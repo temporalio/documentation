@@ -1,6 +1,6 @@
 ---
 id: index
-title: Temporal Go SDK development documentation
+title: Go SDK developer guide
 sidebar_label: Go SDK
 description: Explore the Temporal Go SDK feature guides to seamlessly develop and manage Temporal Applications with core components, Temporal Client connections, testing, debugging, versioning, and more.
 toc_max_heading_level: 4
@@ -13,11 +13,11 @@ tags:
   - go
 ---
 
-These Temporal Go SDK feature guides aim to show how to use Temporal features when developing [Temporal Applications](/temporal#temporal-application).
+Build [Temporal Applications](/temporal#temporal-application) with the Go SDK.
 
-## Core application
+## [Core Application](/develop/go/core-application)
 
-The [Core Application feature guide](/develop/go/core-application) shows how to use the basic building blocks of a Temporal Application (Workflows, Activities, and Workers).
+Use the essential components of a Temporal Application (Workflows, Activities, and Workers) to build and run a Temporal application.
 
 - [How to develop a basic Workflow](/develop/go/core-application#develop-workflows)
 - [How to develop an Activity Definition in Go](/develop/go/core-application#activity-definition)
@@ -25,18 +25,18 @@ The [Core Application feature guide](/develop/go/core-application) shows how to 
 - [How to develop a Worker in Go](/develop/go/core-application#develop-worker)
 - [How to run a Temporal Cloud Worker](/develop/go/core-application#run-a-temporal-cloud-worker)
 
-## Temporal Client
+## [Temporal Client](/develop/go/temporal-clients)
 
-The [Temporal Client feature guide](/develop/go/temporal-clients) shows how to connect to a Temporal Service and start a Workflow Execution.
+Connect to a Temporal Service and start a Workflow Execution.
 
 - [Connect to development Temporal Service](/develop/go/temporal-clients#connect-to-development-service)
 - [Connect to Temporal Cloud](/develop/go/temporal-clients#connect-to-temporal-cloud)
 - [Start Workflow Execution](/develop/go/temporal-clients#start-workflow-execution)
 - [How to start a Workflow Execution](/develop/go/temporal-clients#start-workflow-execution)
 
-## Testing suites
+## [Testing](/develop/go/testing-suite)
 
-The [Testing suite feature guide](/develop/go/testing-suite) shows how to set up the testing suite and test Workflows and Activities.
+Set up the testing suite and test Workflows and Activities.
 
 - [Test frameworks](/develop/go/testing-suite#test-frameworks)
 - [Test setup](/develop/go/testing-suite#test-setup)
@@ -45,101 +45,121 @@ The [Testing suite feature guide](/develop/go/testing-suite) shows how to set up
 - [Testing Workflows](/develop/go/testing-suite#test-workflows)
 - [How to Replay a Workflow Execution](/develop/go/testing-suite#replay)
 
-## Failure detection
+## [Failure detection feature guide](/develop/go/failure-detection)
 
-The [Failure detection feature guide](/develop/go/failure-detection) shows how your application can detect failures using timeouts and automatically attempt to mitigate them with retries.
+Explore how your application can detect failures using timeouts and automatically attempt to mitigate them with retries.
 
 - [Workflow timeouts](/develop/go/failure-detection#workflow-timeouts)
 - [How to set Activity timeouts](/develop/go/failure-detection#activity-timeouts)
 - [How to Heartbeat an Activity](/develop/go/failure-detection#activity-heartbeats)
 
-## Messages
+## [Workflow message passing](/develop/go/message-passing)
 
-The [Workflow messages feature guide](/develop/go/message-passing) shows how to send messages to and read the state of Workflow Executions.
+Send messages to and read the state of Workflow Executions.
 
 - [How to develop with Signals](/develop/go/message-passing#signals)
 - [How to develop with Queries](/develop/go/message-passing#queries)
 - [How to develop with Updates](/develop/go/message-passing#updates)
 
-## Asynchronous Activity Completion
+## [Interrupt a Workflow feature guide](/develop/go/cancellation)
 
-The [Asynchronous Activity Completion feature guide](/develop/go/asynchronous-activity-completion) shows how to complete Activities asynchronously.
+Interrupt a Workflow Execution with a Cancel or Terminate action.
 
-## Versioning
+- [Handle a Workflow Cancellation Request](/develop/go/cancellation#handle-cancellation-in-workflow): Interrupt a Workflow Execution and its Activities through Workflow cancellation.
+- [Request Cancellation](/develop/go/cancellation#request-cancellation)
 
-The [Versioning feature guide](/develop/go/versioning) shows how to change Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
+## [Asynchronous Activity completion](/develop/go/asynchronous-activity-completion)
+
+Complete Activities asynchronously.
+
+- [How to asynchronously complete an Activity](/develop/go/asynchronous-activity-completion)
+
+## [Versioning](/develop/go/versioning)
+
+Change Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
 
 - [Temporal Go SDK Patching APIs](/develop/go/versioning#patching)
 - [Sanity checking](/develop/go/versioning#sanity-checking)
 - [How to use Worker Versioning in Go](/develop/go/versioning#worker-versioning)
 
-## Observability
+## [Observability](/develop/go/observability)
 
-The [Observability feature guide](/develop/go/observability) shows how to configure and use the Temporal Observability APIs.
+Configure and use the Temporal Observability APIs.
 
 - [How to emit metrics](/develop/go/observability#metrics)
 - [Tracing and Context Propagation](/develop/go/observability#tracing-and-context-propogation)
 - [How to log from a Workflow](/develop/go/observability#logging)
 - [How to use Visibility APIs](/develop/go/observability#visibility)
 
-## Debugging
+## [Debugging](/develop/go/debugging)
 
-The [Debugging feature guide](/develop/go/debugging) covers the various ways to debug your application.
+Explore various ways to debug your application.
 
 - [How to debug in a development environment](/develop/go/debugging#debug-in-a-development-environment)
 - [How to debug in a production environment](/develop/go/debugging#debug-in-a-production-environment)
 - [How to test Workflow Definitions in Go](/develop/go/debugging#testing-and-debugging)
 
-## Schedules
+## [Schedules](/develop/go/schedules)
 
-The [Schedules feature guide](/develop/go/schedules) shows how to schedule Workflows, run Workflows on a Cron, and to delay the start of a Workflow.
+Run Workflows on a schedule and delay the start of a Workflow.
 
 - [How to Schedule a Workflow](/develop/go/schedules#schedule-a-workflow)
 - [How to use Temporal Cron Jobs](/develop/go/schedules#temporal-cron-jobs)
 
-## Data encryption
+## [Data encryption](/develop/go/converters-and-encryption)
 
-The [Data encryption feature guide](/develop/go/data-encryption) provides guidance on how to support compression, encryption, and other data handling by implementing custom converters and codecs.
+Use compression, encryption, and other data handling by implementing custom converters and codecs.
 
-- [How to use a custom Payload Codec in Go](/develop/go/data-encryption#custom-payload-codec)
-- [How to use custom payload conversion](/develop/go/data-encryption#custom-payload-conversion)
-- [How to use a custom Payload Converter in Go](/develop/go/data-encryption#custom-payload-converter)
+- [How to use a custom Payload Codec in Go](/develop/go/converters-and-encryption#custom-payload-codec)
+- [How to use custom payload conversion](/develop/go/converters-and-encryption#custom-payload-conversion)
+- [How to use a custom Payload Converter in Go](/develop/go/converters-and-encryption#custom-payload-converter)
 
-## Child Workflows
+## Temporal Nexus
 
-The [Child Workflows feature guide](/develop/go/child-workflows) shows how to spawn a Child Workflow Execution and handle Child Workflow Events.
+The [Temporal Nexus](/develop/go/nexus) feature guide shows how to use Temporal Nexus to connect durable executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
+
+- [Create a Nexus Endpoint to route requests from caller to handler](/develop/go/nexus#create-nexus-endpoint)
+- [Define the Nexus Service API contract](/develop/go/nexus#define-nexus-service-api-contract)
+- [Develop a Nexus Service and Operation handlers](/develop/go/nexus#develop-nexus-service-operation-handlers)
+- [Develop a caller Workflow that uses a Nexus Service](/develop/go/nexus#develop-caller-workflow-nexus-service)
+- [Make Nexus calls across Namespaces with a dev Server](/develop/go/nexus#nexus-calls-across-namespaces-dev-server)
+- [Make Nexus calls across Namespaces in Temporal Cloud](/develop/go/nexus#nexus-calls-across-namespaces-temporal-cloud)
+
+## [Durable Timers](/develop/go/timers)
+
+Use Timers to make a Workflow Execution pause or "sleep" for seconds, minutes, days, months, or years.
+
+- [Set a Timer](/develop/go/timers)
+
+## [Child Workflows](/develop/go/child-workflows)
+
+Explore how to spawn a Child Workflow Execution and handle Child Workflow Events.
 
 - [How to start a Child Workflow Execution](/develop/go/child-workflows#child-workflows)
 
-## Continue-As-New
+## [Continue-As-New](/develop/go/continue-as-new)
 
-The [Continue-As-New feature guide](/develop/go/continue-as-new) shows how to continue the Workflow Execution with a new Workflow Execution using the same Workflow ID.
+Continue the Workflow Execution with a new Workflow Execution using the same Workflow ID.
 
 - [How to Continue-As-New](/develop/go/continue-as-new)
 
-## Timers
+## [Worker Sessions](/develop/go/sessions)
 
-The [Durable Timers feature guide](/develop/go/timers) shows how to use Timers and sleep within Workflows.
-
-- [Set a timer](/develop/go/timers)
-
-## Worker Sessions
-
-The [Worker Sessions feature guide](/develop/go/sessions) shows how to use Worker Session APIs.
+Use Worker Session APIs.
 
 - [Enable Sessions for a Worker](/develop/go/sessions#enable-sessions)
 - [Change the maximum concurrent Sessions of a Worker](/develop/go/sessions#max-concurrent-sessions)
 - [Create a Worker Session](/develop/go/sessions#create-a-session)
 
-## Side Effects
+## [Side Effects](/develop/go/side-effects)
 
-The [Side Effects feature guide](/develop/go/side-effects) covers how to use Side Effects in Workflows.
+Use Side Effects in Workflows.
 
 - [Side Effects](/develop/go/side-effects)
 
-## Manage Namespaces
+## [Manage Namespaces](/develop/go/namespaces)
 
-The [Manage Namespaces feature guide](/develop/go/namespaces) covers how to create and manage Namespaces.
+Create and manage Namespaces.
 
 - [Register Namespaces](/develop/go/namespaces#register-namespace)
 - [Manage Namespaces](/develop/go/namespaces#manage-namespaces)

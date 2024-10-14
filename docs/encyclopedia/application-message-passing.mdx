@@ -31,9 +31,9 @@ keywords:
 import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
 import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
 
-Workflows can be thought of as stateful web services that can receive messages. The Workflow can have powerful message handlers akin to endpoints that can react to the incoming messages in combination with the current state of the Workflow.
-Temporal supports three types of messages: Signals, Queries, and Updates.
-To define these, consider these messages from the perspective of the client making the request:
+Workflows can be thought of as stateful web services that can receive messages.
+The Workflow can have powerful message handlers akin to endpoints that react to the incoming messages in combination with the current state of the Workflow.
+Temporal supports three types of messages: Signals, Queries, and Updates:
 
 - Queries are read requests. They can read the current state of the Workflow but cannot block in doing so.
 - Signals are asynchronous write requests. They cause changes in the running Workflow, but you cannot await any response or error.
@@ -128,22 +128,21 @@ Signal-With-Start is a great tool for lazily initializing Workflows. When you se
 
 :::tip Support, stability, and dependency info
 
-- In [Pre-release](/evaluate/release-stages#pre-release) (API is subject to change)
-- Introduced in [Temporal Server version 1.21](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
-- Available in [Go SDK](https://pkg.go.dev/go.temporal.io/sdk@v1.23.1/client#Client.UpdateWorkflowWithOptions) since [v1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
-- Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)) since [v1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
-- Available in [Python SDK](https://docs.temporal.io/develop/python/features#updates) since [v1.4.0](https://github.com/temporalio/sdk-python/releases/tag/1.4.0)
-- Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_ExecuteUpdateAsync_System_String_System_Collections_Generic_IReadOnlyCollection_System_Object__Temporalio_Client_WorkflowUpdateOptions_) since [v0.1.0-beta2](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-beta2)
-- Available in [TypeScript SDK](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#executeupdate) since [v1.9.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.9.0)
-- Available in [PHP SDK](https://php.temporal.io/classes/Temporal-Client-WorkflowStubInterface.html#method_startUpdate) since [v2.8.0](https://github.com/temporalio/sdk-php/releases/tag/v2.8.0)
+- In [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in Open Source Temporal Server since [v1.25.0](https://github.com/temporalio/temporal/releases/tag/v1.25.0)
+- Available in [Go SDK](https://pkg.go.dev/go.temporal.io/sdk@v1.28.0/client#Client.UpdateWorkflow) since [v1.28.0](https://github.com/temporalio/sdk-go/releases/tag/v1.28.0)
+- Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)) since [v1.25.0](https://github.com/temporalio/sdk-java/releases/tag/v1.25.0)
+- Available in [Python SDK](/develop/python/message-passing#send-update-from-client) since [v1.7.0](https://github.com/temporalio/sdk-python/releases/tag/1.7.0)
+- Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_ExecuteUpdateAsync_System_String_System_Collections_Generic_IReadOnlyCollection_System_Object__Temporalio_Client_WorkflowUpdateOptions_) since [v0.1.0-beta2](https://github.com/temporalio/sdk-dotnet/releases/tag/1.3.0)
+- Available in [TypeScript SDK](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#executeupdate) since [v1.11.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.11.0)
+- Available in [PHP SDK](https://php.temporal.io/classes/Temporal-Client-WorkflowStubInterface.html#method_startUpdate) since [v2.11.0](https://github.com/temporalio/sdk-php/releases/tag/v2.11.0)
 
 :::
 
 :::note
 
-Workflow Updates are currently disabled by default on Temporal Server.
+To use the Workflow Update feature in versions prior to v1.25.0, it must be manually enabled.
 
-To enable sending Updates, set the [frontend.enableUpdateWorkflowExecution](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) and [frontend.enableUpdateWorkflowExecutionAsyncAccepted](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) dynamic config values to `true`.
+Set the [frontend.enableUpdateWorkflowExecution](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) and [frontend.enableUpdateWorkflowExecutionAsyncAccepted](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) dynamic config values to `true`.
 
 For example, with the Temporal CLI, run these commands:
 
@@ -160,8 +159,8 @@ In most languages (except Go), you may call `executeUpdate` to complete an Updat
 
 Alternatively, to start an Update, you may call `startUpdate` and pass in the Workflow Update Stage as an argument. You have two choices on what to await:
 
-- Accepted - wait til the Worker is contacted, which ensures that the Update is persisted. See [Update Validators](#update-validators) for more information.
-- Completed - wait til the handler finishes and returns a result. (This is equivalent to `executeUpdate`.)
+- Accepted - wait until the Worker is contacted, which ensures that the Update is persisted. See [Update Validators](#update-validators) for more information.
+- Completed - wait until the handler finishes and returns a result. (This is equivalent to `executeUpdate`.)
 
 The start call will give you a handle you can use to track the Update, determine whether it was Accepted, and ultimately get its result or an error.
 
@@ -172,9 +171,7 @@ If you want to send an Update to another Workflow such as a Child Workflow from 
     <RelatedReadItem path="/develop/java/message-passing#send-update-from-client" text="Send Updates in Java" archetype="feature-guide" />
     <RelatedReadItem path="/develop/php/message-passing#send-update-from-client" text="Send Updates in PHP" archetype="feature-guide" />
     <RelatedReadItem path="/develop/python/message-passing#send-update-from-client" text="Send Updates in Python" archetype="feature-guide" />
-    <!-- DOES NOT EXIST YET
-        <RelatedReadItem path="/develop/typescript/message-passing#send-update-from-client" text="Send Updates in Typescript" archetype="feature-guide" />
-    -->
+    <RelatedReadItem path="/develop/typescript/message-passing#send-update-from-client" text="Send Updates in Typescript" archetype="feature-guide" />
     <RelatedReadItem path="/develop/dotnet/message-passing#send-update-from-client" text="Send Updates in .NET" archetype="feature-guide" />
 </RelatedReadContainer>
 
@@ -222,22 +219,44 @@ Every time the Workflow wakes up--generally, it wakes up when it needs to--it wi
 
 This execution is on a single thread–while this means you don’t have to worry about parallelism, you do need to worry about concurrency if you have written Signal and Update handlers that can block. These can run interleaved with the main Workflow and with one another, resulting in potential race conditions. These methods should be made reentrant.
 
+#### Initializing the Workflow first {#workflow-initializers}
+
+Initialize your Workflow's state before handling messages.
+This prevents your handler from reading uninitialized instance variables.
+
+To see why, refer to the [diagram](#message-handler-concurrency).
+It shows that your Workflow processes messages before the first run of your Workflow's main method.
+
+The message handler runs first in several scenarios, such as:
+
+- When using [Signal-with-Start](#signal-with-start).
+- When your Worker experiences delays, such as when the Task Queue it polls gets backlogged.
+- When messages arrive immediately after a Workflow continues as new but before it resumes.
+
+For all languages except Go and TypeScript, use your constructor to set up state.
+Annotate your constructor as a Workflow Initializer and take the same arguments as your Workflow's main method.
+
+Note that you can't make blocking calls from your constructor.
+If you need to block, make your Signal or Update handler [wait](#waiting) for an initialization flag.
+
+In Go and TypeScript, register any message handlers only after completing initialization.
+
 ### Message handler patterns {#message-handler-patterns}
 
 Here are several common patterns for write operations, Signal and Update handlers. They don't apply to pure read operations, i.e. Queries or [Update Validators](#update-validators):
 
-- Synchronous, returning immediately.
-- Waiting for the Workflow to be ready to process them.
+- Returning immediately from a handler
+- Waiting for the Workflow to be ready to process them
 - Kicking off activities and other asynchronous tasks
-- Injecting work into the main Workflow.
-- Finishing handlers before the Workflow completes.
-- Ensuring your messages are processed exactly once.
+- Injecting work into the main Workflow
+- Finishing handlers before the Workflow completes
+- Ensuring your messages are processed exactly once
 
 #### Synchronous handlers
 
 Synchronous handlers don’t kick off any long-running operations or otherwise block. They're guaranteed to run atomically.
 
-#### Waiting
+#### Waiting {#waiting}
 
 A Signal or Update handler can block waiting for the Workflow to reach a certain state using a Wait Condition. See the links below to find out how to use this with your SDK.
 
@@ -246,7 +265,7 @@ A Signal or Update handler can block waiting for the Workflow to reach a certain
 Sometimes, you need your message handler to wait for long-running operations such as executing an Activity. When this happens, the handler will yield control back to [the loop](#message-handler-concurrency). This means that your handlers can have race conditions if you’re not careful.
 You can guard your handlers with concurrency primitives like mutexes or semaphores, but you should use versions of these primitives provided for Workflows in most languages. See the links below for examples of how to use them in your SDK.
 
-#### Inject work into the main Workflow
+#### Inject work into the main Workflow {#injecting-work-into-main-workflow}
 
 Sometimes you want to process work provided by messages in the main Workflow. Perhaps you’d like to accumulate several messages before acting on any of them. For example, message handlers might put work into a queue, which can then be picked up and processed in an event loop that you yourself write.
 This option is considered advanced but offers powerful flexibility. And if you serialize the handling of your messages inside your main Workflow, you can avoid using concurrency primitives like mutexes and semaphores. See the links above for how to do this in your SDK.
@@ -259,7 +278,7 @@ If you don’t need to ensure that your handlers complete, you may specify your 
 
 See the links below for how to ensure handlers are finished in your SDK.
 
-#### Ensuring your messages are processed exactly once
+#### Ensuring your messages are processed exactly once {#exactly-once-message-processing}
 
 Many developers want their message handlers to run exactly once--to be idempotent--in cases where the same Signal or Update is delivered twice or sent by two different call sites. Temporal deduplicates messages for you on the server, but there is one important case when you need to think about this yourself when authoring a Workflow, and one when sending Signals and Updates.
 
@@ -271,8 +290,6 @@ Clients can provide an idempotency key. This can be important because Temporal's
 
 Inside your message handler, you can check your idempotency key--the Update ID or the one you provided to the Signal--to check whether the Workflow has already handled the update.
 
-<!-- DOES NOT EXIST YET
-
 See the links below for examples of solving this in your SDK.
 
 #### Authoring message handler patterns
@@ -280,14 +297,13 @@ See the links below for examples of solving this in your SDK.
 See examples of the above patterns.
 
 <RelatedReadContainer>
-    <RelatedReadItem path="/develop/go/message-passing#handler-patterns" text="Author message handler patterns in Go" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/java/message-passing#handler-patterns" text="Author message handler patterns in Java" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/php/message-passing#handler-patterns" text="Author message handler patterns in PHP" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/python/message-passing#handler-patterns" text="Author message handler patterns in Python" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/typescript/message-passing#handler-patterns" text="Author message handler patterns in Typescript" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/dotnet/message-passing#handler-patterns" text="Author message handler patterns in .NET" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/dotnet/message-passing" text="Author message handler patterns in .NET" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/go/message-passing#message-handler-patterns" text="Author message handler patterns in Go" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/message-passing" text="Author message handler patterns in Java" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/php/message-passing" text="Author message handler patterns in PHP" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/message-passing#message-handler-patterns" text="Author message handler patterns in Python" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/message-passing#message-handler-patterns" text="Author message handler patterns in Typescript" archetype="feature-guide" />
 </RelatedReadContainer>
--->
 
 ### Update Validators {#update-validators}
 
@@ -304,18 +320,16 @@ Like Queries, Validators are not allowed to block.
 
 Once the Update handler is finished and has returned a value, the operation is considered Completed.
 
-<!-- DOES NOT EXIST YET
 <RelatedReadContainer>
-    <RelatedReadItem path="/develop/go/message-passing#validate-update" text="Validate updates in Go" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/java/message-passing#validate-update" text="Validate updates in Java" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/php/message-passing#validate-update" text="Validate updates in PHP" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/python/message-passing#validate-update" text="Validate updates in Python" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/typescript/message-passing#validate-update" text="Validate updates in Typescript" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/dotnet/message-passing#validate-update" text="Validate updates in .NET" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/go/message-passing#updates" text="Validate updates in Go" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/message-passing#updates" text="Validate updates in Java" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/dotnet/message-passing#updates" text="Validate updates in .NET" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/message-passing#updates" text="Validate updates in Python" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/message-passing#updates" text="Validate updates in Typescript" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/php/message-passing#handle-updates" text="Validate updates in PHP" archetype="feature-guide" />
 </RelatedReadContainer>
--->
 
-### Exceptions in message handlers
+### Exceptions in message handlers {#exceptions}
 
 When throwing an exception in a message handler, you should decide whether to make it an [Application Failure](/references/failures#application-failure). The implications are different between Signals and Updates.
 
@@ -339,49 +353,43 @@ If you throw any other exception, by default, it will cause a [Workflow Task Fai
 
 #### Errors and panics in message handlers in the Go SDK
 
-In Go, returning an error behaves like an [Application Failure](/references/failures#application-failure) in the other SDKs. Panics behave like non-Application Failure exceptions in other languages, in that they fail the Signal or Update handler tasks.
+In Go, returning an error behaves like an [Application Failure](/references/failures#application-failure) in the other SDKs. Panics behave like non-Application Failure exceptions in other languages, in that they cause a [Workflow Task Failure](/references/failures#workflow-task-failures).
 
 ### Writing Signal Handlers {#writing-signal-handlers}
 
 Use these links to see a simple Signal handler.
 
 <RelatedReadContainer>
-    <RelatedReadItem path="/develop/go/message-passing#handle-signal" text="Handle Signals in Go" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/java/message-passing#handle-signal" text="Handle Signals in Java" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/go/message-passing#signals" text="Handle Signals in Go" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/message-passing#signals" text="Handle Signals in Java" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/message-passing#signals" text="Handle Signals in Python" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/message-passing#signals" text="Handle Signals in Typescript" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/dotnet/message-passing#signals" text="Handle Signals in .NET" archetype="feature-guide" />
     <RelatedReadItem path="/develop/php/message-passing#handle-signal" text="Handle Signals in PHP" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/python/message-passing#handle-signal" text="Handle Signals in Python" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/typescript/message-passing#handle-signal" text="Handle Signals in Typescript" archetype="feature-guide" />
-    <!-- DOES NOT EXIST YET
-    <RelatedReadItem path="/develop/dotnet/message-passing#handle-signal" text="Handle Signals in .NET" archetype="feature-guide" />
-    -->
 </RelatedReadContainer>
 
-<!-- DOES NOT EXIST YET
 ### Writing Update Handlers {#writing-update-handlers}
 
 Use these links to see a simple update handler.
 
 <RelatedReadContainer>
-    <RelatedReadItem path="/develop/go/message-passing#handle-update" text="Handle Updates in Go" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/java/message-passing#handle-update" text="Handle Updates in Java" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/php/message-passing#handle-update" text="Handle Updates in PHP" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/python/message-passing#handle-update" text="Handle Updates in Python" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/typescript/message-passing#handle-update" text="Handle Updates in Typescript" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/dotnet/message-passing#handle-update" text="Handle Updates in .NET" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/go/message-passing#updates" text="Handle Updates in Go" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/message-passing#updates" text="Handle Updates in Java" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/message-passing#updates" text="Handle Updates in Python" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/message-passing#updates" text="Handle Updates in Typescript" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/dotnet/message-passing#updates" text="Handle Updates in .NET" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/php/message-passing#handle-updates" text="Handle Updates in PHP" archetype="feature-guide" />
 </RelatedReadContainer>
--->
 
 ### Writing Query Handlers {#writing-query-handlers}
 
 Author queries using these per-language guides.
 
 <RelatedReadContainer>
-    <RelatedReadItem path="/develop/go/message-passing#handle-query" text="Handle Queries in Go" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/java/message-passing#handle-query" text="Handle Queries in Java" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/go/message-passing#queries" text="Handle Queries in Go" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/message-passing#queries" text="Handle Queries in Java" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/message-passing#queries" text="Handle Queries in Python" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/message-passing#queries" text="Handle Queries in Typescript" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/dotnet/message-passing#queries" text="Handle Queries in .NET" archetype="feature-guide" />
     <RelatedReadItem path="/develop/php/message-passing#handle-query" text="Handle Queries in PHP" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/python/message-passing#handle-query" text="Handle Queries in Python" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/typescript/message-passing#handle-query" text="Handle Queries in Typescript" archetype="feature-guide" />
-    <!-- DOES NOT EXIST YET
-    <RelatedReadItem path="/develop/dotnet/message-passing#handle-query" text="Handle Queries in .NET" archetype="feature-guide" />
-    -->
 </RelatedReadContainer>

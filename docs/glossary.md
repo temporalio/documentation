@@ -193,10 +193,14 @@ An append-only log of Events that represents the full state a Workflow Execution
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
+#### [Failback](/cloud/multi-region)
+
+After Temporal Cloud has resolved an outage or incident involving a failover, a failback process shifts Workflow Execution processing back to the original region that was active before the incident.
+
 #### [Failover](/cloud/multi-region)
 
-A Failover shifts Workflow Execution processing from an active Temporal Namespace to a standby Temporal Namespace during outages or other incidents.
-Standby Namespaces use replication to duplicate data and prevent data loss during Failover.
+A failover shifts Workflow Execution processing from an active Temporal Namespace region to a standby Temporal Namespace region during outages or other incidents.
+Standby Namespace regions use replication to duplicate data and prevent data loss during failover.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
@@ -234,7 +238,7 @@ _Tags: [product-release-stages](/tags/product-release-stages), [term](/tags/term
 
 A Global Namespace is a Namespace that duplicates data from an active [Temporal Service](#temporal-cluster) to a standby Service using the replication to keep both Namespaces in sync.
 Global Namespaces are designed to respond to service issues like network congestion.
-When service to the primary Cluster is compromised, a [Failover](#failover) transfers control from the active to the standby cluster.
+When service to the primary Cluster is compromised, a [failover](#failover) transfers control from the active to the standby cluster.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
@@ -292,13 +296,84 @@ A multi-region Namespace (MRN) is a [Temporal Cloud](#temporal-cloud) Namespace 
 Each region corresponds to a dedicated Temporal Cloud Service. 
 Temporal Cloud automatically replicates Workflow Executions and metadata from the active to the standby region.
 MRNs are designed to respond to service issues as they arise.
-In the event that the Namespace's performance is compromised, a [Failover](#failover) transfers control from the active to the standby region.
+In the event that the Namespace's performance is compromised, a [failover](#failover) transfers control from the active to the standby region.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 #### [Namespace](/namespaces)
 
-A Namespace is a unit of isolation within the Temporal Platform
+A Namespace is a unit of isolation within the Temporal Platform.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+#### Nexus API Definitions
+
+A common code package, schema, or documentation that a Caller can use to obtain Service and Operation names as associated input/output types a Service will accept for a given Operation.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+#### Nexus API Registry
+
+The Nexus API Registry stores information about Nexus Endpoints. 
+In the open source version of Temporal, the registry is scoped to a cluster, while in Temporal Cloud, it is scoped to an account. 
+Endpoint names must be unique within the registry. 
+When the Temporal Service dispatches a Nexus request, it resolves the request's Endpoint to a Namespace and Task Queue through the Registry.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+#### Nexus Async Completion Callback
+
+A Nexus Async Completion Callback is the completion callback for an asynchronous Nexus Operation.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+#### Nexus Endpoint
+
+A Nexus Endpoint is an API proxy that can serve one or more Nexus Services from a target such as a Worker listening on a target Temporal Namespace and target Task Queue. 
+This allows service providers to present a clean API contract and hide the underlying implementation, which may consist of many internal Workflows. 
+Multiple Nexus Endpoints can target the same Namespace, and over time a Nexus Endpoint will be able to span multiple Namespaces with service routing rules.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+#### Nexus Machinery
+
+Temporal has built-in Nexus Machinery that performs the low-level Nexus RPC operations on the wire and provides an integrated Temporal SDK experience to create Nexus Services in a handler Worker and use them from a caller Workflow through a Nexus Endpoint.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+#### Nexus Operation
+
+An arbitrary-duration operation that may be synchronous or asynchronous, short-lived, or long-lived, and used to connect durable executions within and across Namespaces, clusters, regions, and clouds. 
+Unlike a traditional RPC, an asynchronous Nexus Operation has an operation identity that can be used to re-attach to a long-lived Nexus Operation, for example, one backed by a Temporal Workflow.
+Nexus Operations support a uniform interface to get the status of an operation or its result, receive a completion callback, or cancel the operation – all of which are fully integrated into the Temporal Platform.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+#### Nexus Operation Events
+
+Nexus Operations Events are history events that surface in the Caller Workflow to indicate the state of an Operation including `Nexus Operation Scheduled`, `Nexus Operation Started`, `Nexus Operation Completed`.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+
+#### Nexus Operation Handler
+
+The Nexus handler code in a Temporal Worker typically created using Temporal SDK builder functions that make it easy to abstract Temporal primitives and expose a clean service contract for others to use.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+
+#### [Nexus RPC](https://github.com/nexus-rpc/api/blob/main/SPEC.md)
+
+Nexus RPC is a protocol designed with durable execution in mind. 
+It supports arbitrary-duration Operations that extend beyond a traditional RPC — a key underpinning to connect durable executions within and across Namespaces, clusters, regions, and cloud boundaries.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+#### Nexus Service
+
+A Nexus Service is a named collection of arbitrary-duration Nexus Operations that provide an API contract suitable for sharing across team boundaries.
+Nexus Services are registered with a Temporal Worker that is listening on the target Namespace and Task Queue for an Endpoint.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
@@ -346,7 +421,7 @@ _Tags: [term](/tags/term), [queries](/tags/queries), [explanation](/tags/explana
 
 #### [Remote data encoding](/dataconversion#remote-data-encoding)
 
-Remote data encding is using your custom Data Converter to decode (and encode) your Payloads remotely through endpoints.
+Remote data encoding is using your custom Data Converter to decode (and encode) your Payloads remotely through endpoints.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
@@ -559,7 +634,6 @@ The Temporal Server is a grouping of four horizontally scalable services.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
-
 #### [Temporal Web UI](/web-ui)
 
 The Temporal Web UI provides users with Workflow Execution state and metadata for debugging purposes.
@@ -646,13 +720,19 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/ti
 
 #### [Workflow History Export](/cloud/export)
 
-Workflow History export allows users to export Closed Workflow Histories to a user's Cloud Storage Sink
+Workflow History export allows users to export Closed Workflow Histories to a user's Cloud Storage Sink.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation), [temporal-cloud](/tags/temporal-cloud), [operations](/tags/operations)_
 
 #### [Workflow Id](/workflows#workflow-id)
 
 A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+#### [Workflow Id Conflict Policy](/workflows#workflow-id-conflict-policy)
+
+A Workflow Id Conflict Policy determines how to resolve the conflict when spawning a new Workflow Execution with a particular Workflow Id that is used by an Open Workflow Execution already.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
@@ -695,4 +775,4 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 #### tctl (_deprecated_)
 
 tctl is a command-line tool that you can use to interact with a Temporal Service.
-It is superceded by the [Temporal CLI utility](#cli)
+It is superseded by the [Temporal CLI utility](#cli).

@@ -1,6 +1,6 @@
 ---
 id: core-application
-title: Core application - Temporal Go SDK feature guide
+title: Core application - Go SDK
 sidebar_label: Core application
 toc_max_heading_level: 4
 keywords:
@@ -51,21 +51,12 @@ tags:
   - activity-parameters
   - api
   - cli
-  - cli-feature
   - client
   - client-options
   - temporal service
-  - temporal service-feature
   - code-sample
-  - code-samples
   - deterministic
-  - developer-guide-doc-type
-  - go-sdk
-  - go-sdk
   - how-to
-  - how-to-doc-type
-  - introduction-doc-type
-  - reference-doc-type
   - retry-and-timeout-policies
   - return-values
   - run-id
@@ -83,6 +74,9 @@ tags:
   - workflow-parameters
   - workflow-run
   - workflows
+  - sdk
+  - go-sdk
+  - developer guide
 description: The Foundations section of the Temporal Developer's guide introduces essential concepts for building and running a Temporal Application, outlining steps to start Workflow and Activity Execution, running development Workers, and installing the Temporal CLI.
 ---
 
@@ -109,72 +103,72 @@ This local development Temporal Service runs as a single process with zero runti
 
 **Install the Temporal CLI**
 
-Choose one of the following install methods to install the Temporal CLI.
+The Temporal CLI is available on MacOS, Windows, and Linux.
 
-<Tabs>
-<TabItem value="macOS" label="macOS">
+### MacOS
 
-- Install the Temporal CLI with Homebrew.
+**How to install the Temporal CLI on Mac OS**
 
-  ```bash
-  brew install temporal
-  ```
+Choose one of the following install methods to install the Temporal CLI on MacOS:
 
-- Install the Temporal CLI with cURL.
+**Install the Temporal CLI with Homebrew**
 
-  ```bash
-  curl -sSf https://temporal.download/cli.sh | sh
-  ```
+```bash
+brew install temporal
+```
 
-- Install the Temporal CLI from CDN.
-  1. Select the platform and architecture needed.
-     - <a href="https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64">
-         Download for Darwin amd64
-       </a>
-     - <a href="https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64">
-         Download for Darwin arm64
-       </a>
-  2. Extract the downloaded archive.
-  3. Add the `temporal` binary to your PATH.
+**Install the Temporal CLI from CDN**
 
-</TabItem>
-<TabItem value="Linux" label="Linux">
+1. Select the platform and architecture needed.
 
-- Install the Temporal CLI with cURL.
+- Download for Darwin amd64: https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64
+- Download for Darwin arm64: https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64
 
-  ```bash
-  curl -sSf https://temporal.download/cli.sh | sh
-  ```
+2. Extract the downloaded archive.
 
-- Install the Temporal CLI from CDN.
-  1. Select the platform and architecture needed.
-     - <a href="https://temporal.download/cli/archive/latest?platform=linux&arch=amd64">
-         Download for Linux amd64
-       </a>
-     - <a href="https://temporal.download/cli/archive/latest?platform=linux&arch=arm64">
-         Download for Linux arm64
-       </a>
-  2. Extract the downloaded archive.
-  3. Add the `temporal` binary to your PATH.
+3. Add the `temporal` binary to your PATH.
 
-</TabItem>
-<TabItem value="Windows" label="Windows">
+### Linux
 
-- Install the Temporal CLI from CDN.
-  1. Select the platform and architecture needed and download the binary.
-     - <a href="https://temporal.download/cli/archive/latest?platform=windows&arch=amd64">
-         Download for Windows amd64
-       </a>
-     - <a href="https://temporal.download/cli/archive/latest?platform=windows&arch=arm64">
-         Download for Windows arm64
-       </a>
-  2. Extract the downloaded archive.
-  3. Add the `temporal.exe` binary to your PATH.
+**How to install the Temporal CLI on Linux**
 
-</TabItem>
-</Tabs>
+Choose one of the following install methods to install the Temporal CLI on Linux:
 
-**Start the Temporal Development Server**
+**Install the Temporal CLI with Homebrew**
+
+```bash
+brew install temporal
+```
+
+**Install the Temporal CLI from CDN**
+
+1. Select the platform and architecture needed.
+
+- Download for Linux amd64: https://temporal.download/cli/archive/latest?platform=linux&arch=amd64
+- Download for Linux arm64: https://temporal.download/cli/archive/latest?platform=linux&arch=arm64
+
+2. Extract the downloaded archive.
+
+3. Add the `temporal` binary to your PATH.
+
+### Windows
+
+**How to install the Temporal CLI on Windows**
+
+Follow these instructions to install the Temporal CLI on Windows:
+
+**Install the Temporal CLI from CDN**
+
+1. Select the platform and architecture needed and download the binary.
+
+- Download for Windows amd64: https://temporal.download/cli/archive/latest?platform=windows&arch=amd64
+- Download for Windows arm64: https://temporal.download/cli/archive/latest?platform=windows&arch=arm64
+
+2. Extract the downloaded archive.
+
+3. Add the `temporal.exe` binary to your PATH.
+
+### Start the Temporal Development Server
 
 Start the Temporal Development Server by using the `server start-dev` command.
 
@@ -203,8 +197,6 @@ An SDK provides you with the following:
 - APIs to develop [Workflows](/workflows).
 - APIs to create and manage [Worker Processes](/workers#worker).
 - APIs to author [Activities](/activities#activity-definition).
-
-[![Build Status](https://badge.buildkite.com/ce6df3b1a8b375270261ae70fb2d2756af298fef3a0dac4d20.svg?theme=github&branch=master)](https://buildkite.com/temporal/temporal-go-client) [![Coverage Status](https://coveralls.io/repos/github/temporalio/temporal-go-sdk/badge.svg?branch=master)](https://coveralls.io/github/temporalio/temporal-go-sdk?branch=master) [![Go reference](https://pkg.go.dev/badge/go.temporal.io/sdk)](https://pkg.go.dev/go.temporal.io/sdk)
 
 Add the [Temporal Go SDK](https://github.com/temporalio/sdk-go) to your project:
 
@@ -238,7 +230,7 @@ Additionally, several of the [Tutorials](https://learn.temporal.io) are backed b
   It demonstrates a basic "money transfer" Workflow Definition and works in conjunction with the [Run your first app tutorial in Go](https://learn.temporal.io/getting_started/go/first_program_in_go/).
 - [Subscription-style Workflow Definition in Go](https://github.com/temporalio/subscription-workflow-project-template-go): Demonstrates some of the patterns that could be implemented for a subscription-style business process.
 - [eCommerce application example in Go](https://github.com/temporalio/temporal-ecommerce): Showcases a per-user shopping cart–style Workflow Definition that includes an API for adding and removing items from the cart as well as a web UI.
-  This application sample works in conjunction with the [eCommerce in Go tutorial](https://temporal.io/blog/build-an-ecommerce-app-with-temporal-part-1).
+  This application sample works in conjunction with the [eCommerce in Go tutorial](https://learn.temporal.io/tutorials/go/build-an-ecommerce-app).
 
 ## How to develop a basic Workflow {#develop-workflows}
 
@@ -653,7 +645,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 ### How to set the required Activity Timeouts {#required-timeout}
 
 Activity Execution semantics rely on several parameters.
-The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
+The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
 These values are set in the Activity Options.
 
 To set an Activity Timeout in Go, create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the Activity Timeout field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.

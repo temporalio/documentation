@@ -94,9 +94,7 @@ Temporal Cloud notifies you by email once the replication has caught up and both
 Temporal Cloud will initiate a Namespace failover when it detects an incident or outage that elevates error rates or latency in the active region of a multi-region Namespace.
 A failover operation shifts Workflow processing to a standby region, unaffected by the incident.
 This ensures that existing Workflows can progress and new Workflows can be created as the incident is addressed.
-
-Temporal Cloud doesn't revert Namespaces back to the original active region after an incident is resolved.
-[File a Support ticket](https://temporalsupport.zendesk.com/) to request switching back to the original region.
+After Temporal-initiated failovers, Temporal Cloud shifts Workflow Execution processing back to the original region that was active before the incident (a "failback") once the incident is resolved.
 
 :::info
 
@@ -316,7 +314,9 @@ Adding a second region enables multi-region Namespace capabilities.
 Start with the following command to create the new multi-region Namespace:
 
 ```
-tcld namespace create --namespace <namespace_id> region <region> --region <region>
+tcld namespace create \
+    --namespace <namespace_id>.<account_id> \
+    --region <region>
 ```
 
 Include both regions by specifying the [region codes](/cloud/service-availability) as arguments to the `--region` flags.
@@ -345,7 +345,9 @@ An email alert is sent once your multi-region Namespace is ready for use.
 At the command line, enter:
 
 ```
-tcld namespace add-region --namespace <namespace_id> --region <region>
+tcld namespace add-region \
+    --namespace <namespace_id>.<account_id> \
+    --region <region>
 ```
 
 Specify the region code for the new region to add.
@@ -401,7 +403,9 @@ After confirming the operation, the failover is initiated.
 To manually trigger a failover, issue the following from your command line:
 
 ```
-tcld namespace failover --namespace <namespace_id> --region <target_region>
+tcld namespace failover \
+    --namespace <namespace_id>.<account_id> \
+    --region <target_region>
 ```
 
 #### After failover
@@ -413,9 +417,7 @@ After failover, the Namespace is active in the new region.
 You needn't monitor Temporal Cloud's failover response in real-time.
 Whenever there is a failover event, you'll receive an alert email.
 
-Temporal Cloud doesn't revert Namespaces back to the original active region after an incident is resolved.
-[File a Support ticket](https://temporalsupport.zendesk.com/) to request switching back to the original region.
-
+After Temporal-initiated failovers, Temporal Cloud shifts Workflow Execution processing back to the original region that was active before the incident (a "failback") once the incident is resolved.
 More information is available in [Monitoring and Observability](/cloud/multi-region#observability).
 
 ### Metrics {#metrics-operations}
