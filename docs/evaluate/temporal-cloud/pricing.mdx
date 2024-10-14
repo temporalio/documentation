@@ -17,16 +17,19 @@ keywords:
   - temporal cloud
   - term
 tags:
-  - explanation
-  - faq
-  - introduction
-  - pricing
-  - security
-  - storage
-  - support
-  - temporal-cloud
-  - term
+  - Temporal Cloud
+  - Support
+  - Pricing
 ---
+
+:::tip Support, stability, and dependency info
+
+This Pricing on this page applies to new Temporal Cloud customers.
+It goes into effect in February 2025 for existing customers.
+
+If you are an existing customer, please refer to the [legacy pricing](/cloud/legacy-pricing) page until the new plan goes live for you.
+
+:::
 
 Temporal Cloud is a consumption-based service.
 You pay only for what you use.
@@ -43,16 +46,16 @@ For more information, visit the [Billing and Cost](/cloud/billing-and-cost) page
 ## Temporal Cloud pricing model {#pricing-model}
 
 This section explains the basis of the Temporal Cloud pricing model and how it works.
-Your total invoice each calendar month is the combination of Temporal Cloud consumption ([Actions](#action) and [Storage](#storage)), and a [Base Plan](#base_plans) that includes [Support](/cloud/support#support).
+Your total invoice each calendar month is the combination of Temporal Cloud consumption ([Actions](#action) and [Storage](#storage)), and a [Temporal Cloud plan](#base_plans) that includes [Support](/cloud/support#support).
 
-### Base Plans {#base_plans}
+### Temporal Cloud plans {#base_plans}
 
-**How Temporal Base Plans work**
+**How plans work**
 
-Each Temporal Cloud account includes a Base Plan that includes Support, Actions, Active Storage, Retained Storage and other features for a complete Temporal solution.
+Each Temporal Cloud account includes a plan with Support, Actions, Active Storage, Retained Storage and platform features.
 Base allocations help you get started on the Temporal platform, so you can better estimate costs.
 
-- Packages are charged monthly.
+- Temporal Cloud plans are charged monthly.
 - Actions or Storage allocations are reset each calendar month.
 
 Temporal offers four plans: Essential, Business, Enterprise, Mission Critical.
@@ -62,12 +65,13 @@ Prices are outlined in the following table:
 | ----------------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
 | Support Targeting | Basic use                                                                    | Production deployments<br />that scale                                                                                            | Enterprise deployments<br/>w/ stringent uptime demands                                                                          | Mission-critical applications<br />w/ the highest support needs                                                                 |
 | Support Features  | Access to Support                                                                | <li>P0 Response Times</li>                                                                                                        | <li>P0: \<30 Min, 24/7</li><li>Private Slack</li>                                                                               | <li>P0: \<15 Min, 24/7</li><li>Private Slack</li><li>Dedicated DSE</li>                                                         |
-| Product Features  | <li>1M Actions</li><li>1GBh Active Storage</li><li>40 GB Retained Storage</li> | <li>Commit discounts</li><li>SSO (Add-on)</li><li>2.5M Actions</li><li>2.5GBh Active Storage</li><li>100 GB Retained Storage</li> | <li>Commit discounts</li><li>SSO included</li><li>10M Actions</li><li>10GBh Active Storage</li><li>400 GB Retained Storage</li> | <li>Commit discounts</li><li>SSO included</li><li>10M Actions</li><li>10GBh Active Storage</li><li>400 GB Retained Storage</li> |
+| Product Features  | <li>1M Actions</li><li>1 GB Active Storage</li><li>40 GB Retained Storage</li> | <li>Commit discounts</li><li>SSO (Add-on)</li><li>2.5M Actions</li><li>2.5 GB Active Storage</li><li>100 GB Retained Storage</li> | <li>Commit discounts</li><li>SSO included</li><li>10M Actions</li><li>10 GB Active Storage</li><li>400 GB Retained Storage</li> | <li>Commit discounts</li><li>SSO included</li><li>10M Actions</li><li>10 GB Active Storage</li><li>400 GB Retained Storage</li> |
 | Pricing           | Greater of<li>&#36;100/mo; or</li><li>5% of Usage Spend</li>                   | Greater of<li>&#36;500/mo; or</li><li>5% of Usage Spend</li>                                                                      | Priced annually:<br /> [contact Sales](mailto:sales@temporal.io) for details                                                    | Priced annually:<br /> [contact Sales](mailto:sales@temporal.io) for details                                                    |
+Partial months are pro-rated to the day.
 
 Find a complete description of Support offerings and response times in our [Support](/cloud/support) documentation.
 
-:::info Converting GB to GBH
+:::note Converting GB to GBH
 
 Active and Retained Storage allocations are translated into GBh at a rate of 1GB equals 744GBh.
 
@@ -86,7 +90,7 @@ They track billable operations within the Temporal Cloud Service, such as starti
 [Toggle to View] The following operations result in Actions:
 </summary>
 
-#### WORKFLOWS
+**WORKFLOWS**
 
 - **Workflow started**.
   Occurs via client start, client [Signal-With-Start](/encyclopedia/workflow-message-passing#signal-with-start), [Continue-As-New](/workflows#continue-as-new), or [Child Workflow](/encyclopedia/child-workflows) start.
@@ -107,14 +111,14 @@ They track billable operations within the Temporal Cloud Service, such as starti
   (Be aware that some SDKs don't support Side Effects.)
 - [**NEW**] **Workflow Update**. [Workflow Updates](/encyclopedia/workflow-message-passing#sending-updates) is a primitive that combines a Signal and Query together for a single Action.
 
-#### CHILD WORKFLOWS
+**CHILD WORKFLOWS**
 
 - **Child Workflows spawned**.
   The parent Workflow spawning a Child Workflow results in one Action.
 - **Child Workflows executed**.
   Execution of the Child Workflow results in one Action.
 
-#### ACTIVITIES
+**ACTIVITIES**
 
 - **Activity started or retried**.
   Occurs each time an Activity is started or retried.
@@ -130,7 +134,7 @@ They track billable operations within the Temporal Cloud Service, such as starti
   The default throttle is 80% of the [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout).
   Heartbeats don't apply to Local Activities.
 
-#### SCHEDULES
+**SCHEDULES**
 
 [Schedules](/workflows#schedule) allows you to "schedule" a Workflow to start at a particular time.
 Each execution of a Schedule accrues three actions:
@@ -140,21 +144,19 @@ Each execution of a Schedule accrues three actions:
 - **Workflow started**.
   This is a single action to start the target workflow.
 
-#### EXPORT
+**EXPORT**
 
 [Workflow History Export](/cloud/export) enables you to export closed Workflow Histories to a cloud storage sink of your choice.
 
 - **Workflow exported**.
   Each Workflow exported accrues a single action.
 
-#### TEMPORAL NEXUS PRICING
+**TEMPORAL NEXUS**
 
 - For Nexus Operation scheduled, the caller Workflow starting a Nexus Operation results in one Action on the caller Namespace.
 - For Nexus Operation canceled, the caller Workflow canceling a Nexus Operation results in one Action on the caller Namespace.
 - The underlying Temporal primitives (such as Workflows, Activities, and Signals) created by a Nexus Operation handler (directly or indirectly) result in the normal Actions for those primitives billed to the handler’s Namespace.
-  This includes retries for underlying Temporal primitives like Activities.
-- No Action results for handling the Nexus Operation itself.
-- No Action results for a retry of the Nexus Operation itself.
+  This includes retries for underlying Temporal primitives like Activities but _not_ for handling the Nexus Operation itself or a retry of the Nexus Operation itself.
 
 </details>
 
@@ -175,30 +177,30 @@ Under this framework, a Workflow Execution has only two states, open (Active Sto
   Typical uses of Retained Storage include compliance, debugging, workload refresh, and business analytics.
   When closed Workflow Histories need to be retained for more than the 90-day maximum period on Temporal Cloud, we recommend using our [**Export**](/cloud/export) feature.
 
-Storage costs are measured in gigabyte-hours (GBh) and they are measured per Namespace.
+Storage costs are measured in gigabyte-hours (GBh).
 
 ### Pricing options {#pricing-options}
 
 **How to Pay for Temporal Cloud**
 
 After you exceed your Actions and Storage allocations in your base tier, Temporal Cloud offers two payment options: Pay-As-You-Go and Commitments.
-Both models meter and bill for three primary components: [Actions](#action), [Storage](#storage), and [Support](/cloud/support#support).
+Both models meter and bill for three primary components: [Actions](#action), [Storage](#storage), and [your Temporal Cloud plan](/cloud/support#support).
 
 - With Pay-As-You-Go, you are invoiced each calendar month based on your consumption.
   Pay-As-You-Go pricing automatically applies volume prices as your Actions scale.
 - With Commitments, you pre-purchase your Temporal Cloud spend with Temporal Credits.
-  Temporal Credits pay for your Temporal Cloud consumption, including Support charges.
+  Temporal Credits pay for your Temporal Cloud consumption, including Temporal Cloud plan charges.
 
 ## Pay-As-You-Go {#payg}
 
 **How does Pay-As-You-Go pricing work?**
 
-Pay-As-You-Go is based on consumption.
+Pay-As-You-Go pricing is based on consumption.
 This section explains how you're billed each calendar month and gives examples.
 
 ### Action pricing {#payg-action-pricing}
 
-Temporal Cloud prices actions based on usage, starting at &#36;50 per million actions (&#36;0.00005 per action).
+Actions pricing starts at &#36;50 per million actions (&#36;0.00005 per action).
 You gain progressive volume discounts as you scale.
 Discounts are based on your account's total usage, metered and billed for each calendar month:
 
@@ -214,7 +216,7 @@ Discounts are based on your account's total usage, metered and billed for each c
 
 **Example**
 
-If you consume 11.25M Actions in excess of your base tier allocation in one calendar month, your bill for Actions will be:
+If you consume 11.25M Actions in excess of your Temporal Cloud plan allocation in one calendar month, your bill for Actions will be:
 
 ```
 5M Actions ⨉ $50 Per Million Actions = $250
@@ -226,11 +228,11 @@ $250 (First Tier) + $225 (Second Tier) + $50 (Third Tier) = $525
 
 ### Storage pricing {#payg-storage-pricing}
 
-Most accounts’ storage needs are met by our Base Plans.
+Most accounts’ storage needs are met by our Temporal Cloud plans.
 For additional storage within a calendar month, you are billed for Active and Retained Storage as follows:
 | **Storage** | **Price per GBh (USD)** |
 | ----------- | ----------------------- |
-| Retained | &#36;0.00042 |
+| Retained | &#36;0.00105 |
 | Active | &#36;0.042 |
 
 **Example**
@@ -239,13 +241,13 @@ If you have 720 GBh of Active Storage and 3,600 GBh of Retained Storage in exces
 
 ```
 720 GBh Active Storage ⨉ $0.042 per GBh = $30.24
-3,600 GBh Retained Storage ⨉ $0.00042 per GBh = $1.51
-Total Storage Bill: $30.24 Active Storage + $1.51 Retained Storage = $31.75
+3,600 GBh Retained Storage ⨉ $0.00105 per GBh = $3.78
+Total Storage Bill: $30.24 Active Storage + $3.78 Retained Storage = $34.02
 ```
 
-## Base Plan pricing
+## Temporal Cloud plan pricing
 
-Your Base Plan pricing is the greater of the minimum monthly price or a percent (%) of your consumption spend:
+Your Temporal Cloud plan pricing is the greater of the minimum monthly price or a percent (%) of your consumption spend:
 
 - The Essentials tier is priced at the greater of &#36;100/month or 5% of your Temporal Cloud consumption.
 - The Business tier is priced at the greater of &#36;500/month or 10% of Temporal Cloud consumption.
@@ -272,16 +274,16 @@ Key discount levers include:
 - Account Action volume over 200M Actions
 - Duration of your commitment (1, 2, or 3 years)
 
-Meet your commitments with any Temporal Cloud spend, including Actions, Storage and your Base Plan.
+Meet your commitments with any Temporal Cloud spend, including Actions, Storage and your Temporal Cloud plan.
 After making a commitment, Temporal locks in your Actions price based on your expected volume and discounts your Active Storage costs.
 This price is used to bill your Actions and Active Storage across your account for the timeframe specified in your commitment.
 
 Commitments must be paid for with Temporal Credits.
-Temporal Credits are used to pay your Temporal Cloud consumption, including support and base plan charges.
+Temporal Credits are used to pay your Temporal Cloud consumption, including Temporal Cloud plan charges.
 A Temporal Credit is equivalent to &#36;1 USD.
 For example, a credit purchase of &#36;20,000 results in 20,000 Temporal Credits.
 A minimum credit purchase equivalent to the first year of your commitment is required.
-For Multi-year deals please contact [Sales](mailto:sales@temporal.io) for the most accurate pricing.
+For multi-year deals please contact [Sales](mailto:sales@temporal.io) for the most accurate pricing.
 
 ### Commitment Pricing Q&A
 
@@ -296,7 +298,6 @@ You continue to receive the negotiated discounted prices for the remainder of yo
 You'll be invoiced for another credit purchase based on your most recent calendar month's spend.
 This amount is multiplied by the months remaining in the annual portion of your term.
 If your previous month spend was &#36;5,000, and you're 10 months through your annual term, you'll be invoiced for 10,000 Temporal Credits to cover the remaining two months.
-For multi-year commitments, accelerated credit purchases offset remaining annual credit requirements.
 
 **What happens if I have unused Temporal Credits at the end of my term?**
 
@@ -418,8 +419,8 @@ You can purchase Temporal Cloud credits by contacting our team at [sales@tempora
 
 **What's the minimum cost to run Temporal Cloud?**
 
-The Essentials Base plan starts at &#36;100/month.
-Consumption in excess of your base plans allocations are billed on a consumption basis.
+The Essentials plan starts at &#36;100/month.
+Consumption in excess of your plan's allocations are billed on a consumption basis.
 
 **Can I purchase Temporal Cloud through my Amazon, Azure, or Google Cloud Platform Marketplace?**
 
