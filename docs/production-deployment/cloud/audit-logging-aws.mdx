@@ -29,8 +29,6 @@ tags:
 
 ## Configure Audit Logging using AWS Kinesis {#configure-audit-logging}
 
-**How to configure Audit Logging using AWS Kinesis **
-
 To set up Audit Logging, you must have an Amazon Web Services (AWS) account and set up Kinesis Data Streams.
 
 1. If you don't have an AWS account, follow the instructions from AWS in [Create and activate an AWS account](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/).
@@ -68,7 +66,6 @@ If you chose the **Manual** access method, continue with the following steps:
 1. Select **Choose file** and specify the template you generated in step 1.
 1. Select **Next** on this page and on the next two pages.
 1. On the **Review** page, select **Create stack**.
-
 
 ## Consume an Audit Log {#consume-an-audit-log}
 
@@ -122,7 +119,7 @@ The following is a sample result.
 {
   "emit_time": "2023-11-14T07:56:55Z",
   "level": "LOG_LEVEL_INFO",
-  "caller_ip_address":"10.1.2.3, 10.4.5.6",
+  "caller_ip_address": "10.1.2.3, 10.4.5.6",
   "user_email": "user1@example.com",
   "operation": "DeleteUser",
   "details": {
