@@ -244,7 +244,7 @@ List archived Workflow Executions.
 
 :::note
 
-Currently an experimental feature.
+Caution: `--archived` is experimental.
 
 :::
 
@@ -317,11 +317,13 @@ Use `-1` to fetch Child Workflows at any depth.
 
 ## description
 
-Namespace description or Endpoint description in markdown format (encoded using the configured Codec Server).
+Namespace description or Nexus Endpoint description.
+You may use Markdown formatting in the Nexus Endpoint description.
 
 ## description-file
 
-Endpoint description file in markdown format (encoded using the configured Codec Server).
+Path to the Nexus Endpoint description file.
+The contents of the description file may use Markdown formatting.
 
 ## detail
 
@@ -354,7 +356,8 @@ Name of the environment to read environmental variables from.
 
 ## env-file
 
-Path to environment settings file. (defaults to `$HOME/.config/temporalio/temporal.yaml`).
+Path to environment settings file.
+Defaults to `$HOME/.config/temporalio/temporal.yaml`.
 
 ## event-id
 
@@ -532,7 +535,7 @@ All Child Workflows within the set depth will be fetched and displayed.
 
 ## no-json-shorthand-payloads
 
-Raw payload output, even if they are JSON.
+Raw payload output, even if the JSON option was used.
 
 ## no-pager
 
@@ -674,15 +677,23 @@ Backfill start time.
 
 ## target-namespace
 
-Namespace in which a handler worker will be polling for Nexus tasks on.
+Namespace in which a handler Worker will poll for Nexus tasks.
 
 ## target-task-queue
 
-Task Queue in which a handler worker will be polling for Nexus tasks on.
+Task Queue in which a handler Worker will poll for Nexus tasks.
 
 ## target-url
 
-URL to direct Nexus requests to.
+An external Nexus Endpoint where Nexus requests are forwarded to.
+May be used as an alternative to `--target-namespace` and `--target-task-queue`.
+
+:::note
+
+Caution: `--target-url` is experimental.
+
+:::
+
 
 :::note
 

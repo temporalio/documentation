@@ -573,30 +573,30 @@ Use the options listed below to change the command's behavior.
 
 ## nexus
 
-Nexus commands enable managing Nexus resources.
+These commands manage Nexus resources.
 
-Nexus commands follow this syntax:
+nexus commands follow this syntax:
 
 ```
-temporal operator nexus [command] [command] [command options]
+temporal operator nexus [command] [subcommand] [options]
 ```
 
 ### endpoint
 
-Endpoint commands enable managing Nexus Endpoints.
+These commands manage Nexus Endpoints.
 
-Endpoint commands follow this syntax:
+Nexus Endpoint commands follow this syntax:
 
 ```
-temporal operator nexus endpoint [command] [command options]
+temporal operator nexus endpoint [command] [options]
 ```
 
 #### create
 
-Create a new Nexus Endpoint on the Server.
+Create a Nexus Endpoint on the Server.
 
-An endpoint name is used in Workflow code to invoke Nexus operations.
-The endpoint target may either be a Worker, in which case `--target-namespace` and
+A Nexus Endpoint name is used in Workflow code to invoke Nexus Operations.  The
+endpoint target may either be a Worker, in which case `--target-namespace` and
 `--target-task-queue` must both be provided, or an external URL, in which case
 `--target-url` must be provided.
 
@@ -672,7 +672,7 @@ Use the following options to change the behavior of this command.
 
 #### delete
 
-Delete a Nexus Endpoint configuration from the Server.
+Delete a Nexus Endpoint from the Server.
 
 ```
 temporal operator nexus endpoint delete --name your-endpoint
@@ -730,7 +730,7 @@ Use the following options to change the behavior of this command.
 
 #### get
 
-Get a Nexus Endpoint configuration by name from the Server.
+Get a Nexus Endpoint by name from the Server.
 
 ```
 temporal operator nexus endpoint get --name your-endpoint
@@ -788,7 +788,7 @@ Use the following options to change the behavior of this command.
 
 #### list
 
-List all Nexus Endpoint configurations on the Server.
+List all Nexus Endpoints on the Server.
 
 ```
 temporal operator nexus endpoint list
@@ -846,8 +846,8 @@ Use the following options to change the behavior of this command.
 
 Update an existing Nexus Endpoint on the Server.
 
-An endpoint name is used in Workflow code to invoke Nexus operations.
-The endpoint target may either be a Worker, in which case `--target-namespace` and
+A Nexus Endpoint name is used in Workflow code to invoke Nexus Operations.  The
+endpoint target may either be a Worker, in which case `--target-namespace` and
 `--target-task-queue` must both be provided, or an external URL, in which case
 `--target-url` must be provided.
 
