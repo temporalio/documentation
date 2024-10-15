@@ -25,12 +25,125 @@ The `tcld nexus endpoint` commands manage Nexus Endpoints in Temporal Cloud.
 
 Alias: `ep`
 
+- [tcld nexus endpoint allowed-namespace](#allowed-namespace)
 - [tcld nexus endpoint create](#create)
 - [tcld nexus endpoint delete](#delete)
 - [tcld nexus endpoint get](#get)
 - [tcld nexus endpoint list](#list)
 - [tcld nexus endpoint update](#update)
-- [tcld nexus endpoint allowed-namespace](#allowed-namespace)
+
+### allowed-namespace
+
+The `tcld nexus endpoint allowed-namespace` commands manage the allowed namespaces for a Nexus Endpoint.
+
+Alias: `an`
+
+- [tcld nexus endpoint allowed-namespace add](#add)
+- [tcld nexus endpoint allowed-namespace list](#list)
+- [tcld nexus endpoint allowed-namespace remove](#remove)
+- [tcld nexus endpoint allowed-namespace set](#set)
+
+#### add
+
+The `tcld nexus endpoint allowed-namespace add` command adds allowed namespaces to a Nexus Endpoint.
+
+Alias: `a`
+
+##### --name
+
+Endpoint name.
+
+Alias: `n`
+
+##### --namespace
+
+Namespace that is allowed to call this endpoint.
+
+Alias: `ns`
+
+##### --request-id
+
+The request-id to use for the asynchronous operation, if not set the server will assign one (optional).
+
+Alias: `r`
+
+##### --resource-version
+
+The resource-version (etag) to update from, if not set the cli will use the latest (optional).
+
+Alias: `v`
+
+#### list
+
+The `tcld nexus endpoint allowed-namespace list` command lists the allowed namespaces of a Nexus Endpoint.
+
+Alias: `l`
+
+##### --name
+
+Endpoint name.
+
+Alias: `n`
+
+#### remove
+
+The `tcld nexus endpoint allowed-namespace remove` command removes allowed namespaces from a Nexus Endpoint.
+
+Alias: `r`
+
+##### --name
+
+Endpoint name.
+
+Alias: `n`
+
+##### --namespace
+
+Namespace that is allowed to call this endpoint.
+
+Alias: `ns`
+
+##### --request-id
+
+The request-id to use for the asynchronous operation, if not set the server will assign one (optional).
+
+Alias: `r`
+
+##### --resource-version
+
+The resource-version (etag) to update from, if not set the cli will use the latest (optional).
+
+Alias: `v`
+
+#### set
+
+The `tcld nexus endpoint allowed-namespace set` command sets the allowed namespaces of a Nexus Endpoint.
+
+Alias: `s`
+
+##### --name
+
+Endpoint name.
+
+Alias: `n`
+
+##### --namespace
+
+Namespace that is allowed to call this endpoint.
+
+Alias: `ns`
+
+##### --request-id
+
+The request-id to use for the asynchronous operation, if not set the server will assign one (optional).
+
+Alias: `r`
+
+##### --resource-version
+
+The resource-version (etag) to update from, if not set the cli will use the latest (optional).
+
+Alias: `v`
 
 ### create
 
@@ -181,117 +294,4 @@ Alias: `ttq`
 #### --unset-description
 
 Unset endpoint description.
-
-### allowed-namespace
-
-The `tcld nexus endpoint allowed-namespace` commands manage the allowed namespaces for a Nexus Endpoint.
-
-Alias: `an`
-
-- [tcld nexus endpoint allowed-namespace add](#add)
-- [tcld nexus endpoint allowed-namespace list](#list)
-- [tcld nexus endpoint allowed-namespace remove](#remove)
-- [tcld nexus endpoint allowed-namespace set](#set)
-
-#### add
-
-The `tcld nexus endpoint allowed-namespace add` command adds allowed namespaces to a Nexus Endpoint.
-
-Alias: `a`
-
-##### --name
-
-Endpoint name.
-
-Alias: `n`
-
-##### --namespace
-
-Namespace that is allowed to call this endpoint.
-
-Alias: `ns`
-
-##### --request-id
-
-The request-id to use for the asynchronous operation, if not set the server will assign one (optional).
-
-Alias: `r`
-
-##### --resource-version
-
-The resource-version (etag) to update from, if not set the cli will use the latest (optional).
-
-Alias: `v`
-
-#### list
-
-The `tcld nexus endpoint allowed-namespace list` command lists the allowed namespaces of a Nexus Endpoint.
-
-Alias: `l`
-
-##### --name
-
-Endpoint name.
-
-Alias: `n`
-
-#### remove
-
-The `tcld nexus endpoint allowed-namespace remove` command removes allowed namespaces from a Nexus Endpoint.
-
-Alias: `r`
-
-##### --name
-
-Endpoint name.
-
-Alias: `n`
-
-##### --namespace
-
-Namespace that is allowed to call this endpoint.
-
-Alias: `ns`
-
-##### --request-id
-
-The request-id to use for the asynchronous operation, if not set the server will assign one (optional).
-
-Alias: `r`
-
-##### --resource-version
-
-The resource-version (etag) to update from, if not set the cli will use the latest (optional).
-
-Alias: `v`
-
-#### set
-
-The `tcld nexus endpoint allowed-namespace set` command sets the allowed namespaces of a Nexus Endpoint.
-
-Alias: `s`
-
-##### --name
-
-Endpoint name.
-
-Alias: `n`
-
-##### --namespace
-
-Namespace that is allowed to call this endpoint.
-
-Alias: `ns`
-
-##### --request-id
-
-The request-id to use for the asynchronous operation, if not set the server will assign one (optional).
-
-Alias: `r`
-
-##### --resource-version
-
-The resource-version (etag) to update from, if not set the cli will use the latest (optional).
-
-Alias: `v`
 
