@@ -417,6 +417,7 @@ module.exports = {
             "production-deployment/self-hosted-guide/upgrade-server",
             "production-deployment/self-hosted-guide/archival",
             "production-deployment/self-hosted-guide/multi-cluster-replication",
+            "production-deployment/self-hosted-guide/enable-nexus",
             "production-deployment/self-hosted-guide/server-frontend-api-reference",
           ],
         },
