@@ -99,7 +99,7 @@ You can invite users pragmatically using the Cloud Ops API.
 
 ## What are the account-level roles for users in Temporal Cloud? {#account-level-roles}
 
-When a Global Admin invites a user to join an account, the Global Admin selects one of the following roles for that user:
+When an Account Owner or Global Admin invites a user to join an account, they select one of the following roles for that user:
 
 - **Global Admin**
   - Has full administrative permissions across the account, including users and usage
@@ -116,7 +116,7 @@ In addition, there are two roles that the Global Admin cannot assign:
   - Has Namespace Admin [permissions](#namespace-level-permissions) on all [Namespaces](/namespaces) in the account
 - **Finance Admin**
   - Has permissions to view [billing](/cloud/billing-and-cost) information and update payment information
-  - Otherwise, has the same permissions as Account Read-only users 
+  - Otherwise, has the same permissions as Account Read-only users
   - Can only be assigned by an Account Owner
 
 :::note Default Role
@@ -146,7 +146,7 @@ This latter rule is useful for anyone on your team who may need to be contacted 
 
 ## What are the Namespace-level permissions for users in Temporal Cloud? {#namespace-level-permissions}
 
-A [Global Admin](#account-level-roles) can assign permissions for any [Namespace](/namespaces) in an account.
+An Account Owner or Global Admin can assign permissions for any [Namespace](/namespaces) in an account.
 A Developer can assign permissions for a Namespace they create.
 
 For a Namespace, a user can have one of the following permissions:
@@ -251,7 +251,7 @@ The following table provides the API details associated with each account-level 
 
 :::note
 
-Account Global Admin has Namespace Admin permissions on Namespaces.
+Account Owners and Global Admins have Namespace Admin permissions on all Namespaces.
 
 :::
 
@@ -259,59 +259,59 @@ Account Global Admin has Namespace Admin permissions on Namespaces.
 
 This table provides API-level details for the permissions granted to a user through account-level roles. These permissions are configured per user.
 
-| Permission                            | Read-only | Developer | Finance Admin | Global Admin | Account Owner |
-| ------------------------------------- | --------- | --------- | ------------- | ------------ | ------------- |
-| CountIdentities                       | ✔         | ✔         | ✔             | ✔            | ✔             |
-| CreateAPIKey                          | ✔         | ✔         | ✔             | ✔            | ✔             |
-| CreateNamespace                       |           | ✔         |               | ✔            | ✔             |
-| CreateServiceAccount                  |           |           |               | ✔            | ✔             |
-| CreateServiceAccountAPIKey            |           |           |               | ✔            | ✔             |
-| CreateStripeCustomerPortalSession     |           |           | ✔             |              | ✔             |
-| CreateUser                            |           |           |               | ✔            | ✔             |
-| DeleteAPIKey                          | ✔         | ✔         | ✔             | ✔            | ✔             |
-| DeleteServiceAccount                  |           |           |               | ✔            | ✔             |
-| DeleteUser                            |           |           |               | ✔            | ✔             |
-| GetAccount                            | ✔         | ✔         | ✔             | ✔            | ✔             |
-| GetAccountFeatureFlags                | ✔         | ✔         | ✔             | ✔            | ✔             |
-| GetAccountLimits                      | ✔         | ✔         | ✔             | ✔            | ✔             |
-| GetAccountSettings                    | ✔         | ✔         | ✔             | ✔            | ✔             |
-| GetAccountUsage                       |           |           |               | ✔            | ✔             |
-| GetAPIKey                             | ✔         | ✔         | ✔             | ✔            | ✔             |
-| GetAPIKeys                            | ✔         | ✔         | ✔             | ✔            | ✔             |
-| GetAsyncOperation                     | ✔         | ✔         | ✔             | ✔            | ✔             |
-| GetDecodedCertificate                 | ✔         | ✔         | ✔             | ✔            | ✔             |
-| GetIdentities                         | ✔         | ✔         | ✔             | ✔            | ✔             |
-| GetIdentity                           | ✔         | ✔         | ✔             | ✔            | ✔             |
-| GetNamespaces                         | ✔         | ✔         | ✔             | ✔            | ✔             |
-| GetNamespacesUsage                    |           |           |               | ✔            | ✔             |
-| GetRegion                             | ✔         | ✔         | ✔             | ✔            | ✔             |
-| GetRegions                            | ✔         | ✔         | ✔             | ✔            | ✔             |
-| GetRequestStatus                      | ✔         | ✔         | ✔             | ✔            | ✔             |
-| GetRequestStatuses                    |           |           |               | ✔            | ✔             |
-| GetRequestStatusesForNamespace        | ✔         | ✔         | ✔             | ✔            | ✔             |
-| GetRequestStatusesForUser             | ✔         | ✔         | ✔             | ✔            | ✔             |
-| GetRoles                              | ✔         | ✔         | ✔             | ✔            | ✔             |
-| GetRolesByPermissions                 | ✔         | ✔         | ✔             | ✔            | ✔             |
-| GetServiceAccount                     | ✔         | ✔         | ✔             | ✔            | ✔             |
-| GetServiceAccounts                    | ✔         | ✔         | ✔             | ✔            | ✔             |
-| GetStripeInvoice                      |           |           | ✔             |              | ✔             |
-| GetUser                               | ✔         | ✔         | ✔             | ✔            | ✔             |
-| GetUsers                              | ✔         | ✔         | ✔             | ✔            | ✔             |
-| GetUsersWithAccountRoles              | ✔         | ✔         | ✔             | ✔            | ✔             |
-| InviteUsers                           |           |           |               | ✔            | ✔             |
-| ListCreditLedgerEntries               |           |           | ✔             |              | ✔             |
-| ListGrants                            |           |           | ✔             |              | ✔             |
-| ListMetronomeInvoices                 |           |           | ✔             |              | ✔             |
-| ListMetronomeInvoicesForNamespace     |           |           | ✔             |              | ✔             |
-| ListNamespaces                        | ✔         | ✔         | ✔             | ✔            | ✔             |
-| ListPromotionGrantBalances            |           |           | ✔             |              | ✔             |
-| ResendUserInvite                      |           |           |               | ✔            | ✔             |
-| SetAccountSettings                    |           |           |               | ✔            | ✔             |
-| SyncCurrentUserInvite                 | ✔         | ✔         | ✔             | ✔            | ✔             |
-| UpdateAccount                         |           |           |               | ✔            | ✔             |
-| UpdateAPIKey                          | ✔         | ✔         | ✔             | ✔            | ✔             |
-| UpdateServiceAccount                  |           |           |               | ✔            | ✔             |
-| UpdateUser                            |           |           |               | ✔            | ✔             |
+| Permission                        | Read-only | Developer | Finance Admin | Global Admin | Account Owner |
+| --------------------------------- | --------- | --------- | ------------- | ------------ | ------------- |
+| CountIdentities                   | ✔         | ✔         | ✔             | ✔            | ✔             |
+| CreateAPIKey                      | ✔         | ✔         | ✔             | ✔            | ✔             |
+| CreateNamespace                   |           | ✔         |               | ✔            | ✔             |
+| CreateServiceAccount              |           |           |               | ✔            | ✔             |
+| CreateServiceAccountAPIKey        |           |           |               | ✔            | ✔             |
+| CreateStripeCustomerPortalSession |           |           | ✔             |              | ✔             |
+| CreateUser                        |           |           |               | ✔            | ✔             |
+| DeleteAPIKey                      | ✔         | ✔         | ✔             | ✔            | ✔             |
+| DeleteServiceAccount              |           |           |               | ✔            | ✔             |
+| DeleteUser                        |           |           |               | ✔            | ✔             |
+| GetAccount                        | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetAccountFeatureFlags            | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetAccountLimits                  | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetAccountSettings                | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetAccountUsage                   |           |           |               | ✔            | ✔             |
+| GetAPIKey                         | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetAPIKeys                        | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetAsyncOperation                 | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetDecodedCertificate             | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetIdentities                     | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetIdentity                       | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetNamespaces                     | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetNamespacesUsage                |           |           |               | ✔            | ✔             |
+| GetRegion                         | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetRegions                        | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetRequestStatus                  | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetRequestStatuses                |           |           |               | ✔            | ✔             |
+| GetRequestStatusesForNamespace    | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetRequestStatusesForUser         | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetRoles                          | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetRolesByPermissions             | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetServiceAccount                 | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetServiceAccounts                | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetStripeInvoice                  |           |           | ✔             |              | ✔             |
+| GetUser                           | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetUsers                          | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetUsersWithAccountRoles          | ✔         | ✔         | ✔             | ✔            | ✔             |
+| InviteUsers                       |           |           |               | ✔            | ✔             |
+| ListCreditLedgerEntries           |           |           | ✔             |              | ✔             |
+| ListGrants                        |           |           | ✔             |              | ✔             |
+| ListMetronomeInvoices             |           |           | ✔             |              | ✔             |
+| ListMetronomeInvoicesForNamespace |           |           | ✔             |              | ✔             |
+| ListNamespaces                    | ✔         | ✔         | ✔             | ✔            | ✔             |
+| ListPromotionGrantBalances        |           |           | ✔             |              | ✔             |
+| ResendUserInvite                  |           |           |               | ✔            | ✔             |
+| SetAccountSettings                |           |           |               | ✔            | ✔             |
+| SyncCurrentUserInvite             | ✔         | ✔         | ✔             | ✔            | ✔             |
+| UpdateAccount                     |           |           |               | ✔            | ✔             |
+| UpdateAPIKey                      | ✔         | ✔         | ✔             | ✔            | ✔             |
+| UpdateServiceAccount              |           |           |               | ✔            | ✔             |
+| UpdateUser                        |           |           |               | ✔            | ✔             |
 
 #### Namespace-level permissions details
 
