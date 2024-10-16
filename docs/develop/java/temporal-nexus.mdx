@@ -1,0 +1,655 @@
+---
+id: nexus
+title: Temporal Nexus - Java SDK Feature Guide
+sidebar_label: Temporal Nexus
+description: Learn how to use Temporal Nexus within the Java SDK to connect durable executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
+toc_max_heading_level: 4
+keywords:
+  - temporal nexus java sdk
+
+tags:
+  - temporal-nexus
+  - java-sdk
+  - nexus
+---
+
+Use Temporal Nexus to connect durable executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
+
+This page shows how to do the following:
+
+- [Run a development Temporal Service with Nexus enabled](#run-the-temporal-nexus-development-server)
+- [Create caller and handler Namespaces](#create-caller-handler-namespaces)
+- [Create a Nexus Endpoint to route requests from caller to handler](#create-nexus-endpoint)
+- [Define the Nexus Service API contract](#define-nexus-service-api-contract)
+- [Develop a Nexus Service and Operation handlers](#develop-nexus-service-operation-handlers)
+- [Develop a caller Workflow that uses a Nexus Service](#develop-caller-workflow-nexus-service)
+- [Make Nexus calls across Namespaces with a development Server](#nexus-calls-across-namespaces-dev-server)
+- [Make Nexus calls across Namespaces in Temporal Cloud](#nexus-calls-across-namespaces-temporal-cloud)
+
+## Run a development server with Nexus enabled {#run-the-temporal-nexus-development-server}
+
+The first step in working with Temporal Nexus involves starting a Temporal server with Nexus enabled.
+
+Prerequisites:
+
+- [Install the latest Temporal CLI](https://learn.temporal.io/getting_started/java/dev_environment/#set-up-a-local-temporal-service-for-development-with-temporal-cli)
+- [Install the latest Temporal Java SDK](https://learn.temporal.io/getting_started/java/dev_environment/#add-temporal-java-sdk-dependencies) (v1.26.0 or higher)
+
+### Start the Temporal Development Server {#start-the-temporal-development-server}
+
+Start the Temporal Development Server by using the `temporal server start-dev`, with `system.enableNexus=true`.
+The HTTP port is required for Nexus communications.
+
+```
+temporal server start-dev --http-port 7243 --dynamic-config-value system.enableNexus=true
+```
+
+This command automatically starts the Web UI, creates the default Namespace, and uses an in-memory database.
+
+The Temporal Server should be available on `localhost:7233` and the Temporal Web UI should be accessible at [http://localhost:8233](http://localhost:8233).
+
+## Create caller and handler Namespaces {#create-caller-handler-namespaces}
+
+Before setting up Nexus endpoints, create separate Namespaces for the caller and handler.
+
+```
+temporal operator namespace create --namespace my-target-namespace
+temporal operator namespace create --namespace my-caller-namespace
+```
+
+## Create a Nexus Endpoint to route requests from caller to handler {#create-nexus-endpoint}
+
+After establishing caller and handler Namespaces, the next step is to create a Nexus Endpoint to route requests.
+
+```
+temporal operator nexus endpoint create \
+  --name my-nexus-endpoint-name \
+  --target-namespace my-target-namespace \
+  --target-task-queue my-handler-task-queue
+```
+
+## Define the Nexus Service API contract {#define-nexus-service-api-contract}
+
+Defining a clear API contract for the Nexus Service is crucial for smooth communication between services.
+
+[View the source code](https://github.com/temporalio/samples-go/tree/main/nexus) in the context of the rest of the application code.
+
+```
+git clone https://github.com/temporalio/samples-java.git
+cd samples-java
+```
+
+The Nexus Service API contract can be in whatever form works best for your environment.
+Each [Temporal SDK includes and uses a default Data Converter](https://docs.temporal.io/dataconversion), that encodes payloads in the following order: Null, Byte array, Protobuf JSON, and JSON.
+In a polyglot environment, Protobuf and JSON are common choices. This example uses Java classes serialized into JSON.
+
+In this example, there is a service package that describes the Service and Operation names along with input/output types for caller Workflows to use the Nexus Endpoint.
+
+<!--SNIPSTART samples-java-nexus-service-->
+
+[core/src/main/java/io/temporal/samples/nexus/service/NexusService.java](https://github.com/temporalio/samples-java/blob/nexus-snip-sync/core/src/main/java/io/temporal/samples/nexus/service/NexusService.java)
+
+```java
+@Service
+public interface NexusService {
+  enum Language {
+    EN,
+    FR,
+    DE,
+    ES,
+    TR
+  }
+
+  class HelloInput {
+    private final String name;
+    private final Language language;
+
+    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+    public HelloInput(
+        @JsonProperty("name") String name, @JsonProperty("language") Language language) {
+      this.name = name;
+      this.language = language;
+    }
+
+    @JsonProperty("name")
+    public String getName() {
+      return name;
+    }
+
+    @JsonProperty("language")
+    public Language getLanguage() {
+      return language;
+    }
+  }
+
+  class HelloOutput {
+    private final String message;
+
+    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+    public HelloOutput(@JsonProperty("message") String message) {
+      this.message = message;
+    }
+
+    @JsonProperty("message")
+    public String getMessage() {
+      return message;
+    }
+  }
+
+  class EchoInput {
+    private final String message;
+
+    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+    public EchoInput(@JsonProperty("message") String message) {
+      this.message = message;
+    }
+
+    @JsonProperty("message")
+    public String getMessage() {
+      return message;
+    }
+  }
+
+  class EchoOutput {
+    private final String message;
+
+    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+    public EchoOutput(@JsonProperty("message") String message) {
+      this.message = message;
+    }
+
+    @JsonProperty("message")
+    public String getMessage() {
+      return message;
+    }
+  }
+
+  @Operation
+  HelloOutput hello(HelloInput input);
+
+  @Operation
+  EchoOutput echo(EchoInput input);
+}
+```
+
+<!--SNIPEND-->
+
+## Develop a Nexus Service and Operation handlers {#develop-nexus-service-operation-handlers}
+
+Nexus Operation handlers are typically defined in the same Worker as the underlying Temporal primitives they abstract.
+Operation handlers can decide if a given Nexus Operation will be synchronous or asynchronous, execute arbitrary code, and invoke underlying Temporal primitives such as a Workflow, Query, Signal, or Update.
+
+The `io.temporal.nexus.WorkflowClientOperationHandlers` package has builders to create Nexus Operations:
+
+- `sync` \- Simple synchronous RPC handlers, such as for Signals
+- `fromWorkflowMethod` \- Run a Workflow as an asynchronous Nexus Operation
+
+This tutorial starts with a `sync` example, and then uses `fromWorkflowMethod` to start a handler Workflow from a Nexus Operation.
+
+### Develop a Synchronous Nexus Operation handler
+
+The `WorkflowClientOperationHandlers.sync` method is for exposing simple RPC handlers.
+Its handler function is provided with an SDK client that can be used for signaling, querying, and listing Workflows.
+However, implementations are free to make arbitrary calls to other services or databases, or perform computations such as this one:
+
+<!--SNIPSTART samples-java-nexus-handler {"selectedLines": ["1-16", "37"]}-->
+
+[core/src/main/java/io/temporal/samples/nexus/handler/NexusServiceImpl.java](https://github.com/temporalio/samples-java/blob/nexus-snip-sync/core/src/main/java/io/temporal/samples/nexus/handler/NexusServiceImpl.java)
+
+```java
+// To create a service implementation, annotate the class with @ServiceImpl and provide the
+// interface that the service implements. The service implementation class should have methods that
+// return OperationHandler that correspond to the operations defined in the service interface.
+@ServiceImpl(service = NexusService.class)
+public class NexusServiceImpl {
+  @OperationImpl
+  public OperationHandler<NexusService.EchoInput, NexusService.EchoOutput> echo() {
+    // WorkflowClientOperationHandlers.sync is a meant for exposing simple RPC handlers.
+    return WorkflowClientOperationHandlers.sync(
+        // The method is provided with an SDK client that can be used for arbitrary calls such as
+        // signaling, querying,
+        // and listing workflows but implementations are free to make arbitrary calls to other
+        // services or databases, or
+        // perform simple computations such as this one.
+        (ctx, details, client, input) -> new NexusService.EchoOutput(input.getMessage()));
+  }
+// ...
+}
+```
+
+<!--SNIPEND-->
+
+### Develop an Asynchronous Nexus Operation handler to start a Workflow
+
+Use the `WorkflowClientOperationHandlers.fromWorkflowMethod` method, which is the easiest way to expose a Workflow as an operation.
+See alternatives [here](https://pkg.go.dev/go.temporal.io/sdk/temporalnexus).
+
+<!--SNIPSTART samples-java-nexus-handler {"selectedLines": ["1-5", "18-37"]}-->
+
+[core/src/main/java/io/temporal/samples/nexus/handler/NexusServiceImpl.java](https://github.com/temporalio/samples-java/blob/nexus-snip-sync/core/src/main/java/io/temporal/samples/nexus/handler/NexusServiceImpl.java)
+
+```java
+// To create a service implementation, annotate the class with @ServiceImpl and provide the
+// interface that the service implements. The service implementation class should have methods that
+// return OperationHandler that correspond to the operations defined in the service interface.
+@ServiceImpl(service = NexusService.class)
+public class NexusServiceImpl {
+// ...
+  @OperationImpl
+  public OperationHandler<NexusService.HelloInput, NexusService.HelloOutput> hello() {
+    // Use the WorkflowClientOperationHandlers.fromWorkflowMethod constructor, which is the easiest
+    // way to expose a workflow as an operation.
+    return WorkflowClientOperationHandlers.fromWorkflowMethod(
+        (ctx, details, client, input) ->
+            client.newWorkflowStub(
+                    HelloHandlerWorkflow.class,
+                    // Workflow IDs should typically be business meaningful IDs and are used to
+                    // dedupe workflow starts.
+                    // For this example, we're using the request ID allocated by Temporal when the
+                    // caller workflow schedules
+                    // the operation, this ID is guaranteed to be stable across retries of this
+                    // operation.
+                    //
+                    // Task queue defaults to the task queue this operation is handled on.
+                    WorkflowOptions.newBuilder().setWorkflowId(details.getRequestId()).build())
+                ::hello);
+  }
+}
+```
+
+<!--SNIPEND-->
+
+Workflow IDs should typically be business meaningful IDs and are used to dedupe Workflow starts.
+For the `HelloOperation`, `input.ID` is passed as part of the Nexus Service contract.
+
+### Register a Nexus Service in a Worker
+
+After developing an asynchronous Nexus Operation handler to start a Workflow, the next step is to register a Nexus Service in a Worker.
+
+<!--SNIPSTART samples-java-nexus-handler-worker-->
+
+[core/src/main/java/io/temporal/samples/nexus/handler/HandlerWorker.java](https://github.com/temporalio/samples-java/blob/nexus-snip-sync/core/src/main/java/io/temporal/samples/nexus/handler/HandlerWorker.java)
+
+```java
+package io.temporal.samples.nexus.handler;
+
+import io.temporal.client.WorkflowClient;
+import io.temporal.samples.nexus.options.ClientOptions;
+import io.temporal.worker.Worker;
+import io.temporal.worker.WorkerFactory;
+
+public class HandlerWorker {
+  public static final String DEFAULT_TASK_QUEUE_NAME = "my-handler-task-queue";
+
+  public static void main(String[] args) {
+    WorkflowClient client = ClientOptions.getWorkflowClient(args);
+
+    WorkerFactory factory = WorkerFactory.newInstance(client);
+
+    Worker worker = factory.newWorker(DEFAULT_TASK_QUEUE_NAME);
+    worker.registerWorkflowImplementationTypes(HelloHandlerWorkflowImpl.class);
+    worker.registerNexusServiceImplementation(new NexusServiceImpl());
+
+    factory.start();
+  }
+}
+```
+
+<!--SNIPEND-->
+
+## Develop a caller Workflow that uses the Nexus Service {#develop-caller-workflow-nexus-service}
+
+Import the Service API package, that has the necessary service and operation names and input/output types to execute a Nexus Operation from the caller Workflow:
+
+<!--SNIPSTART samples-java-nexus-caller-echo-workflow-->
+
+[core/src/main/java/io/temporal/samples/nexus/caller/EchoCallerWorkflowImpl.java](https://github.com/temporalio/samples-java/blob/nexus-snip-sync/core/src/main/java/io/temporal/samples/nexus/caller/EchoCallerWorkflowImpl.java)
+
+```java
+package io.temporal.samples.nexus.caller;
+
+import io.temporal.samples.nexus.service.NexusService;
+import io.temporal.workflow.NexusOperationOptions;
+import io.temporal.workflow.NexusServiceOptions;
+import io.temporal.workflow.Workflow;
+import java.time.Duration;
+
+public class EchoCallerWorkflowImpl implements EchoCallerWorkflow {
+  NexusService nexusService =
+      Workflow.newNexusServiceStub(
+          NexusService.class,
+          NexusServiceOptions.newBuilder()
+              .setOperationOptions(
+                  NexusOperationOptions.newBuilder()
+                      .setScheduleToCloseTimeout(Duration.ofSeconds(10))
+                      .build())
+              .build());
+
+  @Override
+  public String echo(String message) {
+    return nexusService.echo(new NexusService.EchoInput(message)).getMessage();
+  }
+}
+```
+
+<!--SNIPEND-->
+
+<!--SNIPSTART samples-java-nexus-caller-hello-workflow-->
+
+[core/src/main/java/io/temporal/samples/nexus/caller/HelloCallerWorkflowImpl.java](https://github.com/temporalio/samples-java/blob/nexus-snip-sync/core/src/main/java/io/temporal/samples/nexus/caller/HelloCallerWorkflowImpl.java)
+
+```java
+package io.temporal.samples.nexus.caller;
+
+import io.temporal.samples.nexus.service.NexusService;
+import io.temporal.workflow.NexusOperationHandle;
+import io.temporal.workflow.NexusOperationOptions;
+import io.temporal.workflow.NexusServiceOptions;
+import io.temporal.workflow.Workflow;
+import java.time.Duration;
+
+public class HelloCallerWorkflowImpl implements HelloCallerWorkflow {
+  NexusService nexusService =
+      Workflow.newNexusServiceStub(
+          NexusService.class,
+          NexusServiceOptions.newBuilder()
+              .setOperationOptions(
+                  NexusOperationOptions.newBuilder()
+                      .setScheduleToCloseTimeout(Duration.ofSeconds(10))
+                      .build())
+              .build());
+
+  @Override
+  public String hello(String message, NexusService.Language language) {
+    NexusOperationHandle<NexusService.HelloOutput> handle =
+        Workflow.startNexusOperation(
+            nexusService::hello, new NexusService.HelloInput(message, language));
+    // Optionally wait for the operation to be started. NexusOperationExecution will contain the
+    // operation ID in case this operation is asynchronous.
+    handle.getExecution().get();
+    return handle.getResult().get().getMessage();
+  }
+}
+```
+
+<!--SNIPEND-->
+
+### Register the caller Workflow in a Worker
+
+After developing the caller Workflow, the next step is to register it with a Worker.
+
+<!--SNIPSTART samples-java-nexus-caller-worker-->
+
+[core/src/main/java/io/temporal/samples/nexus/caller/CallerWorker.java](https://github.com/temporalio/samples-java/blob/nexus-snip-sync/core/src/main/java/io/temporal/samples/nexus/caller/CallerWorker.java)
+
+```java
+package io.temporal.samples.nexus.caller;
+
+import io.temporal.client.WorkflowClient;
+import io.temporal.samples.nexus.options.ClientOptions;
+import io.temporal.worker.Worker;
+import io.temporal.worker.WorkerFactory;
+import io.temporal.worker.WorkflowImplementationOptions;
+import io.temporal.workflow.NexusServiceOptions;
+import java.util.Collections;
+
+public class CallerWorker {
+  public static final String DEFAULT_TASK_QUEUE_NAME = "my-caller-workflow-task-queue";
+
+  public static void main(String[] args) {
+    WorkflowClient client = ClientOptions.getWorkflowClient(args);
+
+    WorkerFactory factory = WorkerFactory.newInstance(client);
+
+    Worker worker = factory.newWorker(DEFAULT_TASK_QUEUE_NAME);
+    worker.registerWorkflowImplementationTypes(
+        WorkflowImplementationOptions.newBuilder()
+            .setNexusServiceOptions(
+                Collections.singletonMap(
+                    "NexusService",
+                    NexusServiceOptions.newBuilder().setEndpoint("my-nexus-endpoint-name").build()))
+            .build(),
+        EchoCallerWorkflowImpl.class,
+        HelloCallerWorkflowImpl.class);
+
+    factory.start();
+  }
+}
+```
+
+<!--SNIPEND-->
+
+### Develop a starter to start the caller Workflow
+
+To initiate the caller Workflow, a starter program is required.
+
+<!--SNIPSTART samples-java-nexus-caller-starter-->
+
+[core/src/main/java/io/temporal/samples/nexus/caller/CallerStarter.java](https://github.com/temporalio/samples-java/blob/nexus-snip-sync/core/src/main/java/io/temporal/samples/nexus/caller/CallerStarter.java)
+
+```java
+package io.temporal.samples.nexus.caller;
+
+import io.temporal.client.WorkflowClient;
+import io.temporal.client.WorkflowOptions;
+import io.temporal.client.WorkflowStub;
+import io.temporal.samples.nexus.options.ClientOptions;
+import io.temporal.samples.nexus.service.NexusService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class CallerStarter {
+  private static final Logger logger = LoggerFactory.getLogger(CallerStarter.class);
+
+  public static void main(String[] args) {
+    WorkflowClient client = ClientOptions.getWorkflowClient(args);
+
+    WorkflowOptions workflowOptions =
+        WorkflowOptions.newBuilder().setTaskQueue(CallerWorker.DEFAULT_TASK_QUEUE_NAME).build();
+    EchoCallerWorkflow echoWorkflow =
+        client.newWorkflowStub(EchoCallerWorkflow.class, workflowOptions);
+    logger.info("Workflow result: {}", echoWorkflow.echo("Nexus Echo 👋"));
+    logger.info(
+        "Started workflow workflowId: {} runId: {}",
+        WorkflowStub.fromTyped(echoWorkflow).getExecution().getWorkflowId(),
+        WorkflowStub.fromTyped(echoWorkflow).getExecution().getRunId());
+    HelloCallerWorkflow helloWorkflow =
+        client.newWorkflowStub(HelloCallerWorkflow.class, workflowOptions);
+    logger.info("Workflow result: {}", helloWorkflow.hello("Nexus", NexusService.Language.ES));
+    logger.info(
+        "Started workflow workflowId: {} runId: {}",
+        WorkflowStub.fromTyped(helloWorkflow).getExecution().getWorkflowId(),
+        WorkflowStub.fromTyped(helloWorkflow).getExecution().getRunId());
+  }
+}
+```
+
+<!--SNIPEND-->
+
+## Make Nexus calls across Namespaces with a development Server {#nexus-calls-across-namespaces-dev-server}
+
+To run the tutorial, follow the steps below to run the Nexus handler Worker, the Nexus caller Worker, and the starter.
+
+### Run Workers connected to a local development server
+
+In separate terminal window, run the Nexus handler Worker:
+
+```bash
+./gradlew -q execute -PmainClass=io.temporal.samples.nexus.handler.HandlerWorker \
+    --args="-target-host localhost:7233 -namespace my-target-namespace"
+```
+
+In another terminal window, run the Nexus caller Worker:
+
+```bash
+./gradlew -q execute -PmainClass=io.temporal.samples.nexus.caller.CallerWorker \
+    --args="-target-host localhost:7233 -namespace my-caller-namespace"
+```
+
+### Start a caller Workflow
+
+With the Workers running, the final step in the local development process is to start a caller Workflow.
+
+Run the starter:
+
+```bash
+./gradlew -q execute -PmainClass=io.temporal.samples.nexus.caller.CallerStarter \
+    --args="-target-host localhost:7233 -namespace my-caller-namespace"
+```
+
+This will result in:
+
+```
+[main] INFO  i.t.s.nexus.caller.CallerStarter - Workflow result: Nexus Echo 👋 
+[main] INFO  i.t.s.nexus.caller.CallerStarter - Started workflow workflowId: 9b3de8ba-28ae-42fb-8087-bdedf4cecd39 runId: 404a2529-764d-4d1d-9de5-8a9475e40fba 
+[main] INFO  i.t.s.nexus.caller.CallerStarter - Workflow result: ¡Hola! Nexus 👋 
+[main] INFO  i.t.s.nexus.caller.CallerStarter - Started workflow workflowId: 9cb29897-356a-4714-87b7-aa2f00784a46 runId: 7e71e62a-db50-49da-b081-24b61016a0fc
+```
+
+## Make Nexus calls across Namespaces in Temporal Cloud {#nexus-calls-across-namespaces-temporal-cloud}
+
+This section assumes you are already familiar with [how connect a Worker to Temporal Cloud](https://docs.temporal.io/develop/java/core-application#run-a-temporal-cloud-worker).
+The same [source code](https://github.com/temporalio/samples-go/tree/main/nexus) is used in this section, but the `tcld` CLI will be used to create Namespaces and the Nexus Endpoint, and mTLS client certificates will be used to securely connect the caller and handler works to their respective Temporal Cloud Namespaces.
+
+### Install the latest tcld CLI and generate certificates
+
+To install the latest version of the `tcld` CLI, run the following command:
+
+```
+brew install temporalio/brew/tcld
+```
+
+If you don’t already have certificates, you can generate them for mTLS Worker authentication using the command below:
+
+```
+tcld gen ca --org $YOUR_ORG_NAME --validity-period 1y --ca-cert ca.pem --ca-key ca.key
+```
+
+### Create caller and handler Namespaces
+
+Before deploying to Temporal Cloud, ensure the appropriate Namespaces are created for both the caller and handler.
+If you already have these Namespaces, this step is optional.
+
+```
+tcld login
+
+tcld namespace create \
+	--namespace <your-caller-namespace> \
+	--region us-west-2 \
+	--ca-certificate-file 'path/to/your/ca.pem' \
+	--retention-days 1
+
+tcld namespace create \
+	--namespace <your-target-namespace> \
+	--region us-west-2 \
+	--ca-certificate-file 'path/to/your/ca.pem' \
+	--retention-days 1
+```
+
+Alternatively, you can create Namespace through the UI: [https://cloud.temporal.io/Namespaces](https://cloud.temporal.io/Namespaces).
+
+### Create a Nexus Endpoint to route requests from caller to handler
+
+To create a Nexus Endpoint you must have a Developer account role or higher, and have NamespaceAdmin permission on the `--target-namespace`.
+
+```
+tcld nexus endpoint create \
+  --name <my-nexus-endpoint-name> \
+  --target-task-queue my-handler-task-queue \
+  --target-namespace <my-target-namespace.account> \
+  --allow-namespace <my-caller-namespace.account> \
+  --description-file description.md
+```
+
+The `--allow-namespace` is used to build an Endpoint allowlist of caller Namespaces that can use the Nexus Endpoint, as described in Runtime Access Control.
+
+Alternatively, you can create a Nexus Endpoint through the UI: [https://cloud.temporal.io/nexus](https://cloud.temporal.io/nexus).
+You can also create a Nexus endpoint through the UI in the development server.
+
+### Run Workers Connected to Temporal Cloud
+
+[View the source code](https://github.com/temporalio/samples-go/tree/main/nexus) in the context of the rest of the application code.
+
+Run the handler Worker:
+
+```go
+./gradlew -q execute -PmainClass=io.temporal.samples.nexus.handler.HandlerWorker \
+    --args="-target-host <your-target-namespace.account>.tmprl.cloud:7233 \
+	-namespace <your-target-namespace.account> \
+	-client-cert 'path/to/your/ca.pem' \
+	-client-key 'path/to/your/ca.key'"
+```
+
+Run the caller Worker:
+
+```go
+./gradlew -q execute -PmainClass=io.temporal.samples.nexus.caller.CallerWorker \
+    --args="-target-host <your-caller-namespace.account>.tmprl.cloud:7233 \
+	-namespace <your-caller-namespace.account> \
+	-client-cert 'path/to/your/ca.pem' \
+	-client-key 'path/to/your/ca.key'"
+```
+
+### Start a caller Workflow
+
+In order to start the caller Workflow, run the starter.
+
+```go
+./gradlew -q execute -PmainClass=io.temporal.samples.nexus.caller.CallerStarter \
+    --args="-target-host <your-caller-namespace.account>.tmprl.cloud:7233 \
+	-namespace <your-caller-namespace.account> \
+	-client-cert 'path/to/your/ca.pem' \
+	-client-key 'path/to/your/ca.key'"
+```
+
+This will result in:
+
+```
+[main] INFO  i.t.s.nexus.caller.CallerStarter - Workflow result: Nexus Echo 👋 
+[main] INFO  i.t.s.nexus.caller.CallerStarter - Started workflow workflowId: 9b3de8ba-28ae-42fb-8087-bdedf4cecd39 runId: 404a2529-764d-4d1d-9de5-8a9475e40fba 
+[main] INFO  i.t.s.nexus.caller.CallerStarter - Workflow result: ¡Hola! Nexus 👋 
+[main] INFO  i.t.s.nexus.caller.CallerStarter - Started workflow workflowId: 9cb29897-356a-4714-87b7-aa2f00784a46 runId: 7e71e62a-db50-49da-b081-24b61016a0fc
+```
+
+## Observability
+
+### Web UI
+
+A synchronous Nexus Operation will surface in the caller Workflow as follows, with just `NexusOperationScheduled` and `NexusOperationCompleted` events in the caller’s Workflow history:
+
+![Observability Sync](/img/nexus-go/go-sdk-observability-sync.png)
+
+An asynchronous Nexus Operation will surface in the caller Workflow as follows, with `NexusOperationScheduled`, `NexusOperationStarted`, and `NexusOperationCompleted`, in the caller’s Workflow history:
+
+![Observability Async](/img/nexus-go/go-sdk-observability-async.png)
+
+### Temporal CLI
+
+Use the `workflow describe` command to show pending Nexus Operations in the caller Workflow and any attached callbacks on the handler Workflow:
+
+```
+temporal workflow describe -w <ID>
+```
+
+Nexus events are included in the caller’s Workflow history:
+
+```
+temporal workflow show -w <ID>
+```
+
+For **asynchronous Nexus Operations** the following are reported in the caller’s history:
+
+- `NexusOperationScheduled`
+- `NexusOperationStarted`
+- `NexusOperationCompleted`
+
+For **synchronous Nexus Operations** the following are reported in the caller’s history:
+
+- `NexusOperationScheduled`
+- `NexusOperationCompleted`
+
+:::note
+
+`NexusOperationStarted` isn't reported in the caller’s history for synchronous operations.
+
+:::
