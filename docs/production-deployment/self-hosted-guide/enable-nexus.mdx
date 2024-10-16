@@ -11,10 +11,16 @@ tags:
   - enable-nexus
 ---
 
-Nexus is only supported in single cluster setups for the time being due to endpoint registry replication not being implemented yet. 
 Enable Nexus in your self-hosted Temporal Service by updating the server's static configuration file and enabling Nexus through dynamic config, then setting the public callback URL and allowed callback addresses.
+Nexus is only supported in single cluster setups at this time. 
+For additional information on operating Nexus workloads in your self-hosted cluster, see [Nexus Architecture](https://github.com/temporalio/temporal/blob/main/docs/architecture/nexus.md).
 
 ## Enabling Nexus
+
+:::note
+Replace `$PUBLIC_URL` with a URL value that's accessible to external callers or internally within the cluster. 
+Currently, external Nexus calls are considered experimental so it should be safe to use the address of an internal load balancer for the Frontend Service.
+:::
 
 To enable Nexus in your deployment:
 
