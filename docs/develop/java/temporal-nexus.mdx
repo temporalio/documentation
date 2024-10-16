@@ -179,7 +179,7 @@ public interface NexusService {
 Nexus Operation handlers are typically defined in the same Worker as the underlying Temporal primitives they abstract.
 Operation handlers can decide if a given Nexus Operation will be synchronous or asynchronous, execute arbitrary code, and invoke underlying Temporal primitives such as a Workflow, Query, Signal, or Update.
 
-The `io.temporal.nexus.WorkflowClientOperationHandlers` package has builders to create Nexus Operations:
+The `io.temporal.nexus.WorkflowClientOperationHandlers` class has builders to create Nexus Operations:
 
 - `sync` \- Simple synchronous RPC handlers, such as for Signals
 - `fromWorkflowMethod` \- Run a Workflow as an asynchronous Nexus Operation
@@ -259,8 +259,7 @@ public class NexusServiceImpl {
 
 <!--SNIPEND-->
 
-Workflow IDs should typically be business meaningful IDs and are used to dedupe Workflow starts.
-For the `HelloOperation`, `input.ID` is passed as part of the Nexus Service contract.
+Workflow IDs should typically be business meaningful IDs and are used to dedupe Workflow starts.q
 
 ### Register a Nexus Service in a Worker
 
