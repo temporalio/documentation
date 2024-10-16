@@ -217,7 +217,9 @@ Metrics to monitor:
 **Calculate Poll Success Rate**
 
 ```
-(temporal_cloud_v0_poll_success_count + temporal_cloud_v0_poll_success_sync_count)(temporal_cloud_v0_poll_success_count + temporal_cloud_v0_poll_success_sync_count + temporal_cloud_v0_poll_timeout_count)
+(temporal_cloud_v0_poll_success_count + temporal_cloud_v0_poll_success_sync_count)
+/
+(temporal_cloud_v0_poll_success_count + temporal_cloud_v0_poll_success_sync_count + temporal_cloud_v0_poll_timeout_count)
 ```
 
 **Target**
