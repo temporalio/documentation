@@ -208,7 +208,7 @@ Before the Timer is up, we change the Workflow Definition to the following seque
 When the Timer fires, the next Workflow Task will cause the Workflow Function to re-execute.
 The first Command the Worker sees would be ScheduleActivityTask Command, which wouldn't match up to the expected [TimerStarted](/references/events#timerstarted) Event.
 
-The Workflow Execution would fail and return a non-deterministic error.
+The Workflow Execution would fail and return a nondeterminism error.
 
 The following are examples of minor changes that would not result in non-determinism errors when re-executing a History which already contain the Events:
 
