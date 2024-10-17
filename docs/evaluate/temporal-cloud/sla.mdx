@@ -25,6 +25,8 @@ These levels are set by your deployment mode:
 - **Temporal Cloud with multi-region Namespace deployment**:
   Temporal Cloud Namespaces that use the multi-region feature provide 99.99% availability and contractual service level agreement (SLA) of 99.99% guarantee against service errors.
 
+The same SLA for normal Worker requests (commands and polling) apply to Nexus in both the caller and handler Namespaces.
+
 To calculate the service-error rate, Temporal Cloud captures all requests that arrive in a Namespace during a five-minute interval.
 We record the number of gRPC service errors that occurred.
 For each Namespace, we calculate the service-error rate as 1 - (count of errors / count of requests).
