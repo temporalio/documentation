@@ -518,5 +518,33 @@ For additional information, see [Inject work into the main Workflow](/encycloped
 
 ### Ensure your handlers finish before the Workflow completes {#wait-for-message-handlers}
 
+Workflow wait conditions can ensure your handler completes before a Workflow finishes.
+When your Workflow uses async Signal or Update handlers, your main Workflow method can return or continue-as-new while a handler is still waiting on an async task, such as an Activity result.
+The Workflow completing may interrupt the handler before it finishes crucial work and cause client errors when trying retrieve Update results.
+Use [`Workflow::await()`](https://php.temporal.io/classes/Temporal-Workflow.html#method_await) and [`Workflow::allHandlersFinished()`](https://php.temporal.io/classes/Temporal-Workflow.html#method_allHandlersFinished) to address this problem and allow your Workflow to end smoothly:
+
+```php
+#[WorkflowInterface]
+class MyWorkflow {
+    #[WorkflowMethod]
+    public function run() {
+        // ...
+        yield Workflow::await(fn() => Workflow::allHandlersFinished());
+        return "workflow-result";
+    }
+}
+```
+
+By default, your Worker will log a warning when you allow a Workflow Execution to finish with unfinished handler executions.
+You can silence these warnings on a per-handler basis by passing the `unfinishedPolicy` argument to the [`UpdateMethod`](https://php.temporal.io/classes/Temporal-Workflow-UpdateMethod.html) / [`SignalMethod`](https://php.temporal.io/classes/Temporal-Workflow-SignalMethod.html) attribute:
+
+```php
+    #[UpdateMethod(unfinishedPolicy: HandlerUnfinishedPolicy::Abandon)]
+    public function myUpdate() {
+        // ...
+    }
+```
+
+See [Finishing handlers before the Workflow completes](/encyclopedia/workflow-message-passing#finishing-message-handlers) for more information.
 
 ### Use `Mutex` to prevent concurrent handler execution {#control-handler-concurrency}
