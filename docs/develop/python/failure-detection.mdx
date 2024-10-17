@@ -186,7 +186,7 @@ To override the next retry interval set by the current policy, pass `next_retry_
 This value replaces and overrides whatever the retry interval would normally be on the retry policy.
 
 For example, you can set the delay interval based on an Activity's attempt count.
-In the example below, the retry delay starts at 3 seconds after the first attempt.
+In the following example, the retry delay starts at 3 seconds after the first attempt.
 It increases to 6 seconds for the second attempt, 9 seconds for the third attempt, and so forth.
 This creates a steadily increasing backoff, versus the exponential approach used by [backoff coefficients](/encyclopedia/retry-policies#backoff-coefficient):
 
