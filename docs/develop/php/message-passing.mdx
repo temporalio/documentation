@@ -2,7 +2,7 @@
 id: message-passing
 title: Workflow message passing - PHP SDK
 sidebar_label: Messages
-toc_max_heading_level: 2
+toc_max_heading_level: 3
 keywords:
   - message passing
   - signals
@@ -495,3 +495,28 @@ $resultUuid = $stub->startUpdate(
         ->withResultType(UuidInterface::class)
  )->getResult();
 ```
+
+## Message handler patterns {#message-handler-patterns}
+
+This section covers common write operations, such as Signal and Update handlers.
+It doesn't apply to pure read operations, like Queries or Update Validators.
+
+:::tip
+
+For additional information, see [Inject work into the main Workflow](/encyclopedia/workflow-message-passing#injecting-work-into-main-workflow), [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing), and [this sample](https://github.com/temporalio/samples-php/tree/master/app/src/SafeMessageHandlers) demonstrating safe `async` message handling.
+
+:::
+
+### Add async handlers to use `await` {#async-handlers}
+
+
+### Add wait conditions to block
+
+
+### Use wait conditions in handlers
+
+
+### Ensure your handlers finish before the Workflow completes {#wait-for-message-handlers}
+
+
+### Use `Mutex` to prevent concurrent handler execution {#control-handler-concurrency}
