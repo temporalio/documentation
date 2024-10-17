@@ -180,6 +180,32 @@ from temporalio.common import RetryPolicy
         )
 ```
 
+### Override the retry interval with `next_retry_delay` {#next-retry-delay}
+
+To override the next retry interval set by the current policy, pass `next_retry_delay` when raising an [ApplicationError](/references/failures#application-failure) in an Activity.
+This value replaces and overrides whatever the retry interval would normally be on the retry policy.
+
+For example, you can set the delay interval based on an Activity's attempt count.
+In the following example, the retry delay starts at 3 seconds after the first attempt.
+It increases to 6 seconds for the second attempt, 9 seconds for the third attempt, and so forth.
+This creates a steadily increasing backoff, versus the exponential approach used by [backoff coefficients](/encyclopedia/retry-policies#backoff-coefficient):
+
+```python
+from temporalio.exceptions import ApplicationError
+from datetime import timedelta
+
+@activity.defn
+async def my_activity(input: MyActivityInput):
+    try:
+        # Your activity logic goes here
+    except Exception as e:
+        attempt = activity.info().attempt
+        raise ApplicationError(
+            f"Error encountered on attempt {attempt}",
+            next_retry_delay=timedelta(seconds=3 * attempt),
+        ) from e
+```
+
 ## Heartbeat an Activity {#activity-heartbeats}
 
 **How to Heartbeat an Activity using the Temporal Python SDK.**
