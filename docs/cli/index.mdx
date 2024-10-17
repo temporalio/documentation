@@ -459,7 +459,7 @@ OPTIONS:
    --address value                          The host and port (formatted as host:port) for the Temporal Frontend Service. [$TEMPORAL_CLI_ADDRESS]
    --codec-auth value                       Sets the authorization header on requests to the Codec Server. [$TEMPORAL_CLI_CODEC_AUTH]
    --codec-endpoint value                   Endpoint for a remote Codec Server. [$TEMPORAL_CLI_CODEC_ENDPOINT]
-   --context-timeout value                  An optional timeout for the context of an RPC call (in seconds). (default: 5) [$TEMPORAL_CONTEXT_TIMEOUT]
+   --command-timeout duration               Timeout for the span of a command. (default 0s)
    --env value                              Name of the environment to read environmental variables from. (default: "default")
    --grpc-meta value [ --grpc-meta value ]  Contains gRPC metadata to send with requests (format: key=value). Values must be in a valid JSON format.
    --namespace value, -n value              Identifies a Namespace in the Temporal Workflow. (default: "default") [$TEMPORAL_CLI_NAMESPACE]
