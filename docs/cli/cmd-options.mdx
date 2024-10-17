@@ -281,9 +281,9 @@ When to use color: auto, always, never. (default: auto)
 
 Request concurrency.
 
-## context-timeout
+## command-timeout
 
-An optional timeout for the context of an RPC call (in seconds).
+The command execution timeout. 0s means no timeout.
 
 ## cron
 
@@ -543,7 +543,7 @@ Disables the interactive pager.
 
 ## non-deterministic
 
-Reset Workflow Execution only if its last Event is `WorkflowTaskFailed` with a nondeterministic error.
+Reset Workflow Execution only if its last Event is `WorkflowTaskFailed` with a nondeterminism error.
 
 ## notes
 
