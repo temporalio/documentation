@@ -497,7 +497,7 @@ Valid values for the `failure_reason` tag:
   unexpected error (or panics in languages where relevant), the TYPE is set to `internal`.
 - `operation_failed`: The user handler code has indicated that the operation has failed. In Go, this maps to an
   `UnsuccessfulOperationError` with a `failed` state.
-- `operation_failed`: The user handler code has indicated that the operation has completed as canceled. In Go, this maps
+- `operation_canceled`: The user handler code has indicated that the operation has completed as canceled. In Go, this maps
   to an `UnsuccessfulOperationError` with a `canceled` state.
 
 ### nexus_task_execution_latency
