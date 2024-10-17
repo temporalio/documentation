@@ -233,9 +233,9 @@ Temporal uses the root CA certificate as the trusted authority for access to you
 
 To keep your Namespace secure and online, you must update the CA certificate for the Namespace _before_ the certificate expires.
 
-To help you remember to do so, Temporal Cloud sends email notifications to users who have the Global Admin [Role](/cloud/users#account-level-roles) or the Namespace Admin [permission](/cloud/users#namespace-level-permissions) 15 days before expiration and, if necessary, 10 days before expiration.
+To help you remember to do so, Temporal Cloud sends email notifications to users who have the Account Owner or Global Admin [roles](/cloud/users#account-level-roles) or the Namespace Admin [permission](/cloud/users#namespace-level-permissions) 15 days before expiration and, if necessary, 10 days before expiration.
 
-If the certificate is not updated, 5 days before expiration Temporal Cloud creates a support ticket on behalf of the Global Admins and Namespace Admins.
+If the certificate is not updated, 5 days before expiration Temporal Cloud creates a support ticket on behalf of the Account Owner, Global Admins, and Namespace Admins.
 
 To ensure that you receive email notifications, configure your junk-email filters to permit email from `noreply@temporal.io`.
 
