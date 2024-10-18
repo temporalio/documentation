@@ -513,7 +513,7 @@ For additional information, see [Inject work into the main Workflow](/encycloped
 ### Add wait conditions to block
 
 Sometimes, async Signal or Update handlers need to meet certain conditions before they should continue.
-You can use a wait condition ([`Workflow::await()`](https://php.temporal.io/classes/Temporal-Workflow.html#method_await)) to set a function that prevents the code from proceeding until the condition returns `True`.
+You can use a wait condition ([`Workflow::await()`](https://php.temporal.io/classes/Temporal-Workflow.html#method_await)) to set a function that prevents the code from proceeding until the condition returns `true`.
 This is an important feature that helps you control your handler logic.
 
 Here are two important use cases for `Workflow::await()`:
@@ -559,3 +559,66 @@ You can silence these warnings on a per-handler basis by passing the `unfinished
 See [Finishing handlers before the Workflow completes](/encyclopedia/workflow-message-passing#finishing-message-handlers) for more information.
 
 ### Use `Mutex` to prevent concurrent handler execution {#control-handler-concurrency}
+
+Concurrent processes can interact in unpredictable ways.
+Incorrectly written [concurrent message-passing](/encyclopedia/workflow-message-passing#message-handler-concurrency) code may not work correctly when multiple handler instances run simultaneously.
+Here's an example of a pathological case:
+
+```php
+#[WorkflowInterface]
+class MyWorkflow
+{
+    // ...
+
+    #[SignalMethod]
+    public function badAsyncHandler()
+    {
+        $data = yield Workflow::executeActivity(
+            type: 'fetch_data',
+            args: ['url' => 'http://example.com'],
+            options: ActivityOptions::new()->withStartToCloseTimeout('10 seconds'),
+        );
+        $this->x = $data->x;
+        # 🐛🐛 Bug!! If multiple instances of this handler are executing concurrently, then
+        # there may be times when the Workflow has $this->x from one Activity execution and $this->y from another.
+        yield Workflow::timer(1);  # or await anything else
+        $this->y = $data->y;
+    }
+}
+```
+
+Coordinating access using `Mutex` corrects this code.
+Locking makes sure that only one handler instance can execute a specific section of code at any given time:
+
+```php
+use Temporal\Workflow;
+
+#[Workflow\WorkflowInterface]
+class MyWorkflow
+{
+    // ...
+
+    private Workflow\Mutex $mutex;
+
+    public function __construct()
+    {
+        $this->mutex = new Workflow\Mutex();
+    }
+
+    #[Workflow\SignalMethod]
+    public function safeAsyncHandler()
+    {
+        $data = yield Workflow::executeActivity(
+            type: 'fetch_data',
+            args: ['url' => 'http://example.com'],
+            options: ActivityOptions::new()->withStartToCloseTimeout('10 seconds'),
+        );
+        yield Workflow::runLocked($this->mutex, function () use ($data) {
+            $this->x = $data->x;
+            # ✅ OK: the scheduler may switch now to a different handler execution, or to the main workflow
+            # method, but no other execution of this handler can run until this execution finishes.
+            yield Workflow::timer(1);  # or await anything else
+            $this->y = $data->y;
+        });
+    }
+```
