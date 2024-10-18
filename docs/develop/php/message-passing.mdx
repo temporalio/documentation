@@ -526,6 +526,26 @@ This includes the main Workflow method, other handlers, or child coroutines spaw
 
 ### Use wait conditions in handlers
 
+It's common to use a Workflow wait condition to wait until a handler should start.
+You can also use wait conditions anywhere else in the handler to wait for a specific condition to become `true`.
+This allows you to write handlers that pause at multiple points, each time waiting for a required condition to become `true`.
+
+Consider a `readyForUpdateToExecute` method that runs before your Update handler executes.
+The `Workflow::await` method waits until your condition is met:
+
+```php
+    #[UpdateMethod]
+    public function myUpdate(UpdateInput $input)
+    {
+        yield Workflow::await(
+            fn() => $this->readyForUpdateToExecute($input),
+        );
+
+        // ...
+    }
+```
+
+Remember: Handlers can execute before the main Workflow method starts.
 
 ### Ensure your handlers finish before the Workflow completes {#wait-for-message-handlers}
 
@@ -536,9 +556,11 @@ Use [`Workflow::await()`](https://php.temporal.io/classes/Temporal-Workflow.html
 
 ```php
 #[WorkflowInterface]
-class MyWorkflow {
+class MyWorkflow
+{
     #[WorkflowMethod]
-    public function run() {
+    public function run()
+    {
         // ...
         yield Workflow::await(fn() => Workflow::allHandlersFinished());
         return "workflow-result";
@@ -551,7 +573,8 @@ You can silence these warnings on a per-handler basis by passing the `unfinished
 
 ```php
     #[UpdateMethod(unfinishedPolicy: HandlerUnfinishedPolicy::Abandon)]
-    public function myUpdate() {
+    public function myUpdate()
+    {
         // ...
     }
 ```
