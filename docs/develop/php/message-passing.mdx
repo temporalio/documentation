@@ -512,6 +512,17 @@ For additional information, see [Inject work into the main Workflow](/encycloped
 
 ### Add wait conditions to block
 
+Sometimes, async Signal or Update handlers need to meet certain conditions before they should continue.
+You can use a wait condition ([`Workflow::await()`](https://php.temporal.io/classes/Temporal-Workflow.html#method_await)) to set a function that prevents the code from proceeding until the condition returns `True`.
+This is an important feature that helps you control your handler logic.
+
+Here are two important use cases for `Workflow::await()`:
+
+- Waiting in a handler until it is appropriate to continue.
+- Waiting in the main Workflow until all active handlers have finished.
+
+The condition state you're waiting for can be updated by and reflect any part of the Workflow code.
+This includes the main Workflow method, other handlers, or child coroutines spawned by the main Workflow method (see [`Workflow::async()`](https://php.temporal.io/classes/Temporal-Workflow.html#method_async).
 
 ### Use wait conditions in handlers
 
