@@ -493,9 +493,9 @@ Valid values for the `failure_reason` tag:
 - `internal_sdk_error`: There was an unexpected internal error within the SDK while handling the Nexus task. Indicates a
   bug in the SDK.
 `handler_error_{TYPE}`: The user handler code returned a predefined error, as specified in the [Nexus spec](https://github.com/nexus-rpc/api/blob/main/SPEC.md#predefined-handler-errors).
-If the handler returns an unexpected error, the TYPE is set to `internal`.
+If the handler returns an unexpected error, the TYPE is set to `INTERNAL`.
   spec](https://github.com/nexus-rpc/api/blob/main/SPEC.md#predefined-handler-errors). If the handler returns an
-  unexpected error (or panics in languages where relevant), the TYPE is set to `internal`.
+  unexpected error (or panics in languages where relevant), the TYPE is set to `INTERNAL`.
 - `operation_failed`: The user handler code has indicated that the operation has failed. In Go, this maps to an
   `UnsuccessfulOperationError` with a `failed` state.
 - `operation_canceled`: The user handler code has indicated that the operation has completed as canceled. In Go, this maps
