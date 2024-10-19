@@ -84,7 +84,22 @@ When an [Activity Execution](/activities#activity-execution) fails, the Applicat
 
 ### Errors in Nexus Operations
 
-An error in a Nexus Operation can cause either a Nexus Operation Task Failure (the Task will be retried) or a Nexus Operation Execution Failure (the Nexus Operation is marked as failed).
+Nexus Operations can end up in completed, failed, canceled, and timed out states.
+
+Under the hood, the Nexus Operation machinery, breaks up the lifecycle of an Operation into one or more StartOperation requests and completion callbacks and automatically retries these requests as long they fail with retryable errors.
+
+The Workflow-specified schedule-to-close timeout is enforced by the caller's machinery and the only way for an Operation to transition to the timed out state.
+
+Operations can end up in the other three states either when a user handler returns a synchronous response or error, or when an asynchronous Operation (like one backed by a workflow) eventually reaches a terminal state.
+
+A handler can return either retryable or non-retryable errors to indicate to the caller's Nexus machinery whether to retry a given request. 
+Requests that time out before a response is sent to the caller are automatically retried.
+
+By default, errors are considered retryable, unless specified below:
+- Non retryable Application Failures
+- Unsuccessful Operation errors that can resolve an operation as either failed or canceled
+- [Handler errors](https://github.com/nexus-rpc/api/blob/main/SPEC.md#predefined-handler-errors) with the following types: `BAD_REQUEST`, `UNAUTHENTICATED`, `UNAUTHORIZED`, `NOT_FOUND`, and `RESOURCE_EXHAUSTED`
+
 
 #### Nexus Operation Task Failures
 
