@@ -609,7 +609,7 @@ This Event type contains Nexus Operation results.
 
 This Event type indicates that a Nexus Operation has failed.
 The caller's workflow history records a failed Nexus Operation with this event both for synchronous and asynchronous Nexus Operations.
-For example, when a Nexus Handler responds synchronously with a non-retryable error or when a Workflow  that backs an Operation fails, resulting in a [WorkflowExecutionFailed](#workflowexecutionfailed) Event.
+For example, when a Nexus Handler responds synchronously with a non-retryable error or when a Workflow that backs an Operation fails, resulting in a [WorkflowExecutionFailed](#workflowexecutionfailed) Event.
 When an SDK client picks up a Nexus Operation, the Nexus handler asynchronously starts an underlying Workflow, which subsequently results in [WorkflowExecutionFailed](#workflowexecutionfailed).
 This Event type contains a Nexus Operation failure.
 
