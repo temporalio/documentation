@@ -565,7 +565,7 @@ This [Event](/workflows#event) type indicates that a [Workflow Execution](/workf
 
 ### NexusOperationScheduled
 
-This Event type indicates that a Nexus Operation was scheduled by caller Workflow.
+This Event type indicates that a Nexus Operation scheduled by a caller Workflow.
 The caller's [Nexus Machinery](/glossary#nexus-machinery) will attempt to start the Nexus Operation.
 This Event type contains Nexus Operation input and the Operation request ID.
 
@@ -583,9 +583,9 @@ This Event type contains Nexus Operation input and the Operation request ID.
 
 ### NexusOperationStarted
 
-This Event type indicates that an Nexus Operation Execution was started.
-This event is added to the caller's workflow history for Asynchronous Nexus Operations, for example one that is picked up by a handler's SDK client and started by a Nexus handler.
-The event is not added to the caller's Workflow history for Synchronous Nexus Operations, since they transition directly to [NexusOperationCompleted](#nexusoperationcompleted) or another final state such as [NexusOperationFailed](#nexusoperationfailed) when the response is provided synchronously by the Nexus handler.
+This Event type indicates that a Nexus Operation Execution was started.
+This Event is added to the caller's Workflow History for Asynchronous Nexus Operations, for example those that are backed by a Workflow.
+The Event is not added to the caller's Workflow History for Synchronous Nexus Operations, since they transition directly to [NexusOperationCompleted](#nexusoperationcompleted) or another final state such as [NexusOperationFailed](#nexusoperationfailed) when the response is provided synchronously by the Nexus handler.
 
 | Field              | Description                                                                                                                                 |
 | :----------------- | :------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -595,9 +595,9 @@ The event is not added to the caller's Workflow history for Synchronous Nexus Op
 
 ### NexusOperationCompleted
 
-This Event type indicates that the Nexus Operation has completed successfully.
+This Event type indicates that a Nexus Operation has completed successfully.
 The caller's workflow history records the result of a successful Nexus Operation with this event for synchronous and asynchronous Nexus Operations.
-This Event type contains Nexus Operation Execution results.
+This Event type contains Nexus Operation results.
 
 | Field              | Description                                                                                                                                                          |
 | :----------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -607,11 +607,11 @@ This Event type contains Nexus Operation Execution results.
 
 ### NexusOperationFailed
 
-This Event type indicates that the Nexus Operation has failed.
+This Event type indicates that a Nexus Operation has failed.
 The caller's workflow history records a failed Nexus Operation with this event both for synchronous and asynchronous Nexus Operations.
-For example, when an SDK client picks up a Nexus Operation and the Nexus handler responds synchronously with a non-retryable error.
+For example, when a Nexus Handler responds synchronously with a non-retryable error or when a Workflow  that backs an Operation fails, resulting in a [WorkflowExecutionFailed](#workflowexecutionfailed) Event.
 When an SDK client picks up a Nexus Operation, the Nexus handler asynchronously starts an underlying Workflow, which subsequently results in [WorkflowExecutionFailed](#workflowexecutionfailed).
-This Event type contains Nexus Operation Execution errors.
+This Event type contains a Nexus Operation failure.
 
 | Field              | Description                                                                                                   |
 | :----------------- | :------------------------------------------------------------------------------------------------------------ |
@@ -621,7 +621,7 @@ This Event type contains Nexus Operation Execution errors.
 
 ### NexusOperationTimedOut
 
-This Event type indicates that the Nexus Operation has timed out according to the Temporal Server, due to one of these Nexus Operation timeouts: Schedule-to-Close Timeout.
+This Event type indicates that a Nexus Operation has timed out according to the Temporal Server, due to one of these Nexus Operation timeouts: Schedule-to-Close Timeout.
 | Field | Description |
 | :---- | :---- |
 | scheduled_event_id | The ID of the [NexusOperationScheduled](#nexusoperationscheduled)` event. Uniquely identifies this operation. |
@@ -630,7 +630,7 @@ This Event type indicates that the Nexus Operation has timed out according to th
 
 ### NexusOperationCancelRequested
 
-This Event type indicates that a request to cancel the Nexus Operation has occurred.
+This Event type indicates that the Workflow that scheduled a Nexus Operation requested to cancel it.
 | Field | Description |
 | :---- | :---- |
 | scheduled_event_id | The id of the [NexusOperationScheduled](#nexusoperationscheduled)` event this cancel request corresponds to. |
@@ -638,7 +638,7 @@ This Event type indicates that a request to cancel the Nexus Operation has occur
 
 ### NexusOperationCanceled
 
-This Event type indicates that the Nexus Operation has been canceled.
+This Event type indicates that a Nexus Operation has resolved as canceled.
 | Field | Description |
 | :---- | :---- |
 | scheduled_event_id | The ID of the [NexusOperationScheduled](#nexusoperationscheduled)` event. Uniquely identifies this operation. |
