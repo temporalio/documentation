@@ -302,6 +302,7 @@ To send an Update to a Workflow Execution, you can:
   update_handle = await workflow_handle.start_update(
       HelloWorldWorkflow.set_greeting,
       HelloWorldInput("World"),
+      wait_for_stage=client.WorkflowUpdateStage.ACCEPTED,
   )
   # Wait until the update is completed
   update_result = await update_handle.result()
