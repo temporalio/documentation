@@ -526,6 +526,8 @@ If you don’t already have certificates, you can generate them for mTLS Worker 
 tcld gen ca --org $YOUR_ORG_NAME --validity-period 1y --ca-cert ca.pem --ca-key ca.key
 ```
 
+These certificates will be valid for one year.
+
 ### Create caller and handler Namespaces
 
 Before deploying to Temporal Cloud, ensure the appropriate Namespaces are created for both the caller and handler.
