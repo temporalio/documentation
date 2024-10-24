@@ -15,14 +15,9 @@ keywords:
   - temporal cloud account
   - users
 tags:
-  - explanation
-  - how-to
-  - introduction
-  - namespace
-  - namespaces
-  - temporal-cloud
-  - temporal-cloud-account
-  - users
+  - Temporal Cloud
+  - Namespaces
+  - Users
 ---
 
 - [How to invite users to your Temporal Cloud account](#invite-users)
@@ -99,7 +94,7 @@ You can invite users pragmatically using the Cloud Ops API.
 
 ## What are the account-level roles for users in Temporal Cloud? {#account-level-roles}
 
-When a Global Admin invites a user to join an account, the Global Admin selects one of the following roles for that user:
+When an Account Owner or Global Admin invites a user to join an account, they select one of the following roles for that user:
 
 - **Global Admin**
   - Has full administrative permissions across the account, including users and usage
@@ -146,7 +141,7 @@ This latter rule is useful for anyone on your team who may need to be contacted 
 
 ## What are the Namespace-level permissions for users in Temporal Cloud? {#namespace-level-permissions}
 
-A [Global Admin](#account-level-roles) can assign permissions for any [Namespace](/namespaces) in an account.
+An Account Owner or Global Admin can assign permissions for any [Namespace](/namespaces) in an account.
 A Developer can assign permissions for a Namespace they create.
 
 For a Namespace, a user can have one of the following permissions:
@@ -251,7 +246,7 @@ The following table provides the API details associated with each account-level 
 
 :::note
 
-Account Global Admin has Namespace Admin permissions on Namespaces.
+Account Owners and Global Admins have Namespace Admin permissions on all Namespaces.
 
 :::
 

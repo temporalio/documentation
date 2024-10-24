@@ -9,9 +9,9 @@ keywords:
   - failure
   - term
 tags:
-  - explanation
-  - failure
-  - term
+  - Reference
+  - Failures
+  - Timeouts
 ---
 
 A Failure is Temporal's representation of various types of errors that occur in the system.
@@ -166,14 +166,13 @@ When a Nexus Operation handler throws an Application Failure, it is retried by d
 Nexus Operation handlers can avoid retrying by setting an Application Failure's non_retryable flag to true.
 When a non-retryable error is returned from a Nexus handler, the overall Nexus Operation Execution is failed and the error is returned to the caller’s Workflow Execution as a Nexus Operation Failure.
 
-### Setting the Next Retry Delay {#next-retry-delay}
+### Setting the Next Retry Delay {#activity-next-retry-delay}
 
-Activities and Workflows can set the Next Retry Delay for a given Application Failure, to tell the server to wait that amount of time before trying the Activity or Workflow again.
+By setting the Next Retry Delay for a given Application Failure, you can tell the server to wait that amount of time before trying the Activity or Workflow again. 
 This will override whatever the Retry Policy would have computed for your specific exception.
 
-Nexus Operations do not currently allow the handler to customize the Next Retry Delay for a given Application Failure.
-
-Java: [NextRetryDelay](/develop/java/failure-detection#next-retry-delay)
+Java: [NextRetryDelay](/develop/java/failure-detection#activity-next-retry-delay)
+TypeScript: [nextRetryDelay](/develop/typescript/failure-detection#activity-next-retry-delay)
 
 ### Nexus errors {#nexus-errors}
 
