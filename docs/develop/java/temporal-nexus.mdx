@@ -82,7 +82,7 @@ cd samples-java
 ```
 
 The Nexus Service API contract can be in whatever form works best for your environment.
-Each [Temporal SDK includes and uses a default Data Converter](https://docs.temporal.io/dataconversion), that encodes payloads in the following order: Null, Byte array, Protobuf JSON, and JSON.
+Each [Temporal SDK includes and uses a default Data Converter](https://docs.temporal.io/dataconversion). The default data converter encodes payloads in the following order: Null, Byte array, Protobuf JSON, and JSON.
 In a polyglot environment, Protobuf and JSON are common choices. This example uses Java classes serialized into JSON.
 
 In this example, there is a service package that describes the Service and Operation names along with input/output types for caller Workflows to use the Nexus Endpoint.
