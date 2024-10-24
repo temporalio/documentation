@@ -557,7 +557,7 @@ tcld nexus endpoint create \
   --target-task-queue my-handler-task-queue \
   --target-namespace <my-target-namespace.account> \
   --allow-namespace <my-caller-namespace.account> \
-  --description-file description.md
+  --description-file ./core/src/main/java/io/temporal/samples/nexus/service/description.md
 ```
 
 The `--allow-namespace` is used to build an Endpoint allowlist of caller Namespaces that can use the Nexus Endpoint, as described in Runtime Access Control.
