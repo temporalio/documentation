@@ -13,12 +13,8 @@ keywords:
   - temporal cloud
   - term
 tags:
-  - explanation
-  - how-to
-  - introduction
-  - namespaces
-  - temporal-cloud
-  - term
+  - Namespaces
+  - Temporal Cloud
 ---
 
 A Namespace is a unit of isolation within the Temporal Platform.
@@ -171,7 +167,7 @@ Follow these steps to find it:
 
 The user who creates a [Namespace](/namespaces) is automatically granted [Namespace Admin](/cloud/users#namespace-level-permissions) permission for that Namespace.
 
-To create a Namespace, a user must have the Developer or Global Admin account-level [Role](/cloud/users#account-level-roles).
+To create a Namespace, a user must have the Developer, Account Owner, or Global Admin account-level [Role](/cloud/users#account-level-roles).
 
 :::
 
@@ -384,6 +380,15 @@ To delete a Namespace, a user must have Namespace Admin [permission](/cloud/user
 1. On the **Edit** Namespace page, select **Delete Namespace** in the upper-right portion of the window.
 1. In the **Delete Namespace** dialog, type `DELETE` to confirm the deletion of that Namespace.
 1. Select **Delete**.
+
+After deleting a Temporal Cloud Namespace, the Temporal Service immediately removes the Namespace's Workflow Executions and Task Queues.
+Make sure all Workflows have been completed, canceled, or terminated before removing a Namespace.
+The Namespace removal is permanent.
+
+Closed Workflow Histories remain in Temporal storage until the user-defined retention period expires.
+This period reflects the policy in effect when the Workflow Execution was closed.
+
+For further questions or concerns, contact [Support](https://docs.temporal.io/cloud/support#support-ticket).
 
 ### Delete a Namespace using tcld
 
