@@ -575,34 +575,34 @@ You can also create a Nexus endpoint through the UI in the development server.
 
 Run the handler Worker:
 
-```go
+```
 ./gradlew -q execute -PmainClass=io.temporal.samples.nexus.handler.HandlerWorker \
-    --args="-target-host <your-target-namespace.account>.tmprl.cloud:7233 \
-	-namespace <your-target-namespace.account> \
-	-client-cert 'path/to/your/ca.pem' \
-	-client-key 'path/to/your/ca.key'"
+  --args="-target-host <your-target-namespace.account>.tmprl.cloud:7233 \
+  -namespace <your-target-namespace.account> \
+  -client-cert 'path/to/your/ca.pem' \
+  -client-key 'path/to/your/ca.key'"
 ```
 
 Run the caller Worker:
 
-```go
+```
 ./gradlew -q execute -PmainClass=io.temporal.samples.nexus.caller.CallerWorker \
-    --args="-target-host <your-caller-namespace.account>.tmprl.cloud:7233 \
-	-namespace <your-caller-namespace.account> \
-	-client-cert 'path/to/your/ca.pem' \
-	-client-key 'path/to/your/ca.key'"
+  --args="-target-host <your-caller-namespace.account>.tmprl.cloud:7233 \
+  -namespace <your-caller-namespace.account> \
+  -client-cert 'path/to/your/ca.pem' \
+  -client-key 'path/to/your/ca.key'"
 ```
 
 ### Start a caller Workflow
 
 In order to start the caller Workflow, run the starter.
 
-```go
+```
 ./gradlew -q execute -PmainClass=io.temporal.samples.nexus.caller.CallerStarter \
-    --args="-target-host <your-caller-namespace.account>.tmprl.cloud:7233 \
-	-namespace <your-caller-namespace.account> \
-	-client-cert 'path/to/your/ca.pem' \
-	-client-key 'path/to/your/ca.key'"
+  --args="-target-host <your-caller-namespace.account>.tmprl.cloud:7233 \
+  -namespace <your-caller-namespace.account> \
+  -client-cert 'path/to/your/ca.pem' \
+  -client-key 'path/to/your/ca.key'"
 ```
 
 This will result in:
