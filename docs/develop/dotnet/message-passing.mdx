@@ -515,7 +515,7 @@ See [Finishing handlers before the Workflow completes](/encyclopedia/workflow-me
 ### Use `[WorkflowInit]` to operate on Workflow input before any handler executes
 
 Normally, your Workflow constructor method won't need parameters.
-However, if you use the `[WorkflowInit]` attribute on your constructor, you can give it the same Workflow parameters as your `[WorkflowRun]` method.
+If you use the `[WorkflowInit]` attribute on your constructor, you can give it the same Workflow parameters as your `[WorkflowRun]` method.
 The SDK will then ensure that your constructor receives the Workflow input arguments that the [Client sent](/develop/dotnet/temporal-client#start-workflow).
 (The Workflow input arguments are also passed to your `[WorkflowRun]` method -- that always happens, whether or not you use the `[WorkflowInit]` attribute.)
 This is useful if you have message handlers that need access to workflow input: see [Initializing the Workflow first](/encyclopedia/workflow-message-passing#workflow-initializers).
