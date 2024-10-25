@@ -518,7 +518,6 @@ The `[WorkflowInit]` attribute gives message handlers access to [Workflow input]
 When you use the `[WorkflowInit]` attribute on your constructor, you give the constructor the same Workflow parameters as your `[WorkflowRun]` method.
 The SDK will then ensure that your constructor receives the Workflow input arguments that the [Client sent](/develop/dotnet/temporal-client#start-workflow).
 The Workflow input arguments are also passed to your `[WorkflowRun]` method -- that always happens, whether or not you use the `[WorkflowInit]` attribute.
-This is useful if you have message handlers that need access to workflow input: see [Initializing the Workflow first](/encyclopedia/workflow-message-passing#workflow-initializers).
 
 Here's an example.
 Notice that the constructor and `RunAsync` must have the same parameters with the same types:
