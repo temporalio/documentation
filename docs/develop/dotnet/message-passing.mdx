@@ -17,17 +17,8 @@ keywords:
   - dynamic signals
   - dynamic queries
 tags:
-  - dotnet
-  - dotnet-sdk
-  - workflows
-  - messages
-  - signals
-  - queries
-  - updates
-  - sdk
-  - dotnet-sdk
-  - developer guide
-  - dynamic-handlers
+  - .Net SDK
+  - Temporal SDKs
 ---
 
 A Workflow can act like a stateful web service that receives messages: Queries, Signals, and Updates.
@@ -520,6 +511,50 @@ public async Task MyUpdateAsync()
 ```
 
 See [Finishing handlers before the Workflow completes](/encyclopedia/workflow-message-passing#finishing-message-handlers) for more information.
+
+### Use `[WorkflowInit]` to operate on Workflow input before any handler executes
+
+The `[WorkflowInit]` attribute gives message handlers access to [Workflow input](/encyclopedia/workflow-message-passing#workflow-initializers).
+When you use the `[WorkflowInit]` attribute on your constructor, you give the constructor the same Workflow parameters as your `[WorkflowRun]` method.
+The SDK will then ensure that your constructor receives the Workflow input arguments that the [Client sent](/develop/dotnet/temporal-client#start-workflow).
+The Workflow input arguments are also passed to your `[WorkflowRun]` method -- that always happens, whether or not you use the `[WorkflowInit]` attribute.
+
+Here's an example.
+The constructor and `RunAsync` must have the same parameters with the same types:
+
+```csharp
+[Workflow]
+public class WorkflowInitWorkflow
+{
+    public record Input(string Name);
+
+    private readonly string nameWithTitle;
+    private bool titleHasBeenChecked;
+
+    [WorkflowInit]
+    public WorkflowInitWorkflow(Input input) =>
+        nameWithTitle = $"Sir {input.Name}";
+
+    [WorkflowRun]
+    public async Task<string> RunAsync(Input ignored)
+    {
+        await Workflow.WaitConditionAsync(() => titleHasBeenChecked);
+        return $"Hello, {nameWithTitle}";
+    }
+
+    [WorkflowUpdate]
+    public async Task<bool> CheckTitleValidityAsync()
+    {
+        // The handler is now guaranteed to see the workflow input after it has
+        // been processed by the constructor.
+        var valid = await Workflow.ExecuteActivityAsync(
+            (MyActivities acts) -> acts.CheckTitleValidityAsync(nameWithTitle),
+            new() { StartToCloseTimeout = TimeSpan.FromSeconds(10) });
+        titleHasBeenChecked = true;
+        return valid;
+    }
+}
+```
 
 ### Use locks to prevent concurrent handler execution {#control-handler-concurrency}
 

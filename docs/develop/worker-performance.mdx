@@ -5,8 +5,8 @@ description: Optimize Temporal SDK performance by fine-tuning maxConcurrentWorkf
 sidebar_label: Worker performance
 toc_max_heading_level: 3
 tags:
-  - operation-guide
-  - workers
+  - Workers
+  - Performance
 ---
 
 import RelatedReadList from '../components/RelatedReadList.js';
@@ -41,7 +41,7 @@ These options limit the resource consumption of the in-memory Workflow cache. Wo
 
 :::tip Support, stability, and dependency info
 
-The information listed in this section is readable using the `DescribeTaskQueueEnhanced` method in the [Go SDK](https://github.com/temporalio/sdk-go/blob/74320648ab0e4178b1fedde01672f9b5b9f6c898/client/client.go), with the [Temporal CLI](https://github.com/temporalio/cli/releases/tag/v1.1.0) `task-queue describe` command, and using `DescribeTaskQueue` through [RPC](https://github.com/temporalio/temporal/blob/c4b6b34f33f4772564c8ae759f2e907e3651a65a/service/matching/matching_engine.go).
+The information listed in this section is readable using the `DescribeTaskQueueEnhanced` method in the [Go SDK](https://github.com/temporalio/sdk-go/blob/74320648ab0e4178b1fedde01672f9b5b9f6c898/client/client.go), with the [Temporal CLI](https://github.com/temporalio/cli/releases/tag/v1.1.0) `task-queue describe` command, and using `DescribeTaskQueue` through RPC.
 
 :::
 
@@ -177,7 +177,7 @@ For instance, a large backlog of Tasks with too few Workers will slow down Workf
 Adding more Workers boosts speeds up completion rates and improves throughput.
 An empty backlog indicates low Worker utilization, allowing you to reduce your fleet and associated costs.
 
-The metric values provided by `temporal task-queue describe` can help you manage your Worker fleet deployment:
+The values provided by `temporal task-queue describe` can help you manage your Worker fleet deployment:
 
 - `ApproximateBacklogAge` shows how long Tasks have been waiting to be dispatched.
   If this time grows too long, more Workers can boost Workflow efficiency.

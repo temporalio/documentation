@@ -9,9 +9,7 @@ keywords:
   - errors
   - strongly-typed
 tags:
-  - error
-  - errors
-  - strongly-typed
+  - Reference
 ---
 
 This reference lists possible [Workflow Task](/workers#workflow-task) errors and how to resolve them.
@@ -64,7 +62,7 @@ Restart the [Worker](/workers) that the [Workflow](/workflows) and [Activity](/a
 This error indicates that the [Workflow Task](/workers#workflow-task) failed to validate attributes on a property in the Upsert Memo or in a payload.
 These attributes are either unset or exceeding size limits.
 
-Reset any unset and empty atrributes.
+Reset any unset and empty attributes.
 Adjust the size of the [Memo](/workflows#memo) or payload to fit within the system's limits.
 
 ## Bad Record Marker Attributes {#bad-record-marker-attributes}
@@ -99,6 +97,12 @@ This error indicates unset or invalid attributes for [`ScheduleActivityTask`](/r
 
 Reset any unset or empty attributes.
 Adjust the size of the received payload to stay within the given size limit.
+
+## Bad Schedule Nexus Operation Attributes
+
+This error indicates unset or invalid attributes for ScheduleNexusOperation, for example if the Nexus Endpoint name used in the caller Workflow doesn't exist.
+
+Inspect the reason given in the error for mitigation when possible.
 
 ## Bad Search Attributes {#bad-search-attributes}
 
@@ -207,6 +211,20 @@ This error indicates that the [Workflow](/workflows) has reached capacity for pe
 Therefore, the [Workflow Task](/workers#workflow-task) was failed to prevent additional Child Workflows from being added.
 
 Wait for the system to finish any currently running Child Workflows before redeploying this Task.
+
+## Pending Nexus Operations Limit Exceeded {#pending-nexus-operations-limit-exceeded}
+
+The Workflow has reached capacity for pending Nexus Operations. Therefore, the Workflow Task was failed to prevent the creation of another Nexus Operation.
+
+:::note
+
+In Public Preview, Nexus Operations are not yet deleted from mutable state when they complete, so the limit is for the total count of Nexus Operations in a given Workflow.
+
+:::
+
+Let the Workflow complete any current Nexus Operation before retrying the Task.
+
+See [Per Workflow Nexus Operation Limits](/cloud/limits#per-workflow-nexus-operation-limits) for details.
 
 ## Pending Request Cancel Limit Exceeded {#pending-request-cancel-limit-exceeded}
 
