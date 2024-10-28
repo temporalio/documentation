@@ -11,7 +11,7 @@ module.exports = {
       },
       items: [
         "evaluate/why-temporal",
-        "evaluate/major-components",
+        "evaluate/understanding-temporal",
         {
           type: "category",
           label: "Features",
@@ -391,6 +391,7 @@ module.exports = {
                 "production-deployment/cloud/tcld/login",
                 "production-deployment/cloud/tcld/logout",
                 "production-deployment/cloud/tcld/namespace",
+                "production-deployment/cloud/tcld/nexus",
                 "production-deployment/cloud/tcld/request",
                 "production-deployment/cloud/tcld/user",
                 "production-deployment/cloud/tcld/version",
@@ -418,6 +419,7 @@ module.exports = {
             "production-deployment/self-hosted-guide/upgrade-server",
             "production-deployment/self-hosted-guide/archival",
             "production-deployment/self-hosted-guide/multi-cluster-replication",
+            "production-deployment/self-hosted-guide/enable-nexus",
             "production-deployment/self-hosted-guide/server-frontend-api-reference",
           ],
         },
