@@ -87,7 +87,7 @@ They track billable operations within the Temporal Cloud Service, such as starti
   Occurs each time an Activity is started or retried.
 - **Local Activity started**.
   All [Local Activities](/activities#local-activity) associated with one Workflow Task count as a single Action.
-  That's because Temporal Cloud counts all [RecordMarkers](https://docs.temporal.io/references/commands#recordmarker) from each Workflow Task as one action, and not _N_ actions.
+  That's because Temporal Cloud counts all [RecordMarkers](/references/commands#recordmarker) from each Workflow Task as one action, and not _N_ actions.
   Please note:
   - Each additional Workflow Task heartbeat after counts as an additional Action.
   - Local Activities retried following a Workflow Task heartbeat count as one Action (capped at 100 Actions).
@@ -476,7 +476,10 @@ Invoices are issued on the 3rd of the month for the previous month.
 For example, invoices for May will be issued at midnight UTC on June 3rd.
 
 **Where can I view my usage and billing information?**
-Account Owners and Finance Admin can view their detailed billing data at any time via the [Usage and Billing dashboards](/cloud/billing-and-cost) in Temporal Cloud.
+
+Account Owners and Finance Admins can view their detailed billing data at any time.
+Visit the [Usage and Billing dashboards](/cloud/billing-and-cost) in Temporal Cloud.
+You need appropriate administrative permissions to access this section.
 
 **How do I purchase Temporal Cloud credits?**
 
@@ -501,7 +504,7 @@ To purchase Temporal Cloud on the Google Cloud Marketplace, please contact our t
 
 **How do I see how many Temporal Cloud credits are remaining?**
 
-To view remaining Temporal Cloud credits, log in to Temporal Cloud and go to Settings > Billing.
+To view remaining Temporal Cloud credits, Account Owners and Finance Admins can log in to Temporal Cloud and go to Settings > Billing.
 You need appropriate administrative permissions to access this section.
 
 **What happens if I exceed my available credits?**
@@ -518,7 +521,11 @@ This date will be stated as part of the sign-up process.
 
 **How do I update my payment information?**
 
-To update payment information, [contact Support](https://temporalsupport.zendesk.com/).
+Account Owners and Finance Admins can update payment information at any time on the Temporal Cloud [Billing](https://cloud.temporal.io/billing) page under the Plan tab.
+You need appropriate administrative permissions to access this section.
+Select the "Manage Payment Method" button.
+
+See [this overview](/cloud/billing-and-cost) for more details.
 
 **What happens if my payment fails?**
 
@@ -526,9 +533,10 @@ Temporal will periodically send you email reminders to complete the payment.
 
 **How do I view my invoices and billing history?**
 
-Invoices are emailed to Admins of Temporal Cloud.
-Admins can view their [detailed billing information](https://cloud.temporal.io/billing) at any time.
+Invoices are emailed to Temporal Cloud Admins.
+Account Owners and Finance Admins can view their [detailed billing information](https://cloud.temporal.io/billing) at any time.
 See our [billing and cost](/cloud/billing-and-cost) page for details.
+You need appropriate administrative permissions to access this section.
 Alternatively, to view invoices and billing history, [contact Support](https://temporalsupport.zendesk.com/).
 
 **Does Temporal charge sales tax/VAT?**
@@ -537,11 +545,16 @@ We charge applicable sales tax in US jurisdictions as required.
 
 **How do I cancel my account?**
 
-To cancel your Temporal Cloud account, [contact Support](https://temporalsupport.zendesk.com/).
+If you used our self sign-up feature to create your Temporal Account, and you are an Account Owner, you can cancel your account from the Temporal Cloud [Billing](https://cloud.temporal.io/billing) page under the Plan tab.
+You need appropriate administrative permissions to access this section.
+Select the "Delete Account" button.
+Otherwise, to cancel your Temporal Cloud account, please [contact Support](https://temporalsupport.zendesk.com/).
+
+See [this overview](/cloud/billing-and-cost#account-cancellation) for more details.
 
 **Will I lose access immediately if I cancel my account?**
 
-Customers will lose access once Temporal completes the off-boarding process.
+Customers lose access to Temporal Cloud once Temporal completes the off-boarding process.
 Billing is independent of this process.
 
 **Can I reactivate my account after cancellation?**
