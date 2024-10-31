@@ -219,8 +219,21 @@ The Temporal Service interprets the outcome and determines whether to retry the 
 ## What is a Task Queue? {#task-queue}
 
 A Task Queue is a lightweight, dynamically allocated queue that one or more [Worker Entities](#worker-entity) poll for [Tasks](#task).
+For each Task Queue name, Temporal creates separate queues for each Task Queue type, specifically:
 
-There are two types of Task Queues, Activity Task Queues and Workflow Task Queues.
+- **Activity Task Queue**: A queue that holds Activity Tasks.
+  Activity Tasks represent units of work within a larger business process.
+  Each Activity Task contains the context required by an Activity Definition.
+  Workers poll Activity Tasks from the Activity Task Queue and use them to initiate Activity Executions.
+- **Workflow Task Queue**: A queue that holds Workflow Tasks.
+  Workflow Tasks contain the context needed by a Workflow Definition.
+  Workers poll Workflow Tasks from the Workflow Task Queue and use them to initiate Workflow Executions.
+- **Nexus Task Queue** ([Public Preview](/evaluate/development-production-features/release-stages#public-preview)): A queue that holds Nexus Tasks.
+  Nexus Tasks are used for units of work passed between Namespaces.
+  Workers configured with the Nexus Service poll the Nexus Task Queue for available tasks and handle them by initiating Workflow Executions in the target Namespace.
+  Each Nexus Task contains the context required by the target Workflow Definition.
+
+Each Task Queue type provides unaggregated data.
 
 <div className="tdiw">
   <div className="tditw">
