@@ -163,13 +163,21 @@ If an Activity is supposed to react to a Cancellation, you can test whether it r
 
 ## Mock and override Nexus operations
 
-A workflow that executes a Nexus operation can be tested by providing a mock of the Nexus operation
-or overriding its implementation with the Nexus mock environment. This allows you to test the
-workflow without needing to create a Nexus handler service to run the Nexus operation.
+Mocking Nexus operations lets you test a Workflow that executes Nexus operations without needing a
+Nexus handler servier to run the actual Nexus operation. You can mock the Nexus operation or
+override its implementation with the Nexus mock environment.
 
-Let's take a look at a test that simulates a Nexus operation call. Assume the Nexus operation is
+Consider a test that simulates a Nexus operation call. In this example, the Nexus operation is
 called `sample-operation`, the input type is `SampleInput`, the output type is `SampleOutput`, and
 it belongs to the Nexus service `sample-service`.
+
+The example bellow mocks a call to a Nexus synchronous operation, indicated by the returned value
+type `*nexus.HandlerStartOperationResultSync[T]`. Since `OnNexusOperation` needs to know the
+operation's name, input type and output type, and you might not have access to the Nexus operation
+on the handler side, you can use `nexus.NewOperationReference` to create a Nexus operation reference
+that represents the operation without its implementation (basically, it represents the signature of
+the Nexus operation). You may also use the operation itself instead of creating the operation
+reference if you have it available.
 
 ```go
 func (s *UnitTestSuite) Test_SimpleWorkflow_NexusSyncOperation() {
@@ -194,14 +202,12 @@ func (s *UnitTestSuite) Test_SimpleWorkflow_NexusSyncOperation() {
 }
 ```
 
-The example above simulates a call to a Nexus synchronous operation, indicated by the returned value
-type `*nexus.HandlerStartOperationResultSync[T]`. Since `OnNexusOperation` needs to know the
-operation's name, input and output, `nexus.NewOperationReference` creates an operation reference
-that represents the operation without knowing the implementation (basically, it represents the
-signature of the operation). You may also use the operation itself instead of creating the operation
-reference if you have it available.
-
-Let's take an example of simulating a call to an Nexus asynchronous operation.
+Besides the synchronous operations, you can also mock asynchronous operations. The following example
+demonstrates how to test a Workflow executing a Nexus asynchronous operation. The returned value
+type in this case must be `*nexus.HandlerStartOperationResultAsync` with an `OperationID`, which can
+be any string of your choice. Furthermore, you must call `RegisterNexusAsyncOperationCompletion` to
+register the result of the asynchronous operation identified by the tuple service name, operation
+name, and operation ID.
 
 ```go
 func (s *UnitTestSuite) Test_SimpleWorkflow_NexusAsyncOperation() {
@@ -221,7 +227,7 @@ func (s *UnitTestSuite) Test_SimpleWorkflow_NexusAsyncOperation() {
                 "sample-operation",
                 "sample-operation-id", // must match the OperationID above
                 SampleOutput{},
-                nil,            // error if you want to simulation an error in the operation
+                nil,            // error if you want to simulate an error in the operation
                 2*time.Second,  // delay to simulate how long the operation takes after it starts
         )
         s.NoError(err)
@@ -232,22 +238,22 @@ func (s *UnitTestSuite) Test_SimpleWorkflow_NexusAsyncOperation() {
 }
 ```
 
-In the example above, the `OperationID` in the `*nexus.HandlerStartOperationResultAsync` object can
-be any string of your choice, and it is used in the `RegisterNexusAsyncOperationCompletion` call to
-register the result of the corresponding asynchronous operation. With this, you can mock multiple
-asynchronous Nexus operations and register the results for each of them in the same workflow.
+If your Workflow executed multiple Nexus asynchronous operations, you can mock each of them with
+different operation IDs, and register the completion results using the corresponding operation ID.
 
-If you need to run some custom logic for the Nexus operation, you can do as follows.
+If mocking Nexus operations is not enough, and you need to run some custom logic when the Nexus
+operation is executed, you can override it as follows.
 
 ```go
-var SampleOperation = nexus.NewSyncOperation(
-        "sample-operation",
-        func(ctx context.Context, input SampleInput, options nexus.StartOperationOptions) (SampleOutput, error) {
-                return SampleOutput{}, nil
-        },
-)
-
 func (s *UnitTestSuite) Test_SimpleWorkflow_NexusSyncOperation() {
+        var SampleOperation = nexus.NewSyncOperation(
+                "sample-operation",
+                func(ctx context.Context, input SampleInput, options nexus.StartOperationOptions) (SampleOutput, error) {
+                        // Custom logic here.
+                        return SampleOutput{}, nil
+                },
+        )
+
         service := nexus.NewService("sample-service")
         s.NoError(service.Register(SampleOperation))
         env.RegisterNexusService(service)
