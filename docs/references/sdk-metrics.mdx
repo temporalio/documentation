@@ -114,7 +114,7 @@ Some keys may not be available in every SDK, and Histogram metrics may have diff
 | [unregistered_activity_invocation](#unregistered_activity_invocation)                   | Worker         | Counter     | Go             |
 | [worker_start](#worker_start)                                                           | Worker         | Counter     | Core, Go, Java |
 | [worker_task_slots_available](#worker_task_slots_available)                             | Worker         | Gauge       | Core, Go, Java |
-| [worker_task_slots_used](#worker_task_slots_used)                             | Worker         | Gauge       | Core, Go, Java |
+| [worker_task_slots_used](#worker_task_slots_used)                                       | Worker         | Gauge       | Core, Go, Java |
 | [workflow_active_thread_count](#workflow_active_thread_count)                           | Worker         | Gauge       | Java           |
 | [workflow_cancelled](#workflow_cancelled)                                               | Worker         | Counter     | Core, Go, Java |
 | [workflow_completed](#workflow_completed)                                               | Worker         | Counter     | Core, Go, Java |
@@ -504,8 +504,7 @@ Valid values for the `failure_reason` tag:
 
 - `internal_sdk_error`: There was an unexpected internal error within the SDK while handling the Nexus task. Indicates a
   bug in the SDK.
-- `handler_error_{TYPE}`: The user handler code returned a predefined error, as specified in the [Nexus
-  spec](https://github.com/nexus-rpc/api/blob/main/SPEC.md#predefined-handler-errors).
+- `handler_error_{TYPE}`: The user handler code returned a predefined error, as specified in the [Nexus spec](https://github.com/nexus-rpc/api/blob/main/SPEC.md#predefined-handler-errors).
   If the handler returns an unexpected error, the TYPE is set to `INTERNAL`.
 - `timeout`: The user handler code did not return within the request timeout.
 - `operation_failed`: The user handler code has indicated that the operation has failed. In Go, this maps to an
