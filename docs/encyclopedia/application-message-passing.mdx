@@ -32,6 +32,7 @@ keywords:
 
 
 
+
 import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
 import {RelatedReadContainer, RelatedReadItem} from '@site/src/components/related-read/RelatedRead';
 
@@ -194,8 +195,10 @@ Update-With-Start is great for latency-sensitive use cases, including the follow
   For example, a shopping cart can be modelled using Update-With-Start.
   Add or remove an item with an Update.
   Update-With-Start ensures the cart is created first (the Workflow Execution) before applying the Update (state change of items within the cart).
-- **Early Return** - Starting a new Workflow Execution and synchronously receiving a response mid-Workflow, while the Workflow Execution continues to run to completion. For example, a payment process can be modelled using Update-With-Start: Sending the result of the payment validation back to the client synchronously, and continuing to complete or rollback the transaction asynchronously.
-
+- **Early Return** -
+  Using Update-With-Start can begin a new Workflow Execution and synchronously receiving a response while the Workflow Execution continues to run to completion.
+  For example, a payment process can be modelled using Update-With-Start.
+  You can send the result of payment validation back to the client synchronously, while continuing to complete or rollback the transaction asynchronously.
 
 :::caution
 
