@@ -382,7 +382,9 @@ Not all `ExecuteWorkflow` options are allowed with Update-With-Start.
 For example, specifying a `CronSchedule` results in an error.
 Refer to the API documentation for further details.
 
-The `ExecuteWorkflow` call will return once an Update result is available; or when the provided context times out. To obtain the Update result, first obtain a [`WorkflowUpdateHandle`](https://pkg.go.dev/go.temporal.io/sdk/client#WorkflowUpdateHandle) by calling `Get` on the Update operation.
+The `ExecuteWorkflow` returns once an Update result is available; or when a provided context times out.
+You need a [`WorkflowUpdateHandle`](https://pkg.go.dev/go.temporal.io/sdk/client#WorkflowUpdateHandle) to retrieve a result.
+Call `Get` on the Update operation.
 
 `UpdateWithStartWorkflowOperation` can only be executed once.
 Re-using a previously executed operation returns an error from `ExecuteWorkflow`.
