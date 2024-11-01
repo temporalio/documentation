@@ -384,6 +384,8 @@ The `ExecuteWorkflow` call will return once an Update result is available; or wh
 
 Note that an `UpdateWithStartWorkflowOperation` can only be executed once. Re-using a previously executed operation returns an error from `ExecuteWorkflow`.
 
+The following example shows the creation, configuration, and use of UpdateWithStart:
+
 ```go
 updateOperation := client.NewUpdateWithStartWorkflowOperation(
     client.UpdateWorkflowOptions{
