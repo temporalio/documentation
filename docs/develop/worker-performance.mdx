@@ -25,11 +25,11 @@ The omitted prefix makes the names more readable and descriptive.
 
 ## Worker peformance concepts {#worker-performance-concepts}
 
-A Worker's performance characteristics are affected by the following elements.
+A Worker's performance characteristics are affected by, but not limited to, the following elements.
 
-### Executor slots {#slots}
+### Task slots {#slots}
 
-A **Worker Executor Slot**, represents the capacity of a Temporal Worker to execute a single concurrent Task.
+A **Worker Task Slot**, represents the capacity of a Temporal Worker to execute a single concurrent Task.
 Slots are crucial for managing the workload and performance of Workers in a Temporal application.
 They're used for both Workflow and Activity Tasks.
 When a Worker starts processing a Task, it occupies one slot.
@@ -46,7 +46,7 @@ Resource-based slot suppliers are in [Public Preview](/evaluate/development-prod
 A **Slot Supplier** defines a strategy to provide slots for a Worker, increasing or decreasing the Worker's slot count.
 The supplier determines when it's acceptable to begin a new Task.
 Each supplier manages one slot type.
-Slot types support Activity, Workflow, Nexus, or Local Activity Tasks.
+There are slot types for Activity, Workflow, Nexus, or Local Activity Tasks.
 An available slot determines whether or not a Worker is willing to poll for, and execute, a new Task of that type.
 
 Slot supplier strategies include manual assignment of fixed slot counts and resource-balanced "auto-tuner" assignment.
@@ -56,7 +56,8 @@ Available slot suppliers include:
 - **Fixed Size Slot Suppliers**:
   Hands out slots up to a preset limit.
   This is useful if you have a concrete idea of how many resources your tasks are going to consume, and can easily determine an upper bound on how many should run at once.
-  When you need the absolute best performance, pre-determine your hardware and environment characteristics.
+  When you need the absolute best performance, review your hardware and environment characteristics.
+  This information lets you calculate an appropriate fixed-size limit.
   Evaluate the maximum number of slots you can support without oversubscribing or hitting out-of-memory conditions ("OOMing").
   Using that value with a fixed-size supplier provides optimal results with the least overhead.
 
@@ -71,8 +72,8 @@ Available slot suppliers include:
 - You cannot guarantee that the targets for resource-based suppliers won't ever be exceeded.
   Resources consumed during a task can't be known ahead of time.
 
-- Resource-based slot suppliers supersede the existing `maxConcurrentXXXTask` style Worker options.
-  Using both styles will cause runtime crashes of your Temporal applications.
+- Worker tuners supersede the existing `maxConcurrentXXXTask` style Worker options.
+  Using both styles will cause an error at Worker initialization time.
 
 :::
 
@@ -90,33 +91,19 @@ They use special types called **Worker tuners** that assign slot suppliers to va
 :::caution
 
 - Worker tuners supersede the existing `maxConcurrentXXXTask` style Worker options.
-  Using both styles will cause runtime crashes of your Temporal applications.
+  Using both styles will cause an error at Worker initialization time.
 
 :::
 
 ### Task pollers {#task-poller}
 
-**Task pollers** play a crucial role in the Temporal architecture by efficiently distributing work to Workers to support scalable, resilient Workflow Execution.
-A Temporal Task poller is a Worker component.
+A Worker's **Task pollers** play a crucial role in the Temporal architecture by efficiently distributing work to Workers to support scalable, resilient Workflow Execution.
 It actively polls a Task Queue for Tasks to process.
 Pollers create long-polling connections to the Temporal Service, allowing the service to dispatch Tasks to Workers.
 When a Task Poller receives a Task, it delivers it to the appropriate Executor Slot for processing.
 
 Task Pollers enable efficient load balancing across multiple Worker processes and support server-side throttling.
 The number of Task Pollers can be configured using `WorkerOptions` when creating a new Worker instance.
-
-### Latency timers {#latency-timers}
-
-A **Temporal latency timer** measures the time taken for various operations within the Temporal system.
-These timers help monitor and optimize the performance of Temporal Workflows and services.
-They help identify bottlenecks, detecting backlogs, and support efficient Workflow execution.
-
-
-### Worker caches {#caches}
-
-Worker caches in Temporal are an optimization mechanism that improve the performance and efficiency of Workflow execution.
-A WorkerCache is held by each Worker to store cached data.
-It contains pointers for data shared with other Workers and its own values for instance-specific use.
 
 ## Performance metrics for tuning {#metrics}
 
@@ -125,8 +112,16 @@ Performance tuning uses three important SDK metric groups:
 
 ### Slot availability metrics
 
-Temporal's [`worker_task_slots_available`](/references/sdk-metrics#worker_task_slots_available) gauges can report the number of available executor “slots” that are currently available and unoccupied for a Worker type.
+Temporal's [`worker_task_slots_available`](/references/sdk-metrics#worker_task_slots_available) and `worker_task_slots_used` gauges can report the number of available executor “slots” that are currently available and unoccupied for a Worker type.
 Tag these with `worker_type=WorkflowWorker` for Workflow Task Workers or `worker_type=ActivityWorker` for Activity Workers.
+
+:::tip
+
+Unlike `worker_task_slots_used`, `worker_task_slots_available` can only be used with fixed size slot suppliers and can't be used with resource-based slot suppliers.
+
+Resource-based slot suppliers are in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+
+:::
 
 ### Latency metrics
 
@@ -150,7 +145,14 @@ Options are specific to individual Workers and do not affect other members of yo
 
 ### Executor slot options
 
-`maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecutionSize` define the number of total available Workflow Task and Activity Task slots for a Worker.
+The `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecutionSize` options define the number of total available Workflow Task and Activity Task slots for a Worker.
+
+:::caution
+
+- Worker tuners supersede the existing `maxConcurrentXXXTask` style Worker options.
+  Using both styles will cause an error at Worker initialization time.
+
+:::
 
 ### Poller options
 
@@ -197,17 +199,17 @@ Worker tuners are in [Public Preview](/evaluate/development-production-features/
 :::
 
 Worker tuning manages the assignment of slot suppliers.
-A **Worker Tuner** provides a single instance that provides slot suppliers for different slot types (Activity, Workflow, Nexus, or Local Activity Tasks).
+A **Worker Tuner** instance exists per-Worker, providing slot suppliers for different slot types (Activity, Workflow, Nexus, or Local Activity Tasks).
 A tuner assigns different suppliers to each slot type.
-For example, it might vend a fixed assignment slot supplier for Workflows and use an resource-based supplier for Activities.
+For example, it might provide a fixed assignment slot supplier for Workflows and use an resource-based supplier for Activities.
 
 ### Choosing slot supplier types
 
 When choosing whether to opt for fixed assignment or resource-based suppliers, consider:
 
-- Workflow Tasks, make minimal demands on the CPU and, normally, do not consume much memory.
+- Workflow Tasks make minimal demands on the CPU and, normally, do not consume much memory.
   They are well-served by fixed-sized slot suppliers.
-- When Task completion latency is a concern, avoid resourced-based auto-tuning slot suppliers.
+- When very low Task completion latency is a concern, avoid resourced-based auto-tuning slot suppliers.
 - Reserve auto-tuned resource-based slot suppliers for deployments focused on avoiding Worker overload.
   They provide excellent balance with built-in throttling that ensures the Worker will be cautious when handing out new executor slots.
 
@@ -229,7 +231,7 @@ Auto-tuned suppliers may diverge from requested thresholds.
 The resources a given Task will use can't be known ahead of time.
 There is a fundamental tradeoff between how quickly a slot supplier is willing to accept Tasks and how well it can respect the defined thresholds.
 
-Slot throttling is a mechanism used in Temporal's Worker configuration to control the rate at which new slots for concurrent tasks are made available for processing.
+Slot throttling is a mechanism to control the rate at which new slots for concurrent tasks are made available for processing.
 This concept is part of the resource-based auto-tuning feature for Workers.
 By waiting a brief period between making slots available, the Worker can assess how resource usage has changed since the last task began processing
 
