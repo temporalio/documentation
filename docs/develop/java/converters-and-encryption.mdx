@@ -18,10 +18,12 @@ tags:
   - Temporal SDKs
 ---
 
-This page shows how to do the following:
+By default, Temporal payloads are stored unencrypted inside of its data store.
+Consequently, this means that string payloads can be read from the Temporal Web UI and CLI in plain text.
+When working with sensitive data, Temporal implementers may need to adopt encryption algorithms, manage encryption keys, or restrict a subset of their users from viewing payload output.
 
-- [Use a custom Payload Codec in Java](#custom-payload-codec)
-- [Do custom Payload conversion in Java](#custom-payload-conversion)
+A Custom Codec allows a developer to transform the payload of a message sent or received by a Temporal Client.
+This ensures that the data is encrypted as it travels across the network and when it is stored in the Event History, readable only by those with access to the key.
 
 ## Custom Payload Codec in Java {#custom-payload-codec}
 
@@ -151,12 +153,22 @@ WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
               .build());
 ```
 
-For example implementations, see the following samples:
+- Data **encoding** is performed by the client using the default converter provided by Temporal or your custom Data Converter when passing input to the Temporal Cluster. For example, plain text input is usually serialized into a JSON object, and can then be compressed or encrypted.
+- Data **decoding** may be performed by your application logic during your Workflows or Activities as necessary, but decoded Workflow results are never persisted back to the Temporal Cluster. Instead, they are stored encoded on the Cluster, and you need to provide an additional parameter when using the [temporal workflow show](/cli/workflow#show) command or when browsing the Web UI to view output.
 
-- [Encrypted Payloads](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/encryptedpayloads)
-- [Remote Data Encoder and Codec Server](https://github.com/temporalio/sdk-java/tree/master/temporal-remote-data-encoder)
+For reference, see the [Encryption](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/encryptedpayloads) sample.
 
-## Custom Payload conversion {#custom-payload-conversion}
+### Using a Codec Server
+
+A Codec Server is an HTTP server that uses your custom Codec logic to decode your data remotely.
+The Codec Server is independent of the Temporal Cluster and decodes your encrypted payloads through predefined endpoints.
+You create, operate, and manage access to your Codec Server in your own environment.
+The `temporal `CLI and the Web UI in turn provide built-in hooks to call the Codec Server to decode encrypted payloads on demand.
+Refer to the [Codec Server](/production-deployment/data-encryption) documentation for information on how to design and deploy a Codec Server.
+
+For reference, see the [Codec server](https://github.com/temporalio/sdk-java/tree/master/temporal-remote-data-encoder) sample.
+
+## Using custom Payload conversion {#custom-payload-conversion}
 
 **How to do custom Payload conversion using the Java SDK.**
 
@@ -170,6 +182,11 @@ To support custom Payload conversion, create a [custom Payload Converter](/datac
 The order in which your encoding Payload Converters are applied depend on the order given to the Data Converter.
 You can set multiple encoding Payload Converters to run your conversions.
 When the Data Converter receives a value for conversion, it passes through each Payload Converter in sequence until the converter that handles the data type does the conversion.
+
+Payload Converters can be customized independently of a Payload Codec.
+Temporal's Converter architecture looks like this:
+
+![Billing page showing Credits tab](/img/converter-architecture.png)
 
 Create a custom implementation of a [PayloadConverter](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/PayloadConverter.html) interface and use the `withPayloadConverterOverrides` method to implement the custom object conversion with `DefaultDataConverter`.
 
