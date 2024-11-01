@@ -122,20 +122,17 @@ c, err := client.Dial(client.Options{
 - Data **encoding** is performed by the client using the default converter provided by Temporal or your custom Data Converter when passing input to the Temporal Cluster. For example, plain text input is usually serialized into a JSON object, and can then be compressed or encrypted.
 - Data **decoding** may be performed by your application logic during your Workflows or Activities as necessary, but decoded Workflow results are never persisted back to the Temporal Cluster. Instead, they are stored encoded on the Cluster, and you need to provide an additional parameter when using the [temporal workflow show](/cli/workflow#show) command or when browsing the Web UI to view output.
 
-For reference, see the following sample:
-
-- [Encryption](https://github.com/temporalio/samples-go/tree/main/encryption)
+For reference, see the [Encryption](https://github.com/temporalio/samples-go/tree/main/encryption) sample.
 
 ### Using a Codec Server
 
-A [Codec Server](/production-deployment/data-encryption) is an HTTP server that uses your custom Codec logic to decode your data remotely.
+A Codec Server is an HTTP server that uses your custom Codec logic to decode your data remotely.
 The Codec Server is independent of the Temporal Cluster and decodes your encrypted payloads through predefined endpoints.
 You create, operate, and manage access to your Codec Server in your own environment.
 The `temporal `CLI and the Web UI in turn provide built-in hooks to call the Codec Server to decode encrypted payloads on demand.
+Refer to the [Codec Server](/production-deployment/data-encryption) documentation for information on how to design and deploy a Codec Server.
 
-For reference, see the following sample:
-
-- [Codec server](https://github.com/temporalio/samples-go/tree/main/codec-server)
+For reference, see the [Codec server](https://github.com/temporalio/samples-go/tree/main/codec-server) sample.
 
 ## Use custom Payload conversion {#custom-payload-conversion}
 
