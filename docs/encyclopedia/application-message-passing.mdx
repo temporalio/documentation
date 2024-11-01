@@ -192,7 +192,14 @@ Update-With-Start is great for latency-sensitive use cases, including the follow
 - **Lazy Initialization** - Instead of making separate Start Workflow and Update Workflow calls, Update-With-Start allows to send them together in a single roundtrip. For example, a shopping cart can be modelled using Update-With-Start: Adding or removing an item with an Update; ensuring the cart is created first before applying the Update.
 - **Early Return** - Starting a new Workflow Execution and synchronously receiving a response mid-Workflow, while the Workflow Execution continues to run to completion. For example, a payment process can be modelled using Update-With-Start: Sending the result of the payment validation back to the client synchronously, and continuing to complete or rollback the transaction asynchronously.
 
-It is important to note that - unlike Signal-with-Start - Update-With-Start is *not* atomic. That means if the Update cannot be delievered - for example, when no Worker is running - the Workflow Execution is still started. The SDKs will retry the Update-With-Start request; but there is no gurantee that it will succeed.
+
+:::caution
+
+Unlike Signal-with-Start - Update-With-Start is *not* atomic.
+If the Update cannot be delievered, for example, when no Worker is running, the Workflow Execution is still started.
+The SDKs will retry the Update-With-Start request but there is no guarantee that it will succeed.
+
+:::
 
 <RelatedReadContainer>
     <RelatedReadItem path="/develop/go/message-passing#update-with-start" text="Update-With-Start with the Go SDK" archetype="feature-guide" />
