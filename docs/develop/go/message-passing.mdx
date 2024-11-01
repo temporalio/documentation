@@ -373,7 +373,9 @@ If it does, the Update is delivered.
 If not, it starts a new Workflow Execution with the supplied ID.
 Upon starting a new Workflow, it immediately processes the Update.
 
-Use the [`client.NewUpdateWithStartWorkflowOperation`](https://pkg.go.dev/go.temporal.io/sdk/client#NewUpdateWithStartWorkflowOperation) API to create a new Update Operation. The `WorkflowID` option is optional; and it is invalid to set the `RunID` option.
+To create a new Update operation, use [`client.NewUpdateWithStartWorkflowOperation`](https://pkg.go.dev/go.temporal.io/sdk/client#NewUpdateWithStartWorkflowOperation).
+For most calls, the `WorkflowID` option is optional; and it is invalid to set the `RunID` option.
+For `WithStartOperation`, a `WorkflowID` is required.
 
 Use the `WithStartOperation` option to attach an Update Operation to the [`Client.ExecuteWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.ExecuteWorkflow) API call.
 Not all `ExecuteWorkflow` options are allowed with Update-With-Start.
