@@ -524,7 +524,6 @@ module.exports = {
                 "encyclopedia/workflow/cron-job",
               ],
             },
-            "encyclopedia/workflows",
             "encyclopedia/activities",
             {
               type: "category",
