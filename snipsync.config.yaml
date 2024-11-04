@@ -15,6 +15,7 @@ origins:
     repo: samples-go
   - owner: temporalio
     repo: samples-java
+    ref: "nexus-snip-sync"
   - files:
       pattern: "./sample-apps/**/*.go"
       owner: "temporalio"
