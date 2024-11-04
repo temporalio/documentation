@@ -1,0 +1,54 @@
+---
+id: start-delay
+title: What is a Start Delay? 
+sidebar_label: Start Delay
+description: This comprehensive guide provides insights into Temporal Workflows, covering Workflow Definitions in various programming languages, deterministic constraints, handling code changes, and ensuring reliability, durability, and scalability in a Temporal Application, with examples and best practices for Workflow Versioning and development.
+slug: /start-delay
+toc_max_heading_level: 4
+keywords:
+  - start delay
+tags:
+  - Concepts
+  - Workflows
+
+---
+
+
+## What is a Start Delay? {#delay-workflow-execution}
+
+:::tip Support, stability, and dependency info
+
+- Available in the [Go SDK](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions.StartDelay) since [v1.25.0](https://github.com/temporalio/sdk-go/releases/tag/v1.25.0)
+- Available in the [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setStartDelay(java.time.Duration)) since [v1.25.0](https://github.com/temporalio/sdk-java/releases/tag/v1.22.1)
+- Available in the [Python SDK](https://python.temporal.io/temporalio.client.Client.html#start_workflow) since [v1.4.0](https://github.com/temporalio/sdk-python/releases/tag/1.4.0)
+- Available in the [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowOptions.html#Temporalio_Client_WorkflowOptions_StartDelay) since [v1.0.0](https://github.com/temporalio/sdk-dotnet/releases/tag/1.0.0)
+- Available in the [TypeScript SDK](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions#startdelay) since [v1.9.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.9.0)
+- Available in the [PHP SDK](https://php.temporal.io/classes/Temporal-Client-WorkflowOptions.html#property_workflowStartDelay) since [v2.7.0](https://github.com/temporalio/sdk-php/releases/tag/v2.7.0)
+
+:::
+
+Start Delay determines the amount of time to wait before initiating a Workflow Execution.
+
+:::note
+
+Start Delay Workflow Execution is incompatible with both [Schedules](#schedule) and [Cron Jobs](#temporal-cron-job).
+
+:::
+
+This is useful if you have a Workflow you want to schedule out in the future, but only want it to execute once: in comparison to reoccurring Workflows using Schedules.
+
+If the Workflow receives a Signal-With-Start during the delay, it dispatches a Workflow Task and the remaining delay is bypassed.
+If the Workflow receives a Signal during the delay that is not a Signal-With-Start, the Signal does not interrupt the delay, and the Workflow continues to be delayed until the delay expires or a Signal-With-Start is received.
+
+You can delay the dispatch of the initial Workflow Execution by setting this option in the Workflow Options field of the SDK of your choice.
+
+## What is a State Transition? {#state-transition}
+
+A State Transition is a unit of progress made by a [Workflow Execution](#workflow-execution).
+Each State Transition is recorded in a persistence store.
+
+Some operations, such as [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat), require only one or two State Transitions each. With an Activity Heartbeat, there are two: the Activity Heartbeat and a Timer.
+
+Most operations require multiple State Transitions.
+
+For example, a simple Workflow with two sequential [Activity Tasks](/workers#activity-task) (and no retries) produces 11 State Transitions: two for Workflow start, four for each Activity, and one for Workflow completion.
