@@ -330,6 +330,14 @@ if err != nil {
 
 ### Send an Update {#send-update-from-client}
 
+:::tip Stability
+
+In [Pre-release](/evaluate/development-production-features/release-stages#pre-release) (API is subject to change).
+
+Minimum recommended [Temporal Server version 1.25](https://github.com/temporalio/temporal/releases/tag/v1.25.0)
+
+:::
+
 An Update is a synchronous, blocking call that can change Workflow state, control its flow, and return a result.
 
 A Client sending an Update must wait until the Server delivers the Update to a Worker.
