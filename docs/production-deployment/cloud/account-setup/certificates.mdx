@@ -92,7 +92,6 @@ Ensure that the CA certificate is long-lived and that the end-entity certificate
 
 Follow the instructions to [upload the CA certificate](/cloud/certificates#update-certificates-using-temporal-cloud-ui) and [configure your client](/cloud/certificates#configure-clients-to-use-client-certificates) with the end-entity certificate.
 
-
 ### Option 2: You don't have certificate management infrastructure
 
 If you don't have an existing certificate management infrastructure, issue the CA and end-entity certificates using [tcld](#use-tcld-to-generate-certificates) or open source tools such as [certstrap](#use-certstrap-to-generate-certificates).
@@ -132,7 +131,6 @@ You can now use the generated CA certificate (`ca.pem`) with Temporal Cloud and 
 Upload the contents of the `ca.pem` file to the **CA Certificates** section of your **Namespace** settings.
 
 Follow the instructions to [upload the CA certificate](/cloud/certificates#update-certificates-using-temporal-cloud-ui) and [configure your client](/cloud/certificates#configure-clients-to-use-client-certificates) with the end-entity certificate.
-
 
 #### Use certstrap to generate certificates
 
@@ -413,6 +411,7 @@ To set or clear certificate filters, use the following [tcld](/cloud/tcld) comma
 To view the current certificate filters, use the [tcld namespace certificate-filters export](/cloud/tcld/namespace/#export) command.
 
 ## Configure clients to use client certificates
+
 - [Go SDK](/develop/go/temporal-clients#connect-to-temporal-cloud)
 - [Java SDK](/develop/java/temporal-clients#connect-to-temporal-cloud)
 - [PHP SDK](/develop/php/temporal-clients#connect-to-a-dev-cluster)
