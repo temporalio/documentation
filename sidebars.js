@@ -22,7 +22,6 @@ module.exports = {
           },
           items: [
             "evaluate/development-production-features/core-application",
-            "evaluate/development-production-features/temporal-client",
             "evaluate/development-production-features/failure-detection",
             "evaluate/development-production-features/throughput-composability",
             "evaluate/development-production-features/nexus",
@@ -165,6 +164,7 @@ module.exports = {
             "develop/java/schedules",
             "develop/java/converters-and-encryption",
             "develop/java/timers",
+            "develop/java/nexus",
             "develop/java/child-workflows",
             "develop/java/continue-as-new",
             "develop/java/side-effects",
