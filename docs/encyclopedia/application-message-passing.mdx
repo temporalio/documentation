@@ -35,6 +35,7 @@ keywords:
 
 
 
+
 import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
 import {RelatedReadContainer, RelatedReadItem} from '@site/src/components/related-read/RelatedRead';
 
@@ -59,7 +60,6 @@ Use Signals instead of Updates when:
 - The Workflow's clients want to quickly move on after sending an asynchronous message.
 - The clients care more about the latency of sending the message than they do about the latency of the end-to-end operation.
 - The clients don't want to rely on the Worker being available.
-- Clients need to [Signal-With-Start](#signal-with-start) atomically (since Update-with-Start is not atomic).
 
 Use Updates instead of Signals when:
 
