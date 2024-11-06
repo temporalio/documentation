@@ -213,7 +213,7 @@ Update-With-Start is great for latency-sensitive use cases, including the follow
 :::caution
 
 Unlike Signal-with-Start - Update-With-Start is *not* atomic.
-If the Update cannot be delievered, for example, when no Worker is running, the Workflow Execution is still started.
+If the Update cannot be delivered, for example, when no Worker is running, the Workflow Execution is still started.
 The SDKs will retry the Update-With-Start request but there is no guarantee that it will succeed.
 
 :::
