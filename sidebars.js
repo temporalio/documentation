@@ -90,6 +90,7 @@ module.exports = {
             "evaluate/temporal-cloud/service-availability",
             "evaluate/temporal-cloud/limits",
             "evaluate/temporal-cloud/sla",
+            "evaluate/temporal-cloud/legacy-pricing",
             "evaluate/temporal-cloud/pricing",
             "evaluate/temporal-cloud/support", // This will become legacy support in Jan 2025, removed in Feb 2025 Its file is legacy-support
             "evaluate/temporal-cloud/future_support", // This will become support in Jan 2025. Its file is support
