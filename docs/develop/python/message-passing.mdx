@@ -296,6 +296,7 @@ To send an Update to a Workflow Execution, you can:
   update_handle = await workflow_handle.start_update(
       HelloWorldWorkflow.set_greeting,
       HelloWorldInput("World"),
+      wait_for_stage=client.WorkflowUpdateStage.ACCEPTED,
   )
   # Wait until the update is completed
   update_result = await update_handle.result()
@@ -481,12 +482,11 @@ async def my_update(self) -> None:
 
 See [Finishing handlers before the Workflow completes](/encyclopedia/workflow-message-passing#finishing-message-handlers) for more information.
 
-
 ### Use `@workflow.init` to operate on Workflow input before any handler executes
 
 Normally, your Workflow `__init__` method won't have any parameters.
 However, if you use the `@workflow.init` decorator on your `__init__` method, you can give it the same [Workflow parameters](/develop/python/core-application#workflow-parameters) as your `@workflow.run` method.
-The SDK will then ensure that your `__init__` method receives the Workflow input arguments that the  [Client sent](/develop/python/temporal-clients#start-workflow-execution).
+The SDK will then ensure that your `__init__` method receives the Workflow input arguments that the [Client sent](/develop/python/temporal-clients#start-workflow-execution).
 (The Workflow input arguments are also passed to your `@workflow.run` method -- that always happens, whether or not you use the `@workflow.init` decorator.)
 This is useful if you have message handlers that need access to workflow input: see [Initializing the Workflow first](/encyclopedia/workflow-message-passing#workflow-initializers).
 
@@ -523,8 +523,6 @@ class WorkflowRunSeesWorkflowInitWorkflow:
         self.title_has_been_checked = True
         return is_valid
 ```
-
-
 
 ### Use `asyncio.Lock` to prevent concurrent handler execution {#control-handler-concurrency}
 
