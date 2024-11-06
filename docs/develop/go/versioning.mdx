@@ -1,9 +1,9 @@
 ---
 id: versioning
-title: Versioning - Go SDK
-description: Temporal's Go SDK ensures Workflow determinism through Patching APIs and Worker Versioning. Learn how to update Workflow code without causing non-deterministic issues, understand versioning best practices, and use dynamic configuration parameters for seamless updating of long-running Workflows.
-sidebar_label: Versioning
-toc_max_heading_level: 4
+title: Workflow Versioning - Go SDK
+description: Achieve Workflow expertise in Temporal's Go SDK with Patching APIs & Workflow Versioning.
+sidebar_label: Workflow Versioning
+toc_max_heading_level: 3
 keywords:
   - determinism
   - go sdk
@@ -12,281 +12,332 @@ keywords:
   - workflows
 tags:
   - Workflows
-  - Versioning
-  - Patching
   - Go SDK
   - Temporal SDKs
 ---
 
-The Temporal Platform requires that Workflow code is [deterministic](/workflows#deterministic-constraints).
-Because of that requirement, the Temporal Go SDK offers two dedicated versioning features.
+:::note Example Only: For docs team sync
 
-- [Workflow Patching APIs](#patching)
-- [Worker Build Ids](#worker-versioning)
+- Does not demonstrate snipsync (there is no go sample for patching)
+- Removed prerelease section (Can be restored)
+- Brian would like this version to persist and be incorporated
+  - Add request for replay testing as best practice
+  - Mine from Python version, Typescript version, and the Versioning Course for content.
+  - Contact Spencer (look for Replay Tests in Jira)
 
-## Temporal Go SDK Patching APIs {#patching}
+:::
 
-The definition code of a Temporal Workflow must be deterministic because Temporal uses event sourcing to reconstruct the Workflow state by replaying the saved history event data on the Workflow definition code.
-This means that any incompatible update to the Workflow Definition code could cause a non-deterministic issue if not handled correctly.
 
-Because we design for potentially long running Workflows at scale, versioning with Temporal works differently. We explain more in this optional 30 minute introduction: [https://www.youtube.com/watch?v=kkP899WxgzY](https://www.youtube.com/watch?v=kkP899WxgzY)
+Updating distributed systems can be challenging.
+This is especially true when you need to maintain Workflow Execution integrity as you migrate and evolve your code.
+Whether you’re fixing bugs or rolling out new versions, Workflows need to run smoothly and be ready to re-create system state on demand.
 
-Consider the following Workflow Definition:
+This page introduces mechanisms that keep your Workflow Definition code and your Workflow Execution Event Histories aligned, even when you need to update them.
+Adding Workflow Versioning lets your code runs smoothly, whether you're patching code, using Replays, or performing Replay tests.
+
+## Deterministic code and Replays
+
+Durability starts with code that's deterministic.
+Determinism means that when code receives the same input, your Workflow always goes through identical state changes and produces the same output, no matter when or where it runs.
+[Determinism](/workflows#deterministic-constraints) is key to Temporal's ability to replay Workflow state for truly durable execution.
+
+Determinism is particularly important for workflows with multiple stages, components, and state changes.
+Deterministic code is easier to understand, test, and maintain.
+It’s a crucial part of ensuring reliability.
+When working with Orchestration and Replay, determinism makes sure that Workflow Executions always produce the same outcome for the same inputs.
+Workflows depend on deterministic code to keep their processes consistent across executions and Replays.
+
+Replays happen for many reasons.
+For example, you might recover an interrupted Workflow or perform Replay testing before deployment.
+If your Event History doesn't match your replayed Workflow, your code _will_ break.
+Unless your code is guaranteed to have that 1:1 correspondence, it isn't deterministic, and it isn't compatible with Durable Execution.
+Correspondence means creating the same sequence, the same state, and the same results.
+
+Determinism allows Temporal to accurately replay History events and ensures that the outcome remains unchanged, no matter when or where the Replay happens.
+It maintains system integrity and it's essential for Durable Execution.
+Because of this, the Temporal Platform, and the Temporal Go SDK specifically, require all Workflow code to be deterministic.
+
+That's why you must make sure that every Workflow is deterministic, even when it undergoes change.
+
+## Change and durable execution
+
+Maintaining determinism even when you update code is the key to creating versioned patches.
+This predictability plays a vital role in debugging, reliability, and consistent performance, especially with complex Workflows and long-running processes.
+That's because change and Workflow Executions may overlap.
+It's your job to make sure that overlap remains deterministic.
+
+Since Workflow Executions might run for months or years, you may make major changes to a Workflow Definition while Workflow Executions are still in progress.
+For example, imagine that your Workflow currently notifies a customer when an order is shipped with an e-mail notification.
+You later decide to update this to allow a customer to opt into sending a text notification as well or instead.
+Versioning is a Temporal feature that helps manage code changes safely during any kind of Replay event.
+
+- Maybe someone tripped over a power cord in your Worker farm at the same time your development team issues a new release.
+- Maybe your team is re-running Event Histories to try to track down a persistent bug.
+- Maybe you just have a lot of long-running Workflow Executions and need to deploy updates.
+
+Temporal's Go SDK helps you work through updating your Workflow Definition logic.
+When you roll out changes with Temporal, your focus needs to be on safety and reliability.
+Temporal's patching APIs and version markers let you support in-flight and replayed Workflow Executions even as you deploy bug fixes and enhancements for newly started ones.
+Between patching and determinism checks, you have the tools you need to keep your Temporal applications well-maintained and ready to adapt and grow.
+
+Versioning is an SDK feature that lets you make, support, and test your code updates.
+
+## Versioning and patching features
+
+Workflow Patching APIs let you modify Workflow code without introducing non-deterministic behavior.
+Versioning ensures the code you run is consistent with each Execution's original deployment.
+
+There will be times a Workflow Execution needs serious intervention, such as when you meet significant code changes that make versioning impractical.
+New laws may come into effect causing the need for data cleanup or regulatory compliance.
+You might need to revert Workflow Executions to an earlier state or you have to mitigate unrecoverable Activity failures.
+In these cases, you might need to terminate and restart Workflows.
+Patching is, as the name suggests, the process to fix bugs, improve performance, or add new features.
+It's not meant for re-architecting Workflows.
+
+Temporal's Patching APIs create logical branches inside your Workflow Definition code.
+They use developer-specified version identifiers to choose pathways based on the circumstances under which your Workflow Execution began.
+This section shows ways your team can enhance, adapt, and evolve Workflow code, while preserving ongoing functionality to maintain stability.
+
+Read on to learn more.
+
+:::tip
+Temporal is designed for Workflows that run at scale and may be potentially long-running.
+This [30-minute video](https://www.youtube.com/watch?v=kkP899WxgzY) explains determinism issues in more depth.
+:::
+
+## Patching {#patching}
+
+What do you do when your code changes over time?
+Patching lets you update code without breaking determinism.
+The Go SDK's patching APIs create logical branches within your Workflow Definition code.
+It works by using version identifiers that direct the flow of your code into new branches, creating patched and updated deployments.
+
+Patches, like Workflow Definitions in general, must be deterministic.
+That's because when needed, Temporal uses event sourcing to reconstruct Workflow state.
+It replays saved [Event History](/encyclopedia/retry-policies#event-history) data and  applies it to your Workflow Definition code.
+Incompatible updates will cause non-deterministic errors.
+
+To understand how patching works, read about what happens when you substitute code without using the patching APIs.
+
+### How not to patch
+
+Consider the following Workflow Definition.
+It creates a Workflow with Activity options, then runs Activity A and then Activity B:
 
 ```go
 func YourWorkflow(ctx workflow.Context, data string) (string, error) {
-        ao := workflow.ActivityOptions{
-                ScheduleToStartTimeout: time.Minute,
-                StartToCloseTimeout:    time.Minute,
-        }
-        ctx = workflow.WithActivityOptions(ctx, ao)
-        var result1 string
-        err := workflow.ExecuteActivity(ctx, ActivityA, data).Get(ctx, &result1)
-        if err != nil {
-                return "", err
-        }
-        var result2 string
-        err = workflow.ExecuteActivity(ctx, ActivityB, result1).Get(ctx, &result2)
-        return result2, err
+    ao := workflow.ActivityOptions{
+        ScheduleToStartTimeout: time.Minute,
+        StartToCloseTimeout:    time.Minute,
+    }
+    ctx = workflow.WithActivityOptions(ctx, ao)
+    var result1 string
+
+    // Run ActivityA
+    err := workflow.ExecuteActivity(ctx, ActivityA, data).Get(ctx, &result1)
+
+    // Activity A has completed running and `result1` retrieved
+
+    if err != nil {
+        return "", err
+    }
+
+    // Run Activity B
+    var result2 string
+    err = workflow.ExecuteActivity(ctx, ActivityB, result1).Get(ctx, &result2)
+
+    // Activity B has completed running and `result2` retrieved
+
+    return result2, err
 }
 ```
 
-Now let's say we replaced ActivityA with ActivityC and deployed the updated code.
-If an existing Workflow Execution was started by the original version of the Workflow code, where ActivityA had already completed and the result was recorded to history, the new version of the Workflow code picks up that Workflow Execution and tries to resume from there.
-However, the Workflow will fail because the new code expects a result for ActivityC from the history data, but instead it gets the result for ActivityA.
-This causes the Workflow to fail on the nondeterminism error.
+In this example, what would happen when you replace `ActivityA` with `ActivityC` and deploy that updated Workflow Definition code?
 
-Thus we use `workflow.GetVersion().`
+A Workflow Definition's signature, that is the Tasks, Activities, and Server-side [Commands](https://docs.temporal.io/workflows#command) it generates, are checked before retrieving Activity results.
+When the signature doesn't match, the Temporal Service raises a nondeterminism error.
+
+Patching must be reliable and predictable.
+In Go, you should approach code changes by using versions and change identifiers.
+
+### Versions and change identifiers {#versions-and-change-ids}
+
+Following onto the example in the preceding section, say there's an existing Workflow Execution.
+This execution started running using the original Workflow Definition, which used `ActivityA` as its first Activity.
+Now, the Workflow Execution needs to be replayed.
+Maybe someone tripped over a power strip and knocked out Workers in one of your deployment fleets.
+Unless you update your code to take the patch from `ActivityA` to `ActivityC` into account, this Workflow Execution can't move forward without generating a nondeterminism error.
+To resolve this situation, update the code to use `workflow.GetVersion`.
+
+`workflow.GetVersion()` takes three arguments: a String change Id, the minimum  supported deployed version (Integer), and the maximum supported deployed version (Integer):
+
+- A **change Id** in Temporal is an arbitrary unique String identifier used for Worker patching and versioning.
+  For example, it might be called "Step1", since this is the first step in the Workflow process.
+  You can use up to 255 characters.
+  The Id works with `workflow.GetVersion()` to mark and manage patched changes in Workflow code.
+- The **minimum deployed version** is the oldest supported version for this Workflow Definition.
+  A special constant, `workflow.DefaultVersion`, represents the version of code that wasn't versioned before, supplying the canonical initial or default version of any Workflow.
+  In Go, that version is `-1`.
+- The **maximum deployed version** is the latest supported version for this Workflow Definition.
+  The number is automatically managed by Temporal and stored on the Server using the argument passed to `GetVersion`.
+
+Here is the patched version of this code.
+This example is ready for both new Workflow Executions and replayed original versions whose execution has not yet closed:
 
 ```go
+
 var err error
+
+var result1 string
+
+// This line is added when the `ActivityC` patch was deployed
 v := workflow.GetVersion(ctx, "Step1", workflow.DefaultVersion, 1)
+
+// Check the version of the Workflow
 if v == workflow.DefaultVersion {
-        err = workflow.ExecuteActivity(ctx, ActivityA, data).Get(ctx, &result1)
+    // This logic is only used for Replays of the original version.
+    // `GetVersion` does not write when called during Replays.
+    err = workflow.ExecuteActivity(ctx, ActivityA, data).Get(ctx, &result1)
+} else if v == 1 {
+    // Once `GetVersion` has been run, a Marker called "Version" is recorded in History with a value of 1
+    // It is also read during Replays.
+    err = workflow.ExecuteActivity(ctx, ActivityC, data).Get(ctx, &result1)
 } else {
-        err = workflow.ExecuteActivity(ctx, ActivityC, data).Get(ctx, &result1)
+   // Handle the pathological case that should never happen
 }
 if err != nil {
-        return "", err
-}
-
-var result2 string
-err = workflow.ExecuteActivity(ctx, ActivityB, result1).Get(ctx, &result2)
-return result2, err
-```
-
-When `workflow.GetVersion()` is run for the new Workflow Execution, it records a marker in the Workflow history so that all future calls to `GetVersion` for this change Id—`Step 1` in the example—on this Workflow Execution will always return the given version number, which is `1` in the example.
-
-If you make an additional change, such as replacing ActivityC with ActivityD, you need to
-add some additional code:
-
-```go
-v := workflow.GetVersion(ctx, "Step1", workflow.DefaultVersion, 2)
-if v == workflow.DefaultVersion {
-        err = workflow.ExecuteActivity(ctx, ActivityA, data).Get(ctx, &result1)
-} else if v == 1 {
-        err = workflow.ExecuteActivity(ctx, ActivityC, data).Get(ctx, &result1)
-} else {
-        err = workflow.ExecuteActivity(ctx, ActivityD, data).Get(ctx, &result1)
+    return "", err
 }
 ```
 
-Note that we changed `maxSupported` from 1 to 2.
-A Workflow that has already passed this `GetVersion()` call before it was introduced returns `DefaultVersion`.
-A Workflow that was run with `maxSupported` set to 1 returns 1.
-New Workflows return 2.
+When `workflow.GetVersion()` is run for a new Workflow Execution, it records a marker in that Workflow's Event History.
+Markers are custom events that are transparent to the Temporal Server.
+That is, the Server stores it but does not try to interpret its contents.
+`GetVersion` sets a Marker called "Version".
+It names the Version using the change Id string you passed.
+It sets its value to the maximum deployed version passed in the arguments.
 
-After you are sure that all of the Workflow Executions prior to version 1 have completed, you can remove the code for that version.
-It should now look like the following:
+During Replays, `GetVersion` doesn't write.
+It will only attempt to read the version.
+For an unpatched Workflow Execution, such as the original one with `ActivityA`, this defaults to the `workflow.DefaultVersion`.
+
+This means that:
+
+- Any Workflow Execution that ran with `ActivityA` will not have a Version Marker.
+- Any Workflow Execution that ran with `ActivityC`, which includes a call to `GetVersion`, will record the maximum version on its first run and read the version when replayed.
+
+This patching approach does not require you to retain eternal backwards compatibility.
+Once you've closed all Workflow Executions using the original version, you can update your code and move forward.
+
+### Retiring patches {#retiring-patches}
+
+After all Workflow Executions that were started before the deployment of the `ActivityC` patch are closed, you can safely remove the logic for those versions.
+Do, however, take into account any forensic work you might do in the future on Event Histories.
+Re-running Histories can be valuable for insights into bugs or performance.
+Never remove version logic you may have to return to.
+
+Revising supported versions is an ongoing process.
+As new patches are added to your Workflow Definition, you can continue to add and remove branches to your testing logic.
+
+For example:
 
 ```go
+
+var err error
+
+var result1 string
+
+// This line was updated when retiring `ActivityA` and introducing `ActivityD`
 v := workflow.GetVersion(ctx, "Step1", 1, 2)
+
+// Check the version of the Workflow
 if v == 1 {
-        err = workflow.ExecuteActivity(ctx, ActivityC, data).Get(ctx, &result1)
+    err = workflow.ExecuteActivity(ctx, ActivityC, data).Get(ctx, &result1)
+} else if v == 2 {
+    err = workflow.ExecuteActivity(ctx, ActivityD, data).Get(ctx, &result1)
 } else {
-        err = workflow.ExecuteActivity(ctx, ActivityD, data).Get(ctx, &result1)
+   // Handle the pathological case that should never happen
 }
-```
-
-You'll note that `minSupported` has changed from `DefaultVersion` to `1`.
-If an older version of the Workflow Execution history is replayed on this code, it fails because the minimum expected version is 1.
-After you are sure that all of the Workflow Executions for version 1 have completed, you can remove version 1 so that your code looks like the following:
-
-```go
-_ := workflow.GetVersion(ctx, "Step1", 2, 2)
-err = workflow.ExecuteActivity(ctx, ActivityD, data).Get(ctx, &result1)
-```
-
-Note that we have preserved the call to `GetVersion()`. There are two reasons to preserve this call:
-
-1. This ensures that if there is a Workflow Execution still running for an older version, it will
-   fail here and not proceed.
-2. If you need to make additional changes for `Step1`, such as changing ActivityD to ActivityE, you
-   only need to update `maxVersion` from 2 to 3 and branch from there.
-
-You need to preserve only the first call to `GetVersion()` for each `changeID`.
-All subsequent calls to `GetVersion()` with the same change Id are safe to remove.
-If necessary, you can remove the first `GetVersion()` call, but you need to ensure the following:
-
-- All executions with an older version are completed.
-- You can no longer use `Step1` for the changeId. If you need to make changes to that same part in
-  the future, such as change from ActivityD to ActivityE, you would need to use a different changeId
-  like `Step1-fix2`, and start minVersion from DefaultVersion again. The code would look like the
-  following:
-
-```go
-v := workflow.GetVersion(ctx, "Step1-fix2", workflow.DefaultVersion, 1)
-if v == workflow.DefaultVersion {
-        err = workflow.ExecuteActivity(ctx, ActivityD, data).Get(ctx, &result1)
-} else {
-        err = workflow.ExecuteActivity(ctx, ActivityE, data).Get(ctx, &result1)
+if err != nil {
+    return "", err
 }
+
+...
 ```
 
-Upgrading a Workflow is straightforward if you don't need to preserve your currently running Workflow Executions.
-You can simply terminate all of the currently running Workflow Executions and suspend new ones from being created while you deploy the new version of your Workflow code, which does not use `GetVersion()`, and then resume Workflow creation.
-However, that is often not the case, and you need to take care of the currently running Workflow Executions, so using `GetVersion()` to update your code is the method to use.
+If an older version using the `ActivityA` Workflow Execution History is replayed on this code, it will fail.
+The minimum expected version is 1, raising an `UnsupportedVersion` error.
 
-However, if you want your currently running Workflows to proceed based on the current Workflow logic, but you want to ensure new Workflows are running on new logic, you can define your Workflow as a new `WorkflowType`, and change your start path (calls to `StartWorkflow()`) to start the new Workflow type.
+Some tips:
 
-## Sanity checking
+- You must update versions each time you patch the same logic.
+- You may only remove the first (`ActivityA`) call to `GetVersion()` when there are no longer potential Replay conflicts.
+- After removing `GetUpdate` calls, if you need to patch that area again, you must use a new change identifier.
+  That's because your open Workflow Executions may no longer have consistent Markers in their Event Histories.
+- If you don't want to use versions or if your changes will be extensive, you can wait for all existing Workflow Executions to complete and suspend new ones from being created before deploying the new version of your Workflow code.
 
-The Temporal client SDK performs a sanity check to help prevent obvious incompatible changes.
-The sanity check verifies whether a Command made in replay matches the event recorded in history, in the same order.
-The Command is generated by calling any of the following methods:
+## Detecting nondeterminism {#sanity-checking}
 
-- workflow.ExecuteActivity()
-- workflow.ExecuteChildWorkflow()
-- workflow.NewTimer()
-- workflow.RequestCancelWorkflow()
-- workflow.SideEffect()
-- workflow.SignalExternalWorkflow()
-- workflow.Sleep()
+Knowing when nondeterminism happens is an important part of Temporal durable execution.
+Detecting nondeterminism isn’t always possible because finding instances of nondeterminism can be too complicated to automate.
+However, Temporal does try its best.
+It applies automatic detection under several circumstances:
 
-Adding, removing, or reordering any of the preceding methods triggers the sanity check and results in a nondeterminism error.
+- During Replay, a Worker ensures each replayed [Command](https://docs.temporal.io/workflows#command) from an Event History is fully aligned with the corresponding Command in the active Workflow Definition.
+  A Command is an action issued by a Worker to the Temporal Service after a Workflow Task Execution completes.
+  This also includes Replay Unit Testing.
+- Some SDKs perform runtime checks to detect potential non-deterministic behavior.
+  For example, the .NET SDK uses an event listener to catch unsafe threading operations.
+- Some SDKs, like TypeScript, use isolated virtual machines with continuous checking to ensure that Workflows cannot violate determinism.
+- Some SDKs, like Go, offer Static Analysis tooling that look for invalid code constructions that could lead to nondeterminism.
 
-The sanity check does not perform a thorough check.
-For example, it does not check on the Activity's input arguments or the Timer duration.
-If the check is enforced on every property, it becomes too restrictive and harder to maintain the Workflow code.
-For example, if you move your Activity code from one package to another package, that move changes the `ActivityType`, which technically becomes a different Activity.
-But we don't want to fail on that change, so we check only the function name part of the `ActivityType`.
+Although these checks can't catch all issues, they cover a good range of possible problems.
 
-## How to use Worker Versioning in Go {#worker-versioning}
+### Replay checks
 
-:::caution
+You might wonder how the Replay knows when it's encountered deterministic code.
+This happens during a Replay check.
+A Replay check ensures that any Command in the following list that is made in Replay matches the Event recorded in the Event History, and appears in the same order:
 
-Worker Versioning is currently in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+- `workflow.ExecuteActivity()`
+- `workflow.ExecuteChildWorkflow()`
+- `workflow.NewTimer()`
+- `workflow.RequestCancelWorkflow()`
+- `workflow.SideEffect()`
+- `workflow.SignalExternalWorkflow()`
+- `workflow.Sleep()`
 
-See the [Pre-release README](https://github.com/temporalio/temporal/blob/main/docs/worker-versioning.md) for more information.
+Adding, removing, or reordering any of these methods from your Workflow Definition can result in a nondeterminism error.
 
-:::
+### Checking limitations
 
-A Build ID corresponds to a deployment. If you don't already have one, we recommend a hash of the code--such as a Git SHA--combined with a human-readable timestamp.
-To use [Worker Versioning](/workers#worker-versioning), you need to pass a Build ID to your Go Worker and opt in to Worker Versioning.
+No determinism checks are perfect.
+For example, Replay tests do not check on an Activity's input arguments or Timer durations.
+If checks are enforced on every property, test implementation becomes too restrictive and harder to maintain within your Workflow code.
 
-### Assign a Build ID to your Worker and opt in to Worker Versioning
+## Read more
 
-You should understand assignment rules before completing this step.
-See the [Worker Versioning Pre-release README](https://github.com/temporalio/temporal/blob/main/docs/worker-versioning.md) for more information.
+To learn more about patching and versioning your Workflow code, check out these resources:
 
-To enable Worker Versioning for your Worker, assign the Build ID--perhaps from an environment variable--and turn it on.
+**Documentation**
 
-```go
-// ...
-workerOptions := worker.Options{
-   BuildID: buildID,
-   UseBuildIDForVersioning: true,
-// ...
-}
-w := worker.New(c, "your_task_queue_name", workerOptions)
-// ...
-```
+- [Encyclopedia: Versioning Workflow code](/workflows#workflow-versioning)
+
+**Courses and Tutorials**
+
+- [Versioning Workflows](https://learn.temporal.io/courses/versioning/)
+- [Temporal 102: Exploring Durable Execution](https://learn.temporal.io/courses/temporal_102/)
+- [Typescript Background Check: Durable Execution](https://learn.temporal.io/tutorials/typescript/background-check/durable-execution/)
+- [Java Background Check: Durable Execution](https://learn.temporal.io/tutorials/java/background-check/durable-execution/)
+
+**Blog Posts**
+
+- [Temporal Spooky Stories: Anti-patterns](https://temporal.io/blog/spooky-stories-chilling-temporal-anti-patterns-part-1)
+
+## Worker Versioning
 
 :::warning
 
-Importantly, when you start this Worker, it won't receive any tasks until you set up assignment rules.
+Worker Versioning is a [Pre-release](/evaluate/development-production-features/release-stages#pre-release) feature and will not be documented for the Go SDK until it reaches [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
 
 :::
-
-### Specify versions for Activities, Child Workflows, and Continue-as-New Workflows
-
-By default, Activities, Child Workflows, and Continue-as-New Workflows are run on the build of the Workflow that created them if they are also configured to run on the same Task Queue.
-When configured to run on a separate Task Queue, they will default to using the current assignment rules.
-
-If you want to override this behavior, you can specify your intent via the `VersioningIntent` field on the appropriate options struct.
-
-{/* For more information refer to the [conceptual documentation](/workers#worker-versioning). */}
-
-For example, if you want an Activity to use the latest assignment rules rather than inheriting from its parent:
-
-```go
-// ...
-ao := workflow.ActivityOptions{
-    VersioningIntent: VersioningIntentUseAssignmentRules,
-    // ...other options
-}
-activityCtx := workflow.WithActivityOptions(ctx, ao)
-var yourActivityResult YourActivityResultType
-err := workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
-// ...
-```
-
-#### Specifying versions for Continue-As-New
-
-When using the Continue-As-New feature, use the `WithWorkflowVersioningIntent` context modifier:
-
-```go
-ctx = workflow.WithWorkflowVersioningIntent(ctx, temporal.VersioningIntentUseAssignmentRules)
-err := workflow.NewContinueAsNewError(ctx, "WorkflowName")
-```
-
-### Tell the Task Queue about your Worker's Build ID (Deprecated)
-
-:::caution
-
-This section is for a previous Worker Versioning API that is deprecated and will go away at some point. Please redirect your attention to [Worker Versioning](/workers#worker-versioning).
-
-:::
-
-Now you can use the SDK (or the Temporal CLI) to tell the Task Queue about your Worker's Build ID.
-You might want to do this as part of your CI deployment process.
-
-```go
-// ...
-err := client.UpdateWorkerBuildIdCompatibility(ctx, &client.UpdateWorkerBuildIdCompatibilityOptions{
-   TaskQueue: "your_task_queue_name",
-   Operation: &client.BuildIDOpAddNewIDInNewDefaultSet{
-      BuildID: "deadbeef",
-   },
-})
-```
-
-This code adds the `deadbeef` Build ID to the Task Queue as the sole version in a new version set, which becomes the default for the queue.
-New Workflows execute on Workers with this Build ID, and existing ones will continue to process by appropriately compatible Workers.
-
-If, instead, you want to add the Build ID to an existing compatible set, you can do this:
-
-```go
-// ...
-err := client.UpdateWorkerBuildIdCompatibility(ctx, &client.UpdateWorkerBuildIdCompatibilityOptions{
-   TaskQueue: "your_task_queue_name",
-   Operation: &client.BuildIDOpAddNewCompatibleVersion{
-      BuildID:                   "deadbeef",
-      ExistingCompatibleBuildId: "some-existing-build-id",
-   },
-})
-```
-
-This code adds `deadbeef` to the existing compatible set containing `some-existing-build-id` and marks it as the new default Build ID for that set.
-
-You can also promote an existing Build ID in a set to be the default for that set:
-
-```go
-// ...
-err := client.UpdateWorkerBuildIdCompatibility(ctx, &client.UpdateWorkerBuildIdCompatibilityOptions{
-   TaskQueue: "your_task_queue_name",
-   Operation: &client.BuildIDPromoteIDWithinSet{
-      BuildID: "some-existing-build-id",
-   },
-})
-```
