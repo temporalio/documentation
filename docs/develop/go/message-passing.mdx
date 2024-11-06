@@ -395,7 +395,7 @@ It is invalid to set the Run ID since there might not be running Workflow Execut
 Use the `WithStartOperation` option to attach an Update Operation to the [`Client.ExecuteWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.ExecuteWorkflow) API call.
 Not all `ExecuteWorkflow` options are allowed with Update-With-Start.
 For example, specifying a Cron Schedule results in an error.
-Refer to the API documentation for further details.
+Refer to the [API documentation](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions) for further details.
 
 `ExecuteWorkflow` returns once the requested Update wait stage has been reached; or when a provided context times out.
 Choose [Workflow Id Conflict Policy](#workflow-id-conflict-policy) "Use Existing" coupled with an indempotent Update handler by default to allow the code to be executed again, in case of client failure.
