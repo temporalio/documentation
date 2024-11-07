@@ -18,12 +18,17 @@ tags:
   - Temporal SDKs
 ---
 
-By default, Temporal payloads are stored unencrypted inside of its data store.
-Consequently, this means that string payloads can be read from the Temporal Web UI and CLI in plain text.
-When working with sensitive data, Temporal implementers may need to adopt encryption algorithms, manage encryption keys, or restrict a subset of their users from viewing payload output.
+Temporal's security model is designed around client-side encryption of Payloads.
+A client may encrypt Payloads before sending them to the server, and decrypt them after receiving them from the server.
+This provides a high degree of confidentiality because the Temporal Server itself has absolutely no knowledge of the actual data.
+It also gives implementers more power and more freedom regarding which client is able to read which data -- they can control access on keys, algorithms, etc.
 
-A Custom Codec allows a developer to transform the payload of a message sent or received by a Temporal Client.
-This ensures that the data is encrypted as it travels across the network and when it is stored in the Event History, readable only by those with access to the key.
+A Temporal developer adds client-side encryption of Payloads by providing a Custom Payload Codec to its Client.
+Depending on business needs, a complete implementation of Payload Encryption may involve the selection of appropriate encryption algorithms, management of encryption keys, and/or restriction a subset of their users from viewing payload output.
+
+The server itself never adds encryption over Payloads.
+Therefore, unless client-side encryption is implemented, Payload data will be persisted in non-encrypted form to the data store, and any Client that can make requests to a Temporal namespace (including the Temporal UI and CLI) will be able to read Payloads contained in Workflows.
+When working with sensitive data, you should always implement Payload encryption.
 
 ## Custom Payload Codec in Java {#custom-payload-codec}
 
@@ -153,7 +158,7 @@ WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
               .build());
 ```
 
-- Data **encoding** is performed by the client using the default converter provided by Temporal or your custom Data Converter when passing input to the Temporal Cluster. For example, plain text input is usually serialized into a JSON object, and can then be compressed or encrypted.
+- Data **encoding** is performed by the client using the converters and codecs provided by Temporal or your custom implementation when passing input to the Temporal Cluster. For example, plain text input is usually serialized into a JSON object, and can then be compressed or encrypted.
 - Data **decoding** may be performed by your application logic during your Workflows or Activities as necessary, but decoded Workflow results are never persisted back to the Temporal Cluster. Instead, they are stored encoded on the Cluster, and you need to provide an additional parameter when using the [temporal workflow show](/cli/workflow#show) command or when browsing the Web UI to view output.
 
 For reference, see the [Encryption](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/encryptedpayloads) sample.
@@ -186,7 +191,7 @@ When the Data Converter receives a value for conversion, it passes through each 
 Payload Converters can be customized independently of a Payload Codec.
 Temporal's Converter architecture looks like this:
 
-![Billing page showing Credits tab](/img/converter-architecture.png)
+![Temporal converter architecture](/img/converter-architecture.png)
 
 Create a custom implementation of a [PayloadConverter](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/PayloadConverter.html) interface and use the `withPayloadConverterOverrides` method to implement the custom object conversion with `DefaultDataConverter`.
 
