@@ -201,6 +201,8 @@ An Activity is a normal function or method execution that's intended to execute 
 An Activity can interact with world outside the Temporal Platform or use a Temporal Client to interact with a Temporal Service.
 For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/activities#activity-definition).
 
+In Python, modules for external services must be added to the [sandbox passthrough modules](/encyclopedia/python-sdk-sandbox#passthrough-modules).
+
 You can develop an Activity Definition by using the `@activity.defn` decorator.
 Register the function as an Activity with a custom name through a decorator argument, for example `@activity.defn(name="your_activity")`.
 
