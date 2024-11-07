@@ -22,6 +22,7 @@ The pages shows how to do the following:
 - [Connect to a local development Temporal Service](#connect-to-development-service)
 - [Connect to Temporal Cloud](#connect-to-temporal-cloud)
 - [Start a Workflow Execution](#start-workflow-execution)
+- [Advanced connection options](#advanced-connection-options)
 
 ## How to connect a Temporal Client to a Temporal Service {#connect-to-a-dev-cluster}
 
@@ -67,14 +68,6 @@ $workflowClient = WorkflowClient::create($serviceClient);
 // Use $workflowClient to work with Workflows ...
 ```
 
-Note that the gRPC connection in the PHP SDK is lazy, meaning it is not established until the first call.
-To force establishing the connection to the Temporal Service, call the [`connect()`](https://php.temporal.io/classes/Temporal-Client-GRPC-Connection-ConnectionInterface.html#method_connect) method:
-
-```php
-// ...
-$serviceClient->getConnection()->connect(timeout: 10);
-```
-
 ## How to connect a Temporal Client to a Temporal Service {#connect-to-temporal-cloud}
 
 When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
@@ -94,8 +87,8 @@ Use the [`ServiceClient::createSSL()`](https://php.temporal.io/classes/Temporal-
 The `$clientKey` argument must be combined with the `$clientPem` to authenticate the Client.
 
 ```php
-use Temporal\Client\GRPC\ServiceClient;
 use Temporal\Client\ClientOptions;
+use Temporal\Client\GRPC\ServiceClient;
 use Temporal\Client\WorkflowClient;
 
 $serviceClient = \Temporal\Client\GRPC\ServiceClient::createSSL(
@@ -199,3 +192,52 @@ var_dump($run->getExecution()->getID());
 **Recurring start**
 
 You can start a Workflow Execution on a regular schedule with [the CronSchedule option](/develop/php/schedules).
+
+
+## Advanced connection options {#advanced-connection-options}
+
+In PHP, it is common practice to work with resources in blocking mode.
+Long blocks can quickly exhaust the pool of available workers and lead to application failure.
+
+This section introduces features and configuration examples of the PHP SDK when working with the Temporal Client API.
+
+### Connection
+
+gRPC connections in the PHP SDK are lazy by default, meaning they are not established until the first call.
+To force establishing the connection to the Temporal Service, you can call the [`ConnectionInterface::connect()`](https://php.temporal.io/classes/Temporal-Client-GRPC-Connection-ConnectionInterface.html#method_connect) or [`ServiceClient::getServerCapabilities()`](https://php.temporal.io/classes/Temporal-Client-GRPC-ServiceClientInterface.html#method_getServerCapabilities) method.
+
+```php
+// ...
+$serviceClient->getConnection()->connect(timeout: 10);
+
+// or
+$serviceClient->getServerCapabilities();
+```
+
+If, for some reason, the established connection is broken, the SDK will automatically attempt to restore it, taking into account the configured retry policy.
+
+### Retry policy {#configure-rpc-retry-policy}
+
+Whenever the client fails to connect to the server, an error with a status code is generated.
+If the status code is `UNKNOWN`, `UNAVAILABLE`, or `RESOURCE_EXHAUSTED`, the client will make another connection attempt.
+By default, the number of attempts is unlimited, and the interval between them will range from 0.5 to 100 seconds with a backoff coefficient of 2.
+This means that the client will likely be blocked until it establishes a connection to the server through infinite attempts.
+
+If you want to change the default behavior, use the `withRetryPolicy()` method when creating a client service:
+
+```php
+use Temporal\Client\Common\RpcRetryOptions;
+use Temporal\Client\GRPC\ServiceClient;
+use Temporal\Client\WorkflowClient;
+
+$serviceClient = ServiceClient::create('localhost:7233');
+$client = WorkflowClient::create($serviceClient)
+    ->withRetryOptions(
+        RpcRetryOptions::new()
+            ->withMaximumAttempts(10)
+            ->withInitialInterval('1 second')   // The first retry will be in 1 second
+            ->withBackoffCoefficient(2.5)       // Each next retry time will be multiplied by 2.5
+            ->withMaximumInterval('20 seconds') // The maximum interval between attempts
+            ->withMaximumJitterCoefficient(0.2) // Actual retry time can be +/- 20% of the calculated time
+    );
+```
