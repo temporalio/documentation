@@ -19,7 +19,7 @@ It explains the role and use of Clients and shows you how to configure your PHP 
 
 The pages shows how to do the following:
 
-- [Connect to a local development Temporal Service](#connect-to-development-service)
+- [Connect to a local development Temporal Service](#connect-to-a-dev-cluster)
 - [Connect to Temporal Cloud](#connect-to-temporal-cloud)
 - [Start a Workflow Execution](#start-workflow-execution)
 - [Advanced connection options](#advanced-connection-options)
@@ -68,7 +68,7 @@ $workflowClient = WorkflowClient::create($serviceClient);
 // Use $workflowClient to work with Workflows ...
 ```
 
-## How to connect a Temporal Client to a Temporal Service {#connect-to-temporal-cloud}
+## How to connect a Temporal Client to a Temporal Cloud {#connect-to-temporal-cloud}
 
 When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
 
