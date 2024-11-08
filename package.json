@@ -43,6 +43,7 @@
     "@mdx-js/react": "^3.0.0",
     "chart.js": "^4.4.1",
     "clsx": "^1.1.1",
+    "lucide-react": "^0.454.0",
     "path": "^0.12.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

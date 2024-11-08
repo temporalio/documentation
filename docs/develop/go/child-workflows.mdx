@@ -2,6 +2,7 @@
 id: child-workflows
 title: Child Workflows - Go SDK
 sidebar_label: Child Workflows
+description: Learn how to use the Go SDK to start a Child Workflow Execution and set a Parent Close Policy, including details on Workflow Options and future management.
 toc_max_heading_level: 4
 keywords:
   - child-workflows
@@ -10,17 +11,33 @@ tags:
   - Child Workflows
   - Go SDK
   - Temporal SDKs
-description: Learn how to use the Go SDK to start a Child Workflow Execution and set a Parent Close Policy, including details on Workflow Options and future management.
 ---
+
+import { ChevronRight, Zap } from 'lucide-react';
 
 This page shows how to do the following:
 
 - [Start a Child Workflow Execution](#child-workflows)
 - [Set a Parent Close Policy](#parent-close-policy)
 
-## Start a Child Workflow Execution {#child-workflows}
+## Why Child Workflows?
+Generally, a Child Workflow is a Workflow that is started and managed by another Workflow, known as the Parent Workflow. 
+This setup allows Workflows to delegate specific tasks to separate processes, improving organization, scalability, and maintainability.
 
-**How to start a Child Workflow Execution using the Go SDK.**
+Temporal’s Child Workflows add structure and control to complex Workflows. 
+Temporal provides tracking, failure handling, and retry management within each Child Workflow, allowing applications to scale efficiently. 
+
+## When to use a Child Workflow?
+Use Child Workflows in Temporal when you need to break up a complex workflow into independent, manageable parts. They’re ideal for situations where you need:
+
+1. Separate processing: If you want one part of your Workflow to run on a different set of workers, like a separate service.
+2. Handling large workloads: For tasks that would be too large or complex for a single Workflow to handle, Child Workflows help split them up.
+3. Unique resource management: If a task involves a specific resource that needs to be handled uniquely, you can assign a Child Workflow to manage it.
+3. Periodic tasks: When a task needs to run regularly without overwhelming the main Workflow, a Child Workflow can handle it on its own.
+
+In general, start with Activities unless you have a specific need that Child Workflows can solve more effectively.
+
+## Start a Child Workflow Execution {#child-workflows}
 
 A [Child Workflow Execution](/encyclopedia/child-workflows) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
 
@@ -31,15 +48,18 @@ After that, Child Workflow Executions may be abandoned using the default _Abando
 
 To be sure that the Child Workflow Execution has started, first call the Child Workflow Execution method on the instance of Child Workflow future, which returns a different future.
 
-Then get the value of an object that acts as a proxy for a result that is initially unknown, which is what waits until the Child Workflow Execution has spawned.
+Then get the value of an object that acts as a proxy for a result that is initially unknown, which is what waits until the Child Workflow Execution has started.
 
-To spawn a [Child Workflow Execution](/encyclopedia/child-workflows) in Go, use the [`ExecuteChildWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ExecuteChildWorkflow) API, which is available from the `go.temporal.io/sdk/workflow` package.
+### Using the ExecuteChildWorkflow API
+To start a [Child Workflow Execution](/encyclopedia/child-workflows) within a Parent Workflow Execution in Go, use the [`ExecuteChildWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ExecuteChildWorkflow) function, which is available from the `go.temporal.io/sdk/workflow` package.
 
+
+#### Setting up Context and Objects 
 The `ExecuteChildWorkflow` call requires an instance of [`workflow.Context`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Context), with an instance of [`workflow.ChildWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ChildWorkflowOptions) applied to it, the Workflow Type, and any parameters that should be passed to the Child Workflow Execution.
 
 `workflow.ChildWorkflowOptions` contain the same fields as `client.StartWorkflowOptions`.
 Workflow Option fields automatically inherit their values from the Parent Workflow Options if they are not explicitly set.
-If a custom `WorkflowID` is not set, one is generated when the Child Workflow Execution is spawned.
+If a custom `WorkflowID` is not set, one is generated when the Child Workflow Execution is started.
 Use the [`WithChildOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#WithChildOptions) API to apply Child Workflow Options to the instance of `workflow.Context`.
 
 The `ExecuteChildWorkflow` call returns an instance of a [`ChildWorkflowFuture`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ChildWorkflowFuture).
@@ -66,14 +86,21 @@ func YourOtherWorkflowDefinition(ctx workflow.Context, params ChildParams) (Chil
   return resp, nil
 }
 ```
+Here, YourWorkflowDefinition is the Parent Workflow, and it starts a Child Workflow called YourOtherWorkflowDefinition. 
+The result of YourOtherWorkflowDefinition is stored in result after it completes.
 
-To asynchronously spawn a Child Workflow Execution, the Child Workflow must have an "Abandon" Parent Close Policy set in the Child Workflow Options.
+
+### Starting a Child Workflow Asynchronously with an Abandon Parent Close Policy
+To start a Child Workflow asynchronously (so it continues running even after the Parent Workflow finishes), you need to set the "Abandon" option in the Child Workflow's settings. 
+This means the Child Workflow can keep going, even if the Parent Workflow completes.
+
+To asynchronously start a Child Workflow Execution, the Child Workflow must have an "Abandon" Parent Close Policy set in the Child Workflow Options.
 Additionally, the Parent Workflow Execution must wait for the `ChildWorkflowExecutionStarted` Event to appear in its Event History before it completes.
 
-If the Parent makes the `ExecuteChildWorkflow` call and then immediately completes, the Child Workflow Execution does not spawn.
+If the Parent makes the `ExecuteChildWorkflow` call and then immediately completes, the Child Workflow Execution does not start.
 
 To be sure that the Child Workflow Execution has started, first call the `GetChildWorkflowExecution` method on the instance of the `ChildWorkflowFuture`, which will return a different Future.
-Then call the `Get()` method on that Future, which is what will wait until the Child Workflow Execution has spawned.
+Then call the `Get()` method on that Future, which is what will wait until the Child Workflow Execution has started.
 
 ```go
 import (
@@ -89,7 +116,7 @@ func YourWorkflowDefinition(ctx workflow.Context, params ParentParams) (ParentRe
   ctx = workflow.WithChildOptions(ctx, childWorkflowOptions)
 
   childWorkflowFuture := workflow.ExecuteChildWorkflow(ctx, YourOtherWorkflowDefinition, ChildParams{})
-  // Wait for the Child Workflow Execution to spawn
+  // Wait for the Child Workflow Execution to start
   var childWE workflow.Execution
   if err := childWorkflowFuture.GetChildWorkflowExecution().Get(ctx, &childWE); err != nil {
      return err
@@ -105,8 +132,6 @@ func YourOtherWorkflowDefinition(ctx workflow.Context, params ChildParams) (Chil
 ```
 
 #### Set a Parent Close Policy {#parent-close-policy}
-
-**How to set a Parent Close Policy for a Child Workflow Execution using the Go SDK.**
 
 A [Parent Close Policy](/encyclopedia/child-workflows#parent-close-policy) determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).
 
@@ -146,3 +171,55 @@ func YourOtherWorkflowDefinition(ctx workflow.Context, params ChildParams) (Chil
   return resp, nil
 }
 ```
+<div style={{
+  background: 'linear-gradient(to right, #ebf8ff, #eef2ff)', 
+  borderRadius: '0.5rem', 
+  padding: '1.5rem',
+  marginTop: '2rem'
+}}>
+  <h4 style={{ 
+    fontWeight: '600', 
+    fontSize: '1.125rem', 
+    marginBottom: '1rem', 
+    display: 'flex', 
+    alignItems: 'center' 
+  }}>
+    <span style={{
+      display: 'inline-flex', 
+      alignItems: 'center', 
+      justifyContent: 'center', 
+      fontSize: '1.25rem', 
+      lineHeight: '1', 
+      marginRight: '0.5rem'
+    }}>⚡</span>
+    Ready to dive deeper?
+  </h4>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+    <a href="#" style={{
+      display: 'flex', 
+      alignItems: 'center', 
+      padding: '0.75rem', 
+      borderRadius: '0.5rem', 
+      transition: 'background-color 0.2s', 
+      textDecoration: 'none',
+      color: 'inherit'
+    }} 
+    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.5)'}
+    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+      ➔ <span style={{ marginLeft: '0.5rem' }}>Explore Child Workflow code samples</span>
+    </a>
+    <a href="#" style={{
+      display: 'flex', 
+      alignItems: 'center', 
+      padding: '0.75rem', 
+      borderRadius: '0.5rem', 
+      transition: 'background-color 0.2s', 
+      textDecoration: 'none',
+      color: 'inherit'
+    }} 
+    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.5)'}
+    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+      ➔ <span style={{ marginLeft: '0.5rem' }}>Read the Child Workflows Encyclopedia entry</span>
+    </a>
+  </div>
+</div>
