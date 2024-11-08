@@ -231,7 +231,7 @@ use Temporal\Client\GRPC\ServiceClient;
 use Temporal\Client\WorkflowClient;
 
 $serviceClient = ServiceClient::create('localhost:7233');
-$client = WorkflowClient::create($serviceClient)
+$workflowClient = WorkflowClient::create($serviceClient)
     ->withRetryOptions(
         RpcRetryOptions::new()
             ->withMaximumAttempts(10)
@@ -241,3 +241,31 @@ $client = WorkflowClient::create($serviceClient)
             ->withMaximumJitterCoefficient(0.2) // Actual retry time can be +/- 20% of the calculated time
     );
 ```
+
+### RPC timeout {#configure-rpc-timeout}
+
+When the client calls the service's RPC, there is no default time limit for waiting for a response. This can result in the code call `$result = $workflowHandle->getResult();` blocking the PHP worker until the Workflow completes. In some cases, this is not the desired behavior, and there may be a need to set a reasonable timeout for waiting for the RPC to complete.
+
+Use the `withTimeout()` method to build a client with a timeout for all RPC calls.
+
+```php
+use Temporal\Client\GRPC\ServiceClient;
+use Temporal\Client\WorkflowClient;
+
+$serviceClient = ServiceClient::create('localhost:7233');
+$workflowClient = WorkflowClient::create($serviceClient)
+    ->withTimeout(5.75);
+
+// Create a Workflow stub
+$stub = $workflowClient->newWorkflowStub(AccountTransferWorkflowInterface::class);
+
+// If the Workflow does not complete within 5.75 seconds, a TimeoutException will be thrown
+$result = $accountTransfer->transfer('fromID', 'toID', 'refID', 1000);
+```
+
+:::note
+
+The `withTimeout()` method is immutable.
+If you need to change the timeout for individual operations, create a new client from the existing one with a specific timeout: `$newClient = $workflowClient->withTimeout(0);` (`0` means no timeout).
+
+:::
