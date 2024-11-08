@@ -12,24 +12,136 @@ tags:
   - dev-guide
   - go
 ---
+import { ChevronRight } from 'lucide-react';
 
 ![Go SDK Banner](/img/banner-go-temporal.png)
 
-:::info GO SPECIFIC RESOURCES
-Build [Temporal Applications](/temporal#temporal-application) with the Go SDK.
+<div style={{
+  background: 'linear-gradient(to right, #ebf8ff, #eef2ff)', 
+  borderRadius: '0.5rem', 
+  padding: '1.5rem',
+  marginTop: '2rem',
+  color: '#1f2937'
+}}>
+  <h3 style={{ 
+    fontWeight: '700', 
+    fontSize: '1.25rem', 
+    marginBottom: '1rem', 
+    display: 'flex', 
+    alignItems: 'center' 
+  }}>
+    🚀 Go-Specific Resources
+  </h3>
 
-**Temporal Go Technical Resources:**
-- [Go API Documentation](https://pkg.go.dev/go.temporal.io/sdk)
-- [Go SDK Code Samples](https://github.com/temporalio/samples-go)
-- [Go SDK GitHub](https://github.com/temporalio/sdk-go)
+  <div style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+    gap: '1rem'
+  }}>
+    <a href="https://pkg.go.dev/go.temporal.io/sdk" target="_blank" style={{
+      display: 'flex',
+      alignItems: 'center',
+      padding: '1rem', 
+      borderRadius: '0.5rem', 
+      textDecoration: 'none',
+      color: '#1f2937',
+      backgroundColor: '#f0f5ff',
+      transition: 'background-color 0.3s ease',
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+      height: '100px' // fixed height for uniformity
+    }} 
+    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e0e7ff'}
+    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f0f5ff'}>
+      <span style={{ textAlign: 'left' }}>Go API Documentation</span>
+    </a>
+    
+    <a href="https://github.com/temporalio/samples-go" target="_blank" style={{
+      display: 'flex',
+      alignItems: 'center',
+      padding: '1rem', 
+      borderRadius: '0.5rem', 
+      textDecoration: 'none',
+      color: '#1f2937',
+      backgroundColor: '#f0f5ff',
+      transition: 'background-color 0.3s ease',
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+      height: '100px'
+    }} 
+    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e0e7ff'}
+    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f0f5ff'}>
+      <span style={{ textAlign: 'left' }}>Go SDK Code Samples</span>
+    </a>
+    
+    <a href="https://github.com/temporalio/sdk-go" target="_blank" style={{
+      display: 'flex',
+      alignItems: 'center',
+      padding: '1rem', 
+      borderRadius: '0.5rem', 
+      textDecoration: 'none',
+      color: '#1f2937',
+      backgroundColor: '#f0f5ff',
+      transition: 'background-color 0.3s ease',
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+      height: '100px'
+    }} 
+    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e0e7ff'}
+    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f0f5ff'}>
+      <span style={{ textAlign: 'left' }}>Go SDK GitHub</span>
+    </a>
+    
+    <a href="https://temporalio.slack.com/archives/CTDTU3J4T" target="_blank" style={{
+      display: 'flex',
+      alignItems: 'center',
+      padding: '1rem', 
+      borderRadius: '0.5rem', 
+      textDecoration: 'none',
+      color: '#1f2937',
+      backgroundColor: '#f0f5ff',
+      transition: 'background-color 0.3s ease',
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+      height: '100px'
+    }} 
+    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e0e7ff'}
+    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f0f5ff'}>
+      <span style={{ textAlign: 'left' }}>Temporal Go Community Slack</span>
+    </a>
+    
+    <a href="https://community.temporal.io/tag/go-sdk" target="_blank" style={{
+      display: 'flex',
+      alignItems: 'center',
+      padding: '1rem', 
+      borderRadius: '0.5rem', 
+      textDecoration: 'none',
+      color: '#1f2937',
+      backgroundColor: '#f0f5ff',
+      transition: 'background-color 0.3s ease',
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+      height: '100px'
+    }} 
+    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e0e7ff'}
+    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f0f5ff'}>
+      <span style={{ textAlign: 'left' }}>Go SDK Forum</span>
+    </a>
 
-**Get Connected with the Temporal Go Community:**
+    <a href="https://temporal.io/in-use?sdk=Go#temporal-in-action" target="_blank" style={{
+      display: 'flex',
+      alignItems: 'center',
+      padding: '1rem', 
+      borderRadius: '0.5rem', 
+      textDecoration: 'none',
+      color: '#1f2937',
+      backgroundColor: '#f0f5ff',
+      transition: 'background-color 0.3s ease',
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+      height: '100px'
+    }} 
+    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e0e7ff'}
+    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f0f5ff'}>
+      <span style={{ textAlign: 'left' }}>Temporal In Action: Use Cases with Go</span>
+    </a>
+  </div>
+</div>
 
-- [Temporal Go Community Slack](https://temporalio.slack.com/archives/CTDTU3J4T)
-- [Go SDK Forum](https://community.temporal.io/tag/go-sdk)
-- [Temporal In Action: Use Cases with Go](https://temporal.io/in-use?sdk=Go#temporal-in-action)
-- [Temporal Meetups](https://www.meetup.com/pro/temporal-technologies/)
-:::
 
 ## [Core Application](/develop/go/core-application)
 
