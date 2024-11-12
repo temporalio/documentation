@@ -181,6 +181,14 @@ workflow_handle = await client.start_workflow(
 
 To check the argument types required when sending messages -- and the return type for Queries and Updates -- refer to the corresponding handler method in the Workflow Definition.
 
+:::warning Using Continue-as-New and Updates
+
+- Temporal _does not_ support Continue-as-New functionality within Update handlers.
+- Complete all handlers _before_ using Continue-as-New.
+- Use Continue-as-New from your main Workflow Definition method, just as you would complete or fail a Workflow Execution.
+
+:::
+
 ### Send a Query {#send-query}
 
 Use [`WorkflowHandle.query`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#query) to send a Query to a Workflow Execution:
