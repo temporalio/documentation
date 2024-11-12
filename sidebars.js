@@ -22,7 +22,6 @@ module.exports = {
           },
           items: [
             "evaluate/development-production-features/core-application",
-            "evaluate/development-production-features/temporal-client",
             "evaluate/development-production-features/failure-detection",
             "evaluate/development-production-features/throughput-composability",
             "evaluate/development-production-features/nexus",
@@ -91,8 +90,10 @@ module.exports = {
             "evaluate/temporal-cloud/service-availability",
             "evaluate/temporal-cloud/limits",
             "evaluate/temporal-cloud/sla",
+            "evaluate/temporal-cloud/legacy-pricing",
             "evaluate/temporal-cloud/pricing",
-            "evaluate/temporal-cloud/support",
+            "evaluate/temporal-cloud/support", // This will become legacy support in Jan 2025, removed in Feb 2025 Its file is legacy-support
+            "evaluate/temporal-cloud/future_support", // This will become support in Jan 2025. Its file is support
           ],
         },
         "security",
@@ -165,6 +166,7 @@ module.exports = {
             "develop/java/schedules",
             "develop/java/converters-and-encryption",
             "develop/java/timers",
+            "develop/java/nexus",
             "develop/java/child-workflows",
             "develop/java/continue-as-new",
             "develop/java/side-effects",
