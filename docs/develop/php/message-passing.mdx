@@ -670,3 +670,18 @@ All handlers may experience additional exceptions during the initial (pre-Worker
 
 For Queries and Updates, the client waits for a response from the Worker.
 If an issue occurs during the handler Execution by the Worker, the client may receive an exception.
+
+### Problems when sending a Query {#query-problems}
+
+When working with Queries, you may encounter these errors:
+
+- **There is no Workflow Worker polling the Task Queue**:
+You'll receive a [`WorkflowNotFoundException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowNotFoundException.html).
+
+- **Query failed**:
+You'll receive a [`WorkflowQueryException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowQueryException.html) if something goes wrong during a Query.
+Any exception in a Query handler will trigger this error.
+This differs from Signal and Update requests, where exceptions can lead to Workflow Task Failure instead.
+
+- **The handler caused the Workflow Task to fail.**
+This would happen, for example, if the Query handler blocks the thread for too long without yielding.
