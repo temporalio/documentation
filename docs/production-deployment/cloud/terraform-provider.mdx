@@ -12,7 +12,7 @@ ssdi:
 
 The Terraform Temporal Cloud provider allows you to use Terraform to manage resources for Temporal Cloud. Terraform is a tool used to manage infrastructure as code (IaC). With this provider, you can use Terraform to automate the management of Temporal Cloud resources, like Namespaces, Users, Service Accounts, API Keys and more.
 
-Remember, once a resource is managed by Terraform, you should only use Terraform to manage that resource.
+**Remember, once a resource is managed by Terraform, you should only use Terraform to manage that resource.**
 
 The [Temporal Cloud Terraform provider](https://registry.terraform.io/providers/temporalio/temporalcloud/latest) is available in the Terraform Registry, where you can find detailed documentation on the Provider's supported resources and data sources.
 
@@ -37,7 +37,7 @@ To use the Terraform provider, you'll need the following:
 - [Terraform account](https://developer.hashicorp.com/terraform)
 - [Terraform CLI](https://developer.hashicorp.com/terraform/cli)
 - [API Key](/cloud/api-keys): an API Key is required to use the Terraform provider.
-  - see [here](https://docs.temporal.io/cloud/api-keys#generate-an-api-key) for instrutions on generating an API Key.
+  - see [here](https://docs.temporal.io/cloud/api-keys#generate-an-api-key) for instructions on generating an API Key.
 
 :::note OpenTofu Registry
 
@@ -520,7 +520,7 @@ Your API Key ID is available in the Cloud UI in the API Key's details page
 terraform import temporalcloud_apikey.import_key zJV5zQ3IhsAbw75dAkVNEMsAd3a5AemC
 ```
 The API Key is now a part of the Terraform state and all changes to the API Key will be, should be, managed by Terraform.
-Import does not import the API Key Token.  The Token is only avaialble at the time of API Key creation.
+Import does not import the API Key Token. The Token is only avaialble at the time of API Key creation.
 
 ## Data Sources - Regions and Namespaces
 The Terraform provider also supports 2 data sources that provide you access to the available Regions and Namespaces in your Temporal Cloud account.
