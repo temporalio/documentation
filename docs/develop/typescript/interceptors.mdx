@@ -1,38 +1,36 @@
 ---
 id: interceptors
-title: Manage Interceptors
+title: Manage Interceptors - TypeScript SDK
 sidebar_label: Interceptors
 toc_max_heading_level: 2
 keywords:
   - interceptors
 tags:
-  - interceptors
+  - Interceptors
+  - TypeScript SDK
+  - Temporal SDKs
 description: Learn how to implement Interceptors in TypeScript using the Temporal TypeScript SDK to manage inbound and outbound SDK calls, enhance tracing, and add authorization to your Workflows and Activities.
 ---
-
-## How to implement interceptors in TypeScript {#interceptors}
 
 Interceptors are a mechanism for modifying inbound and outbound SDK calls.
 Interceptors are commonly used to add tracing and authorization to the scheduling and execution of Workflows and Activities.
 You can compare these to "middleware" in other frameworks.
 
+## How to implement interceptors in TypeScript {#interceptors}
+
 The TypeScript SDK comes with an optional interceptor package that adds tracing with [OpenTelemetry](https://www.npmjs.com/package/@temporalio/interceptors-opentelemetry).
 See how to use it in the [interceptors-opentelemetry](https://github.com/temporalio/samples-typescript/tree/main/interceptors-opentelemetry) code sample.
-
-### Interceptor types
 
 - [WorkflowInboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInboundCallsInterceptor/): Intercept Workflow inbound calls like execution, Signals, and Queries.
 - [WorkflowOutboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/workflow.WorkflowOutboundCallsInterceptor/): Intercept Workflow outbound calls to Temporal APIs like scheduling Activities and starting Timers.
 - [ActivityInboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/worker.ActivityInboundCallsInterceptor): Intercept inbound calls to an Activity (such as `execute`).
 - [WorkflowClientInterceptor](https://typescript.temporal.io/api/interfaces/client.WorkflowClientInterceptor/): Intercept workflow-related methods of [`Client`](https://typescript.temporal.io/api/classes/client.Client/) and [`WorkflowHandle`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle) like starting or signaling a Workflow.
 
-### How interceptors work
-
 Interceptors are run in a chain, and all interceptors work similarly.
 They accept two arguments: `input` and `next`, where `next` calls the next interceptor in the chain.
 All interceptor methods are optional—it's up to the implementor to choose which methods to intercept.
 
-### Interceptor examples
+## Interceptor examples
 
 **Log start and completion of Activities**
 
@@ -104,15 +102,15 @@ export class DumbWorkflowAuthInterceptor
 To properly do authorization from Workflow code, the Workflow would need to access encryption keys and possibly authenticate against an external user database, which requires the Workflow to break isolation.
 Please contact us if you need to discuss this further.
 
-### Interceptor registration
+## Register an Interceptor {#register-interceptor}
 
-**Activity and client interceptors registration**
+### Activity and client interceptors registration
 
 - Activity interceptors are registered on Worker creation by passing an array of [ActivityInboundCallsInterceptor factory functions](https://typescript.temporal.io/api/interfaces/worker.ActivityInboundCallsInterceptorFactory) through [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#interceptors).
 
 - Client interceptors are registered on `Client` construction by passing an array of [WorkflowClientInterceptor](https://typescript.temporal.io/api/interfaces/client.WorkflowClientInterceptor) via [ClientOptions.interceptors](https://typescript.temporal.io/api/interfaces/client.ClientOptions#interceptors).
 
-**Workflow interceptors registration**
+### Workflow interceptors registration
 
 Workflow interceptor registration is different from the other interceptors because they run in the Workflow isolate.
 To register Workflow interceptors, export an `interceptors` function from a file located in the `workflows` directory and provide the name of that file to the Worker on creation via [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#interceptors).

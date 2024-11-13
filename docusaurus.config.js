@@ -5,7 +5,7 @@ const FontPreloadPlugin = require("webpack-font-preload-plugin");
 
 module.exports = async function createConfigAsync() {
   return {
-    title: "Temporal Documentation",
+    title: "Temporal Platform Documentation",
     tagline: "Build invincible applications",
     url: "https://docs.temporal.io",
     baseUrl: "/",
@@ -55,14 +55,14 @@ module.exports = async function createConfigAsync() {
           autoCollapseCategories: true,
         },
       },
-      announcementBar: {
-        id: "replay_announcement",
-        content:
-          'Replay will return September 18-20 in Seattle! <a href="https://www.eventbrite.com/e/replay-2024-tickets-744609486017?aff=ebdsoporgprofile">Secure your ticket</a>.',
-        backgroundColor: "#141414",
-        textColor: "#ffffff",
-        isCloseable: true,
-      },
+      // announcementBar: {
+      //   id: "replay_announcement",
+      //   content:
+      //     'Replay will return September 18-20 in Seattle! <a href="https://www.eventbrite.com/e/replay-2024-tickets-744609486017?aff=ebdsoporgprofile">Secure your ticket</a>.',
+      //   backgroundColor: "#141414",
+      //   textColor: "#ffffff",
+      //   isCloseable: true,
+      // },
       navbar: {
         hideOnScroll: false,
         logo: {
@@ -73,7 +73,7 @@ module.exports = async function createConfigAsync() {
         },
         items: [
           {
-            label: "Home",
+            label: "Documentation Home",
             to: "/",
             position: "left",
             activeBasePath: "none",

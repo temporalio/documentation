@@ -1,6 +1,6 @@
 ---
 id: continue-as-new
-title: Continue-As-New - Python SDK feature guide
+title: Continue-As-New - Python SDK
 sidebar_label: Continue-As-New
 description: Learn how to use Temporal's Continue-As-New in Python to manage large Event Histories by atomically creating new Workflow Executions with the same Workflow Id and fresh parameters.
 toc_max_heading_level: 2
@@ -11,10 +11,10 @@ keywords:
   - avoid large event histories
   - temporal python continue-as-new
 tags:
-  - python
-  - python-sdk
-  - workflows
+  - Workflows
   - continue-as-new
+  - Python SDK
+  - Temporal SDKs
 ---
 
 **How to Continue-As-New using the Temporal Python SDK.**
@@ -42,3 +42,11 @@ class LoopingWorkflow:
         await asyncio.sleep(10)
         workflow.continue_as_new(iteration + 1)
 ```
+
+:::warning Using Continue-as-New and Updates
+
+- Temporal _does not_ support Continue-as-New functionality within Update handlers.
+- Complete all handlers _before_ using Continue-as-New.
+- Use Continue-as-New from your main Workflow Definition method, just as you would complete or fail a Workflow Execution.
+
+:::

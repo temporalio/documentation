@@ -12,11 +12,8 @@ keywords:
   - settings
   - temporal cloud
 tags:
-  - configuration
-  - defaults
-  - limits
-  - settings
-  - temporal-cloud
+  - Temporal Cloud
+  - Limits
 ---
 
 This page addresses the limits of the Temporal Cloud system.
@@ -187,6 +184,29 @@ For more information on custom Search Attributes see [Custom Search Attributes l
 The rate limit for requests to the Visibility APIs varies, and may be as low as 30 requests per second.
 This limit is not configurable.
 
+### Nexus Rate Limit {#nexus-rate-limits}
+
+Nexus requests (such as starting a Nexus Operation or sending a Nexus completion callback) are counted as part of the overall Namespace RPS limit.
+If too many Nexus requests are sent at once, they may be throttled, along with other requests to the Namespace.
+Throttling limits the rate at which Nexus requests are processed, ensuring the RPS limit isn't exceeded.
+
+You can request this limit be manually raised by [opening a support ticket](https://docs.temporal.io/cloud/support#support-ticket).
+
+:::note
+
+For the target Namespace of a Nexus Endpoint, even though there are no Action results for handling a Nexus Operation itself, the Nexus requests on a target Namespace do count towards the overall RPS limit for the Namespace as a whole.
+
+:::
+
+## Nexus Endpoint level
+
+### Nexus Endpoints limits
+
+**How many Nexus Endpoints can you create?​**
+
+By default, each account is provisioned with 10 Nexus Endpoints.
+You can request further increases beyond the initial 10 Endpoint limit by [opening a support ticket](/cloud/support#support-ticket).
+
 ## Programming model level
 
 The following aspects apply at the programming model level.
@@ -261,3 +281,34 @@ As a precautionary measure, a Workflow Execution's Event History is limited to 5
 It warns you after 10,240 Events or 10 MB.
 This limit applies to all Temporal Workflow Executions, whether on Temporal Cloud or other deployments.
 Read more about [Temporal Workflow Execution limits](/workflows#limits) on the [Temporal Workflow](/workflows) documentation page.
+
+### Per Workflow Nexus Operation limits {#per-workflow-nexus-operation-limits}
+
+**What is the maximum number of Nexus Operations that can be started from a single Workflow Execution?**
+
+A single Workflow Execution can have a maximum of 30 in-flight Nexus Operations and 30 total Nexus Operations (as Public Preview does not remove completed Nexus Operations from mutable state).
+After the Workflow Execution reaches that limit, it won't process any further Nexus Operations.
+
+See the Nexus Encyclopedia entry for [additional details](/workflows#workflow-execution-nexus-operation-limits).
+
+### Nexus Operation request timeout {#nexus-operation-request-timeout}
+
+**What is the context deadline timeout for a Nexus handler to process a Nexus start or cancel request?**
+
+Less than 10 seconds is the maximum duration for a Nexus handler to process a single Nexus start or cancel request.
+
+The timeout is measured from the calling History Service and the request must go through matching, so the available time for a handler to respond is often much less than 10 seconds.
+Handlers should observe the context deadline and ensure they don't exceed it.
+This includes fully processing a synchronous Nexus operation and starting an asynchronous Nexus operation, for example one that starts a Workflow.
+
+If a Nexus handler doesn’t process a start or cancel request within 10 seconds, it will receive a context deadline exceeded error, and the caller will retry, with an exponential backoff, for the ScheduleToClose duration for the overall Nexus Operation.
+This has a default and maximum as defined below in [Nexus Operation duration limits](/cloud/limits#nexus-operation-duration-limits).
+
+### Nexus Operation duration limits {#nexus-operation-duration-limits}
+
+Each Nexus Operation has a maximum ScheduleToClose duration of 60 days.
+This is most applicable to asynchronous Nexus Operations completed with an asynchronous callback using a separate Nexus request from the handler back to the caller Namespace.
+
+For enhanced security, you may sign completion callbacks with a single-use token in the future, and the 60 day maximum allows you to rotate the asymmetric encryption keys used for completion callback request signing.
+
+While the caller of a Nexus Operation can configure the ScheduleToClose duration to be shorter than 60 days, the maximum duration can not extend beyond 60 days and capped by the server to 60 days.

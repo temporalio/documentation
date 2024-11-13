@@ -3,13 +3,16 @@ id: multi-region
 slug: /cloud/multi-region
 title: Multi-region Namespace - Temporal Cloud feature guide
 sidebar_label: Multi-region Namespaces
-tags:
+keywords:
   - multi-region
   - multi-region namespace
   - high-availability
   - failover
   - availability
   - namespaces
+tags:
+  - Temporal Cloud
+  - Namespaces
 description: Experience disaster-tolerant deployment with Temporal Cloud's multi-region Namespaces. Ensure high availability and data integrity through automated failover and seamless data synchronization among regions, supported by a 99.99% SLA.
 ---
 
@@ -282,7 +285,7 @@ Use these tools to create, upgrade, and discontinue your multi-region Namespace.
 
 :::warning
 
-Only [Global Admins](https://docs.temporal.io/cloud/users#account-level-roles) and [Namespace Admins](https://docs.temporal.io/cloud/users#namespace-level-permissions) may create an multi-region Namespace (MRN), upgrade an existing Namespace to MRN, or trigger an MRN failover.
+Only Account Owner and Global Admin [roles](/cloud/users#account-level-roles) and [Namespace Admins](https://docs.temporal.io/cloud/users#namespace-level-permissions) may create an multi-region Namespace (MRN), upgrade an existing Namespace to MRN, or trigger an MRN failover.
 
 :::
 
@@ -314,7 +317,9 @@ Adding a second region enables multi-region Namespace capabilities.
 Start with the following command to create the new multi-region Namespace:
 
 ```
-tcld namespace create --namespace <namespace_id> region <region> --region <region>
+tcld namespace create \
+    --namespace <namespace_id>.<account_id> \
+    --region <region>
 ```
 
 Include both regions by specifying the [region codes](/cloud/service-availability) as arguments to the `--region` flags.
@@ -343,7 +348,9 @@ An email alert is sent once your multi-region Namespace is ready for use.
 At the command line, enter:
 
 ```
-tcld namespace add-region --namespace <namespace_id> --region <region>
+tcld namespace add-region \
+    --namespace <namespace_id>.<account_id> \
+    --region <region>
 ```
 
 Specify the region code for the new region to add.
@@ -399,7 +406,9 @@ After confirming the operation, the failover is initiated.
 To manually trigger a failover, issue the following from your command line:
 
 ```
-tcld namespace failover --namespace <namespace_id> --region <target_region>
+tcld namespace failover \
+    --namespace <namespace_id>.<account_id> \
+    --region <target_region>
 ```
 
 #### After failover

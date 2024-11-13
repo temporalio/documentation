@@ -1,12 +1,15 @@
 ---
 id: continue-as-new
-title: Continue-As-New
+title: Continue-As-New - TypeScript SDK
 sidebar_label: Continue-As-New
 toc_max_heading_level: 2
 keywords:
   - continue-as-new
 tags:
+  - Workflows
   - continue-as-new
+  - TypeScript SDK
+  - Temporal SDKs
 description: Continue-As-New helps manage large Event Histories by initiating a new Workflow Execution with the same Workflow Id and fresh parameters, ensuring efficient Workflow management.
 ---
 
@@ -35,3 +38,11 @@ export async function loopingWorkflow(iteration = 0): Promise<void> {
 ```
 
 <!--SNIPEND-->
+
+:::warning Using Continue-as-New and Updates
+
+- Temporal _does not_ support Continue-as-New functionality within Update handlers.
+- Complete all handlers _before_ using Continue-as-New.
+- Use Continue-as-New from your main Workflow Definition method, just as you would complete or fail a Workflow Execution.
+
+:::

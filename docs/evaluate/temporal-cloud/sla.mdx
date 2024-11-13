@@ -10,9 +10,8 @@ keywords:
   - operations
   - temporal cloud
 tags:
-  - explanation
-  - operations
-  - temporal-cloud
+  - Temporal Cloud
+  - Support
 ---
 
 **What is Temporal Cloud's Service Level Agreement? SLA?**
@@ -24,6 +23,8 @@ These levels are set by your deployment mode:
   Standard Temporal Cloud deployment provides 99.99% availability and a contractual service level agreement (SLA) of 99.9% guarantee against service errors.
 - **Temporal Cloud with multi-region Namespace deployment**:
   Temporal Cloud Namespaces that use the multi-region feature provide 99.99% availability and contractual service level agreement (SLA) of 99.99% guarantee against service errors.
+
+The same SLA for normal Worker requests (commands and polling) apply to Nexus in both the caller and handler Namespaces.
 
 To calculate the service-error rate, Temporal Cloud captures all requests that arrive in a Namespace during a five-minute interval.
 We record the number of gRPC service errors that occurred.

@@ -11,10 +11,7 @@ keywords:
   - temporal cloud
   - throughput
 tags:
-  - explanation
-  - operations
-  - temporal-cloud
-  - throughput
+  - Temporal Cloud
 ---
 
 The operating envelope of Temporal Cloud includes availability, regions, throughput, latency, and limits.
@@ -55,10 +52,10 @@ Temporal Cloud operates in several regions on Amazon Web Services (AWS):
 
 Temporal Cloud operates in two regions on Google Cloud (GCP):
 
-| Area          | Code                 | Region            |
-| ------------- | -------------------- | ----------------- |
-| North America | us-west1             | Oregon            |
-| Asia Pacific  | australia-southeast1 | Sydney            |
+| Area          | Code                 | Region |
+| ------------- | -------------------- | ------ |
+| North America | us-west1             | Oregon |
+| Asia Pacific  | australia-southeast1 | Sydney |
 
 ## Throughput expectations {#throughput}
 
@@ -121,6 +118,8 @@ In March 2024, latency over a week-long period for starting and signaling Workfl
 | `SignalWithStartWorkflowExecution` | 24ms | 61ms |
 
 As Temporal continues working on improving latencies, these numbers will progressively decrease.
+
+The same SLO for normal Worker requests (commands and polling) apply to Nexus in both the caller and handler Namespaces.
 
 Latency observed from the Temporal Client is influenced by other system components like the Codec Server, egress proxy, and the network itself.
 Also, concurrent operations on the same Workflow Execution may result in higher latency.

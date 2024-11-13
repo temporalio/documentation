@@ -1,13 +1,19 @@
 ---
 id: core-application
-title: Core application
+title: Core application - TypeScript SDK
 sidebar_label: Core application
 slug: /develop/typescript/core-application
 toc_max_heading_level: 2
 keywords:
   - core-application
 tags:
-  - core-application
+  - Activities
+  - Temporal Client
+  - Task Queues
+  - Workers
+  - Workflows
+  - TypeScript SDK
+  - Temporal SDKs
 description: The Foundations section of the Temporal Developer's guide explains essential concepts needed for building and running a Temporal Application, from installing the Temporal CLI to starting Workflow and Activity Executions.
 ---
 
@@ -38,13 +44,13 @@ This local development Temporal Service runs as a single process with zero runti
 
 **Install the Temporal CLI**
 
-The Temporal CLI is available on MacOS, Windows, and Linux.
+The Temporal CLI is available on macOS, Windows, and Linux.
 
-### MacOS
+### macOS
 
-**How to install the Temporal CLI on Mac OS**
+**How to install the Temporal CLI on macOS**
 
-Choose one of the following install methods to install the Temporal CLI on MacOS:
+Choose one of the following install methods to install the Temporal CLI on macOS:
 
 **Install the Temporal CLI with Homebrew**
 
@@ -707,7 +713,7 @@ This imports the individual Activities and declares the type alias for each Acti
 ### How to set the required Activity Timeouts {#required-timeout}
 
 Activity Execution semantics rely on several parameters.
-The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
+The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
 These values are set in the Activity Options.
 
 ### How to get the results of an Activity Execution {#get-activity-results}
