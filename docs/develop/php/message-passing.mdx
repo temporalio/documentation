@@ -702,6 +702,14 @@ A [Workflow Task Failure](/references/failures#errors-in-workflows) causes the s
   - If the request has been accepted, it is durable.
   Once the Workflow is healthy again after a code deploy, use an [`UpdateHandle`](https://php.temporal.io/classes/Temporal-Client-Update-UpdateHandle.html) to fetch the Update result.
 
+- **The Workflow finished while the Update handler execution was in progress**:
+You'll receive a [`WorkflowUpdateException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowUpdateException.html).
+This happens if the Workflow finished while the Update handler execution was in progress, for example because
+
+  - The Workflow was canceled or failed.
+
+  - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/encyclopedia/workflow-message-passing#finishing-message-handlers).
+
 ### Problems when sending a Query {#query-problems}
 
 When working with Queries, you may encounter these errors:
