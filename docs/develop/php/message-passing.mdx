@@ -671,6 +671,30 @@ All handlers may experience additional exceptions during the initial (pre-Worker
 For Queries and Updates, the client waits for a response from the Worker.
 If an issue occurs during the handler Execution by the Worker, the client may receive an exception.
 
+### Problems when sending an Update {#update-problems}
+
+When working with Updates, you may encounter these errors:
+
+- **No Workflow Workers are polling the Task Queue**:
+Your request will be retried by the SDK Client indefinitely.
+You can [configure RPC timeout](/develop/php/temporal-clients#configure-rpc-timeout) to impose a timeout.
+This raises a [`WorkflowUpdateRPCTimeoutOrCanceledException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowUpdateRPCTimeoutOrCanceledException.html).
+
+- **Update failed**: You'll receive a [`WorkflowUpdateException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowUpdateException.html) exception.
+There are two ways this can happen:
+
+  - The Update was rejected by an Update validator defined in the Workflow alongside the Update handler.
+
+  - The Update failed after having been accepted.
+
+Update failures are like [Workflow failures](/references/failures#errors-in-workflows).
+Issues that cause a Workflow failure in the main method also cause Update failures in the Update handler.
+These might include:
+
+    - A failed Child Workflow
+    - A failed Activity (if the Activity retries have been set to a finite number)
+    - The Workflow author raising `ApplicationFailure`
+
 ### Problems when sending a Query {#query-problems}
 
 When working with Queries, you may encounter these errors:
