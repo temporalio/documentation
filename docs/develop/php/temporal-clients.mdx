@@ -83,7 +83,7 @@ For more information about managing and generating client certificates for Tempo
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
-Use the [`ServiceClient::createSSL()`](https://php.temporal.io/classes/Temporal-Client-GRPC-BaseClient.html#method_createSSL) method to configure a connection to the Temporal Service.
+Use the [`ServiceClient::createSSL()`](https://php.temporal.io/classes/Temporal-Client-GRPC-BaseClient.html#method_createSSL) method to configure a client connection to the Temporal Service.
 The `$clientKey` argument must be combined with the `$clientPem` to authenticate the Client.
 
 ```php
@@ -93,9 +93,10 @@ use Temporal\Client\WorkflowClient;
 
 $serviceClient = \Temporal\Client\GRPC\ServiceClient::createSSL(
     address: '<your-custom-namespace>.tmprl.cloud:7233',
-    // crt: 'server--root-ca-cert.pem',  # ROOT CA to validate the server cert
-    clientKey: 'client-private-key.pem',
-    clientPem: 'client-cert.pem',
+    // crt: 'certs/server-root-ca-cert.pem', # ROOT CA to validate the server cert
+    clientKey: 'certs/client-private-key.pem',
+    clientPem: 'certs/client-cert.pem',
+    // overrideServerName: 'tls-sample',
 );
 
 $workflowClient = WorkflowClient::create(
@@ -103,6 +104,19 @@ $workflowClient = WorkflowClient::create(
     options: (new ClientOptions())
         ->withNamespace('<your-custom-namespace>.<id>'),
 );
+```
+
+To [run Worker processes](/develop/php/core-application#run-a-dev-worker) managed by Temporal Cloud, configure RoadRunner in the same way.
+
+```yml
+temporal:
+  # ...
+  tls:
+    # root_ca: 'certs/server-root-ca-cert.pem'
+    key: 'certs/client-private-key.pem'
+    cert: 'certs/client-cert.pem'
+    client_auth_type: require_and_verify_client_cert
+    # server_name: 'tls-sample'
 ```
 
 ## How to start a Workflow Execution {#start-workflow-execution}
