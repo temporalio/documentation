@@ -348,9 +348,7 @@ var_dump($workflow->getCurrentState());
 
 Queries are sent from a Temporal Client.
 
-## Updates {#updates}
-
-**How to develop with Updates using the Temporal PHP SDK**
+## How to develop with Updates {#updates}
 
 An [Update](/encyclopedia/workflow-message-passing#sending-updates) is an operation that can mutate the state of a Workflow Execution and return a response.
 
@@ -504,11 +502,6 @@ It doesn't apply to pure read operations, like Queries or Update Validators.
 :::tip
 
 For additional information, see [Inject work into the main Workflow](/encyclopedia/workflow-message-passing#injecting-work-into-main-workflow), [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing), and [this sample](https://github.com/temporalio/samples-php/tree/master/app/src/SafeMessageHandlers) demonstrating safe `async` message handling.
-
-:::
-
-### Add async handlers to use `await` {#async-handlers}
-
 
 ### Add wait conditions to block
 
