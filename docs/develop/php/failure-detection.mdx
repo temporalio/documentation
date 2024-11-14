@@ -130,6 +130,26 @@ Activity Execution semantics rely on several parameters.
 The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
 These values are set in the Activity Options.
 
+## Activity next Retry delay {#activity-next-retry-delay}
+
+**How to override the next Retry delay following an Activity failure using the Temporal PHP SDK**
+
+You may throw an [Application Failure](/references/failures#application-failure) with the NextRetryDelay field set.
+This value will replace and override whatever the retry interval would be on the retry policy.
+
+For example, if in an Activity, you want to base the interval on the number of attempts, you might do:
+
+```php
+$attempt = \Temporal\Activity::getInfo()->attempt;
+
+throw new \Temporal\Exception\Failure\ApplicationFailure(
+    message: "Something bad happened on attempt $attempt",
+    type: 'my_failure_type',
+    nonRetryable: false,
+    nextRetryDelay: \DateInterval::createFromDateString(\sprintf('%d seconds', $attempt * 3)),
+);
+```
+
 ## How to Heartbeat an Activity {#activity-heartbeats}
 
 An [Activity Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Service](/clusters).
