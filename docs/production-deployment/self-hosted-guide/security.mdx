@@ -161,7 +161,8 @@ A `TokenKeyProvider` obtains public keys from specified issuers' URIs that adher
 The default JWT `ClaimMapper` uses this component to obtain and refresh public keys over time.
 
 Temporal provides a `defaultTokenKeyProvider`.
-This component dynamically obtains public keys that follow the [JWKS format](https://tools.ietf.org/html/rfc7517). It supports formats such as `RSA` and `ECDSA`.
+This component dynamically obtains public keys that follow the [JWKS format](https://tools.ietf.org/html/rfc7517).
+It supports formats such as `RSA` and `ECDSA`.
 
 ```go
 provider := authorization.NewDefaultTokenKeyProvider(cfg, logger)
