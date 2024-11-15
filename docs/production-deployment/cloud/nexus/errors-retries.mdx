@@ -1,0 +1,72 @@
+---
+id: errors-retries
+slug: /cloud/nexus/failure-retries
+title: Errors and Retries - Temporal Nexus
+description: Learn about errors and retries for Temporal Nexus.
+sidebar_label: Errors and Retries
+tags:
+  - Temporal Cloud
+  - Nexus
+keywords:
+  - Nexus errors
+  - Nexus failures
+  - Nexus retries
+---
+
+This section covers errors and automatic retries for Temporal Nexus.
+
+## Errors in Nexus Handlers
+
+Nexus Operations can end up in [completed](/references/events#nexusoperationcompleted), [failed](/references/events#nexusoperationfailed), [canceled](/references/events#nexusoperationcanceled), and [timed out](/references/events#nexusoperationtimedout) states.
+
+The Nexus Machinery breaks up the [Nexus Operation lifecycle](/nexus/services-operations#operation-lifecycle) into one or more [Nexus Tasks](/workers#nexus-task) that a Nexus handler is responsible for processing.
+For [synchronous Nexus Operations](/nexus/services-operations#synchronous-operations-lifecycle) the Nexus Machinery creates a single Nexus Task to start an Operation.
+Additional Nexus Tasks may be used for [asynchronous Nexus Operations](/nexus/services-operations#asynchronous-operation-lifecycle), for example to cancel a long-running Operation.
+
+In Temporal, a user-defined Nexus handler is primarily responsible for starting a Nexus Operation.
+Nexus handlers run in a Temporal Worker and use Temporal SDK builder functions like New-Sync-Operation or New-Workflow-Run-Operation to start an Operation.
+Nexus handlers may return [different error types](/references/failures#nexus-errors).
+
+:::tip
+
+To avoid infinite retries and improve semantics, Nexus handlers should return a [specific Nexus error type](/references/failures#nexus-errors).
+
+:::
+
+By default, errors are considered retryable, unless specified below:
+- [Application Failures](/references/failures#nexus-errors) marked as non-retryable.
+- [Unsuccessful Operation errors](/references/failures#nexus-errors) that can resolve an operation as either failed or canceled.
+- [Non-retryable Nexus errors](/references/failures#non-retryable-nexus-errors).
+
+For example, if an unknown error is returned from a Nexus handler it will be classified as a retryable error.
+
+When a Nexus handler attempts to start an Operation and returns an error:
+- If a [non-retryable error](/references/failures#non-retryable-nexus-errors) is returned, the caller Workflow will have a [NexusOperationFailed](/references/events#nexusoperationfailed) event added to it's Workflow History.
+- If a [retryable error](/references/failures#retryable-nexus-errors) is returned, the Nexus Machinery will automatically retry the [Nexus Task](/workers#nexus-task), indefinitely.
+These errors are visible to the caller Workflow as part of integrated execution debugging.
+
+See [Errors in Nexus Operations](/references/failures#errors-in-nexus-operations) for additional details.
+
+## Automatic Retries
+
+All retryable errors are automatically retried by the Nexus Machinery, as discussed in [Automatic Retries](/nexus/services-operations#automatic-retries).
+
+:::note
+This differs from how Activities and Workflows handle errors and retries:
+
+- [Errors in Activities](/references/failures#errors-in-activities)
+- [Non-retryable errors](/references/failures#non-retryable)
+
+:::
+
+The Nexus Machinery uses the default Retry Policy’s maximum attempts and expiration interval, with exponential backoff.
+
+See [Nexus Automatic Retries](/nexus/services-operations#automatic-retries) for additional details.
+
+## Nexus Error Handling in Caller Workflows
+
+A Nexus Operation Failure is delivered to the Workflow Execution when a Nexus Operation fails.
+It contains information about the failure and the Nexus Operation Execution; for example, the Nexus Operation name and Nexus Operation Id.
+The reason for the failure is in the message and in the underlying cause is typically an Application Error or a Canceled Error.
+
+See [Nexus Operation Failures](/references/failures#nexus-operation-failure) for additional details.

@@ -312,10 +312,10 @@ A common code package, schema, or documentation that a Caller can use to obtain 
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### Nexus API Registry
+#### Nexus Registry
 
-The Nexus API Registry stores information about Nexus Endpoints.
-In the open source version of Temporal, the registry is scoped to a cluster, while in Temporal Cloud, it is scoped to an account.
+The Nexus Registry stores information about Nexus Endpoints.
+In the open source version of Temporal, the registry is scoped to a Cluster, while in Temporal Cloud, it is scoped to an Account.
 Endpoint names must be unique within the registry.
 When the Temporal Service dispatches a Nexus request, it resolves the request's Endpoint to a Namespace and Task Queue through the Registry.
 
@@ -337,7 +337,9 @@ Multiple Nexus Endpoints can target the same Namespace, and over time a Nexus En
 
 #### Nexus Machinery
 
-Temporal has built-in Nexus Machinery that performs the low-level Nexus RPC operations on the wire and provides an integrated Temporal SDK experience to create Nexus Services in a handler Worker and use them from a caller Workflow through a Nexus Endpoint.
+Temporal has built-in Nexus Machinery to guarantee at-least-once execution of Nexus Operations with state-machine-based invocation and completion callbacks.
+The Nexus Machinery uses [Nexus RPC](/glossary#nexus-rpc), a new protocol designed with Durable Execution in mind, to communicate across Namespace boundaries.
+Caller Workflows and Nexus handlers don't have to use Nexus RPC directly, since the Temporal SDK provides a streamlined developer experience to build, run, and use Nexus Services.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 

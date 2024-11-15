@@ -2,7 +2,7 @@
 id: nexus-services-operations
 title: Nexus Services and Operations
 sidebar_label: Services and Operations
-description: Discover how Nexus Service and Operations enable the creation of well-defined API contracts for sharing capabilities across team and Namespace boundaries, leveraging Temporal's durable and scalable infrastructure.
+description: Discover how Nexus Service and Operations enable the creation of well-defined microservice contracts for sharing capabilities across team and Namespace boundaries, leveraging Temporal's durable and scalable infrastructure.
 toc_max_heading_level: 4
 slug: /nexus/services-operations
 keywords:
@@ -31,8 +31,8 @@ This page covers the following:
 
 ## Nexus Services {#nexus-services}
 
-A Nexus Service is a named collection of arbitrary-duration Nexus Operations that provide an API contract suitable for sharing across team boundaries.
-Nexus Services are registered with a Temporal Worker that is listening on the target Namespace and Task Queue for an Endpoint.
+A Nexus Service is a named collection of arbitrary-duration Nexus Operations that provide a microservice contract suitable for sharing across team boundaries.
+Nexus Services are registered with a Temporal Worker that is polling the target Namespace and Task Queue for a Nexus Endpoint.
 
 For example, a Nexus Service is often registered in the same Worker as the underlying Workflows they abstract:
 
@@ -60,7 +60,7 @@ func main() {
 }
 ```
 
-## Operations {#nexus-operations}
+## Nexus Operations {#nexus-operations}
 
 Nexus Operations are not intrinsically durable, but can be made durable by backing them with Temporal primitives like a Workflow, Update, or Signal.
 The Temporal SDK provides helper functions to create Operations that may be registered with a Service in a Temporal Worker.
@@ -114,7 +114,7 @@ The lifecycle of an asynchronous Nexus Operation:
 
 A synchronous Nexus Operation handler has less than 10 seconds to complete, as measured from the caller's Nexus Machinery, and will then timeout with a retryable error.
 The handler should stay within the context deadline to not timeout.
-The Nexus Operation will be retried by the caller's Nexus Machinery, until the operation's Start-to-Close timeout has been exceeded.
+The Nexus Operation will be retried by the caller's Nexus Machinery, until the operation's Schedule-to-Close timeout has been exceeded.
 
 The lifecycle of a synchronous Nexus Operation, for example to do a Query or a Signal:
 
@@ -131,7 +131,7 @@ The lifecycle of a synchronous Nexus Operation, for example to do a Query or a S
    2. Retries are processed by the Nexus Machinery in the caller’s Temporal cluster and tracked as part of the caller Workflow, similar to Activities.
 3. Nexus Operation handler processes the Nexus Operation.
    1. Handler Worker gets a Nexus Task from Task Queue.
-   2. Operation handler starts a Workflow in the target cluster.
+   2. Operation handler is executed, which may use the Temporal client to Signal or Query a workflow.
    3. Operation result is returned inline, since the operation is synchronous.
    4. **`NexusOperationCompleted`** added to caller’s Event History.
 4. Caller’s Workflow code is returned the result if requested.

@@ -1,0 +1,51 @@
+---
+id: security
+slug: /cloud/nexus/security
+title: Security - Temporal Nexus
+description: Learn about security in Temporal Nexus
+sidebar_label: Security
+tags:
+  - Temporal Cloud
+  - Nexus
+keywords:
+  - Temporal Nexus
+  - Nexus
+  - security
+  - access control
+---
+
+## Access Control
+
+Nexus Endpoints are Account-scoped resources, similar to a Namespace.
+The following roles and permissions are required to manage and view Nexus Endpoints in the Nexus Registry:
+- Managing a Nexus Endpoint (create, update, delete):
+  - Developer role (or higher) and Namespace Admin permission on the Endpoint’s target Namespace
+- Viewing and browsing the full list of Nexus Endpoints in an Account: 
+  - Read-only role (or higher)
+
+The Nexus Registry allows setting Endpoint access policy on each Endpoint.
+This currently includes an allow list of caller Namespaces that can use the Endpoint at runtime.
+Endpoint access control policies are enforced at runtime:
+1. Caller's Worker authenticates with their Namespace as they do today with mTLS certificates or API keys.
+This establishes the caller's identity and caller Namespace.
+2. Caller Workflow executes a Nexus Operation on a Nexus Endpoint.
+3. Endpoint access control policy is enforced, checking if the caller Namespace is in the Endpoint allow list.
+
+
+See [Nexus Security](/nexus/security) and [Nexus Registry](/nexus/registry-endpoints#nexus-registry) for additional details.
+
+
+## Secure Routing
+
+Nexus Endpoints are only privately accessible from within a Temporal Cloud and mTLS is used for all Nexus communication, including across cloud cells and regions.
+Workers authenticate to their Namespaces through mTLS or an API key as allowed by their Namespace configuration.
+
+![NexusYourCloud](/img/nexus/nexus-connect-queue-based-workers.png)
+
+See [Nexus Secure Routing](/nexus/security#secure-routing) for additional details.
+
+## Payload Encryption
+
+For payload encryption, the DataConverter works the same for a Nexus Operation as it does for other payloads sent between a Worker and Temporal Cloud.
+
+See [Nexus Payload Encryption & Data Converter](/nexus/security#payload-encryption-data-converter) for additional details.

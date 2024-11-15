@@ -19,12 +19,12 @@ tags:
 
 This page covers the following:
 
-- [Managing Nexus Endpoints in the Nexus API Registry](#managing-nexus-endpoints)
+- [Managing Nexus Endpoints in the Nexus Registry](#managing-nexus-endpoints)
 - [Runtime Access Control](#runtime-access-control)
 - [Secure Routing](#secure-routing)
 - [Payload Encryption & Data Converter](#payload-encryption-data-converter)
 
-### Managing Nexus Endpoints in the Nexus API Registry {#managing-nexus-endpoints}
+### Managing Nexus Endpoints in the Nexus Registry {#managing-nexus-endpoints}
 
 Similar to Namespaces, a Nexus Endpoint is an account-scoped resource that is global within your Temporal Cloud account.
 
@@ -47,6 +47,8 @@ In this way, Temporal Cloud acts as a trusted broker across Namespace boundaries
 ### Secure Routing {#secure-routing}
 
 In Temporal Cloud multiple security provisions are in place to ensure it can act as a trusted broker across Namespace boundaries:
+
+![NexusYourCloud](/img/nexus/nexus-connect-queue-based-workers.png)
 
 - Workers authenticate to their Namespaces via mTLS or an API key as allowed by their Namespace configuration.
 - mTLS is used for all Nexus communication, including across cloud cells and regions, to:
