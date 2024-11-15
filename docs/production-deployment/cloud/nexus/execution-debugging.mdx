@@ -1,34 +1,30 @@
 ---
-id: operations
-slug: /cloud/nexus/operations
-title: Temporal Nexus Operations
-description: Explore how to manage and debug Nexus Operations.
-sidebar_label: Temporal Nexus Operations
+id: execution-debugging
+slug: /cloud/nexus/execution-debugging
+title: Execution Debugging - Temporal Nexus
+description: Learn about execution debugging in Temporal Nexus
+sidebar_label: Execution Debugging
 tags:
   - Temporal Cloud
   - Nexus
-  - Limits
 keywords:
-  - Temporal Nexus operations
-  - temporal cloud
-
+  - Temporal Nexus
+  - Nexus
+  - debugging
+  - execution debugging
 ---
-
-Temporal Nexus supports fully integrated observability, execution debugging, metrics, audit logs, secure mTLS routing, and payload encryption.
-
-## Execution Debugging
 
 Execution debugging with Nexus includes end-to-end executions that span:
 
 - Caller Workflows
-- One or more Nexus Operations routed within and across Namespaces
+- One or more Nexus Operations executed within and across Namespaces
 - Underlying Temporal primitives created by a Nexus Operation handler like a Workflow
 
 Multi-level Nexus calls are supported:
 
 - Workflow A → Nexus Op 1 → Workflow B → Nexus Op 2 → Workflow C
 
-### Underlying Workflow ID is returned as the Nexus Operation ID
+## Nexus Operation ID
 
 When a Nexus Operation is started by a caller Workflow that's processed by a Temporal SDK New-Workflow-Run-Operation handler, the underlying Workflow ID is returned as the Nexus Operation ID which is reflected in the Nexus Operation Started event in the caller’s Workflow history.
 
@@ -68,7 +64,7 @@ Which can then be searched using: `temporal workflow list –query`.
 
 However, this requires knowing the Endpoint’s target Namespace and manual steps, which is why we’ve created [bi-directional linking for Nexus Operations] to navigate forwards and backwards across Workflow event histories, through the Nexus Operations and underlying Temporal primitives they may create.
 
-### Pending Operations
+## Pending Operations
 
 Similar to pending Activities, pending Nexus Operations are displayed in the Workflow details page and using: `temporal workflow describe`.
 
@@ -94,7 +90,7 @@ Pending Nexus Operations: 1
   LastAttemptFailure       {"message":"unexpected response status: \"500 Internal Server Error\": internal error","applicationFailureInfo":{}}
 ```
 
-### Pending Callbacks
+## Pending Callbacks
 
 Nexus callbacks are sent from the handler’s Namespace to the caller’s Namespace to complete an asynchronous Nexus Operation.
 These show up in the UI and using: `temporal workflow describe`.
@@ -117,7 +113,7 @@ Callbacks: 1
   RegistrationTime  32 minutes ago
 ```
 
-### Bi-directional linking
+## Bi-directional linking
 
 To support deep linking for Nexus Operations that may span Workflows across Namespace boundaries, and invoke Update, Signals, and other operations on a Workflow, linking support is available for Workflow history events.
 This enables a given history event to link to events in other Workflows, including across Namespace boundaries.
@@ -133,75 +129,3 @@ This enables bi-directional navigation across Workflow histories:
 - Backwards through the Nexus Operation execution:
   - From the underlying event in the handler’s Workflow.
   - To a Nexus Operation event in the callers Workflow history.
-
-## Metrics
-
-Scheduling and processing a Nexus Operation is reported through existing cloud metrics with the following operation metric labels:
-
-- Caller Namespace
-  - RespondWorkflowTaskCompleted: This is used to schedule the Nexus Operation.
-- Handler Namespace
-  - PollNexusTaskQueue
-  - RespondNexusTaskCompleted
-  - RespondNexusTaskFailed
-
-See [Cloud Metrics](/production-deployment/cloud/metrics/reference) for additional details.
-
-## Audit Logging
-
-The following Nexus control plane actions are sent to the Audit Logging integration:
-
-- Create Nexus Endpoint: `CreateNexusEndpoint`
-- Update Nexus Endpoint: `UpdateNexusEndpoint`
-- Delete Nexus Endpoint: `DeleteNexusEndpoint`
-
-See [Audit Logging](/cloud/audit-logging) for additional details.
-
-## Rate Limiting
-
-Nexus requests (commands, polling) are counted as part of the overall Namespace RPS limit in both the caller and handler Namespaces.
-Default Namespace RPS limits are set at 1600 and automatically adjust based on recent usage (over prior 7 days).
-
-## SLOs & SLAs
-
-Nexus requests (commands, polling) have the same latency SLOs and error rate SLAs as other Worker requests in both the caller and handler Namespaces.
-
-See [Availability](/cloud/service-availability) and [SLA](/cloud/sla) for additional details.
-
-## Limits
-
-### Max Nexus Endpoints
-
-By default, each account is provisioned with a max of 10 Nexus Endpoints.
-You can request further increases beyond the initial 10 Endpoint limit by opening a support ticket.
-
-### Workflow Max Nexus Operations
-
-A single Workflow Execution can have a maximum of 30 in-flight Nexus Operations and 30 total Nexus Operations (as Public Preview does not yet remove completed Nexus Operations from mutable state).
-After that limit is reached, no more Nexus Operations will be processed for that Workflow Execution.
-
-### Nexus Request Handler Timeout
-
-Nexus Operation handlers have less than 10 seconds to process a single Nexus start or cancel request.
-Handlers should observe the context deadline and ensure they do not exceed it.
-This includes fully processing a synchronous Nexus operation and starting an asynchronous Nexus operation, for example one that starts a Workflow.
-If a handler doesn’t respond within a context deadline, a context deadline exceeded error will be tracked in the caller Workflow’s pending Nexus operations, and the Nexus Machinery will retry the Nexus request with an exponential backoff policy.
-
-### Nexus Operation Maximum Duration
-
-Each Nexus Operation has a maximum ScheduleToClose duration of 60 days, which is most applicable to asynchronous Nexus Operations that are completed with an asynchronous callback using a separate Nexus request from the handler back to the caller Namespace.
-The 60 day maximum is a limit we will look to increase at some point in the future.
-While the caller of a Nexus Operation can configure the ScheduleToClose duration to be shorter than 60 days, the maximum duration can not be extended beyond 60 days and will be capped by the server to 60 days.
-
-## Secure Routing
-
-Nexus Endpoints are only privately accessible from within a Temporal Cloud and mTLS is used for all Nexus communication, including across cloud cells and regions.
-Workers authenticate to their Namespaces through mTLS or an API key as allowed by their Namespace configuration.
-
-See [Nexus Secure Routing](/nexus/security#secure-routing) for additional details.
-
-## Payload Encryption
-
-For payload encryption, the DataConverter works the same for a Nexus Operation as it does for other payloads sent between a Worker and Temporal Cloud.
-
-See [Nexus Payload Encryption & Data Converter](/nexus/security#payload-encryption-data-converter) for additional details.

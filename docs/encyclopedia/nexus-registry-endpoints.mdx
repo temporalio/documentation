@@ -1,0 +1,62 @@
+---
+id: nexus-registry-endpoints
+title: Nexus Registry & Nexus Endpoints
+sidebar_label: Registry and Endpoints
+description: Use the Nexus Registry to manage Nexus Endpoints.
+toc_max_heading_level: 4
+slug: /nexus/registry-endpoints
+keywords:
+  - nexus registry
+  - nexus endpoints
+  - temporal nexus
+  - nexus
+tags:
+  - Nexus
+  - Concepts
+---
+
+This page covers the following:
+
+- [Nexus Endpoints](#nexus-endpoints)
+- [Nexus Registry](#nexus-registry)
+
+## Nexus Endpoints {#nexus-endpoints}
+
+A Nexus Endpoint is a reverse proxy that can route Nexus requests from a caller Workflow to an upstream target Namespace and Task Queue that a Worker is polling.
+An Endpoint decouples the caller and handler, so the caller only needs to know the Endpoint name. The Endpoint encapsulates the upstream target Namespace and Task Queue from the caller.
+A Worker handles Nexus requests by registering one or more [Nexus Services](/nexus/services-operations) and polling the Endpoint's target Task Queue.
+
+![Nexus Overview](/img/nexus-overview.png)
+
+Multiple Nexus Endpoints can target the same target Namespace.
+For example, to decompose a monolithic Namespace into multiple Nexus Endpoints you can add multiple Nexus Endpoints that target the monolithic Namespace, and then update the Endpoints to target different target Namespaces later.
+
+Adding a Nexus Endpoint to the Nexus Registry deploys the Endpoint, so it is available at runtime to serve Nexus requests.
+
+## Nexus Registry {#nexus-registry}
+
+The Nexus Registry is used to create and manage Nexus Endpoints.
+In self-hosted deployments, the registry is scoped to a Cluster; while in Temporal Cloud, it is scoped to an Account.
+Developers can advertise available Endpoints and Services, so others can find them for use in their caller Workflows.
+
+Endpoint names must be unique within the Nexus Registry.
+
+![Nexus Endpoints](/img/nexus/nexus-endpoints-ss.png)
+
+You can search the Nexus Registry for Endpoint name or an Endpoint's target Namespace to quickly find an Endpoint of interest.
+The Endpoint details page shows the target Namespace and target Task Queue along with the endpoint description rendered as markdown.
+
+![Nexus Billing](/img/nexus/nexus-billing-ss.png)
+
+Creating a Nexus Endpoint includes setting an Access Policy of caller Namespaces that can access the Endpoint.
+Even the target Namespace must be added to the Access Policy to access the Endpoint.
+Temporal Cloud also provides built-in Endpoint access control in the form of a caller Namespace allowlist, which must be set for any caller to access a Nexus Endpoint, even if in the same Namespace.
+
+![Create Nexus Endpoint](/img/nexus/create-nexus-endpoint-ss.png)
+
+Editing a Nexus Endpoint allows changing everything but the Endpoint Name.
+The target Namespace and target Task Queue can be updated without interrupting existing in-flight Nexus Operations that are already being processed, and new Nexus Operations will be routed to the updated target Namespace and target Task Queue.
+
+![Target Namespace](/img/nexus/target-namespace-ss.png)
+
+The Access Policy may also be edited to add or remove caller Namespaces that can access the Endpoint.

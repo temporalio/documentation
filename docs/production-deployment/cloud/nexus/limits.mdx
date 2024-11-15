@@ -1,0 +1,57 @@
+---
+id: limits
+slug: /cloud/nexus/limits
+title: Limits - Temporal Nexus
+description: Learn about Nexus limits including rate limits, the maximum number of Endpoints, and handler request timeouts.
+sidebar_label: Limits
+tags:
+  - Temporal Cloud
+  - Nexus
+keywords:
+  - Temporal Nexus
+  - Nexus
+  - limits
+  - rate limits
+  - max endpoints
+  - max operations
+  - request handler timeout
+  - max operation duration
+---
+
+## Rate Limiting
+
+Nexus requests (commands, polling) are counted as part of the overall Namespace RPS limit in both the caller and handler Namespaces.
+Default Namespace RPS limits are set at 1600 and automatically adjust based on recent usage (over prior 7 days).
+
+## SLOs & SLAs
+
+Nexus requests (commands, polling) have the same latency SLOs and error rate SLAs as other Worker requests in both the caller and handler Namespaces.
+
+See [Availability](/cloud/service-availability) and [SLA](/cloud/sla) for additional details.
+
+## Operational Limits
+
+Nexus has operational limits for thing like the maximum number of Nexus Endpoints and the maximum request handler timeout.
+
+### Max Nexus Endpoints
+
+By default, each account is provisioned with a max of 10 Nexus Endpoints.
+You can request further increases beyond the initial 10 Endpoint limit by opening a support ticket.
+
+### Workflow Max Nexus Operations
+
+A single Workflow Execution can have a maximum of 30 in-flight Nexus Operations and 30 total Nexus Operations (as Public Preview does not yet remove completed Nexus Operations from mutable state).
+After that limit is reached, no more Nexus Operations will be processed for that Workflow Execution.
+
+### Nexus Request Handler Timeout
+
+Nexus Operation handlers have less than 10 seconds to process a single Nexus start or cancel request.
+Handlers should observe the context deadline and ensure they do not exceed it.
+This includes fully processing a synchronous Nexus operation and starting an asynchronous Nexus operation, for example one that starts a Workflow.
+If a handler doesn’t respond within a context deadline, a context deadline exceeded error will be tracked in the caller Workflow’s pending Nexus operations, and the Nexus Machinery will retry the Nexus request with an exponential backoff policy.
+
+### Nexus Operation Maximum Duration
+
+Each Nexus Operation has a maximum ScheduleToClose duration of 60 days, which is most applicable to asynchronous Nexus Operations that are completed with an asynchronous callback using a separate Nexus request from the handler back to the caller Namespace.
+The 60 day maximum is a limit we will look to increase at some point in the future.
+While the caller of a Nexus Operation can configure the ScheduleToClose duration to be shorter than 60 days, the maximum duration can not be extended beyond 60 days and will be capped by the server to 60 days.

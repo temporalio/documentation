@@ -1,8 +1,8 @@
 ---
-id: enable-nexus
-title:  Enable Nexus
-sidebar_label: Enable Nexus
-description: Enable Nexus in your self-hosted Temporal Service. 
+id: nexus
+title:  Self-hosted Temporal Nexus
+sidebar_label: Temporal Nexus
+description: Use Nexus in your self-hosted Temporal Service. 
 toc_max_heading_level: 4
 keywords:
   - self-hosted
@@ -10,6 +10,18 @@ tags:
   - self-hosted
   - enable-nexus
 ---
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal Nexus is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+Learn why you should use Nexus in the [evaluation guide](/evaluate/nexus).
+
+:::
+
+[Temporal Nexus](/evaluate/nexus) allows you to reliably connect Temporal Applications.
+It was designed with Durable Execution in mind and enables each team to have their own Namespace for improved modularity, security, debugging, and fault isolation.
+
+## Enable Nexus
 
 Enable Nexus in your self-hosted Temporal Service by updating the server's static configuration file and enabling Nexus through dynamic config, then setting the public callback URL and allowed callback addresses.
 Nexus is only supported in single cluster setups at this time.
@@ -57,3 +69,28 @@ To enable Nexus in your deployment:
          - Pattern: "*"
            AllowInsecure: true
    ```
+
+## Build and use Nexus Services
+
+Nexus has a familiar programming model to build and use Nexus Services using the Temporal SDK.
+The [Nexus Operation lifecycle](/nexus/services-operations#operation-lifecycle) supports both synchronous and asynchronous Operations.
+Nexus Operations can be implemented with Temporal primitives, like a Workflow, or execute arbitrary code.
+
+:::tip RESOURCES
+
+- [Go SDK - Nexus quick start and code sample](/develop/go/nexus)
+- [Java SDK - Nexus quick start and code sample](/develop/java/nexus)
+
+:::
+
+## Learn more
+
+Evaluate if you should use Nexus and learn how it works.
+
+:::tip RELATED
+
+- [Evaluate](/evaluate/nexus) why you should use Nexus and watch the [Nexus keynote and demo](https://youtu.be/qqc2vsv1mrU?feature=shared&t=2082).
+- Learn how Nexus works in the [Nexus deep dive talk](https://www.youtube.com/watch?v=izR9dQ_eIe4) and [Encyclopedia](/nexus).
+- Deploy Nexus Endpoints in production with [Temporal Cloud](/cloud/nexus).
+
+:::

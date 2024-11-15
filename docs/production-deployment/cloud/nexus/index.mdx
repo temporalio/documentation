@@ -1,7 +1,7 @@
 ---
 id: index
 slug: /cloud/nexus
-title: Temporal Nexus
+title: Nexus - Temporal Cloud feature guide
 description: Discover Temporal Nexus, a powerful feature for connecting durable executions across team, namespace, region, and cloud boundaries. Nexus also enables each team to have their own namespace for improved security, troubleshooting, and blast radius isolation.
 sidebar_label: Temporal Nexus
 tags:
@@ -20,69 +20,84 @@ keywords:
 
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
-Temporal Nexus is in [Public Preview](https://docs.temporal.io/evaluate/development-production-features/release-stages#public-preview) for Temporal Cloud.
+Temporal Nexus is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+Learn why you should use Nexus in the [evaluation guide](/evaluate/nexus).
 
 :::
 
-This Temporal Nexus guide covers the following topics:
+## Using Nexus in Temporal Cloud
+[Temporal Nexus](/evaluate/nexus) allows you to reliably connect Temporal Applications.
+It was designed with Durable Execution in mind and enables each team to have their own Namespace for improved modularity, security, debugging, and fault isolation.
 
-- [Introduction to Nexus](#nexus-introduction)
-- [Using Nexus](/cloud/nexus/using-nexus)
-- [Pricing](/cloud/nexus/pricing)
-- [Getting Started](/cloud/nexus/getting-started)
-- [Operations](/cloud/nexus/operations)
+[Nexus Services](/nexus/services-operations) are exposed from a Nexus Endpoint created in the the [Nexus Registry](/nexus/registry-endpoints#nexus-registry).
+A [Nexus Endpoint](/nexus/registry-endpoints#nexus-endpoints) is a reverse proxy that decouples the caller from the handler, routes requests to upstream targets, and enforces access controls.
+Nexus Services and [Nexus Operations](/nexus/services-operations#nexus-operations) are often registered in the same Worker as the underlying Temporal primitives they abstract.
 
-## Introduction to Nexus {#nexus-introduction}
+When a caller Workflow executes a Nexus Operation, a Nexus request is sent to a Nexus Endpoint using the Endpoint name.
+The Endpoint then routes the Nexus request to an upstream target Namespace and Task Queue that is being polled by a Nexus Worker.
 
-[Temporal Nexus](/nexus) is designed to connect durable executions across team, Namespace, region, and cloud boundaries.
-It promotes a more modular architecture for sharing a subset of your team’s capabilities through well-defined service API contracts for other teams to use, that abstract underlying Temporal primitives, like Workflows, or execute arbitrary code.
+![Nexus Overview](/img/nexus-overview.png)
 
-**Why use Temporal Nexus?**
+## Build and use Nexus Services
 
-Temporal Nexus provides:
+Nexus has a familiar programming model to build and use Nexus Services using the Temporal SDK.
+The [Nexus Operation lifecycle](/nexus/services-operations#operation-lifecycle) supports both synchronous and asynchronous Operations.
+Nexus Operations can be implemented with Temporal primitives, like Workflows, or execute arbitrary code.
 
-- A fully integrated Temporal SDK experience:
-  - Run Nexus Services in a Worker, often the same Worker as underlying primitives.
-  - Use Nexus Services from a Workflow.
-  - Use the same queue-based Worker architecture, for Worker fleet load balancing.
-- Built-in Nexus machinery:
-  - Connects Nexus callers and handlers through Nexus Endpoints.
-  - Automatic retries & circuit breaking.
-- Multi-region routing across Namespaces:
-  - Secure mTLS connectivity.
-  - Endpoint access control.
-- Observability:
-  - Integrated into Workflow Event History.
-  - Bi-direction linking for end-to-end debugging.
-  - Metrics, traces, and logs.
-- Improved blast radius isolation:
-  - Each team can have its own Namespace.
-  - Per-Namespace security & rate limits.
-  - Easier troubleshooting with less noise.
+:::tip RESOURCES
+- [Go SDK - Nexus quick start and code sample](/develop/go/nexus)
+- [Java SDK - Nexus quick start and code sample](/develop/java/nexus)
+:::
 
-**Should you be using Temporal Nexus?**
+## Queue-based Worker Architecture
 
-- **Modular design** \- Temporal Nexus enables a modular design that helps structure an application for fast growth and supports teams working on their own parts independently.
-  If you want to decouple callers from handlers to enable moving a service to a different Namespace or Task Queue later, Nexus can encapsulate those implementation details to avoid breaking changes and cross-team coordination.
+Nexus uses the Temporal queue-based Worker architecture to ensure reliable execution and automatic load balancing for Nexus Operations.
+When a caller Workflow schedules a Nexus Operation, Temporal atomically transfers the Nexus request to a Nexus state machine responsible for [at-least-once](#at-least-once) invocation of the Nexus Operation.
 
-- **Teams working together** \- When there is no clear API contract between teams working in a large monolithic Namespace, it takes work to understand what Workflows can be called from other Workflows – or if a team has signed up to maintain that interface. This places a burden on both teams, and makes changes more difficult.
-  Nexus Services define a clear contract that is suitable for sharing across teams, and cleanly separates the public interface from the internal implementation, providing a more curated experience for service consumers while protecting service authors.
+In Temporal Cloud, Nexus connectivity across Namespaces is provided with a combination of robust Nexus Machinery and Temporal Cloud's global mTLS-secured Envoy mesh.
+Built-in Endpoint access controls can be configured in the Nexus Registry to limit which caller namespaces can use an Endpoint.
 
-- **Keeping things separate and secure** \- When all teams operate in the same monolithic Namespace, everything is available to everyone, and mis-behaving workers can trigger rate limits that affect all teams operating in that monolithic Namespace.
-  Temporal Nexus enables service modules to run in arbitrary Namespaces, since all Nexus requests are routed through the Nexus Endpoint to the underlying target Namespace and Task Queue. Running a Nexus Service in its own Namespace allows tighter Namespace permissions and limits the blast radius of misbehaving workers.
+Workers authenticate to thier Namespace with an mTLS client certificate or API Key.
+This establishes the caller's identity and caller namespace for Endpoint access control.
+Nexus handler Workers poll the Endpoint's target Task Queue for Nexus Tasks to process.
 
-- **Managing interactions across boundaries** \- When no clean boundary exists it is hard to manage concerns like security and rate-limiting.
-  A Nexus Endpoint is an API Proxy or Gateway, that can act as a central point of control for these concerns.
-  Temporal Cloud supports built-in rate-limiting and an Endpoint allowlist \- with a roadmap to support finer-grained rate-limiting and access-control policies suitable for external callers.
+![NexusYourCloud](/img/nexus/nexus-connect-queue-based-workers.png)
 
-- **Adapting as the application grows** \- Temporal Nexus enables a modular application design that can evolve as you grow.
-  From refactoring service implementations, changing an endpoint to point at a different target Namespace, or splitting a Worker out to a different Task Queue, Temporal Nexus enables you to hide these implementation details and provide a curated Nexus Service contract for other teams to use, so you can grow your application faster with less breaking changes, downtime, and cross-team coordination.
+For example, when you execute a synchronous Nexus Operation from a caller Workflow, the Workers communicate with their Namespace gRPC service:
+1. A command is sent from a caller Workflow to Temporal to schedule the Operation. 
+  - RespondWorkflowTaskCompleted([ScheduleNexusOperation command](/references/commands#schedulenexusoperation))
+The [Nexus Machinery](/glossary#nexus-machinery) uses [Nexus RPC](https://github.com/nexus-rpc), a new protocol designed with Durable Execution in mind, to communicate across Namespaces within an Account.
+2. Nexus requests are handled by sync matching to a Worker that is polling the Endpoint's Task Queue.
+  - PollNexusTaskQueue - to execute a [Nexus Task](/workers#nexus-task)
+3. A Nexus Operation completes successfully and returns a synchronous result.
+  - RespondNexusTaskCompleted or RespondNexusTaskFailed
+4. The result is recorded in the caller's Workflow Event History by the Nexus Machinery
+  - The caller Workflow recieves a [NexusOperationCompleted](/references/events#nexusoperationcompleted) event with the result.
+  - PollWorkflowTaskQueue([Nexus Operation event](/references/events#nexusoperationcompleted): Completed, Failed, Canceled, or TimedOut)
 
-**Advantages of Temporal Nexus:**
+## Execution Semantics
 
-- Connect durable execution within and across Namespaces.
-- Service contracts suitable for sharing across teams.
-- Abstract underlying Temporal primitives, like Workflows – or execute arbitrary code.
-- Modular design that streamlines multi-team development.
-- Improved security and blast-radius isolation with isolated Namespaces.
-- Same queue-based Worker architecture, no bespoke service deployments needed.
+### At-least-once Execution Semantics {#at-least-once}
+
+Nexus Operations, like Activities, have at-least-once execution semantics.
+The caller's Nexus Machinery will keep trying to start the Operation multiple times.
+
+### Exactly-once Execution Semantics {#exactly-once}
+
+To dedupe work and get exactly-once execution semantics, an Operation can start a Workflow with a WorkflowIdReusePolicy of RejectDuplicates which only allows one Workflow Execution per Workflow Id within a Namespace for the retention period.
+
+### Idempotency
+
+Nexus Operation handlers should be idempotent just like Activities should be idempotent as a general rule.
+It's not required in all cases, but highly recommended in general.
+
+## Learn more
+
+Evaluate if you should use Nexus and learn how it works.
+
+:::tip RELATED
+
+- [Evaluate](/evaluate/nexus) why you should use Nexus and watch the [Nexus keynote and demo](https://youtu.be/qqc2vsv1mrU?feature=shared&t=2082).
+- Learn how Nexus works in the [Nexus deep dive talk](https://www.youtube.com/watch?v=izR9dQ_eIe4) and [Encyclopedia](/nexus).
+
+:::
