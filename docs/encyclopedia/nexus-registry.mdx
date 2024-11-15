@@ -1,39 +1,20 @@
 ---
-id: nexus-registry-endpoints
-title: Nexus Registry & Nexus Endpoints
-sidebar_label: Registry and Endpoints
+id: nexus-registry
+title: Nexus Registry
+sidebar_label: Nexus Registry
 description: Use the Nexus Registry to manage Nexus Endpoints.
 toc_max_heading_level: 4
-slug: /nexus/registry-endpoints
+slug: /nexus/registry
 keywords:
   - nexus registry
-  - nexus endpoints
   - temporal nexus
   - nexus
+  - create endpoint
+  - manage endpoint
 tags:
   - Nexus
   - Concepts
 ---
-
-This page covers the following:
-
-- [Nexus Endpoints](#nexus-endpoints)
-- [Nexus Registry](#nexus-registry)
-
-## Nexus Endpoints {#nexus-endpoints}
-
-A Nexus Endpoint is a reverse proxy that can route Nexus requests from a caller Workflow to an upstream target Namespace and Task Queue that a Worker is polling.
-An Endpoint decouples the caller and handler, so the caller only needs to know the Endpoint name. The Endpoint encapsulates the upstream target Namespace and Task Queue from the caller.
-A Worker handles Nexus requests by registering one or more [Nexus Services](/nexus/services-operations) and polling the Endpoint's target Task Queue.
-
-![Nexus Overview](/img/nexus-overview.png)
-
-Multiple Nexus Endpoints can target the same target Namespace.
-For example, to decompose a monolithic Namespace into multiple Nexus Endpoints you can add multiple Nexus Endpoints that target the monolithic Namespace, and then update the Endpoints to target different target Namespaces later.
-
-Adding a Nexus Endpoint to the Nexus Registry deploys the Endpoint, so it is available at runtime to serve Nexus requests.
-
-## Nexus Registry {#nexus-registry}
 
 The Nexus Registry is used to create and manage Nexus Endpoints.
 In self-hosted deployments, the registry is scoped to a Cluster; while in Temporal Cloud, it is scoped to an Account.

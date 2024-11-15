@@ -19,9 +19,9 @@ This section covers errors and automatic retries for Temporal Nexus.
 
 Nexus Operations can end up in [completed](/references/events#nexusoperationcompleted), [failed](/references/events#nexusoperationfailed), [canceled](/references/events#nexusoperationcanceled), and [timed out](/references/events#nexusoperationtimedout) states.
 
-The Nexus Machinery breaks up the [Nexus Operation lifecycle](/nexus/services-operations#operation-lifecycle) into one or more [Nexus Tasks](/workers#nexus-task) that a Nexus handler is responsible for processing.
-For [synchronous Nexus Operations](/nexus/services-operations#synchronous-operations-lifecycle) the Nexus Machinery creates a single Nexus Task to start an Operation.
-Additional Nexus Tasks may be used for [asynchronous Nexus Operations](/nexus/services-operations#asynchronous-operation-lifecycle), for example to cancel a long-running Operation.
+The Nexus Machinery breaks up the [Nexus Operation lifecycle](/nexus/operations#operation-lifecycle) into one or more [Nexus Tasks](/workers#nexus-task) that a Nexus handler is responsible for processing.
+For [synchronous Nexus Operations](/nexus/operations#synchronous-operation-lifecycle) the Nexus Machinery creates a single Nexus Task to start an Operation.
+Additional Nexus Tasks may be used for [asynchronous Nexus Operations](/nexus/operations#asynchronous-operation-lifecycle), for example to cancel a long-running Operation.
 
 In Temporal, a user-defined Nexus handler is primarily responsible for starting a Nexus Operation.
 Nexus handlers run in a Temporal Worker and use Temporal SDK builder functions like New-Sync-Operation or New-Workflow-Run-Operation to start an Operation.
@@ -49,7 +49,7 @@ See [Errors in Nexus Operations](/references/failures#errors-in-nexus-operations
 
 ## Automatic Retries
 
-All retryable errors are automatically retried by the Nexus Machinery, as discussed in [Automatic Retries](/nexus/services-operations#automatic-retries).
+All retryable errors are automatically retried by the Nexus Machinery, as discussed in [Automatic Retries](/nexus/operations#automatic-retries).
 
 :::note
 This differs from how Activities and Workflows handle errors and retries:
@@ -61,7 +61,7 @@ This differs from how Activities and Workflows handle errors and retries:
 
 The Nexus Machinery uses the default Retry Policy’s maximum attempts and expiration interval, with exponential backoff.
 
-See [Nexus Automatic Retries](/nexus/services-operations#automatic-retries) for additional details.
+See [Nexus Automatic Retries](/nexus/operations#automatic-retries) for additional details.
 
 ## Nexus Error Handling in Caller Workflows
 

@@ -1,12 +1,11 @@
 ---
-id: nexus-services-operations
-title: Nexus Services and Operations
-sidebar_label: Services and Operations
+id: nexus-operations
+title: Nexus Operations
+sidebar_label: Nexus Operations
 description: Discover how Nexus Service and Operations enable the creation of well-defined microservice contracts for sharing capabilities across team and Namespace boundaries, leveraging Temporal's durable and scalable infrastructure.
 toc_max_heading_level: 4
-slug: /nexus/services-operations
+slug: /nexus/operations
 keywords:
-  - Nexus Services
   - Nexus Operations
   - Operation Lifecycle
   - durable execution
@@ -22,45 +21,13 @@ tags:
 
 This page covers the following:
 
-- [Nexus Services](#nexus-services)
-- [Nexus Operations](#nexus-services)
-  - [Operation Lifecycle](#operation-lifecycle)
-  - [Automatic Retries](#automatic-retries)
-  - [Execution Semantics](#execution-semantics)
-  - [Versioning](#versioning)
+- [Introduction](#introduction)
+- [Operation Lifecycle](#operation-lifecycle)
+- [Automatic Retries](#automatic-retries)
+- [Execution Semantics](#execution-semantics)
+- [Versioning](#versioning)
 
-## Nexus Services {#nexus-services}
-
-A Nexus Service is a named collection of arbitrary-duration Nexus Operations that provide a microservice contract suitable for sharing across team boundaries.
-Nexus Services are registered with a Temporal Worker that is polling the target Namespace and Task Queue for a Nexus Endpoint.
-
-For example, a Nexus Service is often registered in the same Worker as the underlying Workflows they abstract:
-
-```go
-func main() {
-	c, err := client.Dial(client.Options{})
-	if err != nil {
-		log.Fatalln("Unable to create client", err)
-	}
-	defer c.Close()
-
-	w := worker.New(c, taskQueue, worker.Options{})
-	service := nexus.NewService(service.HelloServiceName)
-	err = service.Register(handler.EchoOperation, handler.HelloOperation)
-	if err != nil {
-		log.Fatalln("Unable to register operations", err)
-	}
-	w.RegisterNexusService(service)
-	w.RegisterWorkflow(handler.HelloHandlerWorkflow)
-
-	err = w.Run(worker.InterruptCh())
-	if err != nil {
-		log.Fatalln("Unable to start worker", err)
-	}
-}
-```
-
-## Nexus Operations {#nexus-operations}
+### Introduction
 
 Nexus Operations are not intrinsically durable, but can be made durable by backing them with Temporal primitives like a Workflow, Update, or Signal.
 The Temporal SDK provides helper functions to create Operations that may be registered with a Service in a Temporal Worker.
@@ -69,7 +36,7 @@ Calling a Nexus Operation from a caller Workflow presents as a non-blocking, arb
 This schedules the Operation with the caller’s Temporal Service and does not block caller Workflow execution, unless the caller Workflow chooses to do so by waiting for the Nexus Operation to be started or in a final state (completed, failed, timed out, canceled).
 The caller’s Nexus Machinery is responsible for making the underlying Nexus RPC calls and updating the caller’s Workflow history with the result.
 
-### Operation Lifecycle {#operation-lifecycle}
+### Nexus Operation Lifecycle {#operation-lifecycle}
 
 Nexus Operation handlers are created with the Temporal SDK:
 
@@ -110,7 +77,7 @@ The lifecycle of an asynchronous Nexus Operation:
    2. `NexusOperationCompleted` is added to caller’s Event History.
 5. Caller’s Workflow code is returned the result if requested.
 
-#### Synchronous Operations Lifecycle
+#### Synchronous Operation Lifecycle
 
 A synchronous Nexus Operation handler has less than 10 seconds to complete, as measured from the caller's Nexus Machinery, and will then timeout with a retryable error.
 The handler should stay within the context deadline to not timeout.
