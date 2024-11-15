@@ -216,7 +216,8 @@ See also: [Self-hosted Temporal Service defaults](/self-hosted-guide/defaults).
 
 **What is the maximum length for identifiers?**
 
-Identifiers such as Workflow Id, Workflow Type, and Task Queue names have a maximum length of 1,000 characters in UTF-8 format.
+Identifiers such as Workflow Id, Workflow Type, and Task Queue names have a maximum length of 1,000 bytes, unicode
+characters may take up more than a byte each.
 
 ### Per message gRPC limit
 
