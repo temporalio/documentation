@@ -29,9 +29,9 @@ Learn why you should use Nexus in the [evaluation guide](/evaluate/nexus).
 [Temporal Nexus](/evaluate/nexus) allows you to reliably connect Temporal Applications.
 It was designed with Durable Execution in mind and enables each team to have their own Namespace for improved modularity, security, debugging, and fault isolation.
 
-[Nexus Services](/nexus/services-operations) are exposed from a Nexus Endpoint created in the the [Nexus Registry](/nexus/registry-endpoints#nexus-registry).
-A [Nexus Endpoint](/nexus/registry-endpoints#nexus-endpoints) is a reverse proxy that decouples the caller from the handler, routes requests to upstream targets, and enforces access controls.
-Nexus Services and [Nexus Operations](/nexus/services-operations#nexus-operations) are often registered in the same Worker as the underlying Temporal primitives they abstract.
+[Nexus Services](/nexus/services) are exposed from a Nexus Endpoint created in the the [Nexus Registry](/nexus/registry).
+A [Nexus Endpoint](/nexus/endpoints) is a reverse proxy that decouples the caller from the handler, routes requests to upstream targets, and enforces access controls.
+Nexus Services and [Nexus Operations](/nexus/operations) are often registered in the same Worker as the underlying Temporal primitives they abstract.
 
 When a caller Workflow executes a Nexus Operation, a Nexus request is sent to a Nexus Endpoint using the Endpoint name.
 The Endpoint then routes the Nexus request to an upstream target Namespace and Task Queue that is being polled by a Nexus Worker.
@@ -41,7 +41,7 @@ The Endpoint then routes the Nexus request to an upstream target Namespace and T
 ## Build and use Nexus Services
 
 Nexus has a familiar programming model to build and use Nexus Services using the Temporal SDK.
-The [Nexus Operation lifecycle](/nexus/services-operations#operation-lifecycle) supports both synchronous and asynchronous Operations.
+The [Nexus Operation lifecycle](/nexus/operations#operation-lifecycle) supports both synchronous and asynchronous Operations.
 Nexus Operations can be implemented with Temporal primitives, like Workflows, or execute arbitrary code.
 
 :::tip RESOURCES
@@ -49,7 +49,7 @@ Nexus Operations can be implemented with Temporal primitives, like Workflows, or
 - [Java SDK - Nexus quick start and code sample](/develop/java/nexus)
 :::
 
-## Queue-based Worker Architecture
+## Queue-based Worker architecture
 
 Nexus uses the Temporal queue-based Worker architecture to ensure reliable execution and automatic load balancing for Nexus Operations.
 When a caller Workflow schedules a Nexus Operation, Temporal atomically transfers the Nexus request to a Nexus state machine responsible for [at-least-once](#at-least-once) invocation of the Nexus Operation.
@@ -63,17 +63,19 @@ Nexus handler Workers poll the Endpoint's target Task Queue for Nexus Tasks to p
 
 ![NexusYourCloud](/img/nexus/nexus-connect-queue-based-workers.png)
 
+:::info
+
+Temporal Cloud supports Nexus connectivity within and across cloud regions. Cross-cloud connectivity is not yet supported.
+
+:::
+
 For example, when you execute a synchronous Nexus Operation from a caller Workflow, the Workers communicate with their Namespace gRPC service:
 1. A command is sent from a caller Workflow to Temporal to schedule the Operation. 
-  - RespondWorkflowTaskCompleted([ScheduleNexusOperation command](/references/commands#schedulenexusoperation))
-The [Nexus Machinery](/glossary#nexus-machinery) uses [Nexus RPC](https://github.com/nexus-rpc), a new protocol designed with Durable Execution in mind, to communicate across Namespaces within an Account.
 2. Nexus requests are handled by sync matching to a Worker that is polling the Endpoint's Task Queue.
-  - PollNexusTaskQueue - to execute a [Nexus Task](/workers#nexus-task)
 3. A Nexus Operation completes successfully and returns a synchronous result.
-  - RespondNexusTaskCompleted or RespondNexusTaskFailed
 4. The result is recorded in the caller's Workflow Event History by the Nexus Machinery
-  - The caller Workflow recieves a [NexusOperationCompleted](/references/events#nexusoperationcompleted) event with the result.
-  - PollWorkflowTaskQueue([Nexus Operation event](/references/events#nexusoperationcompleted): Completed, Failed, Canceled, or TimedOut)
+
+See [Queue-based Worker architecture](/nexus#queue-based-worker-architecture) for additional details.
 
 ## Execution Semantics
 

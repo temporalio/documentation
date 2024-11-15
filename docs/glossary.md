@@ -306,12 +306,6 @@ A Namespace is a unit of isolation within the Temporal Platform.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### Nexus API Definitions
-
-A common code package, schema, or documentation that a Caller can use to obtain Service and Operation names as associated input/output types a Service will accept for a given Operation.
-
-<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
-
 #### Nexus Registry
 
 The Nexus Registry stores information about Nexus Endpoints.
@@ -378,6 +372,13 @@ A Nexus Service is a named collection of arbitrary-duration Nexus Operations tha
 Nexus Services are registered with a Temporal Worker that is listening on the target Namespace and Task Queue for an Endpoint.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
+
+#### Nexus Service Contract
+
+A common code package, schema, or documentation that a Caller can use to obtain Service and Operation names as associated input/output types a Service will accept for a given Operation.
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
+
 
 #### [Parent Close Policy](/encyclopedia/child-workflows#parent-close-policy)
 

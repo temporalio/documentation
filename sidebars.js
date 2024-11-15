@@ -543,8 +543,10 @@ module.exports = {
                 id: "encyclopedia/nexus",
               },
               items: [
-                "encyclopedia/nexus-registry-endpoints",
-                "encyclopedia/nexus-services-operations",
+                "encyclopedia/nexus-endpoints",
+                "encyclopedia/nexus-registry",
+                "encyclopedia/nexus-services",
+                "encyclopedia/nexus-operations",
                 "encyclopedia/nexus-security",
               ],
             },
