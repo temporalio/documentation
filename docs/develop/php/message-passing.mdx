@@ -690,8 +690,7 @@ These might include:
 
 - **The handler caused the Workflow Task to fail**:
 A [Workflow Task Failure](/references/failures#errors-in-workflows) causes the server to retry Workflow Tasks indefinitely. What happens to your Update request depends on its stage:
-  - If the request has been admitted by the server but not accepted or rejected by the Workflow, you receive a [`WorkflowUpdateResultException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowUpdateResultException.html).
-  - If the request has been rejected by the workflow, you receive a  [`WorkflowUpdateException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowUpdateException.html).
+  - If the request hasn't been accepted by the server, you receive a [`WorkflowUpdateException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowUpdateException.html).
   - If the request has been accepted, it is durable.
   Once the Workflow is healthy again after a code deploy, use an [`UpdateHandle`](https://php.temporal.io/classes/Temporal-Client-Update-UpdateHandle.html) to fetch the Update result.
 
