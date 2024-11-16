@@ -20,8 +20,8 @@ Temporal Nexus is available in [Public Preview](/evaluate/development-production
 
 ## Connect Temporal Applications
 
-[Temporal Nexus](/evaluate/nexus) is a feature of the Temporal Platform designed to connect Temporal Applications across team, Namespace, region, and cloud boundaries.
-It promotes a more modular architecture for sharing a subset of your team’s capabilities via well-defined microservice contracts for other teams to use, that abstract underlying Temporal primitives, like Workflows, or execute arbitrary code.
+[Temporal Nexus](/evaluate/nexus) is a feature of the Temporal Platform designed to connect Temporal Applications across team, Namespace, and region boundaries.
+It promotes a more modular architecture for sharing a subset of your team’s capabilities with well-defined microservice contracts for other teams to use, that abstract underlying Temporal primitives, like Workflows, or execute arbitrary code.
 
 Nexus provides an integrated Temporal SDK experience, built-in Nexus Machinery, and first-class observability. It enables each team to have their own Namespace for improved security, troubleshooting, and blast radius isolation.
 
@@ -70,29 +70,24 @@ This establishes the caller's identity and caller namespace for Endpoint access 
 Nexus handler Workers poll the Endpoint's target Task Queue for Nexus Tasks to process.
 
 Nexus connectivity across Namespaces is provided by the Temporal Platform. 
-In Temporal Cloud this is achieved with robust, built-in Temporal Nexus Machinery and Temporal Cloud's global mTLS-secured Envoy mesh.
-In a self-hosted deployments Temporal Server provides Nexus connectivity across Namespaces within a single Cluster.
+Temporal Cloud connects all Namespaces within an Account and provides built-in Endpoint access controls.
+Self-hosted deployments support Nexus connectivity within a single Cluster and you can implement a custom Authorizer.
 
 ![NexusYourCloud](/img/nexus/nexus-connect-queue-based-workers.png)
 
-:::info
+When you execute a [Nexus Operation](/nexus/operations) in a caller Workflow, the caller and handler Workers interact with Temporal as follows:
 
-Temporal Cloud supports Nexus connectivity within and across cloud regions. Cross-cloud connectivity is not yet supported.
-
-:::
-
-For example, when you execute a [Nexus Operation](/nexus/operations) from a caller Workflow:
-1. **Caller Workflow schedules a Nexus Operation** \- 
-RespondWorkflowTaskCompleted([ScheduleNexusOperation command](/references/commands#schedulenexusoperation)) is used to schedule the Nexus Operation which atomically hands off execution to the caller's Nexus Machinery.
-2. **Nexus handler polls an Endpoint's Task Queue for Nexus Tasks to process** \-
-PollNexusTaskQueue is used to recieve a [Nexus Task](/workers#nexus-task) to process.
-3. **Nexus handler processes the Nexus Task and return a Task result** \-
-RespondNexusTaskCompleted or RespondNexusTaskFailed is used to return the Nexus Task result.
-For [asynchronous Nexus Operations](/nexus/operations) Nexus handlers will return a Nexus Operation ID, that can be used to perform additional actions like canceling an Operation.
-For [synchronous Nexus Operations](/nexus/operations#synchronous-operation-lifecycle) Nexus handlers return the Operation result directly.
-4. **The Nexus Task response is recorded as a Nexus event in the caller's Workflow History** \-
-Nexus Machinery records the [NexusOperation event](/references/events#nexusoperationstarted) in the caller's Workflow History.
-Caller Workflow recieves the [Nexus Operation event](/references/events#nexusoperationstarted)) from PollWorkflowTaskQueue, which may be Started, Completed, Failed, Canceled, or TimedOut
+1. **RespondWorkflowTaskCompleted([ScheduleNexusOperation command](/references/commands#schedulenexusoperation))** \-
+is used by the caller Worker to schedule a Nexus Operation, which atomically hands off execution to the caller's Nexus Machinery.
+2. **PollNexusTaskQueue** \-
+is used by the handler Worker to recieve a [Nexus Task](/workers#nexus-task) to process, for example to start a Nexus Operation.
+3. **RespondNexusTaskCompleted** or **RespondNexusTaskFailed** \-
+is used by the handler Worker to return the Nexus Task result.
+[Asynchronous Nexus Operations](/nexus/operations) will return a Nexus Operation ID, that can be used to perform additional actions like canceling an Operation.
+[Synchronous Nexus Operations](/nexus/operations#synchronous-operation-lifecycle) will return the Operation result directly.
+The caller's Nexus Machinery recieves the result and records a [NexusOperation event](/references/events#nexusoperationstarted) in the caller's Workflow History.
+4. **PollWorkflowTaskQueue** \-
+is used by the caller Worker to recieve a Workflow Task with the [Nexus Operation event](/references/events#nexusoperationstarted) which may be Started, Completed, Failed, Canceled, or TimedOut.
 
 ## Built-in Nexus Machinery
 

@@ -324,7 +324,7 @@ A Nexus Async Completion Callback is the completion callback for an asynchronous
 #### Nexus Endpoint
 
 A Nexus Endpoint is an API proxy that can serve one or more Nexus Services from a target such as a Worker listening on a target Temporal Namespace and target Task Queue.
-This allows service providers to present a clean API contract and hide the underlying implementation, which may consist of many internal Workflows.
+This allows service providers to present a clean service contract and hide the underlying implementation, which may consist of many internal Workflows.
 Multiple Nexus Endpoints can target the same Namespace, and over time a Nexus Endpoint will be able to span multiple Namespaces with service routing rules.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
@@ -368,8 +368,8 @@ It supports arbitrary-duration Operations that extend beyond a traditional RPC â
 
 #### Nexus Service
 
-A Nexus Service is a named collection of arbitrary-duration Nexus Operations that provide an API contract suitable for sharing across team boundaries.
-Nexus Services are registered with a Temporal Worker that is listening on the target Namespace and Task Queue for an Endpoint.
+A Nexus Service is a named collection of arbitrary-duration Nexus Operations that provide a microservice contract suitable for sharing across team and application boundaries.
+Nexus Services are registered with a Temporal Worker that is polling a Nexus Endpoint's target Namespace and Task Queue.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
