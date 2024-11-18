@@ -308,9 +308,9 @@ A Namespace is a unit of isolation within the Temporal Platform.
 
 #### Nexus Registry
 
-The Nexus Registry stores information about Nexus Endpoints.
-In the open source version of Temporal, the registry is scoped to a Cluster, while in Temporal Cloud, it is scoped to an Account.
-Endpoint names must be unique within the registry.
+The Nexus Registry manages Nexus Endpoints and provides lookup services for resolving Nexus requests at runtime.
+In the open source version of Temporal, the Registry is scoped to a Cluster, while in Temporal Cloud, it is scoped to an Account.
+Endpoint names must be unique within the Registry.
 When the Temporal Service dispatches a Nexus request, it resolves the request's Endpoint to a Namespace and Task Queue through the Registry.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
@@ -323,7 +323,8 @@ A Nexus Async Completion Callback is the completion callback for an asynchronous
 
 #### Nexus Endpoint
 
-A Nexus Endpoint is an API proxy that can serve one or more Nexus Services from a target such as a Worker listening on a target Temporal Namespace and target Task Queue.
+A Nexus Endpoint is a reverse proxy that can serve one or more Nexus Services.
+It routes Nexus requests to a target Namespace and Task Queue, that a Nexus Worker is polling.
 This allows service providers to present a clean service contract and hide the underlying implementation, which may consist of many internal Workflows.
 Multiple Nexus Endpoints can target the same Namespace, and over time a Nexus Endpoint will be able to span multiple Namespaces with service routing rules.
 
