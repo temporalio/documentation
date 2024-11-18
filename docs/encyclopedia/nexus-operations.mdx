@@ -35,7 +35,7 @@ This page covers the following:
 
 ## Arbitrary-duration operations
 
-Nexus Operations are arbitrary-duration operations that may be synchronous or asynchronous, short-lived or long-lived, and are used to connect Temporal Applications within and across Namespaces, clusters, regions, and clouds.
+[Nexus Operations](/glossary#nexus-operation) are arbitrary-duration operations that may be synchronous or asynchronous, short-lived or long-lived, and are used to connect Temporal Applications within and across Namespaces, clusters, regions, and clouds.
 
 Unlike a traditional RPC, an asynchronous Nexus Operation has an operation identity that can be used to re-attach to a long-lived Nexus Operation, for example, one backed by a Temporal Workflow.
 Nexus Operations support a uniform interface to get the status of an operation or its result, receive a completion callback, or cancel the operation – all of which are fully integrated into the Temporal Platform.
@@ -66,7 +66,7 @@ Operations may be implemented with Temporal primitives or execute arbitrary code
 ## Nexus Operation Lifecycle {#operation-lifecycle}
 
 When you execute a Nexus Operation from a caller Workflow using the Temporal SDK, a command is sent to Temporal to schedule the Nexus Operation which is atomically handed off to the Nexus Machinery.
-The Nexus Machinery uses state-machine-based invocation and completion callbacks to ensure [at-least-once](#at-least-once-execution-semantics-and-idempotency) execution of a Nexus Operation and reliable delivery of the result.
+The [Nexus Machinery](/glossary#nexus-machinery) uses state-machine-based invocation and completion callbacks to ensure [at-least-once](#at-least-once-execution-semantics-and-idempotency) execution of a Nexus Operation and reliable delivery of the result.
 
 ![Nexus Overview](/img/nexus-overview.png)
 
