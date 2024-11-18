@@ -17,6 +17,12 @@ tags:
 
 ---
 
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal Nexus is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
+
+:::
+
 This page covers the following:
 
 - [Managing Nexus Endpoints in the Nexus Registry](#managing-nexus-endpoints)
@@ -26,21 +32,23 @@ This page covers the following:
 
 :::info
 
-The page focuses on Nexus Security in Temporal Cloud. For self-hosted deployments you can implement custom Authorizers.
+The page focuses on Nexus Security in Temporal Cloud. For self-hosted deployments you can implement [custom Authorizers](/self-hosted-guide/security#authorizer-plugin).
 
 :::
 
 ### Managing Nexus Endpoints in the Nexus Registry {#managing-nexus-endpoints}
 
-Similar to Namespaces, a Nexus Endpoint is an account-scoped resource that is global within your Temporal Cloud account.
+In Temporal Cloud, a Nexus Endpoint is an account-scoped resource that is global within your Temporal Cloud Account, similar to Namespaces.
 
 Any Developer in an account, who is also a Namespace Admin on the endpoint’s target Namespace, can manage (create/update/delete) a Nexus Endpoint.
 
 All users with a Read-only role or higher in an account, can view and browse the full list of Endpoints.
 
+See [Nexus Registry](/nexus/registry) for how to manage Nexus Endpoints.
+
 ### Runtime Access Control {#runtime-access-control}
 
-Access to a Nexus Endpoint is controlled by the endpoint's access control policy (allowlist of caller Namespaces) for each endpoint in the Nexus API registry.
+In Temporal Cloud, access to a Nexus Endpoint is controlled by the Endpoint's access control policy (allowlist of caller Namespaces) for each Endpoint in the Nexus Registry.
 
 Workers in each Namespace may authenticate with Temporal Cloud as they do now with mTLS certificates or API key as allowed by the caller Namespace.
 Once a Worker has authenticated it can send Nexus Operation commands to Temporal Cloud using a Temporal SDK to start a Nexus Operation in a different Namespace.
@@ -49,6 +57,8 @@ For example, in the Temporal Go SDK a caller Workflow would use `nexusClient.Exe
 To process a `ScheduleNexusOperation` command from a caller Workflow, Temporal Cloud obtains the handler Namespace and Task Queue for the handler endpoint, and restricts access by verifying that the caller’s Namespace is in the endpoint’s allowlist.
 
 In this way, Temporal Cloud acts as a trusted broker across Namespace boundaries, and relies on authenticated workers in each Namespace.
+
+See [Nexus Registry](/nexus/registry#configure-access-control) for how to manage Nexus Endpoints access controls in Temporal Cloud.
 
 ### Secure Routing {#secure-routing}
 
@@ -73,3 +83,15 @@ If encryption keys are used to encrypt payloads, they must be available in both 
 the caller and handler can use a shared symmetric key stored in your KMS.
 
 Please let us know if you need per-Service payload encryption or better handling for asymmetric encryption keys.
+
+## Learn more
+
+Evaluate if you should use Nexus and learn how it works.
+
+:::tip RELATED
+
+- [Evaluate](/evaluate/nexus) why you should use Nexus and watch the [Nexus keynote and demo](https://youtu.be/qqc2vsv1mrU?feature=shared&t=2082).
+- Learn how Nexus works in the [Nexus deep dive talk](https://www.youtube.com/watch?v=izR9dQ_eIe4).
+- [Additional resources](/evaluate/nexus#learn-more) to learn more about Nexus.
+
+:::

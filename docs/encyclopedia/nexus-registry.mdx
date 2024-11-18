@@ -16,28 +16,55 @@ tags:
   - Concepts
 ---
 
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal Nexus is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
+
+:::
+
+## Manage Nexus Endpoints
+
 The Nexus Registry is used to create and manage Nexus Endpoints.
 In self-hosted deployments, the registry is scoped to a Cluster; while in Temporal Cloud, it is scoped to an Account.
 Developers can advertise available Endpoints and Services, so others can find them for use in their caller Workflows.
-
 Endpoint names must be unique within the Nexus Registry.
+
+Nexus Endpoints may be managed using the Temporal UI, the CLI, or the [Cloud Ops API](/ops).
+
+:::tip RESOURCES
+- [tcld nexus](/cloud/tcld/nexus) for Temporal Cloud.
+- [temporal operator nexus](/cli/operator#nexus) for self-hosted deployments.
+:::
+
+### Search for a Nexus Endpoint
+
+
+You can search the Nexus Registry for Endpoint name or an Endpoint's target Namespace to quickly find an Endpoint of interest.
 
 ![Nexus Endpoints](/img/nexus/nexus-endpoints-ss.png)
 
-You can search the Nexus Registry for Endpoint name or an Endpoint's target Namespace to quickly find an Endpoint of interest.
 The Endpoint details page shows the target Namespace and target Task Queue along with the endpoint description rendered as markdown.
 
 ![Nexus Billing](/img/nexus/nexus-billing-ss.png)
+
+### Create a Nexus Endpoint
 
 Creating a Nexus Endpoint includes setting an Access Policy of caller Namespaces that can access the Endpoint.
 Even the target Namespace must be added to the Access Policy to access the Endpoint.
 Temporal Cloud also provides built-in Endpoint access control in the form of a caller Namespace allowlist, which must be set for any caller to access a Nexus Endpoint, even if in the same Namespace.
 
+
 ![Create Nexus Endpoint](/img/nexus/create-nexus-endpoint-ss.png)
+
+### Edit a Nexus Endpoint
 
 Editing a Nexus Endpoint allows changing everything but the Endpoint Name.
 The target Namespace and target Task Queue can be updated without interrupting existing in-flight Nexus Operations that are already being processed, and new Nexus Operations will be routed to the updated target Namespace and target Task Queue.
 
 ![Target Namespace](/img/nexus/target-namespace-ss.png)
 
-The Access Policy may also be edited to add or remove caller Namespaces that can access the Endpoint.
+### Configure Access Controls
+
+An Endpoint's Access Policy may also be edited to add or remove caller Namespaces that can access the Endpoint from caller Workflows at runtime.
+
+See [Runtime Access Control](/nexus/security#runtime-access-control) for more information.
