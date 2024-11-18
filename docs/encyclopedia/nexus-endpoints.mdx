@@ -22,7 +22,7 @@ Temporal Nexus is available in [Public Preview](/evaluate/development-production
 
 ## A reverse proxy for Nexus requests
 
-A Nexus Endpoint is a reverse proxy that can route Nexus requests from a caller Workflow to an upstream target Namespace and Task Queue that a Worker is polling.
+A [Nexus Endpoint](/glossary#nexus-endpoint) is a reverse proxy that can route Nexus requests from a caller Workflow to an upstream target Namespace and Task Queue that a Worker is polling.
 An Endpoint decouples the caller and handler, so the caller only needs to know the Endpoint name. The Endpoint encapsulates the upstream target Namespace and Task Queue from the caller.
 A Worker handles Nexus requests by registering one or more [Nexus Services](/nexus/services) and polling the Endpoint's target Task Queue.
 
