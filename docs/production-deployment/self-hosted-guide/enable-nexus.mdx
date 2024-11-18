@@ -1,0 +1,59 @@
+---
+id: enable-nexus
+title:  Enable Nexus
+sidebar_label: Enable Nexus
+description: Enable Nexus in your self-hosted Temporal Service. 
+toc_max_heading_level: 4
+keywords:
+  - self-hosted
+tags:
+  - self-hosted
+  - enable-nexus
+---
+
+Enable Nexus in your self-hosted Temporal Service by updating the server's static configuration file and enabling Nexus through dynamic config, then setting the public callback URL and allowed callback addresses.
+Nexus is only supported in single cluster setups at this time.
+For additional information on operating Nexus workloads in your self-hosted cluster, see [Nexus Architecture](https://github.com/temporalio/temporal/blob/main/docs/architecture/nexus.md).
+
+:::note
+Replace `$PUBLIC_URL` with a URL value that's accessible to external callers or internally within the cluster.
+Currently, external Nexus calls are considered experimental so it should be safe to use the address of an internal load balancer for the Frontend Service.
+:::
+
+To enable Nexus in your deployment:
+
+1. Ensure that the server's static configuration file enables the HTTP API.
+
+   ```yaml
+   services:
+     frontend:
+       rpc:
+         # NOTE: keep other fields as they were
+         httpPort: 7243
+
+   clusterMetadata:
+     # NOTE: keep other fields as they were
+     clusterInformation:
+       active:
+         # NOTE: keep other fields as they were
+         httpAddress: $PUBLIC_URL:7243
+   ```
+
+2. Enable Nexus through dynamic config, set the public callback URL, and set the allowed callback addresses.
+
+   ```yaml
+   system.enableNexus:
+     - value: true
+   component.nexusoperations.callback.endpoint.template:
+     # The URL must be publicly accessible if the callback is meant to be called by external services.
+     # When using Nexus for cross namespace calls, the URL's host is irrelevant as the address is resolved using
+     # membership. The URL is a Go template that interpolates the `NamepaceName` and `NamespaceID` variables.
+     - value: https://$PUBLIC_URL:7243/namespaces/{{.NamespaceName}}/nexus/callback
+   component.callbacks.allowedAddresses:
+     # This list is a security mechanism for limiting which callback URLs are accepted by the server.
+     # Attackers may leverage the callback mechanism to force the server to call arbitrary URLs.
+     # The config below is only recommended for development, tune this to your requirements.
+     - value:
+         - Pattern: "*"
+           AllowInsecure: true
+   ```

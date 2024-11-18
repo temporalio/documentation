@@ -4,11 +4,14 @@ title: Service health
 sidebar_label: Service health
 description: Use Temporal Cloud metrics to monitor your production deployment Service health.
 toc_max_heading_level: 4
-tags:
+keywords:
   - temporal-cloud
   - metrics
   - observability
   - health
+tags:
+  - Temporal Cloud
+  - Observability
 ---
 
 Temporal Cloud metrics help monitor the Service health of production deployments.
@@ -60,7 +63,7 @@ avg_over_time((
         /
         sum(increase(temporal_cloud_v0_frontend_service_request_count{temporal_namespace=~"$namespace", operation=~"StartWorkflowExecution|SignalWorkflowExecution|SignalWithStartWorkflowExecution|RequestCancelWorkflowExecution|TerminateWorkflowExecution"}[10m]))
     )
-    
+
     or vector(1)
 
     )[1d:10m])

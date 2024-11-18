@@ -5,8 +5,8 @@ title: Getting Started with Temporal Nexus
 description: Get started with Temporal Nexus, including setting up Nexus Endpoints and integrating Nexus into your Temporal Workflows.
 sidebar_label: Getting Started
 tags:
-  - temporal cloud
-  - nexus setup
+  - Temporal Cloud
+  - Nexus
 keywords:
   - Temporal Nexus onboarding
   - setting up Nexus Endpoints
@@ -38,7 +38,7 @@ Follow these steps to enable calls across existing Namespaces:
 
 Multiple Nexus Endpoints can target a single Namespace, and then each Endpoint can be updated, one at a time, to target separate Namespaces, for an incremental migration.
 
-Once Nexus Endpoints are in place, targeting a new Namespace can be done with config changes and zero downtime. 
+Once Nexus Endpoints are in place, targeting a new Namespace can be done with config changes and zero downtime.
 New Nexus requests will be routed to the new target Namespace, and existing Nexus requests will be completed in the previous Namespace.
 
 **Follow these steps to decompose a large monolithic Namespace:**
@@ -56,7 +56,7 @@ New Nexus requests will be routed to the new target Namespace, and existing Nexu
    5. New Nexus Operations will be routed from callers in the monolithic Namespace to the new Namespace.
 4. Quiesce Nexus Operations on the previous target Namespace.
    1. Leave the previous Worker deployment running until all existing Nexus Operations in the previous Namespace have completed.
-      This includes their underlying Workflows, if any. 
+      This includes their underlying Workflows, if any.
    2. Previous Workers in the monolithic Namespace can have the service implementation removed, since it is now being served from the new Endpoint target Namespace.
 
 Please note the following points:
