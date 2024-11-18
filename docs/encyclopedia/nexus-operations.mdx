@@ -166,9 +166,9 @@ Since the caller's Nexus Machinery will keep trying to start the Operation multi
 It's not required in all cases, but highly recommended in general.
 With retries an Operation, like Activities, has at-least-once execution semantics, so an Operation should be idempotent as a general rule.
 
-### At-most-once execution semantics through an underlying WorkflowIDReusePolicy
+### Exactly-once execution semantics through an underlying WorkflowIDReusePolicy
 
-To deduplicate work and get at-most-once execution semantics, an Operation can start a Workflow with a WorkflowIDReusePolicy of RejectDuplicates which only allows one Workflow Execution per Workflow ID within a Namespace for the Retention Period.
+To deduplicate work and get exactly-once execution semantics, an Operation can start a Workflow with a WorkflowIDReusePolicy of RejectDuplicates which only allows one Workflow Execution per Workflow ID within a Namespace for the Retention Period.
 
 ## Versioning {#versioning}
 
