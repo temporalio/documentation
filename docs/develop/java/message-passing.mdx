@@ -17,15 +17,13 @@ keywords:
   - dynamic signals
   - dynamic queries
 tags:
-  - workflows
-  - messages
-  - signals
-  - queries
-  - updates
-  - dynamic-handlers
-  - sdk
-  - java-sdk
-  - developer guide
+  - Workflows
+  - Messages
+  - Signals
+  - Queries
+  - Updates
+  - Java SDK
+  - Temporal SDKs
 ---
 
 A Workflow can act like a stateful web service that receives messages: Queries, Signals, and Updates.
@@ -191,7 +189,7 @@ public class MessagePassingIntro {
 }
 ```
 
-- The Update annotation accepts arguments (`name`, and `unfinished_policy`) as described in the API reference docs for  [`@UpdateMethod`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/UpdateMethod.html).
+- The Update annotation accepts arguments (`name`, and `unfinished_policy`) as described in the API reference docs for [`@UpdateMethod`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/UpdateMethod.html).
 
 - About validators:
   - Use validators to reject an Update before it is written to History.
@@ -218,7 +216,6 @@ public class MessagePassingIntro {
 
 To send Queries, Signals, or Updates you call methods on a `WorkflowInterface`, often called the "WorkflowStub."
 
-
 Use [newWorkflowStub](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClient.html#newWorkflowStub(java.lang.Class,io.temporal.client.WorkflowOptions)) to obtain the WorkflowStub.
 
 For example:
@@ -239,6 +236,14 @@ WorkflowClient.start(workflow::getGreetings);
 ```
 
 To check the argument types required when sending messages -- and the return type for Queries and Updates -- refer to the corresponding handler method in the Workflow Definition.
+
+:::warning Using Continue-as-New and Updates
+
+- Temporal _does not_ support Continue-as-New functionality within Update handlers.
+- Complete all handlers _before_ using Continue-as-New.
+- Use Continue-as-New from your main Workflow Definition method, just as you would complete or fail a Workflow Execution.
+
+:::
 
 ### Send a Query {#send-query}
 
@@ -286,6 +291,7 @@ other.mySignalMethod();
 ```
 
 When an External Signal is sent:
+
 - A [SignalExternalWorkflowExecutionInitiated](/references/events#signalexternalworkflowexecutioninitiated) Event appears in the sender's Event History.
 - A [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the recipient's Event History.
 
@@ -351,7 +357,6 @@ To send an Update to a Workflow Execution, you can:
 
 - Send [`startUpdate`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)) to receive an [`WorkflowUpdateHandle`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowUpdateHandle.html) as soon as the Update is accepted or rejected.
 
-
   - Use this `WorkflowUpdateHandle` later to fetch your results.
   - Blocking Update handlers normally perform long-running asynchronous operations.
   - `startUpdate` only waits until the Worker has accepted or rejected the Update, not until all asynchronous operations are complete.
@@ -375,10 +380,9 @@ To obtain an Update handle, you can:
 
 You can use the `WorkflowUpdateHandle` to obtain information about the update:
 
-  - `getExecution()`: Returns the Workflow Execution that this Update was sent to.
-  - `getId()`: Returns the Update's unique ID, which can be useful for deduplication when using Continue-As-New: see [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing).
-  - `getResultAsync()`: Returns a `CompletableFuture` which can be used to wait for the Update to complete.
-
+- `getExecution()`: Returns the Workflow Execution that this Update was sent to.
+- `getId()`: Returns the Update's unique ID, which can be useful for deduplication when using Continue-As-New: see [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing).
+- `getResultAsync()`: Returns a `CompletableFuture` which can be used to wait for the Update to complete.
 
 :::info NON-TYPE SAFE API CALLS
 
@@ -407,7 +411,6 @@ It doesn't apply to pure read operations, like Queries or Update Validators.
 For additional information, see [Inject work into the main Workflow](/encyclopedia/workflow-message-passing#injecting-work-into-main-workflow), and [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing).
 
 :::
-
 
 ### Do blocking operations in handlers {#blocking-handlers}
 
@@ -466,11 +469,11 @@ For example, suppose your Workflow class has a `updateReadyToExecute` method tha
 You can use `workflow.wait_condition` in the handler to make the handler pause until the condition is met:
 
 ```java
-    @Override
-    public String setLanguage(UpdateInput input) {
-        Workflow.await(() -> this.updateReadyToExecute(input));
-        ...
-    }
+@Override
+public String setLanguage(UpdateInput input) {
+    Workflow.await(() -> this.updateReadyToExecute(input));
+    ...
+}
 ```
 
 Remember: handlers can execute before the main Workflow method starts.
@@ -510,6 +513,57 @@ public interface MyWorkflow {
 ```
 
 See [Finishing handlers before the Workflow completes](/encyclopedia/workflow-message-passing#finishing-message-handlers) for more information.
+
+### Use `@WorkflowInit` to operate on Workflow input before any handler executes
+
+Normally, your Workflows constructor won't have any parameters.
+However, if you use the `@WorkflowInit` annotation on your constructor, you can give it the same [Workflow parameters](/develop/java/core-application#workflow-parameters) as your `@WorkflowMethod`.
+The SDK will then ensure that your constructor receives the Workflow input arguments that the [Client sent](/develop/python/temporal-clients#start-workflow-execution).
+The Workflow input arguments are also passed to your `@WorkflowMethod` method -- that always happens, whether or not you use the `@WorkflowInit` annotation.
+This is useful if you have message handlers that need access to Workflow input: see [Initializing the Workflow first](/encyclopedia/workflow-message-passing#workflow-initializers).
+
+Here's an example.
+Notice that the constructor and `getGreeting` must have the same parameters:
+
+```java
+public class GreetingExample {
+    @WorkflowInterface
+    public interface GreetingWorkflow {
+        @WorkflowMethod
+        String getGreeting(String input);
+
+        @UpdateMethod
+        boolean checkTitleValidity();
+    }
+
+    public static class GreetingWorkflowImpl implements GreetingWorkflow {
+        private final String nameWithTitle;
+        private final String titleHasBeenChecked;
+        ...
+        // Note the annotation is on a public constructor
+        @WorkflowInit
+        public GreetingWorkflowImpl(String input) {
+          this.nameWithTitle = "Sir " + input;
+          this.titleHasBeenChecked = false;
+        }
+
+        @Override
+        public String getGreeting(String input) {
+          Workflow.await(() -> titleHasBeenChecked)
+          return "Hello " + nameWithTitle;
+        }
+
+        @Override
+        public boolean checkTitleValidity() {
+          // 👉 The handler is now guaranteed to see the workflow input
+          // after it has been processed by the constructor.
+          boolean isValid = activity.checkTitleValidity(nameWithTitle);
+          titleHasBeenChecked = true;
+          return isValid;
+        }
+    }
+}
+```
 
 ### Use locks to prevent concurrent handler execution {#control-handler-concurrency}
 
@@ -588,13 +642,13 @@ When working with Updates, you may encounter these errors:
 - **Update failed**: You'll receive a `WorkflowUpdateException` exception.
   There are two ways this can happen:
 
-    - The Update was rejected by an Update validator defined in the Workflow alongside the Update handler.
+  - The Update was rejected by an Update validator defined in the Workflow alongside the Update handler.
 
-    - The Update failed after having been accepted.
+  - The Update failed after having been accepted.
 
-    Update failures are like [Workflow failures](/references/failures).
-    Issues that cause a Workflow failure in the main method also cause Update failures in the Update handler.
-    These might include:
+  Update failures are like [Workflow failures](/references/failures).
+  Issues that cause a Workflow failure in the main method also cause Update failures in the Update handler.
+  These might include:
 
       - A failed Child Workflow
       - A failed Activity (if the Activity retries have been set to a finite number)
@@ -603,25 +657,25 @@ When working with Updates, you may encounter these errors:
 
 - **The handler caused the Workflow Task to fail**:
   A [Workflow Task Failure](/references/failures) causes the server to retry Workflow Tasks indefinitely. What happens to your Update request depends on its stage:
-    - If the request hasn't been accepted by the server, you receive a `FAILED_PRECONDITION` [`WorkflowServiceException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowServiceException.html) exception.
-    - If the request has been accepted, it is durable.
-      Once the Workflow is healthy again after a code deploy, use an `WorkflowUpdateHandle`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowUpdateHandle.html) to fetch the Update result.
+  - If the request hasn't been accepted by the server, you receive a `FAILED_PRECONDITION` [`WorkflowServiceException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowServiceException.html) exception.
+  - If the request has been accepted, it is durable.
+    Once the Workflow is healthy again after a code deploy, use an `WorkflowUpdateHandle`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowUpdateHandle.html) to fetch the Update result.
 
 - **The Workflow finished while the Update handler execution was in progress**:
   You'll receive a [`WorkflowServiceException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowServiceException.html) "workflow execution already completed"`.
 
-   This will happen if the Workflow finished while the Update handler execution was in progress, for example because
+  This will happen if the Workflow finished while the Update handler execution was in progress, for example because
 
-    - The Workflow was canceled or failed.
+  - The Workflow was canceled or failed.
 
-    - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/encyclopedia/workflow-message-passing#finishing-message-handlers).
+  - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/encyclopedia/workflow-message-passing#finishing-message-handlers).
 
 ### Problems when sending a Query {#query-problems}
 
 When working with Queries, you may encounter these errors:
 
 - **There is no Workflow Worker polling the Task Queue**:
-  You'll receive a [`WorkflowServiceException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowServiceException.html) on which the `cause` is a [`StatusRuntimeException`](https://grpc.github.io/grpc-java/javadoc/io/grpc/StatusRuntimeException.html) with a `status` of  `FAILED_PRECONDITION`.
+  You'll receive a [`WorkflowServiceException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowServiceException.html) on which the `cause` is a [`StatusRuntimeException`](https://grpc.github.io/grpc-java/javadoc/io/grpc/StatusRuntimeException.html) with a `status` of `FAILED_PRECONDITION`.
 
 - **Query failed**:
   You'll receive a [`WorkflowQueryException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowQueryException.html) exception if something goes wrong during a Query.

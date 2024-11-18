@@ -11,7 +11,7 @@ module.exports = {
       },
       items: [
         "evaluate/why-temporal",
-        "evaluate/major-components",
+        "evaluate/understanding-temporal",
         {
           type: "category",
           label: "Features",
@@ -22,7 +22,6 @@ module.exports = {
           },
           items: [
             "evaluate/development-production-features/core-application",
-            "evaluate/development-production-features/temporal-client",
             "evaluate/development-production-features/failure-detection",
             "evaluate/development-production-features/throughput-composability",
             "evaluate/development-production-features/nexus",
@@ -91,8 +90,10 @@ module.exports = {
             "evaluate/temporal-cloud/service-availability",
             "evaluate/temporal-cloud/limits",
             "evaluate/temporal-cloud/sla",
+            "evaluate/temporal-cloud/legacy-pricing",
             "evaluate/temporal-cloud/pricing",
-            "evaluate/temporal-cloud/support",
+            "evaluate/temporal-cloud/support", // This will become legacy support in Jan 2025, removed in Feb 2025 Its file is legacy-support
+            "evaluate/temporal-cloud/future_support", // This will become support in Jan 2025. Its file is support
           ],
         },
         "security",
@@ -165,6 +166,7 @@ module.exports = {
             "develop/java/schedules",
             "develop/java/converters-and-encryption",
             "develop/java/timers",
+            "develop/java/nexus",
             "develop/java/child-workflows",
             "develop/java/continue-as-new",
             "develop/java/side-effects",
@@ -391,6 +393,7 @@ module.exports = {
                 "production-deployment/cloud/tcld/login",
                 "production-deployment/cloud/tcld/logout",
                 "production-deployment/cloud/tcld/namespace",
+                "production-deployment/cloud/tcld/nexus",
                 "production-deployment/cloud/tcld/request",
                 "production-deployment/cloud/tcld/user",
                 "production-deployment/cloud/tcld/version",
@@ -418,6 +421,7 @@ module.exports = {
             "production-deployment/self-hosted-guide/upgrade-server",
             "production-deployment/self-hosted-guide/archival",
             "production-deployment/self-hosted-guide/multi-cluster-replication",
+            "production-deployment/self-hosted-guide/enable-nexus",
             "production-deployment/self-hosted-guide/server-frontend-api-reference",
           ],
         },

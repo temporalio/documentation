@@ -27,10 +27,9 @@ keywords:
   - request cancellation
   - workflow code examples
 tags:
-  - cancellation
-  - sdk
-  - dotnet-sdk
-  - developer guide
+  - Workflows
+  - .Net SDK
+  - Temporal SDKs
 ---
 
 This page shows how to interrupt a Workflow Execution.
@@ -42,6 +41,7 @@ You can interrupt a Workflow Execution in one of the following ways:
 
 Terminating a Workflow forcefully stops Workflow Execution.
 This action resembles killing a process.
+
 - The system records a `WorkflowExecutionTerminated` event in the Workflow History.
 - The termination forcefully and immediately stops the Workflow Execution.
 - The Workflow code gets no chance to handle termination.

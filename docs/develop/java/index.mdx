@@ -5,13 +5,10 @@ sidebar_label: Java SDK
 description: Explore Temporal Java SDK feature guides to master developing Temporal Applications. Learn how to build Workflows, Activities, and Workers, connect to Temporal Services, set up a testing suite, handle failure detection, send messages, complete Activities asynchronously, implement Versioning, use Observability, debug applications, schedule Workflows
 toc_max_heading_level: 4
 keywords:
-  - dev guide
-  - java
-  - introduction
+  - Java SDK
 tags:
-  - sdk
-  - java-sdk
-  - developer guide
+  - Java SDK
+  - Temporal SDKs
 ---
 
 
@@ -58,7 +55,6 @@ Set up the testing suite and test Workflows and Activities.
 - [Testing Workflows](/develop/java/testing-suite#test-workflows)
 - [How to Replay a Workflow Execution](/develop/java/testing-suite#replay)
 
-
 ## [Failure detection](/develop/java/failure-detection)
 
 Explore how your application can detect failures using timeouts and automatically attempt to mitigate them with retries.
@@ -89,7 +85,6 @@ Change Workflow Definitions without causing non-deterministic behavior in curren
 - [How to patch Workflows in Java](/develop/java/versioning#patching)
 - [How to use Worker Versioning in Java](/develop/java/versioning#worker-versioning)
 
-
 ## [Observability](/develop/java/observability)
 
 Configure and use the Temporal Observability APIs.
@@ -98,7 +93,6 @@ Configure and use the Temporal Observability APIs.
 - [How to setup Tracing](/develop/java/observability#tracing)
 - [How to log from a Workflow](/develop/java/observability#logging)
 - [How to use Visibility APIs](/develop/java/observability#visibility)
-
 
 ## [Debugging](/develop/java/debugging)
 
@@ -120,6 +114,17 @@ Use compression, encryption, and other data handling by implementing custom conv
 
 - [How to use a custom Payload Codec in Java](/develop/java/converters-and-encryption#custom-payload-codec)
 - [How to use custom Payload conversion](/develop/java/converters-and-encryption#custom-payload-conversion)
+
+## Temporal Nexus
+
+The [Temporal Nexus](/develop/java/nexus) feature guide shows how to use Temporal Nexus to connect Durable Executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
+
+- [Create a Nexus Endpoint to route requests from caller to handler](/develop/java/nexus#create-nexus-endpoint)
+- [Define the Nexus Service API contract](/develop/java/nexus#define-nexus-service-api-contract)
+- [Develop a Nexus Service and Operation handlers](/develop/java/nexus#develop-nexus-service-operation-handlers)
+- [Develop a caller Workflow that uses a Nexus Service](/develop/java/nexus#develop-caller-workflow-nexus-service)
+- [Make Nexus calls across Namespaces with a development Server](/develop/java/nexus#nexus-calls-across-namespaces-dev-server)
+- [Make Nexus calls across Namespaces in Temporal Cloud](/develop/java/nexus#nexus-calls-across-namespaces-temporal-cloud)
 
 ## [Child Workflows](/develop/java/child-workflows)
 
