@@ -17,6 +17,14 @@ tags:
 
 ---
 
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal Nexus is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
+
+:::
+
+## A named collection of Nexus Operations
+
 A Nexus Service is a named collection of arbitrary-duration Nexus Operations that provide a microservice contract suitable for sharing across team boundaries.
 Nexus Services are registered with a Temporal Worker that is polling the target Namespace and Task Queue for a Nexus Endpoint.
 
@@ -45,3 +53,10 @@ func main() {
 	}
 }
 ```
+
+The Nexus Service name is used when invoking a Nexus Operation from a caller workflow.
+
+:::tip RESOURCES
+- [Go SDK - build and use Nexus Services](/develop/go/nexus#develop-nexus-service-operation-handlers).
+- [Java SDK - build and use Nexus Services](/develop/java/nexus#develop-nexus-service-operation-handlers).
+:::
