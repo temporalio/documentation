@@ -36,7 +36,7 @@ Nexus handlers may return [different error types](/references/failures#nexus-err
 
 :::tip
 
-To avoid infinite retries and improve semantics, Nexus handlers should return a [specific Nexus error type](/references/failures#nexus-errors).
+To avoid infinite retries and improve semantics, custom Nexus handlers should return a [specific Nexus error type](/references/failures#nexus-errors).
 
 :::
 
@@ -56,7 +56,7 @@ See [Errors in Nexus Operations](/references/failures#errors-in-nexus-operations
 
 ## Automatic Retries
 
-All retryable errors are automatically retried by the Nexus Machinery, as discussed in [Automatic Retries](/nexus/operations#automatic-retries).
+All [retryable Nexus errors](/references/failures#nexus-errors) are automatically retried by the Nexus Machinery, as discussed in [Automatic Retries](/nexus/operations#automatic-retries).
 
 :::note
 This differs from how Activities and Workflows handle errors and retries:
