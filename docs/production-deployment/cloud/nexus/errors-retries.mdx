@@ -1,0 +1,51 @@
+---
+id: errors-retries
+slug: /cloud/nexus/errors-retries
+title: Errors and Retries - Temporal Nexus
+description: Learn about Nexus error handling and automatic retries
+sidebar_label: Errors and Retries
+keywords:
+  - nexus errors
+  - automatic retries
+  - retries
+  - nexus
+  - temporal nexus
+tags:
+  - Nexus
+---
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal Nexus is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+Learn why you should use Nexus in the [evaluation guide](/evaluate/nexus).
+
+:::
+
+## Errors in Nexus Handlers
+
+In Temporal, a user-defined Nexus handler is primarily responsible for starting a Nexus Operation.
+Nexus handlers run in a Temporal Worker and use Temporal SDK builder functions like New-Sync-Operation or New-Workflow-Run-Operation to start an Operation.
+
+Nexus handlers may return [different error types](/references/failures#nexus-errors).
+If a Workflow is started by a Nexus handler, the Workflow result is propagated as the Nexus Operation result.
+Nexus Operations can end up in [completed](/references/events#nexusoperationcompleted), [failed](/references/events#nexusoperationfailed), [canceled](/references/events#nexusoperationcanceled), and [timed out](/references/events#nexusoperationtimedout) states.
+
+See [errors in Nexus handlers](/nexus/errors-retries) and the [error reference](/references/failures#errors-in-nexus-operations) for more information.
+
+## Automatic Retries
+
+All retryable errors are automatically retried by the Nexus Machinery.
+
+:::tip
+
+To avoid infinite retries and improve semantics, custom Nexus handlers should return a [specific Nexus error type](/references/failures#nexus-errors).
+
+:::
+
+See [Nexus Automatic Retries](/nexus/errors-retries#automatic-retries) for additional details.
+
+## Nexus Error Handling in Caller Workflows
+
+A Nexus Operation Failure is delivered to the caller's Workflow Execution when a Nexus Operation fails.
+
+See [error handling in caller Workflows](/nexus/errors-retries#nexus-error-handling-in-caller-workflows) for additional details.

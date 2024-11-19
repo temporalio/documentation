@@ -1,0 +1,58 @@
+---
+id: debugging
+slug: /cloud/nexus/debugging
+title: Execution Debugging - Temporal Nexus
+description: Learn about integrated execution debugging in Temporal Nexus
+sidebar_label: Execution Debugging
+keywords:
+  - nexus
+  - temporal nexus
+  - debugging
+  - execution debugging
+tags:
+  - Nexus
+---
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal Nexus is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+Learn why you should use Nexus in the [evaluation guide](/evaluate/nexus).
+
+:::
+
+Nexus has integrated [execution debugging](/nexus/execution-debugging) in the UI and CLI.
+
+### Pending Nexus Operations
+Pending Nexus Operations are displayed in the caller Workflow details page, similar to pending Activities.
+
+For example:
+
+![Pending Operations](/img/nexus/pending-nexus-operations.png)
+
+See [pending Operations](/nexus/execution-debugging#pending-operations) for more details.
+
+### Pending Nexus Callbacks
+
+Pending Nexus Callbacks show the delivery status for completion notifications back to the caller.
+
+For example:
+![Pending callbacks](/img/nexus/nexus-callback.png)
+
+See [pending Nexus Callbacks](/nexus/execution-debugging#pending-callbacks) for more details.
+
+### Bi-directional linking
+
+Bi-directional linking across Namespaces enables navigation across the callers and handlers to walk the end-to-end execution.
+
+For example:
+
+![Bi-directional linking](/img/nexus/nexus-bi-directional-linking.png)
+
+See [bi-directional linking](/nexus/execution-debugging#bi-directional-linking) for more details.
+
+### Nexus Operation ID
+For Nexus Operations backed by a Temporal Workflow, the underlying handler Workflow ID is returned as the Nexus Operation ID.
+When an asynchronous Nexus Operation starts an underlying Workflow, the underlying Workfow ID is returned as the Nexus Operation ID.
+This is is reflected in the Nexus Operation Started event in the caller’s Workflow history.
+
+See [Nexus Operation ID](/nexus/execution-debugging#nexus-operation-id) for more details.

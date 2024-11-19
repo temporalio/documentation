@@ -342,6 +342,8 @@ module.exports = {
                 id: "production-deployment/cloud/nexus/index",
               },
               items: [
+                "production-deployment/cloud/nexus/errors-retries",
+                "production-deployment/cloud/nexus/debugging",
                 "production-deployment/cloud/nexus/security",
                 "production-deployment/cloud/nexus/observability",
                 "production-deployment/cloud/nexus/latency-availability",

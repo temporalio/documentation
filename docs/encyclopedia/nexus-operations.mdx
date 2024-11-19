@@ -151,7 +151,7 @@ As mentioned above, a synchronous Nexus Operation handler has less than 10 secon
 ## Automatic Retries {#automatic-retries}
 
 Once the caller Workflow schedules an Operation with the caller’s Temporal cluster, the caller’s Nexus Machinery keeps trying to start the Operation, with automatic retries and exponential backoff.
-If a Nexus Operation returns a [retryable error](https://github.com/temporalio/temporal/blob/13d6cd8cf7a4ba0c4660cf98f672bbd645dca3e7/components/nexusoperations/executors.go#L659) when attempting to start, the Operation it will be retried up to the [default Retry Policy’s](https://github.com/temporalio/temporal/blob/de7c8879e103be666a7b067cc1b247f0ac63c25c/components/nexusoperations/config.go#L111) max attempts and expiration interval.
+If a Nexus Operation returns a [retryable error](/references/failures#nexus-errors) when attempting to start, the Operation will be retried up to the [default Retry Policy’s](https://github.com/temporalio/temporal/blob/de7c8879e103be666a7b067cc1b247f0ac63c25c/components/nexusoperations/config.go#L111) max attempts and expiration interval.
 
 ## Execution semantics {#execution-semantics}
 
