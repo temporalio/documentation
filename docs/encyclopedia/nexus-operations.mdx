@@ -167,10 +167,13 @@ To deduplicate work and get exactly-once execution semantics, an Operation can s
 
 ## Cancelation
 
-TODO: link to pending operations in Encyclopedia
-Canceling a caller Workflow with pending Nexus Operaitons
+The request to cancel a caller Workflow is automatically propagaged to all pending Nexus Operations, and in turn any underlying handler Workflows.
+
+If an underlying handler Workflow is canceled, the Nexus Operation will report a [Canceled Failure](/references/failures#cancelled-failure) to the caller's Workflow Execution.
 
 ## Termination
+
+If the caller Workflow is Terminated all pending Nexus Operations are abandoned. If possible, consider [cancelation](#cancelation) instead.
 
 ## Versioning {#versioning}
 
