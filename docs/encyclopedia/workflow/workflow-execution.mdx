@@ -56,7 +56,7 @@ A Temporal Application is scalable because the Temporal Platform is capable of s
 
 A Replay is the method by which a Workflow Execution resumes making progress. During a Replay the Commands that are generated are checked against an existing Event History. Replays are necessary and often happen to give the effect that Workflow Executions are resumable, reliable, and durable.
 
-For more information, see [Deterministic constraints](/workflow-definition/#deterministic-constraints).
+For more information, see [Deterministic constraints](/workflow-definition#deterministic-constraints).
 
 If a failure occurs, the Workflow Execution picks up where the last recorded event occurred in the Event History.
 
@@ -273,7 +273,7 @@ The Continue-As-New feature enables developers to complete the current Workflow 
 
 The new Workflow Execution has the same Workflow Id, but a different Run Id, and has its own Event History.
 
-In the case of [Temporal Cron Jobs](#temporal-cron-job), Continue-As-New is actually used internally for the same effect.
+In the case of [Temporal Cron Jobs](/cron-job), Continue-As-New is actually used internally for the same effect.
 
 - [How to Continue-As-New using the Go SDK](/develop/go/continue-as-new)
 - [How to Continue-As-New using the Java SDK](/develop/java/continue-as-new)
