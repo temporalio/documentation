@@ -22,50 +22,47 @@ Here are some examples where Temporal is most impactful and running in productio
 
 Actions or activities involving two or more parties or things that reciprocally affect or influence each other. For example:
 
-- Payment processing [Stripe](https://www.youtube.com/watch?v=Crkcr1S-NSc)
-- Money movement [Coinbase](https://temporal.io/in-use/coinbase)
-- Content management [Box](https://temporal.io/use-cases/temporal-a-central-brain-for-box)
+- Payment processing at [Stripe](https://www.youtube.com/watch?v=Crkcr1S-NSc)
+- Money movement at [Coinbase](https://temporal.io/in-use/coinbase)
+- Content management at [Box](https://temporal.io/use-cases/temporal-a-central-brain-for-box)
 
 ### Business processes
 
 A sequence of tasks that find their end in the delivery of a service or product to a client. For example:
 
-- Bookings [Turo](https://temporal.io/replay/videos/temporal-adoption-and-integration-at-turo)
-- Orders/logistics [Maersk](https://temporal.io/replay/videos/building-a-time-machine-for-the-logistics-industry)
-- Marketing Campaigns [AirBnb](https://medium.com/airbnb-engineering/journey-platform-a-low-code-tool-for-creating-interactive-user-workflows-9954f51fa3f8)
-- Human-in-the-loop [Checkr](https://temporal.io/in-use/checkr)
+- Bookings at [Turo](https://temporal.io/replay/videos/temporal-adoption-and-integration-at-turo)
+- Orders/logistics at [Maersk](https://temporal.io/replay/videos/building-a-time-machine-for-the-logistics-industry)
+- Marketing Campaigns at [AirBnb](https://medium.com/airbnb-engineering/journey-platform-a-low-code-tool-for-creating-interactive-user-workflows-9954f51fa3f8)
+- Human-in-the-loop at [Checkr](https://temporal.io/in-use/checkr)
 
 ### Entity lifecycle
 
 Complex long-running processes that accumulate state over time. For example:
 
-- Mortgage underwriting applications [ANZ](https://temporal.io/in-use/anz-story)
-- Menu/listing versioning [Yum! Brands](https://temporal.io/replay-2023/videos/synchronizing-concurrent-workflows)
+- Mortgage underwriting applications at [ANZ](https://temporal.io/in-use/anz-story)
+- Menu versioning at [Yum! Brands](https://temporal.io/replay-2023/videos/synchronizing-concurrent-workflows)
 
 ### Operations
 
 An automated method for getting a repeatable, mundane task accomplished. For example:
 
-- Infrastructure services [DataDog](https://www.youtube.com/watch?v=Hz7ZZzafBoE)
-- Custom CI/CD [Netflix](https://temporal.io/replay-2023/videos/actor-workflows-reliably-orchestrating-thousands-of-flink-clusters-at)
-- Data pipelines/ETL
-- Provisioning
-- Backups
+- Infrastructure services at [DataDog](https://www.youtube.com/watch?v=Hz7ZZzafBoE)
+- Custom CI/CD at [Netflix](https://temporal.io/replay-2023/videos/actor-workflows-reliably-orchestrating-thousands-of-flink-clusters-at)
 
 ### AI / ML and Data Engineering
 
 AI and ML developers face challenges in system orchestration, such as managing complex data pipelines and job coordination across GPU resources. 
 Temporal's code-first approach helps build reliable services faster, making it popular among AI companies. For example:
-- orchestrating video processing, AI-generated voice libraries [Descript](https://temporal.io/blog/ai-ml-and-data-engineering-workflows-with-temporal)
-- automating data pipelines, anonymize and synchronize databases, simplifying process management [Neosync](https://temporal.io/blog/ai-ml-and-data-engineering-workflows-with-temporal)
+- Orchestrating video processing at [Descript](https://temporal.io/blog/ai-ml-and-data-engineering-workflows-with-temporal)
+- Automating data pipelines at [Neosync](https://temporal.io/blog/ai-ml-and-data-engineering-workflows-with-temporal)
 
 ## General Use Cases
 
-### Human In The Loop
+### Human in the Loop
 
-Systems requiring human interaction for certain steps, such as customer onboarding, forms, or invoice approval.
-This is just an event driven system with humans generating events, often in an unreliable way due to time, lack of interaction, or unreliable connections between the human to the rest of the system.
-Can use schedules and timers to prompt for user input, further simplifying Human In The Loop systems.
+"Human in the Loop" systems require human interaction for certain steps, such as customer onboarding, forms, or invoice approval.
+These are event driven system with humans generating events, and may be challenging to implement due to timing or unreliable connections between the human to the rest of the system.
+They can use schedules and timers to prompt for user input.
 
 **Example**: [Background checks example](https://github.com/temporalio/background-checks).
 
@@ -75,7 +72,7 @@ Can use schedules and timers to prompt for user input, further simplifying Human
 
 Temporal supports multiple languages, allowing different teams to work in their preferred languages. 
 Systems are built by people and teams with different language skills.
-An advantage of event-driven or internet-communicating (REST) systems is they can interact via a specific protocol without having to be written in the same language.
+An advantage of event-driven systems is they can interact via a specific protocol without having to be written in the same language.
 
 **Example**: [Polyglot example](https://github.com/temporalio/temporal-polyglot). An implementer can wrap existing code, a Typescript UI starting a Java Workflow which calls a Python Activity.
 
@@ -84,25 +81,12 @@ An advantage of event-driven or internet-communicating (REST) systems is they ca
 This use case is particularly relevant for scenarios like shopping cart Workflows in an eCommerce app, where you can handling long-running tasks efficiently without managing state in a separate database.
 It processes one message at a time, ensuring each message is processed only once.
 This approach addresses issues that can arise with long message processing times, which in other systems might cause consumer failover (typically with a default 5-minute message poll timeout) and potentially result in duplicate message processing by multiple consumers.
-Temporal's ability to handle extended task durations makes it well-suited for such scenarios. Designed for long tasks, supports heartbeats for Activity status.
-The heartbeat feature allows you to know that an activity is still working, providing insight into the progress of long-running processes.
+Temporal's ability to handle extended task durations makes it well-suited for such scenarios.
+The [heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) feature allows you to know that an activity is still working, providing insight into the progress of long-running processes.
 
 **Example**: [eCommerce example](https://docs.temporal.io/blog/build-an-ecommerce-app-with-temporal-part-1).
 
 **Code Sample**: [Temporal eCommerce](https://github.com/temporalio/temporal-ecommerce)
-
-### Iterator Workflow
-
-Efficiently processing large datasets by loading pages of data and using child Workflows.
-Continue-As-New can be used to manage Event History size.
-
-**Example**:
-  For example, a Workflow can load a page of account IDs through an Activity, execute child Workflows for all IDs in the page, and call Continue-As-New with the last page token.
-  The next run of the Workflow processes the subsequent page in the same manner, effectively managing parallelism.
-  This approach, using Continue-As-New, helps control the Event History size.
-  In many cases, starting all Workflows simultaneously is impractical due to their potentially long execution times.
-  Instead, using a hierarchical structure or tree of child Workflows is the preferred method.
-
 
 ## Design Patterns
 
@@ -118,14 +102,6 @@ This ensures that even in the event of a failure, the system can revert to a con
   - [To choreograph or orchestrate your saga, that is the question](https://temporal.io/blog/to-choreograph-or-orchestrate-your-saga-that-is-the-question)
   - [Saga Webinar](https://pages.temporal.io/on-demand-webinar-what-is-a-saga.html)
 
-### Pub/Sub Messaging
-
-Pub/Sub (Publish/Subscribe) messaging patterns involve broadcasting events to multiple receivers or subscribers.
-This model is commonly used in event-driven architectures where events need to be disseminated to various components or services.
-While Pub/Sub is effective for certain scenarios, it can lead to architectural challenges when misused for orchestration purposes.
-Temporal provides clear orchestration over pub/sub for coordinated Workflows.
-
-
 ### State Machine
 
 A state machine is a software design pattern used to modify a system’s behavior in response to changes in its state.
@@ -133,14 +109,3 @@ While state machines are widely used in software development, applying them to c
 Temporal simplifies the complexity of state machines by providing a structured approach to workflow development, avoiding the intricate state management code required for state machines.
 
 **Example**: [State Machine Simplified Whitepaper](https://pages.temporal.io/download-state-machines-simplified.html)
-
-### Actor Model
-
-The Actor Model is a design pattern for building distributed applications at an industrial scale. 
-It encapsulates logic, data access, and state into discrete entities called “actors,” which communicate asynchronously via messages. 
-This allows them to exist independently yet work together in concert as a unified application.
-Thus, Actors operate concurrently and independently - enhancing scalability and fault tolerance.
-
-However, implementing an Actor Model from scratch is complex. 
-Developers must build every component, handle concurrency, ensure reliable message delivery, and scale the system according to demand. 
-Temporal simplifies this process by providing a framework that supports the principles of the Actor Model, such as encapsulation, message-based communication, and concurrency.
