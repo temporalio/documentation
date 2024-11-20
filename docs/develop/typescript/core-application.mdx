@@ -1,13 +1,19 @@
 ---
 id: core-application
-title: Core application
+title: Core application - TypeScript SDK
 sidebar_label: Core application
 slug: /develop/typescript/core-application
 toc_max_heading_level: 2
 keywords:
   - core-application
 tags:
-  - core-application
+  - Activities
+  - Temporal Client
+  - Task Queues
+  - Workers
+  - Workflows
+  - TypeScript SDK
+  - Temporal SDKs
 description: The Foundations section of the Temporal Developer's guide explains essential concepts needed for building and running a Temporal Application, from installing the Temporal CLI to starting Workflow and Activity Executions.
 ---
 
@@ -38,72 +44,72 @@ This local development Temporal Service runs as a single process with zero runti
 
 **Install the Temporal CLI**
 
-Choose one of the following install methods to install the Temporal CLI.
+The Temporal CLI is available on macOS, Windows, and Linux.
 
-<Tabs>
-<TabItem value="macOS" label="macOS">
+### macOS
 
-- Install the Temporal CLI with Homebrew.
+**How to install the Temporal CLI on macOS**
 
-  ```bash
-  brew install temporal
-  ```
+Choose one of the following install methods to install the Temporal CLI on macOS:
 
-- Install the Temporal CLI with cURL.
+**Install the Temporal CLI with Homebrew**
 
-  ```bash
-  curl -sSf https://temporal.download/cli.sh | sh
-  ```
+```bash
+brew install temporal
+```
 
-- Install the Temporal CLI from CDN.
-  1. Select the platform and architecture needed.
-     - <a href="https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64">
-         Download for Darwin amd64
-       </a>
-     - <a href="https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64">
-         Download for Darwin arm64
-       </a>
-  2. Extract the downloaded archive.
-  3. Add the `temporal` binary to your PATH.
+**Install the Temporal CLI from CDN**
 
-</TabItem>
-<TabItem value="Linux" label="Linux">
+1. Select the platform and architecture needed.
 
-- Install the Temporal CLI with cURL.
+- Download for Darwin amd64: https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64
+- Download for Darwin arm64: https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64
 
-  ```bash
-  curl -sSf https://temporal.download/cli.sh | sh
-  ```
+2. Extract the downloaded archive.
 
-- Install the Temporal CLI from CDN.
-  1. Select the platform and architecture needed.
-     - <a href="https://temporal.download/cli/archive/latest?platform=linux&arch=amd64">
-         Download for Linux amd64
-       </a>
-     - <a href="https://temporal.download/cli/archive/latest?platform=linux&arch=arm64">
-         Download for Linux arm64
-       </a>
-  2. Extract the downloaded archive.
-  3. Add the `temporal` binary to your PATH.
+3. Add the `temporal` binary to your PATH.
 
-</TabItem>
-<TabItem value="Windows" label="Windows">
+### Linux
 
-- Install the Temporal CLI from CDN.
-  1. Select the platform and architecture needed and download the binary.
-     - <a href="https://temporal.download/cli/archive/latest?platform=windows&arch=amd64">
-         Download for Windows amd64
-       </a>
-     - <a href="https://temporal.download/cli/archive/latest?platform=windows&arch=arm64">
-         Download for Windows arm64
-       </a>
-  2. Extract the downloaded archive.
-  3. Add the `temporal.exe` binary to your PATH.
+**How to install the Temporal CLI on Linux**
 
-</TabItem>
-</Tabs>
+Choose one of the following install methods to install the Temporal CLI on Linux:
 
-**Start the Temporal Development Server**
+**Install the Temporal CLI with Homebrew**
+
+```bash
+brew install temporal
+```
+
+**Install the Temporal CLI from CDN**
+
+1. Select the platform and architecture needed.
+
+- Download for Linux amd64: https://temporal.download/cli/archive/latest?platform=linux&arch=amd64
+- Download for Linux arm64: https://temporal.download/cli/archive/latest?platform=linux&arch=arm64
+
+2. Extract the downloaded archive.
+
+3. Add the `temporal` binary to your PATH.
+
+### Windows
+
+**How to install the Temporal CLI on Windows**
+
+Follow these instructions to install the Temporal CLI on Windows:
+
+**Install the Temporal CLI from CDN**
+
+1. Select the platform and architecture needed and download the binary.
+
+- Download for Windows amd64: https://temporal.download/cli/archive/latest?platform=windows&arch=amd64
+- Download for Windows arm64: https://temporal.download/cli/archive/latest?platform=windows&arch=arm64
+
+2. Extract the downloaded archive.
+
+3. Add the `temporal.exe` binary to your PATH.
+
+### Start the Temporal Development Server
 
 Start the Temporal Development Server by using the `server start-dev` command.
 
@@ -707,7 +713,7 @@ This imports the individual Activities and declares the type alias for each Acti
 ### How to set the required Activity Timeouts {#required-timeout}
 
 Activity Execution semantics rely on several parameters.
-The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
+The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
 These values are set in the Activity Options.
 
 ### How to get the results of an Activity Execution {#get-activity-results}

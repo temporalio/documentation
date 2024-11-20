@@ -1,0 +1,125 @@
+---
+id: service-availability
+title: Service availability - Temporal Cloud
+sidebar_label: Availability
+description: Temporal Cloud offers high availability and low latency across multiple cloud provider regions with adjustable throughput limits and robust latency targets. Contact us for more details.
+slug: /cloud/service-availability
+toc_max_heading_level: 4
+keywords:
+  - explanation
+  - operations
+  - temporal cloud
+  - throughput
+tags:
+  - Temporal Cloud
+---
+
+The operating envelope of Temporal Cloud includes availability, regions, throughput, latency, and limits.
+If you need more details, [contact us](https://pages.temporal.io/contact-us).
+
+## Available regions {#regions}
+
+**Where is Temporal Cloud available?**
+
+Developers and applications can access Temporal Cloud from any location with internet connectivity, irrespective of where the Temporal Cloud resources (Namespaces) are located.
+
+Temporal Cloud is compatible with applications deployed in various cloud environments or data centers.
+
+To minimize latency, we advise creating your Namespace in a region geographically close to your Workers' hosting location.
+
+### AWS
+
+Temporal Cloud operates in several regions on Amazon Web Services (AWS):
+
+| Area          | Code           | Region            |
+| ------------- | -------------- | ----------------- |
+| Asia Pacific  | ap-northeast-1 | Tokyo             |
+| Asia Pacific  | ap-northeast-2 | Seoul             |
+| Asia Pacific  | ap-south-1     | Mumbai            |
+| Asia Pacific  | ap-south-2     | Hyderabad         |
+| Asia Pacific  | ap-southeast-1 | Singapore         |
+| Asia Pacific  | ap-southeast-2 | Sydney            |
+| Europe        | eu-central-1   | Frankfurt         |
+| Europe        | eu-west-1      | Ireland           |
+| Europe        | eu-west-2      | London            |
+| North America | ca-central-1   | Central Canada    |
+| North America | us-east-1      | Northern Virginia |
+| North America | us-east-2      | Ohio              |
+| North America | us-west-2      | Oregon            |
+| South America | sa-east-1      | São Paulo         |
+
+### GCP
+
+Temporal Cloud operates in two regions on Google Cloud (GCP):
+
+| Area          | Code                 | Region |
+| ------------- | -------------------- | ------ |
+| North America | us-west1             | Oregon |
+| Asia Pacific  | asia-south1          | Mumbai |
+
+## Throughput expectations {#throughput}
+
+**What kind of throughput can I get with Temporal Cloud?**
+
+Each Namespace has a rate limit, which is measured in [Actions](/cloud/pricing#action) per second (APS).
+A Namespace's default limit is set at 400 APS and automatically adjusts based on recent usage (over the prior 7 days).
+Your throughput limit will never fall below this default value.
+
+When your Action rate exceeds your quota, Temporal Cloud throttles Actions until the rate matches your quota.
+Throttling means limiting the rate at which Actions are performed to prevent the Namespace from exceeding its APS limit.
+
+Critical calls to external events, such starting or Signaling a Workflow, are always prioritized and never throttled.
+There are four priority levels for Temporal Cloud API calls:
+
+1. External events
+2. Workflow progress updates
+3. Visibility API calls
+4. Cloud operations such as Namespace creation
+
+When you exceed your APS limits, you might receive warnings about throttling.
+However, requests are never dropped, and high-priority calls are never delayed.
+Workers might take longer to complete Workflows.
+
+If your usage grows slowly, your throughput limit grows with your usage.
+At times, you may hit a maximum throughput threshold and need to switch to a higher consumption tier.
+Learn more about our tiers by visiting our [information page](/cloud/pricing#action) or [reach out to our team](https://pages.temporal.io/contact-us) to help size your number of Actions.
+Temporal Cloud can provide more than 150,000 Actions per second at its highest tier.
+
+:::tip MEASURING THROUGHPUT WITH APS AND RPS
+
+APS and RPS are both measures of throughput, but apply to different aspects of Temporal.
+
+APS, or Actions Per Second, is specific to Temporal Cloud.
+It measures the rate at which Actions, like starting or signaling a Workflow, can be performed in a specific Namespace.
+Temporal Cloud uses APS to manage and throttle Actions, preventing a Namespace from exceeding its limit.
+APS measures how many high-level operations (Actions) a user can perform in Temporal Cloud each second.
+
+RPS, or Requests Per Second, is used in the Temporal Service, both in self-hosted Temporal and Temporal Cloud.
+It measures and controls the rate of gRPC requests to the Service.
+This is a lower-level measure that manages rates at the service level, such as the Frontend, History, or Matching Services.
+
+In summary, APS is a higher-level measure to limit and mitigate Action spikes in Temporal Cloud.
+RPS is a lower-level measure to control and balance request rates at the service level.
+
+:::
+
+## Latency Service Level Objective (SLO) {#latency}
+
+**What kind of latency can I expect from Temporal Cloud?**
+
+Temporal Cloud has a p99 latency SLO of 200ms per region.
+
+In March 2024, latency over a week-long period for starting and signaling Workflow Executions was as follows:
+
+| Operation                          | p90  |  p99 |
+| :--------------------------------- | :--: | ---: |
+| `StartWorkflowExecution`           | 24ms | 54ms |
+| `SignalWorkflowExecution`          | 14ms | 40ms |
+| `SignalWithStartWorkflowExecution` | 24ms | 61ms |
+
+As Temporal continues working on improving latencies, these numbers will progressively decrease.
+
+The same SLO for normal Worker requests (commands and polling) apply to Nexus in both the caller and handler Namespaces.
+
+Latency observed from the Temporal Client is influenced by other system components like the Codec Server, egress proxy, and the network itself.
+Also, concurrent operations on the same Workflow Execution may result in higher latency.

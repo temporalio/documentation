@@ -1,9 +1,9 @@
 ---
 id: message-passing
-title: Workflow message passing - Temporal Java SDK feature guide
+title: Workflow message passing - Java SDK
 sidebar_label: Messages
-description: A Signal is a message sent to a running Workflow Execution, defined and handled in Workflow Definition code. Signals can be sent from a Temporal Client or another Workflow Execution.
-toc_max_heading_level: 4
+description: Develop with Queries, Signals, and Updates with the Temporal Java SDK.
+toc_max_heading_level: 3
 keywords:
   - temporal java signals
   - send signal from client
@@ -17,211 +17,290 @@ keywords:
   - dynamic signals
   - dynamic queries
 tags:
-  - java
-  - java-sdk
-  - workflows
-  - messages
-  - signals
-  - queries
-  - updates
-  - dynamic-handlers
+  - Workflows
+  - Messages
+  - Signals
+  - Queries
+  - Updates
+  - Java SDK
+  - Temporal SDKs
 ---
 
-## Signals {#signals}
+A Workflow can act like a stateful web service that receives messages: Queries, Signals, and Updates.
+The Workflow implementation defines these endpoints via handler methods that can react to incoming messages and return values.
+Temporal Clients use messages to read Workflow state and control execution.
+See [Workflow message passing](/encyclopedia/workflow-message-passing) for a general overview of this topic.
+This page introduces these features for the Temporal Java SDK.
 
-A [Signal](/encyclopedia/workflow-message-passing#sending-signals) is a message sent to a running Workflow Execution.
+## Write message handlers {#writing-message-handlers}
 
-Signals are defined in your code and handled in your Workflow Definition.
-Signals can be sent to Workflow Executions from a Temporal Client or from another Workflow Execution.
+Follow these guidelines when writing your message handlers:
 
-### Define a Signal {#define-signal}
+- Message handlers are defined as methods on the Workflow class, using one of the three annotations: [`@QueryMethod`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/QueryMethod.html), [`@SignalMethod`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/SignalMethod.html), and [`@UpdateMethod`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/UpdateMethod.html).
+- The parameters and return values of handlers and the main Workflow function must be [serializable](/dataconversion).
+- Prefer a single class with multiple fields over using multiple input parameters.
+  A class allows you to add fields without changing the calling signature.
 
-**How to define a Signal using the Java SDK.**
+### Query handlers {#queries}
 
-A Signal has a name and can have arguments.
-
-- The name, also called a Signal type, is a string.
-- The arguments must be [serializable](/dataconversion).
-
-The `@SignalMethod` annotation indicates that the method is used to handle and react to external Signals.
-
-```java
-@SignalMethod
-void mySignal(String signalName);
-```
-
-The method can have parameters that contain the Signal payload and must be serializable by the default Jackson JSON Payload Converter.
+A [Query](/encyclopedia/workflow-message-passing#sending-queries) is a synchronous operation that retrieves state from a Workflow Execution:
 
 ```java
-void mySignal(String signalName, Object... args);
-```
+public class MessagePassingIntro {
 
-This method does not return a value and must have a `void` return type.
+    public enum Language {
+        CHINESE,
+        ENGLISH,
+        FRENCH,
+        SPANISH,
+        PORTUGUESE,
+    }
 
-Things to consider when defining Signals:
+    public static class GetLanguagesInput {
+        public boolean includeUnsupported;
 
-- Use Workflow object constructors and initialization blocks to initialize the internal data structures if possible.
-- Signals might be received by a Workflow before the Workflow method is executed.
-  When implementing Signals in scenarios where this can occur, assume that no parts of Workflow code ran.
-  In some cases, Signal method implementation might require some initialization to be performed by the Workflow method code first—for example, when the Signal processing depends on, and is defined by the Workflow input.
-  In this case, you can use a flag to determine whether the Workflow method is already triggered; if not, persist the Signal data into a collection for delayed processing by the Workflow method.
-
-### Handle Signals in a Workflow in Java {#handle-signal}
-
-**How to handle Signals in a Workflow using the Java SDK.**
-
-Workflows listen for Signals by the Signal's name.
-
-Use the `@SignalMethod` annotation to handle Signals in the Workflow interface.
-
-The Signal type defaults to the name of the method. In the following example, the Signal type defaults to `retryNow`.
-
-```java
-@WorkflowInterface
-public interface FileProcessingWorkflow {
-
-   @WorkflowMethod
-   String processFile(Arguments args);
-
-   @SignalMethod
-   void retryNow();
-}
-```
-
-To overwrite this default naming and assign a custom Signal type, use the `@SignalMethod` annotation with the `name` parameter.
-In the following example, the Signal type is set to `retrysignal`.
-
-```java
-@WorkflowInterface
-public interface FileProcessingWorkflow {
-
-   @WorkflowMethod
-   String processFile(Arguments args);
-
-   @SignalMethod(name = "retrysignal")
-   void retryNow();
-}
-```
-
-A Workflow interface can define any number of methods annotated with `@SignalMethod`, but the method names or the `name` parameters for each must be unique.
-
-In the following example, we define a Signal method `updateGreeting` to update the greeting in the Workflow.
-We set a `Workflow.await` in the Workflow implementation to block the current Workflow Execution until the provided unblock condition is evaluated to `true`.
-In this case, the unblocking condition is evaluated to `true` when the Signal to update the greeting is received.
-
-```java
-@WorkflowInterface
-public interface HelloWorld {
-    @WorkflowMethod
-    void sayHello(String name);
-
-    @SignalMethod
-    void updateGreeting(String greeting);
-}
-```
-
-```java
-public class HelloWorldImpl implements HelloWorld {
-    private final Logger workflowLogger = Workflow.getLogger(HelloWorldImpl.class);
-    private String greeting;
-
-    @Override
-    public void sayHello(String name) {
-        int count = 0;
-        while (!"Bye".equals(greeting)) {
-            String oldGreeting = greeting;
-            Workflow.await(() -> !Objects.equals(greeting, oldGreeting));
+        public GetLanguagesInput() {
+            this.includeUnsupported = false;
         }
-        workflowLogger.info(++count + ": " + greeting + " " + name + "!");
+
+        public GetLanguagesInput(boolean includeUnsupported) {
+            this.includeUnsupported = includeUnsupported;
+        }
     }
 
-    @Override
-    public void updateGreeting(String greeting) {
-        this.greeting = greeting;
+    @WorkflowInterface
+    public interface GreetingWorkflow {
+        ...
+        // 👉 Use the @QueryMethod annotation to define a Query handler in the
+        // Workflow interface.
+        @QueryMethod
+        List<Language> getLanguages(GetLanguagesInput input);
+    }
+
+    public static class GreetingWorkflowImpl implements GreetingWorkflow {
+        ...
+        @Override
+        public List<Language> getLanguages(GetLanguagesInput input) {
+            // 👉 The Query handler returns a value: it must not mutate the Workflow state
+            // or perform blocking operations.
+            if (input.includeUnsupported) {
+                return Arrays.asList(Language.values());
+            } else {
+                return new ArrayList(greetings.keySet());
+            }
+        }
+    }
+
+}
+```
+
+- A Query handler must not modify Workflow state.
+- You can't perform blocking operations such as executing an Activity in a Query handler.
+- The Query annotation accepts an argument (`name`) as described in the API reference docs for [`@QueryMethod`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/QueryMethod.html).
+
+### Signal handlers {#signals}
+
+A [Signal](/encyclopedia/workflow-message-passing#sending-signals) is an asynchronous message sent to a running Workflow Execution to change its state and control its flow:
+
+```java
+public class MessagePassingIntro {
+
+    public static class ApproveInput {
+        private String name;
+
+        public ApproveInput() {}
+
+        public ApproveInput(String name) {
+            this.name = name;
+        }
+    }
+
+    @WorkflowInterface
+    public interface GreetingWorkflow {
+        ...
+        // 👉 Use the @SignalMethod annotation to define a Signal handler in the
+        // Workflow interface.
+        @SignalMethod
+        void approve(ApproveInput input);
+    }
+
+    public static class GreetingWorkflowImpl implements GreetingWorkflow {
+        ...
+        @Override
+        public Language setLanguage(Language language) {
+            // 👉 The Signal handler mutates the Workflow state but cannot return a value.
+            Language previousLanguage = this.language;
+            this.language = language;
+            return previousLanguage;
+        }
     }
 }
 ```
 
-This Workflow completes when the Signal updates the greeting to `Bye`.
+- The handler should not return a value.
+  The response is sent immediately from the server, without waiting for the Workflow to process the Signal.
 
-### Send a Signal from a Temporal Client {#send-signal-from-client}
+- The Signal annotation accepts arguments (`name`, and `unfinished_policy`) as described in the API reference docs for [`@SignalMethod`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/SignalMethod.html).
 
-**How to send a Signal to a Workflow Execution from a Temporal Client using the Java SDK.**
+- Signal (and Update) handlers can be blocking.
+  This allows you to use Activities, Child Workflows, durable [`Workflow.sleep`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sleep(java.time.Duration)) Timers, [`Workflow.await`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#await(java.time.Duration,java.util.function.Supplier)), and more.
+  See [Blocking handlers](#blocking-handlers) and [Workflow message passing](/encyclopedia/workflow-message-passing) for guidelines on safely using blocking Signal and Update handlers.
 
-When a Signal is sent successfully from the Temporal Client, the [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the Event History of the Workflow that receives the Signal.
+### Update handlers and validators {#updates}
 
-To send a Signal to a Workflow Execution from a Client, call the Signal method, annotated with `@SignalMethod` in the Workflow interface, from the Client code.
-
-In the following Client code example, we start the Workflow `greetCustomer` and call the Signal method `addCustomer` that is handled in the Workflow.
+An [Update](/encyclopedia/workflow-message-passing#sending-updates) is a trackable synchronous request sent to a running Workflow Execution.
+It can change the Workflow state, control its flow, and return a result.
+The sender must wait until the Worker accepts or rejects the Update.
+The sender may wait further to receive a returned value or an exception if something goes wrong:
 
 ```java
-// create a typed Workflow stub for GreetingsWorkflow
-GreetingsWorkflow workflow = client.newWorkflowStub(GreetingsWorkflow.class,
-        WorkflowOptions.newBuilder()
-                // set the Task Queue
-                .setTaskQueue(taskQueue)
-                // Workflow Id is recommended but not required
-                .setWorkflowId(workflowId)
-                .build());
+public class MessagePassingIntro {
+    @WorkflowInterface
+    public interface GreetingWorkflow {
+        ...
+        // 👉 Use the @UpdateMethod annotation to define an Update handler in the
+        // Workflow interface.
+        @UpdateMethod
+        Language setLanguage(Language language);
 
-// start the Workflow
-WorkflowClient.start(workflow::greetCustomer);
-// send a Signal to the Workflow
-Customer customer = new Customer("John", "Spanish", "john@john.com");
-workflow.addCustomer(customer); //addCustomer is the Signal method defined in the greetCustomer Workflow.
+        // 👉 Update validators are optional
+        @UpdateValidatorMethod(updateName = "setLanguage")
+        void setLanguageValidator(Language language);
+    }
+
+    public static class GreetingWorkflowImpl implements GreetingWorkflow {
+        ...
+        @Override
+        public Language setLanguage(Language language) {
+            // 👉 The Update handler can mutate the Workflow state and return a value.
+            Language previousLanguage = this.language;
+            this.language = language;
+            return previousLanguage;
+        }
+
+        @Override
+        public void setLanguageValidator(Language language) {
+            // 👉 The Update validator performs validation but cannot mutate the Workflow state.
+            if (!greetings.containsKey(language)) {
+                throw new IllegalArgumentException("Unsupported language: " + language);
+            }
+        }
+    }
+}
 ```
 
-See [Handle Signals](#handle-signal) for details on how to handle Signals in a Workflow.
+- The Update annotation accepts arguments (`name`, and `unfinished_policy`) as described in the API reference docs for [`@UpdateMethod`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/UpdateMethod.html).
 
-### Send a Signal from a Workflow {#send-signal-from-workflow}
+- About validators:
+  - Use validators to reject an Update before it is written to History.
+    Validators are always optional.
+    If you don't need to reject Updates, you can skip them.
+  - Define an Update validator with the `@UpdateValidatorMethod` annotation.
+    Use the `updateName` argument when declaring the validator to connect it to its Update.
+    The validator must return `void` and accept the same argument types as the handler.
 
-**How to send a Signal to a Workflow Execution from another Workflow Execution using the Java SDK.**
+- Accepting and rejecting Updates with validators:
+  - To reject an Update, throw an exception of any type in the validator.
+  - Without a validator, Updates are always accepted.
+- Validators and Event History:
+  - The `WorkflowExecutionUpdateAccepted` event is written into the History whether the acceptance was automatic or programmatic.
+  - When a Validator throws an error, the Update is rejected, the Update is not run, and `WorkflowExecutionUpdateAccepted` _won't_ be added to the Event History.
+    The caller receives an "Update failed" error.
 
-A Workflow can send a Signal to another Workflow, in which case it's called an _External Signal_.
+- Use [`getCurrentUpdateInfo`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/internal/sync/WorkflowInternal.html#getCurrentUpdateInfo()) to obtain information about the current Update. This includes the Update ID, which can be useful for deduplication when using Continue-As-New: see [Ensuring your messages are processed exactly once](https://docs.temporal.io/encyclopedia/workflow-message-passing#exactly-once-message-processing).
+
+- Signal (and Update) handlers can be blocking, letting them use Activities, Child Workflows, durable [`Workflow.sleep`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sleep(java.time.Duration)) Timers, [`Workflow.await`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#await(java.time.Duration,java.util.function.Supplier)) conditions, and more.
+  See [Blocking handlers](#blocking-handlers) and [Workflow message passing](/encyclopedia/workflow-message-passing) for safe usage guidelines.
+
+## Send messages {#send-messages}
+
+To send Queries, Signals, or Updates you call methods on a `WorkflowInterface`, often called the "WorkflowStub."
+
+Use [newWorkflowStub](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClient.html#newWorkflowStub(java.lang.Class,io.temporal.client.WorkflowOptions)) to obtain the WorkflowStub.
+
+For example:
+
+```java
+WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
+
+WorkflowClient client = WorkflowClient.newInstance(service);
+
+WorkflowOptions workflowOptions =
+    WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).setWorkflowId(WORKFLOW_ID).build();
+
+// Create the workflow client stub. It is used to start the workflow execution.
+GreetingWorkflow workflow = client.newWorkflowStub(GreetingWorkflow.class, workflowOptions);
+
+// Start workflow asynchronously and call its getGreeting workflow method
+WorkflowClient.start(workflow::getGreetings);
+```
+
+To check the argument types required when sending messages -- and the return type for Queries and Updates -- refer to the corresponding handler method in the Workflow Definition.
+
+:::warning Using Continue-as-New and Updates
+
+- Temporal _does not_ support Continue-as-New functionality within Update handlers.
+- Complete all handlers _before_ using Continue-as-New.
+- Use Continue-as-New from your main Workflow Definition method, just as you would complete or fail a Workflow Execution.
+
+:::
+
+### Send a Query {#send-query}
+
+Call a Query method defined within a Workflow from a `WorkflowStub` created in Client code to send a Query to a Workflow Execution:
+
+```java
+List<Language> languages = workflow.getLanguages(new GetLanguagesInput(false));
+System.out.println("Supported languages: " + languages);
+```
+
+- Sending a Query doesn’t add events to a Workflow's Event History.
+
+- You can send Queries to closed Workflow Executions within a Namespace's Workflow retention period.
+  This includes Workflows that have completed, failed, or timed out.
+  Querying terminated Workflows is not safe and, therefore, not supported.
+
+- A Worker must be online and polling the Task Queue to process a Query.
+
+### Send a Signal {#send-signal}
+
+You can send a Signal to a Workflow Execution from a Temporal Client or from another Workflow Execution.
+However, you can only send Signals to Workflow Executions that haven’t closed.
+
+#### Send a Signal from a Client {#send-signal-from-client}
+
+To send a Signal from Client code, call a Signal method on the WorkflowStub:
+
+```java
+workflow.approve(new ApproveInput("Me"));
+```
+
+- The call returns when the server accepts the Signal; it does _not_ wait for the Signal to be delivered to the Workflow Execution.
+
+- The [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the Workflow's Event History.
+
+#### Send a Signal from a Workflow {#send-signal-from-workflow}
+
+A Workflow can send a Signal to another Workflow, known as an _External Signal_.
+Use [`Workflow.newExternalWorkflowStub`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newExternalWorkflowStub(java.lang.Class,io.temporal.api.common.v1.WorkflowExecution)) in your _current_ Workflow to create an `ExternalWorkflowStub` for the other Workflow.
+Call Signal methods on the external stub to Signal the other Workflow:
+
+```java
+OtherWorkflow other = Workflow.newExternalWorkflowStub(OtherWorkflow.class, otherWorkflowID);
+other.mySignalMethod();
+```
 
 When an External Signal is sent:
 
 - A [SignalExternalWorkflowExecutionInitiated](/references/events#signalexternalworkflowexecutioninitiated) Event appears in the sender's Event History.
 - A [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the recipient's Event History.
 
-To send a Signal from within a Workflow to a different Workflow Execution, initiate an `ExternalWorkflowStub` in the implementation of the current Workflow and call the Signal method defined in the other Workflow.
+#### Signal-With-Start {#signal-with-start}
 
-The following example shows how to use an untyped `ExternalWorkflowStub` in the Workflow implementation to send a Signal to another Workflow.
-
-```java
-public String sendGreeting(String name) {
-
-    // initiate ExternalWorkflowStub to call another Workflow by its Id "ReplyWF"
-    ExternalWorkflowStub callRespondWorkflow = Workflow.newUntypedExternalWorkflowStub("ReplyWF");
-
-    String responseTrigger = activity.greeting("Hello", name);
-
-    // send a Signal from this sendGreeting Workflow to the other Workflow
-    // by calling the Signal method name "getGreetCall" defined in that Workflow.
-    callRespondWorkflow.signal("getGreetCall", responseTrigger);
-
-    return responseTrigger;
-}
-```
-
-### Signal-with-Start in Java {#signal-with-start}
-
-**How to use Signal-With-Start in Java using the Temporal Java SDK.**
-
-Signal-With-Start is used from the Client.
-It takes a Workflow Id, Workflow arguments, a Signal name, and Signal arguments.
-
-If there's a Workflow running with the given Workflow Id, it will be signaled. If there isn't, a new Workflow will be started and immediately signaled.
-
-To send Signals to a Workflow Execution whose status is unknown, use `SignalWithStart` with a `WorkflowStub` in the Client code.
-This method ensures that if the Workflow Execution is in a closed state, a new Workflow Execution is spawned and the Signal is delivered to the running Workflow Execution.
-
-Note that when the `SignalWithStart` spawns a new Workflow Execution, the Signal is delivered before the call to your `@WorkflowMethod`.
-This means that the Signal handler in your Workflow interface code will execute before the `@WorkfowMethod`.
-You must ensure that your code logic can deal with this.
-
-In the following example, the Client code uses `SignalWithStart` to send the Signal `setCustomer` to the `UntypedWorkflowStub` named `GreetingWorkflow`.
-If the `GreetingWorkflow` Workflow Execution is not running, the `SignalWithStart` starts the Workflow Execution.
+Signal-With-Start allows a Client to send a Signal to a Workflow Execution, starting the Execution if it is not already running.
+If there's a Workflow running with the given Workflow Id, it will be signaled.
+If there isn't, a new Workflow will be started and immediately signaled.
+To use Signal-With-Start, call `signalWithStart` and pass the name of your Signal with its arguments:
 
 ```java
 public static void signalWithStart() {
@@ -234,20 +313,12 @@ public static void signalWithStart() {
 
     untypedWorkflowStub.signalWithStart("setCustomer", new Object[] {customer2}, new Object[] {customer1});
 
-    printWorkflowStatus();
-
-    try {
-        String greeting = untypedWorkflowStub.getResult(String.class);
-        printWorkflowStatus();
-        System.out.println("Greeting: " + greeting);
-    } catch(WorkflowFailedException e) {
-        System.out.println("Workflow failed: " + e.getCause().getMessage());
-        printWorkflowStatus();
-    }
+    String greeting = untypedWorkflowStub.getResult(String.class);
 }
 ```
 
-The following example shows the Workflow interface for the `GreetingWorkflow` called in the previous example.
+Here's the `WorkflowInterface` for the previous example.
+When using Signal-With-Start, the Signal handler (`setCustomer`) will be executed before the Workflow method (`greet`).
 
 ```java
 @WorkflowInterface
@@ -256,170 +327,382 @@ public interface GreetingWorkflow {
     String greet(Customer customer);
 
     @SignalMethod
-    void
-
- setCustomer(Customer customer);
+    void setCustomer(Customer customer);
 
     @QueryMethod
     Customer getCustomer();
 }
 ```
 
-Note that the Signal handler `setCustomer` is executed before the `@WorkflowMethod` `greet` is called.
+### Send an Update {#send-update-from-client}
 
-## Queries {#queries}
+An Update is a synchronous, blocking call that can change Workflow state, control its flow, and return a result.
 
-A [Query](/encyclopedia/workflow-message-passing#sending-queries) is a synchronous operation that is used to get the state of a Workflow Execution.
+A Client sending an Update must wait until the Server delivers the Update to a Worker.
+Workers must be available and responsive.
+If you need a response as soon as the Server receives the request, use a Signal instead.
+Also note that you can't send Updates to other Workflow Executions or perform an Update equivalent of Signal-With-Start.
 
-### Define a Query {#define-query}
+- `WorkflowExecutionUpdateAccepted` is added to the Event History when the Worker confirms that the Update passed validation.
+- `WorkflowExecutionUpdateCompleted` is added to the Event History when the Worker confirms that the Update has finished.
 
-**How to define a Query using the Java SDK.**
+To send an Update to a Workflow Execution, you can:
 
-A Query has a name and can have arguments.
+- Call the Update method on a WorkflowStub in Client code and wait for the Update to complete.
+  This code fetches an Update result:
 
-- The name, also called a Query type, is a string.
-- The arguments must be [serializable](/dataconversion).
+  ```java
+  Language previousLanguage = workflow.setLanguage(Language.CHINESE);
+  ```
 
-To define a Query, define the method name and the result type of the Query.
+- Send [`startUpdate`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)) to receive an [`WorkflowUpdateHandle`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowUpdateHandle.html) as soon as the Update is accepted or rejected.
+
+  - Use this `WorkflowUpdateHandle` later to fetch your results.
+  - Blocking Update handlers normally perform long-running asynchronous operations.
+  - `startUpdate` only waits until the Worker has accepted or rejected the Update, not until all asynchronous operations are complete.
+
+  For example:
+
+  ```java
+  WorkflowUpdateHandle<Language> handle =
+      WorkflowStub.fromTyped(workflow)
+          .startUpdate(
+              "setLanguage", WorkflowUpdateStage.ACCEPTED, Language.class, Language.ENGLISH);
+  previousLanguage = handle.getResultAsync().get();
+  ```
+
+  For more details, see the "Blocking handlers" section.
+
+To obtain an Update handle, you can:
+
+- Use [`startUpdate`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)) to start an Update and return the handle, as shown in the preceding example.
+- Use [`getUpdateHandle`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#getUpdateHandle(java.lang.String,java.lang.Class)) to fetch a handle for an in-progress Update using the Update ID and Workflow ID.
+
+You can use the `WorkflowUpdateHandle` to obtain information about the update:
+
+- `getExecution()`: Returns the Workflow Execution that this Update was sent to.
+- `getId()`: Returns the Update's unique ID, which can be useful for deduplication when using Continue-As-New: see [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing).
+- `getResultAsync()`: Returns a `CompletableFuture` which can be used to wait for the Update to complete.
+
+:::info NON-TYPE SAFE API CALLS
+
+In real-world development, sometimes you may be unable to import Workflow Definition method signatures.
+When you don't have access to the Workflow Definition or it isn't written in Java, you can use these non-type safe APIs to obtain an untyped WorkflowStub:
+
+- [`WorkflowClient.newUntypedWorkflowStub`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClient.html#newUntypedWorkflowStub(java.lang.String,io.temporal.client.WorkflowOptions))
+- [`Workflow.newUntypedExternalWorkflowStub`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newUntypedExternalWorkflowStub(java.lang.String)).
+
+Pass method names instead of method objects to:
+
+- [`WorkflowStub.query`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#query(java.lang.String,java.lang.Class,java.lang.Object...))
+- [`WorkflowStub.signal`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#signal(java.lang.String,java.lang.Object...))
+- [`WorkflowStub.update`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#update(java.lang.String,java.lang.Class,java.lang.Object...))
+- [`WorkflowStub.startUpdate`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...))
+
+:::
+
+## Message handler patterns {#message-handler-patterns}
+
+This section covers common write operations, such as Signal and Update handlers.
+It doesn't apply to pure read operations, like Queries or Update Validators.
+
+:::tip
+
+For additional information, see [Inject work into the main Workflow](/encyclopedia/workflow-message-passing#injecting-work-into-main-workflow), and [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing).
+
+:::
+
+### Do blocking operations in handlers {#blocking-handlers}
+
+Signal and Update handlers can block.
+This allows you to use [`Workflow.await`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#await(java.time.Duration,java.util.function.Supplier)), Activities, Child Workflows, [`Workflow.sleep`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sleep(java.time.Duration)) Timers, etc.
+This expands the possibilities for what can be done by a handler but it also means that handler executions and your main Workflow method are all running concurrently, with switching occurring between them at await calls.
+
+It's essential to understand the things that could go wrong in order to use blocking handlers safely.
+See [Workflow message passing](/encyclopedia/workflow-message-passing) for guidance on safe usage of blocking Signal and Update handlers, and the [Controlling handler concurrency](#control-handler-concurrency) and [Waiting for message handlers to finish](#wait-for-message-handlers) sections below.
+
+The following code modifies the Update handler from earlier on in this page.
+The Update handler now makes a blocking call to execute an Activity:
 
 ```java
-query(String queryType, Class<R> resultClass, Type resultType, Object... args);
-
-  /* @param queryType name of the Query handler. Usually it is a method name.
-   * @param resultClass class of the Query result type
-   * @param args optional Query arguments
-   * @param <R> type of the Query result
-  */
-```
-
-Query methods can take in any number of input parameters which can be used to limit the data that is returned.
-
-Use the Query method names to send and receive Queries.
-
-Query methods must never change any Workflow state including starting Activities or blocking threads in any way.
-
-### Handle a Query {#handle-query}
-
-**How to handle a Query in a Workflow using the Java SDK.**
-
-Queries are handled by your Workflow.
-
-Don't include any logic that causes [Command](/workflows#command) generation within a Query handler (such as executing Activities).
-Including such logic causes unexpected behavior.
-
-To handle a Query in the Workflow, create a Query handler using the `@QueryMethod` annotation in the Workflow interface and define it in the Workflow implementation.
-
-The `@QueryMethod` annotation indicates that the method is used to handle a Query that is sent to the Workflow Execution.
-The method can have parameters that can be used to filter data that the Query returns.
-Because the method returns a value, it must have a return type that is not `void`.
-
-The Query name defaults to the name of the method.
-In the following example, the Query name defaults to `getStatus`.
-
-```java
-@WorkflowInterface
-public interface FileProcessingWorkflow {
-   @QueryMethod
-   String getStatus();
-}
-```
-
-To overwrite this default naming and assign a custom Query name, use the `@QueryMethod` annotation with the `name` parameter. In the following example, the Query name is set to "history".
-
-```java
-@WorkflowInterface
-public interface FileProcessingWorkflow {
-   @QueryMethod(name = "history")
-   String getStatus();
-}
-```
-
-A Workflow Definition interface can define multiple methods annotated with `@QueryMethod`, but the method names or the `name` parameters for each must be unique.
-
-The following Workflow interface has a Query method `getCount()` to handle Queries to this Workflow.
-
-```java
-@WorkflowInterface
-public interface HelloWorld {
-    @WorkflowMethod
-    void sayHello(String name);
-
-    @QueryMethod
-    int getCount();
-}
-```
-
-The following example is the Workflow implementation with the Query method defined in the `HelloWorld` Workflow interface from the previous example.
-
-```java
-public static class HelloWorldImpl implements HelloWorld {
-
-    private String greeting = "Hello";
-    private int count = 0;
-
+public static class GreetingWorkflowImpl implements GreetingWorkflow {
+    ...
     @Override
-    public void sayHello(String name) {
-        while (!"Bye".equals(greeting)) {
-            logger.info(++count + ": " + greeting + " " + name + "!");
-            String oldGreeting = greeting;
-            Workflow.await(() -> !Objects.equals(greeting, oldGreeting));
+    public Language setLanguage(Language language) {
+        if (!greetings.containsKey(language)) {
+            String greeting = activity.greetingService(language);
+            if (greeting == null) {
+                // 👉 An update validator cannot be blocking, so cannot be used to check that the remote
+                // greetingService supports the requested language. Throwing an ApplicationFailure
+                // will fail the Update, but the WorkflowExecutionUpdateAccepted event will still be
+                // added to history.
+                throw ApplicationFailure.newFailure("Greeting service does not support: " + language, "GreetingFailure")
+            }
+            greetings.put(language, greeting);
         }
-        logger.info(++count + ": " + greeting + " " + name + "!");
-    }
-
-    @Override
-    public int getCount() {
-        return count;
+        Language previousLanguage = this.language;
+        this.language = language;
+        return previousLanguage;
     }
 }
 ```
 
-### Send a Query {#send-query}
+Although a Signal handler can also make blocking calls like this, using an Update handler allows the Client to receive a result or error once the Activity completes.
+This lets your Client track the progress of asynchronous work performed by the Update's Activities, Child Workflows, etc.
 
-**How to send a Query to a Workflow Execution from a Temporal Client using the Java SDK.**
+### Add blocking wait conditions {#block-with-wait}
 
-Queries are sent from a Temporal Client.
+Sometimes, blocking Signal or Update handlers need to meet certain conditions before they should continue.
+You can use [`Workflow.await`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#await(java.time.Duration,java.util.function.Supplier)) to prevent the code from proceeding until a condition is true.
+You specify the condition by passing a function that returns `true` or `false`.
+This is an important feature that helps you control your handler logic.
 
-To send a Query to a Workflow Execution from an external process, call the Query method (defined in the Workflow) from a `WorkflowStub` within the Client code.
+Here are two important use cases for `Workflow.await`:
 
-For example, the following Client code calls a Query method `queryGreeting()` defined in the `GreetingWorkflow` Workflow interface.
+- Waiting in a handler until it is appropriate to continue.
+- Waiting in the main Workflow until all active handlers have finished.
+
+#### Wait for conditions in handlers {#wait-in-handlers}
+
+It's common to use `Workflow.await` in a handler.
+For example, suppose your Workflow class has a `updateReadyToExecute` method that indicates whether your Update handler should be allowed to start executing.
+You can use `workflow.wait_condition` in the handler to make the handler pause until the condition is met:
 
 ```java
- // Create our workflow options
- WorkflowOptions workflowOptions =
-    WorkflowOptions.newBuilder()
-    .setWorkflowId(WORKFLOW_ID)
-    .setTaskQueue(TASK_QUEUE).build();
-
- // Create the Temporal client stub. It is used to start our workflow execution.
- GreetingWorkflow workflow = client.newWorkflowStub(GreetingWorkflow.class, workflowOptions);
-
- // Start our workflow asynchronously to not use another thread to query.
- WorkflowClient.start(workflow::createGreeting, "World");
-
- // Query the Workflow to get the current value of greeting and print it.
- System.out.println(workflow.queryGreeting());
+@Override
+public String setLanguage(UpdateInput input) {
+    Workflow.await(() -> this.updateReadyToExecute(input));
+    ...
+}
 ```
 
-## Dynamic Handlers {#dynamic-handler}
+Remember: handlers can execute before the main Workflow method starts.
 
-**What is a Dynamic Handler in Temporal Java SDK?**
+You can also use `Workflow.await` anywhere else in the handler to wait for a specific condition to become true.
+This allows you to write handlers that pause at multiple points, each time waiting for a required condition to become true.
 
-Temporal supports Dynamic Workflows, Activities, Signals, and Queries.
-These are unnamed handlers that are invoked if no other statically defined handler with the given name exists.
+#### Ensure your handlers finish before the Workflow completes {#wait-for-message-handlers}
 
-Dynamic Handlers provide flexibility to handle cases where the names of Workflows, Activities, Signals, or Queries aren't known at runtime.
+`Workflow.await` can ensure your handler completes before a Workflow finishes.
+When your Workflow uses blocking Signal or Update handlers, your main Workflow method can return or Continue-as-New while a handler is still waiting on an async task, such as an Activity.
+The Workflow completing may interrupt the handler before it finishes crucial work and cause Client errors when trying to retrieve Update results.
+Use `Workflow.await` to wait for [`Workflow.isEveryHandlerFinished`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#isEveryHandlerFinished()) to return `true` to address this problem and allow your Workflow to end smoothly:
+
+```java
+public class MyWorkflowImpl implements MyWorkflow {
+    ...
+    @Override
+    public String run() {
+        ...
+        Workflow.await(() -> Workflow.isEveryHandlerFinished());
+        return "workflow-result";
+    }
+}
+```
+
+By default, your Worker will log a warning when you allow a Workflow Execution to finish with unfinished handler executions.
+You can silence these warnings on a per-handler basis by passing the `unfinishedPolicy` argument to the [`@SignalMethod`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/SignalMethod.html) / [`@UpdateMethod`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/UpdateMethod.html) annotation:
+
+```java
+@WorkflowInterface
+public interface MyWorkflow {
+    ...
+    @UpdateMethod(unfinishedPolicy = HandlerUnfinishedPolicy.ABANDON)
+    void myUpdate();
+}
+```
+
+See [Finishing handlers before the Workflow completes](/encyclopedia/workflow-message-passing#finishing-message-handlers) for more information.
+
+### Use `@WorkflowInit` to operate on Workflow input before any handler executes
+
+Normally, your Workflows constructor won't have any parameters.
+However, if you use the `@WorkflowInit` annotation on your constructor, you can give it the same [Workflow parameters](/develop/java/core-application#workflow-parameters) as your `@WorkflowMethod`.
+The SDK will then ensure that your constructor receives the Workflow input arguments that the [Client sent](/develop/python/temporal-clients#start-workflow-execution).
+The Workflow input arguments are also passed to your `@WorkflowMethod` method -- that always happens, whether or not you use the `@WorkflowInit` annotation.
+This is useful if you have message handlers that need access to Workflow input: see [Initializing the Workflow first](/encyclopedia/workflow-message-passing#workflow-initializers).
+
+Here's an example.
+Notice that the constructor and `getGreeting` must have the same parameters:
+
+```java
+public class GreetingExample {
+    @WorkflowInterface
+    public interface GreetingWorkflow {
+        @WorkflowMethod
+        String getGreeting(String input);
+
+        @UpdateMethod
+        boolean checkTitleValidity();
+    }
+
+    public static class GreetingWorkflowImpl implements GreetingWorkflow {
+        private final String nameWithTitle;
+        private final String titleHasBeenChecked;
+        ...
+        // Note the annotation is on a public constructor
+        @WorkflowInit
+        public GreetingWorkflowImpl(String input) {
+          this.nameWithTitle = "Sir " + input;
+          this.titleHasBeenChecked = false;
+        }
+
+        @Override
+        public String getGreeting(String input) {
+          Workflow.await(() -> titleHasBeenChecked)
+          return "Hello " + nameWithTitle;
+        }
+
+        @Override
+        public boolean checkTitleValidity() {
+          // 👉 The handler is now guaranteed to see the workflow input
+          // after it has been processed by the constructor.
+          boolean isValid = activity.checkTitleValidity(nameWithTitle);
+          titleHasBeenChecked = true;
+          return isValid;
+        }
+    }
+}
+```
+
+### Use locks to prevent concurrent handler execution {#control-handler-concurrency}
+
+Concurrent processes can interact in unpredictable ways.
+Incorrectly written [concurrent message-passing](/encyclopedia/workflow-message-passing#message-handler-concurrency) code may not work correctly when multiple handler instances run simultaneously.
+Here's an example of a pathological case:
+
+```java
+public class DataWorkflowImpl implements DataWorkflow {
+    ...
+    @Override
+    public void badSignalHandler() {
+        Data data = activity.fetchData();
+        this.x = data.x;
+        // 🐛🐛 Bug!! If multiple instances of this method are executing concurrently, then
+        // there may be times when the Workflow has self.x from one Activity execution and self.y from another.
+        Workflow.sleep(Duration.ofSeconds(1));
+        this.y = data.y;
+    }
+}
+```
+
+Coordinating access with `WorkflowLock` corrects this code.
+Locking makes sure that only one handler instance can execute a specific section of code at any given time:
+
+```java
+public class DataWorkflowImpl implements DataWorkflow {
+    WorkflowLock lock = Workflow.newWorkflowLock();
+    ...
+    @Override
+    public void safeSignalHandler() {
+        try {
+            lock.lock();
+            Data data = activity.fetchData();
+            this.x = data.x;
+            // ✅ OK: the scheduler may switch now to a different handler execution,
+            // or to the main workflow method, but no other execution of this handler
+            // can run until this execution finishes.
+            Workflow.sleep(Duration.ofSeconds(1));
+            this.y = data.y;
+        } finally {
+            lock.unlock()
+        }
+    }
+}
+```
+
+## Message handler troubleshooting {#message-handler-troubleshooting}
+
+When sending a Signal, Update, or Query to a Workflow, your Client might encounter the following errors:
+
+- **The Client can't contact the server**:
+  You'll receive a [`WorkflowServiceException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowServiceException.html) on which the `cause` is a [`StatusRuntimeException`](https://grpc.github.io/grpc-java/javadoc/io/grpc/StatusRuntimeException.html) and `status` of `UNAVAILABLE` (after some retries).
+
+- **The Workflow does not exist**:
+  You'll receive a [`WorkflowNotFoundException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowNotFoundException.html).
+
+See [Exceptions in message handlers](/encyclopedia/workflow-message-passing#exceptions) for a non–Java-specific discussion of this topic.
+
+### Problems when sending a Signal {#signal-problems}
+
+When using Signal, the above `WorkflowException`s are the only types of exception that will result from the request.
+
+In contrast, for Queries and Updates, the client waits for a response from the Worker.
+If an issue occurs during the handler execution by the Worker, the Client may receive an exception.
+
+### Problems when sending an Update {#update-problems}
+
+When working with Updates, you may encounter these errors:
+
+- **No Workflow Workers are polling the Task Queue**:
+  Your request will be retried by the SDK Client indefinitely.
+  You can impose a timeout with `CompletableFuture.get()` method with a timeout parameter.
+  This throws a `java.util.concurrent.TimeoutException` exception when it expires.
+
+- **Update failed**: You'll receive a `WorkflowUpdateException` exception.
+  There are two ways this can happen:
+
+  - The Update was rejected by an Update validator defined in the Workflow alongside the Update handler.
+
+  - The Update failed after having been accepted.
+
+  Update failures are like [Workflow failures](/references/failures).
+  Issues that cause a Workflow failure in the main method also cause Update failures in the Update handler.
+  These might include:
+
+      - A failed Child Workflow
+      - A failed Activity (if the Activity retries have been set to a finite number)
+      - The Workflow author throwing `ApplicationFailure`
+      - Any error listed in [getFailWorkflowExceptionTypes](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkflowImplementationOptions.html#getFailWorkflowExceptionTypes()) (empty by default)
+
+- **The handler caused the Workflow Task to fail**:
+  A [Workflow Task Failure](/references/failures) causes the server to retry Workflow Tasks indefinitely. What happens to your Update request depends on its stage:
+  - If the request hasn't been accepted by the server, you receive a `FAILED_PRECONDITION` [`WorkflowServiceException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowServiceException.html) exception.
+  - If the request has been accepted, it is durable.
+    Once the Workflow is healthy again after a code deploy, use an `WorkflowUpdateHandle`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowUpdateHandle.html) to fetch the Update result.
+
+- **The Workflow finished while the Update handler execution was in progress**:
+  You'll receive a [`WorkflowServiceException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowServiceException.html) "workflow execution already completed"`.
+
+  This will happen if the Workflow finished while the Update handler execution was in progress, for example because
+
+  - The Workflow was canceled or failed.
+
+  - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/encyclopedia/workflow-message-passing#finishing-message-handlers).
+
+### Problems when sending a Query {#query-problems}
+
+When working with Queries, you may encounter these errors:
+
+- **There is no Workflow Worker polling the Task Queue**:
+  You'll receive a [`WorkflowServiceException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowServiceException.html) on which the `cause` is a [`StatusRuntimeException`](https://grpc.github.io/grpc-java/javadoc/io/grpc/StatusRuntimeException.html) with a `status` of `FAILED_PRECONDITION`.
+
+- **Query failed**:
+  You'll receive a [`WorkflowQueryException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowQueryException.html) exception if something goes wrong during a Query.
+  Any exception in a Query handler will trigger this error.
+  This differs from Signal and Update requests, where exceptions can lead to Workflow Task Failure instead.
+
+- **The handler caused the Workflow Task to fail.**
+  This would happen, for example, if the Query handler blocks the thread for too long without yielding.
+
+## Dynamic components {#dynamic-handler}
+
+A dynamic Workflow, Activity, Signal, Update, or Query is a kind of unnamed item.
+Normally, these items are registered by name with the Worker and invoked at runtime.
+When an unregistered or unrecognized Workflow, Activity, or message request arrives with a recognized method signature, the Worker can use a pre-registered dynamic stand-in.
+
+For example, you might send a request to start a Workflow named "MyUnknownWorkflow".
+After receiving a Workflow Task, the Worker may find that there's no registered Workflow Definitions of that type.
+It then checks to see if there's a registered dynamic Workflow.
+If the dynamic Workflow signature matches the incoming Workflow signature, the Worker invokes that just as it would invoke a non-dynamic statically named version.
+
+By registering dynamic versions of your Temporal components, the Worker can fall back to these alternate implementations for name mismatches.
 
 :::caution
 
-Dynamic Handlers should be used judiciously as a fallback mechanism rather than the primary approach.
-Overusing them can lead to maintainability and debugging issues down the line.
-
-Instead, Workflows, Activities, Signals, and Queries should be defined statically whenever possible, with clear names that indicate their purpose.
-Use static definitions as the primary way of structuring your Workflows.
-
-Reserve Dynamic Handlers for cases where the handler names are not known at compile time and need to be looked up dynamically at runtime.
-They are meant to handle edge cases and act as a catch-all, not as the main way of invoking logic.
+Use dynamic elements judiciously and as a fallback mechanism, not a primary design.
+They can introduce long-term maintainability and debugging issues.
+Reserve dynamic invocation use for cases where a name is not or can't be known at compile time.
 
 :::
 
@@ -499,69 +782,7 @@ When registered, any Queries sent to the Workflow without a defined handler will
 Note that you can only register one `Workflow.registerListener(Object)` per Workflow Execution.
 `DynamicQueryHandler` can be implemented in both regular and dynamic Workflow implementations.
 
-## Updates {#updates}
-
-An [Update](/encyclopedia/workflow-message-passing#sending-updates) is an operation that can mutate the state of a Workflow Execution and return a response.
-
-### Define Update {#define-update}
-
-**How to define an Update using the Java SDK.**
-
-An Update handler has a name, arguments, response, and an optional validator.
-
-- The name, also called an Update type, is a string.
-- The arguments and response must be [serializable](/dataconversion).
-
-The `@UpdateMethod` annotation indicates that the method is used to handle and respond to update requests.
-
-```java
-@UpdateMethod
-String myUpdate(String updateName);
-```
-
-### Handle Update {#handle-update}
-
-**How to handle Updates in a Workflow using the Java SDK.**
-
-Workflows listen for Updates by the update's name.
-
-Use the `@UpdateMethod` annotation to handle Updates in the Workflow interface.
-The handler method can accept multiple serial
-
-izable input parameters, but it's recommended to use only a single parameter.
-The function can return a serializable value or `void`.
-If any exception is thrown while handling an update, that exception may fail the Workflow task or the update depending on the type of the exception and `WorkflowImplementationOptions.setFailWorkflowExceptionTypes`.
-
-```java
-@WorkflowInterface
-public interface FileProcessingWorkflow {
-
-   @WorkflowMethod
-   String processFile(Arguments args);
-
-   @UpdateMethod
-   void pauseProcessing();
-}
-```
-
-Update handlers, unlike Query handlers, can change Workflow state.
-
-The Update type defaults to the name of the method.
-To overwrite this default naming and assign a custom Update type, use the `@UpdateMethod` annotation with the `name` parameter.
-
-```java
-@WorkflowInterface
-public interface FileProcessingWorkflow {
-
-   @WorkflowMethod
-   String processFile(Arguments args);
-
-   @UpdateMethod(name = "pause")
-   void pauseProcessing();
-}
-```
-
-**Dynamic Update Handler**
+### How to set a Dynamic Update {#set-a-dynamic-update}
 
 You can also implement Update handlers dynamically.
 This is useful for library-level code and implementation of DSLs.
@@ -575,49 +796,3 @@ Workflow.registerListener(
 When registered, any Updates sent to the Workflow without a defined handler will be delivered to the `DynamicUpdateHandler`.
 You can only register one `Workflow.registerListener(Object)` per Workflow Execution.
 `DynamicUpdateHandler` can be implemented in both regular and dynamic Workflow implementations.
-
-### Validate Update {#validate-update}
-
-**How to validate Updates in a Workflow using the Java SDK.**
-
-Validate certain aspects of the data sent to the Workflow using an Update Validator method.
-For instance, a counter Workflow might never want to accept a non-positive number.
-Use the `@UpdateValidatorMethod` annotation and set `updateName` to the name of your Update handler.
-Your Update Validator should accept the same input parameters as your Update Handler and return `void`.
-
-```java
-@WorkflowInterface
-public interface GreetingWorkflow {
-    @WorkflowMethod
-    List<String> getGreetings();
-
-    @UpdateMethod
-    int addGreeting(String name);
-
-    @UpdateValidatorMethod(updateName = "addGreeting")
-    void addGreetingValidator(String name);
-}
-```
-
-### Send Update from a Client {#send-update-from-client}
-
-**How to send an Update to a Workflow Execution from a Temporal Client using the Java SDK.**
-
-To send an Update to a Workflow Execution from a Client, call the Update method, annotated with `@UpdateMethod` in the Workflow interface, from the Client code.
-
-In the following Client code example, start the Workflow `getGreetings` and call the Update method `addGreeting` that is handled in the Workflow.
-
-```java
-WorkflowOptions workflowOptions =
-    WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).setWorkflowId(WORKFLOW_ID).build();
-
-// Create a typed Workflow stub for GreetingsWorkflow
-GreetingWorkflow workflow = client.newWorkflowStub(GreetingWorkflow.class, workflowOptions);
-
-// Start the Workflow
-WorkflowClient.start(workflow::getGreetings);
-
-// Send an update to the Workflow. addGreeting returns
-// the number of greetings our workflow has received.
-int count = workflow.addGreeting("World");
-```

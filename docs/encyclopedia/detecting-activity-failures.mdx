@@ -9,9 +9,10 @@ keywords:
   - term
   - timeouts
 tags:
-  - explanation
-  - term
-  - timeouts
+  - Concepts
+  - Activities
+  - Failures
+  - Timeouts
 ---
 
 import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
@@ -206,6 +207,10 @@ Throttling is implemented as follows:
   - Sends the most recent Heartbeat.
   - Sets the timer again.
 
+Throttling allows the Worker to reduce network traffic and load on the Temporal Service by suppressing Heartbeats that aren’t necessary to prevent a Heartbeat Timeout.
+Throttling does not apply to the final Heartbeat message in the case of Activity Failure.
+If an Activity fails just after recording progress information in a Heartbeat message, that progress information will be available during the next retry attempt, provided that the Worker itself did not crash before delivering it to the Temporal Service.
+
 ### Which Activities should Heartbeat?
 
 Heartbeating is best thought about not in terms of time, but in terms of "How do you know you are making progress?"
@@ -241,7 +246,7 @@ A Heartbeat Timeout is the maximum time between [Activity Heartbeats](#activity-
   <RelatedReadItem path="/develop/java/failure-detection#heartbeat-timeout" text="Set a Heartbeat Timeout using the Java SDK" archetype="feature-guide" />
   <RelatedReadItem path="/develop/php/failure-detection#heartbeat-timeout" text="Set a Heartbeat Timeout using the PHP SDK" archetype="feature-guide" />
   <RelatedReadItem path="/develop/python/failure-detection#heartbeat-timeout" text="Set a Heartbeat Timeout using the Python SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/typescript/failure-detection#heartbeat-timeout" text="Set a Heartbeat Timeout using the TypeScript SDK" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/typescript/failure-detection#activity-heartbeat-timeout" text="Set a Heartbeat Timeout using the TypeScript SDK" archetype="feature-guide" />
   <RelatedReadItem path="/develop/dotnet/failure-detection#heartbeat-timeout" text="Set a Heartbeat Timeout using the .NET SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 

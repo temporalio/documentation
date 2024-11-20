@@ -1,8 +1,8 @@
 ---
 id: failure-detection
-title: Failure detection - .NET SDK feature guide
+title: Failure detection - .NET SDK
 sidebar_label: Failure detection
-description: Learn how to set Workflow and Activity Timeouts, implement Retry Policies, and manage Activity Heartbeats using the Temporal .NET SDK for efficient Workflow Execution.
+description: Optimize Workflow Execution with Temporal .Net SDK - Set Timeouts, Retry Policies, and manage Activity Heartbeats efficiently.
 toc_max_heading_level: 4
 keywords:
   - guide context
@@ -11,11 +11,12 @@ keywords:
   - sdk
   - failure detection
 tags:
-  - guide-context
-  - how-to
-  - dotnet
-  - sdk
-  - failure-detection
+  - Activities
+  - Workflows
+  - .Net SDK
+  - Temporal SDKs
+  - Failures
+  - Errors
 ---
 
 This page shows how to do the following:
@@ -123,6 +124,23 @@ return await Workflow.ExecuteActivityAsync(
         StartToCloseTimeout = TimeSpan.FromMinutes(5),
         RetryPolicy = new() { MaximumInterval = TimeSpan.FromSeconds(10) },
     });
+```
+
+### Override the Retry interval with `nextRetryDelay` {#next-retry-delay}
+
+When you throw an [Application Failure](/references/failures#application-failure) and assign the `nextRetryDelay` field, its value replaces and overrides the Retry interval defined in the active Retry Policy.
+
+For example, you might scale the next Retry delay interval based on the current number of attempts.
+Here's how you'd do that in an Activity.
+In the following sample, the `attempt` count is retrieved from the Activity Execution context and used to set the number of seconds for the next Retry delay:
+
+```csharp
+var attempt = ActivityExecutionContext.Current.Info.Attempt;
+
+throw new ApplicationFailureException(
+    $"Something bad happened on attempt {attempt}",
+    errorType: "my_failure_type",
+    nextRetryDelay: TimeSpan.FromSeconds(3 * attempt));
 ```
 
 ## Heartbeat an Activity {#activity-heartbeats}

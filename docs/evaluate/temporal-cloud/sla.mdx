@@ -1,0 +1,61 @@
+---
+id: sla
+title: Service Level Agreement (SLA) - Temporal Cloud
+sidebar_label: SLA
+description: Temporal Cloud offers two availability levels; 99.99% uptime for standard and multi-region deployments, with SLAs guaranteeing 99.9% and 99.99% against service errors, respectively.
+slug: /cloud/sla
+toc_max_heading_level: 4
+keywords:
+  - explanation
+  - operations
+  - temporal cloud
+tags:
+  - Temporal Cloud
+  - Support
+---
+
+**What is Temporal Cloud's Service Level Agreement? SLA?**
+
+Temporal Cloud provides two availability levels: the [service availability](https://en.wikipedia.org/wiki/Reliability,_availability_and_serviceability) and the contractual [service level agreement](https://en.wikipedia.org/wiki/Service-level_agreement) (SLA).
+These levels are set by your deployment mode:
+
+- **Temporal Cloud with standard single-region deployment**:
+  Standard Temporal Cloud deployment provides 99.99% availability and a contractual service level agreement (SLA) of 99.9% guarantee against service errors.
+- **Temporal Cloud with multi-region Namespace deployment**:
+  Temporal Cloud Namespaces that use the multi-region feature provide 99.99% availability and contractual service level agreement (SLA) of 99.99% guarantee against service errors.
+
+The same SLA for normal Worker requests (commands and polling) apply to Nexus in both the caller and handler Namespaces.
+
+To calculate the service-error rate, Temporal Cloud captures all requests that arrive in a Namespace during a five-minute interval.
+We record the number of gRPC service errors that occurred.
+For each Namespace, we calculate the service-error rate as 1 - (count of errors / count of requests).
+Rates are averaged per month and reset quarterly.
+
+Errors are recorded against the SLA are service errors, such as the `UNAVAILABLE` [gRPC status code](https://grpc.github.io/grpc/core/md_doc_statuscodes.html).
+The following errors are _not_ counted against the SLA:
+
+- `ClientVersionNotSupported`
+- `InvalidArgument`
+- `NamespaceAlreadyExists`
+- `NamespaceInvalidState`
+- `NamespaceNotActive`
+- `NamespaceNotFound`
+- `NotFound`
+- `PermissionDenied`
+- `QueryFailed`
+- `RetryReplication`
+- `StickyWorkerUnavailable`
+- `TaskAlreadyStarted`
+- `Throttling (resources exhausted; triggers retry)`
+- `WorkflowExecutionAlreadyStarted`
+- `WorkflowNotReady`
+
+Our internal alerting system is based on a [service level objective](https://en.wikipedia.org/wiki/Service-level_objective) (SLO) for all errors, not just errors that count against the SLA.
+When we receive an alert that an SLO is not being met, we page our on-call engineers, which often means that issues are resolved before they become noticeable.
+
+Internally, our components are distributed across a minimum of three availability zones per region.
+We implement a cell architecture.
+Each cell contains the software and services necessary to host a Namespace.
+Within each cell, the components are distributed across a minimum of three availability zones per region.
+
+For current system status and information about recent incidents, see [Temporal Status](https://status.temporal.io).

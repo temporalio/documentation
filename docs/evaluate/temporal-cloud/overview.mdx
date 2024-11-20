@@ -1,0 +1,58 @@
+---
+id: overview
+title: Overview - Temporal Cloud
+sidebar_label: Overview
+description: Temporal Cloud is a SaaS platform managing the durability of your Temporal Applications, implemented using Temporal SDK. It supervises workflow histories and supports multiple isolated namespaces.
+slug: /cloud/overview
+toc_max_heading_level: 4
+keywords:
+  - explanation
+  - term
+tags:
+  - Temporal Cloud
+---
+
+When it comes to running Temporal in production, you have two main options:
+
+**Temporal self-hosted:**
+This option involves setting up and managing your own instance of the Temporal Server.
+Your Workers and Temporal Application connect directly to this self-hosted instance.
+With the self-hosted approach, you have full control over the infrastructure and are responsible for managing the persistence layer, scalability, and availability of the Temporal system.
+
+**Temporal Cloud:**
+Temporal Cloud is a fully managed service provided by Temporal.
+It offers a hassle-free way to run your Temporal Applications without the need to manage the underlying infrastructure.
+Your Workers and Temporal Applications connect to the Temporal Cloud service, which takes care of the persistence layer, scalability, and availability for you.
+
+Temporal Cloud and self-hosted Temporal Services have some similarities, as both require your Temporal Clients and Workers to establish a connection to the Temporal Service.
+Additionally, in both cases, you are responsible for managing and hosting your application code and running your Workers.
+The choice between self-hosted and Temporal Cloud depends on your specific requirements, resources, and expertise.
+
+### High level system topology of the Temporal Service
+
+There are two major parts of the Temporal Service that work together to create the fully functioning system.
+Temporal Cloud is an offering of the Temporal Service.
+
+1. Temporal SDK: The Temporal software development kit (SDK) is available in various languages and can be integrated as a dependency into your new or existing application.
+   It offers developers a comprehensive development framework and APIs, facilitating the creation and management of applications.
+2. Temporal Cloud: Operating independently from the execution environment, Temporal Cloud oversees the execution process by preserving the source of truth for your Workflow Execution Event Histories.
+   This independent supervision ensures the durable execution of your distributed applications and services.
+
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">High-level system topology</p>
+  </div>
+  <div className="tdiiw" height="761">
+    <img
+      className="img_ev3q"
+      src="/diagrams/high-level-system-topology.svg"
+      alt="High-level system topology"
+    />
+  </div>
+</div>
+
+Temporal Cloud is based off of the open source [Temporal Server](/clusters#temporal-server) software and offers a comparable set of features but with out the overhead of setting up and deploying a production level Temporal Service (Temporal Server + all of the auxillary services it depends on).
+
+Temporal Cloud is offered in units of isolation known as [Namespaces](/namespaces).
+You can provision and use one or more Cloud Namespaces.
+A typical use case is to use separate Namespaces as development, testing, integration, staging, and production environments for an application.

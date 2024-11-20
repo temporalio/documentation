@@ -2,39 +2,46 @@
 id: terraform-provider
 title: Temporal Cloud Terraform provider
 sidebar_label: Terraform provider
-description: The Terraform Temporal provider enables Terraform to automate resource management on Temporal Cloud. Easily manage Namespaces and users using Terraform's infrastructure as code capabilities. Find it on the Terraform Registry.
+description: Automate resource management on Temporal Cloud with the Terraform Temporal provider. Manage Namespaces and users with Terraform's infrastructure-as-code.
 tags:
-  - temporal cloud
-  - terraform
+  - Temporal Cloud
+  - Terraform
 ssdi:
   - The Terraform Provider is in a Public Preview release status for Temporal Cloud.
 ---
 
-The Terraform Temporal provider is a plugin that allows Terraform to manage resources on Temporal Cloud.
-Terraform is a tool used to codify and provision infrastructure as code (IaC).
-With this provider, you can use Terraform to automate the management of Temporal Cloud Namespaces, resources for Temporal Cloud users, and more.
+The Terraform Temporal Cloud provider allows you to use Terraform to manage resources for Temporal Cloud.
+The Terraform tool manages infrastructure as code (IaC).
+With this provider, you can use Terraform to automate Temporal Cloud resource management, including Namespaces, Users, Service Accounts, API Keys and more.
 
-The [Temporal Cloud Terraform provider](https://registry.terraform.io/providers/temporalio/temporalcloud/latest) is available in the Terraform Registry, where you can find detailed documentation on the supported resources and data sources.
+:::note Terraform Management
 
-The GitHub repository for the Terraform provider is [terraform-provider-temporalcloud](https://github.com/temporalio/terraform-provider-temporalcloud/tree/main), where you can find the source code, contribution guidelines, and additional information.
+Once a resource is managed by Terraform, you should only use Terraform to manage that resource.
 
-:::note
+:::
 
-Temporal supports the [Cloud Namespace](/cloud/namespaces) resource management, a user resource for managing Temporal Cloud users, and data sources for retrieving information about existing Namespaces and users, with the Temporal Cloud Terraform provider.
+Resources:
+
+- The [Temporal Cloud Terraform provider](https://registry.terraform.io/providers/temporalio/temporalcloud/latest) is available in the Terraform Registry, where you can find detailed documentation on the Provider's supported resources and data sources.
+- The GitHub repository for the Terraform provider is [terraform-provider-temporalcloud](https://github.com/temporalio/terraform-provider-temporalcloud/tree/main), where you can report bugs, provide feature requests, and [contribute](https://github.com/temporalio/terraform-provider-temporalcloud/blob/main/CONTRIBUTING.md) to the provider.
+  We encourage your input as we develop the provider with the community.
+- To view the list of available Temporal Cloud resources supported by Terraform provider, visit the resources section of the Terraform documentation in Hashi's [registry](https://registry.terraform.io/providers/temporalio/temporalcloud/latest/docs).
+
+:::info AWS-only Regions
+
+The Terraform Provider currently supports Temporal Cloud deployments in AWS regions.
+Support for Temporal on GCP is in development.
 
 :::
 
 ### Prerequisites
 
-You must have access to the following to use the Temporal Cloud Terraform provider:
+To use the Terraform provider, you'll need the following:
 
-- [Terraform account](https://developer.hashicorp.com/terraform)
-- [Terraform CLI](https://developer.hashicorp.com/terraform/cli)
-- [API Key](/cloud/api-keys): an API Key is required to use the Terraform provider.
-  - [Temporal tcld](/cloud/tcld/): This is an optional tool used to log in to your Temporal Cloud account and create an API Key.
-- [Issued certification authority](/cloud/certificates)
-  - This is needed when Account Role permission set actions are used. For example, when managing a Namespace.
-
+- A [Terraform account](https://developer.hashicorp.com/terraform)
+- The [Terraform CLI](https://developer.hashicorp.com/terraform/cli)
+- An [API Key](/cloud/api-keys): an API Key is required to use the Terraform provider.
+  - See [the API docs](https://docs.temporal.io/cloud/api-keys#generate-an-api-key) for instructions on generating an API Key.
 
 :::note OpenTofu Registry
 
@@ -44,53 +51,18 @@ Our Terraform Provider is registered with [OpenTofu](https://opentofu.org), but 
 
 ## Setup
 
-Generate an API Key to authenticate your requests with your Temporal Cloud account.
-Then use an action to create a manage your Temporal Cloud Terraform resources.
+Generate an [API Key](https://docs.temporal.io/cloud/api-keys#generate-an-api-key) to authenticate Terraform operations with your Temporal Cloud account or a Service Account.
+Then, either use an environmental variable or pass the API Key into the provider manually to manage your Temporal Cloud Terraform resources.
 
-### Generate an API Key
-
-You can generate an API Key through the Temporal Web UI or through the `tcld apikey create` command.
-
-:::note
-
-You can skip generating an API Key if you already possess a valid API Key.
-
-:::
-
-**Using the Temporal Web UI**
-
-1. Log into the Temporal Cloud Web UI.
-2. Select your account name in the top right corner.
-3. Select **API Keys** from the menu.
-4. Choose **Create API Key**.
-5. Enter a name for your API Key.
-6. (optional) Provide a description.
-7. Set a duration for the API Key.
-8. Choose **Generate API Key**.
-
-**Using the tcld**
-
-1. Use tcld to log in and generate an API Key.
-   This API Key is used to authenticate the Terraform provider run.
-
-```bash
-# authenticate your session
-tcld login
-# generate an API Key
-tcld apikey create -n "terraform-test" --desc "Testing the API Key for the TF Provider" -d 90d
-```
-
-You will use this key when creating or destroying Namespaces with the Terraform provider.
-
-2. Provide your working environment with the API Key generated in the previous step.
+Follow these examples to use an environmental variable to pass in your API Key to the provider.
 
 <Tabs>
   <TabItem value="macos" label="macOS" default>
 Export your environment variable for secure access to the API Keys.
 
 ```bash
-# replace <yoursecretkey> with the "secretKey": output from tcld apikey create command
-export TEMPORAL_CLOUD_API_KEY=<yoursecretkey>
+# replace <your-secret-key> with the "secretKey": output from tcld apikey create command
+export TEMPORAL_CLOUD_API_KEY=<your-secret-key>
 ```
 
 </TabItem>
@@ -98,35 +70,33 @@ export TEMPORAL_CLOUD_API_KEY=<yoursecretkey>
 Export your environment variable for secure access to the API Keys.
 
 ```bash
-# replace <yoursecretkey> with the "secretKey": output from tcld apikey create command
-set TEMPORAL_CLOUD_API_KEY=<yoursecretkey>
+# replace <your-secret-key> with the "secretKey": output from tcld apikey create command
+set TEMPORAL_CLOUD_API_KEY=<your-secret-key>
 ```
 
 </TabItem>
 </Tabs>
 
-The `TEMPORAL_CLOUD_API_KEY` is used to authenticate the Terraform provider.
+Or, pass it in manually in your .tf file using the provider code block
 
-3. (optional) Generate your CA certificate
-
-The CA certificate allows you to authenticate and interact with your Temporal Cloud Namespace.
-You can use an existing CA cert or [create one using tcld](/cloud/certificates).
-Once you have your CA certificate be sure to add the CA `.pem` file to your working directory.
-
-```bash
-mv ca.pem test-temporal-terraform
+```yml
+provider "temporalcloud" {
+  api_key = "my-temporalcloud-api-key"
+}
 ```
 
-## Manage Temporal Cloud Namespace with Terraform
+## Manage Temporal Cloud Namespaces with Terraform
 
-Manage your Temporal Cloud Namespace with Terraform.
-You can create, update, and delete Namespaces with the Terraform provider.
+Terraform is a great way to automate the management of Temporal Namespaces.
+It doesn't matter whether you want management to be centralized within a platform team or federated to different product teams.
+The provider allows you to can import, create, update, and delete Namespaces with Terraform.
 
-You must have the Account Role permission set associated with your account to manage Namespaces.
+You must use an Identity with Temporal Cloud Namespace management privileges.
+This includes the Account Owner, Global Admin, or Developer Account Role.
 
 :::info Support, stability, and dependency info
 
-Temporal Cloud’s Terraform provider does not support [multi-region Namespaces](/cloud/multi-region).
+Temporal Cloud’s Terraform provider currently does not support [multi-region Namespaces](/cloud/multi-region) or [GCP regions](https://docs.temporal.io/cloud/service-availability#gcp).
 
 :::
 
@@ -134,52 +104,55 @@ Temporal Cloud’s Terraform provider does not support [multi-region Namespaces]
 
 1. Create a Terraform configuration file (`terraform.tf`) to define a Namespace.
 
-```yml
-terraform {
-required_providers {
-temporalcloud = {
-source = "temporalio/temporalcloud"
-}
-}
-}
+   ```yml
+   terraform {
+     required_providers {
+       temporalcloud = {
+         source = "temporalio/temporalcloud"
+       }
+     }
+   }
 
-provider "temporalcloud" {
+   provider "temporalcloud" {
 
-}
+   }
 
-resource "temporalcloud_namespace" "namespace" {
-name               = "terraform"
-regions            = ["aws-us-east-1"]
-accepted_client_ca = base64encode(file("ca.pem"))
-retention_days     = 14
-}
-```
+   resource "temporalcloud_namespace" "namespace" {
+     name               = "terraform"
+     regions            = ["aws-us-east-1"]
+     accepted_client_ca = base64encode(file("ca.pem"))
+     retention_days     = 14
+   }
+   ```
 
-In this example you are creating the Temporal Cloud Namespace name as `terraform`, specifying the AWS region `aws-us-east-1`, and specifying the path to the CA certificate.
+   In this example, you create a Temporal Cloud Namespace named `terraform`, specifying the AWS region `aws-us-east-1`, and specifying the path to the CA certificate.
 
-2. Initailze the Terraform provider.
+1. Initialize the Terraform provider.
 
-Run the following command to initialize the Terraform provider.
+   Run the following command to initialize the Terraform provider.
 
-```bash
-terraform init
-```
+   ```bash
+   terraform init
+   ```
 
-3. Apply the Terraform configuration.
+1. Apply the Terraform configuration.
 
-Once initialization occurs, apply the Terraform configuration to your Temporal Cloud account.
+   Once initialization occurs, apply the Terraform configuration to your Temporal Cloud account.
 
-```bash
-terraform apply
-```
+   ```bash
+   terraform apply
+   ```
 
 Follow the onscreen prompts.
 
 Upon completion, you'll see a success message indicating your Namespace is created.
 
 ```bash
-temporalcloud_namespace.terraform: Creation complete after 2m17s [id=<yournamespace>]
+temporalcloud_namespace.terraform: Creation complete after 2m17s [id=<your-namespace>]
 ```
+
+You can find more examples of Namespace management in the Terraform Provider docs located on HashiCorp's [Terraform Registry](https://registry.terraform.io/providers/temporalio/temporalcloud/latest/docs/resources/namespace).
+The Terraform Provider docs show how to generate CA certs within Terraform configuration files and create a Namespace with API Key based authentication.
 
 **How do I validate the creation of the Namespace?**
 
@@ -188,55 +161,55 @@ You can validate the creation of the Namespace through the Temporal Web UI or th
 **Using the Temporal Web UI**
 
 1. Log into the Temporal Cloud Web UI.
-2. Navigate to the Namespaces page.
-3. Search for the Namespace you created.
+1. Navigate to the Namespaces page.
+1. Search for the Namespace you created.
 
-**Using the tcld**
+**Using the tcld CLI utility**
 
 Validate the creation of your Namespace through the Terraform provider.
 To validate see your Namespace in the Cloud UI or through the `tcld namespace get` command.
 Run the `tcld namespace get` command and pass in your [Cloud Namespace Name](/cloud/namespaces#temporal-cloud-namespace-name) and [Cloud Account Id](/cloud/namespaces#temporal-cloud-account-id):
 
 ```bash
-tcld namespace get -n "<yournamespace>.<youraccountid>"
+tcld namespace get -n "<your-namespace>.<your-account-id>"
 ```
 
 **How do I update a Temporal Cloud Namespace?**
 
 Terraform automatically recognizes changes made within `.tf` files and applies those changes to Temporal.
 
-For example, change the retention period setting in the Terraform file previously and watch Terraform apply the change without any additional steps.
+For example, change the retention period setting in the Terraform file from the previous example and watch Terraform apply the change without any additional steps required by you.
 
 1. Set the retention period to 30 days.
 
-```yml
-terraform {
-required_providers {
-temporalcloud = {
-source = "temporalio/temporalcloud"
-version = ">= 0.0.6"
-}
-}
-}
+   ```yml
+   terraform {
+     required_providers {
+       temporalcloud = {
+         source = "temporalio/temporalcloud"
+         version = ">= 0.0.6"
+       }
+     }
+   }
 
-provider "temporalcloud" {
+   provider "temporalcloud" {
 
-}
+   }
 
-resource "temporalcloud_namespace" "namespace" {
-name               = "terraform"
-regions            = ["aws-us-east-1"]
-accepted_client_ca = base64encode(file("ca.pem"))
-retention_days     = 30
-}
-```
+   resource "temporalcloud_namespace" "namespace" {
+     name               = "terraform"
+     regions            = ["aws-us-east-1"]
+     accepted_client_ca = base64encode(file("ca.pem"))
+     retention_days     = 30
+   }
+   ```
 
-2. Apply your configuration.
+1. Apply your configuration.
    When prompted, answer yes to continue:
 
-```command
-terraform apply
-```
+   ```command
+   terraform apply
+   ```
 
 Upon completion, you will see a success message indicating your Namespace has been updated.
 It may take several minutes to update a Namespace.
@@ -253,61 +226,104 @@ To delete the Namespace, run the following command:
 terraform destroy
 ```
 
+:::note Preventing Deletion
+
+You can prevent deletion of any Terraform resource by including the `prevent_destroy` argument in the Terraform configuration file.
+
+:::
+
+**How do I import a Temporal Cloud Namespace?**
+
+If you have an existing Namespace in Temporal Cloud, you can import it into Terraform to manage the Namespace from Terraform using the `terraform import` command.
+
+1. Provide a configuration placeholder in your Terraform configuration.
+
+   ```yml
+   resource "temporalcloud_namespace" "namespace" {
+   }
+   ```
+
+1. Run the `terraform import` command from the command line and pass in the Namespace ID.
+   Your Namespace ID is available at the top of the Namespace's page in the Temporal Cloud UI and is in the format `namespaceid.acctid`.
+
+   ```bash
+   terraform import temporalcloud_namespace.terraform namespaceid.acctid
+   ```
+
+The Namespace is now a part of the Terraform state and all changes to the Namespace should be managed by Terraform.
+Once a resource has been imported into Terraform, outside changes to the resource will create Terraform "drift" errors on subsequent Terraform operations.
+
 ## Manage Temporal Cloud Users with Terraform
 
 Manage Temporal Cloud Users with the same process you use to manage Namespaces with Terraform.
-The following examples create, update, and delete Temporal Cloud Users by using the `terraform apply` command on the Terraform configuration file.
+The following examples create, update, delete, and import Temporal Cloud Users with `terraform apply` commands on the Terraform configuration file.
+
+:::note User Management
+
+Cautions about Temporal User management:
+
+- Terraform can't manage the Temporal Account Owner role.
+  While you can import an Account Owner to Terraform, you cannot create, update, or delete an Account Owner with Terraform.
+- Right now, you can't manage a user's access to a Namespace from the Namespace resource.
+  You must manage Namespace access from the User resource.
+  This is also true for Service Accounts.
+- Account Owners and Global Admins automatically gain access to all Namespaces in Temporal.
+  Therefore, you cannot specify Namespace access for these roles.
+  This is also true for Service Accounts.
+- To Import a user, you'll need the User's ID which is currently not available in the Temporal Cloud UI.
+  You can fetch current User ID by running the `tcld user list` command.
+
+:::
 
 **How do I create a Temporal Cloud User with Terraform?**
 
 1. Add a Terraform User resources configuration to your Terraform file.
 
-```yml
-terraform {
-required_providers {
-temporalcloud = {
-source = "temporalio/temporalcloud"
-version = ">= 0.0.6"
-}
-}
-}
+   ```yml
+   terraform {
+     required_providers {
+       temporalcloud = {
+         source = "temporalio/temporalcloud"
+       }
+     }
+   }
 
-provider "temporalcloud" {
+   provider "temporalcloud" {
 
-}
+   }
 
-resource "temporalcloud_namespace" "namespace" {
-name               = "terraform"
-regions            = ["aws-us-east-1"]
-accepted_client_ca = base64encode(file("ca.pem"))
-retention_days     = 14
-}
+   resource "temporalcloud_namespace" "namespace" {
+     name               = "terraform"
+     regions            = ["aws-us-east-1"]
+     accepted_client_ca = base64encode(file("ca.pem"))
+     retention_days     = 14
+   }
 
-resource "temporalcloud_user" "global_admin" {
-email          = <admin email>
-account_access = "Admin"
-}
+   resource "temporalcloud_user" "global_admin" {
+     email          = <admin-email>
+     account_access = "Admin"
+   }
 
-resource "temporalcloud_user" "namespace_admin" {
-email          = <developer email>
-account_access = "Developer"
-namespace_accesses = [
-{
-namespace_id = temporalcloud_namespace.namespace.id
-permission = "Write"
-}
-]
-}
-```
+   resource "temporalcloud_user" "namespace_admin" {
+     email          = <developer-email>
+     account_access = "Developer"
+     namespace_accesses = [
+       {
+         namespace_id = temporalcloud_namespace.namespace.id
+         permission = "Write"
+       }
+     ]
+   }
+   ```
 
-Replace the email and domain values with your Temporal Cloud User email and domain.
+   Replace the email and domain values with your Temporal Cloud User email and domain.
 
-2. Apply your configuration.
+1. Apply your configuration.
    When prompted, answer yes to continue:
 
-```command
-terraform apply
-```
+   ```command
+   terraform apply
+   ```
 
 Upon completion, you will see a success message indicating your User has been created.
 
@@ -326,54 +342,50 @@ To delete a User with Terraform, remove the Terraform User resources configurati
 
 1. Remove the Terraform User resources configuration from your Terraform file.
 
-```yml
-terraform {
-required_providers {
-temporalcloud = {
-source = "temporalio/temporalcloud"
-version = ">= 0.0.6"
-}
-}
-}
+   ```yml
+   terraform {
+     required_providers {
+       temporalcloud = {
+         source = "temporalio/temporalcloud"
+         version = ">= 0.0.6"
+       }
+     }
+   }
 
-provider "temporalcloud" {
+   provider "temporalcloud" {
 
-}
+   }
 
-resource "temporalcloud_namespace" "namespace" {
-name               = "terraform"
-regions            = ["aws-us-east-1"]
-accepted_client_ca = base64encode(file("ca.pem"))
-retention_days     = 14
-}
+   resource "temporalcloud_namespace" "namespace" {
+     name               = "terraform"
+     regions            = ["aws-us-east-1"]
+     accepted_client_ca = base64encode(file("ca.pem"))
+     retention_days     = 14
+   }
 
-resource "temporalcloud_user" "global_admin" {
-email          = <some email>
-account_access = "Admin"
-}
+   resource "temporalcloud_user" "global_admin" {
+     email          = <admin-email>
+     account_access = "Admin"
+   }
 
-resource "temporalcloud_user" "global_admin" {
-email          = <admin email>
-account_access = "Admin"
-}
-# resource "temporalcloud_user" "namespace_admin" {
-#   email          = <developer email>
-#   account_access = "Developer"
-#   namespace_accesses = [
-#     {
-#       namespace_id = temporalcloud_namespace.namespace.id
-#       permission = "Write"
-#     }
-#   ]
-# }
-```
+   # resource "temporalcloud_user" "namespace_admin" {
+   #   email          = <developer-email>
+   #   account_access = "Developer"
+   #   namespace_accesses = [
+   #     {
+   #       namespace_id = temporalcloud_namespace.namespace.id
+   #       permission = "Write"
+   #     }
+   #   ]
+   # }
+   ```
 
-2. Run the `terraform apply` command.
+1. Run the `terraform apply` command.
    When prompted, answer yes to continue:
 
-```command
-terraform apply
-```
+   ```command
+   terraform apply
+   ```
 
 Upon completion, you will see a success message indicating your User has been deleted.
 
@@ -381,3 +393,203 @@ Upon completion, you will see a success message indicating your User has been de
 temporalcloud_user.namespace_admin: Destruction complete after 2s
 Apply complete! Resources: 0 added, 0 changed, 1 destroyed.
 ```
+
+**How do I import a Temporal User?**
+If you have an existing User in Temporal Cloud, you can import it into Terraform using the `terraform import` command.
+
+1. Provide a configuration placeholder in your Terraform configuration.
+
+   ```yml
+   resource "temporalcloud_user" "user" {
+   }
+  ```
+
+1. Run the `terraform import` command and pass in the User ID
+   Your User ID is available using the Temporal Cloud CLI `tcld u l` command.
+
+   ```bash
+   terraform import temporalcloud_user.user 72360058153949edb2f1d47019c1e85f
+   ```
+
+The User is now a part of the Terraform state and all changes to the User should be managed by Terraform.
+
+## Manage Temporal Cloud Service Accounts with Terraform
+
+The process and steps to managing a Service Account with Terraform are very similar to managing a User with Terraform with a few small differences:
+
+- Service Accounts use the Service Account Terraform resource not the User resource.
+- Service Accounts do not have email addresses, they have names instead.
+  This means you should specify a name for a Service Account instead of an email.
+
+Everything else about managing Services Accounts with Terraform follows the same process, guidance, and limitations of managing Users with Terraform.
+
+## Manage Temporal Cloud API Keys with Terraform
+
+You can manage your own, personal API Keys and Service Account API Keys with Terraform.
+The process and steps to managing an API Key with Terraform are very similar to managing other resources with Terraform.
+You can create, delete, update and import API Keys with Terraform.
+One difference between working with API Keys as a Terraform resource compared to other Temporal Cloud resources is the need to access an API Keys secure token output from Terraform.
+Walk through the process of securely accessing the API Key Token in the Create section of this guide.
+
+:::note Limits and Best Practices
+
+- See the API Key [documentation](https://docs.temporal.io/cloud/api-keys) for information about the limits and best practices for managing API Keys.
+- See Terraform's documentation on working with [sensitive data](https://www.terraform.io/docs/language/values/variables.html#sensitive-values) for more information on how to manage sensitive data in Terraform.
+
+:::
+
+**How do I create a Temporal Cloud API Key with Terraform?**
+
+1. Add a Terraform API Key resources configuration to your Terraform file.
+
+   ```yml
+   terraform {
+     required_providers {
+       temporalcloud = {
+         source = "temporalio/temporalcloud"
+       }
+     }
+   }
+
+   provider "temporalcloud" {
+
+   }
+
+   resource "temporalcloud_service_account" "global_service_account" {
+     name           = "admin"
+     account_access = "Admin"
+   }
+
+   resource "temporalcloud_apikey" "global_apikey" {
+     display_name = "admin"
+     owner_type   = "service-account"
+     owner_id     = temporalcloud_service_account.global_service_account.id
+     expiry_time  = "2024-11-01T00:00:00Z"
+     disabled     = false
+   }
+   ```
+
+   Make sure to:
+
+   - Replace the display_name, expiry_time, and disabled values with your Temporal Cloud API Key configuration.
+   - Replace the owner_type and owner_id values with your Temporal Cloud Service Account or other Identity information.
+
+1. Create an output.tf file and add the following code to output the API Key Token.
+
+   ```yml
+   output "apikey_token" {
+     value = temporalcloud_apikey.global_apikey.token
+     sensitive = true
+   }
+   ```
+
+1. Apply your configuration.
+   When prompted, answer yes to continue:
+
+   ```command
+   terraform apply
+   ```
+
+   Upon completion, you will see a success message indicating the API Key has been created.
+
+   ```text
+   temporalcloud_apikey.global_apikey: Creation complete after 1s [id=kayBf38JIWkMPmnfr59iEIaEk2L7uqR4]
+   ```
+
+1. Access the API Key Token securely.
+   You'll notice that if you view the state for the API Key resource, the token value is not displayed.
+
+   ```bash
+   terraform state show temporalcloud_apikey.global_apikey
+
+   # temporalcloud_apikey.global_apikey:
+   resource "temporalcloud_apikey" "global_apikey" {
+       disabled     = false
+       display_name = "adminKey3"
+       expiry_time  = "2024-12-01T00:00:00Z"
+       id           = "kayBf38JIWkMPmnfr59iEIaEk2L7uqR4"
+       owner_id     = "b81336a6097449cba75c2e5500df3d31"
+       owner_type   = "service-account"
+       state        = "active"
+       token        = (sensitive value)
+   }
+   ```
+
+To access the token, you can use the Terraform output command.
+
+```bash
+terraform output -json apikey_token
+```
+
+This will display the token value in the terminal.
+
+:::info Security and API Keys
+
+Remember, keep your Terraform state files secure if you're managing API Keys with Terraform.
+The state file contains sensitive information, like the API Key Token, that should not be shared or exposed.
+
+:::
+
+**How do I update a Temporal Cloud API Key with Terraform?**
+
+To update an API Key with Terraform, follow the same steps used to create an API Key.
+
+:::note Editing Fields
+
+You can only edit an API Key's name or description field.
+Updating an API Key does not generate a new secure token
+
+:::
+
+**How do I delete a Temporal Cloud API Key with Terraform?**
+
+To delete an API Key with Terraform, remove the Terraform API Key resources configuration from your Terraform and output.tf files and run the `terraform apply` command.
+
+**How do I Import a Temporal API Key?**
+
+If you have an existing API Key in Temporal Cloud, you can import it into Terraform using the `terraform import` command.
+
+1. Provide a configuration placeholder in your Terraform configuration.
+
+   ```yml
+   resource "temporalcloud_apikey" "import_key"{
+   }
+   ```
+
+1. Run the `terraform import` command and pass in the API Key ID
+   Your API Key ID is available in the Cloud UI in the API Key's details page
+
+   ```bash
+   terraform import temporalcloud_apikey.import_key zJV5zQ3IhsAbw75dAkVNEMsAd3a5AemC
+   ```
+
+The API Key is now a part of the Terraform state and all changes to the API Key should be managed by Terraform.
+Import does not import the API Key Token.
+The Token is only available at the time of API Key creation.
+
+## Data Sources - Regions and Namespaces
+
+The Terraform provider also supports 2 data sources that provide you access to the available Regions and Namespaces in your Temporal Cloud account.
+
+:::note Terraform Data Sources
+
+See Terraform [documentation](https://developer.hashicorp.com/terraform/language/data-sources) to learn more about Terraform Data Sources
+
+:::
+
+For example, to retrieve a list of regions available for your account, you can use the regions data_source
+
+```yml
+data "temporalcloud_regions" "regions" {}
+
+output "regions" {
+  value = data.temporalcloud_regions.regions.regions
+}
+```
+
+## Community Involvement
+
+Do you have feedback about the provider? Want to report a bug or request a feature? We'd love to hear from you.
+
+- Please reach out to us in the Temporal Community [Slack](https://join.slack.com/t/temporalio/shared_invite/zt-2u2ey8ilu-LRxnd3PSoAk9GZ94UuzoBA) in the #terraform channel
+- Feel free to create issues and contribute PRs in the Temporal Terraform [GitHub repository](https://github.com/temporalio/terraform-provider-temporalcloud/tree/main)

@@ -53,6 +53,8 @@ swap:
   namespace: Namespace
   namespaces: Namespaces
   namespace id: Namespace Id
+  nexus: Temporal Nexus
+  Nexus: Temporal Nexus
   parent close policy: Parent Close Policy
   payload codec: Payload Codec
   payload converter: Payload Converter
@@ -96,6 +98,7 @@ swap:
   '\bworkflow\b': Workflow
   timer: Timer
   timers: Timers
+  update: Update
   worker entity: Worker Entity
   worker process: Worker Process
   worker program: Worker Program

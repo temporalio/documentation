@@ -13,12 +13,8 @@ keywords:
   - temporal cloud
   - term
 tags:
-  - explanation
-  - how-to
-  - introduction
-  - namespaces
-  - temporal-cloud
-  - term
+  - Namespaces
+  - Temporal Cloud
 ---
 
 A Namespace is a unit of isolation within the Temporal Platform.
@@ -171,7 +167,7 @@ Follow these steps to find it:
 
 The user who creates a [Namespace](/namespaces) is automatically granted [Namespace Admin](/cloud/users#namespace-level-permissions) permission for that Namespace.
 
-To create a Namespace, a user must have the Developer or Global Admin account-level [Role](/cloud/users#account-level-roles).
+To create a Namespace, a user must have the Developer, Account Owner, or Global Admin account-level [Role](/cloud/users#account-level-roles).
 
 :::
 
@@ -190,7 +186,7 @@ You can request further increases beyond the 100 Namespace limit by opening a [s
 
 To create a Namespace in Temporal Cloud, gather the following information:
 
-- [Namespace Name](#temporal-cloud-namespace-name) and region.
+- [Namespace Name](#temporal-cloud-namespace-name), region, and Cloud Provider
 - [Retention Period](/clusters#retention-period) for the [Event History](/workflows#event-history) of closed [Workflow Executions](/workflows#workflow-execution).
 - [CA certificate](/cloud/certificates#certificate-requirements) for the Namespace.
 - [Codec Server endpoint](/production-deployment/data-encryption#set-your-codec-server-endpoints-with-web-ui-and-cli) to show decoded payloads to users in the Event History for Workflow Executions in the Namespace. For details, see [Securing your data](/production-deployment/data-encryption).
@@ -205,6 +201,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 1. On the left side of the window, click **Namespaces**.
 1. On the **Namespaces** page, click **Create Namespace** in the upper-right portion of the window.
 1. On the **Create Namespace** page in **Name**, enter the Namespace Name.
+1. In **Cloud Provider**, select the cloud provider in which to host this Namespace.
 1. In **Region**, select the region in which to host this Namespace.
 1. In **Retention Period**, specify a value from 1 to 90 days.
    When choosing this value, consider your needs for Event History versus the cost of maintaining that Event History.
@@ -220,7 +217,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 
 ### Create a Namespace using tcld
 
-See the [tcld namespace create](/cloud/tcld/namespace/#create) command reference for details.
+See the [`tcld` namespace create](/cloud/tcld/namespace/#create) command reference for details.
 
 ## What are some Namespace best practices? {#best-practices}
 
@@ -317,9 +314,10 @@ Each Namespace in Temporal Cloud has two unique endpoints, both of which include
 To ensure the security of your data, all traffic to and from your Namespace is encrypted.
 However, for enhanced protection, you have additional options:
 
-- (recommended) Set up [PrivateLink](https://aws.amazon.com/privatelink/) by [creating a ticket for Temporal Support](/cloud/support#support-ticket).
-  If you don't host your Clients and Workers on AWS, you can create an AWS account to proxy traffic through.
-- Allow list, for outgoing network requests from your Clients and Workers, the [IP address ranges](https://docs.aws.amazon.com/vpc/latest/userguide/aws-ip-ranges.html) of the AWS region in which your Namespace is located.
+- (recommended) Set up private connectivity by [creating a ticket for Temporal Support](/cloud/support#support-ticket).
+- Set up your allow list for outgoing network requests from your Clients and Workers with the IP address ranges of the Cloud Provider region in which your Namespace is located:
+  - [AWS IP address ranges](https://docs.aws.amazon.com/vpc/latest/userguide/aws-ip-ranges.html)
+  - [GCP IP address ranges](https://cloud.google.com/compute/docs/faq#find_ip_range)
 
 ## How to manage Namespaces in Temporal Cloud {#manage-namespaces}
 
@@ -382,6 +380,15 @@ To delete a Namespace, a user must have Namespace Admin [permission](/cloud/user
 1. On the **Edit** Namespace page, select **Delete Namespace** in the upper-right portion of the window.
 1. In the **Delete Namespace** dialog, type `DELETE` to confirm the deletion of that Namespace.
 1. Select **Delete**.
+
+After deleting a Temporal Cloud Namespace, the Temporal Service immediately removes the Namespace's Workflow Executions and Task Queues.
+Make sure all Workflows have been completed, canceled, or terminated before removing a Namespace.
+The Namespace removal is permanent.
+
+Closed Workflow Histories remain in Temporal storage until the user-defined retention period expires.
+This period reflects the policy in effect when the Workflow Execution was closed.
+
+For further questions or concerns, contact [Support](https://docs.temporal.io/cloud/support#support-ticket).
 
 ### Delete a Namespace using tcld
 
