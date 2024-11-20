@@ -56,7 +56,7 @@ A Temporal Application is scalable because the Temporal Platform is capable of s
 
 A Replay is the method by which a Workflow Execution resumes making progress. During a Replay the Commands that are generated are checked against an existing Event History. Replays are necessary and often happen to give the effect that Workflow Executions are resumable, reliable, and durable.
 
-For more information, see [Deterministic constraints](#deterministic-constraints).
+For more information, see [Deterministic constraints](/workflow-definition/#deterministic-constraints).
 
 If a failure occurs, the Workflow Execution picks up where the last recorded event occurred in the Event History.
 
@@ -75,7 +75,7 @@ A Workflow Execution does two things:
 
 <PrettyImage src="/diagrams/workflow-execution-progession-simple.svg" title="Command generation and waiting" />
 
-Commands are issued and Awaitables are provided by the use of Workflow APIs in the [Workflow Definition](#workflow-definition).
+Commands are issued and Awaitables are provided by the use of Workflow APIs in the [Workflow Definition](/workflow-definition).
 
 Commands are generated whenever the Workflow Function is executed.
 The Worker Process supervises the Command generation and makes sure that it maps to the current Event History.
@@ -124,7 +124,7 @@ Each Workflow Run in the sequence is connected by one of the following:
 
 - [Continue-As-New](#continue-as-new)
 - [Retries](/encyclopedia/retry-policies)
-- [Temporal Cron Job](#temporal-cron-job)
+- [Temporal Cron Job](/cron-job)
 
 A Workflow Execution is uniquely identified by its [Namespace](/namespaces), [Workflow Id](#workflow-id), and [Run Id](#run-id).
 

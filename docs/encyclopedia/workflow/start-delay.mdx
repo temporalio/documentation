@@ -31,7 +31,7 @@ Start Delay determines the amount of time to wait before initiating a Workflow E
 
 :::note
 
-Start Delay Workflow Execution is incompatible with both [Schedules](#schedule) and [Cron Jobs](#temporal-cron-job).
+Start Delay Workflow Execution is incompatible with both [Schedules](/schedule) and [Cron Jobs](/cron-job).
 
 :::
 
@@ -44,7 +44,7 @@ You can delay the dispatch of the initial Workflow Execution by setting this opt
 
 ## What is a State Transition? {#state-transition}
 
-A State Transition is a unit of progress made by a [Workflow Execution](#workflow-execution).
+A State Transition is a unit of progress made by a [Workflow Execution](/workflow-execution).
 Each State Transition is recorded in a persistence store.
 
 Some operations, such as [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat), require only one or two State Transitions each. With an Activity Heartbeat, there are two: the Activity Heartbeat and a Timer.
