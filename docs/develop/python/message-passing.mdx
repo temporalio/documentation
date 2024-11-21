@@ -291,7 +291,7 @@ To send an Update to a Workflow Execution, you can:
   )
   ```
 
-- Send [`start_update`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#start_update) to receive an [`UpdateHandle`](https://python.temporal.io/temporalio.client.WorkflowUpdateHandle.html) as soon as the Update is accepted or rejected.
+- Send [`start_update`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#start_update) to receive an [`UpdateHandle`](https://python.temporal.io/temporalio.client.WorkflowUpdateHandle.html) as soon as the Update is accepted.
 
   - Use this `UpdateHandle` later to fetch your results.
   - `async def` Update handlers normally perform long-running asynchronous operations, such as executing an Activity.
