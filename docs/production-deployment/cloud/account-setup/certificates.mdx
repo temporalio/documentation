@@ -56,6 +56,13 @@ CA certificates _must_ meet the following criteria:
   SHA-1 and MD5 cannot be used.
 - The certificates cannot be generated with a passphrase.
 
+:::info
+
+A certificate bundle can contain up to 16 CA certificates.
+A certificate bundle can have a maximum payload size of 32 KB before base64 encoding.
+
+:::
+
 ### End-entity certificates
 
 An end-entity certificate is a type of X.509v3 certificate used by clients to authenticate themselves.
@@ -95,13 +102,6 @@ Follow the instructions to [upload the CA certificate](/cloud/certificates#updat
 ### Option 2: You don't have certificate management infrastructure
 
 If you don't have an existing certificate management infrastructure, issue the CA and end-entity certificates using [tcld](#use-tcld-to-generate-certificates) or open source tools such as [certstrap](#use-certstrap-to-generate-certificates).
-
-:::info
-
-A certificate bundle can contain up to 16 CA certificates.
-A certificate bundle can have a maximum payload size of 32 KB before base64 encoding.
-
-:::
 
 #### Use tcld to generate certificates
 
