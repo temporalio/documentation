@@ -170,7 +170,7 @@ if err != nil {
 
 ### Overriding the retry interval with Next Retry Delay {#next-retry-delay}
 
-You may return an [Application Failure](/references/failures#application-failure) with the NextRetryDelay field set. This value will replace and override whatever the retry interval would be on the retry policy.
+You may return an [Application Failure](/references/failures#application-failure) with the `NextRetryDelay` field set. This value will replace and override whatever the retry interval would be on the retry policy.
 
 For example, if in an activity, you want to base the interval on the number of attempts, you might do:
 
