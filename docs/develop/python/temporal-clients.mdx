@@ -1,6 +1,6 @@
 ---
 id: temporal-clients
-title: Temporal Client - Python SDK feature guide
+title: Temporal Client - Python SDK
 sidebar_label: Temporal Client
 toc_max_heading_level: 4
 description: Discover how to connect and use Temporal Clients with Python. Learn to link your Client to Temporal Service, Temporal Cloud, start Workflow Executions, set Task Queues, Workflow Ids, and get Workflow results.
@@ -20,9 +20,10 @@ keywords:
   - temporal client options
   - managing temporal namespaces
 tags:
-  - python
-  - python-sdk
-  - temporal-client
+  - Temporal Client
+  - Python SDK
+  - Temporal SDKs
+  - Certificates
 ---
 
 This guide introduces Temporal Clients.
@@ -318,7 +319,7 @@ Then use the [`result`](https://python.temporal.io/temporalio.client.WorkflowHan
 
 To get a handle for an existing Workflow by its Id, you can use [`get_workflow_handle()`](https://python.temporal.io/temporalio.client.Client.html#get_workflow_handle), or use [`get_workflow_handle_for()`](https://python.temporal.io/temporalio.client.Client.html#get_workflow_handle_for) for type safety.
 
-Then use [`describe()`](https://python.temporal.io/temporalio.client.workflowhandle#describe) to get the current status of the Workflow.
+Then use [`describe()`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#describe) to get the current status of the Workflow.
 If the Workflow does not exist, this call fails.
 
 <div class="copycode-notice-container">

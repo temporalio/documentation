@@ -1,6 +1,6 @@
 ---
 id: versioning
-title: Versioning - Python SDK feature guide
+title: Versioning - Python SDK
 sidebar_label: Versioning
 description: Learn how to ensure deterministic Temporal Workflow execution and safely deploy updates using the Python SDK's patching and Worker Versioning APIs, for scalable long-running Workflows.
 slug: /develop/python/versioning
@@ -21,20 +21,11 @@ keywords:
   - workflow history
   - workflow transition
 tags:
-  - best-practices
-  - code-sample
-  - deployment
-  - deployment-safety
-  - deprecated-patches
-  - how-to
-  - patching
-  - python
-  - python-sdk
-  - version
-  - versioning
-  - workflow-completion
-  - workflow-history
-  - workflow-transition
+  - Workflows
+  - Versioning
+  - Patching
+  - Python SDK
+  - Temporal SDKs
 ---
 
 The definition code of a Temporal Workflow must be deterministic because Temporal uses event sourcing
@@ -112,7 +103,7 @@ class MyWorkflow:
         )
 ```
 
-**Problem: You cannot deploy `post_patch_activity` directly until you're certain there are no more running Workflows created using the `pre_patch_activity` code, otherwise you are likely to cause a non-deterministic error.**
+**Problem: You cannot deploy `post_patch_activity` directly until you're certain there are no more running Workflows created using the `pre_patch_activity` code, otherwise you are likely to cause a nondeterminism error.**
 
 Instead, you'll need to deploy `post_patched_activity` and use the [patched](https://python.temporal.io/temporalio.workflow.html#patched) function to determine which version of the code to execute.
 

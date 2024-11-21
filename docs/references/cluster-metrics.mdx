@@ -7,7 +7,8 @@ toc_max_heading_level: 4
 keywords:
   - reference
 tags:
-  - reference
+  - Reference
+  - Metrics
 ---
 
 :::info OSS Temporal Service metrics
@@ -22,13 +23,13 @@ See [SDK metrics](/references/sdk-metrics) for metrics emitted by the [SDKs](/en
 
 A Temporal Service emits a range of metrics to help operators get visibility into the Temporal Service's performance and to set up alerts.
 
-All metrics emitted by the Temporal Service are listed in [metric_defs.go](https://github.com/temporalio/temporal/blob/master/common/metrics/metric_defs.go).
+All metrics emitted by the Temporal Service are listed in [metric_defs.go](https://github.com/temporalio/temporal/blob/main/common/metrics/metric_defs.go).
 
 For details on setting up metrics in your Temporal Service configuration, see the [Temporal Service configuration reference](/references/configuration#global).
 
 The [dashboards repository](https://github.com/temporalio/dashboards) contains community-driven Grafana dashboard templates that can be used as a starting point for monitoring the Temporal Service and SDK metrics.
 You can use these templates as references to build your own dashboards.
-For any metrics that are missing in the dashboards, use [metric_defs.go](https://github.com/temporalio/temporal/blob/master/common/metrics/metric_defs.go) as a reference.
+For any metrics that are missing in the dashboards, use [metric_defs.go](https://github.com/temporalio/temporal/blob/main/common/metrics/metric_defs.go) as a reference.
 
 Note that, apart from these metrics emitted by the Temporal Service, you should also monitor infrastructure-specific metrics like CPU, memory, and network for all hosts that are running Temporal Service services.
 
@@ -40,7 +41,7 @@ These metrics are emitted with `type`, `operation`, and `namespace` tags, which 
 - Use the `operation` tag in your query to get request rates, error rates, or latencies per operation.
 - Use the `service_name` tag with the [service role tag values](https://github.com/temporalio/temporal/blob/bba148cf1e1642fd39fa0174423b183d5fc62d95/common/metrics/defs.go#L108) to get details for the specific service.
 
-All common tags that you can add in your query are defined in the [metric_defs.go](https://github.com/temporalio/temporal/blob/master/common/metrics/metric_defs.go) file.
+All common tags that you can add in your query are defined in the [metric_defs.go](https://github.com/temporalio/temporal/blob/main/common/metrics/metric_defs.go) file.
 
 For example, to see service requests by operation on the Frontend Service, use the following:
 
@@ -76,7 +77,7 @@ Example: Client errors
 `sum(rate(client_errors{service_name="frontend",service_role="history"}[5m]))`
 
 In addition to these, you can define some service-specific metrics to get performance details for each service.
-Start with the following list, and use [metric_defs.go](https://github.com/temporalio/temporal/blob/master/common/metrics/metric_defs.go) to define additional metrics as required.
+Start with the following list, and use [metric_defs.go](https://github.com/temporalio/temporal/blob/main/common/metrics/metric_defs.go) to define additional metrics as required.
 
 ## Matching Service metrics
 
@@ -263,3 +264,86 @@ Number of Workflows that successfully completed.
 ### `workflow_timeout`
 
 Number of Workflows that timed out before completing execution.
+
+## Nexus metrics
+
+These metrics pertain to Nexus Operations.
+
+### Nexus Machinery in the History Service
+
+See [architecture document](https://github.com/temporalio/temporal/blob/5d55d6c707bd68d8f3274c57ae702331adf05e6e/docs/architecture/nexus.md#scheduler)
+for more info.
+
+#### In-Memory Buffer
+
+`dynamic_worker_pool_scheduler_enqueued_tasks`: A counter that is incremented when a task is enqueued to the buffer.
+
+`dynamic_worker_pool_scheduler_dequeued_tasks`: A counter that is incremented when a task is dequeued from the buffer.
+
+`dynamic_worker_pool_scheduler_rejected_tasks`: A counter that is incremented when the buffer is full and adding the
+task is rejected.
+
+`dynamic_worker_pool_scheduler_buffer_size`: A gauge that periodically samples the size of the buffer.
+
+### Concurrency Limiter
+
+`dynamic_worker_pool_scheduler_active_workers`: A gauge that periodically samples the number of running goroutines.
+
+#### Rate Limiter
+
+`rate_limited_task_runnable_wait_time`: A histogram representing the time a task spends waiting for the rate limiter.
+
+#### Circuit Breaker
+
+`circuit_breaker_executable_blocked`: A counter that is incremented every time a task execution is blocked by the
+circuit breaker.
+
+#### Task Executors
+
+`nexus_outbound_requests`: A counter representing the number of Nexus outbound requests made by the history service.
+
+`nexus_outbound_latency`: A histogram representing the latency of outbound Nexus requests made by the history service.
+
+`callback_outbound_requests`: A counter representing the number of callback outbound requests made by the history
+service.
+
+`callback_outbound_latency`: A histogram representing the latency histogram of outbound callback requests made by the
+history service.
+
+### Nexus Machinery on the Frontend Service
+
+#### `nexus_requests`
+
+The number of Nexus requests received by the service.
+
+Type: Counter
+
+#### `nexus_latency`
+
+Latency of Nexus requests.
+
+Type: Histogram
+
+#### `nexus_request_preprocess_errors`
+
+The number of Nexus requests for which pre-processing failed.
+
+Type: Counter
+
+#### `nexus_completion_requests`
+
+The number of Nexus completion (callback) requests received by the service.
+
+Type: Counter
+
+#### `nexus_completion_latency`
+
+Latency histogram of Nexus completion (callback) requests.
+
+Type: Histogram
+
+#### `nexus_completion_request_preprocess_errors`
+
+The number of Nexus completion requests for which pre-processing failed.
+
+Type: Counter

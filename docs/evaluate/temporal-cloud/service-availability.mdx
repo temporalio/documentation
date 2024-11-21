@@ -2,7 +2,7 @@
 id: service-availability
 title: Service availability - Temporal Cloud
 sidebar_label: Availability
-description: Temporal Cloud offers high availability and low latency across multiple AWS regions with adjustable throughput limits and robust latency targets. Contact us for more details.
+description: Temporal Cloud offers high availability and low latency across multiple cloud provider regions with adjustable throughput limits and robust latency targets. Contact us for more details.
 slug: /cloud/service-availability
 toc_max_heading_level: 4
 keywords:
@@ -11,10 +11,7 @@ keywords:
   - temporal cloud
   - throughput
 tags:
-  - explanation
-  - operations
-  - temporal-cloud
-  - throughput
+  - Temporal Cloud
 ---
 
 The operating envelope of Temporal Cloud includes availability, regions, throughput, latency, and limits.
@@ -30,7 +27,9 @@ Temporal Cloud is compatible with applications deployed in various cloud environ
 
 To minimize latency, we advise creating your Namespace in a region geographically close to your Workers' hosting location.
 
-Currently, Temporal Cloud operates in several regions on Amazon Web Services (AWS):
+### AWS
+
+Temporal Cloud operates in several regions on Amazon Web Services (AWS):
 
 | Area          | Code           | Region            |
 | ------------- | -------------- | ----------------- |
@@ -49,7 +48,14 @@ Currently, Temporal Cloud operates in several regions on Amazon Web Services (AW
 | North America | us-west-2      | Oregon            |
 | South America | sa-east-1      | São Paulo         |
 
-_**Your Workers and Client code aren't required to be hosted on AWS.**_
+### GCP
+
+Temporal Cloud operates in two regions on Google Cloud (GCP):
+
+| Area          | Code                 | Region |
+| ------------- | -------------------- | ------ |
+| North America | us-west1             | Oregon |
+| Asia Pacific  | asia-south1          | Mumbai |
 
 ## Throughput expectations {#throughput}
 
@@ -112,6 +118,8 @@ In March 2024, latency over a week-long period for starting and signaling Workfl
 | `SignalWithStartWorkflowExecution` | 24ms | 61ms |
 
 As Temporal continues working on improving latencies, these numbers will progressively decrease.
+
+The same SLO for normal Worker requests (commands and polling) apply to Nexus in both the caller and handler Namespaces.
 
 Latency observed from the Temporal Client is influenced by other system components like the Codec Server, egress proxy, and the network itself.
 Also, concurrent operations on the same Workflow Execution may result in higher latency.

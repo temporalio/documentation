@@ -1,19 +1,15 @@
 ---
 id: testing-suite
-title: Test suites
-sidebar_label: Test suites
+title: Testing - TypeScript SDK
+sidebar_label: Testing
 description: The Testing section of the Temporal Application development guide covers frameworks for Workflow and integration testing, including end-to-end, integration, unit testing, and time-skipping functionalities.
 toc_max_heading_level: 4
 keywords:
-  - developer-guide
-  - guide-context
-  - sdk
-  - typescript
+  - testing
 tags:
-  - developer-guide
-  - guide-context
-  - sdk
-  - typescript
+  - Testing
+  - TypeScript SDK
+  - Temporal SDKs
 ---
 
 The Testing section of the Temporal Application development guide describes the frameworks that facilitate Workflow and integration testing.
@@ -201,7 +197,7 @@ afterAll(async () => {
 });
 ```
 
-`TestWorkflowEnvironment` has [`client`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment/#client) and [`nativeConnection`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#nativeconnection) for creating Workers:
+`TestWorkflowEnvironment` has [`client`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#client) and [`nativeConnection`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#nativeconnection) for creating Workers:
 
 ```typescript
 import { Worker } from '@temporalio/worker';
@@ -334,7 +330,7 @@ test('sleeperWorkflow counts days correctly', async () => {
 
 Learn to skip time in Activities in the SDK of your choice.
 
-Call [`TestWorkflowEnvironment.sleep`](https://typescript.temporal.io/api/classes/testing.testworkflowenvironment/#sleep) from the mock Activity.
+Call [`TestWorkflowEnvironment.sleep`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#sleep) from the mock Activity.
 
 In the following test, `processOrderWorkflow` sends a notification to the user after one day.
 The `processOrder` mocked Activity calls `testEnv.sleep(‘2 days')`, during which the Workflow sends email (by calling the `sendNotificationEmail` Activity).
