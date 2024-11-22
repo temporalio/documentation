@@ -36,7 +36,7 @@ Nexus Services and [Nexus Operations](/nexus/operations) are often registered in
 When a caller Workflow executes a Nexus Operation, a Nexus request is sent to a Nexus Endpoint using the Endpoint name.
 The Endpoint then routes the Nexus request to an upstream target Namespace and Task Queue that is being polled by a Nexus Worker.
 
-![Nexus Overview](/img/nexus-overview.png)
+![Nexus Overview](/img/nexus-overview-short.png)
 
 ## Build and use Nexus Services
 
@@ -61,7 +61,14 @@ Workers authenticate to thier Namespace with an mTLS client certificate or API K
 This establishes the caller's identity and caller namespace for Endpoint access control.
 Nexus handler Workers poll the Endpoint's target Task Queue for Nexus Tasks to process.
 
-![NexusYourCloud](/img/nexus/nexus-connect-queue-based-workers.png)
+![NexusYourCloud](/img/nexus/nexus-workers-short.png)
+
+For example, when you execute a synchronous Nexus Operation from a caller Workflow, the Workers communicate with their Namespace gRPC endpoint:
+1. The caller Worker executes a Nexus Operation by responding with a [ScheduleNexusOperation](/references/commands#schedulenexusoperation) command.
+2. The handler Worker gets a [Nexus Task](/workers#nexus-task) to start a Nexus Operation, by polling the Nexus Endpoint's target Task Queue.
+3. The handler Worker processes the Task and responds with the result.
+4. The result is recorded in the caller's Workflow history as a Nexus Operation event.
+5. The caller Worker recieves the result of the [ScheduleNexusOperation](/references/commands#schedulenexusoperation) command, by polling it's Workflow Task Queue.
 
 :::info
 
@@ -69,13 +76,7 @@ Temporal Cloud supports Nexus connectivity within and across cloud regions. Cros
 
 :::
 
-For example, when you execute a synchronous Nexus Operation from a caller Workflow, the Workers communicate with their Namespace gRPC service:
-1. A command is sent from a caller Workflow to Temporal to schedule the Operation. 
-2. Nexus requests are handled by sync matching to a Worker that is polling the Endpoint's Task Queue.
-3. A Nexus Operation completes successfully and returns a synchronous result.
-4. The result is recorded in the caller's Workflow Event History by the Nexus Machinery
-
-See [Queue-based Worker architecture](/nexus#queue-based-worker-architecture) for additional details.
+See the [Queue-based Worker Architecture](/nexus#queue-based-worker-architecture) for additional details.
 
 ## Execution Semantics
 
@@ -92,6 +93,10 @@ To dedupe work and get exactly-once execution semantics, an Operation can start 
 
 Nexus Operation handlers should be idempotent just like Activities should be idempotent as a general rule.
 It's not required in all cases, but highly recommended in general.
+
+## Multi-level calls
+Nexus supports multi-level Nexus calls, for example:
+- Workflow A → Nexus Operation 1 → Workflow B → Nexus Operation 2 → Workflow C
 
 ## Learn more
 

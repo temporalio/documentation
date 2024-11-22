@@ -40,16 +40,16 @@ This establishes the caller's identity and caller Namespace.
 2. Caller Workflow executes a Nexus Operation on a Nexus Endpoint.
 3. Endpoint access control policy is enforced, checking if the caller Namespace is in the Endpoint allow list.
 
-See [runtime access controls](/nexus/security#runtime-access-controls) and [configuring runtime access controls](/nexus/registry#configure-runtime-access-controls) for additional details.
+See [Runtime Access Controls](/nexus/security#runtime-access-controls) and [Configuring Runtime Access Controls](/nexus/registry#configure-runtime-access-controls) for additional details.
 
 ## Secure connectivity
 
 Nexus Endpoints are only privately accessible from within a Temporal Cloud and mTLS is used for all Nexus communication, including across cloud cells and regions.
 Workers authenticate to their Namespaces through mTLS or an API key as allowed by their Namespace configuration.
 
-![NexusYourCloud](/img/nexus/nexus-connect-queue-based-workers.png)
+![Nexus Security](/img/nexus/nexus-workers-short.png)
 
-See [Nexus secure connectivity](/nexus/security#secure-connectivity) for additional details.
+See [Nexus Secure Connectivity](/nexus/security#secure-connectivity) for additional details.
 
 ## Payload encryption
 

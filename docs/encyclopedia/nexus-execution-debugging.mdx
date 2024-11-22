@@ -27,47 +27,7 @@ Execution debugging with Nexus includes end-to-end executions that span:
 
 Multi-level Nexus calls are supported:
 
-- Workflow A → Nexus Op 1 → Workflow B → Nexus Op 2 → Workflow C
-
-## Nexus Operation ID
-
-When a Nexus Operation is started by a caller Workflow that's processed by a Temporal SDK New-Workflow-Run-Operation handler, the underlying Workflow ID is returned as the Nexus Operation ID which is reflected in the Nexus Operation Started event in the caller’s Workflow history.
-
-![Workflow history](/img/nexus/nexus-operations-ui.png)
-
-This can be used to search the handler’s Namespace for that Workflow ID:
-
-![Search handler's Namespace](/img/nexus/nexus-operations-ui-search-handler.png)
-
-This may also be done using: `temporal workflow show –detailed`
-
-```
---------------- [5] NexusOperationScheduled ---------------
-endpoint: myendpoint
-endpointId: 80a4fb3e7ab145eabc6a3b15e327548f
-eventTime: 2024-08-28T03:44:34.985230930Z
-input.Language: es
-input.Name: Nexus
-operation: say-hello
-requestId: 1307660f-7f2e-4626-8629-851a0e468482
-scheduleToCloseTimeout: 0s
-service: my-hello-service
-taskId: 158300487
-version: 1265
-workflowTaskCompletedEventId: 4
-
---------------- [6] NexusOperationStarted ---------------
-eventTime: 2024-08-28T03:44:35.198292012Z
-operationId: 1307660f-7f2e-4626-8629-851a0e468482
-requestId: 1307660f-7f2e-4626-8629-851a0e468482
-scheduledEventId: 5
-taskId: 158300491
-version: 1265
-```
-
-Which can then be searched using: `temporal workflow list –query`.
-
-However, this requires knowing the Endpoint’s target Namespace and manual steps, which is why we’ve created [bi-directional linking for Nexus Operations] to navigate forwards and backwards across Workflow event histories, through the Nexus Operations and underlying Temporal primitives they may create.
+- Workflow A → Nexus Operation 1 → Workflow B → Nexus Operation 2 → Workflow C
 
 ## Pending Operations
 
@@ -131,8 +91,49 @@ In Public Preview, this is only supported for New-Workflow-Run-Operation, which 
 This enables bi-directional navigation across Workflow histories:
 
 - Forward through the Nexus Operation execution:
-  - From a Nexus Operation event in the callers Workflow history.
-  - To the underlying event in the handler’s Workflow.
+  - From a Nexus Operation event in the caller's Workflow history.
+  - To the underlying event in the handler's Workflow.
 - Backwards through the Nexus Operation execution:
-  - From the underlying event in the handler’s Workflow.
-  - To a Nexus Operation event in the callers Workflow history.
+  - From the underlying event in the handler's Workflow.
+  - To a Nexus Operation event in the caller's Workflow history.
+
+## Nexus Operation ID
+
+Nexus Operations created with the Temporal SDK New-Workflow-Run-Operation helper, return the Workflow ID as the Nexus Operation ID.
+The caller’s Workflow history shows the Nexus Operation ID in the [NexusOperationStarted](/references/events#nexusoperationstarted) event.
+
+![Workflow history](/img/nexus/nexus-operations-ui.png)
+
+This can be used to search the handler’s Namespace for that Workflow ID:
+
+![Search handler's Namespace](/img/nexus/nexus-operations-ui-search-handler.png)
+
+This may also be done using: `temporal workflow show -–detailed`
+
+```
+--------------- [5] NexusOperationScheduled ---------------
+endpoint: myendpoint
+endpointId: 80a4fb3e7ab145eabc6a3b15e327548f
+eventTime: 2024-08-28T03:44:34.985230930Z
+input.Language: es
+input.Name: Nexus
+operation: say-hello
+requestId: 1307660f-7f2e-4626-8629-851a0e468482
+scheduleToCloseTimeout: 0s
+service: my-hello-service
+taskId: 158300487
+version: 1265
+workflowTaskCompletedEventId: 4
+
+--------------- [6] NexusOperationStarted ---------------
+eventTime: 2024-08-28T03:44:35.198292012Z
+operationId: 1307660f-7f2e-4626-8629-851a0e468482
+requestId: 1307660f-7f2e-4626-8629-851a0e468482
+scheduledEventId: 5
+taskId: 158300491
+version: 1265
+```
+
+Which can then be searched using: `temporal workflow list –query`.
+
+However, this requires knowing the Endpoint’s target Namespace and manual steps, which is why we’ve created [bi-directional linking for Nexus Operations] to navigate forwards and backwards across Workflow event histories, through the Nexus Operations and underlying Temporal primitives they may create.

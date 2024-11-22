@@ -30,7 +30,7 @@ Nexus handlers may return [different error types](/references/failures#nexus-err
 If a Workflow is started by a Nexus handler, the Workflow result is propagated as the Nexus Operation result.
 Nexus Operations can end up in [completed](/references/events#nexusoperationcompleted), [failed](/references/events#nexusoperationfailed), [canceled](/references/events#nexusoperationcanceled), and [timed out](/references/events#nexusoperationtimedout) states.
 
-See [errors in Nexus handlers](/nexus/errors-retries) and the [error reference](/references/failures#errors-in-nexus-operations) for more information.
+See [Error and Retries](/nexus/errors-retries) for more information.
 
 ## Automatic Retries
 
@@ -41,11 +41,10 @@ All retryable errors are automatically retried by the Nexus Machinery.
 To avoid infinite retries and improve semantics, custom Nexus handlers should return a [specific Nexus error type](/references/failures#nexus-errors).
 
 :::
-
-See [Nexus Automatic Retries](/nexus/errors-retries#automatic-retries) for additional details.
+See [Automatic Retries](/nexus/errors-retries#automatic-retries) for additional details.
 
 ## Nexus Error Handling in Caller Workflows
 
 A Nexus Operation Failure is delivered to the caller's Workflow Execution when a Nexus Operation fails.
 
-See [error handling in caller Workflows](/nexus/errors-retries#nexus-error-handling-in-caller-workflows) for additional details.
+See [Nexus Error Handling in Caller Workflows](/nexus/errors-retries#nexus-error-handling-in-caller-workflows) for additional details.

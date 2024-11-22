@@ -27,7 +27,7 @@ This section covers errors and automatic retries for Temporal Nexus.
 Nexus Operations can end up in [completed](/references/events#nexusoperationcompleted), [failed](/references/events#nexusoperationfailed), [canceled](/references/events#nexusoperationcanceled), and [timed out](/references/events#nexusoperationtimedout) states.
 
 The Nexus Machinery breaks up the [Nexus Operation lifecycle](/nexus/operations#operation-lifecycle) into one or more [Nexus Tasks](/workers#nexus-task) that a Nexus handler is responsible for processing.
-For [synchronous Nexus Operations](/nexus/operations#synchronous-operation-lifecycle) the Nexus Machinery creates a single Nexus Task to start an Operation.
+For [synchronous Nexus Operations](/nexus/operations#synchronous-operation-lifecycle) the Nexus Machinery creates a Nexus Task to start an Operation.
 Additional Nexus Tasks may be used for [asynchronous Nexus Operations](/nexus/operations#asynchronous-operation-lifecycle), for example to cancel a long-running Operation.
 
 In Temporal, a user-defined Nexus handler is primarily responsible for starting a Nexus Operation.
@@ -73,7 +73,13 @@ See [Nexus Automatic Retries](/nexus/operations#automatic-retries) for additiona
 ## Nexus Error Handling in Caller Workflows
 
 A Nexus Operation Failure is delivered to the Workflow Execution when a Nexus Operation fails.
-It contains information about the failure and the Nexus Operation Execution; for example, the Nexus Operation name and Nexus Operation Id.
+It contains information about the failure and the Nexus Operation Execution; for example, the Nexus Operation name and Nexus Operation ID.
 The reason for the failure is in the message and in the underlying cause is typically an Application Error or a Canceled Error.
 
-See [Nexus Operation Failures](/references/failures#nexus-operation-failure) for additional details.
+:::tip RESOURCES
+
+- [Errors in Nexus Operations](/references/failures#errors-in-nexus-operations)
+- [Nexus Errors](/references/failures#nexus-errors)
+- [Nexus Operation Failures](/references/failures#nexus-operation-failure)
+
+:::
