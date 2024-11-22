@@ -73,7 +73,7 @@ The Nexus Machinery uses state-machined-based invocation and completion callback
 Nexus uses the Temporal queue-based Worker architecture to ensure reliable execution and automatic load balancing for Nexus Operations.
 When a caller Workflow schedules a Nexus Operation, Temporal atomically transfers the Nexus request to a Nexus state machine responsible for [at-least-once](/nexus/operations#execution-semantics) invocation of the Nexus Operation.
 
-Workers authenticate to thier Namespace with supported methods including mTLS client certificates or API Keys in Temporal Cloud.
+Workers authenticate to their Namespace with supported methods including mTLS client certificates or API Keys in Temporal Cloud.
 This establishes the caller's identity and caller namespace for Endpoint access control.
 Nexus handler Workers poll the Endpoint's target Task Queue for Nexus Tasks to process.
 
@@ -100,9 +100,7 @@ is used by the caller Worker to recieve a Workflow Task with the [Nexus Operatio
 ## Built-in Nexus Machinery
 
 The built-in [Nexus Machinery](/glossary#nexus-machinery) uses state-machine-based invocation and completion callbacks to guarantee at-least-once execution of Nexus Operations.
-It uses [Nexus RPC](/glossary#nexus-rpc) on the wire, a new protocol designed with Durable Execution in mind, to communicate across Namespaces within an Account.
-
-Nexus RPC supports arbitrary-duration Operations that extend beyond a traditional RPC — a key underpinning to connect durable executions within and across Namespaces, clusters, and regions.
+It uses [Nexus RPC](/glossary#nexus-rpc) on the wire, a protocol designed with Durable Execution in mind, to support arbitrary-duration Operations that extend beyond a traditional RPC.
 
 For example, when you execute a Nexus Operation in a caller Workflow, a command is sent to Temporal to schedule the Operation, and the Nexus Machinery is responsible for making the Nexus RPC calls on your behalf.
 This means you don't have to use Nexus RPC directly, only the Temporal SDK along with the Temporal Service.
