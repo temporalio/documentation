@@ -87,14 +87,14 @@ The caller's Nexus Machinery will keep trying to start the Operation multiple ti
 
 ### Exactly-once Execution Semantics {#exactly-once}
 
-To dedupe work and get exactly-once execution semantics, an Operation can start a Workflow with a WorkflowIdReusePolicy of RejectDuplicates which only allows one Workflow Execution per Workflow Id within a Namespace for the retention period.
+To dedupe work and get exactly-once execution semantics, an Operation can start a Workflow with a WorkflowIdReusePolicy of RejectDuplicates which only allows one Workflow Execution per Workflow ID within a Namespace for the retention period.
 
 ### Idempotency
 
 Nexus Operation handlers should be idempotent just like Activities should be idempotent as a general rule.
 It's not required in all cases, but highly recommended in general.
 
-## Multi-level calls
+## Multi-level Nexus calls
 Nexus supports multi-level Nexus calls, for example:
 - Workflow A → Nexus Operation 1 → Workflow B → Nexus Operation 2 → Workflow C
 

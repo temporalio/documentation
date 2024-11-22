@@ -36,7 +36,7 @@ The Nexus Registry allows setting Endpoint access policy on each Endpoint.
 This currently includes an allow list of caller Namespaces that can use the Endpoint at runtime.
 Endpoint access control policies are enforced at runtime:
 1. Caller's Worker authenticates with their Namespace as they do today with mTLS certificates or API keys.
-This establishes the caller's identity and caller Namespace.
+   This establishes the caller's identity and caller Namespace.
 2. Caller Workflow executes a Nexus Operation on a Nexus Endpoint.
 3. Endpoint access control policy is enforced, checking if the caller Namespace is in the Endpoint allow list.
 

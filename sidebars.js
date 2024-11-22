@@ -549,6 +549,7 @@ module.exports = {
                 "encyclopedia/nexus-use-cases",
                 "encyclopedia/nexus-errors-retries",
                 "encyclopedia/nexus-execution-debugging",
+                "encyclopedia/nexus-metrics",
                 "encyclopedia/nexus-security",
               ],
             },
