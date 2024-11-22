@@ -8,8 +8,7 @@ keywords:
   - reference
   - web-ui
 tags:
-  - reference
-  - web-ui
+  - Reference
 ---
 
 You can run the [Temporal Server](/clusters#temporal-server) as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a Temporal Server.
@@ -103,8 +102,9 @@ Configures a [mechanism to map roles](/self-hosted-guide/security#claim-mapper) 
 ```go
 s := temporal.NewServer(
   temporal.WithClaimMapper(func(cfg *config.Config) authorization.ClaimMapper {
+  		logger := getYourLogger() // Replace with how you retrieve or initialize your logger
 		return authorization.NewDefaultJWTClaimMapper(
-			authorization.NewRSAKeyProvider(cfg),
+			authorization.NewDefaultTokenKeyProvider(cfg, logger),
 			cfg
 		)
 	}),

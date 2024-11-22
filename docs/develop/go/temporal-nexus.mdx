@@ -1,0 +1,606 @@
+---
+id: nexus
+title: Temporal Nexus - Go SDK Feature Guide
+sidebar_label: Temporal Nexus
+description: Learn how to use Temporal Nexus within the Go SDK to connect durable executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
+toc_max_heading_level: 4
+keywords:
+  - temporal nexus go sdk
+
+tags:
+  - Temporal Client
+  - Go SDK
+  - Temporal SDKs
+  - Nexus
+---
+
+Use Temporal Nexus to connect durable executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
+
+This page shows how to do the following:
+
+- [Run a development Temporal Service with Nexus enabled](#run-the-temporal-nexus-development-server)
+- [Create caller and handler Namespaces](#create-caller-handler-namespaces)
+- [Create a Nexus Endpoint to route requests from caller to handler](#create-nexus-endpoint)
+- [Define the Nexus Service API contract](#define-nexus-service-api-contract)
+- [Develop a Nexus Service and Operation handlers](#develop-nexus-service-operation-handlers)
+- [Develop a caller Workflow that uses a Nexus Service](#develop-caller-workflow-nexus-service)
+- [Make Nexus calls across Namespaces with a development Server](#nexus-calls-across-namespaces-dev-server)
+- [Make Nexus calls across Namespaces in Temporal Cloud](#nexus-calls-across-namespaces-temporal-cloud)
+
+## Run a development server with Nexus enabled {#run-the-temporal-nexus-development-server}
+
+The first step in working with Temporal Nexus involves starting a Temporal server with Nexus enabled.
+
+Prerequisites:
+
+- [Install the latest Temporal CLI](https://docs.temporal.io/develop/go/core-application#run-a-development-server)
+- [Install the latest Temporal Go SDK](https://docs.temporal.io/develop/go/core-application#install-a-temporal-sdk) (v1.29.1 or higher)
+
+### Start the Temporal Development Server {#start-the-temporal-development-server}
+
+Start the Temporal Development Server by using the `temporal server start-dev`, with `system.enableNexus=true`.
+The HTTP port is required for Nexus communications.
+
+```
+temporal server start-dev --http-port 7243 --dynamic-config-value system.enableNexus=true
+```
+
+This command automatically starts the Web UI, creates the default Namespace, and uses an in-memory database.
+
+The Temporal Server should be available on `localhost:7233` and the Temporal Web UI should be accessible at [http://localhost:8233](http://localhost:8233).
+
+## Create caller and handler Namespaces {#create-caller-handler-namespaces}
+
+Before setting up Nexus endpoints, create separate Namespaces for the caller and handler.
+
+```
+temporal operator namespace create --namespace my-target-namespace
+temporal operator namespace create --namespace my-caller-namespace
+```
+
+## Create a Nexus Endpoint to route requests from caller to handler {#create-nexus-endpoint}
+
+After establishing caller and handler Namespaces, the next step is to create a Nexus Endpoint to route requests.
+
+```go
+temporal operator nexus endpoint create \
+  --name my-nexus-endpoint-name \
+  --target-namespace my-target-namespace \
+  --target-task-queue my-handler-task-queue
+```
+
+## Define the Nexus Service API contract {#define-nexus-service-api-contract}
+
+Defining a clear API contract for the Nexus Service is crucial for smooth communication between services.
+
+[View the source code](https://github.com/temporalio/samples-go/tree/main/nexus) in the context of the rest of the application code.
+
+```
+git clone https://github.com/temporalio/samples-go.git
+cd samples-go/nexus
+```
+
+The Nexus Service API contract can be in whatever form works best for your environment.
+Each [Temporal SDK includes and uses a default Data Converter](https://docs.temporal.io/dataconversion), that encodes payloads in the following order: Null, Byte array, Protobuf JSON, and JSON.
+In a polyglot environment, Protobuf and JSON are common choices. This example uses native Go types.
+
+In this example, there is a service package that describes the Service and Operation names along with input/output types for caller Workflows to use the Nexus Endpoint.
+
+<!--SNIPSTART samples-go-nexus-service {"selectedLines": ["2-13"]}-->
+
+[nexus/service/api.go](https://github.com/temporalio/samples-go/blob/main/nexus/service/api.go)
+
+```go
+// ...
+
+const HelloServiceName = "my-hello-service"
+
+// Echo operation
+const EchoOperationName = "echo"
+
+type EchoInput struct {
+	Message string
+}
+
+type EchoOutput EchoInput
+```
+
+<!--SNIPEND-->
+
+## Develop a Nexus Service and Operation handlers {#develop-nexus-service-operation-handlers}
+
+Nexus Operation handlers are typically defined in the same Worker as the underlying Temporal primitives they abstract.
+Operation handlers can decide if a given Nexus Operation will be synchronous or asynchronous, execute arbitrary code, and invoke underlying Temporal primitives such as a Workflow, Query, Signal, or Update.
+
+The `temporalnexus` package has builders to create Nexus Operations:
+
+- `NewSyncOperation` \- Simple synchronous RPC handlers, such as for Signals
+- `NewWorkflowRunOperation` \- Run a Workflow as an asynchronous Nexus Operation
+
+This tutorial starts with a `NewSyncOperation` example, and then uses `NewWorkflowRunOperation` to start a handler Workflow from a Nexus Operation.
+
+### Develop a Synchronous Nexus Operation handler
+
+The `temporalnexus.NewSyncOperation` builder function is for exposing simple RPC handlers.
+Its handler function is provided with an SDK client that can be used for signaling, querying, and listing Workflows.
+However, implementations are free to make arbitrary calls to other services or databases, or perform computations such as this one:
+
+<!--SNIPSTART samples-go-nexus-handler {"selectedLines": ["2-23"]}-->
+
+[nexus/handler/app.go](https://github.com/temporalio/samples-go/blob/main/nexus/handler/app.go)
+
+```go
+// ...
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/nexus-rpc/sdk-go/nexus"
+
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/temporalnexus"
+	"go.temporal.io/sdk/workflow"
+
+	"github.com/temporalio/samples-go/nexus/service"
+)
+
+// NewSyncOperation is a meant for exposing simple RPC handlers.
+var EchoOperation = temporalnexus.NewSyncOperation(service.EchoOperationName, func(ctx context.Context, c client.Client, input service.EchoInput, options nexus.StartOperationOptions) (service.EchoOutput, error) {
+	// The method is provided with an SDK client that can be used for arbitrary calls such as signaling, querying,
+	// and listing workflows but implementations are free to make arbitrary calls to other services or databases, or
+	// perform simple computations such as this one.
+	return service.EchoOutput(input), nil
+})
+```
+
+<!--SNIPEND-->
+
+### Develop an Asynchronous Nexus Operation handler to start a Workflow
+
+Use the `NewWorkflowRunOperation` constructor, which is the easiest way to expose a Workflow as an operation.
+See alternatives [here](https://pkg.go.dev/go.temporal.io/sdk/temporalnexus).
+
+<!--SNIPSTART samples-go-nexus-handler {"selectedLines": ["26-35"]}-->
+
+[nexus/handler/app.go](https://github.com/temporalio/samples-go/blob/main/nexus/handler/app.go)
+
+```go
+// ...
+var HelloOperation = temporalnexus.NewWorkflowRunOperation(service.HelloOperationName, HelloHandlerWorkflow, func(ctx context.Context, input service.HelloInput, options nexus.StartOperationOptions) (client.StartWorkflowOptions, error) {
+	return client.StartWorkflowOptions{
+		// Workflow IDs should typically be business meaningful IDs and are used to dedupe workflow starts.
+		// For this example, we're using the request ID allocated by Temporal when the caller workflow schedules
+		// the operation, this ID is guaranteed to be stable across retries of this operation.
+		ID: options.RequestID,
+		// Task queue defaults to the task queue this operation is handled on.
+	}, nil
+})
+```
+
+<!--SNIPEND-->
+
+Workflow IDs should typically be business meaningful IDs and are used to dedupe Workflow starts.
+For the `HelloOperation`, `input.ID` is passed as part of the Nexus Service contract.
+
+### Register a Nexus Service in a Worker
+
+After developing an asynchronous Nexus Operation handler to start a Workflow, the next step is to register a Nexus Service in a Worker.
+
+<!--SNIPSTART samples-go-nexus-handler-worker-->
+
+[nexus/handler/worker/main.go](https://github.com/temporalio/samples-go/blob/main/nexus/handler/worker/main.go)
+
+```go
+package main
+
+import (
+	"log"
+	"os"
+
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/worker"
+
+	"github.com/nexus-rpc/sdk-go/nexus"
+	"github.com/temporalio/samples-go/nexus/handler"
+	"github.com/temporalio/samples-go/nexus/options"
+	"github.com/temporalio/samples-go/nexus/service"
+)
+
+const (
+	taskQueue = "my-handler-task-queue"
+)
+
+func main() {
+	// The client and worker are heavyweight objects that should be created once per process.
+	clientOptions, err := options.ParseClientOptionFlags(os.Args[1:])
+	if err != nil {
+		log.Fatalf("Invalid arguments: %v", err)
+	}
+	c, err := client.Dial(clientOptions)
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer c.Close()
+
+	w := worker.New(c, taskQueue, worker.Options{})
+	service := nexus.NewService(service.HelloServiceName)
+	err = service.Register(handler.EchoOperation, handler.HelloOperation)
+	if err != nil {
+		log.Fatalln("Unable to register operations", err)
+	}
+	w.RegisterNexusService(service)
+	w.RegisterWorkflow(handler.HelloHandlerWorkflow)
+
+	err = w.Run(worker.InterruptCh())
+	if err != nil {
+		log.Fatalln("Unable to start worker", err)
+	}
+}
+```
+
+<!--SNIPEND-->
+
+## Develop a caller Workflow that uses the Nexus Service {#develop-caller-workflow-nexus-service}
+
+Import the Service API package, that has the necessary service and operation names and input/output types to execute a Nexus Operation from the caller Workflow:
+
+<!--SNIPSTART samples-go-nexus-caller-workflow-->
+
+[nexus/caller/workflows.go](https://github.com/temporalio/samples-go/blob/main/nexus/caller/workflows.go)
+
+```go
+package caller
+
+import (
+	"github.com/temporalio/samples-go/nexus/service"
+	"go.temporal.io/sdk/workflow"
+)
+
+const (
+	TaskQueue    = "my-caller-workflow-task-queue"
+	endpointName = "my-nexus-endpoint-name"
+)
+
+func EchoCallerWorkflow(ctx workflow.Context, message string) (string, error) {
+	c := workflow.NewNexusClient(endpointName, service.HelloServiceName)
+
+	fut := c.ExecuteOperation(ctx, service.EchoOperationName, service.EchoInput{Message: message}, workflow.NexusOperationOptions{})
+
+	var res service.EchoOutput
+	if err := fut.Get(ctx, &res); err != nil {
+		return "", err
+	}
+
+	return res.Message, nil
+}
+
+func HelloCallerWorkflow(ctx workflow.Context, name string, language service.Language) (string, error) {
+	c := workflow.NewNexusClient(endpointName, service.HelloServiceName)
+
+	fut := c.ExecuteOperation(ctx, service.HelloOperationName, service.HelloInput{Name: name, Language: language}, workflow.NexusOperationOptions{})
+	var res service.HelloOutput
+
+	// Optionally wait for the operation to be started. NexusOperationExecution will contain the operation ID in
+	// case this operation is asynchronous.
+	var exec workflow.NexusOperationExecution
+	if err := fut.GetNexusOperationExecution().Get(ctx, &exec); err != nil {
+		return "", err
+	}
+	if err := fut.Get(ctx, &res); err != nil {
+		return "", err
+	}
+
+	return res.Message, nil
+}
+```
+
+<!--SNIPEND-->
+
+### Register the caller Workflow in a Worker
+
+After developing the caller Workflow, the next step is to register it with a Worker.
+
+<!--SNIPSTART samples-go-nexus-caller-worker-->
+
+[nexus/caller/worker/main.go](https://github.com/temporalio/samples-go/blob/main/nexus/caller/worker/main.go)
+
+```go
+package main
+
+import (
+	"log"
+	"os"
+
+	"github.com/temporalio/samples-go/nexus/caller"
+	"github.com/temporalio/samples-go/nexus/options"
+
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/worker"
+)
+
+func main() {
+	// The client and worker are heavyweight objects that should be created once per process.
+	clientOptions, err := options.ParseClientOptionFlags(os.Args[1:])
+	if err != nil {
+		log.Fatalf("Invalid arguments: %v", err)
+	}
+	c, err := client.Dial(clientOptions)
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer c.Close()
+
+	w := worker.New(c, caller.TaskQueue, worker.Options{})
+
+	w.RegisterWorkflow(caller.EchoCallerWorkflow)
+	w.RegisterWorkflow(caller.HelloCallerWorkflow)
+
+	err = w.Run(worker.InterruptCh())
+	if err != nil {
+		log.Fatalln("Unable to start worker", err)
+	}
+}
+```
+
+<!--SNIPEND-->
+
+### Develop a starter to start the caller Workflow
+
+To initiate the caller Workflow, a starter program is required.
+
+<!--SNIPSTART samples-go-nexus-caller-starter-->
+
+[nexus/caller/starter/main.go](https://github.com/temporalio/samples-go/blob/main/nexus/caller/starter/main.go)
+
+```go
+package main
+
+import (
+	"context"
+	"log"
+	"os"
+	"time"
+
+	"go.temporal.io/sdk/client"
+
+	"github.com/temporalio/samples-go/nexus/caller"
+	"github.com/temporalio/samples-go/nexus/options"
+	"github.com/temporalio/samples-go/nexus/service"
+)
+
+func main() {
+	clientOptions, err := options.ParseClientOptionFlags(os.Args[1:])
+	if err != nil {
+		log.Fatalf("Invalid arguments: %v", err)
+	}
+	c, err := client.Dial(clientOptions)
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer c.Close()
+	runWorkflow(c, caller.EchoCallerWorkflow, "Nexus Echo 👋")
+	runWorkflow(c, caller.HelloCallerWorkflow, "Nexus", service.ES)
+}
+
+func runWorkflow(c client.Client, workflow interface{}, args ...interface{}) {
+	ctx := context.Background()
+	workflowOptions := client.StartWorkflowOptions{
+		ID:        "nexus_hello_caller_workflow_" + time.Now().Format("20060102150405"),
+		TaskQueue: caller.TaskQueue,
+	}
+
+	wr, err := c.ExecuteWorkflow(ctx, workflowOptions, workflow, args...)
+	if err != nil {
+		log.Fatalln("Unable to execute workflow", err)
+	}
+	log.Println("Started workflow", "WorkflowID", wr.GetID(), "RunID", wr.GetRunID())
+
+	// Synchronously wait for the workflow completion.
+	var result string
+	err = wr.Get(context.Background(), &result)
+	if err != nil {
+		log.Fatalln("Unable get workflow result", err)
+	}
+	log.Println("Workflow result:", result)
+}
+```
+
+<!--SNIPEND-->
+
+## Make Nexus calls across Namespaces with a development Server {#nexus-calls-across-namespaces-dev-server}
+
+To run the tutorial, follow the steps below to run the Nexus handler Worker, the Nexus caller Worker, and the starter.
+
+### Run Workers connected to a local development server
+
+In separate terminal window, run the Nexus handler Worker:
+
+```go
+cd handler
+go run ./worker \
+    -target-host localhost:7233 \
+    -namespace my-target-namespace
+```
+
+In another terminal window, run the Nexus caller Worker:
+
+```go
+cd caller
+go run ./worker \
+    -target-host localhost:7233 \
+    -namespace my-caller-namespace
+```
+
+### Start a caller Workflow
+
+With the Workers running, the final step in the local development process is to start a caller Workflow.
+
+Run the starter:
+
+```go
+cd caller
+go run ./starter \
+    -target-host localhost:7233 \
+    -namespace my-caller-namespace
+```
+
+This will result in:
+
+```
+2024/10/04 19:57:40 Workflow result: Nexus Echo 👋
+2024/10/04 19:57:40 Started workflow WorkflowID nexus_hello_caller_workflow_20240723195740 RunID c9789128-2fcd-4083-829d-95e43279f6d7
+2024/10/04 19:57:40 Workflow result: ¡Hola! Nexus 👋
+```
+
+## Make Nexus calls across Namespaces in Temporal Cloud {#nexus-calls-across-namespaces-temporal-cloud}
+
+This section assumes you are already familiar with [how connect a Worker to Temporal Cloud](https://docs.temporal.io/develop/go/core-application#run-a-temporal-cloud-worker).
+The same [source code](https://github.com/temporalio/samples-go/tree/main/nexus) is used in this section, but the `tcld` CLI will be used to create Namespaces and the Nexus Endpoint, and mTLS client certificates will be used to securely connect the caller and handler works to their respective Temporal Cloud Namespaces.
+
+### Install the latest tcld CLI and generate certificates
+
+To install the latest version of the `tcld` CLI, run the following command:
+
+```
+brew install temporalio/brew/tcld
+```
+
+If you don’t already have certificates, you can generate them for mTLS Worker authentication using the command below:
+
+```
+tcld gen ca --org $YOUR_ORG_NAME --validity-period 1y --ca-cert ca.pem --ca-key ca.key
+```
+
+### Create caller and handler Namespaces
+
+Before deploying to Temporal Cloud, ensure the appropriate Namespaces are created for both the caller and handler.
+If you already have these Namespaces, this step is optional.
+
+```
+tcld login
+
+tcld namespace create \
+	--namespace <your-caller-namespace> \
+	--region us-west-2 \
+	--ca-certificate-file 'path/to/your/ca.pem' \
+	--retention-days 1
+
+tcld namespace create \
+	--namespace <your-target-namespace> \
+	--region us-west-2 \
+	--ca-certificate-file 'path/to/your/ca.pem' \
+	--retention-days 1
+```
+
+Alternatively, you can create Namespace through the UI: [https://cloud.temporal.io/Namespaces](https://cloud.temporal.io/Namespaces).
+
+### Create a Nexus Endpoint to route requests from caller to handler
+
+To create a Nexus Endpoint you must have a Developer account role or higher, and have NamespaceAdmin permission on the `--target-namespace`.
+
+```
+tcld nexus endpoint create \
+  --name <my-nexus-endpoint-name> \
+  --target-task-queue my-handler-task-queue \
+  --target-namespace <my-target-namespace.account> \
+  --allow-namespace <my-caller-namespace.account> \
+  --description-file description.md
+```
+
+The `--allow-namespace` is used to build an Endpoint allowlist of caller Namespaces that can use the Nexus Endpoint, as described in Runtime Access Control.
+
+Alternatively, you can create a Nexus Endpoint through the UI: [https://cloud.temporal.io/nexus](https://cloud.temporal.io/nexus).
+You can also create a Nexus endpoint through the UI in the development server.
+
+### Run Workers Connected to Temporal Cloud
+
+[View the source code](https://github.com/temporalio/samples-go/tree/main/nexus) in the context of the rest of the application code.
+
+Run the handler Worker:
+
+```go
+cd handler
+
+go run ./worker \
+	-target-host <your-target-namespace.account>.tmprl.cloud:7233 \
+	-namespace <your-target-namespace.account> \
+	-client-cert 'path/to/your/ca.pem' \
+	-client-key 'path/to/your/ca.key'
+```
+
+Run the caller Worker:
+
+```go
+cd caller
+
+go run ./worker \
+	-target-host <your-caller-namespace.account>.tmprl.cloud:7233 \
+	-namespace <your-caller-namespace.account> \
+	-client-cert 'path/to/your/ca.pem' \
+	-client-key 'path/to/your/ca.key'
+```
+
+### Start a caller Workflow
+
+In order to start the caller Workflow, run the starter.
+
+```go
+cd caller
+
+go run ./starter \
+	-target-host <your-caller-namespace.account>.tmprl.cloud:7233 \
+	-namespace <your-caller-namespace.account> \
+	-client-cert 'path/to/your/ca.pem' \
+	-client-key 'path/to/your/ca.key'
+```
+
+This will result in:
+
+```
+2024/10/04 19:57:40 Workflow result: Nexus Echo 👋
+2024/10/04 19:57:40 Workflow result: ¡Hola! Nexus 👋
+```
+
+## Observability
+
+### Web UI
+
+A synchronous Nexus Operation will surface in the caller Workflow as follows, with just `NexusOperationScheduled` and `NexusOperationCompleted` events in the caller’s Workflow history:
+
+![Observability Sync](/img/nexus-go/go-sdk-observability-sync.png)
+
+An asynchronous Nexus Operation will surface in the caller Workflow as follows, with `NexusOperationScheduled`, `NexusOperationStarted`, and `NexusOperationCompleted`, in the caller’s Workflow history:
+
+![Observability Async](/img/nexus-go/go-sdk-observability-async.png)
+
+### Temporal CLI
+
+Use the `workflow describe` command to show pending Nexus Operations in the caller Workflow and any attached callbacks on the handler Workflow:
+
+```
+temporal workflow describe -w <ID>
+```
+
+Nexus events are included in the caller’s Workflow history:
+
+```
+temporal workflow show -w <ID>
+```
+
+For **asynchronous Nexus Operations** the following are reported in the caller’s history:
+
+- `NexusOperationScheduled`
+- `NexusOperationStarted`
+- `NexusOperationCompleted`
+
+For **synchronous Nexus Operations** the following are reported in the caller’s history:
+
+- `NexusOperationScheduled`
+- `NexusOperationCompleted`
+
+:::note
+
+`NexusOperationStarted` isn't reported in the caller’s history for synchronous operations.
+
+:::

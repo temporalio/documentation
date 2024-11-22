@@ -5,15 +5,27 @@ sidebar_label: Go SDK
 description: Explore the Temporal Go SDK feature guides to seamlessly develop and manage Temporal Applications with core components, Temporal Client connections, testing, debugging, versioning, and more.
 toc_max_heading_level: 4
 keywords:
-  - dev guide
-  - go
-  - introduction
+  - Go SDK
 tags:
-  - dev-guide
-  - go
+  - Go SDK
+  - Temporal SDKs
 ---
 
-Build [Temporal Applications](/temporal#temporal-application) with the Go SDK.
+![Go SDK Banner](/img/banner-go-temporal.png)
+
+:::info GO SPECIFIC RESOURCES
+Build Temporal Applications with the Go SDK.
+
+**Temporal Go Technical Resources:**
+- [Go API Documentation](https://pkg.go.dev/go.temporal.io/sdk)
+- [Go SDK Code Samples](https://github.com/temporalio/samples-go)
+- [Go SDK GitHub](https://github.com/temporalio/sdk-go)
+
+ **Get Connected with the Temporal Go Community:**
+
+ - [Temporal Go Community Slack](https://temporalio.slack.com/archives/CTDTU3J4T)
+ - [Go SDK Forum](https://community.temporal.io/tag/go-sdk)
+ :::
 
 ## [Core Application](/develop/go/core-application)
 
@@ -68,13 +80,11 @@ Interrupt a Workflow Execution with a Cancel or Terminate action.
 - [Handle a Workflow Cancellation Request](/develop/go/cancellation#handle-cancellation-in-workflow): Interrupt a Workflow Execution and its Activities through Workflow cancellation.
 - [Request Cancellation](/develop/go/cancellation#request-cancellation)
 
-
 ## [Asynchronous Activity completion](/develop/go/asynchronous-activity-completion)
 
 Complete Activities asynchronously.
 
 - [How to asynchronously complete an Activity](/develop/go/asynchronous-activity-completion)
-
 
 ## [Versioning](/develop/go/versioning)
 
@@ -108,20 +118,30 @@ Run Workflows on a schedule and delay the start of a Workflow.
 - [How to Schedule a Workflow](/develop/go/schedules#schedule-a-workflow)
 - [How to use Temporal Cron Jobs](/develop/go/schedules#temporal-cron-jobs)
 
-## [Data encryption](/develop/go/data-encryption)
+## [Data encryption](/develop/go/converters-and-encryption)
 
 Use compression, encryption, and other data handling by implementing custom converters and codecs.
 
-- [How to use a custom Payload Codec in Go](/develop/go/data-encryption#custom-payload-codec)
-- [How to use custom payload conversion](/develop/go/data-encryption#custom-payload-conversion)
-- [How to use a custom Payload Converter in Go](/develop/go/data-encryption#custom-payload-converter)
+- [How to use a custom Payload Codec in Go](/develop/go/converters-and-encryption#custom-payload-codec)
+- [How to use custom payload conversion](/develop/go/converters-and-encryption#custom-payload-conversion)
+- [How to use a custom Payload Converter in Go](/develop/go/converters-and-encryption#custom-payload-converter)
+
+## Temporal Nexus
+
+The [Temporal Nexus](/develop/go/nexus) feature guide shows how to use Temporal Nexus to connect durable executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
+
+- [Create a Nexus Endpoint to route requests from caller to handler](/develop/go/nexus#create-nexus-endpoint)
+- [Define the Nexus Service API contract](/develop/go/nexus#define-nexus-service-api-contract)
+- [Develop a Nexus Service and Operation handlers](/develop/go/nexus#develop-nexus-service-operation-handlers)
+- [Develop a caller Workflow that uses a Nexus Service](/develop/go/nexus#develop-caller-workflow-nexus-service)
+- [Make Nexus calls across Namespaces with a dev Server](/develop/go/nexus#nexus-calls-across-namespaces-dev-server)
+- [Make Nexus calls across Namespaces in Temporal Cloud](/develop/go/nexus#nexus-calls-across-namespaces-temporal-cloud)
 
 ## [Durable Timers](/develop/go/timers)
 
 Use Timers to make a Workflow Execution pause or "sleep" for seconds, minutes, days, months, or years.
 
 - [Set a Timer](/develop/go/timers)
-
 
 ## [Child Workflows](/develop/go/child-workflows)
 

@@ -8,8 +8,8 @@ keywords:
   - cloud
   - namespaces
 tags:
-  - cloud
-  - namespaces
+  - Temporal Cloud
+  - Namespaces
 ---
 
 The message `Failed reaching server: last connection error` can often result from an expired TLS certificate or during the Server startup process, in which the Client requests reach the Server before the roles are fully initialized.
@@ -32,7 +32,9 @@ Choose one of the following methods to verify the expiration date of the TLS cer
 List the expiration date with the following command:
 
 ```command
-tcld namespace accepted-client-ca list --namespace <namespace_name> | jq -r '.[0].notAfter'
+tcld namespace accepted-client-ca list \
+    --namespace <namespace_id>.<account_id> | \
+    jq -r '.[0].notAfter'
 ```
 
 If the returned date is in the past, the certificate has expired.
@@ -51,7 +53,11 @@ openssl s_client -connect <namespace_grpc_endpoint> -showcerts -cert ~/certs/pat
 If you are using a self-signed certificate, run the following Temporal CLI command:
 
 ```command
-temporal namespace describe --namespace <namespace_id> --address <namespace_grpc_endpoint> --tls-cert-path <path-to-mTLS-pem-file> --tls-key-path <path-to-mTLS-key-file>
+temporal namespace describe \
+    --namespace <namespace_id>.<account_id> \
+    --address <namespace_grpc_endpoint> \
+    --tls-cert-path <path-to-mTLS-pem-file> \
+    --tls-key-path <path-to-mTLS-key-file>
 ```
 
 Your Namespace gRPC endpoint is available on the details page for your [Temporal Cloud Namespace](https://cloud.temporal.io/namespaces).

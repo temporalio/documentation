@@ -12,11 +12,9 @@ keywords:
   - introduction
   - temporal cloud
 tags:
-  - certificates
-  - explanation
-  - how-to
-  - introduction
-  - temporal-cloud
+  - Security
+  - Certificates
+  - Temporal Cloud
 ---
 
 [Temporal Cloud](https://temporal.io/cloud) requires security certificates for secure access and communication.
@@ -58,6 +56,13 @@ CA certificates _must_ meet the following criteria:
   SHA-1 and MD5 cannot be used.
 - The certificates cannot be generated with a passphrase.
 
+:::info
+
+A certificate bundle can contain up to 16 CA certificates.
+A certificate bundle can have a maximum payload size of 32 KB before base64 encoding.
+
+:::
+
 ### End-entity certificates
 
 An end-entity certificate is a type of X.509v3 certificate used by clients to authenticate themselves.
@@ -93,13 +98,6 @@ When you configure the client SDK, you need to present a complete certificate ch
 ### Option 2: You don't have certificate management infrastructure
 
 If you don't have an existing certificate management infrastructure, issue the CA and end-entity certificates using [tcld](/cloud/tcld) or open source tools such as certstrap.
-
-:::info
-
-A certificate bundle can contain up to 16 CA certificates.
-A certificate bundle can have a maximum payload size of 32 KB before base64 encoding.
-
-:::
 
 #### Use tcld to generate certificates
 
@@ -153,7 +151,7 @@ This CA certificate will be used to sign and issue end-entity certificates.
 Set the Namespace Name as the common name for the end-entity certificate:
 
 <Tabs>
-  <TabItem value="macos" label="macOs" default>
+  <TabItem value="macos" label="macOS" default>
 
 For Linux or macOS:
 
@@ -233,9 +231,9 @@ Temporal uses the root CA certificate as the trusted authority for access to you
 
 To keep your Namespace secure and online, you must update the CA certificate for the Namespace _before_ the certificate expires.
 
-To help you remember to do so, Temporal Cloud sends email notifications to users who have the Global Admin [Role](/cloud/users#account-level-roles) or the Namespace Admin [permission](/cloud/users#namespace-level-permissions) 15 days before expiration and, if necessary, 10 days before expiration.
+To help you remember to do so, Temporal Cloud sends email notifications to users who have the Account Owner or Global Admin [roles](/cloud/users#account-level-roles) or the Namespace Admin [permission](/cloud/users#namespace-level-permissions) 15 days before expiration and, if necessary, 10 days before expiration.
 
-If the certificate is not updated, 5 days before expiration Temporal Cloud creates a support ticket on behalf of the Global Admins and Namespace Admins.
+If the certificate is not updated, 5 days before expiration Temporal Cloud creates a support ticket on behalf of the Account Owner, Global Admins, and Namespace Admins.
 
 To ensure that you receive email notifications, configure your junk-email filters to permit email from `noreply@temporal.io`.
 
