@@ -57,7 +57,7 @@ Pending Nexus Operations: 1
 
 ## Pending Callbacks
 
-Nexus callbacks are sent from the handler’s Namespace to the caller’s Namespace to complete an asynchronous Nexus Operation.
+Nexus callbacks are sent from the handler's Namespace to the caller's Namespace to complete an asynchronous Nexus Operation.
 These show up in the UI and using: `temporal workflow describe`.
 
 For example, from the Temporal UI:\
@@ -85,7 +85,7 @@ This enables a given history event to link to events in other Workflows, includi
 
 ![Bi-directional linking](/img/nexus/nexus-bi-directional-linking.png)
 
-Temporal SDK Nexus Operation builders, like New-Workflow-Run-Operation, use this new Event History linking capability to auto-wire bi-directional links from a specific Nexus Operation event in the callers Workflow history to a specific event in the handler’s Workflow history.
+Temporal SDK Nexus Operation builders, like New-Workflow-Run-Operation, use this new Event History linking capability to auto-wire bi-directional links from a specific Nexus Operation event in the callers Workflow history to a specific event in the handler's Workflow history.
 In Public Preview, this is only supported for New-Workflow-Run-Operation, which does the auto-wiring of bi-directional links for you, but it is not currently supported for `NewSyncOperation`.
 
 This enables bi-directional navigation across Workflow histories:
@@ -100,11 +100,11 @@ This enables bi-directional navigation across Workflow histories:
 ## Nexus Operation ID
 
 Nexus Operations created with the Temporal SDK New-Workflow-Run-Operation helper, return the Workflow ID as the Nexus Operation ID.
-The caller’s Workflow history shows the Nexus Operation ID in the [NexusOperationStarted](/references/events#nexusoperationstarted) event.
+The caller's Workflow history shows the Nexus Operation ID in the [NexusOperationStarted](/references/events#nexusoperationstarted) event.
 
 ![Workflow history](/img/nexus/nexus-operations-ui.png)
 
-This can be used to search the handler’s Namespace for that Workflow ID:
+This can be used to search the handler's Namespace for that Workflow ID:
 
 ![Search handler's Namespace](/img/nexus/nexus-operations-ui-search-handler.png)
 
@@ -136,4 +136,4 @@ version: 1265
 
 Which can then be searched using: `temporal workflow list –query`.
 
-However, this requires knowing the Endpoint’s target Namespace and manual steps, which is why we’ve created [bi-directional linking for Nexus Operations] to navigate forwards and backwards across Workflow event histories, through the Nexus Operations and underlying Temporal primitives they may create.
+However, this requires knowing the Endpoint's target Namespace and manual steps, which is why we've created [bi-directional linking for Nexus Operations] to navigate forwards and backwards across Workflow event histories, through the Nexus Operations and underlying Temporal primitives they may create.
