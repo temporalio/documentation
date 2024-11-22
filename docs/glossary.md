@@ -333,7 +333,7 @@ Multiple Nexus Endpoints can target the same Namespace, and over time a Nexus En
 #### Nexus Machinery
 
 Temporal has built-in Nexus Machinery to guarantee at-least-once execution of Nexus Operations with state-machine-based invocation and completion callbacks.
-The Nexus Machinery uses [Nexus RPC](/glossary#nexus-rpc), a new protocol designed with Durable Execution in mind, to communicate across Namespace boundaries.
+The Nexus Machinery uses [Nexus RPC](/glossary#nexus-rpc), a protocol designed with Durable Execution in mind, to communicate across Namespace boundaries.
 Caller Workflows and Nexus handlers don't have to use Nexus RPC directly, since the Temporal SDK provides a streamlined developer experience to build, run, and use Nexus Services.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->

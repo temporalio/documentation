@@ -57,7 +57,7 @@ When a caller Workflow schedules a Nexus Operation, Temporal atomically transfer
 In Temporal Cloud, Nexus connectivity across Namespaces is provided with a combination of robust Nexus Machinery and Temporal Cloud's global mTLS-secured Envoy mesh.
 Built-in Endpoint access controls can be configured in the Nexus Registry to limit which caller namespaces can use an Endpoint.
 
-Workers authenticate to thier Namespace with an mTLS client certificate or API Key.
+Workers authenticate to their Namespace with an mTLS client certificate or API Key.
 This establishes the caller's identity and caller namespace for Endpoint access control.
 Nexus handler Workers poll the Endpoint's target Task Queue for Nexus Tasks to process.
 
