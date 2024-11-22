@@ -24,27 +24,18 @@ Learn why you should use Nexus in the [evaluation guide](/evaluate/nexus).
 
 :::
 
-Nexus provides Cloud Metrics and Audit Log streaming, in addition to integrated [execution debugging](/nexus/execution-debugging).
+Nexus provides metrics and audit log streaming, in addition to integrated [execution debugging](/nexus/execution-debugging).
 
 ## Metrics
 
-Scheduling and processing a Nexus Operation is reported through existing cloud metrics with the following operation metric labels:
-
-- Caller Namespace
-  - RespondWorkflowTaskCompleted: This is used to schedule the Nexus Operation.
-- Handler Namespace
-  - PollNexusTaskQueue
-  - RespondNexusTaskCompleted
-  - RespondNexusTaskFailed
-
-See [Cloud Metrics](/production-deployment/cloud/metrics/reference) for additional details.
+Nexus provides the following metrics:
+- [SDK metrics](/nexus/metrics#sdk-metrics) \- emitted by a Worker.
+- [Cloud metrics](/nexus/metrics#cloud-metrics) \- emitted by Temporal Cloud.
 
 ## Audit Logging
 
-The following Nexus control plane actions are sent to the Audit Logging integration:
+The following Nexus control plane actions are sent to the [Audit Logging](/cloud/audit-logging) integrations:
 
 - Create Nexus Endpoint: `CreateNexusEndpoint`
 - Update Nexus Endpoint: `UpdateNexusEndpoint`
 - Delete Nexus Endpoint: `DeleteNexusEndpoint`
-
-See [Audit Logging](/cloud/audit-logging) for additional details.

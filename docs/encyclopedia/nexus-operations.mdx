@@ -154,21 +154,25 @@ The lifecycle of an asynchronous Nexus Operation:
 
 Synchronous Nexus Operation handlers can execute arbitrary code, but unlike Activities they should be short-lived.
 As mentioned above, a synchronous Nexus Operation handler has less than 10 seconds to process a Nexus start operation request and should stay within the remaining request deadline budget for the Nexus request. 
+For example, this may be done by looking at the Request-Timeout header or hooking into cancelation that is triggered when the timeout is exceeded.
 
 ![Nexus Operations with Arbitrary Code](/img/nexus/nexus-sync-operation-arbitrary-code.png)
 
 ## Automatic Retries {#automatic-retries}
 
 Once the caller Workflow schedules an Operation with the caller's Temporal Service, the caller's Nexus Machinery keeps trying to start the Operation, with automatic retries and exponential backoff.
-If a Nexus Operation returns a [retryable error](/references/failures#nexus-errors) when attempting to start, the Operation will be retried up to the [default Retry Policy's](https://github.com/temporalio/temporal/blob/de7c8879e103be666a7b067cc1b247f0ac63c25c/components/nexusoperations/config.go#L111) max attempts and expiration interval.
+If a Nexus handler returns a [retryable error](/references/failures#nexus-errors), or an [upstream timeout](https://github.com/nexus-rpc/api/blob/main/SPEC.md#predefined-handler-errors) is encountered by the caller, the Nexus request will be retried up to the [default Retry Policy's](https://github.com/temporalio/temporal/blob/de7c8879e103be666a7b067cc1b247f0ac63c25c/components/nexusoperations/config.go#L111) max attempts and expiration interval.
 
 ## Execution semantics {#execution-semantics}
 
 ### At-least-once execution semantics and idempotency
 
-Since the caller's Nexus Machinery will keep trying to start the Operation multiple times, the Nexus Operation handler should be idempotent, like Activities should be idempotent.
+The Nexus Machinery provides reliable execution with at-least-once execution semantics for a Nexus Operation.
+
+For example, if an [upstream timeout](https://github.com/nexus-rpc/api/blob/main/SPEC.md#predefined-handler-errors) is encountered by the caller's Nexus Machinery then it's possible for your Nexus handler to be invoked multiple times for a given Nexus Operation.
+
+To deal with at-least-once execution, the Nexus Operation handler should be idempotent, like Activities should be idempotent.
 It's not required in all cases, but highly recommended in general.
-With retries an Operation, like Activities, has at-least-once execution semantics, so an Operation should be idempotent as a general rule.
 
 ### Exactly-once execution semantics through an underlying WorkflowIDReusePolicy
 

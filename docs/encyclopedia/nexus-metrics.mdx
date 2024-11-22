@@ -1,0 +1,52 @@
+---
+id: nexus-metrics
+slug: /nexus/metrics
+title: Nexus Metrics
+description: Learn about available metrics emitted by Temporal Nexus.
+sidebar_label: Nexus Metrics
+tags:
+  - Nexus
+keywords:
+  - Temporal Nexus
+  - Nexus
+  - observability
+  - metrics
+  - nexus metrics
+  - nexus sdk metrics
+  - nexus cloud metrics
+  - nexus oss metrics
+---
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal Nexus is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
+
+:::
+
+Nexus provides SDK metrics, Cloud metrics, and OSS Cluster metrics in addition to integrated [execution debugging](/nexus/execution-debugging).
+
+## SDK Metrics
+
+[SDK metrics](/references/sdk-metrics) are emitted from a Nexus Worker, including:
+- [nexus_poll_no_task](/references/sdk-metrics#nexus_poll_no_task)
+- [nexus_task_schedule_to_start_latency](/references/sdk-metrics#nexus_task_schedule_to_start_latency)
+- [nexus_task_execution_failed	Worker](/references/sdk-metrics#nexus_task_execution_failed)
+- [nexus_task_execution_latency](/references/sdk-metrics#nexus_task_execution_latency)
+- [nexus_task_endtoend_latency](/references/sdk-metrics#nexus_task_endtoend_latency)
+
+## Cloud Metrics
+
+[Cloud metrics](/production-deployment/cloud/metrics/reference) are emitted by Temporal Cloud, including:
+- Caller Namespace
+  - RespondWorkflowTaskCompleted \- schedule a Nexus Operation.
+- Handler Namespace
+  - PollNexusTaskQueue \- get a [Nexus Task](/workers#nexus-task) to process, for example to start a Nexus Operation.
+  - RespondNexusTaskCompleted \- report the Nexus Task was successful.
+  - RespondNexusTaskFailed \- report the Nexus Task failed.
+
+## OSS Cluster Metrics
+
+[Cluster metrics](/references/cluster-metrics#nexus-metrics) are emitted from an OSS Cluster, including:
+- History Service metrics
+- Concurrency Limiter metrics
+- Frontend Service metrics
