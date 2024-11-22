@@ -34,7 +34,7 @@ Temporal Cloud has built-in Endpoint access controls. For self-hosted deployment
 
 In Temporal Cloud, access to a Nexus Endpoint at runtime is controlled by the Endpoint's access control policy (allowlist of caller Namespaces) for each Endpoint in the Nexus Registry.
 
-![NexusYourCloud](/img/nexus/nexus-connect-queue-based-workers.png)
+![Nexus Security](/img/nexus/nexus-workers-short.png)
 
 Workers in each Namespace may authenticate with Temporal Cloud as they do now with mTLS certificates or API key as allowed by the caller Namespace.
 Once a Worker has authenticated it can send Nexus Operation commands to Temporal Cloud using a Temporal SDK to start a Nexus Operation in a different Namespace.
@@ -44,7 +44,7 @@ To process a `ScheduleNexusOperation` command from a caller Workflow, Temporal C
 
 In this way, Temporal Cloud acts as a trusted broker across Namespace boundaries, and relies on authenticated workers in each Namespace.
 
-See [configure runtime access controls](/nexus/registry#configure-runtime-access-controls) for additional information.
+See [Configure Runtime Access Controls](/nexus/registry#configure-runtime-access-controls) for additional information.
 
 ### Secure connectivity {#secure-connectivity}
 
@@ -78,7 +78,7 @@ Please let us know if you need per-Service payload encryption or better handling
 
 ### Nexus Registry Security {#managing-nexus-endpoints}
 
-See [Nexus Registry roles and permissions](/nexus/registry#roles-and-permissions).
+See [Nexus Registry Roles and Permissions](/nexus/registry#roles-and-permissions).
 
 
 ## Learn more

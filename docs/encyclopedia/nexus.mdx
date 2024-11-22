@@ -22,10 +22,16 @@ Temporal Nexus is available in [Public Preview](/evaluate/development-production
 
 ## Connect Temporal Applications
 
-[Temporal Nexus](/evaluate/nexus) is a feature of the Temporal Platform designed to connect Temporal Applications across team, Namespace, and region boundaries.
+[Temporal Nexus](/evaluate/nexus) is a feature of the Temporal Platform designed to connect Temporal Applications across team, Namespace, region, and cloud boundaries.
 It promotes a more modular architecture for sharing a subset of your team’s capabilities with well-defined microservice contracts for other teams to use, that abstract underlying Temporal primitives, like Workflows, or execute arbitrary code.
 
 Nexus provides an integrated Temporal SDK experience, built-in Nexus Machinery, and first-class observability. It enables each team to have their own Namespace for improved security, troubleshooting, and blast radius isolation.
+
+:::info
+
+Cross-cloud Nexus connectivity is not yet supported in Temporal Cloud.
+
+:::
 
 ## Integrated Temporal experience
 
@@ -75,7 +81,7 @@ Nexus connectivity across Namespaces is provided by the Temporal Platform.
 Temporal Cloud connects all Namespaces within an Account and provides built-in Endpoint access controls.
 Self-hosted deployments support Nexus connectivity within a single Cluster and you can implement a custom Authorizer.
 
-![NexusYourCloud](/img/nexus/nexus-connect-queue-based-workers.png)
+![NexusYourCloud](/img/nexus/nexus-workers.png)
 
 When you execute a [Nexus Operation](/nexus/operations) in a caller Workflow, the caller and handler Workers interact with Temporal as follows:
 
@@ -100,3 +106,7 @@ Nexus RPC supports arbitrary-duration Operations that extend beyond a traditiona
 
 For example, when you execute a Nexus Operation in a caller Workflow, a command is sent to Temporal to schedule the Operation, and the Nexus Machinery is responsible for making the Nexus RPC calls on your behalf.
 This means you don’t have to use Nexus RPC directly, only the Temporal SDK along with the Temporal Service.
+
+## Multi-level calls
+Nexus supports multi-level Nexus calls, for example:
+- Workflow A → Nexus Operation 1 → Workflow B → Nexus Operation 2 → Workflow C
