@@ -2,7 +2,7 @@
 id: nexus
 title: Temporal Nexus
 sidebar_label: Temporal Nexus
-description: Temporal Nexus is a feature of the Temporal platform designed to connect durable executions across team, namespace, region, and cloud boundaries. It promotes a more modular architecture for sharing a subset of your team’s capabilities via well-defined microservice contracts for other teams to use, that abstract underlying Temporal primitives, like Workflows, or execute arbitrary code.
+description: Temporal Nexus is a feature of the Temporal platform designed to connect durable executions across team, namespace, region, and cloud boundaries. It promotes a more modular architecture for sharing a subset of your team's capabilities via well-defined microservice contracts for other teams to use, that abstract underlying Temporal primitives, like Workflows, or execute arbitrary code.
 toc_max_heading_level: 4
 slug: /nexus
 keywords:
@@ -23,7 +23,7 @@ Temporal Nexus is available in [Public Preview](/evaluate/development-production
 ## Connect Temporal Applications
 
 [Temporal Nexus](/evaluate/nexus) is a feature of the Temporal Platform designed to connect Temporal Applications across team, Namespace, region, and cloud boundaries.
-It promotes a more modular architecture for sharing a subset of your team’s capabilities with well-defined microservice contracts for other teams to use, that abstract underlying Temporal primitives, like Workflows, or execute arbitrary code.
+It promotes a more modular architecture for sharing a subset of your team's capabilities with well-defined microservice contracts for other teams to use, that abstract underlying Temporal primitives, like Workflows, or execute arbitrary code.
 
 Nexus provides an integrated Temporal SDK experience, built-in Nexus Machinery, and first-class observability. It enables each team to have their own Namespace for improved security, troubleshooting, and blast radius isolation.
 
@@ -105,7 +105,7 @@ It uses [Nexus RPC](/glossary#nexus-rpc) on the wire, a new protocol designed wi
 Nexus RPC supports arbitrary-duration Operations that extend beyond a traditional RPC — a key underpinning to connect durable executions within and across Namespaces, clusters, and regions.
 
 For example, when you execute a Nexus Operation in a caller Workflow, a command is sent to Temporal to schedule the Operation, and the Nexus Machinery is responsible for making the Nexus RPC calls on your behalf.
-This means you don’t have to use Nexus RPC directly, only the Temporal SDK along with the Temporal Service.
+This means you don't have to use Nexus RPC directly, only the Temporal SDK along with the Temporal Service.
 
 ## Multi-level calls
 Nexus supports multi-level Nexus calls, for example:

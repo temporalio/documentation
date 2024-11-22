@@ -40,7 +40,7 @@ Workers in each Namespace may authenticate with Temporal Cloud as they do now wi
 Once a Worker has authenticated it can send Nexus Operation commands to Temporal Cloud using a Temporal SDK to start a Nexus Operation in a different Namespace.
 For example, in the Temporal Go SDK a caller Workflow would use `nexusClient.ExecuteOperation` to issue a command to start a Nexus Operation.
 
-To process a `ScheduleNexusOperation` command from a caller Workflow, Temporal Cloud obtains the handler Namespace and Task Queue for the handler endpoint, and restricts access by verifying that the caller’s Namespace is in the endpoint’s allowlist.
+To process a `ScheduleNexusOperation` command from a caller Workflow, Temporal Cloud obtains the handler Namespace and Task Queue for the handler endpoint, and restricts access by verifying that the caller's Namespace is in the endpoint's allowlist.
 
 In this way, Temporal Cloud acts as a trusted broker across Namespace boundaries, and relies on authenticated workers in each Namespace.
 
