@@ -146,6 +146,16 @@ As mentioned above, a synchronous Nexus Operation handler has less than 10 secon
 Once the caller Workflow schedules an Operation with the caller’s Temporal cluster, the caller’s Nexus Machinery keeps trying to start the Operation, with automatic retries and exponential backoff.
 If a Nexus Operation returns a [retryable error](https://github.com/temporalio/temporal/blob/13d6cd8cf7a4ba0c4660cf98f672bbd645dca3e7/components/nexusoperations/executors.go#L659) when attempting to start, the Operation it will be retried up to the [default Retry Policy’s](https://github.com/temporalio/temporal/blob/de7c8879e103be666a7b067cc1b247f0ac63c25c/components/nexusoperations/config.go#L111) max attempts and expiration interval.
 
+### Circuit Breaker {#circuit-breaker}
+
+The circuit breaker kicks in when requests fail with a [retryable error](https://github.com/temporalio/temporal/blob/13d6cd8cf7a4ba0c4660cf98f672bbd645dca3e7/components/nexusoperations/executors.go#L659)
+consecutively as it might indicate that the destination (eg: Nexus service to start operation, or
+the caller for callback request) is down or unable to process the request. The default behavior of
+the circuit breaker is to open after 5 consecutive failed requests. Once in open state, Nexus taskk
+will fail early and requests won't be sent to destination. After a minute in open state, it will
+change to half-open state, which will allow only 1 request to be made. If the request is successful,
+then the circuit breaker changes its state to closed, and allows all requests to pass through.
+
 ### Execution Semantics {#execution-semantics}
 
 #### At-least-once Execution Semantics and idempotency
