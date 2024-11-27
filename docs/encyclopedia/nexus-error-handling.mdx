@@ -1,0 +1,67 @@
+---
+id: nexus-error-handling
+slug: /nexus/error-handling
+title: Error Handling - Temporal Nexus
+description: Learn about error handling for Temporal Nexus.
+sidebar_label: Nexus Error Handling
+keywords:
+  - temporal nexus
+  - nexus
+  - errors
+  - error handling
+  - failures
+  - nexus failures
+tags:
+  - Nexus
+---
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal Nexus is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
+
+:::
+
+## Errors in Nexus handlers
+
+In Temporal, a user-defined Nexus handler is primarily responsible for starting a Nexus Operation.
+Nexus handlers run in a Temporal Worker and use Temporal SDK builder functions like New-Sync-Operation or New-Workflow-Run-Operation to start an Operation.
+Nexus handlers may return [different error types](/references/failures#nexus-errors).
+Nexus Operations can end up in [completed](/references/events#nexusoperationcompleted), [failed](/references/events#nexusoperationfailed), [canceled](/references/events#nexusoperationcanceled), and [timed out](/references/events#nexusoperationtimedout) states.
+
+The Nexus Machinery breaks up the [Nexus Operation lifecycle](/nexus/operations#operation-lifecycle) into one or more [Nexus Tasks](/workers#nexus-task) that a Nexus handler is responsible for processing.
+It creates a Nexus Task to start an Operation and may create additional Nexus Tasks, for example to cancel a long-running [asynchronous Operation](/nexus/operations#asynchronous-operation-lifecycle).
+
+By default, Nexus handler errors are considered retryable, unless specified below:
+- [Application Failures](/references/failures#nexus-errors) marked as non-retryable.
+- [Unsuccessful Operation errors](/references/failures#nexus-errors) that can resolve an operation as either failed or canceled.
+- [Non-retryable Nexus errors](/references/failures#non-retryable-nexus-errors).
+
+For example, if an unknown error is returned from a Nexus handler it will be classified as a retryable error.
+
+When an error is recieved by the caller's Nexus Machinery:
+- If a [non-retryable error](/references/failures#non-retryable-nexus-errors) is returned, the caller Workflow will have a [NexusOperationFailed](/references/events#nexusoperationfailed) event added to it's Workflow History.
+- If a [retryable error](/references/failures#retryable-nexus-errors) is returned, the Nexus Machinery will automatically retry the [Nexus Task](/workers#nexus-task), as discussed in [automatic retries](/nexus/operations#automatic-retries).
+These errors are visible to the caller Workflow as part of integrated execution debugging in [Pending Operations](/nexus/execution-debugging/#pending-operations).
+
+:::tip
+
+To avoid infinite [automatic retries](/nexus/operations#automatic-retries) and improve semantics, custom Nexus handlers should return a [specific Nexus error type](/references/failures#nexus-errors).
+
+See [errors in Nexus Operations](/references/failures#errors-in-nexus-operations) for additional details.
+
+:::
+
+
+## Nexus error handling in caller Workflows
+
+A Nexus Operation Failure is delivered to the Workflow Execution when a Nexus Operation fails.
+It contains information about the failure and the Nexus Operation Execution; for example, the Nexus Operation name and Nexus Operation ID.
+The reason for the failure is in the message and in the underlying cause is typically an Application Error or a Canceled Error.
+
+:::tip RESOURCES
+
+- [Errors in Nexus Operations](/references/failures#errors-in-nexus-operations)
+- [Nexus Errors](/references/failures#nexus-errors)
+- [Nexus Operation Failures](/references/failures#nexus-operation-failure)
+
+:::

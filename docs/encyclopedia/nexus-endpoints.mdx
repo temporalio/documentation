@@ -22,13 +22,16 @@ Temporal Nexus is available in [Public Preview](/evaluate/development-production
 
 ## A reverse proxy for Nexus requests
 
-A [Nexus Endpoint](/glossary#nexus-endpoint) is a reverse proxy that can route Nexus requests from a caller Workflow to an upstream target Namespace and Task Queue that a Worker is polling.
-An Endpoint decouples the caller and handler, so the caller only needs to know the Endpoint name. The Endpoint encapsulates the upstream target Namespace and Task Queue from the caller.
+A [Nexus Endpoint](/glossary#nexus-endpoint) is a reverse proxy that can route Nexus requests from a caller Workflow to an upstream target Namespace and Task Queue.
+A [Nexus Service](/nexus/services) runs in a Worker that is polling the Endpoint's target Task Queue.
+
+An Endpoint decouples the caller and handler, so the caller only needs to know the Endpoint name.
+The Endpoint encapsulates the upstream target Namespace and Task Queue from the caller.
 A Worker handles Nexus requests by registering one or more [Nexus Services](/nexus/services) and polling the Endpoint's target Task Queue.
 
-![Nexus Overview](/img/nexus-overview.png)
+![Nexus Overview](/img/nexus-overview-short.png)
 
 Multiple Nexus Endpoints can target the same target Namespace.
 For example, to decompose a monolithic Namespace into multiple Nexus Endpoints you can add multiple Nexus Endpoints that target the monolithic Namespace, and then update the Endpoints to target different target Namespaces later.
 
-Adding a Nexus Endpoint to the Nexus Registry deploys the Endpoint, so it is available at runtime to serve Nexus requests.
+Adding a Nexus Endpoint to the [Nexus Registry](/nexus/registry) deploys the Endpoint, so it is available at runtime to serve Nexus requests.

@@ -25,8 +25,10 @@ Temporal Nexus is available in [Public Preview](/evaluate/development-production
 
 ## A named collection of Nexus Operations
 
-A [Nexus Service](/glossary#nexus-service) is a named collection of arbitrary-duration [Nexus Operations](/nexus/operations) that provide a contract suitable for sharing across team boundaries.
-Nexus Services are registered with a Temporal Worker that is polling the target Namespace and Task Queue for a Nexus Endpoint.
+[Nexus Services](/glossary#nexus-service) are named collections of arbitrary-duration [Nexus Operations](/nexus/operations) that provide a contract suitable for sharing across team boundaries.
+A [Nexus Endpoint](/nexus/endpoints) exposes Nexus Services for others to use.
+Services are handled in a Temporal Worker that is polling an Endpoint's target Namespace and Task Queue.
+Multiple Nexus Services may be run in the same Worker polling the same Endpoint target Namespace and Task Queue.
 
 For example, a Nexus Service is often registered in the same Worker as the underlying Workflows they abstract:
 
