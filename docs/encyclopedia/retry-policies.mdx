@@ -5,11 +5,11 @@ sidebar_label: Retry Policies
 description: Optimize your Workflow and Activity Task Executions with a custom Retry Policy on Temporal. Understand default retries, intervals, backoff, and maximum attempts for error handling.
 toc_max_heading_level: 4
 keywords:
-  - explanation
-  - term
+  - activities
+  - retry policy
 tags:
-  - explanation
-  - term
+  - Activities
+  - Concepts
 ---
 
 import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
@@ -119,14 +119,15 @@ The wait time before a retry is the _retry interval_. A retry interval is the sm
 
 <PrettyImage src="/img/retry-interval-diagram.png" title="Diagram that shows the retry interval and its formula" />
 
-### Per-error Next Retry Delay
+### Per-error next Retry delay
 
 Sometimes, your Activity or Workflow raises a special exception that needs a different retry interval from the Retry Policy.
-To accomplish this, you may throw an [Application Failure](/references/failures#application-failure) with the Next Retry Delay field set. This value will replace and override whatever the retry interval would be on the Retry Policy.
+To accomplish this, you may throw an [Application Failure](/references/failures#application-failure) with the next Retry delay field set. This value will replace and override whatever the retry interval would be on the Retry Policy.
 Note that your retries will still cap out under the Retry Policy's Maximum Attempts, as well as overall timeouts. For an Activity, its Schedule-to-Close Timeout applies. For a Workflow, the Execution Timeout applies.
 
 <RelatedReadContainer>
-    <RelatedReadItem path="/develop/java/failure-detection#next-retry-delay" text="Customize retry delays per error in the Java SDK." archetype="feature-guide" />
+  <RelatedReadItem path="/develop/java/failure-detection#activity-next-retry-delay" text="Customize retry delays per error in the Java SDK." archetype="feature-guide" />
+  <RelatedReadItem path="/develop/typescript/failure-detection#activity-next-retry-delay" text="Customize retry delays per error in the TypeScript SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
 ## Event History

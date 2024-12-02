@@ -12,9 +12,8 @@ keywords:
   - secure routing
   - payload encryption and data converter
 tags:
-  - nexus security
-  - temporal nexus
-  - nexus 
+  - Nexus
+  - Concepts
 
 ---
 
@@ -60,4 +59,9 @@ In Temporal Cloud multiple security provisions are in place to ensure it can act
 ### Payload Encryption and Data Converter {#payload-encryption-data-converter}
 
 The Data Converter works the same for a Nexus Operation as it does for other payloads sent between a Worker and Temporal Cloud.
-There is support for a single Data Converter to be used for inbound inputs and outbound outputs, which means the encryption key often used in a custom Data Converter must be the same for both the caller and the handler.
+The caller and handler Workers must have compatible Data Converters as operation inputs and results are passed between the two.
+
+If encryption keys are used to encrypt payloads, they must be available in both the caller and handler. For example,
+the caller and handler can use a shared symmetric key stored in your KMS.
+
+Please let us know if you need per-Service payload encryption or better handling for asymmetric encryption keys.
