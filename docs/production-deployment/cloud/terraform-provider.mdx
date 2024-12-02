@@ -270,6 +270,9 @@ Cautions about Temporal User management:
 - Account Owners and Global Admins automatically gain access to all Namespaces in Temporal.
   Therefore, you cannot specify Namespace access for these roles.
   This is also true for Service Accounts.
+- Follow Terraform best practices for resource management.
+  Manage a specific user in one and only one .tf file.
+  There's a risk that you may overwrite a user's permissions if you don't.
 - To Import a user, you'll need the User's ID which is currently not available in the Temporal Cloud UI.
   You can fetch current User ID by running the `tcld user list` command.
 
