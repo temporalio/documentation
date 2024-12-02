@@ -46,8 +46,10 @@ import pytest
 import temporalio.testing.WorkflowEnvironment
 
 
-# This might break because it will reuse the workflow environment 
-pytest.fixture(scope="session")
+# Notice how this doesn't specify a "scope" like "session" scope. If you don't
+# specify a scope, the default scope is function, so a new workflow
+# environment will be created for each test.
+@pytest.fixture
 def workflow_environment():
   return WorkflowEnvironment.start_time_skipping()
 
@@ -56,12 +58,6 @@ def test_1(workflow_environment):
 
 def test_2(workflow_environment):
   pass
-
-# Correct: if you don't specify a scope, the default scope is function,
-# so a new workflow environment will be created for each test
-@pytest.fixture 
-def workflow_environment():
-  return WorkflowEnvironment.start_time_skipping()
 ```
 
 ## Testing Activities {#test-activities}
