@@ -38,7 +38,7 @@ One recommended framework for testing in Python for the Temporal SDK is [pytest]
 
 ### A note on pytest fixtures
 
-When using pytest fixtures to setup databases, application servers and common infrastructure it is not unusual to use the `session` scope to ensure the fixture is shared among multiple tests. However, with the test server it is important that each test is executed in isolation. Launching a test server per test introduce negligible overhead and ensures your test do not conflict with each other
+When using pytest fixtures to setup databases, application servers and common infrastructure it is not unusual to use the `session` scope to ensure the fixture is shared among multiple tests. However, with the time-skipping test server it is important that each test is executed in isolation. Launching a test server per test introduce negligible overhead and ensures your test do not conflict with each other
 
 
 ```python
