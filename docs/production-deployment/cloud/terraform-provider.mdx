@@ -550,7 +550,10 @@ To delete an API Key with Terraform, remove the Terraform API Key resources conf
 
 **How do I Import a Temporal API Key?**
 
-Importing an API Key into Terraform is not a supported operation. This is because the API Key Token is a sensitive value that is not available after creation, therefore it is likely not available during import time.
+You cannot import an API Key into Terraform.
+Once created, the API Key secret isn't stored and can't be retrieved, so you can't access it using import.
+
+Instead, Temporal recommends creating a new API Key using Terraform directly.
 Instead of importing an API Key, Temporal recommends creating new API Keys with Terraform.
 
 ## Data Sources - Regions and Namespaces
