@@ -102,8 +102,9 @@ Configures a [mechanism to map roles](/self-hosted-guide/security#claim-mapper) 
 ```go
 s := temporal.NewServer(
   temporal.WithClaimMapper(func(cfg *config.Config) authorization.ClaimMapper {
+  		logger := getYourLogger() // Replace with how you retrieve or initialize your logger
 		return authorization.NewDefaultJWTClaimMapper(
-			authorization.NewRSAKeyProvider(cfg),
+			authorization.NewDefaultTokenKeyProvider(cfg, logger),
 			cfg
 		)
 	}),

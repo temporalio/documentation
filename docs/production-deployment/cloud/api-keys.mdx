@@ -152,16 +152,16 @@ Then select **Create API key** and provide the following information:
 
 Finish by selecting **Generate API key**.
 
-#### Generate API keys with `tcld`
+#### Generate API keys with tcld
 
 To generate an API key, log into your account and issue the following command:
 
 ```command
 tcld login
 tcld apikey create \
-    --name "<key-name>" \
-    --description "<key-description>" \
-    --duration "<key-duration>"
+    --name <api-key-name> \
+    --description "<api-key-description>" \
+    --duration <api-key-duration>
 ```
 
 Duration specifies the time until the API key expires, for example: "30d", "4d12h", etc.
@@ -180,7 +180,7 @@ Follow these steps:
 1. Select the three vertical dots next to the API key’s row.
 1. Choose **Enable** or **Disable**.
 
-#### Manage API Key State with `tcld`
+#### Manage API Key State with tcld
 
 To manage an API key, log into your account and use one of the following commands to enable or disable it:
 
@@ -210,7 +210,7 @@ Follow these steps to remove API keys:
 1. Select the three vertical dots next to the API key's row.
 1. Choose **Delete**.
 
-#### Delete API keys with `tcld`
+#### Delete API keys with tcld
 
 To delete an API key, log into your account and issue the following:
 
@@ -261,12 +261,13 @@ In the "Mapped to identity" input box, select a Service account and provide the 
 
 Finish by selecting **Generate API key**.
 
-#### Generate API keys with `tcld`
+#### Generate API keys with tcld
 
 To create an API key for a Service Account, use `tcld apikey create` with the `--service-account-id` flag:
 
 ```
-tcld apikey create --namespace <namespace_id>.<account_id> \
+tcld apikey create \
+    --name <api-key-name> \
     --description "<api-key-description>" \
     --duration <api-key-duration> \
     --service-account-id <service-account-id>
@@ -286,7 +287,7 @@ Follow these steps:
    There may be a delay after changing the status.
    Once successful, the updated API key status will be shown in the row.
 
-#### Manage keys with `tcld`
+#### Manage keys with tcld
 
 Use the `tcld apikey disable` or `tcld apikey enable` command to disable or enable an API key:
 
@@ -314,7 +315,7 @@ Follow these steps:
    There may be a delay after deleting the API key.
 1. Once successful, the updated API key status will be reflected in the row.
 
-#### Delete a Service Account API key with `tcld`
+#### Delete a Service Account API key with tcld
 
 Use the `tcld apikey delete` command to delete an API key.
 The process for deleting an API key is the same for a user or Service Account.
@@ -683,7 +684,7 @@ const worker = await Worker.create({
 });
 ```
 
-### `tcld`
+### tcld
 
 To use an API key with `tcld`, choose one of these methods:
 
