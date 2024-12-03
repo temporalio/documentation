@@ -151,7 +151,7 @@ If a Nexus Operation returns a [retryable error](https://github.com/temporalio/t
 The circuit breaker kicks in when requests fail with a [retryable error](https://github.com/temporalio/temporal/blob/13d6cd8cf7a4ba0c4660cf98f672bbd645dca3e7/components/nexusoperations/executors.go#L659)
 consecutively as it might indicate that the destination (eg: Nexus endpoint to start operation, or
 the caller's endpoint for callback request) is down or unable to process the request (eg: Nexus
-request times out because the handler's worker is down) The default behavior of the circuit breaker
+request times out because the handler's worker is down). The default behavior of the circuit breaker
 is to open after 5 consecutive failed requests. Once in open state, the Nexus machinery will fail
 early and requests won't be sent to that destination. After a minute in open state, it will change
 to half-open state, which will allow only 1 request to be made. If the request is successful, then
@@ -160,6 +160,28 @@ the circuit breaker changes its state to closed, and allows all requests to pass
 You will be able to check if an operation (pending Nexus operation, cancel Nexus operation, or
 callback) is blocked by a circuit breaker via the DescribeWorkflowExecution API. The status of the
 operation will be `BLOCKED` and it will include details in the `BlockedReason` field.
+
+```sh
+$ temporal workflow describe -w my-workflow-id
+Execution Info:
+  WorkflowId            my-workflow-id
+  ...
+
+Pending Activities: 0
+Pending Child Workflows: 0
+Pending Nexus Operations: 1
+
+  Endpoint                 my-nexus-endpoint-name
+  Service                  my-hello-service
+  Operation                echo
+  OperationID
+  State                    Blocked
+  Attempt                  8
+  ScheduleToCloseTimeout   0s
+  LastAttemptCompleteTime  1 minute ago
+  LastAttemptFailure       ...
+  BlockedReason            The circuit breaker is open.
+```
 
 ### Execution Semantics {#execution-semantics}
 
