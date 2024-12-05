@@ -156,6 +156,29 @@ order-abracadabra
 
 It does not match `order-~~`.
 
+:::note Filter Composition Quick Reference
+
+**Composition**
+- Data types:
+  - String literals with single or double quotes
+  - Numbers (Integer and Floating Point)
+  - Booleans
+- Comparison: `=`, `!=`, `>`, `>=`, `<`, `<=`
+- Expressions/Operators:
+  - `IN array`
+  - `BETWEEN value AND value`
+  - `STARTS_WITH string`
+  - `IS NULL`, `IS NOT NULL`
+  - `expr AND expr`, `expr OR expr`, `( expr )`
+- Array: `( comma-separated-values )`
+
+**Please note**
+- Wrap attributes with backticks if it contains characters not in
+  `[a-zA-Z0-9]`.
+- `STARTS_WITH` is only available for Keyword search attributes.
+
+:::
+
 ### Efficient API usage
 
 If the Advanced List Filter API retrieves a substantial number of Workflow Executions (more than 10,000), the response time might be longer.
