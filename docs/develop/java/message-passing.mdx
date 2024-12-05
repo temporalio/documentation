@@ -17,15 +17,13 @@ keywords:
   - dynamic signals
   - dynamic queries
 tags:
-  - workflows
-  - messages
-  - signals
-  - queries
-  - updates
-  - dynamic-handlers
-  - sdk
-  - java-sdk
-  - developer guide
+  - Workflows
+  - Messages
+  - Signals
+  - Queries
+  - Updates
+  - Java SDK
+  - Temporal SDKs
 ---
 
 A Workflow can act like a stateful web service that receives messages: Queries, Signals, and Updates.
@@ -238,6 +236,14 @@ WorkflowClient.start(workflow::getGreetings);
 ```
 
 To check the argument types required when sending messages -- and the return type for Queries and Updates -- refer to the corresponding handler method in the Workflow Definition.
+
+:::warning Using Continue-as-New and Updates
+
+- Temporal _does not_ support Continue-as-New functionality within Update handlers.
+- Complete all handlers _before_ using Continue-as-New.
+- Use Continue-as-New from your main Workflow Definition method, just as you would complete or fail a Workflow Execution.
+
+:::
 
 ### Send a Query {#send-query}
 
@@ -507,6 +513,57 @@ public interface MyWorkflow {
 ```
 
 See [Finishing handlers before the Workflow completes](/encyclopedia/workflow-message-passing#finishing-message-handlers) for more information.
+
+### Use `@WorkflowInit` to operate on Workflow input before any handler executes
+
+Normally, your Workflows constructor won't have any parameters.
+However, if you use the `@WorkflowInit` annotation on your constructor, you can give it the same [Workflow parameters](/develop/java/core-application#workflow-parameters) as your `@WorkflowMethod`.
+The SDK will then ensure that your constructor receives the Workflow input arguments that the [Client sent](/develop/python/temporal-clients#start-workflow-execution).
+The Workflow input arguments are also passed to your `@WorkflowMethod` method -- that always happens, whether or not you use the `@WorkflowInit` annotation.
+This is useful if you have message handlers that need access to Workflow input: see [Initializing the Workflow first](/encyclopedia/workflow-message-passing#workflow-initializers).
+
+Here's an example.
+Notice that the constructor and `getGreeting` must have the same parameters:
+
+```java
+public class GreetingExample {
+    @WorkflowInterface
+    public interface GreetingWorkflow {
+        @WorkflowMethod
+        String getGreeting(String input);
+
+        @UpdateMethod
+        boolean checkTitleValidity();
+    }
+
+    public static class GreetingWorkflowImpl implements GreetingWorkflow {
+        private final String nameWithTitle;
+        private final String titleHasBeenChecked;
+        ...
+        // Note the annotation is on a public constructor
+        @WorkflowInit
+        public GreetingWorkflowImpl(String input) {
+          this.nameWithTitle = "Sir " + input;
+          this.titleHasBeenChecked = false;
+        }
+
+        @Override
+        public String getGreeting(String input) {
+          Workflow.await(() -> titleHasBeenChecked)
+          return "Hello " + nameWithTitle;
+        }
+
+        @Override
+        public boolean checkTitleValidity() {
+          // 👉 The handler is now guaranteed to see the workflow input
+          // after it has been processed by the constructor.
+          boolean isValid = activity.checkTitleValidity(nameWithTitle);
+          titleHasBeenChecked = true;
+          return isValid;
+        }
+    }
+}
+```
 
 ### Use locks to prevent concurrent handler execution {#control-handler-concurrency}
 

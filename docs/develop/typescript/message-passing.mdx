@@ -17,15 +17,13 @@ keywords:
   - dynamic signals
   - dynamic queries
 tags:
-  - workflows
-  - messages
-  - signals
-  - queries
-  - updates
-  - dynamic-handlers
-  - sdk
-  - typescript-sdk
-  - developer guide
+  - Workflows
+  - Messages
+  - Signals
+  - Queries
+  - Updates
+  - TypeScript SDK
+  - Temporal SDKs
 ---
 
 A Workflow can act like a stateful web service that receives messages: Queries, Signals, and Updates.
@@ -222,6 +220,14 @@ const handle = await client.workflow.start(greetingWorkflow, {
 ```
 
 To check the argument types required when sending messages -- and the return type for Queries and Updates -- refer to the corresponding handler method in the Workflow Definition.
+
+:::warning Using Continue-as-New and Updates
+
+- Temporal _does not_ support Continue-as-New functionality within Update handlers.
+- Complete all handlers _before_ using Continue-as-New.
+- Use Continue-as-New from your main Workflow Definition method, just as you would complete or fail a Workflow Execution.
+
+:::
 
 ### Send a Query {#send-query}
 

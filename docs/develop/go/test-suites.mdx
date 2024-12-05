@@ -7,28 +7,18 @@ keywords:
   - activity
   - cancellation
   - event history
-  - explanation-doc-type
   - go sdk
   - heartbeat
-  - how-to-doc-type
+  - nexus
   - replay
   - testing
   - timer
   - workflow
   - workflow execution
 tags:
-  - activity
-  - cancellation
-  - event-history
-  - explanation-doc-type
-  - go-sdk
-  - heartbeat
-  - how-to-doc-type
-  - replay
-  - testing
-  - timer
-  - workflow
-  - workflow-execution
+  - Testing
+  - Go SDK
+  - Temporal SDKs
 description: The Testing section of the Temporal Application development guide details frameworks for Workflow and integration testing. Learn to create end-to-end, integration, unit tests, and more for Workflows and Activities. Each test runs in an isolated environment, ensuring accurate and reliable testing. Discover how to mock and override Activities, test
 ---
 
@@ -171,6 +161,136 @@ When an Activity sends a Heartbeat, be sure that you can see the Heartbeats in y
 
 If an Activity is supposed to react to a Cancellation, you can test whether it reacts correctly by canceling it.
 
+## Mock and override Nexus operations
+
+Mocking Nexus operations lets you test a Workflow that executes Nexus operations without needing a
+Nexus handler to run the actual Nexus operation. You can mock the Nexus operation or override its
+implementation with the test Workflow environment.
+
+Consider a test that simulates a Nexus operation call. In this example, the Nexus operation is
+called `sample-operation`, the input type is `SampleInput`, the output type is `SampleOutput`, and
+it belongs to the Nexus service `sample-service`.
+
+The example bellow mocks a call to a Nexus synchronous operation, indicated by the returned value
+type `*nexus.HandlerStartOperationResultSync[T]`. Since `OnNexusOperation` needs to know the
+operation's name, input type and output type, and you might not have access to the Nexus operation
+on the handler side, you can use `nexus.NewOperationReference` to create a Nexus operation reference
+that represents the operation without its implementation (basically, it represents the signature of
+the Nexus operation). You may also use the operation itself instead of creating the operation
+reference if you have it available.
+
+```go
+func (s *UnitTestSuite) Test_SimpleWorkflow_NexusSyncOperation() {
+        s.env.OnNexusOperation(
+                "sample-service",
+                nexus.NewOperationReference[SampleInput, SampleOutput]("sample-operation"),
+                SampleInput{},
+                workflow.NexusOperationOptions{},
+        ).Return(
+                &nexus.HandlerStartOperationResultSync[SampleOutput]{
+                        Value: SampleOutput{},
+                },
+                nil, // error if you want to simulate an error in the ExecuteOperation call
+        )
+        // You can also add a delay to return the mock values by calling After().
+        // Eg: s.env.OnNexusOperation(...).Return(...).After(1*time.Second)
+
+        s.env.ExecuteWorkflow(SimpleWorkflow, "test_nexus_operation")
+
+        s.True(s.env.IsWorkflowCompleted())
+        s.NoError(s.env.GetWorkflowError())
+}
+```
+
+Besides the synchronous operations, you can also mock asynchronous operations. The following example
+demonstrates how to test a Workflow executing a Nexus asynchronous operation. The returned value
+type in this case must be `*nexus.HandlerStartOperationResultAsync` with an `OperationID`, which can
+be any string of your choice. Furthermore, you must call `RegisterNexusAsyncOperationCompletion` to
+register the result of the asynchronous operation identified by the tuple service name, operation
+name, and operation ID.
+
+```go
+func (s *UnitTestSuite) Test_SimpleWorkflow_NexusAsyncOperation() {
+        s.env.OnNexusOperation(
+                "sample-service",
+                nexus.NewOperationReference[SampleInput, SampleOutput]("sample-operation"),
+                SampleInput{},
+                workflow.NexusOperationOptions{},
+        ).Return(
+                &nexus.HandlerStartOperationResultAsync{
+                        OperationID: "sample-operation-id",
+                },
+                nil, // error if you want to simulate an error in the ExecuteOperation call
+        )
+        err := env.RegisterNexusAsyncOperationCompletion(
+                "sample-service",
+                "sample-operation",
+                "sample-operation-id", // must match the OperationID above
+                SampleOutput{},
+                nil,            // error if you want to simulate an error in the operation
+                2*time.Second,  // delay to simulate how long the operation takes after it starts
+        )
+        s.NoError(err)
+        s.env.ExecuteWorkflow(SimpleWorkflow, "test_nexus_operation")
+
+        s.True(s.env.IsWorkflowCompleted())
+        s.NoError(s.env.GetWorkflowError())
+}
+```
+
+If your Workflow executes multiple Nexus asynchronous operations, you can mock each of them with
+different operation IDs, and register the completion results using the corresponding operation ID.
+
+If mocking Nexus operations is not enough, and you need to run some custom logic when the Nexus
+operation is executed, you can override it as follows.
+
+```go
+func (s *UnitTestSuite) Test_SimpleWorkflow_NexusSyncOperation() {
+        var SampleOperation = nexus.NewSyncOperation(
+                "sample-operation",
+                func(ctx context.Context, input SampleInput, options nexus.StartOperationOptions) (SampleOutput, error) {
+                        // Custom logic here.
+                        return SampleOutput{}, nil
+                },
+        )
+
+        service := nexus.NewService("sample-service")
+        s.NoError(service.Register(SampleOperation))
+        env.RegisterNexusService(service)
+        s.env.ExecuteWorkflow(SimpleWorkflow, "test_nexus_operation")
+
+        s.True(s.env.IsWorkflowCompleted())
+        s.NoError(s.env.GetWorkflowError())
+}
+```
+
+The following example shows how to override a Nexus asynchronous operation.
+
+```go
+func (s *UnitTestSuite) Test_SimpleWorkflow_NexusSyncOperation() {
+        SampleHandlerWorkflow := func(_ workflow.Context, input SampleInput) (SampleOutput, error) {
+                // Custom logic here.
+                return SampleOutput{}, nil
+        }
+        SampleOperation := nexus.NewWorkflowRunOperation(
+                "sample-operation",
+                SampleHandlerWorkflow,
+                func(ctx context.Context, input SampleInput, options nexus.StartOperationOptions) (client.StartWorkflowOptions, error) {
+                        // Custom logic to build client.StartWorkflowOptions.
+                        return client.StartWorkflowOptions{}, nil
+                },
+        )
+
+        service := nexus.NewService("sample-service")
+        s.NoError(service.Register(SampleOperation))
+        env.RegisterNexusService(service)
+        s.env.ExecuteWorkflow(SimpleWorkflow, "test_nexus_operation")
+
+        s.True(s.env.IsWorkflowCompleted())
+        s.NoError(s.env.GetWorkflowError())
+}
+```
+
 ## Testing Workflows {#test-workflows}
 
 When running unit tests on Workflows, we want to test the Workflow logic in isolation.
@@ -189,7 +309,7 @@ Calling `s.env.ExecuteWorkflow(...)` executes the Workflow logic and any invoked
 
 > Note that unless the Activity invocations are mocked or Activity implementation replaced (see [Activity mocking and overriding](#mock-and-override-activities)), the test environment will execute the actual Activity code including any calls to outside services.
 
-After executing the Workflow in the above example, we assert that the Workflow ran through completion via the call to `s.env.IsWorkflowComplete()`. We also assert that no errors were returned by asserting on the return value of `s.env.GetWorkflowError()`.
+After executing the Workflow in the above example, we assert that the Workflow ran through completion via the call to `s.env.IsWorkflowCompleted()`. We also assert that no errors were returned by asserting on the return value of `s.env.GetWorkflowError()`.
 If our Workflow returned a value, we could have retrieved that value via a call to `s.env.GetWorkflowResult(&value)` and had additional asserts on that value.
 
 ### Query tests

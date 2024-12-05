@@ -5,27 +5,33 @@ sidebar_label: Testing
 description: The Testing section of the Temporal Application development guide covers frameworks for Workflow and integration testing, including end-to-end, integration, and unit tests. Unit tests can be set up and run using the Temporal Java SDK's TestWorkflowEnvironment and TestWorkflowExtension classes for automated testing, allowing developers to test Workflows
 toc_max_heading_level: 4
 keywords:
-  - developer-guide
-  - guide-context
-  - java
-  - sdk
-tags:
-  - sdk
-  - java-sdk
-  - developer guide
+  - activity
+  - cancellation
+  - event history
+  - java sdk
+  - heartbeat
+  - nexus
+  - replay
   - testing
+  - timer
+  - workflow
+  - workflow execution
+tags:
+  - Testing
+  - Java SDK
+  - Temporal SDKs
 ---
 
 The Testing section of the Temporal Application development guide describes the frameworks that facilitate Workflow and integration testing.
 
 In the context of Temporal, you can create these types of automated tests:
 
-- **End-to-end:** Running a Temporal Server and Worker with all its Workflows and Activities; starting and interacting with Workflows from a Client.
+- **End-to-end:** Running a Temporal Server and Worker with all its Workflows, Activities, and Nexus Operations; starting and interacting with Workflows from a Client.
 - **Integration:** Anything between end-to-end and unit testing.
   - Running Activities with mocked Context and other SDK imports (and usually network requests).
-  - Running Workers with mock Activities, and using a Client to start Workflows.
+  - Running Workers with mock Activities and Nexus Operations, and using a Client to start Workflows.
   - Running Workflows with mocked SDK imports.
-- **Unit:** Running a piece of Workflow or Activity code (a function or method) and mocking any code it calls.
+- **Unit:** Running a piece of Workflow, Activity, or Nexus Operation code (a function or method) and mocking any code it calls.
 
 We generally recommend writing the majority of your tests as integration tests.
 
@@ -113,7 +119,7 @@ public class HelloActivityTest {
 }
 ```
 
-In cases where you do not wish to execute your actual Activity implementations during
+In cases where you do not wish to execute your actual Activity or Nexus Operation implementations during
 unit testing, you can use a framework such as Mockito to mock them.
 
 The following code implements a unit test for the `HelloActivity` sample which shows
@@ -275,6 +281,12 @@ Mock the Activity invocation when unit testing your Workflows.
 
 When integration testing Workflows with a Worker, you can mock Activities by providing mock Activity implementations to the Worker.
 
+### How to mock Nexus Operations {#mock-nexus-operations}
+
+Mock the Nexus Operation invocation when unit testing your Workflows.
+
+When integration testing Workflows with a Worker, you can mock Nexus Operations by providing mock Nexus Service implementations to the Worker.
+
 ### How to skip time {#skip-time}
 
 Some long-running Workflows can persist for months or even years.
@@ -296,15 +308,11 @@ Learn to set up the time-skipping test framework in the SDK of your choice.
 
 You can skip time automatically in the SDK of your choice.
 Start a test server process that skips time as needed.
-For example, in the time-skipping mode, Timers, which include sleeps and conditional timeouts, are fast-forwarded except when Activities are running.
+For example, in the time-skipping mode, Timers, which include sleeps and conditional timeouts, are fast-forwarded except when Activities or Nexus Operation handlers are running. Nexus Operation handlers timeout after 10 seconds and time skipping is allowed while waiting for retries.
 
 #### Skip time manually {#manual-method}
 
 Learn to skip time manually in the SDK of your choice.
-
-#### Skip time in Activities {#skip-time-in-activities}
-
-Learn to skip time in Activities in the SDK of your choice.
 
 ## How to Replay a Workflow Execution {#replay}
 

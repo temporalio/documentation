@@ -3,13 +3,16 @@ id: multi-region
 slug: /cloud/multi-region
 title: Multi-region Namespace - Temporal Cloud feature guide
 sidebar_label: Multi-region Namespaces
-tags:
+keywords:
   - multi-region
   - multi-region namespace
   - high-availability
   - failover
   - availability
   - namespaces
+tags:
+  - Temporal Cloud
+  - Namespaces
 description: Experience disaster-tolerant deployment with Temporal Cloud's multi-region Namespaces. Ensure high availability and data integrity through automated failover and seamless data synchronization among regions, supported by a 99.99% SLA.
 ---
 
@@ -282,7 +285,7 @@ Use these tools to create, upgrade, and discontinue your multi-region Namespace.
 
 :::warning
 
-Only [Global Admins](https://docs.temporal.io/cloud/users#account-level-roles) and [Namespace Admins](https://docs.temporal.io/cloud/users#namespace-level-permissions) may create an multi-region Namespace (MRN), upgrade an existing Namespace to MRN, or trigger an MRN failover.
+Only Account Owner and Global Admin [roles](/cloud/users#account-level-roles) and [Namespace Admins](https://docs.temporal.io/cloud/users#namespace-level-permissions) may create an multi-region Namespace (MRN), upgrade an existing Namespace to MRN, or trigger an MRN failover.
 
 :::
 
@@ -516,6 +519,7 @@ You can check the Namespace's active region using the Namespace record CNAME, wh
 To set up the DNS override, you override specific regions to target the relevant IP addresses (e.g. aws-us-west-1.region.tmprl.cloud to target 192.168.1.2).
 Using AWS, this can be done using a private hosted zone in Route53 for `region.<tmprl_domain>`.
 Link that private zone to the VPCs you use for Workers.
+Private Link is not yet offered for GCP multi-region Namespaces. 
 
 When your Workers connect to the Namespace, they first resolve the `<ns>.<acct>.<tmprl_domain>` record.
 This targets `<active>.region.<tmprl_domain>` using a CNAME. Your private zone overrides that second DNS resolution, leading traffic to reach the internal IP you're using.
