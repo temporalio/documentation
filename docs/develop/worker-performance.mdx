@@ -213,7 +213,6 @@ When choosing whether to opt for fixed assignment or resource-based suppliers, c
 - Reserve auto-tuned resource-based slot suppliers for deployments focused on avoiding Worker overload.
   They provide excellent balance with built-in throttling that ensures the Worker will be cautious when handing out new executor slots.
 
-
 The following use cases are particularly well suited to resource-based auto-tuning slot suppliers:
 
 - **Fluctuating workloads with low per-Task consumption**:
@@ -336,7 +335,7 @@ const workerOptions = {
   tuner: {
     tunerOptions: resourceBasedTunerOptions,
   },
-}
+};
 // Combining different types
 const resourceBasedTunerOptions: ResourceBasedTunerOptions = {
   targetMemoryUsage: 0.8,
