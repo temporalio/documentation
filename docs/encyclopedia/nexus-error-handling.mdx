@@ -39,7 +39,7 @@ By default, Nexus handler errors are considered retryable, unless specified belo
 For example, if an unknown error is returned from a Nexus handler it will be classified as a retryable error.
 
 When an error is recieved by the caller's Nexus Machinery:
-- If a [non-retryable error](/references/failures#non-retryable-nexus-errors) is returned, the caller Workflow will have a [NexusOperationFailed](/references/events#nexusoperationfailed) event added to it's Workflow History.
+- If a [non-retryable error](/references/failures#non-retryable-nexus-errors) is returned, the caller Workflow will have a [NexusOperationFailed](/references/events#nexusoperationfailed) event added to its Workflow History.
 - If a [retryable error](/references/failures#retryable-nexus-errors) is returned, the Nexus Machinery will automatically retry the [Nexus Task](/workers#nexus-task), as discussed in [automatic retries](/nexus/operations#automatic-retries).
 These errors are visible to the caller Workflow as part of integrated execution debugging in [Pending Operations](/nexus/execution-debugging/#pending-operations).
 
