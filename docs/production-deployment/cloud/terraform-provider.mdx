@@ -550,25 +550,10 @@ To delete an API Key with Terraform, remove the Terraform API Key resources conf
 
 **How do I Import a Temporal API Key?**
 
-If you have an existing API Key in Temporal Cloud, you can import it into Terraform using the `terraform import` command.
+You cannot import an API Key into Terraform.
+Once created, the API Key secret isn't stored and can't be retrieved, so you can't access it using import.
 
-1. Provide a configuration placeholder in your Terraform configuration.
-
-   ```yml
-   resource "temporalcloud_apikey" "import_key"{
-   }
-   ```
-
-1. Run the `terraform import` command and pass in the API Key ID
-   Your API Key ID is available in the Cloud UI in the API Key's details page
-
-   ```bash
-   terraform import temporalcloud_apikey.import_key zJV5zQ3IhsAbw75dAkVNEMsAd3a5AemC
-   ```
-
-The API Key is now a part of the Terraform state and all changes to the API Key should be managed by Terraform.
-Import does not import the API Key Token.
-The Token is only available at the time of API Key creation.
+Instead, Temporal recommends creating a new API Key using Terraform directly.
 
 ## Data Sources - Regions and Namespaces
 
