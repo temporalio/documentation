@@ -88,6 +88,13 @@ async def main():
     )
 ```
 
+:::tip Schedule Auto-Deletion
+
+Once a Schedule has completed creating all its Workflow Executions, the Temporal Service deletes it since it won’t fire again.
+The Service doesn't guarantee when this removal will happen.
+
+:::
+
 ### Backfill a Scheduled Workflow {#backfill}
 
 **How to backfill a Scheduled Workflow**

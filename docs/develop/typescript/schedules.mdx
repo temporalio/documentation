@@ -38,6 +38,13 @@ Use any of the following action to help Schedule a Workflow Execution and take c
 
 The create action enables you to create a new Schedule. When you create a new Schedule, a unique Schedule ID is generated, which you can use to reference the Schedule in other Schedule commands.
 
+:::tip Schedule Auto-Deletion
+
+Once a Schedule has completed creating all its Workflow Executions, the Temporal Service deletes it since it won’t fire again.
+The Service doesn't guarantee when this removal will happen.
+
+:::
+
 ### How to Backfill a Scheduled Workflow {#backfill}
 
 The backfill action executes Actions ahead of their specified time range. This command is useful when you need to execute a missed or delayed Action, or when you want to test the Workflow before its scheduled time.

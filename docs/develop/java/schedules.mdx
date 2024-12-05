@@ -61,6 +61,13 @@ ScheduleHandle handle =
     scheduleClient.createSchedule("ScheduleId", schedule, ScheduleOptions.newBuilder().build());
 ```
 
+:::tip Schedule Auto-Deletion
+
+Once a Schedule has completed creating all its Workflow Executions, the Temporal Service deletes it since it won’t fire again.
+The Service doesn't guarantee when this removal will happen.
+
+:::
+
 ### How to backfill a Schedule in Java {#backfill-schedule}
 
 The backfill action executes Actions ahead of their specified time range. This command is useful when you need to execute a missed or delayed Action, or when you want to test the Workflow before its scheduled time.
