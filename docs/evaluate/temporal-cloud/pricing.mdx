@@ -98,6 +98,8 @@ They track billable operations within the Temporal Cloud Service, such as starti
   (Actions that occur before a [Reset](/workflows#reset) are counted even if they are no longer visible in [Event History](/workflows#event-history).)
 - **Timer started**.
   Includes implicit Timers that are started by a Temporal SDK when timeouts are set, such as `AwaitWithTimeout` in Go or `condition` in TypeScript.
+- **Search Attribute upsert requested**.
+  Occurs for each invocation of `UpsertSearchAttributes` command.
 - **Signal sent**.
   An Action occurs for every [Signal](/encyclopedia/workflow-message-passing#sending-signals), whether sent from a Client or from a Workflow.
 - **Query received by Worker**.
@@ -140,7 +142,7 @@ Each execution of a Schedule accrues three actions:
   This accounts for two actions.
 - **Workflow started**.
   This is a single action to start the target Workflow.
-  Any Search Attributes sent with `StartWorkflow` are included in the action.
+  It includes initial Search Attributes as part of the start request.
 
 **EXPORT**
 
