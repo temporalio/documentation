@@ -342,7 +342,7 @@ An Update is a synchronous, blocking call that can change Workflow state, contro
 
 A Client sending an Update must wait until the Server delivers the Update to a Worker.
 Workers must be available and responsive.
-Therefore, provide a context with a timeout to limit the time the client waits for a response.
+Setting a timeout with a context provides a hard limit on how long a client will wait for a response.
 If you need a response as soon as the Server receives the request, use a Signal instead.
 
 - `WorkflowExecutionUpdateAccepted` is added to the Event History when the Worker confirms that the Update passed validation.
