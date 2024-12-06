@@ -400,7 +400,7 @@ Refer to the [API documentation](https://pkg.go.dev/go.temporal.io/sdk/internal#
 `ExecuteWorkflow` returns once the requested Update wait stage has been reached; or when a provided context times out.
 Choose [Workflow Id Conflict Policy](#workflow-id-conflict-policy) "Use Existing" coupled with an indempotent Update handler by default to allow the code to be executed again, in case of client failure.
 
-You need a [`WorkflowUpdateHandle`](https://pkg.go.dev/go.temporal.io/sdk/client#WorkflowUpdateHandle) to retrieve a result.
+Use [`WorkflowUpdateHandle`](https://pkg.go.dev/go.temporal.io/sdk/client#WorkflowUpdateHandle) to retrieve a result from the Update.
 Call `Get` on the Update operation.
 
 `UpdateWithStartWorkflowOperation` can only be executed once.
