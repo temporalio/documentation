@@ -124,6 +124,7 @@ module.exports = {
           items: [
             "develop/go/core-application",
             "develop/go/temporal-clients",
+            "develop/go/go-sdk-multithreading",
             "develop/go/namespaces",
             "develop/go/testing-suite",
             "develop/go/failure-detection",
@@ -208,6 +209,8 @@ module.exports = {
           items: [
             "develop/python/core-application",
             "develop/python/temporal-clients",
+            "develop/python/python-sdk-sandbox",
+            "develop/python/python-sdk-sync-vs-async",
             "develop/python/testing-suite",
             "develop/python/failure-detection",
             "develop/python/message-passing",
@@ -494,20 +497,7 @@ module.exports = {
           },
           items: [
             "encyclopedia/temporal",
-            {
-              type: "category",
-              label: "Temporal SDKs",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "encyclopedia/temporal-sdks",
-              },
-              items: [
-                "encyclopedia/go-sdk-multithreading",
-                "encyclopedia/python-sdk-sandbox",
-                "encyclopedia/python-sdk-sync-vs-async",
-              ],
-            },
+            "encyclopedia/temporal-sdks",
             "encyclopedia/workflows",
             "encyclopedia/activities",
             {
