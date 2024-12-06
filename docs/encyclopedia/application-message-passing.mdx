@@ -214,7 +214,7 @@ Updates let you add and remove items from the cart.
 :::caution
 
 Unlike Signal-with-Start - Update-With-Start is *not* atomic.
-If the Update cannot be delivered, for example, when no Worker is running, the Workflow Execution is still started.
+If the Update can't be delivered, for example, say that there's no running Worker available, a new Workflow Execution will still start.
 The SDKs will retry the Update-With-Start request but there is no guarantee that it will succeed.
 
 :::
