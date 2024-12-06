@@ -209,7 +209,7 @@ Updates let you add and remove items from the cart.
 - **Early Return** -
   Using Update-With-Start can begin a new Workflow Execution and synchronously receiving a response while the Workflow Execution continues to run to completion.
   For example, a payment process can be modelled using Update-With-Start.
-  You can send the result of payment validation back to the client synchronously, while continuing to complete or rollback the transaction asynchronously.
+  Whether the payment completes or rolls back, you can send the payment validation results back to the client synchronously, while attempting the transaction asynchronously.
 
 :::caution
 
