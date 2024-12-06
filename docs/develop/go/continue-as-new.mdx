@@ -33,3 +33,11 @@ To check whether a Workflow Execution was spawned as a result of Continue-As-New
   Failure to do so can result in buffered Signals being ignored and lost.
 - Make sure that the previous Workflow and the Continue-As-New Workflow are referenced by the same alias.
   Failure to do so can cause the Workflow to Continue-As-New on an entirely different Workflow.
+
+:::warning Using Continue-as-New and Updates
+
+- Temporal _does not_ support Continue-as-New functionality within Update handlers.
+- Complete all handlers _before_ using Continue-as-New.
+- Use Continue-as-New from your main Workflow Definition method, just as you would complete or fail a Workflow Execution.
+
+:::

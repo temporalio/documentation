@@ -168,6 +168,21 @@ if err != nil {
 }
 ```
 
+### Overriding the retry interval with Next Retry Delay {#next-retry-delay}
+
+You may return an [Application Failure](/references/failures#application-failure) with the `NextRetryDelay` field set.
+This value will replace and override whatever the Retry interval would be on the Retry Policy.
+
+For example, if in an Activity, you want to base the interval on the number of attempts:
+
+```go
+attempt := activity.GetInfo(ctx).Attempt;
+
+return temporal.NewApplicationErrorWithOptions(fmt.Sprintf("Something bad happened on attempt %d", attempt), "NextDelay", temporal.ApplicationErrorOptions{
+  NextRetryDelay: 3 * time.Second * delay,
+})
+```
+
 ## Activity Heartbeats {#activity-heartbeats}
 
 **How to Heartbeat an Activity using the Go SDK.**
