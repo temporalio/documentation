@@ -204,7 +204,7 @@ Update-With-Start is great for latency-sensitive use cases, including the follow
 - **Lazy Initialization** -
   Instead of making separate Start Workflow and Update Workflow calls, Update-With-Start allows you to send them together in a single roundtrip.
   For example, a shopping cart can be modelled using Update-With-Start.
-  Add or remove an item with an Update.
+Updates let you add and remove items from the cart.
   Update-With-Start ensures the cart (the Workflow Execution) is created first before applying the Update (state change of items within the cart).
 - **Early Return** -
   Using Update-With-Start can begin a new Workflow Execution and synchronously receiving a response while the Workflow Execution continues to run to completion.
