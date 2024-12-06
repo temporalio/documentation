@@ -104,7 +104,7 @@ An asynchronous Nexus Operation may take up to 60 days to complete in Temporal C
 The lifecycle of an asynchronous Nexus Operation, with differences between the synchronous lifecycle in bold:
 
 1. Caller Workflow executes a Nexus Operation using the Temporal SDK.
-1. Caller Worker issues a [ScheduleNexusOperation](/references/commands#schedulenexusoperation) command to it's Namespace gRPC endpoint.
+1. Caller Worker issues a [ScheduleNexusOperation](/references/commands#schedulenexusoperation) command to its Namespace gRPC endpoint.
 1. Caller Namespace records a [NexusOperationScheduled](/references/events#nexusoperationscheduled) event in the caller's Workflow History.
 1. Caller Nexus Machinery makes a Nexus call to start a Nexus Operation.
 1. Handler Nexus Machinery recieves the Nexus request and sync matches to a handler Worker.
