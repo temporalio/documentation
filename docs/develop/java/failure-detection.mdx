@@ -198,7 +198,7 @@ To set a Retry Policy, known as the [Retry Options](/encyclopedia/retry-policies
 
 **How to override the next Retry delay following an Activity failure using the Temporal Java SDK**
 
-You may throw an [Application Failure](/references/failures#application-failure) with the NextRetryDelay field set. This value will replace and override whatever the retry interval would be on the retry policy.
+You may throw an [`ApplicationFailure`](/references/failures#application-failure) with the `NextRetryDelay` field set. This value will replace and override whatever the retry interval would be on the retry policy.
 
 For example, if in an activity, you want to base the interval on the number of attempts, you might do:
 

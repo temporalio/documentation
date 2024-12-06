@@ -25,6 +25,7 @@ Most SDKs have a base class that the other Failures extend:
 - TypeScript: [TemporalFailure](https://typescript.temporal.io/api/classes/common.TemporalFailure)
 - Java: [TemporalFailure](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/failure/TemporalFailure.html)
 - Python: [FailureError](https://python.temporal.io/temporalio.exceptions.FailureError.html)
+- PHP: [TemporalFailure](https://php.temporal.io/classes/Temporal-Exception-Failure-TemporalFailure.html)
 
 The base [Failure proto message](https://api-docs.temporal.io/#temporal.api.failure.v1.Failure) has these fields:
 
@@ -43,6 +44,7 @@ This is the only type of Temporal Failure created and thrown by user code.
 - Java: [ApplicationFailure](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/failure/ApplicationFailure.html)
 - Go: [ApplicationError](https://pkg.go.dev/go.temporal.io/sdk/temporal#ApplicationError)
 - Python: [ApplicationError](https://python.temporal.io/temporalio.exceptions.ApplicationError.html)
+- PHP: [ApplicationFailure](https://php.temporal.io/classes/Temporal-Exception-Failure-ApplicationFailure.html)
 - Proto: [ApplicationFailureInfo](https://api-docs.temporal.io/#temporal.api.failure.v1.ApplicationFailureInfo) and [Failure](https://api-docs.temporal.io/#temporal.api.failure.v1.Failure)
 
 ### Errors in Workflows
@@ -173,6 +175,7 @@ This will override whatever the Retry Policy would have computed for your specif
 
 Java: [NextRetryDelay](/develop/java/failure-detection#activity-next-retry-delay)
 TypeScript: [nextRetryDelay](/develop/typescript/failure-detection#activity-next-retry-delay)
+PHP: [NextRetryDelay](/develop/php/failure-detection#activity-next-retry-delay)
 
 ### Nexus errors {#nexus-errors}
 
@@ -225,6 +228,7 @@ When a Workflow, Activity or Nexus Operation is successfully Cancelled, a Cancel
 - Java: [CanceledFailure](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/failure/CanceledFailure.html)
 - Go: [CanceledError](https://pkg.go.dev/go.temporal.io/sdk/temporal#CanceledError)
 - Python: [CancelledError](https://python.temporal.io/temporalio.exceptions.CancelledError.html)
+- PHP: [CanceledFailure](https://php.temporal.io/classes/Temporal-Exception-Failure-CanceledFailure.html)
 - Proto: [CanceledFailureInfo](https://api-docs.temporal.io/#temporal.api.failure.v1.CanceledFailureInfo) and [Failure](https://api-docs.temporal.io/#temporal.api.failure.v1.Failure)
 
 ## Activity Failure
@@ -238,6 +242,7 @@ For example, if an Activity Execution times out, the `cause` is a [Timeout Failu
 - Java: [ActivityFailure](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/failure/ActivityFailure.html)
 - Go: [ActivityError](https://pkg.go.dev/go.temporal.io/sdk/temporal#ActivityError)
 - Python: [ActivityError](https://python.temporal.io/temporalio.exceptions.ActivityError.html)
+- PHP: [ActivityFailure](https://php.temporal.io/classes/Temporal-Exception-Failure-ActivityFailure.html)
 - Proto: [ActivityFailureInfo](https://api-docs.temporal.io/#temporal.api.failure.v1.ActivityFailureInfo) and [Failure](https://api-docs.temporal.io/#temporal.api.failure.v1.Failure)
 
 ## Nexus Operation Failure
@@ -273,6 +278,7 @@ The reason for the failure is in the `cause` field.
 - Java: [ChildWorkflowFailure](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/failure/ChildWorkflowFailure.html)
 - Go: [ChildWorkflowExecutionError](https://pkg.go.dev/go.temporal.io/sdk/temporal#ChildWorkflowExecutionError)
 - Python: [ChildWorkflowError](https://python.temporal.io/temporalio.exceptions.ChildWorkflowError.html)
+- PHP: [ChildWorkflowFailure](https://php.temporal.io/classes/Temporal-Exception-Failure-ChildWorkflowFailure.html)
 - Proto: [ChildWorkflowExecutionFailureInfo](https://api-docs.temporal.io/#temporal.api.failure.v1.ChildWorkflowExecutionFailureInfo) and [Failure](https://api-docs.temporal.io/#temporal.api.failure.v1.Failure)
 
 ## Timeout Failure
@@ -285,6 +291,7 @@ When an Activity times out, the last Heartbeat details it emitted is attached.
 - Java: [TimeoutFailure](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/failure/TimeoutFailure.html)
 - Go: [TimeoutError](https://pkg.go.dev/go.temporal.io/sdk/temporal#TimeoutError)
 - Python: [TimeoutError](https://python.temporal.io/temporalio.exceptions.TimeoutError.html)
+- PHP: [TimeoutFailure](https://php.temporal.io/classes/Temporal-Exception-Failure-TimeoutFailure.html)
 - Proto: [TimeoutFailureInfo](https://api-docs.temporal.io/#temporal.api.failure.v1.TimeoutFailureInfo) and [Failure](https://api-docs.temporal.io/#temporal.api.failure.v1.Failure)
 
 ## Terminated Failure
@@ -300,6 +307,7 @@ In the SDKs:
 - Java: [TerminatedFailure](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/failure/TerminatedFailure.html)
 - Go: [TerminatedError](https://pkg.go.dev/go.temporal.io/sdk/temporal#TerminatedError)
 - Python: [TerminatedError](https://python.temporal.io/temporalio.exceptions.TerminatedError.html)
+- PHP: [TerminatedFailure](https://php.temporal.io/classes/Temporal-Exception-Failure-TerminatedFailure.html)
 - Proto: [TerminatedFailureInfo](https://api-docs.temporal.io/#temporal.api.failure.v1.TerminatedFailureInfo) and [Failure](https://api-docs.temporal.io/#temporal.api.failure.v1.Failure)
 
 ## Server Failure
@@ -310,4 +318,5 @@ A Server Failure is used for errors that originate in the Temporal Service.
 - Java: [ServerFailure](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/failure/ServerFailure.html)
 - Go: [ServerError](https://pkg.go.dev/go.temporal.io/sdk/temporal#ServerError)
 - Python: [ServerError](https://python.temporal.io/temporalio.exceptions.ServerError.html)
+- PHP: [ServerFailure](https://php.temporal.io/classes/Temporal-Exception-Failure-ServerFailure.html)
 - Proto: [ServerFailureInfo](https://api-docs.temporal.io/#temporal.api.failure.v1.ServerFailureInfo) and [Failure](https://api-docs.temporal.io/#temporal.api.failure.v1.Failure)

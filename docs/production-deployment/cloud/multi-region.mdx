@@ -519,6 +519,7 @@ You can check the Namespace's active region using the Namespace record CNAME, wh
 To set up the DNS override, you override specific regions to target the relevant IP addresses (e.g. aws-us-west-1.region.tmprl.cloud to target 192.168.1.2).
 Using AWS, this can be done using a private hosted zone in Route53 for `region.<tmprl_domain>`.
 Link that private zone to the VPCs you use for Workers.
+Private Link is not yet offered for GCP multi-region Namespaces. 
 
 When your Workers connect to the Namespace, they first resolve the `<ns>.<acct>.<tmprl_domain>` record.
 This targets `<active>.region.<tmprl_domain>` using a CNAME. Your private zone overrides that second DNS resolution, leading traffic to reach the internal IP you're using.
