@@ -106,11 +106,29 @@ Similarly, you can customize the OpenTelemetry `NodeSDK` propagators by followin
 
 ## Log from a Workflow {#logging}
 
+Logging enables you to record critical information during execution.
+Loggers create an audit trail and capture information about your Workflow's operation.
+An appropriate logging level depends on your specific needs.
+During development or troubleshooting, you might use debug or even trace.
+In production, you might use info or warn to avoid excessive log volume.
+
+The logger supports the following logging levels:
+
+| Level | Use                                                                                                       |
+| ----- | --------------------------------------------------------------------------------------------------------- |
+| TRACE | The most detailed level of logging, used for very fine-grained information.                               |
+| DEBUG | Detailed information, typically useful for debugging purposes.                                            |
+| INFO  | General information about the application's operation.                                                    |
+| WARN  | Indicates potentially harmful situations or minor issues that don't prevent the application from working. |
+| ERROR | Indicates error conditions that might still allow the application to continue running.                    |
+
+The Temporal SDK core normally uses WARN as its default logging level.
+
 ### Logging from Activities
 
 Activities run in the standard Node.js environment and may therefore use any Node.js logger directly.
 
-The Temporal SDK however provides a convenient Activity Context logger, which funels log messages to the [Runtime's logger](/develop/typescript/observability#customizing-the-default-logger). Attributes from the current Activity context are automatically included as metadata on every log entries emited using the Activity context logger, and some key events of the Activity's lifecycle are automatically logged (at DEBUG level for most messages; WARN for failures).
+The Temporal SDK however provides a convenient Activity Context logger, which funnels log messages to the [Runtime's logger](/develop/typescript/observability#customizing-the-default-logger). Attributes from the current Activity context are automatically included as metadata on every log entries emitted using the Activity context logger, and some key events of the Activity's lifecycle are automatically logged (at DEBUG level for most messages; WARN for failures).
 
 <details>
 <summary>
@@ -142,7 +160,7 @@ Workflows may not use regular Node.js loggers because:
 1. Workflows run in a sandboxed environment and cannot do any I/O.
 1. Workflow code might get replayed at any time, which would result in duplicated log messages.
 
-The Temporal SDK however provides a Workflow Context logger, which funnels log messages to the [Runtime's logger](/develop/typescript/observability#customizing-the-default-logger). Attributes from the current Workflow context are automatically included as metadata on every log entries emited using the Workflow context logger, and some key events of the Workflow's lifecycle are automatically logged (at DEBUG level for most messages; WARN for failures).
+The Temporal SDK however provides a Workflow Context logger, which funnels log messages to the [Runtime's logger](/develop/typescript/observability#customizing-the-default-logger). Attributes from the current Workflow context are automatically included as metadata on every log entries emitted using the Workflow context logger, and some key events of the Workflow's lifecycle are automatically logged (at DEBUG level for most messages; WARN for failures).
 
 <details>
 <summary>
@@ -190,9 +208,9 @@ By default, the Runtime's Logger simply write messages to the console (i.e. the 
 
 #### How to customize the Runtime's Logger
 
-A custom Runtime Logger may be registered when the SDK `Runtime` is instanciated. This is done only once per process.
+A custom Runtime Logger may be registered when the SDK `Runtime` is instantiated. This is done only once per process.
 
-To register a custom Runtime Logger, you must explicitely instanciate the Runtime, using the [`Runtime.install()`](https://typescript.temporal.io/api/classes/worker.Runtime/#install) function.
+To register a custom Runtime Logger, you must explicitly instantiate the Runtime, using the [`Runtime.install()`](https://typescript.temporal.io/api/classes/worker.Runtime/#install) function.
 For example:
 
 ```typescript
@@ -210,8 +228,8 @@ const logger = new DefaultLogger('WARN', ({ level, message }) => {
 Runtime.install({
   logger,
   // The following block is optional, but generally desired.
-  // It allows capturing log messages emited by the underlying Temporal Core SDK (native code).
-  // The Telemetry Filter String determine the desired verboseness of messages emited by the
+  // It allows capturing log messages emitted by the underlying Temporal Core SDK (native code).
+  // The Telemetry Filter String determine the desired verboseness of messages emitted by the
   // Temporal Core SDK itself ("core"), and by other native libraries ("other").
   telemetryOptions: {
     logging: {
@@ -222,7 +240,7 @@ Runtime.install({
 });
 ```
 
-A common use case for this is to write log mesages to a file to be picked up by a collector service, such as the [Datadog Agent](https://docs.datadoghq.com/logs/log_collection/nodejs/?tab=winston30).
+A common use case for this is to write log messages to a file to be picked up by a collector service, such as the [Datadog Agent](https://docs.datadoghq.com/logs/log_collection/nodejs/?tab=winston30).
 For example:
 
 ```typescript
@@ -242,8 +260,8 @@ const logger = winston.createLogger({
 Runtime.install({
   logger,
   // The following block is optional, but generally desired.
-  // It allows capturing log messages emited by the underlying Temporal Core SDK (native code).
-  // The Telemetry Filter String determine the desired verboseness of messages emited by the
+  // It allows capturing log messages emitted by the underlying Temporal Core SDK (native code).
+  // The Telemetry Filter String determine the desired verboseness of messages emitted by the
   // Temporal Core SDK itself ("core"), and by other native libraries ("other").
   telemetryOptions: {
     logging: {
