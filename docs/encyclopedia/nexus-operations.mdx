@@ -114,7 +114,7 @@ The lifecycle of an asynchronous Nexus Operation, with differences between the s
 1. Caller Namespace records the response in the caller's Workflow history as a Nexus event, for example **[NexusOperationStarted](/references/events#nexusoperationstarted)**.
 1. **Handler Workflow completes and the [Nexus Completion Callback](/glossary#nexus-async-completion-callback) is delivered to the caller's Nexus Machinery.**
 1. Caller Namespace records the result in the caller's Workflow history as a Nexus event, for example [Completed](/references/events#nexusoperationcompleted) or [Failed](/references/events#nexusoperationfailed).
-1. Caller Worker polls for a Workflow Task on it's Workflow Task Queue.
+1. Caller Worker polls for a Workflow Task on its Workflow Task Queue.
 1. Caller Workflow gets the Operation result, using the Temporal SDK.
 
 ![NexusYourCloud](/img/nexus/nexus-workers-short-async-op-sequence.png)
