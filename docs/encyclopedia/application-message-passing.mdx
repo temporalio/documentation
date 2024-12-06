@@ -199,7 +199,7 @@ If it does, the Update is processed.
 If not, it starts a new Workflow Execution with the supplied ID.
 When starting a new Workflow, it immediately processes the Update.
 
-Update-With-Start is great for latency-sensitive use cases, including the following examples:
+Update-With-Start is great for latency-sensitive use cases:
 
 - **Lazy Initialization** -
   Instead of making separate Start Workflow and Update Workflow calls, Update-With-Start allows you to send them together in a single roundtrip.
