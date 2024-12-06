@@ -64,6 +64,13 @@ var handle = await client.CreateScheduleAsync(
         }));
 ```
 
+:::tip Schedule Auto-Deletion
+
+Once a Schedule has completed creating all its Workflow Executions, the Temporal Service deletes it since it won’t fire again.
+The Temporal Service doesn't guarantee when this removal will happen.
+
+:::
+
 ### Backfill a Scheduled Workflow {#backfill-a-scheduled-workflow}
 
 **How to backfill a Scheduled Workflow using the Temporal .NET SDK**
