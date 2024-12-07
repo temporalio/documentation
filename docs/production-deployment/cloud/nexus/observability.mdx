@@ -1,0 +1,41 @@
+---
+id: observability
+slug: /cloud/nexus/observability
+title: Obserability - Temporal Nexus
+description: Learn about integrated observability in Temporal Nexus including cloud metrics and audit log streaming.
+sidebar_label: Observability
+tags:
+  - Temporal Cloud
+  - Nexus
+keywords:
+  - Temporal Nexus
+  - Nexus
+  - observability
+  - metrics
+  - cloud metrics
+  - audit log
+  - audit log streaming
+---
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal Nexus is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+Learn why you should use Nexus in the [evaluation guide](/evaluate/nexus).
+
+:::
+
+Nexus provides metrics and audit log streaming, in addition to integrated [execution debugging](/nexus/execution-debugging).
+
+## Metrics
+
+Nexus provides the following metrics:
+- [SDK metrics](/nexus/metrics#sdk-metrics) \- emitted by a Worker.
+- [Cloud metrics](/nexus/metrics#cloud-metrics) \- emitted by Temporal Cloud.
+
+## Audit Logging
+
+The following Nexus control plane actions are sent to the [Audit Logging](/cloud/audit-logging) integrations:
+
+- Create Nexus Endpoint: `CreateNexusEndpoint`
+- Update Nexus Endpoint: `UpdateNexusEndpoint`
+- Delete Nexus Endpoint: `DeleteNexusEndpoint`
