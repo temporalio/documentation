@@ -138,13 +138,13 @@ The logger supports the following logging levels:
 
 | Level | Use                                                                                                       |
 | ----- | --------------------------------------------------------------------------------------------------------- |
-| TRACE | The most detailed level of logging, used for very fine-grained information.                               |
-| DEBUG | Detailed information, typically useful for debugging purposes.                                            |
-| INFO  | General information about the application's operation.                                                    |
-| WARN  | Indicates potentially harmful situations or minor issues that don't prevent the application from working. |
-| ERROR | Indicates error conditions that might still allow the application to continue running.                    |
+| `TRACE` | The most detailed level of logging, used for very fine-grained information.                               |
+| `DEBUG` | Detailed information, typically useful for debugging purposes.                                            |
+| `INFO`  | General information about the application's operation.                                                    |
+| `WARN`  | Indicates potentially harmful situations or minor issues that don't prevent the application from working. |
+| `ERROR` | Indicates error conditions that might still allow the application to continue running.                    |
 
-The Temporal SDK core normally uses WARN as its default logging level.
+The Temporal SDK core normally uses `WARN` as its default logging level.
 
 To get a standard `slf4j` logger in your Workflow code, use the [`Workflow.getLogger`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html) method.
 
