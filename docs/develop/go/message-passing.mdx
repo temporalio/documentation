@@ -330,14 +330,6 @@ if err != nil {
 
 ### Send an Update {#send-update-from-client}
 
-:::tip Stability
-
-In [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in Temporal Cloud.
-
-Minimum Temporal Server version [Temporal Server version 1.26](https://github.com/temporalio/temporal/releases/tag/v1.26.0)
-
-:::
-
 An Update is a synchronous, blocking call that can change Workflow state, control its flow, and return a result.
 
 A Client sending an Update must wait until the Server delivers the Update to a Worker.
@@ -390,6 +382,14 @@ if err != nil {
 ```
 
 #### Update-With-Start {#update-with-start}
+
+:::tip Stability
+
+In [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in Temporal Cloud.
+
+Minimum Temporal Server version [Temporal Server version 1.26](https://github.com/temporalio/temporal/releases/tag/v1.26.0)
+
+:::
 
 [Update-with-Start](/encyclopedia/workflow-message-passing#update-with-start) lets you send an Update that checks whether an already-running Workflow with that ID exists.
 If it does, the Update is processed.
