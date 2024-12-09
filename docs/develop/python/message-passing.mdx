@@ -492,11 +492,10 @@ See [Finishing handlers before the Workflow completes](/encyclopedia/workflow-me
 
 ### Use `@workflow.init` to operate on Workflow input before any handler executes
 
-Normally, your Workflow `__init__` method won't have any parameters.
-However, if you use the `@workflow.init` decorator on your `__init__` method, you can give it the same [Workflow parameters](/develop/python/core-application#workflow-parameters) as your `@workflow.run` method.
+The `@workflow.init` decorator method gives message handlers access to [Workflow input](/encyclopedia/workflow-message-passing#workflow-initializers).
+When you use the `@workflow.init` decorator on your `__init__` method, you give the constructor the same Workflow parameters as your `@workflow.run` method.
 The SDK will then ensure that your `__init__` method receives the Workflow input arguments that the [Client sent](/develop/python/temporal-clients#start-workflow-execution).
-(The Workflow input arguments are also passed to your `@workflow.run` method -- that always happens, whether or not you use the `@workflow.init` decorator.)
-This is useful if you have message handlers that need access to workflow input: see [Initializing the Workflow first](/encyclopedia/workflow-message-passing#workflow-initializers).
+The Workflow input arguments are also passed to your `@workflow.run` method -- that always happens, whether or not you use the `@workflow.init` decorator.
 
 Here's an example.
 Notice that `__init__` and `get_greeting` must have the same parameters, with the same type annotations:
