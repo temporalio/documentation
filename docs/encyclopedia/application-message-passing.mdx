@@ -351,7 +351,7 @@ If you throw any other exception, by default, it will cause a [Workflow Task Fai
 Doing any of the following will fail the Update and cause the client to receive the error:
 
 - Reject the Update by throwing any exception from your [Validator](https://docs.temporal.io/encyclopedia/workflow-message-passing#update-validators).
-- Allow a failing Activity of Child Workflow to exhaust its retries, so that it throws an [Activity Failure](https://docs.temporal.io/references/failures#activity-failure) or [Child Workflow Failure](https://docs.temporal.io/references/failures#child-workflow-failure). Note that for Activities, this will only happen if you change the default Activity [Retry Policy](https://docs.temporal.io/encyclopedia/retry-policies), since by default they retry forever.
+- Allow a failing Activity or Child Workflow to exhaust its retries, so that it throws an [Activity Failure](https://docs.temporal.io/references/failures#activity-failure) or [Child Workflow Failure](https://docs.temporal.io/references/failures#child-workflow-failure). Note that for Activities, this will only happen if you change the default Activity [Retry Policy](https://docs.temporal.io/encyclopedia/retry-policies), since by default they retry forever.
 - Throw an [Application Failure](/references/failures#application-failure) from your Update handler.
 
 Unlike with Signals, the Workflow will keep going in these cases.
