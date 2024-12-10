@@ -21,6 +21,11 @@ Learn why you should use Nexus in the [evaluation guide](/evaluate/nexus).
 
 :::
 
+Temporal Cloud has built-in Nexus security.
+It provides secure Nexus connectivity across Namespaces with an mTLS secured Envoy mesh.
+Workers authenticate to their Namespace with mTLS client certificates or API keys, as allowed by their Namespace.
+Encryption for Nexus payloads is also supported, for example using shared symmetric keys and compatible Data Converters.
+
 ## Registry roles and permissions
 
 Nexus Endpoints are Account-scoped resources, similar to a Namespace.

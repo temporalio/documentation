@@ -19,16 +19,13 @@ Temporal Nexus is available in [Public Preview](/evaluate/development-production
 
 :::
 
-## Integrated debugging across Namespaces
-
-Nexus supports debugging end-to-end executions that span:
+Nexus supports end-to-end execution debugging that may span:
 
 - Caller Workflows
 - One or more Nexus Operations executed within and across Namespaces
 - Underlying Temporal primitives, like a Workflow, created by a Nexus Operation handler
 
-Multi-level Nexus calls are supported:
-
+This includes [multi-level Nexus calls](/nexus#multi-level-calls), for example:
 - Workflow A → Nexus Operation 1 → Workflow B → Nexus Operation 2 → Workflow C
 
 ## Bi-directional linking
@@ -75,8 +72,10 @@ Pending Nexus Operations: 1
   LastAttemptFailure       {"message":"handler error (INTERNAL): internal error","applicationFailureInfo":{}}
 ```
 
-## Pending Callbacks
+Retryable Nexus errors [returned from a Nexus handler](/nexus/error-handling#errors-in-nexus-handlers) will surface as part of the Pending Operation in a caller Workflow.
+Non-retryable errors will result in the Nexus Operation reaching a final state in the caller Workflow, with a [Failed](/references/events#nexusoperationfailed), [TimedOut](/references/events#nexusoperationtimedout) or [Canceled](/references/events#nexusoperationcanceled) event.
 
+## Pending Callbacks
 Nexus callbacks are sent from the handler's Namespace to the caller's Namespace to complete an asynchronous Nexus Operation.
 These show up in the UI and using: `temporal workflow describe`.
 

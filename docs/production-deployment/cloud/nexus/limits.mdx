@@ -25,16 +25,13 @@ Learn why you should use Nexus in the [evaluation guide](/evaluate/nexus).
 
 :::
 
+Temporal Cloud has default limits for several aspects of Nexus.
+Many of these defaults are configurable, so if you need them changed please open a support ticket.
+
 ## Rate Limiting
 
 Nexus requests (commands, polling) are counted as part of the overall Namespace RPS limit in both the caller and handler Namespaces.
 Default Namespace RPS limits are set at 1600 and automatically adjust based on recent usage (over prior 7 days).
-
-## SLOs & SLAs
-
-Nexus requests (commands, polling) have the same latency SLOs and error rate SLAs as other Worker requests in both the caller and handler Namespaces.
-
-See [Availability](/cloud/service-availability) and [SLA](/cloud/sla) for additional details.
 
 ## Operational Limits
 

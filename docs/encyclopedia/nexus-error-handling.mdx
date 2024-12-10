@@ -21,6 +21,9 @@ Temporal Nexus is available in [Public Preview](/evaluate/development-production
 
 :::
 
+Nexus Operations can return an error for a caller Workflow to handle.
+If an asynchronous Nexus Operation starts a Workflow that returns an error, it will be propagated back to the caller Workflow.
+
 ## Errors in Nexus handlers
 
 In Temporal, a user-defined Nexus handler is primarily responsible for starting a Nexus Operation.
@@ -50,7 +53,6 @@ To avoid infinite [automatic retries](/nexus/operations#automatic-retries) and i
 See [errors in Nexus Operations](/references/failures#errors-in-nexus-operations) for additional details.
 
 :::
-
 
 ## Nexus error handling in caller Workflows
 

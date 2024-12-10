@@ -23,14 +23,11 @@ Temporal Nexus is available in [Public Preview](/evaluate/development-production
 
 :::
 
+Nexus supports restricting access to Nexus Endpoints.
+Temporal Cloud has built-in Endpoint access controls and provides secure Nexus connectivity across Namespaces.
+For self-hosted deployments you can implement custom Authorizers.
 
 ### Runtime access controls {#runtime-access-controls}
-
-:::info
-
-Temporal Cloud has built-in Endpoint access controls. For self-hosted deployments you can implement [custom Authorizers](/self-hosted-guide/security#authorizer-plugin).
-
-:::
 
 In Temporal Cloud, access to a Nexus Endpoint at runtime is controlled by the Endpoint's access control policy (allowlist of caller Namespaces) for each Endpoint in the Nexus Registry.
 
@@ -79,7 +76,6 @@ Please let us know if you need per-Service payload encryption or better handling
 ### Nexus Registry Security {#managing-nexus-endpoints}
 
 See [Nexus Registry Roles and Permissions](/nexus/registry#roles-and-permissions).
-
 
 ## Learn more
 
