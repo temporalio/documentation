@@ -508,7 +508,24 @@ module.exports = {
                 "encyclopedia/python-sdk-sync-vs-async",
               ],
             },
-            "encyclopedia/workflows",
+            {
+              type: "category",
+              label: "Workflows",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "encyclopedia/workflow/workflow-deep-dive",
+              },
+              items: [
+                "encyclopedia/workflow/workflow-definition",
+                "encyclopedia/workflow/workflow-execution",
+                "encyclopedia/workflow/dynamic-handler",
+                "encyclopedia/workflow/workflow-schedule",
+                "encyclopedia/workflow/side-effect",
+                "encyclopedia/workflow/start-delay",
+                "encyclopedia/workflow/cron-job",
+              ],
+            },
             "encyclopedia/activities",
             {
               type: "category",

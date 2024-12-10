@@ -1,0 +1,32 @@
+---
+id: side-effect
+title: What is a Side Effect? 
+sidebar_label: Side Effect
+description: This comprehensive guide provides insights into Temporal Workflows, covering Workflow Definitions in various programming languages, deterministic constraints, handling code changes, and ensuring reliability, durability, and scalability in a Temporal Application, with examples and best practices for Workflow Versioning and development.
+slug: /side-effect
+toc_max_heading_level: 4
+keywords:
+  - side effect
+tags:
+  - Concepts
+  - Workflows
+
+---
+
+
+## What is a Side Effect? {#side-effect}
+
+:::note
+
+Side Effects are included in the Go, Java, and PHP SDKs.
+They are not included in other SDKs.
+[Local Activities](/activities#local-activity) fit the same use case and are slightly less resource intensive.
+
+:::
+
+A Side Effect is a way to execute a short, non-deterministic code snippet, such as generating a UUID, that executes the provided function once and records its result into the Workflow Execution Event History.
+
+A Side Effect does not re-execute upon replay, but instead returns the recorded result.
+
+Do not ever have a Side Effect that could fail, because failure could result in the Side Effect function executing more than once.
+If there is any chance that the code provided to the Side Effect could fail, use an Activity.
