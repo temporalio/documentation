@@ -342,7 +342,8 @@ The following content applies in every SDK except the Go SDK. See below.
 #### Exceptions in Signals
 
 In Signal handlers, throw [Application Failures](/references/failures#application-failure) only for unrecoverable errors, because the entire Workflow will fail.
-Similarly, allowing a failing Activity to exhaust its retries, so that it throws an [Activity Failure](https://docs.temporal.io/references/failures#activity-failure) will cause the entire Workflow to fail. This will only happen if you change the default Activity [Retry Policy](https://docs.temporal.io/encyclopedia/retry-policies).
+Similarly, allowing a failing Activity or Child Workflow to exhaust its retries, so that it throws an [Activity Failure](https://docs.temporal.io/references/failures#activity-failure) or [Child Workflow Failure](https://docs.temporal.io/references/failures#child-workflow-failure) will cause the entire Workflow to fail.
+Note that for Activities, this will only happen if you change the default Activity [Retry Policy](https://docs.temporal.io/encyclopedia/retry-policies), since by default they retry forever.
 If you throw any other exception, by default, it will cause a [Workflow Task Failure](/references/failures#workflow-task-failures). This means the Workflow will get stuck and will retry the handler periodically until the exception is fixed, for example by a code change.
 
 #### Exceptions in Updates
@@ -350,7 +351,7 @@ If you throw any other exception, by default, it will cause a [Workflow Task Fai
 Doing any of the following will fail the Update and cause the client to receive the error:
 
 - Reject the Update by throwing any exception from your [Validator](https://docs.temporal.io/encyclopedia/workflow-message-passing#update-validators).
-- Allow a failing Activity to exhaust its retries, so that it throws an [Activity Failure](https://docs.temporal.io/references/failures#activity-failure). This will only happen if you change the default Activity [Retry Policy](https://docs.temporal.io/encyclopedia/retry-policies).
+- Allow a failing Activity of Child Workflow to exhaust its retries, so that it throws an [Activity Failure](https://docs.temporal.io/references/failures#activity-failure) or [Child Workflow Failure](https://docs.temporal.io/references/failures#child-workflow-failure). Note that for Activities, this will only happen if you change the default Activity [Retry Policy](https://docs.temporal.io/encyclopedia/retry-policies), since by default they retry forever.
 - Throw an [Application Failure](/references/failures#application-failure) from your Update handler.
 
 Unlike with Signals, the Workflow will keep going in these cases.
