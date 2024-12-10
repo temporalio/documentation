@@ -1,0 +1,105 @@
+---
+id: nexus-registry
+title: Nexus Registry
+sidebar_label: Nexus Registry
+description: Use the Nexus Registry to manage Nexus Endpoints.
+toc_max_heading_level: 4
+slug: /nexus/registry
+keywords:
+  - nexus registry
+  - manage endpoint
+  - create endpoint
+  - edit endpoint
+  - search endpoint
+  - endpoint access control
+  - nexus
+  - temporal nexus
+tags:
+  - Nexus
+  - Concepts
+---
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal Nexus is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
+
+:::
+
+The [Nexus Registry](/glossary#nexus-registry) is used to view and manage [Nexus Endpoints](/nexus/endpoints).
+Adding a Nexus Endpoint to the Nexus Registry deploys the Endpoint, so it is available at runtime to serve Nexus requests.
+
+![Nexus Overview](/img/nexus-overview-short.png)
+
+:::info
+
+The Nexus Registry is scoped to an Account in Temporal Cloud and scoped to a Cluster for self-hosted deployments.
+
+:::
+
+Developers can advertise available Endpoints and Services, so others can find them for use in their caller Workflows.
+Endpoint names must be unique within the Nexus Registry.
+
+## View and Manage Nexus Endpoints
+
+Nexus Endpoints may be managed using the Temporal UI, the CLI, or the [Cloud Ops API](/ops).
+
+:::tip RESOURCES
+- [tcld nexus](/cloud/tcld/nexus) for Temporal Cloud.
+- [temporal operator nexus](/cli/operator#nexus) for self-hosted deployments.
+:::
+
+### Search for a Nexus Endpoint
+
+You can search the Nexus Registry for Endpoint name or an Endpoint's target Namespace to quickly find an Endpoint of interest.
+
+![Nexus Endpoints](/img/nexus/nexus-endpoints-ss.png)
+
+The Endpoint details page shows the target Namespace and target Task Queue along with the endpoint description rendered as markdown.
+
+![Nexus Billing](/img/nexus/nexus-billing-ss.png)
+
+### Create a Nexus Endpoint
+
+Creating a Nexus Endpoint includes setting an Access Policy of caller Namespaces that can access the Endpoint.
+Even the target Namespace must be added to the Access Policy to access the Endpoint.
+Temporal Cloud also provides built-in Endpoint access control in the form of a caller Namespace allowlist, which must be set for any caller to access a Nexus Endpoint, even if in the same Namespace.
+
+
+![Create Nexus Endpoint](/img/nexus/create-nexus-endpoint-ss.png)
+
+### Edit a Nexus Endpoint
+
+Editing a Nexus Endpoint allows changing everything but the Endpoint Name.
+The target Namespace and target Task Queue can be updated without interrupting existing in-flight Nexus Operations that are already being processed, and new Nexus Operations will be routed to the updated target Namespace and target Task Queue.
+
+![Edit Nexus Endpoint](/img/nexus/target-namespace-ss.png)
+
+### Configure runtime access controls
+
+Configure the Endpoint's Access Policy to control which callers can access a Nexus Endpoint at runtime.
+
+![Configure runtime access controls](/img/nexus/create-nexus-endpoint-ss.png)
+
+The Access Policy allows specifying the caller Namespaces that can use Nexus Services on an Endpoint at runtime.
+
+No callers are allowed by default, even if the caller is in the same namespace as the Endpoint target.
+
+See [Runtime Access Controls](/nexus/security#runtime-access-controls) for more information.
+
+## Roles and permissions
+
+:::info
+
+Temporal Cloud has built-in Nexus security. For self-hosted deployments you can implement [custom Authorizers](/self-hosted-guide/security#authorizer-plugin).
+
+:::
+
+In Temporal Cloud, access to the Nexus Registry is controlled with the following roles and permissions:
+- View, list, and search Nexus Endpoints:
+  - Read-only role (or higher) in an Account
+- Manage a Nexus Endpoint (create, edit, delete) requires **both**:
+  - Developer role (or higher) in an Account
+  - Namespace Admin permission on the Endpoint's target Namespace
+
+  See [Nexus Security in Temporal Cloud](/cloud/nexus/security) for more information.
+

@@ -1,0 +1,135 @@
+---
+id: nexus-execution-debugging
+slug: /nexus/execution-debugging
+title: Execution Debugging - Temporal Nexus
+description: Learn about execution debugging in Temporal Nexus.
+sidebar_label: Nexus Execution Debugging
+keywords:
+  - nexus
+  - temporal nexus
+  - debugging
+  - execution debugging
+tags:
+  - Nexus
+---
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal Nexus is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
+
+:::
+
+Nexus supports end-to-end execution debugging that may span:
+
+- Caller Workflows
+- One or more Nexus Operations executed within and across Namespaces
+- Underlying Temporal primitives, like a Workflow, created by a Nexus Operation handler
+
+This includes [multi-level Nexus calls](/nexus#multi-level-calls), for example:
+- Workflow A → Nexus Operation 1 → Workflow B → Nexus Operation 2 → Workflow C
+
+## Bi-directional linking
+
+Bi-directional links enable navigation of an end-to-end execution across Namespace boundaries in the Temporal UI.
+They are automatically added by the Temporal SDK for builder functions like New-Workflow-Run-Operation.
+Links are auto-wired from a specific Nexus Operation event in the caller's Workflow history to a specific event in the handler's Workflow history.
+
+![Bi-directional linking](/img/nexus/nexus-bi-directional-linking.png)
+
+Bi-directional links enable navigating across Namespace boundaries:
+
+- Forward through the Nexus Operation execution:
+  - From a Nexus Operation event in the caller's Workflow history.
+  - To the underlying event in the handler's Workflow.
+- Backwards through the Nexus Operation execution:
+  - From the underlying event in the handler's Workflow.
+  - To a Nexus Operation event in the caller's Workflow history.
+
+
+## Pending Operations
+
+Similar to pending Activities, pending Nexus Operations are displayed in the Workflow details page and using: `temporal workflow describe`.
+
+For example, from the Temporal UI:\
+![Pending Operations](/img/nexus/pending-nexus-operations.png)
+
+For example, from the `temporal` CLI:
+
+```
+temporal workflow describe
+
+Pending Nexus Operations: 1
+
+  Endpoint                 myendpoint
+  Service                  my-hello-service
+  Operation                echo
+  OperationID
+  State                    BackingOff
+  Attempt                  6
+  ScheduleToCloseTimeout   0s
+  NextAttemptScheduleTime  20 seconds from now
+  LastAttemptCompleteTime  11 seconds ago
+  LastAttemptFailure       {"message":"handler error (INTERNAL): internal error","applicationFailureInfo":{}}
+```
+
+Retryable Nexus errors [returned from a Nexus handler](/nexus/error-handling#errors-in-nexus-handlers) will surface as part of the Pending Operation in a caller Workflow.
+Non-retryable errors will result in the Nexus Operation reaching a final state in the caller Workflow, with a [Failed](/references/events#nexusoperationfailed), [TimedOut](/references/events#nexusoperationtimedout) or [Canceled](/references/events#nexusoperationcanceled) event.
+
+## Pending Callbacks
+Nexus callbacks are sent from the handler's Namespace to the caller's Namespace to complete an asynchronous Nexus Operation.
+These show up in the UI and using: `temporal workflow describe`.
+
+For example, from the Temporal UI:\
+![Pending Callbacks](/img/nexus/nexus-callback.png)
+
+For example, from the `temporal` CLI:
+
+```
+temporal workflow describe
+
+
+Callbacks: 1
+
+  URL               https://nexus.phil-caller-Namespace.a2dd6.cluster.tmprl.cloud:7243/Namespaces/phil-caller-Namespace.a2dd6/nexus/callback
+  Trigger           WorkflowClosed
+  State             Succeeded
+  Attempt           1
+  RegistrationTime  32 minutes ago
+```
+
+## Nexus Operation ID
+
+Nexus Operations created with the Temporal SDK New-Workflow-Run-Operation helper, return the Workflow ID as the Nexus Operation ID.
+The caller's Workflow history shows the Nexus Operation ID in the [NexusOperationStarted](/references/events#nexusoperationstarted) event.
+
+![Workflow history](/img/nexus/nexus-operations-ui.png)
+
+This can be used to search the handler's Namespace for that Workflow ID:
+
+![Search handler's Namespace](/img/nexus/nexus-operations-ui-search-handler.png)
+
+This may also be done using: `temporal workflow show --detailed`
+
+```
+--------------- [5] NexusOperationScheduled ---------------
+endpoint: myendpoint
+endpointId: 80a4fb3e7ab145eabc6a3b15e327548f
+eventTime: 2024-08-28T03:44:34.985230930Z
+input.Language: es
+input.Name: Nexus
+operation: say-hello
+requestId: 1307660f-7f2e-4626-8629-851a0e468482
+scheduleToCloseTimeout: 0s
+service: my-hello-service
+taskId: 158300487
+version: 1265
+workflowTaskCompletedEventId: 4
+
+--------------- [6] NexusOperationStarted ---------------
+eventTime: 2024-08-28T03:44:35.198292012Z
+operationId: 1307660f-7f2e-4626-8629-851a0e468482
+requestId: 1307660f-7f2e-4626-8629-851a0e468482
+scheduledEventId: 5
+taskId: 158300491
+version: 1265
+```
