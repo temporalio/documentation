@@ -181,6 +181,14 @@ workflow_handle = await client.start_workflow(
 
 To check the argument types required when sending messages -- and the return type for Queries and Updates -- refer to the corresponding handler method in the Workflow Definition.
 
+:::warning Using Continue-as-New and Updates
+
+- Temporal _does not_ support Continue-as-New functionality within Update handlers.
+- Complete all handlers _before_ using Continue-as-New.
+- Use Continue-as-New from your main Workflow Definition method, just as you would complete or fail a Workflow Execution.
+
+:::
+
 ### Send a Query {#send-query}
 
 Use [`WorkflowHandle.query`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#query) to send a Query to a Workflow Execution:
@@ -283,7 +291,7 @@ To send an Update to a Workflow Execution, you can:
   )
   ```
 
-- Send [`start_update`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#start_update) to receive an [`UpdateHandle`](https://python.temporal.io/temporalio.client.WorkflowUpdateHandle.html) as soon as the Update is accepted or rejected.
+- Send [`start_update`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#start_update) to receive an [`UpdateHandle`](https://python.temporal.io/temporalio.client.WorkflowUpdateHandle.html) as soon as the Update is accepted.
 
   - Use this `UpdateHandle` later to fetch your results.
   - `async def` Update handlers normally perform long-running asynchronous operations, such as executing an Activity.
@@ -482,12 +490,11 @@ async def my_update(self) -> None:
 
 See [Finishing handlers before the Workflow completes](/encyclopedia/workflow-message-passing#finishing-message-handlers) for more information.
 
-
 ### Use `@workflow.init` to operate on Workflow input before any handler executes
 
 Normally, your Workflow `__init__` method won't have any parameters.
 However, if you use the `@workflow.init` decorator on your `__init__` method, you can give it the same [Workflow parameters](/develop/python/core-application#workflow-parameters) as your `@workflow.run` method.
-The SDK will then ensure that your `__init__` method receives the Workflow input arguments that the  [Client sent](/develop/python/temporal-clients#start-workflow-execution).
+The SDK will then ensure that your `__init__` method receives the Workflow input arguments that the [Client sent](/develop/python/temporal-clients#start-workflow-execution).
 (The Workflow input arguments are also passed to your `@workflow.run` method -- that always happens, whether or not you use the `@workflow.init` decorator.)
 This is useful if you have message handlers that need access to workflow input: see [Initializing the Workflow first](/encyclopedia/workflow-message-passing#workflow-initializers).
 
@@ -524,8 +531,6 @@ class WorkflowRunSeesWorkflowInitWorkflow:
         self.title_has_been_checked = True
         return is_valid
 ```
-
-
 
 ### Use `asyncio.Lock` to prevent concurrent handler execution {#control-handler-concurrency}
 
