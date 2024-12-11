@@ -64,31 +64,31 @@ Unlike other forms of inter-service communication, Nexus combines a familiar pro
 ### Use cases
 
 - **Cross-team, cross-domain, and cross-namespace** \-
-Nexus is purpose-built to connect Temporal Applications within and across Namespaces.
-It addresses the limitations of Child Workflows, Activity Wrappers, and bespoke APIs that target a remote Namespace; such as leaking implementation details, second-class observability, overly-permissive security, and error-prone boilerplate code.
-Nexus has a streamlined Temporal developer experience, reliable execution, and integrated observability.
+  Nexus is purpose-built to connect Temporal Applications within and across Namespaces.
+  It addresses the limitations of Child Workflows, Activity Wrappers, and bespoke APIs that target a remote Namespace; such as leaking implementation details, second-class observability, overly-permissive security, and error-prone boilerplate code.
+  Nexus has a streamlined Temporal developer experience, reliable execution, and integrated observability.
 
 - **Share a subset of a Temporal Application** \-
-Abstract and share a subset of an Application as a Nexus Service.
-Nexus Operations can span any length of execution, be synchronous or asynchronous, and be implemented with Temporal primitives, like Workflows, Signals, or Updates.
-Expose Services on a Nexus Endpoint for others to use and secure them with access control policies.
-Nexus Endpoints decouple callers from handlers, so teams can operate more autonomously.
+  Abstract and share a subset of an Application as a Nexus Service.
+  Nexus Operations can span any length of execution, be synchronous or asynchronous, and be implemented with Temporal primitives, like Workflows, Signals, or Updates.
+  Expose Services on a Nexus Endpoint for others to use and secure them with access control policies.
+  Nexus Endpoints decouple callers from handlers, so teams can operate more autonomously.
 
 - **Modular design for growth** \-
-Temporal Nexus enables a modular application design that can evolve as you grow.
-Start with Nexus Services in a monolithic Namespace and move Services to separate Namespaces with small configuration changes.
+  Temporal Nexus enables a modular application design that can evolve as you grow.
+  Start with Nexus Services in a monolithic Namespace and move Services to separate Namespaces with small configuration changes.
 
 - **Smaller failure domains** \- When teams operate in the same monolithic Namespace, everything is available to everyone, and mis-behaving Workers can trigger rate limits that affect all teams operating in that monolithic Namespace.
   Nexus enables each team to have their own Namespace for improved security, troubleshooting, and fault isolation.
 
 - **Multi-region** \-
-Nexus requests in Temporal Cloud are routed across a global mTLS-secured Envoy mesh.
-Built-in Nexus Machinery provides reliable at-least-once execution and Workflow policy can deduplicate requests for exactly-once execution, even across multi-region boundaries.
+  Nexus requests in Temporal Cloud are routed across a global mTLS-secured Envoy mesh.
+  Built-in Nexus Machinery provides reliable at-least-once execution and Workflow policy can deduplicate requests for exactly-once execution, even across multi-region boundaries.
 
 ### Key features
 
 - **Familiar developer experience** \-
-Temporal SDKs provide an integrated way to build and use Nexus Services.
+  Temporal SDKs provide an integrated way to build and use Nexus Services.
   - Use Nexus Services from a caller Workflow.
   - Run Nexus Service handlers in a Worker, often the same Worker as underlying Temporal primitives.
   - Implement long-running asynchronous Nexus Operations as Workflows.
@@ -103,32 +103,32 @@ Temporal SDKs provide an integrated way to build and use Nexus Services.
   - Streamline operations by running Nexus Services in existing queue-based Workers.
 
 - **Built-in Nexus Machinery** \-
-Execution guarantees are provided with built-in Nexus Machinery.
+  Execution guarantees are provided with built-in Nexus Machinery.
   - Execute Nexus Operations with reliable state-machine-based invocation and completion callbacks.
   - Guarantee atomic handoff from Workflow Event History to Nexus Operation state machines.
   - Ensure reliable execution with automatic retries, rate limiting, concurrency limiting, and circuit breaking.
 
 - **Integrated observability** \-
-Execution debugging and observability is integrated into the Temporal Platform.
+  Execution debugging and observability is integrated into the Temporal Platform.
   - View Nexus Operation lifecycle and error info in Workflow Event History.
   - Debug across Namespaces with bi-directional linking.
   - Generate metrics, traces, and logs.
 
 - **Improved blast radius isolation** \-
-Separate Namespaces isolate underlying Workers and sensitive Workflow state.
+  Separate Namespaces isolate underlying Workers and sensitive Workflow state.
   - Limit direct access to a Namespace, while exposing Nexus Endpoints for others to use.
   - Isolate misbehaving Workers that affect rate limits for all Workers in a Namespace.
   - Avoid leaking Workflow implementation details to external callers.
 
 - **Enhanced security and connectivity** \-
-Temporal Cloud provides integrated Nexus access controls and multi-region routing.
+  Temporal Cloud provides integrated Nexus access controls and multi-region routing.
   - Connect Applications across Namespaces in an Account with Temporal's private mTLS-secured Envoy mesh.
   - Restrict which callers can use a Nexus Endpoint, with built-in Endpoint access controls.
   - Stream audit logs including Nexus Registry actions to create, update, or delete Endpoints.
 
 ## Learn more
 
- To connect with the Nexus community, join the [#nexus](https://temporalio.slack.com/archives/C07LQN0JK9B) channel in [Temporal Slack](https://t.mp/slack).
+To connect with the Nexus community, join the [#nexus](https://temporalio.slack.com/archives/C07LQN0JK9B) channel in [Temporal Slack](https://t.mp/slack).
 
 <RelatedReadContainer>
   <RelatedReadItem path="https://youtu.be/qqc2vsv1mrU?feature=shared&t=2082" text="Nexus keynote & demo - Replay video" archetype="replay-talk" />

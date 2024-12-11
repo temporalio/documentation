@@ -30,7 +30,8 @@ Encryption for Nexus payloads is also supported, for example using shared symmet
 
 Nexus Endpoints are Account-scoped resources, similar to a Namespace.
 The following roles and permissions are required to manage and view Nexus Endpoints in the Nexus Registry:
-- Viewing and browsing the full list of Nexus Endpoints in an Account: 
+
+- Viewing and browsing the full list of Nexus Endpoints in an Account:
   - Read-only role (or higher)
 - Managing a Nexus Endpoint (create, update, delete):
   - Developer role (or higher) and Namespace Admin permission on the Endpoint’s target Namespace
@@ -40,6 +41,7 @@ The following roles and permissions are required to manage and view Nexus Endpoi
 The Nexus Registry allows setting Endpoint access policy on each Endpoint.
 This currently includes an allow list of caller Namespaces that can use the Endpoint at runtime.
 Endpoint access control policies are enforced at runtime:
+
 1. Caller's Worker authenticates with their Namespace as they do today with mTLS certificates or API keys.
    This establishes the caller's identity and caller Namespace.
 2. Caller Workflow executes a Nexus Operation on a Nexus Endpoint.
