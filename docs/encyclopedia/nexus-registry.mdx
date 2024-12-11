@@ -44,9 +44,10 @@ Endpoint names must be unique within the Nexus Registry.
 Nexus Endpoints may be managed using the Temporal UI, the CLI, or the [Cloud Ops API](/ops).
 
 :::tip RESOURCES
+
 - [tcld nexus](/cloud/tcld/nexus) for Temporal Cloud.
 - [temporal operator nexus](/cli/operator#nexus) for self-hosted deployments.
-:::
+  :::
 
 ### Search for a Nexus Endpoint
 
@@ -63,7 +64,6 @@ The Endpoint details page shows the target Namespace and target Task Queue along
 Creating a Nexus Endpoint includes setting an Access Policy of caller Namespaces that can access the Endpoint.
 Even the target Namespace must be added to the Access Policy to access the Endpoint.
 Temporal Cloud also provides built-in Endpoint access control in the form of a caller Namespace allowlist, which must be set for any caller to access a Nexus Endpoint, even if in the same Namespace.
-
 
 ![Create Nexus Endpoint](/img/nexus/create-nexus-endpoint-ss.png)
 
@@ -95,6 +95,7 @@ Temporal Cloud has built-in Nexus security. For self-hosted deployments you can 
 :::
 
 In Temporal Cloud, access to the Nexus Registry is controlled with the following roles and permissions:
+
 - View, list, and search Nexus Endpoints:
   - Read-only role (or higher) in an Account
 - Manage a Nexus Endpoint (create, edit, delete) requires **both**:
@@ -102,4 +103,3 @@ In Temporal Cloud, access to the Nexus Registry is controlled with the following
   - Namespace Admin permission on the Endpoint's target Namespace
 
   See [Nexus Security in Temporal Cloud](/cloud/nexus/security) for more information.
-

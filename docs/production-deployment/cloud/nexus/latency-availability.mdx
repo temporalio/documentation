@@ -41,6 +41,7 @@ Nexus-related Worker interactions with Temporal Cloud have the same [latency SLO
 ![Interaction between Workers and Temporal Cloud](/img/nexus/nexus-workers-short.png)
 
 This applies to the following Nexus-related interactions between a Worker and Temporal Cloud:
+
 - Caller Namespace
   - RespondWorkflowTaskCompleted \- schedule a Nexus Operation.
 - Handler Namespace
@@ -53,6 +54,6 @@ This applies to the following Nexus-related interactions between a Worker and Te
 Nexus connectivity in Temporal Cloud is provided by a global mTLS secured Envoy mesh.
 The cross-namespace latency between the caller's Nexus Machinery and the handler's Nexus Machinery varies based on the locality of the caller and handler Namespaces, which may be placed in different regions.
 
-Communication between Namespaces in the same region will have lower latency. 
+Communication between Namespaces in the same region will have lower latency.
 Communication across different regions will have higher latency.
 Consult the cross-region latency tables for your cloud provider(s) to estimate the latency for Nexus communication across Namespaces in Temporal Cloud.

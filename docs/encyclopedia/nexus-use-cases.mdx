@@ -25,15 +25,15 @@ Temporal Nexus is available in [Public Preview](/evaluate/development-production
 [Temporal Nexus](/evaluate/nexus) enables the following use cases:
 
 - **Cross-team, cross-domain, and cross-namespace** \-
-connect Temporal Applications within and across Namespaces.
+  connect Temporal Applications within and across Namespaces.
 - **Share a subset of a Temporal Application** \-
-abstract and share a subset of an Application as a Nexus Service.
+  abstract and share a subset of an Application as a Nexus Service.
 - **Modular design for growth** \-
-modular application design that can evolve as you grow.
-- **Smaller failure domains** \- 
-each team to have their own Namespace for improved security, troubleshooting, and fault isolation.
+  modular application design that can evolve as you grow.
+- **Smaller failure domains** \-
+  each team to have their own Namespace for improved security, troubleshooting, and fault isolation.
 - **Multi-region** \-
-Nexus requests in Temporal Cloud are routed across a global mTLS-secured Envoy mesh.
+  Nexus requests in Temporal Cloud are routed across a global mTLS-secured Envoy mesh.
 
 :::tip RELATED
 
@@ -48,6 +48,7 @@ It addresses the limitations of Child Workflows, Activity Wrappers, and bespoke 
 Nexus has a streamlined Temporal developer experience, reliable execution, and integrated observability.
 
 Without Nexus, when a caller Workflow invokes another Workflow directly the caller must know:
+
 - target Workflow's Namesapce and Task Queue.
 - target Workflow retry policy and timeouts.
 - target Workflow options including [Workflow-Id-Reuse-Policy](/workflows#workflow-id-reuse-policy) and [Workflow-Id-Conflict-Policy](/workflows#workflow-id-conflict-policy).
@@ -61,15 +62,15 @@ In short, Workflow to Workflow is a leaky abstraction.
 Nexus addresses this by providing a cleaner service contract between the caller and handler.
 Nexus is suitable for abstracting and sharing Workflows across team, domain, and namespace boundaries.
 Nexus requests in Temporal Cloud are routed across a global mTLS-secured Envoy mesh, so they're also suitable for multi-region use cases.
- 
+
 Enable calls across Namespaces by:
 
 1. Creating a [Nexus Endpoint](/nexus/endpoints) in the [Nexus Registry](/nexus/registry) that:
    1. Targets the handler Namespace.
    2. Allows the caller Namespace.
 2. Creating a [Nexus Service](/nexus/services) in a Worker within a handler Namespace.
-   1.  Abstract Workflows with Nexus Operations [using Temporal SDK builder functions for Nexus Operations](/nexus/operations#sdk-support).
-   2.  Register the Nexus Service with the Worker.
-   2.  Ensure the Worker is polling the Endpoint's Task Queue. 
+   1. Abstract Workflows with Nexus Operations [using Temporal SDK builder functions for Nexus Operations](/nexus/operations#sdk-support).
+   2. Register the Nexus Service with the Worker.
+   3. Ensure the Worker is polling the Endpoint's Task Queue.
 3. Calling the Nexus Service from a Workflow in a different Namespace.
    1. Execute a Nexus Operation from a caller Workflow [using the Temporal SDK](/nexus/operations#sdk-support).
