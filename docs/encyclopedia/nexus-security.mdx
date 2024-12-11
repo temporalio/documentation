@@ -27,7 +27,7 @@ Nexus supports restricting access to Nexus Endpoints.
 Temporal Cloud has built-in Endpoint access controls and provides secure Nexus connectivity across Namespaces.
 For self-hosted deployments you can implement custom Authorizers.
 
-### Runtime access controls {#runtime-access-controls}
+## Runtime access controls {#runtime-access-controls}
 
 In Temporal Cloud, access to a Nexus Endpoint at runtime is controlled by the Endpoint's access control policy (allowlist of caller Namespaces) for each Endpoint in the Nexus Registry.
 
@@ -43,7 +43,7 @@ In this way, Temporal Cloud acts as a trusted broker across Namespace boundaries
 
 See [Configure Runtime Access Controls](/nexus/registry#configure-runtime-access-controls) for additional information.
 
-### Secure connectivity {#secure-connectivity}
+## Secure connectivity {#secure-connectivity}
 
 :::info
 
@@ -63,7 +63,7 @@ In Temporal Cloud multiple security provisions are in place to ensure it can act
   - Accessible from within a caller Workflow using the Temporal SDK.
   - Not externally accessible for arbitrary clients yet.
 
-### Payload Encryption and Data Converter {#payload-encryption-data-converter}
+## Payload Encryption and Data Converter {#payload-encryption-data-converter}
 
 The Data Converter works the same for a Nexus Operation as it does for other payloads sent between a Worker and Temporal Cloud.
 The caller and handler Workers must have compatible Data Converters as operation inputs and results are passed between the two.
@@ -73,7 +73,7 @@ the caller and handler can use a shared symmetric key stored in your KMS.
 
 Please let us know if you need per-Service payload encryption or better handling for asymmetric encryption keys.
 
-### Nexus Registry Security {#managing-nexus-endpoints}
+## Nexus Registry Security {#managing-nexus-endpoints}
 
 See [Nexus Registry Roles and Permissions](/nexus/registry#roles-and-permissions).
 
