@@ -1,0 +1,58 @@
+---
+id: latency-availability
+slug: /cloud/nexus/latency-availability
+title: Latency and Availability - Temporal Nexus
+description: Learn about Nexus latency and availability
+sidebar_label: Latency and Availability
+tags:
+  - Temporal Cloud
+  - Nexus
+keywords:
+  - Temporal Nexus
+  - Nexus
+  - latency
+  - availability
+  - SLO
+  - SLA
+  - error rate
+  - service level
+  - service level objective
+  - service level agreement
+---
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal Nexus is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+Learn why you should use Nexus in the [evaluation guide](/evaluate/nexus).
+
+:::
+
+Nexus requests (commands, polling) have the same latency SLOs and error rate SLAs as other Worker requests in both the caller and handler Namespaces.
+
+## Latency metrics
+
+Nexus supports various [latency metrics](/nexus/metrics).
+
+## Worker to Temporal Cloud interactions
+
+Nexus interactions between a Worker and Temporal Cloud use the Worker's Namespace gRPC endpoint.
+Nexus-related Worker interactions with Temporal Cloud have the same [latency SLOs](/cloud/service-availability#latency) and [availability SLAs](/cloud/sla) as other calls to a Namespaces's gRPC endpoint.
+
+![Interaction between Workers and Temporal Cloud](/img/nexus/nexus-workers-short.png)
+
+This applies to the following Nexus-related interactions between a Worker and Temporal Cloud:
+- Caller Namespace
+  - RespondWorkflowTaskCompleted \- schedule a Nexus Operation.
+- Handler Namespace
+  - PollNexusTaskQueue \- get a [Nexus Task](/workers#nexus-task) to process, for example to start a Nexus Operation.
+  - RespondNexusTaskCompleted \- report the Nexus Task was successful.
+  - RespondNexusTaskFailed \- report the Nexus Task failed.
+
+## Nexus connectivity across Namespaces
+
+Nexus connectivity in Temporal Cloud is provided by a global mTLS secured Envoy mesh.
+The cross-namespace latency between the caller's Nexus Machinery and the handler's Nexus Machinery varies based on the locality of the caller and handler Namespaces, which may be placed in different regions.
+
+Communication between Namespaces in the same region will have lower latency. 
+Communication across different regions will have higher latency.
+Consult the cross-region latency tables for your cloud provider(s) to estimate the latency for Nexus communication across Namespaces in Temporal Cloud.

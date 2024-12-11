@@ -1,0 +1,65 @@
+---
+id: nexus-services
+title: Nexus Services
+sidebar_label: Nexus Services
+description: Nexus Services are named collections of arbitrary-duration Nexus Operations that provide a microservice contract suitable for sharing across team boundaries.
+toc_max_heading_level: 4
+slug: /nexus/services
+keywords:
+  - Nexus Services
+  - contract
+  - service contract
+  - API contract
+  - microservice contract
+tags:
+  - Nexus
+  - Concepts
+
+---
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal Nexus is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
+
+:::
+
+[Nexus Services](/glossary#nexus-service) are named collections of arbitrary-duration [Nexus Operations](/nexus/operations) that provide a contract suitable for sharing across team boundaries.
+
+![Nexus Security](/img/nexus-overview-short.png)
+
+A [Nexus Endpoint](/nexus/endpoints) exposes Nexus Services for others to use.
+Services are handled in a Temporal Worker that is polling an Endpoint's target Namespace and Task Queue.
+Multiple Nexus Services may be run in the same Worker polling the same Endpoint target Namespace and Task Queue.
+
+For example, a Nexus Service is often registered in the same Worker as the underlying Workflows they abstract:
+
+```go
+func main() {
+	c, err := client.Dial(client.Options{})
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer c.Close()
+
+	w := worker.New(c, taskQueue, worker.Options{})
+	service := nexus.NewService(service.HelloServiceName)
+	err = service.Register(handler.EchoOperation, handler.HelloOperation)
+	if err != nil {
+		log.Fatalln("Unable to register operations", err)
+	}
+	w.RegisterNexusService(service)
+	w.RegisterWorkflow(handler.HelloHandlerWorkflow)
+
+	err = w.Run(worker.InterruptCh())
+	if err != nil {
+		log.Fatalln("Unable to start worker", err)
+	}
+}
+```
+
+The Nexus Service name is used when invoking a Nexus Operation from a caller workflow.
+
+:::tip RESOURCES
+- [Go SDK - build and use Nexus Services](/develop/go/nexus#develop-nexus-service-operation-handlers).
+- [Java SDK - build and use Nexus Services](/develop/java/nexus#develop-nexus-service-operation-handlers).
+:::
