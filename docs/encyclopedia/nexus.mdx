@@ -54,7 +54,7 @@ Nexus Operations can be implemented with Temporal primitives, like Workflows, or
 
 ## Queue-based Worker architecture
 
-Nexus uses the Temporal queue-based Worker architecture and built-in Nexus Machinery to ensure reliable execution of a Nexus Operations.
+Nexus uses the Temporal queue-based Worker architecture and built-in Nexus Machinery to ensure reliable execution of Nexus Operations.
 If a Nexus Service is down, a caller Workflow can continue to schedule Nexus Operations and they will be processed when the service is up.
 
 Nexus handler Workers poll the Endpoint's target Namespace and Task Queue for [Nexus Tasks](/workers#nexus-task) to process.
