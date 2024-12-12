@@ -27,7 +27,7 @@ Temporal Nexus is available in [Public Preview](/evaluate/development-production
 - **Cross-team, cross-domain, and cross-namespace** \-
   connect Temporal Applications within and across Namespaces.
 - **Share a subset of a Temporal Application** \-
-  abstract and share a subset of an Application as a Nexus Service.
+  abstract and share a subset of an Temporal Application as a Nexus Service.
 - **Modular design for growth** \-
   modular application design that can evolve as you grow.
 - **Smaller failure domains** \-
@@ -49,10 +49,10 @@ Nexus has a streamlined Temporal developer experience, reliable execution, and i
 
 Without Nexus, when a caller Workflow invokes another Workflow directly the caller must know:
 
-- target Workflow's Namesapce and Task Queue.
-- target Workflow retry policy and timeouts.
+- target Workflow's Namespace and Task Queue.
+- target Workflow Retry Policy and Timeouts.
 - target Workflow options including [Workflow-Id-Reuse-Policy](/workflows#workflow-id-reuse-policy) and [Workflow-Id-Conflict-Policy](/workflows#workflow-id-conflict-policy).
-- target Workflow ID uniqueness constraints, so it doesn't conflict with other Workflow types in the handler namespace.
+- target Workflow ID uniqueness constraints, so it doesn't conflict with other Workflow types in the handler Namespace.
 
 This creates a high degree of coupling between the caller and handler, by exposing internal implementation details to the caller.
 This adds friction for the caller, who shouldn't need to know this level of detail.
@@ -60,7 +60,7 @@ It's more difficult to refactor or migrate handler Workflows to different Namesp
 In short, Workflow to Workflow is a leaky abstraction.
 
 Nexus addresses this by providing a cleaner service contract between the caller and handler.
-Nexus is suitable for abstracting and sharing Workflows across team, domain, and namespace boundaries.
+Nexus is suitable for abstracting and sharing Workflows across team, domain, and Namespace boundaries.
 Nexus requests in Temporal Cloud are routed across a global mTLS-secured Envoy mesh, so they're also suitable for multi-region use cases.
 
 Enable calls across Namespaces by:
