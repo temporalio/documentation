@@ -38,9 +38,10 @@ Nexus Operations support a uniform interface to get the status of an operation o
 The Temporal SDK provides an integrated Temporal experience to build, run, and use Nexus Operations.
 
 :::tip RESOURCES
+
 - [Go SDK - Nexus quick start and code sample](/develop/go/nexus)
 - [Java SDK - Nexus quick start and code sample](/develop/java/nexus)
-:::
+  :::
 
 Caller Workflows use the Temporal SDK to execute Nexus Operations.
 
@@ -75,7 +76,7 @@ The lifecycle for a synchronous Nexus Operation, for example to Signal or Query 
 1. Caller Worker issues a [ScheduleNexusOperation](/references/commands#schedulenexusoperation) command to it's Namespace gRPC endpoint.
 1. Caller Namespace records a [NexusOperationScheduled](/references/events#nexusoperationscheduled) event in the caller's Workflow History.
 1. Caller Nexus Machinery makes a Nexus call to start a Nexus Operation.
-1. Handler Nexus Machinery recieves the Nexus request and sync matches to a handler Worker.
+1. Handler Nexus Machinery receives the Nexus request and sync matches to a handler Worker.
 1. Handler Worker gets a [Nexus Task](/workers#nexus-task) to start a Nexus Operation, by polling the Nexus Endpoint's target Task Queue.
 1. Handler processes the Nexus Task, using the Temporal SDK **New-Sync-Operation**.
 1. Handler responds to it's Namespace gRPC endpoint with the Operation result.
@@ -92,7 +93,6 @@ If a Nexus handler times out, the Operation will be retried by the caller's Nexu
 
 :::
 
-
 ### Asynchronous Operation lifecycle {#asynchronous-operation-lifecycle}
 
 An asynchronous Nexus Operation may take up to 60 days to complete in Temporal Cloud, which is the maximum Schedule-to-Close-Timeout.
@@ -105,7 +105,7 @@ The lifecycle of an asynchronous Nexus Operation, with differences between the s
 1. Caller Worker issues a [ScheduleNexusOperation](/references/commands#schedulenexusoperation) command to its Namespace gRPC endpoint.
 1. Caller Namespace records a [NexusOperationScheduled](/references/events#nexusoperationscheduled) event in the caller Workflow's History.
 1. Caller Nexus Machinery makes a Nexus RPC to start a Nexus Operation.
-1. Handler Nexus Machinery recieves the Nexus request and sync matches to a handler Worker.
+1. Handler Nexus Machinery receives the Nexus request and sync matches to a handler Worker.
 1. Handler Worker gets a [Nexus Task](/workers#nexus-task) to start a Nexus Operation, by polling the Nexus Endpoint's target Task Queue.
 1. Handler processes the Nexus Task, using the Temporal SDK **New-Workflow-Run-Operation**.
 1. Handler responds to it's Namespace gRPC endpoint with the **start Operation response**.
@@ -120,7 +120,7 @@ The lifecycle of an asynchronous Nexus Operation, with differences between the s
 ### Executing arbitrary code from a synchronous Nexus Operation handler {#executing-arbitrary-code-from-a-sync-handler}
 
 Synchronous Nexus Operation handlers can execute arbitrary code, but unlike Activities they should be short-lived.
-As mentioned above, a synchronous Nexus Operation handler has less than 10 seconds to process a Nexus start Operation request and should stay within the remaining request deadline budget for the Nexus request. 
+As mentioned above, a synchronous Nexus Operation handler has less than 10 seconds to process a Nexus start Operation request and should stay within the remaining request deadline budget for the Nexus request.
 For example, this may be done by looking at the Request-Timeout header or hooking into cancelation that is triggered when the timeout is exceeded.
 
 ![Nexus Operations with Arbitrary Code](/img/nexus/nexus-sync-operation-arbitrary-code.png)
@@ -128,31 +128,27 @@ For example, this may be done by looking at the Request-Timeout header or hookin
 ### System interactions
 
 Temporal Nexus Operations are requested and processed using the Temporal queue-based Worker architecture.
-Workers interact with thier Namespace gRPC endpoint as before.
+Workers interact with their Namespace gRPC endpoint as before.
 Nexus Machinery on both sides handles the cross-namepace communication.
 
 ![Nexus Queue-based Worker Architecture](/img/nexus/nexus-workers.png)
 
 For example, when you execute a Nexus Operation in a caller Workflow the following Namespace gRPC calls are made:
-1. **RespondWorkflowTaskCompleted([ScheduleNexusOperation command](/references/commands#schedulenexusoperation))** \-
-is used by the caller Worker to schedule a Nexus Operation, which atomically hands off execution to the caller's Nexus Machinery.
-1. **PollNexusTaskQueue** \-
-is used by the handler Worker to recieve a [Nexus Task](/workers#nexus-task) to process, for example to start a Nexus Operation.
-1. **RespondNexusTaskCompleted** or **RespondNexusTaskFailed** \-
-is used by the handler Worker to return the Nexus Task result.
-When asked to start a Nexus Operation, the Nexus handler decides if the Operation will be synchronous or asynchronous.
+
+1. **RespondWorkflowTaskCompleted ([ScheduleNexusOperation command](/references/commands#schedulenexusoperation)) is used by the caller Worker to schedule a Nexus Operation, which atomically hands off execution to the caller's Nexus Machinery.
+1. **PollNexusTaskQueue** is used by the handler Worker to receive a [Nexus Task](/workers#nexus-task) to process, for example to start a Nexus Operation.
+1. **RespondNexusTaskCompleted** or **RespondNexusTaskFailed** is used by the handler Worker to return the Nexus Task result.
+   When asked to start a Nexus Operation, the Nexus handler decides if the Operation will be synchronous or asynchronous.
    1. This is typically a static decision based on the [Temporal SDK builder function used](#sdk-support).
    1. [Asynchronous Nexus Operations](#asynchronous-operation-lifecycle), created with the New-Workflow-Run-Operation SDK helper, will return a Nexus Operation ID, that can be used to perform additional actions like canceling an Operation.
    1. [Synchronous Nexus Operations](#synchronous-operation-lifecycle), created with the New-Sync-Operation SDK helper, will return the Operation result directly.
-   1. The caller's Nexus Machinery recieves the result and records a NexusOperation event in the caller's Workflow History.
-1. **PollWorkflowTaskQueue** \-
-is used by the caller Worker to recieve a Workflow Task with the Nexus Operation event which may be 
-[Started](/references/events#nexusoperationstarted),
-[Completed](/references/events#nexusoperationcompleted),
-[Failed](/references/events#nexusoperationfailed),
-[Canceled](/references/events#nexusoperationcanceled), or
-[TimedOut](/references/events#nexusoperationtimedout).
-
+   1. The caller's Nexus Machinery receives the result and records a NexusOperation event in the caller's Workflow History.
+1. **PollWorkflowTaskQueue** is used by the caller Worker to receive a Workflow Task with the Nexus Operation event which may be
+   [Started](/references/events#nexusoperationstarted),
+   [Completed](/references/events#nexusoperationcompleted),
+   [Failed](/references/events#nexusoperationfailed),
+   [Canceled](/references/events#nexusoperationcanceled), or
+   [TimedOut](/references/events#nexusoperationtimedout).
 
 ## Automatic Retries {#automatic-retries}
 
@@ -190,7 +186,7 @@ To deduplicate work and get exactly-once execution semantics, a Nexus Operation 
 
 ## Cancelation
 
-The request to cancel a caller Workflow is automatically propagaged to all pending Nexus Operations, and in turn any underlying handler Workflows.
+The request to cancel a caller Workflow is automatically propagated to all pending Nexus Operations, and in turn any underlying handler Workflows.
 
 If an underlying handler Workflow is canceled, the Nexus Operation will report a [Canceled Failure](/references/failures#cancelled-failure) to the caller's Workflow Execution.
 
