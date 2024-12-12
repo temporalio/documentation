@@ -124,7 +124,7 @@ The following example shows a sample `POST` request body with base64 encoding.
     "metadata": {
       "encoding": <base64EncodedEncodingHint>
     },
-    "data": <base64 of decoded value>
+    "data": <encryptedPayloadData>
   }, ...]
 }
 ```
@@ -218,6 +218,37 @@ Content-Type: application/json
       "shopperId":"your-shopper-id-example",
       "email":"your-email@domain.com"
     }}]
+}
+```
+
+You can also perform remote encoding on an `/encode` endpoint, which looks the same in reverse:
+
+- Scheme: `https`
+- Host: `dev.mydomain.com/codec`
+- Path: `/encode`
+
+```json
+HTTP/1.1 POST /encode
+Host: https://dev.mydomain.com/codec
+Content-Type: application/json
+X-Namespace: myapp-dev.acctid123
+Authorization: Bearer <token>
+
+{"payloads":[{"metadata":{"encoding":"json/protobuf","messageType":"temporal_shop.orchestrations.v1.StartShoppingCartRequest"},"data":{"cartId":"example-cart","shopperId":"your-shopper-id-example","email":"your-email@domain.com"}}]}
+
+200 OK
+Content-Type: application/json
+
+{
+  "payloads": [
+    {
+      "metadata": {
+        "encoding": "anNvbi9wcm90b2J1Zg==",
+        "messageType": "dGVtcG9yYWxfc2hvcC5vcmNoZXN0cmF0aW9ucy52MS5TdGFydFNob3BwaW5nQ2FydFJlcXVlc3Q="
+      },
+      "data": "eyJjYXJ0SWQiOiJleGFtcGxlLWNhcnQiLCJzaG9wcGVySWQiOiJ5b3VyLXNob3BwZXItaWQtZXhhbXBsZSIsImVtYWlsIjoieW91ci1lbWFpbEBkb21haW4uY29tIn0"
+    }
+  ]
 }
 ```
 
