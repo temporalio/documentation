@@ -56,6 +56,13 @@ CA certificates _must_ meet the following criteria:
   SHA-1 and MD5 cannot be used.
 - The certificates cannot be generated with a passphrase.
 
+:::info
+
+A certificate bundle can contain up to 16 CA certificates.
+A certificate bundle can have a maximum payload size of 32 KB before base64 encoding.
+
+:::
+
 ### End-entity certificates
 
 An end-entity certificate is a type of X.509v3 certificate used by clients to authenticate themselves.
@@ -85,19 +92,16 @@ Choose one of the following options to generate and manage the certificates:
 
 ### Option 1: You already have certificate management infrastructure
 
-If you have existing certificate management infrastructure that supports issuing CA and end-entity certificates, it satisfies the requirements.
-When you configure the client SDK, you need to present a complete certificate chain up to the CA certificate given to Temporal.
+If you have existing certificate management infrastructure that supports issuing CA and end-entity certificates,
+export the CA and generate an end-entity certificates using your existing tools.
+
+Ensure that the CA certificate is long-lived and that the end-entity certificate expires before the CA certificate.
+
+Follow the instructions to [upload the CA certificate](/cloud/certificates#update-certificates-using-temporal-cloud-ui) and [configure your client](/cloud/certificates#configure-clients-to-use-client-certificates) with the end-entity certificate.
 
 ### Option 2: You don't have certificate management infrastructure
 
-If you don't have an existing certificate management infrastructure, issue the CA and end-entity certificates using [tcld](/cloud/tcld) or open source tools such as certstrap.
-
-:::info
-
-A certificate bundle can contain up to 16 CA certificates.
-A certificate bundle can have a maximum payload size of 32 KB before base64 encoding.
-
-:::
+If you don't have an existing certificate management infrastructure, issue the CA and end-entity certificates using [tcld](#use-tcld-to-generate-certificates) or open source tools such as [certstrap](#use-certstrap-to-generate-certificates).
 
 #### Use tcld to generate certificates
 
@@ -122,7 +126,13 @@ To create a new end-entity certificate, use `tcld gen leaf`.
 tcld gen leaf --org temporal -d 364d --ca-cert ca.pem --ca-key ca.key --cert client.pem --key client.key
 ```
 
-#### Use certstrap
+You can now use the generated CA certificate (`ca.pem`) with Temporal Cloud and configure your client with these certs (`client.pem`, `client.key`).
+
+Upload the contents of the `ca.pem` file to the **CA Certificates** section of your **Namespace** settings.
+
+Follow the instructions to [upload the CA certificate](/cloud/certificates#update-certificates-using-temporal-cloud-ui) and [configure your client](/cloud/certificates#configure-clients-to-use-client-certificates) with the end-entity certificate.
+
+#### Use certstrap to generate certificates
 
 Temporal Cloud requires client certificates for authentication and secure communication.
 [Certstrap](https://github.com/square/certstrap) is a popular and easy-to-use tool for issuing certificates.
@@ -140,10 +150,10 @@ Create a self-signed CA certificate and use it to issue an end-entity certificat
 Create a new Certificate Authority (CA) using Certstrap:
 
 ```command
-./certstrap init --common-name "Cert"
+./certstrap init --common-name "CertAuth"
 ```
 
-This command creates a self-signed CA certificate named `Cert.crt` in the `out` folder within the Certstrap directory.
+This command creates a self-signed CA certificate named `CertAuth.crt` in the `out` folder within the Certstrap directory.
 This CA certificate will be used to sign and issue end-entity certificates.
 
 ##### 2. Set the Namespace Name
@@ -151,7 +161,7 @@ This CA certificate will be used to sign and issue end-entity certificates.
 Set the Namespace Name as the common name for the end-entity certificate:
 
 <Tabs>
-  <TabItem value="macos" label="macOs" default>
+  <TabItem value="macos" label="macOS" default>
 
 For Linux or macOS:
 
@@ -188,10 +198,10 @@ This command creates a Certificate Signing Request (CSR) for an end-entity certi
 Sign the certificate request and generate the end-entity certificate:
 
 ```command
-./certstrap sign ${NAMESPACE_NAME} --CA "Cert"
+./certstrap sign ${NAMESPACE_NAME} --CA "CertAuth"
 ```
 
-This command takes the CSR from the previous step and signs it with your CA (`Cert`).
+This command takes the CSR from the previous step and signs it with your CA (`CertAuth`).
 The result is an end-entity certificate (`your-namespace.crt`) that is now a valid certificate signed by your CA.
 
 ##### 5. (optional) Convert to PKCS8 Format for Java SDK
@@ -200,15 +210,16 @@ If you are using the Temporal Java SDK, you will need to convert the PKCS1 file 
 Export the end-entity's private key to a PKCS8 file:
 
 ```command
-openssl pkcs8 -topk8 -inform PEM -outform PEM -in <out/your-namespace.key> -out <out/your-namespace.pkcs8.key> -nocrypt
+openssl pkcs8 -topk8 -inform PEM -outform PEM -in out/${NAMESPACE_NAME}.key -out out/${NAMESPACE_NAME}.pkcs8.key -nocrypt
 ```
 
 ##### 6. Use the Certificates with Temporal Cloud
 
-You can now use the generated client certificate (`your-namespace.crt`) and the CA certificate (`Cert.crt`) with Temporal Cloud.
-You will upload the contents of the `Cert.crt` file to the **CA Certificates** section of your **Namespace** settings.
+You can now use the generated client certificate (`your-namespace.crt`) and the CA certificate (`CertAuth.crt`) with Temporal Cloud.
 
-Follow the instructions to [upload the CA certificate and configure your client](/cloud/certificates#update-certificates-using-temporal-cloud-ui) with the end-entity certificate.
+Upload the contents of the `CertAuth.crt` file to the **CA Certificates** section of your **Namespace** settings.
+
+Follow the instructions to [upload the CA certificate](/cloud/certificates#update-certificates-using-temporal-cloud-ui) and [configure your client](/cloud/certificates#configure-clients-to-use-client-certificates) with the end-entity certificate.
 
 ## How to control authorization for Temporal Cloud Namespaces {#control-authorization}
 
@@ -398,3 +409,12 @@ To set or clear certificate filters, use the following [tcld](/cloud/tcld) comma
 - [tcld namespace certificate-filters clear](/cloud/tcld/namespace/#clear)
 
 To view the current certificate filters, use the [tcld namespace certificate-filters export](/cloud/tcld/namespace/#export) command.
+
+## Configure clients to use client certificates
+
+- [Go SDK](/develop/go/temporal-clients#connect-to-temporal-cloud)
+- [Java SDK](/develop/java/temporal-clients#connect-to-temporal-cloud)
+- [PHP SDK](/develop/php/temporal-clients#connect-to-a-dev-cluster)
+- [Python SDK](/develop/python/temporal-clients#connect-to-temporal-cloud)
+- [TypeScript SDK](/develop/typescript/temporal-clients#connect-to-temporal-cloud)
+- [.NET SDK](/develop/dotnet/temporal-client#connect-to-temporal-cloud)

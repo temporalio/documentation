@@ -136,6 +136,8 @@ In the example above, the Workflow code uses `workflow.GetSignalChannel` to open
 - Before completing the Workflow or using [Continue-As-New](/develop/go/continue-as-new), make sure to do an asynchronous drain on the Signal channel.
   Otherwise, the Signals will be lost.
   The [batch sliding window](https://github.com/temporalio/samples-go/tree/main/batch-sliding-window) sample contains an example:
+- Delay calling `workflow.GetSignalChannel` until the Workflow initialization needed to process the Signal channel has finished.
+  This is safe because the SDK buffers signals when there are no channel created for them.
 
 ```go
 reportCompletionChannel := workflow.GetSignalChannel(ctx, "ReportCompletion")
@@ -207,11 +209,23 @@ func GreetingWorkflow(ctx workflow.Context) error {
   This includes the Update ID, which can be useful for deduplication when using Continue-As-New: see [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing).
 - Update handlers can use Activities, Child Workflows, durable [workflow.Sleep](https://pkg.go.dev/go.temporal.io/sdk/workflow#Sleep) Timers, [`workflow.Await`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Await) conditions, and more.
   See [Blocking handlers](#blocking-handlers) and [Workflow message passing](/encyclopedia/workflow-message-passing) for safe usage guidelines.
+- Delay calling [`workflow.SetUpdateHandler`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SetUpdateHandler) until the Workflow initialization needed by Update handlers is finished.
+  This is safe because the SDK buffers messages when there are no registered handlers for them.
+  Note that [`workflow.SetUpdateHandler`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SetUpdateHandler) will immediately invoke the handler of buffered Updates with matching types.
+  This could lead to out-of-order processing of messages with different types.
 
 ## Send messages {#send-messages}
 
 To send Queries, Signals, or Updates, you call methods on a Temporal [Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client).
 To check the argument types required when sending messages -- and the return type for Queries and Updates -- refer to the corresponding handler method in the Workflow Definition.
+
+:::warning Using Continue-as-New and Updates
+
+- Temporal _does not_ support Continue-as-New functionality within Update handlers.
+- Complete all handlers _before_ using Continue-as-New.
+- Use Continue-as-New from your main Workflow function, just as you would complete or fail a Workflow Execution.
+
+:::
 
 ### Send a Query {#send-query}
 

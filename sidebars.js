@@ -22,7 +22,6 @@ module.exports = {
           },
           items: [
             "evaluate/development-production-features/core-application",
-            "evaluate/development-production-features/temporal-client",
             "evaluate/development-production-features/failure-detection",
             "evaluate/development-production-features/throughput-composability",
             "evaluate/development-production-features/nexus",
@@ -91,8 +90,10 @@ module.exports = {
             "evaluate/temporal-cloud/service-availability",
             "evaluate/temporal-cloud/limits",
             "evaluate/temporal-cloud/sla",
+            "evaluate/temporal-cloud/legacy-pricing",
             "evaluate/temporal-cloud/pricing",
-            "evaluate/temporal-cloud/support",
+            "evaluate/temporal-cloud/support", // This will become legacy support in Jan 2025, removed in Feb 2025 Its file is legacy-support
+            "evaluate/temporal-cloud/future_support", // This will become support in Jan 2025. Its file is support
           ],
         },
         "security",
@@ -123,6 +124,7 @@ module.exports = {
           items: [
             "develop/go/core-application",
             "develop/go/temporal-clients",
+            "develop/go/go-sdk-multithreading",
             "develop/go/namespaces",
             "develop/go/testing-suite",
             "develop/go/failure-detection",
@@ -165,6 +167,7 @@ module.exports = {
             "develop/java/schedules",
             "develop/java/converters-and-encryption",
             "develop/java/timers",
+            "develop/java/nexus",
             "develop/java/child-workflows",
             "develop/java/continue-as-new",
             "develop/java/side-effects",
@@ -206,6 +209,8 @@ module.exports = {
           items: [
             "develop/python/core-application",
             "develop/python/temporal-clients",
+            "develop/python/python-sdk-sandbox",
+            "develop/python/python-sdk-sync-vs-async",
             "develop/python/testing-suite",
             "develop/python/failure-detection",
             "develop/python/message-passing",
@@ -340,10 +345,11 @@ module.exports = {
                 id: "production-deployment/cloud/nexus/index",
               },
               items: [
-                "production-deployment/cloud/nexus/using-nexus",
+                "production-deployment/cloud/nexus/security",
+                "production-deployment/cloud/nexus/observability",
+                "production-deployment/cloud/nexus/latency-availability",
+                "production-deployment/cloud/nexus/limits",
                 "production-deployment/cloud/nexus/pricing",
-                "production-deployment/cloud/nexus/getting-started",
-                "production-deployment/cloud/nexus/operations",
               ],
             },
             "production-deployment/cloud/worker-health",
@@ -419,7 +425,7 @@ module.exports = {
             "production-deployment/self-hosted-guide/upgrade-server",
             "production-deployment/self-hosted-guide/archival",
             "production-deployment/self-hosted-guide/multi-cluster-replication",
-            "production-deployment/self-hosted-guide/enable-nexus",
+            "production-deployment/self-hosted-guide/nexus",
             "production-deployment/self-hosted-guide/server-frontend-api-reference",
           ],
         },
@@ -492,20 +498,7 @@ module.exports = {
           },
           items: [
             "encyclopedia/temporal",
-            {
-              type: "category",
-              label: "Temporal SDKs",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "encyclopedia/temporal-sdks",
-              },
-              items: [
-                "encyclopedia/go-sdk-multithreading",
-                "encyclopedia/python-sdk-sandbox",
-                "encyclopedia/python-sdk-sync-vs-async",
-              ],
-            },
+            "encyclopedia/temporal-sdks",
             "encyclopedia/workflows",
             "encyclopedia/activities",
             {
@@ -537,8 +530,14 @@ module.exports = {
                 id: "encyclopedia/nexus",
               },
               items: [
-                "encyclopedia/nexus-api-registry-endpoints",
-                "encyclopedia/nexus-services-operations",
+                "encyclopedia/nexus-endpoints",
+                "encyclopedia/nexus-registry",
+                "encyclopedia/nexus-services",
+                "encyclopedia/nexus-operations",
+                "encyclopedia/nexus-use-cases",
+                "encyclopedia/nexus-execution-debugging",
+                "encyclopedia/nexus-error-handling",
+                "encyclopedia/nexus-metrics",
                 "encyclopedia/nexus-security",
               ],
             },

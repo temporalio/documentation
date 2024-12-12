@@ -57,7 +57,7 @@ Visibility, within the Temporal Platform, is the subsystem and APIs that enable 
 - For Temporal Server versions 1.19.1 and earlier, you must [integrate with ElasticSearch](/self-hosted-guide/visibility#elasticsearch) to use advanced Visibility.
   Elasticsearch takes on the Visibility request load, relieving potential performance issues.
   We highly recommend operating a Temporal Service with Elasticsearch for any use case that spawns more than just a few Workflow Executions.
-- On Temporal Cloud, [advanced Visibility is enabled by default for all users](/cloud/users#invite-users).
+- On Temporal Cloud, advanced Visibility is enabled by default for [all users](/cloud/users#invite-users).
 
 ## What is Dual Visibility? {#dual-visibility}
 
@@ -155,6 +155,31 @@ order-abracadabra
 ```
 
 It does not match `order-~~`.
+
+:::note Filter Composition Quick Reference
+
+**Composition**
+
+- Data types:
+  - String literals with single or double quotes
+  - Numbers (Integer and Floating Point)
+  - Booleans
+- Comparison: `=`, `!=`, `>`, `>=`, `<`, `<=`
+- Expressions/Operators:
+  - `IN array`
+  - `BETWEEN value AND value`
+  - `STARTS_WITH string`
+  - `IS NULL`, `IS NOT NULL`
+  - `expr AND expr`, `expr OR expr`, `( expr )`
+- Array: `( comma-separated-values )`
+
+**Please note**
+
+- Wrap attributes with backticks if it contains characters not in
+  `[a-zA-Z0-9]`.
+- `STARTS_WITH` is only available for Keyword search attributes.
+
+:::
 
 ### Efficient API usage
 
