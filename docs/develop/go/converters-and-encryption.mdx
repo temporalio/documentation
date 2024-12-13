@@ -134,7 +134,7 @@ For reference, see the [Encryption](https://github.com/temporalio/samples-go/tre
 A Codec Server is an HTTP server that uses your custom Codec logic to decode your data remotely.
 The Codec Server is independent of the Temporal Cluster and decodes your encrypted payloads through predefined endpoints.
 You create, operate, and manage access to your Codec Server in your own environment.
-The `temporal` CLI and the Web UI in turn provide built-in hooks to call the Codec Server to decode encrypted payloads on demand.
+The Temporal CLI and the Web UI in turn provide built-in hooks to call the Codec Server to decode encrypted payloads on demand.
 Refer to the [Codec Server](/production-deployment/data-encryption) documentation for information on how to design and deploy a Codec Server.
 
 For reference, see the [Codec server](https://github.com/temporalio/samples-go/tree/main/codec-server) sample.
