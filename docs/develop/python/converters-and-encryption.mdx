@@ -24,7 +24,7 @@ tags:
 Temporal's security model is designed around client-side encryption of Payloads.
 A client may encrypt Payloads before sending them to the server, and decrypt them after receiving them from the server.
 This provides a high degree of confidentiality because the Temporal Server itself has absolutely no knowledge of the actual data.
-It also gives implementers more power and more freedom regarding which client is able to read which data -- they can control access on keys, algorithms, etc.
+It also gives implementers more power and more freedom regarding which client is able to read which data -- they can control access with keys, algorithms, or other security measures.
 
 A Temporal developer adds client-side encryption of Payloads by providing a Custom Payload Codec to its Client.
 Depending on business needs, a complete implementation of Payload Encryption may involve the selection of appropriate encryption algorithms, management of encryption keys, and/or restriction a subset of their users from viewing payload output.
