@@ -14,14 +14,20 @@ tags:
   - Nexus
 ---
 
-Use Temporal Nexus to connect durable executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal Go SDK support for Nexus is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+
+:::
+
+Use [Temporal Nexus](/evaluate/nexus) to connect Temporal Applications within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
 
 This page shows how to do the following:
 
 - [Run a development Temporal Service with Nexus enabled](#run-the-temporal-nexus-development-server)
 - [Create caller and handler Namespaces](#create-caller-handler-namespaces)
 - [Create a Nexus Endpoint to route requests from caller to handler](#create-nexus-endpoint)
-- [Define the Nexus Service API contract](#define-nexus-service-api-contract)
+- [Define the Nexus Service contract](#define-nexus-service-contract)
 - [Develop a Nexus Service and Operation handlers](#develop-nexus-service-operation-handlers)
 - [Develop a caller Workflow that uses a Nexus Service](#develop-caller-workflow-nexus-service)
 - [Make Nexus calls across Namespaces with a development Server](#nexus-calls-across-namespaces-dev-server)
@@ -69,9 +75,9 @@ temporal operator nexus endpoint create \
   --target-task-queue my-handler-task-queue
 ```
 
-## Define the Nexus Service API contract {#define-nexus-service-api-contract}
+## Define the Nexus Service contract {#define-nexus-service-contract}
 
-Defining a clear API contract for the Nexus Service is crucial for smooth communication between services.
+Defining a clear contract for the Nexus Service is crucial for smooth communication between services.
 
 [View the source code](https://github.com/temporalio/samples-go/tree/main/nexus) in the context of the rest of the application code.
 
@@ -80,7 +86,7 @@ git clone https://github.com/temporalio/samples-go.git
 cd samples-go/nexus
 ```
 
-The Nexus Service API contract can be in whatever form works best for your environment.
+The Nexus Service contract can be in whatever form works best for your environment.
 Each [Temporal SDK includes and uses a default Data Converter](https://docs.temporal.io/dataconversion), that encodes payloads in the following order: Null, Byte array, Protobuf JSON, and JSON.
 In a polyglot environment, Protobuf and JSON are common choices. This example uses native Go types.
 
@@ -466,7 +472,7 @@ To install the latest version of the `tcld` CLI, run the following command:
 brew install temporalio/brew/tcld
 ```
 
-If you don’t already have certificates, you can generate them for mTLS Worker authentication using the command below:
+If you don't already have certificates, you can generate them for mTLS Worker authentication using the command below:
 
 ```
 tcld gen ca --org $YOUR_ORG_NAME --validity-period 1y --ca-cert ca.pem --ca-key ca.key
@@ -513,7 +519,7 @@ The `--allow-namespace` is used to build an Endpoint allowlist of caller Namespa
 Alternatively, you can create a Nexus Endpoint through the UI: [https://cloud.temporal.io/nexus](https://cloud.temporal.io/nexus).
 You can also create a Nexus endpoint through the UI in the development server.
 
-### Run Workers Connected to Temporal Cloud
+### Run Workers Connected to Temporal Cloud with TLS certificates
 
 [View the source code](https://github.com/temporalio/samples-go/tree/main/nexus) in the context of the rest of the application code.
 
@@ -562,15 +568,61 @@ This will result in:
 2024/10/04 19:57:40 Workflow result: ¡Hola! Nexus 👋
 ```
 
+### Run Workers Connected to Temporal Cloud with API keys
+
+[View the source code](https://github.com/temporalio/samples-go/tree/main/nexus) in the context of the rest of the application code.
+
+Run the handler Worker:
+
+```go
+cd handler
+
+go run ./worker \
+	-target-host <region>.<cloud_provider>.api.temporal.io:7233 \
+	-namespace <your-target-namespace.account> \
+	-api-key <your-api-key>
+```
+
+Run the caller Worker:
+
+```go
+cd caller
+
+go run ./worker \
+	-target-host <region>.<cloud_provider>.api.temporal.io:7233 \
+	-namespace <your-caller-namespace.account> \
+	-api-key <your-api-key>
+```
+
+### Start a caller Workflow
+
+In order to start the caller Workflow, run the starter.
+
+```go
+cd caller
+
+go run ./starter \
+	-target-host <region>.<cloud_provider>.api.temporal.io:7233 \
+	-namespace <your-caller-namespace.account> \
+	-api-key <your-api-key>
+```
+
+This will result in:
+
+```
+2024/10/04 19:57:40 Workflow result: Nexus Echo 👋
+2024/10/04 19:57:40 Workflow result: ¡Hola! Nexus 👋
+```
+
 ## Observability
 
 ### Web UI
 
-A synchronous Nexus Operation will surface in the caller Workflow as follows, with just `NexusOperationScheduled` and `NexusOperationCompleted` events in the caller’s Workflow history:
+A synchronous Nexus Operation will surface in the caller Workflow as follows, with just `NexusOperationScheduled` and `NexusOperationCompleted` events in the caller's Workflow history:
 
 ![Observability Sync](/img/nexus-go/go-sdk-observability-sync.png)
 
-An asynchronous Nexus Operation will surface in the caller Workflow as follows, with `NexusOperationScheduled`, `NexusOperationStarted`, and `NexusOperationCompleted`, in the caller’s Workflow history:
+An asynchronous Nexus Operation will surface in the caller Workflow as follows, with `NexusOperationScheduled`, `NexusOperationStarted`, and `NexusOperationCompleted`, in the caller's Workflow history:
 
 ![Observability Async](/img/nexus-go/go-sdk-observability-async.png)
 
@@ -582,25 +634,31 @@ Use the `workflow describe` command to show pending Nexus Operations in the call
 temporal workflow describe -w <ID>
 ```
 
-Nexus events are included in the caller’s Workflow history:
+Nexus events are included in the caller's Workflow history:
 
 ```
 temporal workflow show -w <ID>
 ```
 
-For **asynchronous Nexus Operations** the following are reported in the caller’s history:
+For **asynchronous Nexus Operations** the following are reported in the caller's history:
 
 - `NexusOperationScheduled`
 - `NexusOperationStarted`
 - `NexusOperationCompleted`
 
-For **synchronous Nexus Operations** the following are reported in the caller’s history:
+For **synchronous Nexus Operations** the following are reported in the caller's history:
 
 - `NexusOperationScheduled`
 - `NexusOperationCompleted`
 
 :::note
 
-`NexusOperationStarted` isn't reported in the caller’s history for synchronous operations.
+`NexusOperationStarted` isn't reported in the caller's history for synchronous operations.
 
 :::
+
+## Learn more
+
+- [Evaluate](/evaluate/nexus) why you should use Nexus and watch the [Nexus keynote and demo](https://youtu.be/qqc2vsv1mrU?feature=shared&t=2082).
+- Learn how Nexus works in the [Nexus deep dive talk](https://www.youtube.com/watch?v=izR9dQ_eIe4) and [Encyclopedia](/nexus).
+- Deploy Nexus Endpoints in production with [Temporal Cloud](/cloud/nexus).

@@ -405,14 +405,15 @@ If you have an existing User in Temporal Cloud, you can import it into Terraform
    ```yml
    resource "temporalcloud_user" "user" {
    }
-  ```
-
-1. Run the `terraform import` command and pass in the User ID
-   Your User ID is available using the Temporal Cloud CLI `tcld u l` command.
-
-   ```bash
-   terraform import temporalcloud_user.user 72360058153949edb2f1d47019c1e85f
    ```
+
+````
+1. Run the `terraform import` command and pass in the User ID
+ Your User ID is available using the Temporal Cloud CLI `tcld u l` command.
+
+ ```bash
+ terraform import temporalcloud_user.user 72360058153949edb2f1d47019c1e85f
+````
 
 The User is now a part of the Terraform state and all changes to the User should be managed by Terraform.
 
