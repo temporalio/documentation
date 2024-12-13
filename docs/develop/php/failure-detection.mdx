@@ -1,13 +1,18 @@
 ---
 id: failure-detection
-title: Failure detection
+title: Failure detection - PHP SDK
 sidebar_label: Failure detection
 slug: /develop/php/failure-detection
 toc_max_heading_level: 2
 keywords:
-  - failure-detection
+  - failure detection
 tags:
-  - failure-detection
+  - Activities
+  - Workflows
+  - Errors
+  - Failures
+  - PHP SDK
+  - Temporal SDKs
 description: Learn about setting Workflow and Activity Timeouts, Retry Policies, and using Heartbeats in Temporal for optimal Workflow Execution management. Enhance your Workflow reliability.
 ---
 
@@ -124,6 +129,26 @@ For an executable code sample, see [ActivityRetry sample](https://github.com/tem
 Activity Execution semantics rely on several parameters.
 The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
 These values are set in the Activity Options.
+
+## Activity next Retry delay {#activity-next-retry-delay}
+
+**How to override the next Retry delay following an Activity failure using the Temporal PHP SDK**
+
+You may throw an [`ApplicationFailure`](/references/failures#application-failure) with the `nextRetryDelay` field set.
+This value will replace and override whatever the retry interval would be on the retry policy.
+
+For example, if in an Activity, you want to base the interval on the number of attempts, you might do:
+
+```php
+$attempt = \Temporal\Activity::getInfo()->attempt;
+
+throw new \Temporal\Exception\Failure\ApplicationFailure(
+    message: "Something bad happened on attempt $attempt",
+    type: 'my_failure_type',
+    nonRetryable: false,
+    nextRetryDelay: \DateInterval::createFromDateString(\sprintf('%d seconds', $attempt * 3)),
+);
+```
 
 ## How to Heartbeat an Activity {#activity-heartbeats}
 

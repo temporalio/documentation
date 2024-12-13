@@ -1,13 +1,18 @@
 ---
-id: data-encryption
-title: Data encryption
-sidebar_label: Data encryption
-slug: /develop/typescript/data-encryption
+id: converters-and-encryption
+title: Converters and encryption - TypeScript SDK
+sidebar_label: Converters and encryption
+slug: /develop/typescript/converters-and-encryption
 toc_max_heading_level: 2
 keywords:
   - data-encryption
 tags:
-  - data-encryption
+  - Security
+  - Codec Server
+  - Data Converters
+  - Encryption
+  - TypeScript SDK
+  - Temporal SDKs
 description: Learn how to create a custom Payload Converter in TypeScript with Temporal SDKs to handle non-JSON-serializable values, configure your Data Converter, and utilize protobufs and encryption seamlessly in your Workflows and Activities.
 ---
 
@@ -75,7 +80,7 @@ export class DefaultPayloadConverter extends CompositePayloadConverter {
     super(
       new UndefinedPayloadConverter(),
       new BinaryPayloadConverter(),
-      new JsonPayloadConverter()
+      new JsonPayloadConverter(),
     );
   }
 }
@@ -90,7 +95,7 @@ To replace the default Data Converter with a custom `CompositeDataConverter`, us
 ```typescript
 export const payloadConverter = new CompositePayloadConverter(
   new UndefinedPayloadConverter(),
-  new EjsonPayloadConverter()
+  new EjsonPayloadConverter(),
 );
 ```
 
@@ -102,10 +107,10 @@ Here is the Worker code:
 
 ```typescript
 const worker = await Worker.create({
-  workflowsPath: require.resolve("./workflows"),
-  taskQueue: "ejson",
+  workflowsPath: require.resolve('./workflows'),
+  taskQueue: 'ejson',
   dataConverter: {
-    payloadConverterPath: require.resolve("./payload-converter"),
+    payloadConverterPath: require.resolve('./payload-converter'),
   },
 });
 ```
@@ -117,7 +122,7 @@ Here is the Client:
 ```typescript
 const client = new Client({
   dataConverter: {
-    payloadConverterPath: require.resolve("./payload-converter"),
+    payloadConverterPath: require.resolve('./payload-converter'),
   },
 });
 ```
@@ -150,7 +155,7 @@ interface PayloadConverter {
 
 This custom converter should include logic for both serialization (`toPayload`) and deserialization (`fromPayload`), handling your specific data types or serialization format. The method `toPayload` returns a Payload object, which is used to manage and transport serialized data. The method `fromPayload` returns the deserialized data. This ensures that the data returned is in the same format as it was before serialization, allowing it to be used directly in the application.
 
-2. Configure the Data Converter.  To send values that are not JSON-serializable like a `BigInt` or `Date`, provide the custom Data Converter to the Client and Worker as described in the [Composite Data Converters](#composite-data-converters) section.
+2. Configure the Data Converter. To send values that are not JSON-serializable like a `BigInt` or `Date`, provide the custom Data Converter to the Client and Worker as described in the [Composite Data Converters](#composite-data-converters) section.
 
 #### Custom implementation
 

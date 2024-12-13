@@ -1,0 +1,84 @@
+---
+id: nexus-security
+title: Security in Temporal Nexus
+sidebar_label: Nexus Security
+description: Explore the security aspects of Temporal Nexus, including managing Nexus Endpoints, runtime access control, secure routing, and payload encryption to ensure safe and reliable cross-namespace operations.
+toc_max_heading_level: 4
+slug: /nexus/security
+keywords:
+  - nexus security
+  - runtime access control
+  - encryption
+  - secure routing
+  - payload encryption and data converter
+tags:
+  - Nexus
+  - Concepts
+
+---
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal Nexus is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
+
+:::
+
+Nexus supports restricting access to Nexus Endpoints.
+Temporal Cloud has built-in Endpoint access controls and provides secure Nexus connectivity across Namespaces.
+For self-hosted deployments you can implement custom Authorizers.
+
+### Runtime access controls {#runtime-access-controls}
+
+In Temporal Cloud, access to a Nexus Endpoint at runtime is controlled by the Endpoint's access control policy (allowlist of caller Namespaces) for each Endpoint in the Nexus Registry.
+
+![Nexus Security](/img/nexus/nexus-workers-short.png)
+
+Workers in each Namespace may authenticate with Temporal Cloud as they do now with mTLS certificates or API key as allowed by the caller Namespace.
+Once a Worker has authenticated it can send Nexus Operation commands to Temporal Cloud using a Temporal SDK to start a Nexus Operation in a different Namespace.
+For example, in the Temporal Go SDK a caller Workflow would use `nexusClient.ExecuteOperation` to issue a command to start a Nexus Operation.
+
+To process a `ScheduleNexusOperation` command from a caller Workflow, Temporal Cloud obtains the handler Namespace and Task Queue for the handler endpoint, and restricts access by verifying that the caller's Namespace is in the endpoint's allowlist.
+
+In this way, Temporal Cloud acts as a trusted broker across Namespace boundaries, and relies on authenticated workers in each Namespace.
+
+See [Configure Runtime Access Controls](/nexus/registry#configure-runtime-access-controls) for additional information.
+
+### Secure connectivity {#secure-connectivity}
+
+:::info
+
+Temporal Cloud has built-in security connectivity across all Namespaces in an Account.
+
+Self-hosted deployments rely on the Temporal Cluster being secure.
+
+:::
+
+In Temporal Cloud multiple security provisions are in place to ensure it can act as a trusted broker across Namespace boundaries:
+
+- Workers authenticate to their Namespaces via mTLS or an API key as allowed by their Namespace configuration.
+- mTLS is used for all Nexus communication, including across cloud cells and regions, to:
+  - Start or Cancel a Nexus Operation.
+  - Callback on completion of an asynchronous Nexus Operation.
+- Nexus Endpoints are only privately accessible from within a Temporal Cloud account.
+  - Accessible from within a caller Workflow using the Temporal SDK.
+  - Not externally accessible for arbitrary clients yet.
+
+### Payload Encryption and Data Converter {#payload-encryption-data-converter}
+
+The Data Converter works the same for a Nexus Operation as it does for other payloads sent between a Worker and Temporal Cloud.
+The caller and handler Workers must have compatible Data Converters as operation inputs and results are passed between the two.
+
+If encryption keys are used to encrypt payloads, they must be available in both the caller and handler. For example,
+the caller and handler can use a shared symmetric key stored in your KMS.
+
+Please let us know if you need per-Service payload encryption or better handling for asymmetric encryption keys.
+
+### Nexus Registry Security {#managing-nexus-endpoints}
+
+See [Nexus Registry Roles and Permissions](/nexus/registry#roles-and-permissions).
+
+## Learn more
+
+- [Evaluate](/evaluate/nexus) why you should use Nexus and watch the [Nexus keynote and demo](https://youtu.be/qqc2vsv1mrU?feature=shared&t=2082).
+- Learn how Nexus works in the [Nexus deep dive talk](https://www.youtube.com/watch?v=izR9dQ_eIe4&t=934s).
+- Explore [additional resources](/evaluate/nexus#learn-more) to learn more about Nexus.

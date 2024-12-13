@@ -13,12 +13,9 @@ keywords:
   - security
   - term
 tags:
-  - auth
-  - developer-guide
-  - guide-context
-  - java
-  - security
-  - term
+  - Temporal Service
+  - Self-hosting
+  - Security
 ---
 
 :::info General company security
@@ -163,12 +160,12 @@ The code for the default `ClaimMapper` can also be used to build a custom `Claim
 A `TokenKeyProvider` obtains public keys from specified issuers' URIs that adhere to a specific format.
 The default JWT `ClaimMapper` uses this component to obtain and refresh public keys over time.
 
-Temporal provides an `rsaTokenKeyProvider`.
+Temporal provides a `defaultTokenKeyProvider`.
 This component dynamically obtains public keys that follow the [JWKS format](https://tools.ietf.org/html/rfc7517).
-`rsaTokenKeyProvider` uses only the `RSAKey` and `Close` methods.
+It supports formats such as `RSA` and `ECDSA`.
 
 ```go
-provider := authorization.NewRSAKeyProvider(cfg)
+provider := authorization.NewDefaultTokenKeyProvider(cfg, logger)
 ```
 
 :::note

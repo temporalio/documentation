@@ -1,12 +1,17 @@
 ---
 id: failure-detection
-title: Failure detection - Temporal Java SDK feature guide
+title: Failure detection - Java SDK
 sidebar_label: Failure detection
 toc_max_heading_level: 4
 keywords:
-  - failure-detection
+  - failure detection
 tags:
-  - failure-detection
+  - Activities
+  - Workflows
+  - Errors
+  - Failures
+  - Java SDK
+  - Temporal SDKs
 description: Learn how to set Workflow and Activity timeouts, Retry Policies, and Heartbeat in Java using the Temporal Client and Worker for Workflow optimization and execution controls.
 ---
 
@@ -189,9 +194,11 @@ To set a Retry Policy, known as the [Retry Options](/encyclopedia/retry-policies
                 .build();
   ```
 
-### Overriding the retry interval with Next Retry Delay {#next-retry-delay}
+## Activity next Retry delay {#activity-next-retry-delay}
 
-You may throw an [Application Failure](/references/failures#application-failure) with the NextRetryDelay field set. This value will replace and override whatever the retry interval would be on the retry policy.
+**How to override the next Retry delay following an Activity failure using the Temporal Java SDK**
+
+You may throw an [`ApplicationFailure`](/references/failures#application-failure) with the `NextRetryDelay` field set. This value will replace and override whatever the retry interval would be on the retry policy.
 
 For example, if in an activity, you want to base the interval on the number of attempts, you might do:
 

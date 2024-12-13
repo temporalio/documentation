@@ -1,12 +1,15 @@
 ---
 id: schedules
-title: Schedules - Temporal Go SDK feature guide
+title: Schedules - Go SDK
 sidebar_label: Schedules
 toc_max_heading_level: 4
 keywords:
   - schedules
 tags:
-  - schedules
+  - Workflows
+  - Schedules
+  - Go SDK
+  - Temporal SDKs
 description: Learn how to schedule Workflows, start them with delays or as Temporal Cron Jobs using the Go SDK. Master scheduling, backfilling, pausing, deleting, and updating Workflows.
 ---
 
@@ -66,6 +69,13 @@ func main() {
 }
 // ...
 ```
+
+:::tip Schedule Auto-Deletion
+
+Once a Schedule has completed creating all its Workflow Executions, the Temporal Service deletes it since it won’t fire again.
+The Temporal Service doesn't guarantee when this removal will happen.
+
+:::
 
 ### Backfill a Schedule {#backfill-schedule}
 

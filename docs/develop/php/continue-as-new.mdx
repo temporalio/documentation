@@ -1,13 +1,16 @@
 ---
 id: continue-as-new
-title: Continue-As-New
+title: Continue-As-New - PHP SDK
 sidebar_label: Continue-As-New
 slug: /develop/php/continue-as-new
 toc_max_heading_level: 2
 keywords:
   - continue-as-new
 tags:
+  - Workflows
   - continue-as-new
+  - PHP SDK
+  - Temporal SDKs
 description: Learn how to use Continue-As-New to manage large Event Histories in Workflow Execution by creating a new execution with the same Workflow Id but a fresh Event History.
 ---
 
@@ -38,3 +41,11 @@ public function periodic(string $name, int $value = 0)
     return Workflow::newContinueAsNewStub(self::class)->periodic($name, $value);
 }
 ```
+
+:::warning Using Continue-as-New and Updates
+
+- Temporal _does not_ support Continue-as-New functionality within Update handlers.
+- Complete all handlers _before_ using Continue-as-New.
+- Use Continue-as-New from your main Workflow Definition method, just as you would complete or fail a Workflow Execution.
+
+:::

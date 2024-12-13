@@ -1,135 +1,159 @@
 ---
 id: index
-title: Temporal Java SDK development documentation
+title: Java SDK developer guide
 sidebar_label: Java SDK
 description: Explore Temporal Java SDK feature guides to master developing Temporal Applications. Learn how to build Workflows, Activities, and Workers, connect to Temporal Services, set up a testing suite, handle failure detection, send messages, complete Activities asynchronously, implement Versioning, use Observability, debug applications, schedule Workflows
 toc_max_heading_level: 4
 keywords:
-  - dev guide
-  - java
-  - introduction
+  - Java SDK
 tags:
-  - dev-guide
-  - java
+  - Java SDK
+  - Temporal SDKs
 ---
 
-These Temporal Java SDK feature guides aim to show how to use Temporal features when developing [Temporal Applications](/temporal#temporal-application).
+![Java SDK Banner](/img/banner-java-temporal.png)
 
-## Core application
+:::info JAVA SPECIFIC RESOURCES
+Build Temporal Applications with the Java SDK.
 
-The [Core Application feature guide](/develop/java/core-application) shows how to use the basic building blocks of a Temporal Application (Workflows, Activities, and Workers).
+**Temporal Java Technical Resources:**
+
+- [Java API Documentation](https://javadoc.io/doc/io.temporal/temporal-sdk)
+- [Java SDK Code Samples](https://github.com/temporalio/samples-java)
+- [Java SDK GitHub](https://github.com/temporalio/sdk-java)
+
+**Get Connected with the Temporal Java Community:**
+
+- [Temporal Java Community Slack](https://temporalio.slack.com/archives/CTT84KXK9)
+- [Java SDK Forum](https://community.temporal.io/tag/java-sdk)
+  :::
+
+## [Core application](/develop/java/core-application)
+
+Use the essential components of a Temporal Application (Workflows, Activities, and Workers) to build and run a Temporal application.
 
 - [How to develop a Workflow Definition in Java](/develop/java/core-application#develop-workflows)
 - [How to develop a basic Activity](/develop/java/core-application#develop-activities)
 - [How to start an Activity Execution](/develop/java/core-application#activity-execution)
 - [How to develop a Worker Program in Java](/develop/java/core-application#run-a-dev-worker)
 
-## Temporal Client
+## [Temporal Client](/develop/java/temporal-clients)
 
-The [Temporal Client feature guide](/develop/java/temporal-clients) shows how to connect to a Temporal Service and start a Workflow Execution.
+Connect to a Temporal Service and start a Workflow Execution.
 
 - [Connect to a development Temporal Service](/develop/java/temporal-clients#connect-to-development-service)
 - [Connect to a custom Namespace](/develop/java/temporal-clients#connect-to-custom-namespace)
 - [Connect to Temporal Cloud](/develop/java/temporal-clients#connect-to-temporal-cloud)
 - [Start a Workflow Execution](/develop/java/temporal-clients#start-workflow-execution)
 
-## Testing suites
+## [Testing](/develop/java/testing-suite)
 
-The [Testing suite feature guide](/develop/java/testing-suite) shows how to set up the testing suite and test Workflows and Activities.
+Set up the testing suite and test Workflows and Activities.
 
 - [Test frameworks](/develop/java/testing-suite#test-frameworks)
 - [Test Activities](/develop/java/testing-suite#test-activities)
 - [Testing Workflows](/develop/java/testing-suite#test-workflows)
 - [How to Replay a Workflow Execution](/develop/java/testing-suite#replay)
 
-## Failure detection
+## [Failure detection](/develop/java/failure-detection)
 
-The [Failure detection feature guide](/develop/java/failure-detection) shows how your application can detect failures using timeouts and automatically attempt to mitigate them with retries.
+Explore how your application can detect failures using timeouts and automatically attempt to mitigate them with retries.
 
 - [Workflow timeouts](/develop/java/failure-detection#workflow-timeouts)
 - [How to set Activity timeouts](/develop/java/failure-detection#activity-timeouts)
 - [How to Heartbeat an Activity](/develop/java/failure-detection#activity-heartbeats)
 
-## Messages
+## [Workflow message passing](/develop/java/message-passing)
 
-The [Workflow messages feature guide](/develop/java/message-passing) shows how to send messages to and read the state of Workflow Executions.
+Send messages to and read the state of Workflow Executions.
 
 - [How to develop with Signals](/develop/java/message-passing#signals)
 - [How to develop with Queries](/develop/java/message-passing#queries)
 - [What is a Dynamic Handler?](/develop/java/message-passing#dynamic-handler)
 - [How to develop with Updates](/develop/java/message-passing#updates)
 
-## Asynchronous Activity Completion
+## [Asynchronous Activity completion](/develop/java/asynchronous-activity-completion)
 
-The [Asynchronous Activity Completion feature guide](/develop/java/asynchronous-activity-completion) shows how to complete Activities asynchronously.
+Complete Activities asynchronously.
 
 - [How to asynchronously complete an Activity](/develop/java/asynchronous-activity-completion)
 
-## Versioning
+## [Versioning](/develop/java/versioning)
 
-The [Versioning feature guide](/develop/java/versioning) shows how to change Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
+Change Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
 
 - [How to patch Workflows in Java](/develop/java/versioning#patching)
 - [How to use Worker Versioning in Java](/develop/java/versioning#worker-versioning)
 
-## Observability
+## [Observability](/develop/java/observability)
 
-The [Observability feature guide](/develop/java/observability) shows how to configure and use the Temporal Observability APIs.
+Configure and use the Temporal Observability APIs.
 
 - [How to emit metrics](/develop/java/observability#metrics)
 - [How to setup Tracing](/develop/java/observability#tracing)
 - [How to log from a Workflow](/develop/java/observability#logging)
 - [How to use Visibility APIs](/develop/java/observability#visibility)
 
-## Debugging
+## [Debugging](/develop/java/debugging)
 
-The [Debugging feature guide](/develop/java/debugging) covers the various ways to debug your application.
+Explore various ways to debug your application.
 
 - [How to debug in a development environment](/develop/java/debugging#debug-in-a-development-environment)
 - [How to debug in a production environment](/develop/java/debugging#debug-in-a-production-environment)
 
-## Schedules
+## [Schedules](/develop/java/schedules)
 
-The [Schedules feature guide](/develop/java/schedules) shows how to schedule Workflows, run Workflows on a Cron, and to delay the start of a Workflow.
+Run Workflows on a schedule and delay the start of a Workflow.
 
 - [How to Schedule a Workflow](/develop/java/schedules#schedule-a-workflow)
 - [How to set a Cron Schedule in Java](/develop/java/schedules#cron-schedule)
 
-## Data encryption
+## [Data encryption](/develop/java/converters-and-encryption)
 
-The [Data encryption feature guide](/develop/java/data-encryption) provides guidance on how to support compression, encryption, and other data handling by implementing custom converters and codecs.
+Use compression, encryption, and other data handling by implementing custom converters and codecs.
 
-- [How to use a custom Payload Codec in Java](/develop/java/data-encryption#custom-payload-codec)
-- [How to use custom Payload conversion](/develop/java/data-encryption#custom-payload-conversion)
+- [How to use a custom Payload Codec in Java](/develop/java/converters-and-encryption#custom-payload-codec)
+- [How to use custom Payload conversion](/develop/java/converters-and-encryption#custom-payload-conversion)
 
-## Child Workflows
+## Temporal Nexus
 
-The [Child Workflows feature guide](/develop/java/child-workflows) shows how to spawn a Child Workflow Execution and handle Child Workflow Events.
+The [Temporal Nexus](/develop/java/nexus) feature guide shows how to use Temporal Nexus to connect Durable Executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
+
+- [Create a Nexus Endpoint to route requests from caller to handler](/develop/java/nexus#create-nexus-endpoint)
+- [Define the Nexus Service contract](/develop/java/nexus#define-nexus-service-contract)
+- [Develop a Nexus Service and Operation handlers](/develop/java/nexus#develop-nexus-service-operation-handlers)
+- [Develop a caller Workflow that uses a Nexus Service](/develop/java/nexus#develop-caller-workflow-nexus-service)
+- [Make Nexus calls across Namespaces with a development Server](/develop/java/nexus#nexus-calls-across-namespaces-dev-server)
+- [Make Nexus calls across Namespaces in Temporal Cloud](/develop/java/nexus#nexus-calls-across-namespaces-temporal-cloud)
+
+## [Child Workflows](/develop/java/child-workflows)
+
+Explore how to spawn a Child Workflow Execution and handle Child Workflow Events.
 
 - [Start a Child Workflow Execution](/develop/java/child-workflows#start-child-workflow)
 - [Set a Parent Close Policy](/develop/java/child-workflows#parent-close-policy)
 
-## Continue-As-New
+## [Continue-As-New](/develop/java/continue-as-new)
 
-The [Continue-As-New feature guide](/develop/java/continue-as-new) shows how to continue the Workflow Execution with a new Workflow Execution using the same Workflow ID.
+Continue the Workflow Execution with a new Workflow Execution using the same Workflow ID.
 
 - [Continue a Workflow as New](/develop/java/continue-as-new)
 
-## Timers
+## [Durable Timers](/develop/java/timers)
 
-The [Durable Timers feature guide](/develop/java/timers) shows how to use Timers and sleep within Workflows.
+Use Timers to make a Workflow Execution pause or "sleep" for seconds, minutes, days, months, or years.
 
 - [What is a Timer?](/develop/java/timers#timers)
 
-## Side Effects
+## [Side Effects](/develop/java/side-effects)
 
-The [Side Effects feature guide](/develop/java/side-effects) covers how to use Side Effects in Workflows.
+Use Side Effects in Workflows.
 
 - [Side Effects](/develop/java/side-effects#side-effects)
 
-## Namespaces
+## [Manage Namespaces](/develop/java/namespaces)
 
-The [Namespaces feature guide](/develop/java/namespaces) covers how to create and manage Namespaces.
+Create and manage Namespaces.
 
 - [Create a Namespace](/develop/java/namespaces#register-namespace)
 - [Manage Namespaces](/develop/java/namespaces#manage-namespaces)
