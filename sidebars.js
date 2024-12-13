@@ -368,6 +368,7 @@ module.exports = {
               },
               items: [
                 "production-deployment/cloud/aws-export-s3",
+                "production-deployment/cloud/gcp-export-gcs",
               ],
             },
             {
@@ -381,7 +382,6 @@ module.exports = {
               items: [
                 "production-deployment/cloud/audit-logging-aws",
                 "production-deployment/cloud/audit-logging-gcp",
-                "production-deployment/cloud/gcp-export-gcs"
               ],
             },
             {
