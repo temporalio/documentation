@@ -11,10 +11,9 @@ keywords:
   - production-readiness
   - security
 tags:
-  - guide-context
-  - how-to
-  - production-readiness
-  - security
+  - Temporal Service
+  - Self-hosting
+  - Security
 ---
 
 import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
@@ -125,13 +124,14 @@ The following example shows a sample `POST` request body with base64 encoding.
     "metadata": {
       "encoding": <base64EncodedEncodingHint>
     },
-    "data": <base64 of decoded value>
+    "data": <encryptedPayloadData>
   }, ...]
 }
 ```
 
 #### CORS
 
+By default, in cross-origin Fetch/XHR invocations, browsers will not send credentials.
 Enable [Cross-Origin Resource Sharing (CORS)](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) requests on your Codec Server to receive HTTP/HTTPS requests from the Temporal Web UI.
 
 At a minimum, enable the following responses from your Codec Server to allow requests coming from the Temporal Web UI:
@@ -218,6 +218,37 @@ Content-Type: application/json
       "shopperId":"your-shopper-id-example",
       "email":"your-email@domain.com"
     }}]
+}
+```
+
+You can also perform remote encoding on an `/encode` endpoint, which looks the same in reverse:
+
+- Scheme: `https`
+- Host: `dev.mydomain.com/codec`
+- Path: `/encode`
+
+```json
+HTTP/1.1 POST /encode
+Host: https://dev.mydomain.com/codec
+Content-Type: application/json
+X-Namespace: myapp-dev.acctid123
+Authorization: Bearer <token>
+
+{"payloads":[{"metadata":{"encoding":"json/protobuf","messageType":"temporal_shop.orchestrations.v1.StartShoppingCartRequest"},"data":{"cartId":"example-cart","shopperId":"your-shopper-id-example","email":"your-email@domain.com"}}]}
+
+200 OK
+Content-Type: application/json
+
+{
+  "payloads": [
+    {
+      "metadata": {
+        "encoding": "anNvbi9wcm90b2J1Zg==",
+        "messageType": "dGVtcG9yYWxfc2hvcC5vcmNoZXN0cmF0aW9ucy52MS5TdGFydFNob3BwaW5nQ2FydFJlcXVlc3Q="
+      },
+      "data": "eyJjYXJ0SWQiOiJleGFtcGxlLWNhcnQiLCJzaG9wcGVySWQiOiJ5b3VyLXNob3BwZXItaWQtZXhhbXBsZSIsImVtYWlsIjoieW91ci1lbWFpbEBkb21haW4uY29tIn0"
+    }
+  ]
 }
 ```
 
@@ -325,5 +356,12 @@ Codec Servers can be used for more than encryption and decryption of sensitive d
 Codec Server behavior is left up to implementers -- they can also call external services or perform other tasks, as long as they hook in at the encoding and decoding stages of a Workflow payload.
 
 By default, Temporal limits payload size to 4MB.
-If this limitation is problematic for your use case, you could implement a codec that persists your payloads to an S3 bucket outside of workflow histories.
+If this limitation is problematic for your use case, you could implement a codec that persists your payloads to an object store outside of workflow histories.
 An example implementation is available from [DataDog](https://github.com/DataDog/temporal-large-payload-codec).
+
+### Temporal Nexus
+
+The Data Converter works the same for a Nexus Operation as it does for other payloads sent between a Worker and Temporal Cloud.
+Both the caller and handler Workers must use compatible Data Converters to pass operation inputs and results between them.
+
+See [Nexus Payload Encryption & Data Converter](/nexus/security#payload-encryption-data-converter) for details.

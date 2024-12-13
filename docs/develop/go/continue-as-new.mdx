@@ -1,12 +1,15 @@
 ---
 id: continue-as-new
-title: Continue-As-New - Temporal Go SDK feature guide
+title: Continue-As-New - Go SDK
 sidebar_label: Continue-As-New
 toc_max_heading_level: 4
 keywords:
   - continue-as-new
 tags:
+  - Workflows
   - continue-as-new
+  - Go SDK
+  - Temporal SDKs
 description: Continue-As-New in Temporal allows a Workflow Execution to close and start a new one with the same Workflow Id, new Run Id, and fresh Event History to manage large Event Histories.
 ---
 
@@ -30,3 +33,11 @@ To check whether a Workflow Execution was spawned as a result of Continue-As-New
   Failure to do so can result in buffered Signals being ignored and lost.
 - Make sure that the previous Workflow and the Continue-As-New Workflow are referenced by the same alias.
   Failure to do so can cause the Workflow to Continue-As-New on an entirely different Workflow.
+
+:::warning Using Continue-as-New and Updates
+
+- Temporal _does not_ support Continue-as-New functionality within Update handlers.
+- Complete all handlers _before_ using Continue-as-New.
+- Use Continue-as-New from your main Workflow Definition method, just as you would complete or fail a Workflow Execution.
+
+:::

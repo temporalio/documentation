@@ -1,6 +1,6 @@
 ---
 id: schedules
-title: Schedules - Python SDK feature guide
+title: Schedules - Python SDK
 sidebar_label: Schedules
 description: Learn how to Schedule, Create, Backfill, Delete, Describe, List, Pause, Trigger, and Update a Scheduled Workflow, along with Temporal Cron Jobs and Start Delay options.
 slug: /develop/python/schedules
@@ -18,11 +18,10 @@ keywords:
   - temporal cron jobs
   - workflow start delay
 tags:
-  - python
-  - python-sdk
-  - workflows
-  - schedules
-  - cron-jobs
+  - Workflows
+  - Schedules
+  - Python SDK
+  - Temporal SDKs
 ---
 
 This page shows how to do the following:
@@ -88,6 +87,13 @@ async def main():
         ),
     )
 ```
+
+:::tip Schedule Auto-Deletion
+
+Once a Schedule has completed creating all its Workflow Executions, the Temporal Service deletes it since it won’t fire again.
+The Temporal Service doesn't guarantee when this removal will happen.
+
+:::
 
 ### Backfill a Scheduled Workflow {#backfill}
 

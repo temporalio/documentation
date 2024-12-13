@@ -1,0 +1,133 @@
+---
+id: audit-logging-aws
+title: Audit Logging - AWS Kinesis
+sidebar_label: Amazon Kinesis
+description: Audit Logging in Temporal Cloud provides forensic information, integrating with AWS Kinesis for secure data handling and supporting key Admin and API Key operations. This streamlines audit and compliance processes.
+slug: /cloud/audit-logging-aws
+toc_max_heading_level: 4
+keywords:
+  - audit logging
+  - explanation
+  - how-to
+  - operations
+  - temporal cloud
+  - term
+  - troubleshooting
+  - aws
+  - kinesis
+tags:
+  - Temporal Cloud
+  - Logging
+  - AWS
+---
+
+## Configure Audit Logging using AWS Kinesis {#configure-audit-logging}
+
+To set up Audit Logging, you must have an Amazon Web Services (AWS) account and set up Kinesis Data Streams.
+
+1. If you don't have an AWS account, follow the instructions from AWS in [Create and activate an AWS account](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/).
+2. To set up Kinesis Data Streams, open the [AWS Management Console](https://aws.amazon.com/console/), search for Kinesis, and start the setup process.
+
+You can use [this AWS CloudFormation template](https://temporal-auditlogs-config.s3.us-west-2.amazonaws.com/cloudformation/iam-role-for-temporal-audit-logs.yaml) to create an IAM role with access to a Kinesis stream you have in your account.
+
+Be aware that Kinesis has a rate limit of 1,000 messages per second and quotas for both the number of records written and the size of the records.
+For more information, see [Why is my Kinesis data stream throttling?](https://aws.amazon.com/premiumsupport/knowledge-center/kinesis-data-stream-throttling/)
+
+### Create an Audit Log sink
+
+1. In the Temporal Cloud UI, select **Settings**.
+1. On the **Settings** page, select **Integrations**.
+1. In the **Audit Logging** card, select **Configure Audit Logs**.
+1. On the **Audit Logging** page, choose your **Access method** (either **Auto** or **Manual**).
+   - **Auto:** Configure the AWS CloudFormation stack in your AWS account from the Cloud UI.
+   - **Manual:** Use a generated AWS CloudFormation template to set up Kinesis manually.
+1. In **Kinesis ARN**, paste the Kinesis ARN from your AWS account.
+1. In **Role name**, provide a name for a new IAM Role.
+1. In **Select an AWS region**, select the appropriate region for your Kinesis stream.
+
+If you chose the **Auto** access method, continue with the following steps:
+
+1. Select **Save and launch stack**.
+1. In **Stack name** in the AWS CloudFormation console, specify a name for the stack.
+1. In the lower-right corner of the page, select **Create stack**.
+
+If you chose the **Manual** access method, continue with the following steps:
+
+1. Select **Save and download template**.
+1. Open the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/).
+1. Select **Create Stack**.
+1. On the **Create stack** page, select **Template is ready** and **Update a template file**.
+1. Select **Choose file** and specify the template you generated in step 1.
+1. Select **Next** on this page and on the next two pages.
+1. On the **Review** page, select **Create stack**.
+
+## Consume an Audit Log {#consume-an-audit-log}
+
+**How to consume an Audit Log**
+
+After you create an Audit Log sink, wait for the logs to flow into the Kinesis stream.
+You should see the first logs 2–10 minutes after you configure the sink.
+Subsequent logs arrive every 2 minutes if any actions occurred during that 2-minute window.
+
+:::note
+
+You must configure and implement your own consumer of the Kinesis stream.
+For an example, see [Example of consuming an Audit Log](#example-of-consuming-an-audit-log).
+
+:::
+
+### Example of consuming an Audit Log
+
+The following Go code is an example of consuming Audit Logs from a Kinesis stream and delivering them to an S3 bucket.
+
+```go
+func main() {
+   fmt.Println("print audit log from S3")
+   cfg, err := config.LoadDefaultConfig(context.TODO(),
+      config.WithSharedConfigProfile("your_profile"),
+   )
+   if err != nil {
+      fmt.Println(err)
+   }
+   s3Client := s3.NewFromConfig(cfg)
+   response, err := s3Client.GetObject(
+      context.Background(),
+      &s3.GetObjectInput{
+         Bucket: aws.String("your_bucket_name"),
+         Key:    aws.String("your_s3_file_path")})
+   if err != nil {
+      fmt.Println(err)
+   }
+   defer response.Body.Close()
+
+   content, err := io.ReadAll(response.Body)
+
+   fmt.Println(string(content))
+}
+```
+
+The preceding code also prints the logs in the terminal.
+The following is a sample result.
+
+```json
+{
+  "emit_time": "2023-11-14T07:56:55Z",
+  "level": "LOG_LEVEL_INFO",
+  "caller_ip_address": "10.1.2.3, 10.4.5.6",
+  "user_email": "user1@example.com",
+  "operation": "DeleteUser",
+  "details": {
+    "target_users": ["d7dca96f-adcc-417d-aafc-e8f5d2ba9fe1"],
+    "search_attribute_update": {}
+  },
+  "status": "OK",
+  "category": "LOG_CATEGORY_ADMIN",
+  "log_id": "0mc69c0323b871293ce231dd1c7fb639",
+  "request_id": "445297d3-43a7-4793-8a04-1b1dd1999640",
+  "principal": {
+    "id": "988cb80b-d6be-4bb5-9c87-d09f93f58ed3",
+    "type": "user",
+    "name": "user1@example.com"
+  }
+}
+```

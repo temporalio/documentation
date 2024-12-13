@@ -1,0 +1,34 @@
+---
+id: nexus-endpoints
+title: Nexus Endpoints
+sidebar_label: Nexus Endpoints
+description: Nexus Endpoints are reverse proxies that connect Nexus callers and handlers forwarding Nexus requests to an upstream target Namespace and Task Queue that a Worker is polling.
+toc_max_heading_level: 4
+slug: /nexus/endpoints
+keywords:
+  - nexus endpoints
+  - temporal nexus
+  - nexus
+tags:
+  - Nexus
+  - Concepts
+---
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal Nexus is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
+
+:::
+
+A [Nexus Endpoint](/glossary#nexus-endpoint) is a reverse proxy that can route Nexus requests from a caller Workflow to an upstream target Namespace and Task Queue.
+A [Nexus Service](/nexus/services) runs in a Worker that is polling the Endpoint's target Task Queue.
+
+An Endpoint decouples the caller and handler, so the caller only needs to know the Endpoint name.
+The Endpoint encapsulates the upstream target Namespace and Task Queue from the caller.
+A Worker handles Nexus requests by registering one or more [Nexus Services](/nexus/services) and polling the Endpoint's target Task Queue.
+
+![Nexus Overview](/img/nexus-overview-short.png)
+
+Multiple Nexus Endpoints can target the same target Namespace.
+
+Adding a Nexus Endpoint to the [Nexus Registry](/nexus/registry) deploys the Endpoint, so it is available at runtime to serve Nexus requests.

@@ -1,13 +1,16 @@
 ---
 id: schedules
-title: Schedules
+title: Schedules - PHP SDK
 sidebar_label: Schedules
 slug: /develop/php/schedules
 toc_max_heading_level: 2
 keywords:
   - schedules
 tags:
-  - schedules
+  - Workflows
+  - Schedules
+  - Go SDK
+  - Temporal SDKs
 description: Learn how to use Workflow Start Delay and Temporal Cron Jobs in PHP. Delay Workflow execution or set up recurring tasks with a Cron Schedule using Temporal Client.
 ---
 
@@ -69,3 +72,10 @@ The following example sets a Cron Schedule in PHP:
 
 Setting `withCronSchedule` turns the Workflow Execution into a Temporal Cron Job.
 For more information, see the [PHP samples](https://github.com/temporalio/samples-php/tree/master/app/src/Cron) for example code or the PHP SDK `WorkflowOptions` [source code](https://github.com/temporalio/sdk-php/blob/master/src/Client/WorkflowOptions.php).
+
+:::tip Schedule Auto-Deletion
+
+Once a Schedule has completed creating all its Workflow Executions, the Temporal Service deletes it since it won’t fire again.
+The Temporal Service doesn't guarantee when this removal will happen.
+
+:::

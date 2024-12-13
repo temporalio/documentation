@@ -5,9 +5,9 @@ sidebar_label: Available metrics
 description: Explore Temporal Cloud metrics that can be used with counters and histograms, supporting rate and latency calculations.
 toc_max_heading_level: 4
 tags:
-  - temporal-cloud
-  - metrics
-  - observability
+  - Metrics
+  - Observability
+  - Temporal Cloud
 keywords:
   - temporal cloud metrics
   - promql temporal metrics
@@ -222,7 +222,7 @@ Use the following labels to filter metrics:
 | `le`                       | Less than or equal to (`le`) is used in histograms to categorize observations into buckets based on their value being less than or equal to a predefined upper limit.                                                                                                                      |
 | `operation`                | This includes operations such as:<ul><li>SignalWorkflowExecution</li><li>StartBatchOperation</li><li>StartWorkflowExecution</li><li>TaskQueueMgr</li><li>TerminateWorkflowExecution</li><li>UpdateNamespace</li><li>UpdateSchedule</li></ul> See: [Metric Operations](#metrics-operations) |
 | `resource_exhausted_cause` | Cause for resource exhaustion.                                                                                                                                                                                                                                                             |
-| `task_type`                | Activity or Workflow.                                                                                                                                                                                                                                                                      |
+| `task_type`                | Activity, Workflow, or Nexus.                                                                                                                                                                                                                                                              |
 | `temporal_account`         | Temporal Account.                                                                                                                                                                                                                                                                          |
 | `temporal_namespace`       | Temporal Namespace.                                                                                                                                                                                                                                                                        |
 | `temporal_service_type`    | Frontend or Matching or History or Worker.                                                                                                                                                                                                                                                 |
@@ -265,6 +265,7 @@ Temporal Cloud includes the following operations labels:
 - OperatorDeleteNamespace
 - PatchSchedule
 - PollActivityTaskQueue
+- PollNexusTaskQueue
 - PollWorkflowExecutionHistory
 - PollWorkflowExecutionUpdate
 - PollWorkflowTaskQueue
@@ -280,6 +281,8 @@ Temporal Cloud includes the following operations labels:
 - RespondActivityTaskCompletedById
 - RespondActivityTaskFailed
 - RespondActivityTaskFailedById
+- RespondNexusTaskCompleted
+- RespondNexusTaskFailed
 - RespondQueryTaskCompleted
 - RespondWorkflowTaskCompleted
 - RespondWorkflowTaskFailed

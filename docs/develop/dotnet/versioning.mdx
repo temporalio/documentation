@@ -1,6 +1,6 @@
 ---
 id: versioning
-title: Versioning - .NET SDK feature guide
+title: Versioning - .NET SDK
 sidebar_label: Versioning
 description: Learn how to use the .NET SDK Patching API to safely deploy new code versions, handle deprecated patches, and manage Workflow activities using Temporal for long-running tasks.
 toc_max_heading_level: 4
@@ -20,20 +20,11 @@ keywords:
   - workflow history
   - workflow transition
 tags:
-  - best-practices
-  - code-sample
-  - deployment
-  - deployment-safety
-  - deprecated-patches
-  - how-to
-  - patching
-  - dotnet
-  - dotnet-sdk
-  - version
-  - versioning
-  - workflow-completion
-  - workflow-history
-  - workflow-transition
+  - Workflows
+  - .Net SDK
+  - Temporal SDKs
+  - Versioning
+  - Patching
 ---
 
 This page shows how to do the following:
@@ -107,7 +98,7 @@ public class MyWorkflow
 }
 ```
 
-**Problem: You cannot deploy `PostPatchActivity` directly until you're certain there are no more running Workflows created using the `PrePatchActivity` code, otherwise you are likely to cause a non-deterministic error.**
+**Problem: You cannot deploy `PostPatchActivity` directly until you're certain there are no more running Workflows created using the `PrePatchActivity` code, otherwise you are likely to cause a nondeterminism error.**
 
 Instead, you'll need to deploy `PostPatchActivity` and use the [Patched](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_Patched_System_String_) method to determine which version of the code to execute.
 

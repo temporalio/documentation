@@ -1,6 +1,6 @@
 ---
 id: schedules
-title: Schedules - .NET SDK feature guide
+title: Schedules - .NET SDK
 sidebar_label: Schedules
 description: Learn how to manage and optimize Scheduled Workflows using the Temporal .NET SDK; Schedule, Create, Backfill, Update, Delete, Describe, List, Pause, Trigger, and use Start Delay options.
 keywords:
@@ -8,9 +8,10 @@ keywords:
   - dotnet
   - schedules
 tags:
-  - sdk
-  - dotnet
-  - schedules
+  - Workflows
+  - .Net SDK
+  - Temporal SDKs
+  - Schedules
 ---
 
 This page shows how to do the following:
@@ -62,6 +63,13 @@ var handle = await client.CreateScheduleAsync(
             Intervals = new List<ScheduleIntervalSpec> { new(Every: TimeSpan.FromDays(5)) },
         }));
 ```
+
+:::tip Schedule Auto-Deletion
+
+Once a Schedule has completed creating all its Workflow Executions, the Temporal Service deletes it since it won’t fire again.
+The Temporal Service doesn't guarantee when this removal will happen.
+
+:::
 
 ### Backfill a Scheduled Workflow {#backfill-a-scheduled-workflow}
 
