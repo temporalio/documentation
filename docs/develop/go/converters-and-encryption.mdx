@@ -24,7 +24,7 @@ This provides a high degree of confidentiality because the Temporal Server itsel
 It also gives implementers more power and more freedom regarding which client is able to read which data -- they can control access with keys, algorithms, or other security measures.
 
 A Temporal developer adds client-side encryption of Payloads by providing a Custom Payload Codec to its Client.
-Depending on business needs, a complete implementation of Payload Encryption may involve the selection of appropriate encryption algorithms, management of encryption keys, and/or restriction a subset of their users from viewing payload output.
+Depending on business needs, a complete implementation of Payload Encryption may involve selecting appropriate encryption algorithms, managing encryption keys, restricting a subset of their users from viewing payload output, or a combination of these.
 
 The server itself never adds encryption over Payloads.
 Therefore, unless client-side encryption is implemented, Payload data will be persisted in non-encrypted form to the data store, and any Client that can make requests to a Temporal namespace (including the Temporal UI and CLI) will be able to read Payloads contained in Workflows.
