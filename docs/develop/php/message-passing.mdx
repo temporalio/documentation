@@ -569,11 +569,11 @@ By default, your Worker will log a warning when you allow a Workflow Execution t
 You can silence these warnings on a per-handler basis by passing the `unfinishedPolicy` argument to the [`UpdateMethod`](https://php.temporal.io/classes/Temporal-Workflow-UpdateMethod.html) / [`SignalMethod`](https://php.temporal.io/classes/Temporal-Workflow-SignalMethod.html) attribute:
 
 ```php
-    #[UpdateMethod(unfinishedPolicy: HandlerUnfinishedPolicy::Abandon)]
-    public function myUpdate()
-    {
-        // ...
-    }
+#[UpdateMethod(unfinishedPolicy: HandlerUnfinishedPolicy::Abandon)]
+public function myUpdate()
+{
+    // ...
+}
 ```
 
 See [Finishing handlers before the Workflow completes](/encyclopedia/workflow-message-passing#finishing-message-handlers) for more information.
@@ -673,12 +673,12 @@ If an issue occurs during the handler Execution by the Worker, the client may re
 When working with Updates, you may encounter these errors:
 
 - **No Workflow Workers are polling the Task Queue**:
-Your request will be retried by the SDK Client indefinitely.
-You can [configure RPC timeout](/develop/php/temporal-clients#configure-rpc-timeout) to impose a timeout.
-This raises a [`WorkflowUpdateRPCTimeoutOrCanceledException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowUpdateRPCTimeoutOrCanceledException.html).
+  Your request will be retried by the SDK Client indefinitely.
+  You can [configure RPC timeout](/develop/php/temporal-clients#configure-rpc-timeout) to impose a timeout.
+  This raises a [`WorkflowUpdateRPCTimeoutOrCanceledException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowUpdateRPCTimeoutOrCanceledException.html).
 
 - **Update failed**: You'll receive a [`WorkflowUpdateException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowUpdateException.html) exception.
-There are two ways this can happen:
+  There are two ways this can happen:
 
   - The Update was rejected by an Update validator defined in the Workflow alongside the Update handler.
 
@@ -693,14 +693,14 @@ These might include:
     - The Workflow author raising `ApplicationFailure`
 
 - **The handler caused the Workflow Task to fail**:
-A [Workflow Task Failure](/references/failures#errors-in-workflows) causes the server to retry Workflow Tasks indefinitely. What happens to your Update request depends on its stage:
+  A [Workflow Task Failure](/references/failures#errors-in-workflows) causes the server to retry Workflow Tasks indefinitely. What happens to your Update request depends on its stage:
   - If the request hasn't been accepted by the server, you receive a [`WorkflowUpdateException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowUpdateException.html).
   - If the request has been accepted, it is durable.
-  Once the Workflow is healthy again after a code deploy, use an [`UpdateHandle`](https://php.temporal.io/classes/Temporal-Client-Update-UpdateHandle.html) to fetch the Update result.
+    Once the Workflow is healthy again after a code deploy, use an [`UpdateHandle`](https://php.temporal.io/classes/Temporal-Client-Update-UpdateHandle.html) to fetch the Update result.
 
 - **The Workflow finished while the Update handler execution was in progress**:
-You'll receive a [`WorkflowUpdateException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowUpdateException.html).
-This happens if the Workflow finished while the Update handler execution was in progress, for example because
+  You'll receive a [`WorkflowUpdateException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowUpdateException.html).
+  This happens if the Workflow finished while the Update handler execution was in progress, for example because
 
   - The Workflow was canceled or failed.
 
@@ -711,12 +711,12 @@ This happens if the Workflow finished while the Update handler execution was in 
 When working with Queries, you may encounter these errors:
 
 - **There is no Workflow Worker polling the Task Queue**:
-You'll receive a [`WorkflowNotFoundException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowNotFoundException.html).
+  You'll receive a [`WorkflowNotFoundException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowNotFoundException.html).
 
 - **Query failed**:
-You'll receive a [`WorkflowQueryException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowQueryException.html) if something goes wrong during a Query.
-Any exception in a Query handler will trigger this error.
-This differs from Signal and Update requests, where exceptions can lead to Workflow Task Failure instead.
+  You'll receive a [`WorkflowQueryException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowQueryException.html) if something goes wrong during a Query.
+  Any exception in a Query handler will trigger this error.
+  This differs from Signal and Update requests, where exceptions can lead to Workflow Task Failure instead.
 
 - **The handler caused the Workflow Task to fail.**
-This would happen, for example, if the Query handler blocks the thread for too long without yielding.
+  This would happen, for example, if the Query handler blocks the thread for too long without yielding.
