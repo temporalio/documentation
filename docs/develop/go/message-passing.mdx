@@ -376,10 +376,11 @@ Minimum Temporal Server version [Temporal Server version 1.26](https://github.co
 
 :::
 
-[Update-with-Start](/encyclopedia/workflow-message-passing#update-with-start) lets you send an Update that checks whether an already-running Workflow with that ID exists.
-If it does, the Update is processed.
-If not, it starts a new Workflow Execution with the supplied ID.
-Upon starting a new Workflow, it immediately processes the Update.
+[Update-with-Start](/encyclopedia/workflow-message-passing#update-with-start)
+lets you send an Update that checks whether an already-running Workflow with that ID exists:
+
+- If the Workflow exists, the Update is processed.
+- If the Workflow does not exist, a new Workflow Execution starts with the given ID, and the Update is processed immediately after.
 
 To create a new Update operation, use [`client.NewUpdateWithStartWorkflowOperation`](https://pkg.go.dev/go.temporal.io/sdk/client#NewUpdateWithStartWorkflowOperation).
 The Workflow Id is optional.
