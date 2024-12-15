@@ -387,6 +387,11 @@ When specified, the Id must match the one used in `StartWorkflowOptions`.
 Since a running Workflow Execution may not already exist, you can't set a Run Id.
 
 Use the `WithStartOperation` option to attach an Update Operation to the [`Client.ExecuteWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.ExecuteWorkflow) API call.
+
+Not all `ExecuteWorkflow` options are allowed with Update-With-Start.
+For example, specifying a Cron Schedule will result in an error.
+
+For more details, refer to the [API documentation](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions).
 Not all `ExecuteWorkflow` options are allowed with Update-With-Start.
 For example, specifying a Cron Schedule results in an error.
 Refer to the [API documentation](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions) for further details.
