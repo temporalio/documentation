@@ -144,17 +144,26 @@ Description = 'foo'
 
 #### Keyword
 
-For Search Attributes of type `Keyword` like `WorkflowId`, the only kind of partial string matching that works is using BETWEEN for suffixes.
+For Search Attributes of type `Keyword` like `WorkflowId`, perform partial string matching using STARTS_WITH for prefixes and BETWEEN for suffixes.
 
-`WorkflowId BETWEEN "order-" AND "order-~"` matches WorkflowIds that have characters after `order-` with ASCII values lower than `~` (126, the highest-value printable character), such as the following:
+* `WorkflowId STARTS_WITH "order-"` matches Workflow Ids with the "order-" prefix, regardless of the following text.
 
-```
-order-
-order-1234
-order-abracadabra
-```
+  ```
+  order-
+  order-1234
+  order-abracadabra
+  order-~~~abracadabra
+  ```
 
-It does not match `order-~~`.
+* `WorkflowId BETWEEN "order-" AND "order-~"` matches Workflow Ids that have characters after `order-` with ASCII values lower than `~` (126, the highest-value printable character), such as the following:
+
+  ```
+  order-
+  order-1234
+  order-abracadabra
+  ```
+
+  It does not match `order-~~`.
 
 :::note Filter Composition Quick Reference
 
