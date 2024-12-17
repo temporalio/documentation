@@ -349,13 +349,7 @@ You must provide a `WaitForStage` when calling `UpdateWorkflow()`.
 This parameter controls the stage the update must reach before returning a handle to the caller:
 
 - If `WaitForStage` is set to `WorkflowUpdateStageCompleted`, the handle is returned after the Update completes.
-- If `WaitForStage` is set to `WorkflowUpdateStageAccepted`, the handle is returned after the Update is accepted and the Validator is run, if it's defined.
-
-Note: You cannot send Updates to other Workflow Executions.
-
-The following sample demonstrates how to create a context with timeout for sending an `Update` to the Workflow:
-
-If `WaitForStage` is set to `WorkflowUpdateStageCompleted` the handle is returned after the update completes; if `WaitForStage` is set to `WorkflowUpdateStageAccepted` the handle is returned after the Update is accepted (i.e. after the validator has run, if there is a validator).
+- If `WaitForStage` is set to `WorkflowUpdateStageAccepted`, the handle is returned after the Update is accepted (i.e. after the validator has run, if there is a validator).
 
 Also note that you can't send Updates to other Workflow Executions.
 
