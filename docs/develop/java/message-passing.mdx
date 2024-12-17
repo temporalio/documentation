@@ -407,7 +407,7 @@ Use the [`WorkflowUpdateHandle`](https://javadoc.io/doc/io.temporal/temporal-sdk
 You will need to provide:
 
 - WorkflowStub created from [`WorkflowOptions`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.html).
-  The `WorkflowOptions` require [Workflow Id Conflict Policy](#workflow-id-conflict-policy) to be specified.
+  The `WorkflowOptions` require [Workflow Id Conflict Policy](/workflows#workflow-id-conflict-policy) to be specified.
   Choose "Use Existing" and use an idempotent Update handler to ensure your code can be executed again in case of a Client failure.
   Not all `WorkflowOptions` are allowed.
   For example, specifying a Cron Schedule will result in an error.
