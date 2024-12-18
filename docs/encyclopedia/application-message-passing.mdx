@@ -30,6 +30,8 @@ keywords:
 ---
 
 
+
+
 import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
 import {RelatedReadContainer, RelatedReadItem} from '@site/src/components/related-read/RelatedRead';
 
@@ -129,8 +131,6 @@ Signal-With-Start is a great tool for lazily initializing Workflows. When you se
 
 :::tip Support, stability, and dependency info
 
-- In [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in Temporal Cloud.
-- In [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in Open Source Temporal Server since [v1.25.0](https://github.com/temporalio/temporal/releases/tag/v1.25.0)
 - Available in [Go SDK](https://pkg.go.dev/go.temporal.io/sdk@v1.28.0/client#Client.UpdateWorkflow) since [v1.28.0](https://github.com/temporalio/sdk-go/releases/tag/v1.28.0)
 - Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)) since [v1.25.0](https://github.com/temporalio/sdk-java/releases/tag/v1.25.0)
 - Available in [Python SDK](/develop/python/message-passing#send-update-from-client) since [v1.7.0](https://github.com/temporalio/sdk-python/releases/tag/1.7.0)
@@ -183,7 +183,10 @@ If you want to send an Update to another Workflow such as a Child Workflow from 
 
 In [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in Temporal Cloud.
 
-Minimum Temporal Server version [Temporal Server version 1.26](https://github.com/temporalio/temporal/releases/tag/v1.26.0)
+Minimum Temporal Server version [Temporal Server version 1.26](https://github.com/temporalio/temporal/releases/tag/v1.26.2)
+
+- Available in [Go SDK](https://pkg.go.dev/go.temporal.io/sdk@v1.31.0/client#Client.UpdateWithStartWorkflow) since [v1.31.0](https://github.com/temporalio/sdk-go/releases/tag/v1.31.0)
+- Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/1.27.0/io/temporal/client/WorkflowStub.html#startUpdateWithStart(io.temporal.client.UpdateOptions,java.lang.Object%5B%5D,java.lang.Object%5B%5D)) since [v1.27.0](https://github.com/temporalio/sdk-java/releases/tag/v1.27.0)
 
 :::
 
@@ -215,6 +218,7 @@ The SDKs will retry the Update-With-Start request but there is no guarantee that
 
 <RelatedReadContainer>
     <RelatedReadItem path="/develop/go/message-passing#update-with-start" text="Update-With-Start with the Go SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/message-passing#update-with-start" text="Update-With-Start with the Java SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
 ### Sending Queries {#sending-queries}
