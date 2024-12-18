@@ -13,11 +13,11 @@ tags:
   - Concepts
 ---
 
-There is a tight coupling between Temporal Task Queues and Worker Processes.
+There is a close relationship between Temporal Task Queues and Worker Processes.
 
 ## What is a Worker? {#worker}
 
-Workers execute your Workflow code. The Worker itself is provided by the Temporal SDK, but your application will include code to configure and run it. In general, a Worker is an entity that polls a specific Task Queue on the Temporal Service, executes Workflow code in response, and returns the results of the execution back to the Temporal Server. 
+Workers, which are part of your application and provided by the Temporal SDK, carry out the tasks defined in your Workflow. The Worker itself is provided by the Temporal SDK, but your application will include code to configure and run it. Specifically, a Worker is an entity that polls a specific Task Queue on the Temporal Service, executes Workflow code in response, and returns the results of the execution back to the Temporal Server. 
 
 Since Workers execute your code, any Workflows you execute will make no progress unless one Worker is running.
 
