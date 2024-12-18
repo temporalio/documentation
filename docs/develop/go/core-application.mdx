@@ -16,16 +16,8 @@ keywords:
   - client options
   - temporal service
   - temporal service-feature
-  - code sample
-  - code samples
   - deterministic
-  - developer-guide-doc-type
   - go sdk
-  - go-sdk
-  - how-to
-  - how-to-doc-type
-  - introduction-doc-type
-  - reference-doc-type
   - retry and timeout policies
   - return values
   - run id
@@ -44,39 +36,13 @@ keywords:
   - workflow run
   - workflows
 tags:
-  - activity
-  - activity-definition
-  - activity-execution
-  - activity-options
-  - activity-parameters
-  - api
-  - cli
-  - client
-  - client-options
-  - temporal service
-  - code-sample
-  - deterministic
-  - how-to
-  - retry-and-timeout-policies
-  - return-values
-  - run-id
-  - task-queue
-  - temporal-cloud
-  - timeouts
-  - worker
-  - worker-options
-  - workflow
-  - workflow-and-activity-types
-  - workflow-definition
-  - workflow-execution
-  - workflow-id
-  - workflow-options
-  - workflow-parameters
-  - workflow-run
-  - workflows
-  - sdk
-  - go-sdk
-  - developer guide
+  - Activities
+  - Temporal Client
+  - Task Queues
+  - Workers
+  - Workflows
+  - Go SDK
+  - Temporal SDKs
 description: The Foundations section of the Temporal Developer's guide introduces essential concepts for building and running a Temporal Application, outlining steps to start Workflow and Activity Execution, running development Workers, and installing the Temporal CLI.
 ---
 
@@ -103,13 +69,13 @@ This local development Temporal Service runs as a single process with zero runti
 
 **Install the Temporal CLI**
 
-The Temporal CLI is available on MacOS, Windows, and Linux.
+The Temporal CLI is available on macOS, Windows, and Linux.
 
-### MacOS
+### macOS
 
-**How to install the Temporal CLI on Mac OS**
+**How to install the Temporal CLI on macOS**
 
-Choose one of the following install methods to install the Temporal CLI on MacOS:
+Choose one of the following install methods to install the Temporal CLI on macOS:
 
 **Install the Temporal CLI with Homebrew**
 
@@ -250,16 +216,16 @@ Below is an example of a basic Workflow Definition.
 package yourapp
 
 import (
-	"time"
+    "time"
 
-	"go.temporal.io/sdk/workflow"
+    "go.temporal.io/sdk/workflow"
 )
 // ...
 
-// YourSimpleWorkflowDefintiion is the most basic Workflow Defintion.
+// YourSimpleWorkflowDefinition is the most basic Workflow Definition.
 func YourSimpleWorkflowDefinition(ctx workflow.Context) error {
-	// ...
-	return nil
+    // ...
+    return nil
 }
 ```
 
@@ -294,15 +260,15 @@ All Workflow Definition parameters must be serializable and can't be channels, f
 package yourapp
 
 import (
-	"time"
+    "time"
 
-	"go.temporal.io/sdk/workflow"
+    "go.temporal.io/sdk/workflow"
 )
 
 // YourWorkflowParam is the object passed to the Workflow.
 type YourWorkflowParam struct {
-	WorkflowParamX string
-	WorkflowParamY int
+    WorkflowParamX string
+    WorkflowParamY int
 }
 // ...
 // YourWorkflowDefinition is your custom Workflow Definition.
@@ -335,30 +301,30 @@ Returning a non-nil `error` from a Workflow indicates that an error was encounte
 package yourapp
 
 import (
-	"time"
+    "time"
 
-	"go.temporal.io/sdk/workflow"
+    "go.temporal.io/sdk/workflow"
 )
 // ...
 
 // YourWorkflowResultObject is the object returned by the Workflow.
 type YourWorkflowResultObject struct {
-	WFResultFieldX string
-	WFResultFieldY int
+    WFResultFieldX string
+    WFResultFieldY int
 }
 // ...
 // YourWorkflowDefinition is your custom Workflow Definition.
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {
 // ...
-	if err != nil {
-		return nil, err
-	}
-	// Make the results of the Workflow Execution available.
-	workflowResult := &YourWorkflowResultObject{
-		WFResultFieldX: activityResult.ResultFieldX,
-		WFResultFieldY: activityResult.ResultFieldY,
-	}
-	return workflowResult, nil
+    if err != nil {
+        return nil, err
+    }
+    // Make the results of the Workflow Execution available.
+    workflowResult := &YourWorkflowResultObject{
+        WFResultFieldX: activityResult.ResultFieldX,
+        WFResultFieldY: activityResult.ResultFieldY,
+    }
+    return workflowResult, nil
 }
 ```
 
@@ -379,25 +345,25 @@ To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` 
 package main
 
 import (
-	"log"
+    "log"
 
-	"go.temporal.io/sdk/activity"
-	"go.temporal.io/sdk/client"
-	"go.temporal.io/sdk/worker"
-	"go.temporal.io/sdk/workflow"
+    "go.temporal.io/sdk/activity"
+    "go.temporal.io/sdk/client"
+    "go.temporal.io/sdk/worker"
+    "go.temporal.io/sdk/workflow"
 
-	"documentation-samples-go/yourapp"
+    "documentation-samples-go/yourapp"
 )
 // ...
 func main() {
 // ...
-	yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
+    yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
 // ...
-	// Use RegisterOptions to set the name of the Workflow Type for example.
-	registerWFOptions := workflow.RegisterOptions{
-		Name: "JustAnotherWorkflow",
-	}
-	yourWorker.RegisterWorkflowWithOptions(yourapp.YourSimpleWorkflowDefinition, registerWFOptions)
+    // Use RegisterOptions to set the name of the Workflow Type for example.
+    registerWFOptions := workflow.RegisterOptions{
+        Name: "JustAnotherWorkflow",
+    }
+    yourWorker.RegisterWorkflowWithOptions(yourapp.YourSimpleWorkflowDefinition, registerWFOptions)
 // ...
 }
 ```
@@ -454,26 +420,26 @@ Because this is such a common need, the rest of this guide shows Activities writ
 package yourapp
 
 import (
-	"context"
+    "context"
 
-	"go.temporal.io/sdk/activity"
+    "go.temporal.io/sdk/activity"
 )
 // ...
 
-// YourSimpleActivityDefinition is a basic Activity Definiton.
+// YourSimpleActivityDefinition is a basic Activity Definition.
 func YourSimpleActivityDefinition(ctx context.Context) error {
-	return nil
+    return nil
 }
 
 // YourActivityObject is the struct that maintains shared state across Activities.
 // If the Worker crashes this Activity object loses its state.
 type YourActivityObject struct {
-	Message *string
-	Number  *int
+    Message *string
+    Number  *int
 }
 
 // YourActivityDefinition is your custom Activity Definition.
-// An Activity Definiton is an exportable function.
+// An Activity Definition is an exportable function.
 func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (*YourActivityResultObject, error) {
 // ...
 }
@@ -513,8 +479,8 @@ However, all parameters must be serializable (parameters can't be channels, func
 // YourActivityParam is the struct passed to your Activity.
 // Use a struct so that your function signature remains compatible if fields change.
 type YourActivityParam struct {
-	ActivityParamX string
-	ActivityParamY int
+    ActivityParamX string
+    ActivityParamY int
 }
 // ...
 func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (*YourActivityResultObject, error) {
@@ -543,19 +509,19 @@ You may wish to use a `struct` type to hold all custom values, just keep in mind
 // Use a struct so that you can return multiple values of different types.
 // Additionally, your function signature remains compatible if the fields change.
 type YourActivityResultObject struct {
-	ResultFieldX string
-	ResultFieldY int
+    ResultFieldX string
+    ResultFieldY int
 }
 // ...
 func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (*YourActivityResultObject, error) {
 // ...
-	result := &YourActivityResultObject{
-		ResultFieldX: "Success",
-		ResultFieldY: 1,
-	}
-	// Return the results back to the Workflow Execution.
-	// The results persist within the Event History of the Workflow Execution.
-	return result, nil
+    result := &YourActivityResultObject{
+        ResultFieldX: "Success",
+        ResultFieldY: 1,
+    }
+    // Return the results back to the Workflow Execution.
+    // The results persist within the Event History of the Workflow Execution.
+    return result, nil
 }
 ```
 
@@ -573,15 +539,15 @@ To customize the Activity Type, set the `Name` parameter with `RegisterOptions` 
 ```go
 func main() {
 // ...
-	yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
+    yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
 // ...
-	// Use RegisterOptions to change the name of the Activity Type for example.
-	registerAOptions := activity.RegisterOptions{
-		Name: "JustAnotherActivity",
-	}
-	yourWorker.RegisterActivityWithOptions(yourapp.YourSimpleActivityDefinition, registerAOptions)
-	// Run the Worker
-	err = yourWorker.Run(worker.InterruptCh())
+    // Use RegisterOptions to change the name of the Activity Type for example.
+    registerAOptions := activity.RegisterOptions{
+        Name: "JustAnotherActivity",
+    }
+    yourWorker.RegisterActivityWithOptions(yourapp.YourSimpleActivityDefinition, registerAOptions)
+    // Run the Worker
+    err = yourWorker.Run(worker.InterruptCh())
 // ...
 }
 // ...
@@ -606,7 +572,7 @@ Otherwise, no additional limitations exist on Activity implementations.
     To spawn an [Activity Execution](/activities#activity-execution), call [`ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/workflow#ExecuteActivity) inside your Workflow Definition.
     The API is available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/workflow) package.
     The `ExecuteActivity()` API call requires an instance of `workflow.Context`, the Activity function name, and any variables to be passed to the Activity Execution.
-    	The Activity function name can be provided as a variable object (no quotations) or as a string.
+        The Activity function name can be provided as a variable object (no quotations) or as a string.
         The benefit of passing the actual function object is that the framework can validate the parameters against the Activity Definition.
         The `ExecuteActivity` call returns a Future, which can be used to get the result of the Activity Execution.
 
@@ -619,25 +585,25 @@ Otherwise, no additional limitations exist on Activity implementations.
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {
-	// Set the options for the Activity Execution.
-	// Either StartToClose Timeout OR ScheduleToClose is required.
-	// Not specifying a Task Queue will default to the parent Workflow Task Queue.
-	activityOptions := workflow.ActivityOptions{
-		StartToCloseTimeout: 10 * time.Second,
-	}
-	ctx = workflow.WithActivityOptions(ctx, activityOptions)
-	activityParam := YourActivityParam{
-		ActivityParamX: param.WorkflowParamX,
-		ActivityParamY: param.WorkflowParamY,
-	}
-	// Use a nil struct pointer to call Activities that are part of a struct.
-	var a *YourActivityObject
-	// Execute the Activity and wait for the result.
-	var activityResult YourActivityResultObject
-	err := workflow.ExecuteActivity(ctx, a.YourActivityDefinition, activityParam).Get(ctx, &activityResult)
-	if err != nil {
-		return nil, err
-	}
+    // Set the options for the Activity Execution.
+    // Either StartToClose Timeout OR ScheduleToClose is required.
+    // Not specifying a Task Queue will default to the parent Workflow Task Queue.
+    activityOptions := workflow.ActivityOptions{
+        StartToCloseTimeout: 10 * time.Second,
+    }
+    ctx = workflow.WithActivityOptions(ctx, activityOptions)
+    activityParam := YourActivityParam{
+        ActivityParamX: param.WorkflowParamX,
+        ActivityParamY: param.WorkflowParamY,
+    }
+    // Use a nil struct pointer to call Activities that are part of a struct.
+    var a *YourActivityObject
+    // Execute the Activity and wait for the result.
+    var activityResult YourActivityResultObject
+    err := workflow.ExecuteActivity(ctx, a.YourActivityDefinition, activityParam).Get(ctx, &activityResult)
+    if err != nil {
+        return nil, err
+    }
 // ...
 }
 ```
@@ -645,7 +611,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 ### How to set the required Activity Timeouts {#required-timeout}
 
 Activity Execution semantics rely on several parameters.
-The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
+The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
 These values are set in the Activity Options.
 
 To set an Activity Timeout in Go, create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the Activity Timeout field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
@@ -657,13 +623,13 @@ Available timeouts are:
 - `ScheduleToStartTimeout`
 
 ```go
-activityoptions := workflow.ActivityOptions{
+activityOptions := workflow.ActivityOptions{
   // Set Activity Timeout duration
   ScheduleToCloseTimeout: 10 * time.Second,
   // StartToCloseTimeout: 10 * time.Second,
   // ScheduleToStartTimeout: 10 * time.Second,
 }
-ctx = workflow.WithActivityOptions(ctx, activityoptions)
+ctx = workflow.WithActivityOptions(ctx, activityOptions)
 var yourActivityResult YourActivityResult
 err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
 if err != nil {
@@ -695,10 +661,10 @@ The instance of `workflow.Context` is then passed to the `ExecuteActivity()` cal
 - Default: None
 
 ```go
-activityoptions := workflow.ActivityOptions{
+activityOptions := workflow.ActivityOptions{
   ActivityID: "your-activity-id",
 }
-ctx = workflow.WithActivityOptions(ctx, activityoptions)
+ctx = workflow.WithActivityOptions(ctx, activityOptions)
 var yourActivityResult YourActivityResult
 err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
 if err != nil {
@@ -714,10 +680,10 @@ if err != nil {
 - Default: Inherits the TaskQueue name from the Workflow.
 
 ```go
-activityoptions := workflow.ActivityOptions{
+activityOptions := workflow.ActivityOptions{
   TaskQueueName: "your-task-queue-name",
 }
-ctx = workflow.WithActivityOptions(ctx, activityoptions)
+ctx = workflow.WithActivityOptions(ctx, activityOptions)
 var yourActivityResult YourActivityResult
 err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
 if err != nil {
@@ -737,10 +703,10 @@ This or `StartToCloseTimeout` must be set.
 - Default: ∞ (infinity - no limit)
 
 ```go
-activityoptions := workflow.ActivityOptions{
+activityOptions := workflow.ActivityOptions{
   ScheduleToCloseTimeout: 10 * time.Second,
 }
-ctx = workflow.WithActivityOptions(ctx, activityoptions)
+ctx = workflow.WithActivityOptions(ctx, activityOptions)
 var yourActivityResult YourActivityResult
 err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
 if err != nil {
@@ -756,10 +722,10 @@ To set a [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#s
 - Default: ∞ (infinity - no limit)
 
 ```go
-activityoptions := workflow.ActivityOptions{
+activityOptions := workflow.ActivityOptions{
   ScheduleToStartTimeout: 10 * time.Second,
 }
-ctx = workflow.WithActivityOptions(ctx, activityoptions)
+ctx = workflow.WithActivityOptions(ctx, activityOptions)
 var yourActivityResult YourActivityResult
 err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
 if err != nil {
@@ -777,10 +743,10 @@ This or `ScheduleToCloseTimeout` must be set.
 - Default: Same as the `ScheduleToCloseTimeout`
 
 ```go
-activityoptions := workflow.ActivityOptions{
+activityOptions := workflow.ActivityOptions{
   StartToCloseTimeout: 10 * time.Second,
 }
-ctx = workflow.WithActivityOptions(ctx, activityoptions)
+ctx = workflow.WithActivityOptions(ctx, activityOptions)
 var yourActivityResult YourActivityResult
 err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
 if err != nil {
@@ -793,10 +759,10 @@ if err != nil {
 To set a [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
 ```go
-activityoptions := workflow.ActivityOptions{
+activityOptions := workflow.ActivityOptions{
   HeartbeatTimeout: 10 * time.Second,
 }
-ctx = workflow.WithActivityOptions(ctx, activityoptions)
+ctx = workflow.WithActivityOptions(ctx, activityOptions)
 var yourActivityResult YourActivityResult
 err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
 if err != nil {
@@ -812,10 +778,10 @@ If `true` the Activity Execution will finish executing should there be a Cancell
 - Default: `false`
 
 ```go
-activityoptions := workflow.ActivityOptions{
+activityOptions := workflow.ActivityOptions{
   WaitForCancellation: false,
 }
-ctx = workflow.WithActivityOptions(ctx, activityoptions)
+ctx = workflow.WithActivityOptions(ctx, activityOptions)
 var yourActivityResult YourActivityResult
 err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
 if err != nil {
@@ -826,10 +792,10 @@ if err != nil {
 #### OriginalTaskQueueName
 
 ```go
-activityoptions := workflow.ActivityOptions{
+activityOptions := workflow.ActivityOptions{
   OriginalTaskQueueName: "your-original-task-queue-name",
 }
-ctx = workflow.WithActivityOptions(ctx, activityoptions)
+ctx = workflow.WithActivityOptions(ctx, activityOptions)
 var yourActivityResult YourActivityResult
 err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
 if err != nil {
@@ -845,7 +811,7 @@ To set a [RetryPolicy](/encyclopedia/retry-policies), create an instance of `Act
 - Default:
 
 ```go
-retrypolicy := &temporal.RetryPolicy{
+retryPolicy := &temporal.RetryPolicy{
   InitialInterval:    time.Second,
   BackoffCoefficient: 2.0,
   MaximumInterval:    time.Second * 100, // 100 * InitialInterval
@@ -857,16 +823,16 @@ retrypolicy := &temporal.RetryPolicy{
 Providing a Retry Policy here is a customization that overwrites individual Field defaults.
 
 ```go
-retrypolicy := &temporal.RetryPolicy{
+retryPolicy := &temporal.RetryPolicy{
   InitialInterval:    time.Second,
   BackoffCoefficient: 2.0,
   MaximumInterval:    time.Second * 100,
 }
 
-activityoptions := workflow.ActivityOptions{
-  RetryPolicy: retrypolicy,
+activityOptions := workflow.ActivityOptions{
+  RetryPolicy: retryPolicy,
 }
-ctx = workflow.WithActivityOptions(ctx, activityoptions)
+ctx = workflow.WithActivityOptions(ctx, activityOptions)
 var yourActivityResult YourActivityResult
 err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
 if err != nil {
@@ -957,46 +923,46 @@ gow run worker/main.go # automatically reloads when file changes
 package main
 
 import (
-	"log"
+    "log"
 
-	"go.temporal.io/sdk/activity"
-	"go.temporal.io/sdk/client"
-	"go.temporal.io/sdk/worker"
-	"go.temporal.io/sdk/workflow"
+    "go.temporal.io/sdk/activity"
+    "go.temporal.io/sdk/client"
+    "go.temporal.io/sdk/worker"
+    "go.temporal.io/sdk/workflow"
 
-	"documentation-samples-go/yourapp"
+    "documentation-samples-go/yourapp"
 )
 
 func main() {
-	// Create a Temporal Client
-	// A Temporal Client is a heavyweight object that should be created just once per process.
-	temporalClient, err := client.Dial(client.Options{})
-	if err != nil {
-		log.Fatalln("Unable to create client", err)
-	}
-	defer temporalClient.Close()
-	// Create a new Worker.
-	yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
-	// Register your Workflow Definitions with the Worker.
-	// Use the ReisterWorkflow or RegisterWorkflowWithOptions method for each Workflow registration.
-	yourWorker.RegisterWorkflow(yourapp.YourWorkflowDefinition)
+    // Create a Temporal Client
+    // A Temporal Client is a heavyweight object that should be created just once per process.
+    temporalClient, err := client.Dial(client.Options{})
+    if err != nil {
+        log.Fatalln("Unable to create client", err)
+    }
+    defer temporalClient.Close()
+    // Create a new Worker.
+    yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
+    // Register your Workflow Definitions with the Worker.
+    // Use the RegisterWorkflow or RegisterWorkflowWithOptions method for each Workflow registration.
+    yourWorker.RegisterWorkflow(yourapp.YourWorkflowDefinition)
 // ...
-	// Register your Activity Definitons with the Worker.
-	// Use this technique for registering all Activities that are part of a struct and set the shared variable values.
-	message := "This could be a connection string or endpoint details"
-	number := 100
-	activities := &yourapp.YourActivityObject{
-		Message: &message,
-		Number:  &number,
-	}
-	// Use the RegisterActivity or RegisterActivityWithOptions method for each Activity.
-	yourWorker.RegisterActivity(activities)
+    // Register your Activity Definitons with the Worker.
+    // Use this technique for registering all Activities that are part of a struct and set the shared variable values.
+    message := "This could be a connection string or endpoint details"
+    number := 100
+    activities := &yourapp.YourActivityObject{
+        Message: &message,
+        Number:  &number,
+    }
+    // Use the RegisterActivity or RegisterActivityWithOptions method for each Activity.
+    yourWorker.RegisterActivity(activities)
 // ...
-	// Run the Worker
-	err = yourWorker.Run(worker.InterruptCh())
-	if err != nil {
-		log.Fatalln("Unable to start Worker", err)
-	}
+    // Run the Worker
+    err = yourWorker.Run(worker.InterruptCh())
+    if err != nil {
+        log.Fatalln("Unable to start Worker", err)
+    }
 }
 // ...
 ```
@@ -1065,7 +1031,7 @@ This can be used to protect down stream services from flooding with requests.
 ```go
 // ...
 workerOptions := worker.Options{
-	WorkerActivitiesPerSecond: 100000,
+    WorkerActivitiesPerSecond: 100000,
   // ..
 }
 w := worker.New(c, "your_task_queue_name", workerOptions)
@@ -1084,7 +1050,7 @@ A value of `0` sets to the default value.
 ```go
 // ...
 workerOptions := worker.Options{
-	MaxConcurrentLocalActivityExecutionSize: 1000,
+    MaxConcurrentLocalActivityExecutionSize: 1000,
   // ...
 }
 w := worker.New(c, "your_task_queue_name", workerOptions)
@@ -1109,7 +1075,7 @@ This can be used to protect down stream services from flooding with requests.
 ```go
 // ...
 workerOptions := worker.Options{
-	WorkerLocalActivitiesPerSecond: 100000,
+    WorkerLocalActivitiesPerSecond: 100000,
   // ...
 }
 w := worker.New(c, "your_task_queue_name", workerOptions)
@@ -1134,7 +1100,7 @@ This can be used to protect down stream services from flooding.
 ```go
 // ...
 workerOptions := worker.Options{
-	TaskQueueActivitiesPerSecond: 100000,
+    TaskQueueActivitiesPerSecond: 100000,
   // ...
 }
 w := worker.New(c, "your_task_queue_name", workerOptions)
@@ -1153,7 +1119,7 @@ Changing this value will affect the rate at which the Worker is able to consume 
 ```go
 // ...
 workerOptions := worker.Options{
-	MaxConcurrentActivityTaskPollers: 2,
+    MaxConcurrentActivityTaskPollers: 2,
   // ...
 }
 w := worker.New(c, "your_task_queue_name", workerOptions)
@@ -1172,7 +1138,7 @@ A value of `0` sets to the default value.
 ```go
 // ...
 workerOptions := worker.Options{
-	MaxConcurrentWorkflowTaskExecutionSize: 1000,
+    MaxConcurrentWorkflowTaskExecutionSize: 1000,
   // ...
 }
 w := worker.New(c, "your_task_queue_name", workerOptions)
@@ -1191,7 +1157,7 @@ Changing this value will affect the rate at which the Worker is able to consume 
 ```go
 // ...
 workerOptions := worker.Options{
-	MaxConcurrentWorkflowTaskPollers: 2,
+    MaxConcurrentWorkflowTaskPollers: 2,
   // ...
 }
 w := worker.New(c, "your_task_queue_name", workerOptions)
@@ -1213,7 +1179,7 @@ This is only really useful for debugging purpose.
 ```go
 // ...
 workerOptions := worker.Options{
-	EnableLoggingInReplay: false,
+    EnableLoggingInReplay: false,
   // ...
 }
 w := worker.New(c, "your_task_queue_name", workerOptions)
@@ -1244,7 +1210,7 @@ If this Worker crashes, the sticky Workflow Task will timeout after `StickySched
 ```go
 // ...
 workerOptions := worker.Options{
-	StickyScheduleToStartTimeout: time.Second(5),
+    StickyScheduleToStartTimeout: time.Second(5),
   // ...
 }
 w := worker.New(c, "your_task_queue_name", workerOptions)
@@ -1263,7 +1229,7 @@ The resolution is in seconds.
 ```go
 // ...
 workerOptions := worker.Options{
-	StickyScheduleToStartTimeout: time.Second(5),
+    StickyScheduleToStartTimeout: time.Second(5),
   // ...
 }
 w := worker.New(c, "your_task_queue_name", workerOptions)
@@ -1292,7 +1258,7 @@ The context can be used to pass external dependencies such as database connectio
 // ...
 ctx := context.WithValue(context.Background(), "your-key", "your-value")
 workerOptions := worker.Options{
-	BackgroundActivityContext: ctx,
+    BackgroundActivityContext: ctx,
   // ...
 }
 w := worker.New(c, "your_task_queue_name", workerOptions)
@@ -1309,7 +1275,7 @@ Sets how the Workflow Worker handles a non-deterministic Workflow Execution Hist
 ```go
 // ...
 workerOptions := worker.Options{
-	DisableStickyExecution: internal.BlockWorkflow,
+    DisableStickyExecution: internal.BlockWorkflow,
   // ...
 }
 w := worker.New(c, "your_task_queue_name", workerOptions)
@@ -1328,7 +1294,7 @@ Value resolution is in seconds.
 ```go
 // ...
 workerOptions := worker.Options{
-	WorkerStopTimeout: time.Second(0),
+    WorkerStopTimeout: time.Second(0),
   // ...
 }
 w := worker.New(c, "your_task_queue_name", workerOptions)
@@ -1347,7 +1313,7 @@ When `true` the Activity Worker creates a Session to sequentially process Activi
 ```go
 // ...
 workerOptions := worker.Options{
-	EnableSessionWorker: true,
+    EnableSessionWorker: true,
   // ...
 }
 w := worker.New(c, "your_task_queue_name", workerOptions)
@@ -1364,7 +1330,7 @@ Sets the maximum number of concurrent Sessions that the Worker can support.
 ```go
 // ...
 workerOptions := worker.Options{
-	MaxConcurrentSessionExecutionSize: 1000,
+    MaxConcurrentSessionExecutionSize: 1000,
   // ...
 }
 w := worker.New(c, "your_task_queue_name", workerOptions)
@@ -1389,7 +1355,7 @@ Sets the Worker to only handle Workflow Tasks and local Activity Tasks.
 ```go
 // ...
 workerOptions := worker.Options{
-	LocalActivityWorkerOnly: 1000,
+    LocalActivityWorkerOnly: 1000,
   // ...
 }
 w := worker.New(c, "your_task_queue_name", workerOptions)
@@ -1406,7 +1372,7 @@ Sets the Temporal Client-level Identity value, overwriting the existing one.
 ```go
 // ...
 workerOptions := worker.Options{
-	Identity: "your_custom_identity",
+    Identity: "your_custom_identity",
   // ...
 }
 w := worker.New(c, "your_task_queue_name", workerOptions)
@@ -1425,7 +1391,7 @@ Resolution is in seconds.
 ```go
 // ...
 workerOptions := worker.Options{
-	DeadlockDetectionTimeout: time.Second(1),
+    DeadlockDetectionTimeout: time.Second(1),
   // ...
 }
 w := worker.New(c, "your_task_queue_name", workerOptions)
@@ -1467,42 +1433,42 @@ For more information about configuring TLS to secure inter- and intra-network co
 package main
 
 import (
-	"crypto/tls"
-	"log"
+    "crypto/tls"
+    "log"
 
-	"go.temporal.io/sdk/client"
-	"go.temporal.io/sdk/worker"
+    "go.temporal.io/sdk/client"
+    "go.temporal.io/sdk/worker"
 
-	"documentation-samples-go/cloud"
+    "documentation-samples-go/cloud"
 )
 
 func main() {
-	// Get the key and cert from your env or local machine
-	clientKeyPath := "./secrets/yourkey.key"
-	clientCertPath := "./secrets/yourcert.pem"
-	// Specify the host and port of your Temporal Cloud Namespace
-	// Host and port format: namespace.unique_id.tmprl.cloud:port
-	hostPort := "<yournamespace>.<id>.tmprl.cloud:7233"
-	namespace := "<yournamespace>.<id>"
-	// Use the crypto/tls package to create a cert object
-	cert, err := tls.LoadX509KeyPair(clientCertPath, clientKeyPath)
-	if err != nil {
-		log.Fatalln("Unable to load cert and key pair.", err)
-	}
-	// Add the cert to the tls certificates in the ConnectionOptions of the Client
-	temporalClient, err := client.Dial(client.Options{
-		HostPort:  hostPort,
-		Namespace: namespace,
-		ConnectionOptions: client.ConnectionOptions{
-			TLS: &tls.Config{Certificates: []tls.Certificate{cert}},
-		},
-	})
-	if err != nil {
-		log.Fatalln("Unable to connect to Temporal Cloud.", err)
-	}
-	defer temporalClient.Close()
-	// Create a new Worker.
-	yourWorker := worker.New(temporalClient, "cloud-connection-example-go-task-queue", worker.Options{})
+    // Get the key and cert from your env or local machine
+    clientKeyPath := "./secrets/yourkey.key"
+    clientCertPath := "./secrets/yourcert.pem"
+    // Specify the host and port of your Temporal Cloud Namespace
+    // Host and port format: namespace.unique_id.tmprl.cloud:port
+    hostPort := "<yournamespace>.<id>.tmprl.cloud:7233"
+    namespace := "<yournamespace>.<id>"
+    // Use the crypto/tls package to create a cert object
+    cert, err := tls.LoadX509KeyPair(clientCertPath, clientKeyPath)
+    if err != nil {
+        log.Fatalln("Unable to load cert and key pair.", err)
+    }
+    // Add the cert to the tls certificates in the ConnectionOptions of the Client
+    temporalClient, err := client.Dial(client.Options{
+        HostPort:  hostPort,
+        Namespace: namespace,
+        ConnectionOptions: client.ConnectionOptions{
+            TLS: &tls.Config{Certificates: []tls.Certificate{cert}},
+        },
+    })
+    if err != nil {
+        log.Fatalln("Unable to connect to Temporal Cloud.", err)
+    }
+    defer temporalClient.Close()
+    // Create a new Worker.
+    yourWorker := worker.New(temporalClient, "cloud-connection-example-go-task-queue", worker.Options{})
 // ...
 }
 ```

@@ -10,26 +10,18 @@ keywords:
   - cli
   - cli-feature
   - code samples
-  - developer-guide
-  - developer-guide-doc-type
-  - guide-context
-  - how-to
-  - how-to-doc-type
   - java
   - options
   - workers
   - workflow
 tags:
-  - cli
-  - code-samples
-  - how-to
-  - java
-  - options
-  - workers
-  - workflow
-  - sdk
-  - java-sdk
-  - developer guide
+  - Activities
+  - Temporal Client
+  - Task Queues
+  - Workers
+  - Workflows
+  - Java SDK
+  - Temporal SDKs
 ---
 
 This page shows how to do the following:
@@ -689,7 +681,7 @@ For details on getting the results of an Activity Execution, see [Activity Execu
 **How to set required Activity Timeouts using the Java SDK.**
 
 Activity Execution semantics rely on several parameters.
-The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
+The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
 These values are set in the Activity Options.
 
 Set your Activity Timeout from the [`ActivityOptions.Builder`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html) class.

@@ -6,10 +6,10 @@ toc_max_heading_level: 4
 keywords:
   - continue-as-new
 tags:
+  - Workflows
   - continue-as-new
-  - sdk
-  - java-sdk
-  - developer guide
+  - Java SDK
+  - Temporal SDKs
 description: Learn how to use Continue-As-New with the Java SDK to manage Workflow Executions efficiently in Temporal, ensuring optimal Event History management and flexible Workflow transitions.
 ---
 
@@ -49,3 +49,11 @@ continueAsNew.greet(input);
 Providing these options allows you to continue Workflow Execution as a new Workflow run, with a different Workflow Type, and on a different Task Queue.
 
 Java Workflow reference: [https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html)
+
+:::warning Using Continue-as-New and Updates
+
+- Temporal _does not_ support Continue-as-New functionality within Update handlers.
+- Complete all handlers _before_ using Continue-as-New.
+- Use Continue-as-New from your main Workflow Definition method, just as you would complete or fail a Workflow Execution.
+
+:::

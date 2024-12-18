@@ -1,23 +1,34 @@
 ---
-id: data-encryption
-title: Data encryption - Java SDK
-sidebar_label: Data encryption
+id: converters-and-encryption
+title: Converters and encryption - Java SDK
+sidebar_label: Converters and encryption
 description: Learn how to create and implement a Custom Payload Codec and Payload Converter in Java using the Temporal SDK for custom data encryption, compression, and type conversion.
 toc_max_heading_level: 4
 keywords:
-  - Java
-  - developer-guide
-  - guide-context
+  - java sdk
+  - data converter
+  - payload conversion
+  - payload converter
 tags:
-  - sdk
-  - java-sdk
-  - developer guide
+  - Security
+  - Codec Server
+  - Data Converters
+  - Encryption
+  - Java SDK
+  - Temporal SDKs
 ---
 
-This page shows how to do the following:
+Temporal's security model is designed around client-side encryption of Payloads.
+A client may encrypt Payloads before sending them to the server, and decrypt them after receiving them from the server.
+This provides a high degree of confidentiality because the Temporal Server itself has absolutely no knowledge of the actual data.
+It also gives implementers more power and more freedom regarding which client is able to read which data -- they can control access with keys, algorithms, or other security measures.
 
-- [Use a custom Payload Codec in Java](#custom-payload-codec)
-- [Do custom Payload conversion in Java](#custom-payload-conversion)
+A Temporal developer adds client-side encryption of Payloads by providing a Custom Payload Codec to its Client.
+Depending on business needs, a complete implementation of Payload Encryption may involve selecting appropriate encryption algorithms, managing encryption keys, restricting a subset of their users from viewing payload output, or a combination of these.
+
+The server itself never adds encryption over Payloads.
+Therefore, unless client-side encryption is implemented, Payload data will be persisted in non-encrypted form to the data store, and any Client that can make requests to a Temporal namespace (including the Temporal UI and CLI) will be able to read Payloads contained in Workflows.
+When working with sensitive data, you should always implement Payload encryption.
 
 ## Custom Payload Codec in Java {#custom-payload-codec}
 
@@ -147,12 +158,22 @@ WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
               .build());
 ```
 
-For example implementations, see the following samples:
+- Data **encoding** is performed by the client using the converters and codecs provided by Temporal or your custom implementation when passing input to the Temporal Cluster. For example, plain text input is usually serialized into a JSON object, and can then be compressed or encrypted.
+- Data **decoding** may be performed by your application logic during your Workflows or Activities as necessary, but decoded Workflow results are never persisted back to the Temporal Cluster. Instead, they are stored encoded on the Cluster, and you need to provide an additional parameter when using the [temporal workflow show](/cli/workflow#show) command or when browsing the Web UI to view output.
 
-- [Encrypted Payloads](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/encryptedpayloads)
-- [Remote Data Encoder and Codec Server](https://github.com/temporalio/sdk-java/tree/master/temporal-remote-data-encoder)
+For reference, see the [Encryption](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/encryptedpayloads) sample.
 
-## Custom Payload conversion {#custom-payload-conversion}
+### Using a Codec Server
+
+A Codec Server is an HTTP server that uses your custom Codec logic to decode your data remotely.
+The Codec Server is independent of the Temporal Cluster and decodes your encrypted payloads through predefined endpoints.
+You create, operate, and manage access to your Codec Server in your own environment.
+The Temporal CLI and the Web UI in turn provide built-in hooks to call the Codec Server to decode encrypted payloads on demand.
+Refer to the [Codec Server](/production-deployment/data-encryption) documentation for information on how to design and deploy a Codec Server.
+
+For reference, see the [Codec server](https://github.com/temporalio/sdk-java/tree/master/temporal-remote-data-encoder) sample.
+
+## Using custom Payload conversion {#custom-payload-conversion}
 
 **How to do custom Payload conversion using the Java SDK.**
 
@@ -166,6 +187,11 @@ To support custom Payload conversion, create a [custom Payload Converter](/datac
 The order in which your encoding Payload Converters are applied depend on the order given to the Data Converter.
 You can set multiple encoding Payload Converters to run your conversions.
 When the Data Converter receives a value for conversion, it passes through each Payload Converter in sequence until the converter that handles the data type does the conversion.
+
+Payload Converters can be customized independently of a Payload Codec.
+Temporal's Converter architecture looks like this:
+
+![Temporal converter architecture](/img/converter-architecture.png)
 
 Create a custom implementation of a [PayloadConverter](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/PayloadConverter.html) interface and use the `withPayloadConverterOverrides` method to implement the custom object conversion with `DefaultDataConverter`.
 

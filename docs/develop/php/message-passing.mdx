@@ -2,17 +2,20 @@
 id: message-passing
 title: Workflow message passing - PHP SDK
 sidebar_label: Messages
-toc_max_heading_level: 2
+toc_max_heading_level: 3
 keywords:
   - message passing
   - signals
   - queries
   - updates
 tags:
-  - messages
-  - sdk
-  - php-sdk
-  - developer guide
+  - Workflows
+  - Messages
+  - Signals
+  - Queries
+  - Updates
+  - PHP SDK
+  - Temporal SDKs
 description: Learn how to develop with Signals, Queries, and Updates in Temporal Workflows. Define, handle, and send Signals or Queries, and validate updates from a Temporal Client.
 ---
 
@@ -348,9 +351,7 @@ var_dump($workflow->getCurrentState());
 
 Queries are sent from a Temporal Client.
 
-##  Updates {#updates}
-
-**How to develop with Updates using the Temporal PHP SDK**
+## How to develop with Updates {#updates}
 
 An [Update](/encyclopedia/workflow-message-passing#sending-updates) is an operation that can mutate the state of a Workflow Execution and return a response.
 
@@ -495,3 +496,227 @@ $resultUuid = $stub->startUpdate(
         ->withResultType(UuidInterface::class)
  )->getResult();
 ```
+
+## Message handler patterns {#message-handler-patterns}
+
+This section covers common write operations, such as Signal and Update handlers.
+It doesn't apply to pure read operations, like Queries or Update Validators.
+
+:::tip
+
+For additional information, see [Inject work into the main Workflow](/encyclopedia/workflow-message-passing#injecting-work-into-main-workflow), [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing), and [this sample](https://github.com/temporalio/samples-php/tree/master/app/src/SafeMessageHandlers) demonstrating safe `async` message handling.
+:::
+
+### Add wait conditions to block
+
+Sometimes, async Signal or Update handlers need to meet certain conditions before they should continue.
+You can use a wait condition ([`Workflow::await()`](https://php.temporal.io/classes/Temporal-Workflow.html#method_await)) to set a function that prevents the code from proceeding until the condition returns `true`.
+This is an important feature that helps you control your handler logic.
+
+Here are two important use cases for `Workflow::await()`:
+
+- Waiting in a handler until it is appropriate to continue.
+- Waiting in the main Workflow until all active handlers have finished.
+
+The condition state you're waiting for can be updated by and reflect any part of the Workflow code.
+This includes the main Workflow method, other handlers, or child coroutines spawned by the main Workflow method (see [`Workflow::async()`](https://php.temporal.io/classes/Temporal-Workflow.html#method_async).
+
+### Use wait conditions in handlers
+
+It's common to use a Workflow wait condition to wait until a handler should start.
+You can also use wait conditions anywhere else in the handler to wait for a specific condition to become `true`.
+This allows you to write handlers that pause at multiple points, each time waiting for a required condition to become `true`.
+
+Consider a `readyForUpdateToExecute` method that runs before your Update handler executes.
+The `Workflow::await` method waits until your condition is met:
+
+```php
+    #[UpdateMethod]
+    public function myUpdate(UpdateInput $input)
+    {
+        yield Workflow::await(
+            fn() => $this->readyForUpdateToExecute($input),
+        );
+
+        // ...
+    }
+```
+
+Remember: Handlers can execute before the main Workflow method starts.
+
+### Ensure your handlers finish before the Workflow completes {#wait-for-message-handlers}
+
+Workflow wait conditions can ensure your handler completes before a Workflow finishes.
+When your Workflow uses async Signal or Update handlers, your main Workflow method can return or continue-as-new while a handler is still waiting on an async task, such as an Activity result.
+The Workflow completing may interrupt the handler before it finishes crucial work and cause client errors when trying retrieve Update results.
+Use [`Workflow::await()`](https://php.temporal.io/classes/Temporal-Workflow.html#method_await) and [`Workflow::allHandlersFinished()`](https://php.temporal.io/classes/Temporal-Workflow.html#method_allHandlersFinished) to address this problem and allow your Workflow to end smoothly:
+
+```php
+#[WorkflowInterface]
+class MyWorkflow
+{
+    #[WorkflowMethod]
+    public function run()
+    {
+        // ...
+        yield Workflow::await(fn() => Workflow::allHandlersFinished());
+        return "workflow-result";
+    }
+}
+```
+
+By default, your Worker will log a warning when you allow a Workflow Execution to finish with unfinished handler executions.
+You can silence these warnings on a per-handler basis by passing the `unfinishedPolicy` argument to the [`UpdateMethod`](https://php.temporal.io/classes/Temporal-Workflow-UpdateMethod.html) / [`SignalMethod`](https://php.temporal.io/classes/Temporal-Workflow-SignalMethod.html) attribute:
+
+```php
+#[UpdateMethod(unfinishedPolicy: HandlerUnfinishedPolicy::Abandon)]
+public function myUpdate()
+{
+    // ...
+}
+```
+
+See [Finishing handlers before the Workflow completes](/encyclopedia/workflow-message-passing#finishing-message-handlers) for more information.
+
+### Use `Mutex` to prevent concurrent handler execution {#control-handler-concurrency}
+
+Concurrent processes can interact in unpredictable ways.
+Incorrectly written [concurrent message-passing](/encyclopedia/workflow-message-passing#message-handler-concurrency) code may not work correctly when multiple handler instances run simultaneously.
+Here's an example of a pathological case:
+
+```php
+#[WorkflowInterface]
+class MyWorkflow
+{
+    // ...
+
+    #[SignalMethod]
+    public function badAsyncHandler()
+    {
+        $data = yield Workflow::executeActivity(
+            type: 'fetch_data',
+            args: ['url' => 'http://example.com'],
+            options: ActivityOptions::new()->withStartToCloseTimeout('10 seconds'),
+        );
+        $this->x = $data->x;
+        # 🐛🐛 Bug!! If multiple instances of this handler are executing concurrently, then
+        # there may be times when the Workflow has $this->x from one Activity execution and $this->y from another.
+        yield Workflow::timer(1);  # or await anything else
+        $this->y = $data->y;
+    }
+}
+```
+
+Coordinating access using `Mutex` corrects this code.
+Locking makes sure that only one handler instance can execute a specific section of code at any given time:
+
+```php
+use Temporal\Workflow;
+
+#[Workflow\WorkflowInterface]
+class MyWorkflow
+{
+    // ...
+
+    private Workflow\Mutex $mutex;
+
+    public function __construct()
+    {
+        $this->mutex = new Workflow\Mutex();
+    }
+
+    #[Workflow\SignalMethod]
+    public function safeAsyncHandler()
+    {
+        $data = yield Workflow::executeActivity(
+            type: 'fetch_data',
+            args: ['url' => 'http://example.com'],
+            options: ActivityOptions::new()->withStartToCloseTimeout('10 seconds'),
+        );
+        yield Workflow::runLocked($this->mutex, function () use ($data) {
+            $this->x = $data->x;
+            # ✅ OK: the scheduler may switch now to a different handler execution, or to the main workflow
+            # method, but no other execution of this handler can run until this execution finishes.
+            yield Workflow::timer(1);  # or await anything else
+            $this->y = $data->y;
+        });
+    }
+```
+
+## Message handler troubleshooting {#message-handler-troubleshooting}
+
+When sending a Signal, Update, or Query to a Workflow, your Client might encounter the following errors:
+
+- **The client can't contact the server**:
+  You'll receive a [`ServiceClientException`](https://php.temporal.io/classes/Temporal-Exception-Client-ServiceClientException.html) in case of a server connection error.
+  [How to configure RPC Retry Policy](/develop/php/temporal-clients#configure-rpc-retry-policy)
+
+- **RPC timout**:
+  You'll receive a [`TimeoutException`](https://php.temporal.io/classes/Temporal-Exception-Client-TimeoutException.html) in case of an RPC timeout.
+  [How to configure RPC timeout](/develop/php/temporal-clients#configure-rpc-timeout)
+
+- **The workflow does not exist**:
+  You'll receive a [`WorkflowNotFoundException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowNotFoundException.html) exception.
+
+See [Exceptions in message handlers](/encyclopedia/workflow-message-passing#exceptions) for a non–PHP-specific discussion of this topic.
+
+### Problems when sending a Signal {#signal-problems}
+
+When using Signal, the only exception that will result from your requests during its execution is `ServiceClientException`.
+All handlers may experience additional exceptions during the initial (pre-Worker) part of a handler request lifecycle.
+
+For Queries and Updates, the client waits for a response from the Worker.
+If an issue occurs during the handler Execution by the Worker, the client may receive an exception.
+
+### Problems when sending an Update {#update-problems}
+
+When working with Updates, you may encounter these errors:
+
+- **No Workflow Workers are polling the Task Queue**:
+  Your request will be retried by the SDK Client indefinitely.
+  You can [configure RPC timeout](/develop/php/temporal-clients#configure-rpc-timeout) to impose a timeout.
+  This raises a [`WorkflowUpdateRPCTimeoutOrCanceledException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowUpdateRPCTimeoutOrCanceledException.html).
+
+- **Update failed**: You'll receive a [`WorkflowUpdateException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowUpdateException.html) exception.
+  There are two ways this can happen:
+
+  - The Update was rejected by an Update validator defined in the Workflow alongside the Update handler.
+
+  - The Update failed after having been accepted.
+
+Update failures are like [Workflow failures](/references/failures#errors-in-workflows).
+Issues that cause a Workflow failure in the main method also cause Update failures in the Update handler.
+These might include:
+
+    - A failed Child Workflow
+    - A failed Activity (if the Activity retries have been set to a finite number)
+    - The Workflow author raising `ApplicationFailure`
+
+- **The handler caused the Workflow Task to fail**:
+  A [Workflow Task Failure](/references/failures#errors-in-workflows) causes the server to retry Workflow Tasks indefinitely. What happens to your Update request depends on its stage:
+  - If the request hasn't been accepted by the server, you receive a [`WorkflowUpdateException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowUpdateException.html).
+  - If the request has been accepted, it is durable.
+    Once the Workflow is healthy again after a code deploy, use an [`UpdateHandle`](https://php.temporal.io/classes/Temporal-Client-Update-UpdateHandle.html) to fetch the Update result.
+
+- **The Workflow finished while the Update handler execution was in progress**:
+  You'll receive a [`WorkflowUpdateException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowUpdateException.html).
+  This happens if the Workflow finished while the Update handler execution was in progress, for example because
+
+  - The Workflow was canceled or failed.
+
+  - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/encyclopedia/workflow-message-passing#finishing-message-handlers).
+
+### Problems when sending a Query {#query-problems}
+
+When working with Queries, you may encounter these errors:
+
+- **There is no Workflow Worker polling the Task Queue**:
+  You'll receive a [`WorkflowNotFoundException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowNotFoundException.html).
+
+- **Query failed**:
+  You'll receive a [`WorkflowQueryException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowQueryException.html) if something goes wrong during a Query.
+  Any exception in a Query handler will trigger this error.
+  This differs from Signal and Update requests, where exceptions can lead to Workflow Task Failure instead.
+
+- **The handler caused the Workflow Task to fail.**
+  This would happen, for example, if the Query handler blocks the thread for too long without yielding.

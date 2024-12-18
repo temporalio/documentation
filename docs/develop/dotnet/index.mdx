@@ -8,13 +8,28 @@ keywords:
   - dotnet
   - sdk
 tags:
-  - dotnet-sdk
-  - developer guide
+  - .Net SDK
+  - Temporal SDKs
 ---
 
 <!-- .NET SDK feature guidance landing page-->
 
-Build [Temporal Applications](/temporal#temporal-application) with the .Net SDK.
+![.NET SDK Banner](/img/banner-dotnet-temporal.png)
+
+:::info .NET SPECIFIC RESOURCES
+Build Temporal Applications with the .NET SDK.
+
+**Temporal .NET Technical Resources:**
+
+- [.NET API Documentation](https://dotnet.temporal.io/api/)
+- [.NET SDK Code Samples](https://github.com/temporalio/samples-dotnet)
+- [.NET SDK GitHub](https://github.com/temporalio/sdk-dotnet)
+
+**Get Connected with the Temporal .NET Community:**
+
+- [Temporal .NET Community Slack](https://temporalio.slack.com/archives/C012SHMPDDZ)
+- [.NET SDK Forum](https://community.temporal.io/tag/dotnet-sdk)
+  :::
 
 ## [Core Application](/develop/dotnet/core-application)
 
@@ -130,12 +145,12 @@ Run Workflows on a schedule and delay the start of a Workflow.
   - [Update a Scheduled Workflow](/develop/dotnet/schedules#update-a-scheduled-workflow): Updates a schedule with a new definition for a scheduled Workflow.
 - [Use Start Delay](/develop/dotnet/schedules#start-delay): Start delay functionality if you need to delay the execution of the Workflow without the need for regular launches.
 
-## [Data encryption](/develop/dotnet/data-encryption)
+## [Data encryption](/develop/dotnet/converters-and-encryption)
 
 Use compression, encryption, and other data handling by implementing custom converters and codecs.
 
-- [Use a custom Payload Codec](/develop/dotnet/data-encryption#custom-payload-codec): Create a custom PayloadCodec implementation and define your encryption/compression and decryption/decompression logic.
-- [Use a custom Payload Converter](/develop/dotnet/data-encryption#custom-payload-converter): A custom data converter can be set via the `DataConverter` option when creating a client.
+- [Use a custom Payload Codec](/develop/dotnet/converters-and-encryption#custom-payload-codec): Create a custom PayloadCodec implementation and define your encryption/compression and decryption/decompression logic.
+- [Use a custom Payload Converter](/develop/dotnet/converters-and-encryption#custom-payload-converter): A custom data converter can be set via the `DataConverter` option when creating a client.
 
 ## [Durable Timers](/develop/go/timers)
 
@@ -155,4 +170,3 @@ Explore how to spawn a Child Workflow Execution and handle Child Workflow Events
 Continue the Workflow Execution with a new Workflow Execution using the same Workflow ID.
 
 - [Continue-As-New](/develop/dotnet/continue-as-new): Continue-As-New enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.
-

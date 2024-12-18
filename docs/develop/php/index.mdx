@@ -5,16 +5,28 @@ sidebar_label: PHP SDK
 description: Explore Temporal PHP SDK guides to master features for Temporal Applications. Learn Workflows, Activities, Testing, Failure Detection, Messages, Observability, and more.
 toc_max_heading_level: 4
 keywords:
-  - dev guide
-  - php
-  - introduction
+  - PHP SDK
 tags:
-  - sdk
-  - php-sdk
-  - developer guide
+  - PHP SDK
+  - Temporal SDKs
 ---
 
-Build [Temporal Applications](/temporal#temporal-application) with the PHP SDK.
+![PHP SDK Banner](/img/banner-php-temporal.png)
+
+:::info PHP SPECIFIC RESOURCES
+Build Temporal Applications with the PHP SDK.
+
+**Temporal PHP Technical Resources:**
+
+- [PHP API Documentation](https://php.temporal.io)
+- [PHP SDK Code Samples](https://github.com/temporalio/samples-php)
+- [PHP SDK GitHub](https://github.com/temporalio/sdk-php)
+
+**Get Connected with the Temporal PHP Community:**
+
+- [Temporal PHP Community Slack](https://temporalio.slack.com/archives/C01LK9FAMM0)
+- [PHP SDK Forum](https://community.temporal.io/tag/php-sdk)
+  :::
 
 ## [Core Application](/develop/php/core-application)
 
@@ -30,6 +42,9 @@ Use the essential components of a Temporal Application (Workflows, Activities, a
 Connect to a Temporal Service and start a Workflow Execution.
 
 - [How to connect a Temporal Client to a Temporal Service](/develop/php/temporal-clients#connect-to-a-dev-cluster)
+- [How to connect a Temporal Client to a Temporal Cloud](/develop/php/temporal-clients#connect-to-temporal-cloud)
+- [How to start a Workflow Execution](/develop/php/temporal-clients#start-workflow-execution)
+- [Advanced connection options](/develop/php/temporal-clients#advanced-connection-options)
 
 ## [Testing](/develop/php/testing-suite)
 
@@ -54,6 +69,8 @@ Send messages to read the state of Workflow Executions.
 - [How to develop with Signals](/develop/php/message-passing#signals)
 - [How to develop with Queries](/develop/php/message-passing#queries)
 - [How to develop with Updates](/develop/php/message-passing#updates)
+- [Message handler patterns](/develop/php/message-passing#message-handler-patterns)
+- [Message handler troubleshooting](/develop/php/message-passing#message-handler-troubleshooting)
 
 ## [Interrupt a Workflow feature guide](/develop/php/cancellation)
 
@@ -61,7 +78,7 @@ Interrupt a Workflow Execution with a Cancel or Terminate action.
 
 - [Cancel an Activity from a Workflow](/develop/php/cancellation#cancel-an-activity)
 
-## Versioning
+## [Versioning](/develop/php/versioning)
 
 The PHP SDK [Versioning developer guide](/develop/php/versioning) shows how to change Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
 
@@ -70,7 +87,6 @@ The PHP SDK [Versioning developer guide](/develop/php/versioning) shows how to c
 - [Sanity checking](/develop/php/versioning#sanity-checking)
 
 ## [Asynchronous Activity Completion](/develop/php/asynchronous-activity-completion)
-
 
 Complete Activities asynchronously.
 

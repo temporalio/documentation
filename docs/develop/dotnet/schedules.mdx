@@ -8,10 +8,10 @@ keywords:
   - dotnet
   - schedules
 tags:
-  - sdk
-  - dotnet-sdk
-  - developer guide
-  - schedules
+  - Workflows
+  - .Net SDK
+  - Temporal SDKs
+  - Schedules
 ---
 
 This page shows how to do the following:
@@ -63,6 +63,13 @@ var handle = await client.CreateScheduleAsync(
             Intervals = new List<ScheduleIntervalSpec> { new(Every: TimeSpan.FromDays(5)) },
         }));
 ```
+
+:::tip Schedule Auto-Deletion
+
+Once a Schedule has completed creating all its Workflow Executions, the Temporal Service deletes it since it won’t fire again.
+The Temporal Service doesn't guarantee when this removal will happen.
+
+:::
 
 ### Backfill a Scheduled Workflow {#backfill-a-scheduled-workflow}
 

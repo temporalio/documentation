@@ -5,15 +5,28 @@ sidebar_label: Python SDK
 description: Explore Temporal's Python SDK feature guides to effortlessly develop, test, and manage Temporal Applications. Master Workflows, Activities, Workers, Failure Detection, and more!
 toc_max_heading_level: 4
 keywords:
-  - dev guide
-  - python
-  - introduction
+  - Python SDK
 tags:
-  - dev-guide
-  - python
+  - Python SDK
+  - Temporal SDKs
 ---
 
-Build [Temporal Applications](/temporal#temporal-application) with the Python SDK.
+![Python SDK Banner](/img/banner-python-temporal.png)
+
+:::info PYTHON SPECIFIC RESOURCES
+Build Temporal Applications with the Python SDK.
+
+**Temporal Python Technical Resources:**
+
+- [Python API Documentation](https://python.temporal.io)
+- [Python SDK Code Samples](https://github.com/temporalio/samples-python)
+- [Python SDK Github](https://github.com/temporalio/sdk-python)
+
+**Get Connected with the Temporal Python Community:**
+
+- [Temporal Python Community Slack](https://app.slack.com/client/TNWA8QCGZ)
+- [Python SDK Forum](https://community.temporal.io/tag/python-sdk)
+  :::
 
 ## [Core Application](/develop/python/core-application)
 
@@ -32,6 +45,14 @@ Connect to a Temporal Service and start a Workflow Execution.
 - [Connect a Temporal Client to a Temporal Service](/develop/python/temporal-clients#connect-to-a-dev-cluster)
 - [Connect to Temporal Cloud](/develop/python/temporal-clients#connect-to-temporal-cloud)
 - [Start a Workflow Execution](/develop/python/temporal-clients#start-workflow-execution)
+
+## [Python SDK Sandbox](/develop/python/python-sdk-sandbox)
+
+Use third-party Python modules without non-deterministic behavior.
+
+## [Python SDK sync vs. async implementations](/develop/python/python-sdk-sync-vs-async)
+
+Implement synchronous or asynchronous Activities.
 
 ## [Testing](/develop/python/testing-suite)
 
@@ -104,12 +125,12 @@ Run Workflows on a schedule and delay the start of a Workflow.
 - [Temporal Cron Jobs](/develop/python/schedules#temporal-cron-jobs)
 - [Start Delay](/develop/python/schedules#start-delay)
 
-## [Data encryption](/develop/python/data-encryption)
+## [Data encryption](/develop/python/converters-and-encryption)
 
 Use compression, encryption, and other data handling by implementing custom converters and codecs.
 
-- [Custom Payload Codec](/develop/python/data-encryption#custom-payload-codec)
-- [Payload Conversion](/develop/python/data-encryption#payload-conversion)
+- [Custom Payload Codec](/develop/python/converters-and-encryption#custom-payload-codec)
+- [Payload Conversion](/develop/python/converters-and-encryption#payload-conversion)
 
 ## [Durable Timers](/develop/python/timers)
 
@@ -128,4 +149,3 @@ Explore how to spawn a Child Workflow Execution and handle Child Workflow Events
 Continue the Workflow Execution with a new Workflow Execution using the same Workflow ID.
 
 - [Continue-As-New](/develop/python/continue-as-new)
-

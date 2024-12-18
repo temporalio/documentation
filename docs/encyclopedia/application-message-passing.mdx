@@ -4,10 +4,11 @@ title: Temporal Workflow message passing - Signals, Queries, & Updates
 sidebar_label: Workflow message passing
 description: Signals, Queries, and Updates facilitate interactions with Workflow Executions.
 tags:
-- signals
-- queries
-- updates
-- message-passing
+- Concepts
+- Signals
+- Queries
+- Updates
+- Messages
 keywords:
 - temporal workflow signals
 - temporal workflow queries
@@ -28,8 +29,11 @@ keywords:
 - temporal sdk message passing
 ---
 
+
+
+
 import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
-import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
+import {RelatedReadContainer, RelatedReadItem} from '@site/src/components/related-read/RelatedRead';
 
 Workflows can be thought of as stateful web services that can receive messages.
 The Workflow can have powerful message handlers akin to endpoints that react to the incoming messages in combination with the current state of the Workflow.
@@ -52,7 +56,6 @@ Use Signals instead of Updates when:
 - The Workflow's clients want to quickly move on after sending an asynchronous message.
 - The clients care more about the latency of sending the message than they do about the latency of the end-to-end operation.
 - The clients don't want to rely on the Worker being available.
-- Clients need to [Signal-With-Start](#signal-with-start) atomically (since there is currently no Update-with-Start operation.)
 
 Use Updates instead of Signals when:
 
@@ -128,8 +131,6 @@ Signal-With-Start is a great tool for lazily initializing Workflows. When you se
 
 :::tip Support, stability, and dependency info
 
-- In [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in Temporal Cloud.
-- In [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in Open Source Temporal Server since [v1.25.0](https://github.com/temporalio/temporal/releases/tag/v1.25.0)
 - Available in [Go SDK](https://pkg.go.dev/go.temporal.io/sdk@v1.28.0/client#Client.UpdateWorkflow) since [v1.28.0](https://github.com/temporalio/sdk-go/releases/tag/v1.28.0)
 - Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)) since [v1.25.0](https://github.com/temporalio/sdk-java/releases/tag/v1.25.0)
 - Available in [Python SDK](/develop/python/message-passing#send-update-from-client) since [v1.7.0](https://github.com/temporalio/sdk-python/releases/tag/1.7.0)
@@ -176,6 +177,50 @@ If you want to send an Update to another Workflow such as a Child Workflow from 
     <RelatedReadItem path="/develop/dotnet/message-passing#send-update-from-client" text="Send Updates in .NET" archetype="feature-guide" />
 </RelatedReadContainer>
 
+#### Update-With-Start {#update-with-start}
+
+:::tip Stability
+
+In [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in Temporal Cloud.
+
+Minimum Temporal Server version [Temporal Server version 1.26](https://github.com/temporalio/temporal/releases/tag/v1.26.2)
+
+- Available in [Go SDK](https://pkg.go.dev/go.temporal.io/sdk@v1.31.0/client#Client.UpdateWithStartWorkflow) since [v1.31.0](https://github.com/temporalio/sdk-go/releases/tag/v1.31.0)
+- Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/1.27.0/io/temporal/client/WorkflowStub.html#startUpdateWithStart(io.temporal.client.UpdateOptions,java.lang.Object%5B%5D,java.lang.Object%5B%5D)) since [v1.27.0](https://github.com/temporalio/sdk-java/releases/tag/v1.27.0)
+
+:::
+
+Update-With-Start sends an Update that checks whether an already-running Workflow with that ID exists.
+If it does, the Update is processed.
+If not, it starts a new Workflow Execution with the supplied ID.
+When starting a new Workflow, it immediately processes the Update.
+
+Update-With-Start is great for latency-sensitive use cases:
+
+- **Lazy Initialization** -
+  Instead of making separate Start Workflow and Update Workflow calls, Update-With-Start allows you to send them together in a single roundtrip.
+  For example, a shopping cart can be modelled using Update-With-Start.
+Updates let you add and remove items from the cart.
+  Update-With-Start lets the customer start shopping, whether the cart already exists or they've just started shopping.
+  It ensures the cart, modeled by a Workflow Execution, is created before applying any Update that changes the state of items within the cart.
+- **Early Return** -
+  Using Update-With-Start can begin a new Workflow Execution and synchronously receiving a response while the Workflow Execution continues to run to completion.
+  For example, you might model a payment process using Update-With-Start.
+  Whether the payment completes or rolls back, you can send the payment validation results back to the client synchronously, while attempting the transaction asynchronously.
+
+:::caution
+
+Unlike Signal-with-Start - Update-With-Start is *not* atomic.
+If the Update can't be delivered, for example, say that there's no running Worker available, a new Workflow Execution will still start.
+The SDKs will retry the Update-With-Start request but there is no guarantee that it will succeed.
+
+:::
+
+<RelatedReadContainer>
+    <RelatedReadItem path="/develop/go/message-passing#update-with-start" text="Update-With-Start with the Go SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/message-passing#update-with-start" text="Update-With-Start with the Java SDK" archetype="feature-guide" />
+</RelatedReadContainer>
+
 ### Sending Queries {#sending-queries}
 
 Queries can be sent from a Temporal Client or the Temporal CLI to a Workflow Execution--even if this Workflow has Completed. This call is synchronous and will call into the corresponding Query handler.
@@ -220,22 +265,44 @@ Every time the Workflow wakes up--generally, it wakes up when it needs to--it wi
 
 This execution is on a single thread–while this means you don’t have to worry about parallelism, you do need to worry about concurrency if you have written Signal and Update handlers that can block. These can run interleaved with the main Workflow and with one another, resulting in potential race conditions. These methods should be made reentrant.
 
+#### Initializing the Workflow first {#workflow-initializers}
+
+Initialize your Workflow's state before handling messages.
+This prevents your handler from reading uninitialized instance variables.
+
+To see why, refer to the [diagram](#message-handler-concurrency).
+It shows that your Workflow processes messages before the first run of your Workflow's main method.
+
+The message handler runs first in several scenarios, such as:
+
+- When using [Signal-with-Start](#signal-with-start).
+- When your Worker experiences delays, such as when the Task Queue it polls gets backlogged.
+- When messages arrive immediately after a Workflow continues as new but before it resumes.
+
+For all languages except Go and TypeScript, use your constructor to set up state.
+Annotate your constructor as a Workflow Initializer and take the same arguments as your Workflow's main method.
+
+Note that you can't make blocking calls from your constructor.
+If you need to block, make your Signal or Update handler [wait](#waiting) for an initialization flag.
+
+In Go and TypeScript, register any message handlers only after completing initialization.
+
 ### Message handler patterns {#message-handler-patterns}
 
 Here are several common patterns for write operations, Signal and Update handlers. They don't apply to pure read operations, i.e. Queries or [Update Validators](#update-validators):
 
-- Synchronous, returning immediately.
-- Waiting for the Workflow to be ready to process them.
+- Returning immediately from a handler
+- Waiting for the Workflow to be ready to process them
 - Kicking off activities and other asynchronous tasks
-- Injecting work into the main Workflow.
-- Finishing handlers before the Workflow completes.
-- Ensuring your messages are processed exactly once.
+- Injecting work into the main Workflow
+- Finishing handlers before the Workflow completes
+- Ensuring your messages are processed exactly once
 
 #### Synchronous handlers
 
 Synchronous handlers don’t kick off any long-running operations or otherwise block. They're guaranteed to run atomically.
 
-#### Waiting
+#### Waiting {#waiting}
 
 A Signal or Update handler can block waiting for the Workflow to reach a certain state using a Wait Condition. See the links below to find out how to use this with your SDK.
 
@@ -319,16 +386,21 @@ The following content applies in every SDK except the Go SDK. See below.
 #### Exceptions in Signals
 
 In Signal handlers, throw [Application Failures](/references/failures#application-failure) only for unrecoverable errors, because the entire Workflow will fail.
+Similarly, allowing a failing Activity or Child Workflow to exhaust its retries, so that it throws an [Activity Failure](https://docs.temporal.io/references/failures#activity-failure) or [Child Workflow Failure](https://docs.temporal.io/references/failures#child-workflow-failure) will cause the entire Workflow to fail.
+Note that for Activities, this will only happen if you change the default Activity [Retry Policy](https://docs.temporal.io/encyclopedia/retry-policies), since by default they retry forever.
 If you throw any other exception, by default, it will cause a [Workflow Task Failure](/references/failures#workflow-task-failures). This means the Workflow will get stuck and will retry the handler periodically until the exception is fixed, for example by a code change.
 
 #### Exceptions in Updates
 
-When you want to fail the Update and for the client to receive that error:
+Doing any of the following will fail the Update and cause the client to receive the error:
 
-- Reject the Update by throwing any exception from your Validator, OR
-- Throw an [Application Failure](/references/failures#application-failure) from your Update handler. Unlike with Signals, the Workflow will keep going.
+- Reject the Update by throwing any exception from your [Validator](https://docs.temporal.io/encyclopedia/workflow-message-passing#update-validators).
+- Allow a failing Activity or Child Workflow to exhaust its retries, so that it throws an [Activity Failure](https://docs.temporal.io/references/failures#activity-failure) or [Child Workflow Failure](https://docs.temporal.io/references/failures#child-workflow-failure). Note that for Activities, this will only happen if you change the default Activity [Retry Policy](https://docs.temporal.io/encyclopedia/retry-policies), since by default they retry forever.
+- Throw an [Application Failure](/references/failures#application-failure) from your Update handler.
 
-If you throw any other exception, by default, it will cause a [Workflow Task Failure](/references/failures#workflow-task-failures). This means the Workflow will get stuck and will retry the handler periodically until the exception is fixed, for example by a code change or infrastructure coming back online. Note that this will cause a delay for clients waiting for a result.
+Unlike with Signals, the Workflow will keep going in these cases.
+
+If you throw any other exception, by default, it will cause a [Workflow Task Failure](/references/failures#workflow-task-failures). This means the Workflow will get stuck and will retry the handler periodically until the exception is fixed, for example by a code change or infrastructure coming back online. Note that this will cause a delay for clients waiting for an Update result.
 
 #### Errors and panics in message handlers in the Go SDK
 

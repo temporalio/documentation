@@ -20,20 +20,11 @@ keywords:
   - workflow history
   - workflow transition
 tags:
-  - best-practices
-  - code-sample
-  - deployment
-  - deployment-safety
-  - deprecated-patches
-  - how-to
-  - patching
-  - php
-  - php-sdk
-  - version
-  - versioning
-  - workflow-completion
-  - workflow-history
-  - workflow-transition
+  - Workflows
+  - Versioning
+  - Patching
+  - Java SDK
+  - Temporal SDKs
 ---
 
 A Temporal Workflow Definition must be deterministic.
@@ -48,7 +39,7 @@ Discover more in this optional 30-minute introduction: [https://www.youtube.com/
 
 ## How to use the PHP SDK Patching API {#php-sdk-patching-api}
 
-The PHP SDK's patching mechanism operates similarly to other SDKs in a "feature-flag" fashion. 
+The PHP SDK's patching mechanism operates similarly to other SDKs in a "feature-flag" fashion.
 The "versioning" API now uses the concept of "patching in" code.
 
 To understand this, you can break it down into three steps, which reflect three stages of migration:
@@ -100,7 +91,7 @@ class MyWorkflow
 ```
 
 Problem: You can't deploy `postPatchActivity` directly until you're certain there are no more running Workflows created using the `prePatchActivity` code.
-Otherwise you are likely to cause a non-deterministic error.
+Otherwise you are likely to cause a nondeterminism error.
 
 Instead, you'll need to deploy `postPatchActivity` and use the [Workflow::getVersion()](https://php.temporal.io/classes/Temporal-Workflow.html#method_getVersion) method to determine which version of the code to execute.
 
@@ -157,7 +148,7 @@ class MyWorkflow
 ```
 
 Note that `maxSupported` changed from 1 to 2.
-A Workflow that had already passed this `GetVersion()` call before it was introduced will return `DEFAULT_VERSION`. 
+A Workflow that had already passed this `GetVersion()` call before it was introduced will return `DEFAULT_VERSION`.
 A Workflow that was run with `maxSupported` set to 1, will return 1.
 New Workflows will return 2.
 

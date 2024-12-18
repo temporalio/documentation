@@ -7,10 +7,10 @@ toc_max_heading_level: 2
 keywords:
   - schedules
 tags:
-  - schedules
-  - sdk
-  - typescript-sdk
-  - developer guide
+  - Workflows
+  - Schedules
+  - TypeScript SDK
+  - Temporal SDKs
 description: Schedule automated tasks effortlessly with Temporal. Learn how to create, backfill, delete, describe, list, pause, trigger, and update Scheduled Workflows. Control your Workflow execution with Temporal Cron Jobs and ensure timely, automated business processes. Automate repetitive tasks and reduce manual intervention now!
 ---
 
@@ -37,6 +37,13 @@ Use any of the following action to help Schedule a Workflow Execution and take c
 ### How to Create a Scheduled Workflow {#create}
 
 The create action enables you to create a new Schedule. When you create a new Schedule, a unique Schedule ID is generated, which you can use to reference the Schedule in other Schedule commands.
+
+:::tip Schedule Auto-Deletion
+
+Once a Schedule has completed creating all its Workflow Executions, the Temporal Service deletes it since it won’t fire again.
+The Temporal Service doesn't guarantee when this removal will happen.
+
+:::
 
 ### How to Backfill a Scheduled Workflow {#backfill}
 

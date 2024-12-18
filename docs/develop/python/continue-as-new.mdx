@@ -11,11 +11,10 @@ keywords:
   - avoid large event histories
   - temporal python continue-as-new
 tags:
-  - workflows
+  - Workflows
   - continue-as-new
-  - sdk
-  - python-sdk
-  - developer guide
+  - Python SDK
+  - Temporal SDKs
 ---
 
 **How to Continue-As-New using the Temporal Python SDK.**
@@ -43,3 +42,11 @@ class LoopingWorkflow:
         await asyncio.sleep(10)
         workflow.continue_as_new(iteration + 1)
 ```
+
+:::warning Using Continue-as-New and Updates
+
+- Temporal _does not_ support Continue-as-New functionality within Update handlers.
+- Complete all handlers _before_ using Continue-as-New.
+- Use Continue-as-New from your main Workflow Definition method, just as you would complete or fail a Workflow Execution.
+
+:::
