@@ -427,6 +427,12 @@ A Query is a synchronous operation that is used to report the state of a Workflo
 
 Remote data encoding is using your custom Data Converter to decode (and encode) your Payloads remotely through endpoints.
 
+<!-- _Tags: [term](/tags/term), [queries](/tags/queries), [explanation](/tags/explanation)_ -->
+
+#### [Replication Lag](/cloud/multi-region#replication-lag)
+
+The transmission delay of Workflow updates and history events from the active region to the standby region.
+
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
 #### [Requests Per Second (RPS)](/references/dynamic-configuration#service-level-rps-limits)
