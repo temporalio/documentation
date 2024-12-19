@@ -317,6 +317,61 @@ To obtain an Update handle, you can:
 - Use [`start_update`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#start_update) to start an Update and return the handle, as shown in the preceding example.
 - Use [`get_update_handle_for`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#get_update_handle_for) to fetch a handle for an in-progress Update using the Update ID.
 
+
+#### Update-With-Start {#update-with-start}
+
+:::tip Stability
+
+In [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in Temporal Cloud.
+
+Minimum Temporal Server version [Temporal Server version 1.26](https://github.com/temporalio/temporal/releases/tag/v1.26.0)
+
+:::
+
+[Update-with-Start](/encyclopedia/workflow-message-passing#update-with-start) lets you
+[send an Update](/develop/java/message-passing#send-update-from-client) that checks whether an already-running Workflow with that ID exists:
+
+- If the Workflow exists, the Update is processed.
+- If the Workflow does not exist, a new Workflow Execution starts with the given ID, and the Update is processed immediately after.
+
+Use [`start_update_with_start_workflow`](https://python.temporal.io/temporalio.client.Client.html#start_update_with_start_workflow) to start an Update and wait for a [`WorkflowUpdateHandle`](https://python.temporal.io/temporalio.client.WorkflowUpdateHandle.html), and use `await update_handle.result()` to retrieve the result from the Update.
+
+Alternatively, you can use [`execute_update_with_start_workflow`](https://python.temporal.io/temporalio.client.Client.html#start_update_with_start_workflow) to start an Update and wait for the result in one go.
+
+These calls return once the requested Update wait stage has been reached, or when the request times out.
+
+You will need to provide a [`WithStartWorkflowOperation`](https://python.temporal.io/temporalio.client.WithStartWorkflowOperation.html) that defines the Workflow that will be started if necessary, and its arguments.
+You must specify a [WorkflowIdConflictPolicy](/workflows#workflow-id-conflict-policy) when creating the `WithStartWorkflowOperation`.
+Note that a `WithStartWorkflowOperation` can only be used once.
+Re-using a previously used operation returns an error from `startUpdateWithStart`.
+
+Here's an example taken from the [sample](https://github.com/temporalio/samples-python/blob/main/message_passing/update_with_start/lazy_initialization/starter.py):
+
+```python
+start_op = WithStartWorkflowOperation(
+    ShoppingCartWorkflow.run,
+    id=cart_id,
+    id_conflict_policy=common.WorkflowIDConflictPolicy.USE_EXISTING,
+    task_queue="my-task-queue",
+)
+try:
+    price = Decimal(
+        await temporal_client.execute_update_with_start_workflow(
+            ShoppingCartWorkflow.add_item,
+            ShoppingCartItem(sku=item_id, quantity=quantity),
+            start_workflow_operation=start_op,
+        )
+    )
+except WorkflowUpdateFailedError:
+    price = None
+
+workflow_handle = await start_op.workflow_handle()
+
+return price, workflow_handle
+```
+
+
+
 :::info SEND MESSAGES WITHOUT TYPE SAFETY
 
 In real-world development, sometimes you may be unable to import Workflow Definition method signatures.
