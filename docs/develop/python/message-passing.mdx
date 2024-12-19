@@ -329,23 +329,22 @@ Minimum Temporal Server version [Temporal Server version 1.26](https://github.co
 :::
 
 [Update-with-Start](/encyclopedia/workflow-message-passing#update-with-start) lets you
-[send an Update](/develop/java/message-passing#send-update-from-client) that checks whether an already-running Workflow with that ID exists:
+[send an Update](/develop/python/message-passing#send-update-from-client) that checks whether an already-running Workflow with that ID exists:
 
 - If the Workflow exists, the Update is processed.
-- If the Workflow does not exist, a new Workflow Execution starts with the given ID, and the Update is processed immediately after.
+- If the Workflow does not exist, a new Workflow Execution is started with the given ID, and the Update is processed immediately after.
 
 Use [`start_update_with_start_workflow`](https://python.temporal.io/temporalio.client.Client.html#start_update_with_start_workflow) to start an Update and wait for a [`WorkflowUpdateHandle`](https://python.temporal.io/temporalio.client.WorkflowUpdateHandle.html), and use `await update_handle.result()` to retrieve the result from the Update.
 
-Alternatively, you can use [`execute_update_with_start_workflow`](https://python.temporal.io/temporalio.client.Client.html#start_update_with_start_workflow) to start an Update and wait for the result in one go.
+Alternatively, use [`execute_update_with_start_workflow`](https://python.temporal.io/temporalio.client.Client.html#start_update_with_start_workflow) to start an Update and wait for the result in one go.
 
 These calls return once the requested Update wait stage has been reached, or when the request times out.
 
-You will need to provide a [`WithStartWorkflowOperation`](https://python.temporal.io/temporalio.client.WithStartWorkflowOperation.html) that defines the Workflow that will be started if necessary, and its arguments.
+You will need to provide a [`WithStartWorkflowOperation`](https://python.temporal.io/temporalio.client.WithStartWorkflowOperation.html) to define the Workflow that will be started if necessary, and its arguments.
 You must specify a [WorkflowIdConflictPolicy](/workflows#workflow-id-conflict-policy) when creating the `WithStartWorkflowOperation`.
 Note that a `WithStartWorkflowOperation` can only be used once.
-Re-using a previously used operation returns an error from `startUpdateWithStart`.
 
-Here's an example taken from the [sample](https://github.com/temporalio/samples-python/blob/main/message_passing/update_with_start/lazy_initialization/starter.py):
+Here's an example taken from the [lazy_initialization](https://github.com/temporalio/samples-python/blob/main/message_passing/update_with_start/lazy_initialization/starter.py):
 
 ```python
 start_op = WithStartWorkflowOperation(

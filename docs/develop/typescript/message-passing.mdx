@@ -358,6 +358,50 @@ To obtain an Update handle, you can:
 - Use [`WorkflowHandle.startUpdate`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle/#startUpdate) to start an Update and return the handle, as shown in the preceding example.
 - Use [`getUpdateHandle`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle/#getupdatehandle) to fetch a handle for an in-progress Update using the Update ID.
 
+#### Update-With-Start {#update-with-start}
+
+:::tip Stability
+
+In [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in Temporal Cloud.
+
+Minimum Temporal Server version [Temporal Server version 1.26](https://github.com/temporalio/temporal/releases/tag/v1.26.0)
+
+:::
+
+[Update-with-Start](/encyclopedia/workflow-message-passing#update-with-start) lets you
+[send an Update](/develop/typescript/message-passing#send-update-from-client) that checks whether an already-running Workflow with that ID exists:
+
+- If the Workflow exists, the Update is processed.
+- If the Workflow does not exist, a new Workflow Execution is started with the given ID, and the Update is processed immediately after.
+
+Use [`startUpdateWithStart`](https://typescript.temporal.io/api/classes/client.WorkflowClient#startUpdateWithStart) to start an Update and wait for a [`WorkflowUpdateHandle`](https://typescript.temporal.io/api/interfaces/client.WorkflowUpdateHandle), and use `await updateHandle.result()` to retrieve the result from the Update.
+
+Alternatively, use [`executeUpdateWithStart`](https://typescript.temporal.io/api/classes/client.WorkflowClient#executeUpdateWithStart) to start an Update and wait for the result in one go.
+
+These calls return once the requested Update wait stage has been reached, or when the request times out.
+
+You will need to provide a [`WithStartWorkflowOperation`](https://typescript.temporal.io/api/classes/client.WithStartWorkflowOperation) to define the Workflow that will be started if necessary, and its arguments.
+You must specify a [WorkflowIdConflictPolicy](/workflows#workflow-id-conflict-policy) when creating the `WithStartWorkflowOperation`.
+Note that a `WithStartWorkflowOperation` can only be used once.
+
+Here's an example taken from the [early-return](https://github.com/temporalio/samples-typescript/blob/main/early-return/src/start-test-workflow.ts):
+
+```typescript
+const startWorkflowOperation = WithStartWorkflowOperation.create(transactionWorkflow, {
+  workflowId,
+  args: [transactionID],
+  taskQueue: 'early-return',
+  workflowIdConflictPolicy: 'FAIL',
+});
+
+const earlyConfirmation = await client.workflow.executeUpdateWithStart(getTransactionConfirmation, {
+  startWorkflowOperation,
+});
+const wfHandle = await startWorkflowOperation.workflowHandle();
+const finalReport = await wfHandle.result();
+```
+
+
 :::info SEND MESSAGES WITHOUT TYPE SAFETY
 
 In real-world development, sometimes you may be unable to import message type objects defined by `defineQuery`, `defineSignal`, or `defineUpdate`.
