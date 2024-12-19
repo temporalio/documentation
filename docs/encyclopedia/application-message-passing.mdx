@@ -194,28 +194,27 @@ Minimum Temporal Server version [Temporal Server version 1.26](https://github.co
 :::
 
 Update-With-Start sends an Update that checks whether an already-running Workflow with that ID exists.
-If it does, the Update is processed.
-If not, it starts a new Workflow Execution with the supplied ID.
-When starting a new Workflow, it immediately processes the Update.
+If it does, the Update is processed normally.
+If not, it starts a new Workflow Execution with the supplied ID, and immediately processes the Update.
 
 Update-With-Start is great for latency-sensitive use cases:
 
 - **Lazy Initialization** -
   Instead of making separate Start Workflow and Update Workflow calls, Update-With-Start allows you to send them together in a single roundtrip.
-  For example, a shopping cart can be modelled using Update-With-Start.
-Updates let you add and remove items from the cart.
+  For example, a shopping cart can be modeled using Update-With-Start.
+  Updates let you add and remove items from the cart.
   Update-With-Start lets the customer start shopping, whether the cart already exists or they've just started shopping.
-  It ensures the cart, modeled by a Workflow Execution, is created before applying any Update that changes the state of items within the cart.
+  It ensures the cart, modeled by a Workflow Execution, exists before applying any Update that changes the state of items within the cart.
 - **Early Return** -
-  Using Update-With-Start can begin a new Workflow Execution and synchronously receiving a response while the Workflow Execution continues to run to completion.
+  Using Update-With-Start you can begin a new Workflow Execution and synchronously receive a response, while the Workflow Execution continues to run to completion.
   For example, you might model a payment process using Update-With-Start.
-  Whether the payment completes or rolls back, you can send the payment validation results back to the client synchronously, while attempting the transaction asynchronously.
+  This allows you to send the payment validation results back to the client synchronously, while the transaction Workflow continues in the background.
 
 :::caution
 
 Unlike Signal-with-Start - Update-With-Start is *not* atomic.
-If the Update can't be delivered, for example, say that there's no running Worker available, a new Workflow Execution will still start.
-The SDKs will retry the Update-With-Start request but there is no guarantee that it will succeed.
+If the Update can't be delivered, for example, because there's no running Worker available, a new Workflow Execution will still start.
+The SDKs will retry the Update-With-Start request, but there is no guarantee that the Update will succeed.
 
 :::
 
