@@ -336,7 +336,7 @@ Minimum Temporal Server version [Temporal Server version 1.26](https://github.co
 
 Use [`execute_update_with_start_workflow`](https://python.temporal.io/temporalio.client.Client.html#start_update_with_start_workflow) to start the Update and wait for the result in one go.
 
-Alternatively, use [`start_update_with_start_workflow`](https://python.temporal.io/temporalio.client.Client.html#start_update_with_start_workflow) to start the Update and wait for a [`WorkflowUpdateHandle`](https://python.temporal.io/temporalio.client.WorkflowUpdateHandle.html), and then use `await update_handle.result()` to retrieve the result from the Update.
+Alternatively, use [`start_update_with_start_workflow`](https://python.temporal.io/temporalio.client.Client.html#start_update_with_start_workflow) to start the Update and receive a [`WorkflowUpdateHandle`](https://python.temporal.io/temporalio.client.WorkflowUpdateHandle.html), and then use `await update_handle.result()` to retrieve the result from the Update.
 
 These calls return once the requested Update wait stage has been reached, or when the request times out.
 

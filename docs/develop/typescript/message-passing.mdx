@@ -376,7 +376,7 @@ Minimum Temporal Server version [Temporal Server version 1.26](https://github.co
 
 Use [`executeUpdateWithStart`](https://typescript.temporal.io/api/classes/client.WorkflowClient#executeUpdateWithStart) to start an Update and wait for the result in one go.
 
-Alternatively, use [`startUpdateWithStart`](https://typescript.temporal.io/api/classes/client.WorkflowClient#startUpdateWithStart) to start an Update and wait for a [`WorkflowUpdateHandle`](https://typescript.temporal.io/api/interfaces/client.WorkflowUpdateHandle), and use `await updateHandle.result()` to retrieve the result from the Update.
+Alternatively, use [`startUpdateWithStart`](https://typescript.temporal.io/api/classes/client.WorkflowClient#startUpdateWithStart) to start an Update and receive a [`WorkflowUpdateHandle`](https://typescript.temporal.io/api/interfaces/client.WorkflowUpdateHandle), and then use `await updateHandle.result()` to retrieve the result from the Update.
 
 These calls return once the requested Update wait stage has been reached, or when the request times out.
 
