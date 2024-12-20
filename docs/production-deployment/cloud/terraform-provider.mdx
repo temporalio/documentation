@@ -270,6 +270,9 @@ Cautions about Temporal User management:
 - Account Owners and Global Admins automatically gain access to all Namespaces in Temporal.
   Therefore, you cannot specify Namespace access for these roles.
   This is also true for Service Accounts.
+- Follow Terraform best practices for resource management.
+  Manage a specific user in one and only one .tf file.
+  There's a risk that you may overwrite a user's permissions if you don't.
 - To Import a user, you'll need the User's ID which is currently not available in the Temporal Cloud UI.
   You can fetch current User ID by running the `tcld user list` command.
 
@@ -402,14 +405,15 @@ If you have an existing User in Temporal Cloud, you can import it into Terraform
    ```yml
    resource "temporalcloud_user" "user" {
    }
-  ```
-
-1. Run the `terraform import` command and pass in the User ID
-   Your User ID is available using the Temporal Cloud CLI `tcld u l` command.
-
-   ```bash
-   terraform import temporalcloud_user.user 72360058153949edb2f1d47019c1e85f
    ```
+
+````
+1. Run the `terraform import` command and pass in the User ID
+ Your User ID is available using the Temporal Cloud CLI `tcld u l` command.
+
+ ```bash
+ terraform import temporalcloud_user.user 72360058153949edb2f1d47019c1e85f
+````
 
 The User is now a part of the Terraform state and all changes to the User should be managed by Terraform.
 
@@ -547,25 +551,10 @@ To delete an API Key with Terraform, remove the Terraform API Key resources conf
 
 **How do I Import a Temporal API Key?**
 
-If you have an existing API Key in Temporal Cloud, you can import it into Terraform using the `terraform import` command.
+You cannot import an API Key into Terraform.
+Once created, the API Key secret isn't stored and can't be retrieved, so you can't access it using import.
 
-1. Provide a configuration placeholder in your Terraform configuration.
-
-   ```yml
-   resource "temporalcloud_apikey" "import_key"{
-   }
-   ```
-
-1. Run the `terraform import` command and pass in the API Key ID
-   Your API Key ID is available in the Cloud UI in the API Key's details page
-
-   ```bash
-   terraform import temporalcloud_apikey.import_key zJV5zQ3IhsAbw75dAkVNEMsAd3a5AemC
-   ```
-
-The API Key is now a part of the Terraform state and all changes to the API Key should be managed by Terraform.
-Import does not import the API Key Token.
-The Token is only available at the time of API Key creation.
+Instead, Temporal recommends creating a new API Key using Terraform directly.
 
 ## Data Sources - Regions and Namespaces
 

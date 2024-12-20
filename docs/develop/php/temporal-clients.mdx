@@ -14,11 +14,22 @@ tags:
 description: Learn to connect a Temporal Client to a Temporal Service and start Workflow Executions. This guide covers communication, including sending signals and queries.
 ---
 
+This guide introduces Temporal Clients.
+It explains the role and use of Clients and shows you how to configure your PHP Client code to connect to the Temporal Service.
+
+The pages shows how to do the following:
+
+- [Connect to a local development Temporal Service](#connect-to-a-dev-cluster)
+- [Connect to Temporal Cloud](#connect-to-temporal-cloud)
+- [Start a Workflow Execution](#start-workflow-execution)
+- [Advanced connection options](#advanced-connection-options)
+
 ## How to connect a Temporal Client to a Temporal Service {#connect-to-a-dev-cluster}
 
 A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Service](/clusters).
 Communication with a Temporal Service includes, but isn't limited to, the following:
 
+- Scheduling Workflow Executions.
 - Starting Workflow Executions.
 - Sending Signals to Workflow Executions.
 - Sending Queries to Workflow Executions.
@@ -35,50 +46,77 @@ However, it is acceptable and common to use a Temporal Client inside an Activity
 When you are running a Temporal Service locally (such as the [Temporal CLI](https://docs.temporal.io/cli/server#start-dev)), the number of connection options you must provide is minimal.
 Many SDKs default to the local host or IP address and port that Temporalite and [Docker Compose](https://github.com/temporalio/docker-compose) serve (`127.0.0.1:7233`).
 
-Create an instance of the `$workflowClient` class and use the `create()` method to connect a Temporal Client to a Temporal Service.
+In the PHP SDK, different client classes are responsible for different functional areas.
+The [`ServiceClient`](https://php.temporal.io/classes/Temporal-Client-GRPC-ServiceClient.html) is responsible for the low-level API and connection to the Temporal Service.
+It is also used in higher-level clients: [`WorkflowClient`](https://php.temporal.io/classes/Temporal-Client-WorkflowClient.html) and [`ScheduleClient`](https://php.temporal.io/classes/Temporal-Client-ScheduleClient.html).
 
-Specify the target host, `localhost:7223`, parameter as a string and provide the TLS configuration for connecting to a Temporal Service.
+:::note
+
+RoadRunner is not required to work only with the client API; however, the [gRPC extension](https://pecl.php.net/package/grpc) is necessary.
+
+:::
+
+Use `create()` factory methods to create clients.
 
 ```php
 use Temporal\Client\GRPC\ServiceClient;
-use Temporal\Client\WorkflowOptions;
-# . . .
-$workflowClient = Temporal\Client\WorkflowClient::create(
-     ServiceClient::createSSL(
-         'localhost:7233',
-         'certs/ca.cert',
-         'certs/client.key',
-         'certs/client.pem',
-         'tls-sample',
-     ),
- );
+use Temporal\Client\WorkflowClient;
+
+$serviceClient = ServiceClient::create('localhost:7233');
+$workflowClient = WorkflowClient::create($serviceClient);
+
+// Use $workflowClient to work with Workflows ...
 ```
 
-To provide the client options as an environmental variable, add the `tls` option to the RoadRunner configuration file and pass the path to the file.
+## How to connect a Temporal Client to a Temporal Cloud {#connect-to-temporal-cloud}
+
+When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
+
+- The [Temporal Cloud Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id).
+- The [Namespace's gRPC endpoint](/cloud/namespaces#temporal-cloud-grpc-endpoint).
+  An endpoint listing is available at the [Temporal Cloud Website](https://cloud.temporal.io/namespaces) on each Namespace detail page.
+  The endpoint contains the Namespace Id and port.
+- mTLS CA certificate.
+- mTLS private key.
+
+For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/certificates).
+
+For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
+
+Use the [`ServiceClient::createSSL()`](https://php.temporal.io/classes/Temporal-Client-GRPC-BaseClient.html#method_createSSL) method to configure a client connection to the Temporal Service.
+The `$clientKey` argument must be combined with the `$clientPem` to authenticate the Client.
+
+```php
+use Temporal\Client\ClientOptions;
+use Temporal\Client\GRPC\ServiceClient;
+use Temporal\Client\WorkflowClient;
+
+$serviceClient = \Temporal\Client\GRPC\ServiceClient::createSSL(
+    address: '<your-custom-namespace>.tmprl.cloud:7233',
+    // crt: 'certs/server-root-ca-cert.pem', # ROOT CA to validate the server cert
+    clientKey: 'certs/client-private-key.pem',
+    clientPem: 'certs/client-cert.pem',
+    // overrideServerName: 'tls-sample',
+);
+
+$workflowClient = WorkflowClient::create(
+    serviceClient: $serviceClient,
+    options: (new ClientOptions())
+        ->withNamespace('<your-custom-namespace>.<id>'),
+);
+```
+
+To [run Worker processes](/develop/php/core-application#run-a-dev-worker) managed by Temporal Cloud, configure RoadRunner in the same way.
 
 ```yml
 temporal:
-  # . . .
+  # ...
   tls:
-    key: 'certs/client.key'
-    cert: 'certs/client.pem'
-    root_ca: 'certs/ca.cert'
+    # root_ca: 'certs/server-root-ca-cert.pem'
+    key: 'certs/client-private-key.pem'
+    cert: 'certs/client-cert.pem'
     client_auth_type: require_and_verify_client_cert
-    server_name: 'tls-sample'
-```
-
-Then update your application and use the SSL connection for `ServiceClient`.
-
-```php
-$workflowClient = Temporal\Client\WorkflowClient::create(
-     ServiceClient::createSSL(
-         'localhost:7233',
-         getenv('TEMPORAL_SERVER_ROOT_CA_CERT_PATH'),
-         getenv('TEMPORAL_CLIENT_KEY_PATH'),
-         getenv('TEMPORAL_CLIENT_CERT_PATH'),
-         getenv('TEMPORAL_SERVER_NAME_OVERRIDE')
-     ),
- );
+    # server_name: 'tls-sample'
 ```
 
 ## How to start a Workflow Execution {#start-workflow-execution}
@@ -168,3 +206,79 @@ var_dump($run->getExecution()->getID());
 **Recurring start**
 
 You can start a Workflow Execution on a regular schedule with [the CronSchedule option](/develop/php/schedules).
+
+## Advanced connection options {#advanced-connection-options}
+
+In PHP, it is common practice to work with resources in blocking mode.
+Long blocks can quickly exhaust the pool of available workers and lead to application failure.
+
+This section introduces features and configuration examples of the PHP SDK when working with the Temporal Client API.
+
+### Connection
+
+gRPC connections in the PHP SDK are lazy by default, meaning they are not established until the first call.
+To force establishing the connection to the Temporal Service, you can call the [`ConnectionInterface::connect()`](https://php.temporal.io/classes/Temporal-Client-GRPC-Connection-ConnectionInterface.html#method_connect) or [`ServiceClient::getServerCapabilities()`](https://php.temporal.io/classes/Temporal-Client-GRPC-ServiceClientInterface.html#method_getServerCapabilities) method.
+
+```php
+// ...
+$serviceClient->getConnection()->connect(timeout: 10);
+
+// or
+$serviceClient->getServerCapabilities();
+```
+
+If, for some reason, the established connection is broken, the SDK will automatically attempt to restore it, taking into account the configured retry policy.
+
+### Retry policy {#configure-rpc-retry-policy}
+
+Whenever the client fails to connect to the server, an error with a status code is generated.
+If the status code is `UNKNOWN`, `UNAVAILABLE`, or `RESOURCE_EXHAUSTED`, the client will make another connection attempt.
+By default, the number of attempts is unlimited, and the interval between them will range from 0.5 to 100 seconds with a backoff coefficient of 2.
+This means that the client will likely be blocked until it establishes a connection to the server through infinite attempts.
+
+If you want to change the default behavior, use the `withRetryPolicy()` method when creating a client service:
+
+```php
+use Temporal\Client\Common\RpcRetryOptions;
+use Temporal\Client\GRPC\ServiceClient;
+use Temporal\Client\WorkflowClient;
+
+$serviceClient = ServiceClient::create('localhost:7233');
+$workflowClient = WorkflowClient::create($serviceClient)
+    ->withRetryOptions(
+        RpcRetryOptions::new()
+            ->withMaximumAttempts(10)
+            ->withInitialInterval('1 second')   // The first retry will be in 1 second
+            ->withBackoffCoefficient(2.5)       // Each next retry time will be multiplied by 2.5
+            ->withMaximumInterval('20 seconds') // The maximum interval between attempts
+            ->withMaximumJitterCoefficient(0.2) // Actual retry time can be +/- 20% of the calculated time
+    );
+```
+
+### RPC timeout {#configure-rpc-timeout}
+
+When the client calls the service's RPC, there is no default time limit for waiting for a response. This can result in the code call `$result = $workflowHandle->getResult();` blocking the PHP worker until the Workflow completes. In some cases, this is not the desired behavior, and there may be a need to set a reasonable timeout for waiting for the RPC to complete.
+
+Use the `withTimeout()` method to build a client with a timeout for all RPC calls.
+
+```php
+use Temporal\Client\GRPC\ServiceClient;
+use Temporal\Client\WorkflowClient;
+
+$serviceClient = ServiceClient::create('localhost:7233');
+$workflowClient = WorkflowClient::create($serviceClient)
+    ->withTimeout(5.75);
+
+// Create a Workflow stub
+$stub = $workflowClient->newWorkflowStub(AccountTransferWorkflowInterface::class);
+
+// If the Workflow does not complete within 5.75 seconds, a TimeoutException will be thrown
+$result = $accountTransfer->transfer('fromID', 'toID', 'refID', 1000);
+```
+
+:::note
+
+The `withTimeout()` method is immutable.
+If you need to change the timeout for individual operations, create a new client from the existing one with a specific timeout: `$newClient = $workflowClient->withTimeout(0);` (`0` means no timeout).
+
+:::
