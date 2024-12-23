@@ -169,7 +169,7 @@ Dual Visibility is a feature, specific to a Self-hosted Temporal Service, that l
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [filtered-lists](/tags/filtered-lists), [visibility](/tags/visibility)_ -->
 
-#### [Durable Execution](/temporal#durable-execution)
+#### [Durable Execution](/durable-execution)
 
 Durable Execution in the context of Temporal refers to the ability of a Workflow Execution to maintain its state and progress even in the face of failures, crashes, or server outages.
 

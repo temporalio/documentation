@@ -1,0 +1,199 @@
+---
+# Project Nova: Workflow Encyclopedia Breakdown Project
+# Tickets: EDU-3426, EDU-3677
+#
+# Destination slug: /workflow-definitions
+#
+id: workflow-definitions
+title: Workflow Definitions
+sidebar_label: Workflows Definitions
+slug: /workflow-definitions
+description: Discover the Temporal Workflow Definitions, which programatically create orchestratable Workflow code.
+toc_max_heading_level: 3
+keywords:
+  - workflow-definitions
+tags:
+  - Concepts
+  - Workflows
+---
+
+:::tip Support, stability, and dependency info
+
+Our Docs modernization effort is underway.
+New documentation will co-exist alongside our current docs content.
+We're rebuilding the docs for better organization and engagement so you can find what you need to know with clear unambiguous communication.
+
+- This page has not been reviewed for SEO
+- This page contains re-used elements with some rewording and restructuring
+- This page probably does not belong in this section.
+
+:::
+
+A Workflow Definition is code that defines how a Workflow functions.
+You write your definitions in your preferred programming languages using Temporal's suite of SDKs.
+A Workflow Definition (sometimes referred to as a Workflow Function) encompasses the end-to-end series of steps of a Temporal application.
+It has one entry point and takes a custom payload as input.
+Depending on the programming language, the Workflow Definition is typically a function or object method.
+
+## Supported development languages
+
+Below are different ways to develop a basic Workflow Definition using our existing SDKs.
+Although it's possible to use an unsupported language to develop a Temporal application we advise against it.
+It's much harder and you'll have fewer resources to call on in our community.
+
+<Tabs groupId="basic-workflow-definition" queryString>
+<TabItem value="go" label="Go">
+
+**[Workflow Definition in Go](/develop/go/core-application#develop-workflows)**
+
+```go
+func YourBasicWorkflow(ctx workflow.Context) error {
+    // ...
+    return nil
+}
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+**[Workflow Definition in Java (Interface)](/develop/java/core-application#develop-workflows)**
+
+```java
+// Workflow interface
+@WorkflowInterface
+public interface YourBasicWorkflow {
+
+    @WorkflowMethod
+    String workflowMethod(Arguments args);
+}
+```
+
+**[Workflow Definition in Java (Implementation)](/develop/java/core-application#develop-workflows)**
+
+```java
+// Workflow implementation
+public class YourBasicWorkflowImpl implements YourBasicWorkflow {
+    // ...
+}
+```
+
+</TabItem>
+<TabItem value="php" label="PHP">
+
+**[Workflow Definition in PHP (Interface)](/develop/php/core-application#develop-workflows)**
+
+```php
+#[WorkflowInterface]
+interface YourBasicWorkflow {
+    #[WorkflowMethod]
+    public function workflowMethod(Arguments args);
+}
+```
+
+**[Workflow Definition in PHP (Implementation)](/develop/php/core-application#develop-workflows)**
+
+```php
+class YourBasicWorkflowImpl implements YourBasicWorkflow {
+    // ...
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+**[Workflow Definition in Python](/develop/python/core-application#develop-workflows)**
+
+```Python
+@workflow.defn
+class YourWorkflow:
+    @workflow.run
+    async def YourBasicWorkflow(self, input: str) -> str:
+        # ...
+```
+
+</TabItem>
+<TabItem value="typescript" label="Typescript">
+
+**[Workflow Definition in Typescript](/develop/typescript/core-application#develop-workflows)**
+
+```Typescript
+type BasicWorkflowArgs = {
+  param: string;
+};
+
+export async function WorkflowExample(
+  args: BasicWorkflowArgs,
+): Promise<{ result: string }> {
+  // ...
+}
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+**[Workflow Definition in C# and .NET](/develop/dotnet/core-application#develop-workflow)**
+
+```csharp
+[Workflow]
+public class YourBasicWorkflow {
+
+    [WorkflowRun]
+    public async Task<string> workflowExample(string param) {
+        // ...
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+## Developer guides
+
+import { SdkLogos } from '../../components/SdkLogos';
+
+<SdkLogos />
+
+Our Temporal SDK developer guides provide comprehensive overviews of the structures, primitives, and features used in your [Temporal Application](/temporal#temporal-application) Workflow Definition development.
+Here are links to each of the guides and their API references:
+
+- Go SDK [developer guide](/develop/go) and [API reference](http://t.mp/go-api)
+- Java SDK [developer guide](/develop/java) and [API reference](http://t.mp/java-api)
+- PHP SDK [developer guide](/develop/php) and [API reference](https://php.temporal.io/namespaces/temporal.html)
+- Python SDK [developer guide](/develop/python) and [API reference](https://python.temporal.io)
+- TypeScript SDK [developer guide](/develop/typescript) and [API reference](https://typescript.temporal.io)
+- .NET SDK [developer guide](/develop/dotnet) and [API reference](https://dotnet.temporal.io/)
+
+## Hands on Workflow Definition learning
+
+To learn more about creating Workflows Definitions, visit our courses.
+Each course provides guided introductions to many of these elements with an expert instructor:
+
+- [Temporal 101: Introducing the Temporal Platform](https://learn.temporal.io/courses/temporal_101/)
+- [Temporal 102: Exploring Durable Execution](https://learn.temporal.io/courses/temporal_102/)
+- [Versioning Workflows](https://learn.temporal.io/courses/versioning/)
+- [Interacting with Workflows](https://learn.temporal.io/courses/interacting_with_workflows/)
+
+
+## Additional community support
+
+Reach out to others in our Temporal community to learn and grow as a developer:
+
+- [Temporal Community Forums](https://community.temporal.io/)
+- [Temporal Community Slack](https://temporal.io/slack)
+- [Temporal YouTube channel](https://www.youtube.com/c/Temporalio)
+- [Temporal Community Events](https://temporal.io/community#events)
+
+
+:::info Terminology Trivia
+
+In practice, a Workflow Definition and a Workflow Function are basically the same thing.
+If you dive deeper, you'll uncover the nuanced distinctions between the two:
+
+- A Workflow Definition refers to the code source managed by a Workflow Execution.
+  A Workflow Execution is a complete process, which runs from start to completion.
+  The Workflow Definition runs once per execution.
+- A Workflow Function refers to the source for the instance of a Workflow _Function_ Execution.
+  Temporal may invoke a Workflow Function Execution more than once during the lifetime of a Workflow Execution, normally during replays.
+
+:::

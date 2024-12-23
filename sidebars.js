@@ -498,9 +498,35 @@ module.exports = {
             id: "encyclopedia/index",
           },
           items: [
-            "encyclopedia/temporal",
-            "encyclopedia/temporal-sdks",
-            "encyclopedia/workflows",
+            {
+              type: "category",
+              label: "Durable Execution",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "encyclopedia/durable-execution/index",
+              },
+              items: [
+                "encyclopedia/durable-execution/temporal",
+                "encyclopedia/durable-execution/temporal-sdks",
+              ],
+            },
+            {
+              type: "category",
+              label: "Workflows",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "encyclopedia/workflows/index",
+              },
+              items: [
+                  "encyclopedia/workflows/workflows-legacy",
+                  "encyclopedia/workflows/workflow-executions",
+                  "encyclopedia/workflows/workflow-determinism",
+                  "encyclopedia/workflows/workflow-definitions",
+//                  "encyclopedia/workflows/workflows-source",
+              ],
+            },
             "encyclopedia/activities",
             {
               type: "category",
