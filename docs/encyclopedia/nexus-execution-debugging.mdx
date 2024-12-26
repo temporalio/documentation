@@ -26,6 +26,7 @@ Nexus supports end-to-end execution debugging that may span:
 - Underlying Temporal primitives, like a Workflow, created by a Nexus Operation handler
 
 This includes [multi-level Nexus calls](/nexus#multi-level-calls), for example:
+
 - Workflow A → Nexus Operation 1 → Workflow B → Nexus Operation 2 → Workflow C
 
 ## Bi-directional linking
@@ -44,7 +45,6 @@ Bi-directional links enable navigating across Namespace boundaries:
 - Backwards through the Nexus Operation execution:
   - From the underlying event in the handler's Workflow.
   - To a Nexus Operation event in the caller's Workflow history.
-
 
 ## Pending Operations
 
@@ -76,6 +76,7 @@ Retryable Nexus errors [returned from a Nexus handler](/nexus/error-handling#err
 Non-retryable errors will result in the Nexus Operation reaching a final state in the caller Workflow, with a [Failed](/references/events#nexusoperationfailed), [TimedOut](/references/events#nexusoperationtimedout) or [Canceled](/references/events#nexusoperationcanceled) event.
 
 ## Pending Callbacks
+
 Nexus callbacks are sent from the handler's Namespace to the caller's Namespace to complete an asynchronous Nexus Operation.
 These show up in the UI and using: `temporal workflow describe`.
 

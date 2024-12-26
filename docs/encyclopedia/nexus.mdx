@@ -26,8 +26,8 @@ Nexus was designed with Durable Execution in mind and enables each team to have 
 
 ## Connect Temporal Applications
 
-[Nexus Services](/nexus/services) are exposed from a [Nexus Endpoint](/nexus/endpoints) created in the the [Nexus Registry](/nexus/registry).
-Adding a Nexus Endpoint to the Nexus Registry deploys the Endpoint, so it is available at runtime to serve Nexus requests. 
+[Nexus Services](/nexus/services) are exposed from a [Nexus Endpoint](/nexus/endpoints) created in the [Nexus Registry](/nexus/registry).
+Adding a Nexus Endpoint to the Nexus Registry deploys the Endpoint, so it is available at runtime to serve Nexus requests.
 The Nexus Registry is scoped to an Account in Temporal Cloud and scoped to a Cluster for self-hosted deployments.
 
 ![Nexus Overview](/img/nexus-overview-short.png)
@@ -35,7 +35,7 @@ The Nexus Registry is scoped to an Account in Temporal Cloud and scoped to a Clu
 A Nexus Endpoint is a reverse proxy that decouples the caller from the handler and routes requests to upstream targets. It currently supports routing to a single target Namespace and Task Queue.
 Nexus Services and [Nexus Operations](/nexus/operations) are often registered in the same Worker as the underlying Temporal primitives they abstract.
 
-Nexus connectivity across Namespaces is provided by the Temporal Service. 
+Nexus connectivity across Namespaces is provided by the Temporal Service.
 Temporal Cloud supports Nexus connectivity [within and across regions](/cloud/nexus#multi-region-connectivity) and has [built-in access controls](/cloud/nexus#built-in-access-controls).
 Self-hosted Nexus connectivity is supported within a single Cluster and [custom Authorizers](/self-hosted-guide/security#authorizer-plugin) may be used for access control.
 
@@ -47,13 +47,14 @@ It is suitable for low-latency and long-running use cases.
 Nexus Operations can be implemented with Temporal primitives, like Workflows, or [execute arbitrary code](/nexus/operations#executing-arbitrary-code-from-a-sync-handler).
 
 :::tip RESOURCES
+
 - [Go SDK - Nexus quick start and code sample](/develop/go/nexus)
 - [Java SDK - Nexus quick start and code sample](/develop/java/nexus)
-:::
+  :::
 
 ## Queue-based Worker architecture
 
-Nexus uses the Temporal queue-based Worker architecture and built-in Nexus Machinery to ensure reliable execution of a Nexus Operations.
+Nexus uses the Temporal queue-based Worker architecture and built-in Nexus Machinery to ensure reliable execution of Nexus Operations.
 If a Nexus Service is down, a caller Workflow can continue to schedule Nexus Operations and they will be processed when the service is up.
 
 Nexus handler Workers poll the Endpoint's target Namespace and Task Queue for [Nexus Tasks](/workers#nexus-task) to process.
@@ -76,4 +77,5 @@ This means you don't have to use Nexus RPC directly, only the Temporal SDK along
 ## Multi-level calls
 
 Nexus supports multi-level Nexus calls, for example:
+
 - Workflow A → Nexus Operation 1 → Workflow B → Nexus Operation 2 → Workflow C

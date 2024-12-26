@@ -314,7 +314,7 @@ If there's a Workflow running with the given Workflow Id, it will be signaled. I
 
 Use the [`Client.SignalWithStartWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.SignalWithStartWorkflow) API to start a Workflow Execution (if not already running) and pass it the Signal at the same time.
 
-Because the Workflow Execution might not exist, this API does not take a Run ID as a parameter
+Because the Workflow Execution might not exist, this API does not take a Run Id as a parameter
 
 ```go
 // ...
@@ -334,8 +334,8 @@ An Update is a synchronous, blocking call that can change Workflow state, contro
 
 A Client sending an Update must wait until the Server delivers the Update to a Worker.
 Workers must be available and responsive.
+Setting a timeout with a context provides a hard limit on how long a client will wait for a response.
 If you need a response as soon as the Server receives the request, use a Signal instead.
-Also note that you can't send Updates to other Workflow Executions or perform an Update equivalent of Signal-With-Start.
 
 - `WorkflowExecutionUpdateAccepted` is added to the Event History when the Worker confirms that the Update passed validation.
 - `WorkflowExecutionUpdateCompleted` is added to the Event History when the Worker confirms that the Update has finished.
@@ -346,10 +346,18 @@ You must provide the Workflow Id, but specifying a Run Id is optional.
 If you supply only the Workflow Id (and provide an empty string as the Run Id param), the running Workflow Execution receives the Update.
 
 You must provide a `WaitForStage` when calling `UpdateWorkflow()`.
-This parameter controls what stage the update must reach before a handle is returned to the caller. If `WaitForStage` is set to `WorkflowUpdateStageCompleted` the handle is returned after the update completes; if `WaitForStage` is set to `WorkflowUpdateStageAccepted` the handle is returned after the Update is accepted (i.e. after the validator has run, if there is a validator).
+This parameter controls the stage the update must reach before returning a handle to the caller:
+
+- If `WaitForStage` is set to `WorkflowUpdateStageCompleted`, the handle is returned after the Update completes.
+- If `WaitForStage` is set to `WorkflowUpdateStageAccepted`, the handle is returned after the Update is accepted (i.e. after the validator has run, if there is a validator).
+
+Also note that you can't send Updates to other Workflow Executions.
 
 ```go
-updateHandle, err := temporalClient.UpdateWorkflow(context.Background(), client.UpdateWorkflowOptions{
+ctxWithTimeout, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+defer cancel()
+
+updateHandle, err := temporalClient.UpdateWorkflow(ctxWithTimeout, client.UpdateWorkflowOptions{
     WorkflowID:   we.GetID(),
     RunID:        we.GetRunID(),
     UpdateName:   message.SetLanguageUpdate,
@@ -359,12 +367,95 @@ updateHandle, err := temporalClient.UpdateWorkflow(context.Background(), client.
 if err != nil {
     log.Fatalf("Unable to update workflow: %v", err)
 }
+
 var previousLang message.Language
-err = updateHandle.Get(context.Background(), &previousLang)
+err = updateHandle.Get(ctxWithTimeout, &previousLang)
 if err != nil {
     log.Fatalf("Unable to get update result: %v", err)
 }
 ```
+
+#### Update-With-Start {#update-with-start}
+
+:::tip Stability
+
+In [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in Temporal Cloud.
+
+Minimum Temporal Server version [Temporal Server version 1.26](https://github.com/temporalio/temporal/releases/tag/v1.26.2)
+
+:::
+
+[Update-with-Start](/encyclopedia/workflow-message-passing#update-with-start) lets you
+[send an Update](/develop/go/message-passing#send-update-from-client) that checks whether an already-running Workflow with that ID exists:
+
+- If the Workflow exists, the Update is processed.
+- If the Workflow does not exist, a new Workflow Execution is started with the given ID, and the Update is processed immediately after.
+
+Use the [`Client.UpdateWithStartWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.UpdateWithStartWorkflow) API call.
+It returns once the requested Update wait stage has been reached; or when a provided context times out.
+Use [`WorkflowUpdateHandle`](https://pkg.go.dev/go.temporal.io/sdk/client#WorkflowUpdateHandle) to retrieve a result from the Update.
+
+You will need to provide:
+
+- [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions).
+  The [Workflow Id Conflict Policy](/workflows#workflow-id-conflict-policy) is required.
+  Choose "Use Existing" and use an idempotent Update handler to ensure your code can be executed again in case of a Client failure.
+  Not all `StartWorkflowOptions` are allowed.
+  For example, specifying a Cron Schedule will result in an error.
+  Refer to the [API documentation](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions) for further details.
+
+- [`UpdateWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/internal#UpdateWorkflowOptions).
+  Same as for [Update Workflow](/develop/go/message-passing#send-update-from-client), the update name and an update wait stage must be specified.
+  For Update-with-Start, the Workflow Id is optional.
+  When specified, the Id must match the one used in `StartWorkflowOptions`.
+  Since a running Workflow Execution may not already exist, you can't set a Run Id.
+
+- [`Client.NewWithStartWorkflowOperation`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.NewWithStartWorkflowOperation).
+  Specify the workflow options, method and arguments.
+  Note that a `WithStartWorkflowOperation` can only be used once.
+  Re-using a previously used operation returns an error from `UpdateWithStartWorkflow`.
+
+The following example shows the creation, configuration, and use of UpdateWithStart:
+
+```go
+ctxWithTimeout, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+defer cancel()
+
+workflowOptions := client.StartWorkflowOptions{
+    ID:                       "some-workflow-id",
+    TaskQueue:                "some-task-queue",
+    WorkflowIDConflictPolicy: enumspb.WORKFLOW_ID_CONFLICT_POLICY_USE_EXISTING,
+}
+
+updateOptions := client.UpdateWorkflowOptions{
+    UpdateName:   message.SetLanguageUpdate,
+    WaitForStage: client.WorkflowUpdateStageCompleted,
+}
+
+startWorkflowOp := temporalClient.NewWithStartWorkflowOperation(workflowOptions, MyWorkflow)
+updateHandle, err := temporalClient.UpdateWithStartWorkflow(
+	ctxWithTimeout,
+	client.UpdateWithStartWorkflowOptions{
+        StartWorkflowOperation: startWorkflowOp,
+        UpdateOptions:          updateOptions,
+    })
+if err != nil {
+    log.Fatalf("Unable to execute update-with-start: %v", err)
+}
+
+var previousLang message.Language
+err = updateHandle.Get(ctxWithTimeout, &previousLang)
+if err != nil {
+    log.Fatalf("Unable to obtain update result: %v", err)
+}
+
+workflowRun, err := startWorkflowOp.Get(ctxWithTimeout)
+if err != nil {
+    log.Fatalf("Unable to obtain workflow run: %v", err)
+}
+```
+
+For more examples, see the [Go sample for early-return pattern](https://github.com/temporalio/samples-go/tree/main/early-return).
 
 ## Message handler patterns {#message-handler-patterns}
 

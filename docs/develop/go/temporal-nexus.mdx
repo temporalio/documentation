@@ -519,7 +519,7 @@ The `--allow-namespace` is used to build an Endpoint allowlist of caller Namespa
 Alternatively, you can create a Nexus Endpoint through the UI: [https://cloud.temporal.io/nexus](https://cloud.temporal.io/nexus).
 You can also create a Nexus endpoint through the UI in the development server.
 
-### Run Workers Connected to Temporal Cloud
+### Run Workers Connected to Temporal Cloud with TLS certificates
 
 [View the source code](https://github.com/temporalio/samples-go/tree/main/nexus) in the context of the rest of the application code.
 
@@ -559,6 +559,52 @@ go run ./starter \
 	-namespace <your-caller-namespace.account> \
 	-client-cert 'path/to/your/ca.pem' \
 	-client-key 'path/to/your/ca.key'
+```
+
+This will result in:
+
+```
+2024/10/04 19:57:40 Workflow result: Nexus Echo 👋
+2024/10/04 19:57:40 Workflow result: ¡Hola! Nexus 👋
+```
+
+### Run Workers Connected to Temporal Cloud with API keys
+
+[View the source code](https://github.com/temporalio/samples-go/tree/main/nexus) in the context of the rest of the application code.
+
+Run the handler Worker:
+
+```go
+cd handler
+
+go run ./worker \
+	-target-host <region>.<cloud_provider>.api.temporal.io:7233 \
+	-namespace <your-target-namespace.account> \
+	-api-key <your-api-key>
+```
+
+Run the caller Worker:
+
+```go
+cd caller
+
+go run ./worker \
+	-target-host <region>.<cloud_provider>.api.temporal.io:7233 \
+	-namespace <your-caller-namespace.account> \
+	-api-key <your-api-key>
+```
+
+### Start a caller Workflow
+
+In order to start the caller Workflow, run the starter.
+
+```go
+cd caller
+
+go run ./starter \
+	-target-host <region>.<cloud_provider>.api.temporal.io:7233 \
+	-namespace <your-caller-namespace.account> \
+	-api-key <your-api-key>
 ```
 
 This will result in:

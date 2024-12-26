@@ -52,10 +52,10 @@ Temporal Cloud operates in several regions on Amazon Web Services (AWS):
 
 Temporal Cloud operates in two regions on Google Cloud (GCP):
 
-| Area          | Code                 | Region |
-| ------------- | -------------------- | ------ |
-| North America | us-west1             | Oregon |
-| Asia Pacific  | asia-south1          | Mumbai |
+| Area          | Code        | Region |
+| ------------- | ----------- | ------ |
+| North America | us-west1    | Oregon |
+| Asia Pacific  | asia-south1 | Mumbai |
 
 ## Throughput expectations {#throughput}
 
@@ -71,7 +71,7 @@ Throttling means limiting the rate at which Actions are performed to prevent the
 Critical calls to external events, such starting or Signaling a Workflow, are always prioritized and never throttled.
 There are four priority levels for Temporal Cloud API calls:
 
-1. External events
+1. External events (Critical calls)
 2. Workflow progress updates
 3. Visibility API calls
 4. Cloud operations such as Namespace creation
