@@ -78,30 +78,6 @@ class MyWorkflow:
 
 Now, you want to update your code to run `post_patch_activity` instead. This represents your desired end state.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_4_patch_complete_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
-
-```python
-from datetime import timedelta
-
-from temporalio import workflow
-
-with workflow.unsafe.imports_passed_through():
-    from activities import post_patch_activity
-# ...
-@workflow.defn
-class MyWorkflow:
-    @workflow.run
-    async def run(self) -> None:
-        self._result = await workflow.execute_activity(
-            post_patch_activity,
-            schedule_to_close_timeout=timedelta(minutes=5),
-        )
-```
 
 **Problem: You cannot deploy `post_patch_activity` directly until you're certain there are no more running Workflows created using the `pre_patch_activity` code, otherwise you are likely to cause a nondeterminism error.**
 
