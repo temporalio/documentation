@@ -337,6 +337,7 @@ module.exports = {
               ],
             },
             "production-deployment/cloud/multi-region",
+            "production-deployment/cloud/rpo-rto",
             {
               type: "category",
               label: "Temporal Nexus",
