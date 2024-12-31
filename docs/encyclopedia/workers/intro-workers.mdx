@@ -1,0 +1,146 @@
+---
+id: workers
+title: What is a Temporal Worker?
+sidebar_label: Workers
+description: Temporal Workers are tightly coupled with Task Queues and Worker Processes.
+slug: /workers
+toc_max_heading_level: 4
+keywords:
+  - workers
+  - versioning
+tags:
+  - Workers
+  - Concepts
+---
+What is a Worker?
+What is a Worker Program?
+What is a Worker Entity?
+
+## What is a Worker? {#worker}
+
+In day-to-day conversations, the term Worker is used to denote either a [Worker Program](#worker-program), a [Worker Process](#worker-process), or a [Worker Entity](#worker-entity).
+Temporal documentation aims to be explicit and differentiate between them.
+
+## What is a Worker Program? {#worker-program}
+
+A Worker Program is the static code that defines the constraints of the Worker Process, developed using the APIs of a Temporal SDK.
+
+:::info
+
+- [How to run a development Worker using the Go SDK](/develop/go/core-application#develop-worker)
+- [How to run a development Worker using the Java SDK](/develop/java/core-application#run-a-dev-worker)
+- [How to run a development Worker using the PHP SDK](/develop/php/core-application#run-a-dev-worker)
+- [How to run a development Worker using the Python SDK](/develop/python/core-application#run-a-dev-worker)
+- [How to run a development Worker using the TypeScript SDK](/develop/typescript/core-application#run-a-dev-worker)
+- [How to run a development Worker using the .NET SDK](/develop/dotnet/core-application#run-worker-process)
+
+- [How to run a Temporal Cloud Worker using the Go SDK](/develop/go/core-application#run-a-temporal-cloud-worker)
+- [How to run a Temporal Cloud Worker using the TypeScript SDK](/develop/typescript/core-application#run-a-temporal-cloud-worker)
+
+:::
+
+## What is a Worker Entity? {#worker-entity}
+
+A Worker Entity is the individual Worker within a Worker Process that listens to a specific Task Queue.
+
+A Worker Entity listens and polls on a single Task Queue.
+A Worker Entity contains a Workflow Worker and/or an Activity Worker, which makes progress on Workflow Executions and Activity Executions, respectively.
+
+**Can a Worker handle more Workflow Executions than its cache size or number of supported threads?**
+
+Yes it can.
+However, the trade off is added latency.
+
+Workers are stateless, so any Workflow Execution in a blocked state can be safely removed from a Worker.
+Later on, it can be resurrected on the same or different Worker when the need arises (in the form of an external event).
+Therefore, a single Worker can handle millions of open Workflow Executions, assuming it can handle the update rate and that a slightly higher latency is not a concern.
+
+**Operation guides:**
+
+- [How to tune Workers](/develop/worker-performance)
+
+## What is a Worker Identity? {#worker-identity}
+
+Workers have an associated identifier that helps identify the specific Worker instance.
+By default, Temporal SDKs set a Worker Identity to `${process.pid}@${os.hostname()}`, which combines the Worker's process ID (`process.pid`) and the hostname of the machine running the Worker (`os.hostname()`).
+
+The Worker Identity is visible in various contexts, such as Workflow History and the list of pollers on a Task Queue.
+
+You can use the Worker Identity to aid in debugging operational issues.
+By providing a user assigned identifier, you can trace issues back to specific Worker instances.
+
+**What are some limitations of the default identity?**
+
+While the default identity format may seem sensible, it often proves to be of limited usefulness in cloud environments.
+Some common issues include:
+
+- **Docker containers**: When running Workers inside Docker containers, the process ID is always `1`, as each container typically runs a single process. This makes the process identifier meaningless for identification purposes.
+- **Random hostnames**: In some cloud environments, such as Amazon ECS (Elastic Container Service), the hostname is a randomly generated string that does not provide any meaningful information about the Worker's execution context.
+- **Ephemeral IP addresses**: In certain cases, the hostname might be set to an ephemeral IP address, which can change over time and does not uniquely identify a Worker instance.
+
+**What are some recommended approaches?**
+
+It is recommended that you ensure that the Worker Identity can be linked back to the corresponding machine, process, execution context, or log stream.
+In some execution environment, this might require that you explicitly specify the Worker Identity.
+
+Here are some approaches:
+
+- **Use environment-specific identifiers**: Choose an identifier that is specific to your execution environment. For example, when running Workers on Amazon ECS, you can set the Worker Identity to the ECS Task ID, which uniquely identifies the task running the Worker.
+- **Include relevant context**: Incorporate information that helps establish the context of the Worker, such as the deployment environment (`staging` or `production`), region, or any other relevant details.
+- **Ensure uniqueness**: Make sure that the Worker Identity is unique within your system to avoid ambiguity when debugging issues.
+- **Keep it concise**: While including relevant information is important, try to keep the Worker Identity concise and easily readable to facilitate quick identification and troubleshooting.
+
+## What is a Worker Process? {#worker-process}
+
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">
+      Component diagram of a Worker Process and the Temporal Server
+    </p>
+  </div>
+  <div className="tdiiw" height="422">
+    <img
+      className="img_ev3q"
+      src="/diagrams/worker-and-server-component.svg"
+      alt="Component diagram of a Worker Process and the Temporal Server"
+    />
+  </div>
+</div>
+
+A Worker Process is responsible for polling a [Task Queue](#task-queue), dequeueing a [Task](#task), executing your code in response to a Task, and responding to the [Temporal Service](/clusters) with the results.
+
+More formally, a Worker Process is any process that implements the Task Queue Protocol and the Task Execution Protocol.
+
+- A Worker Process is a Workflow Worker Process if the process implements the Workflow Task Queue Protocol and executes the Workflow Task Execution Protocol to make progress on a Workflow Execution.
+  A Workflow Worker Process can listen on an arbitrary number of Workflow Task Queues and can execute an arbitrary number of Workflow Tasks.
+- A Worker Process is an Activity Worker Process if the process implements the Activity Task Queue Protocol and executes the Activity Task Processing Protocol to make progress on an Activity Execution.
+  An Activity Worker Process can listen on an arbitrary number of Activity Task Queues and can execute an arbitrary number of Activity Tasks.
+
+**Worker Processes are external to a Temporal Service.**
+Temporal Application developers are responsible for developing [Worker Programs](#worker-program) and operating Worker Processes.
+Said another way, the [Temporal Service](/clusters) (including the Temporal Cloud) doesn't execute any of your code (Workflow and Activity Definitions) on Temporal Service machines. The Temporal Service is solely responsible for orchestrating [State Transitions](/workflows#state-transition) and providing Tasks to the next available [Worker Entity](#worker-entity).
+
+While data transferred in Event Histories is [secured by mTLS](/self-hosted-guide/security#encryption-in-transit-with-mtls), by default, it is still readable at rest in the Temporal Service.
+
+To solve this, Temporal SDKs offer a [Data Converter API](/dataconversion) that you can use to customize the serialization of data going out of and coming back in to a Worker Entity, with the net effect of guaranteeing that the Temporal Service cannot read sensitive business data.
+
+In many of our tutorials, we show you how to run both a Temporal Service and one Worker on the same machine for local development.
+However, a production-grade Temporal Application typically has a _fleet_ of Worker Processes, all running on hosts external to the Temporal Service.
+A Temporal Application can have as many Worker Processes as needed.
+
+A Worker Process can be both a Workflow Worker Process and an Activity Worker Process.
+Many SDKs support the ability to have multiple Worker Entities in a single Worker Process.
+(Worker Entity creation and management differ between SDKs.)
+A single Worker Entity can listen to only a single Task Queue.
+But if a Worker Process has multiple Worker Entities, the Worker Process could be listening to multiple Task Queues.
+
+![Entity relationship diagram (meta model) of Worker Processes, Task Queues, and Tasks](/diagrams/worker-and-server-entity-relationship.svg)
+
+Worker Processes executing Activity Tasks must have access to any resources needed to execute the actions that are defined in Activity Definitions, such as the following:
+
+- Network access for external API calls.
+- Credentials for infrastructure provisioning.
+- Specialized GPUs for machine learning utilities.
+
+The Temporal Service itself has [internal workers](https://temporal.io/blog/workflow-engine-principles/#system-workflows-1910) for system Workflow Executions.
+However, these internal workers are not visible to the developer.
