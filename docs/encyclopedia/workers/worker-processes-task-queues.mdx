@@ -12,7 +12,7 @@ tags:
   - Task Queues
 ---
 
-This page discusses [Task Queues](#task-queue) including [where to set Task Queues](#where-to-set-task-queues) and [Task Ordering](#task-ordering). 
+This page discusses [Task Queues](#task-queue) including [where to set Task Queues](#where-to-set-task-queues) and [Task Ordering](#task-ordering).
 
 ## What is a Task Queue? {#task-queue}
 
@@ -59,6 +59,7 @@ There are four places where the name of the Task Queue can be set by the develop
 1. A Task Queue must be set when spawning a Workflow Execution:
 
 :::info
+
 - [How to start a Workflow Execution using the Temporal CLI](/cli/workflow#start)
 - [How to start a Workflow Execution using the Go SDK](/develop/go/temporal-clients#start-workflow-execution)
 - [How to start a Workflow Execution using the Java SDK](/develop/java/temporal-clients#start-workflow-execution)
@@ -67,11 +68,12 @@ There are four places where the name of the Task Queue can be set by the develop
 - [How to start a Workflow Execution using the TypeScript SDK](/develop/typescript/temporal-clients#start-workflow-execution)
 - [How to start a Workflow Execution using the .NET SDK](/develop/dotnet/temporal-client#start-workflow)
 
-::: 
+:::
 
 2. A Task Queue name must be set when creating a Worker Entity and when running a Worker Process:
 
 :::info
+
 - [How to run a development Worker using the Go SDK](/develop/go/core-application#develop-worker)
 - [How to run a development Worker using the Java SDK](/develop/java/core-application#run-a-dev-worker)
 - [How to run a development Worker using the PHP SDK](/develop/php/core-application#run-a-dev-worker)
@@ -82,7 +84,7 @@ There are four places where the name of the Task Queue can be set by the develop
 - [How to run a Temporal Cloud Worker using the Go SDK](/develop/go/core-application#run-a-temporal-cloud-worker)
 - [How to run a Temporal Cloud Worker using the TypeScript SDK](/develop/typescript/core-application#run-a-temporal-cloud-worker)
 
-::: 
+:::
 
 Note that all Worker Entities listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
 
