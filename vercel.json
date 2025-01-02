@@ -1274,7 +1274,7 @@
     },
     {
       "source": "/concepts/what-is-task-routing",
-      "destination": "/workers#task-routing"
+      "destination": "/task-routing"
     },
     {
       "source": "/concepts/what-is-a-task-token",

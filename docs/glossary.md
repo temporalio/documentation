@@ -538,7 +538,7 @@ A Task Queue is a first-in, first-out queue that a Worker Process polls for Task
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Task Routing](/workers#task-routing)
+#### [Task Routing](/task-routing)
 
 Task Routing is when a Task Queue is paired with one or more Worker Processes, primarily for Activity Task Executions.
 
