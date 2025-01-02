@@ -59,7 +59,7 @@ A unique identifier for an Activity Execution.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Activity Task](/workers#activity-task)
+#### [Activity Task](/tasks#activity-task)
 
 An Activity Task contains the context needed to make an Activity Task Execution.
 

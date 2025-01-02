@@ -48,7 +48,7 @@ Try out the [Activity retry simulator](/develop/activity-retry-simulator) to vis
   The intention is that a Workflow Definition should be written to never fail due to intermittent issues; an Activity is designed to handle such issues.
 
 - **Activity Execution:** When an Activity Execution is spawned, it is associated with a default Retry Policy, and thus Activity Task Executions are retried by default.
-  When an Activity Task Execution is retried, the Temporal Service places a new [Activity Task](/workers#activity-task) into its respective [Activity Task Queue](/task-queue), which results in a new Activity Task Execution.
+  When an Activity Task Execution is retried, the Temporal Service places a new [Activity Task](/tasks#activity-task) into its respective [Activity Task Queue](/task-queue), which results in a new Activity Task Execution.
 
 ## Custom Retry Policy
 

@@ -1146,7 +1146,7 @@
     },
     {
       "source": "/concepts/what-is-an-activity-task",
-      "destination": "/workers#activity-task"
+      "destination": "/tasks#activity-task"
     },
     {
       "source": "/concepts/what-is-an-activity-task-execution",

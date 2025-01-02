@@ -217,7 +217,7 @@ However, the Workflow reset functionality also uses this Event.
 
 ### ActivityTaskScheduled
 
-This [Event](/workflows#event) type indicates that an [Activity Task](/workers#activity-task) was scheduled.
+This [Event](/workflows#event) type indicates that an [Activity Task](/tasks#activity-task) was scheduled.
 The SDK client should pick up this Activity Task and execute.
 This Event type contains Activity inputs, as well as Activity Timeout configurations.
 
@@ -252,7 +252,7 @@ Note, however, that this Event is not written to History until the terminal Even
 
 ### ActivityTaskCompleted
 
-This [Event](/workflows#event) type indicates that the [Activity Task](/workers#activity-task) has completed.
+This [Event](/workflows#event) type indicates that the [Activity Task](/tasks#activity-task) has completed.
 The SDK client has picked up and successfully completed the Activity Task.
 This Event type contains [Activity Execution](/activities#activity-execution) results.
 
@@ -265,7 +265,7 @@ This Event type contains [Activity Execution](/activities#activity-execution) re
 
 ### ActivityTaskFailed
 
-This [Event](/workflows#event) type indicates that the [Activity Task](/workers#activity-task) has failed.
+This [Event](/workflows#event) type indicates that the [Activity Task](/tasks#activity-task) has failed.
 The SDK client picked up the Activity Task but unsuccessfully completed it.
 This Event type contains [Activity Execution](/activities#activity-execution) errors.
 
