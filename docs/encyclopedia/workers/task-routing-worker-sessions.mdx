@@ -1,8 +1,8 @@
 ---
-id: task-routing-sticky-execution
-title: Task Routing and Sticky Execution
-sidebar_label: Task Routing and Sticky Execution
-description: Learn about routing Tasks to specific Worker Processes and managing Sticky Executions.
+id: task-routing-worker-sessions
+title: Task Routing and Worker Sessions
+sidebar_label: Task Routing and Worker Sessions
+description: Learn about routing Tasks and Worker Sessions. 
 slug: /task-routing
 toc_max_heading_level: 4
 keywords:
@@ -15,23 +15,8 @@ tags:
 
 This page discusses the following:
 
-- [Sticky Execution](#sticky-execution)
 - [Task Routing](#task-routing)
-
-## What is a Sticky Execution? {#sticky-execution}
-
-A Sticky Execution is when a Worker Entity caches the Workflow in memory and creates a dedicated Task Queue to listen on.
-
-A Sticky Execution occurs after a Worker Entity completes the first Workflow Task in the chain of Workflow Tasks for the Workflow Execution.
-
-The Worker Entity caches the Workflow in memory and begins polling the dedicated Task Queue for Workflow Tasks that contain updates, rather than the entire Event History.
-
-If the Worker Entity does not pick up a Workflow Task from the dedicated Task Queue in an appropriate amount of time, the Temporal Service will resume Scheduling Workflow Tasks on the original Task Queue.
-Another Worker Entity can then resume the Workflow Execution, and can set up its own Sticky Execution for future Workflow Tasks.
-
-- [How to set a `StickyScheduleToStartTimeout` on a Worker Entity in Go](/develop/go/core-application#stickyscheduletostarttimeout)
-
-Sticky Executions are the default behavior of the Temporal Platform.
+- [Worker Sessions](#worker-session)
 
 ## What is Task Routing? {#task-routing}
 
@@ -105,3 +90,10 @@ If your use case involves more than one priority, you can create one Task Queue 
 Task Routing is the simplest way to version your code.
 
 If you have a new backward-incompatible Activity Definition, start by using a different Task Queue.
+
+## What is a Worker Session? {#worker-session}
+
+A Worker Session is a feature provided by some SDKs that provides a straightforward API for [Task Routing](#task-routing) to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.
+It also includes features like concurrent session limitations and Worker failure detection.
+
+- [How to use Worker Sessions](/develop/go/sessions)

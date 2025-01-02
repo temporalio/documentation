@@ -526,9 +526,10 @@ module.exports = {
               },
               items: [
                 "encyclopedia/workers/tasks",
-                "encyclopedia/workers/task-routing-sticky-execution",
-                "encyclopedia/workers/worker-processes-task-queues",
-                "encyclopedia/workers/worker-sessions-versioning",
+                "encyclopedia/workers/task-queues",
+                "encyclopedia/workers/task-routing-worker-sessions",
+                "encyclopedia/workers/sticky-execution",
+                "encyclopedia/workers/worker-versioning",
               ],
             },
             "encyclopedia/workflow-message-passing",
