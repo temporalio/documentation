@@ -1,0 +1,143 @@
+---
+id: task-queues
+title: Task Queues
+sidebar_label: Task Queues
+description: Explore the role of Worker Processes in polling Task Queues and executing Tasks.
+slug: /task-queue
+toc_max_heading_level: 4
+keywords:
+  - task queues
+tags:
+  - Workers
+  - Task Queues
+---
+
+This page discusses [Task Queues](#task-queue) including [where to set Task Queues](#where-to-set-task-queues) and [Task Ordering](#task-ordering).
+
+## What is a Task Queue? {#task-queue}
+
+A Task Queue is a lightweight, dynamically allocated queue that one or more [Worker Entities](#worker-entity) poll for [Tasks](#task).
+
+There are two types of Task Queues, Activity Task Queues and Workflow Task Queues.
+
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Task Queue component</p>
+  </div>
+  <div className="tdiiw" height="500">
+    <img
+      className="img_ev3q"
+      src="/diagrams/task-queue.svg"
+      alt="Task Queue component"
+    />
+  </div>
+</div>
+
+Task Queues are very lightweight components.
+Task Queues do not require explicit registration but instead are created on demand when a Workflow Execution or Activity spawns or when a Worker Process subscribes to it.
+When a Task Queue is created, both a Workflow Task Queue and an Activity Task Queue are created under the same name.
+There is no limit to the number of Task Queues a Temporal Application can use or a Temporal Service can maintain.
+
+Workers poll for Tasks in Task Queues via synchronous RPC.
+This implementation offers several benefits:
+
+- A Worker Process polls for a message only when it has spare capacity, avoiding overloading itself.
+- In effect, Task Queues enable load balancing across many Worker Processes.
+- Task Queues enable what we call [Task Routing](#task-routing), which is the routing of specific Tasks to specific Worker Processes or even a specific process.
+- Task Queues support server-side throttling, which enables you to limit the Task dispatching rate to the pool of Worker Processes while still supporting Task dispatching at higher rates when spikes happen.
+- When all Worker Processes are down, messages simply persist in a Task Queue, waiting for the Worker Processes to recover.
+- Worker Processes do not need to advertise themselves through DNS or any other network discovery mechanism.
+- Worker Processes do not need to have any open ports, which is more secure.
+
+All Workers listening to a given Task Queue must have identical registrations of Activities and/or Workflows.
+The one exception is during a Server upgrade, where it is okay to have registration temporarily misaligned while the binary rolls out.
+
+### Where to set Task Queues {#set-task-queue}
+
+There are four places where the name of the Task Queue can be set by the developer.
+
+1. A Task Queue must be set when spawning a Workflow Execution:
+
+:::info
+
+- [How to start a Workflow Execution using the Temporal CLI](/cli/workflow#start)
+- [How to start a Workflow Execution using the Go SDK](/develop/go/temporal-clients#start-workflow-execution)
+- [How to start a Workflow Execution using the Java SDK](/develop/java/temporal-clients#start-workflow-execution)
+- [How to start a Workflow Execution using the PHP SDK](/develop/php/temporal-clients#start-workflow-execution)
+- [How to start a Workflow Execution using the Python SDK](/develop/python/temporal-clients#start-workflow-execution)
+- [How to start a Workflow Execution using the TypeScript SDK](/develop/typescript/temporal-clients#start-workflow-execution)
+- [How to start a Workflow Execution using the .NET SDK](/develop/dotnet/temporal-client#start-workflow)
+
+:::
+
+2. A Task Queue name must be set when creating a Worker Entity and when running a Worker Process:
+
+:::info
+
+- [How to run a development Worker using the Go SDK](/develop/go/core-application#develop-worker)
+- [How to run a development Worker using the Java SDK](/develop/java/core-application#run-a-dev-worker)
+- [How to run a development Worker using the PHP SDK](/develop/php/core-application#run-a-dev-worker)
+- [How to run a development Worker using the Python SDK](/develop/python/core-application#run-a-dev-worker)
+- [How to run a development Worker using the TypeScript SDK](/develop/typescript/core-application#run-a-dev-worker)
+- [How to run a development Worker using the .NET SDK](/develop/dotnet/core-application#run-worker-process)
+
+- [How to run a Temporal Cloud Worker using the Go SDK](/develop/go/core-application#run-a-temporal-cloud-worker)
+- [How to run a Temporal Cloud Worker using the TypeScript SDK](/develop/typescript/core-application#run-a-temporal-cloud-worker)
+
+:::
+
+Note that all Worker Entities listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
+
+If a Worker Entity polls a Task for a Workflow Type or Activity Type it does not know about, it will fail that Task.
+However, the failure of the Task will not cause the associated Workflow Execution to fail.
+
+3. A Task Queue name can be provided when spawning an Activity Execution:
+
+This is optional.
+An Activity Execution inherits the Task Queue name from its Workflow Execution if one is not provided.
+
+:::info
+
+- [How to start an Activity Execution using the Go SDK](/develop/go/core-application#activity-execution)
+- [How to start an Activity Execution using the Java SDK](/develop/java/core-application#activity-execution)
+- [How to start an Activity Execution using the PHP SDK](/develop/php/core-application#activity-execution)
+- [How to start an Activity Execution using the Python SDK](/develop/python/core-application#activity-execution)
+- [How to start an Activity Execution using the TypeScript SDK](/develop/typescript/core-application#activity-execution)
+- [How to start an Activity Execution using the .NET SDK](/develop/dotnet/core-application#activity-execution)
+
+:::
+
+4. A Task Queue name can be provided when spawning a Child Workflow Execution:
+
+This is optional.
+A Child Workflow Execution inherits the Task Queue name from its Parent Workflow Execution if one is not provided.
+
+:::info
+
+- [How to start a Child Workflow Execution using the Go SDK](/develop/go/child-workflows)
+- [How to start a Child Workflow Execution using the Java SDK](/develop/java/child-workflows)
+- [How to start a Child Workflow Execution using the PHP SDK](/develop/php/continue-as-new)
+- [How to start a Child Workflow Execution using the Python SDK](/develop/python/child-workflows)
+- [How to start a Child Workflow Execution using the TypeScript SDK](/develop/typescript/child-workflows)
+- [How to start a Child Workflow Execution using the .NET SDK](/develop/dotnet/child-workflows)
+
+:::
+
+### Task ordering {#task-ordering}
+
+Task Queues can be scaled by adding partitions.
+The [default](/references/dynamic-configuration#service-level-rps-limits) number of partitions is 4.
+
+Task Queues with multiple partitions do not have any ordering guarantees.
+Once there is a backlog of Tasks that have been written to disk, Tasks that can be dispatched immediately (“sync matches”) are delivered before tasks from the backlog (“async matches”).
+This approach optimizes throughput.
+
+Task Queues with a single partition are almost always first-in, first-out, with rare edge case exceptions.
+However, using a single partition limits you to low- and medium-throughput use cases.
+
+:::note
+
+This section is on the ordering of individual Tasks, and does not apply to the ordering of Workflow Executions, Activity Executions, or [Events](/workflows#event) in a single Workflow Execution.
+The order of Events in a Workflow Execution is guaranteed to remain constant once they have been written to that Workflow Execution's [History](/workflows#event-history).
+
+:::
