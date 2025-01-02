@@ -44,7 +44,7 @@ A Workflow Task is a Task that contains the context needed to make progress with
 
 ### What is a Workflow Task Execution? {#workflow-task-execution}
 
-A Workflow Task Execution occurs when a [Worker](#worker-entity) picks up a [Workflow Task](#workflow-task) and uses it to make progress on the execution of a [Workflow Definition](/workflows#workflow-definition) (also known as a Workflow function).
+A Workflow Task Execution occurs when a [Worker](/workers#worker-entity) picks up a [Workflow Task](#workflow-task) and uses it to make progress on the execution of a [Workflow Definition](/workflows#workflow-definition) (also known as a Workflow function).
 
 ## What is an Activity Task? {#activity-task}
 
@@ -55,7 +55,7 @@ If Heartbeat data is being passed, an Activity Task will also contain the latest
 
 ### What is an Activity Task Execution? {#activity-task-execution}
 
-An Activity Task Execution occurs when a [Worker](#worker-entity) uses the context provided from the [Activity Task](#activity-task) and executes the [Activity Definition](/activities#activity-definition) (also known as the Activity Function).
+An Activity Task Execution occurs when a [Worker](/workers#worker-entity) uses the context provided from the [Activity Task](#activity-task) and executes the [Activity Definition](/activities#activity-definition) (also known as the Activity Function).
 
 The [ActivityTaskScheduled Event](/references/events#activitytaskscheduled) corresponds to when the Temporal Service puts the Activity Task into the Task Queue.
 

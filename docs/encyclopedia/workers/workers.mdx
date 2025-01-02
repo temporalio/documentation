@@ -22,7 +22,7 @@ This page discusses the following:
 
 ## What is a Worker? {#worker}
 
-In day-to-day conversations, the term Worker is used to denote either a [Worker Program](#worker-program), a [Worker Process](#worker-process), or a [Worker Entity](#worker-entity).
+In day-to-day conversations, the term Worker is used to denote either a [Worker Program](#worker-program), a [Worker Process](#worker-process), or a [Worker Entity](/workers#worker-entity).
 Temporal documentation aims to be explicit and differentiate between them.
 
 ## What is a Worker Program? {#worker-program}
@@ -122,7 +122,7 @@ More formally, a Worker Process is any process that implements the Task Queue Pr
 
 **Worker Processes are external to a Temporal Service.**
 Temporal Application developers are responsible for developing [Worker Programs](#worker-program) and operating Worker Processes.
-Said another way, the [Temporal Service](/clusters) (including the Temporal Cloud) doesn't execute any of your code (Workflow and Activity Definitions) on Temporal Service machines. The Temporal Service is solely responsible for orchestrating [State Transitions](/workflows#state-transition) and providing Tasks to the next available [Worker Entity](#worker-entity).
+Said another way, the [Temporal Service](/clusters) (including the Temporal Cloud) doesn't execute any of your code (Workflow and Activity Definitions) on Temporal Service machines. The Temporal Service is solely responsible for orchestrating [State Transitions](/workflows#state-transition) and providing Tasks to the next available [Worker Entity](/workers#worker-entity).
 
 While data transferred in Event Histories is [secured by mTLS](/self-hosted-guide/security#encryption-in-transit-with-mtls), by default, it is still readable at rest in the Temporal Service.
 
