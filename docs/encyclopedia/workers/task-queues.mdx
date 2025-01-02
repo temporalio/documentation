@@ -12,11 +12,11 @@ tags:
   - Task Queues
 ---
 
-This page discusses [Task Queues](#task-queue) including [where to set Task Queues](#where-to-set-task-queues) and [Task Ordering](#task-ordering).
+This page discusses [Task Queues](#task-queue) including [where to set Task Queues](#set-task-queue) and [Task Ordering](#task-ordering).
 
 ## What is a Task Queue? {#task-queue}
 
-A Task Queue is a lightweight, dynamically allocated queue that one or more [Worker Entities](/workers#worker-entity) poll for [Tasks](#task).
+A Task Queue is a lightweight, dynamically allocated queue that one or more [Worker Entities](/workers#worker-entity) poll for [Tasks](/tasks#task).
 
 There are two types of Task Queues, Activity Task Queues and Workflow Task Queues.
 
@@ -43,7 +43,7 @@ This implementation offers several benefits:
 
 - A Worker Process polls for a message only when it has spare capacity, avoiding overloading itself.
 - In effect, Task Queues enable load balancing across many Worker Processes.
-- Task Queues enable what we call [Task Routing](#task-routing), which is the routing of specific Tasks to specific Worker Processes or even a specific process.
+- Task Queues enable what we call [Task Routing](/task-routing), which is the routing of specific Tasks to specific Worker Processes or even a specific process.
 - Task Queues support server-side throttling, which enables you to limit the Task dispatching rate to the pool of Worker Processes while still supporting Task dispatching at higher rates when spikes happen.
 - When all Worker Processes are down, messages simply persist in a Task Queue, waiting for the Worker Processes to recover.
 - Worker Processes do not need to advertise themselves through DNS or any other network discovery mechanism.

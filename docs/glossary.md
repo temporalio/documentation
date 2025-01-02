@@ -698,7 +698,7 @@ The Worker Service runs background processing for the replication queue, system 
 
 <!-- _Tags: [term](/tags/term)_ -->
 
-#### [Worker Session](/workers#worker-session)
+#### [Worker Session](/task-routing#worker-session)
 
 A Worker Session is a feature provided by some SDKs that provides a straightforward way to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.
 
