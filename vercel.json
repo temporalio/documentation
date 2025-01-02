@@ -1266,7 +1266,7 @@
     },
     {
       "source": "/concepts/what-is-a-sticky-execution",
-      "destination": "/workers#sticky-execution"
+      "destination": "/sticky-execution"
     },
     {
       "source": "/concepts/what-is-a-task-queue",

@@ -520,7 +520,7 @@ A State Transition is a unit of progress by a Workflow Execution.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Sticky Execution](/workers#sticky-execution)
+#### [Sticky Execution](/sticky-execution)
 
 A Sticky Execution is a when a Worker Entity caches the Workflow Execution Event History and creates a dedicated Task Queue to listen on.
 

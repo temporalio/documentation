@@ -451,7 +451,7 @@ The age is based on the creation time of the Task at the head of the queue.
 
 You can rely on both these counts when making scaling decisions.
 
-Please note: [Sticky queues](https://docs.temporal.io/workers#sticky-execution) will affect these values, but only for a few seconds.
+Please note: [Sticky queues](https://docs.temporal.io/sticky-execution) will affect these values, but only for a few seconds.
 That's because Tasks sent to Sticky queues are not included in the returned values for `ApproximateBacklogCount` and `ApproximateBacklogAge`.
 Inaccuracies diminish as the backlog grows.
 
