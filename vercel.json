@@ -1150,7 +1150,7 @@
     },
     {
       "source": "/concepts/what-is-an-activity-task-execution",
-      "destination": "/workers#activity-task-execution"
+      "destination": "/tasks#activity-task-execution"
     },
     {
       "source": "/concepts/what-is-an-activity-type",
@@ -1270,7 +1270,7 @@
     },
     {
       "source": "/concepts/what-is-a-task-queue",
-      "destination": "/workers#task-queue"
+      "destination": "/task-queue"
     },
     {
       "source": "/concepts/what-is-task-routing",

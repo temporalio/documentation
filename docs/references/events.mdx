@@ -24,7 +24,7 @@ It indicates that the Temporal Service received a request to spawn the Workflow 
 | parent_workflow_namespace          | The [Namespace](/namespaces) of the Parent [Workflow Execution](/workflows#workflow-execution), if applicable.                                                            |
 | parent_workflow_execution          | Identifies the parent Workflow and the execution run.                                                                                                                     |
 | parent_initiated_event_id          | Id of the [StartWorkflowExecutionInitiated](#startchildworkflowexecutioninitiated) Event this Event corresponds to.                                                       |
-| task_queue                         | The [Task Queue](/workers#task-queue) that this [Workflow Task](/workers#workflow-task) was enqueued in.                                                                  |
+| task_queue                         | The [Task Queue](/task-queue) that this [Workflow Task](/workers#workflow-task) was enqueued in.                                                                  |
 | input                              | Information that is deserialized by the SDK to provide arguments to the Workflow.                                                                                         |
 | workflow_execution_timeout         | The total timeout period for a [Workflow Execution](/workflows#workflow-execution), including retries and continue-as-new.                                                |
 | workflow_run_timeout               | Timeout of a single Workflow run.                                                                                                                                         |
@@ -127,7 +127,7 @@ This Event type contains last [Workflow Execution](/workflows#workflow-execution
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------- |
 | new_execution_run_id             | The [Run Id](/workflows#run-id) of the new Workflow started by this Continue-As-New Event.                    |
 | workflow_type                    | The name/type of Workflow that was started by this Event.                                                     |
-| task_queue                       | The [Task Queue](/workers#task-queue) that this [Workflow Task](/workers#workflow-task) was enqueued in.      |
+| task_queue                       | The [Task Queue](/task-queue) that this [Workflow Task](/workers#workflow-task) was enqueued in.      |
 | input                            | Information that is deserialized by the SDK to provide arguments to the Workflow.                             |
 | workflow_run_timeout             | Timeout of a single Workflow run.                                                                             |
 | workflow_task_timeout            | Timeout of a single Workflow Task.                                                                            |
@@ -146,7 +146,7 @@ The SDK client should now be able to process any new history events.
 
 | Field                  | Description                                                                                |
 | ---------------------- | ------------------------------------------------------------------------------------------ |
-| task_queue             | The [Task Queue](/workers#task-queue) that this Workflow Task was enqueued in.             |
+| task_queue             | The [Task Queue](/task-queue) that this Workflow Task was enqueued in.             |
 | start_to_close_timeout | The time that the [Worker](/workers#worker) takes to process this Task once it's received. |
 | attempt                | The number of attempts that have been made to complete this Task.                          |
 
@@ -226,7 +226,7 @@ This Event type contains Activity inputs, as well as Activity Timeout configurat
 | activity_id                      | The identifier assigned to this Activity by a [Worker](/workers#worker) or user.                                                                                          |
 | activity_type                    | The [type of Activity](/activities#activity-type) that was scheduled.                                                                                                     |
 | namespace                        | Namespace of the Workflow that the [Activity](/activities) resides in.                                                                                                    |
-| task_queue                       | The [Task Queue](/workers#task-queue) that this Activity Task was enqueued in.                                                                                            |
+| task_queue                       | The [Task Queue](/task-queue) that this Activity Task was enqueued in.                                                                                            |
 | header                           | Information passed by the sender of the [Signal](/encyclopedia/workflow-message-passing#sending-signals) that is copied into the [Workflow Task](/workers#workflow-task). |
 | input                            | Information that is deserialized by the SDK to provide arguments to the [Workflow](/workflows) function.                                                                  |
 | schedule_to_close_timeout        | The amount of time that a caller will wait for Activity completion. Limits the amount of time that retries will be attempted for this Activity.                           |
@@ -238,7 +238,7 @@ This Event type contains Activity inputs, as well as Activity Timeout configurat
 
 ### ActivityTaskStarted
 
-This [Event](/workflows#event) type indicates that an [Activity Task Execution](/workers#activity-task-execution) was started.
+This [Event](/workflows#event) type indicates that an [Activity Task Execution](/tasks#activity-task-execution) was started.
 The SDK Worker picked up the Activity Task and started processing the [Activity](/activities) invocation.
 Note, however, that this Event is not written to History until the terminal Event (like [ActivityTaskCompleted](#activitytaskcompleted) or [ActivityTaskFailed](#activitytaskfailed)) occurs.
 

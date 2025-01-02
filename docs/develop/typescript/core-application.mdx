@@ -743,7 +743,7 @@ The `proxyActivities()` returns an object that calls the Activities in the funct
 The [Worker Process](/workers#worker-process) is where Workflow Functions and Activity Functions are executed.
 
 - Each [Worker Entity](/workers#worker-entity) in the Worker Process must register the exact Workflow Types and Activity Types it may execute.
-- Each Worker Entity must also associate itself with exactly one [Task Queue](/workers#task-queue).
+- Each Worker Entity must also associate itself with exactly one [Task Queue](/task-queue).
 - Each Worker Entity polling the same Task Queue must be registered with the same Workflow Types and Activity Types.
 
 A [Worker Entity](/workers#worker-entity) is the component within a Worker Process that listens to a specific Task Queue.
@@ -1028,7 +1028,7 @@ Workflow Execution run in a separate V8 isolate context in order to provide a [d
 
 ### How to set a Workflow's Task Queue {#set-task-queue}
 
-In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/workers#task-queue).
+In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/task-queue).
 
 For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task Queue name.
 

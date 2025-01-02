@@ -73,7 +73,7 @@ In most cases, we recommend monitoring the `temporal_activity_schedule_to_start_
 
 **What is a Start-To-Close Timeout in Temporal?**
 
-A Start-To-Close Timeout is the maximum time allowed for a single [Activity Task Execution](/workers#activity-task-execution).
+A Start-To-Close Timeout is the maximum time allowed for a single [Activity Task Execution](/tasks#activity-task-execution).
 
 <RelatedReadContainer>
   <RelatedReadItem path="/develop/go/failure-detection#activity-timeouts" text="Set a Start-To-Close Timeout using the Go SDK" archetype="feature-guide" />
@@ -183,7 +183,7 @@ For _long-running_ Activities, we recommend using a relatively short Heartbeat T
 That way if a Worker fails it can be handled in a timely manner.
 
 A Heartbeat can include an application layer payload that can be used to _save_ Activity Execution progress.
-If an [Activity Task Execution](/workers#activity-task-execution) times out due to a missed Heartbeat, the next Activity Task can access and continue with that payload.
+If an [Activity Task Execution](/tasks#activity-task-execution) times out due to a missed Heartbeat, the next Activity Task can access and continue with that payload.
 
 Activity Cancellations are delivered to Activities from the Temporal Service when they Heartbeat. Activities that don't Heartbeat can't receive a Cancellation.
 Heartbeat throttling may lead to Cancellation getting delivered later than expected.

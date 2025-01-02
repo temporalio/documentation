@@ -65,7 +65,7 @@ An Activity Task contains the context needed to make an Activity Task Execution.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Activity Task Execution](/workers#activity-task-execution)
+#### [Activity Task Execution](/tasks#activity-task-execution)
 
 An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.
 
@@ -532,7 +532,7 @@ A Task is the context needed to make progress with a specific Workflow Execution
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Task Queue](/workers#task-queue)
+#### [Task Queue](/task-queue)
 
 A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.
 

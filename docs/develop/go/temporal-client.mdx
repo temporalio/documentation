@@ -244,7 +244,7 @@ workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "Yo
 
 **How to set a Workflow's Task Queue using the Go SDK**
 
-In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/workers#task-queue).
+In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/task-queue).
 
 For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task Queue name.
 
@@ -719,7 +719,7 @@ You can start a Workflow Execution on a regular schedule with [the CronSchedule 
 
 ### How to set a Workflow's Task Queue {#set-task-queue}
 
-In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/workers#task-queue).
+In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/task-queue).
 
 For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task Queue name.
 
