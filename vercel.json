@@ -1146,11 +1146,11 @@
     },
     {
       "source": "/concepts/what-is-an-activity-task",
-      "destination": "/workers#activity-task"
+      "destination": "/tasks#activity-task"
     },
     {
       "source": "/concepts/what-is-an-activity-task-execution",
-      "destination": "/workers#activity-task-execution"
+      "destination": "/tasks#activity-task-execution"
     },
     {
       "source": "/concepts/what-is-an-activity-type",
@@ -1266,15 +1266,15 @@
     },
     {
       "source": "/concepts/what-is-a-sticky-execution",
-      "destination": "/workers#sticky-execution"
+      "destination": "/sticky-execution"
     },
     {
       "source": "/concepts/what-is-a-task-queue",
-      "destination": "/workers#task-queue"
+      "destination": "/task-queue"
     },
     {
       "source": "/concepts/what-is-task-routing",
-      "destination": "/workers#task-routing"
+      "destination": "/task-routing"
     },
     {
       "source": "/concepts/what-is-a-task-token",
@@ -1358,7 +1358,7 @@
     },
     {
       "source": "/concepts/what-is-a-workflow-task-execution",
-      "destination": "/workers#workflow-task-execution"
+      "destination": "/tasks#workflow-task-execution"
     },
     {
       "source": "/concepts/what-is-a-workflow-task-timeout",

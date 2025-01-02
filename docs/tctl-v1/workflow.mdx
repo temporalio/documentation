@@ -50,7 +50,7 @@ The `tctl workflow` commands enable [Workflow Execution](/workflows#workflow-exe
 The `tctl workflow cancel --query` command cancels a [Workflow Execution](/workflows#workflow-execution).
 
 Canceling a running Workflow Execution records a `WorkflowExecutionCancelRequested` event in the History.
-A new [Workflow Task](/workers#workflow-task) will be scheduled.
+A new [Workflow Task](/tasks#workflow-task) will be scheduled.
 After cancellation, the Workflow Execution can perform cleanup work.
 
 See also [`tctl workflow terminate --query`](#terminate).
@@ -1219,7 +1219,7 @@ The following modifiers control the behavior of the command.
 
 ### --taskqueue
 
-Specify a [Task Queue](/workers#task-queue).
+Specify a [Task Queue](/task-queue).
 
 Alias: `--t`
 
@@ -1264,7 +1264,7 @@ tctl workflow run --execution_timeout <seconds>
 
 ### --workflow_task_timeout
 
-Specify the [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) of the [Workflow Task](/workers#workflow-task) in seconds.
+Specify the [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) of the [Workflow Task](/tasks#workflow-task) in seconds.
 The default value is 10.
 
 **Example**
@@ -1979,7 +1979,7 @@ Always include required modifiers when executing this command.
 
 ### --taskqueue
 
-Specify a [Task Queue](/workers#task-queue).
+Specify a [Task Queue](/task-queue).
 
 Alias: `--t`
 
@@ -2035,7 +2035,7 @@ tctl workflow start --execution_timeout <seconds>
 
 ### --workflow_task_timeout
 
-Specify the [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) of the [Workflow Task](/workers#workflow-task) in seconds.
+Specify the [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) of the [Workflow Task](/tasks#workflow-task) in seconds.
 The default value is 10.
 
 **Example**
@@ -2183,7 +2183,7 @@ tctl workflow start --search_attr_value <value>
 The `tctl workflow terminate` command terminates a [Workflow Execution](/workflows#workflow-execution).
 
 Terminating a running Workflow Execution records a `WorkflowExecutionTerminated` event as the closing event in the History.
-No more [Workflow Task](/workers#workflow-task) will be scheduled.
+No more [Workflow Task](/tasks#workflow-task) will be scheduled.
 
 See also [`tctl workflow cancel`](#cancel).
 

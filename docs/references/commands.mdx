@@ -10,7 +10,7 @@ tags:
   - Reference
 ---
 
-A [Command](/workflows#command) is a requested action issued by a [Worker](/workers#worker) to the [Temporal Service](/clusters) after a [Workflow Task Execution](/workers#workflow-task-execution) completes.
+A [Command](/workflows#command) is a requested action issued by a [Worker](/workers#worker) to the [Temporal Service](/clusters) after a [Workflow Task Execution](/tasks#workflow-task-execution) completes.
 
 The following is a complete list of possible Commands.
 
@@ -84,7 +84,7 @@ By default, you cannot schedule more than 2,000 Activities concurrently.
 
 ### RequestCancelActivityTask
 
-This Command is triggered by a call to request the cancellation of an [Activity Task](/workers#activity-task).
+This Command is triggered by a call to request the cancellation of an [Activity Task](/tasks#activity-task).
 
 - Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
 - Corresponding Event: [ActivityTaskCancelRequested](/references/events#activitytaskcancelrequested)

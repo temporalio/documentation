@@ -15,12 +15,12 @@ tags:
   - Temporal CLI
 ---
 
-Task Queue commands allow operations to be performed on [Task Queues](/workers#task-queue).
+Task Queue commands allow operations to be performed on [Task Queues](/task-queue).
 To run a Task Queue command, run `temporal task-queue [command] [command options]`
 
 ## describe
 
-The `temporal task-queue describe` command provides [poller](/develop/worker-performance#poller-count) information for a given [Task Queue](/workers#task-queue).
+The `temporal task-queue describe` command provides [poller](/develop/worker-performance#poller-count) information for a given [Task Queue](/task-queue).
 
 The [Server](/clusters#temporal-server) records the last time of each poll request.
 A `LastAccessTime` value in excess of one minute can indicate the Worker is at capacity (all Workflow and Activity slots are full) or that the Worker has shut down.
@@ -73,7 +73,7 @@ Use the following options to change the behavior of this command.
 
 ## list-partition
 
-The `temporal task-queue list-partition` command displays the partitions of a [Task Queue](/workers#task-queue), along with the matching node they are assigned to.
+The `temporal task-queue list-partition` command displays the partitions of a [Task Queue](/task-queue), along with the matching node they are assigned to.
 
 Use the following options to change the command's behavior.
 

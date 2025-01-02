@@ -28,7 +28,7 @@ Namespaces are created on the Temporal Service, and provide a range of controls 
   See the [Registration](#registration) section for details.
 - Namespaces created on self-hosted Temporal Service are case-sensitive. For example, `foo` and `Foo` are two different Namespaces.
   On Temporal Cloud, Namespaces are case-insensitive, and we recommend using lowercase for Namespace names to avoid potential issues.
-- **Membership:** [Task Queue](/workers#task-queue) names and [Workflow Ids](/workflows#workflow-id) must all correspond to a specific Namespace.
+- **Membership:** [Task Queue](/task-queue) names and [Workflow Ids](/workflows#workflow-id) must all correspond to a specific Namespace.
   For example, when a Workflow Execution is spawned, it does so within a specific Namespace.
 - **Uniqueness:** Temporal guarantees a unique Workflow Id within a Namespace.
   Workflow Executions may have the same Workflow Id if they are in different Namespaces.
@@ -125,7 +125,7 @@ For a failover to be successful, Worker Processes must be polling for Tasks for 
 A Global Namespace has a failover version.
 Because a failover can be triggered from any Cluster, the failover version prevents certain conflicts from occurring if a failover is mistakenly triggered simultaneously on two Clusters.
 
-Only the active Cluster dispatches [Tasks](/workers#task); however, certain conflicts are possible.
+Only the active Cluster dispatches [Tasks](/tasks#task); however, certain conflicts are possible.
 Unlike regular Namespaces, which provide at-most-once semantics for an Activity Execution, Global Namespaces can support only at-least-once semantics (see [Conflict resolution](/clusters#conflict-resolution)).
 Worker Processes on the standby Clusters are idle until a failover occurs and their Cluster becomes active.
 

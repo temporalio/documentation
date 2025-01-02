@@ -22,7 +22,7 @@ After the release of Temporal CLI v1.0, tctl will deprecate.
 
 :::
 
-The `tctl taskqueue` command enables [Task Queue](/workers#task-queue) operations.
+The `tctl taskqueue` command enables [Task Queue](/task-queue) operations.
 
 Alias: `t`
 
@@ -31,7 +31,7 @@ Alias: `t`
 
 ## describe
 
-The `tctl taskqueue describe` command describes the poller information of a [Task Queue](/workers#task-queue).
+The `tctl taskqueue describe` command describes the poller information of a [Task Queue](/task-queue).
 
 `tctl taskqueue describe <modifiers> <value>`
 
@@ -41,7 +41,7 @@ The following modifiers control the behavior of the command.
 
 _Required modifier_
 
-Specify a [Task Queue](/workers#task-queue).
+Specify a [Task Queue](/task-queue).
 
 Alias: `--t`
 
@@ -53,7 +53,7 @@ tctl taskqueue describe --taskqueue <value>
 
 ### --taskqueuetype
 
-Specify the type of a [Task Queue](/workers#task-queue).
+Specify the type of a [Task Queue](/task-queue).
 The type can be `workflow` or `activity`.
 The default is `workflow`.
 
@@ -65,7 +65,7 @@ tctl taskqueue describe --taskqueue <value> --taskqueuetype <type>
 
 ## list-partition
 
-The `tctl taskqueue list-partition` command lists the partitions of a [Task Queue](/workers#task-queue) and the hostname for the partitions.
+The `tctl taskqueue list-partition` command lists the partitions of a [Task Queue](/task-queue) and the hostname for the partitions.
 
 `tctl taskqueue list-partition --taskqueue <value>`
 
@@ -75,7 +75,7 @@ The following modifier controls the behavior of the command.
 
 _Required modifier_
 
-Specify a [Task Queue](/workers#task-queue) description.
+Specify a [Task Queue](/task-queue) description.
 
 Alias: `--t`
 

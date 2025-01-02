@@ -451,7 +451,7 @@ The age is based on the creation time of the Task at the head of the queue.
 
 You can rely on both these counts when making scaling decisions.
 
-Please note: [Sticky queues](https://docs.temporal.io/workers#sticky-execution) will affect these values, but only for a few seconds.
+Please note: [Sticky queues](https://docs.temporal.io/sticky-execution) will affect these values, but only for a few seconds.
 That's because Tasks sent to Sticky queues are not included in the returned values for `ApproximateBacklogCount` and `ApproximateBacklogAge`.
 Inaccuracies diminish as the backlog grows.
 
@@ -483,11 +483,11 @@ While individual `add` and `dispatch` rates may be inaccurate due to Eager and S
 
 ## Evaluate Task Queue performance {#evaluate-worker-loads}
 
-A [Task Queue](https://docs.temporal.io/workers#task-queue) is a lightweight, dynamically allocated queue.
-[Worker Entities](https://docs.temporal.io/workers#worker-entity) poll the queue for [Tasks](https://docs.temporal.io/workers#task) and retrieve Tasks to work on.
+A [Task Queue](https://docs.temporal.io/task-queue) is a lightweight, dynamically allocated queue.
+[Worker Entities](https://docs.temporal.io/workers#worker-entity) poll the queue for [Tasks](https://docs.temporal.io/tasks#task) and retrieve Tasks to work on.
 Tasks are contexts that a Worker progresses using a specific Workflow Execution, Activity Execution, or a Nexus Task Execution.
 Each Task Queue type offers its Tasks to compatible Workers for Task completion.
-The Temporal Service dynamically creates different [Task Queue types](/workers#task-queue) including Activity Task Queues, Workflow Task Queues, and Nexus Task Queues.
+The Temporal Service dynamically creates different [Task Queue types](/task-queue) including Activity Task Queues, Workflow Task Queues, and Nexus Task Queues.
 
 With an accurate estimate of backlog Tasks, you can determine the optimal number of Workers to deploy.
 Balance your Worker count with the number of Tasks to achieve the best performance.

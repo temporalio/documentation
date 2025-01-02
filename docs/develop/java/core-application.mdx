@@ -327,7 +327,7 @@ A single argument is limited to a maximum size of 2 MB.
 And the total size of a gRPC message, which includes all the arguments, is limited to a maximum of 4 MB.
 
 Also, keep in mind that all Payload data is recorded in the [Workflow Execution Event History](/workflows#event-history) and large Event Histories can affect Worker performance.
-This is because the entire Event History could be transferred to a Worker Process with a [Workflow Task](/workers#workflow-task).
+This is because the entire Event History could be transferred to a Worker Process with a [Workflow Task](/tasks#workflow-task).
 
 {/* TODO link to gRPC limit section when available */}
 
@@ -478,7 +478,7 @@ Systems such as Prometheus may ignore metrics with tags using unsupported charac
 
 Calls to spawn [Activity Executions](/activities#activity-execution) are written within a [Workflow Definition](/workflows#workflow-definition).
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
-This results in the set of three [Activity Task](/workers#activity-task) related Events ([ActivityTaskScheduled](/references/events#activitytaskscheduled), [ActivityTaskStarted](/references/events#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
+This results in the set of three [Activity Task](/tasks#activity-task) related Events ([ActivityTaskScheduled](/references/events#activitytaskscheduled), [ActivityTaskStarted](/references/events#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
 
 A single instance of the Activities implementation is shared across multiple simultaneous Activity invocations.
 Activity implementation code should be _idempotent_.
@@ -930,7 +930,7 @@ Note that if you define options per-Activity Type options with `WorkflowImplemen
                       .build();
   ```
 
-See [Task Queue](/workers#task-queue)
+See [Task Queue](/task-queue)
 
 #### RetryOptions
 
@@ -1064,7 +1064,7 @@ When the download is complete, the download service potentially can complete the
 The [Worker Process](/workers#worker-process) is where Workflow Functions and Activity Functions are executed.
 
 - Each [Worker Entity](/workers#worker-entity) in the Worker Process must register the exact Workflow Types and Activity Types it may execute.
-- Each Worker Entity must also associate itself with exactly one [Task Queue](/workers#task-queue).
+- Each Worker Entity must also associate itself with exactly one [Task Queue](/task-queue).
 - Each Worker Entity polling the same Task Queue must be registered with the same Workflow Types and Activity Types.
 
 A [Worker Entity](/workers#worker-entity) is the component within a Worker Process that listens to a specific Task Queue.

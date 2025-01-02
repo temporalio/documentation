@@ -487,7 +487,7 @@ The `assert` method is available in Python and TypeScript.
 
 The Node.js [`assert`](https://nodejs.org/api/assert.html) module is included in Workflow bundles.
 
-By default, a failed `assert` statement throws `AssertionError`, which causes a [Workflow Task](/workers#workflow-task) to fail and be indefinitely retried.
+By default, a failed `assert` statement throws `AssertionError`, which causes a [Workflow Task](/tasks#workflow-task) to fail and be indefinitely retried.
 
 To prevent this behavior, use [`workflowInterceptorModules`](https://typescript.temporal.io/api/namespaces/testing/#workflowinterceptormodules) from `@temporalio/testing`.
 These interceptors catch an `AssertionError` and turn it into an `ApplicationFailure` that fails the entire Workflow Execution (not just the Workflow Task).
