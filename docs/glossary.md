@@ -758,13 +758,13 @@ This is the maximum amount of time that a single Workflow Run is restricted to.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_ -->
 
-#### [Workflow Task](/workers#workflow-task)
+#### [Workflow Task](/tasks#workflow-task)
 
 A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Workflow Task Execution](/workers#workflow-task-execution)
+#### [Workflow Task Execution](/tasks#workflow-task-execution)
 
 A Workflow Task Execution occurs when a Worker picks up a Workflow Task and uses it to make progress on the execution of a Workflow Definition.
 

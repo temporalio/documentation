@@ -527,7 +527,7 @@ module.exports = {
               items: [
                 "encyclopedia/workers/tasks",
                 "encyclopedia/workers/task-routing-sticky-execution",
-                "encyclopedia/workers/worker-processes-task-queues",
+                "encyclopedia/workers/task-queues",
                 "encyclopedia/workers/worker-sessions-versioning",
               ],
             },

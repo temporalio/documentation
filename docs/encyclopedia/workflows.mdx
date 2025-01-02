@@ -454,7 +454,7 @@ These limits are set with the following [dynamic configuration keys](https://git
 
 ### What is a Command? {#command}
 
-A Command is a requested action issued by a [Worker](/workers#worker) to the [Temporal Service](/clusters) after a [Workflow Task Execution](/workers#workflow-task-execution) completes.
+A Command is a requested action issued by a [Worker](/workers#worker) to the [Temporal Service](/clusters) after a [Workflow Task Execution](/tasks#workflow-task-execution) completes.
 
 The action that the Temporal Service takes is recorded in the [Workflow Execution's](#workflow-execution) [Event History](#event-history) as an [Event](#event).
 The Workflow Execution can await on some of the Events that come as a result from some of the Commands.

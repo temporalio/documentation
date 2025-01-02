@@ -36,7 +36,7 @@ The Temporal Server uses the Build ID to determine which versions of a Workflow 
 
 We recommend that you read about Workflow Definitions before proceeding, because Workflow Versioning is largely concerned with helping to manage nondeterministic changes to those definitions.
 
-Worker Versioning helps manage nondeterministic changes by providing a convenient way to ensure that [Workers](/workers) with different Workflow and Activity Definitions operating on the same Task Queue don't attempt to process [Workflow Tasks](/workers#workflow-task) and [Activity Tasks](/tasks#activity-task-execution) that they can't successfully process, according to sets of versions associated with that Task Queue that you've defined.
+Worker Versioning helps manage nondeterministic changes by providing a convenient way to ensure that [Workers](/workers) with different Workflow and Activity Definitions operating on the same Task Queue don't attempt to process [Workflow Tasks](/tasks#workflow-task) and [Activity Tasks](/tasks#activity-task-execution) that they can't successfully process, according to sets of versions associated with that Task Queue that you've defined.
 
 Accomplish this goal by assigning a Build ID (a free-form string) to the code that defines a Worker, and specifying which Build IDs are compatible with each other by updating the version sets associated with the Task Queue, stored by the Temporal Server.
 
