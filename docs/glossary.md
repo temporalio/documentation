@@ -526,7 +526,7 @@ A Sticky Execution is a when a Worker Entity caches the Workflow Execution Event
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Task](/workers#task)
+#### [Task](/tasks#task)
 
 A Task is the context needed to make progress with a specific Workflow Execution or Activity Execution.
 
