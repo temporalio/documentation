@@ -13,13 +13,17 @@ tags:
   - Tasks
   - Concepts
 ---
-What is a Task?
-What is a Workflow Task?
-What is a Workflow Task Execution?
-What is an Activity Task?
-What is an Activity Task Execution?
-What is a Nexus Task?
-What is a Nexus Task Execution?
+
+This page discusses the following:
+
+- [Task](#task)
+- [Workflow Task](#workflow-task)
+- [Workflow Task Execution](#workflow-task-execution)
+- [Activity Task](#activity-task)
+- [Activity Task Execution](#activity-task-execution)
+- [Nexus Task](#nexus-task)
+- [Nexus Task Execution](#nexus-task-execution)
+
 
 ## What is a Task? {#task}
 
@@ -27,8 +31,8 @@ A Task is the context that a Worker needs to progress with a specific [Workflow 
 
 There are three types of Tasks:
 
-- [Activity Task](#activity-task)
 - [Workflow Task](#workflow-task)
+- [Activity Task](#activity-task)
 - [Nexus Task](#nexus-task)
 
 
@@ -40,7 +44,7 @@ A Workflow Task is a Task that contains the context needed to make progress with
 - After the new event is handled, the Workflow Task is completed with a list of [Commands](/workflows#command).
 - Handling of a Workflow Task is usually very fast and is not related to the duration of operations that the Workflow invokes.
 
-## What is a Workflow Task Execution? {#workflow-task-execution}
+### What is a Workflow Task Execution? {#workflow-task-execution}
 
 A Workflow Task Execution occurs when a [Worker](#worker-entity) picks up a [Workflow Task](#workflow-task) and uses it to make progress on the execution of a [Workflow Definition](/workflows#workflow-definition) (also known as a Workflow function).
 
@@ -51,7 +55,7 @@ Activity Tasks largely represent the Activity Task Scheduled Event, which contai
 
 If Heartbeat data is being passed, an Activity Task will also contain the latest Heartbeat details.
 
-## What is an Activity Task Execution? {#activity-task-execution}
+### What is an Activity Task Execution? {#activity-task-execution}
 
 An Activity Task Execution occurs when a [Worker](#worker-entity) uses the context provided from the [Activity Task](#activity-task) and executes the [Activity Definition](/activities#activity-definition) (also known as the Activity Function).
 
@@ -77,7 +81,7 @@ A Nexus Task represents a single Nexus request to start or cancel a Nexus Operat
 The Nexus Task includes details such as the Nexus Service and Nexus Operation names, and other information required to process the Nexus request.
 The Temporal Worker triggers the registered Operation handler based on the Nexus task information.
 
-## What is a Nexus Task Execution? {#nexus-task-execution}
+### What is a Nexus Task Execution? {#nexus-task-execution}
 
 A Nexus Task Execution occurs when a Worker uses the context provided from the Nexus Task and executes an action associated with a Nexus Operation which commonly includes starting a Nexus Operation using it's Nexus Operation handler plus many additional actions that may be performed on a Nexus Operation.
 
