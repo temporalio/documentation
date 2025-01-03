@@ -1,0 +1,209 @@
+---
+# Project Nova: Workflow Encyclopedia Breakdown Project
+# Tickets: EDU-3426, EDU-3677
+#
+# Tasks
+# - For each breakdown, need to
+#    - Update all incoming links on docs and learn sites, potentially CLI
+#    - Update Vercel for external incoming links to outdated elements
+# - Goal: maintain as much continuity of slugs as possible
+# - After migration, update slug to /workflows-legacy and, eventually remove.
+# - Update description for SEO, check keywords and tags. Consult with SEO experts.
+# - Spellcheck, grammar check, fluency, header levels (down by 1), remove how-to titles
+# - Bring in external content (courses, pictures, readability)
+# - See exemplars docs work:
+#   https://docs.google.com/document/d/1v9HVyI5WJZ1TqIq6YkQN8sohyG5PPiq3H0Z1aF_4lgU/
+#
+# Destination slug: /workflows
+#
+id: index
+title: Temporal Workflows
+slug: /workflows-newlanding
+sidebar_label: Workflows
+description: Explore this guide on Temporal Workflows, covering definitions, deterministic constraints, code changes, reliability, scalability, and best practices for versioning.
+toc_max_heading_level: 3
+keywords:
+  - child-workflow
+  - child-workflow-executions
+  - continue-as-new
+  - delay-workflow
+  - queries
+  - resets
+  - signals
+  - timeouts
+  - updates
+tags:
+  - Concepts
+  - Workflows
+---
+
+import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
+
+:::tip Support, stability, and dependency info
+
+Our Docs modernization effort is underway.
+New documentation will co-exist alongside our current docs content.
+We're rebuilding the docs for better organization and engagement so you can find what you need to know with clear unambiguous communication.
+
+- This page has not been reviewed for SEO but contains minor enhancements
+- This page is revised
+
+:::
+
+Temporal Workflows are the core conceptual element of the Temporal system.
+They represent a workflow process tailored to your business logic.
+In Temporal, workflows play two distinct and useful roles.
+
+In the real world, workflows are a sequence of steps or tasks carried out to complete a procedure or reach a goal.
+They're used in business operations, project management, and software development to build processes.
+Temporal Workflows follow this pattern, allowing you to write your application code as steps and tasks to complete a process reliably and visibly.
+
+Temporal Workflows' second pattern support event-driven design.
+They let you model event-driven _entities_.
+An entity Workflow might represent a customer, a subscription, or other long running existence.
+These can persist for a substantial time, whether days, months, or years.
+Interactions with a running entity Workflow might signal it to start or stop a process, query its current state, or update its information.
+The Workflow code that responds to these interactions are called Handlers.
+
+:::tip CASING
+
+- In our documentation, uppercase _Workflow_ refers to elements of the Temporal framework.
+- Lowercase _workflow_ describes the steps and tasks that make up a process.
+
+:::
+
+## Workflows
+
+Workflows are the core abstraction for Temporal Durable Execution.
+They are created using the following elements:
+
+- A [**Workflow Definition**](/workflows#workflow-definition) is code written in your preferred programming language.
+  This is the code that defines your Workflow and runs when your Workflow is executed.
+  Depending on the language, it is either a function or method, but unlike other functions or methods in that language, it has the benefit of Durable Execution.
+  A Workflow Definition outlines the end-to-end steps, constraints, and tasks needed to achieve a goal within a Temporal application.
+- A [**Workflow Handler**](/encyclopedia/workflow-message-passing) is code that lives within a Workflow Definition to process Workflow interaction events.
+  These are also called "message handlers" and can be named for the type of interaction it processes: Signal handler, Update handler, or Query handler.
+- A [**Workflow Type**](/workflows#workflow-type) is a _name_.
+  It identifies a specific Workflow Definition.
+  Although details vary by programming language, a Workflow Type is normally the name of the class, method, or function of your Workflow Definition.
+  As a developer, you can choose a different and possibly more descriptive name if needed.
+  Temporal needs this name to run and control a Workflow.
+- A [**Workflow Execution**](/workflows#workflow-execution) is a record of a running, completed, or terminated Workflow.
+  This record's information includes the Workflow’s state, History, and other details that enable Temporal to ensure durable execution.
+  It’s the primary unit of tracking and control in Temporal applications.
+  A Workflow Execution can be started by a client application or by a Schedule.
+  It has an input payload, a Workflow Type to run, and a Workflow Run ID assigned by the Temporal System.
+- A [**Workflow Run Id**](/workflows#run-id) is a globally unique, platform-level identifier for a single Workflow Execution.
+  It provides a Service-level 'name' for each Workflow Execution, although it may change during a Workflow Retry.
+
+The **Temporal Service** manages and oversees Workflow Executions.
+It uses Workflow Executions to manage Workflow state and invoke Workflow Definition code to ensure durability and reliability in real world deployment.
+
+The Service coordinates an Execution's run by issuing Tasks, which are picked up by Temporal Workers.
+Tasks are representations of part of the Execution and are sourced from the Workflow's definition.
+Workers monitor Temporal Task Queues (this is called "polling"), select available Workflow Tasks, and run those Tasks on Worker processes.
+These processes invoke your Workflow Definitions, producing the actual code execution that moves your applications forward.
+
+The Temporal Service controls this process, ensuring our core promise of durability and reliability.
+The Service doesn't execute your Workflow Definition code itself.
+Instead, your Workflow Definition code runs on _your_ machines, written in the language or languages you choose, compiled with our SDKs.
+
+The following image shows where these pieces live and how they connect:
+
+![Workflow Definition and Workflow Execution Overview](/img/encyclopedia/workflows/workflow-overview.png)
+
+- A Workflow Execution lives entirely on the Temporal Service.
+- A Workflow Definition and its handlers live within Temporal Workers.
+
+This section of the Temporal Encyclopedia introduces Workflows in depth.
+Here, you'll find all the technical material you need to understand how Workflows are defined and used.
+
+<!--All links will change after migration-->
+<!--Move out schedules/start delays/, create separate subpage for event history or part of Replays? -->
+<!--
+## Workflows in Depth
+
+With basic Workflow terms in-hand, you're ready to dive deeper.
+The following sections cover important aspects of Workflow use, including Executions, Definitions, and best practices.
+
+
+- [Workflow Executions](/workflows#workflow-execution)
+- [Workflow Definitions](/workflows#workflow-definition)
+- [Workflow Types](/workflows#workflow-type)
+- [Workflow Events](/workflows#event)
+- [Workflow Patching and Versioning](/workflows#workflow-versioning)
+- [Workflow Replays](/workflows#replays)
+- [Workflow Determinism](/workflows#deterministic-constraints)
+- [Dynamic Workflow Handlers](/workflows#dynamic-handler)
+
+
+- Workflow Limits
+- Workflow Best Practices
+- Workflow FAQs
+
+## What is a Workflow Definition? {#workflow-definition}
+#[WorkflowInterface]
+### Deterministic constraints
+### Code changes can cause non-deterministic behavior {#non-deterministic-change}
+### Intrinsic non-deterministic logic
+### Versioning Workflow code {#workflow-versioning}
+#### Patching
+### Handling unreliable Worker Processes
+### What is a Workflow Type? {#workflow-type}
+## What is a Workflow Execution? {#workflow-execution}
+### Replays
+### Commands and awaitables
+### Status
+#### Open
+#### Closed
+### Workflow Execution Chain
+### Event loop
+### Time constraints
+### Limits
+#### Workflow Execution Nexus Operation Limits {#workflow-execution-nexus-operation-limits}
+### What is a Command? {#command}
+### What is an Event? {#event}
+#### Activity Events
+### What is an Event History? {#event-history}
+#### What is Continue-As-New? {#continue-as-new}
+### What is a Reset? {#reset}
+### What is a Run Id? {#run-id}
+#### Which operations lead to non-determinism issues?
+### What is a Workflow Id? {#workflow-id}
+#### What is a Workflow Id Reuse Policy? {#workflow-id-reuse-policy}
+#### What is a Workflow Id Conflict Policy? {#workflow-id-conflict-policy}
+### What is a Timer? {#timer}
+### What is a Memo? {#memo}
+## What is a Dynamic Handler? {#dynamic-handler}
+## What is a Side Effect? {#side-effect}
+## What is a Schedule? {#schedule}
+### Action
+### Spec
+### Pause
+### Backfill
+### Limit number of Actions
+### Policies
+#### Overlap Policy
+#### Catchup Window
+#### Pause-on-failure
+### Last completion result
+### Last failure
+### Limitations
+## What is a Temporal Cron Job? {#temporal-cron-job}
+### Cron Schedules
+### `robfig` predefined schedules and intervals
+### Time zones
+### How to stop a Temporal Cron Job
+## What is a Start Delay? {#delay-workflow-execution}
+## What is a State Transition? {#state-transition}
+
+## Learn more
+
+To learn more about Workflows, visit our courses.
+Each course provides guided introductions to many of these elements with an expert instructor:
+
+- [Temporal 101: Introducing the Temporal Platform](https://learn.temporal.io/courses/temporal_101/)
+- [Temporal 102: Exploring Durable Execution](https://learn.temporal.io/courses/temporal_102/)
+- [Versioning Workflows](https://learn.temporal.io/courses/versioning/)
+- [Interacting with Workflows](https://learn.temporal.io/courses/interacting_with_workflows/)
+-->
