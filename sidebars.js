@@ -282,7 +282,6 @@ module.exports = {
           ],
         },
         "develop/activity-retry-simulator",
-        "develop/worker-performance",
       ],
     },
     {
@@ -321,21 +320,6 @@ module.exports = {
             },
             "production-deployment/cloud/billing-and-cost",
             "production-deployment/cloud/service-accounts",
-            {
-              type: "category",
-              label: "Metrics",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "production-deployment/cloud/metrics/index",
-              },
-              items: [
-                "production-deployment/cloud/metrics/general-setup",
-                "production-deployment/cloud/metrics/reference",
-                "production-deployment/cloud/metrics/datadog",
-                "production-deployment/cloud/metrics/prometheus-grafana",
-              ],
-            },
             "production-deployment/cloud/multi-region",
             {
               type: "category",
@@ -353,8 +337,6 @@ module.exports = {
                 "production-deployment/cloud/nexus/pricing",
               ],
             },
-            "production-deployment/cloud/worker-health",
-            "production-deployment/cloud/service-health",
             "production-deployment/cloud/saml",
             "production-deployment/cloud/operation-api",
             "production-deployment/cloud/terraform-provider",
@@ -406,8 +388,6 @@ module.exports = {
             },
           ],
         },
-        "production-deployment/data-encryption",
-        "production-deployment/migration",
         {
           type: "category",
           label: "Self-host",
@@ -430,6 +410,102 @@ module.exports = {
             "production-deployment/self-hosted-guide/server-frontend-api-reference",
           ],
         },
+        "production-deployment/migration",
+        {
+          type: "category",
+          label: "Health and tuning",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "production-deployment/health-and-tuning/index",
+          },
+          items: [
+            {
+              type: "category",
+              label: "Observability",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "production-deployment/health-and-tuning/observability/index",
+              },
+              items: [
+                "evaluate/development-production-features/observability",
+                "production-deployment/cloud/nexus/observability",
+              ],
+            },
+            {
+              type: "category",
+              label: "Metrics",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "production-deployment/health-and-tuning/metrics/index",
+              },
+              items: [
+                {
+                  type: "category",
+                  label: "Cloud",
+                  collapsed: true,
+                  link: {
+                    type: "doc",
+                    id: "production-deployment/health-and-tuning/metrics/cloud/index",
+                  },
+                  items: [
+                    "production-deployment/cloud/metrics/general-setup",
+                    "production-deployment/cloud/metrics/datadog",
+                    "production-deployment/cloud/metrics/prometheus-grafana",
+                  ],
+                },
+                {
+                  type: "category",
+                  label: "Service",
+                  collapsed: true,
+                  link: {
+                    type: "doc",
+                    id: "production-deployment/health-and-tuning/metrics/service/index",
+                  },
+                  items: [
+                  ],
+                },
+                {
+                  type: "category",
+                  label: "Reference",
+                  collapsed: true,
+                  link: {
+                    type: "doc",
+                    id: "production-deployment/health-and-tuning/metrics/reference/index",
+                  },
+                  items: [
+                          "production-deployment/cloud/metrics/reference",
+                          "references/cluster-metrics",
+                          "references/sdk-metrics",
+                          "encyclopedia/nexus-metrics",
+                          ],
+                },
+              ],
+            },
+            "develop/worker-performance",
+            "production-deployment/cloud/worker-health",
+            "production-deployment/cloud/service-health",
+          ],
+        },
+        {
+          type: "category",
+          label: "Security",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "production-deployment/security/index",
+          },
+          items: [
+            "evaluate/temporal-cloud/security",
+            "production-deployment/self-hosted-guide/security",
+            "production-deployment/cloud/nexus/security",
+            "production-deployment/security/payloads",
+            "production-deployment/security/privatelink",
+            "production-deployment/data-encryption",
+          ],
+        }
       ],
     },
     {
@@ -461,14 +537,12 @@ module.exports = {
             id: "references/index",
           },
           items: [
-            "references/cluster-metrics",
             "references/commands",
             "references/configuration",
             "references/dynamic-configuration",
             "references/errors",
             "references/events",
             "references/failures",
-            "references/sdk-metrics",
             "references/server-options",
             "references/web-ui-configuration",
             "references/web-ui-environment-variables",
@@ -538,7 +612,6 @@ module.exports = {
                 "encyclopedia/nexus-use-cases",
                 "encyclopedia/nexus-execution-debugging",
                 "encyclopedia/nexus-error-handling",
-                "encyclopedia/nexus-metrics",
                 "encyclopedia/nexus-security",
               ],
             },
