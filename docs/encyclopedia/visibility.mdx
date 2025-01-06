@@ -44,7 +44,7 @@ Open Workflow Executions can be filtered by a time constraint and either a Workf
 
 Closed Workflow Executions can be filtered by a time constraint and either a Workflow Type, Workflow Id, Run Id, or Execution Status (Completed, Failed, Timed Out, Terminated, Canceled, or Continued-As-New).
 
-[Search Attributes](https://docs.temporal.io/visibility#search-attribute) are not supported with Standard Visibility.
+[Custom Search Attributes](https://docs.temporal.io/visibility#custom-search-attributes) are not supported with Standard Visibility.
 
 Support for standard Visibility is deprecated beginning with Temporal Server v1.21.
 For updates, check [Supported databases](/self-hosted-guide/visibility).
@@ -144,17 +144,26 @@ Description = 'foo'
 
 #### Keyword
 
-For Search Attributes of type `Keyword` like `WorkflowId`, the only kind of partial string matching that works is using BETWEEN for suffixes.
+For Search Attributes of type `Keyword` like `WorkflowId`, perform partial string matching using STARTS_WITH for prefixes and BETWEEN for suffixes.
 
-`WorkflowId BETWEEN "order-" AND "order-~"` matches WorkflowIds that have characters after `order-` with ASCII values lower than `~` (126, the highest-value printable character), such as the following:
+* `WorkflowId STARTS_WITH "order-"` matches Workflow Ids with the "order-" prefix, regardless of the following text.
 
-```
-order-
-order-1234
-order-abracadabra
-```
+  ```
+  order-
+  order-1234
+  order-abracadabra
+  order-~~~abracadabra
+  ```
 
-It does not match `order-~~`.
+* `WorkflowId BETWEEN "order-" AND "order-~"` matches Workflow Ids that have characters after `order-` with ASCII values lower than `~` (126, the highest-value printable character), such as the following:
+
+  ```
+  order-
+  order-1234
+  order-abracadabra
+  ```
+
+  It does not match `order-~~`.
 
 :::note Filter Composition Quick Reference
 
