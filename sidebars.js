@@ -98,6 +98,7 @@ module.exports = {
           ],
         },
         "security",
+        "evaluate/use-cases-design-patterns",
       ],
     },
     {
