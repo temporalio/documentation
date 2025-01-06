@@ -30,12 +30,11 @@ tags:
 Before configuring the Export sink, please complete the following steps in Google Cloud.
 
 1. Create a GCS bucket and take note of its bucket name, for example, "test-export"
-
-   Enable customer-managed encryption keys (CMEK) if you need additional security for your GCS bucket.
-   
+  1. Enable customer-managed encryption keys (CMEK) if you need additional security for your GCS bucket.
+  2. For now we only support single region (or “Region” option when creating the bucket in GCS, not “Multi-Region” or “Dual-Region”)
+  3. The region of the bucket has to be the same as the region of your namespace.
 2. Record the GCP Project ID that owns the bucket.
-
-   Create a service account in the same project that grants Temporal permission to write to your GCS bucket.
+3. Create a service account in the same project that grants Temporal permission to write to your GCS bucket.
 4. Follow the instructions in the Temporal Cloud UI, there are two ways to set up this service account:
     - Manual Setup:
       - Input the service account ID, GCP project ID and GCS bucket name.
@@ -68,10 +67,10 @@ The following steps guide you through setting up Workflow History Export using t
   If not, please fix any errors or reach out to support for help.
 4. Clicking **Create** will complete the Export sink set up
 5. The page will auto-refresh and you should see the status “Enabled” on the Export screen. 
-  You are now ready to export workflow histories.
+  You are now ready to export Workflow histories.
 6. You can toggle the enable button if you want to stop export and resume in the future. 
-  Note: when you re-enable the feature, it will start from the current point in time, and not from the time when you disabled export.
-7. You can also delete export by clicking Delete.
+  **Note**: when you re-enable the feature, it will start from the current point in time, and not from the time when you disabled export.
+7. You can also delete export by clicking **Delete**.
 
 :::tip
 
@@ -84,8 +83,8 @@ Don't forget to click Create at the end of your setup to confirm your export.
 To access export-related commands in tcld, please follow these steps:
 
 1. Download the latest version of tcld. [https://docs.temporal.io/cloud/tcld/#install-tcld]
-2. Make sure tcld version is v0.17.0 or above.
-3. Run the command: `tcld f toggle-export` and `tcld f toggle-gcp-sink`. 
+2. Make sure tcld version is v0.35.0 or above.
+3. Run the command: `tcld n export gcs`:
     This command enables the export GCP sink feature in tcld
     1. After enabling the feature, you can find the export-related commands by running `tcld n export gcs`:
     
