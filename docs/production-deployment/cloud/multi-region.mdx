@@ -380,7 +380,7 @@ This section provides how-to instructions for the following operations tasks:
 
 ### Triggering failovers {#triggering-failovers}
 
-Users also can trigger a failover during the outage of a non-Temporal controlled regional downstream dependency, or for testing purposes.
+Users can trigger a failover during the outage of a non-Temporal controlled regional downstream dependency, or for testing purposes.
 
 Temporal is responsible for detecting and triggering a failover for a multi-region Namespace in the event of a regional outage or a disaster.
 Users also can trigger a failover during the outage of a non-Temporal controlled regional downstream dependency, or for testing purposes.
@@ -422,6 +422,41 @@ Whenever there is a failover event, you'll receive an alert email.
 
 After Temporal-initiated failovers, Temporal Cloud shifts Workflow Execution processing back to the original region that was active before the incident (a "failback") once the incident is resolved.
 More information is available in [Monitoring and Observability](/cloud/multi-region#observability).
+
+#### Reasons to test failing over {#trigger-reasons}
+
+Microservices and external dependencies will always fail at some point.
+Testing failovers helps ensure your application can handle these failures when they happen.
+By testing in non-emergency conditions, you verify that your application continues to function even when parts of the infrastructure fail.
+
+Trigger testing can:
+
+- **Validate multi-region deployments**:
+  In multi-region setups, failover testing ensures your app can operate from another region if the primary region experiences an outage.
+  This is crucial for maintaining high availability in mission-critical deployments, as noted in the Temporal production readiness checklist.
+  Manual testing lets you verify that the failover mechanism works as expected, ensuring your system handles regional outages or disasters effectively.
+
+- **Assess replication lag**:
+  Monitoring and understanding replication lag between regions is essential in multi-region setups.
+  Check replication lag before initiating a failover to avoid rolling back Workflow progress.
+  Manual testing lets you practice this important step and understand its impact on the failover process.
+
+- **Assess recovery time**:
+  Manual testing lets you measure an actual recovery time.
+  You can assess if it meets your expected Recovery Time Objective (RTO) of 20 minutes or less, as stated in the [Multi-region Namespace SLA](#sla).
+
+- **Identify potential issues**:
+  Failover testing helps uncover problems that might not be visible during normal operation.
+  This includes issues like [backlogs and capacity planning](https://temporal.io/blog/workers-in-production#testing-failure-paths-2438) and how external dependencies behave during a failover event.
+
+- **Validate fault-oblivious programming**:
+  Temporal provides a "fault-oblivious programming" model, where your application code doesn’t need to explicitly handle many types of failures.
+  Testing failovers helps ensure that this model works as expected in your application.
+
+- **Operational readiness**:
+  Regular testing helps your team become familiar with the failover process, improving their ability to handle real incidents when they occur.
+
+Regularly testing failovers ensures that your Temporal-based applications stay resilient and reliable, even when infrastructure is unreliable.
 
 ### Metrics {#metrics-operations}
 
