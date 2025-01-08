@@ -51,7 +51,7 @@ Unlike Signals, Updates must be synchronous. That is, they must wait for the Wor
 Use Signals instead of Updates when:
 
 - The Workflow's clients want to quickly move on after sending an asynchronous message.
-- The clients don't need a result or exception from the message.
+- The clients are willing to "fire and forget": they don't want a result or exception from the message.
 - The clients don't want to rely on the Worker being available.
 
 Use Updates instead of Signals when:
