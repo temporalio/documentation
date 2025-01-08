@@ -39,6 +39,7 @@ This feature guide covers the following topics:
 
 - [Choosing multi-region](/cloud/multi-region#multi-region-intro)
 - [Failovers](/cloud/multi-region#failovers)
+- [Health Checks](/cloud/multi-region#healthchecks)
 - [Multi-region Namespace SLA](/cloud/multi-region#sla)
 - [Architecture](/cloud/multi-region#architecture)
 - [Pricing](/cloud/multi-region#pricing)
@@ -92,19 +93,31 @@ Temporal Cloud notifies you by email once the replication has caught up and both
 
 ## Failovers {#failovers}
 
+A failover shifts Workflow Execution processing from an active Temporal Namespace region to a standby Temporal Namespace region during outages or other incidents.
+Standby Namespace regions use replication to duplicate data and prevent data loss during failover.
+
 **What happens during the failover process?**
 
-Temporal Cloud will initiate a Namespace failover when it detects an incident or outage that elevates error rates or latency in the active region of a multi-region Namespace.
-A failover operation shifts Workflow processing to a standby region, unaffected by the incident.
-This ensures that existing Workflows can progress and new Workflows can be created as the incident is addressed.
-After Temporal-initiated failovers, Temporal Cloud shifts Workflow Execution processing back to the original region that was active before the incident (a "failback") once the incident is resolved.
+Temporal Cloud initiates a Namespace failover when it detects an incident or outage that raises error rates or latency in the active region of a multi-region Namespace.
+The failover shifts Workflow processing to a standby region that isn’t affected by the incident.
+This lets existing Workflows continue and new Workflows start while the incident is fixed.
+Once the incident is resolved, Temporal Cloud performs a "failback" by shifting Workflow Execution processing back to the original region.
+
 
 :::info
 
-You can test your multi-region Namespace by manually triggering failovers using the UI page or the 'tcld' CLI utility.
+You can test the failover of your multi-region Namespace by manually [triggering a failover](/cloud/multi-region#triggering-failovers) using the UI page or the 'tcld' CLI utility.
 In most scenarios, we recommend you let Temporal handle failovers for you.
 
 :::
+
+## Health Checks {#healthchecks}
+
+**How does Temporal detect failover conditions?**
+
+Temporal Cloud automates failovers by performing internal health checks.
+This process monitors your request error rates, latencies, and any infrastructure issues that might cause service disruptions, such as request timeouts.
+It automatically triggers failovers when these indicators exceed our allowed thresholds.
 
 ### Replication lag {#replication-lag}
 
@@ -394,6 +407,8 @@ Always check the [metric replication lag](/production-deployment/cloud/metrics/r
 A forced failover when there is a large replication lag has a higher likelihood of rolling back Workflow progress.
 
 :::
+
+For details on how Temporal detects conditions and triggers failovers automatically, see [Failovers](#failovers).
 
 #### Temporal Cloud Web UI
 
