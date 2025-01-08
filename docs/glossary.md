@@ -306,17 +306,11 @@ A Namespace is a unit of isolation within the Temporal Platform.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### Nexus API Definitions
+#### Nexus Registry
 
-A common code package, schema, or documentation that a Caller can use to obtain Service and Operation names as associated input/output types a Service will accept for a given Operation.
-
-<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
-
-#### Nexus API Registry
-
-The Nexus API Registry stores information about Nexus Endpoints.
-In the open source version of Temporal, the registry is scoped to a cluster, while in Temporal Cloud, it is scoped to an account.
-Endpoint names must be unique within the registry.
+The Nexus Registry manages Nexus Endpoints and provides lookup services for resolving Nexus requests at runtime.
+In the open source version of Temporal, the Registry is scoped to a Cluster, while in Temporal Cloud, it is scoped to an Account.
+Endpoint names must be unique within the Registry.
 When the Temporal Service dispatches a Nexus request, it resolves the request's Endpoint to a Namespace and Task Queue through the Registry.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
@@ -329,15 +323,18 @@ A Nexus Async Completion Callback is the completion callback for an asynchronous
 
 #### Nexus Endpoint
 
-A Nexus Endpoint is an API proxy that can serve one or more Nexus Services from a target such as a Worker listening on a target Temporal Namespace and target Task Queue.
-This allows service providers to present a clean API contract and hide the underlying implementation, which may consist of many internal Workflows.
+A Nexus Endpoint is a reverse proxy that can serve one or more Nexus Services.
+It routes Nexus requests to a target Namespace and Task Queue, that a Nexus Worker is polling.
+This allows service providers to present a clean service contract and hide the underlying implementation, which may consist of many internal Workflows.
 Multiple Nexus Endpoints can target the same Namespace, and over time a Nexus Endpoint will be able to span multiple Namespaces with service routing rules.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
 #### Nexus Machinery
 
-Temporal has built-in Nexus Machinery that performs the low-level Nexus RPC operations on the wire and provides an integrated Temporal SDK experience to create Nexus Services in a handler Worker and use them from a caller Workflow through a Nexus Endpoint.
+Temporal has built-in Nexus Machinery to guarantee at-least-once execution of Nexus Operations with state-machine-based invocation and completion callbacks.
+The Nexus Machinery uses [Nexus RPC](/glossary#nexus-rpc), a protocol designed with Durable Execution in mind, to communicate across Namespace boundaries.
+Caller Workflows and Nexus handlers don't have to use Nexus RPC directly, since the Temporal SDK provides a streamlined developer experience to build, run, and use Nexus Services.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
@@ -372,10 +369,17 @@ It supports arbitrary-duration Operations that extend beyond a traditional RPC â
 
 #### Nexus Service
 
-A Nexus Service is a named collection of arbitrary-duration Nexus Operations that provide an API contract suitable for sharing across team boundaries.
-Nexus Services are registered with a Temporal Worker that is listening on the target Namespace and Task Queue for an Endpoint.
+A Nexus Service is a named collection of arbitrary-duration Nexus Operations that provide a microservice contract suitable for sharing across team and application boundaries.
+Nexus Services are registered with a Temporal Worker that is polling a Nexus Endpoint's target Namespace and Task Queue.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
+
+#### Nexus Service Contract
+
+A common code package, schema, or documentation that a Caller can use to obtain Service and Operation names as associated input/output types a Service will accept for a given Operation.
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
+
 
 #### [Parent Close Policy](/encyclopedia/child-workflows#parent-close-policy)
 
@@ -422,6 +426,12 @@ A Query is a synchronous operation that is used to report the state of a Workflo
 #### [Remote data encoding](/dataconversion#remote-data-encoding)
 
 Remote data encoding is using your custom Data Converter to decode (and encode) your Payloads remotely through endpoints.
+
+<!-- _Tags: [term](/tags/term), [queries](/tags/queries), [explanation](/tags/explanation)_ -->
+
+#### [Replication Lag](/cloud/multi-region#replication-lag)
+
+The transmission delay of Workflow updates and history events from the active region to the standby region.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
