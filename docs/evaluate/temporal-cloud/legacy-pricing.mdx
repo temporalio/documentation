@@ -1,10 +1,9 @@
 ---
 id: legacy-pricing
-title: Temporal Cloud pricing
-sidebar_label: Pricing
-sidebar_position: 6
+title: Temporal Cloud legacy pricing
+sidebar_label: Legacy pricing
 description: Temporal Cloud offers flexible, predictable pricing for Workflows, Activities, Workers, and storage. Pay for what you use with volume discounts and credit savings.
-slug: /cloud/pricing
+slug: /cloud/legacy_pricing
 toc_max_heading_level: 4
 keywords:
   - explanation
@@ -24,7 +23,7 @@ tags:
 
 :::tip Support, stability, and dependency info
 
-Temporal Cloud pricing structures [will update](/cloud/future_pricing) in January 2025 (February 2025 for existing customers).
+Temporal Cloud pricing structures [will update](/cloud/pricing) in February 2025 for existing customers.
 
 :::
 
@@ -69,7 +68,7 @@ They track billable operations within the Temporal Cloud Service, such as starti
 - **Timer started**.
   Includes implicit Timers that are started by a Temporal SDK when timeouts are set, such as `AwaitWithTimeout` in Go or `condition` in TypeScript.
 - **Search Attribute upsert requested**.
-  Occurs after a Workflow starts and invokes `UpsertSearchAttributes`.
+  Occurs for each invocation of `UpsertSearchAttributes` command.
 - **Signal sent**.
   Includes sending a [Signal](/encyclopedia/workflow-message-passing#sending-signals) from a client or from within a Workflow to another Workflow.
 - **Query received**. [Queries](/encyclopedia/workflow-message-passing#sending-queries) aren't recorded in Event History.
@@ -110,7 +109,8 @@ Each execution of a Schedule accrues three actions:
 - **Schedule Start**.
   This accounts for two actions.
 - **Workflow started**.
-  This is a single action to start the target workflow.
+  This is a single action to start the target Workflow.
+  It includes initial Search Attributes as part of the start request.
 
 **EXPORT**
 
@@ -160,9 +160,9 @@ We offer two Support tiers: Basic and Premium.
 Support costs are outlined in the table below.
 A complete description of Support plans and response times can be found in our [Support](/cloud/support#support) documentation.
 
-|                     | Basic                                       | Premium                                       |
-| ------------------- | ------------------------------------------- | --------------------------------------------- |
-| Pricing (per month) | Greater of &#36;200 or 10% of monthly usage | Contact [Sales](mailto:sales@temporal.io)     |
+|                     | Basic                                       | Premium                                   |
+| ------------------- | ------------------------------------------- | ----------------------------------------- |
+| Pricing (per month) | Greater of &#36;200 or 10% of monthly usage | Contact [Sales](mailto:sales@temporal.io) |
 
 ### Pricing options {#pricing-options}
 
@@ -456,4 +456,3 @@ You will be assigned a new Temporal account and be treated as a new customer.
 **What happens to my credits if I cancel my account?**
 
 Prepaid but unused credits purchased after June 17, 2024 will be refunded if the account is canceled.
-

@@ -36,7 +36,7 @@ If you are using Google OAuth for single sign-on and an email address is not ass
 
 **Important:** Do _not_ create a Gmail account when creating a Google Account.
 
-If your organization uses Google Workspace or Microsoft Azure AD, and your IT administrator has enabled controls over single sign-on permissions, then you will need to work with your IT administrator to allow logins to Temporal Cloud.
+If your organization uses Google Workspace or Microsoft Entra ID, and your IT administrator has enabled controls over single sign-on permissions, then you will need to work with your IT administrator to allow logins to Temporal Cloud.
 
 :::
 
@@ -259,11 +259,13 @@ This table provides API-level details for the permissions granted to a user thro
 | CountIdentities                   | ✔         | ✔         | ✔             | ✔            | ✔             |
 | CreateAPIKey                      | ✔         | ✔         | ✔             | ✔            | ✔             |
 | CreateNamespace                   |           | ✔         |               | ✔            | ✔             |
+| CreateNexusEndpoint               |           | ✔         |               | ✔            | ✔             |
 | CreateServiceAccount              |           |           |               | ✔            | ✔             |
 | CreateServiceAccountAPIKey        |           |           |               | ✔            | ✔             |
 | CreateStripeCustomerPortalSession |           |           | ✔             |              | ✔             |
 | CreateUser                        |           |           |               | ✔            | ✔             |
 | DeleteAPIKey                      | ✔         | ✔         | ✔             | ✔            | ✔             |
+| DeleteNexusEndpoint               |           | ✔         |               | ✔            | ✔             |
 | DeleteServiceAccount              |           |           |               | ✔            | ✔             |
 | DeleteUser                        |           |           |               | ✔            | ✔             |
 | GetAccount                        | ✔         | ✔         | ✔             | ✔            | ✔             |
@@ -279,6 +281,8 @@ This table provides API-level details for the permissions granted to a user thro
 | GetIdentity                       | ✔         | ✔         | ✔             | ✔            | ✔             |
 | GetNamespaces                     | ✔         | ✔         | ✔             | ✔            | ✔             |
 | GetNamespacesUsage                |           |           |               | ✔            | ✔             |
+| GetNexusEndpoint                  | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetNexusEndpoints                 | ✔         | ✔         | ✔             | ✔            | ✔             |
 | GetRegion                         | ✔         | ✔         | ✔             | ✔            | ✔             |
 | GetRegions                        | ✔         | ✔         | ✔             | ✔            | ✔             |
 | GetRequestStatus                  | ✔         | ✔         | ✔             | ✔            | ✔             |
@@ -305,6 +309,7 @@ This table provides API-level details for the permissions granted to a user thro
 | SyncCurrentUserInvite             | ✔         | ✔         | ✔             | ✔            | ✔             |
 | UpdateAccount                     |           |           |               | ✔            | ✔             |
 | UpdateAPIKey                      | ✔         | ✔         | ✔             | ✔            | ✔             |
+| UpdateNexusEndpoint               |           | ✔         |               | ✔            | ✔             |
 | UpdateServiceAccount              |           |           |               | ✔            | ✔             |
 | UpdateUser                        |           |           |               | ✔            | ✔             |
 

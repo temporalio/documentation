@@ -341,7 +341,7 @@ An Update is a synchronous, blocking call that can change Workflow state, contro
 A Client sending an Update must wait until the Server delivers the Update to a Worker.
 Workers must be available and responsive.
 If you need a response as soon as the Server receives the request, use a Signal instead.
-Also note that you can't send Updates to other Workflow Executions or perform an Update equivalent of Signal-With-Start.
+Also note that you can't send Updates to other Workflow Executions.
 
 - `WorkflowExecutionUpdateAccepted` is added to the Event History when the Worker confirms that the Update passed validation.
 - `WorkflowExecutionUpdateCompleted` is added to the Event History when the Worker confirms that the Update has finished.
@@ -384,6 +384,77 @@ You can use the `WorkflowUpdateHandle` to obtain information about the update:
 - `getId()`: Returns the Update's unique ID, which can be useful for deduplication when using Continue-As-New: see [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing).
 - `getResultAsync()`: Returns a `CompletableFuture` which can be used to wait for the Update to complete.
 
+#### Update-With-Start {#update-with-start}
+
+:::tip Stability
+
+In [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in Temporal Cloud.
+
+Minimum Temporal Server version [Temporal Server version 1.26](https://github.com/temporalio/temporal/releases/tag/v1.26.2)
+
+:::
+
+[Update-with-Start](/encyclopedia/workflow-message-passing#update-with-start) lets you
+[send an Update](/develop/java/message-passing#send-update-from-client) that checks whether an already-running Workflow with that ID exists:
+
+- If the Workflow exists, the Update is processed.
+- If the Workflow does not exist, a new Workflow Execution is started with the given ID, and the Update is processed immediately after.
+
+Use the [`startUpdateWithStart`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClient.html#startUpdateWithStart(io.temporal.workflow.Functions.Func,io.temporal.client.UpdateOptions,io.temporal.client.WithStartWorkflowOperation)) WorkflowClient API.
+It returns once the requested Update wait stage has been reached; or when the request times out.
+Use the [`WorkflowUpdateHandle`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowUpdateHandle.html) to retrieve a result from the Update.
+
+You will need to provide:
+
+- WorkflowStub created from [`WorkflowOptions`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.html).
+  The `WorkflowOptions` require [Workflow Id Conflict Policy](/workflows#workflow-id-conflict-policy) to be specified.
+  Choose "Use Existing" and use an idempotent Update handler to ensure your code can be executed again in case of a Client failure.
+  Not all `WorkflowOptions` are allowed.
+  For example, specifying a Cron Schedule will result in an error.
+
+- [`UpdateOptions`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/UpdateOptions.html).
+  Same as for [Update Workflow](/develop/java/message-passing#send-update-from-client), the update wait stage must be specified.
+  For Update-with-Start, the Workflow Id is optional.
+  When specified, the Id must match the one used in `WorkflowOptions`.
+  Since a running Workflow Execution may not already exist, you can't set a Run Id.
+
+- [`WithStartWorkflowOperation`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WithStartWorkflowOperation.html).
+  Specify the workflow method.
+  Note that a `WithStartWorkflowOperation` can only be used once.
+  Re-using a previously used operation returns an error from `startUpdateWithStart`.
+
+For example:
+
+```java
+WorkflowUpdateHandle<Language> handle =
+    WorkflowClient.startUpdateWithStart(
+        workflow::setLanguage,
+        Language.ENGLISH,
+        UpdateOptions.<Language>newBuilder().setWaitForStage(WorkflowUpdateStage.ACCEPTED).build(),
+        new WithStartWorkflowOperation<>(workflow::getGreetings));
+
+Language previousLanguage = handle.getResultAsync().get();
+```
+
+To obtain the update result directly, use the [`executeUpdateWithStart`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClient.html#executeUpdateWithStart(io.temporal.workflow.Functions.Func,io.temporal.client.UpdateOptions,io.temporal.client.WithStartWorkflowOperation)) WorkflowClient API.
+It returns once the update result is available; or when the API call times out.
+The update wait stage on the `UpdateOptions` is optional.
+When specified, it must be `WorkflowUpdateStage.COMPLETED`.
+
+For example:
+
+```java
+Language previousLanguage =
+    WorkflowClient.executeUpdateWithStart(
+        workflow::setLanguage,
+        Language.ENGLISH,
+        UpdateOptions.<Language>newBuilder().build(),
+        new WithStartWorkflowOperation<>(workflow::getGreetings));
+```
+
+For more examples, see the [Java sample for early-return pattern](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/earlyreturn).
+
+
 :::info NON-TYPE SAFE API CALLS
 
 In real-world development, sometimes you may be unable to import Workflow Definition method signatures.
@@ -397,7 +468,8 @@ Pass method names instead of method objects to:
 - [`WorkflowStub.query`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#query(java.lang.String,java.lang.Class,java.lang.Object...))
 - [`WorkflowStub.signal`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#signal(java.lang.String,java.lang.Object...))
 - [`WorkflowStub.update`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#update(java.lang.String,java.lang.Class,java.lang.Object...))
-- [`WorkflowStub.startUpdate`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...))
+- [`WorkflowStub.startUpdateWithStart`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdateWithStart(io.temporal.client.UpdateOptions,java.lang.Object%5B%5D,java.lang.Object%5B%5D))
+- [`WorkflowStub.executeUpdateWithStart`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#executeUpdateWithStart(io.temporal.client.UpdateOptions,java.lang.Object%5B%5D,java.lang.Object%5B%5D))
 
 :::
 

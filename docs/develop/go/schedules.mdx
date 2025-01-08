@@ -70,6 +70,13 @@ func main() {
 // ...
 ```
 
+:::tip Schedule Auto-Deletion
+
+Once a Schedule has completed creating all its Workflow Executions, the Temporal Service deletes it since it won’t fire again.
+The Temporal Service doesn't guarantee when this removal will happen.
+
+:::
+
 ### Backfill a Schedule {#backfill-schedule}
 
 **How to Backfill a Schedule for a Workflow using the Go SDK.**

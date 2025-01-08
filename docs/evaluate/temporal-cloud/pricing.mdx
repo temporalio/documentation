@@ -1,10 +1,9 @@
 ---
 id: pricing
-title: Temporal Cloud future pricing
-sidebar_label: Future pricing
-sidebar_position: 6
+title: Temporal Cloud pricing
+sidebar_label: Pricing
 description: Temporal Cloud offers flexible, predictable pricing for Workflows, Activities, Workers, and Storage. Pay for what you use with volume discounts and credit savings.
-slug: /cloud/future_pricing
+slug: /cloud/pricing
 toc_max_heading_level: 4
 keywords:
   - explanation
@@ -24,8 +23,8 @@ tags:
 
 :::tip Support, stability, and dependency info
 
-The pricing structure on this page goes into effect in January 2025 for new customers and February 2025 for existing customers.
-Please refer to the current [Pricing](/cloud/pricing) page until that time.
+Temporal Cloud pricing structures will in February 2025 for existing customers.
+Until then, existing customers should reference our [legacy pricing](/cloud/legacy_pricing) page.
 
 :::
 
@@ -99,7 +98,7 @@ They track billable operations within the Temporal Cloud Service, such as starti
 - **Timer started**.
   Includes implicit Timers that are started by a Temporal SDK when timeouts are set, such as `AwaitWithTimeout` in Go or `condition` in TypeScript.
 - **Search Attribute upsert requested**.
-  Occurs after a Workflow starts and invokes `UpsertSearchAttributes`.
+  Occurs for each invocation of `UpsertSearchAttributes` command.
 - **Signal sent**.
   An Action occurs for every [Signal](/encyclopedia/workflow-message-passing#sending-signals), whether sent from a Client or from a Workflow.
 - **Query received by Worker**.
@@ -141,7 +140,8 @@ Each execution of a Schedule accrues three actions:
 - **Schedule Start**.
   This accounts for two actions.
 - **Workflow started**.
-  This is a single action to start the target workflow.
+  This is a single action to start the target Workflow.
+  It includes initial Search Attributes as part of the start request.
 
 **EXPORT**
 
