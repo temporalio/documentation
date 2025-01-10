@@ -24,7 +24,6 @@
   --tag-background-color-dark: #444;
   --tag-text-color-light: #333;
   --tag-text-color-dark: #ddd;
-  --docsearch-muted-color: #3b3b3b;
 }
 
 html[data-theme="dark"] {
@@ -85,6 +84,7 @@ html[data-theme="light"] {
   --docusaurus-highlighted-code-line-bg: rgb(57, 104, 77);
   --tag-background-color: var(--tag-background-color-light);
   --tag-text-color: var(--tag-text-color-light);
+  --docsearch-muted-color: #3b3b3b;
 }
 
 /* --ifm-background-surface-color: #000000;
