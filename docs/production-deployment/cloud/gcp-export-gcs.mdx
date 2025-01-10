@@ -30,9 +30,9 @@ tags:
 Before configuring the Export sink, please complete the following steps in Google Cloud.
 
 1. Create a GCS bucket and take note of its bucket name, for example, "test-export"
-  1. Enable customer-managed encryption keys (CMEK) if you need additional security for your GCS bucket.
-  2. For now we only support single region (or “Region” option when creating the bucket in GCS, not “Multi-Region” or “Dual-Region”)
-  3. The region of the bucket has to be the same as the region of your namespace.
+  * Enable customer-managed encryption keys (CMEK) if you need additional security for your GCS bucket.
+  * For now we only support single region (or “Region” option when creating the bucket in GCS, not “Multi-Region” or “Dual-Region”)
+  * The region of the bucket has to be the same as the region of your Temporal Cloud Namespace.
 2. Record the GCP Project ID that owns the bucket.
 3. Create a service account in the same project that grants Temporal permission to write to your GCS bucket.
 4. Follow the instructions in the Temporal Cloud UI, there are two ways to set up this service account:
@@ -43,8 +43,6 @@ Before configuring the Export sink, please complete the following steps in Googl
       - Use the [Terraform template](https://github.com/temporalio/terraform-modules/tree/main/modules/gcp-sink-sa) to create the service account.
 
 ## Configure Workflow History Export 
-
-How to configure Workflow History Export using the Temporal Cloud UI or tcld
 
 You can use either the [Temporal Cloud UI](#using-temporal-cloud-ui) or [tcld](#using-tcld) to configure the Workflow History Export.
 
@@ -65,6 +63,7 @@ The following steps guide you through setting up Workflow History Export using t
 3. After inputting the necessary values, click on **Verify**. 
   You should be able to write to the sink successfully. 
   If not, please fix any errors or reach out to support for help.
+    * If you just created the GCS bucket and granted the permission for your service account, it may take some time for it to populate the permission, thus, you may need to wait for several minutes (usually 1-5 minutes) then you can click the “Verify” button to verify the connection.
 4. Clicking **Create** will complete the Export sink set up
 5. The page will auto-refresh and you should see the status “Enabled” on the Export screen. 
   You are now ready to export Workflow histories.
@@ -85,9 +84,6 @@ To access export-related commands in tcld, please follow these steps:
 1. Download the latest version of tcld. [https://docs.temporal.io/cloud/tcld/#install-tcld]
 2. Make sure tcld version is v0.35.0 or above.
 3. Run the command: `tcld n export gcs`:
-    This command enables the export GCP sink feature in tcld
-    1. After enabling the feature, you can find the export-related commands by running `tcld n export gcs`:
-    
     ```bash
     NAME:
        tcld namespace export gcs - Manage GCS export sink
@@ -145,26 +141,4 @@ tcld n export gcs g -n test.ns --sink-name test-sink
 }
 ```
 
-## Monitoring after Export is enabled
 
-1. **Export Job Execution**: The Export job will run as an hourly process, starting at 10 minutes past each hour. 
-  This means that closed Workflow history data will be exported to your designated bucket approximately 1 hour after the closure of each Workflow. 
-  Please note that the export process may take some time to complete.
-2. **Files in GCS Bucket**: After the first hour, you should check your GCS bucket to see if the exported Workflow history files have landed. 
-  These files will contain relevant data from closed Workflows. 
-  The exported files will be located in your GCS bucket, following the specified format: 
-  ```
-  //[test-bucket]/temporal-workflow-history/export/[Namespace]/[Year]/[Month]/[Date]/[Hour]/[Minute]/
-  ```
-3. **UI Updates**: Within the UI, you will find two important pieces of information
-    1. **Last Successful Export**: This indicates the date and time when the most recent successful export occurred. 
-      It provides an overview of when the export process was last executed successfully.
-    2. **Last Status Check**: This refers to an internal Workflow that performs periodic status checks on the Export process. 
-      It displays the date and time of the most recent status check, ensuring that the export functionality is continuously monitored.
-
-By periodically reviewing the GCS bucket for exported files and checking the relevant information in the UI, you can stay updated on the progress and status of exports.
-
-## Working with exported files
-
-The proto schema is defined in https://github.com/temporalio/api/blob/master/temporal/api/export/v1/message.proto. You could build your own custom deserializer for it. 
-You can find sample go code to reference when you want to deserialize export file in the Appendix section of this document.
