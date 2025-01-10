@@ -34,7 +34,7 @@ For other Activity-related Events, see [Activity Events](/workflows#activity-eve
 
 ## What is an Activity Definition? {#activity-definition}
 
-An Activity Definition is the code that defines the constraints of an [Activity Task Execution](/workers#activity-task-execution).
+An Activity Definition is the code that defines the constraints of an [Activity Task Execution](/tasks#activity-task-execution).
 
 - [How to develop an Activity Definition using the Go SDK](/develop/go/core-application#activity-definition)
 - [How to develop an Activity Definition using the Java SDK](/develop/java/core-application#develop-activities)
@@ -43,7 +43,7 @@ An Activity Definition is the code that defines the constraints of an [Activity 
 - [How to develop an Activity Definition using the TypeScript SDK](/develop/typescript/core-application#develop-activities)
 - [How to develop an Activity Definition using the .NET SDK](/develop/dotnet/core-application#develop-activity)
 
-The term 'Activity Definition' is used to refer to the full set of primitives in any given language SDK that provides an access point to an Activity Function Definition——the method or function that is invoked for an [Activity Task Execution](/workers#activity-task-execution).
+The term 'Activity Definition' is used to refer to the full set of primitives in any given language SDK that provides an access point to an Activity Function Definition——the method or function that is invoked for an [Activity Task Execution](/tasks#activity-task-execution).
 Therefore, the terms Activity Function and Activity Method refer to the source of an instance of an execution.
 
 Activity Definitions are named and referenced in code by their [Activity Type](#activity-type).
@@ -74,7 +74,7 @@ By design, completed Activities will not re-execute as part of a [Workflow Repla
 
 :::
 
-An Activity is idempotent if multiple [Activity Task Executions](/workers#activity-task-execution) do not change the state of the system beyond the first Activity Task Execution.
+An Activity is idempotent if multiple [Activity Task Executions](/tasks#activity-task-execution) do not change the state of the system beyond the first Activity Task Execution.
 
 We recommend using idempotency keys for critical side effects.
 
@@ -119,7 +119,7 @@ Activity Types are scoped through Task Queues.
 
 ## What is an Activity Execution? {#activity-execution}
 
-An Activity Execution is the full chain of [Activity Task Executions](/workers#activity-task-execution).
+An Activity Execution is the full chain of [Activity Task Executions](/tasks#activity-task-execution).
 
 - [How to start an Activity Execution using the Go SDK](/develop/go/core-application#activity-execution)
 - [How to start an Activity Execution using the Java SDK](/develop/java/core-application#activity-execution)
@@ -258,7 +258,7 @@ In the second scenario, the failure is retried sooner. This is particularly help
 
 #### What is a Task Token? {#task-token}
 
-A Task Token is a unique identifier for an [Activity Task Execution](/workers#activity-task-execution).
+A Task Token is a unique identifier for an [Activity Task Execution](/tasks#activity-task-execution).
 
 [Asynchronous Activity Completion](#asynchronous-activity-completion) calls take either of the following as arguments:
 
