@@ -254,7 +254,7 @@ See the [Pre-release README](https://github.com/temporalio/temporal/blob/main/do
 :::
 
 A Build ID corresponds to a deployment. If you don't already have one, we recommend a hash of the code--such as a Git SHA--combined with a human-readable timestamp.
-To use [Worker Versioning](/workers#worker-versioning), you need to pass a Build ID to your Typescript Worker and opt in to Worker Versioning.
+To use [Worker Versioning](/worker-versioning), you need to pass a Build ID to your Typescript Worker and opt in to Worker Versioning.
 
 ### Assign a Build ID to your Worker and opt in to Worker Versioning
 
@@ -294,7 +294,7 @@ When configured to run on a separate task queue, they will default to using the 
 If you want to override this behavior, you can specify your intent via the `versioningIntent`
 field available on the options object for each of these commands.
 
-{/* For more information refer to the [conceptual documentation](/workers#worker-versioning). */}
+{/* For more information refer to the [conceptual documentation](/worker-versioning). */}
 
 For example, if you want an Activity to use the latest assignment rules rather than inheriting from its parent:
 
@@ -311,7 +311,7 @@ const { echo } = proxyActivities<typeof activities>({
 
 :::caution
 
-This section is for a previous Worker Versioning API that is deprecated and will go away at some point. Please redirect your attention to [Worker Versioning](/workers#worker-versioning).
+This section is for a previous Worker Versioning API that is deprecated and will go away at some point. Please redirect your attention to [Worker Versioning](/worker-versioning).
 
 :::
 
