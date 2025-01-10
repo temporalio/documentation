@@ -125,7 +125,7 @@ The Archival URI cannot be changed after the Namespace is created.
 Each Namespace supports only a single Archival URI, but each Namespace can use a different URI.
 A Namespace can safely switch Archival between `enabled` and `disabled` states as long as Archival is enabled at the Temporal Service level.
 
-Archival is supported in [Global Namespaces](/namespaces#global-namespace) (Namespaces that span multiple clusters).
+Archival is supported in [Global Namespaces](/global-namespace) (Namespaces that span multiple clusters).
 When Archival is running in a Global Namespace, it first runs on the active cluster; later it runs on the standby cluster. Before archiving, a history check is done to see what has been previously archived.
 
 #### Test setup
