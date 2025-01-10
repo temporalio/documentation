@@ -24,6 +24,7 @@
   --tag-background-color-dark: #444;
   --tag-text-color-light: #333;
   --tag-text-color-dark: #ddd;
+  --docsearch-muted-color: #3b3b3b;
 }
 
 html[data-theme="dark"] {
