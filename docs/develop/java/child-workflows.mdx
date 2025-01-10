@@ -33,6 +33,8 @@ To be sure that the Child Workflow Execution has started, first call the Child W
 
 Then get the value of an object that acts as a proxy for a result that is initially unknown, which is what waits until the Child Workflow Execution has spawned.
 
+### Async Child Workflows
+
 The first call to the Child Workflow stub must always be its Workflow method (method annotated with `@WorkflowMethod`).
 Similar to Activities, invoking Child Workflow methods can be made synchronous or asynchronous by using `Async#function` or `Async#procedure`.
 The synchronous call blocks until a Child Workflow method completes.

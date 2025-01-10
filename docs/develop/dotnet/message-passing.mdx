@@ -305,7 +305,7 @@ An Update is a synchronous, blocking call that can change Workflow state, contro
 A Client sending an Update must wait until the Server delivers the Update to a Worker.
 Workers must be available and responsive.
 If you need a response as soon as the Server receives the request, use a Signal instead.
-Also note that you can't send Updates to other Workflow Executions or perform an Update equivalent of Signal-With-Start.
+Also note that you can't send Updates to other Workflow Executions.
 
 - `WorkflowExecutionUpdateAccepted` is added to the Event History when the Worker confirms that the Update passed validation.
 - `WorkflowExecutionUpdateCompleted` is added to the Event History when the Worker confirms that the Update has finished.
