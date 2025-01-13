@@ -33,9 +33,9 @@ Temporal takes care of the heavy lifting, guaranteeing that your workflows are e
 
 ## Durable Execution {#durable-execution}
 
-At the heart of Temporal is the concept of Durable Execution and allows your applications to be resilient and durable by default. 
+At the heart of Temporal is the concept of Durable Execution.
 It is the guarantee that, once started, your application will run to completion despite adverse conditions (such as a crash or hardware failure) that would otherwise cause it to fail. 
-Durable Execution makes your applications invincible. 
+Durable Execution makes your applications invincible and allows your applications to be resilient and durable by default. . 
 
 This durability isn't magic — it's achieved through Event History which keeps a record of each step in a Workflow Execution. 
 If something goes wrong, the Workflow can resume exactly where it left off at its last recorded event, without losing any progress. 
@@ -49,18 +49,13 @@ Whether you self-host Temporal to harness the power of open source or leverage T
 
 ## What is the Temporal Platform? {#temporal-platform}
 
-The Temporal Platform consists of a [Temporal Service](/clusters) and [Worker Processes](/workers#worker-process).
-Together these components create a runtime for Workflow Executions.
+The Temporal Platform provides the runtime for Workflow Executions by combining two core components:
+1. Temporal Service: The supervising software responsible for managing Workflow Executions and state. 
+It consists of the Temporal Server and a database. 
+You can either host this yourself or use our Software as a Service (SaaS) offering, Temporal Cloud, which eliminates the need to manage the infrastructure.
 
-The Temporal Platform consists of a supervising software typically called the [Temporal Service](/clusters) and application code bundled as Worker Processes.
-Together these components create a runtime for your application.
-
-A Temporal Service consists of the Temporal Server and a database.
-
-Our software as a service (SaaS) offering, Temporal Cloud, offers an alternative to hosting the Temporal Service yourself.
-
-Worker Processes are hosted and operated by you and execute your code. Workers run using one of our SDKs.
-
+2. Worker Processes: Worker Processes are hosted and operated by you, bundled into processes called Workers. 
+Workers execute your Workflow and Activity code using one of Temporal's SDKs.
 
 
 ## What is a Temporal Application? {#temporal-application}
