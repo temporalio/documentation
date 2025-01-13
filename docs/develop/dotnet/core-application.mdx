@@ -86,7 +86,8 @@ Temporal requires that the deterministic `TaskScheduler.Current` is used, but ma
 Here are some known gotchas to avoid with .NET tasks inside of Workflows:
 
 - Do not use `Task.Run` - this uses the default scheduler and puts work on the thread pool.
-  - Use `Task.Factory.StartNew` or instantiate the `Task` and run `Task.Start` on it.
+  - Use `Workflow.RunTaskAsync` instead.
+  - Can also use `Task.Factory.StartNew` with current scheduler or instantiate the `Task` and run `Task.Start` on it.
 - Do not use `Task.ConfigureAwait(false)` - this will not use the current context.
   - If you must use `Task.ConfigureAwait`, use `Task.ConfigureAwait(true)`.
   - There is no significant performance benefit to `Task.ConfigureAwait` in workflows anyways due to how the scheduler works.
@@ -97,6 +98,16 @@ Here are some known gotchas to avoid with .NET tasks inside of Workflows:
   - Use `Workflow.WhenAnyAsync` instead.
   - Technically this only applies to an enumerable set of tasks with results or more than 2 tasks with results. Other
     uses are safe. See [this issue](https://github.com/dotnet/runtime/issues/87481).
+- Do not use `Task.WhenAll`
+  - Use `Workflow.WhenAllAsync` instead.
+  - Technically `Task.WhenAll` is currently deterministic in .NET and safe, but it is better to use the wrapper to be
+    sure.
+- Do not use `CancellationTokenSource.CancelAsync`.
+  - Use `CancellationTokenSource.Cancel` instead.
+- Do not use `System.Threading.Semaphore` or `System.Threading.SemaphoreSlim` or `System.Threading.Mutex`.
+  - Use `Temporalio.Workflows.Semaphore` or `Temporalio.Workflows.Mutex` instead.
+  - _Technically_ `SemaphoreSlim` does work if only the async form of `WaitAsync` is used without no timeouts and
+    `Release` is used. But anything else can deadlock the workflow and its use is cumbersome since it must be disposed.
 - Be wary of additional libraries' implicit use of the default scheduler.
   - For example, while there are articles for `Dataflow` about [using a specific scheduler](https://learn.microsoft.com/en-us/dotnet/standard/parallel-programming/how-to-specify-a-task-scheduler-in-a-dataflow-block), there are hidden implicit uses of `TaskScheduler.Default`. For example, see [this bug](https://github.com/dotnet/runtime/issues/83159).
 
@@ -104,6 +115,10 @@ In order to help catch wrong scheduler use, by default the Temporal .NET SDK add
 While this technically receives events from all uses of tasks in the process, we make sure to ignore anything that is not running in a Workflow in a high performant way (basically one thread local check).
 For code that does run in a Workflow and accidentally starts a task in another scheduler, an `InvalidWorkflowOperationException` will be thrown which "pauses" the Workflow (fails the Workflow Rask which continually retries until the code is fixed).
 This is unfortunately a runtime-only check, but can help catch mistakes early. If this needs to be turned off for any reason, set `DisableWorkflowTracingEventListener` to `true` in Worker options.
+
+In the near future for modern .NET versions we hope to use the
+[new `TimeProvider` API](https://github.com/dotnet/runtime/issues/36617) which will allow us to control current time and
+timers.
 
 #### Workflow .editorconfig
 
@@ -215,7 +230,7 @@ A single argument is limited to a maximum size of 2 MB.
 And the total size of a gRPC message, which includes all the arguments, is limited to a maximum of 4 MB.
 
 Also, keep in mind that all Payload data is recorded in the [Workflow Execution Event History](/workflows#event-history) and large Event Histories can affect Worker performance.
-This is because the entire Event History could be transferred to a Worker Process with a [Workflow Task](/workers#workflow-task).
+This is because the entire Event History could be transferred to a Worker Process with a [Workflow Task](/tasks#workflow-task).
 
 Some SDKs require that you pass context objects, others do not.
 When it comes to your application data—that is, data that is serialized and encoded into a Payload—we recommend that you use a single object as an argument that wraps the application data passed to Activities.
@@ -231,7 +246,7 @@ Technically this can be multiple parameters, but Temporal strongly encourages a 
 
 Calls to spawn [Activity Executions](/activities#activity-execution) are written within a [Workflow Definition](/workflows#workflow-definition).
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
-This results in the set of three [Activity Task](/workers#activity-task) related Events ([ActivityTaskScheduled](/references/events#activitytaskscheduled), [ActivityTaskStarted](/references/events#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
+This results in the set of three [Activity Task](/tasks#activity-task) related Events ([ActivityTaskScheduled](/references/events#activitytaskscheduled), [ActivityTaskStarted](/references/events#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
 
 A single instance of the Activities implementation is shared across multiple simultaneous Activity invocations.
 Activity implementation code should be _idempotent_.
@@ -278,7 +293,7 @@ The Activity result is the returned in the task from the `ExecuteActivityAsync` 
 The [Worker Process](/workers#worker-process) is where Workflow Functions and Activity Functions are executed.
 
 - Each [Worker Entity](/workers#worker-entity) in the Worker Process must register the exact Workflow Types and Activity Types it may execute.
-- Each Worker Entity must also associate itself with exactly one [Task Queue](/workers#task-queue).
+- Each Worker Entity must also associate itself with exactly one [Task Queue](/task-queue).
 - Each Worker Entity polling the same Task Queue must be registered with the same Workflow Types and Activity Types.
 
 A [Worker Entity](/workers#worker-entity) is the component within a Worker Process that listens to a specific Task Queue.
