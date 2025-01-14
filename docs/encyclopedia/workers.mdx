@@ -274,7 +274,7 @@ This implementation offers several benefits:
 
 Any Worker can pick up any Task on a given Task Queue.
 You must ensure that if a Worker accepts a Task that it can process that task using one of its registered Workflows, Activities, or Nexus Operation handlers.
-This means that all Workers listening to a Task Queue must register all Tasks and Nexus Operations that live on that Queue.
+This means that all Workers listening to a Task Queue must register all Workflows, Activities, and Nexus Operations that live on that Queue.
 
 There are two exceptions to this "Task Queue Workers with identical registrations" rule.
 First, Worker Versioning may be used.
