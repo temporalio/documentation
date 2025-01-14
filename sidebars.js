@@ -516,7 +516,22 @@ module.exports = {
                 "encyclopedia/retry-policies",
               ],
             },
-            "encyclopedia/workers",
+            {
+              type: "category",
+              label: "Workers",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "encyclopedia/workers/workers",
+              },
+              items: [
+                "encyclopedia/workers/tasks",
+                "encyclopedia/workers/task-queues",
+                "encyclopedia/workers/task-routing-worker-sessions",
+                "encyclopedia/workers/sticky-execution",
+                "encyclopedia/workers/worker-versioning",
+              ],
+            },
             "encyclopedia/workflow-message-passing",
             "encyclopedia/child-workflows",
             "encyclopedia/visibility",
