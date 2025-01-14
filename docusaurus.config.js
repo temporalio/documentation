@@ -55,14 +55,13 @@ module.exports = async function createConfigAsync() {
           autoCollapseCategories: true,
         },
       },
-      // announcementBar: {
-      //   id: "replay_announcement",
-      //   content:
-      //     'Replay will return September 18-20 in Seattle! <a href="https://www.eventbrite.com/e/replay-2024-tickets-744609486017?aff=ebdsoporgprofile">Secure your ticket</a>.',
-      //   backgroundColor: "#141414",
-      //   textColor: "#ffffff",
-      //   isCloseable: true,
-      // },
+      announcementBar: {
+        id: "replay_announcement",
+        content: '<div style="padding: 4px 0">Replay is coming to London on March 3-5! <a href="https://www.eventbrite.com/e/replay-conference-2025-tickets-1045108576887">Secure your ticket</a></div>',
+        backgroundColor: "#312e81",
+        textColor: "#e0e7ff",
+        isCloseable: true,
+      },
       navbar: {
         hideOnScroll: false,
         logo: {
