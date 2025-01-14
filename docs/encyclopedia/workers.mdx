@@ -311,7 +311,7 @@ There are five places where the name of the Task Queue can be set by the develop
    - [How to run a Temporal Cloud Worker using the Go SDK](/develop/go/core-application#run-a-temporal-cloud-worker)
    - [How to run a Temporal Cloud Worker using the TypeScript SDK](/develop/typescript/core-application#run-a-temporal-cloud-worker)
 
-   Note that all Worker Entities listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
+   Note that all Worker Entities listening to the same Task Queue name must be registered to handle the exact same Workflows Types, Activity Types, and Nexus Operations.
 
    If a Worker Entity polls a Task for a Workflow Type or Activity Type it does not know about, it will fail that Task.
    However, the failure of the Task will not cause the associated Workflow Execution to fail.
