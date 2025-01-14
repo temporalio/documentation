@@ -67,6 +67,11 @@ Available slot suppliers include:
   A resource-based supplier will account for memory limits imposed in containerized environments.
   It dynamically adjusts the number of available slots for different task types with respect to current system resources.
 
+- **Custom Slot Suppliers**:
+  Hands out slots based on the custom logic that you define.
+  Use this approach when you need complete control over when Workers accept and execute Tasks.
+  For implementation details, see [Implement Custom Slot Suppliers](#custom-slot-implementation).
+
 :::caution
 
 - You cannot guarantee that the targets for resource-based suppliers won't ever be exceeded.
@@ -205,6 +210,9 @@ For example, it might provide a fixed assignment slot supplier for Workflows and
 
 ### Choosing slot supplier types
 
+Temporal offers three types of slot suppliers: fixed assignment, resource-based, and custom.
+Here’s how to choose the best approach based on your system requirements and workload characteristics.
+
 When choosing whether to opt for fixed assignment or resource-based suppliers, consider:
 
 - Workflow Tasks make minimal demands on the CPU and, normally, do not consume much memory.
@@ -223,6 +231,42 @@ The following use cases are particularly well suited to resource-based auto-tuni
   Do you want to avoid crashes without setting an overly-conservative fixed limit?
   In these cases, the resource-based supplier is a good match.
   Keep in mind that auto-tuning can never do a _perfect_ job and may sometimes exceed your requested system limits for CPU and memory.
+
+For the highest level of control over slot allocation, consider custom slot suppliers.
+This allows you to tailor the logic of how slots are allocated based on your system requirements.
+Custom suppliers provide flexibility to optimize for specific use cases that fixed assignment and resource-based suppliers may not fully address.
+
+Choosing the right slot supplier depends on your workload complexity and the control you need over resource allocation.
+For predictable tasks, variable workloads, or complex dynamic scenarios, Temporal slot suppliers can meet your needs.
+
+### Implement Custom Slot Suppliers {#custom-slot-implementation}
+
+Implement your own Slot Supplier to control how Workers are allocated Tasks and manage the processing of Workflows, Activities, and Nexus Operations.
+Custom Slot Suppliers let you fine-tune task processing based on your application's needs.
+
+Each SDK's reference documentation explains the specifics of the interface, but the core concepts are consistent across SDKs:
+
+| Language                                            | Slot Supplier Reference                                                                                                  |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| <img src="/img/logos/golang.png" height="24" />     | [`SlotSupplier`](https://pkg.go.dev/go.temporal.io/sdk/worker#SlotSupplier)                                              |
+| <img src="/img/logos/java.png" height="24" />       | [`SlotSupplier`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/tuning/SlotSupplier.html) |
+| <img src="/img/logos/python.png" height="24" />     | [`CustomSlotSupplier`](https://python.temporal.io/temporalio.worker.CustomSlotSupplier.html)                             |
+| <img src="/img/logos/typescript.png" height="24" /> | [`CustomSlotSupplier`](https://typescript.temporal.io/api/interfaces/worker.CustomSlotSupplier)                          |
+| <img src="/img/logos/dotnet.png" height="24" />     | [`CustomSlotSupplier`](https://dotnet.temporal.io/api/Temporalio.Worker.Tuning.CustomSlotSupplier.html)                  |
+
+Slot Suppliers issue `SlotPermit`s.
+These represent the right to use a slot of a specific type, namely Workflow, Activity, Local Activity, or Nexus.
+You control whether a Worker can perform certain tasks by issuing or withholding permits.
+
+Custom Slot Suppliers must implement these functions:
+
+- `reserveSlot` - Called before polling for new tasks. Your implementation can block and must return a Slot Permit once it decides to accept new work.
+- `tryReserveSlot` - Called for slot reservations in cases like eager activity processing. This must not block.
+- `markSlotUsed` - Called when a slot is about to be used for a task (not while it’s held during polling). It provides information about the task.
+- `releaseSlot` - Called when a slot is no longer needed, whether or not it was used.
+
+Custom policies require more effort, but provide finer control over Task processing.
+By implementing your own Slot Supplier, you can tailor how Workflows, Activities, and Nexus Operations are handled, optimizing performance for your specific needs.
 
 ### Slot supplier throttles
 
