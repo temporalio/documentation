@@ -57,9 +57,9 @@ module.exports = async function createConfigAsync() {
       },
       announcementBar: {
         id: "replay_announcement",
-        content: '<div style="padding: 4px 0">Replay is coming to London on March 3-5! <a href="https://www.eventbrite.com/e/replay-conference-2025-tickets-1045108576887">Secure your ticket</a></div>',
+        content: 'Replay is coming to London, March 3-5! <a href="https://www.eventbrite.com/e/replay-conference-2025-tickets-1045108576887">Secure your ticket</a>',
         backgroundColor: "#312e81",
-        textColor: "#e0e7ff",
+        textColor: "#ffffff",
         isCloseable: true,
       },
       navbar: {
