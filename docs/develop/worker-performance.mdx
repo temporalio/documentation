@@ -528,7 +528,7 @@ While individual `add` and `dispatch` rates may be inaccurate due to Eager and S
 ## Evaluate Task Queue performance {#evaluate-worker-loads}
 
 A [Task Queue](https://docs.temporal.io/task-queue) is a lightweight, dynamically allocated queue.
-[Worker Entities](https://docs.temporal.io/workers#worker-entity) poll the queue for [Tasks](https://docs.temporal.io/tasks#task) and retrieve Tasks to work on.
+[Worker Entities](/workers#worker-entity) poll the queue for [Tasks](https://docs.temporal.io/tasks#task) and retrieve Tasks to work on.
 Tasks are contexts that a Worker progresses using a specific Workflow Execution, Activity Execution, or a Nexus Task Execution.
 Each Task Queue type offers its Tasks to compatible Workers for Task completion.
 The Temporal Service dynamically creates different [Task Queue types](/task-queue) including Activity Task Queues, Workflow Task Queues, and Nexus Task Queues.
