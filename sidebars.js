@@ -85,6 +85,7 @@ module.exports = {
               },
               items: [
                 "evaluate/temporal-cloud/aws-privatelink",
+                "evaluate/temporal-cloud/gcp-private-service-connect"
               ],
             },
             "evaluate/temporal-cloud/service-availability",
@@ -368,6 +369,7 @@ module.exports = {
               },
               items: [
                 "production-deployment/cloud/aws-export-s3",
+                "production-deployment/cloud/gcp-export-gcs",
               ],
             },
             {
@@ -380,6 +382,7 @@ module.exports = {
               },
               items: [
                 "production-deployment/cloud/audit-logging-aws",
+                "production-deployment/cloud/audit-logging-gcp",
               ],
             },
             {
