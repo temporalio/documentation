@@ -50,7 +50,7 @@ Workflow commands use this syntax:
 The `temporal workflow cancel` command cancels a [Workflow Execution](/workflows#workflow-execution).
 
 Canceling a running Workflow Execution records a [`WorkflowExecutionCancelRequested` event](/references/events#workflowexecutioncancelrequested) in the [Event History](/workflows#event-history).
-A new [Workflow Task](/workers#workflow-task) will be scheduled, and the Workflow Execution performs cleanup work.
+A new [Workflow Task](/tasks#workflow-task) will be scheduled, and the Workflow Execution performs cleanup work.
 
 `temporal workflow cancel --workflow-id=meaningful-business-id`
 

@@ -109,6 +109,77 @@ The Id that is passed to the `getVersion` call identifies the change. Each chang
 a change spawns multiple places in the Workflow code and the new code should be either executed in all of them or
 in none of them, then they have to share the Id.
 
+### Adding Support for Versioned Workflow Visibility in the Event History
+
+In other Temporal SDKs, when you invoke the Patching API, the SDK records an
+`UpsertWorkflowSearchAttribute` Event in the history. This adds support
+for a custom query parameter in the web UI named `TemporalChangeVersion` that
+allows you to filter Workflows based on their version. Unfortunately, the Java
+SDK doesn't currently support the automatic adding of this attribute, so you'll
+have to do it manually instead.
+
+Within your Workflow Implementation code you'll need to perform the following steps:
+
+#### Import the `SearchAttributes` class
+
+```java
+import io.temporal.common.SearchAttributeKey;
+```
+
+#### Define the `SearchAttributesKey` object
+
+This object will be used as the key within the search attributes. This is done as an instance variable.
+
+```java
+public static final SearchAttributeKey<List<String>> TEMPORAL_CHANGE_VERSION = SearchAttributeKey.forKeywordList("TemporalChangeVersion");
+```
+
+#### Set the Search Attribute using `upsert`
+
+You will set this attribute when you make the call to `getVersion`. It is important
+to set this value as soon as possible after the `getVersion` call so you can be
+able to search for the Workflow as soon as possible. For example, if you set
+the attribute at the end of your Workflow, you'd have to wait until the very end
+of the execution to be able to identify what version this is. As you'll read later,
+being able to know how many Workflows of a specific version are still running is
+important when you are trying to deprecate older Workflow versions and their workers.
+
+```java
+int version = Workflow.getVersion("MovedThankYouAfterLoop", Workflow.DEFAULT_VERSION, 1);
+
+if (version != Workflow.DEFAULT_VERSION) {
+  Workflow.upsertTypedSearchAttributes(Constants.TEMPORAL_CHANGE_VERSION
+      .valueSet(Arrays.asList(("MovedThankYouAfterLoop-" + version))));
+}
+```
+
+You should only set the attribute on new versions. Setting the attribute on the
+default version will cause a non-deterministic error.
+
+#### Setting Attributes for Multiple `getVersion` Calls
+
+The code in the previous section works well for code that only has one call to
+`getVersion`. However, you may encounter situations where you have to have
+multiple calls to `getVersion` to handle multiple independent changes to your
+Workflow. If you were to use the code above you'd overwrite all but the last
+call to `getVersion` in your event history. Therefore you should create
+a list of all the version changes and then set the attribute value.
+
+Example:
+
+```java
+List<String> list = new ArrayList<String>();
+int versionOne = Workflow.getVersion("versionOne", Workflow.DEFAULT_VERSION, 1);
+int versionTwo = Workflow.getVersion("versionTwo", Workflow.DEFAULT_VERSION, 1);
+if ( versionOne != Workflow.DEFAULT_VERSION ) {
+   list.append("versionOne-" + versionOne);
+}
+if (versionTwo != Workflow.DEFAULT_VERSION) {
+   list.append("versionTwo-" + versionTwo);
+}
+Workflow.upsertTypedSearchAttributes(Constants.TEMPORAL_CHANGE_VERSION.valueSet(list));
+```
+
 ## How to use Worker Versioning in Java {#worker-versioning}
 
 :::caution
@@ -119,7 +190,7 @@ See the [Pre-release README](https://github.com/temporalio/temporal/blob/main/do
 
 :::
 A Build ID corresponds to a deployment. If you don't already have one, we recommend a hash of the code--such as a Git SHA--combined with a human-readable timestamp.
-To use [Worker Versioning](/workers#worker-versioning), you need to pass a Build ID to your Go Worker and opt in to Worker Versioning.
+To use [Worker Versioning](/worker-versioning), you need to pass a Build ID to your Java Worker and opt in to Worker Versioning.
 
 ### Assign a Build ID to your Worker and opt in to Worker Versioning
 
@@ -178,7 +249,7 @@ private final MyActivity activity =
 
 :::caution
 
-This section is for a previous Worker Versioning API that is deprecated and will go away at some point. Please redirect your attention to [Worker Versioning](/workers#worker-versioning).
+This section is for a previous Worker Versioning API that is deprecated and will go away at some point. Please redirect your attention to [Worker Versioning](/worker-versioning).
 
 :::
 

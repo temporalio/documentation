@@ -29,9 +29,6 @@ keywords:
 - temporal sdk message passing
 ---
 
-
-
-
 import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
 import {RelatedReadContainer, RelatedReadItem} from '@site/src/components/related-read/RelatedRead';
 
@@ -168,6 +165,9 @@ The start call will give you a handle you can use to track the Update, determine
 
 If you want to send an Update to another Workflow such as a Child Workflow from within a Workflow, you should do so within an Activity and use the Temporal Client as normal.
 
+There are limits on the total number of Updates that may occur during a Workflow Execution run, and also on the number of concurrent in-progress Updates that a Workflow Execution may have.
+Use [Update Validators](#update-validators) and [Update IDs](#exactly-once-message-processing) to stay within the system limits in both [Cloud](/cloud/limits#per-workflow-execution-update-limits) and [Self-Hosted](/self-hosted-guide/defaults).
+
 <RelatedReadContainer>
     <RelatedReadItem path="/develop/go/message-passing#send-update-from-client" text="Send Updates in Go" archetype="feature-guide" />
     <RelatedReadItem path="/develop/java/message-passing#send-update-from-client" text="Send Updates in Java" archetype="feature-guide" />
@@ -187,32 +187,35 @@ Minimum Temporal Server version [Temporal Server version 1.26](https://github.co
 
 - Available in [Go SDK](https://pkg.go.dev/go.temporal.io/sdk@v1.31.0/client#Client.UpdateWithStartWorkflow) since [v1.31.0](https://github.com/temporalio/sdk-go/releases/tag/v1.31.0)
 - Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/1.27.0/io/temporal/client/WorkflowStub.html#startUpdateWithStart(io.temporal.client.UpdateOptions,java.lang.Object%5B%5D,java.lang.Object%5B%5D)) since [v1.27.0](https://github.com/temporalio/sdk-java/releases/tag/v1.27.0)
+- Available in [Python SDK](/develop/python/message-passing#send-update-from-client) since [v1.9.0](https://github.com/temporalio/sdk-python/releases/tag/1.9.0)
+- Available in [TypeScript SDK](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#executeupdate) since [v1.11.6](https://github.com/temporalio/sdk-typescript/releases/tag/v1.11.6)
+- Available in [PHP SDK](https://php.temporal.io/classes/Temporal-Client-WorkflowClient.html#method_updateWithStart) since [v2.11.4](https://github.com/temporalio/sdk-php/releases/tag/v2.11.4)
+- Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowStartUpdateWithStartOptions.html) since [v1.4.0](https://github.com/temporalio/sdk-dotnet/releases/tag/1.4.0)
 
 :::
 
 Update-With-Start sends an Update that checks whether an already-running Workflow with that ID exists.
-If it does, the Update is processed.
-If not, it starts a new Workflow Execution with the supplied ID.
-When starting a new Workflow, it immediately processes the Update.
+If it does, the Update is processed normally.
+If not, it starts a new Workflow Execution with the supplied ID, and immediately processes the Update.
 
 Update-With-Start is great for latency-sensitive use cases:
 
 - **Lazy Initialization** -
   Instead of making separate Start Workflow and Update Workflow calls, Update-With-Start allows you to send them together in a single roundtrip.
-  For example, a shopping cart can be modelled using Update-With-Start.
-Updates let you add and remove items from the cart.
+  For example, a shopping cart can be modeled using Update-With-Start.
+  Updates let you add and remove items from the cart.
   Update-With-Start lets the customer start shopping, whether the cart already exists or they've just started shopping.
-  It ensures the cart, modeled by a Workflow Execution, is created before applying any Update that changes the state of items within the cart.
+  It ensures the cart, modeled by a Workflow Execution, exists before applying any Update that changes the state of items within the cart.
 - **Early Return** -
-  Using Update-With-Start can begin a new Workflow Execution and synchronously receiving a response while the Workflow Execution continues to run to completion.
+  Using Update-With-Start you can begin a new Workflow Execution and synchronously receive a response, while the Workflow Execution continues to run to completion.
   For example, you might model a payment process using Update-With-Start.
-  Whether the payment completes or rolls back, you can send the payment validation results back to the client synchronously, while attempting the transaction asynchronously.
+  This allows you to send the payment validation results back to the client synchronously, while the transaction Workflow continues in the background.
 
 :::caution
 
 Unlike Signal-with-Start - Update-With-Start is *not* atomic.
-If the Update can't be delivered, for example, say that there's no running Worker available, a new Workflow Execution will still start.
-The SDKs will retry the Update-With-Start request but there is no guarantee that it will succeed.
+If the Update can't be delivered, for example, because there's no running Worker available, a new Workflow Execution will still start.
+The SDKs will retry the Update-With-Start request, but there is no guarantee that the Update will succeed.
 
 :::
 

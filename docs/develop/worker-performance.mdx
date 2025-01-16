@@ -23,7 +23,7 @@ The omitted prefix makes the names more readable and descriptive.
 
 :::
 
-## Worker peformance concepts {#worker-performance-concepts}
+## Worker performance concepts {#worker-performance-concepts}
 
 A Worker's performance characteristics are affected by, but not limited to, the following elements.
 
@@ -66,6 +66,11 @@ Available slot suppliers include:
   You set target utilization for both CPU and memory and the Slot Supplier tries to reach those values without exceeding them under load.
   A resource-based supplier will account for memory limits imposed in containerized environments.
   It dynamically adjusts the number of available slots for different task types with respect to current system resources.
+
+- **Custom Slot Suppliers**:
+  Hands out slots based on the custom logic that you define.
+  Use this approach when you need complete control over when Workers accept and execute Tasks.
+  For implementation details, see [Implement Custom Slot Suppliers](#custom-slot-implementation).
 
 :::caution
 
@@ -201,9 +206,12 @@ Worker tuners are in [Public Preview](/evaluate/development-production-features/
 Worker tuning manages the assignment of slot suppliers.
 A **Worker Tuner** instance exists per-Worker, providing slot suppliers for different slot types (Activity, Workflow, Nexus, or Local Activity Tasks).
 A tuner assigns different suppliers to each slot type.
-For example, it might provide a fixed assignment slot supplier for Workflows and use an resource-based supplier for Activities.
+For example, it might provide a fixed assignment slot supplier for Workflows and use a resource-based supplier for Activities.
 
 ### Choosing slot supplier types
+
+Temporal offers three types of slot suppliers: fixed assignment, resource-based, and custom.
+Here’s how to choose the best approach based on your system requirements and workload characteristics.
 
 When choosing whether to opt for fixed assignment or resource-based suppliers, consider:
 
@@ -223,6 +231,42 @@ The following use cases are particularly well suited to resource-based auto-tuni
   Do you want to avoid crashes without setting an overly-conservative fixed limit?
   In these cases, the resource-based supplier is a good match.
   Keep in mind that auto-tuning can never do a _perfect_ job and may sometimes exceed your requested system limits for CPU and memory.
+
+For the highest level of control over slot allocation, consider custom slot suppliers.
+This allows you to tailor the logic of how slots are allocated based on your system requirements.
+Custom suppliers provide flexibility to optimize for specific use cases that fixed assignment and resource-based suppliers may not fully address.
+
+Choosing the right slot supplier depends on your workload complexity and the control you need over resource allocation.
+For predictable tasks, variable workloads, or complex dynamic scenarios, Temporal slot suppliers can meet your needs.
+
+### Implement Custom Slot Suppliers {#custom-slot-implementation}
+
+Implement your own Slot Supplier to control how Workers are allocated Tasks and manage the processing of Workflows, Activities, and Nexus Operations.
+Custom Slot Suppliers let you fine-tune task processing based on your application's needs.
+
+Each SDK's reference documentation explains the specifics of the interface, but the core concepts are consistent across SDKs:
+
+| Language                                            | Slot Supplier Reference                                                                                                  |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| <img src="/img/logos/golang.png" height="24" />     | [`SlotSupplier`](https://pkg.go.dev/go.temporal.io/sdk/worker#SlotSupplier)                                              |
+| <img src="/img/logos/java.png" height="24" />       | [`SlotSupplier`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/tuning/SlotSupplier.html) |
+| <img src="/img/logos/python.png" height="24" />     | [`CustomSlotSupplier`](https://python.temporal.io/temporalio.worker.CustomSlotSupplier.html)                             |
+| <img src="/img/logos/typescript.png" height="24" /> | [`CustomSlotSupplier`](https://typescript.temporal.io/api/interfaces/worker.CustomSlotSupplier)                          |
+| <img src="/img/logos/dotnet.png" height="24" />     | [`CustomSlotSupplier`](https://dotnet.temporal.io/api/Temporalio.Worker.Tuning.CustomSlotSupplier.html)                  |
+
+Slot Suppliers issue `SlotPermit`s.
+These represent the right to use a slot of a specific type, namely Workflow, Activity, Local Activity, or Nexus.
+You control whether a Worker can perform certain tasks by issuing or withholding permits.
+
+Custom Slot Suppliers must implement these functions:
+
+- `reserveSlot` - Called before polling for new tasks. Your implementation can block and must return a Slot Permit once it decides to accept new work.
+- `tryReserveSlot` - Called for slot reservations in cases like eager activity processing. This must not block.
+- `markSlotUsed` - Called when a slot is about to be used for a task (not while it’s held during polling). It provides information about the task.
+- `releaseSlot` - Called when a slot is no longer needed, whether or not it was used.
+
+Custom policies require more effort, but provide finer control over Task processing.
+By implementing your own Slot Supplier, you can tailor how Workflows, Activities, and Nexus Operations are handled, optimizing performance for your specific needs.
 
 ### Slot supplier throttles
 
@@ -451,7 +495,7 @@ The age is based on the creation time of the Task at the head of the queue.
 
 You can rely on both these counts when making scaling decisions.
 
-Please note: [Sticky queues](https://docs.temporal.io/workers#sticky-execution) will affect these values, but only for a few seconds.
+Please note: [Sticky queues](https://docs.temporal.io/sticky-execution) will affect these values, but only for a few seconds.
 That's because Tasks sent to Sticky queues are not included in the returned values for `ApproximateBacklogCount` and `ApproximateBacklogAge`.
 Inaccuracies diminish as the backlog grows.
 
@@ -483,11 +527,11 @@ While individual `add` and `dispatch` rates may be inaccurate due to Eager and S
 
 ## Evaluate Task Queue performance {#evaluate-worker-loads}
 
-A [Task Queue](https://docs.temporal.io/workers#task-queue) is a lightweight, dynamically allocated queue.
-[Worker Entities](https://docs.temporal.io/workers#worker-entity) poll the queue for [Tasks](https://docs.temporal.io/workers#task) and retrieve Tasks to work on.
+A [Task Queue](https://docs.temporal.io/task-queue) is a lightweight, dynamically allocated queue.
+[Worker Entities](/workers#worker-entity) poll the queue for [Tasks](https://docs.temporal.io/tasks#task) and retrieve Tasks to work on.
 Tasks are contexts that a Worker progresses using a specific Workflow Execution, Activity Execution, or a Nexus Task Execution.
 Each Task Queue type offers its Tasks to compatible Workers for Task completion.
-The Temporal Service dynamically creates different [Task Queue types](/workers#task-queue) including Activity Task Queues, Workflow Task Queues, and Nexus Task Queues.
+The Temporal Service dynamically creates different [Task Queue types](/task-queue) including Activity Task Queues, Workflow Task Queues, and Nexus Task Queues.
 
 With an accurate estimate of backlog Tasks, you can determine the optimal number of Workers to deploy.
 Balance your Worker count with the number of Tasks to achieve the best performance.
