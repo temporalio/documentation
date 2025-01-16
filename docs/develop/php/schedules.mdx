@@ -47,6 +47,18 @@ A [Temporal Cron Job](/workflows#temporal-cron-job) is the series of Workflow Ex
 A Cron Schedule is provided as an option when the call to spawn a Workflow Execution is made.
 
 Set your Cron Schedule with `CronSchedule('* * * * *')`.
+Temporal Workflow Schedule Cron strings follow this format:
+
+```
+┌───────────── minute (0 - 59)
+│ ┌───────────── hour (0 - 23)
+│ │ ┌───────────── day of the month (1 - 31)
+│ │ │ ┌───────────── month (1 - 12)
+│ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday)
+│ │ │ │ │
+* * * * *
+```
+
 
 The following example sets a Cron Schedule in PHP:
 
