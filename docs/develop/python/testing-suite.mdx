@@ -43,20 +43,31 @@ When using pytest fixtures to setup databases, application servers and common in
 
 ```python
 import pytest
+import pytest_asyncio
 import temporalio.testing.WorkflowEnvironment
 
 
 # Notice how this doesn't specify a "scope" like "session" scope. If you don't
 # specify a scope, the default scope is function, so a new workflow
 # environment will be created for each test.
-@pytest.fixture
+@pytest_asyncio.fixture
 def workflow_environment():
   return WorkflowEnvironment.start_time_skipping()
 
-def test_1(workflow_environment):
+
+# This might break because it will reuse the workflow environment 
+@pytest_asyncio.fixture(scope="session")
+async def workflow_environment():
+  return await WorkflowEnvironment.start_time_skipping()
+
+
+@pytest.mark.asyncio
+async def test_1(workflow_environment):
   pass
 
-def test_2(workflow_environment):
+
+@pytest.mark.asyncio
+async def test_2(workflow_environment):
   pass
 ```
 
