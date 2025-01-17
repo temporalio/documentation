@@ -1,0 +1,30 @@
+name: Content Correction Issue
+description: "Report issues related to documentation content, including missing or incorrect information and unclear, confusing, or misleading writing."
+labels: ["content-correction"]
+body:
+  - type: checkboxes
+    id: employee
+    attributes:
+      label: Temporal Affiliation
+      options:
+        - label: I am a Temporal employee
+          required: false
+  - type: input
+    id: issue-url
+    attributes:
+      label: Page URL
+      description: The page where the problem occurs
+      placeholder: "For example, https://docs.temporal.io/..."
+    validations:
+      required: true
+  - type: textarea
+    id: issue-location
+    attributes:
+      label: Content Issue
+      description: Report unclear, confusing, or misleading writing, or missing/incorrect information in the documentation here. Describe the content issue you encountered and your recommended solution. Specify the approximate location on the page (for example, under which heading or part of the content), and any other details that will help us locate and resolve the problem. We appreciate links to any reference material or experts that support factual changes.
+      placeholder: "Section title, issue, suggested correction"
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: "Thanks for helping us improve our documentation."
