@@ -16,34 +16,36 @@ tags:
   - Concepts
 ---
 
-Temporal is a scalable and reliable runtime for durable function executions called [Temporal Workflow Executions](/workflows#workflow-execution).
 
-Said another way, it's a platform that guarantees the [Durable Execution](#durable-execution) of your application code.
+Temporal is an open source platform designed to make your application code durable and resilient to failures. 
 
-It enables you to develop as if failures don't even exist.
-Your application will run reliably even if it encounters problems, such as network outages or server crashes, which would be catastrophic for a typical application.
-The Temporal Platform handles these types of problems, allowing you to focus on the business logic, instead of writing application code to detect and recover from failures.
+:::info 
+💡 To learn more about the basics, check out the [Understanding Temporal](/evaluate/understanding-temporal) page.
+:::
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">The Temporal System</p>
-  </div>
-  <div className="tdiiw" height="740">
-    <img
-      className="img_ev3q"
-      src="/diagrams/temporal-system-simple.svg"
-      alt="The Temporal System"
-    />
-  </div>
-</div>
+The most valuable mission critical workloads in any software are long running and tie together multiple services. 
+With Temporal, your application will run reliably even if it encounters problems, such as network outages or server crashes, which would be catastrophic for a typical application. 
+
+Temporal allows you to develop your applications as if failures don’t exist. Instead of writing complex error-handling code and application code to detect and recover from failures, you can focus entirely on your business logic. 
+Temporal takes care of the heavy lifting, guaranteeing that your workflows are executed to completion - whether they run for seconds, days, or even years.
+
+<iframe width="750" height="500" src="https://www.youtube.com/embed/f-18XztyN6c" title="Temporal in Two Minutes" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Durable Execution {#durable-execution}
 
-Durable Execution in the context of Temporal refers to the ability of a Workflow Execution to maintain its state and progress even in the face of failures, crashes, or server outages.
-This is achieved through Temporal's use of an [Event History](/workflows#event-history), which records the state of a Workflow Execution at each step.
-If a failure occurs, the Workflow Execution can resume from the last recorded event, ensuring that progress isn't lost.
-This durability is a key feature of Temporal Workflow Executions, making them reliable and resilient.
-It enables application code to execute effectively once and to completion, regardless of whether it takes seconds or years.
+At the heart of Temporal is the concept of Durable Execution and allows your applications to be resilient and durable by default. 
+It is the guarantee that, once started, your application will run to completion despite adverse conditions (such as a crash or hardware failure) that would otherwise cause it to fail. 
+Durable Execution makes your applications invincible. 
+
+This durability isn't magic — it's achieved through Event History which keeps a record of each step in a Workflow Execution. 
+If something goes wrong, the Workflow can resume exactly where it left off at its last recorded event, without losing any progress. 
+This durability makes your applications reliable and resilient, allowing you to execute code exactly once and to completion, regardless of how long it takes.
+
+**Ready to build your first invincible application?**
+Start with Temporal's open-source platform and join a global community of developers embracing reliability and scalability by default. 
+Whether you self-host Temporal to harness the power of open source or leverage Temporal Cloud for hassle-free scalability and management, you can build applications with unmatched reliability. 
+
+![100% Open Source](/img/intro-temporal/100opensource.png)
 
 ## What is the Temporal Platform? {#temporal-platform}
 
@@ -53,37 +55,13 @@ Together these components create a runtime for Workflow Executions.
 The Temporal Platform consists of a supervising software typically called the [Temporal Service](/clusters) and application code bundled as Worker Processes.
 Together these components create a runtime for your application.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">The Temporal Platform</p>
-  </div>
-  <div className="tdiiw" height="740">
-    <img
-      className="img_ev3q"
-      src="/diagrams/temporal-platform-simple.svg"
-      alt="The Temporal Platform"
-    />
-  </div>
-</div>
-
 A Temporal Service consists of the Temporal Server and a database.
 
 Our software as a service (SaaS) offering, Temporal Cloud, offers an alternative to hosting the Temporal Service yourself.
 
 Worker Processes are hosted and operated by you and execute your code. Workers run using one of our SDKs.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Basic component topology of the Temporal Platform</p>
-  </div>
-  <div className="tdiiw" height="1121">
-    <img
-      className="img_ev3q"
-      src="/diagrams/temporal-platform-component-topology.svg"
-      alt="Basic component topology of the Temporal Platform"
-    />
-  </div>
-</div>
+
 
 ## What is a Temporal Application? {#temporal-application}
 
@@ -94,23 +72,6 @@ A Temporal Application can consist of millions to billions of Workflow Execution
 Workflow Executions are lightweight components.
 A Workflow Execution consumes few compute resources; in fact, if a Workflow Execution is suspended, such as when it is in a waiting state, the Workflow Execution consumes no compute resources at all.
 
-**Reentrant Process**
-
-A Temporal Workflow Execution is a Reentrant Process. A Reentrant Process is resumable, recoverable, and reactive.
-
-- Resumable: Ability of a process to continue execution after execution was suspended on an _awaitable_.
-- Recoverable: Ability of a process to continue execution after execution was suspended on a _failure_.
-- Reactive: Ability of a process to react to external events.
-
 Therefore, a Temporal Workflow Execution executes a [Temporal Workflow Definition](/workflows#workflow-definition), also called a Temporal Workflow Function, your application code, exactly once and to completion—whether your code executes for seconds or years, in the presence of arbitrary load and arbitrary failures.
 
-## What is a Failure? {#failure}
 
-[Temporal Failures](/references/failures) are representations (in the SDKs and Event History) of various types of errors that occur in the system.
-
-Failure handling is an essential part of development.
-For more information, including the difference between application-level and platform-level failures, see [Handling Failure From First Principles](https://dominik-tornow.medium.com/handling-failures-from-first-principles-1ed976b1b869).
-For the practical application of those concepts in Temporal, see [Failure Handling in Practice](https://temporal.io/blog/failure-handling-in-practice).
-
-For languages that throw (or raise) errors (or exceptions), throwing an error that is not a Temporal Failure from a Workflow fails the Workflow Task (and the Task will be retried until it succeeds), whereas throwing a Temporal Failure (or letting a Temporal Failure propagate from Temporal calls, like an [Activity Failure](/references/failures#activity-failure) from an Activity call) fails the Workflow Execution.
-For more information, see [Application Failure](/references/failures#application-failure).
