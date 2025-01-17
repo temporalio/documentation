@@ -501,8 +501,19 @@ module.exports = {
             id: "encyclopedia/index",
           },
           items: [
-            "encyclopedia/temporal",
-            "encyclopedia/temporal-sdks",
+            {
+              type: "category",
+              label: "Durable Execution",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "encyclopedia/durable-execution/index",
+              },
+              items: [
+                "encyclopedia/durable-execution/temporal",
+                "encyclopedia/durable-execution/temporal-sdks",
+              ],
+            },
             "encyclopedia/workflows",
             "encyclopedia/activities",
             {
