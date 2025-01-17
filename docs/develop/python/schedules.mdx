@@ -329,6 +329,19 @@ You can set each Workflow to repeat on a schedule with the `cron_schedule` optio
     print(f"Results: {result}")
 ```
 
+Temporal Workflow Schedule Cron strings follow this format:
+
+```
+┌───────────── minute (0 - 59)
+│ ┌───────────── hour (0 - 23)
+│ │ ┌───────────── day of the month (1 - 31)
+│ │ │ ┌───────────── month (1 - 12)
+│ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday)
+│ │ │ │ │
+* * * * *
+```
+
+
 ## Start Delay {#start-delay}
 
 **How to use Start Delay**
