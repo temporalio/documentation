@@ -510,10 +510,10 @@ module.exports = {
                 id: "encyclopedia/durable-execution/index",
               },
               items: [
-                "encyclopedia/durable-execution/temporal",
-                "encyclopedia/durable-execution/temporal-sdks",
               ],
             },
+            "encyclopedia/durable-execution/temporal",
+            "encyclopedia/durable-execution/temporal-sdks",
             "encyclopedia/workflows",
             "encyclopedia/activities",
             {
