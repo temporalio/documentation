@@ -211,7 +211,8 @@ These attributes are useful for querying Workflows based on the customer ID or t
 
 You can upsert Search Attributes to add or update Search Attributes from within Workflow code.
 
-To upsert custom Search Attributes, use the [`upsert_search_attributes()`](https://python.temporal.io/temporalio.workflow.html#upsert_search_attributes) method to pass a list of `SearchAttributeUpdate()`. These can be created via value_set calls on search attribute keys:
+To upsert custom Search Attributes, use the [`upsert_search_attributes()`](https://python.temporal.io/temporalio.workflow.html#upsert_search_attributes) method to pass a list of `SearchAttributeUpdate()`.
+These can be created via value_set calls on search attribute keys:
 
 ```python
 workflow.upsert_search_attributes([
