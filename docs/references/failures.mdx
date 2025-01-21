@@ -83,7 +83,7 @@ During conversion, the following Application Failure fields are set:
 - `next_retry_delay` is left unset.
 - call stack is copied.
 
-When an [Activity Execution](/activities#activity-execution) (an Activity Execution is the full chain of [Activity Task Executions](/workers#activity-task-execution)) fails, the Application Failure from the last Activity Task is the `cause` field of the [ActivityFailure](#activity-failure).  This Activity Failure is thrown by the Workflow's call to execute the Activity, and this call site is where Activity Failure can be handled by the application developer.
+When an [Activity Execution](/activities#activity-execution) (an Activity Execution is the full chain of [Activity Task Executions](/tasks#activity-task-execution)) fails, the Application Failure from the last Activity Task is the `cause` field of the [ActivityFailure](#activity-failure).  This Activity Failure is thrown by the Workflow's call to execute the Activity, and this call site is where Activity Failure can be handled by the application developer.
 
 ### Errors in Nexus Operations
 
