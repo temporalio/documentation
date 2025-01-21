@@ -197,6 +197,19 @@ YourWorkflowInterface workflow1 =
                 .build());
 ```
 
+Temporal Workflow Schedule Cron strings follow this format:
+
+```
+┌───────────── minute (0 - 59)
+│ ┌───────────── hour (0 - 23)
+│ │ ┌───────────── day of the month (1 - 31)
+│ │ │ ┌───────────── month (1 - 12)
+│ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday)
+│ │ │ │ │
+* * * * *
+```
+
+
 For more details, see the [Cron Sample](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/hello/HelloCron.java)
 
 ## Start Delay {#start-delay}

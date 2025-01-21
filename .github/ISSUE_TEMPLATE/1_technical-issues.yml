@@ -1,0 +1,30 @@
+name: Site Technical Issue
+description: Report technical issues like broken links, missing media, outdated information, or problems with code examples.
+labels: ["site-technical-issue"]
+body:
+  - type: checkboxes
+    id: employee
+    attributes:
+      label: Temporal Affiliation
+      options:
+        - label: I am a Temporal employee
+          required: false
+  - type: input
+    id: issue-url
+    attributes:
+      label: Page URL
+      description: The page where the problem occurs
+      placeholder: "For example, https://docs.temporal.io/..."
+    validations:
+      required: true
+  - type: textarea
+    id: issue-location
+    attributes:
+      label: Technical Issue
+      description: Report technical issues like broken links, missing media, outdated information, or problems with code examples here. Describe the technical issue you encountered and your recommended solution. Specify the approximate location on the page (for example, under which heading or part of the content), and any other details that will help us locate and resolve the problem.
+      placeholder: "Section title, issue, suggested correction"
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: "Thanks for helping us improve our documentation."
