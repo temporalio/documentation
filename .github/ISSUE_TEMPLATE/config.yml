@@ -1,0 +1,22 @@
+blank_issues_enabled: false
+contact_links:
+  - "https://github.com/temporalio/documentation/blob/main/CONTACT.md"
+templates:
+  - name: "Typos and Grammar"
+    description: "Report typos, spelling mistakes, or grammar problems."
+    filename: "0_typos-and-grammar.yml"
+  - name: "Technical Issues"
+    description: "Report technical issues like broken links, missing media, outdated information, or problems with code examples."
+    filename: "1_technical-issues.yml"
+  - name: "Content Clarification"
+    description: "Report unclear, confusing, or misleading writing, or missing/incorrect information in the documentation."
+    filename: "2_content-issues.yml"
+  - name: "Improvements and Enhancements"
+    description: "Suggest ways to improve, add, or reorganize our content to make it clearer, better structured, and more discoverable."
+    filename: "3_improvement-suggestions.yml"
+  - name: "Accessibility Issues"
+    description: "Report issues related to accessibility, such as color contrast, font readability, missing image descriptions, or screen reader problems."
+    filename: "4_accessibility-issues.yml"
+  - name: "General Suggestions"
+    description: "Share any other feedback, including positive comments or broad suggestions for improving the documentation."
+    filename: "5_other-feedback.yml"
