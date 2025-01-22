@@ -67,7 +67,7 @@ Workflow Execution Timeout, which is unlimited by default.
 
 An `ApplicationError`, an extension of `FailureError`, can be raised in a Workflow to fail the Workflow Execution.
 Workflow Execution Failures put the Workflow Execution into the "Failed" state and no more attempts will be made in progressing this execution.
-If you are creating custom exceptions you would need to extend the `ApplicationError` class—a child class of `FailureError`.
+If you are creating custom exceptions you would need to extend the [`ApplicationError`](https://docs.temporal.io/references/failures#application-failure) class—a child class of [`FailureError`](https://docs.temporal.io/references/failures#temporal-failure).
 
 ### Errors in Activities
 
