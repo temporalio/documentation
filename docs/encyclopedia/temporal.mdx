@@ -17,11 +17,7 @@ tags:
 ---
 
 
-Temporal is an open source platform designed to make your application code durable and resilient to failures. 
-
-:::info 
-💡 To learn more about the basics, check out the [Understanding Temporal](/evaluate/understanding-temporal) page.
-:::
+Temporal is a developer first, open source platform designed to make your application code durable and resilient to failures. 
 
 The most valuable mission critical workloads in any software are long running and tie together multiple services. 
 With Temporal, your application will run reliably even if it encounters problems, such as network outages or server crashes, which would be catastrophic for a typical application. 
@@ -29,44 +25,37 @@ With Temporal, your application will run reliably even if it encounters problems
 Temporal allows you to develop your applications as if failures don’t exist. Instead of writing complex error-handling code and application code to detect and recover from failures, you can focus entirely on your business logic. 
 Temporal takes care of the heavy lifting, guaranteeing that your workflows are executed to completion - whether they run for seconds, days, or even years.
 
-<iframe width="750" height="500" src="https://www.youtube.com/embed/f-18XztyN6c" title="Temporal in Two Minutes" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-## Durable Execution {#durable-execution}
+## Build Resilient Applications at Scale: Durable Execution {#durable-execution}
 
 At the heart of Temporal is the concept of Durable Execution.
 It is the guarantee that, once started, your application will run to completion despite adverse conditions (such as a crash or hardware failure) that would otherwise cause it to fail. 
-Durable Execution makes your applications invincible and allows your applications to be resilient and durable by default. . 
+Durable Execution makes your applications invincible and allows your applications to be resilient and durable by default. 
 
-This durability isn't magic — it's achieved through Event History which keeps a record of each step in a Workflow Execution. 
+This durability is achieved through Event History which keeps a record of each step in a Workflow Execution. 
 If something goes wrong, the Workflow can resume exactly where it left off at its last recorded event, without losing any progress. 
 This durability makes your applications reliable and resilient, allowing you to execute code exactly once and to completion, regardless of how long it takes.
 
 **Ready to build your first invincible application?**
-Start with Temporal's open-source platform and join a global community of developers embracing reliability and scalability by default. 
+Join a global community of developers embracing reliability and scalability by default. 
 Whether you self-host Temporal to harness the power of open source or leverage Temporal Cloud for hassle-free scalability and management, you can build applications with unmatched reliability. 
 
-![100% Open Source](/img/intro-temporal/100opensource.png)
 
-## What is the Temporal Platform? {#temporal-platform}
-
-The Temporal Platform provides the runtime for Workflow Executions by combining two core components:
-1. Temporal Service: The supervising software responsible for managing Workflow Executions and state. 
-It consists of the Temporal Server and a database. 
-You can either host this yourself or use our Software as a Service (SaaS) offering, Temporal Cloud, which eliminates the need to manage the infrastructure.
-
-2. Worker Processes: Worker Processes are hosted and operated by you, bundled into processes called Workers. 
-Workers execute your Workflow and Activity code using one of Temporal's SDKs.
-
+<iframe width="750" height="500" src="https://www.youtube.com/embed/f-18XztyN6c" title="Temporal in Two Minutes" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## What is a Temporal Application? {#temporal-application}
 
-A Temporal Application is a set of [Temporal Workflow Executions](/workflows#workflow-execution).
-Each Temporal Workflow Execution has exclusive access to its local state, executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions and the environment via message passing.
+:::tip
+💡 To learn more about the basics, check out the [Understanding Temporal](/evaluate/understanding-temporal) page.
+:::
 
-A Temporal Application can consist of millions to billions of Workflow Executions.
-Workflow Executions are lightweight components.
-A Workflow Execution consumes few compute resources; in fact, if a Workflow Execution is suspended, such as when it is in a waiting state, the Workflow Execution consumes no compute resources at all.
+A Temporal Application is made up of lightweight Workflow Executions. 
+These executions can run concurrently, manage their state independently, and scale from millions to billions and all while consuming minimal resources. 
+Even if a Workflow Execution pauses, it doesn’t use compute resources until it resumes.
+Each Workflow Execution runs exactly once, to completion, no matter how long it takes or what failures occur.
 
-Therefore, a Temporal Workflow Execution executes a [Temporal Workflow Definition](/workflows#workflow-definition), also called a Temporal Workflow Function, your application code, exactly once and to completion—whether your code executes for seconds or years, in the presence of arbitrary load and arbitrary failures.
+## What is the Temporal Platform? {#temporal-platform}
 
+The Temporal Platform is the foundation behind durable and scalable Workflow Executions. 
+It combines the Temporal Service, which supervises and manages Workflow Executions, and Worker Processes, which run your Workflow and Activity code with one of the Temporal SDKs. 
+With options to self-host or use Temporal Cloud, the platform ensures your applications are resilient, no matter the scale or complexity.
 
