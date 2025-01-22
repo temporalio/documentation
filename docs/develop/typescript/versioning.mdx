@@ -181,7 +181,7 @@ Patching is a three-step process:
 
 #### Overview
 
-The following sample shows how the `patched` function behaves, providing explanations at each stage of the patching flow:
+The following sample shows how the `patched()` function behaves, providing explanations at each stage of the patching flow:
 
 <!--SNIPSTART typescript-patching-example-->
 
@@ -193,7 +193,7 @@ if (patched('v3')) {
     // one of the following three things:
 
     // 1. If the execution is not Replaying, it will evaluate
-    //    to True and write a Marker Event to the history
+    //    to true and write a Marker Event to the history
     //    with a patch id v3. This code block will run.
     // 2. If the execution is Replaying, and the original
     //    run put a Patch ID v3 at this location in the event
@@ -241,10 +241,9 @@ if (patched('v3')) {
  ```
 <!--SNIPEND-->
 
-Avoid pitfalls by carefully structuring your conditional checks in newest-first order.
-The following sample shows a common mistake that ends up running the `v2` patch each time.
-During your first run -- that is, before any Replays -- all `patched()` calls return `True`.
-Make sure your latest behavior is chosen for all newly initiated Workflow Executions and avoid falling into the following trap:
+To add more clarity, the following sample shows how `patched()` will behave in a different conditional block.
+In this case, the code's conditional block doesn't have the newest code at the top.
+Because `patched()` will always return `true` when not Replaying, this snippet will run the `v2` branch instead of `v3` in new executions.
 
 <!--SNIPSTART typescript-patching-anti-example-->
 
@@ -258,6 +257,9 @@ if (patched('v2')) {
 else if (patched('v3')) {}
 else {}
 ```
+
+The moral of the story is that when not Replaying, `patched()` will return true and write the patch ID to the Event History.
+And when Replaying, it will only return true if the patch ID matches that in the Event History.
 
 <!--SNIPEND-->
 

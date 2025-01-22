@@ -113,9 +113,97 @@ Implementing patching involves three steps:
 2. Remove the old code and apply [deprecate_patch](https://python.temporal.io/temporalio.workflow.html#deprecate_patch).
 3. Once you're confident that all old Workflows have finished executing, remove `deprecate_patch`.
 
+#### Overview
+
+The following sample shows how the `patched()` function behaves, providing explanations at each stage of the patching flow:
+
+<!--SNIPSTART python-patching-example-->
+
+```python
+if patched('v3'):
+    # This is the newest version of the code.
+
+    # The above patched statement following will do
+    # one of the following three things:
+
+    # 1. If the execution is not Replaying, it will evaluate
+    #    to true and write a Marker Event to the history
+    #    with a patch id v3. This code block will run.
+    # 2. If the execution is Replaying, and the original
+    #    run put a Patch ID v3 at this location in the event
+    #    history, it will evaluate to True, and this code block
+    #    will run.
+    # 3. If the execution is Replaying, and the original
+    #    run has a Patch ID other than v3 at this location in the event
+    #    history, it will evaluate to False, and this code block won't
+    #    run.
+    pass
+elif patched('v2'):
+    # This is the second version of the code.
+
+    # The above patched statement following will do
+    # one of the following three things:
+
+    # 1. If the execution is not Replaying, the execution
+    #    won't get here because the first patched statement
+    #    will be True.
+    # 2. If the execution is Replaying, and the original
+    #    run put a Patch ID v2 marker at this location in the event
+    #    history, it will evaluate to True, and this code block
+    #    will run.
+    # 3. If the execution is Replaying, and the original
+    #    run has a Patch ID other than v2 at this location in the event
+    #    history, or doesn't have a patch marker at this location in the event
+    #    history, it will evaluate to False, and this code block won't
+    #    run.
+    pass
+else:
+    # This is the original version of the code.
+
+    # The above patched statement following will do
+    # one of the following three things:
+
+    # 1. If the execution is not Replaying, the execution
+    #    won't get here because the first patched statement
+    #    will be True.
+    # 2. If the execution is Replaying, and the original
+    #    run had a patch marker v3 or v2 at this location in the event
+    #    history, the execution
+    #    won't get here because the first or second patched statement
+    #    will be True (respectively).
+    # 3. If the execution is Replaying, and condition 2
+    #    doesn't hold, then it will run this code.
+    pass
+ ```
+<!--SNIPEND-->
+
+To add more clarity, the following sample shows how `patched()` will behave in a different conditional block.
+In this case, the code's conditional block doesn't have the newest code at the top.
+Because `patched()` will always return `True` when not Replaying, this snippet will run the `v2` branch instead of `v3` in new executions.
+
+<!--SNIPSTART python-patching-anti-example-->
+
+```python
+if patched('v2'):
+    # This is bad because when doing an original execution (i.e. not replaying),
+    # all patched statements evaluate to True (and put a marker
+    # in the event history), which means that new executions
+    # will use v2, and miss v3 below
+    pass
+elif patched('v3'):
+    pass
+else:
+  pass
+```
+
+The moral of the story is that when not Replaying, `patched()` will return `True` and write the patch ID to the Event History.
+And when Replaying, it will only return true if the patch ID matches that in the Event History.
+
+<!--SNIPEND-->
+
 ### Patching in new code {#using-patched-for-workflow-history-markers}
 
-Using `patched` inserts a marker into the Workflow History.
+Using `patched()` inserts a marker into the Workflow History.
 
 ![image](https://user-images.githubusercontent.com/6764957/139673361-35d61b38-ab94-401e-ae7b-feaa52eae8c6.png)
 
