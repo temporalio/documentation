@@ -322,6 +322,14 @@ export async function myWorkflow(): Promise<void> {
 
 `vFinal` is safe to deploy once all `v2` or earlier Workflows are complete due to the assertion mentioned above.
 
+### Best Practice of Using TypeScript Objects as Arguments and Returns
+
+As a side note on the Patching API, its behavior is why Temporal recommends using single objects as arguments and returns from Signals, Queries, Updates, and Activities, rather than using multiple arguments.
+The Patching API's main use case is to support branching in an `if` block of a function body.
+It is not designed to be used to set different functions or function signatures for different Workflow Versions.
+
+Because of this, Temporal recommends that each Signal, Activity, etc, accepts a single object and returns a single object, so the function signature can stay constant, and you can do your versioning logic using `patched()` within the function body.
+
 ### Upgrading Workflow dependencies
 
 Upgrading Workflow dependencies (such as ones installed into `node_modules`) _might_ break determinism in unpredictable ways.
