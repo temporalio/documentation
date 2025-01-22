@@ -254,7 +254,7 @@ This feature is useful for Workflow Definition logic that needs to be updated bu
 - [How to patch Workflow code in TypeScript](/develop/typescript/versioning#patching)
 - [How to patch Workflow code in .NET](/develop/dotnet/versioning#dotnet-sdk-patching-api)
 
-You can also use [Worker Versioning](/workers#worker-versioning) instead of Patching.
+You can also use [Worker Versioning](/worker-versioning) instead of Patching.
 
 ### Handling unreliable Worker Processes
 
@@ -454,7 +454,7 @@ These limits are set with the following [dynamic configuration keys](https://git
 
 ### What is a Command? {#command}
 
-A Command is a requested action issued by a [Worker](/workers#worker) to the [Temporal Service](/clusters) after a [Workflow Task Execution](/workers#workflow-task-execution) completes.
+A Command is a requested action issued by a [Worker](/workers#worker) to the [Temporal Service](/clusters) after a [Workflow Task Execution](/tasks#workflow-task-execution) completes.
 
 The action that the Temporal Service takes is recorded in the [Workflow Execution's](#workflow-execution) [Event History](#event-history) as an [Event](#event).
 The Workflow Execution can await on some of the Events that come as a result from some of the Commands.
@@ -479,7 +479,7 @@ A list of all possible Events that could appear in a Workflow Execution Event Hi
 
 Seven Activity-related Events are added to Event History at various points in an Activity Execution:
 
-- After a [Workflow Task Execution](/workers#activity-task-execution) reaches a line of code that starts/executes an Activity, the Worker sends the Activity Type and arguments to the Temporal Service, and the Temporal Service adds an [ActivityTaskScheduled](/references/events#activitytaskscheduled) Event to Event History.
+- After a [Workflow Task Execution](/tasks#activity-task-execution) reaches a line of code that starts/executes an Activity, the Worker sends the Activity Type and arguments to the Temporal Service, and the Temporal Service adds an [ActivityTaskScheduled](/references/events#activitytaskscheduled) Event to Event History.
 - When `ActivityTaskScheduled` is added to History, the Temporal Service adds a corresponding Activity Task to the Task Queue.
 - A Worker polling that Task Queue picks up the Activity Task and runs the Activity function or method.
 - If the Activity function returns, the Worker reports completion to the Temporal Service, and the Temporal Service adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskCompleted](/references/events#activitytaskcompleted) to Event History.
@@ -661,7 +661,7 @@ The Workflow Id Conflict Policy can have one of the following values:
 
 Temporal SDKs offer Timer APIs so that Workflow Executions are deterministic in their handling of time values.
 
-Timers in Temporal are persisted, meaning that even if your Worker or Temporal Service is down when the time period completes, as soon as your Worker and Temporal Service become available, the call that is awaiting the Timer in your Workflow code will resolve, causing execution to proceed
+Timers in Temporal are persisted, meaning that even if your Worker or Temporal Service is down when the time period completes, as soon as your Worker and Temporal Service become available, the call that is awaiting the Timer in your Workflow code will resolve, causing execution to proceed.
 Timers are reliable and efficient.
 Workers consume no additional resources while waiting for a Timer to fire, so a single Worker can await millions of Timers concurrently.
 
@@ -1116,4 +1116,4 @@ Some operations, such as [Activity Heartbeats](/encyclopedia/detecting-activity-
 
 Most operations require multiple State Transitions.
 
-For example, a simple Workflow with two sequential [Activity Tasks](/workers#activity-task) (and no retries) produces 11 State Transitions: two for Workflow start, four for each Activity, and one for Workflow completion.
+For example, a simple Workflow with two sequential [Activity Tasks](/tasks#activity-task) (and no retries) produces 11 State Transitions: two for Workflow start, four for each Activity, and one for Workflow completion.
