@@ -52,8 +52,8 @@ This is the only type of Temporal Failure created and thrown by user code.
 An error in a Workflow can cause either a **Workflow Task Failure** (the Task will be retried) or a **Workflow Execution Failure** (the Workflow is marked as failed).
 
 Only Workflow exceptions that are Temporal Failures cause the Workflow Execution to fail; all other exceptions cause the Workflow Task to fail and be retried (in Go, any error returned from the Workflow fails the Workflow Execution, and a panic fails the Workflow Task).
-Most types of Temporal Failures are raised by the Temporal Service, like a [Cancelled Failure](#cancelled-failure) when the Workflow is Cancelled or an [Activity Failure](#activity-failure) when an Activity Fails.
-In contrast, the application developer can explicitly fail the Workflow Execution by throwing an Application Failure (returning any error in Go).
+Most types of Temporal Failures are raised by the Temporal Service, like a [Cancelled Failure](#cancelled-failure) when the Workflow is Cancelled or an [Activity Failure](#activity-failure) when an Activity fails.
+In contrast, you can explicitly fail the Workflow Execution by throwing an Application Failure (returning any error in Go) in Workflow Definition code.
 
 #### Workflow Task Failures
 
