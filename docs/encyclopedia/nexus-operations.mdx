@@ -11,6 +11,9 @@ keywords:
   - nexus operation lifecycle
   - durable execution
   - automatic retries
+  - nexus circuit breaking
+  - nexus circuit breaker
+  - blocked reason
   - execution semantics
   - temporal sdk
   - versioning
@@ -150,7 +153,7 @@ For example, when you execute a Nexus Operation in a caller Workflow the followi
    [Canceled](/references/events#nexusoperationcanceled), or
    [TimedOut](/references/events#nexusoperationtimedout).
 
-## Automatic Retries {#automatic-retries}
+## Automatic retries {#automatic-retries}
 
 Once the caller Workflow schedules an Operation with the caller's Temporal Service, the caller's Nexus Machinery keeps trying to start the Operation.
 If a [retryable Nexus error](/references/failures#nexus-errors) is returned the Nexus Machinery will retry until the Nexus Operation's Start-to-Close-Timeout is exceeded.
@@ -166,6 +169,78 @@ This differs from how Activities and Workflows handle errors and retries:
 :::
 
 See [errors in Nexus handlers](/nexus/error-handling#errors-in-nexus-handlers) to control the retry behavior by returning a [non-retryable Nexus error](/references/failures#non-retryable-nexus-errors).
+
+## Circuit breaking {#circuit-breaking}
+
+Nexus provides a circuit breaker for each destination pair (caller Namespace and target Nexus Endpoint). The circuit breaker for each pair trips and resets independently.
+By default, the circuit breaker kicks in after 5 consecutive Nexus requests fail with a [retryable error](/references/failures#nexus-errors).
+For example, this happens if all Nexus Workers for a Nexus Endpoint are down and 5 consecutive requests fail due to request timeouts.
+
+Once a circuit breaker has tripped and is in the open state, the caller's Nexus Machinery will fail early and won't send requests to the target Nexus Endpoint.
+After 60 seconds in open state, it will change to the half-open state, which will allow only 1 request to be made.
+If the request is successful, then the circuit breaker changes its state to closed, and allows all requests to pass through.
+
+The circuit breaker state is surfaced in a caller Workflow's [Pending Nexus Operations](/nexus/execution-debugging#pending-operations) and [Pending Nexus Callbacks](/nexus/execution-debugging#pending-callbacks).
+It can be checked using the UI, the Temporal CLI, and the DescribeWorkflowExecution API.
+
+If the circuit breaker for a destination pair has been tripped, the [Pending Nexus Operation](/nexus/execution-debugging#pending-operations) for a [Nexus Operation Scheduled](/references/events#nexusoperationscheduled) event surfaces a State of Blocked and a BlockedReason.
+
+For example, in the UI:
+
+![Nexus Overview](/img/nexus/circuit-breaking.png)
+
+For example, in the CLI:
+
+```sh
+temporal workflow describe -w my-workflow-id
+
+Execution Info:
+  WorkflowId            my-workflow-id
+  ...
+
+Pending Activities: 0
+Pending Child Workflows: 0
+Pending Nexus Operations: 1
+
+  Endpoint                 my-nexus-endpoint
+  Service                  nexus-playground
+  Operation                sync-op-ok
+  OperationID
+  State                    Blocked
+  Attempt                  1
+  ScheduleToCloseTimeout   1d 0h 0m 0s
+  LastAttemptCompleteTime  56 seconds ago
+  LastAttemptFailure       {"message":"handler error (UPSTREAM_TIMEOUT): upstream timeout","cause":{"message":"upstream timeout","applicationFailureInfo":{"type":"NexusFailure"}},"applicationFailureInfo":{"type":"NexusHandlerError"}}
+  BlockedReason            The circuit breaker is open.
+```
+
+For example, a [Nexus Operation Cancel Request](/references/events#nexusoperationcancelrequested) surfaces a CancelationState of Blocked and a CancelationBlockedReason:
+
+```sh
+$ temporal workflow describe -w my-workflow-id
+Execution Info:
+  WorkflowId            my-workflow-id
+  ...
+
+Pending Activities: 0
+Pending Child Workflows: 0
+Pending Nexus Operations: 1
+
+  Endpoint                            my-nexus-endpoint
+  Service                             nexus-playground
+  Operation                           async-op-workflow-wait-for-cancel
+  OperationID                         async-op-workflow-wait-for-cancel-20250124150655
+  State                               Started
+  Attempt                             1
+  ScheduleToCloseTimeout              1d 0h 0m 0s
+  LastAttemptCompleteTime             51 seconds ago
+  CancelationState                    Blocked
+  CancelationAttempt                  1
+  CancelationRequestedTime            37 seconds ago
+  CancelationLastAttemptCompleteTime  27 seconds ago
+  CancelationLastAttemptFailure       {"message":"handler error (UPSTREAM_TIMEOUT): upstream timeout","cause":{"message":"upstream timeout","applicationFailureInfo":{"type":"NexusFailure"}},"applicationFailureInfo":{"type":"NexusHandlerError"}}
+  CancelationBlockedReason            The circuit breaker is open.
+```
 
 ## Execution semantics {#execution-semantics}
 
