@@ -13,7 +13,7 @@ keywords:
   - automatic retries
   - nexus circuit breaking
   - nexus circuit breaker
-  - blocked reason
+  - circuit breaker is open
   - execution semantics
   - temporal sdk
   - versioning
@@ -207,7 +207,7 @@ Pending Nexus Operations: 1
   Operation                sync-op-ok
   OperationID
   State                    Blocked
-  Attempt                  1
+  Attempt                  5
   ScheduleToCloseTimeout   1d 0h 0m 0s
   LastAttemptCompleteTime  56 seconds ago
   LastAttemptFailure       {"message":"handler error (UPSTREAM_TIMEOUT): upstream timeout","cause":{"message":"upstream timeout","applicationFailureInfo":{"type":"NexusFailure"}},"applicationFailureInfo":{"type":"NexusHandlerError"}}
@@ -235,7 +235,7 @@ Pending Nexus Operations: 1
   ScheduleToCloseTimeout              1d 0h 0m 0s
   LastAttemptCompleteTime             51 seconds ago
   CancelationState                    Blocked
-  CancelationAttempt                  1
+  CancelationAttempt                  5
   CancelationRequestedTime            37 seconds ago
   CancelationLastAttemptCompleteTime  27 seconds ago
   CancelationLastAttemptFailure       {"message":"handler error (UPSTREAM_TIMEOUT): upstream timeout","cause":{"message":"upstream timeout","applicationFailureInfo":{"type":"NexusFailure"}},"applicationFailureInfo":{"type":"NexusHandlerError"}}
