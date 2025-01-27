@@ -475,7 +475,6 @@ module.exports = {
             "references/server-options",
             "references/web-ui-configuration",
             "references/web-ui-environment-variables",
-            "references/web-ui-server-env-vars",
           ],
         },
         {
