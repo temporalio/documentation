@@ -1932,6 +1932,6 @@
       "source": "/references/web-ui-server-env-vars",
       "destination": "/references/web-ui-environment-variables",
       "permanent": true
-    },
+    }
   ]
 }
