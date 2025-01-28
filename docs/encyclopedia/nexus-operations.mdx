@@ -180,7 +180,7 @@ Once a circuit breaker has tripped and is in the open state, the caller's Nexus 
 After 60 seconds in open state, it will change to the half-open state, which will allow only 1 request to be made.
 If the request is successful, then the circuit breaker changes its state to closed, and allows all requests to pass through.
 
-The circuit breaker state is surfaced in a caller Workflow's [Pending Nexus Operations](/nexus/execution-debugging#pending-operations) and [Pending Nexus Callbacks](/nexus/execution-debugging#pending-callbacks).
+The circuit breaker state is surfaced in a caller Workflow's [Pending Nexus Operations](/nexus/execution-debugging#pending-operations), and in the handler's Workflow [Pending Nexus Callbacks](/nexus/execution-debugging#pending-callbacks).
 It can be checked using the UI, the Temporal CLI, and the DescribeWorkflowExecution API.
 
 If the circuit breaker for a destination pair has been tripped, the [Pending Nexus Operation](/nexus/execution-debugging#pending-operations) for a [Nexus Operation Scheduled](/references/events#nexusoperationscheduled) event surfaces a State of Blocked and a BlockedReason.
