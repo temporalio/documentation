@@ -187,7 +187,18 @@ If the circuit breaker for a destination pair has been tripped, the [Pending Nex
 
 For example, in the UI:
 
-![Nexus Overview](/img/nexus/circuit-breaking.png)
+![Circuit Breaking](/img/nexus/circuit-breaking.png)
+
+:::tip
+
+Different Nexus Operations may contribute to tripping the circuit breaker for a given destination pair.
+When the circuit breaker is open, a given Nexus Operation may have no attempts or less than 5 attempts.
+
+:::
+
+For example, in the UI:
+
+![Circuit Breaking No Attempts](/img/nexus/circuit-breaking-no-attempts.png)
 
 For example, in the CLI:
 
@@ -207,7 +218,7 @@ Pending Nexus Operations: 1
   Operation                sync-op-ok
   OperationID
   State                    Blocked
-  Attempt                  5
+  Attempt                  1
   ScheduleToCloseTimeout   1d 0h 0m 0s
   LastAttemptCompleteTime  56 seconds ago
   LastAttemptFailure       {"message":"handler error (UPSTREAM_TIMEOUT): upstream timeout","cause":{"message":"upstream timeout","applicationFailureInfo":{"type":"NexusFailure"}},"applicationFailureInfo":{"type":"NexusHandlerError"}}
