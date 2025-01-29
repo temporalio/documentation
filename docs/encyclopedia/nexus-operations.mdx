@@ -11,6 +11,9 @@ keywords:
   - nexus operation lifecycle
   - durable execution
   - automatic retries
+  - nexus circuit breaking
+  - nexus circuit breaker
+  - circuit breaker is open
   - execution semantics
   - temporal sdk
   - versioning
@@ -24,7 +27,7 @@ tags:
 
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
-Temporal Nexus is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
+Temporal Nexus is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
 
 :::
 
@@ -73,15 +76,15 @@ Nexus supports synchronous Operations that take less than 10 seconds to execute,
 The lifecycle for a synchronous Nexus Operation, for example to Signal or Query a Workflow:
 
 1. Caller Workflow executes a Nexus Operation using the Temporal SDK.
-1. Caller Worker issues a [ScheduleNexusOperation](/references/commands#schedulenexusoperation) command to it's Namespace gRPC endpoint.
+1. Caller Worker issues a [ScheduleNexusOperation](/references/commands#schedulenexusoperation) command to its Namespace gRPC endpoint.
 1. Caller Namespace records a [NexusOperationScheduled](/references/events#nexusoperationscheduled) event in the caller's Workflow History.
 1. Caller Nexus Machinery makes a Nexus call to start a Nexus Operation.
 1. Handler Nexus Machinery receives the Nexus request and sync matches to a handler Worker.
 1. Handler Worker gets a [Nexus Task](/tasks#nexus-task) to start a Nexus Operation, by polling the Nexus Endpoint's target Task Queue.
 1. Handler processes the Nexus Task, using the Temporal SDK **New-Sync-Operation**.
-1. Handler responds to it's Namespace gRPC endpoint with the Operation result.
+1. Handler responds to its Namespace gRPC endpoint with the Operation result.
 1. Caller Namespace records the result in the caller's Workflow history as a Nexus event, for example [Completed](/references/events#nexusoperationcompleted) or [Failed](/references/events#nexusoperationfailed).
-1. Caller Worker polls for a Workflow Task on it's Workflow Task Queue.
+1. Caller Worker polls for a Workflow Task on its Workflow Task Queue.
 1. Caller Workflow gets the Operation result, using the Temporal SDK.
 
 ![NexusYourCloud](/img/nexus/nexus-workers-short-sync-op-sequence.png)
@@ -108,7 +111,7 @@ The lifecycle of an asynchronous Nexus Operation, with differences between the s
 1. Handler Nexus Machinery receives the Nexus request and sync matches to a handler Worker.
 1. Handler Worker gets a [Nexus Task](/tasks#nexus-task) to start a Nexus Operation, by polling the Nexus Endpoint's target Task Queue.
 1. Handler processes the Nexus Task, using the Temporal SDK **New-Workflow-Run-Operation**.
-1. Handler responds to it's Namespace gRPC endpoint with the **start Operation response**.
+1. Handler responds to its Namespace gRPC endpoint with the **start Operation response**.
 1. Caller Namespace records the response in the caller's Workflow history as a Nexus event, for example **[NexusOperationStarted](/references/events#nexusoperationstarted)**.
 1. **Handler Workflow completes and the [Nexus Completion Callback](/glossary#nexus-async-completion-callback) is delivered to the caller's Nexus Machinery.**
 1. Caller Namespace records the result in the caller's Workflow history as a Nexus event, for example [Completed](/references/events#nexusoperationcompleted) or [Failed](/references/events#nexusoperationfailed).
@@ -150,7 +153,7 @@ For example, when you execute a Nexus Operation in a caller Workflow the followi
    [Canceled](/references/events#nexusoperationcanceled), or
    [TimedOut](/references/events#nexusoperationtimedout).
 
-## Automatic Retries {#automatic-retries}
+## Automatic retries {#automatic-retries}
 
 Once the caller Workflow schedules an Operation with the caller's Temporal Service, the caller's Nexus Machinery keeps trying to start the Operation.
 If a [retryable Nexus error](/references/failures#nexus-errors) is returned the Nexus Machinery will retry until the Nexus Operation's Start-to-Close-Timeout is exceeded.
@@ -167,6 +170,99 @@ This differs from how Activities and Workflows handle errors and retries:
 
 See [errors in Nexus handlers](/nexus/error-handling#errors-in-nexus-handlers) to control the retry behavior by returning a [non-retryable Nexus error](/references/failures#non-retryable-nexus-errors).
 
+## Circuit breaking {#circuit-breaking}
+
+Circuit breaking handles deployment issues, such as remote service faults, that take time to recover.
+The circuit-breaker pattern improves application stability and resilience by detecting repeated errors and enforcing a "timeout" to allow external resources to recover.
+Nexus implements the circuit-breaker pattern for each pair of caller Namespaces and target Nexus Endpoints.
+
+This pair is called a "destination pair" and consists of one Namespace and one Endpoint.
+The circuit breaker for each pair is unique to those two elements.
+It will trip and reset independently from all other Nexus destination pairs.
+
+Here's an example of how the circuit breaker functionality works.
+Say that all Nexus Workers associated with a Nexus Endpoint are unavailable for some reasons.
+Five consecutive requests fail due to request timeouts.
+By default, the circuit breaker activates after five consecutive Nexus requests fail due to [retryable errors](/references/failures#nexus-errors).
+
+After a circuit breaker trips, it enters the _open_ state.
+In this state, the caller's Nexus Machinery fails early and stops sending requests to the target Nexus Endpoint.
+After 60 seconds in the _open_ state, the circuit breaker transitions to the _half-open_ state, allowing a single trailblazing request from the Client.
+If the request is successful, the circuit breaker returns to the _closed_ state, its default operational state.
+Once the circuit breaker closes, all requests are allowed through.
+If it fails, the circuit breaker returns to the _half-open_ state for another 60 seconds.
+
+![Flow chart showing the states of the Temporal Nexus Circuit Breaker](/img/nexus/circuit-breaker.png)
+
+The circuit breaker state is surfaced in a caller Workflow's [Pending Nexus Operations](/nexus/execution-debugging#pending-operations) and in the handler's Workflow [Pending Nexus Callbacks](/nexus/execution-debugging#pending-callbacks).
+You can check the circuit breaker state using the UI, the Temporal CLI, or the `DescribeWorkflowExecution` API.
+
+When the circuit breaker for a destination pair is tripped (i.e., the circuit breaker is _open_), the [Pending Nexus Operation](/nexus/execution-debugging#pending-operations) for a [Nexus Operation Scheduled](/references/events#nexusoperationscheduled) event surfaces a State of Blocked along with a BlockedReason.
+
+Here's how that looks in the Web UI:
+
+![Circuit Breaking](/img/nexus/circuit-breaking.png)
+
+In the preceding screen shot, the open circuit breaker has made 1 attempt.
+For a given destination pair, differing Nexus Operations may contribute to tripping the circuit breaker count.
+When the circuit breaker is open, a given Nexus Operation may have no attempts or fewer than 5 attempts.
+
+To check from the command line, issue:
+
+```sh
+temporal workflow describe -w my-workflow-id
+```
+
+Here's how that looks:
+
+```sh
+Execution Info:
+  WorkflowId            my-workflow-id
+  ...
+
+Pending Activities: 0
+Pending Child Workflows: 0
+Pending Nexus Operations: 1
+
+  Endpoint                 my-nexus-endpoint
+  Service                  nexus-playground
+  Operation                sync-op-ok
+  OperationID
+  State                    Blocked
+  Attempt                  1
+  ScheduleToCloseTimeout   1d 0h 0m 0s
+  LastAttemptCompleteTime  56 seconds ago
+  LastAttemptFailure       {"message":"handler error (UPSTREAM_TIMEOUT): upstream timeout","cause":{"message":"upstream timeout","applicationFailureInfo":{"type":"NexusFailure"}},"applicationFailureInfo":{"type":"NexusHandlerError"}}
+  BlockedReason            The circuit breaker is open.
+```
+
+Here's what a [Nexus Operation Cancel Request](/references/events#nexusoperationcancelrequested) surfaces for a CancelationState of Blocked and a CancelationBlockedReason:
+
+```sh
+Execution Info:
+  WorkflowId            my-workflow-id
+  ...
+
+Pending Activities: 0
+Pending Child Workflows: 0
+Pending Nexus Operations: 1
+
+  Endpoint                            my-nexus-endpoint
+  Service                             nexus-playground
+  Operation                           async-op-workflow-wait-for-cancel
+  OperationID                         async-op-workflow-wait-for-cancel-20250124150655
+  State                               Started
+  Attempt                             1
+  ScheduleToCloseTimeout              1d 0h 0m 0s
+  LastAttemptCompleteTime             51 seconds ago
+  CancelationState                    Blocked
+  CancelationAttempt                  5
+  CancelationRequestedTime            37 seconds ago
+  CancelationLastAttemptCompleteTime  27 seconds ago
+  CancelationLastAttemptFailure       {"message":"handler error (UPSTREAM_TIMEOUT): upstream timeout","cause":{"message":"upstream timeout","applicationFailureInfo":{"type":"NexusFailure"}},"applicationFailureInfo":{"type":"NexusHandlerError"}}
+  CancelationBlockedReason            The circuit breaker is open.
+```
+
 ## Execution semantics {#execution-semantics}
 
 ### At-least-once execution semantics and idempotency
@@ -175,10 +271,10 @@ The Nexus Machinery provides reliable execution with at-least-once execution sem
 
 The Nexus Machinery breaks up the [Nexus Operation lifecycle](/nexus/operations#operation-lifecycle) into one or more [Nexus Tasks](/tasks#nexus-task) that a Nexus handler is responsible for processing.
 If a Nexus handler times out or returns a non-retryable Nexus error, then the Nexus Machinery will retry the Nexus request to provide at-least-once execution.
-This means it's possible for your Nexus handler to be invoked multiple times for a given Nexus Operation.
+This means its possible for your Nexus handler to be invoked multiple times for a given Nexus Operation.
 
 To deal with at-least-once execution, the Nexus Operation handler should be idempotent, like Activities should be idempotent.
-It's not required in all cases, but highly recommended in general.
+Its not required in all cases, but highly recommended in general.
 
 ### Exactly-once execution semantics through an underlying WorkflowIDReusePolicy
 
@@ -192,7 +288,8 @@ If an underlying handler Workflow is canceled, the Nexus Operation will report a
 
 ## Termination
 
-If the caller Workflow is Terminated, all pending Nexus Operations are abandoned. If possible, consider [cancelation](#cancelation) instead.
+If the caller Workflow is Terminated, all pending Nexus Operations are abandoned.
+If possible, consider [cancellation](#cancelation) instead.
 
 ## Versioning {#versioning}
 
