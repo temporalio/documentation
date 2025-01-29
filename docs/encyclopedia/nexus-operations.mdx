@@ -274,7 +274,7 @@ If a Nexus handler times out or returns a non-retryable Nexus error, then the Ne
 This means its possible for your Nexus handler to be invoked multiple times for a given Nexus Operation.
 
 To deal with at-least-once execution, the Nexus Operation handler should be idempotent, like Activities should be idempotent.
-Its not required in all cases, but highly recommended in general.
+It's not required in all cases, but highly recommended in general.
 
 ### Exactly-once execution semantics through an underlying WorkflowIDReusePolicy
 
