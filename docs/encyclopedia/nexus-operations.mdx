@@ -271,7 +271,7 @@ The Nexus Machinery provides reliable execution with at-least-once execution sem
 
 The Nexus Machinery breaks up the [Nexus Operation lifecycle](/nexus/operations#operation-lifecycle) into one or more [Nexus Tasks](/tasks#nexus-task) that a Nexus handler is responsible for processing.
 If a Nexus handler times out or returns a non-retryable Nexus error, then the Nexus Machinery will retry the Nexus request to provide at-least-once execution.
-This means its possible for your Nexus handler to be invoked multiple times for a given Nexus Operation.
+This means it's possible for your Nexus handler to be invoked multiple times for a given Nexus Operation.
 
 To deal with at-least-once execution, the Nexus Operation handler should be idempotent, like Activities should be idempotent.
 It's not required in all cases, but highly recommended in general.
