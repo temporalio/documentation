@@ -17,8 +17,11 @@ The Temporal Server services can be run in various ways.
 We recommend this approach for a limited number of situations.
 
 ```go
-s := temporal.NewServer()
-err := s.Start()
+s, err := temporal.NewServer()
+if err != nil {
+	log.Fatel(err)
+}
+err = s.Start()
 if err != nil{
 	log.Fatal(err)
 }
@@ -30,10 +33,13 @@ Source code for parameter reference is here: https://github.com/temporalio/tempo
 
 ### WithConfig
 
-Overrides the default configuration with a custom configuration that is defined in the config package `go.temporal.io/server/common/service/config`.
+To launch a Temporal server, a configuration file is required. The server automatically searches for this configuration
+in the default location ./config/development.yaml when starting. If you need to use a custom configuration, you can
+specify it through the server's configuration option. For comprehensive details about configuration parameters and
+structure, refer to the official configuration documentation: https://pkg.go.dev/go.temporal.io/server/common/config.
 
 ```go
-s := temporal.NewServer(
+s, err := temporal.NewServer(
 	temporal.WithConfig(cfg),
 )
 ```
@@ -43,7 +49,7 @@ s := temporal.NewServer(
 Load a custom configuration from a file.
 
 ```go
-s := temporal.NewServer(
+s, err := temporal.NewServer(
 	temporal.WithConfigLoader(configDir, env, zone),
 )
 ```
@@ -54,7 +60,7 @@ Sets the list of all valid temporal services.
 The default can be used from the `go.temporal.io/server/temporal` package.
 
 ```go
-s := temporal.NewServer(
+s, err := temporal.NewServer(
 	temporal.ForServices(temporal.Services),
 )
 ```
@@ -69,7 +75,7 @@ This option provides a channel that interrupts the server on the signal from tha
 - If `temporal.Interrupt(someCustomChan)` is passed, `server.Start()` blocks until a signal is sent to `someCustomChan`.
 
 ```go
-s := temporal.NewServer(
+s, err := temporal.NewServer(
 	temporal.InterruptOn(temporal.InterruptCh()),
 )
 ```
@@ -79,7 +85,7 @@ s := temporal.NewServer(
 Sets a low level [authorization mechanism](/self-hosted-guide/security#authorizer-plugin) that determines whether to allow or deny inbound API calls.
 
 ```go
-s := temporal.NewServer(
+s, err := temporal.NewServer(
 	temporal.WithAuthorizer(myAuthorizer),
 )
 ```
@@ -90,7 +96,7 @@ Overrides the default TLS configuration provider.
 `TLSConfigProvider` is defined in the `go.temporal.io/server/common/rpc/encryption` package.
 
 ```go
-s := temporal.NewServer(
+s, err := temporal.NewServer(
 	temporal.WithTLSConfigFactory(yourTLSConfigProvider),
 )
 ```
@@ -100,7 +106,7 @@ s := temporal.NewServer(
 Configures a [mechanism to map roles](/self-hosted-guide/security#claim-mapper) to `Claims` for authorization.
 
 ```go
-s := temporal.NewServer(
+s, err := temporal.NewServer(
   temporal.WithClaimMapper(func(cfg *config.Config) authorization.ClaimMapper {
   		logger := getYourLogger() // Replace with how you retrieve or initialize your logger
 		return authorization.NewDefaultJWTClaimMapper(
@@ -116,7 +122,7 @@ s := temporal.NewServer(
 Sets a custom tally metric reporter.
 
 ```go
-s := temporal.NewServer(
+s, err := temporal.NewServer(
 	temporal.WithCustomMetricsReporter(myReporter),
 )
 ```
