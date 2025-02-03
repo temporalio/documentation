@@ -256,12 +256,43 @@ To add the Temporal Cloud Prometheus HTTP API endpoint that we generated in the 
 1. In the **Connection** section, paste the URL that was generated in the Observability section on the Temporal Cloud UI.
 1. The **Authentication** section may be left as **No Authentication**.
 1. In the **TLS Settings** section, select **TLS Client Authentication**:
-   1. Leave **ServerName** blank. This is not required.
-   1. Paste in your end-entity certificate and key.
+   - Leave **ServerName** blank. This is not required.
+   - Paste in your end-entity certificate and key.
    - Note that the end-entity certificate used here must be part of the certificate chain with the root CA certificates used in your [Temporal Cloud observability setup](/production-deployment/cloud/metrics/general-setup).
+   <div style={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
+      <div style={{ textAlign: 'center' }}>
+        <span
+          style={{
+            cursor: 'default',
+            fontSize: '24px',
+            color: 'blue',
+            marginBottom: '5px',
+          }}
+        >
+          🔍
+        </span>
+        <span style={{ fontSize: '12px', color: 'gray' }}>
+          Click image to expand
+        </span>
+      </div>
+      <img
+        src="/img/cloud/add-prometheus-api-endpoint.png"
+        alt="A screenshot showing the data source configuration in Grafana"
+        style={{
+          width: '20%',
+          cursor: 'pointer',
+          transition: 'all 0.3s ease',
+          border: '1px solid #ddd',
+          borderRadius: '4px',
+          marginLeft: '20px',
+        }}
+        onClick={(e) => {
+          const img = e.target;
+          img.style.width = img.style.width === '100%' ? '20%' : '100%';
+        }}
+      />
+    </div>
 1. Click **Save and test** to verify that the data source is working.
-
-![A screenshot showing the data source configuration in Grafana](/img/cloud/add-prometheus-api-endpoint.png)
 
 If you see issues in setting this data source, verify your CA certificate chain and ensure that you are setting the correct certificates in your Temporal Cloud observability setup and in the TLS authentication in Grafana.
 
