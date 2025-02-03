@@ -35,23 +35,11 @@ a non-deterministic issue if not handled correctly.
 
 ## Introduction to Versioning
 
-Because we design for potentially long running Workflows at scale, versioning with Temporal works differently. We explain more in this optional 30 minute introduction...
+Because we design for potentially long running Workflows at scale, versioning with Temporal works differently. We explain more in this optional 30 minute introduction:
 
 <div style={{ position: "relative", paddingBottom: "56.25%", height: 0 }}>
   <iframe
     src="https://www.youtube.com/embed/kkP899WxgzY?autoplay=0"
-    style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
-    frameborder="0"
-    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-    allowfullscreen>
-  </iframe>
-</div>
-
-... and this optional 37 minute YouTube series that takes a deep dive into the patched function.
-
-<div style={{ position: "relative", paddingBottom: "56.25%", height: 0 }}>
-  <iframe
-    src="https://www.youtube.com/embed/videoseries?list=PLytZkHFJwKUdfxFQnuo0Fson0QM0VL9hL"
     style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
     frameborder="0"
     allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -136,6 +124,19 @@ Implementing patching involves three steps:
 3. Once you're confident that all old Workflows have finished executing, remove `deprecate_patch`.
 
 #### Overview
+
+We take a deep dive into the behavior of the `patched()` function in this optional 37 minute YouTube series:
+
+<div style={{ position: "relative", paddingBottom: "56.25%", height: 0 }}>
+  <iframe
+    src="https://www.youtube.com/embed/videoseries?list=PLytZkHFJwKUdfxFQnuo0Fson0QM0VL9hL"
+    style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
+    frameborder="0"
+    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen>
+  </iframe>
+</div>
+
 
 The following sample shows how the `patched()` function behaves, providing explanations at each stage of the patching flow:
 
