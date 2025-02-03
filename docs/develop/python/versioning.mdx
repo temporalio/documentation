@@ -137,16 +137,14 @@ We take a deep dive into the behavior of the `patched()` function in this option
   </iframe>
 </div>
 
-And here is a detailed explanation of how the `patched()` function behaves.
-
 ##### Behavior When Not Replaying
 
 If not replaying, and the execution hits a call to patched, it first checks the event history, and:
 
-- If the patch ID is not in the event history, it will add a marker to the event history and upsert a search attribute (you can think of this like the first block of patching with a given patch ID).
-- If the patch ID is in the event history, it won't modify the history (you can think of this like the second block of patching of a given patch ID).
-
-In either case, it will return true
+- If the patch ID is not in the event history, it will add a marker to the event history, upsert a search attribute, and return true.
+  This happens in a given patch ID's first block.
+- If the patch ID is in the event history, it won't modify the history, and it will return true.
+  This happens in a given patch ID's subsequent blocks.
 
 > There is a caveat to the above, and we will discuss that below.
 
@@ -157,38 +155,27 @@ If Replaying:
 - If the code has a call to patched, and if the event history
   has a marker from a call to patched in the same place (which means it
   will match the original event history), then
-  write a marker to the replay event history and return true.
+  it writes a marker to the replay event history and returns true.
   *This is similar to the behavior of the non-replay case, and
-  just like in that one, you can think of this like the first block of patching with
-  a given patch ID*
+  just like in that case, this happens in a given patch ID's first block*
 - If the code has a call to patched, and the event history
   has a marker with that Patch ID earlier in the history,
   then it will simply return true and not modify the
   replay event history.
-  *This is similar to the behavior of the non-replay case, and just
-  like in that case, you can think of this like the second
-  block of patching of a given patch ID*
+  *This is similar to the behavior of the non-replay case, and
+  just like in that case, this happens in a given patch ID's subsequent blocks*
 
-##### Behavior When Replaying With Marker After Current Location or No Marker at All
+##### Behavior When Replaying With Marker After Current Location
 
-We have covered what happens when replaying and the code
-hits a call to patched and there's a marker in the event
-history on or before that spot in the execution. What remains
-is what happens if (1) the marker is after that spot in the
-execution or (2) if there is no marker at all for that patch.
-
-###### (1) There is a marker after that spot in the execution
-
-If the event is after where we currently are
+If the Marker Event is after where the execution currently is
 in the event history, then, in other words,
-our patch is before the
-event, then our patch is too early. it will
+the patch is before the original patch, then the patch is too early. It will
 attempt to write the marker to the replay event
 history, but it will throw a non-deterministic
 exception because the replay and original event
 histories don't match
 
-###### (2) There is no marker for that Patch ID
+##### Behavior When Replaying With No Marker For that Patch ID
 
 It will return false and not add anything to
 the event history. Furthermore, ***and this is the
@@ -198,8 +185,8 @@ and is running new code.
 
 Why is this a caveat?
 
-In the first section, we said that ***if not replaying,
-the patched function will always return true***, and if
+In the [preceding section](#behavior-when-not-replaying) where we discussed the behavior when not replaying , we said that if not replaying,
+the patched function will always return true, and if
 the marker doesn't exist, it will add it, and if
 the marker already exists, it won't re-add it.
 
@@ -216,20 +203,16 @@ true.
    the event history***, you may not expect that
    the event history *after* where you currently
    are matters. Because:
-   1. If that patch ID exists later, you get an NDE [(see above: (1) There is a marker after that spot in the execution)](#1-there-is-a-marker-after-that-spot-in-the-execution).
+   1. If that patch ID exists later, you get an NDE [(see above: Behavior When Replaying With Marker After Current Location)](#behavior-when-replaying-with-marker-after-current-location).
    2. If it doesn't exist later, you don't get an NDE, and
       it returns false
-      [(see above: (2) There is no marker for that Patch ID)](#2-there-is-no-marker-for-that-patch-id).
+      [(see above: Behavior When Replaying With No Marker For that Patch ID)](#behavior-when-replaying-with-no-marker-for-that-patch-id).
 
 2. When Replaying, if you hit a call to patched with an ID that
    doesn't exist in the history, then not only will it return
    false in that occurence, but it will also return false if
    the execution surpasses the Replay threshold and is running new code.
-   [(see above: (2) There is no marker for that Patch ID)](#2-there-is-no-marker-for-that-patch-id).
-
-   (This doesn't happen in TS -- it will
-   return false in that occurence, but this doesn't modify the behavior
-   of future calls).
+   [(see above: Behavior When Replaying With No Marker For that Patch ID)](#behavior-when-replaying-with-no-marker-for-that-patch-id).
 
 ##### Implications of the Behaviors
 
