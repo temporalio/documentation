@@ -179,7 +179,7 @@ histories don't match
 
 It will return false and not add anything to
 the event history. Furthermore, ***and this is the
-caveat mentioned in the very first section***, it will make all future calls to patched
+caveat mentioned in the preceeding section [Behavior When Not Replaying](#behavior-when-not-replaying)***, it will make all future calls to patched
 with that ID false -- even after it is done replaying
 and is running new code.
 
@@ -278,10 +278,6 @@ else:
 ```
 
 <!--SNIPEND-->
-
-
-The moral of the story is that when not Replaying, `patched()` will return `True` (except with caveats) and write the patch ID to the Event History.
-And when Replaying, it will only return true if the patch ID matches that in the Event History.
 
 ### Patching in new code {#using-patched-for-workflow-history-markers}
 

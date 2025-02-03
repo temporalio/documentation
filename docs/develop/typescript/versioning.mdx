@@ -187,10 +187,10 @@ Here is a detailed explanation of how the `patched()` function behaves.
 
 If not replaying, and the execution hits a call to patched, it first checks the event history, and:
 
-- If the patch ID is not in the event history, it will add a marker to the event history and upsert a search attribute (you can think of this like the first block of patching with a given patch ID).
-- If the patch ID is in the event history, it won't modify the history (you can think of this like the second block of patching of a given patch ID).
-
-In either case, it will return true
+- If the patch ID is not in the event history, it will add a marker to the event history, upsert a search attribute, and return true.
+  This happens in a given patch ID's first block.
+- If the patch ID is in the event history, it won't modify the history, and it will return true.
+  This happens in a given patch ID's subsequent blocks.
 
 ##### Behavior When Replaying With Marker Before-Or-At Current Location
 
@@ -199,18 +199,16 @@ If Replaying:
 - If the code has a call to patched, and if the event history
   has a marker from a call to patched in the same place (which means it
   will match the original event history), then
-  write a marker to the replay event history and return true.
+  it writes a marker to the replay event history and returns true.
   *This is similar to the behavior of the non-replay case, and
-  just like in that one, you can think of this like the first block of patching with
-  a given patch ID*
+  just like in that case, this happens in a given patch ID's first block*
 - If the code has a call to patched, and the event history
   has a marker with that Patch ID earlier in the history,
   then it will simply return true and not modify the
   replay event history.
-  *This is similar to the behavior of the non-replay case, and just
-  like in that case, you can think of this like the second
-  block of patching of a given patch ID*
-- If the code has a call to patched, and there is a marker after that spot in the execution, or if there is no marker for that patch ID anywhere in the event history, it returns false.
+  *This is similar to the behavior of the non-replay case, and
+  just like in that case, this happens in a given patch ID's subsequent blocks*
+- If the code has a call to patched, and there no marker on or before that spot in the execution, it returns false.
 
 ##### Implications of the Behaviors
 
@@ -253,87 +251,41 @@ if (patched('my-change-id')) {
 In the first part, it will be Replaying, and it will run the old code,
 and after the sleep, it won't be Replaying, and it will run the new code.
 
-##### Examples
+##### Recommendations
 
-The following sample shows how the `patched()` function behaves, providing explanations at each stage of the patching flow:
+Based on this behavior and the implications, when patching in new code, always put the newest code at the top of an if-patched-block.
 
 <!--SNIPSTART typescript-patching-example-->
 
 ```ts
 if (patched('v3')) {
     // This is the newest version of the code.
-
-    // The above patched statement following will do
-    // one of the following three things:
-
-    // 1. If the execution is not Replaying, it will evaluate
-    //    to true and write a Marker Event to the history
-    //    with a patch id v3. This code block will run.
-    // 2. If the execution is Replaying, and the original
-    //    run put a Patch ID v3 at this location in the event
-    //    history, it will evaluate to True, and this code block
-    //    will run.
-    // 3. If the execution is Replaying, and the original
-    //    run has a Patch ID other than v3 at this location in the event
-    //    history, it will evaluate to False, and this code block won't
-    //    run.
+    // put this at the top, so when it is running
+    // a fresh execution and not replaying,
+    // this patched statement will return true
+    // and it will run the new code.
 } else if (patched('v2')) {
-    // This is the second version of the code.
-
-    // The above patched statement following will do
-    // one of the following three things:
-
-    // 1. If the execution is not Replaying, the execution
-    //    won't get here because the first patched statement
-    //    will be True.
-    // 2. If the execution is Replaying, and the original
-    //    run put a Patch ID v2 marker at this location in the event
-    //    history, it will evaluate to True, and this code block
-    //    will run.
-    // 3. If the execution is Replaying, and the original
-    //    run has a Patch ID other than v2 at this location in the event
-    //    history, or doesn't have a patch marker at this location in the event
-    //    history, it will evaluate to False, and this code block won't
-    //    run.
 } else {
-    // This is the original version of the code.
-    //
-    // The above patched statement following will do
-    // one of the following three things:
-    //
-    // 1. If the execution is not Replaying, the execution
-    //    won't get here because the first patched statement
-    //    will be True.
-    // 2. If the execution is Replaying, and the original
-    //    run had a patch marker v3 or v2 at this location in the event
-    //    history, the execution
-    //    won't get here because the first or second patched statement
-    //    will be True (respectively).
-    // 3. If the execution is Replaying, and condition 2
-    //    doesn't hold, then it will run this code.
 }
  ```
 <!--SNIPEND-->
 
-To add more clarity, the following sample shows how `patched()` will behave in a different conditional block.
+The following sample shows how `patched()` will behave in a conditional block that's arranged differently.
 In this case, the code's conditional block doesn't have the newest code at the top.
-Because `patched()` will always return `true` when not Replaying, this snippet will run the `v2` branch instead of `v3` in new executions.
+Because `patched()` will return `true` when not Replaying (except with the preceding caveats), this snippet will run the `v2` branch instead of `v3` in new executions.
 
 <!--SNIPSTART typescript-patching-anti-example-->
 
 ```ts
 if (patched('v2')) {
-    // This is bad because when doing an original execution (i.e. not replaying),
-    // all patched statements evaluate to True (and put a marker
+    // This is bad because when doing a new execution (i.e. not replaying),
+    // patched statements evaluate to True (and put a marker
     // in the event history), which means that new executions
     // will use v2, and miss v3 below
 }
 else if (patched('v3')) {}
 else {}
 ```
-
-The moral of the story is that when not Replaying, `patched()` will return true and write the patch ID to the Event History.
-And when Replaying, it will only return true if the patch ID matches that in the Event History.
 
 <!--SNIPEND-->
 
