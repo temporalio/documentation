@@ -1,0 +1,79 @@
+---
+id: failovers
+title: failovers
+sidebar_label: Failovers
+slug: /cloud/high-availability/failovers
+description: Temporal Cloud's High-Availability Namespaces offer automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime. Use Global Namespace for self-hosted.
+tags:
+  - Temporal Cloud
+  - Production
+  - High availability
+keywords:
+  - availability
+  - explanation
+  - failover
+  - high-availability
+  - multi-region
+  - multi-region namespace
+  - namespaces
+  - temporal-cloud
+  - term
+---
+
+import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
+
+A failover shifts Workflow Execution processing from an active Temporal Namespace to replicated Temporal Namespace during outages or other incidents.
+Standby Namespace replicas duplicate data and prevent data loss during failover.
+
+- [Triggering failovers](#triggering-failovers)
+- [Initiating manual failovers](#manual-failovers)
+- [Post-failover event information](#info)
+- [Failbacks](#failbacks)
+
+## Triggering failovers {#triggering-failovers}
+
+Temporal automatically initiates failovers when an incident or outage affects a high availability Namespace.
+You can also [trigger a failover](/cloud/high-availability/failovers#triggering-failovers) based on your own custom alerts and for testing purposes.
+This section explains how to manually trigger a failover and what to expect afterward.
+
+:::warning Check Your Replication Lag
+
+Always check the [metric replication lag](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_replication_lag_bucket) before initiating a failover.
+A forced failover when there is a large replication lag has a higher likelihood of rolling back Workflow progress.
+
+:::
+
+For details on how Temporal detects conditions and triggers failovers automatically, see [the failover process](/cloud/high-availability/failovers).
+
+## Initiating manual failovers {#manual-failovers}
+
+You can trigger a failover manually using the Temporal Cloud Web UI or the `tcld` CLI, depending on your preference and setup.
+The following table outlines the steps for each method:
+
+<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**Need to update the CLI instructions**</div>
+| Method                    | Instructions                                                                                                                                                                                                                                                            |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Temporal Cloud Web UI** | 1. Visit the [Namespace page](https://cloud.temporal.io/namespaces) on the Temporal Cloud Web UI.<br />2. Navigate to your Namespace details page and select the **Trigger a failover** option from the menu.<br />3. After confirmation, Temporal initiates the failover. |
+| **Temporal `tcld` CLI**   | To manually trigger a failover, run the following command in your terminal:<br /><tt>tcld namespace failover \ </tt><br /><tt>&nbsp;&nbsp;&nbsp;&nbsp;--namespace \<namespace_id>.\<account_id> \ </tt><br /><tt>&nbsp;&nbsp;&nbsp;&nbsp;--region \<target_region></tt><br />Temporal fails over the Namespace to the target region. High availability Namespaces using a single region will failover to the standby isolation domain. |
+
+## Post-failover event information {#info}
+
+After any failover, whether triggered by you or by Temporal, event information appears in both the [Temporal Cloud Web UI](https://cloud.temporal.io/namespaces) (on the Namespace detail page) and in your audit logs.
+The audit log entry for Failover uses the `"operation": "FailoverNamespace"` event.
+After failover, the replica becomes active, taking over and the Namespace is active in the new isolation domain or region.
+
+You don't need to monitor Temporal Cloud's failover response in real-time.
+Whenever there is a failover event, users with the Account Owner and Global Admin roles automatically receive an alert email.
+
+## Failbacks
+
+After Temporal-initiated failovers, Temporal Cloud shifts Workflow Execution processing back to the original region or isolation zone that was active before the incident once the incident is resolved.
+This is called a "failback".
+
+## Disabling Temporal-initiated failovers
+
+When you add a replica to a Namespace, it becomes a high availability Namespace.
+In the event of an incident or an outage Temporal Cloud automatically fails over a high availability Namespaces to its replica.
+_This is the recommended and default option_.
+
+If you prefer to disable Temporal-initiated failovers and handle your own failovers, you can do so by navigating to the Namespace detail page in Temporal Cloud. Choose the "Disable Temporal-initiated failovers" option.

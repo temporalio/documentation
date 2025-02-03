@@ -2,45 +2,8 @@
 
 AFFECTED COVERAGE:
 
-- ALL LINKS ON NEW PAGES MUST BE AUDITED, REDONE, TESTED!!!
 
-THESE PAGES MENTION MULTI-REGION:
-./docs/encyclopedia/nexus.mdx
-./docs/encyclopedia/nexus-use-cases.mdx
-./docs/evaluate/development-production-features/temporal-nexus.mdx
-./docs/evaluate/development-production-features/index.mdx
-./docs/evaluate/development-production-features/high-availability.mdx
-./docs/evaluate/development-production-features/multi-region-namespace.mdx
-./docs/evaluate/development-production-features/cloud-vs-self-hosted.mdx
-./docs/evaluate/temporal-cloud/pricing.mdx
-./docs/evaluate/temporal-cloud/sla.mdx
-./docs/evaluate/temporal-cloud/legacy-pricing.mdx
-./docs/evaluate/temporal-cloud/security.mdx
-./docs/production-deployment/cloud/metrics/reference.mdx
-./docs/production-deployment/cloud/gcp-export-gcs.mdx
-./docs/production-deployment/cloud/audit-logging.mdx
-./docs/production-deployment/cloud/multi-region.mdx
-./docs/production-deployment/cloud/tcld/namespace.mdx
-./docs/production-deployment/cloud/nexus/index.mdx
-./docs/production-deployment/cloud/terraform-provider.mdx
-./docs/production-deployment/cloud/service-health.mdx
 
-## Pricing {#pricing}
-
-**How does adding a multi-region Namespace affect my costs?**
-
-For pricing details, visit Temporal Cloud's [Pricing page](/cloud/pricing).
-
-## Manage your multi-region Namespace {#management}
-
-**How do you create, enable, and manage your multi-region Namespace?**
-
-Temporal enables you to create and manage your multi-region Namespace using the Temporal Cloud Web UI, the command line 'tcld' CLI utility, and the [Cloud Ops API](/ops).
-Use these tools to create, upgrade, and discontinue your multi-region Namespace.
-
-- [Create a multi-region Namespace](/cloud/multi-region#create)
-- [Upgrade a single-region Namespace to multi-region](/cloud/multi-region#add-regions)
-- [Discontinuing multi-region service](/cloud/multi-region#discontinuing)
 
 :::warning
 
@@ -53,7 +16,6 @@ Only Account Owner and Global Admin [roles](/cloud/users#account-level-roles) an
 Temporal Cloud’s Terraform provider does not support multi-region Namespaces.
 
 :::
-
 
 
 <RelatedReadContainer>
