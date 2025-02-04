@@ -108,7 +108,7 @@ Implementing patching involves three steps:
 2. Remove the old code and apply [DeprecatePatch](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_DeprecatePatch_System_String_).
 3. Once you're confident that all old Workflows have finished executing, remove `DeprecatePatch`.
 
-#### Overview
+### Overview
 
 We take a deep dive into the behavior of the `patched()` function in this optional 37 minute YouTube series:
 
@@ -122,7 +122,7 @@ We take a deep dive into the behavior of the `patched()` function in this option
   </iframe>
 </div>
 
-##### Behavior When Not Replaying
+#### Behavior When Not Replaying
 
 If not replaying, and the execution hits a call to patched, it first checks the event history, and:
 
@@ -133,7 +133,7 @@ If not replaying, and the execution hits a call to patched, it first checks the 
 
 > There is a caveat to the above, and we will discuss that below.
 
-##### Behavior When Replaying With Marker Before-Or-At Current Location
+#### Behavior When Replaying With Marker Before-Or-At Current Location
 
 If Replaying:
 
@@ -150,7 +150,7 @@ If Replaying:
   *This is similar to the behavior of the non-replay case, and
   just like in that case, this happens in a given patch ID's subsequent blocks*
 
-##### Behavior When Replaying With Marker After Current Location
+#### Behavior When Replaying With Marker After Current Location
 
 If the Marker Event is after where the execution currently is
 in the event history, then, in other words,
@@ -160,7 +160,7 @@ history, but it will throw a non-deterministic
 exception because the replay and original event
 histories don't match
 
-##### Behavior When Replaying With No Marker For that Patch ID
+#### Behavior When Replaying With No Marker For that Patch ID
 
 It will return false and not add anything to
 the event history. Furthermore, ***and this is the
@@ -181,7 +181,7 @@ a call to patched with that ID in the replay code, but not
 in the event history. In this situation, it won't return
 true.
 
-##### A Summary of the Two Potentially Unexpected Behaviors
+#### A Summary of the Two Potentially Unexpected Behaviors
 
 1. When Replaying, in the scenario of ***it hits a call to
    patched, but that patch ID isn't before/on that point in
@@ -199,7 +199,7 @@ true.
    the execution surpasses the Replay threshold and is running new code.
    [(see above: Behavior When Replaying With No Marker For that Patch ID)](#behavior-when-replaying-with-no-marker-for-that-patch-id).
 
-##### Implications of the Behaviors
+#### Implications of the Behaviors
 
 If you deploy new code while a worker is down,
 any workflows that were in the middle of executing will replay
@@ -222,7 +222,7 @@ the newest code***. It only does that if not replaying or if
 surpassed replay and there hasn't been a call to patched (with that ID) throughout
 the replay.
 
-##### Recommendations
+#### Recommendations
 
 Based on this behavior and the implications, when patching in new code, always put the newest code at the top of an if-patched-block.
 
