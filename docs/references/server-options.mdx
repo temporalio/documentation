@@ -19,7 +19,7 @@ We recommend this approach for a limited number of situations.
 ```go
 s, err := temporal.NewServer()
 if err != nil {
-	log.Fatel(err)
+	log.Fatal(err)
 }
 err = s.Start()
 if err != nil{
