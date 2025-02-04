@@ -123,7 +123,94 @@ Implementing patching involves three steps:
 2. Remove the old code and apply [deprecate_patch](https://python.temporal.io/temporalio.workflow.html#deprecate_patch).
 3. Once you're confident that all old Workflows have finished executing, remove `deprecate_patch`.
 
-### Overview
+### Patching in new code {#using-patched-for-workflow-history-markers}
+
+Using `patched()` inserts a marker into the Workflow History.
+
+![image](https://user-images.githubusercontent.com/6764957/139673361-35d61b38-ab94-401e-ae7b-feaa52eae8c6.png)
+
+During replay, if a Worker encounters a history with that marker, it will fail the Workflow task when the Workflow code doesn't produce the same patch marker (in this case, `my-patch`). This ensures you can safely deploy code from `post_patch_activity` as a "feature flag" alongside the original version (`pre_patch_activity`).
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_2_patched_dacx.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```python
+# ...
+@workflow.defn
+class MyWorkflow:
+    @workflow.run
+    async def run(self) -> None:
+        if workflow.patched("my-patch"):
+            self._result = await workflow.execute_activity(
+                post_patch_activity,
+                schedule_to_close_timeout=timedelta(minutes=5),
+            )
+        else:
+            self._result = await workflow.execute_activity(
+                pre_patch_activity,
+                schedule_to_close_timeout=timedelta(minutes=5),
+            )
+```
+
+### Understanding deprecated Patches in the Python SDK {#deprecated-patches}
+
+After ensuring that all Workflows started with `pre_patch_activity` code have finished, you can [deprecate the patch](https://python.temporal.io/temporalio.workflow.html#deprecate_patch).
+
+Once you're confident that your Workflows are no longer running the pre-patch code paths, you can deploy your code with `deprecate_patch()`.
+These Workers will be running the most up-to-date version of the Workflow code, which no longer requires the patch.
+The `deprecate_patch()` function works similarly to the `patched()` function by recording a marker in the Workflow history.
+This marker does not fail replay when Workflow code does not emit it.
+Deprecated patches serve as a bridge between the pre-patch code paths and the post-patch code paths, and are useful for avoiding errors resulting from patched code paths in your Workflow history.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_3_patch_deprecated_dacx.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```python
+# ...
+@workflow.defn
+class MyWorkflow:
+    @workflow.run
+    async def run(self) -> None:
+        workflow.deprecate_patch("my-patch")
+        self._result = await workflow.execute_activity(
+            post_patch_activity,
+            schedule_to_close_timeout=timedelta(minutes=5),
+        )
+```
+
+### Safe Deployment of post_patch_activity {#deploy-new-code}
+
+Once you're sure that you will no longer need to Query or Replay any of your pre-patch Workflows, you can then safely deploy Workers that no longer use either the `patched()` or `deprecate_patch()` calls:
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_4_patch_complete_dacx.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```python
+# ...
+@workflow.defn
+class MyWorkflow:
+    @workflow.run
+    async def run(self) -> None:
+        self._result = await workflow.execute_activity(
+            post_patch_activity,
+            schedule_to_close_timeout=timedelta(minutes=5),
+        )
+```
+
+
+### Detailed Description of the Patched Function
 
 We take a deep dive into the behavior of the `patched()` function in this optional 37 minute YouTube series:
 
@@ -279,91 +366,6 @@ else:
 
 <!--SNIPEND-->
 
-### Patching in new code {#using-patched-for-workflow-history-markers}
-
-Using `patched()` inserts a marker into the Workflow History.
-
-![image](https://user-images.githubusercontent.com/6764957/139673361-35d61b38-ab94-401e-ae7b-feaa52eae8c6.png)
-
-During replay, if a Worker encounters a history with that marker, it will fail the Workflow task when the Workflow code doesn't produce the same patch marker (in this case, `my-patch`). This ensures you can safely deploy code from `post_patch_activity` as a "feature flag" alongside the original version (`pre_patch_activity`).
-
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_2_patched_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
-
-```python
-# ...
-@workflow.defn
-class MyWorkflow:
-    @workflow.run
-    async def run(self) -> None:
-        if workflow.patched("my-patch"):
-            self._result = await workflow.execute_activity(
-                post_patch_activity,
-                schedule_to_close_timeout=timedelta(minutes=5),
-            )
-        else:
-            self._result = await workflow.execute_activity(
-                pre_patch_activity,
-                schedule_to_close_timeout=timedelta(minutes=5),
-            )
-```
-
-### Understanding deprecated Patches in the Python SDK {#deprecated-patches}
-
-After ensuring that all Workflows started with `pre_patch_activity` code have finished, you can [deprecate the patch](https://python.temporal.io/temporalio.workflow.html#deprecate_patch).
-
-Once you're confident that your Workflows are no longer running the pre-patch code paths, you can deploy your code with `deprecate_patch()`.
-These Workers will be running the most up-to-date version of the Workflow code, which no longer requires the patch.
-The `deprecate_patch()` function works similarly to the `patched()` function by recording a marker in the Workflow history.
-This marker does not fail replay when Workflow code does not emit it.
-Deprecated patches serve as a bridge between the pre-patch code paths and the post-patch code paths, and are useful for avoiding errors resulting from patched code paths in your Workflow history.
-
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_3_patch_deprecated_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
-
-```python
-# ...
-@workflow.defn
-class MyWorkflow:
-    @workflow.run
-    async def run(self) -> None:
-        workflow.deprecate_patch("my-patch")
-        self._result = await workflow.execute_activity(
-            post_patch_activity,
-            schedule_to_close_timeout=timedelta(minutes=5),
-        )
-```
-
-### Safe Deployment of post_patch_activity {#deploy-new-code}
-
-Once you're sure that you will no longer need to Query or Replay any of your pre-patch Workflows, you can then safely deploy Workers that no longer use either the `patched()` or `deprecate_patch()` calls:
-
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_4_patch_complete_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
-
-```python
-# ...
-@workflow.defn
-class MyWorkflow:
-    @workflow.run
-    async def run(self) -> None:
-        self._result = await workflow.execute_activity(
-            post_patch_activity,
-            schedule_to_close_timeout=timedelta(minutes=5),
-        )
-```
 
 ### Best Practice of Using Python Dataclasses as Arguments and Returns
 
