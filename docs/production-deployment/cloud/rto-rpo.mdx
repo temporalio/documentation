@@ -2,7 +2,7 @@
 id: rpo-rto
 title: RPO and RTO - Temporal Cloud feature guide
 sidebar_label: RPO and RTO
-description: Understand the Recovery Point Objective (RPO) and Recovery Time Objective (RTO) in Temporal Cloud. Explore scenarios for Multi-Region Namespaces, Single-Region Namespaces, and Availability Zone Failures.
+description: Understand the Recovery Point Objective (RPO) and Recovery Time Objective (RTO) in Temporal Cloud.
 slug: /cloud/rpo-rto
 toc_max_heading_level: 4
 keywords:
@@ -19,17 +19,17 @@ tags:
 
 Recovery Point Objective (RPO) and Recovery Time Objective (RTO) for Temporal Cloud can be considered within three scenarios:
 
-1. The near-zero RPO/20 minutes or less RTO for Temporal Cloud with Multi-Region Namespaces
+1. The near-zero RPO/20 minutes or less RTO for Temporal Cloud with [Multi-Region Namespaces](/cloud/multi-region)
 2. The eight-hour RPO/RTO Temporal Cloud reports for _regional_ failures for single-region namespaces
-3. The RPO/RTO Temporal Cloud guarantees for _availability zone_ failure.
+3. The RPO/RTO Temporal Cloud guarantees for _availability zone_ failure
 
 Which objective is relevant to your organization is driven by whether you map data center loss to a _regional_ loss or a _zonal_ loss.
 Temporal Cloud delivers different RPO/RTOs based on these scenarios because of the way our platform performs writes to our data provider.
 
-## Scenario: Multi Region Namespace, Regional Failure
+## Multi Region Namespace, Regional Failure
 
-Temporal Cloud offers a "Multi Region Namespace" option in private preview.
-This option provides a push-button, multi-region, active-standby failover deployment for your Temporal Service.
+Temporal Cloud offers "Multi Region Namespace".
+Multi Region Namespace provides a push-button, multi-region, active-standby failover deployment for your Temporal Service.
 
 As Workflows progress in the active region, history events are asynchronously replicated to the standby region.
 In case of an incident or outage in the active region, Temporal Cloud will fail over to the standby region so that existing Workflow Executions will continue to run and new Executions can be started.
@@ -44,7 +44,7 @@ There may be a short period of time—the replication lag—during the incident 
 
 Recovery time objective (RTO) for Temporal Cloud is 20 minutes or less per incident.
 
-## Scenario: Single Region Namespace, Regional Failure
+## Single Region Namespace, Regional Failure
 
 Temporal Cloud Namespace data is backed up by our data provider.
 For a single region Namespace, data must be restored in order to recover in the event of regional failure (i.e., logical corruption).
@@ -61,7 +61,7 @@ Temporal Cloud is beholden to our data provider backup constraints, so in this s
 - The time window of _4 hours_ allocated to detection of corruption point.
 - Our data provider restore time can be up to _4 hours_
 
-## Scenario: Availability Zone Failure
+## Availability Zone Failure
 
 Temporal Cells are deployed in three Availability Zones (AZs) in the same region.
 Our data provider is deployed with the same topology in three AZs in the same region.\
