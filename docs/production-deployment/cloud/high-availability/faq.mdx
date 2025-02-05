@@ -87,7 +87,7 @@ Temporal Cloud initiates failovers when there are incidents or outages in the cl
 This includes failures of databases, storage, etc.
 We trigger failovers any time we observe increased latencies or an increase in service errors that causes us to violate the SLA that is in our control.
 
-Read more about [automatic failovers](/cloud/high-availability/how-it-works#healthchecks).
+Read more about [automatic failovers](/cloud/high-availability/how-it-works#health-checks).
 
 **Q: Are there any other types of failover not listed above?**
 
@@ -235,7 +235,7 @@ Not at the moment.
 
 Signals are cherry-picked during conflict resolution if there is replication lag and conflict. Workflows can theoretically revert multiple steps.
 
-Customers should decide whether to add logic to handle this or manually fix affected Workflows if they believe the risk is low. Other known limitations have been [documented](/cloud/high-availability/how-it-works#architecture) around causality and so forth.
+Customers should decide whether to add logic to handle this or manually fix affected Workflows if they believe the risk is low. Other known limitations have been [documented](/cloud/high-availability/how-it-works#workflow-execution-replication) around causality and so forth.
 
 **Q: How much time does it take to reconcile data after an incident is resolved? **
 

@@ -1,8 +1,24 @@
 <div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**STOPPED HERE. Considering whether this should be its own page**</div>
 
-AFFECTED COVERAGE:
+<ExpandableDefinition label="Definition" definition="RTO sets a maximum time and service level objective, after which, service must be restored following a disruption." />
 
+- Body doubling / parallel play
+  - https://www.deepwrk.io
+  - https://www.fastcompany.com/90632591/focusmate-body-doubling-virtual-coworking
 
+Co-working is considered a good "body doubling" practice because the simple presence of others working nearby can significantly boost focus and motivation, acting as a subtle accountability mechanism that helps individuals stay on task and reduce procrastination, especially for people with conditions like ADHD who might struggle with staying focused when working alone; essentially, seeing others working can subconsciously encourage you to do the same. 
+
+## Regional availability {#regional-availability}
+
+Multi-region Namespaces are one of the high availability options you can choose.
+They are available in all existing [Temporal Cloud regions](/cloud/service-availability#regions).
+
+:::tip
+
+Namespace pairing is currently limited to regions within the same continent.
+South America is excluded as only one region is available.
+
+:::
 
 
 :::warning

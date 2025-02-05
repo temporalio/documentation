@@ -347,9 +347,9 @@ module.exports = {
                 id: "production-deployment/cloud/high-availability/index",
               },
               items: [
+                "production-deployment/cloud/high-availability/how-it-works",
                 "production-deployment/cloud/high-availability/enable",
                 "production-deployment/cloud/high-availability/failovers",
-                "production-deployment/cloud/high-availability/how-it-works",
                 "production-deployment/cloud/high-availability/best-practices",
                 "production-deployment/cloud/high-availability/faq",
               ],
