@@ -1,8 +1,18 @@
 <div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**STOPPED HERE. Considering whether this should be its own page**</div>
 
-AFFECTED COVERAGE:
+<ExpandableDefinition label="Definition" definition="RTO sets a maximum time and service level objective, after which, service must be restored following a disruption." />
 
+## Regional availability {#regional-availability}
 
+Multi-region Namespaces are one of the high availability options you can choose.
+They are available in all existing [Temporal Cloud regions](/cloud/service-availability#regions).
+
+:::tip
+
+Namespace pairing is currently limited to regions within the same continent.
+South America is excluded as only one region is available.
+
+:::
 
 
 :::warning
