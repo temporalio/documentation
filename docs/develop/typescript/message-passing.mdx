@@ -379,7 +379,7 @@ You will need to provide a [`WithStartWorkflowOperation`](https://typescript.tem
 You must specify a [WorkflowIdConflictPolicy](/workflows#workflow-id-conflict-policy) when creating the `WithStartWorkflowOperation`.
 Note that a `WithStartWorkflowOperation` can only be used once.
 
-Here's an example taken from the [early-return](https://github.com/temporalio/samples-typescript/blob/main/early-return/src/start-test-workflow.ts) sample:
+Here's an example taken from the [early-return](https://github.com/temporalio/samples-typescript/tree/main/early-return) sample:
 
 ```typescript
 const startWorkflowOperation = new WithStartWorkflowOperation(transactionWorkflow, {
