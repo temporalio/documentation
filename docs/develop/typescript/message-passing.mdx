@@ -382,7 +382,7 @@ Note that a `WithStartWorkflowOperation` can only be used once.
 Here's an example taken from the [early-return](https://github.com/temporalio/samples-typescript/blob/main/early-return/src/start-test-workflow.ts) sample:
 
 ```typescript
-const startWorkflowOperation = WithStartWorkflowOperation.create(transactionWorkflow, {
+const startWorkflowOperation = new WithStartWorkflowOperation(transactionWorkflow, {
   workflowId,
   args: [transactionID],
   taskQueue: 'early-return',
