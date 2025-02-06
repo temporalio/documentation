@@ -338,6 +338,22 @@ module.exports = {
             "production-deployment/cloud/multi-region",
             {
               type: "category",
+              label: "High-availability Namespaces",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "production-deployment/cloud/high-availability/index",
+              },
+              items: [
+                "production-deployment/cloud/high-availability/how-it-works",
+                "production-deployment/cloud/high-availability/enable",
+                "production-deployment/cloud/high-availability/failovers",
+                "production-deployment/cloud/high-availability/best-practices",
+                "production-deployment/cloud/high-availability/faq",
+              ],
+            },
+            {
+              type: "category",
               label: "Temporal Nexus",
               collapsed: true,
               link: {

@@ -1,0 +1,39 @@
+<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**STOPPED HERE. Considering whether this should be its own page**</div>
+
+<ExpandableDefinition label="Definition" definition="RTO sets a maximum time and service level objective, after which, service must be restored following a disruption." />
+
+## Regional availability {#regional-availability}
+
+Multi-region Namespaces are one of the high availability options you can choose.
+They are available in all existing [Temporal Cloud regions](/cloud/service-availability#regions).
+
+:::tip
+
+Namespace pairing is currently limited to regions within the same continent.
+South America is excluded as only one region is available.
+
+:::
+
+
+:::warning
+
+Only Account Owner and Global Admin [roles](/cloud/users#account-level-roles) and [Namespace Admins](https://docs.temporal.io/cloud/users#namespace-level-permissions) may create an multi-region Namespace (MRN), upgrade an existing Namespace to MRN, or trigger an MRN failover.
+
+:::
+
+:::info Support, stability, and dependency info
+
+Temporal Cloud’s Terraform provider does not support multi-region Namespaces.
+
+:::
+
+
+<RelatedReadContainer>
+<RelatedReadItem path="/cloud/multi-region" text="Multi-region Namespaces for Temporal Cloud" archetype="encyclopedia" />
+<RelatedReadItem path="/namespaces#global-namespace" text="Global Namespace for self-hosted deployments" archetype="encyclopedia" />
+<RelatedReadItem path="/cloud/pricing" text="Multi-region Pricing" archetype="encyclopedia" />
+<RelatedReadItem path="/cloud/multi-region#routing" text="PrivateLink routing for Multi-region" archetype="encyclopedia" />
+</RelatedReadContainer>
+
+
+
