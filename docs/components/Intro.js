@@ -409,33 +409,35 @@ function Explained() {
   );
 }
 
+const CourseCTA = () => {
+  return (
+    <div className="my-16 text-center">
+      <h1 className="text-2xl font-bold">Take a Temporal Course</h1>
+      <p className="text-lg mt-2">Learn Temporal by enrolling in our free introductory courses.</p>
+      
+      <div className="grid md:grid-cols-2 gap-6 mt-6">
+        <div>
+          <Link to="https://learn.temporal.io/courses/temporal_101/">
+            <img src={"/homepage/background-101-courses.png"} alt="Temporal 101 Course" className="rounded-lg shadow-lg" />
+          </Link>
+        </div>
+        <div>
+          <Link to="https://learn.temporal.io/courses/temporal_102/">
+            <img src={"/homepage/background-102-courses.png"} alt="Temporal 102 Course" className="rounded-lg shadow-lg" />
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const Intro = () => {
   return (
     <section className="mt-1 mb-14 tailwindcss temporal-documentation-landing">
       <div className="main-grid grid grid-cols-1 gap-6 lg:gap-8">
         <Explained />
-      </div>
-
-       {/* CTA Section - Take a Course */}
-       <div className="my-16 text-center">
-        <h1 className="text-2xl font-bold">Take a Temporal Course</h1>
-        <p className="text-lg mt-2">Learn Temporal by enrolling in our free introductory courses.</p>
-        
-        <div className="grid md:grid-cols-2 gap-6 mt-6">
-          <div>
-            <Link to="https://learn.temporal.io/courses/temporal_101/">
-              <img src={"homepage/background-101-courses.png"} alt="Temporal 101 Course" className="rounded-lg shadow-lg" />
-            </Link>
-          </div>
-          <div>
-            <Link to="https://learn.temporal.io/courses/temporal_102/">
-              <img src={"/homepage/background-102-courses.png"} alt="Temporal 102 Course" className="rounded-lg shadow-lg" />
-            </Link>
-          </div>
         </div>
-      </div>
-
-
+      <CourseCTA />
     </section>
 
     
