@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Link from "@docusaurus/Link";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 import { SdkLogos } from "./SdkLogos";
+import { Globe, Book, Terminal, Clock, Users, Rocket, Info, ArrowRight, DivideIcon as LucideIcon } from 'lucide-react';
 
 const coreConcepts = [
   {
@@ -351,7 +352,7 @@ function Explained() {
 
   return (
     <div>
-      <p className="main-subhead">Temporal Platform explanation and usage information.</p>
+      <p className="main-subhead"></p>
       <div className="mb-8">{SdkLogos()}</div>
       <div className="grid md:grid-cols-2">
         <SimpleCard
@@ -376,33 +377,6 @@ function Explained() {
           />
         </div>
         <SimpleCard title="References" content="Referable Platform information" links={references} />
-      </div>
-
-      <div className="my-20 text-center">
-        <h1>Helpful resources</h1>
-        <div className="grid md:grid-cols-3">
-          <ResourceCard
-            title="Introduction to Temporal Workflows"
-            author="Dominik Tornow"
-            role="Principal Engineer"
-            link="https://temporal.io/blog/dominik-workflow-part-1"
-            img="https://images.ctfassets.net/0uuz8ydxyd9p/bSjHrfjo6yDNCRUHw46gU/ab4899b711ecf09bf165ea7a1615b0a8/dominik-tornow.png?w=80&h=80"
-          />
-          <ResourceCard
-            title="Failure Handling in Practice"
-            author="Fitz"
-            role="Developer Advocate"
-            link="https://temporal.io/blog/failure-handling-in-practice"
-            img="https://images.ctfassets.net/0uuz8ydxyd9p/5rtdEzcJFPLV5Ce29uPyFb/951227c4a68cb13b1bd03c8856b1f740/fitzface_shadowed_blue-2.jpg?w=80&h=80"
-          />
-          <ResourceCard
-            title="Time-Travel Debugging Production Code"
-            author="Loren Sands-Ramshaw"
-            role="Developer Relations Engineer"
-            link="https://temporal.io/blog/time-travel-debugging-production-code"
-            img="https://images.ctfassets.net/0uuz8ydxyd9p/3koq3MoNG4lPucMRTSkEUW/40ba102fafaba8524b8826b345ee55cd/loren-ivy-512-square.png?w=80&h=80"
-          />
-        </div>
       </div>
 
       <div className="my-20 text-center">
@@ -441,6 +415,29 @@ export const Intro = () => {
       <div className="main-grid grid grid-cols-1 gap-6 lg:gap-8">
         <Explained />
       </div>
+
+       {/* CTA Section - Take a Course */}
+       <div className="my-16 text-center">
+        <h1 className="text-2xl font-bold">Take a Temporal Course</h1>
+        <p className="text-lg mt-2">Learn Temporal by enrolling in our free introductory courses.</p>
+        
+        <div className="grid md:grid-cols-2 gap-6 mt-6">
+          <div>
+            <Link to="https://learn.temporal.io/courses/temporal_101/">
+              <img src={"homepage/background-101-courses.png"} alt="Temporal 101 Course" className="rounded-lg shadow-lg" />
+            </Link>
+          </div>
+          <div>
+            <Link to="https://learn.temporal.io/courses/temporal_102/">
+              <img src={"/homepage/background-102-courses.png"} alt="Temporal 102 Course" className="rounded-lg shadow-lg" />
+            </Link>
+          </div>
+        </div>
+      </div>
+
+
     </section>
+
+    
   );
 };
