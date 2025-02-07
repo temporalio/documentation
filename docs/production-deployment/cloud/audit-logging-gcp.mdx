@@ -32,13 +32,13 @@ tags:
 Before configuring the Audit log Sink, please complete the following steps in Google Cloud:
 
 1. Create a PubSub topic and take note of its topic name, for example, "test-
-auditlog"
-    1. If you wish to enable customer-managed encryption keys (CMEK), do so
+   auditlog"
+   1. If you wish to enable customer-managed encryption keys (CMEK), do so
 2. Record the GCP Project ID that owns the topic
 3. Set up a service account in the same project that trusts the Temporal internal service account to let Temporal write information to your account. Follow the instructions in the Temporal Cloud UI, there are two ways to set up this service account:
-    1. Input the service account ID, GCP project ID and PubSub topic name
-        1. Follow the instructions, manually set up a new service account
-        2. Use the [Terraform template](https://github.com/temporalio/terraform-modules/tree/main/modules/gcp-sink-sa) to create the service account
+   1. Input the service account ID, GCP project ID and PubSub topic name
+      1. Follow the instructions, manually set up a new service account
+      2. Use the [Terraform template](https://github.com/temporalio/terraform-modules/tree/main/modules/gcp-sink-sa) to create the service account
 
 ## **Temporal Cloud UI**
 
@@ -46,11 +46,11 @@ auditlog"
 
 1. In the Cloud UI, navigate to the Settings → Integration Page → Audit Log, confirm that you see Pub/Sub as a sink option
 2. Configure the Audit Log
-    1. Choose Pub as Sink type
-    2. Provide the following information
-        1. Service account ID: [from Prerequisite 3]
-        2. GCP Project ID: [from Prerequisite 2]
-        3. Pub/Sub topic name: [from Prerequisite 1]
+   1. Choose Pub as Sink type
+   2. Provide the following information
+      1. Service account ID: [from Prerequisite 3]
+      2. GCP Project ID: [from Prerequisite 2]
+      3. Pub/Sub topic name: [from Prerequisite 1]
 3. Once you have filled in the necessary values, please click on “Create” to get Audit Log Configured
 4. Please check back in few minutes to make sure everything set up successfully
 

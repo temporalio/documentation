@@ -79,6 +79,7 @@ $ tctl schedule create \
 ```
 
 <!-- ADDING TO DEPRECATED SECTION FOR INBOUND LINKS AND OLDER DEPLOYMENTS -->
+
 Temporal Workflow Schedule Cron strings follow this format:
 
 ```
@@ -90,7 +91,6 @@ Temporal Workflow Schedule Cron strings follow this format:
 │ │ │ │ │
 * * * * *
 ```
-
 
 Any combination of `--calendar`, `--interval`, and `--cron` is supported and Actions will happen at any of the specified times.
 If you use both `--time-zone` and also `CRON_TZ`, they must agree.
