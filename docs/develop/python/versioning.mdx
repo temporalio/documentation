@@ -113,25 +113,6 @@ Implementing patching involves three steps:
 2. Remove the old code and apply [deprecate_patch](https://python.temporal.io/temporalio.workflow.html#deprecate_patch).
 3. Once you're confident that all old Workflows have finished executing, remove `deprecate_patch`.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_4_patch_complete_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
-
-```python
-# ...
-@workflow.defn
-class MyWorkflow:
-    @workflow.run
-    async def run(self) -> None:
-        self._result = await workflow.execute_activity(
-            post_patch_activity,
-            schedule_to_close_timeout=timedelta(minutes=5),
-        )
-```
-
 ### Patching in new code {#using-patched-for-workflow-history-markers}
 
 Using `patched` inserts a marker into the Workflow History.
@@ -229,7 +210,7 @@ See the [Pre-release README](https://github.com/temporalio/temporal/blob/main/do
 :::
 
 A Build ID corresponds to a deployment. If you don't already have one, we recommend a hash of the code--such as a Git SHA--combined with a human-readable timestamp.
-To use [Worker Versioning](/workers#worker-versioning), you need to pass a Build ID to your Java Worker and opt in to Worker Versioning.
+To use [Worker Versioning](/worker-versioning), you need to pass a Build ID to your Java Worker and opt in to Worker Versioning.
 
 ### Assign a Build ID to your Worker and opt in to Worker Versioning
 
@@ -285,7 +266,7 @@ await workflow.execute_activity(
 
 :::caution
 
-This section is for a previous Worker Versioning API that is deprecated and will go away at some point. Please redirect your attention to [Worker Versioning](/workers#worker-versioning).
+This section is for a previous Worker Versioning API that is deprecated and will go away at some point. Please redirect your attention to [Worker Versioning](/worker-versioning).
 
 :::
 

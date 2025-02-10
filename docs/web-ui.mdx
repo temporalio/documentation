@@ -10,6 +10,8 @@ tags:
   - Temporal Web UI
 ---
 
+import {RelatedReadContainer, RelatedReadItem} from '@site/src/components/related-read/RelatedRead';
+
 The Temporal Web UI provides users with Workflow Execution state and metadata for debugging purposes.
 It ships with every [Temporal CLI](/cli) release and [Docker Compose](https://github.com/temporalio/docker-compose) update and is available with [Temporal Cloud](/cloud).
 
@@ -63,7 +65,7 @@ The top of the page lists the following execution metadata:
 - [Workflow Type](/workflows#workflow-type)
 - [Run ID](/workflows#run-id)
 - Start Time and Close Time
-- [Task Queue](/workers#task-queue)
+- [Task Queue](/task-queue)
 - Parent and Parent ID
 - [State Transitions](/workflows#state-transition)
 
@@ -113,6 +115,32 @@ Lists all Queries sent to the Workflow Execution.
 On Temporal Cloud and self-hosted Temporal Service Web UI, the Schedules page lists all the [Schedules](/workflows#schedule) created on the selected Namespace.
 
 Click a Schedule to see details, such as configured frequency, start and end times, and recent and upcoming runs.
+
+:::tip Setting Schedules with Strings
+
+Temporal Workflow Schedule Cron strings follow this format:
+
+```
+┌───────────── minute (0 - 59)
+│ ┌───────────── hour (0 - 23)
+│ │ ┌───────────── day of the month (1 - 31)
+│ │ │ ┌───────────── month (1 - 12)
+│ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday)
+│ │ │ │ │
+* * * * *
+```
+:::
+
+To read more about Schedules, explore these links:
+
+<RelatedReadContainer>
+    <RelatedReadItem path="/develop/go/schedules" text="Schedules using the Go SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/schedules" text="Schedules using the Java SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/php/schedules" text="Schedules using the PHP SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/schedules" text="Schedules using the Python SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/schedules" text="Schedules using the TypeScript SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/dotnet/schedules" text="Schedules using the .NET SDK" archetype="feature-guide" />
+</RelatedReadContainer>
 
 ### Settings
 

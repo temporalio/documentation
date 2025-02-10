@@ -85,18 +85,18 @@ module.exports = {
               },
               items: [
                 "evaluate/temporal-cloud/aws-privatelink",
+                "evaluate/temporal-cloud/gcp-private-service-connect"
               ],
             },
             "evaluate/temporal-cloud/service-availability",
             "evaluate/temporal-cloud/limits",
             "evaluate/temporal-cloud/sla",
-            "evaluate/temporal-cloud/legacy-pricing",
             "evaluate/temporal-cloud/pricing",
-            "evaluate/temporal-cloud/support", // This will become legacy support in Jan 2025, removed in Feb 2025 Its file is legacy-support
-            "evaluate/temporal-cloud/future_support", // This will become support in Jan 2025. Its file is support
+            "evaluate/temporal-cloud/support",
           ],
         },
         "security",
+        "evaluate/use-cases-design-patterns",
       ],
     },
     {
@@ -367,6 +367,7 @@ module.exports = {
               },
               items: [
                 "production-deployment/cloud/aws-export-s3",
+                "production-deployment/cloud/gcp-export-gcs",
               ],
             },
             {
@@ -379,6 +380,7 @@ module.exports = {
               },
               items: [
                 "production-deployment/cloud/audit-logging-aws",
+                "production-deployment/cloud/audit-logging-gcp",
               ],
             },
             {
@@ -471,7 +473,6 @@ module.exports = {
             "references/server-options",
             "references/web-ui-configuration",
             "references/web-ui-environment-variables",
-            "references/web-ui-server-env-vars",
           ],
         },
         {
@@ -515,7 +516,22 @@ module.exports = {
                 "encyclopedia/retry-policies",
               ],
             },
-            "encyclopedia/workers",
+            {
+              type: "category",
+              label: "Workers",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "encyclopedia/workers/workers",
+              },
+              items: [
+                "encyclopedia/workers/tasks",
+                "encyclopedia/workers/task-queues",
+                "encyclopedia/workers/task-routing-worker-sessions",
+                "encyclopedia/workers/sticky-execution",
+                "encyclopedia/workers/worker-versioning",
+              ],
+            },
             "encyclopedia/workflow-message-passing",
             "encyclopedia/child-workflows",
             "encyclopedia/visibility",

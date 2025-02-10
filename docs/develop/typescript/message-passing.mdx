@@ -122,14 +122,11 @@ export async function greetingWorkflow(): Promise<string> {
 - The handler cannot return a value.
   The response is sent immediately from the server, without waiting for the Workflow to process the Signal.
 
-- Signal (and Update) handlers can be `async`.
+- Signal and Update handlers can be `async`.
   This allows you to use Activities, Child Workflows, durable [`workflow.sleep`](https://typescript.temporal.io/api/namespaces/workflow#sleep) Timers, [`workflow.condition`](https://typescript.temporal.io/api/namespaces/workflow#condition) conditions, and more.
   See [Async handlers](#async-handlers) and [Workflow message passing](/encyclopedia/workflow-message-passing) for guidelines on safely using async Signal and Update handlers.
 
-- Delay calling [`workflow.setHandler`](https://typescript.temporal.io/api/namespaces/workflow#sethandler) until the Workflow initialization needed by Signal (or Update) handlers has finished.
-  This is safe because the SDK buffers messages when there are no registered handlers for them.
-  Note that [`workflow.setHandler`](https://typescript.temporal.io/api/namespaces/workflow#sethandler) will immediately invoke the handler of buffered Signals (or Updates) with matching types.
-  This could lead to out-of-order processing of messages with different types.
+- If your Workflow needs to do some async initialization before handling a Signal or Update, use [`workflow.condition`](https://typescript.temporal.io/api/namespaces/workflow#condition) inside your handler to wait until initialization has completed.
 
 - `setHandler` can take `SignalHandlerOptions` (such as `description` and `unfinishedPolicy`) as described in the API reference docs for [`workflow.setHandler`](https://typescript.temporal.io/api/namespaces/workflow#sethandler).
 
@@ -194,12 +191,10 @@ wf.setHandler(
 
 - Use [`workflow.currentUpdateInfo`](https://typescript.temporal.io/api/namespaces/workflow#current_update_info) to obtain information about the current Update.
   This includes the Update ID, which can be useful for deduplication when using Continue-As-New: see [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing).
-- Update (and Signal) handlers can be `async`, letting them use Activities, Child Workflows, durable [`workflow.sleep`](https://typescript.temporal.io/api/namespaces/workflow#sleep) Timers, [`workflow.condition`](https://typescript.temporal.io/api/namespaces/workflow#condition) conditions, and more.
+- Update and Signal handlers can be `async`, letting them use Activities, Child Workflows, durable [`workflow.sleep`](https://typescript.temporal.io/api/namespaces/workflow#sleep) Timers, [`workflow.condition`](https://typescript.temporal.io/api/namespaces/workflow#condition) conditions, and more.
   See [Async handlers](#async-handlers) and [Workflow message passing](/encyclopedia/workflow-message-passing) for safe usage guidelines.
-- Delay calling [`workflow.setHandler`](https://typescript.temporal.io/api/namespaces/workflow#sethandler) until the Workflow initialization needed by Update (or Signal) handlers has finished.
-  This is safe because the SDK buffers messages when there are no registered handlers for them.
-  Note that [`workflow.setHandler`](https://typescript.temporal.io/api/namespaces/workflow#sethandler) will immediately invoke the handler of buffered Updates (or Signals) with matching types.
-  This could lead to out-of-order processing of messages with different types.
+- If your Workflow needs to do some async initialization before handling an Update or Signal, use [`workflow.condition`](https://typescript.temporal.io/api/namespaces/workflow#condition) inside your handler to wait until initialization has completed.
+
 
 ## Send messages {#send-messages}
 
@@ -357,6 +352,49 @@ To obtain an Update handle, you can:
 
 - Use [`WorkflowHandle.startUpdate`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle/#startUpdate) to start an Update and return the handle, as shown in the preceding example.
 - Use [`getUpdateHandle`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle/#getupdatehandle) to fetch a handle for an in-progress Update using the Update ID.
+
+#### Update-With-Start {#update-with-start}
+
+:::tip Stability
+
+In [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in Temporal Cloud.
+
+Minimum Temporal Server version [Temporal Server version 1.26](https://github.com/temporalio/temporal/releases/tag/v1.26.2)
+
+:::
+
+[Update-with-Start](/encyclopedia/workflow-message-passing#update-with-start) lets you
+[send an Update](/develop/typescript/message-passing#send-update-from-client) that checks whether an already-running Workflow with that ID exists:
+
+- If the Workflow exists, the Update is processed.
+- If the Workflow does not exist, a new Workflow Execution is started with the given ID, and the Update is processed immediately after.
+
+Use [`executeUpdateWithStart`](https://typescript.temporal.io/api/classes/client.WorkflowClient#executeUpdateWithStart) to start an Update and wait for the result in one go.
+
+Alternatively, use [`startUpdateWithStart`](https://typescript.temporal.io/api/classes/client.WorkflowClient#startUpdateWithStart) to start an Update and receive a [`WorkflowUpdateHandle`](https://typescript.temporal.io/api/interfaces/client.WorkflowUpdateHandle), and then use `await updateHandle.result()` to retrieve the result from the Update.
+
+These calls return once the requested Update wait stage has been reached, or when the request times out.
+
+You will need to provide a [`WithStartWorkflowOperation`](https://typescript.temporal.io/api/classes/client.WithStartWorkflowOperation) to define the Workflow that will be started if necessary, and its arguments.
+You must specify a [WorkflowIdConflictPolicy](/workflows#workflow-id-conflict-policy) when creating the `WithStartWorkflowOperation`.
+Note that a `WithStartWorkflowOperation` can only be used once.
+
+Here's an example taken from the [early-return](https://github.com/temporalio/samples-typescript/blob/main/early-return/src/start-test-workflow.ts) sample:
+
+```typescript
+const startWorkflowOperation = WithStartWorkflowOperation.create(transactionWorkflow, {
+  workflowId,
+  args: [transactionID],
+  taskQueue: 'early-return',
+  workflowIdConflictPolicy: 'FAIL',
+});
+
+const earlyConfirmation = await client.workflow.executeUpdateWithStart(getTransactionConfirmation, {
+  startWorkflowOperation,
+});
+const wfHandle = await startWorkflowOperation.workflowHandle();
+const finalReport = await wfHandle.result();
+```
 
 :::info SEND MESSAGES WITHOUT TYPE SAFETY
 

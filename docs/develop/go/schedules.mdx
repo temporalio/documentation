@@ -81,7 +81,7 @@ The Temporal Service doesn't guarantee when this removal will happen.
 
 **How to Backfill a Schedule for a Workflow using the Go SDK.**
 
-Backfilling a Schedule executes [Workflow Tasks](/workers#workflow-task) ahead of the Schedule's specified time range.
+Backfilling a Schedule executes [Workflow Tasks](/tasks#workflow-task) ahead of the Schedule's specified time range.
 This is useful for executing a missed or delayed Action, or for testing the Workflow ahead of time.
 
 To backfill a Schedule in Go, use `Backfill()` on `ScheduleHandle`.
@@ -340,4 +340,16 @@ workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, You
 if err != nil {
   // ...
 }
+```
+
+Temporal Workflow Schedule Cron strings follow this format:
+
+```
+┌───────────── minute (0 - 59)
+│ ┌───────────── hour (0 - 23)
+│ │ ┌───────────── day of the month (1 - 31)
+│ │ │ ┌───────────── month (1 - 12)
+│ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday)
+│ │ │ │ │
+* * * * *
 ```

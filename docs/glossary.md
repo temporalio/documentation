@@ -59,13 +59,13 @@ A unique identifier for an Activity Execution.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Activity Task](/workers#activity-task)
+#### [Activity Task](/tasks#activity-task)
 
 An Activity Task contains the context needed to make an Activity Task Execution.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Activity Task Execution](/workers#activity-task-execution)
+#### [Activity Task Execution](/tasks#activity-task-execution)
 
 An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.
 
@@ -427,6 +427,12 @@ A Query is a synchronous operation that is used to report the state of a Workflo
 
 Remote data encoding is using your custom Data Converter to decode (and encode) your Payloads remotely through endpoints.
 
+<!-- _Tags: [term](/tags/term), [queries](/tags/queries), [explanation](/tags/explanation)_ -->
+
+#### [Replication Lag](/cloud/multi-region#replication-lag)
+
+The transmission delay of Workflow updates and history events from the active region to the standby region.
+
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
 #### [Requests Per Second (RPS)](/references/dynamic-configuration#service-level-rps-limits)
@@ -514,25 +520,25 @@ A State Transition is a unit of progress by a Workflow Execution.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Sticky Execution](/workers#sticky-execution)
+#### [Sticky Execution](/sticky-execution)
 
 A Sticky Execution is a when a Worker Entity caches the Workflow Execution Event History and creates a dedicated Task Queue to listen on.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Task](/workers#task)
+#### [Task](/tasks#task)
 
 A Task is the context needed to make progress with a specific Workflow Execution or Activity Execution.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Task Queue](/workers#task-queue)
+#### [Task Queue](/task-queue)
 
 A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Task Routing](/workers#task-routing)
+#### [Task Routing](/task-routing)
 
 Task Routing is when a Task Queue is paired with one or more Worker Processes, primarily for Activity Task Executions.
 
@@ -692,7 +698,7 @@ The Worker Service runs background processing for the replication queue, system 
 
 <!-- _Tags: [term](/tags/term)_ -->
 
-#### [Worker Session](/workers#worker-session)
+#### [Worker Session](/task-routing#worker-session)
 
 A Worker Session is a feature provided by some SDKs that provides a straightforward way to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.
 
@@ -752,13 +758,13 @@ This is the maximum amount of time that a single Workflow Run is restricted to.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_ -->
 
-#### [Workflow Task](/workers#workflow-task)
+#### [Workflow Task](/tasks#workflow-task)
 
 A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Workflow Task Execution](/workers#workflow-task-execution)
+#### [Workflow Task Execution](/tasks#workflow-task-execution)
 
 A Workflow Task Execution occurs when a Worker picks up a Workflow Task and uses it to make progress on the execution of a Workflow Definition.
 
