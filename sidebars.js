@@ -536,7 +536,18 @@ module.exports = {
             "encyclopedia/child-workflows",
             "encyclopedia/visibility",
             "encyclopedia/clusters",
-            "encyclopedia/namespaces",
+            {
+              type: "category",
+              label: "Namespaces",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "encyclopedia/namespaces/namespaces",
+              },
+              items: [
+                   "encyclopedia/namespaces/global-namespaces",
+              ],
+            },
             {
               type: "category",
               label: "Temporal Nexus",
