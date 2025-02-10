@@ -538,11 +538,14 @@ module.exports = {
               type: "category",
               label: "Visibility",
               collapsed: true,
+              link: {
+                type: "doc",
+                id: "encyclopedia/visibility/visibility",
+              },
               items: [
-                "encyclopedia/visibility/visibility",
                 "encyclopedia/visibility/dual-visibility",
                 "encyclopedia/visibility/list-filter",
-                "encyclopedia/visibility/search-attribute"
+                "encyclopedia/visibility/search-attribute",
               ],
             },
             "encyclopedia/clusters",
