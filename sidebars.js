@@ -534,7 +534,17 @@ module.exports = {
             },
             "encyclopedia/workflow-message-passing",
             "encyclopedia/child-workflows",
-            "encyclopedia/visibility",
+            {
+              type: "category",
+              label: "Visibility",
+              collapsed: true,
+              items: [
+                "encyclopedia/visibility/visibility",
+                "encyclopedia/visibility/dual-visibility",
+                "encyclopedia/visibility/list-filter",
+                "encyclopedia/visibility/search-attribute"
+              ],
+            },
             "encyclopedia/clusters",
             {
               type: "category",
