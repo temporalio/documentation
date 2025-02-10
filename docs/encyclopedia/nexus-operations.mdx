@@ -62,7 +62,7 @@ Nexus Operation handlers are created with Temporal SDK builder functions such as
 When you execute a Nexus Operation from a caller Workflow using the Temporal SDK, a command is sent to Temporal to schedule the Nexus Operation which is atomically handed off to the Nexus Machinery.
 The [Nexus Machinery](/glossary#nexus-machinery) uses state-machine-based invocation and completion callbacks to ensure [at-least-once](#at-least-once-execution-semantics-and-idempotency) execution of a Nexus Operation and reliable delivery of the result.
 
-![Nexus Overview](/img/nexus-overview.png)
+![Nexus Overview](/img/cloud/nexus/nexus-overview.png)
 
 The Nexus Machinery is responsible for making the Nexus RPC calls on behalf of the caller Workflow, with [automatic-retries](#automatic-retries).
 This means you don't have to use Nexus RPC directly, only the Temporal SDK along with the Temporal Service.
@@ -71,7 +71,7 @@ This means you don't have to use Nexus RPC directly, only the Temporal SDK along
 
 Nexus supports synchronous Operations that take less than 10 seconds to execute, as measured from the caller's Nexus Machinery.
 
-![Nexus Sync Operation Lifecycle](/img/nexus/nexus-sync-operation.png)
+![Nexus Sync Operation Lifecycle](/img/cloud/nexus/nexus-sync-operation.png)
 
 The lifecycle for a synchronous Nexus Operation, for example to Signal or Query a Workflow:
 
@@ -87,7 +87,7 @@ The lifecycle for a synchronous Nexus Operation, for example to Signal or Query 
 1. Caller Worker polls for a Workflow Task on its Workflow Task Queue.
 1. Caller Workflow gets the Operation result, using the Temporal SDK.
 
-![NexusYourCloud](/img/nexus/nexus-workers-short-sync-op-sequence.png)
+![NexusYourCloud](/img/cloud/nexus/nexus-workers-short-sync-op-sequence.png)
 
 :::tip
 
@@ -100,7 +100,7 @@ If a Nexus handler times out, the Operation will be retried by the caller's Nexu
 
 An asynchronous Nexus Operation may take up to 60 days to complete in Temporal Cloud, which is the maximum Schedule-to-Close-Timeout.
 
-![Nexus Async Operation Lifecycle](/img/nexus/nexus-async-operation.png)
+![Nexus Async Operation Lifecycle](/img/cloud/nexus/nexus-async-operation.png)
 
 The lifecycle of an asynchronous Nexus Operation, with differences between the synchronous lifecycle in bold:
 
@@ -118,7 +118,7 @@ The lifecycle of an asynchronous Nexus Operation, with differences between the s
 1. Caller Worker polls for a Workflow Task on its Workflow Task Queue.
 1. Caller Workflow gets the Operation result, using the Temporal SDK.
 
-![NexusYourCloud](/img/nexus/nexus-workers-short-async-op-sequence.png)
+![NexusYourCloud](/img/cloud/nexus/nexus-workers-short-async-op-sequence.png)
 
 ### Executing arbitrary code from a synchronous Nexus Operation handler {#executing-arbitrary-code-from-a-sync-handler}
 
@@ -126,7 +126,7 @@ Synchronous Nexus Operation handlers can execute arbitrary code, but unlike Acti
 As mentioned above, a synchronous Nexus Operation handler has less than 10 seconds to process a Nexus start Operation request and should stay within the remaining request deadline budget for the Nexus request.
 For example, this may be done by looking at the Request-Timeout header or hooking into cancelation that is triggered when the timeout is exceeded.
 
-![Nexus Operations with Arbitrary Code](/img/nexus/nexus-sync-operation-arbitrary-code.png)
+![Nexus Operations with Arbitrary Code](/img/cloud/nexus/nexus-sync-operation-arbitrary-code.png)
 
 ### System interactions
 
@@ -134,7 +134,7 @@ Temporal Nexus Operations are requested and processed using the Temporal queue-b
 Workers interact with their Namespace gRPC endpoint as before.
 Nexus Machinery on both sides handles the cross-namepace communication.
 
-![Nexus Queue-based Worker Architecture](/img/nexus/nexus-workers.png)
+![Nexus Queue-based Worker Architecture](/img/cloud/nexus/nexus-workers.png)
 
 For example, when you execute a Nexus Operation in a caller Workflow the following Namespace gRPC calls are made:
 
@@ -192,7 +192,7 @@ If the request is successful, the circuit breaker returns to the _closed_ state,
 Once the circuit breaker closes, all requests are allowed through.
 If it fails, the circuit breaker returns to the _half-open_ state for another 60 seconds.
 
-![Flow chart showing the states of the Temporal Nexus Circuit Breaker](/img/nexus/circuit-breaker.png)
+![Flow chart showing the states of the Temporal Nexus Circuit Breaker](/img/cloud/nexus/circuit-breaker.png)
 
 The circuit breaker state is surfaced in a caller Workflow's [Pending Nexus Operations](/nexus/execution-debugging#pending-operations) and in the handler's Workflow [Pending Nexus Callbacks](/nexus/execution-debugging#pending-callbacks).
 You can check the circuit breaker state using the UI, the Temporal CLI, or the `DescribeWorkflowExecution` API.
@@ -201,7 +201,7 @@ When the circuit breaker for a destination pair is tripped (i.e., the circuit br
 
 Here's how that looks in the Web UI:
 
-![Circuit Breaking](/img/nexus/circuit-breaking.png)
+![Circuit Breaking](/img/cloud/nexus/circuit-breaking.png)
 
 In the preceding screen shot, the open circuit breaker has made 1 attempt.
 For a given destination pair, differing Nexus Operations may contribute to tripping the circuit breaker count.
