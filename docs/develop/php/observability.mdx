@@ -117,3 +117,16 @@ public function unsetDestinationTime()
     );
 }
 ```
+
+### How to list Workflow Executions {#list-workflow-executions}
+
+Use the [listWorkflowExecutions()](https://php.temporal.io/classes/Temporal-Client-WorkflowClientInterface.html#method_listWorkflowExecutions) method on the Client and pass a [List Filter](/visibility#list-filter) as an argument to filter the listed Workflows.
+The result is an iterable paginator, so you can use the `foreach` loop to iterate over the results.
+
+```php
+$paginator = $workflowClient->listWorkflowExecutions('WorkflowType="GreetingWorkflow"');
+
+foreach ($paginator as $info) {
+    echo "Workflow ID: {$info->execution->getID()}\n";
+}
+```
