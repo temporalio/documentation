@@ -1,8 +1,8 @@
 ---
 id: index
-title: Namespace replication
-sidebar_label: Namespace replication
-slug: /cloud/replication
+title: High availability features
+sidebar_label: High availability features
+slug: /cloud/high-availability
 description: Temporal Cloud's replicated Namespaces offer automated failover, synchronized data, and replication for workloads requiring disaster-tolerant deployment and 99.99% uptime. Use Global Namespace for self-hosted.
 tags:
   - Temporal Cloud
@@ -14,238 +14,32 @@ keywords:
   - failover
   - high-availability
   - replication
-
-  - multi-region
-  - multi-region namespace
   - namespaces
   - temporal-cloud
   - term
 ---
 
-import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
-import ExpandableDefinition from '@site/src/components/definitions/ExpandableDefinition';
+Temporal Cloud provides high availability features for workloads where availability is critical to your operations.
+When you enable these features, Temporal Cloud automatically synchronizes your data between the primary and a replica, keeping them in sync.
+In case of an incident or an outage, Temporal will [failover](/glossary#failover) your Namespace from the primary to the replica.
+This allows for Workflow Executions to seamlessly continue to make progress with minimal interruptions or data loss.
 
-<<<<<<< HEAD
-Mission-critical deployment means applications must be reliably available even when an unexpected incident occurs.
-Data loss and disruptions to Workflows can severely impact business.
-Temporal's Namespace replication protects applications against outages and downtime by co-locating data in two isolation domains.
-It synchronizes a fallback "replica"<ExpandableDefinition label="Definition" definition="A replica is a synchronized copy of your active Namespace. It provides a ready-to-deploy backup for unexpected outage conditions when your active Namespace becomes unavailable." /> that can take over Namespace duties during service incidents.
-This keeps your Workflows running and your data available, even when your usual Namespace is unavailable.
-Replication provides "Reliability-as-a-Service" at Temporal's higest level of availability guarantees.
+## Replication and Replicas
 
-## Replication and failovers
+High availability (HA) features in Temporal Cloud simplify deployment, ensuring operational continuity and data integrity even during unexpected events impacting an availability zone (AZ) or a region using a process called Replication.
+Replication asynchronously replicates Workflow Executions from an active region to its replica.
+Using Temporal Cloud’s HA features, you can create a replica in the same region or in a different region.
+In the event of network service or performance issues in the active region, your replica is ready to take over.
+Temporal Cloud smoothly transitions control from the active to the replica via a "[failover](/glossary#failover)".
 
-Temporal Cloud’s replicated Namespaces provide disaster-tolerant availability for critical workloads.
-When you [enable replication](/cloud/replication/enable), Temporal Cloud syncs your data and Workflows between an active and a replica Namespace.
-If an incident occurs, Temporal automatically **fails over**<ExpandableDefinition label="Definition" definition="A failover shifts Workflow Execution processing from an active Temporal Namespace to a standby Temporal Namespace replica during outages or other incidents. Temporal Cloud uses replication to duplicate data to the replica Namespace and prevent data loss during failover." /> your Namespace.
+## Achieving Business Continuity with 99.99% SLA
 
-During a failover, your Workflow Executions and Schedules seamlessly transition from the active Namespace to a standby domain.
-This standby domain is called a **replica**, as it replicates the Workflows and data of the active Namespace.
-Once the incident resolves, the Namespaces reconcile and control returns back to the original.
-
-<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-  <img
-    src="/img/cloud/replication/failover.png"
-    alt="Data and Workflows replicate to the Replica. Failover transfers control to the Replica that becomes the active Namespace. After resolution, control fails back to the original"
-    style={{ width: '50%', border: '1px solid #ddd', borderRadius: '4px', margin: '20px' }}
-  />
-</div>
-
-A high availability Namespace creates a single logical Namespace that operates across two domains: one active and one standby.
-Replicated Namespaces combine access for both domains to a unified Namespace endpoint.
-As Workflows progress in the active Namespace, Temporal Cloud replicates History events to the standby domain, ensuring continuity and data integrity.
-
-During an incident or outage in the active domain, Temporal Cloud seamlessly fails over to your replica.
-Failovers allow existing Workflow Executions to continue running and new Workflow Executions to be started.
-Once failover occurs, the replica becomes active.
-After the issue is resolved, the active replica "fails back" and the original Namespace resumes being "active".
-Temporal resumes replication from the original active Namespace to the replica.
-
-<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-  <img
-    src="/img/cloud/replication/logical-namespace.png"
-    alt="Data and Workflows replicate to the Replica. Failover transfers control to the Replica that becomes the active Namespace. After resolution, control fails back to the original"
-    style={{ width: '70%', border: '1px solid #ddd', borderRadius: '4px', margin: '20px' }}
-  />
-</div>
-
-
-<details>
-
-<summary>
-Dive deeper...
-</summary>
-
-An **isolation domain** is a physically isolated data center within a deployment region for a given cloud provider.
-**Regions** consist of multiple isolation domains.
-Isolation domains provide redundancy and fault tolerance.
-
-A **replicated Namespace** consists of an **active Namespace** and a passive, fallback **replica**.
-Depending on your setup, your replica may reside in the same region as your active Namespace (standard replication), or it may be located in an entirely different region (multi-region replication).
-
-After a **failover**, the replica takes on the active role until the incident is resolved.
-After, the replica **fails back** and the original Namespace resumes the active role.
-
-In traditional active/active replication, multiple nodes serve requests and accept writes simultaneously, ensuring strong synchronous data consistency.
-In contrast, with a Temporal Cloud replicated Namespace, only the active Namespace accepts requests and writes at any given time.
-Workflow history events are written to the active Namespace first and then asynchronously replicated to the standby replica, ensuring that the replica remains in sync.
-
-Each high availability Namespace replicates its metadata and Workflow Executions to its connected replica.
-This redundancy, combined with failover capability, provides measurable stability during outages.
-
-A high availability Namespace is typically active in a single isolation domain at any given time, with the passive replica in a standby role.
-The only exception occurs in the event of a <a href="https://en.wikipedia.org/wiki/Network_partition">network partition</a>.
-In this situation, you can promote a standby isolation domain to active status.
-
-**Caution:** This action will temporarily make both regions active.
-Once the network partition is resolved and communication between the isolation domains/regions is restored, a conflict resolution algorithm determines which region remains active.
-This ensures only one Namespace remains active.
-
-</details>
-
-**Temporal Cloud’s high availability features:**
-
-- No manual deployment or configuration needed, just simple push-button operations.
-- Existing Workflows resume seamlessly in the replica with minimal interruption and data loss.
-- No changes needed for Worker and Workflow code during setup or failover.
-- 99.99% contractual [SLA](/cloud/sla).
-
-## Types of high availability
-
-Temporal currently offers the following high availability features.
-Configure these from your Namespace:
-
-- **Replication**:
-  Workflows are seamlessly replicated to a different isolation domain within the same region as the Namespace, such as "us-east-1".<ExpandableDefinition label="Info" definition="The us-east-1 region was Amazon's original and largest region. Many people consider it the 'default' region." />
-  Choose this option for applications architected for a single-region.
-  Your Namespaces failover to an isolation domain within the same region.
-- **Multi-region replication**:
-  Workflows are seamlessly replicated to a different region that you choose.
-  Choose this option when your business requires multi-regional availability and the higher-level of resilience that separated locations offers.
-  You will failover from one region to a separate region.
-=======
-:::tip Support, stability, and dependency info
-
-High-availability Namespaces are in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for Temporal Cloud.
-
-:::
-
-<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**General note, we should be using "Replica" vs "Region", and probably note "Zone". Discuss. "Replica" is the corpus of Workflows. High Availability is a _capability_. Features are "replication" and "multi-region". Features achieve HA workflows in your applications. See messaging guide.**</div>
-
-Temporal Cloud's high-availability Namespaces provide disaster-tolerant deployment for workloads where availability is critical to your operations.
-When you enable high availability, Temporal Cloud automatically synchronizes your data between a primary and a fallback Namespace, keeping them in sync.
-Should an incident occur, Temporal will [failover](/glossary#failover) your Namespace.
-This allows your Workflow Executions and Schedules to seamlessly shift from the active availability zone to the replica in the fallback availability zone.
-
-## Availability zones and replicas
-
-An availability zone is a physically isolated data center within a deployment region for a given cloud provider.
-Regions consist of multiple availability zones, providing redundancy and fault tolerance.
-In some cases, the fallback zone may be in the same region as the primary zone, or it may be in a different region altogether, depending on your deployment configuration.
-
-High-availability simplifies deployment, ensuring operational continuity and data integrity even during unexpected events.
-Regional disruptions or other issues that affect the data centers within a specific availability zone may occur.
-High-availability allows processing to shift from the affected zone to an already-synchronized fallback zone.
-
-This synchronized zone is called a "**replica**."
-The process of duplicating all Workflow data ensures that your replica, which serves as the standby region, is always available and ready to take on the active role.
-
-In the event of network service or performance issues in the active zone, your replica is ready to take over.
-When necessary, Temporal Cloud smoothly transitions control from the active to the standby zone using a process called "[failover](/glossary#failover)".
->>>>>>> parent of cf6c2c1c (EDU-3661: Monday Feb 3 Updates with Nikitha feedback)
-
-## High-availability and business continuity {#high-availability-intro}
-
-<<<<<<< HEAD
-Replication charges apply when you enable high availability.
-For pricing details, visit the Temporal Cloud [Pricing](/cloud/pricing) page.
-
-:::
-
-## Should you choose high availability?
-=======
 For many organizations, ensuring high-availability is critical to maintaining business continuity.
-Temporal Cloud's high-availability Namespace feature includes a 99.99% contractual Service Level Agreement ([SLA](https://docs.temporal.io/cloud/sla)).
-It provides 99.99% availability and 99.99% guarantee against service errors.
+Temporal Cloud's HA features provide a 99.99% contractual Service Level Agreement ([SLA](/cloud/sla)).
 
-A high-availability Namespace (HAN) creates a single logical Namespace that operates across two physical zones: one active and one standby.
-HANs streamline access for both zones to a unified Namespace endpoint.
-As Workflows progress in the active zone, history events are asynchronously replicated to the standby zone, ensuring continuity and data integrity.
+## Should you enable high availability features?
 
-In the event of an incident or outage in the active zone, Temporal Cloud will seamlessly failover to your standby zone.
-Failovers allow existing Workflow Executions to continue running and new Workflow Executions to be started.
-Once failover occurs, the roles of the active and standby zones switch.
-The standby zone becomes active, and the previous active zone becomes the standby.
-After the issue is resolved, the zone "fails back" from the replica to the original.
+With HA features in Temporal Cloud, you can easily meet your availability SLAs, and ensure service disruptions and outages don’t affect the performance of your applications.
 
-## Types of high-availability
->>>>>>> parent of cf6c2c1c (EDU-3661: Monday Feb 3 Updates with Nikitha feedback)
-
-Temporal currently offers the following high-availability options, which you select when upgrading your Namespace to use high-availability:
-
-<<<<<<< HEAD
-- **High availability Namespaces** offer a 99.99% Service Level Agreement ([SLA](/cloud/sla)) for workloads with strict high availability needs.
-  They use two Namespaces in two isolation domains to support standby recovery.
-  In the event of an incident, Temporal Cloud automatically fails over the Namespace to the standby replica.
-  High availability Namespaces' 99.99% availability is enforced by Temporal Cloud's [service error rates SLA](https://docs.temporal.io/cloud/sla).
-- **Namespaces without high availability** include a 99.9% contractual Service Level Agreement ([SLA](/cloud/sla)).
-  In this use, Temporal clients connect to a single Namespace in one deployment domain.
-  For many applications, this offers sufficient availability.
-
-Temporal Cloud provides 99.99% service availability for all Namespaces, both single-region and high availability.
-Our system is designed to limit data loss after recovery when the incident triggering the failover is resolved.
-
-- Our recovery point objective (RPO)<ExpandableDefinition label="Definition" definition="RPO is the maximum acceptable duration during which transactional data might be lost from the service." /> is near-zero.
-  There may be a short period of time during an incident or forced failover when some data is unavailable in the replica.
-  Some Workflow History data won't arrive until networks issue are fixed, enabling the History to finish replicating and the divergent History branches to reconcile.
-- Temporal Cloud proactively responds to incidents by triggering failovers.
-  Our recovery time objective (RTO)<ExpandableDefinition label="Definition" definition="RTO sets a maximum time and service level objective, after which, service must be restored following a disruption." /> is 20 minutes or less per incident.
-
-:::info
-
-During a disaster scenario in which the data on the hard drives in the active Namespace cannot be recovered, the duration of data loss may be as high as the [replication lag](/cloud/replication/best-practices#metrics) at the time of disaster.
-
-:::
-
-=======
-- **In-region replication** -
-  Data is replicated to a separate zone in the same availability region, such as "us-east-1".
-  This option offers near-instantaneous failovers but does not protect against regional disasters like hurricanes where both the primary and the fallback .
-- **Multi-region replication** -
-  Data is replicated to a separate region on the same continent.
-  This option offers the greatest protection against weather events and other possible external causes for regional outages, as the regions are physically separated by large distances.
-  Failover may experience some minor latency.
-
-<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**Did we want to go into further detail about lag and conflict resolution? if so, where?**</div>
-
-<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**Would be very nice to have more compelling explanations here**</div>
-
-:::tip
-
-As Namespace pairing is currently limited to regions within the same continent, South America is excluded as only one region is available.
-
-:::
-
-## Should you choose high-availability?
-
-Should you be using high-availability Namespaces? It depends on your availability requirements:
-
-- High-availability Namespaces offer a 99.99% contractual SLA for workloads with strict high-availability needs.
-  HANs use two Namespaces in two deployment zones to support standby recovery.
-  In the event of a zone failure, Temporal Cloud automatically fails over the HAN Namespace to the standby replica.
-- Single-zone Namespaces include a 99.9% contractual Service Level Agreement ([SLA](/cloud/sla)).
-  In single-zone use, Temporal clients connect to a single Namespace in one deployment zone.
-  For many applications, this offers sufficient availability.
-
-Temporal Cloud provides 99.99% service availability for all Namespaces, both single-region and high-availability.
-
-## Summary
-
-The following list reviews the advantages of high-availability Namespaces:
-
-- No manual deployment or configuration required—just simple push-button operation.
-- Open Workflows continue in the standby zone with minimal interruption and data loss.
-- No changes needed for Worker or Workflow code during setup or failover.
-- 99.99% contractual SLA.
-
->>>>>>> parent of cf6c2c1c (EDU-3661: Monday Feb 3 Updates with Nikitha feedback)
+- Keep your applications online by protecting your Temporal Workflows against outages and service disruptions
+- Replication and Multi-Region Replication offer a 99.99% contractual SLA for workloads with strict uptime requirements, compliance, and regulatory needs; whether you choose to be in a single region or across multiple regions.

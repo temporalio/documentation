@@ -326,7 +326,7 @@ module.exports = {
             "production-deployment/cloud/multi-region",
             {
               type: "category",
-              label: "Namespace replication",
+              label: "High availabilty features",
               collapsed: true,
               link: {
                 type: "doc",
@@ -335,10 +335,10 @@ module.exports = {
               items: [
                 "production-deployment/cloud/high-availability/how-it-works",
                 "production-deployment/cloud/high-availability/enable",
-                "production-deployment/cloud/high-availability/how-it-works",
-                "production-deployment/cloud/high-availability/guarantees",
+                // "production-deployment/cloud/high-availability/guarantees",
                 "production-deployment/cloud/high-availability/monitor",
-                "production-deployment/cloud/high-availability/faq",
+                "production-deployment/cloud/high-availability/failovers",
+                // "production-deployment/cloud/high-availability/faq",
               ],
             },
             {
