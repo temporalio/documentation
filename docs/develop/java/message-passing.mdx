@@ -610,7 +610,7 @@ public class GreetingExample {
 
     public static class GreetingWorkflowImpl implements GreetingWorkflow {
         private final String nameWithTitle;
-        private final String titleHasBeenChecked;
+        private boolean titleHasBeenChecked;
         ...
         // Note the annotation is on a public constructor
         @WorkflowInit
