@@ -1,9 +1,9 @@
 ---
 id: index
-title: High-availability Namespaces
-sidebar_label: High-availability Namespaces
-slug: /cloud/high-availability
-description: Temporal Cloud's High-Availability Namespaces offer automated failover, synchronized data replication, and high-availability for workloads requiring disaster-tolerant deployment and 99.99% uptime. Use Global Namespace for self-hosted.
+title: Namespace replication
+sidebar_label: Namespace replication
+slug: /cloud/replication
+description: Temporal Cloud's replicated Namespaces offer automated failover, synchronized data, and replication for workloads requiring disaster-tolerant deployment and 99.99% uptime. Use Global Namespace for self-hosted.
 tags:
   - Temporal Cloud
   - Production
@@ -13,6 +13,8 @@ keywords:
   - explanation
   - failover
   - high-availability
+  - replication
+
   - multi-region
   - multi-region namespace
   - namespaces
@@ -23,16 +25,17 @@ keywords:
 import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
 import ExpandableDefinition from '@site/src/components/definitions/ExpandableDefinition';
 
-Temporal Cloud offers "Reliability-as-a-Service" to support mission-critical deployment when applications must be highly available.
+Mission-critical deployment means applications must be reliably available even when an unexpected incident occurs.
 Data loss and disruptions to Workflows can severely impact business.
-Replication, the critical component of highly available Namespaces, protects applications against outages and downtime.
-High availability creates a fallback "replica"<ExpandableDefinition label="Definition" definition="A replica is a synchronized copy of your active Namespace used to provide high availability" /> that can take over Namespace duties during service incidents.
+Temporal's Namespace replication protects applications against outages and downtime by co-locating data in two isolation domains.
+It synchronizes a fallback "replica"<ExpandableDefinition label="Definition" definition="A replica is a synchronized copy of your active Namespace. It provides a ready-to-deploy backup for unexpected outage conditions when your active Namespace becomes unavailable." /> that can take over Namespace duties during service incidents.
 This keeps your Workflows running and your data available, even when your usual Namespace is unavailable.
+Replication provides "Reliability-as-a-Service" at Temporal's higest level of availability guarantees.
 
 ## Replication and failovers
 
 Temporal Cloud’s replicated Namespaces provide disaster-tolerant availability for critical workloads.
-When you enable replication, Temporal Cloud syncs your data and Workflows between an active and a replica Namespace.
+When you [enable replication](/cloud/replication/enable), Temporal Cloud syncs your data and Workflows between an active and a replica Namespace.
 If an incident occurs, Temporal automatically **fails over**<ExpandableDefinition label="Definition" definition="A failover shifts Workflow Execution processing from an active Temporal Namespace to a standby Temporal Namespace replica during outages or other incidents. Temporal Cloud uses replication to duplicate data to the replica Namespace and prevent data loss during failover." /> your Namespace.
 
 During a failover, your Workflow Executions and Schedules seamlessly transition from the active Namespace to a standby domain.
@@ -41,7 +44,7 @@ Once the incident resolves, the Namespaces reconcile and control returns back to
 
 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
   <img
-    src="/img/cloud/high-availability/failover.png"
+    src="/img/cloud/replication/failover.png"
     alt="Data and Workflows replicate to the Replica. Failover transfers control to the Replica that becomes the active Namespace. After resolution, control fails back to the original"
     style={{ width: '50%', border: '1px solid #ddd', borderRadius: '4px', margin: '20px' }}
   />
@@ -59,7 +62,7 @@ Temporal resumes replication from the original active Namespace to the replica.
 
 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
   <img
-    src="/img/cloud/high-availability/logical-namespace.png"
+    src="/img/cloud/replication/logical-namespace.png"
     alt="Data and Workflows replicate to the Replica. Failover transfers control to the Replica that becomes the active Namespace. After resolution, control fails back to the original"
     style={{ width: '70%', border: '1px solid #ddd', borderRadius: '4px', margin: '20px' }}
   />
@@ -83,7 +86,7 @@ After a **failover**, the replica takes on the active role until the incident is
 After, the replica **fails back** and the original Namespace resumes the active role.
 
 In traditional active/active replication, multiple nodes serve requests and accept writes simultaneously, ensuring strong synchronous data consistency.
-In contrast, with a Temporal Cloud high-availability Namespace, only the active Namespace accepts requests and writes at any given time.
+In contrast, with a Temporal Cloud replicated Namespace, only the active Namespace accepts requests and writes at any given time.
 Workflow history events are written to the active Namespace first and then asynchronously replicated to the standby replica, ensuring that the replica remains in sync.
 
 Each high availability Namespace replicates its metadata and Workflow Executions to its connected replica.
@@ -150,7 +153,7 @@ Our system is designed to limit data loss after recovery when the incident trigg
 
 :::info
 
-During a disaster scenario in which the data on the hard drives in the active Namespace cannot be recovered, the duration of data loss may be as high as the [replication lag](/cloud/high-availability/best-practices#metrics) at the time of disaster.
+During a disaster scenario in which the data on the hard drives in the active Namespace cannot be recovered, the duration of data loss may be as high as the [replication lag](/cloud/replication/best-practices#metrics) at the time of disaster.
 
 :::
 

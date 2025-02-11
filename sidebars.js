@@ -28,18 +28,6 @@ module.exports = {
             "evaluate/development-production-features/workflow-message-passing",
             "evaluate/development-production-features/debugging",
             "evaluate/development-production-features/interrupt-workflow",
-            {
-              type: "category",
-              label: "High Availability",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "evaluate/development-production-features/high-availability",
-              },
-              items: [
-                "evaluate/development-production-features/multi-region-namespace",
-              ],
-            },
             "evaluate/development-production-features/testing-suite",
             "evaluate/development-production-features/observability",
             "evaluate/development-production-features/data-encryption",
@@ -338,7 +326,7 @@ module.exports = {
             "production-deployment/cloud/multi-region",
             {
               type: "category",
-              label: "High-availability Namespaces",
+              label: "Namespace replication",
               collapsed: true,
               link: {
                 type: "doc",

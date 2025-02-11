@@ -2,8 +2,8 @@
 id: best-practices
 title: best-practices
 sidebar_label: Best Practices
-slug: /cloud/high-availability/best-practices
-description: Temporal Cloud's High-Availability Namespaces offer automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime. Use Global Namespace for self-hosted.
+slug: /cloud/replication/best-practices
+description: Temporal Cloud's replicated Namespaces offer automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime. Use Global Namespace for self-hosted.
 tags:
   - Temporal Cloud
   - Production
@@ -13,6 +13,7 @@ keywords:
   - explanation
   - failover
   - high-availability
+  - replication
   - namespaces
   - temporal-cloud
   - term
@@ -22,12 +23,12 @@ import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/rela
 
 This page collects best practices related to high availability Namespaces.
 
-- [Preparing Worker deployment](/cloud/high-availability/best-practices#worker-deployment)
-- [Set up secure routing for failovers](/cloud/high-availability/best-practices#routing)
-- [PrivateLink routing](/cloud/high-availability/best-practices#privatelink-routing)
-- [High availability Failover testing](/cloud/high-availability/best-practices#testing)
-- [Monitoring replication lag metrics](/cloud/high-availability/best-practices#metrics)
-- [Viewing operational events](/cloud/high-availability/best-practices#events)
+- [Preparing Worker deployment](/cloud/replication/best-practices#worker-deployment)
+- [Set up secure routing for failovers](/cloud/replication/best-practices#routing)
+- [PrivateLink routing](/cloud/replication/best-practices#privatelink-routing)
+- [High availability Failover testing](/cloud/replication/best-practices#testing)
+- [Monitoring replication lag metrics](/cloud/replication/best-practices#metrics)
+- [Viewing operational events](/cloud/replication/best-practices#events)
 
 ## High availability Failover testing {#testing}
 
@@ -49,7 +50,7 @@ Practice runs help ensure the process runs smoothly during real incidents in pro
 
 Trigger testing can:
 
-- **Validate high-availability deployments**:
+- **Validate replicated deployments**:
   In multi-region setups, failover testing ensures your app can run from another region when the primary region experiences outages.
   In single-region setups, failover testing instead works with isolation domain.
   This maintains high availability in mission-critical deployments.
@@ -85,7 +86,7 @@ Testing failovers regularly ensures your Temporal-based applications remain resi
 Enabling high availability for Namespaces doesn't require specific Worker configuration.
 The process is invisible to the Workers.
 When a Namespace fails over to the replica, the DNS redirection orchestrated by Temporal ensures that your existing Workers continue to poll the Namespace without interruption.
-More details are available in the [Routing](/cloud/high-availability/best-practices#routing) section.
+More details are available in the [Routing](/cloud/replication/best-practices#routing) section.
 
 - When a Namespace fails over to a replica in a different region, Workers will be communicating cross-region.
   If your application can’t tolerate this latency, deploy a second set of Workers in this region or opt for a replica in the same region.
@@ -204,7 +205,7 @@ Errors -- if any occur -- will also surface in the Namespace Web UI.
 
 :::info
 
-You may notice that high-availability Namespaces shows twice (2x) the Action count in `temporal_cloud_v0_total_action_count`.
+You may notice that replicated Namespaces shows twice (2x) the Action count in `temporal_cloud_v0_total_action_count`.
 This doubling happens due to regional replication.
 
 :::

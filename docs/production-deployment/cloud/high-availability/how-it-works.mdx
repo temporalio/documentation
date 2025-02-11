@@ -2,8 +2,8 @@
 id: how-it-works
 title: How it works
 sidebar_label: How it works
-slug: /cloud/high-availability/how-it-works
-description: Temporal Cloud's High-Availability Namespaces offer automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime. Use Global Namespace for self-hosted.
+slug: /cloud/replication/how-it-works
+description: Temporal Cloud's Replicated Namespaces offer automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime. Use Global Namespace for self-hosted.
 tags:
   - Temporal Cloud
   - Production
@@ -13,6 +13,8 @@ keywords:
   - explanation
   - failover
   - high-availability
+  - replication
+
   - multi-region
   - multi-region namespace
   - namespaces
@@ -37,9 +39,9 @@ In this context, P95 means 95% of requests are processed faster than the specifi
 
 Replication lags are a concern because:
 
-- Replication lags may lead to a [forced failover](/cloud/high-availability/how-it-works#forced-failover), potentially causing Workflows to rollback in progress.
+- Replication lags may lead to a [forced failover](/cloud/replication/how-it-works#forced-failover), potentially causing Workflows to rollback in progress.
 - Lags may cause recently started Workflows to be temporarily unavailable until the Namespace recovers.
-  Temporal event versioning and [conflict resolution mechanisms](/cloud/high-availability/how-it-works#conflict-resolution) ensure the Workflow Event History can be replayed.
+  Temporal event versioning and [conflict resolution mechanisms](/cloud/replication/how-it-works#conflict-resolution) ensure the Workflow Event History can be replayed.
   Critical operations like Signals won’t be lost.
 
 ## Types of Failover scenarios
@@ -70,7 +72,7 @@ During this period:
 ### Forced failover {#forced-failover}
 
 In this mode, Temporal Cloud immediately activates the replica in the standby Namespace.
-Events that weren't replicated due to [replication lag](/cloud/high-availability/best-practices#metrics) undergo [conflict resolution](/cloud/high-availability/how-it-works#conflict-resolution) when they reach the new active Namespace.
+Events that weren't replicated due to [replication lag](/cloud/replication/best-practices#metrics) undergo [conflict resolution](/cloud/replication/how-it-works#conflict-resolution) when they reach the new active Namespace.
 
 *This mode prioritizes _availability_ over consistency.*
 
@@ -175,7 +177,7 @@ Once the incident is resolved, Temporal Cloud performs a "failback" by shifting 
 
 :::info
 
-You can test the failover of your high availability Namespace by manually [triggering a failover](/cloud/high-availability/failovers#triggering-failovers) using the UI page or the 'tcld' CLI utility.
+You can test the failover of your high availability Namespace by manually [triggering a failover](/cloud/replication/failovers#triggering-failovers) using the UI page or the 'tcld' CLI utility.
 In most scenarios, we recommend you let Temporal handle failovers for you.
 
 :::

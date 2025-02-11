@@ -2,8 +2,8 @@
 id: failovers
 title: How to trigger failovers
 sidebar_label: How to trigger failovers
-slug: /cloud/high-availability/failovers
-description: Temporal Cloud's High-Availability Namespaces offer automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime. Use Global Namespace for self-hosted.
+slug: /cloud/replication/failovers
+description: Temporal Cloud's Replicated Namespaces offer automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime. Use Global Namespace for self-hosted.
 tags:
   - Temporal Cloud
   - Production
@@ -13,6 +13,8 @@ keywords:
   - explanation
   - failover
   - high-availability
+  - replication
+
   - multi-region
   - multi-region namespace
   - namespaces
@@ -33,7 +35,7 @@ Standby Namespace replicas duplicate data and prevent data loss during failover.
 ## Triggering failovers {#triggering-failovers}
 
 Temporal automatically initiates failovers when an incident or outage affects a high availability Namespace.
-You can also [trigger a failover](/cloud/high-availability/failovers#triggering-failovers) based on your own custom alerts and for testing purposes.
+You can also [trigger a failover](/cloud/replication/failovers#triggering-failovers) based on your own custom alerts and for testing purposes.
 This section explains how to manually trigger a failover and what to expect afterward.
 
 :::warning Check Your Replication Lag
@@ -43,7 +45,7 @@ A forced failover when there is a large replication lag has a higher likelihood 
 
 :::
 
-For details on how Temporal detects conditions and triggers failovers automatically, see [the failover process](/cloud/high-availability/failovers).
+For details on how Temporal detects conditions and triggers failovers automatically, see [the failover process](/cloud/replication/failovers).
 
 ## Initiating manual failovers {#manual-failovers}
 
