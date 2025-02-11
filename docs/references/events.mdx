@@ -587,11 +587,11 @@ This Event type indicates that a Nexus Operation Execution was started.
 This Event is added to the caller's Workflow History for Asynchronous Nexus Operations, for example those that are backed by a Workflow.
 The Event is not added to the caller's Workflow History for Synchronous Nexus Operations, since they transition directly to [NexusOperationCompleted](#nexusoperationcompleted) or another final state such as [NexusOperationFailed](#nexusoperationfailed) when the response is provided synchronously by the Nexus handler.
 
-| Field              | Description                                                                                                                                    |
-| :----------------- | :--------------------------------------------------------------------------------------------------------------------------------------------- |
-| scheduled_event_id | The ID of the [NexusOperationScheduled](#nexusoperationscheduled) event this task corresponds to.                                              |
+| Field              | Description                                                                                                                                       |
+| :----------------- | :------------------------------------------------------------------------------------------------------------------------------------------------ |
+| scheduled_event_id | The ID of the [NexusOperationScheduled](#nexusoperationscheduled) event this task corresponds to.                                                 |
 | operation_token    | The operation token returned by the Nexus handler in the response to the StartOperation request. This token is used when canceling the operation. |
-| request_id         | The request ID allocated at schedule time.                                                                                                     |
+| request_id         | The request ID allocated at schedule time.                                                                                                        |
 
 ### NexusOperationCompleted
 
