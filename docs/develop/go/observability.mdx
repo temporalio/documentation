@@ -297,7 +297,7 @@ The typical method of retrieving a Workflow Execution is by its Workflow Id.
 
 However, sometimes you'll want to retrieve one or more Workflow Executions based on another property. For example, imagine you want to get all Workflow Executions of a certain type that have failed within a time range, so that you can start new ones with the same arguments.
 
-You can do this with [Search Attributes](/visibility#search-attribute).
+You can do this with [Search Attributes](/search-attribute).
 
 - [Default Search Attributes](/visibility#default-search-attributes) like `WorkflowType`, `StartTime` and `ExecutionStatus` are automatically added to Workflow Executions.
 - _Custom Search Attributes_ can contain their own domain-specific data (like `customerId` or `numItems`).
@@ -318,7 +318,7 @@ The steps to using custom Search Attributes are:
 
 Here is how to query Workflow Executions:
 
-The [ListWorkflow()](https://pkg.go.dev/go.temporal.io/sdk/client#Client.ListWorkflow) function retrieves a list of [Workflow Executions](/workflows#workflow-execution) that match the [Search Attributes](/visibility#search-attribute) of a given [List Filter](/list-filter).
+The [ListWorkflow()](https://pkg.go.dev/go.temporal.io/sdk/client#Client.ListWorkflow) function retrieves a list of [Workflow Executions](/workflows#workflow-execution) that match the [Search Attributes](/search-attribute) of a given [List Filter](/list-filter).
 The metadata returned from the [Visibility](/clusters#visibility) store can be used to get a Workflow Execution's history and details from the [Persistence](/clusters#persistence) store.
 
 Use a List Filter to define a `request` to pass into `ListWorkflow()`.

@@ -484,7 +484,7 @@ A Schedule-To-Start Timeout is the maximum amount of time that is allowed from w
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_ -->
 
-#### [Search Attribute](/visibility#search-attribute)
+#### [Search Attribute](/search-attribute)
 
 A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.
 

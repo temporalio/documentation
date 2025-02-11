@@ -1242,7 +1242,7 @@
     },
     {
       "source": "/concepts/what-is-a-search-attribute",
-      "destination": "/visibility#search-attribute"
+      "destination": "/search-attribute"
     },
     {
       "source": "/concepts/what-is-a-side-effect",
@@ -1502,7 +1502,7 @@
     },
     {
       "source": "/server-workflow-search",
-      "destination": "/visibility#search-attribute"
+      "destination": "/search-attribute"
     },
     {
       "source": "/server/elasticsearch-setup",
