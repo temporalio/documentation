@@ -378,7 +378,7 @@ Caller Workflows and Nexus handlers don't have to use Nexus RPC directly, since 
 #### Nexus Operation
 
 An arbitrary-duration operation that may be synchronous or asynchronous, short-lived, or long-lived, and used to connect durable executions within and across Namespaces, clusters, regions, and clouds.
-Unlike a traditional RPC, an asynchronous Nexus Operation has an operation identity that can be used to re-attach to a long-lived Nexus Operation, for example, one backed by a Temporal Workflow.
+Unlike a traditional RPC, an asynchronous Nexus Operation has an operation token that can be used to re-attach to a long-lived Nexus Operation, for example, one backed by a Temporal Workflow.
 Nexus Operations support a uniform interface to get the status of an operation or its result, receive a completion callback, or cancel the operation – all of which are fully integrated into the Temporal Platform.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->

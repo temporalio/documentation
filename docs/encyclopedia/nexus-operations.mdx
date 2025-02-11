@@ -33,7 +33,7 @@ Temporal Nexus is in [Public Preview](/evaluate/development-production-features/
 
 [Nexus Operations](/glossary#nexus-operation) are arbitrary-duration operations that may be synchronous or asynchronous, short-lived or long-lived, and are used to connect Temporal Applications within and across Namespaces, clusters, regions, and clouds.
 
-Unlike a traditional RPC, an asynchronous Nexus Operation has an operation identity that can be used to re-attach to a long-lived Nexus Operation, for example, one backed by a Temporal Workflow.
+Unlike a traditional RPC, an asynchronous Nexus Operation has an operation token that can be used to re-attach to a long-lived Nexus Operation, for example, one backed by a Temporal Workflow.
 Nexus Operations support a uniform interface to get the status of an operation or its result, receive a completion callback, or cancel the operation – all of which are fully integrated into the Temporal Platform.
 
 ## SDK support
@@ -143,7 +143,7 @@ For example, when you execute a Nexus Operation in a caller Workflow the followi
 1. **RespondNexusTaskCompleted** or **RespondNexusTaskFailed** is used by the handler Worker to return the Nexus Task result.
    When asked to start a Nexus Operation, the Nexus handler decides if the Operation will be synchronous or asynchronous.
    1. This is typically a static decision based on the [Temporal SDK builder function used](#sdk-support).
-   1. [Asynchronous Nexus Operations](#asynchronous-operation-lifecycle), created with the New-Workflow-Run-Operation SDK helper, will return a Nexus Operation ID, that can be used to perform additional actions like canceling an Operation.
+   1. [Asynchronous Nexus Operations](#asynchronous-operation-lifecycle), created with the New-Workflow-Run-Operation SDK helper, will return a Nexus Operation token, that can be used to perform additional actions like canceling an Operation.
    1. [Synchronous Nexus Operations](#synchronous-operation-lifecycle), created with the New-Sync-Operation SDK helper, will return the Operation result directly.
    1. The caller's Nexus Machinery receives the result and records a NexusOperation event in the caller's Workflow History.
 1. **PollWorkflowTaskQueue** is used by the caller Worker to receive a Workflow Task with the Nexus Operation event which may be
@@ -227,7 +227,7 @@ Pending Nexus Operations: 1
   Endpoint                 my-nexus-endpoint
   Service                  nexus-playground
   Operation                sync-op-ok
-  OperationID
+  OperationToken
   State                    Blocked
   Attempt                  1
   ScheduleToCloseTimeout   1d 0h 0m 0s
@@ -250,7 +250,7 @@ Pending Nexus Operations: 1
   Endpoint                            my-nexus-endpoint
   Service                             nexus-playground
   Operation                           async-op-workflow-wait-for-cancel
-  OperationID                         async-op-workflow-wait-for-cancel-20250124150655
+  OperationToken                      eyJ2IjowLCJ0IjoxLCJucyI6Im5zIiwid2lkIjoidyJ
   State                               Started
   Attempt                             1
   ScheduleToCloseTimeout              1d 0h 0m 0s

@@ -152,7 +152,7 @@ Pending Nexus Operations: 1
   Endpoint                 myendpoint
   Service                  my-hello-service
   Operation                echo
-  OperationID
+  OperationToken
   State                    BackingOff
   Attempt                  6
   ScheduleToCloseTimeout   0s
@@ -250,7 +250,7 @@ For example, if an Activity Execution times out, the `cause` is a [Timeout Failu
 ## Nexus Operation Failure
 
 A Nexus Operation Failure is delivered to the Workflow Execution when a Nexus Operation fails.
-It contains information about the failure and the Nexus Operation Execution; for example, the Nexus Operation name and Nexus Operation ID.
+It contains information about the failure and the Nexus Operation Execution; for example, the Nexus Operation name and Nexus Operation token.
 The reason for the failure is in the message and cause (typically an Application Error or a Canceled Error).
 
 - Go: NexusOperationError
