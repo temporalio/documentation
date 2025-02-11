@@ -312,13 +312,13 @@ The steps to using custom Search Attributes are:
 - Read the value of the Search Attribute:
   - On the Client by calling `DescribeWorkflow`.
   - In the Workflow by looking at `WorkflowInfo`.
-- Query Workflow Executions by the Search Attribute using a [List Filter](/visibility#list-filter):
+- Query Workflow Executions by the Search Attribute using a [List Filter](/list-filter):
   - [In the Temporal CLI](/cli/workflow#list).
   - In code by calling `ListWorkflowExecutions`.
 
 Here is how to query Workflow Executions:
 
-The [ListWorkflow()](https://pkg.go.dev/go.temporal.io/sdk/client#Client.ListWorkflow) function retrieves a list of [Workflow Executions](/workflows#workflow-execution) that match the [Search Attributes](/visibility#search-attribute) of a given [List Filter](/visibility#list-filter).
+The [ListWorkflow()](https://pkg.go.dev/go.temporal.io/sdk/client#Client.ListWorkflow) function retrieves a list of [Workflow Executions](/workflows#workflow-execution) that match the [Search Attributes](/visibility#search-attribute) of a given [List Filter](/list-filter).
 The metadata returned from the [Visibility](/clusters#visibility) store can be used to get a Workflow Execution's history and details from the [Persistence](/clusters#persistence) store.
 
 Use a List Filter to define a `request` to pass into `ListWorkflow()`.
@@ -328,7 +328,7 @@ request := &workflowservice.ListWorkflowExecutionsRequest{ Query: "CloseTime = m
 ```
 
 This `request` value returns only open Workflows.
-For more List Filter examples, see the [examples provided for List Filters in the Temporal Visibility guide.](/visibility#list-filter-examples)
+For more List Filter examples, see the [examples provided for List Filters in the Temporal Visibility guide.](/list-filter#list-filter-examples)
 
 ```go
 resp, err := temporalClient.ListWorkflow(ctx.Background(), request)

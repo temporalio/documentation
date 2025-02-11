@@ -187,7 +187,7 @@ The steps to using custom Search Attributes are:
 - Read the value of the Search Attribute:
   - On the Client by calling `Describe` on a `WorkflowHandle`.
   - In the Workflow by looking at `WorkflowInfo`.
-- Query Workflow Executions by the Search Attribute using a [List Filter](/visibility#list-filter):
+- Query Workflow Executions by the Search Attribute using a [List Filter](/list-filter):
   - [In the Temporal CLI](/cli/operator#list-2)
   - In code by calling `ListWorkflowsAsync`.
 
@@ -195,7 +195,7 @@ The steps to using custom Search Attributes are:
 
 **How to list Workflow Executions using the .NET SDK**
 
-Use the [ListWorkflowsAsync()](https://dotnet.temporal.io/api/Temporalio.Client.ITemporalClient.html#Temporalio_Client_ITemporalClient_ListWorkflowsAsync_System_String_Temporalio_Client_WorkflowListOptions_) method on the Client and pass a [List Filter](/visibility#list-filter) as an argument to filter the listed Workflows.
+Use the [ListWorkflowsAsync()](https://dotnet.temporal.io/api/Temporalio.Client.ITemporalClient.html#Temporalio_Client_ITemporalClient_ListWorkflowsAsync_System_String_Temporalio_Client_WorkflowListOptions_) method on the Client and pass a [List Filter](/list-filter) as an argument to filter the listed Workflows.
 The result is an async enumerable.
 
 ```csharp

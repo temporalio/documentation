@@ -260,7 +260,7 @@ A History Shard is an important unit within a Temporal Service by which the scal
 
 <!-- _Tags: [term](/tags/term)_ -->
 
-#### [List Filter](/visibility#list-filter)
+#### [List Filter](/list-filter)
 
 A List Filter is the SQL-like string that is provided as the parameter to an advanced Visibility List API.
 

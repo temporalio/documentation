@@ -467,7 +467,7 @@ The steps to using custom Search Attributes are:
 - Read the value of the Search Attribute:
   - On the Client by calling `DescribeWorkflow`.
   - In the Workflow by looking at `WorkflowInfo`.
-- Query Workflow Executions by the Search Attribute using a [List Filter](/visibility#list-filter):
+- Query Workflow Executions by the Search Attribute using a [List Filter](/list-filter):
   - [With the Temporal CLI](/cli/workflow#list).
   - In code by calling `ListWorkflowExecutions`.
 
@@ -484,7 +484,7 @@ const response = await connection.workflowService.listWorkflowExecutions({
 });
 ```
 
-where `query` is a [List Filter](/visibility#list-filter).
+where `query` is a [List Filter](/list-filter).
 
 ### How to set custom Search Attributes {#custom-search-attributes}
 
