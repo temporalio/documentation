@@ -33,7 +33,7 @@ To enable advanced Visibility on your SQL databases, ensure that you do the foll
 - [Upgrade your Temporal Server](/self-hosted-guide/upgrade-server#upgrade-server) to version 1.20 or later.
 - [Update your database schemas](/self-hosted-guide/upgrade-server#upgrade-server) for MySQL to version 8.0.17 (or later), PostgreSQL to version 12 (or later), or SQLite to v3.31.0 (or later).
 
-Beginning with Temporal Server v1.21, you can set up a secondary Visibility store in your Temporal Service to enable [Dual Visibility](/visibility#dual-visibility).
+Beginning with Temporal Server v1.21, you can set up a secondary Visibility store in your Temporal Service to enable [Dual Visibility](/dual-visibility).
 This is useful for migrating your Visibility store database.
 
 #### Supported databases
@@ -459,7 +459,7 @@ Ensure that the following privileges are granted for the Elasticsearch Temporal 
 
 :::
 
-To enable [Dual Visibility](/visibility#dual-visibility), set up a secondary Visibility store with your primary Visibility store, and configure your Temporal Service to enable read and/or write operations on the secondary Visibility store.
+To enable [Dual Visibility](/dual-visibility), set up a secondary Visibility store with your primary Visibility store, and configure your Temporal Service to enable read and/or write operations on the secondary Visibility store.
 
 With Dual Visibility, you can read from only one Visibility store at a time, but can configure your Temporal Service to write to primary only, secondary only, or to both primary and secondary stores.
 
@@ -650,7 +650,7 @@ For details on the configuration options, see:
 
 :::
 
-To migrate your Visibility database, [set up a secondary Visibility store](#dual-visibility) to enable [Dual Visibility](/visibility#dual-visibility), and update the dynamic configuration in your Temporal Service to update the read and write operations for the Visibility store.
+To migrate your Visibility database, [set up a secondary Visibility store](#dual-visibility) to enable [Dual Visibility](/dual-visibility), and update the dynamic configuration in your Temporal Service to update the read and write operations for the Visibility store.
 
 Dual Visibility setup is optional but useful in gradually migrating your Visibility data to another database.
 

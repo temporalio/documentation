@@ -163,7 +163,7 @@ Start Delay determines the amount of time to wait before initiating a Workflow E
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [delay-workflow](/tags/delay-workflow)_ -->
 
-#### [Dual Visibility](/visibility#dual-visibility)
+#### [Dual Visibility](/dual-visibility)
 
 Dual Visibility is a feature, specific to a Self-hosted Temporal Service, that lets you set a secondary Visibility store in your Temporal Service to facilitate migrating your Visibility data from one database to another.
 
