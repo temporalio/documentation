@@ -625,6 +625,14 @@ class GreetingExample
 }
 ```
 
+:::note
+
+By default, the Workflow Handler runs before Signals and Updates in PHP SDK v2. This behavior is incorrect.
+To avoid breaking already written Workflows, since PHP SDK v2.11.0, a [feature flag](https://php.temporal.io/classes/Temporal-Worker-FeatureFlags.html#property_workflowDeferredHandlerStart) was added to enhance the behavior of the Workflow Handler.
+Make sure to set this flag to `true` to enable the correct behavior.
+
+:::
+
 ### Use `Mutex` to prevent concurrent handler execution {#control-handler-concurrency}
 
 Concurrent processes can interact in unpredictable ways.
