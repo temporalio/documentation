@@ -578,6 +578,53 @@ public function myUpdate()
 
 See [Finishing handlers before the Workflow completes](/encyclopedia/workflow-message-passing#finishing-message-handlers) for more information.
 
+### Use `#[WorkflowInit]` to operate on Workflow input before any handler executes
+
+Normally, your Workflows constructor won't have any parameters.
+However, if you use the `#[WorkflowInit]` attribute on your constructor, you can give it the same [Workflow parameters](/develop/php/core-application#workflow-parameters) as your `#[WorkflowMethod]`.
+The SDK will then ensure that your constructor receives the Workflow input arguments that the [Client sent](/develop/php/temporal-clients#start-workflow-execution).
+The Workflow input arguments are also passed to your `#[WorkflowMethod]` method -- that always happens, whether or not you use the `#[WorkflowInit]` attribute.
+This is useful if you have message handlers that need access to Workflow input: see [Initializing the Workflow first](/encyclopedia/workflow-message-passing#workflow-initializers).
+
+Here's an example.
+Notice that the constructor and `getGreeting` must have the same parameters:
+
+```php
+use Temporal\Workflow;
+
+#[Workflow\WorkflowInterface]
+class GreetingExample
+{
+    private readonly string $nameWithTitle;
+    private bool $titleHasBeenChecked;
+
+    // Note the annotation is on a public constructor
+    #[Workflow\WorkflowInit]
+    public function __construct(string $input)
+    {
+        $this->nameWithTitle = 'Sir ' . $input;
+        $this->titleHasBeenChecked = false;
+    }
+
+    #[Workflow\WorkflowMethod]
+    public function getGreeting(string $input)
+    {
+        yield Workflow::await(fn() => $this->titleHasBeenChecked);
+        return "Hello " . $this->nameWithTitle;
+    }
+
+    #[Workflow\UpdateMethod]
+    public function checkTitleValidity()
+    {
+        // 👉 The handler is now guaranteed to see the workflow input
+        // after it has been processed by the constructor.
+        $isValid = yield Workflow::executeActivity('activity.checkTitleValidity', [$this->nameWithTitle]);
+        $this->titleHasBeenChecked = true;
+        return $isValid;
+    }
+}
+```
+
 ### Use `Mutex` to prevent concurrent handler execution {#control-handler-concurrency}
 
 Concurrent processes can interact in unpredictable ways.
@@ -585,12 +632,14 @@ Incorrectly written [concurrent message-passing](/encyclopedia/workflow-message-
 Here's an example of a pathological case:
 
 ```php
-#[WorkflowInterface]
+use Temporal\Workflow;
+
+#[Workflow\WorkflowInterface]
 class MyWorkflow
 {
     // ...
 
-    #[SignalMethod]
+    #[Workflow\SignalMethod]
     public function badAsyncHandler()
     {
         $data = yield Workflow::executeActivity(
