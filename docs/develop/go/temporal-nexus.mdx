@@ -124,7 +124,7 @@ The `temporalnexus` package has builders to create Nexus Operations and other he
 - `GetClient` \- Get the Temporal Client that the Worker was initialized with for synchronous RPC handlers backed by
   Temporal primitives such as for Signals, and Queries
 
-This tutorial starts with a sync Operation handler example using the `nexus.NewSyncOperation` method, and then uses `NewWorkflowRunOperation` to start a handler Workflow from a Nexus Operation.
+This tutorial starts with a sync Operation handler example using the `nexus.NewSyncOperation` method, and then shows how to create an async Operation handler that uses `NewWorkflowRunOperation` to start a handler Workflow from a Nexus Operation.
 
 ### Develop a Synchronous Nexus Operation handler
 
