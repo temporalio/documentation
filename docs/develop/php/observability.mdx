@@ -82,24 +82,22 @@ $workflow = $workflowClient->newWorkflowStub(
 
 ### How to upsert Search Attributes {#upsert-search-attributes}
 
-You can upsert Search Attributes to add or update Search Attributes from within Workflow code.
-
-To upsert Search Attributes within a Workflow, use `Workflow::upsertSearchAttributes()`.
+Within the Workflow code, you can dynamically add or update Search Attributes using [`upsertTypedSearchAttributes`](https://php.temporal.io/classes/Temporal-Workflow.html#method_upsertTypedSearchAttributes).
+This method is particularly useful for Workflows whose attributes need to change based on internal logic or external events.
 
 ```php
-class GreetingWorkflow implements GreetingWorkflowInterface
+#[Workflow\UpdateMethod]
+public function postponeDestinationTime(\DateInterval $interval)
 {
-    public function getGreeting(string $name)
-    {
-        Workflow::upsertSearchAttributes(
-            [
-                'CustomKeywordField' => 'attr1-value',
-                'CustomIntField' => 123,
-            ]
-        );
+    // Get the key for the DestinationTime attribute
+    $keyDestinationTime = SearchAttributeKey::forDatetime('DestinationTime');
 
-        // ...
-    }
+    /** @var DateTimeImmutable $destinationTime */
+    $destinationTime = Workflow::getInfo()->typedSearchAttributes->get($keyDestinationTime);
+
+    Workflow::upsertTypedSearchAttributes(
+        $keyDestinationTime->valueSet($destinationTime->add($interval)),
+    );
 }
 ```
 
