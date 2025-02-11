@@ -103,6 +103,17 @@ public function postponeDestinationTime(\DateInterval $interval)
 
 ### How to remove a Search Attribute from a Workflow {#remove-search-attribute}
 
-To remove a Search Attribute that was previously set, set it to an empty array: `[]`.
+To remove a Search Attribute that was previously set, set it to an empty Map.
 
-To remove a Search Attribute that was previously set, set it to an empty array `[]`.
+```php
+#[Workflow\UpdateMethod]
+public function unsetDestinationTime()
+{
+    // Get the key for the DestinationTime attribute
+    $keyDestinationTime = SearchAttributeKey::forDatetime('DestinationTime');
+
+    Workflow::upsertTypedSearchAttributes(
+        $keyDestinationTime->valueUnset(),
+    );
+}
+```
