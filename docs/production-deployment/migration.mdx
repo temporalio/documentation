@@ -65,7 +65,7 @@ To accomplish this migration, cancel your current Workflow and pass the current 
 Refer to [this repository](https://github.com/temporalio/temporal-migration) for an example of migrating running Workflows in Java.
 
 When performing a live migration, make sure your Worker capacity can support the migration load.
-Both a [Signal](/encyclopedia/sending-messages#sending-signals) and a [Query](/encyclopedia/workflow-message-passing#sending-queries) will be executed during the course of the migration.
+Both a [Signal](/sending-messages#sending-signals) and a [Query](/sending-messages#sending-queries) will be executed during the course of the migration.
 Also, the Query API loads the entire history of Workflows into Workers to compute the result (if they are not already cached).
 That means that your self-hosted Temporal Service Worker capacity will need to support having those executions in memory to serve those requests.
 The volume of these requests might be high to execute against all the matches to a `ListFilter`.

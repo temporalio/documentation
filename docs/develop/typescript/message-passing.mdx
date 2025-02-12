@@ -49,7 +49,7 @@ Follow these guidelines when writing your message handlers:
 
 ### Query handlers {#queries}
 
-A [Query](/encyclopedia/workflow-message-passing#sending-queries) is a synchronous operation that retrieves state from a Workflow Execution:
+A [Query](/sending-messages#sending-queries) is a synchronous operation that retrieves state from a Workflow Execution:
 
 ```typescript
 export enum Language {
@@ -97,7 +97,7 @@ export async function greetingWorkflow(): Promise<string> {
 
 ### Signal handlers {#signals}
 
-A [Signal](/encyclopedia/sending-messages#sending-signals) is an asynchronous message sent to a running Workflow Execution to change its state and control its flow:
+A [Signal](/sending-messages#sending-signals) is an asynchronous message sent to a running Workflow Execution to change its state and control its flow:
 
 ```typescript
 // 👉 Use the object returned by defineSignal to set the Signal handler in

@@ -417,7 +417,7 @@ Learn more about the Public Preview release stage
 
 <!-- _Tags: [product-release-stages](/tags/product-release-stages), [term](/tags/term)_ -->
 
-#### [Query](/encyclopedia/workflow-message-passing#sending-queries)
+#### [Query](/sending-messages#sending-queries)
 
 A Query is a synchronous operation that is used to report the state of a Workflow Execution.
 
@@ -496,7 +496,7 @@ A Side Effect is a way to execute a short, non-deterministic code snippet, such 
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Signal](/encyclopedia/sending-messages#sending-signals)
+#### [Signal](/sending-messages#sending-signals)
 
 A Signal is an asynchronous request to a Workflow Execution.
 
