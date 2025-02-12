@@ -62,7 +62,7 @@ async def main():
 
 Everything up to this point is standard. You import the Workflow and Activity code, instantiate a parser with two modes, and create your Task Queue, Workflow, and Activity.
 
-You can pass in the `args.mode` from any appropriate spot in your code. If the mode is set to `verify`, you conduct the replay testing by specifying the time period to test, and passing in the Workflows corresponding to that time period. 
+You can pass in the `args.mode` from any appropriate spot in your code. If the mode is set to `verify`, you conduct the replay testing by specifying the time period to test, and passing in the Workflows corresponding to that time period. Note that the Workflows are consumed as histories, using [the `map_histories()` function](https://python.temporal.io/temporalio.client.WorkflowExecutionAsyncIterator.html#map_histories).
 
 ```python
 
