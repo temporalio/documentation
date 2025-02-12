@@ -57,6 +57,17 @@ The steps to using custom Search Attributes are:
 
 Here is how to query Workflow Executions:
 
+Use the [listWorkflowExecutions()](https://php.temporal.io/classes/Temporal-Client-WorkflowClientInterface.html#method_listWorkflowExecutions) method on the Client and pass a [List Filter](/visibility#list-filter) as an argument to filter the listed Workflows.
+The result is an iterable paginator, so you can use the `foreach` loop to iterate over the results.
+
+```php
+$paginator = $workflowClient->listWorkflowExecutions('WorkflowType="GreetingWorkflow"');
+
+foreach ($paginator as $info) {
+    echo "Workflow ID: {$info->execution->getID()}\n";
+}
+```
+
 ### How to set custom Search Attributes {#custom-search-attributes}
 
 After you've created custom Search Attributes in your Temporal Service (using `temporal operator search-attribute create` or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
@@ -115,18 +126,5 @@ public function unsetDestinationTime()
     Workflow::upsertTypedSearchAttributes(
         $keyDestinationTime->valueUnset(),
     );
-}
-```
-
-### How to list Workflow Executions {#list-workflow-executions}
-
-Use the [listWorkflowExecutions()](https://php.temporal.io/classes/Temporal-Client-WorkflowClientInterface.html#method_listWorkflowExecutions) method on the Client and pass a [List Filter](/visibility#list-filter) as an argument to filter the listed Workflows.
-The result is an iterable paginator, so you can use the `foreach` loop to iterate over the results.
-
-```php
-$paginator = $workflowClient->listWorkflowExecutions('WorkflowType="GreetingWorkflow"');
-
-foreach ($paginator as $info) {
-    echo "Workflow ID: {$info->execution->getID()}\n";
 }
 ```
