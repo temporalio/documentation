@@ -1750,7 +1750,7 @@ tctl workflow showid <workflow_id> --reset_points_only
 
 ## signal
 
-The `tctl workflow signal` command [Signals](/encyclopedia/workflow-message-passing#sending-signals) a [Workflow Execution](/workflows#workflow-execution).
+The `tctl workflow signal` command [Signals](/encyclopedia/sending-messages#sending-signals) a [Workflow Execution](/workflows#workflow-execution).
 
 Workflows listen for Signals by their Signal name, and can be made to listen to one or more Signal names.
 Workflows can also listen for SQL queries.
@@ -1863,7 +1863,7 @@ tctl workflow signal --run_id <id>
 
 ### --name
 
-Specify the name of a [Signal](/encyclopedia/workflow-message-passing#sending-signals).
+Specify the name of a [Signal](/encyclopedia/sending-messages#sending-signals).
 
 **Example**
 
@@ -1873,7 +1873,7 @@ tctl workflow signal --query <query> --name <name>
 
 ### --input
 
-Pass input for the [Signal](/encyclopedia/workflow-message-passing#sending-signals).
+Pass input for the [Signal](/encyclopedia/sending-messages#sending-signals).
 Input must be in JSON format.
 
 Alias: `-i`
@@ -1886,7 +1886,7 @@ tctl workflow signal --query <query> --input <json>
 
 ### --input_file
 
-Pass input for the [Signal](/encyclopedia/workflow-message-passing#sending-signals) from a JSON file.
+Pass input for the [Signal](/encyclopedia/sending-messages#sending-signals) from a JSON file.
 
 **Example**
 

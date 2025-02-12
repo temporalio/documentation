@@ -289,7 +289,7 @@ Sample naming convention:
 
 #### Example 3: Namespace per use case, domain, and environment
 
-We recommend using one namespace per use case, domain, and environment combination when multiple services that are part of the same use case need to communicate with each another via [Signals](/encyclopedia/workflow-message-passing#sending-signals) or by starting [Child Workflows](/encyclopedia/child-workflows).
+We recommend using one namespace per use case, domain, and environment combination when multiple services that are part of the same use case need to communicate with each another via [Signals](/encyclopedia/sending-messages#sending-signals) or by starting [Child Workflows](/encyclopedia/child-workflows).
 In this case, though, you must be mindful about Workflow Id uniqueness by prefixing each Workflow Id with a service-specific string.
 The name of each Task Queue must also be unique.
 If multiple teams are involved, the domain could also represent a team boundary.

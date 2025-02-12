@@ -496,7 +496,7 @@ A Side Effect is a way to execute a short, non-deterministic code snippet, such 
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Signal](/encyclopedia/workflow-message-passing#sending-signals)
+#### [Signal](/encyclopedia/sending-messages#sending-signals)
 
 A Signal is an asynchronous request to a Workflow Execution.
 

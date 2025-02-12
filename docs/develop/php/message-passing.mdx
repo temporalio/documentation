@@ -21,7 +21,7 @@ description: Learn how to develop with Signals, Queries, and Updates in Temporal
 
 ## How to develop with Signals {#signals}
 
-A [Signal](/encyclopedia/workflow-message-passing#sending-signals) is a message sent to a running Workflow Execution.
+A [Signal](/encyclopedia/sending-messages#sending-signals) is a message sent to a running Workflow Execution.
 
 Signals are defined in your code and handled in your Workflow Definition.
 Signals can be sent to Workflow Executions from a Temporal Client or from another Workflow Execution.
@@ -33,7 +33,7 @@ A Signal has a name and can have arguments.
 - The name, also called a Signal type, is a string.
 - The arguments must be [serializable](/dataconversion).
 
-Workflows can answer synchronous [Queries](/encyclopedia/workflow-message-passing#sending-queries) and receive [Signals](/encyclopedia/workflow-message-passing#sending-signals).
+Workflows can answer synchronous [Queries](/encyclopedia/workflow-message-passing#sending-queries) and receive [Signals](/encyclopedia/sending-messages#sending-signals).
 
 All interface methods must have one of the following annotations:
 
@@ -205,7 +205,7 @@ A Query has a name and can have arguments.
 - The name, also called a Query type, is a string.
 - The arguments must be [serializable](/dataconversion).
 
-Workflows can answer synchronous [Queries](/encyclopedia/workflow-message-passing#sending-queries) and receive [Signals](/encyclopedia/workflow-message-passing#sending-signals).
+Workflows can answer synchronous [Queries](/encyclopedia/workflow-message-passing#sending-queries) and receive [Signals](/encyclopedia/sending-messages#sending-signals).
 
 All interface methods must have one of the following annotations:
 
