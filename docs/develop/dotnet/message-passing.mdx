@@ -192,7 +192,7 @@ public class GreetingWorkflow
     The caller receives an "Update failed" error.
 
 - Use [`Workflow.CurrentUpdateInfo`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_CurrentUpdateInfo) to obtain information about the current Update.
-  This includes the Update ID, which can be useful for deduplication when using Continue-As-New: see [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing).
+  This includes the Update ID, which can be useful for deduplication when using Continue-As-New: see [Ensuring your messages are processed exactly once](/handling-messages#exactly-once-message-processing).
 - Update (and Signal) handlers can be asynchronous and blocking.
   This allows you to use Activities, Child Workflows, durable [`Workflow.DelayAsync`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html?#Temporalio_Workflows_Workflow_DelayAsync_System_Int32_System_Nullable_System_Threading_CancellationToken__) Timers, [`Workflow.WaitConditionAsync`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html?#Temporalio_Workflows_Workflow_WaitConditionAsync_System_Func_System_Boolean__System_Int32_System_Nullable_System_Threading_CancellationToken__) conditions, and more.
   See [Async handlers](#async-handlers) and [Workflow message passing](/encyclopedia/workflow-message-passing) for guidelines on safely using async Update and Signal handlers.
@@ -366,7 +366,7 @@ It doesn't apply to pure read operations, like Queries or Update Validators.
 
 :::tip
 
-For additional information, see [Inject work into the main Workflow](/encyclopedia/workflow-message-passing#injecting-work-into-main-workflow) and [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing).
+For additional information, see [Inject work into the main Workflow](/handling-messages#injecting-work-into-main-workflow) and [Ensuring your messages are processed exactly once](/handling-messages#exactly-once-message-processing).
 
 :::
 
@@ -519,11 +519,11 @@ public async Task MyUpdateAsync()
     // ...
 ```
 
-See [Finishing handlers before the Workflow completes](/encyclopedia/workflow-message-passing#finishing-message-handlers) for more information.
+See [Finishing handlers before the Workflow completes](/handling-messages#finishing-message-handlers) for more information.
 
 ### Use `[WorkflowInit]` to operate on Workflow input before any handler executes
 
-The `[WorkflowInit]` attribute gives message handlers access to [Workflow input](/encyclopedia/workflow-message-passing#workflow-initializers).
+The `[WorkflowInit]` attribute gives message handlers access to [Workflow input](/handling-messages#workflow-initializers).
 When you use the `[WorkflowInit]` attribute on your constructor, you give the constructor the same Workflow parameters as your `[WorkflowRun]` method.
 The SDK will then ensure that your constructor receives the Workflow input arguments that the [Client sent](/develop/dotnet/temporal-client#start-workflow).
 The Workflow input arguments are also passed to your `[WorkflowRun]` method -- that always happens, whether or not you use the `[WorkflowInit]` attribute.
@@ -568,7 +568,7 @@ public class WorkflowInitWorkflow
 ### Use locks to prevent concurrent handler execution {#control-handler-concurrency}
 
 Concurrent processes can interact in unpredictable ways.
-Incorrectly written [concurrent message-passing](/encyclopedia/workflow-message-passing#message-handler-concurrency) code may not work correctly when multiple handler instances run simultaneously.
+Incorrectly written [concurrent message-passing](/handling-messages#message-handler-concurrency) code may not work correctly when multiple handler instances run simultaneously.
 Here's an example of a pathological case:
 
 ```csharp
@@ -639,7 +639,7 @@ When sending a Signal, Update, or Query to a Workflow, your Client might encount
 - **The Workflow does not exist**:
   You'll receive a [`Temporalio.Exceptions.RpcException`](https://dotnet.temporal.io/api/Temporalio.Exceptions.RpcException.html) exception whose `Code` property is [`RpcException.StatusCode`](https://dotnet.temporal.io/api/Temporalio.Exceptions.RpcException.StatusCode.html) with a status of `NotFound`.
 
-See [Exceptions in message handlers](/encyclopedia/workflow-message-passing#exceptions) for a non–.NET-specific discussion of this topic.
+See [Exceptions in message handlers](/handling-messages#exceptions) for a non–.NET-specific discussion of this topic.
 
 ### Problems when sending a Signal {#signal-problems}
 
@@ -687,7 +687,7 @@ When working with Updates, you may encounter these errors:
 
   - The Workflow was canceled or failed.
 
-  - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/encyclopedia/workflow-message-passing#finishing-message-handlers).
+  - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/handling-messages#finishing-message-handlers).
 
 ### Problems when sending a Query {#query-problems}
 

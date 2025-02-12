@@ -502,7 +502,7 @@ A Signal is an asynchronous request to a Workflow Execution.
 
 <!-- _Tags: [term](/tags/term), [signals](/tags/signals), [explanation](/tags/explanation)_ -->
 
-#### [Signal-With-Start](/encyclopedia/workflow-message-passing#signal-with-start)
+#### [Signal-With-Start](/sending-messages#signal-with-start)
 
 Signal-With-Start starts and Signals a Workflow Execution, or just Signals it if it already exists.
 

@@ -60,7 +60,7 @@ It shows that your Workflow processes messages before the first run of your Work
 
 The message handler runs first in several scenarios, such as:
 
-- When using [Signal-with-Start](#signal-with-start).
+- When using [Signal-with-Start](/sending-messages#signal-with-start).
 - When your Worker experiences delays, such as when the Task Queue it polls gets backlogged.
 - When messages arrive immediately after a Workflow continues as new but before it resumes.
 
@@ -74,7 +74,7 @@ In Go and TypeScript, register any message handlers only after completing initia
 
 ### Message handler patterns {#message-handler-patterns}
 
-Here are several common patterns for write operations, Signal and Update handlers. They don't apply to pure read operations, i.e. Queries or [Update Validators](#update-validators):
+Here are several common patterns for write operations, Signal and Update handlers. They don't apply to pure read operations, i.e. Queries or [Update Validators](/handling-messages#update-validators):
 
 - Returning immediately from a handler
 - Waiting for the Workflow to be ready to process them
@@ -179,7 +179,7 @@ If you throw any other exception, by default, it will cause a [Workflow Task Fai
 
 Doing any of the following will fail the Update and cause the client to receive the error:
 
-- Reject the Update by throwing any exception from your [Validator](https://docs.temporal.io/encyclopedia/workflow-message-passing#update-validators).
+- Reject the Update by throwing any exception from your [Validator](https://docs.temporal.io/handling-messages#update-validators).
 - Allow a failing Activity or Child Workflow to exhaust its retries, so that it throws an [Activity Failure](https://docs.temporal.io/references/failures#activity-failure) or [Child Workflow Failure](https://docs.temporal.io/references/failures#child-workflow-failure). Note that for Activities, this will only happen if you change the default Activity [Retry Policy](https://docs.temporal.io/encyclopedia/retry-policies), since by default they retry forever.
 - Throw an [Application Failure](/references/failures#application-failure) from your Update handler.
 

@@ -206,7 +206,7 @@ func GreetingWorkflow(ctx workflow.Context) error {
     The caller receives an "Update failed" error.
 
 - Use [`workflow.GetCurrentUpdateInfo`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetCurrentUpdateInfo) to obtain information about the current Update.
-  This includes the Update ID, which can be useful for deduplication when using Continue-As-New: see [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing).
+  This includes the Update ID, which can be useful for deduplication when using Continue-As-New: see [Ensuring your messages are processed exactly once](/handling-messages#exactly-once-message-processing).
 - Update handlers can use Activities, Child Workflows, durable [workflow.Sleep](https://pkg.go.dev/go.temporal.io/sdk/workflow#Sleep) Timers, [`workflow.Await`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Await) conditions, and more.
   See [Blocking handlers](#blocking-handlers) and [Workflow message passing](/encyclopedia/workflow-message-passing) for safe usage guidelines.
 - Delay calling [`workflow.SetUpdateHandler`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SetUpdateHandler) until the Workflow initialization needed by Update handlers is finished.
@@ -385,7 +385,7 @@ Minimum Temporal Server version [Temporal Server version 1.26](https://github.co
 
 :::
 
-[Update-with-Start](/encyclopedia/workflow-message-passing#update-with-start) lets you
+[Update-with-Start](/sending-messages#update-with-start) lets you
 [send an Update](/develop/go/message-passing#send-update-from-client) that checks whether an already-running Workflow with that ID exists:
 
 - If the Workflow exists, the Update is processed.
@@ -464,7 +464,7 @@ It doesn't apply to pure read operations, like Queries or Update Validators.
 
 :::tip
 
-For additional information, see [Inject work into the main Workflow](/encyclopedia/workflow-message-passing#injecting-work-into-main-workflow), [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing), and [this sample](https://github.com/temporalio/samples-typescript/blob/main/pdates-and-signals/safe-message-handlers/README.md) demonstrating safe blocking message handling.
+For additional information, see [Inject work into the main Workflow](/handling-messages#injecting-work-into-main-workflow), [Ensuring your messages are processed exactly once](/handling-messages#exactly-once-message-processing), and [this sample](https://github.com/temporalio/samples-typescript/blob/main/pdates-and-signals/safe-message-handlers/README.md) demonstrating safe blocking message handling.
 
 :::
 
@@ -557,14 +557,14 @@ err = workflow.SetUpdateHandlerWithOptions(ctx, UpdateHandlerName, UpdateFunc, w
 })
 ```
 
-See [Finishing handlers before the Workflow completes](/encyclopedia/workflow-message-passing#finishing-message-handlers) for more information.
+See [Finishing handlers before the Workflow completes](/handling-messages#finishing-message-handlers) for more information.
 
 #### Use `workflow.Mutex` to prevent concurrent handler execution {#control-handler-concurrency}
 
-See [Message handler concurrency](/encyclopedia/workflow-message-passing#message-handler-concurrency).
+See [Message handler concurrency](/handling-messages#message-handler-concurrency).
 
 Concurrent processes can interact in unpredictable ways.
-Incorrectly written [concurrent message-passing](/encyclopedia/workflow-message-passing#message-handler-concurrency) code may not work correctly when multiple handler instances run simultaneously.
+Incorrectly written [concurrent message-passing](/handling-messages#message-handler-concurrency) code may not work correctly when multiple handler instances run simultaneously.
 Here's an example of a pathological case:
 
 ```go
@@ -626,7 +626,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
 
 ## Troubleshooting
 
-See [Exceptions in message handlers](/encyclopedia/workflow-message-passing#exceptions) for a non–Go-specific discussion of this topic.
+See [Exceptions in message handlers](/handling-messages#exceptions) for a non–Go-specific discussion of this topic.
 
 When sending a Signal, Update, or Query to a Workflow, your Client might encounter the following errors:
 
@@ -667,7 +667,7 @@ If an issue occurs during the handler execution by the Worker, the Client may re
 
   - The Workflow was canceled or failed.
 
-  - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/encyclopedia/workflow-message-passing#finishing-message-handlers).
+  - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/handling-messages#finishing-message-handlers).
 
 ### Problems when sending a Query
 
