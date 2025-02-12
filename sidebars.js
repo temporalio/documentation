@@ -533,7 +533,18 @@ module.exports = {
               ],
             },
             "encyclopedia/workflow-message-passing",
-            "encyclopedia/child-workflows",
+            {
+              type: "category",
+              label: "Child Workflows",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "encyclopedia/child-workflows/child-workflows",
+              },
+              items: [
+                   "encyclopedia/child-workflows/parent-close-policy",
+              ],
+            },
             "encyclopedia/visibility",
             "encyclopedia/clusters",
             {
