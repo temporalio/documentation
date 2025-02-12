@@ -30,7 +30,7 @@ A Dual Visibility setup requires two Visibility store configurations:
 - **Primary Visibility:** The primary Visibility store where Visibility data is written to and read from by default. The primary Visibility store is set with the `visibilityStore` configuration key in your Temporal Service.
 - **Secondary Visibility:** A secondary storage for your Visibility data. The secondary Visibility store is set with the `secondaryVisibilityStore` configuration key in your Temporal Service.
 
-For configuration details, see [Dual Visibility setup](/self-hosted-guide/dual-visibility).
+For configuration details, see [Dual Visibility setup](/self-hosted-guide/visibility#dual-visibility).
 
 The following combinations are allowed in a Dual Visibility setting.
 
@@ -44,6 +44,6 @@ With Dual Visibility, you can read from only one Visibility store at a time, but
 When migrating from one Visibility store database to another, set up the database you want to migrate to as your secondary Visibility store.
 
 You can plan your migration using specific dynamic configuration keys that help you transition your read and write operations from the primary to the secondary Visibility store.
-For details on migrating your Visibility store databases, see [Dual Visibility](/self-hosted-guide/dual-visibility).
+For details on migrating your Visibility store databases, see [Dual Visibility](/self-hosted-guide/visibility#dual-visibility).
 
 
