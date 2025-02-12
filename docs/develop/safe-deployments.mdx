@@ -22,7 +22,7 @@ Replay testing takes one or more existing [Workflow Histories](https://docs.temp
 
 There are multiple points in your development lifecycle where running replay tests can make sense. They exist on a spectrum, with shortest time to feedback on one end, and most representative of a production deployment on the other.
 
-- During development, replay testing lets you get feedback as early as possible on whether your changes are compatible. For example, you might include some integration tests that run your workflows against the Temporal Test Server to produce histories which you then check in. You can use those checked-in histories for replay tests to verify you haven’t made breaking changes.
+- During development, replay testing lets you get feedback as early as possible on whether your changes are compatible. For example, you might include some integration tests that run your Workflows against the Temporal Test Server to produce histories which you then check in. You can use those checked-in histories for replay tests to verify you haven’t made breaking changes.
 - During pre-deployment validation (such as during some automated deployment validation) you can get feedback in a more representative environment. For example, you might fetch histories from a live Temporal environment (whether production or some kind of pre-production) and use them in replay tests.
 - At deployment time, your environment *is* production, but you are using the new code to replay recent real-world Workflow histories.
 
