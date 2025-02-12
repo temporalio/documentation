@@ -19,6 +19,8 @@ keywords:
   - term
 ---
 
+import DiscoverableDisclosure from '@site/src/components/disclosures/DiscoverableDisclosure';
+
 Temporal Cloud automatically initiates failovers when an incident or outage affects a replicated Namespace.
 Standby Namespace replicas duplicate data and prevent data loss during failover.
 
@@ -83,11 +85,7 @@ Testing failovers ensures your app can handle these failures effectively.
 Temporal recommends regular and periodic failover testing for mission-critical applications in production.
 By testing in non-emergency conditions, you verify that your app continues to function even when parts of the infrastructure fail.
 
-<details>
-
-<summary>
-Why test?
-</summary>
+<DiscoverableDisclosure label="Why test?">
 
 Regular failover testing ensures your app can handle disruptions and continue running smoothly in production.
 
@@ -138,7 +136,7 @@ Trigger testing can:
 
 Testing failovers regularly ensures your Temporal-based applications remain resilient and reliable, even when infrastructure fails.
 
-</details>
+</DiscoverableDisclosure>
 
 ## Preparing Worker deployment {#worker}
 
