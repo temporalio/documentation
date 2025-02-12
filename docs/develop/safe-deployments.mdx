@@ -80,7 +80,7 @@ You can pass in the `args.mode` from any appropriate spot in your code. If the m
         return
 ```
 
-If any of the Workflows fail to replay, an error will be thrown. If now errors occur, you can return successfully to indicate success here, or communicate with an endpoint you've defined to indicate success or failure of the verification. You could switch to the `run` mode, and have this Worker transition to a real Worker that will start pulling from the Task Queue and processing Workflows:
+If any of the Workflows fail to replay, an error will be thrown. If no errors occur, you can return successfully to indicate success here, or communicate with an endpoint you've defined to indicate success or failure of the verification. You could switch to the `run` mode, and have this Worker transition to a real Worker that will start pulling from the Task Queue and processing Workflows:
 
 ```python
     else:
