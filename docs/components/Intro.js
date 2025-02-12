@@ -319,13 +319,13 @@ function SlideInfo({ activeSlide, handleClick }) {
   return (
     <div className="core-concepts-info">
       <button onClick={onPrevious} className="arrow left-arrow">
-        <img src="/img/left-chevron.png" alt="previous" />
+        <img src="/img/assets/left-chevron.png" alt="previous" />
       </button>
       <div>
         <h3 className="core-concepts-title">Introducing our core concepts</h3>
         <h1>{slide.title}</h1>
         <h3 className="core-concepts-description">
-          <img src="/img/info.svg" />
+          <img src="/img/assets/info.svg" />
           {slide.description}
         </h3>
         <p>{renderTextWithHighlight(slide.content1 || "")}</p>
@@ -336,7 +336,7 @@ function SlideInfo({ activeSlide, handleClick }) {
         </div>
       </div>
       <button onClick={onNext} className="arrow right-arrow">
-        <img src="/img/right-chevron.png" alt="next" />
+        <img src="/img/assets/right-chevron.png" alt="next" />
       </button>
     </div>
   );

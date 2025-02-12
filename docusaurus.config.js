@@ -31,19 +31,19 @@ module.exports = async function createConfigAsync() {
         // switchConfig: {
         //   darkIcon: "🌙",
         //   darkIconStyle: {
-        //     content: `url(/img/moon.svg)`,
+        //     content: `url(/img/assets/moon.svg)`,
         //     transform: "scale(2)",
         //     margin: "0 0.2rem",
         //   },
         //   lightIcon: "\u{1F602}",
         //   lightIconStyle: {
-        //     content: `url(/img/sun.svg)`,
+        //     content: `url(/img/assets/sun.svg)`,
         //     transform: "scale(2)",
         //   },
         // },
       },
       metadata: [{ name: "robots", content: "follow, index" }],
-      image: "/img/open-graph-shiny.png",
+      image: "/img/assets/open-graph-shiny.png",
       prism: {
         //theme: require("prism-react-renderer/themes/nightOwlLight"),
         // darkTheme: require("prism-react-renderer/themes/dracula"),
@@ -66,8 +66,8 @@ module.exports = async function createConfigAsync() {
         hideOnScroll: false,
         logo: {
           alt: "Temporal logo",
-          src: "img/temporal-logo-dark.svg",
-          srcDark: "img/temporal-logo.svg",
+          src: "img/assets/temporal-logo-dark.svg",
+          srcDark: "img/assets/temporal-logo.svg",
           href: "https://temporal.io",
         },
         items: [
