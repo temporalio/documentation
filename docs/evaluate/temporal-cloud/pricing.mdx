@@ -93,6 +93,9 @@ They track billable operations within the Temporal Cloud Service, such as starti
   Includes implicit Timers that are started by a Temporal SDK when timeouts are set, such as `AwaitWithTimeout` in Go or `condition` in TypeScript.
 - **Search Attribute upsert requested**.
   Occurs for each invocation of `UpsertSearchAttributes` command.
+  Multiple Search Attributes updated in a single `UpsertSearchAttributes` command count as one Action.
+  Search Attributes specified during Workflow start are _excluded_ from Action counts.
+  The `TemporalChangeVersion` Search Attribute, used for Workflow versioning, is also exempt from Action counting.
 - **Signal sent**.
   An Action occurs for every [Signal](/encyclopedia/workflow-message-passing#sending-signals), whether sent from a Client or from a Workflow.
 - **Query received by Worker**.
@@ -407,8 +410,6 @@ For example, invoices for May will be issued at midnight UTC on June 3rd.
 
 Account Owners and Finance Admins can view their detailed billing data at any time.
 Visit the [Usage and Billing dashboards](/cloud/billing-and-cost) in Temporal Cloud.
-
-You need appropriate administrative permissions to access this section.
 
 **How do I purchase Temporal Cloud credits?**
 

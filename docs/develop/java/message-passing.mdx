@@ -590,7 +590,7 @@ See [Finishing handlers before the Workflow completes](/encyclopedia/workflow-me
 
 Normally, your Workflows constructor won't have any parameters.
 However, if you use the `@WorkflowInit` annotation on your constructor, you can give it the same [Workflow parameters](/develop/java/core-application#workflow-parameters) as your `@WorkflowMethod`.
-The SDK will then ensure that your constructor receives the Workflow input arguments that the [Client sent](/develop/python/temporal-clients#start-workflow-execution).
+The SDK will then ensure that your constructor receives the Workflow input arguments that the [Client sent](/develop/java/temporal-clients#start-workflow-execution).
 The Workflow input arguments are also passed to your `@WorkflowMethod` method -- that always happens, whether or not you use the `@WorkflowInit` annotation.
 This is useful if you have message handlers that need access to Workflow input: see [Initializing the Workflow first](/encyclopedia/workflow-message-passing#workflow-initializers).
 
@@ -610,7 +610,7 @@ public class GreetingExample {
 
     public static class GreetingWorkflowImpl implements GreetingWorkflow {
         private final String nameWithTitle;
-        private final String titleHasBeenChecked;
+        private boolean titleHasBeenChecked;
         ...
         // Note the annotation is on a public constructor
         @WorkflowInit
