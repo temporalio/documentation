@@ -234,7 +234,7 @@ Learn more about the General Availability release stage
 
 <!-- _Tags: [product-release-stages](/tags/product-release-stages), [term](/tags/term)_ -->
 
-#### [Global Namespace](/namespaces#global-namespace)
+#### [Global Namespace](/global-namespace)
 
 A Global Namespace is a Namespace that duplicates data from an active [Temporal Service](#temporal-cluster) to a standby Service using the replication to keep both Namespaces in sync.
 Global Namespaces are designed to respond to service issues like network congestion.

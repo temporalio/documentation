@@ -92,9 +92,7 @@ module.exports = {
             "evaluate/temporal-cloud/limits",
             "evaluate/temporal-cloud/sla",
             "evaluate/temporal-cloud/pricing",
-            "evaluate/temporal-cloud/legacy-pricing",
             "evaluate/temporal-cloud/support",
-            "evaluate/temporal-cloud/legacy-support", // This will be removed in Feb 2025 Its file is legacy-support.mdx
           ],
         },
         "security",
@@ -476,7 +474,6 @@ module.exports = {
             "references/server-options",
             "references/web-ui-configuration",
             "references/web-ui-environment-variables",
-            "references/web-ui-server-env-vars",
           ],
         },
         {
@@ -540,7 +537,18 @@ module.exports = {
             "encyclopedia/child-workflows",
             "encyclopedia/visibility",
             "encyclopedia/clusters",
-            "encyclopedia/namespaces",
+            {
+              type: "category",
+              label: "Namespaces",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "encyclopedia/namespaces/namespaces",
+              },
+              items: [
+                   "encyclopedia/namespaces/global-namespaces",
+              ],
+            },
             {
               type: "category",
               label: "Temporal Nexus",

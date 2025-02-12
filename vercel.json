@@ -1927,6 +1927,11 @@
       "source": "/production-readiness/develop#codec-server-setup",
       "destination": "/production-deployment/data-encryption",
       "permanent": true
+    },
+    {
+      "source": "/references/web-ui-server-env-vars",
+      "destination": "/references/web-ui-environment-variables",
+      "permanent": true
     }
   ]
 }
