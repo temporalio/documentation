@@ -20,9 +20,10 @@ keywords:
 ---
 
 import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+import ExpandableDefinition from '@site/src/components/definitions/ExpandableDefinition';
 
 Temporal Cloud provides high availability features for workloads where availability is critical to your operations.
-When you enable these features, Temporal Cloud automatically synchronizes your data between the primary and a replica, keeping them in sync.
+When you enable these features, Temporal Cloud automatically synchronizes your data between the primary and a <span class="nowrap">replica<ExpandableDefinition label="Definition" definition="A replica is a synchronized copy of your active Namespace. It provides a ready-to-deploy backup for unexpected outage conditions when your active Namespace becomes unavailable." /></span>, keeping them in sync.
 In case of an incident or an outage, Temporal will [failover](/glossary#failover) your Namespace from the primary to the replica.
 This allows for Workflow Executions to seamlessly continue to make progress with minimal interruptions or data loss.
 

@@ -7,7 +7,6 @@ const DiscoverableDisclosure = ({ label = "Summary", children }) => {
         borderRadius: '0.5rem',
         margin: '1rem',
         padding: '16px 24px',
-        backgroundColor: '#f7f7f7',
         border: '2px solid #ccc',
         transition: '200ms',
       }}
