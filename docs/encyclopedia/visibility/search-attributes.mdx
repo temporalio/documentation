@@ -17,11 +17,14 @@ tags:
   - Search Attributes
 ---
 
-This page discusses [Search Attributes](#search-attribute).
+This page discusses the following:
+- [Search Attributes](#search-attribute)
+- [Default Search Attributes](#default-search-attribute)
+- [Custom Search Attributes](#custom-search-attribute)
 
 ## What is a Search Attribute? {#search-attribute}
 
-A Search Attribute is an indexed field used in a [List Filter](#list-filter) to filter a list of [Workflow Executions](/workflows#workflow-execution) that have the Search Attribute in their metadata.
+A Search Attribute is an indexed field used in a [List Filter](/list-filter) to filter a list of [Workflow Executions](/workflows#workflow-execution) that have the Search Attribute in their metadata.
 
 Each Search Attribute is a key-value pair metadata object included in a Workflow Execution's Visibility information.
 This information is available in the Visibility store.
@@ -32,8 +35,8 @@ Search Attribute values are not encrypted because the Temporal Server must be ab
 
 :::
 
-Temporal provides some [default Search Attributes](#default-search-attributes), such as `ExecutionStatus`, the current state of your Workflow Executions.
-You can also create [custom Search Attribute](#custom-search-attributes) keys in your Visibility store and assign values when starting a Workflow Execution or in Workflow code.
+Temporal provides some [default Search Attributes](/search-attribute#default-search-attribute), such as `ExecutionStatus`, the current state of your Workflow Executions.
+You can also create [custom Search Attribute](/search-attribute#custom-search-attribute) keys in your Visibility store and assign values when starting a Workflow Execution or in Workflow code.
 
 When using [Continue-As-New](/workflows#continue-as-new) or a [Temporal Cron Job](/workflows#temporal-cron-job), Search Attribute keys are carried over to the new Workflow Run by default.
 Search Attribute values are only available for as long as the Workflow is.
@@ -47,7 +50,7 @@ For business logic in which you need to get information about a Workflow Executi
 If your business logic requires high throughput or low latency, store and fetch the data through Activities.
 You might experience lag due to time passing between the Workflow's state change and the Activity updating the Visibility store.
 
-### Default Search Attributes
+### Default Search Attributes {#default-search-attribute}
 
 A Temporal Service has a set of default Search Attributes already available.
 Default Search Attributes are set globally in any Namespace.
@@ -98,7 +101,7 @@ You can use the default Search Attributes in a List Filter, such as in the Tempo
 - With advanced Visibility, you can combine default Search Attributes in a List Filter to get a list of specific Workflow Executions.
   For example: `temporal workflow list --query "WorkflowType = 'main.YourWorkflowDefinition' and ExecutionStatus != 'Running' and (StartTime > '2022-06-07T16:46:34.236-08:00' or CloseTime < '2022-06-08T16:46:34-08:00')"`
 
-### Custom Search Attributes
+### Custom Search Attributes {#custom-search-attribute}
 
 You can [create custom Search Attributes](/self-hosted-guide/visibility#create-custom-search-attributes) with unique key names that are relevant to your business needs.
 
@@ -115,7 +118,7 @@ However, if using any of the [supported SQL databases](/self-hosted-guide/visibi
 
 See [custom Search Attributes limits](#custom-search-attributes-limits) for limits on the number and size of custom Search Attributes you can create.
 
-#### Supported types
+#### Supported types {#supported-types}
 
 Custom Search Attributes must be one of the following types:
 
@@ -143,7 +146,7 @@ Note:
   To store a list of values, use **KeywordList**.
 - The **Text** type cannot be used in the "Order By" clause.
 
-#### Custom Search Attributes limits
+#### Custom Search Attributes limits {#custom-search-attribute-limits}
 
 {/* TODO - [How to configure maximum number of Search Attribute keys per Cluster](#) */}
 
@@ -184,10 +187,10 @@ This is configurable with [`SearchAttributesNumberOfKeysLimit`, `SearchAttribute
 
 For Temporal Cloud specific configurations, see the [Defaults, limits, and configurable settings -Temporal Cloud](/cloud/limits#number-of-custom-search-attributes) guide.
 
-### Usage
+### Usage {#usage}
 
 Search Attributes available in your Visibility store can be used with Workflow Executions for the Temporal Service.
-To actually have results from the use of a [List Filter](#list-filter), Search Attributes must be added to a Workflow Execution as metadata.
+To actually have results from the use of a [List Filter](/list-filter), Search Attributes must be added to a Workflow Execution as metadata.
 
 - To create custom Search Attributes in your Visibility store, see [Create custom Search Attributes](/self-hosted-guide/visibility#create-custom-search-attributes).
 - To remove a custom Search Attribute from the Visbility store, see [Remove custom Search Attributes](/self-hosted-guide/visibility#remove-custom-search-attributes).
@@ -200,12 +203,17 @@ With Workflows you can do the following:
 - Update the value set for a Search Attribute from within the Workflow code
 - Remove the value set for a Search Attribute from within the Workflow code
 
+
+:::info Manage Search Attributes by SDK
+
 - [How to manage Search Attributes using the Go SDK](/develop/go/observability#visibility)
 - [How to manage Search Attributes using the Java SDK](/develop/java/observability#visibility)
 - [How to manage Search Attributes using the PHP SDK](/develop/php/observability#visibility)
 - [How to manage Search Attributes using the Python SDK](/develop/python/observability#visibility)
 - [How to manage Search Attributes using the TypeScript SDK](/develop/typescript/observability#visibility)
 - [How to manage Search Attributes using the .NET SDK](/develop/dotnet/observability#search-attributes)
+
+::: 
 
 - To get a list of Search Attributes using the Temporal CLI, issue `temporal operator search-attribute list`. See [Search Attributes](/search-attribute).
 

@@ -32,7 +32,7 @@ The [Visibility store](/self-hosted-guide/visibility) in your Temporal Service s
 
 - [How to set up a Visibility store](/self-hosted-guide/visibility)
 
-With Temporal Server v1.21, you can set up [Dual Visibility](#dual-visibility) to migrate your Visibility store from one database to another.
+With Temporal Server v1.21, you can set up [Dual Visibility](/dual-visibility) to migrate your Visibility store from one database to another.
 
 Support for separate standard and advanced Visibility setups will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/self-hosted-guide/visibility) for updates.
 
@@ -44,14 +44,14 @@ Open Workflow Executions can be filtered by a time constraint and either a Workf
 
 Closed Workflow Executions can be filtered by a time constraint and either a Workflow Type, Workflow Id, Run Id, or Execution Status (Completed, Failed, Timed Out, Terminated, Canceled, or Continued-As-New).
 
-[Custom Search Attributes](https://docs.temporal.io/visibility#custom-search-attributes) are not supported with Standard Visibility.
+[Custom Search Attributes](https://docs.temporal.io/search-attribute#custom-search-attribute) are not supported with Standard Visibility.
 
 Support for standard Visibility is deprecated beginning with Temporal Server v1.21.
 For updates, check [Supported databases](/self-hosted-guide/visibility).
 
 ## What is advanced Visibility? {#advanced-visibility}
 
-Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of [Workflow Executions](/workflows#workflow-execution) through a custom SQL-like [List Filter](#list-filter).
+Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of [Workflow Executions](/workflows#workflow-execution) through a custom SQL-like [List Filter](/list-filter).
 
 - In Temporal Service version 1.20 and later, advanced Visibility is available on SQL databases like MySQL (version 8.0.17 and later) and PostgreSQL (version 12 and later), in addition to support for Elasticsearch.
 - For Temporal Server versions 1.19.1 and earlier, you must [integrate with ElasticSearch](/self-hosted-guide/visibility#elasticsearch) to use advanced Visibility.
