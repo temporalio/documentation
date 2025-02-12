@@ -35,7 +35,7 @@ Bi-directional links enable navigation of an end-to-end execution across Namespa
 They are automatically added by the Temporal SDK for builder functions like New-Workflow-Run-Operation.
 Links are auto-wired from a specific Nexus Operation event in the caller's Workflow history to a specific event in the handler's Workflow history.
 
-![Bi-directional linking](/img/nexus/nexus-bi-directional-linking.png)
+![Bi-directional linking](/img/cloud/nexus/nexus-bi-directional-linking.png)
 
 Bi-directional links enable navigating across Namespace boundaries:
 
@@ -51,7 +51,7 @@ Bi-directional links enable navigating across Namespace boundaries:
 Similar to pending Activities, pending Nexus Operations are displayed in the Workflow details page and using: `temporal workflow describe`.
 
 For example, from the Temporal UI:\
-![Pending Operations](/img/nexus/pending-nexus-operations.png)
+![Pending Operations](/img/cloud/nexus/pending-nexus-operations.png)
 
 For example, from the `temporal` CLI:
 
@@ -81,7 +81,7 @@ Nexus callbacks are sent from the handler's Namespace to the caller's Namespace 
 These show up in the UI and using: `temporal workflow describe`.
 
 For example, from the Temporal UI:\
-![Pending Callbacks](/img/nexus/nexus-callback.png)
+![Pending Callbacks](/img/cloud/nexus/nexus-callback.png)
 
 For example, from the `temporal` CLI:
 
@@ -103,11 +103,11 @@ Callbacks: 1
 Nexus Operations created with the Temporal SDK New-Workflow-Run-Operation helper, return the Workflow ID as the Nexus Operation ID.
 The caller's Workflow history shows the Nexus Operation ID in the [NexusOperationStarted](/references/events#nexusoperationstarted) event.
 
-![Workflow history](/img/nexus/nexus-operations-ui.png)
+![Workflow history](/img/cloud/nexus/nexus-operations-ui.png)
 
 This can be used to search the handler's Namespace for that Workflow ID:
 
-![Search handler's Namespace](/img/nexus/nexus-operations-ui-search-handler.png)
+![Search handler's Namespace](/img/cloud/nexus/nexus-operations-ui-search-handler.png)
 
 This may also be done using: `temporal workflow show --detailed`
 
