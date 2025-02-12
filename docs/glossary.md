@@ -656,7 +656,7 @@ Temporal SDKs offer Timer APIs so that Workflow Executions are deterministic in 
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Update](/encyclopedia/workflow-message-passing#sending-updates)
+#### [Update](/sending-messages#sending-updates)
 
 An Update is a request to and a response from Workflow Execution.
 

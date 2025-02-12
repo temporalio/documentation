@@ -132,7 +132,7 @@ export async function greetingWorkflow(): Promise<string> {
 
 ### Update handlers and validators {#updates}
 
-An [Update](/encyclopedia/workflow-message-passing#sending-updates) is a trackable synchronous request sent to a running Workflow Execution.
+An [Update](/sending-messages#sending-updates) is a trackable synchronous request sent to a running Workflow Execution.
 It can change the Workflow state, control its flow, and return a result.
 The sender must wait until the Worker accepts or rejects the Update.
 The sender may wait further to receive a returned value or an exception if something goes wrong:
