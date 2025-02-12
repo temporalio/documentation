@@ -559,9 +559,20 @@ h1 {
   display: flex;
 }
 
+/*
 .list-logo img {
   filter: grayscale(1);
 }
+*/
+
+.fixed-size-logo {
+  width: 300px;  
+  height: auto; 
+  display: block; 
+  margin-left: 0; 
+  margin-right: auto; 
+}
+
 
 .w-third {
   width: 1/3;
