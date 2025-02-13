@@ -31,21 +31,21 @@ For example, if you have sensitive information passed in the following objects t
 - Results of [Local Activities](/activities#local-activity) and [Side Effects](/workflows#side-effect)
 - [Application errors and failures](/references/failures).
   Failure messages and call stacks are not encoded as codec-capable Payloads by default; you must explicitly enable encoding these common attributes on failures.
-  For more details, see [Failure Converter](/dataconversion#failure-converter).
+  For more details, see [Failure Converter](/failure-converter).
 
 Using encryption ensures that your sensitive data exists unencrypted only on the Client and the Worker Process that is executing the Workflows and Activities, on hosts that you control.
 
 By default, your data is serialized to a [Payload](/dataconversion#payload) by a [Data Converter](/dataconversion).
-To encrypt your Payload, configure your custom encryption logic with a [Payload Codec](/dataconversion#payload-codec) and set it with a [custom Data Converter](/dataconversion#custom-data-converter).
+To encrypt your Payload, configure your custom encryption logic with a [Payload Codec](/payload-codec) and set it with a [custom Data Converter](/dataconversion#custom-data-converter).
 
-A Payload Codec does byte-to-byte conversion to transform your Payload (for example, by implementing compression and/or encryption and decryption) and is an optional step that happens between the Client and the [Payload Converter](/dataconversion#payload-converter):
+A Payload Codec does byte-to-byte conversion to transform your Payload (for example, by implementing compression and/or encryption and decryption) and is an optional step that happens between the Client and the [Payload Converter](/payload-converter):
 
 <PrettyImage src="/diagrams/remote-data-encoding.svg" title="Remote data encoding architecture" />
 
-You can run your Payload Codec with a [Codec Server](/dataconversion#codec-server) and use the Codec Server endpoints in the Web UI and CLI to decode your encrypted Payload locally.
+You can run your Payload Codec with a [Codec Server](/codec-server) and use the Codec Server endpoints in the Web UI and CLI to decode your encrypted Payload locally.
 For details on how to set up a Codec Server, see [Codec Server setup](#codec-server-setup).
 
-However, if you plan to set up [remote data encoding](/dataconversion#remote-data-encoding) for your data, ensure that you consider all security implications of running encryption remotely before implementing it.
+However, if you plan to set up [remote data encoding](/remote-data-encoding) for your data, ensure that you consider all security implications of running encryption remotely before implementing it.
 
 When implementing a custom codec, it is recommended to perform your compression or encryption on the entire input Payload and store the result in the data field of a new Payload with a different encoding metadata field.
 This ensures that the input Payload's metadata is preserved.
@@ -76,11 +76,11 @@ Decoded payloads can then be displayed in the Workflow Execution Event History o
 Because you create, operate, and manage access to your Codec Server in your controlled environment, ensure that you consider the following:
 
 - When you register a Codec Server endpoint with your Web UI, expect the Codec Server to receive multiple requests per Workflow Execution.
-- Ensure that you secure access to your Codec Server. For details, see [Authorization](#authorization). You might need some form of [Key management infrastructure](/dataconversion#key-management) for sharing your encryption keys between the Workers and your Codec Server.
+- Ensure that you secure access to your Codec Server. For details, see [Authorization](#authorization). You might need some form of [Key management infrastructure](/key-management) for sharing your encryption keys between the Workers and your Codec Server.
 - You will need to enable [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) on the HTTP/HTTPS endpoints in your Codec Server to receive requests from the Temporal Web UI.
 - You may introduce latency in the Web UI when sending and receiving payloads to the Codec Server.
 
-Your Codec Server should share logic with the custom [Payload Codec](/dataconversion#payload-codec) used elsewhere in your application.
+Your Codec Server should share logic with the custom [Payload Codec](/payload-codec) used elsewhere in your application.
 
 ### API contract specifications
 

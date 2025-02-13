@@ -1,6 +1,6 @@
 ---
 id: payload-codec
-title: What is a Payload Codec?
+title: Payload Codec
 sidebar_label: Payload Codec
 description: A Payload Codec performs bytes-to-bytes transformations on Temporal Payloads, often for compression and encryption.
 slug: /payload-codec
@@ -36,7 +36,7 @@ Use a custom Payload Codec to transform your Payloads; for example, implementing
 Using end-to-end encryption in your custom Data Converter ensures that sensitive application data is secure when handled by the Temporal Server.
 
 Apply your encryption logic in a custom Payload Codec and use it locally to encrypt data.
-You maintain all the encryption keys, and the Temporal Server sees only encrypted data. Refer to [What is Key Management?](#key-management) for more guidance.
+You maintain all the encryption keys, and the Temporal Server sees only encrypted data. Refer to [What is Key Management?](/key-management) for more guidance.
 
 Your data exists unencrypted only on the Client and the Worker process that is executing the Workflows and Activities, on hosts that you control. For details, see [Securing your data](/production-deployment/data-encryption).
 

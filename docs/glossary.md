@@ -113,7 +113,7 @@ The Claim Mapper component is a pluggable component that extracts Claims from JS
 
 <!-- _Tags: [term](/tags/term)_ -->
 
-#### [Codec Server](/dataconversion#codec-server)
+#### [Codec Server](/codec-server)
 
 A Codec Server is an HTTP server that uses your custom Payload Codec to encode and decode your data remotely through endpoints.
 
@@ -151,7 +151,7 @@ A Data Converter is a Temporal SDK component that serializes and encodes data en
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Default Data Converter](/dataconversion#default-data-converter)
+#### [Default Data Converter](/default-custom-data-converters#default-data-converter)
 
 The default Data Converter is used by the Temporal SDK to convert objects into bytes using a series of Payload Converters.
 
@@ -210,7 +210,7 @@ Temporal Failures are representations of various types of errors that occur in t
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Failure Converter](/dataconversion#failure-converter)
+#### [Failure Converter](/failure-converter)
 
 A Failure Converter converts error objects to proto Failures and back.
 
@@ -393,13 +393,13 @@ A Payload represents binary data such as input and output from Activities and Wo
 
 <!-- _Tags: [term](/tags/term), [payloads](/tags/payloads), [explanation](/tags/explanation)_ -->
 
-#### [Payload Codec](/dataconversion#payload-codec)
+#### [Payload Codec](/payload-codec)
 
 A Payload Codec transforms an array of Payloads into another array of Payloads.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Payload Converter](/dataconversion#payload-converter)
+#### [Payload Converter](/payload-converter)
 
 A Payload Converter serializes data, converting objects or values to bytes and back.
 
@@ -423,7 +423,7 @@ A Query is a synchronous operation that is used to report the state of a Workflo
 
 <!-- _Tags: [term](/tags/term), [queries](/tags/queries), [explanation](/tags/explanation)_ -->
 
-#### [Remote data encoding](/dataconversion#remote-data-encoding)
+#### [Remote data encoding](/remote-data-encoding)
 
 Remote data encoding is using your custom Data Converter to decode (and encode) your Payloads remotely through endpoints.
 
