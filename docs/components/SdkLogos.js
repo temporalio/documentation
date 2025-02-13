@@ -3,37 +3,37 @@ import React from "react";
 const supportedTech = [
   {
     link: "/develop/go",
-    image: "/img/golang.svg",
+    image: "/img/sdks/svgs/golang.svg",
     alt: "Go lang logo",
     class: "w-10 h-8",
   },
   {
     link: "/develop/java",
-    image: "/img/java.svg",
+    image: "/img/sdks/svgs/java.svg",
     alt: "Java logo",
     class: "w-7 h-7",
   },
   {
     link: "/develop/python",
-    image: "/img/python.svg",
+    image: "/img/sdks/svgs/python.svg",
     alt: "Python logo",
     class: "w-7 h-7",
   },
   {
     link: "/develop/typescript",
-    image: "/img/typescript.svg",
+    image: "/img/sdks/svgs/typescript.svg",
     alt: "TypeScript logo",
     class: "w-7 h-7",
   },
   {
     link: "/develop/php",
-    image: "/img/php.svg",
+    image: "/img/sdks/svgs/php.svg",
     alt: "php logo",
     class: "w-10",
   },
   {
     link: "/develop/dotnet",
-    image: "/img/dotnet.svg",
+    image: "/img/sdks/svgs/dotnet.svg",
     alt: ".Net logo",
     class: "w-10",
   },
