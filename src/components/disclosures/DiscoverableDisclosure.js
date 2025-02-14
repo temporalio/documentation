@@ -1,8 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
-const DiscoverableDisclosure = ({ label = "Summary", children }) => {
+const DiscoverableDisclosure = ({ label = "Summary", children, prompt = "Dive deeper — " }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const contentRef = useRef(null);
+  const summaryRef = useRef(null);
+  const isInitialRender = useRef(true); // Track the initial render
+
+  const [maxHeight, setMaxHeight] = useState('0px');
+
+  const toggleOpen = () => {
+    setIsOpen((prev) => {
+      const newState = !prev;
+
+      if (newState) {
+        setMaxHeight('500px');
+      } else {
+        setMaxHeight('0px');
+      }
+      return newState;
+    });
+  };
+
+  useEffect(() => {
+    if (isInitialRender.current) {
+      // Skip the first render, no scroll on initial load
+      isInitialRender.current = false;
+      return;
+    }
+
+    // Only scroll into view when the disclosure is closing
+    if (!isOpen && summaryRef.current) {
+      summaryRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // Dynamically adjust max-height when content is open
+    if (isOpen && contentRef.current) {
+      setMaxHeight(`${contentRef.current.scrollHeight}px`);
+    }
+  }, [isOpen]);
+
   return (
-    <details
+    <div
       style={{
         borderRadius: '0.5rem',
         margin: '1rem',
@@ -12,6 +50,7 @@ const DiscoverableDisclosure = ({ label = "Summary", children }) => {
       }}
     >
       <summary
+        ref={summaryRef}
         style={{
           cursor: 'pointer',
           display: 'flex',
@@ -21,25 +60,50 @@ const DiscoverableDisclosure = ({ label = "Summary", children }) => {
           padding: '8px 16px',
           minHeight: '40px',
           lineHeight: '1.5',
+          transition: 'color 200ms ease',
         }}
+        onClick={toggleOpen}
+        onMouseEnter={(e) => (e.target.style.color = '#007BFF')}
+        onMouseLeave={(e) => (e.target.style.color = '')}
       >
-      Dive deeper&nbsp;—&nbsp;<strong>{label}</strong> &nbsp;&nbsp; [Toggle to Open]
+        {prompt}
+        <strong>{label}</strong>
+        <span style={{ marginLeft: '8px', fontSize: '1.2rem' }}>
+          {isOpen ? '[-]' : '[+]'}
+        </span>
       </summary>
 
       <div
+        ref={contentRef}
         style={{
+          maxHeight,
           marginTop: '5px',
-          padding: '10px',
-          fontFamily: 'Georgia, serif',
-          border: '2px solid #B0B0B0',
+          padding: isOpen ? '10px' : '0',
           borderRadius: '8px',
-          transition: 'max-height 0.3s ease-out',
+          transition: 'max-height 0.3s ease, padding 0.3s ease',
           overflow: 'hidden',
         }}
       >
         {children}
       </div>
-    </details>
+
+      {isOpen && (
+        <div
+          style={{
+            marginTop: '10px',
+            textAlign: 'center',
+            fontSize: '1.0rem',
+            cursor: 'pointer',
+            color: '#007BFF',
+            fontWeight: 'bold',
+          }}
+          onClick={toggleOpen}
+        >
+          <span style={{ marginRight: '8px' }}>↩️</span>
+          Close back up
+        </div>
+      )}
+    </div>
   );
 };
 
