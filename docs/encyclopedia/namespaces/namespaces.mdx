@@ -1,7 +1,7 @@
 ---
 id: namespaces
-title: What is a Temporal Namespace?
-sidebar_label: Namespaces
+title: Temporal Namespace
+sidebar_label: Namespace
 description: This guide covers everything about Namespaces within the Temporal Platform, highlighting their role in Workflow isolation, setting up, registering, and managing Namespaces, and the concept and benefits of Global Namespaces.
 slug: /namespaces
 toc_max_heading_level: 4
@@ -18,7 +18,7 @@ A Namespace is a unit of isolation within the Temporal Platform.
 
 A single Namespace is still multi-tenant.
 
-### Usage
+## Usage
 
 Namespaces are created on the Temporal Service, and provide a range of controls to achieve isolation on Workflow Executions.
 
@@ -34,7 +34,7 @@ Namespaces are created on the Temporal Service, and provide a range of controls 
   Workflow Executions may have the same Workflow Id if they are in different Namespaces.
 - **Namespace Configuration:** Various configuration options like the [Retention Period](/clusters#retention-period) and the [Archival](/clusters#archival) destination are configured per Namespace through a special CRUD API or through the [Temporal CLI](/cli).
 
-### Registration
+## Registration
 
 Registering a Namespace creates the Namespace on the Temporal Service.
 When you register your Namespace, you must also set the [Retention Period](/clusters#retention-period) for the Namespace.
@@ -64,7 +64,7 @@ On self-hosted Temporal Service, you can register your Namespaces in the followi
 
 Note that registering a Namespace takes up to 15 seconds to complete. Ensure that you are waiting for this process to complete before making calls to the Namespace.
 
-### Manage Namespaces
+## Manage Namespaces
 
 Use a custom [Authorizer](/self-hosted-guide/security#authorizer-plugin) on your Frontend Service in the Temporal Service to set restrictions on who can create, update, or deprecate Namespaces.
 
@@ -99,7 +99,7 @@ On self-hosted Temporal Service, you can manage your registered Namespaces using
 - With the Temporal CLI: [`temporal operator namespace delete`](/cli/operator#delete).
 - Use the DeleteNamespace API to delete a registered Namespaces. All the running Workflow Executions on a deleted Namespace are also deleted.
 
-### Setting
+## Setting
 
 Set Namespaces in your SDK Client to isolate your Workflow Executions to the Namespace.
 If you do not set a Namespace, all Workflow Executions started using the Client will be associated with the "default" Namespace. This means, you must have a default Namespace called "default" registered with your Temporal Service. See [Registration](#registration) for details.
@@ -109,25 +109,3 @@ If you do not set a Namespace, all Workflow Executions started using the Client 
 - [How to list Namespaces in a Temporal Service using the Temporal CLI](/cli/operator#list)
 - [How to view (describe) Namespace metadata and details using the Temporal CLI](/cli/operator#describe)
 
-## What is a Global Namespace? {#global-namespace}
-
-A Global Namespace is a [Namespace](/namespaces) that exists across Clusters when [Multi-Cluster Replication](/clusters#multi-cluster-replication) is set up.
-
-- [How to register a Global Namespace](/cli/operator#create)
-- [How to change the active Cluster for a Global Namespace](/cli/operator#update)
-
-The Global Namespace feature enables Workflow Executions to progress through another Cluster in the event of a failover.
-
-A Global Namespace may be replicated to any number of Clusters, but is active in only one Cluster at any given time.
-
-For a failover to be successful, Worker Processes must be polling for Tasks for the Global Namespace on all Clusters.
-
-A Global Namespace has a failover version.
-Because a failover can be triggered from any Cluster, the failover version prevents certain conflicts from occurring if a failover is mistakenly triggered simultaneously on two Clusters.
-
-Only the active Cluster dispatches [Tasks](/tasks#task); however, certain conflicts are possible.
-Unlike regular Namespaces, which provide at-most-once semantics for an Activity Execution, Global Namespaces can support only at-least-once semantics (see [Conflict resolution](/clusters#conflict-resolution)).
-Worker Processes on the standby Clusters are idle until a failover occurs and their Cluster becomes active.
-
-Temporal Application API calls made to a non-active Cluster are rejected with a **NamespaceNotActiveError** which contains the name of the current active Cluster.
-It is the responsibility of the Temporal Application to call the Cluster that is currently active.

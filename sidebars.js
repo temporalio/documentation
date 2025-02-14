@@ -282,6 +282,7 @@ module.exports = {
         },
         "develop/activity-retry-simulator",
         "develop/worker-performance",
+        "develop/safe-deployments",
       ],
     },
     {
@@ -534,9 +535,33 @@ module.exports = {
             },
             "encyclopedia/workflow-message-passing",
             "encyclopedia/child-workflows",
-            "encyclopedia/visibility",
+            {
+              type: "category",
+              label: "Visibility",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "encyclopedia/visibility/visibility",
+              },
+              items: [
+                "encyclopedia/visibility/dual-visibility",
+                "encyclopedia/visibility/list-filter",
+                "encyclopedia/visibility/search-attribute",
+              ],
+            },
             "encyclopedia/clusters",
-            "encyclopedia/namespaces",
+            {
+              type: "category",
+              label: "Namespaces",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "encyclopedia/namespaces/namespaces",
+              },
+              items: [
+                   "encyclopedia/namespaces/global-namespaces",
+              ],
+            },
             {
               type: "category",
               label: "Temporal Nexus",

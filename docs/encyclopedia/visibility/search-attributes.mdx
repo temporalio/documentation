@@ -1,275 +1,30 @@
 ---
-id: visibility
-title: What is the Temporal Visibility feature?
-sidebar_label: Visibility
-description: This comprehensive guide on Temporal Visibility explains how to set up, configure, and use Visibility features in Temporal Server versions. Learn about standard and advanced Visibility, Dual Visibility, supported databases, and custom Search Attributes.
-slug: /visibility
+id: search-attribute
+title: Search Attributes
+sidebar_label: Search Attributes
+description: This guide on Temporal Search Attributes explains how to set up, configure, and use default and custom Search Attributes in Temporal Server versions. Learn about supported types, limits, and how to use them to enhance Workflow filtering and querying.
+slug: /search-attribute
 toc_max_heading_level: 4
 keywords:
   - explanation
   - filtered-lists
   - term
   - visibility
+  - search attribute
 tags:
   - Concepts
   - Visibility
   - Search Attributes
 ---
 
-This guide provides a comprehensive overview of Temporal Visibility.
-
-:::tip Support, stability, and dependency info
-
-- For Temporal Server v1.19 and earlier, all supported databases for Visibility provide standard Visibility features, and an Elasticsearch database is required for advanced Visibility features.
-- For Temporal Server v1.20 and later, advanced Visibility features are enabled on all supported SQL databases, in addition to Elasticsearch.
-- In Temporal Server v1.21 and later, standard Visibility is no longer in development, and we recommend migrating to a [database that supports Advanced Visibility features](/self-hosted-guide/visibility). The Visibility configuration for the Temporal Service has been updated and Dual Visibility is enabled. For details, see [Visibility store setup](/self-hosted-guide/visibility).
-
-:::
-
-The term [Visibility](/visibility), within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view, filter, and search for Workflow Executions that currently exist within a Temporal Service.
-
-The [Visibility store](/self-hosted-guide/visibility) in your Temporal Service stores persisted Workflow Execution Event History data and is set up as a part of your [Persistence store](/clusters#persistence) to enable listing and filtering details about Workflow Executions that exist on your Temporal Service.
-
-- [How to set up a Visibility store](/self-hosted-guide/visibility)
-
-With Temporal Server v1.21, you can set up [Dual Visibility](#dual-visibility) to migrate your Visibility store from one database to another.
-
-Support for separate standard and advanced Visibility setups will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/self-hosted-guide/visibility) for updates.
-
-## What is standard Visibility? {#standard-visibility}
-
-Standard Visibility, within the Temporal Platform, is the subsystem and APIs that list Workflow Executions by a predefined set of filters.
-
-Open Workflow Executions can be filtered by a time constraint and either a Workflow Type, Workflow Id, or Run Id.
-
-Closed Workflow Executions can be filtered by a time constraint and either a Workflow Type, Workflow Id, Run Id, or Execution Status (Completed, Failed, Timed Out, Terminated, Canceled, or Continued-As-New).
-
-[Custom Search Attributes](https://docs.temporal.io/visibility#custom-search-attributes) are not supported with Standard Visibility.
-
-Support for standard Visibility is deprecated beginning with Temporal Server v1.21.
-For updates, check [Supported databases](/self-hosted-guide/visibility).
-
-## What is advanced Visibility? {#advanced-visibility}
-
-Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of [Workflow Executions](/workflows#workflow-execution) through a custom SQL-like [List Filter](#list-filter).
-
-- In Temporal Service version 1.20 and later, advanced Visibility is available on SQL databases like MySQL (version 8.0.17 and later) and PostgreSQL (version 12 and later), in addition to support for Elasticsearch.
-- For Temporal Server versions 1.19.1 and earlier, you must [integrate with ElasticSearch](/self-hosted-guide/visibility#elasticsearch) to use advanced Visibility.
-  Elasticsearch takes on the Visibility request load, relieving potential performance issues.
-  We highly recommend operating a Temporal Service with Elasticsearch for any use case that spawns more than just a few Workflow Executions.
-- On Temporal Cloud, advanced Visibility is enabled by default for [all users](/cloud/users#invite-users).
-
-## What is Dual Visibility? {#dual-visibility}
-
-Dual Visibility is a feature that lets you set a secondary Visibility store in addition to a primary store in your Temporal Service.
-Setting up Dual Visibility is optional and can be used to [migrate your Visibility database](/self-hosted-guide/visibility#migrating-visibility-database) or create a backup Visibility store.
-
-For example, if you have Cassandra configured as your Visibility database, you can set up a supported SQL database as your secondary Visibility store and gradually migrate your data to the secondary store before deprecating your primary one.
-
-A Dual Visibility setup requires two Visibility store configurations:
-
-- **Primary Visibility:** The primary Visibility store where Visibility data is written to and read from by default. The primary Visibility store is set with the `visibilityStore` configuration key in your Temporal Service.
-- **Secondary Visibility:** A secondary storage for your Visibility data. The secondary Visibility store is set with the `secondaryVisibilityStore` configuration key in your Temporal Service.
-
-For configuration details, see [Dual Visibility setup](/self-hosted-guide/visibility#dual-visibility).
-
-The following combinations are allowed in a Dual Visibility setting.
-
-| Primary                     | Secondary                       |
-| --------------------------- | ------------------------------- |
-| Standard (Cassandra or SQL) | Advanced (SQL or Elasticsearch) |
-| Advanced (SQL)              | Advanced (SQL)                  |
-| Advanced (Elasticsearch)    | Advanced (Elasticsearch)        |
-
-With Dual Visibility, you can read from only one Visibility store at a time, but can configure your Temporal Service to write to primary only, secondary only, or to both primary and secondary Visibility stores.
-When migrating from one Visibility store database to another, set up the database you want to migrate to as your secondary Visibility store.
-
-You can plan your migration using specific dynamic configuration keys that help you transition your read and write operations from the primary to the secondary Visibility store.
-For details on migrating your Visibility store databases, see [Dual Visibility](/self-hosted-guide/visibility#dual-visibility).
-
-## What is a List Filter? {#list-filter}
-
-The [Visibility](/clusters#visibility) List API requires you to provide a List Filter as an SQL-like string parameter.
-
-A List Filter includes [Search Attribute](#search-attribute) names, Search Attribute values, and [operators](#supported-operators) so that it can retrieve a filtered list of Workflow Executions from the Visibility Store.
-
-List Filter [Search Attribute](#search-attribute) names are case sensitive.
-A single [Namespace](/namespaces) scopes each List Filter.
-
-A List Filter using a time range provides a resolution of 1 ns on [Elasticsearch](/self-hosted-guide/visibility#elasticsearch) and 1 µs for [SQL databases](/self-hosted-guide/visibility).
-
-### Supported operators
-
-List Filters support the following operators:
-
-- **`=, !=, >, >=, <, <=`**
-- **`AND, OR, ()`**
-- **`BETWEEN ... AND`**
-- **`IN`**
-- **STARTS_WITH**
-
-{/* - **ORDER BY** */}
-
-The **ORDER BY** operator is currently not supported in Temporal Cloud.
-
-Custom Search Attributes of the `Text` type cannot be used in **ORDER BY** clauses.
-
-### Partial string match
-
-There are different options for partial string matching when the type of the Search Attribute is [Text](#text) versus [Keyword](#keyword).
-
-#### Text
-
-Search Attributes of type `Text` are [broken up into words](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) that match with the `=` operator.
-
-For example, if you have a custom `Text` Search Attribute named `Description` with either of the following values—
-
-```
-my-business-id-foobar
-my business id foobar
-```
-
-—then the following List Filter matches—
-
-```
-Description = 'foobar'
-```
-
-—but a partial word does not:
-
-```
-// Doesn't match
-Description = 'foo'
-```
-
-#### Keyword
-
-For Search Attributes of type `Keyword` like `WorkflowId`, perform partial string matching using STARTS_WITH for prefixes and BETWEEN for suffixes.
-
-- `WorkflowId STARTS_WITH "order-"` matches Workflow Ids with the "order-" prefix, regardless of the following text.
-
-  ```
-  order-
-  order-1234
-  order-abracadabra
-  order-~~~abracadabra
-  ```
-
-- `WorkflowId BETWEEN "order-" AND "order-~"` matches Workflow Ids that have characters after `order-` with ASCII values lower than `~` (126, the highest-value printable character), such as the following:
-
-  ```
-  order-
-  order-1234
-  order-abracadabra
-  ```
-
-  It does not match `order-~~`.
-
-:::note Filter Composition Quick Reference
-
-**Composition**
-
-- Data types:
-  - String literals with single or double quotes
-  - Numbers (Integer and Floating Point)
-  - Booleans
-- Comparison: `=`, `!=`, `>`, `>=`, `<`, `<=`
-- Expressions/Operators:
-  - `IN array`
-  - `BETWEEN value AND value`
-  - `STARTS_WITH string`
-  - `IS NULL`, `IS NOT NULL`
-  - `expr AND expr`, `expr OR expr`, `( expr )`
-- Array: `( comma-separated-values )`
-
-**Please note**
-
-- Wrap attributes with backticks if it contains characters not in
-  `[a-zA-Z0-9]`.
-- `STARTS_WITH` is only available for Keyword search attributes.
-
-:::
-
-### Efficient API usage
-
-If the Advanced List Filter API retrieves a substantial number of Workflow Executions (more than 10,000), the response time might be longer.
-
-Beginning with Temporal Server v1.20, you can employ the `CountWorkflow` API to efficiently count the number of [Workflow Executions](/workflows#workflow-execution).
-
-To paginate the results using the `ListWorkflow` API, use the page token to retrieve the next page.
-Continue until the page token becomes `null`/`nil`.
-
-#### List Filter examples
-
-Here are examples of List Filters set with the [Temporal CLI](/cli/workflow#list):
-
-```
-WorkflowType = "main.YourWorkflowDefinition" and ExecutionStatus != "Running" and (StartTime > "2021-06-07T16:46:34.236-08:00" or CloseTime > "2021-06-07T16:46:34-08:00")
-```
-
-When you use the preceding example, you receive a list of Workflows fulfilling the following criteria:
-
-- Workflow Type is `main.YourWorkflowDefinition`.
-- Workflow isn't in a running state.
-- Workflow either started after "2021-06-07T16:46:34.236-08:00" or closed after "2021-06-07T16:46:34-08:00".
-
-The following are additional examples of List Filters.
-
-```sql
-WorkflowId = '<workflow-id>'
-```
-
-```sql
-WorkflowId = '<workflow-id>' or WorkflowId = '<another-workflow-id>'
-```
-
-```sql
-WorkflowId IN ('<workflow-id>', '<another-workflow-id>')
-```
-
-```sql
-WorkflowId = '<workflow-id>' and ExecutionStatus = 'Running'
-```
-
-```sql
-WorkflowId = '<workflow-id>' or ExecutionStatus = 'Running'
-```
-
-```sql
-WorkflowId = '<workflow-id>' and StartTime > '2021-08-22T15:04:05+00:00'
-```
-
-```sql
-ExecutionTime between '2021-08-22T15:04:05+00:00' and '2021-08-28T15:04:05+00:00'
-```
-
-```sql
-ExecutionTime < '2021-08-28T15:04:05+00:00' or ExecutionTime > '2021-08-22T15:04:05+00:00'
-```
-
-```sql
-WorkflowType STARTS_WITH '<workflow-type-prefix>'
-```
-
-{/*
-
-```sql
-order by ExecutionTime
-```
-
-```sql
-order by StartTime desc, CloseTime asc
-```
-
-```sql
-order by CustomIntField asc
-```
-
-*/}
+This page discusses the following:
+- [Search Attributes](#search-attribute)
+- [Default Search Attributes](#default-search-attribute)
+- [Custom Search Attributes](#custom-search-attribute)
 
 ## What is a Search Attribute? {#search-attribute}
 
-A Search Attribute is an indexed field used in a [List Filter](#list-filter) to filter a list of [Workflow Executions](/workflows#workflow-execution) that have the Search Attribute in their metadata.
+A Search Attribute is an indexed field used in a [List Filter](/list-filter) to filter a list of [Workflow Executions](/workflows#workflow-execution) that have the Search Attribute in their metadata.
 
 Each Search Attribute is a key-value pair metadata object included in a Workflow Execution's Visibility information.
 This information is available in the Visibility store.
@@ -280,8 +35,8 @@ Search Attribute values are not encrypted because the Temporal Server must be ab
 
 :::
 
-Temporal provides some [default Search Attributes](#default-search-attributes), such as `ExecutionStatus`, the current state of your Workflow Executions.
-You can also create [custom Search Attribute](#custom-search-attributes) keys in your Visibility store and assign values when starting a Workflow Execution or in Workflow code.
+Temporal provides some [default Search Attributes](/search-attribute#default-search-attribute), such as `ExecutionStatus`, the current state of your Workflow Executions.
+You can also create [custom Search Attribute](/search-attribute#custom-search-attribute) keys in your Visibility store and assign values when starting a Workflow Execution or in Workflow code.
 
 When using [Continue-As-New](/workflows#continue-as-new) or a [Temporal Cron Job](/workflows#temporal-cron-job), Search Attribute keys are carried over to the new Workflow Run by default.
 Search Attribute values are only available for as long as the Workflow is.
@@ -295,7 +50,7 @@ For business logic in which you need to get information about a Workflow Executi
 If your business logic requires high throughput or low latency, store and fetch the data through Activities.
 You might experience lag due to time passing between the Workflow's state change and the Activity updating the Visibility store.
 
-### Default Search Attributes
+### Default Search Attributes {#default-search-attribute}
 
 A Temporal Service has a set of default Search Attributes already available.
 Default Search Attributes are set globally in any Namespace.
@@ -346,7 +101,7 @@ You can use the default Search Attributes in a List Filter, such as in the Tempo
 - With advanced Visibility, you can combine default Search Attributes in a List Filter to get a list of specific Workflow Executions.
   For example: `temporal workflow list --query "WorkflowType = 'main.YourWorkflowDefinition' and ExecutionStatus != 'Running' and (StartTime > '2022-06-07T16:46:34.236-08:00' or CloseTime < '2022-06-08T16:46:34-08:00')"`
 
-### Custom Search Attributes
+### Custom Search Attributes {#custom-search-attribute}
 
 You can [create custom Search Attributes](/self-hosted-guide/visibility#create-custom-search-attributes) with unique key names that are relevant to your business needs.
 
@@ -361,9 +116,9 @@ Use custom Search Attributes in a List Filter, such as in the Temporal Web UI or
 If you use Elasticsearch as your Visibility store, your custom Search Attributes apply globally and can be used across Namespaces.
 However, if using any of the [supported SQL databases](/self-hosted-guide/visibility) with Temporal Server v1.20 and later, your custom Search Attributes are associated with a specific Namespace and can be used for Workflow Executions in that Namespace.
 
-See [custom Search Attributes limits](#custom-search-attributes-limits) for limits on the number and size of custom Search Attributes you can create.
+See [custom Search Attributes limits](/search-attribute#custom-search-attribute-limits) for limits on the number and size of custom Search Attributes you can create.
 
-#### Supported types
+#### Supported types {#supported-types}
 
 Custom Search Attributes must be one of the following types:
 
@@ -391,7 +146,7 @@ Note:
   To store a list of values, use **KeywordList**.
 - The **Text** type cannot be used in the "Order By" clause.
 
-#### Custom Search Attributes limits
+#### Custom Search Attributes limits {#custom-search-attribute-limits}
 
 {/* TODO - [How to configure maximum number of Search Attribute keys per Cluster](#) */}
 
@@ -422,7 +177,7 @@ Default total maximum number of Search Attribute **keys** per Temporal Service i
 
 - The maximum total Search Attribute size is 40 KB.
 
-{/* TODO - [How to configure total Search Attribute size limite](#) */}
+{/* TODO - [How to configure total Search Attribute size limit](#) */}
 
 - The maximum total characters per Search Attribute value is 255.
 
@@ -432,10 +187,10 @@ This is configurable with [`SearchAttributesNumberOfKeysLimit`, `SearchAttribute
 
 For Temporal Cloud specific configurations, see the [Defaults, limits, and configurable settings -Temporal Cloud](/cloud/limits#number-of-custom-search-attributes) guide.
 
-### Usage
+### Usage {#usage}
 
 Search Attributes available in your Visibility store can be used with Workflow Executions for the Temporal Service.
-To actually have results from the use of a [List Filter](#list-filter), Search Attributes must be added to a Workflow Execution as metadata.
+To actually have results from the use of a [List Filter](/list-filter), Search Attributes must be added to a Workflow Execution as metadata.
 
 - To create custom Search Attributes in your Visibility store, see [Create custom Search Attributes](/self-hosted-guide/visibility#create-custom-search-attributes).
 - To remove a custom Search Attribute from the Visbility store, see [Remove custom Search Attributes](/self-hosted-guide/visibility#remove-custom-search-attributes).
@@ -448,6 +203,9 @@ With Workflows you can do the following:
 - Update the value set for a Search Attribute from within the Workflow code
 - Remove the value set for a Search Attribute from within the Workflow code
 
+
+:::info Manage Search Attributes by SDK
+
 - [How to manage Search Attributes using the Go SDK](/develop/go/observability#visibility)
 - [How to manage Search Attributes using the Java SDK](/develop/java/observability#visibility)
 - [How to manage Search Attributes using the PHP SDK](/develop/php/observability#visibility)
@@ -455,7 +213,9 @@ With Workflows you can do the following:
 - [How to manage Search Attributes using the TypeScript SDK](/develop/typescript/observability#visibility)
 - [How to manage Search Attributes using the .NET SDK](/develop/dotnet/observability#search-attributes)
 
-- To get a list of Search Attributes using the Temporal CLI, issue `temporal operator search-attribute list`. See [Search Attributes](/visibility#search-attribute).
+::: 
+
+- To get a list of Search Attributes using the Temporal CLI, issue `temporal operator search-attribute list`. See [Search Attributes](/search-attribute).
 
 After you add and set your Search Attributes, use your default or custom Search Attributes in a List Filter.
 

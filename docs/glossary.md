@@ -163,7 +163,7 @@ Start Delay determines the amount of time to wait before initiating a Workflow E
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [delay-workflow](/tags/delay-workflow)_ -->
 
-#### [Dual Visibility](/visibility#dual-visibility)
+#### [Dual Visibility](/dual-visibility)
 
 Dual Visibility is a feature, specific to a Self-hosted Temporal Service, that lets you set a secondary Visibility store in your Temporal Service to facilitate migrating your Visibility data from one database to another.
 
@@ -234,7 +234,7 @@ Learn more about the General Availability release stage
 
 <!-- _Tags: [product-release-stages](/tags/product-release-stages), [term](/tags/term)_ -->
 
-#### [Global Namespace](/namespaces#global-namespace)
+#### [Global Namespace](/global-namespace)
 
 A Global Namespace is a Namespace that duplicates data from an active [Temporal Service](#temporal-cluster) to a standby Service using the replication to keep both Namespaces in sync.
 Global Namespaces are designed to respond to service issues like network congestion.
@@ -260,7 +260,7 @@ A History Shard is an important unit within a Temporal Service by which the scal
 
 <!-- _Tags: [term](/tags/term)_ -->
 
-#### [List Filter](/visibility#list-filter)
+#### [List Filter](/list-filter)
 
 A List Filter is the SQL-like string that is provided as the parameter to an advanced Visibility List API.
 
@@ -484,7 +484,7 @@ A Schedule-To-Start Timeout is the maximum amount of time that is allowed from w
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_ -->
 
-#### [Search Attribute](/visibility#search-attribute)
+#### [Search Attribute](/search-attribute)
 
 A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.
 
