@@ -86,6 +86,7 @@ const DiscoverableDisclosure = ({ label = "Summary", children, prompt = "Dive de
         }}
       >
         {children}
+        <br />
       </div>
 
       {isOpen && (

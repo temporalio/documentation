@@ -30,9 +30,9 @@ In case of an incident or an outage, Temporal will automatically <ExpandableDefi
 This lets Workflow Executions continue with minimal interruptions or data loss.
 Customers can also initiate failovers based on their situational monitoring or for testing.
 
-![On failover, the replica becomes active and the Namespace endpoint directs access to  it](/img/cloud/high-availability/failover.png)
+<CaptionedImage src="/img/cloud/high-availability/failover.png" title="On failover, the replica becomes active and the Namespace endpoint directs access to  it" />
 
-Returning control from the replica to the primary Namespace is called a failback.
+Returning control from the replica to the primary Namespace is called a <ExpandableDefinition term="failback" definition = "A failback returns Workflow Execution processing to the primary Namespace from the replica after an incident resolves. This is automatic for Temporal-initiated failovers but can be disabled in region settings." />.
 The replica is active for a brief duration during an incident.
 Once the incident is done, Temporal fails back to the primary unless the failover was initiated by a user or the automatic failback feature was disabled in settings.
 
@@ -41,13 +41,14 @@ Once the incident is done, Temporal fails back to the primary unless the failove
 
 ## Replication and replicas {#replications-and-replicas}
 
-High availability (HA) features in Temporal Cloud simplify deployment, ensuring operational continuity and data integrity even during unexpected events impacting an availability zone (AZ) or a region using a process called Replication.
+High availability features in Temporal Cloud simplify deployment, ensuring operational continuity and data integrity even during unexpected events impacting an isolation domain or a region using a process called Replication.
 Replication asynchronously replicates Workflow Executions from an active region to its replica.
-Using Temporal Cloud’s HA features, you can create a replica in the same region or in a different region.
+Using Temporal Cloud’s high availability features, you can create a replica in the same region or in a different region.
 In the event of network service or performance issues in the active region, your replica is ready to take over.
 Temporal Cloud smoothly transitions control from the active to the replica via a "[failover](/glossary#failover)".
 
 <DiscoverableDisclosure label="Explore more" prompt="">
+
 After a **failover**, the replica takes on the active role until the incident is resolved.
 After, the replica **fails back** and the original Namespace resumes the active role.
 
@@ -57,18 +58,18 @@ Workflow history events are written to the active Namespace first and then async
 
 Each high availability Namespace replicates metadata and Workflow Executions to its connected replica.
 This redundancy, combined with failover capability, provides measurable stability during outages.
-<br /><br />
+
 </DiscoverableDisclosure>
 
 
 ## Achieving Business Continuity with 99.99% SLA
 
 For many organizations, ensuring high availability is critical to maintaining business continuity.
-Temporal Cloud's HA features provide a 99.99% contractual Service Level Agreement ([SLA](/cloud/sla)).
+Temporal Cloud's high availability features provide a 99.99% contractual Service Level Agreement ([SLA](/cloud/sla)).
 
 ## Should you enable high availability features?
 
-With HA features in Temporal Cloud, you can easily meet your availability SLAs, and ensure service disruptions and outages don’t affect the performance of your applications.
+With high availability features in Temporal Cloud, you can easily meet your availability SLAs, and ensure service disruptions and outages don’t affect the performance of your applications.
 
 - Keep your applications online by protecting your Temporal Workflows against outages and service disruptions
-- Replication and Multi-Region Replication offer a 99.99% contractual SLA for workloads with strict uptime requirements, compliance, and regulatory needs; whether you choose to be in a single region or across multiple regions.
+- Replication and multi-region Replication offer a 99.99% contractual SLA for workloads with strict uptime requirements, compliance, and regulatory needs; whether you choose to be in a single region or across multiple regions.

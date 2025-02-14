@@ -23,17 +23,82 @@ import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage'
 import ExpandableDefinition from '@site/src/components/definitions/ExpandableDefinition';
 import DiscoverableDisclosure from '@site/src/components/disclosures/DiscoverableDisclosure';
 
-A failover shifts Workflow Execution processing from an active Temporal Namespace region to its replica during outages or other incidents.
-This mode of replication duplicates data and prevents data loss during failover.
+When you enable High Availability features, you allow Temporal to replicate Namespace metadata and Workflow Executions to a replica.
+This redundancy, plus the added failover capability, provides measurable stability when dealing with outages.
 
-Temporal Cloud initiates a Namespace failover when it detects an incident or outage that raises error rates or latency in the active region of a Namespace.
-The failover shifts Workflow processing to a replica that isn’t affected by the incident.
-This lets existing Workflows continue and new Workflows start while the incident is fixed.
+## Replication
+
+An isolation domain is a defined area within Temporal Cloud's infrastructure.
+It helps contain failures and prevents them from spreading to other parts of the system.
+This provides redundancy and fault tolerance.
+Regions may contain multiple isolation domains.
+You choose whether your replica resides in the same region as your active Namespace using separate  isolation domains (standard replication), or in different regions (multi-region replication).
+
+Temporal deploys your active Namespace and your replica to separate isolation domains.
+It asynchronously replicates Workflow Executions from the active Namespace to the replica.
+This can occur within the same region or across different regions, depending on your architecture and requirements.
+
+The replicated data includes both Workflow Execution details and metadata.
+Metadata includes configurations such as retention periods, Search Attributes, and other settings.
+Temporal Cloud ensures that all regions will eventually share a consistent and unified view of the Namespace metadata.
+
+:::info
+
+A Namespace failover, which changes the "active region" field of a Namespace record, is an update. This update is replicated via the Namespace metadata mechanism.
+
+:::
+
+At any time only the primary Namespace or the replica is active.
+The exception only occurs in the event of a [network partition](https://en.wikipedia.org/wiki/Network_partition"), when a Network splits into separate subnetworks.
+Should this occur, you can promote a replica to active status.
+**Caution:** Doing so will temporarily make both regions active.
+Once the network partition is resolved and communication between the isolation domains/regions is restored, a conflict resolution algorithm determines if the Namespace or replica remains active.
+
+<DiscoverableDisclosure label="Explore more" prompt="">
+
+In traditional active/active replication, multiple nodes serve requests and accept writes simultaneously, ensuring strong synchronous data consistency.
+In contrast, with a Temporal Cloud high-availability Namespace, only the active Namespace accepts requests and writes at any given time.
+Workflow history events are written to the active Namespace first and then asynchronously replicated to the standby replica, ensuring that the replica remains in sync.
+
+</DiscoverableDisclosure>
+
+### Workflow Execution replication
+
+Temporal Cloud restricts certain Workflow operations to the active region:
+
+- You may only update Workflows in the active region.
+- You may only dispatch Workflow Tasks and Activity Tasks from the active region.
+  Forward progress in a Workflow Execution can therefore only be made in the active region.
+
+These limits mean that certain requests, such as Start Workflow and Signal Workflow, are processed by and limited to the active region.
+Replicas may receive API requests from Clients and Workers.
+They automatically forward these requests to the active region for execution.
+
+Namespaces with high availability provide an “all-active” experience for Temporal users.
+This helps limit or eliminate downtime during Namespace failover.
+There's a short time window from when a replica becomes active to when Clients and Workers receive a DNS update.
+During this time requests forward from the now passive (formerly active) region to the newly active (formerly standby) replica.
+
+As Workflow Executions progress and are operated on, replication tasks created in the active region are dispatched to the replica.
+Processing these replication tasks ensures that the replica undergoes the same state transitions as the active.
+This enables replicated tasks to synchronize and achieve the same state as the original tasks.
+
+Replicas do not distribute Workflow or Activity Tasks.
+Instead, they perform verification tasks to confirm that intended operations are executed so Workflows reach the desired state.
+This mechanism ensures consistency and reliability in the replication process.
+
+## Failovers
+
+At times, incidents occur that make a Namespace temporarily unavailable for use.
+Temporal detects this situation using regular health checks.
+If it finds unhealthy conditions, it will automatically failover the primary Namespace to a replica that isn’t affected by the incident.
+This shift prevents data loss and application interruptions.
+Existing Workflows continue and new Workflows start while the incident is fixed.
 Once the incident is resolved, Temporal Cloud performs a "failback" by shifting Workflow Execution processing back to the original region.
 
-- [Health checks](#health-checks)
-- [Failover scenarios](#failover-scenarios)
-- [Replication](#replication)
+Temporal Cloud automates failovers by performing internal **health checks**.
+This process monitors your request error rates, latencies, and any infrastructure issues that might cause service disruptions, such as request timeouts.
+It automatically triggers failovers when these indicators exceed our allowed thresholds.
 
 :::tip
 
@@ -42,23 +107,29 @@ In most scenarios, we recommend you let Temporal handle failovers for you.
 
 :::
 
-## Health checks {#health-checks}
+After failover, be aware of the following points:
+
+- When working with multi-region Namespaces, your CNAME may change.
+  For example, it may switch from aws-us-west-1.region.tmprl.com to <ExpandableDefinition term="aws-us-east-1.region.tmprl.com" definition="The us-east-1 region was Amazon's original and largest region. Many people consider it the 'default' region." />.
+  This change does not affect Namespaces deployed to a single region.
+- Your Namespace endpoint _will not change_.
+  If it is `my_namespace.my_account.tmprl.cloud:7233` before failover, it will be `my_namespace.my_account.tmprl.cloud:7233` after failover.
+
+### Checking health {#health-check}
 
 Temporal Cloud automates failovers by performing internal health checks.
 This process monitors your request error rates, latencies, and any infrastructure issues that might cause service disruptions, such as request timeouts.
 It automatically triggers failovers when these indicators exceed our allowed thresholds.
 
-### Replication lag
-
 Temporal Cloud’s High Availability features use asynchronous replication between the active region and the replica.
 Workflow updates in the active region, along with associated history events, are transmitted to the replica with a short delay.
 This delay is called the replication lag.
-Temporal Cloud strives to maintain a P95 replication delay of less than 1 minute.
+Temporal Cloud strives to maintain a <ExpandableDefinition term="P95" definition="P95 refers to the 95th percentile of a data set. It identifies values that are greater than or equal to 95% of that set." /> replication delay of less than 1 minute.
 In this context, P95 means 95% of requests are processed faster than this specified limit.
 
-Replication lags mean a forced failover may cause Workflows to rollback in progress.
+Replication lags mean a [forced failover](#forced-failover) may cause Workflows to rollback in progress.
 Lags may also cause recently started Workflows to be temporarily unavailable until the active region recovers.
-Temporal event versioning and conflict resolution mechanisms help guarantee that the Workflow Event History can be replayed.
+Temporal event versioning and [conflict resolution mechanisms](#conflict-resolution) help guarantee that the Workflow Event History can be replayed.
 Critical operations like Signals won't get lost.
 
 ## Failover scenarios
@@ -107,63 +178,7 @@ If the graceful approach doesn’t resolve the issue, Temporal Cloud automatical
 
 This strategy balances *consistency* and *availability* requirements.
 
-## Replication
-
-High Availability features replicate Namespace metadata and Workflow Executions to a replica.
-This redundancy, plus the added failover capability, provides measurable stability when dealing with outages.
-
-A highly available Namespace is normally active in a single region at any moment.
-The replica assumes a standby role.
-
-:::caution
-
-An exception to this only occurs in the event of a [network partition](https://en.wikipedia.org/wiki/Network_partition).
-In this case, you may elect to promote a replica to active status.
-_Caution_: this action will temporarily result in both regions being active.
-Once the network partition resolves and communication between the regions is restored, a conflict resolution algorithm determines which entity continues as the active one.
-This ensures only one region remains active.
-
-:::
-
-### Metadata replication
-
-Updates to highly available Namespace records automatically replicate.
-This metadata includes configurations such as retention periods, Search Attributes, and other settings.
-Temporal Cloud ensures that all regions will eventually share a consistent and unified view of the Namespace metadata.
-
-:::tip
-
-A Namespace failover, which changes the "active region" field of a Namespace record, is an update.
-This update is replicated via the Namespace metadata mechanism.
-
-:::
-
-### Workflow Execution replication
-
-Temporal Cloud restricts certain Workflow operations to the active region:
-
-- You may only update Workflows in the active region.
-- You may only dispatch Workflow Tasks and Activity Tasks from the active region.
-  Forward progress in a Workflow Execution can therefore only be made in the active region.
-
-These limits mean that certain requests, such as Start Workflow and Signal Workflow, are processed by and limited to the active region.
-Replicas may receive API requests from Clients and Workers.
-They automatically forward these requests to the active region for execution.
-
-Namespaces with high availability provide an “all-active” experience for Temporal users.
-This helps limit or eliminate downtime during Namespace failover.
-There's a short time window from when a replica becomes active to when Clients and Workers receive a DNS update.
-During this time requests forward from the now passive (formerly active) region to the newly active (formerly standby) replica.
-
-As Workflow Executions progress and are operated on, replication tasks created in the active region are dispatched to the replica.
-Processing these replication tasks ensures that the replica undergoes the same state transitions as the active.
-This enables replicated tasks to synchronize and achieve the same state as the original tasks.
-
-Replicas do not distribute Workflow or Activity Tasks.
-Instead, they perform verification tasks to confirm that intended operations are executed so Workflows reach the desired state.
-This mechanism ensures consistency and reliability in the replication process.
-
-### Conflict resolution
+## Conflict resolution {#conflict-resolution}
 
 Namespaces with replicas rely on asynchronous event replication.
 In the event of a non-graceful failover, replication lag may result in a temporary setback in workflow progress.
