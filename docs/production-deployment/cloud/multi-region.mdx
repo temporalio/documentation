@@ -62,8 +62,8 @@ In traditional active/active replication, multiple nodes serve requests and acce
 With a Temporal Cloud multi-region Namespace, two replicated Namespaces (one active, one standby) accept requests, but not simultaneously.
 Requests are processed and Workflow history events are initially written to the active region, then asynchronously replicated to the standby region.
 
-|                      Before failover                      |                     After failover                      |
-| :-------------------------------------------------------: | :-----------------------------------------------------: |
+|                         Before failover                         |                        After failover                         |
+| :-------------------------------------------------------------: | :-----------------------------------------------------------: |
 | ![Before failover](/img/cloud/multi-region/before-failover.png) | ![After failover](/img/cloud/multi-region/after-failover.png) |
 
 Should you be using multi-region Namespaces?
