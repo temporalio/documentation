@@ -327,7 +327,7 @@ module.exports = {
             "production-deployment/cloud/multi-region",
             {
               type: "category",
-              label: "High availabilty features",
+              label: "High availabilty",
               collapsed: true,
               link: {
                 type: "doc",

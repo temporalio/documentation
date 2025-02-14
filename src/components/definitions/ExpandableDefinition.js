@@ -1,53 +1,64 @@
 import React, { useState } from 'react';
 
-const ExpandableDefinition = ({ label = "Definition", definition }) => {
+const ExpandableDefinition = ({ term, definition }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDefinition = () => setIsOpen(!isOpen);
 
   return (
-    <span>
+    <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+      {/* Term and button within the same span */}
+      <span
+        style={{
+          marginRight: '1px', // Small space between term and button
+          fontWeight: '500',
+          fontSize: '1rem',
+          color: 'var(--primary-text-color)', // Text color for the term
+        }}
+      >
+        {term}
+      </span>
+
       <button
         onClick={toggleDefinition}
+        aria-expanded={isOpen}
+        aria-label={`Toggle definition for ${term}`}
         style={{
           background: 'none',
           border: 'none',
-          color: '#007acc',
+          color: 'var(--button-color)', // Blue for interactable button
           cursor: 'pointer',
-          fontSize: '0.9rem',
-          margin: '-5px',
-          verticalAlign: 'super',
+          fontSize: '1.2rem',
+          padding: '0',
+          margin: '0',
+          verticalAlign: 'middle', // Keep the button aligned with the term
+          display: 'inline-block',
           transition: 'transform 0.3s ease-in-out',
           transform: isOpen ? 'rotate(45deg)' : 'none',
-          // textDecoration: 'underline',
         }}
       >
         ⊕ {/* Circled plus */}
       </button>
+
+      {/* Inline definition */}
       {isOpen && (
         <span
           style={{
-            display: 'block',
+            display: 'inline-block',
             marginTop: '5px',
+            marginLeft: '10px',
             fontStyle: 'italic',
-            textAlign: 'center',
-            marginLeft: 'auto',
-            marginRight: 'auto',
-            maxWidth: '80%',
-            // color: '#4F4F4F',
-            fontFamily: 'Georgia, serif',
+            fontSize: '0.95rem',
             padding: '10px',
-            border: '2px solid #B0B0B0',
+            border: '2px solid var(--border-color)', // Border color that adapts
             borderRadius: '8px',
-            // backgroundColor: '#f9f9f9',
-            transition: 'max-height 0.3s ease-out',
-            maxHeight: isOpen ? '500px' : '0',
+            backgroundColor: 'var(--background-color)', // Background color adapts
+            color: 'var(--text-color)', // Text color adapts
+            transition: 'max-height 0.3s ease-out, padding 0.3s ease-out',
+            maxHeight: isOpen ? '500px' : '0', // Smooth collapse/expand
             overflow: 'hidden',
           }}
         >
-          <span style={{ fontWeight: 'bold', /*color: '#333'*/ }}>
-            {label}: {/* Dynamically change the label */}
-          </span>
           {definition}
         </span>
       )}
