@@ -17,6 +17,7 @@ const DiscoverableDisclosure = ({ label = "Summary", children, prompt = "Dive de
       } else {
         setMaxHeight('0px');
       }
+
       return newState;
     });
   };
@@ -85,6 +86,7 @@ const DiscoverableDisclosure = ({ label = "Summary", children, prompt = "Dive de
         }}
       >
         {children}
+        <br />
       </div>
 
       {isOpen && (
