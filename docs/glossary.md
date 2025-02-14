@@ -101,7 +101,7 @@ The `Authorizer` plugin contains a single `Authorize` method, which is invoked f
 
 <!-- _Tags: [term](/tags/term)_ -->
 
-#### [Child Workflow](/encyclopedia/child-workflows)
+#### [Child Workflow](/child-workflows)
 
 A Child Workflow Execution is a Workflow Execution that is spawned from within another Workflow.
 
@@ -381,7 +381,7 @@ A common code package, schema, or documentation that a Caller can use to obtain 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
 
-#### [Parent Close Policy](/encyclopedia/child-workflows#parent-close-policy)
+#### [Parent Close Policy](/parent-close-policy)
 
 If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy determines what happens to the Workflow Execution if its Parent Workflow Execution changes to a Closed status (Completed, Failed, Timed out).
 

@@ -88,7 +88,7 @@ Unset or invalid attributes can cause this to occur.
 Reset any missing attributes, such as Workflow Id or Run Id.
 Adjust any fields that exceed length limits.
 
-If [Child Workflow](/encyclopedia/child-workflows) is set to `Start` and `RequestCancel`, remove one of these attributes.
+If [Child Workflow](/child-workflows) is set to `Start` and `RequestCancel`, remove one of these attributes.
 A Child Workflow cannot perform both actions in the same Workflow Task.
 
 ## Bad Schedule Activity Attributes {#bad-schedule-activity-attributes}
@@ -207,7 +207,7 @@ Let the Workflow complete any current Activities before redeploying the code.
 
 ## Pending Child Workflows Limit Exceeded {#pending-child-workflows-limit-exceeded}
 
-This error indicates that the [Workflow](/workflows) has reached capacity for pending [Child Workflows](/encyclopedia/child-workflows).
+This error indicates that the [Workflow](/workflows) has reached capacity for pending [Child Workflows](/child-workflows).
 Therefore, the [Workflow Task](/tasks#workflow-task) was failed to prevent additional Child Workflows from being added.
 
 Wait for the system to finish any currently running Child Workflows before redeploying this Task.
