@@ -17,6 +17,7 @@ const DiscoverableDisclosure = ({ label = "Summary", children, prompt = "Dive de
       } else {
         setMaxHeight('0px');
       }
+
       return newState;
     });
   };

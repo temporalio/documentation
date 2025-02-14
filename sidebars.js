@@ -28,18 +28,6 @@ module.exports = {
             "evaluate/development-production-features/workflow-message-passing",
             "evaluate/development-production-features/debugging",
             "evaluate/development-production-features/interrupt-workflow",
-            {
-              type: "category",
-              label: "High Availability",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "evaluate/development-production-features/high-availability",
-              },
-              items: [
-                "evaluate/development-production-features/multi-region-namespace",
-              ],
-            },
             "evaluate/development-production-features/testing-suite",
             "evaluate/development-production-features/observability",
             "evaluate/development-production-features/data-encryption",
@@ -337,6 +325,23 @@ module.exports = {
               ],
             },
             "production-deployment/cloud/multi-region",
+            {
+              type: "category",
+              label: "High availabilty",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "production-deployment/cloud/high-availability/index",
+              },
+              items: [
+                "production-deployment/cloud/high-availability/how-it-works",
+                "production-deployment/cloud/high-availability/enable",
+                // "production-deployment/cloud/high-availability/guarantees",
+                "production-deployment/cloud/high-availability/monitor",
+                "production-deployment/cloud/high-availability/failovers",
+                // "production-deployment/cloud/high-availability/faq",
+              ],
+            },
             {
               type: "category",
               label: "Temporal Nexus",
