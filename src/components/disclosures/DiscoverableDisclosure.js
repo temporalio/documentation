@@ -1,21 +1,20 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const DiscoverableDisclosure = ({ label = "Summary", children }) => {
+const DiscoverableDisclosure = ({ label = "Summary", children, prompt = "Dive deeper — " }) => {
   const [isOpen, setIsOpen] = useState(false);
   const contentRef = useRef(null);
   const summaryRef = useRef(null);
 
-  // Set initial max-height value for transition
   const [maxHeight, setMaxHeight] = useState('0px');
 
   const toggleOpen = () => {
     setIsOpen((prev) => {
       const newState = !prev;
-      // Update max-height for smooth collapsing
+
       if (newState) {
-        setMaxHeight('500px'); // Arbitrary max height for smooth expansion
+        setMaxHeight('500px');
       } else {
-        setMaxHeight('0px'); // Collapse with animation
+        setMaxHeight('0px');
       }
       return newState;
     });
@@ -23,10 +22,9 @@ const DiscoverableDisclosure = ({ label = "Summary", children }) => {
 
   useEffect(() => {
     if (isOpen && contentRef.current) {
-      setMaxHeight(`${contentRef.current.scrollHeight}px`); // Dynamically adjust max-height based on content height
+      setMaxHeight(`${contentRef.current.scrollHeight}px`);
     }
 
-    // Scroll back into view after the collapse
     if (!isOpen && summaryRef.current) {
       summaryRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
@@ -43,7 +41,7 @@ const DiscoverableDisclosure = ({ label = "Summary", children }) => {
       }}
     >
       <summary
-        ref={summaryRef} // Attach the ref to the summary element
+        ref={summaryRef}
         style={{
           cursor: 'pointer',
           display: 'flex',
@@ -53,13 +51,14 @@ const DiscoverableDisclosure = ({ label = "Summary", children }) => {
           padding: '8px 16px',
           minHeight: '40px',
           lineHeight: '1.5',
-          transition: 'color 200ms ease', // Smooth transition for hover color
+          transition: 'color 200ms ease',
         }}
         onClick={toggleOpen}
         onMouseEnter={(e) => (e.target.style.color = '#007BFF')}
         onMouseLeave={(e) => (e.target.style.color = '')}
       >
-        Dive deeper&nbsp;—&nbsp;<strong>{label}</strong>
+        {prompt}
+        <strong>{label}</strong>
         <span style={{ marginLeft: '8px', fontSize: '1.2rem' }}>
           {isOpen ? '[-]' : '[+]'}
         </span>
@@ -68,11 +67,11 @@ const DiscoverableDisclosure = ({ label = "Summary", children }) => {
       <div
         ref={contentRef}
         style={{
-          maxHeight, // Apply dynamic maxHeight
+          maxHeight,
           marginTop: '5px',
-          padding: isOpen ? '10px' : '0', // Only add padding when open
+          padding: isOpen ? '10px' : '0',
           borderRadius: '8px',
-          transition: 'max-height 0.3s ease, padding 0.3s ease', // Smooth transition for collapse only
+          transition: 'max-height 0.3s ease, padding 0.3s ease',
           overflow: 'hidden',
         }}
       >
