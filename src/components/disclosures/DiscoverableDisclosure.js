@@ -4,6 +4,7 @@ const DiscoverableDisclosure = ({ label = "Summary", children, prompt = "Dive de
   const [isOpen, setIsOpen] = useState(false);
   const contentRef = useRef(null);
   const summaryRef = useRef(null);
+  const isInitialRender = useRef(true); // Track the initial render
 
   const [maxHeight, setMaxHeight] = useState('0px');
 
@@ -21,12 +22,20 @@ const DiscoverableDisclosure = ({ label = "Summary", children, prompt = "Dive de
   };
 
   useEffect(() => {
-    if (isOpen && contentRef.current) {
-      setMaxHeight(`${contentRef.current.scrollHeight}px`);
+    if (isInitialRender.current) {
+      // Skip the first render, no scroll on initial load
+      isInitialRender.current = false;
+      return;
     }
 
+    // Only scroll into view when the disclosure is closing
     if (!isOpen && summaryRef.current) {
       summaryRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // Dynamically adjust max-height when content is open
+    if (isOpen && contentRef.current) {
+      setMaxHeight(`${contentRef.current.scrollHeight}px`);
     }
   }, [isOpen]);
 
