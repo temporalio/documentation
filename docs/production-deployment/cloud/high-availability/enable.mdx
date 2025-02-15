@@ -20,8 +20,8 @@ keywords:
 ---
 
 import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
-import ExpandableDefinition from '@site/src/components/definitions/ExpandableDefinition';
 import DiscoverableDisclosure from '@site/src/components/disclosures/DiscoverableDisclosure';
+import ToolTipTerm from '@site/src/components/tooltip/ToolTipTerm';
 
 You can enable high availability features for a new or existing Namespace by adding a replica.
 When you add a replica, Temporal Cloud begins the replication of ongoing and existing workflows.
@@ -45,7 +45,7 @@ Replication is in [Public Preview](/evaluate/development-production-features/rel
 Temporal currently offers the following high availability features, which you can configure at a Namespace level.
 See the “Enable high availability features” section for more details.
 
-- Replication: Workflows are seamlessly replicated to a different isolation domain within the same region as the Namespace, such as "us-east-1".
+- Replication: Workflows are seamlessly replicated to a different isolation domain within the same region as the Namespace, such as "<ToolTipTerm term="us-east-1" tooltip="The us-east-1 region was Amazon's original and largest region. Many people consider it the 'default' region." />".
   This option is a good fit if your application is architected to be in a single-region and you would prefer to failover within the same region.
 - Multi-region replication: Workflows are seamlessly replicated to a different region that you can choose.
   This option is a good fit if your application is architected to be multi-region and your business requires multi-regional availability.

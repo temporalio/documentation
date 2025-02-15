@@ -20,19 +20,18 @@ keywords:
 ---
 
 import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
-import ExpandableDefinition from '@site/src/components/definitions/ExpandableDefinition';
 import DiscoverableDisclosure from '@site/src/components/disclosures/DiscoverableDisclosure';
+import ToolTipTerm from '@site/src/components/tooltip/ToolTipTerm';
 
 Temporal Cloud provides high availability features for workloads where availability is critical to your operations.
-When you enable these features, Temporal Cloud automatically synchronizes your data between the  primary Namespace information and a <ExpandableDefinition term="replica" definition = "A replica is a synchronized copy of a Namespace. It ensures redundancy, fault tolerance, and minimal downtime during an incident or outage. A replica can take over operations if the primary Namespace becomes unavailable. It's synchronized up to the point of replication lag, where no further data is available." />, keeping them in sync.
-
-In case of an incident or an outage, Temporal will automatically <ExpandableDefinition term="failover" definition = "A failover shifts Workflow Execution processing from a primary  Namespace to a replica during outages or other incidents. Temporal Cloud uses replication to duplicate data and prevent data loss during failover." /> your Namespace from the primary to the replica.
+When you enable these features, Temporal Cloud automatically synchronizes your data between the  primary Namespace information and a <ToolTipTerm term="replica" tooltip="A replica is a synchronized copy of a Namespace. It ensures redundancy, fault tolerance, and minimal downtime during an incident or outage. A replica can take over operations if the primary Namespace becomes unavailable. It's synchronized up to the point of replication lag, where no further data is available." />, keeping them in sync.
+In case of an incident or an outage, Temporal will automatically <ToolTipTerm term="failover" tooltip="A failover shifts Workflow Execution processing from a primary  Namespace to a replica during outages or other incidents. Temporal Cloud uses replication to duplicate data and prevent data loss during failover." /> your Namespace from the primary to the replica.
 This lets Workflow Executions continue with minimal interruptions or data loss.
 Customers can also initiate failovers based on their situational monitoring or for testing.
 
 <CaptionedImage src="/img/cloud/high-availability/failover.png" title="On failover, the replica becomes active and the Namespace endpoint directs access to  it" />
 
-Returning control from the replica to the primary Namespace is called a <ExpandableDefinition term="failback" definition = "A failback returns Workflow Execution processing to the primary Namespace from the replica after an incident resolves. This is automatic for Temporal-initiated failovers but can be disabled in region settings." />.
+Returning control from the replica to the primary Namespace is called a <ToolTipTerm term="failback" tooltip="A failback returns Workflow Execution processing to the primary Namespace from the replica after an incident resolves. This is automatic for Temporal-initiated failovers but can be disabled in region settings." />.
 The replica is active for a brief duration during an incident.
 Once the incident is done, Temporal fails back to the primary unless the failover was initiated by a user or the automatic failback feature was disabled in settings.
 
@@ -45,7 +44,7 @@ High availability features in Temporal Cloud simplify deployment, ensuring opera
 Replication asynchronously replicates Workflow Executions from an active region to its replica.
 Using Temporal Cloud’s high availability features, you can create a replica in the same region or in a different region.
 In the event of network service or performance issues in the active region, your replica is ready to take over.
-Temporal Cloud smoothly transitions control from the active to the replica via a "[failover](/glossary#failover)".
+Temporal Cloud smoothly transitions control from the active to the replica via a failover".
 
 <DiscoverableDisclosure label="Explore more" prompt="">
 
