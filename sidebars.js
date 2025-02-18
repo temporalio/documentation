@@ -336,9 +336,10 @@ module.exports = {
               items: [
                 "production-deployment/cloud/high-availability/how-it-works",
                 "production-deployment/cloud/high-availability/enable",
-                // "production-deployment/cloud/high-availability/guarantees",
                 "production-deployment/cloud/high-availability/monitor",
                 "production-deployment/cloud/high-availability/failovers",
+                "production-deployment/cloud/high-availability/guarantees",
+                "production-deployment/cloud/high-availability/concepts",
                 // "production-deployment/cloud/high-availability/faq",
               ],
             },
