@@ -43,7 +43,7 @@ Once the incident is done, Temporal fails back to the primary unless the failove
 High availability features in Temporal Cloud simplify deployment, ensuring operational continuity and data integrity even during unexpected events impacting an isolation domain or a region using a process called Replication.
 Replication asynchronously replicates Workflow Executions from an active region to its replica.
 Using Temporal Cloud’s high availability features, you can create a replica in the same region or in a different region.
-In the event of network service or performance issues in the active region, your replica is ready to take over.
+In the event of network service or performance issues in the active Namespace, your replica is ready to take over.
 Temporal Cloud smoothly transitions control from the active to the replica via a failover".
 
 After a failover, the replica takes on the active role until the incident is resolved.
@@ -56,6 +56,19 @@ Workflow history events are written to the active Namespace first and then async
 
 Each high availability Namespace replicates metadata and Workflow Executions to its connected replica.
 This redundancy, combined with failover capability, provides measurable stability during outages.
+
+<DiscoverableDisclosure label="Namespaces and built-in stability">
+Each Temporal Namespace uses database-level replication to distribute data across three availability zones.
+An activity zone (AZ) is a distributed system segment where tasks or operations are assigned and executed.
+It can be used to manage workloads and ensure tasks are handled in the right location, optimizing resource usage and minimizing latency.
+
+This replication ensures that any Workflow state or History changes is written to all three AZs before sending an acknowledgement to the Client.
+As a result, your Temporal Namespace remains operational, even if a single AZ becomes unavailable.
+
+Note that Temporal deploys Namespaces using a cell-based architecture.
+Each cell, along with is physical and software resources, is a failure domain.
+When a shared dependency or common infrastructure component -- such as the database or networking -- fails within a cell, then all Namespaces within that cell are affected.
+</DiscoverableDisclosure>
 
 ## Achieving Business Continuity with 99.99% SLA
 

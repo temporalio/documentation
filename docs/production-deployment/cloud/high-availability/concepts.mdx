@@ -137,18 +137,6 @@ A Namespace failover, which changes the "active region" field of a Namespace rec
 
 :::
 
-## Network partitions
-
-At any time only the **active Namespace**or the **replica** is active.
-The exception only occurs in the event of a [network partition](https://en.wikipedia.org/wiki/Network_partition"), when a Network splits into separate subnetworks.
-Should this occur, you can promote a **replica**to active status.
-**Caution:** Doing so will temporarily make both regions active.
-Once the network partition is resolved and communication between the isolation domains/regions is restored, a conflict resolution algorithm determines if the Namespace or **replica**remains active.
-
-In traditional active/active replication, multiple nodes serve requests and accept writes simultaneously, ensuring strong synchronous data consistency.
-In contrast, with a Temporal Cloud high-availability Namespace, only the **active Namespace**accepts requests and writes at any given time.
-Workflow history events are written to the **active Namespace**first and then asynchronously replicated to the standby replica, ensuring that the **replica**remains in sync.
-
 ## Failovers
 
 At times, incidents occur that make a Namespace temporarily unavailable for use.
