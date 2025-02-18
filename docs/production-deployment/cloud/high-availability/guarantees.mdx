@@ -1,7 +1,7 @@
 ---
 id: guarantees
-title: Guarantees and availability
-sidebar_label: Guarantees and availability
+title: Guarantees
+sidebar_label: Guarantees
 slug: /cloud/high-availability/guarantees
 description: Temporal Cloud's High-Availability Namespaces offer automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime. Use Global Namespace for self-hosted.
 tags:
@@ -30,14 +30,11 @@ High-availability Namespaces are in [Public Preview](/evaluate/development-produ
 
 :::
 
-<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**Maybe these could just be parts of the FAQ?**</div>
+## High availability Namespace replication feature SLA {#sla}
 
+**What guarantees does Temporal offer for replication features?**
 
-## Multi-region Namespace SLA {#sla}
-
-**What guarantees does Temporal offer for multi-region Namespaces?**
-
-Multi-region Namespaces offer 99.99% availability, enforced by Temporal Cloud's [service error rates SLA](https://docs.temporal.io/cloud/sla).
+Namespace replication offers 99.99% availability, enforced by Temporal Cloud's [service error rates SLA](https://docs.temporal.io/cloud/sla).
 Our system is designed to limit data loss after recovery when the incident triggering the failover is resolved.
 
 Our recovery point objective ([RPO](https://en.wikipedia.org/wiki/Disaster_recovery#Recovery_Point_Objective)) is near-zero.

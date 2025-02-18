@@ -33,26 +33,33 @@ High-availability Namespaces are in [Public Preview](/evaluate/development-produ
 How do you trigger failovers and observe Workflow Executions?
 This section provides how-to instructions for the following operations tasks:
 
-- [Health status of replica](#monitor-health)
+- [Health status of replica](#replica-health)
 - [Metrics](#metrics)
-- [Monitoring and observability](#observe)
+  - [Monitoring and observability](#observe)
+  - [Auditing operational events](#auditing)
 
-## Health status of replica {#monitor-health}
+## Replica health {#replica-health}
 
-The status of the replica can be monitored using the Temporal Cloud UI.
-When the replica is in an unhealthy state, you will see that the “Trigger a failover” option is disabled.
-This is to prevent you from failing over your namespace to an unhealthy replica.
+You can monitor your replica statuses with the Temporal Cloud UI.
+If the replica is unhealthy, the “Trigger a failover” option is disabled to prevent failing over to an unhealthy replica.
 
-<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>The replica could be in an unhealthy state because….</div>
-<br /><br />
-<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>You can remediate by…</div>
+An unhealthy replica might result from:
+
+- **Data synchronization issues:** The replica fails to stay in sync with the **active Namespace** due to network or performance problems.
+- **Replication lag:** The replica falls behind the **active Namespace**, causing it to be out of sync.
+- **Network issues:** Loss of communication between the **replica** and the **active Namespace** causes problems.
+- **Failed health checks:** If the replica fails health checks, it’s marked as unhealthy.
+
+These issues prevent the replica from being used during a failover, ensuring system stability and consistency.
 
 ## Metrics {#metrics}
 
 Replication lag refers to the transmission delay of Workflow updates and history events from the active region to the replica.
-A forced failover when there is a large replication lag has a higher likelihood of rolling back Workflow progress, so always check the metric replication lag before initiating a failover.
-Temporal Cloud emits three replication lag-specific metrics.
-The following samples demonstrate how you can use these metrics to explore replication lag.
+A forced failover when there is significant replication lag increases the likelihood of rolling back Workflow progress. Therefore, always check the replication lag metric before initiating a failover.
+
+Temporal Cloud emits three replication lag-specific [metrics](/production-deployment/cloud/metrics/reference#replication-lag).
+The following samples demonstrate how you can use these metrics to monitor and explore replication lag:
+
 
 **P99 replication lag histogram**:
 
@@ -68,24 +75,24 @@ sum(rate(temporal_cloud_v0_replication_lag_sum[$__rate_interval])) by (temporal_
 sum(rate(temporal_cloud_v0_replication_lag_count[$__rate_interval])) by (temporal_namespace)
 ```
 
-## Monitoring and observability {#observe}
+### Monitoring and observability {#observe}
 
-You can view and alert on key cloud metrics using the Web UI, the 'tcld' CLI utility, and Temporal Cloud APIs.
-For example, during the process of adding a region to a Namespace, you can see the progress of Workflow replication.
-Errors -- if any occur -- will also surface in the Namespace Web UI.
+You can view and alert for key cloud metrics using the Web UI, the 'tcld' CLI utility, or Temporal Cloud APIs.
+For instance, when adding a region to a Namespace, you can track how Workflow replication progresses.
+If any errors occur, they will be displayed in the Namespace Web UI.
 
 :::tip
 
-You may notice that multi-region Namespace shows twice (2x) the Action count in temporal_cloud_v0_total_action_count.
-This doubling happens due to replication.
+If a Namespace is using a replica, you may notice that the Action count in `temporal_cloud_v0_total_action_count` is doubled (2x).
+This happens because operations are replicated: they occur on both the active Namespace and the replica.
+
 :::
 
-## Auditing operational events
+### Auditing operational events {#auditing}
 
-Temporal Cloud provides several ways to audit events:
+Temporal Cloud offers several ways to audit events:
 
-- When Temporal triggers failovers, the audit log updates with details.
-  Look specifically for "operation": "FailoverNamespace" in the logs.
-- You can set alerts for Temporal-initiated failover events.
-- After a failover, you can check that the Namespace is active in the new region using the Temporal Cloud Web UI.
-
+- When Temporal triggers failovers, the audit log will update with details.
+  Look for `"operation": "FailoverNamespace"` in the logs.
+- You can set up alerts for Temporal-initiated failover events.
+- After a failover, verify that the Namespace is active in the new region using the Temporal Cloud Web UI.

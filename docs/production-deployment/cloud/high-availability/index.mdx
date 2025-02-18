@@ -46,10 +46,9 @@ Using Temporal Cloud’s high availability features, you can create a replica in
 In the event of network service or performance issues in the active region, your replica is ready to take over.
 Temporal Cloud smoothly transitions control from the active to the replica via a failover".
 
-<DiscoverableDisclosure label="Explore more" prompt="">
-
-After a **failover**, the replica takes on the active role until the incident is resolved.
-After, the replica **fails back** and the original Namespace resumes the active role.
+After a failover, the replica takes on the active role until the incident is resolved.
+After, the replica fails back and the original Namespace resumes the active role.
+(Failback may be disabled by demand in your Namespace settings.)
 
 In traditional active/active replication, multiple nodes serve requests and accept writes simultaneously, ensuring strong synchronous data consistency.
 In contrast, with a Temporal Cloud high availability Namespace, only the active Namespace accepts requests and writes at any given time.
@@ -57,9 +56,6 @@ Workflow history events are written to the active Namespace first and then async
 
 Each high availability Namespace replicates metadata and Workflow Executions to its connected replica.
 This redundancy, combined with failover capability, provides measurable stability during outages.
-
-</DiscoverableDisclosure>
-
 
 ## Achieving Business Continuity with 99.99% SLA
 
