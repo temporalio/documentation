@@ -27,9 +27,10 @@ Temporal Cloud automatically initiates failovers when an incident or outage affe
 Standby Namespace replicas duplicate data and prevent data loss during failover.
 
 - [Triggering failovers](#triggering-failovers)
+  - [Disabling Temporal-initiated failovers](#disabling-temporal-initiated)
 - [Failover testing](#testing)
-- [Failovers and Worker deployment](#worker)
-- [Set up secure routing for failovers](#routing)
+- [Preparing Worker deployment](#worker)
+- [Secure routing for failovers](#routing)
 
 ## Triggering failovers {#triggering-failovers}
 
@@ -39,7 +40,7 @@ This section explains how to manually trigger a failover and what to expect afte
 
 :::warning Check Your Replication Lag
 
-Always check the [metric replication lag](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_replication_lag_bucket) before initiating a failover.
+Always check the [metric replication lag](/production-deployment/cloud/metrics/reference#replication-lag) before initiating a failover.
 A forced failover when there is a large replication lag has a higher likelihood of rolling back Workflow progress.
 
 :::
@@ -49,7 +50,6 @@ A forced failover when there is a large replication lag has a higher likelihood 
 You can trigger a failover manually using the Temporal Cloud Web UI or the `tcld` CLI, depending on your preference and setup.
 The following table outlines the steps for each method:
 
-<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**Need to update the CLI instructions**</div>
 | Method                    | Instructions                                                                                                                                                                                                                                                            |
 | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Temporal Cloud Web UI** | 1. Visit the [Namespace page](https://cloud.temporal.io/namespaces) on the Temporal Cloud Web UI.<br />2. Navigate to your Namespace details page and select the **Trigger a failover** option from the menu.<br />3. After confirmation, Temporal initiates the failover. |
@@ -162,9 +162,7 @@ To keep Workflows moving during this level of outage, deploy a second set of Wor
 
 :::
 
-## Set up secure routing for failovers {#routing}
-
-<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**This section needs fixing for regions vs isolation domains**</div>
+## Secure routing for failovers {#routing}
 
 When using a high availability Namespace, the Namespace's DNS record `<ns>.<acct>.<tmprl_domain>` targets a regional DNS record in the format `<region>.region.<tmprl_domain>`.
 Here, `<region>` is the currently active region for your Namespace.
@@ -177,8 +175,6 @@ As a rule of thumb, DNS reconciliation takes no longer than twice (2x) the TTL.
 Clients should converge to the newly targeted region within, at, most a 30-second delay.
 
 ### PrivateLink routing {#privatelink-routing}
-
-<div style={{backgroundColor: '#ffff00',padding: '0px 15px',borderRadius: '5px',border: '1px solid #cccccc',display: 'inline-block'}}>**This section needs fixing for regions vs isolation domains**</div>
 
 :::important
 
@@ -216,6 +212,7 @@ Alternately, you could establish connectivity between the regions to redirect Wo
 
 The following table lists Temporal's available regions, PrivateLink endpoints, and DNS record overrides.
 The `sa-east-1` region listed here is not yet available for use with multi-region Namespaces.
+There is (currently) only one region on the continent.
 
 | Region           | PrivateLink Service Name                                       | DNS Record Override                     |
 | ---------------- | -------------------------------------------------------------- | --------------------------------------- |
