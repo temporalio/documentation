@@ -323,6 +323,12 @@ The gRPC endpoint format for the Namespace depends on the authentication method:
 
 Use this gRPC endpoint in the Temporal CLI or SDK to connect to Temporal Cloud with an API key.
 
+:::info
+
+For Multi-region Namespaces with API key authentication enabled, use the gRPC endpoint format `<namespace>.<account>.tmprl.cloud:7233`. This allows automated regional failover without needing to switch endpoints.
+
+:::
+
 ## Use API keys to authenticate {#using-apikeys}
 
 Authenticate with Temporal Cloud using API keys with the following clients:
