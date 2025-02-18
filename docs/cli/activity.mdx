@@ -9,6 +9,10 @@ keywords:
   - activity complete
   - activity execution
   - activity fail
+  - activity update-options
+  - activity pause
+  - activity unpause
+  - activity reset
   - cli reference
   - cli-feature
   - command-line-interface-cli
@@ -17,6 +21,8 @@ tags:
   - Activities
   - Temporal CLI
 ---
+
+# Activity commands
 
 Activity commands operate on [Activity Executions](/activities#activity-execution).
 
@@ -118,3 +124,180 @@ Use the following options to change the behavior of this command.
 - [--tls-server-name](/cli/cmd-options#tls-server-name)
 
 - [--workflow-id](/cli/cmd-options#workflow-id)
+
+## update-options
+
+The `temporal activity update-options` command updates options for an [Activity Execution](/activities#activity-execution).
+The Activity must already be running on a valid [Workflow](/workflows).
+Updates are incremental, only changing the specified options. Either activity id or activity type must be provided.
+If type is provided, and there are multiple pending activities of the provided type - all of them will be updated.
+Command will return new activity options.
+
+Use the following options to change the behavior of this command.
+
+Routing options:
+- [--activity-id](/cli/cmd-options#activity-id)
+- [--activity-type](/cli/cmd-options#activity-type)
+- [--workflow-id](/cli/cmd-options#workflow-id)
+- [--run-id](/cli/cmd-options#run-id)
+- [--namespace](/cli/cmd-options#namespace)
+
+
+Update specific options:
+
+- [--task-queue](/cli/cmd-options#task-queue)
+- [--schedule-to-close-timeout](/cli/cmd-options#schedule-to-close-timeout)
+- [--schedule-to-start-timeout](/cli/cmd-options#schedule-to-start-timeout)
+- [--start-to-close-timeout](/cli/cmd-options#start-to-close-timeout)
+- [--heartbeat-timeout](/cli/cmd-options#heartbeat-timeout)
+- [--retry-initial-interval](/cli/cmd-options#retry-initial-interval)
+- [--retry-maximum-interval](/cli/cmd-options#retry-maximum-interval)
+- [--retry-backoff-coefficient](/cli/cmd-options#retry-backoff-coefficient)
+- [--retry-maximum-attempts](/cli/cmd-options#retry-maximum-attempts)
+
+Other options:
+- [--identity](/cli/cmd-options#identity)
+- [--tls](/cli/cmd-options#tls)
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
+- [--address](/cli/cmd-options#address)
+- [--codec-auth](/cli/cmd-options#codec-auth)
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+- [--color](/cli/cmd-options#color)
+- [--command-timeout](/cli/cmd-options#command-timeout)
+- [--detail](/cli/cmd-options#detail)
+- [--env](/cli/cmd-options#env)
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
+
+## pause
+
+The `temporal activity pause` command pauses an [Activity Execution](/activities#activity-execution) specified by its ID or type.
+If type is provided, and there are multiple pending activities of the provided type - all of them will be paused.
+Pausing an activity means:
+* If the activity is currently waiting for a retry or is running and subsequently fails, it will not be rescheduled until it is unpaused.
+* If the activity is already paused, calling this method will have no effect.
+* If the activity is running and finishes successfully, the activity will be completed.
+* If the activity is running and finishes with failure:
+  * if there is no retry left - the activity will be completed.
+  * if there are more retries left - the activity will be paused.
+For long-running activities, activities in paused state will send a cancellation with "activity_paused" set to 'true' in response to 'RecordActivityTaskHeartbeat'.
+The activity should respond to the cancellation accordingly.
+
+This command returns a `NotFound` error if there is no pending activity with the provided ID or type.
+Use the following options to change the behavior of this command.
+
+Routing options:
+- [--activity-id](/cli/cmd-options#activity-id)
+- [--activity-type](/cli/cmd-options#activity-type)
+- [--workflow-id](/cli/cmd-options#workflow-id)
+- [--run-id](/cli/cmd-options#run-id)
+- [--namespace](/cli/cmd-options#namespace)
+
+Other options:
+  - [--identity](/cli/cmd-options#identity)
+  - [--tls](/cli/cmd-options#tls)
+  - [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+  - [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+  - [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+  - [--tls-key-path](/cli/cmd-options#tls-key-path)
+  - [--tls-server-name](/cli/cmd-options#tls-server-name)
+  - [--address](/cli/cmd-options#address)
+  - [--codec-auth](/cli/cmd-options#codec-auth)
+  - [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+  - [--color](/cli/cmd-options#color)
+  - [--command-timeout](/cli/cmd-options#command-timeout)
+  - [--detail](/cli/cmd-options#detail)
+  - [--env](/cli/cmd-options#env)
+  - [--grpc-meta](/cli/cmd-options#grpc-meta)
+
+## unpause
+
+The `temporal activity unpause` command unpauses an [Activity Execution](/activities#activity-execution) specified by its ID or type.
+If there are multiple pending activities of the provided type - all of them will be unpaused.
+If activity is not paused, this call will have no effect.
+If the activity was paused while waiting for retry, it will be scheduled immediately (* see 'jitter' flag).
+Once the activity is unpaused, all timeout timers will be regenerated.
+
+Command will fail with a `NotFound` error if there is no pending activity with the provided ID or type.
+
+Activities can be unpaused in bulk via a visibility Query list filter:
+
+```
+temporal activity unpause --query YourQuery \
+    --reason YourReasonForUnpause
+```
+
+
+Routing options:
+- [--activity-id](/cli/cmd-options#activity-id)
+- [--activity-type](/cli/cmd-options#activity-type)
+- [--workflow-id](/cli/cmd-options#workflow-id)
+- [--run-id](/cli/cmd-options#run-id)
+- [--namespace](/cli/cmd-options#namespace)
+
+Unpause specific options:
+- [--match-all](/cli/cmd-options#match-all)
+- [--reset-attempts](/cli/cmd-options#reset-attempts)
+- [--reset-heartbeat](/cli/cmd-options#reset-heartbeat)
+- [--jitter](/cli/cmd-options#activity-jitter)
+
+Other options:
+  - [--identity](/cli/cmd-options#identity)
+  - [--tls](/cli/cmd-options#tls)
+  - [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+  - [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+  - [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+  - [--tls-key-path](/cli/cmd-options#tls-key-path)
+  - [--tls-server-name](/cli/cmd-options#tls-server-name)
+  - [--address](/cli/cmd-options#address)
+  - [--codec-auth](/cli/cmd-options#codec-auth)
+  - [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+  - [--color](/cli/cmd-options#color)
+  - [--command-timeout](/cli/cmd-options#command-timeout)
+  - [--detail](/cli/cmd-options#detail)
+  - [--env](/cli/cmd-options#env)
+  - [--grpc-meta](/cli/cmd-options#grpc-meta)
+
+## reset
+
+The `temporal activity reset` command resets an [Activity Execution](/activities#activity-execution) specified by its ID or type.
+If there are multiple pending activities of the provided type - all of them will be reset.
+Resetting an activity means:
+* number of attempts will be reset to 0.
+* activity timeouts will be reset.
+* if the activity is waiting for retry, and it is not paused or 'keep_paused' is not provided, it will be scheduled immediately (* see 'jitter' flag),
+
+Command will fail with a `NotFound` error if there is no pending activity with the provided ID or type.
+
+Routing options:
+- [--activity-id](/cli/cmd-options#activity-id)
+- [--activity-type](/cli/cmd-options#activity-type)
+- [--workflow-id](/cli/cmd-options#workflow-id)
+- [--run-id](/cli/cmd-options#run-id)
+- [--namespace](/cli/cmd-options#namespace)
+
+Reset specific options:
+- [--keep-paused](/cli/cmd-options#keep-paused)
+- [--reset-heartbeat](/cli/cmd-options#reset-heartbeat)
+- [--jitter](/cli/cmd-options#activity-jitter)
+
+Other options:
+  - [--identity](/cli/cmd-options#identity)
+  - [--tls](/cli/cmd-options#tls)
+  - [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+  - [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+  - [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+  - [--tls-key-path](/cli/cmd-options#tls-key-path)
+  - [--tls-server-name](/cli/cmd-options#tls-server-name)
+  - [--address](/cli/cmd-options#address)
+  - [--codec-auth](/cli/cmd-options#codec-auth)
+  - [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+  - [--color](/cli/cmd-options#color)
+  - [--command-timeout](/cli/cmd-options#command-timeout)
+  - [--detail](/cli/cmd-options#detail)
+  - [--env](/cli/cmd-options#env)
+  - [--grpc-meta](/cli/cmd-options#grpc-meta)
+
