@@ -141,7 +141,7 @@ After failover, be aware of the following points:
 Here’s how Temporal's automated failover process works:
 
 - During normal operation, the active Namespace asynchronously copies  operations and metadata to its replica, keeping them in sync.
-- If the active Namespace fails and becomes unavailable, Temporal detects this through health checks and fails over to the replica.
+- If the active Namespace fails and becomes unavailable, Temporal detects this through health checks and fails over to the replica using one of the [failover scenarios](#scenarios) Temporal provides.
 - The replica assumes the active role, continuing operations with minimal disruption.
 - Once the original active Namespace recovers, the roles can either switch back (failback, the default) or remain as they are, depending on your Namespace settings.
 
@@ -154,6 +154,52 @@ This update is replicated via the Namespace metadata mechanism.
 
 :::
 
+## Failover scenarios {#scenarios}
+
+The Temporal Cloud failover mechanism supports several modes for executing Namespace failovers.
+These modes include graceful failover ("handover"), forced failover, and a hybrid mode.
+The hybrid mode is Temporal Cloud’s default Namespace behavior.
+The following sections describe each style.
+
+### Graceful failover (handover) {#graceful-failover}
+
+In this mode, Temporal Cloud fully processes and drains replication Tasks.
+Temporal Cloud pauses traffic to the Namespace before the failover.
+Graceful failover prevents the loss of progress and avoids data conflicts.
+
+The Namespace experiences a short period of unavailability, defaulting to 10 seconds.
+During this period:
+
+- Existing Workflows stop progress.
+- Temporal Cloud returns a "Service unavailable error".
+  This error is retryable by the Temporal SDKs.
+- State transitions will not happen and tasks are not dispatched.
+- User requests like start/signal Workflow are rejected.
+- Operations are paused during handover.
+
+This mode favors _consistency_ over availability.
+
+### Forced failover {#forced-failover}
+
+In this mode, a Namespace immediately activates in the standby region.
+Events not replicated due to replication lag undergo conflict resolution upon reaching the new active region.
+
+This mode prioritizes *availability* over consistency.
+
+### Hybrid failover mode {#hybrid-failover}
+
+While graceful failovers are preferred for consistency, they aren’t always practical.
+Temporal Cloud’s hybrid failover mode (the default mode) limits the initial graceful failover attempt to 10 seconds or less.
+
+During this period:
+
+- Existing Workflows stop progress.
+- Temporal Cloud returns a "Service unavailable error", which is retried by SDKs.
+
+If the graceful approach doesn’t resolve the issue, Temporal Cloud automatically switches to a forced failover.
+
+This strategy balances *consistency* and *availability* requirements.
+
 ## Network partitions
 
 At any time only the active Namespace or the replica is active.
@@ -165,3 +211,19 @@ Once the network partition is resolved and communication between the isolation d
 In traditional active/active replication, multiple nodes serve requests and accept writes simultaneously, ensuring strong synchronous data consistency.
 In contrast, with a Temporal Cloud high-availability Namespace, only the active Namespace accepts requests and writes at any given time.
 Workflow History Events are written to the active Namespace first and then asynchronously replicated to the replica, ensuring that the replica remains in sync.
+
+## Conflict resolution {#conflict-resolution}
+
+Namespaces with replicas rely on asynchronous event replication.
+In the event of a non-graceful failover, replication lag may result in a temporary setback in workflow progress.
+
+Single-region Namespaces can be configured to provide at-most-once semantics for Activities execution (when Maximum Attempts is set to 0).
+Namespaces with replicas provide at-least-once semantics for execution of Activities.
+Completed Activities may be re-dispatched in a newly active region, leading to repeated executions.
+
+When a Workflow Execution is updated in a replica following a failover, events from the previously active region that arrive after the failover can't be directly applied.
+At this point, Temporal Cloud has forked the Workflow History.
+
+After failover, Temporal Cloud creates a new branch history for execution, and begins its conflict resolution process.
+The Temporal Service ensures that Workflow Histories remain valid and are replayable by SDKs post-failover or after conflict resolution.
+This capability is crucial for Workflow Executions to continue their forward progress.
