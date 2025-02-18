@@ -24,14 +24,14 @@ This page discusses [Payload Codec](#payload-codec).
 
 ## What is a Payload Codec? {#payload-codec}
 
-A Payload Codec transforms an array of [Payloads](#payload) (for example, a list of Workflow arguments) into another array of Payloads.
+A Payload Codec transforms an array of [Payloads](/dataconversion#payload) (for example, a list of Workflow arguments) into another array of Payloads.
 
 When serializing to Payloads, the Payload Converter is applied first to convert your objects to bytes, followed by codecs that convert bytes to bytes.
 When deserializing from Payloads, codecs are applied first to last to reverse the effect, followed by the Payload Converter.
 
 Use a custom Payload Codec to transform your Payloads; for example, implementing compression and/or encryption on your Workflow Execution data.
 
-#### Encryption
+### Encryption {#encryption}
 
 Using end-to-end encryption in your custom Data Converter ensures that sensitive application data is secure when handled by the Temporal Server.
 

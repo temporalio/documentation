@@ -29,7 +29,7 @@ A Payload Converter serializes data, converting values to bytes and back.
 When you initiate a Workflow Execution through a Client and pass data as input, the input is serialized using a Data Converter that runs it through a set of Payload Converters.
 When your Workflow Execution starts, this data input is deserialized and passed as input to your Workflow.
 
-#### Composite Data Converters
+### Composite Data Converters {#composite-data-converters}
 
 A Composite Data Converter is used to apply custom, type-specific Payload Converters in a specified order.
 A Composite Data Converter can be comprised of custom rules that you created, and it can also leverage the default Data Converters built into Temporal.

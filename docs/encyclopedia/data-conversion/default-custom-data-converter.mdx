@@ -45,13 +45,14 @@ For example:
 
 The default Data Converter serializes objects based on their root type, rather than nested types.
 The JSON serializers of some SDKs cannot process lists with Protobuf children objects without implementing a [custom Data Converter](#custom-data-converter).
+
 ## What is a custom Data Converter? {#custom-data-converter}
 
-A custom Data Converter extends the default Data Converter with custom logic for [Payload](#payload) conversion or encoding.
+A custom Data Converter extends the default Data Converter with custom logic for [Payload](/dataconversion#payload) conversion or encoding.
 
 You can create a custom Data Converter to alter formats (for example, using [MessagePack](https://msgpack.org/) instead of JSON) or add compression and encryption.
 
-A Payload Codec encodes and decodes [Payloads](#payload), with bytes-to-bytes conversion.
+A Payload Codec encodes and decodes [Payloads](/dataconversion#payload), with bytes-to-bytes conversion.
 To use custom encryption or compression logic, create a custom Payload Codec with your encryption/compression logic in the `encode` function and your decryption/decompression logic in the `decode` function.
 To implement a custom Payload Codec, you can override the default Data Converter, or create a customized Data Converter that defines its own Payload Converter.
 
@@ -59,9 +60,9 @@ Custom Data Converters are not applied to all data; for example, [Search Attribu
 
 A customized Data Converter can have the following three components:
 
-- [Payload Converter](#payload-converter)
-- [Payload Codec](#payload-codec)
-- [Failure Converter](#failure-converter)
+- [Payload Converter](/payload-converter)
+- [Payload Codec](/payload-codec)
+- [Failure Converter](/failure-converter)
 
 For details on how to implement custom encryption and compression in your SDK, see [Data Encryption](/production-deployment/data-encryption).
 

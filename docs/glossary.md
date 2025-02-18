@@ -139,7 +139,7 @@ Centralizing development enables the Core SDK to support quick and reliable depl
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [continue-as-new](/tags/continue-as-new)_ -->
 
-#### [Custom Data Converter](/dataconversion#custom-data-converter)
+#### [Custom Data Converter](/default-custom-data-converters#custom-data-converter)
 
 A custom Data Converter extends the default Data Converter with custom logic for Payload conversion or Payload encryption.
 

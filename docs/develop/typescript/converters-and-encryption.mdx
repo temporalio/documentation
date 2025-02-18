@@ -131,7 +131,7 @@ You can now use a variety of data types in arguments.
 
 ## How to use a custom payload converter in TypeScript {#custom-payload-conversion}
 
-To support custom Payload conversion, create a [custom Payload Converter](/dataconversion#composite-data-converters) and configure the Data Converter to use it in your Client options.
+To support custom Payload conversion, create a [custom Payload Converter](/payload-converter#composite-data-converters) and configure the Data Converter to use it in your Client options.
 You can use Custom Payload Converters to change how application objects get serialized to binary Payload. To handle custom data types that are not natively JSON-serializable (e.g., `BigInt`, `Date`, or binary data), you can create a custom Payload Converter. A Custom Payload Converter is responsible for converting your custom data types to a payload format that Temporal can manage.
 
 To implement a Custom Payload Converter in TypeScript, you need to do the following steps:
@@ -511,7 +511,7 @@ export async function protoActivity(
 
 #### Encryption
 
-> Background: [Encryption](/dataconversion#encryption)
+> Background: [Encryption](/payload-codec#encryption)
 
 The following is an example class that implements the `PayloadCodec` interface:
 

@@ -36,7 +36,7 @@ For example, if you have sensitive information passed in the following objects t
 Using encryption ensures that your sensitive data exists unencrypted only on the Client and the Worker Process that is executing the Workflows and Activities, on hosts that you control.
 
 By default, your data is serialized to a [Payload](/dataconversion#payload) by a [Data Converter](/dataconversion).
-To encrypt your Payload, configure your custom encryption logic with a [Payload Codec](/payload-codec) and set it with a [custom Data Converter](/dataconversion#custom-data-converter).
+To encrypt your Payload, configure your custom encryption logic with a [Payload Codec](/payload-codec) and set it with a [custom Data Converter](/default-custom-data-converters#custom-data-converter).
 
 A Payload Codec does byte-to-byte conversion to transform your Payload (for example, by implementing compression and/or encryption and decryption) and is an optional step that happens between the Client and the [Payload Converter](/payload-converter):
 
