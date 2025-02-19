@@ -65,14 +65,14 @@ class EncryptionCodec(PayloadCodec):
 The `decode()` function should implement the `encode()` logic in reverse.
 
 ```python
-    async def decode(self, payloads: Iterable[Payload]) -> List[Payload]:
-        ret: List[Payload] = []
-        for p in payloads:
-            if p.metadata.get("encoding", b"").decode() != "binary/snappy":
-                ret.append(p)
-                continue
-            ret.append(Payload.FromString(bytes(cramjam.snappy.decompress(p.data))))
-        return ret
+async def decode(self, payloads: Iterable[Payload]) -> List[Payload]:
+    ret: List[Payload] = []
+    for p in payloads:
+        if p.metadata.get("encoding", b"").decode() != "binary/snappy":
+            ret.append(p)
+            continue
+        ret.append(Payload.FromString(bytes(cramjam.snappy.decompress(p.data))))
+    return ret
 ```
 
 This example verifies that an encoded payload matches the `binary/snappy` filetype -- i.e., that it was encoded using the same custom `encode()` function -- and if so, performs decompression followed by unmarshaling.
