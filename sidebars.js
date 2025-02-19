@@ -324,10 +324,10 @@ module.exports = {
                 "production-deployment/cloud/metrics/prometheus-grafana",
               ],
             },
-            "production-deployment/cloud/multi-region",
+            // "production-deployment/cloud/multi-region",
             {
               type: "category",
-              label: "High availabilty",
+              label: "High Availabilty",
               collapsed: true,
               link: {
                 type: "doc",
@@ -336,12 +336,26 @@ module.exports = {
               items: [
                 "production-deployment/cloud/high-availability/how-it-works",
                 "production-deployment/cloud/high-availability/enable",
-                "production-deployment/cloud/high-availability/monitor",
-                "production-deployment/cloud/high-availability/failovers",
                 "production-deployment/cloud/high-availability/guarantees",
-                "production-deployment/cloud/high-availability/concepts",
-                // "production-deployment/cloud/high-availability/faq",
-              ],
+                {
+                type: "category",
+                label: "Knowledge base",
+                collapsed: true,
+                link: {
+                  type: "doc",
+                  id: "production-deployment/cloud/high-availability/knowledge-base/index",
+                },
+                items: [
+                  "production-deployment/cloud/high-availability/knowledge-base/monitor",
+                  "production-deployment/cloud/high-availability/knowledge-base/failovers",
+                  "production-deployment/cloud/high-availability/knowledge-base/secure-routing",
+                  "production-deployment/cloud/high-availability/knowledge-base/private-link",
+                  "production-deployment/cloud/high-availability/knowledge-base/concepts",
+                  "production-deployment/cloud/high-availability/knowledge-base/best-practices",
+                  "production-deployment/cloud/high-availability/knowledge-base/glossary",
+                ]
+              },
+              ]
             },
             {
               type: "category",
