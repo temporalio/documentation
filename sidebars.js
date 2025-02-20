@@ -337,6 +337,7 @@ module.exports = {
                 "production-deployment/cloud/high-availability/how-it-works",
                 "production-deployment/cloud/high-availability/enable",
                 "production-deployment/cloud/high-availability/guarantees",
+                "production-deployment/cloud/high-availability/monitor",
                 {
                 type: "category",
                 label: "Knowledge base",
@@ -346,13 +347,23 @@ module.exports = {
                   id: "production-deployment/cloud/high-availability/knowledge-base/index",
                 },
                 items: [
-                  "production-deployment/cloud/high-availability/knowledge-base/monitor",
                   "production-deployment/cloud/high-availability/knowledge-base/failovers",
                   "production-deployment/cloud/high-availability/knowledge-base/secure-routing",
                   "production-deployment/cloud/high-availability/knowledge-base/private-link",
-                  "production-deployment/cloud/high-availability/knowledge-base/concepts",
-                  "production-deployment/cloud/high-availability/knowledge-base/best-practices",
-                  "production-deployment/cloud/high-availability/knowledge-base/glossary",
+                ]
+              },
+              {
+                type: "category",
+                label: "References",
+                collapsed: true,
+                link: {
+                  type: "doc",
+                  id: "production-deployment/cloud/high-availability/references/index",
+                },
+                items: [
+                  "production-deployment/cloud/high-availability/references/concepts",
+                  "production-deployment/cloud/high-availability/references/best-practices",
+                  "production-deployment/cloud/high-availability/references/glossary",
                 ]
               },
               ]
