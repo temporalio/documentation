@@ -56,15 +56,18 @@ This redundancy, combined with failover capability, provides measurable stabilit
 
 <DiscoverableDisclosure label="Namespaces and built-in stability">
 Each Temporal Namespace uses database-level replication to distribute data across three availability zones.
-An activity zone (AZ) is a distributed system segment where tasks or operations are assigned and executed.
-It can be used to manage workloads and ensure tasks are handled in the right location, optimizing resource usage and minimizing latency.
+An activity zone (AZ) is a distributed system segment where Tasks or operations are assigned and executed.
+It can be used to manage workloads and ensure Tasks are handled in the right location, optimizing resource usage and minimizing latency.
 
-This replication ensures that any Workflow state or History changes is written to all three AZs before sending an acknowledgement to the Client.
+This replication ensures that any Workflow state or History changes is written to all three AZs before sending an acknowledgment to the Client.
 As a result, your Temporal Namespace remains operational, even if a single AZ becomes unavailable.
 
 Note that Temporal deploys Namespaces using a cell-based architecture.
-Each cell, along with is physical and software resources, is a failure domain.
-When a shared dependency or common infrastructure component -- such as the database or networking -- fails within a cell, then all Namespaces within that cell are affected.
+Each cell, along with its physical and software resources, is a failure domain or "isolation domain".
+When a shared dependency or common infrastructure component -- such as the database or networking -- fails within a cell, all Namespaces within that cell are affected.
+
+High Availability features improve reliability and reduce risk by deploying a primary Namespace and its replica to different cells, that is separate isolation domains.
+If one domain experiences an incident, a simple failover mitigates the impact.
 </DiscoverableDisclosure>
 
 ## Achieving Business Continuity with 99.99% SLA
