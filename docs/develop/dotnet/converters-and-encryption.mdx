@@ -30,7 +30,6 @@ The server itself never adds encryption over Payloads.
 Therefore, unless client-side encryption is implemented, Payload data will be persisted in non-encrypted form to the data store, and any Client that can make requests to a Temporal namespace (including the Temporal UI and CLI) will be able to read Payloads contained in Workflows.
 When working with sensitive data, you should always implement Payload encryption.
 
-
 ## Custom Payload Codec {#custom-payload-codec}
 
 **How to use a custom Payload Codec using the .NET SDK**
