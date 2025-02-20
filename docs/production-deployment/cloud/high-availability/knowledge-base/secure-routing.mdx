@@ -29,10 +29,10 @@ Here, `<region>` is the currently active region for your Namespace.
 Clients resolving the Namespace’s DNS record are directed to connect to the active region for that Namespace, thanks to the regional DNS record.
 
 During failover, Temporal Cloud changes the target of the Namespace DNS record from one region to another.
-Namespace DNS records are configured with a 15 seconds <a href="https://en.wikipedia.org/wiki/Time_to_live">TTL</a>.
+Namespace DNS records are configured with a 15 second <a href="https://en.wikipedia.org/wiki/Time_to_live">TTL</a>.
 Any DNS cache should re-resolve the record within this delay.
 As a rule of thumb, DNS reconciliation takes no longer than twice (2x) the TTL.
-Clients should converge to the newly targeted region within, at, most a 30-second delay.
+Clients should converge to the newly targeted region within, at most, a 30-second delay.
 
 :::info AWS PrivateLink
 

@@ -24,9 +24,9 @@ import DiscoverableDisclosure from '@site/src/components/disclosures/Discoverabl
 import ToolTipTerm from '@site/src/components/tooltip/ToolTipTerm';
 
 Keeping services available is crucial in distributed applications, especially during failures or incidents.
-Temporal’s replication and automated failover features ensure high availability by automatically switching between active primary and its replica when needed.
-By enabling high availability replication, you allow Temporal to copy Namespace metadata and Workflow Executions to a <ToolTipTerm term="replica" tooltip="A replica is a synchronized copy of a Namespace. It ensures redundancy, fault tolerance, and minimal downtime during an incident or outage. A replica can take over operations if the primary becomes unavailable. It's synchronized up to the point of replication lag, where no further data is available." />.
-This redundancy, combined with failover capability, enhances stability during outages.
+Temporal’s replication and automated failover features ensure high availability by automatically switching the Temporal Service between a primary and its replica when needed.
+By enabling High Availability replication, you allow Temporal to copy Namespace metadata and Workflow Executions to a <ToolTipTerm term="replica" tooltip="A replica is a synchronized copy of a Namespace. It ensures redundancy, fault tolerance, and minimal downtime during an incident or outage. A replica can take over operations if the primary becomes unavailable. It's synchronized up to the point of replication lag, where no further data is available." />.
+This redundancy, combined with failover capability, enhances availability during outages.
 
 ## High availability
 
@@ -39,13 +39,12 @@ Each Namespace is automatically distributed across three availability zones, off
 
 For added resilience, you can enable a Namespace replica, which also delivers automated failovers to your deployment.
 Your replica can be configured within the same region ("same-region") or across separate regions ("multi-region").
-The failover process automatically switches to a backup system or component when the primary system fails.
+The failover process automatically configures the replica to assume the primary role during an outage.
 It ensures that even if parts of the Temporal Service fail or become unreachable, your application continues to function.
-Your application experiences minimal disruption, as Temporal automatically shifts operations to a replicated system.
 
 ## Replication
 
-Replication is the process of copying and synchronizing data or services across multiple nodes or systems.
+Replication is the process of copying and synchronizing data or services across Temporal Server deployments.
 This ensures availability and consistency in the event of a failure.
 Temporal uses replication to support high availability, ensuring that Workflows and data remain available even if parts of the system fail or become unreachable.
 
@@ -237,4 +236,4 @@ At this point, Temporal Cloud has forked the Workflow History.
 
 After failover, Temporal Cloud creates a new branch history for execution, and begins its <ToolTipTerm term="conflict resolution" tooltip="The process of identifying and resolving conflicts that arise when different parts of a system have inconsistent data or operations. Conflicts can occur when Namespaces and replicas have diverging states. These are often due to network issues, concurrent updates, or replication delays. Conflict resolution ensures that all elements eventually converge to a consistent and correct state, minimizing data inconsistency and system disruption." /> process.
 The Temporal Service ensures that Workflow Histories remain valid and are replayable by SDKs post-failover or after conflict resolution.
-This capability is crucial for ensuring Workflow Executions continue forward without losing progress, and for maintaining consistency across replication, even during incidents that caused disruptions in replication.
+This capability is crucial for ensuring Workflow Executions continue forward without losing progress, and for maintaining consistency across replication, even during incidents that cause disruptions in replication.

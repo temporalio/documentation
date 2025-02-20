@@ -59,10 +59,12 @@ The following table outlines the steps for each method:
 When you add a replica to a Namespace, in the event of an incident or an outage Temporal Cloud automatically fails over the Namespace to its replica.
 _This is the recommended and default option._
 
-However if you prefer to disable Temporal-initiated failovers and handle your own failovers, you can do so by navigating to the Namespace detail page in Temporal Cloud.
-Choose the "Disable Temporal-initiated failovers" option.
+However if you prefer to disable Temporal-initiated failovers and handle your own failovers, you can do so by following these instructions:
 
-If you prefer to disable Temporal-initiated failovers and handle your own failovers, you can do so by navigating to the Namespace detail page in Temporal Cloud. Choose the "Disable Temporal-initiated failovers" option.
+| Method                    | Instructions                                                                                                                                                                                                                                                                                                                                                                                                             |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Temporal Cloud Web UI** | <ul><li>Navigate to the Namespace detail page in Temporal Cloud.</li><li>Choose the "Disable Temporal-initiated failovers" option.</li></ul>                                         |
+| **Temporal `tcld` CLI**   | To disable Temporal-initiated failovers, run the following command in your terminal:<br /><tt>tcld namespace update-high-availability \ </tt><br /><tt>&nbsp;&nbsp;&nbsp;&nbsp;--namespace \<namespace_id>.\<account_id> \ </tt><br /><tt>&nbsp;&nbsp;&nbsp;&nbsp;--disable-auto-failover=true</tt><br /> |
 
 ### Post-failover event information {#info}
 
@@ -142,18 +144,15 @@ Enabling high availability for Namespaces doesn't require specific Worker config
 The process is invisible to the Workers.
 When a Namespace fails over to the replica, the DNS redirection orchestrated by Temporal ensures that your existing Workers continue to poll the Namespace without interruption.
 
-- When a Namespace fails over to a replica in a different region, Workers will be communicating cross-region.
-  If your application can’t tolerate this latency, deploy a second set of Workers in this region or opt for a replica in the same region.
-
-- In case of a complete regional outage, Workers in the original region may fail alongside the original Namespace.
-  To keep Workflows moving during this level of outage, deploy a second set of Workers to the secondary region.
-
 :::tip
 
 When a Namespace fails over to a replica in a different region, Workers will be communicating cross-region.
 If your application can’t tolerate this latency, deploy a second set of Workers in this region or opt for a replica in the same region.
 In case of a complete regional outage, Workers in the original region may fail alongside the original Namespace.
 To keep Workflows moving during this level of outage, deploy a second set of Workers to the secondary region.
+
+Temporal Cloud enforces a maximum connection lifetime of 5 minutes.
+This offers your Workers an opportunity to re-resolve the DNS.
 
 :::
 
