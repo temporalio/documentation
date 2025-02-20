@@ -58,7 +58,7 @@ Each Temporal Namespace uses database-level replication to distribute data acros
 An activity zone (AZ) is a distributed system segment where Tasks or operations are assigned and executed.
 It can be used to manage workloads and ensure Tasks are handled in the right location, optimizing resource usage and minimizing latency.
 
-This replication ensures that any Workflow state or History changes is written to all three AZs before sending an acknowledgment to the Client.
+This replication ensures that any Workflow state or History change is written to all three AZs before sending an acknowledgment to the Client.
 As a result, your Temporal Namespace remains operational, even if a single AZ becomes unavailable.
 
 Note that Temporal deploys Namespaces using a cell-based architecture.
@@ -71,10 +71,14 @@ If one domain experiences an incident, a simple failover mitigates the impact.
 
 ## Achieving Business Continuity with 99.99% SLA
 
-For many organizations, ensuring high availability is critical to maintaining business continuity.
-Temporal Cloud's High Availability features provide a 99.99% contractual Service Level Agreement ([SLA](/cloud/sla)).
+Temporal Cloud is designed with reliability and availability built into its foundations.
+Temporal Cloud provides a 99.9% contractual Service Level Agreement ([SLA](/cloud/sla)) guarantee against service errors for all Namespaces.
+This ensures that most use cases are supported with our base product.
 
-## Should you enable High Availability features?
+For many organizations, ensuring high availability is critical to maintaining business continuity.
+For these critical use cases, Temporal Cloud offers a suite of _High Availability (HA) features_ with a 99.99% contractual SLA.
+
+### Should you enable High Availability features?
 
 With High Availability features in Temporal Cloud, you can easily meet your availability SLAs, and ensure service disruptions and outages don’t affect the performance of your applications.
 
