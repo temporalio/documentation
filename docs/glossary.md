@@ -101,6 +101,15 @@ The `Authorizer` plugin contains a single `Authorize` method, which is invoked f
 
 <!-- _Tags: [term](/tags/term)_ -->
 
+#### [Availability Zone](/cloud/high-availability)
+
+An availability zone is a part of the Temporal system where tasks or operations are handled and executed. 
+This design helps manage workloads and ensure tasks are completed.
+This improves resource use and reduces delays.
+Temporal Cloud Namespaces are automatically distributed across three availability zones, offering the 99.9% uptime outlined in our Cloud [SLA](/cloud/sla). 
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
+
 #### [Child Workflow](/encyclopedia/child-workflows)
 
 A Child Workflow Execution is a Workflow Execution that is spawned from within another Workflow.
@@ -193,7 +202,7 @@ An append-only log of Events that represents the full state a Workflow Execution
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Failback](/cloud/multi-region)
+#### [Failback](/cloud/high-availability)
 
 After Temporal Cloud has resolved an outage or incident involving a failover, a failback process shifts Workflow Execution processing back to the original region that was active before the incident.
 
@@ -248,6 +257,22 @@ A Heartbeat Timeout is the maximum time between Activity Heartbeats.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_ -->
 
+#### [High Availability](/cloud/high-availability/how-it-works#high-availability)
+
+High availability ensures that a system remains operational with minimal downtime.
+It achieves this with redundancy and failover mechanisms that handle failures, so end-users remain unaware of incidents.
+Temporal Cloud guarantees this high availability with its Service Level Agreements ([SLA](/cloud/sla))
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_ -->
+
+#### [High Availability features](/cloud/high-availability#high-availability-features)
+
+High Availability features automatically synchronize your data between a primary and a replica Namespace, keeping them in sync.
+In case of an incident or an outage, Temporal will automatically failover your Namespace from the primary to the replica.
+This supports high levels of business continuity, allowing Workflow Executions to continue with minimal interruptions or data loss.
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_ -->
+
 #### [History Service](/clusters#history-service)
 
 The History Service is responsible for persisting Workflow Execution state and determining what to do next to progress the Workflow Execution through History Shards.
@@ -266,6 +291,13 @@ An "idempotent" approach avoids process duplication that could withdraw money tw
 Idempotency keeps operations from producing additional effects, protecting your processes from accidental or repeated actions, for more reliable execution.
 Design your activities to succeed once and only once.
 Run-once actions maintain data integrity and prevent costly errors.
+
+<!-- _Tags: [term](/tags/term)_ -->
+
+#### [Isolation Domain](/cloud/high-availability/how-it-works)
+
+An isolation domain is a defined area within Temporal Cloud's infrastructure.
+It helps contain failures and prevents them from spreading to other parts of the system, providing redundancy and fault tolerance.
 
 <!-- _Tags: [term](/tags/term)_ -->
 
@@ -299,13 +331,19 @@ Multi-Cluster Replication is a feature which asynchronously replicates Workflow 
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Multi-region Namespace](/cloud/multi-region)
+#### [Multi-region Namespaces](/cloud/high-availability)
 
-A multi-region Namespace (MRN) is a [Temporal Cloud](#temporal-cloud) Namespace that is configured to work across an active [region](/cloud/service-availability#regions) and a standby region.
+A multi-region Namespace (MRN) is a [Temporal Cloud](#temporal-cloud) Namespace that is configured to work across a primary region and a replica located in a different region.
 Each region corresponds to a dedicated Temporal Cloud Service.
-Temporal Cloud automatically replicates Workflow Executions and metadata from the active to the standby region.
-MRNs are designed to respond to service issues as they arise.
-In the event that the Namespace's performance is compromised, a [failover](#failover) transfers control from the active to the standby region.
+Temporal Cloud automatically replicates Workflow Executions and metadata from the primary to its replica.
+In the event that the Namespace's performance is compromised, a [failover](#failover) transfers control from the primary to its replica.
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
+
+#### [Multi-region Replication](/cloud/high-availability/enable)
+
+Multi-region Replication replicates Workflows and metadata to an isolation domain within a region that is not co-located with a primary Namespace.
+This is particularly beneficial for organizations with multi-regional architectures or those required to be highly available across regions for compliance purposes.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
@@ -389,6 +427,13 @@ A common code package, schema, or documentation that a Caller can use to obtain 
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
+#### Node
+
+A node refers to a single, independently functioning Namespace unit associated with a single Temporal Server.
+In a High Availability setup, a node can take on different roles, such as a the [primary node](/glossary#primary-node) that handles requests and processes, or a [replica node](/glossary#replica-node) that mirrors the state of the active node and takes over in the event of a failure.
+Nodes work together to ensure the system remains resilient, scalable, and fault-tolerant.
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
 #### [Parent Close Policy](/encyclopedia/child-workflows#parent-close-policy)
 
@@ -420,6 +465,12 @@ Learn more about the Pre-release stage
 
 <!-- _Tags: [product-release-stages](/tags/product-release-stages), [term](/tags/term)_ -->
 
+#### [Primary node](/cloud/high-availability) {#primary-node}
+
+Also called a _primary_ or a _primary Namespace_, a primary node is one of two types of replication nodes.
+The primary node assumes the active role.
+Its Workflows and metadata are copied to the replica node for Namespaces that have adopted the High Availability replication feature with failovers. 
+
 #### [Public Preview](/evaluate/development-production-features/release-stages#public-preview)
 
 Learn more about the Public Preview release stage
@@ -438,7 +489,22 @@ Remote data encoding is using your custom Data Converter to decode (and encode) 
 
 <!-- _Tags: [term](/tags/term), [queries](/tags/queries), [explanation](/tags/explanation)_ -->
 
-#### [Replication Lag](/cloud/multi-region#replication-lag)
+#### [Primary node](/cloud/high-availability) {#primary-node}
+
+Also called a _primary_ or a _primary Namespace_, a primary node is one of two types of replication nodes.
+The primary node assumes the active role.
+Its Workflows and metadata are copied to the replica node for Namespaces that have adopted the High Availability replication feature with failovers. 
+
+#### [Replica node](/cloud/high-availability) {#replica-node}
+
+Also called a _replica_ or a _replica Namespace_, a replica node is a synchronized copy of a primary Namespace that has adopted the High Availability replication feature with failovers
+A replica can take over operations if the primary becomes unavailable.
+It's synchronized up to the point of replication lag, where no further data is available.
+This ensures redundancy, fault tolerance, and minimal downtime during an incident or outage.
+
+<!-- _Tags: [term](/tags/term), [queries](/tags/queries), [explanation](/tags/explanation)_ -->
+
+#### [Replication Lag](/cloud/high-availability/operations)
 
 The transmission delay of Workflow updates and history events from the active region to the standby region.
 
@@ -472,6 +538,22 @@ A Retry Policy is a collection of attributes that instructs the Temporal Server 
 #### [Run Id](/workflows#run-id)
 
 A Run Id is a globally unique, platform-level identifier for a Workflow Execution.
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
+
+#### [Same-region Namespaces](/cloud/high-availability)
+
+A Same-region Namespace (SRN) is a [Temporal Cloud](#temporal-cloud) Namespace that is configured to work with two isolation domains co-located in a single region.
+Both domains share a dedicated Temporal Cloud Service.
+Temporal Cloud automatically replicates Workflow Executions and metadata from a primary to its replica.
+In the event that the Namespace's performance is compromised, a [failover](#failover) transfers control from the primary to its replica.
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
+
+#### [Same-region Replication](/cloud/high-availability/enable)
+
+Same-region Replication replicates Workflows and metadata to an isolation domain within the same region as a primary Namespace.
+It provides a reliable failover mechanism while maintaining deployment simplicity.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
@@ -790,6 +872,8 @@ A Workflow Task Timeout is the maximum amount of time that the Temporal Server w
 A Workflow Type is a name that maps to a Workflow Definition.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
+
+## Deprecated terms
 
 #### tctl (_deprecated_)
 
