@@ -24,13 +24,6 @@ import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage'
 import DiscoverableDisclosure from '@site/src/components/disclosures/DiscoverableDisclosure';
 import ToolTipTerm from '@site/src/components/tooltip/ToolTipTerm';
 
-## Temporal High Availability features
-
-| **Term**                     | **Description**                                                                                                         |
-| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| **Same-region Replication**  | Duplicates Workflows and metadata between isolation domains co-located within the same region as the primary Namespace. |
-| **Multi-region Replication** | Duplicates Workflows and metadata from a primary Namespace to a replica located in another region.                      |
-
 ## Something
 
 In the context of distributed systems or cloud platforms, a cell refers to a unit or partition of infrastructure that can independently manage tasks, resources, or workloads.
@@ -183,14 +176,14 @@ Temporal Cloud automates failovers by performing internal health checks.
 This process monitors your request error rates, latencies, and any infrastructure issues that might cause service disruptions, such as request timeouts.
 It automatically triggers failovers when these indicators exceed our allowed thresholds.
 
-Temporal Cloud’s High Availability features use asynchronous replication between the primary Namespace and the replica.
-Workflow updates in the primary Namespace, along with associated History Events, are transmitted to the replica with a short delay.
+Temporal Cloud’s High Availability features use asynchronous replication between the primary and the replica.
+Workflow updates in the primary, along with associated History Events, are transmitted to the replica with a short delay.
 This delay is called the replication lag.
 Temporal Cloud strives to maintain a <ToolTipTerm term="P95" tooltip="P95 refers to the 95th percentile of a data set. It identifies values that are greater than or equal to 95% of that set." /> replication delay of less than 1 minute.
 In this context, P95 means 95% of requests are processed faster than this specified limit.
 
 Replication lags mean a [forced failover](/cloud/high-availability/how-it-works#forced-failover) may cause Workflows to rollback in progress.
-Lags may also cause recently started Workflows to be temporarily unavailable until the primary Namespace recovers.
+Lags may also cause recently started Workflows to be temporarily unavailable until the primary recovers.
 Temporal event versioning and [conflict resolution mechanisms](/cloud/high-availability/how-it-works#conflict-resolution) help guarantee that the Workflow Event History can be replayed.
 Critical operations like Signals won't get lost.
 
@@ -200,7 +193,7 @@ Critical operations like Signals won't get lost.
 
 | Feature                | Automated Failover                                | Active-Active Replication                  | Active-Passive Replication                           |
 | ---------------------- | ------------------------------------------------- | ------------------------------------------ | ---------------------------------------------------- |
-| How many active nodes? | One primary Namespace, one or more replicas       | All nodes are active                       | One primary Namespace, one or more replicas          |
+| How many active nodes? | One primary, one or more replicas       | All nodes are active                       | One primary, one or more replicas          |
 | Traffic handling       | Active Namespace only, automatic failover         | All nodes handle traffic                   | Active Namespace handles traffic, replica nodes wait |
 | Data Sync              | Replicas sync automatically                       | All nodes sync with each other             | Active Namespace syncs to replica nodes              |
 | Failover               | Automated                                         | No automatic failover, manual intervention | Manual failover unless automated                     |
