@@ -172,7 +172,7 @@ Start Delay determines the amount of time to wait before initiating a Workflow E
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [delay-workflow](/tags/delay-workflow)_ -->
 
-#### [Dual Visibility](/visibility#dual-visibility)
+#### [Dual Visibility](/dual-visibility)
 
 Dual Visibility is a feature, specific to a Self-hosted Temporal Service, that lets you set a secondary Visibility store in your Temporal Service to facilitate migrating your Visibility data from one database to another.
 
@@ -301,7 +301,7 @@ It helps contain failures and prevents them from spreading to other parts of the
 
 <!-- _Tags: [term](/tags/term)_ -->
 
-#### [List Filter](/visibility#list-filter)
+#### [List Filter](/list-filter)
 
 A List Filter is the SQL-like string that is provided as the parameter to an advanced Visibility List API.
 
@@ -575,7 +575,7 @@ A Schedule-To-Start Timeout is the maximum amount of time that is allowed from w
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_ -->
 
-#### [Search Attribute](/visibility#search-attribute)
+#### [Search Attribute](/search-attribute)
 
 A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.
 

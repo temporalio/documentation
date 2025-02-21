@@ -1202,7 +1202,7 @@
     },
     {
       "source": "/concepts/what-is-a-list-filter",
-      "destination": "/visibility#list-filter"
+      "destination": "/list-filter"
     },
     {
       "source": "/concepts/what-is-a-local-activity",
@@ -1242,7 +1242,7 @@
     },
     {
       "source": "/concepts/what-is-a-search-attribute",
-      "destination": "/visibility#search-attribute"
+      "destination": "/search-attribute"
     },
     {
       "source": "/concepts/what-is-a-side-effect",
@@ -1438,7 +1438,7 @@
     },
     {
       "source": "/filter-workflows",
-      "destination": "/visibility#list-filter"
+      "destination": "/list-filter"
     },
     {
       "source": "/go-queries",
@@ -1490,7 +1490,7 @@
     },
     {
       "source": "/learn-workflow-filtering",
-      "destination": "/visibility#list-filter"
+      "destination": "/list-filter"
     },
     {
       "source": "/php-sdk-overview",
@@ -1502,7 +1502,7 @@
     },
     {
       "source": "/server-workflow-search",
-      "destination": "/visibility#search-attribute"
+      "destination": "/search-attribute"
     },
     {
       "source": "/server/elasticsearch-setup",
@@ -1522,7 +1522,7 @@
     },
     {
       "source": "/filter-workflows",
-      "destination": "/visibility#list-filter"
+      "destination": "/list-filter"
     },
     {
       "source": "/go/how-to-develop-a-workflow-definition-in-go",
