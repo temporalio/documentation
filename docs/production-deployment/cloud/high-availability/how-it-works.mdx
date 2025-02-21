@@ -1,7 +1,7 @@
 ---
 id: how-it-works
-title: How it works
-sidebar_label: How it works
+title: How replication works
+sidebar_label: How replication works
 slug: /cloud/high-availability/how-it-works
 description: Temporal Cloud's Namespace with High Availability featuress offer automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime.
 tags:
@@ -96,6 +96,16 @@ Because each region has multiple isolation domains, you can place your replica i
   Asynchronous replication means changes aren’t immediately reflected in other regions but will sync over time, ensuring data integrity.
   This setup allows failovers between replicas without needing immediate consistency across regions.
   Replication across different regions enhances resilience and reliability.
+
+:::caution
+
+Even as you adopt Temporal's High Availability features, don't forget to consider the reliability of your own infrastructure and dependencies.
+Issues like network outages, hardware failures, or misconfigurations in your own systems can affect your application performance.
+
+For the highest level of reliability, distribute your dependencies across regions, and choose our Multi-region Namespace feature.
+Using physically separated regions provides fuller tolerance for your application.
+
+:::
 
 | **Deployment**                          | **Description**                                          |
 | --------------------------------------- | -------------------------------------------------------- |
