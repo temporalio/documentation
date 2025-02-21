@@ -24,56 +24,71 @@ import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage'
 import DiscoverableDisclosure from '@site/src/components/disclosures/DiscoverableDisclosure';
 import ToolTipTerm from '@site/src/components/tooltip/ToolTipTerm';
 
-:::important
+:::tip Namespaces with High Availability features and AWS PrivateLink
 
 Proper networking configuration is required for failover to be transparent to clients and workers when using PrivateLink.
 This page describes how to configure routing for Namespaces with High Availability features on AWS PrivateLink.
 
 :::
 
-You may need to:
+To use AWS PrivateLink with High Availability features, you may need to:
 
-- override our regional DNS zone; and
-- ensure network connectivity between the two regions.
+- Override the regional DNS zone.
+- Ensure network connectivity between the two regions.
 
-![Customer side solution example](/img/cloud/high-availability/private-link.png)
+This page provides the details you need to set this up.
 
-When using PrivateLink, you connect to Temporal Cloud a VPC Endpoint which has addresses local to your network.
-The `region.<tmprl_domain>` zone is configured in the Temporal systems as an independent zone.
-This allows you to override it to make sure traffic is routed internally for the regions in use.
-A Namespace's active region is reflected as the target of a CNAME record.
-For example, if a Namespace’s active region is AWS us-west-2, the DNS configuration would look like this:
+## Customer side solutions
 
-| Domain                              | Type   | Value                        |
-|-------------------------------------|--------|------------------------------|
+When using PrivateLink, you connect to Temporal Cloud through a VPC Endpoint, which uses addresses local to your network.
+Temporal treats each `region.<tmprl_domain>` as a separate zone.
+This setup allows you to override the default zone, ensuring that traffic is routed internally for the regions you’re using.
+
+A Namespace's active region is reflected in the target of a CNAME record.
+For example, if the active region of a Namespace is AWS us-west-2, the DNS configuration would look like this:
+
 | ha-namespace.account-id.tmprl.cloud | CNAME  | aws-us-west-2.region.tmprl.cloud |
+|-------------------------------------|--------|----------------------------------|
 
 After a failover, the CNAME record will be updated to point to the failover region, for example:
 
-| Domain                              | Type   | Value                        |
-|-------------------------------------|--------|------------------------------|
 | ha-namespace.account-id.tmprl.cloud | CNAME  | aws-us-east-1.region.tmprl.cloud |
+|-------------------------------------|--------|----------------------------------|
 
 The Temporal domain did not change, but the CNAME updated from us-west-2 to us-east-1.
 
+![Customer side solution example](/img/cloud/high-availability/private-link.png)
 
+## Setting up the DNS override
 
-To set up the DNS override, you override specific regions to target the relevant IP addresses (e.g. aws-us-west-1.region.tmprl.cloud to target 192.168.1.2).
-Using AWS, this can be done using a private hosted zone in Route53 for `region.<tmprl_domain>`.
-Link that private zone to the VPCs you use for Workers.
+:::caution
+
 Private connectivity is not yet offered for GCP multi-region Namespaces.
 
+:::
+
+To set up the DNS override, configure specific regions to target the internal VPC Endpoint IP addresses.
+For example, you might set aws-us-west-1.region.tmprl.cloud to target 192.168.1.2.
+In AWS, this can be done using a Route 53 private hosted zone for `region.tmprl.cloud`.
+Link that private zone to the VPCs you use for Workers.
+
 When your Workers connect to the Namespace, they first resolve the `<ns>.<acct>.<tmprl_domain>` record.
-This targets `<active>.region.<tmprl_domain>` using a CNAME.
-Your private zone overrides that second DNS resolution, leading traffic to reach the internal IP you're using.
+This points to `<aws-active-region>.region.tmprl.cloud`, which then resolves to your internal IP addresses.
 
-Consider how you'll configure Workers to run in this scenario.
-You might set Workers to run in both regions at all times.
-Alternately, you could establish connectivity between the regions to redirect Workers once failover occurs.
+Consider how you’ll configure Workers for this setup.
+You can either have Workers run in both regions continuously or establish connectivity between regions using Transit Gateway or VPC Peering.
+This way, Workers can access the newly activated region once failover occurs.
 
-The following table lists Temporal's available regions, PrivateLink endpoints, and DNS record overrides.
-The `sa-east-1` region listed here is not yet available for use with multi-region Namespaces.
-There is (currently) only one region on the continent.
+## Available regions, PrivateLink endpoints, and DNS record overrides
+
+:::caution
+
+The `sa-east-1` region is not yet available for use with multi-region Namespaces. Currently, it is the only region on the continent.
+
+:::
+
+
+The following table lists the available Temporal regions, PrivateLink endpoints, and DNS record overrides:
 
 | Region           | PrivateLink Service Name                                       | DNS Record Override                     |
 | ---------------- | -------------------------------------------------------------- | --------------------------------------- |
