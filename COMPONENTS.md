@@ -10,14 +10,14 @@
 
 #### Compatibility
 
-[x] Dark mode
-[x] Light mode
-[x] Desktop
-[x] Mobile
-[x] Accessibility (AX)
-[x] Alt text
-[x] Should fully develop
-[ ] Should deprecate
+- [x] Dark mode
+- [x] Light mode
+- [x] Desktop
+- [x] Mobile
+- [x] Accessibility (AX)
+- [x] Alt text
+- [x] Should fully develop
+- [ ] Should deprecate
 
 #### Usage
 
@@ -36,13 +36,13 @@ import ZoomableImage from '@site/src/components/zoompic/ZoomableImage';
 
 #### Compatibilities
 
-[x] Dark mode
-[x] Light mode
-[x] Desktop
-[x] Mobile
-[x] Alt text
-[ ] Accessibility (AX)
-[x] Should fully develop
+- [x] Dark mode
+- [x] Light mode
+- [x] Desktop
+- [x] Mobile
+- [x] Alt text
+- [ ] Accessibility (AX)
+- [x] Should fully develop
 
 #### Usage
 
@@ -64,14 +64,14 @@ Please avoid. This is not suitable for dark modes. It also takes up quite a lot 
 
 #### Compatibilities
 
-[ ] Dark mode
-[x] Light mode
-[ ] Desktop
-[ ] Mobile
-[ ] Accessibility (AX)
-[x] Alt text
-[ ] Should fully develop
-[x] Should deprecate
+- [ ] Dark mode
+- [x] Light mode
+- [ ] Desktop
+- [ ] Mobile
+- [ ] Accessibility (AX)
+- [x] Alt text
+- [ ] Should fully develop
+- [x] Should deprecate
 
 #### Usage
 
@@ -96,14 +96,14 @@ Please avoid this 'tdiiw' approach.
 
 #### Compatibility
 
-[ ] Dark mode
-[x] Light mode
-[x] Desktop
-[x] Mobile
-[ ] Accessibility (AX)
-[x] Alt text
-[ ] Should fully develop
-[x] Should deprecate
+- [ ] Dark mode
+- [x] Light mode
+- [x] Desktop
+- [x] Mobile
+- [ ] Accessibility (AX)
+- [x] Alt text
+- [ ] Should fully develop
+- [x] Should deprecate
 
 #### Usage
 ```
@@ -132,14 +132,14 @@ It is sometimes unavoidable in tables.
 
 #### Compatibility
 
-[x] Dark mode
-[x] Light mode
-[x] Desktop
-[x] Mobile
-[x] Alt text
-[x] Accessibility (AX)
-[x] Should fully develop
-[ ] Should deprecate
+- [x] Dark mode
+- [x] Light mode
+- [x] Desktop
+- [x] Mobile
+- [x] Alt text
+- [x] Accessibility (AX)
+- [x] Should fully develop
+- [ ] Should deprecate
 
 #### Usage
 
@@ -151,7 +151,9 @@ Hidden content
 </DiscoverableDisclosure>
 ```
 
-- An optional `prompt="alternate prompt" replaces "Dive deeper -"
+Note
+
+- An optional `prompt="alternate prompt"` replaces "Dive deeper - " text.
 
 ## Definitions
 
@@ -159,12 +161,12 @@ Hidden content
 
 #### Compatibilities
 
-[x] Dark mode
-[x] Light mode
-[x] Desktop
-[x] Mobile
-[x] Accessibility (AX)
-[x] Should fully develop
+- [x] Dark mode
+- [x] Light mode
+- [x] Desktop
+- [x] Mobile
+- [x] Accessibility (AX)
+- [x] Should fully develop
 
 #### Usage
 
