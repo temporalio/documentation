@@ -344,11 +344,7 @@ Authenticate with Temporal Cloud using API keys with the following clients:
 ### Temporal CLI
 
 To use your API key with the Temporal CLI, either pass it with the `--api-key` flag or set an environment variable (recommended).
-The `tcld` tool automatically picks up the `TEMPORAL_CLOUD_API_KEY` environment variable.
-
-```
-tcld <command> <subcommand> --api-key YourAPIKey <other flags and options>
-```
+The CLI automatically picks up the `TEMPORAL_CLOUD_API_KEY` environment variable.
 
 In addition to the API key, the following client options are required:
 
