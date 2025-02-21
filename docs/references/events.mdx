@@ -42,7 +42,7 @@ It indicates that the Temporal Service received a request to spawn the Workflow 
 | cron_schedule                      | Displays the Workflow's [Cron Schedule](/workflows#temporal-cron-job), if applicable.                                                                                     |
 | first_workflow_task_backoff        | Contains the amount of time between when this iteration of the Workflow was scheduled, and when it should run next. Applies to Cron Scheduling.                           |
 | memo                               | Non-indexed information to show in the Workflow.                                                                                                                          |
-| search_attributes                  | Provides data for setting up a Workflow's [Search Attributes](/visibility#search-attribute).                                                                              |
+| search_attributes                  | Provides data for setting up a Workflow's [Search Attributes](/search-attribute).                                                                              |
 | prev_auto_reset_points             |                                                                                                                                                                           |
 | header                             | Information passed by the sender of the [Signal](/sending-messages#sending-signals) that is copied into the [Workflow Task](/tasks#workflow-task). |
 
@@ -137,7 +137,7 @@ This Event type contains last [Workflow Execution](/workflows#workflow-execution
 | last_completion_result           | Information passed by the previously completed Task to the ongoing execution.                                 |
 | header                           | Information passed by the sender of the Signal that is copied into the Workflow Task.                         |
 | memo                             | Non-indexed information to show in the Workflow.                                                              |
-| search_attributes                | Provides data for setting up a Workflow's [Search Attributes](/visibility#search-attribute).                  |
+| search_attributes                | Provides data for setting up a Workflow's [Search Attributes](/search-attribute).                  |
 
 ### WorkflowTaskScheduled
 
@@ -534,12 +534,12 @@ This [Event](/workflows#event) type indicates that the [Temporal Server](/cluste
 
 ### UpsertWorkflowSearchAttributes
 
-This [Event](/workflows#event) type indicates that the Workflow [Search Attributes](/visibility#search-attribute) should be updated and synchronized with the visibility store.
+This [Event](/workflows#event) type indicates that the Workflow [Search Attributes](/search-attribute) should be updated and synchronized with the visibility store.
 
 | Field                            | Description                                                                                  |
 | -------------------------------- | -------------------------------------------------------------------------------------------- |
 | workflow_task_completed_event_id | The [WorkflowTaskCompleted](#workflowtaskcompleted) Event reported the Event with this Id.   |
-| search_attributes                | Provides data for setting up a Workflow's [Search Attributes](/visibility#search-attribute). |
+| search_attributes                | Provides data for setting up a Workflow's [Search Attributes](/search-attribute). |
 
 ### WorkflowExecutionUpdateAcceptedEvent
 
