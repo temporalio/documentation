@@ -334,6 +334,7 @@ module.exports = {
                 "production-deployment/cloud/metrics/reference",
                 "production-deployment/cloud/metrics/datadog",
                 "production-deployment/cloud/metrics/prometheus-grafana",
+                "production-deployment/cloud/metrics/performance-bottlenecks",
               ],
             },
             "production-deployment/cloud/multi-region",
