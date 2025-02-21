@@ -352,20 +352,20 @@ module.exports = {
                   "production-deployment/cloud/high-availability/knowledge-base/private-link",
                 ]
               },
-              {
-                type: "category",
-                label: "References",
-                collapsed: true,
-                link: {
-                  type: "doc",
-                  id: "production-deployment/cloud/high-availability/references/index",
-                },
-                items: [
-                  "production-deployment/cloud/high-availability/references/concepts",
-                  "production-deployment/cloud/high-availability/references/best-practices",
-                  "production-deployment/cloud/high-availability/references/glossary",
-                ]
-              },
+//              {
+//                type: "category",
+//                label: "References",
+//                collapsed: true,
+//                link: {
+//                  type: "doc",
+//                  id: "production-deployment/cloud/high-availability/references/index",
+//                },
+//                items: [
+//                  "production-deployment/cloud/high-availability/references/concepts",
+//                  "production-deployment/cloud/high-availability/references/best-practices",
+//                  "production-deployment/cloud/high-availability/references/glossary",
+//                ]
+//              },
               ]
             },
             {
