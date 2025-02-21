@@ -36,6 +36,41 @@ Some SDKs have support or examples for popular test frameworks, runners, or libr
 
 One recommended framework for testing in Python for the Temporal SDK is [pytest](https://docs.pytest.org/), which can help with fixtures to stand up and tear down test environments, provide useful test discovery, and make it easy to write parameterized tests.
 
+### A note on pytest fixtures
+
+When using pytest fixtures to setup databases, application servers and common infrastructure it is not unusual to use the `session` scope to ensure the fixture is shared among multiple tests. However, with the time-skipping test server it is important that each test is executed in isolation. Launching a test server per test introduce negligible overhead and ensures your test do not conflict with each other.
+
+
+```python
+import pytest
+import pytest_asyncio
+import temporalio.testing.WorkflowEnvironment
+
+
+# Notice how this doesn't specify a "scope" like "session" scope. If you don't
+# specify a scope, the default scope is function, so a new workflow
+# environment will be created for each test.
+@pytest_asyncio.fixture
+def workflow_environment():
+  return WorkflowEnvironment.start_time_skipping()
+
+
+# This might break because it will reuse the workflow environment 
+@pytest_asyncio.fixture(scope="session")
+async def workflow_environment():
+  return await WorkflowEnvironment.start_time_skipping()
+
+
+@pytest.mark.asyncio
+async def test_1(workflow_environment):
+  pass
+
+
+@pytest.mark.asyncio
+async def test_2(workflow_environment):
+  pass
+```
+
 ## Testing Activities {#test-activities}
 
 An Activity can be tested with a mock Activity environment, which provides a way to mock the Activity context, listen to Heartbeats, and cancel the Activity.
