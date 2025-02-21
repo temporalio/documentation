@@ -314,6 +314,14 @@ Follow these steps to rotate API keys:
 1. Switch clients to load the new key and start using it.
 1. Delete the old key after it is no longer in use.
 
+:::tip
+
+Service Accounts can rotate their own API keys irrespective of their configured permissions. 
+To use this feature, have your Service Account create a new API key using the [Cloud Ops APIs](/ops) or [`tcld`](/cloud/tcld) before the current one expires. 
+Service Accounts cannot delete their own API keys without the requisite permissions, which helps keep Workflow access secure.
+
+:::
+
 ## API keys for Namespace authentication {#namespace-authentication}
 
 Create a Namespace with API key authentication as an alternative to mTLS-based authentication by selecting "Allow API key authentication" during setup.
@@ -336,11 +344,7 @@ Authenticate with Temporal Cloud using API keys with the following clients:
 ### Temporal CLI
 
 To use your API key with the Temporal CLI, either pass it with the `--api-key` flag or set an environment variable (recommended).
-The `tcld` tool automatically picks up the `TEMPORAL_CLOUD_API_KEY` environment variable.
-
-```
-tcld <command> <subcommand> --api-key YourAPIKey <other flags and options>
-```
+The CLI automatically picks up the `TEMPORAL_CLOUD_API_KEY` environment variable.
 
 In addition to the API key, the following client options are required:
 
@@ -688,7 +692,7 @@ A: Yes, you can generate multiple API keys for different services or team member
 
 **Q: How many API keys can be issued at once?**
 
-A: Up to 20 active, enabled keys per Identity (user or Service Account).
+A: Up to 10 non-expired keys per user and 20 non-expired keys per Service Account.
 
 **Q: Do API keys expire?**
 
