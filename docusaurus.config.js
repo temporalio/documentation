@@ -72,7 +72,7 @@ module.exports = async function createConfigAsync() {
         },
         items: [
           {
-            label: "Documentation Home",
+            label: "Home",
             to: "/",
             position: "left",
             activeBasePath: "none",
@@ -85,6 +85,11 @@ module.exports = async function createConfigAsync() {
           {
             label: "Start building",
             href: "/develop",
+            right: "left",
+          },
+          {
+            label: "Code Exchange",
+            href: "https://temporal.io/code-exchange",
             right: "left",
           },
           {
