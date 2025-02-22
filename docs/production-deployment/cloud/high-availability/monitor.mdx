@@ -1,0 +1,96 @@
+---
+id: monitor
+title: Monitoring health
+sidebar_label: Monitoring health
+slug: /cloud/high-availability/operations
+description: Temporal Cloud's High Availability Namespaces offer automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime.
+tags:
+  - Temporal Cloud
+  - Production
+  - High availability
+keywords:
+  - availability
+  - explanation
+  - failover
+  - high-availability
+  - multi-region
+  - multi-region namespace
+  - namespaces
+  - temporal-cloud
+  - term
+---
+
+import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+import DiscoverableDisclosure from '@site/src/components/disclosures/DiscoverableDisclosure';
+import ToolTipTerm from '@site/src/components/tooltip/ToolTipTerm';
+
+:::tip Support, stability, and dependency info
+
+Same-region replication is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for Temporal Cloud.
+
+:::
+
+This section provides how-to instructions monitoring health when using Namespaces with High Availability features:
+
+- [Health status of replica](#replica-health)
+- [Metrics](#metrics)
+  - [Monitoring and observability](#observe)
+  - [Auditing operational events](#auditing)
+
+## Replica health {#replica-health}
+
+You can monitor your replica statuses with the Temporal Cloud UI.
+If the replica is unhealthy, the “Trigger a failover” option is disabled to prevent failing over to an unhealthy replica.
+
+An unhealthy replica might result from:
+
+- **Data synchronization issues:** The replica fails to stay in sync with the primary due to network or performance problems.
+- **Replication lag:** The replica falls behind the primary, causing it to be out of sync.
+- **Network issues:** Loss of communication between the replica and the primary causes problems.
+- **Failed health checks:** If the replica fails health checks, it’s marked as unhealthy.
+
+These issues prevent the replica from being used during a failover, ensuring system stability and consistency.
+
+## Metrics {#metrics}
+
+Replication lag refers to the transmission delay of Workflow updates and history events from the primary to the replica.
+A forced failover when there is significant replication lag increases the likelihood of rolling back Workflow progress. Therefore, always check the replication lag metric before initiating a failover.
+
+Temporal Cloud emits three replication lag-specific [metrics](/production-deployment/cloud/metrics/reference#replication-lag).
+The following samples demonstrate how you can use these metrics to monitor and explore replication lag:
+
+**P99 replication lag histogram**:
+
+```
+histogram_quantile(0.99, sum(rate(temporal_cloud_v0_replication_lag_bucket[$__rate_interval])) by (temporal_namespace, le))
+```
+
+**Average replication lag**:
+
+```
+sum(rate(temporal_cloud_v0_replication_lag_sum[$__rate_interval])) by (temporal_namespace)
+/
+sum(rate(temporal_cloud_v0_replication_lag_count[$__rate_interval])) by (temporal_namespace)
+```
+
+### Monitoring and observability {#observe}
+
+You can view and alert for key cloud metrics using the Web UI, the 'tcld' CLI utility, or Temporal Cloud APIs.
+For instance, when adding a region to a Namespace, you can track how Workflow replication progresses.
+If any errors occur, they will be displayed in the Namespace Web UI.
+
+:::tip
+
+If a Namespace is using a replica, you may notice that the Action count in `temporal_cloud_v0_total_action_count` is doubled (2x).
+This happens because operations are replicated: they occur on both the primary and the replica.
+
+:::
+
+### Auditing operational events {#auditing}
+
+Temporal Cloud offers several ways to audit events:
+
+- When Temporal triggers failovers, the audit log will update with details.
+  Look for `"operation": "FailoverNamespace"` in the logs.
+- You can set up alerts for Temporal-initiated failover events.
+- After a failover, verify that the Namespace is active in the new region using the Temporal Cloud Web UI.

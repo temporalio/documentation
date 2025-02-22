@@ -34,7 +34,7 @@ Alias: `n`
 ## add-region
 
 Use `tcld namespace add-region` to add a standby region to an existing Temporal Cloud [Namespace](/namespaces).
-Enrolling a second region upgrades the Namespace to [multi-region](/cloud/multi-region).
+Enrolling a second region upgrades the Namespace to [High Availability features](/cloud/high-availability).
 Once provisioned, the multi-region Namespace enables Temporal Cloud to start replicating Workflow Execution data from the active to the standby region and trigger failover during adverse conditions.
 
 `tcld namespace add-region`
@@ -125,7 +125,7 @@ The region to create the Namespace in.
 When one `--region` flag is used, `tcld` provisions a single-region namespace.
 In single-region use, Temporal clients connect to a single Namespace in one deployment region.
 
-When two `--region` flags are provided, your Namespace is provisioned to use Temporal Cloud [multi-region Namespace](/cloud/multi-region) (MRN) service.
+When two `--region` flags are provided, your Namespace is provisioned to use Temporal Cloud [multi-region Namespace](/cloud/high-availability) (MRN) service.
 Once provisioned, MRN enables Temporal Cloud to start replicating Workflow Execution data from the active to the standby region and trigger failover during adverse conditions.
 
 Valid options: `ap-northeast-1` | `ap-southeast-1` | `ap-southeast-2` | `ca-central-1` | `eu-central-1` | `eu-west-1` | `eu-west-2` | `us-east-1` | `us-west-2`

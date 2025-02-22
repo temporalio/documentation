@@ -37,12 +37,6 @@ The number of available slots directly affects how many tasks a Worker can handl
 
 ### Slot suppliers
 
-:::tip Support, stability, and dependency info
-
-Resource-based slot suppliers are in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
-
-:::
-
 A **Slot Supplier** defines a strategy to provide slots for a Worker, increasing or decreasing the Worker's slot count.
 The supplier determines when it's acceptable to begin a new Task.
 Each supplier manages one slot type.
@@ -84,12 +78,6 @@ Available slot suppliers include:
 
 ### Worker tuning {#worker-tuning}
 
-:::tip Support, stability, and dependency info
-
-Worker tuners are in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
-
-:::
-
 **Worker tuning** lets you manage and customize a Worker's runtime performance characteristics.
 They use special types called **Worker tuners** that assign slot suppliers to various Task Types, including Worker, Activity, Nexus, and Local Activity Tasks.
 
@@ -123,8 +111,6 @@ Tag these with `worker_type=WorkflowWorker` for Workflow Task Workers or `worker
 :::tip
 
 Unlike `worker_task_slots_used`, `worker_task_slots_available` can only be used with fixed size slot suppliers and can't be used with resource-based slot suppliers.
-
-Resource-based slot suppliers are in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
 
 :::
 
@@ -196,12 +182,6 @@ Perform this sanity check after the adjustments to Worker settings.
 3. `maxConcurrentWorkflowTaskPollers` should be significantly ≤ `maxConcurrentWorkflowTaskExecutionSize`. And `maxConcurrentActivityTaskPollers` should be significantly ≤ `maxConcurrentActivityExecutionSize`. The number of pollers should always be lower than the number of executors.
 
 ## Worker runtime performance tuning {#worker-performance-tuning}
-
-:::tip Support, stability, and dependency info
-
-Worker tuners are in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
-
-:::
 
 Worker tuning manages the assignment of slot suppliers.
 A **Worker Tuner** instance exists per-Worker, providing slot suppliers for different slot types (Activity, Workflow, Nexus, or Local Activity Tasks).
