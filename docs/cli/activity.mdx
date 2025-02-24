@@ -178,18 +178,18 @@ Other options:
 The `temporal activity pause` command pauses an [Activity Execution](/activities#activity-execution) specified by its ID or type.
 Pausing the activity can be undone by using the `temporal activity unpause` command.
 
-Pausing an activity means:
+Pausing an Activity means:
 * If the activity is currently waiting for a retry or is running and subsequently fails, it will not be rescheduled until it is unpaused.
-* If the activity is already paused, calling this method will have no effect.
-* If the activity is running and finishes successfully, the activity will be completed.
-* If the activity is running and finishes with failure:
-  * if there is no retry left - the activity will be completed.
-  * if there are more retries left - the activity will be paused.
+* If the Activity is already paused, calling this method will have no effect.
+* If the Activity is running and finishes successfully, the Activity will be completed.
+* If the Activity is running and finishes with failure:
+  * if there is no retry left then the Activity will be completed.
+  * if there are more retries left then the Activity will be paused.
 
-If activity type is provided, and there are multiple pending activities of the provided type - all of them will be paused.
+If Activity type is provided, and there are multiple pending activities of the provided type - all of them will be paused.
 
 For long-running activities, activities in paused state will send a cancellation with "activity_paused" set to 'true' as a part of [Activity Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) response.
-### activity-typeYou can choose how you'd like to handle this case in your activity.
+You can choose how you'd like to handle this case in your Activity.
 
 This command returns a `NotFound` error if there is no pending activity with the provided ID or type.
 Use the following options to change the behavior of this command.
@@ -222,11 +222,11 @@ Other options:
 
 The `temporal activity unpause` command unpauses an [Activity Execution](/activities#activity-execution) specified by its ID or type.
 If there are multiple pending activities of the provided type - all of them will be unpaused.
-If activity is not paused, this call will have no effect.
-If the activity was paused while waiting for retry, it will be scheduled immediately (* see 'jitter' flag).
-Once the activity is unpaused, all timeout timers will be regenerated.
+If Activity is not paused, this call will have no effect.
+If the Activity was paused while waiting for retry, it will be scheduled immediately (* see 'jitter' flag).
+Once the Activity is unpaused, all timeout timers will be regenerated.
 
-Command will fail with a `NotFound` error if there is no pending activity with the provided ID or type.
+Command will fail with a `NotFound` error if there is no pending Activity with the provided ID or type.
 
 Activities can be unpaused in bulk via a visibility Query list filter:
 
@@ -270,15 +270,15 @@ Other options:
 
 The `temporal activity reset` command restarts a running [Activity Execution](/activities#activity-execution) specified by its ID or type.
 If there are multiple pending activities of the provided type - all of them will be reset.
-Resetting an activity means:
-* number of attempts will be reset to 0;
-* activity timeouts will be reset;
-* if the activity is waiting for retry, it will be scheduled immediately (* see 'jitter' flag);
-* if the activity is currently executing, it will be reset once/if it completes with failure;
-* if the activity is paused, it will be unpaused. If you want it to stay paused, you can pass --keep-paused flag;
+Resetting an Activity means:
+* The number of attempts will be reset to 0;
+* Activity timeouts will be reset;
+* If the Activity is waiting for retry, it will be scheduled immediately (* see 'jitter' flag);
+* If the Activity is currently executing, it will be reset once/if it completes with failure;
+* If the Activity is paused, it will be unpaused. If you want it to stay paused, you can pass --keep-paused flag;
 
-Command will fail with a `NotFound` error if there is no pending activity with the provided ID or type.
-This may happen if the activity has already completed.
+Command will fail with a `NotFound` error if there is no pending Activity with the provided ID or type.
+This may happen if the Activity has already completed.
 
 Routing options:
 - [--activity-id](/cli/cmd-options#activity-id)
