@@ -72,7 +72,7 @@ There's a short time window from when a replica becomes active to when Clients a
 During this time requests forward from the now passive (formerly active) primary to the newly active (formerly passive) replica.
 
 As Workflow Executions progress and are operated on, replication Tasks created in the primary are dispatched to the replica.
-Processing these replication Tasks ensures that the replica undergoes the same state transitions as the active.
+Processing these replication Tasks ensures that the replica undergoes the same state transitions as the active primary.
 This enables replicated tasks to synchronize and achieve the same state as the original tasks.
 
 Replicas do not distribute Workflow or Activity Tasks.
@@ -88,7 +88,7 @@ Because each region has multiple isolation domains, you can place your replica i
 
 - **Same-region Replication**:
   Temporal replicates Namespaces across isolation domains within one region.
-  A good fit when your application is built for one region and you prefer to failover within that region.
+  This option is a good fit when your application is built for one region and you prefer to failover within that region.
   This provides a reliable failover mechanism while maintaining deployment simplicity.
 
 - **Multi-region Replication**:
@@ -115,7 +115,7 @@ Using physically separated regions provides fuller tolerance for your applicatio
 ## Failovers
 
 Occasionally, a Namespace may become temporarily unavailable due to an unexpected incident.
-Temporal detects these issues using regular health checks.
+Temporal detects these issues using regular [health checks](/cloud/high-availability/operations#healthchecks).
 It monitors error rates, latencies, and infrastructure problems, such as request timeouts.
 If it finds unhealthy conditions where indicators exceed the allowed thresholds, Temporal automatically switches the primary to the replica.
 In most cases, the replica is unaffected by the issue.
@@ -150,7 +150,7 @@ Temporal's automated failover process works as follows:
 - During normal operation, the primary asynchronously copies operations and metadata to its replica, keeping them in sync.
 - If the primary becomes unavailable, Temporal detects the issue through health checks.
   It automatically switches to the replica, using one of its available [failover scenarios](#scenarios).
-- The replica takes over the active role.
+- The replica takes over the active role and becomes the primary.
   Operations continue with minimal disruption.
 - When the original primary recovers, the roles can either switch back (failback, by default) or remain as they are, based on your Namespace settings.
   Automatic role switching with failover and failback minimizes downtime for consistent availability.
@@ -218,7 +218,7 @@ This strategy balances _consistency_ and _availability_ requirements.
 ## Network partitions
 
 At any time only the primary or the replica is active.
-The exception only occurs in the event of a [network partition](https://en.wikipedia.org/wiki/Network_partition), when a Network splits into separate subnetworks.
+The only exception occurs in the event of a [network partition](https://en.wikipedia.org/wiki/Network_partition), when a Network splits into separate subnetworks.
 Should this occur, you can promote a replica to active status.
 **Caution:** This temporarily makes both regions active.
 After the network partition is resolved and communication between the isolation domains/regions is restored, a conflict resolution algorithm determines whether the primary or replica remains active.

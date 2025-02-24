@@ -74,11 +74,11 @@ This redundancy, combined with failover capability, provides measurable stabilit
 
 Using Temporal Cloud’s High Availability features, you can create a replica in the same region or in a different region.
 In the event of network service or performance issues in the primary, your replica is ready to take over.
-Temporal Cloud smoothly transitions control from the active to the replica via a failover.
+Temporal Cloud smoothly transitions control from the active primary to the replica via a failover.
 
-After a failover, the replica takes on the active role until the incident is resolved.
-After, the replica fails back and the original Namespace resumes the active role.
-(Failback may be disabled by demand in your Namespace settings.)
+After a failover, the replica takes on the active role as the primary until the incident is resolved.
+After, the replica fails back and the original Namespace resumes the active role and becomes the primary.
+(Failback may be [disabled by demand](/cloud/high-availability/failovers#disabling-temporal-initiated) in your Namespace settings.)
 
 In traditional active/active replication, multiple nodes serve requests and accept writes simultaneously, ensuring strong synchronous data consistency.
 In contrast, with a Temporal Cloud Namespace that has a replica, only the primary accepts requests and writes at any given time.
