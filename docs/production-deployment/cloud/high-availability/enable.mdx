@@ -65,56 +65,57 @@ The following table explains how:
 
 | Approach                                 | Instructions                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Temporal&nbsp;Cloud&nbsp;Web&nbsp;UI** | 1. Visit Temporal Cloud in your Web browser. <br /> 2. During Namespace creation, specify the primary region for the Namespace. <br /> 3. Select "Add a replica". <ul><li>Adding a replica in the same region enables Replication.</li><li>Using a different region (within the same continent) replicates across regions.</li></ul>                                                                                                                                                                                                                                                                                                                                                               |
+| **Temporal&nbsp;Cloud&nbsp;Web&nbsp;UI** | 1. Visit Temporal Cloud in your Web browser. <br /> 2. During Namespace creation, specify the primary region for the Namespace. <br /> 3. Select "Add a replica". <ul><li>Adding a replica in the same region enables Same-region Replication.</li><li>Adding a replica in a different region (within the same continent) replicates across regions for Multi-region Replication.</li></ul>                                                                                                                                                                                                                                                                                                        |
 | **Temporal&nbsp;`tcld`&nbsp;CLI**        | At the command line, enter: <br /> <tt>tcld namespace create \ <br /> &nbsp;&nbsp;&nbsp;&nbsp;--namespace \<namespace_id>.\<account_id> \ <br />&nbsp;&nbsp;&nbsp;&nbsp;--region \<primary_region> \ <br /> &nbsp;&nbsp;&nbsp;&nbsp;--region \<replica_region></tt> <br /> <br /> Specify the [region codes](/cloud/service-availability) as arguments to the two `--region` flags. <ul> <li>Using the same region replicates to an isolation domain within that region.</li> <li>Using a different region (within the same continent) replicates across regions.</li> </ul> Before pressing return, add your authentication credentials. For example, `--ca-certificate-file <path-to-pem-file>`. |
 
-:::tip
+:::caution
 
 Same-region Replication is not supported in all regions.
 For multi-region replication, pairing is limited to regions within the same continent.
-Contact [Support](https://support.temporal.io) to request more regions
+Contact [Support](https://support.temporal.io) to request more regions.
 
 :::
 
-## Upgrade an existing Namespace with high availability functionality {#upgrade}
+## Upgrade an existing Namespace with High Availability functionality {#upgrade}
 
 Upgrade an existing standard Namespace by adding High Availability features.
 Adding a replica unlocks that functionality.
 
 The following table explains how:
 
-| Approach                                 | Instructions                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Temporal&nbsp;Cloud&nbsp;Web&nbsp;UI** | 1. Visit Temporal Cloud Namespaces in your Web browser. <br /> 2. Navigate to the Namespace details page. <br /> 3. Select the “Add a replica” button. <br /> 4. Choose either **Same-region Replication** or **Multi-region Replication** (across regions). <ul><li>If you select Multi-region Replication, specify which region.</li></ul> The web interface will present an estimated time for replication to complete. <br /> This time is based on your selection and the size and scale of the Workflows in your Namespace. <br /> An email alert is dispatched once your Namespace is ready for use.                                                                                                                           |
-| **Temporal&nbsp;`tcld`&nbsp;CLI**        | At the command line, enter: <br /> <tt>tcld namespace add-region \ <br /> &nbsp;&nbsp;&nbsp;&nbsp;--namespace \<namespace_id>.\<account_id> \ <br />&nbsp;&nbsp;&nbsp;&nbsp;--region \<replica_region></tt> <br /> <br /> Specify the added [region code](/cloud/service-availability) as an argument to the `--region` flag. <ul><li>Using the current region replicates to an isolation domain within your existing region.</li><li>Using a different region (within the same continent) replicates across regions.</li></ul> <br /> Before pressing return, add your authentication credentials.<br />For example, `--ca-certificate-file <path-to-pem-file>`. <br /> An email alert is sent once your Namespace is ready for use. |
+| Approach                                 | Instructions                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Temporal&nbsp;Cloud&nbsp;Web&nbsp;UI** | 1. Visit Temporal Cloud Namespaces in your Web browser. <br /> 2. Navigate to the Namespace details page. <br /> 3. Select the “Add a replica” button. <br /> 4. Choose either **Same-region Replication** or **Multi-region Replication** (across regions). <ul><li>If you select Multi-region Replication, specify which region.</li></ul> The web interface will present an estimated time for replication to complete. <br /> This time is based on your selection and the size and scale of the Workflows in your Namespace. <br /> An email alert is dispatched once your Namespace is ready for use.                                                                                                                                                                        |
+| **Temporal&nbsp;`tcld`&nbsp;CLI**        | At the command line, enter: <br /> <tt>tcld namespace add-region \ <br /> &nbsp;&nbsp;&nbsp;&nbsp;--namespace \<namespace_id>.\<account_id> \ <br />&nbsp;&nbsp;&nbsp;&nbsp;--region \<replica_region></tt> <br /> <br /> Specify the [region code](/cloud/service-availability) of the region where you want to create the replica as an argument to the `--region` flag. <ul><li>Using the current region replicates to an isolation domain within your existing region.</li><li>Using a different region (within the same continent) replicates across regions.</li></ul> <br /> Before pressing return, add your authentication credentials.<br />For example, `--ca-certificate-file <path-to-pem-file>`. <br /> An email alert is sent once your Namespace is ready for use. |
 
 ## Changing a replica location (⚠️ _Not Recommended_) {#changing}
 
 :::caution
 
 We strongly discourage changing the location of your replica for deployed applications, except under exceptional circumstances.
-
 Changing the location of your Namespace replica will result in a mandatory seven-day waiting period before you can re-enable High Availability Namespace features.
 
 :::
 
-To change the replica location, follow these steps:
+Temporal Cloud can't change replica locations directly.
+To update the location, you need to remove the current replica and add a new one.
+Follow these steps to change the replica location:
 
 1. [Remove your replica](#discontinuing).
    This disables High Availability for your Namespace.
-2. Wait for the required seven-day waiting period to pass.
+2. Wait through the required seven-day waiting period.
 3. [Add a new replica](#upgrade) to your Namespace.
 
 You will receive an email alert once your Namespace is ready for use.
 
 ## Discontinue High Availability features {#discontinuing}
 
-Removing a Namespace replica disables high availability and automatic failover features.
-Follow these steps to disable these features and end high availability charges:
+Removing a Namespace replica disables High Availability and automatic failover features.
+Follow these steps to disable these features and end High Availability charges:
 
 | Approach                                 | Instructions                                                                                                                                                                                                                                                                                                                                          |
 | ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Temporal&nbsp;Cloud&nbsp;Web&nbsp;UI** | <ul><li>Navigate to the Namespace details page in Temporal Cloud</li><li>Select the option to "Remove Replica." on the "Region" card.</li></ul>                                                                                                                                                                                                       |
+| **Temporal&nbsp;Cloud&nbsp;Web&nbsp;UI** | <ul><li>Navigate to the Namespace details page in Temporal Cloud</li><li>Select the option to "Remove Replica" on the "Region" card.</li></ul>                                                                                                                                                                                                        |
 | **Temporal&nbsp;`tcld`&nbsp;CLI**        | At the command line, enter: <br /><br /> <tt>tcld namespace delete-region \ <br /> &nbsp;&nbsp;&nbsp;&nbsp;--namespace \<namespace_id>.\<account_id> \ <br />&nbsp;&nbsp;&nbsp;&nbsp;--region \<replica_region></tt><br /><br />Before pressing return, add your authentication credentials. For example, `--ca-certificate-file <path-to-pem-file>`. |
 
 After following these instructions, Temporal Cloud deletes the replica.
