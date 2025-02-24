@@ -30,31 +30,31 @@ Same-region Replication is in [Public Preview](/evaluate/development-production-
 
 :::
 
-This section provides how-to instructions monitoring health when using Namespaces with High Availability features:
+This section provides how-to instructions for monitoring replica and Service health when using Namespaces with High Availability features:
 
-- [Health status of replica](#replica-health)
-- [Metrics](#metrics)
+- [Replica health](#replica-health)
+- [Service health and latency metrics](#metrics)
   - [Monitoring and observability](#observe)
-  - [Auditing operational events](#auditing)
+  - [Operational events in the audit log](#auditing)
 
 ## Replica health {#replica-health}
 
-You can monitor your replica statuses with the Temporal Cloud UI.
-If the replica is unhealthy, the “Trigger a failover” option is disabled to prevent failing over to an unhealthy replica.
+You can monitor your replica status with the Temporal Cloud UI.
+If the replica is unhealthy, Temporal Cloud diables the “Trigger a failover” option to prevent failing over to an unhealthy replica.
+An unhealthy replica might be due to:
 
-An unhealthy replica might result from:
-
-- **Data synchronization issues:** The replica fails to stay in sync with the primary due to network or performance problems.
+- **Data synchronization issues:** The replica fails to remain in sync with the primary due to network or performance problems.
 - **Replication lag:** The replica falls behind the primary, causing it to be out of sync.
 - **Network issues:** Loss of communication between the replica and the primary causes problems.
 - **Failed health checks:** If the replica fails health checks, it’s marked as unhealthy.
 
 These issues prevent the replica from being used during a failover, ensuring system stability and consistency.
 
-## Metrics {#metrics}
+## Service health and latency metrics {#metrics}
 
 Replication lag refers to the transmission delay of Workflow updates and history events from the primary to the replica.
-A forced failover when there is significant replication lag increases the likelihood of rolling back Workflow progress. Therefore, always check the replication lag metric before initiating a failover.
+A forced failover, when there is significant replication lag, increases the likelihood of rolling back Workflow progress.
+Always check the replication lag metrics before initiating a failover.
 
 Temporal Cloud emits three replication lag-specific [metrics](/production-deployment/cloud/metrics/reference#replication-lag).
 The following samples demonstrate how you can use these metrics to monitor and explore replication lag:
@@ -75,18 +75,18 @@ sum(rate(temporal_cloud_v0_replication_lag_count[$__rate_interval])) by (tempora
 
 ### Monitoring and observability {#observe}
 
-You can view and alert for key cloud metrics using the Web UI, the 'tcld' CLI utility, or Temporal Cloud APIs.
+You can view and set alerts for key Cloud metrics using the Web UI, the 'tcld' CLI utility, or Temporal Cloud APIs.
 For instance, when adding a region to a Namespace, you can track how Workflow replication progresses.
 If any errors occur, they will be displayed in the Namespace Web UI.
 
 :::tip
 
 If a Namespace is using a replica, you may notice that the Action count in `temporal_cloud_v0_total_action_count` is doubled (2x).
-This happens because operations are replicated: they occur on both the primary and the replica.
+This happens because operations are replicated; they occur on both the primary and the replica.
 
 :::
 
-### Auditing operational events {#auditing}
+### Operational events in the audit log {#auditing}
 
 Temporal Cloud offers several ways to audit events:
 
