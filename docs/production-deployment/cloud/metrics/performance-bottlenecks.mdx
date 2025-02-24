@@ -17,22 +17,27 @@ tags:
 ---
 
 
-This document outlines common performance bottlenecks in Temporal Workers and Clients. It covers key latency metrics and root causes of high values, and provides diagnostic steps and troubleshooting strategies. These metrics can help you optimize Temporal deployments and Workflow execution.
+This guide outlines common performance bottlenecks in Temporal Workers and Clients. 
+It covers key latency metrics and root causes of high values, and provides diagnostic steps and troubleshooting strategies. 
+These metrics can help you optimize Temporal deployments and Workflow execution.
 
-To get the most out of this article, you should be familiar with [Temporal architecture](/temporal), [Workflows](/workflows), [Activities](/activities), and [Task Queues](/task-queue). You should also know how to use key metrics like latency, counter, rate, CPU utilization, and memory usage.
+To get the most out of this guide, you should be familiar with [Temporal architecture](/temporal), [Workflows](/workflows), [Activities](/activities), and [Task Queues](/task-queue). 
+You should also know how to use key metrics like latency, counter, rate, CPU utilization, and memory usage.
 
 ## Task processing metrics
 
-These metrics provide insights into various stages of the [Task](/tasks) lifecycle, from scheduling to completion. The following sections detail common metrics, their potential causes for high latency or resource depletion, and strategies for diagnosing and resolving performance issues.
+These metrics provide insights into various stages of the [Task](/tasks) lifecycle, from scheduling to completion. 
+The following sections detail common metrics, their potential causes for high latency or resource depletion, and strategies for diagnosing and resolving performance issues.
 
 ### `temporal_workflow_task_schedule_to_start_latency` spike
 
-High [`temporal_workflow_task_schedule_to_start_latency`](/references/sdk-metrics#workflow_task_schedule_to_start_latency) (P95 higher than one second) can be caused by several factors. This metric represents the time between when a [Workflow Task](/tasks#workflow-task) is scheduled (enqueued) and when it is picked up by a Worker for processing. Here are some potential causes:
+High [`temporal_workflow_task_schedule_to_start_latency`](/references/sdk-metrics#workflow_task_schedule_to_start_latency) (P95 higher than one second) can be caused by several factors. 
+This metric represents the time between when a [Workflow Task](/tasks#workflow-task) is scheduled (enqueued) and when it is picked up by a Worker for processing. Here are some potential causes:
 
-- Insufficient Worker capacity: If there aren't enough Workers or if the Workers are overloaded, they may not be able to pick up tasks quickly enough. This can lead to Tasks waiting in the queue for longer periods ([Detect Task Backlog](https://docs.temporal.io/production-deployment/cloud/worker-health#detect-task-backlog)).  
-- Worker configuration issues: If the Workers are not configured properly, such as having too few pollers or Task slots, it can lead to increased latency ([Detect Task Backlog](https://docs.temporal.io/production-deployment/cloud/worker-health#detect-task-backlog)).  
-- High Workflow lock latency: If many updates are made to a single execution, this can cause Workflow lock latency, which in turn affects the Schedule-to-start latency. You should reduce the rate of Signals.  
-- Network latency: If the Workers are in a different region from the Temporal cluster, or the payload size is large, it can introduce additional latency.
+- Insufficient Worker capacity: If there aren't enough Workers or if the Workers are overloaded, they may not be able to pick up Tasks quickly enough. This can lead to Tasks waiting longer in the queue ([Detect Task Backlog](https://docs.temporal.io/production-deployment/cloud/worker-health#detect-task-backlog)).  
+- Worker configuration issues: Improperly configured Workers, such as having too few pollers or Task slots, can lead to increased latency ([Detect Task Backlog](https://docs.temporal.io/production-deployment/cloud/worker-health#detect-task-backlog)).  
+- High Workflow lock latency: If many updates are made to a single execution, this can cause Workflow lock latency, which in turn affects the Schedule-to-start latency. Reduce the rate of Signals.  
+- Network latency: Workers in a different region from the Temporal cluster, or large payload size, can introduce additional latency.
 
 To diagnose and address high `temporal_workflow_task_schedule_to_start_latency`, you should:
 
@@ -43,14 +48,16 @@ To diagnose and address high `temporal_workflow_task_schedule_to_start_latency`,
 
 ### `temporal_activity_schedule_to_start_latency` spike
 
-High [`temporal_activity_schedule_to_start_latency`](/references/sdk-metrics#activity_schedule_to_start_latency) (P95 higher than one second) can be caused by several factors. This metric represents the time between when an [Activity Task](/tasks#activity-task) is scheduled (enqueued) and when it is picked up by a Worker for processing. Here are some potential causes:
+High [`temporal_activity_schedule_to_start_latency`](/references/sdk-metrics#activity_schedule_to_start_latency) (P95 higher than one second) can be caused by several factors. 
+This metric represents the time between when an [Activity Task](/tasks#activity-task) is scheduled (enqueued) and when it is picked up by a Worker for processing. 
+Here are some potential causes:
 
-- Insufficient Worker capacity: If there aren't enough Workers or if the Workers are overloaded, they may not be able to pick up Tasks quickly enough. This can lead to Tasks waiting in the queue for longer periods ([Detect Task Backlog](https://docs.temporal.io/production-deployment/cloud/worker-health#detect-task-backlog)).  
-- Worker configuration issues: If the Workers are not configured properly, such as having too few pollers or Task slots, it can lead to increased latency ([Detect Task Backlog](https://docs.temporal.io/production-deployment/cloud/worker-health#detect-task-backlog)).  
-- Task Queue configuration: If `TaskQueueActivitiesPerSecond` is set too low, it can limit the rate at which Activities are started, leading to increased Schedule-to-start latency.  
-- Network latency: If the Workers are in a different region from the Temporal cluster, or the payload size is large, it can introduce additional latency.
+- Insufficient Worker capacity: If there aren't enough Workers or if the Workers are overloaded, they may not be able to pick up Tasks quickly enough. This can lead to Tasks waiting longer in the queue ([Detect Task Backlog](https://docs.temporal.io/production-deployment/cloud/worker-health#detect-task-backlog)).  
+- Worker configuration issues: Improperly configured Workers, such as having too few pollers or Task slots, can lead to increased latency ([Detect Task Backlog](https://docs.temporal.io/production-deployment/cloud/worker-health#detect-task-backlog)).  
+- Task Queue configuration: Setting `TaskQueueActivitiesPerSecond` too low can limit the rate at which Activities are started, leading to increased Schedule-to-start latency.  
+- Network latency: Workers in a different region from the Temporal cluster, or large payload size can introduce additional latency.
 
-To diagnose and address high `temporal_activity_schedule_to_start_latency`, you should:
+To diagnose and address high `temporal_activity_schedule_to_start_latency`:
 
 1. Check Worker CPU and memory usage.
 1. Review Worker configuration (number of pollers, Task slots, etc.).
@@ -59,15 +66,16 @@ To diagnose and address high `temporal_activity_schedule_to_start_latency`, you 
 
 ### `temporal_workflow_endtoend_latency` spike
 
-The [`temporal_workflow_endtoend_latency`](/references/sdk-metrics#workflow_endtoend_latency) metric represents the total Workflow Execution time from Schedule to the closure for a single Workflow Run. Normal ranges for this metric depend on the use case, but here are some potential causes for the unexpected spikes:
+The [`temporal_workflow_endtoend_latency`](/references/sdk-metrics#workflow_endtoend_latency) metric represents the total Workflow Execution time from Schedule to the closure for a single Workflow Run. 
+Normal ranges for this metric depend on the use case, but here are some potential causes for the unexpected spikes:
 
-- Complex Workflows: If the Workflows have many Activities or if the Activities themselves take a long time to execute, this can increase the end-to-end latency.  
+- Complex Workflows: If the Workflows have many Activities or if the Activities take a long time to execute.  
 - Workflow and Activity retries: If Workflows or Activities are configured to retry upon failure and they fail often, this can increase the end-to-end latency as the system will wait for the retry delay before reattempting the failed operation.  
-- Worker capacity and configuration: If there aren't enough Workers or if the Workers are overloaded, they may not be able to pick up and process Tasks quickly enough. This can lead to Tasks waiting in the queue for longer periods, thereby increasing the end-to-end latency ([Detect Task Backlog](https://docs.temporal.io/production-deployment/cloud/worker-health#detect-task-backlog)).
+- Worker capacity and configuration: If there aren't enough Workers or if the Workers are overloaded, they may not be able to pick up and process Tasks quickly enough. This can lead to Tasks waiting longer in the queue, thereby increasing the end-to-end latency ([Detect Task Backlog](https://docs.temporal.io/production-deployment/cloud/worker-health#detect-task-backlog)).
 - External dependencies: If your Workflows or Activities depend on external systems or services (such as databases or APIs) and these systems are slow or unreliable, they can increase the end-to-end latency.  
-- Network latency: If the Workers are in a different region from the Temporal cluster, it can introduce additional latency.
+- Network latency: Workers in a different region from the Temporal cluster can introduce additional latency.
 
-To diagnose and address high `temporal_workflow_endtoend_latency`, you should:
+To diagnose and address high `temporal_workflow_endtoend_latency`:
 
 1. Review your Workflow and Activity designs to ensure they are as efficient as possible.  
 2. Monitor your Workers to ensure they have sufficient capacity (CPU and memory) and are not overloaded.  
@@ -76,13 +84,15 @@ To diagnose and address high `temporal_workflow_endtoend_latency`, you should:
 
 ### High `temporal_workflow_task_execution_latency`
 
-The [`temporal_workflow_task_execution_latency`](/references/sdk-metrics#workflow_task_execution_latency) metric represents the time taken by a Worker to execute a Workflow Task. The Temporal SDK raises a “Deadlock detected during Workflow run” error or [TMPRL1101](https://github.com/temporalio/rules/blob/main/rules/TMPRL1101.md) when a Workflow Task takes more than one or two seconds to complete. Here are some potential causes:
+The [`temporal_workflow_task_execution_latency`](/references/sdk-metrics#workflow_task_execution_latency) metric represents the time taken by a Worker to execute a Workflow Task. 
+The Temporal SDK raises a “Deadlock detected during Workflow run” error or [TMPRL1101](https://github.com/temporalio/rules/blob/main/rules/TMPRL1101.md) when a Workflow Task takes more than one or two seconds to complete. 
+Here are some potential causes:
 
-- CPU-intensive work: If your Workflow Task is performing CPU-intensive operations, it can lead to slow execution.  
+- CPU-intensive work: Performing CPU-intensive operations in your Workflow Task is can lead to slow execution.  
 - Slow local Activities: Workflow Task execution time includes the Local Activity execution time.  
 - Slow Workflow replay: Workflow Task execution time includes the Workflow Replay time. Refer to `workflow_task_replay_latency` for more details.  
-- Worker resource constraints: High CPU usage on Worker pods can lead to slower Workflow Task execution. If the Workers don't have enough CPU resources, it can cause delays.  
-- Infinite loops or blocking calls: If your Workflow code has infinite loops or makes blocking external API calls, it can cause the Workflow Task to execute slowly or time out.  
+- Worker resource constraints: High CPU usage on Worker pods can lead to slower Workflow Task execution. Workers with insufficient CPU resources can cause delays.  
+- Infinite loops or blocking calls: Workflow code with infinite loops or blocking external API calls can cause the Workflow Task to execute slowly or time out.  
 - Slow data conversion: Your custom Data Converter is taking too long to encode/decode payloads, for example, when talking to a remote encryption service.
 
 To diagnose and address slow Workflow Task execution, you can:
@@ -91,16 +101,19 @@ To diagnose and address slow Workflow Task execution, you can:
 2. Ensure that your Workers have adequate resources and are properly scaled for your workload.  
 3. Consider running your Workflow code in a profiler using a replayer to see where CPU cycles are spent.  
 4. Review your Workflow code for potential optimizations or to remove blocking operations.  
-5. Disable deadlock detection for Data Converter: It does not help reducing the Task execution latency but does remove the “Deadlock detected during Workflow run” or TMPRL1101 error. In Go, wrap it with `workflow.DataConverterWithoutDeadlockDetection`. In Java, surround your Data Converter code with `WorkflowUnsafe.deadlockDetectorOff`.
+5. Disable deadlock detection for Data Converter: It does not reduce Task execution latency but does remove the “Deadlock detected during Workflow run” or TMPRL1101 error. In Go, wrap it with `workflow.DataConverterWithoutDeadlockDetection`. In Java, surround your Data Converter code with `WorkflowUnsafe.deadlockDetectorOff`.
 
 ### High `workflow_task_replay_latency`
 
-Workflow Task replay is the process of reconstructing the Workflow's state by re-executing the Workflow code from the beginning, using the recorded Event History. This process ensures that the Workflow can continue from where it left off, even after interruptions or failures. [`workflow_task_replay_latency`](/references/sdk-metrics#workflow_task_replay_latency) is considered high if it takes more than a few milliseconds. Here are the main causes:
+Workflow Task replay is the process of reconstructing the Workflow's state by re-executing the Workflow code from the beginning, using the recorded Event History. 
+This process ensures that the Workflow can continue from where it left off, even after interruptions or failures. 
+[`workflow_task_replay_latency`](/references/sdk-metrics#workflow_task_replay_latency) is high if it exceeds a few milliseconds. 
+Here are the main causes:
 
 - Large Event Histories: Workflows with long histories take more time to replay, as the Worker needs to process all events to reconstruct the Workflow state.  
-- Data Converter performance: Slow Data Converters, especially those that perform encryption or interact with external services, can significantly impact replay.  
+- Data Converter performance: Slow Data Converters, especially those that perform encryption or interact with external services, can impact replay.  
 - Large payloads: Activities or Signals with large payloads can slow down the replay process, especially if the Data Converter needs to process these payloads.  
-- Complex Workflow logic: If your Workflow code has complex logic or computationally intensive operations such as scheduling many concurrent child Workflows or Activities, it can increase replay latency.  
+- Complex Workflow logic: Workflow code with complex logic or computationally intensive operationssuch as scheduling many concurrent child Workflows or Activities, can increase replay latency.  
 - Frequent cache evictions: If workers often evict Workflow Executions from their cache (due to memory constraints or frequent restarts), it leads to more replays and higher latency.  
 - Worker resource constraints: High CPU utilization or memory pressure on Worker nodes can slow down the replay.
 
@@ -115,43 +128,46 @@ To diagnose and address slow Workflow Task replay, you can:
 
 ### `temporal_activity_execution_latency` spike
 
-The [`temporal_activity_execution_latency`](/references/sdk-metrics#activity_execution_latency) metric measures the time from when a Worker starts processing an Activity Task until it reports to the service that the Task is complete or failed. There are several potential causes for high `temporal_activity_execution_latency`:
+The [`temporal_activity_execution_latency`](/references/sdk-metrics#activity_execution_latency) metric measures the time from when a Worker starts processing an Activity Task until it reports to the service that the Task is complete or failed. 
+There are several potential causes for high `temporal_activity_execution_latency`:
 
 - Activity implementation: The most common cause of high Activity Execution latency is the actual implementation of the Activity itself. If the Activity is performing time-consuming operations or making slow external API calls, it will take longer to execute.  
 - External dependencies: If your Activity is constrained by an external resource or service that all Activities access, it could cause increased latency.  
-- Worker resource constraints: If your Worker nodes are under-resourced or experiencing high CPU utilization, it can lead to slower Activity Execution.  
+- Worker resource constraints: Under-resourced Worker nodes or experiencing high CPU utilization can lead to slower Activity Execution.  
 - Network latency: High latency between your Workers and external services or the Temporal service itself can contribute to increased Activity Execution time.
 
 To diagnose and address high Activity Execution latency:
 
 1. Monitor the `activity_execution_latency` metric, which you can filter by Activity type and Activity Task queue.  
-2. Review your Activity implementation for potential optimizations, especially in areas interacting with external services or databases.  
+2. Optimize your Activity implementat to reduce latency, especially with external services or database interactions.  
 3. Check your Worker CPU and memory utilization to make sure they have adequate resources.  
 4. Examine your Worker configuration, particularly the `(Max)ConcurrentActivityExecutionSize` and `(Max)WorkerActivitiesPerSecond metrics`, to ensure they are not limiting your activity execution.
 
 ### Depletion of `temporal_worker_task_slots_available` for `WorkflowWorker`
 
-The [`temporal_worker_task_slots_available{worker_type=”WorkflowWorker”}`](/references/sdk-metrics#worker_task_slots_available) metric indicates the number of available slots for executing Workflow Tasks on a Worker. This metric may go to zero for several reasons:
+The [`temporal_worker_task_slots_available{worker_type=”WorkflowWorker”}`](/references/sdk-metrics#worker_task_slots_available) metric indicates the number of available slots for executing Workflow Tasks on a Worker. 
+This metric may go to zero for several reasons:
 
 - High Workflow Task Load: If there are more Tasks than the Worker can handle concurrently, the available slots will be depleted. This can happen if the rate of incoming Tasks is higher than the rate at which tasks are being completed.  
 - Worker Configuration: The number of available slots is determined by the Worker configuration, specifically the `MaxConcurrentWorkflowTaskExecutionSize` setting. If these are set too low, the Worker may not have enough slots to handle the Task load.  
 - High `temporal_workflow_task_execution_latency` and `workflow_task_replay_latency`.
 
-To prevent depletion of Workflow Task slots, you should:
+To prevent depletion of Workflow Task slots:
 
 1. Monitor Worker CPU and Memory usage while increasing `(Max)ConcurrentWorkflowTaskExecutionSize` to add more execution slots.  
 2. Scale up Workers both vertically (increasing CPU and Memory) and horizontally (increasing Worker instances).
 
 ### Depletion of `temporal_worker_task_slots_available` for `ActivityWorker` 
 
-The [`temporal_worker_task_slots_available{worker_type=”ActivityWorker”}`](/references/sdk-metrics#worker_task_slots_available) metric indicates the number of available slots for executing Tasks on a Worker. This metric may go to zero for several reasons:
+The [`temporal_worker_task_slots_available{worker_type=”ActivityWorker”}`](/references/sdk-metrics#worker_task_slots_available) metric indicates the number of available slots for executing Tasks on a Worker. 
+This metric may go to zero for several reasons:
 
 - Blocked Activities and Zombie Activities: The most common cause is activities that are blocked or not returning on time. Zombie Activities are a subset of this category. They occur when an Activity times out (hits its `StartToClose` timeout) but continues to run, occupying some or all the slots as more retries occur. This can happen if:  
    - The Activity code is blocking on a downstream service call or an infinite loop.  
    - There's a mismatch between the Activity's `StartToClose` timeout and any client-side timeouts for external calls.  
 - Resource Utilization: High CPU or memory usage on Workers can cause activities to block and not release slots.
 
-To prevent depletion of Activity Task slots, you should:
+To prevent depletion of Activity Task slots:
 
 1. Monitor Worker CPU and Memory usage while increasing `(Max)ConcurrentActivityExecutionSize` to add more execution slots.  
 2. Add client-side timeout to your downstream API client.  
@@ -160,7 +176,9 @@ To prevent depletion of Activity Task slots, you should:
 
 ## Network requests 
 
-Network issues can significantly impact the reliability of  Temporal clients and workers, leading to delays, failures, and overall system instability. This section focuses on  metrics that reveal common network-related problems with your Temporal deployment, specifically related to network connectivity, latency, and request failures. These metrics can indicate where bottlenecks exist within the communication channels between  Temporal clients (including Temporal Workers) and the Temporal server.
+Network issues can impact Temporal clients and workers, leading to delays, failures, and overall system instability. 
+This section focuses on  metrics that reveal common network-related problems with your Temporal deployment, specifically related to network connectivity, latency, and request failures. 
+These metrics can indicate where bottlenecks exist within the communication channels between  Temporal clients (including Temporal Workers) and the Temporal server.
 
 ### High `temporal_long_request_failure`
 
@@ -178,7 +196,8 @@ To diagnose the cause of high `temporal_long_request_failure`, you can:
 
 ### High `temporal_request_failure_total`
 
-The [`temporal_request_failure_total`](/references/sdk-metrics#request_failure) metric counts the number of RPC requests made by the Temporal Client that have failed. High values of this metric can be caused by several factors:
+The [`temporal_request_failure_total`](/references/sdk-metrics#request_failure) metric counts the number of RPC requests made by the Temporal Client that have failed.
+High values of this metric can be caused by several factors:
 
 - Network Issues: Problems with the network connection between the Temporal Client and the Temporal Server can cause requests to fail.  
 - Client Errors: If there's an issue with the Temporal Client, such as misconfiguration or resource exhaustion, it may fail to make requests correctly.  
@@ -196,15 +215,16 @@ To diagnose the cause of high `temporal_request_failure_total`, you can:
 
 ### High `temporal_request_latency`
 
-The [`temporal_request_latency`](/references/sdk-metrics#request_latency) metric measures the latency of gRPC requests made by the Temporal Client. High values for this metric can be caused by several factors:
+The [`temporal_request_latency`](/references/sdk-metrics#request_latency) metric measures the latency of gRPC requests made by the Temporal Client. 
+High values for this metric can be caused by several factors:
 
 - Network Latency: The physical distance and network conditions between the Temporal Client and the Temporal Server can affect the latency of requests.  
-- Network Transfer Time: Larger payloads take longer to transfer over the network, which affects request latency. For example, large payloads in `RespondWorkflowTaskCompleted` can significantly impact the latency of the request. This is especially true when Workflows are scheduling multiple activities with large inputs.  
-- Resource Exhaustion: If the server or the client is running out of resources (such as CPU or memory), it can cause delays in processing the request.  
+- Network Transfer Time: Larger payloads take longer to transfer over the network, which affects request latency. For example, large payloads in `RespondWorkflowTaskCompleted` can affect the latency of the request. This is especially true when Workflows are scheduling multiple activities with large inputs.  
+- Resource Exhaustion: Running out of resources (such as CPU or memory) on the client or server can cause delays in processing the request.  
 - Client Configuration: Improper client configuration, such as setting thread pool sizes too aggressively or having memory constraints that are too low for the number of allocated threads can lead to situations where Tasks overwhelm the client, causing increased latency.  
 - Server Load: If the Temporal Server is under heavy load, it may take longer to respond to requests, leading to increased latency.
 
-To diagnose and address high `temporal_request_latency`, you should:
+To diagnose and address high `temporal_request_latency`:
 
 1. Monitor the `temporal_request_latency` metric to identify when and where latency spikes are occurring.  
 2. Check the network connection between the Temporal Client and the Temporal Server.  
@@ -216,55 +236,71 @@ To diagnose and address high `temporal_request_latency`, you should:
 
 The [`rate(temporal_long_request_total{operation="PollActivityTaskQueue"})`](/references/sdk-metrics#long_request) expression measures the per-second average rate of `PollActivityTaskQueue` long poll requests over a certain period of time.
 
-`PollActivityTaskQueue` is an operation where Workers poll for Activity Tasks from the Task Queue. The `temporal_long_request_total` metric counts the number of these long poll requests.
+`PollActivityTaskQueue` is an operation where Workers poll for Activity Tasks from the Task Queue. 
+The `temporal_long_request_total` metric counts the number of these long poll requests.
 
-By applying the `rate()` function in Prometheus, you can calculate the per-second average rate of these requests over the time range specified in the Query. This can help you understand the load on your Temporal service and how often your Workers are polling for Activity Tasks.
+By applying the `rate()` function in Prometheus, you can calculate the per-second average rate of these requests over the time range specified in the Query. 
+his can help you understand the load on your Temporal service and how often your Workers are polling for Activity Tasks.
 
 ### `rate(temporal_long_request_total{operation="PollWorkflowTaskQueue"})`
 
 The [`rate(temporal_long_request_total{operation="PollWorkflowTaskQueue"})`](/references/sdk-metrics#long_request) expression measures the per-second average rate of `PollWorkflowTaskQueue` long poll requests over a certain period of time.
 
-`PollWorkflowTaskQueue` is an operation where Workers poll for Workflow Tasks from the Task Queue. The `temporal_long_request_total` metric counts the number of these long poll requests.
+`PollWorkflowTaskQueue` is an operation where Workers poll for Workflow Tasks from the Task Queue. 
+The `temporal_long_request_total` metric counts the number of these long poll requests.
 
-By applying the `rate()` function in Prometheus, you can calculate the per-second average rate of these requests over the time range specified in the query. This can help you understand the load on your Temporal service and how often your Workers are polling for Workflow Tasks.
+By applying the `rate()` function in Prometheus, you can calculate the per-second average rate of these requests over the time range specified in the query. 
+This can help you understand the load on your Temporal service and how often your Workers are polling for Workflow Tasks.
 
 ##  Caching
 
-Temporal Workers relies on caching to optimize performance by reducing the overhead of fetching Workflow state from the history. However, unlimited caching is impossible; there's a trade-off between the benefits of cached data and the memory consumed. These metrics allow you to balance  performance gains with responsible memory usage.
+Temporal Workers relies on caching to optimize performance by reducing the overhead of fetching Workflow state from the history. 
+However, unlimited caching is impossible; there's a trade-off between the benefits of cached data and the memory consumed. 
+These metrics allow you to balance performance gains with responsible memory usage.
 
 ### `temporal_sticky_cache_size`
 
 The [`temporal_sticky_cache_size`](/references/sdk-metrics#sticky_cache_size) metric represents the number of Workflow executions currently cached in a Worker's memory.
 
-The sticky cache is used to improve performance by keeping the Workflow state in memory, reducing the need to reconstruct the Workflow from its Event History for every Task. It’s particularly useful for latency-sensitive Workflows.  
+The sticky cache is used to improve performance by keeping the Workflow state in memory, reducing the need to reconstruct the Workflow from its Event History for every Task. 
+It’s particularly useful for latency-sensitive Workflows.  
 
-There is a direct relationship between the sticky cache size and Worker memory consumption. As the cache size increases, so does the memory usage of the Worker.
+There is a direct relationship between the sticky cache size and Worker memory consumption. 
+As the cache size increases, so does the memory usage of the Worker.
 
 The maximum size of the sticky cache can be configured. For example, the default in the Go SDK is 10,000 Workflows.  
 
-A larger sticky cache can improve performance by reducing the need to replay Workflow histories. However, it also increases memory usage, which can lead to issues if not properly managed.  
+A larger sticky cache can improve performance by reducing the need to replay Workflow histories. 
+However, it also increases memory usage, which can lead to issues if not properly managed.  
 
-You should monitor this metric alongside Worker memory usage. A sudden increase in `sticky_cache_size` can correlate with increased memory consumption and potential performance issues.  
+Monitor this metric alongside Worker memory usage. 
+A sudden increase in `sticky_cache_size` can correlate with increased memory consumption and potential performance issues.  
 
-If memory consumption is too high, you can reduce the maximum sticky cache size. Conversely, if you have available memory and want to improve performance, you might increase it.
+If memory consumption is too high, you can reduce the maximum sticky cache size. 
+Conversely, if you have available memory and want to improve performance, you might increase it.
 
 ### `temporal_sticky_cache_hit_total`
 
 The [`temporal_sticky_cache_hit_total`](https://docs.temporal.io/references/sdk-metrics#sticky_cache_hit) metric is a counter that measures the total number of times a Workflow Task found a cached Workflow Execution Event History to run against.
 
-Sticky Execution is a feature where a Worker caches a Workflow Execution Event History and creates a dedicated Task Queue to listen on. This significantly improves performance because the Temporal Service only sends new events to the Worker instead of entire Event Histories.
+Sticky Execution is a feature where a Worker caches a Workflow Execution Event History and creates a dedicated Task Queue to listen on. 
+This improves performance because the Temporal Service only sends new events to the Worker instead of entire Event Histories.
 
 A “hit” means the Worker finds the Workflow in its cache when processing a Workflow Task, allowing immediate processing without fetching the full Event History from the server.
 
-Monitoring the `temporal_sticky_cache_hit_total` metric can help you understand how your sticky cache is being used. A high rate of cache hits indicates that your Workflows are being scheduled efficiently, with minimal need for fetching Event Histories.
+Monitoring the `temporal_sticky_cache_hit_total` metric can help you understand how your sticky cache is being used. 
+A high rate of cache hits indicates that your Workflows are being scheduled efficiently, with minimal need for fetching Event Histories.
 
 ### `temporal_sticky_cache_total_forced_eviction_total`
 
 The [`temporal_sticky_cache_total_forced_eviction_total`](https://docs.temporal.io/references/sdk-metrics#sticky_cache_hit) metric is a counter that measures the total number of Workflow Executions that have been forcibly evicted from the sticky cache.
 
-Sticky Execution is a feature where a Worker caches a Workflow Execution Event History and creates a dedicated Task Queue to listen on. This significantly improves performance because the Temporal Service only sends new events to the Worker instead of entire Event Histories.
+Sticky Execution is a feature where a Worker caches a Workflow Execution Event History and creates a dedicated Task Queue to listen on. 
+This improves performance because the Temporal Service only sends new events to the Worker instead of entire Event Histories.
 
-A "forced eviction" in this context means that a Workflow Execution was removed from the cache before it completed, typically because the cache was full and needed to make room for other Workflow Executions. This means that if the Worker needs to process more Tasks for the evicted Workflow Execution, it will have to fetch the entire Event History from the Temporal Service.
+A "forced eviction" in this context means that a Workflow Execution was removed from the cache before it completed, typically because the cache was full and needed to make room for other Workflow Executions. 
+This means that if the Worker needs to process more Tasks for the evicted Workflow Execution, it will have to fetch the entire Event History from the Temporal Service.
 
-Monitoring the `temporal_sticky_cache_total_forced_eviction_total` metric can help you understand how often your Workflows are being evicted from the cache. A high rate of forced evictions could indicate that your cache size is too small for your workload, and you may need to increase the `WorkflowCacheSize` setting if your Worker resources can accommodate it.
+Monitoring the `temporal_sticky_cache_total_forced_eviction_total` metric can help you understand how often your Workflows are being evicted from the cache. 
+A high rate of forced evictions could indicate that your cache size is too small for your workload, and you may need to increase the `WorkflowCacheSize` setting if your Worker resources can accommodate it.
 
