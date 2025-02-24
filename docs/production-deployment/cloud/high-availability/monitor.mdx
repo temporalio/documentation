@@ -35,7 +35,7 @@ This section provides how-to instructions for monitoring replica and Service hea
 - [Replica health](#replica-health)
 - [Service health and latency metrics](#metrics)
   - [Monitoring and observability](#observe)
-  - [Operational events in the audit log](#auditing)
+  - [Checking failovers](#auditing)
 
 ## Replica health {#replica-health}
 
@@ -96,9 +96,9 @@ This happens because operations are replicated; they occur on both the primary a
 
 :::
 
-### Operational events in the audit log {#auditing}
+### Checking failovers {#auditing}
 
-Temporal Cloud offers several ways to audit events:
+Temporal Cloud offers several ways to monitor failovers:
 
 - When Temporal triggers failovers, the audit log will update with details.
   Look for `"operation": "FailoverNamespace"` in the logs.
