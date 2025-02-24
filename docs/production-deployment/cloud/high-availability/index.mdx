@@ -3,7 +3,7 @@ id: index
 title: High Availability
 sidebar_label: High Availability
 slug: /cloud/high-availability
-description: Temporal Cloud's Namespace with High Availability featuress offer automated failover, synchronized data, and replication for workloads requiring disaster-tolerant deployment and 99.99% uptime.
+description: Temporal Cloud's Namespace with High Availability features offer automated failover, synchronized data, and replication for workloads requiring disaster-tolerant deployment and 99.99% uptime.
 tags:
   - Temporal Cloud
   - Production
@@ -60,7 +60,7 @@ In case of an incident or an outage, Temporal will automatically <ToolTipTerm te
 This lets Workflow Executions continue with minimal interruptions or data loss.
 Customers can also initiate failovers based on their situational monitoring or for testing.
 
-<CaptionedImage src="/img/cloud/high-availability/failover.png" title="On failover, the replica becomes active and the Namespace endpoint directs access to  it" />
+<CaptionedImage src="/img/cloud/high-availability/failover.png" title="On failover, the replica becomes active and the Namespace endpoint directs access to it." />
 
 Returning control from the replica to the primary is called a <ToolTipTerm term="failback" tooltip="A failback returns Workflow Execution processing to the primary from the replica after an incident resolves. This is automatic for Temporal-initiated failovers but can be disabled in region settings." />.
 The replica is active for a brief duration during an incident.
@@ -74,7 +74,7 @@ This redundancy, combined with failover capability, provides measurable stabilit
 
 Using Temporal Cloud’s High Availability features, you can create a replica in the same region or in a different region.
 In the event of network service or performance issues in the primary, your replica is ready to take over.
-Temporal Cloud smoothly transitions control from the active to the replica via a failover".
+Temporal Cloud smoothly transitions control from the active to the replica via a failover.
 
 After a failover, the replica takes on the active role until the incident is resolved.
 After, the replica fails back and the original Namespace resumes the active role.
@@ -93,7 +93,7 @@ Our system is designed to limit data loss after recovery when the incident trigg
 
 Our recovery point objective ([RPO](https://en.wikipedia.org/wiki/Disaster_recovery#Recovery_Point_Objective)) is near-zero.
 There may be a short period of time during an incident or forced failover when some data is unavailable in the replica region.
-Some Workflow History data won't arrive until networks issue are fixed, enabling the History to finish replicating and the divergent History branches to reconcile.
+Some Workflow History data won't arrive until network issues are fixed, enabling the History to finish replicating and the divergent History branches to reconcile.
 
 Temporal Cloud proactively responds to incidents by triggering failovers.
 Our recovery time objective ([RTO](https://en.wikipedia.org/wiki/Disaster_recovery#Recovery_Time_Objective)) is 20 minutes or less per incident.
