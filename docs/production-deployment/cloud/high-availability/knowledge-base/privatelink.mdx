@@ -47,13 +47,13 @@ This setup allows you to override the default zone, ensuring that traffic is rou
 A Namespace's active region is reflected in the target of a CNAME record.
 For example, if the active region of a Namespace is AWS us-west-2, the DNS configuration would look like this:
 
-| ha-namespace.account-id.tmprl.cloud | CNAME  | aws-us-west-2.region.tmprl.cloud |
-|-------------------------------------|--------|----------------------------------|
+| ha-namespace.account-id.tmprl.cloud | CNAME | aws-us-west-2.region.tmprl.cloud |
+| ----------------------------------- | ----- | -------------------------------- |
 
 After a failover, the CNAME record will be updated to point to the failover region, for example:
 
-| ha-namespace.account-id.tmprl.cloud | CNAME  | aws-us-east-1.region.tmprl.cloud |
-|-------------------------------------|--------|----------------------------------|
+| ha-namespace.account-id.tmprl.cloud | CNAME | aws-us-east-1.region.tmprl.cloud |
+| ----------------------------------- | ----- | -------------------------------- |
 
 The Temporal domain did not change, but the CNAME updated from us-west-2 to us-east-1.
 
@@ -86,7 +86,6 @@ This way, Workers can access the newly activated region once failover occurs.
 The `sa-east-1` region is not yet available for use with Multi-region Namespaces. Currently, it is the only region on the continent.
 
 :::
-
 
 The following table lists the available Temporal regions, PrivateLink endpoints, and DNS record overrides:
 

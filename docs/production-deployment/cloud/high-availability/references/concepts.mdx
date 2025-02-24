@@ -193,7 +193,7 @@ Critical operations like Signals won't get lost.
 
 | Feature                | Automated Failover                                | Active-Active Replication                  | Active-Passive Replication                           |
 | ---------------------- | ------------------------------------------------- | ------------------------------------------ | ---------------------------------------------------- |
-| How many active nodes? | One primary, one or more replicas       | All nodes are active                       | One primary, one or more replicas          |
+| How many active nodes? | One primary, one or more replicas                 | All nodes are active                       | One primary, one or more replicas                    |
 | Traffic handling       | Active Namespace only, automatic failover         | All nodes handle traffic                   | Active Namespace handles traffic, replica nodes wait |
 | Data Sync              | Replicas sync automatically                       | All nodes sync with each other             | Active Namespace syncs to replica nodes              |
 | Failover               | Automated                                         | No automatic failover, manual intervention | Manual failover unless automated                     |
