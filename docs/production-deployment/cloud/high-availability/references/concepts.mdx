@@ -164,7 +164,7 @@ In most scenarios, we recommend you let Temporal handle failovers for you.
 
 After failover, be aware of the following points:
 
-- When working with multi-region Namespaces, your CNAME may change.
+- When working with Multi-region Namespaces, your CNAME may change.
   For example, it may switch from aws-us-west-1.region.tmprl.com to aws-us-east-1.region.tmprl.com.
   This change doesn't affect standard Namespaces as they are **deployed within a single region**.
 - Your Namespace endpoint _will not change_.
@@ -233,7 +233,7 @@ Each AZ is designed to operate independently, reducing the risk of failure affec
 They are often located in separate geographical locations within a region.
 
 Temporal uses the term isolation domain to refer to zones that are geographically or physically isolated from each other.
-These are the building blocks that enable Temporal’s multi-region Namespace and failover mechanisms to operate effectively.
+These are the building blocks that enable Temporal’s Multi-region Namespace and failover mechanisms to operate effectively.
 
 ### region
 
@@ -241,22 +241,22 @@ A region is a geographically defined area that contains multiple availability zo
 A region is typically a self-contained unit of a cloud provider’s infrastructure and is often used to provide redundancy, low-latency access, and fault tolerance.
 
 Temporal operates in multiple regions for high availability and fault tolerance.
-The multi-region Namespace feature allows Temporal to replicate data and services across different regions, ensuring resilience even if an entire region becomes unavailable.
+The Multi-region Namespace feature allows Temporal to replicate data and services across different regions, ensuring resilience even if an entire region becomes unavailable.
 
 ### region failover
 
 Region failover refers to the process of switching the active service from one region to another in the event of a regional failure.
 This ensures that the system remains available by leveraging data and service redundancy across multiple regions.
 
-Temporal supports region failover with its multi-region Namespace feature.
+Temporal supports region failover with its Multi-region Namespace feature.
 If a region becomes unavailable, Temporal automatically switches the active Namespace to a replica in another region, ensuring minimal downtime.
 
-### multi-region Namespace
+### Multi-region Namespace
 
-A multi-region Namespace is a service architecture where data and services are replicated across multiple regions to improve fault tolerance, availability, and performance.
+A Multi-region Namespace is a service architecture where data and services are replicated across multiple regions to improve fault tolerance, availability, and performance.
 This ensures the service can continue to operate even if one region experiences failure.
 
-Temporal provides the multi-region Namespace feature to enable high availability.
+Temporal provides the Multi-region Namespace feature to enable high availability.
 It allows a Namespace to span multiple regions, with replicas in each region.
 If one region goes down, the replica Namespace in another region takes over to ensure system continuity.
 
@@ -274,14 +274,14 @@ Load balancing refers to the process of distributing network or application traf
 This improves resource utilization, prevents downtime, and increases the performance and reliability of systems.
 
 Temporal uses load balancing for distributing tasks across multiple worker nodes to ensure efficient processing of workflows.
-However, Temporal doesn't rely on traditional load balancing for its multi-region Namespace since it instead focuses on failover and replication to ensure high availability.
+However, Temporal doesn't rely on traditional load balancing for its Multi-region Namespace since it instead focuses on failover and replication to ensure high availability.
 
 ### consistency model
 
 A consistency model defines the rules for how data is synchronized across distributed systems.
 It determines the level of guarantee for data consistency, which can range from strict consistency (data is always the same across replicas) to eventual consistency (data may not be immediately consistent but will eventually converge).
 
-Temporal operates with an eventual consistency model for its data across multi-region Namespaces.
+Temporal operates with an eventual consistency model for its data across Multi-region Namespaces.
 It ensures that workflows are replicated across regions, and data will eventually converge, but it doesn't guarantee immediate consistency during failover events.
 
 Temporal typically doesn't rely on synchronous replication across regions due to performance considerations.
