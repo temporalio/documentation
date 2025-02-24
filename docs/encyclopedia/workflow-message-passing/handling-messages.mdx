@@ -1,6 +1,6 @@
 ---
 id: handling-messages
-title: Handling Messages - Signals, Queries, & Updates
+title: Handling Messages
 sidebar_label: Handling Signals, Queries, & Updates
 description: Signals, Queries, and Updates facilitate interactions with Workflow Executions.
 slug: /handling-messages 
@@ -33,11 +33,11 @@ keywords:
 import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
 import {RelatedReadContainer, RelatedReadItem} from '@site/src/components/related-read/RelatedRead';
 
+When Signals, Updates, and Queries arrive at your Workflow, the handlers for these messages will operate on the current state of your Workflow and can use whatever fields you have set.
+In this section, we’ll give you an overview of how messages work with Temporal and cover how to write correct and robust handlers by covering topics like atomicity, guaranteeing completion before the Workflow exits, exceptions, and idempotency.
 
 ## Handling Signals, Updates, and Queries {#handling-messages}
 
-When Signals, Updates, and Queries arrive at your Workflow, the handlers for these messages will operate on the current state of your Workflow and can use whatever fields you have set.
-In this section, we’ll give you an overview of how messages work with Temporal and cover how to write correct and robust handlers by covering topics like atomicity, guaranteeing completion before the Workflow exits, exceptions, and idempotency.
 
 ### Message handler concurrency {#message-handler-concurrency}
 
