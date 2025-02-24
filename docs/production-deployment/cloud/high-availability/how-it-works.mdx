@@ -7,7 +7,7 @@ description: Temporal Cloud's Namespace with High Availability features offers a
 tags:
   - Temporal Cloud
   - Production
-  - High availability
+  - High Availability
 keywords:
   - availability
   - explanation
@@ -66,7 +66,7 @@ These limits mean that certain requests, such as Start Workflow and Signal Workf
 Replicas may receive API requests from Clients and Workers.
 They automatically forward these requests to the primary for execution.
 
-Namespaces with high availability provide an “all-active” experience for Temporal users.
+Namespaces with High Availability features provide an “all-active” experience for Temporal users.
 This helps limit or eliminate downtime during Namespace failover.
 There's a short time window from when a replica becomes active to when Clients and Workers receive a DNS update.
 During this time requests forward from the now passive (formerly active) primary to the newly active (formerly passive) replica.
@@ -226,7 +226,7 @@ After the network partition is resolved and communication between the isolation 
 :::tip
 
 In traditional active/active replication, multiple nodes serve requests and accept writes simultaneously, ensuring strong synchronous data consistency.
-In contrast, with a Temporal Cloud high availability Namespace, only the primary accepts requests and writes at any given time.
+In contrast, with a Temporal Cloud High Availability Namespace, only the primary accepts requests and writes at any given time.
 Workflow History Events are written to the primary first and then asynchronously replicated to the replica, ensuring that the replica remains in sync.
 
 :::
