@@ -322,6 +322,7 @@ module.exports = {
                 "production-deployment/cloud/metrics/reference",
                 "production-deployment/cloud/metrics/datadog",
                 "production-deployment/cloud/metrics/prometheus-grafana",
+                "production-deployment/cloud/metrics/performance-bottlenecks",
               ],
             },
             // "production-deployment/cloud/multi-region",
@@ -564,7 +565,19 @@ module.exports = {
                 "encyclopedia/workers/worker-versioning",
               ],
             },
-            "encyclopedia/workflow-message-passing",
+            {
+              type: "category",
+              label: "Workflow Message Passing",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "encyclopedia/workflow-message-passing/workflow-message-passing",
+              },
+              items: [
+                   "encyclopedia/workflow-message-passing/sending-messages",
+                   "encyclopedia/workflow-message-passing/handling-messages",
+              ],
+            },
             "encyclopedia/child-workflows",
             {
               type: "category",
