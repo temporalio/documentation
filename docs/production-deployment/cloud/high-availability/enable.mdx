@@ -24,7 +24,7 @@ import DiscoverableDisclosure from '@site/src/components/disclosures/Discoverabl
 import ToolTipTerm from '@site/src/components/tooltip/ToolTipTerm';
 
 You can enable High Availability features for a new or existing Namespace by adding a replica.
-When you add a replica, Temporal Cloud begins the replication of ongoing and existing workflows.
+When you add a replica, Temporal Cloud begins the replication of ongoing and existing Workflow Executions.
 Once the replication is complete and the replica is ready, your Namespace is ready for failover.
 
 Advantages of using Temporal Cloud’s High Availability features:
@@ -38,7 +38,7 @@ Advantages of using Temporal Cloud’s High Availability features:
 
 :::tip Support, stability, and dependency info
 
-Same-region replication is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for Temporal Cloud.
+Same-region Replication is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for Temporal Cloud.
 
 :::
 
@@ -47,12 +47,12 @@ Temporal offers the following High Availability features, which you can configur
 - Same-region Replication: Workflows are seamlessly replicated to a different isolation domain within the same region as the primary.
   This option is a good fit if your application is architected to be in one region and you would prefer to failover within the same region.
   It provides a reliable failover mechanism while maintaining deployment simplicity.
-  GCP Namespaces do not support same-region replication.
+  GCP Namespaces do not support Same-region Replication.
 - Multi-region Replication: Workflows are seamlessly replicated to a different region that you can choose.
   Replicating Workflows across different regions enhances resilience and reliability.
   This is particularly beneficial for organizations with multi-regional architectures or those required to be highly available across regions for compliance purposes.
   This option is a good fit if your application is architected to be multi-region.
-  GCP Namespaces support multi-region replication.
+  GCP Namespaces support Multi-region Replication.
 
 There are charges associated with Replication and enabling High Availability features.
 For pricing details, visit Temporal Cloud's [Pricing](/cloud/pricing) page.
@@ -71,7 +71,7 @@ The following table explains how:
 :::caution
 
 Same-region Replication is not supported in all regions.
-For multi-region replication, pairing is limited to regions within the same continent.
+For Multi-region Replication, pairing is limited to regions within the same continent.
 Contact [Support](https://support.temporal.io) to request more regions.
 
 :::
@@ -93,7 +93,7 @@ The following table explains how:
 :::caution
 
 We strongly discourage changing the location of your replica for deployed applications, except under exceptional circumstances.
-Changing the location of your Namespace replica will result in a mandatory seven-day waiting period before you can re-enable High Availability Namespace features.
+Changing the location of your Namespace replica will result in a mandatory 7-day waiting period before you can re-enable High Availability Namespace features.
 
 :::
 
@@ -103,7 +103,7 @@ Follow these steps to change the replica location:
 
 1. [Remove your replica](#discontinuing).
    This disables High Availability for your Namespace.
-2. Wait through the required seven-day waiting period.
+2. Wait through the required 7-day waiting period.
 3. [Add a new replica](#upgrade) to your Namespace.
 
 You will receive an email alert once your Namespace is ready for use.
