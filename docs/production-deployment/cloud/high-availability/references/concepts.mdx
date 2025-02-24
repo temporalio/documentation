@@ -142,34 +142,6 @@ A Namespace failover, which changes the "active region" field of a Namespace rec
 
 :::
 
-## Failovers
-
-At times, incidents occur that make a Namespace temporarily unavailable for use.
-Temporal detects this situation using regular health checks.
-If it finds unhealthy conditions, it will automatically failover the active Namespaceto a replicathat isn’t affected by the incident.
-This shift prevents data loss and application interruptions.
-Existing Workflows continue and new Workflows start while the incident is fixed.
-Once the incident is resolved, Temporal Cloud performs a "failback" by shifting Workflow Execution processing back to the original region.
-
-Temporal Cloud automates failovers by performing internal health checks.
-This process monitors your request error rates, latencies, and any infrastructure issues that might cause service disruptions, such as request timeouts.
-It automatically triggers failovers when these indicators exceed our allowed thresholds.
-
-:::tip
-
-You can test the failover of your Namespace by manually triggering a failover using the UI or the 'tcld' CLI utility.
-In most scenarios, we recommend you let Temporal handle failovers for you.
-
-:::
-
-After failover, be aware of the following points:
-
-- When working with Multi-region Namespaces, your CNAME may change.
-  For example, it may switch from aws-us-west-1.region.tmprl.com to aws-us-east-1.region.tmprl.com.
-  This change doesn't affect standard Namespaces as they are **deployed within a single region**.
-- Your Namespace endpoint _will not change_.
-  If it is `my_namespace.my_account.tmprl.cloud:7233` before failover, it will be `my_namespace.my_account.tmprl.cloud:7233` after failover.
-
 ### Checking health {#health-check}
 
 Temporal Cloud automates failovers by performing internal health checks.

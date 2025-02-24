@@ -504,7 +504,7 @@ This ensures redundancy, fault tolerance, and minimal downtime during an inciden
 
 <!-- _Tags: [term](/tags/term), [queries](/tags/queries), [explanation](/tags/explanation)_ -->
 
-#### [Replication Lag](/cloud/high-availability/operations)
+#### [Replication Lag](/cloud/high-availability/monitor)
 
 The transmission delay of Workflow updates and history events from the active region to the standby region.
 

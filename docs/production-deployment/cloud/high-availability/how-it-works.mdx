@@ -115,17 +115,30 @@ Using physically separated regions provides fuller tolerance for your applicatio
 ## Failovers
 
 Occasionally, a Namespace may become temporarily unavailable due to an unexpected incident.
-Temporal detects these issues using regular [health checks](/cloud/high-availability/operations#healthchecks).
-It monitors error rates, latencies, and infrastructure problems, such as request timeouts.
+Temporal Cloud detects these issues using regular health checks.
+
+### Health checks
+
+Temporal Cloud monitors error rates, latencies, and infrastructure problems, such as request timeouts.
 If it finds unhealthy conditions where indicators exceed the allowed thresholds, Temporal automatically switches the primary to the replica.
 In most cases, the replica is unaffected by the issue.
 This process is known as failover.
+
+### Automatic failovers
 
 Failovers prevent data loss and application interruptions.
 Existing Workflows continue, and new Workflows start as the incident is addressed.
 Once the incident is resolved, Temporal Cloud performs a "failback," shifting Workflow Execution processing back to the original Namespace.
 
 Temporal Cloud handles failovers automatically, ensuring continuity without manual intervention.
+
+<CaptionedImage src="/img/cloud/high-availability/failover.png" title="On failover, the replica becomes active and the Namespace endpoint directs access to it." />
+
+For more control over the failover process, you can [disable automated failovers](/cloud/high-availability/failovers#disabling-temporal-initiated).
+
+
+
+
 
 :::tip
 

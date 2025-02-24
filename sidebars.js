@@ -344,12 +344,12 @@ module.exports = {
                 collapsed: true,
                 link: {
                   type: "doc",
-                  id: "production-deployment/cloud/high-availability/knowledge-base/index",
+                  id: "production-deployment/cloud/high-availability/how-to/index",
                 },
                 items: [
-                  "production-deployment/cloud/high-availability/knowledge-base/failovers",
-                  "production-deployment/cloud/high-availability/knowledge-base/secure-routing",
-                  "production-deployment/cloud/high-availability/knowledge-base/private-link",
+                  "production-deployment/cloud/high-availability/how-to/failovers",
+                  "production-deployment/cloud/high-availability/how-to/secure-routing",
+                  "production-deployment/cloud/high-availability/how-to/private-link",
                 ]
               },
 //              {

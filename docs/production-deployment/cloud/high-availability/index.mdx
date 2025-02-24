@@ -96,16 +96,16 @@ Workflow history events are written to the primary first and then asynchronously
 Namespace replication offers 99.99% availability, enforced by Temporal Cloud's [service error rates SLA](https://docs.temporal.io/cloud/sla).
 Our system is designed to limit data loss after recovery when the incident triggering the failover is resolved.
 
-Our recovery point objective ([RPO](https://en.wikipedia.org/wiki/Disaster_recovery#Recovery_Point_Objective)) is near-zero.
+Our recovery point objective (<ToolTipTerm term="RPO" tooltip="RPO is the maximum acceptable duration during which transactional data might be lost from the service." />) is near-zero.
 There may be a short period of time during an incident or forced failover when some data is unavailable in the replica region.
 Some Workflow History data won't arrive until network issues are fixed, enabling the History to finish replicating and the divergent History branches to reconcile.
 
 Temporal Cloud proactively responds to incidents by triggering failovers.
-Our recovery time objective ([RTO](https://en.wikipedia.org/wiki/Disaster_recovery#Recovery_Time_Objective)) is 20 minutes or less per incident.
+Our recovery time objective (<ToolTipTerm term="RTO" tooltip="RTO sets a maximum time and service level objective, after which, service must be restored following a disruption." />) is 20 minutes or less per incident.
 
 :::info
 
-During a disaster scenario in which the data in the primary Namespace cannot be recovered, the duration of data loss may be as high as the [replication lag](/cloud/high-availability/operations) at the time of disaster.
+During a disaster scenario in which the data in the primary Namespace cannot be recovered, the duration of data loss may be as high as the [replication lag](/cloud/high-availability/monitor) at the time of disaster.
 
 :::
 
