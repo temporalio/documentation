@@ -3,7 +3,7 @@ id: how-it-works
 title: How replication works
 sidebar_label: How replication works
 slug: /cloud/high-availability/how-it-works
-description: Temporal Cloud's Namespace with High Availability features offer automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime.
+description: Temporal Cloud's Namespace with High Availability features offers automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime.
 tags:
   - Temporal Cloud
   - Production
@@ -84,7 +84,7 @@ This mechanism ensures consistency and reliability in the replication process.
 
 Temporal deploys your primary and its replica across separate <ToolTipTerm term="isolation domains" tooltip="An isolation domain is a defined area within Temporal Cloud's infrastructure. It helps contain failures and prevents them from spreading to other parts of the system. This provides redundancy and fault tolerance." />.
 These domains can be in the same region or in different regions, depending on your setup.
-Because each region has multiple isolation domains, you can place your replica in the same region as your primary (same-region replication) or in another region (Multi-region Replication).
+Because each region has multiple isolation domains, you can place your replica in the same region as your primary (Same-region Replication) or in another region (Multi-region Replication).
 
 - **Same-region Replication**:
   Temporal replicates Namespaces across isolation domains within one region.
@@ -218,7 +218,7 @@ This strategy balances _consistency_ and _availability_ requirements.
 ## Network partitions
 
 At any time only the primary or the replica is active.
-The exception only occurs in the event of a [network partition](https://en.wikipedia.org/wiki/Network_partition"), when a Network splits into separate subnetworks.
+The exception only occurs in the event of a [network partition](https://en.wikipedia.org/wiki/Network_partition), when a Network splits into separate subnetworks.
 Should this occur, you can promote a replica to active status.
 **Caution:** This temporarily makes both regions active.
 After the network partition is resolved and communication between the isolation domains/regions is restored, a conflict resolution algorithm determines whether the primary or replica remains active.
