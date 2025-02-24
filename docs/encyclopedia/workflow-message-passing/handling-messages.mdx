@@ -44,7 +44,7 @@ In this section, we’ll give you an overview of how messages work with Temporal
 If your Workflow receives messages, you may need to consider how those messages interact with one another or with the main Workflow method.
 Behind the scenes, Temporal is running a loop that looks like this:
 
-<PrettyImage src="/img/messages-workflow-loop.png" title="Diagram that shows the execution ordering of Workflows" />
+<PrettyImage src="/img/info/messages-workflow-loop.png" title="Diagram that shows the execution ordering of Workflows" />
 
 Every time the Workflow wakes up--generally, it wakes up when it needs to--it will process messages in the order they were received, followed by making progress in the Workflow’s main method.
 
