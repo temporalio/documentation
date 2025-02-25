@@ -306,6 +306,10 @@ Authentication methods require specific endpoints in order to programmatically a
 - For the mTLS authentication method, use the endpoint format `<namespace>.<account>.tmprl.cloud:7233`.
 - For [multi-region Namespaces](/cloud/multi-region) use the endpoint format `<namespace>.<account>.tmprl.cloud:7233` regardless of authentication method, because it allows automated regional failover without needing to switch endpoints.
 
+For information on how to connect to clients using a specific authentication method see the following documentation.
+- To use API keys to connect with the [Temporal CLI](/cli), [client SDK](/develop), [tcld](/cloud/tcld), and [Cloud Ops API](/ops), see [Use API keys to authenticate](/cloud/api-keys#using-apikeys).
+- To use mTLS to connect with the [Temporal CLI](/cli) and [client SDK](/develop) see [Configure clients to use client certificates](/cloud/certificates#configure-clients).
+
 For accessing Temporal Web UI, use the HTTPS endpoint in the form `https://cloud.temporal.io/namespaces/<namespace>.<account>`; for example, `https://cloud.temporal.io/namespaces/accounting-production.f45a2`.
 
 To ensure the security of your data, all traffic to and from your Namespace is encrypted.
