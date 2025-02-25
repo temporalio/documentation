@@ -398,7 +398,7 @@ Minimum Temporal Server version [Temporal Server version 1.26](https://github.co
 [send an Update](/develop/java/message-passing#send-update-from-client) that checks whether an already-running Workflow with that ID exists:
 
 - If the Workflow exists, the Update is processed.
-- If the Workflow does not exist, a new Workflow Execution is started with the given ID, and the Update is processed immediately after.
+- If the Workflow does not exist, a new Workflow Execution is started with the given ID, and the Update is processed before the main Workflow method starts to execute.
 
 Use the [`startUpdateWithStart`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClient.html#startUpdateWithStart(io.temporal.workflow.Functions.Func,io.temporal.client.UpdateOptions,io.temporal.client.WithStartWorkflowOperation)) WorkflowClient API.
 It returns once the requested Update wait stage has been reached; or when the request times out.
