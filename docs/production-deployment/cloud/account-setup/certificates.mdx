@@ -421,10 +421,14 @@ To view the current certificate filters, use the [tcld namespace certificate-fil
 
 ### Configure Temporal CLI {#configure-temporal-cli}
 
-To connect to a Temporal Namespace using the Temporal CLI and certificates specify your certificates and the TLS server name.
+To connect to a Temporal Namespace using the Temporal CLI and certificate authentication, specify your credentials and the TLS server name:
 
-```bash
-temporal --tls-ca-path <Path to server CA certificate> --tls-cert-path <Path to x509 certificate> --tls-key-path <Path to private certificate key> --tls-server-name <Override for target TLS server name>
+```sh
+temporal <command> <subcommand> \
+    --tls-ca-path <Path to server CA certificate> \
+    --tls-cert-path <Path to x509 certificate> \
+    --tls-key-path <Path to private certificate key> \
+    --tls-server-name <Override for target TLS server name>
 ```
 
-For more information on Temporal CLI environment variables see [Environment variables](/cli#environment-variables).
+For more information on Temporal CLI environment variables, see [Environment variables](/cli#environment-variables).
