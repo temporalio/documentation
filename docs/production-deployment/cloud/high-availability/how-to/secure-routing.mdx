@@ -1,0 +1,40 @@
+---
+id: secure-routing
+title: Monitoring the Namespace DNS record
+sidebar_label: Monitoring the Namespace DNS
+slug: /cloud/high-availability/secure-routing
+description: Temporal Cloud's High Availability Namespaces offer automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime.
+tags:
+  - Temporal Cloud
+  - Production
+  - High Availability
+keywords:
+  - availability
+  - explanation
+  - failover
+  - high-availability
+  - multi-region
+  - multi-region namespace
+  - namespaces
+  - temporal-cloud
+  - term
+---
+
+import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+import DiscoverableDisclosure from '@site/src/components/disclosures/DiscoverableDisclosure';
+import ToolTipTerm from '@site/src/components/tooltip/ToolTipTerm';
+
+When using a Namespace with High Availability features, the Namespace's DNS record `<ns>.<acct>.<tmprl_domain>` points to a regional DNS record in the format `<region>.region.<tmprl_domain>`.
+Here, `<region>` is the currently active region for your Namespace.
+
+During failover, Temporal Cloud changes the target of the Namespace DNS record from one region to another.
+Namespace DNS records are configured with a 15 second <a href="https://en.wikipedia.org/wiki/Time_to_live">TTL</a>.
+Any DNS cache should re-resolve the record within this time.
+As a rule of thumb, receiving an updated DNS record takes about twice (2x) the TTL.
+Clients should converge to the newly targeted region within, at most, a 30-second delay.
+
+:::info AWS PrivateLink
+
+AWS PrivateLink customers should visit the [dedicated AWS PrivateLink page](/cloud/high-availability/private-link) for configuration details.
+
+:::

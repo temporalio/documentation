@@ -14,6 +14,8 @@ tags:
   - Namespaces
 ---
 
+import ToolTipTerm from '@site/src/components/tooltip/ToolTipTerm';
+
 The `tcld namespace` commands enable [Namespace](/namespaces) operations in Temporal Cloud.
 
 Alias: `n`
@@ -33,20 +35,11 @@ Alias: `n`
 
 ## add-region
 
-Use `tcld namespace add-region` to add a standby region to an existing Temporal Cloud [Namespace](/namespaces).
-Enrolling a second region upgrades the Namespace to [multi-region](/cloud/multi-region).
-Once provisioned, the multi-region Namespace enables Temporal Cloud to start replicating Workflow Execution data from the active to the standby region and trigger failover during adverse conditions.
-
-`tcld namespace add-region`
+Use `tcld namespace add-region` to add a <ToolTipTerm term="replica" tooltip="A replica is a synchronized copy of a Namespace. It ensures redundancy, fault tolerance, and minimal downtime during an incident or outage. A replica can take over operations if the primary becomes unavailable. It's synchronized up to the point of replication lag, where no further data is available." /> to an existing Temporal Cloud [Namespace](/namespaces).
+Adding a replica upgrades the Namespace to [High Availability features](/cloud/high-availability).
+Once provisioned, High Availability features enable Temporal Cloud to start replicating Workflow Execution data from the primary to the replica and trigger failover during adverse conditions.
 
 Alias: _none_
-
-:::caution
-
-To end multi-region service and discontinue replication charges, contact [Temporal Support](https://support.temporal.io) directly.
-You can't use `tcld` to remove a region from a Namespace.
-
-:::
 
 The following modifiers control the behavior of the command.
 
@@ -82,9 +75,41 @@ Alias: `--re`
 
 _Required modifier_
 
+**Example**
+
+```
+tcld namespace add-region \
+    --namespace <namespace_id>.<account_id> \
+    --region <replica_region>
+```
+
+When using API key authentication, add your API credentials before pressing Enter:
+
+```
+
+tcld --api-key <your_api_key> \
+    add-region \
+    --namespace <namespace_id>.<account_id> \
+    --region <replica_region>
+
+```
+
+:::tip
+
+Specify the region code of the region where you want to create the replica as an argument to the `--region` flag:
+
+- Using the current region replicates to an <ToolTipTerm term="isolation domain" tooltip="An isolation domain is a defined area within Temporal Cloud's infrastructure. It helps contain failures and prevents them from spreading to other parts of the system. This provides redundancy and fault tolerance." /> within your existing region.
+- Using a different region (within the same continent) replicates across regions.
+- You cannot create a Multi-region deployment on separate continents.
+
+Temporal Cloud sends an email alert once your Namespace is ready for use.
+
+:::
+
 ## create
 
 The `tcld namespace create` command creates a Temporal [Namespace](/namespaces) in Temporal Cloud.
+Use it to create a standard Namespace or a Namespace with [High Availability features](/cloud/high-availability).
 
 Alias: `c`
 
@@ -122,24 +147,48 @@ _Required modifier_
 
 The region to create the Namespace in.
 
-When one `--region` flag is used, `tcld` provisions a single-region namespace.
-In single-region use, Temporal clients connect to a single Namespace in one deployment region.
+- Supplying a single `--region` flags creates a standard Namespace.
+- Supplying two `--region` flags creates a Namespace that uses <ToolTipTerm term="replication" tooltip="Replication creates a synchronized copy of a Namespace. It ensures redundancy, fault tolerance, and minimal downtime during an incident or outage. A replica can take over operations if the primary becomes unavailable. It's synchronized up to the point of replication lag, where no further data is available." /> and <ToolTipTerm term="failover" tooltip="A failover shifts Workflow Execution processing from a primary Namespace to a replica during outages or other incidents. Temporal Cloud uses replication to duplicate data and prevent data loss during failover." /> for continued service availability in case of failures of incidents.
 
-When two `--region` flags are provided, your Namespace is provisioned to use Temporal Cloud [multi-region Namespace](/cloud/multi-region) (MRN) service.
-Once provisioned, MRN enables Temporal Cloud to start replicating Workflow Execution data from the active to the standby region and trigger failover during adverse conditions.
+**Example**
+
+```
+tcld namespace create \
+    --namespace <namespace_id>.<account_id> \
+    --region <primary_region> [\]
+    [--region <replica_region>] // if adding replica
+```
+
+When using API key authentication, add your API credentials before pressing Enter:
+
+```
+
+tcld --api-key <your_api_key> \
+    namespace create \
+    --namespace <namespace_id>.<account_id> \
+    --region <primary_region> [\]
+    [--region <replica_region>] // if adding replica
+
+```
+
+
+:::tip
+
+When using High Availability features, specify the region code of the region where you want to create the replica as an argument to the `--region` flag:
+
+- Using the current region replicates to an <ToolTipTerm term="isolation domain" tooltip="An isolation domain is a defined area within Temporal Cloud's infrastructure. It helps contain failures and prevents them from spreading to other parts of the system. This provides redundancy and fault tolerance." /> within your existing region.
+- Using a different region (within the same continent) replicates across regions.
+- You cannot create a Multi-region deployment on separate continents.
+
+Temporal Cloud sends an email alert once your Namespace is ready for use.
+
+:::
 
 Valid options: `ap-northeast-1` | `ap-southeast-1` | `ap-southeast-2` | `ca-central-1` | `eu-central-1` | `eu-west-1` | `eu-west-2` | `us-east-1` | `us-west-2`
 
 Alias: `--re`
 
 _Required modifier_
-
-:::caution
-
-To end multi-region service and end charges, contact [Temporal Support](https://support.temporal.io) directly.
-You can't use `tcld` to remove a region from a namespace.
-
-:::
 
 #### --retention-days
 
@@ -267,8 +316,27 @@ tcld namespace delete --namespace <namespace_id>
 
 ## failover
 
-Failover a Temporal Namespace.
-A failover switches a Namespace region from the active region to the standby region.
+Failover a Temporal Namespace with [High Availability features](/cloud/high-availability).
+A failover switches a Namespace region from a primary Namespace to its replica.
+
+**Example**
+
+```
+tcld namespace failover \
+    --namespace <namespace_id>.<account_id> \
+    --region <target_region>
+```
+
+When using API key authentication, add your API credentials before pressing Enter:
+
+```
+
+tcld --api-key <your_api_key> \
+    namespace failover \
+    --namespace <namespace_id>.<account_id> \
+    --region <target_region>
+
+```
 
 #### --request-id
 
@@ -1490,3 +1558,47 @@ Alias: `--ic`
 ```bash
 tcld namespace update-codec-server --namespace <namespace_id> --endpoint <https_url> --include-credentials true
 ```
+
+## update-high-availability
+
+The `tcld namespace update-high-availability` command enables you to adjust settings for your [Namespace](/namespaces) with [High Availability features](/cloud/high-availability).
+This is set to `false` by default.
+
+Alias: `uha`
+
+The following modifiers control the behavior of the command.
+
+#### --namespace
+
+_Required modifier._
+
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+
+Alias: `-n`
+
+#### --disable-auto-failover
+
+Specify whether Temporal Cloud should perform <ToolTipTerm term="health checks" tooltip="Temporal Cloud monitors error rates, latencies, and infrastructure problems, such as request timeouts. If it finds unhealthy conditions where indicators exceed the allowed thresholds, Temporal automatically switches the primary to the replica." /> and trigger automatic failovers.
+Pass `true` or `false` (default).
+
+**Example**
+
+```
+tcld namespace update-high-availability \
+    --namespace <namespace_id>.<account_id> \
+    --disable-auto-failover=true
+
+```
+
+When using API key authentication, add your API credentials before pressing Enter:
+
+```
+
+tcld --api-key <your_api_key> \
+    namespace update-high-availability \
+    --namespace <namespace_id>.<account_id> \
+    --disable-auto-failover=true
+
+```
+
+Alias: `-daf`
