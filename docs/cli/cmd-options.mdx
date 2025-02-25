@@ -179,13 +179,13 @@ Endpoint for a remote Codec Server.
 
 When to use color: auto, always, never. (default: auto)
 
-## concurrency
-
-Request concurrency.
-
 ## command-timeout
 
 The command execution timeout. 0s means no timeout.
+
+## concurrency
+
+Request concurrency.
 
 ## cron
 
@@ -310,13 +310,13 @@ Flag to indicate whether a Namespace is a Global Namespace.
 Contains gRPC metadata to send with requests (format: `key=value`).
 Values must be in a valid JSON format.
 
-## heartbeat-timeout
-
-Maximum permitted time between successful Worker Heartbeats.
-
 ## headless
 
 Disable the Web UI.
+
+## heartbeat-timeout
+
+Maximum permitted time between successful Worker Heartbeats.
 
 ## history-archival-state
 
@@ -336,6 +336,20 @@ Options: AllowDuplicate, AllowDuplicateFailedOnly, RejectDuplicate, TerminateIfR
 
 Specify operator's identity.
 
+## input
+
+Use the `--input` command option to include data in the command.
+
+This command option accepts a valid JSON string.
+If the entity that the command is acting on accepts multiple parameters, pass "null" for null values within the JSON string.
+
+The following is an example of starting a Workflow with the `--input` command option.
+This Workflow expects a single string as a parameter:
+
+```shell
+temporal workflow start --input '"+1 555-555-5555"'
+```
+
 ## input-file
 
 Passes optional input for the Workflow from a JSON file.
@@ -350,20 +364,6 @@ Each goroutine processes one line for every second.
 ## input-separator
 
 Separator for the input file. The default is a tab (`\t`).
-
-## input
-
-Use the `--input` command option to include data in the command.
-
-This command option accepts a valid JSON string.
-If the entity that the command is acting on accepts multiple parameters, pass "null" for null values within the JSON string.
-
-The following is an example of starting a Workflow with the `--input` command option.
-This Workflow expects a single string as a parameter:
-
-```shell
-temporal workflow start --input '"+1 555-555-5555"'
-```
 
 ## interval
 
@@ -478,13 +478,13 @@ Options: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll.
 Sets the pager for the Temporal CLI to use.
 Options are less, more, and favoritePager.
 
-## pause-on-failure
-
-Pause schedule after any Workflow failure.
-
 ## pause
 
 Pauses the Schedule.
+
+## pause-on-failure
+
+Pause schedule after any Workflow failure.
 
 ## port
 
@@ -652,14 +652,14 @@ Caution: `--target-url` is experimental.
 
 :::
 
+## task-queue
+
+Task Queue.
+
 ## task-queue-type
 
 Task Queue type, which can be either Workflow or Activity.
 The default type is Workflow.
-
-## task-queue
-
-Task Queue.
 
 ## task-timeout
 
@@ -672,6 +672,10 @@ Format time as: relative, iso, raw.
 ## time-zone
 
 Time zone (IANA name).
+
+## tls
+
+Enable TLS encryption without additional options such as mTLS or client certificates.
 
 ## tls-ca-data
 
@@ -704,10 +708,6 @@ Path to private certificate key.
 ## tls-server-name
 
 Overrides the target TLS server name.
-
-## tls
-
-Enable TLS encryption without additional options such as mTLS or client certificates.
 
 ## type
 
