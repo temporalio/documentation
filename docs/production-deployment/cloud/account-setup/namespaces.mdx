@@ -398,7 +398,13 @@ See the [tcld namespace delete](/cloud/tcld/namespace/#delete) command reference
 
 To prevent accidental Namespace deletion, Temporal Cloud provides a protection feature.
 When you enable "delete protection" for your production environment Namespaces, you ensure that critical data won't be deleted unintentionally.
+- Visit the [Namespaces page](https://cloud.temporal.io/namespaces) on Temporal Cloud.
+- Open your Namespace details page.
+- Select the Edit button.
+- Scroll down to Security and click the disclosure button (downward-facing caret).
+- Enable **Deletion Protection**
 
+![Deletion Protection is enabled by toggling the switch](/img/cloud/namespace/deletion-protection.png)
 To enable or disable this feature using the Temporal Cloud UI, update the security setting on the Namespace edit page.
 
 To enable or disable this feature using [`tcld`](/cloud/tcld), use the following command.
