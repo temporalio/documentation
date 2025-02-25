@@ -407,6 +407,8 @@ When you enable Deletion Protection for your production environment Namespace, y
 ![Deletion Protection is enabled by toggling the switch](/img/cloud/namespace/deletion-protection.png)
 
 To enable or disable this feature using [`tcld`](/cloud/tcld), use the following command.
+Set the value to `true` to enable or `false` to disable:
+
 ```
 tcld namespace lifecycle set \
     --namespace <namespace_id.account_id> \
