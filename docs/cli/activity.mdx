@@ -127,12 +127,12 @@ Use the following options to change the behavior of this command.
 
 ## update-options
 
-The `temporal activity update-options` command lets you fix running Activities by updating the options that were passed in by the Activity's parent workflow.
+The `temporal activity update-options` command lets you fix running Activities by updating the options that were passed in by the Activity's Parent Workflow.
 
 The Activity must already be running on a valid [Workflow](/workflows).
-Updates are incremental, only changing the specified options. Either activity id or activity type must be provided.
-If activity type is provided, and there are multiple pending activities of the provided type - all of them will be updated.
-The command will return the new activity options for an [Activity Execution](/activities#activity-execution)..
+Updates are incremental, only changing the specified options. Either the Activity Id or Activity Type must be provided.
+If Activity Type is provided, and there are multiple pending Activities of the provided type, then all of them will be updated.
+The command will return the new Activity options for an [Activity Execution](/activities#activity-execution)..
 
 Use the following options to change the behavior of this command.
 
@@ -176,22 +176,22 @@ Other options:
 ## pause
 
 The `temporal activity pause` command pauses an [Activity Execution](/activities#activity-execution) specified by its ID or type.
-Pausing the activity can be undone by using the `temporal activity unpause` command.
+Pausing the Activity can be undone by using the `temporal activity unpause` command.
 
 Pausing an Activity means:
-* If the activity is currently waiting for a retry or is running and subsequently fails, it will not be rescheduled until it is unpaused.
+* If the Activity is currently waiting for a retry or is running and subsequently fails, it will not be rescheduled until it is unpaused.
 * If the Activity is already paused, calling this method will have no effect.
 * If the Activity is running and finishes successfully, the Activity will be completed.
 * If the Activity is running and finishes with failure:
-  * if there is no retry left then the Activity will be completed.
-  * if there are more retries left then the Activity will be paused.
+  * If no retries remain, the Activity will be completed.
+  * If retries remain, the Activity will be paused.
 
-If Activity type is provided, and there are multiple pending activities of the provided type - all of them will be paused.
+If Activity Type is provided and multiple pending Activities of the provided type exist, all of them will be paused.
 
-For long-running activities, activities in paused state will send a cancellation with "activity_paused" set to 'true' as a part of [Activity Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) response.
-You can choose how you'd like to handle this case in your Activity.
+For long-running Activities, Activities in a paused state will send a cancellation with `activity_paused` set to `true` as a part of [Activity Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) response.
+You can choose how you would like to handle this case in your Activity.
 
-This command returns a `NotFound` error if there is no pending activity with the provided ID or type.
+This command returns a `NotFound` error if there is no pending Activity with the provided ID or type.
 Use the following options to change the behavior of this command.
 
 Routing options:
@@ -221,10 +221,10 @@ Other options:
 ## unpause
 
 The `temporal activity unpause` command unpauses an [Activity Execution](/activities#activity-execution) specified by its ID or type.
-If there are multiple pending activities of the provided type - all of them will be unpaused.
+If there are multiple pending Activities of the provided type, then all of them will be unpaused.
 If Activity is not paused, this call will have no effect.
 If the Activity was paused while waiting for retry, it will be scheduled immediately (* see 'jitter' flag).
-Once the Activity is unpaused, all timeout timers will be regenerated.
+Once the Activity is unpaused, all Timeout timers will be regenerated.
 
 Command will fail with a `NotFound` error if there is no pending Activity with the provided ID or type.
 
