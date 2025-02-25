@@ -327,13 +327,13 @@ Service Accounts cannot delete their own API keys without the requisite permissi
 Create a Namespace with API key authentication as an alternative to mTLS-based authentication by selecting "Allow API key authentication" during setup.
 The gRPC endpoint format for the Namespace depends on the authentication method:
 
-- For API key connections, use `<region>.<cloud_provider>.api.temporal.io:7233`.
+- For API key connections, use the gRPC regional endpoint `<region>.<cloud_provider>.api.temporal.io:7233`.
 
 Use this gRPC endpoint in the Temporal CLI or SDK to connect to Temporal Cloud with an API key.
 
 :::info
 
-For [Namespaces with High Availability Features](/cloud/high-availability) with API key authentication enabled, use the gRPC endpoint format `<namespace>.<account>.tmprl.cloud:7233`.
+For [Namespaces with High Availability Features](/cloud/high-availability) with API key authentication enabled, use the gRPC Namespace endpoint `<namespace>.<account>.tmprl.cloud:7233`.
 This allows automated failover without needing to switch endpoints.
 
 :::
