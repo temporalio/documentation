@@ -410,7 +410,7 @@ To set or clear certificate filters, use the following [tcld](/cloud/tcld) comma
 
 To view the current certificate filters, use the [tcld namespace certificate-filters export](/cloud/tcld/namespace/#export) command.
 
-## Configure clients to use client certificates
+## Configure clients to use client certificates {#configure-clients}
 
 - [Go SDK](/develop/go/temporal-clients#connect-to-temporal-cloud)
 - [Java SDK](/develop/java/temporal-clients#connect-to-temporal-cloud)
@@ -418,3 +418,13 @@ To view the current certificate filters, use the [tcld namespace certificate-fil
 - [Python SDK](/develop/python/temporal-clients#connect-to-temporal-cloud)
 - [TypeScript SDK](/develop/typescript/temporal-clients#connect-to-temporal-cloud)
 - [.NET SDK](/develop/dotnet/temporal-client#connect-to-temporal-cloud)
+
+### Configure Temporal CLI {#configure-temporal-cli}
+
+To connect to a Temporal Namespace using the Temporal CLI and certificates specify your certificates and the TLS server name.
+
+```bash
+temporal --tls-ca-path <Path to server CA certificate> --tls-cert-path <Path to x509 certificate> --tls-key-path <Path to private certificate key> --tls-server-name <Override for target TLS server name>
+```
+
+For more information on Temporal CLI environment variables see [Environment variables](/cli/#environment-variables).
