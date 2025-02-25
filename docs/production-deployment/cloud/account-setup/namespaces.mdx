@@ -408,5 +408,7 @@ When you enable Deletion Protection for your production environment Namespace, y
 
 To enable or disable this feature using [`tcld`](/cloud/tcld), use the following command.
 ```
-tcld namespace lifecycle set -n <namespace> --enable-delete-protection <true/false>
+tcld namespace lifecycle set \
+    --namespace <namespace_id.account_id> \
+    --enable-delete-protection <Boolean>
 ```
