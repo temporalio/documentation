@@ -152,6 +152,15 @@ Follow these steps to find it:
    Just below that is a row of information including the completed Workflow retention policy, the Namespace region, the Actions-Per-Second limit, and the gRPC endpoint.
 5. Click the copy icon next to the gRPC address to copy it to your clipboard.
 
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">gRPC endpoint</p>
+  </div>
+  <div className="tdiiw" height="207">
+    <img className="img_ev3q" src="/img/grpc-endpoint.png" alt="gRPC endpoint" />
+  </div>
+</div>
+
 ## How to create a Namespace in Temporal Cloud {#create-a-namespace}
 
 :::info
@@ -304,7 +313,7 @@ If you require migrating from one authentication method to another, please conta
 Authentication methods require specific endpoints in order to programmatically access your namespace.
 - For the API key authentication method, use the endpoint format `<region>.<cloud_provider>.api.temporal.io:7233`.
 - For the mTLS authentication method, use the endpoint format `<namespace>.<account>.tmprl.cloud:7233`.
-- For [multi-region Namespaces](/cloud/multi-region) use the endpoint format `<namespace>.<account>.tmprl.cloud:7233` regardless of authentication method, because it allows automated regional failover without needing to switch endpoints.
+- For [multi-region Namespaces](/cloud/high-availability) use the endpoint format `<namespace>.<account>.tmprl.cloud:7233` regardless of authentication method, because it allows automated failover without needing to switch endpoints.
 
 For information on how to connect to clients using a specific authentication method see the following documentation.
 - To use API keys to connect with the [Temporal CLI](/cli), [client SDK](/develop), [tcld](/cloud/tcld), and [Cloud Ops API](/ops), see [Use API keys to authenticate](/cloud/api-keys#using-apikeys).
