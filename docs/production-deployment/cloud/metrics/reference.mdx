@@ -83,7 +83,7 @@ rate(temporal_cloud_v0_service_latency_sum[$__rate_interval])
 histogram_quantile(0.99, sum(rate(temporal_cloud_v0_service_latency_bucket[$__rate_interval])) by (le, operation))
 ```
 
-Metrics are scraped every 30 seconds and exposed to the metrics endpoint with a 1-minute lag.  
+Metrics are scraped every 30 seconds and exposed to the metrics endpoint with a 1-minute lag.\
 The endpoint returns data with a 15-second resolution, which results in displaying the same value twice.
 
 Set up Grafana with Temporal Cloud observability to view metrics by creating or getting your Prometheus endpoint for Temporal Cloud metrics and enabling SDK metrics.
