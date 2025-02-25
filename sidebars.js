@@ -348,6 +348,7 @@ module.exports = {
                   id: "production-deployment/cloud/high-availability/how-to/index",
                 },
                 items: [
+                  "production-deployment/cloud/high-availability/how-to/api-authentication",
                   "production-deployment/cloud/high-availability/how-to/failovers",
                   "production-deployment/cloud/high-availability/how-to/secure-routing",
                   "production-deployment/cloud/high-availability/how-to/private-link",
