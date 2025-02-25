@@ -83,7 +83,7 @@ rate(temporal_cloud_v0_service_latency_sum[$__rate_interval])
 histogram_quantile(0.99, sum(rate(temporal_cloud_v0_service_latency_bucket[$__rate_interval])) by (le, operation))
 ```
 
-Metrics are scraped every 30 seconds and exposed to the metrics endpoint with a 1-minute lag.  
+Metrics are scraped every 30 seconds and exposed to the metrics endpoint with a 1-minute lag.\
 The endpoint returns data with a 15-second resolution, which results in displaying the same value twice.
 
 Set up Grafana with Temporal Cloud observability to view metrics by creating or getting your Prometheus endpoint for Temporal Cloud metrics and enabling SDK metrics.
@@ -140,15 +140,15 @@ When no tasks are available for a poller before timing out.
 
 #### temporal_cloud_v0_replication_lag_bucket
 
-A histogram of [replication lag](/cloud/multi-region#replication-lag) during a specific time interval for a [multi-region Namespace](/cloud/multi-region).
+A histogram of [replication lag](/cloud/high-availability/monitor) during a specific time interval for a Namespace with high availability.
 
 #### temporal_cloud_v0_replication_lag_count
 
-The [replication lag](/cloud/multi-region#replication-lag) count during a specific time interval for a [multi-region Namespace](/cloud/multi-region).
+The [replication lag](/cloud/high-availability/monitor) count during a specific time interval for a Namespace with high availability.
 
 #### temporal_cloud_v0_replication_lag_sum
 
-The sum of [replication lag](/cloud/multi-region#replication-lag) during a specific time interval for a [multi-region Namespace](/cloud/multi-region).
+The sum of [replication lag](/cloud/high-availability/monitor) during a specific time interval for a Namespace with high availability.
 
 ### Schedule metrics {#schedule}
 

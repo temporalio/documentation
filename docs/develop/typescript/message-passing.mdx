@@ -195,7 +195,6 @@ wf.setHandler(
   See [Async handlers](#async-handlers) and [Workflow message passing](/encyclopedia/workflow-message-passing) for safe usage guidelines.
 - If your Workflow needs to do some async initialization before handling an Update or Signal, use [`workflow.condition`](https://typescript.temporal.io/api/namespaces/workflow#condition) inside your handler to wait until initialization has completed.
 
-
 ## Send messages {#send-messages}
 
 To send Queries, Signals, or Updates, you call methods on a [WorkflowHandle](https://typescript.temporal.io/api/namespaces/client#workflowhandle) object:
@@ -382,16 +381,22 @@ Note that a `WithStartWorkflowOperation` can only be used once.
 Here's an example taken from the [early-return](https://github.com/temporalio/samples-typescript/blob/main/early-return/src/start-test-workflow.ts) sample:
 
 ```typescript
-const startWorkflowOperation = WithStartWorkflowOperation.create(transactionWorkflow, {
-  workflowId,
-  args: [transactionID],
-  taskQueue: 'early-return',
-  workflowIdConflictPolicy: 'FAIL',
-});
+const startWorkflowOperation = WithStartWorkflowOperation.create(
+  transactionWorkflow,
+  {
+    workflowId,
+    args: [transactionID],
+    taskQueue: 'early-return',
+    workflowIdConflictPolicy: 'FAIL',
+  },
+);
 
-const earlyConfirmation = await client.workflow.executeUpdateWithStart(getTransactionConfirmation, {
-  startWorkflowOperation,
-});
+const earlyConfirmation = await client.workflow.executeUpdateWithStart(
+  getTransactionConfirmation,
+  {
+    startWorkflowOperation,
+  },
+);
 const wfHandle = await startWorkflowOperation.workflowHandle();
 const finalReport = await wfHandle.result();
 ```
