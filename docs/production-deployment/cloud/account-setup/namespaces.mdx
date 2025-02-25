@@ -152,15 +152,6 @@ Follow these steps to find it:
    Just below that is a row of information including the completed Workflow retention policy, the Namespace region, the Actions-Per-Second limit, and the gRPC endpoint.
 5. Click the copy icon next to the gRPC address to copy it to your clipboard.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">gRPC endpoint</p>
-  </div>
-  <div className="tdiiw" height="207">
-    <img className="img_ev3q" src="/img/grpc-endpoint.png" alt="gRPC endpoint" />
-  </div>
-</div>
-
 ## How to create a Namespace in Temporal Cloud {#create-a-namespace}
 
 :::info
@@ -306,10 +297,16 @@ Sample workflowId convention:
 
 {/* How to access a Namespace in Temporal Cloud */}
 
-Each Namespace in Temporal Cloud has two unique endpoints, both of which include the [Namespace Id](#temporal-cloud-namespace-id).
+Temporal supports authentication to Namespaces using [API keys](/cloud/api-keys) or [mTLS](/cloud/certificates).
+We currently only support one authentication method at a time, which is determined at namespace creation time.
+If you require migrating from one authentication method to another, please contact [Temporal Support](https://support.temporal.io).
 
-- For programmatic access, a gRPC endpoint in the form `<NamespaceId>.tmprl.cloud`; for example, `accounting-production.f45a2.tmprl.cloud:7233`.
-- For accessing Temporal Web UI, an HTTPS endpoint in the form `https://cloud.temporal.io/namespaces/<namespaceId>`; for example, `https://cloud.temporal.io/namespaces/accounting-production.f45a2`.
+Authentication methods require specific endpoints in order to programmatically access your namespace.
+- For the API key authentication method, use the endpoint format `<region>.<cloud_provider>.api.temporal.io:7233`.
+- For the mTLS authentication method, use the endpoint format `<namespace>.<account>.tmprl.cloud:7233`.
+- For [multi-region Namespaces](/cloud/multi-region) use the endpoint format `<namespace>.<account>.tmprl.cloud:7233` regardless of authentication method, because it allows automated regional failover without needing to switch endpoints.
+
+For accessing Temporal Web UI, use the HTTPS endpoint in the form `https://cloud.temporal.io/namespaces/<namespace>.<account>`; for example, `https://cloud.temporal.io/namespaces/accounting-production.f45a2`.
 
 To ensure the security of your data, all traffic to and from your Namespace is encrypted.
 However, for enhanced protection, you have additional options:
