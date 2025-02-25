@@ -92,7 +92,7 @@ To manage your account’s API keys:
 1. [Log in](https://cloud.temporal.io/) to the Temporal Cloud UI.
 1. [Select **Settings** and choose **API keys**](https://cloud.temporal.io/settings/api-keys).
 
-Administrators can disable the creation of new API keys using the **Disable API Keys** button on the **API Keys** settings page. 
+Administrators can disable the creation of new API keys using the **Disable API Keys** button on the **API Keys** Settings page.
 Existing API keys can still be used to authenticate into Temporal Cloud normally until they are either disabled, deleted, or expired.
 
 To disable or delete an individual API key use the vertical ellipsis next to the API key row or view the API key detail page.
@@ -316,8 +316,8 @@ Follow these steps to rotate API keys:
 
 :::tip
 
-Service Accounts can rotate their own API keys irrespective of their configured permissions. 
-To use this feature, have your Service Account create a new API key using the [Cloud Ops APIs](/ops) or [`tcld`](/cloud/tcld) before the current one expires. 
+Service Accounts can rotate their own API keys irrespective of their configured permissions.
+To use this feature, have your Service Account create a new API key using the [Cloud Ops APIs](/ops) or [`tcld`](/cloud/tcld) before the current one expires.
 Service Accounts cannot delete their own API keys without the requisite permissions, which helps keep Workflow access secure.
 
 :::
@@ -703,3 +703,9 @@ Temporal recommends rotating API keys periodically.
 
 A: The full key is displayed only once upon creation for security reasons.
 If you lose it, generate a new one.
+
+**Q: What is the `Generate API Key` button on the Namespace page?**
+
+A: The `Generate API Key` button on a Namespace page generates an API key with `Admin` permissions for the given Namespace.
+For additional details, refer to [Namespace Scoped Service Accounts](/cloud/service-accounts#scoped).
+
