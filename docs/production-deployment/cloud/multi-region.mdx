@@ -381,17 +381,6 @@ MRN-specific charges for replication will stop once this decommissioning procedu
 - Temporal won't retain replicated data in the standby region once multi-region has been disabled.
 - After disabling multi-region, Temporal Cloud cannot re-enable the feature for a given Namespace for seven days.
 
-## Authentication {#authentication}
-
-Temporal supports authentication to multi-region Namespaces using [API keys](/cloud/api-keys) or [mTLS](/cloud/certificates).
-We currently only support one authentication method at a time, which is determined at namespace creation time.
-If you require migrating from one authentication method to another, please contact [Temporal Support](https://support.temporal.io).
-
-We recommend multi-region Namespaces to connect using the gRPC endpoint format `<namespace>.<account>.tmprl.cloud:7233` regardless of authentication method.
-This allows automated regional failover without needing to switch endpoints.
-
-See the following documentation for [accessing Namespaces](/cloud/namespaces#access-namespaces) for more information.
-
 ## Operations {#operations}
 
 **How do you trigger failovers and observe Workflow Executions?**
