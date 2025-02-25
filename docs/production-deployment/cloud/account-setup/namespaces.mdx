@@ -393,3 +393,15 @@ For further questions or concerns, contact [Support](https://docs.temporal.io/cl
 ### Delete a Namespace using tcld
 
 See the [tcld namespace delete](/cloud/tcld/namespace/#delete) command reference for details.
+
+### Delete Namespace Protection
+
+To prevent accidental deletion of a Namespace, Temporal Cloud provides a feature to protect against deletion.
+When enabled, this feature prevents the deletion of a Namespace.
+
+To enable or disable this feature using the Temporal Cloud UI, update the security setting on the Namespace edit page.
+
+To enable or disable this feature using [`tcld`](/cloud/tcld), use the following command.
+```
+tcld namespace lifecycle set -n <namespace> --enable-delete-protection <true/false>
+```
