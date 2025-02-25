@@ -124,6 +124,10 @@ Active cluster name.
 
 Identifies the Activity Execution.
 
+## activity-jitter
+
+If set, the Activity will start at a random time within the specified jitter duration.
+
 ## activity-type
 
 Command is applied to the all running activities with of this type.
@@ -308,7 +312,7 @@ Values must be in a valid JSON format.
 
 ## heartbeat-timeout
 
-Maximum permitted time between successful worker heartbeats.
+Maximum permitted time between successful Worker Heartbeats.
 
 ## headless
 
@@ -378,6 +382,10 @@ Jitter duration.
 
 Batch Job Id.
 
+## keep-paused
+
+If this flag is provided and Activity was paused, it will stay paused after reset.
+
 ## limit
 
 Number of items to print on a page.
@@ -391,6 +399,10 @@ Options: ["json", "pretty"].
 
 Set the log level.
 Options: ["debug" "info" "warn" "error" "fatal"].
+
+## match-all
+
+If set, all currently running activities will be unpaused.
 
 ## max-field-length
 
@@ -521,6 +533,14 @@ Valid values are "not_open" and "not_completed_cleanly".
 
 Total number of actions allowed.
 
+## reset-attempts
+
+Providing this flag will reset the number of attempts.
+
+## reset-heartbeat
+
+Providing this flag will reset the heartbeat details.
+
 ## reset-points
 
 Only show Workflow Events that are eligible for reset.
@@ -567,12 +587,12 @@ Schedule Id.
 
 ## schedule-to-close-timeout
 
-Indicates how long the caller is willing to wait for an activity completion.
+Indicates how long the caller is willing to wait for an Activity completion.
 Limits how long retries will be attempted.
 
 ## schedule-to-start-timeout
 
-Limits time an activity task can stay in a task queue before a worker picks it up.
+Limits time an Activity Task can stay in a task queue before a Worker picks it up.
 This timeout is always non retryable, as all a retry would achieve is to put it back into the same queue.
 Defaults to `schedule_to_close_timeout` or workflow execution timeout if not specified.
 
@@ -610,8 +630,8 @@ Backfill start time.
 
 ## start-to-close-timeout
 
-Maximum time an activity is allowed to execute after being picked up by a worker.
-This timeout is always retryable.
+Maximum time an Activity is allowed to execute after being picked up by a Worker.
+This Timeout is always retryable.
 
 ## target-namespace
 
@@ -634,8 +654,8 @@ Caution: `--target-url` is experimental.
 
 ## task-queue-type
 
-Task Queue type, which can be either workflow or activity.
-The default type is workflow.
+Task Queue type, which can be either Workflow or Activity.
+The default type is Workflow.
 
 ## task-queue
 
@@ -744,28 +764,3 @@ Workflow type name.
 ## yes
 
 Confirm all prompts.
-
-## task-queue
-
-If specified, activity will be assigned to this task-queue.
-
-## match-all
-
-If set, all currently running activities will be unpaused.
-
-## reset-attempts
-
-Providing this flag will reset the number of attempts.
-
-## reset-heartbeat
-
-Providing this flag will reset the heartbeat details.
-
-## activity-jitter
-
-If set, the activity will start at a random time within the specified jitter duration.
-
-## keep-paused
-
-If this flag is provided and activity was paused, it will stay paused after reset.
-
