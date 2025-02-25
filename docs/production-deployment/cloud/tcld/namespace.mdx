@@ -36,7 +36,7 @@ Alias: `n`
 ## add-region
 
 Use `tcld namespace add-region` to add a <ToolTipTerm term="replica" tooltip="A replica is a synchronized copy of a Namespace. It ensures redundancy, fault tolerance, and minimal downtime during an incident or outage. A replica can take over operations if the primary becomes unavailable. It's synchronized up to the point of replication lag, where no further data is available." /> to an existing Temporal Cloud [Namespace](/namespaces).
-Enrolling a replica upgrades the Namespace to [High Availability features](/cloud/high-availability).
+Adding a replica upgrades the Namespace to [High Availability features](/cloud/high-availability).
 Once provisioned, High Availability features enable Temporal Cloud to start replicating Workflow Execution data from the primary to the replica and trigger failover during adverse conditions.
 
 Alias: _none_
@@ -98,7 +98,7 @@ tcld --api-key <your_api_key> \
 
 Specify the region code of the region where you want to create the replica as an argument to the `--region` flag:
 
-- Using the current region replicates to an <ToolTipTerm term="isolation domains" tooltip="An isolation domain is a defined area within Temporal Cloud's infrastructure. It helps contain failures and prevents them from spreading to other parts of the system. This provides redundancy and fault tolerance." /> within your existing region.
+- Using the current region replicates to an <ToolTipTerm term="isolation domain" tooltip="An isolation domain is a defined area within Temporal Cloud's infrastructure. It helps contain failures and prevents them from spreading to other parts of the system. This provides redundancy and fault tolerance." /> within your existing region.
 - Using a different region (within the same continent) replicates across regions.
 - You cannot create a Multi-region deployment on separate continents.
 
@@ -156,7 +156,7 @@ The region to create the Namespace in.
 tcld namespace create \
     --namespace <namespace_id>.<account_id> \
     --region <primary_region> [\]
-    [--region <replica_region>] // if enrolling with replica
+    [--region <replica_region>] // if adding replica
 ```
 
 When using API key authentication, add your API credentials before pressing Enter:
@@ -167,7 +167,7 @@ tcld --api-key <your_api_key> \
     namespace create \
     --namespace <namespace_id>.<account_id> \
     --region <primary_region> [\]
-    [--region <replica_region>] // if enrolling with replica
+    [--region <replica_region>] // if adding replica
 
 ```
 
@@ -176,7 +176,7 @@ tcld --api-key <your_api_key> \
 
 When using High Availability features, specify the region code of the region where you want to create the replica as an argument to the `--region` flag:
 
-- Using the current region replicates to an <ToolTipTerm term="isolation domains" tooltip="An isolation domain is a defined area within Temporal Cloud's infrastructure. It helps contain failures and prevents them from spreading to other parts of the system. This provides redundancy and fault tolerance." /> within your existing region.
+- Using the current region replicates to an <ToolTipTerm term="isolation domain" tooltip="An isolation domain is a defined area within Temporal Cloud's infrastructure. It helps contain failures and prevents them from spreading to other parts of the system. This provides redundancy and fault tolerance." /> within your existing region.
 - Using a different region (within the same continent) replicates across regions.
 - You cannot create a Multi-region deployment on separate continents.
 

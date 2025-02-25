@@ -79,12 +79,6 @@ Temporal Cloud smoothly transitions control from the active primary to the repli
 After a failover, the replica takes on the active role as the primary until the incident is resolved.
 After, the replica fails back and the original Namespace resumes the active role and becomes the primary.
 
-:::tip
-
-Failback [may be disabled](/cloud/high-availability/failovers#disabling-temporal-initiated) by modifying your Namespace settings.
-
-:::
-
 In traditional active/active replication, multiple nodes serve requests and accept writes simultaneously, ensuring strong synchronous data consistency.
 In contrast, with a Temporal Cloud Namespace that has a replica, only the primary accepts requests and writes at any given time.
 Workflow history events are written to the primary first and then asynchronously replicated to the replica, ensuring that the replica remains in sync.

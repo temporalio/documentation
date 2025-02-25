@@ -24,7 +24,7 @@ import DiscoverableDisclosure from '@site/src/components/disclosures/Discoverabl
 import ToolTipTerm from '@site/src/components/tooltip/ToolTipTerm';
 
 Keeping services available is crucial in distributed applications, especially during failures or incidents.
-Temporal’s replication and automated failover features ensure high availability by automatically switching the Temporal Service between a primary and its replica when needed.
+Temporal’s replication and automated failover features ensure high availability.
 By enabling High Availability replication, you allow Temporal to copy Namespace metadata and Workflow Executions to a <ToolTipTerm term="replica" tooltip="A replica is a synchronized copy of a Namespace. It ensures redundancy, fault tolerance, and minimal downtime during an incident or outage. A replica can take over operations if the primary becomes unavailable. It's synchronized up to the point of replication lag, where no further data is available." />.
 This redundancy, combined with failover capability, enhances availability during outages.
 
@@ -102,7 +102,7 @@ Because each region has multiple isolation domains, you can place your replica i
 Even as you adopt Temporal's High Availability features, don't forget to consider the reliability of your own infrastructure and dependencies.
 Issues like network outages, hardware failures, or misconfigurations in your own systems can affect your application performance.
 
-For the highest level of reliability, distribute your dependencies across regions, and choose our Multi-region Namespace feature.
+For the highest level of reliability, distribute your dependencies across regions, and choose our Multi-region replication feature.
 Using physically separated regions provides fuller tolerance for your application.
 
 :::
@@ -235,7 +235,7 @@ After the network partition is resolved and communication between the isolation 
 :::tip
 
 In traditional active/active replication, multiple nodes serve requests and accept writes simultaneously, ensuring strong synchronous data consistency.
-In contrast, with a Temporal Cloud High Availability Namespace, only the primary accepts requests and writes at any given time.
+In contrast, with a Temporal Cloud Namespace with High Availability Features, only the primary accepts requests and writes at any given time.
 Workflow History Events are written to the primary first and then asynchronously replicated to the replica, ensuring that the replica remains in sync.
 
 :::

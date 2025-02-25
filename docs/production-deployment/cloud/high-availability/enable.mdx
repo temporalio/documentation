@@ -90,11 +90,11 @@ The following table explains how:
 | **Temporal&nbsp;Cloud<br />Web&nbsp;UI** | - Visit Temporal Cloud Namespaces in your Web browser. <br /> - Navigate to the Namespace details page.<br /> - Select the “Add a replica” button. <br /> - Choose either **Same-region Replication** or **Multi-region Replication** (across regions). _If you select Multi-region Replication, specify which region._ <br /> The web interface will present an estimated time for replication to complete. This time is based on your selection and the size and scale of the Workflows in your Namespace. Temporal Cloud sends an email alert once your Namespace is ready for use.                                                                                                                                                                                                                                                                                                                                                                                |
 | **Temporal<br />tcld&nbsp;CLI**          | At the command line, enter: <br /> <tt>tcld namespace add-region \ <br /> <Spacer width={4} />--namespace \<namespace_id>.\<account_id> \ <br /><Spacer width={4} />--region \<replica_region></tt> <br /> <br /> Specify the [region code](/cloud/service-availability) of the region where you want to create the replica as an argument to the `--region` flag:<br /><Spacer width={4} />- Using the current region replicates to an isolation domain within your existing region.<br /><Spacer width={4} />- Using a different region (within the same continent) replicates across regions.<br /><Spacer width={4} />- You cannot create a Multi-region deployment on separate continents.<br /><br /> If using API key authentication with the `--api-key` flag, you must add it directly after the tcld command and before `namespace add-region` <br /><br /> Temporal Cloud sends an email alert once your Namespace is ready for use. |
 
-## Change a replica location (⚠️ _Not Recommended_) {#changing}
+## Change a replica location {#changing}
 
 :::caution
 
-We strongly discourage changing the location of your replica for deployed applications, except under exceptional circumstances.
+We discourage changing the location of your replica for deployed applications, except under exceptional circumstances.
 Changing the location of your Namespace replica will result in a mandatory 7-day waiting period before you can re-enable High Availability Namespace features.
 
 :::
