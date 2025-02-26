@@ -306,10 +306,30 @@ Sample workflowId convention:
 
 {/* How to access a Namespace in Temporal Cloud */}
 
-Each Namespace in Temporal Cloud has two unique endpoints, both of which include the [Namespace Id](#temporal-cloud-namespace-id).
+Temporal Cloud supports authentication to Namespaces using [API keys](/cloud/api-keys) or [mTLS](/cloud/certificates).
+A Namespace only supports one authentication method at a time.
+The method is set at Namespace creation.
 
-- For programmatic access, a gRPC endpoint in the form `<NamespaceId>.tmprl.cloud`; for example, `accounting-production.f45a2.tmprl.cloud:7233`.
-- For accessing Temporal Web UI, an HTTPS endpoint in the form `https://cloud.temporal.io/namespaces/<namespaceId>`; for example, `https://cloud.temporal.io/namespaces/accounting-production.f45a2`.
+See the documentation for [API keys](/cloud/api-keys) and [mTLS certificates](/cloud/certificates) for more information on how to create and manage your credentials.
+
+:::tip
+
+If you need to migrate from one authentication method to another, please contact [Support](https://support.temporal.io).
+
+:::
+
+Authentication methods require specific endpoints in order to programmatically access your Namespace.
+- For the API key authentication method, use the gRPC regional endpoint `<region>.<cloud_provider>.api.temporal.io:7233`.
+- For the mTLS authentication method, use the gRPC Namespace endpoint `<namespace>.<account>.tmprl.cloud:7233`.
+- For [Namespaces with High Availability features](/cloud/high-availability) use the gRPC Namespace endpoint `<namespace>.<account>.tmprl.cloud:7233`, regardless of your authentication method.
+  This allows automated failover without needing to switch your endpoint.
+
+For information on how to connect to Clients using a specific authentication method see the following documentation.
+- To use API keys to connect with the [Temporal CLI](/cli), [Client SDK](/develop), [tcld](/cloud/tcld), [Cloud Ops API](/ops), and [Terraform](/production-deployment/cloud/terraform-provider), see [Use API keys to authenticate](/cloud/api-keys#using-apikeys).
+- To use mTLS to connect with the [Temporal CLI](/cli) and [Client SDK](/develop), see [Configure Clients to use Client certificates](/cloud/certificates#configure-clients-to-use-client-certificates).
+
+For accessing the Temporal Web UI, use the HTTPS endpoint in the form: `https://cloud.temporal.io/namespaces/<namespace>.<account>`.
+For example: `https://cloud.temporal.io/namespaces/accounting-production.f45a2`.
 
 To ensure the security of your data, all traffic to and from your Namespace is encrypted.
 However, for enhanced protection, you have additional options:
