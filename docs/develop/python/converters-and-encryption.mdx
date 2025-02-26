@@ -43,9 +43,8 @@ If you only need to change the encoding performed on your payloads -- by adding 
 The `PayloadCodec` needs to implement `encode()` and `decode()` functions at a minimum.
 These should loop through all of a Workflow's payloads, perform all of your necessary marshaling, compression, or encryption steps in order, and set an `"encoding"` metadata field.
 
-In this example the `encode` method marshals and then compresses a payload using Python's [cramjam](https://github.com/milesgranger/cramjam) library to provide `snappy` compression.
+In this example, the `encode` method marshals and then compresses a payload using Python's [cramjam](https://github.com/milesgranger/cramjam) library to provide `snappy` compression.
 The `decode()` function implements the `encode()` logic in reverse:
-
 
 ```python
 import cramjam
