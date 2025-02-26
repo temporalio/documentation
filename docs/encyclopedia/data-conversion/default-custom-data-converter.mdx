@@ -56,7 +56,7 @@ A Payload Codec encodes and decodes [Payloads](/dataconversion#payload), with by
 To use custom encryption or compression logic, create a custom Payload Codec with your encryption/compression logic in the `encode` function and your decryption/decompression logic in the `decode` function.
 To implement a custom Payload Codec, you can override the default Data Converter, or create a customized Data Converter that defines its own Payload Converter.
 
-Custom Data Converters are not applied to all data; for example, [Search Attributes](/visibility#search-attribute) are persisted unencoded so they can be indexed for searching.
+Custom Data Converters are not applied to all data; for example, [Search Attributes](/search-attribute) are persisted unencoded so they can be indexed for searching.
 
 A customized Data Converter can have the following three components:
 
