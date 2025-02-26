@@ -239,7 +239,7 @@ Before considering an appropriate Namespace configuration, you should be aware o
 - A Namespace is a security isolation boundary.
   Access to Temporal by [Worker Processes](/workers#worker-process) is permitted at the Namespace level.
   Isolating applications or environments (development, test, staging, production) should take this into consideration.
-- A Namespace is provisioned with an endpoint for executing your workflows.
+- A Namespace is provisioned with an endpoint for executing your Workflows.
   Accessing a Namespace from a Temporal Client requires [API keys](/cloud/api-keys) or [mTLS](/cloud/certificates) authentication.
 - [Workflow Id](/workflows#workflow-id) uniqueness is per Namespace.
 - [Task Queue](/task-queue) names are unique per Namespace.
