@@ -129,7 +129,7 @@ This tutorial starts with a sync Operation handler example using the `nexus.NewS
 ### Develop a Synchronous Nexus Operation handler
 
 The `nexus.NewSyncOperation` builder function is for exposing simple RPC handlers.
-Its handler function is provided with an SDK client that can be used for signaling, querying, and listing Workflows.
+Typically to use SDK client, which is obtained via `temporalnexus.GetClient(ctx)`, for signaling, querying, and listing Workflows.
 However, implementations are free to make arbitrary calls to other services or databases, or perform computations such as this one:
 
 <!--SNIPSTART samples-go-nexus-handler {"selectedLines": ["2-23"]}-->
