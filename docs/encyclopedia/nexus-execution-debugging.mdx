@@ -88,7 +88,6 @@ For example, from the `temporal` CLI:
 ```
 temporal workflow describe
 
-
 Callbacks: 1
 
   URL               https://nexus.phil-caller-Namespace.a2dd6.cluster.tmprl.cloud:7243/Namespaces/phil-caller-Namespace.a2dd6/nexus/callback
@@ -96,41 +95,4 @@ Callbacks: 1
   State             Succeeded
   Attempt           1
   RegistrationTime  32 minutes ago
-```
-
-## Nexus Operation ID
-
-Nexus Operations created with the Temporal SDK New-Workflow-Run-Operation helper, return the Workflow ID as the Nexus Operation ID.
-The caller's Workflow history shows the Nexus Operation ID in the [NexusOperationStarted](/references/events#nexusoperationstarted) event.
-
-![Workflow history](/img/cloud/nexus/nexus-operations-ui.png)
-
-This can be used to search the handler's Namespace for that Workflow ID:
-
-![Search handler's Namespace](/img/cloud/nexus/nexus-operations-ui-search-handler.png)
-
-This may also be done using: `temporal workflow show --detailed`
-
-```
---------------- [5] NexusOperationScheduled ---------------
-endpoint: myendpoint
-endpointId: 80a4fb3e7ab145eabc6a3b15e327548f
-eventTime: 2024-08-28T03:44:34.985230930Z
-input.Language: es
-input.Name: Nexus
-operation: say-hello
-requestId: 1307660f-7f2e-4626-8629-851a0e468482
-scheduleToCloseTimeout: 0s
-service: my-hello-service
-taskId: 158300487
-version: 1265
-workflowTaskCompletedEventId: 4
-
---------------- [6] NexusOperationStarted ---------------
-eventTime: 2024-08-28T03:44:35.198292012Z
-operationId: 1307660f-7f2e-4626-8629-851a0e468482
-requestId: 1307660f-7f2e-4626-8629-851a0e468482
-scheduledEventId: 5
-taskId: 158300491
-version: 1265
 ```
