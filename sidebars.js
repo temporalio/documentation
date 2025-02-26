@@ -3,7 +3,7 @@ module.exports = {
     "index",
     {
       type: "category",
-      label: "Evaluate",
+      label: "Introduction to Temporal",
       collapsed: false,
       link: {
         type: "doc",
