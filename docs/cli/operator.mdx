@@ -37,7 +37,7 @@ tags:
   - Temporal CLI
 ---
 
-Operator commands enable actions on [Namespaces](/namespaces), [Search Attributes](/visibility#search-attribute), and [Temporal Clusters](/clusters).
+Operator commands enable actions on [Namespaces](/namespaces), [Search Attributes](/search-attribute), and [Temporal Clusters](/clusters).
 These actions are performed through subcommands.
 
 To run an Operator command, run `temporal operator [command] [subcommand] [command options]`.
@@ -920,15 +920,15 @@ Use the following options to change the behavior of this command.
 
 ## search-attribute
 
-Search Attribute commands enable operations for the creation, listing, and removal of [Search Attributes](/visibility#search-attribute).
+Search Attribute commands enable operations for the creation, listing, and removal of [Search Attributes](/search-attribute).
 
 Search Attribute commands follow this syntax:
 `temporal operator search-attribute COMMAND [ARGS]`.
 
 ### create
 
-The `temporal operator search-attribute create` command adds one or more custom [Search Attributes](/visibility#search-attribute).
-These Search Attributes can be used to [filter a list](/visibility#list-filter) of [Workflow Executions](/workflows#workflow-execution) that contain the given Search Attributes in their metadata.
+The `temporal operator search-attribute create` command adds one or more custom [Search Attributes](/search-attribute).
+These Search Attributes can be used to [filter a list](/list-filter) of [Workflow Executions](/workflows#workflow-execution) that contain the given Search Attributes in their metadata.
 
 Use the following options to change this command's behavior.
 
@@ -967,7 +967,7 @@ Use the following options to change this command's behavior.
 
 ### list
 
-The `temporal operator search-attribute list` command displays a list of all [Search Attributes](/visibility#search-attribute) that can be used in [Queries](/encyclopedia/workflow-message-passing#sending-queries).
+The `temporal operator search-attribute list` command displays a list of all [Search Attributes](/search-attribute) that can be used in [Queries](/sending-messages#sending-queries).
 
 `temporal workflow list --query`.
 
@@ -1005,7 +1005,7 @@ Use the following options to change this command's behavior.
 
 ### remove
 
-The `temporal operator search-attribute remove` command removes custom [Search Attribute](/visibility#search-attribute) metadata.
+The `temporal operator search-attribute remove` command removes custom [Search Attribute](/search-attribute) metadata.
 This command does not remove custom Search Attributes from Elasticsearch or change the index schema.
 
 Use the following options to change this command's behavior.

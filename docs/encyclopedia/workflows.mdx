@@ -289,7 +289,7 @@ It is the main unit of execution of a [Temporal Application](/temporal#temporal-
 - [How to start a Workflow Execution using the .NET SDK](/develop/dotnet/temporal-client#start-workflow)
 
 Each Temporal Workflow Execution has exclusive access to its local state.
-It executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions through [Signals](/encyclopedia/workflow-message-passing#sending-signals) and the environment through [Activities](/activities).
+It executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions through [Signals](/sending-messages#sending-signals) and the environment through [Activities](/activities).
 While a single Workflow Execution has limits on size and throughput, a Temporal Application can consist of millions to billions of Workflow Executions.
 
 **Durability**
@@ -347,7 +347,7 @@ Awaitables are provided when using APIs for the following:
 
 - Awaiting: Progress can block using explicit "Await" APIs.
 - Requesting cancellation of another Workflow Execution: Progress can block on confirmation that the other Workflow Execution is cancelled.
-- Sending a [Signal](/encyclopedia/workflow-message-passing#sending-signals): Progress can block on confirmation that the Signal sent.
+- Sending a [Signal](/sending-messages#sending-signals): Progress can block on confirmation that the Signal sent.
 - Spawning a [Child Workflow Execution](/encyclopedia/child-workflows): Progress can block on confirmation that the Child Workflow Execution started, and on the result of the Child Workflow Execution.
 - Spawning an [Activity Execution](/activities#activity-execution): Progress can block on the result of the Activity Execution.
 - Starting a Timer: Progress can block until the Timer fires.
@@ -785,7 +785,7 @@ The Action of a Schedule is where the Workflow Execution properties are establis
 Workflow Executions started by a Schedule have the following additional properties:
 
 - The Action's timestamp is appended to the Workflow Id.
-- The `TemporalScheduledStartTime` [Search Attribute](/visibility#search-attribute) is added to the Workflow Execution.
+- The `TemporalScheduledStartTime` [Search Attribute](/search-attribute) is added to the Workflow Execution.
   The value is the Action's timestamp.
 - The `TemporalScheduledById` Search Attribute is added to the Workflow Execution.
   The value is the Schedule Id.

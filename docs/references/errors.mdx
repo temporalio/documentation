@@ -106,7 +106,7 @@ Inspect the reason given in the error for mitigation when possible.
 
 ## Bad Search Attributes {#bad-search-attributes}
 
-This error indicates that the [Workflow Task](/tasks#workflow-task) has unset or invalid [Search Attributes](/visibility#search-attribute).
+This error indicates that the [Workflow Task](/tasks#workflow-task) has unset or invalid [Search Attributes](/search-attribute).
 This can cause Workflow Tasks to continue to retry without success.
 
 Make sure that all attributes are defined before retrying the Task.
@@ -114,7 +114,7 @@ Adjust the size of the Payload to fit within the system's size limits.
 
 ## Bad Signal Input Size {#bad-signal-input-size}
 
-This error indicates that the Payload has exceeded the [Signal's](/encyclopedia/workflow-message-passing#sending-signals) available input size.
+This error indicates that the Payload has exceeded the [Signal's](/sending-messages#sending-signals) available input size.
 
 Adjust the size of the Payload, and redeploy the [Workflow Task](/tasks#workflow-task).
 
@@ -131,7 +131,7 @@ This error indicates that the [Workflow Task](/tasks#workflow-task) failed to va
 
 Adjust the input size of the attributes to fall within the system's size limits.
 
-Make sure that [Search Attribute](/visibility#search-attribute) validation is performed after unaliasing keys.
+Make sure that [Search Attribute](/search-attribute) validation is performed after unaliasing keys.
 
 ## Bad Start Timer Attributes {#bad-start-timer-attributes}
 
@@ -236,7 +236,7 @@ If you see this error, give the system time to process pending requests before r
 ## Pending Signals Limit Exceeded {#pending-signals-limit-exceeded}
 
 The Workflow has reached capacity for pending Signals.
-Therefore, the [Workflow Task](/tasks#workflow-task) was failed after attempting to add more [Signals](/encyclopedia/workflow-message-passing#sending-signals) to an external Workflow.
+Therefore, the [Workflow Task](/tasks#workflow-task) was failed after attempting to add more [Signals](/sending-messages#sending-signals) to an external Workflow.
 
 Wait for Signals to be processed by the Workflow before retrying the Task.
 
@@ -299,7 +299,7 @@ Try entering a different Timer Id, and retry the [Workflow Task](/tasks#workflow
 This error indicates new available [Events](/references/events) since the last [Workflow Task](/tasks#workflow-task) started.
 The Workflow Task was failed because the [Workflow](/workflows) attempted to close itself without handling the new Events.
 
-`UnhandledCommand` can happen when the Workflow is receiving a high number of [Signals](/encyclopedia/workflow-message-passing#sending-signals).
+`UnhandledCommand` can happen when the Workflow is receiving a high number of [Signals](/sending-messages#sending-signals).
 If the Workflow doesn't have enough time to handle these Signals, a RetryWorkflow Task is scheduled to handle these new Events.
 
 To prevent this error, drain the Signal Channel with the ReceiveAsync function.

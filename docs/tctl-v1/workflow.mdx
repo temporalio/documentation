@@ -13,12 +13,12 @@ keywords:
   - temporal server
 ---
 
-:::info Temporal CLI is now available
+:::info tctl is deprecated
 
-The public preview of [Temporal CLI](/cli) is now available.
-We encourage you to begin using it and to provide feedback.
+The tctl command line utility has been deprecated and is no longer actively supported.
+We recommend transitioning to [Temporal CLI](/cli) for continued use and access to new features.
 
-After the release of Temporal CLI v1.0, tctl will deprecate.
+Thank you for being a valued part of the Temporal community.
 
 :::
 
@@ -96,7 +96,7 @@ The following modifier controls the behavior of the command.
 
 _Required modifier_
 
-Specify an SQL-like query of [Search Attributes](/visibility#search-attribute).
+Specify an SQL-like query of [Search Attributes](/search-attribute).
 
 Alias: `-q`
 
@@ -246,7 +246,7 @@ tctl workflow list --print_memo
 
 ### --print_search_attr
 
-Print the [Search Attributes](/visibility#search-attribute).
+Print the [Search Attributes](/search-attribute).
 
 **Example**
 
@@ -387,7 +387,7 @@ tctl workflow list --status <value>
 
 ### --query
 
-**How to list and filter Workflow Executions with a [List Filter](/visibility#list-filter) using tctl.**
+**How to list and filter Workflow Executions with a [List Filter](/list-filter) using tctl.**
 
 The `--query` flag is supported only when [Advanced Visibility](/visibility#advanced-visibility) is configured with the Cluster.
 
@@ -497,7 +497,7 @@ tctl workflow listall --print_memo
 
 ### --print_search_attr
 
-Print the [Search Attributes](/visibility#search-attribute).
+Print the [Search Attributes](/search-attribute).
 
 **Example**
 
@@ -638,7 +638,7 @@ tctl workflow listall --status <value>
 
 ### --query
 
-Specify an SQL-like query of [Search Attributes](/visibility#search-attribute).
+Specify an SQL-like query of [Search Attributes](/search-attribute).
 
 Using the `--query` option causes tctl to ignore all other filter options, including `open`, `earliest_time`, `latest_time`, `workflow_id`, and `workflow_type`.
 
@@ -697,7 +697,7 @@ tctl workflow listarchived --print_memo
 
 ### --print_search_attr
 
-Print the [Search Attributes](/visibility#search-attribute).
+Print the [Search Attributes](/search-attribute).
 
 **Example**
 
@@ -727,7 +727,7 @@ tctl workflow listarchived --print_json
 
 ### --query
 
-Specify an SQL-like query of [Search Attributes](/visibility#search-attribute).
+Specify an SQL-like query of [Search Attributes](/search-attribute).
 
 Consult the documentation of the visibility archiver that is used by your [Namespace](/namespaces) for detailed instructions.
 
@@ -852,7 +852,7 @@ tctl workflow observeid --max_field_length <length>
 
 Alias: `q`
 
-The `tctl workflow query` command sends a [Query](/encyclopedia/workflow-message-passing#sending-queries) to a [Workflow Execution](/workflows#workflow-execution).
+The `tctl workflow query` command sends a [Query](/sending-messages#sending-queries) to a [Workflow Execution](/workflows#workflow-execution).
 
 Queries can be used to retrieve all or part of the Workflow state with given parameters.
 
@@ -1073,7 +1073,7 @@ tctl workflow reset-batch --input_file <filename>
 
 ### --query
 
-Specify an SQL-like query of [Search Attributes](/visibility#search-attribute) describing the [Workflow Executions](/workflows#workflow-execution) to reset.
+Specify an SQL-like query of [Search Attributes](/search-attribute) describing the [Workflow Executions](/workflows#workflow-execution) to reset.
 
 Alias: `-q`
 
@@ -1366,7 +1366,7 @@ tctl workflow run --memo_file <filename>
 
 ### --search_attr_key
 
-Specify a [Search Attribute](/visibility#search-attribute) key.
+Specify a [Search Attribute](/search-attribute) key.
 For multiple keys, concatenate them and use pipes (`|`) as separators.
 
 To list valid keys, use the `tctl cluster get-search-attributes` command.
@@ -1379,7 +1379,7 @@ tctl workflow run --search_attr_key <key>
 
 ### --search_attr_value
 
-Specify a [Search Attribute](/visibility#search-attribute) value.
+Specify a [Search Attribute](/search-attribute) value.
 For multiple values, concatenate them and use pipes (`|`) as separators.
 If a value is an array, use JSON format, such as `["a","b"]`, `[1,2]`, `["true","false"]`, or `["2022-06-07T17:16:34-08:00","2022-06-07T18:16:34-08:00"]`.
 
@@ -1458,7 +1458,7 @@ tctl workflow scan --print_memo
 
 ### --print_search_attr
 
-Print the [Search Attributes](/visibility#search-attribute).
+Print the [Search Attributes](/search-attribute).
 
 **Example**
 
@@ -1499,7 +1499,7 @@ tctl workflow scan --pagesize <value>
 
 ### --query
 
-Specify an SQL-like query of [Search Attributes](/visibility#search-attribute).
+Specify an SQL-like query of [Search Attributes](/search-attribute).
 
 Alias: `-q`
 
@@ -1750,7 +1750,7 @@ tctl workflow showid <workflow_id> --reset_points_only
 
 ## signal
 
-The `tctl workflow signal` command [Signals](/encyclopedia/workflow-message-passing#sending-signals) a [Workflow Execution](/workflows#workflow-execution).
+The `tctl workflow signal` command [Signals](/sending-messages#sending-signals) a [Workflow Execution](/workflows#workflow-execution).
 
 Workflows listen for Signals by their Signal name, and can be made to listen to one or more Signal names.
 Workflows can also listen for SQL queries.
@@ -1863,7 +1863,7 @@ tctl workflow signal --run_id <id>
 
 ### --name
 
-Specify the name of a [Signal](/encyclopedia/workflow-message-passing#sending-signals).
+Specify the name of a [Signal](/sending-messages#sending-signals).
 
 **Example**
 
@@ -1873,7 +1873,7 @@ tctl workflow signal --query <query> --name <name>
 
 ### --input
 
-Pass input for the [Signal](/encyclopedia/workflow-message-passing#sending-signals).
+Pass input for the [Signal](/sending-messages#sending-signals).
 Input must be in JSON format.
 
 Alias: `-i`
@@ -1886,7 +1886,7 @@ tctl workflow signal --query <query> --input <json>
 
 ### --input_file
 
-Pass input for the [Signal](/encyclopedia/workflow-message-passing#sending-signals) from a JSON file.
+Pass input for the [Signal](/sending-messages#sending-signals) from a JSON file.
 
 **Example**
 
@@ -2153,7 +2153,7 @@ tctl workflow start --memo_file <filename>
 
 ### --search_attr_key
 
-Specify a [Search Attribute](/visibility#search-attribute) name.
+Specify a [Search Attribute](/search-attribute) name.
 For multiple names, concatenate them and use pipes (`|`) as separators.
 
 To list valid Search Attributes, use the `tctl cluster get-search-attributes` command.
@@ -2166,7 +2166,7 @@ tctl workflow start --search_attr_key <key>
 
 ### --search_attr_value
 
-Specify a [Search Attribute](/visibility#search-attribute) value.
+Specify a [Search Attribute](/search-attribute) value.
 For multiple values, concatenate them and use pipes (`|`) as separators.
 If a value is an array, use JSON format, such as `["a","b"]`, `[1,2]`, `["true","false"]`, or `["2022-06-07T17:16:34-08:00","2022-06-07T18:16:34-08:00"]`.
 
