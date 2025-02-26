@@ -14,13 +14,20 @@ tags:
 ---
 
 # Why Temporal?
+Modern applications are increasingly distributed. 
+If your architecture spans multiple services or databases, ensuring reliability, scaling efficiently, and maintaining visibility becomes a fundamental challenge.
 
-Temporal solves many problems that developers face while building distributed applications.
-But most of them revolve around these three themes:
+Failures are inevitable and managing them effectively is critical to maintaining system durability. 
+Traditional approaches rely on retries, queues, and ad-hoc state tracking - leading to brittle workarounds, complexity, and operational burden. 
+Temporal provides a structured way to build resilient applications by ensuring execution continues, even in the face of failures.
 
-- Reliable distributed applications
-- Productive development paradigms and code structure
-- Visible distributed application state
+Developers building distributed applications often encounter three core challenges which Temporal addresses these through three fundamental shifts:
+
+- Reliability, built in → Applications execute to completion, no matter how long they run or how many failures occur. 
+Temporal ensures fault-tolerance at scale by managing retries and state without additional complexity.
+- Code-first development → Instead of managing fragile state machines or configuration-heavy workflows, developers write application logic in code using their existing tech stacks.
+- Execution visibility → Every application's state, progress, and history are accessible in real time, making it easier to monitor, debug, and maintain applications. Debugging is no longer guesswork - developers see exactly what happened and why.
+
 
 :::tip See Temporal in action
 Watch the following video to see how Temporal ensures an order-fulfillment system can recover from various failures, from process crashes to unreachable APIs.
