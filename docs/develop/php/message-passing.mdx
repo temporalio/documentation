@@ -497,6 +497,68 @@ $resultUuid = $stub->startUpdate(
  )->getResult();
 ```
 
+#### Update-With-Start {#update-with-start}
+
+[Update-with-Start](/sending-messages#update-with-start) lets you
+[send an Update](#send-update-from-client) that checks whether an already-running Workflow with that ID exists:
+
+- If the Workflow exists, the Update is processed.
+- If the Workflow does not exist, a new Workflow Execution is started with the given ID, and the Update is processed before the main Workflow method starts to execute.
+
+Use the [`updateWithStart`](https://php.temporal.io/classes/Temporal-Client-WorkflowClientInterface.html#method_updateWithStart) WorkflowClient API.
+It returns once the requested Update wait stage has been reached; or when the request times out.
+Use the  [`UpdateHandle`](https://php.temporal.io/classes/Temporal-Client-Update-UpdateHandle.html) to retrieve a result from the Update.
+
+You will need to provide:
+
+- WorkflowStub created from [`WorkflowOptions`](https://php.temporal.io/classes/Temporal-Client-WorkflowOptions.html).
+The `WorkflowOptions` require [Workflow Id Conflict Policy](/workflows#workflow-id-conflict-policy) to be specified.
+Choose ["Use Existing"](https://php.temporal.io/classes/Temporal-Common-WorkflowIdConflictPolicy.html#enumcase_UseExisting) and use an idempotent Update handler to ensure your code can be executed again in case of a Client failure.
+Not all `WorkflowOptions` are allowed.
+For example, specifying a Cron Schedule will result in an error.
+
+- Update name or [`UpdateOptions`](https://php.temporal.io/classes/Temporal-Client-Update-UpdateOptions.html).
+Same as for [Update Workflow](#send-update-from-client).
+For Update-with-Start, the Workflow Id is optional.
+When specified, the Id must match the one used in `WorkflowOptions`.
+Since a running Workflow Execution may not already exist, you can't set a Run Id.
+
+For example:
+
+```php
+$stub = $workflowClient->newUntypedWorkflowStub(
+    ShoppingCartWorkflow::class,
+    WorkflowOptions::new()
+        ->withTaskQueue('service-queue')
+        ->withWorkflowId($cartId)
+        ->withWorkflowIdConflictPolicy(WorkflowIdConflictPolicy::UseExisting),
+);
+$handle = $workflowClient->updateWithStart(
+    workflow: $stub,
+    update: 'addItem',
+    updateArgs: [$itemId, $quantity],
+);
+
+$price = $handle->getResult();
+```
+
+To wait for the Update result, run the Update with the wait stage set to [`LifecycleStage::StageCompleted`](https://php.temporal.io/classes/Temporal-Client-Update-LifecycleStage.html#enumcase_StageCompleted).
+It returns once the update result is available; or when the API call times out.
+
+For example:
+
+```php
+$handle = $workflowClient->updateWithStart(
+    workflow: $stub,
+    update: UpdateOptions::new('addItem', LifecycleStage::StageCompleted),
+    updateArgs: [$itemId, $quantity],
+);
+
+assert($handle->hasResult() === true);
+$price = $handle->getResult();
+```
+
+
 ## Message handler patterns {#message-handler-patterns}
 
 This section covers common write operations, such as Signal and Update handlers.
