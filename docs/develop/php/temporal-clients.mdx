@@ -273,7 +273,7 @@ $workflowClient = WorkflowClient::create($serviceClient)
 $stub = $workflowClient->newWorkflowStub(AccountTransferWorkflowInterface::class);
 
 // If the Workflow does not complete within 5.75 seconds, a TimeoutException will be thrown
-$result = $accountTransfer->transfer('fromID', 'toID', 'refID', 1000);
+$result = $stub->transfer('fromID', 'toID', 'refID', 1000);
 ```
 
 :::note

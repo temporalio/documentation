@@ -43,7 +43,7 @@ Follow these guidelines when writing your message handlers:
 
 ### Query handlers {#queries}
 
-A [Query](/encyclopedia/workflow-message-passing#sending-queries) is a synchronous operation that retrieves state from a Workflow Execution:
+A [Query](/sending-messages#sending-queries) is a synchronous operation that retrieves state from a Workflow Execution:
 
 ```java
 public class MessagePassingIntro {
@@ -100,7 +100,7 @@ public class MessagePassingIntro {
 
 ### Signal handlers {#signals}
 
-A [Signal](/encyclopedia/workflow-message-passing#sending-signals) is an asynchronous message sent to a running Workflow Execution to change its state and control its flow:
+A [Signal](/sending-messages#sending-signals) is an asynchronous message sent to a running Workflow Execution to change its state and control its flow:
 
 ```java
 public class MessagePassingIntro {
@@ -148,7 +148,7 @@ public class MessagePassingIntro {
 
 ### Update handlers and validators {#updates}
 
-An [Update](/encyclopedia/workflow-message-passing#sending-updates) is a trackable synchronous request sent to a running Workflow Execution.
+An [Update](/sending-messages#sending-updates) is a trackable synchronous request sent to a running Workflow Execution.
 It can change the Workflow state, control its flow, and return a result.
 The sender must wait until the Worker accepts or rejects the Update.
 The sender may wait further to receive a returned value or an exception if something goes wrong:
@@ -207,7 +207,7 @@ public class MessagePassingIntro {
   - When a Validator throws an error, the Update is rejected, the Update is not run, and `WorkflowExecutionUpdateAccepted` _won't_ be added to the Event History.
     The caller receives an "Update failed" error.
 
-- Use [`getCurrentUpdateInfo`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/internal/sync/WorkflowInternal.html#getCurrentUpdateInfo()) to obtain information about the current Update. This includes the Update ID, which can be useful for deduplication when using Continue-As-New: see [Ensuring your messages are processed exactly once](https://docs.temporal.io/encyclopedia/workflow-message-passing#exactly-once-message-processing).
+- Use [`getCurrentUpdateInfo`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/internal/sync/WorkflowInternal.html#getCurrentUpdateInfo()) to obtain information about the current Update. This includes the Update ID, which can be useful for deduplication when using Continue-As-New: see [Ensuring your messages are processed exactly once](https://docs.temporal.io/handling-messages#exactly-once-message-processing).
 
 - Signal (and Update) handlers can be blocking, letting them use Activities, Child Workflows, durable [`Workflow.sleep`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sleep(java.time.Duration)) Timers, [`Workflow.await`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#await(java.time.Duration,java.util.function.Supplier)) conditions, and more.
   See [Blocking handlers](#blocking-handlers) and [Workflow message passing](/encyclopedia/workflow-message-passing) for safe usage guidelines.
@@ -381,7 +381,7 @@ To obtain an Update handle, you can:
 You can use the `WorkflowUpdateHandle` to obtain information about the update:
 
 - `getExecution()`: Returns the Workflow Execution that this Update was sent to.
-- `getId()`: Returns the Update's unique ID, which can be useful for deduplication when using Continue-As-New: see [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing).
+- `getId()`: Returns the Update's unique ID, which can be useful for deduplication when using Continue-As-New: see [Ensuring your messages are processed exactly once](/handling-messages#exactly-once-message-processing).
 - `getResultAsync()`: Returns a `CompletableFuture` which can be used to wait for the Update to complete.
 
 #### Update-With-Start {#update-with-start}
@@ -394,11 +394,11 @@ Minimum Temporal Server version [Temporal Server version 1.26](https://github.co
 
 :::
 
-[Update-with-Start](/encyclopedia/workflow-message-passing#update-with-start) lets you
+[Update-with-Start](/sending-messages#update-with-start) lets you
 [send an Update](/develop/java/message-passing#send-update-from-client) that checks whether an already-running Workflow with that ID exists:
 
 - If the Workflow exists, the Update is processed.
-- If the Workflow does not exist, a new Workflow Execution is started with the given ID, and the Update is processed immediately after.
+- If the Workflow does not exist, a new Workflow Execution is started with the given ID, and the Update is processed before the main Workflow method starts to execute.
 
 Use the [`startUpdateWithStart`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClient.html#startUpdateWithStart(io.temporal.workflow.Functions.Func,io.temporal.client.UpdateOptions,io.temporal.client.WithStartWorkflowOperation)) WorkflowClient API.
 It returns once the requested Update wait stage has been reached; or when the request times out.
@@ -454,7 +454,6 @@ Language previousLanguage =
 
 For more examples, see the [Java sample for early-return pattern](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/earlyreturn).
 
-
 :::info NON-TYPE SAFE API CALLS
 
 In real-world development, sometimes you may be unable to import Workflow Definition method signatures.
@@ -480,7 +479,7 @@ It doesn't apply to pure read operations, like Queries or Update Validators.
 
 :::tip
 
-For additional information, see [Inject work into the main Workflow](/encyclopedia/workflow-message-passing#injecting-work-into-main-workflow), and [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing).
+For additional information, see [Inject work into the main Workflow](/handling-messages#injecting-work-into-main-workflow), and [Ensuring your messages are processed exactly once](/handling-messages#exactly-once-message-processing).
 
 :::
 
@@ -584,15 +583,15 @@ public interface MyWorkflow {
 }
 ```
 
-See [Finishing handlers before the Workflow completes](/encyclopedia/workflow-message-passing#finishing-message-handlers) for more information.
+See [Finishing handlers before the Workflow completes](/handling-messages#finishing-message-handlers) for more information.
 
 ### Use `@WorkflowInit` to operate on Workflow input before any handler executes
 
 Normally, your Workflows constructor won't have any parameters.
 However, if you use the `@WorkflowInit` annotation on your constructor, you can give it the same [Workflow parameters](/develop/java/core-application#workflow-parameters) as your `@WorkflowMethod`.
-The SDK will then ensure that your constructor receives the Workflow input arguments that the [Client sent](/develop/python/temporal-clients#start-workflow-execution).
+The SDK will then ensure that your constructor receives the Workflow input arguments that the [Client sent](/develop/java/temporal-clients#start-workflow-execution).
 The Workflow input arguments are also passed to your `@WorkflowMethod` method -- that always happens, whether or not you use the `@WorkflowInit` annotation.
-This is useful if you have message handlers that need access to Workflow input: see [Initializing the Workflow first](/encyclopedia/workflow-message-passing#workflow-initializers).
+This is useful if you have message handlers that need access to Workflow input: see [Initializing the Workflow first](/handling-messages#workflow-initializers).
 
 Here's an example.
 Notice that the constructor and `getGreeting` must have the same parameters:
@@ -610,7 +609,7 @@ public class GreetingExample {
 
     public static class GreetingWorkflowImpl implements GreetingWorkflow {
         private final String nameWithTitle;
-        private final String titleHasBeenChecked;
+        private boolean titleHasBeenChecked;
         ...
         // Note the annotation is on a public constructor
         @WorkflowInit
@@ -640,7 +639,7 @@ public class GreetingExample {
 ### Use locks to prevent concurrent handler execution {#control-handler-concurrency}
 
 Concurrent processes can interact in unpredictable ways.
-Incorrectly written [concurrent message-passing](/encyclopedia/workflow-message-passing#message-handler-concurrency) code may not work correctly when multiple handler instances run simultaneously.
+Incorrectly written [concurrent message-passing](/handling-messages#message-handler-concurrency) code may not work correctly when multiple handler instances run simultaneously.
 Here's an example of a pathological case:
 
 ```java
@@ -693,7 +692,7 @@ When sending a Signal, Update, or Query to a Workflow, your Client might encount
 - **The Workflow does not exist**:
   You'll receive a [`WorkflowNotFoundException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowNotFoundException.html).
 
-See [Exceptions in message handlers](/encyclopedia/workflow-message-passing#exceptions) for a non–Java-specific discussion of this topic.
+See [Exceptions in message handlers](/handling-messages#exceptions) for a non–Java-specific discussion of this topic.
 
 ### Problems when sending a Signal {#signal-problems}
 
@@ -740,7 +739,7 @@ When working with Updates, you may encounter these errors:
 
   - The Workflow was canceled or failed.
 
-  - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/encyclopedia/workflow-message-passing#finishing-message-handlers).
+  - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/handling-messages#finishing-message-handlers).
 
 ### Problems when sending a Query {#query-problems}
 

@@ -25,7 +25,7 @@ The List Filter identifies the Workflow Executions in the Batch Job; the Batch t
 There are three types of Batch Jobs:
 
 - Cancel: cancels the Workflow Executions specified by the List Filter.
-- Signal: sends a [Signal](/encyclopedia/workflow-message-passing#sending-signals) to the Workflow Executions specified by the List Filter.
+- Signal: sends a [Signal](/sending-messages#sending-signals) to the Workflow Executions specified by the List Filter.
 - Terminate: terminates the Workflow Executions specified by the List Filter.
 
 Batch operations can affect multiple Workflows simultaneously.
@@ -34,7 +34,7 @@ Below are examples of how to use the Temporal CLI for each type of Batch operati
 
 These commands will directly impact the Workflows you target, so it's important to use them judiciously.
 
-You can use the `--query` flag, which acts as [List Filter](/visibility#list-filter), to filter the Workflow Executions to be affected by the Batch Job.
+You can use the `--query` flag, which acts as [List Filter](/list-filter), to filter the Workflow Executions to be affected by the Batch Job.
 
 To Cancel Workflows:
 
