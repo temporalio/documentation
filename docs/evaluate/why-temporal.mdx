@@ -20,18 +20,14 @@ But with that comes complexity:
 - How do you manage retries, timeouts, and failures without writing thousands of lines of error-handling code?
 - How do you track what actually happened in an application when debugging an issue?
 
-Developers often patch together solutions using queues, manual retries, external databases, and homegrown orchestration tools. 
-But these approaches can be difficult to scale, introduce hidden failures, and make debugging a nightmare. 
-It can lead to brittle workarounds, complexity, and operational burden.
+Developers often manually patch together solutions using queues, retries, external databases, and homegrown orchestration tools. 
+But these approaches are difficult to scale as applications grow, introduce hidden failures, and make debugging unpredictable challenging - leading to custom tracing solutions, brittle workarounds, and operational burden.
+
+Engineering teams commonly find themselves spending significant time implementing and maintaining reliability patterns rather than focusing on core business logic. 
+This trade-off becomes more pronounced as systems scale and reliability requirements increase. 
+As systems scale, this burden only grows, having developers to build custom tools just to keep things running.
 
 Temporal provides a structured way to build resilient applications by ensuring execution continues, even in the face of failures.
-Instead of writing complex infrastructure code to handle failures, retries, and state management, developers write normal application logic, and Temporal ensures it runs to completion—no matter what.
-
-Developers building distributed applications encounter many challenges, but most of them revolve around these three themes:
-
-- Reliable distributed applications
-- Productive development paradigms and code structure
-- Visible distributed application state
 
 :::tip See Temporal in action
 Watch the following video to see how Temporal ensures an order-fulfillment system can recover from various failures, from process crashes to unreachable APIs.
@@ -46,9 +42,6 @@ Watch the following video to see how Temporal ensures an order-fulfillment syste
 </div>
 :::
 
-- Failures will happen - services crash, APIs time out, and dependencies fail.
-- Developers manually write retry logic, state tracking, and recovery mechanisms.
-- Debugging failures involves logs, dashboards, and guesswork.
 
 ## Reliable execution
 
