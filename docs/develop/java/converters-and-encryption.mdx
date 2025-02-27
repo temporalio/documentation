@@ -177,12 +177,12 @@ For reference, see the [Codec server](https://github.com/temporalio/sdk-java/tre
 
 **How to do custom Payload conversion using the Java SDK.**
 
-Temporal SDKs provide a [Payload Converter](/dataconversion#payload-converter) that can be customized to convert a custom data type to [Payload](/dataconversion#payload) and back.
+Temporal SDKs provide a [Payload Converter](/payload-converter) that can be customized to convert a custom data type to [Payload](/dataconversion#payload) and back.
 
 Implementing custom Payload conversion is optional.
-It is needed only if the [default Data Converter](/dataconversion#default-data-converter) does not support your custom values.
+It is needed only if the [default Data Converter](/default-custom-data-converters#default-data-converter) does not support your custom values.
 
-To support custom Payload conversion, create a [custom Payload Converter](/dataconversion#composite-data-converters) and configure the Data Converter to use it in your Client options.
+To support custom Payload conversion, create a [custom Payload Converter](/payload-converter#composite-data-converters) and configure the Data Converter to use it in your Client options.
 
 The order in which your encoding Payload Converters are applied depend on the order given to the Data Converter.
 You can set multiple encoding Payload Converters to run your conversions.
