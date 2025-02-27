@@ -118,17 +118,18 @@ type EchoOutput EchoInput
 Nexus Operation handlers are typically defined in the same Worker as the underlying Temporal primitives they abstract.
 Operation handlers can decide if a given Nexus Operation will be synchronous or asynchronous, execute arbitrary code, and invoke underlying Temporal primitives such as a Workflow, Query, Signal, or Update.
 
-The `temporalnexus` package has builders to create Nexus Operations:
+The `temporalnexus` package has builders to create Nexus Operations and other helpers for authoring Operation handlers:
 
-- `NewSyncOperation` \- Simple synchronous RPC handlers, such as for Signals
 - `NewWorkflowRunOperation` \- Run a Workflow as an asynchronous Nexus Operation
+- `GetClient` \- Get the Temporal Client that the Worker was initialized with for synchronous RPC handlers backed by
+  Temporal primitives such as for Signals, and Queries
 
-This tutorial starts with a `NewSyncOperation` example, and then uses `NewWorkflowRunOperation` to start a handler Workflow from a Nexus Operation.
+This tutorial starts with a sync Operation handler example using the `nexus.NewSyncOperation` method, and then shows how to create an async Operation handler that uses `NewWorkflowRunOperation` to start a handler Workflow from a Nexus Operation.
 
 ### Develop a Synchronous Nexus Operation handler
 
-The `temporalnexus.NewSyncOperation` builder function is for exposing simple RPC handlers.
-Its handler function is provided with an SDK client that can be used for signaling, querying, and listing Workflows.
+The `nexus.NewSyncOperation` builder function is for exposing simple RPC handlers.
+Typically to use SDK client, which is obtained via `temporalnexus.GetClient(ctx)`, for signaling, querying, and listing Workflows.
 However, implementations are free to make arbitrary calls to other services or databases, or perform computations such as this one:
 
 <!--SNIPSTART samples-go-nexus-handler {"selectedLines": ["2-23"]}-->
@@ -152,10 +153,11 @@ import (
 )
 
 // NewSyncOperation is a meant for exposing simple RPC handlers.
-var EchoOperation = temporalnexus.NewSyncOperation(service.EchoOperationName, func(ctx context.Context, c client.Client, input service.EchoInput, options nexus.StartOperationOptions) (service.EchoOutput, error) {
+var EchoOperation = nexus.NewSyncOperation(service.EchoOperationName, func(ctx context.Context, input service.EchoInput, options nexus.StartOperationOptions) (service.EchoOutput, error) {
 	// The method is provided with an SDK client that can be used for arbitrary calls such as signaling, querying,
 	// and listing workflows but implementations are free to make arbitrary calls to other services or databases, or
 	// perform simple computations such as this one.
+	// Use temporalnexus.GetClient to get the client that the worker was initialized with.
 	return service.EchoOutput(input), nil
 })
 ```
@@ -287,7 +289,7 @@ func HelloCallerWorkflow(ctx workflow.Context, name string, language service.Lan
 	fut := c.ExecuteOperation(ctx, service.HelloOperationName, service.HelloInput{Name: name, Language: language}, workflow.NexusOperationOptions{})
 	var res service.HelloOutput
 
-	// Optionally wait for the operation to be started. NexusOperationExecution will contain the operation ID in
+	// Optionally wait for the operation to be started. NexusOperationExecution will contain the operation token in
 	// case this operation is asynchronous.
 	var exec workflow.NexusOperationExecution
 	if err := fut.GetNexusOperationExecution().Get(ctx, &exec); err != nil {
