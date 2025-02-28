@@ -158,13 +158,14 @@ Yes. Multiple context propagators help to structure code with each propagator ha
 
 ### Context Propagation Over Nexus Operation Calls
 
-Nexus does not use the above header structure as it uses a Temporal agnostic protocol under the hood that is built to
-connect arbitrary systems. For propagating context over Nexus Operation calls, the context can be serialized into a
-`nexus.Header` - a wrapper on top of `map[string]string` with helpers to `Set` and `Get` values, normalizing keys into
-lower case form. Due to this different format, and the fact that Nexus calls may go to external parties, the
-`ContextPropagator` interface does not apply to Nexus headers and must be explicitly propagated via interceptors as
-shown in the [Nexus Context Propagation
-sample](https://github.com/temporalio/samples-go/tree/main/nexus-context-propagation).
+Nexus does not use the standard context propagator header structure.
+Instead, it relies on a Temporal-agnostic protocol designed to connect arbitrary systems.
+To propagate context over Nexus Operation calls, the context is serialized into a `nexus.Header`.
+This is essentially a wrapper around `map[string]string` with helper methods to `Set` and `Get` values.
+The header normalizes all keys to lowercase.
+
+Because Nexus uses this custom format, and because Nexus calls may involve external systems, the `ContextPropagator` interface doesn’t apply to Nexus headers.
+Context must be explicitly propagated through interceptors, as shown in the [Nexus Context Propagation sample](https://github.com/temporalio/samples-go/tree/main/nexus-context-propagation).
 
 ### Useful Resources
 
