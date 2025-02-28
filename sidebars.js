@@ -28,18 +28,6 @@ module.exports = {
             "evaluate/development-production-features/workflow-message-passing",
             "evaluate/development-production-features/debugging",
             "evaluate/development-production-features/interrupt-workflow",
-            {
-              type: "category",
-              label: "High Availability",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "evaluate/development-production-features/high-availability",
-              },
-              items: [
-                "evaluate/development-production-features/multi-region-namespace",
-              ],
-            },
             "evaluate/development-production-features/testing-suite",
             "evaluate/development-production-features/observability",
             "evaluate/development-production-features/data-encryption",
@@ -337,7 +325,51 @@ module.exports = {
                 "production-deployment/cloud/metrics/performance-bottlenecks",
               ],
             },
-            "production-deployment/cloud/multi-region",
+            // "production-deployment/cloud/multi-region",
+            {
+              type: "category",
+              label: "High Availabilty",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "production-deployment/cloud/high-availability/index",
+              },
+              items: [
+                "production-deployment/cloud/high-availability/how-it-works",
+                "production-deployment/cloud/high-availability/enable",
+                // "production-deployment/cloud/high-availability/guarantees",
+                "production-deployment/cloud/high-availability/monitor",
+                {
+                type: "category",
+                label: "How-to guides",
+                collapsed: true,
+                link: {
+                  type: "doc",
+                  id: "production-deployment/cloud/high-availability/how-to/index",
+                },
+                items: [
+                  "production-deployment/cloud/high-availability/how-to/api-authentication",
+                  "production-deployment/cloud/high-availability/how-to/failovers",
+                  "production-deployment/cloud/high-availability/how-to/secure-routing",
+                  "production-deployment/cloud/high-availability/how-to/private-link",
+                ]
+              },
+//              {
+//                type: "category",
+//                label: "References",
+//                collapsed: true,
+//                link: {
+//                  type: "doc",
+//                  id: "production-deployment/cloud/high-availability/references/index",
+//                },
+//                items: [
+//                  "production-deployment/cloud/high-availability/references/concepts",
+//                  "production-deployment/cloud/high-availability/references/best-practices",
+//                  "production-deployment/cloud/high-availability/references/glossary",
+//                ]
+//              },
+              ]
+            },
             {
               type: "category",
               label: "Temporal Nexus",
@@ -595,7 +627,24 @@ module.exports = {
                 "encyclopedia/nexus-security",
               ],
             },
-            "encyclopedia/dataconversion",
+            {
+              type: "category",
+              label: "Data Conversion",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "encyclopedia/data-conversion/dataconversion",
+              },
+              items: [
+                   "encyclopedia/data-conversion/default-custom-data-converters",
+                   "encyclopedia/data-conversion/payload-converter",
+                   "encyclopedia/data-conversion/payload-codec",
+                   "encyclopedia/data-conversion/failure-converter",
+                   "encyclopedia/data-conversion/remote-data-encoding",
+                   "encyclopedia/data-conversion/codec-server",
+                   "encyclopedia/data-conversion/key-management",
+              ],
+            },
           ],
         },
         "glossary",

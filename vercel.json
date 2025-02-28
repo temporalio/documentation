@@ -1932,6 +1932,11 @@
       "source": "/references/web-ui-server-env-vars",
       "destination": "/references/web-ui-environment-variables",
       "permanent": true
+    },
+    {
+      "source": "/cloud/pricing#multi-region",
+      "destination": "/cloud/pricing#high-availability-features",
+      "permanent": true
     }
   ]
 }
