@@ -3,7 +3,7 @@ id: temporal-clients
 title: Temporal Clients - PHP SDK
 sidebar_label: Temporal Clients
 slug: /develop/php/temporal-clients
-toc_max_heading_level: 2
+toc_max_heading_level: 3
 keywords:
   - temporal-clients
 tags:
@@ -119,6 +119,13 @@ temporal:
     # server_name: 'tls-sample'
 ```
 
+To set up the [API key](/cloud/api-keys) in the Client, use the [`ServiceClient::withAuthKey()`](https://php.temporal.io/classes/Temporal-Client-GRPC-BaseClient.html#method_withAuthKey) method:
+
+```php
+$serviceClient = \Temporal\Client\GRPC\ServiceClient::createSSL(/*...*/)
+    ->withAuthKey('your-api-key');
+```
+
 ## How to start a Workflow Execution {#start-workflow-execution}
 
 [Workflow Execution](/workflows#workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
@@ -206,6 +213,162 @@ var_dump($run->getExecution()->getID());
 **Recurring start**
 
 You can start a Workflow Execution on a regular schedule with [the CronSchedule option](/develop/php/schedules).
+
+### How to set a Workflow's Task Queue {#set-task-queue}
+
+In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/task-queue).
+
+For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task Queue name.
+
+In PHP, a Task Queue is represented in code by its name as a `string`.
+There are four places where the name of the Task Queue is supplied by the developer.
+
+1. When starting a Workflow, a Task Queue name must be provided in the `StartWorkflowOptions`.
+
+```php
+// Create new Workflow Options and set the Task Queue
+$workflowOptions = WorkflowOptions::new()
+  ->withTaskQueue("Workflow-Task-Queue-1")
+  // ...
+
+$yourWorkflow = $workflowClient->newWorkflowStub(
+  YourWorkflowInterface::class,
+  $workflowOptions
+);
+
+$result = $yourWorkflow->workflowMethod();
+```
+
+2. A Task Queue name must be provided as a parameter when creating a Worker.
+
+```php
+use Temporal\WorkerFactory;
+
+// Create a Worker Factory
+$factory = WorkerFactory::create();
+
+// Set the Task Queue when creating the Worker
+$worker = $factory->newWorker("Workflow-Task-Queue-1");
+
+// Workflows are stateful. So you need a type to create instances.
+$worker->registerWorkflowTypes(YourWorkflow::class);
+
+// start primary loop
+$factory->run();
+```
+
+A single Worker can listen to only one Task Queue.
+And, it is important to remember that the name of the Task Queue the Worker is listening to must match the name of the Task Queue provided in the options to any given Workflow or Activity.
+
+All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
+
+If a Worker polls a Task for a Workflow Type or Activity Type it does not know about, it will fail that Task.
+However, the failure of the Task will not cause the associated Workflow Execution to fail.
+
+3. Optionally, the name of a Task Queue can be provided in the `ActivityOptions` when calling an Activity from a Workflow.
+
+```php
+class YourWorkflow implements YourWorkflowInterface
+{
+  private $yourActivity;
+
+  public function __construct()
+  {
+    // Create Activity options and set the Task Queue
+    $activityOptions = ActivityOptions::new()
+      ->withTaskQueue("Activity-Task-Queue-1")
+      // ...
+
+    // Create a new Activity Stub and pass the options
+    $this->yourActivity = Workflow::newActivityStub(
+      YourActivityInterface::class,
+      $activityOptions
+    );
+  }
+
+  public function workflowMethod(): \Generator
+  {
+    // Call the Activity
+    return yield $this->yourActivity->activityMethod();
+  }
+}
+```
+
+If a Task Queue name is not provided in the `ActivityOptions`, then the Activity Tasks are placed in the same Task Queue as the Workflow Task Queue.
+
+4. Optionally, the name of a Task Queue can be provided in the `ChildWorkflowOptions` when calling a Child Workflow.
+
+```php
+//Create new Child Workflow Options and set the Task Queue
+$childWorkflowOptions = ChildWorkflowOptions::new()
+    ->withTaskQueue("Child-Workflow-Task-Queue-1")
+    // ...
+
+// Create a new Child Workflow Stub and set the Task Queue
+$childWorkflow = Workflow::newChildWorkflowStub(
+    ChildWorkflowInterface::class,
+    $childWorkflowOptions
+);
+
+// Call the Child Workflow method
+$promise = $childWorkflow->workflowMethod();
+```
+
+If a Task Queue name is not provided in the `ChildWorkflowOptions`, then the Child Workflow Tasks are placed in the same Task Queue as the Parent Workflow Task Queue.
+
+### How to set a Workflow Id {#workflow-id}
+
+Although it is not required, we recommend providing your own [Workflow Id](/workflows#workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
+
+The following code example grabs the `userID` as an input and uses it to start the Workflow. The `userID` is used as Workflow Id. You can use this to cancel your Workflow later.
+
+```php
+#[WorkflowInterface]
+interface SubscriptionWorkflowInterface
+{
+    #[WorkflowMethod]
+    public function subscribe(string $userID);
+}
+```
+
+The following code example, uses the input parameter `userID` as the Workflow Id.
+
+```php
+#[WorkflowInterface]
+interface SubscriptionWorkflowInterface
+{
+    #[WorkflowMethod]
+    public function subscribe(
+        string $userID
+    );
+}
+```
+
+You can also set the Workflow Id as a constant, for example:
+
+```php
+public const WORKFLOW_ID = Your-Workflow-Id
+```
+
+### How to get the results of a Workflow Execution {#get-workflow-results}
+
+If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
+
+The Workflow Id, Run Id, and Namespace may be used to uniquely identify a Workflow Execution in the system and get its result.
+
+It's possible to both block progress on the result (synchronous execution) or get the result at some other point in time (asynchronous execution).
+
+In the Temporal Platform, it's also acceptable to use Queries as the preferred method for accessing the state and results of Workflow Executions.
+
+If you need to wait for the completion of a Workflow after an asynchronous start, make a blocking call to
+the `WorkflowRun`->`getResult` method.
+
+```php
+$run = $workflowClient->start($accountTransfer, 'fromID', 'toID', 'refID', 1000);
+
+var_dump($run->getResult());
+```
+
 
 ## Advanced connection options {#advanced-connection-options}
 
