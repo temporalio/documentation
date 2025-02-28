@@ -350,8 +350,7 @@ Minimum Temporal Server version [Temporal Server version 1.26](https://github.co
 
 :::
 
-[Update-with-Start](/sending-messages#update-with-start) lets you
-[send an Update](/develop/dotnet/message-passing#send-update-from-client) that checks whether an already-running Workflow with that ID exists:
+[Update-with-Start](/sending-messages#update-with-start) lets you [send an Update](/develop/dotnet/message-passing#send-update-from-client) that checks whether an already-running Workflow with that ID exists:
 
 - If the Workflow exists, the Update is processed.
 - If the Workflow does not exist, a new Workflow Execution is started with the given ID, and the Update is processed before the main Workflow method starts to execute.
@@ -361,10 +360,9 @@ Use `ExecuteUpdateWithStartAsync` to start the Update and wait for the result in
 Alternatively, use `StartUpdateWithStartAsync` to start the Update and receive a `WorkflowUpdateHandle`, and then use `await updateHandle.GetResultAsync()` to retrieve the result from the Update.
 
 These calls return once the requested Update wait stage has been reached, or when the request times out.
-
-You will need to provide a `WithStartWorkflowOperation` to define the Workflow that will be started if necessary, and its arguments.
-You must specify an [IdConflictPolicy](/workflows#workflow-id-conflict-policy) when creating the `WithStartWorkflowOperation`.
-Note that a `WithStartWorkflowOperation` can only be used once.
+- You will need to provide a `WithStartWorkflowOperation` to define the Workflow that will be started if necessary, and its arguments.
+- You must specify an [IdConflictPolicy](/workflows#workflow-id-conflict-policy) when creating the `WithStartWorkflowOperation`.
+  Note that a `WithStartWorkflowOperation` can only be used once.
 
 Here's an example taken from the [UpdateWithStartLazyInit](https://github.com/temporalio/samples-dotnet/blob/main/src/UpdateWithStartLazyInit/Program.cs) sample:
 
