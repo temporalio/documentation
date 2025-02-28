@@ -1,0 +1,85 @@
+---
+id: worker-deployments
+title: What is a Temporal Worker Deployment? 
+sidebar_label: Worker Deployments
+description: Temporal Worker Deployments help you manage and deploy your Worker services.
+slug: /worker-deployments
+toc_max_heading_level: 4
+keywords:
+  - workers
+  - versioning
+  - deployments
+  - deployment versions
+tags:
+  - Workers
+  - Concepts
+  - Deployments
+  - Deployment Versions
+---
+
+This page defines [Worker Deployments](#deployments) and [Worker Deployment Versions](#deployment-versions) and explains their use cases.
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+The Worker Deployments feature is available in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+
+Supported Worker Deployment Clients include:
+
+- Temporal CLI: version [v1.3.0](https://github.com/temporalio/cli/releases/tag/v1.3.0) or higher
+- Go SDK: version [v1.33.0](https://github.com/temporalio/sdk-go/releases/tag/v1.33.0) or higher
+- Other SDKs: coming soon!
+
+Open source users need:
+
+- Temporal Server: version [v1.27.1](https://github.com/temporalio/temporal/releases/tag/v1.27.1) or higher
+- Open Source UI: version [v2.36.0](https://github.com/temporalio/ui/releases/tag/v2.36.0) or higher
+
+:::
+
+## What are Worker Deployments? {#deployments}
+
+A Worker Deployment is a logical service that groups similar Workers together for unified management.
+Each Deployment has a name (such as your service name) and supports versioning through a series of [Worker Deployment Versions](#deployment-versions).
+
+## What are Worker Deployment Versions? {#deployment-versions}
+
+A Worker Deployment Version represents an iteration of a Worker Deployment.
+Each Deployment Version consists of Workers that share the same code build and environment.
+When a Worker starts polling for Workflow and Activity Tasks, it reports its Deployment Version to the Temporal Server.
+
+## What can I do with Worker Deployments? {#use-cases}
+
+Worker Deployments currently support [Worker Versioning](/worker-versioning), with more features planned for the future.
+
+## How do I enable Worker Deployments? {#how-to}
+
+:::note
+
+Temporal Server disables Worker Deployments by default.
+
+Temporal Cloud customers: Contact your Temporal account team or the [Temporal Support Team](https://docs.temporal.io/cloud/support#support-ticket) for Pre-release access.
+
+Open source users: Enable the [system.enableDeploymentVersions](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) and [frontend.workerVersioningWorkflowAPIs](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) dynamic config values by setting both to `true`.
+
+For example, with the Temporal CLI, run:
+
+```command
+temporal server start-dev \
+   --dynamic-config-value system.enableDeploymentVersions=true \
+   --dynamic-config-value frontend.workerVersioningWorkflowAPIs=true
+```
+
+:::
+
+To add your Worker to a Deployment, provide both the Deployment name and Version when creating your Worker.
+When your deployment system is ready, turn on Versioning as well. Refer to [Worker Versioning](/worker-versioning) for details.
+
+When running multiple Workers in one process (such as using multiple [Task Queues](/task-queue)), you'll typically use the same Deployment name for all of them, since they belong to the same service.
+
+The server will automatically register new Deployments and Deployment Versions when a Worker connects. You can see the status of Versions on the Deployments page in [Temporal UI](https://docs.temporal.io/web-ui).
+
+:::info
+
+SDK-specific  documentation will be available soon.
+
+:::
