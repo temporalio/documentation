@@ -119,6 +119,13 @@ temporal:
     # server_name: 'tls-sample'
 ```
 
+To set up the [API key](/cloud/api-keys) in the Client, use the [`ServiceClient::withAuthKey()`](https://php.temporal.io/classes/Temporal-Client-GRPC-BaseClient.html#method_withAuthKey) method:
+
+```php
+$serviceClient = \Temporal\Client\GRPC\ServiceClient::createSSL(/*...*/)
+    ->withAuthKey('your-api-key');
+```
+
 ## How to start a Workflow Execution {#start-workflow-execution}
 
 [Workflow Execution](/workflows#workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
