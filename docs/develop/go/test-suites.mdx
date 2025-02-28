@@ -204,10 +204,10 @@ func (s *UnitTestSuite) Test_SimpleWorkflow_NexusSyncOperation() {
 
 Besides the synchronous operations, you can also mock asynchronous operations. The following example
 demonstrates how to test a Workflow executing a Nexus asynchronous operation. The returned value
-type in this case must be `*nexus.HandlerStartOperationResultAsync` with an `OperationID`, which can
+type in this case must be `*nexus.HandlerStartOperationResultAsync` with an `OperationToken`, which can
 be any string of your choice. Furthermore, you must call `RegisterNexusAsyncOperationCompletion` to
 register the result of the asynchronous operation identified by the tuple service name, operation
-name, and operation ID.
+name, and operation token.
 
 ```go
 func (s *UnitTestSuite) Test_SimpleWorkflow_NexusAsyncOperation() {
@@ -218,14 +218,14 @@ func (s *UnitTestSuite) Test_SimpleWorkflow_NexusAsyncOperation() {
                 workflow.NexusOperationOptions{},
         ).Return(
                 &nexus.HandlerStartOperationResultAsync{
-                        OperationID: "sample-operation-id",
+                        OperationToken: "sample-operation-token",
                 },
                 nil, // error if you want to simulate an error in the ExecuteOperation call
         )
         err := env.RegisterNexusAsyncOperationCompletion(
                 "sample-service",
                 "sample-operation",
-                "sample-operation-id", // must match the OperationID above
+                "sample-operation-token", // must match the OperationToken above
                 SampleOutput{},
                 nil,            // error if you want to simulate an error in the operation
                 2*time.Second,  // delay to simulate how long the operation takes after it starts
@@ -239,7 +239,7 @@ func (s *UnitTestSuite) Test_SimpleWorkflow_NexusAsyncOperation() {
 ```
 
 If your Workflow executes multiple Nexus asynchronous operations, you can mock each of them with
-different operation IDs, and register the completion results using the corresponding operation ID.
+different operation tokens, and register the completion results using the corresponding operation token.
 
 If mocking Nexus operations is not enough, and you need to run some custom logic when the Nexus
 operation is executed, you can override it as follows.
@@ -373,7 +373,7 @@ func (s *UnitTestSuite) Test_ProgressWorkflow() {
 
 :::note
 
-`RegisterDelayedCallback` can also be used to send [Signals](/encyclopedia/workflow-message-passing#sending-signals).
+`RegisterDelayedCallback` can also be used to send [Signals](/sending-messages#sending-signals).
 When using "Signal-With-Start", set the delay to `0`.
 :::
 

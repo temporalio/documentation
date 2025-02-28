@@ -114,7 +114,7 @@ Adjust the size of the Payload to fit within the system's size limits.
 
 ## Bad Signal Input Size {#bad-signal-input-size}
 
-This error indicates that the Payload has exceeded the [Signal's](/encyclopedia/workflow-message-passing#sending-signals) available input size.
+This error indicates that the Payload has exceeded the [Signal's](/sending-messages#sending-signals) available input size.
 
 Adjust the size of the Payload, and redeploy the [Workflow Task](/tasks#workflow-task).
 
@@ -216,12 +216,6 @@ Wait for the system to finish any currently running Child Workflows before redep
 
 The Workflow has reached capacity for pending Nexus Operations. Therefore, the Workflow Task was failed to prevent the creation of another Nexus Operation.
 
-:::note
-
-In Public Preview, Nexus Operations are not yet deleted from mutable state when they complete, so the limit is for the total count of Nexus Operations in a given Workflow.
-
-:::
-
 Let the Workflow complete any current Nexus Operation before retrying the Task.
 
 See [Per Workflow Nexus Operation Limits](/cloud/limits#per-workflow-nexus-operation-limits) for details.
@@ -236,7 +230,7 @@ If you see this error, give the system time to process pending requests before r
 ## Pending Signals Limit Exceeded {#pending-signals-limit-exceeded}
 
 The Workflow has reached capacity for pending Signals.
-Therefore, the [Workflow Task](/tasks#workflow-task) was failed after attempting to add more [Signals](/encyclopedia/workflow-message-passing#sending-signals) to an external Workflow.
+Therefore, the [Workflow Task](/tasks#workflow-task) was failed after attempting to add more [Signals](/sending-messages#sending-signals) to an external Workflow.
 
 Wait for Signals to be processed by the Workflow before retrying the Task.
 
@@ -299,7 +293,7 @@ Try entering a different Timer Id, and retry the [Workflow Task](/tasks#workflow
 This error indicates new available [Events](/references/events) since the last [Workflow Task](/tasks#workflow-task) started.
 The Workflow Task was failed because the [Workflow](/workflows) attempted to close itself without handling the new Events.
 
-`UnhandledCommand` can happen when the Workflow is receiving a high number of [Signals](/encyclopedia/workflow-message-passing#sending-signals).
+`UnhandledCommand` can happen when the Workflow is receiving a high number of [Signals](/sending-messages#sending-signals).
 If the Workflow doesn't have enough time to handle these Signals, a RetryWorkflow Task is scheduled to handle these new Events.
 
 To prevent this error, drain the Signal Channel with the ReceiveAsync function.

@@ -21,7 +21,7 @@ description: Learn how to develop with Signals, Queries, and Updates in Temporal
 
 ## How to develop with Signals {#signals}
 
-A [Signal](/encyclopedia/workflow-message-passing#sending-signals) is a message sent to a running Workflow Execution.
+A [Signal](/sending-messages#sending-signals) is a message sent to a running Workflow Execution.
 
 Signals are defined in your code and handled in your Workflow Definition.
 Signals can be sent to Workflow Executions from a Temporal Client or from another Workflow Execution.
@@ -33,7 +33,7 @@ A Signal has a name and can have arguments.
 - The name, also called a Signal type, is a string.
 - The arguments must be [serializable](/dataconversion).
 
-Workflows can answer synchronous [Queries](/encyclopedia/workflow-message-passing#sending-queries) and receive [Signals](/encyclopedia/workflow-message-passing#sending-signals).
+Workflows can answer synchronous [Queries](/sending-messages#sending-queries) and receive [Signals](/sending-messages#sending-signals).
 
 All interface methods must have one of the following attributes:
 
@@ -196,7 +196,7 @@ $run = $workflowClient->startWithSignal(
 
 ## How to develop with Queries {#queries}
 
-A [Query](/encyclopedia/workflow-message-passing#sending-queries) is a synchronous operation that is used to get the state of a Workflow Execution.
+A [Query](/sending-messages#sending-queries) is a synchronous operation that is used to get the state of a Workflow Execution.
 
 ### How to define a Query {#define-query}
 
@@ -205,7 +205,7 @@ A Query has a name and can have arguments.
 - The name, also called a Query type, is a string.
 - The arguments must be [serializable](/dataconversion).
 
-Workflows can answer synchronous [Queries](/encyclopedia/workflow-message-passing#sending-queries) and receive [Signals](/encyclopedia/workflow-message-passing#sending-signals).
+Workflows can answer synchronous [Queries](/sending-messages#sending-queries) and receive [Signals](/sending-messages#sending-signals).
 
 All interface methods must have one of the following attributes:
 
@@ -353,7 +353,7 @@ Queries are sent from a Temporal Client.
 
 ## How to develop with Updates {#updates}
 
-An [Update](/encyclopedia/workflow-message-passing#sending-updates) is an operation that can mutate the state of a Workflow Execution and return a response.
+An [Update](/sending-messages#sending-updates) is an operation that can mutate the state of a Workflow Execution and return a response.
 
 ### Define Update {#define-update}
 
@@ -497,6 +497,69 @@ $resultUuid = $stub->startUpdate(
  )->getResult();
 ```
 
+#### Update-With-Start {#update-with-start}
+
+[Update-with-Start](/sending-messages#update-with-start) lets you [send an Update](#send-update-from-client) that checks whether an already-running Workflow with that ID exists:
+
+- If the Workflow exists, the Update is processed.
+- If the Workflow does not exist, a new Workflow Execution is started with the given ID, and the Update is processed before the main Workflow method starts to execute.
+
+You can:
+
+- Use the [`updateWithStart`](https://php.temporal.io/classes/Temporal-Client-WorkflowClientInterface.html#method_updateWithStart) WorkflowClient API.
+  It returns once the requested Update wait stage has been reached; or when the request times out.
+- Use the  [`UpdateHandle`](https://php.temporal.io/classes/Temporal-Client-Update-UpdateHandle.html) to retrieve a result from the Update.
+
+You provide:
+
+- A WorkflowStub created from [`WorkflowOptions`](https://php.temporal.io/classes/Temporal-Client-WorkflowOptions.html).
+  - The `WorkflowOptions` require a [Workflow Id Conflict Policy](/workflows#workflow-id-conflict-policy) to be specified.
+  - Choose ["Use Existing"](https://php.temporal.io/classes/Temporal-Common-WorkflowIdConflictPolicy.html#enumcase_UseExisting) and use an idempotent Update handler to ensure your code can be executed again in case of a Client failure.
+    Not all `WorkflowOptions` are allowed.
+    For example, specifying a Cron Schedule will result in an error.
+
+- Update name or [`UpdateOptions`](https://php.temporal.io/classes/Temporal-Client-Update-UpdateOptions.html).
+  This mirrors the approach used for [Update Workflow](#send-update-from-client).
+  - For Update-with-Start, the Workflow Id is optional.
+  - When specified, the Id must match the one used in `WorkflowOptions`.
+  - Since a running Workflow Execution may not already exist, you can't set a Run Id.
+
+For example:
+
+```php
+$stub = $workflowClient->newUntypedWorkflowStub(
+    ShoppingCartWorkflow::class,
+    WorkflowOptions::new()
+        ->withTaskQueue('service-queue')
+        ->withWorkflowId($cartId)
+        ->withWorkflowIdConflictPolicy(WorkflowIdConflictPolicy::UseExisting),
+);
+$handle = $workflowClient->updateWithStart(
+    workflow: $stub,
+    update: 'addItem',
+    updateArgs: [$itemId, $quantity],
+);
+
+$price = $handle->getResult();
+```
+
+To wait on the Update result, run the Update with the wait stage set to [`LifecycleStage::StageCompleted`](https://php.temporal.io/classes/Temporal-Client-Update-LifecycleStage.html#enumcase_StageCompleted).
+This returns once the update result is available; or when the API call times out.
+
+For example:
+
+```php
+$handle = $workflowClient->updateWithStart(
+    workflow: $stub,
+    update: UpdateOptions::new('addItem', LifecycleStage::StageCompleted),
+    updateArgs: [$itemId, $quantity],
+);
+
+assert($handle->hasResult() === true);
+$price = $handle->getResult();
+```
+
+
 ## Message handler patterns {#message-handler-patterns}
 
 This section covers common write operations, such as Signal and Update handlers.
@@ -504,7 +567,7 @@ It doesn't apply to pure read operations, like Queries or Update Validators.
 
 :::tip
 
-For additional information, see [Inject work into the main Workflow](/encyclopedia/workflow-message-passing#injecting-work-into-main-workflow), [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing), and [this sample](https://github.com/temporalio/samples-php/tree/master/app/src/SafeMessageHandlers) demonstrating safe `async` message handling.
+For additional information, see [Inject work into the main Workflow](/handling-messages#injecting-work-into-main-workflow), [Ensuring your messages are processed exactly once](/handling-messages#exactly-once-message-processing), and [this sample](https://github.com/temporalio/samples-php/tree/master/app/src/SafeMessageHandlers) demonstrating safe `async` message handling.
 :::
 
 ### Add wait conditions to block
@@ -576,7 +639,7 @@ public function myUpdate()
 }
 ```
 
-See [Finishing handlers before the Workflow completes](/encyclopedia/workflow-message-passing#finishing-message-handlers) for more information.
+See [Finishing handlers before the Workflow completes](/handling-messages#finishing-message-handlers) for more information.
 
 ### Use `#[WorkflowInit]` to operate on Workflow input before any handler executes
 
@@ -636,7 +699,7 @@ Make sure to set this flag to `true` to enable the correct behavior.
 ### Use `Mutex` to prevent concurrent handler execution {#control-handler-concurrency}
 
 Concurrent processes can interact in unpredictable ways.
-Incorrectly written [concurrent message-passing](/encyclopedia/workflow-message-passing#message-handler-concurrency) code may not work correctly when multiple handler instances run simultaneously.
+Incorrectly written [concurrent message-passing](/handling-messages#message-handler-concurrency) code may not work correctly when multiple handler instances run simultaneously.
 Here's an example of a pathological case:
 
 ```php
@@ -715,7 +778,7 @@ When sending a Signal, Update, or Query to a Workflow, your Client might encount
 - **The workflow does not exist**:
   You'll receive a [`WorkflowNotFoundException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowNotFoundException.html) exception.
 
-See [Exceptions in message handlers](/encyclopedia/workflow-message-passing#exceptions) for a non–PHP-specific discussion of this topic.
+See [Exceptions in message handlers](/handling-messages#exceptions) for a non–PHP-specific discussion of this topic.
 
 ### Problems when sending a Signal {#signal-problems}
 
@@ -761,7 +824,7 @@ These might include:
 
   - The Workflow was canceled or failed.
 
-  - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/encyclopedia/workflow-message-passing#finishing-message-handlers).
+  - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/handling-messages#finishing-message-handlers).
 
 ### Problems when sending a Query {#query-problems}
 
