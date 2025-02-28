@@ -44,9 +44,7 @@ Each Deployment has a name (such as your service name) and supports versioning t
 ## What are Worker Deployment Versions? {#deployment-versions}
 
 A Worker Deployment Version represents an iteration of a Worker Deployment.
-
 Each Deployment Version consists of Workers that share the same code build and environment.
-
 When a Worker starts polling for Workflow and Activity Tasks, it reports its Deployment Version to the Temporal Server.
 
 ## What can I do with Worker Deployments? {#use-cases}
@@ -74,7 +72,6 @@ temporal server start-dev \
 :::
 
 To add your Worker to a Deployment, provide both the Deployment name and Version when creating your Worker.
-
 When your deployment system is ready, turn on Versioning as well. Refer to [Worker Versioning](/worker-versioning) for details.
 
 When running multiple Workers in one process (such as using multiple [Task Queues](/task-queue)), you'll typically use the same Deployment name for all of them, since they belong to the same service.
