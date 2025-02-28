@@ -73,7 +73,7 @@ For more information, see the [Go sample for metrics](https://github.com/tempora
 
 The Temporal Go SDK supports three tracing implementations: [Datadog](https://pkg.go.dev/go.temporal.io/sdk/contrib/datadog), [OpenTelemetry](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentelemetry), and [OpenTracing](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentracing).
 
-Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.
+Tracing allows you to view the call graph of a Workflow along with its Activities, Nexus Operations, and any Child Workflows.
 
 Tracing can be configured by providing a tracer implementation in [ClientOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions) during client instantiation.
 
@@ -155,6 +155,16 @@ It also uses Jaeger for tracing.
 #### Can I configure multiple context propagators?
 
 Yes. Multiple context propagators help to structure code with each propagator having its own scope of responsibility.
+
+### Context Propgation Over Nexus Operation Calls
+
+Nexus does not use the above header structure as it uses a Temporal agnostic protocol under the hood that is built to
+connect arbitrary systems. For propagating context over Nexus Operation calls, the context can be serialized into a
+`nexus.Header` - a wrapper on top of `map[string]string` with helpers to `Set` and `Get` values, normalizing keys into
+lower case form. Due to this different format, and the fact that Nexus calls may go to external parties, the
+`ContextPropagator` interface does not apply to Nexus headers and must be explicitly propagated via interceptors as
+shown in the [Nexus Context Propagation
+sample](https://github.com/temporalio/samples-go/tree/main/nexus-context-propagation).
 
 ### Useful Resources
 
