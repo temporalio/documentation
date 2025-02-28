@@ -62,13 +62,13 @@ Temporal Server disables Worker Deployments by default.
 
 Temporal Cloud customers: Contact your Temporal account team or the [Temporal Support Team](https://docs.temporal.io/cloud/support#support-ticket) for Pre-release access.
 
-Open source users: Enable the [system.enableDeployments](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) and [frontend.workerVersioningWorkflowAPIs](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) dynamic config values by setting both to `true`.
+Open source users: Enable the [system.enableDeploymentVersions](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) and [frontend.workerVersioningWorkflowAPIs](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) dynamic config values by setting both to `true`.
 
 For example, with the Temporal CLI, run:
 
 ```command
 temporal server start-dev \
-   --dynamic-config-value system.enableDeployments=true \
+   --dynamic-config-value system.enableDeploymentVersions=true \
    --dynamic-config-value frontend.workerVersioningWorkflowAPIs=true
 ```
 
@@ -76,10 +76,10 @@ temporal server start-dev \
 
 To add your Worker to a Deployment, provide both the Deployment name and Version when creating your Worker.
 
-When running multiple Workers in one process (such as when using multiple [Task Queues](/task-queue)), you'll typically use the same Deployment name for all of them since they belong to the same service.
+When your deployment system is ready, turn on Versioning as well. Refer to [Worker Versioning](/worker-versioning) for details.
 
-The server automatically registers new Deployments and Deployment Versions when a Worker connects.
+When running multiple Workers in one process (such as when using multiple [Task Queues](/task-queue)), you'll typically use the same Deployment name for all of them, since they belong to the same service.
+
+The server will automatically register new Deployments and Deployment Versions when a Worker connects. You can see the status of Versions on the Deployments page in [Temporal UI](https://docs.temporal.io/web-ui).
 
 Per-SDK documentation will be available soon.
-
-This change is safe as long as you don't enable Versioning on that deployment. See the [Worker Versioning](/worker-versioning) docs for information on preparing your deployment system.
