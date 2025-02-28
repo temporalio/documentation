@@ -340,6 +340,65 @@ To send an Update to a Workflow Execution, you can:
 
   For more details, see the "Async handlers" section.
 
+#### Update-with-Start {#update-with-start}
+
+:::tip Stability
+
+In [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in Temporal Cloud.
+
+Minimum Temporal Server version [Temporal Server version 1.26](https://github.com/temporalio/temporal/releases/tag/v1.26.2)
+
+:::
+
+[Update-with-Start](/sending-messages#update-with-start) lets you [send an Update](/develop/dotnet/message-passing#send-update-from-client) that checks whether an already-running Workflow with that ID exists:
+
+- If the Workflow exists, the Update is processed.
+- If the Workflow does not exist, a new Workflow Execution is started with the given ID, and the Update is processed before the main Workflow method starts to execute.
+
+Use `ExecuteUpdateWithStartAsync` to start the Update and wait for the result in one go.
+
+Alternatively, use `StartUpdateWithStartAsync` to start the Update and receive a `WorkflowUpdateHandle`, and then use `await updateHandle.GetResultAsync()` to retrieve the result from the Update.
+
+These calls return once the requested Update wait stage has been reached, or when the request times out.
+- You will need to provide a `WithStartWorkflowOperation` to define the Workflow that will be started if necessary, and its arguments.
+- You must specify an [IdConflictPolicy](/workflows#workflow-id-conflict-policy) when creating the `WithStartWorkflowOperation`.
+  Note that a `WithStartWorkflowOperation` can only be used once.
+
+Here's an example taken from the [UpdateWithStartLazyInit](https://github.com/temporalio/samples-dotnet/blob/main/src/UpdateWithStartLazyInit/Program.cs) sample:
+
+```csharp
+async Task<AddCartItemResult> AddCartItemAsync(string sessionId, ShoppingCartItem item)
+{
+    // Issue an update-with-start that will create the workflow if it does not
+    // exist before attempting the update
+
+    // Create the start operation
+    var startOperation = WithStartWorkflowOperation.Create(
+        (ShoppingCartWorkflow wf) => wf.RunAsync(),
+        new(id: $"cart-{sessionId}", taskQueue: TaskQueue)
+        {
+            IdConflictPolicy = Temporalio.Api.Enums.V1.WorkflowIdConflictPolicy.UseExisting,
+        });
+
+    // Issue the update-with-start, swallowing item-unavailable failure
+    decimal? subtotal;
+    try
+    {
+        subtotal = await client.ExecuteUpdateWithStartWorkflowAsync(
+            (ShoppingCartWorkflow wf) => wf.AddItemAsync(item),
+            new(startOperation));
+    }
+    catch (WorkflowUpdateFailedException e) when (
+        e.InnerException is ApplicationFailureException appErr && appErr.ErrorType == "ItemUnavailable")
+    {
+        // Set subtotal to null if item was not found
+        subtotal = null;
+    }
+
+    return new(await startOperation.GetHandleAsync(), subtotal);
+}
+```
+
 :::info NON-TYPE SAFE API CALLS
 
 In real-world development, sometimes you may be unable to import Workflow Definition method signatures.
