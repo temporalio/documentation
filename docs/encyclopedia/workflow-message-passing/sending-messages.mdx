@@ -34,6 +34,7 @@ import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
 import {RelatedReadContainer, RelatedReadItem} from '@site/src/components/related-read/RelatedRead';
 
 This section will help you write clients that send messages to Workflows which includes:
+
 - [Sending Signals](#sending-signals)
 - [Sending Updates](#sending-updates)
 - [Sending Queries](#sending-queries)
@@ -169,7 +170,7 @@ Update-With-Start is great for latency-sensitive use cases:
 
 :::caution
 
-Unlike Signal-with-Start - Update-With-Start is *not* atomic.
+Unlike Signal-with-Start - Update-With-Start is _not_ atomic.
 If the Update can't be delivered, for example, because there's no running Worker available, a new Workflow Execution will still start.
 The SDKs will retry the Update-With-Start request, but there is no guarantee that the Update will succeed.
 
