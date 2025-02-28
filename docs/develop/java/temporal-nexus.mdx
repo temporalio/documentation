@@ -38,16 +38,17 @@ The first step in working with Temporal Nexus involves starting a Temporal serve
 
 Prerequisites:
 
-- [Install the latest Temporal CLI](https://learn.temporal.io/getting_started/java/dev_environment/#set-up-a-local-temporal-service-for-development-with-temporal-cli)
-- [Install the latest Temporal Java SDK](https://learn.temporal.io/getting_started/java/dev_environment/#add-temporal-java-sdk-dependencies) (v1.26.0 or higher)
+- [Install the latest Temporal CLI](https://learn.temporal.io/getting_started/java/dev_environment/#set-up-a-local-temporal-service-for-development-with-temporal-cli) (v1.3.0 or higher recommended)
+- [Install the latest Temporal Java
+  SDK](https://learn.temporal.io/getting_started/java/dev_environment/#add-temporal-java-sdk-dependencies) (v1.28.0 or
+  higher recommended)
 
 ### Start the Temporal Development Server {#start-the-temporal-development-server}
 
-Start the Temporal Development Server by using the `temporal server start-dev`, with `system.enableNexus=true`.
-The HTTP port is required for Nexus communications.
+Start the Temporal Development Server.
 
 ```
-temporal server start-dev --http-port 7243 --dynamic-config-value system.enableNexus=true
+temporal server start-dev
 ```
 
 This command automatically starts the Temporal development server, the Web UI, creates the `default` Namespace, and uses an in-memory database.
