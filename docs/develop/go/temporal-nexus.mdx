@@ -461,20 +461,17 @@ This will result in:
 ```
 
 ### Canceling a Nexus Operation {#canceling-a-nexus-operation}
+To cancel a Nexus Operation from within a Workflow, create a Go context using the `workflow.WithCancel` API.
+This returns a new context and a function that, when called, cancels the context and any SDK method that was passed this context.
+The future returned by `NexusClient.ExecuteOperation` is resolved when the operation finishes, whether it succeeds, fails, times out, or is canceled. 
 
-To cancel a Nexus Operation from within a workflow, create a Go context using the `workflow.WithCancel` API, this will
-return a new context and a function that, when called, will cancel the returned context along with any SDK method that
-this context was passed to.
+Only asynchronous operations can be canceled in Nexus, as cancelation is sent using an operation token.
+The Workflow or other resources backing the operation may choose to ignore the cancelation request.
+If ignored, the operation may enter a terminal state.
 
-The future returned by `NexusClient.ExecuteOperation` gets resolved when the operation completes with either success,
-failure, timeout, or cancelation.
-Only asynchronous operations may receive cancelation as cancelation in Nexus is sent using an operation token. The
-Workflow or any other underlying resource backing the operation may choose to ignore the cancelation request, allowing
-the Operation to end up in any of the terminal states.
-
-Once the workflow completes, the server will stop trying to cancel any Operations that have not yet recieved
-cancelation, letting them run to completion. It is totally valid to abandon Operations for certain use cases. To ensure
-delivery of cancelations, wait for all pending Operations to complete before exiting the Workflow.
+Once the Workflow completes, the server stops attempting to cancel operations that have not yet been canceled, letting them run to completion.
+It's okay to leave operations running in some use cases.
+To ensure cancelations are delivered, wait for all pending operations to finish before exiting the Workflow.
 
 See the [Nexus cancelation sample](https://github.com/temporalio/samples-go/tree/main/nexus-cancelation) for reference.
 
