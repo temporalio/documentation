@@ -96,3 +96,13 @@ Callbacks: 1
   Attempt           1
   RegistrationTime  32 minutes ago
 ```
+
+## Tracing
+
+Temporal integrates with tracing libraries like [OpenTelemetry](https://opentelemetry.io/) and [OpenTracing](https://opentracing.io/).
+Tracing allows you to visualize the call graph of a Workflow, including its Activities, Nexus Operations, and Child Workflows.
+You can enable tracing by installing an interceptor on the Temporal Client or Worker in the supported SDKs.
+See the samples linked below to enable tracing for the SDKs:
+
+- [Go SDK](https://github.com/temporalio/samples-go/tree/main/opentelemetry)
+- [Java SDK](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/tracing)
