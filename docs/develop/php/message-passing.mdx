@@ -35,17 +35,17 @@ A Signal has a name and can have arguments.
 
 Workflows can answer synchronous [Queries](/sending-messages#sending-queries) and receive [Signals](/sending-messages#sending-signals).
 
-All interface methods must have one of the following annotations:
+All interface methods must have one of the following attributes:
 
 - **#[WorkflowMethod]** indicates an entry point to a Workflow.
   It contains parameters that specify timeouts and a Task Queue name.
-  Required parameters (such as `executionStartToCloseTimeoutSeconds`) that are not specified through the annotation must be provided at runtime.
+  Required parameters (such as `executionStartToCloseTimeoutSeconds`) that are not specified through the attribute must be provided at runtime.
 - **#[SignalMethod]** indicates a method that reacts to external signals. It must have a `void` return type.
 - **#[QueryMethod]** indicates a method that reacts to synchronous query requests. It must have a non `void` return type.
 
 > It is possible (though not recommended for usability reasons) to annotate concrete class implementation.
 
-You can have more than one method with the same annotation (except #[WorkflowMethod]).
+You can have more than one method with the same attribute (except #[WorkflowMethod]).
 
 For example:
 
@@ -75,7 +75,7 @@ interface FileProcessingWorkflow
 }
 ```
 
-Note that name parameter of Workflow method annotations can be used to specify name of Workflow, Signal and Query types.
+Note that name parameter of Workflow method attributes can be used to specify name of Workflow, Signal and Query types.
 If name is not specified the short name of the Workflow interface is used.
 
 In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow Type defaults to `"FileProcessingWorkflow"`.
@@ -84,7 +84,7 @@ In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workf
 
 Workflows listen for Signals by the Signal's name.
 
-Use the `#[SignalMethod]` annotation to handle Signals in the Workflow interface:
+Use the `#[SignalMethod]` attribute to handle Signals in the Workflow interface:
 
 ```php
 use Temporal\Workflow;
@@ -207,17 +207,17 @@ A Query has a name and can have arguments.
 
 Workflows can answer synchronous [Queries](/sending-messages#sending-queries) and receive [Signals](/sending-messages#sending-signals).
 
-All interface methods must have one of the following annotations:
+All interface methods must have one of the following attributes:
 
 - **#[WorkflowMethod]** indicates an entry point to a Workflow.
   It contains parameters that specify timeouts and a Task Queue name.
-  Required parameters (such as `executionStartToCloseTimeoutSeconds`) that are not specified through the annotation must be provided at runtime.
+  Required parameters (such as `executionStartToCloseTimeoutSeconds`) that are not specified through the attribute must be provided at runtime.
 - **#[SignalMethod]** indicates a method that reacts to external signals. It must have a `void` return type.
 - **#[QueryMethod]** indicates a method that reacts to synchronous query requests. It must have a non `void` return type.
 
 > It is possible (though not recommended for usability reasons) to annotate concrete class implementation.
 
-You can have more than one method with the same annotation (except #[WorkflowMethod]).
+You can have more than one method with the same attribute (except #[WorkflowMethod]).
 
 For example:
 
@@ -247,7 +247,7 @@ interface FileProcessingWorkflow
 }
 ```
 
-Note that name parameter of Workflow method annotations can be used to specify name of Workflow, Signal and Query types.
+Note that name parameter of Workflow method attributes can be used to specify name of Workflow, Signal and Query types.
 If name is not specified the short name of the Workflow interface is used.
 
 In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow Type defaults to `"FileProcessingWorkflow"`.
@@ -641,6 +641,61 @@ public function myUpdate()
 
 See [Finishing handlers before the Workflow completes](/handling-messages#finishing-message-handlers) for more information.
 
+### Use `#[WorkflowInit]` to operate on Workflow input before any handler executes
+
+Normally, your Workflows constructor won't have any parameters.
+However, if you use the `#[WorkflowInit]` attribute on your constructor, you can give it the same [Workflow parameters](/develop/php/core-application#workflow-parameters) as your `#[WorkflowMethod]`.
+The SDK will then ensure that your constructor receives the Workflow input arguments that the [Client sent](/develop/php/temporal-clients#start-workflow-execution).
+The Workflow input arguments are also passed to your `#[WorkflowMethod]` method -- that always happens, whether or not you use the `#[WorkflowInit]` attribute.
+This is useful if you have message handlers that need access to Workflow input: see [Initializing the Workflow first](/sending-messages).
+
+Here's an example.
+Notice that the constructor and `getGreeting` must have the same parameters:
+
+```php
+use Temporal\Workflow;
+
+#[Workflow\WorkflowInterface]
+class GreetingExample
+{
+    private readonly string $nameWithTitle;
+    private bool $titleHasBeenChecked;
+
+    // Note the attribute is on a public constructor
+    #[Workflow\WorkflowInit]
+    public function __construct(string $input)
+    {
+        $this->nameWithTitle = 'Sir ' . $input;
+        $this->titleHasBeenChecked = false;
+    }
+
+    #[Workflow\WorkflowMethod]
+    public function getGreeting(string $input)
+    {
+        yield Workflow::await(fn() => $this->titleHasBeenChecked);
+        return "Hello " . $this->nameWithTitle;
+    }
+
+    #[Workflow\UpdateMethod]
+    public function checkTitleValidity()
+    {
+        // 👉 The handler is now guaranteed to see the workflow input
+        // after it has been processed by the constructor.
+        $isValid = yield Workflow::executeActivity('activity.checkTitleValidity', [$this->nameWithTitle]);
+        $this->titleHasBeenChecked = true;
+        return $isValid;
+    }
+}
+```
+
+:::note
+
+By default, the Workflow Handler runs before Signals and Updates in PHP SDK v2. This behavior is incorrect.
+To avoid breaking already written Workflows, since PHP SDK v2.11.0, a [feature flag](https://php.temporal.io/classes/Temporal-Worker-FeatureFlags.html#property_workflowDeferredHandlerStart) was added to enhance the behavior of the Workflow Handler.
+Make sure to set this flag to `true` to enable the correct behavior.
+
+:::
+
 ### Use `Mutex` to prevent concurrent handler execution {#control-handler-concurrency}
 
 Concurrent processes can interact in unpredictable ways.
@@ -648,12 +703,14 @@ Incorrectly written [concurrent message-passing](/handling-messages#message-hand
 Here's an example of a pathological case:
 
 ```php
-#[WorkflowInterface]
+use Temporal\Workflow;
+
+#[Workflow\WorkflowInterface]
 class MyWorkflow
 {
     // ...
 
-    #[SignalMethod]
+    #[Workflow\SignalMethod]
     public function badAsyncHandler()
     {
         $data = yield Workflow::executeActivity(
