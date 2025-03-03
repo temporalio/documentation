@@ -390,6 +390,7 @@ module.exports = {
             "production-deployment/cloud/worker-health",
             "production-deployment/cloud/service-health",
             "production-deployment/cloud/saml",
+            "production-deployment/cloud/scim",
             "production-deployment/cloud/operation-api",
             "production-deployment/cloud/terraform-provider",
             {
