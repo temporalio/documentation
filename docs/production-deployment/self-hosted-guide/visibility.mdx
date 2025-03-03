@@ -858,18 +858,17 @@ Removing Search Attributes is not supported on Temporal Cloud.
 
 For example, if using Elasticsearch for advanced Visibility, to remove a custom Search Attribute called `CustomSA` of type Keyword use the following command:
 
-{/* CHECK FOR ACCURACY */}
-
 ```
-temporal attribute search-attribute remove --name="CustomSA"
+temporal operator search-attribute remove \
+    --name="your_custom_attribute"
 ```
 
 With Temporal Server v1.20, if using a SQL database for advanced Visibility, you need to specify the Namespace in your command, as shown in the following command:
 
-{/* CHECK FOR ACCURACY */}
-
 ```
-temporal attribute search-attribute remove --name="CustomSA" --namespace="SomeNamespace"
+temporal operator search-attribute remove \
+    --name="your_custom_attribute" \
+    --namespace="your_namespace"
 ```
 
 To check whether the Search Attribute was removed, run
