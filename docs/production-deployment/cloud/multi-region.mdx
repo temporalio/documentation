@@ -62,9 +62,9 @@ In traditional active/active replication, multiple nodes serve requests and acce
 With a Temporal Cloud multi-region Namespace, two replicated Namespaces (one active, one standby) accept requests, but not simultaneously.
 Requests are processed and Workflow history events are initially written to the active region, then asynchronously replicated to the standby region.
 
-|                      Before failover                      |                     After failover                      |
-| :-------------------------------------------------------: | :-----------------------------------------------------: |
-| ![Before failover](/img/multi-region/before-failover.png) | ![After failover](/img/multi-region/after-failover.png) |
+|                         Before failover                         |                        After failover                         |
+| :-------------------------------------------------------------: | :-----------------------------------------------------------: |
+| ![Before failover](/img/cloud/multi-region/before-failover.png) | ![After failover](/img/cloud/multi-region/after-failover.png) |
 
 Should you be using multi-region Namespaces?
 It depends on your availability requirements:
@@ -102,7 +102,6 @@ Temporal Cloud initiates a Namespace failover when it detects an incident or out
 The failover shifts Workflow processing to a standby region that isn’t affected by the incident.
 This lets existing Workflows continue and new Workflows start while the incident is fixed.
 Once the incident is resolved, Temporal Cloud performs a "failback" by shifting Workflow Execution processing back to the original region.
-
 
 :::info
 
@@ -168,7 +167,7 @@ Temporal Cloud returns a "Service unavailable error", which is retried by SDKs.
 If the graceful approach doesn’t resolve the issue, Temporal Cloud automatically switches to a forced failover.
 This strategy balances consistency and availability requirements.
 
-See the sections on [triggering a failover](/cloud/multi-region#triggering-failovers), [Worker deployment](/cloud/multi-region#worker-deployment), and [routing](/cloud/multi-region#routing) for more information.
+See the sections on [triggering a failover](/cloud/multi-region#triggering-failovers), [deploying Workers](/cloud/multi-region#worker-deployment), and [routing](/cloud/multi-region#routing) for more information.
 
 ## Multi-region Namespace SLA {#sla}
 
@@ -520,7 +519,7 @@ Temporal Cloud provides several ways to audit events:
 - You can set alerts for Temporal-initiated failover events.
 - After a failover, you can check that the Namespace is active in the new region using the Temporal Cloud Web UI.
 
-### Worker Deployment {#worker-deployment}
+### Deploying Workers {#worker-deployment}
 
 Enabling the multi-region Namespace does not require specific Worker configuration.
 The process is invisible to the Workers.
@@ -563,7 +562,7 @@ You may need to:
 - override a DNS zone; and
 - ensure the network connectivity between the two regions.
 
-![Customer side solution example](/img/multi-region/private-link.png)
+![Customer side solution example](/img/cloud/multi-region/private-link.png)
 
 When using PrivateLink, you connect to Temporal Cloud using IP addresses local to your network.
 The `region.<tmprl_domain>` zone is configured in the Temporal systems as an independent zone.

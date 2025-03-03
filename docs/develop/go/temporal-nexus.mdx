@@ -16,7 +16,7 @@ tags:
 
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
-Temporal Go SDK support for Nexus is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+Temporal Go SDK support for Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability).
 
 :::
 
@@ -39,16 +39,16 @@ The first step in working with Temporal Nexus involves starting a Temporal serve
 
 Prerequisites:
 
-- [Install the latest Temporal CLI](https://docs.temporal.io/develop/go/core-application#run-a-development-server)
-- [Install the latest Temporal Go SDK](https://docs.temporal.io/develop/go/core-application#install-a-temporal-sdk) (v1.29.1 or higher)
+- [Install the latest Temporal CLI](https://docs.temporal.io/develop/go/core-application#run-a-development-server) (v1.3.0 or higher recommended)
+- [Install the latest Temporal Go SDK](https://docs.temporal.io/develop/go/core-application#install-a-temporal-sdk)
+  (v1.33.0 or higher recommended)
 
 ### Start the Temporal Development Server {#start-the-temporal-development-server}
 
-Start the Temporal Development Server by using the `temporal server start-dev`, with `system.enableNexus=true`.
-The HTTP port is required for Nexus communications.
+Start the Temporal Development Server.
 
 ```
-temporal server start-dev --http-port 7243 --dynamic-config-value system.enableNexus=true
+temporal server start-dev
 ```
 
 This command automatically starts the Web UI, creates the default Namespace, and uses an in-memory database.
@@ -118,17 +118,18 @@ type EchoOutput EchoInput
 Nexus Operation handlers are typically defined in the same Worker as the underlying Temporal primitives they abstract.
 Operation handlers can decide if a given Nexus Operation will be synchronous or asynchronous, execute arbitrary code, and invoke underlying Temporal primitives such as a Workflow, Query, Signal, or Update.
 
-The `temporalnexus` package has builders to create Nexus Operations:
+The `temporalnexus` package has builders to create Nexus Operations and other helpers for authoring Operation handlers:
 
-- `NewSyncOperation` \- Simple synchronous RPC handlers, such as for Signals
 - `NewWorkflowRunOperation` \- Run a Workflow as an asynchronous Nexus Operation
+- `GetClient` \- Get the Temporal Client that the Worker was initialized with for synchronous RPC handlers backed by
+  Temporal primitives such as for Signals, and Queries
 
-This tutorial starts with a `NewSyncOperation` example, and then uses `NewWorkflowRunOperation` to start a handler Workflow from a Nexus Operation.
+This tutorial starts with a sync Operation handler example using the `nexus.NewSyncOperation` method, and then shows how to create an async Operation handler that uses `NewWorkflowRunOperation` to start a handler Workflow from a Nexus Operation.
 
 ### Develop a Synchronous Nexus Operation handler
 
-The `temporalnexus.NewSyncOperation` builder function is for exposing simple RPC handlers.
-Its handler function is provided with an SDK client that can be used for signaling, querying, and listing Workflows.
+The `nexus.NewSyncOperation` builder function is for exposing simple RPC handlers.
+Typically to use SDK client, which is obtained via `temporalnexus.GetClient(ctx)`, for signaling, querying, and listing Workflows.
 However, implementations are free to make arbitrary calls to other services or databases, or perform computations such as this one:
 
 <!--SNIPSTART samples-go-nexus-handler {"selectedLines": ["2-23"]}-->
@@ -152,10 +153,10 @@ import (
 )
 
 // NewSyncOperation is a meant for exposing simple RPC handlers.
-var EchoOperation = temporalnexus.NewSyncOperation(service.EchoOperationName, func(ctx context.Context, c client.Client, input service.EchoInput, options nexus.StartOperationOptions) (service.EchoOutput, error) {
-	// The method is provided with an SDK client that can be used for arbitrary calls such as signaling, querying,
-	// and listing workflows but implementations are free to make arbitrary calls to other services or databases, or
-	// perform simple computations such as this one.
+var EchoOperation = nexus.NewSyncOperation(service.EchoOperationName, func(ctx context.Context, input service.EchoInput, options nexus.StartOperationOptions) (service.EchoOutput, error) {
+	// Use temporalnexus.GetClient to get the client that the worker was initialized with to perform client calls
+	// such as signaling, querying, and listing workflows. Implementations are free to make arbitrary calls to other
+	// services or databases, or perform simple computations such as this one.
 	return service.EchoOutput(input), nil
 })
 ```
@@ -287,7 +288,7 @@ func HelloCallerWorkflow(ctx workflow.Context, name string, language service.Lan
 	fut := c.ExecuteOperation(ctx, service.HelloOperationName, service.HelloInput{Name: name, Language: language}, workflow.NexusOperationOptions{})
 	var res service.HelloOutput
 
-	// Optionally wait for the operation to be started. NexusOperationExecution will contain the operation ID in
+	// Optionally wait for the operation to be started. NexusOperationExecution will contain the operation token in
 	// case this operation is asynchronous.
 	var exec workflow.NexusOperationExecution
 	if err := fut.GetNexusOperationExecution().Get(ctx, &exec); err != nil {
@@ -459,6 +460,21 @@ This will result in:
 2024/10/04 19:57:40 Workflow result: ¡Hola! Nexus 👋
 ```
 
+### Canceling a Nexus Operation {#canceling-a-nexus-operation}
+To cancel a Nexus Operation from within a Workflow, create a Go context using the `workflow.WithCancel` API.
+This returns a new context and a function that, when called, cancels the context and any SDK method that was passed this context.
+The future returned by `NexusClient.ExecuteOperation` is resolved when the operation finishes, whether it succeeds, fails, times out, or is canceled. 
+
+Only asynchronous operations can be canceled in Nexus, as cancelation is sent using an operation token.
+The Workflow or other resources backing the operation may choose to ignore the cancelation request.
+If ignored, the operation may enter a terminal state.
+
+Once the Workflow completes, the server stops attempting to cancel operations that have not yet been canceled, letting them run to completion.
+It's okay to leave operations running in some use cases.
+To ensure cancelations are delivered, wait for all pending operations to finish before exiting the Workflow.
+
+See the [Nexus cancelation sample](https://github.com/temporalio/samples-go/tree/main/nexus-cancelation) for reference.
+
 ## Make Nexus calls across Namespaces in Temporal Cloud {#nexus-calls-across-namespaces-temporal-cloud}
 
 This section assumes you are already familiar with [how connect a Worker to Temporal Cloud](https://docs.temporal.io/develop/go/core-application#run-a-temporal-cloud-worker).
@@ -620,11 +636,11 @@ This will result in:
 
 A synchronous Nexus Operation will surface in the caller Workflow as follows, with just `NexusOperationScheduled` and `NexusOperationCompleted` events in the caller's Workflow history:
 
-![Observability Sync](/img/nexus-go/go-sdk-observability-sync.png)
+![Observability Sync](/img/cloud/nexus/go-sdk-observability-sync.png)
 
 An asynchronous Nexus Operation will surface in the caller Workflow as follows, with `NexusOperationScheduled`, `NexusOperationStarted`, and `NexusOperationCompleted`, in the caller's Workflow history:
 
-![Observability Async](/img/nexus-go/go-sdk-observability-async.png)
+![Observability Async](/img/cloud/nexus/go-sdk-observability-async.png)
 
 ### Temporal CLI
 

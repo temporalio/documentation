@@ -16,7 +16,7 @@ tags:
 
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
-Temporal Nexus is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
+Temporal Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
 
 :::
 
@@ -30,7 +30,7 @@ Nexus was designed with Durable Execution in mind and enables each team to have 
 Adding a Nexus Endpoint to the Nexus Registry deploys the Endpoint, so it is available at runtime to serve Nexus requests.
 The Nexus Registry is scoped to an Account in Temporal Cloud and scoped to a Cluster for self-hosted deployments.
 
-![Nexus Overview](/img/nexus-overview-short.png)
+![Nexus Overview](/img/cloud/nexus/nexus-overview-short.png)
 
 A Nexus Endpoint is a reverse proxy that decouples the caller from the handler and routes requests to upstream targets. It currently supports routing to a single target Namespace and Task Queue.
 Nexus Services and [Nexus Operations](/nexus/operations) are often registered in the same Worker as the underlying Temporal primitives they abstract.
@@ -60,7 +60,7 @@ If a Nexus Service is down, a caller Workflow can continue to schedule Nexus Ope
 Nexus handler Workers poll the Endpoint's target Namespace and Task Queue for [Nexus Tasks](/tasks#nexus-task) to process.
 Workers authenticate to their Namespace's gRPC endpoint with supported methods including mTLS client certificates or API Keys in Temporal Cloud.
 
-![NexusYourCloud](/img/nexus/nexus-workers-short.png)
+![NexusYourCloud](/img/cloud/nexus/nexus-workers-short.png)
 
 See [system interactions](/nexus/operations/#system-interactions) for additional detail.
 
