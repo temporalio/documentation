@@ -1,0 +1,57 @@
+---
+id: scim
+title: SCIM user management - Temporal Cloud feature guide
+sidebar_label: SCIM
+description: Integrate SCIM with your Temporal Cloud account for secure user Management. Connect via Okta for seamless user and group management. Charges apply.
+slug: /cloud/scim
+toc_max_heading_level: 4
+keywords:
+  - how-to
+  - introduction
+  - security
+  - temporal cloud
+tags:
+  - Security
+  - Temporal Cloud
+---
+
+Enabling SCIM requires that SAML already be configured for your account. See the [SAML](/cloud/saml) for instructions on
+how to setup SSO with SAML.
+
+:::info
+
+This feature is in pre-release and subject to change. Currently only Okta is supported as the upstream IDP.
+
+:::
+
+### How to configure SCIM with Okta {#configure-scim-with-okta}
+
+To enable SCIM on your account, you will need to create a support ticket but there are a few things to prepare before
+starting the process.
+
+1. Configure [SAML](/cloud/saml) SSO
+1. Ensure that all critical traffic is configured to authenticate via mTLS or API keys attached to
+system accounts. This ensures that if there is a problem with the integration that workflows will continue
+uninterrupted.
+1. Determine who is an Okta administrator that will be configuring the SCIM integration. The administrator will receive
+an email with a configuration link allowing them to setup the integration.
+
+Once these steps have been completed, you can submit a support ticket to enable SCIM. Onboarding consists of
+the following steps:
+
+1. Temporal Support will enable the SCIM integration on your account which will trigger a configuration link to
+be sent to your Okta administrator
+1. Your Okta administrator will use the supplied link, which includes step-by-step instructions, to configure
+the integration
+1. Once configured in Okta, Temporal Cloud will begin to receive SCIM messages and automatically onboard and offboard
+the users and groups configured in Okta
+
+User and group change events are applied within 10 minutes of them being made in Okta. User lifecycle
+management with SCIM also allows user roles to be derived from group membership. Once a group has been synced
+in Temporal Cloud, you can use `tcld` to assign roles to the group. Instructions for managing user groups with
+`tcld` can be found [here](https://github.com/temporalio/tcld?tab=readme-ov-file#user-group-management)
+
+
+
+
+
