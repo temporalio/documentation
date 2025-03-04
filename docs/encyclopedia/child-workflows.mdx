@@ -25,6 +25,8 @@ tags:
   - Child Workflows
 ---
 
+import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+
 A Child Workflow Execution is a [Workflow Execution](/workflows#workflow-execution) that is spawned from within another Workflow in the same Namespace.
 
 - [Go SDK Child Workflow feature guide](/develop/go/child-workflows)
@@ -36,18 +38,10 @@ A Child Workflow Execution is a [Workflow Execution](/workflows#workflow-executi
 
 A Workflow Execution can be both a Parent and a Child Workflow Execution because any Workflow can spawn another Workflow.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Parent and Child Workflow Execution entity relationship</p>
-  </div>
-  <div className="tdiiw" height="600">
-    <img
-      className="img_ev3q"
-      src="/diagrams/parent-child-workflow-execution-relationship.svg"
-      alt="Parent and Child Workflow Execution entity relationship"
+<CaptionedImage
+    src="/diagrams/parent-child-workflow-execution-relationship.svg"
+    title="Parent and Child Workflow Execution entity relationship"
     />
-  </div>
-</div>
 
 A Parent Workflow Execution must await on the Child Workflow Execution to spawn.
 The Parent can optionally await on the result of the Child Workflow Execution.
@@ -64,21 +58,10 @@ When a Parent Workflow Execution reaches a Closed status, the Temporal Service p
 
 If a Child Workflow Execution uses Continue-As-New, from the Parent Workflow Execution's perspective the entire chain of Runs is treated as a single execution.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">
-      Parent and Child Workflow Execution entity relationship with Continue As
-      New
-    </p>
-  </div>
-  <div className="tdiiw" height="700">
-    <img
-      className="img_ev3q"
-      src="/diagrams/parent-child-workflow-execution-with-continue-as-new.svg"
-      alt="Parent and Child Workflow Execution entity relationship with Continue As New"
+<CaptionedImage
+    src="/diagrams/parent-child-workflow-execution-with-continue-as-new.svg"
+    title="Parent and Child Workflow Execution entity relationship with Continue As New"
     />
-  </div>
-</div>
 
 ## When to use Child Workflows
 
@@ -93,7 +76,7 @@ However, there are several valid reasons for using Child Workflows.
 
 Because a Child Workflow Execution can be processed by a completely separate set of [Workers](/workers#worker) than the Parent Workflow Execution, it can act as an entirely separate service.
 However, this also means that a Parent Workflow Execution and a Child Workflow Execution do not share any local state.
-As all Workflow Executions, they can communicate only via asynchronous [Signals](/encyclopedia/workflow-message-passing#sending-signals).
+As all Workflow Executions, they can communicate only via asynchronous [Signals](/sending-messages#sending-signals).
 
 ### Paritition problems into smaller chunks
 
@@ -164,18 +147,10 @@ There are three possible values:
 Each Child Workflow Execution may have its own Parent Close Policy.
 This policy applies only to Child Workflow Executions and has no effect otherwise.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Parent Close Policy entity relationship</p>
-  </div>
-  <div className="tdiiw" height="543">
-    <img
-      className="img_ev3q"
-      src="/diagrams/parent-close-policy.svg"
-      alt="Parent Close Policy entity relationship"
+<CaptionedImage
+    src="/diagrams/parent-close-policy.svg"
+    title="Parent Close Policy entity relationship"
     />
-  </div>
-</div>
 
 You can set policies per child, which means you can opt out of propagating terminates / cancels on a per-child basis.
 This is useful for starting Child Workflows asynchronously (see [relevant issue here](https://community.temporal.io/t/best-way-to-create-an-async-child-workflow/114) or the corresponding SDK docs).

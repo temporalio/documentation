@@ -12,6 +12,8 @@ tags:
   - Temporal Service
 ---
 
+import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+
 :::info
 Please note an important update in our terminology.
 
@@ -24,7 +26,10 @@ A Temporal Service is the group of services, known as the [Temporal Server](#tem
 
 See the Self-hosted Temporal Service [production deployment guide](/self-hosted-guide) for implementation guidance.
 
-![A Temporal Service (Server + persistence)](/diagrams/temporal-cluster.svg)
+<CaptionedImage
+    src="/diagrams/temporal-cluster.svg"
+    title="A Temporal Service (Server + persistence)"
+/>
 
 ## What is the Temporal Server? {#temporal-server}
 
@@ -69,18 +74,10 @@ Temporal offers official support for, and is tested against, dependencies with t
 The Frontend Service is a stateless gateway service that exposes a strongly typed [Proto API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto).
 The Frontend Service is responsible for rate limiting, authorizing, validating, and routing all inbound calls.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Frontend Service</p>
-  </div>
-  <div className="tdiiw" height="1040">
-    <img
-      className="img_ev3q"
-      src="/diagrams/temporal-frontend-service.svg"
-      alt="Frontend Service"
-    />
-  </div>
-</div>
+<CaptionedImage
+    src="/diagrams/temporal-frontend-service.svg"
+    title="Frontend Service"
+/>
 
 Types of inbound calls include the following:
 
@@ -109,21 +106,10 @@ The History Service is responsible for persisting Workflow Execution state to th
 When the Workflow Execution is able to progress, the History Service adds a Task with the Workflow's updated history to the Task Queue.
 From there, a Worker can poll for work, receive this updated history, and resume execution.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">
-      Block diagram of how the History Service relates to the other services of
-      the Temporal Server and to the Temporal Service
-    </p>
-  </div>
-  <div className="tdiiw" height="1040">
-    <img
-      className="img_ev3q"
-      src="/diagrams/temporal-history-service.svg"
-      alt="Block diagram of how the History Service relates to the other services of the Temporal Server and to a Temporal Service"
-    />
-  </div>
-</div>
+<CaptionedImage
+    src="/diagrams/temporal-history-service.svg"
+    title="Block diagram of how the History Service relates to the other services of the Temporal Server and to the Temporal Service"
+/>
 
 The total number of History Service processes can be between 1 and the total number of [History Shards](#history-shard).
 An individual History Service can support many History Shards.
@@ -172,18 +158,10 @@ Each History Shard maintains the Workflow Execution Event History, Workflow Exec
 
 The Matching Service is responsible for hosting user-facing [Task Queues](/task-queue) for Task dispatching.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Matching Service</p>
-  </div>
-  <div className="tdiiw" height="980">
-    <img
-      className="img_ev3q"
-      src="/diagrams/temporal-matching-service.svg"
-      alt="Matching Service"
-    />
-  </div>
-</div>
+<CaptionedImage
+    src="/diagrams/temporal-matching-service.svg"
+    title="Matching Service"
+/>
 
 It is responsible for matching Workers to Tasks and routing new Tasks to the appropriate queue.
 This service can scale internally by having multiple instances.
@@ -249,18 +227,10 @@ The Temporal Persistence store is a database used by the [Temporal Server](#temp
 A Temporal Service's only required dependency for basic operation is the Persistence database.
 Multiple types of databases are supported.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Persistence</p>
-  </div>
-  <div className="tdiiw" height="620">
-    <img
-      className="img_ev3q"
-      src="/diagrams/temporal-database.svg"
-      alt="Persistence"
-    />
-  </div>
-</div>
+<CaptionedImage
+    src="/diagrams/temporal-database.svg"
+    title="Persistence"
+/>
 
 The database stores the following types of data:
 
@@ -308,7 +278,7 @@ The [Visibility store](/self-hosted-guide/visibility) in your Temporal Service s
 
 - [How to set up a Visibility store](/self-hosted-guide/visibility)
 
-With Temporal Server v1.21, you can set up [Dual Visibility](/visibility#dual-visibility) to migrate your Visibility store from one database to another.
+With Temporal Server v1.21, you can set up [Dual Visibility](/dual-visibility) to migrate your Visibility store from one database to another.
 
 Support for separate standard and advanced Visibility setups will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/self-hosted-guide/visibility) for updates. \*/}
 
