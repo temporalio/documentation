@@ -77,6 +77,7 @@ module.exports = {
               ],
             },
             "evaluate/temporal-cloud/service-availability",
+            "evaluate/temporal-cloud/regions",
             "evaluate/temporal-cloud/limits",
             "evaluate/temporal-cloud/sla",
             "evaluate/temporal-cloud/pricing",
@@ -325,7 +326,6 @@ module.exports = {
                 "production-deployment/cloud/metrics/performance-bottlenecks",
               ],
             },
-            // "production-deployment/cloud/multi-region",
             {
               type: "category",
               label: "High Availabilty",
@@ -337,7 +337,6 @@ module.exports = {
               items: [
                 "production-deployment/cloud/high-availability/how-it-works",
                 "production-deployment/cloud/high-availability/enable",
-                // "production-deployment/cloud/high-availability/guarantees",
                 "production-deployment/cloud/high-availability/monitor",
                 {
                 type: "category",
@@ -354,20 +353,22 @@ module.exports = {
                   "production-deployment/cloud/high-availability/how-to/private-link",
                 ]
               },
-//              {
-//                type: "category",
-//                label: "References",
-//                collapsed: true,
-//                link: {
-//                  type: "doc",
-//                  id: "production-deployment/cloud/high-availability/references/index",
-//                },
-//                items: [
-//                  "production-deployment/cloud/high-availability/references/concepts",
-//                  "production-deployment/cloud/high-availability/references/best-practices",
-//                  "production-deployment/cloud/high-availability/references/glossary",
-//                ]
-//              },
+              {
+                type: "category",
+                label: "References",
+                collapsed: true,
+                link: {
+                  type: "doc",
+                  id: "production-deployment/cloud/high-availability/references/index",
+                },
+                items: [
+                  "production-deployment/cloud/high-availability/references/regions",
+                  // "production-deployment/cloud/high-availability/references/concepts",
+                  // "production-deployment/cloud/high-availability/references/best-practices",
+                  // "production-deployment/cloud/high-availability/references/glossary",
+                  // "production-deployment/cloud/high-availability/references/faq",
+                ]
+              },
               ]
             },
             {
@@ -389,6 +390,7 @@ module.exports = {
             "production-deployment/cloud/worker-health",
             "production-deployment/cloud/service-health",
             "production-deployment/cloud/saml",
+            "production-deployment/cloud/scim",
             "production-deployment/cloud/operation-api",
             "production-deployment/cloud/terraform-provider",
             {

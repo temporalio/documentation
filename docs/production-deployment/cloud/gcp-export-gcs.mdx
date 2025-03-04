@@ -31,7 +31,7 @@ Before configuring the Export sink, please complete the following steps in Googl
 
 1. Create a GCS bucket and take note of its bucket name, for example, "test-export"
   * Enable customer-managed encryption keys (CMEK) if you need additional security for your GCS bucket.
-  * For now we only support single region (or “Region” option when creating the bucket in GCS, not “Multi-Region” or “Dual-Region”)
+  * For now we only support single region (or “Region” option when creating the bucket in GCS, not “Multi-region” or “Same-region”)
   * The region of the bucket has to be the same as the region of your Temporal Cloud Namespace.
 2. Record the GCP Project ID that owns the bucket.
 3. Create a service account in the same project that grants Temporal permission to write to your GCS bucket.
