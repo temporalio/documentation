@@ -259,9 +259,9 @@ You can start a Workflow Execution on a regular schedule with [the CronSchedule 
 
 ### How to set a Workflow's Task Queue {#set-task-queue}
 
-When developing in PHP, the Task Queue name is a `string`.
-It defaults to `"default"`.
-While setting a meaningful Task Queue name is recommended for better observability, you can run Workflows without setting this option.
+In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/task-queue).
+When developing in PHP, the Task Queue name defaults to `"default"`.
+While setting a meaningful Task Queue name is recommended for better observability, Workflows can be run without setting this option.
 
 :::note
 
@@ -269,41 +269,18 @@ PHP's default is different from most SDKs, which do require an explicit Task Que
 
 :::
 
-For your code to execute, a Worker Process must be running.
+For your code to execute, a Worker Process must be running ([how to run Worker Processes](/develop/php/core-application#run-a-dev-worker)).
 This process needs a Worker Entity that is polling the same Task Queue name.
 
-The following example demonstrates how to set the Workflow options and the Task Queue name and build a new Workflow stub:
+Set the Workflow Task Queue with the Workflow stub in the Client code using [`WorkflowOptions::withTaskQueue()`](https://php.temporal.io/classes/Temporal-Client-WorkflowOptions.html#method_withTaskQueue).
 
 ```php
-// Create new Workflow Options and set the Task Queue
-$workflowOptions = WorkflowOptions::new()
-  ->withTaskQueue("Workflow-Task-Queue-1")
-  // ...
-
-$yourWorkflow = $workflowClient->newWorkflowStub(
-  YourWorkflowInterface::class,
-  $workflowOptions
+$stub = $workflowClient->newWorkflowStub(
+    YourWorkflowInterface::class,
+    WorkflowOptions::new()
+        ->withTaskQueue("Workflow-Task-Queue-1"),
 );
-
-$result = $yourWorkflow->workflowMethod();
 ```
-
-Each Worker listens to one Task Queue.
-To set the Task Queue name when creating a Worker:
-
-```php
-// Set the Task Queue when creating the Worker
-$worker = $factory->newWorker("Workflow-Task-Queue-1");
-```
-
-The Task Queue must match the one used by the Client so it can poll for Activity and Workflow Tasks.
-
-:::info
-
-Workers automatically fail any Tasks that are not registered with them that appear on their Task Queue.
-A Task failure doesn't cause its associated Workflow Execution to fail.
-
-:::
 
 ### How to set a Workflow Id {#workflow-id}
 
