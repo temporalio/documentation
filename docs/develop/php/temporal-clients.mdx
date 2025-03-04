@@ -325,7 +325,7 @@ $workflowClient->start($stub, 'fromID', 'toID', 'refID', 1000);
 var_dump($stub->getResult(timeout: 5.5));
 ```
 
-Note, that you can specify a timeout for the `getResult()` method in seconds.
+Note that you can specify a timeout for the `getResult()` method in seconds.
 If the Workflow does not complete within the specified time, a `TimeoutException` will be thrown.
 See how to limit all RPC calls in the [RPC timeout](#configure-rpc-timeout) section.
 
