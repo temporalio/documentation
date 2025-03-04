@@ -54,7 +54,7 @@ A new [Workflow Task](/tasks#workflow-task) will be scheduled, and the Workflow 
 
 `temporal workflow cancel --workflow-id=meaningful-business-id`
 
-In addition to Workflow IDs, Workflows can also be cancelled by a [List Filter](/visibility#list-filter).
+In addition to Workflow IDs, Workflows can also be cancelled by a [List Filter](/list-filter).
 `temporal workflow cancel --query=MyListFilter`
 
 Use the following options to change the behavior of this command.
@@ -315,7 +315,7 @@ Use the following command options to change how the Workflow Execution behaves d
 
 ## list
 
-The `temporal workflow list` command provides a list of [Workflow Executions](/workflows#workflow-execution) that meet the criteria of a given [List Filter](/visibility#list-filter).
+The `temporal workflow list` command provides a list of [Workflow Executions](/workflows#workflow-execution) that meet the criteria of a given [List Filter](/list-filter).
 By default, this command returns a list of up to 10 closed Workflow Executions.
 
 `temporal workflow list --query=MyListFilter`
@@ -372,7 +372,7 @@ Use the following command options to change the information returned by this com
 
 ## query
 
-The `temporal workflow query` command sends a [Query](/encyclopedia/workflow-message-passing#sending-queries) to a [Workflow Execution](/workflows#workflow-execution).
+The `temporal workflow query` command sends a [Query](/sending-messages#sending-queries) to a [Workflow Execution](/workflows#workflow-execution).
 
 Queries can retrieve all or part of the Workflow state within given parameters.
 Queries can also be used on completed [Workflows](/workflows#workflow-execution).
@@ -484,7 +484,7 @@ The input file must have a [Workflow ID](/workflows#workflow-id) on each line.
 
 `temporal workflow reset-batch --input-file=MyInput --input-separator="\t"`
 
-Workflow Executions can also be queried by a [List Filter](/visibility#list-filter).
+Workflow Executions can also be queried by a [List Filter](/list-filter).
 `temporal workflow reset-batch --query=MyListFilter`
 
 Use the following options to change reset behavior.
@@ -597,7 +597,7 @@ Use the following options to change the behavior of this command.
 
 ## signal
 
-The `temporal workflow signal` command is used to send a [Signal](/encyclopedia/workflow-message-passing#sending-signals) to a [Workflow Execution](/workflows#workflow-execution) by [Workflow Id](/workflows#workflow-id) or [List Filter](/visibility#list-filter).
+The `temporal workflow signal` command is used to send a [Signal](/sending-messages#sending-signals) to a [Workflow Execution](/workflows#workflow-execution) by [Workflow Id](/workflows#workflow-id) or [List Filter](/list-filter).
 
 Use the following options to change the command's behavior.
 
@@ -647,7 +647,7 @@ Use the following options to change the command's behavior.
 
 ## stack
 
-The `temporal workflow stack` command queries a [Workflow Execution](/workflows#workflow-execution) with `--stack-trace` as the [Query](/encyclopedia/workflow-message-passing#stack-trace-query) type.
+The `temporal workflow stack` command queries a [Workflow Execution](/workflows#workflow-execution) with `--stack-trace` as the [Query](/sending-messages#stack-trace-query) type.
 Returning the call stack of all the threads owned by a Workflow Execution can be great for troubleshooting in production.
 
 Use the following options to change the command's behavior.

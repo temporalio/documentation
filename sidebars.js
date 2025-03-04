@@ -28,18 +28,6 @@ module.exports = {
             "evaluate/development-production-features/workflow-message-passing",
             "evaluate/development-production-features/debugging",
             "evaluate/development-production-features/interrupt-workflow",
-            {
-              type: "category",
-              label: "High Availability",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "evaluate/development-production-features/high-availability",
-              },
-              items: [
-                "evaluate/development-production-features/multi-region-namespace",
-              ],
-            },
             "evaluate/development-production-features/testing-suite",
             "evaluate/development-production-features/observability",
             "evaluate/development-production-features/data-encryption",
@@ -89,6 +77,7 @@ module.exports = {
               ],
             },
             "evaluate/temporal-cloud/service-availability",
+            "evaluate/temporal-cloud/regions",
             "evaluate/temporal-cloud/limits",
             "evaluate/temporal-cloud/sla",
             "evaluate/temporal-cloud/pricing",
@@ -282,6 +271,7 @@ module.exports = {
         },
         "develop/activity-retry-simulator",
         "develop/worker-performance",
+        "develop/safe-deployments",
       ],
     },
     {
@@ -333,9 +323,54 @@ module.exports = {
                 "production-deployment/cloud/metrics/reference",
                 "production-deployment/cloud/metrics/datadog",
                 "production-deployment/cloud/metrics/prometheus-grafana",
+                "production-deployment/cloud/metrics/performance-bottlenecks",
               ],
             },
-            "production-deployment/cloud/multi-region",
+            {
+              type: "category",
+              label: "High Availabilty",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "production-deployment/cloud/high-availability/index",
+              },
+              items: [
+                "production-deployment/cloud/high-availability/how-it-works",
+                "production-deployment/cloud/high-availability/enable",
+                "production-deployment/cloud/high-availability/monitor",
+                {
+                type: "category",
+                label: "How-to guides",
+                collapsed: true,
+                link: {
+                  type: "doc",
+                  id: "production-deployment/cloud/high-availability/how-to/index",
+                },
+                items: [
+                  "production-deployment/cloud/high-availability/how-to/api-authentication",
+                  "production-deployment/cloud/high-availability/how-to/failovers",
+                  "production-deployment/cloud/high-availability/how-to/secure-routing",
+                  "production-deployment/cloud/high-availability/how-to/private-link",
+                ]
+              },
+              {
+                type: "category",
+                label: "References",
+                collapsed: true,
+                link: {
+                  type: "doc",
+                  id: "production-deployment/cloud/high-availability/references/index",
+                },
+                items: [
+                  "production-deployment/cloud/high-availability/references/regions",
+                  // "production-deployment/cloud/high-availability/references/concepts",
+                  // "production-deployment/cloud/high-availability/references/best-practices",
+                  // "production-deployment/cloud/high-availability/references/glossary",
+                  // "production-deployment/cloud/high-availability/references/faq",
+                ]
+              },
+              ]
+            },
             {
               type: "category",
               label: "Temporal Nexus",
@@ -355,6 +390,7 @@ module.exports = {
             "production-deployment/cloud/worker-health",
             "production-deployment/cloud/service-health",
             "production-deployment/cloud/saml",
+            "production-deployment/cloud/scim",
             "production-deployment/cloud/operation-api",
             "production-deployment/cloud/terraform-provider",
             {
@@ -529,12 +565,38 @@ module.exports = {
                 "encyclopedia/workers/task-queues",
                 "encyclopedia/workers/task-routing-worker-sessions",
                 "encyclopedia/workers/sticky-execution",
+                "encyclopedia/workers/worker-deployments",
                 "encyclopedia/workers/worker-versioning",
               ],
             },
-            "encyclopedia/workflow-message-passing",
+            {
+              type: "category",
+              label: "Workflow Message Passing",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "encyclopedia/workflow-message-passing/workflow-message-passing",
+              },
+              items: [
+                   "encyclopedia/workflow-message-passing/sending-messages",
+                   "encyclopedia/workflow-message-passing/handling-messages",
+              ],
+            },
             "encyclopedia/child-workflows",
-            "encyclopedia/visibility",
+            {
+              type: "category",
+              label: "Visibility",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "encyclopedia/visibility/visibility",
+              },
+              items: [
+                "encyclopedia/visibility/dual-visibility",
+                "encyclopedia/visibility/list-filter",
+                "encyclopedia/visibility/search-attribute",
+              ],
+            },
             "encyclopedia/clusters",
             {
               type: "category",
@@ -568,7 +630,24 @@ module.exports = {
                 "encyclopedia/nexus-security",
               ],
             },
-            "encyclopedia/dataconversion",
+            {
+              type: "category",
+              label: "Data Conversion",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "encyclopedia/data-conversion/dataconversion",
+              },
+              items: [
+                   "encyclopedia/data-conversion/default-custom-data-converters",
+                   "encyclopedia/data-conversion/payload-converter",
+                   "encyclopedia/data-conversion/payload-codec",
+                   "encyclopedia/data-conversion/failure-converter",
+                   "encyclopedia/data-conversion/remote-data-encoding",
+                   "encyclopedia/data-conversion/codec-server",
+                   "encyclopedia/data-conversion/key-management",
+              ],
+            },
           ],
         },
         "glossary",

@@ -11,16 +11,16 @@ const archetypeClasses = {
 };
 
 const languageIcons = {
-  Go: "/img/golang.svg",
-  Java: "/img/java.svg",
-  PHP: "/img/php.svg",
-  Python: "/img/python.svg",
-  TypeScript: "/img/typescript.svg",
-  ".NET": "/img/dotnet.svg",
-  "Temporal CLI": "/img/terminal.svg",
+  Go: "/img/sdks/svgs/golang.svg",
+  Java: "/img/sdks/svgs/java.svg",
+  PHP: "/img/sdks/svgs/php.svg",
+  Python: "/img/sdks/svgs/python.svg",
+  TypeScript: "/img/sdks/svgs/typescript.svg",
+  ".NET": "/img/sdks/svgs/dotnet.svg",
+  "Temporal CLI": "/img/assets/terminal.svg",
 };
 
-const encyclopediaIcon = "/img/link-preview-icon.svg";
+const encyclopediaIcon = "/img/assets/link-preview-icon.svg";
 
 function getTagClass(tag) {
   return archetypeClasses[tag] || null;
