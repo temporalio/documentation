@@ -307,18 +307,27 @@ It's possible to both block progress on the result (synchronous execution) or ge
 In the Temporal Platform, it's also acceptable to use Queries as the preferred method for accessing the state and results of Workflow Executions.
 
 If you need to wait for the completion of a Workflow after an asynchronous start, make a blocking call to
-the `WorkflowRun`->`getResult` method.
+the `WorkflowRun::getResult()` method.
 
 ```php
-$run = $workflowClient->start($accountTransfer, 'fromID', 'toID', 'refID', 1000);
+$stub = $workflowClient->newWorkflowStub(YourWorkflowInterface::class);
+$run = $workflowClient->start($stub, 'fromID', 'toID', 'refID', 1000);
 
 var_dump($run->getResult());
 ```
 
+In case of untyped Workflow stub, you can use the [`WorkflowStub::getResult()`](https://php.temporal.io/classes/Temporal-Workflow-WorkflowRunInterface.html#method_getResult) method:
 
+```php
+$stub = $workflowClient->newUntypedWorkflowStub('account.transfer');
+$workflowClient->start($stub, 'fromID', 'toID', 'refID', 1000);
 
+var_dump($stub->getResult(timeout: 5.5));
+```
 
-
+Note, that you can specify a timeout for the `getResult()` method in seconds.
+If the Workflow does not complete within the specified time, a `TimeoutException` will be thrown.
+See how to limit all RPC calls in the [RPC timeout](#configure-rpc-timeout) section.
 
 
 ## Advanced connection options {#advanced-connection-options}
