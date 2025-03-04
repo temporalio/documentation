@@ -428,6 +428,16 @@ map[string]interface{}{
 }
 ```
 
+When upserting search attributes in existing workflows, use versioning to prevent failures caused by [nondeterminism errors](/workflows#non-deterministic-change) 
+```go
+version := workflow.GetVersion(ctx, "adding-to-existing-workflows", workflow.DefaultVersion, 0)
+if version == workflow.DefaultVersion {
+    // Do nothing
+} else {
+    workflow.UpsertTypedSearchAttributes(ctx, searchAttributeUpdate...)
+} 
+```
+
 ### Remove a Search Attribute from a Workflow {#remove-search-attribute}
 
 **How to remove a Search Attribute from a Workflow using the Go SDK.**
