@@ -13,6 +13,8 @@ tags:
   - Nexus
 ---
 
+import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
 Temporal Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
@@ -35,7 +37,11 @@ Bi-directional links enable navigation of an end-to-end execution across Namespa
 They are automatically added by the Temporal SDK for builder functions like New-Workflow-Run-Operation.
 Links are auto-wired from a specific Nexus Operation event in the caller's Workflow history to a specific event in the handler's Workflow history.
 
-![Bi-directional linking](/img/cloud/nexus/nexus-bi-directional-linking.png)
+<CaptionedImage
+    src="/img/cloud/nexus/nexus-bi-directional-linking.png"
+    title="Bi-directional linking"
+    zoom="true"
+/>
 
 Bi-directional links enable navigating across Namespace boundaries:
 
@@ -50,8 +56,13 @@ Bi-directional links enable navigating across Namespace boundaries:
 
 Similar to pending Activities, pending Nexus Operations are displayed in the Workflow details page and using: `temporal workflow describe`.
 
-For example, from the Temporal UI:\
-![Pending Operations](/img/cloud/nexus/pending-nexus-operations.png)
+For example, from the Temporal UI:
+
+<CaptionedImage
+    src="/img/cloud/nexus/pending-nexus-operations.png"
+    title="Pending Operations"
+    zoom="true"
+/>
 
 For example, from the `temporal` CLI:
 
@@ -80,8 +91,13 @@ Non-retryable errors will result in the Nexus Operation reaching a final state i
 Nexus callbacks are sent from the handler's Namespace to the caller's Namespace to complete an asynchronous Nexus Operation.
 These show up in the UI and using: `temporal workflow describe`.
 
-For example, from the Temporal UI:\
-![Pending Callbacks](/img/cloud/nexus/nexus-callback.png)
+For example, from the Temporal UI:
+
+<CaptionedImage
+    src="/img/cloud/nexus/nexus-callback.png"
+    title="Pending Callbacks"
+    zoom="true"
+/>
 
 For example, from the `temporal` CLI:
 

@@ -16,6 +16,8 @@ tags:
   - Limits
 ---
 
+import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+
 This page addresses the limits of the Temporal Cloud system.
 Reach out to your account team should you have any questions about these limits.
 
@@ -114,31 +116,15 @@ This is configurable in the Temporal Web UI.
 
 [Navigate to your list of Namespaces](https://cloud.temporal.io/namespaces), choose the Namespace you want to update, and select edit:
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Choose your Namespace and select Edit</p>
-  </div>
-  <div className="tdiiw" height="462">
-    <img
-      className="img_ev3q"
-      src="/img/cloud/cloud-guide/edit-namespace-option.png"
-      alt="Choose your Namespace and select Edit"
-    />
-  </div>
-</div>
+<CaptionedImage
+    src="/img/cloud/cloud-guide/edit-namespace-option.png"
+    title="Choose your Namespace and select Edit"
+/>
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Update the Retention Period</p>
-  </div>
-  <div className="tdiiw" height="482">
-    <img
-      className="img_ev3q"
-      src="/img/cloud/cloud-guide/edit-retention-period.png"
-      alt="Update the Retention Period"
-    />
-  </div>
-</div>
+<CaptionedImage
+    src="/img/cloud/cloud-guide/edit-retention-period.png"
+    title="Update the Retention Period"
+/>
 
 You can set the Retention Period between 1 and 90 days.
 

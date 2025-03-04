@@ -28,6 +28,8 @@ tags:
   - Temporal SDKs
 ---
 
+import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+
 The definition code of a Temporal Workflow must be deterministic because Temporal uses event sourcing
 to reconstruct the Workflow state by replaying the saved history event data on the Workflow
 definition code. This means that any incompatible update to the Workflow Definition code could cause
@@ -117,7 +119,11 @@ Implementing patching involves three steps:
 
 Using `patched` inserts a marker into the Workflow History.
 
-![image](https://user-images.githubusercontent.com/6764957/139673361-35d61b38-ab94-401e-ae7b-feaa52eae8c6.png)
+<CaptionedImage
+    src="https://user-images.githubusercontent.com/6764957/139673361-35d61b38-ab94-401e-ae7b-feaa52eae8c6.png"
+    title="Using `patched` inserts a marker into the Workflow History"
+    zoom="true"
+/>
 
 During replay, if a Worker encounters a history with that marker, it will fail the Workflow task when the Workflow code doesn't produce the same patch marker (in this case, `my-patch`). This ensures you can safely deploy code from `post_patch_activity` as a "feature flag" alongside the original version (`pre_patch_activity`).
 

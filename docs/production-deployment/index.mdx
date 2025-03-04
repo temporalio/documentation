@@ -12,6 +12,8 @@ tags:
   - Self-hosting
 ---
 
+import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+
 **Ready to elevate your durable application into production?**
 
 To take your application to production, you deploy your application code, including your Workflows, Activities, and Workers, on your infrastructure using your existing build, test and deploy tools.
@@ -25,35 +27,17 @@ You can use Temporal Cloud, a fully-managed platform, or you can self-host the s
 You can let us handle the operations of running the Temporal Service, and focus on your application.
 Follow the [Temporal Cloud guide](/cloud) to get started.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Connect your application instances to Temporal Cloud</p>
-  </div>
-  <div className="tdiiw" height="742">
-    <img
-      className="img_ev3q"
-      src="/diagrams/basic-platform-topology-cloud.svg"
-      alt="Connect your application instances to Temporal Cloud"
-    />
-  </div>
-</div>
+<CaptionedImage
+    src="/diagrams/basic-platform-topology-cloud.svg"
+    title="Connect your application instances to Temporal Cloud"
+/>
 
 ## Run a Self-hosted Temporal Service
 
 Alternatively, you can run your own production level Temporal Service to orchestrate your durable applications.
 Follow the [Self-hosted guide](/self-hosted-guide) to get started.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">
-      Connect your application instances to your self-hosted Temporal Service
-    </p>
-  </div>
-  <div className="tdiiw" height="879">
-    <img
-      className="img_ev3q"
-      src="/diagrams/basic-platform-topology-self-hosted.svg"
-      alt="Connect your application instances to your self-hosted Temporal Service"
-    />
-  </div>
-</div>
+<CaptionedImage
+    src="/diagrams/basic-platform-topology-self-hosted.svg"
+    title="Connect your application instances to your self-hosted Temporal Service"
+/>

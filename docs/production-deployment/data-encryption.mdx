@@ -16,6 +16,8 @@ tags:
   - Security
 ---
 
+import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+
 import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
 
 Temporal Server stores and persists the data handled in your Workflow Execution.
@@ -262,18 +264,10 @@ After you create your Codec Server and expose the requisite endpoints, set the e
 
 On Temporal Cloud and self-hosted Temporal Service, you can configure a Codec Server endpoint to be used for a Namespace in the Web UI.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Codec Server endpoint Namespace setting</p>
-  </div>
-  <div className="tdiiw" height="840">
-    <img
-      className="img_ev3q"
-      src="/img/info/set-codec-endpoint-form.png"
-      alt="Codec Server endpoint Namespace setting"
-    />
-  </div>
-</div>
+<CaptionedImage
+    src="/img/info/set-codec-endpoint-form.png"
+    title="Codec Server endpoint Namespace setting"
+/>
 
 To set a Codec Server endpoint on a Namespace, do the following.
 
@@ -288,18 +282,10 @@ Setting a Codec Server endpoint on a self-hosted Temporal Service enables it for
 
 You can also override the global Codec Server setting at the browser level. This can be useful when developing, testing, or troubleshooting encoding functionality.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Codec Server endpoint browser setting</p>
-  </div>
-  <div className="tdiiw" height="333">
-    <img
-      className="img_ev3q"
-      src="/img/info/data-encoder-button.png"
-      alt="Codec Server endpoint browser setting"
-    />
-  </div>
-</div>
+<CaptionedImage
+    src="/img/info/data-encoder-button.png"
+    title="Codec Server endpoint browser setting"
+/>
 
 To set a browser override for the Namespace-level endpoint, do the following.
 
