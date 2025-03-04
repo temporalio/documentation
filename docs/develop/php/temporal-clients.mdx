@@ -286,28 +286,14 @@ $stub = $workflowClient->newWorkflowStub(
 
 Although it is not required, we recommend providing your own [Workflow Id](/workflows#workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
 
-The following code example grabs the `userID` as an input and uses it to start the Workflow. The `userID` is used as Workflow Id. You can use this to cancel your Workflow later.
+Set the Workflow Id with the Workflow stub in the Client code using [`WorkflowOptions::withTaskQueue()`](https://php.temporal.io/classes/Temporal-Client-WorkflowOptions.html#method_withWorkflowId).
 
 ```php
-#[WorkflowInterface]
-interface SubscriptionWorkflowInterface
-{
-    #[WorkflowMethod]
-    public function subscribe(string $userID);
-}
-```
-
-The following code example, uses the input parameter `userID` as the Workflow Id.
-
-```php
-#[WorkflowInterface]
-interface SubscriptionWorkflowInterface
-{
-    #[WorkflowMethod]
-    public function subscribe(
-        string $userID
-    );
-}
+$stub = $workflowClient->newWorkflowStub(
+    YourWorkflowInterface::class,
+    WorkflowOptions::new()
+        ->withWorkflowId("Workflow-Id"),
+);
 ```
 
 ### How to get the results of a Workflow Execution {#get-workflow-results}
