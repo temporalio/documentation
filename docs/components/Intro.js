@@ -3,6 +3,7 @@ import Link from "@docusaurus/Link";
 import { SdkLogos } from "./SdkLogos";
 import { BookOpen, Code, Terminal, Rocket, Cloud, ShieldCheck, Activity, MessageSquare, Globe, Calendar } from 'lucide-react';
 
+
 const cardIcons = {
   "Get started with Temporal": <Rocket className="w-12 h-12 mb-4 text-[#7B61FF] dark:text-[#A78BFA]" strokeWidth="2" />,
   "Start building your next app": <Code className="w-12 h-12 mb-4 text-[#6366F1] dark:text-[#818CF8]" strokeWidth="2" />,
