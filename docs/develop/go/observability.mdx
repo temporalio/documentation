@@ -428,7 +428,7 @@ map[string]interface{}{
 }
 ```
 
-When upserting search attributes in existing workflows, use versioning to prevent failures caused by [nondeterminism errors](/workflows#non-deterministic-change) 
+When upserting Search Attributes in existing Workflows, versioning prevents failures caused by [non-determinism errors](/workflows#non-deterministic-change).
 ```go
 version := workflow.GetVersion(ctx, "adding-to-existing-workflows", workflow.DefaultVersion, 0)
 if version == workflow.DefaultVersion {
