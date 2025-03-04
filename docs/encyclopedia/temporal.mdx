@@ -16,6 +16,8 @@ tags:
   - Concepts
 ---
 
+import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+
 Temporal is a scalable and reliable runtime for durable function executions called [Temporal Workflow Executions](/workflows#workflow-execution).
 
 Said another way, it's a platform that guarantees the [Durable Execution](#durable-execution) of your application code.
@@ -24,18 +26,10 @@ It enables you to develop as if failures don't even exist.
 Your application will run reliably even if it encounters problems, such as network outages or server crashes, which would be catastrophic for a typical application.
 The Temporal Platform handles these types of problems, allowing you to focus on the business logic, instead of writing application code to detect and recover from failures.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">The Temporal System</p>
-  </div>
-  <div className="tdiiw" height="740">
-    <img
-      className="img_ev3q"
-      src="/diagrams/temporal-system-simple.svg"
-      alt="The Temporal System"
+<CaptionedImage
+    src="/diagrams/temporal-system-simple.svg"
+    title="The Temporal System"
     />
-  </div>
-</div>
 
 ## Durable Execution {#durable-execution}
 
@@ -53,18 +47,10 @@ Together these components create a runtime for Workflow Executions.
 The Temporal Platform consists of a supervising software typically called the [Temporal Service](/clusters) and application code bundled as Worker Processes.
 Together these components create a runtime for your application.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">The Temporal Platform</p>
-  </div>
-  <div className="tdiiw" height="740">
-    <img
-      className="img_ev3q"
-      src="/diagrams/temporal-platform-simple.svg"
-      alt="The Temporal Platform"
+<CaptionedImage
+    src="/diagrams/temporal-platform-simple.svg"
+    title="The Temporal Platform"
     />
-  </div>
-</div>
 
 A Temporal Service consists of the Temporal Server and a database.
 
@@ -72,18 +58,11 @@ Our software as a service (SaaS) offering, Temporal Cloud, offers an alternative
 
 Worker Processes are hosted and operated by you and execute your code. Workers run using one of our SDKs.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Basic component topology of the Temporal Platform</p>
-  </div>
-  <div className="tdiiw" height="1121">
-    <img
-      className="img_ev3q"
-      src="/diagrams/temporal-platform-component-topology.svg"
-      alt="Basic component topology of the Temporal Platform"
+<CaptionedImage
+    src="/diagrams/temporal-platform-component-topology.svg"
+    title="Basic component topology of the Temporal Platform"
+    width="90%"
     />
-  </div>
-</div>
 
 ## What is a Temporal Application? {#temporal-application}
 

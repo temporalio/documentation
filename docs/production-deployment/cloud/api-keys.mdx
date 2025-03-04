@@ -17,6 +17,8 @@ tags:
   - API
 ---
 
+import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+
 Temporal Cloud API keys offer industry-standard identity-based authentication for Temporal users and [Service Accounts](/cloud/service-accounts).
 This document introduces Temporal Cloud's API key features:
 
@@ -36,7 +38,10 @@ Each Temporal Cloud API key is a unique identity linked to role-based access con
 
 The authentication process follows this pathway:
 
-![API key (authentication) → Identity (user or Service Account) → RBAC (authorization)](/img/cloud/apikeys/apikeyrbac.png)
+<CaptionedImage
+    src="/img/cloud/apikeys/apikeyrbac.png"
+    title="API key (authentication) → Identity (user or Service Account) → RBAC (authorization)"
+/>
 
 ## API key best practices {#best-practices}
 
@@ -707,6 +712,10 @@ A: Up to 10 non-expired keys per user and 20 non-expired keys per Service Accoun
 
 A: Yes, API keys expire based on the specified expiration date.
 Temporal recommends rotating API keys periodically.
+
+**Q: Whats the maximum allowed expiration for an API key?**
+
+A: The maximum expiration time for an API key is 2 years.
 
 **Q: What happens if I misplace or lose my API bearer token/secret key?**
 

@@ -14,6 +14,8 @@ tags:
   - Concepts
 ---
 
+import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
 Temporal Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
@@ -27,7 +29,10 @@ An Endpoint decouples the caller and handler, so the caller only needs to know t
 The Endpoint encapsulates the upstream target Namespace and Task Queue from the caller.
 A Worker handles Nexus requests by registering one or more [Nexus Services](/nexus/services) and polling the Endpoint's target Task Queue.
 
-![Nexus Overview](/img/cloud/nexus/nexus-overview-short.png)
+<CaptionedImage
+    src="/img/cloud/nexus/nexus-overview-short.png"
+    title="Nexus Overview"
+/>
 
 Multiple Nexus Endpoints can target different Task Queues in the same target Namespace.
 

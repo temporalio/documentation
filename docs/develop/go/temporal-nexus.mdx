@@ -14,6 +14,8 @@ tags:
   - Nexus
 ---
 
+import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
 Temporal Go SDK support for Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability).
@@ -636,11 +638,17 @@ This will result in:
 
 A synchronous Nexus Operation will surface in the caller Workflow as follows, with just `NexusOperationScheduled` and `NexusOperationCompleted` events in the caller's Workflow history:
 
-![Observability Sync](/img/cloud/nexus/go-sdk-observability-sync.png)
+<CaptionedImage
+    src="/img/cloud/nexus/go-sdk-observability-sync.png"
+    title="Observability Sync"
+/>
 
 An asynchronous Nexus Operation will surface in the caller Workflow as follows, with `NexusOperationScheduled`, `NexusOperationStarted`, and `NexusOperationCompleted`, in the caller's Workflow history:
 
-![Observability Async](/img/cloud/nexus/go-sdk-observability-async.png)
+<CaptionedImage
+    src="/img/cloud/nexus/go-sdk-observability-async.png"
+    title="Observability Async"
+/>
 
 ### Temporal CLI
 

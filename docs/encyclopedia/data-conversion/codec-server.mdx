@@ -20,6 +20,8 @@ tags:
   - Security
 ---
 
+import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+
 This page discusses [Codec Server](#codec-server). 
 
 ## What is a Codec Server? {#codec-server}
@@ -28,7 +30,12 @@ A Codec Server is an HTTP/HTTPS server that uses a [custom Payload Codec](/produ
 
 {/* This should not have changed with tctl-to-temporal */}
 
-![](/diagrams/tctl-diagram-codec-server.svg)
+<CaptionedImage
+    src="/diagrams/tctl-diagram-codec-server.svg"
+    title="Codec Server"
+    width="50%"
+    zoom="true"
+/>
 
 A Codec Server follows the Temporal [Codec Server Protocol](https://github.com/temporalio/samples-go/tree/main/codec-server#codec-server-protocol).
 It implements two endpoints:
