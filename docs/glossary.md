@@ -205,7 +205,7 @@ An append-only log of Events that represents the full state a Workflow Execution
 
 After Temporal Cloud has resolved an outage or incident involving a failover, a failback process shifts Workflow Execution processing back to the original region that was active before the incident.
 
-#### [Failover](/cloud/multi-region)
+#### [Failover](/cloud/high-availability)
 
 A failover shifts Workflow Execution processing from an active Temporal Namespace region to a standby Temporal Namespace region during outages or other incidents.
 Standby Namespace regions use replication to duplicate data and prevent data loss during failover.
