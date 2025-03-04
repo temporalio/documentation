@@ -17,6 +17,8 @@ tags:
   - Temporal Cloud
 ---
 
+import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+
 A Namespace is a unit of isolation within the Temporal Platform.
 
 - [Create a Namespace](#create-a-namespace)
@@ -422,7 +424,10 @@ Follow these steps:
 - Scroll down to Security and click the disclosure button (downward-facing caret).
 - Enable **Deletion Protection**
 
-![Deletion Protection is enabled by toggling the switch](/img/cloud/namespace/deletion-protection.png)
+<CaptionedImage
+    src="/img/cloud/namespace/deletion-protection.png"
+    title="Deletion Protection is enabled by toggling the switch"
+/>
 
 To enable or disable this feature using [`tcld`](/cloud/tcld), use the following command.
 Set the value to `true` to enable or `false` to disable:

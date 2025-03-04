@@ -15,6 +15,8 @@ tags:
   - Durable Execution
 ---
 
+import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+
 This guide provides a comprehensive overview of Temporal Activities.
 
 In day-to-day conversation, the term _Activity_ denotes an [Activity Definition](#activity-definition), [Activity Type](#activity-type), or [Activity Execution](#activity-execution).
@@ -48,18 +50,10 @@ Therefore, the terms Activity Function and Activity Method refer to the source o
 
 Activity Definitions are named and referenced in code by their [Activity Type](#activity-type).
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Activity Definition</p>
-  </div>
-  <div className="tdiiw" height="680">
-    <img
-      className="img_ev3q"
-      src="/diagrams/activity-definition.svg"
-      alt="Activity Definition"
+<CaptionedImage
+    src="/diagrams/activity-definition.svg"
+    title="Activity Definition"
     />
-  </div>
-</div>
 
 #### Idempotency
 
@@ -128,18 +122,10 @@ An Activity Execution is the full chain of [Activity Task Executions](/tasks#act
 - [How to start an Activity Execution using the TypeScript SDK](/develop/typescript/core-application#activity-execution)
 - [How to start an Activity Execution using the .NET SDK](/develop/dotnet/core-application#activity-execution)
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Activity Execution</p>
-  </div>
-  <div className="tdiiw" height="1780">
-    <img
-      className="img_ev3q"
-      src="/diagrams/activity-execution.svg"
-      alt="Activity Execution"
+<CaptionedImage
+    src="/diagrams/activity-execution.svg"
+    title="Activity Execution"
     />
-  </div>
-</div>
 
 You can customize [Activity Execution timeouts](/encyclopedia/detecting-activity-failures#start-to-close-timeout) and [retry policies](/encyclopedia/retry-policies).
 

@@ -18,6 +18,8 @@ tags:
   - Security
 ---
 
+import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+
 :::info General company security
 
 For information about the general security habits of Temporal Technologies, see our [trust page](https://trust.temporal.io).
@@ -95,7 +97,10 @@ When these are provided the frontend invokes the implementation of these interfa
 
 See https://github.com/temporalio/samples-server/blob/main/extensibility/authorizer for a sample implementation.
 
-![](/diagrams/frontend-authorization-order-of-operations.png)
+<CaptionedImage
+    src="/diagrams/frontend-authorization-order-of-operations.png"
+    title="Front-end authorization order of operations"
+/>
 
 ### Single sign-on integration
 

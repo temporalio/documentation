@@ -18,6 +18,8 @@ tags:
   - Temporal SDKs
 ---
 
+import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+
 The Temporal Platform requires that Workflow code is [deterministic](/workflows#deterministic-constraints).
 Because of that requirement, the Temporal TypeScript SDK offers two dedicated versioning features.
 
@@ -183,7 +185,11 @@ Patching is a three-step process:
 
 `patched` inserts a marker into the Workflow history.
 
-![image](https://user-images.githubusercontent.com/6764957/139673361-35d61b38-ab94-401e-ae7b-feaa52eae8c6.png)
+<CaptionedImage
+    src="https://user-images.githubusercontent.com/6764957/139673361-35d61b38-ab94-401e-ae7b-feaa52eae8c6.png"
+    title="`patched` inserts a marker into the Workflow history."
+    zoom="true"
+/>
 
 During replay, when a Worker picks up a history with that marker it will fail the Workflow task when running Workflow code that does not emit the same patch marker (in this case `your-change-id`); therefore it is safe to deploy code from `v2` in a "feature flag" alongside the original version (`v1`).
 
