@@ -9,10 +9,7 @@ const TemporalDocsLanding = () => {
       ? "/homepage/Temporal_Symbol_light.png"
       : "/homepage/Temporal_Symbol_dark.png";
 
-  const sdks = [
-    "Go", "Java", "TypeScript", "PHP", 
-    "Python", ".NET"
-  ];
+  const sdks = ["Go", "Java", "TypeScript", "PHP", "Python", ".NET"];
 
   const certifications = [
     { name: "Temporal 101", icon: logoSrc },
@@ -53,7 +50,6 @@ const TemporalDocsLanding = () => {
   return (
     <div className="docs-landing">
       <div className="container">
-     
         {/* SDK Navigation */}
         <div className="section">
           <h2>Explore by SDK</h2>
@@ -68,65 +64,13 @@ const TemporalDocsLanding = () => {
           </div>
         </div>
 
-        {/* Two-column layout for Search and Certification */}
-        <div className="flex-grid">
-          {/* Search Section */}
-          <div className="flex-column">
-            <div className="search-box">
-              <div>
-                <h2>Find exactly what you need</h2>
-                <p>Use Command - K to open the search. Discover code samples, API reference, and deep technical guides.</p>
-              </div>
-              <a href="#" className="cta-link">
-                Explore Documentation →
-              </a>
-            </div>
-          </div>
-
-          {/* Certification Section */}
-          <div className="flex-column">
-            <div className="certification-box">
-              <div>
-                <h2>Learn Temporal by enrolling in our free introductory courses.</h2>
-                <p>Validate your expertise and earn a Temporal certification to stand out in the industry.</p>
-              </div>
-              <div className="certification-grid">
-                {certifications.map((cert) => (
-                  <div key={cert.name} className="cert-card">
-                    <img src={cert.icon} alt="Temporal Logo" className="cert-icon" />
-                    <p>{cert.name}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Cloud Platform Section */}
-        <div className="cloud-box">
-          <h2>Run workflows in production, effortlessly</h2>
-          <p>Temporal Cloud takes care of scaling, reliability, and upgrades—so you can focus on building.</p>
-          <button className="cta-button">Get Started with Temporal Cloud</button>
-        </div>
-
-        {/* Well-Architected Framework */}
-        <div className="framework-box">
-          <h2>Build Invincible Apps</h2>
-          <p>Learn the best practices for designing, deploying, and operating Temporal applications at scale.</p>
-          <a href="#" className="cta-link">
-            Explore Best Practices →
+        {/* Banners Side by Side with Correct Order */}
+        <div className="banner-grid">
+          <a href="#" className="banner-item">
+            <img src="/homepage/search-banner.png" alt="Find what you need with search" className="full-width-banner" />
           </a>
-        </div>
-
-        {/* Code Exchange */}
-        <div className="framework-box">
-          <h2>Code Exchange</h2>
-          <p>A collection of code samples, example applications, and ideas to inspire you to create what's next.</p>
-          <a 
-            href="https://temporal.io/code-exchange" 
-            className="cta-link"
-          >
-            Explore Code Exchange →
+          <a href="https://temporal.io/code-exchange" className="banner-item">
+            <img src="/homepage/code-exchange.png" alt="Explore Code Exchange" className="full-width-banner" />
           </a>
         </div>
 
