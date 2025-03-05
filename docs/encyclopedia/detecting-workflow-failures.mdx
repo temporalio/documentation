@@ -15,7 +15,8 @@ tags:
   - Timeouts
 ---
 
-import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
+import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+
 import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
 
 Temporal can detect different kinds of Workflow Execution failures through the following timeouts:
@@ -39,7 +40,9 @@ A Workflow Execution Timeout is the maximum time that a Workflow Execution can b
     <RelatedReadItem path="/develop/dotnet/failure-detection#workflow-timeouts" text="Set a Workflow Execution Timeout using the .NET SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
-<PrettyImage src="/diagrams/workflow-execution-timeout.svg" title="Workflow Execution Timeout period" />
+<CaptionedImage
+    src="/diagrams/workflow-execution-timeout.svg"
+    title="Workflow Execution Timeout period" />
 
 **The default value is ∞ (infinite).**
 If this timeout is reached, the Workflow Execution changes to a Timed Out status.
@@ -61,7 +64,9 @@ A Workflow Run Timeout is the maximum amount of time that a single Workflow Run 
     <RelatedReadItem path="/develop/dotnet/failure-detection#workflow-timeouts" text="Set a Workflow Timeout using the .NET SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
-<PrettyImage src="/diagrams/workflow-run-timeout.svg" title="Workflow Run Timeout period" />
+<CaptionedImage
+    src="/diagrams/workflow-run-timeout.svg"
+    title="Workflow Run Timeout period" />
 
 **The default is set to the same value as the [Workflow Execution Timeout](#workflow-execution-timeout).**
 This timeout is most commonly used to limit the execution time of a single [Temporal Cron Job Execution](/workflows#temporal-cron-job).
@@ -83,7 +88,9 @@ A Workflow Task Timeout is the maximum amount of time allowed for a [Worker](/wo
     <RelatedReadItem path="/develop/dotnet/failure-detection#workflow-timeouts" text="Set a Workflow Task Timeout using the .NET SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
-<PrettyImage src="/diagrams/workflow-task-timeout.svg" title="Workflow Task Timeout period" />
+<CaptionedImage
+    src="/diagrams/workflow-task-timeout.svg"
+    title="Workflow Task Timeout period" />
 
 **The default value is 10 seconds.**
 This timeout is primarily available to recognize whether a Worker has gone down so that the Workflow Execution can be recovered on a different Worker.
