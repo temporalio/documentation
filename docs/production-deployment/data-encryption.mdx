@@ -18,8 +18,6 @@ tags:
 
 import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
 
-import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
-
 Temporal Server stores and persists the data handled in your Workflow Execution.
 Encrypting this data ensures that any sensitive application data is secure when handled by the Temporal Server.
 
@@ -42,7 +40,9 @@ To encrypt your Payload, configure your custom encryption logic with a [Payload 
 
 A Payload Codec does byte-to-byte conversion to transform your Payload (for example, by implementing compression and/or encryption and decryption) and is an optional step that happens between the Client and the [Payload Converter](/payload-converter):
 
-<PrettyImage src="/diagrams/remote-data-encoding.svg" title="Remote data encoding architecture" />
+<CaptionedImage
+    src="/diagrams/remote-data-encoding.svg"
+    title="Remote data encoding architecture" />
 
 You can run your Payload Codec with a [Codec Server](/codec-server) and use the Codec Server endpoints in the Web UI and CLI to decode your encrypted Payload locally.
 For details on how to set up a Codec Server, see [Codec Server setup](#codec-server-setup).
