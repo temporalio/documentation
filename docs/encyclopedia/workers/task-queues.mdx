@@ -12,7 +12,7 @@ tags:
   - Task Queues
 ---
 
-import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+import * as Components from '@site/src/components';
 
 This page discusses [Task Queues](#task-queue) including [where to set Task Queues](#set-task-queue) and [Task Ordering](#task-ordering).
 
@@ -21,7 +21,7 @@ This page discusses [Task Queues](#task-queue) including [where to set Task Queu
 A Task Queue is a lightweight, dynamically allocated queue that one or more [Worker Entities](/workers#worker-entity) poll for [Tasks](/tasks).
 There are three types of Task Queues: Activity Task Queues, Workflow Task Queues, and Nexus Task Queues.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/diagrams/task-queue.svg"
     title="Task Queue component"
     />
@@ -30,7 +30,7 @@ A Nexus Endpoint creates an entry point that separates callers from the underlyi
 The Nexus callers only interact with the Nexus Endpoint.
 This endpoint routes Nexus Requests to a target Task Queue that's polled by a Nexus Worker.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/img/encyclopedia/workers/nexus-task-queue.png"
     title="Nexus Endpoint component"
     />

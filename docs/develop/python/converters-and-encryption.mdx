@@ -21,7 +21,7 @@ tags:
   - Temporal SDKs
 ---
 
-import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+import * as Components from '@site/src/components';
 
 Temporal's security model is designed around client-side encryption of Payloads.
 A client may encrypt Payloads before sending them to the server, and decrypt them after receiving them from the server.
@@ -118,7 +118,7 @@ When the Data Converter receives a value for conversion, it passes through each 
 Payload Converters can be customized independently of a Payload Codec.
 Temporal's Converter architecture looks like this:
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/img/info/converter-architecture.png"
     title="Temporal converter architecture"
 />

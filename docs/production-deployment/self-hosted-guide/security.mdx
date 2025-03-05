@@ -18,7 +18,7 @@ tags:
   - Security
 ---
 
-import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+import * as Components from '@site/src/components';
 
 :::info General company security
 
@@ -97,7 +97,7 @@ When these are provided the frontend invokes the implementation of these interfa
 
 See https://github.com/temporalio/samples-server/blob/main/extensibility/authorizer for a sample implementation.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/diagrams/frontend-authorization-order-of-operations.png"
     title="Front-end authorization order of operations"
 />

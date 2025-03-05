@@ -25,7 +25,7 @@ tags:
 
 ---
 
-import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+import * as Components from '@site/src/components';
 
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
@@ -64,7 +64,7 @@ Nexus Operation handlers are created with Temporal SDK builder functions such as
 When you execute a Nexus Operation from a caller Workflow using the Temporal SDK, a command is sent to Temporal to schedule the Nexus Operation which is atomically handed off to the Nexus Machinery.
 The [Nexus Machinery](/glossary#nexus-machinery) uses state-machine-based invocation and completion callbacks to ensure [at-least-once](#at-least-once-execution-semantics-and-idempotency) execution of a Nexus Operation and reliable delivery of the result.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/img/cloud/nexus/nexus-overview.png"
     title="Nexus Overview"
 />
@@ -76,7 +76,7 @@ This means you don't have to use Nexus RPC directly, only the Temporal SDK along
 
 Nexus supports synchronous Operations that take less than 10 seconds to execute, as measured from the caller's Nexus Machinery.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/img/cloud/nexus/nexus-sync-operation.png"
     title="Nexus Sync Operation Lifecycle"
 />
@@ -95,7 +95,7 @@ The lifecycle for a synchronous Nexus Operation, for example to Signal or Query 
 1. Caller Worker polls for a Workflow Task on its Workflow Task Queue.
 1. Caller Workflow gets the Operation result, using the Temporal SDK.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/img/cloud/nexus/nexus-workers-short-sync-op-sequence.png"
     title="Nexus"
 />
@@ -111,7 +111,7 @@ If a Nexus handler times out, the Operation will be retried by the caller's Nexu
 
 An asynchronous Nexus Operation may take up to 60 days to complete in Temporal Cloud, which is the maximum Schedule-to-Close-Timeout.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/img/cloud/nexus/nexus-async-operation.png"
     title="Nexus Async Operation Lifecycle"
 />
@@ -132,7 +132,7 @@ The lifecycle of an asynchronous Nexus Operation, with differences between the s
 1. Caller Worker polls for a Workflow Task on its Workflow Task Queue.
 1. Caller Workflow gets the Operation result, using the Temporal SDK.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/img/cloud/nexus/nexus-workers-short-async-op-sequence.png"
     title="Nexus"
 />
@@ -143,7 +143,7 @@ Synchronous Nexus Operation handlers can execute arbitrary code, but unlike Acti
 As mentioned above, a synchronous Nexus Operation handler has less than 10 seconds to process a Nexus start Operation request and should stay within the remaining request deadline budget for the Nexus request.
 For example, this may be done by looking at the Request-Timeout header or hooking into cancelation that is triggered when the timeout is exceeded.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/img/cloud/nexus/nexus-sync-operation-arbitrary-code.png"
     title="Nexus Operations with Arbitrary Code"
 />
@@ -154,7 +154,7 @@ Temporal Nexus Operations are requested and processed using the Temporal queue-b
 Workers interact with their Namespace gRPC endpoint as before.
 Nexus Machinery on both sides handles the cross-namepace communication.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/img/cloud/nexus/nexus-workers.png"
     title="Nexus Queue-based Worker Architecture"
 />
@@ -215,7 +215,7 @@ If the request is successful, the circuit breaker returns to the _closed_ state,
 Once the circuit breaker closes, all requests are allowed through.
 If it fails, the circuit breaker returns to the _half-open_ state for another 60 seconds.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/img/cloud/nexus/circuit-breaker.png"
     title="Flow chart showing the states of the Temporal Nexus Circuit Breaker"
 />
@@ -227,7 +227,7 @@ When the circuit breaker for a destination pair is tripped (i.e., the circuit br
 
 Here's how that looks in the Web UI:
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/img/cloud/nexus/circuit-breaking.png"
     title="Circuit Breaking"
 />

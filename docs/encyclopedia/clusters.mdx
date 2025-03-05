@@ -12,7 +12,7 @@ tags:
   - Temporal Service
 ---
 
-import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+import * as Components from '@site/src/components';
 
 :::info
 Please note an important update in our terminology.
@@ -26,7 +26,7 @@ A Temporal Service is the group of services, known as the [Temporal Server](#tem
 
 See the Self-hosted Temporal Service [production deployment guide](/self-hosted-guide) for implementation guidance.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/diagrams/temporal-cluster.svg"
     title="A Temporal Service (Server + persistence)"
 />
@@ -74,7 +74,7 @@ Temporal offers official support for, and is tested against, dependencies with t
 The Frontend Service is a stateless gateway service that exposes a strongly typed [Proto API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto).
 The Frontend Service is responsible for rate limiting, authorizing, validating, and routing all inbound calls.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/diagrams/temporal-frontend-service.svg"
     title="Frontend Service"
 />
@@ -106,7 +106,7 @@ The History Service is responsible for persisting Workflow Execution state to th
 When the Workflow Execution is able to progress, the History Service adds a Task with the Workflow's updated history to the Task Queue.
 From there, a Worker can poll for work, receive this updated history, and resume execution.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/diagrams/temporal-history-service.svg"
     title="Block diagram of how the History Service relates to the other services of the Temporal Server and to the Temporal Service"
 />
@@ -158,7 +158,7 @@ Each History Shard maintains the Workflow Execution Event History, Workflow Exec
 
 The Matching Service is responsible for hosting user-facing [Task Queues](/task-queue) for Task dispatching.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/diagrams/temporal-matching-service.svg"
     title="Matching Service"
 />
@@ -227,7 +227,7 @@ The Temporal Persistence store is a database used by the [Temporal Server](#temp
 A Temporal Service's only required dependency for basic operation is the Persistence database.
 Multiple types of databases are supported.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/diagrams/temporal-database.svg"
     title="Persistence"
 />

@@ -18,7 +18,7 @@ tags:
   - Temporal SDKs
 ---
 
-import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+import * as Components from '@site/src/components';
 
 The Temporal Platform requires that Workflow code is [deterministic](/workflows#deterministic-constraints).
 Because of that requirement, the Temporal TypeScript SDK offers two dedicated versioning features.
@@ -185,7 +185,7 @@ Patching is a three-step process:
 
 `patched` inserts a marker into the Workflow history.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="https://user-images.githubusercontent.com/6764957/139673361-35d61b38-ab94-401e-ae7b-feaa52eae8c6.png"
     title="`patched` inserts a marker into the Workflow history."
     zoom="true"

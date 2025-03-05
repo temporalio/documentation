@@ -12,7 +12,7 @@ tags:
   - Self-hosting
 ---
 
-import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+import * as Components from '@site/src/components';
 
 **Ready to elevate your durable application into production?**
 
@@ -27,7 +27,7 @@ You can use Temporal Cloud, a fully-managed platform, or you can self-host the s
 You can let us handle the operations of running the Temporal Service, and focus on your application.
 Follow the [Temporal Cloud guide](/cloud) to get started.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/diagrams/basic-platform-topology-cloud.svg"
     title="Connect your application instances to Temporal Cloud"
 />
@@ -37,7 +37,7 @@ Follow the [Temporal Cloud guide](/cloud) to get started.
 Alternatively, you can run your own production level Temporal Service to orchestrate your durable applications.
 Follow the [Self-hosted guide](/self-hosted-guide) to get started.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/diagrams/basic-platform-topology-self-hosted.svg"
     title="Connect your application instances to your self-hosted Temporal Service"
 />
