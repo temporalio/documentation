@@ -25,7 +25,7 @@ tags:
   - Child Workflows
 ---
 
-import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+import * as Components from '@site/src/components';
 
 A Child Workflow Execution is a [Workflow Execution](/workflows#workflow-execution) that is spawned from within another Workflow in the same Namespace.
 
@@ -38,7 +38,7 @@ A Child Workflow Execution is a [Workflow Execution](/workflows#workflow-executi
 
 A Workflow Execution can be both a Parent and a Child Workflow Execution because any Workflow can spawn another Workflow.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/diagrams/parent-child-workflow-execution-relationship.svg"
     title="Parent and Child Workflow Execution entity relationship"
     />
@@ -58,7 +58,7 @@ When a Parent Workflow Execution reaches a Closed status, the Temporal Service p
 
 If a Child Workflow Execution uses Continue-As-New, from the Parent Workflow Execution's perspective the entire chain of Runs is treated as a single execution.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/diagrams/parent-child-workflow-execution-with-continue-as-new.svg"
     title="Parent and Child Workflow Execution entity relationship with Continue As New"
     />
@@ -147,7 +147,7 @@ There are three possible values:
 Each Child Workflow Execution may have its own Parent Close Policy.
 This policy applies only to Child Workflow Executions and has no effect otherwise.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/diagrams/parent-close-policy.svg"
     title="Parent Close Policy entity relationship"
     />

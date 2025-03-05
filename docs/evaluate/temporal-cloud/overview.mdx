@@ -12,7 +12,7 @@ tags:
   - Temporal Cloud
 ---
 
-import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+import * as Components from '@site/src/components';
 
 When it comes to running Temporal in production, you have two main options:
 
@@ -40,7 +40,7 @@ Temporal Cloud is an offering of the Temporal Service.
 2. Temporal Cloud: Operating independently from the execution environment, Temporal Cloud oversees the execution process by preserving the source of truth for your Workflow Execution Event Histories.
    This independent supervision ensures the durable execution of your distributed applications and services.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/diagrams/high-level-system-topology.svg"
     title="High-level system topology"
 />

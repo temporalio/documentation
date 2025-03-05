@@ -10,7 +10,7 @@ tags:
   - Temporal Web UI
 ---
 
-import {RelatedReadContainer, RelatedReadItem} from '@site/src/components/related-read/RelatedRead';
+import * as Components from '@site/src/components';
 
 The Temporal Web UI provides users with Workflow Execution state and metadata for debugging purposes.
 It ships with every [Temporal CLI](/cli) release and [Docker Compose](https://github.com/temporalio/docker-compose) update and is available with [Temporal Cloud](/cloud).
@@ -134,14 +134,14 @@ Temporal Workflow Schedule Cron strings follow this format:
 
 To read more about Schedules, explore these links:
 
-<RelatedReadContainer>
-    <RelatedReadItem path="/develop/go/schedules" text="Schedules using the Go SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/java/schedules" text="Schedules using the Java SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/php/schedules" text="Schedules using the PHP SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/python/schedules" text="Schedules using the Python SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/typescript/schedules" text="Schedules using the TypeScript SDK" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/dotnet/schedules" text="Schedules using the .NET SDK" archetype="feature-guide" />
-</RelatedReadContainer>
+<Components.RelatedReadContainer>
+    <Components.RelatedReadItem path="/develop/go/schedules" text="Schedules using the Go SDK" archetype="feature-guide" />
+    <Components.RelatedReadItem path="/develop/java/schedules" text="Schedules using the Java SDK" archetype="feature-guide" />
+    <Components.RelatedReadItem path="/develop/php/schedules" text="Schedules using the PHP SDK" archetype="feature-guide" />
+    <Components.RelatedReadItem path="/develop/python/schedules" text="Schedules using the Python SDK" archetype="feature-guide" />
+    <Components.RelatedReadItem path="/develop/typescript/schedules" text="Schedules using the TypeScript SDK" archetype="feature-guide" />
+    <Components.RelatedReadItem path="/develop/dotnet/schedules" text="Schedules using the .NET SDK" archetype="feature-guide" />
+</Components.RelatedReadContainer>
 
 ### Settings
 

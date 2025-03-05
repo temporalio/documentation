@@ -14,7 +14,7 @@ tags:
   - Concepts
 ---
 
-import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+import * as Components from '@site/src/components';
 
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
@@ -29,7 +29,7 @@ An Endpoint decouples the caller and handler, so the caller only needs to know t
 The Endpoint encapsulates the upstream target Namespace and Task Queue from the caller.
 A Worker handles Nexus requests by registering one or more [Nexus Services](/nexus/services) and polling the Endpoint's target Task Queue.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/img/cloud/nexus/nexus-overview-short.png"
     title="Nexus Overview"
 />

@@ -13,7 +13,7 @@ tags:
   - API
 ---
 
-import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+import * as Components from '@site/src/components';
 
 While it's usually easiest to interact with [Temporal Server](/clusters#temporal-server) via a [Client SDK](/encyclopedia/temporal-sdks#temporal-client) or the [Temporal CLI](https://docs.temporal.io/cli), you can also use its gRPC API.
 
@@ -80,14 +80,14 @@ Once inside the evans prompt, you can run commands like `help`, `show service` t
 - Edit the JSON in the left pane.
 - Hit `Cmd/Ctrl-Enter` or click the play button to get a response from the server on the right.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/img/proto/ListWorkflowExecutions.png"
     title="ListWorkflowExecutions"
 />
 
 One downside compared to [command line](#with-command-line) is it doesn't show enum names, just numbers like `"task_queue_type": 1`.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/img/proto/DescribeTaskQueue.png"
     title="DescribeTaskQueue"
 />

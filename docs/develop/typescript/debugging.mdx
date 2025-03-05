@@ -13,7 +13,7 @@ tags:
   - Temporal SDKs
 ---
 
-import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+import * as Components from '@site/src/components';
 
 The Debugging section of the Temporal TypeScript SDK developer's guide covers tools for debugging and how to troubleshoot common issues.
 
@@ -206,7 +206,7 @@ Error: 3 INVALID_ARGUMENT: WorkflowType is not set on request.
 
 Or you may see shorter names in the Temporal Service's Web UI when Webpack changed the Workflow's function name to something shorter, in this case the single letter 's':
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/img/webui/stripped_workflow_types_in_webui.png"
     title="Temporal Web UI showing stripped 'Workflow Type' entries, in this case the single letter 's'"
 />

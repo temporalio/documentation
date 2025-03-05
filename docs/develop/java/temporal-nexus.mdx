@@ -13,7 +13,7 @@ tags:
   - nexus
 ---
 
-import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+import * as Components from '@site/src/components';
 
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
@@ -611,14 +611,14 @@ This will result in:
 
 A synchronous Nexus Operation will surface in the caller Workflow as follows, with just `NexusOperationScheduled` and `NexusOperationCompleted` events in the caller's Workflow history:
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/img/cloud/nexus/go-sdk-observability-sync.png"
     title="Observability Sync"
 />
 
 An asynchronous Nexus Operation will surface in the caller Workflow as follows, with `NexusOperationScheduled`, `NexusOperationStarted`, and `NexusOperationCompleted`, in the caller's Workflow history:
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/img/cloud/nexus/go-sdk-observability-async.png"
     title="Observability Async"
 />

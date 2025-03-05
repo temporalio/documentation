@@ -28,7 +28,7 @@ tags:
   - Temporal SDKs
 ---
 
-import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+import * as Components from '@site/src/components';
 
 The definition code of a Temporal Workflow must be deterministic because Temporal uses event sourcing
 to reconstruct the Workflow state by replaying the saved history event data on the Workflow
@@ -119,7 +119,7 @@ Implementing patching involves three steps:
 
 Using `patched` inserts a marker into the Workflow History.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="https://user-images.githubusercontent.com/6764957/139673361-35d61b38-ab94-401e-ae7b-feaa52eae8c6.png"
     title="Using `patched` inserts a marker into the Workflow History"
     zoom="true"

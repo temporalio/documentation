@@ -19,11 +19,7 @@ keywords:
   - term
 ---
 
-import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
-import DiscoverableDisclosure from '@site/src/components/disclosures/DiscoverableDisclosure';
-import ToolTipTerm from '@site/src/components/tooltip/ToolTipTerm';
-import NoBreak from '@site/src/components/nobreak/NoBreak';
-import Spacer from '@site/src/components/spacer/Spacer';
+import * as Components from '@site/src/components';
 
 Temporal Cloud automatically initiates failovers when an incident or outage affects a Namespace with High Availability features.
 Namespace replicas duplicate data and prevent data loss during failover.
@@ -41,7 +37,7 @@ This section explains how and what to expect afterward.
 
 :::warning Check Your Replication Lag
 
-Always check the <ToolTipTerm term="replication lag" tooltip="The transmission delay of Workflow updates and history events from the primary to the replica." /> before initiating a failover.
+Always check the <Components.ToolTipTerm term="replication lag" tooltip="The transmission delay of Workflow updates and history events from the primary to the replica." /> before initiating a failover.
 A forced failover when there is a significant replication lag has a higher likelihood of rolling back Workflow progress.
 
 :::
@@ -54,7 +50,7 @@ The following table outlines the steps for each method:
 | Method                                   | Instructions                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Temporal&nbsp;Cloud<br />Web&nbsp;UI** | - Visit the [Namespace page](https://cloud.temporal.io/namespaces) on the Temporal Cloud Web UI.<br />- Navigate to your Namespace details page and select the **Trigger a failover** option from the menu.<br />- After confirmation, Temporal initiates the failover.                                                                                                                                                                         |
-| **Temporal<br />tcld&nbsp;CLI**          | To manually trigger a failover, run the following command in your terminal:<br /><tt>tcld namespace failover \ </tt><br /><tt><Spacer width={4} />--namespace \<namespace_id>.\<account_id> \ </tt><br /><tt><Spacer width={4} />--region \<target_region></tt><br /><br /> If using API key authentication with the `--api-key` flag, you must add it directly after the tcld command and before `namespace failover`. |
+| **Temporal<br />tcld&nbsp;CLI**          | To manually trigger a failover, run the following command in your terminal:<br /><tt>tcld namespace failover \ </tt><br /><tt><Components.Spacer width={4} />--namespace \<namespace_id>.\<account_id> \ </tt><br /><tt><Components.Spacer width={4} />--region \<target_region></tt><br /><br /> If using API key authentication with the `--api-key` flag, you must add it directly after the tcld command and before `namespace failover`. |
 
 Temporal fails over the primary to the replica.
 When you're ready to fail back, follow these failover instructions to move the primary back to the original.
@@ -89,7 +85,7 @@ However if you prefer to disable Temporal-initiated failovers and handle your ow
 | Method                                   | Instructions                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Temporal&nbsp;Cloud<br />Web&nbsp;UI** | - Navigate to the Namespace detail page in Temporal Cloud. <br /> - Choose the "Disable Temporal-initiated failovers" option.                                                                                                                                                                                                                                                                                                                                              |
-| **Temporal<br />tcld&nbsp;CLI**          | To disable Temporal-initiated failovers, run the following command in your terminal:<br /><tt>tcld namespace update-high-availability \ </tt><br /><tt><Spacer width={4} />--namespace \<namespace_id>.\<account_id> \ </tt><br /><tt><Spacer width={4} />--disable-auto-failover=true</tt><br /><br /> If using API key authentication with the `--api-key` flag, you must add it directly after the tcld command and before `namespace update-high-availability` |
+| **Temporal<br />tcld&nbsp;CLI**          | To disable Temporal-initiated failovers, run the following command in your terminal:<br /><tt>tcld namespace update-high-availability \ </tt><br /><tt><Components.Spacer width={4} />--namespace \<namespace_id>.\<account_id> \ </tt><br /><tt><Components.Spacer width={4} />--disable-auto-failover=true</tt><br /><br /> If using API key authentication with the `--api-key` flag, you must add it directly after the tcld command and before `namespace update-high-availability` |
 
 Temporal Cloud disables its health-check initiated failovers.
 To restore the default behavior, unselect the option in the WebUI or change `true` to `false` in the CLI command.
@@ -120,7 +116,7 @@ Testing failovers ensures your app can handle these failures effectively.
 Temporal recommends regular and periodic failover testing for mission-critical applications in production.
 By testing in non-emergency conditions, you verify that your app continues to function, even when parts of the infrastructure fail.
 
-<DiscoverableDisclosure label="Why test?">
+<Components.DiscoverableDisclosure label="Why test?">
 
 :::tip Safety First
 
@@ -130,7 +126,7 @@ Practice runs help ensure the process runs smoothly during real incidents in pro
 
 :::
 
-Failover testing (also known as "<ToolTipTerm term="trigger testing" tooltip="Trigger testing means  emulating Temporal's automatic failover trigger after a failing health check."/>") can:
+Failover testing (also known as "<Components.ToolTipTerm term="trigger testing" tooltip="Trigger testing means  emulating Temporal's automatic failover trigger after a failing health check."/>") can:
 
 - **Validate replicated deployments**:
   In multi-region setups, failover testing ensures your app can run from another region when the primary region experiences outages.
@@ -161,4 +157,4 @@ Failover testing (also known as "<ToolTipTerm term="trigger testing" tooltip="Tr
 
 Testing failovers regularly ensures your Temporal-based applications remain resilient and reliable, even when infrastructure fails.
 
-</DiscoverableDisclosure>
+</Components.DiscoverableDisclosure>

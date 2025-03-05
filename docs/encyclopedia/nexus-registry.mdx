@@ -19,7 +19,7 @@ tags:
   - Concepts
 ---
 
-import CaptionedImage from '@site/src/components/captioned-image/CaptionedImage';
+import * as Components from '@site/src/components';
 
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
@@ -30,7 +30,7 @@ Temporal Nexus is now [Generally Available](/evaluate/development-production-fea
 The [Nexus Registry](/glossary#nexus-registry) is used to view and manage [Nexus Endpoints](/nexus/endpoints).
 Adding a Nexus Endpoint to the Nexus Registry deploys the Endpoint, so it is available at runtime to serve Nexus requests.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/img/cloud/nexus/nexus-overview-short.png"
     title="Nexus Overview"
     width="100%"
@@ -60,14 +60,14 @@ Nexus Endpoints may be managed using the Temporal UI, the CLI, or the [Cloud Ops
 
 You can search the Nexus Registry for Endpoint name or an Endpoint's target Namespace to quickly find an Endpoint of interest.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/img/cloud/nexus/nexus-endpoints-ss.png"
     title="Nexus Endpoints"
 />
 
 The Endpoint details page shows the target Namespace and target Task Queue along with the endpoint description rendered as markdown.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/img/cloud/nexus/nexus-billing-ss.png"
     title="Nexus Billing"
 />
@@ -78,7 +78,7 @@ Creating a Nexus Endpoint includes setting an Access Policy of caller Namespaces
 Even the target Namespace must be added to the Access Policy to access the Endpoint.
 Temporal Cloud also provides built-in Endpoint access control in the form of a caller Namespace allowlist, which must be set for any caller to access a Nexus Endpoint, even if in the same Namespace.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/img/cloud/nexus/create-nexus-endpoint-ss.png"
     title="Create Nexus Endpoint"
 />
@@ -88,7 +88,7 @@ Temporal Cloud also provides built-in Endpoint access control in the form of a c
 Editing a Nexus Endpoint allows changing everything but the Endpoint Name.
 The target Namespace and target Task Queue can be updated without interrupting existing in-flight Nexus Operations that are already being processed, and new Nexus Operations will be routed to the updated target Namespace and target Task Queue.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/img/cloud/nexus/target-namespace-ss.png"
     title="Edit Nexus Endpoint"
 />
@@ -97,7 +97,7 @@ The target Namespace and target Task Queue can be updated without interrupting e
 
 Configure the Endpoint's Access Policy to control which callers can access a Nexus Endpoint at runtime.
 
-<CaptionedImage
+<Components.CaptionedImage
     src="/img/cloud/nexus/create-nexus-endpoint-ss.png"
     title="Configure runtime access controls"
 />

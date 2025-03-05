@@ -31,7 +31,7 @@ keywords:
   - microservice contract
 ---
 
-import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
+import * as Components from '@site/src/components';
 
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
@@ -130,12 +130,12 @@ Unlike other forms of inter-service communication, Nexus combines a familiar pro
 
 To connect with the Nexus community, join the [#nexus](https://temporalio.slack.com/archives/C07LQN0JK9B) channel in [Temporal Slack](https://t.mp/slack).
 
-<RelatedReadContainer>
-  <RelatedReadItem path="https://youtu.be/qqc2vsv1mrU?feature=shared&t=2082" text="Nexus keynote & demo - Replay video" archetype="replay-talk" />
-  <RelatedReadItem path="https://www.youtube.com/watch?v=izR9dQ_eIe4" text="Nexus deep dive - Replay video" archetype="replay-talk" />
-  <RelatedReadItem path="/nexus" text="Nexus concepts and getting started" archetype="encyclopedia" />
-  <RelatedReadItem path="/develop/go/nexus" text="Go SDK - Nexus quick start and code sample" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/java/nexus" text="Java SDK - Nexus quick start and code sample" archetype="feature-guide" />
-  <RelatedReadItem path="/cloud/nexus" text="Production deployment in Temporal Cloud" archetype="feature-guide" />
-  <RelatedReadItem path="/production-deployment/self-hosted-guide/nexus" text="Self-hosted deployment" archetype="feature-guide" />
-</RelatedReadContainer>
+<Components.RelatedReadContainer>
+  <Components.RelatedReadItem path="https://youtu.be/qqc2vsv1mrU?feature=shared&t=2082" text="Nexus keynote & demo - Replay video" archetype="replay-talk" />
+  <Components.RelatedReadItem path="https://www.youtube.com/watch?v=izR9dQ_eIe4" text="Nexus deep dive - Replay video" archetype="replay-talk" />
+  <Components.RelatedReadItem path="/nexus" text="Nexus concepts and getting started" archetype="encyclopedia" />
+  <Components.RelatedReadItem path="/develop/go/nexus" text="Go SDK - Nexus quick start and code sample" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/java/nexus" text="Java SDK - Nexus quick start and code sample" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/cloud/nexus" text="Production deployment in Temporal Cloud" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/production-deployment/self-hosted-guide/nexus" text="Self-hosted deployment" archetype="feature-guide" />
+</Components.RelatedReadContainer>
