@@ -418,14 +418,15 @@ The previous code example sets the default logger to log only messages with leve
 #### Accumulate logs for testing and reporting
 
 ```ts
-import { DefaultLogger, LogEntry } from '@temporalio/worker';
+import { DefaultLogger, LogEntry, LogLevel } from '@temporalio/worker';
 
 const logs: LogEntry[] = [];
-const logger = new DefaultLogger('TRACE', (entry) => logs.push(entry));
-log.debug('hey', { a: 1 });
-log.info('ho');
-log.warn('lets', { a: 1 });
-log.error('go');
+const logger = new DefaultLogger(LogLevel.TRACE, (entry) => logs.push(entry));
+
+logger.debug('hey', { a: 1 });
+logger.info('ho');
+logger.warn('lets', { a: 1 });
+logger.error('go');
 ```
 
 A common logging use case is logging to a file to be picked up by a collector like the [Datadog Agent](https://docs.datadoghq.com/logs/log_collection/nodejs/?tab=winston30).
