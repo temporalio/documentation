@@ -28,7 +28,7 @@ Temporal Cloud delivers different RPO/RTOs based on these scenarios because of t
 
 ## Multi Region Namespace, Regional Failure
 
-Temporal Cloud offers "Multi Region Namespace".
+Temporal Cloud offers [Multi-Region Namespaces](/cloud/multi-region).
 Multi Region Namespace provides a push-button, multi-region, active-standby failover deployment for your Temporal Service.
 
 As Workflows progress in the active region, history events are asynchronously replicated to the standby region.
@@ -80,4 +80,4 @@ Anything that gets committed into the zone is protected by replication in anothe
 
 **Recovery Time Objective (RTO) - 0**
 
-Temporal is active-active across AZs. We are writing to at least two AZs so there is no data loss.
+Temporal is active-active across AZs. 
