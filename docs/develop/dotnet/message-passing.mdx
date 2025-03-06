@@ -518,7 +518,7 @@ Sometimes, async Signal or Update handlers need to meet certain conditions befor
 Using a wait condition with [`Workflow.WaitConditionAsync`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html?#Temporalio_Workflows_Workflow_WaitConditionAsync_System_Func_System_Boolean__System_Int32_System_Nullable_System_Threading_CancellationToken__) sets a function that prevents the code from proceeding until the condition returns `true`.
 This is an important feature that helps you control your handler logic.
 
-Here are two important use cases for `Workflow.await`:
+Here are two important use cases for `Workflow.WaitConditionAsync`:
 
 - Waiting in a handler until it is appropriate to continue.
 - Waiting in the main Workflow until all active handlers have finished.
