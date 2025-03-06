@@ -64,18 +64,20 @@ Temporal Cloud is beholden to our data provider backup constraints, so in this s
 ## Availability Zone Failure
 
 Temporal Cells are deployed in three Availability Zones (AZs) in the same region.
-Our data provider is deployed with the same topology in three AZs in the same region.\
-**All writes to storage are synchronously replicated across AZs**, including our writes to ElasticSearch (ES).
-ES is eventually consistent, but this does not impact our RPO (there is no data loss).\
+Our data provider is deployed with the same topology in three AZs in the same region.
+
+**All writes to storage are synchronously replicated across AZs**, including our writes to ElasticSearch.
+ElasticSearch is eventually consistent, but this does not impact our RPO as there is no data loss.
+
 This means there is _no_ logical corruption and restoration is done from a live replicated instance.
-This applies for both single region Namespaces and multi region Namespaces.\
+This applies for both single region Namespaces and multi region Namespaces.
+
 This leads to the following objectives for availability zone failure:
 
-### Recovery Point Objective (RPO) \- 0\.
+**Recovery Point Objective (RPO) - 0**
 
 Anything that gets committed into the zone is protected by replication in another AZ.
 
-### Recovery Time Objective (RTO) \- 0\.
+**Recovery Time Objective (RTO) - 0**
 
-Temporal is active-active across AZs.\
-We are writing to at least two AZs so there is no data loss.
+Temporal is active-active across AZs. We are writing to at least two AZs so there is no data loss.
