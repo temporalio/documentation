@@ -12,8 +12,7 @@ tags:
   - Concepts
 ---
 
-import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
-import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
+import * as Components from '@site/src/components';
 
 A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
@@ -24,23 +23,23 @@ Try out the [Activity retry simulator](/develop/activity-retry-simulator) to vis
 
 ---
 
-<RelatedReadContainer>
-  <RelatedReadItem path="/develop/go/failure-detection#activity-retries" text="Set a custom Retry Policy for an Activity in Go" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/java/failure-detection#activity-retries" text="Set a custom Retry Policy for an Activity in Java" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/php/failure-detection#activity-retries" text="Set a custom Retry Policy for an Activity in PHP" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/python/failure-detection#activity-retries" text="Set a custom Retry Policy for an Activity in Python" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/typescript/failure-detection#activity-retries" text="Set a custom Retry Policy for an Activity in TypeScript" archetype="feature-guide" />
-</RelatedReadContainer>
+<Components.RelatedReadContainer>
+  <Components.RelatedReadItem path="/develop/go/failure-detection#activity-retries" text="Set a custom Retry Policy for an Activity in Go" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/java/failure-detection#activity-retries" text="Set a custom Retry Policy for an Activity in Java" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/php/failure-detection#activity-retries" text="Set a custom Retry Policy for an Activity in PHP" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/python/failure-detection#activity-retries" text="Set a custom Retry Policy for an Activity in Python" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/typescript/failure-detection#activity-retries" text="Set a custom Retry Policy for an Activity in TypeScript" archetype="feature-guide" />
+</Components.RelatedReadContainer>
 
 ---
 
-<RelatedReadContainer>
-  <RelatedReadItem path="/develop/go/failure-detection#workflow-retries" text="Set a Retry Policy for a Workflow in Go" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/java/failure-detection#workflow-retries" text="Set a Retry Policy for a Workflow in Java" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/php/failure-detection#workflow-retries" text="Set a Retry Policy for a Workflow in PHP" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/python/failure-detection#workflow-retries" text="Set a Retry Policy for a Workflow in Python" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/typescript/failure-detection#workflow-retries" text="Set a Retry Policy for a Workflow in TypeScript" archetype="feature-guide" />
-</RelatedReadContainer>
+<Components.RelatedReadContainer>
+  <Components.RelatedReadItem path="/develop/go/failure-detection#workflow-retries" text="Set a Retry Policy for a Workflow in Go" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/java/failure-detection#workflow-retries" text="Set a Retry Policy for a Workflow in Java" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/php/failure-detection#workflow-retries" text="Set a Retry Policy for a Workflow in PHP" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/python/failure-detection#workflow-retries" text="Set a Retry Policy for a Workflow in Python" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/typescript/failure-detection#workflow-retries" text="Set a Retry Policy for a Workflow in TypeScript" archetype="feature-guide" />
+</Components.RelatedReadContainer>
 
 ## Default behavior
 
@@ -117,7 +116,9 @@ The wait time before a retry is the _retry interval_. A retry interval is the sm
 - The [Initial Interval](#initial-interval) multiplied by the [Backoff Coefficient](#backoff-coefficient) raised to the power of the number of retries.
 - The [Maximum Interval](#maximum-interval).
 
-<PrettyImage src="/img/retry-interval-diagram.png" title="Diagram that shows the retry interval and its formula" />
+<Components.CaptionedImage
+    src="/img/info/retry-interval-diagram.png"
+    title="Diagram that shows the retry interval and its formula" />
 
 ### Per-error next Retry delay
 
@@ -125,10 +126,10 @@ Sometimes, your Activity or Workflow raises a special exception that needs a dif
 To accomplish this, you may throw an [Application Failure](/references/failures#application-failure) with the next Retry delay field set. This value will replace and override whatever the retry interval would be on the Retry Policy.
 Note that your retries will still cap out under the Retry Policy's Maximum Attempts, as well as overall timeouts. For an Activity, its Schedule-to-Close Timeout applies. For a Workflow, the Execution Timeout applies.
 
-<RelatedReadContainer>
-  <RelatedReadItem path="/develop/java/failure-detection#activity-next-retry-delay" text="Customize retry delays per error in the Java SDK." archetype="feature-guide" />
-  <RelatedReadItem path="/develop/typescript/failure-detection#activity-next-retry-delay" text="Customize retry delays per error in the TypeScript SDK" archetype="feature-guide" />
-</RelatedReadContainer>
+<Components.RelatedReadContainer>
+  <Components.RelatedReadItem path="/develop/java/failure-detection#activity-next-retry-delay" text="Customize retry delays per error in the Java SDK." archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/typescript/failure-detection#activity-next-retry-delay" text="Customize retry delays per error in the TypeScript SDK" archetype="feature-guide" />
+</Components.RelatedReadContainer>
 
 ## Event History
 

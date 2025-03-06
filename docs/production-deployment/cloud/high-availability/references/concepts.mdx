@@ -1,0 +1,258 @@
+---
+id: concepts
+title: Concepts
+sidebar_label: Concepts
+slug: /cloud/high-availability/concepts
+description: Temporal Cloud's High Availability Namespaces offer automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime.
+tags:
+  - Temporal Cloud
+  - Production
+  - High Availability
+keywords:
+  - availability
+  - explanation
+  - failover
+  - high-availability
+  - multi-region
+  - multi-region namespace
+  - namespaces
+  - temporal-cloud
+  - term
+---
+
+import * as Components from '@site/src/components';
+
+## Something
+
+In the context of distributed systems or cloud platforms, a cell refers to a unit or partition of infrastructure that can independently manage tasks, resources, or workloads.
+
+It is typically used to ensure isolation, fault tolerance, and efficient resource allocation.
+
+Cells can operate independently, so issues in one cell do not necessarily affect others, helping to maintain system stability and availability.
+
+For example, in a system like Temporal, a cell might represent a specific region or environment where certain workflows or data are handled, providing isolation from other cells in different regions.
+
+## Namespaces
+
+A Namespace is a unit of isolation within the Temporal Platform.
+In distributed systems, a Namespace is a logical unit that isolates a set of workflows and data.
+It works like a partition or tenant in other systems.
+
+In Temporal, the Namespace isolates Workflow Executions and metadata, handles them independently, and scales effectively.
+Each Temporal Cloud Namespace with High Availability features has a specific endpoint that ensures requests go to the correct unit.
+This endpoint can be found on the Temporal Cloud Namespace details webpage:
+
+```
+https://cloud.temporal.io/namespaces/your_namespace.your_account_id
+```
+
+In Temporal, a Namespace might represent a specific application or business unit, or it can be used to isolate a development feature branch from production deployment.
+This isolation makes your management safer and easier.
+
+In industry terms, a namespace is a logical unit that isolates a set of data, resources, or workflows.
+It is used to separate and manage different applications, services, or tenants within a system.
+It is commonly used in cloud platforms and distributed services.
+
+In Temporal, a Namespace is an isolation unit for workflows and data.
+Temporal uses Namespaces at the application level, where workflows within a specific Namespace are isolated from those in other Namespaces.
+When discussing high availability and failover, Temporal uses the term replica to avoid confusion between the control plane Namespace and the operational Namespace that holds Workflows and data.
+
+- A replica refers to a backup node that mirrors data or service state from an active node.
+  In a failover scenario, the replica node can take over if the active node becomes unavailable, ensuring continuity of operations.
+  In Temporal, the replica node is a Namespace that takes over from the active Namespace during a failover.
+  The replica keeps the data and workflow state synchronized with the active Namespace.
+
+- A control plane refers to the layer of infrastructure that manages the configuration, orchestration, and administration of services.
+  It is responsible for monitoring and controlling the overall system, including routing, load balancing, and failover management.
+  Temporal's control plane manages clusters and regions, ensuring proper operation of Namespaces across the system.
+  It is the management layer interacting with users, while the replica Namespace handles the actual execution of workflows.
+
+Temporal’s use of the term Namespace has a specific meaning.
+The term refers to two distinct concepts:
+
+1. Control Plane Namespace: This term refers to the management layer that coordinates Temporal’s operation across clusters and regions.
+2. Replica: This is the Temporal Namespace that holds workflows and data for a particular set of processes.
+   To avoid confusion, replica is used instead of Namespace when discussing failover scenarios.
+
+In industry terms, a Temporal Namespace operates like the primary node or active instance in failover systems.
+The replica is akin to a passive node, kept in sync with the active one.
+
+## Replication
+
+Replication refers to the process of copying and synchronizing data or services across multiple nodes or systems to ensure availability and consistency in the event of a failure.
+Temporal uses replication to support high availability, ensuring that Workflows and data are consistently available, even if part of the system fails or becomes unavailable due to an incident.
+
+In Temporal, replication operates at the Namespace level for High Availability features.
+This means that each Namespace is replicated across multiple regions or data centers, and when one Namespace becomes unavailable, a replica Namespace can take over.
+This process ensures that workflows continue without interruption, maintaining service availability.
+
+:::info definitions
+
+- Asynchronous replication refers to a data replication method where changes made to a primary node are not immediately replicated to secondary nodes.
+  Instead, replication occurs with a delay to reduce overhead on the primary system.
+
+- Synchronous replication involves immediate replication of data changes from the primary node to secondary nodes.
+  This ensures that all nodes in the system remain consistent in real-time, reducing the risk of data loss.
+
+:::
+
+### Workflow Execution replication
+
+## Isolation domains
+
+An isolation domain is a defined area within Temporal Cloud's infrastructure.
+It helps contain failures and prevents them from spreading to other parts of the system.
+This provides redundancy and fault tolerance.
+Regions may contain multiple isolation domains.
+You choose whether your replica resides in the same region as your active Namespace using separate isolation domains (standard replication), or in different regions (Multi-region Replication).
+
+When using replication, Temporal deploys your active Namespace and your replica to separate isolation domains.
+It asynchronously replicates Workflow Executions from the active Namespace to the replica.
+This can occur within the same region or across different regions, depending on your architecture and requirements.
+
+The replicated data includes both Workflow Execution details and metadata.
+Metadata includes configurations such as retention periods, Search Attributes, and other settings.
+Temporal Cloud ensures that all regions will eventually share a consistent and unified view of the Namespace metadata.
+
+## Failovers
+
+Temporal's high availability automated failover feature works at the Namespace level.
+You can add a replica to a Namespace to enable this feature.
+If the active Namespace fails during an incident, the passive replica takes over, keeping the system operational with minimal or no interruption.
+
+### Definitions
+
+- Failover is the process of automatically switching operations to a backup replica when the primary system fails.
+  This ensures that service continuity is maintained with minimal disruption, as the system automatically shifts operations to a redundant, passive, or standby resource.
+  In high availability systems, failover mechanisms detect failures and activate passive standby nodes, ensuring no downtime or loss of data.
+  Temporal uses failover at the namespace level.
+  If the active Namespace becomes unavailable, Temporal automatically switches to a replica, ensuring continued operations.
+  Temporal’s automated failover feature minimizes downtime by handling the failover process without manual intervention, making the system more resilient.
+
+- Failback is the process of restoring service to its original state after failover has occurred.
+  This typically involves moving from a backup system back to the primary system once it has recovered.
+  In Temporal’s failover system, failback refers to switching the active role back to the original active Namespace once it has recovered.
+  This process can be automated or manually configured to maintain the new roles.
+
+:::info
+
+A Namespace failover, which changes the "active region" field of a Namespace record, is an update. This update is replicated via the Namespace metadata mechanism.
+
+:::
+
+### Checking health {#health-check}
+
+Temporal Cloud automates failovers by performing internal health checks.
+This process monitors your request error rates, latencies, and any infrastructure issues that might cause service disruptions, such as request timeouts.
+It automatically triggers failovers when these indicators exceed our allowed thresholds.
+
+Temporal Cloud’s High Availability features use asynchronous replication between the primary and the replica.
+Workflow updates in the primary, along with associated History Events, are transmitted to the replica with a short delay.
+This delay is called the replication lag.
+Temporal Cloud strives to maintain a <Components.ToolTipTerm term="P95" tooltip="P95 refers to the 95th percentile of a data set. It identifies values that are greater than or equal to 95% of that set." /> replication delay of less than 1 minute.
+In this context, P95 means 95% of requests are processed faster than this specified limit.
+
+Replication lags mean a [forced failover](/cloud/high-availability/how-it-works#forced-failover) may cause Workflows to rollback in progress.
+Lags may also cause recently started Workflows to be temporarily unavailable until the primary recovers.
+Temporal event versioning and [conflict resolution mechanisms](/cloud/high-availability/how-it-works#conflict-resolution) help guarantee that the Workflow Event History can be replayed.
+Critical operations like Signals won't get lost.
+
+### Temporal-Specific terminology and industry context
+
+### Comparing Failover Approaches
+
+| Feature                | Automated Failover                                | Active-Active Replication                  | Active-Passive Replication                           |
+| ---------------------- | ------------------------------------------------- | ------------------------------------------ | ---------------------------------------------------- |
+| How many active nodes? | One primary, one or more replicas                 | All nodes are active                       | One primary, one or more replicas                    |
+| Traffic handling       | Active Namespace only, automatic failover         | All nodes handle traffic                   | Active Namespace handles traffic, replica nodes wait |
+| Data Sync              | Replicas sync automatically                       | All nodes sync with each other             | Active Namespace syncs to replica nodes              |
+| Failover               | Automated                                         | No automatic failover, manual intervention | Manual failover unless automated                     |
+| Complexity             | Low (easy management)                             | High (requires conflict resolution)        | Low to moderate (simple failover)                    |
+| Use Case               | Ideal for high availability with minimal downtime | Best for high load, complex setups         | Simple, cost-effective backups                       |
+
+### Benefits of Automated Failover with Namespaces
+
+Using Automated Failover with Namespaces in Temporal ensures several advantages:
+
+- Minimized Downtime: If the active Namespace fails, the replica immediately takes over, reducing the time required to recover.
+- Seamless Role Switching: Unlike more manual failover processes, Temporal automatically handles the role-switching, eliminating the need for human intervention.
+- Reliability: The clear distinction between Active and Replica Namespaces ensures one operational Namespace is always available, keeping workflows uninterrupted.
+
+### Conclusion
+
+Temporal’s Automated Failover feature, operating at the Namespace level, provides a reliable way to ensure high availability in distributed systems.
+By automating the role-switching between active and passive nodes, Temporal minimizes downtime while maintaining the isolation and management of workflows.
+The shift to using Replica Namespace clarifies the distinction between Temporal-specific Namespaces and the control plane, making the system more intuitive for teams to manage and understand.
+
+:::caution
+
+Design your activities to succeed once and only once.
+This "idempotent" approach avoids process duplication that could withdraw money twice or ship extra orders by mistake.
+Run-once actions maintain data integrity and prevent costly errors.
+Idempotency keeps operations from producing additional effects.
+Protect your processes from accidental or repeated actions for more reliable execution.
+
+:::
+
+## Glossary
+
+### isolation domain (availability zone)
+
+An isolation domain or availability zone (AZ) is a physical or logical data center or cluster of resources that is isolated from other zones.
+Each AZ is designed to operate independently, reducing the risk of failure affecting the entire system.
+They are often located in separate geographical locations within a region.
+
+Temporal uses the term isolation domain to refer to zones that are geographically or physically isolated from each other.
+These are the building blocks that enable Temporal’s Multi-region Namespace and failover mechanisms to operate effectively.
+
+### region
+
+A region is a geographically defined area that contains multiple availability zones or data centers.
+A region is typically a self-contained unit of a cloud provider’s infrastructure and is often used to provide redundancy, low-latency access, and fault tolerance.
+
+Temporal operates in multiple regions for high availability and fault tolerance.
+The Multi-region Namespace feature allows Temporal to replicate data and services across different regions, ensuring resilience even if an entire region becomes unavailable.
+
+### region failover
+
+Region failover refers to the process of switching the active service from one region to another in the event of a regional failure.
+This ensures that the system remains available by leveraging data and service redundancy across multiple regions.
+
+Temporal supports region failover with its Multi-region Namespace feature.
+If a region becomes unavailable, Temporal automatically switches the active Namespace to a replica in another region, ensuring minimal downtime.
+
+### Multi-region Namespace
+
+A Multi-region Namespace is a service architecture where data and services are replicated across multiple regions to improve fault tolerance, availability, and performance.
+This ensures the service can continue to operate even if one region experiences failure.
+
+Temporal provides the Multi-region Namespace feature to enable high availability.
+It allows a Namespace to span multiple regions, with replicas in each region.
+If one region goes down, the replica Namespace in another region takes over to ensure system continuity.
+
+### failover
+
+Failover is the process of automatically switching from a failed system or component to a backup or passive standby system.
+This ensures service continuity and minimizes downtime in the event of hardware or software failure.
+
+Temporal’s automated failover operates at the Namespace level.
+If the active Namespace fails, the replica Namespace automatically assumes the active role, ensuring the system continues to function without manual intervention.
+
+### load balancing
+
+Load balancing refers to the process of distributing network or application traffic across multiple servers or resources to ensure no single server becomes overwhelmed.
+This improves resource utilization, prevents downtime, and increases the performance and reliability of systems.
+
+Temporal uses load balancing for distributing tasks across multiple worker nodes to ensure efficient processing of workflows.
+However, Temporal doesn't rely on traditional load balancing for its Multi-region Namespace since it instead focuses on failover and replication to ensure high availability.
+
+### consistency model
+
+A consistency model defines the rules for how data is synchronized across distributed systems.
+It determines the level of guarantee for data consistency, which can range from strict consistency (data is always the same across replicas) to eventual consistency (data may not be immediately consistent but will eventually converge).
+
+Temporal operates with an eventual consistency model for its data across Multi-region Namespaces.
+It ensures that workflows are replicated across regions, and data will eventually converge, but it doesn't guarantee immediate consistency during failover events.
+
+Temporal typically doesn't rely on synchronous replication across regions due to performance considerations.
+Instead, it uses asynchronous replication to replicate data between replica Namespaces in different regions, ensuring that failover and eventual consistency are handled without real-time replication.

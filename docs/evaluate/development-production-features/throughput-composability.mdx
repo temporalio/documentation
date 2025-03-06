@@ -18,7 +18,7 @@ keywords:
   - throughput composability
 ---
 
-import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
+import * as Components from '@site/src/components';
 
 In Temporal, **Child Workflows** enable applications to achieve another level of composability when it comes to throughput.
 
@@ -31,13 +31,13 @@ The following example scenarios are a few reasons to use this feature:
 
 See the SDK feature guides for implementation details:
 
-<RelatedReadContainer>
-  <RelatedReadItem path="/develop/go/child-workflows" text="Go SDK Child Workflow feature guide" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/java/child-workflows" text="Java SDK Child Workflow feature guide" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/php/child-workflows" text="PHP SDK Child Workflow feature guide" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/python/child-workflows" text="Python SDK Child Workflow feature guide" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/typescript/child-workflows" text="TypeScript SDK Child Workflow feature guide" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/dotnet/child-workflows" text=".NET SDK Child Workflow feature guide" archetype="feature-guide" />
-</RelatedReadContainer>
+<Components.RelatedReadContainer>
+  <Components.RelatedReadItem path="/develop/go/child-workflows" text="Go SDK Child Workflow feature guide" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/java/child-workflows" text="Java SDK Child Workflow feature guide" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/php/child-workflows" text="PHP SDK Child Workflow feature guide" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/python/child-workflows" text="Python SDK Child Workflow feature guide" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/typescript/child-workflows" text="TypeScript SDK Child Workflow feature guide" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/dotnet/child-workflows" text=".NET SDK Child Workflow feature guide" archetype="feature-guide" />
+</Components.RelatedReadContainer>
 
 For a deep dive into Child Workflows see the [Child Workflows Encyclopedia page](/child-workflows).

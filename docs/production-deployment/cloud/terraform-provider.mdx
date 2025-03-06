@@ -27,13 +27,6 @@ Resources:
   We encourage your input as we develop the provider with the community.
 - To view the list of available Temporal Cloud resources supported by Terraform provider, visit the resources section of the Terraform documentation in Hashi's [registry](https://registry.terraform.io/providers/temporalio/temporalcloud/latest/docs).
 
-:::info AWS-only Regions
-
-The Terraform Provider currently supports Temporal Cloud deployments in AWS regions.
-Support for Temporal on GCP is in development.
-
-:::
-
 ### Prerequisites
 
 To use the Terraform provider, you'll need the following:
@@ -93,12 +86,6 @@ The provider allows you to can import, create, update, and delete Namespaces wit
 
 You must use an Identity with Temporal Cloud Namespace management privileges.
 This includes the Account Owner, Global Admin, or Developer Account Role.
-
-:::info Support, stability, and dependency info
-
-Temporal Cloud’s Terraform provider currently does not support [multi-region Namespaces](/cloud/multi-region) or [GCP regions](https://docs.temporal.io/cloud/service-availability#gcp).
-
-:::
 
 **How do I create a Namespace with Terraform?**
 

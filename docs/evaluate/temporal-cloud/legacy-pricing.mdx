@@ -60,7 +60,7 @@ They track billable operations within the Temporal Cloud Service, such as starti
 **WORKFLOWS**
 
 - **Workflow started**.
-  Occurs via client start, client [Signal-With-Start](/encyclopedia/workflow-message-passing#signal-with-start), [Continue-As-New](/workflows#continue-as-new), or [Child Workflow](/child-workflows) start.
+  Occurs via client start, client [Signal-With-Start](/sending-messages#signal-with-start), [Continue-As-New](/workflows#continue-as-new), or [Child Workflow](/child-workflows) start.
   If a Workflow start fails, an Action is not recorded.
 - **Workflow reset**.
   Occurs when a [Workflow](/workflows) is reset.
@@ -70,13 +70,13 @@ They track billable operations within the Temporal Cloud Service, such as starti
 - **Search Attribute upsert requested**.
   Occurs for each invocation of `UpsertSearchAttributes` command.
 - **Signal sent**.
-  Includes sending a [Signal](/encyclopedia/workflow-message-passing#sending-signals) from a client or from within a Workflow to another Workflow.
-- **Query received**. [Queries](/encyclopedia/workflow-message-passing#sending-queries) aren't recorded in Event History.
+  Includes sending a [Signal](/sending-messages#sending-signals) from a client or from within a Workflow to another Workflow.
+- **Query received**. [Queries](/sending-messages#sending-queries) aren't recorded in Event History.
   An operation such as viewing the call stack in the Temporal Cloud UI results in a Query.
 - **Side Effect recorded**.
   For a mutable [Side Effect](/workflows#side-effect), an Action occurs only when the value changes.
   (Be aware that some SDKs don't support Side Effects.)
-- [**NEW**] **Workflow Update**. [Workflow Updates](/encyclopedia/workflow-message-passing#sending-updates) is a primitive that combines a Signal and Query together for a single Action.
+- [**NEW**] **Workflow Update**. [Workflow Updates](/sending-messages#sending-updates) is a primitive that combines a Signal and Query together for a single Action.
 
 **CHILD WORKFLOWS**
 

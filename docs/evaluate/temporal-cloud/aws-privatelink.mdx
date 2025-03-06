@@ -17,6 +17,8 @@ tags:
   - AWS
 ---
 
+import * as Components from '@site/src/components';
+
 #### AWS PrivateLink
 
 [AWS PrivateLink](https://aws.amazon.com/privatelink/) allows you to open a path to Temporal without opening a public egress.
@@ -40,7 +42,7 @@ Set up PrivateLink connectivity with Temporal Cloud with these steps:
 1. Open the AWS console with the region you want to use to establish the PrivateLink.
 2. Search for "VPC" in _Services_ and select the option.
 
-   ![AWS console showing services, features, resources](/img/aws-privatelink/aws-console.png)
+   ![AWS console showing services, features, resources](/img/cloud/privatelink/aws-console.png)
 3. Select _Virtual private cloud_ > _Endpoints_ from the left menu bar.
 4. Click the _Create endpoint_ button to the right of the _Actions_ pulldown menu.
 5. Under _Type_ category, select _Endpoint services that use NLBs and GWLBs_.
@@ -66,7 +68,7 @@ Set up PrivateLink connectivity with Temporal Cloud with these steps:
 
 7. Confirm your service by clicking on the _Verify service_ button. AWS should respond "Service name verified."
 
-   ![The service name field is filled out and the Verify service button is shown](/img/aws-privatelink/service-settings.png)
+   ![The service name field is filled out and the Verify service button is shown](/img/cloud/privatelink/service-settings.png)
 8. Select the VPC and subnets to peer with the Temporal Cloud service endpoint.
 9. Select the security group that will control traffic sources for this VPC endpoint.
    The security group must accept TCP ingress traffic to port 7233 for gRPC communication with Temporal Cloud.
@@ -74,7 +76,7 @@ Set up PrivateLink connectivity with Temporal Cloud with these steps:
     If successful, AWS reports "Successfully created VPC endpoint." and lists the new endpoint.
     The new endpoint appears in the Endpoints list, along with its ID.
 
-    ![The created endpoint appears in the Endpoints list](/img/aws-privatelink/endpoint-created.png)
+    ![The created endpoint appears in the Endpoints list](/img/cloud/privatelink/endpoint-created.png)
 11. Click on the VPC endpoint ID in the Endpoints list to check its status.
     Wait for the status to be “Available”.
     This can take up to 10 minutes.
@@ -82,7 +84,7 @@ Set up PrivateLink connectivity with Temporal Cloud with these steps:
     Use the first value under “DNS names” as your hostname to connect to Temporal Cloud using port 7233.
     To establish a valid mTLS session, you must override the TLS server name used for the connection to `<namespace_id>.<account_id>.tmprl.cloud`.
 
-    ![Highlighted DNS names section shows your hostname](/img/aws-privatelink/details.png)
+    ![Highlighted DNS names section shows your hostname](/img/cloud/privatelink/details.png)
 
 You are ready to start using Private Link with Temporal Cloud.
 

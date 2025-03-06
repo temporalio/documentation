@@ -2,8 +2,7 @@
 id: child-workflows
 title: Child Workflows
 sidebar_label: Child Workflows
-description: A Child Workflow Execution in the Temporal platform is initiated from another Workflow within the same Namespace. Learn about the feature guides for Go, Java, PHP, Python, TypeScript, and .NET SDKs. 
-slug: /child-workflows
+description: A Child Workflow Execution in the Temporal platform is initiated from another Workflow within the same Namespace. Learn about the feature guides for Go, Java, PHP, Python, TypeScript, and .NET SDKs. Understand the Parent-Child Workflow relationship, including when to use Child Workflows, Parent Close Policies
 toc_max_heading_level: 4
 keywords:
   - child workflow execution
@@ -26,6 +25,8 @@ tags:
   - Child Workflows
 ---
 
+import * as Components from '@site/src/components';
+
 A Child Workflow Execution is a [Workflow Execution](/workflows#workflow-execution) that is spawned from within another Workflow in the same Namespace.
 
 - [Go SDK Child Workflow feature guide](/develop/go/child-workflows)
@@ -37,22 +38,14 @@ A Child Workflow Execution is a [Workflow Execution](/workflows#workflow-executi
 
 A Workflow Execution can be both a Parent and a Child Workflow Execution because any Workflow can spawn another Workflow.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Parent and Child Workflow Execution entity relationship</p>
-  </div>
-  <div className="tdiiw" height="600">
-    <img
-      className="img_ev3q"
-      src="/diagrams/parent-child-workflow-execution-relationship.svg"
-      alt="Parent and Child Workflow Execution entity relationship"
+<Components.CaptionedImage
+    src="/diagrams/parent-child-workflow-execution-relationship.svg"
+    title="Parent and Child Workflow Execution entity relationship"
     />
-  </div>
-</div>
 
 A Parent Workflow Execution must await on the Child Workflow Execution to spawn.
 The Parent can optionally await on the result of the Child Workflow Execution.
-Consider the Child's [Parent Close Policy](/parent-close-policy) if the Parent does not await on the result of the Child, which includes any use of Continue-As-New by the Parent.
+Consider the Child's [Parent Close Policy](#parent-close-policy) if the Parent does not await on the result of the Child, which includes any use of Continue-As-New by the Parent.
 
 :::note
 
@@ -61,25 +54,14 @@ This means that if a Parent Workflow Execution utilizes Continue-As-New, any ong
 
 :::
 
-When a Parent Workflow Execution reaches a Closed status, the Temporal Service propagates Cancellation Requests or Terminations to Child Workflow Executions depending on the Child's [Parent Close Policy](/parent-close-policy).
+When a Parent Workflow Execution reaches a Closed status, the Temporal Service propagates Cancellation Requests or Terminations to Child Workflow Executions depending on the Child's [Parent Close Policy](#parent-close-policy).
 
 If a Child Workflow Execution uses Continue-As-New, from the Parent Workflow Execution's perspective the entire chain of Runs is treated as a single execution.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">
-      Parent and Child Workflow Execution entity relationship with Continue As
-      New
-    </p>
-  </div>
-  <div className="tdiiw" height="700">
-    <img
-      className="img_ev3q"
-      src="/diagrams/parent-child-workflow-execution-with-continue-as-new.svg"
-      alt="Parent and Child Workflow Execution entity relationship with Continue As New"
+<Components.CaptionedImage
+    src="/diagrams/parent-child-workflow-execution-with-continue-as-new.svg"
+    title="Parent and Child Workflow Execution entity relationship with Continue As New"
     />
-  </div>
-</div>
 
 ## When to use Child Workflows
 
@@ -94,7 +76,7 @@ However, there are several valid reasons for using Child Workflows.
 
 Because a Child Workflow Execution can be processed by a completely separate set of [Workers](/workers#worker) than the Parent Workflow Execution, it can act as an entirely separate service.
 However, this also means that a Parent Workflow Execution and a Child Workflow Execution do not share any local state.
-As all Workflow Executions, they can communicate only via asynchronous [Signals](/encyclopedia/workflow-message-passing#sending-signals).
+As all Workflow Executions, they can communicate only via asynchronous [Signals](/sending-messages#sending-signals).
 
 ### Paritition problems into smaller chunks
 
@@ -129,7 +111,7 @@ Here are some important differences:
 
 - A Child Workflow has access to all Workflow APIs but is subject to the same [deterministic constraints](/workflows#deterministic-constraints) as other Workflows.
   An Activity has the inverse pros and cons—no access to Workflow APIs but no Workflow constraints.
-- A Child Workflow Execution can continue on if its Parent is canceled with a [Parent Close Policy](/parent-close-policy) of `ABANDON`.
+- A Child Workflow Execution can continue on if its Parent is canceled with a [Parent Close Policy](#parent-close-policy) of `ABANDON`.
   An Activity Execution is _always_ canceled when its Workflow Execution is canceled.
   (It can react to a cancellation Signal for cleanup.)
   The decision is roughly analogous to spawning a child process in a terminal to do work versus doing work in the same process.
@@ -141,3 +123,34 @@ An Activity usually models a single operation on the external world.
 
 Our advice: **When in doubt, use an Activity.**
 
+## Parent Close Policy {#parent-close-policy}
+
+**What is a Parent Close Policy?**
+
+A Parent Close Policy determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed out).
+
+- [How to set a Parent Close Policy using the Go SDK](/develop/go/child-workflows#parent-close-policy)
+- [How to set a Parent Close Policy using the Java SDK](/develop/java/child-workflows#parent-close-policy)
+- [How to set a Parent Close Policy using the PHP SDK](/develop/php/child-workflows#parent-close-policy)
+- [How to set a Parent Close Policy using the Python SDK](/develop/python/child-workflows#parent-close-policy)
+- [How to set a Parent Close Policy using the TypeScript SDK](/develop/typescript/child-workflows#parent-close-policy)
+- [How to set a Parent Close Policy using the .NET SDK](/develop/dotnet/child-workflows#parent-close-policy)
+
+There are three possible values:
+
+- **Abandon:** the Child Workflow Execution is not affected.
+- **Request Cancel:** a Cancellation request is sent to the Child Workflow Execution.
+- **Terminate** (default): the Child Workflow Execution is forcefully Terminated.
+
+[`ParentClosePolicy`](https://github.com/temporalio/api/blob/c1f04d0856a3ba2995e92717607f83536b5a44f5/temporal/api/enums/v1/workflow.proto#L44) proto definition.
+
+Each Child Workflow Execution may have its own Parent Close Policy.
+This policy applies only to Child Workflow Executions and has no effect otherwise.
+
+<Components.CaptionedImage
+    src="/diagrams/parent-close-policy.svg"
+    title="Parent Close Policy entity relationship"
+    />
+
+You can set policies per child, which means you can opt out of propagating terminates / cancels on a per-child basis.
+This is useful for starting Child Workflows asynchronously (see [relevant issue here](https://community.temporal.io/t/best-way-to-create-an-async-child-workflow/114) or the corresponding SDK docs).
