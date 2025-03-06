@@ -16,9 +16,11 @@ This guide shows you how to import, use, and customize these components in your 
 Whether you’re using core components or experimenting with new ones, this guide helps you make the most of them.
 
 - [Finding Components](#finding-components)
-- [March 2025 Components Refactoring](#2503-refactor)
+- [Adding Components to This Repository](#adding-components-to-this-repository)
+- [Using Components in MDX Source Files](#using-components-in-mdx-source-files)
+- [ToolTipTerm](#tooltipterm-usage)
 
-## Finding Components {#finding-components}
+## Finding Components
 
 Our components are located in the `src/components` folder at the root of this repository.
 
@@ -115,12 +117,49 @@ For example:
 <CaptionedImage src="/path/to/image" alt="accessibility_text">
 ```
 
-## Components Refactoring (March 2025) {#2503-refactor}
+## ToolTipTerm Usage
 
-As of this patch, we are now using a single canonical components folder:
+Role: Provide definitions or background information at the point of use.
+
+Usage:
 
 ```
-import * as Components from '@site/src/components';
+<Components.ToolTipTerm term="your_term_name" />
 ```
 
-The components folder in '@site/docs/components' has been removed.
+For example:
+
+```
+Temporal Cloud strives to maintain a <Components.ToolTipTerm term="P95" /> replication delay of less than 1 minute.
+```
+
+The term is used to look up a file in `static/term`, appended by `md`. 
+In this example, the file `P95.md`:
+
+```
+docs% ls static/terms/P95*
+static/terms/P95.md
+```
+
+### Using Content from a Different File
+
+For reasons of capitalization, spelling, or different reader set, you may want to vary the content of the tooltip.
+Use the `src` prop to select a different md file.
+For example:
+
+```
+<Components.ToolTipTerm term="fail over" src="failover" />
+``` 
+
+### Manually Overriding Content
+
+Use the `tooltip` prop to add non-reusable content specific to one tooltip term.
+
+```
+<Components.ToolTipTerm term="your term" tooltip="any custom content you want to add" />
+``` 
+
+### Known Limitations
+
+The static Markdown content cannot use links, images, and other advanced elements.
+
