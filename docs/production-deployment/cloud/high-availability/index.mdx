@@ -53,14 +53,14 @@ With High Availability features in Temporal Cloud, you can meet your availabilit
 ### Critical availability
 
 Temporal Cloud provides Namespaces with High Availability features for workloads where availability is critical to your operations.
-When you enable these features, Temporal Cloud automatically synchronizes your data between the primary and a <Components.ToolTipTerm term="replica" tooltip="A replica is a synchronized copy of a Namespace. It ensures redundancy, fault tolerance, and minimal downtime during an incident or outage. A replica can take over operations if the primary becomes unavailable. It's synchronized up to the point of replication lag, where no further data is available." />, keeping them in sync.
-In case of an incident or an outage, Temporal will automatically <Components.ToolTipTerm term="fail over" tooltip="A failover shifts Workflow Execution processing from a primary Namespace to a replica during outages or other incidents. Temporal Cloud uses replication to duplicate data and prevent data loss during failover." /> your Namespace from the primary to the replica.
+When you enable these features, Temporal Cloud automatically synchronizes your data between the primary and a <Components.ToolTipTerm term="replica"/>, keeping them in sync.
+In case of an incident or an outage, Temporal will automatically <Components.ToolTipTerm term="fail over" src="failover" /> your Namespace from the primary to the replica.
 This lets Workflow Executions continue with minimal interruptions or data loss.
 Customers can also initiate failovers based on their situational monitoring or for testing.
 
 <Components.CaptionedImage src="/img/cloud/high-availability/failover.png" title="On failover, the replica becomes active and the Namespace endpoint directs access to it." />
 
-Returning control from the replica to the primary is called a <Components.ToolTipTerm term="failback" tooltip="A failback returns Workflow Execution processing to the primary from the replica after an incident resolves. This is automatic for Temporal-initiated failovers but can be disabled in region settings." />.
+Returning control from the replica to the primary is called a <Components.ToolTipTerm term="failback" />.
 The replica is active for a brief duration during an incident.
 After the incident, Temporal fails back to the primary.
 
@@ -88,12 +88,12 @@ Workflow history events are written to the primary first and then asynchronously
 Namespace replication offers 99.99% availability, enforced by Temporal Cloud's [service error rates SLA](https://docs.temporal.io/cloud/sla).
 Our system is designed to limit data loss after recovery when the incident triggering the failover is resolved.
 
-Our recovery point objective (<Components.ToolTipTerm term="RPO" tooltip="RPO is the maximum acceptable duration during which transactional data might be lost from the service." />) is near-zero.
+Our recovery point objective (<Components.ToolTipTerm term="RPO" />) is near-zero.
 There may be a short period of time during an incident or forced failover when some data is unavailable in the replica region.
 Some Workflow History data won't arrive until network issues are fixed, enabling the History to finish replicating and the divergent History branches to reconcile.
 
 Temporal Cloud proactively responds to incidents by triggering failovers.
-Our recovery time objective (<Components.ToolTipTerm term="RTO" tooltip="RTO sets a maximum time and service level objective, after which, service must be restored following a disruption." />) is 20 minutes or less per incident.
+Our recovery time objective (<Components.ToolTipTerm term="RTO" />) is 20 minutes or less per incident.
 
 :::info
 

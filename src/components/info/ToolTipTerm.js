@@ -1,10 +1,23 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const ToolTipTerm = ({ term, tooltip }) => {
+const ToolTipTerm = ({ term, tooltip, src }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isClosingByButton, setIsClosingByButton] = useState(false);
+  const [tooltipContent, setTooltipContent] = useState(tooltip);
   const tooltipRef = useRef(null);
   const termRef = useRef(null);
+
+    const loadTooltipFromMarkdown = async (term, src) => {
+    try {
+      const filename = src ? `${src}.md` : `${term}.md`;
+      const response = await fetch(`/terms/${filename}`);
+      const text = await response.text();
+      setTooltipContent(text);
+    } catch (error) {
+      console.error('Error loading tooltip content:', error);
+      setTooltipContent('Tooltip content not found.');
+    }
+  };
 
   const openTooltip = () => {
     setTimeout(() => {
@@ -21,6 +34,12 @@ const ToolTipTerm = ({ term, tooltip }) => {
     setIsClosingByButton(true);
     setIsOpen(false);
   };
+
+  useEffect(() => {
+    if (!tooltip) {
+      loadTooltipFromMarkdown(term, src);
+    }
+  }, [term, tooltip, src]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -102,7 +121,7 @@ const ToolTipTerm = ({ term, tooltip }) => {
             {term}
           </h4>
           <p style={{ fontSize: '1rem', margin: 0, padding: '0 8px' }}>
-            {tooltip}
+            {tooltipContent}
           </p>
 
           <button

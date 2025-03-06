@@ -37,7 +37,7 @@ This section explains how and what to expect afterward.
 
 :::warning Check Your Replication Lag
 
-Always check the <Components.ToolTipTerm term="replication lag" tooltip="The transmission delay of Workflow updates and history events from the primary to the replica." /> before initiating a failover.
+Always check the <Components.ToolTipTerm term="replication lag" /> before initiating a failover.
 A forced failover when there is a significant replication lag has a higher likelihood of rolling back Workflow progress.
 
 :::
@@ -126,7 +126,7 @@ Practice runs help ensure the process runs smoothly during real incidents in pro
 
 :::
 
-Failover testing (also known as "<Components.ToolTipTerm term="trigger testing" tooltip="Trigger testing means  emulating Temporal's automatic failover trigger after a failing health check."/>") can:
+Failover testing (also known as "<Components.ToolTipTerm term="trigger testing" />)" can:
 
 - **Validate replicated deployments**:
   In multi-region setups, failover testing ensures your app can run from another region when the primary region experiences outages.
