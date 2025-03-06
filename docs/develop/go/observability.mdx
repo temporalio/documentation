@@ -172,7 +172,7 @@ Context must be explicitly propagated through interceptors, as shown in the [Nex
 - [Passing Context with Temporal](https://spiralscout.com/blog/passing-context-with-temporal) by SpiralScout
 
 The [Go SDK](https://github.com/temporalio/sdk-go) provides support for distributed tracing with **_Interceptors_**.
-Interceptors uses Temporal headers to create a call graph of a [Workflow](/workflows), along with its [Activities](/activities) and [Child Workflows](/encyclopedia/child-workflows).
+Interceptors uses Temporal headers to create a call graph of a [Workflow](/workflows), along with its [Activities](/activities) and [Child Workflows](/child-workflows).
 
 There are several tracing implementations supported by the Temporal Go SDK.
 For an [OpenTracing](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentracing) Interceptor, use `opentracing.NewInterceptor(opentracing.TracerOptions{})` to create a `TracingInterceptor`.
