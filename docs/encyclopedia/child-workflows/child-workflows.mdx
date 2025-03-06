@@ -3,6 +3,7 @@ id: child-workflows
 title: Child Workflows
 sidebar_label: Child Workflows
 description: A Child Workflow Execution in the Temporal platform is initiated from another Workflow within the same Namespace. 
+slug: /child-workflows
 toc_max_heading_level: 4
 keywords:
   - child workflow execution
@@ -45,7 +46,7 @@ A Workflow Execution can be both a Parent and a Child Workflow Execution because
 
 A Parent Workflow Execution must await on the Child Workflow Execution to spawn.
 The Parent can optionally await on the result of the Child Workflow Execution.
-Consider the Child's [Parent Close Policy](#parent-close-policy) if the Parent does not await on the result of the Child, which includes any use of Continue-As-New by the Parent.
+Consider the Child's [Parent Close Policy](/parent-close-policy) if the Parent does not await on the result of the Child, which includes any use of Continue-As-New by the Parent.
 
 :::note
 
@@ -54,7 +55,7 @@ This means that if a Parent Workflow Execution utilizes Continue-As-New, any ong
 
 :::
 
-When a Parent Workflow Execution reaches a Closed status, the Temporal Service propagates Cancellation Requests or Terminations to Child Workflow Executions depending on the Child's [Parent Close Policy](#parent-close-policy).
+When a Parent Workflow Execution reaches a Closed status, the Temporal Service propagates Cancellation Requests or Terminations to Child Workflow Executions depending on the Child's [Parent Close Policy](/parent-close-policy).
 
 If a Child Workflow Execution uses Continue-As-New, from the Parent Workflow Execution's perspective the entire chain of Runs is treated as a single execution.
 
@@ -111,7 +112,7 @@ Here are some important differences:
 
 - A Child Workflow has access to all Workflow APIs but is subject to the same [deterministic constraints](/workflows#deterministic-constraints) as other Workflows.
   An Activity has the inverse pros and cons—no access to Workflow APIs but no Workflow constraints.
-- A Child Workflow Execution can continue on if its Parent is canceled with a [Parent Close Policy](#parent-close-policy) of `ABANDON`.
+- A Child Workflow Execution can continue on if its Parent is canceled with a [Parent Close Policy](/parent-close-policy) of `ABANDON`.
   An Activity Execution is _always_ canceled when its Workflow Execution is canceled.
   (It can react to a cancellation Signal for cleanup.)
   The decision is roughly analogous to spawning a child process in a terminal to do work versus doing work in the same process.
