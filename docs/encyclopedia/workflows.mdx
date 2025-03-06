@@ -352,7 +352,7 @@ Awaitables are provided when using APIs for the following:
 - Awaiting: Progress can block using explicit "Await" APIs.
 - Requesting cancellation of another Workflow Execution: Progress can block on confirmation that the other Workflow Execution is cancelled.
 - Sending a [Signal](/sending-messages#sending-signals): Progress can block on confirmation that the Signal sent.
-- Spawning a [Child Workflow Execution](/encyclopedia/child-workflows): Progress can block on confirmation that the Child Workflow Execution started, and on the result of the Child Workflow Execution.
+- Spawning a [Child Workflow Execution](/child-workflows): Progress can block on confirmation that the Child Workflow Execution started, and on the result of the Child Workflow Execution.
 - Spawning an [Activity Execution](/activities#activity-execution): Progress can block on the result of the Activity Execution.
 - Starting a Timer: Progress can block until the Timer fires.
 
@@ -1104,22 +1104,18 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 - Available in the [TypeScript SDK](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions#startdelay) since [v1.9.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.9.0)
 - Available in the [PHP SDK](https://php.temporal.io/classes/Temporal-Client-WorkflowOptions.html#property_workflowStartDelay) since [v2.7.0](https://github.com/temporalio/sdk-php/releases/tag/v2.7.0)
 
-:::
-
-Start Delay determines the amount of time to wait before initiating a Workflow Execution.
-
-:::note
-
 Start Delay Workflow Execution is incompatible with both [Schedules](#schedule) and [Cron Jobs](#temporal-cron-job).
 
 :::
 
+Start Delay determines the amount of time to wait before initiating a Workflow Execution.
 This is useful if you have a Workflow you want to schedule out in the future, but only want it to execute once: in comparison to reoccurring Workflows using Schedules.
 
 If the Workflow receives a Signal-With-Start during the delay, it dispatches a Workflow Task and the remaining delay is bypassed.
 If the Workflow receives a Signal during the delay that is not a Signal-With-Start, the Signal does not interrupt the delay, and the Workflow continues to be delayed until the delay expires or a Signal-With-Start is received.
 
-You can delay the dispatch of the initial Workflow Execution by setting this option in the Workflow Options field of the SDK of your choice.
+You can delay the dispatch of the initial Workflow Execution by setting this option in the Workflow Options field of your chosen SDK.
+This delay only applies to the initial Workflow Execution and does not affect subsequent executions, such as when the Workflow Continues-as-New.
 
 ## What is a State Transition? {#state-transition}
 

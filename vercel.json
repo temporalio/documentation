@@ -1166,7 +1166,7 @@
     },
     {
       "source": "/concepts/what-is-a-child-workflow-execution",
-      "destination": "/workflows#child-workflow"
+      "destination": "/child-workflows"
     },
     {
       "source": "/concepts/what-is-a-command",
@@ -1218,7 +1218,15 @@
     },
     {
       "source": "/concepts/what-is-a-parent-close-policy",
-      "destination": "/workflows#parent-close-policy"
+      "destination": "/parent-close-policy"
+    },
+    {
+      "source": "/encyclopedia/child-workflows",
+      "destination": "/child-workflows"
+    },
+    {
+      "source": "/encyclopedia/child-workflows#parent-close-policy",
+      "destination": "/parent-close-policy"
     },
     {
       "source": "/concepts/what-is-a-query",
