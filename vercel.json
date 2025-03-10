@@ -1134,7 +1134,7 @@
     },
     {
       "source": "/concepts/what-is-an-activity-execution",
-      "destination": "/activities#activity-execution"
+      "destination": "/activity-execution"
     },
     {
       "source": "/concepts/what-is-an-activity-heartbeat",

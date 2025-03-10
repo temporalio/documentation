@@ -39,7 +39,7 @@ An Activity Definition is the code that defines the constraints of an Activity T
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Activity Execution](/activities#activity-execution)
+#### [Activity Execution](/activity-execution)
 
 An Activity Execution is the full chain of Activity Task Executions.
 

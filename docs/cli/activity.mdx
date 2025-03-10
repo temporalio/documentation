@@ -18,14 +18,14 @@ tags:
   - Temporal CLI
 ---
 
-Activity commands operate on [Activity Executions](/activities#activity-execution).
+Activity commands operate on [Activity Executions](/activity-execution).
 
 Activity commands follow this syntax:
 `temporal activity [command] [command options]`
 
 ## complete
 
-The `temporal activity complete` command completes an [Activity Execution](/activities#activity-execution).
+The `temporal activity complete` command completes an [Activity Execution](/activity-execution).
 Along with completing the Activity, the result given upon return can be set as well.
 
 `temporal activity complete --activity-id=MyActivity --result=ActivityComplete`
@@ -72,7 +72,7 @@ Use the following options to change the behavior of this command.
 
 ## fail
 
-The `temporal activity fail` command fails an [Activity Execution](/activities#activity-execution).
+The `temporal activity fail` command fails an [Activity Execution](/activity-execution).
 The Activity must already be running on a valid [Workflow](/workflows).
 
 `temporal fail --workflow-id=meaningful-business-id --activity-id=MyActivity`

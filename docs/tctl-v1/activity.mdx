@@ -22,14 +22,14 @@ Thank you for being a valued part of the Temporal community.
 
 :::
 
-The `tctl activity` commands enable [Activity Execution](/activities#activity-execution) operations.
+The `tctl activity` commands enable [Activity Execution](/activity-execution) operations.
 
 - [tctl activity complete](#complete)
 - [tctl activity fail](#fail)
 
 ## complete
 
-The `tctl activity complete` command completes an [Activity Execution](/activities#activity-execution).
+The `tctl activity complete` command completes an [Activity Execution](/activity-execution).
 
 `tctl activity complete <modifiers>`
 
@@ -37,7 +37,7 @@ The following modifiers control the behavior of the command.
 
 ### --workflow_id
 
-Specify the [Workflow Id](/workflows#workflow-id) of an [Activity Execution](/activities#activity-execution) to complete.
+Specify the [Workflow Id](/workflows#workflow-id) of an [Activity Execution](/activity-execution) to complete.
 
 Alias: `-w`
 
@@ -49,7 +49,7 @@ tctl activity complete --workflow_id <id>
 
 ### --run_id
 
-Specify the [Run Id](/workflows#run-id) of an [Activity Execution](/activities#activity-execution) to complete.
+Specify the [Run Id](/workflows#run-id) of an [Activity Execution](/activity-execution) to complete.
 
 Alias: `-r`
 
@@ -61,7 +61,7 @@ tctl activity complete --run_id <id>
 
 ### --activity_id
 
-Specify the [Activity Id](/activities#activity-id) of an [Activity Execution](/activities#activity-execution) to complete.
+Specify the [Activity Id](/activities#activity-id) of an [Activity Execution](/activity-execution) to complete.
 
 **Example**
 
@@ -71,7 +71,7 @@ tctl activity complete --activity_id <id>
 
 ### --result
 
-Specify the result of an [Activity Execution](/activities#activity-execution) when using tctl to complete the Activity Execution.
+Specify the result of an [Activity Execution](/activity-execution) when using tctl to complete the Activity Execution.
 
 **Example**
 
@@ -81,7 +81,7 @@ tctl activity complete --result <value>
 
 ### --identity
 
-Specify the identity of the operator when using tctl to complete an [Activity Execution](/activities#activity-execution).
+Specify the identity of the operator when using tctl to complete an [Activity Execution](/activity-execution).
 
 **Example**
 
@@ -91,7 +91,7 @@ tctl activity complete --identity <value>
 
 ## fail
 
-The `tctl activity fail` command fails an [Activity Execution](/activities#activity-execution).
+The `tctl activity fail` command fails an [Activity Execution](/activity-execution).
 
 `tctl activity fail [<modifiers>]`
 
@@ -99,7 +99,7 @@ The following modifiers control the behavior of the command.
 
 ### --workflow_id
 
-Specify the [Workflow Id](/workflows#workflow-id) of an [Activity Execution](/activities#activity-execution) to fail.
+Specify the [Workflow Id](/workflows#workflow-id) of an [Activity Execution](/activity-execution) to fail.
 
 Alias: `-w`
 
@@ -111,7 +111,7 @@ tctl activity fail --workflow_id <id>
 
 ### --run_id
 
-Specify the [Run Id](/workflows#run-id) of an [Activity Execution](/activities#activity-execution) to fail.
+Specify the [Run Id](/workflows#run-id) of an [Activity Execution](/activity-execution) to fail.
 
 Alias: `-r`
 
@@ -123,7 +123,7 @@ tctl activity fail --run_id <id>
 
 ### --activity_id
 
-Specify the [Activity Id](/activities#activity-id) of an [Activity Execution](/activities#activity-execution) to fail.
+Specify the [Activity Id](/activities#activity-id) of an [Activity Execution](/activity-execution) to fail.
 
 **Example**
 
@@ -133,7 +133,7 @@ tctl activity fail --activity_id <id>
 
 ### --reason
 
-Specify the reason for failing an [Activity Execution](/activities#activity-execution).
+Specify the reason for failing an [Activity Execution](/activity-execution).
 
 **Example**
 
@@ -143,7 +143,7 @@ tctl activity fail --reason <value>
 
 ### --detail
 
-Specify details of the reason for failing an [Activity Execution](/activities#activity-execution).
+Specify details of the reason for failing an [Activity Execution](/activity-execution).
 
 **Example**
 
@@ -153,7 +153,7 @@ tctl activity fail --detail <value>
 
 ### --identity
 
-Specify the identity of the operator when using tctl to fail an [Activity Execution](/activities#activity-execution).
+Specify the identity of the operator when using tctl to fail an [Activity Execution](/activity-execution).
 
 **Example**
 
