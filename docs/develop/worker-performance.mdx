@@ -9,7 +9,7 @@ tags:
   - Performance
 ---
 
-import RelatedReadList from '../components/RelatedReadList.js';
+import * as Components from '@site/src/components';
 
 This page documents metrics and configurations that drive the efficiency of your Worker fleet.
 It provides coverage of performance metric families, Worker configuration options, Task Queue information, backlog counts, Task rates, and how to evaluate Worker availability.
@@ -36,12 +36,6 @@ When a Worker starts processing a Task, it occupies one slot.
 The number of available slots directly affects how many tasks a Worker can handle simultaneously.
 
 ### Slot suppliers
-
-:::tip Support, stability, and dependency info
-
-Resource-based slot suppliers are in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
-
-:::
 
 A **Slot Supplier** defines a strategy to provide slots for a Worker, increasing or decreasing the Worker's slot count.
 The supplier determines when it's acceptable to begin a new Task.
@@ -84,12 +78,6 @@ Available slot suppliers include:
 
 ### Worker tuning {#worker-tuning}
 
-:::tip Support, stability, and dependency info
-
-Worker tuners are in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
-
-:::
-
 **Worker tuning** lets you manage and customize a Worker's runtime performance characteristics.
 They use special types called **Worker tuners** that assign slot suppliers to various Task Types, including Worker, Activity, Nexus, and Local Activity Tasks.
 
@@ -123,8 +111,6 @@ Tag these with `worker_type=WorkflowWorker` for Workflow Task Workers or `worker
 :::tip
 
 Unlike `worker_task_slots_used`, `worker_task_slots_available` can only be used with fixed size slot suppliers and can't be used with resource-based slot suppliers.
-
-Resource-based slot suppliers are in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
 
 :::
 
@@ -197,12 +183,6 @@ Perform this sanity check after the adjustments to Worker settings.
 
 ## Worker runtime performance tuning {#worker-performance-tuning}
 
-:::tip Support, stability, and dependency info
-
-Worker tuners are in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
-
-:::
-
 Worker tuning manages the assignment of slot suppliers.
 A **Worker Tuner** instance exists per-Worker, providing slot suppliers for different slot types (Activity, Workflow, Nexus, or Local Activity Tasks).
 A tuner assigns different suppliers to each slot type.
@@ -246,13 +226,13 @@ Custom Slot Suppliers let you fine-tune task processing based on your applicatio
 
 Each SDK's reference documentation explains the specifics of the interface, but the core concepts are consistent across SDKs:
 
-| Language                                            | Slot Supplier Reference                                                                                                  |
-| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| <img src="/img/logos/golang.png" height="24" />     | [`SlotSupplier`](https://pkg.go.dev/go.temporal.io/sdk/worker#SlotSupplier)                                              |
-| <img src="/img/logos/java.png" height="24" />       | [`SlotSupplier`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/tuning/SlotSupplier.html) |
-| <img src="/img/logos/python.png" height="24" />     | [`CustomSlotSupplier`](https://python.temporal.io/temporalio.worker.CustomSlotSupplier.html)                             |
-| <img src="/img/logos/typescript.png" height="24" /> | [`CustomSlotSupplier`](https://typescript.temporal.io/api/interfaces/worker.CustomSlotSupplier)                          |
-| <img src="/img/logos/dotnet.png" height="24" />     | [`CustomSlotSupplier`](https://dotnet.temporal.io/api/Temporalio.Worker.Tuning.CustomSlotSupplier.html)                  |
+| Language                                               | Slot Supplier Reference                                                                                                  |
+| ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
+| <img src="/img/sdks/png/golang.png" height="24" />     | [`SlotSupplier`](https://pkg.go.dev/go.temporal.io/sdk/worker#SlotSupplier)                                              |
+| <img src="/img/sdks/png/java.png" height="24" />       | [`SlotSupplier`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/tuning/SlotSupplier.html) |
+| <img src="/img/sdks/png/python.png" height="24" />     | [`CustomSlotSupplier`](https://python.temporal.io/temporalio.worker.CustomSlotSupplier.html)                             |
+| <img src="/img/sdks/png/typescript.png" height="24" /> | [`CustomSlotSupplier`](https://typescript.temporal.io/api/interfaces/worker.CustomSlotSupplier)                          |
+| <img src="/img/sdks/png/dotnet.png" height="24" />     | [`CustomSlotSupplier`](https://dotnet.temporal.io/api/Temporalio.Worker.Tuning.CustomSlotSupplier.html)                  |
 
 Slot Suppliers issue `SlotPermit`s.
 These represent the right to use a slot of a specific type, namely Workflow, Activity, Local Activity, or Nexus.

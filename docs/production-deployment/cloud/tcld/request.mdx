@@ -25,19 +25,9 @@ The `tcld request get` command gets the status of the specified request in Tempo
 
 `tcld request get --request-id <request_id>`
 
+Alias: `g`
+
 The following modifiers control the behavior of the command.
-
-#### --namespace
-
-Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
-
-Alias: `-n`
-
-**Example**
-
-```bash
-tcld namespace get --namespace <namespace_id> --request-id <request_id>
-```
 
 #### --request
 
@@ -50,5 +40,5 @@ Alias: `-r`
 **Example**
 
 ```bash
-tcld namespace get --request-id <request_id>
+tcld request get --request-id <request_id>
 ```

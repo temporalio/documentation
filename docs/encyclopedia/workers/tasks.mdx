@@ -85,7 +85,7 @@ A Nexus Task Execution occurs when a Worker uses the context provided from the N
 
 The NexusOperationScheduled Event corresponds to when the Temporal Service records the Workflow's intent to schedule an operation.
 
-The NexusOperationStarted Event corresponds to when the Worker picks up the Nexus Task from the Task Queue, starts an asynchronous Nexus Operation, and returns an Operation ID to the caller indicating the asynchronous Nexus Operation has started.
+The NexusOperationStarted Event corresponds to when the Worker picks up the Nexus Task from the Task Queue, starts an asynchronous Nexus Operation, and returns an Operation token to the caller indicating the asynchronous Nexus Operation has started.
 
 Either NexusOperationCompleted or one of the other Closed Nexus Operation Events corresponds to when the Nexus Operation has reached a final state due to successfully completing the operation or unsuccessfully completing the operation in the case of a failure, timeout, or cancellation.
 

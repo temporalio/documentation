@@ -57,51 +57,74 @@ The steps to using custom Search Attributes are:
 
 Here is how to query Workflow Executions:
 
+Use the [listWorkflowExecutions()](https://php.temporal.io/classes/Temporal-Client-WorkflowClientInterface.html#method_listWorkflowExecutions) method on the Client and pass a [List Filter](/list-filter) as an argument to filter the listed Workflows.
+The result is an iterable paginator, so you can use the `foreach` loop to iterate over the results.
+
+```php
+$paginator = $workflowClient->listWorkflowExecutions('WorkflowType="GreetingWorkflow"');
+
+foreach ($paginator as $info) {
+    echo "Workflow ID: {$info->execution->getID()}\n";
+}
+```
+
 ### How to set custom Search Attributes {#custom-search-attributes}
 
 After you've created custom Search Attributes in your Temporal Service (using `temporal operator search-attribute create` or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
-Use the `WorkflowOptions::withSearchAttributes()` method to provide Search Attributes when you start a Workflow.
+To set custom Search Attributes, use the `withTypedSearchAttributes` method on `WorkflowOptions` for a Workflow stub.
+Typed search attributes are a `TypedSearchAttributes` collection.
 
 ```php
-$workflow = $this->workflowClient->newWorkflowStub(
-    GreetingWorkflowInterface::class,
+$keyDestinationTime = SearchAttributeKey::forDatetime('DestinationTime');
+$keyOrderId = SearchAttributeKey::forKeyword('OrderId');
+
+$workflow = $workflowClient->newWorkflowStub(
+    OrderWorkflowInterface::class,
     WorkflowOptions::new()
-        ->withWorkflowExecutionTimeout(CarbonInterval::minute())
-        ->withSearchAttributes(
-            [
-                'CustomKeywordField' => 'value',
-                'CustomIntField' => 123,
-            ]
-        )
+        ->withWorkflowExecutionTimeout('10 minutes')
+        ->withTypedSearchAttributes(
+            TypedSearchAttributes::empty()
+                ->withValue($keyOrderId, $orderid)
+                ->withValue($keyDestinationTime, new \DateTimeImmutable('2028-11-05T00:10:07Z'))
+        ),
 );
 ```
 
 ### How to upsert Search Attributes {#upsert-search-attributes}
 
-You can upsert Search Attributes to add or update Search Attributes from within Workflow code.
-
-To upsert Search Attributes within a Workflow, use `Workflow::upsertSearchAttributes()`.
+Within the Workflow code, you can dynamically add or update Search Attributes using [`upsertTypedSearchAttributes`](https://php.temporal.io/classes/Temporal-Workflow.html#method_upsertTypedSearchAttributes).
+This method is particularly useful for Workflows whose attributes need to change based on internal logic or external events.
 
 ```php
-class GreetingWorkflow implements GreetingWorkflowInterface
+#[Workflow\UpdateMethod]
+public function postponeDestinationTime(\DateInterval $interval)
 {
-    public function getGreeting(string $name)
-    {
-        Workflow::upsertSearchAttributes(
-            [
-                'CustomKeywordField' => 'attr1-value',
-                'CustomIntField' => 123,
-            ]
-        );
+    // Get the key for the DestinationTime attribute
+    $keyDestinationTime = SearchAttributeKey::forDatetime('DestinationTime');
 
-        // ...
-    }
+    /** @var DateTimeImmutable $destinationTime */
+    $destinationTime = Workflow::getInfo()->typedSearchAttributes->get($keyDestinationTime);
+
+    Workflow::upsertTypedSearchAttributes(
+        $keyDestinationTime->valueSet($destinationTime->add($interval)),
+    );
 }
 ```
 
 ### How to remove a Search Attribute from a Workflow {#remove-search-attribute}
 
-To remove a Search Attribute that was previously set, set it to an empty array: `[]`.
+To remove a Search Attribute that was previously set, set it to an empty Map.
 
-To remove a Search Attribute that was previously set, set it to an empty array `[]`.
+```php
+#[Workflow\UpdateMethod]
+public function unsetDestinationTime()
+{
+    // Get the key for the DestinationTime attribute
+    $keyDestinationTime = SearchAttributeKey::forDatetime('DestinationTime');
+
+    Workflow::upsertTypedSearchAttributes(
+        $keyDestinationTime->valueUnset(),
+    );
+}
+```

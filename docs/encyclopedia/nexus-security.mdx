@@ -17,9 +17,11 @@ tags:
 
 ---
 
+import * as Components from '@site/src/components';
+
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
-Temporal Nexus is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
+Temporal Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
 
 :::
 
@@ -31,7 +33,10 @@ For self-hosted deployments you can implement custom Authorizers.
 
 In Temporal Cloud, access to a Nexus Endpoint at runtime is controlled by the Endpoint's access control policy (allowlist of caller Namespaces) for each Endpoint in the Nexus Registry.
 
-![Nexus Security](/img/cloud/nexus/nexus-workers-short.png)
+<Components.CaptionedImage
+    src="/img/cloud/nexus/nexus-workers-short.png"
+    title="Nexus Security"
+/>
 
 Workers in each Namespace may authenticate with Temporal Cloud as they do now with mTLS certificates or API key as allowed by the caller Namespace.
 Once a Worker has authenticated it can send Nexus Operation commands to Temporal Cloud using a Temporal SDK to start a Nexus Operation in a different Namespace.

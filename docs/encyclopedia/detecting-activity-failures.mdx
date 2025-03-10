@@ -15,8 +15,7 @@ tags:
   - Timeouts
 ---
 
-import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
-import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
+import * as Components from '@site/src/components';
 
 A Workflow can detect different kinds of Activity Execution failures through the following timeouts:
 
@@ -32,19 +31,21 @@ A Workflow can detect different kinds of Activity Execution failures through the
 A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an [Activity Task](/tasks#activity-task) is scheduled (that is, placed in a Task Queue) to when a [Worker](/workers#worker) starts (that is, picks up from the Task Queue) that Activity Task.
 In other words, it's a limit for how long an Activity Task can be enqueued.
 
-<RelatedReadContainer>
-  <RelatedReadItem path="/develop/go/failure-detection#activity-timeouts" text="Set a Schedule-To-Start Timeout using the Go SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/java/failure-detection#activity-timeouts" text="Set a Schedule-To-Start Timeout using the Java SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/php/failure-detection#activity-timeouts" text="Set a Schedule-To-Start Timeout using the PHP SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/python/failure-detection#activity-timeouts" text="Set a Schedule-To-Start Timeout using the Python SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/typescript/failure-detection#activity-timeouts" text="Set a Schedule-To-Start Timeout using the TypeScript SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/dotnet/failure-detection#activity-timeouts" text="Set a Schedule-To-Start Timeout using the .NET SDK" archetype="feature-guide" />
-</RelatedReadContainer>
+<Components.RelatedReadContainer>
+  <Components.RelatedReadItem path="/develop/go/failure-detection#activity-timeouts" text="Set a Schedule-To-Start Timeout using the Go SDK" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/java/failure-detection#activity-timeouts" text="Set a Schedule-To-Start Timeout using the Java SDK" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/php/failure-detection#activity-timeouts" text="Set a Schedule-To-Start Timeout using the PHP SDK" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/python/failure-detection#activity-timeouts" text="Set a Schedule-To-Start Timeout using the Python SDK" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/typescript/failure-detection#activity-timeouts" text="Set a Schedule-To-Start Timeout using the TypeScript SDK" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/dotnet/failure-detection#activity-timeouts" text="Set a Schedule-To-Start Timeout using the .NET SDK" archetype="feature-guide" />
+</Components.RelatedReadContainer>
 
 The moment that the Task is picked by the Worker, from the Task Queue, is considered to be the start of the Activity Task Execution for the purposes of the Schedule-To-Start Timeout and associated metrics.
 This definition of "Start" avoids issues that a clock difference between the Temporal Service and a Worker might create.
 
-<PrettyImage src="/diagrams/schedule-to-start-timeout.svg" title="Schedule-To-Start Timeout period" />
+<Components.CaptionedImage
+    src="/diagrams/schedule-to-start-timeout.svg"
+    title="Schedule-To-Start Timeout period" />
 
 "Schedule" in Schedule-To-Start and Schedule-To-Close have different frequency guarantees.
 
@@ -54,7 +55,9 @@ Thus, "Schedule" in Schedule-To-Start refers to the scheduling moment of _every_
 
 A [Retry Policy](/encyclopedia/retry-policies) attached to an Activity Execution retries an Activity Task.
 
-<PrettyImage src="/diagrams/schedule-to-start-timeout-with-retry.svg" title="Start-To-Close Timeout period with retries" />
+<Components.CaptionedImage
+    src="/diagrams/schedule-to-start-timeout-with-retry.svg"
+    title="Start-To-Close Timeout period with retries" />
 
 This timeout has two primary use cases:
 
@@ -75,14 +78,14 @@ In most cases, we recommend monitoring the `temporal_activity_schedule_to_start_
 
 A Start-To-Close Timeout is the maximum time allowed for a single [Activity Task Execution](/tasks#activity-task-execution).
 
-<RelatedReadContainer>
-  <RelatedReadItem path="/develop/go/failure-detection#activity-timeouts" text="Set a Start-To-Close Timeout using the Go SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/java/failure-detection#activity-timeouts" text="Set a Start-To-Close Timeout using the Java SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/php/failure-detection#activity-timeouts" text="Set a Start-To-Close Timeout using the PHP SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/python/failure-detection#activity-timeouts" text="Set a Start-To-Close Timeout using the Python SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/typescript/failure-detection#activity-timeouts" text="Set a Start-To-Close Timeout using the TypeScript SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/dotnet/failure-detection#activity-timeouts" text="Set a Start-To-Close Timeout using the .NET SDK" archetype="feature-guide" />
-</RelatedReadContainer>
+<Components.RelatedReadContainer>
+  <Components.RelatedReadItem path="/develop/go/failure-detection#activity-timeouts" text="Set a Start-To-Close Timeout using the Go SDK" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/java/failure-detection#activity-timeouts" text="Set a Start-To-Close Timeout using the Java SDK" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/php/failure-detection#activity-timeouts" text="Set a Start-To-Close Timeout using the PHP SDK" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/python/failure-detection#activity-timeouts" text="Set a Start-To-Close Timeout using the Python SDK" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/typescript/failure-detection#activity-timeouts" text="Set a Start-To-Close Timeout using the TypeScript SDK" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/dotnet/failure-detection#activity-timeouts" text="Set a Start-To-Close Timeout using the .NET SDK" archetype="feature-guide" />
+</Components.RelatedReadContainer>
 
 **The default Start-To-Close Timeout is the same as the default [Schedule-To-Close Timeout](#schedule-to-close-timeout).**
 
@@ -101,14 +104,18 @@ Therefore, the Temporal Server relies on the Start-To-Close Timeout to force Act
 
 The main use case for the Start-To-Close timeout is to detect when a Worker crashes after it has started executing an Activity Task.
 
-<PrettyImage src="/diagrams/start-to-close-timeout.svg" title="Start-To-Close Timeout period" />
+<Components.CaptionedImage
+    src="/diagrams/start-to-close-timeout.svg"
+    title="Start-To-Close Timeout period" />
 
 A [Retry Policy](/encyclopedia/retry-policies) attached to an Activity Execution retries an Activity Task Execution.
 Thus, the Start-To-Close Timeout is applied to each Activity Task Execution within an Activity Execution.
 
 If the first Activity Task Execution returns an error the first time, then the full Activity Execution might look like this:
 
-<PrettyImage src="/diagrams/start-to-close-timeout-with-retry.svg" title="Start-To-Close Timeout period with retries" />
+<Components.CaptionedImage
+    src="/diagrams/start-to-close-timeout-with-retry.svg"
+    title="Start-To-Close Timeout period with retries" />
 
 If this timeout is reached, the following actions occur:
 
@@ -123,20 +130,24 @@ If this timeout is reached, the following actions occur:
 
 A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall [Activity Execution](/activity-execution), from when the first [Activity Task](/tasks#activity-task) is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.
 
-<RelatedReadContainer>
-  <RelatedReadItem path="/develop/go/failure-detection#activity-timeouts" text="Set a Schedule-To-Close Timeout using the Go SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/java/failure-detection#activity-timeouts" text="Set a Schedule-To-Close Timeout using the Java SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/php/failure-detection#activity-timeouts" text="Set a Schedule-To-Close Timeout using the PHP SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/python/failure-detection#activity-timeouts" text="Set a Schedule-To-Close Timeout using the Python SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/typescript/failure-detection#activity-timeouts" text="Set a Schedule-To-Close Timeout using the TypeScript SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/dotnet/failure-detection#activity-timeouts" text="Set a Schedule-To-Close Timeout using the .NET SDK" archetype="feature-guide" />
-</RelatedReadContainer>
+<Components.RelatedReadContainer>
+  <Components.RelatedReadItem path="/develop/go/failure-detection#activity-timeouts" text="Set a Schedule-To-Close Timeout using the Go SDK" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/java/failure-detection#activity-timeouts" text="Set a Schedule-To-Close Timeout using the Java SDK" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/php/failure-detection#activity-timeouts" text="Set a Schedule-To-Close Timeout using the PHP SDK" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/python/failure-detection#activity-timeouts" text="Set a Schedule-To-Close Timeout using the Python SDK" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/typescript/failure-detection#activity-timeouts" text="Set a Schedule-To-Close Timeout using the TypeScript SDK" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/dotnet/failure-detection#activity-timeouts" text="Set a Schedule-To-Close Timeout using the .NET SDK" archetype="feature-guide" />
+</Components.RelatedReadContainer>
 
-<PrettyImage src="/diagrams/schedule-to-close-timeout.svg" title="Schedule-To-Close Timeout period" />
+<Components.CaptionedImage
+    src="/diagrams/schedule-to-close-timeout.svg"
+    title="Schedule-To-Close Timeout period" />
 
 Example Schedule-To-Close Timeout period for an Activity Execution that has a chain Activity Task Executions:
 
-<PrettyImage src="/diagrams/schedule-to-close-timeout-with-retry.svg" title="Schedule-To-Close Timeout period with a retry" />
+<Components.CaptionedImage
+    src="/diagrams/schedule-to-close-timeout-with-retry.svg"
+    title="Schedule-To-Close Timeout period with a retry" />
 
 **The default Schedule-To-Close Timeout is ∞ (infinity).**
 
@@ -159,14 +170,14 @@ Therefore, the Temporal Server relies on the Start-To-Close Timeout to force Act
 An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Service.
 Each ping informs the Temporal Service that the Activity Execution is making progress and the Worker has not crashed.
 
-<RelatedReadContainer>
-  <RelatedReadItem path="/develop/go/failure-detection#activity-heartbeats" text="Heartbeat an Activity using the Go SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/java/failure-detection#activity-heartbeats" text="Heartbeat an Activity using the Java SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/php/failure-detection#activity-heartbeats" text="Heartbeat an Activity using the PHP SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/python/failure-detection#activity-heartbeats" text="Heartbeat an Activity using the Python SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/typescript/failure-detection#activity-heartbeats" text="Heartbeat an Activity using the TypeScript SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/dotnet/failure-detection#activity-heartbeats" text="Heartbeat an Activity using the .NET SDK" archetype="feature-guide" />
-</RelatedReadContainer>
+<Components.RelatedReadContainer>
+  <Components.RelatedReadItem path="/develop/go/failure-detection#activity-heartbeats" text="Heartbeat an Activity using the Go SDK" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/java/failure-detection#activity-heartbeats" text="Heartbeat an Activity using the Java SDK" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/php/failure-detection#activity-heartbeats" text="Heartbeat an Activity using the PHP SDK" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/python/failure-detection#activity-heartbeats" text="Heartbeat an Activity using the Python SDK" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/typescript/failure-detection#activity-heartbeats" text="Heartbeat an Activity using the TypeScript SDK" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/dotnet/failure-detection#activity-heartbeats" text="Heartbeat an Activity using the .NET SDK" archetype="feature-guide" />
+</Components.RelatedReadContainer>
 
 Activity Heartbeats work in conjunction with a [Heartbeat Timeout](#heartbeat-timeout).
 
@@ -241,15 +252,17 @@ And the following scenarios are not suitable for Heartbeating:
 
 A Heartbeat Timeout is the maximum time between [Activity Heartbeats](#activity-heartbeat).
 
-<RelatedReadContainer>
-  <RelatedReadItem path="/develop/go/failure-detection#activity-heartbeats" text="Set a Heartbeat Timeout using the Go SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/java/failure-detection#heartbeat-timeout" text="Set a Heartbeat Timeout using the Java SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/php/failure-detection#heartbeat-timeout" text="Set a Heartbeat Timeout using the PHP SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/python/failure-detection#heartbeat-timeout" text="Set a Heartbeat Timeout using the Python SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/typescript/failure-detection#activity-heartbeat-timeout" text="Set a Heartbeat Timeout using the TypeScript SDK" archetype="feature-guide" />
-  <RelatedReadItem path="/develop/dotnet/failure-detection#heartbeat-timeout" text="Set a Heartbeat Timeout using the .NET SDK" archetype="feature-guide" />
-</RelatedReadContainer>
+<Components.RelatedReadContainer>
+  <Components.RelatedReadItem path="/develop/go/failure-detection#activity-heartbeats" text="Set a Heartbeat Timeout using the Go SDK" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/java/failure-detection#heartbeat-timeout" text="Set a Heartbeat Timeout using the Java SDK" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/php/failure-detection#heartbeat-timeout" text="Set a Heartbeat Timeout using the PHP SDK" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/python/failure-detection#heartbeat-timeout" text="Set a Heartbeat Timeout using the Python SDK" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/typescript/failure-detection#activity-heartbeat-timeout" text="Set a Heartbeat Timeout using the TypeScript SDK" archetype="feature-guide" />
+  <Components.RelatedReadItem path="/develop/dotnet/failure-detection#heartbeat-timeout" text="Set a Heartbeat Timeout using the .NET SDK" archetype="feature-guide" />
+</Components.RelatedReadContainer>
 
-<PrettyImage src="/diagrams/heartbeat-timeout.svg" title="Heartbeat Timeout periods" />
+<Components.CaptionedImage
+    src="/diagrams/heartbeat-timeout.svg"
+    title="Heartbeat Timeout periods" />
 
 If this timeout is reached, the Activity Task fails and a retry occurs if a [Retry Policy](/encyclopedia/retry-policies) dictates it.

@@ -466,6 +466,16 @@ temporal:
 
 > You can serve HTTP endpoints using the same server setup.
 
+To provide the [API key](/cloud/api-keys) to RoadRunner use a `ServiceCredentials` DTO when creating the WorkerFactory:
+
+```php
+use Temporal\Worker\ServiceCredentials;
+
+$workerFactory = \Temporal\WorkerFactory::create(
+    credentials: ServiceCredentials::create()->withApiKey('your-api-key'),
+);
+```
+
 [How to configure connection to a Temporal Cloud](/develop/php/temporal-clients#connect-to-temporal-cloud)
 
 ### How to register types {#register-types}

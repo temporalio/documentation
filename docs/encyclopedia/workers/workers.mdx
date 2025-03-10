@@ -13,6 +13,8 @@ tags:
   - Concepts
 ---
 
+import * as Components from '@site/src/components';
+
 This page discusses the following:
 
 - [Worker](#worker)
@@ -96,20 +98,10 @@ Here are some approaches:
 
 ## What is a Worker Process? {#worker-process}
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">
-      Component diagram of a Worker Process and the Temporal Server
-    </p>
-  </div>
-  <div className="tdiiw" height="422">
-    <img
-      className="img_ev3q"
-      src="/diagrams/worker-and-server-component.svg"
-      alt="Component diagram of a Worker Process and the Temporal Server"
+<Components.CaptionedImage
+    src="/diagrams/worker-and-server-component.svg"
+    title="Component diagram of a Worker Process and the Temporal Server"
     />
-  </div>
-</div>
 
 A Worker Process is responsible for polling a [Task Queue](/task-queue), dequeueing a [Task](/tasks#task), executing your code in response to a Task, and responding to the [Temporal Service](/clusters) with the results.
 
@@ -138,7 +130,10 @@ Many SDKs support the ability to have multiple Worker Entities in a single Worke
 A single Worker Entity can listen to only a single Task Queue.
 But if a Worker Process has multiple Worker Entities, the Worker Process could be listening to multiple Task Queues.
 
-![Entity relationship diagram (meta model) of Worker Processes, Task Queues, and Tasks](/diagrams/worker-and-server-entity-relationship.svg)
+<Components.CaptionedImage
+    src="/diagrams/worker-and-server-entity-relationship.svg"
+    title="Entity relationship diagram (meta model) of Worker Processes, Task Queues, and Tasks"
+/>
 
 Worker Processes executing Activity Tasks must have access to any resources needed to execute the actions that are defined in Activity Definitions, such as the following:
 
