@@ -306,7 +306,7 @@ A List Filter is the SQL-like string that is provided as the parameter to an adv
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [filtered-lists](/tags/filtered-lists), [visibility](/tags/visibility)_ -->
 
-#### [Local Activity](/activities#local-activity)
+#### [Local Activity](/local-activity)
 
 A Local Activity is an Activity Execution that executes in the same process as the Workflow Execution that spawns it.
 

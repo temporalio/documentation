@@ -188,7 +188,7 @@ An Activity Heartbeat can be recorded as often as needed (e.g. once a minute or 
 It is often a good practice to Heartbeat on anything but the shortest Activity Function Execution.
 Temporal SDKs control the rate at which Heartbeats are sent to the Temporal Service.
 
-Heartbeating is not required from [Local Activities](/activities#local-activity), and does nothing.
+Heartbeating is not required from [Local Activities](/local-activity), and does nothing.
 
 For _long-running_ Activities, we recommend using a relatively short Heartbeat Timeout and a frequent Heartbeat.
 That way if a Worker fails it can be handled in a timely manner.
