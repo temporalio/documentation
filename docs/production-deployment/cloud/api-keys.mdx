@@ -469,23 +469,12 @@ apiKeyProvider.APIKey = myKeyUpdated
 At a client level:
 
 ```java
-// Create a Metadata object with the Temporal namespace header key.
-Metadata.Key<String> TEMPORAL_NAMESPACE_HEADER_KEY =
-    Metadata.Key.of("temporal-namespace", Metadata.ASCII_STRING_MARSHALLER);
-Metadata metadata = new Metadata();
-metadata.put(TEMPORAL_NAMESPACE_HEADER_KEY, <namespace_id>.<account_id>);
-
 // Create the Workflow service stub.
 WorkflowServiceStubsOptions.Builder stubOptions =
     WorkflowServiceStubsOptions.newBuilder()
-        .setChannelInitializer(
-            (channel) -> {
-                channel.intercept(MetadataUtils.newAttachHeadersInterceptor(metadata));
-            })
-        .addGrpcMetadataProvider(
-            new AuthorizationGrpcMetadataProvider(() -> "Bearer " + <APIKey>))
+        .addApiKey(() -> <APIKey>)
+        .setEnableHttps(true)
         .setTarget(<endpoint>);
-stubOptions.setSslContext(SimpleSslContextBuilder.noKeyOrCertChain().setUseInsecureTrustManager(false).build());
 
 WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(stubOptions.build());
 
@@ -500,10 +489,10 @@ WorkflowClient client =
 At a per-call level:
 
 ```java
-String myKey = "Bearer " + <APIKey>;
+String myKey = <APIKey>;
 WorkflowServiceStubsOptions stubOptions =
     WorkflowServiceStubsOptions.newBuilder()
-        .addGrpcMetadataProvider(new AuthorizationGrpcMetadataProvider(() -> myKey))
+        .addApiKey(() -> myKey)
         .build();
 
 // Just update by replacing, this must be done in a thread safe way
