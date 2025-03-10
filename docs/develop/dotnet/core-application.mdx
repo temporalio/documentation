@@ -202,7 +202,7 @@ public class MyWorkflow
 One of the primary things that Workflows do is orchestrate the execution of Activities.
 An Activity is a normal method execution that's intended to execute a single, well-defined action (either short or long-running), such as querying a database, calling a third-party API, or transcoding a media file.
 An Activity can interact with world outside the Temporal Platform or use a Temporal Client to interact with a Temporal Service.
-For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/activities#activity-definition).
+For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/activity-definition).
 
 You can develop an Activity Definition by using the `[Activity]` attribute from the `Temporalio.Activities` namespace on the method.
 To register a method as an Activity with a custom name, use an attribute parameter, for example `[Activity("your-activity")]`.
@@ -223,7 +223,7 @@ public class MyActivities
 }
 ```
 
-There is no explicit limit to the total number of parameters that an [Activity Definition](/activities#activity-definition) may support.
+There is no explicit limit to the total number of parameters that an [Activity Definition](/activity-definition) may support.
 However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
 
 A single argument is limited to a maximum size of 2 MB.

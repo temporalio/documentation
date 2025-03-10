@@ -162,7 +162,7 @@ An SDK provides you with the following:
 - A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) to communicate with a [Temporal Service](/clusters).
 - APIs to develop [Workflows](/workflows).
 - APIs to create and manage [Worker Processes](/workers#worker).
-- APIs to author [Activities](/activities#activity-definition).
+- APIs to author [Activities](/activity-definition).
 
 Add the [Temporal Go SDK](https://github.com/temporalio/sdk-go) to your project:
 
@@ -447,7 +447,7 @@ func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param Y
 
 ### How to develop Activity Parameters {#activity-parameters}
 
-There is no explicit limit to the total number of parameters that an [Activity Definition](/activities#activity-definition) may support.
+There is no explicit limit to the total number of parameters that an [Activity Definition](/activity-definition) may support.
 However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
 
 A single argument is limited to a maximum size of 2 MB.

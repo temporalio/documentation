@@ -33,7 +33,7 @@ In day-to-day conversation, the term "Activity" denotes an Activity Type, Activi
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Activity Definition](/activities#activity-definition)
+#### [Activity Definition](/activity-definition)
 
 An Activity Definition is the code that defines the constraints of an Activity Task Execution.
 
