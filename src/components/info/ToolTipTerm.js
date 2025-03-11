@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
 
 const ToolTipTerm = ({ term, tooltip, src }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -7,7 +8,7 @@ const ToolTipTerm = ({ term, tooltip, src }) => {
   const tooltipRef = useRef(null);
   const termRef = useRef(null);
 
-    const loadTooltipFromMarkdown = async (term, src) => {
+  const loadTooltipFromMarkdown = async (term, src) => {
     try {
       const filename = src ? `${src}.md` : `${term}.md`;
       const response = await fetch(`/terms/${filename}`);
@@ -120,9 +121,29 @@ const ToolTipTerm = ({ term, tooltip, src }) => {
           >
             {term}
           </h4>
-          <p style={{ fontSize: '1rem', margin: 0, padding: '0 8px' }}>
-            {tooltipContent}
-          </p>
+          <div
+            style={{
+              fontSize: '1rem',
+              margin: 0,
+              padding: '0 8px',
+            }}
+          >
+            {/* Render the markdown content as HTML */}
+            <ReactMarkdown
+              children={tooltipContent}
+              components={{
+                a: ({ node, ...props }) => (
+                  <a
+                    {...props}
+                    style={{
+                      color: '#4D90FE', // Set a fixed, visible color for links
+                      textDecoration: 'underline',
+                    }}
+                  />
+                ),
+              }}
+            />
+          </div>
 
           <button
             onClick={closeTooltipWithAnimation}
