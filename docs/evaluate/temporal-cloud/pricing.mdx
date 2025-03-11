@@ -106,6 +106,7 @@ They track billable operations within the Temporal Cloud Service, such as starti
   An Action occurs for every [Query](/sending-messages#sending-queries), including viewing the call stack in the Temporal Cloud UI, which results in a Query behind the scenes.
 - **Update received by Worker**.
   An Action occurs for every successful [Update](/sending-messages#sending-updates) and every [rejected](/handling-messages#update-validators) Update.
+  De-duplicated Updates that share an Update ID do _not_ count as an Action.
 - **Side Effect recorded**.
   For a mutable [Side Effect](/workflows#side-effect), an Action occurs only when the value changes.
   (Be aware that some SDKs don't support Side Effects.)
