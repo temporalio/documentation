@@ -432,7 +432,12 @@ A Workflow Task Execution failed.
 
 - Type: Counter
 - Available in: Core, Go, Java
-- Tags: `namespace`, `task_queue`, `workflow_type`
+- Tags: `namespace`, `task_queue`, `workflow_type`, `failure_reason`
+
+Valid values for the `failure_reason` tag:
+
+- `NonDeterminismError`: The Workflow Task failed due to a non-determinim error.
+- `WorkflowError`: The Workflow Task failed for any other reason.
 
 ### workflow_task_execution_latency
 
