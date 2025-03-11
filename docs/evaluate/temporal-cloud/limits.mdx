@@ -2,9 +2,9 @@
 id: limits
 title: System limits - Temporal Cloud
 sidebar_label: Limits
-description: This page outlines the limits of the Temporal Cloud system for accounts, namespaces, and programming models, providing key information on user capacity, namespace creation, throughput, certificates, task pollers, retention periods, batch jobs, search attributes, visibility API rate limit, identifier length, gRPC message limits, event
 slug: /cloud/limits
-toc_max_heading_level: 4
+description: Learn about Temporal Cloud limits, including accounts, namespaces, throughput, retention, task pollers, batch jobs, gRPC, search attributes, and more.
+toc_max_heading_level: 3
 keywords:
   - configuration
   - defaults
@@ -169,6 +169,15 @@ For more information on custom Search Attributes see [Custom Search Attributes l
 
 The rate limit for requests to the Visibility APIs varies, and may be as low as 30 requests per second.
 This limit is not configurable.
+
+**Which calls are subject to the Visibility API rate limit?**
+
+- `GetWorkerTaskReachability`
+- `ListSchedules`
+- `ListBatchOperations`
+- `DescribeTaskQueueWithReachability`
+- `ListDeployments`
+- `GetDeploymentReachability`
 
 ### Nexus Rate Limit {#nexus-rate-limits}
 
