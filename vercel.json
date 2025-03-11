@@ -1142,7 +1142,7 @@
     },
     {
       "source": "/concepts/what-is-an-activity-id",
-      "destination": "/activities#activity-id"
+      "destination": "/activity-execution#activity-id"
     },
     {
       "source": "/concepts/what-is-an-activity-task",
@@ -1286,7 +1286,7 @@
     },
     {
       "source": "/concepts/what-is-a-task-token",
-      "destination": "/activities#task-token"
+      "destination": "/activity-execution#task-token"
     },
     {
       "source": "/concepts/what-is-a-task",

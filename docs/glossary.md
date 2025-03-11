@@ -53,7 +53,7 @@ Each ping informs the Temporal Service that the Activity Execution is making pro
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Activity Id](/activities#activity-id)
+#### [Activity Id](/activity-execution#activity-id)
 
 A unique identifier for an Activity Execution.
 
@@ -83,7 +83,7 @@ Archival is a feature specific to a Self-hosted Temporal Service that automatica
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Asynchronous Activity Completion](/activities#asynchronous-activity-completion)
+#### [Asynchronous Activity Completion](/activity-execution#asynchronous-activity-completion)
 
 Asynchronous Activity Completion occurs when an external system provides the final result of a computation, started by an Activity, to the Temporal System.
 
@@ -588,7 +588,7 @@ Task Routing is when a Task Queue is paired with one or more Worker Processes, p
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Task Token](/activities#task-token)
+#### [Task Token](/activity-execution#task-token)
 
 A Task Token is a unique identifier for an Activity Task Execution.
 
