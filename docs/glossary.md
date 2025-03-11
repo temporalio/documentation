@@ -71,7 +71,7 @@ An Activity Task Execution occurs when a Worker uses the context provided from t
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Activity Type](/activities#activity-type)
+#### [Activity Type](/activity-definition#activity-type)
 
 An Activity Type is the mapping of a name to an Activity Definition.
 
