@@ -284,7 +284,7 @@ A History Shard is an important unit within a Temporal Service by which the scal
 
 <!-- _Tags: [term](/tags/term)_ -->
 
-#### [Idempotency](/activities#idempotency)
+#### [Idempotency](/activity-definition#idempotency)
 
 An "idempotent" approach avoids process duplication that could withdraw money twice or ship extra orders by mistake.
 Idempotency keeps operations from producing additional effects, protecting your processes from accidental or repeated actions, for more reliable execution.

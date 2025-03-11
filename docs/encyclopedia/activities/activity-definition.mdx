@@ -15,13 +15,28 @@ tags:
   - Durable Execution
 ---
 
+import * as Components from '@site/src/components';
+
 This guide provides a comprehensive overview of Temporal Activities.
+
+In day-to-day conversation, the term _Activity_ denotes an [Activity Definition](#activity-definition), [Activity Type](#activity-type), or [Activity Execution](#activity-execution).
+Temporal documentation aims to be explicit and differentiate between them.
+
+An Activity is a normal function or method that executes a single, well-defined action (either short or long running), such as calling another service, transcoding a media file, or sending an email message.
+Activity code can be non-deterministic.
+We recommend that it be [idempotent](#idempotency).
+
+Workflow code orchestrates the execution of Activities, persisting the results.
+If an Activity Function Execution fails, any future execution starts from initial state (except [Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat)).
+
+Activity Functions are executed by Worker Processes.
+When the Activity Function returns, the Worker sends the results back to the Temporal Service as part of the [ActivityTaskCompleted](/references/events#activitytaskcompleted) Event.
+The Event is added to the Workflow Execution's Event History.
+For other Activity-related Events, see [Activity Events](/workflows#activity-events).
 
 ## What is an Activity Definition? {#activity-definition}
 
 An Activity Definition is the code that defines the constraints of an [Activity Task Execution](/tasks#activity-task-execution).
-
-:::info
 
 - [How to develop an Activity Definition using the Go SDK](/develop/go/core-application#activity-definition)
 - [How to develop an Activity Definition using the Java SDK](/develop/java/core-application#develop-activities)
@@ -30,27 +45,17 @@ An Activity Definition is the code that defines the constraints of an [Activity 
 - [How to develop an Activity Definition using the TypeScript SDK](/develop/typescript/core-application#develop-activities)
 - [How to develop an Activity Definition using the .NET SDK](/develop/dotnet/core-application#develop-activity)
 
-:::
-
 The term 'Activity Definition' is used to refer to the full set of primitives in any given language SDK that provides an access point to an Activity Function Definition——the method or function that is invoked for an [Activity Task Execution](/tasks#activity-task-execution).
 Therefore, the terms Activity Function and Activity Method refer to the source of an instance of an execution.
 
 Activity Definitions are named and referenced in code by their [Activity Type](#activity-type).
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Activity Definition</p>
-  </div>
-  <div className="tdiiw" height="680">
-    <img
-      className="img_ev3q"
-      src="/diagrams/activity-definition.svg"
-      alt="Activity Definition"
+<Components.CaptionedImage
+    src="/diagrams/activity-definition.svg"
+    title="Activity Definition"
     />
-  </div>
-</div>
 
-### Idempotency
+#### Idempotency {#idempotency}
 
 Temporal recommends that Activities be idempotent.
 
@@ -73,12 +78,11 @@ In other words, lack of idempotency doesn't lead to a platform error.
 In some cases, whether something is idempotent doesn't affect the correctness of an application.
 For example, if you have a monotonically incrementing counter, you might not care that retries increment the counter because you don't care about the actual value, only that the current value is greater than a previous value.
 
-:::tip
 For more information about idempotency in Temporal, see the following post:
-[Idempotency and Durable Execution](https://temporal.io/blog/idempotency-and-durable-execution)
-:::
 
-### Constraints
+[Idempotency and Durable Execution](https://temporal.io/blog/idempotency-and-durable-execution)
+
+#### Constraints
 
 Activity Definitions are executed as normal functions.
 
@@ -86,7 +90,7 @@ In the event of failure, the function begins at its initial state when retried (
 
 Therefore, an Activity Definition has no restrictions on the code it contains.
 
-### Parameters
+#### Parameters
 
 An Activity Definition can support as many parameters as needed.
 
@@ -101,7 +105,7 @@ Activity Definitions must contain the following parameters:
 
 Other parameters, such as [Retry Policies](/encyclopedia/retry-policies) and return values, can be seen in the implementation guides, listed in the next section.
 
-## What is an Activity Type? {#activity-type}
+### What is an Activity Type? {#activity-type}
 
 An Activity Type is the mapping of a name to an Activity Definition.
 

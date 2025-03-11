@@ -24,7 +24,7 @@ tags:
 
 # Temporal CLI activity command reference
 
-Activity commands operate on [Activity Executions](/activities#activity-execution).
+Activity commands operate on [Activity Executions](/activity-execution).
 
 Activity commands follow this syntax:
 `temporal activity [command] [command options]`
@@ -132,7 +132,7 @@ The `temporal activity update-options` command lets you fix running Activities b
 The Activity must already be running on a valid [Workflow](/workflows).
 Updates are incremental, only changing the specified options. Either the Activity Id or Activity Type must be provided.
 If Activity Type is provided, and there are multiple pending Activities of the provided type, then all of them will be updated.
-The command will return the new Activity options for an [Activity Execution](/activities#activity-execution).
+The command will return the new Activity options for an [Activity Execution](/activity-execution).
 
 Use the following options to change the behavior of this command.
 
@@ -175,7 +175,7 @@ Other options:
 
 ## pause
 
-The `temporal activity pause` command pauses an [Activity Execution](/activities#activity-execution) specified by its ID or type.
+The `temporal activity pause` command pauses an [Activity Execution](/activity-execution) specified by its ID or type.
 Pausing the Activity can be undone by using the `temporal activity unpause` command.
 
 Pausing an Activity means:
@@ -220,7 +220,7 @@ Other options:
 
 ## unpause
 
-The `temporal activity unpause` command unpauses an [Activity Execution](/activities#activity-execution) specified by its ID or type.
+The `temporal activity unpause` command unpauses an [Activity Execution](/activity-execution) specified by its ID or type.
 If there are multiple pending Activities of the provided type, then all of them will be unpaused.
 If Activity is not paused, this call will have no effect.
 If the Activity was paused while waiting for retry, it will be scheduled immediately (* see 'jitter' flag).
@@ -268,7 +268,7 @@ Other options:
 
 ## reset
 
-The `temporal activity reset` command restarts a running [Activity Execution](/activities#activity-execution) specified by its ID or type.
+The `temporal activity reset` command restarts a running [Activity Execution](/activity-execution) specified by its ID or type.
 If there are multiple pending activities of the provided type - all of them will be reset.
 Resetting an Activity means:
 * The number of attempts will be reset to 0;
