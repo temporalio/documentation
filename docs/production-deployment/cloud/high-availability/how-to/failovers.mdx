@@ -48,25 +48,26 @@ You can trigger a failover manually using the Temporal&nbsp;Cloud<br />Web&nbsp;
 The following table outlines the steps for each method:
 
 <DocsTable
-  Columns = {[
-    "Approach",
-    "Instructions"
-  ]}
+Columns = {[
+"Approach",
+"Instructions"
+]}
 >
 
-**Web UI**
+<!-- --Web UI-- -->
 
+**Web UI**
 <NewDocsCell />
 
 1. Visit the [Namespace page](https://cloud.temporal.io/namespaces) on the Temporal Cloud Web UI.
 1. Navigate to your Namespace details page and select the **Trigger a failover** option from the menu.
 1. Confirm your action.
    After confirmation, Temporal initiates the failover.
+   <NewDocsCell />
 
-<NewDocsCell />
+<!-- --tcld-- -->
 
 **tcld**
-
 <NewDocsCell />
 
 To manually trigger a failover, run the following command in your terminal:
@@ -80,6 +81,7 @@ tcld namespace failover \
 If using API key authentication with the `--api-key` flag, you must add it directly after the tcld command and before `namespace failover`.
 
 </DocsTable>
+
 Temporal fails over the primary to the replica.
 When you're ready to fail back, follow these failover instructions to move the primary back to the original.
 
@@ -111,23 +113,24 @@ _This is the recommended and default option._
 However if you prefer to disable Temporal-initiated failovers and handle your own failovers, you can do so by following these instructions:
 
 <DocsTable
-  Columns = {[
-    "Approach",
-    "Instructions"
-  ]}
+Columns = {[
+"Approach",
+"Instructions"
+]}
 >
 
-**Web UI**
+<!-- --Web UI-- -->
 
+**Web UI**
 <NewDocsCell />
 
 1. Navigate to the Namespace detail page in Temporal Cloud.
 1. Choose the "Disable Temporal-initiated failovers" option.
+   <NewDocsCell />
 
-<NewDocsCell />
+<!-- --tcld-- -->
 
 **tcld**
-
 <NewDocsCell />
 
 To disable Temporal-initiated failovers, run the following command in your terminal:
