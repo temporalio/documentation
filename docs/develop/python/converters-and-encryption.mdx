@@ -125,12 +125,12 @@ Temporal's Converter architecture looks like this:
 
 **How to use a custom Payload Converter using the Temporal Python SDK.**
 
-Data converters convert raw Temporal payloads to/from actual Python types.
-A custom Data Converter of type `temporalio.converter.DataConverter` can be set via the `data_converter` parameter of the `Client` constructor.
-Data converters are a combination of payload converters, payload codecs, and failure converters.
-Payload converters convert Python values to/from serialized bytes.
-Payload codecs convert bytes to bytes (e.g. for compression or encryption).
-Failure converters convert exceptions to/from serialized failures.
+Data Converters convert raw Temporal payloads to/from actual Python types.
+A custom Data Converter of type `temporalio.converter.DataConverter` can be set through the `data_converter` parameter of the `Client` constructor.
+Data Converters are a combination of Payload Converters, Payload Codecs, and Failure Converters.
+Payload Converters convert Python values to/from serialized bytes.
+Payload Codecs convert bytes to bytes (for example, for compression or encryption).
+Failure Converters convert exceptions to/from serialized failures.
 
 The default Data Converter supports converting multiple types including:
 
@@ -149,11 +149,13 @@ To use Pydantic model instances, see [Pydantic Support](#pydantic-support).
 `datetime.date`, `datetime.time`, and `datetime.datetime` can only be used with the Pydantic Data Converter.
 
 Although Workflows, Updates, Signals, and Queries can all be defined with multiple input parameters, users are strongly
-encouraged to use a single `dataclass` or Pydantic model parameter, so that fields with defaults can be easily added
-without breaking compatibility. Similar advice applies to return values.
+encouraged to use a single `dataclass` or Pydantic model parameter so that fields with defaults can be easily added
+without breaking compatibility. 
+Similar advice applies to return values.
 
-Classes with generics may not have the generics properly resolved. The current implementation does not have generic
-type resolution. Users should use concrete types.
+Classes with generics may not have the generics properly resolved. 
+The current implementation does not have generic type resolution. 
+Users should use concrete types.
 
 ### Pydantic Support
 
@@ -170,8 +172,12 @@ This Data Converter supports conversion of all types supported by Pydantic to an
 In addition to Pydantic models, these include all `json.dump`-able types, various non-`json.dump`-able standard library
 types such as dataclasses, types from the datetime module, sets, UUID, etc, and custom types composed of any of these.
 
+:::note
+
 Pydantic v1 isn't supported by this Data Converter.
 If you aren't yet able to upgrade from Pydantic v1, see https://github.com/temporalio/samples-python/tree/main/pydantic_converter/v1 for limited v1 support.
+
+:::
 
 ### Custom Type Data Conversion
 
