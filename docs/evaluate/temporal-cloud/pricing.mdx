@@ -21,7 +21,7 @@ tags:
   - Support
 ---
 
-import { DiscoverableDisclosure, DocsTable, NewDocsCell } from '@site/src/components';
+import * as Components from '@site/src/components';
 
 Temporal Cloud is a consumption-based service.
 You pay only for what you use.
@@ -59,129 +59,13 @@ Base allocations help you get started with the Temporal platform, so you can bet
 Temporal offers four plans: Essential, Business, Enterprise, Mission Critical.
 Prices are outlined in the following table:
 
-<DocsTable
-Columns={[
-"",
-"Essentials",
-"Business",
-"Enterprise",
-"Mission Critical"
-]}
->
-
-<!-- --TOPICS-- -->
-
-Support Targeting
-<NewDocsCell />
-
-Basic use
-<NewDocsCell />
-
-Production deployments<br />
-that scale
-<NewDocsCell />
-
-Enterprise deployments<br/>
-w/ stringent uptime demands
-<NewDocsCell />
-
-Mission-critical applications<br />
-w/ the highest support needs
-<NewDocsCell />
-
-<!-- --ESSENTIALS-- -->
-
-Support<br />Features
-<NewDocsCell />
-
-Access to Support
-<NewDocsCell />
-
-P0 Response Times
-<NewDocsCell />
-
-- P0: \<30 Min, 24/7
-- Private Slack
-  <NewDocsCell />
-
-- P0: \<15 Min, 24/7
-- Private Slack
-- Dedicated DSE
-  <NewDocsCell />
-
-<!-- --BUSINESS-- -->
-
-Product Features
-<NewDocsCell />
-
-- 1M Actions
-- 1 GB Active Storage
-- 40 GB Retained Storage
-  <NewDocsCell />
-
-- Commit discounts
-- SSO (Add-on)
-- 2.5M Actions
-- 2.5 GB Active Storage
-- 100 GB Retained Storage
-  <NewDocsCell />
-
-- Commit discounts
-- SSO included
-- SCIM (Pre-release)
-- 10M Actions
-- 10 GB Active Storage
-- 400 GB Retained Storage
-  <NewDocsCell />
-
-- Commit discounts
-- SSO included
-- SCIM (Pre-release)
-- 10M Actions
-- 10 GB Active Storage
-- 400 GB Retained Storage
-  <NewDocsCell />
-
-<!-- --ENTERPRISE-- -->
-
-Plan Pricing
-<NewDocsCell />
-
-Greater of &#36;100/mo<br />
-or 5% of Usage Spend
-<NewDocsCell />
-
-Greater of &#36;500/mo<br />or 10% of Usage Spend
-<NewDocsCell />
-
-Priced annually:<br />
-[contact Sales](mailto:sales@temporal.io) for details
-<NewDocsCell />
-
-Priced annually:<br />
-[contact Sales](mailto:sales@temporal.io) for details
-<NewDocsCell />
-
-<!-- --MISSION CRITICAL-- -->
-
-Usage Pricing
-<NewDocsCell />
-
-[Pay-As-You-Go](#payg) Pricing
-<NewDocsCell />
-
-Choose from <br />
-[Pay-As-You-Go](#payg) or [Commitment Pricing](#commitment-pricing)
-<NewDocsCell />
-
-Choose from <br />
-[Pay-As-You-Go](#payg) or [Commitment Pricing](#commitment-pricing)
-<NewDocsCell />
-
-Choose from <br />
-[Pay-As-You-Go](#payg) or [Commitment Pricing](#commitment-pricing)
-
-</DocsTable>
+|                   | Essentials                                                                     | Business                                                                                                                          | Enterprise                                                                                                                      | Mission Critical                                                                                                                |
+| ----------------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Support Targeting | Basic use                                                                      | Production deployments<br />that scale                                                                                            | Enterprise deployments<br/>w/ stringent uptime demands                                                                          | Mission-critical applications<br />w/ the highest support needs                                                                 |
+| Support Features  | Access to Support                                                              | <li>P0 Response Times</li>                                                                                                        | <li>P0: \<30 Min, 24/7</li><li>Private Slack</li>                                                                               | <li>P0: \<15 Min, 24/7</li><li>Private Slack</li><li>Dedicated DSE</li>                                                         |
+| Product Features  | <li>1M Actions</li><li>1 GB Active Storage</li><li>40 GB Retained Storage</li> | <li>Commit discounts</li><li>SSO (Add-on)</li><li>2.5M Actions</li><li>2.5 GB Active Storage</li><li>100 GB Retained Storage</li> | <li>Commit discounts</li><li>SSO included</li><li>SCIM (Pre-release)</li><li>10M Actions</li><li>10 GB Active Storage</li><li>400 GB Retained Storage</li> | <li>Commit discounts</li><li>SSO included</li><li>SCIM (Pre-release)</li><li>10M Actions</li><li>10 GB Active Storage</li><li>400 GB Retained Storage</li> |
+| Plan Pricing      | Greater of<li>&#36;100/mo or</li><li>5% of Usage Spend</li>                    | Greater of<li>&#36;500/mo or</li><li>10% of Usage Spend</li>                                                                      | Priced annually:<br /> [contact Sales](mailto:sales@temporal.io) for details                                                    | Priced annually:<br /> [contact Sales](mailto:sales@temporal.io) for details                                                    |
+| Usage Pricing     | [Pay-As-You-Go](#payg) Pricing                                                 | Choose from <br /> [Pay-As-You-Go](#payg) or [Commitment Pricing](#commitment-pricing)                                            | Choose from <br /> [Pay-As-You-Go](#payg) or [Commitment Pricing](#commitment-pricing)                                          | Choose from <br /> [Pay-As-You-Go](#payg) or [Commitment Pricing](#commitment-pricing)                                          |
 
 Please note, partial months are prorated to the day.
 Find a complete description of Support offerings and response times in our [Support](/cloud/support) documentation.
@@ -199,7 +83,7 @@ Active and Retained Storage allocations are translated into GBh at a rate of 1GB
 Actions are the primary unit of consumption-based pricing for Temporal Cloud.
 They track billable operations within the Temporal Cloud Service, such as starting Workflows, recording a Heartbeat or sending messages.
 
-<DiscoverableDisclosure label="Operations that result in Actions">
+<Components.DiscoverableDisclosure label="Operations that result in Actions">
 
 **WORKFLOWS**
 
@@ -275,7 +159,7 @@ Each execution of a Schedule accrues three actions:
 - The underlying Temporal primitives (such as Workflows, Activities, and Signals) created by a Nexus Operation handler (directly or indirectly) result in the normal Actions for those primitives billed to the handler’s Namespace.
   This includes retries for underlying Temporal primitives like Activities but _not_ for handling the Nexus Operation itself or a retry of the Nexus Operation itself.
 
-</DiscoverableDisclosure>
+</Components.DiscoverableDisclosure>
 
 [Reach out](https://pages.temporal.io/contact-us) to our team for more information or to help size your number of Actions.
 
@@ -347,11 +231,10 @@ $250 (First Tier) + $225 (Second Tier) + $50 (Third Tier) = $525
 
 Most accounts’ storage needs are met by our Temporal Cloud Plans.
 For additional storage within a calendar month, you are billed for Active and Retained Storage as follows:
-
 | **Storage** | **Price per GBh (USD)** |
 | ----------- | ----------------------- |
-| Retained    | &#36;0.00105            |
-| Active      | &#36;0.042              |
+| Retained | &#36;0.00105 |
+| Active | &#36;0.042 |
 
 **Example**
 
@@ -502,6 +385,7 @@ SCIM support is available in [Pre-release](/evaluate/development-production-feat
 
 :::
 
+
 ### Use case cost estimates {#pricing-estimates}
 
 Temporal Cloud uses a consumption-based pricing model based primarily on [Actions](#action) and [Storage](#storage).
@@ -515,10 +399,10 @@ Our team is always happy to [help you estimate costs] (https://pages.temporal.io
 
 | Workload size | Cost (monthly) | Characteristics                            | Actions                                            | Typical use cases                                                                                             |
 | ------------- | -------------- | ------------------------------------------ | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Small         | < &#36;50.00   | Modest / transient throughput              | < 1M / month <br /> _(< 0.38 actions per second)_  | General automation <br /> Human dependent processes <br /> Data pipelines <br /> Nightly batch processes      |
-| Medium        | < &#36;2K      | Steady or burst throughput                 | < 40M / month <br /> _(< 15 actions per second)_   | Transaction & order systems <br /> Infrastructure automation <br /> Payment Processing <br /> Batch processes |
-| Large         | < &#36;15K     | Sustained throughput or multiple use cases | < 400M / month <br /> _(< 150 actions per second)_ | Data processing / sync <br /> Retail order system <br /> KYC & fraud detection                                |
-| Web Scale     | &#36;20K+      | "Web scale" and / or numerous use cases    | 1B+ / month <br /> _(400+ actions per second)_     | Social media application <br /> SaaS application service                                                      |
+| Small         | < &#36;50.00   | Modest / transient throughput              | < 1M / month  <br /> _(< 0.38 actions per second)_ | General automation <br /> Human dependent processes <br /> Data pipelines <br /> Nightly batch processes      |
+| Medium        | < &#36;2K      | Steady or burst throughput                 | < 40M / month <br /> _(< 15 actions per second)_   | Transaction & order systems <br /> Infrastructure automation <br /> Payment Processing <br /> Batch processes |
+| Large         | < &#36;15K     | Sustained throughput or multiple use cases | < 400M / month <br /> _(< 150 actions per second)_ | Data processing / sync <br /> Retail order system <br /> KYC & fraud detection                                |
+| Web Scale     | &#36;20K+      | "Web scale" and / or numerous use cases    | 1B+ / month <br /> _(400+ actions per second)_     | Social media application <br /> SaaS application service                                                      |
 
 ## Billing Questions FAQs {#pricing-faq}
 
