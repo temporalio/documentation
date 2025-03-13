@@ -16,7 +16,7 @@ tags:
   - Visibility
 ---
 
-A [Visibility](/clusters#visibility) store is set up as a part of your [Persistence store](/clusters#persistence) to enable listing and filtering details about Workflow Executions that exist on your Temporal Service.
+A [Visibility](/temporal-service/visibility) store is set up as a part of your [Persistence store](/clusters#persistence) to enable listing and filtering details about Workflow Executions that exist on your Temporal Service.
 
 A Visibility store is required in a Temporal Service setup because it is used by Temporal Web UI and CLI to pull Workflow Execution data and enables features like batch operations on a group of Workflow Executions.
 
@@ -66,7 +66,7 @@ For updates, check [Server release notes](https://github.com/temporalio/temporal
 
 :::
 
-You can set MySQL as your [Visibility store](/clusters#visibility).
+You can set MySQL as your [Visibility store](/temporal-service/visibility).
 Verify [supported versions](/self-hosted-guide/visibility) before you proceed.
 
 If using MySQL v8.0.17 or later as your Visibility store with Temporal Server v1.20 and later, any [custom Search Attributes](/search-attribute#custom-search-attribute) that you create must be associated with a Namespace in that Temporal Service.
@@ -155,7 +155,7 @@ Note that the script uses [temporal-sql-tool](https://github.com/temporalio/temp
 
 :::
 
-You can set PostgreSQL as your [Visibility store](/clusters#visibility).
+You can set PostgreSQL as your [Visibility store](/temporal-service/visibility).
 Verify [supported versions](/self-hosted-guide/visibility) before you proceed.
 
 If using PostgreSQL v12 or later as your Visibility store with Temporal Server v1.20 and later, any [custom Search Attributes](/search-attribute#custom-search-attribute) that you create must be associated with a Namespace in that Temporal Service.
@@ -235,7 +235,7 @@ Note that the script uses [temporal-sql-tool](https://github.com/temporalio/temp
 
 :::
 
-You can set SQLite as your [Visibility store](/clusters#visibility).
+You can set SQLite as your [Visibility store](/temporal-service/visibility).
 Verify [supported versions](/self-hosted-guide/visibility) before you proceed.
 
 Temporal supports only an in-memory database with SQLite; this means that the database is automatically created when Temporal Server starts and is destroyed when Temporal Server stops.
@@ -298,7 +298,7 @@ For an example of setting up the SQLite schema, see [Temporalite](https://github
 
 :::
 
-You can set Cassandra as your [Visibility store](/clusters#visibility).
+You can set Cassandra as your [Visibility store](/temporal-service/visibility).
 Verify [supported versions](/self-hosted-guide/visibility) before you proceed.
 
 Advanced Visibility is not supported with Cassandra.

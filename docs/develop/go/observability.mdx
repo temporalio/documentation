@@ -330,7 +330,7 @@ The steps to using custom Search Attributes are:
 Here is how to query Workflow Executions:
 
 The [ListWorkflow()](https://pkg.go.dev/go.temporal.io/sdk/client#Client.ListWorkflow) function retrieves a list of [Workflow Executions](/workflows#workflow-execution) that match the [Search Attributes](/search-attribute) of a given [List Filter](/list-filter).
-The metadata returned from the [Visibility](/clusters#visibility) store can be used to get a Workflow Execution's history and details from the [Persistence](/clusters#persistence) store.
+The metadata returned from the [Visibility](/temporal-service/visibility) store can be used to get a Workflow Execution's history and details from the [Persistence](/clusters#persistence) store.
 
 Use a List Filter to define a `request` to pass into `ListWorkflow()`.
 
