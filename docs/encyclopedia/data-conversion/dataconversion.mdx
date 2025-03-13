@@ -19,14 +19,14 @@ tags:
   - Security
 ---
 
-import * as Components from '@site/src/components';
+import { CaptionedImage } from '@site/src/components';
 
 This guide provides an overview of data handling using a Data Converter on the Temporal Platform.
 
 Data Converters in Temporal are SDK components that handle the serialization and encoding of data entering and exiting a Temporal Service.
 Workflow inputs and outputs need to be serialized and deserialized so they can be sent as JSON to a Temporal Service.
 
-<Components.CaptionedImage
+<CaptionedImage
     src="/diagrams/default-data-converter.svg"
     title="Data Converter encodes and decodes data"
     />

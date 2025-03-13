@@ -17,7 +17,7 @@ tags:
   - API
 ---
 
-import * as Components from '@site/src/components';
+import { CaptionedImage } from '@site/src/components';
 
 Temporal Cloud API keys offer industry-standard identity-based authentication for Temporal users and [Service Accounts](/cloud/service-accounts).
 This document introduces Temporal Cloud's API key features:
@@ -38,7 +38,7 @@ Each Temporal Cloud API key is a unique identity linked to role-based access con
 
 The authentication process follows this pathway:
 
-<Components.CaptionedImage
+<CaptionedImage
     src="/img/cloud/apikeys/apikeyrbac.png"
     title="API key (authentication) → Identity (user or Service Account) → RBAC (authorization)"
 />

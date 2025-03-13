@@ -14,7 +14,7 @@ tags:
   - Namespaces
 ---
 
-import ToolTipTerm from '@site/src/components/info/ToolTipTerm';
+import { ToolTipTerm } from '@site/src/components'
 
 The `tcld namespace` commands enable [Namespace](/namespaces) operations in Temporal Cloud.
 
@@ -176,7 +176,7 @@ tcld --api-key <your_api_key> \
 
 When using High Availability features, specify the region code of the region where you want to create the replica as an argument to the `--region` flag:
 
-- Using the current region replicates to an <ToolTipTerm term="isolation domain" src="isolation domains"/> within your existing region.
+- Using the current region replicates to an <ToolTipTerm term="isolation domain" src="isolation domains" /> within your existing region.
 - Using a different region (within the same continent) replicates across regions.
 - You cannot create a Multi-region deployment on separate continents.
 
@@ -1644,7 +1644,8 @@ Alias: `-n`
 
 #### --disable-auto-failover
 
-Specify whether Temporal Cloud should perform <ToolTipTerm term="health checks" src="health check"/> and trigger automatic failovers.
+Specify whether Temporal Cloud should perform <ToolTipTerm term="health checks" src="health check" /> and trigger automatic failovers.
+
 Pass `true` or `false` (default).
 
 **Example**

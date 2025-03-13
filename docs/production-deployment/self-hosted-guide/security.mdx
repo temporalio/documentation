@@ -18,7 +18,7 @@ tags:
   - Security
 ---
 
-import * as Components from '@site/src/components';
+import { CaptionedImage } from '@site/src/components';
 
 :::info General company security
 
@@ -97,7 +97,7 @@ When these are provided the frontend invokes the implementation of these interfa
 
 See https://github.com/temporalio/samples-server/blob/main/extensibility/authorizer for a sample implementation.
 
-<Components.CaptionedImage
+<CaptionedImage
     src="/diagrams/frontend-authorization-order-of-operations.png"
     title="Front-end authorization order of operations"
 />
@@ -113,7 +113,7 @@ To enable SSO for the Temporal Web UI edit the web service's configuration per t
 
 ## Temporal Service plugins {#plugins}
 
-The Temporal Service supports some pluggable components.
+The Temporal Service supports some pluggable 
 
 ### What is a ClaimMapper Plugin? {#claim-mapper}
 
