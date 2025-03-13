@@ -648,11 +648,11 @@ A Cloud gRPC Endpoint is a Namespace-specific address used to access Temporal Cl
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Temporal Cluster](/clusters)
+#### [Temporal Cluster](/temporal-service)
 The term "Temporal Cluster" is being phased out.
 Instead the term [Temporal Service](#temporal-service) is now being used.
 
-#### [Temporal Service](/clusters)
+#### [Temporal Service](/temporal-service)
 
 A Temporal Service is a Temporal Server paired with Persistence and Visibility stores.
 

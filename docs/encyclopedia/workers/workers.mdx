@@ -103,7 +103,7 @@ Here are some approaches:
     title="Component diagram of a Worker Process and the Temporal Server"
     />
 
-A Worker Process is responsible for polling a [Task Queue](/task-queue), dequeueing a [Task](/tasks#task), executing your code in response to a Task, and responding to the [Temporal Service](/clusters) with the results.
+A Worker Process is responsible for polling a [Task Queue](/task-queue), dequeueing a [Task](/tasks#task), executing your code in response to a Task, and responding to the [Temporal Service](/temporal-service) with the results.
 
 More formally, a Worker Process is any process that implements the Task Queue Protocol and the Task Execution Protocol.
 
@@ -114,7 +114,7 @@ More formally, a Worker Process is any process that implements the Task Queue Pr
 
 **Worker Processes are external to a Temporal Service.**
 Temporal Application developers are responsible for developing [Worker Programs](#worker-program) and operating Worker Processes.
-Said another way, the [Temporal Service](/clusters) (including the Temporal Cloud) doesn't execute any of your code (Workflow and Activity Definitions) on Temporal Service machines. The Temporal Service is solely responsible for orchestrating [State Transitions](/workflows#state-transition) and providing Tasks to the next available [Worker Entity](/workers#worker-entity).
+Said another way, the [Temporal Service](/temporal-service) (including the Temporal Cloud) doesn't execute any of your code (Workflow and Activity Definitions) on Temporal Service machines. The Temporal Service is solely responsible for orchestrating [State Transitions](/workflows#state-transition) and providing Tasks to the next available [Worker Entity](/workers#worker-entity).
 
 While data transferred in Event Histories is [secured by mTLS](/self-hosted-guide/security#encryption-in-transit-with-mtls), by default, it is still readable at rest in the Temporal Service.
 
