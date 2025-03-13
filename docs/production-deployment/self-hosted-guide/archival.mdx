@@ -33,7 +33,7 @@ It can be enabled in the [config](https://github.com/temporalio/temporal/blob/ma
 
 ### How to set up Archival {#set-up-archival}
 
-[Archival](/clusters#archival) consists of the following elements:
+[Archival](/temporal-service#archival) consists of the following elements:
 
 - **Configuration:** Archival is controlled by the [server configuration](https://github.com/temporalio/temporal/blob/main/config/development.yaml#L81) (i.e. the `config/development.yaml` file).
 - **Provider:** Location where the data should be archived. Supported providers are S3, GCloud, and the local file system.
@@ -170,7 +170,7 @@ You can retrieve archived Event Histories by copying the `workflowId` and `runId
 
 ### How to create a custom Archiver {#custom-archiver}
 
-To archive data with a given provider, using the [Archival](/clusters#archival) feature, Temporal must have a corresponding Archiver component installed.
+To archive data with a given provider, using the [Archival](/temporal-service#archival) feature, Temporal must have a corresponding Archiver component installed.
 The platform does not limit you to the existing providers.
 To use a provider that is not currently supported, you can create your own Archiver.
 
