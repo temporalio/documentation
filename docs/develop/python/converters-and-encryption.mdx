@@ -167,10 +167,14 @@ from temporalio.contrib.pydantic import pydantic_data_converter
 client = Client(data_converter=pydantic_data_converter, ...)
 ```
 
-This Data Converter supports conversion of all types supported by Pydantic to and from JSON.
-In addition to Pydantic models, these include all `json.dump`-able types, various non-`json.dump`-able standard library
-types such as dataclasses, types from the datetime module, sets, UUID, etc, and custom types composed of any of these.
-See the [Pydantic documentation](https://docs.pydantic.dev/latest/api/standard_library_types/) for full details of supported types.
+This Data Converter supports conversion of all [types supported by Pydantic](https://docs.pydantic.dev/latest/api/standard_library_types/) to and from JSON.
+In addition to Pydantic models, supported types include:
+- Everything that [`json.dumps()`](https://docs.python.org/3/library/json.html#py-to-json-table) supports by default
+- Several standard library types that `json.dumps()` does not support, including dataclasses, types from the datetime module, sets, UUID, etc
+- Custom types composed of any of these, with any degree of nesting.
+  For example, a list of Pydantic models with `datetime` fields.
+
+See the [Pydantic documentation](https://docs.pydantic.dev/latest/api/standard_library_types/) for full details.
 
 :::note
 
