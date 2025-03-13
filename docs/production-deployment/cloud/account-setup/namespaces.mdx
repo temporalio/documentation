@@ -29,7 +29,7 @@ A Namespace is a unit of isolation within the Temporal Platform.
 ## What is a Cloud Namespace Name? {#temporal-cloud-namespace-name}
 
 A Cloud Namespace Name is a customer-supplied name for a [Namespace](/namespaces) in Temporal Cloud.
-Each Namespace Name, such as `accounting-production`, is unique within the scope of a customer's account.
+Each Namespace Name, such as `rapid-delivery-production`, is unique within the scope of a customer's account.
 It cannot be changed after the Namespace is provisioned.
 
 Each Namespace Name must conform to the following rules:
@@ -42,7 +42,7 @@ Each Namespace Name must conform to the following rules:
 ## What is a Temporal Cloud Account Id? {#temporal-cloud-account-id}
 
 A Temporal Cloud Account Id is a unique customer identifier assigned by Temporal Technologies.
-Each Id is a short string of numbers and letters like `f45a2`, at least five characters long.
+Each Id is a short string of numbers and letters like `abc45`, at least five characters long.
 This account identifier is retained throughout the time each customer uses Temporal Cloud.
 
 At times you may need to know a customer Account Id.
@@ -133,7 +133,7 @@ A Namespace Id is formed by concatenating the following:
 1. A period (.)
 1. The [Account Id](#temporal-cloud-account-id) to which the Namespace belongs
 
-For example, for the Account Id `f45a2` and Namespace Name `accounting-production`, the Namespace Id is `accounting-production.f45a2`.
+For example, for the Account Id `abc45` and Namespace Name `rapid-delivery-production`, the Namespace Id is `rapid-delivery-production.abc45`.
 
 ## What is a Cloud gRPC Endpoint? {#temporal-cloud-grpc-endpoint}
 
@@ -326,7 +326,7 @@ For information on how to connect to Clients using a specific authentication met
 - To use mTLS to connect with the [Temporal CLI](/cli) and [Client SDK](/develop), see [Configure Clients to use Client certificates](/cloud/certificates#configure-clients-to-use-client-certificates).
 
 For accessing the Temporal Web UI, use the HTTPS endpoint in the form: `https://cloud.temporal.io/namespaces/<namespace>.<account>`.
-For example: `https://cloud.temporal.io/namespaces/accounting-production.f45a2`.
+For example: `https://cloud.temporal.io/namespaces/rapid-delivery-production.abc45`.
 
 To ensure the security of your data, all traffic to and from your Namespace is encrypted.
 However, for enhanced protection, you have additional options:

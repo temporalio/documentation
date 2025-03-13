@@ -28,7 +28,7 @@ For more information, contact your account manager.
 
 1. Locate your [Temporal Cloud Account Id](/cloud/namespaces#temporal-cloud-account-id).
    One way to do so is to sign in to Temporal Cloud and find your [Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id).
-   The Account Id is the five or six characters following the period (.), such as `f45a2`.
+   The Account Id is the five or six characters following the period (.), such as `abc45`.
    You will need the Account Id to construct your callback URL and your entity identifier.
 1. Configure SAML with your IdP by following one of these sets of instructions:
    - [Microsoft Entra ID](#configure-saml-with-azure-ad)
@@ -60,7 +60,7 @@ To use Entra ID as your SAML IdP, create a Microsoft Entra ID Enterprise applica
    A correctly formed entity identifier looks like this:
 
    ```bash
-   urn:auth0:prod-tmprl:f45a2-saml
+   urn:auth0:prod-tmprl:abc45-saml
    ```
 
 1. In **Reply URL (Assertion Consumer Service URL)**, enter the following callback URL, including your Account Id where indicated:
@@ -72,7 +72,7 @@ To use Entra ID as your SAML IdP, create a Microsoft Entra ID Enterprise applica
    A correctly formed callback URL looks like this:
 
    ```bash
-   https://login.tmprl.cloud/login/callback?connection=f45a2-saml
+   https://login.tmprl.cloud/login/callback?connection=abc45-saml
    ```
 
 1. You can leave the other fields blank.
@@ -105,7 +105,7 @@ To use Okta as your SAML IdP, configure a new Okta application integration.
    A correctly formed callback URL looks like this:
 
    ```bash
-   https://login.tmprl.cloud/login/callback?connection=f45a2-saml
+   https://login.tmprl.cloud/login/callback?connection=abc45-saml
    ```
 
 1. In **Audience URI (SP Entity ID)**, enter the following entity identifier, including your Account Id where indicated:
@@ -117,7 +117,7 @@ To use Okta as your SAML IdP, configure a new Okta application integration.
    A correctly formed entity identifier looks like this:
 
    ```bash
-   urn:auth0:prod-tmprl:f45a2-saml
+   urn:auth0:prod-tmprl:abc45-saml
    ```
 
 1. We require the user's full email address when connecting to Temporal.
