@@ -13,9 +13,11 @@ tags:
   - Nexus
 ---
 
+import * as Components from '@site/src/components';
+
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
-Temporal Nexus is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
+Temporal Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
 
 :::
 
@@ -35,7 +37,11 @@ Bi-directional links enable navigation of an end-to-end execution across Namespa
 They are automatically added by the Temporal SDK for builder functions like New-Workflow-Run-Operation.
 Links are auto-wired from a specific Nexus Operation event in the caller's Workflow history to a specific event in the handler's Workflow history.
 
-![Bi-directional linking](/img/cloud/nexus/nexus-bi-directional-linking.png)
+<Components.CaptionedImage
+    src="/img/cloud/nexus/nexus-bi-directional-linking.png"
+    title="Bi-directional linking"
+    zoom="true"
+/>
 
 Bi-directional links enable navigating across Namespace boundaries:
 
@@ -50,8 +56,13 @@ Bi-directional links enable navigating across Namespace boundaries:
 
 Similar to pending Activities, pending Nexus Operations are displayed in the Workflow details page and using: `temporal workflow describe`.
 
-For example, from the Temporal UI:\
-![Pending Operations](/img/cloud/nexus/pending-nexus-operations.png)
+For example, from the Temporal UI:
+
+<Components.CaptionedImage
+    src="/img/cloud/nexus/pending-nexus-operations.png"
+    title="Pending Operations"
+    zoom="true"
+/>
 
 For example, from the `temporal` CLI:
 
@@ -63,7 +74,7 @@ Pending Nexus Operations: 1
   Endpoint                 myendpoint
   Service                  my-hello-service
   Operation                echo
-  OperationID
+  OperationToken
   State                    BackingOff
   Attempt                  6
   ScheduleToCloseTimeout   0s
@@ -80,14 +91,18 @@ Non-retryable errors will result in the Nexus Operation reaching a final state i
 Nexus callbacks are sent from the handler's Namespace to the caller's Namespace to complete an asynchronous Nexus Operation.
 These show up in the UI and using: `temporal workflow describe`.
 
-For example, from the Temporal UI:\
-![Pending Callbacks](/img/cloud/nexus/nexus-callback.png)
+For example, from the Temporal UI:
+
+<Components.CaptionedImage
+    src="/img/cloud/nexus/nexus-callback.png"
+    title="Pending Callbacks"
+    zoom="true"
+/>
 
 For example, from the `temporal` CLI:
 
 ```
 temporal workflow describe
-
 
 Callbacks: 1
 
@@ -98,39 +113,12 @@ Callbacks: 1
   RegistrationTime  32 minutes ago
 ```
 
-## Nexus Operation ID
+## Tracing
 
-Nexus Operations created with the Temporal SDK New-Workflow-Run-Operation helper, return the Workflow ID as the Nexus Operation ID.
-The caller's Workflow history shows the Nexus Operation ID in the [NexusOperationStarted](/references/events#nexusoperationstarted) event.
+Temporal integrates with tracing libraries like [OpenTelemetry](https://opentelemetry.io/) and [OpenTracing](https://opentracing.io/).
+Tracing allows you to visualize the call graph of a Workflow, including its Activities, Nexus Operations, and Child Workflows.
+You can enable tracing by installing an interceptor on the Temporal Client or Worker in the supported SDKs.
+See the samples linked below to enable tracing for the SDKs:
 
-![Workflow history](/img/cloud/nexus/nexus-operations-ui.png)
-
-This can be used to search the handler's Namespace for that Workflow ID:
-
-![Search handler's Namespace](/img/cloud/nexus/nexus-operations-ui-search-handler.png)
-
-This may also be done using: `temporal workflow show --detailed`
-
-```
---------------- [5] NexusOperationScheduled ---------------
-endpoint: myendpoint
-endpointId: 80a4fb3e7ab145eabc6a3b15e327548f
-eventTime: 2024-08-28T03:44:34.985230930Z
-input.Language: es
-input.Name: Nexus
-operation: say-hello
-requestId: 1307660f-7f2e-4626-8629-851a0e468482
-scheduleToCloseTimeout: 0s
-service: my-hello-service
-taskId: 158300487
-version: 1265
-workflowTaskCompletedEventId: 4
-
---------------- [6] NexusOperationStarted ---------------
-eventTime: 2024-08-28T03:44:35.198292012Z
-operationId: 1307660f-7f2e-4626-8629-851a0e468482
-requestId: 1307660f-7f2e-4626-8629-851a0e468482
-scheduledEventId: 5
-taskId: 158300491
-version: 1265
-```
+- [Go SDK](https://github.com/temporalio/samples-go/tree/main/opentelemetry)
+- [Java SDK](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/tracing)

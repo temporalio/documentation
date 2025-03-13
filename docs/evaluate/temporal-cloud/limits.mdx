@@ -2,9 +2,9 @@
 id: limits
 title: System limits - Temporal Cloud
 sidebar_label: Limits
-description: This page outlines the limits of the Temporal Cloud system for accounts, namespaces, and programming models, providing key information on user capacity, namespace creation, throughput, certificates, task pollers, retention periods, batch jobs, search attributes, visibility API rate limit, identifier length, gRPC message limits, event
 slug: /cloud/limits
-toc_max_heading_level: 4
+description: Learn about Temporal Cloud limits, including accounts, namespaces, throughput, retention, task pollers, batch jobs, gRPC, search attributes, and more.
+toc_max_heading_level: 3
 keywords:
   - configuration
   - defaults
@@ -15,6 +15,8 @@ tags:
   - Temporal Cloud
   - Limits
 ---
+
+import * as Components from '@site/src/components';
 
 This page addresses the limits of the Temporal Cloud system.
 Reach out to your account team should you have any questions about these limits.
@@ -114,31 +116,15 @@ This is configurable in the Temporal Web UI.
 
 [Navigate to your list of Namespaces](https://cloud.temporal.io/namespaces), choose the Namespace you want to update, and select edit:
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Choose your Namespace and select Edit</p>
-  </div>
-  <div className="tdiiw" height="462">
-    <img
-      className="img_ev3q"
-      src="/img/cloud/cloud-guide/edit-namespace-option.png"
-      alt="Choose your Namespace and select Edit"
-    />
-  </div>
-</div>
+<Components.CaptionedImage
+    src="/img/cloud/cloud-guide/edit-namespace-option.png"
+    title="Choose your Namespace and select Edit"
+/>
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Update the Retention Period</p>
-  </div>
-  <div className="tdiiw" height="482">
-    <img
-      className="img_ev3q"
-      src="/img/cloud/cloud-guide/edit-retention-period.png"
-      alt="Update the Retention Period"
-    />
-  </div>
-</div>
+<Components.CaptionedImage
+    src="/img/cloud/cloud-guide/edit-retention-period.png"
+    title="Update the Retention Period"
+/>
 
 You can set the Retention Period between 1 and 90 days.
 
@@ -183,6 +169,15 @@ For more information on custom Search Attributes see [Custom Search Attributes l
 
 The rate limit for requests to the Visibility APIs varies, and may be as low as 30 requests per second.
 This limit is not configurable.
+
+**Which calls are subject to the Visibility API rate limit?**
+
+- `GetWorkerTaskReachability`
+- `ListSchedules`
+- `ListBatchOperations`
+- `DescribeTaskQueueWithReachability`
+- `ListDeployments`
+- `GetDeploymentReachability`
 
 ### Nexus Rate Limit {#nexus-rate-limits}
 
@@ -287,8 +282,7 @@ Read more about [Temporal Workflow Execution limits](/workflows#limits) on the [
 
 **What is the maximum number of Nexus Operations that can be started from a single Workflow Execution?**
 
-A single Workflow Execution can have a maximum of 30 in-flight Nexus Operations and 30 total Nexus Operations (as Public Preview does not remove completed Nexus Operations from mutable state).
-After the Workflow Execution reaches that limit, it won't process any further Nexus Operations.
+A single Workflow Execution can have a maximum of 30 in-flight Nexus Operations.
 
 See the Nexus Encyclopedia entry for [additional details](/workflows#workflow-execution-nexus-operation-limits).
 

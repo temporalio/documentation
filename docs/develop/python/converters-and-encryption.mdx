@@ -21,6 +21,8 @@ tags:
   - Temporal SDKs
 ---
 
+import * as Components from '@site/src/components';
+
 Temporal's security model is designed around client-side encryption of Payloads.
 A client may encrypt Payloads before sending them to the server, and decrypt them after receiving them from the server.
 This provides a high degree of confidentiality because the Temporal Server itself has absolutely no knowledge of the actual data.
@@ -42,7 +44,9 @@ If you only need to change the encoding performed on your payloads -- by adding 
 
 The `PayloadCodec` needs to implement `encode()` and `decode()` functions at a minimum.
 These should loop through all of a Workflow's payloads, perform all of your necessary marshaling, compression, or encryption steps in order, and set an `"encoding"` metadata field.
-Here is an example that marshals and then compresses a payload using Python's [cramjam](https://github.com/milesgranger/cramjam) library to provide `snappy` compression:
+
+In this example, the `encode` method marshals and then compresses a payload using Python's [cramjam](https://github.com/milesgranger/cramjam) library to provide `snappy` compression.
+The `decode()` function implements the `encode()` logic in reverse:
 
 ```python
 import cramjam
@@ -50,30 +54,25 @@ from temporalio.api.common.v1 import Payload
 from temporalio.converter import PayloadCodec
 
 class EncryptionCodec(PayloadCodec):
+    async def encode(self, payloads: Iterable[Payload]) -> List[Payload]:
+        return [
+            Payload(
+                metadata={
+                    "encoding": b"binary/snappy",
+                },
+                data=(bytes(cramjam.snappy.compress(p.SerializeToString()))),
+            )
+            for p in payloads
+        ]
 
-async def encode(self, payloads: Iterable[Payload]) -> List[Payload]:
-	return [
-		Payload(
-			metadata={
-				"encoding": b"binary/snappy",
-			},
-			data=(bytes(cramjam.snappy.compress(p.SerializeToString()))),
-		)
-		for p in payloads
-	]
-```
-
-The `decode()` function should implement the `encode()` logic in reverse.
-
-```python
-async def decode(self, payloads: Iterable[Payload]) -> List[Payload]:
-	ret: List[Payload] = []
-	for p in payloads:
-		if p.metadata.get("encoding", b"").decode() != "binary/snappy":
-			ret.append(p)
-			continue
-		ret.append(Payload.FromString(bytes(cramjam.snappy.decompress(p.data))))
-	return ret
+    async def decode(self, payloads: Iterable[Payload]) -> List[Payload]:
+        ret: List[Payload] = []
+        for p in payloads:
+            if p.metadata.get("encoding", b"").decode() != "binary/snappy":
+                ret.append(p)
+                continue
+            ret.append(Payload.FromString(bytes(cramjam.snappy.decompress(p.data))))
+        return ret
 ```
 
 This example verifies that an encoded payload matches the `binary/snappy` filetype -- i.e., that it was encoded using the same custom `encode()` function -- and if so, performs decompression followed by unmarshaling.
@@ -108,7 +107,7 @@ Refer to the [Codec Server](/production-deployment/data-encryption) documentatio
 
 ## Payload conversion
 
-Temporal SDKs provide a default [Payload Converter](/dataconversion#payload-converter) that can be customized to convert a custom data type to [Payload](/dataconversion#payload) and back.
+Temporal SDKs provide a default [Payload Converter](/payload-converter) that can be customized to convert a custom data type to [Payload](/dataconversion#payload) and back.
 
 ### Conversion sequence {#conversion-sequence}
 
@@ -119,7 +118,10 @@ When the Data Converter receives a value for conversion, it passes through each 
 Payload Converters can be customized independently of a Payload Codec.
 Temporal's Converter architecture looks like this:
 
-![Temporal converter architecture](/img/info/converter-architecture.png)
+<Components.CaptionedImage
+    src="/img/info/converter-architecture.png"
+    title="Temporal converter architecture"
+/>
 
 ### Custom Payload Converter {#custom-payload-converter}
 

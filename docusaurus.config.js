@@ -55,13 +55,13 @@ module.exports = async function createConfigAsync() {
           autoCollapseCategories: true,
         },
       },
-      announcementBar: {
-        id: "replay_announcement",
-        content: 'Replay is coming to London, March 3-5! <a href="https://www.eventbrite.com/e/replay-conference-2025-tickets-1045108576887">Secure your ticket</a>',
-        backgroundColor: "#312e81",
-        textColor: "#ffffff",
-        isCloseable: true,
-      },
+      // announcementBar: {
+      //   id: "replay_announcement",
+      //   content: 'Replay is coming to London, March 3-5! <a href="https://www.eventbrite.com/e/replay-conference-2025-tickets-1045108576887">Secure your ticket</a>',
+      //   backgroundColor: "#312e81",
+      //   textColor: "#ffffff",
+      //   isCloseable: true,
+      // },
       navbar: {
         hideOnScroll: false,
         logo: {
@@ -72,7 +72,7 @@ module.exports = async function createConfigAsync() {
         },
         items: [
           {
-            label: "Documentation Home",
+            label: "Home",
             to: "/",
             position: "left",
             activeBasePath: "none",
@@ -85,6 +85,11 @@ module.exports = async function createConfigAsync() {
           {
             label: "Start building",
             href: "/develop",
+            right: "left",
+          },
+          {
+            label: "Code Exchange",
+            href: "https://temporal.io/code-exchange",
             right: "left",
           },
           {

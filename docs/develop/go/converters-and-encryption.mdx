@@ -18,6 +18,8 @@ tags:
   - Temporal SDKs
 ---
 
+import * as Components from '@site/src/components';
+
 Temporal's security model is designed around client-side encryption of Payloads.
 A client may encrypt Payloads before sending them to the server, and decrypt them after receiving them from the server.
 This provides a high degree of confidentiality because the Temporal Server itself has absolutely no knowledge of the actual data.
@@ -143,7 +145,7 @@ For reference, see the [Codec server](https://github.com/temporalio/samples-go/t
 
 **How to customize the conversion of a payload using the Go SDK.**
 
-Temporal SDKs provide a default [Payload Converter](/dataconversion#payload-converter) that can be customized to convert a custom data type to [Payload](/dataconversion#payload) and back.
+Temporal SDKs provide a default [Payload Converter](/payload-converter) that can be customized to convert a custom data type to [Payload](/dataconversion#payload) and back.
 
 The order in which your encoding Payload Converters are applied depend on the order given to the Data Converter.
 You can set multiple encoding Payload Converters to run your conversions.
@@ -152,7 +154,10 @@ When the Data Converter receives a value for conversion, it passes through each 
 Payload Converters can be customized independently of a Payload Codec.
 Temporal's Converter architecture looks like this:
 
-![Temporal converter architecture](/img/info/converter-architecture.png)
+<Components.CaptionedImage
+    src="/img/info/converter-architecture.png"
+    title="Temporal converter architecture"
+/>
 
 ## How to use a custom Payload Converter in Go {#custom-payload-converter}
 

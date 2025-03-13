@@ -1,0 +1,252 @@
+---
+id: enable
+title: How to enable replication
+sidebar_label: How to enable replication
+slug: /cloud/high-availability/enable
+description: Temporal Cloud's High Availability Namespaces offer automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime.
+tags:
+  - Temporal Cloud
+  - Production
+  - High Availability
+keywords:
+  - availability
+  - explanation
+  - failover
+  - high-availability
+  - replication
+  - namespaces
+  - temporal-cloud
+  - term
+---
+
+import { ToolTipTerm, DocsTable, NewDocsCell } from '@site/src/components';
+
+You can enable High Availability features for a new or existing Namespace by adding a replica.
+When you add a replica, Temporal Cloud begins the replication of ongoing and existing Workflow Executions.
+Once the replication is complete and the replica is ready, your Namespace is ready for failover.
+
+Advantages of using Temporal Cloud’s High Availability features:
+
+- No manual deployment or configuration needed, just simple push-button operations.
+- Existing Workflows resume seamlessly in the replica with minimal interruption and data loss.
+- No changes needed for Worker and Workflow code during setup or failover.
+- 99.99% contractual SLA.
+
+## High Availability features
+
+:::tip Support, stability, and dependency info
+
+Same-region Replication is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for Temporal Cloud.
+
+:::
+
+Temporal offers the following High Availability features, which you can configure at a Namespace level.
+
+- **Same-region Replication**: Workflows are seamlessly replicated to a different <ToolTipTerm term="isolation domain" /> within the same region as the primary.
+  This option is a good fit if your application is architected to be in one region and you would prefer to failover within the same region.
+  It provides a reliable failover mechanism while maintaining deployment simplicity.
+  GCP Namespaces do not support Same-region Replication.
+- **Multi-region Replication**: Workflows are seamlessly replicated to a different [region](/cloud/high-availability/regions) that you choose.
+  Replicating Workflows across different regions enhances resilience and reliability.
+  This is particularly beneficial for organizations with multi-regional architectures or those required to be highly available across regions for compliance purposes.
+  This option is a good fit if your application is architected to be multi-region.
+  GCP Namespaces support Multi-region Replication.
+
+There are charges associated with Replication and enabling High Availability features.
+For pricing details, visit Temporal Cloud's [Pricing](/cloud/pricing) page.
+This page explains how to enable and manage these features.
+
+## Create a Namespace with High Availability features {#create}
+
+To create a new Namespace with High Availability features, you can use the Temporal Cloud UI or the tcld command line utility.
+The following table explains how:
+
+<DocsTable
+Columns = {[
+"Approach",
+"Instructions"
+]}
+>
+
+<!-- --Web UI-- -->
+
+**Web UI**
+
+<NewDocsCell />
+
+1. Visit Temporal Cloud in your Web browser.
+1. During Namespace creation, specify the primary [region](/cloud/high-availability/regions) for the Namespace.
+1. Select "Add a replica":
+   - Adding a replica in the same region enables Same-region Replication.
+   - Adding a replica in a different region (within the same continent) replicates across regions for Multi-region Replication.
+   - You cannot create a Multi-region deployment on separate continents.
+
+The web interface will present an estimated time for replication to complete.
+This time is based on your selection and the size and scale of the Workflows in your Namespace.
+
+Temporal Cloud sends an email alert once your Namespace is ready for use.
+
+<NewDocsCell />
+
+<!-- --tcld-- -->
+
+**tcld**
+
+<NewDocsCell />
+
+At the command line, enter:
+
+```
+tcld namespace create \
+   --namespace <namespace_id>.<account_id> \
+   --region <primary_region> \
+   --region <replica_region>
+```
+
+Specify the [region codes](/cloud/high-availability/regions) as arguments to the two `--region` flags.
+
+- Using the same region replicates to an isolation domain within that region.
+- Using a different region (within the same continent) replicates across regions.
+- You cannot create a Multi-region deployment on separate continents.
+
+If using API key authentication with the `--api-key` flag, you must add it directly after the tcld command and before `namespace create`.
+
+</DocsTable>
+
+:::caution
+
+Same-region Replication is not supported in all regions.
+For Multi-region Replication, pairing is limited to regions within the same continent.
+Contact [Support](https://support.temporal.io) to request more regions.
+
+:::
+
+## Upgrade an existing Namespace with High Availability functionality {#upgrade}
+
+Upgrade an existing standard Namespace by adding High Availability features.
+Adding a replica unlocks that functionality.
+
+The following table explains how:
+
+<DocsTable
+Columns = {[
+"Approach",
+"Instructions"
+]}
+>
+
+<!-- --Web UI-- -->
+
+**Web UI**
+
+<NewDocsCell />
+
+1. Visit Temporal Cloud Namespaces in your Web browser.
+1. Navigate to the Namespace details page.
+1. Select the “Add a replica” button.
+1. Choose either **Same-region Replication** or **Multi-region Replication** (across regions).<br />
+   _If you select Multi-region Replication, specify which [region](/cloud/high-availability/regions).
+   You cannot create a Multi-region deployment on separate continents._
+
+The web interface will present an estimated time for replication to complete.
+This time is based on your selection and the size and scale of the Workflows in your Namespace.
+
+Temporal Cloud sends an email alert once your Namespace is ready for use.
+
+<NewDocsCell />
+
+<!-- --tcld-- -->
+
+**tcld**
+
+<NewDocsCell />
+
+At the command line, enter:
+
+```
+tcld namespace add-region \
+   --namespace <namespace_id>.<account_id> \
+   --region <replica_region>
+```
+
+Specify the [region code](/cloud/high-availability/regions) of the region where you want to create the replica as an argument to the `--region` flag.
+
+- Using the current region replicates to an isolation domain within your existing region.
+- Using a different region (within the same continent) replicates across regions (Multi-region Replication).
+- You cannot create a Multi-region deployment on separate continents.
+
+If using API key authentication with the `--api-key` flag, you must add it directly after the tcld command and before `namespace add-region`.
+
+Temporal Cloud sends an email alert once your Namespace is ready for use.
+
+</DocsTable>
+
+## Change a replica location {#changing}
+
+:::caution
+
+We discourage changing the location of your replica for deployed applications, except under exceptional circumstances.
+Changing the location of your Namespace replica will result in a mandatory 7-day waiting period before you can re-enable High Availability Namespace features.
+
+:::
+
+Temporal Cloud can't change replica locations directly.
+To update the location, you need to remove the current replica and add a new one.
+Follow these steps to change the replica location:
+
+1. [Remove your replica](#discontinuing).
+   This disables High Availability for your Namespace.
+2. Wait through the required 7-day waiting period.
+3. [Add a new replica](#upgrade) to your Namespace.
+
+You will receive an email alert once your Namespace is ready for use.
+
+## Discontinue High Availability features {#discontinuing}
+
+Removing a Namespace replica disables High Availability and automatic failover features.
+Follow these steps to disable these features and end High Availability charges:
+
+<DocsTable
+Columns = {[
+"Approach",
+"Instructions"
+]}
+>
+
+<!-- --Web UI-- -->
+
+**Web UI**
+
+<NewDocsCell />
+
+1. Navigate to the Namespace details page in Temporal Cloud
+1. Select the option to "Remove Replica" on the "Region" card.
+
+<NewDocsCell />
+
+<!-- --tcld-- -->
+
+**tcld**
+
+<NewDocsCell />
+
+At the command line, enter:
+
+```
+tcld namespace delete-region \
+    --namespace <namespace_id>.<account_id> \
+    --region <replica_region>
+```
+
+If using API key authentication with the `--api-key` flag, you must add it directly after the tcld command and before `namespace delete-region`
+
+</DocsTable>
+
+After following these instructions, Temporal Cloud deletes the replica.
+Your Namespace will no longer use High Availability features and you will no longer be charged for this feature.
+
+:::note
+
+After removing a replica, Temporal Cloud can't re-enable replication for a given Namespace for seven days.
+
+:::

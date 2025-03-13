@@ -101,7 +101,15 @@ The `Authorizer` plugin contains a single `Authorize` method, which is invoked f
 
 <!-- _Tags: [term](/tags/term)_ -->
 
-#### [Child Workflow](/encyclopedia/child-workflows)
+#### [Availability Zone](/cloud/high-availability)
+
+An availability zone is a part of the Temporal system where tasks or operations are handled and executed. 
+This design helps manage workloads and ensure tasks are completed.
+Temporal Cloud Namespaces are automatically distributed across three availability zones, offering the 99.9% uptime outlined in our Cloud [SLA](/cloud/sla). 
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
+
+#### [Child Workflow](/child-workflows)
 
 A Child Workflow Execution is a Workflow Execution that is spawned from within another Workflow.
 
@@ -113,7 +121,7 @@ The Claim Mapper component is a pluggable component that extracts Claims from JS
 
 <!-- _Tags: [term](/tags/term)_ -->
 
-#### [Codec Server](/dataconversion#codec-server)
+#### [Codec Server](/codec-server)
 
 A Codec Server is an HTTP server that uses your custom Payload Codec to encode and decode your data remotely through endpoints.
 
@@ -139,7 +147,7 @@ Centralizing development enables the Core SDK to support quick and reliable depl
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [continue-as-new](/tags/continue-as-new)_ -->
 
-#### [Custom Data Converter](/dataconversion#custom-data-converter)
+#### [Custom Data Converter](/default-custom-data-converters#custom-data-converter)
 
 A custom Data Converter extends the default Data Converter with custom logic for Payload conversion or Payload encryption.
 
@@ -151,7 +159,7 @@ A Data Converter is a Temporal SDK component that serializes and encodes data en
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Default Data Converter](/dataconversion#default-data-converter)
+#### [Default Data Converter](/default-custom-data-converters#default-data-converter)
 
 The default Data Converter is used by the Temporal SDK to convert objects into bytes using a series of Payload Converters.
 
@@ -193,11 +201,11 @@ An append-only log of Events that represents the full state a Workflow Execution
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Failback](/cloud/multi-region)
+#### [Failback](/cloud/high-availability)
 
 After Temporal Cloud has resolved an outage or incident involving a failover, a failback process shifts Workflow Execution processing back to the original region that was active before the incident.
 
-#### [Failover](/cloud/multi-region)
+#### [Failover](/cloud/high-availability)
 
 A failover shifts Workflow Execution processing from an active Temporal Namespace region to a standby Temporal Namespace region during outages or other incidents.
 Standby Namespace regions use replication to duplicate data and prevent data loss during failover.
@@ -210,7 +218,7 @@ Temporal Failures are representations of various types of errors that occur in t
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Failure Converter](/dataconversion#failure-converter)
+#### [Failure Converter](/failure-converter)
 
 A Failure Converter converts error objects to proto Failures and back.
 
@@ -248,6 +256,22 @@ A Heartbeat Timeout is the maximum time between Activity Heartbeats.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_ -->
 
+#### [High Availability](/cloud/high-availability/how-it-works#high-availability)
+
+High availability ensures that a system remains operational with minimal downtime.
+It achieves this with redundancy and failover mechanisms that handle failures, so end-users remain unaware of incidents.
+Temporal Cloud guarantees this high availability with its Service Level Agreements ([SLA](/cloud/sla))
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_ -->
+
+#### [High Availability features](/cloud/high-availability#high-availability-features)
+
+High Availability features automatically synchronize your data between a primary Namespace and its replica, keeping them in sync.
+In case of an incident or an outage, Temporal will automatically failover your Namespace from the primary to the replica.
+This supports high levels of business continuity, allowing Workflow Executions to continue with minimal interruptions or data loss.
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_ -->
+
 #### [History Service](/clusters#history-service)
 
 The History Service is responsible for persisting Workflow Execution state and determining what to do next to progress the Workflow Execution through History Shards.
@@ -257,6 +281,22 @@ The History Service is responsible for persisting Workflow Execution state and d
 #### [History Shard](/clusters#history-shard)
 
 A History Shard is an important unit within a Temporal Service by which the scale of concurrent Workflow Execution throughput can be measured.
+
+<!-- _Tags: [term](/tags/term)_ -->
+
+#### [Idempotency](/activities#idempotency)
+
+An "idempotent" approach avoids process duplication that could withdraw money twice or ship extra orders by mistake.
+Idempotency keeps operations from producing additional effects, protecting your processes from accidental or repeated actions, for more reliable execution.
+Design your activities to succeed once and only once.
+Run-once actions maintain data integrity and prevent costly errors.
+
+<!-- _Tags: [term](/tags/term)_ -->
+
+#### [Isolation Domain](/cloud/high-availability/how-it-works)
+
+An isolation domain is a defined area within Temporal Cloud's infrastructure.
+It helps contain failures and prevents them from spreading to other parts of the system, providing redundancy and fault tolerance.
 
 <!-- _Tags: [term](/tags/term)_ -->
 
@@ -290,28 +330,16 @@ Multi-Cluster Replication is a feature which asynchronously replicates Workflow 
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Multi-region Namespace](/cloud/multi-region)
+#### [Multi-region Replication](/cloud/high-availability/enable)
 
-A multi-region Namespace (MRN) is a [Temporal Cloud](#temporal-cloud) Namespace that is configured to work across an active [region](/cloud/service-availability#regions) and a standby region.
-Each region corresponds to a dedicated Temporal Cloud Service.
-Temporal Cloud automatically replicates Workflow Executions and metadata from the active to the standby region.
-MRNs are designed to respond to service issues as they arise.
-In the event that the Namespace's performance is compromised, a [failover](#failover) transfers control from the active to the standby region.
+Multi-region Replication replicates Workflows and metadata to a different region that is not co-located with the primary Namespace.
+This is particularly beneficial for organizations with multi-regional architectures or those required to be highly available across regions for compliance purposes.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
 #### [Namespace](/namespaces)
 
 A Namespace is a unit of isolation within the Temporal Platform.
-
-<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
-
-#### Nexus Registry
-
-The Nexus Registry manages Nexus Endpoints and provides lookup services for resolving Nexus requests at runtime.
-In the open source version of Temporal, the Registry is scoped to a Cluster, while in Temporal Cloud, it is scoped to an Account.
-Endpoint names must be unique within the Registry.
-When the Temporal Service dispatches a Nexus request, it resolves the request's Endpoint to a Namespace and Task Queue through the Registry.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
@@ -341,7 +369,7 @@ Caller Workflows and Nexus handlers don't have to use Nexus RPC directly, since 
 #### Nexus Operation
 
 An arbitrary-duration operation that may be synchronous or asynchronous, short-lived, or long-lived, and used to connect durable executions within and across Namespaces, clusters, regions, and clouds.
-Unlike a traditional RPC, an asynchronous Nexus Operation has an operation identity that can be used to re-attach to a long-lived Nexus Operation, for example, one backed by a Temporal Workflow.
+Unlike a traditional RPC, an asynchronous Nexus Operation has an operation token that can be used to re-attach to a long-lived Nexus Operation, for example, one backed by a Temporal Workflow.
 Nexus Operations support a uniform interface to get the status of an operation or its result, receive a completion callback, or cancel the operation – all of which are fully integrated into the Temporal Platform.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
@@ -356,6 +384,16 @@ Nexus Operations Events are history events that surface in the Caller Workflow t
 #### Nexus Operation Handler
 
 The Nexus handler code in a Temporal Worker typically created using Temporal SDK builder functions that make it easy to abstract Temporal primitives and expose a clean service contract for others to use.
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
+
+
+#### Nexus Registry
+
+The Nexus Registry manages Nexus Endpoints and provides lookup services for resolving Nexus requests at runtime.
+In the open source version of Temporal, the Registry is scoped to a Cluster, while in Temporal Cloud, it is scoped to an Account.
+Endpoint names must be unique within the Registry.
+When the Temporal Service dispatches a Nexus request, it resolves the request's Endpoint to a Namespace and Task Queue through the Registry.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
@@ -380,8 +418,7 @@ A common code package, schema, or documentation that a Caller can use to obtain 
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-
-#### [Parent Close Policy](/encyclopedia/child-workflows#parent-close-policy)
+#### [Parent Close Policy](/parent-close-policy)
 
 If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy determines what happens to the Workflow Execution if its Parent Workflow Execution changes to a Closed status (Completed, Failed, Timed out).
 
@@ -393,13 +430,13 @@ A Payload represents binary data such as input and output from Activities and Wo
 
 <!-- _Tags: [term](/tags/term), [payloads](/tags/payloads), [explanation](/tags/explanation)_ -->
 
-#### [Payload Codec](/dataconversion#payload-codec)
+#### [Payload Codec](/payload-codec)
 
 A Payload Codec transforms an array of Payloads into another array of Payloads.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Payload Converter](/dataconversion#payload-converter)
+#### [Payload Converter](/payload-converter)
 
 A Payload Converter serializes data, converting objects or values to bytes and back.
 
@@ -417,19 +454,19 @@ Learn more about the Public Preview release stage
 
 <!-- _Tags: [product-release-stages](/tags/product-release-stages), [term](/tags/term)_ -->
 
-#### [Query](/encyclopedia/workflow-message-passing#sending-queries)
+#### [Query](/sending-messages#sending-queries)
 
 A Query is a synchronous operation that is used to report the state of a Workflow Execution.
 
 <!-- _Tags: [term](/tags/term), [queries](/tags/queries), [explanation](/tags/explanation)_ -->
 
-#### [Remote data encoding](/dataconversion#remote-data-encoding)
+#### [Remote data encoding](/remote-data-encoding)
 
 Remote data encoding is using your custom Data Converter to decode (and encode) your Payloads remotely through endpoints.
 
 <!-- _Tags: [term](/tags/term), [queries](/tags/queries), [explanation](/tags/explanation)_ -->
 
-#### [Replication Lag](/cloud/multi-region#replication-lag)
+#### [Replication Lag](/cloud/high-availability/monitor)
 
 The transmission delay of Workflow updates and history events from the active region to the standby region.
 
@@ -466,6 +503,13 @@ A Run Id is a globally unique, platform-level identifier for a Workflow Executio
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
+#### [Same-region Replication](/cloud/high-availability/enable)
+
+Same-region Replication replicates Workflows and metadata to an isolation domain within the same region as the primary Namespace.
+It provides a reliable failover mechanism while maintaining deployment simplicity.
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
+
 #### [Schedule](/workflows#schedule)
 
 A Schedule enables the scheduling of Workflow Executions.
@@ -496,13 +540,13 @@ A Side Effect is a way to execute a short, non-deterministic code snippet, such 
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Signal](/encyclopedia/workflow-message-passing#sending-signals)
+#### [Signal](/sending-messages#sending-signals)
 
 A Signal is an asynchronous request to a Workflow Execution.
 
 <!-- _Tags: [term](/tags/term), [signals](/tags/signals), [explanation](/tags/explanation)_ -->
 
-#### [Signal-With-Start](/encyclopedia/workflow-message-passing#signal-with-start)
+#### [Signal-With-Start](/sending-messages#signal-with-start)
 
 Signal-With-Start starts and Signals a Workflow Execution, or just Signals it if it already exists.
 
@@ -656,7 +700,7 @@ Temporal SDKs offer Timer APIs so that Workflow Executions are deterministic in 
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Update](/encyclopedia/workflow-message-passing#sending-updates)
+#### [Update](/sending-messages#sending-updates)
 
 An Update is a request to and a response from Workflow Execution.
 
@@ -781,6 +825,8 @@ A Workflow Task Timeout is the maximum amount of time that the Temporal Server w
 A Workflow Type is a name that maps to a Workflow Definition.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
+
+## Deprecated terms
 
 #### tctl (_deprecated_)
 

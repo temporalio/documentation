@@ -14,9 +14,11 @@ keywords:
   - access control
 ---
 
+import * as Components from '@site/src/components';
+
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
-Temporal Nexus is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+Temporal Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability).
 Learn why you should use Nexus in the [evaluation guide](/evaluate/nexus).
 
 :::
@@ -54,7 +56,10 @@ See [Runtime Access Controls](/nexus/security#runtime-access-controls) and [Conf
 Nexus Endpoints are only privately accessible from within a Temporal Cloud and mTLS is used for all Nexus communication, including across cloud cells and regions.
 Workers authenticate to their Namespaces through mTLS or an API key as allowed by their Namespace configuration.
 
-![Nexus Security](/img/cloud/nexus/nexus-workers-short.png)
+<Components.CaptionedImage
+    src="/img/cloud/nexus/nexus-workers-short.png"
+    title="Nexus Security"
+/>
 
 See [Nexus Secure Connectivity](/nexus/security#secure-connectivity) for additional details.
 
