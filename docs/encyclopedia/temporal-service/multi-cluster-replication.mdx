@@ -39,7 +39,7 @@ This enables [Temporal UI](https://docs.temporal.io/web-ui) to work seamlessly f
 Applications making API calls directly to the Temporal Visibility API continue to work even if a Global Namespace is in standby mode.
 However, they might see a lag due to replication delay when querying the Workflow Execution state from a standby Cluster.
 
-#### Namespace Versions
+## Namespace Versions
 
 A _version_ is a concept in Multi-Cluster Replication that describes the chronological order of events per Namespace.
 
@@ -107,7 +107,7 @@ all workflows events generated within this namespace, will come with version 11
 
 </details>
 
-#### Version history
+## Version history
 
 Version history is a concept which provides a high level summary of version information in regards to Workflow Execution History.
 
@@ -311,7 +311,7 @@ T = 2: replication task from Cluster B arrives in Cluster C, same as above
 
 </details>
 
-#### Conflict resolution
+## Conflict resolution
 
 When a Workflow Execution History diverges, proper conflict resolution is applied.
 
@@ -332,7 +332,7 @@ Any outstanding Activities will eventually time out based on the configuration.
 Your application should have retry logic in place so that the Activity gets retried and dispatched again to a Worker after the failover to the new Cluster.
 Handling this is similar to handling an Activity Task timeout caused by a Worker restarting.
 
-#### Zombie Workflows
+## Zombie Workflows
 
 There is an existing contract that for any Namespace and Workflow Id combination, there can be at most one run (Namespace + Workflow Id + Run Id) open / executing.
 
@@ -369,7 +369,7 @@ A "zombie" state is one in which a Workflow Execution which cannot be actively m
 
 Run 1 will be replicated similar to Run 2, except when Run 1's execution will become a "zombie" before Run 1 reaches completion.
 
-#### Workflow Task processing
+## Workflow Task processing
 
 In the context of Multi-cluster Replication, a Workflow Execution's mutable state is an entity which tracks all pending tasks.
 Prior to the introduction of Multi-cluster Replication, Workflow Execution History entries (events) are from a single branch, and the Temporal Server will only append new entries (events) to the Workflow Execution History.
