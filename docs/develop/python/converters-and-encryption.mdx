@@ -128,30 +128,62 @@ Temporal's Converter architecture looks like this:
 **How to use a custom Payload Converter using the Temporal Python SDK.**
 
 Data Converters convert raw Temporal payloads to/from actual Python types.
-A custom Data Converter of type `temporalio.converter.DataConverter` can be set via the `data_converter` client parameter.
+A custom Data Converter of type `temporalio.converter.DataConverter` can be set through the `data_converter` parameter of the `Client` constructor.
+Data Converters are a combination of Payload Converters, Payload Codecs, and Failure Converters.
+Payload Converters convert Python values to/from serialized bytes.
+Payload Codecs convert bytes to bytes (for example, for compression or encryption).
+Failure Converters convert exceptions to/from serialized failures.
 
 The default Data Converter supports converting multiple types including:
 
-- `None`
-- `bytes`
-- `google.protobuf.message.Message` - As JSON when encoding, but has ability to decode binary proto from other languages
-- Anything that can be converted to JSON including:
-  - Anything that [`json.dump`](https://docs.python.org/3/library/json.html#json.dump) supports natively
-  - [dataclasses](https://docs.python.org/3/library/dataclasses.html)
-  - Iterables including ones JSON dump may not support by default, e.g. `set`
-  - Any class with a `dict()` method and a static `parse_obj()` method, e.g.
-    [Pydantic models](https://pydantic-docs.helpmanual.io/usage/models)
-    - The default data converter is deprecated for Pydantic models and will warn if used since not all fields work.
-      See [this sample](https://github.com/temporalio/samples-python/tree/main/pydantic_converter) for the recommended
-      approach.
-  - [IntEnum, StrEnum](https://docs.python.org/3/library/enum.html) based enumerates
-  - [UUID](https://docs.python.org/3/library/uuid.html)
+* `None`
+* `bytes`
+* `google.protobuf.message.Message` - As JSON when encoding, but has ability to decode binary proto from other languages
+* Anything that can be converted to JSON including:
+  * Anything that [`json.dump`](https://docs.python.org/3/library/json.html#json.dump) supports natively
+  * [dataclasses](https://docs.python.org/3/library/dataclasses.html)
+  * Iterables including ones JSON dump may not support by default, e.g. `set`
+  * [IntEnum, StrEnum](https://docs.python.org/3/library/enum.html) based enumerates
+  * [UUID](https://docs.python.org/3/library/uuid.html)
 
-This notably doesn't include any `date`, `time`, or `datetime` objects, as they may not work across SDKs.
+To use Pydantic model instances, see [Pydantic Support](#pydantic-support).
 
-Users are strongly encouraged to use a single `dataclass` for parameter and return types so fields with defaults can be easily added without breaking compatibility.
-Classes with generics may not have the generics properly resolved.
-The current implementation does not have generic type resolution. Users should use concrete types.
+`datetime.date`, `datetime.time`, and `datetime.datetime` can only be used with the Pydantic Data Converter.
+
+Although Workflows, Updates, Signals, and Queries can all be defined with multiple input parameters, users are strongly
+encouraged to use a single `dataclass` or Pydantic model parameter so that fields with defaults can be easily added
+without breaking compatibility. 
+Similar advice applies to return values.
+
+Classes with generics may not have the generics properly resolved. 
+The current implementation does not have generic type resolution. 
+Users should use concrete types.
+
+### Pydantic Support
+
+To use Pydantic model instances, install Pydantic and set the Pydantic Data Converter when creating Client instances:
+
+```python
+from temporalio.contrib.pydantic import pydantic_data_converter
+
+client = Client(data_converter=pydantic_data_converter, ...)
+```
+
+This Data Converter supports conversion of all [types supported by Pydantic](https://docs.pydantic.dev/latest/api/standard_library_types/) to and from JSON.
+In addition to Pydantic models, supported types include:
+- Everything that [`json.dumps()`](https://docs.python.org/3/library/json.html#py-to-json-table) supports by default.
+- Several standard library types that `json.dumps()` does not support, including dataclasses, types from the datetime module, sets, UUID, etc.
+- Custom types composed of any of these, with any degree of nesting.
+  For example, a list of Pydantic models with `datetime` fields.
+
+See the [Pydantic documentation](https://docs.pydantic.dev/latest/api/standard_library_types/) for full details.
+
+:::note
+
+Pydantic v1 isn't supported by this Data Converter.
+If you aren't yet able to upgrade from Pydantic v1, see https://github.com/temporalio/samples-python/tree/main/pydantic_converter/v1 for limited v1 support.
+
+:::
 
 ### Custom Type Data Conversion
 
