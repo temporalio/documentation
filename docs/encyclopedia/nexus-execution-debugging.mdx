@@ -13,7 +13,7 @@ tags:
   - Nexus
 ---
 
-import * as Components from '@site/src/components';
+import { CaptionedImage } from '@site/src/components';
 
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
@@ -37,7 +37,7 @@ Bi-directional links enable navigation of an end-to-end execution across Namespa
 They are automatically added by the Temporal SDK for builder functions like New-Workflow-Run-Operation.
 Links are auto-wired from a specific Nexus Operation event in the caller's Workflow history to a specific event in the handler's Workflow history.
 
-<Components.CaptionedImage
+<CaptionedImage
     src="/img/cloud/nexus/nexus-bi-directional-linking.png"
     title="Bi-directional linking"
     zoom="true"
@@ -58,7 +58,7 @@ Similar to pending Activities, pending Nexus Operations are displayed in the Wor
 
 For example, from the Temporal UI:
 
-<Components.CaptionedImage
+<CaptionedImage
     src="/img/cloud/nexus/pending-nexus-operations.png"
     title="Pending Operations"
     zoom="true"
@@ -93,7 +93,7 @@ These show up in the UI and using: `temporal workflow describe`.
 
 For example, from the Temporal UI:
 
-<Components.CaptionedImage
+<CaptionedImage
     src="/img/cloud/nexus/nexus-callback.png"
     title="Pending Callbacks"
     zoom="true"

@@ -21,7 +21,7 @@ tags:
   - Support
 ---
 
-import * as Components from '@site/src/components';
+import { DiscoverableDisclosure } from '@site/src/components';
 
 Temporal Cloud is a consumption-based service.
 You pay only for what you use.
@@ -83,7 +83,7 @@ Active and Retained Storage allocations are translated into GBh at a rate of 1GB
 Actions are the primary unit of consumption-based pricing for Temporal Cloud.
 They track billable operations within the Temporal Cloud Service, such as starting Workflows, recording a Heartbeat or sending messages.
 
-<Components.DiscoverableDisclosure label="Operations that result in Actions">
+<DiscoverableDisclosure label="Operations that result in Actions">
 
 **WORKFLOWS**
 
@@ -159,7 +159,7 @@ Each execution of a Schedule accrues three actions:
 - The underlying Temporal primitives (such as Workflows, Activities, and Signals) created by a Nexus Operation handler (directly or indirectly) result in the normal Actions for those primitives billed to the handler’s Namespace.
   This includes retries for underlying Temporal primitives like Activities but _not_ for handling the Nexus Operation itself or a retry of the Nexus Operation itself.
 
-</Components.DiscoverableDisclosure>
+</DiscoverableDisclosure>
 
 [Reach out](https://pages.temporal.io/contact-us) to our team for more information or to help size your number of Actions.
 

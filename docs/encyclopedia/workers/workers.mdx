@@ -13,7 +13,7 @@ tags:
   - Concepts
 ---
 
-import * as Components from '@site/src/components';
+import { CaptionedImage } from '@site/src/components';
 
 This page discusses the following:
 
@@ -98,7 +98,7 @@ Here are some approaches:
 
 ## What is a Worker Process? {#worker-process}
 
-<Components.CaptionedImage
+<CaptionedImage
     src="/diagrams/worker-and-server-component.svg"
     title="Component diagram of a Worker Process and the Temporal Server"
     />
@@ -130,7 +130,7 @@ Many SDKs support the ability to have multiple Worker Entities in a single Worke
 A single Worker Entity can listen to only a single Task Queue.
 But if a Worker Process has multiple Worker Entities, the Worker Process could be listening to multiple Task Queues.
 
-<Components.CaptionedImage
+<CaptionedImage
     src="/diagrams/worker-and-server-entity-relationship.svg"
     title="Entity relationship diagram (meta model) of Worker Processes, Task Queues, and Tasks"
 />

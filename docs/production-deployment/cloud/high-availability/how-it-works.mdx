@@ -19,11 +19,11 @@ keywords:
   - term
 ---
 
-import * as Components from '@site/src/components';
+import { ToolTipTerm, DiscoverableDisclosure, CaptionedImage } from '@site/src/components';
 
 Keeping services available is crucial in distributed applications, especially during failures or incidents.
 Temporal’s replication and automated failover features ensure high availability.
-By enabling High Availability replication, you allow Temporal to copy Namespace metadata and Workflow Executions to a <Components.ToolTipTerm term="replica"/>.
+By enabling High Availability replication, you allow Temporal to copy Namespace metadata and Workflow Executions to a <ToolTipTerm term="replica"/>.
 This redundancy, combined with failover capability, enhances availability during outages.
 
 ## High availability {#high-availability}
@@ -47,13 +47,13 @@ This ensures availability and consistency in the event of a failure.
 Temporal uses replication to support high availability, ensuring that Workflows and data remain available even if parts of the system fail or become unreachable.
 
 In Temporal, replication operates at the Namespace level.
-Each Namespace is replicated across <Components.ToolTipTerm term="isolation domains" /> or separate regions.
+Each Namespace is replicated across <ToolTipTerm term="isolation domains" /> or separate regions.
 If one Namespace becomes unavailable, a replica can take over, ensuring that Workflows continue without interruption.
 
 Temporal Cloud replicates both Workflow Execution details and metadata, including configurations such as retention periods, Search Attributes, and other settings.
 All parts of the system will eventually synchronize to a consistent view of the Namespace metadata, even if the primary and its replica temporarily lose communication.
 
-<Components.DiscoverableDisclosure label="Workflow replication restrictions">
+<DiscoverableDisclosure label="Workflow replication restrictions">
 Temporal Cloud restricts certain Workflow operations to the primary:
 
 - You may only update Workflows in the primary.
@@ -76,7 +76,7 @@ This enables replicated tasks to synchronize and achieve the same state as the o
 Replicas do not distribute Workflow or Activity Tasks.
 Instead, they perform verification tasks to confirm that intended operations are executed so Workflows reach the desired state.
 This mechanism ensures consistency and reliability in the replication process.
-</Components.DiscoverableDisclosure>
+</DiscoverableDisclosure>
 
 ### Deployment options {#deployment-options}
 
@@ -130,7 +130,7 @@ Once the incident is resolved, Temporal Cloud performs a "failback," shifting Wo
 
 Temporal Cloud handles failovers automatically, ensuring continuity without manual intervention.
 
-<Components.CaptionedImage src="/img/cloud/high-availability/failover.png" title="On failover, the replica becomes active and the Namespace endpoint directs access to it." />
+<CaptionedImage src="/img/cloud/high-availability/failover.png" title="On failover, the replica becomes active and the Namespace endpoint directs access to it." />
 
 For more control over the failover process, you can [disable automated failovers](/cloud/high-availability/failovers#disabling-temporal-initiated).
 
@@ -241,7 +241,7 @@ Workflow History Events are written to the primary first and then asynchronously
 ## Conflict resolution {#conflict-resolution}
 
 Namespaces with replicas rely on asynchronous event replication.
-Updates made to the primary may not immediately be reflected in the replica due to <Components.ToolTipTerm term="replication lag" />, particularly during failovers.
+Updates made to the primary may not immediately be reflected in the replica due to <ToolTipTerm term="replication lag" />, particularly during failovers.
 In the event of a non-graceful failover, replication lag may cause a temporary setback in Workflow progress.
 
 Namespaces that aren't replicated can be configured to provide _at-most-once_ semantics for Activities execution when a retry policy's [maximum attempts](https://docs.temporal.io/retry-policies#maximum-attempts) is set to 0.
@@ -251,6 +251,6 @@ Completed Activities _may_ be re-dispatched in a newly active Namespace, leading
 When a Workflow Execution is updated in a newly active replica following a failover, events from the previously active Namespace that arrive after the failover can't be directly applied.
 At this point, Temporal Cloud has forked the Workflow History.
 
-After failover, Temporal Cloud creates a new branch history for execution, and begins its <Components.ToolTipTerm term="conflict resolution"/> process.
+After failover, Temporal Cloud creates a new branch history for execution, and begins its <ToolTipTerm term="conflict resolution"/> process.
 The Temporal Service ensures that Workflow Histories remain valid and are replayable by SDKs post-failover or after conflict resolution.
 This capability is crucial for ensuring Workflow Executions continue forward without losing progress, and for maintaining consistency across replication, even during incidents that cause disruptions in replication.
