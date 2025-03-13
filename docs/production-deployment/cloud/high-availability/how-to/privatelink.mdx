@@ -20,7 +20,7 @@ keywords:
   - term
 ---
 
-import * as Components from '@site/src/components';
+import { CaptionedImage } from '@site/src/components';
 
 :::tip Namespaces with High Availability features and AWS PrivateLink
 
@@ -55,7 +55,7 @@ After a failover, the CNAME record will be updated to point to the failover regi
 
 The Temporal domain did not change, but the CNAME updated from us-west-2 to us-east-1.
 
-<Components.CaptionedImage
+<CaptionedImage
     src="/img/cloud/high-availability/private-link.png"
     title="Customer side solution example"
     zoom="true"
