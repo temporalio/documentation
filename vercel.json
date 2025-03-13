@@ -1474,7 +1474,7 @@
     },
     {
       "source": "/install-temporal-server",
-      "destination": "/clusters#temporal-server"
+      "destination": "/temporal-service#temporal-server"
     },
     {
       "source": "/java-quick-start",

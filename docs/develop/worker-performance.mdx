@@ -570,7 +570,7 @@ for _, taskQueueName := range taskQueueNames {
 
 ### Evaluate Worker availability and capacity issues {#worker-capacity-issues}
 
-Each Temporal [Server](https://docs.temporal.io/clusters#temporal-server) records the last time of each poll request.
+Each Temporal [Server](https://docs.temporal.io/temporal-service#temporal-server) records the last time of each poll request.
 This time is displayed in the `temporal task-queue describe` output.
 
 - A `LastAccessTime` value exceeding one minute may indicate that the Worker fleet is at capacity or that Workers have shut down or been removed.

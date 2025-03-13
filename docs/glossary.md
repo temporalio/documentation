@@ -682,7 +682,7 @@ A Temporal SDK is a language-specific library that offers APIs to construct and 
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Temporal Server](/clusters#temporal-server)
+#### [Temporal Server](/temporal-service#temporal-server)
 
 The Temporal Server is a grouping of four horizontally scalable services.
 
