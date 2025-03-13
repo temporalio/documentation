@@ -8,6 +8,7 @@ export { default as DocsTable, NewDocsCell } from './formatting/DocsTable';
 
 // Image components
 export { default as CaptionedImage } from './images/CaptionedImage';
+export { default as ZoomingImage } from './images/ZoomingImage';
 
 // Information components
 export { default as DiscoverableDisclosure } from './info/DiscoverableDisclosure';

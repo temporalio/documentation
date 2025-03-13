@@ -23,7 +23,7 @@ Whether you’re using core components or experimenting with new ones, this guid
 - [Using DocsTable](#using-docstable)
 - [Using RelatedRead](#using-relatedread)
 - [Using ToolTipTerm](#using-tooltipterm)
-- [Using ZoomingImage](#using-zoomimage) (TBD - will arrive soon)
+- [Using ZoomingImage](#using-zoomingimage)
 
 ## Finding Components
 
@@ -304,5 +304,19 @@ Use the `tooltip` prop to add non-reusable content specific to one tooltip term.
 
 ## Using ZoomingImage
 
-TBD
+Role: Provide image "asides" embedded into instructions where a standard image would normally interfere.
 
+A ZoomingImage is presented at a very small size, with the understanding that it is too small to view.
+An optional component, the image uses a magnifying glass and text prompt for discovery.
+See the instructions for [Prometheus Grafana](http://docs.temporal.io/cloud/metrics/prometheus-grafana#grafana-data-sources-configuration) for an example.
+
+Reserve ZoomingImages for situations where the image itself is an obstacle to communicating steps or other content.
+It provides opt-in supplementary information.
+
+Usage:
+
+```
+<ZoomingImage src="/path/to/image" alt="Alt text" />
+```
+
+Images are normally stored in the '/static' folder in `img` or `diagrams`.
