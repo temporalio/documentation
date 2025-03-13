@@ -14,7 +14,7 @@ tags:
   - Namespaces
 ---
 
-import * as Components from '@site/src/components';
+import ToolTipTerm from '@site/src/components/info/ToolTipTerm';
 
 The `tcld namespace` commands enable [Namespace](/namespaces) operations in Temporal Cloud.
 
@@ -35,7 +35,7 @@ Alias: `n`
 
 ## add-region
 
-Use `tcld namespace add-region` to add a <Components.ToolTipTerm term="replica" tooltip="A replica is a synchronized copy of a Namespace. It ensures redundancy, fault tolerance, and minimal downtime during an incident or outage. A replica can take over operations if the primary becomes unavailable. It's synchronized up to the point of replication lag, where no further data is available." /> to an existing Temporal Cloud [Namespace](/namespaces).
+Use `tcld namespace add-region` to add a <ToolTipTerm term="replica" /> to an existing Temporal Cloud [Namespace](/namespaces).
 Adding a replica upgrades the Namespace to [High Availability features](/cloud/high-availability).
 Once provisioned, High Availability features enable Temporal Cloud to start replicating Workflow Execution data from the primary to the replica and trigger failover during adverse conditions.
 
@@ -98,7 +98,7 @@ tcld --api-key <your_api_key> \
 
 Specify the region code of the region where you want to create the replica as an argument to the `--region` flag:
 
-- Using the current region replicates to an <Components.ToolTipTerm term="isolation domain" tooltip="An isolation domain is a defined area within Temporal Cloud's infrastructure. It helps contain failures and prevents them from spreading to other parts of the system. This provides redundancy and fault tolerance." /> within your existing region.
+- Using the current region replicates to an <ToolTipTerm term="isolation domain" src="isolation domains" /> within your existing region.
 - Using a different region (within the same continent) replicates across regions.
 - You cannot create a Multi-region deployment on separate continents.
 
@@ -148,7 +148,7 @@ _Required modifier_
 The region to create the Namespace in.
 
 - Supplying a single `--region` flags creates a standard Namespace.
-- Supplying two `--region` flags creates a Namespace that uses <Components.ToolTipTerm term="replication" tooltip="Replication creates a synchronized copy of a Namespace. It ensures redundancy, fault tolerance, and minimal downtime during an incident or outage. A replica can take over operations if the primary becomes unavailable. It's synchronized up to the point of replication lag, where no further data is available." /> and <Components.ToolTipTerm term="failover" tooltip="A failover shifts Workflow Execution processing from a primary Namespace to a replica during outages or other incidents. Temporal Cloud uses replication to duplicate data and prevent data loss during failover." /> for continued service availability in case of failures of incidents.
+- Supplying two `--region` flags creates a Namespace that uses <ToolTipTerm term="replication" /> and <ToolTipTerm term="failover" /> for continued service availability in case of failures of incidents.
 
 **Example**
 
@@ -176,7 +176,7 @@ tcld --api-key <your_api_key> \
 
 When using High Availability features, specify the region code of the region where you want to create the replica as an argument to the `--region` flag:
 
-- Using the current region replicates to an <Components.ToolTipTerm term="isolation domain" tooltip="An isolation domain is a defined area within Temporal Cloud's infrastructure. It helps contain failures and prevents them from spreading to other parts of the system. This provides redundancy and fault tolerance." /> within your existing region.
+- Using the current region replicates to an <ToolTipTerm term="isolation domain" src="isolation domains"/> within your existing region.
 - Using a different region (within the same continent) replicates across regions.
 - You cannot create a Multi-region deployment on separate continents.
 
@@ -312,6 +312,72 @@ Alias: `-v`
 
 ```bash
 tcld namespace delete --namespace <namespace_id>
+```
+
+## delete-region
+
+Use `tcld namespace delete-region` to remove a <ToolTipTerm term="replica" /> to an existing Temporal Cloud [Namespace](/namespaces).
+Removing a replica disables [High Availability features](/cloud/high-availability).
+
+:::tip
+
+Disabling replication by removing a region results in a mandatory 7-day waiting period before you can re-enable High Availability Namespace features.
+
+:::
+
+Alias: _none_
+
+The following modifiers control the behavior of the command.
+
+#### --ca-certificate
+
+_Required modifier unless `--ca-certificate-file` is specified_
+
+A base64-encoded CA certificate.
+
+If both `--ca-certificate` and `--ca-certificate-file` are specified, only `--ca-certificate` is used.
+
+Alias: `-c`
+
+#### --namespace
+
+Specify a Namespace hosted on Temporal Cloud.
+If not specified, the value of the environment variable `$TEMPORAL_CLOUD_NAMESPACE` is used.
+
+Alias: `-n`
+
+_Required modifier_
+
+#### --region
+
+The region to remove from the existing Namespace.
+
+Valid options: `ap-northeast-1` | `ap-northeast-2` | `ap-south-1` | `ap-south-2` | `ap-southeast-1` | `ap-southeast-2` | `eu-central-1` | `eu-west-1` | `eu-west-2` | `ca-central-1` | `us-east-1` | `us-east-2` | `us-west-2`
+
+See [Service Availability](/cloud/service-availability).
+The `sa-east-1` region is not supported at this time.
+
+Alias: `--re`
+
+_Required modifier_
+
+**Example**
+
+```
+tcld namespace delete-region \
+    --namespace <namespace_id>.<account_id> \
+    --region <replica_region>
+```
+
+When using API key authentication, add your API credentials before pressing Enter:
+
+```
+
+tcld --api-key <your_api_key> \
+    delete-region \
+    --namespace <namespace_id>.<account_id> \
+    --region <replica_region>
+
 ```
 
 ## failover
@@ -1578,7 +1644,7 @@ Alias: `-n`
 
 #### --disable-auto-failover
 
-Specify whether Temporal Cloud should perform <Components.ToolTipTerm term="health checks" tooltip="Temporal Cloud monitors error rates, latencies, and infrastructure problems, such as request timeouts. If it finds unhealthy conditions where indicators exceed the allowed thresholds, Temporal automatically switches the primary to the replica." /> and trigger automatic failovers.
+Specify whether Temporal Cloud should perform <ToolTipTerm term="health checks" src="health check"/> and trigger automatic failovers.
 Pass `true` or `false` (default).
 
 **Example**
