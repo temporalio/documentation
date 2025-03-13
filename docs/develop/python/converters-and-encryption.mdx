@@ -168,9 +168,9 @@ client = Client(data_converter=pydantic_data_converter, ...)
 ```
 
 This Data Converter supports conversion of all types supported by Pydantic to and from JSON.
-
 In addition to Pydantic models, these include all `json.dump`-able types, various non-`json.dump`-able standard library
 types such as dataclasses, types from the datetime module, sets, UUID, etc, and custom types composed of any of these.
+See the [Pydantic documentation](https://docs.pydantic.dev/latest/api/standard_library_types/) for full details of supported types.
 
 :::note
 
