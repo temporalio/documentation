@@ -33,13 +33,13 @@ In day-to-day conversation, the term "Activity" denotes an Activity Type, Activi
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Activity Definition](/activities#activity-definition)
+#### [Activity Definition](/activity-definition)
 
 An Activity Definition is the code that defines the constraints of an Activity Task Execution.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Activity Execution](/activities#activity-execution)
+#### [Activity Execution](/activity-execution)
 
 An Activity Execution is the full chain of Activity Task Executions.
 
@@ -53,7 +53,7 @@ Each ping informs the Temporal Service that the Activity Execution is making pro
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Activity Id](/activities#activity-id)
+#### [Activity Id](/activity-execution#activity-id)
 
 A unique identifier for an Activity Execution.
 
@@ -71,7 +71,7 @@ An Activity Task Execution occurs when a Worker uses the context provided from t
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Activity Type](/activities#activity-type)
+#### [Activity Type](/activity-definition#activity-type)
 
 An Activity Type is the mapping of a name to an Activity Definition.
 
@@ -83,7 +83,7 @@ Archival is a feature specific to a Self-hosted Temporal Service that automatica
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Asynchronous Activity Completion](/activities#asynchronous-activity-completion)
+#### [Asynchronous Activity Completion](/activity-execution#asynchronous-activity-completion)
 
 Asynchronous Activity Completion occurs when an external system provides the final result of a computation, started by an Activity, to the Temporal System.
 
@@ -284,7 +284,7 @@ A History Shard is an important unit within a Temporal Service by which the scal
 
 <!-- _Tags: [term](/tags/term)_ -->
 
-#### [Idempotency](/activities#idempotency)
+#### [Idempotency](/activity-definition#idempotency)
 
 An "idempotent" approach avoids process duplication that could withdraw money twice or ship extra orders by mistake.
 Idempotency keeps operations from producing additional effects, protecting your processes from accidental or repeated actions, for more reliable execution.
@@ -306,7 +306,7 @@ A List Filter is the SQL-like string that is provided as the parameter to an adv
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [filtered-lists](/tags/filtered-lists), [visibility](/tags/visibility)_ -->
 
-#### [Local Activity](/activities#local-activity)
+#### [Local Activity](/local-activity)
 
 A Local Activity is an Activity Execution that executes in the same process as the Workflow Execution that spawns it.
 
@@ -588,7 +588,7 @@ Task Routing is when a Task Queue is paired with one or more Worker Processes, p
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Task Token](/activities#task-token)
+#### [Task Token](/activity-execution#task-token)
 
 A Task Token is a unique identifier for an Activity Task Execution.
 

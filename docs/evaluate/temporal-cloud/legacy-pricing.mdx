@@ -90,7 +90,7 @@ They track billable operations within the Temporal Cloud Service, such as starti
 - **Activity started or retried**.
   Occurs each time an Activity is started or retried.
 - **Local Activity started**.
-  All [Local Activities](/activities#local-activity) associated with one Workflow Task count as a single Action.
+  All [Local Activities](/local-activity) associated with one Workflow Task count as a single Action.
   That's because Temporal Cloud counts all [RecordMarkers](https://docs.temporal.io/references/commands#recordmarker) from each Workflow Task as one action, and not _N_ actions.
   Please note:
   - Each additional Workflow Task heartbeat after counts as an additional Action.

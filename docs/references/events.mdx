@@ -224,7 +224,7 @@ This Event type contains Activity inputs, as well as Activity Timeout configurat
 | Field                            | Description                                                                                                                                        |
 | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
 | activity_id                      | The identifier assigned to this Activity by a [Worker](/workers#worker) or user.                                                                   |
-| activity_type                    | The [type of Activity](/activities#activity-type) that was scheduled.                                                                              |
+| activity_type                    | The [type of Activity](/activity-definition#activity-type) that was scheduled.                                                                              |
 | namespace                        | Namespace of the Workflow that the [Activity](/activities) resides in.                                                                             |
 | task_queue                       | The [Task Queue](/task-queue) that this Activity Task was enqueued in.                                                                             |
 | header                           | Information passed by the sender of the [Signal](/sending-messages#sending-signals) that is copied into the [Workflow Task](/tasks#workflow-task). |
@@ -254,7 +254,7 @@ Note, however, that this Event is not written to History until the terminal Even
 
 This [Event](/workflows#event) type indicates that the [Activity Task](/tasks#activity-task) has completed.
 The SDK client has picked up and successfully completed the Activity Task.
-This Event type contains [Activity Execution](/activities#activity-execution) results.
+This Event type contains [Activity Execution](/activity-execution) results.
 
 | Field              | Description                                                                                                    |
 | ------------------ | -------------------------------------------------------------------------------------------------------------- |
@@ -267,7 +267,7 @@ This Event type contains [Activity Execution](/activities#activity-execution) re
 
 This [Event](/workflows#event) type indicates that the [Activity Task](/tasks#activity-task) has failed.
 The SDK client picked up the Activity Task but unsuccessfully completed it.
-This Event type contains [Activity Execution](/activities#activity-execution) errors.
+This Event type contains [Activity Execution](/activity-execution) errors.
 
 | Field              | Description                                                                                                 |
 | ------------------ | ----------------------------------------------------------------------------------------------------------- |
@@ -293,7 +293,7 @@ When the Activity times out, you will observe that the `ActivityTaskTimedOut` Ev
 
 ### ActivityTaskCancelRequested
 
-This [Event](/workflows#event) type indicates that a request to [cancel](/activities#cancellation) the [Activity](/activities) has occurred.
+This [Event](/workflows#event) type indicates that a request to [cancel](/activity-execution#cancellation) the [Activity](/activities) has occurred.
 
 | Field                            | Description                                                                                                |
 | -------------------------------- | ---------------------------------------------------------------------------------------------------------- |
@@ -302,7 +302,7 @@ This [Event](/workflows#event) type indicates that a request to [cancel](/activi
 
 ### ActivityTaskCanceled
 
-This [Event](/workflows#event) type indicates that the [Activity](/activities) has been [canceled](/activities#cancellation).
+This [Event](/workflows#event) type indicates that the [Activity](/activities) has been [canceled](/activity-execution#cancellation).
 
 | Field                            | Description                                                                                                                |
 | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
