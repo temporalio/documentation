@@ -32,12 +32,12 @@ Namespaces are created on the Temporal Service, and provide a range of controls 
   For example, when a Workflow Execution is spawned, it does so within a specific Namespace.
 - **Uniqueness:** Temporal guarantees a unique Workflow Id within a Namespace.
   Workflow Executions may have the same Workflow Id if they are in different Namespaces.
-- **Namespace Configuration:** Various configuration options like the [Retention Period](/clusters#retention-period) and the [Archival](/clusters#archival) destination are configured per Namespace through a special CRUD API or through the [Temporal CLI](/cli).
+- **Namespace Configuration:** Various configuration options like the [Retention Period](/temporal-service#retention-period) and the [Archival](/clusters#archival) destination are configured per Namespace through a special CRUD API or through the [Temporal CLI](/cli).
 
 ## Registration
 
 Registering a Namespace creates the Namespace on the Temporal Service.
-When you register your Namespace, you must also set the [Retention Period](/clusters#retention-period) for the Namespace.
+When you register your Namespace, you must also set the [Retention Period](/temporal-service#retention-period) for the Namespace.
 
 On Temporal Cloud, use the [Temporal Cloud UI](/cloud/namespaces#create-a-namespace) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to create and manage Namespaces.
 

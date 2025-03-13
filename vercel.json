@@ -1765,7 +1765,7 @@
     },
     {
       "source": "/concepts/what-is-a-retention-period",
-      "destination": "/clusters#retention-period"
+      "destination": "/temporal-service#retention-period"
     },
     {
       "source": "/archive-data",

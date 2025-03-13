@@ -90,7 +90,7 @@ Use the following options to change the output of this command.
 
 ### health
 
-The `temporal operator cluster health` command checks the health of the [Frontend Service](/clusters#frontend-service).
+The `temporal operator cluster health` command checks the health of the [Frontend Service](/temporal-service#frontend-service).
 A successful execution returns a list of [Cluster](/clusters) metrics.
 
 Use the following options to change the behavior and output of this command.
@@ -308,7 +308,7 @@ The Namespace can be created on the active [Cluster](/clusters), or any named Cl
 Global Namespaces can also be created.
 `temporal operator namespace create --global`
 
-Other settings, such as [retention](/clusters#retention-period) and [Visibility Archival State](/temporal-service/visibility), can be configured according to the application's needs.
+Other settings, such as [retention](/temporal-service#retention-period) and [Visibility Archival State](/temporal-service/visibility), can be configured according to the application's needs.
 The Visibility Archive can be set on a separate URI.
 `temporal operator namespace create --retention=RetentionMyWorkflow --visibility-archival-state="enabled" --visibility-uri="some-uri"`
 
@@ -442,7 +442,7 @@ Use the following options to change the behavior of this command.
 
 ### list
 
-The `temporal operator namespace list` command lists all [Namespaces](/namespaces) on the [Server](/clusters#frontend-service).
+The `temporal operator namespace list` command lists all [Namespaces](/namespaces) on the [Server](/temporal-service#frontend-service).
 
 `temporal operator namespace list`
 
