@@ -77,7 +77,7 @@ An Activity Type is the mapping of a name to an Activity Definition.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Archival](/temporal-service#archival)
+#### [Archival](/temporal-service/archival)
 
 Archival is a feature specific to a Self-hosted Temporal Service that automatically backs up Event Histories from Temporal Service persistence to a custom blob store after the Closed Workflow Execution retention period is reached.
 
@@ -230,7 +230,7 @@ A Failure is Temporal's representation of various types of errors that occur in 
 
 <!-- _Tags: [failure](/tags/failure), [explanation](/tags/explanation), [term](/tags/term)_ -->
 
-#### [Frontend Service](/temporal-service#frontend-service)
+#### [Frontend Service](/temporal-service/temporal-server#frontend-service)
 
 The Frontend Service is a stateless gateway service that exposes a strongly typed Proto API. The Frontend Service is responsible for rate limiting, authorizing, validating, and routing all inbound calls.
 
@@ -485,7 +485,7 @@ A Reset terminates a Workflow Execution, removes the progress in the Event Histo
 
 <!-- _Tags: [term](/tags/term), [resets](/tags/resets), [explanation](/tags/explanation)_ -->
 
-#### [Retention Period](/temporal-service#retention-period)
+#### [Retention Period](/temporal-service/temporal-server#retention-period)
 
 A Retention Period is the amount of time a Workflow Execution Event History remains in the Temporal Service's persistence store.
 

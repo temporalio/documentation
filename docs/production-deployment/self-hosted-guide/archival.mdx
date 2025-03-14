@@ -18,14 +18,14 @@ Archival is a feature that automatically backs up [Event Histories](/workflows#e
 - [How to create a custom Archiver](#custom-archiver)
 - [How to set up Archival](#set-up-archival)
 
-Workflow Execution Event Histories are backed up after the [Retention Period](/temporal-service#retention-period) is reached.
+Workflow Execution Event Histories are backed up after the [Retention Period](/temporal-service/temporal-server#retention-period) is reached.
 Visibility records are backed up immediately after a Workflow Execution reaches a Closed status.
 
 Archival enables Workflow Execution data to persist as long as needed, while not overwhelming the Temporal Service's persistence store.
 
 This feature is helpful for compliance and debugging.
 
-Temporal's Archival feature is considered **experimental** and not subject to normal [versioning and support policy](/clusters#versions-and-support).
+Temporal's Archival feature is considered **experimental** and not subject to normal [versioning and support policy](/temporal-service/temporal-server#versions-and-support).
 
 Archival is not supported when running Temporal through Docker.
 It's disabled by default when installing the system manually and when deploying through [helm charts](https://github.com/temporalio/helm-charts/blob/main/charts/temporal/templates/server-configmap.yaml).
@@ -33,7 +33,7 @@ It can be enabled in the [config](https://github.com/temporalio/temporal/blob/ma
 
 ### How to set up Archival {#set-up-archival}
 
-[Archival](/temporal-service#archival) consists of the following elements:
+[Archival](/temporal-service/archival) consists of the following elements:
 
 - **Configuration:** Archival is controlled by the [server configuration](https://github.com/temporalio/temporal/blob/main/config/development.yaml#L81) (i.e. the `config/development.yaml` file).
 - **Provider:** Location where the data should be archived. Supported providers are S3, GCloud, and the local file system.
@@ -170,7 +170,7 @@ You can retrieve archived Event Histories by copying the `workflowId` and `runId
 
 ### How to create a custom Archiver {#custom-archiver}
 
-To archive data with a given provider, using the [Archival](/temporal-service#archival) feature, Temporal must have a corresponding Archiver component installed.
+To archive data with a given provider, using the [Archival](/temporal-service/archival) feature, Temporal must have a corresponding Archiver component installed.
 The platform does not limit you to the existing providers.
 To use a provider that is not currently supported, you can create your own Archiver.
 

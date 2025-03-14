@@ -43,7 +43,7 @@ Note that these APIs and Temporal CLI commands will not work with Temporal Cloud
 
 Use a custom [Authorizer](/self-hosted-guide/security#authorizer-plugin) on your Frontend Service in the Temporal Service to set restrictions on who can create, update, or deprecate Namespaces.
 
-Use [`Register` API](https://pkg.go.dev/go.temporal.io/sdk/client#NamespaceClient) with the `NamespaceClient` interface to register a [Namespace](/namespaces) and set the [Retention Period](/temporal-service#retention-period) for the Workflow Execution Event History for the Namespace.
+Use [`Register` API](https://pkg.go.dev/go.temporal.io/sdk/client#NamespaceClient) with the `NamespaceClient` interface to register a [Namespace](/namespaces) and set the [Retention Period](/temporal-service/temporal-server#retention-period) for the Workflow Execution Event History for the Namespace.
 
 You can also [register Namespaces using the Temporal CLI command-line tool](/cli/operator#create).
 

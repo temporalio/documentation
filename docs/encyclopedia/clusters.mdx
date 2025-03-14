@@ -296,7 +296,7 @@ Archival enables Workflow Execution data to persist as long as needed, while not
 
 This feature is helpful for compliance and debugging.
 
-Temporal's Archival feature is considered **experimental** and not subject to normal [versioning and support policy](/clusters#versions-and-support).
+Temporal's Archival feature is considered **experimental** and not subject to normal [versioning and support policy](/temporal-service/temporal-server#versions-and-support).
 
 Archival is not supported when running Temporal through Docker.
 It's disabled by default when installing the system manually and when deploying through [helm charts](https://github.com/temporalio/helm-charts/blob/main/charts/temporal/templates/server-configmap.yaml).
@@ -441,7 +441,7 @@ For details on self-hosted Temporal Service metrics and setup, see the following
 Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.
 When necessary, for higher availability, Cluster operators can failover to any of the backup Clusters.
 
-Temporal's Multi-Cluster Replication feature is considered **experimental** and not subject to normal [versioning and support policy](/clusters).
+Temporal's Multi-Cluster Replication feature is considered **experimental** and not subject to normal [versioning and support policy](/temporal-service/temporal-server#versions-and-support).
 
 Temporal automatically forwards Start, Signal, and Query requests to the active Cluster.
 This feature must be enabled through a Dynamic Config flag per [Global Namespace](/global-namespace).

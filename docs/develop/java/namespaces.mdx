@@ -45,7 +45,7 @@ Note that these APIs and Temporal CLI commands will not work with Temporal Cloud
 
 Use a custom [Authorizer](/self-hosted-guide/security#authorizer-plugin) on your Frontend Service in the Temporal Service to set restrictions on who can create, update, or deprecate Namespaces.
 
-Use the [`RegisterNamespace` API](https://github.com/temporalio/api/blob/f0350f8032ad2f0c60c539b3b61ea37f412f1cf7/temporal/api/workflowservice/v1/service.proto) to register a [Namespace](/namespaces) and set the [Retention Period](/temporal-service#retention-period) for the Workflow Execution Event History for the Namespace.
+Use the [`RegisterNamespace` API](https://github.com/temporalio/api/blob/f0350f8032ad2f0c60c539b3b61ea37f412f1cf7/temporal/api/workflowservice/v1/service.proto) to register a [Namespace](/namespaces) and set the [Retention Period](/temporal-service/temporal-server#retention-period) for the Workflow Execution Event History for the Namespace.
 
 ```java
 //...

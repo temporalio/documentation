@@ -90,7 +90,7 @@ Use the following options to change the output of this command.
 
 ### health
 
-The `temporal operator cluster health` command checks the health of the [Frontend Service](/temporal-service#frontend-service).
+The `temporal operator cluster health` command checks the health of the [Frontend Service](/temporal-service/temporal-server#frontend-service).
 A successful execution returns a list of [Cluster](/temporal-service) metrics.
 
 Use the following options to change the behavior and output of this command.
@@ -308,7 +308,7 @@ The Namespace can be created on the active [Cluster](/temporal-service), or any 
 Global Namespaces can also be created.
 `temporal operator namespace create --global`
 
-Other settings, such as [retention](/temporal-service#retention-period) and [Visibility Archival State](/temporal-service/visibility), can be configured according to the application's needs.
+Other settings, such as [retention](/temporal-service/temporal-server#retention-period) and [Visibility Archival State](/temporal-service/visibility), can be configured according to the application's needs.
 The Visibility Archive can be set on a separate URI.
 `temporal operator namespace create --retention=RetentionMyWorkflow --visibility-archival-state="enabled" --visibility-uri="some-uri"`
 
@@ -442,7 +442,7 @@ Use the following options to change the behavior of this command.
 
 ### list
 
-The `temporal operator namespace list` command lists all [Namespaces](/namespaces) on the [Server](/temporal-service#frontend-service).
+The `temporal operator namespace list` command lists all [Namespaces](/namespaces) on the [Server](/temporal-service/temporal-server#frontend-service).
 
 `temporal operator namespace list`
 
@@ -486,7 +486,7 @@ Namespaces can be assigned a different active [Cluster](/temporal-service).
 Namespaces can also be promoted to global Namespaces.
 `temporal operator namespace --promote-global=true`
 
-Any [Archives](/temporal-service#archival) that were previously enabled or disabled can be changed through this command.
+Any [Archives](/temporal-service/archival) that were previously enabled or disabled can be changed through this command.
 However, URI values for archival states cannot be changed after the states are enabled.
 `temporal operator namespace update --history-archival-state="enabled" --visibility-archival-state="disabled"`
 

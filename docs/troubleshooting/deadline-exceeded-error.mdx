@@ -36,7 +36,7 @@ If you're using Temporal Cloud, create a [support ticket](/cloud/support#support
 
 :::
 
-[Frontend Service](/temporal-service#frontend-service) logs can show which parts of the Temporal Service aren't working.
+[Frontend Service](/temporal-service/temporal-server#frontend-service) logs can show which parts of the Temporal Service aren't working.
 For the error to appear, a service pod or container must be up and running.
 
 OSS users can verify that the Frontend Service is connected and running by using the Temporal CLI.
@@ -106,7 +106,7 @@ If the error persists, review your Workflow Execution History and server logs fo
 
 ### When executing or scheduling Workflows
 
-One or more services might be unable to connect to the [Frontend Service](/temporal-service#frontend-service).
+One or more services might be unable to connect to the [Frontend Service](/temporal-service/temporal-server#frontend-service).
 The Workflow might be unable to complete requests within the given connection time.
 
 Increase the value of `frontend.keepAliveMaxConnectionAge` so that requests can be finished before the connection terminates.

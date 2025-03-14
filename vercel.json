@@ -874,7 +874,7 @@
     },
     {
       "source": "/server/archive-data",
-      "destination": "/temporal-service#archival"
+      "destination": "/temporal-service/archival"
     },
     {
       "source": "/clusters/how-to-set-up-archival",
@@ -1162,7 +1162,7 @@
     },
     {
       "source": "/concepts/what-is-archival",
-      "destination": "/temporal-service#archival"
+      "destination": "/temporal-service/archival"
     },
     {
       "source": "/concepts/what-is-a-child-workflow-execution",
@@ -1486,7 +1486,7 @@
     },
     {
       "source": "/learn-archival",
-      "destination": "/temporal-service#archival"
+      "destination": "/temporal-service/archival"
     },
     {
       "source": "/learn-cli",
@@ -1765,7 +1765,7 @@
     },
     {
       "source": "/concepts/what-is-a-retention-period",
-      "destination": "/temporal-service#retention-period"
+      "destination": "/temporal-service/temporal-server#retention-period"
     },
     {
       "source": "/archive-data",

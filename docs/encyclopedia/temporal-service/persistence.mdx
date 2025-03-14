@@ -22,7 +22,7 @@ This page discusses the following:
 
 ## What is Persistence? {#persistence}
 
-The Temporal Persistence store is a database used by the [Temporal Server](#temporal-server) to persist events generated and processed in your Temporal Service and SDK.
+The Temporal Persistence store is a database used by the [Temporal Server](/temporal-service/temporal-server) to persist events generated and processed in your Temporal Service and SDK.
 
 A Temporal Service's only required dependency for basic operation is the Persistence database.
 Multiple types of databases are supported.
@@ -39,7 +39,7 @@ The database stores the following types of data:
   - Execution table: A capture of the mutable state of Workflow Executions.
   - History table: An append-only log of Workflow Execution History Events.
 - Namespace metadata: Metadata of each Namespace in the Temporal Service.
-- [Visibility](#visibility) data: Enables operations like "show all running Workflow Executions".
+- [Visibility](/temporal-service/visibility) data: Enables operations like "show all running Workflow Executions".
   For production environments, we recommend using Elasticsearch as your Visibility store.
 
 An Elasticsearch database must be configured in a self-hosted Temporal Service to enable [advanced Visibility](/visibility#advanced-visibility) on Temporal Server versions 1.19.1 and earlier.
