@@ -32,6 +32,7 @@ Alias: `n`
 - [tcld namespace search-attributes](#search-attributes)
 - [tcld namespace retention](#retention)
 - [tcld namespace update-codec-server](#update-codec-server)
+- [tcld namespace update-high-availability](#update-high-availability)
 
 ## add-region
 
@@ -106,7 +107,6 @@ Temporal Cloud sends an email alert once your Namespace is ready for use.
 The cloud provider of the region.
 
 Default: aws (default: "aws")
-
 
 ## create
 
@@ -1736,7 +1736,7 @@ tcld namespace update-codec-server \
     --include-credentials true
 ```
 
-## update-high-availability
+## update-high-availability {#update-high-availability}
 
 The `tcld namespace update-high-availability` command enables you to adjust settings for your [Namespace](/namespaces) with [High Availability features](/cloud/high-availability).
 This is set to `false` by default.
