@@ -1,6 +1,6 @@
-| Area          | Code         | Region            |
-| ------------- | ------------ | ----------------- |
-| North America | us-west1     | Oregon            |
-| North America | us-east4     | Northern Virginia |
-| Europe        | europe-west3 | Frankfurt         |
-| Asia Pacific  | asia-south1  | Mumbai            |
+| Area          | Code         | Region            | Notes                                          |
+| ------------- | ------------ | ----------------- | ---------------------------------------------- |
+| North America | us-west1     | Oregon            | Does not support<br /> Same-region Replication |
+| North America | us-east4     | Northern Virginia | Does not support<br /> Same-region Replication |
+| Europe        | europe-west3 | Frankfurt         | Does not support<br /> Same-region Replication |
+| Asia Pacific  | asia-south1  | Mumbai            | Does not support<br /> Same-region Replication |
