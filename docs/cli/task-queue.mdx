@@ -22,7 +22,7 @@ To run a Task Queue command, run `temporal task-queue [command] [command options
 
 The `temporal task-queue describe` command provides [poller](/develop/worker-performance#poller-count) information for a given [Task Queue](/task-queue).
 
-The [Server](/temporal-service#temporal-server) records the last time of each poll request.
+The [Server](/temporal-service/temporal-server) records the last time of each poll request.
 A `LastAccessTime` value in excess of one minute can indicate the Worker is at capacity (all Workflow and Activity slots are full) or that the Worker has shut down.
 [Workers](/workers#worker) are removed if 5 minutes have passed since the last poll request.
 

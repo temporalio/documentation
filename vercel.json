@@ -906,7 +906,7 @@
     },
     {
       "source": "/server/multi-cluster",
-      "destination": "/clusters#multi-cluster-replication"
+      "destination": "/temporal-service/multi-cluster-replication"
     },
     {
       "source": "/clusters/how-to-set-up-multi-cluster-replication",
@@ -1422,7 +1422,7 @@
     },
     {
       "source": "/concepts/what-is-multi-cluster-replication",
-      "destination": "/clusters#multi-cluster-replication"
+      "destination": "/temporal-service/multi-cluster-replication"
     },
     {
       "source": "/configure-temporal-server",
@@ -1474,7 +1474,7 @@
     },
     {
       "source": "/install-temporal-server",
-      "destination": "/temporal-service#temporal-server"
+      "destination": "/temporal-service/temporal-server"
     },
     {
       "source": "/java-quick-start",
