@@ -1,0 +1,118 @@
+---
+id: cells
+title: Ensuring Resilience
+sidebar_label: Ensuring Resilience
+slug: /cloud/high-availability/cells
+description: Temporal Cloud deployment provides 99.99% availability and a contractual service level agreement (SLA) of 99.9% guarantee against service errors.
+tags:
+  - Temporal Cloud
+  - Production
+  - High Availability
+keywords:
+  - high-availability
+  - temporal-cloud
+  - term
+---
+
+:::tip HIGH AVAILABILITY FOR ALL CUSTOMERS
+
+This page discusses the High Availability Namespace architecture offered to all Temporal Cloud customers.
+To read about High Availability features for mission-critical use-cases, please visit the [Namespaces with High Availability features](/cloud/high-availability#high-availability-features) section of our documentation after you're done with this page.
+
+:::
+
+Temporal Cloud deployment provides 99.99% availability and a contractual service level agreement (SLA) of 99.9% guarantee against service errors.
+To keep systems reliable, Temporal separates workloads into independent task management units.
+This limits the impact of failures and helps our services stay available for when you need them most.
+This page explains this design, and how it protects uptime and handles growth.
+
+## Availability Zones and Isolation Domains
+
+Each standard Temporal Namespace replicates its data across three **availability zones**.
+An availability zone (AZ) is a cloud provider's physical or logical data center or cluster of resources that is isolated from other zones.
+Availability zones increase resilience by physically and logically separating infrastructure within a region.
+
+Each AZ operates independently, reducing the risk of failure affecting the entire system.
+They are often located in separate geographical locations.
+Temporal uses the term **isolation domain** to refer to zones.
+These are geographically or physically isolated from each other.
+
+Workloads distributed across multiple availability zones can continue running when one zone experiences an outage.
+
+## Regions
+
+A region is a geographically defined area that contains multiple availability zones or data centers.
+It's typically a self-contained unit of a cloud provider’s infrastructure that helps provide redundancy, low-latency access, and fault tolerance.
+
+Temporal operates in multiple regions for high availability and fault tolerance.
+The [Multi-region Namespace](/cloud/high-availability#replications-and-replicas) feature allows Temporal to replicate data and services across different regions.
+This ensures mission-critical resilience even when an entire region becomes unavailable, whether through a network outage or a natural disaster.
+
+## Temporal Cells
+
+Temporal Cloud's **cells** are a fundamental architectural concept.
+Each cell is an infrastructure unit that can independently manage tasks, resources, or workloads.
+They're designed for isolation, fault tolerance, and efficient resource allocation in the Temporal platform.
+
+Every Temporal Cloud Namespace replicates its data and operations across three availability zones (isolation domains).
+This design helps manage workloads and ensures tasks are completed.
+This approach improves resource use and reduces delays and latency.
+
+During data replication, any changes to Workflow state or History are saved in all three zones before the Temporal Service acknowledges a change back to the Client.
+As a result, your standard Temporal Namespace stays operational even if one of its three zones becomes unavailable.
+This architecture forms the basis of our base 99.9% service level.
+
+## Cell Architecture and Composition
+
+Our cell architecture is managed by Temporal's Control Plane.
+We needed a Control Plane that would manage provisioning  resources, deploying software, and handle Cell configuration changes.
+Our Control plane monitors, alerts, and handles certain failure classes.
+
+Each cell in Temporal Cloud uses:
+
+- Several compute clusters
+- One or more databases
+- Elastic Search
+- Ingress components
+- Observability stack
+- Additional dependency components
+
+We used Temporal itself to building the Control Plane.
+Temporal is an excellent fit for automating infrastructure management.
+That's because operations on cloud resources can take time, sometimes a fairly long time.
+A dependency service might return various retriable and non-retriable errors, and retries usually require backoff timing.
+Temporal treats our Control Plane operations like any other Workflow.
+Each Workflow retains a complete history of its execution, with all inputs and outputs, timestamps, and errors.
+
+### Managing our Cells
+
+Temporal uses entity Workflows to manage cells.
+Each cell has a dedicated entity Workflow that manages its entire lifecycle, from provisioning to upgrades.
+This approach ensures consistency and simplifies concurrency control.
+
+:::info Entity Workflows
+
+Unlike process Workflows, an entity Workflow is long-lived.
+It represents a single resource that manages a resource or process throughout its life.
+Entity Workflows often are used to manage individual customers, subscriptions, or long-term processes like cell management.
+
+:::
+
+### Choosing the Cell Architecture
+
+We use the cell architecture to:
+
+- **Minimize blast radius**:
+  Dividing infrastructure into cells means Temporal contains the impact of any issues.
+  If there are ten cells in a region and one experiences a problem, only about 10% of customers in that region would be affected.
+  This might happen due to software edge cases, infrastructure incidents, or operator mistakes.
+- **Enable scaling**:
+  Temporal clusters scale with the database and compute resources allocated to them.
+  Our cell architecture supports both scaling out (by adding more cells) and scaling up (by using larger cells).
+  Larger cells handle higher throughput for individual Namespaces and absorb traffic spikes when they occur.
+  Running large cells helps customers that need high throughput for a single Namespace.
+
+---
+
+In summary, Temporal Cloud cells are a critical architectural component that provide isolation, fault tolerance, and scalability.
+Every Temporal Cloud Namespace is backed by three cells to guarantee high availability and responsiveness.

@@ -362,11 +362,8 @@ module.exports = {
                   id: "production-deployment/cloud/high-availability/references/index",
                 },
                 items: [
+                  "production-deployment/cloud/high-availability/references/cells",
                   "production-deployment/cloud/high-availability/references/regions",
-                  // "production-deployment/cloud/high-availability/references/concepts",
-                  // "production-deployment/cloud/high-availability/references/best-practices",
-                  // "production-deployment/cloud/high-availability/references/glossary",
-                  // "production-deployment/cloud/high-availability/references/faq",
                 ]
               },
               ]
