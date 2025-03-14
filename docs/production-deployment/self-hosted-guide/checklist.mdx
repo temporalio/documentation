@@ -49,7 +49,7 @@ Workloads can be highly variable, and you may experience sustained workload spik
 Temporal recommends scaling your clusters to well above the average throughput.
 See [Scaling Temporal: The Basics](https://temporal.io/blog/scaling-temporal-the-basics) for an introduction to the topic.
 
-Temporal server throughput is often limited by the number of [Shards](/clusters#history-shard) configured for the Temporal Service.
+Temporal server throughput is often limited by the number of [Shards](/temporal-service/temporal-server#history-shard) configured for the Temporal Service.
 A Shard is an unit within a Temporal Service by which concurrent Workflow Execution throughput can be scaled.
 Shard capacity, and often overall cluster throughput, is set at build time for a cluster and that cluster setting cannot be adjusted later.
 Adding more Shards if needed requires a cluster rebuild, and a migration to the new cluster.

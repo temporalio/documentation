@@ -874,7 +874,7 @@
     },
     {
       "source": "/server/archive-data",
-      "destination": "/clusters#archival"
+      "destination": "/temporal-service/archival"
     },
     {
       "source": "/clusters/how-to-set-up-archival",
@@ -906,7 +906,7 @@
     },
     {
       "source": "/server/multi-cluster",
-      "destination": "/clusters#multi-cluster-replication"
+      "destination": "/temporal-service/multi-cluster-replication"
     },
     {
       "source": "/clusters/how-to-set-up-multi-cluster-replication",
@@ -1162,7 +1162,7 @@
     },
     {
       "source": "/concepts/what-is-archival",
-      "destination": "/clusters#archival"
+      "destination": "/temporal-service/archival"
     },
     {
       "source": "/concepts/what-is-a-child-workflow-execution",
@@ -1422,7 +1422,7 @@
     },
     {
       "source": "/concepts/what-is-multi-cluster-replication",
-      "destination": "/clusters#multi-cluster-replication"
+      "destination": "/temporal-service/multi-cluster-replication"
     },
     {
       "source": "/configure-temporal-server",
@@ -1474,7 +1474,7 @@
     },
     {
       "source": "/install-temporal-server",
-      "destination": "/clusters#temporal-server"
+      "destination": "/temporal-service/temporal-server"
     },
     {
       "source": "/java-quick-start",
@@ -1486,7 +1486,7 @@
     },
     {
       "source": "/learn-archival",
-      "destination": "/clusters#archival"
+      "destination": "/temporal-service/archival"
     },
     {
       "source": "/learn-cli",
@@ -1765,7 +1765,7 @@
     },
     {
       "source": "/concepts/what-is-a-retention-period",
-      "destination": "/clusters#retention-period"
+      "destination": "/temporal-service/temporal-server#retention-period"
     },
     {
       "source": "/archive-data",
