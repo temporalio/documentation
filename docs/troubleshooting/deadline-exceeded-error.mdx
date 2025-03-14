@@ -45,7 +45,7 @@ OSS users can verify that the Frontend Service is connected and running by using
 temporal operator cluster health --address 127.0.0.1:7233
 ```
 
-Use [`grpc-health-probe`](https://github.com/grpc-ecosystem/grpc-health-probe) to check the Frontend Service, [Matching Service](/clusters#matching-service), and [History Service](/clusters#history-service).
+Use [`grpc-health-probe`](https://github.com/grpc-ecosystem/grpc-health-probe) to check the Frontend Service, [Matching Service](/temporal-service/temporal-server#matching-service), and [History Service](/temporal-service/temporal-server#history-service).
 
 ```
 ./grpc-health-probe -addr=frontendAddress:frontendPort -service=temporal.api.workflowservice.v1.WorkflowService

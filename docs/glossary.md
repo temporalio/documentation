@@ -272,13 +272,13 @@ This supports high levels of business continuity, allowing Workflow Executions t
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_ -->
 
-#### [History Service](/clusters#history-service)
+#### [History Service](/temporal-service/temporal-server#history-service)
 
 The History Service is responsible for persisting Workflow Execution state and determining what to do next to progress the Workflow Execution through History Shards.
 
 <!-- _Tags: [term](/tags/term)_ -->
 
-#### [History Shard](/clusters#history-shard)
+#### [History Shard](/temporal-service/temporal-server#history-shard)
 
 A History Shard is an important unit within a Temporal Service by which the scale of concurrent Workflow Execution throughput can be measured.
 
@@ -312,7 +312,7 @@ A Local Activity is an Activity Execution that executes in the same process as t
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Matching Service](/clusters#matching-service)
+#### [Matching Service](/temporal-service/temporal-server#matching-service)
 
 The Matching Service is responsible for hosting external Task Queues for Task dispatching.
 
@@ -658,7 +658,7 @@ A Temporal Service is a Temporal Server paired with Persistence and Visibility s
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Temporal Service configuration](/clusters#cluster-configuration)
+#### [Temporal Service configuration](/temporal-service/configuration)
 
 Temporal Service configuration is the setup and configuration details of your Temporal Service, defined using YAML.
 
@@ -736,7 +736,7 @@ A Worker Program is the static code that defines the constraints of the Worker P
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Worker Service](/clusters#worker-service)
+#### [Worker Service](/temporal-service/temporal-server#worker-service)
 
 The Worker Service runs background processing for the replication queue, system Workflows, and (in versions older than 1.5.0) the Kafka visibility processor.
 

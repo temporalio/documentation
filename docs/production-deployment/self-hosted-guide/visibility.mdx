@@ -658,7 +658,7 @@ Before you begin, verify [supported databases and versions](/self-hosted-guide/v
 
 The following steps describe how to migrate your Visibility database.
 
-After you make any changes to your [Temporal Service configuration](/clusters#cluster-configuration), ensure that you restart your services.
+After you make any changes to your [Temporal Service configuration](/temporal-service/configuration), ensure that you restart your services.
 
 #### Set up secondary Visibility store
 
@@ -688,7 +688,7 @@ After you make any changes to your [Temporal Service configuration](/clusters#cl
        closeIdleConnectionsInterval: 15s
    ```
 
-1. Update the [dynamic configuration](/clusters#dynamic-configuration) keys on your self-hosted Temporal Service to enable write operations to the secondary store and disable read operations.
+1. Update the [dynamic configuration](/temporal-service/configuration#dynamic-configuration) keys on your self-hosted Temporal Service to enable write operations to the secondary store and disable read operations.
    Example:
 
    ```yaml
