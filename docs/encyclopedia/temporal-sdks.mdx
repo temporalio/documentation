@@ -20,7 +20,7 @@ tags:
   - Durable Execution
 ---
 
-import * as Components from '@site/src/components';
+import { CaptionedImage } from '@site/src/components';
 
 Temporal SDKs (software development kits) are an open source collection of tools, libraries, and APIs that enable Temporal Application development.
 
@@ -132,7 +132,7 @@ func LoanApplicationWorkflow {
 
 Another quality of the SDKs lies in their ability to replay Workflow Executions, a complex operation that contributes significantly to the Platform's promised reliability.
 
-<Components.CaptionedImage
+<CaptionedImage
     src="/diagrams/replay-basic.svg"
     title="The SDKs Replay code execution to continue from the last step" />
 
@@ -151,8 +151,8 @@ Temporal SDKs offer developers the following:
 - APIs to develop application code (Workflows & Activities)
 - APIs to configure and run Workers
 
-<Components.CaptionedImage
-    src="/diagrams/temporal-sdk-components.svg"
+<CaptionedImage
+    src="/diagrams/temporal-sdk-svg"
     title="Temporal SDK components create a runtime across your environment and a Temporal Service" />
 
 Let's break down each one.
@@ -457,14 +457,14 @@ The Activity above is performing a single call to an external API. Since the cal
 
 When you create a new Worker process, the Worker creates a long-lasting connection to the Temporal Service, polling a Task Queue for Tasks that related to the code it is capable of executing.
 
-<Components.CaptionedImage
+<CaptionedImage
     src="/diagrams/how-sdk-works-1.svg"
     title="A Worker long polls for Tasks" />
 
 Although the Worker is now running, unless a Workflow is explicitly started, the Task Queue doesn't have any Tasks on it and so, no code executes.
 We can use a Temporal Client (available in Temporal SDKs and the Temporal CLI) to start a new Workflow.
 
-<Components.CaptionedImage
+<CaptionedImage
     src="/diagrams/how-sdk-works-2.svg"
     title="Start a Workflow using a Temporal Client" />
 
@@ -481,7 +481,7 @@ Each step of the Task (e.g. Scheduled, Started, and Completed), gets recorded in
 
 When the call to invoke the Activity is evaluated, the Worker suspends executing the code and sends a Command to the Temporal Service to schedule an Activity Task.
 
-<Components.CaptionedImage
+<CaptionedImage
     src="/diagrams/how-sdk-works-3.svg"
     title="Worker suspends code execution and sends a Command to the Temporal Service" />
 
@@ -491,7 +491,7 @@ If the Activity fails, say the API goes down, Temporal will automatically retry 
 
 In the case where the calls succeeds, and the code completes, the Worker tells the Temporal Service the Activity Task completed.
 
-<Components.CaptionedImage
+<CaptionedImage
     src="/diagrams/how-sdk-works-activity.svg"
     title="The Worker reports that the Activity Execution completed" />
 
@@ -499,7 +499,7 @@ Included is any data that was returned from the Activity (results of the API cal
 
 The Temporal Service creates a new Workflow Task which the Worker picks up.
 
-<Components.CaptionedImage
+<CaptionedImage
     src="/diagrams/how-sdk-works-1.svg"
     title="The Worker picks up the new Task" />
 
@@ -511,7 +511,7 @@ Assuming the Activity Execution is successful, the Workflow now has the result o
 
 The result of the Workflow can now be retrieved using a Temporal Client.
 
-<Components.CaptionedImage
+<CaptionedImage
     src="/diagrams/how-sdk-works-4.svg"
     title="The Temporal Client can now access the result of the Workflow" />
 

@@ -18,7 +18,12 @@ Whether you’re using core components or experimenting with new ones, this guid
 - [Finding Components](#finding-components)
 - [Adding Components to This Repository](#adding-components-to-this-repository)
 - [Using Components in MDX Source Files](#using-components-in-mdx-source-files)
-- [ToolTipTerm](#tooltipterm-usage)
+- [Using CaptionedImage](#using-captionedimage)
+- [Using DiscoverableDisclosure](#using-discoverabledisclosure)
+- [Using DocsTable](#using-docstable)
+- [Using RelatedRead](#using-relatedread)
+- [Using ToolTipTerm](#using-tooltipterm)
+- [Using ZoomingImage](#using-zoomingimage)
 
 ## Finding Components
 
@@ -47,12 +52,13 @@ components
 │   ├── CustomWarning.js
 │   ├── DetermineHeader.js
 │   ├── InfoButton.js
+│   ├── NoBreak.js
 │   ├── ResponsivePlayer.js
 │   ├── RowOfImages.js
+│   ├── Spacer.js
 │   └── ToolTipText.js
 ├── formatting
-│   ├── NoBreak.js
-│   └── Spacer.js
+│   └── DocsTable.js
 ├── images
 │   ├── CaptionedImage.js
 │   └── CaptionedImage.module.css
@@ -84,13 +90,49 @@ When adding a patch with new components, please follow these directions:
 
 ## Using Components in MDX Source Files
 
-To use a global import that adds all sanctioned components, add this line after the front-matter in your MDX file:
+### Importing components
+
+You must import components before use. For example:
+
+```
+import { CaptionedImage } from '@site/src/components';
+```
+
+or
+
+```
+import { RelatedReadContainer, RelatedReadItem } from '@site/src/components';
+```
+
+As a rule, place your import statement at the top of your MDX file below the front matter.
+Not all MDX files in this repository follow this rule, especially older documents.
+
+**Note**:
+All sanctioned components are enumerated in 'src/components/index.js'. 
+You shouldn't use any other import paths for Temporal components.
+
+### Adding components to MDX files 
+
+Once imported, you can use components in angle brackets, making sure to set any properties ("props") in their use.
+For example:
+
+```
+<RelatedReadItem
+    path="/cloud/metrics/prometheus-grafana"
+    text="How to set up Grafana with Temporal Cloud observability"
+    archetype="feature-guide"
+/>
+```
+
+### Global Imports
+
+Because this repository uses `index.js` to vend its components, you can import all components as once:
 
 ```
 import * as Components from '@site/src/components';
 ```
 
-Components will use the "Components." prefix before their name:
+Components imported this way use the "Components." prefix before their name:
 
 ```
 <Components.DiscoverableDisclosure>
@@ -98,33 +140,124 @@ Components will use the "Components." prefix before their name:
 </Components.DiscoverableDisclosure>
 ```
 
-To import a component subset, list them between braces, and use them as just mentioned.
+## Using CaptionedImage
+
+CaptionedImage replaces older image inserts methods, and complies with light and dark mode and accessibility.
+It is meant for images that use captions.
+You can still use standard image inserts (`![AX text](/path/to/image)`) as needed.
+
+Usage:
 
 ```
-import { CaptionedImage, DiscoverableDisclosure } from '@site/src/components';
+<CaptionedImage
+    src="/path/to/your/image"
+    title="your caption"
+/>
 ```
 
-To directly import components, provide the full site path:
+Images are normally stored in the '/static' folder in `img` or `diagrams`.
+
+### Zooming images
+
+When images are complex and may not render in a readable fashion on normal monitors, you can enable a minimal form of zooming by setting the `zoom` prop to true:
 
 ```
-import CaptionedImage from '@site/src/components/info/CaptionedImage';
+<CaptionedImage
+    src="/path/to/your/image"
+    title="your caption"
+    zoom="true"
+/>
 ```
 
-Directly imported components do _not_ need a prefix in use.
-For example:
+One click will zoom out, another will zoom back.
+Most rendering will allow readers to pull the image around to view all parts of the image. 
+On non-mobile systems, cursors will change to interactive elements when hovered above zoomable items to indicate interaction.
+
+## Using DiscoverableDisclosure
+
+Role: Provide a more discoverable `<Details>` section.
+
+Unlike Details, it does not require a separate `<Summary>`.
+
+Usage:
 
 ```
-<CaptionedImage src="/path/to/image" alt="accessibility_text">
+<DiscoverableDisclosure label = "your_summary_text">
+...your content...
+</DiscoverableDisclosure>
 ```
 
-## ToolTipTerm Usage
+An additional `prompt` prop enables you to specify the leading text.
+Normally it defaults to `prompt = "Dive deeper — "`.
+
+## Using DocsTable
+
+In certain rare instances, standard Markdown tables won't work for our needs.
+They may contain information that is complex enough that in-line table format becomes unmaintainable and cumbersome.
+DocsTable addresses this, breaking the material down into individual cells that use standard Markdown formatting that is not supported in Markdown tables.
+For example, you can use bullet points instead of HTML lists, and code fencing instead of `<tt>` tagging.
+
+Usage:
+
+```
+<DocsTable Columns = {["", "Column 1", "Column 2"]} >
+
+Row Title
+
+<NewDocsCell />
+
+Column 1 Markdown content
+
+<NewDocsCell />
+
+Column 2 Markdown content
+
+</DocsTable>
+```
+
+Some notes:
+
+- `<NewDocsCell />` separates cell content.
+  It only appears _between_ cells.
+  You do not need it at the start or end of your cell contents.
+- For empty cells, add a blank line and a `<NewDocsCell />`.
+- At this time, keep `<NewDocsCell />` on its own line with space above and below it.
+  `yarn format` will mess up your tables otherwise. 
+  This requirement may be addressed in a future update.
+
+## Using RelatedRead
+
+Role: Create a list of related items, with summaries and archetypes
+
+Usage:
+
+```
+<RelatedReadContainer>
+  <RelatedReadItem path="/cloud/metrics/prometheus-grafana"
+    text="How to set up Grafana with Temporal Cloud observability"
+    archetype="feature-guide" />
+  <RelatedReadItem path="/production-deployment/cloud/worker-health"
+    text="How to monitor Worker Health with Temporal Cloud Metrics"
+    archetype="feature-guide" />
+  <RelatedReadItem path="/production-deployment/cloud/service-health"
+    text="How to monitor Service Health with Temporal Cloud Metrics"
+    archetype="feature-guide" />
+</RelatedReadContainer>
+```
+
+Archetypes:
+- encyclopedia
+- feature-guide
+- feature-summary
+
+## Using ToolTipTerm
 
 Role: Provide definitions or background information at the point of use.
 
 Usage:
 
 ```
-<Components.ToolTipTerm term="your_term_name" />
+<ToolTipTerm term="your_term_name" />
 ```
 
 For example:
@@ -133,17 +266,27 @@ For example:
 Temporal Cloud strives to maintain a <Components.ToolTipTerm term="P95" /> replication delay of less than 1 minute.
 ```
 
-The term is used to look up a file in `static/term`, appended by `md`. 
-In this example, the file `P95.md`:
+### Defining terms
+
+Terms are stored in `static/term`.
+Use standard Markdown, with files named with '.md'.
+You may use links, images, and other standard elements in the definition.
+This helps when you want to define a term and provide a link to further coverage. 
+
+For example:
 
 ```
 docs% ls static/terms/P95*
 static/terms/P95.md
+docs% cat static/terms/P95.md 
+P95 refers to the 95th percentile of a data set.
+It identifies values that are greater than or equal to 95% of that set.
+docs% 
 ```
 
-### Using Content from a Different File
+### Specifying content with a path
 
-For reasons of capitalization, spelling, or different reader set, you may want to vary the content of the tooltip.
+For reasons of capitalization, spelling, or multiple reader sets (experts vs beginners, for example), you may want to vary the content of the tooltip.
 Use the `src` prop to select a different md file.
 For example:
 
@@ -157,9 +300,23 @@ Use the `tooltip` prop to add non-reusable content specific to one tooltip term.
 
 ```
 <Components.ToolTipTerm term="your term" tooltip="any custom content you want to add" />
-``` 
+```
 
-### Known Limitations
+## Using ZoomingImage
 
-The static Markdown content cannot use links, images, and other advanced elements.
+Role: Provide image "asides" embedded into instructions where a standard image would normally interfere.
 
+A ZoomingImage is presented at a very small size, with the understanding that it is too small to view.
+An optional component, the image uses a magnifying glass and text prompt for discovery.
+See the instructions for [Prometheus Grafana](http://docs.temporal.io/cloud/metrics/prometheus-grafana#grafana-data-sources-configuration) for an example.
+
+Reserve ZoomingImages for situations where the image itself is an obstacle to communicating steps or other content.
+It provides opt-in supplementary information.
+
+Usage:
+
+```
+<ZoomingImage src="/path/to/image" alt="Alt text" />
+```
+
+Images are normally stored in the '/static' folder in `img` or `diagrams`.

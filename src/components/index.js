@@ -4,12 +4,11 @@ export { Intro } from './elements/Intro';
 export { SdkLogos } from './elements/SdkLogos';
 
 // Formatting components
-export { default as NoBreak } from './formatting/NoBreak';
-export { default as Spacer } from './formatting/Spacer';
 export { default as DocsTable, NewDocsCell } from './formatting/DocsTable';
 
 // Image components
 export { default as CaptionedImage } from './images/CaptionedImage';
+export { default as ZoomingImage } from './images/ZoomingImage';
 
 // Information components
 export { default as DiscoverableDisclosure } from './info/DiscoverableDisclosure';
