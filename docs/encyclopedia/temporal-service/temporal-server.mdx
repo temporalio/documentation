@@ -60,12 +60,12 @@ We offer maintenance support of **major** versions for at least 12 months after 
 Temporal offers official support for, and is tested against, dependencies with the exact versions described in the `go.mod` file of the corresponding release tag.
 (For example, [v1.5.1](https://github.com/temporalio/temporal/tree/v1.5.1) dependencies are documented in [the go.mod for v1.5.1](https://github.com/temporalio/temporal/blob/v1.5.1/go.mod).)
 
-### What is a Frontend Service? {#frontend-service}
+## What is a Frontend Service? {#frontend-service}
 
 The Frontend Service is a stateless gateway service that exposes a strongly typed [Proto API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto).
 The Frontend Service is responsible for rate limiting, authorizing, validating, and routing all inbound calls.
 
-<Components.CaptionedImage
+<CaptionedImage
     src="/diagrams/temporal-frontend-service.svg"
     title="Frontend Service"
 />
@@ -75,9 +75,9 @@ Types of inbound calls include the following:
 - [Namespace](/namespaces) CRUD
 - External events
 - Worker polls
-- [Visibility](/temporal-service/visibility) requests
+- [Visibility](#visibility) requests
 - [Temporal CLI](/cli) (the Temporal CLI) operations
-- Calls from a remote Temporal Service related to [Multi-Cluster Replication](/temporal-service/multi-cluster-replication)
+- Calls from a remote Temporal Service related to [Multi-Cluster Replication](#multi-cluster-replication)
 
 Every inbound request related to a Workflow Execution must have a Workflow Id, which is hashed for routing purposes.
 The Frontend Service has access to the hash rings that maintain service membership information, including how many nodes (instances of each service) are in the Temporal Service.
@@ -91,13 +91,13 @@ The Frontend Service talks to the Matching Service, History Service, Worker Serv
 
 Ports are configurable in the Temporal Service configuration.
 
-### What is a History Service? {#history-service}
+## What is a History Service? {#history-service}
 
 The History Service is responsible for persisting Workflow Execution state to the Workflow History.
 When the Workflow Execution is able to progress, the History Service adds a Task with the Workflow's updated history to the Task Queue.
 From there, a Worker can poll for work, receive this updated history, and resume execution.
 
-<Components.CaptionedImage
+<CaptionedImage
     src="/diagrams/temporal-history-service.svg"
     title="Block diagram of how the History Service relates to the other services of the Temporal Server and to the Temporal Service"
 />
@@ -115,7 +115,7 @@ The History Service talks to the Matching Service and the database.
 
 Ports are configurable in the Temporal Service configuration.
 
-#### What is a History Shard? {#history-shard}
+### What is a History Shard? {#history-shard}
 
 A History Shard is an important unit within a Temporal Service by which concurrent Workflow Execution throughput can be scaled.
 
@@ -124,394 +124,7 @@ A History Shard assumes that only one concurrent operation can be within a parti
 In essence, the number of History Shards represents the number of concurrent database operations that can occur for a Temporal Service.
 This means that the number of History Shards in a Temporal Service plays a significant role in the performance of your Temporal Application.
 
-Before integrating a database, the total number of History Shards for the Temporal Service must be chosen and set in the Temporal Service's configuration (see [persistence](/references/configuration#persistence
-### Persistence
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store to store the state of Workflow Executions.
-Temporal Server supports the following persistence stores:
-- Cassandra
-- MySQL
-- PostgreSQL
-- CockroachDB
-
-Temporal Server uses a persistence store
+Before integrating a database, the total number of History Shards for the Temporal Service must be chosen and set in the Temporal Service's configuration (see [persistence](/references/configuration#persistence)).
 After the Shard count is configured and the database integrated, the total number of History Shards for the Temporal Service cannot be changed.
 
 In theory, a Temporal Service can operate with an unlimited number of History Shards, but each History Shard adds compute overhead to the Temporal Service.
@@ -532,11 +145,11 @@ Each History Shard maintains the Workflow Execution Event History, Workflow Exec
   (Relies on the experimental Multi-Cluster feature.)
 - Internal Visibility Task Queue: Pushes data to the [Advanced Visibility](/visibility#advanced-visibility) index.
 
-### What is a Matching Service? {#matching-service}
+## What is a Matching Service? {#matching-service}
 
 The Matching Service is responsible for hosting user-facing [Task Queues](/task-queue) for Task dispatching.
 
-<Components.CaptionedImage
+<CaptionedImage
     src="/diagrams/temporal-matching-service.svg"
     title="Matching Service"
 />
@@ -551,7 +164,7 @@ It talks to the Frontend Service, History Service, and the database.
 
 Ports are configurable in the Temporal Service configuration.
 
-### What is a Worker Service? {#worker-service}
+## What is a Worker Service? {#worker-service}
 
 The Worker Service runs background processing for the replication queue, system Workflows, and (in versions older than 1.5.0) the Kafka visibility processor.
 
@@ -574,7 +187,7 @@ It talks to the Frontend Service.
 
 Ports are configurable in the Temporal Service configuration.
 
-### What is a Retention Period? {#retention-period}
+## What is a Retention Period? {#retention-period}
 
 Retention Period is the duration for which the Temporal Service stores data associated with closed Workflow Executions on a Namespace in the Persistence store.
 
