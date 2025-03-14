@@ -14,25 +14,11 @@ tags:
   - Namespaces
 ---
 
-import { ToolTipTerm } from '@site/src/components'
+import { ToolTipTerm, DocsTable, NewDocsCell, NoBreak } from '@site/src/components'
 
 The `tcld namespace` commands enable [Namespace](/namespaces) operations in Temporal Cloud.
 
 Alias: `n`
-
-- [tcld namespace add-region](#add-region)
-- [tcld namespace create](#create)
-- [tcld namespace delete](#delete)
-- [tcld namespace failover](#failover)
-- [tcld namespace get](#get)
-- [tcld namespace list](#list)
-- [tcld namespace export](#export)
-- [tcld namespace accepted-client-ca](#accepted-client-ca)
-- [tcld namespace certificate-filters](#certificate-filters)
-- [tcld namespace search-attributes](#search-attributes)
-- [tcld namespace retention](#retention)
-- [tcld namespace update-codec-server](#update-codec-server)
-- [tcld namespace update-high-availability](#update-high-availability)
 
 ## add-region
 
@@ -42,42 +28,70 @@ Once provisioned, High Availability features enable Temporal Cloud to start repl
 
 Alias: _none_
 
-The following modifiers control the behavior of the command.
-
-#### --request-id
-
-The request identifier to use for the asynchronous operation.
-If not set, the server assigns an identifier.
-
-Alias: `-r`
-
-#### --namespace
-
-Specify a Namespace hosted on Temporal Cloud.
-If not specified, the value of the environment variable `$TEMPORAL_CLOUD_NAMESPACE` is used.
-
-Alias: `-n`
-
-_Required modifier_
-
-#### --region
-
-The region to add to the existing Namespace.
-See [Regions](/cloud/high-availability/regions) for a list of supported regions.
-
 :::tip Choosing Replica Regions
 
 - GCP Namespaces support Multi-region Replication but do not support Same-region Replication.
-- The AWS `sa-east-1` region supports Same-region Replication but does not support Multi-Region Replication.
+- The AWS `sa-east-1` region supports Same-region Replication but does not support Multi-region Replication.
 - You must select a region using the same Cloud provider for your replica as your primary.
 
 :::
 
+The following modifiers control the behavior of the command.
+
+<DocsTable
+  Columns={[
+    "Modifier",
+    "Use",
+  ]}
+>
+
+<NoBreak>`--request-id`</NoBreak>
+
+<br /><br />
+Alias: `-r`
+
+<NewDocsCell />
+
+The request identifier to use for the asynchronous operation.
+If not set, the server assigns an identifier.
+
+<NewDocsCell />
+
+<NoBreak>`--namespace`</NoBreak>
+
+<br /><br />
+Alias: `-n`
+
+_Required modifier_
+
+<NewDocsCell />
+
+Specify a Namespace hosted on Temporal Cloud.
+If not specified, the value of the environment variable `$TEMPORAL_CLOUD_NAMESPACE` is used.
+
+<NewDocsCell />
+
+<NoBreak>`--region`</NoBreak>
+
+<br /><br />
 Alias: `--re`
 
 _Required modifier_
 
-**Example**
+<NewDocsCell />
+
+The region to add to the existing Namespace.
+See [Regions](/cloud/high-availability/regions) for a list of supported regions.
+
+Specify the region code of the region where you want to create the replica as an argument to the `--region` flag:
+
+- Using the current region replicates to an <ToolTipTerm term="isolation domain" src="isolation domains" /> within your existing region.
+- Using a different region (within the same continent) replicates across regions.
+- You cannot create a Multi-region deployment on separate continents.
+
+Temporal Cloud sends an email alert once your Namespace is ready for use.
+
+For example:
 
 ```bash
 tcld namespace add-region \
@@ -94,19 +108,19 @@ tcld --api-key <your_api_key> \
     --region <replica_region>
 ```
 
-Specify the region code of the region where you want to create the replica as an argument to the `--region` flag:
+<NewDocsCell />
 
-- Using the current region replicates to an <ToolTipTerm term="isolation domain" src="isolation domains" /> within your existing region.
-- Using a different region (within the same continent) replicates across regions.
-- You cannot create a Multi-region deployment on separate continents.
+<NoBreak>`--cloud-provider`</NoBreak>
 
-Temporal Cloud sends an email alert once your Namespace is ready for use.
-
-#### --cloud-provider
+<NewDocsCell />
 
 The cloud provider of the region.
 
 Default: aws (default: "aws")
+
+<NewDocsCell />
+
+</DocsTable>
 
 ## create
 

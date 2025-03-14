@@ -5,6 +5,7 @@ export { SdkLogos } from './elements/SdkLogos';
 
 // Formatting components
 export { default as DocsTable, NewDocsCell } from './formatting/DocsTable';
+export { default as NoBreak } from './formatting/NoBreak';
 
 // Image components
 export { default as CaptionedImage } from './images/CaptionedImage';
