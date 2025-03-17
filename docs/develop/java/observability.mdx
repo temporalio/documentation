@@ -126,6 +126,16 @@ WorkerFactory factory = WorkerFactory.newInstance(client, factoryOptions);
 
 For more information, see the Temporal [OpenTracing module](https://github.com/temporalio/sdk-java/blob/master/temporal-opentracing/README.md).
 
+### Context Propagation Over Nexus Operation Calls
+
+Nexus does not use the standard context propagator header structure.
+Instead, it relies on a Temporal-agnostic protocol designed to connect arbitrary systems.
+To propagate context over Nexus Operation calls, the context is serialized into a `Map<String, String>`.
+This mpa is special as it will normalize all keys to lowercase.
+
+Because Nexus uses this custom format, and because Nexus calls may involve external systems, the `ContextPropagator` interface doesn’t apply to Nexus headers.
+Context must be explicitly propagated through interceptors, as shown in the [Nexus Context Propagation sample](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/nexuscontextpropagation).
+
 ## Log from a Workflow {#logging}
 
 Logging enables you to record critical information during code execution.
