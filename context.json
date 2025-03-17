@@ -62,7 +62,7 @@
         "bestPractices": "/go-sdk/best-practices",
         "sampleCode": "https://github.com/temporalio/samples-go",
         "troubleshooting": "/go-sdk/troubleshooting",
-        "learn": "https://learn.temporal.io/courses/go-sdk"
+        "learn": "https://learn.temporal.io/courses"
       },
       "javaSdk": {
         "docs": "/java-sdk",
@@ -81,7 +81,7 @@
         "bestPractices": "/java-sdk/best-practices",
         "sampleCode": "https://github.com/temporalio/samples-java",
         "troubleshooting": "/java-sdk/troubleshooting",
-        "learn": "https://learn.temporal.io/courses/java-sdk"
+        "learn": "https://learn.temporal.io/courses"
       },
       "typescriptSdk": {
         "docs": "/typescript-sdk",
@@ -100,7 +100,7 @@
         "bestPractices": "/typescript-sdk/best-practices",
         "sampleCode": "https://github.com/temporalio/samples-typescript",
         "troubleshooting": "/typescript-sdk/troubleshooting",
-        "learn": "https://learn.temporal.io/courses/typescript-sdk"
+        "learn": "https://learn.temporal.io/courses"
       },
       "pythonSdk": {
         "docs": "/python-sdk",
@@ -138,7 +138,7 @@
         "bestPractices": "/dotnet-sdk/best-practices",
         "sampleCode": "https://github.com/temporalio/samples-dotnet",
         "troubleshooting": "/dotnet-sdk/troubleshooting",
-        "learn": "https://learn.temporal.io/courses/dotnet-sdk"
+        "learn": "https://learn.temporal.io/courses"
       },
       "tools": {
         "activityRetrySimulator": "/activity-retry-simulator",
@@ -159,7 +159,7 @@
         "failovers": "/cloud/failovers",
         "migrateToCloud": "/migrate-to-cloud",
         "pricing": "https://temporal.io/pricing",
-        "learn": "https://learn.temporal.io/courses/temporal-cloud"
+        "learn": "https://learn.temporal.io/courses"
       },
       "selfHosting": {
         "overview": "/self-host",
@@ -180,7 +180,7 @@
         "workerScaling": "/deployment/worker-scaling",
         "observability": "/deployment/observability",
         "bestPractices": "/deployment/best-practices",
-        "learn": "https://learn.temporal.io/courses/deployment-strategies"
+        "learn": "https://learn.temporal.io/courses"
       },
       "tools": {
         "cli": "/cli",
@@ -238,20 +238,6 @@
     }
   },
   "relatedContent": {
-    "learnCourses": [
-      {
-        "title": "Getting Started with Temporal",
-        "url": "https://learn.temporal.io/pathways/getting-started"
-      },
-      {
-        "title": "Advanced Temporal Concepts",
-        "url": "https://learn.temporal.io/courses/advanced-temporal"
-      },
-      {
-        "title": "SDK-Specific Guides",
-        "url": "https://learn.temporal.io/courses/sdk-guides"
-      }
-    ],
     "guides": [
       {
         "title": "Workflow Execution Basics",
