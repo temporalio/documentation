@@ -4,7 +4,7 @@ title: tcld namespace command reference
 sidebar_label: namespace
 description: Unlock the full potential of Temporal Cloud with tcld namespace commands. Efficiently manage Namespace operations, including add-region, create, delete, failover, get, list, and export.
 slug: /cloud/tcld/namespace/
-toc_max_heading_level: 4
+toc_max_heading_level: 3
 keywords:
   - cli reference
   - tcld
@@ -32,6 +32,7 @@ Alias: `n`
 - [tcld namespace search-attributes](#search-attributes)
 - [tcld namespace retention](#retention)
 - [tcld namespace update-codec-server](#update-codec-server)
+- [tcld namespace update-high-availability](#update-high-availability)
 
 ## add-region
 
@@ -43,15 +44,12 @@ Alias: _none_
 
 The following modifiers control the behavior of the command.
 
-#### --ca-certificate
+#### --request-id
 
-_Required modifier unless `--ca-certificate-file` is specified_
+The request identifier to use for the asynchronous operation.
+If not set, the server assigns an identifier.
 
-A base64-encoded CA certificate.
-
-If both `--ca-certificate` and `--ca-certificate-file` are specified, only `--ca-certificate` is used.
-
-Alias: `-c`
+Alias: `-r`
 
 #### --namespace
 
@@ -65,11 +63,15 @@ _Required modifier_
 #### --region
 
 The region to add to the existing Namespace.
+See [Regions](/cloud/high-availability/regions) for a list of supported regions.
 
-Valid options: `ap-northeast-1` | `ap-northeast-2` | `ap-south-1` | `ap-south-2` | `ap-southeast-1` | `ap-southeast-2` | `eu-central-1` | `eu-west-1` | `eu-west-2` | `ca-central-1` | `us-east-1` | `us-east-2` | `us-west-2`
+:::tip Choosing Replica Regions
 
-See [Service Availability](/cloud/service-availability).
-The `sa-east-1` region is not supported at this time.
+- GCP Namespaces support Multi-region Replication but do not support Same-region Replication.
+- The AWS `sa-east-1` region supports Same-region Replication but does not support Multi-region Replication.
+- You must select a region using the same Cloud provider for your replica as your primary.
+
+:::
 
 Alias: `--re`
 
@@ -77,7 +79,7 @@ _Required modifier_
 
 **Example**
 
-```
+```bash
 tcld namespace add-region \
     --namespace <namespace_id>.<account_id> \
     --region <replica_region>
@@ -85,16 +87,12 @@ tcld namespace add-region \
 
 When using API key authentication, add your API credentials before pressing Enter:
 
-```
-
+```bash
 tcld --api-key <your_api_key> \
     add-region \
     --namespace <namespace_id>.<account_id> \
     --region <replica_region>
-
 ```
-
-:::tip
 
 Specify the region code of the region where you want to create the replica as an argument to the `--region` flag:
 
@@ -104,7 +102,11 @@ Specify the region code of the region where you want to create the replica as an
 
 Temporal Cloud sends an email alert once your Namespace is ready for use.
 
-:::
+#### --cloud-provider
+
+The cloud provider of the region.
+
+Default: aws (default: "aws")
 
 ## create
 
@@ -152,7 +154,7 @@ The region to create the Namespace in.
 
 **Example**
 
-```
+```bash
 tcld namespace create \
     --namespace <namespace_id>.<account_id> \
     --region <primary_region> [\]
@@ -161,30 +163,31 @@ tcld namespace create \
 
 When using API key authentication, add your API credentials before pressing Enter:
 
-```
-
+```bash
 tcld --api-key <your_api_key> \
     namespace create \
     --namespace <namespace_id>.<account_id> \
     --region <primary_region> [\]
     [--region <replica_region>] // if adding replica
-
 ```
-
-
-:::tip
 
 When using High Availability features, specify the region code of the region where you want to create the replica as an argument to the `--region` flag:
 
 - Using the current region replicates to an <ToolTipTerm term="isolation domain" src="isolation domains" /> within your existing region.
+  This enables Same-region replication.
 - Using a different region (within the same continent) replicates across regions.
-- You cannot create a Multi-region deployment on separate continents.
+  This enables Multi-region replication.
 
 Temporal Cloud sends an email alert once your Namespace is ready for use.
 
-:::
+:::tip Choosing Replica Regions
 
-Valid options: `ap-northeast-1` | `ap-southeast-1` | `ap-southeast-2` | `ca-central-1` | `eu-central-1` | `eu-west-1` | `eu-west-2` | `us-east-1` | `us-west-2`
+- GCP Namespaces support Multi-region Replication but do not support Same-region Replication.
+- The AWS `sa-east-1` region supports Same-region Replication but does not support Multi-region Replication.
+- You must select a region using the same Cloud provider for your replica as your primary.
+- You cannot create a Multi-region deployment on separate continents.
+
+:::
 
 Alias: `--re`
 
@@ -273,7 +276,17 @@ Alias: `--ic`
 **Example**
 
 ```bash
-tcld namespace create --namespace <namespace_id> --region us-west-2 --retention-days 60 --certificate-filter-input '{"filters": [{"commonName": "test1"}]}' --user-namespace-permission "user@example.com=Admin" --search-attribute "customer_id=Int" --search-attribute "customer_name=Text" --endpoint "https://test-codec-server.com" --pass-access-token --include-credentials
+tcld namespace create \
+    --namespace <namespace_id> \
+    --region us-west-2 \
+    --retention-days 60 \
+    --certificate-filter-input '{"filters": [{"commonName": "test1"}]}' \
+    --user-namespace-permission "user@example.com=Admin" \
+    --search-attribute "customer_id=Int" \
+    --search-attribute "customer_name=Text" \
+    --endpoint "https://test-codec-server.com" \
+    --pass-access-token \
+    --include-credentials
 ```
 
 ## delete
@@ -311,8 +324,73 @@ Alias: `-v`
 **Example**
 
 ```bash
-tcld namespace delete --namespace <namespace_id>
+tcld namespace delete \
+    --namespace <namespace_id>
 ```
+
+## delete-region
+
+Use `tcld namespace delete-region` to remove a <ToolTipTerm term="replica" /> for an existing Temporal Cloud [Namespace](/namespaces).
+Removing a replica disables [High Availability features](/cloud/high-availability).
+
+:::tip
+
+Disabling replication by removing a region results in a mandatory 7-day waiting period before you can re-enable High Availability Namespace features.
+
+:::
+
+Alias: _none_
+
+The following modifiers control the behavior of the command.
+
+#### --request-id
+
+The request identifier to use for the asynchronous operation.
+If not set, the server assigns an identifier.
+
+Alias: `-r`
+
+#### --namespace
+
+Specify a Namespace hosted on Temporal Cloud.
+If not specified, the value of the environment variable `$TEMPORAL_CLOUD_NAMESPACE` is used.
+
+Alias: `-n`
+
+_Required modifier_
+
+#### --region
+
+The region to remove from the Namespace.
+Upon removal, Temporal stops replication and the Namespace becomes a Standard Namespace.
+You cannot re-add a region or add a new region for seven days after removing a Namespace region.
+
+Alias: `--re`
+
+_Required modifier_
+
+**Example**
+
+```bash
+tcld namespace delete-region \
+    --namespace <namespace_id>.<account_id> \
+    --region <replica_region>
+```
+
+When using API key authentication, add your API credentials before pressing Enter:
+
+```bash
+tcld --api-key <your_api_key> \
+    delete-region \
+    --namespace <namespace_id>.<account_id> \
+    --region <replica_region>
+```
+
+#### --cloud-provider
+
+The cloud provider of the region to failover to.
+
+Default: aws (default: "aws")
 
 ## failover
 
@@ -321,7 +399,7 @@ A failover switches a Namespace region from a primary Namespace to its replica.
 
 **Example**
 
-```
+```bash
 tcld namespace failover \
     --namespace <namespace_id>.<account_id> \
     --region <target_region>
@@ -329,13 +407,11 @@ tcld namespace failover \
 
 When using API key authentication, add your API credentials before pressing Enter:
 
-```
-
+```bash
 tcld --api-key <your_api_key> \
     namespace failover \
     --namespace <namespace_id>.<account_id> \
     --region <target_region>
-
 ```
 
 #### --request-id
@@ -358,10 +434,7 @@ _Required modifier_
 
 The region to failover _to_.
 
-Valid options: `ap-northeast-1` | `ap-northeast-2` | `ap-south-1` | `ap-south-2` | `ap-southeast-1` | `ap-southeast-2` | `eu-central-1` | `eu-west-1` | `eu-west-2` | `ca-central-1` | `us-east-1` | `us-east-2` | `us-west-2`
-
-See [Service Availability](/cloud/service-availability).
-The `sa-east-1` region is not supported at this time.
+See [Regions](/cloud/high-availability/regions) for a list of supported regions.
 
 Alias: `--re`
 
@@ -402,7 +475,8 @@ Alias: `-n`
 **Example**
 
 ```bash
-tcld namespace get --namespace <namespace_id>
+tcld namespace get \
+    --namespace <namespace_id>
 ```
 
 ## list
@@ -437,7 +511,11 @@ The `tcld namespace export s3 create` command allows users to create an export s
 **Example**
 
 ```bash
-tcld namespace export s3 create --namespace <namespace_id> --sink-name <sink_name> --s3-bucket-name <bucket_name> --role-arn <role_arn>
+tcld namespace export s3 create \
+    --namespace <namespace_id> \
+    --sink-name <sink_name> \
+    --s3-bucket-name <bucket_name> \
+    --role-arn <role_arn>
 ```
 
 The following modifiers control the behavior of the command.
@@ -487,7 +565,9 @@ The `tcld namespace export s3 get` command allows users to retrieve details abou
 **Example**
 
 ```bash
-tcld namespace export s3 get --namespace <namespace_id> --sink-name <sink_name>
+tcld namespace export s3 get \
+    --namespace <namespace_id> \
+    --sink-name <sink_name>
 ```
 
 The following modifiers control the behavior of the command.
@@ -514,7 +594,9 @@ The `tcld namespace export s3 delete` command allows users to delete an existing
 **Example**
 
 ```bash
-tcld namespace export s3 delete --namespace <namespace_id> --sink-name <sink_name>
+tcld namespace export s3 delete \
+    --namespace <namespace_id> \
+    --sink-name <sink_name>
 ```
 
 The following modifiers control the behavior of the command.
@@ -555,7 +637,8 @@ The `tcld namespace export s3 list` command allows users to list all existing ex
 **Example**
 
 ```bash
-tcld namespace export s3 list --namespace <namespace_id>
+tcld namespace export s3 list \
+    --namespace <namespace_id>
 ```
 
 The following modifiers control the behavior of the command.
@@ -584,7 +667,10 @@ The `tcld namespace export s3 update` command allows users to modify the details
 **Example**
 
 ```bash
-tcld namespace export s3 update --namespace <namespace_id> --sink-name <sink_name> --enabled true
+tcld namespace export s3 update \
+    --namespace <namespace_id> \
+    --sink-name <sink_name> \
+    --enabled true
 ```
 
 The following modifiers control the behavior of the command.
@@ -641,7 +727,11 @@ The `tcld namespace export s3 validate` command allows users to validate an expo
 **Example**
 
 ```bash
-tcld namespace export s3 validate --namespace <namespace_id> --sink-name <sink_name> --s3-bucket-name <bucket_name> --role-arn <role_arn>
+tcld namespace export s3 validate \
+    --namespace <namespace_id> \
+    --sink-name <sink_name> \
+    --s3-bucket-name <bucket_name> \
+    --role-arn <role_arn>
 ```
 
 The following modifiers control the behavior of the command.
@@ -721,7 +811,9 @@ Alias: `-n`
 **Example**
 
 ```bash
-tcld namespace accepted-client-ca add --namespace <namespace_id> --ca-certificate <encoded_certificate>
+tcld namespace accepted-client-ca add \
+    --namespace <namespace_id> \
+    --ca-certificate <encoded_certificate>
 ```
 
 #### --request-id
@@ -733,7 +825,9 @@ Alias: `-r`
 **Example**
 
 ```bash
-tcld namespace accepted-client-ca add --request-id <request_id> --ca-certificate <encoded_certificate>
+tcld namespace accepted-client-ca add \
+    --request-id <request_id> \
+    --ca-certificate <encoded_certificate>
 ```
 
 #### --resource-version
@@ -745,7 +839,9 @@ Alias: `-v`
 **Example**
 
 ```bash
-tcld namespace accepted-client-ca add --resource-version <etag> --ca-certificate <encoded_certificate>
+tcld namespace accepted-client-ca add \
+    --resource-version <etag> \
+    --ca-certificate <encoded_certificate>
 ```
 
 #### --ca-certificate
@@ -761,7 +857,8 @@ Alias: `-c`
 **Example**
 
 ```bash
-tcld namespace accepted-client-ca add --ca-certificate <encoded_certificate>
+tcld namespace accepted-client-ca add \
+    --ca-certificate <encoded_certificate>
 ```
 
 #### --ca-certificate-file
@@ -777,7 +874,8 @@ Alias: `-f`
 **Example**
 
 ```bash
-tcld namespace accepted-client-ca add --ca-certificate-file <path>
+tcld namespace accepted-client-ca add \
+    --ca-certificate-file <path>
 ```
 
 ### list
@@ -799,7 +897,8 @@ Alias: `-n`
 **Example**
 
 ```bash
-tcld namespace accepted-client-ca list --namespace <namespace_id>
+tcld namespace accepted-client-ca list \
+    --namespace <namespace_id>
 ```
 
 ### remove
@@ -821,7 +920,9 @@ Alias: `-n`
 **Example**
 
 ```bash
-tcld namespace accepted-client-ca remove --namespace <namespace_id> --ca-certificate <encoded_certificate>
+tcld namespace accepted-client-ca remove \
+    --namespace <namespace_id> \
+    --ca-certificate <encoded_certificate>
 ```
 
 #### --request-id
@@ -833,7 +934,9 @@ Alias: `-r`
 **Example**
 
 ```bash
-tcld namespace accepted-client-ca remove --request-id <request_id> --ca-certificate <encoded_certificate>
+tcld namespace accepted-client-ca remove \
+    --request-id <request_id> \
+    --ca-certificate <encoded_certificate>
 ```
 
 #### --resource-version
@@ -845,7 +948,9 @@ Alias: `-v`
 **Example**
 
 ```bash
-tcld namespace accepted-client-ca remove --resource-version <etag> --ca-certificate <encoded_certificate>
+tcld namespace accepted-client-ca remove \
+    --resource-version <etag> \
+    --ca-certificate <encoded_certificate>
 ```
 
 #### --ca-certificate
@@ -863,7 +968,8 @@ Alias: `-c`
 **Example**
 
 ```bash
-tcld namespace accepted-client-ca remove --ca-certificate <encoded_certificate>
+tcld namespace accepted-client-ca remove \
+    --ca-certificate <encoded_certificate>
 ```
 
 #### --ca-certificate-file
@@ -881,7 +987,8 @@ Alias: `-f`
 **Example**
 
 ```bash
-tcld namespace accepted-client-ca remove --ca-certificate-file <path>
+tcld namespace accepted-client-ca remove \
+    --ca-certificate-file <path>
 ```
 
 #### --ca-certificate-fingerprint
@@ -897,7 +1004,8 @@ Alias: `--fp`
 **Example**
 
 ```bash
-tcld namespace accepted-client-ca remove --ca-certificate-fingerprint <fingerprint>
+tcld namespace accepted-client-ca remove \
+    --ca-certificate-fingerprint <fingerprint>
 ```
 
 ### set
@@ -928,7 +1036,8 @@ Doing so enables your Namespace to serve both CA certificates for a period of ti
 1. Run the `tcld namespace accepted-client-ca set` command with the CA certificate bundle file.
 
    ```bash
-   tcld namespace accepted-client-ca set --ca-certificate-file <path>
+   tcld namespace accepted-client-ca set \
+       --ca-certificate-file <path>
    ```
 
 1. Monitor traffic to your old certificate until it ceases.
@@ -948,7 +1057,9 @@ Alias: `-n`
 **Example**
 
 ```bash
-tcld namespace accepted-client-ca set --namespace <namespace_id> --ca-certificate <encoded_certificate>
+tcld namespace accepted-client-ca set \
+    --namespace <namespace_id>
+    --ca-certificate <encoded_certificate>
 ```
 
 #### --request-id
@@ -960,7 +1071,9 @@ Alias: `-r`
 **Example**
 
 ```bash
-tcld namespace accepted-client-ca set --request-id <request_id> --ca-certificate <encoded_certificate>
+tcld namespace accepted-client-ca set \
+    --request-id <request_id> \
+    --ca-certificate <encoded_certificate>
 ```
 
 #### --resource-version
@@ -972,7 +1085,9 @@ Alias: `-v`
 **Example**
 
 ```bash
-tcld namespace accepted-client-ca set --resource-version <etag> --ca-certificate <encoded_certificate>
+tcld namespace accepted-client-ca set \
+    --resource-version <etag> \
+    --ca-certificate <encoded_certificate>
 ```
 
 #### --ca-certificate
@@ -988,7 +1103,8 @@ Alias: `-c`
 **Example**
 
 ```bash
-tcld namespace accepted-client-ca set --ca-certificate <encoded_certificate>
+tcld namespace accepted-client-ca set \
+    --ca-certificate <encoded_certificate>
 ```
 
 #### --ca-certificate-file
@@ -1004,7 +1120,8 @@ Alias: `-f`
 **Example**
 
 ```bash
-tcld namespace accepted-client-ca set --ca-certificate-file <path>
+tcld namespace accepted-client-ca set \
+    --ca-certificate-file <path>
 ```
 
 ## certificate-filters
@@ -1033,7 +1150,9 @@ Alias: `-n`
 **Example**
 
 ```bash
-tcld namespace certificate-filters add --namespace <namespace_id> --certificate-filter-file <file>
+tcld namespace certificate-filters add \
+    --namespace <namespace_id> \
+    --certificate-filter-file <file>
 ```
 
 #### --request-id
@@ -1046,7 +1165,9 @@ Alias: `-r`
 **Example**
 
 ```bash
-tcld namespace certificate-filters add --request-id <request_id> --certificate-filter-file <file>
+tcld namespace certificate-filters add \
+    --request-id <request_id> \
+    --certificate-filter-file <file>
 ```
 
 #### --resource-version
@@ -1059,7 +1180,9 @@ Alias: `-v`
 **Example**
 
 ```bash
-tcld namespace certificate-filters add --resource-version <etag> --certificate-filter-file <file>
+tcld namespace certificate-filters add \
+    --resource-version <etag> \
+    --certificate-filter-file <file>
 ```
 
 #### --certificate-filter-file
@@ -1073,7 +1196,8 @@ Aliases: `-f`, `--file`
 **Example**
 
 ```bash
-tcld namespace certificate-filters add --certificate-filter-file <file>
+tcld namespace certificate-filters add \
+    --certificate-filter-file <file>
 ```
 
 #### --certificate-filter-input
@@ -1087,7 +1211,8 @@ Aliases: `-i`, `--input`
 **Example**
 
 ```bash
-tcld namespace certificate-filters add --certificate-filter-input <JSON>
+tcld namespace certificate-filters add \
+    --certificate-filter-input <JSON>
 ```
 
 ### clear
@@ -1113,7 +1238,8 @@ Alias: `-n`
 **Example**
 
 ```bash
-tcld namespace certificate-filters clear --namespace <namespace_id>
+tcld namespace certificate-filters clear \
+    --namespace <namespace_id>
 ```
 
 #### --request-id
@@ -1125,7 +1251,8 @@ Alias: `-r`
 **Example**
 
 ```bash
-tcld namespace certificate-filters clear --request-id <request_id>
+tcld namespace certificate-filters clear
+    --request-id <request_id>
 ```
 
 #### --resource-version
@@ -1137,7 +1264,8 @@ Alias: `-v`
 **Example**
 
 ```bash
-tcld namespace certificate-filters clear --resource-version <etag>
+tcld namespace certificate-filters clear \
+    --resource-version <etag>
 ```
 
 ### export
@@ -1159,7 +1287,8 @@ Aliases: `--file`, `-f`
 **Example**
 
 ```bash
-tcld namespace certificate-filters export --certificate-filter-file <path>
+tcld namespace certificate-filters export \
+    --certificate-filter-file <path>
 ```
 
 #### --namespace
@@ -1171,7 +1300,9 @@ Alias: `-n`
 **Example**
 
 ```bash
-tcld namespace certificate-filters import --namespace <namespace_id> --certificate-filter-input <json>
+tcld namespace certificate-filters import \
+    --namespace <namespace_id> \
+    --certificate-filter-input <json>
 ```
 
 #### --request-id
@@ -1183,7 +1314,9 @@ Alias: `-r`
 **Example**
 
 ```bash
-tcld namespace certificate-filters import --request-id <request_id> --certificate-filter-input <json>
+tcld namespace certificate-filters import \
+    --request-id <request_id> \
+    --certificate-filter-input <json>
 ```
 
 #### --resource-version
@@ -1195,7 +1328,9 @@ Alias: `-v`
 **Example**
 
 ```bash
-tcld namespace certificate-filters import --resource-version <etag> --certificate-filter-input <json>
+tcld namespace certificate-filters import \
+    --resource-version <etag> \
+    --certificate-filter-input <json>
 ```
 
 ### import
@@ -1228,7 +1363,8 @@ Aliases: `--file`, `-f`
 **Example**
 
 ```bash
-tcld namespace certificate-filters import --certificate-filter-file <path>
+tcld namespace certificate-filters import \
+    --certificate-filter-file <path>
 ```
 
 #### --certificate-filter-input
@@ -1244,7 +1380,8 @@ Aliases: `--input`, `-i`
 **Example**
 
 ```bash
-tcld namespace certificate-filters import --certificate-filter-input <json>
+tcld namespace certificate-filters import \
+    --certificate-filter-input <json>
 ```
 
 #### --namespace
@@ -1256,7 +1393,9 @@ Alias: `-n`
 **Example**
 
 ```bash
-tcld namespace certificate-filters import --namespace <namespace_id> --certificate-filter-input <json>
+tcld namespace certificate-filters import \
+    --namespace <namespace_id> \
+    --certificate-filter-input <json>
 ```
 
 #### --request-id
@@ -1268,7 +1407,9 @@ Alias: `-r`
 **Example**
 
 ```bash
-tcld namespace certificate-filters import --request-id <request_id> --certificate-filter-input <json>
+tcld namespace certificate-filters import \
+    --request-id <request_id> \
+    --certificate-filter-input <json>
 ```
 
 #### --resource-version
@@ -1280,7 +1421,9 @@ Alias: `-v`
 **Example**
 
 ```bash
-tcld namespace certificate-filters import --resource-version <etag> --certificate-filter-input <json>
+tcld namespace certificate-filters import \
+    --resource-version <etag> \
+    --certificate-filter-input <json>
 ```
 
 ## search-attributes
@@ -1313,7 +1456,9 @@ Alias: `-n`
 **Example**
 
 ```bash
-tcld namespace search-attributes add --namespace <namespace_id> --search-attribute <value>
+tcld namespace search-attributes add \
+    --namespace <namespace_id> \
+    --search-attribute <value>
 ```
 
 #### --request-id
@@ -1325,7 +1470,9 @@ Alias: `-r`
 **Example**
 
 ```bash
-tcld namespace search-attributes add --request-id <request_id> --search-attribute <value>
+tcld namespace search-attributes add \
+    --request-id <request_id> \
+    --search-attribute <value>
 ```
 
 #### --resource-version
@@ -1337,7 +1484,9 @@ Alias: `-v`
 **Example**
 
 ```bash
-tcld namespace search-attributes add --resource-version <etag> --search-attribute <value>
+tcld namespace search-attributes add \
+    --resource-version <etag> \
+    --search-attribute <value>
 ```
 
 #### --search-attribute
@@ -1358,7 +1507,9 @@ Alias: `--sa`
 **Example**
 
 ```bash
-tcld namespace search-attributes add --search-attribute "YourSearchAttribute1=Text" --search-attribute "YourSearchAttribute2=Double"
+tcld namespace search-attributes add \
+    --search-attribute "YourSearchAttribute1=Text" \
+    --search-attribute "YourSearchAttribute2=Double"
 ```
 
 ### rename
@@ -1378,7 +1529,10 @@ Alias: `-n`
 **Example**
 
 ```bash
-tcld namespace search-attributes rename --namespace <namespace_id> --existing-name <value> --new-name <value>
+tcld namespace search-attributes rename \
+    --namespace <namespace_id> \
+    --existing-name <value> \
+    --new-name <value>
 ```
 
 #### --request-id
@@ -1390,7 +1544,10 @@ Alias: `-r`
 **Example**
 
 ```bash
-tcld namespace search-attributes rename --request-id <request_id> --existing-name <value> --new-name <value>
+tcld namespace search-attributes rename \
+    --request-id <request_id> \
+    --existing-name <value> \
+    --new-name <value>
 ```
 
 #### --resource-version
@@ -1402,7 +1559,10 @@ Alias: `-v`
 **Example**
 
 ```bash
-tcld namespace search-attributes rename --resource-version <etag> --existing-name <value> --new-name <value>
+tcld namespace search-attributes rename \
+    --resource-version <etag> \
+    --existing-name <value> \
+    --new-name <value>
 ```
 
 #### --existing-name
@@ -1416,7 +1576,9 @@ Alias: `--en`
 **Example**
 
 ```bash
-tcld namespace search-attributes rename --existing-name <value> --new-name <value>
+tcld namespace search-attributes rename \
+    --existing-name <value> \
+    --new-name <value>
 ```
 
 #### --new-name
@@ -1430,7 +1592,9 @@ Alias: `--nn`
 **Example**
 
 ```bash
-tcld namespace search-attributes rename --existing-name <value> --new-name <value>
+tcld namespace search-attributes rename \
+    --existing-name <value> \
+    --new-name <value>
 ```
 
 ## retention
@@ -1462,7 +1626,8 @@ Alias: `-n`
 **Example**
 
 ```bash
-tcld namespace retention get --namespace <namespace_id>
+tcld namespace retention get \
+    --namespace <namespace_id>
 ```
 
 ### set
@@ -1493,7 +1658,9 @@ Alias: `--rd`
 **Example**
 
 ```bash
-tcld namespace retention set --namespace <namespace_id> --retention-days <retention_days>
+tcld namespace retention set \
+    --namespace <namespace_id> \
+    --retention-days <retention_days>
 ```
 
 ## update-codec-server
@@ -1515,7 +1682,9 @@ Alias: `-n`
 **Example**
 
 ```bash
-tcld namespace update-codec-server --namespace <namespace_id> --endpoint <http_url>
+tcld namespace update-codec-server \
+    --namespace <namespace_id> \
+    --endpoint <http_url>
 ```
 
 #### --endpoint
@@ -1530,7 +1699,9 @@ Alias: `-e`
 **Example**
 
 ```bash
-tcld namespace update-codec-server --namespace <namespace_id> --endpoint <https_url>
+tcld namespace update-codec-server \
+    --namespace <namespace_id> \
+    --endpoint <https_url>
 ```
 
 #### --pass-access-token
@@ -1543,7 +1714,10 @@ Alias: `--pat`
 **Example**
 
 ```bash
-tcld namespace update-codec-server --namespace <namespace_id> --endpoint <https_url> --pass-access-token <bool>
+tcld namespace update-codec-server \
+    --namespace <namespace_id> \
+    --endpoint <https_url> \
+    --pass-access-token <bool>
 ```
 
 #### --include-credentials
@@ -1556,10 +1730,13 @@ Alias: `--ic`
 **Example**
 
 ```bash
-tcld namespace update-codec-server --namespace <namespace_id> --endpoint <https_url> --include-credentials true
+tcld namespace update-codec-server \
+    --namespace <namespace_id> \
+    --endpoint <https_url> \
+    --include-credentials true
 ```
 
-## update-high-availability
+## update-high-availability {#update-high-availability}
 
 The `tcld namespace update-high-availability` command enables you to adjust settings for your [Namespace](/namespaces) with [High Availability features](/cloud/high-availability).
 This is set to `false` by default.
@@ -1579,6 +1756,7 @@ Alias: `-n`
 #### --disable-auto-failover
 
 Specify whether Temporal Cloud should perform <ToolTipTerm term="health checks" src="health check" /> and trigger automatic failovers.
+
 Pass `true` or `false` (default).
 
 **Example**
@@ -1593,12 +1771,10 @@ tcld namespace update-high-availability \
 When using API key authentication, add your API credentials before pressing Enter:
 
 ```
-
 tcld --api-key <your_api_key> \
     namespace update-high-availability \
     --namespace <namespace_id>.<account_id> \
     --disable-auto-failover=true
-
 ```
 
 Alias: `-daf`
