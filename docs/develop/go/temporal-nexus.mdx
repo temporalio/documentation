@@ -472,7 +472,7 @@ Only asynchronous operations can be canceled in Nexus, as cancelation is sent us
 The Workflow or other resources backing the operation may choose to ignore the cancelation request.
 If ignored, the operation may enter a terminal state.
 
-Once the Workflow completes, the server stops attempting to cancel operations that have not yet been canceled, letting them run to completion.
+Once the caller Workflow completes, the caller's Nexus Machinery stops attempting to cancel operations that have not yet been canceled, letting them run to completion.
 It's okay to leave operations running in some use cases.
 To ensure cancelations are delivered, wait for all pending operations to finish before exiting the Workflow.
 
