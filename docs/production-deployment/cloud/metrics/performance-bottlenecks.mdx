@@ -252,7 +252,7 @@ This can help you understand the load on your Temporal service and how often you
 
 ## Caching
 
-Temporal Workers rely on caching to optimize performance by reducing the overhead of fetching Workflow state from the history.
+Temporal Workers relies on caching to optimize performance by reducing the overhead of fetching Workflow state from the history and Replaying.
 However, unlimited caching is impossible; there's a trade-off between the benefits of cached data and the memory consumed.
 These metrics allow you to balance performance gains with responsible memory usage.
 
@@ -277,27 +277,29 @@ A sudden increase in `sticky_cache_size` can correlate with increased memory con
 If memory consumption is too high, you can reduce the maximum sticky cache size.
 Conversely, if you have available memory and want to improve performance, you might increase it.
 
-### `temporal_sticky_cache_hit_total`
+### `temporal_sticky_cache_hit_total` and `temporal_sticky_cache_miss_total`
 
-The [`temporal_sticky_cache_hit_total`](https://docs.temporal.io/references/sdk-metrics#sticky_cache_hit) metric is a counter that measures the total number of times a Workflow Task found a cached Workflow Execution Event History to run against.
+The [`temporal_sticky_cache_hit_total`](https://docs.temporal.io/references/sdk-metrics#sticky_cache_hit) metric is a counter that measures the total number of times a Workflow Task found a cached Workflow Execution to run against, and
+the opposite is [`temporal_sticky_cache_miss_total`](https://docs.temporal.io/references/sdk-metrics#sticky_cache_miss), which is a counter that measures the total number of times a Workflow Task did not find a cached Workflow Execution to run against.
 
-Sticky Execution is a feature where a Worker caches a Workflow Execution Event History and creates a dedicated Task Queue to listen on.
-This improves performance because the Temporal Service only sends new events to the Worker instead of entire Event Histories.
+Sticky Execution is a feature where a Worker caches a Workflow Execution and creates a dedicated Task Queue to listen on.
+This improves performance because the Temporal Service only sends new events to the Worker instead of entire Event Histories, and the Workflow doesn't have to Replay.
 
-A “hit” means the Worker finds the Workflow in its cache when processing a Workflow Task, allowing immediate processing without fetching the full Event History from the server.
+A “hit” means the Worker finds the Workflow in its cache when processing a Workflow Task, allowing immediate processing without fetching the full Event History from the server and Replaying.
+A "miss" means the Worker didn't find the Workflow in its cache, and it must fetch the Event History and Replay.
 
-Monitoring the `temporal_sticky_cache_hit_total` metric can help you understand how your sticky cache is being used.
-A high rate of cache hits indicates that your Workflows are being scheduled efficiently, with minimal need for fetching Event Histories.
+Monitoring these two metrics and comparing them can help you understand how your sticky cache is being used.
+A high rate of cache hits with a low rate of cache misses indicates that your Workflows are being scheduled efficiently, with minimal need for fetching Event Histories and Replaying.
 
 ### `temporal_sticky_cache_total_forced_eviction_total`
 
 The [`temporal_sticky_cache_total_forced_eviction_total`](https://docs.temporal.io/references/sdk-metrics#sticky_cache_hit) metric is a counter that measures the total number of Workflow Executions that have been forcibly evicted from the sticky cache.
 
-Sticky Execution is a feature where a Worker caches a Workflow Execution Event History and creates a dedicated Task Queue to listen on.
-This improves performance because the Temporal Service only sends new events to the Worker instead of entire Event Histories.
+Sticky Execution is a feature where a Worker caches a Workflow Execution and creates a dedicated Task Queue to listen on.
+This improves performance because the Temporal Service only sends new events to the Worker instead of entire Event Histories, and the Workflow doesn't have to Replay.
 
 A "forced eviction" in this context means that a Workflow Execution was removed from the cache before it completed, typically because the cache was full and needed to make room for other Workflow Executions.
-If the Worker needs to process more Tasks for the evicted Workflow Execution, it will have to fetch the entire Event History from the Temporal Service.
+This means that if the Worker needs to process more Tasks for the evicted Workflow Execution, it will have to fetch the entire Event History from the Temporal Service and Replay.
 
 Monitoring the `temporal_sticky_cache_total_forced_eviction_total` metric can help you understand how often your Workflows are being evicted from the cache.
 A high rate of forced evictions could indicate that your cache size is too small for your workload, and you may need to increase the `WorkflowCacheSize` setting if your Worker resources can accommodate it.
