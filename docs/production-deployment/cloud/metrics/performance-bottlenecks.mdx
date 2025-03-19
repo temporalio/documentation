@@ -87,7 +87,7 @@ The [`temporal_workflow_task_execution_latency`](/references/sdk-metrics#workflo
 The Temporal SDK raises a “Deadlock detected during Workflow run” error or [TMPRL1101](https://github.com/temporalio/rules/blob/main/rules/TMPRL1101.md) when a Workflow Task takes more than one or two seconds to complete.
 Here are some potential causes:
 
-- CPU-intensive work: Performing CPU-intensive operations in your Workflow Task is can lead to slow execution.
+- CPU-intensive work: Performing CPU-intensive operations in your Workflow Task can lead to slow execution.
 - Slow local Activities: Workflow Task execution time includes the Local Activity execution time.
 - Slow Workflow replay: Workflow Task execution time includes the Workflow Replay time. Refer to `workflow_task_replay_latency` for more details.
 - Worker resource constraints: High CPU usage on Worker pods can lead to slower Workflow Task execution. Workers with insufficient CPU resources can cause delays.
@@ -112,7 +112,7 @@ Here are the main causes:
 - Large Event Histories: Workflows with long histories take more time to replay, as the Worker needs to process all events to reconstruct the Workflow state.
 - Data Converter performance: Slow Data Converters, especially those that perform encryption or interact with external services, can impact replay.
 - Large payloads: Activities or Signals with large payloads can slow down the replay process, especially if the Data Converter needs to process these payloads.
-- Complex Workflow logic: Workflow code with complex logic or computationally intensive operationssuch as scheduling many concurrent child Workflows or Activities, can increase replay latency.
+- Complex Workflow logic: Workflow code with complex logic or computationally intensive operations, such as scheduling many concurrent child Workflows or Activities, can increase replay latency.
 - Frequent cache evictions: If workers often evict Workflow Executions from their cache (due to memory constraints or frequent restarts), it leads to more replays and higher latency.
 - Worker resource constraints: High CPU utilization or memory pressure on Worker nodes can slow down the replay.
 
@@ -138,9 +138,9 @@ There are several potential causes for high `temporal_activity_execution_latency
 To diagnose and address high Activity Execution latency:
 
 1. Monitor the `activity_execution_latency` metric, which you can filter by Activity type and Activity Task queue.
-2. Optimize your Activity implementat to reduce latency, especially with external services or database interactions.
+2. Optimize your Activity implementation to reduce latency, especially with external services or database interactions.
 3. Check your Worker CPU and memory utilization to make sure they have adequate resources.
-4. Examine your Worker configuration, particularly the `(Max)ConcurrentActivityExecutionSize` and `(Max)WorkerActivitiesPerSecond metrics`, to ensure they are not limiting your activity execution.
+4. Examine your Worker configuration, particularly `(Max)ConcurrentActivityExecutionSize` and `(Max)WorkerActivitiesPerSecond`, to ensure they are not limiting your activity execution.
 
 ### Depletion of `temporal_worker_task_slots_available` for `WorkflowWorker`
 
@@ -158,10 +158,10 @@ To prevent depletion of Workflow Task slots:
 
 ### Depletion of `temporal_worker_task_slots_available` for `ActivityWorker`
 
-The [`temporal_worker_task_slots_available{worker_type=”ActivityWorker”}`](/references/sdk-metrics#worker_task_slots_available) metric indicates the number of available slots for executing Tasks on a Worker.
+The [`temporal_worker_task_slots_available{worker_type=”ActivityWorker”}`](/references/sdk-metrics#worker_task_slots_available) metric indicates the number of available slots for executing Activity Tasks on a Worker.
 This metric may go to zero for several reasons:
 
-- Blocked Activities and Zombie Activities: The most common cause is activities that are blocked or not returning on time. Zombie Activities are a subset of this category. They occur when an Activity times out (hits its `StartToClose` timeout) but continues to run, occupying some or all the slots as more retries occur. This can happen if:
+- Blocked Activities and Zombie Activities: The most common cause is activities that are blocked or not returning on time. Zombie Activities are a subset of this category. They occur when an Activity times out (hits its `StartToClose` or `HeartbeatTimeout` timeout) and has stopped Heartbeating but continues to run, occupying some or all the slots as more retries occur. This can happen if:
   - The Activity code is blocking on a downstream service call or an infinite loop.
   - There's a mismatch between the Activity's `StartToClose` timeout and any client-side timeouts for external calls.
 - Resource Utilization: High CPU or memory usage on Workers can cause activities to block and not release slots.
@@ -171,7 +171,6 @@ To prevent depletion of Activity Task slots:
 1. Monitor Worker CPU and Memory usage while increasing `(Max)ConcurrentActivityExecutionSize` to add more execution slots.
 2. Add client-side timeout to your downstream API client.
 3. Review your Task code to ensure Tasks complete within a reasonable time measured by `temporal_activity_execution_latency`.
-4. Check your Worker configuration and consider increasing `MaxConcurrentActivityExecutionSize` if necessary.
 
 ## Network requests
 
@@ -220,7 +219,7 @@ High values for this metric can be caused by several factors:
 - Network Latency: The physical distance and network conditions between the Temporal Client and the Temporal Server can affect the latency of requests.
 - Network Transfer Time: Larger payloads take longer to transfer over the network, which affects request latency. For example, large payloads in `RespondWorkflowTaskCompleted` can affect the latency of the request. This is especially true when Workflows are scheduling multiple activities with large inputs.
 - Resource Exhaustion: Running out of resources (such as CPU or memory) on the client or server can cause delays in processing the request.
-- Client Configuration: Improper client configuration, such as setting thread pool sizes too aggressively or having memory constraints that are too low for the number of allocated threads can lead to situations where Tasks overwhelm the client, causing increased latency.
+- Client Configuration: Improper client configuration, such as setting thread pool sizes too aggressively or having memory constraints that are too low for the number of allocated threads, can lead to situations where Tasks overwhelm the client, causing increased latency.
 - Server Load: If the Temporal Server is under heavy load, it may take longer to respond to requests, leading to increased latency.
 
 To diagnose and address high `temporal_request_latency`:
@@ -239,7 +238,7 @@ The [`rate(temporal_long_request_total{operation="PollActivityTaskQueue"})`](/re
 The `temporal_long_request_total` metric counts the number of these long poll requests.
 
 By applying the `rate()` function in Prometheus, you can calculate the per-second average rate of these requests over the time range specified in the Query.
-his can help you understand the load on your Temporal service and how often your Workers are polling for Activity Tasks.
+This can help you understand the load on your Temporal service and how often your Workers are polling for Activity Tasks.
 
 ### `rate(temporal_long_request_total{operation="PollWorkflowTaskQueue"})`
 
@@ -253,7 +252,7 @@ This can help you understand the load on your Temporal service and how often you
 
 ## Caching
 
-Temporal Workers relies on caching to optimize performance by reducing the overhead of fetching Workflow state from the history.
+Temporal Workers rely on caching to optimize performance by reducing the overhead of fetching Workflow state from the history.
 However, unlimited caching is impossible; there's a trade-off between the benefits of cached data and the memory consumed.
 These metrics allow you to balance performance gains with responsible memory usage.
 
@@ -298,7 +297,7 @@ Sticky Execution is a feature where a Worker caches a Workflow Execution Event H
 This improves performance because the Temporal Service only sends new events to the Worker instead of entire Event Histories.
 
 A "forced eviction" in this context means that a Workflow Execution was removed from the cache before it completed, typically because the cache was full and needed to make room for other Workflow Executions.
-This means that if the Worker needs to process more Tasks for the evicted Workflow Execution, it will have to fetch the entire Event History from the Temporal Service.
+If the Worker needs to process more Tasks for the evicted Workflow Execution, it will have to fetch the entire Event History from the Temporal Service.
 
 Monitoring the `temporal_sticky_cache_total_forced_eviction_total` metric can help you understand how often your Workflows are being evicted from the cache.
 A high rate of forced evictions could indicate that your cache size is too small for your workload, and you may need to increase the `WorkflowCacheSize` setting if your Worker resources can accommodate it.
