@@ -1,0 +1,218 @@
+---
+id: workflow-overview
+title: What is a Temporal Workflow?
+sidebar_label: Workflow 
+description: This comprehensive guide provides insights into Temporal Workflows, covering Workflow Definitions in various programming languages, deterministic constraints, handling code changes, and ensuring reliability, durability, and scalability in a Temporal Application, with examples and best practices for Workflow Versioning and development.
+slug: /workflow-overview
+toc_max_heading_level: 4
+keywords:
+  - workflow 
+tags:
+  - Concepts
+  - Workflows
+
+---
+The full Workflow guide covers: 
+- Workflow Definitions
+- Workflow Execution 
+- Schedules
+- Dynamic Handler
+- Cron Job 
+
+This page provides a basic overview of Introduction to Workflow. 
+
+## Intro to Workflows
+
+Temporal applications are built using an abstraction called Workflows. 
+You'll develop those Workflows by writing code in a general-purpose programming language such as Go, Java, TypeScript, or Python. 
+The code you write is the same code that will be executed at runtime, so you can use your favorite tools and libraries to develop Temporal Workflows.
+
+Temporal Workflows are resilient. 
+They can run—and keeping running—for years, even if the underlying infrastructure fails. 
+If the application itself crashes, Temporal will automatically recreate its pre-failure state so it can continue right where it left off.
+
+
+A Temporal Workflow defines the overall flow of your application. 
+Conceptually, it is a sequence of steps written in a general-purpose programming language using a Temporal SDK.
+
+A Workflow consists of:
+
+- A **Workflow Definition**: the code that defines the steps.
+- A **Workflow Execution**: the actual instance of the Workflow Definition running in the Temporal Platform.
+- A **Workflow Type**: a name that maps to a Workflow Definition and is used when starting an Execution.
+
+Conceptually, a workflow defines a sequence of steps.
+With Temporal, those steps are defined by writing code, known as a Workflow Definition, and are carried out by running that code, which results in a Workflow Execution.
+
+
+Workflows are:
+- Durable: Can run for seconds or years.
+- Reliable: Recoverable after failure.
+- Scalable: Can be executed concurrently by millions of instances.
+
+Each Workflow Execution progresses through a series of **Commands** and **Events**, which are recorded in an **Event History**. 
+It can be paused, resumed, continued as new, or reset.
+
+Workflows can:
+
+- Spawn Activities and Child Workflows
+- Receive Signals and respond to Queries
+- Use Timers, Start Delay, and Side Effects
+- Be scheduled with Cron Jobs or Schedules
+
+Workflows must follow deterministic constraints to ensure consistent replay behavior.
+
+
+## Workflow Definition
+A Workflow Definition is the code that defines the Workflow. 
+It is written in a supported programming language and SDK.
+
+Below are different ways to develop a basic Workflow Definition.
+
+<Tabs groupId="basic-workflow-definition" queryString>
+<TabItem value="go" label="Go">
+
+**[Workflow Definition in Go](/develop/go/core-application#develop-workflows)**
+
+```go
+func YourBasicWorkflow(ctx workflow.Context) error {
+    // ...
+    return nil
+}
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+**[Workflow Definition in Java (Interface)](/develop/java/core-application#develop-workflows)**
+
+```java
+// Workflow interface
+@WorkflowInterface
+public interface YourBasicWorkflow {
+
+    @WorkflowMethod
+    String workflowMethod(Arguments args);
+}
+```
+
+**[Workflow Definition in Java (Implementation)](/develop/java/core-application#develop-workflows)**
+
+```java
+// Workflow implementation
+public class YourBasicWorkflowImpl implements YourBasicWorkflow {
+    // ...
+}
+```
+
+</TabItem>
+<TabItem value="php" label="PHP">
+
+**[Workflow Definition in PHP (Interface)](/develop/php/core-application#develop-workflows)**
+
+```php
+#[WorkflowInterface]
+interface YourBasicWorkflow {
+    #[WorkflowMethod]
+    public function workflowMethod(Arguments args);
+}
+```
+
+**[Workflow Definition in PHP (Implementation)](/develop/php/core-application#develop-workflows)**
+
+```php
+class YourBasicWorkflowImpl implements YourBasicWorkflow {
+    // ...
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+**[Workflow Definition in Python](/develop/python/core-application#develop-workflows)**
+
+```Python
+@workflow.defn
+class YourWorkflow:
+    @workflow.run
+    async def YourBasicWorkflow(self, input: str) -> str:
+        # ...
+```
+
+</TabItem>
+<TabItem value="typescript" label="Typescript">
+
+**[Workflow Definition in Typescript](/develop/typescript/core-application#develop-workflows)**
+
+```Typescript
+type BasicWorkflowArgs = {
+  param: string;
+};
+
+export async function WorkflowExample(
+  args: BasicWorkflowArgs,
+): Promise<{ result: string }> {
+  // ...
+}
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+**[Workflow Definition in C# and .NET](/develop/dotnet/core-application#develop-workflow)**
+
+```csharp
+[Workflow]
+public class YourBasicWorkflow {
+
+    [WorkflowRun]
+    public async Task<string> workflowExample(string param) {
+        // ...
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+## Workflow Execution
+
+While the Workflow Definition is the code that defines the Workflow, the Workflow Execution is created by executing that code.
+
+A Workflow Execution is:
+-  Durable, reliable, and scalable function execution.
+- The main unit of execution in a Temporal Application.
+- Identified by a Workflow Id, Run Id, and Namespace.
+
+Each Workflow Execution:
+
+- Has exclusive access to its local state.
+- Executes concurrently with other Workflow Executions.
+- Communicates with the outside world through Activities and Signals.
+
+A Workflow Execution may run for seconds or years and resume progress after Worker or service outages. 
+If needed, it can Continue-As-New to start fresh with a new Event History.
+
+## Workflow Type 
+A Workflow Type in Temporal is a name that maps to a Workflow Definition. 
+It serves as an identifier for a specific workflow implementation.
+A Workflow Type is used to create a Workflow Execution.
+It can be instantiated as multiple Workflow Executions and is scoped by a Task Queue. 
+It is acceptable to have the same Workflow Type name map to different Workflow Definitions if they are using completely different Workers.
+
+The relationship between them works like this: 
+- You write code (Workflow Definition)
+- That code is identified by a name (Workflow Type)
+- When you want to run that code, you create a Workflow Execution by referencing the Workflow Type
+
+Each time you start a workflow using the same Workflow Type, you create a new Workflow Execution with a unique Run ID.
+
+```mermaid
+flowchart LR
+    A[Developer] -->|Writes| B["Workflow Definition\n(Your Code)"]
+    B -->|Registered as| C["Workflow Type\n(Named Identifier)"]
+    A -->|Creates| D["Workflow Execution\n(Running Instance)"]
+    C -->|Referenced by| D
+
+```

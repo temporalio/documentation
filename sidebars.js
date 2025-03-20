@@ -545,9 +545,10 @@ module.exports = {
               collapsed: true,
               link: {
                 type: "doc",
-                id: "encyclopedia/workflow/workflow-definition",
+                id: "encyclopedia/workflow/workflow-overview",
               },
               items: [
+                "encyclopedia/workflow/workflow-definition",
                 "encyclopedia/workflow/workflow-execution",
                 "encyclopedia/workflow/dynamic-handler",
                 "encyclopedia/workflow/workflow-schedule",
