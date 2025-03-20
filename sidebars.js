@@ -537,6 +537,23 @@ module.exports = {
             "encyclopedia/temporal",
             "encyclopedia/temporal-sdks",
             "encyclopedia/workflows",
+            {
+
+
+              type: "category",
+              label: "Workflows",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "encyclopedia/workflow/workflow-definition",
+              },
+              items: [
+                "encyclopedia/workflow/workflow-execution",
+                "encyclopedia/workflow/dynamic-handler",
+                "encyclopedia/workflow/workflow-schedule",
+                "encyclopedia/workflow/cron-job",
+              ],
+            },
             "encyclopedia/activities",
             {
               type: "category",
