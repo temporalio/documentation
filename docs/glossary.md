@@ -133,7 +133,7 @@ A Command is a requested action issued by a Worker to the Temporal Service after
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Continue-As-New](/workflows#continue-as-new)
+#### [Continue-As-New](/workflow-execution#continue-as-new)
 
 Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.
 

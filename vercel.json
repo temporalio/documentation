@@ -1174,7 +1174,7 @@
     },
     {
       "source": "/concepts/what-is-continue-as-new",
-      "destination": "/workflows#continue-as-new"
+      "destination": "/workflow-execution#continue-as-new"
     },
     {
       "source": "/concepts/what-is-a-cloud-namespace-name",
@@ -1522,7 +1522,7 @@
     },
     {
       "source": "/shared/continue-as-new",
-      "destination": "/workflows#continue-as-new"
+      "destination": "/workflow-execution#continue-as-new"
     },
     {
       "source": "/external-resources",
