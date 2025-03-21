@@ -49,7 +49,7 @@ Workflow commands use this syntax:
 
 The `temporal workflow cancel` command cancels a [Workflow Execution](/workflow-execution).
 
-Canceling a running Workflow Execution records a [`WorkflowExecutionCancelRequested` event](/references/events#workflowexecutioncancelrequested) in the [Event History](/workflows#event-history).
+Canceling a running Workflow Execution records a [`WorkflowExecutionCancelRequested` event](/references/events#workflowexecutioncancelrequested) in the [Event History](/workflow-execution#event-history).
 A new [Workflow Task](/tasks#workflow-task) will be scheduled, and the Workflow Execution performs cleanup work.
 
 `temporal workflow cancel --workflow-id=meaningful-business-id`
@@ -424,7 +424,7 @@ Use the following command options to change the information returned by this com
 ## reset
 
 The `temporal workflow reset` command resets a [Workflow Execution](/workflow-execution).
-A reset resumes the Workflow from a certain point without losing your parameters or [Event History](/workflows#event-history).
+A reset resumes the Workflow from a certain point without losing your parameters or [Event History](/workflow-execution#event-history).
 
 The Workflow Execution can be set to a given [Event Type](/workflows#event).
 For example, `temporal workflow reset --workflow-id=meaningful-business-id --type=LastContinuedAsNew`.
@@ -477,7 +477,7 @@ Use the following options to change reset behavior.
 ## reset-batch
 
 The `temporal workflow reset-batch` command resets multiple [Workflow Executions](/workflow-execution) by `resetType`.
-Resetting a [Workflow](/workflows) resumes it from a certain point without losing your parameters or [Event History](/workflows#event-history).
+Resetting a [Workflow](/workflows) resumes it from a certain point without losing your parameters or [Event History](/workflow-execution#event-history).
 
 The set of Workflow Executions to reset can be specified in an input file.
 The input file must have a [Workflow ID](/workflows#workflow-id) on each line.
@@ -541,7 +541,7 @@ Use the following options to change reset behavior.
 
 ## show
 
-The `temporal workflow show` command provides the [Event History](/workflows#event-history) for a [Workflow Execution](/workflow-execution).
+The `temporal workflow show` command provides the [Event History](/workflow-execution#event-history) for a [Workflow Execution](/workflow-execution).
 
 Use the following options to change the behavior of this command.
 
@@ -773,7 +773,7 @@ Use the following command options to change how the Workflow Execution behaves u
 
 The `temporal workflow terminate` command terminates a [Workflow Execution](/workflow-execution)
 
-Terminating a running Workflow Execution records a [`WorkflowExecutionTerminated` event](/references/events#workflowexecutionterminated) as the closing Event in the [Event History](/workflows#event-history).
+Terminating a running Workflow Execution records a [`WorkflowExecutionTerminated` event](/references/events#workflowexecutionterminated) as the closing Event in the [Event History](/workflow-execution#event-history).
 Any further [Command](/workflow-execution#command) Tasks cannot be scheduled after running this command.
 
 Workflow terminations require a valid [Workflow ID](/workflows#workflow-id) to function.

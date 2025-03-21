@@ -81,7 +81,7 @@ As all Workflow Executions, they can communicate only via asynchronous [Signals]
 
 ### Partition problems into smaller chunks
 
-An individual Workflow Execution has an [Event History](/workflows#event-history) size limit, which imposes a couple of considerations for using Child Workflows.
+An individual Workflow Execution has an [Event History](/workflow-execution#event-history) size limit, which imposes a couple of considerations for using Child Workflows.
 
 On one hand, because Child Workflow Executions have their own Event Histories, they are often used to partition large workloads into smaller chunks.
 For example, a single Workflow Execution does not have enough space in its Event History to spawn 100,000 [Activity Executions](/activities#activity-execution).

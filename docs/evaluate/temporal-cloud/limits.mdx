@@ -229,14 +229,14 @@ An Event History transaction encompasses a set of operations such as initiating 
 These operations create Events that are then logged in the Event History.
 The transaction size limit restricts the total size of Events that can be accommodated within a single transaction.
 
-The size limit for any given [Event History](/workflows#event-history) transaction is 4 MB.
+The size limit for any given [Event History](/workflow-execution#event-history) transaction is 4 MB.
 This limit is non-configurable for Temporal Cloud.
 
 **What is the blob size limit for a transaction?**
 
 - **Blob size limit** for Payloads, including Workflow context and each Workflow and Activity argument and return value:
   - The max payload for a single request is 2 MB.
-  - The max size limit for any given [Event History](/workflows#event-history) transaction is 4 MB.
+  - The max size limit for any given [Event History](/workflow-execution#event-history) transaction is 4 MB.
 
 This limit is non-configurable for Temporal Cloud.
 

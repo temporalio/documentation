@@ -195,7 +195,7 @@ Events are created by a Temporal Service in response to external occurrences and
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Event History](/workflows#event-history)
+#### [Event History](/workflow-execution#event-history)
 
 An append-only log of Events that represents the full state a Workflow Execution.
 

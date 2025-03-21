@@ -1190,7 +1190,7 @@
     },
     {
       "source": "/concepts/what-is-an-event-history",
-      "destination": "/workflows#event-history"
+      "destination": "/workflow-execution#event-history"
     },
     {
       "source": "/concepts/what-is-a-failure",
