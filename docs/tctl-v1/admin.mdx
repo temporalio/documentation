@@ -183,7 +183,7 @@ The `tctl admin db` command runs administrator-level operations on a given datab
 
 ### clean
 
-The `tctl admin db clean` command cleans corrupted [Workflow Executions](/workflows#workflow-execution) from the targeted database.
+The `tctl admin db clean` command cleans corrupted [Workflow Executions](/workflow-execution) from the targeted database.
 
 The modifiers below change the behavior of the command.
 
@@ -222,7 +222,7 @@ Default: "temporal"
 
 #### --input_directory
 
-The directory which contains the corrupted [Workflow Execution](/workflows#workflow-execution) files from running [`scan`](#scan).
+The directory which contains the corrupted [Workflow Execution](/workflow-execution) files from running [`scan`](#scan).
 
 #### --lower_shard_bound
 
@@ -888,7 +888,7 @@ The `tctl admin workflow` commands enable administrator-level operations on Work
 
 ### delete
 
-The `tctl admin workflow delete` command deletes the current [Workflow Execution](/workflows#workflow-execution) and the mutableState record.
+The `tctl admin workflow delete` command deletes the current [Workflow Execution](/workflow-execution) and the mutableState record.
 
 #### --db_engine value
 
@@ -1007,7 +1007,7 @@ Note: tls must be enabled
 
 ## describe
 
-The `tctl admin workflow describe` command describes internal information of the current [Workflow Execution](/workflows#workflow-execution).
+The `tctl admin workflow describe` command describes internal information of the current [Workflow Execution](/workflow-execution).
 
 #### --workflow_id value
 

@@ -127,7 +127,7 @@ A Codec Server is an HTTP server that uses your custom Payload Codec to encode a
 
 <!-- _Tags: [term](/tags/term)_ -->
 
-#### [Command](/workflows#command)
+#### [Command](/workflow-execution#command)
 
 A Command is a requested action issued by a Worker to the Temporal Service after a Workflow Task Execution completes.
 
@@ -183,7 +183,7 @@ Durable Execution in the context of Temporal refers to the ability of a Workflow
 
 <!-- _Tags: [temporal](/tags/temporal), [durable-execution](/tags/durable-execution), [term](/tags/term)_ -->
 
-#### [Dynamic Handler](/workflows#dynamic-handler)
+#### [Dynamic Handler](/dynamic-handler)
 
 Dynamic Handlers are Workflows, Activities, Signals, or Queries that are unnamed and invoked when no other named handler matches the call from the Server at runtime.
 
@@ -510,7 +510,7 @@ It provides a reliable failover mechanism while maintaining deployment simplicit
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Schedule](/workflows#schedule)
+#### [Schedule](/schedule)
 
 A Schedule enables the scheduling of Workflow Executions.
 
@@ -754,13 +754,13 @@ In day-to-day conversations, the term "Workflow" frequently denotes either a Wor
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Workflow Definition](/workflows#workflow-definition)
+#### [Workflow Definition](/workflow-definition)
 
 A Workflow Definition is the code that defines the constraints of a Workflow Execution.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Workflow Execution](/workflows#workflow-execution)
+#### [Workflow Execution](/workflow-execution)
 
 A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.
 

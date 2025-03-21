@@ -64,7 +64,7 @@ In the context of Temporal, Activities should be designed to be safely executed 
 
 :::info
 
-By design, completed Activities will not re-execute as part of a [Workflow Replay](/workflows#replays). However, Activities won’t record to the [Event History](/encyclopedia/retry-policies#event-history) until they return or produce an error. If an Activity fails to report to the server at all, it will be retried. Designing for idempotence, especially if you have a [Global Namespace](/global-namespace), will improve reusability and reliability.
+By design, completed Activities will not re-execute as part of a [Workflow Replay](/workflow-execution#replays). However, Activities won’t record to the [Event History](/encyclopedia/retry-policies#event-history) until they return or produce an error. If an Activity fails to report to the server at all, it will be retried. Designing for idempotence, especially if you have a [Global Namespace](/global-namespace), will improve reusability and reliability.
 
 :::
 
@@ -253,7 +253,7 @@ A Task Token is a unique identifier for an [Activity Task Execution](/tasks#acti
 
 ## What is a Local Activity? {#local-activity}
 
-A Local Activity is an [Activity Execution](#activity-execution) that executes in the same process as the [Workflow Execution](/workflows#workflow-execution) that spawns it.
+A Local Activity is an [Activity Execution](#activity-execution) that executes in the same process as the [Workflow Execution](/workflow-execution) that spawns it.
 
 Some Activity Executions are very short-living and do not need the queuing semantic, flow control, rate limiting, and routing capabilities.
 For this case, Temporal supports the Local Activity feature.
