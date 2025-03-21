@@ -399,7 +399,7 @@ export async function helloWorld(): Promise<string> {
 
 ### How to develop Workflow logic {#workflow-logic-requirements}
 
-Workflow logic is constrained by [deterministic execution requirements](/workflows#deterministic-constraints).
+Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints).
 Therefore, each language is limited to the use of certain idiomatic techniques.
 However, each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
 
@@ -1026,7 +1026,7 @@ Calling `client.workflow.start()` and `client.workflow.execute()` send a command
 
 You can test this by executing a Client command without a matching Worker. Temporal Server records the command in Event History, but does not make progress with the Workflow Execution until a Worker starts polling with a matching Task Queue and Workflow Definition.
 
-Workflow Execution run in a separate V8 isolate context in order to provide a [deterministic runtime](/workflows#deterministic-constraints).
+Workflow Execution run in a separate V8 isolate context in order to provide a [deterministic runtime](/workflow-definition#deterministic-constraints).
 
 ### How to set a Workflow's Task Queue {#set-task-queue}
 

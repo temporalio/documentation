@@ -10,7 +10,7 @@ tags:
   - Replay
 ---
 
-Making changes safely to existing Workflow code can be challenging. Your Workflow code must be [deterministic](https://docs.temporal.io/workflows#deterministic-constraints). This means your changes to that code have to be as well. Changes to your Workflow code that qualify as non-deterministic need to be protected by either using the [patching APIs](https://docs.temporal.io/workflows#workflow-versioning) within your Workflow code, or by [some other versioning strategy.](https://docs.temporal.io/workers#worker-versioning)
+Making changes safely to existing Workflow code can be challenging. Your Workflow code must be [deterministic](https://docs.temporal.io/workflow-definition#deterministic-constraints). This means your changes to that code have to be as well. Changes to your Workflow code that qualify as non-deterministic need to be protected by either using the [patching APIs](https://docs.temporal.io/workflows#workflow-versioning) within your Workflow code, or by [some other versioning strategy.](https://docs.temporal.io/workers#worker-versioning)
 
 In this article, we’ll provide some advice on how you can safely validate changes to your Workflow code, ensuring that you won’t experience unexpected non-determinism errors in production when rolling them out.
 

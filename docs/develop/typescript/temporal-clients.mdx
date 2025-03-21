@@ -169,7 +169,7 @@ Calling `client.workflow.start()` and `client.workflow.execute()` send a command
 
 You can test this by executing a Client command without a matching Worker. Temporal Server records the command in Event History, but does not make progress with the Workflow Execution until a Worker starts polling with a matching Task Queue and Workflow Definition.
 
-Workflow Execution run in a separate V8 isolate context in order to provide a [deterministic runtime](/workflows#deterministic-constraints).
+Workflow Execution run in a separate V8 isolate context in order to provide a [deterministic runtime](/workflow-definition#deterministic-constraints).
 
 ### Set a Workflow's Task Queue {#set-task-queue}
 
