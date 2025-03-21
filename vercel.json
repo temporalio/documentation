@@ -1170,7 +1170,7 @@
     },
     {
       "source": "/concepts/what-is-a-command",
-      "destination": "/workflows#command"
+      "destination": "/workflow-execution#command"
     },
     {
       "source": "/concepts/what-is-continue-as-new",

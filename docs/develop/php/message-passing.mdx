@@ -256,7 +256,7 @@ In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workf
 
 Queries are handled by your Workflow.
 
-Don't include any logic that causes [Command](/workflows#command) generation within a Query handler (such as executing Activities).
+Don't include any logic that causes [Command](/workflow-execution#command) generation within a Query handler (such as executing Activities).
 Including such logic causes unexpected behavior.
 
 You can add custom Query types to handle Queries such as Querying the current state of a

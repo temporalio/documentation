@@ -774,7 +774,7 @@ Use the following command options to change how the Workflow Execution behaves u
 The `temporal workflow terminate` command terminates a [Workflow Execution](/workflow-execution)
 
 Terminating a running Workflow Execution records a [`WorkflowExecutionTerminated` event](/references/events#workflowexecutionterminated) as the closing Event in the [Event History](/workflows#event-history).
-Any further [Command](/workflows#command) Tasks cannot be scheduled after running this command.
+Any further [Command](/workflow-execution#command) Tasks cannot be scheduled after running this command.
 
 Workflow terminations require a valid [Workflow ID](/workflows#workflow-id) to function.
 `temporal workflow terminate --workflow-id=meaningful-business-id`

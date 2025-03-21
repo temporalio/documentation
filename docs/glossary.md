@@ -127,7 +127,7 @@ A Codec Server is an HTTP server that uses your custom Payload Codec to encode a
 
 <!-- _Tags: [term](/tags/term)_ -->
 
-#### [Command](/workflows#command)
+#### [Command](/workflow-execution#command)
 
 A Command is a requested action issued by a Worker to the Temporal Service after a Workflow Task Execution completes.
 
