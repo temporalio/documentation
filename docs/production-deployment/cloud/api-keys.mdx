@@ -357,8 +357,8 @@ Authenticate with Temporal Cloud using API keys with the following clients:
 
 ### Temporal CLI
 
-To use your API key with the Temporal CLI, either pass it with the `--api-key` flag or set an environment variable (recommended).
-The CLI automatically picks up the `TEMPORAL_CLOUD_API_KEY` environment variable.
+To use your API key with the Temporal CLI, either pass it with the `--api-key` flag or set an environment variable in your shell (recommended).
+The CLI automatically picks up the `TEMPORAL_API_KEY` environment variable from your shell.
 
 In addition to the API key, the following client options are required:
 
@@ -382,6 +382,12 @@ temporal workflow list \
     --grpc-meta "temporal-namespace=<namespace_id>.<account_id>" \
     --tls
 ```
+
+:::tip ENVIRONMENT VARIABLES
+
+Do not confuse environment variables, set with your shell, with temporal env options.
+
+:::
 
 ### SDK
 
@@ -672,7 +678,13 @@ const worker = await Worker.create({
 To use an API key with `tcld`, choose one of these methods:
 
 - Use the `--api-key` flag.
-- Set the `TEMPORAL_CLOUD_API_KEY` environment variable.
+- Set the `TEMPORAL_API_KEY` environment variable in your shell.
+
+:::tip ENVIRONMENT VARIABLES
+
+Do not confuse environment variables, set with your shell, with temporal env options.
+
+:::
 
 ### Cloud Ops API
 
