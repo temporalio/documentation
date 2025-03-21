@@ -1338,7 +1338,7 @@
     },
     {
       "source": "/concepts/what-is-a-workflow-definition",
-      "destination": "/workflows#workflow-definition"
+      "destination": "/workflow-definition"
     },
     {
       "source": "/concepts/what-is-a-workflow-execution",

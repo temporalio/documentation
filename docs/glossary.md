@@ -183,7 +183,7 @@ Durable Execution in the context of Temporal refers to the ability of a Workflow
 
 <!-- _Tags: [temporal](/tags/temporal), [durable-execution](/tags/durable-execution), [term](/tags/term)_ -->
 
-#### [Dynamic Handler](/workflows#dynamic-handler)
+#### [Dynamic Handler](/dynamic-handler)
 
 Dynamic Handlers are Workflows, Activities, Signals, or Queries that are unnamed and invoked when no other named handler matches the call from the Server at runtime.
 
@@ -754,7 +754,7 @@ In day-to-day conversations, the term "Workflow" frequently denotes either a Wor
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Workflow Definition](/workflows#workflow-definition)
+#### [Workflow Definition](/workflow-definition)
 
 A Workflow Definition is the code that defines the constraints of a Workflow Execution.
 
