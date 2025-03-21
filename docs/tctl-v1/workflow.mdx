@@ -22,7 +22,7 @@ Thank you for being a valued part of the Temporal community.
 
 :::
 
-The `tctl workflow` commands enable [Workflow Execution](/workflows#workflow-execution) operations.
+The `tctl workflow` commands enable [Workflow Execution](/workflow-execution) operations.
 
 - [tctl workflow cancel](#cancel)
 - [tctl workflow count](#count)
@@ -47,7 +47,7 @@ The `tctl workflow` commands enable [Workflow Execution](/workflows#workflow-exe
 
 ## cancel
 
-The `tctl workflow cancel --query` command cancels a [Workflow Execution](/workflows#workflow-execution).
+The `tctl workflow cancel --query` command cancels a [Workflow Execution](/workflow-execution).
 
 Canceling a running Workflow Execution records a `WorkflowExecutionCancelRequested` event in the History.
 A new [Workflow Task](/tasks#workflow-task) will be scheduled.
@@ -85,7 +85,7 @@ tctl workflow cancel --run_id <id>
 
 ## count
 
-The `tctl workflow count` command counts [Workflow Executions](/workflows#workflow-execution).
+The `tctl workflow count` command counts [Workflow Executions](/workflow-execution).
 This command requires Elasticsearch to be enabled.
 
 `tctl workflow count <modifiers>`
@@ -102,7 +102,7 @@ Alias: `-q`
 
 **Example**
 
-To count all open [Workflow Executions](/workflows#workflow-execution):
+To count all open [Workflow Executions](/workflow-execution):
 
 ```bash
 tctl workflow count --query 'ExecutionStatus="Running"'
@@ -110,7 +110,7 @@ tctl workflow count --query 'ExecutionStatus="Running"'
 
 ## describe
 
-The `tctl workflow describe` command shows information about a [Workflow Execution](/workflows#workflow-execution).
+The `tctl workflow describe` command shows information about a [Workflow Execution](/workflow-execution).
 This information can be used to locate a failed Workflow Execution, for example.
 
 To find a Workflow with a given Run Id, refer to [`tctl workflow describeid`](#describeid).
@@ -170,7 +170,7 @@ tctl workflow describe --reset_points_only
 
 ## describeid
 
-The `tctl workflow describeid` command shows information about a [Workflow Execution](/workflows#workflow-execution) for the specified [Workflow Id](/workflows#workflow-id) and optional [Run Id](/workflows#run-id).
+The `tctl workflow describeid` command shows information about a [Workflow Execution](/workflow-execution) for the specified [Workflow Id](/workflows#workflow-id) and optional [Run Id](/workflows#run-id).
 
 `tctl workflow describeid <workflow_id> <run_id> <modifiers>`
 
@@ -200,7 +200,7 @@ tctl workflow describeid <workflow_id> --reset_points_only
 
 ## list
 
-The `tctl workflow list` command lists open or closed [Workflow Executions](/workflows#workflow-execution).
+The `tctl workflow list` command lists open or closed [Workflow Executions](/workflow-execution).
 
 By default, this command lists a maximum of 10 closed Workflow Executions.
 
@@ -276,7 +276,7 @@ tctl workflow list --print_json
 
 ### --open
 
-List open [Workflow Executions](/workflows#workflow-execution).
+List open [Workflow Executions](/workflow-execution).
 (By default, the `tctl workflow list` command lists closed Workflow Executions.)
 
 **Example**
@@ -369,7 +369,7 @@ tctl workflow list --workflow_type <name>
 
 ### --status
 
-Specify the status of a [Workflow Execution](/workflows#workflow-execution).
+Specify the status of a [Workflow Execution](/workflow-execution).
 Supported values are as follows:
 
 - `completed`
@@ -443,7 +443,7 @@ tctl workflow list --more
 
 ### --pagesize
 
-Specify the maximum number of [Workflow Executions](/workflows#workflow-execution) to list on a page.
+Specify the maximum number of [Workflow Executions](/workflow-execution) to list on a page.
 (By default, the `tctl workflow list` command lists 10 Workflow Executions per page.)
 
 **Example**
@@ -454,7 +454,7 @@ tctl workflow list --pagesize <value>
 
 ## listall
 
-The `tctl workflow listall` command lists all open or closed [Workflow Executions](/workflows#workflow-execution).
+The `tctl workflow listall` command lists all open or closed [Workflow Executions](/workflow-execution).
 
 By default, this command lists all closed Workflow Executions.
 To list open Workflow Executions, use the `--open` option.
@@ -527,7 +527,7 @@ tctl workflow listall --print_json
 
 ### --open
 
-List open [Workflow Executions](/workflows#workflow-execution).
+List open [Workflow Executions](/workflow-execution).
 (By default, the `tctl workflow listall` command lists closed Workflow Executions.)
 
 **Example**
@@ -620,7 +620,7 @@ tctl workflow listall --workflow_type <name>
 
 ### --status
 
-Specify the status of a [Workflow Execution](/workflows#workflow-execution).
+Specify the status of a [Workflow Execution](/workflow-execution).
 Supported values are as follows:
 
 - `completed`
@@ -652,7 +652,7 @@ tctl workflow listall --query <value>
 
 ## listarchived
 
-The `tctl workflow listarchived` command lists archived [Workflow Executions](/workflows#workflow-execution).
+The `tctl workflow listarchived` command lists archived [Workflow Executions](/workflow-execution).
 
 By default, this command lists a maximum of 100 Workflow Executions.
 
@@ -741,7 +741,7 @@ tctl workflow listarchived --query <value>
 
 ### --pagesize
 
-Specify the maximum number of [Workflow Executions](/workflows#workflow-execution) to list on a page.
+Specify the maximum number of [Workflow Executions](/workflow-execution) to list on a page.
 (By default, the `tctl workflow listarchived` command lists 100 Workflow Executions per page.)
 
 **Example**
@@ -762,7 +762,7 @@ tctl workflow listarchived --all
 
 ## observe
 
-The `tctl workflow observe` command shows the progress of the [Event History](/workflows#event-history) of a [Workflow Execution](/workflows#workflow-execution).
+The `tctl workflow observe` command shows the progress of the [Event History](/workflows#event-history) of a [Workflow Execution](/workflow-execution).
 
 See also [`tctl workflow observeid`](#observeid).
 
@@ -819,7 +819,7 @@ tctl workflow observe --max_field_length <length>
 
 ## observeid
 
-The `tctl workflow observeid` command shows the progress of the [Event History](/workflows#event-history) of a [Workflow Execution](/workflows#workflow-execution) for the specified [Workflow Id](/workflows#workflow-id) and optional [Run Id](/workflows#run-id).
+The `tctl workflow observeid` command shows the progress of the [Event History](/workflows#event-history) of a [Workflow Execution](/workflow-execution) for the specified [Workflow Id](/workflows#workflow-id) and optional [Run Id](/workflows#run-id).
 
 `tctl workflow observeid <workflow_id> [<run_id>] <modifiers>`
 
@@ -852,7 +852,7 @@ tctl workflow observeid --max_field_length <length>
 
 Alias: `q`
 
-The `tctl workflow query` command sends a [Query](/sending-messages#sending-queries) to a [Workflow Execution](/workflows#workflow-execution).
+The `tctl workflow query` command sends a [Query](/sending-messages#sending-queries) to a [Workflow Execution](/workflow-execution).
 
 Queries can be used to retrieve all or part of the Workflow state with given parameters.
 
@@ -953,7 +953,7 @@ tctl workflow query --query_reject_condition <value>
 
 ## reset
 
-The `tctl workflow reset` command resets a [Workflow Execution](/workflows#workflow-execution) by either [`eventId`](#--event_id)or [`resetType`](#--reset_type).
+The `tctl workflow reset` command resets a [Workflow Execution](/workflow-execution) by either [`eventId`](#--event_id)or [`resetType`](#--reset_type).
 
 Resetting a Workflow allows the process to be resumed from a certain point without losing your parameters or Event History.
 
@@ -1000,7 +1000,7 @@ tctl workflow reset --event_id <id>
 
 ### --reason
 
-Specify a reason for resetting the [Workflow Execution](/workflows#workflow-execution).
+Specify a reason for resetting the [Workflow Execution](/workflow-execution).
 
 **Example**
 
@@ -1048,7 +1048,7 @@ tctl workflow reset --reset_bad_binary_checksum <value>
 
 ## reset-batch
 
-The `tctl workflow reset-batch` command resets a batch of [Workflow Executions](/workflows#workflow-execution) by [`resetType`](#--reset_type).
+The `tctl workflow reset-batch` command resets a batch of [Workflow Executions](/workflow-execution) by [`resetType`](#--reset_type).
 
 Resetting a Workflow allows the process to be resumed from a certain point without losing your parameters or Event History.
 
@@ -1060,7 +1060,7 @@ The following modifiers control the behavior of the command.
 
 ### --input_file
 
-Provide an input file that specifies [Workflow Execution](/workflows#workflow-execution) to reset.
+Provide an input file that specifies [Workflow Execution](/workflow-execution) to reset.
 
 Each line contains one [Workflow Id](/workflows#workflow-id) as the base Run and, optionally, a [Run Id](/workflows#run-id).
 If a Run Id is not specified, the current Run Id is used.
@@ -1073,7 +1073,7 @@ tctl workflow reset-batch --input_file <filename>
 
 ### --query
 
-Specify an SQL-like query of [Search Attributes](/search-attribute) describing the [Workflow Executions](/workflows#workflow-execution) to reset.
+Specify an SQL-like query of [Search Attributes](/search-attribute) describing the [Workflow Executions](/workflow-execution) to reset.
 
 Alias: `-q`
 
@@ -1085,7 +1085,7 @@ tctl workflow reset-batch --query <value>
 
 ### --exclude_file
 
-Provide an input file that specifies [Workflow Executions](/workflows#workflow-execution) to exclude from resetting.
+Provide an input file that specifies [Workflow Executions](/workflow-execution) to exclude from resetting.
 
 Each line contains one [Workflow Id](/workflows#workflow-id).
 
@@ -1108,7 +1108,7 @@ tctl workflow reset-batch --input_separator <string>
 
 ### --reason
 
-Specify a reason for resetting the [Workflow Executions](/workflows#workflow-execution).
+Specify a reason for resetting the [Workflow Executions](/workflow-execution).
 
 **Example**
 
@@ -1130,7 +1130,7 @@ tctl workflow reset-batch --input_parallism <value>
 
 ### --skip_current_open
 
-Indicate that a [Workflow Execution](/workflows#workflow-execution) should be skipped if the current Run is open for the same [Workflow Id](/workflows#workflow-id) as the base Run.
+Indicate that a [Workflow Execution](/workflow-execution) should be skipped if the current Run is open for the same [Workflow Id](/workflows#workflow-id) as the base Run.
 
 **Example**
 
@@ -1140,7 +1140,7 @@ tctl workflow reset-batch --skip_current_open
 
 ### --skip_base_is_not_current
 
-Indicate that a [Workflow Execution](/workflows#workflow-execution) should be skipped if the base Run is not the current Run.
+Indicate that a [Workflow Execution](/workflow-execution) should be skipped if the base Run is not the current Run.
 
 **Example**
 
@@ -1150,7 +1150,7 @@ tctl workflow reset-batch --skip_base_is_not_current
 
 ### --only_non_deterministic
 
-Indicate that a [Workflow Execution](/workflows#workflow-execution) should be reset only if its last event is `WorkflowTaskFailed` with a nondeterminism error.
+Indicate that a [Workflow Execution](/workflow-execution) should be reset only if its last event is `WorkflowTaskFailed` with a nondeterminism error.
 
 **Example**
 
@@ -1160,7 +1160,7 @@ tctl workflow reset-batch --only_non_deterministic
 
 ### --dry_run
 
-Simulate use of the `tctl workflow reset-batch` command without resetting any [Workflow Executions](/workflows#workflow-execution).
+Simulate use of the `tctl workflow reset-batch` command without resetting any [Workflow Executions](/workflow-execution).
 Output is logged to `stdout`.
 
 **Example**
@@ -1198,7 +1198,7 @@ tctl workflow reset-batch --reset_bad_binary_checksum <value>
 
 ## run
 
-The `tctl workflow run` command starts a new [Workflow Execution](/workflows#workflow-execution) and can show the progress of a Workflow Execution.
+The `tctl workflow run` command starts a new [Workflow Execution](/workflow-execution) and can show the progress of a Workflow Execution.
 The command is entered in the following format:
 
 `tctl workflow run <modifiers>`
@@ -1253,7 +1253,7 @@ tctl workflow run --workflow_type <name>
 
 ### --execution_timeout
 
-Specify the [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) of the [Workflow Execution](/workflows#workflow-execution) in seconds.
+Specify the [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) of the [Workflow Execution](/workflow-execution) in seconds.
 The default value is 0.
 
 **Example**
@@ -1286,7 +1286,7 @@ tctl workflow run --cron <string>
 ### --workflowidreusepolicy
 
 Specify a [Workflow Id Reuse Policy](/workflows#workflow-id-reuse-policy).
-Configure if the same [Workflow Id](/workflows#workflow-id) is allowed for use in new [Workflow Execution](/workflows#workflow-execution).
+Configure if the same [Workflow Id](/workflows#workflow-id) is allowed for use in new [Workflow Execution](/workflow-execution).
 
 There are three allowed values:
 
@@ -1414,7 +1414,7 @@ tctl workflow run --max_field_length <length>
 
 ## scan
 
-The `tctl workflow scan` command lists [Workflow Executions](/workflows#workflow-execution).
+The `tctl workflow scan` command lists [Workflow Executions](/workflow-execution).
 It is faster than the `tctl workflow listall` command, but the results are not sorted.
 
 By default, this command lists a maximum of 2000 Workflow Executions.
@@ -1488,7 +1488,7 @@ tctl workflow scan --print_json
 
 ### --pagesize
 
-Specify the maximum number of [Workflow Execution](/workflows#workflow-execution) to list on a page.
+Specify the maximum number of [Workflow Execution](/workflow-execution) to list on a page.
 (By default, the `tctl workflow scan` command lists 2000 Workflow Executions per page.)
 
 **Example**
@@ -1511,7 +1511,7 @@ tctl workflow scan --query <value>
 
 ## show
 
-The `tctl workflow show` command shows the [Event History](/workflows#event-history) for the specified [Workflow Execution](/workflows#workflow-execution).
+The `tctl workflow show` command shows the [Event History](/workflows#event-history) for the specified [Workflow Execution](/workflow-execution).
 
 `tctl workflow show <modifiers>`
 
@@ -1521,7 +1521,7 @@ The following modifiers control the behavior of the command.
 
 ### --workflow_id
 
-Show the History of a [Workflow Execution](/workflows#workflow-execution) by specifying a [Workflow Id](/workflows#workflow-id).
+Show the History of a [Workflow Execution](/workflow-execution) by specifying a [Workflow Id](/workflows#workflow-id).
 
 Alias: `-w`
 
@@ -1533,7 +1533,7 @@ tctl workflow show --workflow_id <id>
 
 ### --run_id
 
-Show the History of a [Workflow Execution](/workflows#workflow-execution) by specifying a [Run Id](/workflows#run-id).
+Show the History of a [Workflow Execution](/workflow-execution) by specifying a [Run Id](/workflows#run-id).
 
 Alias: `-r`
 
@@ -1750,7 +1750,7 @@ tctl workflow showid <workflow_id> --reset_points_only
 
 ## signal
 
-The `tctl workflow signal` command [Signals](/sending-messages#sending-signals) a [Workflow Execution](/workflows#workflow-execution).
+The `tctl workflow signal` command [Signals](/sending-messages#sending-signals) a [Workflow Execution](/workflow-execution).
 
 Workflows listen for Signals by their Signal name, and can be made to listen to one or more Signal names.
 Workflows can also listen for SQL queries.
@@ -1896,7 +1896,7 @@ tctl workflow signal --query <query> --input_file <filename>
 
 ## stack
 
-The `tctl workflow stack` command queries [Workflow Execution](/workflows#workflow-execution) with `__stack_trace` as the query type.
+The `tctl workflow stack` command queries [Workflow Execution](/workflow-execution) with `__stack_trace` as the query type.
 
 This command can be used to locate errors and blocks in a [Workflow Definition](/workflows#workflow-definition).
 
@@ -1969,7 +1969,7 @@ tctl workflow stack --query_reject_condition <value>
 
 ## start
 
-The `tctl workflow start` command starts a new [Workflow Execution](/workflows#workflow-execution).
+The `tctl workflow start` command starts a new [Workflow Execution](/workflow-execution).
 Unlike `run`, this command returns the Workflow Id and Run Id immediately after starting the Workflow.
 
 `tctl workflow start <modifiers>`
@@ -2024,7 +2024,7 @@ tctl workflow start --workflow_type <name>
 
 ### --execution_timeout
 
-Specify the [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) of the [Workflow Execution](/workflows#workflow-execution) in seconds.
+Specify the [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) of the [Workflow Execution](/workflow-execution) in seconds.
 The default value is 0.
 
 **Example**
@@ -2057,7 +2057,7 @@ tctl workflow start --cron <string>
 ### --workflowidreusepolicy
 
 Specify a [Workflow Id Reuse Policy](/workflows#workflow-id-reuse-policy).
-Configure if the same [Workflow Id](/workflows#workflow-id) is allowed for use in new [Workflow Execution](/workflows#workflow-execution).
+Configure if the same [Workflow Id](/workflows#workflow-id) is allowed for use in new [Workflow Execution](/workflow-execution).
 
 There are three allowed values:
 
@@ -2180,7 +2180,7 @@ tctl workflow start --search_attr_value <value>
 
 ## terminate
 
-The `tctl workflow terminate` command terminates a [Workflow Execution](/workflows#workflow-execution).
+The `tctl workflow terminate` command terminates a [Workflow Execution](/workflow-execution).
 
 Terminating a running Workflow Execution records a `WorkflowExecutionTerminated` event as the closing event in the History.
 No more [Workflow Task](/tasks#workflow-task) will be scheduled.
@@ -2221,7 +2221,7 @@ tctl workflow terminate --run_id <id>
 
 ### --reason
 
-Specify a reason for terminating the [Workflow Execution](/workflows#workflow-execution).
+Specify a reason for terminating the [Workflow Execution](/workflow-execution).
 
 **Example**
 

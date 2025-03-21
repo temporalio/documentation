@@ -760,7 +760,7 @@ A Workflow Definition is the code that defines the constraints of a Workflow Exe
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Workflow Execution](/workflows#workflow-execution)
+#### [Workflow Execution](/workflow-execution)
 
 A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.
 

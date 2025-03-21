@@ -25,7 +25,7 @@ tags:
 ---
 
 Schedule commands allow the user to create, use, and update [Schedules](/schedule).
-Schedules control when certain Actions for a [Workflow Execution](/workflows#workflow-execution) are performed, making it a useful tool for automation.
+Schedules control when certain Actions for a [Workflow Execution](/workflow-execution) are performed, making it a useful tool for automation.
 
 To run a Schedule command, run `temporal schedule [command] [command options]`.
 
@@ -216,7 +216,7 @@ Use the following options to change this command's behavior.
 The `temporal schedule delete` command deletes a [Schedule](/schedule).
 Deleting a Schedule does not affect any [Workflows](/workflows) started by the Schedule.
 
-[Workflow Executions](/workflows#workflow-execution) started by Schedules can be cancelled or terminated like other Workflow Executions.
+[Workflow Executions](/workflow-execution) started by Schedules can be cancelled or terminated like other Workflow Executions.
 However, Workflow Executions started by a Schedule can be identified by their [Search Attributes](/search-attribute), making them targetable by batch command for termination.
 
 `temporal schedule delete --schedule-id 'your-schedule-id' [command options]`

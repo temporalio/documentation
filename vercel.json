@@ -1342,7 +1342,7 @@
     },
     {
       "source": "/concepts/what-is-a-workflow-execution",
-      "destination": "/workflows#workflow-execution"
+      "destination": "/workflow-execution"
     },
     {
       "source": "/concepts/what-is-a-workflow-execution-timeout",
