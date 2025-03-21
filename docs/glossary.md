@@ -510,7 +510,7 @@ It provides a reliable failover mechanism while maintaining deployment simplicit
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Schedule](/workflows#schedule)
+#### [Schedule](/schedule)
 
 A Schedule enables the scheduling of Workflow Executions.
 

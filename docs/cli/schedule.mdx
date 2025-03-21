@@ -24,7 +24,7 @@ tags:
   - Schedules
 ---
 
-Schedule commands allow the user to create, use, and update [Schedules](/workflows#schedule).
+Schedule commands allow the user to create, use, and update [Schedules](/schedule).
 Schedules control when certain Actions for a [Workflow Execution](/workflows#workflow-execution) are performed, making it a useful tool for automation.
 
 To run a Schedule command, run `temporal schedule [command] [command options]`.
@@ -86,7 +86,7 @@ Use the following options to change this command's behavior.
 
 ## create
 
-The `temporal schedule create` command creates a new [Schedule](/workflows#schedule).
+The `temporal schedule create` command creates a new [Schedule](/schedule).
 Newly created Schedules return a Schedule ID to be used in other Schedule commands.
 
 Schedules use the following format:
@@ -213,7 +213,7 @@ Use the following options to change this command's behavior.
 
 ## delete
 
-The `temporal schedule delete` command deletes a [Schedule](/workflows#schedule).
+The `temporal schedule delete` command deletes a [Schedule](/schedule).
 Deleting a Schedule does not affect any [Workflows](/workflows) started by the Schedule.
 
 [Workflow Executions](/workflows#workflow-execution) started by Schedules can be cancelled or terminated like other Workflow Executions.
@@ -255,7 +255,7 @@ Use the following options to change this command's behavior.
 
 ## describe
 
-The `temporal schedule describe` command shows the current [Schedule](/workflows#schedule) configuration.
+The `temporal schedule describe` command shows the current [Schedule](/schedule) configuration.
 This command also provides information about past, current, and future [Workflow Runs](/workflows#run-id).
 
 `temporal schedule describe --schedule-id 'your-schedule-id' [command options]`
@@ -302,7 +302,7 @@ Use the following options to change this command's behavior.
 
 ## list
 
-The `temporal schedule list` command lists all [Schedule](/workflows#schedule) configurations.
+The `temporal schedule list` command lists all [Schedule](/schedule) configurations.
 Listing Schedules in [Standard Visibility](/visibility#standard-visibility) will only provide Schedule IDs.
 
 `temporal schedule list`
@@ -351,7 +351,7 @@ Use the options below to change the behavior of this command.
 
 ## toggle
 
-The `temporal schedule toggle` command can pause and unpause a [Schedule](/workflows#schedule).
+The `temporal schedule toggle` command can pause and unpause a [Schedule](/schedule).
 
 Toggling a Schedule requires a reason to be entered on the command line.
 Use `--reason` to note the issue leading to the pause or unpause.
@@ -400,7 +400,7 @@ Use the following options to change this command's behavior.
 
 ## trigger
 
-The `temporal schedule trigger` command triggers an immediate action with a given [Schedule](/workflows#schedule).
+The `temporal schedule trigger` command triggers an immediate action with a given [Schedule](/schedule).
 By default, this action is subject to the Overlap Policy of the Schedule.
 
 Schedule triggers are passed in this format:
@@ -446,7 +446,7 @@ Use the following options to change this command's behavior.
 
 ## update
 
-The `temporal schedule update` command updates an existing [Schedule](/workflows#schedule).
+The `temporal schedule update` command updates an existing [Schedule](/schedule).
 
 Like `temporal schedule create`, updated Schedules need to follow a certain format:
 

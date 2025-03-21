@@ -45,6 +45,13 @@ Conceptually, a workflow defines a sequence of steps.
 With Temporal, those steps are defined by writing code, known as a Workflow Definition, and are carried out by running that code, which results in a Workflow Execution.
 
 
+1. A Workflow Definition is the code. It's what defines your Workflow.
+2. The Workflow Type is the name associated with that Workflow Definition. 
+It's an identifier that makes it possible to distinguish one type of Workflow (such as order processing) from another (such as customer onboarding).
+3. A Workflow Execution is a running Workflow, which is created by combining a Workflow Definition with a request to execute it. 
+You can execute a Workflow Definition any number of times, potentially providing different input each time (i.e., a Workflow Definition for order processing might process order #123 in one execution and order #567 in another execution). 
+
+
 Workflows are:
 - Durable: Can run for seconds or years.
 - Reliable: Recoverable after failure.
@@ -207,12 +214,3 @@ The relationship between them works like this:
 - When you want to run that code, you create a Workflow Execution by referencing the Workflow Type
 
 Each time you start a workflow using the same Workflow Type, you create a new Workflow Execution with a unique Run ID.
-
-```mermaid
-flowchart LR
-    A[Developer] -->|Writes| B["Workflow Definition\n(Your Code)"]
-    B -->|Registered as| C["Workflow Type\n(Named Identifier)"]
-    A -->|Creates| D["Workflow Execution\n(Running Instance)"]
-    C -->|Referenced by| D
-
-```
