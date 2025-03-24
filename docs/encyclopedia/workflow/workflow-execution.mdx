@@ -57,7 +57,7 @@ A Temporal Application is scalable because the Temporal Platform is capable of s
 
 A Replay is the method by which a Workflow Execution resumes making progress. During a Replay the Commands that are generated are checked against an existing Event History. Replays are necessary and often happen to give the effect that Workflow Executions are resumable, reliable, and durable.
 
-For more information, see [Deterministic constraints](#deterministic-constraints).
+For more information, see [Deterministic constraints](/workflow-definition#deterministic-constraints).
 
 If a failure occurs, the Workflow Execution picks up where the last recorded event occurred in the Event History.
 
@@ -78,11 +78,11 @@ A Workflow Execution does two things:
     src="/diagrams/workflow-execution-progession-simple.svg"
     title="Command generation and waiting" />
 
-Commands are issued and Awaitables are provided by the use of Workflow APIs in the [Workflow Definition](#workflow-definition).
+Commands are issued and Awaitables are provided by the use of Workflow APIs in the [Workflow Definition](/workflow-definition).
 
 Commands are generated whenever the Workflow Function is executed.
 The Worker Process supervises the Command generation and makes sure that it maps to the current Event History.
-(For more information, see [Deterministic constraints](#deterministic-constraints).)
+(For more information, see [Deterministic constraints](/workflow-definition#deterministic-constraints).)
 The Worker Process batches the Commands and then suspends progress to send the Commands to the Temporal Service whenever the Workflow Function reaches a place where it can no longer progress without a result from an Awaitable.
 
 A Workflow Execution may only ever block progress on an Awaitable that is provided through a Temporal SDK API.
@@ -129,7 +129,7 @@ Each Workflow Run in the sequence is connected by one of the following:
 
 - [Continue-As-New](#continue-as-new)
 - [Retries](/encyclopedia/retry-policies)
-- [Temporal Cron Job](#temporal-cron-job)
+- [Temporal Cron Job](/cron-job)
 
 A Workflow Execution is uniquely identified by its [Namespace](/namespaces), [Workflow Id](#workflow-id), and [Run Id](#run-id).
 
@@ -282,7 +282,7 @@ The Continue-As-New feature enables developers to complete the current Workflow 
 
 The new Workflow Execution has the same Workflow Id, but a different Run Id, and has its own Event History.
 
-In the case of [Temporal Cron Jobs](#temporal-cron-job), Continue-As-New is actually used internally for the same effect.
+In the case of [Temporal Cron Jobs](/cron-job), Continue-As-New is actually used internally for the same effect.
 
 - [How to Continue-As-New using the Go SDK](/develop/go/continue-as-new)
 - [How to Continue-As-New using the Java SDK](/develop/java/continue-as-new)
@@ -474,7 +474,7 @@ If there is any chance that the code provided to the Side Effect could fail, use
 - Available in the [TypeScript SDK](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions#startdelay) since [v1.9.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.9.0)
 - Available in the [PHP SDK](https://php.temporal.io/classes/Temporal-Client-WorkflowOptions.html#property_workflowStartDelay) since [v2.7.0](https://github.com/temporalio/sdk-php/releases/tag/v2.7.0)
 
-Start Delay Workflow Execution is incompatible with both [Schedules](#schedule) and [Cron Jobs](#temporal-cron-job).
+Start Delay Workflow Execution is incompatible with both [Schedules](/schedule) and [Cron Jobs](/cron-job).
 
 :::
 
