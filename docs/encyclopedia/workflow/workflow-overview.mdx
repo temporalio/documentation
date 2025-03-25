@@ -175,12 +175,7 @@ While the Workflow Definition is the code that defines the Workflow, the Workflo
 When you run a Workflow Definition, you create a Workflow Execution. 
 Each execution is an independent instance with its own state and context. 
 This means you can run the same Workflow Definition for different orders, customers, or scenarios, with each execution maintaining its own unique progress.
-
-
-A Workflow Execution is:
--  Durable, reliable, and scalable function execution.
-- The main unit of execution in a Temporal Application.
-- Identified by a Workflow Id, Run Id, and Namespace.
+A Workflow Execution is identified by a Workflow Id, Run Id, and Namespace.
 
 Each Workflow Execution:
 
@@ -196,7 +191,6 @@ A Workflow Type in Temporal is a name that maps to a Workflow Definition.
 It allows you to distinguish and serves as an identifier between different Workflow implementations and provides a way to track and manage specific workflow patterns.
 A Workflow Type is used to create a Workflow Execution. 
 Each time you start a workflow using the same Workflow Type, you create a new Workflow Execution with a unique Run ID.
-
 
 Temporal Workflows are engineered to handle complex, distributed processes with remarkable resilience. 
 They can survive infrastructure failures, automatically recreate pre-failure states, maintain comprehensive Event Histories, and support advanced workflow management techniques including pausing, resuming, and resetting entire process instances.
