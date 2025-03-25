@@ -17,7 +17,12 @@ tags:
 
 import * as Components from '@site/src/components';
 
-This guide provides a comprehensive overview of Temporal Activities.
+This page discusses the following: 
+- [Activity Definition](#activity-definition)
+- [Idempotency](#idempotency)
+- [Constraints](#activity-constraints)
+- [Parameters](#activity-parameters)
+- [Activity Type](#activity-type)
 
 In day-to-day conversation, the term _Activity_ denotes an [Activity Definition](/activity-definition), [Activity Type](/activity-definition#activity-type), or [Activity Execution](/activity-execution).
 Temporal documentation aims to be explicit and differentiate between them.
@@ -82,7 +87,7 @@ For more information about idempotency in Temporal, see the following post:
 
 [Idempotency and Durable Execution](https://temporal.io/blog/idempotency-and-durable-execution)
 
-#### Constraints
+#### Constraints {#activity-constraints}
 
 Activity Definitions are executed as normal functions.
 
@@ -90,7 +95,7 @@ In the event of failure, the function begins at its initial state when retried (
 
 Therefore, an Activity Definition has no restrictions on the code it contains.
 
-#### Parameters
+#### Parameters {#activity-parameters}
 
 An Activity Definition can support as many parameters as needed.
 
