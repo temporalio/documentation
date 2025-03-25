@@ -60,7 +60,7 @@ Activity Definitions are named and referenced in code by their [Activity Type](/
     title="Activity Definition"
     />
 
-#### Idempotency {#idempotency}
+### Idempotency {#idempotency}
 
 Temporal recommends that Activities be idempotent.
 
@@ -87,7 +87,7 @@ For more information about idempotency in Temporal, see the following post:
 
 [Idempotency and Durable Execution](https://temporal.io/blog/idempotency-and-durable-execution)
 
-#### Constraints {#activity-constraints}
+### Constraints {#activity-constraints}
 
 Activity Definitions are executed as normal functions.
 
@@ -95,7 +95,7 @@ In the event of failure, the function begins at its initial state when retried (
 
 Therefore, an Activity Definition has no restrictions on the code it contains.
 
-#### Parameters {#activity-parameters}
+### Parameters {#activity-parameters}
 
 An Activity Definition can support as many parameters as needed.
 
@@ -110,7 +110,7 @@ Activity Definitions must contain the following parameters:
 
 Other parameters, such as [Retry Policies](/encyclopedia/retry-policies) and return values, can be seen in the implementation guides, listed in the next section.
 
-### What is an Activity Type? {#activity-type}
+## What is an Activity Type? {#activity-type}
 
 An Activity Type is the mapping of a name to an Activity Definition.
 
