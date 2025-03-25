@@ -15,12 +15,12 @@ description: Learn how to asynchronously complete an Activity in Temporal by ena
 
 ## How to asynchronously complete an Activity {#asynchronous-activity-completion}
 
-[Asynchronous Activity Completion](/activities#asynchronous-activity-completion) enables the Activity Function to return without the Activity Execution completing.
+[Asynchronous Activity Completion](/activity-execution#asynchronous-activity-completion) enables the Activity Function to return without the Activity Execution completing.
 
 There are three steps to follow:
 
 1. The Activity provides the external system with identifying information needed to complete the Activity Execution.
-   Identifying information can be a [Task Token](/activities#task-token), or a combination of Namespace, Workflow Id, and Activity Id.
+   Identifying information can be a [Task Token](/activity-execution#task-token), or a combination of Namespace, Workflow Id, and Activity Id.
 2. The Activity Function completes in a way that identifies it as waiting to be completed by an external system.
 3. The Temporal Client is used to Heartbeat and complete the Activity.
 
@@ -52,7 +52,7 @@ async function doSomeWork(taskToken: Uint8Array): Promise<void> {
 
 ## Local Activities {#local-activities}
 
-To call [Local Activities](/activities#local-activity) in TypeScript, use [`proxyLocalActivities`](https://typescript.temporal.io/api/namespaces/workflow/#proxylocalactivities).
+To call [Local Activities](/local-activity) in TypeScript, use [`proxyLocalActivities`](https://typescript.temporal.io/api/namespaces/workflow/#proxylocalactivities).
 
 ```ts
 import * as workflow from '@temporalio/workflow';

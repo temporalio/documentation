@@ -199,7 +199,7 @@ All API safe for Workflows used in the [`temporalio.workflow`](https://python.te
 One of the primary things that Workflows do is orchestrate the execution of Activities.
 An Activity is a normal function or method execution that's intended to execute a single, well-defined action (either short or long-running), such as querying a database, calling a third-party API, or transcoding a media file.
 An Activity can interact with world outside the Temporal Platform or use a Temporal Client to interact with a Temporal Service.
-For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/activities#activity-definition).
+For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/activity-definition).
 
 You can develop an Activity Definition by using the `@activity.defn` decorator.
 Register the function as an Activity with a custom name through a decorator argument, for example `@activity.defn(name="your_activity")`.
@@ -242,7 +242,7 @@ async def your_activity(input: YourParams) -> str:
 
 **How to develop Activity Parameters using the Temporal Python SDK.**
 
-There is no explicit limit to the total number of parameters that an [Activity Definition](/activities#activity-definition) may support.
+There is no explicit limit to the total number of parameters that an [Activity Definition](/activity-definition) may support.
 However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
 
 A single argument is limited to a maximum size of 2 MB.
@@ -333,7 +333,7 @@ async def your_activity(input: YourParams) -> str:
 
 **How to start an Activity Execution using the Temporal Python SDK.**
 
-Calls to spawn [Activity Executions](/activities#activity-execution) are written within a [Workflow Definition](/workflows#workflow-definition).
+Calls to spawn [Activity Executions](/activity-execution) are written within a [Workflow Definition](/workflows#workflow-definition).
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
 This results in the set of three [Activity Task](/tasks#activity-task) related Events ([ActivityTaskScheduled](/references/events#activitytaskscheduled), [ActivityTaskStarted](/references/events#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
 
@@ -417,7 +417,7 @@ Available timeouts are:
 
 **How to get the results of an Activity Execution using the Temporal Python SDK.**
 
-The call to spawn an [Activity Execution](/activities#activity-execution) generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
+The call to spawn an [Activity Execution](/activity-execution) generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
 Workflow Executions can either block progress until the result is available through the Awaitable or continue progressing, making use of the result when it becomes available.
 
 Use [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) to start an Activity and return its handle, [`ActivityHandle`](https://python.temporal.io/temporalio.workflow.ActivityHandle.html). Use [`execute_activity()`](https://python.temporal.io/temporalio.workflow.html#execute_activity) to return the results.
