@@ -21,7 +21,7 @@ tags:
 
 ---
 
-import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
+import { CaptionedImage } from '@site/src/components';
 
 This guide provides a comprehensive overview of Temporal Workflows.
 
@@ -254,7 +254,7 @@ This feature is useful for Workflow Definition logic that needs to be updated bu
 - [How to patch Workflow code in TypeScript](/develop/typescript/versioning#patching)
 - [How to patch Workflow code in .NET](/develop/dotnet/versioning#dotnet-sdk-patching-api)
 
-You can also use [Worker Versioning](/workers#worker-versioning) instead of Patching.
+You can also use [Worker Versioning](/worker-versioning) instead of Patching.
 
 ### Handling unreliable Worker Processes
 
@@ -272,7 +272,9 @@ A Workflow Type is a name that maps to a Workflow Definition.
 - A Workflow Type is scoped by a Task Queue.
   It is acceptable to have the same Workflow Type name map to different Workflow Definitions if they are using completely different Workers.
 
-<PrettyImage src="/diagrams/workflow-type-cardinality.svg" title="Workflow Type cardinality with Workflow Definitions and Workflow Executions" />
+<CaptionedImage
+    src="/diagrams/workflow-type-cardinality.svg"
+    title="Workflow Type cardinality with Workflow Definitions and Workflow Executions" />
 
 ## What is a Workflow Execution? {#workflow-execution}
 
@@ -289,7 +291,7 @@ It is the main unit of execution of a [Temporal Application](/temporal#temporal-
 - [How to start a Workflow Execution using the .NET SDK](/develop/dotnet/temporal-client#start-workflow)
 
 Each Temporal Workflow Execution has exclusive access to its local state.
-It executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions through [Signals](/encyclopedia/workflow-message-passing#sending-signals) and the environment through [Activities](/activities).
+It executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions through [Signals](/sending-messages#sending-signals) and the environment through [Activities](/activities).
 While a single Workflow Execution has limits on size and throughput, a Temporal Application can consist of millions to billions of Workflow Executions.
 
 **Durability**
@@ -333,7 +335,9 @@ A Workflow Execution does two things:
 1. Issue [Commands](#command).
 2. Wait on an Awaitables (often called Futures).
 
-<PrettyImage src="/diagrams/workflow-execution-progession-simple.svg" title="Command generation and waiting" />
+<CaptionedImage
+    src="/diagrams/workflow-execution-progession-simple.svg"
+    title="Command generation and waiting" />
 
 Commands are issued and Awaitables are provided by the use of Workflow APIs in the [Workflow Definition](#workflow-definition).
 
@@ -347,8 +351,8 @@ Awaitables are provided when using APIs for the following:
 
 - Awaiting: Progress can block using explicit "Await" APIs.
 - Requesting cancellation of another Workflow Execution: Progress can block on confirmation that the other Workflow Execution is cancelled.
-- Sending a [Signal](/encyclopedia/workflow-message-passing#sending-signals): Progress can block on confirmation that the Signal sent.
-- Spawning a [Child Workflow Execution](/encyclopedia/child-workflows): Progress can block on confirmation that the Child Workflow Execution started, and on the result of the Child Workflow Execution.
+- Sending a [Signal](/sending-messages#sending-signals): Progress can block on confirmation that the Signal sent.
+- Spawning a [Child Workflow Execution](/child-workflows): Progress can block on confirmation that the Child Workflow Execution started, and on the result of the Child Workflow Execution.
 - Spawning an [Activity Execution](/activities#activity-execution): Progress can block on the result of the Activity Execution.
 - Starting a Timer: Progress can block until the Timer fires.
 
@@ -356,7 +360,9 @@ Awaitables are provided when using APIs for the following:
 
 A Workflow Execution can be either _Open_ or _Closed_.
 
-<PrettyImage src="/diagrams/workflow-execution-statuses.svg" title="Workflow Execution statuses" />
+<CaptionedImage
+    src="/diagrams/workflow-execution-statuses.svg"
+    title="Workflow Execution statuses" />
 
 #### Open
 
@@ -396,7 +402,9 @@ The [Workflow Run Timeout](/encyclopedia/detecting-workflow-failures#workflow-ru
 A Workflow Execution is made up of a sequence of [Events](#event) called an [Event History](#event-history).
 Events are created by the Temporal Service in response to either Commands or actions requested by a Temporal Client (such as a request to spawn a Workflow Execution).
 
-<PrettyImage src="/diagrams/workflow-execution-swim-lane-01.svg" title="Workflow Execution" />
+<CaptionedImage
+    src="/diagrams/workflow-execution-swim-lane-01.svg"
+    title="Workflow Execution" />
 
 ### Time constraints
 
@@ -445,7 +453,7 @@ These limits are set with the following [dynamic configuration keys](https://git
 There is a limit to the maximum number of Nexus Operations in a Workflow before Continue-As-New is required.
 Each in-progress Nexus Operation generates a metadata entry in the Workflow Execution's mutable state.
 Too many entries in a single Workflow Execution's mutable state causes unstable persistence.
-To protect the system, Temporal enforces a maximum number of incomplete (and complete in Public Preview) Nexus Operation requests per Workflow Execution (by default, 30 Nexus Operations).
+To protect the system, Temporal enforces a maximum number of incomplete Nexus Operation requests per Workflow Execution (by default, 30 Nexus Operations).
 Once the limit is reached for a type of operation, if the Workflow Execution attempts to start another Nexus operation (by producing a ScheduleNexusOperation), it will be unable to do so (the Workflow Task Execution will fail and get retried).
 
 These limits are set with the following [dynamic configuration keys](https://github.com/temporalio/temporal/blob/de7c8879e103be666a7b067cc1b247f0ac63c25c/components/nexusoperations/config.go#L38):
@@ -454,7 +462,7 @@ These limits are set with the following [dynamic configuration keys](https://git
 
 ### What is a Command? {#command}
 
-A Command is a requested action issued by a [Worker](/workers#worker) to the [Temporal Service](/clusters) after a [Workflow Task Execution](/workers#workflow-task-execution) completes.
+A Command is a requested action issued by a [Worker](/workers#worker) to the [Temporal Service](/clusters) after a [Workflow Task Execution](/tasks#workflow-task-execution) completes.
 
 The action that the Temporal Service takes is recorded in the [Workflow Execution's](#workflow-execution) [Event History](#event-history) as an [Event](#event).
 The Workflow Execution can await on some of the Events that come as a result from some of the Commands.
@@ -463,7 +471,9 @@ Commands are generated by the use of Workflow APIs in your code. During a Workfl
 The Commands are batched and sent to the Temporal Service as part of the Workflow Task Execution completion request, after the Workflow Task has progressed as far as it can with the Workflow function.
 There will always be [WorkflowTaskStarted](/references/events#workflowtaskstarted) and [WorkflowTaskCompleted](/references/events#workflowtaskcompleted) Events in the Event History when there is a Workflow Task Execution completion request.
 
-<PrettyImage src="/diagrams/commands.svg" title="Commands are generated by the use of Workflow APIs in your code" />
+<CaptionedImage
+    src="/diagrams/commands.svg"
+    title="Commands are generated by the use of Workflow APIs in your code" />
 
 Commands are described in the [Command reference](/references/commands) and are defined in the [Temporal gRPC API](https://github.com/temporalio/api/blob/master/temporal/api/command/v1/message.proto).
 
@@ -479,7 +489,7 @@ A list of all possible Events that could appear in a Workflow Execution Event Hi
 
 Seven Activity-related Events are added to Event History at various points in an Activity Execution:
 
-- After a [Workflow Task Execution](/workers#activity-task-execution) reaches a line of code that starts/executes an Activity, the Worker sends the Activity Type and arguments to the Temporal Service, and the Temporal Service adds an [ActivityTaskScheduled](/references/events#activitytaskscheduled) Event to Event History.
+- After a [Workflow Task Execution](/tasks#activity-task-execution) reaches a line of code that starts/executes an Activity, the Worker sends the Activity Type and arguments to the Temporal Service, and the Temporal Service adds an [ActivityTaskScheduled](/references/events#activitytaskscheduled) Event to Event History.
 - When `ActivityTaskScheduled` is added to History, the Temporal Service adds a corresponding Activity Task to the Task Queue.
 - A Worker polling that Task Queue picks up the Activity Task and runs the Activity function or method.
 - If the Activity function returns, the Worker reports completion to the Temporal Service, and the Temporal Service adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskCompleted](/references/events#activitytaskcompleted) to Event History.
@@ -661,7 +671,7 @@ The Workflow Id Conflict Policy can have one of the following values:
 
 Temporal SDKs offer Timer APIs so that Workflow Executions are deterministic in their handling of time values.
 
-Timers in Temporal are persisted, meaning that even if your Worker or Temporal Service is down when the time period completes, as soon as your Worker and Temporal Service become available, the call that is awaiting the Timer in your Workflow code will resolve, causing execution to proceed
+Timers in Temporal are persisted, meaning that even if your Worker or Temporal Service is down when the time period completes, as soon as your Worker and Temporal Service become available, the call that is awaiting the Timer in your Workflow code will resolve, causing execution to proceed.
 Timers are reliable and efficient.
 Workers consume no additional resources while waiting for a Timer to fire, so a single Worker can await millions of Timers concurrently.
 
@@ -785,7 +795,7 @@ The Action of a Schedule is where the Workflow Execution properties are establis
 Workflow Executions started by a Schedule have the following additional properties:
 
 - The Action's timestamp is appended to the Workflow Id.
-- The `TemporalScheduledStartTime` [Search Attribute](/visibility#search-attribute) is added to the Workflow Execution.
+- The `TemporalScheduledStartTime` [Search Attribute](/search-attribute) is added to the Workflow Execution.
   The value is the Action's timestamp.
 - The `TemporalScheduledById` Search Attribute is added to the Workflow Execution.
   The value is the Schedule Id.
@@ -982,7 +992,9 @@ A Temporal Cron Job is the series of Workflow Executions that occur when a Cron 
 - [How to set a Cron Schedule using the Python SDK](/develop/python/schedules#temporal-cron-jobs)
 - [How to set a Cron Schedule using the TypeScript SDK](/develop/typescript/schedules#temporal-cron-jobs)
 
-<PrettyImage src="/diagrams/temporal-cron-job.svg" title="Temporal Cron Job timeline" />
+<CaptionedImage
+    src="/diagrams/temporal-cron-job.svg"
+    title="Temporal Cron Job timeline" />
 
 A Temporal Cron Job is similar to a classic unix cron job.
 Just as a unix cron job accepts a command and a schedule on which to execute that command, a Cron Schedule can be provided with the call to spawn a Workflow Execution.
@@ -1005,7 +1017,9 @@ The start time for this new Run and the Cron definitions are used to calculate t
 A [Workflow Execution Timeout](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout) is used to limit how long a Workflow can be executing (have an Open status), including retries and any usage of Continue As New.
 The Cron Schedule runs until the Workflow Execution Timeout is reached or you terminate the Workflow.
 
-<PrettyImage src="/diagrams/temporal-cron-job-failure-with-retry.svg" title="Temporal Cron Job Run Failure with a Retry Policy" />
+<CaptionedImage
+    src="/diagrams/temporal-cron-job-failure-with-retry.svg"
+    title="Temporal Cron Job Run Failure with a Retry Policy" />
 
 ### Cron Schedules
 
@@ -1090,22 +1104,18 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 - Available in the [TypeScript SDK](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions#startdelay) since [v1.9.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.9.0)
 - Available in the [PHP SDK](https://php.temporal.io/classes/Temporal-Client-WorkflowOptions.html#property_workflowStartDelay) since [v2.7.0](https://github.com/temporalio/sdk-php/releases/tag/v2.7.0)
 
-:::
-
-Start Delay determines the amount of time to wait before initiating a Workflow Execution.
-
-:::note
-
 Start Delay Workflow Execution is incompatible with both [Schedules](#schedule) and [Cron Jobs](#temporal-cron-job).
 
 :::
 
+Start Delay determines the amount of time to wait before initiating a Workflow Execution.
 This is useful if you have a Workflow you want to schedule out in the future, but only want it to execute once: in comparison to reoccurring Workflows using Schedules.
 
 If the Workflow receives a Signal-With-Start during the delay, it dispatches a Workflow Task and the remaining delay is bypassed.
 If the Workflow receives a Signal during the delay that is not a Signal-With-Start, the Signal does not interrupt the delay, and the Workflow continues to be delayed until the delay expires or a Signal-With-Start is received.
 
-You can delay the dispatch of the initial Workflow Execution by setting this option in the Workflow Options field of the SDK of your choice.
+You can delay the dispatch of the initial Workflow Execution by setting this option in the Workflow Options field of your chosen SDK.
+This delay only applies to the initial Workflow Execution and does not affect subsequent executions, such as when the Workflow Continues-as-New.
 
 ## What is a State Transition? {#state-transition}
 
@@ -1116,4 +1126,4 @@ Some operations, such as [Activity Heartbeats](/encyclopedia/detecting-activity-
 
 Most operations require multiple State Transitions.
 
-For example, a simple Workflow with two sequential [Activity Tasks](/workers#activity-task) (and no retries) produces 11 State Transitions: two for Workflow start, four for each Activity, and one for Workflow completion.
+For example, a simple Workflow with two sequential [Activity Tasks](/tasks#activity-task) (and no retries) produces 11 State Transitions: two for Workflow start, four for each Activity, and one for Workflow completion.

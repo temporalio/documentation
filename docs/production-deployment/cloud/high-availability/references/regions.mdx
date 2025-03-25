@@ -1,0 +1,60 @@
+---
+id: regions
+title: Service regions
+sidebar_label: Service regions
+slug: /cloud/high-availability/regions
+description: Temporal Cloud's High Availability Namespaces offer automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime.
+tags:
+  - Temporal Cloud
+  - Production
+  - High Availability
+keywords:
+  - availability
+  - explanation
+  - failover
+  - high-availability
+  - multi-region
+  - multi-region namespace
+  - namespaces
+  - temporal-cloud
+  - term
+---
+
+You can access Temporal Cloud from anywhere with Internet connectivity, no matter where your Temporal Cloud Namespaces are physically located.
+Your applications can live in the cloud environment or data center of your choice.
+With that in mind, you _will_ reduce latency by creating  Namespaces in a region close to where you host your Workers.
+
+This page enumerates the current regions supported by Temporal Cloud Namespaces.
+
+## Region Status
+
+Visit [status.temporal.io](https://status.temporal.io) to check the status of our supported regions.
+On that page, you can also subscribe to updates to receive email notifications whenever Temporal creates, updates or resolves an incident.
+
+## Supported Regions
+
+:::caution
+
+- While GCP Namespaces support Multi-region Replication, they do not support Same-region Replication.
+- When using Multi-region Replication, both regions must co-exist within the same continent.
+- When using Multi-region Replication, both regions must co-exist within the same provider.
+
+:::
+
+### AWS Service Regions
+
+Temporal Cloud operates in the following Amazon Web Services (AWS) regions:
+
+import AWSRegions from '@site/docs/production-deployment/cloud/references/regions/awsregions.md';
+
+<AWSRegions />
+
+### GCP Service Regions
+
+Temporal Cloud operates the following Google Cloud (GCP) regions:
+
+import GCPRegions from '@site/docs/production-deployment/cloud/references/regions/gcpregions.md';
+
+<GCPRegions />
+
+

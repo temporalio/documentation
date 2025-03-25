@@ -16,32 +16,44 @@ tags:
 
 You can use environment variables to dynamically alter the configuration of your Temporal Web UI.
 
-These can be used in many environments such as Docker.
+These can be used in many environments, such as with Docker.
 For example:
-
-{/*
 
 ```
 docker run\
 -e TEMPORAL_ADDRESS=127.0.0.1:7233\
 -e TEMPORAL_UI_PORT=8080\
+-e TEMPORAL_UI_PUBLIC_PATH=path/to/webui\
+-e TEMPORAL_UI_ENABLED=true\
+-e TEMPORAL_BANNER_TEXT="Some banner text"\
+-e TEMPORAL_CLOUD_UI=false\
+-e TEMPORAL_DEFAULT_NAMESPACE=default\
+-e TEMPORAL_FEEDBACK_URL=https://feedback.here\
+-e TEMPORAL_NOTIFY_ON_NEW_VERSION=true\
+-e TEMPORAL_CONFIG_REFRESH_INTERVAL=0s\
+-e TEMPORAL_SHOW_TEMPORAL_SYSTEM_NAMESPACE=false\
+-e TEMPORAL_DISABLE_WRITE_ACTIONS=false\
 -e TEMPORAL_AUTH_ENABLED=true\
+-e TEMPORAL_AUTH_TYPE=oidc\
 -e TEMPORAL_AUTH_PROVIDER_URL=https://accounts.google.com\
+-e TEMPORAL_AUTH_ISSUER_URL=https://accounts.google.com\
 -e TEMPORAL_AUTH_CLIENT_ID=xxxxx-xxxx.apps.googleusercontent.com\
 -e TEMPORAL_AUTH_CLIENT_SECRET=xxxxxxxxxxxxxxx\
 -e TEMPORAL_AUTH_CALLBACK_URL=https://xxxx.com:8080/auth/sso/callback\
--e TEMPORAL_UI_ENABLED=true\
--e TEMPORAL_OPENAPI_ENABLED=true\
+-e TEMPORAL_AUTH_SCOPES=openid,email,profile\
 -e TEMPORAL_TLS_CA=../ca.cert\
 -e TEMPORAL_TLS_CERT=../cluster.pem\
 -e TEMPORAL_TLS_KEY=../cluster.key\
 -e TEMPORAL_TLS_ENABLE_HOST_VERIFICATION=true\
 -e TEMPORAL_TLS_SERVER_NAME=tls-server\
+-e TEMPORAL_CODEC_ENDPOINT=https://codec.server\
+-e TEMPORAL_CODEC_PASS_ACCESS_TOKEN=false\
+-e TEMPORAL_CODEC_INCLUDE_CREDENTIALS=false\
+-e TEMPORAL_HIDE_LOGS=false\
 temporalio/ui:<tag>
 ```
 
-*/}
-The environment variables are defined in the [UI server configuration template file](https://github.com/temporalio/ui-server/blob/main/docker/config_template.yaml) and described in more detail below.
+The environment variables are defined in the [UI server configuration template file](https://github.com/temporalio/ui-server/blob/main/docker/config-template.yaml) and described in more detail below.
 
 ## `TEMPORAL_ADDRESS`
 
@@ -60,6 +72,47 @@ This variable is needed for `TEMPORAL_OPENAPI_ENABLED` and all auth-related sett
 
 Stores a value such as "" or "/custom-path" that allows the UI to be served from a subpath.
 
+## `TEMPORAL_UI_ENABLED`
+
+Enables or disables the [browser UI](/references/web-ui-configuration#enableui) for the Temporal Cluster.
+
+Enabling the browser UI allows the Server to be accessed from your web browser.
+If disabled, the server cannot be viewed on the web, but the UI server APIs remain available for use.
+
+## `TEMPORAL_BANNER_TEXT`
+
+Provides banner text to display on the Web UI.
+
+## `TEMPORAL_CLOUD_UI`
+
+If enabled, use the alternate UI from Temporal Cloud.
+
+## `TEMPORAL_DEFAULT_NAMESPACE`
+
+The default [Namespace](/namespaces) that the Web UI opens first.
+
+## `TEMPORAL_FEEDBACK_URL`
+
+The URL that users are directed to when they click the Feedback button in the UI.
+
+If not specified, this variable defaults to the UI's GitHub Issue page.
+
+## `TEMPORAL_NOTIFY_ON_NEW_VERSION`
+
+Enables or disables notifications that appear in the UI whenever a newer version of the Temporal Cluster is available.
+
+## `TEMPORAL_CONFIG_REFRESH_INTERVAL`
+
+Determines how often the UI Server reads the configuration file for new values.
+
+## `TEMPORAL_SHOW_TEMPORAL_SYSTEM_NAMESPACE`
+
+If enabled, shows the System Namespace that handles internal Temporal Workflows in the Web UI. 
+
+## `TEMPORAL_DISABLE_WRITE_ACTIONS`
+
+Disables any button in the UI that allows the user to modify Workflows or Activities.
+
 ## `TEMPORAL_AUTH_ENABLED`
 
 Enables or disables Web UI authentication and authorization methods.
@@ -68,6 +121,10 @@ When enabled, the Web UI will use the provider information in the [UI configurat
 
 All auth-related variables can be defined when `TEMPORAL_AUTH_ENABLED` is set to "true".
 Disabling the variable will retain given values.
+
+## `TEMPORAL_AUTH_TYPE`
+
+Specifies the type of authentication. Defaults to `oidc`.
 
 ## `TEMPORAL_AUTH_PROVIDER_URL`
 
@@ -99,39 +156,9 @@ The callback URL used by Temporal for authentication and authorization.
 
 Callback URLs are invoked by IDP after user has finished authenticating in IDP.
 
-## `TEMPORAL_UI_ENABLED`
+## `TEMPORAL_AUTH_SCOPES`
 
-Enables or disables the [browser UI](/references/web-ui-configuration#enableui) for the Temporal Cluster.
-
-Enabling the browser UI allows the Server to be accessed from your web browser.
-If disabled, the server cannot be viewed on the web, but the UI server APIs remain available for use.
-
-## `TEMPORAL_OPENAPI_ENABLED`
-
-Enables or disables OpenAPI features for the Temporal Web UI.
-
-This can be set initially with the [enableOpenAPI](/references/web-ui-configuration#enableopenapi) UI configuration.
-The documentation can be found at `/openapi/` on your Temporal Cluster.
-
-This variable requires `TEMPORAL_UI_ENABLED` to be set to 'true'.
-
-## `TEMPORAL_DEFAULT_NAMESPACE`
-
-The default [Namespace](/namespaces) that the Web UI opens first.
-
-## `TEMPORAL_FEEDBACK_URL`
-
-The URL that users are directed to when they click the Feedback button in the UI.
-
-If not specified, this variable defaults to the UI's GitHub Issue page.
-
-## `TEMPORAL_NOTIFY_ON_NEW_VERSION`
-
-Enables or disables notifications that appear in the UI whenever a newer version of the Temporal Cluster is available.
-
-## `TEMPORAL_CONFIG_REFRESH_INTERVAL`
-
-Determines how often the UI Server reads the configuration file for new values.
+Specifies a set of scopes for auth. Typically, this is `openid`, `profile`, `email`.
 
 ## `TEMPORAL_TLS_CA`
 
@@ -187,16 +214,20 @@ Because of this, TLS operates a go-between server.
 
 ## `TEMPORAL_CODEC_ENDPOINT`
 
-The endpoint for the [Codec Server](/dataconversion#codec-server), if configured.
+The endpoint for the [Codec Server](/codec-server), if configured.
 
 ## `TEMPORAL_CODEC_PASS_ACCESS_TOKEN`
 
-Whether to send a JWT access token as ‘authorization' header in requests with the Codec Server.
+Specifies whether to send a JWT access token as ‘authorization' header in requests with the Codec Server.
+
+## `TEMPORAL_CODEC_INCLUDE_CREDENTIALS`
+
+Specifies whether to include credentials along with requests to the Codec Server.
 
 ## `TEMPORAL_FORWARD_HEADERS`
 
 Forward-specified HTTP headers to direct from HTTP API requests to the Temporal gRPC backend.
 
-## `TEMPORAL_DISABLE_WRITE_ACTIONS`
+## `TEMPORAL_HIDE_LOGS`
 
-Disables any button in the UI that allows the user to modify Workflows or Activities.
+If enabled, does not print logs from the Temporal Service.

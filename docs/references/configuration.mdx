@@ -83,6 +83,12 @@ For example, if you want to exclude `task_queue` because it has unbounded cardin
 
 #### statsd
 
+:::caution
+
+`statsd` is not supported natively by Temporal.
+
+:::
+
 The `statsd` sections supports the following settings:
 
 - `hostPort`: The host:port of the statsd server.
@@ -257,7 +263,7 @@ _Required_ - The name of the primary data store definition that should be used t
 
 ### secondaryVisibilityStore
 
-_Optional_ - The name of the secondary data store definition that should be used to set up [Dual Visibility](/visibility#dual-visibility) on the Temporal Cluster.
+_Optional_ - The name of the secondary data store definition that should be used to set up [Dual Visibility](/dual-visibility) on the Temporal Cluster.
 
 ### datastores
 

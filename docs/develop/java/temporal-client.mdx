@@ -2,7 +2,7 @@
 id: temporal-clients
 title: Temporal Client - Java SDK
 sidebar_label: Temporal Client
-toc_max_heading_level: 4
+toc_max_heading_level: 3
 description: This guide introduces Temporal Clients, explaining their role and configuration in Java to connect to various Temporal Services, including starting Workflow Executions and customizing Workflow options.
 keywords:
   - temporal java sdk
@@ -228,7 +228,7 @@ A Workflow Execution can be started either synchronously or asynchronously.
   ```
 
 - Asynchronous start initiates a Workflow Execution and immediately returns to the caller. This is the most common way to start Workflows in production code.
-  The `WorkflowClient` [https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/client/WorkflowClient.java)](https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/client/WorkflowClient.java)) provides some static methods, such as `start`, `execute`, `signalWithStart` etc., that help with starting your Workflows asynchronously.
+  The [`WorkflowClient`](https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/client/WorkflowClient.java) provides some static methods, such as `start`, `execute`, `signalWithStart` etc., that help with starting your Workflows asynchronously.
 
   The following examples show how to start Workflow Executions asynchronously, with either typed or untyped `WorkflowStub`.
 
@@ -307,9 +307,10 @@ You can start a Workflow Execution on a regular schedule by using [`setCronSched
 
 ### How to set a Workflow's Task Queue {#set-task-queue}
 
-In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/workers#task-queue).
+In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/task-queue).
 
-For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task Queue name.
+For your code to execute, a Worker Process must be running.
+This process needs a Worker Entity that is polling the same Task Queue name.
 
 Set the Workflow Task Queue with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setTaskQueue`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
 

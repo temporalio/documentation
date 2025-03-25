@@ -16,36 +16,38 @@ tags:
   - Security
 ---
 
-import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
+import { CaptionedImage } from '@site/src/components';
 
 Temporal Server stores and persists the data handled in your Workflow Execution.
 Encrypting this data ensures that any sensitive application data is secure when handled by the Temporal Server.
 
 For example, if you have sensitive information passed in the following objects that are persisted in the Workflow Execution Event History, use encryption to secure it:
 
-- Inputs and outputs/results in your [Workflow](/workflows#workflow-execution), [Activity](/activities#activity-execution), and [Child Workflow](/encyclopedia/child-workflows)
-- [Signal](/encyclopedia/workflow-message-passing#sending-signals) inputs
+- Inputs and outputs/results in your [Workflow](/workflows#workflow-execution), [Activity](/activities#activity-execution), and [Child Workflow](/child-workflows)
+- [Signal](/sending-messages#sending-signals) inputs
 - [Memo](/workflows#memo)
 - Headers (verify if applicable to your SDK)
-- [Query](/encyclopedia/workflow-message-passing#sending-queries) inputs and results
+- [Query](/sending-messages#sending-queries) inputs and results
 - Results of [Local Activities](/activities#local-activity) and [Side Effects](/workflows#side-effect)
 - [Application errors and failures](/references/failures).
   Failure messages and call stacks are not encoded as codec-capable Payloads by default; you must explicitly enable encoding these common attributes on failures.
-  For more details, see [Failure Converter](/dataconversion#failure-converter).
+  For more details, see [Failure Converter](/failure-converter).
 
 Using encryption ensures that your sensitive data exists unencrypted only on the Client and the Worker Process that is executing the Workflows and Activities, on hosts that you control.
 
 By default, your data is serialized to a [Payload](/dataconversion#payload) by a [Data Converter](/dataconversion).
-To encrypt your Payload, configure your custom encryption logic with a [Payload Codec](/dataconversion#payload-codec) and set it with a [custom Data Converter](/dataconversion#custom-data-converter).
+To encrypt your Payload, configure your custom encryption logic with a [Payload Codec](/payload-codec) and set it with a [custom Data Converter](/default-custom-data-converters#custom-data-converter).
 
-A Payload Codec does byte-to-byte conversion to transform your Payload (for example, by implementing compression and/or encryption and decryption) and is an optional step that happens between the Client and the [Payload Converter](/dataconversion#payload-converter):
+A Payload Codec does byte-to-byte conversion to transform your Payload (for example, by implementing compression and/or encryption and decryption) and is an optional step that happens between the Client and the [Payload Converter](/payload-converter):
 
-<PrettyImage src="/diagrams/remote-data-encoding.svg" title="Remote data encoding architecture" />
+<CaptionedImage
+    src="/diagrams/remote-data-encoding.svg"
+    title="Remote data encoding architecture" />
 
-You can run your Payload Codec with a [Codec Server](/dataconversion#codec-server) and use the Codec Server endpoints in the Web UI and CLI to decode your encrypted Payload locally.
+You can run your Payload Codec with a [Codec Server](/codec-server) and use the Codec Server endpoints in the Web UI and CLI to decode your encrypted Payload locally.
 For details on how to set up a Codec Server, see [Codec Server setup](#codec-server-setup).
 
-However, if you plan to set up [remote data encoding](/dataconversion#remote-data-encoding) for your data, ensure that you consider all security implications of running encryption remotely before implementing it.
+However, if you plan to set up [remote data encoding](/remote-data-encoding) for your data, ensure that you consider all security implications of running encryption remotely before implementing it.
 
 When implementing a custom codec, it is recommended to perform your compression or encryption on the entire input Payload and store the result in the data field of a new Payload with a different encoding metadata field.
 This ensures that the input Payload's metadata is preserved.
@@ -58,6 +60,7 @@ Examples for implementing encryption:
 - [Java sample](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/encryptedpayloads)
 - [Python sample](https://github.com/temporalio/samples-python/tree/main/encryption)
 - [TypeScript sample](https://github.com/temporalio/samples-typescript/tree/main/encryption)
+- [.NET sample](https://github.com/temporalio/samples-dotnet/tree/main/src/Encryption)
 
 ## Codec Server setup {#codec-server-setup}
 
@@ -76,11 +79,11 @@ Decoded payloads can then be displayed in the Workflow Execution Event History o
 Because you create, operate, and manage access to your Codec Server in your controlled environment, ensure that you consider the following:
 
 - When you register a Codec Server endpoint with your Web UI, expect the Codec Server to receive multiple requests per Workflow Execution.
-- Ensure that you secure access to your Codec Server. For details, see [Authorization](#authorization). You might need some form of [Key management infrastructure](/dataconversion#key-management) for sharing your encryption keys between the Workers and your Codec Server.
+- Ensure that you secure access to your Codec Server. For details, see [Authorization](#authorization). You might need some form of [Key management infrastructure](/key-management) for sharing your encryption keys between the Workers and your Codec Server.
 - You will need to enable [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) on the HTTP/HTTPS endpoints in your Codec Server to receive requests from the Temporal Web UI.
 - You may introduce latency in the Web UI when sending and receiving payloads to the Codec Server.
 
-Your Codec Server should share logic with the custom [Payload Codec](/dataconversion#payload-codec) used elsewhere in your application.
+Your Codec Server should share logic with the custom [Payload Codec](/payload-codec) used elsewhere in your application.
 
 ### API contract specifications
 
@@ -96,6 +99,7 @@ For examples on how to create your Codec Server, see the following Codec Server 
 - [Java](https://github.com/temporalio/sdk-java/tree/master/temporal-remote-data-encoder)
 - [Python](https://github.com/temporalio/samples-python/blob/main/encryption/codec_server.py)
 - [TypeScript](https://github.com/temporalio/samples-typescript/blob/main/encryption/src/codec-server.ts)
+- [.NET](https://github.com/temporalio/samples-dotnet/blob/main/src/Encryption/CodecServer/Program.cs)
 
 You can also add a [verification step](#authorization) to check whether the incoming request has the required authorization to access the decode logic in your Payload Codec.
 
@@ -260,18 +264,10 @@ After you create your Codec Server and expose the requisite endpoints, set the e
 
 On Temporal Cloud and self-hosted Temporal Service, you can configure a Codec Server endpoint to be used for a Namespace in the Web UI.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Codec Server endpoint Namespace setting</p>
-  </div>
-  <div className="tdiiw" height="840">
-    <img
-      className="img_ev3q"
-      src="/img/set-codec-endpoint-form.png"
-      alt="Codec Server endpoint Namespace setting"
-    />
-  </div>
-</div>
+<CaptionedImage
+    src="/img/info/set-codec-endpoint-form.png"
+    title="Codec Server endpoint Namespace setting"
+/>
 
 To set a Codec Server endpoint on a Namespace, do the following.
 
@@ -286,18 +282,10 @@ Setting a Codec Server endpoint on a self-hosted Temporal Service enables it for
 
 You can also override the global Codec Server setting at the browser level. This can be useful when developing, testing, or troubleshooting encoding functionality.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Codec Server endpoint browser setting</p>
-  </div>
-  <div className="tdiiw" height="333">
-    <img
-      className="img_ev3q"
-      src="/img/data-encoder-button.png"
-      alt="Codec Server endpoint browser setting"
-    />
-  </div>
-</div>
+<CaptionedImage
+    src="/img/info/data-encoder-button.png"
+    title="Codec Server endpoint browser setting"
+/>
 
 To set a browser override for the Namespace-level endpoint, do the following.
 

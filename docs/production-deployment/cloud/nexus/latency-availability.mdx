@@ -20,9 +20,11 @@ keywords:
   - service level agreement
 ---
 
+import { CaptionedImage } from '@site/src/components';
+
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
-Temporal Nexus is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+Temporal Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability).
 Learn why you should use Nexus in the [evaluation guide](/evaluate/nexus).
 
 :::
@@ -38,14 +40,17 @@ Nexus supports various [latency metrics](/nexus/metrics).
 Nexus interactions between a Worker and Temporal Cloud use the Worker's Namespace gRPC endpoint.
 Nexus-related Worker interactions with Temporal Cloud have the same [latency SLOs](/cloud/service-availability#latency) and [availability SLAs](/cloud/sla) as other calls to a Namespaces's gRPC endpoint.
 
-![Interaction between Workers and Temporal Cloud](/img/nexus/nexus-workers-short.png)
+<CaptionedImage
+    src="/img/cloud/nexus/nexus-workers-short.png"
+    title="Interaction between Workers and Temporal Cloud"
+/>
 
 This applies to the following Nexus-related interactions between a Worker and Temporal Cloud:
 
 - Caller Namespace
   - RespondWorkflowTaskCompleted \- schedule a Nexus Operation.
 - Handler Namespace
-  - PollNexusTaskQueue \- get a [Nexus Task](/workers#nexus-task) to process, for example to start a Nexus Operation.
+  - PollNexusTaskQueue \- get a [Nexus Task](/tasks#nexus-task) to process, for example to start a Nexus Operation.
   - RespondNexusTaskCompleted \- report the Nexus Task was successful.
   - RespondNexusTaskFailed \- report the Nexus Task failed.
 

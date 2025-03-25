@@ -28,6 +28,8 @@ tags:
   - Temporal SDKs
 ---
 
+import { CaptionedImage } from '@site/src/components';
+
 The definition code of a Temporal Workflow must be deterministic because Temporal uses event sourcing
 to reconstruct the Workflow state by replaying the saved history event data on the Workflow
 definition code. This means that any incompatible update to the Workflow Definition code could cause
@@ -113,30 +115,15 @@ Implementing patching involves three steps:
 2. Remove the old code and apply [deprecate_patch](https://python.temporal.io/temporalio.workflow.html#deprecate_patch).
 3. Once you're confident that all old Workflows have finished executing, remove `deprecate_patch`.
 
-<div className="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_4_patch_complete_dacx.py">
-    View the source code
-  </a>{' '}
-  in the context of the rest of the application code.
-</div>
-
-```python
-# ...
-@workflow.defn
-class MyWorkflow:
-    @workflow.run
-    async def run(self) -> None:
-        self._result = await workflow.execute_activity(
-            post_patch_activity,
-            schedule_to_close_timeout=timedelta(minutes=5),
-        )
-```
-
 ### Patching in new code {#using-patched-for-workflow-history-markers}
 
 Using `patched` inserts a marker into the Workflow History.
 
-![image](https://user-images.githubusercontent.com/6764957/139673361-35d61b38-ab94-401e-ae7b-feaa52eae8c6.png)
+<CaptionedImage
+    src="https://user-images.githubusercontent.com/6764957/139673361-35d61b38-ab94-401e-ae7b-feaa52eae8c6.png"
+    title="Using `patched` inserts a marker into the Workflow History"
+    zoom="true"
+/>
 
 During replay, if a Worker encounters a history with that marker, it will fail the Workflow task when the Workflow code doesn't produce the same patch marker (in this case, `my-patch`). This ensures you can safely deploy code from `post_patch_activity` as a "feature flag" alongside the original version (`pre_patch_activity`).
 
@@ -220,113 +207,10 @@ class MyWorkflow:
 
 ## How to use Worker Versioning in Python {#worker-versioning}
 
-:::caution
+This feature is coming soon!
 
-Worker Versioning is currently in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+For now, please join #safe-deploys in our [Community Slack](https://temporal.io/slack) to find the latest status and pre-release docs.
 
-See the [Pre-release README](https://github.com/temporalio/temporal/blob/main/docs/worker-versioning.md) for more information.
+If you were using a previous pre-release version of Worker Versioning, it's now deprecated.
 
-:::
-
-A Build ID corresponds to a deployment. If you don't already have one, we recommend a hash of the code--such as a Git SHA--combined with a human-readable timestamp.
-To use [Worker Versioning](/workers#worker-versioning), you need to pass a Build ID to your Java Worker and opt in to Worker Versioning.
-
-### Assign a Build ID to your Worker and opt in to Worker Versioning
-
-You should understand assignment rules before completing this step.
-See the [Worker Versioning Pre-release README](https://github.com/temporalio/temporal/blob/main/docs/worker-versioning.md) for more information.
-
-To enable Worker Versioning for your Worker, assign the Build ID--perhaps from an environment variable--and turn it on.
-
-```python
-# ...
-worker = Worker(
-  task_queue="your_task_queue_name",
-  build_id=build_id,
-  use_worker_versioning=True,
-  # ... register workflows & activities, etc
-)
-# ...
-```
-
-:::warning
-
-Importantly, when you start this Worker, it won't receive any tasks until you set up assignment rules.
-
-:::
-
-### Specify versions for Activities, Child Workflows, and Continue-as-New Workflows
-
-:::caution
-
-Python support for this feature is under construction!
-
-:::
-
-By default, Activities, Child Workflows, and Continue-as-New Workflows are run on the build of the workflow that created them if they are also configured to run on the same Task Queue.
-When configured to run on a separate Task Queue, they will default to using the current assignment rules.
-
-If you want to override this behavior, you can specify your intent via the `versioning_intent` argument available on the methods you use to invoke these commands.
-
-For example, if you want an Activity to use the latest assignment rules rather than inheriting from its parent:
-
-```python
-# ...
-await workflow.execute_activity(
-    say_hello,
-    "hi",
-    versioning_intent=VersioningIntent.USE_ASSIGNMENT_RULES,
-    start_to_close_timeout=timedelta(seconds=5),
-)
-# ...
-```
-
-### Tell the Task Queue about your Worker's Build ID (Deprecated)
-
-:::caution
-
-This section is for a previous Worker Versioning API that is deprecated and will go away at some point. Please redirect your attention to [Worker Versioning](/workers#worker-versioning).
-
-:::
-
-Now you can use the SDK (or the Temporal CLI) to tell the Task Queue about your Worker's Build ID.
-You might want to do this as part of your CI deployment process.
-
-```python
-# ...
-await client.update_worker_build_id_compatibility(
-    "your_task_queue_name", BuildIdOpAddNewDefault("deadbeef")
-)
-```
-
-This code adds the `deadbeef` Build ID to the Task Queue as the sole version in a new version set, which becomes the default for the queue.
-New Workflows execute on Workers with this Build ID, and existing ones will continue to process by appropriately compatible Workers.
-
-If, instead, you want to add the Build ID to an existing compatible set, you can do this:
-
-```python
-# ...
-await client.update_worker_build_id_compatibility(
-    "your_task_queue_name", BuildIdOpAddNewCompatible("deadbeef", "some-existing-build-id")
-)
-```
-
-This code adds `deadbeef` to the existing compatible set containing `some-existing-build-id` and marks it as the new default Build ID for that set.
-
-You can also promote an existing Build ID in a set to be the default for that set:
-
-```python
-# ...
-await client.update_worker_build_id_compatibility(
-    "your_task_queue_name", BuildIdOpPromoteBuildIdWithinSet("deadbeef")
-)
-```
-
-You can also promote an entire set to become the default set for the queue. New Workflows will start using that set's default build.
-
-```python
-# ...
-await client.update_worker_build_id_compatibility(
-    "your_task_queue_name", BuildIdOpPromoteSetByBuildId("deadbeef")
-)
-```
+See [Legacy Worker Versioning](worker-versioning-legacy) if you still need those docs.

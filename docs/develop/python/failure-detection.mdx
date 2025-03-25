@@ -24,15 +24,15 @@ description: Learn how to set Workflow and Activity timeouts, retries, retry pol
 
 This page shows how to do the following:
 
-- [Set Workflow timeouts](#workflow-timeouts)
-- [set Workflow retries](#workflow-retries)
-- [Set Activity timeouts](#activity-timeouts)
+- [Set Workflow Timeouts](#workflow-timeouts)
+- [Set Workflow Retries](#workflow-retries)
+- [Set Activity Timeouts](#activity-timeouts)
 - [Set an Activity Retry Policy](#activity-retries)
 - [Heartbeat an Activity](#activity-heartbeats)
 
 ## Workflow timeouts {#workflow-timeouts}
 
-**How to set Workflow timeouts using the Temporal Python SDK.**
+**How to set Workflow timeouts using the Temporal Python SDK**
 
 Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
 
@@ -73,7 +73,7 @@ Available timeouts are:
 
 ### Workflow retries {#workflow-retries}
 
-**How to set a Workflow Retry Policy using the Temporal Python SDK.**
+**How to set a Workflow Retry Policy using the Temporal Python SDK**
 
 A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
@@ -103,15 +103,15 @@ Set the Retry Policy to either the [`start_workflow()`](https://python.temporal.
 
 ## Set Activity timeouts {#activity-timeouts}
 
-**How to set an Activity Execution Timeout using the Temporal Python SDK.**
+**How to set an Activity Execution Timeout using the Temporal Python SDK**
 
 Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
 
 The following timeouts are available in the Activity Options.
 
 - **[Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout):** is the maximum amount of time allowed for the overall [Activity Execution](/activities#activity-execution).
-- **[Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout):** is the maximum time allowed for a single [Activity Task Execution](/workers#activity-task-execution).
-- **[Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout):** is the maximum amount of time that is allowed from when an [Activity Task](/workers#activity-task) is scheduled to when a [Worker](/workers#worker) starts that Activity Task.
+- **[Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout):** is the maximum time allowed for a single [Activity Task Execution](/tasks#activity-task-execution).
+- **[Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout):** is the maximum amount of time that is allowed from when an [Activity Task](/tasks#activity-task) is scheduled to when a [Worker](/workers#worker) starts that Activity Task.
 
 An Activity Execution must have either the Start-To-Close or the Schedule-To-Close Timeout set.
 
@@ -144,7 +144,7 @@ Available timeouts are:
 
 ### Set an Activity Retry Policy {#activity-retries}
 
-**How to set an Activity Retry Policy using the Temporal Python SDK.**
+**How to set an Activity Retry Policy using the Temporal Python SDK**
 
 A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
@@ -205,11 +205,11 @@ async def my_activity(input: MyActivityInput):
 
 ## Heartbeat an Activity {#activity-heartbeats}
 
-**How to Heartbeat an Activity using the Temporal Python SDK.**
+**How to Heartbeat an Activity using the Temporal Python SDK**
 
 An [Activity Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Service](/clusters).
 Each Heartbeat informs the Temporal Service that the [Activity Execution](/activities#activity-execution) is making progress and the Worker has not crashed.
-If the Temporal Service does not receive a Heartbeat within a [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) time period, the Activity will be considered failed and another [Activity Task Execution](/workers#activity-task-execution) may be scheduled according to the Retry Policy.
+If the Temporal Service does not receive a Heartbeat within a [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) time period, the Activity will be considered failed and another [Activity Task Execution](/tasks#activity-task-execution) may be scheduled according to the Retry Policy.
 
 Heartbeats may not always be sent to the Temporal Service—they may be [throttled](/encyclopedia/detecting-activity-failures#throttling) by the Worker.
 
@@ -232,7 +232,7 @@ If an Activity calls `heartbeat(123, 456)` and then fails and is retried, `heart
 
 #### Set a Heartbeat Timeout {#heartbeat-timeout}
 
-**How to set a Heartbeat Timeout using the Temporal Python SDK.**
+**How to set a Heartbeat Timeout using the Temporal Python SDK**
 
 A [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) works in conjunction with [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat).
 

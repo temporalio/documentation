@@ -14,48 +14,9 @@ tags:
   - Temporal Cloud
 ---
 
-The operating envelope of Temporal Cloud includes availability, regions, throughput, latency, and limits.
+The operating envelope of Temporal Cloud includes throughput, latency, and limits.
+Service regions are listed on [this page](/cloud/regions).
 If you need more details, [contact us](https://pages.temporal.io/contact-us).
-
-## Available regions {#regions}
-
-**Where is Temporal Cloud available?**
-
-Developers and applications can access Temporal Cloud from any location with internet connectivity, irrespective of where the Temporal Cloud resources (Namespaces) are located.
-
-Temporal Cloud is compatible with applications deployed in various cloud environments or data centers.
-
-To minimize latency, we advise creating your Namespace in a region geographically close to your Workers' hosting location.
-
-### AWS
-
-Temporal Cloud operates in several regions on Amazon Web Services (AWS):
-
-| Area          | Code           | Region            |
-| ------------- | -------------- | ----------------- |
-| Asia Pacific  | ap-northeast-1 | Tokyo             |
-| Asia Pacific  | ap-northeast-2 | Seoul             |
-| Asia Pacific  | ap-south-1     | Mumbai            |
-| Asia Pacific  | ap-south-2     | Hyderabad         |
-| Asia Pacific  | ap-southeast-1 | Singapore         |
-| Asia Pacific  | ap-southeast-2 | Sydney            |
-| Europe        | eu-central-1   | Frankfurt         |
-| Europe        | eu-west-1      | Ireland           |
-| Europe        | eu-west-2      | London            |
-| North America | ca-central-1   | Central Canada    |
-| North America | us-east-1      | Northern Virginia |
-| North America | us-east-2      | Ohio              |
-| North America | us-west-2      | Oregon            |
-| South America | sa-east-1      | São Paulo         |
-
-### GCP
-
-Temporal Cloud operates in two regions on Google Cloud (GCP):
-
-| Area          | Code        | Region |
-| ------------- | ----------- | ------ |
-| North America | us-west1    | Oregon |
-| Asia Pacific  | asia-south1 | Mumbai |
 
 ## Throughput expectations {#throughput}
 
@@ -71,7 +32,7 @@ Throttling means limiting the rate at which Actions are performed to prevent the
 Critical calls to external events, such starting or Signaling a Workflow, are always prioritized and never throttled.
 There are four priority levels for Temporal Cloud API calls:
 
-1. External events
+1. External events (Critical calls)
 2. Workflow progress updates
 3. Visibility API calls
 4. Cloud operations such as Namespace creation

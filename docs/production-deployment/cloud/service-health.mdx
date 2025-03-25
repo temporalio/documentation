@@ -69,9 +69,9 @@ avg_over_time((
     )[1d:10m])
 ```
 
-## Monitor multi-region Namespace replication lag
+## Monitor replication lag for Namespaces with High Availability features
 
-Replication lag refers to the transmission delay of Workflow updates and history events from the active region to the standby region.
+Replication lag refers to the transmission delay of Workflow updates and history events from the primary Namespace to the replica.
 Always check the [metric replication lag](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_replication_lag_bucket) before initiating a failover.
 A forced failover when there is a large replication lag has a higher likelihood of rolling back Workflow progress.
 
@@ -81,7 +81,7 @@ Temporal owns replication lag.
 **What guarantees are available?**
 There is no SLA for replication lag.
 Temporal recommends that customers do not trigger failovers except for testing or emergency situations.
-Multi-region's four-9 guarantee SLA means Temporal will handle failovers and ensure high availability.
+High Availability feature's four-9 guarantee SLA means Temporal will handle failovers and ensure high availability.
 Temporal also monitors replication lag.
 Customer who decide to trigger failovers should look at this metric before moving forward.
 
@@ -90,7 +90,7 @@ We don't expect users to failover.
 Please contact Temporal support if you feel you have a pressing need.
 
 **Where can you read more?**
-See [multi-region Namespaces](/cloud/multi-region).
+See [operations and metrics](/cloud/high-availability) for Namespaces with High Availability features.
 
 ### Reference Metrics
 

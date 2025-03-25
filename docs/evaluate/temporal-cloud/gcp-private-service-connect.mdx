@@ -1,0 +1,112 @@
+---
+id: gcp-private-service-connect
+title: Private Communication - GCP Private Service Connect
+sidebar_label: GCP Private Service Connect
+description: Secure your Temporal Cloud connections using GCP Private Service Connect.
+slug: /cloud/security/gcp-private-service-connect
+toc_max_heading_level: 4
+keywords:
+  - private service connect
+  - private connectivity
+  - security
+  - temporal cloud
+  - gcp
+  - google cloud
+tags:
+  - security
+  - temporal-cloud
+  - gcp
+  - google cloud
+  - private service connect
+  - private-connectivity
+---
+
+import * as Components from '@site/src/components';
+
+#### Google Cloud Private Service Connect
+
+[Google Cloud Private Service Connect](https://cloud.google.com/vpc/docs/private-service-connect) allows you to open a path to Temporal without opening a public egress.
+It establishes a private connection between your Google Virtual Private Cloud (VPC) and Temporal Cloud.
+This one-way connection means Temporal cannot establish a connection back to your service.
+This is useful if normally you block traffic egress as part of your security protocols.
+If you use a private environment that does not allow external connectivity, you will remain isolated.
+
+:::note
+
+If you are interested in leveraging Google Cloud Private Service Connect in your Namespaces, [create a support ticket](/cloud/support#support-ticket) that includes the following information:
+
+- Google Cloud Region: The Region in which your connection will go through.
+- Google Cloud Project Id: The project that you will establish the private connection from, so it can be allowed on the Temporal side.
+- Temporal Cloud Namespace names: The name of the Namespaces you want to enable Google Cloud Private Service Connect with.
+
+:::
+
+Set up Private Service Connect with Temporal Cloud with these steps:
+
+1. Open the Google Cloud console
+2. Navigate to **Network Services**, then **Private Service Connect**. If you haven't used **Network Services** recently, you might have to find it by clicking on **View All Products** at the bottom of the left sidebar.
+
+   ![GCP console showing Network Services, and the View All Products button](/img/cloud/gcp/gcp-console.png)
+
+3. Go to the **Endpoints** section. Click on **Connect endpoint**.
+
+   ![GCP console showing the endpoints, and the Connect endpoint button](/img/cloud/gcp/connect-endpoint-button.png)
+
+4. Under **Target**, select **Published service**, this will change the contents of the form to allow you to fill the rest as described below
+
+   ![GCP console showing the endpoints, and the Connect endpoint button](/img/cloud/gcp/connect-endpoint.png)
+
+  - For **Target service**, fill in the **Service name** with the Private Service Connect Service Name for the region you’re trying to connect to:
+
+      | Region                 | Private Service Connect Service Name                                                      |
+      | ---------------------- | ----------------------------------------------------------------------------------------- |
+      | `asia-south1`          | `projects/prod-d5spc2sfeshws33bg33vwdef7/regions/asia-south1/serviceAttachments/pl-7w7tw` |
+      | `us-west1   `          | `projects/prod-rbe76zxxzydz4cbdz2xt5b59q/regions/us-west1/serviceAttachments/pl-94w0x`    |
+
+  - For **Endpoint name**, enter a unique identifier to use for this endpoint. It could be for instance `temporal-api` or `temporal-api-<namespace>` if you want a different endpoint per namespace.
+  - For **Network** and **Subnetwork**, choose the network and subnetwork where you want to publish your endpoint.
+  - For **IP address**, click the dropdown and select **Create IP address** to create an internal IP from your subnet dedicated to the endpoint. Select this IP.
+  - Check **Enable global access** if you intend to connect the endpoint to virtual machines outside of the selected region. We recommend regional connectivity instead of global access, as it can be better in terms of latency for your workers.
+
+5. Click the **Add endpoint** button at the bottom of the screen.
+   If successful, the status of your new endpoint will appear as **Accepted**.
+   Take note of the **IP address** that has been assigned to your endpoint, as it will be used to connect to Temporal Cloud.
+
+6. You can use GCP Private Service Connect.
+    You can use the **IP address** of the previous step to connect to Temporal Cloud using port 7233.
+    To establish a valid mTLS session, you must override the TLS server name used for the connection to `<namespace>.<account>.tmprl.cloud`.
+
+
+:::tip
+
+GCP Private Service Connect services are regional.
+Individual Namespaces do not use separate services.
+
+:::
+
+Once set up, you can test your Private Service Connect connectivity using the following methods.
+When connecting, you must override the TLS server name to target your Namespace’s individual hostname (`<namespace>.<account>.tmprl.cloud`) to establish a valid mTLS session:
+
+- The Temporal CLI, using the `--tls-server-name` parameter to override the TLS server name. For example:
+
+  ```
+  temporal workflow count \
+      --address <IP address of the PSC endpoint>:7233 \
+      --tls-cert-path /path/to/client.pem \
+      --tls-key-path /path/to/client.key \
+      --tls-server-name <namespace>.<account>.tmprl.cloud \
+      --namespace <namespace>
+  ```
+
+- Non-Temporal tools like grpcURL, useful for testing from environments that restrict tool usage, using the `-servername` parameter to override the TLS server name. For example:
+
+  ```
+  grpcurl \
+      -servername <name>.<account>.tmprl.cloud \
+      -cert /path/to/client.pem \
+      -key /path/to/client.key \
+      <IP address of the PSC endpoint>:7233 \
+      temporal.api.workflowservice.v1.WorkflowService/GetSystemInfo
+  ```
+
+- Temporal SDKs, by setting the endpoint server address argument to the Private Service Connect endpoint (`<IP address of the PSC endpoint>:7233`) and using the TLS configuration options to override the TLS server name.

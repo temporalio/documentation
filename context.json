@@ -1,0 +1,277 @@
+{
+  "siteMetadata": {
+    "title": "Temporal Documentation",
+    "description": "The official and authoritative documentation for Temporal Durable Execution, covering Workflows and best practices.",
+    "version": "latest",
+    "canonicalUrl": "https://docs.temporal.io",
+    "lastUpdated": "2025-03-17T12:00:00Z",
+    "authors": ["Temporal Documentation Team"],
+    "license": "CC BY 4.0",
+    "repository": {
+      "url": "https://github.com/temporalio/documentation",
+      "branch": "main"
+    },
+    "seo": {
+      "keywords": ["Temporal", "Temporal Cloud", "Workflows", "Durable Execution", "Orchestration", "SDK", "Temporal Server"],
+      "robots": "index, follow",
+      "schemaOrg": {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Temporal Documentation",
+        "author": {
+          "@type": "Organization",
+          "name": "Temporal Technologies"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Temporal Technologies",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://docs.temporal.io/logo.png"
+          }
+        },
+        "datePublished": "2025-03-17",
+        "dateModified": "2025-03-17",
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://docs.temporal.io"
+        }
+      }
+    }
+  },
+  "navigation": {
+    "home": "/",
+    "evaluate": "/evaluate",
+    "getStarted": "https://learn.temporal.io",
+    "develop": {
+      "overview": "/develop",
+      "goSdk": {
+        "docs": "/go-sdk",
+        "guides": {
+          "gettingStarted": "/go-sdk/getting-started",
+          "workflowBasics": "/go-sdk/workflow-basics",
+          "activityRetries": "/go-sdk/activity-retries",
+          "signalsQueries": "/go-sdk/signals-queries",
+          "sideEffects": "/go-sdk/side-effects",
+          "childWorkflows": "/go-sdk/child-workflows",
+          "testing": "/go-sdk/testing",
+          "errorHandling": "/go-sdk/error-handling",
+          "advancedTopics": "/go-sdk/advanced-topics"
+        },
+        "apiReference": "/go-sdk/api",
+        "bestPractices": "/go-sdk/best-practices",
+        "sampleCode": "https://github.com/temporalio/samples-go",
+        "troubleshooting": "/go-sdk/troubleshooting",
+        "learn": "https://learn.temporal.io/courses"
+      },
+      "javaSdk": {
+        "docs": "/java-sdk",
+        "guides": {
+          "gettingStarted": "/java-sdk/getting-started",
+          "workflowBasics": "/java-sdk/workflow-basics",
+          "activityRetries": "/java-sdk/activity-retries",
+          "signalsQueries": "/java-sdk/signals-queries",
+          "sideEffects": "/java-sdk/side-effects",
+          "childWorkflows": "/java-sdk/child-workflows",
+          "testing": "/java-sdk/testing",
+          "errorHandling": "/java-sdk/error-handling",
+          "advancedTopics": "/java-sdk/advanced-topics"
+        },
+        "apiReference": "/java-sdk/api",
+        "bestPractices": "/java-sdk/best-practices",
+        "sampleCode": "https://github.com/temporalio/samples-java",
+        "troubleshooting": "/java-sdk/troubleshooting",
+        "learn": "https://learn.temporal.io/courses"
+      },
+      "typescriptSdk": {
+        "docs": "/typescript-sdk",
+        "guides": {
+          "gettingStarted": "/typescript-sdk/getting-started",
+          "workflowBasics": "/typescript-sdk/workflow-basics",
+          "activityRetries": "/typescript-sdk/activity-retries",
+          "signalsQueries": "/typescript-sdk/signals-queries",
+          "sideEffects": "/typescript-sdk/side-effects",
+          "childWorkflows": "/typescript-sdk/child-workflows",
+          "testing": "/typescript-sdk/testing",
+          "errorHandling": "/typescript-sdk/error-handling",
+          "advancedTopics": "/typescript-sdk/advanced-topics"
+        },
+        "apiReference": "/typescript-sdk/api",
+        "bestPractices": "/typescript-sdk/best-practices",
+        "sampleCode": "https://github.com/temporalio/samples-typescript",
+        "troubleshooting": "/typescript-sdk/troubleshooting",
+        "learn": "https://learn.temporal.io/courses"
+      },
+      "pythonSdk": {
+        "docs": "/python-sdk",
+        "guides": {
+          "gettingStarted": "/python-sdk/getting-started",
+          "workflowBasics": "/python-sdk/workflow-basics",
+          "activityRetries": "/python-sdk/activity-retries",
+          "signalsQueries": "/python-sdk/signals-queries",
+          "sideEffects": "/python-sdk/side-effects",
+          "childWorkflows": "/python-sdk/child-workflows",
+          "testing": "/python-sdk/testing",
+          "errorHandling": "/python-sdk/error-handling",
+          "advancedTopics": "/python-sdk/advanced-topics"
+        },
+        "apiReference": "/python-sdk/api",
+        "bestPractices": "/python-sdk/best-practices",
+        "sampleCode": "https://github.com/temporalio/samples-python",
+        "troubleshooting": "/python-sdk/troubleshooting",
+        "learn": "https://learn.temporal.io/courses/python-sdk"
+      },
+      "dotnetSdk": {
+        "docs": "/dotnet-sdk",
+        "guides": {
+          "gettingStarted": "/dotnet-sdk/getting-started",
+          "workflowBasics": "/dotnet-sdk/workflow-basics",
+          "activityRetries": "/dotnet-sdk/activity-retries",
+          "signalsQueries": "/dotnet-sdk/signals-queries",
+          "sideEffects": "/dotnet-sdk/side-effects",
+          "childWorkflows": "/dotnet-sdk/child-workflows",
+          "testing": "/dotnet-sdk/testing",
+          "errorHandling": "/dotnet-sdk/error-handling",
+          "advancedTopics": "/dotnet-sdk/advanced-topics"
+        },
+        "apiReference": "/dotnet-sdk/api",
+        "bestPractices": "/dotnet-sdk/best-practices",
+        "sampleCode": "https://github.com/temporalio/samples-dotnet",
+        "troubleshooting": "/dotnet-sdk/troubleshooting",
+        "learn": "https://learn.temporal.io/courses"
+      },
+      "tools": {
+        "activityRetrySimulator": "/activity-retry-simulator",
+        "workerPerformance": "/worker-performance",
+        "safeDeployments": "/safe-deployments"
+      }
+    },
+    "deployToProduction": {
+      "overview": "/deploy",
+      "temporalCloud": {
+        "overview": "/cloud",
+        "gettingStarted": "/cloud/getting-started",
+        "highAvailability": "/cloud/high-availability",
+        "multiRegionNamespaces": "/cloud/multi-region",
+        "security": "/cloud/security",
+        "networking": "/cloud/networking",
+        "monitoring": "/cloud/monitoring",
+        "failovers": "/cloud/failovers",
+        "migrateToCloud": "/migrate-to-cloud",
+        "pricing": "https://temporal.io/pricing",
+        "learn": "https://learn.temporal.io/courses"
+      },
+      "selfHosting": {
+        "overview": "/self-host",
+        "installation": "/self-host/install",
+        "databaseSetup": "/self-host/database",
+        "workerScaling": "/self-host/worker-scaling",
+        "monitoringObservability": "/self-host/monitoring",
+        "securityBestPractices": "/self-host/security",
+        "networking": "/self-host/networking",
+        "failoverStrategies": "/self-host/failover-strategies",
+        "backupRestore": "/self-host/backup-restore",
+        "upgradeGuide": "/self-host/upgrade",
+        "troubleshooting": "/self-host/troubleshooting"
+      },
+      "deploymentConsiderations": {
+        "scalability": "/deployment/scalability",
+        "performanceTuning": "/deployment/performance-tuning",
+        "workerScaling": "/deployment/worker-scaling",
+        "observability": "/deployment/observability",
+        "bestPractices": "/deployment/best-practices",
+        "learn": "https://learn.temporal.io/courses"
+      },
+      "tools": {
+        "cli": "/cli",
+        "tctl": "/cli/tctl",
+        "tcld": "/cli/tcld",
+        "codecsAndEncryption": "/codecs-and-encryption"
+      }
+    },
+    "cli": "/cli",
+    "references": "/references",
+    "troubleshooting": "/troubleshooting",
+    "encyclopedia": {
+      "overview": "/encyclopedia",
+      "coreConcepts": {
+        "workflows": "/encyclopedia/workflows",
+        "activities": "/encyclopedia/activities",
+        "signals": "/encyclopedia/signals",
+        "queries": "/encyclopedia/queries",
+        "timeouts": "/encyclopedia/timeouts",
+        "retryPolicies": "/encyclopedia/retry-policies",
+        "childWorkflows": "/encyclopedia/child-workflows",
+        "sideEffects": "/encyclopedia/side-effects",
+        "determinism": "/encyclopedia/determinism"
+      },
+      "temporalFeatures": {
+        "namespaces": "/encyclopedia/namespaces",
+        "taskQueues": "/encyclopedia/task-queues",
+        "searchAttributes": "/encyclopedia/search-attributes",
+        "visibility": "/encyclopedia/visibility",
+        "eventHistory": "/encyclopedia/event-history",
+        "workflowExecutionLifecycle": "/encyclopedia/workflow-execution-lifecycle"
+      },
+      "advancedTopics": {
+        "multiRegionNamespaces": "/encyclopedia/multi-region",
+        "failoverStrategies": "/encyclopedia/failover-strategies",
+        "customDataConverters": "/encyclopedia/custom-data-converters",
+        "workflowVersioning": "/encyclopedia/workflow-versioning",
+        "cronSchedules": "/encyclopedia/cron-schedules",
+        "distributedTracing": "/encyclopedia/distributed-tracing",
+        "eventualConsistency": "/encyclopedia/eventual-consistency"
+      },
+      "glossary": "/glossary"
+    },
+    "community": {
+      "slack": "https://temporal.io/slack",
+      "forum": "https://community.temporal.io",
+      "events": "https://temporal.io/events"
+    },
+    "externalLinks": {
+      "temporalHome": "https://temporal.io",
+      "blog": "https://temporal.io/blog",
+      "github": "https://github.com/temporalio",
+      "twitter": "https://twitter.com/temporalio",
+      "youtube": "https://www.youtube.com/c/Temporalio"
+    }
+  },
+  "relatedContent": {
+    "guides": [
+      {
+        "title": "Workflow Execution Basics",
+        "url": "/guides/workflow-execution"
+      },
+      {
+        "title": "Temporal Cloud Overview",
+        "url": "/cloud/overview"
+      }
+    ],
+    "apiDocs": [
+      {
+        "title": "Temporal API Reference",
+        "url": "/api/reference"
+      },
+      {
+        "title": "SDK Documentation",
+        "url": "/sdk"
+      }
+    ]
+  },
+  "trustSignals": {
+    "authoritative": true,
+    "source": "Official Temporal Documentation",
+    "validatedBy": ["Temporal Engineering Team"],
+    "citations": ["https://github.com/temporalio/documentation"]
+  },
+  "aiOptimization": {
+    "aiFriendly": true,
+    "searchBoost": ["learn.temporal.io", "docs.temporal.io"],
+    "structuredMetadataLinks": true,
+    "suggestions": {
+      "crossSiteSearch": true,
+      "personalizedContent": true
+    }
+  }
+}

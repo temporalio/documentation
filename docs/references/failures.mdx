@@ -33,7 +33,7 @@ The base [Failure proto message](https://api-docs.temporal.io/#temporal.api.fail
 - `string stack_trace`
 - `string source`: The SDK this Failure originated in (for example, `"TypeScriptSDK"`). In some SDKs, this field is used to rehydrate the call stack into an exception object.
 - `Failure cause`: The `Failure` message of the cause of this Failure (if applicable).
-- `Payload encoded_attributes`: Contains the encoded `message` and `stack_trace` fields when using a [Failure Converter](/dataconversion#failure-converter).
+- `Payload encoded_attributes`: Contains the encoded `message` and `stack_trace` fields when using a [Failure Converter](/failure-converter).
 
 ## Application Failure
 
@@ -52,21 +52,22 @@ This is the only type of Temporal Failure created and thrown by user code.
 An error in a Workflow can cause either a **Workflow Task Failure** (the Task will be retried) or a **Workflow Execution Failure** (the Workflow is marked as failed).
 
 Only Workflow exceptions that are Temporal Failures cause the Workflow Execution to fail; all other exceptions cause the Workflow Task to fail and be retried (in Go, any error returned from the Workflow fails the Workflow Execution, and a panic fails the Workflow Task).
-Most types of Temporal Failures occur automatically, like a [Cancelled Failure](#cancelled-failure) when the Workflow is Cancelled or an [Activity Failure](#activity-failure) when an Activity Fails.
-You can also explicitly fail the Workflow Execution by throwing an Application Failure (returning any error in Go).
+Most types of Temporal Failures are raised by the Temporal Service, like a [Cancelled Failure](#cancelled-failure) when the Workflow is Cancelled or an [Activity Failure](#activity-failure) when an Activity fails.
+In contrast, you can explicitly fail the Workflow Execution by throwing an Application Failure (returning any error in Go) in Workflow Definition code.
 
 #### Workflow Task Failures
 
 A **Workflow Task Failure** is an unexpected situation failing to process a Workflow Task.
-This could be triggered by raising an exception in your Workflow code.
+This could be triggered by a non-Temporal exception being raised (panicking in Go) in your Workflow code.
 Any exception that does not extend Temporal's `FailureError` exception is considered a Workflow Task Failure.
-These types of failures will cause the Workflow Task to be retried.
+These types of failures will cause the Workflow Task to be retried until the
+Workflow Execution Timeout, which is unlimited by default.
 
 #### Workflow Execution Failures
 
 An `ApplicationError`, an extension of `FailureError`, can be raised in a Workflow to fail the Workflow Execution.
 Workflow Execution Failures put the Workflow Execution into the "Failed" state and no more attempts will be made in progressing this execution.
-If you are creating custom exceptions you would either need to extend the `ApplicationError` class—a child class of `FailureError`— or explicitly state that this exception is a Workflow Execution Failure by raising a new `ApplicationError`.
+If you are creating custom exceptions you would need to extend the [`ApplicationError`](https://docs.temporal.io/references/failures#application-failure) class—a child class of [`FailureError`](https://docs.temporal.io/references/failures#temporal-failure).
 
 ### Errors in Activities
 
@@ -82,7 +83,8 @@ During conversion, the following Application Failure fields are set:
 - `next_retry_delay` is left unset.
 - call stack is copied.
 
-When an [Activity Execution](/activities#activity-execution) fails, the Application Failure from the last Activity Task is the `cause` field of the [ActivityFailure](#activity-failure) thrown in the Workflow.
+When an [Activity Execution](/activities#activity-execution) fails, the Application Failure from the last Activity Task is the `cause` field of the [ActivityFailure](#activity-failure).
+This ActivityFailure is thrown by the Workflow's call to the Activity, and it can be handled in the Workflow Definition.
 
 ### Errors in Nexus Operations
 
@@ -150,7 +152,7 @@ Pending Nexus Operations: 1
   Endpoint                 myendpoint
   Service                  my-hello-service
   Operation                echo
-  OperationID
+  OperationToken
   State                    BackingOff
   Attempt                  6
   ScheduleToCloseTimeout   0s
@@ -248,7 +250,7 @@ For example, if an Activity Execution times out, the `cause` is a [Timeout Failu
 ## Nexus Operation Failure
 
 A Nexus Operation Failure is delivered to the Workflow Execution when a Nexus Operation fails.
-It contains information about the failure and the Nexus Operation Execution; for example, the Nexus Operation name and Nexus Operation ID.
+It contains information about the failure and the Nexus Operation Execution; for example, the Nexus Operation name and Nexus Operation token.
 The reason for the failure is in the message and cause (typically an Application Error or a Canceled Error).
 
 - Go: NexusOperationError

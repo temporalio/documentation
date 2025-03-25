@@ -31,12 +31,7 @@ This section covers features related to viewing the state of the application, in
 Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
 For a complete list of metrics capable of being emitted, see the [SDK metrics reference](/references/sdk-metrics).
 
-Metrics can be scraped and stored in time series databases, such as:
-
-- [Prometheus](https://prometheus.io/docs/introduction/overview/)
-- [M3db](https://m3db.io/docs/)
-- [statsd](https://github.com/statsd/statsd)
-
+Metrics can be scraped and stored in time series databases, such as [Prometheus](https://prometheus.io/docs/introduction/overview/).
 Temporal also provides a dashboard you can integrate with graphing services like [Grafana](https://grafana.com/docs/). For more information, see:
 
 - Temporal's implementation of the [Grafana dashboard](https://github.com/temporalio/dashboards)
@@ -418,14 +413,15 @@ The previous code example sets the default logger to log only messages with leve
 #### Accumulate logs for testing and reporting
 
 ```ts
-import { DefaultLogger, LogEntry } from '@temporalio/worker';
+import { DefaultLogger, LogEntry, LogLevel } from '@temporalio/worker';
 
 const logs: LogEntry[] = [];
-const logger = new DefaultLogger('TRACE', (entry) => logs.push(entry));
-log.debug('hey', { a: 1 });
-log.info('ho');
-log.warn('lets', { a: 1 });
-log.error('go');
+const logger = new DefaultLogger(LogLevel.TRACE, (entry) => logs.push(entry));
+
+logger.debug('hey', { a: 1 });
+logger.info('ho');
+logger.warn('lets', { a: 1 });
+logger.error('go');
 ```
 
 A common logging use case is logging to a file to be picked up by a collector like the [Datadog Agent](https://docs.datadoghq.com/logs/log_collection/nodejs/?tab=winston30).
@@ -452,11 +448,11 @@ The typical method of retrieving a Workflow Execution is by its Workflow Id.
 
 However, sometimes you'll want to retrieve one or more Workflow Executions based on another property. For example, imagine you want to get all Workflow Executions of a certain type that have failed within a time range, so that you can start new ones with the same arguments.
 
-You can do this with [Search Attributes](/visibility#search-attribute).
+You can do this with [Search Attributes](/search-attribute).
 
-- [Default Search Attributes](/visibility#default-search-attributes) like `WorkflowType`, `StartTime` and `ExecutionStatus` are automatically added to Workflow Executions.
+- [Default Search Attributes](/search-attribute#default-search-attribute) like `WorkflowType`, `StartTime` and `ExecutionStatus` are automatically added to Workflow Executions.
 - _Custom Search Attributes_ can contain their own domain-specific data (like `customerId` or `numItems`).
-  - A few [generic Custom Search Attributes](/visibility#custom-search-attributes) like `CustomKeywordField` and `CustomIntField` are created by default in Temporal's [Docker Compose](https://github.com/temporalio/docker-compose).
+  - A few [generic Custom Search Attributes](/search-attribute#custom-search-attribute) like `CustomKeywordField` and `CustomIntField` are created by default in Temporal's [Docker Compose](https://github.com/temporalio/docker-compose).
 
 The steps to using custom Search Attributes are:
 
@@ -467,7 +463,7 @@ The steps to using custom Search Attributes are:
 - Read the value of the Search Attribute:
   - On the Client by calling `DescribeWorkflow`.
   - In the Workflow by looking at `WorkflowInfo`.
-- Query Workflow Executions by the Search Attribute using a [List Filter](/visibility#list-filter):
+- Query Workflow Executions by the Search Attribute using a [List Filter](/list-filter):
   - [With the Temporal CLI](/cli/workflow#list).
   - In code by calling `ListWorkflowExecutions`.
 
@@ -484,7 +480,7 @@ const response = await connection.workflowService.listWorkflowExecutions({
 });
 ```
 
-where `query` is a [List Filter](/visibility#list-filter).
+where `query` is a [List Filter](/list-filter).
 
 ### How to set custom Search Attributes {#custom-search-attributes}
 

@@ -1146,11 +1146,11 @@
     },
     {
       "source": "/concepts/what-is-an-activity-task",
-      "destination": "/workers#activity-task"
+      "destination": "/tasks#activity-task"
     },
     {
       "source": "/concepts/what-is-an-activity-task-execution",
-      "destination": "/workers#activity-task-execution"
+      "destination": "/tasks#activity-task-execution"
     },
     {
       "source": "/concepts/what-is-an-activity-type",
@@ -1166,7 +1166,7 @@
     },
     {
       "source": "/concepts/what-is-a-child-workflow-execution",
-      "destination": "/workflows#child-workflow"
+      "destination": "/child-workflows"
     },
     {
       "source": "/concepts/what-is-a-command",
@@ -1202,7 +1202,7 @@
     },
     {
       "source": "/concepts/what-is-a-list-filter",
-      "destination": "/visibility#list-filter"
+      "destination": "/list-filter"
     },
     {
       "source": "/concepts/what-is-a-local-activity",
@@ -1218,7 +1218,15 @@
     },
     {
       "source": "/concepts/what-is-a-parent-close-policy",
-      "destination": "/workflows#parent-close-policy"
+      "destination": "/parent-close-policy"
+    },
+    {
+      "source": "/encyclopedia/child-workflows",
+      "destination": "/child-workflows"
+    },
+    {
+      "source": "/encyclopedia/child-workflows#parent-close-policy",
+      "destination": "/parent-close-policy"
     },
     {
       "source": "/concepts/what-is-a-query",
@@ -1242,7 +1250,7 @@
     },
     {
       "source": "/concepts/what-is-a-search-attribute",
-      "destination": "/visibility#search-attribute"
+      "destination": "/search-attribute"
     },
     {
       "source": "/concepts/what-is-a-side-effect",
@@ -1266,15 +1274,15 @@
     },
     {
       "source": "/concepts/what-is-a-sticky-execution",
-      "destination": "/workers#sticky-execution"
+      "destination": "/sticky-execution"
     },
     {
       "source": "/concepts/what-is-a-task-queue",
-      "destination": "/workers#task-queue"
+      "destination": "/task-queue"
     },
     {
       "source": "/concepts/what-is-task-routing",
-      "destination": "/workers#task-routing"
+      "destination": "/task-routing"
     },
     {
       "source": "/concepts/what-is-a-task-token",
@@ -1358,7 +1366,7 @@
     },
     {
       "source": "/concepts/what-is-a-workflow-task-execution",
-      "destination": "/workers#workflow-task-execution"
+      "destination": "/tasks#workflow-task-execution"
     },
     {
       "source": "/concepts/what-is-a-workflow-task-timeout",
@@ -1438,7 +1446,7 @@
     },
     {
       "source": "/filter-workflows",
-      "destination": "/visibility#list-filter"
+      "destination": "/list-filter"
     },
     {
       "source": "/go-queries",
@@ -1490,7 +1498,7 @@
     },
     {
       "source": "/learn-workflow-filtering",
-      "destination": "/visibility#list-filter"
+      "destination": "/list-filter"
     },
     {
       "source": "/php-sdk-overview",
@@ -1502,7 +1510,7 @@
     },
     {
       "source": "/server-workflow-search",
-      "destination": "/visibility#search-attribute"
+      "destination": "/search-attribute"
     },
     {
       "source": "/server/elasticsearch-setup",
@@ -1522,7 +1530,7 @@
     },
     {
       "source": "/filter-workflows",
-      "destination": "/visibility#list-filter"
+      "destination": "/list-filter"
     },
     {
       "source": "/go/how-to-develop-a-workflow-definition-in-go",
@@ -1926,6 +1934,16 @@
     {
       "source": "/production-readiness/develop#codec-server-setup",
       "destination": "/production-deployment/data-encryption",
+      "permanent": true
+    },
+    {
+      "source": "/references/web-ui-server-env-vars",
+      "destination": "/references/web-ui-environment-variables",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/pricing#multi-region",
+      "destination": "/cloud/pricing#high-availability-features",
       "permanent": true
     }
   ]

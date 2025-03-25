@@ -1,0 +1,209 @@
+---
+id: sending-messages
+title: Sending Signals, Queries, & Updates
+sidebar_label: Sending Signals, Queries, & Updates
+description: Signals, Queries, and Updates facilitate interactions with Workflow Executions.
+slug: /sending-messages
+tags:
+- Concepts
+- Signals
+- Queries
+- Updates
+- Messages
+keywords:
+- temporal workflow signals
+- temporal workflow queries
+- temporal workflow updates
+- temporal workflow execution
+- message passing temporal
+- signal-with-start temporal
+- temporal query handler
+- temporal signal handler
+- temporal update handler
+- temporal update validator
+- temporal message passing
+- workflow state temporal
+- synchronous operation temporal
+- asynchronous request temporal
+- temporal service events
+- temporal client methods
+- temporal sdk message passing
+---
+
+import { RelatedReadContainer, RelatedReadItem } from '@site/src/components';
+
+This section will help you write clients that send messages to Workflows which includes:
+
+- [Sending Signals](#sending-signals)
+- [Sending Updates](#sending-updates)
+- [Sending Queries](#sending-queries)
+
+### Sending Signals {#sending-signals}
+
+You can send Signals from any Temporal Client, the Temporal CLI, or you can Signal one Workflow to another.
+
+You can also Signal-With-Start to lazily initialize a Workflow while sending a Signal.
+
+#### Send a Signal from a Temporal Client or the CLI
+
+<RelatedReadContainer>
+    <RelatedReadItem path="/cli/workflow#signal" text="Send a Signal using the Temporal CLI" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/go/message-passing#send-signal-from-client" text="Send Signals with the Go SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/message-passing#send-signal-from-client" text="Send Signals with the Java SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/php/message-passing#send-signal-from-client" text="Send Signals with the PHP SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/message-passing#send-signal-from-client" text="Send Signals with the Python SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/message-passing#send-signal-from-client" text="Send Signals with the TypeScript SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/dotnet/message-passing#send-signal-from-client" text="Send Signals with the .NET SDK" archetype="feature-guide" />
+</RelatedReadContainer>
+
+#### Send a Signal from one Workflow to another
+
+<RelatedReadContainer>
+    <RelatedReadItem path="/develop/go/message-passing#send-signal-from-workflow" text="Send Signals from Workflows with the Go SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/message-passing#send-signal-from-workflow" text="Send Signals from Workflows with the Java SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/php/message-passing#send-signal-from-workflow" text="Send Signals from Workflows with the PHP SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/message-passing#send-signal-from-workflow" text="Send Signals from Workflows with the Python SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/message-passing#send-signal-from-workflow" text="Send Signals from Workflows with the TypeScript SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/dotnet/message-passing#send-signal-from-workflow" text="Send Signals from Workflows with the .NET SDK" archetype="feature-guide" />
+</RelatedReadContainer>
+
+#### Signal-With-Start {#signal-with-start}
+
+Signal-With-Start is a great tool for lazily initializing Workflows. When you send this operation, if there is a running Workflow Execution with the given Workflow Id, it will be Signaled. Otherwise, a new Workflow Execution starts and is immediately sent the Signal.
+
+<RelatedReadContainer>
+    <RelatedReadItem path="/develop/go/message-passing#signal-with-start" text="Signal-With-Start using the Go SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/message-passing#signal-with-start" text="Signal-With-Start using the Java SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/php/message-passing#signal-with-start" text="Signal-With-Start using the PHP SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/message-passing#signal-with-start" text="Signal-With-Start using the Python SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/message-passing#signal-with-start" text="Signal-With-Start using the TypeScript SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/dotnet/message-passing#signal-with-start" text="Signal-With-Start using the .NET SDK" archetype="feature-guide" />
+</RelatedReadContainer>
+
+### Sending Updates {#sending-updates}
+
+:::tip Support, stability, and dependency info
+
+- Available in [Go SDK](https://pkg.go.dev/go.temporal.io/sdk@v1.28.0/client#Client.UpdateWorkflow) since [v1.28.0](https://github.com/temporalio/sdk-go/releases/tag/v1.28.0)
+- Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)) since [v1.25.0](https://github.com/temporalio/sdk-java/releases/tag/v1.25.0)
+- Available in [Python SDK](/develop/python/message-passing#send-update-from-client) since [v1.7.0](https://github.com/temporalio/sdk-python/releases/tag/1.7.0)
+- Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_ExecuteUpdateAsync_System_String_System_Collections_Generic_IReadOnlyCollection_System_Object__Temporalio_Client_WorkflowUpdateOptions_) since [v0.1.0-beta2](https://github.com/temporalio/sdk-dotnet/releases/tag/1.3.0)
+- Available in [TypeScript SDK](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#executeupdate) since [v1.11.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.11.0)
+- Available in [PHP SDK](https://php.temporal.io/classes/Temporal-Client-WorkflowStubInterface.html#method_startUpdate) since [v2.11.0](https://github.com/temporalio/sdk-php/releases/tag/v2.11.0)
+
+:::
+
+:::note
+
+To use the Workflow Update feature in versions prior to v1.25.0, it must be manually enabled.
+
+Set the [frontend.enableUpdateWorkflowExecution](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) and [frontend.enableUpdateWorkflowExecutionAsyncAccepted](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go) dynamic config values to `true`.
+
+For example, with the Temporal CLI, run these commands:
+
+```command
+temporal server start-dev --dynamic-config-value frontend.enableUpdateWorkflowExecution=true
+temporal server start-dev --dynamic-config-value frontend.enableUpdateWorkflowExecutionAsyncAccepted=true
+```
+
+:::
+
+Updates can be sent from a Temporal Client or the Temporal CLI to a Workflow Execution. This call is synchronous and will call into the corresponding Update handler. If you’d rather make an asynchronous request, you should use Signals.
+
+In most languages (except Go), you may call `executeUpdate` to complete an Update and get its result.
+
+Alternatively, to start an Update, you may call `startUpdate` and pass in the Workflow Update Stage as an argument. You have two choices on what to await:
+
+- Accepted - wait until the Worker is contacted, which ensures that the Update is persisted. See [Update Validators](/handling-messages#update-validators) for more information.
+- Completed - wait until the handler finishes and returns a result. (This is equivalent to `executeUpdate`.)
+
+The start call will give you a handle you can use to track the Update, determine whether it was Accepted, and ultimately get its result or an error.
+
+If you want to send an Update to another Workflow such as a Child Workflow from within a Workflow, you should do so within an Activity and use the Temporal Client as normal.
+
+There are limits on the total number of Updates that may occur during a Workflow Execution run, and also on the number of concurrent in-progress Updates that a Workflow Execution may have.
+Use [Update Validators](/handling-messages#update-validators) and [Update IDs](/handling-messages#exactly-once-message-processing) to stay within the system limits in both [Cloud](/cloud/limits#per-workflow-execution-update-limits) and [Self-Hosted](/self-hosted-guide/defaults).
+
+<RelatedReadContainer>
+    <RelatedReadItem path="/develop/go/message-passing#send-update-from-client" text="Send Updates in Go" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/message-passing#send-update-from-client" text="Send Updates in Java" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/php/message-passing#send-update-from-client" text="Send Updates in PHP" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/message-passing#send-update-from-client" text="Send Updates in Python" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/message-passing#send-update-from-client" text="Send Updates in Typescript" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/dotnet/message-passing#send-update-from-client" text="Send Updates in .NET" archetype="feature-guide" />
+</RelatedReadContainer>
+
+#### Update-With-Start {#update-with-start}
+
+:::tip Stability
+
+In [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in Temporal Cloud.
+
+Minimum Temporal Server version [Temporal Server version 1.26](https://github.com/temporalio/temporal/releases/tag/v1.26.2)
+
+- Available in [Go SDK](https://pkg.go.dev/go.temporal.io/sdk@v1.31.0/client#Client.UpdateWithStartWorkflow) since [v1.31.0](https://github.com/temporalio/sdk-go/releases/tag/v1.31.0)
+- Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/1.27.0/io/temporal/client/WorkflowStub.html#startUpdateWithStart(io.temporal.client.UpdateOptions,java.lang.Object%5B%5D,java.lang.Object%5B%5D)) since [v1.27.0](https://github.com/temporalio/sdk-java/releases/tag/v1.27.0)
+- Available in [Python SDK](/develop/python/message-passing#send-update-from-client) since [v1.9.0](https://github.com/temporalio/sdk-python/releases/tag/1.9.0)
+- Available in [TypeScript SDK](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#executeupdate) since [v1.11.6](https://github.com/temporalio/sdk-typescript/releases/tag/v1.11.6)
+- Available in [PHP SDK](https://php.temporal.io/classes/Temporal-Client-WorkflowClient.html#method_updateWithStart) since [v2.11.4](https://github.com/temporalio/sdk-php/releases/tag/v2.11.4)
+- Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowStartUpdateWithStartOptions.html) since [v1.4.0](https://github.com/temporalio/sdk-dotnet/releases/tag/1.4.0)
+
+:::
+
+Update-With-Start sends an Update that checks whether an already-running Workflow with that ID exists.
+If it does, the Update is processed normally.
+If not, it starts a new Workflow Execution with the supplied ID, and immediately processes the Update.
+
+Update-With-Start is great for latency-sensitive use cases:
+
+- **Lazy Initialization** -
+  Instead of making separate Start Workflow and Update Workflow calls, Update-With-Start allows you to send them together in a single roundtrip.
+  For example, a shopping cart can be modeled using Update-With-Start.
+  Updates let you add and remove items from the cart.
+  Update-With-Start lets the customer start shopping, whether the cart already exists or they've just started shopping.
+  It ensures the cart, modeled by a Workflow Execution, exists before applying any Update that changes the state of items within the cart.
+- **Early Return** -
+  Using Update-With-Start you can begin a new Workflow Execution and synchronously receive a response, while the Workflow Execution continues to run to completion.
+  For example, you might model a payment process using Update-With-Start.
+  This allows you to send the payment validation results back to the client synchronously, while the transaction Workflow continues in the background.
+
+:::caution
+
+Unlike Signal-with-Start - Update-With-Start is _not_ atomic.
+If the Update can't be delivered, for example, because there's no running Worker available, a new Workflow Execution will still start.
+The SDKs will retry the Update-With-Start request, but there is no guarantee that the Update will succeed.
+
+:::
+
+<RelatedReadContainer>
+    <RelatedReadItem path="/develop/go/message-passing#update-with-start" text="Update-With-Start with the Go SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/message-passing#update-with-start" text="Update-With-Start with the Java SDK" archetype="feature-guide" />
+</RelatedReadContainer>
+
+### Sending Queries {#sending-queries}
+
+Queries can be sent from a Temporal Client or the Temporal CLI to a Workflow Execution--even if this Workflow has Completed. This call is synchronous and will call into the corresponding Query handler.
+You can also send a built-in "Stack Trace Query" for debugging.
+
+<RelatedReadContainer>
+    <RelatedReadItem path="/cli/workflow#query" text="Send a Query using the Temporal CLI" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/go/message-passing#send-query" text="Send a Query with the Go SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/java/message-passing#send-query" text="Send a Query with the Java SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/php/message-passing#send-query" text="Send a Query with the PHP SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/python/message-passing#send-query" text="Send a Query with the Python SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/message-passing#send-query" text="Send a Query with the TypeScript SDK" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/dotnet/message-passing#send-query" text="Send a Query with the .NET SDK" archetype="feature-guide" />
+</RelatedReadContainer>
+
+#### Stack Trace Query {#stack-trace-query}
+
+In many SDKs, the Temporal Client exposes a predefined `__stack_trace` Query that returns the call stack of all the threads owned by that Workflow Execution.
+This is a great way to troubleshoot a Workflow Execution in production.
+For example, if a Workflow Execution has been stuck at a state for longer than an expected period of time, you can send a `__stack_trace` Query to return the current call stack.
+The `__stack_trace` Query name does not require special handling in your Workflow code.
+
+:::note
+
+Stack Trace Queries are available only for running Workflow Executions.
+
+:::

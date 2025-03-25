@@ -12,13 +12,12 @@ tags:
   - Concepts
 ---
 
-import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
-import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
+import { CaptionedImage, RelatedReadContainer, RelatedReadItem } from '@site/src/components';
 
 A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
-A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a [Workflow Execution](/workflows#workflow-execution) or an [Activity Task Execution](/workers#activity-task-execution).
-(Retry Policies do not apply to [Workflow Task Executions](/workers#workflow-task-execution), which always retry indefinitely.)
+A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a [Workflow Execution](/workflows#workflow-execution) or an [Activity Task Execution](/tasks#activity-task-execution).
+Note that Retry Policies do not apply to [Workflow Task Executions](/tasks#workflow-task-execution), which retry until the Workflow Execution Timeout, which is unlimited by default.
 
 Try out the [Activity retry simulator](/develop/activity-retry-simulator) to visiualize how a Retry Policy works.
 
@@ -48,7 +47,7 @@ Try out the [Activity retry simulator](/develop/activity-retry-simulator) to vis
   The intention is that a Workflow Definition should be written to never fail due to intermittent issues; an Activity is designed to handle such issues.
 
 - **Activity Execution:** When an Activity Execution is spawned, it is associated with a default Retry Policy, and thus Activity Task Executions are retried by default.
-  When an Activity Task Execution is retried, the Temporal Service places a new [Activity Task](/workers#activity-task) into its respective [Activity Task Queue](/workers#task-queue), which results in a new Activity Task Execution.
+  When an Activity Task Execution is retried, the Temporal Service places a new [Activity Task](/tasks#activity-task) into its respective [Activity Task Queue](/task-queue), which results in a new Activity Task Execution.
 
 ## Custom Retry Policy
 
@@ -117,7 +116,9 @@ The wait time before a retry is the _retry interval_. A retry interval is the sm
 - The [Initial Interval](#initial-interval) multiplied by the [Backoff Coefficient](#backoff-coefficient) raised to the power of the number of retries.
 - The [Maximum Interval](#maximum-interval).
 
-<PrettyImage src="/img/retry-interval-diagram.png" title="Diagram that shows the retry interval and its formula" />
+<CaptionedImage
+    src="/img/info/retry-interval-diagram.png"
+    title="Diagram that shows the retry interval and its formula" />
 
 ### Per-error next Retry delay
 
