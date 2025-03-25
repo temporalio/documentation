@@ -536,10 +536,7 @@ module.exports = {
           items: [
             "encyclopedia/temporal",
             "encyclopedia/temporal-sdks",
-            "encyclopedia/workflows",
             {
-
-
               type: "category",
               label: "Workflows",
               collapsed: true,

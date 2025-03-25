@@ -12,42 +12,30 @@ tags:
   - Workflows
 
 ---
-The full Workflow guide covers: 
-- Workflow Definitions
-    - Determinism and constraints
-    - Handling code changes and non-deterministic behavior 
-    - Intrinsic non-determinism logic 
-    - Versioning Workflow code and Patching 
-    - Handling unreliable Worker Processes
-    - What is a Workflow Type? 
-- Workflow Execution 
-    - Replay
-    - Commands and awaitables
-    - Checking Workflow Execution Status
-    - Workflow Execution Chain 
-    - Event Loop 
-    - Time Constraints 
-    - Limits and Nexus Operation Limits 
-    - Commands 
-    - Events, Event History, and Continue-as-new
-    - Reset 
-    - Run Id
-    - Workflow Id
-        - Workflow Id Reuse Policy 
-        - Workflow Id Conflict Policy 
-    - Timer
-    - Memo 
-    - Start Delay 
-    - State Transition
-- Schedules
-- Dynamic Handler
-- Cron Job 
+
+The Temporal Workflow guide covers: 
+- [Workflow Definitions](/workflow-definition) (including Deterministic constraints, Versioning Code, and Workflow Type)
+- [Workflow Execution](/workflow-execution) (including Replay, Command, Limits, Events, and Workflow ID)
+- [Schedules](/schedule)
+- [Dynamic Handler](/dynamic-handler)
+- [Cron Job](/cron-job)
 
 This page provides a basic overview of Introduction to Workflow. 
 
 ## Intro to Workflows
+Conceptually, a workflow defines a sequence of steps.
+With Temporal, those steps are defined by writing code, known as a Workflow Definition, and are carried out by running that code, which results in a Workflow Execution.
 
-Temporal applications are built using an abstraction called Workflows. 
+In day-to-day conversations, the term Workflow might refer to Workflow Type, a Workflow Definition, or a Workflow Execution. 
+
+1. A **Workflow Definition** is the code that defines your Workflow.
+2. The **Workflow Type** is the name associated with that Workflow Definition. 
+It's an identifier that makes it possible to distinguish one type of Workflow (such as order processing) from another (such as customer onboarding).
+3. A **Workflow Execution** is a running Workflow, which is created by combining a Workflow Definition with a request to execute it. 
+You can execute a Workflow Definition any number of times, potentially providing different input each time (i.e., a Workflow Definition for order processing might process order #123 in one execution and order #567 in another execution). 
+It is the  actual instance of the Workflow Definition running in the Temporal Platform.
+
+
 You'll develop those Workflows by writing code in a general-purpose programming language such as Go, Java, TypeScript, or Python. 
 The code you write is the same code that will be executed at runtime, so you can use your favorite tools and libraries to develop Temporal Workflows.
 
@@ -55,31 +43,6 @@ Temporal Workflows are resilient.
 They can run—and keeping running—for years, even if the underlying infrastructure fails. 
 If the application itself crashes, Temporal will automatically recreate its pre-failure state so it can continue right where it left off.
 
-
-A Temporal Workflow defines the overall flow of your application. 
-Conceptually, it is a sequence of steps written in a general-purpose programming language using a Temporal SDK.
-
-A Workflow consists of:
-
-- A **Workflow Definition**: the code that defines the steps.
-- A **Workflow Execution**: the actual instance of the Workflow Definition running in the Temporal Platform.
-- A **Workflow Type**: a name that maps to a Workflow Definition and is used when starting an Execution.
-
-Conceptually, a workflow defines a sequence of steps.
-With Temporal, those steps are defined by writing code, known as a Workflow Definition, and are carried out by running that code, which results in a Workflow Execution.
-
-
-1. A Workflow Definition is the code. It's what defines your Workflow.
-2. The Workflow Type is the name associated with that Workflow Definition. 
-It's an identifier that makes it possible to distinguish one type of Workflow (such as order processing) from another (such as customer onboarding).
-3. A Workflow Execution is a running Workflow, which is created by combining a Workflow Definition with a request to execute it. 
-You can execute a Workflow Definition any number of times, potentially providing different input each time (i.e., a Workflow Definition for order processing might process order #123 in one execution and order #567 in another execution). 
-
-
-Workflows are:
-- Durable: Can run for seconds or years.
-- Reliable: Recoverable after failure.
-- Scalable: Can be executed concurrently by millions of instances.
 
 Each Workflow Execution progresses through a series of **Commands** and **Events**, which are recorded in an **Event History**. 
 It can be paused, resumed, continued as new, or reset.
@@ -92,7 +55,6 @@ Workflows can:
 - Be scheduled with Cron Jobs or Schedules
 
 Workflows must follow deterministic constraints to ensure consistent replay behavior.
-
 
 ## Workflow Definition
 A Workflow Definition is the code that defines the Workflow. 
@@ -210,6 +172,10 @@ public class YourBasicWorkflow {
 ## Workflow Execution
 
 While the Workflow Definition is the code that defines the Workflow, the Workflow Execution is created by executing that code.
+When you run a Workflow Definition, you create a Workflow Execution. 
+Each execution is an independent instance with its own state and context. 
+This means you can run the same Workflow Definition for different orders, customers, or scenarios, with each execution maintaining its own unique progress.
+
 
 A Workflow Execution is:
 -  Durable, reliable, and scalable function execution.
@@ -226,15 +192,12 @@ A Workflow Execution may run for seconds or years and resume progress after Work
 If needed, it can Continue-As-New to start fresh with a new Event History.
 
 ## Workflow Type 
-A Workflow Type in Temporal is a name that maps to a Workflow Definition. 
-It serves as an identifier for a specific workflow implementation.
-A Workflow Type is used to create a Workflow Execution.
-It can be instantiated as multiple Workflow Executions and is scoped by a Task Queue. 
-It is acceptable to have the same Workflow Type name map to different Workflow Definitions if they are using completely different Workers.
-
-The relationship between them works like this: 
-- You write code (Workflow Definition)
-- That code is identified by a name (Workflow Type)
-- When you want to run that code, you create a Workflow Execution by referencing the Workflow Type
-
+A Workflow Type in Temporal is a name that maps to a Workflow Definition.  
+It allows you to distinguish and serves as an identifier between different Workflow implementations and provides a way to track and manage specific workflow patterns.
+A Workflow Type is used to create a Workflow Execution. 
 Each time you start a workflow using the same Workflow Type, you create a new Workflow Execution with a unique Run ID.
+
+
+Temporal Workflows are engineered to handle complex, distributed processes with remarkable resilience. 
+They can survive infrastructure failures, automatically recreate pre-failure states, maintain comprehensive Event Histories, and support advanced workflow management techniques including pausing, resuming, and resetting entire process instances.
+
