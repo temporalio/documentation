@@ -1,0 +1,86 @@
+---
+id: rpo-rto
+title: RPO and RTO - Temporal Cloud feature guide
+sidebar_label: RPO and RTO
+description: Understand the Recovery Point Objective (RPO) and Recovery Time Objective (RTO) in Temporal Cloud.
+slug: /cloud/rpo-rto
+toc_max_heading_level: 4
+keywords:
+  - temporal cloud
+  - RPO
+  - RTO
+  - Recovery Point Objective
+  - Recovery Time Objective
+tags:
+  - Temporal Cloud
+  - Recovery Point Objective 
+  - Recovery Time Objective
+---
+
+Recovery Point Objective (RPO) and Recovery Time Objective (RTO) define data durability and service restoration timelines, respectively. 
+In Temporal Cloud, these objectives shift depending on the scale of failure and whether affecting an availability zone, a region, or spanning multiple regions.
+Therefore, Recovery Point Objective and Recovery Time Objective for Temporal Cloud can be considered within three scenarios:
+
+1. The near-zero RPO/20 minutes or less RTO for Temporal Cloud with [High Availability](/cloud/high-availability)
+2. The eight-hour RPO/RTO Temporal Cloud reports for _regional_ failures for single-region namespaces
+3. The RPO/RTO Temporal Cloud guarantees for _availability zone_ failure
+
+Which objective is relevant to your organization is driven by whether you map data center loss to a _regional_ loss or a _zonal_ loss.
+Temporal Cloud delivers different RPO/RTOs based on these scenarios because of the way our platform performs writes to our data provider.
+
+## High Availability, Regional Failure
+
+Temporal Cloud offers [High Availability](/cloud/high-availability).
+High availability ensures that a system remains operational with minimal downtime. 
+
+As Workflows progress in the active region, history events are asynchronously replicated to the standby region.
+In case of an incident or outage in the active region, Temporal Cloud will fail over to the standby region so that existing Workflow Executions will continue to run and new Executions can be started.
+
+**Recovery Point Objective (RPO) - Near Zero**
+
+Temporal Cloud is designed to limit data loss after recovery when the incident triggering the failover is resolved.
+The recovery point objective RPO is near-zero.
+There may be a short period of time—the replication lag—during the incident when some data may be unavailable
+
+**Recovery Time Objective (RTO) - 20 minutes**
+
+Recovery time objective (RTO) for Temporal Cloud is 20 minutes or less per incident.
+
+## Single Region Namespace, Regional Failure
+
+Temporal Cloud Namespace data is backed up by our data provider.
+For a single region Namespace, data must be restored in order to recover in the event of regional failure (i.e., logical corruption).
+
+Temporal Cloud is beholden to our data provider backup constraints, so in this scenario it leads to the following objectives for regional failure:
+
+**Recovery Point Objective (RPO) - 8 hours**
+
+- Our data provider “snapshot” duration which is _4 hours_
+- The time window of _4 hours_ allocated to detection of corruption point before we mitigate.
+
+**Recovery Time Objective (RTO) - 8 hours**
+
+- The time window of _4 hours_ allocated to detection of corruption point.
+- Our data provider restore time can be up to _4 hours_
+
+## Availability Zone Failure
+
+Temporal Cells are deployed in three Availability Zones (AZs) in the same region.
+Our data provider is deployed with the same topology in three AZs in the same region.
+
+**All writes to storage are synchronously replicated across AZs**, including our writes to ElasticSearch.
+ElasticSearch is eventually consistent, but this does not impact our RPO as there is no data loss.
+
+This means there is _no_ logical corruption and restoration is done from a live replicated instance.
+This applies for both single region Namespaces and multi region Namespaces.
+
+This leads to the following objectives for availability zone failure:
+
+**Recovery Point Objective (RPO) - 0**
+
+Anything that gets committed into the zone is protected by replication in another AZ.
+
+**Recovery Time Objective (RTO) - 0**
+
+Temporal is active-active across AZs.
+The RTO is stated to be zero, meaning there should be no downtime in such scenarios.

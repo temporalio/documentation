@@ -26,7 +26,7 @@ keywords:
   - gRPC error count
 ---
 
-import * as Components from '@site/src/components';
+import { RelatedReadContainer, RelatedReadItem } from '@site/src/components';
 
 A metric is a measurement or data point that provides insights into the performance and health of a system.
 This document describes the metrics available on the Temporal Cloud platform.
@@ -88,11 +88,11 @@ The endpoint returns data with a 15-second resolution, which results in displayi
 
 Set up Grafana with Temporal Cloud observability to view metrics by creating or getting your Prometheus endpoint for Temporal Cloud metrics and enabling SDK metrics.
 
-<Components.RelatedReadContainer>
-  <Components.RelatedReadItem path="/cloud/metrics/prometheus-grafana" text="How to set up Grafana with Temporal Cloud observability" archetype="feature-guide" />
-  <Components.RelatedReadItem path="/production-deployment/cloud/worker-health" text="How to monitor Worker Health with Temporal Cloud Metrics" archetype="feature-guide" />
-  <Components.RelatedReadItem path="/production-deployment/cloud/service-health" text="How to monitor Service Health with Temporal Cloud Metrics" archetype="feature-guide" />
-</Components.RelatedReadContainer>
+<RelatedReadContainer>
+  <RelatedReadItem path="/cloud/metrics/prometheus-grafana" text="How to set up Grafana with Temporal Cloud observability" archetype="feature-guide" />
+  <RelatedReadItem path="/production-deployment/cloud/worker-health" text="How to monitor Worker Health with Temporal Cloud Metrics" archetype="feature-guide" />
+  <RelatedReadItem path="/production-deployment/cloud/service-health" text="How to monitor Service Health with Temporal Cloud Metrics" archetype="feature-guide" />
+</RelatedReadContainer>
 
 ## Available Temporal Cloud metrics {#available-metrics}
 

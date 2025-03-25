@@ -16,7 +16,7 @@ tags:
   - Security
 ---
 
-import * as Components from '@site/src/components';
+import { CaptionedImage } from '@site/src/components';
 
 Temporal Server stores and persists the data handled in your Workflow Execution.
 Encrypting this data ensures that any sensitive application data is secure when handled by the Temporal Server.
@@ -40,7 +40,7 @@ To encrypt your Payload, configure your custom encryption logic with a [Payload 
 
 A Payload Codec does byte-to-byte conversion to transform your Payload (for example, by implementing compression and/or encryption and decryption) and is an optional step that happens between the Client and the [Payload Converter](/payload-converter):
 
-<Components.CaptionedImage
+<CaptionedImage
     src="/diagrams/remote-data-encoding.svg"
     title="Remote data encoding architecture" />
 
@@ -264,7 +264,7 @@ After you create your Codec Server and expose the requisite endpoints, set the e
 
 On Temporal Cloud and self-hosted Temporal Service, you can configure a Codec Server endpoint to be used for a Namespace in the Web UI.
 
-<Components.CaptionedImage
+<CaptionedImage
     src="/img/info/set-codec-endpoint-form.png"
     title="Codec Server endpoint Namespace setting"
 />
@@ -282,7 +282,7 @@ Setting a Codec Server endpoint on a self-hosted Temporal Service enables it for
 
 You can also override the global Codec Server setting at the browser level. This can be useful when developing, testing, or troubleshooting encoding functionality.
 
-<Components.CaptionedImage
+<CaptionedImage
     src="/img/info/data-encoder-button.png"
     title="Codec Server endpoint browser setting"
 />

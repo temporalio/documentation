@@ -20,7 +20,7 @@ keywords:
   - term
 ---
 
-import * as Components from '@site/src/components';
+import { ToolTipTerm } from '@site/src/components';
 
 ## Something
 
@@ -149,7 +149,7 @@ It automatically triggers failovers when these indicators exceed our allowed thr
 Temporal Cloud’s High Availability features use asynchronous replication between the primary and the replica.
 Workflow updates in the primary, along with associated History Events, are transmitted to the replica with a short delay.
 This delay is called the replication lag.
-Temporal Cloud strives to maintain a <Components.ToolTipTerm term="P95" /> replication delay of less than 1 minute.
+Temporal Cloud strives to maintain a <ToolTipTerm term="P95" /> replication delay of less than 1 minute.
 In this context, P95 means 95% of requests are processed faster than this specified limit.
 
 Replication lags mean a [forced failover](/cloud/high-availability/how-it-works#forced-failover) may cause Workflows to rollback in progress.

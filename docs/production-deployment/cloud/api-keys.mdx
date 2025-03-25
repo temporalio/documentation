@@ -17,7 +17,7 @@ tags:
   - API
 ---
 
-import * as Components from '@site/src/components';
+import { CaptionedImage } from '@site/src/components';
 
 Temporal Cloud API keys offer industry-standard identity-based authentication for Temporal users and [Service Accounts](/cloud/service-accounts).
 This document introduces Temporal Cloud's API key features:
@@ -38,7 +38,7 @@ Each Temporal Cloud API key is a unique identity linked to role-based access con
 
 The authentication process follows this pathway:
 
-<Components.CaptionedImage
+<CaptionedImage
     src="/img/cloud/apikeys/apikeyrbac.png"
     title="API key (authentication) → Identity (user or Service Account) → RBAC (authorization)"
 />
@@ -357,8 +357,8 @@ Authenticate with Temporal Cloud using API keys with the following clients:
 
 ### Temporal CLI
 
-To use your API key with the Temporal CLI, either pass it with the `--api-key` flag or set an environment variable (recommended).
-The CLI automatically picks up the `TEMPORAL_CLOUD_API_KEY` environment variable.
+To use your API key with the Temporal CLI, either pass it with the `--api-key` flag or set an environment variable in your shell (recommended).
+The CLI automatically picks up the `TEMPORAL_API_KEY` environment variable from your shell.
 
 In addition to the API key, the following client options are required:
 
@@ -382,6 +382,12 @@ temporal workflow list \
     --grpc-meta "temporal-namespace=<namespace_id>.<account_id>" \
     --tls
 ```
+
+:::tip ENVIRONMENT VARIABLES
+
+Do not confuse environment variables, set with your shell, with temporal env options.
+
+:::
 
 ### SDK
 
@@ -469,23 +475,12 @@ apiKeyProvider.APIKey = myKeyUpdated
 At a client level:
 
 ```java
-// Create a Metadata object with the Temporal namespace header key.
-Metadata.Key<String> TEMPORAL_NAMESPACE_HEADER_KEY =
-    Metadata.Key.of("temporal-namespace", Metadata.ASCII_STRING_MARSHALLER);
-Metadata metadata = new Metadata();
-metadata.put(TEMPORAL_NAMESPACE_HEADER_KEY, <namespace_id>.<account_id>);
-
 // Create the Workflow service stub.
 WorkflowServiceStubsOptions.Builder stubOptions =
     WorkflowServiceStubsOptions.newBuilder()
-        .setChannelInitializer(
-            (channel) -> {
-                channel.intercept(MetadataUtils.newAttachHeadersInterceptor(metadata));
-            })
-        .addGrpcMetadataProvider(
-            new AuthorizationGrpcMetadataProvider(() -> "Bearer " + <APIKey>))
+        .addApiKey(() -> <APIKey>)
+        .setEnableHttps(true)
         .setTarget(<endpoint>);
-stubOptions.setSslContext(SimpleSslContextBuilder.noKeyOrCertChain().setUseInsecureTrustManager(false).build());
 
 WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(stubOptions.build());
 
@@ -500,10 +495,10 @@ WorkflowClient client =
 At a per-call level:
 
 ```java
-String myKey = "Bearer " + <APIKey>;
+String myKey = <APIKey>;
 WorkflowServiceStubsOptions stubOptions =
     WorkflowServiceStubsOptions.newBuilder()
-        .addGrpcMetadataProvider(new AuthorizationGrpcMetadataProvider(() -> myKey))
+        .addApiKey(() -> myKey)
         .build();
 
 // Just update by replacing, this must be done in a thread safe way
@@ -683,7 +678,13 @@ const worker = await Worker.create({
 To use an API key with `tcld`, choose one of these methods:
 
 - Use the `--api-key` flag.
-- Set the `TEMPORAL_CLOUD_API_KEY` environment variable.
+- Set the `TEMPORAL_API_KEY` environment variable in your shell.
+
+:::tip ENVIRONMENT VARIABLES
+
+Do not confuse environment variables, set with your shell, with temporal env options.
+
+:::
 
 ### Cloud Ops API
 

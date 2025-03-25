@@ -55,8 +55,14 @@ Export your environment variable for secure access to the API Keys.
 
 ```bash
 # replace <your-secret-key> with the "secretKey": output from tcld apikey create command
-export TEMPORAL_CLOUD_API_KEY=<your-secret-key>
+export TEMPORAL_API_KEY=<your-secret-key>
 ```
+
+:::tip ENVIRONMENT VARIABLES
+
+Do not confuse environment variables, set with your shell, with temporal env options.
+
+:::
 
 </TabItem>
   <TabItem value="windows" label="Windows">
@@ -64,8 +70,14 @@ Export your environment variable for secure access to the API Keys.
 
 ```bash
 # replace <your-secret-key> with the "secretKey": output from tcld apikey create command
-set TEMPORAL_CLOUD_API_KEY=<your-secret-key>
+set TEMPORAL_API_KEY=<your-secret-key>
 ```
+
+:::tip ENVIRONMENT VARIABLES
+
+Do not confuse environment variables, set with your shell, with temporal env options.
+
+:::
 
 </TabItem>
 </Tabs>
@@ -82,7 +94,7 @@ provider "temporalcloud" {
 
 Terraform is a great way to automate the management of Temporal Namespaces.
 It doesn't matter whether you want management to be centralized within a platform team or federated to different product teams.
-The provider allows you to can import, create, update, and delete Namespaces with Terraform.
+The provider allows you to import, create, update, and delete Namespaces with Terraform.
 
 You must use an Identity with Temporal Cloud Namespace management privileges.
 This includes the Account Owner, Global Admin, or Developer Account Role.

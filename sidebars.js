@@ -371,6 +371,7 @@ module.exports = {
               },
               ]
             },
+            "production-deployment/cloud/rpo-rto",
             {
               type: "category",
               label: "Temporal Nexus",
@@ -416,7 +417,7 @@ module.exports = {
               },
               items: [
                 "production-deployment/cloud/audit-logging-aws",
-                "production-deployment/cloud/audit-logging-gcp",
+                // "production-deployment/cloud/audit-logging-gcp", // pre-release
               ],
             },
             {

@@ -2,9 +2,9 @@
 id: limits
 title: System limits - Temporal Cloud
 sidebar_label: Limits
-description: This page outlines the limits of the Temporal Cloud system for accounts, namespaces, and programming models, providing key information on user capacity, namespace creation, throughput, certificates, task pollers, retention periods, batch jobs, search attributes, visibility API rate limit, identifier length, gRPC message limits, event
 slug: /cloud/limits
-toc_max_heading_level: 4
+description: Learn about Temporal Cloud limits, including accounts, namespaces, throughput, retention, task pollers, batch jobs, gRPC, search attributes, and more.
+toc_max_heading_level: 3
 keywords:
   - configuration
   - defaults
@@ -16,7 +16,7 @@ tags:
   - Limits
 ---
 
-import * as Components from '@site/src/components';
+import { CaptionedImage } from '@site/src/components';
 
 This page addresses the limits of the Temporal Cloud system.
 Reach out to your account team should you have any questions about these limits.
@@ -116,12 +116,12 @@ This is configurable in the Temporal Web UI.
 
 [Navigate to your list of Namespaces](https://cloud.temporal.io/namespaces), choose the Namespace you want to update, and select edit:
 
-<Components.CaptionedImage
+<CaptionedImage
     src="/img/cloud/cloud-guide/edit-namespace-option.png"
     title="Choose your Namespace and select Edit"
 />
 
-<Components.CaptionedImage
+<CaptionedImage
     src="/img/cloud/cloud-guide/edit-retention-period.png"
     title="Update the Retention Period"
 />
@@ -169,6 +169,15 @@ For more information on custom Search Attributes see [Custom Search Attributes l
 
 The rate limit for requests to the Visibility APIs varies, and may be as low as 30 requests per second.
 This limit is not configurable.
+
+**Which calls are subject to the Visibility API rate limit?**
+
+- `GetWorkerTaskReachability`
+- `ListSchedules`
+- `ListBatchOperations`
+- `DescribeTaskQueueWithReachability`
+- `ListDeployments`
+- `GetDeploymentReachability`
 
 ### Nexus Rate Limit {#nexus-rate-limits}
 

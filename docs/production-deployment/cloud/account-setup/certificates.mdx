@@ -270,9 +270,6 @@ For details, see the previous section ([How to receive notifications about certi
 When updating CA certificates, it's important to follow a rollover process (sometimes referred to as "certificate rotation").
 Doing so enables your Namespace to serve both CA certificates for a period of time until traffic to your old CA certificate ceases. This prevents any service disruption during the rollover process.
 
-Be aware that the subject of the existing certificate and the subject of the new certificate must not be identical.
-One way to meet this requirement is to add a version or a date to the common name (CN).
-
 {/* How to update certificates in Temporal Cloud using Temporal Cloud UI */}
 
 ### Update certificates using Temporal Cloud UI

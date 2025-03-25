@@ -16,7 +16,7 @@ tags:
   - Concepts
 ---
 
-import * as Components from '@site/src/components';
+import { CaptionedImage } from '@site/src/components';
 
 Temporal is a scalable and reliable runtime for durable function executions called [Temporal Workflow Executions](/workflows#workflow-execution).
 
@@ -26,7 +26,7 @@ It enables you to develop as if failures don't even exist.
 Your application will run reliably even if it encounters problems, such as network outages or server crashes, which would be catastrophic for a typical application.
 The Temporal Platform handles these types of problems, allowing you to focus on the business logic, instead of writing application code to detect and recover from failures.
 
-<Components.CaptionedImage
+<CaptionedImage
     src="/diagrams/temporal-system-simple.svg"
     title="The Temporal System"
     />
@@ -47,7 +47,7 @@ Together these components create a runtime for Workflow Executions.
 The Temporal Platform consists of a supervising software typically called the [Temporal Service](/clusters) and application code bundled as Worker Processes.
 Together these components create a runtime for your application.
 
-<Components.CaptionedImage
+<CaptionedImage
     src="/diagrams/temporal-platform-simple.svg"
     title="The Temporal Platform"
     />
@@ -58,7 +58,7 @@ Our software as a service (SaaS) offering, Temporal Cloud, offers an alternative
 
 Worker Processes are hosted and operated by you and execute your code. Workers run using one of our SDKs.
 
-<Components.CaptionedImage
+<CaptionedImage
     src="/diagrams/temporal-platform-component-topology.svg"
     title="Basic component topology of the Temporal Platform"
     width="90%"
@@ -70,7 +70,7 @@ A Temporal Application is a set of [Temporal Workflow Executions](/workflows#wor
 Each Temporal Workflow Execution has exclusive access to its local state, executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions and the environment via message passing.
 
 A Temporal Application can consist of millions to billions of Workflow Executions.
-Workflow Executions are lightweight components.
+Workflow Executions are lightweight 
 A Workflow Execution consumes few compute resources; in fact, if a Workflow Execution is suspended, such as when it is in a waiting state, the Workflow Execution consumes no compute resources at all.
 
 **Reentrant Process**
