@@ -15,6 +15,15 @@ Options:
 EOF
 }
 
+# Prerequisites
+
+if ! command -v pandoc >/dev/null 2>&1; then
+  echo "Error: Required application 'pandoc' not found." >&2
+  exit 1
+fi
+
+# Conversion
+
 convert_mdx_to_txt() {
   input_file="$1"
   sed '/^---/,/^---$/d' "$input_file" | \
