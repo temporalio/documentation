@@ -862,7 +862,7 @@
     },
     {
       "source": "/server",
-      "destination": "/clusters/"
+      "destination": "/temporal-service/temporal-server"
     },
     {
       "source": "/server/configuration",
@@ -870,7 +870,7 @@
     },
     {
       "source": "/server-archive-data",
-      "destination": "/clusters#"
+      "destination": "/temporal-service"
     },
     {
       "source": "/server/archive-data",
@@ -890,11 +890,11 @@
     },
     {
       "source": "/server-introduction",
-      "destination": "/clusters"
+      "destination": "/temporal-service"
     },
     {
       "source": "/server/introduction",
-      "destination": "/clusters"
+      "destination": "/temporal-service"
     },
     {
       "source": "/server-namespaces",
@@ -907,6 +907,10 @@
     {
       "source": "/server/multi-cluster",
       "destination": "/temporal-service/multi-cluster-replication"
+    },
+    {
+      "source": "/clusters",
+      "destination": "/temporal-service"
     },
     {
       "source": "/clusters/how-to-set-up-multi-cluster-replication",
@@ -982,7 +986,7 @@
     },
     {
       "source": "/server-versions-and-dependencies",
-      "destination": "/clusters"
+      "destination": "/temporal-service"
     },
     {
       "source": "/server/workflow-search",
@@ -1302,7 +1306,7 @@
     },
     {
       "source": "/concepts/what-is-a-temporal-cluster",
-      "destination": "/clusters"
+      "destination": "/temporal-service"
     },
     {
       "source": "/concepts/what-is-a-temporal-cron-job",
@@ -1418,7 +1422,7 @@
     },
     {
       "source": "/concepts/what-is-a-retention-period",
-      "destination": "clusters#retention-period"
+      "destination": "/temporal-service/temporal-server#retention-period"
     },
     {
       "source": "/concepts/what-is-multi-cluster-replication",
@@ -1518,7 +1522,7 @@
     },
     {
       "source": "/server/versions-and-dependencies",
-      "destination": "/clusters/#version-and-support"
+      "destination": "/temporal-service/temporal-server"
     },
     {
       "source": "/shared/continue-as-new",
