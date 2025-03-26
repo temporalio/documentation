@@ -13,7 +13,7 @@ tags:
   - Temporal Service
 ---
 
-import * as Components from '@site/src/components';
+import { CaptionedImage } from '@site/src/components';
 
 This page discusses the following:
 - [Frontend Service](#frontend-service)
@@ -75,9 +75,9 @@ Types of inbound calls include the following:
 - [Namespace](/namespaces) CRUD
 - External events
 - Worker polls
-- [Visibility](#visibility) requests
+- [Visibility](/temporal-service/visibility) requests
 - [Temporal CLI](/cli) (the Temporal CLI) operations
-- Calls from a remote Temporal Service related to [Multi-Cluster Replication](#multi-cluster-replication)
+- Calls from a remote Temporal Service related to [Multi-Cluster Replication](/temporal-service/multi-cluster-replication)
 
 Every inbound request related to a Workflow Execution must have a Workflow Id, which is hashed for routing purposes.
 The Frontend Service has access to the hash rings that maintain service membership information, including how many nodes (instances of each service) are in the Temporal Service.
