@@ -16,7 +16,7 @@ Temporal handles infrastructure concerns and failure recovery automatically, let
 
 ## Core Documentation
 - [Why Temporal](https://docs.temporal.io/evaluate/why-temporal): What Temporal is, how it works, and why it's the right choice for Durable Execution.
-- [Getting Started](https://docs.temporal.io/develop): Introduction to developing applications with Temporal.
+- [Getting Started](https://learn.temporal.io/getting_started/): Introduction to developing applications with Temporal.
 - [Encyclopedia](https://docs.temporal.io/encyclopedia): Foundational concepts and architecture.
 - [Go SDK](https://docs.temporal.io/develop/go)
 - [Java SDK](https://docs.temporal.io/develop/java)
