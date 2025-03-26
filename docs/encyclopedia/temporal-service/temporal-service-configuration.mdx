@@ -16,7 +16,7 @@ tags:
 This page discusses the following:
 - [Static Configuration](#static-configuration)
 - [Dynamic Configuration](#dynamic-configuration)
-- [TLS and Security](#temporal-cluster-security-configuration)
+- [Security Configuration](#temporal-cluster-security-configuration)
 - [Observability](#monitoring-and-observation)
 
 
@@ -68,13 +68,13 @@ For details on dynamic configuration keys, see [Dynamic configuration reference]
 
 For dynamic configuration examples, see [https://github.com/temporalio/temporal/tree/master/config/dynamicconfig](https://github.com/temporalio/temporal/tree/master/config/dynamicconfig).
 
-### What is Temporal Service security configuration? {#temporal-cluster-security-configuration}
+## What is Temporal Service security configuration? {#temporal-cluster-security-configuration}
 
 Secure your Temporal Service (self-hosted and Temporal Cloud) by encrypting your network communication and setting authentication and authorization protocols for API calls.
 
 For details on setting up your Temporal Service security, see [Temporal Platform security features](/security).
 
-#### mTLS encryption
+### mTLS encryption
 
 Temporal supports Mutual Transport Layer Security (mTLS) to encrypt network traffic between services within a Temporal Service, or between application processes and a Temporal Service.
 
@@ -90,7 +90,7 @@ The mTLS configuration includes two sections that serve to separate communicatio
 
 Setting mTLS for `internode` and `frontend` separately lets you use different certificates and settings to encrypt each section of traffic.
 
-#### Using certificates for Client connections
+### Using certificates for Client connections
 
 Use CA certificates to authenticate client connections to your Temporal Service.
 
@@ -100,7 +100,7 @@ On the self-hosted Temporal Service, you can restrict access to Temporal Service
 These properties can be specified in both the `internode` and `frontend` sections of the [mTLS configuration](/references/configuration#tls).
 For details, see the [tls configuration reference](/references/configuration#tls).
 
-#### Server name specification
+### Server name specification
 
 On the self-hosted Temporal Service, you can specify `serverName` in the `client` section of your mTLS configuration to prevent spoofing and [MITM attacks](https://en.wikipedia.org/wiki/Man-in-the-middle_attack).
 
@@ -111,7 +111,7 @@ This measure can be used for `internode` and `frontend` endpoints.
 
 For more information on mTLS configuration, see [tls configuration reference](/references/configuration#tls).
 
-#### Authentication and authorization
+### Authentication and authorization
 
 {/* commenting this very generic explanation out. Can include it back in if everyone feels strongly.
 **Authentication** is the process of verifying users who want to access your application are actually the users you want accessing it.
@@ -128,7 +128,7 @@ Temporal offers two plugin interfaces for authentication and authorization of AP
 The logic of both plugins can be customized to fit a variety of use cases.
 When plugins are provided, the Frontend Service invokes their implementation before running the requested operation.
 
-### What is Temporal Service observability? {#monitoring-and-observation}
+## What is Temporal Service observability? {#monitoring-and-observation}
 
 You can monitor and observe performance with metrics emitted by your self-hosted Temporal Service or by Temporal Cloud.
 
