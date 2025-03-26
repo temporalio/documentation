@@ -95,6 +95,32 @@ module.exports = {
     },
     {
       type: "category",
+      label: "Build with Temporal",
+      collapsed: false,
+      link: {
+        type: "doc",
+        id: "build-with-temporal/go/index",
+      },
+      items: [
+        "build-with-temporal/setup-cli", // CLI setup guide
+        {
+          type: "category",
+          label: "Build your applications",
+          collapsed: false,
+          link: {
+            type: "doc",
+            id: "build-with-temporal/go/applications/index",
+          },
+          items: [
+            "build-with-temporal/go/applications/define-workflow",
+            "build-with-temporal/go/applications/define-activity",
+            "build-with-temporal/go/applications/run-worker",
+          ],
+        },
+      ],
+    },
+    {
+      type: "category",
       label: "Develop",
       collapsed: false,
       link: {
