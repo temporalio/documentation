@@ -1,0 +1,39 @@
+---
+id: index
+title: Build applications with the Go SDK
+sidebar_label: Build your applications
+slug: /build-with-temporal/go/applications
+description: Build core application components using the Temporal Go SDK.
+tags:
+  - Go SDK
+  - Build application
+  - Workflows
+  - Activities
+  - Workers
+keywords:
+  - Workflow
+  - Activity
+  - Worker
+---
+
+Start building your Temporal application by defining the key components: Workflows, Activities, and Workers.
+
+Each of these plays a distinct role:
+
+- A **Workflow** defines your application's control flow and business logic.
+- An **Activity** performs the actual work—such as calling APIs or accessing databases.
+- A **Worker** runs the code and connects your app to the Temporal Service.
+
+In this section, you:
+
+- Define a [Workflow](/build-with-temporal/go/applications/define-workflow)
+- Define one or more [Activities](/build-with-temporal/go/applications/define-activity)
+- [Run a Worker](/build-with-temporal/go/applications/run-worker) to execute them
+
+Once you have these pieces in place, you can start creating Workflow Executions, pass data, handle errors, and scale up.
+
+:::tip
+This section is SDK-specific.
+All code examples use the Go SDK.
+:::
+

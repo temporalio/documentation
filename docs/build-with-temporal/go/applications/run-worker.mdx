@@ -1,0 +1,92 @@
+---
+id: run-worker
+title: Run a Worker - Go SDK
+sidebar_label: Run a Worker
+description: Start a Worker to execute your Workflows and Activities.
+tags:
+  - Go SDK
+  - Workers
+  - Build application
+keywords:
+  - Worker
+  - Start Worker
+  - Register Workflow
+  - Register Activity
+---
+
+A Worker runs your application code.
+It listens for Tasks on a Task Queue and executes your registered Workflows and Activities.
+
+## Create a Worker
+
+Start by creating a Temporal Client, then create a Worker and register your Workflows and Activities.
+
+```go
+package main
+
+import (
+    "log"
+
+    "go.temporal.io/sdk/client"
+    "go.temporal.io/sdk/worker"
+    "yourapp"
+)
+
+func main() {
+    // Connect to Temporal
+    c, err := client.Dial(client.Options{})
+    if err != nil {
+        log.Fatalln("Unable to create Temporal client", err)
+    }
+    defer c.Close()
+
+    // Create a Worker for a specific Task Queue
+    w := worker.New(c, "your-task-queue", worker.Options{})
+
+    // Register your Workflow(s)
+    w.RegisterWorkflow(yourapp.MyWorkflow)
+
+    // Register your Activity(ies)
+    w.RegisterActivity(yourapp.MyActivity)
+
+    // Start the Worker
+    err = w.Run(worker.InterruptCh())
+    if err != nil {
+        log.Fatalln("Unable to start Worker", err)
+    }
+}
+```
+
+## Register multiple Workflows or Activities
+
+Each Worker can register as many Workflows and Activities as you need, as long as each one has a unique name.
+
+```go
+w.RegisterWorkflow(MyWorkflowA)
+w.RegisterWorkflow(MyWorkflowB)
+
+w.RegisterActivity(MyActivityA)
+w.RegisterActivity(MyActivityB)
+```
+
+If you're using struct-based Activities, register the struct instead:
+
+```go
+inventory := &InventoryService{DBClient: db}
+w.RegisterActivity(inventory)
+```
+
+## Run with automatic reload (optional)
+
+To improve your development loop, you can use [`gow`](https://github.com/mitranim/gow) to auto-reload your Worker process when files change.
+
+```bash
+go install github.com/mitranim/gow@latest
+gow run main.go
+```
+
+---
+
+With a running Worker, your Temporal application is ready to execute Workflows and Activities.
+You can now start a Workflow Execution using your application code or the CLI.
+

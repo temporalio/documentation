@@ -1,0 +1,97 @@
+---
+id: define-activity
+title: Define an Activity - Go SDK
+sidebar_label: Define an Activity
+description: Write Activity functions to perform work inside your Temporal application.
+tags:
+  - Go SDK
+  - Activities
+  - Build application
+keywords:
+  - Activity
+  - Activity Definition
+  - Activity parameters
+  - Activity return value
+---
+
+Activities do the work in your Temporal application.
+They’re Go functions that can run any code, including API calls, file operations, or database queries.
+
+## Write a basic Activity function
+
+An Activity is a function that accepts a `context.Context` and returns an `error`, or a value and an `error`.
+
+```go
+func MyActivity(ctx context.Context) error {
+    // Perform work here
+    return nil
+}
+```
+
+Register the Activity with your Worker:
+
+```go
+worker.RegisterActivity(MyActivity)
+```
+
+## Pass parameters to an Activity
+
+You can pass any serializable value.
+Use a struct to allow the function signature to evolve over time.
+
+```go
+type MyActivityInput struct {
+    ProductID string
+    Quantity  int
+}
+
+func MyActivity(ctx context.Context, input MyActivityInput) error {
+    // Use input.ProductID and input.Quantity
+    return nil
+}
+```
+
+## Return results from an Activity
+
+Return a custom struct if the result has multiple fields.
+
+```go
+type MyActivityResult struct {
+    Success bool
+    ID      string
+}
+
+func MyActivity(ctx context.Context, input MyActivityInput) (*MyActivityResult, error) {
+    return &MyActivityResult{
+        Success: true,
+        ID:      "order-123",
+    }, nil
+}
+```
+
+## Group related Activities with a struct
+
+You can define Activities as struct methods when they share setup or dependencies, like a database client.
+
+```go
+type InventoryService struct {
+    DBClient *MyDBClient
+}
+
+func (s *InventoryService) ReserveStock(ctx context.Context, input MyActivityInput) error {
+    // Use s.DBClient
+    return nil
+}
+```
+
+Register the whole struct with the Worker:
+
+```go
+inventory := &InventoryService{DBClient: myClient}
+worker.RegisterActivity(inventory)
+```
+
+---
+
+Once your Activities are defined and registered, you can call them from inside a Workflow.
+Next, you’ll run a Worker to execute Workflows and Activities.

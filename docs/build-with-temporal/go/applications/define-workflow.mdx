@@ -1,0 +1,87 @@
+---
+id: define-workflow
+title: Define a Workflow - Go SDK
+sidebar_label: Define a Workflow
+description: Create a Workflow Definition that controls your application's behavior.
+tags:
+  - Go SDK
+  - Workflows
+  - Build application
+keywords:
+  - Workflow
+  - Workflow Definition
+  - Workflow parameters
+  - Workflow return value
+---
+
+A Workflow controls the behavior of your Temporal application.
+It’s a function written in Go that runs inside the Temporal Service and coordinates the execution of Activities and other Workflows.
+
+Workflows are **stateful**, **durable**, and **deterministic**.
+
+## Write a basic Workflow Definition
+
+To define a Workflow, write an exportable Go function that accepts a `workflow.Context`.
+
+```go
+func MyWorkflow(ctx workflow.Context) error {
+    // Business logic goes here
+    return nil
+}
+```
+
+Register the Workflow with a Worker using the same function reference.
+
+```go
+worker.RegisterWorkflow(MyWorkflow)
+```
+
+## Add parameters to a Workflow
+
+Workflows can take one or more parameters.
+Use a struct if you expect the parameter shape to evolve over time.
+
+```go
+type MyWorkflowInput struct {
+    CustomerID string
+    Amount     int
+}
+
+func MyWorkflow(ctx workflow.Context, input MyWorkflowInput) error {
+    // Use input.CustomerID and input.Amount
+    return nil
+}
+```
+
+## Return values from a Workflow
+
+Workflows can return one value and an error, or just an error.
+
+```go
+type MyWorkflowResult struct {
+    ConfirmationID string
+}
+
+func MyWorkflow(ctx workflow.Context, input MyWorkflowInput) (*MyWorkflowResult, error) {
+    return &MyWorkflowResult{
+        ConfirmationID: "12345",
+    }, nil
+}
+```
+
+## Customize the Workflow Type name
+
+By default, the Workflow Type is the function name.
+To override it, register the Workflow with options:
+
+```go
+worker.RegisterWorkflowWithOptions(MyWorkflow, workflow.RegisterOptions{
+    Name: "custom-workflow-type",
+})
+```
+
+---
+
+Once your Workflow is defined and registered with a Worker, it’s ready to run.
+Next, define one or more Activities to do the work your Workflow coordinates.
+
