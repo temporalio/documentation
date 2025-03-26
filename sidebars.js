@@ -105,7 +105,7 @@ module.exports = {
         "build-with-temporal/setup-cli", // CLI setup guide
         {
           type: "category",
-          label: "Build your applications",
+          label: "Build applications",
           collapsed: false,
           link: {
             type: "doc",
