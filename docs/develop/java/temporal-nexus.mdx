@@ -284,8 +284,8 @@ all caller Workflows will have completion Callbacks attached to the underlying h
 The initial caller Workflow will be linked from the handler's [WorkflowExecutionStarted](/references/events#workflowexecutionstarted) event and
 additional callers will be attached to the handler's [WorkflowExecutionOptionsUpdated](/references/events#workflowexecutionoptionsupdated) event.
 
-When a handler Workflow uses [Continue-As-New](/workflows#continue-as-new) the existing Nexus completion Callbacks and bi-directional Links will be
-copied to the new Workflow-Execution and the previous Workflow-Execution's completion Callback will be left in the Standby state indefinitely.
+When a handler Workflow uses [Continue-As-New](/workflows#continue-as-new) the existing Nexus completion Callbacks will be copied to the new Workflow-Execution
+and the previous Workflow-Execution's completion Callback will be left in the Standby state indefinitely.
 
 :::
 
