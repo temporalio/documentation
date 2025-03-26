@@ -2,7 +2,7 @@
 > Comprehensive resources for building and operating resilient applications using the Temporal Platform and Durable Execution.
 
 ## Overview
-Temporal is a scalable and reliable runtime platform that guarantees the Durable Execution of your application code. It allows you to develop applications as if failures don't exist, ensuring your code runs reliably even when encountering problems like network outages or server crashes that would typically be catastrophic.
+Temporal is a developer-first open source platform for building durable, reliable applications through Durable Execution. Temporal ensures that every step of your application's logic runs to completion, even in the face of failures like timeouts, crashes, or network issues. It allows you to build long-running, fault-tolerant applications without managing state machines, retries, or custom recovery logic.
 
 At its core, Temporal is:
 
