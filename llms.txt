@@ -1,0 +1,44 @@
+# Temporal Documentation
+> Comprehensive resources for building and operating resilient applications using the Temporal Platform and Durable Execution.
+
+## Overview
+Temporal is a scalable and reliable runtime platform that guarantees the Durable Execution of your application code. It allows you to develop applications as if failures don't exist, ensuring your code runs reliably even when encountering problems like network outages or server crashes that would typically be catastrophic.
+
+At its core, Temporal is:
+
+- A platform for Durable Execution, maintaining the state and progress of application Workflows even in the face of failure
+- A runtime for reentrant processes that are resumable, recoverable, and reactive
+- An orchestration system that breaks complex processes into smaller tasks that run concurrently or sequentially
+
+Temporal applications are built using an abstraction called Workflows. You write these Workflows in general-purpose programming languages like Go, Java, TypeScript, Python, PHP, .NET, and Ruby. The same code runs at runtime, so you can use your familiar tools and libraries without needing special DSLs or configuration-based workflows.
+
+Temporal handles infrastructure concerns and failure recovery automatically, letting developers focus on business logic. Temporal applications are more reliable, easier to build and operate, and often require 40–60% fewer lines of code.
+
+## Core Documentation
+- [Why Temporal](https://docs.temporal.io/evaluate/why-temporal): What Temporal is, how it works, and why it's the right choice for Durable Execution.
+- [Getting Started](https://docs.temporal.io/develop): Introduction to developing applications with Temporal.
+- [Encyclopedia](https://docs.temporal.io/encyclopedia): Foundational concepts and architecture.
+- [Go SDK](https://docs.temporal.io/develop/go)
+- [Java SDK](https://docs.temporal.io/develop/java)
+- [PHP SDK](https://docs.temporal.io/develop/php)
+- [Python SDK](https://docs.temporal.io/develop/python)
+- [TypeScript SDK](https://docs.temporal.io/develop/typescript)
+- [.NET SDK](https://docs.temporal.io/develop/dotnet)
+
+## Deployment
+- [Production Deployment](https://docs.temporal.io/deployment): Guidelines for deploying Temporal to production.
+- [Temporal Cloud](https://docs.temporal.io/cloud): Temporal's SaaS platform for durable and scalable application execution.
+
+## CLI Reference
+- [temporal CLI](https://docs.temporal.io/cli): Local CLI for interacting with the Temporal Server.
+- [tcld CLI](https://docs.temporal.io/cloud/tcld): CLI for interacting with Temporal Cloud.
+
+## Troubleshooting
+- [Common Issues](https://docs.temporal.io/troubleshooting): Solutions to frequently encountered problems.
+
+## Glossary
+- [Terminology](https://docs.temporal.io/glossary): Definitions of key terms used in Temporal.
+
+## Optional
+- [Blog](https://docs.temporal.io/blog): Articles and updates.
+- [Community forum](https://community.temporal.io/?_gl=1*qx1v8n*_gcl_au*OTUwOTU0MjExLjE3NDE3MDIzODQ.*_ga*OTUxMTQ0NTI1LjE3NDE3MDIzODU.*_ga_R90Q9SJD3D*MTc0MzAwMzE0OC42Mi4xLjE3NDMwMDUwMjAuMC4wLjA.): Got a question? Check out the forum
