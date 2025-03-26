@@ -153,6 +153,8 @@ This setting makes created Search Attributes immediately available.
 
 The following table describes the environment variables you can set for the Temporal CLI.
 
+<!-- This is an automatically generated file and the TEMPORAL_API_KEY correction will disappear on the next push. -->
+
 | Variable                                 | Definition                                                                | Client Option                   |
 | ---------------------------------------- | ------------------------------------------------------------------------- | ------------------------------- |
 | `TEMPORAL_ADDRESS`                       | Host and port (formatted as host:port) for the Temporal Frontend Service. | --address                       |
@@ -164,7 +166,15 @@ The following table describes the environment variables you can set for the Temp
 | `TEMPORAL_TLS_DISABLE_HOST_VERIFICATION` | Disables TLS host name verification. Default: false.                      | --tls-disable-host-verification |
 | `TEMPORAL_TLS_KEY`                       | Path to private certificate key.                                          | --tls-key-path                  |
 | `TEMPORAL_TLS_SERVER_NAME`               | Override for target TLS server name.                                      | --tls-server-name               |
-| `TEMPORAL_CLOUD_API_KEY`                 | API key used for authentication.                                          | --api-key                       |
+| `TEMPORAL_API_KEY`                       | API key used for authentication.                                          | --api-key                       |
+
+<!-- This is an automatically generated file and this caution will disappear on the next push. -->
+<!-- issue: https://github.com/temporalio/cli/issues/776 -->
+:::tip ENVIRONMENT VARIABLES
+
+Do not confuse environment variables, set with your shell, with temporal env options.
+
+:::
 
 ## Proxy support
 

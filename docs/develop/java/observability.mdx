@@ -43,12 +43,7 @@ This section covers features related to viewing the state of the application, in
 Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
 For a complete list of metrics capable of being emitted, see the [SDK metrics reference](/references/sdk-metrics).
 
-Metrics can be scraped and stored in time series databases, such as:
-
-- [Prometheus](https://prometheus.io/docs/introduction/overview/)
-- [M3db](https://m3db.io/docs/)
-- [statsd](https://github.com/statsd/statsd)
-
+Metrics can be scraped and stored in time series databases, such as [Prometheus](https://prometheus.io/docs/introduction/overview/).
 Temporal also provides a dashboard you can integrate with graphing services like [Grafana](https://grafana.com/docs/). For more information, see:
 
 - Temporal's implementation of the [Grafana dashboard](https://github.com/temporalio/dashboards)
@@ -125,6 +120,16 @@ WorkerFactory factory = WorkerFactory.newInstance(client, factoryOptions);
 ```
 
 For more information, see the Temporal [OpenTracing module](https://github.com/temporalio/sdk-java/blob/master/temporal-opentracing/README.md).
+
+### Context Propagation Over Nexus Operation Calls
+
+Nexus does not use the standard context propagator header structure.
+Instead, it relies on a Temporal-agnostic protocol designed to connect arbitrary systems.
+To propagate context over Nexus Operation calls, the context is serialized into a `Map<String, String>`.
+This map is special as it will normalize all keys to lowercase.
+
+Because Nexus uses this custom format, and because Nexus calls may involve external systems, the `ContextPropagator` interface doesn’t apply to Nexus headers.
+Context must be explicitly propagated through interceptors, as shown in the [Nexus Context Propagation sample](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/nexuscontextpropagation).
 
 ## Log from a Workflow {#logging}
 

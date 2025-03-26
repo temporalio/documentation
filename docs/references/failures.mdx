@@ -83,7 +83,7 @@ During conversion, the following Application Failure fields are set:
 - `next_retry_delay` is left unset.
 - call stack is copied.
 
-When an [Activity Execution](/activities#activity-execution) fails, the Application Failure from the last Activity Task is the `cause` field of the [ActivityFailure](#activity-failure).
+When an [Activity Execution](/activity-execution) fails, the Application Failure from the last Activity Task is the `cause` field of the [ActivityFailure](#activity-failure).
 This ActivityFailure is thrown by the Workflow's call to the Activity, and it can be handled in the Workflow Definition.
 
 ### Errors in Nexus Operations
@@ -220,7 +220,7 @@ For example the Nexus Go SDK provides
 
 ## Cancelled Failure
 
-When [Cancellation](/activities#cancellation) of a Workflow, Activity or Nexus Operation is requested, SDKs represent the cancellation to the user in language-specific ways.
+When [Cancellation](/activity-execution#cancellation) of a Workflow, Activity or Nexus Operation is requested, SDKs represent the cancellation to the user in language-specific ways.
 For example, in TypeScript, in some cases a Cancelled Failure is thrown directly by a Workflow API function, and in other cases the Cancelled Failure is wrapped in a different Failure.
 To check both types of cases, TypeScript has the [isCancellation](https://typescript.temporal.io/api/namespaces/workflow#iscancellation) helper.
 

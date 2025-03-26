@@ -139,7 +139,7 @@ An SDK provides you with the following:
 - A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) to communicate with a [Temporal Service](/temporal-service).
 - APIs to develop [Workflows](/workflows).
 - APIs to create and manage [Worker Processes](/workers#worker).
-- APIs to author [Activities](/activities#activity-definition).
+- APIs to author [Activities](/activity-definition).
 
 [![NPM](https://img.shields.io/npm/v/temporalio.svg?style=for-the-badge)](https://www.npmjs.com/search?q=author%3Atemporal-sdk-team)
 
@@ -414,8 +414,8 @@ If you **must** use a library that references a Node.js or DOM API and you are c
 
 The Workflow sandbox can run only deterministic code, so side effects and access to external state must be done through Activities because Activity outputs are recorded in the Event History and can read deterministically by the Workflow.
 
-This limitation also means that Workflow code cannot directly import the [Activity Definition](/activities#activity-definition).
-[Activity Types](/activities#activity-type) can be imported, so they can be invoked in a type-safe manner.
+This limitation also means that Workflow code cannot directly import the [Activity Definition](/activity-definition).
+[Activity Types](/activity-definition#activity-type) can be imported, so they can be invoked in a type-safe manner.
 
 To make the Workflow runtime deterministic, functions like `Math.random()`, `Date`, and `setTimeout()` are replaced by deterministic versions.
 
@@ -449,7 +449,7 @@ for (let x = 0; x < 10; ++x) {
 One of the primary things that Workflows do is orchestrate the execution of Activities.
 An Activity is a normal function or method execution that's intended to execute a single, well-defined action (either short or long-running), such as querying a database, calling a third-party API, or transcoding a media file.
 An Activity can interact with world outside the Temporal Platform or use a Temporal Client to interact with a Temporal Service.
-For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/activities#activity-definition).
+For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/activity-definition).
 
 - Activities execute in the standard Node.js environment.
 - Activities cannot be in the same file as Workflows and must be separately registered.
@@ -471,7 +471,7 @@ export async function greet(name: string): Promise<string> {
 
 ### How to develop Activity Parameters {#activity-parameters}
 
-There is no explicit limit to the total number of parameters that an [Activity Definition](/activities#activity-definition) may support.
+There is no explicit limit to the total number of parameters that an [Activity Definition](/activity-definition) may support.
 However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
 
 A single argument is limited to a maximum size of 2 MB.
@@ -679,7 +679,7 @@ ApplicationFailure: Activity function actC is not registered on this Worker, ava
 
 ## How to start an Activity Execution {#activity-execution}
 
-Calls to spawn [Activity Executions](/activities#activity-execution) are written within a [Workflow Definition](/workflows#workflow-definition).
+Calls to spawn [Activity Executions](/activity-execution) are written within a [Workflow Definition](/workflows#workflow-definition).
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
 This results in the set of three [Activity Task](/tasks#activity-task) related Events ([ActivityTaskScheduled](/references/events#activitytaskscheduled), [ActivityTaskStarted](/references/events#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
 
@@ -720,7 +720,7 @@ These values are set in the Activity Options.
 
 ### How to get the results of an Activity Execution {#get-activity-results}
 
-The call to spawn an [Activity Execution](/activities#activity-execution) generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
+The call to spawn an [Activity Execution](/activity-execution) generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
 Workflow Executions can either block progress until the result is available through the Awaitable or continue progressing, making use of the result when it becomes available.
 
 Since Activities are referenced by their string name, you can reference them dynamically to get the result of an Activity Execution.

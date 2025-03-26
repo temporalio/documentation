@@ -41,8 +41,7 @@ The first step in working with Temporal Nexus involves starting a Temporal serve
 Prerequisites:
 
 - [Install the latest Temporal CLI](https://learn.temporal.io/getting_started/java/dev_environment/#set-up-a-local-temporal-service-for-development-with-temporal-cli) (v1.3.0 or higher recommended)
-- [Install the latest Temporal Java
-  SDK](https://learn.temporal.io/getting_started/java/dev_environment/#add-temporal-java-sdk-dependencies) (v1.28.0 or
+- [Install the latest Temporal Java SDK](https://learn.temporal.io/getting_started/java/dev_environment/#add-temporal-java-sdk-dependencies) (v1.28.0 or
   higher recommended)
 
 ### Start the Temporal Development Server {#start-the-temporal-development-server}
@@ -98,7 +97,9 @@ In a polyglot environment, that is where more than one language and SDK is being
 In this example, there is a service package that describes the Service and Operation names along with input/output types for caller Workflows to use the Nexus Endpoint.
 
 <!--SNIPSTART samples-java-nexus-service-->
+
 [core/src/main/java/io/temporal/samples/nexus/service/NexusService.java](https://github.com/temporalio/samples-java/blob/nexus-snip-sync/core/src/main/java/io/temporal/samples/nexus/service/NexusService.java)
+
 ```java
 @Service
 public interface NexusService {
@@ -181,6 +182,7 @@ public interface NexusService {
   EchoOutput echo(EchoInput input);
 }
 ```
+
 <!--SNIPEND-->
 
 ## Develop a Nexus Service and Operation handlers {#develop-nexus-service-operation-handlers}
@@ -190,7 +192,7 @@ Operation handlers can decide if a given Nexus Operation will be synchronous or 
 
 The `io.temporal.nexus.*` packages have utilities to help create Nexus Operations:
 
-- `Nexus.getOperationContext().getWorkflowClient()` \-  Get the Temporal Client that the Worker was initialized with for synchronous RPC handlers backed by
+- `Nexus.getOperationContext().getWorkflowClient()` \- Get the Temporal Client that the Worker was initialized with for synchronous RPC handlers backed by
   Temporal primitives such as for Signals and Queries
 - `WorkflowRunOperation.fromWorkflowMethod` \- Run a Workflow as an asynchronous Nexus Operation
 
@@ -203,7 +205,9 @@ Its handler function can access an SDK client that can be used for signaling, qu
 However, implementations are free to make arbitrary calls to other services or databases, or perform computations such as this one:
 
 <!--SNIPSTART samples-java-nexus-handler {"selectedLines": ["1-16", "40"]}-->
+
 [core/src/main/java/io/temporal/samples/nexus/handler/NexusServiceImpl.java](https://github.com/temporalio/samples-java/blob/nexus-snip-sync/core/src/main/java/io/temporal/samples/nexus/handler/NexusServiceImpl.java)
+
 ```java
 // To create a service implementation, annotate the class with @ServiceImpl and provide the
 // interface that the service implements. The service implementation class should have methods that
@@ -224,6 +228,7 @@ public class NexusServiceImpl {
 // ...
 }
 ```
+
 <!--SNIPEND-->
 
 ### Develop an Asynchronous Nexus Operation handler to start a Workflow
@@ -231,7 +236,9 @@ public class NexusServiceImpl {
 Use the `WorkflowClientOperationHandlers.fromWorkflowMethod` method, which is the easiest way to expose a Workflow as an operation.
 
 <!--SNIPSTART samples-java-nexus-handler {"selectedLines": ["1-5", "18-40"]}-->
+
 [core/src/main/java/io/temporal/samples/nexus/handler/NexusServiceImpl.java](https://github.com/temporalio/samples-java/blob/nexus-snip-sync/core/src/main/java/io/temporal/samples/nexus/handler/NexusServiceImpl.java)
+
 ```java
 // To create a service implementation, annotate the class with @ServiceImpl and provide the
 // interface that the service implements. The service implementation class should have methods that
@@ -263,6 +270,7 @@ public class NexusServiceImpl {
   }
 }
 ```
+
 <!--SNIPEND-->
 
 Workflow IDs should typically be business meaningful IDs and are used to dedupe Workflow starts. In general business meaningful IDs should be passed in the Operation input as part of the Nexus Service contract.
@@ -272,7 +280,9 @@ Workflow IDs should typically be business meaningful IDs and are used to dedupe 
 After developing an asynchronous Nexus Operation handler to start a Workflow, the next step is to register a Nexus Service in a Worker.
 
 <!--SNIPSTART samples-java-nexus-handler-worker-->
+
 [core/src/main/java/io/temporal/samples/nexus/handler/HandlerWorker.java](https://github.com/temporalio/samples-java/blob/nexus-snip-sync/core/src/main/java/io/temporal/samples/nexus/handler/HandlerWorker.java)
+
 ```java
 package io.temporal.samples.nexus.handler;
 
@@ -297,6 +307,7 @@ public class HandlerWorker {
   }
 }
 ```
+
 <!--SNIPEND-->
 
 ## Develop a caller Workflow that uses the Nexus Service {#develop-caller-workflow-nexus-service}
@@ -304,7 +315,9 @@ public class HandlerWorker {
 Import the Service API package, that has the necessary service and operation names and input/output types to execute a Nexus Operation from the caller Workflow:
 
 <!--SNIPSTART samples-java-nexus-caller-echo-workflow-->
+
 [core/src/main/java/io/temporal/samples/nexus/caller/EchoCallerWorkflowImpl.java](https://github.com/temporalio/samples-java/blob/nexus-snip-sync/core/src/main/java/io/temporal/samples/nexus/caller/EchoCallerWorkflowImpl.java)
+
 ```java
 package io.temporal.samples.nexus.caller;
 
@@ -331,10 +344,13 @@ public class EchoCallerWorkflowImpl implements EchoCallerWorkflow {
   }
 }
 ```
+
 <!--SNIPEND-->
 
 <!--SNIPSTART samples-java-nexus-caller-hello-workflow-->
+
 [core/src/main/java/io/temporal/samples/nexus/caller/HelloCallerWorkflowImpl.java](https://github.com/temporalio/samples-java/blob/nexus-snip-sync/core/src/main/java/io/temporal/samples/nexus/caller/HelloCallerWorkflowImpl.java)
+
 ```java
 package io.temporal.samples.nexus.caller;
 
@@ -368,6 +384,7 @@ public class HelloCallerWorkflowImpl implements HelloCallerWorkflow {
   }
 }
 ```
+
 <!--SNIPEND-->
 
 ### Register the caller Workflow in a Worker
@@ -375,7 +392,9 @@ public class HelloCallerWorkflowImpl implements HelloCallerWorkflow {
 After developing the caller Workflow, the next step is to register it with a Worker.
 
 <!--SNIPSTART samples-java-nexus-caller-worker-->
+
 [core/src/main/java/io/temporal/samples/nexus/caller/CallerWorker.java](https://github.com/temporalio/samples-java/blob/nexus-snip-sync/core/src/main/java/io/temporal/samples/nexus/caller/CallerWorker.java)
+
 ```java
 package io.temporal.samples.nexus.caller;
 
@@ -410,6 +429,7 @@ public class CallerWorker {
   }
 }
 ```
+
 <!--SNIPEND-->
 
 ### Develop a starter to start the caller Workflow
@@ -417,7 +437,9 @@ public class CallerWorker {
 To initiate the caller Workflow, a starter program is used.
 
 <!--SNIPSTART samples-java-nexus-caller-starter-->
+
 [core/src/main/java/io/temporal/samples/nexus/caller/CallerStarter.java](https://github.com/temporalio/samples-java/blob/nexus-snip-sync/core/src/main/java/io/temporal/samples/nexus/caller/CallerStarter.java)
+
 ```java
 package io.temporal.samples.nexus.caller;
 
@@ -456,6 +478,7 @@ public class CallerStarter {
   }
 }
 ```
+
 <!--SNIPEND-->
 
 ## Make Nexus calls across Namespaces with a development Server {#nexus-calls-across-namespaces-dev-server}
@@ -495,8 +518,24 @@ This will result in:
 [main] INFO  i.t.s.nexus.caller.CallerStarter - Started workflow workflowId: 9b3de8ba-28ae-42fb-8087-bdedf4cecd39 runId: 404a2529-764d-4d1d-9de5-8a9475e40fba 
 [main] INFO  i.t.s.nexus.caller.CallerStarter - Workflow result: Nexus Echo 👋 
 [main] INFO  i.t.s.nexus.caller.CallerStarter - Started workflow workflowId: 9cb29897-356a-4714-87b7-aa2f00784a46 runId: 7e71e62a-db50-49da-b081-24b61016a0fc
-[main] INFO  i.t.s.nexus.caller.CallerStarter - Workflow result: ¡Hola! Nexus 👋 
+[main] INFO  i.t.s.nexus.caller.CallerStarter - Workflow result: ¡Hola! Nexus 👋
 ```
+
+### Canceling a Nexus Operation {#canceling-a-nexus-operation}
+
+To cancel a Nexus Operation from within a Workflow, create a `CancellationScope` using the `Workflow.newCancellationScope` API. `Workflow.newCancellationScope` takes a `Runnable`, any SDK methods
+, like Nexus operations, started in this runnable will be associated with this scope. `Workflow.newCancellationScope` returns a new scope that, when the `cancel()` method is called, cancels the context and 
+any SDK method that was started in this scope. The promise returned by `Workflow.startNexusOperation` is resolved when the operation finishes, whether it succeeds, fails, times out, or is canceled.
+
+Only asynchronous operations can be canceled in Nexus, as cancelation is sent using an operation token.
+The Workflow or other resources backing the operation may choose to ignore the cancelation request.
+If ignored, the operation may enter a terminal state.
+
+Once the caller Workflow completes, the caller's Nexus Machinery stops attempting to cancel operations that have not yet been canceled, letting them run to completion.
+It's okay to leave operations running in some use cases.
+To ensure cancelations are delivered, wait for all pending operations to finish before exiting the Workflow.
+
+See the [Nexus cancelation sample](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/nexuscancellation) for reference.
 
 ## Make Nexus calls across Namespaces in Temporal Cloud {#nexus-calls-across-namespaces-temporal-cloud}
 
@@ -602,7 +641,7 @@ This will result in:
 [main] INFO  i.t.s.nexus.caller.CallerStarter - Started workflow workflowId: 9b3de8ba-28ae-42fb-8087-bdedf4cecd39 runId: 404a2529-764d-4d1d-9de5-8a9475e40fba 
 [main] INFO  i.t.s.nexus.caller.CallerStarter - Workflow result: Nexus Echo 👋 
 [main] INFO  i.t.s.nexus.caller.CallerStarter - Started workflow workflowId: 9cb29897-356a-4714-87b7-aa2f00784a46 runId: 7e71e62a-db50-49da-b081-24b61016a0fc
-[main] INFO  i.t.s.nexus.caller.CallerStarter - Workflow result: ¡Hola! Nexus 👋 
+[main] INFO  i.t.s.nexus.caller.CallerStarter - Workflow result: ¡Hola! Nexus 👋
 ```
 
 ## Observability

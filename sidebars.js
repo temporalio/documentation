@@ -371,6 +371,7 @@ module.exports = {
               },
               ]
             },
+            "production-deployment/cloud/rpo-rto",
             {
               type: "category",
               label: "Temporal Nexus",
@@ -537,7 +538,20 @@ module.exports = {
             "encyclopedia/temporal",
             "encyclopedia/temporal-sdks",
             "encyclopedia/workflows",
-            "encyclopedia/activities",
+            {
+              type: "category",
+              label: "Activities",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "encyclopedia/activities/activities",
+              },
+              items: [
+                "encyclopedia/activities/activity-definition",
+                "encyclopedia/activities/activity-execution",
+                "encyclopedia/activities/local-activity",
+              ],
+            },
             {
               type: "category",
               label: "Detecting application failures",

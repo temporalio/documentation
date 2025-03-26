@@ -1130,11 +1130,11 @@
     },
     {
       "source": "/concepts/what-is-an-activity-definition",
-      "destination": "/activities#activity-definition"
+      "destination": "/activity-definition"
     },
     {
       "source": "/concepts/what-is-an-activity-execution",
-      "destination": "/activities#activity-execution"
+      "destination": "/activity-execution"
     },
     {
       "source": "/concepts/what-is-an-activity-heartbeat",
@@ -1142,7 +1142,7 @@
     },
     {
       "source": "/concepts/what-is-an-activity-id",
-      "destination": "/activities#activity-id"
+      "destination": "/activity-execution#activity-id"
     },
     {
       "source": "/concepts/what-is-an-activity-task",
@@ -1154,7 +1154,7 @@
     },
     {
       "source": "/concepts/what-is-an-activity-type",
-      "destination": "/activities#activity-type"
+      "destination": "/activity-definition#activity-type"
     },
     {
       "source": "/concepts/what-is-advanced-visibility",
@@ -1206,7 +1206,7 @@
     },
     {
       "source": "/concepts/what-is-a-local-activity",
-      "destination": "/activities#local-activity"
+      "destination": "/local-activity"
     },
     {
       "source": "/concepts/what-is-a-memo",
@@ -1286,7 +1286,7 @@
     },
     {
       "source": "/concepts/what-is-a-task-token",
-      "destination": "/activities#task-token"
+      "destination": "/activity-execution#task-token"
     },
     {
       "source": "/concepts/what-is-a-task",
