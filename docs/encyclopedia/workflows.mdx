@@ -312,7 +312,7 @@ The Temporal Platform ensures the state of the Workflow Execution persists in th
 Scalability is responsiveness in the presence of load.
 
 A single Workflow Execution is limited in size and throughput but is scalable because it can [Continue-As-New](#continue-as-new) in response to load.
-A Temporal Application is scalable because the Temporal Platform is capable of supporting millions to billions of Workflow Executions executing concurrently, which is realized by the design and nature of the [Temporal Service](/clusters) and [Worker Processes](/workers#worker-process).
+A Temporal Application is scalable because the Temporal Platform is capable of supporting millions to billions of Workflow Executions executing concurrently, which is realized by the design and nature of the [Temporal Service](/temporal-service) and [Worker Processes](/workers#worker-process).
 
 ### Replays
 
@@ -462,7 +462,7 @@ These limits are set with the following [dynamic configuration keys](https://git
 
 ### What is a Command? {#command}
 
-A Command is a requested action issued by a [Worker](/workers#worker) to the [Temporal Service](/clusters) after a [Workflow Task Execution](/tasks#workflow-task-execution) completes.
+A Command is a requested action issued by a [Worker](/workers#worker) to the [Temporal Service](/temporal-service) after a [Workflow Task Execution](/tasks#workflow-task-execution) completes.
 
 The action that the Temporal Service takes is recorded in the [Workflow Execution's](#workflow-execution) [Event History](#event-history) as an [Event](#event).
 The Workflow Execution can await on some of the Events that come as a result from some of the Commands.
