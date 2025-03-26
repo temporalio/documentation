@@ -26,7 +26,7 @@ Temporal handles infrastructure concerns and failure recovery automatically, let
 - [.NET SDK](https://docs.temporal.io/develop/dotnet)
 
 ## Deployment
-- [Production Deployment](https://docs.temporal.io/deployment): Guidelines for deploying Temporal to production.
+- [Production Deployment](https://docs.temporal.io/production-deployment): Tools and guidelines for deploying Temporal to production.
 - [Temporal Cloud](https://docs.temporal.io/cloud): Temporal's SaaS platform for durable and scalable application execution.
 
 ## CLI Reference
