@@ -622,7 +622,6 @@ module.exports = {
                 "encyclopedia/visibility/search-attribute",
               ],
             },
-            "encyclopedia/clusters",
             {
               type: "category",
               label: "Temporal Service",
