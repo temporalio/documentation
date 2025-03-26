@@ -40,5 +40,5 @@ Temporal handles infrastructure concerns and failure recovery automatically, let
 - [Terminology](https://docs.temporal.io/glossary): Definitions of key terms used in Temporal.
 
 ## Optional
-- [Blog](https://docs.temporal.io/blog): Articles and updates.
+- [Blog](https://temporal.io/blog): Articles and updates.
 - [Community forum](https://community.temporal.io/?_gl=1*qx1v8n*_gcl_au*OTUwOTU0MjExLjE3NDE3MDIzODQ.*_ga*OTUxMTQ0NTI1LjE3NDE3MDIzODU.*_ga_R90Q9SJD3D*MTc0MzAwMzE0OC42Mi4xLjE3NDMwMDUwMjAuMC4wLjA.): Got a question? Check out the forum
