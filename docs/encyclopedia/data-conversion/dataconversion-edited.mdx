@@ -1,0 +1,64 @@
+---
+id: dataconversion-edited
+title: Manage Application Data with Temporal-edited
+sidebar_label: Data Conversion-edited
+description: This guide explains how Data Converters on the Temporal Platform handle serialization and encoding for Workflow inputs and outputs, ensuring data remains secure and manageable.
+slug: /dataconversion-edited
+toc_max_heading_level: 4
+keywords:
+  - encryption
+  - explanation
+  - keys
+  - payloads
+  - secrets
+  - data-converters
+tags:
+  - Concepts
+  - Encryption
+  - Data Converters
+  - Security
+---
+
+import { CaptionedImage } from '@site/src/components';
+
+This guide covers how to manage data using a Data Converter within the Temporal Platform.
+
+### Understand the Data Converter
+
+Data Converters on the Temporal Platform are SDK components responsible for serializing and encoding data as it flows to and from the Temporal Service. To communicate effectively with the Temporal Service, your Workflow inputs and outputs must be serialized and deserialized into JSON format.
+
+<CaptionedImage
+    src="/diagrams/default-data-converter.svg"
+    title="Data Converter encodes and decodes data"
+/>
+
+### Encode Data for the Temporal Service
+
+Before sending data to the Temporal Service, the Data Converter transforms it into a [Payload](/dataconversion#payload). When the Temporal Server returns this encoded data, the Data Converter decodes it so your application can process it. This process ensures that sensitive information remains in its original form only on trusted hosts under your control.
+
+### Follow the Data Conversion Steps
+
+Data conversion occurs in two key scenarios: when sending data to a Temporal Service (as Workflow input) and when receiving data from a Workflow (as output). Here’s how it works:
+
+- **Automatic Data Encoding**: When you send data to a Temporal Service, the encoding happens automatically using either the default converter or your custom Data Converter. For example, plain text input converts to a JSON object.
+  
+- **Data Decoding**: During your Workflows or Activities, your application handles the decoding of Workflow results as needed. However, note that decoded outputs are not saved back to the Temporal Service. Instead, they remain encoded, and you must use an additional parameter with [`temporal workflow show`](/cli/workflow#show) or check the Web UI to view the output.
+
+Each data element—whether an argument or a return value—is encoded as a [Payload](/dataconversion#payload). This Payload consists of binary data alongside key-value metadata.
+
+### Explore the API References
+
+For more technical details, check the API references for your preferred language:
+
+- [Go](https://pkg.go.dev/go.temporal.io/sdk/converter#DataConverter)
+- [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html)
+- [Python](https://python.temporal.io/temporalio.converter.DataConverter.html)
+- [TypeScript](https://typescript.temporal.io/api/interfaces/common.DataConverter)
+
+### Define a Payload {#payload}
+
+A [Payload](https://api-docs.temporal.io/#temporal.api.common.v1.Payload) represents the binary data exchanged during Activities and Workflows. It also includes metadata that describes the data type and any parameters needed for custom encoders or converters.
+
+When using the SDK, the [default Data Converter](/default-custom-data-converters#default-data-converter) converts your data or values into a Payload before sending it to the Temporal Server. This default converter can process various supported types into Payloads. If you need a different conversion approach, you can create a custom [Payload Converter](/payload-converter) to meet your requirements.
+
+Additionally, you can apply custom codecs, such as encryption or compression, to your Payloads for added security and efficiency.

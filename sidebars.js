@@ -201,6 +201,7 @@ module.exports = {
             "develop/python/python-sdk-sandbox",
             "develop/python/python-sdk-sync-vs-async",
             "develop/python/testing-suite",
+            "develop/python/testing-suite-edited",
             "develop/python/failure-detection",
             "develop/python/message-passing",
             "develop/python/cancellation",
@@ -271,6 +272,7 @@ module.exports = {
         },
         "develop/activity-retry-simulator",
         "develop/worker-performance",
+        "develop/optimize-worker-performance-edited",
         "develop/safe-deployments",
       ],
     },
@@ -671,6 +673,7 @@ module.exports = {
                 "encyclopedia/nexus-security",
               ],
             },
+            "encyclopedia/data-conversion/dataconversion-edited",
             {
               type: "category",
               label: "Data Conversion",

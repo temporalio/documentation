@@ -1,0 +1,172 @@
+---
+id: testing-suite-edited
+title: Test Your Python SDK Applications - edited
+sidebar_label: Testing - edited
+description: Discover how to effectively test your Temporal applications with the Python SDK. This guide covers strategies for Workflow and integration testing, including end-to-end, integration, and unit tests. Learn to use mocked Activities, skip time in tests, and replay Workflow Executions.
+toc_max_heading_level: 2
+keywords:
+  - python
+  - sdk
+  - testing
+  - time-skipping
+tags:
+  - Testing
+  - Python SDK
+  - Temporal SDKs
+---
+
+You can enhance your Temporal applications by implementing effective testing strategies. This guide outlines the testing frameworks available for the Temporal Python SDK and how to use them to automate various types of tests.
+
+### Automate Your Testing Types
+
+In Temporal, you can create the following automated tests:
+
+- **End-to-End Tests:** Simulate a complete workflow by starting a Temporal Server and Worker. You can interact with all Workflows and Activities through a Client.
+  
+- **Integration Tests:** Combine elements of end-to-end and unit testing, including:
+  - Running Activities with mocked contexts and SDK imports.
+  - Configuring Workers with mock Activities and using a Client to invoke Workflows.
+  - Testing Workflows with mocked SDK imports.
+
+- **Unit Tests:** Focus on a specific Workflow or Activity function by mocking dependencies.
+
+We recommend prioritizing integration tests, as the test server’s time-skipping capability allows for effective end-to-end and integration testing with Workers.
+
+### Use Recommended Testing Frameworks
+
+Several SDKs support popular testing frameworks. For Python, [pytest](https://docs.pytest.org/) is a highly recommended framework. It helps manage test environments, facilitates test discovery, and simplifies writing parameterized tests.
+
+### Test Activities in Isolation
+
+You can test Activities using a mock Activity environment, which lets you simulate the Activity context, manage Heartbeats, and cancel the Activity. This isolation allows you to test the Activity directly without needing to set up a Worker.
+
+#### Execute an Activity
+
+When testing, if an Activity requires a context, you must mock it accordingly. Use the [`ActivityEnvironment`](https://python.temporal.io/temporalio.testing.ActivityEnvironment.html) class to run your Activity within a mocked context.
+
+You can test Activity behavior under various conditions by directly invoking it.
+
+#### Monitor Heartbeats
+
+To verify Heartbeats emitted by an Activity, you should ensure that your test code can access them. Use the [`on_heartbeat()`](https://python.temporal.io/temporalio.testing.ActivityEnvironment.html#on_heartbeat) property of the [`ActivityEnvironment`](https://python.temporal.io/temporalio.testing.ActivityEnvironment.html) class to capture Heartbeats.
+
+```python
+@activity.defn
+async def activity_with_heartbeats(param: str):
+    activity.heartbeat(f"param: {param}")
+    activity.heartbeat("second heartbeat")
+
+env = ActivityEnvironment()
+heartbeats = []
+env.on_heartbeat = lambda *args: heartbeats.append(args[0])
+await env.run(activity_with_heartbeats, "test")
+assert heartbeats == ["param: test", "second heartbeat"]
+```
+
+### Validate Workflows Thoroughly
+
+#### Mock Activities During Workflow Testing
+
+When unit testing your Workflows, mock the Activity invocation. If testing integrations with a Worker, provide the Worker with mock Activity implementations.
+
+Your mock Activity must have the same signature as the real one and should be named identically.
+
+```python
+import uuid
+from temporalio.client import Client
+from temporalio.worker import Worker
+from hello.hello_activity import (
+    ComposeGreetingInput,
+    GreetingWorkflow,
+    compose_greeting,
+)
+
+@activity.defn(name="compose_greeting")
+async def mock_compose_greeting(input: ComposeGreetingInput) -> str:
+    return f"{input.greeting}, {input.name} from mocked activity!"
+
+async def test_mock_activity(client: Client):
+    task_queue_name = str(uuid.uuid4())
+    async with Worker(
+        client,
+        task_queue=task_queue_name,
+        workflows=[GreetingWorkflow],
+        activities=[mock_compose_greeting],
+    ):
+        assert "Hello, World from mocked activity!" == await client.execute_workflow(
+            GreetingWorkflow.run,
+            "World",
+            id=str(uuid.uuid4()),
+            task_queue=task_queue_name,
+        )
+```
+
+#### Implement Time Skipping
+
+For long-running Workflows that might last for months or years, your testing framework's time-skipping capability can significantly speed up testing. With this feature, you can test the logic following long sleep durations without waiting for actual time to pass.
+
+Most SDKs include an in-memory Temporal Server that lets you skip time, applying to all tests in a `TestWorkflowEnvironment`. If varied time behaviors are needed, run tests in series or on separate test server instances.
+
+##### Automatically Skip Time
+
+To skip time automatically, use the [`start_time_skipping()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#start_time_skipping) method to initiate a test server that skips time as needed.
+
+```python
+from temporalio.testing import WorkflowEnvironment
+
+async def test_auto_time_skipping():
+    async with await WorkflowEnvironment.start_time_skipping() as env:
+        # Your test code here
+        await env.sleep(3)  # Fast-forward time by 3 seconds
+```
+
+##### Manually Skip Time
+
+Learn to manually control time in your SDK testing. Use the same [`start_time_skipping()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#start_time_skipping) method for this functionality.
+
+```python
+async def test_manual_time_skipping():
+    async with await WorkflowEnvironment.start_time_skipping() as env:
+        await env.sleep(3)  # Advance time by 3 seconds
+```
+
+### Insert Assertions in Workflows
+
+You can use the `assert` statement to add debugging assertions directly within your Workflow. This is beneficial for confirming expected outcomes during testing.
+
+For further details on using assertions, refer to the Python documentation on the [`assert`](https://docs.python.org/3/reference/simple_stmts.html#the-assert-statement) statement.
+
+### Replay Workflow Executions
+
+You can use replay to recreate the exact state of a Workflow Execution from its Event History. Replay is successful only if the current Workflow Definition aligns with the provided history deterministically.
+
+To ensure your Workflow Definitions remain valid, include replay checks in your CI pipeline:
+
+1. Identify the Workflow Types or Task Queues relevant to the Worker code being tested.
+2. Collect Event Histories from a representative set of recent Workflows either programmatically or via the Temporal CLI.
+3. Run these Event Histories through the replay process.
+4. Fail the CI build if any errors occur during replay.
+
+Use the [`replay_workflows`](https://python.temporal.io/temporalio.worker.Replayer.html#replay_workflows) or [`replay_workflow`](https://python.temporal.io/temporalio.worker.Replayer.html#replay_workflow) methods to conduct replays.
+
+Example fetching and replaying Event Histories:
+
+```python
+workflows = client.list_workflows("TaskQueue=foo and StartTime > '2022-01-01T12:00:00'")
+histories = workflows.map_histories()
+replayer = Replayer(workflows=[MyWorkflowA, MyWorkflowB, MyWorkflowC])
+await replayer.replay_workflows(histories)
+```
+
+For replaying a single history, use:
+
+```python
+replayer = Replayer(workflows=[YourWorkflow])
+await replayer.replay_workflow(WorkflowHistory.from_json(history_json_str))
+```
+
+In both scenarios, a replay error will occur if the Event History is non-deterministic. You can choose to wait for all histories to finish replaying by setting the `fail_fast` option to `false`.
+
+:::note
+If you export Workflow Histories via the [Temporal Web UI](/web-ui) or the [Temporal CLI](/cli), you can pass the JSON file's history object as a string or use `json.load()` to convert a file object.
+:::
