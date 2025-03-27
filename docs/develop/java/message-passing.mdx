@@ -595,7 +595,7 @@ This is useful if you have message handlers that need access to Workflow input: 
 
 :::caution
 
-Do not make blocking calls from within your `@WorkflowInit` method. This could result in your Workflow being incompletely initialized at the start, meaning, for example, that Signal and Update handler registration would be delayed.
+Do not make blocking calls from within your `@WorkflowInit` method. This could result in your Workflow being incompletely initialized at the start, meaning, for example, that Signal, Query, and Update handler registration would be delayed.
 
 :::
 
