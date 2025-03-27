@@ -622,7 +622,23 @@ module.exports = {
                 "encyclopedia/visibility/search-attribute",
               ],
             },
-            "encyclopedia/clusters",
+            {
+              type: "category",
+              label: "Temporal Service",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "encyclopedia/temporal-service/temporal-service",
+              },
+              items: [
+                "encyclopedia/temporal-service/temporal-server",
+                "encyclopedia/temporal-service/persistence",
+                "encyclopedia/temporal-service/visibility",
+                "encyclopedia/temporal-service/archival",
+                "encyclopedia/temporal-service/temporal-service-configuration",
+                "encyclopedia/temporal-service/multi-cluster-replication",
+              ],
+            },
             {
               type: "category",
               label: "Namespaces",

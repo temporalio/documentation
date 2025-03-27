@@ -16,7 +16,7 @@ tags:
   - Visibility
 ---
 
-A [Visibility](/clusters#visibility) store is set up as a part of your [Persistence store](/clusters#persistence) to enable listing and filtering details about Workflow Executions that exist on your Temporal Service.
+A [Visibility](/temporal-service/visibility) store is set up as a part of your [Persistence store](/temporal-service/persistence) to enable listing and filtering details about Workflow Executions that exist on your Temporal Service.
 
 A Visibility store is required in a Temporal Service setup because it is used by Temporal Web UI and CLI to pull Workflow Execution data and enables features like batch operations on a group of Workflow Executions.
 
@@ -66,7 +66,7 @@ For updates, check [Server release notes](https://github.com/temporalio/temporal
 
 :::
 
-You can set MySQL as your [Visibility store](/clusters#visibility).
+You can set MySQL as your [Visibility store](/temporal-service/visibility).
 Verify [supported versions](/self-hosted-guide/visibility) before you proceed.
 
 If using MySQL v8.0.17 or later as your Visibility store with Temporal Server v1.20 and later, any [custom Search Attributes](/search-attribute#custom-search-attribute) that you create must be associated with a Namespace in that Temporal Service.
@@ -155,7 +155,7 @@ Note that the script uses [temporal-sql-tool](https://github.com/temporalio/temp
 
 :::
 
-You can set PostgreSQL as your [Visibility store](/clusters#visibility).
+You can set PostgreSQL as your [Visibility store](/temporal-service/visibility).
 Verify [supported versions](/self-hosted-guide/visibility) before you proceed.
 
 If using PostgreSQL v12 or later as your Visibility store with Temporal Server v1.20 and later, any [custom Search Attributes](/search-attribute#custom-search-attribute) that you create must be associated with a Namespace in that Temporal Service.
@@ -235,7 +235,7 @@ Note that the script uses [temporal-sql-tool](https://github.com/temporalio/temp
 
 :::
 
-You can set SQLite as your [Visibility store](/clusters#visibility).
+You can set SQLite as your [Visibility store](/temporal-service/visibility).
 Verify [supported versions](/self-hosted-guide/visibility) before you proceed.
 
 Temporal supports only an in-memory database with SQLite; this means that the database is automatically created when Temporal Server starts and is destroyed when Temporal Server stops.
@@ -298,7 +298,7 @@ For an example of setting up the SQLite schema, see [Temporalite](https://github
 
 :::
 
-You can set Cassandra as your [Visibility store](/clusters#visibility).
+You can set Cassandra as your [Visibility store](/temporal-service/visibility).
 Verify [supported versions](/self-hosted-guide/visibility) before you proceed.
 
 Advanced Visibility is not supported with Cassandra.
@@ -658,7 +658,7 @@ Before you begin, verify [supported databases and versions](/self-hosted-guide/v
 
 The following steps describe how to migrate your Visibility database.
 
-After you make any changes to your [Temporal Service configuration](/clusters#cluster-configuration), ensure that you restart your services.
+After you make any changes to your [Temporal Service configuration](/temporal-service/configuration), ensure that you restart your services.
 
 #### Set up secondary Visibility store
 
@@ -688,7 +688,7 @@ After you make any changes to your [Temporal Service configuration](/clusters#cl
        closeIdleConnectionsInterval: 15s
    ```
 
-1. Update the [dynamic configuration](/clusters#dynamic-configuration) keys on your self-hosted Temporal Service to enable write operations to the secondary store and disable read operations.
+1. Update the [dynamic configuration](/temporal-service/configuration#dynamic-configuration) keys on your self-hosted Temporal Service to enable write operations to the secondary store and disable read operations.
    Example:
 
    ```yaml
@@ -715,7 +715,7 @@ Running in dual mode lets you plan for closed and open Workflow Executions data 
 
 Example:
 
-- To manage closed Workflow Executions data, run in dual mode until the Namespace [Retention Period](/clusters#retention-period) is reached.
+- To manage closed Workflow Executions data, run in dual mode until the Namespace [Retention Period](/temporal-service/temporal-server#retention-period) is reached.
   After the Retention Period, Workflow Execution data is removed from the Persistence and Visibility stores.
   If you want to keep the closed Workflow Executions data after the set Retention Period, you must set up [Archival](/self-hosted-guide/archival).
 - To manage data for all open Workflow Executions, run in dual mode until all the Workflow Executions started before enabling Dual Visibility mode are closed.

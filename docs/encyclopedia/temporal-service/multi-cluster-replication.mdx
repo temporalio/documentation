@@ -1,19 +1,32 @@
 ---
 id: multi-cluster-replication
-title: Self-hosted Multi-Cluster Replication
+title: Multi-Cluster Replication
 sidebar_label: Multi-Cluster Replication
-description: Multi-Cluster Replication in Temporal ensures asynchronous replication of Workflow Executions from active to passive Clusters for backup and state reconstruction, enabling seamless failovers.
-slug: /self-hosted-guide/multi-cluster-replication
+description: Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.
+slug: /temporal-service/multi-cluster-replication
 toc_max_heading_level: 4
 keywords:
-  - cluster
-  - explanation
-  - how-to
-  - term
+  - multi-cluster-replication
+  - namespace-versions
+  - version-history
+  - conflict-resolution
+  - zombie-workflows
+  - workflow-task-processing
 tags:
+  - Concepts
   - Temporal Service
-  - Self-hosting
 ---
+
+This page discusses the following:
+- [Multi-Cluster Replication](#multi-cluster-replication)
+- [Namespace Versions](#namespace-versions)
+- [Version History](#version-history)
+- [Conflict Resolution](#conflict-resolution)
+- [Zombie Workflows](#zombie-workflows)
+- [Workflow Task Processing](#workflow-task-processing)
+
+
+## What is Multi-Cluster Replication? {#multi-cluster-replication}
 
 Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.
 When necessary, for higher availability, Cluster operators can failover to any of the backup Clusters.
@@ -30,7 +43,7 @@ This enables [Temporal UI](https://docs.temporal.io/web-ui) to work seamlessly f
 Applications making API calls directly to the Temporal Visibility API continue to work even if a Global Namespace is in standby mode.
 However, they might see a lag due to replication delay when querying the Workflow Execution state from a standby Cluster.
 
-#### Namespace Versions
+## Namespace Versions
 
 A _version_ is a concept in Multi-Cluster Replication that describes the chronological order of events per Namespace.
 
@@ -59,7 +72,7 @@ A cluster can mutate a Workflow Execution History only if the following is true:
 
 <details>
     <summary>
-    Namespace version change example
+      Namespace version change example
     </summary>
 
 Assuming the following scenario:
@@ -98,7 +111,7 @@ all workflows events generated within this namespace, will come with version 11
 
 </details>
 
-#### Version history
+## Version history
 
 Version history is a concept which provides a high level summary of version information in regards to Workflow Execution History.
 
@@ -119,8 +132,8 @@ T = 0: adding event with event ID == 1 & version == 1
 View in both Cluster A & B
 
 ```
-| -------- | --------------- | --------------- | ------- |
-| Events   | Version History |                 |         |
+| -------- | ------------- | --------------- | ------- |
+| Events   | Version History |
 | -------- | --------------- | --------------- | ------- |
 | Event ID | Event Version   | Event ID        | Version |
 | -------- | -------------   | --------------- | ------- |
@@ -133,8 +146,8 @@ T = 1: adding event with event ID == 2 & version == 1
 View in both Cluster A & B
 
 ```
-| -------- | --------------- | --------------- | ------- |
-| Events   | Version History |                 |         |
+| -------- | ------------- | --------------- | ------- |
+| Events   | Version History |
 | -------- | --------------- | --------------- | ------- |
 | Event ID | Event Version   | Event ID        | Version |
 | -------- | -------------   | --------------- | ------- |
@@ -148,8 +161,8 @@ T = 2: adding event with event ID == 3 & version == 1
 View in both Cluster A & B
 
 ```
-| -------- | --------------- | --------------- | ------- |
-| Events   | Version History |                 |         |
+| -------- | ------------- | --------------- | ------- |
+| Events   | Version History |
 | -------- | --------------- | --------------- | ------- |
 | Event ID | Event Version   | Event ID        | Version |
 | -------- | -------------   | --------------- | ------- |
@@ -165,8 +178,8 @@ adding event with event ID == 4 & version == 2
 View in both Cluster A & B
 
 ```
-| -------- | --------------- | --------------- | ------- |
-| Events   | Version History |                 |         |
+| -------- | ------------- | --------------- | ------- |
+| Events   | Version History |
 | -------- | --------------- | --------------- | ------- |
 | Event ID | Event Version   | Event ID        | Version |
 | -------- | -------------   | --------------- | ------- |
@@ -182,8 +195,8 @@ T = 4: adding event with event ID == 5 & version == 2
 View in both Cluster A & B
 
 ```
-| -------- | --------------- | --------------- | ------- |
-| Events   | Version History |                 |         |
+| -------- | ------------- | --------------- | ------- |
+| Events   | Version History |
 | -------- | --------------- | --------------- | ------- |
 | Event ID | Event Version   | Event ID        | Version |
 | -------- | -------------   | --------------- | ------- |
@@ -197,11 +210,11 @@ View in both Cluster A & B
 
 </details>
 
-Since Temporal is AP, during failover (change of active Temporal Cluster Namespace), there can exist cases where more than one Cluster can modify a Workflow Execution, causing divergence of Workflow Execution History. Below shows how the version history will look like under such conditions.
+Since Temporal is AP, during failover (change of active Temporal Service Namespace), there can exist cases where more than one Cluster can modify a Workflow Execution, causing divergence of Workflow Execution History. Below shows how the version history will look like under such conditions.
 
 <details>
     <summary>
-    Version history example (with data conflict)
+      Version history example (with data conflict)
     </summary>
 
 Below, shows version history of the same Workflow Execution in 2 different Clusters.
@@ -216,8 +229,8 @@ T = 0:
 View in both Cluster B & C
 
 ```
-| -------- | --------------- | --------------- | ------- |
-| Events   | Version History |                 |         |
+| -------- | ------------- | --------------- | ------- |
+| Events   | Version History |
 | -------- | --------------- | --------------- | ------- |
 | Event ID | Event Version   | Event ID        | Version |
 | -------- | -------------   | --------------- | ------- |
@@ -230,8 +243,8 @@ View in both Cluster B & C
 T = 1: adding event with event ID == 4 & version == 2 in Cluster B
 
 ```
-| -------- | --------------- | --------------- | ------- |
-| Events   | Version History |                 |         |
+| -------- | ------------- | --------------- | ------- |
+| Events   | Version History |
 | -------- | --------------- | --------------- | ------- |
 | Event ID | Event Version   | Event ID        | Version |
 | -------- | -------------   | --------------- | ------- |
@@ -245,8 +258,8 @@ T = 1: adding event with event ID == 4 & version == 2 in Cluster B
 T = 1: namespace failover to Cluster C, adding event with event ID == 4 & version == 3 in Cluster C
 
 ```
-| -------- | --------------- | --------------- | ------- |
-| Events   | Version History |                 |         |
+| -------- | ------------- | --------------- | ------- |
+| Events   | Version History |
 | -------- | --------------- | --------------- | ------- |
 | Event ID | Event Version   | Event ID        | Version |
 | -------- | -------------   | --------------- | ------- |
@@ -259,48 +272,50 @@ T = 1: namespace failover to Cluster C, adding event with event ID == 4 & versio
 
 T = 2: replication task from Cluster C arrives in Cluster B
 
-Note: below is a tree structures
+Note: below are a tree structures
 
 ```
-| ------------- | ------------- |
-| Events         |               |
-| -------------- | ------------- |
-| Event ID       | Event Version |
-| -------------  | ------------- |
-| 1              | 1             |
-| 2              | 1             |
-| 3              | 2             |
-| -------------  | ------------- |
-|                |               |
-| -------------  | ------------- |
-|                |               |
-| -------------- | ------------- |  | -------- | ------------- |
-| Event ID       | Event Version |  | Event ID | Event Version |
-| -------------  | ------------- |  | -------- | ------------- |
-| 4              | 2             |  | 4        | 3             |
-| -------------- | ------------- |  | -------- | ------------- |
+                | -------- | ------------- |
+                | Events        |
+                | ------------- | ------------- |
+                | Event ID      | Event Version |
+                | --------      | ------------- |
+                | 1             | 1             |
+                | 2             | 1             |
+                | 3             | 2             |
+                | --------      | ------------- |
+                |               |
+                | ------------- | ------------  |
+                |               |
+                | --------      | ------------- |  | -------- | ------------- |
+                | Event ID      | Event Version |  | Event ID | Event Version |
+                | --------      | ------------- |  | -------- | ------------- |
+                | 4             | 2             |  | 4        | 3             |
+                | --------      | ------------- |  | -------- | ------------- |
 
-| --------------- | ----------- |
-| Version History |              |
-| --------------- | ------------ |
-| Event ID        | Version      |
-| --------------- | ------------ |
-| 2               | 1            |
-| 3               | 2            |
-| --------------- | ------------ |
-
-| --------------- | ----------- |  | --------------- | ------- |
-| Event ID | Version |  | Event ID | Version |
-| -------- | ------- || --------------- | ------- |
-| 4   | 2   |  | 4 | 3 |
-| --- | --- || --------------- | ------- |
+          | --------------- | ------- |
+          | Version History |
+          | --------------- | ------------------- |
+          | Event ID        | Version             |
+          | --------------- | -------             |
+          | 2               | 1                   |
+          | 3               | 2                   |
+          | --------------- | -------             |
+          |                 |
+          | -------         | ------------------- |
+          |                 |
+          | --------------- | -------             |  | --------------- | ------- |
+          | Event ID        | Version             |  | Event ID        | Version |
+          | --------------- | -------             |  | --------------- | ------- |
+          | 4               | 2                   |  | 4               | 3       |
+          | --------------- | -------             |  | --------------- | ------- |
 ```
 
 T = 2: replication task from Cluster B arrives in Cluster C, same as above
 
 </details>
 
-#### Conflict resolution
+## Conflict resolution
 
 When a Workflow Execution History diverges, proper conflict resolution is applied.
 
@@ -321,7 +336,7 @@ Any outstanding Activities will eventually time out based on the configuration.
 Your application should have retry logic in place so that the Activity gets retried and dispatched again to a Worker after the failover to the new Cluster.
 Handling this is similar to handling an Activity Task timeout caused by a Worker restarting.
 
-#### Zombie Workflows
+## Zombie Workflows
 
 There is an existing contract that for any Namespace and Workflow Id combination, there can be at most one run (Namespace + Workflow Id + Run Id) open / executing.
 
@@ -358,7 +373,7 @@ A "zombie" state is one in which a Workflow Execution which cannot be actively m
 
 Run 1 will be replicated similar to Run 2, except when Run 1's execution will become a "zombie" before Run 1 reaches completion.
 
-#### Workflow Task processing
+## Workflow Task processing
 
 In the context of Multi-cluster Replication, a Workflow Execution's mutable state is an entity which tracks all pending tasks.
 Prior to the introduction of Multi-cluster Replication, Workflow Execution History entries (events) are from a single branch, and the Temporal Server will only append new entries (events) to the Workflow Execution History.
@@ -392,142 +407,26 @@ T = 0: task A is generated according to Event Id: 4, version: 2
 T = 1: conflict resolution happens, Workflow Execution's mutable state is rebuilt and history Event Id: 4, version: 3 is written down to persistence
 
 ```
-| ------------- | -------------- |
+| -------- | ------------- |
 | Events        |
-| ------------- | -------------- |
-| Event ID      | Event Version  |
-| ------------- | -------------- |
-| 1             | 1              |
-| 2             | 1              |
-| 3             | 2              |
-| ------------- | -------------- |
-
-| --------------| -------------- |                                  |----------| ----------------- |
-| Event ID | Event Version |  | Event ID | Event Version |
-| -------- | ------------- || -------- | ----------------- |
-| 4   | 2   | <-- task A belongs to this event | 4 | 3 | <-- current branch / mutable state |
-| --- | --- || -------- | ----------------- |
+| ------------- | -------------------------------------------- |
+| Event ID      | Event Version                                |
+| --------      | -------------                                |
+| 1             | 1                                            |
+| 2             | 1                                            |
+| 3             | 2                                            |
+| --------      | -------------                                |
+|               |
+| ------------- | -------------------------------------------- |
+|               |
+| --------      | -------------                                |                                  | -------- | ------------- |
+| Event ID      | Event Version                                |                                  | Event ID | Event Version |
+| --------      | -------------                                |                                  | -------- | ------------- |
+| 4             | 2                                            | <-- task A belongs to this event | 4        | 3             | <-- current branch / mutable state |
+| --------      | -------------                                |                                  | -------- | ------------- |
 ```
 
 T = 2: task A is loaded.
 
 At this time, due to the rebuild of a Workflow Execution's mutable state (conflict resolution), Task A is no longer relevant (Task A's corresponding Event belongs to non-current branch).
 Task processing logic will verify both the Event Id and version of the Task against a corresponding Workflow Execution's mutable state, then discard task A.
-
-## How to set up Multi-Cluster Replication {#set-up-multi-cluster-replication}
-
-The [Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication) feature asynchronously replicates Workflow Execution Event Histories from active Clusters to other passive Clusters, and can be enabled by setting the appropriate values in the `clusterMetadata` section of your configuration file.
-
-1. `enableGlobalNamespace` must be set to `true`.
-2. `failoverVersionIncrement` has to be equal across connected Clusters.
-3. `initialFailoverVersion` in each Cluster has to assign a different value.
-   No equal value is allowed across connected Clusters.
-
-After the above conditions are satisfied, you can start to configure a multi-cluster setup.
-
-#### Set up Multi-Cluster Replication prior to v1.14
-
-You can set this up with [`clusterMetadata` configuration](/references/configuration#clustermetadata); however, this is meant to be only a conceptual guide rather than a detailed tutorial.
-
-:::tip
-
-If you need help when setting up, please reach out to our [community Slack](https://temporalio.slack.com).
-Good places to start include the **\#support-community** channel, searching through previous conversations, and asking our unusually excellent Temporal-trained large language model (visit **\#ask-ai**).
-
-Need a Slack invitation?
-Here's an [invitation link](https://temporal.io/slack).
-
-:::
-
-For example:
-
-```yaml
-# cluster A
-clusterMetadata:
-  enableGlobalNamespace: true
-  failoverVersionIncrement: 100
-  masterClusterName: "clusterA"
-  currentClusterName: "clusterA"
-  clusterInformation:
-    clusterA:
-      enabled: true
-      initialFailoverVersion: 1
-      rpcAddress: "127.0.0.1:7233"
-    clusterB:
-      enabled: true
-      initialFailoverVersion: 2
-      rpcAddress: "127.0.0.1:8233"
-
-# cluster B
-clusterMetadata:
-  enableGlobalNamespace: true
-  failoverVersionIncrement: 100
-  masterClusterName: "clusterA"
-  currentClusterName: "clusterB"
-  clusterInformation:
-    clusterA:
-      enabled: true
-      initialFailoverVersion: 1
-      rpcAddress: "127.0.0.1:7233"
-    clusterB:
-      enabled: true
-      initialFailoverVersion: 2
-      rpcAddress: "127.0.0.1:8233"
-```
-
-#### Set up Multi-Cluster Replication in v1.14 and later
-
-You still need to set up local cluster [`clusterMetadata` configuration](/references/configuration#clustermetadata)
-
-For example:
-
-```yaml
-# cluster A
-clusterMetadata:
-  enableGlobalNamespace: true
-  failoverVersionIncrement: 100
-  masterClusterName: "clusterA"
-  currentClusterName: "clusterA"
-  clusterInformation:
-    clusterA:
-      enabled: true
-      initialFailoverVersion: 1
-      rpcAddress: "127.0.0.1:7233"
-
-# cluster B
-clusterMetadata:
-  enableGlobalNamespace: true
-  failoverVersionIncrement: 100
-  masterClusterName: "clusterB"
-  currentClusterName: "clusterB"
-  clusterInformation:
-    clusterB:
-      enabled: true
-      initialFailoverVersion: 2
-      rpcAddress: "127.0.0.1:8233"
-```
-
-Then you can use the Temporal CLI tool to add cluster connections. All operations should be executed in both Clusters.
-
-{/* tctl -address 127.0.0.1:7233 admin cluster upsert-remote-cluster --frontend_address "localhost:8233" */}
-
-{/* tctl -address 127.0.0.1:8233 admin cluster upsert-remote-cluster --frontend_address "localhost:7233" */}
-
-{/* tctl -address 127.0.0.1:7233 admin cluster upsert-remote-cluster --frontend_address "localhost:8233" --enable_connection false
-tctl -address 127.0.0.1:8233 admin cluster upsert-remote-cluster --frontend_address "localhost:7233" --enable_connection false */}
-
-{/* tctl -address 127.0.0.1:7233 admin cluster remove-remote-cluster --cluster "clusterB"
-tctl -address 127.0.0.1:8233 admin cluster remove-remote-cluster --cluster "clusterA" */}
-
-{/* THIS MUST BE CHECKED FOR ACCURACY */}
-
-```shell
-# Add a cluster
-temporal operator cluster upsert --frontend_address="127.0.2.1:8233"
-
-# Disable connections
-temporal operator cluster upsert --frontend_address="localhost:8233" --enable_connection false
-
-# Delete connections
-temporal operator cluster remove --name="someClusterName"
-```
