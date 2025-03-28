@@ -113,7 +113,7 @@ See the links below for how to ensure handlers are finished in your SDK.
 
 Many developers want their message handlers to run exactly once--to be idempotent--in cases where the same Signal or Update is delivered twice or sent by two different call sites. Temporal deduplicates messages for you on the server, but there is one important case when you need to think about this yourself when authoring a Workflow, and one when sending Signals and Updates.
 
-When your workflow Continues-As-New, you should handle deduplication yourself in your message handler. This is because Temporal's built-in deduplication doesn't work across [Continue-As-New](/workflows#continue-as-new) boundaries, meaning you would risk processing messages twice for such Workflows if you don't check for duplicate messages yourself.
+When your workflow Continues-As-New, you should handle deduplication yourself in your message handler. This is because Temporal's built-in deduplication doesn't work across [Continue-As-New](/workflow-execution#continue-as-new) boundaries, meaning you would risk processing messages twice for such Workflows if you don't check for duplicate messages yourself.
 
 To deduplicate in your message handler, you can use an idempotency key.
 
