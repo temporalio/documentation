@@ -47,6 +47,10 @@ const appDevGuideLinks = [
     path: "/develop/php",
     name: "PHP SDK developer guide",
   },
+  {
+    path: "https://github.com/temporalio/sdk-ruby",
+    name: "Ruby SDK README",
+  },
 ];
 
 const troubleshooting = [
