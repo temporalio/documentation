@@ -86,7 +86,7 @@ Each Activity Timeout controls the maximum duration of a different aspect of an 
 
 The following Timeouts are available in the Activity Options:
 
-- **[Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout):** is the maximum amount of time allowed for the entire [Activity Execution](/activities#activity-execution), from when the [Activity Task](/tasks#activity-task) is initially scheduled by the Workflow to when the server receives a sucessful completion for that Activity Task
+- **[Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout):** is the maximum amount of time allowed for the entire [Activity Execution](/activity-execution), from when the [Activity Task](/tasks#activity-task) is initially scheduled by the Workflow to when the server receives a sucessful completion for that Activity Task
 - **[Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout):** is the maximum time allowed for a single [Activity Task Execution](/tasks#activity-task-execution), from when the Activity Task Execution gets polled by a [Worker](/workers#worker) to when the server receives a successfull completion for that Activity Task
 - **[Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout):** is the maximum amount of time that is allowed from when an [Activity Task](/tasks#activity-task) is initially scheduled by the Workflow to when a [Worker](/workers#worker) polls the Activity Task Execution
 
@@ -146,8 +146,8 @@ throw ApplicationFailure.create({
 
 **How to Heartbeat an Activity using the Temporal TypeScript SDK**
 
-An [Activity Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Service](/clusters).
-Each Heartbeat informs the Temporal Service that the [Activity Execution](/activities#activity-execution) is making progress and the Worker has not crashed.
+An [Activity Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Service](/temporal-service).
+Each Heartbeat informs the Temporal Service that the [Activity Execution](/activity-execution) is making progress and the Worker has not crashed.
 If the Temporal Service does not receive a Heartbeat within a [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) time period, the Activity will be considered as timed out and another [Activity Task Execution](/tasks#activity-task-execution) may be scheduled according to the Retry Policy.
 
 Activity Cancellations are delivered to Activities from the Temporal Service when they Heartbeat.

@@ -17,7 +17,7 @@ tags:
   - Temporal Cloud
 ---
 
-import { CaptionedImage } from '@site/src/components';
+import { CaptionedImage, ZoomingImage } from '@site/src/components';
 
 A Namespace is a unit of isolation within the Temporal Platform.
 
@@ -39,90 +39,86 @@ Each Namespace Name must conform to the following rules:
 - Each hyphen (-) character must be immediately preceded _and_ followed by a letter or number; consecutive hyphens are not permitted.
 - All letters in a Namespace Name must be lowercase.
 
-## What is a Temporal Cloud Account Id? {#temporal-cloud-account-id}
+## What is a Temporal Cloud Account ID? {#temporal-cloud-account-id}
 
-A Temporal Cloud Account Id is a unique customer identifier assigned by Temporal Technologies.
+A Temporal Cloud Account ID is a unique customer identifier assigned by Temporal Technologies.
 Each Id is a short string of numbers and letters like `f45a2`, at least five characters long.
 This account identifier is retained throughout the time each customer uses Temporal Cloud.
 
-At times you may need to know a customer Account Id.
+At times you may need to know your customer Account ID.
 Accessing the account's Namespaces provides an easy way to capture this information.
-Each Temporal Namespace use an Account Id suffix.
+Each Temporal Namespace use an Account ID suffix.
 This is the alphanumeric character string found after the period in any Temporal Cloud Namespace name.
 
-You can retrieve an Account Id from the [Temporal Cloud](https://cloud.temporal.io) Web UI or by using the `tcld` utility at a command line interface (CLI).
+You can retrieve an Account ID from the [Temporal Cloud](https://cloud.temporal.io) Web UI or by using the `tcld` utility at a command line interface (CLI).
 Follow these steps.
 
-**From the Temporal Cloud Web UI:**
+<Tabs>
 
-1. Log into Temporal Cloud.
-2. Navigate to the Namespace list page from the left-side vertical navigation.
-3. View the Namespaces listed for the user. Each Namespace includes several details:
-   - _Status_:
-     the Namespace's current state within the Temporal Cloud system, such as Active, Updating, or Deprecated.
-   - _Name_:
-     a customer-supplied identifier.
-     It is unique within the scope of a customer's account.
-   - _Region_:
-     corresponds to the Namespace's [hosting region](/cloud/regions).
-   - _Retention_:
-     a period during which completed workflows can be recovered and analyzed.
-   - _APS Limit_:
-     the maximum number of actions per second that a namespace supports.
+    <TabItem value="webui" label="Web UI">
+    Follow these steps to retrieve your Account ID:
 
-Each Namespace automatically appends an Account Id suffix to its customer-supplied identifier.
-This five-character-or-longer string appears after the name, separated by a period.
+    1. Log into Temporal Cloud.
+    1. Select your account avatar at the top right of the page.
+       A profile dropdown menu appears.
+    1. Copy the Cloud Account ID from the menu.
+       <ZoomingImage
+           src="/img/cloud/cloud-guide/cloud-account-id.png"
+           alt="Temporal Cloud user profile dropdown menu. The dropdown includes a Cloud Account ID and copy button, with role, profile and logout options, and links to community resources."
+       />
 
-| Status | Name                     | Region    | Retention | APS Limit | Export |
-| ------ | ------------------------ | --------- | --------- | --------- | ------ |
-| Active | your-namespace.123def    | us-west-2 | 30 Days   | 400       | --     |
-| Active | another-namespace.123def | us-west-2 | 30 Days   | 400       | --     |
+    In this example, the Account ID is `123de`.
 
-In this Namespace listing sample, the Account Id is 123def.
+    </TabItem>
 
-**From the Command Line:**
+    <TabItem value="tcldcli" label="tcld">
+    1. Use the `tcld` utility to log into an account.
 
-1. Use the `tcld` utility to log into an account.
+       ```
+       tcld login
+       ```
 
-   ```
-   tcld login
-   ```
+       The `tcld` output presents a URL with an activation code at the end. Take note of this code. The utility blocks until the login/activation process completes.
 
-   The `tcld` output presents a URL with an activation code at the end. Take note of this code. The utility blocks until the login/activation process completes.
+       ```
+       Login via this url: https://login.tmprl.cloud/activate?user_code=KTGC-ZPWQ
+       ```
 
-   ```
-   Login via this url: https://login.tmprl.cloud/activate?user_code=KTGC-ZPWQ
-   ```
+       A Web page automatically opens for authentication in your default browser.
 
-   A Web page automatically opens for authentication in your default browser.
+    1. Visit the browser.
+       Ensure the user code shown by the CLI utility matches the code shown in the Web browser.
+       Then, click Confirm in the browser to continue.
+       After confirmation, Web feedback lets you know that the CLI "device" is now connected.
 
-2. Visit the browser. Ensure the user code shown by the CLI utility matches the code shown in the Web browser.
-   Then, click Confirm in the browser to continue.
+    1. Return to the command line.
+       Issue the following command.
 
-   After confirmation, Web feedback lets you know that the CLI "device" is now connected.
+       ```
+       tcld namespace list
+       ```
 
-3. Return to the command line.
-   Issue the following command.
+       The CLI tool returns a short JSON packet with your namespace information.
+       This is the same list found in the Temporal Cloud Web UI Namespaces list.
+       Like the browser version, each Namespace uses an Account ID suffix.
 
-   ```
-   tcld namespace list
-   ```
+       ```
+       {
+         "namespaces": [
+           "your-namespace.123de",
+           "another-namespace.123de"
+         ],
+         "nextPageToken": ""
+       }
+       ```
 
-   The CLI tool returns a short JSON packet with your namespace information.
-   This is the same list found in the Temporal Cloud Web UI Namespaces list.
-   Like the browser version, each Namespace uses an Account Id suffix.
+    Each Namespace automatically appends an Account ID suffix to its customer-supplied identifier.
+    This five-character-or-longer string appears after the name, separated by a period.
+    In this Namespace listing sample, the Account ID is 123de.
 
-   ```
-   {
-     "namespaces": [
-       "your-namespace.123def",
-       "another-namespace.123def"
-     ],
-     "nextPageToken": ""
-   }
-   ```
+    </TabItem>
 
-In this example, the Account Id is `123def`.
+</Tabs>
 
 ## What is a Cloud Namespace Id? {#temporal-cloud-namespace-id}
 
@@ -131,9 +127,9 @@ A Namespace Id is formed by concatenating the following:
 
 1. A [Namespace Name](#temporal-cloud-namespace-name)
 1. A period (.)
-1. The [Account Id](#temporal-cloud-account-id) to which the Namespace belongs
+1. The [Account ID](#temporal-cloud-account-id) to which the Namespace belongs
 
-For example, for the Account Id `f45a2` and Namespace Name `accounting-production`, the Namespace Id is `accounting-production.f45a2`.
+For example, for the Account ID `123de` and Namespace Name `accounting-production`, the Namespace Id is `accounting-production.123de`.
 
 ## What is a Cloud gRPC Endpoint? {#temporal-cloud-grpc-endpoint}
 
@@ -181,7 +177,7 @@ You can request further increases beyond the 100 Namespace limit by opening a [s
 To create a Namespace in Temporal Cloud, gather the following information:
 
 - [Namespace Name](#temporal-cloud-namespace-name), region, and Cloud Provider
-- [Retention Period](/clusters#retention-period) for the [Event History](/workflow-execution#event-history) of closed [Workflow Executions](/workflow-execution).
+- [Retention Period](/temporal-service/temporal-server#retention-period) for the [Event History](/workflow-execution#event-history) of closed [Workflow Executions](/workflow-execution).
 - [CA certificate](/cloud/certificates#certificate-requirements) for the Namespace, if you are using mTLS authentication.
 - [Codec Server endpoint](/production-deployment/data-encryption#set-your-codec-server-endpoints-with-web-ui-and-cli) to show decoded payloads to users in the Event History for Workflow Executions in the Namespace. For details, see [Securing your data](/production-deployment/data-encryption).
 - [Permissions](/cloud/users#namespace-level-permissions) for each user.

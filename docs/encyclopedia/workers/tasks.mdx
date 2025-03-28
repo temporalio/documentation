@@ -26,7 +26,7 @@ This page discusses the following:
 
 ## What is a Task? {#task}
 
-A Task is the context that a Worker needs to progress with a specific [Workflow Execution](/workflow-execution), [Activity Execution](/activities#activity-execution), or a [Nexus Task Execution](#nexus-task-execution).
+A Task is the context that a Worker needs to progress with a specific [Workflow Execution](/workflow-execution), [Activity Execution](/activity-execution), or a [Nexus Task Execution](#nexus-task-execution).
 
 There are three types of Tasks:
 
@@ -55,7 +55,7 @@ If Heartbeat data is being passed, an Activity Task will also contain the latest
 
 ### What is an Activity Task Execution? {#activity-task-execution}
 
-An Activity Task Execution occurs when a [Worker](/workers#worker-entity) uses the context provided from the [Activity Task](#activity-task) and executes the [Activity Definition](/activities#activity-definition) (also known as the Activity Function).
+An Activity Task Execution occurs when a [Worker](/workers#worker-entity) uses the context provided from the [Activity Task](#activity-task) and executes the [Activity Definition](/activity-definition) (also known as the Activity Function).
 
 The [ActivityTaskScheduled Event](/references/events#activitytaskscheduled) corresponds to when the Temporal Service puts the Activity Task into the Task Queue.
 

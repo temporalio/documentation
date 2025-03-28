@@ -33,13 +33,13 @@ In day-to-day conversation, the term "Activity" denotes an Activity Type, Activi
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Activity Definition](/activities#activity-definition)
+#### [Activity Definition](/activity-definition)
 
 An Activity Definition is the code that defines the constraints of an Activity Task Execution.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Activity Execution](/activities#activity-execution)
+#### [Activity Execution](/activity-execution)
 
 An Activity Execution is the full chain of Activity Task Executions.
 
@@ -53,7 +53,7 @@ Each ping informs the Temporal Service that the Activity Execution is making pro
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Activity Id](/activities#activity-id)
+#### [Activity Id](/activity-execution#activity-id)
 
 A unique identifier for an Activity Execution.
 
@@ -71,19 +71,19 @@ An Activity Task Execution occurs when a Worker uses the context provided from t
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Activity Type](/activities#activity-type)
+#### [Activity Type](/activity-definition#activity-type)
 
 An Activity Type is the mapping of a name to an Activity Definition.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Archival](/clusters#archival)
+#### [Archival](/temporal-service/archival)
 
 Archival is a feature specific to a Self-hosted Temporal Service that automatically backs up Event Histories from Temporal Service persistence to a custom blob store after the Closed Workflow Execution retention period is reached.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Asynchronous Activity Completion](/activities#asynchronous-activity-completion)
+#### [Asynchronous Activity Completion](/activity-execution#asynchronous-activity-completion)
 
 Asynchronous Activity Completion occurs when an external system provides the final result of a computation, started by an Activity, to the Temporal System.
 
@@ -230,7 +230,7 @@ A Failure is Temporal's representation of various types of errors that occur in 
 
 <!-- _Tags: [failure](/tags/failure), [explanation](/tags/explanation), [term](/tags/term)_ -->
 
-#### [Frontend Service](/clusters#frontend-service)
+#### [Frontend Service](/temporal-service/temporal-server#frontend-service)
 
 The Frontend Service is a stateless gateway service that exposes a strongly typed Proto API. The Frontend Service is responsible for rate limiting, authorizing, validating, and routing all inbound calls.
 
@@ -272,19 +272,19 @@ This supports high levels of business continuity, allowing Workflow Executions t
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_ -->
 
-#### [History Service](/clusters#history-service)
+#### [History Service](/temporal-service/temporal-server#history-service)
 
 The History Service is responsible for persisting Workflow Execution state and determining what to do next to progress the Workflow Execution through History Shards.
 
 <!-- _Tags: [term](/tags/term)_ -->
 
-#### [History Shard](/clusters#history-shard)
+#### [History Shard](/temporal-service/temporal-server#history-shard)
 
 A History Shard is an important unit within a Temporal Service by which the scale of concurrent Workflow Execution throughput can be measured.
 
 <!-- _Tags: [term](/tags/term)_ -->
 
-#### [Idempotency](/activities#idempotency)
+#### [Idempotency](/activity-definition#idempotency)
 
 An "idempotent" approach avoids process duplication that could withdraw money twice or ship extra orders by mistake.
 Idempotency keeps operations from producing additional effects, protecting your processes from accidental or repeated actions, for more reliable execution.
@@ -306,13 +306,13 @@ A List Filter is the SQL-like string that is provided as the parameter to an adv
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [filtered-lists](/tags/filtered-lists), [visibility](/tags/visibility)_ -->
 
-#### [Local Activity](/activities#local-activity)
+#### [Local Activity](/local-activity)
 
 A Local Activity is an Activity Execution that executes in the same process as the Workflow Execution that spawns it.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Matching Service](/clusters#matching-service)
+#### [Matching Service](/temporal-service/temporal-server#matching-service)
 
 The Matching Service is responsible for hosting external Task Queues for Task dispatching.
 
@@ -485,7 +485,7 @@ A Reset terminates a Workflow Execution, removes the progress in the Event Histo
 
 <!-- _Tags: [term](/tags/term), [resets](/tags/resets), [explanation](/tags/explanation)_ -->
 
-#### [Retention Period](/clusters#retention-period)
+#### [Retention Period](/temporal-service/temporal-server#retention-period)
 
 A Retention Period is the amount of time a Workflow Execution Event History remains in the Temporal Service's persistence store.
 
@@ -588,7 +588,7 @@ Task Routing is when a Task Queue is paired with one or more Worker Processes, p
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Task Token](/activities#task-token)
+#### [Task Token](/activity-execution#task-token)
 
 A Task Token is a unique identifier for an Activity Task Execution.
 
@@ -648,17 +648,17 @@ A Cloud gRPC Endpoint is a Namespace-specific address used to access Temporal Cl
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Temporal Cluster](/clusters)
+#### [Temporal Cluster](/temporal-service)
 The term "Temporal Cluster" is being phased out.
 Instead the term [Temporal Service](#temporal-service) is now being used.
 
-#### [Temporal Service](/clusters)
+#### [Temporal Service](/temporal-service)
 
 A Temporal Service is a Temporal Server paired with Persistence and Visibility stores.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Temporal Service configuration](/clusters#cluster-configuration)
+#### [Temporal Service configuration](/temporal-service/configuration)
 
 Temporal Service configuration is the setup and configuration details of your Temporal Service, defined using YAML.
 
@@ -682,7 +682,7 @@ A Temporal SDK is a language-specific library that offers APIs to construct and 
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Temporal Server](/clusters#temporal-server)
+#### [Temporal Server](/temporal-service/temporal-server)
 
 The Temporal Server is a grouping of four horizontally scalable services.
 
@@ -706,7 +706,7 @@ An Update is a request to and a response from Workflow Execution.
 
 <!-- _Tags: [term](/tags/term), [updates](/tags/updates), [explanation](/tags/explanation)_ -->
 
-#### [Visibility](/clusters#visibility)
+#### [Visibility](/temporal-service/visibility)
 
 The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Temporal Service.
 
@@ -736,7 +736,7 @@ A Worker Program is the static code that defines the constraints of the Worker P
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Worker Service](/clusters#worker-service)
+#### [Worker Service](/temporal-service/temporal-server#worker-service)
 
 The Worker Service runs background processing for the replication queue, system Workflows, and (in versions older than 1.5.0) the Kafka visibility processor.
 
