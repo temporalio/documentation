@@ -12,19 +12,44 @@ tags:
   - Worker
 ---
 
-This page discusses [Sticky Executions](#sticky-execution). 
+This page discusses [Sticky Execution](#sticky-execution). 
 
 ## What is a Sticky Execution? {#sticky-execution}
 
-A Sticky Execution is when a Worker Entity caches the Workflow in memory and creates a dedicated Task Queue to listen on.
+Workers cache the state of the Workflow they execute. 
+To make this caching more effective, Temporal employs a performance optimization known as "Sticky Execution", which directs Workflow Tasks to the same Worker that previously processed tasks for a specific Workflow Execution.
 
-A Sticky Execution occurs after a Worker Entity completes the first Workflow Task in the chain of Workflow Tasks for the Workflow Execution.
+### How Sticky Execution Works
+**1. Initial Workflow Task Assignment**
 
-The Worker Entity caches the Workflow in memory and begins polling the dedicated Task Queue for Workflow Tasks that contain updates, rather than the entire Event History.
+Once Workflow Execution begins, the Temporal Service schedules a Workflow Task and puts it into a Task Queue with the name you specify. 
+Any Worker that polls that Task Queue is eligible to accept the Task and begin executing the Workflow.
 
-If the Worker Entity does not pick up a Workflow Task from the dedicated Task Queue in an appropriate amount of time, the Temporal Service will resume Scheduling Workflow Tasks on the original Task Queue.
-Another Worker Entity can then resume the Workflow Execution, and can set up its own Sticky Execution for future Workflow Tasks.
+**2. Sticky Queue Creation**
 
-- [How to set a `StickyScheduleToStartTimeout` on a Worker Entity in Go](/develop/go/core-application#stickyscheduletostarttimeout)
+The Worker that picks up this Workflow Task will continue polling the original Task Queue, but will also begin polling an additional Task Queue, which the Temporal Service shares exclusively with that specific Worker. 
+This queue, which has an automatically-generated name, is known as a **Sticky Queue**.
 
-Sticky Executions are the default behavior of the Temporal Platform.
+**3. Subsequent Task Routing**
+
+The Worker caches the Workflow state in memory, which improves performance by reducing the need to reconstruct the Workflow from its Event History for every Task.
+As the Workflow Execution progresses, the Temporal Service schedules additional Workflow Tasks into this Worker-specific Sticky Queue.
+
+**4. Sticky Timeout Handling, Task Failure Handling, and Fallback Mechanism**
+
+If the Worker fails to start a Workflow Task in the Sticky Queue shortly after it's scheduled (within five seconds by default), the Temporal Service disables stickiness for that Workflow Execution.
+When stickiness is disabled, the Temporal Service reschedules the Workflow Task in the original queue, allowing any Worker to pick it up and continue the Workflow Execution.
+
+If a Workflow Task fails, the Worker removes that Workflow Execution from its cache (as it's now in an unknown state), which invalidates the Sticky Execution. 
+The Workflow Task is then put back into the original Task Queue.
+
+### Why Sticky Execution?
+
+The main benefit of Sticky Execution is improved performance. 
+By caching the Workflow state in memory and directing tasks to the same Worker, it reduces the need to reconstruct the Workflow from its Event History for every Task, which is particularly useful for latency-sensitive Workflows.
+
+Sticky Execution is the default behavior of the Temporal Platform and only applies to Workflow Tasks. 
+Since Event History is associated with a Workflow, the concept of Sticky Execution is not relevant to Activity Tasks.
+
+- [How to set a `StickyScheduleToStartTimeout` on a individual Worker in Go](/develop/go/core-application#stickyscheduletostarttimeout)
+
