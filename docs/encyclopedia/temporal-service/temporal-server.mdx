@@ -152,16 +152,15 @@ Each History Shard maintains the Workflow Execution Event History, Workflow Exec
 - Internal Visibility Task Queue: Pushes data to the [Advanced Visibility](/visibility#advanced-visibility) index.
 
 ## What is a Matching Service? {#matching-service}
-
-The Matching Service is responsible for hosting user-facing [Task Queues](/task-queue) for Task dispatching.
+The Matching Service is one of the four core services that make up the Temporal Server. 
+The Matching Service is responsible for maintaining the [Task Queues](/task-queue). 
+It is responsible for matching Workers to Tasks and routing new Tasks to the appropriate queue.
+It also works closely with the History Service, which initiates Workflow and Activity Tasks.
 
 <CaptionedImage
     src="/diagrams/temporal-matching-service.svg"
     title="Matching Service"
 />
-
-It is responsible for matching Workers to Tasks and routing new Tasks to the appropriate queue.
-This service can scale internally by having multiple instances.
 
 It talks to the Frontend Service, History Service, and the database.
 
@@ -169,6 +168,27 @@ It talks to the Frontend Service, History Service, and the database.
 - It uses port 6935 for membership related communication.
 
 Ports are configurable in the Temporal Service configuration.
+
+### Async and Sync Matching 
+In Temporal, sync matching and async matching refer to the two different ways that tasks are dispatched to workers in the Temporal system.
+
+When the next step requires a Worker to execute code, the History Service calls the Matching Service, requesting it to add a Task to the appropriate Task Queue. 
+
+If there is already a Task scheduled when the Worker begins polling, the Matching Service loads the Task from the database, tells the History Service to mark the Task as Started, and provides it to the Frontend Service so it can be delivered to the Worker. 
+This is called **normal or asynchronous matching**.
+
+If the History Service asks the Matching Service to add a Task while a Worker happens to be performing a long poll, the Task can be delivered to the Worker immediately. 
+This optimization, known as **sync matching**, improves performance by eliminating database operations associated with the Task Queue.
+In other words, Sync matching (synchronous matching) occurs when a Worker polls for a Task and the Temporal Service can immediately match it with a Task that's ready to be executed, without having to persist the Task to the database first. 
+This is the more efficient method of Task delivery.
+
+
+**Why Sync Matching is Important?**
+The percentage of Tasks that involve sync matching is often used to evaluate whether an application has enough Workers. 
+When the number of Workers are in good balance with the number of Tasks, sync matching should account for 90% or more of all requests. 
+This percentage may naturally vary according to application load; for example, dropping slightly during a burst of activity. 
+If it remains low for an extended period of time, it can suggest the need to increase the number of Workers.
+
 
 ## What is a Worker Service? {#worker-service}
 
