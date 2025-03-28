@@ -18,7 +18,7 @@ go run worker/main_dacx.go
 3. Start the HTTP server
 
 ```
-go run gateway/main_dacx.go
+go run gateway/main.go
 ```
 
 4. Either in your browser, or via curl command hit `http://localhost:8091/start`
