@@ -1,0 +1,304 @@
+---
+id: deploy-workers-to-aws-eks
+title: Quick Launch - Deploying your Workers on Amazon EKS
+sidebar_label: Deploy Workers to Amazon EKS
+description: Deploy a Temporal Worker on Amazon Elastic Kubernetes Service (EKS) using the Python SDK.
+keywords:
+  - Temporal Cloud
+  - Kubernetes
+  - EKS
+  - AWS
+  - Python SDK
+  - Worker
+tags:
+  - Deploy
+  - Python SDK
+  - Kubernetes
+  - Temporal Cloud
+---
+
+Temporal Workers run in [Kubernetes](https://kubernetes.io)-based deployments deliver scale, resilience, and flexible resource management.
+Amazon EKS (Elastic Kubernetes Service) offers one of the most popular choices for running Temporal Workers.
+It integrates smoothly with AWS services and supports auto-scaling and fault tolerance—key features for many Temporal users.
+
+Follow this guide to deploy and manage your Temporal Workers in EKS.
+This guide walks you through writing Temporal Worker code, containerizing and publishing the Worker to the Amazon Elastic Container Registry (ECR), and deploying the worker to Amazon EKS.
+The example in this post uses Temporal’s Python SDK.
+You can apply this content to both Temporal OSS and Temporal Cloud Workflows.
+
+## Before you begin
+
+To get started deploying your Workers to EKS, you’ll need:
+
+- Your Temporal Cloud account including
+  - A Namespace using [API key authentication](/cloud/api-keys#namespace-authentication)
+  - Your API Key for a [Service Account](/cloud/api-keys#generate-an-api-key-for-a-service-account)
+- An Amazon Web Services (AWS) Account
+  - A deployed EKS cluster within your AWS Account
+- An installed version of the [`aws` CLI](https://aws.amazon.com/cli/)
+- [`docker`](https://www.docker.com/get-started/)
+- The [`kubectl`](https://kubernetes.io/docs/reference/kubectl/) command line tool, configured with your deployed EKS cluster
+
+## Write your Worker code
+
+In Temporal applications, business logic lives within your main Workflow code.
+Your Worker code runs separately, and is responsible for executing your Workflows and Activities.
+Make sure to configure your Worker to use environment variables so you can dynamically route your Worker to different Temporal Instances, Namespaces, and Task Queues on the fly:
+
+```python
+TEMPORAL_ADDRESS = os.environ.get("TEMPORAL_ADDRESS", "localhost:7233")
+TEMPORAL_NAMESPACE = os.environ.get("TEMPORAL_NAMESPACE", "default")
+TEMPORAL_TASK_QUEUE = os.environ.get("TEMPORAL_TASK_QUEUE", "test-task-queue")
+TEMPORAL_API_KEY = os.environ.get("TEMPORAL_API_KEY", "")
+```
+
+After configuration, instantiate your Temporal client:
+
+```
+client = await Client.connect(
+    TEMPORAL_ADDRESS,
+    namespace=TEMPORAL_NAMESPACE,
+    rpc_metadata={"temporal-namespace": TEMPORAL_NAMESPACE},
+    api_key=TEMPORAL_API_KEY,
+    tls=True
+)
+```
+
+Here is a complete Python boilerplate that showcases how to instantiate a Client and pass it to the Worker before starting the Worker execution:
+
+```python
+import asyncio
+import os
+
+from temporalio.worker import Worker
+from temporalio.client import Client
+
+from workflows import your_workflow
+from activities import your_first_activity, your_second_activity, your_third_activity
+
+TEMPORAL_ADDRESS = os.environ.get("TEMPORAL_ADDRESS", "localhost:7233")
+TEMPORAL_NAMESPACE = os.environ.get("TEMPORAL_NAMESPACE", "default")
+TEMPORAL_TASK_QUEUE = os.environ.get("TEMPORAL_TASK_QUEUE", "test-task-queue")
+TEMPORAL_API_KEY = os.environ.get("TEMPORAL_API_KEY", "your-api-key")
+
+async def main():
+  client = await Client.connect(
+    TEMPORAL_ADDRESS,
+    namespace=TEMPORAL_NAMESPACE,
+    rpc_metadata={"temporal-namespace": TEMPORAL_NAMESPACE},
+    api_key=TEMPORAL_API_KEY,
+    tls=True
+  )
+
+print("Initializing worker...")
+  # Run the worker
+  worker = Worker(
+    client,
+    task_queue=TEMPORAL_TASK_QUEUE,
+    workflows=[your_workflow],
+    activities=[
+      your_first_activity,
+      your_second_activity,
+      your_third_activity
+    ]
+  )
+
+  print("Starting worker... Waiting for tasks.")
+  await worker.run()
+
+if __name__ == "__main__":
+  asyncio.run(main())
+```
+
+## Containerize the Worker for Kubernetes
+
+You need to containerize your Worker code to run it with Kubernetes.
+Here is a sample Python Dockerfile, complete with the Temporal Python SDK installed:
+
+```docker
+# Use Python 3.11 slim image as base
+FROM python:3.11-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install the Temporal Python SDK dependency
+RUN pip install --no-cache-dir temporalio
+
+# Copy application code
+COPY . .
+
+# Set Python to run in unbuffered mode
+ENV PYTHONUNBUFFERED=1
+
+# Run the worker
+CMD ["python", "worker.py"]
+```
+
+Build the Docker image and target the `linux/amd64` architecture:
+
+```bash
+docker buildx build \
+    --platform linux/amd64 \
+    -t your-app .
+```
+
+## Publish the Worker Image to Amazon ECR
+
+After building the Docker image, you’re ready to publish it to Amazon ECR.
+Make sure that you’re authenticated with AWS, and that you’ve set your `AWS_REGION` and `AWS_ACCOUNT_ID` environment variables:
+
+```bash
+export AWS_ACCOUNT_ID=<your_aws_account_id>
+export AWS_REGION=<your_aws_region>
+```
+
+Create an ECR repository and authenticate ECR with the Docker container client:
+
+```bash
+aws ecr create-repository \
+    --repository-name your-app
+aws ecr get-login-password --region $AWS_REGION | \
+    docker login --username AWS --password-stdin \
+            $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+```
+
+After authenticating Docker with ECR, tag your container and publish it:
+
+```bash
+docker tag your-app $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/your-app:latest
+docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/your-app:latest
+```
+
+## Deploy the Workers to EKS
+
+With your Worker containerized, you’re ready to deploy it to EKS. Create a namespace in your EKS cluster. You’ll use the namespace to run your Temporal Workers:
+
+```bash
+kubectl create namespace your-namespace
+```
+
+Create a ConfigMap to hold non-sensitive values that Kubernetes will inject into your Worker deployment.
+These enable dynamic routing for instances, Namespaces, and Task Queues.
+To set these values, build a config-map.yaml file like the following example:
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: temporal-worker-config
+  namespace: temporal-system
+data:
+  TEMPORAL_HOST_URL: “<your-temporal-address>“
+  TEMPORAL_NAMESPACE: “<your-temporal-cloud-namespace>”
+  TEMPORAL_TASK_QUEUE: “<your-task-queue>”
+```
+
+Apply the `ConfigMap` to your namespace:
+
+```bash
+kubectl apply -f config-map.yaml \
+    --namespace your-namespace
+```
+
+For sensitive values, use Kubernetes Secrets.
+Create a secret to hold your Temporal API key:
+
+```bash
+kubectl create secret generic temporal-secret \
+    --from-literal=TEMPORAL_API_KEY=$TEMPORAL_API_KEY \
+    --namespace your-namespace
+```
+
+With your configuration in place, you can deploy the Worker.
+Create a deployment.yaml file configuring your Worker image, resources, and secret values.
+In normal deployment, tune your resources for production workloads.
+Note that the spun-up container reads your Temporal API key from the Kubernetes secret you just created:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: your-app
+   namespace: your-namespace
+   labels:
+      app: your-app
+spec:
+   selector:
+      matchLabels:
+         app: your-app
+   replicas: 1
+   template:
+      metadata:
+         labels:
+            app: your-app
+      spec:
+         serviceAccountName: your-app
+         containers:
+            - name: your-app
+              image: <your-ecr-image-name>
+              env:
+                - name: TEMPORAL_ADDRESS
+                  valueFrom:
+                    configMapKeyRef:
+                      name: temporal-worker-config
+                      key: TEMPORAL_ADDRESS
+                - name: TEMPORAL_NAMESPACE
+                  valueFrom:
+                    configMapKeyRef:
+                      name: temporal-worker-config
+                      key: TEMPORAL_NAMESPACE
+                - name: TEMPORAL_TASK_QUEUE
+                  valueFrom:
+                    configMapKeyRef:
+                      name: temporal-worker-config
+                      key: TEMPORAL_TASK_QUEUE
+                - name: TEMPORAL_API_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: temporal-secret
+                      key: TEMPORAL_API_KEY
+              resources:
+                limits:
+                  cpu: "0.5"
+                  memory: "512Mi"
+                requests:
+                  cpu: "0.2"
+                  memory: "256Mi"
+```
+
+Apply the deployment.yaml file to the EKS cluster:
+
+```bash
+kubectl apply -f deployment.yaml \
+    --namespace your-namespace
+```
+
+## Verify the Workers are Connected
+
+After deploying your Workers to EKS, confirm that they have connected to Temporal Cloud.
+Retrieve the pod listing for the Kubernetes/EKS namespace that you created:
+
+```
+kubectl get pods -n temporal-system
+```
+
+After listing the pods, access the Worker logs to confirm you’re properly connected to Temporal Cloud:
+
+```
+kubectl logs <pod-name> -n temporal-system
+```
+
+You confirm connection when you see:
+
+```
+Initializing worker...
+Starting worker... Waiting for tasks.
+```
+
+You have now successfully deployed your Temporal Worker to EKS.

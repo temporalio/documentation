@@ -394,6 +394,7 @@ module.exports = {
             "production-deployment/cloud/scim",
             "production-deployment/cloud/operation-api",
             "production-deployment/cloud/terraform-provider",
+            "production-deployment/cloud/deploy-workers-to-aws-eks",
             {
               type: "category",
               label: "Export",
