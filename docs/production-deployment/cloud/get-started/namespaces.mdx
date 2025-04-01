@@ -161,6 +161,13 @@ This section provides general guidance for organizing [Namespaces](/namespaces) 
 Temporal Cloud provides Namespace–as-a-service, so the Namespace is the endpoint.
 Customers should consider not only a Namespace naming convention but also how to group or isolate workloads using the Namespace as a boundary.
 
+Each team can have their own Namespace for improved modularity, security, debugging, and fault isolation.
+Namespaces contain the blast radius of misbehaving Workers that may exhaust rate limits.
+Sensitive Workflow state (PCI data) can be secured with per-Namespace permissions and encrypted with a separate encryption key.
+
+Temporal Applications in different Namespaces may be connected with [Nexus](/cloud/nexus) by exposing a clean service contract for others to use with built-in [Nexus access controls](/cloud/nexus/security).
+Nexus supports cross-team, cross-domain, multi-region, and multi-cloud use cases.
+
 ### Constraints and limitations
 
 Before considering an appropriate Namespace configuration, you should be aware of the following constraints:
@@ -170,8 +177,6 @@ Before considering an appropriate Namespace configuration, you should be aware o
   Our service identifies your usage patterns.
   It responds by slowly increasing your allowance, up to 100 Namespaces.
   You can request further increases beyond the 100 Namespace limit by opening a [support ticket](/cloud/support#support-ticket).
-- Cross-Namespace communications between [Workflows](/workflows) is not yet supported.
-  For now, you can use the [SDK client](/encyclopedia/temporal-sdks#temporal-client) from within an [Activity](/activities) as a workaround.
 - Each Namespace has a rate limit, which is measured in Actions per second (APS).
   A namespace may be throttled when its throughput becomes too high.
   Throttling means limiting the rate at which actions are performed to prevent overloading the system.
