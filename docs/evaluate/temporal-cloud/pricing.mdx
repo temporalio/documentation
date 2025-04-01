@@ -89,7 +89,7 @@ They track billable operations within the Temporal Cloud Service, such as starti
 
 - **Workflow started**.
   Occurs via client start, client [Signal-With-Start](/sending-messages#signal-with-start), [Continue-As-New](/workflows#continue-as-new), or [Child Workflow](/child-workflows) start.
-  If a Workflow start attempt via client results in the server returning an error, an Action is not recorded. 
+  An Action also won't be recorded when a Workflow start attempt through a Client results in the server returning an error. 
 - **Workflow reset**.
   Occurs when a [Workflow](/workflows) is reset.
   (Actions that occur before a [Reset](/workflows#reset) are counted even if they are no longer visible in [Event History](/workflows#event-history).)
