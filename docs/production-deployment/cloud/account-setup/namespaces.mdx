@@ -232,8 +232,8 @@ Before considering an appropriate Namespace configuration, you should be aware o
   Throttling means limiting the rate at which actions are performed to prevent overloading the system.
   A Namespace's default limit is set at 400 APS and automatically adjusts based on recent usage (over the prior 7 days).
   Your APS limit will never fall below this default value.
-- Each Namespace has a service-level agreement (SLA) of 99.9% uptime.
-- For now, Namespaces are single-region only.
+- Each Namespace has a default service-level agreement (SLA) of 99.9% uptime.
+- You can opt-in to using [High Availability features](https://docs.temporal.io/cloud/high-availability) with a 99.99% contractual SLA.
 - A Namespace is a security isolation boundary.
   Access to Temporal by [Worker Processes](/workers#worker-process) is permitted at the Namespace level.
   Isolating applications or environments (development, test, staging, production) should take this into consideration.
