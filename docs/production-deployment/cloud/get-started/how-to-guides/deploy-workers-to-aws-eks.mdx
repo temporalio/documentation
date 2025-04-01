@@ -218,7 +218,7 @@ kubectl create secret generic temporal-secret \
 
 With your configuration in place, you can deploy the Worker.
 Create a deployment.yaml file configuring your Worker image, resources, and secret values.
-In normal deployment, tune your resources for production workloads.
+For common deployments, tune the resources you specify so they match your production workloads.
 Note that the spun-up container reads your Temporal API key from the Kubernetes secret you just created:
 
 ```yaml
