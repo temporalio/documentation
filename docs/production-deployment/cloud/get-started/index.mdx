@@ -65,7 +65,7 @@ To enable and use API key access, see the following:
 - [Troubleshoot your API key use](/cloud/api-keys#troubleshooting)
 - [API keys: Frequently Asked Questions](/cloud/api-keys#faqs)
 
-### Authentication and SDKs
+### Authentication and SDKs {#auth-and-sdks}
 
 Each SDK has a way to use your CA certificates and private keys to authenticate and authorize access to your Temporal Cloud Namespace.
 
@@ -79,6 +79,7 @@ Each SDK has a way to use your CA certificates and private keys to authenticate 
 ## Create a Namespace
 
 If you don’t have a Namespace yet--or want to create an additional one--[create a Namespace in Temporal Cloud](/cloud/namespaces#create-a-namespace) using the Temporal Cloud UI or the `tcld` CLI.
+If using mTLS authentication, don't forget to follow the step that has you add the CA certificate to the Namespace.
 
 <DiscoverableDisclosure prompt="" label="Namespace Setup - Details">
 
@@ -104,8 +105,7 @@ import InvitationContent from '@site/docs/production-deployment/cloud/get-starte
 
 ## Connect to Temporal Cloud
 
-Update your Temporal Client connections and your Workers to use your Temporal Cloud Namespace credentials.
-Deploy your Workers, so they are ready to execute your Workflows and Activities:
+After having updated your Temporal Client and your Workers to [use your Temporal Cloud Namespace credentials](#auth-and-sdks), you can deploy your Workers, so they are ready to execute your Workflows and Activities:
 
 ### SDK-specific Worker configuration
 
