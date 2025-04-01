@@ -2,6 +2,7 @@
 id: deploy-workers-to-aws-eks
 title: Quick Launch - Deploying your Workers on Amazon EKS
 sidebar_label: Deploy Workers to Amazon EKS
+slug: /cloud/deploy-workers-to-aws-eks
 description: Deploy a Temporal Worker on Amazon Elastic Kubernetes Service (EKS) using the Python SDK.
 keywords:
   - Temporal Cloud
@@ -183,7 +184,7 @@ With your Worker containerized, you’re ready to deploy it to EKS. Create a nam
 kubectl create namespace your-namespace
 ```
 
-Create a ConfigMap to hold non-sensitive values that Kubernetes will inject into your Worker deployment.
+Create a `ConfigMap` to hold non-sensitive values that Kubernetes will inject into your Worker deployment.
 These enable dynamic routing for instances, Namespaces, and Task Queues.
 To set these values, build a config-map.yaml file like the following example:
 
