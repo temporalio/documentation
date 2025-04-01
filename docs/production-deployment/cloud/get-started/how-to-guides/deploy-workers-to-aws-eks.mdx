@@ -24,8 +24,19 @@ It integrates smoothly with AWS services and supports auto-scaling and fault tol
 
 Follow this guide to deploy and manage your Temporal Workers in EKS.
 This guide walks you through writing Temporal Worker code, containerizing and publishing the Worker to the Amazon Elastic Container Registry (ECR), and deploying the worker to Amazon EKS.
-The example in this post uses Temporal’s Python SDK.
-You can apply this content to both Temporal OSS and Temporal Cloud Workflows.
+The example on this page uses Temporal’s Python SDK and Temporal Cloud.
+
+:::tip
+
+While this guide applies to both Temporal OSS and Temporal Cloud Workflows, please ccount for some differences when working with Temporal OSS.
+For example, Temporal OSS requires TLS certificates.
+Certain steps, such as mounting certificates from kube-cert, will need adjusting.
+
+We encourage you to adapt the instructions accordingly based on your specific setup.
+
+The details of these adjustments are left as an exercise for the reader.
+
+:::
 
 ## Before you begin
 
