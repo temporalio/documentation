@@ -37,6 +37,12 @@ const supportedTech = [
     alt: ".Net logo",
     class: "w-10",
   },
+  {
+    link: "https://github.com/temporalio/sdk-ruby",
+    image: "/img/sdks/svgs/ruby.svg",
+    alt: "Ruby logo",
+    class: "w-10",
+  },
 ];
 
 const displayTechListItems = () => {
