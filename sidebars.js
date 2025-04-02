@@ -335,7 +335,6 @@ module.exports = {
                 "production-deployment/cloud/metrics/reference",
                 "production-deployment/cloud/metrics/datadog",
                 "production-deployment/cloud/metrics/prometheus-grafana",
-                "production-deployment/cloud/metrics/performance-bottlenecks",
               ],
             },
             {
@@ -536,6 +535,7 @@ module.exports = {
             "troubleshooting/blob-size-limit-error",
             "troubleshooting/deadline-exceeded-error",
             "troubleshooting/last-connection-error",
+            "troubleshooting/performance-bottlenecks"
           ],
         },
         {
