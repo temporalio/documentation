@@ -292,24 +292,36 @@ module.exports = {
             id: "production-deployment/cloud/index",
           },
           items: [
-            "production-deployment/cloud/get-started",
             {
               type: "category",
-              label: "Account setup",
-              collapsed: true,
+              label: "Get started with Cloud",
+              collapsed: false,
               link: {
                 type: "doc",
-                id: "production-deployment/cloud/account-setup/index",
+                id: "production-deployment/cloud/get-started/index",
               },
               items: [
-                "production-deployment/cloud/account-setup/certificates",
-                "production-deployment/cloud/api-keys",
-                "production-deployment/cloud/account-setup/namespaces",
-                "production-deployment/cloud/account-setup/users",
+                  "production-deployment/cloud/get-started/certificates",
+                  "production-deployment/cloud/get-started/api-keys",
+                  "production-deployment/cloud/get-started/namespaces",
+                  "production-deployment/cloud/get-started/users",
+                  "production-deployment/cloud/get-started/billing-and-cost",
+                  "production-deployment/cloud/get-started/service-accounts",
+                  {
+                    type: "category",
+                    label: "How-to guides",
+                    collapsed: true,
+                    link: {
+                      type: "doc",
+                      id: "production-deployment/cloud/get-started/how-to-guides/index",
+                    },
+                    items: [
+                      "production-deployment/cloud/get-started/how-to-guides/deploy-workers-to-aws-eks",
+                    ],
+                  },
+
               ],
             },
-            "production-deployment/cloud/billing-and-cost",
-            "production-deployment/cloud/service-accounts",
             {
               type: "category",
               label: "Metrics",
