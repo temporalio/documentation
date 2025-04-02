@@ -27,6 +27,31 @@ These limits fall into the following three main categories:
 - At the [Namespace level](#namespace-level)
 - Within the [programming model](#programming-model-level) itself
 
+## Hard and soft limits
+
+Temporal Cloud enforces two types of limits:
+
+- **Hard limits** are fixed and cannot be exceeded under normal operation.
+  These limits are enforced to ensure system stability and cannot be adjusted.
+
+- **Soft limits** can be adjusted by Temporal Cloud based on usage or upon request.
+  Some limits are automatically tracked and changed by Temporal Cloud as your usage increases.
+  For example, as your number of Namespaces or the rate of Actions per second (APS) grows, Temporal Cloud will gradually allocate more resources to meet that demand.
+  For all soft limits, you can also request adjustments by reaching out to [Support](https://support.temporal.io), whether they are automatically managed or not.
+
+The following table lists Temporal Cloud's soft limits, indicating whether they are automatically managed based on usage:
+
+| Limit                     | Managed by Temporal Cloud | Adjustable via Support Request |
+| ------------------------- | ------------------------- | ------------------------------ |
+| Number of Namespaces      | ✅                        | ✅                             |
+| APS (Actions Per Second)  | ✅                        | ✅                             |
+| RPS (Requests Per Second) | ✅                        | ✅                             |
+| Number of users           |                           | ✅                             |
+| Number of Schedules       |                           | ✅                             |
+| Concurrent Task pollers   |                           | ✅                             |
+| Batch jobs                |                           | ✅                             |
+| Nexus endpoints           |                           | ✅                             |
+
 ## Account level
 
 The following aspects apply at the Temporal Cloud Account level (per account).
