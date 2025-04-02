@@ -456,7 +456,7 @@ Too many entries in a single Workflow Execution's mutable state causes unstable 
 To protect the system, Temporal enforces a maximum number of incomplete Nexus Operation requests per Workflow Execution (by default, 30 Nexus Operations).
 Once the limit is reached for a type of operation, if the Workflow Execution attempts to start another Nexus operation (by producing a ScheduleNexusOperation), it will be unable to do so (the Workflow Task Execution will fail and get retried).
 
-These limits are set with the following [dynamic configuration keys](https://github.com/temporalio/temporal/blob/de7c8879e103be666a7b067cc1b247f0ac63c25c/components/nexusoperations/config.go#L38):
+These limits are set with the following [dynamic configuration keys](https://github.com/temporalio/temporal/blob/main/components/nexusoperations/config.go#L52):
 
 - MaxConcurrentOperations
 
