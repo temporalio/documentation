@@ -303,6 +303,16 @@ It warns you after 10,240 Events or 10 MB.
 This limit applies to all Temporal Workflow Executions, whether on Temporal Cloud or other deployments.
 Read more about [Temporal Workflow Execution limits](/workflows#limits) on the [Temporal Workflow](/workflows) documentation page.
 
+### Per Workflow Callback limits
+
+**What is the maximum number of Callbacks that can be attached to a single Workflow Execution?**
+
+A single Workflow Execution can have a maximum of 32 total Callbacks.
+
+These limits may be exceeded when [multiple Nexus callers attach to the same handler Workflow](/nexus/operations#attaching-multiple-nexus-callers).
+
+See the Nexus Encyclopedia entry for [additional details](/workflows#workflow-execution-callback-limits).
+
 ### Per Workflow Nexus Operation limits {#per-workflow-nexus-operation-limits}
 
 **What is the maximum number of Nexus Operations that can be started from a single Workflow Execution?**

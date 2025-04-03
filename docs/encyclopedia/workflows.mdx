@@ -448,6 +448,15 @@ These limits are set with the following [dynamic configuration keys](https://git
 - `NumPendingSignalsLimit`
 - `NumPendingCancelRequestsLimit`
 
+#### Workflow Execution Callback limits {#workflow-execution-callback-limits}
+
+There is a limit to the total number of Workflow Callbacks that may be attached to a single Workflow Execution (by default, 32 Workflow Callbacks).
+Attaching [multiple Nexus callers to a handler Workflow](/nexus/operations#attaching-multiple-nexus-callers) may exceed these limits.
+
+These limits can be set with the following [dynamic configuration keys](https://github.com/temporalio/temporal/blob/main/common/dynamicconfig/constants.go#L924) :
+
+- MaxCallbacksPerWorkflow
+
 #### Workflow Execution Nexus Operation Limits {#workflow-execution-nexus-operation-limits}
 
 There is a limit to the maximum number of Nexus Operations in a Workflow before Continue-As-New is required.

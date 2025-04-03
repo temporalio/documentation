@@ -192,17 +192,9 @@ var HelloOperation = temporalnexus.NewWorkflowRunOperation(service.HelloOperatio
 Workflow IDs should typically be business meaningful IDs and are used to dedupe Workflow starts.
 For the `HelloOperation`, `input.ID` is passed as part of the Nexus Service contract.
 
-:::tip
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
-[Pre-release feature](/evaluate/development-production-features/release-stages#pre-release): Attaching multiple Nexus callers to an underlying handler Workflow.
-
-When using `temporalnexus.NewWorkflowRunOperation` to start a handler Workflow with a [Workflow-Id-Conflict-Policy](/workflows#workflow-id-conflict-policy) of Use-Existing
-all caller Workflows will have completion Callbacks attached to the underlying handler Workflow.
-The initial caller Workflow will be linked from the handler's [WorkflowExecutionStarted](/references/events#workflowexecutionstarted) event and
-additional callers will be attached to the handler's [WorkflowExecutionOptionsUpdated](/references/events#workflowexecutionoptionsupdated) event.
-
-When a handler Workflow uses [Continue-As-New](/workflows#continue-as-new) the existing Nexus completion Callbacks will be copied to the new Workflow-Execution
-and the previous Workflow-Execution's completion Callback will be left in the Standby state indefinitely.
+[Attaching multiple Nexus callers to a handler Workflow](/nexus/operations#attaching-multiple-nexus-callers) using a [Conflict-Policy of Use-Existing](/workflows#workflow-id-conflict-policy) is a [Pre-release feature](/evaluate/development-production-features/release-stages#pre-release).
 
 :::
 
