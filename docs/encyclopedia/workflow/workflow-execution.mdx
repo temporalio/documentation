@@ -113,7 +113,7 @@ Awaitables are provided when using APIs for the following:
 - Requesting cancellation of another Workflow Execution: Progress can block on confirmation that the other Workflow Execution is cancelled.
 - Sending a [Signal](/sending-messages#sending-signals): Progress can block on confirmation that the Signal sent.
 - Spawning a [Child Workflow Execution](/child-workflows): Progress can block on confirmation that the Child Workflow Execution started, and on the result of the Child Workflow Execution.
-- Spawning an [Activity Execution](/activities#activity-execution): Progress can block on the result of the Activity Execution.
+- Spawning an [Activity Execution](/activity-execution): Progress can block on the result of the Activity Execution.
 - Starting a Timer: Progress can block until the Timer fires.
 
 ### Status
@@ -257,7 +257,7 @@ Seven Activity-related Events are added to Event History at various points in an
 - If the Activity function throws an error or retryable Failure, the Temporal Service schedules an Activity Task retry to be added to the Task Queue (unless you’ve reached the Maximum Attempts value of the [Retry Policy](/encyclopedia/retry-policies), in which case the Temporal Service adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskFailed](/references/events#activitytaskfailed) to Event History).
 - If the Activity’s [Start-to-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) passes before the Activity function returns or throws, the Temporal Service schedules a retry.
 - If the Activity’s [Schedule-to-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout) passes before Activity Execution is complete, or if [Schedule-to-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout) passes before a Worker gets the Activity Task, the Temporal Service writes [ActivityTaskTimedOut](/references/events#activitytasktimedout) to Event History.
-- If the Activity is [canceled](/activities#cancellation), the Temporal Service writes [ActivityTaskCancelRequested](/references/events#activitytaskcancelrequested) to Event History, and if the Activity accepts cancellation, the Temporal Service writes [ActivityTaskCanceled](/references/events#activitytaskcanceled).
+- If the Activity is [canceled](/activity-execution/cancellation), the Temporal Service writes [ActivityTaskCancelRequested](/references/events#activitytaskcancelrequested) to Event History, and if the Activity accepts cancellation, the Temporal Service writes [ActivityTaskCanceled](/references/events#activitytaskcanceled).
 
 :::note
 
@@ -472,7 +472,7 @@ Memos shouldn't store data that's critical to the execution of a Workflow, for s
 
 Side Effects are included in the Go, Java, and PHP SDKs.
 They are not included in other SDKs.
-[Local Activities](/activities#local-activity) fit the same use case and are slightly less resource intensive.
+[Local Activities](/local-activity) fit the same use case and are slightly less resource intensive.
 
 :::
 
