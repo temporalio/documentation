@@ -113,10 +113,10 @@ They track billable operations within the Temporal Cloud Service, such as starti
 
 **CHILD WORKFLOWS**
 
-- **Child Workflows spawned**.
-  The parent Workflow spawning a Child Workflow results in one Action.
-- **Child Workflows executed**.
-  Execution of the Child Workflow results in one Action.
+- **Start Child Workflow Execution initiated**.
+  When the parent Workflow durably records the intent to start a Child Workflow, it results in one Action.
+- **Child Workflow Execution attempted**.
+  When the server attempts to start the Child Workflow, it results in one Action.
 
 **ACTIVITIES**
 
