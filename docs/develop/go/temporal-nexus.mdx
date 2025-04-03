@@ -192,6 +192,12 @@ var HelloOperation = temporalnexus.NewWorkflowRunOperation(service.HelloOperatio
 Workflow IDs should typically be business meaningful IDs and are used to dedupe Workflow starts.
 For the `HelloOperation`, `input.ID` is passed as part of the Nexus Service contract.
 
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+[Attaching multiple Nexus callers to a handler Workflow](/nexus/operations#attaching-multiple-nexus-callers) using a [Conflict-Policy of Use-Existing](/workflows#workflow-id-conflict-policy) is a [Pre-release feature](/evaluate/development-production-features/release-stages#pre-release).
+
+:::
+
 ### Register a Nexus Service in a Worker
 
 After developing an asynchronous Nexus Operation handler to start a Workflow, the next step is to register a Nexus Service in a Worker.

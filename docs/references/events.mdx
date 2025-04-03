@@ -45,6 +45,7 @@ It indicates that the Temporal Service received a request to spawn the Workflow 
 | search_attributes                  | Provides data for setting up a Workflow's [Search Attributes](/search-attribute).                                                                              |
 | prev_auto_reset_points             |                                                                                                                                                                |
 | header                             | Information passed by the sender of the [Signal](/sending-messages#sending-signals) that is copied into the [Workflow Task](/tasks#workflow-task).             |
+| completion_callbacks               | Completion callbacks attached when this workflow was started.                                                                                                  |
 
 ### WorkflowExecutionCompleted
 
@@ -138,6 +139,18 @@ This Event type contains last [Workflow Execution](/workflows#workflow-execution
 | header                           | Information passed by the sender of the Signal that is copied into the Workflow Task.                         |
 | memo                             | Non-indexed information to show in the Workflow.                                                              |
 | search_attributes                | Provides data for setting up a Workflow's [Search Attributes](/search-attribute).                             |
+
+### WorkflowExecutionOptionsUpdated
+
+This [Event](/workflows#event) type indicates that the Workflow options have been updated.
+The Event type contains updated options such as a versioning override or attached completion callbacks.
+
+| Field                            | Description                                                                                                            |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| versioning_override              | Versioning override upserted in this event. Ignored if nil or if unset_versioning_override is true.                    |
+| unset_versioning_override        | Versioning override removed in this event.                                                                             |
+| attached_request_id              | Request ID attached to the running workflow execution so subsequent requests with the same request ID will be deduped. |
+| attached_completion_callbacks    | Completion callbacks attached to the running workflow execution.                                                       |
 
 ### WorkflowTaskScheduled
 
