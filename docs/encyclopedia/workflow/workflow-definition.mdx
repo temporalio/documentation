@@ -1,6 +1,6 @@
 ---
 id: workflow-definition
-title: What is a Temporal Workflow Definition?
+title: Temporal Workflow Definition
 sidebar_label: Workflow Definition 
 description: A Workflow Definition in Temporal is the code that defines the constraints of a Workflow Execution.
 slug: /workflow-definition
@@ -16,14 +16,13 @@ import { CaptionedImage } from '@site/src/components';
 
 This guide provides a comprehensive overview of Temporal Workflows.
 
- Workflow Definitions
-    - Determinism and constraints
-    - Handling code changes and non-deterministic behavior 
-    - Intrinsic non-determinism logic 
-    - Versioning Workflow code and Patching 
-    - Handling unreliable Worker Processes
-    - What is a Workflow Type? 
-
+- [Workflow Definitions](/workflow-definition)
+- [Determinism and constraints](#deterministic-constraints)
+- [Handling code changes and non-deterministic behavior](#non-deterministic-change)
+- [Intrinsic non-determinism logic](#intrinsic-nondeterministic-logic)
+- [Versioning Workflow code and Patching](#workflow-versioning)
+- [Handling unreliable Worker Processes](#unreliable-worker-processes)
+- [What is a Workflow Type?](#workflow-type)
 
 A Temporal Workflow defines the overall flow of the application.
 Conceptually, a Workflow is a sequence of steps written in a general-purpose programming language.
@@ -154,7 +153,7 @@ A Workflow Execution effectively executes once to completion, while a Workflow F
 
 We strongly recommend that you write a Workflow Definition in a language that has a corresponding Temporal SDK.
 
-### Deterministic constraints
+### Deterministic constraints {#deterministic-constraints}
 
 A critical aspect of developing Workflow Definitions is ensuring they exhibit certain deterministic traits – that is, making sure that the same Commands are emitted in the same sequence, whenever a corresponding Workflow Function Execution (instance of the Function Definition) is re-executed.
 
@@ -211,7 +210,7 @@ The following are examples of minor changes that would not result in non-determi
   - Call to Signal an External Workflow Execution.
 - Adding a Signal Handler for a Signal Type that has not been sent to this Workflow Execution.
 
-### Intrinsic non-deterministic logic
+### Intrinsic non-deterministic logic {#intrinsic-nondeterministic-logic}
 
 Intrinsic non-determinism is when a Workflow Function Execution might emit a different sequence of Commands on re-execution, regardless of whether all the input parameters are the same.
 
@@ -256,7 +255,7 @@ This feature is useful for Workflow Definition logic that needs to be updated bu
 
 You can also use [Worker Versioning](/worker-versioning) instead of Patching.
 
-### Handling unreliable Worker Processes
+### Handling unreliable Worker Processes {#unreliable-worker-processes}
 
 You do not handle Worker Process failure or restarts in a Workflow Definition.
 

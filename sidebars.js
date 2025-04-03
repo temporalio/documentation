@@ -559,7 +559,22 @@ module.exports = {
               },
               items: [
                 "encyclopedia/workflow/workflow-definition",
-                "encyclopedia/workflow/workflow-execution",
+                {
+                  type: "category",
+                  label: "Workflow Execution",
+                  collapsed: true,
+                  link: {
+                    type: "doc",
+                    id: "encyclopedia/workflow/workflow-execution/workflow-execution", // main overview page
+                  },
+                  items: [
+                    "encyclopedia/workflow/workflow-execution/continue-as-new",
+                    "encyclopedia/workflow/workflow-execution/event",
+                    "encyclopedia/workflow/workflow-execution/limits",
+                    "encyclopedia/workflow/workflow-execution/workflowid-runid",
+                    "encyclopedia/workflow/workflow-execution/timers-delays",
+                  ],
+                },
                 "encyclopedia/workflow/dynamic-handler",
                 "encyclopedia/workflow/workflow-schedule",
                 "encyclopedia/workflow/cron-job",
