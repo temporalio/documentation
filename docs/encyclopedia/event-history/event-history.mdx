@@ -1,0 +1,37 @@
+---
+id: event-history
+title: Event History
+description: Discover how Temporal uses the Event History to recreate a Workflow's state in the case of failure, such as a Worker crash, and how it uses replay to restore the Workflow's state to the point of failure.
+sidebar_label: Event History
+tags:
+  - Workflows
+  - Activities
+  - Workers
+  - Temporal SDKs
+  - Event History
+keywords:
+  - temporal application
+  - event history
+  - workflow design
+  - business logic activities
+  - temporal workers
+  - temporal SDK tutorial
+  - go sdk temporal guide
+  - java sdk temporal guide
+  - php sdk temporal guide
+  - python sdk temporal guide
+  - typescript sdk temporal guide
+  - learning temporal workflows
+  - developing with temporal
+  - temporal workflow execution
+  - temporal activity management
+  - worker process execution
+---
+
+With Temporal, your Workflows can seamlessly recover from crashes or failures without you having to write recovery logic code. This is made possible by the [Event History](https://docs.temporal.io/workflows#event-history), a complete and durable log of everything that has happened in the lifecycle of a Workflow Execution.
+
+Temporal uses the Event History to not only store the current state of a Workflow Execution—it records every step taken along the way. Each time your Workflow Definition makes an API call to execute an Activity or start a Timer for instance, it doesn’t perform the action directly. Instead, it sends a Command to the Temporal Service.
+
+A [Command](https://docs.temporal.io/workflows#command) is a unit of work that the Worker needs to execute and let the Temporal Service know what to do next. The Temporal Service will act on these Commands such as scheduling an Activity or scheduling a timer. These Commands get stored in case of failure. For example, if the Worker crashes, the Temporal Service uses this information to replay the code and recreate the state of the Workflow Execution to what it was immediately before the crash. It then resumes progress from the point of failure as if the failure never occurred. This allows you, as a developer, to code as if this type of failure wasn't even a possibility.
+
+For a deep dive on how the Event History works, refer to the walkthroughs in the dropdown.

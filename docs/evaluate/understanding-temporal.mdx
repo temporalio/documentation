@@ -1,8 +1,8 @@
 ---
 id: understanding-temporal
 title: Understanding Temporal
-sidebar_label: Understanding Temporal 
-description: This page provides a short overview of how Temporal works. 
+sidebar_label: Understanding Temporal
+description: This page provides a short overview of how Temporal works.
 toc_max_heading_level: 4
 keywords:
   - durable execution
@@ -12,7 +12,7 @@ tags:
   - evaluate temporal
 ---
 
-import { CaptionedImage } from '@site/src/components';
+import { CaptionedImage } from "@site/src/components";
 
 Temporal offers an entirely new way to build scalable and reliable applications.
 
@@ -133,10 +133,7 @@ These are powerful for debugging uses and provide real-time monitoring of your a
 The Temporal UI is a browser-based user interface that allows you to see the progress of your application.
 Also, known as the Web UI, it can also help you to quickly isolate, debug, and resolve production problems.
 
-<CaptionedImage
-    src="/img/webui/workflow-details-page-hiw.avif"
-    title="Recent Workflows page"
-/>
+<CaptionedImage src="/img/webui/workflow-details-page-hiw.avif" title="Recent Workflows page" />
 
 ### Temporal CLI
 
@@ -149,6 +146,16 @@ Through your terminal, you can:
 - And perform other operations
 
 The Temporal CLI provides developers with direct access to a Temporal Service for local development purposes.
+
+### Event History
+
+With Temporal, your Workflows can seamlessly recover from crashes or failures without you having to write recovery logic code. This is made possible by the [Event History](https://docs.temporal.io/workflows#event-history), a complete and durable log of everything that has happened in the lifecycle of a Workflow Execution.
+
+Temporal uses the Event History to not only store the current state of a Workflow Execution—it records every step taken along the way. Each time your Workflow Definition makes an API call to execute an Activity or start a Timer for instance, it doesn’t perform the action directly. Instead, it sends a Command to the Temporal Service.
+
+A [Command](https://docs.temporal.io/workflows#command) is a unit of work that the Worker needs to execute and let the Temporal Service know what to do next. The Temporal Service will act on these Commands such as scheduling an Activity or scheduling a timer. These Commands get stored in case of failure. For example, if the Worker crashes, the Temporal Service uses this information to replay the code and recreate the state of the Workflow Execution to what it was immediately before the crash. It then resumes progress from the point of failure as if the failure never occurred. This allows you, as a developer, to code as if this type of failure wasn't even a possibility.
+
+For a deep dive into the Event History or Commands, visit the Temporal [Encyclopedia page](/encyclopedia/event-history) or enroll in one of [our courses](https://learn.temporal.io/courses/).
 
 ## Reliable as Gravity
 

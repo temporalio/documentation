@@ -73,7 +73,7 @@ module.exports = {
               },
               items: [
                 "evaluate/temporal-cloud/aws-privatelink",
-                "evaluate/temporal-cloud/gcp-private-service-connect"
+                "evaluate/temporal-cloud/gcp-private-service-connect",
               ],
             },
             "evaluate/temporal-cloud/service-availability",
@@ -301,25 +301,24 @@ module.exports = {
                 id: "production-deployment/cloud/get-started/index",
               },
               items: [
-                  "production-deployment/cloud/get-started/certificates",
-                  "production-deployment/cloud/get-started/api-keys",
-                  "production-deployment/cloud/get-started/namespaces",
-                  "production-deployment/cloud/get-started/users",
-                  "production-deployment/cloud/get-started/billing-and-cost",
-                  "production-deployment/cloud/get-started/service-accounts",
-                  {
-                    type: "category",
-                    label: "How-to guides",
-                    collapsed: true,
-                    link: {
-                      type: "doc",
-                      id: "production-deployment/cloud/get-started/how-to-guides/index",
-                    },
-                    items: [
-                      "production-deployment/cloud/get-started/how-to-guides/deploy-workers-to-aws-eks",
-                    ],
+                "production-deployment/cloud/get-started/certificates",
+                "production-deployment/cloud/get-started/api-keys",
+                "production-deployment/cloud/get-started/namespaces",
+                "production-deployment/cloud/get-started/users",
+                "production-deployment/cloud/get-started/billing-and-cost",
+                "production-deployment/cloud/get-started/service-accounts",
+                {
+                  type: "category",
+                  label: "How-to guides",
+                  collapsed: true,
+                  link: {
+                    type: "doc",
+                    id: "production-deployment/cloud/get-started/how-to-guides/index",
                   },
-
+                  items: [
+                    "production-deployment/cloud/get-started/how-to-guides/deploy-workers-to-aws-eks",
+                  ],
+                },
               ],
             },
             {
@@ -335,7 +334,6 @@ module.exports = {
                 "production-deployment/cloud/metrics/reference",
                 "production-deployment/cloud/metrics/datadog",
                 "production-deployment/cloud/metrics/prometheus-grafana",
-                "production-deployment/cloud/metrics/performance-bottlenecks",
               ],
             },
             {
@@ -351,37 +349,37 @@ module.exports = {
                 "production-deployment/cloud/high-availability/enable",
                 "production-deployment/cloud/high-availability/monitor",
                 {
-                type: "category",
-                label: "How-to guides",
-                collapsed: true,
-                link: {
-                  type: "doc",
-                  id: "production-deployment/cloud/high-availability/how-to/index",
+                  type: "category",
+                  label: "How-to guides",
+                  collapsed: true,
+                  link: {
+                    type: "doc",
+                    id: "production-deployment/cloud/high-availability/how-to/index",
+                  },
+                  items: [
+                    "production-deployment/cloud/high-availability/how-to/api-authentication",
+                    "production-deployment/cloud/high-availability/how-to/failovers",
+                    "production-deployment/cloud/high-availability/how-to/secure-routing",
+                    "production-deployment/cloud/high-availability/how-to/private-link",
+                  ],
                 },
-                items: [
-                  "production-deployment/cloud/high-availability/how-to/api-authentication",
-                  "production-deployment/cloud/high-availability/how-to/failovers",
-                  "production-deployment/cloud/high-availability/how-to/secure-routing",
-                  "production-deployment/cloud/high-availability/how-to/private-link",
-                ]
-              },
-              {
-                type: "category",
-                label: "References",
-                collapsed: true,
-                link: {
-                  type: "doc",
-                  id: "production-deployment/cloud/high-availability/references/index",
+                {
+                  type: "category",
+                  label: "References",
+                  collapsed: true,
+                  link: {
+                    type: "doc",
+                    id: "production-deployment/cloud/high-availability/references/index",
+                  },
+                  items: [
+                    "production-deployment/cloud/high-availability/references/regions",
+                    // "production-deployment/cloud/high-availability/references/concepts",
+                    // "production-deployment/cloud/high-availability/references/best-practices",
+                    // "production-deployment/cloud/high-availability/references/glossary",
+                    // "production-deployment/cloud/high-availability/references/faq",
+                  ],
                 },
-                items: [
-                  "production-deployment/cloud/high-availability/references/regions",
-                  // "production-deployment/cloud/high-availability/references/concepts",
-                  // "production-deployment/cloud/high-availability/references/best-practices",
-                  // "production-deployment/cloud/high-availability/references/glossary",
-                  // "production-deployment/cloud/high-availability/references/faq",
-                ]
-              },
-              ]
+              ],
             },
             "production-deployment/cloud/rpo-rto",
             {
@@ -488,237 +486,243 @@ module.exports = {
       collapsed: true,
       link: {
         type: "doc",
-            id: "cli/index",
-          },
-          items: [
-            "cli/activity",
-            "cli/batch",
-            "cli/cmd-options",
-            "cli/env",
-            "cli/operator",
-            "cli/schedule",
-            "cli/server",
-            "cli/task-queue",
-            "cli/workflow",
-          ],
-        },
-        {
-          type: "category",
-          label: "References",
-          collapsed: true,
-          link: {
-            type: "doc",
-            id: "references/index",
-          },
-          items: [
-            "references/cluster-metrics",
-            "references/commands",
-            "references/configuration",
-            "references/dynamic-configuration",
-            "references/errors",
-            "references/events",
-            "references/failures",
-            "references/sdk-metrics",
-            "references/server-options",
-            "references/web-ui-configuration",
-            "references/web-ui-environment-variables",
-          ],
-        },
-        {
-          type: "category",
-          label: "Troubleshooting",
-          collapsed: true,
-          link: {
-            type: "doc",
-            id: "troubleshooting/index",
-          },
-          items: [
-            "troubleshooting/blob-size-limit-error",
-            "troubleshooting/deadline-exceeded-error",
-            "troubleshooting/last-connection-error",
-          ],
-        },
-        {
-          type: "category",
-          label: "Encyclopedia",
-          collapsed: true,
-          link: {
-            type: "doc",
-            id: "encyclopedia/index",
-          },
-          items: [
-            "encyclopedia/temporal",
-            "encyclopedia/temporal-sdks",
-            "encyclopedia/workflows",
-            {
-              type: "category",
-              label: "Activities",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "encyclopedia/activities/activities",
-              },
-              items: [
-                "encyclopedia/activities/activity-definition",
-                "encyclopedia/activities/activity-execution",
-                "encyclopedia/activities/local-activity",
-              ],
-            },
-            {
-              type: "category",
-              label: "Detecting application failures",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "encyclopedia/detecting-application-failures",
-              },
-              items: [
-                "encyclopedia/detecting-activity-failures",
-                "encyclopedia/detecting-workflow-failures",
-                "encyclopedia/retry-policies",
-              ],
-            },
-            {
-              type: "category",
-              label: "Workers",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "encyclopedia/workers/workers",
-              },
-              items: [
-                "encyclopedia/workers/tasks",
-                "encyclopedia/workers/task-queues",
-                "encyclopedia/workers/task-routing-worker-sessions",
-                "encyclopedia/workers/sticky-execution",
-                "encyclopedia/workers/worker-deployments",
-                "encyclopedia/workers/worker-versioning",
-              ],
-            },
-            {
-              type: "category",
-              label: "Workflow Message Passing",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "encyclopedia/workflow-message-passing/workflow-message-passing",
-              },
-              items: [
-                   "encyclopedia/workflow-message-passing/sending-messages",
-                   "encyclopedia/workflow-message-passing/handling-messages",
-              ],
-            },
-            {
-              type: "category",
-              label: "Child Workflows",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "encyclopedia/child-workflows/child-workflows",
-              },
-              items: [
-                   "encyclopedia/child-workflows/parent-close-policy",
-              ],
-            },
-            {
-              type: "category",
-              label: "Visibility",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "encyclopedia/visibility/visibility",
-              },
-              items: [
-                "encyclopedia/visibility/dual-visibility",
-                "encyclopedia/visibility/list-filter",
-                "encyclopedia/visibility/search-attribute",
-              ],
-            },
-            {
-              type: "category",
-              label: "Temporal Service",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "encyclopedia/temporal-service/temporal-service",
-              },
-              items: [
-                "encyclopedia/temporal-service/temporal-server",
-                "encyclopedia/temporal-service/persistence",
-                "encyclopedia/temporal-service/visibility",
-                "encyclopedia/temporal-service/archival",
-                "encyclopedia/temporal-service/temporal-service-configuration",
-                "encyclopedia/temporal-service/multi-cluster-replication",
-              ],
-            },
-            {
-              type: "category",
-              label: "Namespaces",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "encyclopedia/namespaces/namespaces",
-              },
-              items: [
-                   "encyclopedia/namespaces/global-namespaces",
-              ],
-            },
-            {
-              type: "category",
-              label: "Temporal Nexus",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "encyclopedia/nexus",
-              },
-              items: [
-                "encyclopedia/nexus-endpoints",
-                "encyclopedia/nexus-registry",
-                "encyclopedia/nexus-services",
-                "encyclopedia/nexus-operations",
-                "encyclopedia/nexus-use-cases",
-                "encyclopedia/nexus-execution-debugging",
-                "encyclopedia/nexus-error-handling",
-                "encyclopedia/nexus-metrics",
-                "encyclopedia/nexus-security",
-              ],
-            },
-            {
-              type: "category",
-              label: "Data Conversion",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "encyclopedia/data-conversion/dataconversion",
-              },
-              items: [
-                   "encyclopedia/data-conversion/default-custom-data-converters",
-                   "encyclopedia/data-conversion/payload-converter",
-                   "encyclopedia/data-conversion/payload-codec",
-                   "encyclopedia/data-conversion/failure-converter",
-                   "encyclopedia/data-conversion/remote-data-encoding",
-                   "encyclopedia/data-conversion/codec-server",
-                   "encyclopedia/data-conversion/key-management",
-              ],
-            },
-          ],
-        },
-        "glossary",
-        // {
-        //   type: "autogenerated",
-        //   dirName: "./dev-guide", // '.' means the current docs folder
-        // },
+        id: "cli/index",
+      },
+      items: [
+        "cli/activity",
+        "cli/batch",
+        "cli/cmd-options",
+        "cli/env",
+        "cli/operator",
+        "cli/schedule",
+        "cli/server",
+        "cli/task-queue",
+        "cli/workflow",
       ],
-      tctl: [
-        "tctl-v1/index",
-        "tctl-v1/activity",
-        "tctl-v1/admin",
-        "tctl-v1/batch",
-        "tctl-v1/cluster",
-        "tctl-v1/dataconverter",
-        "tctl-v1/namespace",
-        "tctl-v1/schedule",
-        "tctl-v1/taskqueue",
-        "tctl-v1/workflow",
+    },
+    {
+      type: "category",
+      label: "References",
+      collapsed: true,
+      link: {
+        type: "doc",
+        id: "references/index",
+      },
+      items: [
+        "references/cluster-metrics",
+        "references/commands",
+        "references/configuration",
+        "references/dynamic-configuration",
+        "references/errors",
+        "references/events",
+        "references/failures",
+        "references/sdk-metrics",
+        "references/server-options",
+        "references/web-ui-configuration",
+        "references/web-ui-environment-variables",
       ],
-    };
+    },
+    {
+      type: "category",
+      label: "Troubleshooting",
+      collapsed: true,
+      link: {
+        type: "doc",
+        id: "troubleshooting/index",
+      },
+      items: [
+        "troubleshooting/blob-size-limit-error",
+        "troubleshooting/deadline-exceeded-error",
+        "troubleshooting/last-connection-error",
+      ],
+    },
+    {
+      type: "category",
+      label: "Encyclopedia",
+      collapsed: true,
+      link: {
+        type: "doc",
+        id: "encyclopedia/index",
+      },
+      items: [
+        "encyclopedia/temporal",
+        "encyclopedia/temporal-sdks",
+        "encyclopedia/workflows",
+        {
+          type: "category",
+          label: "Activities",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "encyclopedia/activities/activities",
+          },
+          items: [
+            "encyclopedia/activities/activity-definition",
+            "encyclopedia/activities/activity-execution",
+            "encyclopedia/activities/local-activity",
+          ],
+        },
+        {
+          type: "category",
+          label: "Detecting application failures",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "encyclopedia/detecting-application-failures",
+          },
+          items: [
+            "encyclopedia/detecting-activity-failures",
+            "encyclopedia/detecting-workflow-failures",
+            "encyclopedia/retry-policies",
+          ],
+        },
+        {
+          type: "category",
+          label: "Workers",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "encyclopedia/workers/workers",
+          },
+          items: [
+            "encyclopedia/workers/tasks",
+            "encyclopedia/workers/task-queues",
+            "encyclopedia/workers/task-routing-worker-sessions",
+            "encyclopedia/workers/sticky-execution",
+            "encyclopedia/workers/worker-deployments",
+            "encyclopedia/workers/worker-versioning",
+          ],
+        },
+        {
+          type: "category",
+          label: "Event History",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "encyclopedia/event-history/event-history",
+          },
+          items: ["encyclopedia/event-history/event-history-typescript"],
+        },
+        {
+          type: "category",
+          label: "Workflow Message Passing",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "encyclopedia/workflow-message-passing/workflow-message-passing",
+          },
+          items: [
+            "encyclopedia/workflow-message-passing/sending-messages",
+            "encyclopedia/workflow-message-passing/handling-messages",
+          ],
+        },
+        {
+          type: "category",
+          label: "Child Workflows",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "encyclopedia/child-workflows/child-workflows",
+          },
+          items: ["encyclopedia/child-workflows/parent-close-policy"],
+        },
+        {
+          type: "category",
+          label: "Visibility",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "encyclopedia/visibility/visibility",
+          },
+          items: [
+            "encyclopedia/visibility/dual-visibility",
+            "encyclopedia/visibility/list-filter",
+            "encyclopedia/visibility/search-attribute",
+          ],
+        },
+        {
+          type: "category",
+          label: "Temporal Service",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "encyclopedia/temporal-service/temporal-service",
+          },
+          items: [
+            "encyclopedia/temporal-service/temporal-server",
+            "encyclopedia/temporal-service/persistence",
+            "encyclopedia/temporal-service/visibility",
+            "encyclopedia/temporal-service/archival",
+            "encyclopedia/temporal-service/temporal-service-configuration",
+            "encyclopedia/temporal-service/multi-cluster-replication",
+          ],
+        },
+        {
+          type: "category",
+          label: "Namespaces",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "encyclopedia/namespaces/namespaces",
+          },
+          items: ["encyclopedia/namespaces/global-namespaces"],
+        },
+        {
+          type: "category",
+          label: "Temporal Nexus",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "encyclopedia/nexus",
+          },
+          items: [
+            "encyclopedia/nexus-endpoints",
+            "encyclopedia/nexus-registry",
+            "encyclopedia/nexus-services",
+            "encyclopedia/nexus-operations",
+            "encyclopedia/nexus-use-cases",
+            "encyclopedia/nexus-execution-debugging",
+            "encyclopedia/nexus-error-handling",
+            "encyclopedia/nexus-metrics",
+            "encyclopedia/nexus-security",
+          ],
+        },
+        {
+          type: "category",
+          label: "Data Conversion",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "encyclopedia/data-conversion/dataconversion",
+          },
+          items: [
+            "encyclopedia/data-conversion/default-custom-data-converters",
+            "encyclopedia/data-conversion/payload-converter",
+            "encyclopedia/data-conversion/payload-codec",
+            "encyclopedia/data-conversion/failure-converter",
+            "encyclopedia/data-conversion/remote-data-encoding",
+            "encyclopedia/data-conversion/codec-server",
+            "encyclopedia/data-conversion/key-management",
+          ],
+        },
+      ],
+    },
+    "glossary",
+    // {
+    //   type: "autogenerated",
+    //   dirName: "./dev-guide", // '.' means the current docs folder
+    // },
+  ],
+  tctl: [
+    "tctl-v1/index",
+    "tctl-v1/activity",
+    "tctl-v1/admin",
+    "tctl-v1/batch",
+    "tctl-v1/cluster",
+    "tctl-v1/dataconverter",
+    "tctl-v1/namespace",
+    "tctl-v1/schedule",
+    "tctl-v1/taskqueue",
+    "tctl-v1/workflow",
+  ],
+};

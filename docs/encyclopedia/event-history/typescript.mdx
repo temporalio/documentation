@@ -1,0 +1,219 @@
+---
+id: event-history-typescript
+title: Event History Walkthrough with the TypeScript SDK
+description: Discover how Temporal uses the Event History to recreate a Workflow's state in the case of failure, such as a Worker crash, and how it uses replay to restore the Workflow's state to the point of failure.
+sidebar_label: TypeScript
+tags:
+  - Workflows
+  - Activities
+  - Workers
+  - Temporal SDKs
+  - Event History
+keywords:
+  - temporal application
+  - event history
+  - workflow design
+  - business logic activities
+  - temporal workers
+  - temporal SDK tutorial
+  - go sdk temporal guide
+  - java sdk temporal guide
+  - php sdk temporal guide
+  - python sdk temporal guide
+  - typescript sdk temporal guide
+  - learning temporal workflows
+  - developing with temporal
+  - temporal workflow execution
+  - temporal activity management
+  - worker process execution
+---
+
+import PhotoCarousel from "@site/src/components/elements/PhotoCarousel";
+
+With Temporal, your Workflows can seamlessly recover from crashes or failures without you having to write recovery logic code. This is made possible by the [Event History](https://docs.temporal.io/workflows#event-history), a complete and durable log of everything that has happened in the lifecycle of a Workflow Execution.
+
+Temporal uses the Event History to not only store the current state of a Workflow Execution—it records every step taken along the way. Each time your Workflow Definition makes an API call to execute an Activity or start a Timer for instance, it doesn’t perform the action directly. Instead, it sends a Command to the Temporal Service.
+
+A [Command](https://docs.temporal.io/workflows#command) is a unit of work that the Worker needs to execute and let the Temporal Service know what to do next. The Temporal Service will act on these Commands such as scheduling an Activity or scheduling a timer. These Commands get stored in case of failure. For example, if the Worker crashes, the Temporal Service uses this information to replay the code and recreate the state of the Workflow Execution to what it was immediately before the crash. It then resumes progress from the point of failure as if the failure never occurred. This allows you, as a developer, to code as if this type of failure wasn't even a possibility.
+
+In order to understand how Workflow Replay works, we'll look at the following walkthroughs:
+
+1. [How Workflow Code Maps to Commands](#How-Workflow-Code-Maps-To-Commands)
+2. [How Workflow Commands Map to Events](#How-Workflow-Commands-Map-To-Events)
+3. [How History Replay Provides Durable Execution](#How-History-Replay-Provides-Durable-Execution)
+4. [Example of a Non-Deterministic Workflow](#Example-of-Non-Deterministic-Workflow)
+
+## How Workflow Code Maps to Commands {#How-Workflow-Code-Maps-To-Commands}
+
+Let's look at how the Workflow code you write camps to Commands that get sent to the Temporal Service, letting the Temporal Service know what to do.
+
+<PhotoCarousel
+  images={[
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/code-commands/code-commands.001.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/code-commands/code-commands.002.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/code-commands/code-commands.009.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/code-commands/code-commands.015.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/code-commands/code-commands.016.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/code-commands/code-commands.018.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/code-commands/code-commands.019.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/code-commands/code-commands.020.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/code-commands/code-commands.021.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/code-commands/code-commands.022.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/code-commands/code-commands.023.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/code-commands/code-commands.024.jpeg",
+  ]}
+  captions={[
+    "NA",
+    "Here is code for a basic Temporal Workflow Definition which does the following items described on the right side of the screen.",
+    "NA",
+    "On the other hand, some steps do involve interaction with the Temporal Service. For example, when the code requests execution of an Activity, it generates a Command to schedule the Activity Task. Another example if when the code returns a value from the Workflow, the Worker notifies the Temporal Service that the Workflow Execution is complete.",
+    "Let's walk through this code. In this Workflow Definition, setting the Start-to-Close Timeout and setting a variable are internal steps. That is, these steps don't require any interaction with the Temporal Service.",
+    "The Worker then reaches a statement that does require interaction with the Temporal Service. In this case, it's a request to execute an Activity. This causes the Worker to issue a Command to the Temporal Service and provides the details needed. For example, the `ScheduleActivityTask` Command contains details such as the Task Queue name, the Activity Type, and the input parameter values.",
+    "Afterwards, the Worker continues executing the Workflow code. The next line, highlighted here, evaluate a variable. Depending on the outcome, it may throw an exception, which would cause the Workflow to fail. However, let's be optimistic in this case and assume that this is a delivery for a nearby customer. The execution will continue.",
+    "The next step also does not involve interaction with the Service.",
+    "The Worker now reaches the call to the Timer, which is another statement that involves interaction with the Temporal Service. This causes the Worker to issue another Command, one which requests that it start a Timer. The duration is one of the details specified in this Command. Further execution of this Workflow will now pause for 30 minutes until the Timer fires.",
+    "The next few lines, highlighted here, create and populate an object that represent the input for the next Activity. While it is related to the Activity, it doesn't involve any interaction with the Service.",
+    "The next statement involves interaction with the Temporal Service. It requests execution of an Activity, so the Worker issues another Command to the Temporal Service: `ScheduleActivityTask`.",
+    "Finally, returning from the Workflow function also results in a Command. It issues a `CompleteWorkflowExecution` Command to the Temporal Service, which includes the value we returned from the function.",
+  ]}
+/>
+
+## How Workflow Commands Map to Events {#How-Workflow-Commands-Map-To-Events}
+
+The Commands that are sent to the Temporal Service are then turned to Events which build up the Event History. The Event History is a detailed log of Events that occur during the lifecycle of a Workflow Execution, such as the execution of Workflow Tasks or Activity Tasks. Event Histories are persisted to the database used by the Temporal Service, so they're durable, and will even survive a crash of the Temporal Service itself.
+
+<PhotoCarousel
+  images={[
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/commands-events/commands-events.001.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/commands-events/commands-events.002.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/commands-events/commands-events.003.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/commands-events/commands-events.004.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/commands-events/commands-events.005.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/commands-events/commands-events.006.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/commands-events/commands-events.007.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/commands-events/commands-events.008.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/commands-events/commands-events.009.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/commands-events/commands-events.010.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/commands-events/commands-events.011.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/commands-events/commands-events.012.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/commands-events/commands-events.013.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/commands-events/commands-events.014.jpeg",
+  ]}
+  captions={["NA", "Caption for image 2"]}
+/>
+
+## How History Replay Provides Durable Execution {#How-History-Replay-Provides-Durable-Execution}
+
+<PhotoCarousel
+  images={[
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.001.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.002.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.003.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.004.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.005.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.006.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.007.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.008.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.009.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.010.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.011.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.012.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.013.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.014.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.015.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.016.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.017.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.018.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.019.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.020.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.021.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.022.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.023.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.024.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.025.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.026.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.027.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.028.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.029.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.030.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.031.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.032.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.033.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.034.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.035.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.036.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.037.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.038.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.039.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.040.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.041.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.042.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.043.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.044.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.045.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.046.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.047.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.048.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.049.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.050.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.051.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.052.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.053.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.054.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.055.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.056.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.057.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.058.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.059.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.060.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.061.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.062.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.063.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.064.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.065.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.066.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.067.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.068.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.069.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.070.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.071.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.072.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.073.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.074.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.075.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.076.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.077.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.078.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.079.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.080.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.081.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/history-replay/history-replay.082.jpeg",
+  ]}
+  captions={["Caption for image 1", "Caption for image 2"]}
+/>
+
+## Example of a Non-Deterministic Workflow {#Example-of-Non-Deterministic-Workflow}
+
+<PhotoCarousel
+  images={[
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.001.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.002.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.003.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.004.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.005.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.006.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.007.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.008.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.009.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.010.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.011.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.012.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.013.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.014.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.015.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.016.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.017.jpeg",
+    "https://learn.temporal.io/courses/temporal-101/typescript/event-history-walkthrough/nondeterministic-workflow/nondeterministic-workflow.018.jpeg",
+  ]}
+  captions={["Caption for image 1", "Caption for image 2"]}
+/>
