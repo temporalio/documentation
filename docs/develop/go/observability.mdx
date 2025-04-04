@@ -28,7 +28,7 @@ tags:
 description: Monitor your Temporal Application state using Metrics, Tracing, Logging, and Visibility features. Emit metrics, configure tracing, use context propagation, customize logging, and use Search Attributes with the Temporal Go SDK for enhanced Workflow Execution insights.
 ---
 
-This page covers the many ways to view the current state of your [Temporal Application](/temporal#temporal-application)—that is, ways to view which [Workflow Executions](/workflows#workflow-execution) are tracked by the [Temporal Platform](/temporal#temporal-platform) and the state of any specified Workflow Execution, either currently or at points of an execution.
+This page covers the many ways to view the current state of your [Temporal Application](/temporal#temporal-application)—that is, ways to view which [Workflow Executions](/workflow-execution) are tracked by the [Temporal Platform](/temporal#temporal-platform) and the state of any specified Workflow Execution, either currently or at points of an execution.
 
 This section covers features related to viewing the state of the application, including:
 
@@ -324,7 +324,7 @@ The steps to using custom Search Attributes are:
 
 Here is how to query Workflow Executions:
 
-The [ListWorkflow()](https://pkg.go.dev/go.temporal.io/sdk/client#Client.ListWorkflow) function retrieves a list of [Workflow Executions](/workflows#workflow-execution) that match the [Search Attributes](/search-attribute) of a given [List Filter](/list-filter).
+The [ListWorkflow()](https://pkg.go.dev/go.temporal.io/sdk/client#Client.ListWorkflow) function retrieves a list of [Workflow Executions](/workflow-execution) that match the [Search Attributes](/search-attribute) of a given [List Filter](/list-filter).
 The metadata returned from the [Visibility](/temporal-service/visibility) store can be used to get a Workflow Execution's history and details from the [Persistence](/temporal-service/persistence) store.
 
 Use a List Filter to define a `request` to pass into `ListWorkflow()`.
