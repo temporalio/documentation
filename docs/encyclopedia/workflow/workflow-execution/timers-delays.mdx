@@ -1,7 +1,7 @@
 ---
 id: timers-delays
 title: Timers and Start Delays
-sidebar_label: Timers & Delays
+sidebar_label: Timers and Start Delays
 description: Temporal SDKs offer Timer APIs so that Workflow Executions are deterministic in their handling of time values.
 slug: /workflow-execution/timers-delays
 keywords:
@@ -13,9 +13,9 @@ tags:
   - Workflows
 ---
 
-Controlling Workflow Timing 
-- Timer
-- Start Delay 
+This page discusses the following:
+- [Timer](#timer)
+- [Start Delay](#delay-workflow-execution)
 
 ### What is a Timer? {#timer}
 
@@ -36,8 +36,6 @@ The duration of a Timer is fixed, and your Workflow might specify a value as sho
 Although it's possible to specify an extremely precise duration, such as 36 milliseconds or 15.072 minutes, your Workflows should not rely on sub-second accuracy for Timers.
 We recommend that you consider the duration as a minimum time, one which will be rounded up slightly due to the latency involved with scheduling and firing the Timer.
 For example, setting a Timer for 11.97 seconds is guaranteed to delay execution for at least that long, but will likely be closer to 12 seconds in practice.
-
-
 
 ## What is a Start Delay? {#delay-workflow-execution}
 

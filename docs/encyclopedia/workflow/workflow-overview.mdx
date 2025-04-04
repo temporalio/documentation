@@ -13,14 +13,12 @@ tags:
 
 ---
 
-The Temporal Workflow guide covers: 
-- [Workflow Definitions](/workflow-definition) (including Deterministic constraints, Versioning Code, and Workflow Type)
-- [Workflow Execution](/workflow-execution) (including Replay, Command, Limits, Events, and Workflow ID)
+This guide provides a comprehensive overview of Temporal Workflows and contains the following subpages: 
+- [Workflow Definition](/workflow-definition) 
+- [Workflow Execution](/workflow-execution)
 - [Schedules](/schedule)
 - [Dynamic Handler](/dynamic-handler)
 - [Cron Job](/cron-job)
-
-This page provides a basic overview of Introduction to Workflow. 
 
 ## Intro to Workflows
 Conceptually, a workflow defines a sequence of steps.
@@ -29,7 +27,7 @@ With Temporal, those steps are defined by writing code, known as a Workflow Defi
 In day-to-day conversations, the term Workflow might refer to Workflow Type, a Workflow Definition, or a Workflow Execution. 
 
 1. A **Workflow Definition** is the code that defines your Workflow.
-2. The **Workflow Type** is the name associated with that Workflow Definition. 
+2. The **Workflow Type** is the name that maps to a Workflow Definition.
 It's an identifier that makes it possible to distinguish one type of Workflow (such as order processing) from another (such as customer onboarding).
 3. A **Workflow Execution** is a running Workflow, which is created by combining a Workflow Definition with a request to execute it. 
 You can execute a Workflow Definition any number of times, potentially providing different input each time (i.e., a Workflow Definition for order processing might process order #123 in one execution and order #567 in another execution). 
@@ -55,143 +53,3 @@ Workflows can:
 - Be scheduled with Cron Jobs or Schedules
 
 Workflows must follow deterministic constraints to ensure consistent replay behavior.
-
-## Workflow Definition
-A Workflow Definition is the code that defines the Workflow. 
-It is written in a supported programming language and SDK.
-
-Below are different ways to develop a basic Workflow Definition.
-
-<Tabs groupId="basic-workflow-definition" queryString>
-<TabItem value="go" label="Go">
-
-**[Workflow Definition in Go](/develop/go/core-application#develop-workflows)**
-
-```go
-func YourBasicWorkflow(ctx workflow.Context) error {
-    // ...
-    return nil
-}
-```
-
-</TabItem>
-<TabItem value="java" label="Java">
-
-**[Workflow Definition in Java (Interface)](/develop/java/core-application#develop-workflows)**
-
-```java
-// Workflow interface
-@WorkflowInterface
-public interface YourBasicWorkflow {
-
-    @WorkflowMethod
-    String workflowMethod(Arguments args);
-}
-```
-
-**[Workflow Definition in Java (Implementation)](/develop/java/core-application#develop-workflows)**
-
-```java
-// Workflow implementation
-public class YourBasicWorkflowImpl implements YourBasicWorkflow {
-    // ...
-}
-```
-
-</TabItem>
-<TabItem value="php" label="PHP">
-
-**[Workflow Definition in PHP (Interface)](/develop/php/core-application#develop-workflows)**
-
-```php
-#[WorkflowInterface]
-interface YourBasicWorkflow {
-    #[WorkflowMethod]
-    public function workflowMethod(Arguments args);
-}
-```
-
-**[Workflow Definition in PHP (Implementation)](/develop/php/core-application#develop-workflows)**
-
-```php
-class YourBasicWorkflowImpl implements YourBasicWorkflow {
-    // ...
-}
-```
-
-</TabItem>
-<TabItem value="python" label="Python">
-
-**[Workflow Definition in Python](/develop/python/core-application#develop-workflows)**
-
-```Python
-@workflow.defn
-class YourWorkflow:
-    @workflow.run
-    async def YourBasicWorkflow(self, input: str) -> str:
-        # ...
-```
-
-</TabItem>
-<TabItem value="typescript" label="Typescript">
-
-**[Workflow Definition in Typescript](/develop/typescript/core-application#develop-workflows)**
-
-```Typescript
-type BasicWorkflowArgs = {
-  param: string;
-};
-
-export async function WorkflowExample(
-  args: BasicWorkflowArgs,
-): Promise<{ result: string }> {
-  // ...
-}
-```
-
-</TabItem>
-<TabItem value="dotnet" label=".NET">
-
-**[Workflow Definition in C# and .NET](/develop/dotnet/core-application#develop-workflow)**
-
-```csharp
-[Workflow]
-public class YourBasicWorkflow {
-
-    [WorkflowRun]
-    public async Task<string> workflowExample(string param) {
-        // ...
-    }
-}
-```
-
-</TabItem>
-
-</Tabs>
-
-## Workflow Execution
-
-While the Workflow Definition is the code that defines the Workflow, the Workflow Execution is created by executing that code.
-When you run a Workflow Definition, you create a Workflow Execution. 
-Each execution is an independent instance with its own state and context. 
-This means you can run the same Workflow Definition for different orders, customers, or scenarios, with each execution maintaining its own unique progress.
-A Workflow Execution is identified by a Workflow Id, Run Id, and Namespace.
-
-Each Workflow Execution:
-
-- Has exclusive access to its local state.
-- Executes concurrently with other Workflow Executions.
-- Communicates with the outside world through Activities and Signals.
-
-A Workflow Execution may run for seconds or years and resume progress after Worker or service outages. 
-If needed, it can Continue-As-New to start fresh with a new Event History.
-
-## Workflow Type 
-A Workflow Type in Temporal is a name that maps to a Workflow Definition.  
-It allows you to distinguish and serves as an identifier between different Workflow implementations and provides a way to track and manage specific workflow patterns.
-A Workflow Type is used to create a Workflow Execution. 
-Each time you start a workflow using the same Workflow Type, you create a new Workflow Execution with a unique Run ID.
-
-Temporal Workflows are engineered to handle complex, distributed processes with remarkable resilience. 
-They can survive infrastructure failures, automatically recreate pre-failure states, maintain comprehensive Event Histories, and support advanced workflow management techniques including pausing, resuming, and resetting entire process instances.
-

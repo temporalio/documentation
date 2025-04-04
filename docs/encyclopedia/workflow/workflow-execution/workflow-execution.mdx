@@ -1,7 +1,7 @@
 ---
 id: workflow-execution
-title: Temporal Workflow Execution
-sidebar_label: Workflow Execution 
+title: Temporal Workflow Execution Overview
+sidebar_label: Workflow Execution Overview
 description: A Temporal Workflow Execution is a durable, reliable, and scalable function execution and the main unit of execution of a Temporal Application.
 slug: /workflow-execution
 toc_max_heading_level: 4
@@ -12,19 +12,16 @@ tags:
   - Workflows
 
 ---
-
-The Workflow Execution page covers the following: 
-- Replay
-- Commands and awaitables
-- Checking Workflow Execution Status
-- Workflow Execution Chain 
-- Time Constraints 
-- Commands 
-- Memo 
-- State Transition
-
-
 import { CaptionedImage } from '@site/src/components';
+
+This page provides an overview of Workflow Execution:
+- [What is a Workflow Execution?](#workflow-execution)
+- [Replay](#replay)
+- [Commands and awaitables](#commands-awaitables)
+- [Checking Workflow Execution Status](#workflow-execution-status)
+- [Workflow Execution Chain](#workflow-execution-chain)
+- [Memo](#memo)
+- [State Transition](#state-transition)
 
 ## What is a Workflow Execution? {#workflow-execution}
 
@@ -64,7 +61,7 @@ Scalability is responsiveness in the presence of load.
 A single Workflow Execution is limited in size and throughput but is scalable because it can [Continue-As-New](#continue-as-new) in response to load.
 A Temporal Application is scalable because the Temporal Platform is capable of supporting millions to billions of Workflow Executions executing concurrently, which is realized by the design and nature of the [Temporal Service](/temporal-service) and [Worker Processes](/workers#worker-process).
 
-### Replays
+### Replays {#replay}
 
 A Replay is the method by which a Workflow Execution resumes making progress. During a Replay the Commands that are generated are checked against an existing Event History. Replays are necessary and often happen to give the effect that Workflow Executions are resumable, reliable, and durable.
 
@@ -78,7 +75,7 @@ If a failure occurs, the Workflow Execution picks up where the last recorded eve
 - [How to use Replay APIs using the TypeScript SDK](/develop/typescript/testing-suite#replay)
 - [How to use Replay APIs using the .NET SDK](/develop/dotnet/testing-suite#replay-test)
 
-### Commands and awaitables
+### Commands and awaitables {#commands-awaitables}
 
 A Workflow Execution does two things:
 
@@ -124,7 +121,7 @@ There will always be [WorkflowTaskStarted](/references/events#workflowtaskstarte
 Commands are described in the [Command reference](/references/commands) and are defined in the [Temporal gRPC API](https://github.com/temporalio/api/blob/master/temporal/api/command/v1/message.proto).
 
 
-### Status
+### Status {#workflow-execution-status}
 
 A Workflow Execution can be either _Open_ or _Closed_.
 
@@ -150,7 +147,7 @@ A _Closed_ status means that the Workflow Execution cannot make further progress
 - Terminated: The Workflow Execution was terminated.
 - Timed Out: The Workflow Execution reached a timeout limit.
 
-### Workflow Execution Chain
+### Workflow Execution Chain {#workflow-execution-chain}
 
 A Workflow Execution Chain is a sequence of Workflow Executions that share the same Workflow Id.
 Each link in the Chain is often called a Workflow Run.
@@ -196,3 +193,11 @@ Most operations require multiple State Transitions.
 
 For example, a simple Workflow with two sequential [Activity Tasks](/tasks#activity-task) (and no retries) produces 11 State Transitions: two for Workflow start, four for each Activity, and one for Workflow completion.
 
+:::tip NEXT STEPS 
+For more information on Workflow Execution, please refer to the following subpages: 
+- [Event](/workflow-execution/event)
+- [Workflow Id and Run Id](/workflow-execution/workflow-id-run-id)
+- [Limits](/workflow-execution/limits)
+- [Continue-as-New](/workflow-execution/continue-as-new)
+- [Timers and Start Delay](/workflow-execution/timers-delays)
+::: 

@@ -1,6 +1,6 @@
 ---
 id: workflowid-runid
-title: Workflow Identifiers
+title: Workflow Id and Run Id
 sidebar_label: Workflow Id and Run Id
 description: A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.
 slug: /workflow-execution/workflow-id-run-id
@@ -13,12 +13,22 @@ tags:
   - Workflows
 ---
 
-- Run Id
-- Workflow Id
-  - Workflow Id Reuse Policy 
-  - Workflow Id Conflict Policy 
+This page discusses the following:
+- [Run Id](#run-id)
+  - [Run Id and Non-determinism](#run-id-non-determinism)
+- [Workflow Id](#workflow-id)
+  - [Workflow Id Reuse Policy](#workflow-id-reuse-policy)
+  - [Workflow Id Conflict Policy](#workflow-id-conflict-policy)
 
-### What is a Run Id? {#run-id}
+
+Each Workflow Execution is associated with a user-defined [Workflow ID](#workflow-id), a value which typically carries some business meaning (such as an order number or customer number). 
+Temporal guarantees that there can at most one Workflow Execution with a given ID running at any point in time, a constraint that helps to protect against unexpected duplication.
+In some cases, such as when running the same Workflow at recurring intervals using the Schedules features, there can be multiple "runs" of a single Workflow Execution over a period of time. 
+In this case, all runs will have the same Workflow ID. 
+However, each run will have a unique system-generated [Run ID](#run-id).
+
+
+## What is a Run Id? {#run-id}
 
 A Run Id is a globally unique, platform-level identifier for a [Workflow Execution](#workflow-execution).
 
@@ -31,7 +41,7 @@ Each Workflow Execution within the chain is considered a _Run_.
 
 A Run Id uniquely identifies a Workflow Execution even if it shares a Workflow Id with other Workflow Executions.
 
-#### Which operations lead to non-determinism issues?
+### Which operations lead to non-determinism issues?{#run-id-non-determinism}
 
 An operation like `ContinueAsNew`, `Retry`, `Cron`, and `Reset` creates a [Workflow Execution Chain](#workflow-execution-chain) as identified by the [`first_execution_run_id`](https://github.com/temporalio/api/blob/master/temporal/api/history/v1/message.proto).
 
@@ -57,7 +67,7 @@ For more information, see the following link.
 
 - [`message.proto`](https://github.com/temporalio/api/blob/master/temporal/api/history/v1/message.proto#L75-L82)
 
-### What is a Workflow Id? {#workflow-id}
+## What is a Workflow Id? {#workflow-id}
 
 A Workflow Id is a customizable, application-level identifier for a [Workflow Execution](#workflow-execution) that is unique to an Open Workflow Execution within a [Namespace](/namespaces).
 
@@ -73,7 +83,7 @@ A [Workflow Id Conflict Policy](#workflow-id-conflict-policy) can be used to dec
 
 A Workflow Execution can be uniquely identified across all Namespaces by its [Namespace](/namespaces), Workflow Id, and [Run Id](#run-id).
 
-#### What is a Workflow Id Reuse Policy? {#workflow-id-reuse-policy}
+### What is a Workflow Id Reuse Policy? {#workflow-id-reuse-policy}
 
 A Workflow Id Reuse Policy determines whether a Workflow Execution is allowed to spawn with a particular Workflow Id, if that Workflow Id has been used with a previous, and now Closed, Workflow Execution.
 
@@ -103,7 +113,7 @@ For Terminate if Running, the Retention Period is not a consideration for this p
 
 If there is an attempt to spawn a Workflow Execution with a Workflow Id Reuse Policy that won't allow it, the Server will prevent the Workflow Execution from spawning.
 
-#### What is a Workflow Id Conflict Policy? {#workflow-id-conflict-policy}
+### What is a Workflow Id Conflict Policy? {#workflow-id-conflict-policy}
 
 A Workflow Id Conflict Policy determines how to resolve a conflict when spawning a new Workflow Execution with a particular Workflow Id used by an existing Open Workflow Execution.
 See [Workflow Id Reuse Policy](#workflow-id-reuse-policy) for managing the reuse of a Workflow Id of a Closed Workflow.

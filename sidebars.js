@@ -565,13 +565,13 @@ module.exports = {
                   collapsed: true,
                   link: {
                     type: "doc",
-                    id: "encyclopedia/workflow/workflow-execution/workflow-execution", // main overview page
+                    id: "encyclopedia/workflow/workflow-execution/workflow-execution",
                   },
                   items: [
-                    "encyclopedia/workflow/workflow-execution/continue-as-new",
-                    "encyclopedia/workflow/workflow-execution/event",
-                    "encyclopedia/workflow/workflow-execution/limits",
                     "encyclopedia/workflow/workflow-execution/workflowid-runid",
+                    "encyclopedia/workflow/workflow-execution/event",
+                    "encyclopedia/workflow/workflow-execution/continue-as-new",
+                    "encyclopedia/workflow/workflow-execution/limits",
                     "encyclopedia/workflow/workflow-execution/timers-delays",
                   ],
                 },
