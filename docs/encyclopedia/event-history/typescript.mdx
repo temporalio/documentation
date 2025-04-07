@@ -32,9 +32,9 @@ import PhotoCarousel from "@site/src/components/elements/PhotoCarousel";
 
 With Temporal, your Workflows can seamlessly recover from crashes or failures without you having to write recovery logic code. This is made possible by the [Event History](https://docs.temporal.io/workflows#event-history), a complete and durable log of everything that has happened in the lifecycle of a Workflow Execution.
 
-Temporal uses the Event History to not only store the current state of a Workflow Execution—it records every step taken along the way. Each time your Workflow Definition makes an API call to execute an Activity or start a Timer for instance, it doesn’t perform the action directly. Instead, it sends a Command to the Temporal Service.
+Temporal uses the Event History to not only store the current state of a Workflow Execution—it records every step taken along the way. Each time your Workflow Definition makes an API call to execute an Activity or start a Timer, for instance, the Worker doesn't perform the action directly. Instead, it sends a Command to the Temporal Service.
 
-A [Command](https://docs.temporal.io/workflows#command) is a unit of work that the Worker needs to execute and let the Temporal Service know what to do next. The Temporal Service will act on these Commands such as scheduling an Activity or scheduling a Timer. These Commands get stored in case of failure. For example, if the Worker crashes, the Temporal Service uses this information to replay the code and recreate the state of the Workflow Execution to what it was immediately before the crash. It then resumes progress from the point of failure as if the failure never occurred. This allows you, as a developer, to code as if this type of failure wasn't even a possibility.
+A [Command](https://docs.temporal.io/workflows#command) is a unit of work that the Worker needs to execute and let the Temporal Service know what to do next. The Temporal Service will act on these Commands such as scheduling an Activity or starting a Timer. These Commands get stored in case of failure. For example, if the Worker crashes, the Temporal Service uses this information to replay the code and recreate the state of the Workflow Execution to what it was immediately before the crash. It then resumes progress from the point of failure as if the failure never occurred. This allows you, as a developer, to code as if this type of failure wasn't even a possibility.
 
 In order to understand how Workflow Replay works, this page will go through the following walkthroughs:
 
@@ -64,9 +64,9 @@ This walkthrough will cover how the Workflow code maps to Commands that get sent
   ]}
   captions={[
     "NA",
-    "Here is code for a basic Temporal Workflow Definition which does the following items described on the right side of the screen.",
-    "Some steps are internal to the Workflow which do not involve interaction with the Service.",
-    "On the other hand, some steps do involve interaction with the Temporal Service. For example, when the code requests execution of an Activity, it generates a Command to schedule the Activity Task. Another example if when the code returns a value from the Workflow, the Worker notifies the Temporal Service that the Workflow Execution is complete.",
+    "Here is code for a basic Temporal Workflow Definition, which does the items described on the right side of the screen.",
+    "Some steps are internal to the Workflow and do not involve interaction with the Service.",
+    "On the other hand, some steps do involve interaction with the Temporal Service. For example, when the code requests execution of an Activity, it generates a Command to schedule the Activity Task. Another example is when the code returns a value from the Workflow, the Worker notifies the Temporal Service that the Workflow Execution is complete.",
     "The code walkthrough will now begin. In this Workflow Definition, setting the Start-to-Close Timeout and setting a variable are internal steps. That is, these steps don't require any interaction with the Temporal Service.",
     "The Worker then reaches a statement that does require interaction with the Temporal Service. In this case, it's a request to execute an Activity. This causes the Worker to issue a Command to the Temporal Service and provides the details needed. For example, the `ScheduleActivityTask` Command contains details such as the Task Queue name, the Activity Type, and the input parameter values.",
     "Afterwards, the Worker continues executing the Workflow code. The next line, highlighted here, evaluates a variable. Depending on the outcome, it may throw an exception, which would cause the Workflow to fail. However, this example assumes that this is a delivery for a nearby customer. The execution will continue.",
@@ -80,7 +80,7 @@ This walkthrough will cover how the Workflow code maps to Commands that get sent
 
 ## How Workflow Commands Map to Events {#How-Workflow-Commands-Map-To-Events}
 
-The Commands that are sent to the Temporal Service are then turned to Events which build up the Event History. The Event History is a detailed log of Events that occur during the lifecycle of a Workflow Execution, such as the execution of Workflow Tasks or Activity Tasks. Event Histories are persisted to the database used by the Temporal Service, so they're durable, and will even survive a crash of the Temporal Service itself.
+The Commands that are sent to the Temporal Service are then turned into Events, which build up the Event History. The Event History is a detailed log of Events that occur during the lifecycle of a Workflow Execution, such as the execution of Workflow Tasks or Activity Tasks. Event Histories are persisted to the database used by the Temporal Service, so they're durable, and will even survive a crash of the Temporal Service itself.
 
 These Events are what are used to recreate a Workflow Execution's state in the case of failure.
 
@@ -121,7 +121,7 @@ These Events are what are used to recreate a Workflow Execution's state in the c
 
 ## How History Replay Provides Durable Execution {#How-History-Replay-Provides-Durable-Execution}
 
-Now that the codewalkthrough has covered how code maps to Commands, and how Commands map to Events, this next waltkthrough will take a look at how Temporal uses Replay with the Events to provide Durable Execution and restore a Workflow Execution in the case of a failure.
+Now that you have seen how code maps to Commands, and how Commands map to Events, this next waltkthrough will take a look at how Temporal uses Replay with the Events to provide Durable Execution and restore a Workflow Execution in the case of a failure.
 
 This code walkthrough will begin by walking through a Workflow Execution, describing how the code maps to Commands and Events. There will then be a Worker crash halfway through, explaining how Temporal uses Replay to recover the state of the Workflow Execution, ultimately resulting in a completed execution that's identical to one that had not crashed.
 
