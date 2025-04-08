@@ -601,7 +601,13 @@ module.exports = {
             type: "doc",
             id: "encyclopedia/event-history/event-history",
           },
-          items: ["encyclopedia/event-history/event-history-typescript"],
+          items: [
+            "encyclopedia/event-history/event-history-go",
+            "encyclopedia/event-history/event-history-dotnet",
+            "encyclopedia/event-history/event-history-java",
+            "encyclopedia/event-history/event-history-python",
+            "encyclopedia/event-history/event-history-typescript",
+          ],
         },
         {
           type: "category",

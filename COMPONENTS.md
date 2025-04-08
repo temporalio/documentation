@@ -44,6 +44,7 @@ components
 ├── elements
 │   ├── Button.js
 │   ├── Intro.js
+│   ├── PhotoCarousel.js
 │   ├── RetrySimulator.js
 │   ├── SdkLogos.js
 │   └── retry-simulator.module.css
