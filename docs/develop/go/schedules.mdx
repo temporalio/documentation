@@ -41,7 +41,7 @@ Schedules are initiated with the `create` call.
 The user generates a unique Schedule ID for each new Schedule.
 
 To create a Schedule in Go, use `Create()` on the [Client](/encyclopedia/temporal-sdks#temporal-client).
-Schedules must be initialized with a Schedule ID, [Spec](/workflows#spec), and [Action](/workflows#action) in `client.ScheduleOptions{}`.
+Schedules must be initialized with a Schedule ID, [Spec](/schedule), and [Action](/schedule) in `client.ScheduleOptions{}`.
 
 <div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/create/main.go">

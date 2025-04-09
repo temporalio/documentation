@@ -13,7 +13,7 @@ tags:
 
 ---
 
-This page discusses [Cron Job](#temporal-cron-job).
+This page discusses [Cron Job](#temporal-cron-job) including [Cron Schedules](#cron-schedules), [Time Zones](#cron-job-time-zones), and [how to stop a Cron Schedule](#stop-cron-schedules).
 
 import { CaptionedImage } from '@site/src/components';
 
@@ -63,7 +63,7 @@ The Cron Schedule runs until the Workflow Execution Timeout is reached or you te
     src="/diagrams/temporal-cron-job-failure-with-retry.svg"
     title="Temporal Cron Job Run Failure with a Retry Policy" />
 
-### Cron Schedules
+## Cron Schedules {#cron-schedules}
 
 Cron Schedules are interpreted in UTC time by default.
 
@@ -109,7 +109,7 @@ Intervals just take a string that can be accepted by [time.ParseDuration](http:/
 @every <duration>
 ```
 
-### Time zones
+## Time zones {#cron-job-time-zones}
 
 _This feature only applies in Temporal 1.15 and up_
 
@@ -127,7 +127,7 @@ If you need to use time zones, here are a few edge cases to keep in mind:
 - **Updating Temporal:** If you use the official Docker images, note that an upgrade of the Temporal Service may include an update to the tzdata files, which may change the meaning of your Cron Schedule. You should be aware of upcoming changes to the definitions of the time zones you use, particularly around daylight saving time start/end dates.
 - **Absolute Time Fixed at Start:** The absolute start time of the next Run is computed and stored in the database when the previous Run completes, and is not recomputed. This means that if you have a Cron Schedule that runs very infrequently, and the definition of the time zone changes between one Run and the next, the Run might happen at the wrong time. For example, `CRON_TZ=America/Los_Angeles 0 12 11 11 *` means "noon in Los Angeles on November 11" (normally not in DST). If at some point the government makes any changes (for example, move the end of DST one week later, or stay on permanent DST year-round), the meaning of that specification changes. In that first year, the Run happens at the wrong time, because it was computed using the older definition.
 
-### How to stop a Temporal Cron Job
+## How to stop a Temporal Cron Job {#stop-cron-schedules}
 
 A Temporal Cron Job does not stop spawning Runs until it has been Terminated or until the [Workflow Execution Timeout](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout) is reached.
 
