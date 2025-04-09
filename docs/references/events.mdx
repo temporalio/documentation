@@ -39,7 +39,7 @@ It indicates that the Temporal Service received a request to spawn the Workflow 
 | retry_policy                       | The amount of retries as determined by the service's dynamic configuration. Retries will happen until 'schedule_to_close_timeout' is reached.                  |
 | attempt                            | The number of attempts that have been made to complete this Task.                                                                                              |
 | workflow_execution_expiration_time | The absolute time at which the Workflow Execution will [time out](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout).                       |
-| cron_schedule                      | Displays the Workflow's [Cron Schedule](/workflows#temporal-cron-job), if applicable.                                                                          |
+| cron_schedule                      | Displays the Workflow's [Cron Schedule](/cron-job), if applicable.                                                                          |
 | first_workflow_task_backoff        | Contains the amount of time between when this iteration of the Workflow was scheduled, and when it should run next. Applies to Cron Scheduling.                |
 | memo                               | Non-indexed information to show in the Workflow.                                                                                                               |
 | search_attributes                  | Provides data for setting up a Workflow's [Search Attributes](/search-attribute).                                                                              |
@@ -55,7 +55,7 @@ This indicates that the [Workflow Execution](/workflow-execution) has successful
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | result                           | Serialized result of completed [Workflow](/workflows).                                                                                |
 | workflow_task_completed_event_id | The Id of the [WorkflowTaskCompleted](#workflowtaskcompleted) that the Event was reported with.                                       |
-| new_execution_run_id             | The [Run Id]/workflow-execution/workflowid-runid#run-id of the new Workflow Execution started as a result of a [Cron Schedule](/workflows#temporal-cron-job). |
+| new_execution_run_id             | The [Run Id]/workflow-execution/workflowid-runid#run-id of the new Workflow Execution started as a result of a [Cron Schedule](/cron-job). |
 
 ### WorkflowExecutionFailed
 

@@ -340,7 +340,7 @@ Alternatively, use [`start_update_with_start_workflow`](https://python.temporal.
 These calls return once the requested Update wait stage has been reached, or when the request times out.
 
 You will need to provide a [`WithStartWorkflowOperation`](https://python.temporal.io/temporalio.client.WithStartWorkflowOperation.html) to define the Workflow that will be started if necessary, and its arguments.
-You must specify a [WorkflowIdConflictPolicy](/workflows#workflow-id-conflict-policy) when creating the `WithStartWorkflowOperation`.
+You must specify a [WorkflowIdConflictPolicy](/workflow-execution/workflowid-runid#workflow-id-conflict-policy) when creating the `WithStartWorkflowOperation`.
 Note that a `WithStartWorkflowOperation` can only be used once.
 
 Here's an example taken from the [lazy_initialization](https://github.com/temporalio/samples-python/blob/main/message_passing/update_with_start/lazy_initialization/starter.py) sample:

@@ -513,7 +513,7 @@ You can:
 You provide:
 
 - A WorkflowStub created from [`WorkflowOptions`](https://php.temporal.io/classes/Temporal-Client-WorkflowOptions.html).
-  - The `WorkflowOptions` require a [Workflow Id Conflict Policy](/workflows#workflow-id-conflict-policy) to be specified.
+  - The `WorkflowOptions` require a [Workflow Id Conflict Policy](/workflow-execution/workflowid-runid#workflow-id-conflict-policy) to be specified.
   - Choose ["Use Existing"](https://php.temporal.io/classes/Temporal-Common-WorkflowIdConflictPolicy.html#enumcase_UseExisting) and use an idempotent Update handler to ensure your code can be executed again in case of a Client failure.
     Not all `WorkflowOptions` are allowed.
     For example, specifying a Cron Schedule will result in an error.

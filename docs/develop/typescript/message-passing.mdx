@@ -375,7 +375,7 @@ Alternatively, use [`startUpdateWithStart`](https://typescript.temporal.io/api/c
 These calls return once the requested Update wait stage has been reached, or when the request times out.
 
 You will need to provide a [`WithStartWorkflowOperation`](https://typescript.temporal.io/api/classes/client.WithStartWorkflowOperation) to define the Workflow that will be started if necessary, and its arguments.
-You must specify a [WorkflowIdConflictPolicy](/workflows#workflow-id-conflict-policy) when creating the `WithStartWorkflowOperation`.
+You must specify a [WorkflowIdConflictPolicy](/workflow-execution/workflowid-runid#workflow-id-conflict-policy) when creating the `WithStartWorkflowOperation`.
 Note that a `WithStartWorkflowOperation` can only be used once.
 
 Here's an example taken from the [early-return](https://github.com/temporalio/samples-typescript/tree/main/early-return) sample:

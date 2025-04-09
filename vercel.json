@@ -1310,7 +1310,7 @@
     },
     {
       "source": "/concepts/what-is-a-temporal-cron-job",
-      "destination": "/workflows#temporal-cron-job"
+      "destination": "/cron-job"
     },
     {
       "source": "/concepts/what-is-the-temporal-platform",
@@ -1354,7 +1354,7 @@
     },
     {
       "source": "/concepts/what-is-a-workflow-id-reuse-policy",
-      "destination": "/workflows#workflow-id-reuse-policy"
+      "destination": "/workflow-execution/workflowid-runid#workflow-id-reuse-policy"
     },
     {
       "source": "/concepts/what-is-a-workflow-id",

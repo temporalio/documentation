@@ -332,12 +332,12 @@ Callers can then migrate to the new version in their normal deployment schedule.
 
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
-Using a [Conflict-Policy of Use-Existing](/workflows#workflow-id-conflict-policy) with the [New-Workflow-Run-Operation](/nexus/operations#sdk-support) SDK helper is currently a [Pre-release](/evaluate/development-production-features/release-stages#pre-release) feature.
+Using a [Conflict-Policy of Use-Existing](/workflow-execution/workflowid-runid#workflow-id-conflict-policy) with the [New-Workflow-Run-Operation](/nexus/operations#sdk-support) SDK helper is currently a [Pre-release](/evaluate/development-production-features/release-stages#pre-release) feature.
 
 :::
 
 Nexus Operations that start a Workflow with the [New-Workflow-Run-Operation](/nexus/operations#sdk-support) SDK helper will automatically attach a completion Callback on the handler Workflow, so the Nexus caller recieves the result.
-Additional Nexus callers may attach to the same handler Workflow if the Nexus handler uses a [Conflict-Policy of Use-Existing](/workflows#workflow-id-conflict-policy).
+Additional Nexus callers may attach to the same handler Workflow if the Nexus handler uses a [Conflict-Policy of Use-Existing](/workflow-execution/workflowid-runid#workflow-id-conflict-policy).
 
 A single handler Workflow Execution has a [Callback limit](/workflows#workflow-execution-callback-limits) that governs how many Nexus callers can be attached.
 Nexus callers that exceed the limit will recieve an error.

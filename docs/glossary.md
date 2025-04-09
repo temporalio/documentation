@@ -664,7 +664,7 @@ Temporal Service configuration is the setup and configuration details of your Te
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Temporal Cron Job](/workflows#temporal-cron-job)
+#### [Temporal Cron Job](/cron-job)
 
 A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
 
@@ -784,13 +784,13 @@ A Workflow Id is a customizable, application-level identifier for a Workflow Exe
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Workflow Id Conflict Policy](/workflows#workflow-id-conflict-policy)
+#### [Workflow Id Conflict Policy](/workflow-execution/workflowid-runid#workflow-id-conflict-policy)
 
 A Workflow Id Conflict Policy determines how to resolve the conflict when spawning a new Workflow Execution with a particular Workflow Id that is used by an Open Workflow Execution already.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Workflow Id Reuse Policy](/workflows#workflow-id-reuse-policy)
+#### [Workflow Id Reuse Policy](/workflow-execution/workflowid-runid#workflow-id-reuse-policy)
 
 A Workflow Id Reuse Policy determines whether a Workflow Execution is allowed to spawn with a particular Workflow Id, if that Workflow Id has been used with a previous, and now Closed, Workflow Execution.
 

@@ -398,7 +398,7 @@ Use [`WorkflowUpdateHandle`](https://pkg.go.dev/go.temporal.io/sdk/client#Workfl
 You will need to provide:
 
 - [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions).
-  The [Workflow Id Conflict Policy](/workflows#workflow-id-conflict-policy) is required.
+  The [Workflow Id Conflict Policy](/workflow-execution/workflowid-runid#workflow-id-conflict-policy) is required.
   Choose "Use Existing" and use an idempotent Update handler to ensure your code can be executed again in case of a Client failure.
   Not all `StartWorkflowOptions` are allowed.
   For example, specifying a Cron Schedule will result in an error.

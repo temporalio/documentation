@@ -600,7 +600,7 @@ Then call the `Get()` method on the instance of `WorkflowRun` that is returned, 
 
 **Get last completion result**
 
-In the case of a [Temporal Cron Job](/workflows#temporal-cron-job), you might need to get the result of the previous Workflow Run and use it in the current Workflow Run.
+In the case of a [Temporal Cron Job](/cron-job), you might need to get the result of the previous Workflow Run and use it in the current Workflow Run.
 
 To do this, use the [`HasLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#HasLastCompletionResult) and [`GetLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLastCompletionResult) APIs, available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow) package, directly in your Workflow code.
 

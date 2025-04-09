@@ -38,7 +38,7 @@ Search Attribute values are not encrypted because the Temporal Server must be ab
 Temporal provides some [default Search Attributes](/search-attribute#default-search-attribute), such as `ExecutionStatus`, the current state of your Workflow Executions.
 You can also create [custom Search Attribute](/search-attribute#custom-search-attribute) keys in your Visibility store and assign values when starting a Workflow Execution or in Workflow code.
 
-When using [Continue-As-New](/workflow-execution/continue-as-new) or a [Temporal Cron Job](/workflows#temporal-cron-job), Search Attribute keys are carried over to the new Workflow Run by default.
+When using [Continue-As-New](/workflow-execution/continue-as-new) or a [Temporal Cron Job](/cron-job), Search Attribute keys are carried over to the new Workflow Run by default.
 Search Attribute values are only available for as long as the Workflow is.
 
 Search Attributes are most effective for search purposes or tasks requiring collection-based result sets.
