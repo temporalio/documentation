@@ -50,7 +50,7 @@ Consider the Child's [Parent Close Policy](/parent-close-policy) if the Parent d
 
 :::note
 
-Child Workflows do not carry over when the Parent uses [Continue-As-New](/workflow-execution#continue-as-new).
+Child Workflows do not carry over when the Parent uses [Continue-As-New](/workflow-execution/continue-as-new).
 This means that if a Parent Workflow Execution utilizes Continue-As-New, any ongoing Child Workflow Executions will not be retained in the new continued instance of the Parent.
 
 :::
@@ -81,7 +81,7 @@ As all Workflow Executions, they can communicate only via asynchronous [Signals]
 
 ### Partition problems into smaller chunks
 
-An individual Workflow Execution has an [Event History](/workflow-execution#event-history) size limit, which imposes a couple of considerations for using Child Workflows.
+An individual Workflow Execution has an [Event History](/workflow-execution/event#event-history) size limit, which imposes a couple of considerations for using Child Workflows.
 
 On one hand, because Child Workflow Executions have their own Event Histories, they are often used to partition large workloads into smaller chunks.
 For example, a single Workflow Execution does not have enough space in its Event History to spawn 100,000 [Activity Executions](/activity-execution).
@@ -102,7 +102,7 @@ For example, a Workflow that manages host upgrades could spawn a Child Workflow 
 ### Periodic logic execution
 
 A Child Workflow can be used to execute some periodic logic without overwhelming the Parent Workflow Event History.
-In this scenario, the Parent Workflow starts a Child Workflow which executes periodic logic calling [Continue-As-New](/workflow-execution#continue-as-new) as many times as needed, then completes.
+In this scenario, the Parent Workflow starts a Child Workflow which executes periodic logic calling [Continue-As-New](/workflow-execution/continue-as-new) as many times as needed, then completes.
 From the Parent point of view, it is just a single Child Workflow invocation.
 
 ### Child Workflow versus an Activity

@@ -229,7 +229,7 @@ However, there is a limit to the total size of the data that ends up encoded int
 A single argument is limited to a maximum size of 2 MB.
 And the total size of a gRPC message, which includes all the arguments, is limited to a maximum of 4 MB.
 
-Also, keep in mind that all Payload data is recorded in the [Workflow Execution Event History](/workflow-execution#event-history) and large Event Histories can affect Worker performance.
+Also, keep in mind that all Payload data is recorded in the [Workflow Execution Event History](/workflow-execution/event#event-history) and large Event Histories can affect Worker performance.
 This is because the entire Event History could be transferred to a Worker Process with a [Workflow Task](/tasks#workflow-task).
 
 Some SDKs require that you pass context objects, others do not.

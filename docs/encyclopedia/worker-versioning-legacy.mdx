@@ -72,7 +72,7 @@ A version can only be garbage collected after a Workflow Execution is deleted.
 
 The feature also lets you implement compatible changes to or prevent a buggy code path from executing on currently open Workflows.
 You can achieve this by adding a new version to an existing set and defining it as _compatible_ with an existing version, which shouldn't execute any future Workflow Tasks.
-Because the new version processes existing [Event Histories](/workflow-execution#event-history), it must adhere to the usual [deterministic constraints](/workflow-definition#deterministic-constraints), and you might need to use one of the [versioning APIs](/workflows#workflow-versioning).
+Because the new version processes existing [Event Histories](/workflow-execution/event#event-history), it must adhere to the usual [deterministic constraints](/workflow-definition#deterministic-constraints), and you might need to use one of the [versioning APIs](/workflows#workflow-versioning).
 
 Moreover, this feature lets you make incompatible changes to Activity Definitions in conjunction with incompatible changes to Workflow Definitions that use those Activities.
 This functionality works because any Activity that a Workflow schedules on the same Task Queue gets dispatched by default only to Workers compatible with the Workflow that scheduled it.

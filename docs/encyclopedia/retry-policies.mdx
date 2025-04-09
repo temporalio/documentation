@@ -139,7 +139,7 @@ There are some subtle nuances to how Events are recorded to an Event History whe
   This is to avoid filling the Event History with noise.
   Use the Describe API to get a pending Activity Execution's attempt count.
 
-- For a Workflow Execution with a Retry Policy, if the Workflow Execution fails, the Workflow Execution will [Continue-As-New](/workflow-execution#continue-as-new) and the associated Event is written to the Event History.
+- For a Workflow Execution with a Retry Policy, if the Workflow Execution fails, the Workflow Execution will [Continue-As-New](/workflow-execution/continue-as-new) and the associated Event is written to the Event History.
   The [WorkflowExecutionContinuedAsNew](/references/events#workflowexecutioncontinuedasnew) Event will have an "initiator" field that will specify the Retry Policy as the value and the new Run Id for the next retry attempt.
   The new Workflow Execution is created immediately.
   But the first Workflow Task won't be scheduled until the backoff duration is exhausted.

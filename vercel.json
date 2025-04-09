@@ -1178,7 +1178,7 @@
     },
     {
       "source": "/concepts/what-is-continue-as-new",
-      "destination": "/workflow-execution#continue-as-new"
+      "destination": "/workflow-execution/continue-as-new"
     },
     {
       "source": "/concepts/what-is-a-cloud-namespace-name",
@@ -1194,7 +1194,7 @@
     },
     {
       "source": "/concepts/what-is-an-event-history",
-      "destination": "/workflow-execution#event-history"
+      "destination": "/workflow-execution/event#event-history"
     },
     {
       "source": "/concepts/what-is-a-failure",
@@ -1526,7 +1526,7 @@
     },
     {
       "source": "/shared/continue-as-new",
-      "destination": "/workflow-execution#continue-as-new"
+      "destination": "/workflow-execution/continue-as-new"
     },
     {
       "source": "/external-resources",
