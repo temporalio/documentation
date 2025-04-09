@@ -43,13 +43,5 @@ If the application itself crashes, Temporal will automatically recreate its pre-
 
 
 Each Workflow Execution progresses through a series of **Commands** and **Events**, which are recorded in an **Event History**. 
-It can be paused, resumed, continued as new, or reset.
-
-Workflows can:
-
-- Spawn Activities and Child Workflows
-- Receive Signals and respond to Queries
-- Use Timers, Start Delay, and Side Effects
-- Be scheduled with Cron Jobs or Schedules
 
 Workflows must follow deterministic constraints to ensure consistent replay behavior.
