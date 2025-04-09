@@ -3,7 +3,7 @@ id: workflowid-runid
 title: Workflow Id and Run Id
 sidebar_label: Workflow Id and Run Id
 description: A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.
-slug: /workflow-execution/workflow-id-run-id
+slug: /workflow-execution/workflowid-runid
 keywords:
   - workflow id
   - run id
@@ -30,7 +30,7 @@ However, each run will have a unique system-generated [Run ID](#run-id).
 
 ## What is a Run Id? {#run-id}
 
-A Run Id is a globally unique, platform-level identifier for a [Workflow Execution](#workflow-execution).
+A Run Id is a globally unique, platform-level identifier for a [Workflow Execution](/workflow-execution).
 
 The current Run Id is mutable and can change during a [Workflow Retry](/encyclopedia/retry-policies). You shouldn't rely on storing the current Run Id, or using it for any logical choices, because a Workflow Retry changes the Run Id and can lead to non-determinism issues.
 
@@ -43,7 +43,7 @@ A Run Id uniquely identifies a Workflow Execution even if it shares a Workflow I
 
 ### Which operations lead to non-determinism issues?{#run-id-non-determinism}
 
-An operation like `ContinueAsNew`, `Retry`, `Cron`, and `Reset` creates a [Workflow Execution Chain](#workflow-execution-chain) as identified by the [`first_execution_run_id`](https://github.com/temporalio/api/blob/master/temporal/api/history/v1/message.proto).
+An operation like `ContinueAsNew`, `Retry`, `Cron`, and `Reset` creates a [Workflow Execution Chain](/workflow-execution#workflow-execution-chain) as identified by the [`first_execution_run_id`](https://github.com/temporalio/api/blob/master/temporal/api/history/v1/message.proto).
 
 Each operation creates a new Workflow Execution inside a chain run and saves its information as `first_execution_run_id`.
 Thus, the Run Id is updated during each operation on a Workflow Execution.
@@ -69,7 +69,7 @@ For more information, see the following link.
 
 ## What is a Workflow Id? {#workflow-id}
 
-A Workflow Id is a customizable, application-level identifier for a [Workflow Execution](#workflow-execution) that is unique to an Open Workflow Execution within a [Namespace](/namespaces).
+A Workflow Id is a customizable, application-level identifier for a [Workflow Execution](/workflow-execution) that is unique to an Open Workflow Execution within a [Namespace](/namespaces).
 
 - [How to set a Workflow Id](/develop/go/temporal-clients#workflow-id)
 

@@ -53,7 +53,7 @@ This differs from a Temporal Cron Job, which relies on a cron schedule as a prop
 
 :::info
 
-For triggering a Workflow Execution at a specific one-time future point rather than on a recurring schedule, the [Start Delay](/workflow-execution#delay-workflow-execution) option should be used instead of a Schedule.
+For triggering a Workflow Execution at a specific one-time future point rather than on a recurring schedule, the [Start Delay](/workflow-execution/timers-delays#delay-workflow-execution) option should be used instead of a Schedule.
 
 :::
 
@@ -220,7 +220,7 @@ When a Schedule triggers a Workflow that completes successfully and yields a res
 
 Be aware that if, during the subsequent run, the Workflow employs the [Continue-As-New](/workflow-execution/continue-as-new) feature, `LastCompletionResult` won't be accessible for this new Workflow iteration.
 
-It is important to note that the [status](/workflow-execution#status) of the subsequent run is marked as `Continued-As-New` and not as `Completed`.
+It is important to note that the [status](/workflow-execution#workflow-execution-status) of the subsequent run is marked as `Continued-As-New` and not as `Completed`.
 
 :::
 

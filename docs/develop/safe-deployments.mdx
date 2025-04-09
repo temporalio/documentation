@@ -16,7 +16,7 @@ In this article, we’ll provide some advice on how you can safely validate chan
 
 ## Use Replay Testing before and during your deployments
 
-The best way to verify that your code won’t cause non-determinism errors once deployed is to make use of [replay testing](https://docs.temporal.io/workflow-execution#replays).
+The best way to verify that your code won’t cause non-determinism errors once deployed is to make use of [replay testing](https://docs.temporal.io/workflow-execution#replay).
 
 Replay testing takes one or more existing [Workflow Histories](https://docs.temporal.io/workflow-execution/event#event-history) that ran against a previous version of Workflow code and runs them against your *current* Workflow code, verifying that it is compatible with the provided history.
 

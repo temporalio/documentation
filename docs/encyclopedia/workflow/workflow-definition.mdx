@@ -157,7 +157,7 @@ We strongly recommend that you write a Workflow Definition in a language that ha
 
 A critical aspect of developing Workflow Definitions is ensuring they exhibit certain deterministic traits – that is, making sure that the same Commands are emitted in the same sequence, whenever a corresponding Workflow Function Execution (instance of the Function Definition) is re-executed.
 
-The execution semantics of a Workflow Execution include the re-execution of a Workflow Function, which is called a [Replay](/workflow-execution#replays).
+The execution semantics of a Workflow Execution include the re-execution of a Workflow Function, which is called a [Replay](/workflow-execution#replay).
 The use of Workflow APIs in the function is what generates [Commands](/workflow-execution#command).
 Commands tell the Temporal Service which Events to create and add to the Workflow Execution's [Event History](/workflow-execution/event#event-history).
 When a Workflow Function executes, the Commands that are emitted are compared with the existing Event History.

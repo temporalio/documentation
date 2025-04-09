@@ -94,13 +94,13 @@ If the Event History exceeds 50Ki (51,200) Events, the Workflow Execution is ter
 To prevent _runaway_ Workflow Executions, you can use the Workflow Execution Timeout, the Workflow Run Timeout, or both.
 A Workflow Execution Timeout can be used to limit the duration of Workflow Execution Chain, and a Workflow Run Timeout can be used to limit the duration an individual Workflow Execution (Run).
 
-You can use the [Continue-As-New](#continue-as-new) feature to close the current Workflow Execution and create a new Workflow Execution in a single atomic operation.
+You can use the [Continue-As-New](/workflow-execution/continue-as-new) feature to close the current Workflow Execution and create a new Workflow Execution in a single atomic operation.
 The Workflow Execution spawned from Continue-As-New has the same Workflow Id, a new Run Id, and a fresh Event History and is passed all the appropriate parameters.
 For example, it may be reasonable to use Continue-As-New once per day for a long-running Workflow Execution that is generating a large Event History.
 
 ## What is a Reset? {#reset}
 
-A Reset terminates a [Workflow Execution](/workflow-execution) and creates a new Workflow Execution with the same [Workflow Type](/workflow-definition#workflow-type) and [Workflow ID](/workflow-execution/workflow-id-run-id).
+A Reset terminates a [Workflow Execution](/workflow-execution) and creates a new Workflow Execution with the same [Workflow Type](/workflow-definition#workflow-type) and [Workflow ID](/workflow-execution/workflowid-runid).
 The [Event History](/workflow-execution/event#event-history) is copied from the original execution up to and including the reset point.
 The new execution continues from the reset point.
 Signals in the original history can be optionally copied to the new history, whether they appear after the reset point or not.
