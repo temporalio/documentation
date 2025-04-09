@@ -318,7 +318,7 @@ The Matching Service is responsible for hosting external Task Queues for Task di
 
 <!-- _Tags: [term](/tags/term)_ -->
 
-#### [Memo](/workflows#memo)
+#### [Memo](/workflow-execution#memo)
 
 A Memo is a non-indexed user-supplied set of Workflow Execution metadata that is returned when you describe or list Workflow Executions.
 
@@ -479,7 +479,7 @@ This is a measure that controls the rate of requests at the service level, such 
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [temporal](/tags/temporal)_ -->
 
-#### [Reset](/workflows#reset)
+#### [Reset](/workflow-execution/event#reset)
 
 A Reset terminates a Workflow Execution, removes the progress in the Event History up to the reset point, and then creates a new Workflow Execution with the same Workflow Type and Id to continue.
 
@@ -534,7 +534,7 @@ A Search Attribute is an indexed name used in List Filters to filter a list of W
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [filtered-lists](/tags/filtered-lists), [visibility](/tags/visibility)_ -->
 
-#### [Side Effect](/workflows#side-effect)
+#### [Side Effect](/workflow-execution/event#side-effect)
 
 A Side Effect is a way to execute a short, non-deterministic code snippet, such as generating a UUID, that executes the provided function once and records its result into the Workflow Execution Event History.
 
@@ -558,7 +558,7 @@ A Start-To-Close Timeout is the maximum time allowed for a single Activity Task 
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_ -->
 
-#### [State Transition](/workflows#state-transition)
+#### [State Transition](/workflow-execution#state-transition)
 
 A State Transition is a unit of progress by a Workflow Execution.
 
@@ -694,7 +694,7 @@ The Temporal Web UI provides users with Workflow Execution state and metadata fo
 
 <!-- _Tags: [term](/tags/term), [web-ui](/tags/web-ui)_ -->
 
-#### [Timer](/workflows#timer)
+#### [Timer](/workflow-execution/timers-delays)
 
 Temporal SDKs offer Timer APIs so that Workflow Executions are deterministic in their handling of time values.
 
@@ -820,7 +820,7 @@ A Workflow Task Timeout is the maximum amount of time that the Temporal Server w
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_ -->
 
-#### [Workflow Type](/workflows#workflow-type)
+#### [Workflow Type](/workflow-definition#workflow-type)
 
 A Workflow Type is a name that maps to a Workflow Definition.
 

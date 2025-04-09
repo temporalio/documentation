@@ -1214,7 +1214,7 @@
     },
     {
       "source": "/concepts/what-is-a-memo",
-      "destination": "/workflows#memo"
+      "destination": "/workflow-execution#memo"
     },
     {
       "source": "/concepts/what-is-a-namespace",
@@ -1258,7 +1258,7 @@
     },
     {
       "source": "/concepts/what-is-a-side-effect",
-      "destination": "/workflows#side-effect"
+      "destination": "/workflow-execution/event#side-effect"
     },
     {
       "source": "/concepts/what-is-a-signal",
@@ -1378,7 +1378,7 @@
     },
     {
       "source": "/concepts/what-is-a-workflow-type",
-      "destination": "/workflows#workflow-type"
+      "destination": "/workflow-definition#workflow-type"
     },
     {
       "source": "/content/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl",

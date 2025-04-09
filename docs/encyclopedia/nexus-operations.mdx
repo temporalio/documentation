@@ -342,5 +342,5 @@ Additional Nexus callers may attach to the same handler Workflow if the Nexus ha
 A single handler Workflow Execution has a [Callback limit](/workflows#workflow-execution-callback-limits) that governs how many Nexus callers can be attached.
 Nexus callers that exceed the limit will recieve an error.
 
-When a handler Workflow uses [Continue-As-New](/workflows#continue-as-new) the existing Nexus completion Callbacks will be copied to the new Workflow Execution
+When a handler Workflow uses [Continue-As-New](/workflow-execution/continue-as-new) the existing Nexus completion Callbacks will be copied to the new Workflow Execution
 and the previous Workflow Execution's completion Callbacks will be left in the Standby state indefinitely.

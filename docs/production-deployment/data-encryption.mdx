@@ -25,10 +25,10 @@ For example, if you have sensitive information passed in the following objects t
 
 - Inputs and outputs/results in your [Workflow](/workflow-execution), [Activity](/activity-execution), and [Child Workflow](/child-workflows)
 - [Signal](/sending-messages#sending-signals) inputs
-- [Memo](/workflows#memo)
+- [Memo](/workflow-execution#memo)
 - Headers (verify if applicable to your SDK)
 - [Query](/sending-messages#sending-queries) inputs and results
-- Results of [Local Activities](/local-activity) and [Side Effects](/workflows#side-effect)
+- Results of [Local Activities](/local-activity) and [Side Effects](/workflow-execution/event#side-effect)
 - [Application errors and failures](/references/failures).
   Failure messages and call stacks are not encoded as codec-capable Payloads by default; you must explicitly enable encoding these common attributes on failures.
   For more details, see [Failure Converter](/failure-converter).

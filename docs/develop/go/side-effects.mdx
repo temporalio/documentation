@@ -27,7 +27,7 @@ You shouldn't modify the Workflow state inside a Side Effect function, because i
 
 :::
 
-Use the [`SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) function from the `go.temporal.io/sdk/workflow` package to execute a [Side Effect](/workflows#side-effect) directly in your Workflow.
+Use the [`SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) function from the `go.temporal.io/sdk/workflow` package to execute a [Side Effect](/workflow-execution/event#side-effect) directly in your Workflow.
 
 Pass it an instance of `context.Context` and the function to execute.
 
