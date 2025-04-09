@@ -28,13 +28,11 @@ The example on this page uses Temporal’s Python SDK and Temporal Cloud.
 
 :::tip
 
-While this guide applies to both Temporal OSS and Temporal Cloud Workflows, please account for some differences when working with Temporal OSS.
-For example, Temporal OSS requires TLS certificates.
-Certain steps, such as mounting certificates from kube-cert, will need adjusting.
-
-We encourage you to adapt the instructions accordingly based on your specific setup.
-
-The details of these adjustments are left as an exercise for the reader.
+This guide applies to running Workers for both Temporal OSS and Temporal Cloud.
+However, there are some differences when working with Temporal OSS.
+For example, you'll need to use mTLS certificates instead of API keys.
+You must modify your Kubernetes deployments to handle and mount the TLS certificates for your use case.
+The specifics will vary depending on your deployment.
 
 :::
 

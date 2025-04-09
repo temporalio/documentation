@@ -34,10 +34,11 @@ Temporal Cloud enforces two types of limits:
 - **Hard limits** are fixed and cannot be exceeded under normal operation.
   These limits are enforced to ensure system stability and cannot be adjusted.
 
-- **Soft limits** can be adjusted by Temporal Cloud based on usage or upon request.
-  Some limits are automatically tracked and changed by Temporal Cloud as your usage increases.
-  For example, as your number of Namespaces or the rate of Actions per second (APS) grows, Temporal Cloud will gradually allocate more resources to meet that demand.
-  For all soft limits, you can also request adjustments by reaching out to [Support](https://support.temporal.io), whether they are automatically managed or not.
+- **Soft limits** can be adjusted by Temporal Cloud based on usage or upon request.  
+  Some limits automatically increase as your usage grows.  
+  Temporal Cloud monitors usage and raises these limits as needed, so you don’t need to take action.  
+  For example, if your number of Namespaces or rate of Actions per second (APS) increases, Temporal Cloud will allocate more resources to keep up.  
+  You can request changes to _any_ soft limit—whether managed automatically or not—by reaching out to [Support](https://support.temporal.io).
 
 The following table lists Temporal Cloud's soft limits, indicating whether they are automatically managed based on usage:
 
@@ -302,6 +303,16 @@ As a precautionary measure, a Workflow Execution's Event History is limited to 5
 It warns you after 10,240 Events or 10 MB.
 This limit applies to all Temporal Workflow Executions, whether on Temporal Cloud or other deployments.
 Read more about [Temporal Workflow Execution limits](/workflows#limits) on the [Temporal Workflow](/workflows) documentation page.
+
+### Per Workflow Callback limits
+
+**What is the maximum number of Callbacks that can be attached to a single Workflow Execution?**
+
+A single Workflow Execution can have a maximum of 32 total Callbacks.
+
+These limits may be exceeded when [multiple Nexus callers attach to the same handler Workflow](/nexus/operations#attaching-multiple-nexus-callers).
+
+See the Nexus Encyclopedia entry for [additional details](/workflows#workflow-execution-callback-limits).
 
 ### Per Workflow Nexus Operation limits {#per-workflow-nexus-operation-limits}
 
