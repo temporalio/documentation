@@ -497,7 +497,7 @@ A Retry Policy is a collection of attributes that instructs the Temporal Server 
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
-#### [Run Id]/workflow-execution/workflowid-runid#run-id
+#### [Run Id](/workflow-execution/workflowid-runid#run-id)
 
 A Run Id is a globally unique, platform-level identifier for a Workflow Execution.
 

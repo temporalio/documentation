@@ -265,7 +265,7 @@ However, you can only send Signals to Workflow Executions that haven’t closed.
 
 Use [`Client.SignalWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.SignalWorkflow).
 
-Pass in both the [Workflow Id]/workflow-execution/workflowid-runid#workflow-id and [Run Id]/workflow-execution/workflowid-runid#run-id to uniquely identify the Workflow Execution.
+Pass in both the [Workflow Id](/workflow-execution/workflowid-runid#workflow-id)and [Run Id](/workflow-execution/workflowid-runid#run-id) to uniquely identify the Workflow Execution.
 If only the Workflow Id is supplied (provide an empty string as the Run Id param), the Workflow Execution that is running receives the Signal.
 
 ```go

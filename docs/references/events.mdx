@@ -29,13 +29,13 @@ It indicates that the Temporal Service received a request to spawn the Workflow 
 | workflow_execution_timeout         | The total timeout period for a [Workflow Execution](/workflow-execution), including retries and continue-as-new.                                     |
 | workflow_run_timeout               | Timeout of a single Workflow run.                                                                                                                              |
 | workflow_task_timeout              | Timeout of a single Workflow Task.                                                                                                                             |
-| continued_execution_run_id         | [Run Id]/workflow-execution/workflowid-runid#run-id of the previous Workflow which continued-as-new, retried or was executed by Cron into this Workflow.                               |
+| continued_execution_run_id         | [Run Id](/workflow-execution/workflowid-runid#run-id) of the previous Workflow which continued-as-new, retried or was executed by Cron into this Workflow.                               |
 | initiator                          | Allows the Workflow to continue as a new Workflow Execution.                                                                                                   |
 | continued_failure                  | Serialized result of a failure.                                                                                                                                |
 | last_completion_result             | Information from the previously completed [Task](/tasks#task), if applicable.                                                                                  |
-| original_execution_run_id          | The [Run Id]/workflow-execution/workflowid-runid#run-id of the original Workflow started.                                                                                              |
+| original_execution_run_id          | The [Run Id](/workflow-execution/workflowid-runid#run-id) of the original Workflow started.                                                                                              |
 | identity                           | The Id of the [Client](/self-hosted-guide/security#client-connections) or parent Workflow [Worker](/workers#worker) that requested the start of this Workflow. |
-| first_execution_run_id             | The first [Run Id]/workflow-execution/workflowid-runid#run-id, along the chain of [Continue-As-New](/workflow-execution/continue-as-new) Runs and Reset.                                        |
+| first_execution_run_id             | The first [Run Id](/workflow-execution/workflowid-runid#run-id), along the chain of [Continue-As-New](/workflow-execution/continue-as-new) Runs and Reset.                                        |
 | retry_policy                       | The amount of retries as determined by the service's dynamic configuration. Retries will happen until 'schedule_to_close_timeout' is reached.                  |
 | attempt                            | The number of attempts that have been made to complete this Task.                                                                                              |
 | workflow_execution_expiration_time | The absolute time at which the Workflow Execution will [time out](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout).                       |
@@ -55,7 +55,7 @@ This indicates that the [Workflow Execution](/workflow-execution) has successful
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | result                           | Serialized result of completed [Workflow](/workflows).                                                                                |
 | workflow_task_completed_event_id | The Id of the [WorkflowTaskCompleted](#workflowtaskcompleted) that the Event was reported with.                                       |
-| new_execution_run_id             | The [Run Id]/workflow-execution/workflowid-runid#run-id of the new Workflow Execution started as a result of a [Cron Schedule](/cron-job). |
+| new_execution_run_id             | The [Run Id](/workflow-execution/workflowid-runid#run-id) of the new Workflow Execution started as a result of a [Cron Schedule](/cron-job). |
 
 ### WorkflowExecutionFailed
 
@@ -65,8 +65,8 @@ This [Event](/workflow-execution/event#event) indicates that the [Workflow Execu
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | failure                          | Serialized result of a [Workflow](/workflows) failure.                                                                   |
 | retry_state                      | The reason provided for whether the [Task](/tasks#task) should or shouldn't be retried.                                  |
-| workflow_task_completed_event_id | The [Run Id]/workflow-execution/workflowid-runid#run-id of the [WorkflowTaskCompleted](#workflowtaskcompleted) that the Event was reported with. |
-| new_execution_run_id             | The [Run Id]/workflow-execution/workflowid-runid#run-id of the new Workflow started by Cron or [Retry](/encyclopedia/retry-policies).            |
+| workflow_task_completed_event_id | The [Run Id](/workflow-execution/workflowid-runid#run-id) of the [WorkflowTaskCompleted](#workflowtaskcompleted) that the Event was reported with. |
+| new_execution_run_id             | The [Run Id](/workflow-execution/workflowid-runid#run-id) of the new Workflow started by Cron or [Retry](/encyclopedia/retry-policies).            |
 
 ### WorkflowExecutionTimedOut
 
@@ -75,7 +75,7 @@ This [Event](/workflow-execution/event#event) type indicates that the [Workflow 
 | Field                | Description                                                                                                   |
 | -------------------- | ------------------------------------------------------------------------------------------------------------- |
 | retry_state          | The reason provided for whether the [Task](/tasks#task) should or shouldn't be retried.                       |
-| new_execution_run_id | The [Run Id]/workflow-execution/workflowid-runid#run-id of the new Workflow started by Cron or [Retry](/encyclopedia/retry-policies). |
+| new_execution_run_id | The [Run Id](/workflow-execution/workflowid-runid#run-id) of the new Workflow started by Cron or [Retry](/encyclopedia/retry-policies). |
 
 ### WorkflowExecutionCancelRequested
 
@@ -84,7 +84,7 @@ This [Event](/workflow-execution/event#event) type indicates that a request has 
 | Field                       | Description                                                                                                           |
 | --------------------------- | --------------------------------------------------------------------------------------------------------------------- |
 | cause                       | The user-provided reason for the cancelation request.                                                                 |
-| external_initiated_event_id | The [Run Id]/workflow-execution/workflowid-runid#run-id of the Event in the [Workflow](/workflows) that requested cancelation, if applicable. |
+| external_initiated_event_id | The [Run Id](/workflow-execution/workflowid-runid#run-id) of the Event in the [Workflow](/workflows) that requested cancelation, if applicable. |
 | external_workflow_execution | Identifies the external Workflow and the run of the its execution.                                                    |
 | identity                    | Id of the [Worker](/workers#worker) that requested cancelation.                                                       |
 
@@ -126,7 +126,7 @@ This Event type contains last [Workflow Execution](/workflow-execution) results 
 
 | Field                            | Description                                                                                                   |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| new_execution_run_id             | The [Run Id]/workflow-execution/workflowid-runid#run-id of the new Workflow started by this Continue-As-New Event.                    |
+| new_execution_run_id             | The [Run Id](/workflow-execution/workflowid-runid#run-id) of the new Workflow started by this Continue-As-New Event.                    |
 | workflow_type                    | The name/type of Workflow that was started by this Event.                                                     |
 | task_queue                       | The [Task Queue](/task-queue) that this [Workflow Task](/tasks#workflow-task) was enqueued in.                |
 | input                            | Information that is deserialized by the SDK to provide arguments to the Workflow.                             |
@@ -223,7 +223,7 @@ However, the Workflow reset functionality also uses this Event.
 | started_event_id   | The Id of the [WorkflowTaskStarted](#workflowtaskstarted) Event that this Workflow Task corresponds to.                                      |
 | failure            | Details for the Workflow Task's failure.                                                                                                     |
 | identity           | The identity of the [Worker](/workers#worker) that failed this Task. The Worker must be explicitly defined to return a value for this field. |
-| base_run_id        | The original [Run Id]/workflow-execution/workflowid-runid#run-id of the Workflow.                                                                                    |
+| base_run_id        | The original [Run Id](/workflow-execution/workflowid-runid#run-id) of the Workflow.                                                                                    |
 | new_run_id         | The Run Id of the reset Workflow.                                                                                                            |
 | fork_event_version | Identifies the Event version that was forked off to the reset Workflow.                                                                      |
 | binary_checksum    | The Binary Id of the Worker that failed this Task. The Worker must be explicitly defined to return a value for this field.                   |

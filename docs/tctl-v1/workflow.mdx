@@ -73,7 +73,7 @@ tctl workflow cancel --workflow_id <id>
 
 ### --run_id
 
-Specify a [Run Id]/workflow-execution/workflowid-runid#run-id.
+Specify a [Run Id](/workflow-execution/workflowid-runid#run-id).
 
 Alias: `-r`
 
@@ -136,7 +136,7 @@ tctl workflow describe --workflow_id <id>
 
 ### --run_id
 
-Specify a [Run Id]/workflow-execution/workflowid-runid#run-id.
+Specify a [Run Id](/workflow-execution/workflowid-runid#run-id).
 If a Run Id is not provided, the command will show the latest Workflow Execution of that Workflow Id.
 
 Alias: `-r`
@@ -170,7 +170,7 @@ tctl workflow describe --reset_points_only
 
 ## describeid
 
-The `tctl workflow describeid` command shows information about a [Workflow Execution](/workflow-execution) for the specified [Workflow Id]/workflow-execution/workflowid-runid#workflow-id and optional [Run Id]/workflow-execution/workflowid-runid#run-id.
+The `tctl workflow describeid` command shows information about a [Workflow Execution](/workflow-execution) for the specified [Workflow Id](/workflow-execution/workflowid-runid#workflow-id)and optional [Run Id](/workflow-execution/workflowid-runid#run-id).
 
 `tctl workflow describeid <workflow_id> <run_id> <modifiers>`
 
@@ -786,7 +786,7 @@ tctl workflow observe --workflow_id <id>
 
 ### --run_id
 
-Specify a [Run Id]/workflow-execution/workflowid-runid#run-id.
+Specify a [Run Id](/workflow-execution/workflowid-runid#run-id).
 
 Alias: `-r`
 
@@ -819,7 +819,7 @@ tctl workflow observe --max_field_length <length>
 
 ## observeid
 
-The `tctl workflow observeid` command shows the progress of the [Event History](/workflow-execution/event#event-history) of a [Workflow Execution](/workflow-execution) for the specified [Workflow Id]/workflow-execution/workflowid-runid#workflow-id and optional [Run Id]/workflow-execution/workflowid-runid#run-id.
+The `tctl workflow observeid` command shows the progress of the [Event History](/workflow-execution/event#event-history) of a [Workflow Execution](/workflow-execution) for the specified [Workflow Id](/workflow-execution/workflowid-runid#workflow-id)and optional [Run Id](/workflow-execution/workflowid-runid#run-id).
 
 `tctl workflow observeid <workflow_id> [<run_id>] <modifiers>`
 
@@ -894,7 +894,7 @@ tctl workflow query --workflow_id <id>
 
 ### --run_id
 
-Specify a [Run Id]/workflow-execution/workflowid-runid#run-id.
+Specify a [Run Id](/workflow-execution/workflowid-runid#run-id).
 
 Alias: `-r`
 
@@ -977,7 +977,7 @@ tctl workflow reset --workflow_id <id>
 
 ### --run_id
 
-Specify a [Run Id]/workflow-execution/workflowid-runid#run-id.
+Specify a [Run Id](/workflow-execution/workflowid-runid#run-id).
 
 Alias: `-r`
 
@@ -1062,7 +1062,7 @@ The following modifiers control the behavior of the command.
 
 Provide an input file that specifies [Workflow Execution](/workflow-execution) to reset.
 
-Each line contains one [Workflow Id]/workflow-execution/workflowid-runid#workflow-id as the base Run and, optionally, a [Run Id]/workflow-execution/workflowid-runid#run-id.
+Each line contains one [Workflow Id](/workflow-execution/workflowid-runid#workflow-id)as the base Run and, optionally, a [Run Id](/workflow-execution/workflowid-runid#run-id).
 If a Run Id is not specified, the current Run Id is used.
 
 **Example**
@@ -1130,7 +1130,7 @@ tctl workflow reset-batch --input_parallism <value>
 
 ### --skip_current_open
 
-Indicate that a [Workflow Execution](/workflow-execution) should be skipped if the current Run is open for the same [Workflow Id]/workflow-execution/workflowid-runid#workflow-id as the base Run.
+Indicate that a [Workflow Execution](/workflow-execution) should be skipped if the current Run is open for the same [Workflow Id](/workflow-execution/workflowid-runid#workflow-id)as the base Run.
 
 **Example**
 
@@ -1286,7 +1286,7 @@ tctl workflow run --cron <string>
 ### --workflowidreusepolicy
 
 Specify a [Workflow Id Reuse Policy](/workflow-execution/workflowid-runid#workflow-id-reuse-policy).
-Configure if the same [Workflow Id]/workflow-execution/workflowid-runid#workflow-id is allowed for use in new [Workflow Execution](/workflow-execution).
+Configure if the same [Workflow Id](/workflow-execution/workflowid-runid#workflow-id)is allowed for use in new [Workflow Execution](/workflow-execution).
 
 There are three allowed values:
 
@@ -1533,7 +1533,7 @@ tctl workflow show --workflow_id <id>
 
 ### --run_id
 
-Show the History of a [Workflow Execution](/workflow-execution) by specifying a [Run Id]/workflow-execution/workflowid-runid#run-id.
+Show the History of a [Workflow Execution](/workflow-execution) by specifying a [Run Id](/workflow-execution/workflowid-runid#run-id).
 
 Alias: `-r`
 
@@ -1627,7 +1627,7 @@ tctl workflow show --reset_points_only
 
 ## showid
 
-The `tctl workflow showid` command shows the Workflow Execution Event History for the specified [Workflow Id]/workflow-execution/workflowid-runid#workflow-id and optional [Run Id]/workflow-execution/workflowid-runid#run-id.
+The `tctl workflow showid` command shows the Workflow Execution Event History for the specified [Workflow Id](/workflow-execution/workflowid-runid#workflow-id)and optional [Run Id](/workflow-execution/workflowid-runid#run-id).
 
 `tctl workflow showid <workflow_id> [<run_id>] <modifiers>`
 
@@ -1851,7 +1851,7 @@ tctl workflow signal --workflow_id <id>
 
 ### --run_id
 
-Specify a [Run Id]/workflow-execution/workflowid-runid#run-id.
+Specify a [Run Id](/workflow-execution/workflowid-runid#run-id).
 
 Alias: `-r`
 
@@ -1920,7 +1920,7 @@ tctl workflow stack --workflow_id <id>
 
 ### --run_id
 
-Specify a [Run Id]/workflow-execution/workflowid-runid#run-id.
+Specify a [Run Id](/workflow-execution/workflowid-runid#run-id).
 
 Alias: `-r`
 
@@ -2057,7 +2057,7 @@ tctl workflow start --cron <string>
 ### --workflowidreusepolicy
 
 Specify a [Workflow Id Reuse Policy](/workflow-execution/workflowid-runid#workflow-id-reuse-policy).
-Configure if the same [Workflow Id]/workflow-execution/workflowid-runid#workflow-id is allowed for use in new [Workflow Execution](/workflow-execution).
+Configure if the same [Workflow Id](/workflow-execution/workflowid-runid#workflow-id)is allowed for use in new [Workflow Execution](/workflow-execution).
 
 There are three allowed values:
 
@@ -2207,7 +2207,7 @@ tctl workflow terminate --workflow_id <id>
 
 ### --run_id
 
-Specify a [Run Id]/workflow-execution/workflowid-runid#run-id.
+Specify a [Run Id](/workflow-execution/workflowid-runid#run-id).
 
 If `run_id` is not specified, `tctl` terminates the last Workflow Execution for the specified `workflow_id`.
 
