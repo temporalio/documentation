@@ -41,8 +41,8 @@ The Web UI displays a maximum of 1,000 Workflow Executions.
 Users can list Workflow Executions by any of the following:
 
 - Status
-- [Workflow ID](/workflows#workflow-id)
-- [Workflow Type](/workflows#workflow-type)
+- [Workflow ID](/workflow-execution/workflowid-runid#workflow-id)
+- [Workflow Type](/workflow-definition#workflow-type)
 - Start time
 - End time
 - A [List Filter](/list-filter)
@@ -57,17 +57,17 @@ Select a Workflow Execution to view the Workflow Execution's History, Workers, a
 
 #### History
 
-This is a view of the [Events](/workflows#event) and Event fields within the Workflow Execution.
+This is a view of the [Events](/workflow-execution/event#event) and Event fields within the Workflow Execution.
 Approximately [40 different Events](/references/events) can appear in a Workflow Execution's Event History.
 
 The top of the page lists the following execution metadata:
 
-- [Workflow Type](/workflows#workflow-type)
-- [Run ID](/workflows#run-id)
+- [Workflow Type](/workflow-definition#workflow-type)
+- [Run Id](/workflow-execution/workflowid-runid#run-id)
 - Start Time and Close Time
 - [Task Queue](/task-queue)
 - Parent and Parent ID
-- [State Transitions](/workflows#state-transition)
+- [State Transitions](/workflow-execution#state-transition)
 
 The Input and Results section displays the function arguments and return values for debugging purposes.
 Results are not available until the Workflow finishes.
@@ -112,7 +112,7 @@ Lists all Queries sent to the Workflow Execution.
 
 ### Schedules
 
-On Temporal Cloud and self-hosted Temporal Service Web UI, the Schedules page lists all the [Schedules](/workflows#schedule) created on the selected Namespace.
+On Temporal Cloud and self-hosted Temporal Service Web UI, the Schedules page lists all the [Schedules](/schedule) created on the selected Namespace.
 
 Click a Schedule to see details, such as configured frequency, start and end times, and recent and upcoming runs.
 

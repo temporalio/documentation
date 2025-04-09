@@ -549,7 +549,37 @@ module.exports = {
           items: [
             "encyclopedia/temporal",
             "encyclopedia/temporal-sdks",
-            "encyclopedia/workflows",
+            {
+              type: "category",
+              label: "Workflows",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "encyclopedia/workflow/workflow-overview",
+              },
+              items: [
+                "encyclopedia/workflow/workflow-definition",
+                {
+                  type: "category",
+                  label: "Workflow Execution",
+                  collapsed: true,
+                  link: {
+                    type: "doc",
+                    id: "encyclopedia/workflow/workflow-execution/workflow-execution",
+                  },
+                  items: [
+                    "encyclopedia/workflow/workflow-execution/workflowid-runid",
+                    "encyclopedia/workflow/workflow-execution/event",
+                    "encyclopedia/workflow/workflow-execution/continue-as-new",
+                    "encyclopedia/workflow/workflow-execution/limits",
+                    "encyclopedia/workflow/workflow-execution/timers-delays",
+                  ],
+                },
+                "encyclopedia/workflow/dynamic-handler",
+                "encyclopedia/workflow/workflow-schedule",
+                "encyclopedia/workflow/cron-job",
+              ],
+            },
             {
               type: "category",
               label: "Activities",

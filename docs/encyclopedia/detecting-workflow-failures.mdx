@@ -45,7 +45,7 @@ A Workflow Execution Timeout is the maximum time that a Workflow Execution can b
 **The default value is ∞ (infinite).**
 If this timeout is reached, the Workflow Execution changes to a Timed Out status.
 This timeout is different from the [Workflow Run Timeout](#workflow-run-timeout).
-This timeout is most commonly used for stopping the execution of a [Temporal Cron Job](/workflows#temporal-cron-job) after a certain amount of time has passed.
+This timeout is most commonly used for stopping the execution of a [Temporal Cron Job](/cron-job) after a certain amount of time has passed.
 
 ## Workflow Run Timeout? {#workflow-run-timeout}
 
@@ -67,7 +67,7 @@ A Workflow Run Timeout is the maximum amount of time that a single Workflow Run 
     title="Workflow Run Timeout period" />
 
 **The default is set to the same value as the [Workflow Execution Timeout](#workflow-execution-timeout).**
-This timeout is most commonly used to limit the execution time of a single [Temporal Cron Job Execution](/workflows#temporal-cron-job).
+This timeout is most commonly used to limit the execution time of a single [Temporal Cron Job Execution](/cron-job).
 
 If the Workflow Run Timeout is reached, the Workflow Execution will be Timed Out.
 

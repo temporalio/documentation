@@ -16,7 +16,7 @@ import { CaptionedImage, RelatedReadContainer, RelatedReadItem } from '@site/src
 
 A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
-A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a [Workflow Execution](/workflows#workflow-execution) or an [Activity Task Execution](/tasks#activity-task-execution).
+A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a [Workflow Execution](/workflow-execution) or an [Activity Task Execution](/tasks#activity-task-execution).
 Note that Retry Policies do not apply to [Workflow Task Executions](/tasks#workflow-task-execution), which retry until the Workflow Execution Timeout, which is unlimited by default.
 
 Try out the [Activity retry simulator](/develop/activity-retry-simulator) to visiualize how a Retry Policy works.
@@ -54,7 +54,7 @@ Try out the [Activity retry simulator](/develop/activity-retry-simulator) to vis
 To use a custom Retry Policy, provide it as an options parameter when starting a Workflow Execution or Activity Execution.
 Only certain scenarios merit starting a Workflow Execution with a custom Retry Policy, such as the following:
 
-- A [Temporal Cron Job](/workflows#temporal-cron-job) or some other stateless, always-running Workflow Execution that can benefit from retries.
+- A [Temporal Cron Job](/cron-job) or some other stateless, always-running Workflow Execution that can benefit from retries.
 - A file-processing or media-encoding Workflow Execution that downloads files to a host.
 
 ## Properties
@@ -139,7 +139,7 @@ There are some subtle nuances to how Events are recorded to an Event History whe
   This is to avoid filling the Event History with noise.
   Use the Describe API to get a pending Activity Execution's attempt count.
 
-- For a Workflow Execution with a Retry Policy, if the Workflow Execution fails, the Workflow Execution will [Continue-As-New](/workflows#continue-as-new) and the associated Event is written to the Event History.
+- For a Workflow Execution with a Retry Policy, if the Workflow Execution fails, the Workflow Execution will [Continue-As-New](/workflow-execution/continue-as-new) and the associated Event is written to the Event History.
   The [WorkflowExecutionContinuedAsNew](/references/events#workflowexecutioncontinuedasnew) Event will have an "initiator" field that will specify the Retry Policy as the value and the new Run Id for the next retry attempt.
   The new Workflow Execution is created immediately.
   But the first Workflow Task won't be scheduled until the backoff duration is exhausted.

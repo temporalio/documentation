@@ -1174,11 +1174,11 @@
     },
     {
       "source": "/concepts/what-is-a-command",
-      "destination": "/workflows#command"
+      "destination": "/workflow-execution#command"
     },
     {
       "source": "/concepts/what-is-continue-as-new",
-      "destination": "/workflows#continue-as-new"
+      "destination": "/workflow-execution/continue-as-new"
     },
     {
       "source": "/concepts/what-is-a-cloud-namespace-name",
@@ -1194,7 +1194,7 @@
     },
     {
       "source": "/concepts/what-is-an-event-history",
-      "destination": "/workflows#event-history"
+      "destination": "/workflow-execution/event#event-history"
     },
     {
       "source": "/concepts/what-is-a-failure",
@@ -1214,7 +1214,7 @@
     },
     {
       "source": "/concepts/what-is-a-memo",
-      "destination": "/workflows#memo"
+      "destination": "/workflow-execution#memo"
     },
     {
       "source": "/concepts/what-is-a-namespace",
@@ -1258,7 +1258,7 @@
     },
     {
       "source": "/concepts/what-is-a-side-effect",
-      "destination": "/workflows#side-effect"
+      "destination": "/workflow-execution/event#side-effect"
     },
     {
       "source": "/concepts/what-is-a-signal",
@@ -1310,7 +1310,7 @@
     },
     {
       "source": "/concepts/what-is-a-temporal-cron-job",
-      "destination": "/workflows#temporal-cron-job"
+      "destination": "/cron-job"
     },
     {
       "source": "/concepts/what-is-the-temporal-platform",
@@ -1342,11 +1342,11 @@
     },
     {
       "source": "/concepts/what-is-a-workflow-definition",
-      "destination": "/workflows#workflow-definition"
+      "destination": "/workflow-definition"
     },
     {
       "source": "/concepts/what-is-a-workflow-execution",
-      "destination": "/workflows#workflow-execution"
+      "destination": "/workflow-execution"
     },
     {
       "source": "/concepts/what-is-a-workflow-execution-timeout",
@@ -1354,11 +1354,11 @@
     },
     {
       "source": "/concepts/what-is-a-workflow-id-reuse-policy",
-      "destination": "/workflows#workflow-id-reuse-policy"
+      "destination": "/workflow-execution/workflowid-runid#workflow-id-reuse-policy"
     },
     {
       "source": "/concepts/what-is-a-workflow-id",
-      "destination": "/workflows#workflow-id"
+      "destination": "/workflow-execution/workflowid-runid#workflow-id"
     },
     {
       "source": "/concepts/what-is-a-workflow-run-timeout",
@@ -1378,7 +1378,7 @@
     },
     {
       "source": "/concepts/what-is-a-workflow-type",
-      "destination": "/workflows#workflow-type"
+      "destination": "/workflow-definition#workflow-type"
     },
     {
       "source": "/content/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl",
@@ -1526,7 +1526,7 @@
     },
     {
       "source": "/shared/continue-as-new",
-      "destination": "/workflows#continue-as-new"
+      "destination": "/workflow-execution/continue-as-new"
     },
     {
       "source": "/external-resources",

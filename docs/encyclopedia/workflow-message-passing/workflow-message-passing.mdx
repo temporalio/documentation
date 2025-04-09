@@ -64,14 +64,14 @@ Use Updates instead of Signals when:
 
 You normally want to do a Query, because:
 
-- Queries are efficient–they never add entries to the [Workflow Event History](/workflows#event-history), whereas an Update would (if accepted).
+- Queries are efficient–they never add entries to the [Workflow Event History](/workflow-execution/event#event-history), whereas an Update would (if accepted).
 - Queries can operate on completed Workflows.
 
 However, because Queries cannot block, sometimes Updates are best.
 When your goal is to do a read once the Workflow achieves a certain desired state, you have two options:
 
 - You could poll periodically with Queries until the Workflow is ready.
-- You could write your read operation as an Update, which will give you better efficiency and latency, though it will write an entry to the [Workflow Event History](/workflows#event-history).
+- You could write your read operation as an Update, which will give you better efficiency and latency, though it will write an entry to the [Workflow Event History](/workflow-execution/event#event-history).
 
 ### For read/write requests
 

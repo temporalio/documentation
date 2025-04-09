@@ -28,7 +28,7 @@ tags:
 
 import { CaptionedImage } from '@site/src/components';
 
-A Child Workflow Execution is a [Workflow Execution](/workflows#workflow-execution) that is spawned from within another Workflow in the same Namespace.
+A Child Workflow Execution is a [Workflow Execution](/workflow-execution) that is spawned from within another Workflow in the same Namespace.
 
 - [Go SDK Child Workflow feature guide](/develop/go/child-workflows)
 - [Java SDK Child Workflow feature guide](/develop/java/child-workflows)
@@ -50,7 +50,7 @@ Consider the Child's [Parent Close Policy](/parent-close-policy) if the Parent d
 
 :::note
 
-Child Workflows do not carry over when the Parent uses [Continue-As-New](/workflows#continue-as-new).
+Child Workflows do not carry over when the Parent uses [Continue-As-New](/workflow-execution/continue-as-new).
 This means that if a Parent Workflow Execution utilizes Continue-As-New, any ongoing Child Workflow Executions will not be retained in the new continued instance of the Parent.
 
 :::
@@ -81,13 +81,13 @@ As all Workflow Executions, they can communicate only via asynchronous [Signals]
 
 ### Partition problems into smaller chunks
 
-An individual Workflow Execution has an [Event History](/workflows#event-history) size limit, which imposes a couple of considerations for using Child Workflows.
+An individual Workflow Execution has an [Event History](/workflow-execution/event#event-history) size limit, which imposes a couple of considerations for using Child Workflows.
 
 On one hand, because Child Workflow Executions have their own Event Histories, they are often used to partition large workloads into smaller chunks.
 For example, a single Workflow Execution does not have enough space in its Event History to spawn 100,000 [Activity Executions](/activity-execution).
 But a Parent Workflow Execution can spawn 1,000 Child Workflow Executions that each spawn 1,000 Activity Executions to achieve a total of 1,000,000 Activity Executions.
 
-However, because a Parent Workflow Execution Event History contains [Events](/workflows#event) that correspond to the status of the Child Workflow Execution, a single Parent should not spawn more than 1,000 Child Workflow Executions.
+However, because a Parent Workflow Execution Event History contains [Events](/workflow-execution/event#event) that correspond to the status of the Child Workflow Execution, a single Parent should not spawn more than 1,000 Child Workflow Executions.
 
 In general, however, Child Workflow Executions result in more overall Events recorded in Event Histories than Activities.
 Because each entry in an Event History is a _cost_ in terms of compute resources, this could become a factor in very large workloads.
@@ -102,7 +102,7 @@ For example, a Workflow that manages host upgrades could spawn a Child Workflow 
 ### Periodic logic execution
 
 A Child Workflow can be used to execute some periodic logic without overwhelming the Parent Workflow Event History.
-In this scenario, the Parent Workflow starts a Child Workflow which executes periodic logic calling [Continue-As-New](/workflows#continue-as-new) as many times as needed, then completes.
+In this scenario, the Parent Workflow starts a Child Workflow which executes periodic logic calling [Continue-As-New](/workflow-execution/continue-as-new) as many times as needed, then completes.
 From the Parent point of view, it is just a single Child Workflow invocation.
 
 ### Child Workflow versus an Activity
@@ -110,7 +110,7 @@ From the Parent point of view, it is just a single Child Workflow invocation.
 Child Workflow Executions and Activity Executions are both started from Workflows, so you might feel confused about when to use which.
 Here are some important differences:
 
-- A Child Workflow has access to all Workflow APIs but is subject to the same [deterministic constraints](/workflows#deterministic-constraints) as other Workflows.
+- A Child Workflow has access to all Workflow APIs but is subject to the same [deterministic constraints](/workflow-definition#deterministic-constraints) as other Workflows.
   An Activity has the inverse pros and cons—no access to Workflow APIs but no Workflow constraints.
 - A Child Workflow Execution can continue on if its Parent is canceled with a [Parent Close Policy](/parent-close-policy) of `ABANDON`.
   An Activity Execution is _always_ canceled when its Workflow Execution is canceled.

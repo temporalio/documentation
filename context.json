@@ -195,7 +195,7 @@
     "encyclopedia": {
       "overview": "/encyclopedia",
       "coreConcepts": {
-        "workflows": "/encyclopedia/workflows",
+        "workflows": "/encyclopedia/workflow-overview",
         "activities": "/encyclopedia/activities",
         "signals": "/encyclopedia/signals",
         "queries": "/encyclopedia/queries",
