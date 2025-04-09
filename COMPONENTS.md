@@ -39,38 +39,6 @@ Our components are located in the `src/components` folder at the root of this re
 - **`experimental`**: This folder contains components that are not currently used on the site.
   These are either for testing or were previously part of ongoing development.
 
-```
-components
-├── elements
-│   ├── Button.js
-│   ├── Intro.js
-│   ├── RetrySimulator.js
-│   ├── SdkLogos.js
-│   └── retry-simulator.module.css
-├── experimental
-│   ├── CenteredImage.js
-│   ├── CustomWarning.js
-│   ├── DetermineHeader.js
-│   ├── InfoButton.js
-│   ├── NoBreak.js
-│   ├── ResponsivePlayer.js
-│   ├── RowOfImages.js
-│   ├── Spacer.js
-│   └── ToolTipText.js
-├── formatting
-│   └── DocsTable.js
-├── images
-│   ├── CaptionedImage.js
-│   └── CaptionedImage.module.css
-├── index.js
-└── info
-    ├── DiscoverableDisclosure.js
-    ├── RelatedRead.js
-    ├── RelatedRead.module.css
-    ├── RelatedReadList.js
-    └── ToolTipTerm.js
-```
-
 Components are reusable, self-contained units of code used for our Documentation site.
 As shown in this file tree, our components are built using JavaScript and React.
 Components often have associated CSS files to manage styling, although this is optional.
@@ -80,13 +48,24 @@ While some components include custom styling for layout or presentation, others 
 
 When adding a patch with new components, please follow these directions:
 
-- Test your component across multiple platforms, including mobile, desktop, and a variety of browsers, as well as both light mode and dark mode.
-- Use ARIA attributes to support accessibility, ensuring the component is usable by all.
-- Register your component in the `index.js` file, making it available for global import.
-- Ensure your component follows our naming conventions (e.g., PascalCase for React components) and the structure used in this repository.
-- Update this documentation file with your component’s details, including usage examples and any configuration options.
+- **Test your component across multiple platforms** including mobile, desktop, and a variety of browsers, as well as both light mode and dark mode.
+- **Use ARIA attributes to support accessibility**, ensuring the component is usable by all.
+- **Register your component in the `index.js` file**, making it available for global import.
+- **Ensure your component follows our naming conventions** (for example, PascalCase for React components) and the structure used in this repository.
+- **Use appropriate 'src/components' folder hierarchies** and document hierarchy changes in this document.
+- **Update this documentation file with your component’s details**, including usage examples and any configuration options.
   Follow the existing format and style for consistency.
-- Include clear and concise examples for usage, and note any potential edge cases or known issues, as well as future development directions.
+- **Include clear and concise usage examples**, and note any potential edge cases or known issues, as well as future development directions.
+
+### Testing your Component
+
+- **Light and Dark Mode**: Make sure all elements of your components works properly in both light and dark modes.
+- **Browser Geometries and Edge Cases**: Make sure your components resize appropriately with ***Web browsers***, and render correctly on ***mobile*** (both phone and tablet). Provide alternate presentations if needed for smaller real estate. On Desktop, make your browser window both tall and short, wide and narrow. 
+- **Cross-browser support**: Test on Chrome and Safari as a minimum. "React aims for cross-browser compatibility, but subtle differences can arise due to how browsers implement web standards or handle specific features. While React itself abstracts away many of these inconsistencies, some areas may require attention."
+- **Accessibility checks**: Test accessibility using a screen reader.
+- **Crowdsource**: Use Vercel deployments to bug-bash your component.
+
+Reach out for help if issues arise that compromise component functionality. We may be able to help you work out a solution.
 
 ## Using Components in MDX Source Files
 
