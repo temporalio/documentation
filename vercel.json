@@ -1358,7 +1358,7 @@
     },
     {
       "source": "/concepts/what-is-a-workflow-id",
-      "destination": "/workflows#workflow-id"
+      "destination": "/workflow-execution/workflowid-runid#workflow-id"
     },
     {
       "source": "/concepts/what-is-a-workflow-run-timeout",

@@ -272,7 +272,7 @@ For more information, refer to [Task Queues Processing Tuning](/develop/worker-p
 
 **How to set a custom Workflow Id using the Go SDK**
 
-Although it is not required, we recommend providing your own [Workflow Id](/workflows#workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
+Although it is not required, we recommend providing your own [Workflow Id]/workflow-execution/workflowid-runid#workflow-id that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
 
 Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `ID` field, and pass the instance to the `ExecuteWorkflow` call.
 
@@ -313,7 +313,7 @@ The following fields are available:
 
 #### ID
 
-Although it is not required, we recommend providing your own [Workflow Id](/workflows#workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
+Although it is not required, we recommend providing your own [Workflow Id]/workflow-execution/workflowid-runid#workflow-id that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
 
 Create an instance of [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `ID` field, and pass the instance to the `ExecuteWorkflow` call.
 

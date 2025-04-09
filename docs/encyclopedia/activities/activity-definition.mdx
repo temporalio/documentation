@@ -58,7 +58,7 @@ In the context of Temporal, Activities should be designed to be safely executed 
 
 :::info
 
-By design, completed Activities will not re-execute as part of a [Workflow Replay](/workflows#replays). However, Activities won’t record to the [Event History](/encyclopedia/retry-policies#event-history) until they return or produce an error. If an Activity fails to report to the server at all, it will be retried. Designing for idempotence, especially if you have a [Global Namespace](/global-namespace), will improve reusability and reliability.
+By design, completed Activities will not re-execute as part of a [Workflow Replay](/workflow-execution#replay). However, Activities won’t record to the [Event History](/encyclopedia/retry-policies#event-history) until they return or produce an error. If an Activity fails to report to the server at all, it will be retried. Designing for idempotence, especially if you have a [Global Namespace](/global-namespace), will improve reusability and reliability.
 
 :::
 
@@ -88,7 +88,7 @@ Therefore, an Activity Definition has no restrictions on the code it contains.
 
 An Activity Definition can support as many parameters as needed.
 
-All values passed through these parameters are recorded in the [Event History](/workflows#event-history) of the Workflow Execution.
+All values passed through these parameters are recorded in the [Event History](/workflow-execution/event#event-history) of the Workflow Execution.
 Return values are also captured in the Event History for the calling Workflow Execution.
 
 Activity Definitions must contain the following parameters:

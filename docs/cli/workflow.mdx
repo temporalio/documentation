@@ -426,7 +426,7 @@ Use the following command options to change the information returned by this com
 The `temporal workflow reset` command resets a [Workflow Execution](/workflow-execution).
 A reset resumes the Workflow from a certain point without losing your parameters or [Event History](/workflow-execution/event#event-history).
 
-The Workflow Execution can be set to a given [Event Type](/workflows#event).
+The Workflow Execution can be set to a given [Event Type](/workflow-execution/event#event).
 For example, `temporal workflow reset --workflow-id=meaningful-business-id --type=LastContinuedAsNew`.
 
 The Workflow Execution can also be reset to any Event after WorkflowTaskStarted.
@@ -480,7 +480,7 @@ The `temporal workflow reset-batch` command resets multiple [Workflow Executions
 Resetting a [Workflow](/workflows) resumes it from a certain point without losing your parameters or [Event History](/workflow-execution/event#event-history).
 
 The set of Workflow Executions to reset can be specified in an input file.
-The input file must have a [Workflow ID](/workflows#workflow-id) on each line.
+The input file must have a [Workflow ID](/workflow-execution/workflowid-runid#workflow-id) on each line.
 
 `temporal workflow reset-batch --input-file=MyInput --input-separator="\t"`
 
@@ -597,7 +597,7 @@ Use the following options to change the behavior of this command.
 
 ## signal
 
-The `temporal workflow signal` command is used to send a [Signal](/sending-messages#sending-signals) to a [Workflow Execution](/workflow-execution) by [Workflow Id](/workflows#workflow-id) or [List Filter](/list-filter).
+The `temporal workflow signal` command is used to send a [Signal](/sending-messages#sending-signals) to a [Workflow Execution](/workflow-execution) by [Workflow Id](/workflow-execution/workflowid-runid#workflow-id) or [List Filter](/list-filter).
 
 Use the following options to change the command's behavior.
 
@@ -776,7 +776,7 @@ The `temporal workflow terminate` command terminates a [Workflow Execution](/wor
 Terminating a running Workflow Execution records a [`WorkflowExecutionTerminated` event](/references/events#workflowexecutionterminated) as the closing Event in the [Event History](/workflow-execution/event#event-history).
 Any further [Command](/workflow-execution#command) Tasks cannot be scheduled after running this command.
 
-Workflow terminations require a valid [Workflow ID](/workflows#workflow-id) to function.
+Workflow terminations require a valid [Workflow ID](/workflow-execution/workflowid-runid#workflow-id) to function.
 `temporal workflow terminate --workflow-id=meaningful-business-id`
 
 Use the following options to change termination behavior.

@@ -93,7 +93,7 @@ A request to spawn a Workflow Execution causes the Temporal Service to create th
 The Temporal Service then creates the first Workflow Task, resulting in the first [WorkflowTaskScheduled](/references/events#workflowtaskscheduled) Event.
 
 To start a Workflow Execution in .NET, use either the `StartWorkflowAsync()` or `ExecuteWorkflowAsync()` methods in the Client.
-You must set a [Workflow Id](/workflows#workflow-id) and [Task Queue](/task-queue) in the `WorkflowOptions` given to the method.
+You must set a [Workflow Id](/workflow-execution/workflowid-runid#workflow-id) and [Task Queue](/task-queue) in the `WorkflowOptions` given to the method.
 
 ```csharp
 var result = await client.ExecuteWorkflowAsync(

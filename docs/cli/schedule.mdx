@@ -32,7 +32,7 @@ To run a Schedule command, run `temporal schedule [command] [command options]`.
 ## backfill
 
 The `temporal schedule backfill` command executes Actions ahead of their specified time range.
-Backfilling adds [Workflow Runs](/workflows#run-id) from a time period when the Schedule was paused, or from before the Schedule was created.
+Backfilling adds [Workflow Runs]/workflow-execution/workflowid-runid#run-id from a time period when the Schedule was paused, or from before the Schedule was created.
 
 Schedule backfills require a valid Schedule ID, along with the time in which to run the Schedule and a change to the overlap policy.
 The following example fills in Workflow Runs from a point when the Schedule was paused.
@@ -256,7 +256,7 @@ Use the following options to change this command's behavior.
 ## describe
 
 The `temporal schedule describe` command shows the current [Schedule](/schedule) configuration.
-This command also provides information about past, current, and future [Workflow Runs](/workflows#run-id).
+This command also provides information about past, current, and future [Workflow Runs]/workflow-execution/workflowid-runid#run-id.
 
 `temporal schedule describe --schedule-id 'your-schedule-id' [command options]`
 

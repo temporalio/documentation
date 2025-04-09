@@ -69,7 +69,7 @@ An append-only log of [Events](#event) for your application.
 
 The Temporal Service stores the complete Event History for the entire lifecycle of a Workflow Execution.
 
-The Temporal Service logs a [warning after 10Ki (10,240) Events](/workflows#limits) and periodically logs additional warnings as new Events are added.
+The Temporal Service logs a [warning after 10Ki (10,240) Events](/workflow-execution/limits) and periodically logs additional warnings as new Events are added.
 If the Event History exceeds 50Ki (51,200) Events, the Workflow Execution is terminated.
 
 ### Event loop {#event-loop}
