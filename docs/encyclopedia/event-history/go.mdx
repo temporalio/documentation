@@ -34,7 +34,7 @@ With Temporal, your Workflows can seamlessly recover from crashes or failures wi
 
 Temporal uses the Event History to not only store the current state of a Workflow Execution—it records every step taken along the way. Each time your Workflow Definition makes an API call to execute an Activity or start a Timer, for instance, the Worker doesn't perform the action directly. Instead, it sends a Command to the Temporal Service.
 
-A [Command](https://docs.temporal.io/workflows#command) is a unit of work that the Worker needs to execute and let the Temporal Service know what to do next. The Temporal Service will act on these Commands such as scheduling an Activity or starting a Timer. These Commands get stored in case of failure. For example, if the Worker crashes, the Temporal Service uses this information to replay the code and recreate the state of the Workflow Execution to what it was immediately before the crash. It then resumes progress from the point of failure as if the failure never occurred. This allows you, as a developer, to code as if this type of failure wasn't even a possibility.
+A [Command](httpsg://docs.temporal.io/workflows#command) is a unit of work that the Worker needs to execute and let the Temporal Service know what to do next. The Temporal Service will act on these Commands such as scheduling an Activity or starting a Timer. These Commands get stored in case of failure. For example, if the Worker crashes, the Temporal Service uses this information to replay the code and recreate the state of the Workflow Execution to what it was immediately before the crash. It then resumes progress from the point of failure as if the failure never occurred. This allows you, as a developer, to code as if this type of failure wasn't even a possibility.
 
 In order to understand how Workflow Replay works, this page will go through the following walkthroughs:
 
@@ -266,7 +266,7 @@ Now that Replay has been covered, this section will explain why Workflows need t
 
 A Workflow is deterministic if every execution of its Workflow Definition produces the same Commands in the same sequence given the same input.
 
-As mentioned in the [`How History Replay Provides Durable Execution`](#How-history-walkthrough-Provides-Durable-Execution) walkthrough, in the case of a failure, a Worker requests the Event History to replay it. During Replay, the Worker has a sequence of expected Commands from the Event History. When there’s a mismatch between the expected sequence of Commands the Worker expects based on the Event History and the actual sequence produced during Replay (due to non-determinism), Replay will be unable to continue.
+As mentioned in the [`How History Replay Provides Durable Execution`](#How-History-Replay-Provides-Durable-Execution) walkthrough, in the case of a failure, a Worker requests the Event History to replay it. During Replay, the Worker has a sequence of expected Commands from the Event History. When there’s a mismatch between the expected sequence of Commands the Worker expects based on the Event History and the actual sequence produced during Replay (due to non-determinism), Replay will be unable to continue.
 
 To better understand why Workflows need to be deterministic, it's helpful to look at a Workflow Definition that violates it. In this case, this code will walk through a Workflow Definition that breaks the determinism constraint with a random number generator.
 
