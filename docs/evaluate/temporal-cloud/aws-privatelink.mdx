@@ -120,15 +120,28 @@ When connecting, you must override the TLS server name to target your Namespaceâ
       temporal.api.workflowservice.v1.WorkflowService/GetSystemInfo
   ```
 
-- Temporal SDKs, by setting the endpoint server address argument to the PrivateLink endpoint (`<DNS associated with VPC endpoint>:7233`) and using the TLS configuration options to override the TLS server name.
+- Temporal SDKs, by setting the endpoint server address argument to the Private Service Connect endpoint (`<IP address of the PSC endpoint>:7233`) and using the TLS configuration options to override the TLS server name.
 
 When using [API keys for namespace authentication](/cloud/api-keys#namespace-authentication), the TLS server name must be set to the Namespace's gRPC endpoint (`<region>.<cloud_provider>.api.temporal.io`):
 
+- The Temporal CLI, using `--tls-server-name` parameter to override the TLS server name and the `--tls` flag to enforce the use of TLS. For example:
+
   ```
   temporal workflow count \
-      --address <DNS associated with VPC endpoint>:7233 \
+      --address <IP address of the PSC endpoint>:7233 \
       --namespace <namespace> \
       --api-key <api_key> \
       --tls-server-name <region>.<cloud_provider>.temporal.io \
       --tls
+  ```
+
+- Non-Temporal tools like grpcURL, setting the `authorization` and `temporal-namespace` headers, and the `-servername` parameter to override the TLS server name. Forexample:
+
+  ```
+  grpcurl \
+      -H "authorization: Bearer <api_key>" \
+      -H "temporal-namespace: <namespace>.<account>" \
+      -servername <region>.<cloud_provider>.api.temporal.io:7233 \
+      <DNS ASSOCIATED WITH VPC ENDPOINT> \
+      temporal.api.workflowservice.v1.WorkflowService/GetSystemInfo
   ```
