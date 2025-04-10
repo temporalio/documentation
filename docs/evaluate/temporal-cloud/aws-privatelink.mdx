@@ -128,10 +128,10 @@ When using [API keys for namespace authentication](/cloud/api-keys#namespace-aut
 
   ```
   temporal workflow count \
-      --address <IP address of the PSC endpoint>:7233 \
-      --namespace <namespace> \
+      --address <DNS associated with VPC endpoint>:7233 \
+      --namespace <namespace>.<account> \
       --api-key <api_key> \
-      --tls-server-name <region>.<cloud_provider>.temporal.io \
+      --tls-server-name <region>.<cloud_provider>.api.temporal.io \
       --tls
   ```
 
@@ -141,7 +141,7 @@ When using [API keys for namespace authentication](/cloud/api-keys#namespace-aut
   grpcurl \
       -H "authorization: Bearer <api_key>" \
       -H "temporal-namespace: <namespace>.<account>" \
-      -servername <region>.<cloud_provider>.api.temporal.io:7233 \
-      <DNS ASSOCIATED WITH VPC ENDPOINT> \
+      -servername <region>.<cloud_provider>.api.temporal.io \
+      <DNS ASSOCIATED WITH VPC ENDPOINT>:7233 \
       temporal.api.workflowservice.v1.WorkflowService/GetSystemInfo
   ```
