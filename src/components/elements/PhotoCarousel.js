@@ -1,8 +1,13 @@
 import React, { useState, useRef } from 'react';
 
-const PhotoCarousel = ({ images = [], captions = [] }) => {
+// This component can be controlled by passing an isDarkMode prop
+// Or it will default to light mode if no prop is provided
+const PhotoCarousel = ({ 
+  images = [], 
+  captions = [],
+  isDarkMode = false // External control prop with default to light mode
+}) => {
   const [current, setCurrent] = useState(0);
-  const imageHeight = '400px';
   const carouselRef = useRef(null);
   const imageRef = useRef(null);
   const captionRef = useRef(null);
@@ -28,7 +33,8 @@ const PhotoCarousel = ({ images = [], captions = [] }) => {
           <code
             key={index}
             style={{
-              backgroundColor: '#f5f5f5',
+              backgroundColor: isDarkMode ? '#2d2d2d' : '#f5f5f5',
+              color: isDarkMode ? '#f0f0f0' : '#333333',
               padding: '2px 4px',
               borderRadius: '4px',
               fontFamily: 'monospace',
@@ -42,109 +48,125 @@ const PhotoCarousel = ({ images = [], captions = [] }) => {
     });
   };
 
+  // Light/dark mode styles
+  const containerStyle = {
+    position: 'relative',
+    width: '100%',
+    maxWidth: '800px',
+    margin: '0 auto',
+    overflow: 'hidden',
+    borderRadius: '16px',
+    boxShadow: isDarkMode 
+      ? '0 4px 20px rgba(0, 0, 0, 0.3)' 
+      : '0 4px 20px rgba(0, 0, 0, 0.1)',
+    backgroundColor: isDarkMode ? '#1a1a1a' : '#ffffff',
+    color: isDarkMode ? '#e0e0e0' : '#222222',
+  };
+
+  const indexStyle = {
+    position: 'absolute',
+    top: '16px',
+    right: '16px',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    color: '#ffffff',
+    padding: '8px 14px',
+    borderRadius: '8px',
+    fontSize: 'clamp(0.8rem, 2vw, 1.2rem)',
+    zIndex: 2,
+  };
+
+  const imageContainerStyle = {
+    position: 'relative',
+    height: 'clamp(200px, 50vw, 400px)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  };
+
+  const imageStyle = {
+    width: '100%',
+    height: '100%',
+    objectFit: 'contain',
+  };
+
+  const captionStyle = {
+    marginTop: '20px',
+    marginBottom: '20px',
+    fontSize: 'clamp(14px, 2vw, 16px)',
+    fontWeight: 'bold',
+    color: isDarkMode ? '#e0e0e0' : '#222222',
+    textAlign: 'left',
+    padding: '0 16px',
+    wordWrap: 'break-word',
+  };
+
+  const arrowStyle = {
+    position: 'absolute',
+    top: '50%',
+    transform: 'translateY(-50%)',
+    backgroundColor: isDarkMode 
+      ? 'rgba(255, 255, 255, 0.2)' 
+      : 'rgba(0, 0, 0, 0.7)',
+    color: '#ffffff',
+    border: 'none',
+    borderRadius: '50%',
+    width: 'clamp(30px, 8vw, 60px)',
+    height: 'clamp(30px, 8vw, 60px)',
+    cursor: 'pointer',
+    fontSize: 'clamp(1.2rem, 3vw, 2.5rem)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    userSelect: 'none',
+    zIndex: 1,
+    transition: 'background-color 0.3s ease',
+  };
+
   return (
-    <>
-      <style>
-        {`
-          .carousel {
-            position: relative;
-            width: 800px;
-            margin: 0 auto;
-            overflow: hidden;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-          }
-
-          .carousel-index {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            background-color: rgba(0, 0, 0, 0.6);
-            color: #fff;
-            padding: 8px 14px;
-            border-radius: 8px;
-            font-size: 1.2rem;
-            z-index: 2;
-          }
-
-          .carousel-image-container {
-            height: ${imageHeight};
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-
-          .carousel img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-          }
-
-          .carousel-caption {
-            margin-top: 20px;
-            margin-bottom: 20px;
-            font-size: 16px;
-            font-family: Arial, sans-serif;
-            font-weight: bold;
-            color: #222;
-            text-align: left;
-            padding: 0 16px;
-            word-wrap: break-word;
-          }
-
-          .carousel-arrow {
-            position: absolute;
-            top: 200px;
-            transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.7);
-            color: #fff;
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            cursor: pointer;
-            font-size: 2.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            user-select: none;
-            z-index: 1;
-            transition: background-color 0.3s ease;
-          }
-
-          .carousel-arrow:hover {
-            background-color: rgba(0, 0, 0, 0.85);
-          }
-
-          .carousel-arrow.left {
-            left: 20px;
-          }
-
-          .carousel-arrow.right {
-            right: 20px;
-          }
-        `}
-      </style>
-      <div className="carousel" ref={carouselRef}>
-        <div className="carousel-index">
+    <div style={{ 
+      fontFamily: 'Arial, sans-serif',
+      width: '100%',
+      maxWidth: '100%',
+      padding: '0 10px',
+      boxSizing: 'border-box'
+    }}>
+      <div ref={carouselRef} style={containerStyle}>
+        <div style={indexStyle}>
           Image {current + 1} out of {images.length}
         </div>
-        <button className="carousel-arrow left" onClick={goToPrevious}>
-          ❮
-        </button>
-        <div className="carousel-image-container" ref={imageRef}>
-          <img src={images[current]} alt={`Slide ${current + 1}`} />
+        
+        <div ref={imageRef} style={imageContainerStyle}>
+          <img 
+            src={images[current]} 
+            alt={`Slide ${current + 1}`}
+            style={imageStyle}
+          />
+          
+          {/* Navigation buttons inside the image container */}
+          <button 
+            onClick={goToPrevious}
+            style={{...arrowStyle, left: '10px'}}
+            aria-label="Previous image"
+          >
+            ❮
+          </button>
+          
+          <button 
+            onClick={goToNext}
+            style={{...arrowStyle, right: '10px'}}
+            aria-label="Next image"
+          >
+            ❯
+          </button>
         </div>
+        
         {isValidCaption(captions[current]) && (
-          <div className="carousel-caption" ref={captionRef}>
+          <div ref={captionRef} style={captionStyle}>
             {renderCaption(captions[current])}
           </div>
         )}
-        <button className="carousel-arrow right" onClick={goToNext}>
-          ❯
-        </button>
       </div>
-    </>
+    </div>
   );
 };
 
