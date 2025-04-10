@@ -2,7 +2,7 @@
 export { default as RetrySimulator } from "./elements/RetrySimulator";
 export { Intro } from "./elements/Intro";
 export { SdkLogos } from "./elements/SdkLogos";
-export { PhotoCarousel } from "./elements/PhotoCarousel";
+export { default as PhotoCarousel } from './elements/PhotoCarousel';
 
 // Formatting components
 export { default as DocsTable, NewDocsCell } from "./formatting/DocsTable";

@@ -40,7 +40,7 @@ In order to understand how Workflow Replay works, this page will go through the 
 
 1. [How Workflow Code Maps to Commands](#How-Workflow-Code-Maps-To-Commands)
 2. [How Workflow Commands Map to Events](#How-Workflow-Commands-Map-To-Events)
-3. [How History Replay Provides Durable Execution](#How-history-walkthrough-Provides-Durable-Execution)
+3. [How History Replay Provides Durable Execution](#How-History-Replay-Provides-Durable-Execution)
 4. [Example of a Non-Deterministic Workflow](#Example-of-Non-Deterministic-Workflow)
 
 ## How Workflow Code Maps to Commands {#How-Workflow-Code-Maps-To-Commands}
@@ -117,7 +117,7 @@ These Events are what are used to recreate a Workflow Execution's state in the c
   ]}
 />
 
-## How History Replay Provides Durable Execution {#How-history-replay-Provides-Durable-Execution}
+## How History Replay Provides Durable Execution {#How-History-Replay-Provides-Durable-Execution}
 
 Now that you have seen how code maps to Commands, and how Commands map to Events, this next waltkthrough will take a look at how Temporal uses Replay with the Events to provide Durable Execution and restore a Workflow Execution in the case of a failure.
 
