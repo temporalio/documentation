@@ -10,15 +10,15 @@ tags:
   - Replay
 ---
 
-Making changes safely to existing Workflow code can be challenging. Your Workflow code must be [deterministic](https://docs.temporal.io/workflows#deterministic-constraints). This means your changes to that code have to be as well. Changes to your Workflow code that qualify as non-deterministic need to be protected by either using the [patching APIs](https://docs.temporal.io/workflows#workflow-versioning) within your Workflow code, or by [some other versioning strategy.](https://docs.temporal.io/workers#worker-versioning)
+Making changes safely to existing Workflow code can be challenging. Your Workflow code must be [deterministic](https://docs.temporal.io/workflow-definition#deterministic-constraints). This means your changes to that code have to be as well. Changes to your Workflow code that qualify as non-deterministic need to be protected by either using the [patching APIs](https://docs.temporal.io/workflow-definition#workflow-versioning) within your Workflow code, or by [some other versioning strategy.](https://docs.temporal.io/workers#worker-versioning)
 
 In this article, we’ll provide some advice on how you can safely validate changes to your Workflow code, ensuring that you won’t experience unexpected non-determinism errors in production when rolling them out.
 
 ## Use Replay Testing before and during your deployments
 
-The best way to verify that your code won’t cause non-determinism errors once deployed is to make use of [replay testing](https://docs.temporal.io/workflows#replays).
+The best way to verify that your code won’t cause non-determinism errors once deployed is to make use of [replay testing](https://docs.temporal.io/workflow-execution#replay).
 
-Replay testing takes one or more existing [Workflow Histories](https://docs.temporal.io/workflows#event-history) that ran against a previous version of Workflow code and runs them against your *current* Workflow code, verifying that it is compatible with the provided history.
+Replay testing takes one or more existing [Workflow Histories](https://docs.temporal.io/workflow-execution/event#event-history) that ran against a previous version of Workflow code and runs them against your *current* Workflow code, verifying that it is compatible with the provided history.
 
 There are multiple points in your development lifecycle where running replay tests can make sense. They exist on a spectrum, with shortest time to feedback on one end, and most representative of a production deployment on the other.
 

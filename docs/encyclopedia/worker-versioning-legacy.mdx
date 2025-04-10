@@ -30,7 +30,7 @@ This version of Worker Versioning is deprecated and will go away at some point. 
 
 :::
 
-Worker Versioning simplifies the process of deploying changes to [Workflow Definitions](/workflows#workflow-definition).
+Worker Versioning simplifies the process of deploying changes to [Workflow Definitions](/workflow-definition).
 It does this by letting you define sets of versions that are compatible with each other, and then assigning a Build ID to the code that defines a Worker.
 The Temporal Server uses the Build ID to determine which versions of a Workflow Definition a Worker can process.
 
@@ -51,7 +51,7 @@ This version of Worker Versioning is deprecated and will go away at some point. 
 The main reason to use this feature is to deploy incompatible changes to short-lived [Workflows](/workflows).
 On Task Queues using this feature, the Workflow starter doesn't have to know about the introduction of new versions.
 
-The new code in the newly deployed Workers executes new [Workflow Executions](/workflows#workflow-execution), while only Workers with an appropriate version process old Workflow Executions.
+The new code in the newly deployed Workers executes new [Workflow Executions](/workflow-execution), while only Workers with an appropriate version process old Workflow Executions.
 
 #### Decommission old Workers
 
@@ -72,7 +72,7 @@ A version can only be garbage collected after a Workflow Execution is deleted.
 
 The feature also lets you implement compatible changes to or prevent a buggy code path from executing on currently open Workflows.
 You can achieve this by adding a new version to an existing set and defining it as _compatible_ with an existing version, which shouldn't execute any future Workflow Tasks.
-Because the new version processes existing [Event Histories](/workflows#event-history), it must adhere to the usual [deterministic constraints](/workflows#deterministic-constraints), and you might need to use one of the [versioning APIs](/workflows#workflow-versioning).
+Because the new version processes existing [Event Histories](/workflow-execution/event#event-history), it must adhere to the usual [deterministic constraints](/workflow-definition#deterministic-constraints), and you might need to use one of the [versioning APIs](/workflow-definition#workflow-versioning).
 
 Moreover, this feature lets you make incompatible changes to Activity Definitions in conjunction with incompatible changes to Workflow Definitions that use those Activities.
 This functionality works because any Activity that a Workflow schedules on the same Task Queue gets dispatched by default only to Workers compatible with the Workflow that scheduled it.

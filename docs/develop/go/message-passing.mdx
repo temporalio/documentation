@@ -265,7 +265,7 @@ However, you can only send Signals to Workflow Executions that haven’t closed.
 
 Use [`Client.SignalWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.SignalWorkflow).
 
-Pass in both the [Workflow Id](/workflows#workflow-id) and [Run Id](/workflows#run-id) to uniquely identify the Workflow Execution.
+Pass in both the [Workflow Id](/workflow-execution/workflowid-runid#workflow-id)and [Run Id](/workflow-execution/workflowid-runid#run-id) to uniquely identify the Workflow Execution.
 If only the Workflow Id is supplied (provide an empty string as the Run Id param), the Workflow Execution that is running receives the Signal.
 
 ```go
@@ -398,7 +398,7 @@ Use [`WorkflowUpdateHandle`](https://pkg.go.dev/go.temporal.io/sdk/client#Workfl
 You will need to provide:
 
 - [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions).
-  The [Workflow Id Conflict Policy](/workflows#workflow-id-conflict-policy) is required.
+  The [Workflow Id Conflict Policy](/workflow-execution/workflowid-runid#workflow-id-conflict-policy) is required.
   Choose "Use Existing" and use an idempotent Update handler to ensure your code can be executed again in case of a Client failure.
   Not all `StartWorkflowOptions` are allowed.
   For example, specifying a Cron Schedule will result in an error.

@@ -189,7 +189,7 @@ Before considering an appropriate Namespace configuration, you should be aware o
   Isolating applications or environments (development, test, staging, production) should take this into consideration.
 - A Namespace is provisioned with an endpoint for executing your Workflows.
   Accessing a Namespace from a Temporal Client requires [API keys](/cloud/api-keys) or [mTLS](/cloud/certificates) authentication.
-- [Workflow Id](/workflows#workflow-id) uniqueness is per Namespace.
+- [Workflow Id](/workflow-execution/workflowid-runid#workflow-id)uniqueness is per Namespace.
 - [Task Queue](/task-queue) names are unique per Namespace.
 - Closed Workflow retention is per Namespace.
 - RBAC [permissions](/cloud/users#namespace-level-permissions) are implemented at the Namespace level.
@@ -200,7 +200,7 @@ Namespace configuration requires some consideration.
 Following are some general guidelines to consider.
 
 - Namespaces are usually defined per use case.
-  A use case can encompass a broad range of Workflow types and a nearly unlimited scale of concurrent [Workflow Executions](/workflows#workflow-execution).
+  A use case can encompass a broad range of Workflow types and a nearly unlimited scale of concurrent [Workflow Executions](/workflow-execution).
 - Namespaces can be split along additional boundaries such as service, application, domain or even sub-domain.
 - Environments such as production and development usually have requirements for isolation.
   We recommend that each environment has its own Namespace.

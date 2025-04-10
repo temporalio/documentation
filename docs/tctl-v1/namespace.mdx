@@ -186,7 +186,7 @@ tctl namespace register --owner_email <value>
 
 Set the [Retention Period](/temporal-service/temporal-server#retention-period) for the [Namespace](/namespaces).
 
-The Retention Period applies to Closed [Workflow Executions](/workflows#workflow-execution).
+The Retention Period applies to Closed [Workflow Executions](/workflow-execution).
 
 **Example**
 
@@ -236,8 +236,8 @@ tctl namespace update --active_cluster <name>
 
 ### --add_bad_binary
 
-Add a binary checksum to use when resetting a [Workflow Execution](/workflows#workflow-execution).
-Temporal will not dispatch any [Commands](/workflows#command) to the given binary.
+Add a binary checksum to use when resetting a [Workflow Execution](/workflow-execution).
+Temporal will not dispatch any [Commands](/workflow-execution#command) to the given binary.
 
 See also [`--remove_bad_binary`](#--remove_bad_binary).
 
@@ -337,7 +337,7 @@ tctl namespace update --remove_bad_binary <value>
 
 ### --retention
 
-Specify the number of days to retain [Workflow Executions](/workflows#workflow-execution).
+Specify the number of days to retain [Workflow Executions](/workflow-execution).
 
 **Example**
 

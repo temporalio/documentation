@@ -26,7 +26,7 @@ This page discusses the following:
 
 ## What is a Task? {#task}
 
-A Task is the context that a Worker needs to progress with a specific [Workflow Execution](/workflows#workflow-execution), [Activity Execution](/activity-execution), or a [Nexus Task Execution](#nexus-task-execution).
+A Task is the context that a Worker needs to progress with a specific [Workflow Execution](/workflow-execution), [Activity Execution](/activity-execution), or a [Nexus Task Execution](#nexus-task-execution).
 
 There are three types of Tasks:
 
@@ -39,12 +39,12 @@ There are three types of Tasks:
 A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.
 
 - Every time a new external event that might affect a Workflow state is recorded, a Workflow Task that contains the event is added to a Task Queue and then picked up by a Workflow Worker.
-- After the new event is handled, the Workflow Task is completed with a list of [Commands](/workflows#command).
+- After the new event is handled, the Workflow Task is completed with a list of [Commands](/workflow-execution#command).
 - Handling of a Workflow Task is usually very fast and is not related to the duration of operations that the Workflow invokes.
 
 ### What is a Workflow Task Execution? {#workflow-task-execution}
 
-A Workflow Task Execution occurs when a [Worker](/workers#worker-entity) picks up a [Workflow Task](#workflow-task) and uses it to make progress on the execution of a [Workflow Definition](/workflows#workflow-definition) (also known as a Workflow function).
+A Workflow Task Execution occurs when a [Worker](/workers#worker-entity) picks up a [Workflow Task](#workflow-task) and uses it to make progress on the execution of a [Workflow Definition](/workflow-definition) (also known as a Workflow function).
 
 ## What is an Activity Task? {#activity-task}
 
