@@ -20,6 +20,9 @@ jobs:
   update:
     name: 'Pull changes from the CLI repo and update CLI docs'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     defaults:
       run:
         shell: bash
@@ -60,8 +63,6 @@ jobs:
           go run .
 
       - name: Publish generated docs to documentation repo
-        env:
-          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
         run: |
           set -ex
 
