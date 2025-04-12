@@ -67,6 +67,8 @@ jobs:
           go run .
 
       - name: Publish generated docs to documentation repo
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -ex
 
