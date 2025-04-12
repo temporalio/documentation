@@ -122,7 +122,7 @@ When connecting, you must override the TLS server name to target your Namespaceâ
 
 - Temporal SDKs, by setting the endpoint server address argument to the PrivateLink endpoint (`<DNS associated with VPC endpoint>:7233`) and using the TLS configuration options to override the TLS server name.
 
-When using [API keys for namespace authentication](/cloud/api-keys#namespace-authentication), the TLS server name must be set to the Namespace's gRPC endpoint (`<region>.<cloud_provider>.api.temporal.io`):
+When using [API keys for namespace authentication](/cloud/api-keys#namespace-authentication), the TLS server name must be set to the Namespace's gRPC endpoint (`<region>.<cloud_provider>.api.temporal.io`) using one of the following methods:
 
 - The Temporal CLI, using `--tls-server-name` parameter to override the TLS server name and the `--tls` flag to enforce the use of TLS. For example:
 
@@ -135,7 +135,7 @@ When using [API keys for namespace authentication](/cloud/api-keys#namespace-aut
       --tls
   ```
 
-- Non-Temporal tools like grpcURL, setting the `authorization` and `temporal-namespace` headers, and the `-servername` parameter to override the TLS server name. Forexample:
+- Non-Temporal tools like grpcURL, setting the `authorization` and `temporal-namespace` headers, and the `-servername` parameter to override the TLS server name. For example:
 
   ```
   grpcurl \
