@@ -1,9 +1,6 @@
 name: 'CLI Docs Update'
 
 on:
-  push:
-    branches:
-      - "cli-docs-autoupdate"
   workflow_dispatch:
     inputs:
       cli_branch:
@@ -23,7 +20,6 @@ jobs:
   update:
     name: 'Pull changes from the CLI repo and update CLI docs'
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_dispatch' }}
     permissions:
       contents: write
       pull-requests: write
@@ -45,6 +41,7 @@ jobs:
           persist-credentials: true
           token: ${{ steps.generate_token.outputs.token }}
           path: docs
+          ref: main
 
       - name: Checkout cli repo
         uses: actions/checkout@v4
