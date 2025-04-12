@@ -1,6 +1,9 @@
 name: 'Update CLI docs with latest release from CLI repo'
 
 on:
+  push:
+    branches:
+      - "cli-docs-autoupdate"
   workflow_dispatch:
     inputs:
       cli_branch:
@@ -35,7 +38,14 @@ jobs:
           app-id: ${{ secrets.TEMPORAL_CICD_APP_ID }}
           private-key: ${{ secrets.TEMPORAL_CICD_PRIVATE_KEY }}
 
-      - name: Checkout repository
+      - name: Checkout docs repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          token: ${{ steps.generate_token.outputs.token }}
+          path: docs
+
+      - name: Checkout cli repo
         uses: actions/checkout@v4
         with:
           path: cli
@@ -43,14 +53,7 @@ jobs:
           submodules: recursive
           persist-credentials: true
           token: ${{ steps.generate_token.outputs.token }}
-
-      - name: Checkout docs repo
-        uses: actions/checkout@v4
-        with:
-          repository: temporalio/documentation
-          persist-credentials: true
-          token: ${{ steps.generate_token.outputs.token }}
-          path: docs
+          repository: temporalio/cli
 
       - name: Setup Go
         uses: actions/setup-go@v4
@@ -70,9 +73,6 @@ jobs:
           git config user.email "${{ github.event.inputs.commit_author_email }}"
           
           BRANCH_NAME="cli-update-docs-${{ github.event.inputs.cli_branch }}"
-          echo "$BRANCH_NAME"
-          # Remove the "/merge" suffix if it exists TODO: Is this still needed?
-          BRANCH_NAME=${BRANCH_NAME%/merge}
 
           cd docs
           git checkout -b $BRANCH_NAME
