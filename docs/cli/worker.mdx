@@ -1,355 +1,86 @@
 ---
-id: schedule
-title: temporal schedule
-sidebar_label: temporal schedule
-description: Temporal's Schedule commands allow users to create, update, and manage Workflow Executions seamlessly for automation, supporting commands for creation, backfill, deletion, and more.
+id: worker
+title: temporal worker
+sidebar_label: temporal worker
+description: Learn how to read or modify state associated with a Worker, such as Worker Deployments.
 toc_max_heading_level: 4
 keywords:
-  - backfill
-  - cli reference
-  - command-line-interface-cli
-  - schedule
-  - schedule backfill
-  - schedule create
-  - schedule delete
-  - schedule describe
-  - schedule list
-  - schedule toggle
-  - schedule trigger
-  - schedule update
-  - temporal cli
-  - updates
+  - worker
+  - worker deployment
 tags:
-  - backfill
-  - cli-reference
-  - command-line-interface-cli
-  - schedule
-  - schedule-backfill
-  - schedule-create
-  - schedule-delete
-  - schedule-describe
-  - schedule-list
-  - schedule-toggle
-  - schedule-trigger
-  - schedule-update
-  - temporal-cli
-  - updates
+  - worker
+  - worker-deployment
 ---
 
-## backfill
+## deployment
 
-Batch-execute actions that would have run during a specified time interval.
-Use this command to fill in Workflow runs from when a Schedule was paused,
-before a Schedule was created, from the future, or to re-process a previously
-executed interval.
++---------------------------------------------------------------------+
+| CAUTION: Worker Deployment is experimental. Deployment commands are |
+| subject to change.                                                  |
++---------------------------------------------------------------------+
 
-Backfills require a Schedule ID and the time period covered by the request.
-It's best to use the `BufferAll` or `AllowAll` policies to avoid conflicts
-and ensure no Workflow Executions are skipped.
+Deployment commands perform operations on Worker Deployments:
+
+```
+temporal worker deployment [command] [options]
+```
 
 For example:
 
 ```
-temporal schedule backfill \
-    --schedule-id "YourScheduleId" \
-    --start-time "2022-05-01T00:00:00Z" \
-    --end-time "2022-05-31T23:59:59Z" \
-    --overlap-policy BufferAll
+temporal worker deployment list
 ```
 
-The policies include:
+Lists the Deployments in the client's namespace.
 
-* **AllowAll**: Allow unlimited concurrent Workflow Executions. This
-  significantly speeds up the backfilling process on systems that support
-  concurrency. You must ensure running Workflow Executions do not interfere
-  with each other.
-* **BufferAll**: Buffer all incoming Workflow Executions while waiting for
-  the running Workflow Execution to complete.
-* **Skip**: If a previous Workflow Execution is still running, discard new
-  Workflow Executions.
-* **BufferOne**: Same as 'Skip' but buffer a single Workflow Execution to be
-  run after the previous Execution completes. Discard other Workflow
-  Executions.
-* **CancelOther**: Cancel the running Workflow Execution and replace it with
-  the incoming new Workflow Execution.
-* **TerminateOther**: Terminate the running Workflow Execution and replace
-  it with the incoming new Workflow Execution.
-
-Use the following options to change the behavior of this command.
-
-**Flags:**
-
-**--end-time** _timestamp_
-
-Backfill end time. Required.
-
-**--start-time** _timestamp_
-
-Backfill start time. Required.
-
-**Global Flags:**
-
-**--address** _string_
-
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
-
-**--api-key** _string_
-
-API key for request.
-
-**--codec-auth** _string_
-
-Authorization header for Codec Server requests.
-
-**--codec-endpoint** _string_
-
-Remote Codec Server endpoint.
-
-**--codec-header** _string[]_
-
-HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
-
-**--color** _string-enum_
-
-Output coloring. Accepted values: always, never, auto. (default "auto")
-
-**--command-timeout** _duration_
-
-The command execution timeout. 0s means no timeout.
-
-**--env** _string_
-
-Active environment name (`ENV`). (default "default")
-
-**--env-file** _string_
-
-Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`.
-
-**--grpc-meta** _string[]_
-
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
-
-**--log-format** _string-enum_
-
-Log format. Accepted values: text, json. (default "text")
-
-**--log-level** _string-enum_
-
-Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. (default "info")
-
-**--namespace**, **-n** _string_
-
-Temporal Service Namespace. (default "default")
-
-**--no-json-shorthand-payloads** _bool_
-
-Raw payload output, even if the JSON option was used.
-
-**--output**, **-o** _string-enum_
-
-Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
-
-**--time-format** _string-enum_
-
-Time format. Accepted values: relative, iso, raw. (default "relative")
-
-**--tls** _bool_
-
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
-
-**--tls-ca-data** _string_
-
-Data for server CA certificate. Can't be used with --tls-ca-path.
-
-**--tls-ca-path** _string_
-
-Path to server CA certificate. Can't be used with --tls-ca-data.
-
-**--tls-cert-data** _string_
-
-Data for x509 certificate. Can't be used with --tls-cert-path.
-
-**--tls-cert-path** _string_
-
-Path to x509 certificate. Can't be used with --tls-cert-data.
-
-**--tls-disable-host-verification** _bool_
-
-Disable TLS host-name verification.
-
-**--tls-key-data** _string_
-
-Private certificate key data. Can't be used with --tls-key-path.
-
-**--tls-key-path** _string_
-
-Path to x509 private key. Can't be used with --tls-key-data.
-
-**--tls-server-name** _string_
-
-Override target TLS server name.
-
-## create
-
-Create a new Schedule on the Temporal Service. A Schedule automatically starts
-new Workflow Executions at the times you specify.
+Arguments can be Worker Deployment Versions associated with
+a Deployment, using a fully qualified Version identifier that
+concatenates the Deployment Name and the Build ID with the
+reserved separator ".".
 
 For example:
 
 ```
-  temporal schedule create \
-    --schedule-id "YourScheduleId" \
-    --calendar '{"dayOfWeek":"Fri","hour":"3","minute":"30"}' \
-    --workflow-id YourBaseWorkflowIdName \
-    --task-queue YourTaskQueue \
-    --type YourWorkflowType
+temporal worker deployment set-current-version \
+         --version YourDeploymentName.YourBuildID
 ```
 
-Schedules support any combination of `--calendar`, `--interval`, and `--cron`:
+Sets the current Deployment Version for a given Deployment.
 
-* Shorthand `--interval` strings.
-  For example: 45m (every 45 minutes) or 6h/5h (every 6 hours, at the top of
-  the 5th hour).
-* JSON `--calendar`, as in the preceding example.
-* Unix-style `--cron` strings and robfig declarations
-  (@daily/@weekly/@every X/etc).
-  For example, every Friday at 12:30 PM: `30 12 * * Fri`.
+### delete
+
++---------------------------------------------------------------------+
+| CAUTION: Worker Deployment is experimental. Deployment commands are |
+| subject to change.                                                  |
++---------------------------------------------------------------------+
+
+Remove a Worker Deployment given its Deployment Name.
+A Deployment can only be deleted if it has no Version in it.
+
+```
+temporal worker deployment delete [options]
+```
+
+For example, setting the user identity that removed the deployment:
+
+```
+temporal worker deployment delete \
+    --name YourDeploymentName \
+    --identity YourIdentity
+
+```
 
 Use the following options to change the behavior of this command.
 
 **Flags:**
 
-**--calendar** _string[]_
+**--identity** _string_
 
-Calendar specification in JSON. For example: `{"dayOfWeek":"Fri","hour":"17","minute":"5"}`.
+Identity of the user submitting this request.
 
-**--catchup-window** _duration_
+**--name**, **-d** _string_
 
-Maximum catch-up time for when the Service is unavailable.
-
-**--cron** _string[]_
-
-Calendar specification in cron string format. For example: `"30 12 * * Fri"`.
-
-**--end-time** _timestamp_
-
-Schedule end time.
-
-**--execution-timeout** _duration_
-
-Fail a WorkflowExecution if it lasts longer than `DURATION`. This time-out includes retries and ContinueAsNew tasks.
-
-**--input**, **-i** _string[]_
-
-Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments.
-
-**--input-base64** _bool_
-
-Assume inputs are base64-encoded and attempt to decode them.
-
-**--input-file** _string[]_
-
-A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments.
-
-**--input-meta** _string[]_
-
-Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times.
-
-**--interval** _string[]_
-
-Interval duration. For example, 90m, or 60m/15m to include phase offset.
-
-**--jitter** _duration_
-
-Max difference in time from the specification. Vary the start time randomly within this amount.
-
-**--memo** _string[]_
-
-Memo using 'KEY="VALUE"' pairs. Use JSON values.
-
-**--notes** _string_
-
-Initial notes field value.
-
-**--overlap-policy** _string-enum_
-
-Policy for handling overlapping Workflow Executions. Accepted values: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll. (default "Skip")
-
-**--pause-on-failure** _bool_
-
-Pause schedule after Workflow failures.
-
-**--paused** _bool_
-
-Pause the Schedule immediately on creation.
-
-**--remaining-actions** _int_
-
-Total allowed actions. Default is zero (unlimited).
-
-**--run-timeout** _duration_
-
-Fail a Workflow Run if it lasts longer than `DURATION`.
-
-**--schedule-id**, **-s** _string_
-
-Schedule ID. Required.
-
-**--schedule-memo** _string[]_
-
-Set schedule memo using `KEY="VALUE` pairs. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times.
-
-**--schedule-search-attribute** _string[]_
-
-Set schedule Search Attributes using `KEY="VALUE` pairs. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times.
-
-**--search-attribute** _string[]_
-
-Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times.
-
-**--start-time** _timestamp_
-
-Schedule start time.
-
-**--static-details** _string_
-
-Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--static-summary** _string_
-
-Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--task-queue**, **-t** _string_
-
-Workflow Task queue. Required.
-
-**--task-timeout** _duration_
-
-Fail a Workflow Task if it lasts longer than `DURATION`. This is the Start-to-close timeout for a Workflow Task. (default "10s")
-
-**--time-zone** _string_
-
-Interpret calendar specs with the `TZ` time zone. For a list of time zones, see: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones.
-
-**--type** _string_
-
-Workflow Type name. Required.
-
-**--workflow-id**, **-w** _string_
-
-Workflow ID. If not supplied, the Service generates a unique ID.
+Name for a Worker Deployment. Required.
 
 **Global Flags:**
 
@@ -453,26 +184,51 @@ Path to x509 private key. Can't be used with --tls-key-data.
 
 Override target TLS server name.
 
-## delete
+### delete-version
 
-Deletes a Schedule on the front end Service:
++---------------------------------------------------------------------+
+| CAUTION: Worker Deployment is experimental. Deployment commands are |
+| subject to change.                                                  |
++---------------------------------------------------------------------+
+
+Remove a Worker Deployment Version given its fully-qualified identifier.
+This is rarely needed during normal operation
+since unused Versions are eventually garbage collected.
+The client can delete a Version only when all of the following conditions
+are met:
+  - It is not the Current or Ramping Version for this Deployment.
+  - It has no active pollers, i.e., none of the task queues in the
+  Version have pollers.
+  - It is not draining. This requirement can be ignored with the option
+`--skip-drainage`.
+  
+```
+temporal worker deployment delete-version [options]
+```
+
+For example, skipping the drainage restriction:
 
 ```
-temporal schedule delete \
-    --schedule-id YourScheduleId
+temporal worker deployment delete-version \
+    --version YourDeploymentName.YourBuildID \
+    --skip-drainage          
 ```
-
-Removing a Schedule won't affect the Workflow Executions it started that are
-still running. To cancel or terminate these Workflow Executions, use `temporal
-workflow delete` with the `TemporalScheduledById` Search Attribute instead.
 
 Use the following options to change the behavior of this command.
 
 **Flags:**
 
-**--schedule-id**, **-s** _string_
+**--identity** _string_
 
-Schedule ID. Required.
+Identity of the user submitting this request.
+
+**--skip-drainage** _bool_
+
+Ignore the deletion requirement of not draining.
+
+**--version**, **-v** _string_
+
+Fully-qualified name for a Worker Deployment Version. Use the format `YourDeploymentName.YourBuildID`. Required.
 
 **Global Flags:**
 
@@ -576,23 +332,36 @@ Path to x509 private key. Can't be used with --tls-key-data.
 
 Override target TLS server name.
 
-## describe
+### describe
 
-Show a Schedule configuration, including information about past, current, and
-future Workflow runs:
++---------------------------------------------------------------------+
+| CAUTION: Worker Deployment is experimental. Deployment commands are |
+| subject to change.                                                  |
++---------------------------------------------------------------------+
+
+Describe properties of a Worker Deployment, such as the versions
+associated with it, routing information of new or existing tasks
+executed by this deployment, or its creation time.
 
 ```
-temporal schedule describe \
-    --schedule-id YourScheduleId
+temporal worker deployment describe [options]
+```
+
+For example, to describe a deployment `YourDeploymentName` in the default
+namespace:
+
+```
+temporal worker deployment describe \
+    --name YourDeploymentName
 ```
 
 Use the following options to change the behavior of this command.
 
 **Flags:**
 
-**--schedule-id**, **-s** _string_
+**--name**, **-d** _string_
 
-Schedule ID. Required.
+Name for a Worker Deployment. Required.
 
 **Global Flags:**
 
@@ -696,30 +465,38 @@ Path to x509 private key. Can't be used with --tls-key-data.
 
 Override target TLS server name.
 
-## list
+### describe-version
 
-Lists the Schedules hosted by a Namespace:
++---------------------------------------------------------------------+
+| CAUTION: Worker Deployment is experimental. Deployment commands are |
+| subject to change.                                                  |
++---------------------------------------------------------------------+
+
+Describe properties of a Worker Deployment Version, such as the task 
+queues polled by workers in this Deployment Version, or drainage
+information required to safely decommission workers, or user-provided
+metadata, or its creation/modification time.
 
 ```
-temporal schedule list \
-    --namespace YourNamespace
+temporal worker deployment describe-version [options]
+```
+
+For example, to describe a deployment version  in a deployment
+`YourDeploymentName`, with Build ID `YourBuildID`, and in the default
+namespace:
+
+```
+temporal worker deployment describe-version \
+    --version YourDeploymentName.YourBuildID
 ```
 
 Use the following options to change the behavior of this command.
 
 **Flags:**
 
-**--long**, **-l** _bool_
+**--version**, **-v** _string_
 
-Show detailed information.
-
-**--query**, **-q** _string_
-
-Filter results using given List Filter.
-
-**--really-long** _bool_
-
-Show extensive information in non-table form.
+Fully-qualified name for a Worker Deployment Version. Use the format `YourDeploymentName.YourBuildID`. Required.
 
 **Global Flags:**
 
@@ -823,49 +600,27 @@ Path to x509 private key. Can't be used with --tls-key-data.
 
 Override target TLS server name.
 
-## toggle
+### list
 
-Pause or unpause a Schedule by passing a flag with your desired state:
++---------------------------------------------------------------------+
+| CAUTION: Worker Deployment is experimental. Deployment commands are |
+| subject to change.                                                  |
++---------------------------------------------------------------------+
 
-```
-temporal schedule toggle \
-    --schedule-id "YourScheduleId" \
-    --pause \
-    --reason "YourReason"
-```
-
-and
+List existing Worker Deployments in the client's namespace.
 
 ```
-temporal schedule toggle
-    --schedule-id "YourScheduleId" \
-    --unpause \
-    --reason "YourReason"
+temporal worker deployment list [options]
 ```
 
-The `--reason` text updates the Schedule's `notes` field for operations
-communication. It defaults to "(no reason provided)" if omitted. This field is
-also visible on the Service Web UI.
+For example, listing Deployments in YourDeploymentNamespace:
+
+```
+temporal worker deployment list \
+    --namespace YourDeploymentNamespace
+```
 
 Use the following options to change the behavior of this command.
-
-**Flags:**
-
-**--pause** _bool_
-
-Pause the Schedule.
-
-**--reason** _string_
-
-Reason for pausing or unpausing the Schedule. (default "(no reason provided)")
-
-**--schedule-id**, **-s** _string_
-
-Schedule ID. Required.
-
-**--unpause** _bool_
-
-Unpause the Schedule.
 
 **Global Flags:**
 
@@ -969,26 +724,70 @@ Path to x509 private key. Can't be used with --tls-key-data.
 
 Override target TLS server name.
 
-## trigger
+### set-current-version
 
-Trigger a Schedule to run immediately:
++---------------------------------------------------------------------+
+| CAUTION: Worker Deployment is experimental. Deployment commands are |
+| subject to change.                                                  |
++---------------------------------------------------------------------+
+
+Set the Current Version for a Deployment.
+When a Version is current, Workers of that Deployment Version will receive
+tasks from new Workflows, and from existing AutoUpgrade Workflows that
+are running on this Deployment.
+
+If not all the expected Task Queues are being polled by Workers in the
+new Version the request will fail. To override this protection use
+`--ignore-missing-task-queues`. Note that this would ignore task queues
+in a deployment that are not yet discovered, leading to inconsistent task
+queue configuration.
 
 ```
-temporal schedule trigger \
-    --schedule-id "YourScheduleId"
+temporal worker deployment set-current-version [options]
 ```
+
+For example, to set the Current Version of a deployment
+`YourDeploymentName`, with a version with Build ID `YourBuildID`, and
+in the default namespace:
+
+```
+temporal worker deployment set-current-version \
+    --version YourDeploymentName.YourBuildID
+```
+
+The target of set-current-version can also be `__unversioned__`, which
+moves tasks to unversioned workers, but in this case we also need to
+specify the Deployment Name.
+
+```
+temporal worker deployment set-current-version \
+    --version __unversioned__ \
+    --deployment-name YourDeploymentName
+```  
 
 Use the following options to change the behavior of this command.
 
 **Flags:**
 
-**--overlap-policy** _string-enum_
+**--deployment-name** _string_
 
-Policy for handling overlapping Workflow Executions. Accepted values: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll. (default "Skip")
+Deployment name. Only needed when `--version` is `__unversioned__` or empty.
 
-**--schedule-id**, **-s** _string_
+**--identity** _string_
 
-Schedule ID. Required.
+Identity of the user submitting this request.
+
+**--ignore-missing-task-queues** _bool_
+
+Override protection to accidentally remove task queues.
+
+**--version**, **-v** _string_
+
+Fully-qualified name for a Worker Deployment Version. Use the format `YourDeploymentName.YourBuildID`. Required.
+
+**--yes**, **-y** _bool_
+
+Don't prompt to confirm set Current Version.
 
 **Global Flags:**
 
@@ -1092,152 +891,227 @@ Path to x509 private key. Can't be used with --tls-key-data.
 
 Override target TLS server name.
 
-## update
+### set-ramping-version
 
-Update an existing Schedule with new configuration details, including time
-specifications, action, and policies:
++---------------------------------------------------------------------+
+| CAUTION: Worker Deployment is experimental. Deployment commands are |
+| subject to change.                                                  |
++---------------------------------------------------------------------+
+
+Set the Ramping Version and Percentage for a Deployment.
+
+The Ramping Version can be set to a fully-qualified Version of the form
+`YourDeploymentName.YourBuildID`, or set to "__unversioned__", a special
+value that represents all the unversioned workers.
+
+The Ramping Percentage is a float with values in the range [0, 100].
+A value of 100 does not make the Ramping Version Current, use
+`set-current-version` instead.
+
+To remove a Ramping Version use the flag `--delete`.
+
+If not all the expected Task Queues are being polled by Workers in the
+new Ramping Version the request will fail. To override this protection use
+`--ignore-missing-task-queues`. Note that this would ignore task queues
+in a deployment that are not yet discovered, leading to inconsistent task
+queue configuration.
 
 ```
-temporal schedule update \
-    --schedule-id "YourScheduleId" \
-    --workflow-type "NewWorkflowType"
+temporal worker deployment set-ramping-version [options]
 ```
+
+For example, to set the Ramping Version of a deployment
+`YourDeploymentName`, with a version with Build ID `YourBuildID`, with
+10 percent of tasks redirected to this version, and
+using the default namespace:
+
+```
+temporal worker deployment set-ramping-version \
+    --version YourDeploymentName.YourBuildID
+    --percentage 10.0
+```
+
+And to remove that ramping:
+  
+```
+temporal worker deployment set-ramping-version \
+    --version YourDeploymentName.YourBuildID \
+    --delete
+```    
 
 Use the following options to change the behavior of this command.
 
 **Flags:**
 
-**--calendar** _string[]_
+**--delete** _bool_
 
-Calendar specification in JSON. For example: `{"dayOfWeek":"Fri","hour":"17","minute":"5"}`.
+Delete the Ramping Version.
 
-**--catchup-window** _duration_
+**--deployment-name** _string_
 
-Maximum catch-up time for when the Service is unavailable.
+Deployment name. Only needed when `--version` is `__unversioned__`.
 
-**--cron** _string[]_
+**--identity** _string_
 
-Calendar specification in cron string format. For example: `"30 12 * * Fri"`.
+Identity of the user submitting this request.
 
-**--end-time** _timestamp_
+**--ignore-missing-task-queues** _bool_
 
-Schedule end time.
+Override protection to accidentally remove task queues.
 
-**--execution-timeout** _duration_
+**--percentage** _float_
 
-Fail a WorkflowExecution if it lasts longer than `DURATION`. This time-out includes retries and ContinueAsNew tasks.
+Percentage of tasks redirected to the Ramping Version. Valid range [0,100].
 
-**--input**, **-i** _string[]_
+**--version**, **-v** _string_
 
-Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments.
+Fully-qualified name for a Worker Deployment Version. Use the format `YourDeploymentName.YourBuildID`. Required.
 
-**--input-base64** _bool_
+**--yes**, **-y** _bool_
 
-Assume inputs are base64-encoded and attempt to decode them.
+Don't prompt to confirm set Ramping Version.
 
-**--input-file** _string[]_
+**Global Flags:**
 
-A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments.
+**--address** _string_
 
-**--input-meta** _string[]_
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
-Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times.
+**--api-key** _string_
 
-**--interval** _string[]_
+API key for request.
 
-Interval duration. For example, 90m, or 60m/15m to include phase offset.
+**--codec-auth** _string_
 
-**--jitter** _duration_
+Authorization header for Codec Server requests.
 
-Max difference in time from the specification. Vary the start time randomly within this amount.
+**--codec-endpoint** _string_
 
-**--memo** _string[]_
+Remote Codec Server endpoint.
 
-Memo using 'KEY="VALUE"' pairs. Use JSON values.
+**--codec-header** _string[]_
 
-**--notes** _string_
+HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
 
-Initial notes field value.
+**--color** _string-enum_
 
-**--overlap-policy** _string-enum_
+Output coloring. Accepted values: always, never, auto. (default "auto")
 
-Policy for handling overlapping Workflow Executions. Accepted values: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll. (default "Skip")
+**--command-timeout** _duration_
 
-**--pause-on-failure** _bool_
+The command execution timeout. 0s means no timeout.
 
-Pause schedule after Workflow failures.
+**--env** _string_
 
-**--paused** _bool_
+Active environment name (`ENV`). (default "default")
 
-Pause the Schedule immediately on creation.
+**--env-file** _string_
 
-**--remaining-actions** _int_
+Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`.
 
-Total allowed actions. Default is zero (unlimited).
+**--grpc-meta** _string[]_
 
-**--run-timeout** _duration_
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
 
-Fail a Workflow Run if it lasts longer than `DURATION`.
+**--log-format** _string-enum_
 
-**--schedule-id**, **-s** _string_
+Log format. Accepted values: text, json. (default "text")
 
-Schedule ID. Required.
+**--log-level** _string-enum_
 
-**--schedule-memo** _string[]_
+Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. (default "info")
 
-Set schedule memo using `KEY="VALUE` pairs. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times.
+**--namespace**, **-n** _string_
 
-**--schedule-search-attribute** _string[]_
+Temporal Service Namespace. (default "default")
 
-Set schedule Search Attributes using `KEY="VALUE` pairs. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times.
+**--no-json-shorthand-payloads** _bool_
 
-**--search-attribute** _string[]_
+Raw payload output, even if the JSON option was used.
 
-Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times.
+**--output**, **-o** _string-enum_
 
-**--start-time** _timestamp_
+Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
-Schedule start time.
+**--time-format** _string-enum_
 
-**--static-details** _string_
+Time format. Accepted values: relative, iso, raw. (default "relative")
 
-Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines.
+**--tls** _bool_
 
-:::note
+Enable base TLS encryption. Does not have additional options like mTLS or client certs.
 
-Option is experimental.
+**--tls-ca-data** _string_
 
-:::
+Data for server CA certificate. Can't be used with --tls-ca-path.
 
-**--static-summary** _string_
+**--tls-ca-path** _string_
 
-Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line.
+Path to server CA certificate. Can't be used with --tls-ca-data.
 
-:::note
+**--tls-cert-data** _string_
 
-Option is experimental.
+Data for x509 certificate. Can't be used with --tls-cert-path.
 
-:::
+**--tls-cert-path** _string_
 
-**--task-queue**, **-t** _string_
+Path to x509 certificate. Can't be used with --tls-cert-data.
 
-Workflow Task queue. Required.
+**--tls-disable-host-verification** _bool_
 
-**--task-timeout** _duration_
+Disable TLS host-name verification.
 
-Fail a Workflow Task if it lasts longer than `DURATION`. This is the Start-to-close timeout for a Workflow Task. (default "10s")
+**--tls-key-data** _string_
 
-**--time-zone** _string_
+Private certificate key data. Can't be used with --tls-key-path.
 
-Interpret calendar specs with the `TZ` time zone. For a list of time zones, see: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones.
+**--tls-key-path** _string_
 
-**--type** _string_
+Path to x509 private key. Can't be used with --tls-key-data.
 
-Workflow Type name. Required.
+**--tls-server-name** _string_
 
-**--workflow-id**, **-w** _string_
+Override target TLS server name.
 
-Workflow ID. If not supplied, the Service generates a unique ID.
+### update-metadata-version
+
++---------------------------------------------------------------------+
+| CAUTION: Worker Deployment is experimental. Deployment commands are |
+| subject to change.                                                  |
++---------------------------------------------------------------------+
+Update metadata associated with a Worker Deployment Version.
+
+For example:
+
+```
+ temporal worker deployment update-metadata-version \
+    --version YourDeploymentName.YourBuildID \
+    --metadata bar=1 \
+    --metadata foo=true
+```
+
+The current metadata is also returned with `describe-version`:
+  
+```
+ temporal worker deployment describe-version \
+    --version YourDeploymentName.YourBuildID \
+```      
+
+Use the following options to change the behavior of this command.
+
+**Flags:**
+
+**--metadata** _string[]_
+
+Set deployment metadata using `KEY="VALUE"` pairs. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times.
+
+**--remove-entries** _string[]_
+
+Keys of entries to be deleted from metadata. Can be passed multiple times.
+
+**--version**, **-v** _string_
+
+Fully-qualified name for a Worker Deployment Version. Use the format `YourDeploymentName.YourBuildID`. Required.
 
 **Global Flags:**
 
