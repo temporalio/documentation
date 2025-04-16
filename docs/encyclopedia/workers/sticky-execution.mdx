@@ -20,22 +20,14 @@ Workers cache the state of the Workflow they execute.
 To make this caching more effective, Temporal employs a performance optimization known as "Sticky Execution", which directs Workflow Tasks to the same Worker that previously processed tasks for a specific Workflow Execution.
 
 ### How Sticky Execution Works
-**1. Initial Workflow Task Assignment**
-
 Once Workflow Execution begins, the Temporal Service schedules a Workflow Task and puts it into a Task Queue with the name you specify. 
 Any Worker that polls that Task Queue is eligible to accept the Task and begin executing the Workflow.
-
-**2. Sticky Queue Creation**
 
 The Worker that picks up this Workflow Task will continue polling the original Task Queue, but will also begin polling an additional Task Queue, which the Temporal Service shares exclusively with that specific Worker. 
 This queue, which has an automatically-generated name, is known as a **Sticky Queue**.
 
-**3. Subsequent Task Routing**
-
 The Worker caches the Workflow state in memory, which improves performance by reducing the need to reconstruct the Workflow from its Event History for every Task.
 As the Workflow Execution progresses, the Temporal Service schedules additional Workflow Tasks into this Worker-specific Sticky Queue.
-
-**4. Sticky Timeout Handling, Task Failure Handling, and Fallback Mechanism**
 
 If the Worker fails to start a Workflow Task in the Sticky Queue shortly after it's scheduled (within five seconds by default), the Temporal Service disables stickiness for that Workflow Execution.
 When stickiness is disabled, the Temporal Service reschedules the Workflow Task in the original queue, allowing any Worker to pick it up and continue the Workflow Execution.
