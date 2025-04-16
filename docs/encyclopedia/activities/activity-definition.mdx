@@ -53,8 +53,21 @@ Activity Definitions are named and referenced in code by their [Activity Type](/
 
 Temporal recommends that Activities be idempotent.
 
-Idempotent means that performing an operation multiple times has the same result as performing it once.
+Idempotence means that performing an operation multiple times has the same result as performing it once.
 In the context of Temporal, Activities should be designed to be safely executed multiple times without causing unexpected or undesired side effects.
+
+Consider the power button on your laptop. When you press it, the state of the machine is changed from one to another, from on to off, and vice versa. This is not an idempotent operation. Each invocation leads to a different state. However, imagine that you modified your laptop to have separate on and off buttons. Pressing the On button multiple times would have no effect beyond the initial invocation as the laptop is already on. This action is considered idempotent.
+
+<Components.CaptionedImage
+    src="/diagrams/idempotence-image.png"
+    />
+
+Idempotency is an important design consideration in software applications as well. You have probably encountered idempotent operations in your work already.
+
+A few examples where idempotent operations are vital would be:
+
+- **Infrastructure-as-Code (IaC) tool** - When provisioning infrastructure in the cloud, it's crucial to conserve resources. An IaC system that was not designed with idempotence in mind could lead to high costs if the function to provision a new server was accidentally invoked multiple times. An IaC tool that is designed with idempotence in mind ensures that multiple invocations of the tool does not lead to unintended instances being created.
+- **Payment processing system** - It's essential for a payment processing system to charge the customer only once for a given purchase. If the system was not designed to be idempotent, duplicate requests would result in extra charges and unhappy customers. A payment processing system that is designed to be idempotent ensures customers are not charged multiple times for the same transaction, preventing financial discrepancies.
 
 :::info
 
@@ -64,13 +77,33 @@ By design, completed Activities will not re-execute as part of a [Workflow Repla
 
 An Activity is idempotent if multiple [Activity Task Executions](/tasks#activity-task-execution) do not change the state of the system beyond the first Activity Task Execution.
 
-We recommend using idempotency keys for critical side effects.
-
 The lack of idempotency might affect the correctness of your application but does not affect the Temporal Platform.
 In other words, lack of idempotency doesn't lead to a platform error.
 
 In some cases, whether something is idempotent doesn't affect the correctness of an application.
 For example, if you have a monotonically incrementing counter, you might not care that retries increment the counter because you don't care about the actual value, only that the current value is greater than a previous value.
+
+When implementing business logic in Temporal, it is strongly recommended that you make your Activities idempotent. Because Activities have the possibility of being retried, these functions may be executed more than once. A non-idempotent Activity could adversely affect the state of the system.
+
+Activities are an atomic unit of execution within Temporal. They are invoked and either complete successfully or not. Take this into consideration when you design your Activities.
+
+For example, consider an Activity that has the following three steps:
+
+1. Performs a database lookup
+2. Makes a call to a microservice with parameters retrieved from the database
+3. Write the result of the microservice call to the filesystem
+
+Imagine that the first two steps succeed, but the third step fails due to a permissions issue. During retry, the entire Activity—and therefore each of the three steps—is executed again. Because of this, it is often a good practice to make your Activities more granular. In this case, it could be better to have three Activities, one for each step. This way, only the step that failed will be executed again. However, you must balance this against the potential for a larger Event History, since there would now be three Activity Executions instead of one.
+
+Idempotence for Activities is also important due to a particular edge case inherent in distributed computing. Consider a scenario in which a Worker polls the Temporal Service, accepts the Activity Task, and begins executing the Activity. The Activity function completes successfully, but the Worker crashes just before it notifies the Temporal Service. In this case, the Event History won’t reflect the successful completion of the Task, so the Activity will be retried. If the Activity is not idempotent, this could have negative consequences, such as duplicate charges in a payment processing scenario.
+
+For an Activity with a Retry Policy that permits retries, Temporal guarantees that the Activity will be observed as completed exactly once. However, the Activity may be executed multiple times and may even partially complete more than once during this process. This could lead to a scenario where certain parts of the Activity are executed multiple times before a successful execution is completed.
+
+You can achieve idempotency in your application through the use of unique identifiers, known as idempotency keys, which are used to detect duplicate requests. These are enforced by the service you are calling from your Activity, not by the Activity itself.
+
+For example, the APIs provided by most payment processors allow the client to include an idempotency key with the request. When the payment service receives a request, it checks a database to determine whether there has already been a request with this key. If so, the duplicate request is ignored and does not result in another charge. If not, then it writes a new record to the database with this key, allowing it to identify duplicate requests in the future.
+
+In Temporal, the request to the payment service would be made from within an Activity. You can use a combination of the Workflow Run ID and the Activity ID as an idempotency key since this is guaranteed to be consistent across retry attempts but unique among Workflow Executions.
 
 For more information about idempotency in Temporal, see the following post:
 
