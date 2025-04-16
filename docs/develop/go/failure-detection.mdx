@@ -46,9 +46,9 @@ Available timeouts are:
 workflowOptions := client.StartWorkflowOptions{
   // ...
   // Set Workflow Timeout duration
-  WorkflowExecutionTimeout: time.Hours * 24 * 365 * 10,
-  // WorkflowRunTimeout: time.Hours * 24 * 365 * 10,
-  // WorkflowTaskTimeout: time.Second * 10,
+  WorkflowExecutionTimeout: 24 * 365 * 10 * time.Hour,
+  // WorkflowRunTimeout: 24 * 365 * 10 * time.Hour,
+  // WorkflowTaskTimeout: 10 * time.Second,
   // ...
 }
 workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
