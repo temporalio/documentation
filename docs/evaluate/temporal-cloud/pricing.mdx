@@ -88,11 +88,11 @@ They track billable operations within the Temporal Cloud Service, such as starti
 **WORKFLOWS**
 
 - **Workflow started**.
-  Occurs via client start, client [Signal-With-Start](/sending-messages#signal-with-start), [Continue-As-New](/workflows#continue-as-new), or [Child Workflow](/child-workflows) start.
+  Occurs via client start, client [Signal-With-Start](/sending-messages#signal-with-start), [Continue-As-New](/workflow-execution/continue-as-new), or [Child Workflow](/child-workflows) start.
   If a Workflow start fails, an Action is not recorded.
 - **Workflow reset**.
   Occurs when a [Workflow](/workflows) is reset.
-  (Actions that occur before a [Reset](/workflows#reset) are counted even if they are no longer visible in [Event History](/workflows#event-history).)
+  (Actions that occur before a [Reset](/workflow-execution/event#reset) are counted even if they are no longer visible in [Event History](/workflow-execution/event#event-history).)
 - **Timer started**.
   Includes implicit Timers that are started by a Temporal SDK when timeouts are set, such as `AwaitWithTimeout` in Go or `condition` in TypeScript.
 - **Search Attribute upsert requested**.
@@ -108,15 +108,15 @@ They track billable operations within the Temporal Cloud Service, such as starti
   An Action occurs for every successful [Update](/sending-messages#sending-updates) and every [rejected](/handling-messages#update-validators) Update.
   De-duplicated Updates that share an Update ID do _not_ count as an Action.
 - **Side Effect recorded**.
-  For a mutable [Side Effect](/workflows#side-effect), an Action occurs only when the value changes.
+  For a mutable [Side Effect](/workflow-execution/event#side-effect), an Action occurs only when the value changes.
   (Be aware that some SDKs don't support Side Effects.)
 
 **CHILD WORKFLOWS**
 
-- **Child Workflows spawned**.
-  The parent Workflow spawning a Child Workflow results in one Action.
-- **Child Workflows executed**.
-  Execution of the Child Workflow results in one Action.
+- **Start Child Workflow Execution initiated**.
+  When the parent Workflow durably records the intent to start a Child Workflow, it results in one Action.
+- **Child Workflow Execution attempted**.
+  When the server attempts to start the Child Workflow, it results in one Action.
 
 **ACTIVITIES**
 
@@ -136,7 +136,7 @@ They track billable operations within the Temporal Cloud Service, such as starti
 
 **SCHEDULES**
 
-[Schedules](/workflows#schedule) allows you to "schedule" a Workflow to start at a particular time.
+[Schedules](/schedule) allows you to "schedule" a Workflow to start at a particular time.
 Each execution of a Schedule accrues three actions:
 
 - **Schedule Start**.
@@ -168,7 +168,7 @@ Each execution of a Schedule accrues three actions:
 **How Workflow Storage works**
 
 A Workflow's execution might exist for a few seconds, a day, month, or even forever.
-The Temporal Service stores the Workflow Execution's [Event History](/workflows#event-history).
+The Temporal Service stores the Workflow Execution's [Event History](/workflow-execution/event#event-history).
 Under this framework, a Workflow Execution has only two states, open (Active Storage) or closed (Retained Storage).
 
 - _Active Storage_ measures the amount of storage used by active Workflows.

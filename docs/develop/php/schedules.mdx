@@ -21,7 +21,7 @@ This page shows how to do the following:
 
 ## How to use Start Delay {#start-delay}
 
-Use the Workflow [Start Delay](/workflows#delay-workflow-execution) functionality if you need to delay the execution of the Workflow without the need for regular launches.
+Use the Workflow [Start Delay](/workflow-execution/timers-delays) functionality if you need to delay the execution of the Workflow without the need for regular launches.
 Here you simply specify the time to wait before dispatching the first Workflow task.
 
 ```php
@@ -37,12 +37,12 @@ $workflowClient->start($workflow, 'Hello world!');
 
 :::caution Cron support is not recommended
 
-We recommend using [Schedules](https://docs.temporal.io/workflows#schedule) instead of Cron Jobs.
+We recommend using [Schedules](https://docs.temporal.io/schedule) instead of Cron Jobs.
 Schedules were built to provide a better developer experience, including more configuration options and the ability to update or pause running Schedules.
 
 :::
 
-A [Temporal Cron Job](/workflows#temporal-cron-job) is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
+A [Temporal Cron Job](/cron-job) is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
 
 A Cron Schedule is provided as an option when the call to spawn a Workflow Execution is made.
 

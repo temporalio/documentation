@@ -16,7 +16,7 @@ This reference lists possible [Workflow Task](/tasks#workflow-task) errors and h
 
 > For other types of errors, see [Temporal Failures](https://docs.temporal.io/kb/failures).
 
-Each of the below errors corresponds with a [WorkflowTaskFailedCause](https://api-docs.temporal.io/#temporal.api.enums.v1.WorkflowTaskFailedCause), which appears in [Events](/workflows#event) under `workflow_task_failed_event_attributes`.
+Each of the below errors corresponds with a [WorkflowTaskFailedCause](https://api-docs.temporal.io/#temporal.api.enums.v1.WorkflowTaskFailedCause), which appears in [Events](/workflow-execution/event#event) under `workflow_task_failed_event_attributes`.
 
 ## Bad Cancel Timer Attributes {#bad-cancel-timer-attributes}
 
@@ -63,7 +63,7 @@ This error indicates that the [Workflow Task](/tasks#workflow-task) failed to va
 These attributes are either unset or exceeding size limits.
 
 Reset any unset and empty attributes.
-Adjust the size of the [Memo](/workflows#memo) or payload to fit within the system's limits.
+Adjust the size of the [Memo](/workflow-execution#memo) or payload to fit within the system's limits.
 
 ## Bad Record Marker Attributes {#bad-record-marker-attributes}
 
@@ -78,7 +78,7 @@ This error either indicates the possibility of unset attributes for [RequestCanc
 Update the [Temporal SDK](/encyclopedia/temporal-sdks) to the most recent release.
 Reset any unset attributes before retrying the [Workflow Task](/tasks#workflow-task).
 
-If you continue to see this error, review your code for [nondeterministic causes](/workflows#non-deterministic-change).
+If you continue to see this error, review your code for [nondeterministic causes](/workflow-definition#non-deterministic-change).
 
 ## Bad Request Cancel External Workflow Execution Attributes {#bad-request-cancel-external-workflow-execution}
 
@@ -135,7 +135,7 @@ Make sure that [Search Attribute](/search-attribute) validation is performed aft
 
 ## Bad Start Timer Attributes {#bad-start-timer-attributes}
 
-This error indicates that the scheduled [Event](/workflows#event) is missing a Timer Id.
+This error indicates that the scheduled [Event](/workflow-execution/event#event) is missing a Timer Id.
 
 {/* TODO add Timer Id as anchor for term and link to it */}
 
@@ -151,7 +151,7 @@ This error indicates that the [Worker](/workers) deployment returned a bad binar
 
 {/* TODO: add link to Workflow Update page when written */}
 
-This error indicates that a [Workflow Execution](/workflows#workflow-execution) tried to complete before receiving an Update.
+This error indicates that a [Workflow Execution](/workflow-execution) tried to complete before receiving an Update.
 
 `BadUpdate` can happen when a [Worker](/workers#worker) generates a [Workflow Task Completed](/references/events#workflowtaskcompleted) message with missing fields or an invalid Update response format.
 
@@ -194,7 +194,7 @@ A retry will be scheduled if the error is recoverable.
 
 ## Nondeterminism Error {#non-deterministic-error}
 
-The [Workflow Task](/tasks#workflow-task) failed due to a [nondeterminism error](/workflows#non-deterministic-change).
+The [Workflow Task](/tasks#workflow-task) failed due to a [nondeterminism error](/workflow-definition#non-deterministic-change).
 
 {/* TODO: info */}
 
@@ -303,6 +303,6 @@ The Workflow may have been picked up by a different [Worker](/workers#worker).
 
 ## Workflow Worker Unhandled Failure {#workflow-worker-unhandled-failure}
 
-This error indicates that the [Workflow Task](/tasks#workflow-task) encountered an unhandled failure from the [Workflow Definition](/workflows#workflow-definition).
+This error indicates that the [Workflow Task](/tasks#workflow-task) encountered an unhandled failure from the [Workflow Definition](/workflow-definition).
 
 {/* TODO: more info needed */}

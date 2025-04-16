@@ -58,10 +58,12 @@ Set up Private Service Connect with Temporal Cloud with these steps:
 
   - For **Target service**, fill in the **Service name** with the Private Service Connect Service Name for the region youâ€™re trying to connect to:
 
-      | Region                 | Private Service Connect Service Name                                                      |
-      | ---------------------- | ----------------------------------------------------------------------------------------- |
-      | `asia-south1`          | `projects/prod-d5spc2sfeshws33bg33vwdef7/regions/asia-south1/serviceAttachments/pl-7w7tw` |
-      | `us-west1   `          | `projects/prod-rbe76zxxzydz4cbdz2xt5b59q/regions/us-west1/serviceAttachments/pl-94w0x`    |
+      | Region         | Private Service Connect Service Name                                                       |
+      | -------------- | ------------------------------------------------------------------------------------------ |
+      | `asia-south1`  | `projects/prod-d5spc2sfeshws33bg33vwdef7/regions/asia-south1/serviceAttachments/pl-7w7tw`  |
+      | `europe-west3` | `projects/prod-kwy7d4faxp6qgrgd9x94du36g/regions/europe-west3/serviceAttachments/pl-acgsh` |
+      | `us-east4`     | `projects/prod-y399cvr9c2b43es2w3q3e4gvw/regions/us-east4/serviceAttachments/pl-8awsy`     |
+      | `us-west1   `  | `projects/prod-rbe76zxxzydz4cbdz2xt5b59q/regions/us-west1/serviceAttachments/pl-94w0x`     |
 
   - For **Endpoint name**, enter a unique identifier to use for this endpoint. It could be for instance `temporal-api` or `temporal-api-<namespace>` if you want a different endpoint per namespace.
   - For **Network** and **Subnetwork**, choose the network and subnetwork where you want to publish your endpoint.
@@ -110,3 +112,27 @@ When connecting, you must override the TLS server name to target your Namespaceâ
   ```
 
 - Temporal SDKs, by setting the endpoint server address argument to the Private Service Connect endpoint (`<IP address of the PSC endpoint>:7233`) and using the TLS configuration options to override the TLS server name.
+
+When using [API keys for namespace authentication](/cloud/api-keys#namespace-authentication), the TLS server name must be set to the Namespace's gRPC endpoint (`<region>.<cloud_provider>.api.temporal.io`) using one of the following methods:
+
+- The Temporal CLI, using `--tls-server-name` parameter to override the TLS server name and the `--tls` flag to enforce the use of TLS. For example:
+
+  ```
+  temporal workflow count \
+      --address <IP address of the PSC endpoint>:7233 \
+      --namespace <namespace>.<account> \
+      --api-key <api_key> \
+      --tls-server-name <region>.<cloud_provider>.api.temporal.io \
+      --tls
+  ```
+
+- Non-Temporal tools like grpcURL, setting the `authorization` and `temporal-namespace` headers, and the `-servername` parameter to override the TLS server name. For example:
+
+  ```
+  grpcurl \
+      -H "authorization: Bearer <api_key>" \
+      -H "temporal-namespace: <namespace>.<account>" \
+      -servername <region>.<cloud_provider>.api.temporal.io \
+      <IP address of the PSC endpoint>:7233 \
+      temporal.api.workflowservice.v1.WorkflowService/GetSystemInfo
+  ```

@@ -292,24 +292,36 @@ module.exports = {
             id: "production-deployment/cloud/index",
           },
           items: [
-            "production-deployment/cloud/get-started",
             {
               type: "category",
-              label: "Account setup",
-              collapsed: true,
+              label: "Get started with Cloud",
+              collapsed: false,
               link: {
                 type: "doc",
-                id: "production-deployment/cloud/account-setup/index",
+                id: "production-deployment/cloud/get-started/index",
               },
               items: [
-                "production-deployment/cloud/account-setup/certificates",
-                "production-deployment/cloud/api-keys",
-                "production-deployment/cloud/account-setup/namespaces",
-                "production-deployment/cloud/account-setup/users",
+                  "production-deployment/cloud/get-started/certificates",
+                  "production-deployment/cloud/get-started/api-keys",
+                  "production-deployment/cloud/get-started/namespaces",
+                  "production-deployment/cloud/get-started/users",
+                  "production-deployment/cloud/get-started/billing-and-cost",
+                  "production-deployment/cloud/get-started/service-accounts",
+                  {
+                    type: "category",
+                    label: "How-to guides",
+                    collapsed: true,
+                    link: {
+                      type: "doc",
+                      id: "production-deployment/cloud/get-started/how-to-guides/index",
+                    },
+                    items: [
+                      "production-deployment/cloud/get-started/how-to-guides/deploy-workers-to-aws-eks",
+                    ],
+                  },
+
               ],
             },
-            "production-deployment/cloud/billing-and-cost",
-            "production-deployment/cloud/service-accounts",
             {
               type: "category",
               label: "Metrics",
@@ -323,7 +335,6 @@ module.exports = {
                 "production-deployment/cloud/metrics/reference",
                 "production-deployment/cloud/metrics/datadog",
                 "production-deployment/cloud/metrics/prometheus-grafana",
-                "production-deployment/cloud/metrics/performance-bottlenecks",
               ],
             },
             {
@@ -524,6 +535,7 @@ module.exports = {
             "troubleshooting/blob-size-limit-error",
             "troubleshooting/deadline-exceeded-error",
             "troubleshooting/last-connection-error",
+            "troubleshooting/performance-bottlenecks"
           ],
         },
         {
@@ -537,7 +549,37 @@ module.exports = {
           items: [
             "encyclopedia/temporal",
             "encyclopedia/temporal-sdks",
-            "encyclopedia/workflows",
+            {
+              type: "category",
+              label: "Workflows",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "encyclopedia/workflow/workflow-overview",
+              },
+              items: [
+                "encyclopedia/workflow/workflow-definition",
+                {
+                  type: "category",
+                  label: "Workflow Execution",
+                  collapsed: true,
+                  link: {
+                    type: "doc",
+                    id: "encyclopedia/workflow/workflow-execution/workflow-execution",
+                  },
+                  items: [
+                    "encyclopedia/workflow/workflow-execution/workflowid-runid",
+                    "encyclopedia/workflow/workflow-execution/event",
+                    "encyclopedia/workflow/workflow-execution/continue-as-new",
+                    "encyclopedia/workflow/workflow-execution/limits",
+                    "encyclopedia/workflow/workflow-execution/timers-delays",
+                  ],
+                },
+                "encyclopedia/workflow/dynamic-handler",
+                "encyclopedia/workflow/workflow-schedule",
+                "encyclopedia/workflow/cron-job",
+              ],
+            },
             {
               type: "category",
               label: "Activities",

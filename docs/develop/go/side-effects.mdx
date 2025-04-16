@@ -13,7 +13,7 @@ description: Side Effects in Workflows execute non-deterministic code, storing r
 ---
 
 Side Effects are used to execute non-deterministic code, such as generating a UUID or a random number, without compromising deterministic in the Workflow.
-This is done by storing the non-deterministic results of the Side Effect into the Workflow [Event History](/workflows#event-history).
+This is done by storing the non-deterministic results of the Side Effect into the Workflow [Event History](/workflow-execution/event#event-history).
 
 A Side Effect does not re-execute during a Replay. Instead, it returns the recorded result from the Workflow Execution Event History.
 
@@ -27,7 +27,7 @@ You shouldn't modify the Workflow state inside a Side Effect function, because i
 
 :::
 
-Use the [`SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) function from the `go.temporal.io/sdk/workflow` package to execute a [Side Effect](/workflows#side-effect) directly in your Workflow.
+Use the [`SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) function from the `go.temporal.io/sdk/workflow` package to execute a [Side Effect](/workflow-execution/event#side-effect) directly in your Workflow.
 
 Pass it an instance of `context.Context` and the function to execute.
 

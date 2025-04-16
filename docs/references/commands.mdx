@@ -10,22 +10,22 @@ tags:
   - Reference
 ---
 
-A [Command](/workflows#command) is a requested action issued by a [Worker](/workers#worker) to the [Temporal Service](/temporal-service) after a [Workflow Task Execution](/tasks#workflow-task-execution) completes.
+A [Command](/workflow-execution#command) is a requested action issued by a [Worker](/workers#worker) to the [Temporal Service](/temporal-service) after a [Workflow Task Execution](/tasks#workflow-task-execution) completes.
 
 The following is a complete list of possible Commands.
 
 ### CompleteWorkflowExecution
 
 This Command is triggered when the Workflow Function Execution returns.
-It indicates to the Temporal Service that the [Workflow Execution](/workflows#workflow-execution) is complete.
-The corresponding [Event](/workflows#event) for this Command is one of the few Events that will be the last in a Workflow Execution [Event History](/workflows#event-history).
+It indicates to the Temporal Service that the [Workflow Execution](/workflow-execution) is complete.
+The corresponding [Event](/workflow-execution/event#event) for this Command is one of the few Events that will be the last in a Workflow Execution [Event History](/workflow-execution/event#event-history).
 
 - Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
 - Corresponding Event: [WorkflowExecutionCompleted](/references/events#workflowexecutioncompleted)
 
 ### ContinueAsNewWorkflowExecution
 
-This Command is triggered when there is a call to [Continue-As-New](/workflows#continue-as-new) from within the [Workflow](/workflows).
+This Command is triggered when there is a call to [Continue-As-New](/workflow-execution/continue-as-new) from within the [Workflow](/workflows).
 The corresponding Event for this Command is one of the few Events that will be the last in a Workflow Execution Event History.
 
 - Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
@@ -131,7 +131,7 @@ This Command is triggered by a call to execute an Nexus Operation in the caller 
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [NexusOperationScheduled](/references/events#nexusoperationscheduled)
 
-By default, you can't schedule more than 30 Nexus Operations concurrently, see [Limits](/workflows#workflow-execution-nexus-operation-limits) for details.
+By default, you can't schedule more than 30 Nexus Operations concurrently, see [Limits](/workflow-execution/limits#workflow-execution-nexus-operation-limits) for details.
 
 ### CancelNexusOperation
 

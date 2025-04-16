@@ -20,7 +20,7 @@ tags:
 
 import { CaptionedImage } from '@site/src/components';
 
-The Temporal Platform requires that Workflow code is [deterministic](/workflows#deterministic-constraints).
+The Temporal Platform requires that Workflow code is [deterministic](/workflow-definition#deterministic-constraints).
 Because of that requirement, the Temporal TypeScript SDK offers two dedicated versioning features.
 
 - [Workflow Patching APIs](#patching)
@@ -56,7 +56,7 @@ Although versioning the Task Queue is usually easier, we can also create a new v
 
 ## How to patch Workflow code in TypeScript {#patching}
 
-The TypeScript SDK Patching API lets you change Workflow Definitions without causing [non-deterministic behavior](/workflows#non-deterministic-change) in current long-running Workflows.
+The TypeScript SDK Patching API lets you change Workflow Definitions without causing [non-deterministic behavior](/workflow-definition#non-deterministic-change) in current long-running Workflows.
 
 ### Do I need to Patch?
 
@@ -107,7 +107,7 @@ export async function yourWorkflow(value: number): Promise<number> {
 
 ### Migrating Workflows in Patches
 
-Workflow code has to be [deterministic](/workflows#deterministic-constraints) by taking the same code path when replaying History Events.
+Workflow code has to be [deterministic](/workflow-definition#deterministic-constraints) by taking the same code path when replaying History Events.
 Any Workflow code change that affects the order in which commands are generated breaks this assumption.
 
 So we have to keep both the old and new code when migrating Workflows while they are still running:
