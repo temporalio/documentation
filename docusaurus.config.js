@@ -62,6 +62,13 @@ module.exports = async function createConfigAsync() {
       //   textColor: "#ffffff",
       //   isCloseable: true,
       // },
+       announcementBar: {
+         id: "new_feedback_widget",
+         content: '<b>Tell us how we\'re doing. Our site has new on-page feedback.</b>',
+         backgroundColor: "#312e81",
+         textColor: "#ffffff",
+         isCloseable: true,
+       },
       navbar: {
         hideOnScroll: false,
         logo: {
