@@ -360,6 +360,7 @@ Use `ExecuteUpdateWithStartAsync` to start the Update and wait for the result in
 Alternatively, use `StartUpdateWithStartAsync` to start the Update and receive a `WorkflowUpdateHandle`, and then use `await updateHandle.GetResultAsync()` to retrieve the result from the Update.
 
 These calls return once the requested Update wait stage has been reached, or when the request times out.
+
 - You will need to provide a `WithStartWorkflowOperation` to define the Workflow that will be started if necessary, and its arguments.
 - You must specify an [IdConflictPolicy](/workflow-execution/workflowid-runid#workflow-id-conflict-policy) when creating the `WithStartWorkflowOperation`.
   Note that a `WithStartWorkflowOperation` can only be used once.
