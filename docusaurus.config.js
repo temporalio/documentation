@@ -62,6 +62,13 @@ module.exports = async function createConfigAsync() {
       //   textColor: "#ffffff",
       //   isCloseable: true,
       // },
+       announcementBar: {
+         id: "new_feedback_widget",
+         content: '<b>How are we doing? Try our new on-page feedback.</b>',
+         backgroundColor: "#312e81",
+         textColor: "#ffffff",
+         isCloseable: true,
+       },
       navbar: {
         hideOnScroll: false,
         logo: {
@@ -312,6 +319,15 @@ module.exports = async function createConfigAsync() {
           },
         };
       },
+      [
+        'docusaurus-pushfeedback',{
+          project: '6c1ptrxbky',
+          privacyPolicyText: 'false',
+          buttonPosition: 'center-right',
+          modalPosition: 'sidebar-right',
+          modalTitle: 'Feedback'
+        }
+      ]
     ],
   };
 
