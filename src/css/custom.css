@@ -40,8 +40,11 @@ html[data-theme="dark"] {
   --alert--competency-background: #00474a;
   --alert--copycode-background: #29005e;
   --alert--info-background: #353536;
-  --feedback-primary-color: #fff;
-  --feedback-white-color: #999;
+  --feedback-primary-color: #fff; /* title on button AND submit button color*/
+  --feedback-light-color: #fff; /* text entry field color */
+  --feedback-dark-color: #ccc; /* overall backsplash color */
+  --feedback-text-color: #444; /* helpful and powered-by */
+  --feedback-white-color: #000; /* other text colors AND main-page button background color */
   /* --ifm-menu-color-active: var(--ifm-color-primary-lighter);
   --ifm-navbar-link-hover-color: var(--ifm-color-primary-lighter);
   --ifm-toc-link-color: #ffffff;
