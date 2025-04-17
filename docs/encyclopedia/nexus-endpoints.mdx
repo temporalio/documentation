@@ -42,6 +42,7 @@ A [Temporal Nexus Endpoint](/glossary#nexus-endpoint) is a reverse proxy for [Ne
 It is not a general purpose L7 reverse proxy like NGINX which can route arbitrary HTTP requests to different upstream targets.
 A Nexus Endpoint currently supports routing Nexus requests to a single upstream target.
 The Temporal Nexus [EndpointSpec](https://github.com/temporalio/api/blob/2a5b3951e71565e28628edea1b3d88d69ed26607/temporal/api/nexus/v1/message.proto#L170) has two [Endpoint target types](https://github.com/temporalio/api/blob/2a5b3951e71565e28628edea1b3d88d69ed26607/temporal/api/nexus/v1/message.proto#L185):
+
 - Worker: route Nexus requests to a target Namespace and Task Queue.
 - External (experimental): route Nexus requests to an external target [Nexus RPC endpoint](https://github.com/nexus-rpc/api/blob/main/SPEC.md) with experimental support in `temporal operator nexus create endpoint` for `--target-url` which may be used with the Nexus Registry in a self-hosted Temporal Service.
 

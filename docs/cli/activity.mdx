@@ -137,12 +137,12 @@ The command will return the new Activity options for an [Activity Execution](/ac
 Use the following options to change the behavior of this command.
 
 Routing options:
+
 - [--activity-id](/cli/cmd-options#activity-id)
 - [--activity-type](/cli/cmd-options#activity-type)
 - [--workflow-id](/cli/cmd-options#workflow-id)
 - [--run-id](/cli/cmd-options#run-id)
 - [--namespace](/cli/cmd-options#namespace)
-
 
 You can update the following Activity options:
 
@@ -157,6 +157,7 @@ You can update the following Activity options:
 - [--retry-maximum-attempts](/cli/cmd-options#retry-maximum-attempts)
 
 Other options:
+
 - [--identity](/cli/cmd-options#identity)
 - [--tls](/cli/cmd-options#tls)
 - [--tls-ca-path](/cli/cmd-options#tls-ca-path)
@@ -179,12 +180,13 @@ The `temporal activity pause` command pauses an [Activity Execution](/activity-e
 Pausing the Activity can be undone by using the `temporal activity unpause` command.
 
 Pausing an Activity means:
-* If the Activity is currently waiting for a retry or is running and subsequently fails, it will not be rescheduled until it is unpaused.
-* If the Activity is already paused, calling this method will have no effect.
-* If the Activity is running and finishes successfully, the Activity will be completed.
-* If the Activity is running and finishes with failure:
-  * If no retries remain, the Activity will be completed.
-  * If retries remain, the Activity will be paused.
+
+- If the Activity is currently waiting for a retry or is running and subsequently fails, it will not be rescheduled until it is unpaused.
+- If the Activity is already paused, calling this method will have no effect.
+- If the Activity is running and finishes successfully, the Activity will be completed.
+- If the Activity is running and finishes with failure:
+  - If no retries remain, the Activity will be completed.
+  - If retries remain, the Activity will be paused.
 
 If Activity Type is provided and multiple pending Activities of the provided type exist, all of them will be paused.
 
@@ -195,6 +197,7 @@ This command returns a `NotFound` error if there is no pending Activity with the
 Use the following options to change the behavior of this command.
 
 Routing options:
+
 - [--activity-id](/cli/cmd-options#activity-id)
 - [--activity-type](/cli/cmd-options#activity-type)
 - [--workflow-id](/cli/cmd-options#workflow-id)
@@ -202,21 +205,22 @@ Routing options:
 - [--namespace](/cli/cmd-options#namespace)
 
 Other options:
-  - [--identity](/cli/cmd-options#identity)
-  - [--tls](/cli/cmd-options#tls)
-  - [--tls-ca-path](/cli/cmd-options#tls-ca-path)
-  - [--tls-cert-path](/cli/cmd-options#tls-cert-path)
-  - [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
-  - [--tls-key-path](/cli/cmd-options#tls-key-path)
-  - [--tls-server-name](/cli/cmd-options#tls-server-name)
-  - [--address](/cli/cmd-options#address)
-  - [--codec-auth](/cli/cmd-options#codec-auth)
-  - [--codec-endpoint](/cli/cmd-options#codec-endpoint)
-  - [--color](/cli/cmd-options#color)
-  - [--command-timeout](/cli/cmd-options#command-timeout)
-  - [--detail](/cli/cmd-options#detail)
-  - [--env](/cli/cmd-options#env)
-  - [--grpc-meta](/cli/cmd-options#grpc-meta)
+
+- [--identity](/cli/cmd-options#identity)
+- [--tls](/cli/cmd-options#tls)
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
+- [--address](/cli/cmd-options#address)
+- [--codec-auth](/cli/cmd-options#codec-auth)
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+- [--color](/cli/cmd-options#color)
+- [--command-timeout](/cli/cmd-options#command-timeout)
+- [--detail](/cli/cmd-options#detail)
+- [--env](/cli/cmd-options#env)
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
 
 ## unpause
 
@@ -235,8 +239,8 @@ temporal activity unpause --query YourQuery \
     --reason YourReasonForUnpause
 ```
 
-
 Routing options:
+
 - [--activity-id](/cli/cmd-options#activity-id)
 - [--activity-type](/cli/cmd-options#activity-type)
 - [--workflow-id](/cli/cmd-options#workflow-id)
@@ -244,43 +248,47 @@ Routing options:
 - [--namespace](/cli/cmd-options#namespace)
 
 Unpause specific options:
+
 - [--match-all](/cli/cmd-options#match-all)
 - [--reset-attempts](/cli/cmd-options#reset-attempts)
 - [--reset-heartbeat](/cli/cmd-options#reset-heartbeat)
 - [--jitter](/cli/cmd-options#activity-jitter)
 
 Other options:
-  - [--identity](/cli/cmd-options#identity)
-  - [--tls](/cli/cmd-options#tls)
-  - [--tls-ca-path](/cli/cmd-options#tls-ca-path)
-  - [--tls-cert-path](/cli/cmd-options#tls-cert-path)
-  - [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
-  - [--tls-key-path](/cli/cmd-options#tls-key-path)
-  - [--tls-server-name](/cli/cmd-options#tls-server-name)
-  - [--address](/cli/cmd-options#address)
-  - [--codec-auth](/cli/cmd-options#codec-auth)
-  - [--codec-endpoint](/cli/cmd-options#codec-endpoint)
-  - [--color](/cli/cmd-options#color)
-  - [--command-timeout](/cli/cmd-options#command-timeout)
-  - [--detail](/cli/cmd-options#detail)
-  - [--env](/cli/cmd-options#env)
-  - [--grpc-meta](/cli/cmd-options#grpc-meta)
+
+- [--identity](/cli/cmd-options#identity)
+- [--tls](/cli/cmd-options#tls)
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
+- [--address](/cli/cmd-options#address)
+- [--codec-auth](/cli/cmd-options#codec-auth)
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+- [--color](/cli/cmd-options#color)
+- [--command-timeout](/cli/cmd-options#command-timeout)
+- [--detail](/cli/cmd-options#detail)
+- [--env](/cli/cmd-options#env)
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
 
 ## reset
 
 The `temporal activity reset` command restarts a running [Activity Execution](/activity-execution) specified by its ID or type.
 If there are multiple pending activities of the provided type - all of them will be reset.
 Resetting an Activity means:
-* The number of attempts will be reset to 0;
-* Activity timeouts will be reset;
-* If the Activity is waiting for retry, it will be scheduled immediately (* see 'jitter' flag);
-* If the Activity is currently executing, it will be reset once/if it completes with failure;
-* If the Activity is paused, it will be unpaused. If you want it to stay paused, you can pass --keep-paused flag;
+
+- The number of attempts will be reset to 0;
+- Activity timeouts will be reset;
+- If the Activity is waiting for retry, it will be scheduled immediately (* see 'jitter' flag);
+- If the Activity is currently executing, it will be reset once/if it completes with failure;
+- If the Activity is paused, it will be unpaused. If you want it to stay paused, you can pass --keep-paused flag;
 
 Command will fail with a `NotFound` error if there is no pending Activity with the provided ID or type.
 This may happen if the Activity has already completed.
 
 Routing options:
+
 - [--activity-id](/cli/cmd-options#activity-id)
 - [--activity-type](/cli/cmd-options#activity-type)
 - [--workflow-id](/cli/cmd-options#workflow-id)
@@ -288,24 +296,25 @@ Routing options:
 - [--namespace](/cli/cmd-options#namespace)
 
 Reset specific options:
+
 - [--keep-paused](/cli/cmd-options#keep-paused)
 - [--reset-heartbeat](/cli/cmd-options#reset-heartbeat)
 - [--jitter](/cli/cmd-options#activity-jitter)
 
 Other options:
-  - [--identity](/cli/cmd-options#identity)
-  - [--tls](/cli/cmd-options#tls)
-  - [--tls-ca-path](/cli/cmd-options#tls-ca-path)
-  - [--tls-cert-path](/cli/cmd-options#tls-cert-path)
-  - [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
-  - [--tls-key-path](/cli/cmd-options#tls-key-path)
-  - [--tls-server-name](/cli/cmd-options#tls-server-name)
-  - [--address](/cli/cmd-options#address)
-  - [--codec-auth](/cli/cmd-options#codec-auth)
-  - [--codec-endpoint](/cli/cmd-options#codec-endpoint)
-  - [--color](/cli/cmd-options#color)
-  - [--command-timeout](/cli/cmd-options#command-timeout)
-  - [--detail](/cli/cmd-options#detail)
-  - [--env](/cli/cmd-options#env)
-  - [--grpc-meta](/cli/cmd-options#grpc-meta)
 
+- [--identity](/cli/cmd-options#identity)
+- [--tls](/cli/cmd-options#tls)
+- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+- [--tls-key-path](/cli/cmd-options#tls-key-path)
+- [--tls-server-name](/cli/cmd-options#tls-server-name)
+- [--address](/cli/cmd-options#address)
+- [--codec-auth](/cli/cmd-options#codec-auth)
+- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+- [--color](/cli/cmd-options#color)
+- [--command-timeout](/cli/cmd-options#command-timeout)
+- [--detail](/cli/cmd-options#detail)
+- [--env](/cli/cmd-options#env)
+- [--grpc-meta](/cli/cmd-options#grpc-meta)
