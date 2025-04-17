@@ -1949,6 +1949,11 @@
       "source": "/cloud/pricing#multi-region",
       "destination": "/cloud/pricing#high-availability-features",
       "permanent": true
+    },
+    {
+      "source": "/production-deployment/cloud/metrics/performance-bottlenecks",
+      "destination": "/troubleshooting/performance-bottlenecks",
+      "permanent": true
     }
   ]
 }
