@@ -39,11 +39,12 @@ When an Account Owner or Global Admin invites a user to join an account, they se
 
 - **Global Admin**
   - Has full administrative permissions across the account, including users and usage
-  - Has Namespace Admin [permissions](#namespace-level-permissions) on all [Namespaces](/namespaces) in the account
+  - Has Namespace Admin [permissions](#namespace-level-permissions) on all [Namespaces](/namespaces) in the account (can not be revoked)
 - **Developer**
-  - Can create and update Namespaces; has full control over [Workflows](/workflows)
-  - Has Namespace Admin permissions for each Namespace created by that user
-- **Read-Only:** Can only read information
+  - Can create Namespaces
+  - Is granted [Namespace Admin](/cloud/users#namespace-level-permissions) permission for each Namespace created (which can be revoked)
+  - Can create Nexus Endpoints where they are a [Namespace Admin](/cloud/users#namespace-level-permissions) on the target Namespace
+- **Read-Only:** Can only read information and be granted Namespace permissions
 
 In addition, there are two roles that the Global Admin cannot assign:
 
@@ -87,9 +88,13 @@ A Developer can assign permissions for a Namespace they create.
 
 For a Namespace, a user can have one of the following permissions:
 
-- **Namespace Admin:** Can [create](/cloud/namespaces#create-a-namespace) and [edit Namespaces](/cloud/namespaces#manage-namespaces); can create, rename, update, and delete [Workflows](/workflows)
-- **Write:** Can create, rename, update, and delete Workflows within the Namespace
-- **Read-Only:** Can only read information from the Namespace
+- **Namespace Admin:**
+  - Can [create](/cloud/namespaces#create-a-namespace) and [edit Namespaces](/cloud/namespaces#manage-namespaces); can create, rename, update, and delete [Workflows](/workflows)
+  - Can manage Namespace identities and permissions
+- **Write:**
+  - Can create, rename, update, and delete Workflows within the Namespace
+- **Read-Only:**
+  - Can only read information from the Namespace
 
 ## How to update an account-level role in Temporal Cloud {#update-roles}
 
