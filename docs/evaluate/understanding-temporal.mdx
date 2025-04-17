@@ -149,7 +149,7 @@ The Temporal CLI provides developers with direct access to a Temporal Service fo
 
 ### Event History
 
-With Temporal, your Workflows can seamlessly recover from crashes. This is made possible by the [Event History](https://docs.temporal.io/workflows#event-history), a complete and durable log of everything that has happened in the lifecycle of a Workflow Execution, as well as the ability of the Temporal Service to durably persist the Events during Replay.
+With Temporal, your Workflows can seamlessly recover from crashes. This is made possible by the [Event History](https://docs.temporal.io/workflow-execution/event), a complete and durable log of everything that has happened in the lifecycle of a Workflow Execution, as well as the ability of the Temporal Service to durably persist the Events during Replay.
 
 Temporal uses the Event History to record every step taken along the way. Each time your Workflow Definition makes an API call to execute an Activity or start a Timer for instance, it doesn’t perform the action directly. Instead, it sends a Command to the Temporal Service.
 
