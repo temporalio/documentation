@@ -9,21 +9,23 @@
 
 :root {
   /* --ifm-color-primary: #f2633f;
-  --ifm-color-primary-dark: #111827; */
+   --ifm-color-primary-dark: #111827; */
   /* --ifm-color-primary-darker: #093d71;
-  --ifm-color-primary-darkest: #041a31; */
+   --ifm-color-primary-darkest: #041a31; */
   /* --ifm-color-primary-light: #1D4ED8;
-  --ifm-color-primary-lighter: #BFDBFE; */
+   --ifm-color-primary-lighter: #BFDBFE; */
   /* --ifm-color-primary-lightest: #cae3fb; */
   --ifm-code-font-size: 95%;
   /* --doc-sidebar-width: 275px !important;
-  --ifm-link-hover-decoration: none;
-  --ifm-link-hover-color: inherit; */
+   --ifm-link-hover-decoration: none;
+   --ifm-link-hover-color: inherit; */
   --ifm-link-decoration: underline;
   --tag-background-color-light: #eee;
   --tag-background-color-dark: #444;
   --tag-text-color-light: #333;
   --tag-text-color-dark: #ddd;
+  --feedback-primary-color: #000000;
+  --feedback-white-color: #fff;
 }
 
 html[data-theme="dark"] {
@@ -38,6 +40,8 @@ html[data-theme="dark"] {
   --alert--competency-background: #00474a;
   --alert--copycode-background: #29005e;
   --alert--info-background: #353536;
+  --feedback-primary-color: #fff;
+  --feedback-white-color: #999;
   /* --ifm-menu-color-active: var(--ifm-color-primary-lighter);
   --ifm-navbar-link-hover-color: var(--ifm-color-primary-lighter);
   --ifm-toc-link-color: #ffffff;
@@ -1185,3 +1189,4 @@ code {
 #kapa-widget-container button {
   z-index: 10;
 }
+
