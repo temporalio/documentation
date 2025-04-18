@@ -1,15 +1,14 @@
 ---
 id: worker
-title: temporal worker
-sidebar_label: temporal worker
+title: Temporal CLI worker command reference
+sidebar_label: worker
 description: Learn how to read or modify state associated with a Worker, such as Worker Deployments.
 toc_max_heading_level: 4
 keywords:
   - worker
   - worker deployment
 tags:
-  - worker
-  - worker-deployment
+  - Temporal CLI
 ---
 
 ## deployment
@@ -201,7 +200,7 @@ are met:
   Version have pollers.
   - It is not draining. This requirement can be ignored with the option
 `--skip-drainage`.
-  
+
 ```
 temporal worker deployment delete-version [options]
 ```
@@ -763,7 +762,7 @@ specify the Deployment Name.
 temporal worker deployment set-current-version \
     --version __unversioned__ \
     --deployment-name YourDeploymentName
-```  
+```
 
 Use the following options to change the behavior of this command.
 
@@ -932,12 +931,12 @@ temporal worker deployment set-ramping-version \
 ```
 
 And to remove that ramping:
-  
+
 ```
 temporal worker deployment set-ramping-version \
     --version YourDeploymentName.YourBuildID \
     --delete
-```    
+```
 
 Use the following options to change the behavior of this command.
 
@@ -1091,11 +1090,11 @@ For example:
 ```
 
 The current metadata is also returned with `describe-version`:
-  
+
 ```
  temporal worker deployment describe-version \
     --version YourDeploymentName.YourBuildID \
-```      
+```
 
 Use the following options to change the behavior of this command.
 
