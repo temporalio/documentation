@@ -17,7 +17,7 @@ tags:
   - Recovery Time Objective
 ---
 
-Recovery Point Objective (RPO) and Recovery Time Objective (RTO) define data durability and service restoration timelines, respectively. 
+Recovery Point Objective (RPO) and Recovery Time Objective (RTO) define data durability and service restoration timelines, respectively.
 In Temporal Cloud, these objectives shift depending on the scale of failure and whether affecting an availability zone, a region, or spanning multiple regions.
 Therefore, Recovery Point Objective and Recovery Time Objective for Temporal Cloud can be considered within three scenarios:
 
@@ -31,7 +31,7 @@ Temporal Cloud delivers different RPO/RTOs based on these scenarios because of t
 ## High Availability, Regional Failure
 
 Temporal Cloud offers [High Availability](/cloud/high-availability).
-High availability ensures that a system remains operational with minimal downtime. 
+High availability ensures that a system remains operational with minimal downtime.
 
 As Workflows progress in the active region, history events are asynchronously replicated to the standby region.
 In case of an incident or outage in the active region, Temporal Cloud will fail over to the standby region so that existing Workflow Executions will continue to run and new Executions can be started.

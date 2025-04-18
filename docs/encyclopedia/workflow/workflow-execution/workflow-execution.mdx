@@ -12,9 +12,11 @@ tags:
   - Workflows
 
 ---
+
 import { CaptionedImage } from '@site/src/components';
 
 This page provides an overview of Workflow Execution:
+
 - [What is a Workflow Execution?](#workflow-execution)
 - [Replay](#replay)
 - [Commands and awaitables](#commands-awaitables)
@@ -121,7 +123,6 @@ There will always be [WorkflowTaskStarted](/references/events#workflowtaskstarte
 
 Commands are described in the [Command reference](/references/commands) and are defined in the [Temporal gRPC API](https://github.com/temporalio/api/blob/master/temporal/api/command/v1/message.proto).
 
-
 ### Status {#workflow-execution-status}
 
 A Workflow Execution can be either _Open_ or _Closed_.
@@ -163,7 +164,6 @@ A Workflow Execution is uniquely identified by its [Namespace](/namespaces), [Wo
 The [Workflow Execution Timeout](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout) applies to a Workflow Execution Chain.
 The [Workflow Run Timeout](/encyclopedia/detecting-workflow-failures#workflow-run-timeout) applies to a single Workflow Execution (Workflow Run).
 
-
 ## What is a Memo? {#memo}
 
 A Memo is a non-indexed set of Workflow Execution metadata that developers supply at start time or in Workflow code and that is returned when you describe or list Workflow Executions.
@@ -182,7 +182,6 @@ Memos shouldn't store data that's critical to the execution of a Workflow, for s
 
 :::
 
-
 ## What is a State Transition? {#state-transition}
 
 A State Transition is a unit of progress made by a [Workflow Execution](#workflow-execution).
@@ -194,11 +193,12 @@ Most operations require multiple State Transitions.
 
 For example, a simple Workflow with two sequential [Activity Tasks](/tasks#activity-task) (and no retries) produces 11 State Transitions: two for Workflow start, four for each Activity, and one for Workflow completion.
 
-:::tip NEXT STEPS 
-For more information on Workflow Execution, please refer to the following subpages: 
+:::tip NEXT STEPS
+For more information on Workflow Execution, please refer to the following subpages:
+
 - [Event](/workflow-execution/event)
 - [Workflow Id and Run Id](/workflow-execution/workflowid-runid)
 - [Limits](/workflow-execution/limits)
 - [Continue-as-New](/workflow-execution/continue-as-new)
 - [Timers and Start Delay](/workflow-execution/timers-delays)
-::: 
+  :::

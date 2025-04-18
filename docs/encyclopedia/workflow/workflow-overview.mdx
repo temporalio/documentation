@@ -13,35 +13,35 @@ tags:
 
 ---
 
-This guide provides a comprehensive overview of Temporal Workflows and covers the following: 
-- [Workflow Definition](/workflow-definition) 
+This guide provides a comprehensive overview of Temporal Workflows and covers the following:
+
+- [Workflow Definition](/workflow-definition)
 - [Workflow Execution](/workflow-execution)
 - [Schedules](/schedule)
 - [Dynamic Handler](/dynamic-handler)
 - [Cron Job](/cron-job)
 
 ## Intro to Workflows
+
 Conceptually, a workflow defines a sequence of steps.
 With Temporal, those steps are defined by writing code, known as a Workflow Definition, and are carried out by running that code, which results in a Workflow Execution.
 
-In day-to-day conversations, the term Workflow might refer to Workflow Type, a Workflow Definition, or a Workflow Execution. 
+In day-to-day conversations, the term Workflow might refer to Workflow Type, a Workflow Definition, or a Workflow Execution.
 
 1. A **Workflow Definition** is the code that defines your Workflow.
 2. The **Workflow Type** is the name that maps to a Workflow Definition.
-It's an identifier that makes it possible to distinguish one type of Workflow (such as order processing) from another (such as customer onboarding).
-3. A **Workflow Execution** is a running Workflow, which is created by combining a Workflow Definition with a request to execute it. 
-You can execute a Workflow Definition any number of times, potentially providing different input each time (i.e., a Workflow Definition for order processing might process order #123 in one execution and order #567 in another execution). 
-It is the  actual instance of the Workflow Definition running in the Temporal Platform.
+   It's an identifier that makes it possible to distinguish one type of Workflow (such as order processing) from another (such as customer onboarding).
+3. A **Workflow Execution** is a running Workflow, which is created by combining a Workflow Definition with a request to execute it.
+   You can execute a Workflow Definition any number of times, potentially providing different input each time (i.e., a Workflow Definition for order processing might process order #123 in one execution and order #567 in another execution).
+   It is the actual instance of the Workflow Definition running in the Temporal Platform.
 
-
-You'll develop those Workflows by writing code in a general-purpose programming language such as Go, Java, TypeScript, or Python. 
+You'll develop those Workflows by writing code in a general-purpose programming language such as Go, Java, TypeScript, or Python.
 The code you write is the same code that will be executed at runtime, so you can use your favorite tools and libraries to develop Temporal Workflows.
 
-Temporal Workflows are resilient. 
-They can run—and keeping running—for years, even if the underlying infrastructure fails. 
+Temporal Workflows are resilient.
+They can run—and keeping running—for years, even if the underlying infrastructure fails.
 If the application itself crashes, Temporal will automatically recreate its pre-failure state so it can continue right where it left off.
 
-
-Each Workflow Execution progresses through a series of **Commands** and **Events**, which are recorded in an **Event History**. 
+Each Workflow Execution progresses through a series of **Commands** and **Events**, which are recorded in an **Event History**.
 
 Workflows must follow deterministic constraints to ensure consistent replay behavior.

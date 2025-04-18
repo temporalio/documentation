@@ -14,19 +14,18 @@ tags:
 ---
 
 This page discusses the following:
+
 - [Run Id](#run-id)
 - [Operations leading to non-determinism](#run-id-non-determinism)
 - [Workflow Id](#workflow-id)
 - [Workflow Id Reuse Policy](#workflow-id-reuse-policy)
 - [Workflow Id Conflict Policy](#workflow-id-conflict-policy)
 
-
-Each Workflow Execution is associated with a user-defined [Workflow ID](#workflow-id), a value which typically carries some business meaning (such as an order number or customer number). 
+Each Workflow Execution is associated with a user-defined [Workflow ID](#workflow-id), a value which typically carries some business meaning (such as an order number or customer number).
 Temporal guarantees that there can at most one Workflow Execution with a given ID running at any point in time, a constraint that helps to protect against unexpected duplication.
-In some cases, such as when running the same Workflow at recurring intervals using the Schedules features, there can be multiple "runs" of a single Workflow Execution over a period of time. 
-In this case, all runs will have the same Workflow ID. 
+In some cases, such as when running the same Workflow at recurring intervals using the Schedules features, there can be multiple "runs" of a single Workflow Execution over a period of time.
+In this case, all runs will have the same Workflow ID.
 However, each run will have a unique system-generated [Run ID](#run-id).
-
 
 ## What is a Run Id? {#run-id}
 
