@@ -274,6 +274,8 @@ These examples focus on Activities and Local Activities, since Workflow Tasks no
 ### Go SDK
 
 ```go
+import "go.temporal.io/sdk/contrib/resourcetuner"
+
 // Using the ResourceBasedTuner in worker options
 tuner, err := resourcetuner.NewResourceBasedTuner(resourcetuner.ResourceBasedTunerOptions{
     TargetMem: 0.8,
