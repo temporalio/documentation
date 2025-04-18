@@ -287,23 +287,24 @@ if err != nil {
 workerOptions := worker.Options{
     Tuner: tuner
 }
-// Combining different types
-options := DefaultResourceControllerOptions()
+
+// Customize the tuner
+options := resourcetuner.DefaultResourceControllerOptions()
 options.MemTargetPercent = 0.8
 options.CpuTargetPercent = 0.9
-controller := NewResourceController(options)
+controller := resourcetuner.NewResourceController(options)
 wfSS, err := worker.NewFixedSizeSlotSupplier(10)
 if err != nil {
   return err
 }
-actSS := &ResourceBasedSlotSupplier{controller: controller,
-    options: defaultActivityResourceBasedSlotSupplierOptions()}
-laSS := &ResourceBasedSlotSupplier{controller: controller,
-    options: defaultActivityResourceBasedSlotSupplierOptions()}
+
+actSS := resourcetuner.NewResourceBasedSlotSupplier(controller, resourcetuner.DefaultActivityResourceBasedSlotSupplierOptions()}
+laSS := resourcetuner.NewResourceBasedSlotSupplier(controller, resourcetuner.DefaultActivityResourceBasedSlotSupplierOptions()}
 nexusSS, err := worker.NewFixedSizeSlotSupplier(10)
 if err != nil {
   return err
 }
+
 compositeTuner, err := worker.NewCompositeTuner(worker.CompositeTunerOptions{
     WorkflowSlotSupplier:      wfSS,
     ActivitySlotSupplier:      actSS,
