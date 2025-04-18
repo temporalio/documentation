@@ -9,7 +9,10 @@ tags:
   - Reference
 ---
 
-The following terms are used in [Temporal Platform](/temporal) documentation. 
+The following terms are used in [Temporal Platform](/temporal) documentation.
+
+
+
 
 #### [Action](/cloud/pricing#action)
 
