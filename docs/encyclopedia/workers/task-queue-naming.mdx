@@ -1,0 +1,218 @@
+---
+id: task-queue-naming
+title: Task Queues and Naming Best Practices
+sidebar_label: Task Queue Naming
+description: A mismatch in Task Queue names creates separate queues, preventing the Worker from receiving tasks and stalling Workflow Execution.
+slug: /task-queue/naming
+toc_max_heading_level: 4
+keywords:
+  - task queues
+  - naming conventions
+
+tags:
+  - Workers
+  - Task Queues
+---
+
+# Task Queue Names
+
+The Temporal Cluster maintains a set of Task Queues, which Workers poll to see
+what work needs to be done. Each Task Queue is identified by a name, which is
+provided to the Temporal Cluster when launching a Workflow Execution. In this
+example, the value is included in request to start the Workflow.
+
+
+
+<Tabs groupId="start-workflow-configure-worker-by-sdk" queryString>
+
+<TabItem value="python" label="Python">
+
+**[Excerpt of code used to start the Workflow in Python](/develop/java/core-application#develop-workflows)**
+
+```python
+client = await Client.connect("localhost:7233", namespace="default")
+
+# Execute a workflow
+result = await client.execute_workflow(
+    GreetingWorkflow.run,
+    name,
+    id="my-workflow",
+    task_queue="my-task-queue-name",
+)
+```
+
+**[Excerpt of code used to configure the Worker in Python](/develop/java/core-application#develop-workflows)**
+
+
+```python
+worker = Worker(
+    client,
+    task_queue="my-task-queue-name",
+    workflows=[GreetingWorkflow],
+    activities=[activities.say_hello],
+)
+```
+
+</TabItem>
+<TabItem value="go" label="Go">
+
+**[Excerpt of code used to start the Workflow in Go](/develop/php/core-application#develop-workflows)**
+
+```go
+options := client.StartWorkflowOptions{
+    ID:        "my-workflow",
+    TaskQueue: "my-task-queue-name",
+}
+
+run, err := c.ExecuteWorkflow(ctx, options, ProcessOrderWorkflow, input)
+```
+
+**[Excerpt of code used to configure the Worker in Go](/develop/php/core-application#develop-workflows)**
+
+```go
+w := worker.New(c, "my-task-queue-name", worker.Options{})
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+**[Excerpt of code used to start the Workflow in Java](/develop/python/core-application#develop-workflows)**
+
+```java
+WorkflowOptions options = WorkflowOptions.newBuilder()
+        .setWorkflowId("my-workflow")
+        .setTaskQueue("my-task-queue-name")
+        .build();
+
+MyWorkflow workflow = client.newWorkflowStub(MyWorkflow.class, options);
+```
+
+**[Excerpt of code used to configure the Worker in Java](/develop/python/core-application#develop-workflows)**
+
+```java
+Worker worker = factory.newWorker("my-task-queue-name");
+```
+
+</TabItem>
+<TabItem value="typescript" label="Typescript">
+
+**[Excerpt of code used to start the Workflow in TypeScript](/develop/typescript/core-application#develop-workflows)**
+
+```typescript
+await client.workflow.start(OrderProcessingWorkflow, {
+  args: [order],
+  taskQueue: "my-task-queue",
+  workflowId: `workflow-order-${order.id},`,
+})
+```
+
+**[Excerpt of code used to configure the Worker in TypeScript](/develop/typescript/core-application#develop-workflows)**
+
+```typescript
+const worker = await Worker.create({
+  taskQueue: "my-task-queue",
+  connection,
+  workflowsPath: require.resolve('./workflows'),
+  activities,
+});
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+**[Excerpt of code used to start the Workflow in C# and .NET](/develop/dotnet/core-application#develop-workflow)**
+
+```csharp
+var options = new WorkflowOptions(
+            id: "translation-workflow",
+            taskQueue: "my-task-queue");
+
+// Run workflow
+var result = await client.ExecuteWorkflowAsync(
+    (TranslationWorkflow wf) => wf.RunAsync(input),
+    options);
+```
+
+**[Excerpt of code used to configure the Worker in C# and .NET](/develop/dotnet/core-application#develop-workflow)**
+
+```csharp
+using var worker = new TemporalWorker(
+    client,
+    new TemporalWorkerOptions("my-task-queue")
+    .AddAllActivities(activities)
+    .AddWorkflow<TestWorkflow>());
+```
+
+
+
+</TabItem>
+
+</Tabs>
+
+
+
+
+-----------
+Since Task Queues are created dynamically when they are first used, a mismatch
+between these two values does not result in an error. Instead, it will result
+in the creation of two different Task Queues. Consequently, the Worker will
+not receive any tasks from the Temporal Cluster and the Workflow Execution
+will not progress. Therefore, we recommend that you define the Task Queue name
+in a constant that is referenced by the Client and Worker if possible, as this
+will ensure that they always use the same value.
+
+**Excerpt of code used to define a constant with the Task Queue name**:
+
+_shared.py_
+
+```python
+TASK_QUEUE_NAME = "my-task-queue-name"
+```
+
+**Excerpt of code used to start the Workflow, referencing the constant
+defined with the Task Queue name**:
+
+```python
+from shared import TASK_QUEUE_NAME
+
+...
+
+client = await Client.connect("localhost:7233", namespace="default")
+
+# Execute a workflow
+result = await client.execute_workflow(
+    GreetingWorkflow.run,
+    name,
+    id="my-workflow",
+    task_queue=TASK_QUEUE_NAME,
+)
+```
+
+**Excerpt of code used to configure the Worker, referencing the constant
+defined with the Task Queue name**:
+
+```python
+worker = Worker(
+    client,
+    task_queue=TASK_QUEUE_NAME,
+    workflows=[GreetingWorkflow],
+    activities=[activities.say_hello],
+)
+```
+
+However, it’s not always possible to do this, such as when the Client used
+to start the Workflow is running on another system or is implemented in a
+different programming language.
+
+## Running Multiple Worker Processes
+
+Finally, we recommend running at least two Worker Processes for each Task Queue
+in a production application, each running on a separate host.
+
+This eliminates the Worker as a single point of failure, because if
+there are two Worker Processes and one of them crashes, the remaining
+Worker will recover any executions that were in progress and will
+continue to handle new ones, too. Running additional Worker Processes
+will further increase the scalability and availability of your
+application.
+

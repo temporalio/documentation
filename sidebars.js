@@ -618,6 +618,7 @@ module.exports = {
           items: [
             "encyclopedia/workers/tasks",
             "encyclopedia/workers/task-queues",
+            "encyclopedia/workers/task-queue-naming",
             "encyclopedia/workers/task-routing-worker-sessions",
             "encyclopedia/workers/sticky-execution",
             "encyclopedia/workers/worker-deployments",
