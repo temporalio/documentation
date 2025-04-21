@@ -145,68 +145,92 @@ details > *:not(summary) {
   color: #6c757d;
 }
 
-/* Navigation Bar Styles */
+/* Layout Container */
+.layout-container {
+  display: flex;
+  align-items: flex-start; /* Align items to the top */
+}
+
+/* Vertical Navigation Sidebar Styles */
 #main-nav {
-  background-color: #e9ecef; /* Light gray background */
-  padding: 0 2rem; /* Match header padding */
-  border-bottom: 1px solid #dee2e6; /* Separator */
+  width: 280px; /* Fixed width for the sidebar */
+  flex-shrink: 0; /* Prevent sidebar from shrinking */
+  height: calc(100vh - 60px); /* Adjust height based on header height, assuming header is roughly 60px */
+  position: sticky;
+  top: 10px; /* Stick following the header (adjust if header height changes) */
+  overflow-y: auto; /* Allow scrolling within the nav */
+  background-color: #f8f9fa; /* Light background */
+  padding: 1rem;
+  border-right: 1px solid #dee2e6;
+  margin-right: 2rem; /* Add some space between nav and main content */
 }
 
 #main-nav ul {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex; /* Horizontal layout for top level */
+  /* display: flex; removed for vertical layout */
 }
 
 #main-nav ul li {
-  position: relative; /* For dropdown positioning */
+  /* position: relative; removed */
+  margin-bottom: 0.25rem; /* Space between list items */
 }
 
 #main-nav ul li a {
   display: block;
-  padding: 0.75rem 1rem; /* Padding for links */
+  padding: 0.4rem 0.8rem; /* Padding for links */
   text-decoration: none;
   color: #495057; /* Dark gray text */
-  white-space: nowrap; /* Prevent wrapping */
+  border-radius: 4px;
+  /* white-space: wrap; removed */
 }
 
-#main-nav ul li a:hover,
-#main-nav ul li:hover > a {
-  /* Highlight on hover */
+#main-nav ul li a:hover {
   background-color: #dee2e6; /* Slightly darker gray */
   color: #0056b3; /* Blue text on hover */
 }
 
-/* Second Level Dropdown */
+/* Second Level List (Always Visible and Indented) */
 #main-nav ul ul {
-  display: none; /* Hide by default */
-  position: absolute;
-  left: 0;
-  top: 100%; /* Position following parent */
-  background-color: white; /* White background for dropdown */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Drop shadow */
-  border: 1px solid #dee2e6;
-  border-top: none; /* Remove top border adjacent to parent */
-  z-index: 1000; /* Ensure dropdown is on top */
-  min-width: 200px; /* Minimum width for dropdown */
-  flex-direction: column; /* Stack items vertically */
+  /* display: none; removed */
+  /* position: absolute; removed */
+  /* left: 0; removed */
+  /* top: 100%; removed */
+  /* background-color: white; removed */
+  /* box-shadow: none; removed */
+  /* border: none; removed */
+  /* z-index: auto; removed */
+  /* min-width: auto; removed */
+  /* flex-direction: column; removed */
+  padding-left: 1rem; /* Indentation for sub-menu */
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
 }
 
-#main-nav ul li:hover > ul {
-  display: block; /* Show dropdown on parent hover */
-}
+/* Remove hover effect that showed dropdown */
+/* #main-nav li:hover > ul { display: block; } */
 
 #main-nav ul ul li {
-  width: 100%; /* Full width list items */
+  /* width: 100%; removed */
+  margin-bottom: 0.1rem;
 }
 
 #main-nav ul ul li a {
-  padding: 0.5rem 1rem; /* Adjust padding for dropdown items */
-  color: #212529; /* Standard text color */
+  padding: 0.25rem 0.8rem; /* Smaller padding for sub-items */
+  font-size: 0.9em; /* Slightly smaller font */
+  color: #6c757d; /* Lighter text color */
 }
 
 #main-nav ul ul li a:hover {
-  background-color: #f8f9fa; /* Very light gray on hover */
+  background-color: #e9ecef;
   color: #0056b3;
+}
+
+/* Adjust Main Content Area */
+main#content {
+  flex-grow: 1; /* Allow main content to grow */
+  max-width: none; /* Remove max-width */
+  margin: 1rem 0; /* Adjust margin */
+  padding: 1rem 2rem; /* Adjust padding as needed */
 }
