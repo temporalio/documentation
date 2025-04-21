@@ -26,7 +26,7 @@
           </li>
           <li><a href="#setup">Setup</a>
             <ul>
-              <li><a href="#temporal-cli">Temporal CLI & Dev Server</a></li>
+              <li><a href="#temporal-cli">Temporal CLI & Development Server</a></li>
               <li><a href="#sdk-installation">SDK Installation</a></li>
             </ul>
           </li>
@@ -59,7 +59,7 @@
           <li><a href="#advanced-concepts">Advanced Concepts</a>
               <ul>
                   <li><a href="#activity-heartbeating">Activity Heartbeating</a></li>
-                  <li><a href="#activity-async-completion">Async Completion</a></li>
+                  <li><a href="#activity-async-completion">Asynchronous Completion</a></li>
                   <li><a href="#activity-cancellation">Activity Cancellation</a></li>
                   <li><a href="#workflow-versioning">Workflow Versioning</a></li>
                   <li><a href="#child-workflows">Child Workflows</a></li>
@@ -1801,6 +1801,9 @@ def load_progress_from_details(details):
     if details: return details # Assuming details itself is the progress marker
     return None
 </code></pre>
+            <p>
+            <strong>Note:</strong> Build ID based Worker Versioning is a newer, often preferred approach for managing incompatible Worker code deployments, especially across multiple Task Queues or complex rollouts. Patching is useful for targeted, small changes within a single Workflow definition.
+            </p>
         </article>
 
         <article id="activity-async-completion">
@@ -2001,29 +2004,31 @@ result = await workflow.execute_activity(activity_A, ...)
 
             <!-- Tabs for Child Workflows -->
             <div class="tab-container">
-            <button class="tab-button" data-tab-target="child-wf-ts">
-                TypeScript
-            </button>
-            <button class="tab-button" data-tab-target="child-wf-py">
-                Python
-            </button>
-            <button class="tab-button" data-tab-target="child-wf-go">
-                Go
-            </button>
-            <button class="tab-button" data-tab-target="child-wf-java">
-                Java
-            </button>
-            <button class="tab-button" data-tab-target="child-wf-dotnet">
-                .NET
-            </button>
-            <button class="tab-button" data-tab-target="child-wf-php">
-                PHP
-            </button>
-            </div>
+              <div class="tab-buttons"> <!-- Added wrapper div for buttons -->
+                <button class="tab-button" data-tab-target="child-wf-ts">
+                    TypeScript
+                </button>
+                <button class="tab-button" data-tab-target="child-wf-py">
+                    Python
+                </button>
+                <button class="tab-button" data-tab-target="child-wf-go">
+                    Go
+                </button>
+                <button class="tab-button" data-tab-target="child-wf-java">
+                    Java
+                </button>
+                <button class="tab-button" data-tab-target="child-wf-dotnet">
+                    .NET
+                </button>
+                <button class="tab-button" data-tab-target="child-wf-php">
+                    PHP
+                </button>
+              </div>
 
-            <div class="tab-content" id="child-wf-ts">
-            <h4>TypeScript</h4>
-            <pre><code class="language-typescript">import { executeChild, proxyActivities, ParentClosePolicy, workflowInfo } from '@temporalio/workflow'; // Import workflowInfo
+              <!-- Tab content divs moved inside tab-container -->
+              <div class="tab-content" id="child-wf-ts">
+                <h4>TypeScript</h4>
+                <pre><code class="language-typescript">import { executeChild, proxyActivities, ParentClosePolicy, workflowInfo } from '@temporalio/workflow'; // Import workflowInfo
 import { childWorkflow } from './child'; // Assume childWorkflow definition exists
 
 export async function parentWorkflow(name: string): Promise&lt;string&gt; {
@@ -2037,11 +2042,11 @@ export async function parentWorkflow(name: string): Promise&lt;string&gt; {
     });
     return `Parent received: ${result}`;
 }</code></pre>
-            </div>
+              </div>
 
-            <div class="tab-content" id="child-wf-py">
-            <h4>Python</h4>
-            <pre><code class="language-python">from temporalio import workflow
+              <div class="tab-content" id="child-wf-py">
+                <h4>Python</h4>
+                <pre><code class="language-python">from temporalio import workflow
 from temporalio.common import ParentClosePolicy
 # Assume child_workflow is defined in another file/module
 with workflow.unsafe.imports_passed_through():
@@ -2058,12 +2063,12 @@ class ParentWorkflow:
             parent_close_policy=ParentClosePolicy.ABANDON,
         )
         return f"Parent received: {result}"
-</code></pre>
-            </div>
+                </code></pre>
+              </div>
 
-            <div class="tab-content" id="child-wf-go">
-            <h4>Go</h4>
-            <pre><code class="language-go">package app // Assuming parent workflow is in app package
+              <div class="tab-content" id="child-wf-go">
+                <h4>Go</h4>
+                <pre><code class="language-go">package app // Assuming parent workflow is in app package
 
 import (
 "fmt" // For string formatting
@@ -2097,13 +2102,12 @@ func ParentWorkflow(ctx workflow.Context, name string) (string, error) {
 //     workflow.GetLogger(ctx).Info("Child workflow started", "Input", inputName)
 //     return "Result from child for " + inputName, nil
 // }
-
-</code></pre>
+                </code></pre>
             </div>
 
-            <div class="tab-content" id="child-wf-java">
-            <h4>Java</h4>
-            <pre><code class="language-java">package your.application.workflows; // Use your actual package name
+              <div class="tab-content" id="child-wf-java">
+                <h4>Java</h4>
+                <pre><code class="language-java">package your.application.workflows; // Use your actual package name
 
 import io.temporal.workflow.*;
 import io.temporal.api.enums.v1.ParentClosePolicy;
@@ -2129,11 +2133,11 @@ public class ParentWorkflowImpl implements ParentWorkflow { // Assuming ParentWo
         // Use promise.get() later
     }
 }</code></pre>
-            </div>
+              </div>
 
-            <div class="tab-content" id="child-wf-dotnet">
-            <h4>.NET</h4>
-            <pre><code class="language-csharp">using Temporalio.Workflows;
+              <div class="tab-content" id="child-wf-dotnet">
+                <h4>.NET</h4>
+                <pre><code class="language-csharp">using Temporalio.Workflows;
 using Temporalio.Common; // For ParentClosePolicy
 using System; // For Guid
 using System.Threading.Tasks;
@@ -2156,18 +2160,19 @@ public class ParentWorkflow
         return $"Parent received: {result}";
     }
 }</code></pre>
-            </div>
+              </div>
 
-            <div class="tab-content" id="child-wf-php">
-            <h4>PHP</h4>
-            <pre><code class="language-php">&lt;?php declare(strict_types=1);\\\\n\\\\nnamespace App\\\\\\\\Workflow;\\\\n\\\\nuse Temporal\\\\\\\\Workflow\\\\\\\\ParentWorkflowInterface;\\\\nuse Temporal\\\\\\\\Workflow\\\\\\\\ParentWorkflowMethod;\\\\nuse Temporal\\\\\\\\Activity\\\\\\\\ActivityOptions;\\\\nuse Temporal\\\\\\\\Common\\\\\\\\RetryOptions;\\\\nuse Temporal\\\\\\\\Activity\\\\\\\\ActivityMethod;\\\\nuse Temporal\\\\\\\\Activity\\\\\\\\ActivityInterface;\\\\nuse App\\\\\\\\ChildWorkflows\\\\\\\\ChildWorkflow;\\\\nuse Ramsey\\\\Uuid\\\\Uuid; // Example: Use ramsey/uuid\\\\n\\\\n// Define ParentWorkflow interface and implementation\\\\ninterface ParentWorkflowInterface extends ParentWorkflowInterface&lt;?&gt; {\\\n    @ParentWorkflowMethod(name = "ParentWorkflow")\\\n    void execute(String name);\n}\\\n\\\\nclass ParentWorkflowImpl implements ParentWorkflowInterface {\\\n    @Override\\\n    @ParentWorkflowMethod(name = "ParentWorkflow")\\\n    public void execute(String name) {\\\n        // Start child workflow\\\n        ChildWorkflow.start(\\\"child-workflow\\\", [\\\"name\\\" => $name]);\\\\\n        // You can also use a different workflow ID if needed\\\\\n    }\\\\\n}\\\n?&gt;</code></pre>
-            </div>
+              <div class="tab-content" id="child-wf-php">
+                <h4>PHP</h4>
+                <pre><code class="language-php">&lt;?php declare(strict_types=1);\\\n\\\nnamespace App\\\\\\\\Workflow;\\\\n\\\\nuse Temporal\\\\\\\\Workflow\\\\\\\\ParentWorkflowInterface;\\\\nuse Temporal\\\\\\\\Workflow\\\\\\\\ParentWorkflowMethod;\\\\nuse Temporal\\\\\\\\Activity\\\\\\\\ActivityOptions;\\\\nuse Temporal\\\\\\\\Common\\\\\\\\RetryOptions;\\\\nuse Temporal\\\\\\\\Activity\\\\\\\\ActivityMethod;\\\\nuse Temporal\\\\\\\\Activity\\\\\\\\ActivityInterface;\\\\nuse App\\\\\\\\ChildWorkflows\\\\\\\\ChildWorkflow;\\\\nuse Ramsey\\\\Uuid\\\\Uuid; // Example: Use ramsey/uuid\\\\n\\\\n// Define ParentWorkflow interface and implementation\\\\ninterface ParentWorkflowInterface extends ParentWorkflowInterface&lt;?&gt; {\\\n    @ParentWorkflowMethod(name = "ParentWorkflow")\\\n    void execute(String name);\n}\\\n\\\\nclass ParentWorkflowImpl implements ParentWorkflowInterface {\\\n    @Override\\\n    @ParentWorkflowMethod(name = "ParentWorkflow")\\\n    public void execute(String name) {\\\n        // Start child workflow\\\n        ChildWorkflow.start(\\\"child-workflow\\\", [\\\"name\\\" => $name]);\\\\\n        // You can also use a different workflow ID if needed\\\\\n    }\\\\\n}\\\n?&gt;</code></pre>
+              </div>
+            </div> <!-- End tab-container -->
         </article>
 
         <article id="continue-as-new">
             <h3>Continue-As-New</h3>
             <p>
-            Workflow Executions have limits on their event history size and duration. For very long-running processes
+            Workflow Executions have limits on their event history size and duration. For long-running processes
             or Workflows that accumulate a large history (for example, loops processing many items), `Continue-As-New` allows
             a Workflow to effectively restart itself with a fresh history, carrying over necessary state.
             </p>
@@ -2277,7 +2282,7 @@ class MyWorkflow:
         <article id="local-activities">
             <h3>Local Activities</h3>
             <p>
-            Local Activities are an optimization for very short-lived Activities that don't require the full overhead
+            Local Activities are an optimization for short-lived Activities that don't require the full overhead
             of Task Queue polling, scheduling, and retries managed by the Temporal Cluster. They execute directly
             within the Worker's Workflow Task processing thread.
             </p>
