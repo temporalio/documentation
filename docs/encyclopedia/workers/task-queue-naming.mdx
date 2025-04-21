@@ -27,7 +27,7 @@ example, the value is included in request to start the Workflow.
 
 <TabItem value="python" label="Python">
 
-**[Excerpt of code used to start the Workflow in Python](/develop/java/core-application#develop-workflows)**
+**Excerpt of code used to start the Workflow in Python**
 
 ```python
 client = await Client.connect("localhost:7233", namespace="default")
@@ -41,7 +41,7 @@ result = await client.execute_workflow(
 )
 ```
 
-**[Excerpt of code used to configure the Worker in Python](/develop/java/core-application#develop-workflows)**
+**Excerpt of code used to configure the Worker in Python**
 
 
 ```python
@@ -56,7 +56,7 @@ worker = Worker(
 </TabItem>
 <TabItem value="go" label="Go">
 
-**[Excerpt of code used to start the Workflow in Go](/develop/php/core-application#develop-workflows)**
+**Excerpt of code used to start the Workflow in Go**
 
 ```go
 options := client.StartWorkflowOptions{
@@ -67,7 +67,7 @@ options := client.StartWorkflowOptions{
 run, err := c.ExecuteWorkflow(ctx, options, ProcessOrderWorkflow, input)
 ```
 
-**[Excerpt of code used to configure the Worker in Go](/develop/php/core-application#develop-workflows)**
+**Excerpt of code used to configure the Worker in Go**
 
 ```go
 w := worker.New(c, "my-task-queue-name", worker.Options{})
@@ -76,7 +76,7 @@ w := worker.New(c, "my-task-queue-name", worker.Options{})
 </TabItem>
 <TabItem value="java" label="Java">
 
-**[Excerpt of code used to start the Workflow in Java](/develop/python/core-application#develop-workflows)**
+**Excerpt of code used to start the Workflow in Java**
 
 ```java
 WorkflowOptions options = WorkflowOptions.newBuilder()
@@ -87,7 +87,7 @@ WorkflowOptions options = WorkflowOptions.newBuilder()
 MyWorkflow workflow = client.newWorkflowStub(MyWorkflow.class, options);
 ```
 
-**[Excerpt of code used to configure the Worker in Java](/develop/python/core-application#develop-workflows)**
+**Excerpt of code used to configure the Worker in Java**
 
 ```java
 Worker worker = factory.newWorker("my-task-queue-name");
@@ -96,7 +96,7 @@ Worker worker = factory.newWorker("my-task-queue-name");
 </TabItem>
 <TabItem value="typescript" label="Typescript">
 
-**[Excerpt of code used to start the Workflow in TypeScript](/develop/typescript/core-application#develop-workflows)**
+**Excerpt of code used to start the Workflow in TypeScript**
 
 ```typescript
 await client.workflow.start(OrderProcessingWorkflow, {
@@ -106,7 +106,7 @@ await client.workflow.start(OrderProcessingWorkflow, {
 })
 ```
 
-**[Excerpt of code used to configure the Worker in TypeScript](/develop/typescript/core-application#develop-workflows)**
+**Excerpt of code used to configure the Worker in TypeScript**
 
 ```typescript
 const worker = await Worker.create({
@@ -120,7 +120,7 @@ const worker = await Worker.create({
 </TabItem>
 <TabItem value="dotnet" label=".NET">
 
-**[Excerpt of code used to start the Workflow in C# and .NET](/develop/dotnet/core-application#develop-workflow)**
+**Excerpt of code used to start the Workflow in C# and .NET**
 
 ```csharp
 var options = new WorkflowOptions(
@@ -133,7 +133,7 @@ var result = await client.ExecuteWorkflowAsync(
     options);
 ```
 
-**[Excerpt of code used to configure the Worker in C# and .NET](/develop/dotnet/core-application#develop-workflow)**
+**Excerpt of code used to configure the Worker in C# and .NET**
 
 ```csharp
 using var worker = new TemporalWorker(
@@ -161,15 +161,15 @@ will ensure that they always use the same value.
 
 <TabItem value="python" label="Python">
 
-**[Excerpt of code used to define a constant with the Task Queue name in Python (in a shared.py file)](/develop/java/core-application#develop-workflows)**
+**Excerpt of code used to define a constant with the Task Queue name in Python (in a shared.py file)**
 
 
 ```python
 TASK_QUEUE_NAME = "my-task-queue-name"
 ```
 
-**[Excerpt of code used to start the Workflow, referencing the constant
-defined with the Task Queue name in Python](/develop/java/core-application#develop-workflows)**
+**Excerpt of code used to start the Workflow, referencing the constant
+defined with the Task Queue name in Python**
 
 ```python
 from shared import TASK_QUEUE_NAME
@@ -187,8 +187,8 @@ result = await client.execute_workflow(
 )
 ```
 
-**[Excerpt of code used to configure the Worker, referencing the constant
-defined with the Task Queue name in Python](/develop/java/core-application#develop-workflows)**
+**Excerpt of code used to configure the Worker, referencing the constant
+defined with the Task Queue name in Python**
 
 
 ```python
@@ -203,7 +203,7 @@ worker = Worker(
 </TabItem>
 <TabItem value="go" label="Go">
 
-**[Excerpt of code used to define a constant with the Task Queue name in Go](/develop/php/core-application#develop-workflows)**
+**Excerpt of code used to define a constant with the Task Queue name in Go**
 
 ```go
 package app 
@@ -211,7 +211,7 @@ package app
 const TaskQueueName = "my-taskqueue-name"
 ```
 
-**[Excerpt of code used to start the Workflow, referencing the constant defined with the Task Queue name in Go](/develop/php/core-application#develop-workflows)**
+**Excerpt of code used to start the Workflow, referencing the constant defined with the Task Queue name in Go**
 
 ```go
 options := client.StartWorkflowOptions{
@@ -223,7 +223,7 @@ run, err := c.ExecuteWorkflow(ctx, options, ProcessOrderWorkflow, input)
 ```
 
 
-**[Excerpt of code used to configure the Worker, referencing the constant defined with the Task Queue name in Go](/develop/php/core-application#develop-workflows)**
+**Excerpt of code used to configure the Worker, referencing the constant defined with the Task Queue name in Go**
 
 ```go
 w := worker.New(c, app.TaskQueueName, worker.Options{})
@@ -232,7 +232,7 @@ w := worker.New(c, app.TaskQueueName, worker.Options{})
 </TabItem>
 <TabItem value="java" label="Java">
 
-**[Excerpt of code used to define a constant with the Task Queue name in Java](/develop/python/core-application#develop-workflows)**
+**Excerpt of code used to define a constant with the Task Queue name in Java**
 
 ```java
 package app;
@@ -244,7 +244,7 @@ public class Constants {
 }
 ```
 
-**[Excerpt of code used to start the Workflow, referencing the constant defined with the Task Queue name in Java](/develop/python/core-application#develop-workflows)**
+**Excerpt of code used to start the Workflow, referencing the constant defined with the Task Queue name in Java**
 
 ```java
 WorkflowOptions options = WorkflowOptions.newBuilder()
@@ -255,7 +255,7 @@ WorkflowOptions options = WorkflowOptions.newBuilder()
 MyWorkflow workflow = client.newWorkflowStub(MyWorkflow.class, options);
 ```
 
-**[Excerpt of code used to configure the Worker, referencing the constant defined with the Task Queue name in Java](/develop/python/core-application#develop-workflows)**
+**Excerpt of code used to configure the Worker, referencing the constant defined with the Task Queue name in Java**
 
 ```java
 Worker worker = factory.newWorker(Constants.taskQueueName);
@@ -264,13 +264,13 @@ Worker worker = factory.newWorker(Constants.taskQueueName);
 </TabItem>
 <TabItem value="typescript" label="Typescript">
 
-**[Excerpt of code used to define a constant with the Task Queue name in TypeScript](/develop/typescript/core-application#develop-workflows)**
+**Excerpt of code used to define a constant with the Task Queue name in TypeScript**
 
 ```typescript
 const TASK_QUEUE_NAME = "my-taskqueue-name"
 ```
 
-**[Excerpt of code used to start the Workflow, referencing the constant defined with the Task Queue name in TypeScript](/develop/typescript/core-application#develop-workflows)**
+**Excerpt of code used to start the Workflow, referencing the constant defined with the Task Queue name in TypeScript**
 
 ```typescript
 import { TASK_QUEUE_NAME } from './shared';
@@ -284,7 +284,7 @@ await client.workflow.start(OrderProcessingWorkflow, {
 })
 ```
 
-**[Excerpt of code used to configure the Worker, referencing the constant defined with the Task Queue name in TypeScript](/develop/typescript/core-application#develop-workflows)**
+**Excerpt of code used to configure the Worker, referencing the constant defined with the Task Queue name in TypeScript**
 
 ```typescript
 import { TASK_QUEUE_NAME } from './shared';
@@ -302,7 +302,7 @@ const worker = await Worker.create({
 </TabItem>
 <TabItem value="dotnet" label=".NET">
 
-**[Excerpt of code used to define a constant with the Task Queue name in C# and .NET](/develop/dotnet/core-application#develop-workflow)**
+**Excerpt of code used to define a constant with the Task Queue name in C# and .NET**
 
 ```csharp
 public static class WorkflowConstants
@@ -312,7 +312,7 @@ public static class WorkflowConstants
 ```
 
 
-**[Excerpt of code used to start the Workflow, referencing the constant defined with the Task Queue name in C# and .NET](/develop/dotnet/core-application#develop-workflow)**
+**Excerpt of code used to start the Workflow, referencing the constant defined with the Task Queue name in C# and .NET**
 
 ```csharp
 var options = new WorkflowOptions(
@@ -325,7 +325,7 @@ var result = await client.ExecuteWorkflowAsync(
     options);
 ```
 
-**[Excerpt of code used to configure the Worker, referencing the constant defined with the Task Queue name in C# and .NET](/develop/dotnet/core-application#develop-workflow)**
+**Excerpt of code used to configure the Worker, referencing the constant defined with the Task Queue name in C# and .NET**
 
 ```csharp
 using var worker = new TemporalWorker(
