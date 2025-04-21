@@ -285,7 +285,7 @@ if err != nil {
   return err
 }
 workerOptions := worker.Options{
-    Tuner: tuner
+    Tuner: tuner,
 }
 
 // Customize the tuner
@@ -298,24 +298,24 @@ if err != nil {
   return err
 }
 
-actSS := resourcetuner.NewResourceBasedSlotSupplier(controller, resourcetuner.DefaultActivityResourceBasedSlotSupplierOptions()}
-laSS := resourcetuner.NewResourceBasedSlotSupplier(controller, resourcetuner.DefaultActivityResourceBasedSlotSupplierOptions()}
+actSS, err := resourcetuner.NewResourceBasedSlotSupplier(controller, resourcetuner.DefaultActivityResourceBasedSlotSupplierOptions())
+laSS, err := resourcetuner.NewResourceBasedSlotSupplier(controller, resourcetuner.DefaultActivityResourceBasedSlotSupplierOptions())
 nexusSS, err := worker.NewFixedSizeSlotSupplier(10)
 if err != nil {
   return err
 }
 
 compositeTuner, err := worker.NewCompositeTuner(worker.CompositeTunerOptions{
-    WorkflowSlotSupplier:      wfSS,
-    ActivitySlotSupplier:      actSS,
-    LocalActivitySlotSupplier: laSS,
-    NexusSlotSupplier:         nexusSS,
+  WorkflowSlotSupplier:      wfSS,
+  ActivitySlotSupplier:      actSS,
+  LocalActivitySlotSupplier: laSS,
+  NexusSlotSupplier:         nexusSS,
 })
 if err != nil {
   return err
 }
 workerOptions := worker.Options{
-    Tuner: compositeTuner
+  Tuner: compositeTuner,
 }
 ```
 
