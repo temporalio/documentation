@@ -148,9 +148,6 @@ using var worker = new TemporalWorker(
 </Tabs>
 
 
-
-
------------
 Since Task Queues are created dynamically when they are first used, a mismatch
 between these two values does not result in an error. Instead, it will result
 in the creation of two different Task Queues. Consequently, the Worker will
@@ -159,17 +156,14 @@ will not progress. Therefore, we recommend that you define the Task Queue name
 in a constant that is referenced by the Client and Worker if possible, as this
 will ensure that they always use the same value.
 
----------
-
-----------------
 
 <Tabs groupId="start-workflow-configure-worker-by-sdk" queryString>
 
 <TabItem value="python" label="Python">
 
-**[Excerpt of code used to define a constant with the Task Queue name in Python](/develop/java/core-application#develop-workflows)**
+**[Excerpt of code used to define a constant with the Task Queue name in Python (in a shared.py file)](/develop/java/core-application#develop-workflows)**
 
-_shared.py_
+
 ```python
 TASK_QUEUE_NAME = "my-task-queue-name"
 ```
@@ -238,41 +232,67 @@ w := worker.New(c, app.TaskQueueName, worker.Options{})
 </TabItem>
 <TabItem value="java" label="Java">
 
-**[Excerpt of code used to start the Workflow in Java](/develop/python/core-application#develop-workflows)**
+**[Excerpt of code used to define a constant with the Task Queue name in Java](/develop/python/core-application#develop-workflows)**
+
+```java
+package app;
+
+public class Constants {
+
+  public static final String taskQueueName = "my-task-queue-name";
+
+}
+```
+
+**[Excerpt of code used to start the Workflow, referencing the constant defined with the Task Queue name in Java](/develop/python/core-application#develop-workflows)**
 
 ```java
 WorkflowOptions options = WorkflowOptions.newBuilder()
         .setWorkflowId("my-workflow")
-        .setTaskQueue("my-task-queue-name")
+        .setTaskQueue(Constants.taskQueueName)
         .build();
 
 MyWorkflow workflow = client.newWorkflowStub(MyWorkflow.class, options);
 ```
 
-**[Excerpt of code used to configure the Worker in Java](/develop/python/core-application#develop-workflows)**
+**[Excerpt of code used to configure the Worker, referencing the constant defined with the Task Queue name in Java](/develop/python/core-application#develop-workflows)**
 
 ```java
-Worker worker = factory.newWorker("my-task-queue-name");
+Worker worker = factory.newWorker(Constants.taskQueueName);
 ```
 
 </TabItem>
 <TabItem value="typescript" label="Typescript">
 
-**[Excerpt of code used to start the Workflow in TypeScript](/develop/typescript/core-application#develop-workflows)**
+**[Excerpt of code used to define a constant with the Task Queue name in TypeScript](/develop/typescript/core-application#develop-workflows)**
 
 ```typescript
+const TASK_QUEUE_NAME = "my-taskqueue-name"
+```
+
+**[Excerpt of code used to start the Workflow, referencing the constant defined with the Task Queue name in TypeScript](/develop/typescript/core-application#develop-workflows)**
+
+```typescript
+import { TASK_QUEUE_NAME } from './shared';
+
+// additional code would follow
+
 await client.workflow.start(OrderProcessingWorkflow, {
   args: [order],
-  taskQueue: "my-task-queue",
+  taskQueue: TASK_QUEUE_NAME,
   workflowId: `workflow-order-${order.id},`,
 })
 ```
 
-**[Excerpt of code used to configure the Worker in TypeScript](/develop/typescript/core-application#develop-workflows)**
+**[Excerpt of code used to configure the Worker, referencing the constant defined with the Task Queue name in TypeScript](/develop/typescript/core-application#develop-workflows)**
 
 ```typescript
+import { TASK_QUEUE_NAME } from './shared';
+
+// additional code would follow
+
 const worker = await Worker.create({
-  taskQueue: "my-task-queue",
+  taskQueue: TASK_QUEUE_NAME,
   connection,
   workflowsPath: require.resolve('./workflows'),
   activities,
@@ -282,12 +302,22 @@ const worker = await Worker.create({
 </TabItem>
 <TabItem value="dotnet" label=".NET">
 
-**[Excerpt of code used to start the Workflow in C# and .NET](/develop/dotnet/core-application#develop-workflow)**
+**[Excerpt of code used to define a constant with the Task Queue name in C# and .NET](/develop/dotnet/core-application#develop-workflow)**
+
+```csharp
+public static class WorkflowConstants
+{
+    public const string TaskQueueName = "translation-tasks";
+}
+```
+
+
+**[Excerpt of code used to start the Workflow, referencing the constant defined with the Task Queue name in C# and .NET](/develop/dotnet/core-application#develop-workflow)**
 
 ```csharp
 var options = new WorkflowOptions(
             id: "translation-workflow",
-            taskQueue: "my-task-queue");
+            taskQueue: WorkflowConstants.TaskQueueName);
 
 // Run workflow
 var result = await client.ExecuteWorkflowAsync(
@@ -295,14 +325,14 @@ var result = await client.ExecuteWorkflowAsync(
     options);
 ```
 
-**[Excerpt of code used to configure the Worker in C# and .NET](/develop/dotnet/core-application#develop-workflow)**
+**[Excerpt of code used to configure the Worker, referencing the constant defined with the Task Queue name in C# and .NET](/develop/dotnet/core-application#develop-workflow)**
 
 ```csharp
 using var worker = new TemporalWorker(
     client,
-    new TemporalWorkerOptions("my-task-queue")
+    new TemporalWorkerOptions(WorkflowConstants.TaskQueueName)
     .AddAllActivities(activities)
-    .AddWorkflow<TestWorkflow>());
+    .AddWorkflow<TranslationWorkflow>());
 ```
 
 </TabItem>
@@ -310,8 +340,6 @@ using var worker = new TemporalWorker(
 </Tabs>
 
 
-
-----------
 However, it’s not always possible to do this, such as when the Client used
 to start the Workflow is running on another system or is implemented in a
 different programming language.
