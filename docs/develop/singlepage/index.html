@@ -12,6 +12,72 @@
       <h1>Temporal SDK Development Guide</h1>
     </header>
 
+    <nav id="main-nav">
+      <ul>
+        <li><a href="#core-concepts">Core Concepts</a>
+          <ul>
+            <li><a href="#temporal-application">What is a Temporal Application?</a></li>
+            <li><a href="#workflows">Workflows</a></li>
+            <li><a href="#activities">Activities</a></li>
+            <li><a href="#workers">Workers</a></li>
+            <li><a href="#task-queues">Task Queues</a></li>
+          </ul>
+        </li>
+        <li><a href="#setup">Setup</a>
+          <ul>
+            <li><a href="#temporal-cli">Temporal CLI & Dev Server</a></li>
+            <li><a href="#sdk-installation">SDK Installation</a></li>
+          </ul>
+        </li>
+        <li><a href="#workflow-definition">Workflow Definition</a>
+            <ul>
+                <li><a href="#workflow-definition">Overview</a></li>
+                <li><a href="#workflow-constraints">Constraints (Determinism)</a></li>
+            </ul>
+        </li>
+        <li><a href="#activity-definition">Activity Definition</a>
+            <ul>
+                <li><a href="#activity-definition">Overview</a></li>
+                <li><a href="#activity-context">Context & Info</a></li>
+                <li><a href="#activity-registration">Registration</a></li>
+            </ul>
+        </li>
+        <!-- TODO: Add Worker Process Nav -->
+        <!-- TODO: Add Run Application Nav -->
+        <li><a href="#temporal-client">Temporal Client</a>
+            <ul>
+                <li><a href="#client-connection">Connection</a></li>
+                <li><a href="#start-workflow-execution">Start Execution</a></li>
+                <li><a href="#get-workflow-result">Get Result</a></li>
+                <li><a href="#signal-workflows">Signal</a></li>
+                <li><a href="#query-workflows">Query</a></li>
+                <li><a href="#terminate-workflows">Terminate</a></li>
+                <li><a href="#cancel-workflows">Cancel</a></li>
+            </ul>
+        </li>
+        <li><a href="#advanced-concepts">Advanced Concepts</a>
+            <ul>
+                <li><a href="#activity-heartbeating">Activity Heartbeating</a></li>
+                <li><a href="#activity-async-completion">Async Completion</a></li>
+                <li><a href="#activity-cancellation">Activity Cancellation</a></li>
+                <li><a href="#workflow-versioning">Workflow Versioning</a></li>
+                <li><a href="#child-workflows">Child Workflows</a></li>
+                <li><a href="#continue-as-new">Continue-As-New</a></li>
+                <li><a href="#side-effects">Side Effects</a></li>
+                <li><a href="#local-activities">Local Activities</a></li>
+                <li><a href="#mutations">Mutations</a></li>
+            </ul>
+        </li>
+        <li><a href="#testing">Testing</a>
+            <ul>
+                <li><a href="#testing-overview">Overview</a></li>
+                <li><a href="#workflow-replay">Workflow Replay</a></li>
+                <li><a href="#testing-environment">Integration Testing</a></li>
+            </ul>
+        </li>
+      </ul>
+    </nav>
+
     <main id="content">
       <!-- Core Concepts Section -->
       <section id="core-concepts">
@@ -241,13 +307,9 @@
       </section>
       <!-- End Setup Section -->
 
-      <!-- Workflow Development Section -->
-      <section id="workflow-development">
-        <h2>Workflow Development</h2>
-        <p>
-            Workflows orchestrate Activities and manage durable state. They execute deterministically, ensuring
-            resilience against failures.
-        </p>
+      <!-- Workflow Definition Section -->
+      <section id="workflow-definition">
+        <h2>Workflow Definition</h2>
 
         <article id="workflow-definition">
             <h3>Workflow Definition</h3>
@@ -491,16 +553,11 @@ class YourWorkflow implements YourWorkflowInterface
             </p>
         </article>
       </section>
-      <!-- End Workflow Development Section -->
+      <!-- End Workflow Definition Section -->
 
-      <!-- Activity Development Section -->
-      <section id="activity-development">
-        <h2>Activity Development</h2>
-        <p>
-            Activities encapsulate the actual business logic, performing tasks like calling external services,
-            interacting with databases, or processing data. They are executed by Workers and can be retried
-            automatically.
-        </p>
+      <!-- Activity Definition Section -->
+      <section id="activity-definition">
+        <h2>Activity Definition</h2>
 
         <article id="activity-definition">
             <h3>Activity Definition</h3>
@@ -1014,7 +1071,7 @@ print("Worker stopped.")
             </ul>
         </article>
       </section>
-      <!-- End Worker Development Section -->
+      <!-- End Worker Process Section -->
 
       <!-- Temporal Client Section -->
       <section id="temporal-client">
@@ -1241,7 +1298,7 @@ public class WorkflowStarter
             <div class="tab-content" id="start-wf-php">
             <h4>PHP</h4>
             <pre><code class="language-php">&lt;?php declare(strict_types=1);\n\nnamespace App\\Client; // Use appropriate namespace\n\nuse Temporal\\Client\\WorkflowClientInterface;\nuse Temporal\\Client\\WorkflowOptions;\nuse App\\Workflow\\YourWorkflowInterface; // Assuming Workflow interface\nuse Ramsey\\Uuid\\Uuid; // Example: Use ramsey/uuid for UUIDs\n\n// Assume $workflowClient is initialized (e.g., via dependency injection)\n/** @var WorkflowClientInterface $workflowClient */\n\n$workflow = $workflowClient->newWorkflowStub(\n    YourWorkflowInterface::class,\n    WorkflowOptions::new()\n        ->withTaskQueue(\'my-task-queue\')\n        ->withWorkflowId(\'workflow-\' + Uuid::uuid4()->toString()) // Generate UUID\n    // ->withWorkflowExecutionTimeout(CarbonInterval::minutes(5))\n);\n\n$run = $workflowClient->start($workflow, \'Temporal\'); // Pass args for execute method\n\necho \"Started workflow \" . $run->getExecution()->id . \"\\n\";\n\n// $result = $run->getResult(); // Wait for completion\n?&gt;</code></pre>
-            </div>
+                </div>
         </article>
 
         <article id="get-workflow-result">
