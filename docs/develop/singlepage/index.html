@@ -1,0 +1,1848 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Temporal SDK Development Guide</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Temporal SDK Development Guide</h1>
+      <p>A consolidated guide covering core concepts and features across Temporal SDKs.</p>
+    </header>
+
+    <main id="content">
+      <!-- Core Concepts Section -->
+      <section id="core-concepts">
+        <h2>Core Concepts</h2>
+
+        <article id="temporal-application">
+          <h3>What is a Temporal Application?</h3>
+          <p>
+            A Temporal Application is a collection of Workflow Definitions, Activity Definitions, and Worker Processes
+            that execute your business logic. It relies on a Temporal Service (either Temporal Cloud or a self-hosted
+            cluster) to manage the state and execution of Workflows reliably.
+          </p>
+        </article>
+
+        <article id="workflows">
+          <h3>Workflows</h3>
+          <p>
+            A Workflow is the core abstraction in Temporal, representing a durable, reliable, and potentially
+            long-running function execution. Workflows orchestrate the execution of Activities to achieve a business
+            goal.
+          </p>
+          <h4>Key Properties:</h4>
+          <ul>
+            <li>
+              <strong>Durability:</strong> Workflow state is persisted by the Temporal Service, allowing execution to
+              survive process failures and resume automatically.
+            </li>
+            <li>
+              <strong>Reliability:</strong> The Temporal Platform guarantees that Workflow code executes exactly once to
+              completion, handling retries and failures transparently.
+            </li>
+            <li>
+              <strong>Deterministic Constraints:</strong> Workflow code must be deterministic. This means it must
+              produce the same output given the same input, without relying on external system state or side effects
+              (except through Activities).
+            </li>
+          </ul>
+          <p>
+            Workflows are defined as functions or methods in your chosen SDK language. They interact with the Temporal
+            system via SDK APIs to schedule Activities, manage timers, wait for external events (Signals), and more.
+          </p>
+        </article>
+
+        <article id="activities">
+          <h3>Activities</h3>
+          <p>
+            An Activity represents a single, well-defined unit of work within a Workflow, typically involving
+            interaction with the outside world (for example, database calls, API requests, sending emails).
+          </p>
+          <h4>Key Properties:</h4>
+          <ul>
+            <li>
+              <strong>Non-deterministic Code:</strong> Unlike Workflows, Activity code can interact freely with external
+              systems and perform non-deterministic operations.
+            </li>
+            <li>
+              <strong>Managed Execution:</strong> Activities are executed by Workers. The Temporal Platform manages
+              their retries, timeouts, and tracking based on configured policies.
+            </li>
+            <li>
+              <strong>Idempotent Design:</strong> Activities should ideally be designed to be idempotent. This means
+              executing them multiple times with the same input yields the same result, which is crucial for handling
+              potential retries safely.
+            </li>
+          </ul>
+          <p>Activities are defined as functions or methods and are invoked asynchronously from Workflows.</p>
+        </article>
+
+        <article id="workers">
+          <h3>Workers</h3>
+          <p>
+            A Worker is a process that hosts Workflow and Activity implementations. Workers poll Task Queues on the
+            Temporal Service, receive Tasks (representing Workflow or Activity executions), execute the corresponding
+            code, and report results back.
+          </p>
+          <h4>Responsibilities:</h4>
+          <ul>
+            <li>Execute Workflow logic based on its history.</li>
+            <li>Execute Activity Tasks, interacting with external systems as needed.</li>
+            <li>Communicate with the Temporal Service to fetch Tasks and report progress/results.</li>
+          </ul>
+          <p>
+            You run Worker processes as part of your application infrastructure. They can be scaled independently based
+            on the load of specific Task Queues.
+          </p>
+        </article>
+
+        <article id="task-queues">
+          <h3>Task Queues</h3>
+          <p>
+            A Task Queue is a lightweight, dynamic queue managed by the Temporal Service. When a Workflow Execution is
+            started or an Activity is scheduled, a Task is placed onto a specific Task Queue.
+          </p>
+          <h4>Purpose:</h4>
+          <ul>
+            <li>
+              <strong>Routing:</strong> Workers listen on specific Task Queues. This directs Tasks to the appropriate
+              set of Workers capable of handling them.
+            </li>
+            <li>
+              <strong>Load Balancing:</strong> The Temporal Service distributes Tasks from a queue among the available
+              Workers listening on it.
+            </li>
+            <li>
+              <strong>Prioritization (Enterprise):</strong> Task Queues can be configured for task prioritization in
+              Temporal Cluster versions supporting it.
+            </li>
+          </ul>
+          <p>Task Queues are fundamental for decoupling Workflow/Activity scheduling from Worker execution.</p>
+        </article>
+      </section>
+      <!-- End Core Concepts Section -->
+
+      <!-- Setup Section -->
+      <section id="setup">
+        <h2>Setup & Installation</h2>
+
+        <article id="temporal-cli">
+          <h3>Temporal CLI & Development Server</h3>
+          <p>
+            The <a href="/cli">Temporal CLI</a> is essential for interacting with a Temporal Service (including Temporal
+            Cloud) and includes a lightweight development server for local testing. This server runs as a single process
+            with an in-memory database (or optional file persistence) and includes the Temporal Web UI.
+          </p>
+
+          <h4>CLI Installation</h4>
+          <p>The CLI is available for macOS, Linux, and Windows.</p>
+          <ul>
+            <li><strong>macOS (Homebrew):</strong> <code>brew install temporal</code></li>
+            <li><strong>Linux (Homebrew):</strong> <code>brew install temporal</code></li>
+            <li>
+              <strong>Manual Download (All Platforms):</strong> Visit
+              <a href="https://temporal.io/download">temporal.io/download</a>, select your platform/architecture,
+              download the archive, extract it, and add the <code>temporal</code> (or <code>temporal.exe</code>) binary
+              to your system's PATH.
+            </li>
+          </ul>
+
+          <h4>Development Server Execution</h4>
+          <p>Start the development server using the following command:</p>
+          <pre><code>temporal server start-dev</code></pre>
+          <p>
+            This command starts the server (listening on <code>localhost:7233</code> by default), creates the default
+            <code>default</code> Namespace, and starts the Web UI (accessible at
+            <a href="http://localhost:8233">http://localhost:8233</a>).
+          </p>
+        </article>
+
+        <article id="sdk-installation">
+          <h3>SDK Installation</h3>
+          <p>Install the Temporal SDK for your preferred language:</p>
+
+          <div class="tab-container" id="sdk-install-tabs">
+            <div class="tab-buttons">
+              <button class="tab-button" data-tab-target="sdk-install-go">Go</button>
+              <button class="tab-button" data-tab-target="sdk-install-java">Java</button>
+              <button class="tab-button" data-tab-target="sdk-install-dotnet">.NET</button>
+              <button class="tab-button" data-tab-target="sdk-install-php">PHP</button>
+              <button class="tab-button" data-tab-target="sdk-install-python">Python</button>
+              <button class="tab-button" data-tab-target="sdk-install-ts">TypeScript</button>
+            </div>
+
+            <div class="tab-content" id="sdk-install-go">
+              <h4>Go</h4>
+              <p>Add the Go SDK module to your project:</p>
+              <pre><code>go get go.temporal.io/sdk</code></pre>
+              <p>Or clone the repository:</p>
+              <pre><code>git clone https://github.com/temporalio/sdk-go.git</code></pre>
+              <p>API Reference: <a href="https://pkg.go.dev/go.temporal.io/sdk">pkg.go.dev/go.temporal.io/sdk</a></p>
+            </div>
+
+            <div class="tab-content" id="sdk-install-java">
+              <h4>Java</h4>
+              <p>Add the Temporal SDK dependency to your project using Maven or Gradle.</p>
+              <p><strong>Maven (<code>pom.xml</code>):</strong></p>
+              <pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;io.temporal&lt;/groupId&gt;
+  &lt;artifactId&gt;temporal-sdk&lt;/artifactId&gt;
+  &lt;version&gt;LATEST_VERSION&lt;/version&gt; &lt;!-- Replace with desired version --&gt;
+&lt;/dependency&gt;</code></pre>
+              <p><strong>Gradle (<code>build.gradle</code>):</strong></p>
+              <pre><code>implementation 'io.temporal:temporal-sdk:LATEST_VERSION' // Replace with desired version</code></pre>
+              <p>
+                Find the latest version on
+                <a href="https://search.maven.org/artifact/io.temporal/temporal-sdk">Maven Central</a>.
+              </p>
+              <p>
+                API Reference:
+                <a href="https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html">Javadoc</a>
+              </p>
+            </div>
+
+            <div class="tab-content" id="sdk-install-dotnet">
+              <h4>.NET</h4>
+              <p>Add the Temporal .NET SDK package to your project using the .NET CLI:</p>
+              <pre><code>dotnet add package Temporalio</code></pre>
+              <p>Or using NuGet Package Manager.</p>
+              <p>API Reference: <a href="https://dotnet.temporal.io/">dotnet.temporal.io</a></p>
+            </div>
+
+            <div class="tab-content" id="sdk-install-php">
+              <h4>PHP</h4>
+              <p>Install the SDK using Composer:</p>
+              <pre><code>composer require temporal/sdk</code></pre>
+              <p>API Reference: <a href="https://php.temporal.io/namespaces/temporal.html">php.temporal.io</a></p>
+            </div>
+
+            <div class="tab-content" id="sdk-install-python">
+              <h4>Python</h4>
+              <p>Install the SDK using pip:</p>
+              <pre><code>pip install temporalio</code></pre>
+              <p>Requires Python 3.8+.</p>
+              <p>API Reference: <a href="https://python.temporal.io/">python.temporal.io</a></p>
+            </div>
+
+            <div class="tab-content" id="sdk-install-ts">
+              <h4>TypeScript / JavaScript</h4>
+              <p>Create a new project using the Temporal initializer:</p>
+              <pre><code>npx @temporalio/create@latest ./your-app</code></pre>
+              <p>Or add to an existing project (requires Node.js 16.15+):</p>
+              <pre><code>npm install @temporalio/client @temporalio/worker @temporalio/workflow @temporalio/activity @temporalio/common</code></pre>
+              <p>API Reference: <a href="https://typescript.temporal.io/">typescript.temporal.io</a></p>
+            </div>
+          </div>
+        </article>
+      </section>
+      <!-- End Setup Section -->
+
+      <!-- Workflow Development Section -->
+      <section id="workflow-development">
+        <h2>Workflow Development</h2>
+
+        <article id="workflow-definition">
+          <h3>Workflow Definition</h3>
+          <p>
+            A Workflow Definition represents the code that executes for a Workflow. In Temporal SDKs, this is typically
+            defined using interfaces and/or classes, often marked with specific annotations or decorators (like
+            <code>@WorkflowInterface</code>, <code>@workflow.defn</code>, <code>[Workflow]</code>).
+          </p>
+          <p>
+            Each Workflow Definition must have a single entry point method (marked with <code>@WorkflowMethod</code>,
+            <code>@workflow.run</code>, <code>[WorkflowRun]</code>, etc.) which defines the start of the Workflow's
+            execution logic. The Workflow Execution completes when this entry point method returns or throws an error.
+          </p>
+
+          <div class="tab-container" id="workflow-def-tabs">
+            <div class="tab-buttons">
+              <button class="tab-button" data-tab-target="workflow-def-go">Go</button>
+              <button class="tab-button" data-tab-target="workflow-def-java">Java</button>
+              <button class="tab-button" data-tab-target="workflow-def-dotnet">.NET</button>
+              <button class="tab-button" data-tab-target="workflow-def-php">PHP</button>
+              <button class="tab-button" data-tab-target="workflow-def-python">Python</button>
+              <button class="tab-button" data-tab-target="workflow-def-ts">TypeScript</button>
+            </div>
+
+            <div class="tab-content" id="workflow-def-go">
+              <h4>Go</h4>
+              <p>
+                Workflows are defined as functions. The function signature defines the Workflow Type, parameters, and
+                return value.
+              </p>
+              <pre><code>package app
+
+import "go.temporal.io/sdk/workflow"
+
+// YourWorkflow is a Workflow Definition.
+func YourWorkflow(ctx workflow.Context, name string) (string, error) {
+  // Workflow logic...
+  logger := workflow.GetLogger(ctx)
+  logger.Info("Workflow started", "name", name)
+  // ... execute activities, timers, etc.
+  return "Workflow completed for " + name, nil
+}</code></pre>
+            </div>
+
+            <div class="tab-content" id="workflow-def-java">
+              <h4>Java</h4>
+              <p>
+                Define a Workflow interface annotated with <code>@WorkflowInterface</code> and a single method annotated
+                with <code>@WorkflowMethod</code>. Then, implement this interface.
+              </p>
+              <pre><code>import io.temporal.workflow.WorkflowInterface;
+import io.temporal.workflow.WorkflowMethod;
+
+@WorkflowInterface
+public interface YourWorkflow {
+    @WorkflowMethod
+    String run(String name);
+}
+
+// Implementation
+public class YourWorkflowImpl implements YourWorkflow {
+    @Override
+    public String run(String name) {
+        // Workflow logic...
+        // ... execute activities, timers, etc.
+        return "Workflow completed for " + name;
+    }
+}</code></pre>
+            </div>
+
+            <div class="tab-content" id="workflow-def-dotnet">
+              <h4>.NET</h4>
+              <p>
+                Define a class annotated with <code>[Workflow]</code> and a single asynchronous method annotated with
+                <code>[WorkflowRun]</code>.
+              </p>
+              <pre><code>using Temporalio.Workflows;
+using System.Threading.Tasks;
+
+[Workflow]
+public class YourWorkflow
+{
+    [WorkflowRun]
+    public async Task&lt;string&gt; RunAsync(string name)
+    {
+        // Workflow logic...
+        Workflow.Logger.LogInformation("Workflow started for {Name}", name);
+        // ... execute activities, timers, etc.
+        return await Task.FromResult("Workflow completed for " + name);
+    }
+}</code></pre>
+            </div>
+
+            <div class="tab-content" id="workflow-def-php">
+              <h4>PHP</h4>
+              <p>
+                Define a Workflow interface annotated with <code>#[WorkflowInterface]</code> and a single method
+                annotated with <code>#[WorkflowMethod]</code>. Then, implement this interface.
+              </p>
+              <pre><code>&lt;?php
+
+namespace App\Workflow;
+
+use Temporal\Workflow\WorkflowInterface;
+use Temporal\Workflow\WorkflowMethod;
+
+#[WorkflowInterface]
+interface YourWorkflowInterface
+{
+    #[WorkflowMethod]
+    public function run(string $name): \Generator;
+}
+
+// Implementation
+use Temporal\Workflow;
+
+class YourWorkflow implements YourWorkflowInterface
+{
+    public function run(string $name): \Generator
+    {
+        Workflow::getLogger()->info('Workflow started', ['name' => $name]);
+        // Workflow logic...
+        // ... execute activities, timers, etc.
+        return 'Workflow completed for ' . $name; // yield return for async
+    }
+}
+</code></pre>
+            </div>
+
+            <div class="tab-content" id="workflow-def-python">
+              <h4>Python</h4>
+              <p>
+                Define a class decorated with <code>@workflow.defn</code> and a single async method decorated with
+                <code>@workflow.run</code>.
+              </p>
+              <pre><code>from temporalio import workflow
+import asyncio
+
+@workflow.defn
+class YourWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        workflow.logger.info("Workflow started", name=name)
+        # Workflow logic...
+        # ... execute activities, timers, etc.
+        await asyncio.sleep(1) # Example async operation
+        return f"Workflow completed for {name}"
+</code></pre>
+            </div>
+
+            <div class="tab-content" id="workflow-def-ts">
+              <h4>TypeScript</h4>
+              <p>
+                Workflows are typically defined as async functions. The function signature defines the Workflow Type,
+                parameters, and return type.
+              </p>
+              <pre><code>import * as workflow from '@temporalio/workflow';
+
+// Can also be defined as an interface and implemented by a class
+export async function yourWorkflow(name: string): Promise&lt;string&gt; {
+  workflow.log.info('Workflow started', { name });
+  // Workflow logic...
+  // ... execute activities, timers, etc.
+  await workflow.sleep('1 second'); // Example async operation
+  return `Workflow completed for ${name}`;
+}</code></pre>
+            </div>
+          </div>
+        </article>
+
+        <article id="workflow-params-returns">
+          <h3>Parameters and Return Values</h3>
+          <p>
+            Workflow parameters and return values must be serializable by the SDK's configured Data Converter (JSON by
+            default in most SDKs). Complex types like objects or data classes are supported.
+          </p>
+          <p>
+            <strong>Best Practice:</strong> Pass a single object/struct/class containing all input fields as the
+            Workflow parameter. This allows adding new fields later without breaking compatibility with running
+            Workflows.
+          </p>
+          <p>
+            Large inputs or return values can impact performance, as they are recorded in the Workflow History which is
+            transferred to Workers.
+          </p>
+        </article>
+
+        <article id="workflow-type-name">
+          <h3>Workflow Type (Name)</h3>
+          <p>
+            Each Workflow Definition has a type name used by the Temporal Client to start executions. By default, this
+            is often derived from the function or class name (for example, <code>YourWorkflow</code>).
+          </p>
+          <p>
+            You can usually customize this name using an argument within the Workflow annotation/decorator (for example,
+            <code>@workflow.defn(name="custom-workflow-name")</code>, <code>[Workflow("custom-workflow-name")]</code>)
+            or by convention (for example, the interface name in Java/PHP).
+          </p>
+        </article>
+
+        <article id="workflow-determinism">
+          <h3>Deterministic Constraints</h3>
+          <p>
+            Workflow code must be deterministic. This means the code must produce the same output given the same input,
+            every time it's re-executed by a Worker during <a href="/workflow-execution#replay">Workflow Replay</a>.
+          </p>
+          <h4>Forbidden Operations:</h4>
+          <ul>
+            <li>Direct network I/O (use Activities)</li>
+            <li>Direct file system access (use Activities)</li>
+            <li>
+              Standard threading or concurrency primitives (use SDK-provided ones if available, like Go selectors or
+              .NET `Workflow.RunTaskAsync`)
+            </li>
+            <li>
+              Using system time directly (use <code>workflow.now()</code>, <code>Workflow.CurrentTimeMillis()</code>,
+              etc.)
+            </li>
+            <li>
+              Generating random numbers directly (use <code>workflow.newRandom()</code>, <code>Workflow.Random</code>,
+              etc.)
+            </li>
+            <li>Accessing external configuration or mutable global state (pass via parameters or use Activities)</li>
+            <li>
+              Iterating over non-deterministically ordered collections like standard maps/dictionaries in some languages
+              (use sorted keys or SDK utilities if available).
+            </li>
+          </ul>
+          <p>
+            Use Activities for any non-deterministic operations. Temporal SDKs provide deterministic APIs for common
+            needs like timers (<code>workflow.sleep</code>, <code>Workflow.timer</code>), accessing Workflow information
+            (ID, Run ID), and managing child Workflows or external Workflow interactions.
+          </p>
+          <p>
+            <strong>Important:</strong> Modifying Workflow code requires careful handling to maintain determinism for
+            already running Workflows. Use <a href="/develop/versioning">Workflow Versioning</a> (patching APIs like
+            <code>workflow.getVersion</code>) to introduce non-backward-compatible changes safely.
+          </p>
+        </article>
+
+        <article id="workflow-start">
+          <h3>Workflow Execution Start</h3>
+          <p>
+            Workflows are started using a Temporal Client instance connected to your Temporal Service. You typically
+            provide:
+          </p>
+          <ul>
+            <li>The Workflow Type name.</li>
+            <li>A unique Workflow ID (business-level identifier).</li>
+            <li>The Task Queue the Workflow should run on.</li>
+            <li>Any input parameters required by the Workflow.</li>
+            <li>Workflow Options (timeouts, Retry Policies, etc.).</li>
+          </ul>
+          <p>
+            The client call is usually asynchronous, returning a handle that can be used to interact with the Workflow
+            later (for example, query, signal, await completion).
+          </p>
+          <p>
+            <em
+              >(Client usage details will be covered in the <a href="#temporal-client">Temporal Client section</a>).</em
+            >
+          </p>
+        </article>
+      </section>
+      <!-- End Workflow Development Section -->
+
+      <!-- Activity Development Section -->
+      <section id="activity-development">
+        <h2>Activity Development</h2>
+
+        <article id="activity-definition">
+          <h3>Activity Definition</h3>
+          <p>
+            An Activity Definition represents the code that performs a single unit of work within your application,
+            often involving I/O or interaction with external systems. Unlike Workflows, Activity code does not have
+            deterministic constraints.
+          </p>
+          <p>
+            Activities are typically defined as functions, methods, or implementations of an interface, often marked
+            with annotations or decorators (like <code>@ActivityInterface</code>, <code>@activity.defn</code>,
+            <code>[Activity]</code>).
+          </p>
+
+          <div class="tab-container" id="activity-def-tabs">
+            <div class="tab-buttons">
+              <button class="tab-button" data-tab-target="activity-def-go">Go</button>
+              <button class="tab-button" data-tab-target="activity-def-java">Java</button>
+              <button class="tab-button" data-tab-target="activity-def-dotnet">.NET</button>
+              <button class="tab-button" data-tab-target="activity-def-php">PHP</button>
+              <button class="tab-button" data-tab-target="activity-def-python">Python</button>
+              <button class="tab-button" data-tab-target="activity-def-ts">TypeScript</button>
+            </div>
+
+            <div class="tab-content" id="activity-def-go">
+              <h4>Go</h4>
+              <p>
+                Activities are defined as functions or methods on a struct. The function signature defines the Activity
+                Type (by default), parameters, and return value. The first parameter can optionally be
+                <code>context.Context</code>.
+              </p>
+              <pre><code>package app
+
+import (
+    "context"
+    "fmt"
+)
+
+// YourActivity is an Activity Definition.
+func YourActivity(ctx context.Context, name string) (string, error) {
+    // Activity logic (can perform I/O, etc.)
+    greeting := fmt.Sprintf("Hello, %s!", name)
+    // ... call external API, database, etc.
+    return greeting, nil
+}
+
+// Can also be a method on a struct
+type Activities struct { /* dependencies */ }
+
+func (a *Activities) YourActivityMethod(ctx context.Context, name string) (string, error) {
+    // Method-based Activity logic
+     greeting := fmt.Sprintf("Hello from method, %s!", name)
+    return greeting, nil
+}</code></pre>
+            </div>
+
+            <div class="tab-content" id="activity-def-java">
+              <h4>Java</h4>
+              <p>
+                Define an Activity interface annotated with <code>@ActivityInterface</code>. Each method in the
+                interface defines an Activity Type. Implement this interface.
+              </p>
+              <pre><code>import io.temporal.activity.ActivityInterface;
+import io.temporal.activity.ActivityMethod;
+
+@ActivityInterface
+public interface YourActivities {
+    // Default Activity name is "DoWork"
+    String doWork(String input);
+
+    // Explicitly named Activity
+    @ActivityMethod(name = "ProcessPayment")
+    boolean processPaymentActivity(String orderId, double amount);
+}
+
+// Implementation
+public class YourActivitiesImpl implements YourActivities {
+    @Override
+    public String doWork(String input) {
+        // Activity logic...
+        return "Processed: " + input;
+    }
+
+    @Override
+    public boolean processPaymentActivity(String orderId, double amount) {
+        // Payment processing logic...
+        System.out.printf("Processing payment for order %s, amount %.2f%n", orderId, amount);
+        return true;
+    }
+}</code></pre>
+            </div>
+
+            <div class="tab-content" id="activity-def-dotnet">
+              <h4>.NET</h4>
+              <p>
+                Define Activity methods within any class, marking them with the <code>[Activity]</code> attribute.
+                Methods can be static or instance methods.
+              </p>
+              <pre><code>using Temporalio.Activities;
+using System.Threading.Tasks;
+
+public class MyActivities
+{
+    [Activity]
+    public async Task&lt;string&gt; ComposeGreetingAsync(string greeting, string name)
+    {
+        // Activity logic...
+        Activity.Logger.LogInformation("Running activity with greeting {Greeting} and name {Name}", greeting, name);
+        await Task.Delay(500); // Simulate work
+        return $"{greeting}, {name}!";
+    }
+
+    [Activity("StaticActivity")] // Custom name
+    public static string DoStaticWork(int value)
+    {
+        return $"Static result: {value * 2}";
+    }
+}</code></pre>
+            </div>
+
+            <div class="tab-content" id="activity-def-php">
+              <h4>PHP</h4>
+              <p>
+                Define an Activity interface annotated with <code>#[ActivityInterface]</code>. Each method defines an
+                Activity Type. Implement this interface.
+              </p>
+              <pre><code>&lt;?php
+
+namespace App\Activity;
+
+use Temporal\Activity\ActivityInterface;
+use Temporal\Activity\ActivityMethod;
+
+#[ActivityInterface(prefix: "App.Activities.")] // Optional prefix for all activity names
+interface YourActivityInterface
+{
+    public function composeGreeting(string $greeting, string $name): string;
+
+    #[ActivityMethod("ExecutePayment")] // Custom name overrides prefix
+    public function executePaymentActivity(string $transactionId): bool;
+}
+
+// Implementation
+use Temporal\Activity;
+
+class YourActivities implements YourActivityInterface
+{
+    public function composeGreeting(string $greeting, string $name): string
+    {
+        Activity::getLogger()->info("Composing greeting", ['greeting' => $greeting, 'name' => $name]);
+        // Activity logic...
+        return $greeting . ', ' . $name . '!';
+    }
+
+    public function executePaymentActivity(string $transactionId): bool
+    {
+        Activity::getLogger()->info("Executing payment", ['transactionId' => $transactionId]);
+        // Payment logic...
+        return true;
+    }
+}
+</code></pre>
+            </div>
+
+            <div class="tab-content" id="activity-def-python">
+              <h4>Python</h4>
+              <p>Activities are defined as functions (async or sync) decorated with <code>@activity.defn</code>.</p>
+              <pre><code>from temporalio import activity
+import time
+
+@activity.defn
+def compose_greeting(greeting: str, name: str) -> str:
+    activity.logger.info(f"Composing greeting for {name}")
+    # Activity logic...
+    time.sleep(0.5) # Simulate I/O
+    return f"{greeting}, {name}!"
+
+@activity.defn(name="DifferentActivityName")
+async def do_async_work(value: int) -> int:
+    activity.logger.info(f"Doing async work with {value}")
+    # Async activity logic...
+    await asyncio.sleep(1)
+    return value * 10
+</code></pre>
+            </div>
+
+            <div class="tab-content" id="activity-def-ts">
+              <h4>TypeScript</h4>
+              <p>
+                Activities are typically defined as async functions within an object or class. The function name usually
+                serves as the Activity Type.
+              </p>
+              <pre><code>import * as activity from '@temporalio/activity';
+
+// Often grouped in an object or class passed to the Worker
+export async function composeGreeting(greeting: string, name: string): Promise&lt;string&gt; {
+  const { log } = activity.Context.current();
+  log.info('Composing greeting', { greeting, name });
+  // Activity logic...
+  await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate I/O
+  return `${greeting}, ${name}!`;
+}
+
+export async function anotherActivity(id: number): Promise&lt;void&gt; {
+  activity.Context.current().log.info('Running another activity', { id });
+  // ...
+}
+</code></pre>
+            </div>
+          </div>
+        </article>
+
+        <article id="activity-params-returns">
+          <h3>Parameters and Return Values</h3>
+          <p>
+            Like Workflows, Activity parameters and return values must be serializable. Standard data types and complex
+            objects/structs/classes are usually supported.
+          </p>
+          <p>
+            <strong>Payload Size Limits:</strong> Be mindful of data size. Individual arguments/return values might have
+            limits (e.g., 2MB), and the total size of all arguments or the return value within a single gRPC message is
+            typically limited (e.g., 4MB). Large payloads recorded in Workflow History can also impact performance.
+          </p>
+          <p>
+            <strong>Best Practice:</strong> Similar to Workflows, consider passing a single object containing all input
+            fields to Activities for easier evolution.
+          </p>
+        </article>
+
+        <article id="activity-type-name">
+          <h3>Activity Type (Name)</h3>
+          <p>
+            Each Activity Definition has a type name used by Workflows to invoke it. By default, this is often derived
+            from the function or method name.
+          </p>
+          <p>
+            This name can usually be customized via annotations/decorators (e.g.,
+            <code>@ActivityMethod(name="CustomName")</code>, <code>@activity.defn(name="custom_name")</code>,
+            <code>[Activity("CustomName")]</code>) or prefixes (PHP).
+          </p>
+        </article>
+
+        <article id="activity-execution">
+          <h3>Activity Execution from Workflows</h3>
+          <p>
+            Workflows execute Activities asynchronously using specific SDK APIs. This is the primary mechanism for
+            Workflows to perform actions with side effects or interact with the external world.
+          </p>
+          <p>When executing an Activity, the Workflow provides:</p>
+          <ul>
+            <li>The Activity Type name (or a reference to the function/method).</li>
+            <li>Input arguments for the Activity.</li>
+            <li>Activity Options, including required timeouts and optional Retry Policies.</li>
+          </ul>
+          <p>The SDK call returns a future/promise/channel representing the Activity's eventual result or error.</p>
+
+          <div class="tab-container" id="activity-exec-tabs">
+            <div class="tab-buttons">
+              <button class="tab-button" data-tab-target="activity-exec-go">Go</button>
+              <button class="tab-button" data-tab-target="activity-exec-java">Java</button>
+              <button class="tab-button" data-tab-target="activity-exec-dotnet">.NET</button>
+              <button class="tab-button" data-tab-target="activity-exec-php">PHP</button>
+              <button class="tab-button" data-tab-target="activity-exec-python">Python</button>
+              <button class="tab-button" data-tab-target="activity-exec-ts">TypeScript</button>
+            </div>
+
+            <div class="tab-content" id="activity-exec-go">
+              <h4>Go</h4>
+              <pre><code>import (
+    "time"
+    "go.temporal.io/sdk/workflow"
+)
+
+func YourWorkflow(ctx workflow.Context, name string) (string, error) {
+    ao := workflow.ActivityOptions{
+        StartToCloseTimeout: time.Minute * 1,
+        // Other options like ScheduleToStartTimeout, RetryPolicy can be set here
+    }
+    ctx = workflow.WithActivityOptions(ctx, ao)
+
+    var result string
+    // Execute by function reference
+    err := workflow.ExecuteActivity(ctx, YourActivity, name).Get(ctx, &result)
+    if err != nil {
+        return "", err
+    }
+
+    // Execute by name (if using struct methods)
+    // var activities *Activities // Can be nil if activities are registered by type on worker
+    // err = workflow.ExecuteActivity(ctx, activities.YourActivityMethod, name).Get(ctx, &result)
+
+    return result, nil
+}</code></pre>
+            </div>
+            <div class="tab-content" id="activity-exec-java">
+              <h4>Java</h4>
+              <pre><code>import io.temporal.activity.ActivityOptions;
+import io.temporal.workflow.Workflow;
+import java.time.Duration;
+
+public class YourWorkflowImpl implements YourWorkflow {
+    // Define Activity stub using the interface
+    private final YourActivities activities = Workflow.newActivityStub(YourActivities.class,
+        ActivityOptions.newBuilder()
+            .setStartToCloseTimeout(Duration.ofMinutes(1))
+            // Other options like setScheduleToStartTimeout, setRetryOptions can be set here
+            .build());
+
+    @Override
+    public String run(String name) {
+        String result = activities.doWork(name);
+        boolean paymentSuccess = activities.processPaymentActivity("order-123", 99.99);
+        // ... use results
+        return result + ", Payment success: " + paymentSuccess;
+    }
+}</code></pre>
+            </div>
+            <div class="tab-content" id="activity-exec-dotnet">
+              <h4>.NET</h4>
+              <pre><code>using Temporalio.Workflows;
+using System;
+using System.Threading.Tasks;
+
+[Workflow]
+public class YourWorkflow
+{
+    [WorkflowRun]
+    public async Task&lt;string&gt; RunAsync(string name)
+    {
+        var options = new ActivityOptions { StartToCloseTimeout = TimeSpan.FromMinutes(1) };
+
+        // Execute using lambda expression targeting the Activity method
+        string result = await Workflow.ExecuteActivityAsync(
+            (MyActivities act) => act.ComposeGreetingAsync("Hello", name),
+            options);
+
+        // Execute static activity by name
+        string staticResult = await Workflow.ExecuteActivityAsync&lt;string&gt;(
+             "StaticActivity", // Activity name
+             new object[] { 10 }, // Arguments as object array
+             options);
+
+        return result + " | " + staticResult;
+    }
+}
+
+// Assumes MyActivities class is defined elsewhere
+public class MyActivities { /* ... Activity methods ... */ }</code></pre>
+            </div>
+            <div class="tab-content" id="activity-exec-php">
+              <h4>PHP</h4>
+              <pre><code>&lt;?php
+namespace App\Workflow;
+
+use Temporal\Workflow;
+use Temporal\Activity\ActivityOptions;
+use App\Activity\YourActivityInterface;
+use Carbon\Interval;
+
+class YourWorkflow implements YourWorkflowInterface
+{
+    public function run(string $name): \Generator
+    {
+        $activities = Workflow::newActivityStub(
+            YourActivityInterface::class,
+            ActivityOptions::new()->withStartToCloseTimeout(Interval::minute())
+        );
+
+        // Yield waits for Activity completion
+        $result = yield $activities->composeGreeting('Hello', $name);
+        $paymentResult = yield $activities->executePaymentActivity('txn-abc');
+
+        return $result . ' | Payment: ' . ($paymentResult ? 'OK' : 'Failed');
+    }
+}
+</code></pre>
+            </div>
+            <div class="tab-content" id="activity-exec-python">
+              <h4>Python</h4>
+              <pre><code>from temporalio import workflow
+from datetime import timedelta
+
+# Assuming activity functions compose_greeting and do_async_work are defined elsewhere
+# and imported
+
+@workflow.defn
+class YourWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        result = await workflow.execute_activity(
+            compose_greeting, # Activity function reference
+            args=["Hello", name],
+            start_to_close_timeout=timedelta(minutes=1),
+            # schedule_to_start_timeout, retry_policy, etc.
+        )
+
+        # Execute by string name (less common unless dynamic)
+        # result_alt = await workflow.execute_activity(
+        #     "DifferentActivityName",
+        #     args=[123],
+        #     start_to_close_timeout=timedelta(minutes=1),
+        # )
+
+        return result
+</code></pre>
+            </div>
+            <div class="tab-content" id="activity-exec-ts">
+              <h4>TypeScript</h4>
+              <pre><code>import * as workflow from '@temporalio/workflow';
+import type * as activities from './activities'; // Assuming activities are defined here
+
+// Use proxyActivities to get strongly-typed Activity stubs
+const { composeGreeting, anotherActivity } = workflow.proxyActivities&lt;typeof activities&gt;({
+  startToCloseTimeout: '1 minute',
+  // scheduleToStartTimeout, retryPolicy, etc.
+});
+
+export async function yourWorkflow(name: string): Promise&lt;string&gt; {
+  const result = await composeGreeting('Hello', name);
+  await anotherActivity(42);
+  return result;
+}
+</code></pre>
+            </div>
+          </div>
+        </article>
+
+        <article id="activity-options">
+          <h3>Activity Options (Timeouts & Retries)</h3>
+          <p>When executing an Activity, you **must** provide timeouts. The most crucial is:</p>
+          <ul>
+            <li>
+              <strong><code>StartToCloseTimeout</code>:</strong> Maximum time allowed for a single Activity Task
+              Execution attempt (from when a Worker picks it up until it completes or fails).
+            </li>
+          </ul>
+          <p>Other important timeouts include:</p>
+          <ul>
+            <li>
+              <strong><code>ScheduleToStartTimeout</code>:</strong> Maximum time an Activity Task can wait in a Task
+              Queue before being picked up by a Worker.
+            </li>
+            <li>
+              <strong><code>ScheduleToCloseTimeout</code>:</strong> Maximum total time allowed for the Activity
+              Execution, including queue time, retries, and execution time.
+            </li>
+            <li>
+              <strong><code>HeartbeatTimeout</code>:</strong> Maximum time between Heartbeats for long-running
+              Activities. If exceeded, the Activity is considered failed, and a retry may occur (if configured).
+            </li>
+          </ul>
+          <p>
+            <strong>Retry Policy:</strong> You can configure automatic retries for Activities that fail or time out.
+            Policies include settings for initial interval, backoff coefficient, maximum interval, maximum attempts, and
+            non-retryable error types.
+          </p>
+          <p>These options provide fine-grained control over Activity execution reliability and timeliness.</p>
+          <p>See also the <a href="/develop/activity-retry-simulator">Activity Retry Simulator</a>.</p>
+        </article>
+
+        <article id="activity-heartbeating">
+          <h3>Activity Heartbeating</h3>
+          <p>
+            For Activities that run longer than the configured <code>HeartbeatTimeout</code>, the Activity code must
+            periodically report progress back to the Temporal Service. This is done using the SDK's Heartbeat API (e.g.,
+            <code>activity.RecordHeartbeat</code>, <code>ActivityExecutionContext.heartbeat</code>).
+          </p>
+          <p>Heartbeating serves two purposes:</p>
+          <ol>
+            <li>It informs the Temporal Service that the Activity is still alive and making progress.</li>
+            <li>
+              It provides a mechanism to save checkpoint data (details) with the Heartbeat, which can be retrieved if
+              the Activity needs to be retried after a failure, allowing it to resume from the last checkpoint.
+            </li>
+          </ol>
+          <p>
+            If a Heartbeat is not received within the <code>HeartbeatTimeout</code> duration, the Temporal Service
+            assumes the Activity Worker has crashed and will attempt to retry the Activity Task (subject to the Retry
+            Policy and `ScheduleToCloseTimeout`).
+          </p>
+        </article>
+
+        <article id="activity-async-completion">
+          <h3>Asynchronous Activity Completion</h3>
+          <p>
+            In some scenarios, an Activity needs to hand off work to an external system and then complete later when
+            that external system calls back.
+          </p>
+          <p>
+            Temporal supports this via Asynchronous Activity Completion. The Activity function starts the external
+            process, then returns control to the Worker *without completing the Activity*. It provides the Temporal
+            Service with a unique Task Token.
+          </p>
+          <p>
+            The external system, upon completing its work, uses this Task Token to report the Activity result (or
+            failure) back to the Temporal Service via the Temporal Client API (e.g.,
+            <code>client.CompleteActivity</code>, <code>client.completeActivity</code>). The Workflow Execution then
+            proceeds based on this reported completion.
+          </p>
+          <p>
+            This pattern requires careful management of the Task Token and ensuring the external system reliably calls
+            back to complete the Activity.
+          </p>
+        </article>
+      </section>
+      <!-- End Activity Development Section -->
+
+      <!-- Worker Development Section -->
+      <section id="worker-development">
+        <h2>Worker Development</h2>
+
+        <article id="worker-process">
+          <h3>Worker Process</h3>
+          <p>
+            A Worker Process is a crucial component of your Temporal Application infrastructure. It hosts your Workflow
+            and Activity implementations, polls specific Task Queues for work assigned by the Temporal Service, executes
+            the corresponding code, and communicates results back to the Service.
+          </p>
+          <h4>Key Responsibilities:</h4>
+          <ul>
+            <li>Connect to the Temporal Service.</li>
+            <li>Listen on one or more Task Queues.</li>
+            <li>Register the Workflow and Activity types it is capable of executing.</li>
+            <li>Poll for Workflow Tasks and Activity Tasks.</li>
+            <li>Execute Workflow code deterministically, progressing the Workflow state based on its history.</li>
+            <li>Execute Activity code, performing the actual business logic and side effects.</li>
+            <li>Report Task completion, failure, or heartbeats to the Temporal Service.</li>
+          </ul>
+          <p>
+            You deploy and manage Worker Processes yourself (or via orchestration platforms like Kubernetes). They can
+            be scaled horizontally based on the load of the Task Queues they monitor.
+          </p>
+        </article>
+
+        <article id="running-a-worker">
+          <h3>Creating and Running a Worker</h3>
+          <p>The general steps to create and run a Worker using an SDK involve:</p>
+          <ol>
+            <li>Establishing a connection to the Temporal Service using a Temporal Client instance.</li>
+            <li>
+              Creating a Worker instance, specifying the Temporal Client, the Task Queue to listen on, and potentially
+              Worker Options.
+            </li>
+            <li>
+              Registering the Workflow implementation types and Activity implementation instances (or types) that this
+              Worker will handle for the specified Task Queue.
+            </li>
+            <li>
+              Starting the Worker, which typically begins polling the Task Queue in a blocking or background manner.
+            </li>
+          </ol>
+          <div class="tab-container" id="worker-run-tabs">
+            <div class="tab-buttons">
+              <button class="tab-button" data-tab-target="worker-run-go">Go</button>
+              <button class="tab-button" data-tab-target="worker-run-java">Java</button>
+              <button class="tab-button" data-tab-target="worker-run-dotnet">.NET</button>
+              <button class="tab-button" data-tab-target="worker-run-php">PHP</button>
+              <button class="tab-button" data-tab-target="worker-run-python">Python</button>
+              <button class="tab-button" data-tab-target="worker-run-ts">TypeScript</button>
+            </div>
+
+            <div class="tab-content" id="worker-run-go">
+              <h4>Go</h4>
+              <pre><code>package main
+
+import (
+    "log"
+    "go.temporal.io/sdk/client"
+    "go.temporal.io/sdk/worker"
+    "your_app/app" // Assuming your Workflow/Activity defs are here
+)
+
+func main() {
+    // The client is a heavyweight object that should be created once per process.
+    c, err := client.Dial(client.Options{ /* HostPort, Namespace, etc. */ })
+    if err != nil {
+        log.Fatalln("Unable to create client", err)
+    }
+    defer c.Close()
+
+    w := worker.New(c, "your-task-queue", worker.Options{ /* MaxConcurrent... etc */ })
+
+    // Register Workflow and Activity implementations
+    w.RegisterWorkflow(app.YourWorkflow)
+    // Register by struct instance (for dependency injection) or type
+    activities := &app.Activities{}
+    w.RegisterActivity(activities)
+    // Or by type: w.RegisterActivity(app.YourActivity) // If YourActivity is a function
+
+    // Start listening to the Task Queue.
+    err = w.Run(worker.InterruptCh())
+    if err != nil {
+        log.Fatalln("Unable to start worker", err)
+    }
+}</code></pre>
+            </div>
+
+            <div class="tab-content" id="worker-run-java">
+              <h4>Java</h4>
+              <pre><code>import io.temporal.client.WorkflowClient;
+import io.temporal.serviceclient.WorkflowServiceStubs;
+import io.temporal.worker.Worker;
+import io.temporal.worker.WorkerFactory;
+import your_app.YourWorkflowImpl; // Import implementations
+import your_app.YourActivitiesImpl;
+
+public class YourWorker {
+    public static void main(String[] args) {
+        // WorkflowServiceStubs is a gRPC stubs wrapper that talks to the Temporal service.
+        WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs(); // Or newServiceStubs(...)
+        WorkflowClient client = WorkflowClient.newInstance(service /*, options */);
+
+        // Worker factory is used to create Workers for specific Task Queues.
+        WorkerFactory factory = WorkerFactory.newInstance(client);
+        Worker worker = factory.newWorker("your-task-queue" /*, options */);
+
+        // Register Workflow and Activity implementations.
+        // Workflows are registered by type, Activities by instance (for dependencies).
+        worker.registerWorkflowImplementationTypes(YourWorkflowImpl.class);
+        worker.registerActivitiesImplementations(new YourActivitiesImpl());
+
+        // Start listening to the Task Queue.
+        factory.start();
+    }
+}</code></pre>
+            </div>
+
+            <div class="tab-content" id="worker-run-dotnet">
+              <h4>.NET</h4>
+              <pre><code>using System;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
+using Temporalio.Client;
+using Temporalio.Worker;
+using YourApp; // Assuming Workflow/Activity classes are here
+
+public class Program
+{
+    public static async Task Main(string[] args)
+    {
+        // Use generic host for logging/DI integration
+        var host = Host.CreateDefaultBuilder(args)
+            .ConfigureLogging(ctx => ctx.AddSimpleConsole().SetMinimumLevel(LogLevel.Information))
+            .ConfigureServices(services =>
+            {
+                // Add client (connects lazily)
+                services.AddSingleton(sp =>
+                    new Lazy&lt;Task&lt;TemporalClient&gt;&gt;(() =>
+                        TemporalClient.ConnectAsync(new() { TargetHost = "localhost:7233" })) // Options
+                );
+                // Add worker hosted service
+                services.AddHostedService&lt;TemporalWorkerService&gt;();
+                // Add Activities as singleton (or other lifetime)
+                services.AddSingleton&lt;MyActivities&gt;();
+            })
+            .Build();
+        await host.RunAsync();
+    }
+}
+
+// Worker hosted service
+public class TemporalWorkerService : BackgroundService
+{
+    private readonly ILogger&lt;TemporalWorkerService&gt; logger;
+    private readonly Lazy&lt;Task&lt;TemporalClient&gt;&gt; client;
+    private readonly IServiceProvider serviceProvider;
+
+    public TemporalWorkerService(ILogger&lt;TemporalWorkerService&gt; logger,
+        Lazy&lt;Task&lt;TemporalClient&gt;&gt; client, IServiceProvider serviceProvider)
+    {
+        this.logger = logger;
+        this.client = client;
+        this.serviceProvider = serviceProvider;
+    }
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        var actualClient = await client.Value;
+        logger.LogInformation("Running worker");
+        var options = new TemporalWorkerOptions("your-task-queue")
+            .AddWorkflow&lt;YourWorkflow&gt;() // Register Workflow type
+            // Register Activity instance resolved from DI
+            .AddActivity(serviceProvider.GetRequiredService&lt;MyActivities&gt;());
+            // Add other options...
+
+        using var worker = new TemporalWorker(actualClient, options);
+        try
+        {
+            await worker.ExecuteAsync(stoppingToken);
+        }
+        catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
+        {
+            logger.LogInformation("Worker cancelled");
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Worker failed");
+        }
+    }
+}</code></pre>
+            </div>
+
+            <div class="tab-content" id="worker-run-php">
+              <h4>PHP</h4>
+              <pre><code>&lt;?php
+require __DIR__ . '/vendor/autoload.php';
+
+use Temporal\WorkerFactory;
+use App\Workflow\YourWorkflow; // Import implementations
+use App\Activity\YourActivities;
+
+// Connect to Temporal server (usually localhost:7233 for local dev)
+// WorkerFactory::create() connects to localhost:7233 by default
+$workerFactory = WorkerFactory::create();
+
+// Create worker for task queue "your-task-queue"
+$worker = $workerFactory->newWorker('your-task-queue' /*, options */);
+
+// Register Workflow and Activity implementations
+$worker->registerWorkflowTypes(YourWorkflow::class);
+$worker->registerActivityImplementations(new YourActivities());
+
+// Start the worker
+echo "Starting Worker...\n";
+$workerFactory->run();
+</code></pre>
+            </div>
+
+            <div class="tab-content" id="worker-run-python">
+              <h4>Python</h4>
+              <pre><code>import asyncio
+from temporalio.client import Client
+from temporalio.worker import Worker
+
+# Import your Workflow and Activity implementations
+from your_app.workflows import YourWorkflow
+from your_app.activities import compose_greeting, do_async_work
+
+async def main():
+    # Connect to client
+    client = await Client.connect("localhost:7233") # Add options if needed
+
+    # Run worker
+    worker = Worker(
+        client,
+        task_queue="your-task-queue",
+        workflows=[YourWorkflow],
+        activities=[compose_greeting, do_async_work],
+        # worker_options...
+    )
+    print("Starting worker...")
+    await worker.run()
+
+if __name__ == "__main__":
+    asyncio.run(main())
+</code></pre>
+            </div>
+
+            <div class="tab-content" id="worker-run-ts">
+              <h4>TypeScript</h4>
+              <pre><code>import { Worker, NativeConnection } from '@temporalio/worker';
+import * as activities from './activities'; // Assuming activities are exported from here
+// Workflow path must point to a file that exports Workflows.
+// It must not import any code relying on non-determinism.
+const workflowPath = require.resolve('./workflows'); // Adjust path as needed
+
+async function run() {
+  // Optional: Establish connection to Temporal Service
+  // const connection = await NativeConnection.connect({ address: 'localhost:7233' });
+  // If not provided, Worker connects to localhost:7233 by default
+
+  const worker = await Worker.create({
+    // connection,
+    workflowsPath: workflowPath,
+    activities, // Directly pass the imported activities object/module
+    taskQueue: 'your-task-queue',
+    // workerOptions ...
+  });
+
+  console.log('Starting worker...');
+  await worker.run();
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+</code></pre>
+            </div>
+          </div>
+        </article>
+
+        <article id="worker-options">
+          <h3>Worker Options & Performance</h3>
+          <p>
+            SDKs provide various options to configure Worker behavior and performance characteristics. Some common
+            options include:
+          </p>
+          <ul>
+            <li>
+              <strong>Concurrency Limits:</strong> Controlling the maximum number of concurrent Workflow Tasks (e.g.,
+              <code>maxConcurrentWorkflowTaskExecutionSize</code>) and Activity Tasks (e.g.,
+              <code>maxConcurrentActivityExecutionSize</code>) a Worker can execute.
+            </li>
+            <li>
+              <strong>Poller Counts:</strong> Configuring the number of concurrent pollers fetching Tasks from the Task
+              Queue (e.g., <code>maxConcurrentWorkflowTaskPollers</code>,
+              <code>maxConcurrentActivityTaskPollers</code>).
+            </li>
+            <li>
+              <strong>Task Queue Specific Settings:</strong> Some options might apply only when interacting with
+              specific Task Queues.
+            </li>
+            <li><strong>Rate Limiting:</strong> Options to limit the rate at which Tasks are polled or executed.</li>
+            <li>
+              <strong>Session Workers (.NET):</strong> Configuration for routing Activity Tasks to specific Workers.
+            </li>
+            <li>
+              <strong>Workflow Cache Size (Java, Go):</strong> Limits on the in-memory cache for active Workflow
+              Executions to optimize performance and resource usage (e.g., <code>stickyWorkflowCacheSize</code>,
+              <code>maxWorkflowThreadCount</code>).
+            </li>
+            <li>
+              **Worker Tuning / Slot Suppliers (Preview/Experimental in some SDKs):** Advanced mechanisms for
+              resource-based auto-tuning of concurrency based on system CPU/memory usage (supersedes fixed concurrency
+              limits).
+            </li>
+          </ul>
+          <p>
+            Tuning these options is crucial for optimizing Worker throughput, latency, and resource utilization.
+            Monitoring SDK metrics (like slot availability, schedule-to-start latency, cache size) is essential for
+            effective tuning. Refer to the `worker-performance.mdx` documentation and SDK-specific references for
+            details.
+          </p>
+        </article>
+      </section>
+      <!-- End Worker Development Section -->
+
+      <!-- Temporal Client Section -->
+      <section id="temporal-client">
+        <h2>Temporal Client</h2>
+
+        <article id="client-role">
+          <h3>Client Role and Creation</h3>
+          <p>
+            The Temporal Client is the primary interface for your application code to interact with the Temporal
+            Service. It allows you to:
+          </p>
+          <ul>
+            <li>Start new Workflow Executions.</li>
+            <li>Send Signals to running Workflows.</li>
+            <li>Query the state of running Workflows.</li>
+            <li>Request cancellation of Workflows.</li>
+            <li>Terminate Workflow Executions.</li>
+            <li>Retrieve the results of completed Workflows.</li>
+            <li>Complete Activities asynchronously (using Task Tokens).</li>
+          </ul>
+          <p>
+            The Client connects to a specific Temporal Service endpoint (like <code>localhost:7233</code> for local
+            development or your Temporal Cloud namespace endpoint). Client instances are typically heavyweight objects
+            containing connection pools and other resources, so it's recommended to create one instance per process and
+            reuse it.
+          </p>
+
+          <div class="tab-container" id="client-create-tabs">
+            <div class="tab-buttons">
+              <button class="tab-button" data-tab-target="client-create-go">Go</button>
+              <button class="tab-button" data-tab-target="client-create-java">Java</button>
+              <button class="tab-button" data-tab-target="client-create-dotnet">.NET</button>
+              <button class="tab-button" data-tab-target="client-create-php">PHP</button>
+              <button class="tab-button" data-tab-target="client-create-python">Python</button>
+              <button class="tab-button" data-tab-target="client-create-ts">TypeScript</button>
+            </div>
+
+            <div class="tab-content" id="client-create-go">
+              <h4>Go</h4>
+              <pre><code>import (
+    "log"
+    "go.temporal.io/sdk/client"
+)
+
+// ...
+c, err := client.Dial(client.Options{
+    HostPort:  client.DefaultHostPort, // "localhost:7233"
+    Namespace: client.DefaultNamespace, // "default"
+    // Logger, MetricsHandler, Identity, DataConverter, etc.
+})
+if err != nil {
+    log.Fatalln("Unable to create client", err)
+}
+defer c.Close() // Close client connection when process exits
+// Use 'c' (client.Client) to interact with Temporal</code></pre>
+            </div>
+
+            <div class="tab-content" id="client-create-java">
+              <h4>Java</h4>
+              <pre><code>import io.temporal.client.WorkflowClient;
+import io.temporal.client.WorkflowClientOptions;
+import io.temporal.serviceclient.WorkflowServiceStubs;
+import io.temporal.serviceclient.WorkflowServiceStubsOptions;
+
+// ...
+// Create gRPC stubs pointing to the Temporal service
+WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(WorkflowServiceStubsOptions.newBuilder()
+    .setTarget("localhost:7233") // Or your Temporal Cloud endpoint
+    // .setSslContext(...) // For TLS
+    // .setChannelInitializer(...) // For auth headers
+    .build());
+
+// Create the client object
+WorkflowClient client = WorkflowClient.newInstance(service, WorkflowClientOptions.newBuilder()
+    .setNamespace("default") // Or your Temporal Cloud namespace
+    // .setDataConverter(...)
+    // .setIdentity(...)
+    .build());
+
+// Use 'client' (WorkflowClient) to interact with Temporal
+// No explicit close needed typically, relies on service stub lifecycle</code></pre>
+            </div>
+
+            <div class="tab-content" id="client-create-dotnet">
+              <h4>.NET</h4>
+              <p>Client creation often integrated with DI (see Worker example), but can be done directly:</p>
+              <pre><code>using System;
+using System.Threading.Tasks;
+using Temporalio.Client;
+
+// ...
+var client = await TemporalClient.ConnectAsync(new TemporalClientConnectOptions
+{
+    TargetHost = "localhost:7233", // Or Temporal Cloud endpoint
+    Namespace = "default",        // Or Temporal Cloud namespace
+    // Tls = new TlsOptions(...), // For TLS
+    // ApiKey = "...",            // For Cloud API key
+    // Logger, Identity, DataConverter, etc.
+});
+
+// Use 'client' (TemporalClient) to interact with Temporal
+// Client should ideally be reused. Connection is lazy.
+// Dispose client when application shuts down if not using DI container management.</code></pre>
+            </div>
+
+            <div class="tab-content" id="client-create-php">
+              <h4>PHP</h4>
+              <p>
+                Client is often created implicitly via <code>Temporal\Client\WorkflowClient::create()</code> or
+                explicitly configured.
+              </p>
+              <pre><code>use Temporal\Client\GRPC\ServiceClient;
+use Temporal\Client\WorkflowClient;
+
+// Default connection to localhost:7233
+$client = WorkflowClient::create(ServiceClient::createSimple('localhost:7233'));
+
+// Or configure connection options (TLS, etc.)
+// $serviceClient = ServiceClient::createSimple(... options ...);
+// $client = WorkflowClient::create($serviceClient, ... client options ...);
+
+// Use $client (WorkflowClient) to interact with Temporal</code></pre>
+            </div>
+
+            <div class="tab-content" id="client-create-python">
+              <h4>Python</h4>
+              <pre><code>import asyncio
+from temporalio.client import Client, TLSConfig
+
+async def create_client():
+    client = await Client.connect(
+        "your-namespace.a1b2c.tmprl.cloud:7233", # Example Cloud endpoint
+        namespace="your-namespace.a1b2c",
+        # tls=TLSConfig(...), # For TLS - provide client cert/key paths
+        # api_key="..." # For Cloud API key
+        # data_converter=...
+        # identity=...
+    )
+    # For local development:
+    # client = await Client.connect("localhost:7233")
+
+    # Use 'client' (Client) to interact with Temporal
+    # Connection is established lazily. Client should be reused.
+    return client
+
+# In your main application logic:
+# client = await create_client()
+# ... use client ...</code></pre>
+            </div>
+
+            <div class="tab-content" id="client-create-ts">
+              <h4>TypeScript</h4>
+              <p>
+                Client connection is usually managed by the <code>Connection</code> class, often implicitly by Worker or
+                explicitly for client-only operations.
+              </p>
+              <pre><code>import { Connection, Client } from '@temporalio/client';
+import { TLSConfig } from '@temporalio/common'; // If using TLS
+
+async function createClient(): Promise&lt;Client&gt; {
+  const connection = await Connection.connect({
+    address: 'your-namespace.a1b2c.tmprl.cloud:7233', // Example Cloud endpoint
+    // tls: { ... } // TLS configuration if needed (clientCertPair, serverRootCACertificate)
+  });
+
+  // For local:
+  // const connection = await Connection.connect({ address: 'localhost:7233' });
+
+  const client = new Client({
+    connection,
+    namespace: 'your-namespace.a1b2c', // Or 'default' for local
+    // identity, dataConverter, etc.
+    // apiKey: '...' // For Cloud API key
+  });
+
+  // Use 'client' (Client) to interact with Temporal
+  // Connection should be reused.
+  return client;
+}
+
+// In your main application logic:
+// const client = await createClient();
+// ... use client ...</code></pre>
+            </div>
+          </div>
+        </article>
+
+        <article id="client-interactions">
+          <h3>Client Interactions with Workflows</h3>
+          <p>Once you have a Client instance, you can interact with Workflow Executions:</p>
+
+          <h4>Starting Workflows</h4>
+          <p>
+            Use the client's start/execute methods, providing the Workflow Type, unique ID, Task Queue, arguments, and
+            options.
+          </p>
+          <div class="tab-container" id="client-start-tabs">
+            <!-- Add tabs for Go, Java, .NET, PHP, Python, TS showing client.startWorkflow(...) etc. -->
+            <div class="tab-buttons">
+              <button class="tab-button" data-tab-target="client-start-go">Go</button>
+              <button class="tab-button" data-tab-target="client-start-java">Java</button>
+              <button class="tab-button" data-tab-target="client-start-dotnet">.NET</button>
+              <button class="tab-button" data-tab-target="client-start-php">PHP</button>
+              <button class="tab-button" data-tab-target="client-start-python">Python</button>
+              <button class="tab-button" data-tab-target="client-start-ts">TypeScript</button>
+            </div>
+            <div class="tab-content" id="client-start-go">
+              Go Example: <code>client.ExecuteWorkflow(...)</code> or <code>client.StartWorkflow(...)</code>
+            </div>
+            <div class="tab-content" id="client-start-java">
+              Java Example: <code>client.newWorkflowStub(...).workflowMethod(...)</code> or
+              <code>client.start(...)</code>
+            </div>
+            <div class="tab-content" id="client-start-dotnet">
+              .NET Example: <code>client.StartWorkflowAsync(...)</code> or <code>client.ExecuteWorkflowAsync(...)</code>
+            </div>
+            <div class="tab-content" id="client-start-php">
+              PHP Example: <code>$client->newWorkflowStub(...)->workflowMethod(...)</code> or
+              <code>$client->start(...)</code>
+            </div>
+            <div class="tab-content" id="client-start-python">
+              Python Example: <code>client.start_workflow(...)</code> or <code>client.execute_workflow(...)</code>
+            </div>
+            <div class="tab-content" id="client-start-ts">
+              TypeScript Example: <code>client.start(...)</code> or <code>client.execute(...)</code>
+            </div>
+          </div>
+
+          <h4>Signaling Workflows</h4>
+          <p>
+            Send data asynchronously to a running Workflow using its ID (and optionally Run ID). The Workflow must have
+            a corresponding Signal handler defined.
+          </p>
+          <div class="tab-container" id="client-signal-tabs">
+            <!-- Add tabs showing client.SignalWorkflow(...) etc. -->
+            <div class="tab-buttons">
+              <button class="tab-button" data-tab-target="client-signal-go">Go</button>
+              <button class="tab-button" data-tab-target="client-signal-java">Java</button>
+              <button class="tab-button" data-tab-target="client-signal-dotnet">.NET</button>
+              <button class="tab-button" data-tab-target="client-signal-php">PHP</button>
+              <button class="tab-button" data-tab-target="client-signal-python">Python</button>
+              <button class="tab-button" data-tab-target="client-signal-ts">TypeScript</button>
+            </div>
+            <div class="tab-content" id="client-signal-go">Go Example: <code>client.SignalWorkflow(...)</code></div>
+            <div class="tab-content" id="client-signal-java">
+              Java Example: <code>client.newWorkflowStub(...).signalMethod(...)</code>
+            </div>
+            <div class="tab-content" id="client-signal-dotnet">
+              .NET Example: <code>client.GetWorkflowHandle(...).SignalAsync(...)</code>
+            </div>
+            <div class="tab-content" id="client-signal-php">
+              PHP Example: <code>$client->newWorkflowStub(...)->signalMethod(...)</code>
+            </div>
+            <div class="tab-content" id="client-signal-python">
+              Python Example: <code>client.get_workflow_handle(...).signal(...)</code>
+            </div>
+            <div class="tab-content" id="client-signal-ts">
+              TypeScript Example: <code>client.getHandle(...).signal(...)</code>
+            </div>
+          </div>
+
+          <h4>Querying Workflows</h4>
+          <p>
+            Synchronously retrieve state from a running Workflow using its ID (and optionally Run ID). The Workflow must
+            have a corresponding Query handler defined.
+          </p>
+          <div class="tab-container" id="client-query-tabs">
+            <!-- Add tabs showing client.QueryWorkflow(...) etc. -->
+            <div class="tab-buttons">
+              <button class="tab-button" data-tab-target="client-query-go">Go</button>
+              <button class="tab-button" data-tab-target="client-query-java">Java</button>
+              <button class="tab-button" data-tab-target="client-query-dotnet">.NET</button>
+              <button class="tab-button" data-tab-target="client-query-php">PHP</button>
+              <button class="tab-button" data-tab-target="client-query-python">Python</button>
+              <button class="tab-button" data-tab-target="client-query-ts">TypeScript</button>
+            </div>
+            <div class="tab-content" id="client-query-go">Go Example: <code>client.QueryWorkflow(...)</code></div>
+            <div class="tab-content" id="client-query-java">
+              Java Example: <code>client.newWorkflowStub(...).queryMethod(...)</code>
+            </div>
+            <div class="tab-content" id="client-query-dotnet">
+              .NET Example: <code>client.GetWorkflowHandle(...).QueryAsync(...)</code>
+            </div>
+            <div class="tab-content" id="client-query-php">
+              PHP Example: <code>$client->newWorkflowStub(...)->queryMethod(...)</code>
+            </div>
+            <div class="tab-content" id="client-query-python">
+              Python Example: <code>client.get_workflow_handle(...).query(...)</code>
+            </div>
+            <div class="tab-content" id="client-query-ts">
+              TypeScript Example: <code>client.getHandle(...).query(...)</code>
+            </div>
+          </div>
+
+          <h4>Getting Results</h4>
+          <p>
+            Await the completion of a Workflow and retrieve its result or error using a handle obtained when starting
+            the Workflow.
+          </p>
+          <div class="tab-container" id="client-result-tabs">
+            <!-- Add tabs showing handle.GetResult(...) etc. -->
+            <div class="tab-buttons">
+              <button class="tab-button" data-tab-target="client-result-go">Go</button>
+              <button class="tab-button" data-tab-target="client-result-java">Java</button>
+              <button class="tab-button" data-tab-target="client-result-dotnet">.NET</button>
+              <button class="tab-button" data-tab-target="client-result-php">PHP</button>
+              <button class="tab-button" data-tab-target="client-result-python">Python</button>
+              <button class="tab-button" data-tab-target="client-result-ts">TypeScript</button>
+            </div>
+            <div class="tab-content" id="client-result-go">Go Example: <code>workflowRun.Get(...)</code></div>
+            <div class="tab-content" id="client-result-java">
+              Java Example: Awaiting the future returned by async stub calls or <code>WorkflowStub.getResult(...)</code>
+            </div>
+            <div class="tab-content" id="client-result-dotnet">.NET Example: <code>handle.GetResultAsync()</code></div>
+            <div class="tab-content" id="client-result-php">
+              PHP Example: Awaiting the promise returned by stub calls.
+            </div>
+            <div class="tab-content" id="client-result-python">Python Example: <code>handle.result()</code></div>
+            <div class="tab-content" id="client-result-ts">TypeScript Example: <code>handle.result()</code></div>
+          </div>
+
+          <h4>Cancellation & Termination</h4>
+          <ul>
+            <li>
+              <strong>Cancellation:</strong> Request graceful shutdown via <code>client.CancelWorkflow(...)</code> or
+              <code>handle.CancelAsync()</code>. The Workflow code must explicitly handle the cancellation request
+              (e.g., using cancellation scopes/tokens) to perform cleanup.
+            </li>
+            <li>
+              <strong>Termination:</strong> Forcefully stop a Workflow Execution immediately via
+              <code>client.TerminateWorkflow(...)</code> or <code>handle.TerminateAsync()</code>. State is not cleaned
+              up within the Workflow code. Use with caution.
+            </li>
+          </ul>
+        </article>
+      </section>
+      <!-- End Temporal Client Section -->
+
+      <!-- Advanced Concepts Section -->
+      <section id="advanced-concepts">
+        <h2>Advanced Concepts</h2>
+
+        <article id="child-workflows">
+          <h3>Child Workflows</h3>
+          <p>
+            A Workflow can orchestrate other Workflows, known as Child Workflows. This allows breaking down complex
+            business logic into smaller, reusable, and independently testable units.
+          </p>
+          <p>Key characteristics and use cases:</p>
+          <ul>
+            <li><strong>Encapsulation:</strong> Child Workflows encapsulate a specific piece of logic.</li>
+            <li><strong>Isolation:</strong> Child Workflows have their own distinct Workflow History.</li>
+            <li>
+              <strong>Independent Execution:</strong> They run independently but are linked to the parent. The parent
+              can await their completion.
+            </li>
+            <li>
+              <strong>Parent Close Policy:</strong> You can configure whether a Child Workflow should be abandoned,
+              terminated, or allowed to continue if its parent completes or fails.
+            </li>
+            <li>
+              <strong>Scalability:</strong> Can help manage the history size of very long-running parent Workflows by
+              offloading segments of work.
+            </li>
+          </ul>
+          <p>
+            Child Workflows are started from within a parent Workflow using specific SDK APIs (e.g.,
+            <code>workflow.ExecuteChildWorkflow</code>, <code>Workflow.newChildWorkflowStub</code>).
+          </p>
+        </article>
+
+        <article id="continue-as-new">
+          <h3>Continue-As-New</h3>
+          <p>
+            Workflows have limits on history size and duration. For Workflows that need to run indefinitely or process
+            large amounts of data sequentially, the <code>Continue-As-New</code> feature allows a Workflow Execution to
+            effectively restart itself with a fresh history, while carrying over state.
+          </p>
+          <p>When a Workflow decides to Continue-As-New:</p>
+          <ol>
+            <li>The current execution is marked as completed (with a "ContinuedAsNew" status).</li>
+            <li>A new Workflow Execution with the same Workflow ID starts immediately.</li>
+            <li>The new execution receives input arguments specified by the concluding execution.</li>
+            <li>The new execution has a fresh, empty history.</li>
+          </ol>
+          <p>
+            This is crucial for implementing eternal Workflows (like monitoring loops) or batch processes that would
+            otherwise exceed history limits. It's invoked using SDK APIs like <code>workflow.ContinueAsNew</code> or by
+            returning a specific Continue-As-New error/object.
+          </p>
+        </article>
+
+        <article id="versioning">
+          <h3>Workflow Versioning (Patching)</h3>
+          <p>
+            Modifying the code of a Workflow Definition can break determinism for Workflows that started executing on
+            older versions of the code. Temporal provides versioning APIs (often called "patching" or using
+            <code>workflow.getVersion</code>) to manage these changes safely.
+          </p>
+          <p>The core idea is to:</p>
+          <ol>
+            <li>Identify a code path change with a unique change ID (e.g., a string).</li>
+            <li>Use the <code>workflow.getVersion</code> API (or equivalent) within the Workflow code.</li>
+            <li>
+              The first time a Worker encounters a specific change ID for a running Workflow, it records the result of
+              the <code>getVersion</code> call (often corresponding to the "old" or "new" code path) in the history.
+            </li>
+            <li>
+              On subsequent replays, the Worker uses the recorded version, ensuring the same code path is taken
+              deterministically, even if the Worker now has newer code deployed.
+            </li>
+          </ol>
+          <p>
+            This allows deploying updated Workflow code without interrupting existing executions or causing
+            non-determinism errors. It's essential for evolving Workflow logic over time in production environments.
+          </p>
+          <p>See also the <a href="/develop/safe-deployments">Safe Deployments guide</a>.</p>
+        </article>
+
+        <article id="error-handling">
+          <h3>Error Handling</h3>
+          <p>Temporal provides robust mechanisms for handling errors in both Workflows and Activities.</p>
+          <ul>
+            <li>
+              <strong>Activity Errors:</strong> Failures in Activities (exceptions, timeouts, panics) are reported back
+              to the Workflow. Workflows can catch these errors using standard language constructs (try/catch) and
+              decide how to proceed (retry the Activity with different parameters, execute a compensating Activity, fail
+              the Workflow, etc.). Activity errors often contain details about the failure, including the original error
+              type and message, and whether timeouts were exceeded. Retry Policies configured in Activity Options
+              automatically handle many transient failures.
+            </li>
+            <li>
+              <strong>Workflow Errors:</strong> Errors within Workflow code (uncaught exceptions, panics, specific
+              Workflow failures like determinism errors during replay) typically cause the Workflow Task to fail. The
+              Worker will retry the Workflow Task. If the error persists (e.g., a deterministic logic bug), the Workflow
+              Execution may eventually time out or be marked as failed.
+            </li>
+            <li>
+              <strong>Temporal Errors:</strong> SDKs define specific error/exception types for Temporal-specific issues
+              (e.g., `ActivityError`, `WorkflowFailureError`, `ApplicationError`, `TimeoutError`, `CanceledError`).
+              Understanding these types helps in building appropriate error handling logic.
+            </li>
+          </ul>
+          <p>
+            Proper error handling, especially distinguishing between retryable and non-retryable errors in Activities,
+            is key to building resilient applications.
+          </p>
+        </article>
+
+        <article id="signals-queries-handlers">
+          <h3>Signal and Query Handlers</h3>
+          <p>
+            Complementing the client-side interactions covered earlier, Workflow Definitions must include specific
+            handlers to react to incoming Signals and Queries.
+          </p>
+          <ul>
+            <li>
+              <strong>Signal Handlers:</strong> Methods within the Workflow Definition (often marked with
+              <code>@SignalMethod</code>, <code>@workflow.signal</code>, etc.) that are executed when a corresponding
+              Signal is received from the client. Signal handlers receive the Signal arguments and can modify Workflow
+              state but cannot return a value directly to the caller.
+            </li>
+            <li>
+              <strong>Query Handlers:</strong> Methods within the Workflow Definition (often marked with
+              <code>@QueryMethod</code>, <code>@workflow.query</code>, etc.) that are executed when a corresponding
+              Query is received from the client. Query handlers receive Query arguments and **must** return a value
+              representing the requested Workflow state. Query handlers **must not** mutate Workflow state, as they
+              might run on a cached Workflow state without executing the full history.
+            </li>
+          </ul>
+          <p>
+            These handlers define the public interface of a running Workflow Execution beyond its main execution logic.
+          </p>
+        </article>
+
+        <!-- Placeholders for other advanced topics -->
+        <article>
+          <p>
+            <em
+              >Other advanced topics include Versioning, Error Handling, Signals/Queries, Side Effects, Timers, Testing,
+              Observability, etc. Refer to SDK-specific documentation for details.</em
+            >
+          </p>
+        </article>
+      </section>
+      <!-- End Advanced Concepts Section -->
+    </main>
+
+    <footer>
+      <p>Generated documentation combining multiple SDK guides.</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
