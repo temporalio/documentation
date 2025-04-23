@@ -1,14 +1,13 @@
 import React from "react";
 import clsx from "clsx";
 import Link from "@docusaurus/Link";
-import {v4 as uuidv4} from "uuid";
 
-export function RelatedReadContainer({children}) {
+export function RelatedReadContainer({ children }) {
   let rl = [];
   if (React.Children.count(children) > 1) {
     React.Children.forEach(children, function (child) {
-      let id = uuidv4();
-      rl.push({id: id, child: child});
+      let id = self.crypto.randomUUID();
+      rl.push({ id: id, child: child });
     });
   }
   return (
@@ -16,7 +15,7 @@ export function RelatedReadContainer({children}) {
       <span className={"related-read-label"}>Related 📚 </span>
       {rl.length > 1 ? (
         <ul className="related-read-list">
-          {rl.map(({id, child}) => (
+          {rl.map(({ id, child }) => (
             <li key={id}>{child}</li>
           ))}
         </ul>
@@ -27,7 +26,7 @@ export function RelatedReadContainer({children}) {
   );
 }
 
-export function RelatedReadItem({page, children}) {
+export function RelatedReadItem({ page, children }) {
   const {
     frontMatter,
     metadata,
@@ -37,15 +36,7 @@ export function RelatedReadItem({page, children}) {
   // identify tags
   let tagClass, tag;
   for (const t of frontMatter.tags) {
-    if (
-      [
-        "developer-guide",
-        "operation-guide",
-        "tutorial",
-        "explanation",
-        "reference",
-      ].includes(t)
-    ) {
+    if (["developer-guide", "operation-guide", "tutorial", "explanation", "reference"].includes(t)) {
       tag = t;
       tagClass = "archetype-tag-" + t;
     }
@@ -55,9 +46,7 @@ export function RelatedReadItem({page, children}) {
       <Preview className={"related-read-link"} page={page}>
         {children || frontMatter.title}
       </Preview>
-      <span className={clsx("related-read-archetype-tag", tagClass)}>
-        {tag}
-      </span>
+      <span className={clsx("related-read-archetype-tag", tagClass)}>{tag}</span>
     </>
   );
 }
@@ -77,7 +66,7 @@ export function Preview({
       className={className}
       onMouseEnter={() => setShow(true)}
       onMouseLeave={() => setShow(false)}
-      style={{position: "relative", display: "inline-block"}}
+      style={{ position: "relative", display: "inline-block" }}
     >
       <a href={metadata.permalink}>
         {children}
@@ -98,11 +87,7 @@ export function Preview({
             padding: "8px",
           }}
         >
-          <div
-            style={{fontSize: "1rem", fontWeight: "bold", textAlign: "center"}}
-          >
-            {frontMatter.title}
-          </div>
+          <div style={{ fontSize: "1rem", fontWeight: "bold", textAlign: "center" }}>{frontMatter.title}</div>
           <div
             style={{
               backgroundColor: "#f2f2f2",
@@ -111,11 +96,9 @@ export function Preview({
             }}
           >
             <span style={{}}>{metadata.description}</span>
-            <span
-              style={{marginTop: "1rem", display: "block", fontSize: "0.75rem"}}
-            >
-              <a style={{color: "blue"}} href={metadata.permalink}>
-                see full article >>
+            <span style={{ marginTop: "1rem", display: "block", fontSize: "0.75rem" }}>
+              <a style={{ color: "blue" }} href={metadata.permalink}>
+                see full article &gt;&gt;
               </a>
             </span>
           </div>
@@ -134,13 +117,7 @@ function InfoIcon() {
         alignItems: "center",
       }}
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        height="0.75rem"
-        width="0.75rem"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-      >
+      <svg xmlns="http://www.w3.org/2000/svg" height="0.75rem" width="0.75rem" viewBox="0 0 20 20" fill="currentColor">
         <path
           fillRule="evenodd"
           d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
@@ -153,14 +130,14 @@ function InfoIcon() {
 
 // TODO - delete everything below this line once we deprecate
 
-export default function RelatedReadList({readlist}) {
+export default function RelatedReadList({ readlist }) {
   let readingList = [];
   for (const item of readlist) {
     const tagStuff = tagInfo(item[2]);
     if (tagStuff instanceof Error) throw tagStuff;
     // form data structure
     readingList.push({
-      id: uuidv4(),
+      id: self.crypto.randomUUID(),
       text: item[0],
       goTo: item[1],
       tag: tagStuff.tag,
@@ -171,14 +148,12 @@ export default function RelatedReadList({readlist}) {
     return (
       <div className={"related-read-div"}>
         <span className={"related-read-label"}>Related 📚 </span>
-        {readingList.map(({id, text, goTo, tag, tagClass}) => (
+        {readingList.map(({ id, text, goTo, tag, tagClass }) => (
           <span key={id}>
             <Link className={"related-read-link"} to={goTo}>
               {text}
             </Link>
-            <span className={clsx("related-read-archetype-tag", tagClass)}>
-              {tag}
-            </span>
+            <span className={clsx("related-read-archetype-tag", tagClass)}>{tag}</span>
           </span>
         ))}
       </div>
@@ -188,14 +163,12 @@ export default function RelatedReadList({readlist}) {
       <div className={"related-read-div"}>
         <span className={"related-read-label"}>Related 📚 </span>
         <ul className="related-read-list">
-          {readingList.map(({id, text, goTo, tag, tagClass}) => (
+          {readingList.map(({ id, text, goTo, tag, tagClass }) => (
             <li key={id}>
               <Link className={"related-read-link"} to={goTo}>
                 {text}
               </Link>
-              <span className={clsx("related-read-archetype-tag", tagClass)}>
-                {tag}
-              </span>
+              <span className={clsx("related-read-archetype-tag", tagClass)}>{tag}</span>
             </li>
           ))}
         </ul>
@@ -225,5 +198,5 @@ function tagInfo(tag) {
     default:
       return new Error("unrecognized tag: " + tag);
   }
-  return {tag: tag, tagClass: tagClass};
+  return { tag: tag, tagClass: tagClass };
 }

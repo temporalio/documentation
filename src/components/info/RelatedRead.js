@@ -1,7 +1,6 @@
 import React from "react";
 import clsx from "clsx";
 import Link from "@docusaurus/Link";
-import { v4 as uuidv4 } from "uuid";
 import styles from "./RelatedRead.module.css";
 
 const archetypeClasses = {
@@ -42,7 +41,7 @@ export function RelatedReadContainer({ children }) {
       {React.Children.count(children) > 1 ? (
         <ul className={styles.relatedReadList}>
           {React.Children.map(children, (child) => (
-            <li key={uuidv4()}>{child}</li>
+            <li key={self.crypto.randomUUID()}>{child}</li>
           ))}
         </ul>
       ) : (
