@@ -17,6 +17,8 @@ tags:
   - Temporal SDKs
 ---
 
+I'll edit this technical documentation to improve clarity, readability, and simplicity while following your formatting requirements. Here's the revised version:
+
 This page answers the following questions for Python developers:
 
 - [What is Continue-As-New?](#what)
@@ -26,13 +28,16 @@ This page answers the following questions for Python developers:
 
 ## What is Continue-As-New? {#what}
 
-[Continue-As-New](/workflow-execution/continue-as-new) enables a Workflow Execution to close successfully and create a new Workflow Execution. This is necessary when the workflow is approaching certain scaling limits.
+[Continue-As-New](/workflow-execution/continue-as-new) lets a Workflow Execution close successfully and create a new Workflow Execution. You can think of it as a checkpoint when your Workflow gets too long or approaches certain scaling limits.
 
-Continue-As-New is an atomic operation. The Workflow Execution spawned from the use of Continue-As-New has the same Workflow Id, a new Run Id, and a fresh Event History and is passed all the appropriate parameters.
+The new Workflow Execution keeps the same Workflow Id but gets a new Run Id and a fresh Event History.
+It also receives your Workflow's usual parameters.
+Note that Continue-As-New works as an atomic operation.
 
-## How to Continue-As-New using the Python SDK. {#how}
+## How to Continue-As-New using the Python SDK {#how}
 
-To Continue-As-New in Python, call the [`continue_as_new()`](https://python.temporal.io/temporalio.workflow.html#continue_as_new) function from inside your Workflow, which will stop the Workflow immediately and Continue-As-New.
+To Continue-As-New in Python, call the [`continue_as_new()`](https://python.temporal.io/temporalio.workflow.html#continue_as_new) function inside your Workflow.
+This stops the Workflow right away and starts a new one.
 
 <div class="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/continue_as_new/your_workflows_dacx.py">
@@ -55,20 +60,25 @@ class LoopingWorkflow:
 
 ### Considerations for Workflows with Message Handlers
 
-If you're using Updates or Signals, don't call Continue-as-New from the handlers. Instead, make sure your handlers finish running before executing `continue_as_new`. See how with [`all_handlers_finished`](message-passing#wait-for-message-handlers).
+If you use Updates or Signals, don't call Continue-as-New from the handlers.
+Instead, wait for your handlers to finish before you run `continue_as_new`.
+See how with [`all_handlers_finished`](message-passing#wait-for-message-handlers).
 
 ## When is it right to Continue-as-New using the Python SDK? {#when}
 
-You should Continue-as-New when your Workflow is in danger of reaching scaling limits.
+Use Continue-as-New when your Workflow might hit scaling limits:
 
-- the number of Events in the Event History is becoming too large.
-- the Workflow is in danger of receiving too many Updates or Signals.
+- When the Event History grows too large
+- When the Workflow might get too many Updates or Signals
 
-Temporal tracks when it's right to do so, so you only need to call `workflow.info().is_continue_as_new_suggested()` to see if it's time.
+Temporal tracks when you should Continue-as-New.
+Just call `workflow.info().is_continue_as_new_suggested()` to check if it's time.
 
 ## How to test Continue-as-New using the Python SDK {#how-to-test}
 
-Running test Workflows that will naturally Continue-as-New is slow and expensive. Instead, consider offering a test hook to test your Workflow's Continue-as-New behavior much more cheaply and quickly in automated tests. For example, you could create a test-only variable, `self.max_history_length`, populate it with a smallish value, and write a helper like this inside your Workflow:
+Testing Workflows that naturally Continue-as-New takes too much time and resources.
+Instead, add a test hook to check your Workflow's Continue-as-New behavior faster in automated tests.
+For example, create a test-only variable called `self.max_history_length`, set it to a small value, and add this helper in your Workflow:
 
 <div class="copycode-notice-container">
   <a href="https://github.com/temporalio/samples-python/blob/main/message_passing/safe_message_handlers/workflow.py">
@@ -76,6 +86,7 @@ Running test Workflows that will naturally Continue-as-New is slow and expensive
   </a>{' '}
   in the context of the rest of the application code.
 </div>
+
 ```python
 def should_continue_as_new(self) -> bool:
     if workflow.info().is_continue_as_new_suggested():
@@ -89,4 +100,4 @@ def should_continue_as_new(self) -> bool:
     return False
 ```
 
-Check this helper each time you're thinking of Continuing-as-New.
+Check this helper each time you consider using Continue-as-New.
