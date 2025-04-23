@@ -71,7 +71,6 @@ $workflowClient = WorkflowClient::create($serviceClient);
 
 See the [Advanced connection options](#advanced-connection-options) section for more information on configuring the connection.
 
-
 ## How to connect a Temporal Client to a Temporal Cloud {#connect-to-temporal-cloud}
 
 When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
@@ -129,7 +128,6 @@ To set up the [API key](/cloud/api-keys) in the Client, use the [`ServiceClient:
 $serviceClient = \Temporal\Client\GRPC\ServiceClient::createSSL(/*...*/)
     ->withAuthKey('your-api-key');
 ```
-
 
 ## How to start a Workflow Execution {#start-workflow-execution}
 
@@ -328,7 +326,6 @@ var_dump($stub->getResult(timeout: 5.5));
 Note that you can specify a timeout for the `getResult()` method in seconds.
 If the Workflow does not complete within the specified time, a `TimeoutException` will be thrown.
 See how to limit all RPC calls in the [RPC timeout](#configure-rpc-timeout) section.
-
 
 ## Advanced connection options {#advanced-connection-options}
 

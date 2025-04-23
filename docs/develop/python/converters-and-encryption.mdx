@@ -136,15 +136,15 @@ Failure Converters convert exceptions to/from serialized failures.
 
 The default Data Converter supports converting multiple types including:
 
-* `None`
-* `bytes`
-* `google.protobuf.message.Message` - As JSON when encoding, but has ability to decode binary proto from other languages
-* Anything that can be converted to JSON including:
-  * Anything that [`json.dump`](https://docs.python.org/3/library/json.html#json.dump) supports natively
-  * [dataclasses](https://docs.python.org/3/library/dataclasses.html)
-  * Iterables including ones JSON dump may not support by default, e.g. `set`
-  * [IntEnum, StrEnum](https://docs.python.org/3/library/enum.html) based enumerates
-  * [UUID](https://docs.python.org/3/library/uuid.html)
+- `None`
+- `bytes`
+- `google.protobuf.message.Message` - As JSON when encoding, but has ability to decode binary proto from other languages
+- Anything that can be converted to JSON including:
+  - Anything that [`json.dump`](https://docs.python.org/3/library/json.html#json.dump) supports natively
+  - [dataclasses](https://docs.python.org/3/library/dataclasses.html)
+  - Iterables including ones JSON dump may not support by default, e.g. `set`
+  - [IntEnum, StrEnum](https://docs.python.org/3/library/enum.html) based enumerates
+  - [UUID](https://docs.python.org/3/library/uuid.html)
 
 To use Pydantic model instances, see [Pydantic Support](#pydantic-support).
 
@@ -152,11 +152,11 @@ To use Pydantic model instances, see [Pydantic Support](#pydantic-support).
 
 Although Workflows, Updates, Signals, and Queries can all be defined with multiple input parameters, users are strongly
 encouraged to use a single `dataclass` or Pydantic model parameter so that fields with defaults can be easily added
-without breaking compatibility. 
+without breaking compatibility.
 Similar advice applies to return values.
 
-Classes with generics may not have the generics properly resolved. 
-The current implementation does not have generic type resolution. 
+Classes with generics may not have the generics properly resolved.
+The current implementation does not have generic type resolution.
 Users should use concrete types.
 
 ### Pydantic Support
@@ -171,6 +171,7 @@ client = Client(data_converter=pydantic_data_converter, ...)
 
 This Data Converter supports conversion of all [types supported by Pydantic](https://docs.pydantic.dev/latest/api/standard_library_types/) to and from JSON.
 In addition to Pydantic models, supported types include:
+
 - Everything that [`json.dumps()`](https://docs.python.org/3/library/json.html#py-to-json-table) supports by default.
 - Several standard library types that `json.dumps()` does not support, including dataclasses, types from the datetime module, sets, UUID, etc.
 - Custom types composed of any of these, with any degree of nesting.
