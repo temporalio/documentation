@@ -17,10 +17,20 @@ tags:
   - Temporal SDKs
 ---
 
-**How to Continue-As-New using the Temporal Python SDK.**
+This page answers the following questions for Python developers:
 
-[Continue-As-New](/workflow-execution/continue-as-new) enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.
-The Workflow Execution spawned from the use of Continue-As-New has the same Workflow Id, a new Run Id, and a fresh Event History and is passed all the appropriate parameters.
+- [What is Continue-As-New?](#what)
+- [How to Continue-As-New?](#how)
+- [When is it right to Continue-as-New?](#when)
+- [How to test Continue-as-New?](#how-to-test)
+
+## What is Continue-As-New? {#what}
+
+[Continue-As-New](/workflow-execution/continue-as-new) enables a Workflow Execution to close successfully and create a new Workflow Execution. This is necessary when the workflow is approaching certain scaling limits.
+
+Continue-As-New is an atomic operation. The Workflow Execution spawned from the use of Continue-As-New has the same Workflow Id, a new Run Id, and a fresh Event History and is passed all the appropriate parameters.
+
+## How to Continue-As-New using the Python SDK. {#how}
 
 To Continue-As-New in Python, call the [`continue_as_new()`](https://python.temporal.io/temporalio.workflow.html#continue_as_new) function from inside your Workflow, which will stop the Workflow immediately and Continue-As-New.
 
@@ -43,10 +53,40 @@ class LoopingWorkflow:
         workflow.continue_as_new(iteration + 1)
 ```
 
-:::warning Using Continue-as-New and Updates
+### Considerations for Workflows with Message Handlers
 
-- Temporal _does not_ support Continue-as-New functionality within Update handlers.
-- Complete all handlers _before_ using Continue-as-New.
-- Use Continue-as-New from your main Workflow Definition method, just as you would complete or fail a Workflow Execution.
+If you're using Updates or Signals, don't call Continue-as-New from the handlers. Instead, make sure your handlers finish running before executing `continue_as_new`. See how with [`all_handlers_finished`](message-passing#wait-for-message-handlers).
 
-:::
+## When is it right to Continue-as-New using the Python SDK? {#when}
+
+You should Continue-as-New when your Workflow is in danger of reaching scaling limits.
+
+- the number of Events in the Event History is becoming too large.
+- the Workflow is in danger of receiving too many Updates or Signals.
+
+Temporal tracks when it's right to do so, so you only need to call `workflow.info().is_continue_as_new_suggested()` to see if it's time.
+
+## How to test Continue-as-New using the Python SDK {#how-to-test}
+
+Running test Workflows that will naturally Continue-as-New is slow and expensive. Instead, consider offering a test hook to test your Workflow's Continue-as-New behavior much more cheaply and quickly in automated tests. For example, you could create a test-only variable, `self.max_history_length`, populate it with a smallish value, and write a helper like this inside your Workflow:
+
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/samples-python/blob/main/message_passing/safe_message_handlers/workflow.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+```python
+def should_continue_as_new(self) -> bool:
+    if workflow.info().is_continue_as_new_suggested():
+        return True
+    # For testing
+    if (
+        self.max_history_length
+        and workflow.info().get_current_history_length() > self.max_history_length
+    ):
+        return True
+    return False
+```
+
+Check this helper each time you're thinking of Continuing-as-New.
