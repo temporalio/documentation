@@ -336,13 +336,13 @@ This includes the Account Owner, Global Admin, or Developer Account Role.
    }
    ```
 
-   In this example, you create a 3 Namespaces:
+   In this example, 3 Namespaces are created:
    - target Namespace for a Nexus Endpoint - Nexus requests will be routed to a Worker in the target Namespace.
-   - caller Namespace(s) that will invoke Nexus Operations through a Nexus Endpoint.
+   - caller Namespace(s) - Nexus Operations are invoked from caller Namespace, for example from a caller Workflow.
 
-   These 3 Namespaces are referenced in the Nexus Endpoint configuration:
-   - worker_target (Namespace and Task Queue) - currently only a single worker_target is supported.
-   - allowed_caller_namespaces - used to enforce Nexus Endpoint [runtime access controls](/nexus/security#runtime-access-controls).
+   These Namespaces are referenced in the [Nexus Endpoint](/nexus/endpoints) configuration:
+   - `worker_target` (Namespace and Task Queue) - currently only a single worker_target is supported.
+   - `allowed_caller_namespaces` - used to enforce Nexus Endpoint [runtime access controls](/nexus/security#runtime-access-controls).
 
 
 1. Initialize the Terraform provider.
@@ -380,13 +380,14 @@ You can validate the creation of the Nexus Endpoint through the Temporal Web UI 
 
 1. Log into the Temporal Cloud Web UI.
 1. Navigate to [the Nexus page](https://cloud.temporal.io/nexus).
-1. Search for the Nexus Endpoint you created, using only the Endpoint Name (without an account suffix).
+1. Search for the Nexus Endpoint you created, using only the Nexus Endpoint Name (without an account suffix).
 
 **Using the tcld CLI utility**
 
 Validate the creation of your Nexus Endpoint through the Terraform provider.
 To validate see your Nexus Endpoint in the Cloud UI or through the `tcld nexus endpoint get` command.
-Run the `tcld nexus endpoint get` command and pass in your Nexus Endpoint name:
+
+Run the command below with your Nexus Endpoint Name (without an account suffix):
 
 ```bash
 tcld nexus endpoint get -n "<your-nexus-endpoint>"
