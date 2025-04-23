@@ -482,11 +482,19 @@ If you have an existing Nexus Endpoint in Temporal Cloud, you can import it into
    }
    ```
 
-1. Run the `terraform import` command from the command line and pass in the Nexus Endpoint Name.
-   Your Nexus Endpoint Name is available at the top of the Nexus Endpoint's page in the [Temporal Cloud UI](https://cloud.temporal.io/nexus).
+1. Run the `terraform import` command from the command line and pass in the Nexus Endpoint ID.
+   Your Nexus Endpoint ID is available at the top of the Nexus Endpoint's page in the [Temporal Cloud UI](https://cloud.temporal.io/nexus).
 
    ```bash
-   terraform import temporalcloud_nexus_endpoint my-nexus-endpoint
+   terraform import temporalcloud_nexus_endpoint <your-nexus-endpoint-ID>
+   ```
+
+   Upon completion, you will see a success message indicating the Nexus Endpoint was imported.
+
+   ```text
+   temporalcloud_nexus_endpoint.nexus_endpoint: Refreshing state... [id=3c0c75ccfa8144b092c13ce632463761]
+
+   Import successful!
    ```
 
 The Nexus Endpoint is now a part of the Terraform state and all changes to the Nexus Endpoint should be managed by Terraform.
