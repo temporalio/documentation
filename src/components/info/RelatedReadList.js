@@ -1,12 +1,13 @@
 import React from "react";
 import clsx from "clsx";
 import Link from "@docusaurus/Link";
+import { v4 as uuidv4 } from "uuid";
 
 export function RelatedReadContainer({ children }) {
   let rl = [];
   if (React.Children.count(children) > 1) {
     React.Children.forEach(children, function (child) {
-      let id = self.crypto.randomUUID();
+      let id = uuidv4();
       rl.push({ id: id, child: child });
     });
   }
@@ -98,7 +99,7 @@ export function Preview({
             <span style={{}}>{metadata.description}</span>
             <span style={{ marginTop: "1rem", display: "block", fontSize: "0.75rem" }}>
               <a style={{ color: "blue" }} href={metadata.permalink}>
-                see full article &gt;&gt;
+                see full article >>
               </a>
             </span>
           </div>
@@ -137,7 +138,7 @@ export default function RelatedReadList({ readlist }) {
     if (tagStuff instanceof Error) throw tagStuff;
     // form data structure
     readingList.push({
-      id: self.crypto.randomUUID(),
+      id: uuidv4(),
       text: item[0],
       goTo: item[1],
       tag: tagStuff.tag,
