@@ -10,6 +10,8 @@ ssdi:
   - The Terraform Provider is in a Public Preview release status for Temporal Cloud.
 ---
 
+import { CaptionedImage } from '@site/src/components';
+
 The Terraform Temporal Cloud provider allows you to use Terraform to manage resources for Temporal Cloud.
 The Terraform tool manages infrastructure as code (IaC).
 With this provider, you can use Terraform to automate Temporal Cloud resource management, including Namespaces, Users, Service Accounts, API Keys and more.
@@ -257,8 +259,7 @@ Once a resource has been imported into Terraform, outside changes to the resourc
 Terraform is a great way to automate the management of [Nexus Endpoints](/nexus/endpoints).
 The provider allows you to import, create, update, and delete Nexus Endpoints with Terraform.
 
-You must use an Identity with Developer role (or higher) and Namespace Admin permissions on the Endpoint's target Namespace.
-This includes the Account Owner, Global Admin, or Developer Account Role.
+You must use an Identity with [Developer role (or higher)](/cloud/users#account-level-roles) and [Namespace Admin permission](/cloud/users#namespace-level-permissions) on the Endpoint's target Namespace.
 
 **How do I create a Nexus Endpoint with Terraform?**
 
@@ -337,7 +338,7 @@ This includes the Account Owner, Global Admin, or Developer Account Role.
    ```
 
    In this example, 3 Namespaces are created:
-   - target Namespace for a Nexus Endpoint - Nexus requests will be routed to a Worker in the target Namespace.
+   - target Namespace for a Nexus Endpoint - Nexus requests will be routed to a Worker that polls the target Namespace.
    - caller Namespace(s) - Nexus Operations are invoked from caller Namespace, for example from a caller Workflow.
 
    These Namespaces are referenced in the [Nexus Endpoint](/nexus/endpoints) configuration:
@@ -397,9 +398,9 @@ tcld nexus endpoint get -n "<your-nexus-endpoint>"
 
 Terraform automatically recognizes changes made within `.tf` files and applies those changes to Temporal.
 
-For example, change the retention period setting in the Terraform file from the previous example and watch Terraform apply the change without any additional steps required by you.
+For example, change the allowed caller Namespaces on a Nexus Endpoint.
 
-1. Add or remove allowed caller Namespaces by updating the Nexus Endpoint configuration to remove `caller_namespace_2`:
+1. Add or remove allowed caller Namespaces by updating the Nexus Endpoint configuration, for example by removing `caller_namespace_2` from the configuration above:
 
    ```yml
    resource "temporalcloud_nexus_endpoint" "nexus_endpoint" {
@@ -432,7 +433,8 @@ For example, change the retention period setting in the Terraform file from the 
    ```
 
    Upon completion, you will see a success message indicating your Nexus Endpoint has been updated.
-   It may take several seconds to update a Nexus Endpoint.
+   It may take several seconds to update a Nexus Endpoint in the control plane which is visibile from the Temporal UI or tcld CLI.
+   Propagation of Nexus Endpoint changes to the data plane may take longer, but usually complete in less than one minute.
 
    ```text
    temporalcloud_nexus_endpoint.nexus_endpoint: Modifications complete after 1s [id=b158063be978471fa1d200569b03834d]
@@ -483,11 +485,19 @@ If you have an existing Nexus Endpoint in Temporal Cloud, you can import it into
    ```
 
 1. Run the `terraform import` command from the command line and pass in the Nexus Endpoint ID.
-   Your Nexus Endpoint ID is available at the top of the Nexus Endpoint's page in the [Temporal Cloud UI](https://cloud.temporal.io/nexus).
 
    ```bash
    terraform import temporalcloud_nexus_endpoint <your-nexus-endpoint-ID>
    ```
+
+   Your Nexus Endpoint ID is available at the top of the Nexus Endpoint's page in the [Temporal Cloud UI](https://cloud.temporal.io/nexus).
+
+   <CaptionedImage
+       src="/img/cloud/nexus/nexus-endpoint-id.png"
+       title="Nexus Endpoint ID"
+       width="100%"
+       zoom="false"
+   />
 
    Upon completion, you will see a success message indicating the Nexus Endpoint was imported.
 
