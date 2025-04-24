@@ -46,6 +46,7 @@
     "@mdx-js/react": "^3.0.0",
     "chart.js": "^4.4.1",
     "clsx": "^1.1.1",
+    "comlink": "^4.4.2",
     "docusaurus-pushfeedback": "^1.0.3",
     "path": "^0.12.7",
     "react": "^18.2.0",

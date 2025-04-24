@@ -24,6 +24,7 @@ module.exports = async function createConfigAsync() {
         },
       },
     ],
+    clientModules: ["./src/client/remote-amplitude-analytics.js"],
     themeConfig: {
       colorMode: {
         defaultMode: "light",
@@ -320,14 +321,15 @@ module.exports = async function createConfigAsync() {
         };
       },
       [
-        'docusaurus-pushfeedback',{
-          project: '6c1ptrxbky',
-          privacyPolicyText: 'false',
-          buttonPosition: 'center-right',
-          modalPosition: 'sidebar-right',
-          modalTitle: 'Feedback'
-        }
-      ]
+        "docusaurus-pushfeedback",
+        {
+          project: "6c1ptrxbky",
+          privacyPolicyText: "false",
+          buttonPosition: "center-right",
+          modalPosition: "sidebar-right",
+          modalTitle: "Feedback",
+        },
+      ],
     ],
   };
 
