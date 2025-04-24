@@ -387,7 +387,8 @@ You can validate the creation of the Nexus Endpoint through the Temporal Web UI 
 Validate the creation of your Nexus Endpoint through the Terraform provider.
 To validate see your Nexus Endpoint in the Cloud UI or through the `tcld nexus endpoint get` command.
 
-Run the command below with your Nexus Endpoint Name (without an account suffix):
+Run the below command using your Nexus Endpoint Name.
+Do not use the account ID suffix with this endpoint Name:
 
 ```bash
 tcld nexus endpoint get -n "<your-nexus-endpoint>"
