@@ -221,7 +221,7 @@ temporalcloud_namespace.namespace: Modifications complete after 10s [id=terrafor
 
 **How do I delete a Temporal Cloud Namespace?**
 
-To delete the Namespace, run the following command:
+To delete the Namespace, run the following command and answer yes when prompted:
 
 ```bash
 terraform destroy
@@ -252,7 +252,12 @@ If you have an existing Namespace in Temporal Cloud, you can import it into Terr
    ```
 
 The Namespace is now a part of the Terraform state and all changes to the Namespace should be managed by Terraform.
+
+:::caution
+
 Once a resource has been imported into Terraform, outside changes to the resource will create Terraform "drift" errors on subsequent Terraform operations.
+
+:::
 
 ## Manage Temporal Cloud Nexus Endpoints with Terraform
 
@@ -442,7 +447,7 @@ For example, to change the allowed caller Namespaces on a Nexus Endpoint:
 
 **How do I delete a Nexus Endpoint?**
 
-To delete the Nexus Endpoint, run the following command:
+To delete the Nexus Endpoint, run the following command and answer yes when prompted:
 
 ```bash
 terraform destroy
@@ -508,7 +513,12 @@ If you have an existing Nexus Endpoint in Temporal Cloud, you can import it into
    ```
 
 The Nexus Endpoint is now a part of the Terraform state and all changes to the Nexus Endpoint should be managed by Terraform.
+
+:::caution
+
 Once a resource has been imported into Terraform, outside changes to the resource will create Terraform "drift" errors on subsequent Terraform operations.
+
+:::
 
 ## Manage Temporal Cloud Users with Terraform
 
