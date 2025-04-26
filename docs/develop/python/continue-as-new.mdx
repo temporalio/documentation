@@ -17,8 +17,6 @@ tags:
   - Temporal SDKs
 ---
 
-I'll edit this technical documentation to improve clarity, readability, and simplicity while following your formatting requirements. Here's the revised version:
-
 This page answers the following questions for Python developers:
 
 - [What is Continue-As-New?](#what)
@@ -32,36 +30,51 @@ This page answers the following questions for Python developers:
 
 The new Workflow Execution keeps the same Workflow Id but gets a new Run Id and a fresh Event History.
 It also receives your Workflow's usual parameters.
-Note that Continue-As-New works as an atomic operation.
 
 ## How to Continue-As-New using the Python SDK {#how}
 
-To Continue-As-New in Python, call the [`continue_as_new()`](https://python.temporal.io/temporalio.workflow.html#continue_as_new) function inside your Workflow.
-This stops the Workflow right away and starts a new one.
+First, design your Workflow parameters so that you can pass in the "current state" when you Continue-As-New into the next Workflow run, typically set to `None` for the original caller of the Workflow.
 
 <div class="copycode-notice-container">
-  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/continue_as_new/your_workflows_dacx.py">
+  <a href="https://github.com/temporalio/samples-python/blob/main/message_passing/safe_message_handlers/workflow.py">
     View the source code
   </a>{' '}
   in the context of the rest of the application code.
 </div>
-
 ```python
-# ...
-@workflow.defn
-class LoopingWorkflow:
-    @workflow.run
-    async def run(self, iteration: int) -> None:
-        if iteration == 5:
-            return
-        await asyncio.sleep(10)
-        workflow.continue_as_new(iteration + 1)
-```
+@dataclass
+class ClusterManagerInput:
+    state: Optional[ClusterManagerState] = None
+    test_continue_as_new: bool = False
 
-### Considerations for Workflows with Message Handlers
+@workflow.run
+async def run(self, input: ClusterManagerInput) -> ClusterManagerResult:
+
+````
+The test hook in the above snippet is covered [below](#how-to-test).
+
+Inside your Workflow, call the [`continue_as_new()`](https://python.temporal.io/temporalio.workflow.html#continue_as_new) function with the same type.
+This stops the Workflow right away and starts a new one.
+
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/samples-python/blob/main/message_passing/safe_message_handlers/workflow.py">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+```python
+  workflow.continue_as_new(
+      ClusterManagerInput(
+          state=self.state,
+          test_continue_as_new=input.test_continue_as_new,
+      )
+  )
+````
+
+### Considerations for Workflows with Message Handlers {#with-message-handlers}
 
 If you use Updates or Signals, don't call Continue-as-New from the handlers.
-Instead, wait for your handlers to finish before you run `continue_as_new`.
+Instead, wait for your handlers to finish in your main Workflow before you run `continue_as_new`.
 See how with [`all_handlers_finished`](message-passing#wait-for-message-handlers).
 
 ## When is it right to Continue-as-New using the Python SDK? {#when}
@@ -78,7 +91,9 @@ Just call `workflow.info().is_continue_as_new_suggested()` to check if it's time
 
 Testing Workflows that naturally Continue-as-New takes too much time and resources.
 Instead, add a test hook to check your Workflow's Continue-as-New behavior faster in automated tests.
-For example, create a test-only variable called `self.max_history_length`, set it to a small value, and add this helper in your Workflow:
+
+For example, when `test_continue_as_new == True`, this sample creates a test-only variable called `self.max_history_length` and sets it to a small value.
+A helper method in the Workflow checks it each time it considers using Continue-as-New:
 
 <div class="copycode-notice-container">
   <a href="https://github.com/temporalio/samples-python/blob/main/message_passing/safe_message_handlers/workflow.py">
@@ -99,5 +114,3 @@ def should_continue_as_new(self) -> bool:
         return True
     return False
 ```
-
-Check this helper each time you consider using Continue-as-New.
