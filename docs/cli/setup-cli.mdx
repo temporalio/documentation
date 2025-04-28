@@ -1,0 +1,144 @@
+---
+id: setup-cli
+title: Set up the Temporal CLI
+sidebar_label: Set up the CLI
+slug: /cli/setup-cli
+description: Install the Temporal CLI and run a local development server.
+keywords:
+  - Temporal CLI
+  - Install CLI
+  - Development server
+  - Run dev server
+---
+
+The Temporal CLI is a command-line tool for interacting with the Temporal Service.
+It helps you manage, monitor, and debug Temporal applications.
+You can also use it to run a local development server and interact with Temporal Applications from the command line.
+
+With the Temporal CLI, you can:
+
+- Run a local Temporal Service for development
+- Start Workflow Executions on any Temporal Service (local, self-hosted, or Temporal Cloud)
+- Interact with running Workflows
+- Inspect the state of Workflows and Activities
+- Manage Namespaces, Schedules, and Task Queues
+- Monitor and debug application behavior
+
+## Install the CLI
+
+The CLI is available for macOS, Linux, and Windows.
+
+<Tabs>
+
+<TabItem value="macosinstall" label="macOS">
+
+Install with Homebrew:
+
+```bash
+brew install temporal
+```
+
+Or download from the CDN:
+
+- [Darwin amd64](https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64)
+- [Darwin arm64](https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64)
+
+Extract the archive and add the `temporal` binary to your `PATH`.
+
+</TabItem>
+
+<TabItem value="linuxinstall" label="Linux">
+
+Install with Homebrew (if available):
+
+```bash
+brew install temporal
+```
+
+Or download from the CDN:
+
+- [Linux amd64](https://temporal.download/cli/archive/latest?platform=linux&arch=amd64)
+- [Linux arm64](https://temporal.download/cli/archive/latest?platform=linux&arch=arm64)
+
+Extract the archive and add the `temporal` binary to your `PATH`.
+
+</TabItem>
+
+<TabItem value="windowsinstall" label="Windows">
+
+Download from the CDN:
+
+- [Windows amd64](https://temporal.download/cli/archive/latest?platform=windows&arch=amd64)
+- [Windows arm64](https://temporal.download/cli/archive/latest?platform=windows&arch=arm64)
+
+Extract the archive and add the `temporal.exe` binary to your `PATH`.
+
+</TabItem>
+
+</Tabs>
+
+## Run the development server
+
+The CLI includes a local Temporal development service for fast feedback while building your application.
+
+Start the server:
+
+```bash
+temporal server start-dev \
+   --db-filename path/to/local-persistent-store
+```
+
+View available options:
+
+```bash
+temporal server start-dev \
+   --help
+```
+
+### What the local server provides
+
+- A local instance of the Temporal Service
+- Automatic startup of the Web UI
+- A default Namespace
+- Optional persistence using SQLite
+
+Omitting `--db-filename` uses an in-memory database. This speeds up testing but does not persist Workflow data between sessions.
+
+### Access the Web UI
+
+- Temporal Service: `localhost:7233`
+- Web UI: [http://localhost:8233](http://localhost:8233)
+
+:::tip
+The CLI works with all Temporal SDKs.
+Use it to develop and test your application before deploying to production.
+:::
+
+## Getting CLI help
+
+From the command line:
+
+```
+temporal <command> <subcommand> --help
+```
+
+For example:
+
+- `temporal --help`
+- `temporal workflow --help`
+- `temporal workflow delete --help`
+
+Available commands
+
+| Command      | Description                                      |
+|--------------|--------------------------------------------------|
+| [**activity**](/cli/activity)     | Complete, update, pause, unpause, reset or fail an Activity |
+| [**batch**](/cli/batch)        | Manage running batch jobs                        |
+| [**completion**](/cli/cmd-options)   | Generate the autocompletion script for the specified shell |
+| [**env**](/cli/env)          | Manage environments                              |
+| [**operator**](/cli/operator)     | Manage Temporal deployments                     |
+| [**schedule**](/cli/schedule)     | Perform operations on Schedules                  |
+| [**server**](/cli/server)       | Run Temporal Server                              |
+| [**task-queue**](/cli/task-queue)   | Manage Task Queues                               |
+| [**worker**](/cli/worker)       | Read or update Worker state                      |
+| [**workflow**](/cli/workflow)     | Start, list, and operate on Workflows            |

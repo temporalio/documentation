@@ -489,6 +489,7 @@ module.exports = {
         id: "cli/index",
       },
       items: [
+        "cli/setup-cli",
         "cli/activity",
         "cli/batch",
         "cli/cmd-options",
