@@ -497,6 +497,7 @@ module.exports = {
         "cli/schedule",
         "cli/server",
         "cli/task-queue",
+        "cli/worker",
         "cli/workflow",
       ],
     },
