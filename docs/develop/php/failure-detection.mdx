@@ -20,6 +20,10 @@ description: Learn about setting Workflow and Activity Timeouts, Retry Policies,
 
 Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
 
+Before we continue, we want to note that we generally do not recommend setting Workflow Timeouts, because Workflows are designed to be long-running and resilient.
+Instead, setting a Timeout can limit its ability to handle unexpected delays or long-running processes.
+If you need to perform an action inside your Workflow after a specific period of time, we recommend using a Timer.
+
 Workflow timeouts are set when [starting the Workflow Execution](#workflow-timeouts).
 
 - **[Workflow Execution Timeout](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout)** - restricts the maximum amount of time that a single Workflow Execution can be executed.

@@ -39,17 +39,26 @@ When an Account Owner or Global Admin invites a user to join an account, they se
 
 - **Global Admin**
   - Has full administrative permissions across the account, including users and usage
-  - Has Namespace Admin [permissions](#namespace-level-permissions) on all [Namespaces](/namespaces) in the account
+  - Can create and manage [Namespaces](/namespaces) and [Nexus Endpoints](/nexus/endpoints)
+  - Has Namespace Admin [permissions](#namespace-level-permissions) on all Namespaces in the account.
+    This permission cannot be revoked
 - **Developer**
-  - Can create and update Namespaces; has full control over [Workflows](/workflows)
-  - Has Namespace Admin permissions for each Namespace created by that user
-- **Read-Only:** Can only read information
+  - Can create Namespaces
+  - Is granted [Namespace Admin](/cloud/users#namespace-level-permissions) permission for each Namespace they create.
+    This permission can be revoked
+  - Can create and manage Nexus Endpoints where they are a [Namespace Admin](/cloud/users#namespace-level-permissions) on the Endpoint's target Namespace
+- **Read-Only**
+  - Can read information
+  - Can be granted Namespace [permissions](#namespace-level-permissions), for example to read or write Workflow state in a given Namespace
+  - Can view all Nexus Endpoints in the account, which have separate [runtime access controls](/nexus/security#runtime-access-controls)
 
 In addition, there are two roles that the Global Admin cannot assign:
 
 - **Account Owner**
   - Has full administrative permissions across the account, including users, usage and [billing](/cloud/billing-and-cost)
-  - Has Namespace Admin [permissions](#namespace-level-permissions) on all [Namespaces](/namespaces) in the account
+  - Can create and manage Namespaces and Nexus Endpoints
+  - Has Namespace Admin [permissions](#namespace-level-permissions) on all [Namespaces](/namespaces) in the account.
+    This permission cannot be revoked
 - **Finance Admin**
   - Has permissions to view [billing](/cloud/billing-and-cost) information and update payment information
   - Otherwise, has the same permissions as Account Read-only users
@@ -87,9 +96,13 @@ A Developer can assign permissions for a Namespace they create.
 
 For a Namespace, a user can have one of the following permissions:
 
-- **Namespace Admin:** Can [create](/cloud/namespaces#create-a-namespace) and [edit Namespaces](/cloud/namespaces#manage-namespaces); can create, rename, update, and delete [Workflows](/workflows)
-- **Write:** Can create, rename, update, and delete Workflows within the Namespace
-- **Read-Only:** Can only read information from the Namespace
+- **Namespace Admin:**
+  - Can [manage the Namespace](/cloud/namespaces#manage-namespaces) including identities and permissions
+  - Can create, rename, update, and delete [Workflows](/workflows) within the Namespace
+- **Write:**
+  - Can create, rename, update, and delete [Workflows](/workflows) within the Namespace
+- **Read-Only:**
+  - Can only read information from the Namespace
 
 ## How to update an account-level role in Temporal Cloud {#update-roles}
 
