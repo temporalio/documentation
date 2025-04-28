@@ -37,7 +37,9 @@ Along with completing the Activity, the result given upon return can be set as w
 Example:
 
 ```
-temporal activity complete --activity-id=MyActivity --result=ActivityComplete
+temporal activity complete \
+    --activity-id=MyActivity \
+    --result=ActivityComplete
 ```
 
 Use the following options to change the behavior of this command.
@@ -77,7 +79,9 @@ Use the following options to change the behavior of this command.
 </Tabs>
 
 ```
-temporal fail --workflow-id=meaningful-business-id --activity-id=MyActivity
+temporal fail \
+    --workflow-id=meaningful-business-id \
+    --activity-id=MyActivity
 ```
 
 Use the following options to change the behavior of this command.
