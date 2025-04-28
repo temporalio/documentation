@@ -529,9 +529,8 @@ This will result in:
 
 ### Canceling a Nexus Operation {#canceling-a-nexus-operation}
 
-To cancel a Nexus Operation from within a Workflow, create a `CancellationScope` using the `Workflow.newCancellationScope` API. `Workflow.newCancellationScope` takes a `Runnable`, any SDK methods
-, like Nexus operations, started in this runnable will be associated with this scope. `Workflow.newCancellationScope` returns a new scope that, when the `cancel()` method is called, cancels the context and 
-any SDK method that was started in this scope. The promise returned by `Workflow.startNexusOperation` is resolved when the operation finishes, whether it succeeds, fails, times out, or is canceled.
+To cancel a Nexus Operation from within a Workflow, create a `CancellationScope` using the `Workflow.newCancellationScope` API. `Workflow.newCancellationScope` takes a `Runnable`, any SDK methods like Nexus operations, started in this runnable will be associated with this scope. `Workflow.newCancellationScope` returns a new scope that, when the `cancel()` method is called, cancels the context and any SDK method that was started in this scope.
+The promise returned by `Workflow.startNexusOperation` is resolved when the operation finishes, whether it succeeds, fails, times out, or is canceled.
 
 Only asynchronous operations can be canceled in Nexus, as cancelation is sent using an operation token.
 The Workflow or other resources backing the operation may choose to ignore the cancelation request.

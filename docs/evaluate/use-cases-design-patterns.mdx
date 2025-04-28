@@ -12,11 +12,11 @@ keywords:
   - workflows
 ---
 
-This page provides an overview of how leading organizations leverage Temporal to solve real-world problems, general use cases, and architectural design patterns. 
+This page provides an overview of how leading organizations leverage Temporal to solve real-world problems, general use cases, and architectural design patterns.
 
 ## Use Cases of Temporal in Production
 
-Here are some examples where Temporal is most impactful and running in production at large organizations today.  For more examples, see our [Temporal Use Cases](https://temporal.io/in-use) page.
+Here are some examples where Temporal is most impactful and running in production at large organizations today. For more examples, see our [Temporal Use Cases](https://temporal.io/in-use) page.
 
 ### Transactions
 
@@ -51,7 +51,7 @@ An automated method for getting a repeatable, mundane task accomplished. For exa
 
 ### AI / ML and Data Engineering
 
-AI and ML developers face challenges in system orchestration, such as managing complex data pipelines and job coordination across GPU resources. 
+AI and ML developers face challenges in system orchestration, such as managing complex data pipelines and job coordination across GPU resources.
 Temporal's code-first approach helps build reliable services faster, making it popular among AI companies. For example:
 
 - [Orchestrating video processing at Descript](https://temporal.io/blog/ai-ml-and-data-engineering-workflows-with-temporal#descript)
@@ -71,11 +71,11 @@ They can use schedules and timers to prompt for user input.
 
 ### Polyglot Systems
 
-Modern development teams often work with different programming languages based on their expertise and project requirements. Temporal supports this through built-in multi-language capabilities, allowing teams to continue using their preferred languages while working together. 
+Modern development teams often work with different programming languages based on their expertise and project requirements. Temporal supports this through built-in multi-language capabilities, allowing teams to continue using their preferred languages while working together.
 
 The example below showcases how Workflow Executions, written in different languages, can send messages to each other. Go, Java, PHP, and TypeScript SDKs are represented in this sample. It also shows how to properly propagate errors, including how to do so across Workflows written in different languages.
 
-**Example**: [Polyglot example](https://github.com/temporalio/temporal-polyglot). 
+**Example**: [Polyglot example](https://github.com/temporalio/temporal-polyglot).
 
 ### Long Running Tasks
 
@@ -99,10 +99,11 @@ If a step in the Workflow fails, the Saga pattern compensates for this failure b
 This ensures that even in the event of a failure, the system can revert to a consistent state.
 
 **Examples:**
-  - [Build a trip booking application in Python](https://learn.temporal.io/tutorials/python/trip-booking-app/).
-  - [Saga Pattern with Temporal Whitepaper](https://pages.temporal.io/download-saga-pattern-made-easy)
-  - [To choreograph or orchestrate your saga, that is the question](https://temporal.io/blog/to-choreograph-or-orchestrate-your-saga-that-is-the-question)
-  - [Saga Webinar](https://pages.temporal.io/on-demand-webinar-what-is-a-saga.html)
+
+- [Build a trip booking application in Python](https://learn.temporal.io/tutorials/python/trip-booking-app/).
+- [Saga Pattern with Temporal Whitepaper](https://pages.temporal.io/download-saga-pattern-made-easy)
+- [To choreograph or orchestrate your saga, that is the question](https://temporal.io/blog/to-choreograph-or-orchestrate-your-saga-that-is-the-question)
+- [Saga Webinar](https://pages.temporal.io/on-demand-webinar-what-is-a-saga.html)
 
 ### State Machine
 
