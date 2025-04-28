@@ -10,6 +10,8 @@ ssdi:
   - The Terraform Provider is in a Public Preview release status for Temporal Cloud.
 ---
 
+import { CaptionedImage } from '@site/src/components';
+
 The Terraform Temporal Cloud provider allows you to use Terraform to manage resources for Temporal Cloud.
 The Terraform tool manages infrastructure as code (IaC).
 With this provider, you can use Terraform to automate Temporal Cloud resource management, including Namespaces, Users, Service Accounts, API Keys and more.
@@ -219,7 +221,7 @@ temporalcloud_namespace.namespace: Modifications complete after 10s [id=terrafor
 
 **How do I delete a Temporal Cloud Namespace?**
 
-To delete the Namespace, run the following command:
+To delete the Namespace, run the following command and answer yes when prompted:
 
 ```bash
 terraform destroy
@@ -250,7 +252,273 @@ If you have an existing Namespace in Temporal Cloud, you can import it into Terr
    ```
 
 The Namespace is now a part of the Terraform state and all changes to the Namespace should be managed by Terraform.
+
+:::caution
+
 Once a resource has been imported into Terraform, outside changes to the resource will create Terraform "drift" errors on subsequent Terraform operations.
+
+:::
+
+## Manage Temporal Cloud Nexus Endpoints with Terraform
+
+Terraform provides a great way to automate the management of [Nexus Endpoints](/nexus/endpoints).
+The provider allows you to import, create, update, and delete Nexus Endpoints with Terraform.
+
+You must use an Identity with [Developer role (or higher)](/cloud/users#account-level-roles) and [Namespace Admin permission](/cloud/users#namespace-level-permissions) on the Endpoint's target Namespace.
+
+**How do I create a Nexus Endpoint with Terraform?**
+
+1. Create a Terraform configuration file (`terraform.tf`) to define a Nexus Endpoint.
+
+   From the [example in the Terraform Registry](https://registry.terraform.io/providers/temporalio/temporalcloud/latest/docs/resources/nexus_endpoint):
+
+   ```yml
+   terraform {
+     required_providers {
+       temporalcloud = {
+         source = "temporalio/temporalcloud"
+       }
+     }
+   }
+
+   provider "temporalcloud" {
+
+   }
+
+   resource "temporalcloud_namespace" "target_namespace" {
+     name           = "terraform-target-namespace"
+     regions        = ["aws-us-west-2"]
+     api_key_auth   = true
+     retention_days = 14
+     timeouts {
+       create = "10m"
+       delete = "10m"
+     }
+   }
+
+   resource "temporalcloud_namespace" "caller_namespace" {
+     name           = "terraform-caller-namespace"
+     regions        = ["aws-us-east-1"]
+     api_key_auth   = true
+     retention_days = 14
+     timeouts {
+       create = "10m"
+       delete = "10m"
+     }
+   }
+
+   resource "temporalcloud_namespace" "caller_namespace_2" {
+     name           = "terraform-caller-namespace-2"
+     regions        = ["gcp-us-central1"]
+     api_key_auth   = true
+     retention_days = 14
+     timeouts {
+       create = "10m"
+       delete = "10m"
+     }
+   }
+
+   resource "temporalcloud_nexus_endpoint" "nexus_endpoint" {
+     name        = "terraform-nexus-endpoint"
+     description = <<-EOT
+       Service Name:
+         my-hello-service
+       Operation Names:
+         echo
+         say-hello
+
+       Input / Output arguments are in the following repository:
+       https://github.com/temporalio/samples-go/blob/main/nexus/service/api.go
+     EOT
+     worker_target = {
+       namespace_id = temporalcloud_namespace.target_namespace.id
+       task_queue   = "terraform-task-queue"
+     }
+     allowed_caller_namespaces = [
+       temporalcloud_namespace.caller_namespace.id,
+       temporalcloud_namespace.caller_namespace_2.id,
+     ]
+   }
+   ```
+
+   In this example, 3 Namespaces are created:
+   - target Namespace for a Nexus Endpoint - Nexus requests will be routed to a Worker that polls the target Namespace.
+   - caller Namespace(s) - Nexus Operations are invoked from caller Namespace, for example from a caller Workflow.
+
+   These Namespaces are referenced in the [Nexus Endpoint](/nexus/endpoints) configuration:
+   - `worker_target` (Namespace and Task Queue) - currently only a single worker_target is supported.
+   - `allowed_caller_namespaces` - used to enforce Nexus Endpoint [runtime access controls](/nexus/security#runtime-access-controls).
+
+
+1. Initialize the Terraform provider.
+
+   Run the following command to initialize the Terraform provider.
+
+   ```bash
+   terraform init
+   ```
+
+1. Apply the Terraform configuration.
+
+   Once initialization occurs, apply the Terraform configuration to your Temporal Cloud account.
+
+   ```bash
+   terraform apply
+   ```
+
+   Follow the onscreen prompts.
+
+   Upon completion, you'll see a success message indicating 3 Namespaces and a Nexus Endpoint are created.
+
+   ```bash
+   temporalcloud_nexus_endpoint.nexus_endpoint: Creation complete after 2s [id=b158063be978471fa1d200569b03834d]
+   ```
+
+You can find more examples of Nexus Endpoint management in the Terraform Provider docs located on HashiCorp's [Terraform Registry](https://registry.terraform.io/providers/temporalio/temporalcloud/latest/docs/resources/nexus_endpoint).
+The Terraform Provider docs show how to generate CA certs within Terraform configuration files and create a Namespace with API Key based authentication.
+
+**How do I validate the creation of the Nexus Endpoint?**
+
+You can validate the creation of the Nexus Endpoint through the Temporal Web UI or through the `tcld nexus endpoint get` command.
+
+**Using the Temporal Web UI**
+
+1. Log into the Temporal Cloud Web UI.
+1. Navigate to [the Nexus page](https://cloud.temporal.io/nexus).
+1. Search for the Nexus Endpoint you created, using only the Nexus Endpoint Name (without an account suffix).
+
+**Using the tcld CLI utility**
+
+Validate the creation of your Nexus Endpoint through the Terraform provider.
+To validate see your Nexus Endpoint in the Cloud UI or through the `tcld nexus endpoint get` command.
+
+Run the below command using your Nexus Endpoint Name.
+Do not use the account ID suffix with this endpoint name:
+
+```bash
+tcld nexus endpoint get -n "<your-nexus-endpoint-name-without-account-suffix>"
+```
+
+**How do I update a Nexus Endpoint?**
+
+Terraform automatically recognizes changes made within `.tf` files and applies those changes to Temporal.
+
+For example, to change the allowed caller Namespaces on a Nexus Endpoint:
+
+1. Add or remove allowed caller Namespaces by updating the Nexus Endpoint configuration, for example by removing `caller_namespace_2` from the configuration above:
+
+   ```yml
+   resource "temporalcloud_nexus_endpoint" "nexus_endpoint" {
+     name        = "terraform-nexus-endpoint"
+     description = <<-EOT
+       Service Name:
+         my-hello-service
+       Operation Names:
+         echo
+         say-hello
+
+       Input / Output arguments are in the following repository:
+       https://github.com/temporalio/samples-go/blob/main/nexus/service/api.go
+     EOT
+     worker_target = {
+       namespace_id = temporalcloud_namespace.target_namespace.id
+       task_queue   = "terraform-task-queue"
+     }
+     allowed_caller_namespaces = [
+       temporalcloud_namespace.caller_namespace.id
+     ]
+   }
+   ```
+
+1. Apply your configuration.
+   When prompted, answer yes to continue:
+
+   ```command
+   terraform apply
+   ```
+
+   Upon completion, you will see a success message indicating your Nexus Endpoint has been updated.
+   It may take several seconds to update a Nexus Endpoint in the control plane which is visibile from the Temporal UI or tcld CLI.
+   Propagation of Nexus Endpoint changes to the data plane may take longer, but usually complete in less than one minute.
+
+   ```text
+   temporalcloud_nexus_endpoint.nexus_endpoint: Modifications complete after 1s [id=b158063be978471fa1d200569b03834d]
+   ```
+
+**How do I delete a Nexus Endpoint?**
+
+To delete the Nexus Endpoint, run the following command and answer yes when prompted:
+
+```bash
+terraform destroy
+```
+
+Upon completion, you will see a success message indicating all resources have been deleted.
+
+```text
+Destroy complete! Resources: 4 destroyed.
+```
+
+**How do I import a Temporal Cloud Nexus Endpoint?**
+
+If you have an existing Nexus Endpoint in Temporal Cloud, you can import it into Terraform to manage the Nexus Endpoint from Terraform using the `terraform import` command.
+
+1. Initialize the Terraform provider in a new directory.
+
+   Run the following command to initialize the Terraform provider.
+
+   ```bash
+   terraform init
+   ```
+
+1. Provide a configuration placeholder in your Terraform configuration and ensure you've included your [API key](#setup).
+
+   ```yml
+   terraform {
+     required_providers {
+       temporalcloud = {
+         source = "temporalio/temporalcloud"
+       }
+     }
+   }
+
+   provider "temporalcloud" {
+   }
+
+   resource "temporalcloud_nexus_endpoint" "nexus_endpoint" {
+   }
+   ```
+
+1. Run the `terraform import` command from the command line and pass in the Nexus Endpoint ID.
+
+   ```bash
+   terraform import temporalcloud_nexus_endpoint <your-nexus-endpoint-ID>
+   ```
+
+   Your Nexus Endpoint ID is available at the top of the Nexus Endpoint's page in the [Temporal Cloud UI](https://cloud.temporal.io/nexus).
+
+   <CaptionedImage
+       src="/img/cloud/nexus/nexus-endpoint-id.png"
+       title="Nexus Endpoint ID"
+       width="100%"
+       zoom="false"
+   />
+
+   Upon completion, you will see a success message indicating the Nexus Endpoint was imported.
+
+   ```text
+   temporalcloud_nexus_endpoint.nexus_endpoint: Refreshing state... [id=3c0c75ccfa8144b092c13ce632463761]
+
+   Import successful!
+   ```
+
+The Nexus Endpoint is now a part of the Terraform state and all changes to the Nexus Endpoint should be managed by Terraform.
+
+:::caution
+
+Once a resource has been imported into Terraform, outside changes to the resource will create Terraform "drift" errors on subsequent Terraform operations.
+
+:::
 
 ## Manage Temporal Cloud Users with Terraform
 
