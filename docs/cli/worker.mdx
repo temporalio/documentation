@@ -15,7 +15,7 @@ tags:
 
 +---------------------------------------------------------------------+
 | CAUTION: Worker Deployment is experimental. Deployment commands are |
-| subject to change.                                                  |
+| subject to change. |
 +---------------------------------------------------------------------+
 
 Deployment commands perform operations on Worker Deployments:
@@ -50,7 +50,7 @@ Sets the current Deployment Version for a given Deployment.
 
 +---------------------------------------------------------------------+
 | CAUTION: Worker Deployment is experimental. Deployment commands are |
-| subject to change.                                                  |
+| subject to change. |
 +---------------------------------------------------------------------+
 
 Remove a Worker Deployment given its Deployment Name.
@@ -66,7 +66,6 @@ For example, setting the user identity that removed the deployment:
 temporal worker deployment delete \
     --name YourDeploymentName \
     --identity YourIdentity
-
 ```
 
 Use the following options to change the behavior of this command.
@@ -187,7 +186,7 @@ Override target TLS server name.
 
 +---------------------------------------------------------------------+
 | CAUTION: Worker Deployment is experimental. Deployment commands are |
-| subject to change.                                                  |
+| subject to change. |
 +---------------------------------------------------------------------+
 
 Remove a Worker Deployment Version given its fully-qualified identifier.
@@ -195,11 +194,12 @@ This is rarely needed during normal operation
 since unused Versions are eventually garbage collected.
 The client can delete a Version only when all of the following conditions
 are met:
-  - It is not the Current or Ramping Version for this Deployment.
-  - It has no active pollers, i.e., none of the task queues in the
+
+- It is not the Current or Ramping Version for this Deployment.
+- It has no active pollers, i.e., none of the task queues in the
   Version have pollers.
-  - It is not draining. This requirement can be ignored with the option
-`--skip-drainage`.
+- It is not draining. This requirement can be ignored with the option
+  `--skip-drainage`.
 
 ```
 temporal worker deployment delete-version [options]
@@ -210,7 +210,7 @@ For example, skipping the drainage restriction:
 ```
 temporal worker deployment delete-version \
     --version YourDeploymentName.YourBuildID \
-    --skip-drainage          
+    --skip-drainage
 ```
 
 Use the following options to change the behavior of this command.
@@ -335,7 +335,7 @@ Override target TLS server name.
 
 +---------------------------------------------------------------------+
 | CAUTION: Worker Deployment is experimental. Deployment commands are |
-| subject to change.                                                  |
+| subject to change. |
 +---------------------------------------------------------------------+
 
 Describe properties of a Worker Deployment, such as the versions
@@ -468,10 +468,10 @@ Override target TLS server name.
 
 +---------------------------------------------------------------------+
 | CAUTION: Worker Deployment is experimental. Deployment commands are |
-| subject to change.                                                  |
+| subject to change. |
 +---------------------------------------------------------------------+
 
-Describe properties of a Worker Deployment Version, such as the task 
+Describe properties of a Worker Deployment Version, such as the task
 queues polled by workers in this Deployment Version, or drainage
 information required to safely decommission workers, or user-provided
 metadata, or its creation/modification time.
@@ -480,7 +480,7 @@ metadata, or its creation/modification time.
 temporal worker deployment describe-version [options]
 ```
 
-For example, to describe a deployment version  in a deployment
+For example, to describe a deployment version in a deployment
 `YourDeploymentName`, with Build ID `YourBuildID`, and in the default
 namespace:
 
@@ -603,7 +603,7 @@ Override target TLS server name.
 
 +---------------------------------------------------------------------+
 | CAUTION: Worker Deployment is experimental. Deployment commands are |
-| subject to change.                                                  |
+| subject to change. |
 +---------------------------------------------------------------------+
 
 List existing Worker Deployments in the client's namespace.
@@ -727,7 +727,7 @@ Override target TLS server name.
 
 +---------------------------------------------------------------------+
 | CAUTION: Worker Deployment is experimental. Deployment commands are |
-| subject to change.                                                  |
+| subject to change. |
 +---------------------------------------------------------------------+
 
 Set the Current Version for a Deployment.
@@ -894,13 +894,13 @@ Override target TLS server name.
 
 +---------------------------------------------------------------------+
 | CAUTION: Worker Deployment is experimental. Deployment commands are |
-| subject to change.                                                  |
+| subject to change. |
 +---------------------------------------------------------------------+
 
 Set the Ramping Version and Percentage for a Deployment.
 
 The Ramping Version can be set to a fully-qualified Version of the form
-`YourDeploymentName.YourBuildID`, or set to "__unversioned__", a special
+`YourDeploymentName.YourBuildID`, or set to "**unversioned**", a special
 value that represents all the unversioned workers.
 
 The Ramping Percentage is a float with values in the range [0, 100].
@@ -1076,24 +1076,24 @@ Override target TLS server name.
 
 +---------------------------------------------------------------------+
 | CAUTION: Worker Deployment is experimental. Deployment commands are |
-| subject to change.                                                  |
+| subject to change. |
 +---------------------------------------------------------------------+
 Update metadata associated with a Worker Deployment Version.
 
 For example:
 
 ```
- temporal worker deployment update-metadata-version \
-    --version YourDeploymentName.YourBuildID \
-    --metadata bar=1 \
-    --metadata foo=true
+temporal worker deployment update-metadata-version \
+   --version YourDeploymentName.YourBuildID \
+   --metadata bar=1 \
+   --metadata foo=true
 ```
 
 The current metadata is also returned with `describe-version`:
 
 ```
- temporal worker deployment describe-version \
-    --version YourDeploymentName.YourBuildID \
+temporal worker deployment describe-version \
+   --version YourDeploymentName.YourBuildID \
 ```
 
 Use the following options to change the behavior of this command.
@@ -1213,4 +1213,3 @@ Path to x509 private key. Can't be used with --tls-key-data.
 **--tls-server-name** _string_
 
 Override target TLS server name.
-
