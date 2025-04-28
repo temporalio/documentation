@@ -26,9 +26,9 @@ This page answers the following questions for Python developers:
 
 ## What is Continue-As-New? {#what}
 
-[Continue-As-New](/workflow-execution/continue-as-new) lets a Workflow Execution close successfully and create a new Workflow Execution. You can think of it as a checkpoint when your Workflow gets too long or approaches certain scaling limits.
+[Continue-As-New](/workflow-execution/continue-as-new) lets a Workflow Execution close successfully and creates a new Workflow Execution. You can think of it as a checkpoint when your Workflow gets too long or approaches certain scaling limits.
 
-The new Workflow Execution keeps the same Workflow Id but gets a new Run Id and a fresh Event History.
+The new Workflow Execution is in the same [chain](workflow-execution#workflow-execution-chain); it keeps the same Workflow Id but gets a new Run Id and a fresh Event History.
 It also receives your Workflow's usual parameters.
 
 ## How to Continue-As-New using the Python SDK {#how}
