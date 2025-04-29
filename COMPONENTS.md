@@ -39,6 +39,39 @@ Our components are located in the `src/components` folder at the root of this re
 - **`experimental`**: This folder contains components that are not currently used on the site.
   These are either for testing or were previously part of ongoing development.
 
+```
+components
+├── elements
+│   ├── Button.js
+│   ├── Intro.js
+│   ├── PhotoCarousel.js
+│   ├── RetrySimulator.js
+│   ├── SdkLogos.js
+│   └── retry-simulator.module.css
+├── experimental
+│   ├── CenteredImage.js
+│   ├── CustomWarning.js
+│   ├── DetermineHeader.js
+│   ├── InfoButton.js
+│   ├── NoBreak.js
+│   ├── ResponsivePlayer.js
+│   ├── RowOfImages.js
+│   ├── Spacer.js
+│   └── ToolTipText.js
+├── formatting
+│   └── DocsTable.js
+├── images
+│   ├── CaptionedImage.js
+│   └── CaptionedImage.module.css
+├── index.js
+└── info
+    ├── DiscoverableDisclosure.js
+    ├── RelatedRead.js
+    ├── RelatedRead.module.css
+    ├── RelatedReadList.js
+    └── ToolTipTerm.js
+```
+
 Components are reusable, self-contained units of code used for our Documentation site.
 As shown in this file tree, our components are built using JavaScript and React.
 Components often have associated CSS files to manage styling, although this is optional.

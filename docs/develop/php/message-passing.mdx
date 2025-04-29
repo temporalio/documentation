@@ -508,7 +508,7 @@ You can:
 
 - Use the [`updateWithStart`](https://php.temporal.io/classes/Temporal-Client-WorkflowClientInterface.html#method_updateWithStart) WorkflowClient API.
   It returns once the requested Update wait stage has been reached; or when the request times out.
-- Use the  [`UpdateHandle`](https://php.temporal.io/classes/Temporal-Client-Update-UpdateHandle.html) to retrieve a result from the Update.
+- Use the [`UpdateHandle`](https://php.temporal.io/classes/Temporal-Client-Update-UpdateHandle.html) to retrieve a result from the Update.
 
 You provide:
 
@@ -558,7 +558,6 @@ $handle = $workflowClient->updateWithStart(
 assert($handle->hasResult() === true);
 $price = $handle->getResult();
 ```
-
 
 ## Message handler patterns {#message-handler-patterns}
 

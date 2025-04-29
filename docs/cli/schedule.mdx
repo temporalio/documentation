@@ -24,521 +24,1306 @@ tags:
   - Schedules
 ---
 
-Schedule commands allow the user to create, use, and update [Schedules](/schedule).
-Schedules control when certain Actions for a [Workflow Execution](/workflow-execution) are performed, making it a useful tool for automation.
-
-To run a Schedule command, run `temporal schedule [command] [command options]`.
-
 ## backfill
 
-The `temporal schedule backfill` command executes Actions ahead of their specified time range.
-Backfilling adds [Workflow Runs]/workflow-execution/workflowid-runid#run-id from a time period when the Schedule was paused, or from before the Schedule was created.
+Batch-execute actions that would have run during a specified time interval.
+Use this command to fill in Workflow runs from when a Schedule was paused,
+before a Schedule was created, from the future, or to re-process a previously
+executed interval.
 
-Schedule backfills require a valid Schedule ID, along with the time in which to run the Schedule and a change to the overlap policy.
-The following example fills in Workflow Runs from a point when the Schedule was paused.
+Backfills require a Schedule ID and the time period covered by the request.
+It's best to use the `BufferAll` or `AllowAll` policies to avoid conflicts
+and ensure no Workflow Executions are skipped.
+
+For example:
 
 ```
-temporal schedule backfill --schedule-id 'your-schedule-id' \
---overlap-policy 'BufferAll' 				\
---start-time '2022-05-0101T00:00:00Z'		\
---end-time '2022-05-31T23:59:59Z'
+temporal schedule backfill \
+    --schedule-id "YourScheduleId" \
+    --start-time "2022-05-01T00:00:00Z" \
+    --end-time "2022-05-31T23:59:59Z" \
+    --overlap-policy BufferAll
 ```
 
-Temporal recommends setting the Overlap Policy to `BufferAll` to run backfilled Workflows sequentially.
+The policies include:
 
-Use the following options to change this command's behavior.
+- **AllowAll**: Allow unlimited concurrent Workflow Executions. This
+  significantly speeds up the backfilling process on systems that support
+  concurrency. You must ensure running Workflow Executions do not interfere
+  with each other.
+- **BufferAll**: Buffer all incoming Workflow Executions while waiting for
+  the running Workflow Execution to complete.
+- **Skip**: If a previous Workflow Execution is still running, discard new
+  Workflow Executions.
+- **BufferOne**: Same as 'Skip' but buffer a single Workflow Execution to be
+  run after the previous Execution completes. Discard other Workflow
+  Executions.
+- **CancelOther**: Cancel the running Workflow Execution and replace it with
+  the incoming new Workflow Execution.
+- **TerminateOther**: Terminate the running Workflow Execution and replace
+  it with the incoming new Workflow Execution.
 
-- [--address](/cli/cmd-options#address)
+Use the following options to change the behavior of this command.
 
-- [--codec-auth](/cli/cmd-options#codec-auth)
+**Flags:**
 
-- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+**--end-time** _timestamp_
 
-- [--color](/cli/cmd-options#color)
+Backfill end time. Required.
 
-- [--command-timeout](/cli/cmd-options#command-timeout)
+**--start-time** _timestamp_
 
-- [--end-time](/cli/cmd-options#end-time)
+Backfill start time. Required.
 
-- [--env](/cli/cmd-options#env)
+**Global Flags:**
 
-- [--grpc-meta](/cli/cmd-options#grpc-meta)
+**--address** _string_
 
-- [--namespace](/cli/cmd-options#namespace)
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
-- [--overlap-policy](/cli/cmd-options#overlap-policy)
+**--api-key** _string_
 
-- [--schedule-id](/cli/cmd-options#schedule-id)
+API key for request.
 
-- [--start-time](/cli/cmd-options#start-time)
+**--codec-auth** _string_
 
-- [--tls](/cli/cmd-options#tls)
+Authorization header for Codec Server requests.
 
-- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+**--codec-endpoint** _string_
 
-- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+Remote Codec Server endpoint.
 
-- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+**--codec-header** _string[]_
 
-- [--tls-key-path](/cli/cmd-options#tls-key-path)
+HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
 
-- [--tls-server-name](/cli/cmd-options#tls-server-name)
+**--color** _string-enum_
+
+Output coloring. Accepted values: always, never, auto. (default "auto")
+
+**--command-timeout** _duration_
+
+The command execution timeout. 0s means no timeout.
+
+**--env** _string_
+
+Active environment name (`ENV`). (default "default")
+
+**--env-file** _string_
+
+Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`.
+
+**--grpc-meta** _string[]_
+
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+
+**--log-format** _string-enum_
+
+Log format. Accepted values: text, json. (default "text")
+
+**--log-level** _string-enum_
+
+Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. (default "info")
+
+**--namespace**, **-n** _string_
+
+Temporal Service Namespace. (default "default")
+
+**--no-json-shorthand-payloads** _bool_
+
+Raw payload output, even if the JSON option was used.
+
+**--output**, **-o** _string-enum_
+
+Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
+
+**--time-format** _string-enum_
+
+Time format. Accepted values: relative, iso, raw. (default "relative")
+
+**--tls** _bool_
+
+Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+
+**--tls-ca-data** _string_
+
+Data for server CA certificate. Can't be used with --tls-ca-path.
+
+**--tls-ca-path** _string_
+
+Path to server CA certificate. Can't be used with --tls-ca-data.
+
+**--tls-cert-data** _string_
+
+Data for x509 certificate. Can't be used with --tls-cert-path.
+
+**--tls-cert-path** _string_
+
+Path to x509 certificate. Can't be used with --tls-cert-data.
+
+**--tls-disable-host-verification** _bool_
+
+Disable TLS host-name verification.
+
+**--tls-key-data** _string_
+
+Private certificate key data. Can't be used with --tls-key-path.
+
+**--tls-key-path** _string_
+
+Path to x509 private key. Can't be used with --tls-key-data.
+
+**--tls-server-name** _string_
+
+Override target TLS server name.
 
 ## create
 
-The `temporal schedule create` command creates a new [Schedule](/schedule).
-Newly created Schedules return a Schedule ID to be used in other Schedule commands.
+Create a new Schedule on the Temporal Service. A Schedule automatically starts
+new Workflow Executions at the times you specify.
 
-Schedules use the following format:
-
-```
-temporal schedule create \
-    --schedule-id 'your-schedule-id' \
-    --workflow-id 'your-workflow-id' \
-    --task-queue 'your-task-queue' \
-    --workflow-type 'YourWorkflowType'
-```
-
-Actions are executed at the times specified in the Schedule.
-For example, the following Schedule starts a Workflow every 5 hours at 15 minutes past the hour.
-A Workflow is also started at 11:03 on Fridays.
+For example:
 
 ```
 temporal schedule create \
-    --schedule-id 'your-schedule-id' \
-    --interval '5h/15m' \
-    --calendar '{"dayOfWeek":"Fri","hour":"11","minute":"3"}' \
-    --overlap-policy 'BufferAll' \
-    --workflow-id 'your-workflow-id' \
-    --task-queue 'your-task-queue' \
-    --workflow-type 'YourWorkflowType'
+  --schedule-id "YourScheduleId" \
+  --calendar '{"dayOfWeek":"Fri","hour":"3","minute":"30"}' \
+  --workflow-id YourBaseWorkflowIdName \
+  --task-queue YourTaskQueue \
+  --type YourWorkflowType
 ```
 
-Workflows don't run in parallel.
-Setting the `--overlap-policy` to `BufferAll` allows Workflows to run sequentially if they would overlap.
+Schedules support any combination of `--calendar`, `--interval`, and `--cron`:
 
-Any combination of `--calendar`, `--interval`, and `--cron` is supported.
-Traditional cron strings, along with `CronSchedule` features, are also supported.
+- Shorthand `--interval` strings.
+  For example: 45m (every 45 minutes) or 6h/5h (every 6 hours, at the top of
+  the 5th hour).
+- JSON `--calendar`, as in the preceding example.
+- Unix-style `--cron` strings and robfig declarations
+  (@daily/@weekly/@every X/etc).
+  For example, every Friday at 12:30 PM: `30 12 * * Fri`.
 
-```
-temporal schedule create \
-    --schedule-id 'your-schedule-id' \
-    --cron '3 11 * * Fri' \
-    --workflow-id 'your-workflow-id' \
-    --task-queue 'your-task-queue' \
-    --workflow-type 'YourWorkflowType'
-```
+Use the following options to change the behavior of this command.
 
-Use the following options to change this command's behavior.
+**Flags:**
 
-- [--address](/cli/cmd-options#address)
+**--calendar** _string[]_
 
-- [--calendar](/cli/cmd-options#calendar)
+Calendar specification in JSON. For example: `{"dayOfWeek":"Fri","hour":"17","minute":"5"}`.
 
-- [--catchup-window](/cli/cmd-options#catchup-window)
+**--catchup-window** _duration_
 
-- [--codec-auth](/cli/cmd-options#codec-auth)
+Maximum catch-up time for when the Service is unavailable.
 
-- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+**--cron** _string[]_
 
-- [--color](/cli/cmd-options#color)
+Calendar specification in cron string format. For example: `"30 12 * * Fri"`.
 
-- [--command-timeout](/cli/cmd-options#command-timeout)
+**--end-time** _timestamp_
 
-- [--cron](/cli/cmd-options#cron)
+Schedule end time.
 
-- [--end-time](/cli/cmd-options#end-time)
+**--execution-timeout** _duration_
 
-- [--env](/cli/cmd-options#env)
+Fail a WorkflowExecution if it lasts longer than `DURATION`. This time-out includes retries and ContinueAsNew tasks.
 
-- [--execution-timeout](/cli/cmd-options#execution-timeout)
+**--input**, **-i** _string[]_
 
-- [--grpc-meta](/cli/cmd-options#grpc-meta)
+Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments.
 
-- [--input](/cli/cmd-options#input)
+**--input-base64** _bool_
 
-- [--input-file](/cli/cmd-options#input-file)
+Assume inputs are base64-encoded and attempt to decode them.
 
-- [--interval](/cli/cmd-options#interval)
+**--input-file** _string[]_
 
-- [--jitter](/cli/cmd-options#jitter)
+A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments.
 
-- [--max-field-length](/cli/cmd-options#max-field-length)
+**--input-meta** _string[]_
 
-- [--memo](/cli/cmd-options#memo)
+Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times.
 
-- [--memo-file](/cli/cmd-options#memo-file)
+**--interval** _string[]_
 
-- [--namespace](/cli/cmd-options#namespace)
+Interval duration. For example, 90m, or 60m/15m to include phase offset.
 
-- [--notes](/cli/cmd-options#notes)
+**--jitter** _duration_
 
-- [--overlap-policy](/cli/cmd-options#overlap-policy)
+Max difference in time from the specification. Vary the start time randomly within this amount.
 
-- [--pause](/cli/cmd-options#pause)
+**--memo** _string[]_
 
-- [--pause-on-failure](/cli/cmd-options#pause-on-failure)
+Memo using 'KEY="VALUE"' pairs. Use JSON values.
 
-- [--remaining-actions](/cli/cmd-options#remaining-actions)
+**--notes** _string_
 
-- [--run-timeout](/cli/cmd-options#run-timeout)
+Initial notes field value.
 
-- [--schedule-id](/cli/cmd-options#schedule-id)
+**--overlap-policy** _string-enum_
 
-- [--search-attribute](/cli/cmd-options#search-attribute)
+Policy for handling overlapping Workflow Executions. Accepted values: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll. (default "Skip")
 
-- [--start-time](/cli/cmd-options#start-time)
+**--pause-on-failure** _bool_
 
-- [--task-queue](/cli/cmd-options#task-queue)
+Pause schedule after Workflow failures.
 
-- [--task-timeout](/cli/cmd-options#task-timeout)
+**--paused** _bool_
 
-- [--time-zone](/cli/cmd-options#time-zone)
+Pause the Schedule immediately on creation.
 
-- [--tls](/cli/cmd-options#tls)
+**--remaining-actions** _int_
 
-- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+Total allowed actions. Default is zero (unlimited).
 
-- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+**--run-timeout** _duration_
 
-- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+Fail a Workflow Run if it lasts longer than `DURATION`.
 
-- [--tls-key-path](/cli/cmd-options#tls-key-path)
+**--schedule-id**, **-s** _string_
 
-- [--tls-server-name](/cli/cmd-options#tls-server-name)
+Schedule ID. Required.
 
-- [--workflow-id](/cli/cmd-options#workflow-id)
+**--schedule-memo** _string[]_
 
-- [--workflow-type](/cli/cmd-options#workflow-type)
+Set schedule memo using `KEY="VALUE` pairs. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times.
+
+**--schedule-search-attribute** _string[]_
+
+Set schedule Search Attributes using `KEY="VALUE` pairs. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times.
+
+**--search-attribute** _string[]_
+
+Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times.
+
+**--start-time** _timestamp_
+
+Schedule start time.
+
+**--static-details** _string_
+
+Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--static-summary** _string_
+
+Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--task-queue**, **-t** _string_
+
+Workflow Task queue. Required.
+
+**--task-timeout** _duration_
+
+Fail a Workflow Task if it lasts longer than `DURATION`. This is the Start-to-close timeout for a Workflow Task. (default "10s")
+
+**--time-zone** _string_
+
+Interpret calendar specs with the `TZ` time zone. For a list of time zones, see: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones.
+
+**--type** _string_
+
+Workflow Type name. Required.
+
+**--workflow-id**, **-w** _string_
+
+Workflow ID. If not supplied, the Service generates a unique ID.
+
+**Global Flags:**
+
+**--address** _string_
+
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+
+**--api-key** _string_
+
+API key for request.
+
+**--codec-auth** _string_
+
+Authorization header for Codec Server requests.
+
+**--codec-endpoint** _string_
+
+Remote Codec Server endpoint.
+
+**--codec-header** _string[]_
+
+HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+
+**--color** _string-enum_
+
+Output coloring. Accepted values: always, never, auto. (default "auto")
+
+**--command-timeout** _duration_
+
+The command execution timeout. 0s means no timeout.
+
+**--env** _string_
+
+Active environment name (`ENV`). (default "default")
+
+**--env-file** _string_
+
+Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`.
+
+**--grpc-meta** _string[]_
+
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+
+**--log-format** _string-enum_
+
+Log format. Accepted values: text, json. (default "text")
+
+**--log-level** _string-enum_
+
+Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. (default "info")
+
+**--namespace**, **-n** _string_
+
+Temporal Service Namespace. (default "default")
+
+**--no-json-shorthand-payloads** _bool_
+
+Raw payload output, even if the JSON option was used.
+
+**--output**, **-o** _string-enum_
+
+Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
+
+**--time-format** _string-enum_
+
+Time format. Accepted values: relative, iso, raw. (default "relative")
+
+**--tls** _bool_
+
+Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+
+**--tls-ca-data** _string_
+
+Data for server CA certificate. Can't be used with --tls-ca-path.
+
+**--tls-ca-path** _string_
+
+Path to server CA certificate. Can't be used with --tls-ca-data.
+
+**--tls-cert-data** _string_
+
+Data for x509 certificate. Can't be used with --tls-cert-path.
+
+**--tls-cert-path** _string_
+
+Path to x509 certificate. Can't be used with --tls-cert-data.
+
+**--tls-disable-host-verification** _bool_
+
+Disable TLS host-name verification.
+
+**--tls-key-data** _string_
+
+Private certificate key data. Can't be used with --tls-key-path.
+
+**--tls-key-path** _string_
+
+Path to x509 private key. Can't be used with --tls-key-data.
+
+**--tls-server-name** _string_
+
+Override target TLS server name.
 
 ## delete
 
-The `temporal schedule delete` command deletes a [Schedule](/schedule).
-Deleting a Schedule does not affect any [Workflows](/workflows) started by the Schedule.
+Deletes a Schedule on the front end Service:
 
-[Workflow Executions](/workflow-execution) started by Schedules can be cancelled or terminated like other Workflow Executions.
-However, Workflow Executions started by a Schedule can be identified by their [Search Attributes](/search-attribute), making them targetable by batch command for termination.
+```
+temporal schedule delete \
+    --schedule-id YourScheduleId
+```
 
-`temporal schedule delete --schedule-id 'your-schedule-id' [command options]`
+Removing a Schedule won't affect the Workflow Executions it started that are
+still running. To cancel or terminate these Workflow Executions, use `temporal workflow delete` with the `TemporalScheduledById` Search Attribute instead.
 
-Use the following options to change this command's behavior.
+Use the following options to change the behavior of this command.
 
-- [--address](/cli/cmd-options#address)
+**Flags:**
 
-- [--codec-auth](/cli/cmd-options#codec-auth)
+**--schedule-id**, **-s** _string_
 
-- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+Schedule ID. Required.
 
-- [--color](/cli/cmd-options#color)
+**Global Flags:**
 
-- [--command-timeout](/cli/cmd-options#command-timeout)
+**--address** _string_
 
-- [--env](/cli/cmd-options#env)
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
-- [--grpc-meta](/cli/cmd-options#grpc-meta)
+**--api-key** _string_
 
-- [--namespace](/cli/cmd-options#namespace)
+API key for request.
 
-- [--schedule-id](/cli/cmd-options#schedule-id)
+**--codec-auth** _string_
 
-- [--tls](/cli/cmd-options#tls)
+Authorization header for Codec Server requests.
 
-- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+**--codec-endpoint** _string_
 
-- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+Remote Codec Server endpoint.
 
-- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+**--codec-header** _string[]_
 
-- [--tls-key-path](/cli/cmd-options#tls-key-path)
+HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
 
-- [--tls-server-name](/cli/cmd-options#tls-server-name)
+**--color** _string-enum_
+
+Output coloring. Accepted values: always, never, auto. (default "auto")
+
+**--command-timeout** _duration_
+
+The command execution timeout. 0s means no timeout.
+
+**--env** _string_
+
+Active environment name (`ENV`). (default "default")
+
+**--env-file** _string_
+
+Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`.
+
+**--grpc-meta** _string[]_
+
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+
+**--log-format** _string-enum_
+
+Log format. Accepted values: text, json. (default "text")
+
+**--log-level** _string-enum_
+
+Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. (default "info")
+
+**--namespace**, **-n** _string_
+
+Temporal Service Namespace. (default "default")
+
+**--no-json-shorthand-payloads** _bool_
+
+Raw payload output, even if the JSON option was used.
+
+**--output**, **-o** _string-enum_
+
+Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
+
+**--time-format** _string-enum_
+
+Time format. Accepted values: relative, iso, raw. (default "relative")
+
+**--tls** _bool_
+
+Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+
+**--tls-ca-data** _string_
+
+Data for server CA certificate. Can't be used with --tls-ca-path.
+
+**--tls-ca-path** _string_
+
+Path to server CA certificate. Can't be used with --tls-ca-data.
+
+**--tls-cert-data** _string_
+
+Data for x509 certificate. Can't be used with --tls-cert-path.
+
+**--tls-cert-path** _string_
+
+Path to x509 certificate. Can't be used with --tls-cert-data.
+
+**--tls-disable-host-verification** _bool_
+
+Disable TLS host-name verification.
+
+**--tls-key-data** _string_
+
+Private certificate key data. Can't be used with --tls-key-path.
+
+**--tls-key-path** _string_
+
+Path to x509 private key. Can't be used with --tls-key-data.
+
+**--tls-server-name** _string_
+
+Override target TLS server name.
 
 ## describe
 
-The `temporal schedule describe` command shows the current [Schedule](/schedule) configuration.
-This command also provides information about past, current, and future [Workflow Runs]/workflow-execution/workflowid-runid#run-id.
+Show a Schedule configuration, including information about past, current, and
+future Workflow runs:
 
-`temporal schedule describe --schedule-id 'your-schedule-id' [command options]`
+```
+temporal schedule describe \
+    --schedule-id YourScheduleId
+```
 
-Use the following options to change this command's behavior.
+Use the following options to change the behavior of this command.
 
-- [--address](/cli/cmd-options#address)
+**Flags:**
 
-- [--codec-auth](/cli/cmd-options#codec-auth)
+**--schedule-id**, **-s** _string_
 
-- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+Schedule ID. Required.
 
-- [--color](/cli/cmd-options#color)
+**Global Flags:**
 
-- [--command-timeout](/cli/cmd-options#command-timeout)
+**--address** _string_
 
-- [--env](/cli/cmd-options#env)
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
-- [--fields](/cli/cmd-options#fields)
+**--api-key** _string_
 
-- [--grpc-meta](/cli/cmd-options#grpc-meta)
+API key for request.
 
-- [--namespace](/cli/cmd-options#namespace)
+**--codec-auth** _string_
 
-- [--output](/cli/cmd-options#output)
+Authorization header for Codec Server requests.
 
-- [--raw](/cli/cmd-options#raw)
+**--codec-endpoint** _string_
 
-- [--schedule-id](/cli/cmd-options#schedule-id)
+Remote Codec Server endpoint.
 
-- [--time-format](/cli/cmd-options#time-format)
+**--codec-header** _string[]_
 
-- [--tls](/cli/cmd-options#tls)
+HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
 
-- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+**--color** _string-enum_
 
-- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+Output coloring. Accepted values: always, never, auto. (default "auto")
 
-- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+**--command-timeout** _duration_
 
-- [--tls-key-path](/cli/cmd-options#tls-key-path)
+The command execution timeout. 0s means no timeout.
 
-- [--tls-server-name](/cli/cmd-options#tls-server-name)
+**--env** _string_
+
+Active environment name (`ENV`). (default "default")
+
+**--env-file** _string_
+
+Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`.
+
+**--grpc-meta** _string[]_
+
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+
+**--log-format** _string-enum_
+
+Log format. Accepted values: text, json. (default "text")
+
+**--log-level** _string-enum_
+
+Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. (default "info")
+
+**--namespace**, **-n** _string_
+
+Temporal Service Namespace. (default "default")
+
+**--no-json-shorthand-payloads** _bool_
+
+Raw payload output, even if the JSON option was used.
+
+**--output**, **-o** _string-enum_
+
+Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
+
+**--time-format** _string-enum_
+
+Time format. Accepted values: relative, iso, raw. (default "relative")
+
+**--tls** _bool_
+
+Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+
+**--tls-ca-data** _string_
+
+Data for server CA certificate. Can't be used with --tls-ca-path.
+
+**--tls-ca-path** _string_
+
+Path to server CA certificate. Can't be used with --tls-ca-data.
+
+**--tls-cert-data** _string_
+
+Data for x509 certificate. Can't be used with --tls-cert-path.
+
+**--tls-cert-path** _string_
+
+Path to x509 certificate. Can't be used with --tls-cert-data.
+
+**--tls-disable-host-verification** _bool_
+
+Disable TLS host-name verification.
+
+**--tls-key-data** _string_
+
+Private certificate key data. Can't be used with --tls-key-path.
+
+**--tls-key-path** _string_
+
+Path to x509 private key. Can't be used with --tls-key-data.
+
+**--tls-server-name** _string_
+
+Override target TLS server name.
 
 ## list
 
-The `temporal schedule list` command lists all [Schedule](/schedule) configurations.
-Listing Schedules in [Standard Visibility](/visibility#standard-visibility) will only provide Schedule IDs.
+Lists the Schedules hosted by a Namespace:
 
-`temporal schedule list`
+```
+temporal schedule list \
+    --namespace YourNamespace
+```
 
-Use the options below to change the behavior of this command.
+Use the following options to change the behavior of this command.
 
-- [--address](/cli/cmd-options#address)
+**Flags:**
 
-- [--codec-auth](/cli/cmd-options#codec-auth)
+**--long**, **-l** _bool_
 
-- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+Show detailed information.
 
-- [--color](/cli/cmd-options#color)
+**--query**, **-q** _string_
 
-- [--command-timeout](/cli/cmd-options#command-timeout)
+Filter results using given List Filter.
 
-- [--env](/cli/cmd-options#env)
+**--really-long** _bool_
 
-- [--fields](/cli/cmd-options#fields)
+Show extensive information in non-table form.
 
-- [--grpc-meta](/cli/cmd-options#grpc-meta)
+**Global Flags:**
 
-- [--limit](/cli/cmd-options#limit)
+**--address** _string_
 
-- [--namespace](/cli/cmd-options#namespace)
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
-- [--no-pager](/cli/cmd-options#no-pager)
+**--api-key** _string_
 
-- [--output](/cli/cmd-options#output)
+API key for request.
 
-- [--pager](/cli/cmd-options#pager)
+**--codec-auth** _string_
 
-- [--time-format](/cli/cmd-options#time-format)
+Authorization header for Codec Server requests.
 
-- [--tls](/cli/cmd-options#tls)
+**--codec-endpoint** _string_
 
-- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+Remote Codec Server endpoint.
 
-- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+**--codec-header** _string[]_
 
-- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
 
-- [--tls-key-path](/cli/cmd-options#tls-key-path)
+**--color** _string-enum_
 
-- [--tls-server-name](/cli/cmd-options#tls-server-name)
+Output coloring. Accepted values: always, never, auto. (default "auto")
+
+**--command-timeout** _duration_
+
+The command execution timeout. 0s means no timeout.
+
+**--env** _string_
+
+Active environment name (`ENV`). (default "default")
+
+**--env-file** _string_
+
+Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`.
+
+**--grpc-meta** _string[]_
+
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+
+**--log-format** _string-enum_
+
+Log format. Accepted values: text, json. (default "text")
+
+**--log-level** _string-enum_
+
+Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. (default "info")
+
+**--namespace**, **-n** _string_
+
+Temporal Service Namespace. (default "default")
+
+**--no-json-shorthand-payloads** _bool_
+
+Raw payload output, even if the JSON option was used.
+
+**--output**, **-o** _string-enum_
+
+Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
+
+**--time-format** _string-enum_
+
+Time format. Accepted values: relative, iso, raw. (default "relative")
+
+**--tls** _bool_
+
+Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+
+**--tls-ca-data** _string_
+
+Data for server CA certificate. Can't be used with --tls-ca-path.
+
+**--tls-ca-path** _string_
+
+Path to server CA certificate. Can't be used with --tls-ca-data.
+
+**--tls-cert-data** _string_
+
+Data for x509 certificate. Can't be used with --tls-cert-path.
+
+**--tls-cert-path** _string_
+
+Path to x509 certificate. Can't be used with --tls-cert-data.
+
+**--tls-disable-host-verification** _bool_
+
+Disable TLS host-name verification.
+
+**--tls-key-data** _string_
+
+Private certificate key data. Can't be used with --tls-key-path.
+
+**--tls-key-path** _string_
+
+Path to x509 private key. Can't be used with --tls-key-data.
+
+**--tls-server-name** _string_
+
+Override target TLS server name.
 
 ## toggle
 
-The `temporal schedule toggle` command can pause and unpause a [Schedule](/schedule).
+Pause or unpause a Schedule by passing a flag with your desired state:
 
-Toggling a Schedule requires a reason to be entered on the command line.
-Use `--reason` to note the issue leading to the pause or unpause.
+```
+temporal schedule toggle \
+    --schedule-id "YourScheduleId" \
+    --pause \
+    --reason "YourReason"
+```
 
-Schedule toggles are passed in this format:
-`temporal schedule toggle --schedule-id 'your-schedule-id' --pause --reason "paused because the database is down"`
-`temporal schedule toggle --schedule-id 'your-schedule-id' --unpause --reason "the database is back up"`
+and
 
-Use the following options to change this command's behavior.
+```
+temporal schedule toggle
+    --schedule-id "YourScheduleId" \
+    --unpause \
+    --reason "YourReason"
+```
 
-- [--address](/cli/cmd-options#address)
+The `--reason` text updates the Schedule's `notes` field for operations
+communication. It defaults to "(no reason provided)" if omitted. This field is
+also visible on the Service Web UI.
 
-- [--codec-auth](/cli/cmd-options#codec-auth)
+Use the following options to change the behavior of this command.
 
-- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+**Flags:**
 
-- [--color](/cli/cmd-options#color)
+**--pause** _bool_
 
-- [--command-timeout](/cli/cmd-options#command-timeout)
+Pause the Schedule.
 
-- [--env](/cli/cmd-options#env)
+**--reason** _string_
 
-- [--grpc-meta](/cli/cmd-options#grpc-meta)
+Reason for pausing or unpausing the Schedule. (default "(no reason provided)")
 
-- [--namespace](/cli/cmd-options#namespace)
+**--schedule-id**, **-s** _string_
 
-- [--pause](/cli/cmd-options#pause)
+Schedule ID. Required.
 
-- [--reason](/cli/cmd-options#reason)
+**--unpause** _bool_
 
-- [--schedule-id](/cli/cmd-options#schedule-id)
+Unpause the Schedule.
 
-- [--tls](/cli/cmd-options#tls)
+**Global Flags:**
 
-- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+**--address** _string_
 
-- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
-- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+**--api-key** _string_
 
-- [--tls-key-path](/cli/cmd-options#tls-key-path)
+API key for request.
 
-- [--tls-server-name](/cli/cmd-options#tls-server-name)
+**--codec-auth** _string_
 
-- [--unpause](/cli/cmd-options#unpause)
+Authorization header for Codec Server requests.
+
+**--codec-endpoint** _string_
+
+Remote Codec Server endpoint.
+
+**--codec-header** _string[]_
+
+HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+
+**--color** _string-enum_
+
+Output coloring. Accepted values: always, never, auto. (default "auto")
+
+**--command-timeout** _duration_
+
+The command execution timeout. 0s means no timeout.
+
+**--env** _string_
+
+Active environment name (`ENV`). (default "default")
+
+**--env-file** _string_
+
+Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`.
+
+**--grpc-meta** _string[]_
+
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+
+**--log-format** _string-enum_
+
+Log format. Accepted values: text, json. (default "text")
+
+**--log-level** _string-enum_
+
+Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. (default "info")
+
+**--namespace**, **-n** _string_
+
+Temporal Service Namespace. (default "default")
+
+**--no-json-shorthand-payloads** _bool_
+
+Raw payload output, even if the JSON option was used.
+
+**--output**, **-o** _string-enum_
+
+Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
+
+**--time-format** _string-enum_
+
+Time format. Accepted values: relative, iso, raw. (default "relative")
+
+**--tls** _bool_
+
+Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+
+**--tls-ca-data** _string_
+
+Data for server CA certificate. Can't be used with --tls-ca-path.
+
+**--tls-ca-path** _string_
+
+Path to server CA certificate. Can't be used with --tls-ca-data.
+
+**--tls-cert-data** _string_
+
+Data for x509 certificate. Can't be used with --tls-cert-path.
+
+**--tls-cert-path** _string_
+
+Path to x509 certificate. Can't be used with --tls-cert-data.
+
+**--tls-disable-host-verification** _bool_
+
+Disable TLS host-name verification.
+
+**--tls-key-data** _string_
+
+Private certificate key data. Can't be used with --tls-key-path.
+
+**--tls-key-path** _string_
+
+Path to x509 private key. Can't be used with --tls-key-data.
+
+**--tls-server-name** _string_
+
+Override target TLS server name.
 
 ## trigger
 
-The `temporal schedule trigger` command triggers an immediate action with a given [Schedule](/schedule).
-By default, this action is subject to the Overlap Policy of the Schedule.
+Trigger a Schedule to run immediately:
 
-Schedule triggers are passed in this format:
-`temporal schedule trigger` can be used to start a Workflow Run immediately.
-`temporal schedule trigger --schedule-id 'your-schedule-id'`
+```
+temporal schedule trigger \
+    --schedule-id "YourScheduleId"
+```
 
-The Overlap Policy of the Schedule can be overridden as well.
-`temporal schedule trigger --schedule-id 'your-schedule-id' --overlap-policy 'AllowAll'`
+Use the following options to change the behavior of this command.
 
-Use the following options to change this command's behavior.
+**Flags:**
 
-- [--address](/cli/cmd-options#address)
+**--overlap-policy** _string-enum_
 
-- [--codec-auth](/cli/cmd-options#codec-auth)
+Policy for handling overlapping Workflow Executions. Accepted values: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll. (default "Skip")
 
-- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+**--schedule-id**, **-s** _string_
 
-- [--color](/cli/cmd-options#color)
+Schedule ID. Required.
 
-- [--command-timeout](/cli/cmd-options#command-timeout)
+**Global Flags:**
 
-- [--env](/cli/cmd-options#env)
+**--address** _string_
 
-- [--grpc-meta](/cli/cmd-options#grpc-meta)
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
-- [--namespace](/cli/cmd-options#namespace)
+**--api-key** _string_
 
-- [--overlap-policy](/cli/cmd-options#overlap-policy)
+API key for request.
 
-- [--schedule-id](/cli/cmd-options#schedule-id)
+**--codec-auth** _string_
 
-- [--tls](/cli/cmd-options#tls)
+Authorization header for Codec Server requests.
 
-- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+**--codec-endpoint** _string_
 
-- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+Remote Codec Server endpoint.
 
-- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+**--codec-header** _string[]_
 
-- [--tls-key-path](/cli/cmd-options#tls-key-path)
+HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
 
-- [--tls-server-name](/cli/cmd-options#tls-server-name)
+**--color** _string-enum_
+
+Output coloring. Accepted values: always, never, auto. (default "auto")
+
+**--command-timeout** _duration_
+
+The command execution timeout. 0s means no timeout.
+
+**--env** _string_
+
+Active environment name (`ENV`). (default "default")
+
+**--env-file** _string_
+
+Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`.
+
+**--grpc-meta** _string[]_
+
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+
+**--log-format** _string-enum_
+
+Log format. Accepted values: text, json. (default "text")
+
+**--log-level** _string-enum_
+
+Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. (default "info")
+
+**--namespace**, **-n** _string_
+
+Temporal Service Namespace. (default "default")
+
+**--no-json-shorthand-payloads** _bool_
+
+Raw payload output, even if the JSON option was used.
+
+**--output**, **-o** _string-enum_
+
+Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
+
+**--time-format** _string-enum_
+
+Time format. Accepted values: relative, iso, raw. (default "relative")
+
+**--tls** _bool_
+
+Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+
+**--tls-ca-data** _string_
+
+Data for server CA certificate. Can't be used with --tls-ca-path.
+
+**--tls-ca-path** _string_
+
+Path to server CA certificate. Can't be used with --tls-ca-data.
+
+**--tls-cert-data** _string_
+
+Data for x509 certificate. Can't be used with --tls-cert-path.
+
+**--tls-cert-path** _string_
+
+Path to x509 certificate. Can't be used with --tls-cert-data.
+
+**--tls-disable-host-verification** _bool_
+
+Disable TLS host-name verification.
+
+**--tls-key-data** _string_
+
+Private certificate key data. Can't be used with --tls-key-path.
+
+**--tls-key-path** _string_
+
+Path to x509 private key. Can't be used with --tls-key-data.
+
+**--tls-server-name** _string_
+
+Override target TLS server name.
 
 ## update
 
-The `temporal schedule update` command updates an existing [Schedule](/schedule).
-
-Like `temporal schedule create`, updated Schedules need to follow a certain format:
+Update an existing Schedule with new configuration details, including time
+specifications, action, and policies:
 
 ```
-temporal schedule update 			    \
-    --schedule-id 'your-schedule-id' 	\
-    --workflow-id 'your-workflow-id' 	\
-    --task-queue 'your-task-queue' 		\
-    --workflow-type 'YourWorkflowType'
+temporal schedule update \
+    --schedule-id "YourScheduleId" \
+    --workflow-type "NewWorkflowType"
 ```
 
-Updating a Schedule takes the given options and replaces the entire configuration of the Schedule with what's provided.
-If you only change one value of the Schedule, be sure to provide the other unchanged fields to prevent them from being overwritten.
+Use the following options to change the behavior of this command.
 
-Use the following options to change the command's behavior.
+**Flags:**
 
-- [--address](/cli/cmd-options#address)
+**--calendar** _string[]_
 
-- [--calendar](/cli/cmd-options#calendar)
+Calendar specification in JSON. For example: `{"dayOfWeek":"Fri","hour":"17","minute":"5"}`.
 
-- [--catchup-window](/cli/cmd-options#catchup-window)
+**--catchup-window** _duration_
 
-- [--codec-auth](/cli/cmd-options#codec-auth)
+Maximum catch-up time for when the Service is unavailable.
 
-- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+**--cron** _string[]_
 
-- [--color](/cli/cmd-options#color)
+Calendar specification in cron string format. For example: `"30 12 * * Fri"`.
 
-- [--command-timeout](/cli/cmd-options#command-timeout)
+**--end-time** _timestamp_
 
-- [--cron](/cli/cmd-options#cron)
+Schedule end time.
 
-- [--end-time](/cli/cmd-options#end-time)
+**--execution-timeout** _duration_
 
-- [--env](/cli/cmd-options#env)
+Fail a WorkflowExecution if it lasts longer than `DURATION`. This time-out includes retries and ContinueAsNew tasks.
 
-- [--execution-timeout](/cli/cmd-options#execution-timeout)
+**--input**, **-i** _string[]_
 
-- [--grpc-meta](/cli/cmd-options#grpc-meta)
+Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments.
 
-- [--input](/cli/cmd-options#input)
+**--input-base64** _bool_
 
-- [--input-file](/cli/cmd-options#input-file)
+Assume inputs are base64-encoded and attempt to decode them.
 
-- [--interval](/cli/cmd-options#interval)
+**--input-file** _string[]_
 
-- [--jitter](/cli/cmd-options#jitter)
+A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments.
 
-- [--max-field-length](/cli/cmd-options#max-field-length)
+**--input-meta** _string[]_
 
-- [--memo](/cli/cmd-options#memo)
+Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times.
 
-- [--memo-file](/cli/cmd-options#memo-file)
+**--interval** _string[]_
 
-- [--namespace](/cli/cmd-options#namespace)
+Interval duration. For example, 90m, or 60m/15m to include phase offset.
 
-- [--notes](/cli/cmd-options#notes)
+**--jitter** _duration_
 
-- [--overlap-policy](/cli/cmd-options#overlap-policy)
+Max difference in time from the specification. Vary the start time randomly within this amount.
 
-- [--pause](/cli/cmd-options#pause)
+**--memo** _string[]_
 
-- [--pause-on-failure](/cli/cmd-options#pause-on-failure)
+Memo using 'KEY="VALUE"' pairs. Use JSON values.
 
-- [--remaining-actions](/cli/cmd-options#remaining-actions)
+**--notes** _string_
 
-- [--run-timeout](/cli/cmd-options#run-timeout)
+Initial notes field value.
 
-- [--schedule-id](/cli/cmd-options#schedule-id)
+**--overlap-policy** _string-enum_
 
-- [--search-attribute](/cli/cmd-options#search-attribute)
+Policy for handling overlapping Workflow Executions. Accepted values: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll. (default "Skip")
 
-- [--start-time](/cli/cmd-options#start-time)
+**--pause-on-failure** _bool_
 
-- [--task-queue](/cli/cmd-options#task-queue)
+Pause schedule after Workflow failures.
 
-- [--task-timeout](/cli/cmd-options#task-timeout)
+**--paused** _bool_
 
-- [--time-zone](/cli/cmd-options#time-zone)
+Pause the Schedule immediately on creation.
 
-- [--tls](/cli/cmd-options#tls)
+**--remaining-actions** _int_
 
-- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+Total allowed actions. Default is zero (unlimited).
 
-- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+**--run-timeout** _duration_
 
-- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+Fail a Workflow Run if it lasts longer than `DURATION`.
 
-- [--tls-key-path](/cli/cmd-options#tls-key-path)
+**--schedule-id**, **-s** _string_
 
-- [--tls-server-name](/cli/cmd-options#tls-server-name)
+Schedule ID. Required.
 
-- [--workflow-id](/cli/cmd-options#workflow-id)
+**--schedule-memo** _string[]_
 
-- [--workflow-type](/cli/cmd-options#workflow-type)
+Set schedule memo using `KEY="VALUE` pairs. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times.
+
+**--schedule-search-attribute** _string[]_
+
+Set schedule Search Attributes using `KEY="VALUE` pairs. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times.
+
+**--search-attribute** _string[]_
+
+Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times.
+
+**--start-time** _timestamp_
+
+Schedule start time.
+
+**--static-details** _string_
+
+Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--static-summary** _string_
+
+Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--task-queue**, **-t** _string_
+
+Workflow Task queue. Required.
+
+**--task-timeout** _duration_
+
+Fail a Workflow Task if it lasts longer than `DURATION`. This is the Start-to-close timeout for a Workflow Task. (default "10s")
+
+**--time-zone** _string_
+
+Interpret calendar specs with the `TZ` time zone. For a list of time zones, see: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones.
+
+**--type** _string_
+
+Workflow Type name. Required.
+
+**--workflow-id**, **-w** _string_
+
+Workflow ID. If not supplied, the Service generates a unique ID.
+
+**Global Flags:**
+
+**--address** _string_
+
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+
+**--api-key** _string_
+
+API key for request.
+
+**--codec-auth** _string_
+
+Authorization header for Codec Server requests.
+
+**--codec-endpoint** _string_
+
+Remote Codec Server endpoint.
+
+**--codec-header** _string[]_
+
+HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+
+**--color** _string-enum_
+
+Output coloring. Accepted values: always, never, auto. (default "auto")
+
+**--command-timeout** _duration_
+
+The command execution timeout. 0s means no timeout.
+
+**--env** _string_
+
+Active environment name (`ENV`). (default "default")
+
+**--env-file** _string_
+
+Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`.
+
+**--grpc-meta** _string[]_
+
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+
+**--log-format** _string-enum_
+
+Log format. Accepted values: text, json. (default "text")
+
+**--log-level** _string-enum_
+
+Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. (default "info")
+
+**--namespace**, **-n** _string_
+
+Temporal Service Namespace. (default "default")
+
+**--no-json-shorthand-payloads** _bool_
+
+Raw payload output, even if the JSON option was used.
+
+**--output**, **-o** _string-enum_
+
+Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
+
+**--time-format** _string-enum_
+
+Time format. Accepted values: relative, iso, raw. (default "relative")
+
+**--tls** _bool_
+
+Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+
+**--tls-ca-data** _string_
+
+Data for server CA certificate. Can't be used with --tls-ca-path.
+
+**--tls-ca-path** _string_
+
+Path to server CA certificate. Can't be used with --tls-ca-data.
+
+**--tls-cert-data** _string_
+
+Data for x509 certificate. Can't be used with --tls-cert-path.
+
+**--tls-cert-path** _string_
+
+Path to x509 certificate. Can't be used with --tls-cert-data.
+
+**--tls-disable-host-verification** _bool_
+
+Disable TLS host-name verification.
+
+**--tls-key-data** _string_
+
+Private certificate key data. Can't be used with --tls-key-path.
+
+**--tls-key-path** _string_
+
+Path to x509 private key. Can't be used with --tls-key-data.
+
+**--tls-server-name** _string_
+
+Override target TLS server name.
