@@ -268,6 +268,28 @@ captions={[
 - Please ensure the caption count and order matches that of the images
 - You may pass an optional `isDarkMode` Boolean prop
 
+### Skipping captioning
+
+To skip slide captioning, pass the string `"NA"` instead of a normal description.
+
+```
+<PhotoCarousel
+images={[
+"/link/to/image-1",
+"/link/to/image-2",
+...
+]}
+captions={[
+"NA",
+"caption-2",
+...
+]}
+/>
+```
+
+Photo 1 will not have a caption but photo 2 will have a caption.
+This ensures photo 2 won't be matched with caption 1. 
+
 ## Using ToolTipTerm
 
 Role: Provide definitions or background information at the point of use.
