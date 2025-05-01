@@ -370,15 +370,6 @@ setup_cassandra_schema() {
 
 ## How to integrate Elasticsearch into a Temporal Service {#elasticsearch}
 
-:::tip Support, stability, and dependency info
-
-- Elasticsearch v8 is supported beginning with Temporal Server version 1.18.0.
-- Elasticsearch v7.10 is supported beginning with Temporal Server version 1.17.0.
-- Elasticsearch v6.8 is supported through Temporal Server version 1.17._x_.
-- Elasticsearch v6.8 and v7.10 are explicitly supported with AWS Elasticsearch.
-
-:::
-
 You can integrate Elasticsearch with your Temporal Service as your Visibility store.
 We recommend using Elasticsearch for large-scale operations on the Temporal Service.
 
@@ -452,12 +443,6 @@ Ensure that the following privileges are granted for the Elasticsearch Temporal 
   - [cluster privileges](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-privileges.html#privileges-list-cluster): `monitor` or `manage`.
 
 ## How to set up Dual Visibility {#dual-visibility}
-
-:::tip Support, stability, and dependency info
-
-- Supported from Temporal Server v1.21 onwards.
-
-:::
 
 To enable [Dual Visibility](/dual-visibility), set up a secondary Visibility store with your primary Visibility store, and configure your Temporal Service to enable read and/or write operations on the secondary Visibility store.
 
@@ -643,12 +628,6 @@ For details on the configuration options, see:
 - [Migrating Visibility databases](#migrating-visibility-database)
 
 ## How to migrate Visibility database {#migrating-visibility-database}
-
-:::tip Support, stability, and dependency info
-
-- Supported beginning with Temporal Server v1.21.
-
-:::
 
 To migrate your Visibility database, [set up a secondary Visibility store](#dual-visibility) to enable [Dual Visibility](/dual-visibility), and update the dynamic configuration in your Temporal Service to update the read and write operations for the Visibility store.
 
