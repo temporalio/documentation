@@ -27,7 +27,7 @@
     },
     {
       "source": "/system-tools/:path*",
-      "destination": "/cli",
+      "destination": "/tctl-v1",
       "permanent": true
     },
     {
