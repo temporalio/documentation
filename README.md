@@ -6,8 +6,15 @@ Welcome to Temporal's documentation repository!
 
 This repository contains a large chunk of the Temporal information corpus.
 
-- [Contributing guidance](./CONTRIBUTING.md)
-- [Style guidance](./STYLE.md)
+| Resource                                   | Audience                |
+|--------------------------------------------|--------------------------|
+| [Contact information](./CONTACT.md)        | For our open source community |
+| [Contributing guidance](./CONTRIBUTING.md) | For our open source community |
+| [License](./LICENSE.md) | For our open source community |
+| [React Component catalog and guidance](./COMPONENTS.md) | For our open source community |
+| [Readability tooling guidance](./READABILITY.md) | For repo maintainers |
+| [Style guidance](./STYLE.md)               | For our open source community |
+| [Utility tooling guidance](./UTILITIES.md) | For repo maintainers |
 
 ### Current component versioning philosophy
 
