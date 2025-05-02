@@ -15,6 +15,7 @@ tags:
   - Kubernetes
   - Temporal Cloud
 ---
+
 import { LANGUAGE_TAB_GROUP, getLanguageLabel } from '@site/src/constants/languageTabs';
 import SdkTabs from '@site/src/components';
 
@@ -102,33 +103,36 @@ TEMPORAL_TASK_QUEUE = os.environ.get("TEMPORAL_TASK_QUEUE", "test-task-queue")
 TEMPORAL_API_KEY = os.environ.get("TEMPORAL_API_KEY", "your-api-key")
 
 async def main():
-  client = await Client.connect(
-    TEMPORAL_ADDRESS,
-    namespace=TEMPORAL_NAMESPACE,
-    rpc_metadata={"temporal-namespace": TEMPORAL_NAMESPACE},
-    api_key=TEMPORAL_API_KEY,
-    tls=True
-  )
+client = await Client.connect(
+TEMPORAL_ADDRESS,
+namespace=TEMPORAL_NAMESPACE,
+rpc_metadata={"temporal-namespace": TEMPORAL_NAMESPACE},
+api_key=TEMPORAL_API_KEY,
+tls=True
+)
 
 print("Initializing worker...")
-  # Run the worker
-  worker = Worker(
-    client,
-    task_queue=TEMPORAL_TASK_QUEUE,
-    workflows=[your_workflow],
-    activities=[
-      your_first_activity,
-      your_second_activity,
-      your_third_activity
-    ]
-  )
 
-  print("Starting worker... Waiting for tasks.")
-  await worker.run()
+# Run the worker
 
-if __name__ == "__main__":
-  asyncio.run(main())
-```
+worker = Worker(
+client,
+task_queue=TEMPORAL_TASK_QUEUE,
+workflows=[your_workflow],
+activities=[
+your_first_activity,
+your_second_activity,
+your_third_activity
+]
+)
+
+print("Starting worker... Waiting for tasks.")
+await worker.run()
+
+if **name** == "**main**":
+asyncio.run(main())
+
+````
 </SdkTabs.Python>
 </SdkTabs>
 
@@ -160,7 +164,7 @@ ENV PYTHONUNBUFFERED=1
 
 # Run the worker
 CMD ["python", "worker.py"]
-```
+````
 
 Build the Docker image and target the `linux/amd64` architecture:
 
