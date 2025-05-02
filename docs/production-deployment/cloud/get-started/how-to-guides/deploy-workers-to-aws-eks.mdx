@@ -3,20 +3,20 @@ id: deploy-workers-to-aws-eks
 title: Quick Launch - Deploying your Workers on Amazon EKS
 sidebar_label: Deploy Workers to Amazon EKS
 slug: /cloud/deploy-workers-to-aws-eks
-description: Deploy a Temporal Worker on Amazon Elastic Kubernetes Service (EKS) using the Python SDK.
+description: Deploy a Temporal Worker on Amazon Elastic Kubernetes Service (EKS)
 keywords:
   - Temporal Cloud
   - Kubernetes
   - EKS
   - AWS
-  - Python SDK
   - Worker
 tags:
   - Deploy
-  - Python SDK
   - Kubernetes
   - Temporal Cloud
 ---
+import { LANGUAGE_TAB_GROUP, getLanguageLabel } from '@site/src/constants/languageTabs';
+import SdkTabs from '@site/src/components';
 
 Temporal Workers run in [Kubernetes](https://kubernetes.io)-based deployments deliver scale, resilience, and flexible resource management.
 Amazon EKS (Elastic Kubernetes Service) offers one of the most popular choices for running Temporal Workers.
@@ -24,7 +24,7 @@ It integrates smoothly with AWS services and supports auto-scaling and fault tol
 
 Follow this guide to deploy and manage your Temporal Workers in EKS.
 This guide walks you through writing Temporal Worker code, containerizing and publishing the Worker to the Amazon Elastic Container Registry (ECR), and deploying the worker to Amazon EKS.
-The example on this page uses Temporal’s Python SDK and Temporal Cloud.
+The example on this page uses Temporal Cloud.
 
 :::tip
 
@@ -55,15 +55,21 @@ In Temporal applications, business logic lives within your main Workflow code.
 Your Worker code runs separately, and is responsible for executing your Workflows and Activities.
 Make sure to configure your Worker to use environment variables so you can dynamically route your Worker to different Temporal Instances, Namespaces, and Task Queues on the fly:
 
+<SdkTabs>
+<SdkTabs.Python>
 ```python
 TEMPORAL_ADDRESS = os.environ.get("TEMPORAL_ADDRESS", "localhost:7233")
 TEMPORAL_NAMESPACE = os.environ.get("TEMPORAL_NAMESPACE", "default")
 TEMPORAL_TASK_QUEUE = os.environ.get("TEMPORAL_TASK_QUEUE", "test-task-queue")
 TEMPORAL_API_KEY = os.environ.get("TEMPORAL_API_KEY", "")
 ```
+</SdkTabs.Python>
+</SdkTabs>
 
 After configuration, instantiate your Temporal client:
 
+<SdkTabs>
+<SdkTabs.Python>
 ```
 client = await Client.connect(
     TEMPORAL_ADDRESS,
@@ -73,9 +79,13 @@ client = await Client.connect(
     tls=True
 )
 ```
+</SdkTabs.Python>
+</SdkTabs>
 
 Here is a complete Python boilerplate that showcases how to instantiate a Client and pass it to the Worker before starting the Worker execution:
 
+<SdkTabs>
+<SdkTabs.Python>
 ```python
 import asyncio
 import os
@@ -119,6 +129,8 @@ print("Initializing worker...")
 if __name__ == "__main__":
   asyncio.run(main())
 ```
+</SdkTabs.Python>
+</SdkTabs>
 
 ## Containerize the Worker for Kubernetes
 
