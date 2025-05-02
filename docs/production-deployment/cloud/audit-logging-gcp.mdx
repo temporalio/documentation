@@ -35,37 +35,22 @@ import * as Components from '@site/src/components';
 Before configuring the Audit log sink, complete the following steps in Google Cloud:
 
 1. Create a Pub/Sub topic and make a note of its topic name, for example, "test-
-   auditlog"
-   1. If you wish to enable customer-managed encryption keys (CMEK), do so.
-2. Set up a service account in the same project in Google Cloud that trusts the Temporal internal
+   auditlog".
+1. Set up a service account in the same project in Google Cloud that trusts the Temporal internal
    service account to let Temporal write information to your Google Cloud account.
 
-There are two ways to set up this service account:
+## Create an Audit Log sink
 
-- **Manually:**
-  1. Grant GCS permission: Navigate to your Pub/Sub topic, go to the Permission section, and grant
-     `roles/pubsub.publisher` to your newly created service account.
-  2. Grant permission to your Temporal service accounts: Navigate to your Service Account page, go
-     to the Permissions section, and grant `roles/iam.serviceAccountTokenCreator` to the following
-     Temporal Service accounts:
-  - auditlog-temporal-dev@test-zt5hvyyfbyfb2tsew2k3fpe5h.iam.gserviceaccount.com
-  - auditlog-temporal-dev@test-3gd87drvpffdafs45kgqqsxfu.iam.gserviceaccount.com
-- **With Terraform:**
-  1. Use the [Terraform template](https://github.com/temporalio/terraform-modules/tree/main/modules/gcp-sink-sa)
-     to create the service account
-
-## Set up audit logging in the Temporal Cloud UI
-
-To set up audit logs integration from the Temporal Cloud UI, follow these steps:
-
-1. In the Cloud UI, navigate to Settings → Integration → Audit Log. Confirm that you see Pub/Sub as a sink option:
-
-![Temporal Cloud UI Setup for Audit Logging with GCP Pub/Sub](/img/cloud/gcp/audit-logging-pub-sub-gcp.png)
-
-2. Choose Pub/Sub as the external provider.
-3. Enter the Service account email that you noted earlier.
-4. Enter the Pub/Sub topic name that you noted earlier.
-5. Click **Create** to configure the audit log. This may take a few minutes.
+1. In the Temporal Cloud UI, select **Settings**.
+1. On the **Settings** page, select **Audit Logging**.
+1. In the **Audit Logging** card, select ** Set Up Audit Log Integration**.
+1. On the Set Up Audit Logs Integration page, select **Pub/Sub**.
+1. In the **Service account email** field, enter the service account email you created in the prerequisites.
+1. In the **Topic name** field, enter the topic name of the Pub/Sub topic you created in the prerequisites.
+1. There are two ways to configure the service account to write to the GCS sink. Select **Manual** to configure 
+the account manually, or **Deploy with Terraform** to use Terraform. 
+1. Follow the instructions in the Temporal Cloud UI for the method you chose.
+1. Click **Create** to configure the audit log. This may take a few minutes.
 
 ## More information
 
