@@ -149,7 +149,7 @@ The `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecution
 `maxConcurrentWorkflowTaskPollers` (JavaSDK: `workflowPollThreadCount`) and `maxConcurrentActivityTaskPollers` (JavaSDK: `activityPollThreadCount`) define the maximum count of pollers performing poll requests on Workflow and Activity Task Queues.
 The Worker's requests deliver Tasks to the related executor slots.
 
-Some SDKs (Python. All will be supported eventually) have currently-experimental support for
+Some SDKs (Python for now, although all SDKs will eventually be supported) have enabled experimental support for
 automated poller tuning. This feature can be enabled by setting the `*_task_poller_behavior` options
 to `PollerBehaviorAutoscaling`. Names may vary slightly depending on the SDK. There are options
 within to configure minimum, maximum, and initial poller counts, but it is unlikely that you will
