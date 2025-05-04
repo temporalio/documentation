@@ -19,3 +19,58 @@ tags:
   - Ruby SDK
   - Temporal SDKs
 ---
+
+This page shows how to interrupt a Workflow Execution.
+
+You can interrupt a Workflow Execution in one of the following ways:
+
+- [Cancel](#cancellation): Canceling a Workflow provides a graceful way to stop Workflow Execution.
+- [Terminate](#termination): Terminating a Workflow forcefully stops Workflow Execution.
+
+Terminating a Workflow forcefully stops Workflow Execution.
+This action resembles killing a process.
+
+- The system records a `WorkflowExecutionTerminated` event in the Workflow History.
+- The termination forcefully and immediately stops the Workflow Execution.
+- The Workflow code gets no chance to handle termination.
+- A Workflow Task doesn't get scheduled.
+
+In most cases, canceling is preferable because it allows the Workflow to finish gracefully.
+Terminate only if the Workflow is stuck and cannot be canceled normally.
+
+## Cancellation {#cancellation}
+
+To give a Workflow and its Activities the ability to be cancelled, do the following:
+
+- Handle a Cancellation request within a Workflow.
+- Set Activity Heartbeat Timeouts.
+- Listen for and handle a Cancellation request within an Activity.
+- Send a Cancellation request from a Temporal Client.
+
+### Handle Cancellation in Workflow {#handle-cancellation-in-workflow}
+
+
+<!-- CONTENT-->
+
+
+### Handle Cancellation in an Activity {#handle-cancellation-in-an-activity}
+
+
+<!-- CONTENT-->
+
+
+### Request Cancellation {#request-cancellation}
+
+
+<!-- CONTENT-->
+
+
+**How to request Cancellation of an Activity in Ruby using the Temporal Ruby SDK**
+
+<!-- CONTENT-->
+
+
+## Termination {#termination}
+
+
+<!-- CONTENT-->

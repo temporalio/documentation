@@ -11,3 +11,170 @@ tags:
   - Ruby SDK
   - Temporal SDKs
 ---
+
+# Quick Start – Ruby SDK
+
+## 1. Installation
+
+Install the Temporal SDK using your preferred method.
+
+The Ruby SDK works with **Ruby 3.2, 3.3, and 3.4**.
+
+<Tabs>
+  <TabItem value="gemfile" label="Gemfile">
+
+  ```ruby
+  gem 'temporalio'
+  ```
+
+  </TabItem>
+</Tabs>
+
+<Tabs>
+  <TabItem value="cli" label="Command Line (gem install)">
+
+  ```bash
+  gem install temporalio
+  ```
+
+  </TabItem>
+</Tabs>
+
+> **Note:**  
+> - Only macOS ARM/x64 and Linux ARM/x64 are supported.  
+> - Source gem is published but **cannot be built directly**.  
+> - Windows (MinGW) is not supported.  
+> - `fibers`/`async` are only supported on Ruby **3.3+**.  
+> - See [Platform Support](#) for full details.
+
+---
+
+## 2. Start the Temporal Server Locally
+
+To run Workflows locally, you need a local instance of the Temporal Service. The easiest way to do this is with [**Temporal CLI**](https://docs.temporal.io/dev-guide/cli/).
+
+### Install Temporal CLI (macOS)
+
+```bash
+brew install temporal
+```
+
+Once installed, run the development server:
+
+```bash
+temporal server start-dev
+```
+
+This will:
+- Start a Temporal Service on `localhost:7233`
+- Launch the Web UI on [http://localhost:8233](http://localhost:8233)
+- Create the default namespace
+- Use an in-memory database (data is lost when you stop the server)
+
+Leave this running in a separate terminal tab or window while you develop.
+
+> 💡 **Optional:** To retain data between runs, use:
+>
+> ```bash
+> temporal server start-dev --db-filename my_temporal.db
+> ```
+
+---
+
+## 3. Write Your First Activity and Workflow 
+
+<Tabs>
+  <TabItem value="activity" label="Activity (say_hello_activity.rb)">
+
+  ```ruby
+  require 'temporalio/activity'
+
+  class SayHelloActivity < Temporalio::Activity::Definition
+    def execute(name)
+      "Hello, #{name}!"
+    end
+  end
+  ```
+
+  </TabItem>
+</Tabs>
+
+<Tabs>
+  <TabItem value="workflow" label="Workflow (say_hello_workflow.rb)">
+
+  ```ruby
+  require 'temporalio/workflow'
+  require_relative 'say_hello_activity'
+
+  class SayHelloWorkflow < Temporalio::Workflow::Definition
+    def execute(name)
+      Temporalio::Workflow.execute_activity(
+        SayHelloActivity,
+        name,
+        schedule_to_close_timeout: 300
+      )
+    end
+  end
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## 4. Run a Worker
+
+<Tabs>
+  <TabItem value="worker" label="Worker (worker.rb)">
+
+  ```ruby
+  require 'temporalio/client'
+  require 'temporalio/worker'
+  require_relative 'say_hello_activity'
+  require_relative 'say_hello_workflow'
+
+  client = Temporalio::Client.connect('localhost:7233', 'my-namespace')
+
+  worker = Temporalio::Worker.new(
+    client:,
+    task_queue: 'my-task-queue',
+    workflows: [SayHelloWorkflow],
+    activities: [SayHelloActivity]
+  )
+
+  worker.run(shutdown_signals: ['SIGINT'])
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## 5. Execute a Workflow and See the Result
+
+<Tabs>
+  <TabItem value="execute" label="Execute Workflow (execute_workflow.rb)">
+
+  ```ruby
+  require 'temporalio/client'
+  require_relative 'say_hello_workflow'
+
+  client = Temporalio::Client.connect('localhost:7233', 'my-namespace')
+
+  result = client.execute_workflow(
+    SayHelloWorkflow,
+    'Temporal',
+    id: 'my-workflow-id',
+    task_queue: 'my-task-queue'
+  )
+
+  puts "Result: #{result}"
+  ```
+
+  </TabItem>
+</Tabs>
+
+**Expected output:**
+```
+Result: Hello, Temporal!
+```
