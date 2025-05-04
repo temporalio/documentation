@@ -34,7 +34,7 @@ When working with sensitive data, you should always implement Payload encryption
 
 ## Custom Payload Codec {#custom-payload-codec}
 
-**How to use a custom Payload Codec using the .NET SDK**
+**How to use a custom Payload Codec using the Ruby SDK**
 
 
 <!-- CONTENT-->
@@ -80,11 +80,11 @@ Temporal's Converter architecture looks like this:
 
 ### Custom Payload Converter {#custom-payload-converter}
 
-**How to use a custom Payload Converter with the .NET SDK.**
+**How to use a custom Payload Converter with the Ruby SDK.**
 
-Data converters are used to convert raw Temporal payloads to/from actual .NET types.
+Data converters are used to convert raw Temporal payloads to/from actual Ruby types.
 A custom data converter can be set via the `DataConverter` option when creating a client. Data converters are a combination of payload converters, payload codecs, and failure converters.
-Payload converters convert .NET values to/from serialized bytes. Payload codecs convert bytes to bytes (e.g. for compression or encryption). Failure converters convert exceptions to/from serialized failures.
+Payload converters convert Ruby values to/from serialized bytes. Payload codecs convert bytes to bytes (e.g. for compression or encryption). Failure converters convert exceptions to/from serialized failures.
 
 Data converters are in the `Temporalio.Converters` namespace.
 The default data converter uses a default payload converter, which supports the following types:
