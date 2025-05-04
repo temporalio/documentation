@@ -30,14 +30,21 @@ tags:
 
 import * as Components from '@site/src/components';
 
-## Prerequisites
+## Manual Setup Prerequisites
 
-Before configuring the Audit log sink, complete the following steps in Google Cloud:
+:::note
+
+These steps are only needed for manual setup. If you use Terraform for your deployment, you don't need
+to complete these prerequisites.
+
+:::
+
+Before configuring the manual Audit log sink, complete the following steps in Google Cloud:
 
 1. Create a Pub/Sub topic and make a note of its topic name, for example, "test-
    auditlog".
-1. Set up a service account in the same project in Google Cloud that trusts the Temporal internal
-   service account to let Temporal write information to your Google Cloud account.
+1. Set up a service account in the same project in Google Cloud and follow the instructions in the 
+   Temporal Cloud UI to configure the permissions for that account.
 
 ## Create an Audit Log sink
 
@@ -47,8 +54,9 @@ Before configuring the Audit log sink, complete the following steps in Google Cl
 1. On the Set Up Audit Logs Integration page, select **Pub/Sub**.
 1. In the **Service account email** field, enter the service account email you created in the prerequisites.
 1. In the **Topic name** field, enter the topic name of the Pub/Sub topic you created in the prerequisites.
-1. There are two ways to configure the service account to write to the GCS sink. Select **Manual** to configure
-   the account manually, or **Deploy with Terraform** to use Terraform.
+1. There are two ways to configure the service account to write to the Pub/Sub sink. Select **Manual** to configure
+   the account manually, or **Deploy with Terraform** to use Terraform. If you use Terraform, you don't need to 
+   complete the prerequisite steps above.
 1. Follow the instructions in the Temporal Cloud UI for the method you chose.
 1. Click **Create** to configure the audit log. This may take a few minutes.
 
