@@ -278,6 +278,7 @@ module.exports = {
             id: "develop/ruby/index",
           },
           items: [
+            "develop/ruby/getting-started",
             "develop/ruby/core-application",
             "develop/ruby/temporal-client",
             "develop/ruby/testing-suite",
