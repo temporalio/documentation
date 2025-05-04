@@ -21,20 +21,27 @@ tags:
 ## Failure Detection {#failure-detection}
 
 ## Workflow timeouts {#workflow-timeouts}
+
 Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
 Workflow timeouts are set when [starting the Workflow Execution](#workflow-timeouts).
+
 - **[Workflow Execution Timeout](/workflows#workflow-execution-timeout)** - restricts the maximum amount of time that a single Workflow Execution can be executed.
 - **[Workflow Run Timeout](/workflows#workflow-run-timeout):** restricts the maximum amount of time that a single Workflow Run can last.
 - **[Workflow Task Timeout](/workflows#workflow-task-timeout):** restricts the maximum amount of time that a Worker can execute a Workflow Task.
+
 <!-- CONTENT-->
 
 ### Workflow retries {#workflow-retries}
+
 A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.
+
 <!-- CONTENT-->
 
 ## How to set Activity timeouts {#activity-timeouts}
+
 Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
 The following timeouts are available in the Activity Options.
+
 - **[Schedule-To-Close Timeout](/activities#schedule-to-close-timeout):** is the maximum amount of time allowed for the overall [Activity Execution](/activities#activity-execution).
 - **[Start-To-Close Timeout](/activities#start-to-close-timeout):** is the maximum time allowed for a single [Activity Task Execution](/workers#activity-task-execution).
 - **[Schedule-To-Start Timeout](/activities#schedule-to-start-timeout):** is the maximum amount of time that is allowed from when an [Activity Task](/workers#activity-task) is scheduled to when a [Worker](/workers#worker) starts that Activity Task.
@@ -42,4 +49,5 @@ The following timeouts are available in the Activity Options.
 <!-- CONTENT-->
 
 ### How to set an Activity Retry Policy {#activity-retries}
+
 <!-- CONTENT-->

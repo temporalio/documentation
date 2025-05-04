@@ -23,28 +23,29 @@ The Ruby SDK works with **Ruby 3.2, 3.3, and 3.4**.
 <Tabs>
   <TabItem value="gemfile" label="Gemfile">
 
-  ```ruby
-  gem 'temporalio'
-  ```
+```ruby
+gem 'temporalio'
+```
 
-  </TabItem>
+</TabItem>
 </Tabs>
 
 <Tabs>
   <TabItem value="cli" label="Command Line (gem install)">
 
-  ```bash
-  gem install temporalio
-  ```
+```bash
+gem install temporalio
+```
 
-  </TabItem>
+</TabItem>
 </Tabs>
 
-> **Note:**  
-> - Only macOS ARM/x64 and Linux ARM/x64 are supported.  
-> - Source gem is published but **cannot be built directly**.  
-> - Windows (MinGW) is not supported.  
-> - `fibers`/`async` are only supported on Ruby **3.3+**.  
+> **Note:**
+>
+> - Only macOS ARM/x64 and Linux ARM/x64 are supported.
+> - Source gem is published but **cannot be built directly**.
+> - Windows (MinGW) is not supported.
+> - `fibers`/`async` are only supported on Ruby **3.3+**.
 > - See [Platform Support](#) for full details.
 
 ---
@@ -66,6 +67,7 @@ temporal server start-dev
 ```
 
 This will:
+
 - Start a Temporal Service on `localhost:7233`
 - Launch the Web UI on [http://localhost:8233](http://localhost:8233)
 - Create the default namespace
@@ -81,43 +83,43 @@ Leave this running in a separate terminal tab or window while you develop.
 
 ---
 
-## 3. Write Your First Activity and Workflow 
+## 3. Write Your First Activity and Workflow
 
 <Tabs>
   <TabItem value="activity" label="Activity (say_hello_activity.rb)">
 
-  ```ruby
-  require 'temporalio/activity'
+```ruby
+require 'temporalio/activity'
 
-  class SayHelloActivity < Temporalio::Activity::Definition
-    def execute(name)
-      "Hello, #{name}!"
-    end
+class SayHelloActivity < Temporalio::Activity::Definition
+  def execute(name)
+    "Hello, #{name}!"
   end
-  ```
+end
+```
 
-  </TabItem>
+</TabItem>
 </Tabs>
 
 <Tabs>
   <TabItem value="workflow" label="Workflow (say_hello_workflow.rb)">
 
-  ```ruby
-  require 'temporalio/workflow'
-  require_relative 'say_hello_activity'
+```ruby
+require 'temporalio/workflow'
+require_relative 'say_hello_activity'
 
-  class SayHelloWorkflow < Temporalio::Workflow::Definition
-    def execute(name)
-      Temporalio::Workflow.execute_activity(
-        SayHelloActivity,
-        name,
-        schedule_to_close_timeout: 300
-      )
-    end
+class SayHelloWorkflow < Temporalio::Workflow::Definition
+  def execute(name)
+    Temporalio::Workflow.execute_activity(
+      SayHelloActivity,
+      name,
+      schedule_to_close_timeout: 300
+    )
   end
-  ```
+end
+```
 
-  </TabItem>
+</TabItem>
 </Tabs>
 
 ---
@@ -127,25 +129,25 @@ Leave this running in a separate terminal tab or window while you develop.
 <Tabs>
   <TabItem value="worker" label="Worker (worker.rb)">
 
-  ```ruby
-  require 'temporalio/client'
-  require 'temporalio/worker'
-  require_relative 'say_hello_activity'
-  require_relative 'say_hello_workflow'
+```ruby
+require 'temporalio/client'
+require 'temporalio/worker'
+require_relative 'say_hello_activity'
+require_relative 'say_hello_workflow'
 
-  client = Temporalio::Client.connect('localhost:7233', 'my-namespace')
+client = Temporalio::Client.connect('localhost:7233', 'my-namespace')
 
-  worker = Temporalio::Worker.new(
-    client:,
-    task_queue: 'my-task-queue',
-    workflows: [SayHelloWorkflow],
-    activities: [SayHelloActivity]
-  )
+worker = Temporalio::Worker.new(
+  client:,
+  task_queue: 'my-task-queue',
+  workflows: [SayHelloWorkflow],
+  activities: [SayHelloActivity]
+)
 
-  worker.run(shutdown_signals: ['SIGINT'])
-  ```
+worker.run(shutdown_signals: ['SIGINT'])
+```
 
-  </TabItem>
+</TabItem>
 </Tabs>
 
 ---
@@ -155,26 +157,27 @@ Leave this running in a separate terminal tab or window while you develop.
 <Tabs>
   <TabItem value="execute" label="Execute Workflow (execute_workflow.rb)">
 
-  ```ruby
-  require 'temporalio/client'
-  require_relative 'say_hello_workflow'
+```ruby
+require 'temporalio/client'
+require_relative 'say_hello_workflow'
 
-  client = Temporalio::Client.connect('localhost:7233', 'my-namespace')
+client = Temporalio::Client.connect('localhost:7233', 'my-namespace')
 
-  result = client.execute_workflow(
-    SayHelloWorkflow,
-    'Temporal',
-    id: 'my-workflow-id',
-    task_queue: 'my-task-queue'
-  )
+result = client.execute_workflow(
+  SayHelloWorkflow,
+  'Temporal',
+  id: 'my-workflow-id',
+  task_queue: 'my-task-queue'
+)
 
-  puts "Result: #{result}"
-  ```
+puts "Result: #{result}"
+```
 
-  </TabItem>
+</TabItem>
 </Tabs>
 
 **Expected output:**
+
 ```
 Result: Hello, Temporal!
 ```

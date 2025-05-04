@@ -36,9 +36,7 @@ When working with sensitive data, you should always implement Payload encryption
 
 **How to use a custom Payload Codec using the .NET SDK**
 
-
 <!-- CONTENT-->
-
 
 **Set Data Converter to use custom Payload Codec**
 
@@ -47,8 +45,8 @@ When creating a client, the default `DataConverter` can be updated with the payl
 <!-- CONTENT-->
 
 - Data **encoding** is performed by the client using the converters and codecs provided by Temporal or your custom implementation when passing input to the Temporal Cluster. For example, plain text input is usually serialized into a JSON object, and can then be compressed or encrypted.
-- Data **decoding** may be performed by your application logic during your Workflows or Activities as necessary, but decoded Workflow results are never persisted back to the Temporal Cluster. 
-Instead, they are stored encoded on the Cluster, and you need to provide an additional parameter when using the [temporal workflow show](/cli/workflow#show) command or when browsing the Web UI to view output.
+- Data **decoding** may be performed by your application logic during your Workflows or Activities as necessary, but decoded Workflow results are never persisted back to the Temporal Cluster.
+  Instead, they are stored encoded on the Cluster, and you need to provide an additional parameter when using the [temporal workflow show](/cli/workflow#show) command or when browsing the Web UI to view output.
 
 For reference, see the [Encryption](https://github.com/temporalio/samples-dotnet/tree/main/src/Encryption) sample.
 
