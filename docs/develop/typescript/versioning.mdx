@@ -245,12 +245,12 @@ Here is a detailed explanation of how the `patched()` function behaves.
 
 ##### Behavior When Not Replaying
 
-If not replaying, and the execution hits a call to patched, it first checks the event history, and:
+If the execution is not replaying, when it encounters a call to `patched()`, it first checks the event history.
 
-- If the patch ID is not in the event history, it will add a marker to the event history, upsert a search attribute, and return true.
-  This happens in a given patch ID's first block.
-- If the patch ID is in the event history, it won't modify the history, and it will return true.
-  This happens in a given patch ID's subsequent blocks.
+- If the patch ID is not in the event history, the execution adds a marker to the event history, upserts a search attribute, and returns `true`.
+  This happens in the first block of the patch ID.
+- If the patch ID is in the event history, the execution doesn't modify the history, and returns `true`.
+  This happens in a patch ID's subsequent blocks, because the event history was updated in the first block.
 
 ##### Behavior When Replaying With Marker Before-Or-At Current Location
 
@@ -270,15 +270,31 @@ If Replaying:
   just like in that case, this happens in a given patch ID's subsequent blocks*
 - If the code has a call to patched, and there no marker on or before that spot in the execution, it returns false.
 
+If the execution is replaying and has a call to `patched()`, and if the event history has a marker from a call to `patched()` in the same place 
+(which means it will match the original event history), then it writes a marker to the replay event history and returns `true`.
+
+This is similar to the behavior of the non-replay case, and
+also happens in a given patch ID's first block.
+
+If the code has a call to `patched()`, and the event history
+has a marker with that Patch ID earlier in the history, 
+it will return `true` and will not modify the
+replay event history.
+
+This is also similar to the behavior of the non-replay case, and
+also happens in a given patch ID's subsequent blocks.
+
+If the code has a call to `patched()`, and there is no marker on or before that spot in the execution, it returns `false`.
+
+
 ##### Implications of the Behaviors
 
-
-If you deploy new code, it will run the new code if it is
-not replaying, and if it is replaying, it will just do what
+If you deploy new code and the execution is not replaying, the new code will be run.
+If the execution is replaying, it will repeat what
 it did the previous time.
 
-This means that if it has gotten through some of your code, then
-you stop the worker and deploy new code, then when it replays,
+This means that if the execution has gotten through some of your code, then
+you stop the worker and deploy new code, when it replays,
 it will use the old code throughout the replay, but switch over
 to new code after it has passed the replay threshold. This means
 your new code and your old code must work together. For example,
@@ -290,9 +306,8 @@ await sleep(10000); // <-- Stop the Worker while this is waiting, and deploy the
 console.log('original code after the sleep')
 ```
 
-Now we stop the Worker during the sleep, and wrap our original
-code in the else part of a patched `if` statement, and start
-our Worker again.
+If you stop the Worker during the `sleep`, and wrap the original
+code in the `else` part of a patched `if` statement:
 
 ```ts
 if (patched('my-change-id')) {
@@ -308,8 +323,8 @@ if (patched('my-change-id')) {
 }
 ```
 
-In the first part, it will be Replaying, and it will run the old code,
-and after the sleep, it won't be Replaying, and it will run the new code.
+When you start the worker again, the execution will initially be replaying and will run the old code, up to the `sleep` call.
+After the `sleep` call, the execution won't be replaying, and will run the new code.
 
 ##### Recommendations
 
@@ -332,7 +347,7 @@ if (patched('v3')) {
 
 The following sample shows how `patched()` will behave in a conditional block that's arranged differently.
 In this case, the code's conditional block doesn't have the newest code at the top.
-Because `patched()` will return `true` when not Replaying (except with the preceding caveats), this snippet will run the `v2` branch instead of `v3` in new executions.
+Because `patched()` will return `true` when not Replaying, this snippet will run the `v2` branch instead of `v3` in new executions.
 
 <!--SNIPSTART typescript-patching-anti-example-->
 
