@@ -24,9 +24,66 @@ The observability section of the Temporal Developer's guide covers the many ways
 
 This section covers features related to viewing the state of the application, including:
 
+- [Log from a Workflow](#logging)
 - [Visibility](#visibility)
 
-## How to use Visibility APIs {#visibility}
+## Log from a Workflow {#logging}
+
+Logging enables you to record critical information during code execution.
+
+To get a PSR-3 compatible logger in your Workflow code, use the `Workflow::getLogger()` method.
+
+```php
+use Temporal\Workflow;
+
+#[Workflow\WorkflowInterface]
+class MyWorkflow
+{
+    #[Workflow\WorkflowMethod]
+    public function execute(string $param): \Generator
+    {
+        Workflow::getLogger()->info('Workflow started', ['parameter' => $param]);
+
+        // Your workflow implementation
+
+        Workflow::getLogger()->info('Workflow completed');
+        return 'Done';
+    }
+}
+```
+
+The Workflow logger automatically enriches log context with the current Task Queue name.
+
+Logs in replay mode are omitted unless the `enableLoggingInReplay` Worker option is set to true.
+
+```php
+$factory = WorkerFactory::create();
+$worker = $factory->newWorker('your-task-queue', WorkerOptions::new()
+    ->withEnableLoggingInReplay(true)
+);
+```
+
+### Default Logger
+
+By default, PHP SDK uses a `StderrLogger` that outputs log messages to the standard error stream.
+These messages are automatically captured by RoadRunner and incorporated into its logging system with the INFO level, ensuring proper log collection in both development and production environments.
+For more details on RoadRunner's logging capabilities, see the [RoadRunner Logger documentation](https://docs.roadrunner.dev/docs/logging-and-observability/logger).
+
+### How to provide a custom logger {#custom-logger}
+
+You can set a custom PSR-3 compatible logger when creating a Worker:
+
+```php
+$myLogger = new MyLogger();
+
+$workerFactory = WorkerFactory::create(converter: $converter);
+$worker = $workerFactory->newWorker(
+    taskQueue: 'my-task-queue',
+    logger: $myLogger,
+);
+```
+
+## Visibility APIs {#visibility}
 
 The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Temporal Service.
 
