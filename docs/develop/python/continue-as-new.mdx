@@ -33,7 +33,8 @@ It also receives your Workflow's usual parameters.
 
 ## How to Continue-As-New using the Python SDK {#how}
 
-First, design your Workflow parameters so that you can pass in the "current state" when you Continue-As-New into the next Workflow run, typically set to `None` for the original caller of the Workflow.
+First, design your Workflow parameters so that you can pass in the "current state" when you Continue-As-New into the next Workflow run. 
+This state is typically set to `None` for the original caller of the Workflow.
 
 <div class="copycode-notice-container">
   <a href="https://github.com/temporalio/samples-python/blob/main/message_passing/safe_message_handlers/workflow.py">
