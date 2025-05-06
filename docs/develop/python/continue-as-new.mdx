@@ -33,7 +33,8 @@ It also receives your Workflow's usual parameters.
 
 ## How to Continue-As-New using the Python SDK {#how}
 
-First, design your Workflow parameters so that you can pass in the "current state" when you Continue-As-New into the next Workflow run, typically set to `None` for the original caller of the Workflow.
+First, design your Workflow parameters so that you can pass in the "current state" when you Continue-As-New into the next Workflow run.
+This state is typically set to `None` for the original caller of the Workflow.
 
 <div class="copycode-notice-container">
   <a href="https://github.com/temporalio/samples-python/blob/main/message_passing/safe_message_handlers/workflow.py">
@@ -85,7 +86,7 @@ Use Continue-as-New when your Workflow might hit scaling limits:
 - When the Workflow might get too many Updates or Signals
 
 Temporal tracks when you should Continue-as-New.
-Just call `workflow.info().is_continue_as_new_suggested()` to check if it's time.
+Call `workflow.info().is_continue_as_new_suggested()` to check if it's time.
 
 ## How to test Continue-as-New using the Python SDK {#how-to-test}
 
