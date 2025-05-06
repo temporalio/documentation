@@ -35,8 +35,7 @@ If you use Terraform for your deployment, you don't need to complete these prere
 
 Before configuring the manual Audit Log sink, complete the following steps in Google Cloud:
 
-1. Create a Pub/Sub topic and make a note of its topic name, for example, "test-
-   auditlog".
+1. Create a Pub/Sub topic and make a note of its topic name, such as "test-auditlog".
 1. Set up a service account in the same project in Google Cloud and follow the instructions in the
    Temporal Cloud UI to configure the permissions for that service account.
 
@@ -45,12 +44,11 @@ Before configuring the manual Audit Log sink, complete the following steps in Go
 1. In the Temporal Cloud UI, select **Settings**.
 1. On the **Settings** page, select **Audit Logging**.
 1. In the **Audit Logging** card, select **Set Up Audit Log Integration**.
-1. On the Set Up Audit Logs Integration page, select **Pub/Sub**.
+1. On the Set Up Audit Log Integration page, select **Pub/Sub**.
 1. In the **service account email** field, enter the email of the service account you created in the prerequisites.
 1. In the **Topic name** field, enter the topic name of the Pub/Sub topic you created in the prerequisites.
-1. There are two ways to configure the service account to write to the Pub/Sub sink.
-   Select **Manual** to configure the account manually, or **Deploy with Terraform** to use Terraform.
-   If you use Terraform, you don't need to complete the prerequisite steps above.
+1. There are two ways to configure the service account to write to the Pub/Sub sink: select **Manual** to configure the account manually, or **Deploy with Terraform** to use Terraform.
+If you use Terraform, you don't need to complete the prerequisite steps above.
 1. Follow the instructions in the Temporal Cloud UI for the method you chose.
 1. Click **Create** to configure the audit log.
    This process may take a few minutes.
