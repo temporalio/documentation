@@ -93,8 +93,8 @@ For more on how to configure and use Worker tuners, see [Worker runtime performa
 ### Task pollers {#task-poller}
 
 A Worker's **Task pollers** play a crucial role in the Temporal architecture by efficiently
-distributing work to Workers to support scalable, resilient Workflow Execution. 
-They actively poll a Task Queue for Tasks to process. 
+distributing work to Workers to support scalable, resilient Workflow Execution.
+They actively poll a Task Queue for Tasks to process.
 Pollers create long-polling connections to the Temporal Service, allowing the service to dispatch Tasks to Workers. When a Task Poller receives a Task, it delivers to the appropriate Executor Slot for processing.
 
 Task Pollers enable efficient load balancing across multiple Worker processes.
@@ -148,8 +148,8 @@ The `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecution
 `maxConcurrentWorkflowTaskPollers` (JavaSDK: `workflowPollThreadCount`) and `maxConcurrentActivityTaskPollers` (JavaSDK: `activityPollThreadCount`) define the maximum count of pollers performing poll requests on Workflow and Activity Task Queues.
 The Worker's requests deliver Tasks to the related executor slots.
 
-Some SDKs (Python for now, although all SDKs will eventually be supported) have enabled experimental support for automated poller tuning. 
-This feature can be enabled by setting the `*_task_poller_behavior` options to `PollerBehaviorAutoscaling`. 
+Some SDKs (Python for now, although all SDKs will eventually be supported) have enabled experimental support for automated poller tuning.
+This feature can be enabled by setting the `*_task_poller_behavior` options to `PollerBehaviorAutoscaling`.
 Names may vary slightly depending on the SDK. There are options within to configure minimum, maximum, and initial poller counts, but it is unlikely that you will need to adjust them.
 
 ### Cache options
@@ -641,7 +641,7 @@ Alternatively, consider using a resource-based slot supplier as described [here]
 
 ### Poller count
 
-Sometimes, it can be appropriate to increase the number of task pollers. 
+Sometimes, it can be appropriate to increase the number of task pollers.
 This is usually more common in situations where your Workers have somewhat high latency when communicating with the server.
 
 You can use automated poller tuning, or consider adjustment if:
