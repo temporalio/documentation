@@ -31,7 +31,7 @@ This section covers features related to viewing the state of the application, in
 
 Logging enables you to record critical information during code execution.
 
-To get a PSR-3 compatible logger in your Workflow code, use the `Workflow::getLogger()` method.
+To get a PSR-3 compatible logger in your Workflow code, use the [`Workflow::getLogger()`](https://php.temporal.io/classes/Temporal-Workflow.html#method_getLogger) method.
 
 ```php
 use Temporal\Workflow;
@@ -54,7 +54,7 @@ class MyWorkflow
 
 The Workflow logger automatically enriches log context with the current Task Queue name.
 
-Logs in replay mode are omitted unless the `enableLoggingInReplay` Worker option is set to true.
+Logs in replay mode are omitted unless the [`enableLoggingInReplay`](https://php.temporal.io/classes/Temporal-Worker-WorkerOptions.html#method_withEnableLoggingInReplay) Worker option is set to true.
 
 ```php
 $factory = WorkerFactory::create();
@@ -65,7 +65,7 @@ $worker = $factory->newWorker('your-task-queue', WorkerOptions::new()
 
 ### Default Logger
 
-By default, PHP SDK uses a `StderrLogger` that outputs log messages to the standard error stream.
+By default, PHP SDK uses a [`StderrLogger`](https://php.temporal.io/classes/Temporal-Worker-Logger-StderrLogger.html) that outputs log messages to the standard error stream.
 These messages are automatically captured by RoadRunner and incorporated into its logging system with the INFO level, ensuring proper log collection in both development and production environments.
 For more details on RoadRunner's logging capabilities, see the [RoadRunner Logger documentation](https://docs.roadrunner.dev/docs/logging-and-observability/logger).
 
