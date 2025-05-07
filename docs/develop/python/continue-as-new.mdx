@@ -88,7 +88,7 @@ Call `workflow.info().is_continue_as_new_suggested()` to check if it's time.
 
 ## How to test Continue-as-New using the Python SDK {#how-to-test}
 
-Testing Workflows that naturally Continue-as-New takes too much time and resources.
+Testing Workflows that naturally Continue-as-New may be time-consuming and resource-intensive.
 Instead, add a test hook to check your Workflow's Continue-as-New behavior faster in automated tests.
 
 For example, when `test_continue_as_new == True`, this sample creates a test-only variable called `self.max_history_length` and sets it to a small value.
