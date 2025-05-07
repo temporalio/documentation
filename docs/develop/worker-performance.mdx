@@ -93,10 +93,9 @@ For more on how to configure and use Worker tuners, see [Worker runtime performa
 ### Task pollers {#task-poller}
 
 A Worker's **Task pollers** play a crucial role in the Temporal architecture by efficiently
-distributing work to Workers to support scalable, resilient Workflow Execution. They actively poll a
-Task Queue for Tasks to process. Pollers create long-polling connections to the Temporal Service,
-allowing the service to dispatch Tasks to Workers. When a Task Poller receives a Task, it delivers
-it to the appropriate Executor Slot for processing.
+distributing work to Workers to support scalable, resilient Workflow Execution. 
+They actively poll a Task Queue for Tasks to process. 
+Pollers create long-polling connections to the Temporal Service, allowing the service to dispatch Tasks to Workers. When a Task Poller receives a Task, it delivers to the appropriate Executor Slot for processing.
 
 Task Pollers enable efficient load balancing across multiple Worker processes.
 The number of Task Pollers can be configured using `WorkerOptions` when creating a new Worker instance.
@@ -149,11 +148,9 @@ The `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecution
 `maxConcurrentWorkflowTaskPollers` (JavaSDK: `workflowPollThreadCount`) and `maxConcurrentActivityTaskPollers` (JavaSDK: `activityPollThreadCount`) define the maximum count of pollers performing poll requests on Workflow and Activity Task Queues.
 The Worker's requests deliver Tasks to the related executor slots.
 
-Some SDKs (Python for now, although all SDKs will eventually be supported) have enabled experimental support for
-automated poller tuning. This feature can be enabled by setting the `*_task_poller_behavior` options
-to `PollerBehaviorAutoscaling`. Names may vary slightly depending on the SDK. There are options
-within to configure minimum, maximum, and initial poller counts, but it is unlikely that you will
-need to adjust them.
+Some SDKs (Python for now, although all SDKs will eventually be supported) have enabled experimental support for automated poller tuning. 
+This feature can be enabled by setting the `*_task_poller_behavior` options to `PollerBehaviorAutoscaling`. 
+Names may vary slightly depending on the SDK. There are options within to configure minimum, maximum, and initial poller counts, but it is unlikely that you will need to adjust them.
 
 ### Cache options
 
@@ -161,7 +158,7 @@ A Workflow Cache is created and shared between all Workers on a single host.
 It's designed to limit the resources used by the cache for each host/process.
 These options are defined on `WorkerFactoryOptions` in JavaSDK and in `worker` package in GoSDK:
 
-- `worker.setStickyWorkflowCacheSize` (JavaSDK: WorkerFactoryOptions#workflowCacheSize`) defines the maximum number of cached Workflows Executions.
+- `worker.setStickyWorkflowCacheSize` (JavaSDK: `WorkerFactoryOptions#workflowCacheSize`) defines the maximum number of cached Workflows Executions.
   Each cached Workflow contains at least one Workflow thread and its resources.
   Resources include memory, etc.
 - `maxWorkflowThreadCount` defines the maximum number of Workflow threads that may exist concurrently at any time.
@@ -599,7 +596,7 @@ The values provided by `temporal task-queue describe` can help you manage your W
   If this time grows too long, more Workers can boost Workflow efficiency.
 
 - Calculate the demand per Worker by dividing the number of backlogged Tasks (`ApproximateBacklogCount`) by the number of Workers.
-  Determine if your task processing rate is within an acceptable range for you needs using the per-Worker demand (how many Tasks each Worker has yet to process), the backlog consumption rate (`TasksDispatchRate`, the rate at which Workers are processing Tasks), and the dispatch latency (`ApproximateBacklogAge`, the time the oldest Task has been waiting to be assigned to a Worker).
+  Determine if your task processing rate is within an acceptable range for your needs using the per-Worker demand (how many Tasks each Worker has yet to process), the backlog consumption rate (`TasksDispatchRate`, the rate at which Workers are processing Tasks), and the dispatch latency (`ApproximateBacklogAge`, the time the oldest Task has been waiting to be assigned to a Worker).
 
 - The backlog increase rate (`BacklogIncreaseRate`) shows the changing demand on your Workers over time.
   As this rate increases, you may need to add more Workers until demand and capacity are balanced.
@@ -644,8 +641,8 @@ Alternatively, consider using a resource-based slot supplier as described [here]
 
 ### Poller count
 
-Sometimes, it can be appropriate to increase the number of task pollers. This is usually more common
-in situations where your workers have somehwat high latency when communicating with the server.
+Sometimes, it can be appropriate to increase the number of task pollers. 
+This is usually more common in situations where your Workers have somewhat high latency when communicating with the server.
 
 You can use automated poller tuning, or consider adjustment if:
 
