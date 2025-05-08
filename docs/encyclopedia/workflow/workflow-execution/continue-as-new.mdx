@@ -15,17 +15,18 @@ tags:
 
 This page discusses [Continue-As-New](#continue-as-new) and how to tell [when](#when) you would want to use it.
 
+## What is Continue-As-New? {#continue-as-new}
+
 Continue-As-New allows you to checkpoint your Workflow's state and start a fresh Workflow.
 
 There are two main problems this practice can prevent:
 
-- A Workflow Execution with a long, or large [Event History](workflow-execution#event-history), such as one calling many activities, may bog down and have performance issues.
-  It could even generate more events than allowed by the [Event History limits](/encyclopedia/workflow/workflow-execution/events#event-history-limits).
+- A Workflow Execution with a long, or large [Event History](/workflow-execution/event#event-history), such as one calling many activities, may bog down and have performance issues.
+  It could even generate more events than allowed by the [Event History limits](/workflow-execution/event#event-history-limits).
 - A Workflow Execution can hit [Workflow Versioning](/workflow-definition#workflow-versioning) problems if it started running on an older version of your code.
 
-## What is Continue-As-New? {#continue-as-new}
-
-Continue-As-New lets you checkpoint the latest relevant state in a Workflow Execution and pass it to a new Execution in the [Execution Chain](/workflow-execution#workflow-execution-chain).
+Pass your latest relevant state into Continue-As-New.
+This checkpoints it and passes it to a new Execution in the [Execution Chain](/workflow-execution#workflow-execution-chain).
 This state is passed in through your Workflow's parameters.
 The parameters are typically optional and left unset by the original caller of the Workflow.
 
