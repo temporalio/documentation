@@ -270,9 +270,10 @@ If a just-started worker were to have no throttle, and there was a backlog of Ta
 If each Task allocated 1GB of RAM, the Worker would likely run out of memory and crash.
 The throttle enforces a wait before handing out new slots (after a minimum number of slots have been occupied) so you can measure newly consumed resources.
 
-## Worker tuner examples {#examples}
+## Performance tuning examples {#examples}
 
-The following examples show how to create and provision composite Worker tuners.
+The following examples show how to create and provision composite Worker tuners and set other
+performance related options.
 Each tuner provides slot suppliers for various Task types.
 These examples focus on Activities and Local Activities, since Workflow Tasks normally do not need resource-based tuning.
 
@@ -391,13 +392,19 @@ const workerOptions = {
 ### Python SDK
 
 ```python
-# Just resource based
+# Just a resource based tuner, with poller autoscaling
 tuner = WorkerTuner.create_resource_based(
     target_memory_usage=0.5,
     target_cpu_usage=0.5,
 )
-worker = Worker(client, task_queue="foo", tuner=tuner)
-# Combining different types
+worker = Worker(
+    client,
+    task_queue="foo",
+    tuner=tuner,
+    workflow_task_poller_behavior=PollerBehaviorAutoscaling(),
+    activity_task_poller_behavior=PollerBehaviorAutoscaling()
+)
+# Combining different types, with poller autoscaling
 resource_based_options = ResourceBasedTunerConfig(0.8, 0.9)
 tuner = WorkerTuner.create_composite(
     workflow_supplier=FixedSizeSlotSupplier(10),
@@ -410,7 +417,13 @@ tuner = WorkerTuner.create_composite(
         resource_based_options,
     ),
 )
-worker = Worker(client, task_queue="foo", tuner=tuner)
+worker = Worker(
+    client,
+    task_queue="foo",
+    tuner=tuner,
+    workflow_task_poller_behavior=PollerBehaviorAutoscaling(),
+    activity_task_poller_behavior=PollerBehaviorAutoscaling()
+)
 ```
 
 ### .NET C# SDK
