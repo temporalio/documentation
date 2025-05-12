@@ -12,6 +12,8 @@ tags:
   - Temporal Cloud
 ---
 
+import { CaptionedImage } from '@site/src/components';
+
 When it comes to running Temporal in production, you have two main options:
 
 **Temporal self-hosted:**
@@ -38,20 +40,12 @@ Temporal Cloud is an offering of the Temporal Service.
 2. Temporal Cloud: Operating independently from the execution environment, Temporal Cloud oversees the execution process by preserving the source of truth for your Workflow Execution Event Histories.
    This independent supervision ensures the durable execution of your distributed applications and services.
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">High-level system topology</p>
-  </div>
-  <div className="tdiiw" height="761">
-    <img
-      className="img_ev3q"
-      src="/diagrams/high-level-system-topology.svg"
-      alt="High-level system topology"
-    />
-  </div>
-</div>
+<CaptionedImage
+    src="/diagrams/high-level-system-topology.svg"
+    title="High-level system topology"
+/>
 
-Temporal Cloud is based off of the open source [Temporal Server](/clusters#temporal-server) software and offers a comparable set of features but with out the overhead of setting up and deploying a production level Temporal Service (Temporal Server + all of the auxillary services it depends on).
+Temporal Cloud is based off of the open source [Temporal Server](/temporal-service/temporal-server) software and offers a comparable set of features but with out the overhead of setting up and deploying a production level Temporal Service (Temporal Server + all of the auxillary services it depends on).
 
 Temporal Cloud is offered in units of isolation known as [Namespaces](/namespaces).
 You can provision and use one or more Cloud Namespaces.

@@ -10,7 +10,7 @@ tags:
   - Temporal Web UI
 ---
 
-import {RelatedReadContainer, RelatedReadItem} from '@site/src/components/related-read/RelatedRead';
+import { RelatedReadContainer, RelatedReadItem } from '@site/src/components';
 
 The Temporal Web UI provides users with Workflow Execution state and metadata for debugging purposes.
 It ships with every [Temporal CLI](/cli) release and [Docker Compose](https://github.com/temporalio/docker-compose) update and is available with [Temporal Cloud](/cloud).
@@ -41,11 +41,11 @@ The Web UI displays a maximum of 1,000 Workflow Executions.
 Users can list Workflow Executions by any of the following:
 
 - Status
-- [Workflow ID](/workflows#workflow-id)
-- [Workflow Type](/workflows#workflow-type)
+- [Workflow ID](/workflow-execution/workflowid-runid#workflow-id)
+- [Workflow Type](/workflow-definition#workflow-type)
 - Start time
 - End time
-- A [List Filter](/visibility#list-filter)
+- A [List Filter](/list-filter)
 
 For start time and end time, users can set their preferred date and time format as one of the following:
 
@@ -57,17 +57,17 @@ Select a Workflow Execution to view the Workflow Execution's History, Workers, a
 
 #### History
 
-This is a view of the [Events](/workflows#event) and Event fields within the Workflow Execution.
+This is a view of the [Events](/workflow-execution/event#event) and Event fields within the Workflow Execution.
 Approximately [40 different Events](/references/events) can appear in a Workflow Execution's Event History.
 
 The top of the page lists the following execution metadata:
 
-- [Workflow Type](/workflows#workflow-type)
-- [Run ID](/workflows#run-id)
+- [Workflow Type](/workflow-definition#workflow-type)
+- [Run Id](/workflow-execution/workflowid-runid#run-id)
 - Start Time and Close Time
 - [Task Queue](/task-queue)
 - Parent and Parent ID
-- [State Transitions](/workflows#state-transition)
+- [State Transitions](/workflow-execution#state-transition)
 
 The Input and Results section displays the function arguments and return values for debugging purposes.
 Results are not available until the Workflow finishes.
@@ -102,7 +102,7 @@ Clicking a pending Activity directs the user to the Pending Activities tab to vi
 
 #### Call Stack
 
-The screen shows the captured result from the [\_\_stack_trace](/encyclopedia/workflow-message-passing#stack-trace-query) Query.
+The screen shows the captured result from the [\_\_stack_trace](/sending-messages#stack-trace-query) Query.
 The Query is performed when the tab is selected.
 It works only if a Worker is running and available to return the call stack. The call stack shows each location where Workflow code is waiting.
 
@@ -112,7 +112,7 @@ Lists all Queries sent to the Workflow Execution.
 
 ### Schedules
 
-On Temporal Cloud and self-hosted Temporal Service Web UI, the Schedules page lists all the [Schedules](/workflows#schedule) created on the selected Namespace.
+On Temporal Cloud and self-hosted Temporal Service Web UI, the Schedules page lists all the [Schedules](/schedule) created on the selected Namespace.
 
 Click a Schedule to see details, such as configured frequency, start and end times, and recent and upcoming runs.
 
@@ -129,6 +129,7 @@ Temporal Workflow Schedule Cron strings follow this format:
 │ │ │ │ │
 * * * * *
 ```
+
 :::
 
 To read more about Schedules, explore these links:
@@ -152,7 +153,7 @@ On a self-hosted Temporal Service, manage your users, metrics, and logging in yo
 
 ### Archive
 
-On a self-hosted Temporal Service, Archive shows [Archived](/clusters#archival) data of your Workflow Executions on the Namespace.
+On a self-hosted Temporal Service, Archive shows [Archived](/temporal-service/archival) data of your Workflow Executions on the Namespace.
 
 To see data in your self-hosted Temporal Service, you must have [Archival set up and configured](/self-hosted-guide/archival).
 
@@ -160,7 +161,7 @@ For information and details on the Archive feature in Temporal Cloud, contact yo
 
 ### Codec Server
 
-The Web UI can use a [Codec Server](/dataconversion#codec-server) with a custom Data Converter to decode inputs and return values.
+The Web UI can use a [Codec Server](/codec-server) with a custom Data Converter to decode inputs and return values.
 For details, see [Securing your data](/production-deployment/data-encryption).
 
 The UI supports a [Codec Server endpoint](/production-deployment/data-encryption#web-ui).

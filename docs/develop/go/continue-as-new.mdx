@@ -13,10 +13,10 @@ tags:
 description: Continue-As-New in Temporal allows a Workflow Execution to close and start a new one with the same Workflow Id, new Run Id, and fresh Event History to manage large Event Histories.
 ---
 
-[Continue-As-New](/workflows#continue-as-new) enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.
+[Continue-As-New](/workflow-execution/continue-as-new) enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.
 The Workflow Execution spawned from the use of Continue-As-New has the same Workflow Id, a new Run Id, and a fresh Event History and is passed all the appropriate parameters.
 
-To cause a Workflow Execution to [Continue-As-New](/workflows#continue-as-new), the Workflow API should return the result of the [`NewContinueAsNewError()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#NewContinueAsNewError) function available from the `go.temporal.io/sdk/workflow` package.
+To cause a Workflow Execution to [Continue-As-New](/workflow-execution/continue-as-new), the Workflow API should return the result of the [`NewContinueAsNewError()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#NewContinueAsNewError) function available from the `go.temporal.io/sdk/workflow` package.
 
 ```go
 func SimpleWorkflow(ctx workflow.Context, value string) error {

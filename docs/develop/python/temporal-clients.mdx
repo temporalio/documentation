@@ -39,7 +39,7 @@ The pages shows how to do the following:
 
 **How to connect to the local Temporal CLI development Temporal Service using the Python SDK**
 
-A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Service](/clusters).
+A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Service](/temporal-service).
 Communication with a Temporal Service includes, but isn't limited to, the following:
 
 - Starting Workflow Executions.
@@ -90,7 +90,7 @@ if __name__ == "__main__":
 
 **How to connect to a Temporal Service**
 
-A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Service](/clusters).
+A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Service](/temporal-service).
 Communication with a Temporal Service includes, but isn't limited to, the following:
 
 - Starting Workflow Executions.
@@ -144,6 +144,10 @@ if __name__ == "__main__":
 When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
 
 - The [Temporal Cloud Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id).
+  A Namespace Id is made up of a Namespace name appended by your unique five- or six-digit [Temporal Cloud Account Id](/cloud/namespaces#temporal-cloud-account-id).
+  You can find this Account Id in the URL of your Namespace and on the "Namespaces" page on the Temporal Cloud website.
+  For example, in `https://cloud.temporal.io/namespaces/yournamespacename.a2fx6/`, your Account Id is `a2fx6`.
+  The fully qualified Namespace Id for your client with this Namespace is `yournamespacename.a2fx6`.
 - The [Namespace's gRPC endpoint](/cloud/namespaces#temporal-cloud-grpc-endpoint).
   An endpoint listing is available at the [Temporal Cloud Website](https://cloud.temporal.io/namespaces) on each Namespace detail page.
   The endpoint contains the Namespace Id and port.
@@ -176,7 +180,7 @@ async def main():
         client_private_key = f.read()
     client = await Client.connect(
         "your-custom-namespace.tmprl.cloud:7233",
-        namespace="<your-custom-namespace>.<id>",
+        namespace="<your-custom-namespace>.<account-id>",
         tls=TLSConfig(
             client_cert=client_cert,
             client_private_key=client_private_key,
@@ -190,7 +194,7 @@ async def main():
 
 **How to start a Workflow Execution using the Python SDK**
 
-[Workflow Execution](/workflows#workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
+[Workflow Execution](/workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
 
 In the examples below, all Workflow Executions are started using a Temporal Client.
 To spawn Workflow Executions from within another Workflow Execution, use either the [Child Workflow](/develop/python/child-workflows) or External Workflow APIs.
@@ -268,7 +272,7 @@ if __name__ == "__main__":
 
 **How to set a Workflow Id using the Python SDK**
 
-You must set a [Workflow Id](/workflows#workflow-id).
+You must set a [Workflow Id](/workflow-execution/workflowid-runid#workflow-id).
 
 When setting a Workflow Id, we recommended mapping it to a business process or business entity identifier, such as an order identifier or customer identifier.
 

@@ -18,6 +18,8 @@ tags:
   - Security
 ---
 
+import { CaptionedImage } from '@site/src/components';
+
 :::info General company security
 
 For information about the general security habits of Temporal Technologies, see our [trust page](https://trust.temporal.io).
@@ -95,7 +97,10 @@ When these are provided the frontend invokes the implementation of these interfa
 
 See https://github.com/temporalio/samples-server/blob/main/extensibility/authorizer for a sample implementation.
 
-![](/diagrams/frontend-authorization-order-of-operations.png)
+<CaptionedImage
+    src="/diagrams/frontend-authorization-order-of-operations.png"
+    title="Front-end authorization order of operations"
+/>
 
 ### Single sign-on integration
 
@@ -108,7 +113,7 @@ To enable SSO for the Temporal Web UI edit the web service's configuration per t
 
 ## Temporal Service plugins {#plugins}
 
-The Temporal Service supports some pluggable components.
+The Temporal Service supports some pluggable
 
 ### What is a ClaimMapper Plugin? {#claim-mapper}
 
@@ -292,13 +297,13 @@ Related read:
 
 ## Data Converter {#data-converter}
 
-Each Temporal SDK provides a [Data Converter](/dataconversion) that can be customized with a custom [Payload Codec](/dataconversion#payload-codec) to encode and secure your data.
+Each Temporal SDK provides a [Data Converter](/dataconversion) that can be customized with a custom [Payload Codec](/payload-codec) to encode and secure your data.
 
 For details on what data can be encoded, how to secure it, and what to consider when using encryption, see [Data encryption](/production-deployment/data-encryption).
 
 #### Codec Server
 
-You can use a [Codec Server](/dataconversion#codec-server) with your custom Payload Codec to decode the data you see on your Web UI and CLI locally through remote endpoints.
-However, ensure that you consider all security implications of [remote data encoding](/dataconversion#remote-data-encoding) before using a Codec Server.
+You can use a [Codec Server](/codec-server) with your custom Payload Codec to decode the data you see on your Web UI and CLI locally through remote endpoints.
+However, ensure that you consider all security implications of [remote data encoding](/remote-data-encoding) before using a Codec Server.
 
 For details on how to set up a Codec Server, see [Codec Server setup](/production-deployment/data-encryption#codec-server-setup).

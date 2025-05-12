@@ -300,12 +300,12 @@ The following example updates the Schedule to use a new argument.
 
 :::caution Cron support is not recommended
 
-We recommend using [Schedules](https://docs.temporal.io/workflows#schedule) instead of Cron Jobs.
+We recommend using [Schedules](https://docs.temporal.io/schedule) instead of Cron Jobs.
 Schedules were built to provide a better developer experience, including more configuration options and the ability to update or pause running Schedules.
 
 :::
 
-A [Temporal Cron Job](/workflows#temporal-cron-job) is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
+A [Temporal Cron Job](/cron-job) is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
 
 A Cron Schedule is provided as an option when the call to spawn a Workflow Execution is made.
 
@@ -340,7 +340,6 @@ Temporal Workflow Schedule Cron strings follow this format:
 │ │ │ │ │
 * * * * *
 ```
-
 
 ## Start Delay {#start-delay}
 

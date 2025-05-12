@@ -16,7 +16,7 @@ This reference lists possible [Workflow Task](/tasks#workflow-task) errors and h
 
 > For other types of errors, see [Temporal Failures](https://docs.temporal.io/kb/failures).
 
-Each of the below errors corresponds with a [WorkflowTaskFailedCause](https://api-docs.temporal.io/#temporal.api.enums.v1.WorkflowTaskFailedCause), which appears in [Events](/workflows#event) under `workflow_task_failed_event_attributes`.
+Each of the below errors corresponds with a [WorkflowTaskFailedCause](https://api-docs.temporal.io/#temporal.api.enums.v1.WorkflowTaskFailedCause), which appears in [Events](/workflow-execution/event#event) under `workflow_task_failed_event_attributes`.
 
 ## Bad Cancel Timer Attributes {#bad-cancel-timer-attributes}
 
@@ -63,7 +63,7 @@ This error indicates that the [Workflow Task](/tasks#workflow-task) failed to va
 These attributes are either unset or exceeding size limits.
 
 Reset any unset and empty attributes.
-Adjust the size of the [Memo](/workflows#memo) or payload to fit within the system's limits.
+Adjust the size of the [Memo](/workflow-execution#memo) or payload to fit within the system's limits.
 
 ## Bad Record Marker Attributes {#bad-record-marker-attributes}
 
@@ -78,7 +78,7 @@ This error either indicates the possibility of unset attributes for [RequestCanc
 Update the [Temporal SDK](/encyclopedia/temporal-sdks) to the most recent release.
 Reset any unset attributes before retrying the [Workflow Task](/tasks#workflow-task).
 
-If you continue to see this error, review your code for [nondeterministic causes](/workflows#non-deterministic-change).
+If you continue to see this error, review your code for [nondeterministic causes](/workflow-definition#non-deterministic-change).
 
 ## Bad Request Cancel External Workflow Execution Attributes {#bad-request-cancel-external-workflow-execution}
 
@@ -88,7 +88,7 @@ Unset or invalid attributes can cause this to occur.
 Reset any missing attributes, such as Workflow Id or Run Id.
 Adjust any fields that exceed length limits.
 
-If [Child Workflow](/encyclopedia/child-workflows) is set to `Start` and `RequestCancel`, remove one of these attributes.
+If [Child Workflow](/child-workflows) is set to `Start` and `RequestCancel`, remove one of these attributes.
 A Child Workflow cannot perform both actions in the same Workflow Task.
 
 ## Bad Schedule Activity Attributes {#bad-schedule-activity-attributes}
@@ -106,7 +106,7 @@ Inspect the reason given in the error for mitigation when possible.
 
 ## Bad Search Attributes {#bad-search-attributes}
 
-This error indicates that the [Workflow Task](/tasks#workflow-task) has unset or invalid [Search Attributes](/visibility#search-attribute).
+This error indicates that the [Workflow Task](/tasks#workflow-task) has unset or invalid [Search Attributes](/search-attribute).
 This can cause Workflow Tasks to continue to retry without success.
 
 Make sure that all attributes are defined before retrying the Task.
@@ -114,7 +114,7 @@ Adjust the size of the Payload to fit within the system's size limits.
 
 ## Bad Signal Input Size {#bad-signal-input-size}
 
-This error indicates that the Payload has exceeded the [Signal's](/encyclopedia/workflow-message-passing#sending-signals) available input size.
+This error indicates that the Payload has exceeded the [Signal's](/sending-messages#sending-signals) available input size.
 
 Adjust the size of the Payload, and redeploy the [Workflow Task](/tasks#workflow-task).
 
@@ -131,11 +131,11 @@ This error indicates that the [Workflow Task](/tasks#workflow-task) failed to va
 
 Adjust the input size of the attributes to fall within the system's size limits.
 
-Make sure that [Search Attribute](/visibility#search-attribute) validation is performed after unaliasing keys.
+Make sure that [Search Attribute](/search-attribute) validation is performed after unaliasing keys.
 
 ## Bad Start Timer Attributes {#bad-start-timer-attributes}
 
-This error indicates that the scheduled [Event](/workflows#event) is missing a Timer Id.
+This error indicates that the scheduled [Event](/workflow-execution/event#event) is missing a Timer Id.
 
 {/* TODO add Timer Id as anchor for term and link to it */}
 
@@ -151,7 +151,7 @@ This error indicates that the [Worker](/workers) deployment returned a bad binar
 
 {/* TODO: add link to Workflow Update page when written */}
 
-This error indicates that a [Workflow Execution](/workflows#workflow-execution) tried to complete before receiving an Update.
+This error indicates that a [Workflow Execution](/workflow-execution) tried to complete before receiving an Update.
 
 `BadUpdate` can happen when a [Worker](/workers#worker) generates a [Workflow Task Completed](/references/events#workflowtaskcompleted) message with missing fields or an invalid Update response format.
 
@@ -194,7 +194,7 @@ A retry will be scheduled if the error is recoverable.
 
 ## Nondeterminism Error {#non-deterministic-error}
 
-The [Workflow Task](/tasks#workflow-task) failed due to a [nondeterminism error](/workflows#non-deterministic-change).
+The [Workflow Task](/tasks#workflow-task) failed due to a [nondeterminism error](/workflow-definition#non-deterministic-change).
 
 {/* TODO: info */}
 
@@ -207,7 +207,7 @@ Let the Workflow complete any current Activities before redeploying the code.
 
 ## Pending Child Workflows Limit Exceeded {#pending-child-workflows-limit-exceeded}
 
-This error indicates that the [Workflow](/workflows) has reached capacity for pending [Child Workflows](/encyclopedia/child-workflows).
+This error indicates that the [Workflow](/workflows) has reached capacity for pending [Child Workflows](/child-workflows).
 Therefore, the [Workflow Task](/tasks#workflow-task) was failed to prevent additional Child Workflows from being added.
 
 Wait for the system to finish any currently running Child Workflows before redeploying this Task.
@@ -215,12 +215,6 @@ Wait for the system to finish any currently running Child Workflows before redep
 ## Pending Nexus Operations Limit Exceeded {#pending-nexus-operations-limit-exceeded}
 
 The Workflow has reached capacity for pending Nexus Operations. Therefore, the Workflow Task was failed to prevent the creation of another Nexus Operation.
-
-:::note
-
-In Public Preview, Nexus Operations are not yet deleted from mutable state when they complete, so the limit is for the total count of Nexus Operations in a given Workflow.
-
-:::
 
 Let the Workflow complete any current Nexus Operation before retrying the Task.
 
@@ -236,7 +230,7 @@ If you see this error, give the system time to process pending requests before r
 ## Pending Signals Limit Exceeded {#pending-signals-limit-exceeded}
 
 The Workflow has reached capacity for pending Signals.
-Therefore, the [Workflow Task](/tasks#workflow-task) was failed after attempting to add more [Signals](/encyclopedia/workflow-message-passing#sending-signals) to an external Workflow.
+Therefore, the [Workflow Task](/tasks#workflow-task) was failed after attempting to add more [Signals](/sending-messages#sending-signals) to an external Workflow.
 
 Wait for Signals to be processed by the Workflow before retrying the Task.
 
@@ -299,7 +293,7 @@ Try entering a different Timer Id, and retry the [Workflow Task](/tasks#workflow
 This error indicates new available [Events](/references/events) since the last [Workflow Task](/tasks#workflow-task) started.
 The Workflow Task was failed because the [Workflow](/workflows) attempted to close itself without handling the new Events.
 
-`UnhandledCommand` can happen when the Workflow is receiving a high number of [Signals](/encyclopedia/workflow-message-passing#sending-signals).
+`UnhandledCommand` can happen when the Workflow is receiving a high number of [Signals](/sending-messages#sending-signals).
 If the Workflow doesn't have enough time to handle these Signals, a RetryWorkflow Task is scheduled to handle these new Events.
 
 To prevent this error, drain the Signal Channel with the ReceiveAsync function.
@@ -309,6 +303,6 @@ The Workflow may have been picked up by a different [Worker](/workers#worker).
 
 ## Workflow Worker Unhandled Failure {#workflow-worker-unhandled-failure}
 
-This error indicates that the [Workflow Task](/tasks#workflow-task) encountered an unhandled failure from the [Workflow Definition](/workflows#workflow-definition).
+This error indicates that the [Workflow Task](/tasks#workflow-task) encountered an unhandled failure from the [Workflow Definition](/workflow-definition).
 
 {/* TODO: more info needed */}

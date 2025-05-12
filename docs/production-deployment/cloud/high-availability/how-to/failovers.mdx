@@ -1,0 +1,202 @@
+---
+id: failovers
+title: Triggering manual failovers
+sidebar_label: Triggering manual failovers
+slug: /cloud/high-availability/failovers
+description: Temporal Cloud's Namespace with High Availability features offers automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime.
+tags:
+  - Temporal Cloud
+  - Production
+  - High Availability
+keywords:
+  - availability
+  - explanation
+  - failover
+  - high-availability
+  - replication
+  - namespaces
+  - temporal-cloud
+  - term
+---
+
+import { ToolTipTerm, DiscoverableDisclosure } from '@site/src/components';
+
+Temporal Cloud automatically initiates failovers when an incident or outage affects a Namespace with High Availability features.
+Namespace replicas duplicate data and prevent data loss during failover.
+
+- [Manual failovers](#triggering-failovers)
+  - [Disabling Temporal-initiated failovers](#disabling-temporal-initiated)
+- [Failover testing](#testing)
+- [Preparing Worker deployment](#worker)
+
+## Perform a manual failover {#triggering-failovers}
+
+For some users, Temporal's automated health checks and failovers don't provide sufficient nuance and control.
+For this reason, you can manually trigger failovers based on your own custom alerts and for testing purposes.
+This section explains how and what to expect afterward.
+
+:::warning Check Your Replication Lag
+
+Always check the <ToolTipTerm term="replication lag" /> before initiating a failover.
+A forced failover when there is a significant replication lag has a higher likelihood of rolling back Workflow progress.
+
+:::
+
+### Trigger the failover {#manual-failovers}
+
+You can trigger a failover manually using the Temporal&nbsp;Cloud<br />Web&nbsp;UI or the tcld CLI, depending on your preference and setup.
+The following instructions outline the steps for each method:
+
+<Tabs>
+
+<TabItem value="webui" label="Web UI">
+
+1. Visit the [Namespace page](https://cloud.temporal.io/namespaces) on the Temporal Cloud Web UI.
+1. Navigate to your Namespace details page and select the **Trigger a failover** option from the menu.
+1. Confirm your action.
+   After confirmation, Temporal initiates the failover.
+
+</TabItem>
+
+<TabItem value="tcldcli" label="tcld">
+
+To manually trigger a failover, run the following command in your terminal:
+
+```
+tcld namespace failover \
+    --namespace <namespace_id>.<account_id> \
+    --region <target_region>
+```
+
+If using API key authentication with the `--api-key` flag, you must add it directly after the tcld command and before `namespace failover`.
+
+</TabItem>
+
+</Tabs>
+
+Temporal fails over the primary to the replica.
+When you're ready to fail back, follow these failover instructions to move the primary back to the original.
+
+### Post-failover event information {#info}
+
+After any failover, whether triggered by you or by Temporal, an event appears in both the [Temporal Cloud Web UI](https://cloud.temporal.io/namespaces) (on the Namespace detail page) and in your audit logs.
+The audit log entry for Failover uses the `"operation": "FailoverNamespace"` event.
+After failover, the replica becomes active, taking over in the isolation domain or region.
+
+You don't need to monitor Temporal Cloud's failover response in real time.
+Whenever there is a failover event, users with the Account Owner and Global Admin roles automatically receive an alert email.
+
+### Returning to the primary with failbacks
+
+After Temporal-initiated failovers, Temporal Cloud shifts Workflow Execution processing back to the original region or isolation domain that was active before the incident once the incident is resolved.
+This is called a "failback".
+
+:::note
+
+To failback a manually-initiated failover, follow the [Manual Failover](#manual-failovers) directions to failover back to the original primary.
+
+:::
+
+## Disabling Temporal-initiated failovers {#disabling-temporal-initiated}
+
+When you add a replica to a Namespace, in the event of an incident or an outage Temporal Cloud automatically fails over the Namespace to its replica.
+_This is the recommended and default option._
+
+However if you prefer to disable Temporal-initiated failovers and handle your own failovers, you can do so by following these instructions:
+
+<Tabs>
+
+<TabItem value="webui" label="Web UI">
+
+1. Navigate to the Namespace detail page in Temporal Cloud.
+1. Choose the "Disable Temporal-initiated failovers" option.
+
+</TabItem>
+
+<TabItem value="tcldcli" label="tcld">
+
+To disable Temporal-initiated failovers, run the following command in your terminal:
+
+```
+tcld namespace update-high-availability \
+    --namespace <namespace_id>.<account_id> \
+    --disable-auto-failover=true
+```
+
+If using API key authentication with the `--api-key` flag, you must add it directly after the tcld command and before `namespace update-high-availability`
+
+</TabItem>
+
+</Tabs>
+
+Temporal Cloud disables its health-check initiated failovers.
+To restore the default behavior, unselect the option in the WebUI or change `true` to `false` in the CLI command.
+
+## Best practices: Workers and failovers {#worker}
+
+Enabling High Availability for Namespaces doesn't require specific Worker configuration.
+The process is invisible to the Workers.
+When a Namespace fails over to the replica, the DNS redirection orchestrated by Temporal ensures that your existing Workers continue to poll the Namespace without interruption.
+
+When a Namespace fails over to a replica in a different region, Workers will be communicating cross-region.
+
+- If your application can’t tolerate this latency, deploy a second set of Workers in the replica's region or opt for a replica in the same region:
+- In the case of a complete regional outage, Workers in the original region may fail alongside the original Namespace.
+  To keep Workflows moving during this level of outage, deploy a second set of Workers to the secondary region.
+
+:::tip
+
+Temporal Cloud enforces a maximum connection lifetime of 5 minutes.
+This offers your Workers an opportunity to re-resolve the DNS.
+
+:::
+
+## Best practices: scheduled failover testing {#testing}
+
+Microservices and external dependencies will fail at some point.
+Testing failovers ensures your app can handle these failures effectively.
+Temporal recommends regular and periodic failover testing for mission-critical applications in production.
+By testing in non-emergency conditions, you verify that your app continues to function, even when parts of the infrastructure fail.
+
+<DiscoverableDisclosure label="Why test?">
+
+:::tip Safety First
+
+If this is your first time performing a failover test, run it with a test-specific namespace and application.
+This helps you gain operational experience before applying it to your production environment.
+Practice runs help ensure the process runs smoothly during real incidents in production.
+
+:::
+
+Failover testing (also known as "<ToolTipTerm term="trigger testing" />)" can:
+
+- **Validate replicated deployments**:
+  In multi-region setups, failover testing ensures your app can run from another region when the primary region experiences outages.
+  In standard setups, failover testing instead works with an isolation domain.
+  This maintains high availability in mission-critical deployments.
+  Manual testing confirms the failover mechanism works as expected, so your system handles incidents effectively.
+
+- **Assess replication lag**:
+  In multi-region deployment, monitoring [replication lag](/cloud/high-availability/monitor#metrics) between regions is crucial.
+  Check the lag before initiating a failover to avoid rolling back Workflow progress.
+  This is less important when using isolation domains as failover is usually instantaneous.
+  Manual testing helps you practice this critical step and understand its impact.
+
+- **Assess recovery time**:
+  Manual testing helps you measure actual recovery time.
+  You can check if it meets your expected Recovery Time Objective (RTO) of 20 minutes or less, as stated in the [High Availability Namespace SLA](/cloud/sla).
+
+- **Identify potential issues**:
+  Failover testing uncovers problems not visible during normal operation.
+  This includes issues like [backlogs and capacity planning](https://temporal.io/blog/workers-in-production#testing-failure-paths-2438) and how external dependencies behave during a failover event.
+
+- **Validate fault-oblivious programming**:
+  Temporal uses a "fault-oblivious programming" model, where your app doesn’t need to explicitly handle many types of failures.
+  Testing failovers ensures that this model works as expected in your app.
+
+- **Operational readiness**:
+  Regular testing familiarizes your team with the failover process, improving their ability to handle real incidents when they arise.
+
+Testing failovers regularly ensures your Temporal-based applications remain resilient and reliable, even when infrastructure fails.
+
+</DiscoverableDisclosure>

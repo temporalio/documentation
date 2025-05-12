@@ -1,0 +1,80 @@
+---
+id: namespaces-creation
+title: Namespace creation - Temporal Cloud feature guide
+sidebar_label: Namespaces
+description: A Namespace is an isolation unit within the Temporal Platform, providing security boundaries, Workflow management, unique identifiers, and gRPC endpoints in Temporal Cloud.
+toc_max_heading_level: 4
+keywords:
+  - explanation
+  - how-to
+  - introduction
+  - namespaces
+  - temporal cloud
+  - term
+tags:
+  - Namespaces
+  - Temporal Cloud
+---
+
+## How to create a Namespace in Temporal Cloud {#create-a-namespace}
+
+:::info
+
+The user who creates a [Namespace](/namespaces) is automatically granted [Namespace Admin](/cloud/users#namespace-level-permissions) permission for that Namespace.
+
+To create a Namespace, a user must have the Developer, Account Owner, or Global Admin account-level [Role](/cloud/users#account-level-roles).
+
+:::
+
+:::tip
+
+By default, each account is allocated with a limit of ten Namespaces.
+As you start using Namespaces by scheduling Workflows, Temporal Cloud automatically raises your allowance.
+This automatic adjustment happens whenever all your Namespaces are in use, up to a maximum of 100 Namespaces.
+You can request further increases beyond the 100 Namespace limit by opening a [support ticket](/cloud/support#support-ticket).
+
+:::
+
+### Information needed to create a Namespace
+
+To create a Namespace in Temporal Cloud, gather the following information:
+
+- [Namespace Name](/cloud/namespaces#temporal-cloud-namespace-name), region, and Cloud Provider
+- [Retention Period](/temporal-service/temporal-server#retention-period) for the [Event History](/workflow-execution/event#event-history) of closed [Workflow Executions](/workflow-execution).
+- [CA certificate](/cloud/certificates#certificate-requirements) for the Namespace, if you are using mTLS authentication.
+- [Codec Server endpoint](/production-deployment/data-encryption#set-your-codec-server-endpoints-with-web-ui-and-cli) to show decoded payloads to users in the Event History for Workflow Executions in the Namespace. For details, see [Securing your data](/production-deployment/data-encryption).
+- [Permissions](/cloud/users#namespace-level-permissions) for each user.
+
+<Tabs>
+
+<TabItem value="namespace-webui" label="Web UI">
+
+### Create a Namespace using Temporal Cloud UI
+
+1. Gather the information listed earlier in [Information needed to create a Namespace](#information-needed-to-create-a-namespace).
+1. Go to the Temporal Cloud UI and log in.
+1. On the left side of the window, click **Namespaces**.
+1. On the **Namespaces** page, click **Create Namespace** in the upper-right portion of the window.
+1. On the **Create Namespace** page in **Name**, enter the Namespace Name.
+1. In **Cloud Provider**, select the cloud provider in which to host this Namespace.
+1. In **Region**, select the region in which to host this Namespace.
+1. In **Retention Period**, specify a value from 1 to 90 days.
+   When choosing this value, consider your needs for Event History versus the cost of maintaining that Event History.
+   Typically, a development Namespace has a short retention period and a production Namespace has a longer retention period.
+   (If you need to change this value later, contact [Temporal Support](/cloud/support#support-ticket).)
+1. Select your authentication method: [API keys](/cloud/api-keys) or [mTLS](/cloud/certificates).
+1. If using mTLS authentication, paste the CA certificate for this Namespace.
+1. Optional: In **Codec Server**, enter the HTTPS URL (including the port number) of your Codec Server endpoint.
+   You may also enable "Pass the user access token with your endpoint" and "Include cross-origin credentials."
+   For details, see [Hosting your Codec Server](/production-deployment/data-encryption#set-your-codec-server-endpoints-with-web-ui-and-cli).
+1. Click **Create Namespace**.
+
+</TabItem>
+
+<TabItem value="namespace-tcld" label="tcld">
+
+See the [`tcld` namespace create](/cloud/tcld/namespace/#create) command reference for details.
+
+</TabItem>
+
+</Tabs>

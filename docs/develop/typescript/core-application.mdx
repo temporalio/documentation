@@ -17,6 +17,8 @@ tags:
 description: The Foundations section of the Temporal Developer's guide explains essential concepts needed for building and running a Temporal Application, from installing the Temporal CLI to starting Workflow and Activity Executions.
 ---
 
+import * as Components from '@site/src/components';
+
 The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a [Temporal Application](/temporal#temporal-application)—that is, all the relevant steps to start a [Workflow Execution](#develop-workflows) that executes an [Activity](#develop-activities).
 
 In this section you can find the following:
@@ -134,10 +136,10 @@ A [Temporal SDK](/encyclopedia/temporal-sdks) provides a framework for [Temporal
 
 An SDK provides you with the following:
 
-- A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) to communicate with a [Temporal Service](/clusters).
+- A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) to communicate with a [Temporal Service](/temporal-service).
 - APIs to develop [Workflows](/workflows).
 - APIs to create and manage [Worker Processes](/workers#worker).
-- APIs to author [Activities](/activities#activity-definition).
+- APIs to author [Activities](/activity-definition).
 
 [![NPM](https://img.shields.io/npm/v/temporalio.svg?style=for-the-badge)](https://www.npmjs.com/search?q=author%3Atemporal-sdk-team)
 
@@ -197,7 +199,7 @@ Take a look at our recommended [.eslintrc](https://github.com/temporalio/samples
 
 ## How to connect a Temporal Client to a Temporal Service {#connect-to-a-dev-cluster}
 
-A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Service](/clusters).
+A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Service](/temporal-service).
 Communication with a Temporal Service includes, but isn't limited to, the following:
 
 - Starting Workflow Executions.
@@ -298,7 +300,7 @@ run().catch((err) => {
 
 ## How to develop a basic Workflow {#develop-workflows}
 
-Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflows#workflow-definition).
+Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflow-definition).
 
 In the Temporal TypeScript SDK programming model, Workflow Definitions are _just functions_, which can store state and orchestrate Activity Functions.
 The following code snippet uses `proxyActivities` to schedule a `greet` Activity in the system to say hello.
@@ -397,7 +399,7 @@ export async function helloWorld(): Promise<string> {
 
 ### How to develop Workflow logic {#workflow-logic-requirements}
 
-Workflow logic is constrained by [deterministic execution requirements](/workflows#deterministic-constraints).
+Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints).
 Therefore, each language is limited to the use of certain idiomatic techniques.
 However, each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
 
@@ -412,8 +414,8 @@ If you **must** use a library that references a Node.js or DOM API and you are c
 
 The Workflow sandbox can run only deterministic code, so side effects and access to external state must be done through Activities because Activity outputs are recorded in the Event History and can read deterministically by the Workflow.
 
-This limitation also means that Workflow code cannot directly import the [Activity Definition](/activities#activity-definition).
-[Activity Types](/activities#activity-type) can be imported, so they can be invoked in a type-safe manner.
+This limitation also means that Workflow code cannot directly import the [Activity Definition](/activity-definition).
+[Activity Types](/activity-definition#activity-type) can be imported, so they can be invoked in a type-safe manner.
 
 To make the Workflow runtime deterministic, functions like `Math.random()`, `Date`, and `setTimeout()` are replaced by deterministic versions.
 
@@ -447,7 +449,7 @@ for (let x = 0; x < 10; ++x) {
 One of the primary things that Workflows do is orchestrate the execution of Activities.
 An Activity is a normal function or method execution that's intended to execute a single, well-defined action (either short or long-running), such as querying a database, calling a third-party API, or transcoding a media file.
 An Activity can interact with world outside the Temporal Platform or use a Temporal Client to interact with a Temporal Service.
-For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/activities#activity-definition).
+For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/activity-definition).
 
 - Activities execute in the standard Node.js environment.
 - Activities cannot be in the same file as Workflows and must be separately registered.
@@ -469,13 +471,13 @@ export async function greet(name: string): Promise<string> {
 
 ### How to develop Activity Parameters {#activity-parameters}
 
-There is no explicit limit to the total number of parameters that an [Activity Definition](/activities#activity-definition) may support.
+There is no explicit limit to the total number of parameters that an [Activity Definition](/activity-definition) may support.
 However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
 
 A single argument is limited to a maximum size of 2 MB.
 And the total size of a gRPC message, which includes all the arguments, is limited to a maximum of 4 MB.
 
-Also, keep in mind that all Payload data is recorded in the [Workflow Execution Event History](/workflows#event-history) and large Event Histories can affect Worker performance.
+Also, keep in mind that all Payload data is recorded in the [Workflow Execution Event History](/workflow-execution/event#event-history) and large Event Histories can affect Worker performance.
 This is because the entire Event History could be transferred to a Worker Process with a [Workflow Task](/tasks#workflow-task).
 
 {/* TODO link to gRPC limit section when available */}
@@ -502,7 +504,7 @@ export async function greet(name: string): Promise<string> {
 
 All data returned from an Activity must be serializable.
 
-There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a [Workflow Execution Event History](/workflows#event-history).
+There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a [Workflow Execution Event History](/workflow-execution/event#event-history).
 
 In TypeScript, the return value is always a Promise.
 
@@ -677,7 +679,7 @@ ApplicationFailure: Activity function actC is not registered on this Worker, ava
 
 ## How to start an Activity Execution {#activity-execution}
 
-Calls to spawn [Activity Executions](/activities#activity-execution) are written within a [Workflow Definition](/workflows#workflow-definition).
+Calls to spawn [Activity Executions](/activity-execution) are written within a [Workflow Definition](/workflow-definition).
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
 This results in the set of three [Activity Task](/tasks#activity-task) related Events ([ActivityTaskScheduled](/references/events#activitytaskscheduled), [ActivityTaskStarted](/references/events#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
 
@@ -718,7 +720,7 @@ These values are set in the Activity Options.
 
 ### How to get the results of an Activity Execution {#get-activity-results}
 
-The call to spawn an [Activity Execution](/activities#activity-execution) generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
+The call to spawn an [Activity Execution](/activity-execution) generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
 Workflow Executions can either block progress until the result is available through the Awaitable or continue progressing, making use of the result when it becomes available.
 
 Since Activities are referenced by their string name, you can reference them dynamically to get the result of an Activity Execution.
@@ -998,7 +1000,7 @@ If you need more visibility into internal Worker state, see the [Worker class](h
 
 ## How to start a Workflow Execution {#start-workflow-execution}
 
-[Workflow Execution](/workflows#workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
+[Workflow Execution](/workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
 
 In the examples below, all Workflow Executions are started using a Temporal Client.
 To spawn Workflow Executions from within another Workflow Execution, use either the [Child Workflow](/develop/typescript/child-workflows) or External Workflow APIs.
@@ -1024,7 +1026,7 @@ Calling `client.workflow.start()` and `client.workflow.execute()` send a command
 
 You can test this by executing a Client command without a matching Worker. Temporal Server records the command in Event History, but does not make progress with the Workflow Execution until a Worker starts polling with a matching Task Queue and Workflow Definition.
 
-Workflow Execution run in a separate V8 isolate context in order to provide a [deterministic runtime](/workflows#deterministic-constraints).
+Workflow Execution run in a separate V8 isolate context in order to provide a [deterministic runtime](/workflow-definition#deterministic-constraints).
 
 ### How to set a Workflow's Task Queue {#set-task-queue}
 
@@ -1109,7 +1111,7 @@ If you do not specify `taskQueue`, the TypeScript SDK places Activity and Child 
 
 ### How to set a Workflow Id {#workflow-id}
 
-Although it is not required, we recommend providing your own [Workflow Id](/workflows#workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
+Although it is not required, we recommend providing your own [Workflow Id](/workflow-execution/workflowid-runid#workflow-id)that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
 
 Connect to a Client with `client.workflow.start()` and any arguments. Then specify your `taskQueue` and set your `workflowId` to a meaningful business identifier.
 

@@ -41,7 +41,7 @@ Schedules are initiated with the `create` call.
 The user generates a unique Schedule ID for each new Schedule.
 
 To create a Schedule in Go, use `Create()` on the [Client](/encyclopedia/temporal-sdks#temporal-client).
-Schedules must be initialized with a Schedule ID, [Spec](/workflows#spec), and [Action](/workflows#action) in `client.ScheduleOptions{}`.
+Schedules must be initialized with a Schedule ID, [Spec](/schedule), and [Action](/schedule) in `client.ScheduleOptions{}`.
 
 <div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/features/schedules/create/main.go">
@@ -317,12 +317,12 @@ if err != nil {
 
 :::caution Cron support is not recommended
 
-We recommend using [Schedules](https://docs.temporal.io/workflows#schedule) instead of Cron Jobs.
+We recommend using [Schedules](https://docs.temporal.io/schedule) instead of Cron Jobs.
 Schedules were built to provide a better developer experience, including more configuration options and the ability to update or pause running Schedules.
 
 :::
 
-A [Temporal Cron Job](/workflows#temporal-cron-job) is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
+A [Temporal Cron Job](/cron-job) is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
 
 A Cron Schedule is provided as an option when the call to spawn a Workflow Execution is made.
 

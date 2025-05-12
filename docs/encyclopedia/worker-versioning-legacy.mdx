@@ -13,24 +13,14 @@ tags:
 :::tip Support, stability, and dependency info
 
 - This version of Worker Versioning is DEPRECATED
-- Introduced in Temporal Server version [1.21.0](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
-- Available in CLI version [0.10.0](https://github.com/temporalio/cli/releases/tag/v0.10.0)
-- Available in [Go SDK](/develop/go/versioning#worker-versioning) since [v1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
-- Available in [Java SDK](/develop/java/versioning#worker-versioning) since [v1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
-- Available in [TypeScript SDK](/develop/typescript/versioning#worker-versioning) since [v1.8.0](https://github.com/temporalio/sdk-typescript/releases/tag/v1.8.0)
-- Available in [Python SDK](https://python.temporal.io/temporalio.worker.Worker.html) since [v1.3.0](https://github.com/temporalio/sdk-python/releases/tag/1.3.0)
-- Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Worker.TemporalWorkerOptions.html#Temporalio_Worker_TemporalWorkerOptions_UseWorkerVersioning) since [v0.1.0-beta1](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-beta1)
-- Not yet available in Temporal Cloud
+- It was not made available in Temporal Cloud
+
+This version of Worker Versioning is deprecated and will go away at some point.
+Please see [Worker Versioning](/worker-versioning) instead.
 
 :::
 
-:::caution
-
-This version of Worker Versioning is deprecated and will go away at some point. Please redirect your attention to [Worker Versioning](/worker-versioning)
-
-:::
-
-Worker Versioning simplifies the process of deploying changes to [Workflow Definitions](/workflows#workflow-definition).
+Worker Versioning simplifies the process of deploying changes to [Workflow Definitions](/workflow-definition).
 It does this by letting you define sets of versions that are compatible with each other, and then assigning a Build ID to the code that defines a Worker.
 The Temporal Server uses the Build ID to determine which versions of a Workflow Definition a Worker can process.
 
@@ -51,7 +41,7 @@ This version of Worker Versioning is deprecated and will go away at some point. 
 The main reason to use this feature is to deploy incompatible changes to short-lived [Workflows](/workflows).
 On Task Queues using this feature, the Workflow starter doesn't have to know about the introduction of new versions.
 
-The new code in the newly deployed Workers executes new [Workflow Executions](/workflows#workflow-execution), while only Workers with an appropriate version process old Workflow Executions.
+The new code in the newly deployed Workers executes new [Workflow Executions](/workflow-execution), while only Workers with an appropriate version process old Workflow Executions.
 
 #### Decommission old Workers
 
@@ -72,7 +62,7 @@ A version can only be garbage collected after a Workflow Execution is deleted.
 
 The feature also lets you implement compatible changes to or prevent a buggy code path from executing on currently open Workflows.
 You can achieve this by adding a new version to an existing set and defining it as _compatible_ with an existing version, which shouldn't execute any future Workflow Tasks.
-Because the new version processes existing [Event Histories](/workflows#event-history), it must adhere to the usual [deterministic constraints](/workflows#deterministic-constraints), and you might need to use one of the [versioning APIs](/workflows#workflow-versioning).
+Because the new version processes existing [Event Histories](/workflow-execution/event#event-history), it must adhere to the usual [deterministic constraints](/workflow-definition#deterministic-constraints), and you might need to use one of the [versioning APIs](/workflow-definition#workflow-versioning).
 
 Moreover, this feature lets you make incompatible changes to Activity Definitions in conjunction with incompatible changes to Workflow Definitions that use those Activities.
 This functionality works because any Activity that a Workflow schedules on the same Task Queue gets dispatched by default only to Workers compatible with the Workflow that scheduled it.

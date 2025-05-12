@@ -9,21 +9,23 @@
 
 :root {
   /* --ifm-color-primary: #f2633f;
-  --ifm-color-primary-dark: #111827; */
+   --ifm-color-primary-dark: #111827; */
   /* --ifm-color-primary-darker: #093d71;
-  --ifm-color-primary-darkest: #041a31; */
+   --ifm-color-primary-darkest: #041a31; */
   /* --ifm-color-primary-light: #1D4ED8;
-  --ifm-color-primary-lighter: #BFDBFE; */
+   --ifm-color-primary-lighter: #BFDBFE; */
   /* --ifm-color-primary-lightest: #cae3fb; */
   --ifm-code-font-size: 95%;
   /* --doc-sidebar-width: 275px !important;
-  --ifm-link-hover-decoration: none;
-  --ifm-link-hover-color: inherit; */
+   --ifm-link-hover-decoration: none;
+   --ifm-link-hover-color: inherit; */
   --ifm-link-decoration: underline;
   --tag-background-color-light: #eee;
   --tag-background-color-dark: #444;
   --tag-text-color-light: #333;
   --tag-text-color-dark: #ddd;
+  --feedback-primary-color: #000000;
+  --feedback-white-color: #fff;
 }
 
 html[data-theme="dark"] {
@@ -38,6 +40,11 @@ html[data-theme="dark"] {
   --alert--competency-background: #00474a;
   --alert--copycode-background: #29005e;
   --alert--info-background: #353536;
+  --feedback-primary-color: #fff; /* title on button AND submit button color*/
+  --feedback-light-color: #fff; /* text entry field color */
+  --feedback-dark-color: #ccc; /* overall backsplash color */
+  --feedback-text-color: #444; /* helpful and powered-by */
+  --feedback-white-color: #000; /* other text colors AND main-page button background color */
   /* --ifm-menu-color-active: var(--ifm-color-primary-lighter);
   --ifm-navbar-link-hover-color: var(--ifm-color-primary-lighter);
   --ifm-toc-link-color: #ffffff;
@@ -828,7 +835,7 @@ h1 {
 }
 
 .core-concepts {
-  background-image: url("/img/stars_bg.png");
+  background-image: url("/img/assets/stars_bg.png");
   color: white;
   position: absolute;
   right: 0;
@@ -1185,3 +1192,4 @@ code {
 #kapa-widget-container button {
   z-index: 10;
 }
+

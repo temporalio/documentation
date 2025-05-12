@@ -31,11 +31,11 @@ keywords:
   - microservice contract
 ---
 
-import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
+import { RelatedReadContainer, RelatedReadItem } from '@site/src/components';
 
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
-Temporal Nexus is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
+Temporal Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
 
 :::
 
@@ -43,7 +43,7 @@ Temporal Nexus is available in [Public Preview](/evaluate/development-production
 
 Nexus allows you to connect Temporal Applications across (and within) isolated Namespaces.
 This provides all the benefits of Durable Execution across team and application boundaries with improved modularity, security, debugging, and fault isolation.
-Nexus supports cross-team, cross-domain, cross-namespace, and multi-region use cases.
+Nexus supports cross-team, cross-domain, cross-namespace, multi-region, and multi-cloud use cases.
 
 ## Why use Nexus?
 
@@ -82,7 +82,7 @@ Unlike other forms of inter-service communication, Nexus combines a familiar pro
   Nexus enables each team to have their own Namespace for improved security, troubleshooting, and fault isolation.
 
 - **Multi-region** \-
-  Nexus requests in Temporal Cloud are routed across a global mTLS-secured Envoy mesh.
+  Nexus requests in Temporal Cloud are routed across a global mTLS-secured Envoy mesh within and across AWS and GCP.
   Built-in Nexus Machinery provides reliable at-least-once execution and Workflow policy can deduplicate requests for exactly-once execution, even across multi-region boundaries.
 
 ### Key features
@@ -123,6 +123,7 @@ Unlike other forms of inter-service communication, Nexus combines a familiar pro
 - **Enhanced security and connectivity** \-
   Temporal Cloud provides integrated Nexus access controls and multi-region routing.
   - Connect Applications across Namespaces in an Account with Temporal's private mTLS-secured Envoy mesh.
+  - Multi-region connectivity within and across AWS and GCP.
   - Restrict which callers can use a Nexus Endpoint, with built-in Endpoint access controls.
   - Stream audit logs including Nexus Registry actions to create, update, or delete Endpoints.
 
@@ -131,6 +132,7 @@ Unlike other forms of inter-service communication, Nexus combines a familiar pro
 To connect with the Nexus community, join the [#nexus](https://temporalio.slack.com/archives/C07LQN0JK9B) channel in [Temporal Slack](https://t.mp/slack).
 
 <RelatedReadContainer>
+  <RelatedReadItem path="https://temporal.io/blog/temporal-nexus-now-available" text="Nexus is now generally available - blog post" archetype="blog" />
   <RelatedReadItem path="https://youtu.be/qqc2vsv1mrU?feature=shared&t=2082" text="Nexus keynote & demo - Replay video" archetype="replay-talk" />
   <RelatedReadItem path="https://www.youtube.com/watch?v=izR9dQ_eIe4" text="Nexus deep dive - Replay video" archetype="replay-talk" />
   <RelatedReadItem path="/nexus" text="Nexus concepts and getting started" archetype="encyclopedia" />

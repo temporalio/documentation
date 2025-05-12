@@ -27,7 +27,7 @@
     },
     {
       "source": "/system-tools/:path*",
-      "destination": "/cli",
+      "destination": "/tctl-v1",
       "permanent": true
     },
     {
@@ -862,7 +862,7 @@
     },
     {
       "source": "/server",
-      "destination": "/clusters/"
+      "destination": "/temporal-service/temporal-server"
     },
     {
       "source": "/server/configuration",
@@ -870,11 +870,11 @@
     },
     {
       "source": "/server-archive-data",
-      "destination": "/clusters#"
+      "destination": "/temporal-service"
     },
     {
       "source": "/server/archive-data",
-      "destination": "/clusters#archival"
+      "destination": "/temporal-service/archival"
     },
     {
       "source": "/clusters/how-to-set-up-archival",
@@ -890,11 +890,11 @@
     },
     {
       "source": "/server-introduction",
-      "destination": "/clusters"
+      "destination": "/temporal-service"
     },
     {
       "source": "/server/introduction",
-      "destination": "/clusters"
+      "destination": "/temporal-service"
     },
     {
       "source": "/server-namespaces",
@@ -906,7 +906,11 @@
     },
     {
       "source": "/server/multi-cluster",
-      "destination": "/clusters#multi-cluster-replication"
+      "destination": "/temporal-service/multi-cluster-replication"
+    },
+    {
+      "source": "/clusters",
+      "destination": "/temporal-service"
     },
     {
       "source": "/clusters/how-to-set-up-multi-cluster-replication",
@@ -982,7 +986,7 @@
     },
     {
       "source": "/server-versions-and-dependencies",
-      "destination": "/clusters"
+      "destination": "/temporal-service"
     },
     {
       "source": "/server/workflow-search",
@@ -1130,11 +1134,11 @@
     },
     {
       "source": "/concepts/what-is-an-activity-definition",
-      "destination": "/activities#activity-definition"
+      "destination": "/activity-definition"
     },
     {
       "source": "/concepts/what-is-an-activity-execution",
-      "destination": "/activities#activity-execution"
+      "destination": "/activity-execution"
     },
     {
       "source": "/concepts/what-is-an-activity-heartbeat",
@@ -1142,7 +1146,7 @@
     },
     {
       "source": "/concepts/what-is-an-activity-id",
-      "destination": "/activities#activity-id"
+      "destination": "/activity-execution#activity-id"
     },
     {
       "source": "/concepts/what-is-an-activity-task",
@@ -1154,7 +1158,7 @@
     },
     {
       "source": "/concepts/what-is-an-activity-type",
-      "destination": "/activities#activity-type"
+      "destination": "/activity-definition#activity-type"
     },
     {
       "source": "/concepts/what-is-advanced-visibility",
@@ -1162,19 +1166,19 @@
     },
     {
       "source": "/concepts/what-is-archival",
-      "destination": "/clusters#archival"
+      "destination": "/temporal-service/archival"
     },
     {
       "source": "/concepts/what-is-a-child-workflow-execution",
-      "destination": "/workflows#child-workflow"
+      "destination": "/child-workflows"
     },
     {
       "source": "/concepts/what-is-a-command",
-      "destination": "/workflows#command"
+      "destination": "/workflow-execution#command"
     },
     {
       "source": "/concepts/what-is-continue-as-new",
-      "destination": "/workflows#continue-as-new"
+      "destination": "/workflow-execution/continue-as-new"
     },
     {
       "source": "/concepts/what-is-a-cloud-namespace-name",
@@ -1190,7 +1194,7 @@
     },
     {
       "source": "/concepts/what-is-an-event-history",
-      "destination": "/workflows#event-history"
+      "destination": "/workflow-execution/event#event-history"
     },
     {
       "source": "/concepts/what-is-a-failure",
@@ -1202,15 +1206,15 @@
     },
     {
       "source": "/concepts/what-is-a-list-filter",
-      "destination": "/visibility#list-filter"
+      "destination": "/list-filter"
     },
     {
       "source": "/concepts/what-is-a-local-activity",
-      "destination": "/activities#local-activity"
+      "destination": "/local-activity"
     },
     {
       "source": "/concepts/what-is-a-memo",
-      "destination": "/workflows#memo"
+      "destination": "/workflow-execution#memo"
     },
     {
       "source": "/concepts/what-is-a-namespace",
@@ -1218,7 +1222,15 @@
     },
     {
       "source": "/concepts/what-is-a-parent-close-policy",
-      "destination": "/workflows#parent-close-policy"
+      "destination": "/parent-close-policy"
+    },
+    {
+      "source": "/encyclopedia/child-workflows",
+      "destination": "/child-workflows"
+    },
+    {
+      "source": "/encyclopedia/child-workflows#parent-close-policy",
+      "destination": "/parent-close-policy"
     },
     {
       "source": "/concepts/what-is-a-query",
@@ -1242,11 +1254,11 @@
     },
     {
       "source": "/concepts/what-is-a-search-attribute",
-      "destination": "/visibility#search-attribute"
+      "destination": "/search-attribute"
     },
     {
       "source": "/concepts/what-is-a-side-effect",
-      "destination": "/workflows#side-effect"
+      "destination": "/workflow-execution/event#side-effect"
     },
     {
       "source": "/concepts/what-is-a-signal",
@@ -1278,7 +1290,7 @@
     },
     {
       "source": "/concepts/what-is-a-task-token",
-      "destination": "/activities#task-token"
+      "destination": "/activity-execution#task-token"
     },
     {
       "source": "/concepts/what-is-a-task",
@@ -1294,11 +1306,11 @@
     },
     {
       "source": "/concepts/what-is-a-temporal-cluster",
-      "destination": "/clusters"
+      "destination": "/temporal-service"
     },
     {
       "source": "/concepts/what-is-a-temporal-cron-job",
-      "destination": "/workflows#temporal-cron-job"
+      "destination": "/cron-job"
     },
     {
       "source": "/concepts/what-is-the-temporal-platform",
@@ -1330,11 +1342,11 @@
     },
     {
       "source": "/concepts/what-is-a-workflow-definition",
-      "destination": "/workflows#workflow-definition"
+      "destination": "/workflow-definition"
     },
     {
       "source": "/concepts/what-is-a-workflow-execution",
-      "destination": "/workflows#workflow-execution"
+      "destination": "/workflow-execution"
     },
     {
       "source": "/concepts/what-is-a-workflow-execution-timeout",
@@ -1342,11 +1354,11 @@
     },
     {
       "source": "/concepts/what-is-a-workflow-id-reuse-policy",
-      "destination": "/workflows#workflow-id-reuse-policy"
+      "destination": "/workflow-execution/workflowid-runid#workflow-id-reuse-policy"
     },
     {
       "source": "/concepts/what-is-a-workflow-id",
-      "destination": "/workflows#workflow-id"
+      "destination": "/workflow-execution/workflowid-runid#workflow-id"
     },
     {
       "source": "/concepts/what-is-a-workflow-run-timeout",
@@ -1366,7 +1378,7 @@
     },
     {
       "source": "/concepts/what-is-a-workflow-type",
-      "destination": "/workflows#workflow-type"
+      "destination": "/workflow-definition#workflow-type"
     },
     {
       "source": "/content/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl",
@@ -1410,11 +1422,11 @@
     },
     {
       "source": "/concepts/what-is-a-retention-period",
-      "destination": "clusters#retention-period"
+      "destination": "/temporal-service/temporal-server#retention-period"
     },
     {
       "source": "/concepts/what-is-multi-cluster-replication",
-      "destination": "/clusters#multi-cluster-replication"
+      "destination": "/temporal-service/multi-cluster-replication"
     },
     {
       "source": "/configure-temporal-server",
@@ -1438,7 +1450,7 @@
     },
     {
       "source": "/filter-workflows",
-      "destination": "/visibility#list-filter"
+      "destination": "/list-filter"
     },
     {
       "source": "/go-queries",
@@ -1466,7 +1478,7 @@
     },
     {
       "source": "/install-temporal-server",
-      "destination": "/clusters#temporal-server"
+      "destination": "/temporal-service/temporal-server"
     },
     {
       "source": "/java-quick-start",
@@ -1478,7 +1490,7 @@
     },
     {
       "source": "/learn-archival",
-      "destination": "/clusters#archival"
+      "destination": "/temporal-service/archival"
     },
     {
       "source": "/learn-cli",
@@ -1490,7 +1502,7 @@
     },
     {
       "source": "/learn-workflow-filtering",
-      "destination": "/visibility#list-filter"
+      "destination": "/list-filter"
     },
     {
       "source": "/php-sdk-overview",
@@ -1502,7 +1514,7 @@
     },
     {
       "source": "/server-workflow-search",
-      "destination": "/visibility#search-attribute"
+      "destination": "/search-attribute"
     },
     {
       "source": "/server/elasticsearch-setup",
@@ -1510,11 +1522,11 @@
     },
     {
       "source": "/server/versions-and-dependencies",
-      "destination": "/clusters/#version-and-support"
+      "destination": "/temporal-service/temporal-server"
     },
     {
       "source": "/shared/continue-as-new",
-      "destination": "/workflows#continue-as-new"
+      "destination": "/workflow-execution/continue-as-new"
     },
     {
       "source": "/external-resources",
@@ -1522,7 +1534,7 @@
     },
     {
       "source": "/filter-workflows",
-      "destination": "/visibility#list-filter"
+      "destination": "/list-filter"
     },
     {
       "source": "/go/how-to-develop-a-workflow-definition-in-go",
@@ -1757,7 +1769,7 @@
     },
     {
       "source": "/concepts/what-is-a-retention-period",
-      "destination": "/clusters#retention-period"
+      "destination": "/temporal-service/temporal-server#retention-period"
     },
     {
       "source": "/archive-data",
@@ -1931,6 +1943,16 @@
     {
       "source": "/references/web-ui-server-env-vars",
       "destination": "/references/web-ui-environment-variables",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/pricing#multi-region",
+      "destination": "/cloud/pricing#high-availability-features",
+      "permanent": true
+    },
+    {
+      "source": "/production-deployment/cloud/metrics/performance-bottlenecks",
+      "destination": "/troubleshooting/performance-bottlenecks",
       "permanent": true
     }
   ]

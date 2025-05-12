@@ -57,7 +57,7 @@ The environment variables are defined in the [UI server configuration template f
 
 ## `TEMPORAL_ADDRESS`
 
-The [Frontend Service](/clusters#frontend-service) address for the Temporal Cluster.
+The [Frontend Service](/temporal-service/temporal-server#frontend-service) address for the Temporal Cluster.
 This environmental variable can be set [in the base configuration file](/references/web-ui-configuration#temporalgrpcaddress) using `temporalGrpcAddress`.
 
 This variable is required for setting other environmental variables.
@@ -107,7 +107,7 @@ Determines how often the UI Server reads the configuration file for new values.
 
 ## `TEMPORAL_SHOW_TEMPORAL_SYSTEM_NAMESPACE`
 
-If enabled, shows the System Namespace that handles internal Temporal Workflows in the Web UI. 
+If enabled, shows the System Namespace that handles internal Temporal Workflows in the Web UI.
 
 ## `TEMPORAL_DISABLE_WRITE_ACTIONS`
 
@@ -214,7 +214,7 @@ Because of this, TLS operates a go-between server.
 
 ## `TEMPORAL_CODEC_ENDPOINT`
 
-The endpoint for the [Codec Server](/dataconversion#codec-server), if configured.
+The endpoint for the [Codec Server](/codec-server), if configured.
 
 ## `TEMPORAL_CODEC_PASS_ACCESS_TOKEN`
 

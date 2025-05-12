@@ -159,10 +159,10 @@ A [Temporal SDK](/encyclopedia/temporal-sdks) provides a framework for [Temporal
 
 An SDK provides you with the following:
 
-- A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) to communicate with a [Temporal Service](/clusters).
+- A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) to communicate with a [Temporal Service](/temporal-service).
 - APIs to develop [Workflows](/workflows).
 - APIs to create and manage [Worker Processes](/workers#worker).
-- APIs to author [Activities](/activities#activity-definition).
+- APIs to author [Activities](/activity-definition).
 
 Add the [Temporal Go SDK](https://github.com/temporalio/sdk-go) to your project:
 
@@ -200,9 +200,9 @@ Additionally, several of the [Tutorials](https://learn.temporal.io) are backed b
 
 ## How to develop a basic Workflow {#develop-workflows}
 
-Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflows#workflow-definition).
+Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflow-definition).
 
-In the Temporal Go SDK programming model, a [Workflow Definition](/workflows#workflow-definition) is an exportable function.
+In the Temporal Go SDK programming model, a [Workflow Definition](/workflow-definition) is an exportable function.
 Below is an example of a basic Workflow Definition.
 
 <div className="copycode-notice-container">
@@ -370,7 +370,7 @@ func main() {
 
 ### How to develop Workflow logic {#workflow-logic-requirements}
 
-Workflow logic is constrained by [deterministic execution requirements](/workflows#deterministic-constraints).
+Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints).
 Therefore, each language is limited to the use of certain idiomatic techniques.
 However, each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
 
@@ -447,13 +447,13 @@ func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param Y
 
 ### How to develop Activity Parameters {#activity-parameters}
 
-There is no explicit limit to the total number of parameters that an [Activity Definition](/activities#activity-definition) may support.
+There is no explicit limit to the total number of parameters that an [Activity Definition](/activity-definition) may support.
 However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
 
 A single argument is limited to a maximum size of 2 MB.
 And the total size of a gRPC message, which includes all the arguments, is limited to a maximum of 4 MB.
 
-Also, keep in mind that all Payload data is recorded in the [Workflow Execution Event History](/workflows#event-history) and large Event Histories can affect Worker performance.
+Also, keep in mind that all Payload data is recorded in the [Workflow Execution Event History](/workflow-execution/event#event-history) and large Event Histories can affect Worker performance.
 This is because the entire Event History could be transferred to a Worker Process with a [Workflow Task](/tasks#workflow-task).
 
 {/* TODO link to gRPC limit section when available */}
@@ -492,7 +492,7 @@ func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param Y
 
 All data returned from an Activity must be serializable.
 
-There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a [Workflow Execution Event History](/workflows#event-history).
+There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a [Workflow Execution Event History](/workflow-execution/event#event-history).
 
 A Go-based Activity Definition can return either just an `error` or a `customValue, error` combination (same as a Workflow Definition).
 You may wish to use a `struct` type to hold all custom values, just keep in mind they must all be serializable.
@@ -555,7 +555,7 @@ func main() {
 
 ## How to start an Activity Execution {#activity-execution}
 
-Calls to spawn [Activity Executions](/activities#activity-execution) are written within a [Workflow Definition](/workflows#workflow-definition).
+Calls to spawn [Activity Executions](/activity-execution) are written within a [Workflow Definition](/workflow-definition).
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
 This results in the set of three [Activity Task](/tasks#activity-task) related Events ([ActivityTaskScheduled](/references/events#activitytaskscheduled), [ActivityTaskStarted](/references/events#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
 
@@ -569,7 +569,7 @@ A large Execution history can thus adversely impact the performance of your Work
 Therefore, be mindful of the amount of data you transfer through Activity invocation parameters or Return Values.
 Otherwise, no additional limitations exist on Activity implementations.
 
-    To spawn an [Activity Execution](/activities#activity-execution), call [`ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/workflow#ExecuteActivity) inside your Workflow Definition.
+    To spawn an [Activity Execution](/activity-execution), call [`ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/workflow#ExecuteActivity) inside your Workflow Definition.
     The API is available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/workflow) package.
     The `ExecuteActivity()` API call requires an instance of `workflow.Context`, the Activity function name, and any variables to be passed to the Activity Execution.
         The Activity function name can be provided as a variable object (no quotations) or as a string.
@@ -672,7 +672,7 @@ if err != nil {
 }
 ```
 
-- [What is an Activity Id](/activities#activity-id)
+- [What is an Activity Id](/activity-execution#activity-id)
 
 #### TaskQueueName
 
@@ -842,7 +842,7 @@ if err != nil {
 
 ### How to get the results of an Activity Execution {#get-activity-results}
 
-The call to spawn an [Activity Execution](/activities#activity-execution) generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
+The call to spawn an [Activity Execution](/activity-execution) generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
 Workflow Executions can either block progress until the result is available through the Awaitable or continue progressing, making use of the result when it becomes available.
 
 The `ExecuteActivity` API call returns an instance of [`workflow.Future`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Futures) which has the following two methods:
@@ -1040,7 +1040,7 @@ w := worker.New(c, "your_task_queue_name", workerOptions)
 
 #### MaxConcurrentLocalActivityExecutionSize
 
-Set the maximum concurrent [Local Activity Executions](/activities#local-activity) for the Worker.
+Set the maximum concurrent [Local Activity Executions](/local-activity) for the Worker.
 
 - Type: `int`
 - Default: `1000`

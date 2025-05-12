@@ -2,9 +2,9 @@
 id: limits
 title: System limits - Temporal Cloud
 sidebar_label: Limits
-description: This page outlines the limits of the Temporal Cloud system for accounts, namespaces, and programming models, providing key information on user capacity, namespace creation, throughput, certificates, task pollers, retention periods, batch jobs, search attributes, visibility API rate limit, identifier length, gRPC message limits, event
 slug: /cloud/limits
-toc_max_heading_level: 4
+description: Learn about Temporal Cloud limits, including accounts, namespaces, throughput, retention, task pollers, batch jobs, gRPC, search attributes, and more.
+toc_max_heading_level: 3
 keywords:
   - configuration
   - defaults
@@ -16,6 +16,8 @@ tags:
   - Limits
 ---
 
+import { CaptionedImage } from '@site/src/components';
+
 This page addresses the limits of the Temporal Cloud system.
 Reach out to your account team should you have any questions about these limits.
 
@@ -24,6 +26,32 @@ These limits fall into the following three main categories:
 - At the Temporal Cloud [Account level](#account-level)
 - At the [Namespace level](#namespace-level)
 - Within the [programming model](#programming-model-level) itself
+
+## Hard and soft limits
+
+Temporal Cloud enforces two types of limits:
+
+- **Hard limits** are fixed and cannot be exceeded under normal operation.
+  These limits are enforced to ensure system stability and cannot be adjusted.
+
+- **Soft limits** can be adjusted by Temporal Cloud based on usage or upon request.\
+  Some limits automatically increase as your usage grows.\
+  Temporal Cloud monitors usage and raises these limits as needed, so you don’t need to take action.\
+  For example, if your number of Namespaces or rate of Actions per second (APS) increases, Temporal Cloud will allocate more resources to keep up.\
+  You can request changes to _any_ soft limit—whether managed automatically or not—by reaching out to [Support](https://support.temporal.io).
+
+The following table lists Temporal Cloud's soft limits, indicating whether they are automatically managed based on usage:
+
+| Limit                     | Managed by Temporal Cloud | Adjustable via Support Request |
+| ------------------------- | ------------------------- | ------------------------------ |
+| Number of Namespaces      | ✅                        | ✅                             |
+| APS (Actions Per Second)  | ✅                        | ✅                             |
+| RPS (Requests Per Second) | ✅                        | ✅                             |
+| Number of users           |                           | ✅                             |
+| Number of Schedules       |                           | ✅                             |
+| Concurrent Task pollers   |                           | ✅                             |
+| Batch jobs                |                           | ✅                             |
+| Nexus endpoints           |                           | ✅                             |
 
 ## Account level
 
@@ -107,38 +135,22 @@ Those values do not affect the global Namespace limit.
 
 **What is the default Retention Period?**
 
-The [Retention Period](/clusters#retention-period) is set per Namespace.
+The [Retention Period](/temporal-service/temporal-server#retention-period) is set per Namespace.
 
 Temporal Cloud sets the default Retention Period to 30 days.
 This is configurable in the Temporal Web UI.
 
 [Navigate to your list of Namespaces](https://cloud.temporal.io/namespaces), choose the Namespace you want to update, and select edit:
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Choose your Namespace and select Edit</p>
-  </div>
-  <div className="tdiiw" height="462">
-    <img
-      className="img_ev3q"
-      src="/img/cloud-guide/edit-namespace-option.png"
-      alt="Choose your Namespace and select Edit"
-    />
-  </div>
-</div>
+<CaptionedImage
+    src="/img/cloud/cloud-guide/edit-namespace-option.png"
+    title="Choose your Namespace and select Edit"
+/>
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">Update the Retention Period</p>
-  </div>
-  <div className="tdiiw" height="482">
-    <img
-      className="img_ev3q"
-      src="/img/cloud-guide/edit-retention-period.png"
-      alt="Update the Retention Period"
-    />
-  </div>
-</div>
+<CaptionedImage
+    src="/img/cloud/cloud-guide/edit-retention-period.png"
+    title="Update the Retention Period"
+/>
 
 You can set the Retention Period between 1 and 90 days.
 
@@ -175,7 +187,7 @@ When creating custom Search Attributes in Temporal Cloud, the attribute names mu
 - Maximum characters: 64
 - Allowed characters: `[a-zA-Z0-9.,:-_\/ ]`.
 
-For more information on custom Search Attributes see [Custom Search Attributes limits](/visibility#custom-search-attributes).
+For more information on custom Search Attributes see [Custom Search Attributes limits](/search-attribute#custom-search-attribute).
 
 ### Visibility API Rate Limit
 
@@ -183,6 +195,15 @@ For more information on custom Search Attributes see [Custom Search Attributes l
 
 The rate limit for requests to the Visibility APIs varies, and may be as low as 30 requests per second.
 This limit is not configurable.
+
+**Which calls are subject to the Visibility API rate limit?**
+
+- `GetWorkerTaskReachability`
+- `ListSchedules`
+- `ListBatchOperations`
+- `DescribeTaskQueueWithReachability`
+- `ListDeployments`
+- `GetDeploymentReachability`
 
 ### Nexus Rate Limit {#nexus-rate-limits}
 
@@ -234,14 +255,14 @@ An Event History transaction encompasses a set of operations such as initiating 
 These operations create Events that are then logged in the Event History.
 The transaction size limit restricts the total size of Events that can be accommodated within a single transaction.
 
-The size limit for any given [Event History](/workflows#event-history) transaction is 4 MB.
+The size limit for any given [Event History](/workflow-execution/event#event-history) transaction is 4 MB.
 This limit is non-configurable for Temporal Cloud.
 
 **What is the blob size limit for a transaction?**
 
 - **Blob size limit** for Payloads, including Workflow context and each Workflow and Activity argument and return value:
   - The max payload for a single request is 2 MB.
-  - The max size limit for any given [Event History](/workflows#event-history) transaction is 4 MB.
+  - The max size limit for any given [Event History](/workflow-execution/event#event-history) transaction is 4 MB.
 
 This limit is non-configurable for Temporal Cloud.
 
@@ -251,7 +272,7 @@ The [BlobSizeLimitError guide](/troubleshooting/blob-size-limit-error) provides 
 
 **How many incomplete concurrent operations can a Workflow Execution have?**
 
-If a Workflow Execution has 2,000 incomplete Activities, Signals, Child Workflows, or external Workflow Cancellation requests, additional [Commands](/workflows#command) of that type will fail to be applied to that Workflow Execution:
+If a Workflow Execution has 2,000 incomplete Activities, Signals, Child Workflows, or external Workflow Cancellation requests, additional [Commands](/workflow-execution#command) of that type will fail to be applied to that Workflow Execution:
 
 - `ScheduleActivityTask`
 - `SignalExternalWorkflowExecution`
@@ -281,16 +302,25 @@ A single Workflow Execution can have a maximum of 10 in-flight Updates and 2000 
 As a precautionary measure, a Workflow Execution's Event History is limited to 51,200 Events or 50 MB.
 It warns you after 10,240 Events or 10 MB.
 This limit applies to all Temporal Workflow Executions, whether on Temporal Cloud or other deployments.
-Read more about [Temporal Workflow Execution limits](/workflows#limits) on the [Temporal Workflow](/workflows) documentation page.
+Read more about [Temporal Workflow Execution limits](/workflow-execution/limits) on the [Temporal Workflow](/workflows) documentation page.
+
+### Per Workflow Callback limits
+
+**What is the maximum number of Callbacks that can be attached to a single Workflow Execution?**
+
+A single Workflow Execution can have a maximum of 32 total Callbacks.
+
+These limits may be exceeded when [multiple Nexus callers attach to the same handler Workflow](/nexus/operations#attaching-multiple-nexus-callers).
+
+See the Nexus Encyclopedia entry for [additional details](/workflow-execution/limits#workflow-execution-callback-limits).
 
 ### Per Workflow Nexus Operation limits {#per-workflow-nexus-operation-limits}
 
 **What is the maximum number of Nexus Operations that can be started from a single Workflow Execution?**
 
-A single Workflow Execution can have a maximum of 30 in-flight Nexus Operations and 30 total Nexus Operations (as Public Preview does not remove completed Nexus Operations from mutable state).
-After the Workflow Execution reaches that limit, it won't process any further Nexus Operations.
+A single Workflow Execution can have a maximum of 30 in-flight Nexus Operations.
 
-See the Nexus Encyclopedia entry for [additional details](/workflows#workflow-execution-nexus-operation-limits).
+See the Nexus Encyclopedia entry for [additional details](/workflow-execution/limits#workflow-execution-nexus-operation-limits).
 
 ### Nexus Operation request timeout {#nexus-operation-request-timeout}
 

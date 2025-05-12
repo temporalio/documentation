@@ -124,6 +124,14 @@ Active cluster name.
 
 Identifies the Activity Execution.
 
+## activity-jitter
+
+If set, the Activity will start at a random time within the specified jitter duration.
+
+## activity-type
+
+Command is applied to the all running activities with of this type.
+
 ## address
 
 The host and port (formatted as host:port) for the Temporal Frontend Service.
@@ -171,13 +179,13 @@ Endpoint for a remote Codec Server.
 
 When to use color: auto, always, never. (default: auto)
 
-## concurrency
-
-Request concurrency.
-
 ## command-timeout
 
 The command execution timeout. 0s means no timeout.
+
+## concurrency
+
+Request concurrency.
 
 ## cron
 
@@ -264,7 +272,7 @@ Input file that specifies Workflow Executions to exclude from resetting.
 
 ## execution-timeout
 
-Timeout (in seconds) for a [Workflow Execution](/workflows#workflow-execution), including retries and `ContinueAsNew` tasks.
+Timeout (in seconds) for a [Workflow Execution](/workflow-execution), including retries and `ContinueAsNew` tasks.
 
 ## existing-compatible-build-id
 
@@ -306,6 +314,10 @@ Values must be in a valid JSON format.
 
 Disable the Web UI.
 
+## heartbeat-timeout
+
+Maximum permitted time between successful Worker Heartbeats.
+
 ## history-archival-state
 
 Sets the history archival state.
@@ -324,6 +336,20 @@ Options: AllowDuplicate, AllowDuplicateFailedOnly, RejectDuplicate, TerminateIfR
 
 Specify operator's identity.
 
+## input
+
+Use the `--input` command option to include data in the command.
+
+This command option accepts a valid JSON string.
+If the entity that the command is acting on accepts multiple parameters, pass "null" for null values within the JSON string.
+
+The following is an example of starting a Workflow with the `--input` command option.
+This Workflow expects a single string as a parameter:
+
+```shell
+temporal workflow start --input '"+1 555-555-5555"'
+```
+
 ## input-file
 
 Passes optional input for the Workflow from a JSON file.
@@ -338,20 +364,6 @@ Each goroutine processes one line for every second.
 ## input-separator
 
 Separator for the input file. The default is a tab (`\t`).
-
-## input
-
-Use the `--input` command option to include data in the command.
-
-This command option accepts a valid JSON string.
-If the entity that the command is acting on accepts multiple parameters, pass "null" for null values within the JSON string.
-
-The following is an example of starting a Workflow with the `--input` command option.
-This Workflow expects a single string as a parameter:
-
-```shell
-temporal workflow start --input '"+1 555-555-5555"'
-```
 
 ## interval
 
@@ -370,6 +382,10 @@ Jitter duration.
 
 Batch Job Id.
 
+## keep-paused
+
+If this flag is provided and Activity was paused, it will stay paused after reset.
+
 ## limit
 
 Number of items to print on a page.
@@ -383,6 +399,10 @@ Options: ["json", "pretty"].
 
 Set the log level.
 Options: ["debug" "info" "warn" "error" "fatal"].
+
+## match-all
+
+If set, all currently running activities will be unpaused.
 
 ## max-field-length
 
@@ -458,13 +478,13 @@ Options: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll.
 Sets the pager for the Temporal CLI to use.
 Options are less, more, and favoritePager.
 
-## pause-on-failure
-
-Pause schedule after any Workflow failure.
-
 ## pause
 
 Pauses the Schedule.
+
+## pause-on-failure
+
+Pause schedule after any Workflow failure.
 
 ## port
 
@@ -513,6 +533,14 @@ Valid values are "not_open" and "not_completed_cleanly".
 
 Total number of actions allowed.
 
+## reset-attempts
+
+Providing this flag will reset the number of attempts.
+
+## reset-heartbeat
+
+Providing this flag will reset the heartbeat details.
+
 ## reset-points
 
 Only show Workflow Events that are eligible for reset.
@@ -525,6 +553,26 @@ Set the result value of Activity completion.
 
 Workflow Execution retention.
 
+## retry-backoff-coefficient
+
+Coefficient used to calculate the next retry interval.
+The next retry interval is previous interval multiplied by the coefficient.
+Must be 1 or larger.
+
+## retry-initial-interval
+
+Interval of the first retry. If retryBackoffCoefficient is 1.0 then it is used for all retries.
+
+## retry-maximum-attempts
+
+Maximum number of attempts. When exceeded the retries stop even if not expired yet.
+1 disables retries. 0 means unlimited (up to the timeouts).
+
+## retry-maximum-interval
+
+Maximum interval between retries. Exponential backoff leads to interval increase.
+This value is the cap of the increase. Default is 100x of the initial interval.
+
 ## run-id
 
 Identifies the current Workflow Run.
@@ -536,6 +584,17 @@ Timeout (in seconds) of a single Workflow run.
 ## schedule-id
 
 Schedule Id.
+
+## schedule-to-close-timeout
+
+Indicates how long the caller is willing to wait for an Activity completion.
+Limits how long retries will be attempted.
+
+## schedule-to-start-timeout
+
+Limits time an Activity Task can stay in a task queue before a Worker picks it up.
+This timeout is always non retryable, as all a retry would achieve is to put it back into the same queue.
+Defaults to `schedule_to_close_timeout` or workflow execution timeout if not specified.
 
 ## search-attribute
 
@@ -569,6 +628,11 @@ Specify a delay before the workflow starts.
 
 Backfill start time.
 
+## start-to-close-timeout
+
+Maximum time an Activity is allowed to execute after being picked up by a Worker.
+This Timeout is always retryable.
+
 ## target-namespace
 
 Namespace in which a handler Worker will poll for Nexus tasks.
@@ -588,14 +652,14 @@ Caution: `--target-url` is experimental.
 
 :::
 
-## task-queue-type
-
-Task Queue type, which can be either workflow or activity.
-The default type is workflow.
-
 ## task-queue
 
 Task Queue.
+
+## task-queue-type
+
+Task Queue type, which can be either Workflow or Activity.
+The default type is Workflow.
 
 ## task-timeout
 
@@ -608,6 +672,10 @@ Format time as: relative, iso, raw.
 ## time-zone
 
 Time zone (IANA name).
+
+## tls
+
+Enable TLS encryption without additional options such as mTLS or client certificates.
 
 ## tls-ca-data
 
@@ -640,10 +708,6 @@ Path to private certificate key.
 ## tls-server-name
 
 Overrides the target TLS server name.
-
-## tls
-
-Enable TLS encryption without additional options such as mTLS or client certificates.
 
 ## type
 
