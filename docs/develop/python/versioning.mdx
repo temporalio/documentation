@@ -215,7 +215,6 @@ class MyWorkflow:
         )
 ```
 
-
 ### Detailed Description of the Patched Function
 
 This video series examines into the behavior of the `patched()` function:
@@ -243,14 +242,14 @@ There is a caveat to this behavior, which we will cover below.
 
 #### Behavior When Replaying With Marker Before-Or-At Current Location
 
-If the execution is replaying and has a call to `patched()`, and if the event history has a marker from a call to `patched()` in the same place 
+If the execution is replaying and has a call to `patched()`, and if the event history has a marker from a call to `patched()` in the same place
 (which means it will match the original event history), then it writes a marker to the replay event history and returns `true`.
 
 This is similar to the behavior of the non-replay case, and
 also happens in a given patch ID's first block.
 
 If the code has a call to `patched()`, and the event history
-has a marker with that Patch ID earlier in the history, 
+has a marker with that Patch ID earlier in the history,
 it will return `true` and will not modify the
 replay event history.
 
@@ -275,7 +274,7 @@ the event history. In addition, all future calls to `patched()`
 with that ID will return `false` -- even after it is done replaying
 and is running new code.
 
-The [preceding section](#behavior-when-not-replaying) states that if the execution is not replaying, 
+The [preceding section](#behavior-when-not-replaying) states that if the execution is not replaying,
 the `patched()` function will always return `true`. If
 the marker doesn't exist, it will be added, and if
 the marker already exists, it won't be re-added.
@@ -289,12 +288,13 @@ in the event history. In this situation, the function won't return
 
 Recapping the potentially unexpected behaviors that may occur during a Replay:
 
-If the execution hits a call to `patched()`, but that patch ID isn't *at or before
-that point* in the event history, you may not realize that
-the event history *after* the current execution location matters. 
+If the execution hits a call to `patched()`, but that patch ID isn't _at or before
+that point_ in the event history, you may not realize that
+the event history _after_ the current execution location matters.
 This behavior occurs because:
-   * If that patch ID exists later, you get a non-determinism error
-   * If the patch doesn't exist later, you don't get a non-determinism error, and the call returns `false`
+
+- If that patch ID exists later, you get a non-determinism error
+- If the patch doesn't exist later, you don't get a non-determinism error, and the call returns `false`
 
 If the execution hits a call to `patched()` with an ID that
 doesn't exist in the history, then not only will it return
@@ -310,21 +310,21 @@ When they do this Replay, they will not follow the `patched()` branches in the c
 For the rest of the execution after they have replayed to the point
 before the deployment and worker restart, they will either:
 
-* Use new code if there was no call to `patched()` in the replay code
-* If there was a call to `patched()` in the replay code, they will
-   run the non-patched code during and after replay
+- Use new code if there was no call to `patched()` in the replay code
+- If there was a call to `patched()` in the replay code, they will
+  run the non-patched code during and after replay
 
 This might sound odd, but it's actually exactly what's needed because
 that means that if the future patched code depends on earlier patched code,
-then it won't use the new code -- it will use the old code instead. 
+then it won't use the new code -- it will use the old code instead.
 
 But if
 there's new code in the future, and there was no code earlier in the
 body that required the new patch, then it can switch over to the new code,
 which it will do.
 
-Note that this behavior means that the Workflow *does not always run
-the newest code*. It only does that if not replaying or if replay is
+Note that this behavior means that the Workflow _does not always run
+the newest code_. It only does that if not replaying or if replay is
 surpassed and there hasn't been a call to `patched()` (with that ID) throughout
 the replay.
 
@@ -346,7 +346,8 @@ elif patched('v2'):
     pass
 else:
     pass
- ```
+```
+
 <!--SNIPEND-->
 
 The following sample shows how `patched()` will behave in a conditional block that's arranged differently.
@@ -369,7 +370,6 @@ else:
 ```
 
 <!--SNIPEND-->
-
 
 ### Best Practice of Using Python Dataclasses as Arguments and Returns
 

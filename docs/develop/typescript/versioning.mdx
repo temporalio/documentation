@@ -244,7 +244,6 @@ export async function myWorkflow(): Promise<void> {
 
 `vFinal` is safe to deploy once all `v2` or earlier Workflows are complete due to the assertion mentioned above.
 
-
 #### Detailed Description of the Patched Function
 
 Here is a detailed explanation of how the `patched()` function behaves.
@@ -266,24 +265,24 @@ If Replaying:
   has a marker from a call to patched in the same place (which means it
   will match the original event history), then
   it writes a marker to the replay event history and returns true.
-  *This is similar to the behavior of the non-replay case, and
-  just like in that case, this happens in a given patch ID's first block*
+  _This is similar to the behavior of the non-replay case, and
+  just like in that case, this happens in a given patch ID's first block_
 - If the code has a call to patched, and the event history
   has a marker with that Patch ID earlier in the history,
   then it will simply return true and not modify the
   replay event history.
-  *This is similar to the behavior of the non-replay case, and
-  just like in that case, this happens in a given patch ID's subsequent blocks*
+  _This is similar to the behavior of the non-replay case, and
+  just like in that case, this happens in a given patch ID's subsequent blocks_
 - If the code has a call to patched, and there no marker on or before that spot in the execution, it returns false.
 
-If the execution is replaying and has a call to `patched()`, and if the event history has a marker from a call to `patched()` in the same place 
+If the execution is replaying and has a call to `patched()`, and if the event history has a marker from a call to `patched()` in the same place
 (which means it will match the original event history), then it writes a marker to the replay event history and returns `true`.
 
 This is similar to the behavior of the non-replay case, and
 also happens in a given patch ID's first block.
 
 If the code has a call to `patched()`, and the event history
-has a marker with that Patch ID earlier in the history, 
+has a marker with that Patch ID earlier in the history,
 it will return `true` and will not modify the
 replay event history.
 
@@ -291,7 +290,6 @@ This is also similar to the behavior of the non-replay case, and
 also happens in a given patch ID's subsequent blocks.
 
 If the code has a call to `patched()`, and there is no marker on or before that spot in the execution, it returns `false`.
-
 
 ##### Implications of the Behaviors
 
@@ -307,9 +305,9 @@ your new code and your old code must work together. For example,
 if your Workflow Definition originally looked like this:
 
 ```ts
-console.log('original code before the sleep')
+console.log('original code before the sleep');
 await sleep(10000); // <-- Stop the Worker while this is waiting, and deploy the new code below
-console.log('original code after the sleep')
+console.log('original code after the sleep');
 ```
 
 If you stop the Worker during the `sleep`, and wrap the original
@@ -317,15 +315,15 @@ code in the `else` part of a patched `if` statement:
 
 ```ts
 if (patched('my-change-id')) {
-  console.log('new code before the sleep')
+  console.log('new code before the sleep');
 } else {
-  console.log('original code before the sleep') // this will run
+  console.log('original code before the sleep'); // this will run
 }
 await sleep(10000);
 if (patched('my-change-id')) {
-  console.log('new code after the sleep') // this will run
+  console.log('new code after the sleep'); // this will run
 } else {
-  console.log('original code after the sleep')
+  console.log('original code after the sleep');
 }
 ```
 
@@ -340,15 +338,16 @@ Based on this behavior and the implications, when patching in new code, always p
 
 ```ts
 if (patched('v3')) {
-    // This is the newest version of the code.
-    // put this at the top, so when it is running
-    // a fresh execution and not replaying,
-    // this patched statement will return true
-    // and it will run the new code.
+  // This is the newest version of the code.
+  // put this at the top, so when it is running
+  // a fresh execution and not replaying,
+  // this patched statement will return true
+  // and it will run the new code.
 } else if (patched('v2')) {
 } else {
 }
- ```
+```
+
 <!--SNIPEND-->
 
 The following sample shows how `patched()` will behave in a conditional block that's arranged differently.
@@ -359,12 +358,11 @@ Because `patched()` will return `true` when not Replaying, this snippet will run
 
 ```ts
 if (patched('v2')) {
-    // This is bad because when doing a new execution (i.e. not replaying),
-    // patched statements evaluate to True (and put a marker
-    // in the event history), which means that new executions
-    // will use v2, and miss v3 below
-}
-else if (patched('v3')) {}
+  // This is bad because when doing a new execution (i.e. not replaying),
+  // patched statements evaluate to True (and put a marker
+  // in the event history), which means that new executions
+  // will use v2, and miss v3 below
+} else if (patched('v3')) {}
 else {}
 ```
 
