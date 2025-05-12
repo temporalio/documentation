@@ -186,7 +186,7 @@ public class MyWorkflow
 
 ### Detailed Description of the Patched Function
 
-This video examines into the behavior of the `patched()` function:
+This video series examines into the behavior of the `patched()` function:
 
 <div style={{ position: "relative", paddingBottom: "56.25%", height: 0 }}>
   <iframe
@@ -227,7 +227,7 @@ also happens in a given patch ID's subsequent blocks.
 
 #### Behavior When Replaying With Marker After Current Location
 
-If the Marker Event occurs after the execution point in the event history,
+If the Event History's Marker Event is after the current execution point,
 that means the new patch is too early.
 The execution will encounter the new patch before the original.
 The execution will
@@ -255,7 +255,7 @@ in the event history. In this situation, the function won't return
 
 #### Potentially Unexpected Behaviors
 
-Recapping the unexpected behaviors that may occur during a Replay:
+Recapping the potentially unexpected behaviors that may occur during a Replay:
 
 If the execution hits a call to `patched()`, but that patch ID isn't *at or before
 that point* in the event history, you may not realize that
@@ -271,10 +271,12 @@ the execution surpasses the Replay threshold and is running new code.
 
 #### Implications of these Behaviors
 
-If you deploy new code while a worker is down,
-any Workflows that were in the middle of executing will replay
-using old code. For the rest of the execution, they
-will either:
+If you deploy new code while Workflows are executing,
+any Workflows that were in the middle of executing will Replay
+up to the point they were at when the Worker was shut down.
+When they do this Replay, they will not follow the `patched()` branches in the code.
+For the rest of the execution after they have replayed to the point
+before the deployment and worker restart, they will either:
 
 * Use new code if there was no call to `patched()` in the replay code
 * If there was a call to `patched()` in the replay code, they will
