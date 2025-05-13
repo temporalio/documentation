@@ -35,7 +35,7 @@ They're used for both Workflow and Activity Tasks.
 When a Worker starts processing a Task, it occupies one slot.
 The number of available slots directly affects how many tasks a Worker can handle simultaneously.
 
-### Slot suppliers
+### Slot suppliers {#slot-suppliers}
 
 A **Slot Supplier** defines a strategy to provide slots for a Worker, increasing or decreasing the Worker's slot count.
 The supplier determines when it's acceptable to begin a new Task.
@@ -81,6 +81,8 @@ Available slot suppliers include:
 **Worker tuning** lets you manage and customize a Worker's runtime performance characteristics.
 They use special types called **Worker tuners** that assign slot suppliers to various Task Types, including Worker, Activity, Nexus, and Local Activity Tasks.
 
+For more on how to configure and use Worker tuners, see [Worker runtime performance tuning](#worker-performance-tuning) below.
+
 :::caution
 
 - Worker tuners supersede the existing `maxConcurrentXXXTask` style Worker options.
@@ -90,12 +92,13 @@ They use special types called **Worker tuners** that assign slot suppliers to va
 
 ### Task pollers {#task-poller}
 
-A Worker's **Task pollers** play a crucial role in the Temporal architecture by efficiently distributing work to Workers to support scalable, resilient Workflow Execution.
-It actively polls a Task Queue for Tasks to process.
+A Worker's **Task pollers** play a crucial role in the Temporal architecture by efficiently
+distributing work to Workers to support scalable, resilient Workflow Execution.
+They actively poll a Task Queue for Tasks to process.
 Pollers create long-polling connections to the Temporal Service, allowing the service to dispatch Tasks to Workers.
-When a Task Poller receives a Task, it delivers it to the appropriate Executor Slot for processing.
+When a Task Poller receives a Task, it delivers to the appropriate Executor Slot for processing.
 
-Task Pollers enable efficient load balancing across multiple Worker processes and support server-side throttling.
+Task Pollers enable efficient load balancing across multiple Worker processes.
 The number of Task Pollers can be configured using `WorkerOptions` when creating a new Worker instance.
 
 ## Performance metrics for tuning {#metrics}
@@ -125,10 +128,6 @@ For more information about `schedule_to_start` timeout and latency, see [Schedul
 
 The [`sticky_cache_size`](/references/sdk-metrics#sticky_cache_size) and [`workflow_active_thread_count`](/references/sdk-metrics#workflow_active_thread_count) metrics report the size of the Workflow cache and the number of cached Workflow threads.
 
-:::note
-Server version ≥ 1.8.0 is required for access to these performance metrics for the JavaSDK.
-:::
-
 ## Worker performance options {#configuration}
 
 Each Worker can be configured by providing custom Worker options (`WorkerOptions`) at instantiation.
@@ -150,13 +149,18 @@ The `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecution
 `maxConcurrentWorkflowTaskPollers` (JavaSDK: `workflowPollThreadCount`) and `maxConcurrentActivityTaskPollers` (JavaSDK: `activityPollThreadCount`) define the maximum count of pollers performing poll requests on Workflow and Activity Task Queues.
 The Worker's requests deliver Tasks to the related executor slots.
 
+Some SDKs (currently Python) have enabled experimental support for automated poller tuning.
+This feature can be enabled by setting the `*_task_poller_behavior` options to `PollerBehaviorAutoscaling`.
+Names may vary slightly depending on the SDK.
+There are options within to configure minimum, maximum, and initial poller counts, but it is unlikely that you will need to adjust them.
+
 ### Cache options
 
 A Workflow Cache is created and shared between all Workers on a single host.
 It's designed to limit the resources used by the cache for each host/process.
 These options are defined on `WorkerFactoryOptions` in JavaSDK and in `worker` package in GoSDK:
 
-- `worker.setStickyWorkflowCacheSize` (JavaSDK: WorkerFactoryOptions#workflowCacheSize`) defines the maximum number of cached Workflows Executions.
+- `worker.setStickyWorkflowCacheSize` (JavaSDK: `WorkerFactoryOptions#workflowCacheSize`) defines the maximum number of cached Workflows Executions.
   Each cached Workflow contains at least one Workflow thread and its resources.
   Resources include memory, etc.
 - `maxWorkflowThreadCount` defines the maximum number of Workflow threads that may exist concurrently at any time.
@@ -265,9 +269,10 @@ If a just-started worker were to have no throttle, and there was a backlog of Ta
 If each Task allocated 1GB of RAM, the Worker would likely run out of memory and crash.
 The throttle enforces a wait before handing out new slots (after a minimum number of slots have been occupied) so you can measure newly consumed resources.
 
-## Worker tuner examples {#examples}
+## Performance tuning examples {#examples}
 
-The following examples show how to create and provision composite Worker tuners.
+The following examples show how to create and provision composite Worker tuners and set other
+performance related options.
 Each tuner provides slot suppliers for various Task types.
 These examples focus on Activities and Local Activities, since Workflow Tasks normally do not need resource-based tuning.
 
@@ -386,13 +391,19 @@ const workerOptions = {
 ### Python SDK
 
 ```python
-# Just resource based
+# Just a resource based tuner, with poller autoscaling
 tuner = WorkerTuner.create_resource_based(
     target_memory_usage=0.5,
     target_cpu_usage=0.5,
 )
-worker = Worker(client, task_queue="foo", tuner=tuner)
-# Combining different types
+worker = Worker(
+    client,
+    task_queue="foo",
+    tuner=tuner,
+    workflow_task_poller_behavior=PollerBehaviorAutoscaling(),
+    activity_task_poller_behavior=PollerBehaviorAutoscaling()
+)
+# Combining different types, with poller autoscaling
 resource_based_options = ResourceBasedTunerConfig(0.8, 0.9)
 tuner = WorkerTuner.create_composite(
     workflow_supplier=FixedSizeSlotSupplier(10),
@@ -405,7 +416,13 @@ tuner = WorkerTuner.create_composite(
         resource_based_options,
     ),
 )
-worker = Worker(client, task_queue="foo", tuner=tuner)
+worker = Worker(
+    client,
+    task_queue="foo",
+    tuner=tuner,
+    workflow_task_poller_behavior=PollerBehaviorAutoscaling(),
+    activity_task_poller_behavior=PollerBehaviorAutoscaling()
+)
 ```
 
 ### .NET C# SDK
@@ -413,26 +430,26 @@ worker = Worker(client, task_queue="foo", tuner=tuner)
 ```csharp
 // Just resource based
 var worker = new TemporalWorker(
-            Client,
-            new TemporalWorkerOptions("my-task-queue")
-            {
-                Tuner = WorkerTuner.CreateResourceBased(0.8, 0.9),
-            };
+    Client,
+    new TemporalWorkerOptions("my-task-queue")
+    {
+        Tuner = WorkerTuner.CreateResourceBased(0.8, 0.9),
+    });
 // Combining different types
 var resourceTunerOptions = new ResourceBasedTunerOptions(0.8, 0.9);
 var worker = new TemporalWorker(
-            Client,
-            new TemporalWorkerOptions("my-task-queue")
-            {
-                Tuner = new WorkerTuner(
-                    new FixedSizeSlotSupplier(10),
-                    new ResourceBasedSlotSupplier(
-                        new ResourceBasedSlotSupplierOptions(),
-                        resourceTunerOptions),
-                    new ResourceBasedSlotSupplier(
-                        new ResourceBasedSlotSupplierOptions(),
-                        resourceTunerOptions),
-            };
+    Client,
+    new TemporalWorkerOptions("my-task-queue")
+    {
+        Tuner = new WorkerTuner(
+             new FixedSizeSlotSupplier(10),
+             new ResourceBasedSlotSupplier(
+                 new ResourceBasedSlotSupplierOptions(),
+                 resourceTunerOptions),
+             new ResourceBasedSlotSupplier(
+                 new ResourceBasedSlotSupplierOptions(),
+                 resourceTunerOptions)),
+    });
 ```
 
 ## Workflow Cache Tuning
@@ -594,7 +611,7 @@ The values provided by `temporal task-queue describe` can help you manage your W
   If this time grows too long, more Workers can boost Workflow efficiency.
 
 - Calculate the demand per Worker by dividing the number of backlogged Tasks (`ApproximateBacklogCount`) by the number of Workers.
-  Determine if your task processing rate is within an acceptable range for you needs using the per-Worker demand (how many Tasks each Worker has yet to process), the backlog consumption rate (`TasksDispatchRate`, the rate at which Workers are processing Tasks), and the dispatch latency (`ApproximateBacklogAge`, the time the oldest Task has been waiting to be assigned to a Worker).
+  Determine if your task processing rate is within an acceptable range for your needs using the per-Worker demand (how many Tasks each Worker has yet to process), the backlog consumption rate (`TasksDispatchRate`, the rate at which Workers are processing Tasks), and the dispatch latency (`ApproximateBacklogAge`, the time the oldest Task has been waiting to be assigned to a Worker).
 
 - The backlog increase rate (`BacklogIncreaseRate`) shows the changing demand on your Workers over time.
   As this rate increases, you may need to add more Workers until demand and capacity are balanced.
@@ -635,13 +652,14 @@ Increase the maximum number of working slots by adjusting `maxConcurrentWorkflow
 1. The Worker hosts are underutilized (no bottlenecks on CPU, load average, etc.).
 2. The `worker_task_slots_available` metric from the corresponding Worker type frequently shows a depleted number of available Worker slots.
 
+Alternatively, consider using a resource-based slot supplier as described [here](#slot-suppliers).
+
 ### Poller count
 
-:::note
-Adjustments to pollers are rarely needed and rarely make a difference. Please consider this step only after adjusting Worker slots in the previous step. The only scenario in which the pollers' adjustment makes sense is when there is a significant network latency between the Workers and Temporal Server.
-:::
+Sometimes, it can be appropriate to increase the number of task pollers.
+This is usually more common in situations where your Workers have somewhat high latency when communicating with the server.
 
-If:
+You can use automated poller tuning, or consider adjustment if:
 
 1. the `schedule_to_start` metric is abnormally long, and
 2. the Worker hosts are underutilized (there are no bottlenecks on CPU, load average, etc), and
