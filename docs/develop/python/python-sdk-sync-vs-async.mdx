@@ -67,7 +67,6 @@ asynchronous Activity would lead to blocking your event loop. If you want to mak
 an HTTP call from within an asynchronous Activity, you should use an async-safe HTTP library
 such as `aiohttp` or `httpx`. Otherwise, use a synchronous Activity.
 
-
 ## Python SDK Worker Execution Architecture
 
 Python workers have following components for executing code:
@@ -78,11 +77,10 @@ Python workers have following components for executing code:
 
 > See Also: [docs for](https://python.temporal.io/temporalio.worker.Worker.html#__init__) `worker.__init__()`
 
-
 ## Activity Definition
 
 **By default, activities should be synchronous rather than asynchronous**.
-You should only make an activity asynchronous if you are *very*
+You should only make an activity asynchronous if you are _very_
 sure that it does not block the event loop.
 
 This is because if you have blocking code in an `async def` function,
@@ -94,8 +92,8 @@ run in the `activity_executor` ([docs for](https://python.temporal.io/temporalio
 rather than in the global event loop,
 which helps because:
 
-* There's no risk of accidentally blocking the global event loop.
-* If you have multiple
+- There's no risk of accidentally blocking the global event loop.
+- If you have multiple
   activity tasks running in a thread pool rather than an event loop, one bad
   activity task can't slow down the others; this is because the OS scheduler preemptively
   switches between threads, which the event loop coordinator does not do.
@@ -106,7 +104,7 @@ which helps because:
 
 ## Implementing Synchronous Activities
 
-The following code is a synchronous Activity Definition. 
+The following code is a synchronous Activity Definition.
 It takes a name (`str`) as input and returns a
 customized greeting (`str`) as output.
 
@@ -163,7 +161,7 @@ equally valid implementations.
 ### Worker for Synchronous Activities
 
 When running synchronous activities, the Worker
-neets to have an `activity_executor`.  Temporal
+neets to have an `activity_executor`. Temporal
 recommends using a `ThreadPoolExecutor` as shown here:
 
 ```python
@@ -249,4 +247,3 @@ using asynchronous Activities _only_ when you are certain that your Activities
 are async safe and don't make blocking calls.
 
 If you experience bugs that you think may be a result of an unsafe call being made in an asynchronous Activity, convert it to a synchronous Activity and see if the issue resolves.
-
