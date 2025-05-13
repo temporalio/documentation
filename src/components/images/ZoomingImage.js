@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { useColorMode } from '@docusaurus/theme-common';
 
-const ZoomingImage = ({ src, alt, ariaLabel }) => {
+const ZoomingImage = ({ src, alt, ariaLabel, initialWidth = '200px' }) => {
   const [isZoomed, setIsZoomed] = useState(false);
   const { colorMode } = useColorMode();
 
-  // Use ariaLabel if provided, otherwise fall back to alt
   const label = ariaLabel || alt;
 
   const handleClick = () => {
@@ -32,9 +31,9 @@ const ZoomingImage = ({ src, alt, ariaLabel }) => {
       <img
         src={src}
         alt={alt}
-        aria-label={label}  // Use the resolved label
+        aria-label={label}
         style={{
-          width: isZoomed ? '100%' : '20%',
+          width: isZoomed ? '100%' : initialWidth,
           cursor: 'pointer',
           transition: 'all 0.3s ease',
           border: `1px solid ${colorMode === 'dark' ? '#333' : '#ddd'}`,
