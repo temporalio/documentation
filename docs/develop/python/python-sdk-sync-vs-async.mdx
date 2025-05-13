@@ -67,12 +67,120 @@ asynchronous Activity would lead to blocking your event loop. If you want to mak
 an HTTP call from within an asynchronous Activity, you should use an async-safe HTTP library
 such as `aiohttp` or `httpx`. Otherwise, use a synchronous Activity.
 
+
+## Python SDK Worker Execution Architecture
+
+Python workers have following components for executing code:
+
+- Your event loop, which runs tasks from async activities **plus the rest of Temporal, such as communicating with the server**.
+- An executor for executing activity tasks from synchronous activities. A thread pool executor is recommended.
+- A thread pool executor for executing workflow tasks (see forum post [here](https://community.temporal.io/t/whats-the-workflow-task-executor-in-the-python-worker-configuration/16965)).
+
+> See Also: [docs for](https://python.temporal.io/temporalio.worker.Worker.html#__init__) `worker.__init__()`
+
+
+## Activity Definition
+
+**By default, activities should be synchronous rather than asynchronous**.
+You should only make an activity asynchronous if you are *very*
+sure that it does not block the event loop.
+
+This is because if you have blocking code in an `async def` function,
+it blocks your event loop and the rest of Temporal, which can cause bugs that are
+very hard to diagnose, including freezing your worker and blocking workflow progress
+(because Temporal can't tell the server that workflow tasks are completing).
+The reason synchronous activities help is because they
+run in the `activity_executor` ([docs for](https://python.temporal.io/temporalio.worker.Worker.html#__init__) `worker.__init__()`)
+rather than in the global event loop,
+which helps because:
+
+* There's no risk of accidentally blocking the global event loop.
+* If you have multiple
+  activity tasks running in a thread pool rather than an event loop, one bad
+  activity task can't slow down the others; this is because the OS scheduler preemptively
+  switches between threads, which the event loop coordinator does not do.
+
+> See Also:
+> ["Types of Activities" section of Python SDK README](https://github.com/temporalio/sdk-python#types-of-activities)
+> and [Sync vs Async activity implementations](https://docs.temporal.io/develop/python/python-sdk-sync-vs-async)
+
+## Implementing Synchronous Activities
+
+The following code is a synchronous Activity Definition. 
+It takes a name (`str`) as input and returns a
+customized greeting (`str`) as output.
+
+It makes a call to a microservice, and when making this call,
+you'll notice that it uses the `requests` library. This is safe to do in
+synchronous Activities.
+
+```python
+import urllib.parse
+import requests
+from temporalio import activity
+
+class TranslateActivities:
+
+    @activity.defn
+    def greet_in_spanish(self, name: str) -> str:
+        greeting = self.call_service("get-spanish-greeting", name)
+        return greeting
+
+    # Utility method for making calls to the microservices
+    def call_service(self, stem: str, name: str) -> str:
+        base = f"http://localhost:9999/{stem}"
+        url = f"{base}?name={urllib.parse.quote(name)}"
+
+        response = requests.get(url)
+        return response.text
+```
+
+In the above example we chose not to share a session across the Activity, so
+`__init__` was removed. While `requests` does have the ability to create sessions,
+it is currently unknown if they are thread safe. Due to no longer having or needing
+`__init__`, the case could be made here to not implement the Activities as a class,
+but just as decorated functions as shown below:
+
+```python
+@activity.defn
+def greet_in_spanish(name: str) -> str:
+    greeting = call_service("get-spanish-greeting", name)
+    return greeting
+
+# Utility method for making calls to the microservices
+def call_service(stem: str, name: str) -> str:
+    base = f"http://localhost:9999/{stem}"
+    url = f"{base}?name={urllib.parse.quote(name)}"
+
+    response = requests.get(url)
+    return response.text
+```
+
+Whether to implement Activities as class methods or functions is a design choice
+choice left up to the developer when cross-activity state is not needed. Both are
+equally valid implementations.
+
+### Worker for Synchronous Activities
+
+When running synchronous activities, the Worker
+neets to have an `activity_executor`.  Temporal
+recommends using a `ThreadPoolExecutor` as shown here:
+
+```python
+with ThreadPoolExecutor(max_workers=42) as executor:
+    worker = Worker(
+        # ...
+        activity_executor=executor,
+        # ...
+    )
+```
+
 ## Implementing Asynchronous Activities
 
-The following code is an asynchronous Activity Definition that's similar to one
-you will use during an upcoming exercise. Like the Workflow Definition
-you've already run, it takes a name (`str`) as input and returns a
-customized greeting (`str`) as output. However, this Activity makes
+The following code is an implementation of the above Activity, but as an
+asynchronous Activity Definition.
+
+It makes
 a call to a microservice, accessed through HTTP, to request this
 greeting in Spanish. This activity uses the `aiohttp` library to make an async
 safe HTTP request. Using the `requests` library here would have resulting in
@@ -122,58 +230,15 @@ class TranslateActivities:
             return translation
 ```
 
-## Implementing Synchronous Activities
+### Running synchronous code from an asynchronous function
 
-The following code is an implementation of the above Activity, but as a
-synchronous Activity Definition. When making the call to the microservice,
-you'll notice that it uses the `requests` library. This is safe to do in
-synchronous Activities.
+If your activity is asynchronous and you don't want to change it to synchronous,
+but you need to run blocking code inside it,
+then you can use python utility functions to run synchronous code
+in an asynchronous function:
 
-```python
-import urllib.parse
-import requests
-from temporalio import activity
-
-class TranslateActivities:
-
-    @activity.defn
-    def greet_in_spanish(self, name: str) -> str:
-        greeting = self.call_service("get-spanish-greeting", name)
-        return greeting
-
-    # Utility method for making calls to the microservices
-    def call_service(self, stem: str, name: str) -> str:
-        base = f"http://localhost:9999/{stem}"
-        url = f"{base}?name={urllib.parse.quote(name)}"
-
-        response = requests.get(url)
-        return response.text
-```
-
-In the above example we chose not to share a session across the Activity, so
-`__init__` was removed. While `requests` does have the ability to create sessions,
-it is currently unknown if they are thread safe. Due to no longer having or needing
-`__ini__`, the case could be made here to not implement the Activities as a class,
-but just as decorated functions as shown below:
-
-```python
-@activity.defn
-def greet_in_spanish(name: str) -> str:
-    greeting = call_service("get-spanish-greeting", name)
-    return greeting
-
-# Utility method for making calls to the microservices
-def call_service(stem: str, name: str) -> str:
-    base = f"http://localhost:9999/{stem}"
-    url = f"{base}?name={urllib.parse.quote(name)}"
-
-    response = requests.get(url)
-    return response.text
-```
-
-Whether to implement Activities as class methods or functions is a design choice
-choice left up to the developer when cross-activity state is not needed. Both are
-equally valid implementations.
+- [`loop.run_in_executor()`](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.run_in_executor), which is also mentioned in the ["running blocking code" section of the "developing with asyncio" guide](https://docs.python.org/3/library/asyncio-dev.html#running-blocking-code)
+- [`asyncio.to_thread()`](https://docs.python.org/3/library/asyncio-task.html#running-in-threads)
 
 ## When Should You Use Async Activities
 
@@ -184,3 +249,4 @@ using asynchronous Activities _only_ when you are certain that your Activities
 are async safe and don't make blocking calls.
 
 If you experience bugs that you think may be a result of an unsafe call being made in an asynchronous Activity, convert it to a synchronous Activity and see if the issue resolves.
+
