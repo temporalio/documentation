@@ -13,12 +13,12 @@ tags:
 ---
 
 # Quick Start – Ruby SDK
+This guide walks you through setting up the Temporal Ruby SDK and running your first Workflow. 
+In just a few steps, you'll install the SDK, start a local development server, and see a Workflow in action.
 
 ## 1. Installation
 
 Install the Temporal SDK using your preferred method.
-
-The Ruby SDK works with **Ruby 3.2, 3.3, and 3.4**.
 
 <Tabs>
   <TabItem value="gemfile" label="Gemfile">
@@ -26,6 +26,11 @@ The Ruby SDK works with **Ruby 3.2, 3.3, and 3.4**.
   ```ruby
   gem 'temporalio'
   ```
+
+This approach is used in Ruby projects that manage dependencies with Bundler. 
+
+To install it, add the line to your project's Gemfile and run `bundle install` in your terminal. 
+Bundler will download and install the gem and its dependencies. 
 
   </TabItem>
 </Tabs>
@@ -37,8 +42,14 @@ The Ruby SDK works with **Ruby 3.2, 3.3, and 3.4**.
   gem install temporalio
   ```
 
+This approach installs the Temporal SDK gem directly via the command line. 
+It installs the gem and its dependencies system-wide or in your current Ruby environment. 
+The gem becomes available for any Ruby script you run. 
+
   </TabItem>
 </Tabs>
+
+Both methods will install the same Temporal SDK, which supports Ruby versions 3.2, 3.3, and 3.4. 
 
 > **Note:**  
 > - Only macOS ARM/x64 and Linux ARM/x64 are supported.  
@@ -47,19 +58,46 @@ The Ruby SDK works with **Ruby 3.2, 3.3, and 3.4**.
 > - `fibers`/`async` are only supported on Ruby **3.3+**.  
 > - See [Platform Support](#) for full details.
 
----
 
 ## 2. Start the Temporal Server Locally
 
-To run Workflows locally, you need a local instance of the Temporal Service. The easiest way to do this is with [**Temporal CLI**](https://docs.temporal.io/dev-guide/cli/).
+With the SDK installed, you’ll need a local Temporal Server to run your Workflows. 
+The easiest way to do this is with [**Temporal CLI**](https://docs.temporal.io/dev-guide/cli/).
 
-### Install Temporal CLI (macOS)
+<Tabs groupId="os" queryString>
+  <TabItem value="mac" label="macOS">
 
-```bash
+You can install the latest version with [Homebrew](https://brew.sh) using the following command:
+
+```command
 brew install temporal
 ```
 
-Once installed, run the development server:
+  </TabItem>
+  <TabItem value="win" label="Windows">
+
+To install Temporal CLI on Windows, download the version for your architecture:
+
+- [Download Temporal CLI for Windows amd64](https://temporal.download/cli/archive/latest?platform=windows&arch=amd64)
+- [Download Temporal CLI for Windows arm64](https://temporal.download/cli/archive/latest?platform=windows&arch=arm64)
+
+Once you've downloaded the file, extract the downloaded archive and add the `temporal.exe` binary to your `PATH`.
+
+  </TabItem>
+  <TabItem value="linux" label="Linux">
+
+
+To install Temporal CLI, download the version for your architecture:
+
+- [Download Temporal CLI for Linux amd64](https://temporal.download/cli/archive/latest?platform=linux&arch=amd64)
+- [Download Temporal CLI for Linux arm64](https://temporal.download/cli/archive/latest?platform=linux&arch=arm64)
+
+Once you've downloaded the file, extract the downloaded archive and add the `temporal` binary to your `PATH` by copying it to a directory like `/usr/local/bin`.
+
+  </TabItem>
+</Tabs>
+
+Once installed, run the development server by opening up a new terminal window:
 
 ```bash
 temporal server start-dev
@@ -73,15 +111,19 @@ This will:
 
 Leave this running in a separate terminal tab or window while you develop.
 
-> 💡 **Optional:** To retain data between runs, use:
+> **Optional:** To retain data between runs, use:
 >
 > ```bash
 > temporal server start-dev --db-filename my_temporal.db
 > ```
 
----
 
 ## 3. Write Your First Activity and Workflow 
+
+Now let’s define the building blocks of a Temporal Application: an Activity and a Workflow.
+
+Open your IDE or code editor of choice and create a file named `say_hello_activity`. 
+Next, create another file in the same directory named `say_hello_workflow.rb`.
 
 <Tabs>
   <TabItem value="activity" label="Activity (say_hello_activity.rb)">
@@ -95,7 +137,12 @@ Leave this running in a separate terminal tab or window while you develop.
     end
   end
   ```
+The `Temporalio::Activity::Definition` signals to the Temporal SDK that this is an Activity. 
+In this file, you define a class called `SayHelloActivity`. 
+Inside the class, you implement an execute method which takes one argument (name) and returns a personalized greeting.
 
+Activities perform single, well-defined tasks (like formatting a greeting). 
+They can interact with external systems, APIs, and databases. 
   </TabItem>
 </Tabs>
 
@@ -117,10 +164,17 @@ Leave this running in a separate terminal tab or window while you develop.
   end
   ```
 
+
+A Workflow defines the overall flow of the application.
+The `Temporalio::Workflow::Definition` signals to the Temporal SDK that this is a Workflow Definition.
+In this example, you define a `SayHelloWorkflow` class. 
+It uses `execute_activity` to run the `SayHelloActivity`, passing along the name as input. 
+It also sets a timeout of 300 seconds, which tells Temporal how long it should wait for the Activity to finish.
+
+
   </TabItem>
 </Tabs>
 
----
 
 ## 4. Run a Worker
 
@@ -148,7 +202,8 @@ Leave this running in a separate terminal tab or window while you develop.
   </TabItem>
 </Tabs>
 
----
+Workers, which are part of your application and provided by the Temporal SDK, then carry out the tasks defined in your Workflow.
+For more information on Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers). 
 
 ## 5. Execute a Workflow and See the Result
 
@@ -178,3 +233,5 @@ Leave this running in a separate terminal tab or window while you develop.
 ```
 Result: Hello, Temporal!
 ```
+
+To follow more Ruby tutorials, visit learn.temporal.io/ruby. 
