@@ -77,8 +77,6 @@ Python workers have following components for executing code:
 
 > See Also: [docs for](https://python.temporal.io/temporalio.worker.Worker.html#__init__) `worker.__init__()`
 
-
-
 ### Activities
 
 - The activities and the temporal worker SDK code both run in whatever event loop the user gives the worker (which is often the default asyncio event loop).
@@ -103,8 +101,7 @@ The only ways to use more than one CPU core in a python worker (considering the 
 ### Separating Activity and Workflow Workers
 
 To reduce the risk of event loops or executors getting blocked,
-some users choose to  deploy separate workers for workflow tasks and activity tasks.
-
+some users choose to deploy separate workers for workflow tasks and activity tasks.
 
 ## Activity Definition
 
