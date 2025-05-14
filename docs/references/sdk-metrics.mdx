@@ -102,7 +102,7 @@ Some keys may not be available in every SDK, and Histogram metrics may have diff
 | [long_request](#long_request)                                                           | Service Client | Counter     | Core, Go, Java |
 | [long_request_failure](#long_request_failure)                                           | Service Client | Counter     | Core, Go, Java |
 | [long_request_latency](#long_request_latency)                                           | Service Client | Histogram   | Core, Go, Java |
-| [num_pollers](#num_pollers)                                                             | Worker         | Gauge       | Core           |
+| [num_pollers](#num_pollers)                                                             | Worker         | Gauge       | Core, Go       |
 | [poller_start](#poller_start)                                                           | Worker         | Counter     | Go, Java       |
 | [request](#request)                                                                     | Service Client | Counter     | Core, Go, Java |
 | [request_failure](#request_failure)                                                     | Service Client | Counter     | Core, Go, Java |
@@ -273,7 +273,7 @@ Latency of a Temporal Client gRPC long poll request.
 Current number of Worker Entities that are polling.
 
 - Type: Gauge
-- Available in: Core
+- Available in: Core, Go
 - Tags: `namespace`, `poller_type`, `task_queue`
 
 ### poller_start
