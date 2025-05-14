@@ -71,37 +71,38 @@ such as `aiohttp` or `httpx`. Otherwise, use a synchronous Activity.
 
 Python workers have following components for executing code:
 
-- Your event loop, which runs tasks from async activities **plus the rest of Temporal, such as communicating with the server**.
+- Your event loop, which runs tasks from async activities **plus the rest of the Temporal Worker, such as communicating with the server**.
 - An executor for executing activity tasks from synchronous activities. A thread pool executor is recommended.
-- A thread pool executor for executing workflow tasks (see forum post [here](https://community.temporal.io/t/whats-the-workflow-task-executor-in-the-python-worker-configuration/16965)).
+- A thread pool executor for executing workflow tasks.
 
 > See Also: [docs for](https://python.temporal.io/temporalio.worker.Worker.html#__init__) `worker.__init__()`
 
 ### Activities
 
-- The activities and the temporal worker SDK code both run in whatever event loop the user gives the worker (which is often the default asyncio event loop).
+- The activities and the temporal worker SDK code both run the default asyncio event loop or whatever event loop you give the Worker.
 - Synchronous Activities run in the `activity_executor`.
 
 ### Workflows
 
 Since workflow tasks (1) are CPU bound, (2) need to be timed out for deadlock detection, and (3) need to not block other workflow tasks, they are run in threads. The `workflow_task_executor` is the thread pool these tasks are run on.
 
-This can be confusing at first because Workflow Definitions are `async`, but this `async` is not referring to the standard event loop -- it is referring to the workflow's own SDK event loop.
+The fact that Workflow Tasks run in a thread pool can be confusing at first because Workflow Definitions are `async`.
+The key differentiator is that the `async` in Workflow Definitions is not referring to the standard event loop -- it is referring to the workflow's own event loop.
 Each workflow gets its own “workflow event loop”, which is deterministic, and described in [the Python SDK blog](https://temporal.io/blog/durable-distributed-asyncio-event-loop#temporal-workflows-are-asyncio-event-loops).
-The workflow event loop doesn't constantly loop – it just gets cycled through during a workflow task to make as much progress as possible on any all of its futures.
+The workflow event loop doesn't constantly loop -- it just gets cycled through during a workflow task to make as much progress as possible on all of its futures.
 When it can no longer make progress on any of its futures, then the Workflow Task is complete.
 
-### Number of cores
+### Number of CPU cores
 
-The only ways to use more than one CPU core in a python worker (considering the GIL) are:
+The only ways to use more than one core in a python worker (considering Python's GIL) are:
 
-- Run the sync activities in a process pool executor, but a thread pool executor is recommended.
 - Run more than one worker process.
+- Run the sync activities in a process pool executor, but a thread pool executor is recommended.
 
 ### Separating Activity and Workflow Workers
 
 To reduce the risk of event loops or executors getting blocked,
-some users choose to deploy separate workers for workflow tasks and activity tasks.
+some users choose to deploy separate Workers for Workflow Tasks and Activity Tasks.
 
 ## Activity Definition
 
