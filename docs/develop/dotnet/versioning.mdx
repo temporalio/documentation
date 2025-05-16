@@ -183,3 +183,163 @@ public class MyWorkflow
     }
 }
 ```
+
+### Detailed Description of the Patched Function
+
+This video series examines into the behavior of the `patched()` function:
+
+<div style={{ position: "relative", paddingBottom: "56.25%", height: 0 }}>
+  <iframe
+    src="https://www.youtube.com/embed/videoseries?list=PLytZkHFJwKUdfxFQnuo0Fson0QM0VL9hL"
+    style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
+    frameborder="0"
+    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen>
+  </iframe>
+</div>
+
+#### Behavior When Not Replaying
+
+If the execution is not replaying, when it encounters a call to `patched()`, it first checks the event history.
+
+- If the patch ID is not in the event history, the execution adds a marker to the event history, upserts a search attribute, and returns `true`.
+  This happens in the first block of the patch ID.
+- If the patch ID is in the event history, the execution doesn't modify the history, and returns `true`.
+  This happens in a patch ID's subsequent blocks, because the event history was updated in the first block.
+
+There is a caveat to this behavior, which we will cover below.
+
+#### Behavior When Replaying With Marker Before-Or-At Current Location
+
+If the execution is replaying and has a call to `patched()`, and if the event history has a marker from a call to `patched()` in the same place
+(which means it will match the original event history), then it writes a marker to the replay event history and returns `true`.
+
+This is similar to the behavior of the non-replay case, and
+also happens in a given patch ID's first block.
+
+If the code has a call to `patched()`, and the event history
+has a marker with that Patch ID earlier in the history,
+it will return `true` and will not modify the
+replay event history.
+
+This is also similar to the behavior of the non-replay case, and
+also happens in a given patch ID's subsequent blocks.
+
+#### Behavior When Replaying With Marker After Current Location
+
+If the Event History's Marker Event is after the current execution point,
+that means the new patch is too early.
+The execution will encounter the new patch before the original.
+The execution will
+attempt to write the marker to the replay event
+history, but it will throw a non-deterministic
+exception because the replay and original event
+histories don't match.
+
+#### Behavior when replaying with no marker for that patch ID
+
+During a Replay, if there is no marker for a given patch ID, the execution will return `false` and will not add a marker to
+the event history. In addition, all future calls to `patched()`
+with that ID will return `false` -- even after it is done replaying
+and is running new code.
+
+The [preceding section](#behavior-when-not-replaying) states that if the execution is not replaying,
+the `patched()` function will always return `true`. If
+the marker doesn't exist, it will be added, and if
+the marker already exists, it won't be re-added.
+
+However, this behavior doesn't occur if there was already
+a call to `patched()` with that ID in the replay code, but not
+in the event history. In this situation, the function won't return
+`true`.
+
+#### Potentially Unexpected Behaviors
+
+Recapping the potentially unexpected behaviors that may occur during a Replay:
+
+If the execution hits a call to `patched()`, but that patch ID isn't _at or before
+that point_ in the event history, you may not realize that
+the event history _after_ the current execution location matters.
+This behavior occurs because:
+
+- If that patch ID exists later, you get a non-determinism error
+- If the patch doesn't exist later, you don't get a non-determinism error, and the call returns `false`
+
+If the execution hits a call to `patched()` with an ID that
+doesn't exist in the history, then not only will it return
+`false` in that occurence, but it will also return `false` if
+the execution surpasses the Replay threshold and is running new code.
+
+#### Implications of these Behaviors
+
+If you deploy new code while Workflows are executing,
+any Workflows that were in the middle of executing will Replay
+up to the point they were at when the Worker was shut down.
+When they do this Replay, they will not follow the `patched()` branches in the code.
+For the rest of the execution after they have replayed to the point
+before the deployment and worker restart, they will either:
+
+- Use new code if there was no call to `patched()` in the replay code
+- If there was a call to `patched()` in the replay code, they will
+  run the non-patched code during and after replay
+
+This might sound odd, but it's actually exactly what's needed because
+that means that if the future patched code depends on earlier patched code,
+then it won't use the new code -- it will use the old code instead.
+
+But if
+there's new code in the future, and there was no code earlier in the
+body that required the new patch, then it can switch over to the new code,
+which it will do.
+
+Note that this behavior means that the Workflow _does not always run
+the newest code_. It only does that if not replaying or if replay is
+surpassed and there hasn't been a call to `patched()` (with that ID) throughout
+the replay.
+
+#### Recommendations
+
+Based on this behavior and the implications, when patching in new code, always put the newest code at the top of an if-patched-block.
+
+<!--SNIPSTART dotnet-patching-example-->
+
+```csharp
+if (patched('v3')) {
+    // This is the newest version of the code.
+    // put this at the top, so when it is running
+    // a fresh execution and not replaying,
+    // this patched statement will return true
+    // and it will run the new code.
+} else if (patched('v2')) {
+} else {
+}
+```
+
+<!--SNIPEND-->
+
+The following sample shows how `patched()` will behave in a conditional block that's arranged differently.
+In this case, the code's conditional block doesn't have the newest code at the top.
+Because `patched()` will return `true` when not Replaying (except with the preceding caveats), this snippet will run the `v2` branch instead of `v3` in new executions.
+
+<!--SNIPSTART dotnet-patching-anti-example-->
+
+```csharp
+if (patched('v2')) {
+    // This is bad because when doing a new execution (i.e. not replaying),
+    // patched statements evaluate to True (and put a marker
+    // in the event history), which means that new executions
+    // will use v2, and miss v3 below
+}
+else if (patched('v3')) {}
+else {}
+```
+
+<!--SNIPEND-->
+
+### Best Practice of Using Classes as Arguments and Returns
+
+As a side note on the Patching API, its behavior is why Temporal recommends using a single object as arguments and returns from Signals, Queries, Updates, and Activities, rather than using multiple arguments/returns.
+The Patching API's main use case is to support branching in an `if` block of a method body.
+It is not designed to be used to set different methods or method signatures for different Workflow Versions.
+
+Because of this, Temporal recommends that each Signal, Activity, etc, accepts a single object and returns a single object, so the method signature can stay constant, and you can do your versioning logic using `patched()` within the method body.
