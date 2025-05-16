@@ -598,14 +598,14 @@ myClient.Connection.RpcMetadata = new Dictionary<string, string>()
 Create an initial `Connection` (for use with `Client`):
 
 ```typescript
-const connection = await Connection.connect(
+const connection = await Connection.connect({
     address: <endpoint>,
     tls: true,
     apiKey: <APIKey>,
     metadata: {
         'temporal-namespace': <namespace_id>.<account_id>,
     },
-)
+});
 const client = new Client({
     connection,
     namespace: <namespace_id>.<account_id>,
@@ -615,14 +615,14 @@ const client = new Client({
 Create an initial Worker `NativeConnection` (for use with `Worker`):
 
 ```typescript
-const connection = await NativeConnection.connect(
+const connection = await NativeConnection.connect({
     address: <endpoint>,
     tls: true,
     apiKey: <APIKey>,
     metadata: {
       'temporal-namespace': <namespace_id>.<account_id>,
     },
-)
+});
 const worker = await Worker.create({
     connection,
     namespace: <namespace_id>.<account_id>,
