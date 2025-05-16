@@ -31,6 +31,22 @@ This section covers features related to viewing the state of the application, in
 ## Log from a Workflow {#logging}
 
 Logging enables you to record critical information during code execution.
+Loggers create an audit trail and capture information about your Workflow's operation.
+An appropriate logging level depends on your specific needs.
+During development or troubleshooting, you might use debug or even trace.
+In production, you might use info or warn to avoid excessive log volume.
+
+The logger supports the following logging levels:
+
+| Level   | Use                                                                                                       |
+| ------- | --------------------------------------------------------------------------------------------------------- |
+| `TRACE` | The most detailed level of logging, used for very fine-grained information.                               |
+| `DEBUG` | Detailed information, typically useful for debugging purposes.                                            |
+| `INFO`  | General information about the application's operation.                                                    |
+| `WARN`  | Indicates potentially harmful situations or minor issues that don't prevent the application from working. |
+| `ERROR` | Indicates error conditions that might still allow the application to continue running.                    |
+
+The Temporal SDK core normally uses `WARN` as its default logging level.
 
 To get a PSR-3 compatible logger in your Workflow code, use the [`Workflow::getLogger()`](https://php.temporal.io/classes/Temporal-Workflow.html#method_getLogger) method.
 
