@@ -427,7 +427,7 @@ module.exports = {
               },
               items: [
                 "production-deployment/cloud/audit-logging-aws",
-                // "production-deployment/cloud/audit-logging-gcp", // pre-release
+                "production-deployment/cloud/audit-logging-gcp", // pre-release
               ],
             },
             {
@@ -489,6 +489,7 @@ module.exports = {
         id: "cli/index",
       },
       items: [
+        "cli/setup-cli",
         "cli/activity",
         "cli/batch",
         "cli/cmd-options",
@@ -497,6 +498,7 @@ module.exports = {
         "cli/schedule",
         "cli/server",
         "cli/task-queue",
+        "cli/worker",
         "cli/workflow",
       ],
     },

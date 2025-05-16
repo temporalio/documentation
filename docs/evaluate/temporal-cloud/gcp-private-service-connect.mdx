@@ -56,28 +56,27 @@ Set up Private Service Connect with Temporal Cloud with these steps:
 
    ![GCP console showing the endpoints, and the Connect endpoint button](/img/cloud/gcp/connect-endpoint.png)
 
-  - For **Target service**, fill in the **Service name** with the Private Service Connect Service Name for the region you’re trying to connect to:
+- For **Target service**, fill in the **Service name** with the Private Service Connect Service Name for the region you’re trying to connect to:
 
-      | Region         | Private Service Connect Service Name                                                       |
-      | -------------- | ------------------------------------------------------------------------------------------ |
-      | `asia-south1`  | `projects/prod-d5spc2sfeshws33bg33vwdef7/regions/asia-south1/serviceAttachments/pl-7w7tw`  |
-      | `europe-west3` | `projects/prod-kwy7d4faxp6qgrgd9x94du36g/regions/europe-west3/serviceAttachments/pl-acgsh` |
-      | `us-east4`     | `projects/prod-y399cvr9c2b43es2w3q3e4gvw/regions/us-east4/serviceAttachments/pl-8awsy`     |
-      | `us-west1   `  | `projects/prod-rbe76zxxzydz4cbdz2xt5b59q/regions/us-west1/serviceAttachments/pl-94w0x`     |
+  | Region         | Private Service Connect Service Name                                                       |
+  | -------------- | ------------------------------------------------------------------------------------------ |
+  | `asia-south1`  | `projects/prod-d5spc2sfeshws33bg33vwdef7/regions/asia-south1/serviceAttachments/pl-7w7tw`  |
+  | `europe-west3` | `projects/prod-kwy7d4faxp6qgrgd9x94du36g/regions/europe-west3/serviceAttachments/pl-acgsh` |
+  | `us-east4`     | `projects/prod-y399cvr9c2b43es2w3q3e4gvw/regions/us-east4/serviceAttachments/pl-8awsy`     |
+  | `us-west1`     | `projects/prod-rbe76zxxzydz4cbdz2xt5b59q/regions/us-west1/serviceAttachments/pl-94w0x`     |
 
-  - For **Endpoint name**, enter a unique identifier to use for this endpoint. It could be for instance `temporal-api` or `temporal-api-<namespace>` if you want a different endpoint per namespace.
-  - For **Network** and **Subnetwork**, choose the network and subnetwork where you want to publish your endpoint.
-  - For **IP address**, click the dropdown and select **Create IP address** to create an internal IP from your subnet dedicated to the endpoint. Select this IP.
-  - Check **Enable global access** if you intend to connect the endpoint to virtual machines outside of the selected region. We recommend regional connectivity instead of global access, as it can be better in terms of latency for your workers.
+- For **Endpoint name**, enter a unique identifier to use for this endpoint. It could be for instance `temporal-api` or `temporal-api-<namespace>` if you want a different endpoint per namespace.
+- For **Network** and **Subnetwork**, choose the network and subnetwork where you want to publish your endpoint.
+- For **IP address**, click the dropdown and select **Create IP address** to create an internal IP from your subnet dedicated to the endpoint. Select this IP.
+- Check **Enable global access** if you intend to connect the endpoint to virtual machines outside of the selected region. We recommend regional connectivity instead of global access, as it can be better in terms of latency for your workers.
 
 5. Click the **Add endpoint** button at the bottom of the screen.
    If successful, the status of your new endpoint will appear as **Accepted**.
    Take note of the **IP address** that has been assigned to your endpoint, as it will be used to connect to Temporal Cloud.
 
 6. You can use GCP Private Service Connect.
-    You can use the **IP address** of the previous step to connect to Temporal Cloud using port 7233.
-    To establish a valid mTLS session, you must override the TLS server name used for the connection to `<namespace>.<account>.tmprl.cloud`.
-
+   You can use the **IP address** of the previous step to connect to Temporal Cloud using port 7233.
+   To establish a valid mTLS session, you must override the TLS server name used for the connection to `<namespace>.<account>.tmprl.cloud`.
 
 :::tip
 
