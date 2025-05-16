@@ -21,8 +21,6 @@ what work needs to be done. Each Task Queue is identified by a name, which is
 provided to the Temporal Service when launching a Workflow Execution. In this
 example, the value is included in request to start the Workflow.
 
-
-
 <Tabs groupId="start-workflow-configure-worker-by-sdk" queryString>
 
 <TabItem value="python" label="Python">
@@ -42,7 +40,6 @@ result = await client.execute_workflow(
 ```
 
 **Excerpt of code used to configure the Worker in Python**
-
 
 ```python
 worker = Worker(
@@ -101,16 +98,16 @@ Worker worker = factory.newWorker("my-task-queue-name");
 ```typescript
 await client.workflow.start(OrderProcessingWorkflow, {
   args: [order],
-  taskQueue: "my-task-queue",
+  taskQueue: 'my-task-queue',
   workflowId: `workflow-order-${order.id},`,
-})
+});
 ```
 
 **Excerpt of code used to configure the Worker in TypeScript**
 
 ```typescript
 const worker = await Worker.create({
-  taskQueue: "my-task-queue",
+  taskQueue: 'my-task-queue',
   connection,
   workflowsPath: require.resolve('./workflows'),
   activities,
@@ -147,7 +144,6 @@ using var worker = new TemporalWorker(
 
 </Tabs>
 
-
 Since Task Queues are created dynamically when they are first used, a mismatch
 between these two values does not result in an error. Instead, it will result
 in the creation of two different Task Queues. Consequently, the Worker will
@@ -156,13 +152,11 @@ will not progress. Therefore, we recommend that you define the Task Queue name
 in a constant that is referenced by the Client and Worker if possible, as this
 will ensure that they always use the same value.
 
-
 <Tabs groupId="start-workflow-configure-worker-by-sdk" queryString>
 
 <TabItem value="python" label="Python">
 
 **Excerpt of code used to define a constant with the Task Queue name in Python (in a shared.py file)**
-
 
 ```python
 TASK_QUEUE_NAME = "my-task-queue-name"
@@ -189,7 +183,6 @@ result = await client.execute_workflow(
 
 **Excerpt of code used to configure the Worker, referencing the constant
 defined with the Task Queue name in Python**
-
 
 ```python
 worker = Worker(
@@ -221,7 +214,6 @@ options := client.StartWorkflowOptions{
 
 run, err := c.ExecuteWorkflow(ctx, options, ProcessOrderWorkflow, input)
 ```
-
 
 **Excerpt of code used to configure the Worker, referencing the constant defined with the Task Queue name in Go**
 
@@ -267,7 +259,7 @@ Worker worker = factory.newWorker(Constants.taskQueueName);
 **Excerpt of code used to define a constant with the Task Queue name in TypeScript**
 
 ```typescript
-const TASK_QUEUE_NAME = "my-taskqueue-name"
+const TASK_QUEUE_NAME = 'my-taskqueue-name';
 ```
 
 **Excerpt of code used to start the Workflow, referencing the constant defined with the Task Queue name in TypeScript**
@@ -281,7 +273,7 @@ await client.workflow.start(OrderProcessingWorkflow, {
   args: [order],
   taskQueue: TASK_QUEUE_NAME,
   workflowId: `workflow-order-${order.id},`,
-})
+});
 ```
 
 **Excerpt of code used to configure the Worker, referencing the constant defined with the Task Queue name in TypeScript**
@@ -311,7 +303,6 @@ public static class WorkflowConstants
 }
 ```
 
-
 **Excerpt of code used to start the Workflow, referencing the constant defined with the Task Queue name in C# and .NET**
 
 ```csharp
@@ -339,7 +330,6 @@ using var worker = new TemporalWorker(
 
 </Tabs>
 
-
 However, it’s not always possible to do this, such as when the Client used
 to start the Workflow is running on another system or is implemented in a
 different programming language.
@@ -355,4 +345,3 @@ Worker will recover any executions that were in progress and will
 continue to handle new ones, too. Running additional Worker Processes
 will further increase the scalability and availability of your
 application.
-
