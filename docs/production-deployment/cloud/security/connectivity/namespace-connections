@@ -1,0 +1,24 @@
+---
+id: namespace-connections
+title: Limiting Access to Namespaces
+sidebar_label: Namespace Access
+description: Secure your Temporal Cloud connections by limiting which namespaces can be accessed
+slug: /cloud/security/connectivity/namespace-connections
+toc_max_heading_level: 4
+keywords:
+  - namespaces  
+  - privatelink
+  - private connectivity
+  - security
+  - temporal cloud
+  - aws
+  - gcp
+tags:
+  - Security
+  - Temporal Cloud
+  - namespaces
+  - AWS
+  - Google Cloud Platform
+---
+
+<!-- New content here. -->

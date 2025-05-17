@@ -3,7 +3,7 @@ id: aws-privatelink
 title: Private Connectivity - AWS PrivateLink
 sidebar_label: AWS PrivateLink
 description: Secure your Temporal Cloud connections using AWS PrivateLink.
-slug: /cloud/security/aws-privatelink
+slug: /cloud/security/connectivity/aws-privatelink
 toc_max_heading_level: 4
 keywords:
   - privatelink
@@ -26,16 +26,6 @@ It establishes a private connection between your Amazon Virtual Private Cloud (V
 This one-way connection means Temporal cannot establish a connection back to your service.
 This is useful if normally you block traffic egress as part of your security protocols.
 If you use a private environment that does not allow external connectivity, you will remain isolated.
-
-:::note
-
-If you are interested in leveraging AWS PrivateLink in your Namespaces, [create a support ticket](/cloud/support#support-ticket) that includes the following information:
-
-- AWS Region: The Region in which your connection will go through.
-- AWS Account Id: The account which contains the permissions to enable AWS PrivateLink.
-- Temporal Cloud Namespace names: The name of the Namespaces you want to enable AWS PrivateLink with.
-
-:::
 
 Set up PrivateLink connectivity with Temporal Cloud with these steps:
 
