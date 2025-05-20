@@ -84,8 +84,13 @@ Python workers have following components for executing code:
 
 ### Workflows
 
-Since Workflow Tasks (1) are CPU bound, (2) need to be timed out for deadlock detection, and (3) need to not block other Workflow Tasks, they are run in threads. The `workflow_task_executor` is the thread pool these Tasks are run on.
+Since Workflow Tasks have the following three properties, they're run in threads.
 
+* are CPU bound
+* need to be timed out for deadlock detection
+* need to not block other Workflow Tasks
+
+The `workflow_task_executor` is the thread pool these Tasks are run on.
 The fact that Workflow Tasks run in a thread pool can be confusing at first because Workflow Definitions are `async`.
 The key differentiator is that the `async` in Workflow Definitions isn't referring to the standard event loop -- it's referring to the Workflow's own event loop.
 Each Workflow gets its own “Workflow event loop,” which is deterministic, and described in [the Python SDK blog](https://temporal.io/blog/durable-distributed-asyncio-event-loop#temporal-workflows-are-asyncio-event-loops).
@@ -94,12 +99,12 @@ When it can no longer make progress on any of its futures, then the Workflow Tas
 
 ### Number of CPU cores
 
-The only ways to use more than one core in a python worker (considering Python's GIL) are:
+The only ways to use more than one core in a python Worker (considering Python's GIL) are:
 
-- Run more than one worker process.
+- Run more than one Worker Process.
 - Run the synchronous Activities in a process pool executor, but a thread pool executor is recommended.
 
-### Separating Activity and Workflow Workers
+### A Worker infrastructure option: Separate Activity and Workflow Workers
 
 To reduce the risk of event loops or executors getting blocked,
 some users choose to deploy separate Workers for Workflow Tasks and Activity Tasks.
@@ -107,8 +112,8 @@ some users choose to deploy separate Workers for Workflow Tasks and Activity Tas
 ## Activity Definition
 
 **By default, Activities should be synchronous rather than asynchronous**.
-You should only make an Activity asynchronous if you are _very_
-sure that it does not block the event loop.
+You should only make an Activity asynchronous if you are
+certain that it doesn't block the event loop.
 
 This is because if you have blocking code in an `async def` function,
 it blocks your event loop and the rest of Temporal, which can cause bugs that are
@@ -123,11 +128,10 @@ which helps because:
 - If you have multiple
   Activity Tasks running in a thread pool rather than an event loop, one bad
   Activity Task can't slow down the others; this is because the OS scheduler preemptively
-  switches between threads, which the event loop coordinator does not do.
+  switches between threads, which the event loop coordinator doesn't do.
 
 > See Also:
 > ["Types of Activities" section of Python SDK README](https://github.com/temporalio/sdk-python#types-of-activities)
-> and [Sync vs Async activity implementations](https://docs.temporal.io/develop/python/python-sdk-sync-vs-async)
 
 ## How to implement Synchronous Activities
 
@@ -162,7 +166,7 @@ class TranslateActivities:
 
 The preceeding example doesn't share a session across the Activity, so
 `__init__` was removed. While `requests` does have the ability to create sessions,
-it's currently unknown if they are thread safe. Due to no longer having or needing
+it's currently unknown if they're thread safe. Due to no longer having or needing
 `__init__`, the case could be made here to not implement the Activities as a class,
 but just as decorated functions as shown here:
 
