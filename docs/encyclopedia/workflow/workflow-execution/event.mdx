@@ -94,9 +94,11 @@ Events are created by the Temporal Service in response to either Commands or act
 
 No, there is no time constraint on how long a Workflow Execution can run.
 
-However, Workflow Executions intended to run indefinitely should be written with some care as they can run into [Event History limits](#event-history-limits).
+However, if your Workflow will perform many actions, or will receive many messages, it can run into [Event History limits](#event-history-limits).
 
-They can also hit [Workflow Versioning](/workflow-definition#workflow-versioning) problems. As such, it can be a good idea to [Continue-As-New](/workflow-execution/continue-as-new) periodically to make sure that all of your running Workflows began on recent versions of your code.
+It can also hit [Workflow Versioning](/workflow-definition#workflow-versioning) and other backwards incompatibility problems.
+
+For these reasons, it can be a good idea to [Continue-As-New](/workflow-execution/continue-as-new) periodically.
 
 ## What is a Reset? {#reset}
 

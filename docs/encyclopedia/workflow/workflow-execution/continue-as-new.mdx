@@ -23,16 +23,17 @@ There are two main problems this practice can prevent:
 
 - A Workflow Execution with a long, or large [Event History](/workflow-execution/event#event-history), such as one calling many activities, may bog down and have performance issues.
   It could even generate more events than allowed by the [Event History limits](/workflow-execution/event#event-history-limits).
-- A Workflow Execution can hit [Workflow Versioning](/workflow-definition#workflow-versioning) problems if it started running on an older version of your code.
+- A Workflow Execution can hit [Workflow Versioning](/workflow-definition#workflow-versioning) problems if it started running on an older version of your code and then begins executing on a newer version.
 
-Pass your latest relevant state into Continue-As-New.
-This checkpoints it and passes it to a new Execution in the [Execution Chain](/workflow-execution#workflow-execution-chain).
-This state is passed in through your Workflow's parameters.
+Your goal is to create a new workflow with a fresh history that picks up where your last one left off.
+First, pass your latest relevant state into Continue-As-New.
+This hands it to a new Execution in the [Execution Chain](/workflow-execution#workflow-execution-chain).
+This state is passed in as arguments to your Workflow.
 The parameters are typically optional and left unset by the original caller of the Workflow.
 
 The new Workflow Execution has the same Workflow Id, but a different Run Id, and starts its own Event History.
 
-You can repeat Continue-As-New as often as needed, which means that your Workflow can run in perpetuity.
+You can repeat Continue-As-New as often as needed, which means that your Workflow can run forever.
 Workflows that do this are often called Entity Workflows because they represent durable objects, not just processes.
 
 - [How to Continue-As-New using the Go SDK](/develop/go/continue-as-new#how)
@@ -47,7 +48,7 @@ Workflows that do this are often called Entity Workflows because they represent 
 To prevent scalability problems, periodically check Continue As New Suggested in your Workflow.\
 Temporal will tell your Workflow when it's approaching performance or scalability problems.
 
-To help prevent versioning problems for long-running Workflows, you may also want to Continue-as-New after a certain amount of time has elapsed. This will make sure every Workflow began on a recent version of your source code.
+To prevent long-running Workflows from running on stale versions of code, you may also want to Continue-as-New periodically. This makes sure you're running only a couple of versions, which avoids some backwards compatibility problems.
 
 - [Determine when to Continue-As-New using the Go SDK](/develop/go/continue-as-new#when)
 - [Determine when to Continue-As-New using the Java SDK](/develop/java/continue-as-new#when)
