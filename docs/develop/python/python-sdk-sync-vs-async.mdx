@@ -86,9 +86,9 @@ Python workers have following components for executing code:
 
 Since Workflow Tasks have the following three properties, they're run in threads.
 
-* are CPU bound
-* need to be timed out for deadlock detection
-* need to not block other Workflow Tasks
+- are CPU bound
+- need to be timed out for deadlock detection
+- need to not block other Workflow Tasks
 
 The `workflow_task_executor` is the thread pool these Tasks are run on.
 The fact that Workflow Tasks run in a thread pool can be confusing at first because Workflow Definitions are `async`.
