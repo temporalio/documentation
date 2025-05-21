@@ -43,12 +43,12 @@ Workflows that do this are often called Entity Workflows because they represent 
 - [How to Continue-As-New using the TypeScript SDK](/develop/typescript/continue-as-new#how)
 - [How to Continue-As-New using the .NET SDK](/develop/dotnet/continue-as-new#how)
 
-## When is it right to Continue-As-New? {#when}
+## When in your Workflow is it right to Continue-As-New? {#when}
 
-To prevent scalability problems, periodically check Continue As New Suggested in your Workflow.\
 Temporal will tell your Workflow when it's approaching performance or scalability problems.
+Find out if it's time by checking Continue-As-New Suggested in your Workflow at spots in your implementation where you are ready to checkpoint your state.
 
-To prevent long-running Workflows from running on stale versions of code, you may also want to Continue-as-New periodically. This makes sure you're running only a couple of versions, which avoids some backwards compatibility problems.
+To prevent long-running Workflows from running on stale versions of code, you may also want to Continue-as-New periodically, depending on how often you deploy. This makes sure you're running only a couple of versions, which avoids some backwards compatibility problems.
 
 - [Determine when to Continue-As-New using the Go SDK](/develop/go/continue-as-new#when)
 - [Determine when to Continue-As-New using the Java SDK](/develop/java/continue-as-new#when)
