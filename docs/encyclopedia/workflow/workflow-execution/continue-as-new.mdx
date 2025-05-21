@@ -13,13 +13,13 @@ tags:
   - Workflows
 ---
 
-This page discusses [Continue-As-New](#continue-as-new) and how to tell [when](#when) you would want to use it.
+This page discusses [Continue-As-New](#continue-as-new) and how to decide [when to use it](#when).
 
 ## What is Continue-As-New? {#continue-as-new}
 
 Continue-As-New allows you to checkpoint your Workflow's state and start a fresh Workflow.
 
-There are two main problems this practice can prevent:
+There are two main reasons you might want to start a new Workflow:
 
 - A Workflow Execution with a long, or large [Event History](/workflow-execution/event#event-history), such as one calling many activities, may bog down and have performance issues.
   It could even generate more events than allowed by the [Event History limits](/workflow-execution/event#event-history-limits).
