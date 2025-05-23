@@ -244,6 +244,138 @@ export async function myWorkflow(): Promise<void> {
 
 `vFinal` is safe to deploy once all `v2` or earlier Workflows are complete due to the assertion mentioned above.
 
+#### Detailed Description of the Patched Function
+
+Here is a detailed explanation of how the `patched()` function behaves.
+
+##### Behavior When Not Replaying
+
+If the execution is not replaying, when it encounters a call to `patched()`, it first checks the event history.
+
+- If the patch ID is not in the event history, the execution adds a marker to the event history, upserts a search attribute, and returns `true`.
+  This happens in the first block of the patch ID.
+- If the patch ID is in the event history, the execution doesn't modify the history, and returns `true`.
+  This happens in a patch ID's subsequent blocks, because the event history was updated in the first block.
+
+##### Behavior When Replaying With Marker Before-Or-At Current Location
+
+If Replaying:
+
+- If the code has a call to patched, and if the event history
+  has a marker from a call to patched in the same place (which means it
+  will match the original event history), then
+  it writes a marker to the replay event history and returns true.
+  _This is similar to the behavior of the non-replay case, and
+  just like in that case, this happens in a given patch ID's first block_
+- If the code has a call to patched, and the event history
+  has a marker with that Patch ID earlier in the history,
+  then it will simply return true and not modify the
+  replay event history.
+  _This is similar to the behavior of the non-replay case, and
+  just like in that case, this happens in a given patch ID's subsequent blocks_
+- If the code has a call to patched, and there no marker on or before that spot in the execution, it returns false.
+
+If the execution is replaying and has a call to `patched()`, and if the event history has a marker from a call to `patched()` in the same place
+(which means it will match the original event history), then it writes a marker to the replay event history and returns `true`.
+
+This is similar to the behavior of the non-replay case, and
+also happens in a given patch ID's first block.
+
+If the code has a call to `patched()`, and the event history
+has a marker with that Patch ID earlier in the history,
+it will return `true` and will not modify the
+replay event history.
+
+This is also similar to the behavior of the non-replay case, and
+also happens in a given patch ID's subsequent blocks.
+
+If the code has a call to `patched()`, and there is no marker on or before that spot in the execution, it returns `false`.
+
+##### Implications of the Behaviors
+
+If you deploy new code and the execution is not replaying, the new code will be run.
+If the execution is replaying, it will repeat what
+it did the previous time.
+
+This means that if the execution has gotten through some of your code, then
+you stop the worker and deploy new code, when it replays,
+it will use the old code throughout the replay, but switch over
+to new code after it has passed the replay threshold. This means
+your new code and your old code must work together. For example,
+if your Workflow Definition originally looked like this:
+
+```ts
+console.log('original code before the sleep');
+await sleep(10000); // <-- Stop the Worker while this is waiting, and deploy the new code below
+console.log('original code after the sleep');
+```
+
+If you stop the Worker during the `sleep`, and wrap the original
+code in the `else` part of a patched `if` statement:
+
+```ts
+if (patched('my-change-id')) {
+  console.log('new code before the sleep');
+} else {
+  console.log('original code before the sleep'); // this will run
+}
+await sleep(10000);
+if (patched('my-change-id')) {
+  console.log('new code after the sleep'); // this will run
+} else {
+  console.log('original code after the sleep');
+}
+```
+
+When you start the worker again, the execution will initially be replaying and will run the old code, up to the `sleep` call.
+After the `sleep` call, the execution won't be replaying, and will run the new code.
+
+##### Recommendations
+
+Based on this behavior and the implications, when patching in new code, always put the newest code at the top of an if-patched-block.
+
+<!--SNIPSTART typescript-patching-example-->
+
+```ts
+if (patched('v3')) {
+  // This is the newest version of the code.
+  // put this at the top, so when it is running
+  // a fresh execution and not replaying,
+  // this patched statement will return true
+  // and it will run the new code.
+} else if (patched('v2')) {
+} else {
+}
+```
+
+<!--SNIPEND-->
+
+The following sample shows how `patched()` will behave in a conditional block that's arranged differently.
+In this case, the code's conditional block doesn't have the newest code at the top.
+Because `patched()` will return `true` when not Replaying, this snippet will run the `v2` branch instead of `v3` in new executions.
+
+<!--SNIPSTART typescript-patching-anti-example-->
+
+```ts
+if (patched('v2')) {
+  // This is bad because when doing a new execution (i.e. not replaying),
+  // patched statements evaluate to True (and put a marker
+  // in the event history), which means that new executions
+  // will use v2, and miss v3 below
+} else if (patched('v3')) {}
+else {}
+```
+
+<!--SNIPEND-->
+
+### Best Practice of Using TypeScript Objects as Arguments and Returns
+
+As a side note on the Patching API, its behavior is why Temporal recommends using single objects as arguments and returns from Signals, Queries, Updates, and Activities, rather than using multiple arguments.
+The Patching API's main use case is to support branching in an `if` block of a function body.
+It is not designed to be used to set different functions or function signatures for different Workflow Versions.
+
+Because of this, Temporal recommends that each Signal, Activity, etc, accepts a single object and returns a single object, so the function signature can stay constant, and you can do your versioning logic using `patched()` within the function body.
+
 ### Upgrading Workflow dependencies
 
 Upgrading Workflow dependencies (such as ones installed into `node_modules`) _might_ break determinism in unpredictable ways.
