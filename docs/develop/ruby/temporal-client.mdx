@@ -14,19 +14,74 @@ tags:
   - Certificates
 ---
 
+This page shows how to do the following:
+
+- [Create a Temporal Client](#create-a-client)
+- [Connect to Temporal Cloud](#connect-to-temporal-cloud)
+- [Start a Workflow](#start-workflow)
+- [Get Workflow results](#get-workflow-results)
+
 ## Create a Temporal Client {#create-a-client}
 
-<!-- CONTENT-->
+**How to create a Temporal Client using the Temporal Ruby SDK**
+
+A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Service](/temporal-service).
+Communication with a Temporal Service includes, but isn't limited to, the following:
+
+- Starting Workflow Executions.
+- Sending Signals to Workflow Executions.
+- Sending Queries to Workflow Executions.
+- Getting the results of a Workflow Execution.
+- Providing an Activity Task Token.
+
+:::caution
+
+A Temporal Client cannot be initialized and used inside a Workflow.
+However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with a Temporal Service.
+
+:::
+
+When running a Temporal Service locally (such as via [Temporal CLI](https://docs.temporal.io/cli/server#start-dev)), the number of connection options required is minimal.
+Most SDKs default to localhost or a standard port (`127.0.0.1:7233`).
+
+<!-- CONTENT -->
 
 ## Connect to Temporal Cloud {#connect-to-temporal-cloud}
 
-<!-- CONTENT-->
+**How to connect to Temporal Cloud using the Temporal Ruby SDK**
 
-## Start a Workflow {#start-worklow}
+When connecting to [Temporal Cloud](/cloud), you must provide:
 
-<!-- CONTENT-->
-<!-- Call out setting Task Queue and Workflow Id-->
+- The [Temporal Cloud Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id)
+- The [Namespace's gRPC endpoint](/cloud/namespaces#temporal-cloud-grpc-endpoint)
+- mTLS CA certificate
+- mTLS private key
 
-## Get Workflow results
+See [How to manage certificates in Temporal Cloud](/cloud/certificates) for details.
 
-<!-- CONTENT-->
+<!-- CONTENT -->
+
+## Start a Workflow {#start-workflow}
+
+**How to start a Workflow using the Temporal Ruby SDK**
+
+To start a Workflow Execution, supply:
+
+- A Task Queue
+- A Workflow Type
+- Input arguments
+- Workflow options such as Workflow Id
+
+<!-- CONTENT -->
+
+## Get Workflow results {#get-workflow-results}
+
+**How to get the results of a Workflow Execution using the Temporal Ruby SDK**
+
+Once a Workflow Execution is started, the Workflow Id and Run Id can be used to uniquely identify it.
+
+You can block until the result is available, or retrieve it later using the handle.
+
+You can also use Queries to access Workflow state and results while the Workflow is running.
+
+<!-- CONTENT -->

@@ -21,52 +21,110 @@ tags:
   - Temporal SDKs
 ---
 
-## Signals
+A Workflow can act like a stateful service that receives messages: Queries, Signals, and Updates.
+These messages interact with the Workflow via handler methods defined in the Workflow code.
+Clients use messages to read Workflow state or change its behavior.
 
-<!-- Links to pages about Signals-->
+See [Workflow message passing](/encyclopedia/workflow-message-passing) for a general overview.
 
-### Define Signal
+## Write message handlers {#writing-message-handlers}
 
-<!-- CONTENT-->
+<!-- CONTENT -->
 
-### Handle Signal
+### Query handlers {#queries}
 
-<!-- CONTENT-->
+<!-- CONTENT -->
 
-### Send a Signal from a Temporal Client
+### Signal handlers {#signals}
 
-<!-- CONTENT-->
+<!-- CONTENT -->
 
-### Send a Signal from a Workflow
+### Update handlers and validators {#updates}
 
-<!-- CONTENT-->
+<!-- CONTENT -->
 
-### Signal-With-Start
+## Send messages {#send-messages}
 
-<!-- CONTENT-->
+<!-- CONTENT -->
 
-### How to set a Dynamic Signal
+### Send a Query {#send-query}
 
-<!-- CONTENT-->
+<!-- CONTENT -->
 
-## Queries
+### Send a Signal {#send-signal}
 
-A [Query](/workflows#query) is a synchronous operation that is used to get the state of a Workflow Execution.
+#### From a Client {#send-signal-from-client}
 
-### Define a Query
+<!-- CONTENT -->
 
-<!-- CONTENT-->
+#### From a Workflow {#send-signal-from-workflow}
 
-### Handle Queries
+<!-- CONTENT -->
 
-<!-- CONTENT-->
+#### Signal-With-Start {#signal-with-start}
 
-### Send Queries
+<!-- CONTENT -->
 
-<!-- CONTENT-->
+### Send an Update {#send-update-from-client}
 
-### How to set a Dynamic Query
+<!-- CONTENT -->
 
-<!-- CONTENT-->
+#### Update-With-Start {#update-with-start}
 
-## Updates
+<!-- CONTENT -->
+
+## Message handler patterns {#message-handler-patterns}
+
+<!-- CONTENT -->
+
+### Add async handlers {#async-handlers}
+
+<!-- CONTENT -->
+
+### Use wait conditions {#block-with-wait}
+
+#### In handlers {#wait-in-handlers}
+
+<!-- CONTENT -->
+
+#### Before finishing the Workflow {#wait-for-message-handlers}
+
+<!-- CONTENT -->
+
+### Use WorkflowInit to access input early
+
+<!-- CONTENT -->
+
+### Use locks to prevent concurrent handler execution {#control-handler-concurrency}
+
+<!-- CONTENT -->
+
+## Troubleshooting {#message-handler-troubleshooting}
+
+<!-- CONTENT -->
+
+### Signal issues {#signal-problems}
+
+<!-- CONTENT -->
+
+### Update issues {#update-problems}
+
+<!-- CONTENT -->
+
+### Query issues {#query-problems}
+
+<!-- CONTENT -->
+
+## Dynamic handlers {#dynamic-handler}
+
+### Dynamic Query {#set-a-dynamic-query}
+
+<!-- CONTENT -->
+
+### Dynamic Signal {#set-a-dynamic-signal}
+
+<!-- CONTENT -->
+
+### Dynamic Update {#set-a-dynamic-update}
+
+<!-- CONTENT -->

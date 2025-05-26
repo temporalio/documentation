@@ -18,36 +18,71 @@ tags:
   - Errors
 ---
 
-## Failure Detection {#failure-detection}
+This page shows how to do the following:
+
+- [Workflow timeouts](#workflow-timeouts)
+- [Workflow retries](#workflow-retries)
+- [Activity timeouts](#activity-timeouts)
+- [Activity Retry Policy](#activity-retries)
+- [Heartbeat an Activity](#activity-heartbeats)
+- [Heartbeat Timeout](#heartbeat-timeout)
 
 ## Workflow timeouts {#workflow-timeouts}
 
 Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
-Workflow timeouts are set when [starting the Workflow Execution](#workflow-timeouts).
 
-- **[Workflow Execution Timeout](/workflows#workflow-execution-timeout)** - restricts the maximum amount of time that a single Workflow Execution can be executed.
-- **[Workflow Run Timeout](/workflows#workflow-run-timeout):** restricts the maximum amount of time that a single Workflow Run can last.
-- **[Workflow Task Timeout](/workflows#workflow-task-timeout):** restricts the maximum amount of time that a Worker can execute a Workflow Task.
+- **[Workflow Execution Timeout](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout)**: Limits how long the full Workflow Execution can run.
+- **[Workflow Run Timeout](/encyclopedia/detecting-workflow-failures#workflow-run-timeout)**: Limits the duration of an individual run of a Workflow Execution.
+- **[Workflow Task Timeout](/encyclopedia/detecting-workflow-failures#workflow-task-timeout)**: Limits the time allowed for a Worker to process a Workflow Task.
 
-<!-- CONTENT-->
+Set these values in the `WorkflowOptions` when starting a Workflow.
+
+<!-- CONTENT -->
 
 ### Workflow retries {#workflow-retries}
 
-A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.
+Use a [Retry Policy](/encyclopedia/retry-policies) to automatically retry Workflow Executions on failure.
+Workflow Executions do not retry by default.
 
-<!-- CONTENT-->
+<!-- CONTENT -->
 
-## How to set Activity timeouts {#activity-timeouts}
+## Activity timeouts {#activity-timeouts}
 
-Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
-The following timeouts are available in the Activity Options.
+Each Activity Timeout controls a different aspect of how long an Activity Execution can take:
 
-- **[Schedule-To-Close Timeout](/activities#schedule-to-close-timeout):** is the maximum amount of time allowed for the overall [Activity Execution](/activities#activity-execution).
-- **[Start-To-Close Timeout](/activities#start-to-close-timeout):** is the maximum time allowed for a single [Activity Task Execution](/workers#activity-task-execution).
-- **[Schedule-To-Start Timeout](/activities#schedule-to-start-timeout):** is the maximum amount of time that is allowed from when an [Activity Task](/workers#activity-task) is scheduled to when a [Worker](/workers#worker) starts that Activity Task.
+- **[Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout)**
+- **[Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout)**
+- **[Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout)**
 
-<!-- CONTENT-->
+At least one of `StartToCloseTimeout` or `ScheduleToCloseTimeout` is required.
 
-### How to set an Activity Retry Policy {#activity-retries}
+<!-- CONTENT -->
 
-<!-- CONTENT-->
+### Activity Retry Policy {#activity-retries}
+
+By default, Activities use a system Retry Policy.
+You can override it by specifying a custom Retry Policy.
+
+<!-- CONTENT -->
+
+### Override the retry interval with `nextRetryDelay` {#next-retry-delay}
+
+If you raise an application-level error, you can override the Retry Policy's delay by specifying a new delay.
+
+<!-- CONTENT -->
+
+## Heartbeat an Activity {#activity-heartbeats}
+
+A Heartbeat is a periodic signal from the Worker to the Temporal Service indicating the Activity is still alive and making progress.
+
+- Heartbeats are used to detect Worker failure.
+- Cancellations are delivered via Heartbeats.
+- Heartbeats may contain custom progress details.
+
+<!-- CONTENT -->
+
+### Heartbeat Timeout {#heartbeat-timeout}
+
+The Heartbeat Timeout sets the maximum duration between Heartbeats before the Temporal Service considers the Activity failed.
+
+<!-- CONTENT -->

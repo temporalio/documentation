@@ -19,69 +19,67 @@ tags:
   - Workflows
 ---
 
-The observability section of the Temporal Developer's guide covers the many ways to view the current state of your [Temporal Application](/temporal#temporal-application)—that is, ways to view which [Workflow Executions](/workflows#workflow-execution) are tracked by the [Temporal Platform](/temporal#temporal-platform) and the state of any specified Workflow Execution, either currently or at points of an execution.
-This section covers features related to viewing the state of the application, including:
+This page covers capabilities related to viewing the state of the application, including:
 
-## How to emit metrics {#metrics}
+- [Metrics](#metrics)
+- [Tracing](#tracing)
+- [Logging](#logging)
+- [Visibility](#visibility)
 
-**List of metrics capable of being emitted**
+The observability guide covers the many ways to view the current state of your [Temporal Application](/temporal#temporal-application).
+This includes viewing [Workflow Executions](/workflow-execution) tracked by the [Temporal Platform](/temporal#temporal-platform), as well as inspecting state at any point during execution.
 
-<!-- CONTENT-->
+## Emit metrics {#metrics}
 
-**How to set a Prometheus endpoint using the Ruby SDK**
+Each Temporal SDK can optionally emit metrics from either the Client or Worker process.
 
-<!-- CONTENT-->
+- Metrics can be scraped by systems like [Prometheus](https://prometheus.io/docs/introduction/overview/).
+- Graphs can be created using tools like [Grafana](https://grafana.com/docs/).
+- For a list of metrics, see the [SDK metrics reference](/references/sdk-metrics).
 
-## How to setup Tracing {#tracing}
+<!-- CONTENT -->
 
-**How to configure tracing using the Ruby SDK**
+## Setup Tracing {#tracing}
 
-<!-- CONTENT-->
+Tracing enables observability into the sequence of calls across your application, including Workflows and Activities.
 
-## How to log from a Workflow {#logging}
+<!-- CONTENT -->
 
-<!-- CONTENT-->
+## Log from a Workflow {#logging}
 
-### How to provide a custom logger {#custom-logger}
+Logging enables you to capture and persist important execution details from your Workflow and Activity code.
 
-<!-- CONTENT-->
+Logging levels typically include:
 
-## How to use Visibility APIs {#visibility}
+| Level   | Use                                                                                                       |
+| ------- | --------------------------------------------------------------------------------------------------------- |
+| `TRACE` | The most detailed level of logging, used for very fine-grained information.                               |
+| `DEBUG` | Detailed information, typically useful for debugging purposes.                                            |
+| `INFO`  | General information about the application's operation.                                                    |
+| `WARN`  | Indicates potentially harmful situations or minor issues that don't prevent the application from working. |
+| `ERROR` | Indicates error conditions that might still allow the application to continue running.                    |
 
-### How to use Search Attributes {#search-attributes}
+<!-- CONTENT -->
 
-**Introducing the methods of using search attributes using the Ruby SDK (default, custom, generic)**
+## Use Visibility APIs {#visibility}
 
-<!-- CONTENT-->
+Visibility refers to Temporal features for listing, filtering, and inspecting Workflow Executions.
 
-**Steps to using custom Search Attributes using the Ruby SDK**
+### Use Search Attributes {#search-attributes}
 
-<!-- CONTENT-->
+- [Default Search Attributes](/search-attribute#default-search-attribute) like `WorkflowType`, `StartTime`, and `ExecutionStatus` are automatically indexed.
+- [Custom Search Attributes](/search-attribute#custom-search-attribute) let you store domain-specific metadata for Workflows.
 
-**How to query Workflow Executions using the Ruby SDK**
+<!-- CONTENT -->
 
-<!-- CONTENT-->
+### List Workflow Executions {#list-workflow-executions}
 
-### How to set custom Search Attributes {#custom-search-attributes}
+<!-- CONTENT -->
 
-<!-- CONTENT-->
+### Set Custom Search Attributes {#custom-search-attributes}
 
-### How to upsert Search Attributes {#upsert-search-attributes}
+<!-- CONTENT -->
 
-**How to upsert Search Attributes to add or update Search Attributes from within Workflow code**
+### Upsert Search Attributes {#upsert-search-attributes}
 
-<!-- CONTENT-->
-
-**How to upsert custom Search Attributes using the Ruby SDK**
-
-<!-- CONTENT-->
-
-### How to remove a Search Attribute from a Workflow {#remove-search-attribute}
-
-**How to remove a Search Attribute that was previously set using the Temporal Ruby SDK**
-
-<!-- CONTENT-->
-
-**How to remove a Search Attribute using the Temporal Ruby SDK**
-
-<!-- CONTENT-->
+<!-- CONTENT -->
