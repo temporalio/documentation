@@ -78,22 +78,5 @@ Temporal's Converter architecture looks like this:
 
 ### Custom Payload Converter {#custom-payload-converter}
 
-**How to use a custom Payload Converter with the Ruby SDK.**
-
-Data converters are used to convert raw Temporal payloads to/from actual Ruby types.
-A custom data converter can be set via the `DataConverter` option when creating a client. Data converters are a combination of payload converters, payload codecs, and failure converters.
-Payload converters convert Ruby values to/from serialized bytes. Payload codecs convert bytes to bytes (e.g. for compression or encryption). Failure converters convert exceptions to/from serialized failures.
-
-Data converters are in the `Temporalio.Converters` namespace.
-The default data converter uses a default payload converter, which supports the following types:
-
-- `null`
-- `byte[]`
-- `Google.Protobuf.IMessage` instances
-- Anything that `System.Text.Json` supports
-- `IRawValue` as unconverted raw payloads
-
-Custom converters can be created for all uses. For example, to create client with a data converter that converts all C#
-property names to camel case, you would:
 
 <!-- CONTENT-->
