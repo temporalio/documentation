@@ -13,7 +13,8 @@ tags:
 ---
 
 # Quick Start – Ruby SDK
-This guide walks you through setting up the Temporal Ruby SDK and running your first Workflow. 
+
+This guide walks you through setting up the Temporal Ruby SDK and running your first Workflow.
 In just a few steps, you'll install the SDK, start a local development server, and see a Workflow in action.
 
 ## 1. Installation
@@ -23,14 +24,14 @@ Install the Temporal SDK using your preferred method.
 <Tabs>
   <TabItem value="gemfile" label="Gemfile">
 
-  ```ruby
-  gem 'temporalio'
-  ```
+```ruby
+gem 'temporalio'
+```
 
-This approach is used in Ruby projects that manage dependencies with Bundler. 
+This approach is used in Ruby projects that manage dependencies with Bundler.
 
-To install it, add the line to your project's Gemfile and run `bundle install` in your terminal. 
-Bundler will download and install the gem and its dependencies. 
+To install it, add the line to your project's Gemfile and run `bundle install` in your terminal.
+Bundler will download and install the gem and its dependencies.
 
 </TabItem>
 </Tabs>
@@ -38,14 +39,14 @@ Bundler will download and install the gem and its dependencies.
 <Tabs>
   <TabItem value="cli" label="Command Line (gem install)">
 
-  ```bash
-  gem install temporalio
-  ```
+```bash
+gem install temporalio
+```
 
 </TabItem>
 </Tabs>
 
-Both methods will install the same Temporal SDK, which supports Ruby versions 3.2, 3.3, and 3.4. 
+Both methods will install the same Temporal SDK, which supports Ruby versions 3.2, 3.3, and 3.4.
 
 > **Note:**
 >
@@ -55,10 +56,9 @@ Both methods will install the same Temporal SDK, which supports Ruby versions 3.
 > - `fibers`/`async` are only supported on Ruby **3.3+**.
 > - See [Platform Support](#) for full details.
 
-
 ## 2. Start the Temporal Server Locally
 
-With the SDK installed, you’ll need a local Temporal Server to run your Workflows. 
+With the SDK installed, you’ll need a local Temporal Server to run your Workflows.
 The easiest way to do this is with [**Temporal CLI**](https://docs.temporal.io/dev-guide/cli/).
 
 <Tabs groupId="os" queryString>
@@ -70,7 +70,7 @@ You can install the latest version with [Homebrew](https://brew.sh) using the fo
 brew install temporal
 ```
 
-  </TabItem>
+</TabItem>
   <TabItem value="win" label="Windows">
 
 To install Temporal CLI on Windows, download the version for your architecture:
@@ -80,9 +80,8 @@ To install Temporal CLI on Windows, download the version for your architecture:
 
 Once you've downloaded the file, extract the downloaded archive and add the `temporal.exe` binary to your `PATH`.
 
-  </TabItem>
+</TabItem>
   <TabItem value="linux" label="Linux">
-
 
 To install Temporal CLI, download the version for your architecture:
 
@@ -91,7 +90,7 @@ To install Temporal CLI, download the version for your architecture:
 
 Once you've downloaded the file, extract the downloaded archive and add the `temporal` binary to your `PATH` by copying it to a directory like `/usr/local/bin`.
 
-  </TabItem>
+</TabItem>
 </Tabs>
 
 Once installed, run the development server by opening up a new terminal window:
@@ -115,8 +114,7 @@ Leave this running in a separate terminal tab or window while you develop.
 > temporal server start-dev --db-filename my_temporal.db
 > ```
 
-
-## 3. Write Your First Activity and Workflow 
+## 3. Write Your First Activity and Workflow
 
 <Tabs>
   <TabItem value="activity" label="Activity (say_hello_activity.rb)">
@@ -129,9 +127,9 @@ require 'temporalio/activity'
       "Hello, #{name}!"
     end
   end
-  ```
+```
 
-  </TabItem>
+</TabItem>
 </Tabs>
 
 <Tabs>
@@ -150,11 +148,10 @@ require_relative 'say_hello_activity'
       )
     end
   end
-  ```
+```
 
 </TabItem>
 </Tabs>
-
 
 ## 4. Run a Worker
 
@@ -183,7 +180,7 @@ worker.run(shutdown_signals: ['SIGINT'])
 </Tabs>
 
 Workers, which are part of your application and provided by the Temporal SDK, then carry out the tasks defined in your Workflow.
-For more information on Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers). 
+For more information on Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
 
 ## 5. Execute a Workflow and See the Result
 
@@ -215,4 +212,4 @@ puts "Result: #{result}"
 Result: Hello, Temporal!
 ```
 
-To follow more Ruby tutorials, visit learn.temporal.io/ruby. 
+To follow more Ruby tutorials, visit learn.temporal.io/ruby.
