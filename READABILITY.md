@@ -1,6 +1,8 @@
 # Readability Tools
 
 This repository includes a small set of utilities to support content readability.
+These utilities are not meant for use by contributors.
+
 All tools are Bash scripts, located in the `bin/` directory at the root of this repository.
 These scripts help review and transform content to improve documentation processing.
 They are lightweight and designed to work within the content-creation and content-evaluation workflow.
