@@ -150,6 +150,7 @@ This command spins up a local web server and serves the contents of the `/build`
 ## `yarn format`
 
 This command formats the documents per the `dprint.json` configuration.
+The repository CI now automatically applies `dprint` formatting on upload and merges any changes back to the submitted branch.
 
 ## `yarn snipsync`
 
