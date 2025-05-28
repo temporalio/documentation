@@ -8,6 +8,9 @@ keywords:
   - signals
   - queries
   - updates
+  - dynamic signals
+  - dynamic queries
+  - dynamic updates
 tags:
   - Workflows
   - Messages
@@ -839,3 +842,83 @@ When working with Queries, you may encounter these errors:
 
 - **The handler caused the Workflow Task to fail.**
   This would happen, for example, if the Query handler blocks the thread for too long without yielding.
+
+## Dynamic components {#dynamic-handler}
+
+Temporal supports Dynamic Queries, Signals, and Updates.
+These are unnamed handlers that are invoked if no other statically defined handler with the given name exists.
+
+Dynamic Handlers provide flexibility to handle cases where the names of Queries, Signals, or Updates aren't known at run time.
+
+:::caution
+
+Dynamic Handlers should be used judiciously as a fallback mechanism rather than the primary approach.
+Overusing them can lead to maintainability and debugging issues down the line.
+
+Instead, Signals, or Queries should be defined statically whenever possible, with clear names that indicate their purpose.
+Use static definitions as the primary way of structuring your Workflows.
+
+Reserve Dynamic Handlers for cases where the handler names are not known at development time and need to be looked up dynamically at runtime.
+They are meant to handle edge cases and act as a catch-all, not as the main way of invoking logic.
+
+:::
+
+### How to set a Dynamic Query {#set-a-dynamic-query}
+
+A Dynamic Query in Temporal is a Query method that is invoked dynamically at runtime if no other Query with the same name is registered.
+Use [`Workflow::registerDynamicQuery()`](https://php.temporal.io/classes/Temporal-Workflow.html#method_registerDynamicQuery) to set a dynamic Query handler.
+
+The Query Handler parameters must accept a `string` name and [`ValuesInterface`](https://php.temporal.io/classes/Temporal-DataConverter-ValuesInterface.html) for the arguments.
+
+```php
+Workflow::registerDynamicQuery(function (string $name, ValuesInterface $arguments): string {
+    return \sprintf(
+        'Got query `%s` with %d arguments',
+        $name,
+        $arguments->count(),
+    );
+});
+```
+
+### How to set a Dynamic Signal {#set-a-dynamic-signal}
+
+A Dynamic Signal in Temporal is a Signal that is invoked dynamically at runtime if no other Signal with the same input is registered.
+Use [`Workflow::registerDynamicSignal()`](https://php.temporal.io/classes/Temporal-Workflow.html#method_registerDynamicSignal) to set a dynamic Signal handler.
+
+The Signal Handler parameters must accept a `string` name and [`ValuesInterface`](https://php.temporal.io/classes/Temporal-DataConverter-ValuesInterface.html) for the arguments.
+
+```php
+Workflow::registerDynamicSignal(function (string $name, ValuesInterface $arguments): void {
+     Workflow::getLogger()->info(\sprintf(
+         'Executed signal `%s` with %d arguments',
+         $name,
+         $arguments->count(),
+     ));
+ });
+```
+
+### How to set a Dynamic Update {#set-a-dynamic-update}
+
+A Dynamic Update in Temporal is an Update that is invoked dynamically at runtime if no other Update with the same input is registered.
+Use [`Workflow::registerDynamicUpdate()`](https://php.temporal.io/classes/Temporal-Workflow.html#method_registerDynamicUpdate) to set a dynamic Update handler.
+
+The method accepts two arguments:
+
+- Update Handler
+- Update Validator (optional) that should throw an exception if the validation fails
+
+Both the Handler and the Validator must accept a `string` name and [`ValuesInterface`](https://php.temporal.io/classes/Temporal-DataConverter-ValuesInterface.html) for the arguments.
+
+```php
+Workflow::registerDynamicUpdate(
+    static fn(string $name, ValuesInterface $arguments): string => \sprintf(
+        'Got update `%s` with %d arguments',
+        $name,
+        $arguments->count(),
+    ),
+    static fn(string $name, ValuesInterface $arguments) => \str_starts_with(
+        $name,
+        'update_',
+    ) or throw new \InvalidArgumentException('Invalid update name'),
+);
+```
