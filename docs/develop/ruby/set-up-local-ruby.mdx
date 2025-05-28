@@ -12,8 +12,8 @@ tags:
   - Temporal SDKs
 ---
 
-This guide walks you through setting up the Temporal Ruby SDK and running your first Workflow. 
-In just a few steps, you'll install the SDK and start a local development server. 
+This guide walks you through setting up the Temporal Ruby SDK and running your first Workflow.
+In just a few steps, you'll install the SDK and start a local development server.
 To validate that your local environment is correctly installed, we will execute a Workflow that will output "Hello, Temporal".
 
 ## 1. Installation
@@ -156,15 +156,15 @@ require_relative 'say_hello_activity'
 </Tabs>
 
 A Temporal Workflow is your business logic, defined in code, outlining each step in your process.
-Activities are the individual units of work in your Workflow. 
-Activities often involve interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling an API, which are prone to failure. 
-You can call Activities directly from your Workflow code. 
-If an Activity fails, Temporal automatically retries it based on your configuration. 
-
+Activities are the individual units of work in your Workflow.
+Activities often involve interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling an API, which are prone to failure.
+You can call Activities directly from your Workflow code.
+If an Activity fails, Temporal automatically retries it based on your configuration.
 
 ## 4. Run a Worker
-With your Activity and Workflow defined, you need a Worker to execute them. 
-Create a file labeled `worker.rb`.  
+
+With your Activity and Workflow defined, you need a Worker to execute them.
+Create a file labeled `worker.rb`.\
 Workers, which are part of your application and provided by the Temporal SDK, then carry out the tasks defined in your Workflow.
 
 <Tabs>
@@ -191,20 +191,22 @@ worker.run(shutdown_signals: ['SIGINT'])
 </TabItem>
 </Tabs>
 
-Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your Workflows and Activities. 
+Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your Workflows and Activities.
 For more information on Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
 
-:::note START THE WORKER
+:::note RUN THE WORKER
 In a terminal window, start your Worker by running:
 `ruby worker.rb` 
 
 Keep this running in this terminal window. 
-You should see output indicating that the Worker has started and is polling for tasks.
+You should see output indicating that the Worker has started.
+Running this will run the Worker until Ctrl+C is pressed.
 ::: 
 
 ## 5. Execute a Workflow and See the Result
-With your Worker running and listening for tasks, you can now trigger a Workflow execution. 
-This final step will validate that everything is working correctly with your file labeled `execute_workflow.rb`. 
+
+With your Worker running and listening for tasks, you can now trigger a Workflow execution.
+This final step will validate that everything is working correctly with your file labeled `execute_workflow.rb`.
 
 
 
@@ -235,14 +237,25 @@ puts "Result: #{result}"
 ```
 Result: Hello, Temporal!
 ```
-:::note RUN THE COMMAND
-Run this script in a new terminal window with the following command: 
+:::note EXECUTE WORKFLOW 
+To see the expected output, run this script in a new terminal window with the following command: 
 `ruby execute_workflow.rb`
 ::: 
 
 
-You've successfully executed your first Temporal Workflow. 
+You've successfully executed your first Temporal Workflow.
 If you check the Temporal Web UI at http://localhost:8233, you'll gain visibility into your Workflow Execution with details listed about its progress and completion.
+
+:::note ADDITIONAL DETAILS ABOUT THE WORKFLOW EXECUTION
+
+- Temporal clients are not explicitly closed.
+- To enable TLS, the `tls` option can be set to `true` or a `Temporalio::Client::Connection::TLSOptions` instance.
+- Instead of `start_workflow` + `result` above, `execute_workflow` shortcut can be used if the handle is not needed.
+- Both `start_workflow` and `execute_workflow` accept either the workflow class or the string/symbol name of the workflow.
+- The `handle` above is a Temporalio::Client::WorkflowHandle which has several other operations that can be performed on a workflow. To get a handle to an existing workflow, use workflow_handle on the client.
+- Clients are thread safe and are fiber-compatible (but fiber compatibility only supported for Ruby 3.3+ at this time).
+
+:::
 
 ## Next Steps 
 Now that your local environment is set up, you're ready to explore more of what Temporal can do with the Ruby SDK.
