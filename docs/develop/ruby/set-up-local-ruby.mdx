@@ -116,7 +116,7 @@ You'll be able to monitor your Workflows through the Web UI as they execute.
 
 ## 3. Write Your First Activity and Workflow
 Now that you have the server running, it's time to create your first Temporal application. 
-In Temporal, you'll create two files an Activity file labeled `say_hello_activity.rb` and a Workflow file labeled `say_hello_workflow.rb`. 
+In Temporal, you'll create two files: an Activity file labeled `say_hello_activity.rb` and a Workflow file labeled `say_hello_workflow.rb`. 
 
 <Tabs>
   <TabItem value="activity" label="Activity (say_hello_activity.rb)">
@@ -194,20 +194,19 @@ worker.run(shutdown_signals: ['SIGINT'])
 Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your Workflows and Activities. 
 For more information on Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
 
-::: note 
-Start your Worker by running:
+:::note START THE WORKER
+In a terminal window, start your Worker by running:
 `ruby worker.rb` 
 
-Keep this running in another terminal window. 
+Keep this running in this terminal window. 
 You should see output indicating that the Worker has started and is polling for tasks.
-
 ::: 
 
 ## 5. Execute a Workflow and See the Result
 With your Worker running and listening for tasks, you can now trigger a Workflow execution. 
 This final step will validate that everything is working correctly with your file labeled `execute_workflow.rb`. 
 
-Run this script in a new terminal window with the following command: `ruby execute_workflow.rb`
+
 
 <Tabs>
   <TabItem value="execute" label="Execute Workflow (execute_workflow.rb)">
@@ -236,17 +235,19 @@ puts "Result: #{result}"
 ```
 Result: Hello, Temporal!
 ```
+:::note RUN THE COMMAND
+Run this script in a new terminal window with the following command: 
+`ruby execute_workflow.rb`
+::: 
+
 
 You've successfully executed your first Temporal Workflow. 
 If you check the Temporal Web UI at http://localhost:8233, you'll gain visibility into your Workflow Execution with details listed about its progress and completion.
 
 ## Next Steps 
+Now that your local environment is set up, you're ready to explore more of what Temporal can do with the Ruby SDK.
 
-Now that your local environment is set up, you can explore the full capabilities of Temporal by following the [Getting Started with Ruby tutorials](https://learn.temporal.io/getting_started/ruby/).
-These tutorials will walk you through building and running your first Workflows using the Ruby SDK.
-
-If you would like to better understand the underlying concepts behind what you have built, visit [Understanding Temporal](/understanding-temporal), which provides a basic high level overview of how the Temporal works.
-For more learning by doing, you can also explore our collection of [Ruby code samples](https://github.com/temporalio/samples-ruby) on GitHub. 
-
-To take the next step toward building production-ready applications, check out the [Core Application section](/develop/ruby/core-application) of the Ruby Developer Guide. 
-This will help you understand how Temporal applications are structured.
+- **Build More Workflows:** Follow the [Getting Started with Ruby tutorials](https://learn.temporal.io/getting_started/ruby/) to building and running your first Workflow step-by-step to see Temporal's full capabilities.
+- **Understand the Core Concepts**: Visit [Understanding Temporal](/understanding-temporal) for a high-level overview of how Temporal works behind the scenes.
+- **Learn by Example:** Explore our [Ruby code samples](/https://github.com/temporalio/samples-ruby) on GitHub for practical examples that demonstrate how to use the Temporal Ruby SDK. 
+- **Advance to Production-Ready:** Check out the [Core Application section](/develop/ruby/core-application) of the Ruby Developer Guide to learn how to structure Temporal applications for real-world use.
