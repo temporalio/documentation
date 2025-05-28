@@ -1,0 +1,85 @@
+---
+id: observability
+title: Observability - Ruby SDK
+sidebar_label: Observability
+description: Explore Temporal SDK observability features for Metrics, Tracing, Logging, and Visibility using the Ruby SDK.
+toc_max_heading_level: 4
+keywords:
+  - logging
+  - ruby
+  - sdk
+  - search attribute
+  - workflow
+  - observability
+tags:
+  - Ruby SDK
+  - Temporal SDKs
+  - Observability
+  - Search Attributes
+  - Workflows
+---
+
+This page covers capabilities related to viewing the state of the application, including:
+
+- [Metrics](#metrics)
+- [Tracing](#tracing)
+- [Logging](#logging)
+- [Visibility](#visibility)
+
+The observability guide covers the many ways to view the current state of your [Temporal Application](/temporal#temporal-application).
+This includes viewing [Workflow Executions](/workflow-execution) tracked by the [Temporal Platform](/temporal#temporal-platform), as well as inspecting state at any point during execution.
+
+## Emit metrics {#metrics}
+
+Each Temporal SDK can optionally emit metrics from either the Client or Worker process.
+
+- Metrics can be scraped by systems like [Prometheus](https://prometheus.io/docs/introduction/overview/).
+- Graphs can be created using tools like [Grafana](https://grafana.com/docs/).
+- For a list of metrics, see the [SDK metrics reference](/references/sdk-metrics).
+
+<!-- CONTENT -->
+
+## Setup Tracing {#tracing}
+
+Tracing enables observability into the sequence of calls across your application, including Workflows and Activities.
+
+<!-- CONTENT -->
+
+## Log from a Workflow {#logging}
+
+Logging enables you to capture and persist important execution details from your Workflow and Activity code.
+
+Logging levels typically include:
+
+| Level   | Use                                                                                                       |
+| ------- | --------------------------------------------------------------------------------------------------------- |
+| `TRACE` | The most detailed level of logging, used for very fine-grained information.                               |
+| `DEBUG` | Detailed information, typically useful for debugging purposes.                                            |
+| `INFO`  | General information about the application's operation.                                                    |
+| `WARN`  | Indicates potentially harmful situations or minor issues that don't prevent the application from working. |
+| `ERROR` | Indicates error conditions that might still allow the application to continue running.                    |
+
+<!-- CONTENT -->
+
+## Use Visibility APIs {#visibility}
+
+Visibility refers to Temporal features for listing, filtering, and inspecting Workflow Executions.
+
+### Use Search Attributes {#search-attributes}
+
+- [Default Search Attributes](/search-attribute#default-search-attribute) like `WorkflowType`, `StartTime`, and `ExecutionStatus` are automatically indexed.
+- [Custom Search Attributes](/search-attribute#custom-search-attribute) let you store domain-specific metadata for Workflows.
+
+<!-- CONTENT -->
+
+### List Workflow Executions {#list-workflow-executions}
+
+<!-- CONTENT -->
+
+### Set Custom Search Attributes {#custom-search-attributes}
+
+<!-- CONTENT -->
+
+### Upsert Search Attributes {#upsert-search-attributes}
+
+<!-- CONTENT -->

@@ -1,0 +1,88 @@
+---
+id: failure-detection
+title: Failure detection - Ruby SDK
+sidebar_label: Failure detection
+description: Optimize Workflow Execution with Temporal Ruby SDK - Set Timeouts, Retry Policies, and manage Activity Heartbeats efficiently.
+toc_max_heading_level: 4
+keywords:
+  - guide context
+  - ruby
+  - sdk
+  - failure detection
+tags:
+  - Activities
+  - Workflows
+  - Ruby SDK
+  - Temporal SDKs
+  - Failures
+  - Errors
+---
+
+This page shows how to do the following:
+
+- [Workflow timeouts](#workflow-timeouts)
+- [Workflow retries](#workflow-retries)
+- [Activity timeouts](#activity-timeouts)
+- [Activity Retry Policy](#activity-retries)
+- [Heartbeat an Activity](#activity-heartbeats)
+- [Heartbeat Timeout](#heartbeat-timeout)
+
+## Workflow timeouts {#workflow-timeouts}
+
+Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
+
+- **[Workflow Execution Timeout](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout)**: Limits how long the full Workflow Execution can run.
+- **[Workflow Run Timeout](/encyclopedia/detecting-workflow-failures#workflow-run-timeout)**: Limits the duration of an individual run of a Workflow Execution.
+- **[Workflow Task Timeout](/encyclopedia/detecting-workflow-failures#workflow-task-timeout)**: Limits the time allowed for a Worker to process a Workflow Task.
+
+Set these values in the `WorkflowOptions` when starting a Workflow.
+
+<!-- CONTENT -->
+
+### Workflow retries {#workflow-retries}
+
+Use a [Retry Policy](/encyclopedia/retry-policies) to automatically retry Workflow Executions on failure.
+Workflow Executions do not retry by default.
+
+<!-- CONTENT -->
+
+## Activity timeouts {#activity-timeouts}
+
+Each Activity Timeout controls a different aspect of how long an Activity Execution can take:
+
+- **[Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout)**
+- **[Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout)**
+- **[Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout)**
+
+At least one of `StartToCloseTimeout` or `ScheduleToCloseTimeout` is required.
+
+<!-- CONTENT -->
+
+### Activity Retry Policy {#activity-retries}
+
+By default, Activities use a system Retry Policy.
+You can override it by specifying a custom Retry Policy.
+
+<!-- CONTENT -->
+
+### Override the retry interval with `nextRetryDelay` {#next-retry-delay}
+
+If you raise an application-level error, you can override the Retry Policy's delay by specifying a new delay.
+
+<!-- CONTENT -->
+
+## Heartbeat an Activity {#activity-heartbeats}
+
+A Heartbeat is a periodic signal from the Worker to the Temporal Service indicating the Activity is still alive and making progress.
+
+- Heartbeats are used to detect Worker failure.
+- Cancellations are delivered via Heartbeats.
+- Heartbeats may contain custom progress details.
+
+<!-- CONTENT -->
+
+### Heartbeat Timeout {#heartbeat-timeout}
+
+The Heartbeat Timeout sets the maximum duration between Heartbeats before the Temporal Service considers the Activity failed.
+
+<!-- CONTENT -->
