@@ -394,7 +394,7 @@ Do not confuse environment variables, set with your shell, with temporal env opt
 To use your API key with a Temporal SDK, include the API key in the Bearer token header and specify the Namespace header.
 The Bearer token header indicates the authentication type, while the Namespace header routes the request.
 
-**Go SDK (v 1.26.0+)**
+#### Go SDK
 
 Create an initial connection:
 
@@ -438,38 +438,6 @@ creds := client.NewAPIKeyDynamicCredentials(
 myKey = myKeyUpdated
 ```
 
-#### Go SDK (pre v 1.26.0)
-
-Create an initial connection:
-
-```go
-// Create headers provider
-type APIKeyProvider struct {
-    APIKey string
-    Namespace string
-}
-
-func (a *APIKeyProvider) GetHeaders(context.Context) (map[string]string, error) {
-    return map[string]string{"Authorization": "Bearer " + a.APIKey, "temporal-namespace": a.Namespace}, nil
-}
-
-// Use headers provider
-apiKeyProvider := &APIKeyProvider{APIKey: <APIKey>, Namespace: <namespace_id>.<account_id>}
-c, err := client.Dial(client.Options{
-    HostPort: <endpoint>,
-    Namespace: <namespace_id>.<account_id>,
-    HeadersProvider: apiKeyProvider,
-    ConnectionOptions: client.ConnectionOptions{TLS: &tls.Config{
-    }},
-})
-```
-
-Update an API key:
-
-```go
-apiKeyProvider.APIKey = myKeyUpdated
-```
-
 #### Java SDK
 
 At a client level:
@@ -505,7 +473,7 @@ WorkflowServiceStubsOptions stubOptions =
 myKey = "Bearer " + <new APIKey>;
 ```
 
-#### Python SDK (v 1.6.0+)
+#### Python SDK
 
 Create an initial connection:
 
@@ -519,32 +487,13 @@ client = await Client.connect(
 )
 ```
 
-Update an API key (newer SDK):
+Update an API key:
 
 ```python
 my_client.api_key = my_key_updated
 ```
 
-#### Python SDK (pre v 1.6.0)
-
-Create an initial connection:
-
-```python
-client = await Client.connect(
-    <endpoint>,
-    namespace=<namespace_id>.<account_id>,
-    rpc_metadata={"temporal-namespace": <namespace_id>.<account_id>, "Authorization": f"Bearer {<APIKey>}"},
-    tls=True,
-)
-```
-
-Update an API key:
-
-```python
-my_client.rpc_metadata = {"Authorization": f"Bearer {<my_key_updated>}"}
-```
-
-#### .NET SDK (v 1.1.0+)
+#### .NET SDK
 
 Create an initial connection:
 
@@ -567,33 +516,7 @@ Update an API key:
 myClient.Connection.ApiKey = myKeyUpdated;
 ```
 
-**.NET SDK (pre v 1.1.0)**
-
-Create an initial connection:
-
-```csharp
-var myClient = TemporalClient.ConnectAsync(new(<endpoint>)
-{
-    Namespace = <namespace_id>.<account_id>,
-    RpcMetadata = new Dictionary<string, string>()
-    {
-        ["Authorization"] = $"Bearer {<APIKey>}",
-        ["temporal-namespace"] = "${<namespace_id>.<account_id>}",
-    },
-    Tls = new(),
-});
-```
-
-Update an API key:
-
-```csharp
-myClient.Connection.RpcMetadata = new Dictionary<string, string>()
-{
-    ["Authorization"] = $"Bearer {myKeyUpdated}",
-};
-```
-
-#### TypeScript SDK (v 1.10.0+)
+#### TypeScript SDK
 
 Create an initial `Connection` (for use with `Client`):
 
@@ -634,43 +557,6 @@ Update the API key on an existing `Connection` or `NativeConnection`:
 
 ```typescript
 connection.setApiKey(<APIKey>);
-```
-
-#### TypeScript SDK (pre v 1.10.0)
-
-Create an initial `Connection` (for use with `Client`):
-
-```typescript
-const connection = await Connection.connect({
-    address: <endpoint>,
-    tls: true,
-    metadata: {
-        'Authorization': `Bearer ${<APIKey>}`,
-        'temporal-namespace': <namespace_id>.<account_id>,
-    },
-})
-const client = new Client({
-    connection,
-    namespace: <namespace_id>.<account_id>,
-});
-```
-
-Create an initial Worker `NativeConnection` (for use with `Worker`):
-
-```typescript
-const connection = await NativeConnection.connect({
-    address: <endpoint>,
-    tls: true,
-    metadata: {
-        'Authorization': `Bearer ${<APIKey>}`
-        'temporal-namespace': <namespace_id>.<account_id>,
-    },
-})
-const worker = await Worker.create({
-    connection,
-    namespace: <namespace_id>.<account_id>,
-    // ...
-});
 ```
 
 ### tcld
