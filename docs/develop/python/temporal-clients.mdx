@@ -139,7 +139,29 @@ if __name__ == "__main__":
 
 ## Connect to Temporal Cloud {#connect-to-temporal-cloud}
 
-**How to connect to Temporal Cloud using the Python SDK**
+### How to connect to Temporal Cloud using an API key
+
+To use your [API key](/cloud/api-keys) with a Temporal SDK, include the API key in the Bearer token header and specify the Namespace header. The Bearer token header indicates the authentication type, while the Namespace header routes the request.
+
+To create an initial connection:
+
+```python
+client = await Client.connect(
+    <endpoint>,
+    namespace=<namespace_id>.<account_id>,
+    rpc_metadata={"temporal-namespace": <namespace_id>.<account_id>},
+    api_key=<APIKey>,
+    tls=True,
+)
+```
+
+To update an API key:
+
+```python
+my_client.api_key = my_key_updated
+```
+
+### How to connect to Temporal Cloud using TLS
 
 When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
 
