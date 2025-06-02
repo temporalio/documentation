@@ -53,7 +53,32 @@ var client = await TemporalClient.ConnectAsync(new("localhost:7233"));
 
 ## Connect to Temporal Cloud {#connect-to-temporal-cloud}
 
-**How to connect to Temporal Cloud using the Temporal .NET SDK**
+### How to connect to Temporal Cloud using an API Key
+
+To use your [API key](/cloud/api-keys) with a Temporal SDK, include the API key in the Bearer token header and specify the Namespace header. The Bearer token header indicates the authentication type, while the Namespace header routes the request.
+
+To create an initial connection:
+
+```csharp
+var myClient = TemporalClient.ConnectAsync(new(<endpoint>)
+{
+    Namespace = <namespace_id>.<account_id>,
+    ApiKey = <APIKey>,
+    RpcMetadata = new Dictionary<string, string>()
+    {
+        ["temporal-namespace"] = "${<namespace_id>.<account_id>}",
+    },
+    Tls = new(),
+});
+```
+
+To update an API key:
+
+```csharp
+myClient.Connection.ApiKey = myKeyUpdated;
+```
+
+### How to connect to Temporal Cloud using TLS
 
 When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
 
