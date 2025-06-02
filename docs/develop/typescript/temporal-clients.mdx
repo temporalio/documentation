@@ -91,9 +91,6 @@ const connection = await Connection.connect({
     address: <endpoint>,
     tls: true,
     apiKey: <APIKey>,
-    metadata: {
-        'temporal-namespace': <namespace_id>.<account_id>,
-    },
 });
 const client = new Client({
     connection,
