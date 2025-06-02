@@ -58,28 +58,17 @@ html[data-theme="dark"] {
 
 html[data-theme="light"] {
   --ifm-color-primary: #1d4ed8;
-  --ifm-background-color: #f9fafb;
+  --ifm-background-color: #ffffff;
+  --ifm-background-surface-color: #ffffff;
   --ifm-footer-background-color: #ffffff;
   --ifm-navbar-background-color: #ffffff;
-  /* --ifm-color: var(--ifm-color-primary-dark); */
+  --ifm-color: #111827;
   --ifm-link-color: #111827;
   --ifm-link-hover-color: var(--ifm-color-primary);
   --ifm-preview-text: #141414;
   --alert--competency-background: #a8fcff;
   --alert--copycode-background: #e0cdfa;
   --alert--info-background: #ebeded;
-  /* --ifm-menu-color-active: var(--ifm-color-primary);
-  --ifm-navbar-link-hover-color: var(--ifm-color-primary);
-  --ifm-toc-link-color: var(--ifm-color-primary-dark);
-  --ifm-blockquote-color: #000000;
-  --ifm-color-emphasis-300: #505050; */
-  /* --ifm-code-background: var(--ifm-color-primary-lightest); */
-  /* --ifm-color-input-background: #ffffff;
-  /* --ifm-color: var(--ifm-color-primary-dark);
-  --ifm-background-color: rgb(249, 250, 251);
-  --ifm-footer-background-color: #ffffff;
-  --ifm-card-background-color: #ffffff;
-  --ifm-badge-background-color: rgba(239, 246, 255); */
   --card-color: #ffffff;
   --docusaurus-highlighted-code-line-bg: rgb(57, 104, 77);
   --tag-background-color: var(--tag-background-color-light);
