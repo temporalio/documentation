@@ -108,6 +108,7 @@ Temporal can be integrated with a single sign-on (SSO) experience by utilizing t
 The default JWT `ClaimMapper` implementation can be used as is or as a base for a custom implementation of a similar plugin.
 
 ### Temporal UI
+
 To enable sso authentication in the Temporal UI using environment credentials, you need to configure the UI container with specific environment variables that define your identity provider and OAuth settings. In your docker-compose.yaml, set `TEMPORAL_AUTH_ENABLED=true` to activate authentication. Then, provide the necessary environment variables for your provider, such as `TEMPORAL_AUTH_CLIENT_ID`, `TEMPORAL_AUTH_CLIENT_SECRET`, `TEMPORAL_AUTH_PROVIDER_URL`, and `TEMPORAL_AUTH_CALLBACK_URL`. These values correspond to the client credentials and endpoints provided by your OAuth identity provider (e.g., Google, Auth0, Okta). When properly configured, Temporal UI will redirect users to your SSO login page and enforce authentication on access. This approach requires no additional config files and is ideal for containerized environments using secure environment variable injection.
 
 <br/>
@@ -134,7 +135,6 @@ To enable sso authentication in the Temporal UI using environment credentials, y
 <br/>
 
 For more details refer [Temporal UI Config](https://github.com/temporalio/ui/blob/c95265ee6431fd0f6cf78ae06373885d66a8ee0c/server/docker/config-template.yaml).
-
 
 ## Temporal Service plugins {#plugins}
 
