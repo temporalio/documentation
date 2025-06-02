@@ -119,10 +119,11 @@ To use your [API key](/cloud/api-keys) with a Temporal SDK, include the API key 
     WorkflowClient client =
         WorkflowClient.newInstance(
             service, WorkflowClientOptions.newBuilder().setNamespace(<namespace_id>.<account_id>).build());
+
 // Just update by replacing, this must be done in a thread safe way
 myKey = "Bearer " + <new APIKey>;
-```
 
+````
 ### How to connect a Temporal Client to Temporal Cloud using TLS
 
 When you use a remote service, you don't use the `newLocalServicesStubs` convenience method.
@@ -143,7 +144,7 @@ Instead, set your connection details as stub configuration options:
 
              // Create a stub that accesses a Temporal Service
             WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newServiceStubs(stubsOptions);
-```
+````
 
 <!--SNIPEND-->
 
