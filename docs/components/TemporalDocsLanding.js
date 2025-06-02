@@ -51,18 +51,12 @@ const TemporalDocsLanding = () => {
         </Icon>
       ),
       items: [
-        { title: "Temporal Client", link: "/dev-guide/temporal-client" },
-        { title: "Workflows", link: "/dev-guide/workflows" },
-        { title: "Activities", link: "/dev-guide/activities" },
-        { title: "Workers", link: "/dev-guide/workers" },
-        { title: "Testing", link: "/dev-guide/testing" },
-        { title: "Failure Detection", link: "/dev-guide/failure-detection" },
-        { title: "Interactive Workflows", link: "/dev-guide/interactive-workflows" },
-        { title: "Namespaces", link: "/dev-guide/namespaces" },
-        { title: "Cancellations", link: "/dev-guide/cancellations" },
-        { title: "Schedules", link: "/dev-guide/schedules" },
-        { title: "Nexus", link: "/dev-guide/nexus" },
-        { title: "Versioning", link: "/dev-guide/versioning" }
+        { title: "Go SDK Developer Guide", link: "/develop/go" },
+        { title: "Java SDK Developer Guide", link: "/develop/java" },
+        { title: "PHP SDK Developer Guide", link: "/develop/php" },
+        { title: "Python SDK Developer Guide", link: "/develop/python" },
+        { title: "TypeScript SDK Developer Guide", link: "/develop/typescript" },
+        { title: ".NET SDK Developer Guide", link: "/develop/dotnet" }
       ]
     },
     {
@@ -109,10 +103,10 @@ const TemporalDocsLanding = () => {
       </Icon>
     ),
     items: [
-      { title: "Optimize", link: "/enhance/optimize" },
-      { title: "Fix", link: "/enhance/fix" },
-      { title: "Fix", link: "/enhance/fix-2" },
-      { title: "Fix", link: "/enhance/fix-3" }
+      { title: "Optimize Long-Running Tasks", link: "/evaluate/use-cases-design-patterns#long-running-tasks" },
+      { title: "Implement SAGA Pattern", link: "/evaluate/use-cases-design-patterns#saga" },
+      { title: "Add State Machines", link: "/evaluate/use-cases-design-patterns#state-machine" },
+      { title: "Build Polyglot Systems", link: "/evaluate/use-cases-design-patterns#polyglot-systems" }
     ]
   };
 
@@ -126,10 +120,10 @@ const TemporalDocsLanding = () => {
       </Icon>
     ),
     items: [
-      { title: "Next Use Case", link: "/expand/next-use-case" },
-      { title: "Fix", link: "/expand/fix" },
-      { title: "Fix", link: "/expand/fix-2" },
-      { title: "Fix", link: "/expand/fix-3" }
+      { title: "Business Process Automation", link: "/evaluate/use-cases-design-patterns#business-processes" },
+      { title: "AI/ML Orchestration", link: "/evaluate/use-cases-design-patterns#ai--ml-and-data-engineering" },
+      { title: "Entity Lifecycle Management", link: "/evaluate/use-cases-design-patterns#entity-lifecycle" },
+      { title: "Human-in-the-Loop Systems", link: "/evaluate/use-cases-design-patterns#human-in-the-loop" }
     ]
   };
 
