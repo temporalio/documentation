@@ -1,26 +1,99 @@
 ---
 id: index
-title: Evaluate Temporal
-sidebar_label: Evaluate
-description: Temporal enhances distributed application development with clear code structure, fault-tolerance, and execution guarantees, trusted by thousands for mission-critical workloads.
-collapsed: false
-toc_max_heading_level: 4
-keywords:
-  - evaluate temporal
-  - temporal
-  - what is temporal
-  - introduction to temporal
-tags:
-  - Temporal
+title: Introducing Temporal
+sidebar_label: Introduction
+description: Temporal is a developer-first, open source platform that ensures the successful execution of services and applications.
 ---
 
-Temporal is designed to make developing distributed applications a delightful experience.
-Developers benefit from a clear approach to structure their code and visibility into the state of their application.
-Applications benefit from fault-tolerance and execution guarantees.
-Thousands of companies of all sizes are leveraging Temporal's capabilities for both mission critical and standard workloads.
+# Introducing Temporal
 
-- [Why Temporal](/evaluate/why-temporal)
-- [Development and production features](/evaluate/development-production-features)
-- [Use cases](/evaluate/use-cases-design-patterns)
-- [Temporal Cloud](/cloud)
-- [Security](/security)
+Temporal is a developer-first, open source platform that ensures the successful execution of services and applications.
+
+## Who is Temporal for?
+
+- Backend engineers
+- Platform engineers
+- SRE/DevOps, infrastructure engineers
+- Architects
+
+## What problems does Temporal solve?
+
+<div className="pattern-grid">
+  <a href="/concepts/saga-pattern" className="pattern-card">
+    <div className="pattern-content">
+      <h3>Compensating patterns (SAGA)</h3>
+      <p>Handle failures across distributed services with compensating transactions</p>
+    </div>
+  </a>
+
+  <a href="/concepts/human-loops" className="pattern-card">
+    <div className="pattern-content">
+      <h3>Human-in-the-loop</h3>
+      <p>Integrate human decision making into automated processes</p>
+    </div>
+  </a>
+
+  <a href="/concepts/long-running-workflows" className="pattern-card">
+    <div className="pattern-content">
+      <h3>Long-running workflows</h3>
+      <p>Build reliable processes that run for days or months</p>
+    </div>
+  </a>
+
+  <a href="/concepts/patterns" className="pattern-card">
+    <div className="pattern-content">
+      <h3>Microservice orchestration</h3>
+      <p>Coordinate multiple services and handle failures gracefully</p>
+    </div>
+  </a>
+
+  <a href="/concepts/use-cases" className="pattern-card">
+    <div className="pattern-content">
+      <h3>Reliable scheduling</h3>
+      <p>Schedule and manage recurring tasks with guaranteed execution</p>
+    </div>
+  </a>
+
+  <a href="/concepts/patterns" className="pattern-card">
+    <div className="pattern-content">
+      <h3>Distributed transactions</h3>
+      <p>Maintain data consistency across multiple services</p>
+    </div>
+  </a>
+</div>
+
+## How does Temporal work?
+
+Temporal provides durable execution for your applications through its unique architecture. Write your business logic as Workflows and Activities, deploy them to Workers, and let Temporal handle the rest.
+
+## What programming languages are supported?
+
+Temporal allows you to develop with durable execution in different languages and multiple languages can be used to build single services, enabling polyglot development.
+
+<div className="sdk-logos">
+  <img src="/img/logos/svgs/golang.svg" alt="Go SDK" />
+  <img src="/img/logos/svgs/java.svg" alt="Java SDK" />
+  <img src="/img/logos/svgs/typescript.svg" alt="TypeScript SDK" />
+  <img src="/img/logos/svgs/python.svg" alt="Python SDK" />
+  <img src="/img/logos/svgs/php.svg" alt="PHP SDK" />
+  <img src="/img/logos/svgs/dotnet.svg" alt=".NET SDK" />
+  <img src="/img/logos/svgs/ruby.svg" alt="Ruby SDK" />
+</div>
+
+## Open-source and Managed Services
+
+Temporal is available as both an open-source platform you can self-host and as a fully managed cloud service.
+
+<div className="cta-container">
+  <a href="/concepts/what-is-durable-execution" className="cta-link">
+    <div className="cta-content">
+      <span className="cta-prefix">Next:</span>
+      <span className="cta-title">What is Durable Execution?</span>
+    </div>
+    <div className="cta-arrow">→</div>
+  </a>
+</div>
+
+---
+
+
