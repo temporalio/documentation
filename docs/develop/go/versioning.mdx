@@ -18,8 +18,10 @@ tags:
   - Temporal SDKs
 ---
 
+Since Workflow Executions in Temporal can run for long periods — sometimes months or even years — it's common to need major changes to a Workflow Definition, even while a particular Workflow Execution is in progress.
 The Temporal Platform requires that Workflow code is [deterministic](/workflow-definition#deterministic-constraints).
 If you make a change to your Workflow code that would cause non-deterministic behavior on Replay, you'll need to use one of our Versioning methods to gracefully update your running Workflows.
+With Versioning, you can modify your Workflow Definition so that new executions use the updated code, while existing ones continue running the original version.
 There are three primary Versioning methods supported by Temporal:
 
 - [Workflow Type Versioning](#type-versioning). This is the simplest of the three, and acts more like a cutover than true versioning. It is suitable for short-running Workflows.
