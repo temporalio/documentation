@@ -123,8 +123,8 @@ To use an [API key](/cloud/api-keys) with the Temporal Jave SDK, use the followi
 
 // Update by replacing, this must be done in a thread safe way
 myKey = "Bearer " + <new APIKey>;
+```
 
-````
 ### How to connect a Temporal Client to Temporal Cloud using TLS {#connect-to-temporal-cloud-tls}
 
 When you use a remote service, you don't use the `newLocalServicesStubs` convenience method.
@@ -145,7 +145,7 @@ Instead, set your connection details as stub configuration options:
 
              // Create a stub that accesses a Temporal Service
             WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newServiceStubs(stubsOptions);
-````
+```
 
 <!--SNIPEND-->
 
