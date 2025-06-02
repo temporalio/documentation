@@ -19,17 +19,57 @@ tags:
 ---
 
 The Temporal Platform requires that Workflow code is [deterministic](/workflow-definition#deterministic-constraints).
-Because of that requirement, the Temporal Go SDK offers two dedicated versioning features.
+If you make a change to your Workflow code that would cause non-deterministic behavior on Replay, you'll need to use one of our Versioning methods to gracefully update your running Workflows.
+There are three primary Versioning methods supported by Temporal:
 
-- [Workflow Patching APIs](#patching)
-- [Worker Versioning](#worker-versioning)
+- [Workflow Type Versioning](#type-versioning). This is the simplest of the three, and acts more like a cutover than true versioning. It is suitable for short-running Workflows.
+- [Branching with GetVersion](#getversion). This method works by adding branches to your code tied to specific revisions. In most other SDKs, it is called patching.
+- [Safe Deploys](/production-deployment/worker-deployments/safe-deploys). Temporal's Safe Deploys feature allows you to tag your Workers and programmatically roll them out in pods tied to specific revisions, so that old Workers can run old code paths and new Workers can run new code paths. A previous version of Safe Deploys was called [Worker Versioning](worker-versioning-legacy).
 
-## Temporal Go SDK Patching APIs {#patching}
+## Workflow Type Versioning {#type-versioning}
 
-The definition code of a Temporal Workflow must be deterministic because Temporal uses event sourcing to reconstruct the Workflow state by replaying the saved history event data on the Workflow definition code.
-This means that any incompatible update to the Workflow Definition code could cause a non-deterministic issue if not handled correctly.
+Since incompatible changes only affect open Workflow Executions of the same type, you can avoid the problem by changing the Workflow Type for the new version.
+To do this, you can copy the Workflow Definition function, giving it a different name, and make sure that both names were registered with your Workers.
 
-Because we design for potentially long running Workflows at scale, versioning with Temporal works differently. We explain more in this optional 30 minute introduction: [https://www.youtube.com/watch?v=kkP899WxgzY](https://www.youtube.com/watch?v=kkP899WxgzY)
+For example, if you had made an incompatible change to the following Workflow Definition:
+
+```go
+func PizzaWorkflow(ctx workflow.Context, order PizzaOrder) (OrderConfirmation, error) {
+    // implementation code omitted for this example
+}
+```
+
+then you would change the code as follows:
+
+```go
+func PizzaWorkflow(ctx workflow.Context, order PizzaOrder) (OrderConfirmation, error) {
+    // this function contains the original code
+}
+
+func PizzaWorkflowV2(ctx workflow.Context, order PizzaOrder) (OrderConfirmation, error) {
+    // this function contains the updated code
+}
+```
+
+You can use any name you like for the new function, so long as the first character remains uppercase (this is a requirement for any Workflow Definition, since it must use an exported function).
+Using some type of version identifier, such as V2 in this example, will make it easier to identify the change.
+
+You would then update the Worker configuration to register both Workflow Types:
+
+```go
+w.RegisterWorkflow(pizza.PizzaWorkflow)
+w.RegisterWorkflow(pizza.PizzaWorkflowV2)
+```
+
+The upside of this versioning method is that it is easy to understand at a glance, as it does not really use any Temporal platform features.
+The downside of this feature is that it does not use any Temporal platform features.
+It requires you to duplicate code and to update any code and commands used to start the Workflow.
+This can become impractical over time, depending on how you are providing configuration strings to your deployment.
+This method also does not provide a way to introduce Versioning to any still-running Workflows -- it is essentially just a cutover.
+
+## Branching with GetVersion {#getversion}
+
+Branching with GetVersion essentially defines a logical branch for a specific change in the Workflow, rather than for the entire Workflow Definition itself.
 
 Consider the following Workflow Definition:
 
@@ -143,17 +183,49 @@ if v == workflow.DefaultVersion {
 }
 ```
 
-Upgrading a Workflow is straightforward if you don't need to preserve your currently running Workflow Executions.
-You can simply terminate all of the currently running Workflow Executions and suspend new ones from being created while you deploy the new version of your Workflow code, which does not use `GetVersion()`, and then resume Workflow creation.
-However, that is often not the case, and you need to take care of the currently running Workflow Executions, so using `GetVersion()` to update your code is the method to use.
+You can add multiple calls to `GetVersion` in a single Workflow.
+This can become challenging to manage if you have many long-running Workflows, as you will wind up with many code branches over time.
+To clean these up, you can gradually deprecate older versions.
 
-However, if you want your currently running Workflows to proceed based on the current Workflow logic, but you want to ensure new Workflows are running on new logic, you can define your Workflow as a new `WorkflowType`, and change your start path (calls to `StartWorkflow()`) to start the new Workflow type.
+### Deprecating Old versions
+
+You can safely remove support for older versions once you are certain that there are no longer any open Workflow Executions based on that version. You can use the following [List Filter](/list-filter) syntax for this (the 1 near the end of the last line represents the version number):
+
+```
+WorkflowType = "PizzaWorkflow" 
+    AND ExecutionStatus = "Running" 
+    AND TemporalChangeVersion="ChangedNotificationActivityType-1"
+```
+
+Since Workflow Executions that were started before `GetVersion` was added to the code won't have the associated Marker in their Event History, you'll need to use a different query to determine if any of those are still running:
+
+```
+WorkflowType = "PizzaWorkflow" 
+    AND ExecutionStatus = "Running" 
+    AND TemporalChangeVersion IS NULL
+```
+
+If you have found that there are no longer any open executions for the first two versions of the Workflow, for example, then you could remove support for them by changing the code as shown below:
+
+```go
+version := GetVersion(ctx, "ChangedNotificationActivityType", 2, 3)
+if version  == 2 {
+    err = workflow.ExecuteActivity(ctx, SendTextMessage).Get(ctx, nil)
+} else {
+    err = workflow.ExecuteActivity(ctx, SendTweet).Get(ctx, nil)
+}
+```
+
+When workflow.GetVersion() is run for a new Workflow execution, it records a marker in the Workflow history so that all future calls to GetVersion() for this change ID — Step 1 in the example — on this Workflow execution will always return the given version number.
+
+GetVersion allows you to make changes to currently running Workflows.
+It is a powerful method for introducing compatible changes without introducing non-determinism errors.
+If you find that GetVersion is adding maintainability concerns to your codebase, consider adopting [Safe Deploys](/production-deployment/worker-deployments/safe-deploys).
 
 ## Sanity checking
 
-The Temporal client SDK performs a sanity check to help prevent obvious incompatible changes.
-The sanity check verifies whether a Command made in replay matches the event recorded in history, in the same order.
-The Command is generated by calling any of the following methods:
+The Temporal Go SDK performs a runtime sanity check to help prevent obvious incompatible changes.
+Adding, removing, or reordering any of these methods without Versioning triggers the sanity check and results in a nondeterminism error:
 
 - workflow.ExecuteActivity()
 - workflow.ExecuteChildWorkflow()
@@ -163,20 +235,7 @@ The Command is generated by calling any of the following methods:
 - workflow.SignalExternalWorkflow()
 - workflow.Sleep()
 
-Adding, removing, or reordering any of the preceding methods triggers the sanity check and results in a nondeterminism error.
-
 The sanity check does not perform a thorough check.
 For example, it does not check on the Activity's input arguments or the Timer duration.
-If the check is enforced on every property, it becomes too restrictive and harder to maintain the Workflow code.
-For example, if you move your Activity code from one package to another package, that move changes the `ActivityType`, which technically becomes a different Activity.
-But we don't want to fail on that change, so we check only the function name part of the `ActivityType`.
-
-## How to use Worker Versioning in Go {#worker-versioning}
-
-Documentation for this feature is coming soon!
-
-For now, please join #safe-deploys in our [Community Slack](https://temporal.io/slack) to find the latest status and pre-release docs.
-
-If you were using a previous pre-release version of Worker Versioning, it's now deprecated.
-
-See [Legacy Worker Versioning](worker-versioning-legacy) if you still need those docs.
+Each Temporal SDK implements these sanity checks differently, and they are not a complete check for non-deterministic changes.
+Instead, you should incorporate [Replay Testing](/develop/go/testing-suite#replay) when making revisions.
