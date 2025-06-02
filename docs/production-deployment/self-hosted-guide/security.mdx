@@ -109,37 +109,38 @@ The default JWT `ClaimMapper` implementation can be used as is or as a base for 
 
 ### Temporal UI
 
-To enable SSO authentication in the Temporal UI using environment credentials, you need to configure the UI container with specific environment variables that define your identity provider and OAuth settings. 
-In your docker-compose.yaml, set `TEMPORAL_AUTH_ENABLED=true` to activate authentication. 
+To enable SSO authentication in the Temporal UI using environment credentials, you need to configure the UI container with specific environment variables that define your identity provider and OAuth settings.
+In your docker-compose.yaml, set `TEMPORAL_AUTH_ENABLED=true` to activate authentication.
 Next, specify the required OAuth credentials and endpoints using environment variables such as:
+
 - `TEMPORAL_AUTH_CLIENT_ID`
 - `TEMPORAL_AUTH_CLIENT_SECRET`
 - `TEMPORAL_AUTH_PROVIDER_URL`
 - `TEMPORAL_AUTH_CALLBACK_URL`
 
-These values correspond to the client credentials and endpoints provided by your OAuth identity provider (such as Google, Auth0, Okta). 
-When properly configured, Temporal UI will redirect users to your SSO login page and enforce authentication on access. 
+These values correspond to the client credentials and endpoints provided by your OAuth identity provider (such as Google, Auth0, Okta).
+When properly configured, Temporal UI will redirect users to your SSO login page and enforce authentication on access.
 This approach does not require any additional configuration files, making it ideal for containerized environments using secure environment variable injection.
 
-```yaml 
-  temporal-ui:
-    container_name: temporal-ui
-    depends_on:
-      - temporal
-    environment:
-      - TEMPORAL_GRPC_ENDPOINT=temporal:7233
-      - TEMPORAL_ADDRESS=temporal:7233
-      - TEMPORAL_AUTH_ENABLED=true
-      - TEMPORAL_AUTH_PROVIDER_URL=https://example.com
-      - TEMPORAL_AUTH_CLIENT_ID=xxxxxxxxxxxxxx
-      - TEMPORAL_AUTH_CLIENT_SECRET=xxxxxxxxxxxxxx
-      - TEMPORAL_AUTH_CALLBACK_URL=https://your-domain/auth/sso/callback
-      - TEMPORAL_AUTH_SCOPES=openid profile email
-    image: temporalio/ui:latest
-    networks:
-      - temporal-network
-    ports:
-      - 8080:8080
+```yaml
+temporal-ui:
+  container_name: temporal-ui
+  depends_on:
+    - temporal
+  environment:
+    - TEMPORAL_GRPC_ENDPOINT=temporal:7233
+    - TEMPORAL_ADDRESS=temporal:7233
+    - TEMPORAL_AUTH_ENABLED=true
+    - TEMPORAL_AUTH_PROVIDER_URL=https://example.com
+    - TEMPORAL_AUTH_CLIENT_ID=xxxxxxxxxxxxxx
+    - TEMPORAL_AUTH_CLIENT_SECRET=xxxxxxxxxxxxxx
+    - TEMPORAL_AUTH_CALLBACK_URL=https://your-domain/auth/sso/callback
+    - TEMPORAL_AUTH_SCOPES=openid profile email
+  image: temporalio/ui:latest
+  networks:
+    - temporal-network
+  ports:
+    - 8080:8080
 ```
 
 For more details refer [Temporal UI Config](https://github.com/temporalio/ui/blob/c95265ee6431fd0f6cf78ae06373885d66a8ee0c/server/docker/config-template.yaml).
