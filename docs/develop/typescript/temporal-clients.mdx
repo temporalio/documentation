@@ -80,7 +80,52 @@ If you omit the `Connection` and just create a `new Client()`, it will connect t
 
 ## Connect to Temporal Cloud {#connect-to-temporal-cloud}
 
-**How to connect to Temporal Cloud using the Typescript SDK**
+### How to connect to Temporal Cloud using an API key
+
+To use your [API key](/cloud/api-keys) with a Temporal SDK, include the API key in the Bearer token header and specify the Namespace header. The Bearer token header indicates the authentication type, while the Namespace header routes the request.
+
+Create an initial `Connection` (for use with `Client`):
+
+```typescript
+const connection = await Connection.connect({
+    address: <endpoint>,
+    tls: true,
+    apiKey: <APIKey>,
+    metadata: {
+        'temporal-namespace': <namespace_id>.<account_id>,
+    },
+});
+const client = new Client({
+    connection,
+    namespace: <namespace_id>.<account_id>,
+});
+```
+
+Create an initial Worker `NativeConnection` (for use with `Worker`):
+
+```typescript
+const connection = await NativeConnection.connect({
+    address: <endpoint>,
+    tls: true,
+    apiKey: <APIKey>,
+    metadata: {
+      'temporal-namespace': <namespace_id>.<account_id>,
+    },
+});
+const worker = await Worker.create({
+    connection,
+    namespace: <namespace_id>.<account_id>,
+    // ...
+});
+```
+
+Update the API key on an existing `Connection` or `NativeConnection`:
+
+```typescript
+connection.setApiKey(<APIKey>);
+```
+
+### How to connect to Temporal Cloud using TLS
 
 When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
 
