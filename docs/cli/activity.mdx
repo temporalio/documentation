@@ -7,12 +7,12 @@ toc_max_heading_level: 4
 keywords:
   - activity
   - activity complete
-  - activity execution
-  - activity fail
   - activity update-options
   - activity pause
   - activity unpause
   - activity reset
+  - activity execution
+  - activity fail
   - cli reference
   - cli-feature
   - command-line-interface-cli
@@ -22,290 +22,925 @@ tags:
   - Temporal CLI
 ---
 
-# Temporal CLI activity command reference
-
-Activity commands operate on [Activity Executions](/activity-execution).
-
-Activity commands follow this syntax:
-`temporal activity [command] [command options]`
-
 ## complete
 
-The `temporal activity complete` command completes an [Activity Execution](/activity-execution).
-Along with completing the Activity, the result given upon return can be set as well.
+Complete an Activity, marking it as successfully finished. Specify the
+Activity ID and include a JSON result for the returned value:
 
-`temporal activity complete --activity-id=MyActivity --result=ActivityComplete`
+```
+temporal activity complete \
+    --activity-id YourActivityId \
+    --workflow-id YourWorkflowId \
+    --result '{"YourResultKey": "YourResultVal"}'
+```
 
 Use the following options to change the behavior of this command.
 
-- [--activity-id](/cli/cmd-options#activity-id)
+**Flags:**
 
-- [--address](/cli/cmd-options#address)
+**--activity-id** _string_
 
-- [--codec-auth](/cli/cmd-options#codec-auth)
+Activity ID to complete. Required.
 
-- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
+**--identity** _string_
 
-- [--color](/cli/cmd-options#color)
+Identity of the user submitting this request.
 
-- [--command-timeout](/cli/cmd-options#command-timeout)
+**--result** _string_
 
-- [--env](/cli/cmd-options#env)
+Result `JSON` to return. Required.
 
-- [--grpc-meta](/cli/cmd-options#grpc-meta)
+**Global Flags:**
 
-- [--identity](/cli/cmd-options#identity)
+**--address** _string_
 
-- [--namespace](/cli/cmd-options#namespace)
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
-- [--result](/cli/cmd-options#result)
+**--api-key** _string_
 
-- [--run-id](/cli/cmd-options#run-id)
+API key for request.
 
-- [--tls](/cli/cmd-options#tls)
+**--codec-auth** _string_
 
-- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
+Authorization header for Codec Server requests.
 
-- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
+**--codec-endpoint** _string_
 
-- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
+Remote Codec Server endpoint.
 
-- [--tls-key-path](/cli/cmd-options#tls-key-path)
+**--codec-header** _string[]_
 
-- [--tls-server-name](/cli/cmd-options#tls-server-name)
+HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
 
-- [--workflow-id](/cli/cmd-options#workflow-id)
+**--color** _string-enum_
+
+Output coloring. Accepted values: always, never, auto. (default "auto")
+
+**--command-timeout** _duration_
+
+The command execution timeout. 0s means no timeout.
+
+**--env** _string_
+
+Active environment name (`ENV`). (default "default")
+
+**--env-file** _string_
+
+Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`.
+
+**--grpc-meta** _string[]_
+
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+
+**--log-format** _string-enum_
+
+Log format. Accepted values: text, json. (default "text")
+
+**--log-level** _string-enum_
+
+Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. (default "info")
+
+**--namespace**, **-n** _string_
+
+Temporal Service Namespace. (default "default")
+
+**--no-json-shorthand-payloads** _bool_
+
+Raw payload output, even if the JSON option was used.
+
+**--output**, **-o** _string-enum_
+
+Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
+
+**--time-format** _string-enum_
+
+Time format. Accepted values: relative, iso, raw. (default "relative")
+
+**--tls** _bool_
+
+Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+
+**--tls-ca-data** _string_
+
+Data for server CA certificate. Can't be used with --tls-ca-path.
+
+**--tls-ca-path** _string_
+
+Path to server CA certificate. Can't be used with --tls-ca-data.
+
+**--tls-cert-data** _string_
+
+Data for x509 certificate. Can't be used with --tls-cert-path.
+
+**--tls-cert-path** _string_
+
+Path to x509 certificate. Can't be used with --tls-cert-data.
+
+**--tls-disable-host-verification** _bool_
+
+Disable TLS host-name verification.
+
+**--tls-key-data** _string_
+
+Private certificate key data. Can't be used with --tls-key-path.
+
+**--tls-key-path** _string_
+
+Path to x509 private key. Can't be used with --tls-key-data.
+
+**--tls-server-name** _string_
+
+Override target TLS server name.
 
 ## fail
 
-The `temporal activity fail` command fails an [Activity Execution](/activity-execution).
-The Activity must already be running on a valid [Workflow](/workflows).
+Fail an Activity, marking it as having encountered an error. Specify the
+Activity and Workflow IDs:
 
-`temporal fail --workflow-id=meaningful-business-id --activity-id=MyActivity`
-
-Use the following options to change the behavior of this command.
-
-- [--activity-id](/cli/cmd-options#activity-id)
-
-- [--address](/cli/cmd-options#address)
-
-- [--codec-auth](/cli/cmd-options#codec-auth)
-
-- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
-
-- [--color](/cli/cmd-options#color)
-
-- [--command-timeout](/cli/cmd-options#command-timeout)
-
-- [--detail](/cli/cmd-options#detail)
-
-- [--env](/cli/cmd-options#env)
-
-- [--grpc-meta](/cli/cmd-options#grpc-meta)
-
-- [--identity](/cli/cmd-options#identity)
-
-- [--namespace](/cli/cmd-options#namespace)
-
-- [--reason](/cli/cmd-options#reason)
-
-- [--run-id](/cli/cmd-options#run-id)
-
-- [--tls](/cli/cmd-options#tls)
-
-- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
-
-- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
-
-- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
-
-- [--tls-key-path](/cli/cmd-options#tls-key-path)
-
-- [--tls-server-name](/cli/cmd-options#tls-server-name)
-
-- [--workflow-id](/cli/cmd-options#workflow-id)
-
-## update-options
-
-The `temporal activity update-options` command lets you fix running Activities by updating the options that were passed in by the Activity's Parent Workflow.
-
-The Activity must already be running on a valid [Workflow](/workflows).
-Updates are incremental, only changing the specified options. Either the Activity Id or Activity Type must be provided.
-If Activity Type is provided, and there are multiple pending Activities of the provided type, then all of them will be updated.
-The command will return the new Activity options for an [Activity Execution](/activity-execution).
+```
+temporal activity fail \
+    --activity-id YourActivityId \
+    --workflow-id YourWorkflowId
+```
 
 Use the following options to change the behavior of this command.
 
-Routing options:
-- [--activity-id](/cli/cmd-options#activity-id)
-- [--activity-type](/cli/cmd-options#activity-type)
-- [--workflow-id](/cli/cmd-options#workflow-id)
-- [--run-id](/cli/cmd-options#run-id)
-- [--namespace](/cli/cmd-options#namespace)
+**Flags:**
 
+**--activity-id** _string_
 
-You can update the following Activity options:
+Activity ID to fail. Required.
 
-- [--task-queue](/cli/cmd-options#task-queue)
-- [--schedule-to-close-timeout](/cli/cmd-options#schedule-to-close-timeout)
-- [--schedule-to-start-timeout](/cli/cmd-options#schedule-to-start-timeout)
-- [--start-to-close-timeout](/cli/cmd-options#start-to-close-timeout)
-- [--heartbeat-timeout](/cli/cmd-options#heartbeat-timeout)
-- [--retry-initial-interval](/cli/cmd-options#retry-initial-interval)
-- [--retry-maximum-interval](/cli/cmd-options#retry-maximum-interval)
-- [--retry-backoff-coefficient](/cli/cmd-options#retry-backoff-coefficient)
-- [--retry-maximum-attempts](/cli/cmd-options#retry-maximum-attempts)
+**--detail** _string_
 
-Other options:
-- [--identity](/cli/cmd-options#identity)
-- [--tls](/cli/cmd-options#tls)
-- [--tls-ca-path](/cli/cmd-options#tls-ca-path)
-- [--tls-cert-path](/cli/cmd-options#tls-cert-path)
-- [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
-- [--tls-key-path](/cli/cmd-options#tls-key-path)
-- [--tls-server-name](/cli/cmd-options#tls-server-name)
-- [--address](/cli/cmd-options#address)
-- [--codec-auth](/cli/cmd-options#codec-auth)
-- [--codec-endpoint](/cli/cmd-options#codec-endpoint)
-- [--color](/cli/cmd-options#color)
-- [--command-timeout](/cli/cmd-options#command-timeout)
-- [--detail](/cli/cmd-options#detail)
-- [--env](/cli/cmd-options#env)
-- [--grpc-meta](/cli/cmd-options#grpc-meta)
+Reason for failing the Activity (JSON).
+
+**--identity** _string_
+
+Identity of the user submitting this request.
+
+**--reason** _string_
+
+Reason for failing the Activity.
+
+**Global Flags:**
+
+**--address** _string_
+
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+
+**--api-key** _string_
+
+API key for request.
+
+**--codec-auth** _string_
+
+Authorization header for Codec Server requests.
+
+**--codec-endpoint** _string_
+
+Remote Codec Server endpoint.
+
+**--codec-header** _string[]_
+
+HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+
+**--color** _string-enum_
+
+Output coloring. Accepted values: always, never, auto. (default "auto")
+
+**--command-timeout** _duration_
+
+The command execution timeout. 0s means no timeout.
+
+**--env** _string_
+
+Active environment name (`ENV`). (default "default")
+
+**--env-file** _string_
+
+Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`.
+
+**--grpc-meta** _string[]_
+
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+
+**--log-format** _string-enum_
+
+Log format. Accepted values: text, json. (default "text")
+
+**--log-level** _string-enum_
+
+Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. (default "info")
+
+**--namespace**, **-n** _string_
+
+Temporal Service Namespace. (default "default")
+
+**--no-json-shorthand-payloads** _bool_
+
+Raw payload output, even if the JSON option was used.
+
+**--output**, **-o** _string-enum_
+
+Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
+
+**--time-format** _string-enum_
+
+Time format. Accepted values: relative, iso, raw. (default "relative")
+
+**--tls** _bool_
+
+Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+
+**--tls-ca-data** _string_
+
+Data for server CA certificate. Can't be used with --tls-ca-path.
+
+**--tls-ca-path** _string_
+
+Path to server CA certificate. Can't be used with --tls-ca-data.
+
+**--tls-cert-data** _string_
+
+Data for x509 certificate. Can't be used with --tls-cert-path.
+
+**--tls-cert-path** _string_
+
+Path to x509 certificate. Can't be used with --tls-cert-data.
+
+**--tls-disable-host-verification** _bool_
+
+Disable TLS host-name verification.
+
+**--tls-key-data** _string_
+
+Private certificate key data. Can't be used with --tls-key-path.
+
+**--tls-key-path** _string_
+
+Path to x509 private key. Can't be used with --tls-key-data.
+
+**--tls-server-name** _string_
+
+Override target TLS server name.
 
 ## pause
 
-The `temporal activity pause` command pauses an [Activity Execution](/activity-execution) specified by its ID or type.
-Pausing the Activity can be undone by using the `temporal activity unpause` command.
+Pause an Activity.
 
-Pausing an Activity means:
-* If the Activity is currently waiting for a retry or is running and subsequently fails, it will not be rescheduled until it is unpaused.
-* If the Activity is already paused, calling this method will have no effect.
-* If the Activity is running and finishes successfully, the Activity will be completed.
-* If the Activity is running and finishes with failure:
-  * If no retries remain, the Activity will be completed.
-  * If retries remain, the Activity will be paused.
+If the Activity is not currently running (e.g. because it previously
+failed), it will not be run again until it is unpaused.
 
-If Activity Type is provided and multiple pending Activities of the provided type exist, all of them will be paused.
+However, if the Activity is currently running, it will run to completion.
+If the Activity is on its last retry attempt and fails, the failure will
+be returned to the caller, just as if the Activity had not been paused.
 
-For long-running Activities, Activities in a paused state will send a cancellation with `activity_paused` set to `true` as a part of [Activity Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) response.
-You can choose how you would like to handle this case in your Activity.
+Activities can be specified by their Activity ID or Activity Type.
+One of those parameters must be provided. If both are provided - Activity
+Type will be used, and Activity ID will be ignored.
 
-This command returns a `NotFound` error if there is no pending Activity with the provided ID or type.
+Specify the Activity and Workflow IDs:
+
+```
+temporal activity pause \
+    --activity-id YourActivityId \
+    --workflow-id YourWorkflowId
+```
+
 Use the following options to change the behavior of this command.
 
-Routing options:
-- [--activity-id](/cli/cmd-options#activity-id)
-- [--activity-type](/cli/cmd-options#activity-type)
-- [--workflow-id](/cli/cmd-options#workflow-id)
-- [--run-id](/cli/cmd-options#run-id)
-- [--namespace](/cli/cmd-options#namespace)
+**Flags:**
 
-Other options:
-  - [--identity](/cli/cmd-options#identity)
-  - [--tls](/cli/cmd-options#tls)
-  - [--tls-ca-path](/cli/cmd-options#tls-ca-path)
-  - [--tls-cert-path](/cli/cmd-options#tls-cert-path)
-  - [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
-  - [--tls-key-path](/cli/cmd-options#tls-key-path)
-  - [--tls-server-name](/cli/cmd-options#tls-server-name)
-  - [--address](/cli/cmd-options#address)
-  - [--codec-auth](/cli/cmd-options#codec-auth)
-  - [--codec-endpoint](/cli/cmd-options#codec-endpoint)
-  - [--color](/cli/cmd-options#color)
-  - [--command-timeout](/cli/cmd-options#command-timeout)
-  - [--detail](/cli/cmd-options#detail)
-  - [--env](/cli/cmd-options#env)
-  - [--grpc-meta](/cli/cmd-options#grpc-meta)
+**--activity-id**, **-a** _string_
+
+Activity ID to pause.
+
+**--activity-type**, **-g** _string_
+
+Activity Type to pause.
+
+**--identity** _string_
+
+Identity of the user submitting this request.
+
+**Global Flags:**
+
+**--address** _string_
+
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+
+**--api-key** _string_
+
+API key for request.
+
+**--codec-auth** _string_
+
+Authorization header for Codec Server requests.
+
+**--codec-endpoint** _string_
+
+Remote Codec Server endpoint.
+
+**--codec-header** _string[]_
+
+HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+
+**--color** _string-enum_
+
+Output coloring. Accepted values: always, never, auto. (default "auto")
+
+**--command-timeout** _duration_
+
+The command execution timeout. 0s means no timeout.
+
+**--env** _string_
+
+Active environment name (`ENV`). (default "default")
+
+**--env-file** _string_
+
+Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`.
+
+**--grpc-meta** _string[]_
+
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+
+**--log-format** _string-enum_
+
+Log format. Accepted values: text, json. (default "text")
+
+**--log-level** _string-enum_
+
+Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. (default "info")
+
+**--namespace**, **-n** _string_
+
+Temporal Service Namespace. (default "default")
+
+**--no-json-shorthand-payloads** _bool_
+
+Raw payload output, even if the JSON option was used.
+
+**--output**, **-o** _string-enum_
+
+Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
+
+**--time-format** _string-enum_
+
+Time format. Accepted values: relative, iso, raw. (default "relative")
+
+**--tls** _bool_
+
+Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+
+**--tls-ca-data** _string_
+
+Data for server CA certificate. Can't be used with --tls-ca-path.
+
+**--tls-ca-path** _string_
+
+Path to server CA certificate. Can't be used with --tls-ca-data.
+
+**--tls-cert-data** _string_
+
+Data for x509 certificate. Can't be used with --tls-cert-path.
+
+**--tls-cert-path** _string_
+
+Path to x509 certificate. Can't be used with --tls-cert-data.
+
+**--tls-disable-host-verification** _bool_
+
+Disable TLS host-name verification.
+
+**--tls-key-data** _string_
+
+Private certificate key data. Can't be used with --tls-key-path.
+
+**--tls-key-path** _string_
+
+Path to x509 private key. Can't be used with --tls-key-data.
+
+**--tls-server-name** _string_
+
+Override target TLS server name.
+
+## reset
+
+Resetting an activity resets both the number of attempts and the activity
+timeout.
+
+If activity is paused and 'keep_paused' flag is not provided - it will be
+unpaused.
+If activity is paused and 'keep_paused' flag is provided - it will stay
+paused.
+If activity is waiting for the retry, is will be rescheduled immediately.
+If the 'reset_heartbeats' flag is set, the activity heartbeat timer and
+heartbeats will be reset.
+
+Activities can be specified by their Activity ID or Activity Type.
+One of those parameters must be provided. If both are provided - Activity
+Type will be used, and Activity ID will be ignored.
+
+Specify the Activity Type of ID and Workflow IDs:
+
+```
+temporal activity reset \
+    --activity-id YourActivityId \
+    --workflow-id YourWorkflowId
+    --keep-paused
+    --reset-heartbeats
+```
+
+Use the following options to change the behavior of this command.
+
+**Flags:**
+
+**--activity-id**, **-a** _string_
+
+Activity ID to pause.
+
+**--activity-type**, **-g** _string_
+
+Activity Type to pause.
+
+**--identity** _string_
+
+Identity of the user submitting this request.
+
+**--keep-paused** _bool_
+
+If activity was paused - it will stay paused.
+
+**--reset-heartbeats** _bool_
+
+Reset the Activity's heartbeat.
+
+**Global Flags:**
+
+**--address** _string_
+
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+
+**--api-key** _string_
+
+API key for request.
+
+**--codec-auth** _string_
+
+Authorization header for Codec Server requests.
+
+**--codec-endpoint** _string_
+
+Remote Codec Server endpoint.
+
+**--codec-header** _string[]_
+
+HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+
+**--color** _string-enum_
+
+Output coloring. Accepted values: always, never, auto. (default "auto")
+
+**--command-timeout** _duration_
+
+The command execution timeout. 0s means no timeout.
+
+**--env** _string_
+
+Active environment name (`ENV`). (default "default")
+
+**--env-file** _string_
+
+Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`.
+
+**--grpc-meta** _string[]_
+
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+
+**--log-format** _string-enum_
+
+Log format. Accepted values: text, json. (default "text")
+
+**--log-level** _string-enum_
+
+Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. (default "info")
+
+**--namespace**, **-n** _string_
+
+Temporal Service Namespace. (default "default")
+
+**--no-json-shorthand-payloads** _bool_
+
+Raw payload output, even if the JSON option was used.
+
+**--output**, **-o** _string-enum_
+
+Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
+
+**--time-format** _string-enum_
+
+Time format. Accepted values: relative, iso, raw. (default "relative")
+
+**--tls** _bool_
+
+Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+
+**--tls-ca-data** _string_
+
+Data for server CA certificate. Can't be used with --tls-ca-path.
+
+**--tls-ca-path** _string_
+
+Path to server CA certificate. Can't be used with --tls-ca-data.
+
+**--tls-cert-data** _string_
+
+Data for x509 certificate. Can't be used with --tls-cert-path.
+
+**--tls-cert-path** _string_
+
+Path to x509 certificate. Can't be used with --tls-cert-data.
+
+**--tls-disable-host-verification** _bool_
+
+Disable TLS host-name verification.
+
+**--tls-key-data** _string_
+
+Private certificate key data. Can't be used with --tls-key-path.
+
+**--tls-key-path** _string_
+
+Path to x509 private key. Can't be used with --tls-key-data.
+
+**--tls-server-name** _string_
+
+Override target TLS server name.
 
 ## unpause
 
-The `temporal activity unpause` command unpauses an [Activity Execution](/activity-execution) specified by its ID or type.
-If there are multiple pending Activities of the provided type, then all of them will be unpaused.
-If Activity is not paused, this call will have no effect.
-If the Activity was paused while waiting for retry, it will be scheduled immediately (* see 'jitter' flag).
-Once the Activity is unpaused, all Timeout timers will be regenerated.
+Re-schedule a previously-paused Activity for execution.
 
-Command will fail with a `NotFound` error if there is no pending Activity with the provided ID or type.
+If the Activity is not running and is past its retry timeout, it will be
+scheduled immediately. Otherwise, it will be scheduled after its retry
+timeout expires.
+
+Use `--reset-attempts` to reset the number of previous run attempts to
+zero. For example, if an Activity is near the maximum number of attempts
+N specified in its retry policy, `--reset-attempts` will allow the
+Activity to be retried another N times after unpausing.
+
+Use `--reset-heartbeat` to reset the Activity's heartbeats.
+
+Activities can be specified by their Activity ID or Activity Type.
+One of those parameters must be provided. If both are provided - Activity
+Type will be used, and Activity ID will be ignored.
 
 Activities can be unpaused in bulk via a visibility Query list filter:
 
 ```
-temporal activity unpause --query YourQuery \
-    --reason YourReasonForUnpause
+temporal activity unpause \
+    --query YourQuery \
+    --reason YourReasonForTermination
 ```
 
+Specify the Activity ID or Type and Workflow IDs:
 
-Routing options:
-- [--activity-id](/cli/cmd-options#activity-id)
-- [--activity-type](/cli/cmd-options#activity-type)
-- [--workflow-id](/cli/cmd-options#workflow-id)
-- [--run-id](/cli/cmd-options#run-id)
-- [--namespace](/cli/cmd-options#namespace)
+```
+temporal activity unpause \
+    --activity-id YourActivityId \
+    --workflow-id YourWorkflowId
+    --reset-attempts
+    --reset-heartbeats
+```
 
-Unpause specific options:
-- [--match-all](/cli/cmd-options#match-all)
-- [--reset-attempts](/cli/cmd-options#reset-attempts)
-- [--reset-heartbeat](/cli/cmd-options#reset-heartbeat)
-- [--jitter](/cli/cmd-options#activity-jitter)
+Use the following options to change the behavior of this command.
 
-Other options:
-  - [--identity](/cli/cmd-options#identity)
-  - [--tls](/cli/cmd-options#tls)
-  - [--tls-ca-path](/cli/cmd-options#tls-ca-path)
-  - [--tls-cert-path](/cli/cmd-options#tls-cert-path)
-  - [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
-  - [--tls-key-path](/cli/cmd-options#tls-key-path)
-  - [--tls-server-name](/cli/cmd-options#tls-server-name)
-  - [--address](/cli/cmd-options#address)
-  - [--codec-auth](/cli/cmd-options#codec-auth)
-  - [--codec-endpoint](/cli/cmd-options#codec-endpoint)
-  - [--color](/cli/cmd-options#color)
-  - [--command-timeout](/cli/cmd-options#command-timeout)
-  - [--detail](/cli/cmd-options#detail)
-  - [--env](/cli/cmd-options#env)
-  - [--grpc-meta](/cli/cmd-options#grpc-meta)
+**Flags:**
 
-## reset
+**--activity-id**, **-a** _string_
 
-The `temporal activity reset` command restarts a running [Activity Execution](/activity-execution) specified by its ID or type.
-If there are multiple pending activities of the provided type - all of them will be reset.
-Resetting an Activity means:
-* The number of attempts will be reset to 0;
-* Activity timeouts will be reset;
-* If the Activity is waiting for retry, it will be scheduled immediately (* see 'jitter' flag);
-* If the Activity is currently executing, it will be reset once/if it completes with failure;
-* If the Activity is paused, it will be unpaused. If you want it to stay paused, you can pass --keep-paused flag;
+Activity ID to unpause. Can only be used without --query.
 
-Command will fail with a `NotFound` error if there is no pending Activity with the provided ID or type.
-This may happen if the Activity has already completed.
+**--activity-type**, **-g** _string_
 
-Routing options:
-- [--activity-id](/cli/cmd-options#activity-id)
-- [--activity-type](/cli/cmd-options#activity-type)
-- [--workflow-id](/cli/cmd-options#workflow-id)
-- [--run-id](/cli/cmd-options#run-id)
-- [--namespace](/cli/cmd-options#namespace)
+Activity Type to unpause.
 
-Reset specific options:
-- [--keep-paused](/cli/cmd-options#keep-paused)
-- [--reset-heartbeat](/cli/cmd-options#reset-heartbeat)
-- [--jitter](/cli/cmd-options#activity-jitter)
+**--identity** _string_
 
-Other options:
-  - [--identity](/cli/cmd-options#identity)
-  - [--tls](/cli/cmd-options#tls)
-  - [--tls-ca-path](/cli/cmd-options#tls-ca-path)
-  - [--tls-cert-path](/cli/cmd-options#tls-cert-path)
-  - [--tls-disable-host-verification](/cli/cmd-options#tls-disable-host-verification)
-  - [--tls-key-path](/cli/cmd-options#tls-key-path)
-  - [--tls-server-name](/cli/cmd-options#tls-server-name)
-  - [--address](/cli/cmd-options#address)
-  - [--codec-auth](/cli/cmd-options#codec-auth)
-  - [--codec-endpoint](/cli/cmd-options#codec-endpoint)
-  - [--color](/cli/cmd-options#color)
-  - [--command-timeout](/cli/cmd-options#command-timeout)
-  - [--detail](/cli/cmd-options#detail)
-  - [--env](/cli/cmd-options#env)
-  - [--grpc-meta](/cli/cmd-options#grpc-meta)
+Identity of the user submitting this request.
 
+**--jitter**, **-j** _duration_
+
+The activity will start at random a time within the specified duration. Can only be used with --query.
+
+**--match-all** _bool_
+
+Every paused activity should be unpaused. This flag is ignored if activity-type is provided. Can only be used with --query.
+
+**--query**, **-q** _string_
+
+Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query.
+
+**--reason** _string_
+
+Reason for batch operation. Only use with --query. Defaults to user name.
+
+**--reset-attempts** _bool_
+
+Also reset the activity attempts.
+
+**--reset-heartbeats** _bool_
+
+Reset the Activity's heartbeats. Only works with --reset-attempts.
+
+**--rps** _float_
+
+Limit batch's requests per second. Only allowed if query is present.
+
+**--run-id**, **-r** _string_
+
+Run ID. Only use with --workflow-id. Cannot use with --query.
+
+**--workflow-id**, **-w** _string_
+
+Workflow ID. You must set either --workflow-id or --query.
+
+**--yes**, **-y** _bool_
+
+Don't prompt to confirm signaling. Only allowed when --query is present.
+
+**Global Flags:**
+
+**--address** _string_
+
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+
+**--api-key** _string_
+
+API key for request.
+
+**--codec-auth** _string_
+
+Authorization header for Codec Server requests.
+
+**--codec-endpoint** _string_
+
+Remote Codec Server endpoint.
+
+**--codec-header** _string[]_
+
+HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+
+**--color** _string-enum_
+
+Output coloring. Accepted values: always, never, auto. (default "auto")
+
+**--command-timeout** _duration_
+
+The command execution timeout. 0s means no timeout.
+
+**--env** _string_
+
+Active environment name (`ENV`). (default "default")
+
+**--env-file** _string_
+
+Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`.
+
+**--grpc-meta** _string[]_
+
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+
+**--log-format** _string-enum_
+
+Log format. Accepted values: text, json. (default "text")
+
+**--log-level** _string-enum_
+
+Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. (default "info")
+
+**--namespace**, **-n** _string_
+
+Temporal Service Namespace. (default "default")
+
+**--no-json-shorthand-payloads** _bool_
+
+Raw payload output, even if the JSON option was used.
+
+**--output**, **-o** _string-enum_
+
+Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
+
+**--time-format** _string-enum_
+
+Time format. Accepted values: relative, iso, raw. (default "relative")
+
+**--tls** _bool_
+
+Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+
+**--tls-ca-data** _string_
+
+Data for server CA certificate. Can't be used with --tls-ca-path.
+
+**--tls-ca-path** _string_
+
+Path to server CA certificate. Can't be used with --tls-ca-data.
+
+**--tls-cert-data** _string_
+
+Data for x509 certificate. Can't be used with --tls-cert-path.
+
+**--tls-cert-path** _string_
+
+Path to x509 certificate. Can't be used with --tls-cert-data.
+
+**--tls-disable-host-verification** _bool_
+
+Disable TLS host-name verification.
+
+**--tls-key-data** _string_
+
+Private certificate key data. Can't be used with --tls-key-path.
+
+**--tls-key-path** _string_
+
+Path to x509 private key. Can't be used with --tls-key-data.
+
+**--tls-server-name** _string_
+
+Override target TLS server name.
+
+## update-options
+
+Update Activity options. Specify the Activity and Workflow IDs, and
+options you want to update.
+Updates are incremental, only changing the specified options.
+
+```
+temporal activity update-options \
+    --activity-id YourActivityId \
+    --workflow-id YourWorkflowId \
+    --task-queue NewTaskQueueName \
+    --schedule-to-close-timeout DURATION \
+    --schedule-to-start-timeout DURATION \
+    --start-to-close-timeout DURATION \
+    --heartbeat-timeout DURATION \
+    --retry-initial-interval DURATION \
+    --retry-maximum-interval DURATION \
+    --retry-backoff-coefficient NewBackoffCoefficient \
+    --retry-maximum-attempts NewMaximumAttempts
+```
+
+Use the following options to change the behavior of this command.
+
+**Flags:**
+
+**--activity-id** _string_
+
+Activity ID. Required.
+
+**--heartbeat-timeout** _duration_
+
+Maximum permitted time between successful worker heartbeats.
+
+**--identity** _string_
+
+Identity of the user submitting this request.
+
+**--retry-backoff-coefficient** _float_
+
+Coefficient used to calculate the next retry interval. The next retry interval is previous interval multiplied by the backoff coefficient. Must be 1 or larger.
+
+**--retry-initial-interval** _duration_
+
+Interval of the first retry. If retryBackoffCoefficient is 1.0 then it is used for all retries.
+
+**--retry-maximum-attempts** _int_
+
+Maximum number of attempts. When exceeded the retries stop even if not expired yet. Setting this value to 1 disables retries. Setting this value to 0 means unlimited attempts(up to the timeouts).
+
+**--retry-maximum-interval** _duration_
+
+Maximum interval between retries. Exponential backoff leads to interval increase. This value is the cap of the increase.
+
+**--schedule-to-close-timeout** _duration_
+
+Indicates how long the caller is willing to wait for an activity completion. Limits how long retries will be attempted.
+
+**--schedule-to-start-timeout** _duration_
+
+Limits time an activity task can stay in a task queue before a worker picks it up. This timeout is always non retryable, as all a retry would achieve is to put it back into the same queue. Defaults to the schedule-to-close timeout or workflow execution timeout if not specified.
+
+**--start-to-close-timeout** _duration_
+
+Maximum time an activity is allowed to execute after being picked up by a worker. This timeout is always retryable.
+
+**--task-queue** _string_
+
+Name of the task queue for the Activity.
+
+**Global Flags:**
+
+**--address** _string_
+
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+
+**--api-key** _string_
+
+API key for request.
+
+**--codec-auth** _string_
+
+Authorization header for Codec Server requests.
+
+**--codec-endpoint** _string_
+
+Remote Codec Server endpoint.
+
+**--codec-header** _string[]_
+
+HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+
+**--color** _string-enum_
+
+Output coloring. Accepted values: always, never, auto. (default "auto")
+
+**--command-timeout** _duration_
+
+The command execution timeout. 0s means no timeout.
+
+**--env** _string_
+
+Active environment name (`ENV`). (default "default")
+
+**--env-file** _string_
+
+Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`.
+
+**--grpc-meta** _string[]_
+
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+
+**--log-format** _string-enum_
+
+Log format. Accepted values: text, json. (default "text")
+
+**--log-level** _string-enum_
+
+Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. (default "info")
+
+**--namespace**, **-n** _string_
+
+Temporal Service Namespace. (default "default")
+
+**--no-json-shorthand-payloads** _bool_
+
+Raw payload output, even if the JSON option was used.
+
+**--output**, **-o** _string-enum_
+
+Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
+
+**--time-format** _string-enum_
+
+Time format. Accepted values: relative, iso, raw. (default "relative")
+
+**--tls** _bool_
+
+Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+
+**--tls-ca-data** _string_
+
+Data for server CA certificate. Can't be used with --tls-ca-path.
+
+**--tls-ca-path** _string_
+
+Path to server CA certificate. Can't be used with --tls-ca-data.
+
+**--tls-cert-data** _string_
+
+Data for x509 certificate. Can't be used with --tls-cert-path.
+
+**--tls-cert-path** _string_
+
+Path to x509 certificate. Can't be used with --tls-cert-data.
+
+**--tls-disable-host-verification** _bool_
+
+Disable TLS host-name verification.
+
+**--tls-key-data** _string_
+
+Private certificate key data. Can't be used with --tls-key-path.
+
+**--tls-key-path** _string_
+
+Path to x509 private key. Can't be used with --tls-key-data.
+
+**--tls-server-name** _string_
+
+Override target TLS server name.

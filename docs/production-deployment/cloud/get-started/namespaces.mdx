@@ -247,17 +247,10 @@ Sample workflowId convention:
 
 {/* How to access a Namespace in Temporal Cloud */}
 
-Temporal Cloud supports authentication to Namespaces using [API keys](/cloud/api-keys) or [mTLS](/cloud/certificates).
-A Namespace only supports one authentication method at a time.
-The method is set at Namespace creation.
+Temporal Cloud normally supports authentication to Namespaces using [API keys](/cloud/api-keys) _or_ [mTLS](/cloud/certificates).
+If you need to migrate from one authentication method to another, or you require both API key and mTLS authentication to be enabled on your Namespace, please contact [Support](https://docs.temporal.io/cloud/support#support-ticket).
 
 See the documentation for [API keys](/cloud/api-keys) and [mTLS certificates](/cloud/certificates) for more information on how to create and manage your credentials.
-
-:::tip
-
-If you need to migrate from one authentication method to another, please contact [Support](https://support.temporal.io).
-
-:::
 
 Authentication methods require specific endpoints in order to programmatically access your Namespace.
 
