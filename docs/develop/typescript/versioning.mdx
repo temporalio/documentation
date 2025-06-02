@@ -62,8 +62,8 @@ You would then update the Worker configuration to register both Workflow Types:
 
 ```typescript
 const worker = await Worker.create({
-  workflowsPath: require.resolve("./workflows"),
-  //other configurations
+  workflowsPath: require.resolve('./workflows'),
+  // other configurations
 });
 ```
 
@@ -106,7 +106,7 @@ Patching is a three-step process:
 1. Patch in any new, updated code using the `patched()` function. Run the new patched code alongside old code.
 2. Remove old code and use `deprecatePatch()` to mark a particular patch as deprecated.
 3. Once there are no longer any open Worklow Executions of the previous version of the code, remove `deprecatePatch()`.
-Let's walk through this process in sequence.
+   Let's walk through this process in sequence.
 
 ### Patching in new code
 
@@ -128,6 +128,7 @@ export async function myWorkflow(): Promise<void> {
   }
 }
 ```
+
 ### Deprecating patches {#deprecated-patches}
 
 After ensuring that all Workflows started with `v1` code have finished, you can [deprecate the patch](https://typescript.temporal.io/api/namespaces/workflow#deprecatepatch).
