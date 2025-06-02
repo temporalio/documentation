@@ -18,8 +18,7 @@ tags:
 
 The Temporal Service maintains a set of Task Queues, which Workers poll to see
 what work needs to be done. Each Task Queue is identified by a name, which is
-provided to the Temporal Service when launching a Workflow Execution. In this
-example, the value is included in request to start the Workflow.
+provided to the Temporal Service when launching a Workflow Execution. 
 
 <Tabs groupId="start-workflow-configure-worker-by-sdk" queryString>
 
@@ -333,15 +332,3 @@ using var worker = new TemporalWorker(
 However, it’s not always possible to do define the Task Queue name in a constant, such as when the Client used
 to start the Workflow is running on another system or is implemented in a
 different programming language.
-
-## Running Multiple Worker Processes
-
-Finally, we recommend running at least two Worker Processes for each Task Queue
-in a production application, each running on a separate host.
-
-This eliminates the Worker as a single point of failure, because if
-there are two Worker Processes and one of them crashes, the remaining
-Worker will recover any executions that were in progress and will
-continue to handle new ones, too. Running additional Worker Processes
-will further increase the scalability and availability of your
-application.
