@@ -105,35 +105,20 @@ Namespaces are established by setting a Client's options to configure the new in
 
 To use your [API key](/cloud/api-keys) with a Temporal SDK, include the API key in the Bearer token header and specify the Namespace header. The Bearer token header indicates the authentication type, while the Namespace header routes the request.
 
-At a client level:
+    WorkflowServiceStubs service =
+        WorkflowServiceStubs.newServiceStubs(
+            WorkflowServiceStubsOptions.newBuilder()
+                .addApiKey(
+                    () ->
+                        <API key>)
+                .setTarget(<endpoint>)
+                .setEnableHttps(true)
+                ...
+                .build());
 
-```java
-// Create the Workflow service stub.
-WorkflowServiceStubsOptions.Builder stubOptions =
-    WorkflowServiceStubsOptions.newBuilder()
-        .addApiKey(() -> <APIKey>)
-        .setEnableHttps(true)
-        .setTarget(<endpoint>);
-
-WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(stubOptions.build());
-
-/*
- * Get a Workflow service client which can be used to start, Signal, and Query Workflow Executions.
- */
-WorkflowClient client =
-    WorkflowClient.newInstance(
-        service, WorkflowClientOptions.newBuilder().setNamespace(<namespace_id>.<account_id>).build());
-```
-
-At a per-call level:
-
-```java
-String myKey = <APIKey>;
-WorkflowServiceStubsOptions stubOptions =
-    WorkflowServiceStubsOptions.newBuilder()
-        .addApiKey(() -> myKey)
-        .build();
-
+    WorkflowClient client =
+        WorkflowClient.newInstance(
+            service, WorkflowClientOptions.newBuilder().setNamespace(<namespace_id>.<account_id>).build());
 // Just update by replacing, this must be done in a thread safe way
 myKey = "Bearer " + <new APIKey>;
 ```
