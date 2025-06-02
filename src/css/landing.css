@@ -2,8 +2,8 @@
 :root {
     --background-color: #161723;    /* Exact background from Figma */
     --text-color: #FFFFFF;          /* Pure white for headings */
-    --card-background: #1C2128;     /* Card background */
-    --card-hover: #22272E;          /* Card hover state */
+    --card-background: #161723;     /* Card background */
+    --card-hover: #161723;          /* Card hover state */
     --link-color: #CACBF9;          /* Indigo/100 from Figma */
     --link-hover-color: #FFFFFF;    /* Link hover - pure white */
     --border-color: #30363D;        /* Border color */
@@ -11,7 +11,7 @@
     --card-padding: 1.25rem;
     --heading-color: #FFFFFF;       /* Pure white for headings */
     --subtext-color: #8B949E;
-    --icon-background: #1C2128;     /* Icon background color */
+    --icon-background: #161723;     /* Icon background color */
     --icon-color: #3FB950;          /* Icon color */
 }
 
