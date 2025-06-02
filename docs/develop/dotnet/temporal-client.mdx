@@ -64,10 +64,6 @@ var myClient = TemporalClient.ConnectAsync(new(<endpoint>)
 {
     Namespace = <namespace_id>.<account_id>,
     ApiKey = <APIKey>,
-    RpcMetadata = new Dictionary<string, string>()
-    {
-        ["temporal-namespace"] = "${<namespace_id>.<account_id>}",
-    },
     Tls = new(),
 });
 ```
