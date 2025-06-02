@@ -128,7 +128,7 @@ To update an API key:
 var myKey string
 creds := client.NewAPIKeyDynamicCredentials(
     func(context.Context) (string, error) { return myKey, nil })
-// Just update by replacing
+// Update by replacing
 myKey = myKeyUpdated
 ```
 
