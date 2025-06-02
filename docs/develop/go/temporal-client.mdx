@@ -102,9 +102,56 @@ func main() {
 
 ## Connect to Temporal Cloud {#connect-to-temporal-cloud}
 
-**How to connect to Temporal Cloud using the Go SDK**
+### How to connect to Temporal Cloud using an API Key
 
-When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
+To use your [API key](/cloud/api-keys) with a Temporal SDK, include the API key in the Bearer token header and specify the Namespace header.
+The Bearer token header indicates the authentication type, while the Namespace header routes the request.
+
+Create an initial connection:
+
+```go
+clientOptions := client.Options{
+    HostPort: <endpoint>,
+    Namespace: <namespace_id>.<account_id>,
+    ConnectionOptions: client.ConnectionOptions{
+        TLS: &tls.Config{},
+        DialOptions: []grpc.DialOption{
+            grpc.WithUnaryInterceptor(
+                func(ctx context.Context, method string, req any, reply any, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
+                    return invoker(
+                        metadata.AppendToOutgoingContext(ctx, "temporal-namespace", <namespace_id>.<account_id>),
+                        method,
+                        req,
+                        reply,
+                        cc,
+                        opts...,
+                    )
+                },
+            ),
+        },
+    },
+    Credentials: client.NewAPIKeyStaticCredentials(apiKey),
+}
+c, err := client.Dial(clientOptions)
+if err != nil {
+  log.Fatalf("error creating temporal client: %v", err)
+}
+```
+
+To update an API key:
+
+```go
+// Assuming client Credentials created with
+var myKey string
+creds := client.NewAPIKeyDynamicCredentials(
+    func(context.Context) (string, error) { return myKey, nil })
+// Just update by replacing
+myKey = myKeyUpdated
+```
+
+### How to connect to Temporal Cloud using TLS
+
+When you connect to [Temporal Cloud](/cloud) with TLS, you need to provide additional connection and client options that include the following:
 
 - The [Temporal Cloud Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id).
 - The [Namespace's gRPC endpoint](/cloud/namespaces#temporal-cloud-grpc-endpoint).
