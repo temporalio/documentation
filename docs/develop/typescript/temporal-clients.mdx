@@ -105,9 +105,6 @@ const connection = await NativeConnection.connect({
     address: <endpoint>,
     tls: true,
     apiKey: <APIKey>,
-    metadata: {
-      'temporal-namespace': <namespace_id>.<account_id>,
-    },
 });
 const worker = await Worker.create({
     connection,
