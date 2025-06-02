@@ -1,17 +1,18 @@
 /* Dark Mode (Default) */
 :root {
-    --background-color: #0D1117;    /* Darker navy background from image */
-    --text-color: #F9FAFB;
-    --card-background: #161B22;     /* Card background from image */
-    --card-hover: #21262D;          /* Slightly lighter for hover */
-    --link-color: #8B949E;          /* Muted text color for links */
-    --link-hover-color: #F9FAFB;
-    --border-color: #30363D;        /* Border color from image */
+    --background-color: #161723;    /* Exact background from Figma */
+    --text-color: #FFFFFF;          /* Pure white for headings */
+    --card-background: #1C2128;     /* Card background */
+    --card-hover: #22272E;          /* Card hover state */
+    --link-color: #CACBF9;          /* Indigo/100 from Figma */
+    --link-hover-color: #FFFFFF;    /* Link hover - pure white */
+    --border-color: #30363D;        /* Border color */
     --section-gap: 1.5rem;
     --card-padding: 1.25rem;
-    --heading-color: #F9FAFB;
+    --heading-color: #FFFFFF;       /* Pure white for headings */
     --subtext-color: #8B949E;
-    --icon-color: #3FB950;          /* The exact green from the image */
+    --icon-background: #1C2128;     /* Icon background color */
+    --icon-color: #3FB950;          /* Icon color */
 }
 
 /* Light Mode */
@@ -33,6 +34,7 @@ body {
     background-color: var(--background-color);
     margin: 0;
     padding: 0;
+    font-family: "Aeonik", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 /* Docs Landing Page Styles */
@@ -95,83 +97,103 @@ body {
     grid-template-columns: repeat(2, 1fr);
 }
 
-/* Section Cards */
+/* Learning Section */
+.learning-section {
+    margin-top: 4rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.learning-section h1 {
+    text-align: center;
+    margin-bottom: 5rem;
+    color: var(--heading-color);
+    font-family: "Aeonik", sans-serif;
+    font-size: 3.75rem;
+    font-weight: 300;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+}
+
+.learning-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+/* Card Styles */
 .section-card {
     background: var(--card-background);
     border: 1px solid var(--border-color);
-    border-radius: 0.5rem;
-    padding: var(--card-padding);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
     height: 100%;
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
 }
 
 .section-card:hover {
     background: var(--card-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .section-header {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid var(--border-color);
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 2px solid var(--border-color);
 }
 
 .section-icon-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
+    width: 2.5rem;
+    height: 2.5rem;
 }
 
 .section-icon {
     stroke: var(--icon-color);
     stroke-width: 2;
-    width: 20px;
-    height: 20px;
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.section-header h2 {
+    color: var(--heading-color);
+    font-family: "Aeonik", sans-serif;
+    font-size: 1.5rem;
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: 0;
+    margin: 0;
 }
 
 /* Section Links */
 .section-links {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 1rem;
+    padding-top: 0.5rem;
 }
 
 .section-link {
     color: var(--link-color);
+    font-family: "Aeonik", sans-serif;
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: 0;
     text-decoration: none;
-    padding: 0.375rem 0;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
     transition: color 0.15s ease;
 }
 
 .section-link:hover {
     color: var(--link-hover-color);
-}
-
-/* Learning Section */
-.learning-section {
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--border-color);
-}
-
-.learning-section h2 {
-    text-align: center;
-    margin-bottom: 1.5rem;
-    color: var(--heading-color);
-    font-size: 1.5rem;
-    font-weight: 600;
-}
-
-.learning-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--section-gap);
 }
 
 /* Typography */

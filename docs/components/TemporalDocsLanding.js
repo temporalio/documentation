@@ -83,9 +83,7 @@ const TemporalDocsLanding = () => {
       title: "Temporal Cloud",
       icon: (
         <Icon>
-          <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />
-          <path d="M12 12v9" />
-          <path d="m8 17 4 4 4-4" />
+          <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 0 9H4" />
         </Icon>
       ),
       items: [
@@ -194,15 +192,16 @@ const TemporalDocsLanding = () => {
     title: "Tutorials",
     icon: (
       <Icon>
-        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+        <path d="M12 14l9-5-9-5-9 5 9 5z" />
+        <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+        <path d="M12 14l-6.16-3.422a12.083 12.083 0 00-.665 6.479A11.952 11.952 0 0112 20.055a11.952 11.952 0 016.824-2.998 12.078 12.078 0 00-.665-6.479L12 14z" />
       </Icon>
     ),
     items: [
-      { title: "Tutorial 1", link: "/tutorials/tutorial-1" },
-      { title: "Tutorial 1", link: "/tutorials/tutorial-2" },
-      { title: "Tutorial 1", link: "/tutorials/tutorial-3" },
-      { title: "Tutorial 1", link: "/tutorials/tutorial-4" }
+      { title: "Build your first Temporal application", link: "/tutorials/first-app" },
+      { title: "Learn Temporal step by step", link: "/tutorials/step-by-step" },
+      { title: "Advanced patterns and practices", link: "/tutorials/advanced" },
+      { title: "Language-specific tutorials", link: "/tutorials/languages" }
     ]
   };
 
@@ -210,16 +209,14 @@ const TemporalDocsLanding = () => {
     title: "Courses",
     icon: (
       <Icon>
-        <path d="M12 14c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5z" />
-        <path d="M12 14v7" />
-        <path d="M9 18h6" />
+        <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
       </Icon>
     ),
     items: [
-      { title: "Course", link: "/courses/course-1" },
-      { title: "Course", link: "/courses/course-2" },
-      { title: "Course", link: "/courses/course-3" },
-      { title: "Course", link: "/courses/course-4" }
+      { title: "Temporal fundamentals", link: "/courses/fundamentals" },
+      { title: "Building resilient workflows", link: "/courses/resilient-workflows" },
+      { title: "Advanced Temporal patterns", link: "/courses/advanced-patterns" },
+      { title: "Best practices and architecture", link: "/courses/best-practices" }
     ]
   };
 
@@ -227,16 +224,14 @@ const TemporalDocsLanding = () => {
     title: "Examples",
     icon: (
       <Icon>
-        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-        <path d="M3.29 7 12 12l8.71-5" />
-        <path d="M12 22V12" />
+        <path d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
       </Icon>
     ),
     items: [
-      { title: "fix", link: "/examples/fix" },
-      { title: "fix", link: "/examples/fix-2" },
-      { title: "fix", link: "/examples/fix-3" },
-      { title: "fix", link: "/examples/fix-4" }
+      { title: "Sample applications", link: "/examples/sample-apps" },
+      { title: "Code patterns library", link: "/examples/patterns" },
+      { title: "Integration examples", link: "/examples/integrations" },
+      { title: "Community showcase", link: "/examples/showcase" }
     ]
   };
 
@@ -340,47 +335,23 @@ const TemporalDocsLanding = () => {
         </div>
 
         <div className="learning-section">
-          <h2>More ways to learn</h2>
+          <h1>More ways to learn</h1>
           <div className="learning-grid">
-            <div className="section-card">
-              <div className="section-header">
-                <span className="section-icon-wrapper">{tutorialsSection.icon}</span>
-                <h2>{tutorialsSection.title}</h2>
+            {[tutorialsSection, coursesSection, examplesSection].map((section, index) => (
+              <div key={index} className="section-card">
+                <div className="section-header">
+                  <span className="section-icon-wrapper">{section.icon}</span>
+                  <h2>{section.title}</h2>
+                </div>
+                <div className="section-links">
+                  {section.items.map((item, itemIndex) => (
+                    <a key={itemIndex} href={item.link} className="section-link">
+                      {item.title}
+                    </a>
+                  ))}
+                </div>
               </div>
-              <div className="section-links">
-                {tutorialsSection.items.map((item, index) => (
-                  <a key={index} href={item.link} className="section-link">
-                    {item.title}
-                  </a>
-                ))}
-              </div>
-            </div>
-            <div className="section-card">
-              <div className="section-header">
-                <span className="section-icon-wrapper">{coursesSection.icon}</span>
-                <h2>{coursesSection.title}</h2>
-              </div>
-              <div className="section-links">
-                {coursesSection.items.map((item, index) => (
-                  <a key={index} href={item.link} className="section-link">
-                    {item.title}
-                  </a>
-                ))}
-              </div>
-            </div>
-            <div className="section-card">
-              <div className="section-header">
-                <span className="section-icon-wrapper">{examplesSection.icon}</span>
-                <h2>{examplesSection.title}</h2>
-              </div>
-              <div className="section-links">
-                {examplesSection.items.map((item, index) => (
-                  <a key={index} href={item.link} className="section-link">
-                    {item.title}
-                  </a>
-                ))}
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
