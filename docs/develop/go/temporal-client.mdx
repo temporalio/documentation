@@ -104,9 +104,17 @@ func main() {
 
 ### How to connect to Temporal Cloud using an API Key {#connect-to-temporal-cloud-api-key}
 
-To use an [API key](/cloud/api-keys) with the Temporal Go SDK, use the following code example.
+To use an [API key](/cloud/api-keys) with the Temporal Go SDK, you will need to gather some information first: 
 
-Create an initial connection:
+* When you create your _API Key,_ be sure to save the value. 
+* You can see the _namespace account id_ combination your URL or anywhere that you manage namespaces.
+It follows the format `<namespace_id>.<account_id>`.
+* The _endpoint_ will vary. The most common endpoint used is the regional endpoint, which you can find on the namespace management page.
+It follows the format: `<region>.<cloud_provider>.api.temporal.io:7233`.
+* For Namespaces with High Availability features with API key authentication enabled, use the gRPC Namespace endpoint: `<namespace>.<account>.tmprl.cloud:7233`. 
+This allows automated failover without needing to switch endpoints.
+
+Once you have the necessary info, to create an initial connection, use this code:
 
 ```go
 clientOptions := client.Options{
