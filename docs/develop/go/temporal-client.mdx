@@ -120,7 +120,7 @@ Once you have the necessary info, to create an initial connection, use this code
 clientOptions := client.Options{
     HostPort: <endpoint>,
     Namespace: <namespace_id>.<account_id>,
-    ConnectionOptions: client.ConnectionOptions{TLS: &tls.Config{},},
+    ConnectionOptions: client.ConnectionOptions{TLS: &tls.Config{}},
     Credentials: client.NewAPIKeyStaticCredentials(apiKey),
 }
 c, err := client.Dial(clientOptions)
