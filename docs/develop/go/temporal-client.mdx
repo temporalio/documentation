@@ -124,9 +124,6 @@ clientOptions := client.Options{
     Credentials: client.NewAPIKeyStaticCredentials(apiKey),
 }
 c, err := client.Dial(clientOptions)
-if err != nil {
-  log.Fatalf("error creating temporal client: %v", err)
-}
 ```
 
 To update an API key:
