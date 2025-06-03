@@ -120,6 +120,7 @@ To use an [API key](/cloud/api-keys) with the Temporal Jave SDK, use the followi
     WorkflowClient client =
         WorkflowClient.newInstance(
             service, WorkflowClientOptions.newBuilder().setNamespace(<namespace_id>.<account_id>).build());
+            ```
 
 // Update by replacing, this must be done in a thread safe way
 myKey = "Bearer " + <new APIKey>;
