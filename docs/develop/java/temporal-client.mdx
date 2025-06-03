@@ -122,9 +122,15 @@ To use an [API key](/cloud/api-keys) with the Temporal Jave SDK, use the followi
             service, WorkflowClientOptions.newBuilder().setNamespace(<namespace_id>.<account_id>).build());
             ```
 
+To update an API key:
+```java
+String myKey = <APIKey>;
+WorkflowServiceStubsOptions stubOptions =
+    WorkflowServiceStubsOptions.newBuilder()
+        .addApiKey(() -> myKey)
+        .build();
 // Update by replacing, this must be done in a thread safe way
 myKey = "Bearer " + <new APIKey>;
-```
 
 ### How to connect a Temporal Client to Temporal Cloud using TLS {#connect-to-temporal-cloud-tls}
 
