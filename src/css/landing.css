@@ -47,14 +47,16 @@ body {
 }
 
 .docs-landing .container {
-    max-width: 1280px;
+    max-width: 100%;
+    width: 1280px;
     margin: 0 auto;
-    padding: 0 1.5rem;
+    padding: 3rem 1.5rem 0;
 }
 
 /* Banner Image */
 .docs-landing img[alt="SDK Logo Banner"] {
-    width: 100%;
+    width: 1280px;
+    max-width: 100%;
     height: auto;
     margin-bottom: 2rem;
 }
@@ -91,10 +93,6 @@ body {
     grid-template-columns: repeat(3, 1fr);
     gap: var(--section-gap);
     margin-bottom: var(--section-gap);
-}
-
-.section-row:last-child {
-    grid-template-columns: repeat(2, 1fr);
 }
 
 /* Learning Section */

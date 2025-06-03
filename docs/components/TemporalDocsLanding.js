@@ -35,12 +35,10 @@ const TemporalDocsLanding = () => {
         </Icon>
       ),
       items: [
-        { title: "Setup your Local Dev Env", link: "/dev-guide/setup-local-dev-env" },
-        { title: "Run your First Temporal App", link: "/dev-guide/run-first-temporal-app" },
-        { title: "Build a Temporal App from Scratch", link: "/dev-guide/build-a-temporal-app-from-scratch" },
-        { title: "Examples", link: "/dev-guide/examples" },
-        { title: "Course", link: "/dev-guide/course" },
-        { title: "Intro to Temporal Cloud", link: "/dev-guide/intro-to-temporal-cloud" }
+        { title: "Setup your Local Dev Env", link: "https://learn.temporal.io/getting_started/" },
+        { title: "Run your First Temporal App", link: "https://learn.temporal.io/getting_started/" },
+        { title: "Build a Temporal App from Scratch", link: "https://learn.temporal.io/getting_started/" },
+        { title: "Take a free course", link: "https://learn.temporal.io/courses/" }
       ]
     },
     {
@@ -56,21 +54,22 @@ const TemporalDocsLanding = () => {
         { title: "PHP SDK Developer Guide", link: "/develop/php" },
         { title: "Python SDK Developer Guide", link: "/develop/python" },
         { title: "TypeScript SDK Developer Guide", link: "/develop/typescript" },
-        { title: ".NET SDK Developer Guide", link: "/develop/dotnet" }
+        { title: ".NET SDK Developer Guide", link: "/develop/dotnet" },
+        { title: "Ruby SDK README", link: "https://github.com/temporalio/sdk-ruby#readme" }
       ]
     },
     {
       title: "Deploy",
       icon: (
         <Icon>
-          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
         </Icon>
       ),
       items: [
-        { title: "Self-Host", link: "/deploy/self-host" },
-        { title: "Workers", link: "/deploy/workers" },
-        { title: "Migrate to Temporal Cloud", link: "/deploy/migrate-to-temporal-cloud" },
-        { title: "Production Readiness", link: "/deploy/production-readiness" }
+        { title: "Self-Host", link: "https://docs.temporal.io/develop/" },
+        { title: "Worker Performance", link: "https://docs.temporal.io/develop/worker-performance" },
+        { title: "Production Checklist", link: "https://docs.temporal.io/self-hosted-guide/production-checklist" },
+        { title: "Migrate to Temporal Cloud", link: "https://docs.temporal.io/production-deployments/migration" }
       ]
     },
     {
@@ -81,51 +80,19 @@ const TemporalDocsLanding = () => {
         </Icon>
       ),
       items: [
-        { title: "Account Management", link: "/cloud/account-management" },
-        { title: "Identity Management", link: "/cloud/identity-management" },
-        { title: "Usage", link: "/cloud/usage" },
-        { title: "Namespace Management", link: "/cloud/namespace-management" },
-        { title: "Billing & Costs", link: "/cloud/billing-and-costs" },
-        { title: "Automation", link: "/cloud/automation" },
+        { title: "Account setup", link: "/cloud/account-setup" },
+        { title: "User management", link: "/cloud/users" },
+        { title: "Billing and cost", link: "/cloud/billing-and-cost" },
+        { title: "Namespace management", link: "/cloud/namespaces" },
+        { title: "Pricing", link: "/cloud/pricing" },
+        { title: "API keys", link: "/cloud/api-keys" },
         { title: "Audit Logging", link: "/cloud/audit-logging" },
-        { title: "Temporal Cloud Limits", link: "/cloud/temporal-cloud-limits" },
-        { title: "Temporal Cloud SLA", link: "/cloud/temporal-cloud-sla" },
-        { title: "Support", link: "/cloud/support" }
+        { title: "Cloud Ops API", link: "/ops" },
+        { title: "Temporal Nexus", link: "/cloud/nexus" },
+        { title: "Export", link: "/cloud/export" }
       ]
     }
   ];
-
-  const enhanceSection = {
-    title: "Enhance",
-    icon: (
-      <Icon>
-        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-      </Icon>
-    ),
-    items: [
-      { title: "Optimize Long-Running Tasks", link: "/evaluate/use-cases-design-patterns#long-running-tasks" },
-      { title: "Implement SAGA Pattern", link: "/evaluate/use-cases-design-patterns#saga" },
-      { title: "Add State Machines", link: "/evaluate/use-cases-design-patterns#state-machine" },
-      { title: "Build Polyglot Systems", link: "/evaluate/use-cases-design-patterns#polyglot-systems" }
-    ]
-  };
-
-  const expandSection = {
-    title: "Expand",
-    icon: (
-      <Icon>
-        <circle cx="12" cy="12" r="10" />
-        <path d="M8 12h8" />
-        <path d="M12 8v8" />
-      </Icon>
-    ),
-    items: [
-      { title: "Business Process Automation", link: "/evaluate/use-cases-design-patterns#business-processes" },
-      { title: "AI/ML Orchestration", link: "/evaluate/use-cases-design-patterns#ai--ml-and-data-engineering" },
-      { title: "Entity Lifecycle Management", link: "/evaluate/use-cases-design-patterns#entity-lifecycle" },
-      { title: "Human-in-the-Loop Systems", link: "/evaluate/use-cases-design-patterns#human-in-the-loop" }
-    ]
-  };
 
   const getUnstuckSection = {
     title: "Get unstuck",
@@ -137,14 +104,14 @@ const TemporalDocsLanding = () => {
       </Icon>
     ),
     items: [
-      { title: "Next Use Case", link: "/help/next-use-case" },
-      { title: "Ask in Stack", link: "/help/ask-in-stack" },
-      { title: "Post in Community Forum", link: "/help/post-in-community-forum" }
+      { title: "Resource Library", link: "https://temporal.io/resources" },
+      { title: "Ask in Stack", link: "https://t.mp/slack" },
+      { title: "Post in Community Forum", link: "https://community.temporal.io" }
     ]
   };
 
   const observabilitySection = {
-    title: "Observability",
+    title: "Monitor",
     icon: (
       <Icon>
         <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
@@ -157,16 +124,16 @@ const TemporalDocsLanding = () => {
       { title: "Log from a Workflow", link: "/observability/log-from-workflow" },
       { title: "Visibility APIs", link: "/observability/visibility-apis" },
       { title: "Interceptors", link: "/observability/interceptors" },
-      { title: "Temporal Cloud Available Metrics", link: "/observability/temporal-cloud-metrics" },
-      { title: "Setup using Datadog", link: "/observability/setup-datadog" },
-      { title: "Setup using Prometheus Grafana", link: "/observability/setup-prometheus-grafana" },
-      { title: "Worker Health", link: "/observability/worker-health" },
-      { title: "Service Health", link: "/observability/service-health" }
+      { title: "Temporal Cloud Available Metrics", link: "/cloud/metrics" },
+      { title: "Setup using Datadog", link: "/cloud/metrics/datadog" },
+      { title: "Setup using Prometheus Grafana", link: "/cloud/metrics/prometheus" },
+      { title: "Worker Health", link: "/cloud/worker-health" },
+      { title: "Service Health", link: "/cloud/service-health" }
     ]
   };
 
   const securitySection = {
-    title: "Security",
+    title: "Secure",
     icon: (
       <Icon>
         <rect width="18" height="16" x="3" y="4" rx="2" />
@@ -177,7 +144,7 @@ const TemporalDocsLanding = () => {
     ),
     items: [
       { title: "Temporal Security Model", link: "/security/temporal-security-model" },
-      { title: "Temporal Cloud Security Model", link: "/security/temporal-cloud-security-model" },
+      { title: "Temporal Cloud Security Model", link: "/cloud/security" },
       { title: "Trust", link: "/security/trust" }
     ]
   };
@@ -207,10 +174,10 @@ const TemporalDocsLanding = () => {
       </Icon>
     ),
     items: [
-      { title: "Temporal fundamentals", link: "/courses/fundamentals" },
-      { title: "Building resilient workflows", link: "/courses/resilient-workflows" },
-      { title: "Advanced Temporal patterns", link: "/courses/advanced-patterns" },
-      { title: "Best practices and architecture", link: "/courses/best-practices" }
+      { title: "Temporal 101: Introducing the Temporal Platform", link: "https://learn.temporal.io/courses/temporal_101/" },
+      { title: "Temporal 102: Exploring Durable Execution", link: "https://learn.temporal.io/courses/temporal_102/" },
+      { title: "Crafting an Error Handling Strategy", link: "https://learn.temporal.io/courses/errstrat/" },
+      { title: "Introduction to Temporal Cloud", link: "https://learn.temporal.io/courses/intro_to_temporal_cloud/" }
     ]
   };
 
@@ -222,10 +189,9 @@ const TemporalDocsLanding = () => {
       </Icon>
     ),
     items: [
-      { title: "Sample applications", link: "/examples/sample-apps" },
-      { title: "Code patterns library", link: "/examples/patterns" },
-      { title: "Integration examples", link: "/examples/integrations" },
-      { title: "Community showcase", link: "/examples/showcase" }
+        { title: "Code Exchange", link: "https://temporal.io/code-exchange" },
+        { title: "Project Based Tutorials", link: "https://learn.temporal.io/tutorials/" },
+        { title: "Example Applications", link: "https://learn.temporal.io/examples/" }
     ]
   };
 
@@ -241,14 +207,19 @@ const TemporalDocsLanding = () => {
               </div>
               <div className="section-links">
                 {section.items.map((item, itemIndex) => (
-                  <a key={itemIndex} href={item.link} className="section-link">
+                  <a 
+                    key={itemIndex} 
+                    href={item.link} 
+                    className="section-link"
+                    onClick={item.onClick}
+                  >
                     {item.title}
                   </a>
                 ))}
               </div>
               {section.title === "Temporal Cloud" && (
                 <a href="/cloud/get-started" className="get-started-button">
-                  Get started for free
+                  Get Started for Free
                 </a>
               )}
             </div>
@@ -256,48 +227,6 @@ const TemporalDocsLanding = () => {
         </div>
 
         <div className="secondary-grid">
-          <div className="section-row">
-            <div className="section-card">
-              <div className="section-header">
-                <span className="section-icon-wrapper">{enhanceSection.icon}</span>
-                <h2>{enhanceSection.title}</h2>
-              </div>
-              <div className="section-links">
-                {enhanceSection.items.map((item, index) => (
-                  <a key={index} href={item.link} className="section-link">
-                    {item.title}
-                  </a>
-                ))}
-              </div>
-            </div>
-            <div className="section-card">
-              <div className="section-header">
-                <span className="section-icon-wrapper">{expandSection.icon}</span>
-                <h2>{expandSection.title}</h2>
-              </div>
-              <div className="section-links">
-                {expandSection.items.map((item, index) => (
-                  <a key={index} href={item.link} className="section-link">
-                    {item.title}
-                  </a>
-                ))}
-              </div>
-            </div>
-            <div className="section-card">
-              <div className="section-header">
-                <span className="section-icon-wrapper">{getUnstuckSection.icon}</span>
-                <h2>{getUnstuckSection.title}</h2>
-              </div>
-              <div className="section-links">
-                {getUnstuckSection.items.map((item, index) => (
-                  <a key={index} href={item.link} className="section-link">
-                    {item.title}
-                  </a>
-                ))}
-              </div>
-            </div>
-          </div>
-
           <div className="section-row">
             <div className="section-card">
               <div className="section-header">
@@ -325,6 +254,19 @@ const TemporalDocsLanding = () => {
                 ))}
               </div>
             </div>
+            <div className="section-card">
+              <div className="section-header">
+                <span className="section-icon-wrapper">{getUnstuckSection.icon}</span>
+                <h2>{getUnstuckSection.title}</h2>
+              </div>
+              <div className="section-links">
+                {getUnstuckSection.items.map((item, index) => (
+                  <a key={index} href={item.link} className="section-link">
+                    {item.title}
+                  </a>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -339,7 +281,12 @@ const TemporalDocsLanding = () => {
                 </div>
                 <div className="section-links">
                   {section.items.map((item, itemIndex) => (
-                    <a key={itemIndex} href={item.link} className="section-link">
+                    <a 
+                      key={itemIndex} 
+                      href={item.link} 
+                      className="section-link"
+                      onClick={item.onClick}
+                    >
                       {item.title}
                     </a>
                   ))}
