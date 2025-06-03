@@ -62,8 +62,8 @@ To create an initial connection:
 ```csharp
 var myClient = TemporalClient.ConnectAsync(new(<endpoint>)
 {
-    Namespace = <namespace_id>.<account_id>,
-    ApiKey = <APIKey>,
+    Namespace = "<namespace_id>.<account_id>",
+    ApiKey = "<APIKey>",
     Tls = new(),
 });
 ```
