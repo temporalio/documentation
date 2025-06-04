@@ -27,40 +27,74 @@ tags:
   - Patching
 ---
 
-This page shows how to do the following:
+import { CaptionedImage } from '@site/src/components';
 
-- [Use the .NET SDK Patching API](#dotnet-sdk-patching-api)
-- [Patching in new code](#using-patched-for-workflow-history-markers)
-- [Understanding deprecated Patches in the .NET SDK](#deprecated-patches)
-- [Safe Deployment of PostPatchActivity](#deploy-postpatchactivity)
+Since Workflow Executions in Temporal can run for long periods — sometimes months or even years — it's common to need to make changes to a Workflow Definition, even while a particular Workflow Execution is in progress.
+The Temporal Platform requires that Workflow code is [deterministic](/workflow-definition#deterministic-constraints).
+If you make a change to your Workflow code that would cause non-deterministic behavior on Replay, you'll need to use one of our Versioning methods to gracefully update your running Workflows.
+With Versioning, you can modify your Workflow Definition so that new executions use the updated code, while existing ones continue running the original version.
+There are three primary Versioning methods supported by Temporal:
 
-## Introduction to Versioning
+- [Workflow Type Versioning](#type-versioning). This is the simplest of the three, and acts more like a cutover than true versioning. It is suitable for short-running Workflows.
+- [Versioning with Patching](#patching). This method works by adding branches to your code tied to specific revisions. It can be used to revise in-progress Workflows.
+- [Safe Deploys](/production-deployment/worker-deployments/safe-deploys). Temporal's Safe Deploys feature allows you to tag your Workers and programmatically roll them out in pods tied to specific revisions, so that old Workers can run old code paths and new Workers can run new code paths. A previous version of Safe Deploys was called [Worker Versioning](worker-versioning-legacy).
 
-Because we design for potentially long running Workflows at scale, versioning with Temporal works differently. We explain more in this optional 30 minute introduction:
+## Workflow Type Versioning {#type-versioning}
 
-<div style={{ position: "relative", paddingBottom: "56.25%", height: 0 }}>
-  <iframe
-    src="https://www.youtube.com/embed/kkP899WxgzY?autoplay=0"
-    style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
-    frameborder="0"
-    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-    allowfullscreen>
-  </iframe>
-</div>
+Since incompatible changes only affect open Workflow Executions of the same type, you can avoid the problem by changing the Workflow Type for the new version.
+To do this, you can copy the Workflow Definition function, giving it a different name, and make sure that both names were registered with your Workers.
 
-## Use the .NET SDK Patching API {#dotnet-sdk-patching-api}
+For example, if you had made an incompatible change to the following Workflow Definition:
 
-**How to use the .NET SDK Patching API using the Temporal .NET SDK**
+```csharp
+[Workflow]
+public class SayHelloWorkflow
+{
+    [WorkflowRun]
+    # implementation code omitted for this example
+}
+```
 
-In principle, the .NET SDK's patching mechanism operates similarly to other SDKs in a "feature-flag" fashion. However, the "versioning" API now uses the concept of "patching in" code.
+then you would change the code as follows:
 
-To understand this, you can break it down into three steps, which reflect three stages of migration:
+```csharp
+[Workflow]
+public class SayHelloWorkflow
+{
+    [WorkflowRun]
+    # this function contains the original code
+}
+        
+[Workflow]
+public class SayHelloWorkflowV2
+{
+    [WorkflowRun]
+    # this function contains the updated code
+}
+```
 
-- Running `PrePatchActivity` code while concurrently patching in `PostPatchActivity`.
-- Running `PostPatchActivity` code with deprecation markers for `my-patch` patches.
-- Running only the `PostPatchActivity` code.
+You can use any name you like for the new function.
+Using some type of version identifier, such as V2 in this example, will make it easier to identify the change.
 
-Let's walk through this process in sequence.
+You would then update the Worker configuration to register both Workflow Types:
+
+```csharp
+using var worker = new TemporalWorker(
+    client,
+    new TemporalWorkerOptions("greeting-tasks")
+        .AddWorkflow<SayHelloWorkflow>()
+        .AddWorkflow<SayHelloWorkflowV2>());
+```
+
+The upside of this versioning method is that it is easy to understand at a glance, as it does not really use any Temporal platform features.
+The downside of this method is that it does not use any Temporal platform features.
+It requires you to duplicate code and to update any code and commands used to start the Workflow.
+This can become impractical over time, depending on how you are providing configuration strings to your deployment.
+This method also does not provide a way to introduce versioning to any still-running Workflows -- it is essentially just a cutover, unlike the Patching method.
+
+## Versioning with Patching {#patching}
+
+Patching essentially defines a logical branch for a specific change in the Workflow, rather than for the entire Workflow Definition itself.
 
 Suppose you have an initial Workflow version called `PrePatchActivity`:
 
@@ -98,11 +132,10 @@ public class MyWorkflow
 }
 ```
 
-**Problem: You cannot deploy `PostPatchActivity` directly until you're certain there are no more running Workflows created using the `PrePatchActivity` code, otherwise you are likely to cause a nondeterminism error.**
-
+The problem is that you cannot deploy `PostPatchActivity` directly until you're certain there are no more running Workflows created using the `PrePatchActivity` code, otherwise you are likely to cause a nondeterminism error.
 Instead, you'll need to deploy `PostPatchActivity` and use the [Patched](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_Patched_System_String_) method to determine which version of the code to execute.
 
-Implementing patching involves three steps:
+Patching is a three step process:
 
 1. Use [Patched](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_Patched_System_String_) to patch in new code and run it alongside the old code.
 2. Remove the old code and apply [DeprecatePatch](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_DeprecatePatch_System_String_).
@@ -139,7 +172,7 @@ public class MyWorkflow
 }
 ```
 
-### Understanding deprecated Patches in the .NET SDK {#deprecated-patches}
+### Deprecating patches {#deprecated-patches}
 
 After ensuring that all Workflows started with `PrePatchActivity` code have finished, you can [deprecate the patch](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_DeprecatePatch_System_String_).
 
@@ -164,7 +197,7 @@ public class MyWorkflow
 }
 ```
 
-### Safe Deployment of PostPatchActivity {#deploy-postpatchactivity}
+### Removing a patch {#deploy-postpatchactivity}
 
 You can safely deploy `PostPatchActivity` once all Workflows labeled my-patch or earlier are finished, based on the previously mentioned assertion.
 
@@ -183,3 +216,10 @@ public class MyWorkflow
     }
 }
 ```
+
+Patching allows you to make changes to currently running Workflows.
+It is a powerful method for introducing compatible changes without introducing non-determinism errors.
+If you find that patching is adding maintainability concerns to your codebase, consider adopting [Safe Deploys](/production-deployment/worker-deployments/safe-deploys).
+
+Changing the order of any commands in your Workflow code that interact directly with the Temporal Service -- such as calling an Activity or creating a Sleep timer -- will cause a non-determinism error unless you've implemented a versioning solution.
+To test whether a new revision will require versioning, you should incorporate [Replay Testing](/develop/dotnet/testing-suite#replay-test).
