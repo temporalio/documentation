@@ -9,7 +9,7 @@ import { SdkLogos } from '../components/SdkLogos';
 
 ## 100% Open Source
 
-The Temporal SDK developer guides provide a comprehensive overview of the structures, primitives, and features used in [Temporal Application](/temporal#temporal-application) development.
+Temporal SDKs provide the foundation for building reliable distributed applications. Each SDK is designed to help you implement durable Workflows, Activities, and Workers with native language support and comprehensive tooling.
 
 <div className="sdk-section">
   <div className="sdk-container">
@@ -79,7 +79,7 @@ The Temporal SDK developer guides provide a comprehensive overview of the struct
 <style>
 {`
   .sdk-section {
-    margin: 2rem 0;
+    margin: 2.5rem 0;
   }
 
   .sdk-container {
@@ -90,54 +90,63 @@ The Temporal SDK developer guides provide a comprehensive overview of the struct
   .sdk-row {
     display: flex;
     justify-content: space-between;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
   }
 
   .sdk-col {
     flex: 1;
-    padding: 1.5rem;
+    padding: 1.75rem;
     background: var(--ifm-background-surface-color);
-    border: 1px solid var(--ifm-color-emphasis-300);
-    border-radius: 8px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--ifm-color-emphasis-200);
+    border-radius: 12px;
+    transition: all 0.2s ease-out;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
   }
 
-  .sdk-logo {
-    width: 40px;
-    height: 40px;
-    margin-bottom: 1rem;
-    opacity: 0.9;
-  }
-
   [data-theme='dark'] .sdk-col {
-    background: var(--ifm-color-emphasis-100);
+    background: rgba(255, 255, 255, 0.02);
     border-color: var(--ifm-color-emphasis-200);
   }
 
   .sdk-col:hover {
-    border-color: var(--ifm-color-primary);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-color: var(--ifm-color-emphasis-300);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.03);
   }
 
   [data-theme='dark'] .sdk-col:hover {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border-color: var(--ifm-color-emphasis-300);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .sdk-logo {
+    width: 42px;
+    height: 42px;
+    margin-bottom: 1.25rem;
+    opacity: 0.85;
+    transition: opacity 0.2s ease-out;
+  }
+
+  .sdk-col:hover .sdk-logo {
+    opacity: 1;
   }
 
   .sdk-col h3 {
-    margin-bottom: 0.75rem;
-    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
     color: var(--ifm-color-emphasis-900);
   }
 
   .sdk-links {
-    font-size: 0.95rem;
+    font-size: 0.925rem;
     display: flex;
-    gap: 0.75rem;
+    gap: 1.25rem;
     align-items: center;
   }
 
@@ -146,10 +155,13 @@ The Temporal SDK developer guides provide a comprehensive overview of the struct
     text-decoration: none;
     padding: 0.25rem 0;
     position: relative;
+    opacity: 0.9;
+    transition: all 0.2s ease-out;
   }
 
   .sdk-links a:hover {
     color: var(--ifm-color-primary-darker);
+    opacity: 1;
   }
 
   [data-theme='dark'] .sdk-links a {
@@ -168,6 +180,13 @@ The Temporal SDK developer guides provide a comprehensive overview of the struct
 
     .sdk-col {
       margin: 0;
+      padding: 1.5rem;
+    }
+
+    .sdk-logo {
+      width: 38px;
+      height: 38px;
+      margin-bottom: 1rem;
     }
   }
 `}
