@@ -18,7 +18,7 @@ tags:
   - Temporal SDKs
 ---
 
-Since Workflow Executions in Temporal can run for long periods — sometimes months or even years — it's common to need major changes to a Workflow Definition, even while a particular Workflow Execution is in progress.
+Since Workflow Executions in Temporal can run for long periods — sometimes months or even years — it's common to need to make changes to a Workflow Definition, even while a particular Workflow Execution is in progress.
 The Temporal Platform requires that Workflow code is [deterministic](/workflow-definition#deterministic-constraints).
 If you make a change to your Workflow code that would cause non-deterministic behavior on Replay, you'll need to use one of our Versioning methods to gracefully update your running Workflows.
 With Versioning, you can modify your Workflow Definition so that new executions use the updated code, while existing ones continue running the original version.
@@ -93,12 +93,13 @@ func YourWorkflow(ctx workflow.Context, data string) (string, error) {
 }
 ```
 
-Now let's say we replaced ActivityA with ActivityC and deployed the updated code.
-If an existing Workflow Execution was started by the original version of the Workflow code, where ActivityA had already completed and the result was recorded to history, the new version of the Workflow code picks up that Workflow Execution and tries to resume from there.
-However, the Workflow will fail because the new code expects a result for ActivityC from the history data, but instead it gets the result for ActivityA.
-This causes the Workflow to fail on the nondeterminism error.
+Now let's say we replaced `ActivityA` with `ActivityC` and deployed the updated code.
 
-Thus we use `workflow.GetVersion().`
+Imagine you want to revise this Workflow by adding another Activity to calculate a file checksum.
+If an existing Workflow Execution was started by the original version of the Workflow code, where `ActivityA` was run, and then resumed running on a new Worker where it was replaced with `ActivityC`, the server side Event History would be out of sync.
+This would cause the Workflow to fail with a nondeterminism error.
+
+Thus we use `workflow.GetVersion()`:
 
 ```go
 var err error
@@ -117,7 +118,7 @@ err = workflow.ExecuteActivity(ctx, ActivityB, result1).Get(ctx, &result2)
 return result2, err
 ```
 
-When `workflow.GetVersion()` is run for the new Workflow Execution, it records a marker in the Workflow history so that all future calls to `GetVersion` for this change Id—`Step 1` in the example—on this Workflow Execution will always return the given version number, which is `1` in the example.
+When `workflow.GetVersion()` is run for the new Workflow Execution, it records a marker in the Event History so that all future calls to `GetVersion` for this change Id — `Step 1` in the example — on this Workflow Execution will always return the given version number, which is `1` in the example.
 
 If you make an additional change, such as replacing ActivityC with ActivityD, you need to
 add some additional code:
@@ -138,8 +139,7 @@ A Workflow that has already passed this `GetVersion()` call before it was introd
 A Workflow that was run with `maxSupported` set to 1 returns 1.
 New Workflows return 2.
 
-After you are sure that all of the Workflow Executions prior to version 1 have completed, you can remove the code for that version.
-It should now look like the following:
+After you are sure that all of the Workflow Executions prior to version 1 have completed, you can remove the code for that version:
 
 ```go
 v := workflow.GetVersion(ctx, "Step1", 1, 2)

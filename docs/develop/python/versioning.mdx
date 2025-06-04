@@ -30,7 +30,7 @@ tags:
 
 import { CaptionedImage } from '@site/src/components';
 
-Since Workflow Executions in Temporal can run for long periods — sometimes months or even years — it's common to need major changes to a Workflow Definition, even while a particular Workflow Execution is in progress.
+Since Workflow Executions in Temporal can run for long periods — sometimes months or even years — it's common to need to make changes to a Workflow Definition, even while a particular Workflow Execution is in progress.
 The Temporal Platform requires that Workflow code is [deterministic](/workflow-definition#deterministic-constraints).
 If you make a change to your Workflow code that would cause non-deterministic behavior on Replay, you'll need to use one of our Versioning methods to gracefully update your running Workflows.
 With Versioning, you can modify your Workflow Definition so that new executions use the updated code, while existing ones continue running the original version.
@@ -71,7 +71,7 @@ class PizzaWorkflowV2:
         # this function contains the updated code
 ```
 
-You can use any name you like for the new function, so long as the first character remains uppercase (this is a requirement for any Workflow Definition, since it must use an exported function).
+You can use any name you like for the new function.
 Using some type of version identifier, such as V2 in this example, will make it easier to identify the change.
 
 You would then update the Worker configuration to register both Workflow Types:
@@ -241,6 +241,10 @@ class MyWorkflow:
             schedule_to_close_timeout=timedelta(minutes=5),
         )
 ```
+
+Patching allows you to make changes to currently running Workflows.
+It is a powerful method for introducing compatible changes without introducing non-determinism errors.
+If you find that patching is adding maintainability concerns to your codebase, consider adopting [Safe Deploys](/production-deployment/worker-deployments/safe-deploys).
 
 Changing the order of any commands in your Workflow code that interact directly with the Temporal Service -- such as calling an Activity or creating a Sleep timer -- will cause a non-determinism error unless you've implemented a versioning solution.
 To test whether a new revision will require versioning, you should incorporate [Replay Testing](/develop/python/testing-suite#replay).
