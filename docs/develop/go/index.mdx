@@ -13,170 +13,358 @@ tags:
 
 ![Go SDK Banner](/img/banner-go-temporal.png)
 
-:::info GO SPECIFIC RESOURCES
-Build Temporal Applications with the Go SDK.
+<div className="resources-card">
+  <h2>Go Specific Resources</h2>
+  <div className="resources-content">
+    <div className="resources-section">
+      <h3>Technical Resources</h3>
+      <ul>
+        <li><a href="https://pkg.go.dev/go.temporal.io/sdk">Go API Documentation</a></li>
+        <li><a href="https://github.com/temporalio/samples-go">Go SDK Code Samples</a></li>
+        <li><a href="https://github.com/temporalio/sdk-go">Go SDK GitHub</a></li>
+      </ul>
+    </div>
+    <div className="resources-section">
+      <h3>Community</h3>
+      <ul>
+        <li><a href="https://temporalio.slack.com/archives/CTDTU3J4T">Temporal Go Community Slack</a></li>
+        <li><a href="https://community.temporal.io/tag/go-sdk">Go SDK Forum</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
 
-**Temporal Go Technical Resources:**
+<div className="feature-grid">
+  <div className="feature-card">
+    <h2><a href="/develop/go/core-application">Core Application</a></h2>
+    <p>Use the essential components of a Temporal Application (Workflows, Activities, and Workers) to build and run a Temporal application.</p>
+    <ul>
+      <li><a href="/develop/go/core-application#develop-workflows">Develop a basic Workflow</a></li>
+      <li><a href="/develop/go/core-application#activity-definition">Develop an Activity Definition</a></li>
+      <li><a href="/develop/go/core-application#activity-execution">Start an Activity Execution</a></li>
+      <li><a href="/develop/go/core-application#develop-worker">Develop a Worker</a></li>
+      <li><a href="/develop/go/core-application#run-a-temporal-cloud-worker">Run a Temporal Cloud Worker</a></li>
+    </ul>
+  </div>
 
-- [Go API Documentation](https://pkg.go.dev/go.temporal.io/sdk)
-- [Go SDK Code Samples](https://github.com/temporalio/samples-go)
-- [Go SDK GitHub](https://github.com/temporalio/sdk-go)
+  <div className="feature-card">
+    <h2><a href="/develop/go/temporal-clients">Temporal Client</a></h2>
+    <p>Connect to a Temporal Service and start a Workflow Execution.</p>
+    <ul>
+      <li><a href="/develop/go/temporal-clients#connect-to-development-service">Connect to development Service</a></li>
+      <li><a href="/develop/go/temporal-clients#connect-to-temporal-cloud">Connect to Temporal Cloud</a></li>
+      <li><a href="/develop/go/temporal-clients#start-workflow-execution">Start Workflow Execution</a></li>
+    </ul>
+  </div>
 
-**Get Connected with the Temporal Go Community:**
+  <div className="feature-card">
+    <h2><a href="/develop/go/testing-suite">Testing</a></h2>
+    <p>Set up the testing suite and test Workflows and Activities.</p>
+    <ul>
+      <li><a href="/develop/go/testing-suite#test-frameworks">Test frameworks</a></li>
+      <li><a href="/develop/go/testing-suite#test-setup">Test setup</a></li>
+      <li><a href="/develop/go/testing-suite#test-activities">Testing Activities</a></li>
+      <li><a href="/develop/go/testing-suite#mock-and-override-activities">Mock and override Activities</a></li>
+      <li><a href="/develop/go/testing-suite#test-workflows">Testing Workflows</a></li>
+      <li><a href="/develop/go/testing-suite#replay">Replay a Workflow Execution</a></li>
+    </ul>
+  </div>
 
-- [Temporal Go Community Slack](https://temporalio.slack.com/archives/CTDTU3J4T)
-- [Go SDK Forum](https://community.temporal.io/tag/go-sdk)
-  :::
+  <div className="feature-card">
+    <h2><a href="/develop/go/failure-detection">Failure Detection</a></h2>
+    <p>Explore how your application can detect failures using timeouts and automatically attempt to mitigate them with retries.</p>
+    <ul>
+      <li><a href="/develop/go/failure-detection#workflow-timeouts">Workflow timeouts</a></li>
+      <li><a href="/develop/go/failure-detection#activity-timeouts">Set Activity timeouts</a></li>
+      <li><a href="/develop/go/failure-detection#activity-heartbeats">Heartbeat an Activity</a></li>
+    </ul>
+  </div>
 
-## [Core Application](/develop/go/core-application)
+  <div className="feature-card">
+    <h2><a href="/develop/go/message-passing">Message Passing</a></h2>
+    <p>Send messages to and read the state of Workflow Executions.</p>
+    <ul>
+      <li><a href="/develop/go/message-passing#signals">Develop with Signals</a></li>
+      <li><a href="/develop/go/message-passing#queries">Develop with Queries</a></li>
+      <li><a href="/develop/go/message-passing#updates">Develop with Updates</a></li>
+    </ul>
+  </div>
 
-Use the essential components of a Temporal Application (Workflows, Activities, and Workers) to build and run a Temporal application.
+  <div className="feature-card">
+    <h2><a href="/develop/go/cancellation">Workflow Interruption</a></h2>
+    <p>Interrupt a Workflow Execution with a Cancel or Terminate action.</p>
+    <ul>
+      <li><a href="/develop/go/cancellation#handle-cancellation-in-workflow">Handle Workflow Cancellation</a></li>
+      <li><a href="/develop/go/cancellation#request-cancellation">Request Cancellation</a></li>
+    </ul>
+  </div>
 
-- [How to develop a basic Workflow](/develop/go/core-application#develop-workflows)
-- [How to develop an Activity Definition in Go](/develop/go/core-application#activity-definition)
-- [How to start an Activity Execution](/develop/go/core-application#activity-execution)
-- [How to develop a Worker in Go](/develop/go/core-application#develop-worker)
-- [How to run a Temporal Cloud Worker](/develop/go/core-application#run-a-temporal-cloud-worker)
+  <div className="feature-card">
+    <h2><a href="/develop/go/versioning">Versioning</a></h2>
+    <p>Change Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.</p>
+    <ul>
+      <li><a href="/develop/go/versioning#patching">Temporal Go SDK Patching APIs</a></li>
+      <li><a href="/develop/go/versioning#sanity-checking">Sanity checking</a></li>
+      <li><a href="/develop/go/versioning#worker-versioning">Use Worker Versioning</a></li>
+    </ul>
+  </div>
 
-## [Temporal Client](/develop/go/temporal-clients)
+  <div className="feature-card">
+    <h2><a href="/develop/go/observability">Observability</a></h2>
+    <p>Configure and use the Temporal Observability APIs.</p>
+    <ul>
+      <li><a href="/develop/go/observability#metrics">Emit metrics</a></li>
+      <li><a href="/develop/go/observability#tracing-and-context-propogation">Tracing and Context Propagation</a></li>
+      <li><a href="/develop/go/observability#logging">Log from a Workflow</a></li>
+      <li><a href="/develop/go/observability#visibility">Use Visibility APIs</a></li>
+    </ul>
+  </div>
 
-Connect to a Temporal Service and start a Workflow Execution.
+  <div className="feature-card">
+    <h2><a href="/develop/go/debugging">Debugging</a></h2>
+    <p>Explore various ways to debug your application.</p>
+    <ul>
+      <li><a href="/develop/go/debugging#debug-in-a-development-environment">Debug in development</a></li>
+      <li><a href="/develop/go/debugging#debug-in-a-production-environment">Debug in production</a></li>
+      <li><a href="/develop/go/debugging#testing-and-debugging">Test Workflow Definitions</a></li>
+    </ul>
+  </div>
 
-- [Connect to development Temporal Service](/develop/go/temporal-clients#connect-to-development-service)
-- [Connect to Temporal Cloud](/develop/go/temporal-clients#connect-to-temporal-cloud)
-- [Start Workflow Execution](/develop/go/temporal-clients#start-workflow-execution)
-- [How to start a Workflow Execution](/develop/go/temporal-clients#start-workflow-execution)
+  <div className="feature-card">
+    <h2><a href="/develop/go/schedules">Schedules</a></h2>
+    <p>Run Workflows on a schedule and delay the start of a Workflow.</p>
+    <ul>
+      <li><a href="/develop/go/schedules#schedule-a-workflow">Schedule a Workflow</a></li>
+      <li><a href="/develop/go/schedules#temporal-cron-jobs">Use Temporal Cron Jobs</a></li>
+    </ul>
+  </div>
 
-## [Multithreading](/develop/go/go-sdk-multithreading)
+  <div className="feature-card">
+    <h2><a href="/develop/go/converters-and-encryption">Data Encryption</a></h2>
+    <p>Use compression, encryption, and other data handling by implementing custom converters and codecs.</p>
+    <ul>
+      <li><a href="/develop/go/converters-and-encryption#custom-payload-codec">Use a custom Payload Codec</a></li>
+      <li><a href="/develop/go/converters-and-encryption#custom-payload-conversion">Use custom payload conversion</a></li>
+      <li><a href="/develop/go/converters-and-encryption#custom-payload-converter">Use a custom Payload Converter</a></li>
+    </ul>
+  </div>
 
-Safely use multithreading with the Go SDK.
+  <div className="feature-card">
+    <h2><a href="/develop/go/nexus">Temporal Nexus</a></h2>
+    <p>Use Temporal Nexus to connect durable executions within and across Namespaces.</p>
+    <ul>
+      <li><a href="/develop/go/nexus#create-nexus-endpoint">Create a Nexus Endpoint</a></li>
+      <li><a href="/develop/go/nexus#define-nexus-service-contract">Define Nexus Service contract</a></li>
+      <li><a href="/develop/go/nexus#develop-nexus-service-operation-handlers">Develop Service and Operation handlers</a></li>
+      <li><a href="/develop/go/nexus#develop-caller-workflow-nexus-service">Develop caller Workflow</a></li>
+      <li><a href="/develop/go/nexus#nexus-calls-across-namespaces-dev-server">Cross-Namespace calls (dev)</a></li>
+      <li><a href="/develop/go/nexus#nexus-calls-across-namespaces-temporal-cloud">Cross-Namespace calls (cloud)</a></li>
+    </ul>
+  </div>
 
-## [Testing](/develop/go/testing-suite)
+  <div className="feature-card">
+    <h2><a href="/develop/go/timers">Durable Timers</a></h2>
+    <p>Use Timers to make a Workflow Execution pause or "sleep" for seconds, minutes, days, months, or years.</p>
+    <ul>
+      <li><a href="/develop/go/timers">Set a Timer</a></li>
+    </ul>
+  </div>
 
-Set up the testing suite and test Workflows and Activities.
+  <div className="feature-card">
+    <h2><a href="/develop/go/child-workflows">Child Workflows</a></h2>
+    <p>Explore how to spawn a Child Workflow Execution and handle Child Workflow Events.</p>
+    <ul>
+      <li><a href="/develop/go/child-workflows#child-workflows">Start a Child Workflow Execution</a></li>
+    </ul>
+  </div>
 
-- [Test frameworks](/develop/go/testing-suite#test-frameworks)
-- [Test setup](/develop/go/testing-suite#test-setup)
-- [Testing Activities](/develop/go/testing-suite#test-activities)
-- [Mock and override Activities](/develop/go/testing-suite#mock-and-override-activities)
-- [Testing Workflows](/develop/go/testing-suite#test-workflows)
-- [How to Replay a Workflow Execution](/develop/go/testing-suite#replay)
+  <div className="feature-card">
+    <h2><a href="/develop/go/continue-as-new">Continue-As-New</a></h2>
+    <p>Continue the Workflow Execution with a new Workflow Execution using the same Workflow ID.</p>
+    <ul>
+      <li><a href="/develop/go/continue-as-new">How to Continue-As-New</a></li>
+    </ul>
+  </div>
 
-## [Failure detection feature guide](/develop/go/failure-detection)
+  <div className="feature-card">
+    <h2><a href="/develop/go/sessions">Worker Sessions</a></h2>
+    <p>Use Worker Session APIs.</p>
+    <ul>
+      <li><a href="/develop/go/sessions#enable-sessions">Enable Sessions for a Worker</a></li>
+      <li><a href="/develop/go/sessions#max-concurrent-sessions">Change maximum concurrent Sessions</a></li>
+      <li><a href="/develop/go/sessions#create-a-session">Create a Worker Session</a></li>
+    </ul>
+  </div>
 
-Explore how your application can detect failures using timeouts and automatically attempt to mitigate them with retries.
+  <div className="feature-card">
+    <h2><a href="/develop/go/side-effects">Side Effects</a></h2>
+    <p>Use Side Effects in Workflows.</p>
+    <ul>
+      <li><a href="/develop/go/side-effects">Side Effects</a></li>
+    </ul>
+  </div>
 
-- [Workflow timeouts](/develop/go/failure-detection#workflow-timeouts)
-- [How to set Activity timeouts](/develop/go/failure-detection#activity-timeouts)
-- [How to Heartbeat an Activity](/develop/go/failure-detection#activity-heartbeats)
+  <div className="feature-card">
+    <h2><a href="/develop/go/namespaces">Manage Namespaces</a></h2>
+    <p>Create and manage Namespaces.</p>
+    <ul>
+      <li><a href="/develop/go/namespaces#register-namespace">Register Namespaces</a></li>
+      <li><a href="/develop/go/namespaces#manage-namespaces">Manage Namespaces</a></li>
+    </ul>
+  </div>
+</div>
 
-## [Workflow message passing](/develop/go/message-passing)
+<style>
+{`
+  .resources-card {
+    background: var(--ifm-color-emphasis-100);
+    border: 1px solid var(--ifm-color-emphasis-300);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
 
-Send messages to and read the state of Workflow Executions.
+  .resources-card h2 {
+    margin-top: 0;
+    color: var(--ifm-color-emphasis-800);
+  }
 
-- [How to develop with Signals](/develop/go/message-passing#signals)
-- [How to develop with Queries](/develop/go/message-passing#queries)
-- [How to develop with Updates](/develop/go/message-passing#updates)
+  .resources-content {
+    display: flex;
+    gap: 2rem;
+  }
 
-## [Interrupt a Workflow feature guide](/develop/go/cancellation)
+  .resources-section {
+    flex: 1;
+  }
 
-Interrupt a Workflow Execution with a Cancel or Terminate action.
+  .resources-section h3 {
+    color: var(--ifm-color-emphasis-700);
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
 
-- [Handle a Workflow Cancellation Request](/develop/go/cancellation#handle-cancellation-in-workflow): Interrupt a Workflow Execution and its Activities through Workflow cancellation.
-- [Request Cancellation](/develop/go/cancellation#request-cancellation)
+  .resources-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
 
-## [Asynchronous Activity completion](/develop/go/asynchronous-activity-completion)
+  .resources-section li {
+    margin-bottom: 0.5rem;
+  }
 
-Complete Activities asynchronously.
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
 
-- [How to asynchronously complete an Activity](/develop/go/asynchronous-activity-completion)
+  .feature-card {
+    background: var(--ifm-color-emphasis-0);
+    border: 1px solid var(--ifm-color-emphasis-300);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
 
-## [Versioning](/develop/go/versioning)
+  .feature-card:hover {
+    border-color: var(--ifm-color-primary);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+  }
 
-Change Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
+  [data-theme='dark'] .feature-card {
+    border-color: var(--ifm-color-emphasis-200);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
 
-- [Temporal Go SDK Patching APIs](/develop/go/versioning#patching)
-- [Sanity checking](/develop/go/versioning#sanity-checking)
-- [How to use Worker Versioning in Go](/develop/go/versioning#worker-versioning)
+  [data-theme='dark'] .feature-card:hover {
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  }
 
-## [Observability](/develop/go/observability)
+  .feature-card h2 {
+    font-size: 1.25rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--ifm-color-emphasis-900);
+  }
 
-Configure and use the Temporal Observability APIs.
+  .feature-card h2 a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
-- [How to emit metrics](/develop/go/observability#metrics)
-- [Tracing and Context Propagation](/develop/go/observability#tracing-and-context-propogation)
-- [How to log from a Workflow](/develop/go/observability#logging)
-- [How to use Visibility APIs](/develop/go/observability#visibility)
+  .feature-card h2 a:hover {
+    color: var(--ifm-color-primary);
+  }
 
-## [Debugging](/develop/go/debugging)
+  .feature-card p {
+    color: var(--ifm-color-emphasis-700);
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
 
-Explore various ways to debug your application.
+  .feature-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
 
-- [How to debug in a development environment](/develop/go/debugging#debug-in-a-development-environment)
-- [How to debug in a production environment](/develop/go/debugging#debug-in-a-production-environment)
-- [How to test Workflow Definitions in Go](/develop/go/debugging#testing-and-debugging)
+  .feature-card li {
+    margin-bottom: 0.5rem;
+  }
 
-## [Schedules](/develop/go/schedules)
+  .feature-card li a {
+    color: var(--ifm-color-emphasis-800);
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: inline-block;
+    position: relative;
+    transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
-Run Workflows on a schedule and delay the start of a Workflow.
+  .feature-card li a:hover {
+    color: var(--ifm-color-primary);
+  }
 
-- [How to Schedule a Workflow](/develop/go/schedules#schedule-a-workflow)
-- [How to use Temporal Cron Jobs](/develop/go/schedules#temporal-cron-jobs)
+  .feature-card li a::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    bottom: -1px;
+    left: 0;
+    background-color: var(--ifm-color-primary);
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
-## [Data encryption](/develop/go/converters-and-encryption)
+  .feature-card li a:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+  }
 
-Use compression, encryption, and other data handling by implementing custom converters and codecs.
+  @media (max-width: 768px) {
+    .resources-content {
+      flex-direction: column;
+      gap: 1rem;
+    }
 
-- [How to use a custom Payload Codec in Go](/develop/go/converters-and-encryption#custom-payload-codec)
-- [How to use custom payload conversion](/develop/go/converters-and-encryption#custom-payload-conversion)
-- [How to use a custom Payload Converter in Go](/develop/go/converters-and-encryption#custom-payload-converter)
+    .feature-grid {
+      grid-template-columns: 1fr;
+    }
+  }
 
-## Temporal Nexus
-
-The [Temporal Nexus](/develop/go/nexus) feature guide shows how to use Temporal Nexus to connect durable executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
-
-- [Create a Nexus Endpoint to route requests from caller to handler](/develop/go/nexus#create-nexus-endpoint)
-- [Define the Nexus Service contract](/develop/go/nexus#define-nexus-service-contract)
-- [Develop a Nexus Service and Operation handlers](/develop/go/nexus#develop-nexus-service-operation-handlers)
-- [Develop a caller Workflow that uses a Nexus Service](/develop/go/nexus#develop-caller-workflow-nexus-service)
-- [Make Nexus calls across Namespaces with a dev Server](/develop/go/nexus#nexus-calls-across-namespaces-dev-server)
-- [Make Nexus calls across Namespaces in Temporal Cloud](/develop/go/nexus#nexus-calls-across-namespaces-temporal-cloud)
-
-## [Durable Timers](/develop/go/timers)
-
-Use Timers to make a Workflow Execution pause or "sleep" for seconds, minutes, days, months, or years.
-
-- [Set a Timer](/develop/go/timers)
-
-## [Child Workflows](/develop/go/child-workflows)
-
-Explore how to spawn a Child Workflow Execution and handle Child Workflow Events.
-
-- [How to start a Child Workflow Execution](/develop/go/child-workflows#child-workflows)
-
-## [Continue-As-New](/develop/go/continue-as-new)
-
-Continue the Workflow Execution with a new Workflow Execution using the same Workflow ID.
-
-- [How to Continue-As-New](/develop/go/continue-as-new)
-
-## [Worker Sessions](/develop/go/sessions)
-
-Use Worker Session APIs.
-
-- [Enable Sessions for a Worker](/develop/go/sessions#enable-sessions)
-- [Change the maximum concurrent Sessions of a Worker](/develop/go/sessions#max-concurrent-sessions)
-- [Create a Worker Session](/develop/go/sessions#create-a-session)
-
-## [Side Effects](/develop/go/side-effects)
-
-Use Side Effects in Workflows.
-
-- [Side Effects](/develop/go/side-effects)
-
-## [Manage Namespaces](/develop/go/namespaces)
-
-Create and manage Namespaces.
-
-- [Register Namespaces](/develop/go/namespaces#register-namespace)
-- [Manage Namespaces](/develop/go/namespaces#manage-namespaces)
+  [data-theme='dark'] .resources-card {
+    border-color: var(--ifm-color-emphasis-200);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+`}
+</style>
