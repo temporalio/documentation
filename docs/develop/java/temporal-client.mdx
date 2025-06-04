@@ -103,17 +103,19 @@ Namespaces are established by setting a Client's options to configure the new in
 
 ### How to connect a Temporal Client to Temporal Cloud using an API key {#connect-to-temporal-cloud-api-key}
 
-To use an [API key](/cloud/api-keys) with the Temporal Java SDK, you will need to provide additional connection information:
+To use an [API key](/cloud/api-keys) with the Temporal Java SDK, you will need to provide additional connection options:
 
-- When you create your _API Key,_ be sure to save the value.
-- You can see the _namespace account id_ combination in your URL or anywhere that you manage namespaces.
-  It follows the format `<namespace_id>.<account_id>`.
-- The _endpoint_ will vary. The most common endpoint used is the gRPC regional endpoint, which you can find by selecting the Connect button on the namespace details page.
-  It follows the format: `<region>.<cloud_provider>.api.temporal.io:7233`.
+- Your _API Key_ value.
+- Your _Namespace and Account id_ combination, which follows the format `<namespace_id>.<account_id>`.
+- The _endpoint_ may vary. The most common endpoint used is the gRPC regional endpoint, which follows the format: `<region>.<cloud_provider>.api.temporal.io:7233`.
 - For Namespaces with High Availability features with API key authentication enabled, use the gRPC Namespace endpoint: `<namespace>.<account>.tmprl.cloud:7233`.
   This allows automated failover without needing to switch endpoints.
 
-Once you have the necessary info, to create an initial connection, use this code:
+You can find the Namespace and Account ID, as well as the endpoint, on the Namespaces tab:
+
+![The Namespace and Account ID combination on the left, and the regional endpoint on the right](/img/cloud/apikeys/namespaces-and-regional-endpoints.png)
+
+Now, when instantiating a Temporal `client` in your Temporal Java SDK code, provide the API key with `WorkflowServiceStubsOptions` and the Namespace and Account ID in `WorkflowClient.newInstance`:
 
 ````java
     WorkflowServiceStubs service =
@@ -132,7 +134,8 @@ Once you have the necessary info, to create an initial connection, use this code
             service, WorkflowClientOptions.newBuilder().setNamespace(<namespace_id>.<account_id>).build());
             ```
 
-To update an API key:
+To update the API key, update the `stubOptions`:
+
 ```java
 String myKey = <APIKey>;
 WorkflowServiceStubsOptions stubOptions =
@@ -141,6 +144,7 @@ WorkflowServiceStubsOptions stubOptions =
         .build();
 // Update by replacing, this must be done in a thread safe way
 myKey = "Bearer " + <new APIKey>;
+```
 
 ### How to connect a Temporal Client to Temporal Cloud using TLS {#connect-to-temporal-cloud-tls}
 
