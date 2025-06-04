@@ -119,16 +119,13 @@ const TemporalDocsLanding = () => {
       </Icon>
     ),
     items: [
-      { title: "OSS Self-Hosted", link: "/observability/oss-self-hosted" },
-      { title: "Tracing", link: "/observability/tracing" },
-      { title: "Log from a Workflow", link: "/observability/log-from-workflow" },
-      { title: "Visibility APIs", link: "/observability/visibility-apis" },
-      { title: "Interceptors", link: "/observability/interceptors" },
-      { title: "Temporal Cloud Available Metrics", link: "/cloud/metrics" },
-      { title: "Setup using Datadog", link: "/cloud/metrics/datadog" },
-      { title: "Setup using Prometheus Grafana", link: "/cloud/metrics/prometheus" },
-      { title: "Worker Health", link: "/cloud/worker-health" },
-      { title: "Service Health", link: "/cloud/service-health" }
+      { title: "Platform Metrics", link: "/references/cluster-metrics" },
+      { title: "SDK Metrics", link: "/references/sdk-metrics" },
+      { title: "Cloud Metrics", link: "/cloud/metrics" },
+      { title: "Setup with Datadog", link: "/cloud/metrics/datadog" },
+      { title: "Setup with Prometheus", link: "/cloud/metrics/prometheus-grafana" },
+      { title: "Worker Health", link: "/production-deployment/cloud/worker-health" },
+      { title: "Service Health", link: "/production-deployment/cloud/service-health" }
     ]
   };
 
@@ -143,9 +140,9 @@ const TemporalDocsLanding = () => {
       </Icon>
     ),
     items: [
-      { title: "Temporal Security Model", link: "/security/temporal-security-model" },
-      { title: "Temporal Cloud Security Model", link: "/cloud/security" },
-      { title: "Trust", link: "/security/trust" }
+      { title: "Trust", link: "https://trust.temporal.io/" },
+      { title: "Cloud Security", link: "/cloud/security" },
+      { title: "Self-hosted Security", link: "/self-hosted-guide/security" }
     ]
   };
 
@@ -159,10 +156,10 @@ const TemporalDocsLanding = () => {
       </Icon>
     ),
     items: [
-      { title: "Build your first Temporal application", link: "/tutorials/first-app" },
-      { title: "Learn Temporal step by step", link: "/tutorials/step-by-step" },
-      { title: "Advanced patterns and practices", link: "/tutorials/advanced" },
-      { title: "Language-specific tutorials", link: "/tutorials/languages" }
+      { title: "Getting Started", link: "https://learn.temporal.io/getting_started/" },
+      { title: "Infrastructure Tutorials", link: "https://learn.temporal.io/tutorials/infrastructure/" },
+      { title: "One-Click Order App in TypeScript and Next.js", link: "https://learn.temporal.io/tutorials/typescript/build-one-click-order-app-nextjs/" },
+      { title: "Trip Booking App in Python", link: "https://learn.temporal.io/tutorials/python/trip-booking-app/" }
     ]
   };
 
