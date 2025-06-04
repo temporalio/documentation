@@ -117,7 +117,7 @@ You can find the Namespace and Account ID, as well as the endpoint, on the Names
 
 Now, when instantiating a Temporal `client` in your Temporal Java SDK code, provide the API key with `WorkflowServiceStubsOptions` and the Namespace and Account ID in `WorkflowClient.newInstance`:
 
-````java
+```java
     WorkflowServiceStubs service =
         WorkflowServiceStubs.newServiceStubs(
             WorkflowServiceStubsOptions.newBuilder()
@@ -132,7 +132,7 @@ Now, when instantiating a Temporal `client` in your Temporal Java SDK code, prov
     WorkflowClient client =
         WorkflowClient.newInstance(
             service, WorkflowClientOptions.newBuilder().setNamespace(<namespace_id>.<account_id>).build());
-            ```
+```
 
 To update the API key, update the `stubOptions`:
 
