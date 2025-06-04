@@ -15,4 +15,395 @@ tags:
   - Durable Execution
 ---
 
+import { LANGUAGE_TAB_GROUP, getLanguageLabel } from '@site/src/constants/languageTabs';
+import SdkTabs from '@site/src/components';
+
+[Safe Deploys](/production-deployment/worker-deployments/safe-deploys) is a Temporal feature that allows you to pin Workflows to individual versions of your workers, which are called Worker Deployment Versions.
+Using pinning, you will not need to patch most Workflows as part of routine deploys.
+If Activities and Workflows are running in the same worker deployment version, you also do not need to ensure interface compatibility across versions.
+
+This allows you to bypass the other Versioning APIs.
+Instead, your deployment system must support multiple versions running simultaneously and allow you to control when they are sunsetted.
+This is typically known as a rainbow deploy (of which a blue-green deploy is a special case) and contrasts to a rolling deploy in which your Workers are upgraded in place without the ability to keep old versions around.
+
+:::tip 
+Watch this Temporal Replay 2025 talk to learn more about Safe Deploys.
+
+<div style={{ display: 'flex', justifyContent: 'center' }}>
+    <iframe width="560" height="315"
+        src="https://www.youtube.com/embed/rm4BlD9WXqc"
+        title="YouTube video player"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+:::
+
+:::note
+Safe Deploys is currently available in Pre-release.
+
+Minimum versions:
+- Go SDK version v1.33.0
+- Python v1.11
+- Java v1.29
+- Typescript v1.12
+- Other SDKs: coming soon!
+
+Self-hosted users:
+
+Minimum Temporal CLI version v1.3.0
+Minimum Temporal Server version: v1.27.1
+Minimum Temporal UI Version v2.36.0
+:::
+
+## Getting Started with Safe Deploys
+
+First, we'll introduce some terminology.
+
+- A **Worker Deployment** is a deployment or service across multiple versions. In a rainbow deploy, a deployment can have multiple active deployment versions running at once.  
+- A **Worker Deployment Version** is a version of a deployment or service. It can have multiple Workers, but they all run the same build.  
+- A **Build ID**, in combination with a Worker Deployment name, identifies a single Worker Deployment Version.
+  - Each Worker Deployment has a single **Current Version** which is where workflows are routed to unless they were previously pinned on a different version. Other versions are still around to drain pinned workflows or in case you need to roll back. If no current version is specified, the default is unversioned.
+  - Each Worker Deployment can have a **Ramping Version** which is where a configurable percentage of workflows are routed to unless they were previously pinned on a different version. The ramp percentage can be in the range [0, 100]. Workflows that don't go to the Ramping Version will go to the Current Version. If no ramping version is specified, 100% of auto-upgrade workflows will go to the Current Version.
+  - You can declare each Workflow type to have a **Versioning Behavior**, either `pinned` or `auto-upgraded`. A `pinned` Worfklow is guaranteed to complete on a single Worker Deployment Version. An `auto-upgraded` Workflow will move to the latest Worker Deployment Version automatically whenever you change the current version.
+
+Your deployment system should support rainbow deployments so that you can keep versions alive to drain existing workflows.
+The [Temporal Worker Controller](/production-deployment/worker-deployments/kubernetes-controller) provides an example of using Kubernetes to bootstrap a rainbow deployment.
+
+### Opting into the Pre-release
+
 TK TK TK
+
+```
+temporal server start-dev \
+   --dynamic-config-value frontend.workerVersioningWorkflowAPIs=true \
+   --dynamic-config-value system.enableDeploymentVersions=true
+```
+
+## Configuring a Worker for Safe Deploys
+
+You'll need to TK TK TK
+
+<SdkTabs>
+<SdkTabs.Go>
+```go
+buildID:= mustGetEnv("MY_BUILD_ID")
+w := worker.New(c, myTaskQueue, worker.Options{
+      DeploymentOptions: worker.DeploymentOptions{
+          UseVersioning: true,
+          // Must be in this exact format: <deployment name>.<build ID>
+          Version: "llm_srv." + buildID,
+          DefaultVersioningBehavior: workflow.VersioningBehaviorAutoUpgrade,
+},
+})
+```
+</SdkTabs.Go>
+<SdkTabs.Java>
+```java
+WorkerOptions options =
+    WorkerOptions.newBuilder()
+        .setDeploymentOptions(
+            WorkerDeploymentOptions.newBuilder()
+                .setVersion(new WorkerDeploymentVersion("llm_srv", "1.0"))
+                .setUseVersioning(true)
+                .setDefaultVersioningBehavior(VersioningBehavior.AUTO_UPGRADE)
+                .build())
+        .build();
+```
+</SdkTabs.Java>
+<SdkTabs.Python>
+```python
+Worker(
+    client,
+    task_queue="mytaskqueue",
+    workflows=workflows,
+    activities=activities,
+    deployment_config=WorkerDeploymentConfig(
+        version=WorkerDeploymentVersion(
+            deployment_name="llm_srv",
+            build_id=my_env.build_id),
+        use_worker_versioning=True,
+    ),
+)
+```
+</SdkTabs.Python>
+<SdkTabs.TypeScript>
+```ts
+const myWorker = await Worker.create({
+workflowsPath: require.resolve('./workflows'),
+taskQueue,
+workerDeploymentOptions: {
+    useWorkerVersioning: true,
+    version: {	buildId: '1.0', deploymentName: 'llm_srv'},
+    defaultVersioningBehavior: 'AUTO_UPGRADE',
+},
+connection: nativeConnection,
+});
+```
+</SdkTabs.TypeScript>
+<SdkTabs.DotNet>
+```csharp
+var myWorker = new TemporalWorker(
+    Client,
+    new TemporalWorkerOptions(taskQueue)
+    {DeploymentOptions = new(new("llm_srv", "1.0"), true)
+      { DefaultVersioningBehavior = VersioningBehavior.AutoUpgrade },
+    }.AddWorkflow<MyWorkflow>());
+```
+</SdkTabs.DotNet>
+<SdkTabs.Ruby>
+```ruby
+worker = Temporalio::Worker.new(
+  client: client,
+  task_queue: task_queue,
+  workflows: [MyWorkflow],
+  deployment_options: Temporalio::Worker::DeploymentOptions.new(
+      version: Temporalio::WorkerDeploymentVersion.new(
+          deployment_name: 'llm_srv',
+          build_id: '1.0'
+      ), 
+      use_worker_versioning: true
+  )
+)
+```
+</SdkTabs.Ruby>
+</SdkTabs>
+
+If your worker and workflows are new, we suggest not providing a `DefaultVersioningBehavior`.
+Each workflow author must annotate their workflow as `auto-upgrade` or `pinned` on a workflow-by-workflow basis, based on how long they expect the workflow to run.
+If all of your workflows will be short-running for the foreseeable future, you can default to `pinned`.
+
+Most users who are migrating to rainbow deploys from rolling deploys will start by defaulting to `auto-upgrade` until they have had time to annotate their Workflows.
+This default is the most similar to the legacy behavior.
+Auto-upgraded workflows won't get stuck on a single version and can use the other Versioning APIs.
+Once each workflow type is annotated, you can remove the `DefaultVersioningBehavior`.
+
+## Rolling out changes with the CLI
+
+TK TK TK
+
+You can view the Versions that are active in a Deployment with the CLI:
+
+```bash
+temporal worker deployment describe --name="$MY_DEPLOYMENT"
+```
+
+To activate a Deployment Version in which the worker is polling TK TK
+
+```bash
+temporal worker deployment set-current-version \
+    --version="$MY_DEPLOYMENT_VERSION"
+```
+
+To gradually ramp a Deployment Version in which the worker is polling, do this:
+
+```bash
+temporal worker deployment set-ramping-version \
+    --version="$MY_DEPLOYMENT_VERSION" --percentage=5
+```
+
+You should see workflows move to that Version when you do this:
+
+```bash
+temporal workflow describe -w YourWorkflowID
+```
+
+That returns the new Version that the workflow is running on:
+
+```
+Versioning Info:
+
+  Behavior               AutoUpgrade
+  Version                llm_srv.2.0
+  OverrideBehavior       Unspecified
+```
+
+## Marking a Workflow Type as Pinned
+
+TK TK TK
+
+<SdkTabs>
+<SdkTabs.Go>
+```go
+// w is the Worker configured as in the previous example
+w.RegisterWorkflowWithOptions(HelloWorld, workflow.RegisterOptions{
+	# or | VersioningBehaviorAutoUpgrade
+        VersioningBehavior: workflow.VersioningBehaviorPinned,
+})
+```
+</SdkTabs.Go>
+<SdkTabs.Java>
+```java
+@WorkflowInterface
+public interface HelloWorld {
+  @WorkflowMethod
+  String hello();
+}
+
+public static class HelloWorldImpl implements HelloWorld {
+  @Override
+  @WorkflowVersioningBehavior(VersioningBehavior.PINNED)
+  public String hello() {
+    return "Hello, World!";
+  }
+}
+```
+</SdkTabs.Java>
+<SdkTabs.Python>
+```python
+@workflow.defn(versioning_behavior=VersioningBehavior.PINNED)
+class HelloWorld:
+    @workflow.run
+    async def run(self):
+        return "hello world!"
+```
+</SdkTabs.Python>
+<SdkTabs.TypeScript>
+```ts
+setWorkflowOptions({ versioningBehavior: 'PINNED' }, helloWorld);
+export async function helloWorld(): Promise<string> {
+  return 'hello world!';
+}
+```
+</SdkTabs.TypeScript>
+<SdkTabs.DotNet>
+```csharp
+[Workflow(VersioningBehavior = VersioningBehavior.Pinned)]
+public class HelloWorld
+{
+    [WorkflowRun]
+    public async Task<string> RunAsync()
+    {
+        return "hello world!";
+    }
+}
+```
+</SdkTabs.DotNet>
+<SdkTabs.Ruby>
+```ruby
+class HelloWorld < Temporalio::Workflow::Definition
+  workflow_versioning_behavior Temporalio::VersioningBehavior::PINNED
+
+  def execute
+    'hello world!'
+  end
+end
+```
+</SdkTabs.Ruby>
+</SdkTabs>
+
+TK TK TK You can see your set of Deployment Versions with:
+
+```bash
+temporal worker deployment describe --name="$MY_DEPLOYMENT"
+```
+
+## Migrating a pinned Workflow
+
+TK TK TK
+
+```bash
+temporal workflow update-options \
+    --workflow-id="MyWorkflowId" \
+    --versioning-override-behavior=pinned \           
+    --versioning-override-pinned-version="$MY_DEPLOYMENT_VERSION"
+```
+
+```bash
+  temporal workflow update-options \
+    --query="TemporalWorkerDeploymentVersion=$MY_BAD_DEPLOYMENT_VERSION" \
+    --versioning-override-behavior=pinned \
+    --versioning-override-pinned-version="$MY_PATCH_DEPLOYMENT_VERSION"
+```
+
+## Sunsetting an old deployment version
+
+TK TK TK
+
+```bash
+temporal worker deployment describe-version \
+    --version="$MY_DEPLOYMENT_VERSION"
+```
+
+```
+Worker Deployment Version:
+  Version                  llm_srv.1.0
+  CreateTime               5 hours ago
+  RoutingChangedTime       32 seconds ago
+  RampPercentage           0
+  DrainageStatus           draining
+  DrainageLastChangedTime  31 seconds ago
+  DrainageLastCheckedTime  31 seconds ago
+
+Task Queues:
+     Name        Type  
+  hello-world  activity
+  hello-world  workflow
+```
+
+### Adding a pre-deployment test
+
+TK TK TK
+
+<SdkTabs>
+<SdkTabs.Go>
+```go
+workflowOptions := client.StartWorkflowOptions{
+ID:        "MyWorkflowId",
+	TaskQueue: "MyTaskQueue",
+       VersioningOverride = client.VersioningOverride{
+Behavior: workflow.VersioningBehaviorPinned,
+PinnedVersion: "$MY_TEST_DEPLOYMENT_VERSION",
+	}
+}
+// c is an initialized Client
+we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, HelloWorld, "Hello")
+```
+</SdkTabs.Go>
+<SdkTabs.TypeScript>
+```ts
+const handle = await client.workflow.start('helloWorld', {
+taskQueue: 'MyTaskQueue',
+workflowId: 'MyWorkflowId',
+versioningOverride: {
+      pinnedTo: { buildId: '1.0', deploymentName: 'deploy-name' },
+},
+});
+```
+</SdkTabs.TypeScript>
+<SdkTabs.DotNet>
+```csharp
+var workerV1 = new WorkerDeploymentVersion("deploy-name", "1.0");
+var handle = await Client.StartWorkflowAsync(
+    (HelloWorld wf) => wf.RunAsync(),
+      	new(id: "MyWorkflowId", taskQueue: "MyTaskQueue")
+      	{
+           VersioningOverride = new VersioningOverride.Pinned(workerV1),
+        }
+);
+```
+</SdkTabs.DotNet>
+<SdkTabs.Ruby>
+```ruby
+worker_v1 = Temporalio::WorkerDeploymentVersion.new(
+  deployment_name: 'deploy-name',
+  build_id: '1.0'
+)
+handle = env.client.start_workflow(
+  HelloWorld,
+  id: 'MyWorkflowId',
+  task_queue: 'MyTaskQueue',
+  versioning_override: Temporalio::VersioningOverride.pinned(worker_v1)
+)
+```
+</SdkTabs.Ruby>
+</SdkTabs>
+
+TK TK TK
+
+```bash
+temporal workflow show --workflow-id="MyWorkflowId"
+```
+
+This covers the complete lifecycle of working with Safe Deploys.
+Consider adopting the [Temporal Worker Controller](/production-deployment/worker-deployments/kubernetes-controller) to provide fine grained, out-of-the-box control of your deployments.
