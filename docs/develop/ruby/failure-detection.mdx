@@ -35,16 +35,34 @@ Each Workflow timeout controls the maximum duration of a different aspect of a W
 - **[Workflow Run Timeout](/encyclopedia/detecting-workflow-failures#workflow-run-timeout)**: Limits the duration of an individual run of a Workflow Execution.
 - **[Workflow Task Timeout](/encyclopedia/detecting-workflow-failures#workflow-task-timeout)**: Limits the time allowed for a Worker to process a Workflow Task.
 
-Set these values in the `WorkflowOptions` when starting a Workflow.
+Set these values as keyword parameter options when starting a Workflow.
 
-<!-- CONTENT -->
+```ruby
+result = my_client.execute_workflow(
+  MyWorkflow, 'some-input',
+  id: 'my-workflow-id', task_queue: 'my-task-queue',
+  execution_timeout: 5 * 60
+)
+```
 
 ### Workflow retries {#workflow-retries}
+
+A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
 Use a [Retry Policy](/encyclopedia/retry-policies) to automatically retry Workflow Executions on failure.
 Workflow Executions do not retry by default.
 
-<!-- CONTENT -->
+Workflow Executions do not retry by default, and Retry Policies should be used with Workflow Executions only in certain situations.
+
+The `retry_policy` can be set when calling `start_workflow` or `execute_workflow`.
+
+```ruby
+result = my_client.execute_workflow(
+  MyWorkflow, 'some-input',
+  id: 'my-workflow-id', task_queue: 'my-task-queue',
+  retry_policy: Temporalio::RetryPolicy.new(max_interval: 10)
+)
+```
 
 ## Activity timeouts {#activity-timeouts}
 
@@ -54,22 +72,43 @@ Each Activity Timeout controls a different aspect of how long an Activity Execut
 - **[Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout)**
 - **[Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout)**
 
-At least one of `StartToCloseTimeout` or `ScheduleToCloseTimeout` is required.
+At least one of `start_to_close_timeout` or `schedule_to_close_timeout` is required.
 
-<!-- CONTENT -->
+```ruby
+Temporalio::Workflow.execute_activity(
+  MyActivity,
+  { greeting: 'Hello', name: },
+  start_to_close_timeout: 5 * 60
+)
+```
 
 ### Activity Retry Policy {#activity-retries}
 
 By default, Activities use a system Retry Policy.
 You can override it by specifying a custom Retry Policy.
 
-<!-- CONTENT -->
+To create an Activity Retry Policy in Ruby, set the `retry_policy` parameter when executing an activity.
 
-### Override the retry interval with `nextRetryDelay` {#next-retry-delay}
+```ruby
+Temporalio::Workflow.execute_activity(
+  MyActivity,
+  { greeting: 'Hello', name: },
+  start_to_close_timeout: 5 * 60,
+  retry_policy: Temporalio::RetryPolicy.new(max_interval: 10)
+)
+```
+
+### Override the retry interval with `next_retry_delay` {#next-retry-delay}
 
 If you raise an application-level error, you can override the Retry Policy's delay by specifying a new delay.
 
-<!-- CONTENT -->
+```ruby
+raise Temporalio::ApplicationError.new(
+  'Some error',
+  type: 'SomeErrorType',
+  next_retry_delay: 3 * Temporalio::Activity::Context.current.info.attempt
+)
+```
 
 ## Heartbeat an Activity {#activity-heartbeats}
 
@@ -79,10 +118,30 @@ A Heartbeat is a periodic signal from the Worker to the Temporal Service indicat
 - Cancellations are delivered via Heartbeats.
 - Heartbeats may contain custom progress details.
 
-<!-- CONTENT -->
+```ruby
+class MyActivity < Temporalio::Activity::Definition
+  def execute
+    # This is a naive loop simulating work, but similar heartbeat logic
+    # applies to other scenarios as well
+    loop do
+      # Send heartbeat
+      Temporalio::Activity::Context.current.heartbeat
+      # Sleep before heartbeating again
+      sleep(3)
+    end
+  end
+end
+```
 
 ### Heartbeat Timeout {#heartbeat-timeout}
 
 The Heartbeat Timeout sets the maximum duration between Heartbeats before the Temporal Service considers the Activity failed.
 
-<!-- CONTENT -->
+```ruby
+Temporalio::Workflow.execute_activity(
+  MyActivity,
+  { greeting: 'Hello', name: },
+  start_to_close_timeout: 5 * 60,
+  heartbeat_timeout: 5
+)
+```

@@ -25,8 +25,43 @@ This page shows how to do the following:
 
 ## Start a Child Workflow Execution {#child-workflows}
 
-<!-- CONTENT-->
+**How to start a Child Workflow Execution using the Temporal Ruby SDK**
+
+A [Child Workflow Execution](/child-workflows) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
+
+When using a Child Workflow API, Child Workflow related Events ([StartChildWorkflowExecutionInitiated](/references/events#startchildworkflowexecutioninitiated), [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted), [ChildWorkflowExecutionCompleted](/references/events#childworkflowexecutioncompleted), etc...) are logged in the Workflow Execution Event History.
+
+Always block progress until the [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted) Event is logged to the Event History to ensure the Child Workflow Execution has started.
+After that, Child Workflow Executions may be abandoned using the _Abandon_ [Parent Close Policy](/parent-close-policy) set in the Child Workflow Options.
+
+To spawn a Child Workflow Execution in Ruby, use the `execute_child_workflow` method which starts the Child Workflow and waits for completion or
+use the `start_child_workflow` method to start a Child Workflow and return its handle.
+This is useful if you want to do something after it has only started, or to get the Workflow/Run ID, or to be able to signal it while running.
+
+:::note
+
+`execute_child_workflow` is a helper method for `start_child_workflow(...).result`.
+
+:::
+
+```ruby
+Temporalio::Workflow.execute_child_workflow(MyChildWorkflow, 'my-workflow-arg')
+```
 
 ## Set a Parent Close Policy {#parent-close-policy}
 
-<!-- CONTENT-->
+**How to set a Parent Close Policy using the Temporal Ruby SDK**
+
+A [Parent Close Policy](/parent-close-policy) determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).
+
+The default Parent Close Policy option is set to terminate the Child Workflow Execution.
+
+Set the `parent_close_policy` parameter for `execute_child_workflow` or `start_child_workflow` to specify the behavior of the Child Workflow when the Parent Workflow closes.
+
+```ruby
+Temporalio::Workflow.execute_child_workflow(
+  MyChildWorkflow,
+  'my-workflow-arg',
+  parent_close_policy: Temporalio::Workflow::ParentClosePolicy::ABANDON
+)
+```

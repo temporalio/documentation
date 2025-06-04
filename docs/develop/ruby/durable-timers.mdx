@@ -24,6 +24,13 @@ Timers are persisted, so even if your Worker or Temporal Service is down when th
 
 Sleeping is a resource-light operation: it does not tie up the process, and you can run millions of Timers off a single Worker.
 
-To add a Timer in a Workflow, use a sleep or delay method provided by the SDK.
+To add a Timer in a Workflow, use `Temporalio::Workflow.sleep`.
+_Technically_ `Kernel#sleep` works, but the workflow form allows one to set a summary to view in the UI.
 
-<!-- CONTENT -->
+```ruby
+# Sleep for 72 hours
+Temporalio::Workflow.sleep(72 * 60 * 60, summary: 'my timer')
+```
+
+There is also a `Temporalio::Workflow.timeout` method that accepts a block and works like standard Ruby
+`Timeout.timeout` if needing the ability to timeout a set of code.

@@ -37,8 +37,11 @@ The new Workflow Execution has the same Workflow Id, but a different Run Id, and
 
 ## Continue-As-New in Ruby {#continue-as-new}
 
-<!-- CONTENT-->
-<!-- Ruby specific example of continue-as-new-->
+To Continue-As-New in Ruby, raise a `Temporalio::Workflow::ContinueAsNewError` from inside your Workflow, which will stop the Workflow immediately and Continue-As-New.
+
+```ruby
+raise Temporalio::Workflow::ContinueAsNewError.new('my-new-arg')
+```
 
 :::warning Using Continue-as-New and Updates
 

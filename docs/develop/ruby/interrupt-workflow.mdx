@@ -49,16 +49,133 @@ To give a Workflow and its Activities the ability to be cancelled, do the follow
 
 ### Handle Cancellation in Workflow {#handle-cancellation-in-workflow}
 
-<!-- CONTENT-->
+**How to handle a Cancellation in a Workflow in Ruby.**
+
+Workflow Definitions can be written to respond to cancellation requests.
+It is common for an Activity to be run on Cancellation to perform cleanup.
+
+Cancellation Requests on Workflows cancel the `Temporalio::Workflow.cancellation` which is a `Temporalio::Cancellation` that effectively serves as a cancellation token.
+This is the cancellation that is implicitly used for all calls within the workflow as well (e.g. Timers, Activities, etc) and therefore cancellation is propagated to them to be handled and bubble out.
+
+```ruby
+class MyWorkflow < Temporalio::Workflow::Definition
+  def execute
+    # Whether this workflow waits on the activity to handle the cancellation or not is
+    # dependent upon the cancellation_type parameter. We leave the default here which
+    # sends the cancellation but does not wait on it to be handled.
+    Temporalio::Workflow.execute_activity(MyActivity, start_to_close_timeout: 100)
+  rescue Temporalio::Error => e
+    # For this sample, we only want to execute cleanup when it's a cancellation
+    raise unless Temporalio::Error.canceled?(e)
+
+    # Call a cleanup activity. We have to do this with a new/detached cancellation
+    # because the default workflow-level one is already canceled at this point.
+    Temporalio::Workflow.execute_activity(
+      MyCleanupActivity,
+      start_to_close_timeout: 100,
+      cancellation: Temporalio::Cancellation.new
+    )
+
+    # Re-raise the original exception
+    raise
+  end
+end
+```
 
 ### Handle Cancellation in an Activity {#handle-cancellation-in-an-activity}
 
-<!-- CONTENT-->
+**How to handle a Cancellation in an Activity using the Temporal Ruby SDK**
+
+Ensure that the Activity is [Heartbeating](/develop/ruby/failure-detection#activity-heartbeats) to receive the Cancellation request and stop execution.
+Also make sure that the [Heartbeat Timeout](/develop/ruby/failure-detection#heartbeat-timeout) is set on the Activity Options when calling from the Workflow.
+An Activity Cancellation Request raises a `Temporalio::Error::CanceledError` in the Activity.
+
+```ruby
+class MyActivity < Temporalio::Activity::Definition
+  def execute
+    # This is a naive loop simulating work, but similar heartbeat/cancellation logic
+    # applies to other scenarios as well
+    loop do
+      # Send heartbeat
+      Temporalio::Activity::Context.current.heartbeat
+      # Sleep before heartbeating again
+      sleep(3)
+    end
+  rescue Temporalio::Error::CanceledError
+    raise 'Canceled!'
+  end
+end
+```
 
 ### Request Cancellation {#request-cancellation}
 
-<!-- CONTENT-->
+**How to request Cancellation of a Workflow using the Temporal Ruby SDK**
+
+Use `cancel` on the `WorkflowHandle` to cancel a Workflow Execution.
+
+```ruby
+# Get a workflow handle by its workflow ID. This could be made specific to a run by
+# passing run ID. This could also just be a handle that is returned from
+# start_workflow instead.
+handle = my_client.workflow_handle('my-workflow-id')
+
+# Send cancellation. This returns when cancellation is received by the server. Wait on
+# the handle's result to wait for cancellation to be applied.
+handle.cancel
+```
+
+**How to request Cancellation of an Activity in Ruby using the Temporal Ruby SDK**
+
+By default, Activities are automatically cancelled when the Workflow is cancelled since the workflow cancellation is used by activities by default.
+To issue a cancellation explicitly, a new cancellation token can be created.
+
+```ruby
+class MyWorkflow < Temporalio::Workflow::Definition
+  def execute
+    # Create a new cancellation linked to the workflow one, so that it inherits
+    # cancellation that comes from the workflow. Users can choose to make it
+    # completely detached by not providing a parent.
+    cancellation, cancel_proc = Temporalio::Cancellation.new(
+      Temporalio::Workflow.cancellation
+    )
+
+    # Start the activity in the background. Whether this workflow waits on the activity
+    # to handle the cancellation or not is dependent upon the cancellation_type
+    # parameter. We leave the default here which sends the cancellation but does not wait
+    # on it to be handled.
+    future = Temporalio::Future.new do
+      Temporalio::Workflow.execute_activity(
+        MyActivity,
+        start_to_close_timeout: 100,
+        cancellation:
+      )
+    end
+
+    # Wait 5 minutes, then cancel it
+    Temporalio::Workflow.sleep(5 * 60)
+    cancel_proc.call
+
+    # Wait on the activity which will raise an activity error with a cause of
+    # cancellation which will fail the workflow
+    future.wait
+  end
+end
+```
 
 ## Termination {#termination}
 
-<!-- CONTENT-->
+**How to Terminate a Workflow Execution in Ruby using the Temporal Ruby SDK**
+
+To Terminate a Workflow Execution in Ruby, use the `terminate` method on the Workflow handle.
+
+```ruby
+# Get a workflow handle by its workflow ID. This could be made specific to a run by
+# passing run ID. This could also just be a handle that is returned from
+# start_workflow instead.
+handle = my_client.workflow_handle('my-workflow-id')
+
+# Terminate
+handle.terminate
+```
+
+Workflow Executions can also be Terminated directly from the WebUI. In this case, a custom note can be logged from the UI when that happens.

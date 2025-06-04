@@ -45,7 +45,7 @@ gem install temporalio
 </TabItem>
 </Tabs>
 
-Both methods will install the same Temporal SDK, which supports Ruby versions 3.2, 3.3, and 3.4.
+Both methods will install the same Temporal SDK, which supports Ruby versions 3.2+.
 
 > **Note:**
 >
@@ -125,11 +125,11 @@ In Temporal, you'll create two files: an Activity file labeled `say_hello_activi
 ```ruby
 require 'temporalio/activity'
 
-  class SayHelloActivity < Temporalio::Activity::Definition
-    def execute(name)
-      "Hello, #{name}!"
-    end
+class SayHelloActivity < Temporalio::Activity::Definition
+  def execute(name)
+    "Hello, #{name}!"
   end
+end
 ```
 
 </TabItem>
@@ -142,15 +142,15 @@ require 'temporalio/activity'
 require 'temporalio/workflow'
 require_relative 'say_hello_activity'
 
-  class SayHelloWorkflow < Temporalio::Workflow::Definition
-    def execute(name)
-      Temporalio::Workflow.execute_activity(
-        SayHelloActivity,
-        name,
-        schedule_to_close_timeout: 300
-      )
-    end
+class SayHelloWorkflow < Temporalio::Workflow::Definition
+  def execute(name)
+    Temporalio::Workflow.execute_activity(
+      SayHelloActivity,
+      name,
+      schedule_to_close_timeout: 300
+    )
   end
+end
 ```
 
 </TabItem>
@@ -249,9 +249,8 @@ If you check the Temporal Web UI at http://localhost:8233, you'll gain visibilit
 
 - Temporal clients are not explicitly closed.
 - To enable TLS, the `tls` option can be set to `true` or a `Temporalio::Client::Connection::TLSOptions` instance.
-- Instead of `start_workflow` + `result` above, `execute_workflow` shortcut can be used if the handle is not needed.
+- Instead of `execute_workflow` above, `start_workflow` can be used to just start and get a handle.
 - Both `start_workflow` and `execute_workflow` accept either the workflow class or the string/symbol name of the workflow.
-- The `handle` above is a Temporalio::Client::WorkflowHandle which has several other operations that can be performed on a workflow. To get a handle to an existing workflow, use workflow_handle on the client.
 - Clients are thread safe and are fiber-compatible (but fiber compatibility only supported for Ruby 3.3+ at this time).
 
 :::
