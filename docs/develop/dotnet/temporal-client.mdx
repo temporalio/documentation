@@ -55,7 +55,7 @@ var client = await TemporalClient.ConnectAsync(new("localhost:7233"));
 
 ### How to connect to Temporal Cloud using an API Key {#connect-to-temporal-cloud-api-key}
 
-To use an [API key](/cloud/api-keys) with the Temporal .NET SDK, you will need to gather some information first:
+To use an [API key](/cloud/api-keys) with the Temporal .NET SDK, you will need to provide additional connection options:
 
 - When you create your _API Key,_ be sure to save the value.
 - You can see the _namespace account id_ combination in your URL or anywhere that you manage namespaces.
