@@ -23,11 +23,12 @@ The traditional approach to workflow determinism is to add branches using the [V
 Over time these checks can become a source of technical debt, as safely removing them from a codebase is a careful process that often involves querying all running workflows.
 
 [Safe Deploys](/production-deployment/worker-deployments/safe-deploys) is a Temporal feature that allows you to pin Workflows to individual versions of your workers, which are called Worker Deployment Versions.
-Using pinning, you will not need to patch most Workflows as part of routine deploys.
-If Activities and Workflows are running in the same worker deployment version, you also do not need to ensure interface compatibility across versions.
+Using pinning, you will not need to add branching to your Workflows to avoid non-determinism errors.
 
-This greatly simplifies Workflow upgrades, but the cost is that your deployment system must support multiple versions running simultaneously and allow you to control when they are sunsetted.
-This is typically known as a rainbow deploy (of which a blue-green deploy is a special case) and contrasts to a rolling deploy in which your Workers are upgraded in place without the ability to keep old versions around.
+This allows you to bypass the other Versioning APIs.
+Instead, your deployment system must support multiple versions running simultaneously and allow you to control when they are sunsetted.
+This is typically known as a **rainbow deploy** and contrasts to a rolling deploy in which your Workers are upgraded in place without the ability to keep old versions around.
+A **blue-green** deploy is a kind of rainbow deploy that is typically used to gradually roll out a new update; our Safe Deploys feature facilitates blue-green deploys. 
 
 This project aims to provide automation to enable rainbow deployments of your workers by simplifying the tracking of which versions still have active workflows, managing the lifecycle of versioned worker deployments, and calling Temporal APIs to update the routing config of Temporal Worker Deployments.
 This way, you can route Workflow traffic to new versions.

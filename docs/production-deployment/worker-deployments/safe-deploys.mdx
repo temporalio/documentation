@@ -19,12 +19,12 @@ import { LANGUAGE_TAB_GROUP, getLanguageLabel } from '@site/src/constants/langua
 import SdkTabs from '@site/src/components';
 
 [Safe Deploys](/production-deployment/worker-deployments/safe-deploys) is a Temporal feature that allows you to pin Workflows to individual versions of your workers, which are called Worker Deployment Versions.
-Using pinning, you will not need to patch most Workflows as part of routine deploys.
-If Activities and Workflows are running in the same worker deployment version, you also do not need to ensure interface compatibility across versions.
+Using pinning, you will not need to add branching to your Workflows to avoid non-determinism errors.
 
 This allows you to bypass the other Versioning APIs.
 Instead, your deployment system must support multiple versions running simultaneously and allow you to control when they are sunsetted.
-This is typically known as a rainbow deploy (of which a blue-green deploy is a special case) and contrasts to a rolling deploy in which your Workers are upgraded in place without the ability to keep old versions around.
+This is typically known as a **rainbow deploy** and contrasts to a rolling deploy in which your Workers are upgraded in place without the ability to keep old versions around.
+A **blue-green** deploy is a kind of rainbow deploy that is typically used to gradually roll out a new update; our Safe Deploys feature facilitates blue-green deploys. 
 
 :::tip 
 Watch this Temporal Replay 2025 talk to learn more about Safe Deploys.
@@ -51,9 +51,9 @@ Minimum versions:
 
 Self-hosted users:
 
-Minimum Temporal CLI version v1.3.0
-Minimum Temporal Server version: v1.27.1
-Minimum Temporal UI Version v2.36.0
+- Minimum Temporal CLI version v1.3.0
+- Minimum Temporal Server version: v1.27.1
+- Minimum Temporal UI Version v2.36.0
 :::
 
 ## Getting Started with Safe Deploys
@@ -343,7 +343,7 @@ Task Queues:
 
 ### Adding a pre-deployment test
 
-TK TK TK
+TK TK TK Canary hooks
 
 <SdkTabs>
 <SdkTabs.Go>
