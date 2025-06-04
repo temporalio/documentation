@@ -17,7 +17,7 @@ tags:
   - Durable Execution
 ---
 
-Temporal's [deterministic constraints](/workflows#deterministic-constraints) can cause challenges when rolling out or rolling back workflow code changes.
+Temporal's [deterministic constraints](/workflow-definition#deterministic-constraints) can cause challenges when rolling out or rolling back workflow code changes.
 
 The traditional approach to workflow determinism is to add branches using the [Versioning APIs](/workflow-definition#workflow-versioning).
 Over time these checks can become a source of technical debt, as safely removing them from a codebase is a careful process that often involves querying all running workflows.
