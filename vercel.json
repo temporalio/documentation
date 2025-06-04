@@ -1954,6 +1954,21 @@
       "source": "/production-deployment/cloud/metrics/performance-bottlenecks",
       "destination": "/troubleshooting/performance-bottlenecks",
       "permanent": true
+    },
+    {
+      "source": "/worker-deployments",
+      "destination": "/production-deployment/worker-deployments",
+      "permanent": true
+    },
+    {
+      "source": "/worker-versioning",
+      "destination": "/production-deployment/worker-deployments/safe-deploys",
+      "permanent": true
+    },
+    {
+      "source": "/develop/safe-deployments",
+      "destination": "/develop/determinism",
+      "permanent": true
     }
   ]
 }
