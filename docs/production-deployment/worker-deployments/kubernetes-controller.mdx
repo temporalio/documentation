@@ -3,7 +3,7 @@ id: kubernetes-controller
 title: Temporal Worker Controller
 sidebar_label: Kubernetes controller
 description: Use Temporal's provided Kubernetes controller to programmatically scale your Worker deployments.
-slug: /production-deployments/worker-deployments/kubernetes-controller
+slug: /production-deployment/worker-deployments/kubernetes-controller
 toc_max_heading_level: 4
 keywords:
   - kubernetes
@@ -22,7 +22,7 @@ Temporal's [deterministic constraints](/workflows#deterministic-constraints) can
 The traditional approach to workflow determinism is to add branches using the [Versioning APIs](/workflow-definition#workflow-versioning).
 Over time these checks can become a source of technical debt, as safely removing them from a codebase is a careful process that often involves querying all running workflows.
 
-[Safe Deploys](/production-deployments/worker-deployments/safe-deploys) is a Temporal feature that allows you to pin Workflows to individual versions of your workers, which are called Worker Deployment Versions.
+[Safe Deploys](/production-deployment/worker-deployments/safe-deploys) is a Temporal feature that allows you to pin Workflows to individual versions of your workers, which are called Worker Deployment Versions.
 Using pinning, you will not need to patch most Workflows as part of routine deploys.
 If Activities and Workflows are running in the same worker deployment version, you also do not need to ensure interface compatibility across versions.
 
@@ -46,7 +46,7 @@ More usage details are coming soon.
 
 ## Configuring Worker Lifecycle
 
-To use the Temporal Worker Controller, tag your Workers following the guidance for using [Safe Deploys](/production-deployments/worker-deployments/safe-deploys). This means specifying a `TEMPORAL_DEPLOYMENT_NAME` and a `WORKER_BUILD_ID` in addition to the stock hostname and namespace configuration parameters.
+To use the Temporal Worker Controller, tag your Workers following the guidance for using [Safe Deploys](/production-deployment/worker-deployments/safe-deploys). This means specifying a `TEMPORAL_DEPLOYMENT_NAME` and a `WORKER_BUILD_ID` in addition to the stock hostname and namespace configuration parameters.
 
 When a new worker deployment version is deployed, the worker controller detects it and automatically begins the process of making that version the new current (default) version of the worker deployment it is a part of. This could happen immediately if `cutover.strategy = AllAtOnce`, or gradually if `cutover.strategy = Progressive`.
 
