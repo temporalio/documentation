@@ -16,7 +16,16 @@ tags:
   - Durable Execution
 ---
 
-TK TK TK
+A core feature of Temporal is that you are able to deploy your Workers to any infrastructure where your Workflow and Activity code will actually run.
+This way, you have total control over your runtime environment, and can be responsive to any security or scaling needs that may arise over time, whether you are using Temporal Cloud or self-hosting a Temporal Service.
 
-- [Safe Deploys](/production-deployment/worker-deployments/safe-deploys)
-- [Temporal Worker Controller](/production-deployment/worker-deployments/kubernetes-controller)
+However, if you do not already have some expertise in site reliability engineering, or do not know how to migrate from a Docker deployment to (for example) a Kubernetes pod of Temporal Workers, you may want more direct guidance here.
+For example, most of our [Tutorials and Courses](https://learn.temporal.io/) use only one or two Temporal Workers to demonstrate core functionality.
+The content in this section will provide clarity on real-world deployments that grow far beyond those examples.
+
+Our Worker Deployments guide provides documentation of Temporal product features that make it easier to scale and revise your Workflows.
+One of these features, [Safe Deploys](/production-deployment/worker-deployments/safe-deploys), allows you to pin Workflows to individual versions of your workers, which are called Worker Deployment Versions.
+Using pinning, you will not need to patch most Workflows as part of routine deploys.
+We also provide a [Temporal Worker Controller](/production-deployment/worker-deployments/kubernetes-controller) for using these features with a sample Kubernetes deployment.
+
+You can also refer to our [Code Exchange](https://temporal.io/code-exchange) for community-contributed deployments.
