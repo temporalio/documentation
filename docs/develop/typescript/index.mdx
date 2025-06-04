@@ -13,133 +13,328 @@ tags:
 
 ![TypeScript SDK Banner](/img/banner-typescript-temporal.png)
 
-:::info TYPESCRIPT SPECIFIC RESOURCES
-Build Temporal Applications with the TypeScript SDK.
+<div className="resources-card">
+  <h2>TypeScript Specific Resources</h2>
+  <div className="resources-content">
+    <div className="resources-section">
+      <h3>Technical Resources</h3>
+      <ul>
+        <li><a href="https://typescript.temporal.io">TypeScript API Documentation</a></li>
+        <li><a href="https://github.com/temporalio/samples-typescript">TypeScript SDK Code Samples</a></li>
+        <li><a href="https://github.com/temporalio/sdk-typescript">TypeScript SDK GitHub</a></li>
+      </ul>
+    </div>
+    <div className="resources-section">
+      <h3>Community</h3>
+      <ul>
+        <li><a href="https://temporalio.slack.com/archives/C01DKSMU94L">Temporal TypeScript Community Slack</a></li>
+        <li><a href="https://community.temporal.io/tag/typescript-sdk">TypeScript SDK Forum</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
 
-**Temporal TypeScript Technical Resources:**
+<div className="feature-grid">
+  <div className="feature-card">
+    <h2><a href="/develop/typescript/core-application">Core Application</a></h2>
+    <p>Use the essential components of a Temporal Application (Workflows, Activities, and Workers) to build and run a Temporal application.</p>
+    <ul>
+      <li><a href="/develop/typescript/core-application#develop-workflows">Develop a Basic Workflow</a></li>
+      <li><a href="/develop/typescript/core-application#develop-activities">Develop a Basic Activity</a></li>
+      <li><a href="/develop/typescript/core-application#activity-execution">Start an Activity Execution</a></li>
+      <li><a href="/develop/typescript/core-application#run-a-dev-worker">Run Worker Processes</a></li>
+    </ul>
+  </div>
 
-- [TypeScript API Documentation](https://typescript.temporal.io)
-- [TypeScript SDK Code Samples](https://github.com/temporalio/samples-typescript)
-- [TypeScript SDK GitHub](https://github.com/temporalio/sdk-typescript)
+  <div className="feature-card">
+    <h2><a href="/develop/typescript/temporal-clients">Temporal Client</a></h2>
+    <p>Connect to a Temporal Service and start a Workflow Execution.</p>
+    <ul>
+      <li><a href="/develop/typescript/temporal-clients#connect-to-development-service">Connect to Development Temporal Service</a></li>
+      <li><a href="/develop/typescript/temporal-clients#connect-to-temporal-cloud">Connect to Temporal Cloud</a></li>
+      <li><a href="/develop/typescript/temporal-clients#start-workflow-execution">Start a Workflow Execution</a></li>
+    </ul>
+  </div>
 
-**Get Connected with the Temporal TypeScript Community:**
+  <div className="feature-card">
+    <h2><a href="/develop/typescript/testing-suite">Testing</a></h2>
+    <p>Set up the testing suite and test Workflows and Activities.</p>
+    <ul>
+      <li><a href="/develop/typescript/testing-suite#test-frameworks">Test Frameworks</a></li>
+      <li><a href="/develop/typescript/testing-suite#test-activities">Testing Activities</a></li>
+      <li><a href="/develop/typescript/testing-suite#test-workflows">Testing Workflows</a></li>
+      <li><a href="/develop/typescript/testing-suite#replay">How to Replay a Workflow Execution</a></li>
+    </ul>
+  </div>
 
-- [Temporal TypeScript Community Slack](https://temporalio.slack.com/archives/C01DKSMU94L)
-- [TypeScript SDK Forum](https://community.temporal.io/tag/typescript-sdk)
-  :::
+  <div className="feature-card">
+    <h2><a href="/develop/typescript/failure-detection">Failure Detection</a></h2>
+    <p>Explore how your application can detect failures using timeouts and automatically attempt to mitigate them with retries.</p>
+    <ul>
+      <li><a href="/develop/typescript/failure-detection#workflow-timeouts">Workflow Timeouts</a></li>
+      <li><a href="/develop/typescript/failure-detection#activity-timeouts">Set Activity Timeouts</a></li>
+      <li><a href="/develop/typescript/failure-detection#activity-heartbeats">Heartbeat an Activity</a></li>
+    </ul>
+  </div>
 
-## [Core application](/develop/typescript/core-application)
+  <div className="feature-card">
+    <h2><a href="/develop/typescript/message-passing">Workflow Message Passing</a></h2>
+    <p>Send messages to and read the state of Workflow Executions.</p>
+    <ul>
+      <li><a href="/develop/typescript/message-passing#signals">Develop with Signals</a></li>
+      <li><a href="/develop/typescript/message-passing#queries">Develop with Queries</a></li>
+      <li><a href="/develop/typescript/message-passing#dynamic-handler">What is a Dynamic Handler</a></li>
+    </ul>
+  </div>
 
-Use the essential components of a Temporal Application (Workflows, Activities, and Workers) to build and run a Temporal application.
+  <div className="feature-card">
+    <h2><a href="/develop/typescript/cancellation">Interrupt a Workflow</a></h2>
+    <p>Interrupt a Workflow Execution with a Cancel or Terminate action.</p>
+    <ul>
+      <li><a href="/develop/typescript/cancellation#cancellation-scopes">Cancellation scopes in Typescript</a></li>
+    </ul>
+  </div>
 
-- [Develop a Basic Workflow](/develop/typescript/core-application#develop-workflows)
-- [Develop a Basic Activity](/develop/typescript/core-application#develop-activities)
-- [Start an Activity Execution](/develop/typescript/core-application#activity-execution)
-- [Run Worker Processes](/develop/typescript/core-application#run-a-dev-worker)
+  <div className="feature-card">
+    <h2><a href="/develop/typescript/asynchronous-activity-completion">Asynchronous Activity Completion</a></h2>
+    <p>Complete Activities asynchronously.</p>
+    <ul>
+      <li><a href="/develop/typescript/asynchronous-activity-completion">Asynchronously Complete an Activity</a></li>
+    </ul>
+  </div>
 
-## [Temporal Client](/develop/typescript/temporal-clients)
+  <div className="feature-card">
+    <h2><a href="/develop/typescript/versioning">Versioning</a></h2>
+    <p>Change Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.</p>
+    <ul>
+      <li><a href="/develop/typescript/versioning">Introduction to Versioning</a></li>
+      <li><a href="/develop/typescript/versioning#typescript-sdk-patching-api">How to Use the Patching API</a></li>
+      <li><a href="/develop/typescript/versioning#worker-versioning">How to Use Worker Versioning</a></li>
+    </ul>
+  </div>
 
-Connect to a Temporal Service and start a Workflow Execution.
+  <div className="feature-card">
+    <h2><a href="/develop/typescript/observability">Observability</a></h2>
+    <p>Configure and use the Temporal Observability APIs.</p>
+    <ul>
+      <li><a href="/develop/typescript/observability#metrics">Emit Metrics</a></li>
+      <li><a href="/develop/typescript/observability#tracing">Setup Tracing</a></li>
+      <li><a href="/develop/typescript/observability#logging">Log from a Workflow</a></li>
+      <li><a href="/develop/typescript/observability#visibility">Use Visibility APIs</a></li>
+    </ul>
+  </div>
 
-- [Connect to Development Temporal Service](/develop/typescript/temporal-clients#connect-to-development-service)
-- [Connect to Temporal Cloud](/develop/typescript/temporal-clients#connect-to-temporal-cloud)
-- [Start a Workflow Execution](/develop/typescript/temporal-clients#start-workflow-execution)
+  <div className="feature-card">
+    <h2><a href="/develop/typescript/debugging">Debugging</a></h2>
+    <p>Explore various ways to debug your application.</p>
+    <ul>
+      <li><a href="/develop/typescript/debugging">Debugging</a></li>
+    </ul>
+  </div>
 
-## [Testing](/develop/typescript/testing-suite)
+  <div className="feature-card">
+    <h2><a href="/develop/typescript/schedules">Schedules</a></h2>
+    <p>Run Workflows on a schedule and delay the start of a Workflow.</p>
+    <ul>
+      <li><a href="/develop/typescript/schedules#schedule-a-workflow">Schedule a Workflow</a></li>
+      <li><a href="/develop/typescript/schedules#temporal-cron-jobs">Temporal Cron Jobs</a></li>
+      <li><a href="/develop/typescript/schedules#start-delay">How to use Start Delay</a></li>
+    </ul>
+  </div>
 
-Set up the testing suite and test Workflows and Activities.
+  <div className="feature-card">
+    <h2><a href="/develop/typescript/converters-and-encryption">Data Encryption</a></h2>
+    <p>Use compression, encryption, and other data handling by implementing custom converters and codecs.</p>
+    <ul>
+      <li><a href="/develop/typescript/converters-and-encryption#custom-payload-conversion">Custom Payload Codec</a></li>
+    </ul>
+  </div>
 
-- [Test Frameworks](/develop/typescript/testing-suite#test-frameworks)
-- [Testing Activities](/develop/typescript/testing-suite#test-activities)
-- [Testing Workflows](/develop/typescript/testing-suite#test-workflows)
-- [How to Replay a Workflow Execution](/develop/typescript/testing-suite#replay)
+  <div className="feature-card">
+    <h2><a href="/develop/typescript/timers">Durable Timers</a></h2>
+    <p>Use Timers to make a Workflow Execution pause or "sleep" for seconds, minutes, days, months, or years.</p>
+    <ul>
+      <li><a href="/develop/typescript/timers">What is a Timer</a></li>
+    </ul>
+  </div>
 
-## [Failure detection](/develop/typescript/failure-detection)
+  <div className="feature-card">
+    <h2><a href="/develop/typescript/child-workflows">Child Workflows</a></h2>
+    <p>Explore how to spawn a Child Workflow Execution and handle Child Workflow Events.</p>
+    <ul>
+      <li><a href="/develop/typescript/child-workflows">Start a Child Workflow Execution</a></li>
+    </ul>
+  </div>
 
-Explore how your application can detect failures using timeouts and automatically attempt to mitigate them with retries.
+  <div className="feature-card">
+    <h2><a href="/develop/typescript/continue-as-new">Continue-As-New</a></h2>
+    <p>Continue the Workflow Execution with a new Workflow Execution using the same Workflow ID.</p>
+    <ul>
+      <li><a href="/develop/typescript/continue-as-new">Continue-As-New</a></li>
+    </ul>
+  </div>
 
-- [Workflow Timeouts](/develop/typescript/failure-detection#workflow-timeouts)
-- [Set Activity Timeouts](/develop/typescript/failure-detection#activity-timeouts)
-- [Heartbeat an Activity](/develop/typescript/failure-detection#activity-heartbeats)
+  <div className="feature-card">
+    <h2><a href="/develop/typescript/interceptors">Interceptors</a></h2>
+    <p>Manage inbound and outbound SDK calls, enhance tracing, and add authorization to your Workflows and Activities.</p>
+    <ul>
+      <li><a href="/develop/typescript/interceptors#interceptors">How to implement interceptors</a></li>
+      <li><a href="/develop/typescript/interceptors#register-interceptor">Register an interceptor</a></li>
+    </ul>
+  </div>
+</div>
 
-## [Workflow message passing](/develop/typescript/message-passing)
+<style>
+{`
+  .resources-card {
+    background: var(--ifm-color-emphasis-100);
+    border: 1px solid var(--ifm-color-emphasis-300);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
 
-Send messages to and read the state of Workflow Executions.
+  .resources-card h2 {
+    margin-top: 0;
+    color: var(--ifm-color-emphasis-800);
+  }
 
-- [Develop with Signals](/develop/typescript/message-passing#signals)
-- [Develop with Queries](/develop/typescript/message-passing#queries)
-- [What is a Dynamic Handler](/develop/typescript/message-passing#dynamic-handler)
+  .resources-content {
+    display: flex;
+    gap: 2rem;
+  }
 
-## [Interrupt a Workflow feature guide](/develop/typescript/cancellation)
+  .resources-section {
+    flex: 1;
+  }
 
-Interrupt a Workflow Execution with a Cancel or Terminate action.
+  .resources-section h3 {
+    color: var(--ifm-color-emphasis-700);
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
 
-- [Cancellation scopes in Typescript](/develop/typescript/cancellation#cancellation-scopes)
+  .resources-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
 
-## [Asynchronous Activity Completion](/develop/typescript/asynchronous-activity-completion)
+  .resources-section li {
+    margin-bottom: 0.5rem;
+  }
 
-Complete Activities asynchronously.
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
 
-- [Asynchronously Complete an Activity](/develop/typescript/asynchronous-activity-completion)
+  .feature-card {
+    background: var(--ifm-color-emphasis-0);
+    border: 1px solid var(--ifm-color-emphasis-300);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
 
-## [Versioning](/develop/typescript/versioning)
+  .feature-card:hover {
+    border-color: var(--ifm-color-primary);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+  }
 
-Change Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
+  [data-theme='dark'] .feature-card {
+    border-color: var(--ifm-color-emphasis-200);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
 
-- [Introduction to Versioning](/develop/typescript/versioning)
-- [How to Use the Patching API](/develop/typescript/versioning#typescript-sdk-patching-api)
-- [How to Use Worker Versioning](/develop/typescript/versioning#worker-versioning)
+  [data-theme='dark'] .feature-card:hover {
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  }
 
-## [Observability](/develop/typescript/observability)
+  .feature-card h2 {
+    font-size: 1.25rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--ifm-color-emphasis-900);
+  }
 
-Configure and use the Temporal Observability APIs.
+  .feature-card h2 a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
-- [Emit Metrics](/develop/typescript/observability#metrics)
-- [Setup Tracing](/develop/typescript/observability#tracing)
-- [Log from a Workflow](/develop/typescript/observability#logging)
-- [Use Visibility APIs](/develop/typescript/observability#visibility)
+  .feature-card h2 a:hover {
+    color: var(--ifm-color-primary);
+  }
 
-## [Debugging](/develop/typescript/debugging)
+  .feature-card p {
+    color: var(--ifm-color-emphasis-700);
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
 
-Explore various ways to debug your application.
+  .feature-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
 
-- [Debugging](/develop/typescript/debugging)
+  .feature-card li {
+    margin-bottom: 0.5rem;
+  }
 
-## [Schedules](/develop/typescript/schedules)
+  .feature-card li a {
+    color: var(--ifm-color-emphasis-800);
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: inline-block;
+    position: relative;
+    transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
-Run Workflows on a schedule and delay the start of a Workflow.
+  .feature-card li a:hover {
+    color: var(--ifm-color-primary);
+  }
 
-- [Schedule a Workflow](/develop/typescript/schedules#schedule-a-workflow)
-- [Temporal Cron Jobs](/develop/typescript/schedules#temporal-cron-jobs)
-- [How to use Start Delay](/develop/typescript/schedules#start-delay)
+  .feature-card li a::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    bottom: -1px;
+    left: 0;
+    background-color: var(--ifm-color-primary);
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
-## [Data encryption](/develop/typescript/converters-and-encryption)
+  .feature-card li a:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+  }
 
-Use compression, encryption, and other data handling by implementing custom converters and codecs.
+  @media (max-width: 768px) {
+    .resources-content {
+      flex-direction: column;
+      gap: 1rem;
+    }
 
-- [Custom Payload Codec](/develop/typescript/converters-and-encryption#custom-payload-conversion)
+    .feature-grid {
+      grid-template-columns: 1fr;
+    }
+  }
 
-## [Durable Timers](/develop/typescript/timers)
-
-Use Timers to make a Workflow Execution pause or "sleep" for seconds, minutes, days, months, or years.
-
-- [What is a Timer](/develop/typescript/timers)
-
-## [Child Workflows](/develop/typescript/child-workflows)
-
-Explore how to spawn a Child Workflow Execution and handle Child Workflow Events.
-
-- [Start a Child Workflow Execution](/develop/typescript/child-workflows)
-
-## [Continue-As-New](/develop/typescript/continue-as-new)
-
-Continue the Workflow Execution with a new Workflow Execution using the same Workflow ID.
-
-- [Continue-As-New](/develop/typescript/continue-as-new)
-
-## [Interceptors](/develop/typescript/interceptors)
-
-Manage inbound and outbound SDK calls, enhance tracing, and add authorization to your Workflows and Activities.
-
-- [How to implement interceptors](/develop/typescript/interceptors#interceptors)
-- [Register an interceptor](/develop/typescript/interceptors#register-interceptor)
+  [data-theme='dark'] .resources-card {
+    border-color: var(--ifm-color-emphasis-200);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+`}
+</style>

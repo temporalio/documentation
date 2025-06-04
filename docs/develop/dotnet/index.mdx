@@ -16,157 +16,342 @@ tags:
 
 ![.NET SDK Banner](/img/banner-dotnet-temporal.png)
 
-:::info .NET SPECIFIC RESOURCES
-Build Temporal Applications with the .NET SDK.
+<div className="resources-card">
+  <h2>.NET Specific Resources</h2>
+  <div className="resources-content">
+    <div className="resources-section">
+      <h3>Technical Resources</h3>
+      <ul>
+        <li><a href="https://dotnet.temporal.io/api/">.NET API Documentation</a></li>
+        <li><a href="https://github.com/temporalio/samples-dotnet">.NET SDK Code Samples</a></li>
+        <li><a href="https://github.com/temporalio/sdk-dotnet">.NET SDK GitHub</a></li>
+      </ul>
+    </div>
+    <div className="resources-section">
+      <h3>Community</h3>
+      <ul>
+        <li><a href="https://temporalio.slack.com/archives/C012SHMPDDZ">Temporal .NET Community Slack</a></li>
+        <li><a href="https://community.temporal.io/tag/dotnet-sdk">.NET SDK Forum</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
 
-**Temporal .NET Technical Resources:**
+<div className="feature-grid">
+  <div className="feature-card">
+    <h2><a href="/develop/dotnet/core-application">Core Application</a></h2>
+    <p>Use the essential components of a Temporal Application (Workflows, Activities, and Workers) to build and run a Temporal application.</p>
+    <ul>
+      <li><a href="/develop/dotnet/core-application#develop-workflow">Develop a basic Workflow Definition</a></li>
+      <li><a href="/develop/dotnet/core-application#develop-activity">Develop a basic Activity Definition</a></li>
+      <li><a href="/develop/dotnet/core-application#activity-execution">Start an Activity from a Workflow</a></li>
+      <li><a href="/develop/dotnet/core-application#run-worker-process">Run a Worker Process</a></li>
+      <li><a href="/develop/dotnet/core-application#set-a-dynamic-workflow">Set a Dynamic Workflow</a></li>
+      <li><a href="/develop/dotnet/core-application#set-a-dynamic-activity">Set a Dynamic Activity</a></li>
+    </ul>
+  </div>
 
-- [.NET API Documentation](https://dotnet.temporal.io/api/)
-- [.NET SDK Code Samples](https://github.com/temporalio/samples-dotnet)
-- [.NET SDK GitHub](https://github.com/temporalio/sdk-dotnet)
+  <div className="feature-card">
+    <h2><a href="/develop/dotnet/temporal-client">Temporal Client</a></h2>
+    <p>Connect to a Temporal Service and start a Workflow Execution.</p>
+    <ul>
+      <li><a href="/develop/dotnet/temporal-client#create-a-client">Create a Temporal Client</a></li>
+      <li><a href="/develop/dotnet/temporal-client#connect-to-temporal-cloud">Connect to Temporal Cloud</a></li>
+      <li><a href="/develop/dotnet/temporal-client#start-workflow">Start a Workflow</a></li>
+      <li><a href="/develop/dotnet/temporal-client#get-workflow-results">Get Workflow results</a></li>
+    </ul>
+  </div>
 
-**Get Connected with the Temporal .NET Community:**
+  <div className="feature-card">
+    <h2><a href="/develop/dotnet/testing-suite">Testing</a></h2>
+    <p>Set up the testing suite and test Workflows and Activities.</p>
+    <ul>
+      <li><a href="/develop/dotnet/testing-suite#test-frameworks">Test frameworks</a></li>
+      <li><a href="/develop/dotnet/testing-suite#testing-workflows">Testing Workflows</a></li>
+      <li><a href="/develop/dotnet/testing-suite#test-activities">Testing Activities</a></li>
+      <li><a href="/develop/dotnet/testing-suite#replay-test">Replay test</a></li>
+    </ul>
+  </div>
 
-- [Temporal .NET Community Slack](https://temporalio.slack.com/archives/C012SHMPDDZ)
-- [.NET SDK Forum](https://community.temporal.io/tag/dotnet-sdk)
-  :::
+  <div className="feature-card">
+    <h2><a href="/develop/dotnet/failure-detection">Failure Detection</a></h2>
+    <p>Explore how your application can detect failures using timeouts and automatically attempt to mitigate them with retries.</p>
+    <ul>
+      <li><a href="/develop/dotnet/failure-detection#workflow-timeouts">Workflow timeouts</a></li>
+      <li><a href="/develop/dotnet/failure-detection#workflow-retries">Workflow retries</a></li>
+      <li><a href="/develop/dotnet/failure-detection#activity-timeouts">Activity timeouts</a></li>
+      <li><a href="/develop/dotnet/failure-detection#activity-retries">Set an Activity Retry Policy</a></li>
+      <li><a href="/develop/dotnet/failure-detection#activity-heartbeats">Heartbeat an Activity</a></li>
+      <li><a href="/develop/dotnet/failure-detection#heartbeat-timeout">Heartbeat Timeout</a></li>
+    </ul>
+  </div>
 
-## [Core Application](/develop/dotnet/core-application)
+  <div className="feature-card">
+    <h2><a href="/develop/go/message-passing">Workflow Message Passing</a></h2>
+    <p>Send messages to and read the state of Workflow Executions.</p>
+    <ul>
+      <li><a href="/develop/dotnet/message-passing#signals">Define Signal</a></li>
+      <li><a href="/develop/dotnet/message-passing#send-signal-from-client">Send a Signal from a Temporal Client</a></li>
+      <li><a href="/develop/dotnet/message-passing#send-signal-from-workflow">Send a Signal from a Workflow</a></li>
+      <li><a href="/develop/dotnet/message-passing#signal-with-start">Signal-With-Start</a></li>
+      <li><a href="/develop/dotnet/message-passing#dynamic-handler">Dynamic Handler</a></li>
+      <li><a href="/develop/dotnet/message-passing#set-a-dynamic-signal">Set a Dynamic Signal</a></li>
+      <li><a href="/develop/dotnet/message-passing#queries">Define a Query</a></li>
+      <li><a href="/develop/dotnet/message-passing#send-query">Send Queries</a></li>
+      <li><a href="/develop/dotnet/message-passing#set-a-dynamic-signal">Set a Dynamic Query</a></li>
+      <li><a href="/develop/dotnet/message-passing#updates">Define an Update</a></li>
+      <li><a href="/develop/dotnet/message-passing#send-update-from-client">Send an Update</a></li>
+    </ul>
+  </div>
 
-Use the essential components of a Temporal Application (Workflows, Activities, and Workers) to build and run a Temporal application.
+  <div className="feature-card">
+    <h2><a href="/develop/dotnet/cancellation">Interrupt a Workflow</a></h2>
+    <p>Interrupt a Workflow Execution with a Cancel or Terminate action.</p>
+    <ul>
+      <li><a href="/develop/dotnet/cancellation#cancellation">Cancel a Workflow</a></li>
+      <li><a href="/develop/dotnet/cancellation#termination">Terminate a Workflow</a></li>
+    </ul>
+  </div>
 
-- [Develop a basic Workflow Definition](/develop/dotnet/core-application#develop-workflow): Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a Workflow Definition.
-- [Develop a basic Activity Definition](/develop/dotnet/core-application#develop-activity): One of the primary things that Workflows do is orchestrate the execution of Activities.
-- [Start an Activity from a Workflow](/develop/dotnet/core-application#activity-execution): Calls to spawn Activity Executions are written within a Workflow Definition.
-- [Run a Worker Process](/develop/dotnet/core-application#run-worker-process): The Worker Process is where Workflow Functions and Activity Functions are executed.
-- [Set a Dynamic Workflow](/develop/dotnet/core-application#set-a-dynamic-workflow): Set a Workflow that can be invoked dynamically at runtime.
-- [Set a Dynamic Activity](/develop/dotnet/core-application#set-a-dynamic-activity): Set an Activity that can be invoked dynamically at runtime.
+  <div className="feature-card">
+    <h2><a href="/develop/dotnet/asynchronous-activity">Asynchronous Activity Completion</a></h2>
+    <p>Complete Activities asynchronously.</p>
+    <ul>
+      <li><a href="/develop/dotnet/asynchronous-activity">Asynchronous Activity</a></li>
+    </ul>
+  </div>
 
-## [Temporal Client](/develop/dotnet/temporal-client)
+  <div className="feature-card">
+    <h2><a href="/develop/dotnet/versioning">Versioning</a></h2>
+    <p>Change Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.</p>
+    <ul>
+      <li><a href="/develop/dotnet/versioning#dotnet-sdk-patching-api">Use the .NET SDK Patching API</a></li>
+    </ul>
+  </div>
 
-Connect to a Temporal Service and start a Workflow Execution.
+  <div className="feature-card">
+    <h2><a href="/develop/dotnet/observability">Observability</a></h2>
+    <p>Configure and use the Temporal Observability APIs.</p>
+    <ul>
+      <li><a href="/develop/dotnet/observability#metrics">Emit Metrics</a></li>
+      <li><a href="/develop/dotnet/observability#tracing">Set up Tracing</a></li>
+      <li><a href="/develop/dotnet/observability#logging">Log from a Workflow</a></li>
+      <li><a href="/develop/dotnet/observability#visibility">Use Visibility APIs</a></li>
+    </ul>
+  </div>
 
-- [Create a Temporal Client](/develop/dotnet/temporal-client#create-a-client): Learn to instantiate and configure a client to interact with the Temporal Service.
-- [Connect to Temporal Cloud](/develop/dotnet/temporal-client#connect-to-temporal-cloud): Securely connect to the Temporal Cloud for a fully managed service.
-- [Start a Workflow](/develop/dotnet/temporal-client#start-workflow): Initiate Workflows seamlessly via the .NET SDK.
-- [Get Workflow results](/develop/dotnet/temporal-client#get-workflow-results): Retrieve and process the results of your Workflows efficiently.
+  <div className="feature-card">
+    <h2><a href="/develop/dotnet/debugging">Debugging</a></h2>
+    <p>Explore various ways to debug your application.</p>
+    <ul>
+      <li><a href="/develop/dotnet/debugging#debug-in-a-development-environment">Debug in a development environment</a></li>
+      <li><a href="/develop/dotnet/debugging#debug-in-a-development-production">Debug in a development production</a></li>
+    </ul>
+  </div>
 
-## [Testing](/develop/dotnet/testing-suite)
+  <div className="feature-card">
+    <h2><a href="/develop/dotnet/schedules">Schedules</a></h2>
+    <p>Run Workflows on a schedule and delay the start of a Workflow.</p>
+    <ul>
+      <li><a href="/develop/dotnet/schedules#schedule-a-workflow">Schedule a Workflow</a></li>
+      <li><a href="/develop/dotnet/schedules#create-a-workflow">Create a Scheduled Workflow</a></li>
+      <li><a href="/develop/dotnet/schedules#backfill-a-scheduled-workflow">Backfill a Scheduled Workflow</a></li>
+      <li><a href="/develop/dotnet/schedules#delete-a-scheduled-workflow">Delete a Scheduled Workflow</a></li>
+      <li><a href="/develop/dotnet/schedules#describe-a-scheduled-workflow">Describe a Scheduled Workflow</a></li>
+      <li><a href="/develop/dotnet/schedules#list-a-scheduled-workflow">List a Scheduled Workflow</a></li>
+      <li><a href="/develop/dotnet/schedules#pause-a-scheduled-workflow">Pause a Scheduled Workflow</a></li>
+      <li><a href="/develop/dotnet/schedules#trigger-a-scheduled-workflow">Trigger a Scheduled Workflow</a></li>
+      <li><a href="/develop/dotnet/schedules#update-a-scheduled-workflow">Update a Scheduled Workflow</a></li>
+      <li><a href="/develop/dotnet/schedules#start-delay">Use Start Delay</a></li>
+    </ul>
+  </div>
 
-Set up the testing suite and test Workflows and Activities.
+  <div className="feature-card">
+    <h2><a href="/develop/dotnet/converters-and-encryption">Data Encryption</a></h2>
+    <p>Use compression, encryption, and other data handling by implementing custom converters and codecs.</p>
+    <ul>
+      <li><a href="/develop/dotnet/converters-and-encryption#custom-payload-codec">Use a custom Payload Codec</a></li>
+      <li><a href="/develop/dotnet/converters-and-encryption#custom-payload-converter">Use a custom Payload Converter</a></li>
+    </ul>
+  </div>
 
-- [Test frameworks](/develop/dotnet/testing-suite#test-frameworks): Testing provides a framework to facilitate Workflow and integration testing.
-- [Testing Workflows](/develop/dotnet/testing-suite#testing-workflows): Ensure the functionality and reliability of your Workflows.
-- [Testing Activities](/develop/dotnet/testing-suite#test-activities): Validate the execution and outcomes of your Activities.
-- [Replay test](/develop/dotnet/testing-suite#replay-test): Replay recreates the exact state of a Workflow Execution.
+  <div className="feature-card">
+    <h2><a href="/develop/go/timers">Durable Timers</a></h2>
+    <p>Use Timers to make a Workflow Execution pause or "sleep" for seconds, minutes, days, months, or years.</p>
+    <ul>
+      <li><a href="/develop/dotnet/durable-timers">Sleep</a></li>
+    </ul>
+  </div>
 
-## [Failure detection](/develop/dotnet/failure-detection)
+  <div className="feature-card">
+    <h2><a href="/develop/dotnet/child-workflows">Child Workflows</a></h2>
+    <p>Explore how to spawn a Child Workflow Execution and handle Child Workflow Events.</p>
+    <ul>
+      <li><a href="/develop/dotnet/child-workflows">Start a Child Workflow Execution</a></li>
+      <li><a href="/develop/dotnet/child-workflows#parent-close-policy">Set a Parent Close Policy</a></li>
+    </ul>
+  </div>
 
-Explore how your application can detect failures using timeouts and automatically attempt to mitigate them with retries.
+  <div className="feature-card">
+    <h2><a href="/develop/dotnet/continue-as-new">Continue-As-New</a></h2>
+    <p>Continue the Workflow Execution with a new Workflow Execution using the same Workflow ID.</p>
+    <ul>
+      <li><a href="/develop/dotnet/continue-as-new">Continue-As-New</a></li>
+    </ul>
+  </div>
+</div>
 
-- [Workflow timeouts](/develop/dotnet/failure-detection#workflow-timeouts): Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
-- [Workflow retries](/develop/dotnet/failure-detection#workflow-retries): A Workflow Retry Policy can be used to retry a Workflow Execution in the event of a failure.
-- [Activity timeouts](/develop/dotnet/failure-detection#activity-timeouts): Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
-- [Set an Activity Retry Policy](/develop/dotnet/failure-detection#activity-retries): Define retry logic for Activities to handle failures.
-- [Heartbeat an Activity](/develop/dotnet/failure-detection#activity-heartbeats): An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Service.
-- [Heartbeat Timeout](/develop/dotnet/failure-detection#heartbeat-timeout): A Heartbeat Timeout works in conjunction with Activity Heartbeats.
+<style>
+{`
+  .resources-card {
+    background: var(--ifm-color-emphasis-100);
+    border: 1px solid var(--ifm-color-emphasis-300);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
 
-## [Workflow message passing](/develop/go/message-passing)
+  .resources-card h2 {
+    margin-top: 0;
+    color: var(--ifm-color-emphasis-800);
+  }
 
-Send messages to and read the state of Workflow Executions.
+  .resources-content {
+    display: flex;
+    gap: 2rem;
+  }
 
-### Signals
+  .resources-section {
+    flex: 1;
+  }
 
-- [Define Signal](/develop/dotnet/message-passing#signals): A Signal is a message sent to a running Workflow Execution.
-- [Send a Signal from a Temporal Client](/develop/dotnet/message-passing#send-signal-from-client): Send a Signal to a Workflow from a Temporal Client.
-- [Send a Signal from a Workflow](/develop/dotnet/message-passing#send-signal-from-workflow): Send a Signal to another Workflow from within a Workflow, this would also be called an External Signal.
-- [Signal-With-Start](/develop/dotnet/message-passing#signal-with-start): Start a Workflow and send it a Signal in a single operation used from the Client.
-- [Dynamic Handler](/develop/dotnet/message-passing#dynamic-handler): Dynamic Handlers provide flexibility to handle cases where the names of Workflows, Activities, Signals, or Queries aren't known at run time.
-- [Set a Dynamic Signal](/develop/dotnet/message-passing#set-a-dynamic-signal): A Dynamic Signal in Temporal is a Signal that is invoked dynamically at runtime if no other Signal with the same input is registered.
+  .resources-section h3 {
+    color: var(--ifm-color-emphasis-700);
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
 
-### Queries
+  .resources-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
 
-- [Define a Query](/develop/dotnet/message-passing#queries): A Query is a synchronous operation that is used to get the state of a Workflow Execution.
-- [Send Queries](/develop/dotnet/message-passing#send-query): Queries are sent from the Temporal Client.
-- [Set a Dynamic Query](/develop/dotnet/message-passing#set-a-dynamic-signal): A Dynamic Query in Temporal is a Query that is invoked dynamically at runtime if no other Query with the same name is registered.
+  .resources-section li {
+    margin-bottom: 0.5rem;
+  }
 
-### Updates
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
 
-- [Define an Update](/develop/dotnet/message-passing#updates): An Update is an operation that can mutate the state of a Workflow Execution and return a response.
-- [Send an Update](/develop/dotnet/message-passing#send-update-from-client): An Update is sent from the Temporal Client.
+  .feature-card {
+    background: var(--ifm-color-emphasis-0);
+    border: 1px solid var(--ifm-color-emphasis-300);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
 
-## [Interrupt a Workflow](/develop/dotnet/cancellation)
+  .feature-card:hover {
+    border-color: var(--ifm-color-primary);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+  }
 
-Interrupt a Workflow Execution with a Cancel or Terminate action.
+  [data-theme='dark'] .feature-card {
+    border-color: var(--ifm-color-emphasis-200);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
 
-- [Cancel a Workflow](/develop/dotnet/cancellation#cancellation): Interrupt a Workflow Execution and its Activities through Workflow cancellation.
-- [Terminate a Workflow](/develop/dotnet/cancellation#termination): Interrupt a Workflow Execution and its Activities through Workflow termination.
+  [data-theme='dark'] .feature-card:hover {
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  }
 
-## [Asynchronous Activity completion](/develop/dotnet/asynchronous-activity)
+  .feature-card h2 {
+    font-size: 1.25rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--ifm-color-emphasis-900);
+  }
 
-Complete Activities asynchronously.
+  .feature-card h2 a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
-- [Asynchronous Activity](/develop/dotnet/asynchronous-activity): Asynchronous Activity completion enables the Activity Function to return without the Activity Execution completing.
+  .feature-card h2 a:hover {
+    color: var(--ifm-color-primary);
+  }
 
-## [Versioning](/develop/dotnet/versioning)
+  .feature-card p {
+    color: var(--ifm-color-emphasis-700);
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
 
-Change Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
+  .feature-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
 
-- [Use the .NET SDK Patching API](/develop/dotnet/versioning#dotnet-sdk-patching-api): Patching Workflows using the .NET SDK.
+  .feature-card li {
+    margin-bottom: 0.5rem;
+  }
 
-## [Observability](/develop/dotnet/observability)
+  .feature-card li a {
+    color: var(--ifm-color-emphasis-800);
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: inline-block;
+    position: relative;
+    transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
-Configure and use the Temporal Observability APIs.
+  .feature-card li a:hover {
+    color: var(--ifm-color-primary);
+  }
 
-- [Emit Metrics](/develop/dotnet/observability#metrics): Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
-- [Set up Tracing](/develop/dotnet/observability#tracing): Explains how the Go SDK supports tracing and custom context propagation.
-- [Log from a Workflow](/develop/dotnet/observability#logging): Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
-- [Use Visibility APIs](/develop/dotnet/observability#visibility): The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Terminal Service.
+  .feature-card li a::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    bottom: -1px;
+    left: 0;
+    background-color: var(--ifm-color-primary);
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
-## [Debugging](/develop/dotnet/debugging)
+  .feature-card li a:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+  }
 
-Explore various ways to debug your application.
+  @media (max-width: 768px) {
+    .resources-content {
+      flex-direction: column;
+      gap: 1rem;
+    }
 
-- [Debug in a development environment](/develop/dotnet/debugging#debug-in-a-development-environment): In addition to the normal development tools of logging and a debugger, you can also see what’s happening in your Workflow by using the Web UI and the Temporal CLI.
-- [Debug in a development production](/develop/dotnet/debugging#debug-in-a-development-production): Debug production Workflows using the Web UI, the Temporal CLI, Replays, Tracing, or Logging.
+    .feature-grid {
+      grid-template-columns: 1fr;
+    }
+  }
 
-## [Schedules](/develop/dotnet/schedules)
-
-Run Workflows on a schedule and delay the start of a Workflow.
-
-- [Schedule a Workflow](/develop/dotnet/schedules#schedule-a-workflow)
-  - [Create a Scheduled Workflow](/develop/dotnet/schedules#create-a-workflow): Create a new schedule for a scheduled Workflow.
-  - [Backfill a Scheduled Workflow](/develop/dotnet/schedules#backfill-a-scheduled-workflow): Backfills a past time range of actions for a scheduled Workflow.
-  - [Delete a Scheduled Workflow](/develop/dotnet/schedules#delete-a-scheduled-workflow): Deletes a schedule for a scheduled Workflow.
-  - [Describe a Scheduled Workflow](/develop/dotnet/schedules#describe-a-scheduled-workflow): Get schedule configuration and current state for a scheduled Workflow.
-  - [List a Scheduled Workflow](/develop/dotnet/schedules#list-a-scheduled-workflow): List a schedule for a scheduled Workflow.
-  - [Pause a Scheduled Workflow](/develop/dotnet/schedules#pause-a-scheduled-workflow): Pause a schedule for a scheduled Workflow.
-  - [Trigger a Scheduled Workflow](/develop/dotnet/schedules#trigger-a-scheduled-workflow): Triggers an immediate action for a scheduled Workflow.
-  - [Update a Scheduled Workflow](/develop/dotnet/schedules#update-a-scheduled-workflow): Updates a schedule with a new definition for a scheduled Workflow.
-- [Use Start Delay](/develop/dotnet/schedules#start-delay): Start delay functionality if you need to delay the execution of the Workflow without the need for regular launches.
-
-## [Data encryption](/develop/dotnet/converters-and-encryption)
-
-Use compression, encryption, and other data handling by implementing custom converters and codecs.
-
-- [Use a custom Payload Codec](/develop/dotnet/converters-and-encryption#custom-payload-codec): Create a custom PayloadCodec implementation and define your encryption/compression and decryption/decompression logic.
-- [Use a custom Payload Converter](/develop/dotnet/converters-and-encryption#custom-payload-converter): A custom data converter can be set via the `DataConverter` option when creating a client.
-
-## [Durable Timers](/develop/go/timers)
-
-Use Timers to make a Workflow Execution pause or "sleep" for seconds, minutes, days, months, or years.
-
-- [Sleep](/develop/dotnet/durable-timers): A Timer lets a Workflow sleep for a fixed time period.
-
-## [Child Workflows](/develop/dotnet/child-workflows)
-
-Explore how to spawn a Child Workflow Execution and handle Child Workflow Events.
-
-- [Start a Child Workflow Execution](/develop/dotnet/child-workflows): A Child Workflow Execution is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
-- [Set a Parent Close Policy](/develop/dotnet/child-workflows#parent-close-policy): A Parent Close Policy determines what happens to a Child Workflow Execution if its Parent changes to a Closed status.
-
-## [Continue-As-New](/develop/dotnet/continue-as-new)
-
-Continue the Workflow Execution with a new Workflow Execution using the same Workflow ID.
-
-- [Continue-As-New](/develop/dotnet/continue-as-new): Continue-As-New enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.
+  [data-theme='dark'] .resources-card {
+    border-color: var(--ifm-color-emphasis-200);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+`}
+</style>
