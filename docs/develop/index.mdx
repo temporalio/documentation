@@ -79,7 +79,7 @@ The Temporal SDK developer guides provide a comprehensive overview of the struct
 <style>
 {`
   .sdk-section {
-    margin: 3rem 0;
+    margin: 2rem 0;
   }
 
   .sdk-container {
@@ -96,26 +96,22 @@ The Temporal SDK developer guides provide a comprehensive overview of the struct
 
   .sdk-col {
     flex: 1;
-    padding: 2rem;
+    padding: 1.5rem;
     background: var(--ifm-background-surface-color);
-    border: 1px solid var(--ifm-color-emphasis-200);
-    border-radius: 12px;
-    transition: all 0.3s ease;
+    border: 1px solid var(--ifm-color-emphasis-300);
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    position: relative;
-    overflow: hidden;
   }
 
   .sdk-logo {
-    width: 48px;
-    height: 48px;
-    margin-bottom: 1.25rem;
+    width: 40px;
+    height: 40px;
+    margin-bottom: 1rem;
     opacity: 0.9;
-    transition: all 0.3s ease;
-    filter: grayscale(0.2);
   }
 
   [data-theme='dark'] .sdk-col {
@@ -125,30 +121,16 @@ The Temporal SDK developer guides provide a comprehensive overview of the struct
 
   .sdk-col:hover {
     border-color: var(--ifm-color-primary);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
   [data-theme='dark'] .sdk-col:hover {
-    border-color: var(--ifm-color-primary);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  }
-
-  .sdk-col:hover .sdk-logo {
-    transform: scale(1.05);
-    opacity: 1;
-    filter: grayscale(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
 
   .sdk-col h3 {
-    margin-bottom: 1rem;
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--ifm-color-emphasis-900);
-    transition: color 0.3s ease;
-  }
-
-  [data-theme='dark'] .sdk-col h3 {
+    margin-bottom: 0.75rem;
+    font-size: 1.2rem;
     color: var(--ifm-color-emphasis-900);
   }
 
@@ -164,37 +146,18 @@ The Temporal SDK developer guides provide a comprehensive overview of the struct
     text-decoration: none;
     padding: 0.25rem 0;
     position: relative;
-    transition: all 0.2s ease;
-    opacity: 0.9;
   }
 
   .sdk-links a:hover {
     color: var(--ifm-color-primary-darker);
-    opacity: 1;
   }
 
-  .sdk-links a::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 2px;
-    bottom: 0;
-    left: 0;
-    background-color: var(--ifm-color-primary);
-    transform: scaleX(0);
-    transform-origin: bottom right;
-    transition: transform 0.3s ease;
-    opacity: 0.8;
+  [data-theme='dark'] .sdk-links a {
+    color: #B4A5FF;
   }
 
-  .sdk-links a:hover::after {
-    transform: scaleX(1);
-    transform-origin: bottom left;
-  }
-
-  .separator {
-    margin: 0 0.25rem;
-    color: var(--ifm-color-emphasis-400);
+  [data-theme='dark'] .sdk-links a:hover {
+    color: #CAC0FF;
   }
 
   @media (max-width: 996px) {
@@ -205,13 +168,6 @@ The Temporal SDK developer guides provide a comprehensive overview of the struct
 
     .sdk-col {
       margin: 0;
-      padding: 1.5rem;
-    }
-
-    .sdk-logo {
-      width: 40px;
-      height: 40px;
-      margin-bottom: 1rem;
     }
   }
 `}
