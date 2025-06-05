@@ -178,6 +178,7 @@ module.exports = {
             "develop/php/message-passing",
             "develop/php/cancellation",
             "develop/php/asynchronous-activity-completion",
+            "develop/php/versioning",
             "develop/php/observability",
             "develop/php/debugging",
             "develop/php/schedules",
