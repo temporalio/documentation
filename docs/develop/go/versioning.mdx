@@ -99,7 +99,7 @@ Imagine you want to revise this Workflow by adding another Activity to calculate
 If an existing Workflow Execution was started by the original version of the Workflow code, where `ActivityA` was run, and then resumed running on a new Worker where it was replaced with `ActivityC`, the server side Event History would be out of sync.
 This would cause the Workflow to fail with a nondeterminism error.
 
-Thus we use `workflow.GetVersion()`:
+To avoid this problem, use `workflow.GetVersion()`:
 
 ```go
 var err error
