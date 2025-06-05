@@ -30,6 +30,7 @@ tags:
 import { CaptionedImage } from '@site/src/components';
 
 Since Workflow Executions in Temporal can run for long periods — sometimes months or even years — it's common to need to make changes to a Workflow Definition, even while a particular Workflow Execution is in progress.
+
 The Temporal Platform requires that Workflow code is [deterministic](/workflow-definition#deterministic-constraints).
 If you make a change to your Workflow code that would cause non-deterministic behavior on Replay, you'll need to use one of our Versioning methods to gracefully update your running Workflows.
 With Versioning, you can modify your Workflow Definition so that new executions use the updated code, while existing ones continue running the original version.
@@ -219,7 +220,10 @@ public class MyWorkflow
 
 Patching allows you to make changes to currently running Workflows.
 It is a powerful method for introducing compatible changes without introducing non-determinism errors.
-If you find that patching is adding maintainability concerns to your codebase, consider adopting [Safe Deploys](/production-deployment/worker-deployments/safe-deploys).
+
+## Safe Deploys
+
+Temporal's [Safe Deploys](/production-deployment/worker-deployments/safe-deploys) feature allows you to tag your Workers and programmatically roll them out in pods tied to specific revisions, so that old Workers can run old code paths and new Workers can run new code paths. If you find that patching is adding maintainability concerns to your codebase, consider adopting [Safe Deploys](/production-deployment/worker-deployments/safe-deploys).
 
 Changing the order of any commands in your Workflow code that interact directly with the Temporal Service -- such as calling an Activity or creating a Sleep timer -- will cause a non-determinism error unless you've implemented a versioning solution.
 To test whether a new revision will require versioning, you should incorporate [Replay Testing](/develop/dotnet/testing-suite#replay-test).

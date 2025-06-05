@@ -19,6 +19,7 @@ tags:
 ---
 
 Since Workflow Executions in Temporal can run for long periods — sometimes months or even years — it's common to need to make changes to a Workflow Definition, even while a particular Workflow Execution is in progress.
+
 The Temporal Platform requires that Workflow code is [deterministic](/workflow-definition#deterministic-constraints).
 If you make a change to your Workflow code that would cause non-deterministic behavior on Replay, you'll need to use one of our Versioning methods to gracefully update your running Workflows.
 With Versioning, you can modify your Workflow Definition so that new executions use the updated code, while existing ones continue running the original version.
@@ -222,12 +223,15 @@ When `workflow.GetVersion()` is run for a new Workflow execution, it records a m
 
 GetVersion allows you to make changes to currently running Workflows.
 It is a powerful method for introducing compatible changes without introducing non-determinism errors.
-If you find that GetVersion is adding maintainability concerns to your codebase, consider adopting [Safe Deploys](/production-deployment/worker-deployments/safe-deploys).
 
-## Sanity checking
+## Safe deploys
 
-The Temporal Go SDK performs a runtime sanity check to help prevent obvious incompatible changes.
-Adding, removing, or reordering any of these methods without Versioning triggers the sanity check and results in a nondeterminism error:
+Temporal's [Safe Deploys](/production-deployment/worker-deployments/safe-deploys) feature allows you to tag your Workers and programmatically roll them out in pods tied to specific revisions, so that old Workers can run old code paths and new Workers can run new code paths. If you find that GetVersion is adding maintainability concerns to your codebase, consider adopting [Safe Deploys](/production-deployment/worker-deployments/safe-deploys).
+
+## Runtime checking
+
+The Temporal Go SDK performs a runtime check to help prevent obvious incompatible changes.
+Adding, removing, or reordering any of these methods without Versioning triggers the runtime check and results in a nondeterminism error:
 
 - workflow.ExecuteActivity()
 - workflow.ExecuteChildWorkflow()
@@ -237,7 +241,7 @@ Adding, removing, or reordering any of these methods without Versioning triggers
 - workflow.SignalExternalWorkflow()
 - workflow.Sleep()
 
-The sanity check does not perform a thorough check.
+The runtime check does not perform a thorough check.
 For example, it does not check on the Activity's input arguments or the Timer duration.
 Each Temporal SDK implements these sanity checks differently, and they are not a complete check for non-deterministic changes.
 Instead, you should incorporate [Replay Testing](/develop/go/testing-suite#replay) when making revisions.

@@ -59,12 +59,12 @@ Self-hosted users:
 
 ## Getting Started with Safe Deploys
 
-First, we'll introduce some terminology.
+To get started with Safe Deploys, you should understand some concepts around versioning and deployments.
 
 - A **Worker Deployment** is a deployment or service across multiple versions. In a rainbow deploy, a deployment can have multiple active deployment versions running at once.
 - A **Worker Deployment Version** is a version of a deployment or service. It can have multiple Workers, but they all run the same build.
 - A **Build ID**, in combination with a Worker Deployment name, identifies a single Worker Deployment Version.
-  - Each Worker Deployment has a single **Current Version** which is where workflows are routed to unless they were previously pinned on a different version. Other versions are still around to drain pinned workflows or in case you need to roll back. If no current version is specified, the default is unversioned.
+  - Each Worker Deployment has a single **Current Version** which is where workflows are routed to unless they were previously pinned on a different version. Other versions are still around to allow pinned Workflows to finish executing, or in case you need to roll back. If no current version is specified, the default is unversioned.
   - Each Worker Deployment can have a **Ramping Version** which is where a configurable percentage of workflows are routed to unless they were previously pinned on a different version. The ramp percentage can be in the range [0, 100]. Workflows that don't go to the Ramping Version will go to the Current Version. If no ramping version is specified, 100% of auto-upgrade workflows will go to the Current Version.
   - You can declare each Workflow type to have a **Versioning Behavior**, either `pinned` or `auto-upgraded`. A `pinned` Worfklow is guaranteed to complete on a single Worker Deployment Version. An `auto-upgraded` Workflow will move to the latest Worker Deployment Version automatically whenever you change the current version.
 
@@ -176,7 +176,7 @@ If all of your workflows will be short-running for the foreseeable future, you c
 
 Most users who are migrating to rainbow deploys from rolling deploys will start by defaulting to `auto-upgrade` until they have had time to annotate their Workflows.
 This default is the most similar to the legacy behavior.
-Auto-upgraded workflows won't get stuck on a single version and can use the other Versioning APIs.
+Auto-upgraded workflows won't be restricted to a single version and can use the other Versioning APIs.
 Once each workflow type is annotated, you can remove the `DefaultVersioningBehavior`.
 
 ## Rolling out changes with the CLI
