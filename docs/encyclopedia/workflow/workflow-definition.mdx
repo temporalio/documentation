@@ -238,23 +238,16 @@ In other words, all operations that do not purely mutate the Workflow Execution'
 The Temporal Platform requires that Workflow code (Workflow Definitions) be deterministic in nature.
 This requirement means that developers should consider how they plan to handle changes to Workflow code over time.
 
-A versioning strategy is even more important if your Workflow Executions live long enough that a Worker must be able to execute multiple versions of the same Workflow Type.
+A versioning strategy is even more important if your Workflow Executions live long enough that a Worker must be able to execute multiple versions of the same Workflow Type. Temporal Platform provides Workflow Versioning APIs.
 
-Apart from the ability to create new Task Queues for Workflow Types with the same name, the Temporal Platform provides Workflow Patching APIs and Worker Build Id–based versioning features.
+- [How to version Workflow code in Go](/develop/go/versioning)
+- [How to version Workflow code in Java](/develop/java/versioning)
+- [How to version Workflow code in Python](/develop/python/versioning)
+- [How to version Workflow code in PHP](/develop/php/versioning)
+- [How to version Workflow code in TypeScript](/develop/typescript/versioning)
+- [How to version Workflow code in .NET](/develop/dotnet/versioning)
 
-#### Patching
-
-Patching APIs enable the creation of logical branching inside a Workflow Definition based on a developer-specified version identifier.
-This feature is useful for Workflow Definition logic that needs to be updated but still has running Workflow Executions that depend on it.
-
-- [How to patch Workflow code in Go](/develop/go/versioning#patching)
-- [How to patch Workflow code in Java](/develop/java/versioning#patching)
-- [How to patch Workflow code in Python](/develop/python/versioning#python-sdk-patching-api)
-- [How to patch Workflow code in PHP](/develop/php/versioning#php-sdk-patching-api)
-- [How to patch Workflow code in TypeScript](/develop/typescript/versioning#patching)
-- [How to patch Workflow code in .NET](/develop/dotnet/versioning#dotnet-sdk-patching-api)
-
-You can also use [Worker Versioning](/worker-versioning) instead of Patching.
+Temporal also has a [Safe Deploys](/production-deployment/worker-deployments/safe-deploys) feature that allows you to tag your Workers and programmatically roll them out in pods tied to specific revisions, so that old Workers can run old code paths and new Workers can run new code paths. A previous version of Safe Deploys was called [Worker Versioning](/encyclopedia/worker-versioning-legacy).
 
 ### Handling unreliable Worker Processes {#unreliable-worker-processes}
 
