@@ -233,13 +233,13 @@ Temporal's [Safe Deploys](/production-deployment/worker-deployments/safe-deploys
 The Temporal Go SDK performs a runtime check to help prevent obvious incompatible changes.
 Adding, removing, or reordering any of these methods without Versioning triggers the runtime check and results in a nondeterminism error:
 
-- workflow.ExecuteActivity()
-- workflow.ExecuteChildWorkflow()
-- workflow.NewTimer()
-- workflow.RequestCancelWorkflow()
-- workflow.SideEffect()
-- workflow.SignalExternalWorkflow()
-- workflow.Sleep()
+- `workflow.ExecuteActivity()`
+- `workflow.ExecuteChildWorkflow()`
+- `workflow.NewTimer()`
+- `workflow.RequestCancelWorkflow()`
+- `workflow.SideEffect()`
+- `workflow.SignalExternalWorkflow()`
+- `workflow.Sleep()`
 
 The runtime check does not perform a thorough check.
 For example, it does not check on the Activity's input arguments or the Timer duration.
