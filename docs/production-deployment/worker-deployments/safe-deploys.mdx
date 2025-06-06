@@ -71,19 +71,15 @@ To get started with Safe Deploys, you should understand some concepts around ver
 Your deployment system should support rainbow deployments so that you can keep versions alive to drain existing workflows.
 The [Temporal Worker Controller](/production-deployment/worker-deployments/kubernetes-controller) provides an example of using Kubernetes to bootstrap a rainbow deployment.
 
-### Opting into the Pre-release
-
-TK TK TK
-
-```
-temporal server start-dev \
-   --dynamic-config-value frontend.workerVersioningWorkflowAPIs=true \
-   --dynamic-config-value system.enableDeploymentVersions=true
-```
-
 ## Configuring a Worker for Safe Deploys
 
-You'll need to TK TK TK
+You'll need to add a few additional configuration parameters to your Workers to toggle on Safe Deploys.
+There are three new parameters, with different names depending on the language:
+- `UseVersioning`: This enables the Safe Deploys functionality for this Worker.
+- A `Version` string to identify the revision that this Worker will be allowed to execute. This is a combination of a deployment name and a build ID number.
+- The Versioning Behavior, either `pinned` or `auto-upgraded`.
+
+Follow the example for your SDK below:
 
 <SdkTabs>
 <SdkTabs.Go>
@@ -181,29 +177,31 @@ Once each workflow type is annotated, you can remove the `DefaultVersioningBehav
 
 ## Rolling out changes with the CLI
 
-TK TK TK
+Next, deploy your Worker with the additional configuration parameters.
+Before making any Workflow revisions, you can use the `temporal` CLI to check which of your Worker versions are currently polling:
 
-You can view the Versions that are active in a Deployment with the CLI:
+You can view the Versions that are active in a Deployment with `temporal worker deployment describe`:
 
 ```bash
 temporal worker deployment describe --name="$MY_DEPLOYMENT"
 ```
 
-To activate a Deployment Version in which the worker is polling TK TK
+To activate a Deployment Version, use `temporal worker deployment set-current-version`
 
 ```bash
 temporal worker deployment set-current-version \
     --version="$MY_DEPLOYMENT_VERSION"
 ```
 
-To gradually ramp a Deployment Version in which the worker is polling, do this:
+To ramp a Deployment Version up to some percentage of your overall Worker fleet, use `set-ramping version`.
+This requires the [Temporal Worker Controller](/production-deployment/worker-deployments/kubernetes-controller).
 
 ```bash
 temporal worker deployment set-ramping-version \
     --version="$MY_DEPLOYMENT_VERSION" --percentage=5
 ```
 
-You should see workflows move to that Version when you do this:
+You can verify that Workflows are cutting over to that version with `describe -w YourWorkflowID`:
 
 ```bash
 temporal workflow describe -w YourWorkflowID
@@ -221,7 +219,8 @@ Versioning Info:
 
 ## Marking a Workflow Type as Pinned
 
-TK TK TK
+You can mark a Workflow Type as pinned when you register it by adding an additional `pinned` parameter.
+This will cause it to remain on its original deployed version:
 
 <SdkTabs>
 <SdkTabs.Go>
@@ -301,7 +300,7 @@ end
 </SdkTabs.Ruby>
 </SdkTabs>
 
-TK TK TK You can see your set of Deployment Versions with:
+You can check your set of Deployment Versions with `temporal worker deployment describe`:
 
 ```bash
 temporal worker deployment describe --name="$MY_DEPLOYMENT"
@@ -309,7 +308,7 @@ temporal worker deployment describe --name="$MY_DEPLOYMENT"
 
 ## Migrating a pinned Workflow
 
-TK TK TK
+If you need to migrate a pinned Workflow to a new version, use `temporal workflow update-options`:
 
 ```bash
 temporal workflow update-options \
@@ -317,6 +316,8 @@ temporal workflow update-options \
     --versioning-override-behavior=pinned \           
     --versioning-override-pinned-version="$MY_DEPLOYMENT_VERSION"
 ```
+
+You can migrate several Workflows at once matching a `--query` parameter:
 
 ```bash
 temporal workflow update-options \
@@ -327,7 +328,14 @@ temporal workflow update-options \
 
 ## Sunsetting an old deployment version
 
-TK TK TK
+After a version stops accepting new Workflows, it is considered to be "draining," which is displayed in a value called `DrainageStatus`.
+As Workflows pinned to this version complete, the version drains.
+Periodically, the Temporal Service will refresh this status by counting any open pinned workflows using that version.
+On each refresh, `DrainageInfo.last_checked_time` is updated.
+Eventually, `DrainageInfo` will report that the version is fully drained.
+At this point, no workflows are still running and no more will be automatically routed to it, so you can consider shutting down the running Workers.
+
+You can monitor this with `temporal worker deployment describe-version`:
 
 ```bash
 temporal worker deployment describe-version \
@@ -350,9 +358,13 @@ Task Queues:
   hello-world  workflow
 ```
 
+If you have implemented [Queries](/sending-messages#sending-queries) on these Workflows, you may need to keep some Workers running to handle them.
+
 ### Adding a pre-deployment test
 
-TK TK TK Canary hooks
+Before deploying a new Workflow revision, you can test it with synthetic traffic.
+
+To do this, utilize pinning in your tests, following the examples below:
 
 <SdkTabs>
 <SdkTabs.Go>
@@ -407,12 +419,6 @@ handle = env.client.start_workflow(
 ```
 </SdkTabs.Ruby>
 </SdkTabs>
-
-TK TK TK
-
-```bash
-temporal workflow show --workflow-id="MyWorkflowId"
-```
 
 This covers the complete lifecycle of working with Safe Deploys.
 Consider adopting the [Temporal Worker Controller](/production-deployment/worker-deployments/kubernetes-controller) to provide fine grained, out-of-the-box control of your deployments.
