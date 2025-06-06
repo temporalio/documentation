@@ -61,12 +61,12 @@ However, we strongly recommend that hashes or objects are used as parameters, so
 Temporal Workflows [must be deterministic](https://docs.temporal.io/workflows#deterministic-constraints), which includes
 Ruby workflows. This means there are several things workflows cannot do such as:
 
-* Perform IO (network, disk, stdio, etc)
-* Access/alter external mutable state
-* Do any threading
-* Do anything using the system clock (e.g. `Time.Now`)
-* Make any random calls
-* Make any not-guaranteed-deterministic calls
+- Perform IO (network, disk, stdio, etc)
+- Access/alter external mutable state
+- Do any threading
+- Do anything using the system clock (e.g. `Time.Now`)
+- Make any random calls
+- Make any not-guaranteed-deterministic calls
 
 To prevent illegal workflow calls, a call tracer is put on the workflow thread that raises an exception if any illegal
 calls are made.
