@@ -3,7 +3,7 @@ module.exports = {
     "index",
     {
       type: "category",
-      label: "Evaluate",
+      label: "Introduction",
       collapsed: false,
       link: {
         type: "doc",
