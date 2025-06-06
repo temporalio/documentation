@@ -55,7 +55,7 @@ ClusterManagerResult run(ClusterManagerInput input);
 ````
 The test hook in the above snippet is covered [below](#how-to-test).
 
-Inside your Workflow, call the [`continue_as_new()`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#continueAsNew(io.temporal.workflow.ContinueAsNewOptions,java.lang.Object...)) function with the same type.
+Inside your Workflow, call the [`continueAsNew()`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#continueAsNew(io.temporal.workflow.ContinueAsNewOptions,java.lang.Object...)) function with the same type.
 This stops the Workflow right away and starts a new one.
 
 <div class="copycode-notice-container">
