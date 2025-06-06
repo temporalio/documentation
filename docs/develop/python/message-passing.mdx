@@ -47,7 +47,7 @@ Follow these guidelines when writing your message handlers:
 
 ### Query handlers {#queries}
 
-A [Query](/encyclopedia/workflow-message-passing#sending-queries) is a synchronous operation that retrieves state from a Workflow Execution:
+A [Query](/sending-messages#sending-queries) is a synchronous operation that retrieves state from a Workflow Execution:
 
 ```python
 class Language(IntEnum):
@@ -84,7 +84,7 @@ class GreetingWorkflow:
 
 ### Signal handlers {#signals}
 
-A [Signal](/encyclopedia/workflow-message-passing#sending-signals) is an asynchronous message sent to a running Workflow Execution to change its state and control its flow:
+A [Signal](/sending-messages#sending-signals) is an asynchronous message sent to a running Workflow Execution to change its state and control its flow:
 
 ```python
 @dataclass
@@ -113,7 +113,7 @@ class GreetingWorkflow:
 
 ### Update handlers and validators {#updates}
 
-An [Update](/encyclopedia/workflow-message-passing#sending-updates) is a trackable synchronous request sent to a running Workflow Execution.
+An [Update](/sending-messages#sending-updates) is a trackable synchronous request sent to a running Workflow Execution.
 It can change the Workflow state, control its flow, and return a result.
 The sender must wait until the Worker accepts or rejects the Update.
 The sender may wait further to receive a returned value or an exception if something goes wrong:
@@ -158,7 +158,7 @@ class GreetingWorkflow:
     The caller receives an "Update failed" error.
 
 - Use [`workflow.current_update_info`](https://python.temporal.io/temporalio.workflow.html#current_update_info) to obtain information about the current Update.
-  This includes the Update ID, which can be useful for deduplication when using Continue-As-New: see [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing).
+  This includes the Update ID, which can be useful for deduplication when using Continue-As-New: see [Ensuring your messages are processed exactly once](/handling-messages#exactly-once-message-processing).
 - Update (and Signal) handlers can be `async def`, letting them use Activities, Child Workflows, durable [`asyncio.sleep`](https://docs.python.org/3/library/asyncio-task.html#asyncio.sleep) Timers, [`workflow.wait_condition`](https://python.temporal.io/temporalio.workflow.html#wait_condition) conditions, and more.
   See [Async handlers](#async-handlers) and [Workflow message passing](/encyclopedia/workflow-message-passing) for safe usage guidelines.
 
@@ -317,7 +317,6 @@ To obtain an Update handle, you can:
 - Use [`start_update`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#start_update) to start an Update and return the handle, as shown in the preceding example.
 - Use [`get_update_handle_for`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#get_update_handle_for) to fetch a handle for an in-progress Update using the Update ID.
 
-
 #### Update-With-Start {#update-with-start}
 
 :::tip Stability
@@ -328,11 +327,11 @@ Minimum Temporal Server version [Temporal Server version 1.26](https://github.co
 
 :::
 
-[Update-with-Start](/encyclopedia/workflow-message-passing#update-with-start) lets you
+[Update-with-Start](/sending-messages#update-with-start) lets you
 [send an Update](/develop/python/message-passing#send-update-from-client) that checks whether an already-running Workflow with that ID exists:
 
 - If the Workflow exists, the Update is processed.
-- If the Workflow does not exist, a new Workflow Execution is started with the given ID, and the Update is processed immediately after.
+- If the Workflow does not exist, a new Workflow Execution is started with the given ID, and the Update is processed before the main Workflow method starts to execute.
 
 Use [`execute_update_with_start_workflow`](https://python.temporal.io/temporalio.client.Client.html#start_update_with_start_workflow) to start the Update and wait for the result in one go.
 
@@ -341,7 +340,7 @@ Alternatively, use [`start_update_with_start_workflow`](https://python.temporal.
 These calls return once the requested Update wait stage has been reached, or when the request times out.
 
 You will need to provide a [`WithStartWorkflowOperation`](https://python.temporal.io/temporalio.client.WithStartWorkflowOperation.html) to define the Workflow that will be started if necessary, and its arguments.
-You must specify a [WorkflowIdConflictPolicy](/workflows#workflow-id-conflict-policy) when creating the `WithStartWorkflowOperation`.
+You must specify a [WorkflowIdConflictPolicy](/workflow-execution/workflowid-runid#workflow-id-conflict-policy) when creating the `WithStartWorkflowOperation`.
 Note that a `WithStartWorkflowOperation` can only be used once.
 
 Here's an example taken from the [lazy_initialization](https://github.com/temporalio/samples-python/blob/main/message_passing/update_with_start/lazy_initialization/starter.py) sample:
@@ -369,8 +368,6 @@ workflow_handle = await start_op.workflow_handle()
 return price, workflow_handle
 ```
 
-
-
 :::info SEND MESSAGES WITHOUT TYPE SAFETY
 
 In real-world development, sometimes you may be unable to import Workflow Definition method signatures.
@@ -397,7 +394,7 @@ It doesn't apply to pure read operations, like Queries or Update Validators.
 
 :::tip
 
-For additional information, see [Inject work into the main Workflow](/encyclopedia/workflow-message-passing#injecting-work-into-main-workflow), [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing), and [this sample](https://github.com/temporalio/samples-python/blob/message-passing/message_passing/safe_message_handlers/README.md) demonstrating safe `async` message handling.
+For additional information, see [Inject work into the main Workflow](/handling-messages#injecting-work-into-main-workflow), [Ensuring your messages are processed exactly once](/handling-messages#exactly-once-message-processing), and [this sample](https://github.com/temporalio/samples-python/blob/message-passing/message_passing/safe_message_handlers/README.md) demonstrating safe `async` message handling.
 
 :::
 
@@ -542,7 +539,7 @@ async def my_update(self) -> None:
     ...
 ```
 
-See [Finishing handlers before the Workflow completes](/encyclopedia/workflow-message-passing#finishing-message-handlers) for more information.
+See [Finishing handlers before the Workflow completes](/handling-messages#finishing-message-handlers) for more information.
 
 ### Use `@workflow.init` to operate on Workflow input before any handler executes
 
@@ -550,7 +547,7 @@ Normally, your Workflow `__init__` method won't have any parameters.
 However, if you use the `@workflow.init` decorator on your `__init__` method, you can give it the same [Workflow parameters](/develop/python/core-application#workflow-parameters) as your `@workflow.run` method.
 The SDK will then ensure that your `__init__` method receives the Workflow input arguments that the [Client sent](/develop/python/temporal-clients#start-workflow-execution).
 (The Workflow input arguments are also passed to your `@workflow.run` method -- that always happens, whether or not you use the `@workflow.init` decorator.)
-This is useful if you have message handlers that need access to workflow input: see [Initializing the Workflow first](/encyclopedia/workflow-message-passing#workflow-initializers).
+This is useful if you have message handlers that need access to workflow input: see [Initializing the Workflow first](/handling-messages#workflow-initializers).
 
 Here's an example.
 Notice that `__init__` and `get_greeting` must have the same parameters, with the same type annotations:
@@ -589,7 +586,7 @@ class WorkflowRunSeesWorkflowInitWorkflow:
 ### Use `asyncio.Lock` to prevent concurrent handler execution {#control-handler-concurrency}
 
 Concurrent processes can interact in unpredictable ways.
-Incorrectly written [concurrent message-passing](/encyclopedia/workflow-message-passing#message-handler-concurrency) code may not work correctly when multiple handler instances run simultaneously.
+Incorrectly written [concurrent message-passing](/handling-messages#message-handler-concurrency) code may not work correctly when multiple handler instances run simultaneously.
 Here's an example of a pathological case:
 
 ```python
@@ -642,7 +639,7 @@ When sending a Signal, Update, or Query to a Workflow, your Client might encount
 - **The workflow does not exist**:
   You'll receive an [`temporalio.service.RPCError`](https://python.temporal.io/temporalio.service.RPCError.html) exception on which the `status` attribute is [`RPCStatusCode`](https://python.temporal.io/temporalio.service.RPCStatusCode.html) `NOT_FOUND`.
 
-See [Exceptions in message handlers](/encyclopedia/workflow-message-passing#exceptions) for a non–Python-specific discussion of this topic.
+See [Exceptions in message handlers](/handling-messages#exceptions) for a non–Python-specific discussion of this topic.
 
 ### Problems when sending a Signal {#signal-problems}
 
@@ -687,7 +684,7 @@ When working with Updates, in addition to the `RPCError`s described above, you m
 
   - The Workflow was canceled or failed.
 
-  - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/encyclopedia/workflow-message-passing#finishing-message-handlers).
+  - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/handling-messages#finishing-message-handlers).
 
 ### Problems when sending a Query {#query-problems}
 

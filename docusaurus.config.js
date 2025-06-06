@@ -24,6 +24,7 @@ module.exports = async function createConfigAsync() {
         },
       },
     ],
+    clientModules: ["./src/client/remote-amplitude-analytics.js"],
     themeConfig: {
       colorMode: {
         defaultMode: "light",
@@ -31,19 +32,19 @@ module.exports = async function createConfigAsync() {
         // switchConfig: {
         //   darkIcon: "🌙",
         //   darkIconStyle: {
-        //     content: `url(/img/moon.svg)`,
+        //     content: `url(/img/assets/moon.svg)`,
         //     transform: "scale(2)",
         //     margin: "0 0.2rem",
         //   },
         //   lightIcon: "\u{1F602}",
         //   lightIconStyle: {
-        //     content: `url(/img/sun.svg)`,
+        //     content: `url(/img/assets/sun.svg)`,
         //     transform: "scale(2)",
         //   },
         // },
       },
       metadata: [{ name: "robots", content: "follow, index" }],
-      image: "/img/open-graph-shiny.png",
+      image: "/img/assets/open-graph-shiny.png",
       prism: {
         //theme: require("prism-react-renderer/themes/nightOwlLight"),
         // darkTheme: require("prism-react-renderer/themes/dracula"),
@@ -55,24 +56,31 @@ module.exports = async function createConfigAsync() {
           autoCollapseCategories: true,
         },
       },
-      announcementBar: {
-        id: "replay_announcement",
-        content: 'Replay is coming to London, March 3-5! <a href="https://www.eventbrite.com/e/replay-conference-2025-tickets-1045108576887">Secure your ticket</a>',
-        backgroundColor: "#312e81",
-        textColor: "#ffffff",
-        isCloseable: true,
-      },
+      // announcementBar: {
+      //   id: "replay_announcement",
+      //   content: 'Replay is coming to London, March 3-5! <a href="https://www.eventbrite.com/e/replay-conference-2025-tickets-1045108576887">Secure your ticket</a>',
+      //   backgroundColor: "#312e81",
+      //   textColor: "#ffffff",
+      //   isCloseable: true,
+      // },
+//      announcementBar: {
+//        id: "new_feedback_widget",
+//        content: "<b>How are we doing? Try our new on-page feedback.</b>",
+//        backgroundColor: "#312e81",
+//        textColor: "#ffffff",
+//        isCloseable: true,
+//      },
       navbar: {
         hideOnScroll: false,
         logo: {
           alt: "Temporal logo",
-          src: "img/temporal-logo-dark.svg",
-          srcDark: "img/temporal-logo.svg",
+          src: "img/assets/temporal-logo-dark.svg",
+          srcDark: "img/assets/temporal-logo.svg",
           href: "https://temporal.io",
         },
         items: [
           {
-            label: "Documentation Home",
+            label: "Home",
             to: "/",
             position: "left",
             activeBasePath: "none",
@@ -85,6 +93,11 @@ module.exports = async function createConfigAsync() {
           {
             label: "Start building",
             href: "/develop",
+            right: "left",
+          },
+          {
+            label: "Code Exchange",
+            href: "https://temporal.io/code-exchange",
             right: "left",
           },
           {
@@ -307,6 +320,16 @@ module.exports = async function createConfigAsync() {
           },
         };
       },
+      [
+        "docusaurus-pushfeedback",
+        {
+          project: "6c1ptrxbky",
+          privacyPolicyText: "false",
+          buttonPosition: "center-right",
+          modalPosition: "sidebar-right",
+          modalTitle: "Feedback",
+        },
+      ],
     ],
   };
 

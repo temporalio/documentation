@@ -17,7 +17,7 @@ The information on this page is relevant to [Temporal SDKs](/encyclopedia/tempor
 
 See [Cloud metrics](/cloud/metrics/) for metrics emitted by [Temporal Cloud](/cloud/overview).
 
-See [Cluster metrics](/references/cluster-metrics) for metrics emitted by the [OSS Cluster](/clusters).
+See [Cluster metrics](/references/cluster-metrics) for metrics emitted by the [OSS Cluster](/temporal-service).
 
 Some SDKs may emit metrics beyond what is listed in this SDK Metrics reference.
 Only metrics included in this Metrics reference have guaranteed, defined behavior.
@@ -102,7 +102,7 @@ Some keys may not be available in every SDK, and Histogram metrics may have diff
 | [long_request](#long_request)                                                           | Service Client | Counter     | Core, Go, Java |
 | [long_request_failure](#long_request_failure)                                           | Service Client | Counter     | Core, Go, Java |
 | [long_request_latency](#long_request_latency)                                           | Service Client | Histogram   | Core, Go, Java |
-| [num_pollers](#num_pollers)                                                             | Worker         | Gauge       | Core           |
+| [num_pollers](#num_pollers)                                                             | Worker         | Gauge       | Core, Go       |
 | [poller_start](#poller_start)                                                           | Worker         | Counter     | Go, Java       |
 | [request](#request)                                                                     | Service Client | Counter     | Core, Go, Java |
 | [request_failure](#request_failure)                                                     | Service Client | Counter     | Core, Go, Java |
@@ -237,7 +237,7 @@ Total latency of successfully finished Local Activity Executions (from schedule 
 
 ### local_activity_total
 
-Total number of [Local Activity Executions](/activities#local-activity).
+Total number of [Local Activity Executions](/local-activity).
 
 - Type: Counter
 - Available in: Core, Go, Java
@@ -273,7 +273,7 @@ Latency of a Temporal Client gRPC long poll request.
 Current number of Worker Entities that are polling.
 
 - Type: Gauge
-- Available in: Core
+- Available in: Core, Go
 - Tags: `namespace`, `poller_type`, `task_queue`
 
 ### poller_start
@@ -311,7 +311,7 @@ Latency of a Temporal Client gRPC request.
 
 ### sticky_cache_hit
 
-A Workflow Task found a cached Workflow Execution Event History to run against.
+A Workflow Task found a cached Workflow Execution to run against.
 
 - Type: Counter
 - Available in: Core, Go, Java
@@ -319,7 +319,7 @@ A Workflow Task found a cached Workflow Execution Event History to run against.
 
 ### sticky_cache_miss
 
-A Workflow Task did not find a cached Workflow Worker.
+A Workflow Task did not find a cached Workflow execution to run against.
 
 - Type: Counter
 - Available in: Core, Go, Java
@@ -432,7 +432,12 @@ A Workflow Task Execution failed.
 
 - Type: Counter
 - Available in: Core, Go, Java
-- Tags: `namespace`, `task_queue`, `workflow_type`
+- Tags: `namespace`, `task_queue`, `workflow_type`, `failure_reason`
+
+Valid values for the `failure_reason` tag:
+
+- `NonDeterminismError`: The Workflow Task failed due to a non-determinim error.
+- `WorkflowError`: The Workflow Task failed for any other reason.
 
 ### workflow_task_execution_latency
 
@@ -491,7 +496,7 @@ This time is limited by the `Request-Timeout` header given to the Frontend when 
 
 - Type: Histogram
 - Available in: Core, Go, Java
-- Tags: `namespace`, `task_queue`, `nexus_service`, `nexus_operation`
+- Tags: `namespace`, `task_queue`
 
 ### nexus_task_execution_failed
 

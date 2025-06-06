@@ -39,7 +39,7 @@ The following page shows how to:
 
 **How to connect to the local Temporal CLI development Temporal Service using the Typescript SDK**
 
-A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) facilitates communication with the [Temporal Service](/clusters), allowing you to perform a variety of actions, such as:
+A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) facilitates communication with the [Temporal Service](/temporal-service), allowing you to perform a variety of actions, such as:
 
 - Starting Workflow Executions.
 - Sending Signals to Workflow Executions.
@@ -80,9 +80,58 @@ If you omit the `Connection` and just create a `new Client()`, it will connect t
 
 ## Connect to Temporal Cloud {#connect-to-temporal-cloud}
 
-**How to connect to Temporal Cloud using the Typescript SDK**
+### How to connect to Temporal Cloud using an API key {#connect-to-temporal-cloud-api-key}
 
-When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
+To use an [API key](/cloud/api-keys) with the Temporal TypeScript SDK, you will need to provide additional connection options:
+
+- Your _API Key_ value
+- Your _Namespace and Account id_ combination, which follows the format `<namespace_id>.<account_id>`.
+- The _endpoint_ may vary. The most common endpoint used is the gRPC regional endpoint, which follows the format: `<region>.<cloud_provider>.api.temporal.io:7233`.
+- For Namespaces with High Availability features with API key authentication enabled, use the gRPC Namespace endpoint: `<namespace>.<account>.tmprl.cloud:7233`.
+  This allows automated failover without needing to switch endpoints.
+
+You can find the Namespace and Account ID, as well as the endpoint, on the Namespaces tab:
+
+![The Namespace and Account ID combination on the left, and the regional endpoint on the right](/img/cloud/apikeys/namespaces-and-regional-endpoints.png)
+
+Now, when instantiating a Temporal `connection` in your Temporal TypeScript SDK code, provide the API key with the following `connect` code:
+
+```typescript
+const connection = await Connection.connect({
+    address: <endpoint>,
+    tls: true,
+    apiKey: <APIKey>,
+});
+const client = new Client({
+    connection,
+    namespace: <namespace_id>.<account_id>,
+});
+```
+
+To create an initial Worker `NativeConnection` (for use with `Worker`):
+
+```typescript
+const connection = await NativeConnection.connect({
+    address: <endpoint>,
+    tls: true,
+    apiKey: <APIKey>,
+});
+const worker = await Worker.create({
+    connection,
+    namespace: <namespace_id>.<account_id>,
+    // ...
+});
+```
+
+To update the API key on an existing `Connection` or `NativeConnection`, use `setApiKey`:
+
+```typescript
+connection.setApiKey(<APIKey>);
+```
+
+### How to connect to Temporal Cloud using mTLS {#connect-to-temporal-cloud-tls}
+
+When you connect to [Temporal Cloud](/cloud) with mTLS, you need to provide additional connection and client options that include the following:
 
 - The [Temporal Cloud Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id).
 - The [Namespace's gRPC endpoint](/cloud/namespaces#temporal-cloud-grpc-endpoint).
@@ -143,7 +192,7 @@ run().catch((err) => {
 
 **How to start a Workflow Execution using the Typescript SDK**
 
-[Workflow Execution](/workflows#workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
+[Workflow Execution](/workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
 
 In the examples below, all Workflow Executions are started using a Temporal Client.
 To spawn Workflow Executions from within another Workflow Execution, use either the Child Workflow or External Workflow APIs.
@@ -169,7 +218,7 @@ Calling `client.workflow.start()` and `client.workflow.execute()` send a command
 
 You can test this by executing a Client command without a matching Worker. Temporal Server records the command in Event History, but does not make progress with the Workflow Execution until a Worker starts polling with a matching Task Queue and Workflow Definition.
 
-Workflow Execution run in a separate V8 isolate context in order to provide a [deterministic runtime](/workflows#deterministic-constraints).
+Workflow Execution run in a separate V8 isolate context in order to provide a [deterministic runtime](/workflow-definition#deterministic-constraints).
 
 ### Set a Workflow's Task Queue {#set-task-queue}
 
@@ -254,7 +303,7 @@ If you do not specify `taskQueue`, the TypeScript SDK places Activity and Child 
 
 ### Set a Workflow Id {#workflow-id}
 
-Although it is not required, we recommend providing your own [Workflow Id](/workflows#workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
+Although it is not required, we recommend providing your own [Workflow Id](/workflow-execution/workflowid-runid#workflow-id)that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
 
 Connect to a Client with `client.workflow.start()` and any arguments. Then specify your `taskQueue` and set your `workflowId` to a meaningful business identifier.
 

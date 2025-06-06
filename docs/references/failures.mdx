@@ -16,7 +16,7 @@ tags:
 
 A Failure is Temporal's representation of various types of errors that occur in the system.
 
-There are different types of Failures, and each has a different type in the SDKs and different information in the protobuf messages (which are used to communicate with the Temporal Service and appear in [Event History](/workflows#event-history)).
+There are different types of Failures, and each has a different type in the SDKs and different information in the protobuf messages (which are used to communicate with the Temporal Service and appear in [Event History](/workflow-execution/event#event-history)).
 
 ## Temporal Failure
 
@@ -33,7 +33,7 @@ The base [Failure proto message](https://api-docs.temporal.io/#temporal.api.fail
 - `string stack_trace`
 - `string source`: The SDK this Failure originated in (for example, `"TypeScriptSDK"`). In some SDKs, this field is used to rehydrate the call stack into an exception object.
 - `Failure cause`: The `Failure` message of the cause of this Failure (if applicable).
-- `Payload encoded_attributes`: Contains the encoded `message` and `stack_trace` fields when using a [Failure Converter](/dataconversion#failure-converter).
+- `Payload encoded_attributes`: Contains the encoded `message` and `stack_trace` fields when using a [Failure Converter](/failure-converter).
 
 ## Application Failure
 
@@ -83,7 +83,7 @@ During conversion, the following Application Failure fields are set:
 - `next_retry_delay` is left unset.
 - call stack is copied.
 
-When an [Activity Execution](/activities#activity-execution) fails, the Application Failure from the last Activity Task is the `cause` field of the [ActivityFailure](#activity-failure).
+When an [Activity Execution](/activity-execution) fails, the Application Failure from the last Activity Task is the `cause` field of the [ActivityFailure](#activity-failure).
 This ActivityFailure is thrown by the Workflow's call to the Activity, and it can be handled in the Workflow Definition.
 
 ### Errors in Nexus Operations
@@ -152,7 +152,7 @@ Pending Nexus Operations: 1
   Endpoint                 myendpoint
   Service                  my-hello-service
   Operation                echo
-  OperationID
+  OperationToken
   State                    BackingOff
   Attempt                  6
   ScheduleToCloseTimeout   0s
@@ -220,7 +220,7 @@ For example the Nexus Go SDK provides
 
 ## Cancelled Failure
 
-When [Cancellation](/activities#cancellation) of a Workflow, Activity or Nexus Operation is requested, SDKs represent the cancellation to the user in language-specific ways.
+When [Cancellation](/activity-execution#cancellation) of a Workflow, Activity or Nexus Operation is requested, SDKs represent the cancellation to the user in language-specific ways.
 For example, in TypeScript, in some cases a Cancelled Failure is thrown directly by a Workflow API function, and in other cases the Cancelled Failure is wrapped in a different Failure.
 To check both types of cases, TypeScript has the [isCancellation](https://typescript.temporal.io/api/namespaces/workflow#iscancellation) helper.
 
@@ -250,7 +250,7 @@ For example, if an Activity Execution times out, the `cause` is a [Timeout Failu
 ## Nexus Operation Failure
 
 A Nexus Operation Failure is delivered to the Workflow Execution when a Nexus Operation fails.
-It contains information about the failure and the Nexus Operation Execution; for example, the Nexus Operation name and Nexus Operation ID.
+It contains information about the failure and the Nexus Operation Execution; for example, the Nexus Operation name and Nexus Operation token.
 The reason for the failure is in the message and cause (typically an Application Error or a Canceled Error).
 
 - Go: NexusOperationError
@@ -261,7 +261,7 @@ A Nexus Operation Failure includes the following fields:
 - Endpoint is set to the name of the endpoint.
 - Service is set to the name of the service.
 - Operation is set to the name of the operation.
-- Operation_id is set to the id of the operation, if this is an async operation.
+- Operation_token is set if this is an async operation, which can be used to perform additional actions like cancelling the operation.
 - Scheduled_event_id is set to the caller’s event id that scheduled the operation.
 - Message is set to a generic unsuccessful error message.
 - Cause is set to the underlying Application Failure with the following fields:

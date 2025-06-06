@@ -48,7 +48,7 @@ This page shows how to do the following:
 
 **How to develop a basic Workflow using the Temporal Python SDK.**
 
-Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflows#workflow-definition).
+Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflow-definition).
 
 In the Temporal Python SDK programming model, Workflows are defined as classes.
 
@@ -177,7 +177,7 @@ class YourWorkflow:
 
 **How to develop Workflow logic using the Temporal Python SDK.**
 
-Workflow logic is constrained by [deterministic execution requirements](/workflows#deterministic-constraints).
+Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints).
 Therefore, each language is limited to the use of certain idiomatic techniques.
 However, each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
 
@@ -199,7 +199,7 @@ All API safe for Workflows used in the [`temporalio.workflow`](https://python.te
 One of the primary things that Workflows do is orchestrate the execution of Activities.
 An Activity is a normal function or method execution that's intended to execute a single, well-defined action (either short or long-running), such as querying a database, calling a third-party API, or transcoding a media file.
 An Activity can interact with world outside the Temporal Platform or use a Temporal Client to interact with a Temporal Service.
-For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/activities#activity-definition).
+For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/activity-definition).
 
 You can develop an Activity Definition by using the `@activity.defn` decorator.
 Register the function as an Activity with a custom name through a decorator argument, for example `@activity.defn(name="your_activity")`.
@@ -242,13 +242,13 @@ async def your_activity(input: YourParams) -> str:
 
 **How to develop Activity Parameters using the Temporal Python SDK.**
 
-There is no explicit limit to the total number of parameters that an [Activity Definition](/activities#activity-definition) may support.
+There is no explicit limit to the total number of parameters that an [Activity Definition](/activity-definition) may support.
 However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
 
 A single argument is limited to a maximum size of 2 MB.
 And the total size of a gRPC message, which includes all the arguments, is limited to a maximum of 4 MB.
 
-Also, keep in mind that all Payload data is recorded in the [Workflow Execution Event History](/workflows#event-history) and large Event Histories can affect Worker performance.
+Also, keep in mind that all Payload data is recorded in the [Workflow Execution Event History](/workflow-execution/event#event-history) and large Event Histories can affect Worker performance.
 This is because the entire Event History could be transferred to a Worker Process with a [Workflow Task](/tasks#workflow-task).
 
 {/* TODO link to gRPC limit section when available */}
@@ -285,7 +285,7 @@ async def your_activity(input: YourParams) -> str:
 
 All data returned from an Activity must be serializable.
 
-There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a [Workflow Execution Event History](/workflows#event-history).
+There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a [Workflow Execution Event History](/workflow-execution/event#event-history).
 
 An Activity Execution can return inputs and other Activity values.
 
@@ -333,7 +333,7 @@ async def your_activity(input: YourParams) -> str:
 
 **How to start an Activity Execution using the Temporal Python SDK.**
 
-Calls to spawn [Activity Executions](/activities#activity-execution) are written within a [Workflow Definition](/workflows#workflow-definition).
+Calls to spawn [Activity Executions](/activity-execution) are written within a [Workflow Definition](/workflow-definition).
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
 This results in the set of three [Activity Task](/tasks#activity-task) related Events ([ActivityTaskScheduled](/references/events#activitytaskscheduled), [ActivityTaskStarted](/references/events#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
 
@@ -417,7 +417,7 @@ Available timeouts are:
 
 **How to get the results of an Activity Execution using the Temporal Python SDK.**
 
-The call to spawn an [Activity Execution](/activities#activity-execution) generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
+The call to spawn an [Activity Execution](/activity-execution) generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
 Workflow Executions can either block progress until the result is available through the Awaitable or continue progressing, making use of the result when it becomes available.
 
 Use [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) to start an Activity and return its handle, [`ActivityHandle`](https://python.temporal.io/temporalio.workflow.ActivityHandle.html). Use [`execute_activity()`](https://python.temporal.io/temporalio.workflow.html#execute_activity) to return the results.

@@ -21,16 +21,18 @@ tags:
   - Support
 ---
 
+import { DiscoverableDisclosure } from '@site/src/components';
+
 Temporal Cloud is a consumption-based service.
 You pay only for what you use.
 Our pricing reflects your use of [_Actions_](#action), [_Storage_](#storage), and [_Support_](/cloud/support#support).
-It is flexible, transparent, and predictable so you know your costs.
+It is flexible, transparent, and predictable, so you know your costs.
 
 This page describes the elements of Temporal Cloud pricing.
 It gives you the information you need to understand and estimate costs for your implementation.
 For more exact estimates, please reach out to [our team](https://pages.temporal.io/ask-an-expert).
 
-Cost and billing information are available directly in the Temporal Cloud UI.
+Billing and cost information is available directly in the Temporal Cloud UI.
 For more information, visit the [Billing and Cost](/cloud/billing-and-cost) page.
 
 ## Temporal Cloud pricing model {#pricing-model}
@@ -42,24 +44,30 @@ Your total invoice each calendar month is the combination of Temporal Cloud cons
 
 **How plans work**
 
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+SCIM support is available in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+
+:::
+
 Each Temporal Cloud account includes a plan with Support, Actions, Active Storage, Retained Storage and platform features.
-Base allocations help you get started on the Temporal platform, so you can better estimate costs.
+Base allocations help you get started with the Temporal platform, so you can better estimate costs.
 
 - Temporal Cloud Plans are charged monthly.
-- Actions or Storage allocations are reset each calendar month.
+- Action and Storage allocations are reset each calendar month.
 
 Temporal offers four plans: Essential, Business, Enterprise, Mission Critical.
 Prices are outlined in the following table:
 
-|                   | Essentials                                                                     | Business                                                                                                                          | Enterprise                                                                                                                      | Mission Critical                                                                                                                |
-| ----------------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| Support Targeting | Basic use                                                                      | Production deployments<br />that scale                                                                                            | Enterprise deployments<br/>w/ stringent uptime demands                                                                          | Mission-critical applications<br />w/ the highest support needs                                                                 |
-| Support Features  | Access to Support                                                              | <li>P0 Response Times</li>                                                                                                        | <li>P0: \<30 Min, 24/7</li><li>Private Slack</li>                                                                               | <li>P0: \<15 Min, 24/7</li><li>Private Slack</li><li>Dedicated DSE</li>                                                         |
-| Product Features  | <li>1M Actions</li><li>1 GB Active Storage</li><li>40 GB Retained Storage</li> | <li>Commit discounts</li><li>SSO (Add-on)</li><li>2.5M Actions</li><li>2.5 GB Active Storage</li><li>100 GB Retained Storage</li> | <li>Commit discounts</li><li>SSO included</li><li>10M Actions</li><li>10 GB Active Storage</li><li>400 GB Retained Storage</li> | <li>Commit discounts</li><li>SSO included</li><li>10M Actions</li><li>10 GB Active Storage</li><li>400 GB Retained Storage</li> |
-| Plan Pricing           | Greater of<li>&#36;100/mo; or</li><li>5% of Usage Spend</li>                   | Greater of<li>&#36;500/mo; or</li><li>10% of Usage Spend</li>                                                                     | Priced annually:<br /> [contact Sales](mailto:sales@temporal.io) for details                                                    | Priced annually:<br /> [contact Sales](mailto:sales@temporal.io) for details                                                    |
-| Usage Pricing | [Pay-As-You-Go](#payg) Pricing | Choose from <br />[Pay-As-You-Go](#payg) or [Commitment Pricing](#commitment-pricing) | Choose from <br />[Pay-As-You-Go](#payg) or [Commitment Pricing](#commitment-pricing) | Choose from <br />[Pay-As-You-Go](#payg) or [Commitment Pricing](#commitment-pricing) |
+|                   | Essentials                                                                     | Business                                                                                                                          | Enterprise                                                                                                                                                 | Mission Critical                                                                                                                                           |
+| ----------------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Support Targeting | Basic use                                                                      | Production deployments<br />that scale                                                                                            | Enterprise deployments<br/>w/ stringent uptime demands                                                                                                     | Mission-critical applications<br />w/ the highest support needs                                                                                            |
+| Support Features  | Access to Support                                                              | <li>P0 Response Times</li>                                                                                                        | <li>P0: \<30 Min, 24/7</li><li>Private Slack</li>                                                                                                          | <li>P0: \<15 Min, 24/7</li><li>Private Slack</li><li>Dedicated DSE</li>                                                                                    |
+| Product Features  | <li>1M Actions</li><li>1 GB Active Storage</li><li>40 GB Retained Storage</li> | <li>Commit discounts</li><li>SSO (Add-on)</li><li>2.5M Actions</li><li>2.5 GB Active Storage</li><li>100 GB Retained Storage</li> | <li>Commit discounts</li><li>SSO included</li><li>SCIM (Pre-release)</li><li>10M Actions</li><li>10 GB Active Storage</li><li>400 GB Retained Storage</li> | <li>Commit discounts</li><li>SSO included</li><li>SCIM (Pre-release)</li><li>10M Actions</li><li>10 GB Active Storage</li><li>400 GB Retained Storage</li> |
+| Plan Pricing      | Greater of<li>&#36;100/mo or</li><li>5% of Usage Spend</li>                    | Greater of<li>&#36;500/mo or</li><li>10% of Usage Spend</li>                                                                      | Priced annually:<br /> [contact Sales](mailto:sales@temporal.io) for details                                                                               | Priced annually:<br /> [contact Sales](mailto:sales@temporal.io) for details                                                                               |
+| Usage Pricing     | [Pay-As-You-Go](#payg) Pricing                                                 | Choose from <br /> [Pay-As-You-Go](#payg) or [Commitment Pricing](#commitment-pricing)                                            | Choose from <br /> [Pay-As-You-Go](#payg) or [Commitment Pricing](#commitment-pricing)                                                                     | Choose from <br /> [Pay-As-You-Go](#payg) or [Commitment Pricing](#commitment-pricing)                                                                     |
 
-Please note: partial months are pro-rated to the day.
+Please note, partial months are prorated to the day.
 Find a complete description of Support offerings and response times in our [Support](/cloud/support) documentation.
 
 :::note Converting GB to GBH
@@ -75,60 +83,60 @@ Active and Retained Storage allocations are translated into GBh at a rate of 1GB
 Actions are the primary unit of consumption-based pricing for Temporal Cloud.
 They track billable operations within the Temporal Cloud Service, such as starting Workflows, recording a Heartbeat or sending messages.
 
-<details>
-
-<summary>
-[Toggle to View] The following operations result in Actions:
-</summary>
+<DiscoverableDisclosure label="Operations that result in Actions">
 
 **WORKFLOWS**
 
 - **Workflow started**.
-  Occurs via client start, client [Signal-With-Start](/encyclopedia/workflow-message-passing#signal-with-start), [Continue-As-New](/workflows#continue-as-new), or [Child Workflow](/encyclopedia/child-workflows) start.
+  Occurs via client start, client [Signal-With-Start](/sending-messages#signal-with-start), [Continue-As-New](/workflow-execution/continue-as-new), or [Child Workflow](/child-workflows) start.
   If a Workflow start fails, an Action is not recorded.
 - **Workflow reset**.
   Occurs when a [Workflow](/workflows) is reset.
-  (Actions that occur before a [Reset](/workflows#reset) are counted even if they are no longer visible in [Event History](/workflows#event-history).)
+  (Actions that occur before a [Reset](/workflow-execution/event#reset) are counted even if they are no longer visible in [Event History](/workflow-execution/event#event-history).)
 - **Timer started**.
   Includes implicit Timers that are started by a Temporal SDK when timeouts are set, such as `AwaitWithTimeout` in Go or `condition` in TypeScript.
 - **Search Attribute upsert requested**.
   Occurs for each invocation of `UpsertSearchAttributes` command.
+  Multiple Search Attributes updated in a single `UpsertSearchAttributes` command count as one Action.
+  Search Attributes specified during Workflow start are _excluded_ from Action counts.
+  The `TemporalChangeVersion` Search Attribute, used for Workflow versioning, is also exempt from Action counting.
 - **Signal sent**.
-  An Action occurs for every [Signal](/encyclopedia/workflow-message-passing#sending-signals), whether sent from a Client or from a Workflow.
+  An Action occurs for every [Signal](/sending-messages#sending-signals), whether sent from a Client or from a Workflow.
 - **Query received by Worker**.
-  An Action occurs for every [Query](/encyclopedia/workflow-message-passing#sending-queries), including viewing the call stack in the Temporal Cloud UI, which results in a Query behind the scenes.
+  An Action occurs for every [Query](/sending-messages#sending-queries), including viewing the call stack in the Temporal Cloud UI, which results in a Query behind the scenes.
 - **Update received by Worker**.
-  An Action occurs for every successful [Update](/encyclopedia/workflow-message-passing#sending-updates) and every [rejected](/encyclopedia/workflow-message-passing#update-validators) Update.
+  An Action occurs for every successful [Update](/sending-messages#sending-updates) and every [rejected](/handling-messages#update-validators) Update.
+  De-duplicated Updates that share an Update ID do _not_ count as an Action.
 - **Side Effect recorded**.
-  For a mutable [Side Effect](/workflows#side-effect), an Action occurs only when the value changes.
+  For a mutable [Side Effect](/workflow-execution/event#side-effect), an Action occurs only when the value changes.
   (Be aware that some SDKs don't support Side Effects.)
 
 **CHILD WORKFLOWS**
 
-- **Child Workflows spawned**.
-  The parent Workflow spawning a Child Workflow results in one Action.
-- **Child Workflows executed**.
-  Execution of the Child Workflow results in one Action.
+- **Start Child Workflow Execution initiated**.
+  When the parent Workflow durably records the intent to start a Child Workflow, it results in one Action.
+- **Child Workflow Execution attempted**.
+  When the server attempts to start the Child Workflow, it results in one Action.
 
 **ACTIVITIES**
 
 - **Activity started or retried**.
   Occurs each time an Activity is started or retried.
 - **Local Activity started**.
-  All [Local Activities](/activities#local-activity) associated with one Workflow Task count as a single Action.
+  All [Local Activities](/local-activity) associated with one Workflow Task count as a single Action.
   That's because Temporal Cloud counts all [RecordMarkers](/references/commands#recordmarker) from each Workflow Task as one action, and not _N_ actions.
   Please note:
   - Each additional Workflow Task heartbeat after counts as an additional Action.
   - Local Activities retried following a Workflow Task heartbeat count as one Action (capped at 100 Actions).
 - **Activity Heartbeat recorded**.
-  A Heartbeat call from Activity code counts as an Action only if it reaches the [Temporal Server](/clusters#temporal-server).
+  A Heartbeat call from Activity code counts as an Action only if it reaches the [Temporal Server](/temporal-service/temporal-server).
   Temporal SDKs throttle [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat).
   The default throttle is 80% of the [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout).
   Heartbeats don't apply to Local Activities.
 
 **SCHEDULES**
 
-[Schedules](/workflows#schedule) allows you to "schedule" a Workflow to start at a particular time.
+[Schedules](/schedule) allows you to "schedule" a Workflow to start at a particular time.
 Each execution of a Schedule accrues three actions:
 
 - **Schedule Start**.
@@ -151,7 +159,7 @@ Each execution of a Schedule accrues three actions:
 - The underlying Temporal primitives (such as Workflows, Activities, and Signals) created by a Nexus Operation handler (directly or indirectly) result in the normal Actions for those primitives billed to the handler’s Namespace.
   This includes retries for underlying Temporal primitives like Activities but _not_ for handling the Nexus Operation itself or a retry of the Nexus Operation itself.
 
-</details>
+</DiscoverableDisclosure>
 
 [Reach out](https://pages.temporal.io/contact-us) to our team for more information or to help size your number of Actions.
 
@@ -160,7 +168,7 @@ Each execution of a Schedule accrues three actions:
 **How Workflow Storage works**
 
 A Workflow's execution might exist for a few seconds, a day, month, or even forever.
-The Temporal Service stores the Workflow Execution's [Event History](/workflows#event-history).
+The Temporal Service stores the Workflow Execution's [Event History](/workflow-execution/event#event-history).
 Under this framework, a Workflow Execution has only two states, open (Active Storage) or closed (Retained Storage).
 
 - _Active Storage_ measures the amount of storage used by active Workflows.
@@ -205,7 +213,7 @@ Discounts are based on your account's total usage, metered and billed for each c
 | Next 30M, up to 50M   | &#36;35                                                                                   |
 | Next 50M, up to 100M  | &#36;30                                                                                   |
 | Next 100M, up to 200M | &#36;25                                                                                   |
-| Over 200M             | Contact [Sales](mailto:sales@temporal.io) for info<br /> _More discounts, helpful Humans_ |
+| Over 200M             | Contact [Sales](mailto:sales@temporal.io) for info<br /> _More discounts, helpful humans_ |
 
 **Example**
 
@@ -303,7 +311,7 @@ Temporal Cloud offers two ways to roll-over unused credits:
 **How do I make a commitment and purchase Temporal Credits?**
 
 Contact our team at [sales@temporal.io](mailto:sales@temporal.io) or reach out to your dedicated account manager.
-You can also purchase Temporal Cloud commitments credits through [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-hbcjz7wcl2mvu).
+You can also purchase Temporal Cloud commitments credits through [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-xx2x66m6fp2lo).
 
 ### Credit Balance
 
@@ -324,42 +332,36 @@ If you have additional questions about credits and volume-based pricing, please 
 ## Other pricing {#other-pricing}
 
 Temporal Cloud has additional pricing for other elements of the platform.
-Following are additional pricing considerations for Multi-region Namespaces and SSO/SAML.
+Following are additional pricing considerations for High Availability features and SSO/SAML.
 
-### Multi-region Namespace (MRN) pricing {#multi-region}
+### High Availability feature pricing {#high-availability-features}
 
-**How do MRN costs work?**
+**How does the pricing for High Availability (HA) features work?**
 
-For workloads with stringent high-availability requirements, Temporal Cloud provides multi-region Namespaces (MRNs), which add a failover capability.
-Each multi-region Namespace automatically replicates Workflow Execution data and metadata to a standby region.
-This keeps the standby region in sync, allowing for a near-seamless failover should regional outages occur.
+For workloads with stringent high availability requirements, Temporal Cloud provides same-region and multi-region replicas, which add a failover capability.
+Enabling HA features for Namespace automatically replicates Workflow Execution data and metadata to a replica in the same region or in a different region.
+This allows for a near-seamless failover when incidents or outages occur.
 
-Multi-region Namespace pricing aligns with the volume of your workloads.
-Actions and Storage used in your MRNs contribute to your Actions and Storage consumption.
-To estimate costs for this deployment model, apply a 2x multiplier to the Actions and Storage in the Namespace you are replicating and include in your account’s consumption.
+The pricing for High Availability features aligns with the volume of your workloads.
+Actions and Storage in your Namespace contribute to your Actions and Storage consumption.
+To estimate costs for this deployment model, apply a 2x multiplier to the Actions and Storage in the Namespace you are replicating and include this scaling in your account’s consumption.
 
-When upgrading an existing Namespace, some points to consider:
+:::tip Future Pricing Update
 
-- Temporal won't charge for historical Actions completed prior to upgrading to a multi-region Namespace.
-  Only ongoing (in-flight) and new Workflow Executions will generate consumption on the MRN.
-- Temporal charges for all Actions of existing (ongoing) and new Workflows from the point of adding a new region and provisioning multi-region Namespace service onward.
-- Temporal charges for Replicated Storage of retained (historical), running (ongoing), and new Workflow Executions from the point of adding a new region and starting MRN service.
-
-Multi-region Namespace invoice charges will include:
-
-- An Actions row, showing the Action count from the active region.
-- A Replicated Actions row, showing the Action count from the standby region.
-
-The invoice follows a similar structure for Replicated Storage.
-It breaks out Storage and Replicated Storage into their own line items.
-
-:::tip Action counts for mid-month adoption
-
-- If your multi-region Namespace adoption began mid-month, expect to see more Actions than Replicated Actions and more Storage than Replicated Storage on your invoice.
+To align with cloud provider network traffic pricing, we are introducing adjustments for multi-region replication.
+Your plan will include a generous base allocation, with additional pay-per-use charges for any network usage beyond that threshold.
+Most multi-region customers will not be impacted by this change.
 
 :::
 
-### SSO and SAML pricing {#sso-and-saml}
+When upgrading an existing Namespace, some points to consider:
+
+- Temporal won't charge for historical Actions completed prior to upgrading to a Namespace with High Availability features.
+  Only ongoing (in-flight) and new Workflow Executions will generate consumption.
+- Temporal charges for all Actions of existing (ongoing) and new Workflows from the point of adding a replica.
+- Temporal charges for Replicated Storage of retained (historical), running (ongoing), and new Workflow Executions from the point of adding a new replica.
+
+### SSO via SAML pricing {#sso-and-saml}
 
 **What costs are associated with SSO/SAML use?**
 
@@ -372,6 +374,17 @@ For business plan customers, a monthly fixed fee based on the number of users re
 | 26 to 50  | &#36;300           |
 | 51+       | &#36;500           |
 
+**What costs are associated with SCIM?**
+
+To enable SCIM (System for Cross-domain Identity Management), you need an Enterprise or Mission Critical plan.
+Please note that you must configure SSO via SAML to use SCIM.
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+SCIM support is available in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+
+:::
+
 ### Use case cost estimates {#pricing-estimates}
 
 Temporal Cloud uses a consumption-based pricing model based primarily on [Actions](#action) and [Storage](#storage).
@@ -381,7 +394,7 @@ Use the resulting Storage and compute measurements to project your production sc
 
 The examples below provide general estimates based on workload size.
 You can also use our calculator on the pricing page to build your estimate.
-Our team is always happy to [help you estimate costs] (https://pages.temporal.io/contact-us) for your specific workloads and requirements.
+Our team is always happy to [help you estimate costs](https://pages.temporal.io/contact-us) for your specific workloads and requirements.
 
 | Workload size | Cost (monthly) | Characteristics                            | Actions                                            | Typical use cases                                                                                             |
 | ------------- | -------------- | ------------------------------------------ | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
@@ -395,7 +408,7 @@ Our team is always happy to [help you estimate costs] (https://pages.temporal.io
 **What payment methods does Temporal accept?**
 
 You can pay with a credit card, ACH, or wire transfer.
-To pay for Temporal Cloud with an AWS Account, sign up for [Temporal Cloud Pay-As-You-Go](https://aws.amazon.com/marketplace/pp/prodview-hbcjz7wcl2mvu) on the AWS Marketplace.
+To pay for Temporal Cloud with an AWS Account, sign up for [Temporal Cloud Pay-As-You-Go](https://aws.amazon.com/marketplace/pp/prodview-xx2x66m6fp2lo) on the AWS Marketplace.
 
 **How often will I be billed?**
 
@@ -407,8 +420,6 @@ For example, invoices for May will be issued at midnight UTC on June 3rd.
 
 Account Owners and Finance Admins can view their detailed billing data at any time.
 Visit the [Usage and Billing dashboards](/cloud/billing-and-cost) in Temporal Cloud.
-
-You need appropriate administrative permissions to access this section.
 
 **How do I purchase Temporal Cloud credits?**
 
@@ -423,7 +434,7 @@ Consumption in excess of your plan's allocations are billed on a consumption bas
 
 There are two ways to purchase Temporal Cloud through AWS Marketplace:
 
-- Pay-As-You-Go available [here](https://aws.amazon.com/marketplace/pp/prodview-hbcjz7wcl2mvu)
+- Pay-As-You-Go available [here](https://aws.amazon.com/marketplace/pp/prodview-xx2x66m6fp2lo)
 - Credits: available via private offer, please contact our team at [sales@temporal.io](mailto:sales@temporal.io)
 
 To purchase Temporal Cloud on the Google Cloud Marketplace, please contact our team at [sales@temporal.io](mailto:sales@temporal.io).

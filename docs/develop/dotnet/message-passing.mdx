@@ -42,7 +42,7 @@ Follow these guidelines when writing your message handlers:
 
 ### Query handlers {#queries}
 
-A [Query](/encyclopedia/workflow-message-passing#sending-queries) is a synchronous operation that retrieves state from a Workflow Execution.
+A [Query](/sending-messages#sending-queries) is a synchronous operation that retrieves state from a Workflow Execution.
 Define as a method:
 
 ```csharp
@@ -101,7 +101,7 @@ public class GreetingWorkflow
 
 ### Signal handlers {#signals}
 
-A [Signal](/encyclopedia/workflow-message-passing#sending-signals) is an asynchronous message sent to a running Workflow Execution to change its state and control its flow:
+A [Signal](/sending-messages#sending-signals) is an asynchronous message sent to a running Workflow Execution to change its state and control its flow:
 
 ```csharp
 [Workflow]
@@ -133,7 +133,7 @@ public class GreetingWorkflow
 
 ### Update handlers and validators {#updates}
 
-An [Update](/encyclopedia/workflow-message-passing#sending-updates) is a trackable synchronous request sent to a running Workflow Execution.
+An [Update](/sending-messages#sending-updates) is a trackable synchronous request sent to a running Workflow Execution.
 It can change the Workflow state, control its flow, and return a result.
 The sender must wait until the Worker accepts or rejects the Update.
 The sender may wait further to receive a returned value or an exception if something goes wrong:
@@ -192,7 +192,7 @@ public class GreetingWorkflow
     The caller receives an "Update failed" error.
 
 - Use [`Workflow.CurrentUpdateInfo`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_CurrentUpdateInfo) to obtain information about the current Update.
-  This includes the Update ID, which can be useful for deduplication when using Continue-As-New: see [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing).
+  This includes the Update ID, which can be useful for deduplication when using Continue-As-New: see [Ensuring your messages are processed exactly once](/handling-messages#exactly-once-message-processing).
 - Update (and Signal) handlers can be asynchronous and blocking.
   This allows you to use Activities, Child Workflows, durable [`Workflow.DelayAsync`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html?#Temporalio_Workflows_Workflow_DelayAsync_System_Int32_System_Nullable_System_Threading_CancellationToken__) Timers, [`Workflow.WaitConditionAsync`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html?#Temporalio_Workflows_Workflow_WaitConditionAsync_System_Func_System_Boolean__System_Int32_System_Nullable_System_Threading_CancellationToken__) conditions, and more.
   See [Async handlers](#async-handlers) and [Workflow message passing](/encyclopedia/workflow-message-passing) for guidelines on safely using async Update and Signal handlers.
@@ -340,6 +340,66 @@ To send an Update to a Workflow Execution, you can:
 
   For more details, see the "Async handlers" section.
 
+#### Update-with-Start {#update-with-start}
+
+:::tip Stability
+
+In [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in Temporal Cloud.
+
+Minimum Temporal Server version [Temporal Server version 1.26](https://github.com/temporalio/temporal/releases/tag/v1.26.2)
+
+:::
+
+[Update-with-Start](/sending-messages#update-with-start) lets you [send an Update](/develop/dotnet/message-passing#send-update-from-client) that checks whether an already-running Workflow with that ID exists:
+
+- If the Workflow exists, the Update is processed.
+- If the Workflow does not exist, a new Workflow Execution is started with the given ID, and the Update is processed before the main Workflow method starts to execute.
+
+Use `ExecuteUpdateWithStartAsync` to start the Update and wait for the result in one go.
+
+Alternatively, use `StartUpdateWithStartAsync` to start the Update and receive a `WorkflowUpdateHandle`, and then use `await updateHandle.GetResultAsync()` to retrieve the result from the Update.
+
+These calls return once the requested Update wait stage has been reached, or when the request times out.
+
+- You will need to provide a `WithStartWorkflowOperation` to define the Workflow that will be started if necessary, and its arguments.
+- You must specify an [IdConflictPolicy](/workflow-execution/workflowid-runid#workflow-id-conflict-policy) when creating the `WithStartWorkflowOperation`.
+  Note that a `WithStartWorkflowOperation` can only be used once.
+
+Here's an example taken from the [UpdateWithStartLazyInit](https://github.com/temporalio/samples-dotnet/blob/main/src/UpdateWithStartLazyInit/Program.cs) sample:
+
+```csharp
+async Task<AddCartItemResult> AddCartItemAsync(string sessionId, ShoppingCartItem item)
+{
+    // Issue an update-with-start that will create the workflow if it does not
+    // exist before attempting the update
+
+    // Create the start operation
+    var startOperation = WithStartWorkflowOperation.Create(
+        (ShoppingCartWorkflow wf) => wf.RunAsync(),
+        new(id: $"cart-{sessionId}", taskQueue: TaskQueue)
+        {
+            IdConflictPolicy = Temporalio.Api.Enums.V1.WorkflowIdConflictPolicy.UseExisting,
+        });
+
+    // Issue the update-with-start, swallowing item-unavailable failure
+    decimal? subtotal;
+    try
+    {
+        subtotal = await client.ExecuteUpdateWithStartWorkflowAsync(
+            (ShoppingCartWorkflow wf) => wf.AddItemAsync(item),
+            new(startOperation));
+    }
+    catch (WorkflowUpdateFailedException e) when (
+        e.InnerException is ApplicationFailureException appErr && appErr.ErrorType == "ItemUnavailable")
+    {
+        // Set subtotal to null if item was not found
+        subtotal = null;
+    }
+
+    return new(await startOperation.GetHandleAsync(), subtotal);
+}
+```
+
 :::info NON-TYPE SAFE API CALLS
 
 In real-world development, sometimes you may be unable to import Workflow Definition method signatures.
@@ -366,7 +426,7 @@ It doesn't apply to pure read operations, like Queries or Update Validators.
 
 :::tip
 
-For additional information, see [Inject work into the main Workflow](/encyclopedia/workflow-message-passing#injecting-work-into-main-workflow) and [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing).
+For additional information, see [Inject work into the main Workflow](/handling-messages#injecting-work-into-main-workflow) and [Ensuring your messages are processed exactly once](/handling-messages#exactly-once-message-processing).
 
 :::
 
@@ -459,7 +519,7 @@ Sometimes, async Signal or Update handlers need to meet certain conditions befor
 Using a wait condition with [`Workflow.WaitConditionAsync`](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html?#Temporalio_Workflows_Workflow_WaitConditionAsync_System_Func_System_Boolean__System_Int32_System_Nullable_System_Threading_CancellationToken__) sets a function that prevents the code from proceeding until the condition returns `true`.
 This is an important feature that helps you control your handler logic.
 
-Here are two important use cases for `Workflow.await`:
+Here are two important use cases for `Workflow.WaitConditionAsync`:
 
 - Waiting in a handler until it is appropriate to continue.
 - Waiting in the main Workflow until all active handlers have finished.
@@ -519,11 +579,11 @@ public async Task MyUpdateAsync()
     // ...
 ```
 
-See [Finishing handlers before the Workflow completes](/encyclopedia/workflow-message-passing#finishing-message-handlers) for more information.
+See [Finishing handlers before the Workflow completes](/handling-messages#finishing-message-handlers) for more information.
 
 ### Use `[WorkflowInit]` to operate on Workflow input before any handler executes
 
-The `[WorkflowInit]` attribute gives message handlers access to [Workflow input](/encyclopedia/workflow-message-passing#workflow-initializers).
+The `[WorkflowInit]` attribute gives message handlers access to [Workflow input](/handling-messages#workflow-initializers).
 When you use the `[WorkflowInit]` attribute on your constructor, you give the constructor the same Workflow parameters as your `[WorkflowRun]` method.
 The SDK will then ensure that your constructor receives the Workflow input arguments that the [Client sent](/develop/dotnet/temporal-client#start-workflow).
 The Workflow input arguments are also passed to your `[WorkflowRun]` method -- that always happens, whether or not you use the `[WorkflowInit]` attribute.
@@ -568,7 +628,7 @@ public class WorkflowInitWorkflow
 ### Use locks to prevent concurrent handler execution {#control-handler-concurrency}
 
 Concurrent processes can interact in unpredictable ways.
-Incorrectly written [concurrent message-passing](/encyclopedia/workflow-message-passing#message-handler-concurrency) code may not work correctly when multiple handler instances run simultaneously.
+Incorrectly written [concurrent message-passing](/handling-messages#message-handler-concurrency) code may not work correctly when multiple handler instances run simultaneously.
 Here's an example of a pathological case:
 
 ```csharp
@@ -639,7 +699,7 @@ When sending a Signal, Update, or Query to a Workflow, your Client might encount
 - **The Workflow does not exist**:
   You'll receive a [`Temporalio.Exceptions.RpcException`](https://dotnet.temporal.io/api/Temporalio.Exceptions.RpcException.html) exception whose `Code` property is [`RpcException.StatusCode`](https://dotnet.temporal.io/api/Temporalio.Exceptions.RpcException.StatusCode.html) with a status of `NotFound`.
 
-See [Exceptions in message handlers](/encyclopedia/workflow-message-passing#exceptions) for a non–.NET-specific discussion of this topic.
+See [Exceptions in message handlers](/handling-messages#exceptions) for a non–.NET-specific discussion of this topic.
 
 ### Problems when sending a Signal {#signal-problems}
 
@@ -687,7 +747,7 @@ When working with Updates, you may encounter these errors:
 
   - The Workflow was canceled or failed.
 
-  - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/encyclopedia/workflow-message-passing#finishing-message-handlers).
+  - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/handling-messages#finishing-message-handlers).
 
 ### Problems when sending a Query {#query-problems}
 

@@ -18,6 +18,8 @@ tags:
   - Encryption
 ---
 
+import { CaptionedImage } from '@site/src/components';
+
 Temporal's security model is designed around client-side encryption of Payloads.
 A client may encrypt Payloads before sending them to the server, and decrypt them after receiving them from the server.
 This provides a high degree of confidentiality because the Temporal Server itself has absolutely no knowledge of the actual data.
@@ -29,7 +31,6 @@ Depending on business needs, a complete implementation of Payload Encryption may
 The server itself never adds encryption over Payloads.
 Therefore, unless client-side encryption is implemented, Payload data will be persisted in non-encrypted form to the data store, and any Client that can make requests to a Temporal namespace (including the Temporal UI and CLI) will be able to read Payloads contained in Workflows.
 When working with sensitive data, you should always implement Payload encryption.
-
 
 ## Custom Payload Codec {#custom-payload-codec}
 
@@ -102,7 +103,7 @@ Refer to the [Codec Server](/production-deployment/data-encryption) documentatio
 
 ## Payload conversion
 
-Temporal SDKs provide a default [Payload Converter](/dataconversion#payload-converter) that can be customized to convert a custom data type to [Payload](/dataconversion#payload) and back.
+Temporal SDKs provide a default [Payload Converter](/payload-converter) that can be customized to convert a custom data type to [Payload](/dataconversion#payload) and back.
 
 ### Conversion sequence {#conversion-sequence}
 
@@ -113,7 +114,10 @@ When the Data Converter receives a value for conversion, it passes through each 
 Payload Converters can be customized independently of a Payload Codec.
 Temporal's Converter architecture looks like this:
 
-![Temporal converter architecture](/img/converter-architecture.png)
+<CaptionedImage
+    src="/img/info/converter-architecture.png"
+    title="Temporal converter architecture"
+/>
 
 ### Custom Payload Converter {#custom-payload-converter}
 

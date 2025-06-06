@@ -123,6 +123,8 @@ This command will start the hyperlink checker.
 
 This repository is configured for [Snipsync](https://github.com/temporalio/snipsync), which checks in the snippets included throughout our documentation.
 
+The reason we use Snipsync is because this repo does not lint or build code samples directly, but the [samples repos](https://github.com/search?q=org%3Atemporalio+samples-&type=repositories) used throughout our organization do. As a general rule, we prefer all code samples presented in docs to be directly extracted from a CI-enabled code repo using Snipsync to benefit from this. While this may not be practical for every single line of code embedded in docs, it is a best practice.
+
 If you are making changes to code surrounded by Snipsync wrappers, i.e. `<--SNIPSTART someid --->` && `<!--SNIPEND-->` then you will want to make those edits to the actual source code.
 The location of the source code is written just inside the wrappers.
 
@@ -148,6 +150,7 @@ This command spins up a local web server and serves the contents of the `/build`
 ## `yarn format`
 
 This command formats the documents per the `dprint.json` configuration.
+The repository CI now automatically applies `dprint` formatting on upload and merges any changes back to the submitted branch.
 
 ## `yarn snipsync`
 

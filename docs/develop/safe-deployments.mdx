@@ -1,0 +1,100 @@
+---
+id: safe-deployments
+title: Safely deploying changes to Workflow code
+description: Safely deploy changes to existing Workflow code by validating first for determinism errors before deploying to production.
+sidebar_label: Safe deployments
+toc_max_heading_level: 3
+tags:
+  - Workflows
+  - Deployment
+  - Replay
+---
+
+Making changes safely to existing Workflow code can be challenging. Your Workflow code must be [deterministic](https://docs.temporal.io/workflow-definition#deterministic-constraints). This means your changes to that code have to be as well. Changes to your Workflow code that qualify as non-deterministic need to be protected by either using the [patching APIs](https://docs.temporal.io/workflow-definition#workflow-versioning) within your Workflow code, or by [some other versioning strategy.](https://docs.temporal.io/workers#worker-versioning)
+
+In this article, we’ll provide some advice on how you can safely validate changes to your Workflow code, ensuring that you won’t experience unexpected non-determinism errors in production when rolling them out.
+
+## Use Replay Testing before and during your deployments
+
+The best way to verify that your code won’t cause non-determinism errors once deployed is to make use of [replay testing](https://docs.temporal.io/workflow-execution#replay).
+
+Replay testing takes one or more existing [Workflow Histories](https://docs.temporal.io/workflow-execution/event#event-history) that ran against a previous version of Workflow code and runs them against your _current_ Workflow code, verifying that it is compatible with the provided history.
+
+There are multiple points in your development lifecycle where running replay tests can make sense. They exist on a spectrum, with shortest time to feedback on one end, and most representative of a production deployment on the other.
+
+- During development, replay testing lets you get feedback as early as possible on whether your changes are compatible. For example, you might include some integration tests that run your Workflows against the Temporal Test Server to produce histories which you then check in. You can use those checked-in histories for replay tests to verify you haven’t made breaking changes.
+- During pre-deployment validation (such as during some automated deployment validation) you can get feedback in a more representative environment. For example, you might fetch histories from a live Temporal environment (whether production or some kind of pre-production) and use them in replay tests.
+- At deployment time, your environment _is_ production, but you are using the new code to replay recent real-world Workflow histories.
+
+When you're writing changes to Workflow code, you can fetch some representative histories from your pre-production or production Temporal environment and verify they work with your changes. You can do the same with the pre-merge CI pipeline. However, if you are using encrypted Payloads, which is a typical and recommended setup in production, you may not be able to decrypt the fetched histories. Additionally if your Workflows contain any PII (which should be encrypted), make sure this information is scrubbed for the purposes of your tests, or err on the side of caution and don’t use this method.
+With that constraint in mind, we’ll focus on how you can perform replay tests in a production deployment of a Worker with new Workflow code. The core of how replay testing is done is the same regardless of when you choose to do it, so you can apply some of the lessons here to earlier stages in your development process.
+
+## Implement a deployment-time replay test
+
+The key to a successful safe deployment is to break it into two phases: a verification phase, where you’ll run the replay test, followed by the actual deployment of your new Worker code.
+
+You can accomplish this by wrapping your Worker application with some code that can choose whether it will run in verification mode, or in production. This is most easily done if you do not deploy your Workers side-by-side with other application code, which is a recommended best practice. If you do deploy your Workers as part of some other application, you will likely need to separate out a different entry point specifically for verification.
+
+### Run a replay and real Worker with the same code
+
+The following code demonstrates how the same entry point could be used to either verify the new code using replay testing, or to actually run the Worker.
+
+```python
+import argparse
+import asyncio
+from datetime import datetime, timedelta
+
+from temporalio.client import Client
+from temporalio.worker import Worker, Replayer
+
+async def main():
+    parser = argparse.ArgumentParser(prog='MyTemporalWorker')
+    parser.add_argument('mode', choices=['verify', 'run'])
+    args = parser.parse_args()
+
+    temporal_url = "localhost:7233"
+    task_queue = "your-task-queue"
+    my_workflows = [YourWorkflow]
+    my_activities = [your_activity]
+
+    client = await Client.connect(temporal_url)
+```
+
+Everything up to this point is standard. You import the Workflow and Activity code, instantiate a parser with two modes, and create your Task Queue, Workflow, and Activity.
+
+You can pass in the `args.mode` from any appropriate spot in your code. If the mode is set to `verify`, you conduct the replay testing by specifying the time period to test, and passing in the Workflows corresponding to that time period. Note that the Workflows are consumed as histories, using [the `map_histories()` function](https://python.temporal.io/temporalio.client.WorkflowExecutionAsyncIterator.html#map_histories).
+
+```python
+if args.mode == 'verify':
+    start_time = (datetime.now() - timedelta(hours=10)).isoformat(timespec='seconds')
+    workflows = client.list_workflows(
+     f"TaskQueue={task_queue} and StartTime > '{start_time}'",
+    limit = 100)
+    histories = workflows.map_histories()
+    replayer = Replayer(
+        workflows=my_workflows,
+        activities=my_activities,
+    )
+    await replayer.replay_workflows(histories)
+    return
+```
+
+If any of the Workflows fail to replay, an error will be thrown. If no errors occur, you can return successfully to indicate success here, or communicate with an endpoint you've defined to indicate success or failure of the verification. You could switch to the `run` mode, and have this Worker transition to a real Worker that will start pulling from the Task Queue and processing Workflows:
+
+```python
+    else:
+        worker = Worker(
+            client,
+            task_queue=task_queue,
+            workflows=my_workflows,
+            activities=my_activities,
+        )
+        await worker.run()
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+### Use the multi-modal Worker
+
+The most straightforward way to use this bimodal Worker is to deploy one instance of it at the beginning of your deployment process in verify mode, see that it passes, and then proceed to deploy the rest of your new workers in run mode.

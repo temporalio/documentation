@@ -1,0 +1,140 @@
+---
+id: users-invite
+title: User management - Temporal Cloud feature guide
+sidebar_label: Users-invite
+description: Learn how to manage user invitations for Temporal Cloud
+slug: /cloud/users-invite
+toc_max_heading_level: 4
+keywords:
+  - explanation
+  - how-to
+  - introduction
+  - namespace
+  - namespaces
+  - temporal cloud
+  - temporal cloud account
+  - users
+tags:
+  - Temporal Cloud
+  - Namespaces
+  - Users
+---
+
+:::caution
+Access to Temporal Cloud can be authorized through email and password, Google single sign-on, Microsoft single sign-on, or SAML, depending on your setup.
+
+If you are using Google OAuth for single sign-on and an email address is not associated with a Google Account, the user must follow the instructions in the [Use an existing email address](https://support.google.com/accounts/answer/27441?hl=en#existingemail) section of [Create a Google Account](https://support.google.com/accounts/answer/27441).
+
+**Important:** Do _not_ create a Gmail account when creating a Google Account.
+
+If your organization uses Google Workspace or Microsoft Entra ID, and your IT administrator has enabled controls over single sign-on permissions, then you will need to work with your IT administrator to allow logins to Temporal Cloud.
+
+:::
+
+When a user is created in Temporal Cloud, they receive an invitation email with a link.
+They must use this link to finalize their setup and access Temporal Cloud.
+Accounts with SAML configurations can ignore this email.
+However, those using Google/Microsoft SSO or email and password authentication need to accept the invitation link for their initial login to Temporal Cloud.
+For future logins, they must use the same authentication method they originally signed up with.
+
+:::info
+
+To invite users, a user must have the Global Admin or Account Owner account-level [role](/cloud/users#account-level-roles).
+
+:::
+
+### Roles and permissions
+
+Each user in Temporal Cloud is assigned a role.
+Each user can be assigned permissions for individual Namespaces.
+
+- [Account-level roles](/cloud/users#account-level-roles)
+- [Namespace-level permissions](/cloud/users#namespace-level-permissions)
+
+<Tabs>
+
+<TabItem value="invite-webui" label="Web UI">
+
+To invite users using the Temporal Cloud UI:
+
+1. In Temporal Web UI, select **Settings** in the left portion of the window.
+1. On the **Settings** page, select **Create Users** in the upper-right portion of the window.
+1. On the **Create Users** page in the **Email Addresses** box, type or paste one or more email addresses.
+1. In **Account-Level Role**, select a [Role](/cloud/users#account-level-roles).
+   The Role applies to all users whose email addresses appear in **Email Addresses**.
+1. If the account has any Namespaces, they are listed under **Grant access to Namespaces**.
+   To add a permission, select the checkbox next to a Namespace, and then select a [permission](/cloud/users#namespace-level-permissions).
+   Repeat as needed.
+1. When all permissions are assigned, select **Send Invite**.
+
+Temporal sends an email message to each user.
+To join Temporal Cloud, a user must select **Accept Invite** in the message.
+
+</TabItem>
+
+<TabItem value="invite-tcld" label="tcld">
+
+To invite users using tcld, see the [tcld user invite](/cloud/tcld/user/#invite) command.
+
+Temporal sends an email message to the specified user.
+To join Temporal Cloud, the user must select **Accept Invite** in the message.
+
+</TabItem>
+
+<TabItem value="invite-ops-api" label="Cloud Ops API">
+
+You can invite users pragmatically using the Cloud Ops API.
+
+1. Create a connection to your Temporal Service using the Cloud Operations API.
+2. Use the [CreateUser service](https://github.com/temporalio/api-cloud/blob/main/temporal/api/cloud/cloudservice/v1/service.proto) to create a user.
+
+</TabItem>
+
+</Tabs>
+
+### Frequently Asked Questions
+
+#### Can the same email be used across different Temporal Cloud accounts?
+
+No — each email address can only be associated with a single Temporal Cloud account.
+If you need access to multiple accounts, you’ll need a separate invite for each one using a different email address.
+
+#### Can I use Google or Microsoft SSO after signing up with email and password?
+
+If you originally signed up for Temporal Cloud using an email and password, you won’t be able to log in using Google or Microsoft single sign-on.
+
+If you prefer SSO, ask your Account Owner to delete your current user and send you a new invitation.
+During re-invitation, be sure to sign up using your preferred authentication method.
+
+#### How do I complete the `Secure Your Account` step?
+
+If you signed up to Temporal Cloud using an email and password, you're required to set up multi-factor authentication (MFA) for added security.
+Currently, only authenticator apps are supported as an additional factor (such as Google Authenticator, Microsoft Authenticator, and Authy).
+
+To proceed:
+
+1. Download a supported authenticator app on your mobile device.
+2. Scan the QR code shown on the **Secure Your Account** screen.
+3. Enter the verification code from your app to complete MFA setup.
+4. Securely store your recovery code.
+   This code allows you to access your account if you lose access to your authenticator app.
+
+Once MFA is configured, you’ll be able to continue using Temporal Cloud.
+
+#### What if I lose access to my authenticator app?
+
+If you lose access to your authenticator app, you can still log in by clicking **Try another method** on the MFA screen.
+From there, you can either:
+
+- Enter your recovery code (provided when you first set up MFA)
+- Receive a verification code through email
+
+Once you're logged in, you can reset your authenticator app by navigating to **My Profile** > **Password and Authentication** and then clicking **Authenticator App** > **Remove method**.
+
+#### How do I reset my password?
+
+If you're currently logged in and would like to change your password, click your profile icon at the top right of the Temporal Cloud UI,
+navigate to **My Profile** > **Password and Authentication**, and then click **Reset Password**.
+
+If you're not currently logged in, navigate to the login page of the Temporal Cloud UI, enter your email address, click **Continue**, and then select **Forgot password**.
+In both cases, you will receive an email with instructions on how to reset your password.

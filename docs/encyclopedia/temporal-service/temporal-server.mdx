@@ -1,0 +1,228 @@
+---
+id: temporal-server
+title: Temporal Server
+sidebar_label: Temporal Server
+description: The Temporal Server consists of four independently scalable services - Frontend gateway, History subsystem, Matching subsystem, and Worker Service.
+slug: /temporal-service/temporal-server
+toc_max_heading_level: 4
+keywords:
+  - temporal-server
+  - frontend-service
+  - history-service
+  - matching-service
+  - worker-service
+  - retention-period
+
+tags:
+  - Concepts
+  - Temporal Service
+---
+
+import { CaptionedImage } from '@site/src/components';
+
+This page discusses the following:
+
+- [Frontend Service](#frontend-service)
+- [History Service](#history-service)
+- [History Shard](#history-shard)
+- [Matching Service](#matching-service)
+- [Worker Service](#worker-service)
+- [Retention Period](#retention-period)
+
+## What is the Temporal Server? {#temporal-server}
+
+The Temporal Server consists of four independently scalable services:
+
+- Frontend gateway: for rate limiting, routing, authorizing.
+- History subsystem: maintains data (mutable state, queues, and timers).
+- Matching subsystem: hosts Task Queues for dispatching.
+- Worker Service: for internal background Workflows.
+
+For example, a real-life production deployment can have 5 Frontend, 15 History, 17 Matching, and 3 Worker Services per Temporal Service.
+
+The Temporal Server services can run independently or be grouped together into shared processes on one or more physical or virtual machines.
+For live (production) environments, we recommend that each service runs independently, because each one has different scaling requirements and troubleshooting becomes easier.
+The History, Matching, and Worker Services can scale horizontally within a Temporal Service.
+The Frontend Service scales differently than the others because it has no sharding or partitioning; it is just stateless.
+
+Each service is aware of the others, including scaled instances, through a membership protocol via [Ringpop](https://github.com/temporalio/ringpop-go).
+
+### Versions and support
+
+:::tip
+
+We release new versions of the Temporal SDKs and Temporal Server software independently of one another.
+That said, All SDK versions support all server versions.
+
+To take advantage of bug fixes, performance improvements, and new features, please upgrade both SDK and servers to the latest versions on a regular cadence.
+
+:::
+
+All Temporal Server releases abide by the [Semantic Versioning Specification](https://semver.org/).
+
+We support upgrade paths from every version beginning with Temporal v1.7.0.
+For details on upgrading your Temporal Service, see [Upgrade Server](/self-hosted-guide/upgrade-server#upgrade-server).
+
+We provide maintenance support for previously published minor and major versions by continuing to release critical bug fixes related to security, the prevention of data loss, and reliability, whenever they are found.
+
+We aim to publish incremental upgrade guides for each minor and major version, which include specifics about dependency upgrades that we have tested for (such as Cassandra 3.0 -> 3.11).
+
+We offer maintenance support of the last three **minor** versions after a release and do not plan to "backport" patches beyond that.
+
+We offer maintenance support of **major** versions for at least 12 months after a GA release, and we provide at least 6 months' notice before EOL/deprecating support.
+
+**Dependencies**
+
+Temporal offers official support for, and is tested against, dependencies with the exact versions described in the `go.mod` file of the corresponding release tag.
+(For example, [v1.5.1](https://github.com/temporalio/temporal/tree/v1.5.1) dependencies are documented in [the go.mod for v1.5.1](https://github.com/temporalio/temporal/blob/v1.5.1/go.mod).)
+
+## What is a Frontend Service? {#frontend-service}
+
+The Frontend Service is a stateless gateway service that exposes a strongly typed [Proto API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto).
+The Frontend Service is responsible for rate limiting, authorizing, validating, and routing all inbound calls.
+
+<CaptionedImage
+    src="/diagrams/temporal-frontend-service.svg"
+    title="Frontend Service"
+/>
+
+Types of inbound calls include the following:
+
+- [Namespace](/namespaces) CRUD
+- External events
+- Worker polls
+- [Visibility](/temporal-service/visibility) requests
+- [Temporal CLI](/cli) (the Temporal CLI) operations
+- Calls from a remote Temporal Service related to [Multi-Cluster Replication](/temporal-service/multi-cluster-replication)
+
+Every inbound request related to a Workflow Execution must have a Workflow Id, which is hashed for routing purposes.
+The Frontend Service has access to the hash rings that maintain service membership information, including how many nodes (instances of each service) are in the Temporal Service.
+
+Inbound call rate limiting is applied per host and per namespace.
+
+The Frontend Service talks to the Matching Service, History Service, Worker Service, the database, and Elasticsearch (if in use).
+
+- It uses the grpcPort 7233 to host the service handler.
+- It uses port 6933 for membership-related communication.
+
+Ports are configurable in the Temporal Service configuration.
+
+## What is a History Service? {#history-service}
+
+The History Service is responsible for persisting Workflow Execution state to the Workflow History.
+When the Workflow Execution is able to progress, the History Service adds a Task with the Workflow's updated history to the Task Queue.
+From there, a Worker can poll for work, receive this updated history, and resume execution.
+
+<CaptionedImage
+    src="/diagrams/temporal-history-service.svg"
+    title="Block diagram of how the History Service relates to the other services of the Temporal Server and to the Temporal Service"
+/>
+
+The total number of History Service processes can be between 1 and the total number of [History Shards](#history-shard).
+An individual History Service can support many History Shards.
+Temporal recommends starting at a ratio of 1 History Service process for every 500 History Shards.
+
+Although the total number of History Shards remains static for the life of the Temporal Service, the number of History Service processes can change.
+
+The History Service talks to the Matching Service and the database.
+
+- It uses grpcPort 7234 to host the service handler.
+- It uses port 6934 for membership-related communication.
+
+Ports are configurable in the Temporal Service configuration.
+
+### What is a History Shard? {#history-shard}
+
+A History Shard is an important unit within a Temporal Service by which concurrent Workflow Execution throughput can be scaled.
+
+Each History Shard maps to a single persistence partition.
+A History Shard assumes that only one concurrent operation can be within a partition at a time.
+In essence, the number of History Shards represents the number of concurrent database operations that can occur for a Temporal Service.
+This means that the number of History Shards in a Temporal Service plays a significant role in the performance of your Temporal Application.
+
+Before integrating a database, the total number of History Shards for the Temporal Service must be chosen and set in the Temporal Service's configuration (see [persistence](/references/configuration#persistence)).
+After the Shard count is configured and the database integrated, the total number of History Shards for the Temporal Service cannot be changed.
+
+In theory, a Temporal Service can operate with an unlimited number of History Shards, but each History Shard adds compute overhead to the Temporal Service.
+The Temporal Service has operated successfully using anywhere from 1 to 128K History Shards, with each Shard responsible for tens of thousands of Workflow Executions.
+One Shard is useful only in small scale setups designed for testing, while 128k Shards is useful only in very large scale production environments.
+The correct number of History Shards for any given Temporal Service depends entirely on the Temporal Application that it is supporting and the type of database.
+
+A History Shard is represented as a hashed integer.
+Each Workflow Execution is automatically assigned to a History Shard.
+The assignment algorithm hashes Workflow Execution metadata such as Workflow Id and Namespace and uses that value to match a History Shard.
+
+Each History Shard maintains the Workflow Execution Event History, Workflow Execution mutable state, and the following internal Task Queues:
+
+- Internal Transfer Task Queue: Transfers internal tasks to the Matching Service.
+  Whenever a new Workflow Task needs to be scheduled, the History Service's Transfer Task Queue Processor transactionally dispatches it to the Matching Service.
+- Internal Timer Task Queue: Durably persists Timers.
+- Internal Replicator Task Queue: Asynchronously replicates Workflow Executions from active Clusters to other passive Clusters.
+  (Relies on the experimental Multi-Cluster feature.)
+- Internal Visibility Task Queue: Pushes data to the [Advanced Visibility](/visibility#advanced-visibility) index.
+
+## What is a Matching Service? {#matching-service}
+
+The Matching Service is responsible for hosting user-facing [Task Queues](/task-queue) for Task dispatching.
+
+<CaptionedImage
+    src="/diagrams/temporal-matching-service.svg"
+    title="Matching Service"
+/>
+
+It is responsible for matching Workers to Tasks and routing new Tasks to the appropriate queue.
+This service can scale internally by having multiple instances.
+
+It talks to the Frontend Service, History Service, and the database.
+
+- It uses grpcPort 7235 to host the service handler.
+- It uses port 6935 for membership related communication.
+
+Ports are configurable in the Temporal Service configuration.
+
+## What is a Worker Service? {#worker-service}
+
+The Worker Service runs background processing for the replication queue, system Workflows, and (in versions older than 1.5.0) the Kafka visibility processor.
+
+<div className="tdiw">
+  <div className="tditw">
+    <p className="tdit">Worker Service</p>
+  </div>
+  <div className="tdiiw" height="740">
+    <img
+      className="img_ev3q"
+      src="/diagrams/temporal-worker-service.svg"
+      alt="Worker Service"
+    />
+  </div>
+</div>
+
+It talks to the Frontend Service.
+
+- It uses port 6939 for membership-related communication.
+
+Ports are configurable in the Temporal Service configuration.
+
+## What is a Retention Period? {#retention-period}
+
+Retention Period is the duration for which the Temporal Service stores data associated with closed Workflow Executions on a Namespace in the Persistence store.
+
+- [How to set the Retention Period for a Namespace](/cli/operator#create)
+- [How to set the Retention Period for a Namespace using the Go SDK](/develop/go/namespaces)
+- [How to set the Retention Period for a Namespace using the Java SDK](/develop/java/namespaces)
+
+A Retention Period applies to all closed Workflow Executions within a [Namespace](/namespaces) and is set when the Namespace is registered.
+
+The Temporal Service triggers a Timer task at the end of the Retention Period that cleans up the data associated with the closed Workflow Execution on that Namespace.
+
+The minimum Retention Period is 1 day.
+On Temporal Service version 1.18 and later, the maximum Retention Period value for Namespaces can be set to anything over the minimum requirement of 1 day. Ensure that your Persistence store has enough capacity for the storage.
+On Temporal Service versions 1.17 and earlier, the maximum Retention Period you can set is 30 days.
+Setting the Retention Period to 0 results in the error _A valid retention period is not set on request_.
+
+If you don't set the Retention Period value when using the [`temporal operator namespace create`](/cli/operator#create) command, it defaults to 3 days.
+If you don't set the Retention Period value when using the Register Namespace Request API, it returns an error.
+
+When changing the Retention Period, the new duration applies to Workflow Executions that close after the change is saved.
+
+{/* TODO link up to working API usage examples */}

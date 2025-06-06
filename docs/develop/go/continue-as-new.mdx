@@ -2,42 +2,114 @@
 id: continue-as-new
 title: Continue-As-New - Go SDK
 sidebar_label: Continue-As-New
+description: Learn how to use Temporal's Continue-As-New in Go to manage large Event Histories by atomically creating new Workflow Executions with the same Workflow Id and fresh parameters.
 toc_max_heading_level: 4
 keywords:
-  - continue-as-new
+  - continue-as-new workflow
+  - restart workflow
+  - fresh event history
+  - avoid large event histories
+  - temporal go continue-as-new
 tags:
   - Workflows
   - continue-as-new
   - Go SDK
   - Temporal SDKs
-description: Continue-As-New in Temporal allows a Workflow Execution to close and start a new one with the same Workflow Id, new Run Id, and fresh Event History to manage large Event Histories.
 ---
 
-[Continue-As-New](/workflows#continue-as-new) enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.
-The Workflow Execution spawned from the use of Continue-As-New has the same Workflow Id, a new Run Id, and a fresh Event History and is passed all the appropriate parameters.
+This page answers the following questions for Go developers:
 
-To cause a Workflow Execution to [Continue-As-New](/workflows#continue-as-new), the Workflow API should return the result of the [`NewContinueAsNewError()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#NewContinueAsNewError) function available from the `go.temporal.io/sdk/workflow` package.
+- [What is Continue-As-New?](#what)
+- [How to Continue-As-New?](#how)
+- [When is it right to Continue-as-New?](#when)
+- [How to test Continue-as-New?](#how-to-test)
+
+## What is Continue-As-New? {#what}
+
+[Continue-As-New](/workflow-execution/continue-as-new) lets a Workflow Execution close successfully and creates a new Workflow Execution.
+You can think of it as a checkpoint when your Workflow gets too long or approaches certain scaling limits.
+
+The new Workflow Execution is in the same [chain](/workflow-execution#workflow-execution-chain); it keeps the same Workflow Id but gets a new Run Id and a fresh Event History.
+It also receives your Workflow's usual parameters.
+
+## How to Continue-As-New using the Go SDK {#how}
+
+First, design your Workflow parameters so that you can pass in the "current state" when you Continue-As-New into the next Workflow run.
+This state is typically set to `None` for the original caller of the Workflow.
+
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/samples-go/blob/main/safe_message_handler/workflow.go">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+```go
+ClusterManagerInput struct {
+    State             *ClusterManagerState
+    TestContinueAsNew bool
+}
+
+func newClusterManager(ctx workflow.Context, wfInput ClusterManagerInput) (*ClusterManager, error) {
+
+````
+The test hook in the above snippet is covered [below](#how-to-test).
+
+Inside your Workflow, return the [`NewContinueAsNewError`](https://pkg.go.dev/go.temporal.io/sdk/workflow#NewContinueAsNewError) error.
+This stops the Workflow right away and starts a new one.
+
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/samples-go/blob/main/safe_message_handler/workflow.go">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+```go
+return ClusterManagerResult{}, workflow.NewContinueAsNewError(
+    ctx,
+    ClusterManagerWorkflow,
+    ClusterManagerInput{
+        State:             &cm.state,
+        TestContinueAsNew: cm.testContinueAsNew,
+    },
+)
+````
+
+### Considerations for Workflows with Message Handlers {#with-message-handlers}
+
+If you use Updates or Signals, don't call Continue-as-New from the handlers.
+Instead, wait for your handlers to finish in your main Workflow before you return `NewContinueAsNewError`.
+See the [`AllHandlersFinished`](message-passing#wait-for-message-handlers) example for guidance.
+
+## When is it right to Continue-as-New using the Go SDK? {#when}
+
+Use Continue-as-New when your Workflow might hit [Event History Limits](/workflow-execution/event#event-history).
+
+Temporal tracks your Workflow's progress against these limits to let you know when you should Continue-as-New.
+Call `GetInfo(ctx).GetContinueAsNewSuggested()` to check if it's time.
+
+## How to test Continue-as-New using the Go SDK {#how-to-test}
+
+Testing Workflows that naturally Continue-as-New may be time-consuming and resource-intensive.
+Instead, add a test hook to check your Workflow's Continue-as-New behavior faster in automated tests.
+
+For example, when `TestContinueAsNew == True`, this sample creates a test-only variable called `maxHistoryLength` and sets it to a small value.
+A helper method in the Workflow checks it each time it considers using Continue-as-New:
+
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/samples-go/blob/main/safe_message_handler/workflow.go">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
 
 ```go
-func SimpleWorkflow(ctx workflow.Context, value string) error {
-    ...
-    return workflow.NewContinueAsNewError(ctx, SimpleWorkflow, value)
+func (cm *ClusterManager) shouldContinueAsNew(ctx workflow.Context) bool {
+	if workflow.GetInfo(ctx).GetContinueAsNewSuggested() {
+		return true
+	}
+	if cm.maxHistoryLength > 0 && workflow.GetInfo(ctx).GetCurrentHistoryLength() > cm.maxHistoryLength {
+		return true
+	}
+	return false
 }
 ```
-
-To check whether a Workflow Execution was spawned as a result of Continue-As-New, you can check if `workflow.GetInfo(ctx).ContinuedExecutionRunID` is not empty (i.e. `""`).
-
-**Notes**
-
-- To prevent Signal loss, be sure to perform an asynchronous drain on the Signal channel.
-  Failure to do so can result in buffered Signals being ignored and lost.
-- Make sure that the previous Workflow and the Continue-As-New Workflow are referenced by the same alias.
-  Failure to do so can cause the Workflow to Continue-As-New on an entirely different Workflow.
-
-:::warning Using Continue-as-New and Updates
-
-- Temporal _does not_ support Continue-as-New functionality within Update handlers.
-- Complete all handlers _before_ using Continue-as-New.
-- Use Continue-as-New from your main Workflow Definition method, just as you would complete or fail a Workflow Execution.
-
-:::

@@ -29,7 +29,7 @@ tags:
   - Temporal SDKs
 ---
 
-The observability section of the Temporal Developer's guide covers the many ways to view the current state of your [Temporal Application](/temporal#temporal-application)—that is, ways to view which [Workflow Executions](/workflows#workflow-execution) are tracked by the [Temporal Platform](/temporal#temporal-platform) and the state of any specified Workflow Execution, either currently or at points of an execution.
+The observability section of the Temporal Developer's guide covers the many ways to view the current state of your [Temporal Application](/temporal#temporal-application)—that is, ways to view which [Workflow Executions](/workflow-execution) are tracked by the [Temporal Platform](/temporal#temporal-platform) and the state of any specified Workflow Execution, either currently or at points of an execution.
 
 This section covers features related to viewing the state of the application, including:
 
@@ -43,12 +43,7 @@ This section covers features related to viewing the state of the application, in
 Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
 For a complete list of metrics capable of being emitted, see the [SDK metrics reference](/references/sdk-metrics).
 
-Metrics can be scraped and stored in time series databases, such as:
-
-- [Prometheus](https://prometheus.io/docs/introduction/overview/)
-- [M3db](https://m3db.io/docs/)
-- [statsd](https://github.com/statsd/statsd)
-
+Metrics can be scraped and stored in time series databases, such as [Prometheus](https://prometheus.io/docs/introduction/overview/).
 Temporal also provides a dashboard you can integrate with graphing services like [Grafana](https://grafana.com/docs/). For more information, see:
 
 - Temporal's implementation of the [Grafana dashboard](https://github.com/temporalio/dashboards)
@@ -82,7 +77,7 @@ For details on configuring a Prometheus scrape endpoint with Micrometer, see the
 
 ## Set up tracing {#tracing}
 
-Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.
+Tracing allows you to view the call graph of a Workflow along with its Activities, Nexus Operations, and any Child Workflows.
 
 Temporal Web's tracing capabilities mainly track Activity Execution within a Temporal context. If you need custom tracing specific for your use case, you should make use of context propagation to add tracing logic accordingly.
 
@@ -125,6 +120,16 @@ WorkerFactory factory = WorkerFactory.newInstance(client, factoryOptions);
 ```
 
 For more information, see the Temporal [OpenTracing module](https://github.com/temporalio/sdk-java/blob/master/temporal-opentracing/README.md).
+
+### Context Propagation Over Nexus Operation Calls
+
+Nexus does not use the standard context propagator header structure.
+Instead, it relies on a Temporal-agnostic protocol designed to connect arbitrary systems.
+To propagate context over Nexus Operation calls, the context is serialized into a `Map<String, String>`.
+This map is special as it will normalize all keys to lowercase.
+
+Because Nexus uses this custom format, and because Nexus calls may involve external systems, the `ContextPropagator` interface doesn’t apply to Nexus headers.
+Context must be explicitly propagated through interceptors, as shown in the [Nexus Context Propagation sample](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/nexuscontextpropagation).
 
 ## Log from a Workflow {#logging}
 
@@ -170,11 +175,11 @@ The typical method of retrieving a Workflow Execution is by its Workflow Id.
 
 However, sometimes you'll want to retrieve one or more Workflow Executions based on another property. For example, imagine you want to get all Workflow Executions of a certain type that have failed within a time range, so that you can start new ones with the same arguments.
 
-You can do this with [Search Attributes](/visibility#search-attribute).
+You can do this with [Search Attributes](/search-attribute).
 
-- [Default Search Attributes](/visibility#default-search-attributes) like `WorkflowType`, `StartTime` and `ExecutionStatus` are automatically added to Workflow Executions.
+- [Default Search Attributes](/search-attribute#default-search-attribute) like `WorkflowType`, `StartTime` and `ExecutionStatus` are automatically added to Workflow Executions.
 - _Custom Search Attributes_ can contain their own domain-specific data (like `customerId` or `numItems`).
-  - A few [generic Custom Search Attributes](/visibility#custom-search-attributes) like `CustomKeywordField` and `CustomIntField` are created by default in Temporal's [Docker Compose](https://github.com/temporalio/docker-compose).
+  - A few [generic Custom Search Attributes](/search-attribute#custom-search-attribute) like `CustomKeywordField` and `CustomIntField` are created by default in Temporal's [Docker Compose](https://github.com/temporalio/docker-compose).
 
 The steps to using custom Search Attributes are:
 
@@ -185,7 +190,7 @@ The steps to using custom Search Attributes are:
 - Read the value of the Search Attribute:
   - On the Client by calling `DescribeWorkflow`.
   - In the Workflow by looking at `WorkflowInfo`.
-- Query Workflow Executions by the Search Attribute using a [List Filter](/visibility#list-filter):
+- Query Workflow Executions by the Search Attribute using a [List Filter](/list-filter):
   - [In the Temporal CLI](/cli/workflow#list).
   - In code by calling `ListWorkflowExecutions`.
 

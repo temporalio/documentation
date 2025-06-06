@@ -13,10 +13,10 @@ tags:
 description: Continue-As-New helps manage large Event Histories by initiating a new Workflow Execution with the same Workflow Id and fresh parameters, ensuring efficient Workflow management.
 ---
 
-[Continue-As-New](/workflows#continue-as-new) enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.
+[Continue-As-New](/workflow-execution/continue-as-new) enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.
 The Workflow Execution spawned from the use of Continue-As-New has the same Workflow Id, a new Run Id, and a fresh Event History and is passed all the appropriate parameters.
 
-To cause a Workflow Execution to [Continue-As-New](/workflows#continue-as-new), the Workflow function should return the result of the [`continueAsNew`](https://typescript.temporal.io/api/namespaces/workflow#continueasnew).
+To cause a Workflow Execution to [Continue-As-New](/workflow-execution/continue-as-new), the Workflow function should return the result of the [`continueAsNew`](https://typescript.temporal.io/api/namespaces/workflow#continueasnew).
 
 <!--SNIPSTART typescript-continue-as-new-workflow -->
 
@@ -42,7 +42,7 @@ export async function loopingWorkflow(iteration = 0): Promise<void> {
 :::warning Using Continue-as-New and Updates
 
 - Temporal _does not_ support Continue-as-New functionality within Update handlers.
-- Complete all handlers _before_ using Continue-as-New.
+- [Complete all handlers](/develop/typescript/message-passing#wait-for-message-handlers) _before_ using Continue-as-New.
 - Use Continue-as-New from your main Workflow Definition method, just as you would complete or fail a Workflow Execution.
 
 :::

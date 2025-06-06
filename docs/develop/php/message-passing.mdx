@@ -8,6 +8,9 @@ keywords:
   - signals
   - queries
   - updates
+  - dynamic signals
+  - dynamic queries
+  - dynamic updates
 tags:
   - Workflows
   - Messages
@@ -21,7 +24,7 @@ description: Learn how to develop with Signals, Queries, and Updates in Temporal
 
 ## How to develop with Signals {#signals}
 
-A [Signal](/encyclopedia/workflow-message-passing#sending-signals) is a message sent to a running Workflow Execution.
+A [Signal](/sending-messages#sending-signals) is a message sent to a running Workflow Execution.
 
 Signals are defined in your code and handled in your Workflow Definition.
 Signals can be sent to Workflow Executions from a Temporal Client or from another Workflow Execution.
@@ -33,19 +36,19 @@ A Signal has a name and can have arguments.
 - The name, also called a Signal type, is a string.
 - The arguments must be [serializable](/dataconversion).
 
-Workflows can answer synchronous [Queries](/encyclopedia/workflow-message-passing#sending-queries) and receive [Signals](/encyclopedia/workflow-message-passing#sending-signals).
+Workflows can answer synchronous [Queries](/sending-messages#sending-queries) and receive [Signals](/sending-messages#sending-signals).
 
-All interface methods must have one of the following annotations:
+All interface methods must have one of the following attributes:
 
 - **#[WorkflowMethod]** indicates an entry point to a Workflow.
   It contains parameters that specify timeouts and a Task Queue name.
-  Required parameters (such as `executionStartToCloseTimeoutSeconds`) that are not specified through the annotation must be provided at runtime.
+  Required parameters (such as `executionStartToCloseTimeoutSeconds`) that are not specified through the attribute must be provided at runtime.
 - **#[SignalMethod]** indicates a method that reacts to external signals. It must have a `void` return type.
 - **#[QueryMethod]** indicates a method that reacts to synchronous query requests. It must have a non `void` return type.
 
 > It is possible (though not recommended for usability reasons) to annotate concrete class implementation.
 
-You can have more than one method with the same annotation (except #[WorkflowMethod]).
+You can have more than one method with the same attribute (except #[WorkflowMethod]).
 
 For example:
 
@@ -75,7 +78,7 @@ interface FileProcessingWorkflow
 }
 ```
 
-Note that name parameter of Workflow method annotations can be used to specify name of Workflow, Signal and Query types.
+Note that name parameter of Workflow method attributes can be used to specify name of Workflow, Signal and Query types.
 If name is not specified the short name of the Workflow interface is used.
 
 In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow Type defaults to `"FileProcessingWorkflow"`.
@@ -84,7 +87,7 @@ In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workf
 
 Workflows listen for Signals by the Signal's name.
 
-Use the `#[SignalMethod]` annotation to handle Signals in the Workflow interface:
+Use the `#[SignalMethod]` attribute to handle Signals in the Workflow interface:
 
 ```php
 use Temporal\Workflow;
@@ -196,7 +199,7 @@ $run = $workflowClient->startWithSignal(
 
 ## How to develop with Queries {#queries}
 
-A [Query](/encyclopedia/workflow-message-passing#sending-queries) is a synchronous operation that is used to get the state of a Workflow Execution.
+A [Query](/sending-messages#sending-queries) is a synchronous operation that is used to get the state of a Workflow Execution.
 
 ### How to define a Query {#define-query}
 
@@ -205,19 +208,19 @@ A Query has a name and can have arguments.
 - The name, also called a Query type, is a string.
 - The arguments must be [serializable](/dataconversion).
 
-Workflows can answer synchronous [Queries](/encyclopedia/workflow-message-passing#sending-queries) and receive [Signals](/encyclopedia/workflow-message-passing#sending-signals).
+Workflows can answer synchronous [Queries](/sending-messages#sending-queries) and receive [Signals](/sending-messages#sending-signals).
 
-All interface methods must have one of the following annotations:
+All interface methods must have one of the following attributes:
 
 - **#[WorkflowMethod]** indicates an entry point to a Workflow.
   It contains parameters that specify timeouts and a Task Queue name.
-  Required parameters (such as `executionStartToCloseTimeoutSeconds`) that are not specified through the annotation must be provided at runtime.
+  Required parameters (such as `executionStartToCloseTimeoutSeconds`) that are not specified through the attribute must be provided at runtime.
 - **#[SignalMethod]** indicates a method that reacts to external signals. It must have a `void` return type.
 - **#[QueryMethod]** indicates a method that reacts to synchronous query requests. It must have a non `void` return type.
 
 > It is possible (though not recommended for usability reasons) to annotate concrete class implementation.
 
-You can have more than one method with the same annotation (except #[WorkflowMethod]).
+You can have more than one method with the same attribute (except #[WorkflowMethod]).
 
 For example:
 
@@ -247,7 +250,7 @@ interface FileProcessingWorkflow
 }
 ```
 
-Note that name parameter of Workflow method annotations can be used to specify name of Workflow, Signal and Query types.
+Note that name parameter of Workflow method attributes can be used to specify name of Workflow, Signal and Query types.
 If name is not specified the short name of the Workflow interface is used.
 
 In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow Type defaults to `"FileProcessingWorkflow"`.
@@ -256,7 +259,7 @@ In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workf
 
 Queries are handled by your Workflow.
 
-Don't include any logic that causes [Command](/workflows#command) generation within a Query handler (such as executing Activities).
+Don't include any logic that causes [Command](/workflow-execution#command) generation within a Query handler (such as executing Activities).
 Including such logic causes unexpected behavior.
 
 You can add custom Query types to handle Queries such as Querying the current state of a
@@ -353,7 +356,7 @@ Queries are sent from a Temporal Client.
 
 ## How to develop with Updates {#updates}
 
-An [Update](/encyclopedia/workflow-message-passing#sending-updates) is an operation that can mutate the state of a Workflow Execution and return a response.
+An [Update](/sending-messages#sending-updates) is an operation that can mutate the state of a Workflow Execution and return a response.
 
 ### Define Update {#define-update}
 
@@ -497,6 +500,68 @@ $resultUuid = $stub->startUpdate(
  )->getResult();
 ```
 
+#### Update-With-Start {#update-with-start}
+
+[Update-with-Start](/sending-messages#update-with-start) lets you [send an Update](#send-update-from-client) that checks whether an already-running Workflow with that ID exists:
+
+- If the Workflow exists, the Update is processed.
+- If the Workflow does not exist, a new Workflow Execution is started with the given ID, and the Update is processed before the main Workflow method starts to execute.
+
+You can:
+
+- Use the [`updateWithStart`](https://php.temporal.io/classes/Temporal-Client-WorkflowClientInterface.html#method_updateWithStart) WorkflowClient API.
+  It returns once the requested Update wait stage has been reached; or when the request times out.
+- Use the [`UpdateHandle`](https://php.temporal.io/classes/Temporal-Client-Update-UpdateHandle.html) to retrieve a result from the Update.
+
+You provide:
+
+- A WorkflowStub created from [`WorkflowOptions`](https://php.temporal.io/classes/Temporal-Client-WorkflowOptions.html).
+  - The `WorkflowOptions` require a [Workflow Id Conflict Policy](/workflow-execution/workflowid-runid#workflow-id-conflict-policy) to be specified.
+  - Choose ["Use Existing"](https://php.temporal.io/classes/Temporal-Common-WorkflowIdConflictPolicy.html#enumcase_UseExisting) and use an idempotent Update handler to ensure your code can be executed again in case of a Client failure.
+    Not all `WorkflowOptions` are allowed.
+    For example, specifying a Cron Schedule will result in an error.
+
+- Update name or [`UpdateOptions`](https://php.temporal.io/classes/Temporal-Client-Update-UpdateOptions.html).
+  This mirrors the approach used for [Update Workflow](#send-update-from-client).
+  - For Update-with-Start, the Workflow Id is optional.
+  - When specified, the Id must match the one used in `WorkflowOptions`.
+  - Since a running Workflow Execution may not already exist, you can't set a Run Id.
+
+For example:
+
+```php
+$stub = $workflowClient->newUntypedWorkflowStub(
+    ShoppingCartWorkflow::class,
+    WorkflowOptions::new()
+        ->withTaskQueue('service-queue')
+        ->withWorkflowId($cartId)
+        ->withWorkflowIdConflictPolicy(WorkflowIdConflictPolicy::UseExisting),
+);
+$handle = $workflowClient->updateWithStart(
+    workflow: $stub,
+    update: 'addItem',
+    updateArgs: [$itemId, $quantity],
+);
+
+$price = $handle->getResult();
+```
+
+To wait on the Update result, run the Update with the wait stage set to [`LifecycleStage::StageCompleted`](https://php.temporal.io/classes/Temporal-Client-Update-LifecycleStage.html#enumcase_StageCompleted).
+This returns once the update result is available; or when the API call times out.
+
+For example:
+
+```php
+$handle = $workflowClient->updateWithStart(
+    workflow: $stub,
+    update: UpdateOptions::new('addItem', LifecycleStage::StageCompleted),
+    updateArgs: [$itemId, $quantity],
+);
+
+assert($handle->hasResult() === true);
+$price = $handle->getResult();
+```
+
 ## Message handler patterns {#message-handler-patterns}
 
 This section covers common write operations, such as Signal and Update handlers.
@@ -504,7 +569,7 @@ It doesn't apply to pure read operations, like Queries or Update Validators.
 
 :::tip
 
-For additional information, see [Inject work into the main Workflow](/encyclopedia/workflow-message-passing#injecting-work-into-main-workflow), [Ensuring your messages are processed exactly once](/encyclopedia/workflow-message-passing#exactly-once-message-processing), and [this sample](https://github.com/temporalio/samples-php/tree/master/app/src/SafeMessageHandlers) demonstrating safe `async` message handling.
+For additional information, see [Inject work into the main Workflow](/handling-messages#injecting-work-into-main-workflow), [Ensuring your messages are processed exactly once](/handling-messages#exactly-once-message-processing), and [this sample](https://github.com/temporalio/samples-php/tree/master/app/src/SafeMessageHandlers) demonstrating safe `async` message handling.
 :::
 
 ### Add wait conditions to block
@@ -576,21 +641,78 @@ public function myUpdate()
 }
 ```
 
-See [Finishing handlers before the Workflow completes](/encyclopedia/workflow-message-passing#finishing-message-handlers) for more information.
+See [Finishing handlers before the Workflow completes](/handling-messages#finishing-message-handlers) for more information.
+
+### Use `#[WorkflowInit]` to operate on Workflow input before any handler executes
+
+Normally, your Workflows constructor won't have any parameters.
+However, if you use the `#[WorkflowInit]` attribute on your constructor, you can give it the same [Workflow parameters](/develop/php/core-application#workflow-parameters) as your `#[WorkflowMethod]`.
+The SDK will then ensure that your constructor receives the Workflow input arguments that the [Client sent](/develop/php/temporal-clients#start-workflow-execution).
+The Workflow input arguments are also passed to your `#[WorkflowMethod]` method -- that always happens, whether or not you use the `#[WorkflowInit]` attribute.
+This is useful if you have message handlers that need access to Workflow input: see [Initializing the Workflow first](/sending-messages).
+
+Here's an example.
+Notice that the constructor and `getGreeting` must have the same parameters:
+
+```php
+use Temporal\Workflow;
+
+#[Workflow\WorkflowInterface]
+class GreetingExample
+{
+    private readonly string $nameWithTitle;
+    private bool $titleHasBeenChecked;
+
+    // Note the attribute is on a public constructor
+    #[Workflow\WorkflowInit]
+    public function __construct(string $input)
+    {
+        $this->nameWithTitle = 'Sir ' . $input;
+        $this->titleHasBeenChecked = false;
+    }
+
+    #[Workflow\WorkflowMethod]
+    public function getGreeting(string $input)
+    {
+        yield Workflow::await(fn() => $this->titleHasBeenChecked);
+        return "Hello " . $this->nameWithTitle;
+    }
+
+    #[Workflow\UpdateMethod]
+    public function checkTitleValidity()
+    {
+        // 👉 The handler is now guaranteed to see the workflow input
+        // after it has been processed by the constructor.
+        $isValid = yield Workflow::executeActivity('activity.checkTitleValidity', [$this->nameWithTitle]);
+        $this->titleHasBeenChecked = true;
+        return $isValid;
+    }
+}
+```
+
+:::note
+
+By default, the Workflow Handler runs before Signals and Updates in PHP SDK v2. This behavior is incorrect.
+To avoid breaking already written Workflows, since PHP SDK v2.11.0, a [feature flag](https://php.temporal.io/classes/Temporal-Worker-FeatureFlags.html#property_workflowDeferredHandlerStart) was added to enhance the behavior of the Workflow Handler.
+Make sure to set this flag to `true` to enable the correct behavior.
+
+:::
 
 ### Use `Mutex` to prevent concurrent handler execution {#control-handler-concurrency}
 
 Concurrent processes can interact in unpredictable ways.
-Incorrectly written [concurrent message-passing](/encyclopedia/workflow-message-passing#message-handler-concurrency) code may not work correctly when multiple handler instances run simultaneously.
+Incorrectly written [concurrent message-passing](/handling-messages#message-handler-concurrency) code may not work correctly when multiple handler instances run simultaneously.
 Here's an example of a pathological case:
 
 ```php
-#[WorkflowInterface]
+use Temporal\Workflow;
+
+#[Workflow\WorkflowInterface]
 class MyWorkflow
 {
     // ...
 
-    #[SignalMethod]
+    #[Workflow\SignalMethod]
     public function badAsyncHandler()
     {
         $data = yield Workflow::executeActivity(
@@ -658,7 +780,7 @@ When sending a Signal, Update, or Query to a Workflow, your Client might encount
 - **The workflow does not exist**:
   You'll receive a [`WorkflowNotFoundException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowNotFoundException.html) exception.
 
-See [Exceptions in message handlers](/encyclopedia/workflow-message-passing#exceptions) for a non–PHP-specific discussion of this topic.
+See [Exceptions in message handlers](/handling-messages#exceptions) for a non–PHP-specific discussion of this topic.
 
 ### Problems when sending a Signal {#signal-problems}
 
@@ -704,7 +826,7 @@ These might include:
 
   - The Workflow was canceled or failed.
 
-  - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/encyclopedia/workflow-message-passing#finishing-message-handlers).
+  - The Workflow completed normally or continued-as-new and the Workflow author did not [wait for handlers to be finished](/handling-messages#finishing-message-handlers).
 
 ### Problems when sending a Query {#query-problems}
 
@@ -720,3 +842,83 @@ When working with Queries, you may encounter these errors:
 
 - **The handler caused the Workflow Task to fail.**
   This would happen, for example, if the Query handler blocks the thread for too long without yielding.
+
+## Dynamic components {#dynamic-handler}
+
+Temporal supports Dynamic Queries, Signals, and Updates.
+These are unnamed handlers that are invoked if no other statically defined handler with the given name exists.
+
+Dynamic Handlers provide flexibility to handle cases where the names of Queries, Signals, or Updates aren't known at run time.
+
+:::caution
+
+Dynamic Handlers should be used judiciously as a fallback mechanism rather than the primary approach.
+Overusing them can lead to maintainability and debugging issues down the line.
+
+Instead, Signals, or Queries should be defined statically whenever possible, with clear names that indicate their purpose.
+Use static definitions as the primary way of structuring your Workflows.
+
+Reserve Dynamic Handlers for cases where the handler names are not known at development time and need to be looked up dynamically at runtime.
+They are meant to handle edge cases and act as a catch-all, not as the main way of invoking logic.
+
+:::
+
+### How to set a Dynamic Query {#set-a-dynamic-query}
+
+A Dynamic Query in Temporal is a Query method that is invoked dynamically at runtime if no other Query with the same name is registered.
+Use [`Workflow::registerDynamicQuery()`](https://php.temporal.io/classes/Temporal-Workflow.html#method_registerDynamicQuery) to set a dynamic Query handler.
+
+The Query Handler parameters must accept a `string` name and [`ValuesInterface`](https://php.temporal.io/classes/Temporal-DataConverter-ValuesInterface.html) for the arguments.
+
+```php
+Workflow::registerDynamicQuery(function (string $name, ValuesInterface $arguments): string {
+    return \sprintf(
+        'Got query `%s` with %d arguments',
+        $name,
+        $arguments->count(),
+    );
+});
+```
+
+### How to set a Dynamic Signal {#set-a-dynamic-signal}
+
+A Dynamic Signal in Temporal is a Signal that is invoked dynamically at runtime if no other Signal with the same input is registered.
+Use [`Workflow::registerDynamicSignal()`](https://php.temporal.io/classes/Temporal-Workflow.html#method_registerDynamicSignal) to set a dynamic Signal handler.
+
+The Signal Handler parameters must accept a `string` name and [`ValuesInterface`](https://php.temporal.io/classes/Temporal-DataConverter-ValuesInterface.html) for the arguments.
+
+```php
+Workflow::registerDynamicSignal(function (string $name, ValuesInterface $arguments): void {
+     Workflow::getLogger()->info(\sprintf(
+         'Executed signal `%s` with %d arguments',
+         $name,
+         $arguments->count(),
+     ));
+ });
+```
+
+### How to set a Dynamic Update {#set-a-dynamic-update}
+
+A Dynamic Update in Temporal is an Update that is invoked dynamically at runtime if no other Update with the same input is registered.
+Use [`Workflow::registerDynamicUpdate()`](https://php.temporal.io/classes/Temporal-Workflow.html#method_registerDynamicUpdate) to set a dynamic Update handler.
+
+The method accepts two arguments:
+
+- Update Handler
+- Update Validator (optional) that should throw an exception if the validation fails
+
+Both the Handler and the Validator must accept a `string` name and [`ValuesInterface`](https://php.temporal.io/classes/Temporal-DataConverter-ValuesInterface.html) for the arguments.
+
+```php
+Workflow::registerDynamicUpdate(
+    static fn(string $name, ValuesInterface $arguments): string => \sprintf(
+        'Got update `%s` with %d arguments',
+        $name,
+        $arguments->count(),
+    ),
+    static fn(string $name, ValuesInterface $arguments) => \str_starts_with(
+        $name,
+        'update_',
+    ) or throw new \InvalidArgumentException('Invalid update name'),
+);
+```

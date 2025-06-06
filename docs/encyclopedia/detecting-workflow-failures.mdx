@@ -15,10 +15,13 @@ tags:
   - Timeouts
 ---
 
-import PrettyImage from '@site/src/components/pretty-image/PrettyImage';
-import { RelatedReadContainer, RelatedReadItem } from '@site/src/components/related-read/RelatedRead';
+import { RelatedReadContainer, RelatedReadItem, CaptionedImage } from '@site/src/components';
 
-Temporal can detect different kinds of Workflow Execution failures through the following timeouts:
+Each Workflow Timeout controls the maximum duration of a different aspect of a Workflow Execution. Workflow Timeouts are set when starting the Workflow Execution.
+
+Before we continue, we want to note that we generally do not recommend setting Workflow Timeouts, because Workflows are designed to be long-running and resilient.
+Instead, setting a Timeout can limit its ability to handle unexpected delays or long-running processes.
+If you need to perform an action inside your Workflow after a specific period of time, we recommend using a Timer.
 
 - [Workflow Execution Timeout](#workflow-execution-timeout)
 - [Workflow Run Timeout](#workflow-run-timeout)
@@ -39,18 +42,24 @@ A Workflow Execution Timeout is the maximum time that a Workflow Execution can b
     <RelatedReadItem path="/develop/dotnet/failure-detection#workflow-timeouts" text="Set a Workflow Execution Timeout using the .NET SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
-<PrettyImage src="/diagrams/workflow-execution-timeout.svg" title="Workflow Execution Timeout period" />
+<CaptionedImage
+    src="/diagrams/workflow-execution-timeout.svg"
+    title="Workflow Execution Timeout period" />
 
 **The default value is ∞ (infinite).**
 If this timeout is reached, the Workflow Execution changes to a Timed Out status.
 This timeout is different from the [Workflow Run Timeout](#workflow-run-timeout).
-This timeout is most commonly used for stopping the execution of a [Temporal Cron Job](/workflows#temporal-cron-job) after a certain amount of time has passed.
+This timeout is most commonly used for stopping the execution of a [Temporal Cron Job](/cron-job) after a certain amount of time has passed.
 
 ## Workflow Run Timeout? {#workflow-run-timeout}
 
 **What is a Workflow Run Timeout in Temporal?**
 
-A Workflow Run Timeout is the maximum amount of time that a single Workflow Run is restricted to.
+A Workflow Run is the instance of a specific Workflow Execution.
+
+Due to the potential for Workflow Retries or Continue-as-New, a Workflow Execution may have multiple Workflow runs. For example, if a Workflow that specifies a Retry Policy initially fails and then succeeds during the next retry attempt, there is a single Workflow Execution that spans two Workflow Runs. Both runs will share the same Workflow ID but have a unique Run ID to distinguish them.
+
+A Workflow Run Timeout restricts the maximum duration of a single Workflow Run. If the Workflow Run Timeout is reached, the Workflow Execution will be Timed Out. Because this Timeout only applies to an individual Workflow Run, this does not include retries or Continue-As-New.
 
 <RelatedReadContainer>
     <RelatedReadItem path="/develop/go/failure-detection#workflow-timeouts" text="Set a Workflow Run Timeout using the Go SDK" archetype="feature-guide" />
@@ -61,10 +70,12 @@ A Workflow Run Timeout is the maximum amount of time that a single Workflow Run 
     <RelatedReadItem path="/develop/dotnet/failure-detection#workflow-timeouts" text="Set a Workflow Timeout using the .NET SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
-<PrettyImage src="/diagrams/workflow-run-timeout.svg" title="Workflow Run Timeout period" />
+<CaptionedImage
+    src="/diagrams/workflow-run-timeout.svg"
+    title="Workflow Run Timeout period" />
 
 **The default is set to the same value as the [Workflow Execution Timeout](#workflow-execution-timeout).**
-This timeout is most commonly used to limit the execution time of a single [Temporal Cron Job Execution](/workflows#temporal-cron-job).
+This timeout is most commonly used to limit the execution time of a single [Temporal Cron Job Execution](/cron-job).
 
 If the Workflow Run Timeout is reached, the Workflow Execution will be Timed Out.
 
@@ -73,6 +84,8 @@ If the Workflow Run Timeout is reached, the Workflow Execution will be Timed Out
 **What is a Workflow Task Timeout in Temporal?**
 
 A Workflow Task Timeout is the maximum amount of time allowed for a [Worker](/workers#worker) to execute a [Workflow Task](/tasks#workflow-task) after the Worker has pulled that Workflow Task from the [Task Queue](/task-queue).
+
+This Timeout is primarily available to recognize whether a Worker has gone down so that the Workflow Execution can be recovered on a different Worker.
 
 <RelatedReadContainer>
     <RelatedReadItem path="/develop/go/failure-detection#workflow-timeouts" text="Set a Workflow Task Timeout using the Go SDK" archetype="feature-guide" />
@@ -83,7 +96,9 @@ A Workflow Task Timeout is the maximum amount of time allowed for a [Worker](/wo
     <RelatedReadItem path="/develop/dotnet/failure-detection#workflow-timeouts" text="Set a Workflow Task Timeout using the .NET SDK" archetype="feature-guide" />
 </RelatedReadContainer>
 
-<PrettyImage src="/diagrams/workflow-task-timeout.svg" title="Workflow Task Timeout period" />
+<CaptionedImage
+    src="/diagrams/workflow-task-timeout.svg"
+    title="Workflow Task Timeout period" />
 
 **The default value is 10 seconds.**
 This timeout is primarily available to recognize whether a Worker has gone down so that the Workflow Execution can be recovered on a different Worker.

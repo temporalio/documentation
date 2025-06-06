@@ -1,0 +1,57 @@
+---
+id: remote-data-encoding
+title: Remote Data Encoding
+sidebar_label: Remote Data Encoding
+description: Learn how to use remote encoding to transform data for the Temporal CLI and Web UI.
+slug: /remote-data-encoding
+toc_max_heading_level: 4
+keywords:
+  - encryption
+  - explanation
+  - keys
+  - payloads
+  - secrets
+  - data-converters
+  - remote-data-encoding
+tags:
+  - Concepts
+  - Encryption
+  - Data Converters
+  - Security
+---
+
+This page discusses [Remote Data Encoding](#remote-data-encoding).
+
+## What is remote data encoding? {#remote-data-encoding}
+
+Remote data encoding is exposing your Payload Codec via HTTP endpoints to support remote encoding and decoding.
+
+Running your encoding remotely allows you to use it with the [Temporal CLI](/cli) to encode/decode data for several commands including `temporal workflow show` and with Temporal Web UI to decode data in your Workflow Execution details view.
+
+To run data encoding/decoding remotely, use a [Codec Server](/codec-server). A Codec Server is an HTTP server that uses your custom Codec logic to decode your data remotely.
+The Codec Server is independent of the Temporal Service and decodes your encrypted payloads through predefined endpoints.
+You create, operate, and manage access to your Codec Server in your own environment.
+The Temporal CLI and the Web UI in turn provide built-in hooks to call the Codec Server to decode encrypted payloads on demand.
+
+### Encoding data on the Web UI and CLI
+
+You can perform some operations on your Workflow Execution using the Temporal CLI and the Web UI.
+For example. you can start or signal an active Workflow Execution from the Temporal CLI or cancel a Workflow Execution from the Web UI, which might require inputs that contain sensitive data.
+
+To encode this data, specify your [Codec Server endpoints](/codec-server) with the `codec-endpoint` parameter in [the Temporal CLI](/cli) and configure your Web UI to use the Codec Server endpoints.
+
+### Decoding data on the Web UI and CLI
+
+If you use custom encoding, Payload data handled by the Temporal Service is stored encoded. Since the Web UI uses the [Visibility](/temporal-service/visibility) database to show events and data stored on the Temporal Server, all data in the Workflow Execution History in your Web UI is displayed in the encoded format.
+
+To decode output when using the Web UI and the Temporal CLI, use a [Codec Server](/codec-server).
+
+Note that a remote data encoder is a separate system with access to your encryption keys and exposes APIs to encode and decode any data.
+Evaluate and ensure that your remote data encoder endpoints are secured and only authorized users have access to them.
+
+Samples:
+
+- [Go](https://github.com/temporalio/samples-go/tree/main/codec-server)
+- [Java](https://github.com/temporalio/sdk-java/tree/master/temporal-remote-data-encoder)
+- [Python](https://github.com/temporalio/samples-python/tree/main/encryption)
+- [TypeScript](https://github.com/temporalio/samples-typescript/tree/main/encryption)

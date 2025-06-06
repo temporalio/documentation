@@ -39,7 +39,7 @@ The pages shows how to do the following:
 
 **How to connect to the local Temporal CLI development Temporal Service using the Python SDK**
 
-A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Service](/clusters).
+A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Service](/temporal-service).
 Communication with a Temporal Service includes, but isn't limited to, the following:
 
 - Starting Workflow Executions.
@@ -90,7 +90,7 @@ if __name__ == "__main__":
 
 **How to connect to a Temporal Service**
 
-A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Service](/clusters).
+A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Service](/temporal-service).
 Communication with a Temporal Service includes, but isn't limited to, the following:
 
 - Starting Workflow Executions.
@@ -139,15 +139,46 @@ if __name__ == "__main__":
 
 ## Connect to Temporal Cloud {#connect-to-temporal-cloud}
 
-**How to connect to Temporal Cloud using the Python SDK**
+### How to connect to Temporal Cloud using an API key {#connect-to-temporal-cloud-api-key}
 
-When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
+To use an [API key](/cloud/api-keys) with the Temporal Python SDK, you will need to provide additional connection options:
+
+- Your _API Key_ value
+- Your _Namespace and Account id_ combination, which follows the format `<namespace_id>.<account_id>`.
+- The _endpoint_ may vary. The most common endpoint used is the gRPC regional endpoint, which follows the format: `<region>.<cloud_provider>.api.temporal.io:7233`.
+- For Namespaces with High Availability features with API key authentication enabled, use the gRPC Namespace endpoint: `<namespace>.<account>.tmprl.cloud:7233`.
+  This allows automated failover without needing to switch endpoints.
+
+You can find the Namespace and Account ID, as well as the endpoint, on the Namespaces tab:
+
+![The Namespace and Account ID combination on the left, and the regional endpoint on the right](/img/cloud/apikeys/namespaces-and-regional-endpoints.png)
+
+Now, when instantiating a Temporal `client` in your Temporal Python SDK code, provide the API key:
+
+```python
+client = await Client.connect(
+    <endpoint>,
+    namespace=<namespace_id>.<account_id>,
+    api_key=<APIKey>,
+    tls=True,
+)
+```
+
+To update an API key, replace the `api_key` parameter:
+
+```python
+client.api_key = my_key_updated
+```
+
+### How to connect to Temporal Cloud using mTLS {#connect-to-temporal-cloud-tls}
+
+When you connect to [Temporal Cloud](/cloud) with mTLS, you need to provide additional connection and client options that include the following:
 
 - The [Temporal Cloud Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id).
-   A Namespace Id is made up of a Namespace name appended by your unique five- or six-digit [Temporal Cloud Account Id](/cloud/namespaces#temporal-cloud-account-id).
-   You can find this Account Id in the URL of your Namespace and on the "Namespaces" page on the Temporal Cloud website.
-   For example, in  `https://cloud.temporal.io/namespaces/yournamespacename.a2fx6/`, your Account Id is `a2fx6`.
-   The fully qualified Namespace Id for your client with this Namespace is `yournamespacename.a2fx6`.
+  A Namespace Id is made up of a Namespace name appended by your unique five- or six-digit [Temporal Cloud Account Id](/cloud/namespaces#temporal-cloud-account-id).
+  You can find this Account Id in the URL of your Namespace and on the "Namespaces" page on the Temporal Cloud website.
+  For example, in `https://cloud.temporal.io/namespaces/yournamespacename.a2fx6/`, your Account Id is `a2fx6`.
+  The fully qualified Namespace Id for your client with this Namespace is `yournamespacename.a2fx6`.
 - The [Namespace's gRPC endpoint](/cloud/namespaces#temporal-cloud-grpc-endpoint).
   An endpoint listing is available at the [Temporal Cloud Website](https://cloud.temporal.io/namespaces) on each Namespace detail page.
   The endpoint contains the Namespace Id and port.
@@ -194,7 +225,7 @@ async def main():
 
 **How to start a Workflow Execution using the Python SDK**
 
-[Workflow Execution](/workflows#workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
+[Workflow Execution](/workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
 
 In the examples below, all Workflow Executions are started using a Temporal Client.
 To spawn Workflow Executions from within another Workflow Execution, use either the [Child Workflow](/develop/python/child-workflows) or External Workflow APIs.
@@ -272,7 +303,7 @@ if __name__ == "__main__":
 
 **How to set a Workflow Id using the Python SDK**
 
-You must set a [Workflow Id](/workflows#workflow-id).
+You must set a [Workflow Id](/workflow-execution/workflowid-runid#workflow-id).
 
 When setting a Workflow Id, we recommended mapping it to a business process or business entity identifier, such as an order identifier or customer identifier.
 

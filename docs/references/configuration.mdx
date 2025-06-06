@@ -83,6 +83,12 @@ For example, if you want to exclude `task_queue` because it has unbounded cardin
 
 #### statsd
 
+:::caution
+
+`statsd` is not supported natively by Temporal.
+
+:::
+
 The `statsd` sections supports the following settings:
 
 - `hostPort`: The host:port of the statsd server.
@@ -253,11 +259,11 @@ _Required_ - The name of the data store definition that should be used by the Te
 
 ### visibilityStore
 
-_Required_ - The name of the primary data store definition that should be used to set up [Visibility](/clusters#visibility) on the Temporal Cluster.
+_Required_ - The name of the primary data store definition that should be used to set up [Visibility](/temporal-service/visibility) on the Temporal Cluster.
 
 ### secondaryVisibilityStore
 
-_Optional_ - The name of the secondary data store definition that should be used to set up [Dual Visibility](/visibility#dual-visibility) on the Temporal Cluster.
+_Optional_ - The name of the secondary data store definition that should be used to set up [Dual Visibility](/dual-visibility) on the Temporal Cluster.
 
 ### datastores
 
@@ -322,7 +328,7 @@ The `log` section is optional and contains the following possible values:
 
 ## clusterMetadata
 
-`clusterMetadata` contains the local cluster information. The information is used in [Multi-Cluster Replication](/clusters#multi-cluster-replication).
+`clusterMetadata` contains the local cluster information. The information is used in [Multi-Cluster Replication](/temporal-service/multi-cluster-replication).
 
 An example `clusterMetadata` section:
 
@@ -409,7 +415,7 @@ Use `dns:///` prefix to enable round-robin between IP address for DNS name.
 
 _Optional_
 
-Archival is an optional configuration needed to set up the [Archival store](/clusters#archival).
+Archival is an optional configuration needed to set up the [Archival store](/temporal-service/archival).
 It can be enabled on `history` and `visibility` data.
 
 The following list describes supported values for each configuration on the `history` and `visibility` data.
@@ -532,7 +538,7 @@ dcRedirectionPolicy:
 
 _Optional_
 
-Configuration for setting up file-based [dynamic configuration](/clusters#dynamic-configuration) client for the Cluster.
+Configuration for setting up file-based [dynamic configuration](/temporal-service/configuration#dynamic-configuration) client for the Cluster.
 
 This setting is required if specifying dynamic configuration. Supported configuration values are as follows:
 

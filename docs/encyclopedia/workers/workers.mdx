@@ -13,12 +13,15 @@ tags:
   - Concepts
 ---
 
+import { CaptionedImage } from '@site/src/components';
+
 This page discusses the following:
 
 - [Worker](#worker)
 - [Worker Program](#worker-program)
 - [Worker Entity](#worker-entity)
-- [Worker Identity?](#worker-identity)
+- [Worker Identity](#worker-identity)
+- [Worker Process](#worker-process)
 
 ## What is a Worker? {#worker}
 
@@ -96,22 +99,12 @@ Here are some approaches:
 
 ## What is a Worker Process? {#worker-process}
 
-<div className="tdiw">
-  <div className="tditw">
-    <p className="tdit">
-      Component diagram of a Worker Process and the Temporal Server
-    </p>
-  </div>
-  <div className="tdiiw" height="422">
-    <img
-      className="img_ev3q"
-      src="/diagrams/worker-and-server-component.svg"
-      alt="Component diagram of a Worker Process and the Temporal Server"
+<CaptionedImage
+    src="/diagrams/worker-and-server-component.svg"
+    title="Component diagram of a Worker Process and the Temporal Server"
     />
-  </div>
-</div>
 
-A Worker Process is responsible for polling a [Task Queue](/task-queue), dequeueing a [Task](/tasks#task), executing your code in response to a Task, and responding to the [Temporal Service](/clusters) with the results.
+A Worker Process is responsible for polling a [Task Queue](/task-queue), dequeueing a [Task](/tasks#task), executing your code in response to a Task, and responding to the [Temporal Service](/temporal-service) with the results.
 
 More formally, a Worker Process is any process that implements the Task Queue Protocol and the Task Execution Protocol.
 
@@ -122,7 +115,7 @@ More formally, a Worker Process is any process that implements the Task Queue Pr
 
 **Worker Processes are external to a Temporal Service.**
 Temporal Application developers are responsible for developing [Worker Programs](#worker-program) and operating Worker Processes.
-Said another way, the [Temporal Service](/clusters) (including the Temporal Cloud) doesn't execute any of your code (Workflow and Activity Definitions) on Temporal Service machines. The Temporal Service is solely responsible for orchestrating [State Transitions](/workflows#state-transition) and providing Tasks to the next available [Worker Entity](/workers#worker-entity).
+Said another way, the [Temporal Service](/temporal-service) (including the Temporal Cloud) doesn't execute any of your code (Workflow and Activity Definitions) on Temporal Service machines. The Temporal Service is solely responsible for orchestrating [State Transitions](/workflow-execution#state-transition) and providing Tasks to the next available [Worker Entity](/workers#worker-entity).
 
 While data transferred in Event Histories is [secured by mTLS](/self-hosted-guide/security#encryption-in-transit-with-mtls), by default, it is still readable at rest in the Temporal Service.
 
@@ -138,7 +131,10 @@ Many SDKs support the ability to have multiple Worker Entities in a single Worke
 A single Worker Entity can listen to only a single Task Queue.
 But if a Worker Process has multiple Worker Entities, the Worker Process could be listening to multiple Task Queues.
 
-![Entity relationship diagram (meta model) of Worker Processes, Task Queues, and Tasks](/diagrams/worker-and-server-entity-relationship.svg)
+<CaptionedImage
+    src="/diagrams/worker-and-server-entity-relationship.svg"
+    title="Entity relationship diagram (meta model) of Worker Processes, Task Queues, and Tasks"
+/>
 
 Worker Processes executing Activity Tasks must have access to any resources needed to execute the actions that are defined in Activity Definitions, such as the following:
 

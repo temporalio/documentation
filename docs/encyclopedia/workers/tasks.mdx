@@ -26,7 +26,7 @@ This page discusses the following:
 
 ## What is a Task? {#task}
 
-A Task is the context that a Worker needs to progress with a specific [Workflow Execution](/workflows#workflow-execution), [Activity Execution](/activities#activity-execution), or a [Nexus Task Execution](#nexus-task-execution).
+A Task is the context that a Worker needs to progress with a specific [Workflow Execution](/workflow-execution), [Activity Execution](/activity-execution), or a [Nexus Task Execution](#nexus-task-execution).
 
 There are three types of Tasks:
 
@@ -39,12 +39,12 @@ There are three types of Tasks:
 A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.
 
 - Every time a new external event that might affect a Workflow state is recorded, a Workflow Task that contains the event is added to a Task Queue and then picked up by a Workflow Worker.
-- After the new event is handled, the Workflow Task is completed with a list of [Commands](/workflows#command).
+- After the new event is handled, the Workflow Task is completed with a list of [Commands](/workflow-execution#command).
 - Handling of a Workflow Task is usually very fast and is not related to the duration of operations that the Workflow invokes.
 
 ### What is a Workflow Task Execution? {#workflow-task-execution}
 
-A Workflow Task Execution occurs when a [Worker](/workers#worker-entity) picks up a [Workflow Task](#workflow-task) and uses it to make progress on the execution of a [Workflow Definition](/workflows#workflow-definition) (also known as a Workflow function).
+A Workflow Task Execution occurs when a [Worker](/workers#worker-entity) picks up a [Workflow Task](#workflow-task) and uses it to make progress on the execution of a [Workflow Definition](/workflow-definition) (also known as a Workflow function).
 
 ## What is an Activity Task? {#activity-task}
 
@@ -55,7 +55,7 @@ If Heartbeat data is being passed, an Activity Task will also contain the latest
 
 ### What is an Activity Task Execution? {#activity-task-execution}
 
-An Activity Task Execution occurs when a [Worker](/workers#worker-entity) uses the context provided from the [Activity Task](#activity-task) and executes the [Activity Definition](/activities#activity-definition) (also known as the Activity Function).
+An Activity Task Execution occurs when a [Worker](/workers#worker-entity) uses the context provided from the [Activity Task](#activity-task) and executes the [Activity Definition](/activity-definition) (also known as the Activity Function).
 
 The [ActivityTaskScheduled Event](/references/events#activitytaskscheduled) corresponds to when the Temporal Service puts the Activity Task into the Task Queue.
 
@@ -85,7 +85,7 @@ A Nexus Task Execution occurs when a Worker uses the context provided from the N
 
 The NexusOperationScheduled Event corresponds to when the Temporal Service records the Workflow's intent to schedule an operation.
 
-The NexusOperationStarted Event corresponds to when the Worker picks up the Nexus Task from the Task Queue, starts an asynchronous Nexus Operation, and returns an Operation ID to the caller indicating the asynchronous Nexus Operation has started.
+The NexusOperationStarted Event corresponds to when the Worker picks up the Nexus Task from the Task Queue, starts an asynchronous Nexus Operation, and returns an Operation token to the caller indicating the asynchronous Nexus Operation has started.
 
 Either NexusOperationCompleted or one of the other Closed Nexus Operation Events corresponds to when the Nexus Operation has reached a final state due to successfully completing the operation or unsuccessfully completing the operation in the case of a failure, timeout, or cancellation.
 

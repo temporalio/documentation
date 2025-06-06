@@ -18,7 +18,7 @@ keywords:
 
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
-Temporal Nexus is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
+Temporal Nexus is now [Generally Available](/evaluate/development-production-features/release-stages#general-availability) for [Temporal Cloud](/cloud/nexus) and [self-hosted deployments](/production-deployment/self-hosted-guide/nexus).
 
 :::
 
@@ -51,7 +51,7 @@ Without Nexus, when a caller Workflow invokes another Workflow directly the call
 
 - target Workflow's Namespace and Task Queue.
 - target Workflow Retry Policy and Timeouts.
-- target Workflow options including [Workflow-Id-Reuse-Policy](/workflows#workflow-id-reuse-policy) and [Workflow-Id-Conflict-Policy](/workflows#workflow-id-conflict-policy).
+- target Workflow options including [Workflow-Id-Reuse-Policy](/workflow-execution/workflowid-runid#workflow-id-reuse-policy) and [Workflow-Id-Conflict-Policy](/workflow-execution/workflowid-runid#workflow-id-conflict-policy).
 - target Workflow ID uniqueness constraints, so it doesn't conflict with other Workflow types in the handler Namespace.
 
 This creates a high degree of coupling between the caller and handler, by exposing internal implementation details to the caller.
