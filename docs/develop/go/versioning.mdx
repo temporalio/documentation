@@ -228,7 +228,7 @@ It is a powerful method for introducing compatible changes without introducing n
 
 Temporal's [Safe Deploys](/production-deployment/worker-deployments/safe-deploys) feature allows you to tag your Workers and programmatically roll them out in pods tied to specific revisions, so that old Workers can run old code paths and new Workers can run new code paths. If you find that GetVersion is adding maintainability concerns to your codebase, consider adopting [Safe Deploys](/production-deployment/worker-deployments/safe-deploys).
 
-## Runtime checking
+## Runtime checking {#runtime-checking}
 
 The Temporal Go SDK performs a runtime check to help prevent obvious incompatible changes.
 Adding, removing, or reordering any of these methods without Versioning triggers the runtime check and results in a nondeterminism error:
