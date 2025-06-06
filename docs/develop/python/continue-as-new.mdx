@@ -65,12 +65,12 @@ This stops the Workflow right away and starts a new one.
   in the context of the rest of the application code.
 </div>
 ```python
-  workflow.continue_as_new(
-      ClusterManagerInput(
-          state=self.state,
-          test_continue_as_new=input.test_continue_as_new,
-      )
+workflow.continue_as_new(
+  ClusterManagerInput(
+      state=self.state,
+      test_continue_as_new=input.test_continue_as_new,
   )
+)
 ````
 
 ### Considerations for Workflows with Message Handlers {#with-message-handlers}
