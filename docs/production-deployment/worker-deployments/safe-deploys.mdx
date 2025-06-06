@@ -75,6 +75,7 @@ The [Temporal Worker Controller](/production-deployment/worker-deployments/kuber
 
 You'll need to add a few additional configuration parameters to your Workers to toggle on Safe Deploys.
 There are three new parameters, with different names depending on the language:
+
 - `UseVersioning`: This enables the Safe Deploys functionality for this Worker.
 - A `Version` string to identify the revision that this Worker will be allowed to execute. This is a combination of a deployment name and a build ID number.
 - The Versioning Behavior, either `pinned` or `auto-upgraded`.
