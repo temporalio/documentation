@@ -32,18 +32,19 @@ Install .NET by following the [official .NET instructions](https://dotnet.micros
 </SetupStep>
 
 <SetupStep code={
-  <>
-    <CodeSnippet language="bash">
-    dotnet new console -n temporalidotnet
-    </CodeSnippet>
-    <CodeSnippet language="bash">
-    cd temporalidotnet
-    </CodeSnippet>
-    <CodeSnippet language="bash">
-    dotnet add package Temporalio
-    </CodeSnippet>
-  </>
+<>
+<CodeSnippet language="bash">
+dotnet new console -n temporalidotnet
+</CodeSnippet>
+<CodeSnippet language="bash">
+cd temporalidotnet
+</CodeSnippet>
+<CodeSnippet language="bash">
+dotnet add package Temporalio
+</CodeSnippet>
+</>
 }>
+
 ## Install the Temporal .NET SDK
 
 Create a new .NET project and install the Temporal SDK package.
@@ -56,26 +57,28 @@ Next, you'll configure a local Temporal service for development.
 </SetupStep>
 
 <SetupStep code={
-  <>
-    <p><strong>macOS</strong></p>
-    <p>Using Homebrew:</p>
-    <CodeSnippet language="bash">
-    brew install temporal
-    </CodeSnippet>
-    <p>Or using curl:</p>
-    <CodeSnippet language="bash">
-    curl -sSf https://temporal.download/cli.sh | sh
-    </CodeSnippet>
-    <p><strong>Linux</strong></p>
-    <CodeSnippet language="bash">
-    curl -sSf https://temporal.download/cli.sh | sh
-    </CodeSnippet>
-    <p><strong>Windows</strong></p>
-    <CodeSnippet language="powershell">
-    curl.exe -sSf https://temporal.download/cli.ps1 | pwsh
-    </CodeSnippet>
-  </>
+<>
+
+<p><strong>macOS</strong></p>
+<p>Using Homebrew:</p>
+<CodeSnippet language="bash">
+brew install temporal
+</CodeSnippet>
+<p>Or using curl:</p>
+<CodeSnippet language="bash">
+curl -sSf https://temporal.download/cli.sh | sh
+</CodeSnippet>
+<p><strong>Linux</strong></p>
+<CodeSnippet language="bash">
+curl -sSf https://temporal.download/cli.sh | sh
+</CodeSnippet>
+<p><strong>Windows</strong></p>
+<CodeSnippet language="powershell">
+curl.exe -sSf https://temporal.download/cli.ps1 | pwsh
+</CodeSnippet>
+</>
 }>
+
 ## Install Temporal CLI
 
 The fastest way to get a development version of the Temporal Service running on your local machine is to use [Temporal CLI](https://docs.temporal.io/cli).
@@ -86,10 +89,10 @@ Choose your operating system to install Temporal CLI:
 </SetupStep>
 
 <SetupStep code={
-  <>
-    <CodeSnippet language="bash">
-    temporal server start-dev
-    </CodeSnippet>
+<>
+<CodeSnippet language="bash">
+temporal server start-dev
+</CodeSnippet>
 
     <InfoBox title="Change the Web UI port">
       The Temporal Web UI may be on a different port in some examples or tutorials.
@@ -101,8 +104,10 @@ Choose your operating system to install Temporal CLI:
 
       The Temporal Web UI will now be available at http://localhost:8080.
     </InfoBox>
-  </>
+
+</>
 }>
+
 ## Start the development server
 
 Once you've installed Temporal CLI and added it to your PATH, open a new Terminal window and run the following command.
@@ -122,4 +127,3 @@ Once you have everything installed, you're ready to build apps with Temporal on 
   <h3>Next: Run your first Temporal Application</h3>
   <p>Learn how to create a basic Workflow and run it with the Temporal .NET SDK</p>
 </CallToAction>
-
