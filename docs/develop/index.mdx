@@ -5,16 +5,189 @@ description: Discover comprehensive Temporal SDK feature guides and API referenc
 sidebar_label: Development
 ---
 
-import { SdkLogos } from '@site/src/components';
+import { SdkLogos } from '@site/src/components/elements/SdkLogos';
 
-The Temporal SDK developer guides provide a comprehensive overview of the structures, primitives, and features used in [Temporal Application](/temporal#temporal-application) development.
+## 100% Open Source
 
-<SdkLogos />
+Temporal SDKs provide the foundation for building reliable distributed applications. Each SDK is designed to help you implement durable Workflows, Activities, and Workers with native language support and comprehensive tooling.
 
-- Go SDK [developer guide](/develop/go) and [API reference](http://t.mp/go-api)
-- Java SDK [developer guide](/develop/java) and [API reference](http://t.mp/java-api)
-- PHP SDK [developer guide](/develop/php) and [API reference](https://php.temporal.io/namespaces/temporal.html)
-- Python SDK [developer guide](/develop/python) and [API reference](https://python.temporal.io)
-- TypeScript SDK [developer guide](/develop/typescript) and [API reference](https://typescript.temporal.io)
-- .NET SDK [developer guide](/develop/dotnet) and [API reference](https://dotnet.temporal.io/)
-- Ruby SDK [README](https://github.com/temporalio/sdk-ruby) and [API reference](https://ruby.temporal.io/)
+<div className="sdk-section">
+  <div className="sdk-container">
+    <div className="sdk-row">
+      <div className="sdk-col">
+        <img src="/img/sdks/svgs/golang.svg" alt="Go SDK" className="sdk-logo" />
+        <h3>Go SDK</h3>
+        <div className="sdk-links">
+          <a href="/develop/go">Developer Guide</a>
+          <a href="http://t.mp/go-api">API Reference</a>
+        </div>
+      </div>
+      <div className="sdk-col">
+        <img src="/img/sdks/svgs/java.svg" alt="Java SDK" className="sdk-logo" />
+        <h3>Java SDK</h3>
+        <div className="sdk-links">
+          <a href="/develop/java">Developer Guide</a>
+          <a href="http://t.mp/java-api">API Reference</a>
+        </div>
+      </div>
+      <div className="sdk-col">
+        <img src="/img/sdks/svgs/typescript.svg" alt="TypeScript SDK" className="sdk-logo" />
+        <h3>TypeScript SDK</h3>
+        <div className="sdk-links">
+          <a href="/develop/typescript">Developer Guide</a>
+          <a href="https://typescript.temporal.io">API Reference</a>
+        </div>
+      </div>
+      <div className="sdk-col">
+        <img src="/img/sdks/svgs/python.svg" alt="Python SDK" className="sdk-logo" />
+        <h3>Python SDK</h3>
+        <div className="sdk-links">
+          <a href="/develop/python">Developer Guide</a>
+          <a href="https://python.temporal.io">API Reference</a>
+        </div>
+      </div>
+    </div>
+    <div className="sdk-row">
+      <div className="sdk-col">
+        <img src="/img/sdks/svgs/dotnet.svg" alt=".NET SDK" className="sdk-logo" />
+        <h3>.NET SDK</h3>
+        <div className="sdk-links">
+          <a href="/develop/dotnet">Developer Guide</a>
+          <a href="https://dotnet.temporal.io/">API Reference</a>
+        </div>
+      </div>
+      <div className="sdk-col">
+        <img src="/img/sdks/svgs/php.svg" alt="PHP SDK" className="sdk-logo" />
+        <h3>PHP SDK</h3>
+        <div className="sdk-links">
+          <a href="/develop/php">Developer Guide</a>
+          <a href="https://php.temporal.io/namespaces/temporal.html">API Reference</a>
+        </div>
+      </div>
+      <div className="sdk-col">
+        <img src="/img/sdks/svgs/ruby.svg" alt="Ruby SDK" className="sdk-logo" />
+        <h3>Ruby SDK</h3>
+        <div className="sdk-links">
+          <a href="https://github.com/temporalio/sdk-ruby#readme">README</a>
+          <a href="https://www.rubydoc.info/gems/temporalio">API Reference</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+{`
+  .sdk-section {
+    margin: 2.5rem 0;
+  }
+
+  .sdk-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .sdk-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .sdk-col {
+    flex: 1;
+    padding: 1.75rem;
+    background: var(--ifm-background-surface-color);
+    border: 1px solid var(--ifm-color-emphasis-200);
+    border-radius: 12px;
+    transition: all 0.2s ease-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  [data-theme='dark'] .sdk-col {
+    background: rgba(255, 255, 255, 0.02);
+    border-color: var(--ifm-color-emphasis-200);
+  }
+
+  .sdk-col:hover {
+    border-color: var(--ifm-color-emphasis-300);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.03);
+  }
+
+  [data-theme='dark'] .sdk-col:hover {
+    border-color: var(--ifm-color-emphasis-300);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .sdk-logo {
+    width: 42px;
+    height: 42px;
+    margin-bottom: 1.25rem;
+    opacity: 0.85;
+    transition: opacity 0.2s ease-out;
+  }
+
+  .sdk-col:hover .sdk-logo {
+    opacity: 1;
+  }
+
+  .sdk-col h3 {
+    margin-bottom: 1rem;
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ifm-color-emphasis-900);
+  }
+
+  .sdk-links {
+    font-size: 0.925rem;
+    display: flex;
+    gap: 1.25rem;
+    align-items: center;
+  }
+
+  .sdk-links a {
+    color: var(--ifm-color-primary);
+    text-decoration: none;
+    padding: 0.25rem 0;
+    position: relative;
+    opacity: 0.9;
+    transition: all 0.2s ease-out;
+  }
+
+  .sdk-links a:hover {
+    color: var(--ifm-color-primary-darker);
+    opacity: 1;
+  }
+
+  [data-theme='dark'] .sdk-links a {
+    color: #B4A5FF;
+  }
+
+  [data-theme='dark'] .sdk-links a:hover {
+    color: #CAC0FF;
+  }
+
+  @media (max-width: 996px) {
+    .sdk-row {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .sdk-col {
+      margin: 0;
+      padding: 1.5rem;
+    }
+
+    .sdk-logo {
+      width: 38px;
+      height: 38px;
+      margin-bottom: 1rem;
+    }
+  }
+`}
+</style>
