@@ -72,8 +72,7 @@ Workflow.continueAsNew(
 ### Considerations for Workflows with Message Handlers {#with-message-handlers}
 
 If you use Updates or Signals, don't call Continue-as-New from the handlers.
-Instead, wait for your handlers to finish in your main Workflow before you run `continue_as_new`.
-See the [`all_handlers_finished`](message-passing#wait-for-message-handlers) example for guidance.
+Instead, wait for your handlers to finish in your main Workflow before you run `continueAsNew`.
 
 ## When is it right to Continue-as-New using the Java SDK? {#when}
 

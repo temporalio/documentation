@@ -68,7 +68,7 @@ return await wf.continueAsNew<typeof clusterManagerWorkflow>({ state: manager.ge
 ### Considerations for Workflows with Message Handlers {#with-message-handlers}
 
 If you use Updates or Signals, don't call Continue-as-New from the handlers.
-Instead, wait for your handlers to finish in your main Workflow before you run `continue_as_new`.
+Instead, wait for your handlers to finish in your main Workflow before you run `ContinueAsNew`.
 See the [`allHandlersFinished`](message-passing#wait-for-message-handlers) example for guidance.
 
 ## When is it right to Continue-as-New using the Typescript SDK? {#when}
