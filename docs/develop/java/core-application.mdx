@@ -378,7 +378,7 @@ For more details, see [Dynamic Activity Reference](https://www.javadoc.io/doc/io
 
 All data returned from an Activity must be serializable.
 
-Activity return values are subject to payload size limits in Temporal. The default payload size limit is 2MB, and there is a hard limit of 4MB for any gRPC message size in the Event History transaction. Keep in mind that all return values are recorded in a [Workflow Execution Event History](/workflow-execution/event#event-history).
+Activity return values are subject to payload size limits in Temporal. The default payload size limit is 2MB, and there is a hard limit of 4MB for any gRPC message size in the Event History transaction [See Cloud Limits here](https://docs.temporal.io/cloud/limits#per-message-grpc-limit). Keep in mind that all return values are recorded in a [Workflow Execution Event History](/workflow-execution/event#event-history).
 
 Activity return values must be serializable and deserializable by the provided [`DataConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.17.0/io/temporal/common/converter/DataConverter.html).
 
