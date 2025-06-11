@@ -217,8 +217,8 @@ const TemporalDocsLanding = () => {
                 ))}
               </div>
               {section.title === "Temporal Cloud" && (
-                <a href="/cloud/get-started" className="get-started-button">
-                  Get Started for Free
+                <a href="https://cloud.temporal.io/" className="cloud-button">
+                  Create an Account
                 </a>
               )}
             </div>

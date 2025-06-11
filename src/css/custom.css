@@ -88,8 +88,7 @@ html[data-theme="light"] {
 
 a,
 a:hover {
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  text-decoration: none;
 }
 
 .alert {
@@ -805,26 +804,24 @@ h1 {
 }
 
 .cloud-button {
-  font-feature-settings: "clig" off, "liga" off;
-  font-family: Noto Sans Mono;
-  font-style: normal;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 24px;
   display: flex;
-  padding: 16px 24px;
+  padding: 6px 12px;
   justify-content: center;
   align-items: center;
   gap: 10px;
-  border-radius: 0;
-  background: linear-gradient(255deg, #444ce7 0%, #b664ff 100%);
+  border-radius: 4px;
+  background: linear-gradient(255.4deg, #444CE7 0%, #B664FF 100%);
   cursor: pointer;
   border: 0px;
-  color: var(--White, #fff);
+  color: #FFFFFF;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+  margin-top: 24px;
+  font-size: 13px;
 }
 
-.cloud-button {
-  text-decoration: none;
+.cloud-button:hover {
+  opacity: 0.9;
 }
 
 .highlight {
