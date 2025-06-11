@@ -35,6 +35,8 @@ const TemporalDocsLanding = () => {
         </Icon>
       ),
       items: [
+        { title: "Understanding Temporal", link: "/concepts/what-is-temporal" },
+        { title: "Why Temporal", link: "/concepts/why-temporal" },
         { title: "Setup your Local Dev Env", link: "https://learn.temporal.io/getting_started/" },
         { title: "Run your First Temporal App", link: "https://learn.temporal.io/getting_started/" },
         { title: "Build a Temporal App from Scratch", link: "https://learn.temporal.io/getting_started/" },

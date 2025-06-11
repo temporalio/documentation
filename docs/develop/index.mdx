@@ -13,63 +13,75 @@ Temporal SDKs provide the foundation for building reliable distributed applicati
 
 <div className="sdk-section">
   <div className="sdk-container">
-    <div className="sdk-row">
-      <div className="sdk-col">
-        <img src="/img/sdks/svgs/golang.svg" alt="Go SDK" className="sdk-logo" />
-        <h3>Go SDK</h3>
-        <div className="sdk-links">
-          <a href="/develop/go">Developer Guide</a>
+    <div className="sdk-grid">
+      <div className="sdk-card">
+        <div className="sdk-card-header">
+          <h2>Go SDK</h2>
+          <img src="/img/sdks/svgs/sdk-box-logos/go.svg" alt="Go SDK" />
+        </div>
+        <div className="sdk-card-links">
           <a href="http://t.mp/go-api">API Reference</a>
+          <a href="/develop/go">Developer Guide</a>
         </div>
       </div>
-      <div className="sdk-col">
-        <img src="/img/sdks/svgs/java.svg" alt="Java SDK" className="sdk-logo" />
-        <h3>Java SDK</h3>
-        <div className="sdk-links">
-          <a href="/develop/java">Developer Guide</a>
+      <div className="sdk-card">
+        <div className="sdk-card-header">
+          <h2>Java SDK</h2>
+          <img src="/img/sdks/svgs/sdk-box-logos/java.svg" alt="Java SDK" />
+        </div>
+        <div className="sdk-card-links">
           <a href="http://t.mp/java-api">API Reference</a>
+          <a href="/develop/java">Developer Guide</a>
         </div>
       </div>
-      <div className="sdk-col">
-        <img src="/img/sdks/svgs/typescript.svg" alt="TypeScript SDK" className="sdk-logo" />
-        <h3>TypeScript SDK</h3>
-        <div className="sdk-links">
-          <a href="/develop/typescript">Developer Guide</a>
+      <div className="sdk-card">
+        <div className="sdk-card-header">
+          <h2>TypeScript SDK</h2>
+          <img src="/img/sdks/svgs/sdk-box-logos/typescript.svg" alt="TypeScript SDK" />
+        </div>
+        <div className="sdk-card-links">
           <a href="https://typescript.temporal.io">API Reference</a>
+          <a href="/develop/typescript">Developer Guide</a>
         </div>
       </div>
-      <div className="sdk-col">
-        <img src="/img/sdks/svgs/python.svg" alt="Python SDK" className="sdk-logo" />
-        <h3>Python SDK</h3>
-        <div className="sdk-links">
-          <a href="/develop/python">Developer Guide</a>
+      <div className="sdk-card">
+        <div className="sdk-card-header">
+          <h2>Python SDK</h2>
+          <img src="/img/sdks/svgs/sdk-box-logos/python.svg" alt="Python SDK" />
+        </div>
+        <div className="sdk-card-links">
           <a href="https://python.temporal.io">API Reference</a>
+          <a href="/develop/python">Developer Guide</a>
         </div>
       </div>
-    </div>
-    <div className="sdk-row">
-      <div className="sdk-col">
-        <img src="/img/sdks/svgs/dotnet.svg" alt=".NET SDK" className="sdk-logo" />
-        <h3>.NET SDK</h3>
-        <div className="sdk-links">
-          <a href="/develop/dotnet">Developer Guide</a>
-          <a href="https://dotnet.temporal.io/">API Reference</a>
+      <div className="sdk-card">
+        <div className="sdk-card-header">
+          <h2>PHP SDK</h2>
+          <img src="/img/sdks/svgs/sdk-box-logos/php.svg" alt="PHP SDK" />
         </div>
-      </div>
-      <div className="sdk-col">
-        <img src="/img/sdks/svgs/php.svg" alt="PHP SDK" className="sdk-logo" />
-        <h3>PHP SDK</h3>
-        <div className="sdk-links">
-          <a href="/develop/php">Developer Guide</a>
+        <div className="sdk-card-links">
           <a href="https://php.temporal.io/namespaces/temporal.html">API Reference</a>
+          <a href="/develop/php">Developer Guide</a>
         </div>
       </div>
-      <div className="sdk-col">
-        <img src="/img/sdks/svgs/ruby.svg" alt="Ruby SDK" className="sdk-logo" />
-        <h3>Ruby SDK</h3>
-        <div className="sdk-links">
-          <a href="https://github.com/temporalio/sdk-ruby#readme">README</a>
+      <div className="sdk-card">
+        <div className="sdk-card-header">
+          <h2>.NET SDK</h2>
+          <img src="/img/sdks/svgs/sdk-box-logos/dotnet.svg" alt=".NET SDK" />
+        </div>
+        <div className="sdk-card-links">
+          <a href="https://dotnet.temporal.io/">API Reference</a>
+          <a href="/develop/dotnet">Developer Guide</a>
+        </div>
+      </div>
+      <div className="sdk-card">
+        <div className="sdk-card-header">
+          <h2>Ruby SDK</h2>
+          <img src="/img/sdks/svgs/sdk-box-logos/ruby.png" alt="Ruby SDK" />
+        </div>
+        <div className="sdk-card-links">
           <a href="https://www.rubydoc.info/gems/temporalio">API Reference</a>
+          <a href="https://github.com/temporalio/sdk-ruby#readme">Developer Guide</a>
         </div>
       </div>
     </div>
@@ -79,7 +91,7 @@ Temporal SDKs provide the foundation for building reliable distributed applicati
 <style>
 {`
   .sdk-section {
-    margin: 2.5rem 0;
+    margin: 2rem 0;
   }
 
   .sdk-container {
@@ -87,107 +99,105 @@ Temporal SDKs provide the foundation for building reliable distributed applicati
     margin: 0 auto;
   }
 
-  .sdk-row {
+  .sdk-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+
+  .sdk-card {
+    background: var(--ifm-background-surface-color);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 1.25rem;
+    min-height: 200px;
+    position: relative;
+  }
+
+  [data-theme='light'] .sdk-card {
+    border: 1px solid var(--ifm-color-emphasis-300);
+  }
+
+  .sdk-card-header {
     display: flex;
     justify-content: space-between;
-    gap: 1.25rem;
-    margin-bottom: 1.25rem;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 3rem;
   }
 
-  .sdk-col {
-    flex: 1;
-    padding: 1.75rem;
-    background: var(--ifm-background-surface-color);
-    border: 1px solid var(--ifm-color-emphasis-200);
-    border-radius: 12px;
-    transition: all 0.2s ease-out;
+  .sdk-card-header h2 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--ifm-color-emphasis-900);
+    line-height: 1;
+  }
+
+  .sdk-card-header img {
+    width: 48px;
+    height: 48px;
+  }
+
+  .sdk-card-links {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
+    gap: 0.75rem;
+    position: absolute;
+    bottom: 1.25rem;
+    left: 1.25rem;
   }
 
-  [data-theme='dark'] .sdk-col {
-    background: rgba(255, 255, 255, 0.02);
-    border-color: var(--ifm-color-emphasis-200);
-  }
-
-  .sdk-col:hover {
-    border-color: var(--ifm-color-emphasis-300);
-    transform: translateY(-1px);
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.03);
-  }
-
-  [data-theme='dark'] .sdk-col:hover {
-    border-color: var(--ifm-color-emphasis-300);
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
-  }
-
-  .sdk-logo {
-    width: 42px;
-    height: 42px;
-    margin-bottom: 1.25rem;
-    opacity: 0.85;
-    transition: opacity 0.2s ease-out;
-  }
-
-  .sdk-col:hover .sdk-logo {
-    opacity: 1;
-  }
-
-  .sdk-col h3 {
-    margin-bottom: 1rem;
-    font-size: 1.15rem;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    color: var(--ifm-color-emphasis-900);
-  }
-
-  .sdk-links {
-    font-size: 0.925rem;
-    display: flex;
-    gap: 1.25rem;
-    align-items: center;
-  }
-
-  .sdk-links a {
-    color: var(--ifm-color-primary);
+  .sdk-card-links a {
+    color: #CACBF9;
     text-decoration: none;
-    padding: 0.25rem 0;
+    font-size: 1rem;
+    font-family: var(--ifm-font-family-base);
+    line-height: 1;
+    transition: color 0.15s ease;
     position: relative;
-    opacity: 0.9;
-    transition: all 0.2s ease-out;
   }
 
-  .sdk-links a:hover {
+  [data-theme='light'] .sdk-card-links a {
+    color: var(--ifm-color-primary);
+  }
+
+  .sdk-card-links a:hover {
+    color: #FFFFFF;
+  }
+
+  [data-theme='light'] .sdk-card-links a:hover {
     color: var(--ifm-color-primary-darker);
-    opacity: 1;
   }
 
-  [data-theme='dark'] .sdk-links a {
-    color: #B4A5FF;
+  .sdk-card-links a::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    background-color: #FFFFFF;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.15s ease;
   }
 
-  [data-theme='dark'] .sdk-links a:hover {
-    color: #CAC0FF;
+  [data-theme='light'] .sdk-card-links a::after {
+    background-color: var(--ifm-color-primary-darker);
   }
 
-  @media (max-width: 996px) {
-    .sdk-row {
-      flex-direction: column;
-      gap: 1rem;
-    }
+  .sdk-card-links a:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+  }
 
-    .sdk-col {
-      margin: 0;
-      padding: 1.5rem;
-    }
-
-    .sdk-logo {
-      width: 38px;
-      height: 38px;
-      margin-bottom: 1rem;
+  @media (max-width: 768px) {
+    .sdk-grid {
+      grid-template-columns: 1fr;
     }
   }
 `}
 </style>
+
+
