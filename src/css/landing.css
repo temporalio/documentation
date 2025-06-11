@@ -123,7 +123,7 @@ body {
 .section-card {
     background: var(--card-background);
     border: 1px solid var(--border-color);
-    border-radius: 0.75rem;
+    border-radius: 0;
     padding: 1.5rem;
     height: 100%;
     transition: all 0.2s ease;
@@ -296,4 +296,16 @@ body {
 
 [data-theme="dark"] .learning-section {
     border-top-color: var(--border-color);
+}
+
+.resource-img {
+    border-radius: 0;
+}
+
+.cloud-button {
+    border-radius: 0;
+}
+
+.highlight {
+    border-radius: 0;
 }

@@ -224,8 +224,8 @@ const slides = [
   {
     title: "Temporal Service",
     description: "Provides reliable and scalable workflow orchestration.",
-    content1: `A Temporal Service ensures that Workflows are resilient by saving each step the Workflow code takes. It also schedules retries whenever there are errors in your application’s code.`,
-    content2: `You can run it wherever you’d like and scale from a single laptop to thousands of machines, adding resources when and where you need them. And although you've just set up a lightweight Temporal Service for development, switching your code to point at a production Temporal Service only requires changing your connection parameters.`,
+    content1: `A Temporal Service ensures that Workflows are resilient by saving each step the Workflow code takes. It also schedules retries whenever there are errors in your application's code.`,
+    content2: `You can run it wherever you'd like and scale from a single laptop to thousands of machines, adding resources when and where you need them. And although you've just set up a lightweight Temporal Service for development, switching your code to point at a production Temporal Service only requires changing your connection parameters.`,
     giphy: "eePSFNBFv2W9owZ4Sh",
   },
   {
@@ -245,8 +245,8 @@ const slides = [
   {
     title: "Determinism",
     description: "Writing deterministic Workflows guarantees durability in the case of failure.",
-    content1: `Temporal's guarantee that your Workflow code can’t fail to continue running requires that the code in your Workflow must be deterministic. Simply put, this means that each execution of a Workflow, given the same input, must follow the same path through the code and produce the same output.`,
-    content2: `This means that you can’t generate a random number or interact with the outside world, as these actions are inherently non-deterministic. Generating a random number twice will likely produce different results, and if you access files, databases, or network services, you might get a failure or different results at different times.`,
+    content1: `Temporal's guarantee that your Workflow code can't fail to continue running requires that the code in your Workflow must be deterministic. Simply put, this means that each execution of a Workflow, given the same input, must follow the same path through the code and produce the same output.`,
+    content2: `This means that you can't generate a random number or interact with the outside world, as these actions are inherently non-deterministic. Generating a random number twice will likely produce different results, and if you access files, databases, or network services, you might get a failure or different results at different times.`,
     giphy: "5FSanfKqd3rS8",
   },
   {
@@ -262,7 +262,7 @@ const slides = [
       "Workers run Workflow and Activity code reliably and consistently. You can increase the scalability and availability of your application by running additional Workers. ",
     content1: `One thing that people new to Temporal find surprising is that the Temporal Service does not execute your code.`,
     content2: `You deploy your code to containers or machines that are separate from the Temporal Service. Using the Worker API provided by the Temporal SDK, you will run one or more Worker processes that will execute your Workflow and Activity code based on tasks managed by the Temporal Service.`,
-    content3: `The Temporal Service gives the Workers tasks like “Start running Workflow A,” and the Workers run the corresponding Workflow function or method.`,
+    content3: `The Temporal Service gives the Workers tasks like "Start running Workflow A," and the Workers run the corresponding Workflow function or method.`,
     giphy: "DhstvI3zZ598Nb1rFf",
   },
   {

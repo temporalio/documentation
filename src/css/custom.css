@@ -646,7 +646,7 @@ h1 {
   font-size: 0.75rem;
   color: #6d28d9;
   background-color: #ede9fe;
-  border-radius: 0.125rem;
+  border-radius: 0;
   padding: 0 0.5rem;
   width: fit-content;
 }
@@ -657,7 +657,7 @@ h1 {
   font-size: 0.75rem;
   color: #1d4ed8;
   background-color: #dbeafe;
-  border-radius: 0.125rem;
+  border-radius: 0;
   padding: 0 0.5rem;
   width: fit-content;
 }
@@ -692,7 +692,7 @@ h1 {
   color: #2563eb;
   background-color: #eff6ff;
   border-width: 1px;
-  border-radius: 0.5rem;
+  border-radius: 0;
   border-color: #2563eb;
   border-style: solid;
   padding: 1.2rem 1.25rem 0.25rem 1.25rem;
@@ -740,7 +740,7 @@ h1 {
 .main-card {
   position: relative;
   width: 100%;
-  border-radius: 20px;
+  border-radius: 0;
   border: 2px solid var(--ifm-link-color);
   background-color: var(--ifm-background-color);
   padding: 32px;
@@ -816,7 +816,7 @@ h1 {
   justify-content: center;
   align-items: center;
   gap: 10px;
-  border-radius: 8px;
+  border-radius: 0;
   background: linear-gradient(255deg, #444ce7 0%, #b664ff 100%);
   cursor: pointer;
   border: 0px;
@@ -1305,7 +1305,7 @@ code {
   padding: 1rem 1.25rem;
   background-color: var(--ifm-background-surface-color);
   border: 1px solid var(--ifm-color-emphasis-200);
-  border-radius: 4px;
+  border-radius: 0;
   color: var(--ifm-color);
   text-decoration: none;
   font-weight: 400;
@@ -1375,7 +1375,7 @@ html[data-theme='dark'] .pattern-link:hover {
   padding: 1.5rem;
   background-color: var(--ifm-background-surface-color);
   border: 1px solid var(--ifm-color-emphasis-200);
-  border-radius: 8px;
+  border-radius: 0;
   transition: all 0.2s ease;
 }
 
@@ -1419,7 +1419,7 @@ html[data-theme='dark'] .sdk-card {
   padding: 2rem;
   background-color: var(--ifm-background-surface-color);
   border: 1px solid var(--ifm-color-emphasis-200);
-  border-radius: 8px;
+  border-radius: 0;
   color: var(--ifm-color);
   text-decoration: none;
   transition: all 0.2s ease;
