@@ -161,23 +161,24 @@ speaking, this means you must take care to ensure that any time your Workflow co
 makes the same Workflow API calls in the same sequence, given the same input. Some changes to those
 
 API calls are safe to make. For example, you can change:
-* The inputs/arguments and timeout values of Child Workflows, Activities, and Signals to external workflows
-  * But not their type, or id!
-* The duration of timers (though changing them to 0 is not safe in all SDKs)
-* Add or remove calls to Workflow APIs that don't produce Commands (ex: get Workflow Info)
+
+- The inputs/arguments and timeout values of Child Workflows, Activities, and Signals to external workflows
+  - But not their type, or id!
+- The duration of timers (though changing them to 0 is not safe in all SDKs)
+- Add or remove calls to Workflow APIs that don't produce Commands (ex: get Workflow Info)
 
 The following Workflow API calls all can produce commands, and thus must not be reordered, added, or
 removed without proper [versioning techniques](#workflow-versioning):
 
-* Starting or cancelling a Timer
-* Scheduling or cancelling Activity executions (including local Activities)
-* Starting or cancelling Child Workflow executions
-* Signalling or cancelling signals to external Workflow executions
-* Scheduling or cancelling Nexus operations
-* Ending the Workflow Execution in any way (completing, failing, cancelling, or continuing as new)
-* Patched or GetVersion calls for versioning (though they may be added or removed according to the [patching](#patching) rules)
-* Upserting Workflow search attributes
-* Upserting Workflow memos
+- Starting or cancelling a Timer
+- Scheduling or cancelling Activity executions (including local Activities)
+- Starting or cancelling Child Workflow executions
+- Signalling or cancelling signals to external Workflow executions
+- Scheduling or cancelling Nexus operations
+- Ending the Workflow Execution in any way (completing, failing, cancelling, or continuing as new)
+- Patched or GetVersion calls for versioning (though they may be added or removed according to the [patching](#patching) rules)
+- Upserting Workflow search attributes
+- Upserting Workflow memos
 
 More formally, the use of certain Workflow APIs in the function is what generates
 [Commands](/workflow-execution#command). Commands tell the Temporal Service which Events to create
