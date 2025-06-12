@@ -171,7 +171,8 @@ temporal server start-dev
         }
       `}
     </style>
-  </>
+
+</>
 }>
 
 ## Start the development server
@@ -194,6 +195,7 @@ Once you have everything installed, you're ready to build apps with Temporal on 
 Now let's verify your setup is working by creating and running a complete Temporal application with both a Workflow and Activity.
 
 This test will confirm that:
+
 - Your .NET SDK installation is working
 - The Temporal .NET SDK is properly installed
 - Your local Temporal Service is running
@@ -211,23 +213,25 @@ using Temporalio.Activities;
 
 public class MyActivities
 {
-    // Activities can be async and/or static too! We just demonstrate instance
-    // methods since many will use them that way.
-    [Activity]
-    public string SayHello(string name) => $"Hello, {name}!";
+// Activities can be async and/or static too! We just demonstrate instance
+// methods since many will use them that way.
+[Activity]
+public string SayHello(string name) => $"Hello, {name}!";
 }`}
-    </CodeSnippet>
-  </>
+</CodeSnippet>
+</>
 }>
+
 ### Create the Activity
 
 Activities contain your business logic. Create a file called `MyActivities.cs`:
 </SetupStep>
 
 <SetupStep code={
-  <>
-    <p><strong>Create a Workflow file (SayHelloWorkflow.cs):</strong></p>
-    <CodeSnippet language="csharp">
+<>
+
+<p><strong>Create a Workflow file (SayHelloWorkflow.cs):</strong></p>
+<CodeSnippet language="csharp">
 {`namespace MyNamespace;
 
 using Temporalio.Workflows;
@@ -235,31 +239,33 @@ using Temporalio.Workflows;
 [Workflow]
 public class SayHelloWorkflow
 {
-    [WorkflowRun]
-    public async Task<string> RunAsync(string name)
-    {
-        // This workflow just runs a simple activity to completion.
-        // StartActivityAsync could be used to just start and there are many
-        // other things that you can do inside a workflow.
-        return await Workflow.ExecuteActivityAsync(
-            // This is a lambda expression where the instance is typed. If this
-            // were static, you wouldn't need a parameter.
-            (MyActivities act) => act.SayHello(name),
-            new() { StartToCloseTimeout = TimeSpan.FromMinutes(5) });
-    }
+[WorkflowRun]
+public async Task<string> RunAsync(string name)
+{
+// This workflow just runs a simple activity to completion.
+// StartActivityAsync could be used to just start and there are many
+// other things that you can do inside a workflow.
+return await Workflow.ExecuteActivityAsync(
+// This is a lambda expression where the instance is typed. If this
+// were static, you wouldn't need a parameter.
+(MyActivities act) => act.SayHello(name),
+new() { StartToCloseTimeout = TimeSpan.FromMinutes(5) });
+}
 }`}
-    </CodeSnippet>
-  </>
+</CodeSnippet>
+</>
 }>
+
 ### Create the Workflow
 
 Workflows orchestrate Activities and contain the application logic. Create a file called `SayHelloWorkflow.cs`:
 </SetupStep>
 
 <SetupStep code={
-  <>
-    <p><strong>Create a Worker file (Program.cs):</strong></p>
-    <CodeSnippet language="csharp">
+<>
+
+<p><strong>Create a Worker file (Program.cs):</strong></p>
+<CodeSnippet language="csharp">
 {`using MyNamespace;
 using Temporalio.Client;
 using Temporalio.Worker;
@@ -271,8 +277,8 @@ var client = await TemporalClient.ConnectAsync(new("localhost:7233"));
 using var tokenSource = new CancellationTokenSource();
 Console.CancelKeyPress += (_, eventArgs) =>
 {
-    tokenSource.Cancel();
-    eventArgs.Cancel = true;
+tokenSource.Cancel();
+eventArgs.Cancel = true;
 };
 
 // Create an activity instance since we have instance activities. If we had
@@ -281,29 +287,31 @@ var activities = new MyActivities();
 
 // Create worker with the activity and workflow registered
 using var worker = new TemporalWorker(
-    client,
-    new TemporalWorkerOptions("my-task-queue").
-        AddActivity(activities.SayHello).
-        AddWorkflow<SayHelloWorkflow>());
+client,
+new TemporalWorkerOptions("my-task-queue").
+AddActivity(activities.SayHello).
+AddWorkflow<SayHelloWorkflow>());
 
 // Run worker until cancelled
 Console.WriteLine("Running worker");
 try
 {
-    await worker.ExecuteAsync(tokenSource.Token);
+await worker.ExecuteAsync(tokenSource.Token);
 }
 catch (OperationCanceledException)
 {
-    Console.WriteLine("Worker cancelled");
+Console.WriteLine("Worker cancelled");
 }`}
-    </CodeSnippet>
+</CodeSnippet>
 
     <p><strong>Run the Worker:</strong></p>
     <CodeSnippet language="bash">
     dotnet run
     </CodeSnippet>
-  </>
+
+</>
 }>
+
 ### Create and Run the Worker
 
 The Worker hosts your Workflows and Activities. Replace the contents of `Program.cs` with:
@@ -312,11 +320,12 @@ Keep this terminal running - you should see "Running worker" displayed.
 </SetupStep>
 
 <SetupStep code={
-  <>
-    <div className="execution-options">
-      <h4>Choose Your Execution Method</h4>
-      <p>With the worker running, you can start a workflow in two ways:</p>
-    </div>
+<>
+
+<div className="execution-options">
+<h4>Choose Your Execution Method</h4>
+<p>With the worker running, you can start a workflow in two ways:</p>
+</div>
 
     <div className="option-section">
       <h5>Option 1: Using Temporal CLI (Recommended for testing)</h5>
@@ -330,6 +339,7 @@ Keep this terminal running - you should see "Running worker" displayed.
       <h5>Option 2: Create a Client Program</h5>
       <p>Create a separate file called `Client.cs` for a more programmatic approach:</p>
       <CodeSnippet language="csharp">
+
 {`using MyNamespace;
 using Temporalio.Client;
 
@@ -338,13 +348,14 @@ var client = await TemporalClient.ConnectAsync(new("localhost:7233"));
 
 // Run workflow
 var result = await client.ExecuteWorkflowAsync(
-    (SayHelloWorkflow wf) => wf.RunAsync("Temporal"),
-    new(id: "my-workflow-id", taskQueue: "my-task-queue"));
+(SayHelloWorkflow wf) => wf.RunAsync("Temporal"),
+new(id: "my-workflow-id", taskQueue: "my-task-queue"));
 
 Console.WriteLine("Workflow result: {0}", result);`}
-      </CodeSnippet>
-      <p>Then run: <code>dotnet run Client.cs</code></p>
-    </div>
+</CodeSnippet>
+
+<p>Then run: <code>dotnet run Client.cs</code></p>
+</div>
 
     <div className="success-section">
       <h4>
@@ -486,8 +497,10 @@ Console.WriteLine("Workflow result: {0}", result);`}
         }
       `}
     </style>
-  </>
+
+</>
 }>
+
 ### Execute the Workflow
 
 Now that your worker is running, it's time to start a workflow execution.
