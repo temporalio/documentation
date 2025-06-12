@@ -103,7 +103,7 @@ body {
 }
 
 .learning-section h1 {
-    text-align: center;
+    text-align: left;
     margin-bottom: 5rem;
     color: var(--heading-color);
     font-family: "Aeonik", sans-serif;
