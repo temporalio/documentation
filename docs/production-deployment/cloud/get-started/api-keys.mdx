@@ -68,7 +68,7 @@ API keys are used for the following scenarios:
 
 Use API keys to authenticate with:
 
-- [The Temporal CLI v 0.12 or higher](/cli)
+- [The Temporal CLI](/cli)
 - [Temporal SDKs](/develop)
 - [`tcld`](/production-deployment/cloud/tcld/index.mdx)
 - [The Cloud Operations API](/production-deployment/cloud/operation-api.mdx)
@@ -349,7 +349,7 @@ See the following documentation for [accessing Namespaces](/cloud/namespaces#acc
 
 Authenticate with Temporal Cloud using API keys with the following clients:
 
-- [Temporal CLI v0.12 or higher](/cli)
+- [Temporal CLI](/cli)
 - [SDKs](/develop)
 - [Temporal Cloud CLI `tcld`](/production-deployment/cloud/tcld/index.mdx)
 - [The Cloud Operations API](/production-deployment/cloud/operation-api.mdx)
@@ -368,7 +368,6 @@ In addition to the API key, the following client options are required:
 - `--namespace`: Provide the `namespace.accountId` from the top of the Namespace page in the UI.
   - Use the format `<namespace_id>.<account_id>`.
   - This can be set using an environment variable.
-- `--grpc-meta "temporal-namespace="`: Provide the `namespace.accountId` again as grpc-metadata.
 - `--tls`: Use for a secure connection with the appropriate options.
   - This can be set using an environment variable.
 
@@ -379,7 +378,6 @@ export TEMPORAL_API_KEY=<key-secret>
 temporal workflow list \
     --address <endpoint> \
     --namespace <namespace_id>.<account_id> \
-    --grpc-meta "temporal-namespace=<namespace_id>.<account_id>" \
     --tls
 ```
 
