@@ -77,6 +77,8 @@ The Workflow Execution is terminated when the Event History:
 - contains more than 2000 Updates.
 - contains more than 10000 Signals.
 
+To avoid hitting these limits, you can use the [Continue-As-New](/workflow-execution/continue-as-new) feature to close the current Workflow Execution and create a new one.
+
 ### Event loop {#event-loop}
 
 A Workflow Execution is made up of a sequence of [Events](#event) called an [Event History](#event-history).
@@ -90,19 +92,13 @@ Events are created by the Temporal Service in response to either Commands or act
 
 **Is there a limit to how long Workflows can run?**
 
-No, there is no time constraint on how long a Workflow Execution can be Running.
+No, there is no time constraint on how long a Workflow Execution can run.
 
-However, Workflow Executions intended to run indefinitely should be written with some care.
-The Temporal Service stores the complete Event History for the entire lifecycle of a Workflow Execution.
-The Temporal Service logs a warning after 10Ki (10,240) Events and periodically logs additional warnings as new Events are added.
-If the Event History exceeds 50Ki (51,200) Events, the Workflow Execution is terminated.
+However, if your Workflow will perform many actions, or will receive many messages, it can run into [Event History limits](#event-history-limits).
 
-To prevent _runaway_ Workflow Executions, you can use the Workflow Execution Timeout, the Workflow Run Timeout, or both.
-A Workflow Execution Timeout can be used to limit the duration of Workflow Execution Chain, and a Workflow Run Timeout can be used to limit the duration an individual Workflow Execution (Run).
+It can also hit [Workflow Versioning](/workflow-definition#workflow-versioning) and other backwards incompatibility problems.
 
-You can use the [Continue-As-New](/workflow-execution/continue-as-new) feature to close the current Workflow Execution and create a new Workflow Execution in a single atomic operation.
-The Workflow Execution spawned from Continue-As-New has the same Workflow Id, a new Run Id, and a fresh Event History and is passed all the appropriate parameters.
-For example, it may be reasonable to use Continue-As-New once per day for a long-running Workflow Execution that is generating a large Event History.
+For these reasons, it can be a good idea to [Continue-As-New](/workflow-execution/continue-as-new) periodically.
 
 ## What is a Reset? {#reset}
 
