@@ -25,23 +25,88 @@ keywords:
   - queries
 ---
 
-Through a Temporal SDK, Temporal provides a wide range of features that enable developers to build applications that serve a wide range of use cases.
+import { CallToAction } from '@site/src/components/elements/CallToAction';
 
-- **[Core application primitives](/evaluate/development-production-features/core-application)**: Develop and run your application with Workflows, Activities, and Workers.
-- **[Testing suite](/evaluate/development-production-features/testing-suite)**: Each Temporal SDK comes with a testing suite that enables developers to test their applications as they would any other.
-- **[Scheduled Workflows](/evaluate/development-production-features/schedules)**: Start a business process at a specific time or on a given time interval.
-- **[Interrupt a Workflow](/evaluate/development-production-features/interrupt-workflow)**: Cancel or terminate a business process (Workflow) that is already in progress and compensate for any steps already taken.
-- **Runtime safeguards**: Prevent avoidable errors and issues from executing during runtime.
-- **[Failure detection and mitigation](/evaluate/development-production-features/failure-detection)**: Detect failures with timeouts and configure automatic retries to mitigate them.
-- **[Temporal Nexus](/evaluate/nexus)**: Connect Temporal Applications across (and within) isolated Namespaces for improved modularity, security, debugging, and fault isolation. Nexus supports cross-team, cross-domain, and multi-region use cases.
-- **[Workflow message passing](/evaluate/development-production-features/workflow-message-passing)**: Build responsive applications that react to events at runtime and enable data retrieval from ongoing Workflows.
-- **Versioning**: Support multiple versions of your business logic for long-running business processes.
-- **[Observability](/evaluate/development-production-features/observability)**: List business process, view their state, and set up dashboards with metrics.
-- **[Debugging](/evaluate/development-production-features/debugging)**: Surface errors and step through code to find issues.
-- **[Data encryption](/evaluate/development-production-features/data-encryption)**: Transform data and protect the privacy of the users of your application.
-- **[Throughput composability](/evaluate/development-production-features/throughput-composability)**: Breakup business processes by data streams, team ownership, or other organization factors.
-- **[Cloud Automation](/evaluate/development-production-features/cloud-automation)**: Simplify cloud management and boost security with Temporal's Cloud Automation.
-- **[Low Latency](/evaluate/development-production-features/low-latency)**: Making your applications faster, more performant, and more efficient.
-- **[Multi-tenancy](/evaluate/development-production-features/multi-tenancy)**: Enhances efficiency and cost-effectiveness.
+# Features
 
-For detailed information on Temporal feature release stages and criteria, see this [Product Release Stages Guide](/evaluate/development-production-features/release-stages).
+<div className="features-intro">
+  The Temporal SDK provides a comprehensive suite of features designed to make building reliable, scalable applications easier than ever. Explore the full feature set below.
+</div>
+
+<div className="feature-grid">
+  <div className="feature-card">
+    <h3>Core application</h3>
+    <p>Workflows, Activities, and Workers form the foundation of every Temporal application.</p>
+    <a href="/evaluate/development-production-features/core-application" className="feature-link">Learn more →</a>
+  </div>
+  <div className="feature-card">
+    <h3>Failure detection</h3>
+    <p>Automatic detection and handling of failures, with timeouts and retry policies.</p>
+    <a href="/evaluate/development-production-features/failure-detection" className="feature-link">Learn more →</a>
+  </div>
+  <div className="feature-card">
+    <h3>Composability</h3>
+    <p>Partition and compose business logic with Child Workflows for scalable throughput.</p>
+    <a href="/evaluate/development-production-features/throughput-composability" className="feature-link">Learn more →</a>
+  </div>
+  <div className="feature-card">
+    <h3>Temporal Nexus</h3>
+    <p>Connect applications and teams across namespaces for modular, secure architectures.</p>
+    <a href="/evaluate/development-production-features/nexus" className="feature-link">Learn more →</a>
+  </div>
+  <div className="feature-card">
+    <h3>Workflow message passing</h3>
+    <p>Signals, Queries, and Updates enable dynamic, real-time interaction with running Workflows.</p>
+    <a href="/evaluate/development-production-features/workflow-message-passing" className="feature-link">Learn more →</a>
+  </div>
+  <div className="feature-card">
+    <h3>Debugging</h3>
+    <p>Powerful debugging tools, including replay debugging and state inspection.</p>
+    <a href="/evaluate/development-production-features/debugging" className="feature-link">Learn more →</a>
+  </div>
+  <div className="feature-card">
+    <h3>Interrupt a Workflow</h3>
+    <p>Cancel or terminate a Workflow in progress and compensate for completed steps.</p>
+    <a href="/evaluate/development-production-features/interrupt-workflow" className="feature-link">Learn more →</a>
+  </div>
+  <div className="feature-card">
+    <h3>Testing suite</h3>
+    <p>Comprehensive testing tools for unit, integration, and end-to-end testing.</p>
+    <a href="/evaluate/development-production-features/testing-suite" className="feature-link">Learn more →</a>
+  </div>
+  <div className="feature-card">
+    <h3>Observability</h3>
+    <p>Metrics, tracing, logging, and visibility into your application state.</p>
+    <a href="/evaluate/development-production-features/observability" className="feature-link">Learn more →</a>
+  </div>
+  <div className="feature-card">
+    <h3>Data encryption</h3>
+    <p>End-to-end encryption for your workflow data, ensuring sensitive information remains secure.</p>
+    <a href="/evaluate/development-production-features/data-encryption" className="feature-link">Learn more →</a>
+  </div>
+  <div className="feature-card">
+    <h3>Schedules</h3>
+    <p>Schedule Workflows to run at specific times or intervals, with cron and custom logic support.</p>
+    <a href="/evaluate/development-production-features/schedules" className="feature-link">Learn more →</a>
+  </div>
+  <div className="feature-card">
+    <h3>Cloud automation</h3>
+    <p>Automate cloud infrastructure management, including provisioning, scaling, and maintenance tasks.</p>
+    <a href="/evaluate/development-production-features/cloud-automation" className="feature-link">Learn more →</a>
+  </div>
+  <div className="feature-card">
+    <h3>Low latency</h3>
+    <p>Optimized for low-latency operations, ensuring your workflows run as quickly as possible.</p>
+    <a href="/evaluate/development-production-features/low-latency" className="feature-link">Learn more →</a>
+  </div>
+  <div className="feature-card">
+    <h3>Multi-tenancy</h3>
+    <p>Support for multiple tenants in a single Temporal cluster, with isolation and resource management.</p>
+    <a href="/evaluate/development-production-features/multi-tenancy" className="feature-link">Learn more →</a>
+  </div>
+</div>
+
+<CallToAction href="/evaluate/development-production-features/release-stages">
+  For detailed information about feature release stages and criteria, see our Product Release Stages Guide.
+</CallToAction>
+
