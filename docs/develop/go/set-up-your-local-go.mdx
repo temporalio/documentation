@@ -1,0 +1,155 @@
+---
+id: set-up-your-local-go
+sidebar_label: Setup
+title: Setup
+---
+
+import { SetupSteps, SetupStep, CodeSnippet } from '@site/src/components/elements/SetupSteps';
+import { CallToAction } from '@site/src/components/elements/CallToAction';
+
+# Setup
+
+Configure your local development environment to get started developing with Temporal.
+
+<SetupSteps>
+<SetupStep code={
+  <>
+    <CodeSnippet language="bash">
+    go version
+    </CodeSnippet>
+    <CodeSnippet language="bash">
+    go version go1.18.1 darwin/amd64
+    </CodeSnippet>
+  </>
+}>
+## Install Go
+
+Make sure you have Go installed. These tutorials were produced using Go 1.18. Check your version of Go with the following command:
+
+This will return your installed Go version.
+</SetupStep>
+
+<SetupStep code={
+  <>
+    <CodeSnippet language="bash">
+    mkdir goproject
+    </CodeSnippet>
+    <CodeSnippet language="bash">
+    cd goproject
+    </CodeSnippet>
+    <CodeSnippet language="bash">
+    go mod init
+    </CodeSnippet>
+    <CodeSnippet language="bash">
+    go get go.temporal.io/sdk
+    </CodeSnippet>
+  </>
+}>
+## Install the Temporal Go SDK
+
+If you are creating a new project using the Temporal Go SDK, you can start by creating a new directory.
+
+Next, switch to the new directory.
+
+Then, initialize a Go project in that directory.
+
+Finally, install the Temporal SDK with `go get`.
+</SetupStep>
+
+<SetupStep code={
+  <>
+    <CodeSnippet language="bash">
+    brew install temporal
+    </CodeSnippet>
+  </>
+}>
+## Install Temporal CLI
+
+The fastest way to get a development version of the Temporal Service running on your local machine is to use [Temporal CLI](https://docs.temporal.io/cli).
+
+Install Temporal CLI on your local machine using the following instructions for your platform.
+</SetupStep>
+
+<SetupStep code={
+  <>
+    <CodeSnippet language="bash">
+    temporal server start-dev
+    </CodeSnippet>
+    <div className="port-info">
+      <h4>Change the Web UI port</h4>
+      <p>The Temporal Web UI may be on a different port in some examples or tutorials. To change the port for the Web UI, use the <code>--ui-port</code> option when starting the server:</p>
+      <CodeSnippet language="bash">
+      temporal server start-dev --ui-port 8080
+      </CodeSnippet>
+      <p>The Temporal Web UI will now be available at http://localhost:8080.</p>
+    </div>
+    <style>
+      {`
+        .port-info {
+          background: rgba(68, 76, 231, 0.1);
+          border: 1px solid rgba(68, 76, 231, 0.2);
+          border-radius: 0.75rem;
+          padding: 1.5rem;
+          margin: 1.5rem 0;
+          transition: all 0.3s ease-in-out;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        [data-theme='dark'] .port-info {
+          background: rgba(68, 76, 231, 0.15);
+          border-color: rgba(68, 76, 231, 0.3);
+        }
+        .port-info h4 {
+          margin-top: 0;
+          margin-bottom: 1rem;
+          color: var(--ifm-color-emphasis-900);
+          font-weight: 600;
+        }
+        .port-info p {
+          margin-bottom: 1rem;
+          font-size: 0.95rem;
+          line-height: 1.5;
+          color: var(--ifm-color-emphasis-800);
+        }
+        .port-info p:last-child {
+          margin-bottom: 0;
+        }
+        .port-info code {
+          background: rgba(255, 255, 255, 0.5);
+          padding: 0.2rem 0.4rem;
+          border-radius: 4px;
+          font-size: 0.9em;
+        }
+        [data-theme='dark'] .port-info code {
+          background: rgba(0, 0, 0, 0.2);
+        }
+        @media (max-width: 768px) {
+          .port-info {
+            padding: 1.25rem;
+          }
+        }
+      `}
+    </style>
+    <CodeSnippet language="bash">
+    temporal server start-dev --db-filename your_temporal.db
+    </CodeSnippet>
+  </>
+}>
+## Start the development server
+
+Once you've installed Temporal CLI and added it to your PATH, open a new Terminal window and run the following command.
+
+This command starts a local Temporal Service. It starts the Web UI, creates the default Namespaces, and uses an in-memory database.
+
+The Temporal Service will be available on <b>localhost:7233</b>.
+The Temporal Web UI will be available at <b>http://localhost:8233</b>.
+
+Leave the local Temporal Service running as you work through tutorials and other projects. You can stop the Temporal Service at any time by pressing CTRL+C.
+
+The <code>temporal server start-dev</code> command uses an in-memory database, so stopping the server will erase all your Workflows and all your Task Queues. If you want to retain those between runs, start the server and specify a database filename using the <code>--db-filename</code> option, like this:
+</SetupStep>
+</SetupSteps>
+
+<CallToAction href="/develop/go/core-application">
+  <h3>Next: Run your first Temporal Application</h3>
+  <p>Learn how to create a basic Workflow and run it with the Temporal Go SDK</p>
+</CallToAction>
