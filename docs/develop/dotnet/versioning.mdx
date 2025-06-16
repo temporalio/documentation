@@ -221,6 +221,20 @@ public class MyWorkflow
 Patching allows you to make changes to currently running Workflows.
 It is a powerful method for introducing compatible changes without introducing non-determinism errors.
 
+### Detailed Overview of the Patched Function
+
+This video provides an in-depth overview of how the `patched()` function works:
+
+<div style={{ position: "relative", paddingBottom: "56.25%", height: 0 }}>
+  <iframe
+    src="https://www.youtube.com/embed/videoseries?list=PLytZkHFJwKUdfxFQnuo0Fson0QM0VL9hL"
+    style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
+    frameborder="0"
+    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen>
+  </iframe>
+</div>
+
 ## Worker Versioning
 
 Temporal's [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) feature allows you to tag your Workers and programmatically roll them out in deployment versions, so that old Workers can run old code paths and new Workers can run new code paths. This way, you can pin your deployments to specific revisions, often avoiding the need for patching.

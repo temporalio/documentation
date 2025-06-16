@@ -4,7 +4,7 @@ title: Versioning - Python SDK
 sidebar_label: Versioning
 description: Learn how to ensure deterministic Temporal Workflow execution and safely deploy updates using the Python SDK's patching and Worker Versioning APIs, for scalable long-running Workflows.
 slug: /develop/python/versioning
-toc_max_heading_level: 2
+toc_max_heading_level: 4
 keywords:
   - best practices
   - code sample
@@ -246,6 +246,20 @@ class MyWorkflow:
 
 Patching allows you to make changes to currently running Workflows.
 It is a powerful method for introducing compatible changes without introducing non-determinism errors.
+
+### Detailed Description of the Patched Function
+
+This video provides an in-depth overview of how the `patched()` function works:
+
+<div style={{ position: "relative", paddingBottom: "56.25%", height: 0 }}>
+  <iframe
+    src="https://www.youtube.com/embed/videoseries?list=PLytZkHFJwKUdfxFQnuo0Fson0QM0VL9hL"
+    style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
+    frameborder="0"
+    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen>
+  </iframe>
+</div>
 
 ## Worker Versioning
 
