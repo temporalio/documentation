@@ -1962,7 +1962,7 @@
     },
     {
       "source": "/worker-versioning",
-      "destination": "/production-deployment/worker-deployments/safe-deploys",
+      "destination": "/production-deployment/worker-deployments/worker-versioning",
       "permanent": true
     },
     {

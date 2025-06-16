@@ -488,8 +488,7 @@ module.exports = {
             id: "production-deployment/worker-deployments/index",
           },
           items: [
-            "production-deployment/worker-deployments/safe-deploys",
-            "production-deployment/worker-deployments/kubernetes-controller",
+            "production-deployment/worker-deployments/worker-versioning",
           ],
         },
       ],

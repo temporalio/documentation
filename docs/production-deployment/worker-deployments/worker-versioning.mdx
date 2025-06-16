@@ -1,8 +1,8 @@
 ---
-id: safe-deploys
-title: Safe Deploys
-sidebar_label: Safe Deploys
-description: Use Safe Deploys to pin Workflow revisions to individual Worker Deployment Versions, avoiding the need for branching to support multiple code paths.
+id: worker-versioning
+title: Worker Versioning
+sidebar_label: Worker Versioning
+description: Use Worker Versioning to pin Workflow revisions to individual Worker Deployment Versions, avoiding the need for branching to support multiple code paths.
 slug: /production-deployment/worker-deployments/safe-deploys
 toc_max_heading_level: 4
 keywords:
@@ -18,16 +18,15 @@ tags:
 import { LANGUAGE_TAB_GROUP, getLanguageLabel } from '@site/src/constants/languageTabs';
 import SdkTabs from '@site/src/components';
 
-[Safe Deploys](/production-deployment/worker-deployments/safe-deploys) is a Temporal feature that allows you to pin Workflows to individual versions of your workers, which are called Worker Deployment Versions.
-Using pinning, you will not need to add branching to your Workflows to avoid non-determinism errors.
+[Worker Versioning](/production-deployment/worker-deployments/worker-versioning) is a Temporal feature that allows you to pin Workflows to individual versions of your workers, which are called Worker Deployment Versions.
 
 This allows you to bypass the other Versioning APIs.
 Instead, your deployment system must support multiple versions running simultaneously and allow you to control when they are sunsetted.
 This is typically known as a **rainbow deploy** and contrasts to a rolling deploy in which your Workers are upgraded in place without the ability to keep old versions around.
-A **blue-green** deploy is a kind of rainbow deploy that is typically used to gradually roll out a new update; our Safe Deploys feature facilitates blue-green deploys.
+A **blue-green** deploy is a kind of rainbow deploy that is typically used to gradually roll out a new update.
 
 :::tip
-Watch this Temporal Replay 2025 talk to learn more about Safe Deploys.
+Watch this Temporal Replay 2025 talk to learn more about Worker Versioning.
 
 <div style={{ display: 'flex', justifyContent: 'center' }}>
     <iframe width="560" height="315"
@@ -40,7 +39,7 @@ Watch this Temporal Replay 2025 talk to learn more about Safe Deploys.
 :::
 
 :::note
-Safe Deploys is currently available in Pre-release.
+Worker Versioning is currently available in Pre-release.
 
 Minimum versions:
 
@@ -57,9 +56,9 @@ Self-hosted users:
 - Minimum Temporal UI Version v2.36.0
   :::
 
-## Getting Started with Safe Deploys
+## Getting Started with Worker Versioning
 
-To get started with Safe Deploys, you should understand some concepts around versioning and deployments.
+To get started with Worker Versioning, you should understand some concepts around versioning and deployments.
 
 - A **Worker Deployment** is a deployment or service across multiple versions. In a rainbow deploy, a deployment can have multiple active deployment versions running at once.
 - A **Worker Deployment Version** is a version of a deployment or service. It can have multiple Workers, but they all run the same build.
@@ -69,14 +68,13 @@ To get started with Safe Deploys, you should understand some concepts around ver
 - You can declare each Workflow type to have a **Versioning Behavior**, either `pinned` or `auto-upgraded`. A `pinned` Worfklow is guaranteed to complete on a single Worker Deployment Version. An `auto-upgraded` Workflow will move to the latest Worker Deployment Version automatically whenever you change the current version.
 
 Your deployment system should support rainbow deployments so that you can keep versions alive to drain existing workflows.
-The [Temporal Worker Controller](/production-deployment/worker-deployments/kubernetes-controller) provides an example of using Kubernetes to bootstrap a rainbow deployment.
 
-## Configuring a Worker for Safe Deploys
+## Configuring a Worker for Versioning
 
-You'll need to add a few additional configuration parameters to your Workers to toggle on Safe Deploys.
+You'll need to add a few additional configuration parameters to your Workers to toggle on Worker Versioning.
 There are three new parameters, with different names depending on the language:
 
-- `UseVersioning`: This enables the Safe Deploys functionality for this Worker.
+- `UseVersioning`: This enables the Versioning functionality for this Worker.
 - A `Version` string to identify the revision that this Worker will be allowed to execute. This is a combination of a deployment name and a build ID number.
 - The Versioning Behavior, either `pinned` or `auto-upgraded`.
 
@@ -89,8 +87,10 @@ buildID:= mustGetEnv("MY_BUILD_ID")
 w := worker.New(c, myTaskQueue, worker.Options{
       DeploymentOptions: worker.DeploymentOptions{
           UseVersioning: true,
-          // Must be in this exact format: <deployment name>.<build ID>
-          Version: "llm_srv." + buildID,
+          Version: worker.WorkerDeploymentVersion{
+              DeploymentName: "llm_srv",
+              BuildId:        buildID,
+          },
           DefaultVersioningBehavior: workflow.VersioningBehaviorAutoUpgrade,
 },
 })
@@ -167,13 +167,13 @@ worker = Temporalio::Worker.new(
 </SdkTabs.Ruby>
 </SdkTabs>
 
-If your worker and workflows are new, we suggest not providing a `DefaultVersioningBehavior`.
-Each workflow author must annotate their workflow as `auto-upgrade` or `pinned` on a workflow-by-workflow basis, based on how long they expect the workflow to run.
-If all of your workflows will be short-running for the foreseeable future, you can default to `pinned`.
+If your Worker and Workflows are new, we suggest not providing a `DefaultVersioningBehavior`.
+In general, each Workflow should be annotated as `auto-upgrade` or `pinned` on a Workflow-by-Workflow basis.
+If all of your Workflows will be short-running for the foreseeable future, you can default to `pinned`.
 
 Most users who are migrating to rainbow deploys from rolling deploys will start by defaulting to `auto-upgrade` until they have had time to annotate their Workflows.
 This default is the most similar to the legacy behavior.
-Auto-upgraded workflows won't be restricted to a single version and can use the other Versioning APIs.
+Auto-upgraded workflows won't be restricted to a single version and and need to be kept replay-safe manually, e.g. with [replay testing](https://docs.temporal.io/workflow-execution#replay).
 Once each workflow type is annotated, you can remove the `DefaultVersioningBehavior`.
 
 ## Rolling out changes with the CLI
@@ -195,7 +195,6 @@ temporal worker deployment set-current-version \
 ```
 
 To ramp a Deployment Version up to some percentage of your overall Worker fleet, use `set-ramping version`.
-This requires the [Temporal Worker Controller](/production-deployment/worker-deployments/kubernetes-controller).
 
 ```bash
 temporal worker deployment set-ramping-version \
@@ -421,5 +420,5 @@ handle = env.client.start_workflow(
 </SdkTabs.Ruby>
 </SdkTabs>
 
-This covers the complete lifecycle of working with Safe Deploys.
-Consider adopting the [Temporal Worker Controller](/production-deployment/worker-deployments/kubernetes-controller) to provide fine grained, out-of-the-box control of your deployments.
+This covers the complete lifecycle of working with Worker Versioning.
+More features will be added here soon, including the ability to progammaticaly deploy and scale your Workers in Kubernetes pods, and checks to guarantee safe deploys.

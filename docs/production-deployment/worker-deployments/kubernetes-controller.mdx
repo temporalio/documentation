@@ -17,12 +17,12 @@ tags:
   - Durable Execution
 ---
 
-Temporal's [deterministic constraints](/workflow-definition#deterministic-constraints) can cause challenges when rolling out or rolling back workflow code changes.
+Temporal's [deterministic constraints](/workflow-definition#deterministic-constraints) require consideration when rolling out or rolling back workflow code changes.
 
 The traditional approach to workflow determinism is to add branches using the [Versioning APIs](/workflow-definition#workflow-versioning).
 Over time these checks can become a source of technical debt, as safely removing them from a codebase is a careful process that often involves querying all running workflows.
 
-[Safe Deploys](/production-deployment/worker-deployments/safe-deploys) is a Temporal feature that allows you to pin Workflows to individual versions of your workers, which are called Worker Deployment Versions.
+[Worker Versioning](/production-deployment/worker-deployments/worker-versioning) is a Temporal feature that allows you to pin Workflows to individual versions of your workers, which are called Worker Deployment Versions.
 Using pinning, you will not need to add branching to your Workflows to avoid non-determinism errors.
 
 This allows you to bypass the other Versioning APIs.
@@ -43,11 +43,9 @@ Note that in Temporal, **Worker Deployment** is sometimes referred to as **Deplo
 
 Refer to [Github](https://github.com/DataDog/temporal-worker-controller/blob/main/internal/README.md) for instructions on how to run the Temporal Worker Controller with Minikube.
 
-More usage details are coming soon.
-
 ## Configuring Worker Lifecycle
 
-To use the Temporal Worker Controller, tag your Workers following the guidance for using [Safe Deploys](/production-deployment/worker-deployments/safe-deploys). This means specifying a `TEMPORAL_DEPLOYMENT_NAME` and a `WORKER_BUILD_ID` in addition to the stock hostname and namespace configuration parameters.
+To use the Temporal Worker Controller, tag your Workers following the guidance for using [Worker Versioning](/production-deployment/worker-deployments/worker-versioning). This means specifying a `TEMPORAL_DEPLOYMENT_NAME` and a `WORKER_BUILD_ID` in addition to the stock hostname and namespace configuration parameters.
 
 When a new worker deployment version is deployed, the worker controller detects it and automatically begins the process of making that version the new current (default) version of the worker deployment it is a part of. This could happen immediately if `cutover.strategy = AllAtOnce`, or gradually if `cutover.strategy = Progressive`.
 
