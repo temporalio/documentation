@@ -1716,3 +1716,72 @@ html[data-theme='dark'] .setup-local-gradient {
   background: var(--ifm-color-primary);
   color: #fff;
 }
+
+/* Ask AI Navbar Button */
+.ask-ai-navbar-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  font-family: var(--ifm-font-family-base);
+  white-space: nowrap;
+  margin-left: 12px;
+  margin-right: 12px;
+}
+
+.ask-ai-navbar-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+  color: white;
+}
+
+.ask-ai-navbar-button:active {
+  transform: translateY(0px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.ask-ai-navbar-button:focus {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+}
+
+@media (max-width: 996px) {
+  .ask-ai-text {
+    display: none;
+  }
+  
+  .ask-ai-navbar-button {
+    padding: 8px;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    justify-content: center;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .ask-ai-navbar-button {
+    width: 32px;
+    height: 32px;
+    padding: 6px;
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+  
+  .ask-ai-navbar-button svg {
+    width: 14px;
+    height: 14px;
+  }
+}
