@@ -1,17 +1,17 @@
 # Worker Shutdown Behavior
 
 When a worker shuts down, it stops polling for new tasks and begins the shutdown sequence.
-In the case of in-flight workflow tasks (WFTs), shutdown may cause them to fail if they aren’t 
-completed in time, after exhausting retry policy attempts. 
+In the case of in-flight workflow tasks (WFTs), shutdown may cause them to fail if they aren’t
+completed in time, after exhausting retry policy attempts.
 
-There are two types of shutdown behavior that can occur, depending on whether an idea of 
+There are two types of shutdown behavior that can occur, depending on whether an idea of
 “graceful shutdown” is configured.
 
 ## Graceful Shutdown
 
 Graceful shutdown configures how much time a worker has to complete its current task before
 shutting down. An activity is able to determine that the worker it’s running on is being shut
-down, through the activity context. 
+down, through the activity context.
 
 > Core SDKs - `graceful_shutdown_period`
 
@@ -20,13 +20,16 @@ down, through the activity context.
 > Java - `shutdown()` followed by `awaitTermination(timeout, unit)`
 
 ### Workflow tasks
+
 Any in-flight workflow tasks are (attempted to be) completed. The only reason they may not
 immediately, is if workflow code is (incorrectly) blocking, or because of local activities (see below)
 
 ### Activities
+
 Activities are allowed to complete during the graceful shutdown period.
 
 ### Local Activities
+
 Because Local Activities run within a WFT, current and future Local Activities within the same
 WFT will be allowed to run and complete, assuming there is no additional command to yield to.
 
@@ -36,6 +39,7 @@ is shut down. The worker still waits for the current WFT to complete, meaning yo
 your workflow task or execution timeout, unless another worker is spun up.
 
 ## Non-Graceful Period Shutdown
+
 This behavior is for either no graceful period being specified, or if shutdown has taken longer than
 the configured graceful period. In all cases, the activity context is canceled and the worker will
 finish shutdown when the current WFT completes (with either success or failure).
@@ -49,11 +53,13 @@ Go and Core SDKs behave differently when we pass task timeout and the Activity o
 :::
 
 ### Local Activities
+
 The Local Activity is sent a cancel signal, WFT heartbeats stop, and no new Local Activities will be
 retried or started. The worker still waits for the current WFT to complete, meaning you can eventually
 hit your workflow task or execution timeout, unless another worker is spun up.
 
 ## General Developer Guidance
+
 - Ensure activities and local activities **honor context cancellation** or other shutdown signals.
 - Expect that **long/hung local activities may block shutdown** unless you fail early. Local Activities
-should already generally be used for extremely short activities, so this is the user's burden.
+  should already generally be used for extremely short activities, so this is the user's burden.
