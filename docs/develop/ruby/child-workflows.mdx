@@ -25,8 +25,6 @@ This page shows how to do the following:
 
 ## Start a Child Workflow Execution {#child-workflows}
 
-**How to start a Child Workflow Execution using the Temporal Ruby SDK**
-
 A [Child Workflow Execution](/child-workflows) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
 
 When using a Child Workflow API, Child Workflow related Events ([StartChildWorkflowExecutionInitiated](/references/events#startchildworkflowexecutioninitiated), [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted), [ChildWorkflowExecutionCompleted](/references/events#childworkflowexecutioncompleted), etc...) are logged in the Workflow Execution Event History.
@@ -49,8 +47,6 @@ Temporalio::Workflow.execute_child_workflow(MyChildWorkflow, 'my-workflow-arg')
 ```
 
 ## Set a Parent Close Policy {#parent-close-policy}
-
-**How to set a Parent Close Policy using the Temporal Ruby SDK**
 
 A [Parent Close Policy](/parent-close-policy) determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).
 
