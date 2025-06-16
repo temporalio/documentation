@@ -41,23 +41,11 @@ import * as Components from '@site/src/components';
   <div className="feature-card">
     <h2><a href="/develop/python/core-application">Core Application</a></h2>
     <p>Use the essential components of a Temporal Application (Workflows, Activities, and Workers) to build and run a Temporal application.</p>
-    <ul>
-      <li><a href="/develop/python/core-application#develop-workflows">Develop a Basic Workflow</a></li>
-      <li><a href="/develop/python/core-application#develop-activities">Develop a Basic Activity</a></li>
-      <li><a href="/develop/python/core-application#activity-execution">Start an Activity Execution</a></li>
-      <li><a href="/develop/python/core-application#run-a-dev-worker">Run Worker Processes</a></li>
-    </ul>
   </div>
 
 <div className="feature-card">
     <h2><a href="/develop/python/temporal-clients">Temporal Client</a></h2>
     <p>Connect to a Temporal Service and start a Workflow Execution.</p>
-    <ul>
-      <li><a href="/develop/python/temporal-clients#connect-to-development-service">Connect to Development Temporal Service</a></li>
-      <li><a href="/develop/python/temporal-clients#connect-to-a-dev-cluster">Connect a Temporal Client to a Temporal Service</a></li>
-      <li><a href="/develop/python/temporal-clients#connect-to-temporal-cloud">Connect to Temporal Cloud</a></li>
-      <li><a href="/develop/python/temporal-clients#start-workflow-execution">Start a Workflow Execution</a></li>
-    </ul>
   </div>
 
 <div className="feature-card">
@@ -73,123 +61,66 @@ import * as Components from '@site/src/components';
 <div className="feature-card">
     <h2><a href="/develop/python/testing-suite">Testing</a></h2>
     <p>Set up the testing suite and test Workflows and Activities.</p>
-    <ul>
-      <li><a href="/develop/python/testing-suite#test-frameworks">Test Frameworks</a></li>
-      <li><a href="/develop/python/testing-suite#test-activities">Testing Activities</a></li>
-      <li><a href="/develop/python/testing-suite#test-workflows">Testing Workflows</a></li>
-      <li><a href="/develop/python/testing-suite#replay">How to Replay a Workflow Execution</a></li>
-    </ul>
   </div>
 
 <div className="feature-card">
     <h2><a href="/develop/python/failure-detection">Failure Detection</a></h2>
     <p>Explore how your application can detect failures using timeouts and automatically attempt to mitigate them with retries.</p>
-    <ul>
-      <li><a href="/develop/python/failure-detection#workflow-timeouts">Workflow Timeouts</a></li>
-      <li><a href="/develop/python/failure-detection#activity-timeouts">Set Activity Timeouts</a></li>
-      <li><a href="/develop/python/failure-detection#activity-heartbeats">Heartbeat an Activity</a></li>
-    </ul>
   </div>
 
 <div className="feature-card">
     <h2><a href="/develop/python/message-passing">Workflow Message Passing</a></h2>
     <p>Send messages to and read the state of Workflow Executions.</p>
-    <ul>
-      <li><a href="/develop/python/message-passing#signals">Develop with Signals</a></li>
-      <li><a href="/develop/python/message-passing#queries">Develop with Queries</a></li>
-      <li><a href="/develop/python/message-passing#updates">Develop with Updates</a></li>
-      <li><a href="/develop/python/message-passing#dynamic-handler">What is a Dynamic Handler</a></li>
-    </ul>
   </div>
 
 <div className="feature-card">
     <h2><a href="/develop/python/cancellation">Interrupt a Workflow</a></h2>
     <p>Interrupt a Workflow Execution with a Cancel or Terminate action.</p>
-    <ul>
-      <li><a href="/develop/python/cancellation#cancellation">Cancel a Workflow</a></li>
-      <li><a href="/develop/python/cancellation#termination">Terminate a Workflow</a></li>
-      <li><a href="/develop/python/cancellation#cancel-activity">Cancel an Activity from a Workflow</a></li>
-    </ul>
   </div>
 
 <div className="feature-card">
     <h2><a href="/develop/python/asynchronous-activity-completion">Asynchronous Activity Completion</a></h2>
     <p>Complete Activities asynchronously.</p>
-    <ul>
-      <li><a href="/develop/python/asynchronous-activity-completion">Asynchronously Complete an Activity</a></li>
-    </ul>
   </div>
 
 <div className="feature-card">
     <h2><a href="/develop/python/versioning">Versioning</a></h2>
     <p>Change Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.</p>
-    <ul>
-      <li><a href="/develop/python/versioning#introduction-to-versioning">Introduction to Versioning</a></li>
-      <li><a href="/develop/python/versioning#python-sdk-patching-api">How to Use the Patching API</a></li>
-      <li><a href="/develop/python/versioning#worker-versioning">How to Use Worker Versioning</a></li>
-    </ul>
   </div>
 
 <div className="feature-card">
     <h2><a href="/develop/python/observability">Observability</a></h2>
     <p>Configure and use the Temporal Observability APIs.</p>
-    <ul>
-      <li><a href="/develop/python/observability#metrics">Emit Metrics</a></li>
-      <li><a href="/develop/python/observability#tracing">Set up tracing</a></li>
-      <li><a href="/develop/python/observability#logging">Log from a Workflow</a></li>
-      <li><a href="/develop/python/observability#visibility">Use Visibility APIs</a></li>
-    </ul>
   </div>
 
 <div className="feature-card">
     <h2><a href="/develop/python/debugging">Debugging</a></h2>
     <p>Explore various ways to debug your application.</p>
-    <ul>
-      <li><a href="/develop/python/debugging">Debugging</a></li>
-    </ul>
   </div>
 
 <div className="feature-card">
     <h2><a href="/develop/python/schedules">Schedules</a></h2>
     <p>Run Workflows on a schedule and delay the start of a Workflow.</p>
-    <ul>
-      <li><a href="/develop/python/schedules#schedule-a-workflow">Schedule a Workflow</a></li>
-      <li><a href="/develop/python/schedules#temporal-cron-jobs">Temporal Cron Jobs</a></li>
-      <li><a href="/develop/python/schedules#start-delay">Start Delay</a></li>
-    </ul>
   </div>
 
 <div className="feature-card">
     <h2><a href="/develop/python/converters-and-encryption">Data Encryption</a></h2>
     <p>Use compression, encryption, and other data handling by implementing custom converters and codecs.</p>
-    <ul>
-      <li><a href="/develop/python/converters-and-encryption#custom-payload-codec">Custom Payload Codec</a></li>
-      <li><a href="/develop/python/converters-and-encryption#payload-conversion">Payload Conversion</a></li>
-    </ul>
   </div>
 
 <div className="feature-card">
     <h2><a href="/develop/python/timers">Durable Timers</a></h2>
     <p>Use Timers to make a Workflow Execution pause or "sleep" for seconds, minutes, days, months, or years.</p>
-    <ul>
-      <li><a href="/develop/python/timers">Sleep</a></li>
-    </ul>
   </div>
 
 <div className="feature-card">
     <h2><a href="/develop/python/child-workflows">Child Workflows</a></h2>
     <p>Explore how to spawn a Child Workflow Execution and handle Child Workflow Events.</p>
-    <ul>
-      <li><a href="/develop/python/child-workflows">Start a Child Workflow Execution</a></li>
-    </ul>
   </div>
 
 <div className="feature-card">
     <h2><a href="/develop/python/continue-as-new">Continue-As-New</a></h2>
     <p>Continue the Workflow Execution with a new Workflow Execution using the same Workflow ID.</p>
-    <ul>
-      <li><a href="/develop/python/continue-as-new">Continue-As-New</a></li>
-    </ul>
   </div>
 </div>
 

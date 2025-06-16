@@ -19,7 +19,6 @@
   padding: 1.5rem;
   transition: all 0.3s ease;
   border: 1px solid var(--ifm-color-emphasis-200);
-  height: 100%;
   display: flex;
   flex-direction: column;
 }
@@ -44,7 +43,6 @@
 .feature-card p {
   color: var(--ifm-color-emphasis-600);
   margin-bottom: 1rem;
-  flex-grow: 1;
 }
 
 .feature-link {
