@@ -47,9 +47,7 @@ To give a Workflow and its Activities the ability to be cancelled, do the follow
 - Listen for and handle a Cancellation request within an Activity.
 - Send a Cancellation request from a Temporal Client.
 
-### Handle Cancellation in Workflow {#handle-cancellation-in-workflow}
-
-**How to handle a Cancellation in a Workflow in Ruby.**
+## Handle Cancellation in Workflow {#handle-cancellation-in-workflow}
 
 Workflow Definitions can be written to respond to cancellation requests.
 It is common for an Activity to be run on Cancellation to perform cleanup.
@@ -82,9 +80,7 @@ class MyWorkflow < Temporalio::Workflow::Definition
 end
 ```
 
-### Handle Cancellation in an Activity {#handle-cancellation-in-an-activity}
-
-**How to handle a Cancellation in an Activity using the Temporal Ruby SDK**
+## Handle Cancellation in an Activity {#handle-cancellation-in-an-activity}
 
 Ensure that the Activity is [Heartbeating](/develop/ruby/failure-detection#activity-heartbeats) to receive the Cancellation request and stop execution.
 Also make sure that the [Heartbeat Timeout](/develop/ruby/failure-detection#heartbeat-timeout) is set on the Activity Options when calling from the Workflow.
@@ -107,9 +103,7 @@ class MyActivity < Temporalio::Activity::Definition
 end
 ```
 
-### Request Cancellation {#request-cancellation}
-
-**How to request Cancellation of a Workflow using the Temporal Ruby SDK**
+## Request Cancellation {#request-cancellation}
 
 Use `cancel` on the `WorkflowHandle` to cancel a Workflow Execution.
 
@@ -123,8 +117,6 @@ handle = my_client.workflow_handle('my-workflow-id')
 # the handle's result to wait for cancellation to be applied.
 handle.cancel
 ```
-
-**How to request Cancellation of an Activity in Ruby using the Temporal Ruby SDK**
 
 By default, Activities are automatically cancelled when the Workflow is cancelled since the workflow cancellation is used by activities by default.
 To issue a cancellation explicitly, a new cancellation token can be created.
@@ -163,8 +155,6 @@ end
 ```
 
 ## Termination {#termination}
-
-**How to Terminate a Workflow Execution in Ruby using the Temporal Ruby SDK**
 
 To Terminate a Workflow Execution in Ruby, use the `terminate` method on the Workflow handle.
 

@@ -39,9 +39,7 @@ Each Temporal SDK can optionally emit metrics from either the Client or Worker p
 
 Metrics in Ruby are configured on the `metrics` argument of the `telemetry` argument when creating a global `Temporalio::Runtime`. That object should be created globally and should be used for all clients; therefore, you should configure this before any other Temporal code.
 
-### Set a Prometheus endpoint
-
-**How to set a Prometheus endpoint using the Ruby SDK**
+## Set a Prometheus endpoint
 
 The following example exposes a Prometheus endpoint on port `9000`.
 

@@ -31,8 +31,6 @@ This page shows how to do the following:
 
 ## Develop a Workflow {#develop-workflow}
 
-**How to develop a basic Workflow using the Temporal Ruby SDK**
-
 Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflow-definition).
 
 In the Temporal Ruby SDK programming model, Workflows are defined as classes.
@@ -73,8 +71,6 @@ calls are made.
 Which calls are illegal is configurable in the worker options.
 
 ### Customize Workflow Type {#workflow-type}
-
-**How to customize your Workflow Type name using the Temporal Ruby SDK**
 
 Workflows have a Type that are referred to as the Workflow name.
 
@@ -201,8 +197,6 @@ Currently due to [an issue](https://github.com/temporalio/sdk-ruby/issues/162), 
 
 ## Start Activity Execution {#activity-execution}
 
-**How to start an Activity Execution using the Temporal Ruby SDK**
-
 Calls to spawn [Activity Executions](/activity-execution) are written within a [Workflow Definition](/workflow-definition).
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
 This results in the set of three [Activity Task](/tasks#activity-task) related Events ([ActivityTaskScheduled](/references/events#activitytaskscheduled), [ActivityTaskStarted](/references/events#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
@@ -239,13 +233,9 @@ These values are set as keyword parameters.
 
 ### Get Activity Execution results {#get-activity-results}
 
-**How to get the results of an Activity Execution using the Temporal Ruby SDK**
-
 The Activity result is the returned from the `execute_activity` call.
 
-## Run Worker Process
-
-**How to create and run a Worker Process using the Temporal Ruby SDK**
+## Run Worker Process {#run-worker-process}
 
 The [Worker Process](/workers#worker-process) is where Workflow Functions and Activity Functions are executed.
 
@@ -292,8 +282,6 @@ However, the failure of the Task does not cause the associated Workflow Executio
 
 ## Set a Dynamic Workflow {#set-a-dynamic-workflow}
 
-**How to set a Dynamic Workflow using the Temporal Ruby SDK**
-
 A Dynamic Workflow in Temporal is a Workflow that is invoked dynamically at runtime if no other Workflow with the same name is registered.
 A Workflow can be made dynamic by invoking `workflow_dynamic` class method at the top of the definition.
 You must register the Workflow with the Worker before it can be invoked.
@@ -324,8 +312,6 @@ end
 ```
 
 ## Set a Dynamic Activity {#set-a-dynamic-activity}
-
-**How to set a Dynamic Activity using the Temporal Ruby SDK**
 
 A Dynamic Activity in Temporal is an Activity that is invoked dynamically at runtime if no other Activity with the same name is registered.
 An Activity can be made dynamic by invoking `activity_dynamic` class method at the top of the definition.
