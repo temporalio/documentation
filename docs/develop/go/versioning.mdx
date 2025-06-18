@@ -62,7 +62,7 @@ w.RegisterWorkflow(pizza.PizzaWorkflowV2)
 The downside of this method is that it does not use any Temporal platform features.
 It requires you to duplicate code and to update any code and commands used to start the Workflow.
 This can become impractical over time, depending on how you are providing configuration strings to your deployment.
-This method also does not provide a way to introduce versioning to any still-running Workflows -- it is essentially just a cutover, unlike the `GetVersion` method.
+This method also does not provide a way to introduce versioning to any still-running Workflows -- it is essentially just a cutover, unlike the `GetVersion` method, which we will now demonstrate.
 
 ### Using GetVersion
 

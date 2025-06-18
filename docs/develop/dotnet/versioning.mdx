@@ -41,7 +41,7 @@ There are two primary Versioning methods that you can use:
 
 ## Versioning with Patching {#patching}
 
-To understand why Workflow Branching is useful, it's helpful to first demonstrate cutting over an entire Workflow.
+To understand why Patching is useful, it's helpful to first demonstrate cutting over an entire Workflow.
 
 ### Workflow cutovers
 
@@ -79,7 +79,7 @@ using var worker = new TemporalWorker(
 The downside of this method is that it does not use any Temporal platform features.
 It requires you to duplicate code and to update any code and commands used to start the Workflow.
 This can become impractical over time, depending on how you are providing configuration strings to your deployment.
-This method also does not provide a way to introduce versioning to any still-running Workflows -- it is essentially just a cutover, unlike the Patching method.
+This method also does not provide a way to introduce versioning to any still-running Workflows -- it is essentially just a cutover, unlike Patching, which we will now demonstrate.
 
 ### Adding a patch
 
