@@ -178,6 +178,7 @@ module.exports = {
             "develop/php/message-passing",
             "develop/php/cancellation",
             "develop/php/asynchronous-activity-completion",
+            "develop/php/versioning",
             "develop/php/observability",
             "develop/php/debugging",
             "develop/php/schedules",
@@ -271,7 +272,7 @@ module.exports = {
         },
         "develop/activity-retry-simulator",
         "develop/worker-performance",
-        "develop/safe-deployments",
+        "develop/determinism",
       ],
     },
     {
@@ -478,6 +479,18 @@ module.exports = {
             "production-deployment/self-hosted-guide/server-frontend-api-reference",
           ],
         },
+        {
+          type: "category",
+          label: "Worker deployments",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "production-deployment/worker-deployments/index",
+          },
+          items: [
+            "production-deployment/worker-deployments/worker-versioning",
+          ],
+        },
       ],
     },
     {
@@ -623,8 +636,6 @@ module.exports = {
             "encyclopedia/workers/task-queue-naming",
             "encyclopedia/workers/task-routing-worker-sessions",
             "encyclopedia/workers/sticky-execution",
-            "encyclopedia/workers/worker-deployments",
-            "encyclopedia/workers/worker-versioning",
           ],
         },
         {
