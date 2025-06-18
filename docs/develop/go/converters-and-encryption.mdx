@@ -127,6 +127,7 @@ func (Codec) Decode(payloads []*commonpb.Payload) ([]*commonpb.Payload, error) {
 	return result, nil
 }
 ```
+
 **Step 2: Set Data Converter to use custom Payload Codec.**
 
 Set your custom `PayloadCodec` with an instance of `DataConverter` in your `Dial` client options that you use to create the client.
@@ -215,4 +216,3 @@ To set your custom Payload Converter, use [`NewCompositeDataConverter`](https://
     converter.NewJSONPayloadConverter(),
   )
   ```
-
