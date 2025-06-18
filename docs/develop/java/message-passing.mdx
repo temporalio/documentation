@@ -32,6 +32,32 @@ Temporal Clients use messages to read Workflow state and control execution.
 See [Workflow message passing](/encyclopedia/workflow-message-passing) for a general overview of this topic.
 This page introduces these features for the Temporal Java SDK.
 
+<div className="topics-covered-section">
+  <h2 className="topics-covered-title">Topics covered in this section</h2>
+  <div className="topics-grid">
+    <a href="#writing-message-handlers" className="topic-card">
+      <div className="topic-title">Write message handlers</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#send-messages" className="topic-card">
+      <div className="topic-title">Send messages</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#message-handler-patterns" className="topic-card">
+      <div className="topic-title">Message handler patterns</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#message-handler-troubleshooting" className="topic-card">
+      <div className="topic-title">Message handler troubleshooting</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#dynamic-handler" className="topic-card">
+      <div className="topic-title">Dynamic components</div>
+      <div className="topic-arrow">→</div>
+    </a>
+  </div>
+</div>
+
 ## Write message handlers {#writing-message-handlers}
 
 Follow these guidelines when writing your message handlers:
@@ -254,7 +280,7 @@ List<Language> languages = workflow.getLanguages(new GetLanguagesInput(false));
 System.out.println("Supported languages: " + languages);
 ```
 
-- Sending a Query doesn’t add events to a Workflow's Event History.
+- Sending a Query doesn't add events to a Workflow's Event History.
 
 - You can send Queries to closed Workflow Executions within a Namespace's Workflow retention period.
   This includes Workflows that have completed, failed, or timed out.
@@ -265,7 +291,7 @@ System.out.println("Supported languages: " + languages);
 ### Send a Signal {#send-signal}
 
 You can send a Signal to a Workflow Execution from a Temporal Client or from another Workflow Execution.
-However, you can only send Signals to Workflow Executions that haven’t closed.
+However, you can only send Signals to Workflow Executions that haven't closed.
 
 #### Send a Signal from a Client {#send-signal-from-client}
 
@@ -453,22 +479,6 @@ Language previousLanguage =
 ```
 
 For more examples, see the [Java sample for early-return pattern](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/earlyreturn).
-
-:::info NON-TYPE SAFE API CALLS
-
-In real-world development, sometimes you may be unable to import Workflow Definition method signatures.
-When you don't have access to the Workflow Definition or it isn't written in Java, you can use these non-type safe APIs to obtain an untyped WorkflowStub:
-
-- [`WorkflowClient.newUntypedWorkflowStub`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClient.html#newUntypedWorkflowStub(java.lang.String,io.temporal.client.WorkflowOptions))
-- [`Workflow.newUntypedExternalWorkflowStub`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newUntypedExternalWorkflowStub(java.lang.String)).
-
-Pass method names instead of method objects to:
-
-- [`WorkflowStub.query`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#query(java.lang.String,java.lang.Class,java.lang.Object...))
-- [`WorkflowStub.signal`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#signal(java.lang.String,java.lang.Object...))
-- [`WorkflowStub.update`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#update(java.lang.String,java.lang.Class,java.lang.Object...))
-- [`WorkflowStub.startUpdateWithStart`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdateWithStart(io.temporal.client.UpdateOptions,java.lang.Object%5B%5D,java.lang.Object%5B%5D))
-- [`WorkflowStub.executeUpdateWithStart`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#executeUpdateWithStart(io.temporal.client.UpdateOptions,java.lang.Object%5B%5D,java.lang.Object%5B%5D))
 
 :::
 
