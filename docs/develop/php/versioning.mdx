@@ -32,6 +32,24 @@ Temporal uses event sourcing to reconstruct Workflow state by replaying saved Hi
 This means that any incompatible update to the Workflow definition code could cause a non-deterministic
 issue if not handled correctly.
 
+<div className="topics-covered-section">
+  <h2 className="topics-covered-title">Topics covered in this section</h2>
+  <div className="topics-grid">
+    <a href="#introduction-to-versioning" className="topic-card">
+      <div className="topic-title">Introduction to Versioning</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#php-sdk-patching-api" className="topic-card">
+      <div className="topic-title">Use the PHP SDK Patching API</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#sanity-checking" className="topic-card">
+      <div className="topic-title">Sanity checking</div>
+      <div className="topic-arrow">→</div>
+    </a>
+  </div>
+</div>
+
 ## Introduction to Versioning {#introduction-to-versioning}
 
 To design for potentially long running Workflows at scale, versioning with Temporal works differently than you might expect.
