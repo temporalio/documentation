@@ -10,14 +10,34 @@ tags:
   - Workflows
   - Go SDK
   - Temporal SDKs
-description: Learn how to use Temporal’s Go SDK Selectors with Futures, Timers, and Channels. Ensure deterministic Workflow execution and handle multiple parallel tasks efficiently.
+description: Learn how to use Temporal's Go SDK Selectors with Futures, Timers, and Channels. Ensure deterministic Workflow execution and handle multiple parallel tasks efficiently.
 ---
 
-This page shows how to do the following:
-
-- [Use Selectors with Futures](#use-selectors-with-futures)
-- [Use Selectors with Timers](#use-selectors-with-timers)
-- [Use Selectors with Channels](#use-selectors-with-channels)
+<div className="topics-covered-section">
+  <h2 className="topics-covered-title">Topics covered in this section</h2>
+  <div className="topics-grid">
+    <a href="#api-example" className="topic-card">
+      <div className="topic-title">Full API example</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#use-selectors-with-futures" className="topic-card">
+      <div className="topic-title">Use Selectors with Futures</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#use-selectors-with-timers" className="topic-card">
+      <div className="topic-title">Use Selectors with Timers</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#use-selectors-with-channels" className="topic-card">
+      <div className="topic-title">Use Selectors with Channels</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#query-selector-state" className="topic-card">
+      <div className="topic-title">Query Selector state</div>
+      <div className="topic-arrow">→</div>
+    </a>
+  </div>
+</div>
 
 In Go, the `select` statement lets a goroutine wait on multiple communication operations.
 A `select` **blocks until one of its cases can run**, then it executes that case.
