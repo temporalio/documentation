@@ -27,15 +27,34 @@ tags:
   - Temporal SDKs
 description: Monitor your Temporal Application state using Metrics, Tracing, Logging, and Visibility features. Emit metrics, configure tracing, use context propagation, customize logging, and use Search Attributes with the Temporal Go SDK for enhanced Workflow Execution insights.
 ---
+This page covers the many ways to view the current state of your [Temporal Application](/temporal#temporal-application). 
+That is, ways to view which [Workflow Executions](/workflow-execution) are tracked by the [Temporal Platform](/temporal#temporal-platform) and the state of any specified Workflow Execution, either currently or at points of an execution.
 
-This page covers the many ways to view the current state of your [Temporal Application](/temporal#temporal-application)—that is, ways to view which [Workflow Executions](/workflow-execution) are tracked by the [Temporal Platform](/temporal#temporal-platform) and the state of any specified Workflow Execution, either currently or at points of an execution.
 
-This section covers features related to viewing the state of the application, including:
+<div className="topics-covered-section">
+  <h2 className="topics-covered-title">Topics covered in this section</h2>
+  <div className="topics-grid">
+    <a href="#metrics" className="topic-card">
+      <div className="topic-title">Metrics</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#tracing-and-context-propogation" className="topic-card">
+      <div className="topic-title">Tracing</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#logging" className="topic-card">
+      <div className="topic-title">Logging</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#visibility" className="topic-card">
+      <div className="topic-title">Visibility</div>
+      <div className="topic-arrow">→</div>
+    </a>
+  </div>
+</div>
 
-- [Metrics](#metrics)
-- [Tracing](#tracing-and-context-propogation)
-- [Logging](#logging)
-- [Visibility](#visibility)
+
+
 
 ## How to emit metrics {#metrics}
 
@@ -159,7 +178,7 @@ To propagate context over Nexus Operation calls, the context is serialized into 
 This is essentially a wrapper around `map[string]string` with helper methods to `Set` and `Get` values.
 The header normalizes all keys to lowercase.
 
-Because Nexus uses this custom format, and because Nexus calls may involve external systems, the `ContextPropagator` interface doesn’t apply to Nexus headers.
+Because Nexus uses this custom format, and because Nexus calls may involve external systems, the `ContextPropagator` interface doesn't apply to Nexus headers.
 Context must be explicitly propagated through interceptors, as shown in the [Nexus Context Propagation sample](https://github.com/temporalio/samples-go/tree/main/nexus-context-propagation).
 
 ### Useful Resources
