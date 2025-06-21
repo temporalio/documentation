@@ -428,10 +428,10 @@ Override target TLS server name.
 
 ## reset
 
-Resetting an activity resets both the number of attempts and the activity timeout.
+Resetting an activity restarts the activity as if it were first being scheduled. That is, it will reset both the number of attempts and the activity timeout, as well as, optionally, the [heartbeat details](#reset-heartbeats).
 
-If the activity may be executing (i.e. it has not yet timed out), the reset will occur the next time it times out.
-If it has failed or timed out and is waiting for a retry, the reset will apply immediately.
+If the activity may be executing (i.e. it has not yet timed out), the reset will take effect the next time it fails or times out.
+If is waiting for a retry (i.e. has failed or timed out), the reset will apply immediately.
 
 If the activity is already paused, it will be unpaused by default. You can specify `keep_paused` to prevent this.
 
@@ -442,13 +442,13 @@ paused.
 
 Activities can be specified by their Activity ID or Activity Type.
 
-### Resetting activities that heartbeat
+### Resetting activities that heartbeat {#reset-heartbeats}
 
 Activities that heartbeat will receive a [Canceled failure](/references/failures#cancelled-failure) the next time they heartbeat after a reset.
 
 If, in your Activity, you need to do any cleanup when an Activity is reset, handle this error and then re-throw it when you've cleaned up.
 
-If the 'reset_heartbeats' flag is set, the heartbeat details will also be cleared.
+If the `reset_heartbeats` flag is set, the heartbeat details will also be cleared.
 
 Specify the Activity Type of ID and Workflow IDs:
 
