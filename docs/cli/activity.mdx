@@ -428,20 +428,27 @@ Override target TLS server name.
 
 ## reset
 
-Resetting an activity resets both the number of attempts and the activity
-timeout.
+Resetting an activity resets both the number of attempts and the activity timeout.
 
-If activity is paused and 'keep_paused' flag is not provided - it will be
+If the activity may be executing (i.e. it has not yet timed out), the reset will occur the next time it times out.
+If it has failed or timed out and is waiting for a retry, the reset will apply immediately.
+
+If the activity is already paused, it will be unpaused by default. You can specify `keep_paused` to prevent this.
+
+If the activity is paused and the `keep_paused` flag is not provided, it will be
 unpaused.
-If activity is paused and 'keep_paused' flag is provided - it will stay
+If the activity is paused and `keep_paused` flag is provided - it will stay
 paused.
-If activity is waiting for the retry, is will be rescheduled immediately.
-If the 'reset_heartbeats' flag is set, the activity heartbeat timer and
-heartbeats will be reset.
 
 Activities can be specified by their Activity ID or Activity Type.
-One of those parameters must be provided. If both are provided - Activity
-Type will be used, and Activity ID will be ignored.
+
+### Resetting activities that heartbeat
+
+Activities that heartbeat will receive a [Canceled failure](/references/failures#cancelled-failure) the next time they heartbeat after a reset.
+
+If, in your Activity, you need to do any cleanup when an Activity is reset, handle this error and then re-throw it when you've cleaned up.
+
+If the 'reset_heartbeats' flag is set, the heartbeat details will also be cleared.
 
 Specify the Activity Type of ID and Workflow IDs:
 
@@ -459,23 +466,23 @@ Use the following options to change the behavior of this command.
 
 **--activity-id**, **-a** _string_
 
-Activity ID to pause.
+The Activity ID to pause.
 
 **--activity-type**, **-g** _string_
 
-Activity Type to pause.
+The Activity Type to pause. Exclusive with `--activity-id`.
 
 **--identity** _string_
 
-Identity of the user submitting this request.
+The identity of the user or client submitting this request.
 
 **--keep-paused** _bool_
 
-If activity was paused - it will stay paused.
+If activity was paused, it will stay paused.
 
 **--reset-heartbeats** _bool_
 
-Reset the Activity's heartbeat.
+Clear the Activity's heartbeat details.
 
 **Global Flags:**
 
