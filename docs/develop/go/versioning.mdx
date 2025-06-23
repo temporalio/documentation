@@ -35,7 +35,7 @@ To understand why Patching is useful, it's helpful to first demonstrate cutting 
 ### Workflow cutovers
 
 Since incompatible changes only affect open Workflow Executions of the same type, you can avoid determinism errors by creating a whole new Workflow when making changes.
-To do this, you can copy the Workflow Definition function, giving it a different name, and make sure that both names were registered with your Workers.
+To do this, you can copy the Workflow Definition function, giving it a different name, and make sure that both names are registered with your Workers.
 
 For example, you would duplicate `PizzaWorkflow` as `PizzaWorkflowV2`:
 
@@ -67,7 +67,7 @@ This method also does not provide a way to introduce versioning to any still-run
 ### Patching with GetVersion
 
 Patching essentially defines a logical branch for a specific change in the Workflow.
-If your Workflow is not [pinned to a specific deployment](/production-deployment/worker-deployments/worker-versioning) or you need to fix a bug in a running workflow, you can patch it.
+If your Workflow is not [pinned to a specific Worker Deployment Version](/production-deployment/worker-deployments/worker-versioning) or you need to fix a bug in a running workflow, you can patch it.
 
 Consider the following Workflow Definition:
 
@@ -183,11 +183,11 @@ if v == workflow.DefaultVersion {
 
 You can add multiple calls to `GetVersion` in a single Workflow.
 This can become challenging to manage if you have many long-running Workflows, as you will wind up with many code branches over time.
-To clean these up, you can gradually deprecate older workflow versions.
+To clean these up, you can gradually deprecate older Workflow versions.
 
-### Deprecating old workflow versions
+### Deprecating old Workflow versions
 
-You can safely remove support for older workflow versions once you are certain that there are no longer any open Workflow Executions based on that version. You can use the following [List Filter](/list-filter) syntax for this (the 1 near the end of the last line represents the version number):
+You can safely remove support for older Workflow versions once you are certain that there are no longer any open Workflow Executions based on that version. You can use the following [List Filter](/list-filter) syntax for this (the 1 near the end of the last line represents the version number):
 
 ```
 WorkflowType = "PizzaWorkflow" 

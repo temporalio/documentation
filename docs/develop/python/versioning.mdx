@@ -47,7 +47,7 @@ To understand why Patching is useful, it's helpful to first demonstrate cutting 
 ### Workflow cutovers
 
 Since incompatible changes only affect open Workflow Executions of the same type, you can avoid determinism errors by creating a whole new Workflow when making changes.
-To do this, you can copy the Workflow Definition function, giving it a different name, and make sure that both names were registered with your Workers.
+To do this, you can copy the Workflow Definition function, giving it a different name, and make sure that both names are registered with your Workers.
 
 For example, you would duplicate `PizzaWorkflow` as `PizzaWorkflowV2`:
 
@@ -83,7 +83,7 @@ This method also does not provide a way to introduce versioning to any still-run
 ### Adding a patch
 
 Patching essentially defines a logical branch for a specific change in the Workflow.
-If your Workflow is not [pinned to a specific deployment](/production-deployment/worker-deployments/worker-versioning) or you need to fix a bug in a running workflow, you can patch it.
+If your Workflow is not [pinned to a specific Worker Deployment Version](/production-deployment/worker-deployments/worker-versioning) or you need to fix a bug in a running workflow, you can patch it.
 
 Suppose you have an initial Workflow version called `pre_patch_activity`:
 

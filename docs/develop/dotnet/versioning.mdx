@@ -29,7 +29,7 @@ tags:
 
 import { CaptionedImage } from '@site/src/components';
 
-Since Workflow Executions in Temporal can run for long periods — sometimes months or even years — it's common to need to make changes to a Workflow Definition, even while a particular Workflow Execution with the same Workflow Definition is in progress.
+Since Workflow Executions in Temporal can run for long periods — sometimes months or even years — it's common to need to make changes to a Workflow Definition, even while a particular Workflow Execution is in progress.
 
 The Temporal Platform requires that Workflow code is [deterministic](/workflow-definition#deterministic-constraints).
 If you make a change to your Workflow code that would cause non-deterministic behavior on Replay, you'll need to use one of our Versioning methods to gracefully update your running Workflows.
@@ -84,7 +84,7 @@ This method also does not provide a way to introduce versioning to any still-run
 ### Adding a patch
 
 Patching essentially defines a logical branch for a specific change in the Workflow.
-If your Workflow is not [pinned to a specific worker deployment version](/production-deployment/worker-deployments/worker-versioning) or if you need to fix a bug in a running workflow, you can patch it.
+If your Workflow is not [pinned to a specific Worker Deployment Version](/production-deployment/worker-deployments/worker-versioning) or if you need to fix a bug in a running workflow, you can patch it.
 
 Suppose you have an initial Workflow version called `PrePatchActivity`:
 
