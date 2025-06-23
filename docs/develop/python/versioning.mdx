@@ -252,7 +252,7 @@ This video provides an in-depth overview of how the `patched()` function works:
 
 ## Worker Versioning
 
-Temporal's [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) feature allows you to tag your Workers and programmatically roll them out in deployment versions, so that old Workers can run old code paths and new Workers can run new code paths. This way, you can pin your deployments to specific revisions, often avoiding the need for patching.
+Temporal's [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) feature allows you to tag your Workers and programmatically roll them out in deployment versions, so that old Workers can run old code paths and new Workers can run new code paths. This way, you can pin your deployments to specific revisions, avoiding the need for patching.
 
 Changing the order of any commands in your Workflow code that interact directly with the Temporal Service -- such as calling an Activity or creating a Sleep timer -- will cause a non-determinism error unless you've implemented a versioning solution.
 To test whether a new revision will require versioning, you should incorporate [Replay Testing](/develop/python/testing-suite#replay).

@@ -17,7 +17,7 @@ Activities do not need to be deterministic.
 
 ## Use Replay Testing before and during your deployments
 
-The best way to verify that your code won't cause non-determinism errors once deployed is to use [replay testing](https://docs.temporal.io/workflow-execution#replay).
+To verify that your code won't cause non-determinism errors upon a new deployment, you can use [replay testing](https://docs.temporal.io/workflow-execution#replay).
 
 Replay testing takes one or more existing [Workflow Histories](https://docs.temporal.io/workflow-execution/event#event-history) that ran against a previous version of Workflow code and runs them against your _current_ Workflow code, verifying that your new code is compatible with the provided history.
 

@@ -2,7 +2,7 @@
 id: worker-versioning
 title: Worker Versioning
 sidebar_label: Worker Versioning
-description: Use Worker Versioning to pin Workflow revisions to individual Worker Deployment Versions, avoiding the need for branching to support multiple code paths.
+description: Use Worker Versioning to pin Workflow revisions to individual Worker Deployment Versions, avoiding the need for patching to support multiple code paths.
 slug: /production-deployment/worker-deployments/worker-versioning
 toc_max_heading_level: 4
 keywords:
@@ -21,9 +21,14 @@ import SdkTabs from '@site/src/components';
 [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) is a Temporal feature that allows you to pin Workflows to individual versions of your workers, which are called Worker Deployment Versions.
 
 This allows you to bypass the other Versioning APIs.
-Instead, your deployment system must support multiple versions running simultaneously and allow you to control when they are sunsetted.
+With Worker Versioning, your deployment should support multiple revisions of your Workflows running simultaneously, and allow you to control when they are sunsetted.
 This is typically known as a **rainbow deploy** and contrasts to a rolling deploy in which your Workers are upgraded in place without the ability to keep old versions around.
-A **blue-green** deploy is a kind of rainbow deploy that is typically used to gradually roll out a new update.
+A **blue-green** deploy is a kind of rainbow deploy with two builds, "blue" and "green," that is used to gradually roll out a new update.
+
+This provides several advantages:
+- Rainbow deploys enable you to keep old builds around until all running instances of that build have concluded. This in turn allows you to pin Workflows to builds for as long as you're willing to keep old builds around.
+- Unlike rolling deploys, rainbow deploys and blue-green deploys allow you "instant rollback" by re-routing traffic to your old builds when something goes wrong.
+- Unlike strict blue-green deploys, rainbow deploys have more than two slots. This means you never have to replace a build that's still running an older revision.
 
 :::tip
 Watch this Temporal Replay 2025 talk to learn more about Worker Versioning.
@@ -56,16 +61,18 @@ Self-hosted users:
 - Minimum Temporal UI Version v2.36.0
   :::
 
-## Getting Started with Worker Versioning
+## Getting Started with Worker Versioning {#definition}
 
 To get started with Worker Versioning, you should understand some concepts around versioning and deployments.
 
 - A **Worker Deployment** is a deployment or service across multiple versions. In a rainbow deploy, a deployment can have multiple active deployment versions running at once.
 - A **Worker Deployment Version** is a version of a deployment or service. It can have multiple Workers, but they all run the same build.
 - A **Build ID**, in combination with a Worker Deployment name, identifies a single Worker Deployment Version.
+- You can declare each Workflow type to have a **Versioning Behavior**, either `pinned` or `auto-upgrade`.
+  - A `pinned` Worfklow is guaranteed to complete on a single Worker Deployment Version.
+  - An `auto-upgrade` Workflow will move to the latest Worker Deployment Version automatically whenever you change the current version.
 - Each Worker Deployment has a single **Current Version** which is where workflows are routed to unless they were previously pinned on a different version. Other versions are still around to allow pinned Workflows to finish executing, or in case you need to roll back. If no current version is specified, the default is unversioned.
 - Each Worker Deployment can have a **Ramping Version** which is where a configurable percentage of workflows are routed to unless they were previously pinned on a different version. The ramp percentage can be in the range [0, 100]. Workflows that don't go to the Ramping Version will go to the Current Version. If no ramping version is specified, 100% of auto-upgrade workflows will go to the Current Version.
-- You can declare each Workflow type to have a **Versioning Behavior**, either `pinned` or `auto-upgraded`. A `pinned` Worfklow is guaranteed to complete on a single Worker Deployment Version. An `auto-upgraded` Workflow will move to the latest Worker Deployment Version automatically whenever you change the current version.
 
 Your deployment system should support rainbow deployments so that you can keep versions alive to drain existing workflows.
 
@@ -76,7 +83,7 @@ There are three new parameters, with different names depending on the language:
 
 - `UseVersioning`: This enables the Versioning functionality for this Worker.
 - A `Version` string to identify the revision that this Worker will be allowed to execute. This is a combination of a deployment name and a build ID number.
-- The Versioning Behavior, either `pinned` or `auto-upgraded`.
+- The [Versioning Behavior](#definition), either `pinned` or `auto-upgrade`.
 
 Follow the example for your SDK below:
 
@@ -173,7 +180,7 @@ If all of your Workflows will be short-running for the foreseeable future, you c
 
 Most users who are migrating to rainbow deploys from rolling deploys will start by defaulting to `auto-upgrade` until they have had time to annotate their Workflows.
 This default is the most similar to the legacy behavior.
-Auto-upgraded workflows won't be restricted to a single version and and need to be kept replay-safe manually, e.g. with [replay testing](https://docs.temporal.io/workflow-execution#replay).
+Auto-upgrade workflows won't be restricted to a single version and and need to be kept replay-safe manually, e.g. with [replay testing](https://docs.temporal.io/workflow-execution#replay).
 Once each workflow type is annotated, you can remove the `DefaultVersioningBehavior`.
 
 ## Rolling out changes with the CLI
@@ -421,4 +428,4 @@ handle = env.client.start_workflow(
 </SdkTabs>
 
 This covers the complete lifecycle of working with Worker Versioning.
-More features will be added here soon, including the ability to progammaticaly deploy and scale your Workers in Kubernetes pods, and checks to guarantee safe deploys.
+We are continuing to improve this feature, and we welcome any feedback or feature requests using the sidebar link!

@@ -26,12 +26,12 @@ If you make a change to your Workflow code that would cause non-deterministic be
 With Versioning, you can modify your Workflow Definition so that new executions use the updated code, while existing ones continue running the original version.
 There are two primary Versioning methods that you can use:
 
-- [Workflow Branching with GetVersion](#getversion). This method works by adding branches to your code tied to specific revisions. In most other SDKs, it is called patching.
+- [Versioning with Patching](#patching). This method works by adding branches to your code tied to specific revisions. It can be used to revise in-progress Workflows.
 - [Worker Versioning](/production-deployment/worker-deployments/worker-versioning). The Worker Versioning feature allows you to tag your Workers and programmatically roll them out in deployment versions, so that old Workers can run old code paths and new Workers can run new code paths. If you were using this method experimentally prior to summer 2025, refer to the [Worker Versioning Legacy](worker-versioning-legacy) docs.
 
-## Workflow Branching {#getversion}
+## Versioning with Patching {#patching}
 
-To understand why Workflow Branching is useful, it's helpful to first demonstrate cutting over an entire Workflow.
+To understand why Patching is useful, it's helpful to first demonstrate cutting over an entire Workflow.
 
 ### Workflow cutovers
 
@@ -87,12 +87,12 @@ worker.registerWorkflowImplementationTypes(PizzaWorkflowImplV2.class);
 The downside of this method is that it does not use any Temporal platform features.
 It requires you to duplicate code and to update any code and commands used to start the Workflow.
 This can become impractical over time, depending on how you are providing configuration strings to your deployment.
-This method also does not provide a way to introduce versioning to any still-running Workflows -- it is essentially just a cutover, unlike the `GetVersion` method, which we will now demonstrate.
+This method also does not provide a way to introduce versioning to any still-running Workflows -- it is essentially just a cutover, unlike Patching, which we will now demonstrate.
 
-### Using GetVersion
+### Patching with GetVersion
 
-Branching with `Workflow.getVersion` essentially defines a logical branch for a specific change in the Workflow.
-If your Workflow is not [pinned to a specific deployment](/production-deployment/worker-deployments/worker-versioning) or you need to fix a bug in a running workflow, you can branch it.
+Patching essentially defines a logical branch for a specific change in the Workflow.
+If your Workflow is not [pinned to a specific deployment](/production-deployment/worker-deployments/worker-versioning) or you need to fix a bug in a running workflow, you can patch it.
 
 Consider the following Workflow Definition:
 
@@ -119,7 +119,7 @@ Imagine you want to revise this Workflow by adding another Activity to calculate
 If an existing Workflow Execution was started by the original version of the Workflow code, where there was no `calculateChecksum()` Activity, and then resumed running on a new Worker where this Activity had been added, the server side Event History would be out of sync.
 This would cause the Workflow to fail with a nondeterminism error.
 
-Thus we use `workflow.GetVersion()`:
+To resolve this, you can use `workflow.GetVersion()` to patch to your Workflow:
 
 ```java
 public void processFile(Arguments args) {
@@ -233,12 +233,13 @@ if (versionTwo != Workflow.DEFAULT_VERSION) {
 Workflow.upsertTypedSearchAttributes(Constants.TEMPORAL_CHANGE_VERSION.valueSet(list));
 ```
 
-GetVersion allows you to make changes to currently running Workflows.
+Patching allows you to make changes to currently running Workflows.
 It is a powerful method for introducing compatible changes without introducing non-determinism errors.
 
 ## Worker Versioning
 
-Temporal's [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) feature allows you to tag your Workers and programmatically roll them out in deployment versions, so that old Workers can run old code paths and new Workers can run new code paths. This way, you can pin your deployments to specific revisions, often avoiding the need for branching.
+Temporal's [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) feature allows you to tag your Workers and programmatically roll them out in deployment versions, so that old Workers can run old code paths and new Workers can run new code paths.
+This way, you can pin your deployments to specific revisions, avoiding the need for patching.
 
 Changing the order of any commands in your Workflow code that interact directly with the Temporal Service -- such as calling an Activity or creating a Sleep timer -- will cause a non-determinism error unless you've implemented a versioning solution.
 To test whether a new revision will require versioning, you should incorporate [Replay Testing](/develop/java/testing-suite#replay).
