@@ -21,7 +21,7 @@ tags:
 import { CaptionedImage } from '@site/src/components';
 
 The Temporal Platform requires that Workflow code is [deterministic](/workflow-definition#deterministic-constraints).
-Because of that requirement, the Temporal TypeScript SDK offers two dedicated versioning features: Workflow Patching APIs and Worker Versioning. 
+Because of that requirement, the Temporal TypeScript SDK offers two dedicated versioning features: Workflow Patching APIs and Worker Versioning.
 
 <div className="topics-covered-section">
   <h2 className="topics-covered-title">Topics covered in this section</h2>
@@ -226,6 +226,7 @@ export async function myWorkflow(): Promise<void> {
   }
 }
 ```
+
 <!--SNIPEND-->
 
 #### Step 2: Deprecate patch
@@ -272,4 +273,3 @@ For now, please join #safe-deploys in our [Community Slack](https://temporal.io/
 If you were using a previous pre-release version of Worker Versioning, it's now deprecated.
 
 See [Legacy Worker Versioning](worker-versioning-legacy) if you still need those docs.
-
