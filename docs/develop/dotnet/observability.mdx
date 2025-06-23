@@ -2,35 +2,46 @@
 id: observability
 title: Observability - .NET SDK
 sidebar_label: Observability
-description: Explore Temporal SDK observability features for Metrics, Tracing, Logging, and Visibility. Learn to track Workflow Executions, set up Prometheus endpoints, customize metrics, configure tracing, and more.
+description: Learn how to emit metrics, set up tracing, log from a Workflow, and use Visibility APIs using the Temporal .NET SDK to monitor and observe your applications.
 toc_max_heading_level: 4
 keywords:
-  - client
-  - code sample
-  - developer guide
-  - guide context
-  - how to
-  - logging
-  - dotnet
-  - dotnet sdk
-  - sdk
-  - search attribute
-  - workflow
   - observability
+  - metrics
+  - tracing
+  - logging
+  - visibility
+  - opentelemetry
+  - prometheus
+  - grafana
+  - search attributes
 tags:
   - .Net SDK
   - Temporal SDKs
-  - Observability
-  - Search Attributes
-  - Workflows
 ---
 
-This page covers features related to viewing the state of the application, including:
+The observability section of the Temporal Developer's guide covers the many ways to view the current state of your [Temporal Application](/temporal#temporal-application)—that is, ways to view which [Workflow Executions](/workflow-execution) are tracked by the [Temporal Platform](/temporal#temporal-platform) and the state of any specified Workflow Execution, either currently or at points of an execution.
 
-- [Metrics](#metrics)
-- [Tracing](#tracing)
-- [Logging](#logging)
-- [Visibility](#visibility)
+<div className="topics-covered-section">
+  <h2 className="topics-covered-title">Topics covered in this section</h2>
+  <div className="topics-grid">
+    <a href="#metrics" className="topic-card">
+      <div className="topic-title">Emit metrics</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#tracing" className="topic-card">
+      <div className="topic-title">Setup Tracing</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#logging" className="topic-card">
+      <div className="topic-title">Log from a Workflow</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#visibility" className="topic-card">
+      <div className="topic-title">Use Visibility APIs</div>
+      <div className="topic-arrow">→</div>
+    </a>
+  </div>
+</div>
 
 The observability feature guide covers the many ways to view the current state of your [Temporal Application](/temporal#temporal-application).
 This includes the ways to view which [Workflow Executions](/workflow-execution) are tracked by the [Temporal Platform](/temporal#temporal-platform) and the state of any specified Workflow Execution, either currently or at points of an execution.

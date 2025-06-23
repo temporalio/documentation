@@ -17,6 +17,24 @@ import { CaptionedImage } from '@site/src/components';
 
 The Debugging section of the Temporal TypeScript SDK developer's guide covers tools for debugging and how to troubleshoot common issues.
 
+<div className="topics-covered-section">
+  <h2 className="topics-covered-title">Topics covered in this section</h2>
+  <div className="topics-grid">
+    <a href="#debug-in-a-development-environment" className="topic-card">
+      <div className="topic-title">Debug in a development environment</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#debug-in-a-production-environment" className="topic-card">
+      <div className="topic-title">Debug in a production environment</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#troubleshoot-common-issues" className="topic-card">
+      <div className="topic-title">Troubleshoot common issues</div>
+      <div className="topic-arrow">→</div>
+    </a>
+  </div>
+</div>
+
 ## How to debug in a development environment {#debug-in-a-development-environment}
 
 In addition to the normal development tools of logging and a debugger, you can also see what's happening in your Workflow by using the [Web UI](/web-ui) or [Temporal CLI](/cli).
@@ -268,50 +286,3 @@ If you are trying to connect in production and getting this:
 ```bash
 [TransportError: transport error]
 ```
-
-It is a sign that something is wrong with your Cert/Key pair.
-Log it out and make sure it is an exact match with what is expected (often, the issue can be whitespace when injecting from your production secrets management environment).
-
-### Resetting Workflows to deal with logical bugs
-
-You can "rewind time" using the Temporal CLI, resetting Workflow History to some previous point in time. You can read the Temporal CLI docs on:
-
-- [Restarting and resetting Workflows by ID](/cli)
-- [Resetting all Workflows by binary checksum identifier](/cli)
-
-If you need to reset programmatically, the TS SDK does not have any high level APIs for this, but you can make raw gRPC calls to [resetWorkflowExecution](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1/#resetworkflowexecution).
-
-Resetting should only be used to deal with serious logical bugs in your code: it's not for handling transient failures, like a downstream service being unreachable. It should not be used in the course of normal application flows.
-
-### gRPC call timeouts (context deadline exceeded)
-
-The opaque `context deadline exceeded` error comes from `gRPC`:
-
-```
-Error: 4 DEADLINE_EXCEEDED: context deadline exceeded
-    at Object.callErrorFromStatus (/Users/swyx/Work/Temporal/samples-typescript/nextjs-oneclick/node_modules/@grpc/grpc-js/build/src/call.js:31:26)
-    at Object.onReceiveStatus (/Users/swyx/Work/Temporal/samples-typescript/nextjs-oneclick/node_modules/@grpc/grpc-js/build/src/client.js:179:52)
-    at Object.onReceiveStatus (/Users/swyx/Work/Temporal/samples-typescript/nextjs-oneclick/node_modules/@grpc/grpc-js/build/src/client-interceptors.js:336:141)
-    at Object.onReceiveStatus (/Users/swyx/Work/Temporal/samples-typescript/nextjs-oneclick/node_modules/@grpc/grpc-js/build/src/client-interceptors.js:299:181)
-    at /Users/swyx/Work/Temporal/samples-typescript/nextjs-oneclick/node_modules/@grpc/grpc-js/build/src/call-stream.js:145:78
-    at processTicksAndRejections (node:internal/process/task_queues:78:11) {
-  code: 4,
-  details: 'context deadline exceeded',
-  metadata: Metadata {
-    internalRepr: Map(1) { 'content-type' => [Array] },
-    options: {}
-  },
-  page: '/api/getBuyState'
-}
-```
-
-Several conditions can cause this error, including network hiccups, timeouts that are too short, and an overloaded server.
-Querying a Workflow Execution whose query handler causes an error can result in the query call timing out.
-
-Some troubleshooting actions you can take:
-
-- Verify the connection from your Worker to the Temporal Server is working and doesn't have unusually high latency.
-- If you are running Temporal Server yourself, check your [server metrics](/self-hosted-guide/production-checklist#scaling-and-metrics) to ensure it's not overloaded.
-- If what's timing out is a query, check the logs of your Workers to see if they are having issues handling the query.
-
-If none of the preceding actions help you discover why timeouts are occurring, please try to produce a minimal repro and we'll be glad to help.

@@ -2,7 +2,8 @@
 id: schedules
 title: Schedules - .NET SDK
 sidebar_label: Schedules
-description: Learn how to manage and optimize Scheduled Workflows using the Temporal .NET SDK; Schedule, Create, Backfill, Update, Delete, Describe, List, Pause, Trigger, and use Start Delay options.
+slug: /develop/dotnet/schedules
+toc_max_heading_level: 2
 keywords:
   - sdk
   - dotnet
@@ -14,18 +15,19 @@ tags:
   - Schedules
 ---
 
-This page shows how to do the following:
-
-- [Schedule a Workflow](#schedule-a-workflow)
-- [Create a Scheduled Workflow](#create-a-workflow)
-- [Backfill a Scheduled Workflow](#backfill-a-scheduled-workflow)
-- [Delete a Scheduled Workflow](#delete-a-scheduled-workflow)
-- [Describe a Scheduled Workflow](#describe-a-scheduled-workflow)
-- [List a Scheduled Workflow](#list-a-scheduled-workflow)
-- [Pause a Scheduled Workflow](#pause-a-scheduled-workflow)
-- [Trigger a Scheduled Workflow](#trigger-a-scheduled-workflow)
-- [Update a Scheduled Workflow](#update-a-scheduled-workflow)
-- [Use Start Delay](#start-delay)
+<div className="topics-covered-section">
+  <h2 className="topics-covered-title">Topics covered in this section</h2>
+  <div className="topics-grid">
+    <a href="#schedule-a-workflow" className="topic-card">
+      <div className="topic-title">Schedule a Workflow</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#start-delay" className="topic-card">
+      <div className="topic-title">Use Start Delay</div>
+      <div className="topic-arrow">→</div>
+    </a>
+  </div>
+</div>
 
 ## Schedule a Workflow {#schedule-a-workflow}
 
@@ -66,7 +68,7 @@ var handle = await client.CreateScheduleAsync(
 
 :::tip Schedule Auto-Deletion
 
-Once a Schedule has completed creating all its Workflow Executions, the Temporal Service deletes it since it won’t fire again.
+Once a Schedule has completed creating all its Workflow Executions, the Temporal Service deletes it since it won't fire again.
 The Temporal Service doesn't guarantee when this removal will happen.
 
 :::

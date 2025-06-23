@@ -20,6 +20,24 @@ tags:
 
 import { CaptionedImage } from '@site/src/components';
 
+<div className="topics-covered-section">
+  <h2 className="topics-covered-title">Topics covered in this section</h2>
+  <div className="topics-grid">
+    <a href="#custom-payload-codec" className="topic-card">
+      <div className="topic-title">Custom Payload Codec</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#conversion-sequence" className="topic-card">
+      <div className="topic-title">Payload conversion</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#custom-payload-converter" className="topic-card">
+      <div className="topic-title">Custom Payload Converter</div>
+      <div className="topic-arrow">→</div>
+    </a>
+  </div>
+</div>
+
 Temporal's security model is designed around client-side encryption of Payloads.
 A client may encrypt Payloads before sending them to the server, and decrypt them after receiving them from the server.
 This provides a high degree of confidentiality because the Temporal Server itself has absolutely no knowledge of the actual data.
