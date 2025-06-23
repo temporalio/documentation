@@ -105,16 +105,16 @@ Each execution of a Schedule accrues three actions:
 Actions usage is tracked across an account in the [usage dashboard](https://cloud.temporal.io/usage) and is visible to Account Owners, Finance Admin and Global Admin.
 For individual namespaces, usage can be seen in the [namespace summary](https://cloud.temporal.io/namespaces/) for a specific namespace.
 
-![Temporal Cloud Usage dashboard showing aggregated Billable Actions](/img/cloud/billing/aggregate-billable-actions.png)
-
-![Temporal Cloud Usage dashboard showing individual Billable Actions associated with events](/img/cloud/billing/individual-billable-actions.png)
+![Temporal Cloud Usage dashboard](/img/cloud/billing/usage-dashboard.png)
 
 ## Actions in Workflows
 
 When viewing a Workflow history, events that represent a Billable Action are annotated with the number consumed by the event in
 the **Billable Actions** Column. These Actions are summarized at the top of the workflow.
 
-![Temporal Cloud Workflow history, showing events that represent Billable Actions]()
+![Temporal Cloud Usage dashboard showing aggregated Billable Actions](/img/cloud/billing/aggregate-billable-actions.png)
+
+![Temporal Cloud Usage dashboard showing individual Billable Actions associated with events](/img/cloud/billing/individual-billable-actions.png)
 
 This Billable Action estimate is useful for projecting the cost of workflows.
 For example, if you ran a test workflow that generated 20 Billable Actions and anticipated that it would be run 100 times
