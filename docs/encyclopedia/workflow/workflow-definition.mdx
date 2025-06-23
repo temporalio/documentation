@@ -184,8 +184,7 @@ removed without proper [Versioning techniques](#workflow-versioning):
 For a complete reference, see the [Command reference](/references/commands).
 
 More formally, the use of certain Workflow APIs in the function is what generates Commands. Commands
-tell the Temporal Service which Events to create and add to the Workflow Execution's [Event
-History](/workflow-execution/event#event-history). When the Workflow's code
+tell the Temporal Service which Events to create and add to the Workflow Execution's [Event History](/workflow-execution/event#event-history). When the Workflow's code
 [replays](/workflow-execution#replay), the Commands that are emitted are compared with the existing
 Event History. If a corresponding Event already exists within the Event History that matches that
 command, then the Execution progresses. See [here](/encyclopedia/event-history/) for a detailed
