@@ -165,7 +165,7 @@ API calls are safe to make. For example, you can change:
   - However, it is not safe to change the types or IDs of Child Workflows or Activities
 - The input parameters used to Signal an external Workflow
 - The duration of Timers (although changing them to 0 is not safe in all SDKs)
-- Add or remove calls to Workflow APIs that don't produce Commands (e.g., `workflow.GetInfo` in the Go SDK or its equivalent in other SDKs)
+- Add or remove calls to Workflow APIs that don't produce [Commands](/workflow-execution#command) (e.g., `workflow.GetInfo` in the Go SDK or its equivalent in other SDKs)
 
 The following Workflow API calls all can produce Commands, and thus must not be reordered, added, or
 removed without proper [Versioning techniques](#workflow-versioning):
@@ -181,12 +181,15 @@ removed without proper [Versioning techniques](#workflow-versioning):
 - Upserting Workflow Memos
 - Running a SideEffect or MutableSideEffect
 
-More formally, the use of certain Workflow APIs in the function is what generates
-[Commands](/workflow-execution#command). Commands tell the Temporal Service which Events to create
-and add to the Workflow Execution's [Event History](/workflow-execution/event#event-history). When
-the Workflow's code [replays](/workflow-execution#replay), the Commands that are emitted are
-compared with the existing Event History. If a corresponding Event already exists within the Event
-History that matches that command, then the Execution progresses.
+For a complete reference, see the [Command reference](/references/commands).
+
+More formally, the use of certain Workflow APIs in the function is what generates Commands. Commands
+tell the Temporal Service which Events to create and add to the Workflow Execution's [Event
+History](/workflow-execution/event#event-history). When the Workflow's code
+[replays](/workflow-execution#replay), the Commands that are emitted are compared with the existing
+Event History. If a corresponding Event already exists within the Event History that matches that
+command, then the Execution progresses. See [here](/encyclopedia/event-history/) for a detailed
+walkthrough of the process.
 
 For example, using an SDK's "Execute Activity" API generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
 When this API is called upon re-execution, that Command is compared with the Event that is in the same location within the sequence.
