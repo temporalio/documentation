@@ -185,7 +185,7 @@ You can add multiple calls to `GetVersion` in a single Workflow.
 This can become challenging to manage if you have many long-running Workflows, as you will wind up with many code branches over time.
 To clean these up, you can gradually deprecate older workflow versions.
 
-### Deprecating old versions
+### Deprecating old workflow versions
 
 You can safely remove support for older workflow versions once you are certain that there are no longer any open Workflow Executions based on that version. You can use the following [List Filter](/list-filter) syntax for this (the 1 near the end of the last line represents the version number):
 
