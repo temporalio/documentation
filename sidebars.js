@@ -81,6 +81,7 @@ module.exports = {
             "evaluate/temporal-cloud/limits",
             "evaluate/temporal-cloud/sla",
             "evaluate/temporal-cloud/pricing",
+            "evaluate/temporal-cloud/actions",
             "evaluate/temporal-cloud/support",
           ],
         },
