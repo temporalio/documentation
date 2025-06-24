@@ -117,6 +117,41 @@ When interacting with the Temporal Cloud Ops API, follow these guidelines:
 
 These steps provide a structured approach to utilizing the Temporal Cloud Ops API effectively, ensuring proper authentication and connection setup.
 
+## Rate limits
+
+The Temporal Cloud Operations API implements rate limiting to ensure system stability and fair usage across all users. Rate limits are applied based on identity type, with different limits for users and service accounts.
+
+### Account-level rate limit
+
+**Total rate limit: 160 requests per second (RPS)**
+
+This limit applies to all requests made to the Temporal Cloud control plane by any client (tcld, UI, Cloud Ops API) or identity type (user, service account) within your account. The total account throughput cannot exceed 160 RPS regardless of the number of users or service accounts making requests.
+
+### Per-identity rate limits
+
+**User rate limit: 40 RPS per user**
+
+Each user within your account is limited to 40 requests per second. This limit applies to all requests made by the user through any client (tcld, UI, Cloud Ops API), regardless of the authentication method used (SSO or API keys).
+
+**Service account rate limit: 80 RPS per service account**
+
+Each service account within your account is limited to 80 requests per second. This limit applies to all requests made by the service account through any client (tcld, Cloud Ops API).
+
+### Important considerations
+
+- Rate limits are enforced across all Temporal Cloud control plane operations
+- Multiple clients used by the same identity (user or service account) share the same rate limit
+- Authentication method (SSO, API keys) does not affect rate limiting
+- These limits help ensure system stability and prevent any single account or identity from overwhelming the service
+
+### Requesting limit increases
+
+If your use case requires higher rate limits, you can request an increase by [submitting a support ticket](/cloud/support#support-ticket). When requesting a limit increase, please provide:
+
+- Your current usage patterns and requirements
+- The specific limits you need increased
+- A description of your use case and why higher limits are necessary
+
 ### Provide feedback
 
 Your input is valuable.
