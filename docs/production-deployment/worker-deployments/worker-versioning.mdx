@@ -314,9 +314,11 @@ You can check your set of Deployment Versions with `temporal worker deployment d
 temporal worker deployment describe --name="$MY_DEPLOYMENT"
 ```
 
-## Migrating a pinned Workflow
+## Moving a pinned Workflow
 
-If you need to migrate a pinned Workflow to a new version, use `temporal workflow update-options`:
+Sometimes you'll need to manually move a set of pinned workflows off of a version that has a bug to a version with the fix.
+
+If you need to move a pinned Workflow to a new version, use `temporal workflow update-options`:
 
 ```bash
 temporal workflow update-options \
@@ -325,7 +327,7 @@ temporal workflow update-options \
     --versioning-override-pinned-version="$MY_DEPLOYMENT_VERSION"
 ```
 
-You can migrate several Workflows at once matching a `--query` parameter:
+You can move several Workflows at once matching a `--query` parameter:
 
 ```bash
 temporal workflow update-options \
@@ -333,6 +335,8 @@ temporal workflow update-options \
   --versioning-override-behavior=pinned \
   --versioning-override-pinned-version="$MY_PATCH_DEPLOYMENT_VERSION"
 ```
+
+In this scenario, you may also need to use the other [Versioning APIs](/workflow-definition#workflow-versioning) to patch your Workflow.
 
 ## Sunsetting an old deployment version
 
