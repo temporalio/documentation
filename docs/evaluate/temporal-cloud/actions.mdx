@@ -19,11 +19,11 @@ tags:
   - Support
 ---
 
+Actions track both the progress of a workflow (such as Workflow Start, Schedule Started, Workflow reset) and broader capabilities
+enabled by Temporal Cloud.
+
 Temporal Cloud Actions are the primary unit of consumption-based pricing for Temporal Cloud.
 They track billable operations within the Temporal Cloud Service, such as starting Workflows, recording a Heartbeat, or sending messages.
-
-Actions track both the progress of a workflow (such as Workflow Start, Schedule Started, Workflow reset) and broader capabilities
-enabled by Temporal cloud.
 
 The following result in an action on Temporal Cloud:
 
@@ -51,7 +51,7 @@ The following result in an action on Temporal Cloud:
   De-duplicated Updates that share an Update ID do _not_ count as an Action.
 - **Side Effect recorded**.
   For a mutable [Side Effect](/workflow-execution/event#side-effect), an Action occurs only when the value changes.
-  (Be aware that some SDKs don't support Side Effects.)
+  (Be aware that only the Go and Java SDKs support Side Effects.)
 
 ## Child Workflows
 
@@ -95,8 +95,8 @@ Each execution of a Schedule accrues three actions:
 
 ## Temporal Nexus
 
-- For Nexus Operation scheduled, the caller Workflow starting a Nexus Operation results in one Action on the caller Namespace.
-- For Nexus Operation canceled, the caller Workflow canceling a Nexus Operation results in one Action on the caller Namespace.
+- For [Nexus Operation scheduled](/references/events#nexusoperationscheduled), the caller Workflow starting a Nexus Operation results in one Action on the caller Namespace.
+- For [Nexus Operation canceled](/references/events#nexusoperationcanceled), the caller Workflow canceling a Nexus Operation results in one Action on the caller Namespace.
 - The underlying Temporal primitives (such as Workflows, Activities, and Signals) created by a Nexus Operation handler (directly or indirectly) result in the normal Actions for those primitives billed to the handler’s Namespace.
   This includes retries for underlying Temporal primitives like Activities but _not_ for handling the Nexus Operation itself or a retry of the Nexus Operation itself.
 
