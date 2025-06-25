@@ -12,7 +12,7 @@ tags:
 
 Temporal Workflows must [deterministically](https://docs.temporal.io/workflow-definition#deterministic-constraints) generate History Events. The same workflow input should always generate the same sequence of events.
 Changes to your Workflows that would create different server-side events, or events in a different order, need to be protected by using the [Versioning APIs](https://docs.temporal.io/workflow-definition#workflow-versioning) within your Workflow code.
-You can also use [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) to pin your deployments to specific code revisions.
+You can also use [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) to pin your Workflows to specific code revisions.
 Activities do not need to be deterministic.
 
 ## Use Replay Testing before and during your deployments
