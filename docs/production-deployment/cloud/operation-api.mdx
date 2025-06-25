@@ -123,19 +123,19 @@ The Temporal Cloud Operations API implements rate limiting to ensure system stab
 
 ### Account-level rate limit
 
-**Total rate limit: 160 requests per second (RPS)**
+**Total rate limit: 40 requests per second (RPS)**
 
 This limit applies to all requests made to the Temporal Cloud control plane by any client (tcld, UI, Cloud Ops API) or identity type (user, service account) within your account. The total account throughput cannot exceed 160 RPS regardless of the number of users or service accounts making requests.
 
 ### Per-identity rate limits
 
-**User rate limit: 40 RPS per user**
+**User rate limit: 10 RPS per user**
 
-Each user within your account is limited to 40 requests per second. This limit applies to all requests made by the user through any client (tcld, UI, Cloud Ops API), regardless of the authentication method used (SSO or API keys).
+This limit applies to all requests made by each user through any client (tcld, UI, Cloud Ops API), regardless of the authentication method used (SSO or API keys).
 
-**Service account rate limit: 80 RPS per service account**
+**Service account rate limit: 20 RPS per service account**
 
-Each service account within your account is limited to 80 requests per second. This limit applies to all requests made by the service account through any client (tcld, Cloud Ops API).
+This limit applies to all requests made by each service account through any client (tcld, Cloud Ops API).
 
 ### Important considerations
 
