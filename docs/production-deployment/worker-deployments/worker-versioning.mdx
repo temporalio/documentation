@@ -23,13 +23,14 @@ import SdkTabs from '@site/src/components';
 This allows you to bypass the other Versioning APIs.
 With Worker Versioning, your deployment should support multiple revisions of your Workflows running simultaneously, and allow you to control when they are sunsetted.
 This is typically known as a **rainbow deploy** and contrasts to a rolling deploy in which your Workers are upgraded in place without the ability to keep old versions around.
-A **blue-green** deploy is a kind of rainbow deploy with two builds, "blue" and "green," that is used to gradually roll out a new update.
+A **blue-green** deploy is a kind of rainbow deploy with two builds, "blue" and "green," that is used to roll out a new update.
 
 This provides several advantages:
 
 - Rainbow deploys enable you to keep old builds around until all running instances of that build have concluded. This in turn allows you to pin Workflows to builds for as long as you're willing to keep old builds around.
 - Unlike rolling deploys, rainbow deploys and blue-green deploys allow you "instant rollback" by re-routing traffic to your old builds when something goes wrong.
 - Unlike strict blue-green deploys, rainbow deploys have more than two slots. This means you never have to replace a build that's still running an older revision.
+- You have fine-grained, direct control over gradually ramping your Worker deployment.
 
 :::tip
 Watch this Temporal Replay 2025 talk to learn more about Worker Versioning.
