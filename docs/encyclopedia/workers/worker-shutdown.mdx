@@ -27,7 +27,7 @@ Activities are allowed to complete during the graceful shutdown period.
 
 Because Local Activities run within a WFT, current and future Local Activities within the same WFT will be allowed to run and complete, assuming there is no additional command to yield to.
 
-If the Local Activity is unable to complete by the graceful shutdown period, the Local Activity attempt is sent a cancel signal, no new Local Activities will be retried or started, and the Worker is shut down. 
+If the Local Activity is unable to complete by the graceful shutdown period, the Local Activity attempt is sent a cancel signal, no new Local Activities will be retried or started, and the Worker is shut down.
 The Worker still waits for the current WFT to complete, meaning you can eventually hit your workflow task or execution timeout, unless another Worker is spun up.
 
 ## Non-Graceful Period Shutdown
@@ -44,7 +44,7 @@ Go and Core SDKs behave differently when we pass task timeout and the Activity o
 
 ### Local Activities
 
-The Local Activity is sent a cancel signal, WFT heartbeats stop, and no new Local Activities will be retried or started. 
+The Local Activity is sent a cancel signal, WFT heartbeats stop, and no new Local Activities will be retried or started.
 The Worker still waits for the current WFT to complete, meaning you can eventually hit your workflow task or execution timeout, unless another Worker is spun up.
 
 ## General Developer Guidance
