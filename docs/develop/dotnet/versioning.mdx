@@ -37,7 +37,7 @@ With Versioning, you can modify your Workflow Definition so that new executions 
 There are two primary Versioning methods that you can use:
 
 - [Versioning with Patching](#patching). This method works by adding branches to your code tied to specific revisions. It can be used to revise in-progress Workflows.
-- [Worker Versioning](/production-deployment/worker-deployments/worker-versioning). The Worker Versioning feature allows you to tag your Workers and programmatically roll them out in deployment versions, so that old Workers can run old code paths and new Workers can run new code paths.
+- [Worker Versioning](/production-deployment/worker-deployments/worker-versioning). The Worker Versioning feature allows you to tag your Workers and programmatically roll them out in versioned deployments, so that old Workers can run old code paths and new Workers can run new code paths.
 
 ## Versioning with Patching {#patching}
 
@@ -76,10 +76,9 @@ using var worker = new TemporalWorker(
         .AddWorkflow<SayHelloWorkflowV2>());
 ```
 
-The downside of this method is that it does not use any Temporal platform features.
-It requires you to duplicate code and to update any code and commands used to start the Workflow.
-This can become impractical over time, depending on how you are providing configuration strings to your deployment.
-This method also does not provide a way to introduce versioning to any still-running Workflows -- it is essentially just a cutover, unlike Patching, which we will now demonstrate.
+The downside of this method is that it requires you to duplicate code and to update any commands used to start the Workflow.
+This can become impractical over time.
+This method also does not provide a way to version any still-running Workflows -- it is essentially just a cutover, unlike Patching, which we will now demonstrate.
 
 ### Adding a patch
 
