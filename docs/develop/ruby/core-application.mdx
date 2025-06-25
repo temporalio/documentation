@@ -97,7 +97,9 @@ end
 ### Workflow Futures {#workflow-futures}
 
 `Temporalio::Workflow::Future` can be used for running things in the background or concurrently.
-This is basically a safe wrapper around `Fiber.schedule` for starting and `Workflow.wait_condition` for waiting.
+Temporal provides Workflow-safe wrappers around some core language features in cases like these.
+`Temporalio::Workflow::Future` is a safe wrapper around `Fiber.schedule` for running multiple Activities at once.
+The Ruby SDK also provides `Workflow.wait_condition` for awaiting a result.
 
 Nothing uses futures by default, but they work with all workflow code/constructs.
 For instance, to run 3 activities and wait for them all to complete, something like this can be written:
