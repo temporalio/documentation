@@ -196,18 +196,21 @@ You can view the Versions that are active in a Deployment with `temporal worker 
 temporal worker deployment describe --name="$MY_DEPLOYMENT"
 ```
 
-To activate a Deployment Version, use `temporal worker deployment set-current-version`
+To activate a Deployment Version, use `temporal worker deployment set-current-version`, specifying the deployment name and a Build ID:
 
 ```bash
 temporal worker deployment set-current-version \
-    --version="$MY_DEPLOYMENT_VERSION"
+    --deployment-name "YourDeploymentName" \
+    --build-id "YourBuildID"
 ```
 
-To ramp a Deployment Version up to some percentage of your overall Worker fleet, use `set-ramping version`.
+To ramp a Deployment Version up to some percentage of your overall Worker fleet, use `set-ramping version`, with the same parameters and a ramping percentage:
 
 ```bash
 temporal worker deployment set-ramping-version \
-    --version="$MY_DEPLOYMENT_VERSION" --percentage=5
+    --deployment-name "YourDeploymentName" \
+    --build-id "YourBuildID" \
+    --percentage=5
 ```
 
 You can verify that Workflows are cutting over to that version with `describe -w YourWorkflowID`:
@@ -352,7 +355,8 @@ You can monitor this with `temporal worker deployment describe-version`:
 
 ```bash
 temporal worker deployment describe-version \
-    --version="$MY_DEPLOYMENT_VERSION"
+    --deployment-name "YourDeploymentName" \
+    --build-id "YourBuildID"
 ```
 
 ```
