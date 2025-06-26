@@ -20,22 +20,21 @@ module.exports = {
             type: "doc",
             id: "evaluate/development-production-features/index",
           },
+          items: [],
+        },
+        {
+          type: "category",
+          label: "Product release stages",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "evaluate/development-production-features/release-stages",
+          },
           items: [
             {
-              type: "category",
-              label: "Product release stages",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "evaluate/development-production-features/release-stages",
-              },
-              items: [
-                {
-                  type: "link",
-                  label: "Change-log",
-                  href: "https://temporal.io/change-log",
-                },
-              ],
+              type: "link",
+              label: "Change-log",
+              href: "https://temporal.io/change-log",
             },
           ],
         },
