@@ -74,9 +74,9 @@ module.exports = {
       ],
     },
     {
-      type: "doc",
-      id: "getting-started",
+      type: "link",
       label: "Get started",
+      href: "https://learn.temporal.io/getting_started/",
     },
     {
       type: "category",
