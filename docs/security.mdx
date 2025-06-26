@@ -11,20 +11,127 @@ tags:
   - Security
 ---
 
-:::info Temporal Technologies' general company security
+Find security information for your Temporal deployment, whether you're using Temporal Cloud or self-hosting.
 
-For information about the general security habits of Temporal Technologies, see our [trust page](https://trust.temporal.io).
+<div className="pattern-grid">
+  <a href="https://trust.temporal.io" className="pattern-card">
+    <div className="pattern-content">
+      <h3>Company Security</h3>
+      <p>Learn about Temporal Technologies' general security practices, compliance certifications, and organizational security measures.</p>
+    </div>
+  </a>
 
-:::
+  <a href="/cloud/security" className="pattern-card">
+    <div className="pattern-content">
+      <h3>Temporal Cloud Security</h3>
+      <p>Explore the security features of our SaaS offering, including mTLS, end-to-end encryption, and enterprise compliance.</p>
+    </div>
+  </a>
 
-:::info Temporal Cloud (SaaS) security
+  <a href="/self-hosted-guide/security" className="pattern-card">
+    <div className="pattern-content">
+      <h3>Self-Hosted Security</h3>
+      <p>Discover how to deploy and secure your own Temporal Platform infrastructure with production-ready best practices.</p>
+    </div>
+  </a>
+</div>
 
-For information about the security features of our SaaS offering, Temporal Cloud, see our [Cloud security page](/cloud/security).
+<style jsx>{`
+  .security-cards-container {
+    margin: 2rem 0;
+  }
 
-:::
+  .security-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
 
-:::info Self-hosted security
+  .security-card {
+    background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+    border: 1px solid #e1e8ed;
+    border-radius: 12px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    position: relative;
+    overflow: hidden;
+  }
 
-For information about how to self-host a secure Temporal Platform, see the [Self-hosted security page](/self-hosted-guide/security).
+  .security-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #444ce7 0%, #b664ff 100%);
+  }
 
-:::
+  .security-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(68, 76, 231, 0.12);
+    border-color: #444ce7;
+  }
+
+  .security-card-header h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.375rem;
+    font-weight: 600;
+    color: #1a1b23;
+    line-height: 1.3;
+  }
+
+  .security-card-divider {
+    width: 40px;
+    height: 3px;
+    background: linear-gradient(90deg, #444ce7 0%, #b664ff 100%);
+    border-radius: 2px;
+    margin-bottom: 1.5rem;
+  }
+
+  .security-card-body p {
+    color: #5d6b7d;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .security-card-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #444ce7;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    padding: 0.5rem 0;
+  }
+
+  .security-card-button:hover {
+    color: #3730a3;
+    text-decoration: none;
+    transform: translateX(2px);
+  }
+
+  .security-card-button svg {
+    transition: transform 0.2s ease;
+  }
+
+  .security-card-button:hover svg {
+    transform: translateX(2px);
+  }
+
+  @media (max-width: 768px) {
+    .security-cards-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    
+    .security-card {
+      padding: 1.5rem;
+    }
+  }
+`}</style>
