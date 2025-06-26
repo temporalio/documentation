@@ -2,7 +2,7 @@
 id: scim
 title: SCIM user management - Temporal Cloud feature guide
 sidebar_label: SCIM
-description: Integrate SCIM with your Temporal Cloud account for secure user Management. Connect via Okta for seamless user and group management. Charges apply.
+description: Integrate SCIM with your Temporal Cloud account for secure user Management. Connect via IDP for seamless user and group management. Charges apply.
 slug: /cloud/scim
 toc_max_heading_level: 3
 keywords:
@@ -17,8 +17,8 @@ tags:
 
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
-This feature is in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
-Only Okta is currently supported as your upstream IDP.
+This feature is in [Public-preview](/evaluate/development-production-features/release-stages#public-preview).
+Supported upstream IDP vendors: Okta, Microsoft Entra ID (Azure AD), Google Workspace, OneLogin, CyberArk, JumpCloud, PingFederate, and Custom SCIM 2.0 providers. 
 
 :::
 
@@ -29,12 +29,12 @@ Before starting your work with SCIM, you'll need to complete this checklist:
 1. Configure [SAML](/cloud/saml) SSO.
 1. Ensure that critical traffic is configured to authenticate using [mTLS](/cloud/certificates) or [API keys](/cloud/api-keys#overview) attached to Temporal Cloud accounts.
    This ensures that Workflows will continue uninterrupted if there is any problem with your integration.
-1. Decide on your **Okta administrator**, who is responsible for configuring and managing your SCIM integration.
+1. Decide on your **IDP administrator**, who is responsible for configuring and managing your SCIM integration.
    Specify their contact details when you reach out to support in the next stage of this process.
 
 After completing these steps, you're ready to submit your [support ticket](/cloud/support#support-ticket) to enable SCIM.
 
-## Onboarding with SCIM and Okta {#configure-scim-with-okta}
+## Example: Onboarding with SCIM and Okta {#configure-scim-with-okta}
 
 1. Temporal Support enables the SCIM integration on your account.
    Enabling integration automatically emails a configuration link to your Okta administrator.
