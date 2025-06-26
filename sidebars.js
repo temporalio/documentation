@@ -625,6 +625,7 @@ module.exports = {
             "encyclopedia/workers/task-routing-worker-sessions",
             "encyclopedia/workers/sticky-execution",
             "encyclopedia/workers/worker-deployments",
+            "encyclopedia/workers/worker-shutdown",
             "encyclopedia/workers/worker-versioning",
           ],
         },
