@@ -7,7 +7,7 @@ There are two types of shutdown behavior that can occur, depending on whether an
 
 ## Graceful Shutdown
 
-Graceful shutdown configures how much time a Worker has to complete its current task before shutting down. 
+Graceful shutdown configures how much time a Worker has to complete its current task before shutting down.
 An Activity is able to determine that the Worker it’s running on is being shut down, through the Activity context.
 
 > Core SDKs - `graceful_shutdown_period`
@@ -18,7 +18,7 @@ An Activity is able to determine that the Worker it’s running on is being shut
 
 ### Workflow tasks
 
-Any in-flight Workflow Tasks are (attempted to be) completed. 
+Any in-flight Workflow Tasks are (attempted to be) completed.
 The only reason they may not immediately, is if Workflow code is (incorrectly) blocking, or because of Local Activities (see below).
 
 ### Activities
@@ -34,7 +34,7 @@ The Worker still waits for the current Workflow Task to complete, meaning you ca
 
 ## Non-Graceful Period Shutdown
 
-This behavior is for either no graceful period being specified, or if the shutdown has taken longer than the configured graceful period. 
+This behavior is for either no graceful period being specified, or if the shutdown has taken longer than the configured graceful period.
 In all cases, the Activity context is canceled and the Worker will finish shutdown when the current Workflow Task completes (with either success or failure).
 
 :::note
@@ -53,5 +53,5 @@ The Worker still waits for the current Workflow Task to complete, meaning you ca
 ## General Developer Guidance
 
 - Ensure Activities and Local Activities **honor context cancellation** or other shutdown signals.
-- Expect that **long or hung Local Activities may block shutdown** unless you fail early. 
-It is recommended that Local Activities should already generally be used for short Activities. 
+- Expect that **long or hung Local Activities may block shutdown** unless you fail early.
+  It is recommended that Local Activities should already generally be used for short Activities.
