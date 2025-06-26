@@ -118,7 +118,8 @@ You can find the Namespace and Account ID, as well as the endpoint, on the Names
 
 Now, when instantiating a Temporal `client` in your Temporal Go SDK code, provide the API key with the following `clientOptions`:
 
-#### v1.33.0+
+<details>
+<summary><strong>v1.33.0+</strong></summary>
 
 ```go
 clientOptions := client.Options{
@@ -141,7 +142,10 @@ creds := client.NewAPIKeyDynamicCredentials(
 myKey = myKeyUpdated
 ```
 
-#### v1.26.0 to v1.33.0 (exclusive)
+</details>
+
+<details>
+<summary><strong>v1.26.0 to v1.33.0 (exclusive)</strong></summary>
 
 Create an initial connection:
 
@@ -185,7 +189,10 @@ creds := client.NewAPIKeyDynamicCredentials(
 myKey = myKeyUpdated
 ```
 
-#### pre v1.26.0
+</details>
+
+<details>
+<summary><strong>pre v1.26.0</strong></summary>
 
 Create an initial connection:
 
@@ -216,6 +223,8 @@ Update an API key:
 ```go
 apiKeyProvider.APIKey = myKeyUpdated
 ```
+
+</details>
 
 ### How to connect to Temporal Cloud using mTLS {#connect-to-temporal-cloud-tls}
 
