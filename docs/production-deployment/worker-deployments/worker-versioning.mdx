@@ -70,9 +70,9 @@ To get started with Worker Versioning, you should understand some concepts aroun
 - A **Worker Deployment** is a deployment or service across multiple versions. In a rainbow deploy, a deployment can have multiple active deployment versions running at once.
 - A **Worker Deployment Version** is a version of a deployment or service. It can have multiple Workers, but they all run the same build.
 - A **Build ID**, in combination with a Worker Deployment name, identifies a single Worker Deployment Version.
-- You can declare each Workflow type to have a **Versioning Behavior**, either `pinned` or `auto-upgrade`.
-  - A `pinned` Worfklow is guaranteed to complete on a single Worker Deployment Version.
-  - An `auto-upgrade` Workflow will move to the latest Worker Deployment Version automatically whenever you change the current version.
+- You can declare each Workflow type to have a **Versioning Behavior**, either Pinned or Auto-Upgrade.
+  - A Pinned Worfklow is guaranteed to complete on a single Worker Deployment Version.
+  - An Auto-Upgrade Workflow will move to the latest Worker Deployment Version automatically whenever you change the current version.
 - Each Worker Deployment has a single **Current Version** which is where workflows are routed to unless they were previously pinned on a different version. Other versions are still around to allow pinned Workflows to finish executing, or in case you need to roll back. If no current version is specified, the default is unversioned.
 - Each Worker Deployment can have a **Ramping Version** which is where a configurable percentage of workflows are routed to unless they were previously pinned on a different version. The ramp percentage can be in the range [0, 100]. Workflows that don't go to the Ramping Version will go to the Current Version. If no ramping version is specified, 100% of auto-upgrade workflows will go to the Current Version.
 
@@ -85,7 +85,7 @@ There are three new parameters, with different names depending on the language:
 
 - `UseVersioning`: This enables the Versioning functionality for this Worker.
 - A `Version` string to identify the revision that this Worker will be allowed to execute. This is a combination of a deployment name and a build ID number.
-- The [Versioning Behavior](#definition), either `pinned` or `auto-upgrade`.
+- The [Versioning Behavior](#definition), either Pinned or Auto-Upgrade.
 
 Follow the example for your SDK below:
 
@@ -177,10 +177,10 @@ worker = Temporalio::Worker.new(
 </SdkTabs>
 
 If your Worker and Workflows are new, we suggest not providing a `DefaultVersioningBehavior`.
-In general, each Workflow should be annotated as `auto-upgrade` or `pinned` on a Workflow-by-Workflow basis.
-If all of your Workflows will be short-running for the foreseeable future, you can default to `pinned`.
+In general, each Workflow should be annotated as Auto-Upgrade or Pinned on a Workflow-by-Workflow basis.
+If all of your Workflows will be short-running for the foreseeable future, you can default to Pinned.
 
-Most users who are migrating to rainbow deploys from rolling deploys will start by defaulting to `auto-upgrade` until they have had time to annotate their Workflows.
+Most users who are migrating to rainbow deploys from rolling deploys will start by defaulting to Auto-Upgrade until they have had time to annotate their Workflows.
 This default is the most similar to the legacy behavior.
 Auto-upgrade workflows won't be restricted to a single version and and need to be kept replay-safe manually, e.g. with [replay testing](https://docs.temporal.io/workflow-execution#replay).
 Once each workflow type is annotated, you can remove the `DefaultVersioningBehavior`.
@@ -231,7 +231,7 @@ Versioning Info:
 
 ## Marking a Workflow Type as Pinned
 
-You can mark a Workflow Type as pinned when you register it by adding an additional `pinned` parameter.
+You can mark a Workflow Type as pinned when you register it by adding an additional Pinned parameter.
 This will cause it to remain on its original deployed version:
 
 <SdkTabs>
