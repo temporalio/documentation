@@ -118,6 +118,9 @@ You can find the Namespace and Account ID, as well as the endpoint, on the Names
 
 Now, when instantiating a Temporal `client` in your Temporal Go SDK code, provide the API key with the following `clientOptions`:
 
+<details>
+<summary><strong>v1.33.0+</strong></summary>
+
 ```go
 clientOptions := client.Options{
     HostPort: <endpoint>,
@@ -138,6 +141,90 @@ creds := client.NewAPIKeyDynamicCredentials(
 // Update by replacing
 myKey = myKeyUpdated
 ```
+
+</details>
+
+<details>
+<summary><strong>v1.26.0 to v1.33.0 (exclusive)</strong></summary>
+
+Create an initial connection:
+
+```go
+clientOptions := client.Options{
+    HostPort: <endpoint>,
+    Namespace: <namespace_id>.<account_id>,
+    ConnectionOptions: client.ConnectionOptions{
+        TLS: &tls.Config{},
+        DialOptions: []grpc.DialOption{
+            grpc.WithUnaryInterceptor(
+                func(ctx context.Context, method string, req any, reply any, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
+                    return invoker(
+                        metadata.AppendToOutgoingContext(ctx, "temporal-namespace", <namespace_id>.<account_id>),
+                        method,
+                        req,
+                        reply,
+                        cc,
+                        opts...,
+                    )
+                },
+            ),
+        },
+    },
+    Credentials: client.NewAPIKeyStaticCredentials(apiKey),
+}
+c, err := client.Dial(clientOptions)
+if err != nil {
+  log.Fatalf("error creating temporal client: %v", err)
+}
+```
+
+Update an API key:
+
+```go
+// Assuming client Credentials created with
+var myKey string
+creds := client.NewAPIKeyDynamicCredentials(
+    func(context.Context) (string, error) { return myKey, nil })
+// Just update by replacing
+myKey = myKeyUpdated
+```
+
+</details>
+
+<details>
+<summary><strong>pre v1.26.0</strong></summary>
+
+Create an initial connection:
+
+```go
+// Create headers provider
+type APIKeyProvider struct {
+    APIKey string
+    Namespace string
+}
+
+func (a *APIKeyProvider) GetHeaders(context.Context) (map[string]string, error) {
+    return map[string]string{"Authorization": "Bearer " + a.APIKey, "temporal-namespace": a.Namespace}, nil
+}
+
+// Use headers provider
+apiKeyProvider := &APIKeyProvider{APIKey: <APIKey>, Namespace: <namespace_id>.<account_id>}
+c, err := client.Dial(client.Options{
+    HostPort: <endpoint>,
+    Namespace: <namespace_id>.<account_id>,
+    HeadersProvider: apiKeyProvider,
+    ConnectionOptions: client.ConnectionOptions{TLS: &tls.Config{
+    }},
+})
+```
+
+Update an API key:
+
+```go
+apiKeyProvider.APIKey = myKeyUpdated
+```
+
+</details>
 
 ### How to connect to Temporal Cloud using mTLS {#connect-to-temporal-cloud-tls}
 
