@@ -85,7 +85,7 @@ There are three new parameters, with different names depending on the language:
 
 - `UseVersioning`: This enables the Versioning functionality for this Worker.
 - A `Version` string to identify the revision that this Worker will be allowed to execute. This is a combination of a deployment name and a build ID number.
-- The [Versioning Behavior](#definition), either Pinned or Auto-Upgrade.
+- (Optional) The [Default Versioning Behavior](#definition). If unset, you'll be required to specify the behavior on each Workflow. Or you can default to Pinned or Auto-Upgrade.
 
 Follow the example for your SDK below:
 
@@ -130,9 +130,12 @@ Worker(
             deployment_name="llm_srv",
             build_id=my_env.build_id),
         use_worker_versioning=True,
+        default_versioning_behavior=VersioningBehavior.AUTO_UPGRADE
     ),
+
 )
-```
+
+````
 </SdkTabs.Python>
 <SdkTabs.TypeScript>
 ```ts
@@ -146,9 +149,11 @@ workerDeploymentOptions: {
 },
 connection: nativeConnection,
 });
-```
+````
+
 </SdkTabs.TypeScript>
 <SdkTabs.DotNet>
+
 ```csharp
 var myWorker = new TemporalWorker(
     Client,
@@ -157,8 +162,10 @@ var myWorker = new TemporalWorker(
       { DefaultVersioningBehavior = VersioningBehavior.AutoUpgrade },
     }.AddWorkflow<MyWorkflow>());
 ```
+
 </SdkTabs.DotNet>
 <SdkTabs.Ruby>
+
 ```ruby
 worker = Temporalio::Worker.new(
   client: client,
@@ -169,12 +176,16 @@ worker = Temporalio::Worker.new(
           deployment_name: 'llm_srv',
           build_id: '1.0'
       ),
-      use_worker_versioning: true
+      use_worker_versioning: true,
+      default_versioning_behavior: Temporalio::VersioningBehavior::AUTO_UPGRADE
   )
 )
 ```
+
 </SdkTabs.Ruby>
 </SdkTabs>
+
+### Which Default Versioning Behavior should you choose?
 
 If your Worker and Workflows are new, we suggest not providing a `DefaultVersioningBehavior`.
 In general, each Workflow should be annotated as Auto-Upgrade or Pinned on a Workflow-by-Workflow basis.
