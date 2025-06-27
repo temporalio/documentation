@@ -14,10 +14,19 @@ tags:
 description: Learn how to use Workflow Start Delay and Temporal Cron Jobs in PHP. Delay Workflow execution or set up recurring tasks with a Cron Schedule using Temporal Client.
 ---
 
-This page shows how to do the following:
-
-- [How to use Start Delay](#start-delay)
-- [How to use Temporal Cron Jobs](#temporal-cron-jobs)
+<div className="topics-covered-section">
+  <h2 className="topics-covered-title">Topics covered in this section</h2>
+  <div className="topics-grid">
+    <a href="#start-delay" className="topic-card">
+      <div className="topic-title">Use Start Delay</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#temporal-cron-jobs" className="topic-card">
+      <div className="topic-title">Use Temporal Cron Jobs</div>
+      <div className="topic-arrow">→</div>
+    </a>
+  </div>
+</div>
 
 ## How to use Start Delay {#start-delay}
 
@@ -86,7 +95,7 @@ For more information, see the [PHP samples](https://github.com/temporalio/sample
 
 :::tip Schedule Auto-Deletion
 
-Once a Schedule has completed creating all its Workflow Executions, the Temporal Service deletes it since it won’t fire again.
+Once a Schedule has completed creating all its Workflow Executions, the Temporal Service deletes it since it won't fire again.
 The Temporal Service doesn't guarantee when this removal will happen.
 
 :::

@@ -26,6 +26,28 @@ tags:
   - Temporal SDKs
 ---
 
+<div className="topics-covered-section">
+  <h2 className="topics-covered-title">Topics covered in this section</h2>
+  <div className="topics-grid">
+    <a href="#handling-messages" className="topic-card">
+      <div className="topic-title">Handle Messages</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#send-messages" className="topic-card">
+      <div className="topic-title">Send Messages</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#message-handler-patterns" className="topic-card">
+      <div className="topic-title">Message Handler Patterns</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#troubleshooting" className="topic-card">
+      <div className="topic-title">Troubleshooting</div>
+      <div className="topic-arrow">→</div>
+    </a>
+  </div>
+</div>
+
 A Workflow can act like a stateful web service that receives messages: Queries, Signals, and Updates.
 The Workflow implementation defines these endpoints via handler methods that can react to incoming Queries and Updates, and via Signal channels.
 Temporal Clients use messages to read Workflow state and control its execution.
@@ -248,7 +270,7 @@ log.Println("Supported languages:", supportedLang)
 // ...
 ```
 
-- Sending a Query doesn’t add events to a Workflow's Event History.
+- Sending a Query doesn't add events to a Workflow's Event History.
 
 - You can send Queries to closed Workflow Executions within a Namespace's Workflow retention period.
   This includes Workflows that have completed, failed, or timed out.
@@ -259,7 +281,7 @@ log.Println("Supported languages:", supportedLang)
 ### Send a Signal {#send-signal}
 
 You can send a Signal to a Workflow Execution from a Temporal Client or from another Workflow Execution.
-However, you can only send Signals to Workflow Executions that haven’t closed.
+However, you can only send Signals to Workflow Executions that haven't closed.
 
 #### Send a Signal from a Client {#send-signal-from-client}
 

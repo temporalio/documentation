@@ -2,21 +2,15 @@
 id: core-application
 title: Core application - Python SDK
 sidebar_label: Core application
-description: Learn to develop and customize Workflows and Activities using the Temporal Python SDK, manage parameters, set timeouts, execute Activities, and run a Worker Process efficiently.
-toc_max_heading_level: 2
+toc_max_heading_level: 4
 keywords:
-  - temporal python core
-  - develop temporal workflow
-  - temporal python activities
-  - workflow logic requirements
-  - customizing workflow type
-  - activity parameters
-  - activity return values
-  - activity execution in workflow
-  - activity timeouts
-  - getting activity results
-  - temporal python worker
-  - registering workflow types
+  - python sdk
+  - temporal sdk
+  - core application
+  - workflow
+  - activity
+  - worker
+description: The Foundations section of the Temporal Developer's guide introduces essential concepts for building and running a Temporal Application using the Python SDK.
 tags:
   - Activities
   - Temporal Client
@@ -27,22 +21,67 @@ tags:
   - Temporal SDKs
 ---
 
-This page shows how to do the following:
-
-- [Develop a basic Workflow](#develop-workflows)
-- [Define Workflow parameters](#workflow-parameters)
-- [Define Workflow return parameters](#workflow-return-values)
-- [Customize your Workflow Type](#workflow-type)
-- [Develop Workflow logic](#workflow-logic-requirements)
-- [Develop a basic Activity](#develop-activities)
-- [Develop Activity Parameters](#activity-parameters)
-- [Define Activity return values](#activity-return-values)
-- [Customize your Activity Type](#activity-type)
-- [Start an Activity Execution](#activity-execution)
-- [Set the required Activity Timeouts](#required-timeout)
-- [Get the results of an Activity Execution](#get-activity-results)
-- [Run a Worker Process](#run-a-dev-worker)
-- [Register types](#register-types)
+<div className="topics-covered-section">
+  <h2 className="topics-covered-title">Topics covered in this section</h2>
+  <div className="topics-grid">
+    <a href="#develop-workflows" className="topic-card">
+      <div className="topic-title">Develop a basic Workflow</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#workflow-parameters" className="topic-card">
+      <div className="topic-title">Define Workflow parameters</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#workflow-return-values" className="topic-card">
+      <div className="topic-title">Define Workflow return parameters</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#workflow-type" className="topic-card">
+      <div className="topic-title">Customize your Workflow Type</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#workflow-logic-requirements" className="topic-card">
+      <div className="topic-title">Develop Workflow logic</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#develop-activities" className="topic-card">
+      <div className="topic-title">Develop a basic Activity</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#activity-parameters" className="topic-card">
+      <div className="topic-title">Develop Activity Parameters</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#activity-return-values" className="topic-card">
+      <div className="topic-title">Define Activity return values</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#activity-type" className="topic-card">
+      <div className="topic-title">Customize your Activity Type</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#activity-execution" className="topic-card">
+      <div className="topic-title">Start an Activity Execution</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#required-timeout" className="topic-card">
+      <div className="topic-title">Set the required Activity Timeouts</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#get-activity-results" className="topic-card">
+      <div className="topic-title">Get the results of an Activity Execution</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#run-a-dev-worker" className="topic-card">
+      <div className="topic-title">Run a Worker Process</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#register-types" className="topic-card">
+      <div className="topic-title">Register types</div>
+      <div className="topic-arrow">→</div>
+    </a>
+  </div>
+</div>
 
 ## Develop a basic Workflow {#develop-workflows}
 

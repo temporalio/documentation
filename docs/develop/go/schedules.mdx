@@ -13,19 +13,23 @@ tags:
 description: Learn how to schedule Workflows, start them with delays or as Temporal Cron Jobs using the Go SDK. Master scheduling, backfilling, pausing, deleting, and updating Workflows.
 ---
 
-This page shows how to do the following:
-
-- [Scheduled Workflows](#schedule-a-workflow)
-  - [Create a Schedule](#create-schedule)
-  - [Backfill a Schedule](#backfill-schedule)
-  - [Delete a Schedule](#delete-schedule)
-  - [Describe a Schedule](#describe-schedule)
-  - [List Schedules](#list-schedules)
-  - [Pause a Schedule](#pause-schedule)
-  - [Trigger a Schedule](#trigger-schedule)
-  - [Update a Schedule](#update-schedule)
-- [Start delay](#start-delay)
-- [Temporal Cron Jobs](#temporal-cron-jobs)
+<div className="topics-covered-section">
+  <h2 className="topics-covered-title">Topics covered in this section</h2>
+  <div className="topics-grid">
+    <a href="#schedule-a-workflow" className="topic-card">
+      <div className="topic-title">Scheduled Workflows</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#start-delay" className="topic-card">
+      <div className="topic-title">Start delay</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#temporal-cron-jobs" className="topic-card">
+      <div className="topic-title">Temporal Cron Jobs</div>
+      <div className="topic-arrow">→</div>
+    </a>
+  </div>
+</div>
 
 ## Scheduled Workflows {#schedule-a-workflow}
 
@@ -72,7 +76,7 @@ func main() {
 
 :::tip Schedule Auto-Deletion
 
-Once a Schedule has completed creating all its Workflow Executions, the Temporal Service deletes it since it won’t fire again.
+Once a Schedule has completed creating all its Workflow Executions, the Temporal Service deletes it since it won't fire again.
 The Temporal Service doesn't guarantee when this removal will happen.
 
 :::

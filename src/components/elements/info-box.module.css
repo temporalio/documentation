@@ -1,0 +1,36 @@
+.infoBox {
+  background: rgba(45, 45, 85, 0.95);
+  border: 1px solid #3b3b7c;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  display: flex;
+  gap: 1rem;
+  color: #e6e6fa;
+}
+
+.infoIcon {
+  font-size: 1.2rem;
+  color: #8585ff;
+  line-height: 1;
+}
+
+.content h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  color: #e6e6fa;
+}
+
+.content p {
+  margin: 0.5rem 0;
+  color: #b4b4d4;
+  line-height: 1.5;
+}
+
+.content code {
+  background: rgba(70, 70, 120, 0.5);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.9em;
+}
