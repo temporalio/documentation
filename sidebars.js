@@ -272,7 +272,7 @@ module.exports = {
         },
         "develop/activity-retry-simulator",
         "develop/worker-performance",
-        "develop/determinism",
+        "develop/safe-deployments",
       ],
     },
     {
