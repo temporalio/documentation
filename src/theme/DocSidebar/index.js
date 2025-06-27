@@ -11,7 +11,12 @@ export default function DocSidebarWrapper(props) {
     return props.sidebar?.find(item => item.label === label);
   };
 
-  // If we're in the develop section (SDKs), create a focused SDK navigation
+  // Only show full sidebar for homepage
+  if (currentPath === '/' || currentPath === '/index') {
+    return <DocSidebar {...props} />;
+  }
+
+  // If we're in the develop section (including main page), create a focused SDK navigation
   if (currentPath.startsWith('/develop') || currentPath.startsWith('/cli')) {
     const developSection = findSidebarSection('Develop');
     if (developSection) {
@@ -26,7 +31,19 @@ export default function DocSidebarWrapper(props) {
               id: 'develop/index',
               label: 'Overview'
             },
-            ...developSection.items.filter(item => item.label?.includes('SDK'))
+            // Include all SDK categories
+            ...developSection.items.filter(item => item.label?.includes('SDK')),
+            // Include additional development tools and guides
+            ...developSection.items.filter(item => 
+              item.id === 'develop/activity-retry-simulator' ||
+              item.id === 'develop/worker-performance' ||
+              item.id === 'develop/safe-deployments' ||
+              (typeof item === 'string' && (
+                item.includes('activity-retry-simulator') ||
+                item.includes('worker-performance') ||
+                item.includes('safe-deployments')
+              ))
+            )
           ]
         }
       ];
@@ -34,7 +51,7 @@ export default function DocSidebarWrapper(props) {
     }
   }
 
-  // If we're in Temporal Cloud section, show only Cloud items
+  // If we're in Temporal Cloud section (including main page), show only Cloud items
   if (currentPath.startsWith('/cloud') || currentPath.startsWith('/ops') || 
       currentPath.startsWith('/production-deployment/cloud')) {
     const cloudSection = findSidebarSection('Deploy to production');
@@ -55,16 +72,28 @@ export default function DocSidebarWrapper(props) {
     }
   }
 
-  // If we're in References section, show only References items
+  // If we're in References section (including main page), show only References items
   if (currentPath.startsWith('/references')) {
+    // Find the actual References section in the sidebar
+    const referencesSection = props.sidebar?.find(item => 
+      item.id === 'references' || 
+      item.link?.id === 'references' ||
+      item.label === 'References'
+    );
+    
+    if (referencesSection) {
+      return <DocSidebar {...props} sidebar={[referencesSection]} />;
+    }
+    
+    // Fallback if References section structure is different
     const referencesSidebar = [
       {
         type: 'category',
         label: 'References',
         collapsed: false,
         items: props.sidebar?.filter(item => 
-          item.id === 'references' || 
-          item.link?.id === 'references' ||
+          item.id?.includes('references') || 
+          item.link?.id?.includes('references') ||
           (typeof item === 'string' && item.includes('references'))
         ) || []
       }
@@ -83,10 +112,20 @@ export default function DocSidebarWrapper(props) {
         label: 'Concepts',
         collapsed: false,
         items: [
-          // Add Introduction section items that relate to concepts
+          // Include Understanding Temporal from Introduction section (at top)
+          {
+            type: 'link',
+            label: 'Understanding Temporal',
+            href: '/evaluate/understanding-temporal'
+          },
+          // Include Encyclopedia section
           ...props.sidebar?.filter(item => 
-            item.label === 'Introduction' || 
             item.id === 'encyclopedia' ||
+            item.link?.id === 'encyclopedia' ||
+            item.label === 'Encyclopedia'
+          ) || [],
+          // Include other concept-related items
+          ...props.sidebar?.filter(item => 
             item.id === 'troubleshooting' ||
             item.id === 'security' ||
             item.id === 'glossary'

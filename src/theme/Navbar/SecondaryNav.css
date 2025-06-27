@@ -28,7 +28,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 0.75rem;
-  background: none;
+  background: rgba(255, 0, 0, 0.1);
   border: 1px solid #e5e7eb;
   border-radius: 6px;
   color: #6b7280;
@@ -39,6 +39,9 @@
   white-space: nowrap;
   text-decoration: none;
   margin-right: 0.5rem;
+  pointer-events: auto;
+  position: relative;
+  z-index: 1000;
 }
 
 .secondary-navbar__back-button:hover {
@@ -69,11 +72,23 @@
   font-size: 0.875rem;
   color: #374151;
   white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.secondary-navbar__section-title:hover {
+  color: #1d4ed8;
+  text-decoration: none;
 }
 
 [data-theme='dark'] .secondary-navbar__section-title {
   color: #f9fafb;
   font-weight: 600;
+}
+
+[data-theme='dark'] .secondary-navbar__section-title:hover {
+  color: #4fddbf;
 }
 
 .secondary-navbar__nav {

@@ -145,7 +145,7 @@ const SecondaryNavbar = () => {
       <a
         href="/"
         className="secondary-navbar__back-button"
-        title="Back to main navigation"
+        title="Go to homepage"
       >
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
           <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -191,9 +191,13 @@ const SecondaryNavbar = () => {
     <div className="secondary-navbar">
       <div className="secondary-navbar__container">
         {renderBackToMainButton()}
-        <div className="secondary-navbar__section-title">
+        <a 
+          href="/"
+          className="secondary-navbar__section-title"
+          title="Go to homepage"
+        >
           {currentNav.label}
-        </div>
+        </a>
         <nav className="secondary-navbar__nav">
           {currentNav.items.map((item, index) => renderNavItem(item, index))}
         </nav>
