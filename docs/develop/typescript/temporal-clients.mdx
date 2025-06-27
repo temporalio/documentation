@@ -29,11 +29,23 @@ tags:
 The Temporal Client, provided by the Temporal SDK, allows you to communicate with the Temporal Service.
 It acts as the bridge for communication between your applications and the Temporal Service.
 
-The following page shows how to:
-
-- [Connect to a local development Temporal Service](#connect-to-development-service)
-- [Connect to Temporal Cloud](#connect-to-temporal-cloud)
-- [Start a Workflow Execution](#start-workflow-execution)
+<div className="topics-covered-section">
+  <h2 className="topics-covered-title">Topics covered in this section</h2>
+  <div className="topics-grid">
+    <a href="#connect-to-development-service" className="topic-card">
+      <div className="topic-title">Connect to a local development Temporal Service</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#connect-to-temporal-cloud" className="topic-card">
+      <div className="topic-title">Connect to Temporal Cloud</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#start-workflow-execution" className="topic-card">
+      <div className="topic-title">Start a Workflow Execution</div>
+      <div className="topic-arrow">→</div>
+    </a>
+  </div>
+</div>
 
 ## Connect to development Temporal Service {#connect-to-development-service}
 
@@ -336,7 +348,7 @@ return 'Completed ' + wf.workflowInfo().workflowId + ', Total Charged: '
 
 `totalCharged` is just a function declared in your code. For a full example, see [subscription-workflow-project-template-typescript/src/workflows.ts](https://github.com/temporalio/subscription-workflow-project-template-typescript/blob/main/src/workflows.ts).
 
-A Workflow function may return a result. If it doesn’t (in which case the return type is `Promise<void>`), the result will be `undefined`.
+A Workflow function may return a result. If it doesn't (in which case the return type is `Promise<void>`), the result will be `undefined`.
 
 If you started a Workflow with `client.workflow.start()`, you can choose to wait for the result anytime with `handle.result()`.
 

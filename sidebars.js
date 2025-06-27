@@ -3,7 +3,7 @@ module.exports = {
     "index",
     {
       type: "category",
-      label: "Evaluate",
+      label: "Introduction",
       collapsed: false,
       link: {
         type: "doc",
@@ -20,36 +20,21 @@ module.exports = {
             type: "doc",
             id: "evaluate/development-production-features/index",
           },
+          items: [],
+        },
+        {
+          type: "category",
+          label: "Product release stages",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "evaluate/development-production-features/release-stages",
+          },
           items: [
-            "evaluate/development-production-features/core-application",
-            "evaluate/development-production-features/failure-detection",
-            "evaluate/development-production-features/throughput-composability",
-            "evaluate/development-production-features/nexus",
-            "evaluate/development-production-features/workflow-message-passing",
-            "evaluate/development-production-features/debugging",
-            "evaluate/development-production-features/interrupt-workflow",
-            "evaluate/development-production-features/testing-suite",
-            "evaluate/development-production-features/observability",
-            "evaluate/development-production-features/data-encryption",
-            "evaluate/development-production-features/schedules",
-            "evaluate/development-production-features/cloud-automation",
-            "evaluate/development-production-features/low-latency",
-            "evaluate/development-production-features/multi-tenancy",
             {
-              type: "category",
-              label: "Product release stages",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "evaluate/development-production-features/release-stages",
-              },
-              items: [
-                {
-                  type: "link",
-                  label: "Change-log",
-                  href: "https://temporal.io/change-log",
-                },
-              ],
+              type: "link",
+              label: "Change-log",
+              href: "https://temporal.io/change-log",
             },
           ],
         },
@@ -112,6 +97,7 @@ module.exports = {
             id: "develop/go/index",
           },
           items: [
+            "develop/go/set-up-your-local-go",
             "develop/go/core-application",
             "develop/go/temporal-clients",
             "develop/go/go-sdk-multithreading",
@@ -144,6 +130,7 @@ module.exports = {
             id: "develop/java/index",
           },
           items: [
+            "develop/java/set-up-your-local-java",
             "develop/java/core-application",
             "develop/java/temporal-clients",
             "develop/java/namespaces",
@@ -172,6 +159,7 @@ module.exports = {
             id: "develop/php/index",
           },
           items: [
+            "develop/php/set-up-your-local-php",
             "develop/php/core-application",
             "develop/php/temporal-clients",
             "develop/php/testing-suite",
@@ -197,6 +185,7 @@ module.exports = {
             id: "develop/python/index",
           },
           items: [
+            "develop/python/set-up-your-local-python",
             "develop/python/core-application",
             "develop/python/temporal-clients",
             "develop/python/python-sdk-sandbox",
@@ -225,6 +214,7 @@ module.exports = {
             id: "develop/typescript/index",
           },
           items: [
+            "develop/typescript/set-up-your-local-typescript",
             "develop/typescript/core-application",
             "develop/typescript/temporal-clients",
             "develop/typescript/namespaces",
@@ -253,6 +243,7 @@ module.exports = {
             id: "develop/dotnet/index",
           },
           items: [
+            "develop/dotnet/set-up-your-local-dotnet",
             "develop/dotnet/core-application",
             "develop/dotnet/temporal-client",
             "develop/dotnet/testing-suite",
