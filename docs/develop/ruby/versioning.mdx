@@ -1,0 +1,164 @@
+---
+id: versioning
+title: Versioning - Ruby SDK
+sidebar_label: Versioning
+description: Learn how to use the Ruby SDK Patching API to safely deploy new code versions, handle deprecated patches, and manage Workflow activities using Temporal for long-running tasks.
+toc_max_heading_level: 4
+keywords:
+  - best practices
+  - deployment
+  - deprecated patches
+  - patching
+  - ruby
+  - sdk
+  - version
+  - versioning
+  - workflow completion
+  - workflow history
+  - workflow transition
+tags:
+  - Workflows
+  - Ruby SDK
+  - Temporal SDKs
+  - Versioning
+  - Patching
+---
+
+This page shows how to do the following:
+
+- [Use the Ruby SDK patching API](#ruby-sdk-patching-api)
+- [Patch in new code safely](#patching-in-new-code)
+- [Understand deprecated patches](#deprecated-patches)
+- [Safely deploy `post_patch_activity`](#safe-deployment-of-postpatchactivity)
+
+## Introduction to Versioning
+
+Because we design for potentially long running Workflows at scale, versioning with Temporal works differently.
+We explain more in this optional 30 minute introduction:
+
+<div style={{ position: "relative", paddingBottom: "56.25%", height: 0 }}>
+  <iframe
+    src="https://www.youtube.com/embed/kkP899WxgzY?autoplay=0"
+    style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
+    frameborder="0"
+    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen>
+  </iframe>
+</div>
+
+## Use the Ruby SDK Patching API {#ruby-sdk-patching-api}
+
+In principle, the Ruby SDK's patching mechanism operates similarly to other SDKs in a "feature-flag" fashion.
+
+To understand this, you can break it down into three steps, which reflect three stages of migration:
+
+- Running `PrePatchActivity` code while concurrently patching in `PostPatchActivity`.
+- Running `PostPatchActivity` code with deprecation markers for `my-patch` patches.
+- Running only the `PostPatchActivity` code.
+
+Let's walk through this process in sequence.
+
+Suppose you have an initial Workflow version using `PrePatchActivity`:
+
+```ruby
+class MyWorkflow < Temporalio::Workflow::Definition
+  def execute
+    result = Temporalio::Workflow.execute_activity(
+      PrePatchActivity,
+      start_to_close_timeout: 100
+    )
+
+    # ...
+  end
+end
+```
+
+Now, you want to update your code to run `PostPatchActivity` instead. This represents your desired end state.
+
+```ruby
+class MyWorkflow < Temporalio::Workflow::Definition
+  def execute
+    result = Temporalio::Workflow.execute_activity(
+      PostPatchActivity,
+      start_to_close_timeout: 100
+    )
+
+    # ...
+  end
+end
+```
+
+**Problem: You cannot deploy `PostPatchActivity` directly until you're certain there are no more running Workflows created using the `PrePatchActivity` code, otherwise you are likely to cause a nondeterminism error.**
+
+Instead, you'll need to deploy `PostPatchActivity` and use the [patched](https://ruby.temporal.io/Temporalio/Workflow.html#patched-class_method) method to determine which version of the code to execute.
+
+Implementing patching involves three steps:
+
+1. Use [patched](https://ruby.temporal.io/Temporalio/Workflow.html#patched-class_method) to patch in new code and run it alongside the old code.
+2. Remove the old code and apply [deprecate_patch](https://ruby.temporal.io/Temporalio/Workflow.html#deprecate_patch-class_method).
+3. Once you're confident that all old Workflows have finished executing, remove `deprecate_patch`.
+
+### Patching in new code {#patching-in-new-code}
+
+Using `patched` inserts a marker into the Workflow History.
+
+During replay, if a Worker encounters a history with that marker, it will fail the Workflow task when the Workflow code doesn't produce the same patch marker (in this case, `my-patch`). This ensures you can safely deploy code from `PostPatchActivity` as a "feature flag" alongside the original version (`PrePatchActivity`).
+
+```ruby
+class MyWorkflow < Temporalio::Workflow::Definition
+  def execute
+    if Temporalio::Workflow.patched('my-patch')
+      result = Temporalio::Workflow.execute_activity(
+        PostPatchActivity,
+        start_to_close_timeout: 100
+      )
+    else
+      result = Temporalio::Workflow.execute_activity(
+        PrePatchActivity,
+        start_to_close_timeout: 100
+      )
+    end
+
+    # ...
+  end
+end
+```
+
+### Understanding deprecated patches in the Ruby SDK {#deprecated-patches}
+
+After ensuring that all Workflows started with `PrePatchActivity` code have finished, you can [deprecate the patch](https://ruby.temporal.io/Temporalio/Workflow.html#deprecate_patch-class_method).
+
+Deprecated patches serve as a bridge between `PrePatchActivity` and `PostPatchActivity`. They function similarly to regular patches by adding a marker to the Workflow History. However, this marker won't cause a replay failure when the Workflow code doesn't produce it.
+
+If, during the deployment of `PostPatchActivity`, there are still live Workers running `PrePatchActivity` code and these Workers pick up Workflow histories generated by `PostPatchActivity`, they will safely use the patched branch.
+
+```ruby
+class MyWorkflow < Temporalio::Workflow::Definition
+  def execute
+    Temporalio::Workflow.deprecate_patch('my-patch')
+    result = Temporalio::Workflow.execute_activity(
+      PostPatchActivity,
+      start_to_close_timeout: 100
+    )
+
+    # ...
+  end
+end
+```
+
+### Safe Deployment of post_patch_activity {#safe-deployment-of-postpatchactivity}
+
+You can safely deploy `PostPatchActivity` once all Workflows labeled my-patch or earlier are finished, based on the previously mentioned assertion.
+
+```ruby
+class MyWorkflow < Temporalio::Workflow::Definition
+  def execute
+    result = Temporalio::Workflow.execute_activity(
+      PostPatchActivity,
+      start_to_close_timeout: 100
+    )
+
+    # ...
+  end
+end
+```
