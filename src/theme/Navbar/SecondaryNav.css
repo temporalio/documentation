@@ -8,8 +8,9 @@
 }
 
 [data-theme='dark'] .secondary-navbar {
-  background: #1b1b1d;
-  border-bottom: 1px solid #2d2d30;
+  background: #1e1f2e;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
 }
 
 .secondary-navbar__container {
@@ -52,14 +53,15 @@
 }
 
 [data-theme='dark'] .secondary-navbar__back-button {
-  border-color: #2d2d30;
-  color: #a1a1aa;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #f9fafb;
+  background: rgba(255, 255, 255, 0.05);
 }
 
 [data-theme='dark'] .secondary-navbar__back-button:hover {
-  background-color: #27272a;
-  border-color: #3f3f46;
-  color: #e4e4e7;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
 }
 
 .secondary-navbar__section-title {
@@ -70,7 +72,8 @@
 }
 
 [data-theme='dark'] .secondary-navbar__section-title {
-  color: #e4e4e7;
+  color: #f9fafb;
+  font-weight: 600;
 }
 
 .secondary-navbar__nav {
@@ -111,22 +114,24 @@
 }
 
 [data-theme='dark'] .secondary-navbar__item {
-  color: #a1a1aa;
+  color: #f9fafb;
+  font-weight: 500;
 }
 
 [data-theme='dark'] .secondary-navbar__item:hover {
-  background-color: #27272a;
-  color: #e4e4e7;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
 }
 
 [data-theme='dark'] .secondary-navbar__item--active {
-  background-color: #2d1b69;
-  color: #a78bfa;
+  background: #4fddbf;
+  color: #161723;
+  font-weight: 600;
 }
 
 [data-theme='dark'] .secondary-navbar__item--active:hover {
-  background-color: #3730a3;
-  color: #c4b5fd;
+  background: #4fddbf;
+  color: #161723;
 }
 
 .secondary-navbar__external-icon {
@@ -169,8 +174,9 @@
 }
 
 [data-theme='dark'] .secondary-navbar__dropdown-menu {
-  background: #1b1b1d;
-  border-color: #2d2d30;
+  background: #1e1f2e;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .secondary-navbar__dropdown-item {
@@ -198,20 +204,24 @@
 }
 
 [data-theme='dark'] .secondary-navbar__dropdown-item {
-  color: #e4e4e7;
+  color: #f9fafb;
+  font-weight: 500;
 }
 
 [data-theme='dark'] .secondary-navbar__dropdown-item:hover {
-  background-color: #27272a;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
 }
 
 [data-theme='dark'] .secondary-navbar__dropdown-item--active {
-  background-color: #2d1b69;
-  color: #a78bfa;
+  background: #4fddbf;
+  color: #161723;
+  font-weight: 600;
 }
 
 [data-theme='dark'] .secondary-navbar__dropdown-item--active:hover {
-  background-color: #3730a3;
+  background: #4fddbf;
+  color: #161723;
 }
 
 /* Responsive Design */
