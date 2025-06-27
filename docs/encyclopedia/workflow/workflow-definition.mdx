@@ -233,21 +233,38 @@ When those APIs are used, the results are stored as part of the Event History, w
 
 In other words, all operations that do not purely mutate the Workflow Execution's state should occur through a Temporal SDK API.
 
-### Versioning Workflow code {#workflow-versioning}
+### Versioning Workflows {#workflow-versioning}
 
 The Temporal Platform requires that Workflow code (Workflow Definitions) be deterministic in nature.
 This requirement means that developers should consider how they plan to handle changes to Workflow code over time.
 
-A versioning strategy is even more important if your Workflow Executions live long enough that a Worker must be able to execute multiple versions of the same Workflow Type. Temporal Platform provides Workflow Versioning APIs.
+A versioning strategy is even more important if your Workflow Executions live long enough to run on multiple versions of your Worker. Temporal Platform provides Workflow Versioning APIs.
 
-- [How to version Workflow code in Go](/develop/go/versioning)
-- [How to version Workflow code in Java](/develop/java/versioning)
-- [How to version Workflow code in Python](/develop/python/versioning)
-- [How to version Workflow code in PHP](/develop/php/versioning)
-- [How to version Workflow code in TypeScript](/develop/typescript/versioning)
-- [How to version Workflow code in .NET](/develop/dotnet/versioning)
+Temporal offers two Versioning strategies:
 
-Temporal also has a [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) feature that allows you to tag your Workers and programmatically roll them out in pods tied to specific revisions, so that old Workers can run old code paths and new Workers can run new code paths. If you were using this method experimentally prior to summer 2025, refer to the [Worker Versioning Legacy](/encyclopedia/worker-versioning-legacy) docs.
+- [Versioning with patching](#workflow-patching): make sure your code changes are compatible across versions of your Workflow.
+- [Worker Versioning](#worker-versioning): keep Workers tied to specific code revisions, so that old Workers can run old code paths and new Workers can run new code paths. (Note: If you were using this method experimentally prior to 2025, refer to the [Worker Versioning Legacy](/encyclopedia/worker-versioning-legacy) docs, but note that these are planned for deprecation.)
+
+You can use one strategy, or a combination.
+
+#### Versioning with Patching {#workflow-patching}
+
+When keeping Workflows compatible, you should learn how to patch and ideally how to test your running Workflows will be safe to run on a new code version.
+
+To patch:
+
+- [How to patch Workflow code in Go](/develop/go/versioning#patching)
+- [How to patch Workflow code in Java](/develop/java/versioning#patching)
+- [How to patch Workflow code in Python](/develop/python/versioning#patching)
+- [How to patch Workflow code in PHP](/develop/php/versioning#patching)
+- [How to patch Workflow code in TypeScript](/develop/typescript/versioning#patching)
+- [How to patch Workflow code in .NET](/develop/dotnet/versioning#patching)
+
+To test, see [Safe Deployments](/develop/safe-deployments.mdx).
+
+#### Worker Versioning {#worker-versioning}
+
+To learn more about Worker Versioning, go [here](/production-deployment/worker-deployments/worker-versioning).
 
 ### Handling unreliable Worker Processes {#unreliable-worker-processes}
 

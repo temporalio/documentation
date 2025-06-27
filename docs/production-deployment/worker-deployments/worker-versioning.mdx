@@ -193,7 +193,7 @@ If all of your Workflows will be short-running for the foreseeable future, you c
 
 Most users who are migrating to rainbow deploys from rolling deploys will start by defaulting to Auto-Upgrade until they have had time to annotate their Workflows.
 This default is the most similar to the legacy behavior.
-Auto-upgrade workflows won't be restricted to a single version and and need to be kept replay-safe manually, e.g. with [replay testing](https://docs.temporal.io/workflow-execution#replay).
+Auto-upgrade workflows won't be restricted to a single version and need to be kept replay-safe manually, i.e. with [patching](/workflow-definition#workflow-versioning).
 Once each workflow type is annotated, you can remove the `DefaultVersioningBehavior`.
 
 ## Rolling out changes with the CLI
