@@ -53,7 +53,7 @@ export async function clusterManagerWorkflow(input: ClusterManagerInput = {}): P
 ````
 The test hook in the above snippet is covered [below](#how-to-test).
 
-Inside your Workflow, call the [`ContinueAsNew()`](https://typescript.temporal.io/api/classes/workflow.ContinueAsNew) function with the same type.
+Inside your Workflow, call the [`continueAsNew()`](https://typescript.temporal.io/api/namespaces/workflow#continueasnew) function with the same type.
 This stops the Workflow right away and starts a new one.
 
 <div class="copycode-notice-container">
@@ -63,7 +63,11 @@ This stops the Workflow right away and starts a new one.
   in the context of the rest of the application code.
 </div>
 ```typescript
-return await wf.continueAsNew<typeof clusterManagerWorkflow>({ state: manager.getState() });
+// Your other workflow code
+return await wf.continueAsNew<typeof clusterManagerWorkflow>({ 
+  state: manager.getState(),
+  testContinueAsNew: input.testContinueAsNew 
+});
 ````
 
 ### Considerations for Workflows with Message Handlers {#with-message-handlers}
