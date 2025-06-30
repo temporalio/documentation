@@ -63,7 +63,6 @@ This stops the Workflow right away and starts a new one.
   in the context of the rest of the application code.
 </div>
 ```typescript
-// Your other workflow code
 return await wf.continueAsNew<typeof clusterManagerWorkflow>({ 
   state: manager.getState(),
   testContinueAsNew: input.testContinueAsNew 
