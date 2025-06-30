@@ -39,11 +39,15 @@ List Filters support the following operators:
 - **`IN`**
 - **STARTS_WITH**
 
-{/* - **ORDER BY** */}
+:::note
 
 The **ORDER BY** operator is currently not supported in Temporal Cloud.
 
+The default ordering is: `ClosedTime DESC NULL FIRST`, `StartTime DESC`. {/* `RunID DESC` depends on which visibility store is used. */}
+
 Custom Search Attributes of the `Text` type cannot be used in **ORDER BY** clauses.
+
+:::
 
 ### Partial string match
 
