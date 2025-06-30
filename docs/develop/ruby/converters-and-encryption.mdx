@@ -173,7 +173,3 @@ end
 Now if `include ActiveModelJSONSupport` is present on any ActiveModel class, on serialization `to_json` will be used which will use `as_json` which calls the super `as_json` but also includes the fully qualified class name as the JSON
 `create_id` key.
 On deserialization, Ruby JSON then uses this key to know what class to call `json_create` on.
-
-## Use a custom Payload Codec
-
-A custom Payload Codec can be used to transform an array of Payloads (for example, for encryption or compression) in the Client and the Worker Process.
