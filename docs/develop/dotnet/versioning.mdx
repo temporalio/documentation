@@ -36,33 +36,9 @@ This page shows how to do the following:
 
 ## Introduction to Versioning
 
-Because we design for potentially long running Workflows at scale, versioning with Temporal works differently. We explain more in this optional 30 minute introduction:
+Because we design for potentially long running Workflows at scale, versioning with Temporal works differently.
 
-<div style={{ position: "relative", paddingBottom: "56.25%", height: 0 }}>
-  <iframe
-    src="https://www.youtube.com/embed/kkP899WxgzY?autoplay=0"
-    style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
-    frameborder="0"
-    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-    allowfullscreen>
-  </iframe>
-</div>
-
-## Use the .NET SDK Patching API {#dotnet-sdk-patching-api}
-
-**How to use the .NET SDK Patching API using the Temporal .NET SDK**
-
-In principle, the .NET SDK's patching mechanism operates similarly to other SDKs in a "feature-flag" fashion. However, the "versioning" API now uses the concept of "patching in" code.
-
-To understand this, you can break it down into three steps, which reflect three stages of migration:
-
-- Running `PrePatchActivity` code while concurrently patching in `PostPatchActivity`.
-- Running `PostPatchActivity` code with deprecation markers for `my-patch` patches.
-- Running only the `PostPatchActivity` code.
-
-Let's walk through this process in sequence.
-
-Suppose you have an initial Workflow version called `PrePatchActivity`:
+Suppose you have a Workflow that has an Activity called `PrePatchActivity`:
 
 ```csharp
 [Workflow]
@@ -100,15 +76,36 @@ public class MyWorkflow
 
 **Problem: You cannot deploy `PostPatchActivity` directly until you're certain there are no more running Workflows created using the `PrePatchActivity` code, otherwise you are likely to cause a nondeterminism error.**
 
+
 Instead, you'll need to deploy `PostPatchActivity` and use the [Patched](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_Patched_System_String_) method to determine which version of the code to execute.
+
+We explain more in this optional 30 minute introduction:
+
+<div style={{ position: "relative", paddingBottom: "56.25%", height: 0 }}>
+  <iframe
+    src="https://www.youtube.com/embed/kkP899WxgzY?autoplay=0"
+    style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
+    frameborder="0"
+    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen>
+  </iframe>
+</div>
+
+## Use the .NET SDK Patching API {#dotnet-sdk-patching-api}
+
+**How to use the .NET SDK Patching API using the Temporal .NET SDK**
+
+In principle, the .NET SDK's patching mechanism operates similarly to other SDKs in a "feature-flag" fashion. However, the "versioning" API now uses the concept of "patching in" code.
 
 Implementing patching involves three steps:
 
-1. Use [Patched](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_Patched_System_String_) to patch in new code and run it alongside the old code.
-2. Remove the old code and apply [DeprecatePatch](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_DeprecatePatch_System_String_).
-3. Once you're confident that all old Workflows have finished executing, remove `DeprecatePatch`.
+1. Use [Patched](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_Patched_System_String_) to patch in new code and run it alongside the `PrePatchActivity` code.
+2. Once all `PrePatchActivity` Workflows have finished executing and surpassed the Retention Period, remove the old code and apply [DeprecatePatch](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_DeprecatePatch_System_String_).
+3. Once all `PostPatchActivity` Workflows that started while both branches existed (that is, before patch deprecation) have finished and surpassed the Retention Period, remove `DeprecatePatch`.
 
-### Patching in new code {#using-patched-for-workflow-history-markers}
+These steps are shown in the following sections.
+
+### 1. Patching in new code {#using-patched-for-workflow-history-markers}
 
 Using `Patched` inserts a marker into the Workflow History.
 
@@ -139,13 +136,11 @@ public class MyWorkflow
 }
 ```
 
-### Understanding deprecated Patches in the .NET SDK {#deprecated-patches}
+### 2. Deprecating Patches {#deprecated-patches}
 
-After ensuring that all Workflows started with `PrePatchActivity` code have finished, you can [deprecate the patch](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_DeprecatePatch_System_String_).
+After ensuring that all Workflows started with `PrePatchActivity` code have finished and surpassed the Retention Period, you can remove the old code branch and [deprecate the patch](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_DeprecatePatch_System_String_).
 
-Deprecated patches serve as a bridge between `PrePatchActivity` and `PostPatchActivity`. They function similarly to regular patches by adding a marker to the Workflow History. However, this marker won't cause a replay failure when the Workflow code doesn't produce it.
-
-If, during the deployment of `PostPatchActivity`, there are still live Workers running `PrePatchActivity` code and these Workers pick up Workflow histories generated by `PostPatchActivity`, they will safely use the patched branch.
+Deprecated patches serve as a bridge between the final stage of the patching process and the final state that no longer has patches. They function similarly to regular patches by adding a marker to the Workflow History. However, this marker won't cause a replay failure when the Workflow code doesn't produce it.
 
 ```csharp
 [Workflow]
@@ -164,9 +159,9 @@ public class MyWorkflow
 }
 ```
 
-### Safe Deployment of PostPatchActivity {#deploy-postpatchactivity}
+### 3. Safe Deployment of PostPatchActivity {#deploy-postpatchactivity}
 
-You can safely deploy `PostPatchActivity` once all Workflows labeled my-patch or earlier are finished, based on the previously mentioned assertion.
+You can safely deploy `PostPatchActivity` without a patch once all Workflows with non-deprecated my-patch or earlier are finished and have surpassed Retention Period.
 
 ```csharp
 [Workflow]
