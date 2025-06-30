@@ -1,17 +1,16 @@
 ---
 id: message-passing
-title: Workflow message passing - .NET SDK
-sidebar_label: Messages
-description: Develop with Queries, Signals, and Updates with the Temporal .NET SDK.
-toc_max_heading_level: 3
+title: Message passing - .NET SDK
+sidebar_label: Message passing
+slug: /develop/dotnet/message-passing
+toc_max_heading_level: 2
 keywords:
-  - temporal dotnet signals
-  - send signal from client
-  - send signal from workflow
-  - signal with start
-  - workflow queries
-  - sending queries
-  - workflow updates
+  - messages
+  - queries
+  - signals
+  - updates
+  - workflow messages
+  - message handlers
   - dynamic workflows
   - dynamic activities
   - dynamic signals
@@ -26,6 +25,32 @@ The Workflow implementation defines these endpoints via handler methods that can
 Temporal Clients use messages to read Workflow state and control execution.
 See [Workflow message passing](/encyclopedia/workflow-message-passing) for a general overview of this topic.
 This page introduces these features for the Temporal .NET SDK.
+
+<div className="topics-covered-section">
+  <h2 className="topics-covered-title">Topics covered in this section</h2>
+  <div className="topics-grid">
+    <a href="#writing-message-handlers" className="topic-card">
+      <div className="topic-title">Write message handlers</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#send-messages" className="topic-card">
+      <div className="topic-title">Send messages</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#message-handler-patterns" className="topic-card">
+      <div className="topic-title">Message handler patterns</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#message-handler-troubleshooting" className="topic-card">
+      <div className="topic-title">Message handler troubleshooting</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#dynamic-handler" className="topic-card">
+      <div className="topic-title">Dynamic Handler</div>
+      <div className="topic-arrow">→</div>
+    </a>
+  </div>
+</div>
 
 ## Write message handlers {#writing-message-handlers}
 
@@ -232,7 +257,7 @@ Call a Query method with [`WorkflowHandle.QueryAsync`](https://dotnet.temporal.i
 var supportedLanguages = await workflowHandle.QueryAsync(wf => wf.GetLanguages(new(false)));
 ```
 
-- Sending a Query doesn’t add events to a Workflow's Event History.
+- Sending a Query doesn't add events to a Workflow's Event History.
 
 - You can send Queries to closed Workflow Executions within a Namespace's Workflow retention period.
   This includes Workflows that have completed, failed, or timed out.
@@ -243,7 +268,7 @@ var supportedLanguages = await workflowHandle.QueryAsync(wf => wf.GetLanguages(n
 ### Send a Signal {#send-signal}
 
 You can send a Signal to a Workflow Execution from a Temporal Client or from another Workflow Execution.
-However, you can only send Signals to Workflow Executions that haven’t closed.
+However, you can only send Signals to Workflow Executions that haven't closed.
 
 #### Send a Signal from a Client {#send-signal-from-client}
 

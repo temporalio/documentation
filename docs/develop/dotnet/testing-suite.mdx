@@ -1,26 +1,27 @@
 ---
 id: testing-suite
-title: Testing - .NET SDK
-sidebar_label: Testing
-description: The .NET test-suite guide covers Workflow and integration testing for Temporal. It includes end-to-end, integration, and unit testing, emphasizing the use of the test server to optimize test execution.
+title: Testing suite - .NET SDK
+sidebar_label: Testing suite
+slug: /develop/dotnet/testing-suite
+description: Learn how to test Workflows and Activities using the Temporal .NET SDK. Includes unit testing, integration testing, time skipping, and Workflow replay testing.
 toc_max_heading_level: 4
 keywords:
-  - developer guide
-  - guide context
-  - how to
-  - dotnet
-  - sdk
   - testing
-  - time-skipping
+  - unit testing
+  - integration testing
+  - workflow testing
+  - activity testing
+  - test framework
+  - xunit
 tags:
   - .Net SDK
   - Temporal SDKs
   - Testing
 ---
 
-The .NET test-suite feature guide describes the frameworks that facilitate Workflow and integration testing.
+The Testing section of the Temporal Developer's guide describes the frameworks that facilitate Workflow and Activity testing.
 
-In the context of Temporal, you can create these types of automated tests:
+In the context of Temporal, you can create these types of tests:
 
 - **End-to-end:** Running a Temporal Server and Worker with all its Workflows and Activities; starting and interacting with Workflows from a Client.
 - **Integration:** Anything between end-to-end and unit testing.
@@ -32,6 +33,28 @@ In the context of Temporal, you can create these types of automated tests:
 We generally recommend writing the majority of your tests as integration tests.
 
 Because the test server supports skipping time, use the test server for both end-to-end and integration tests with Workers.
+
+<div className="topics-covered-section">
+  <h2 className="topics-covered-title">Topics covered in this section</h2>
+  <div className="topics-grid">
+    <a href="#test-frameworks" className="topic-card">
+      <div className="topic-title">Test frameworks</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#testing-workflows" className="topic-card">
+      <div className="topic-title">Testing Workflows</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#test-activities" className="topic-card">
+      <div className="topic-title">Testing Activities</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#replay-test" className="topic-card">
+      <div className="topic-title">Replay test</div>
+      <div className="topic-arrow">→</div>
+    </a>
+  </div>
+</div>
 
 ## Test frameworks {#test-frameworks}
 

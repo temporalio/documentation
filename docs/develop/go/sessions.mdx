@@ -12,12 +12,6 @@ tags:
 description: Learn how to enable Worker Sessions, change concurrent Sessions, and create Session Workers using the Go SDK for precise Task Routing, ensuring efficient Activity Tasks execution.
 ---
 
-This page shows how to do the following:
-
-- [Enable Worker Sessions](#enable-sessions)
-- [Change the maximum concurrent Sessions of a Worker](#max-concurrent-sessions)
-- [Create a Worker Session](#create-a-session)
-
 :::tip Support, stability, and dependency info
 
 - This feature is currently available only in the Go SDK.
@@ -25,6 +19,28 @@ This page shows how to do the following:
 :::
 
 A Worker Session is a feature that provides a straightforward API for [Task Routing](/task-routing) to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.
+
+<div className="topics-covered-section">
+  <h2 className="topics-covered-title">Topics covered in this section</h2>
+  <div className="topics-grid">
+    <a href="#enable-sessions" className="topic-card">
+      <div className="topic-title">Enable Worker Sessions</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#max-concurrent-sessions" className="topic-card">
+      <div className="topic-title">Change the maximum concurrent Sessions of a Worker</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#create-a-session" className="topic-card">
+      <div className="topic-title">Create a Worker Session</div>
+      <div className="topic-arrow">→</div>
+    </a>
+    <a href="#session-metadata" className="topic-card">
+      <div className="topic-title">Additional Session usage information</div>
+      <div className="topic-arrow">→</div>
+    </a>
+  </div>
+</div>
 
 ## Enable Worker Sessions {#enable-sessions}
 
