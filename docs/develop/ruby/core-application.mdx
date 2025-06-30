@@ -239,7 +239,8 @@ The Activity result is the returned from the `execute_activity` call.
 
 ## Run Worker Process {#run-worker-process}
 
-The [Worker Process](/workers#worker-process) is where Workflow Functions and Activity Functions are executed.
+The [Worker Process](/workers#worker-process) is where Workflow Functions and Activity Functions are actually executed.
+In a Temporal application deployment, you ship and scale as many Workers as you need to handle the load of your Workflows and Activities.
 
 - Each [Worker Entity](/workers#worker-entity) in the Worker Process must register the exact Workflow Types and Activity Types it may execute.
 - Each Worker Entity must also associate itself with exactly one [Task Queue](/task-queue).
