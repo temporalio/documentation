@@ -156,10 +156,11 @@ We strongly recommend that you write a Workflow Definition in a language that ha
 
 ### Deterministic constraints {#deterministic-constraints}
 
-A critical aspect of developing Workflow Definitions is ensuring they are deterministic. 
-Generally speaking, this means you must take care to ensure that any time your Workflow code is executed it makes the same Workflow API calls in the same sequence, given the same input. Some changes to those API calls are safe to make. 
+A critical aspect of developing Workflow Definitions is ensuring they are deterministic.
+Generally speaking, this means you must take care to ensure that any time your Workflow code is executed it makes the same Workflow API calls in the same sequence, given the same input. Some changes to those API calls are safe to make.
 
 For example, you can change:
+
 - The input parameters, return values, and execution timeouts of Child Workflows and Activities
   - However, it is not safe to change the types or IDs of Child Workflows or Activities
 - The input parameters used to Signal an external Workflow
@@ -167,6 +168,7 @@ For example, you can change:
 - Add or remove calls to Workflow APIs that don't produce [Commands](/workflow-execution#command) (For example - `workflow.GetInfo` in the Go SDK or its equivalent in other SDKs)
 
 The following Workflow API calls all can produce Commands, and thus must not be reordered, added, or removed without proper [Versioning techniques](#workflow-versioning):
+
 - Starting or cancelling a Timer
 - Scheduling or cancelling Activity Executions (including local Activities)
 - Starting or cancelling Child Workflow executions
@@ -180,13 +182,13 @@ The following Workflow API calls all can produce Commands, and thus must not be 
 
 For a complete reference, see the [Command reference](/references/commands).
 
-More formally, the use of certain Workflow APIs in the function is what generates Commands. 
-Commands tell the Temporal Service which Events to create and add to the Workflow Execution's [Event History](/workflow-execution/event#event-history). 
-When the Workflow's code [replays](/workflow-execution#replay), the Commands that are emitted are compared with the existing Event History. 
-If a corresponding Event already exists within the Event History that matches that command, then the Execution progresses. 
+More formally, the use of certain Workflow APIs in the function is what generates Commands.
+Commands tell the Temporal Service which Events to create and add to the Workflow Execution's [Event History](/workflow-execution/event#event-history).
+When the Workflow's code [replays](/workflow-execution#replay), the Commands that are emitted are compared with the existing Event History.
+If a corresponding Event already exists within the Event History that matches that command, then the Execution progresses.
 See [Event History](/encyclopedia/event-history/) for a detailed walkthrough of the process.
 
-For example, using an SDK's "Execute Activity" API generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command. 
+For example, using an SDK's "Execute Activity" API generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
 When this API is called upon re-execution, that Command is compared with the Event that is in the same location within the sequence.
 The Event in the sequence must be an [ActivityTaskScheduled](/references/events#activitytaskscheduled) Event, where the Activity name is the same as what is in the Command.
 
