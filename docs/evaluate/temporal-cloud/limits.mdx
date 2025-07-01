@@ -126,7 +126,7 @@ Temporal Cloud limits each Namespace to a total of 32 KB or 16 certificates, whi
 
 **Is there a limit to concurrent Task pollers?**
 
-Temporal Cloud limits each Namespace to 5,000 concurrent Task pollers, regardless of whether they are Activity or Workflow Task pollers.
+Temporal Cloud limits each Namespace to 20,000 concurrent Task pollers, regardless of whether they are Activity or Workflow Task pollers.
 
 Each SDK offers a way to configure Workers for per-Worker maximum Activity and Workflow Task pollers.
 Those values do not affect the global Namespace limit.
@@ -185,7 +185,7 @@ There is a limit to the number of custom Search Attributes per attribute type pe
 When creating custom Search Attributes in Temporal Cloud, the attribute names must adhere to the following constraints:
 
 - Maximum characters: 64
-- Allowed characters: `[a-zA-Z0-9.,:-_\/ ]`.
+- Allowed characters: `[a-zA-Z0-9.,:-_\/@ ]`.
 
 For more information on custom Search Attributes see [Custom Search Attributes limits](/search-attribute#custom-search-attribute).
 
