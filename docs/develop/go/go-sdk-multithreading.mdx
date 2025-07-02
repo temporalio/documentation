@@ -45,3 +45,7 @@ This significantly minimizes the likelihood of race conditions, and eliminates t
 For a complex example, refer to the [Go Particle Swarm Operation Sample](https://github.com/temporalio/samples-go/tree/main/pso).
 
 For an example using Signals, refer to the [Go Await Signal Sample](https://github.com/temporalio/samples-go/tree/main/await-signals)
+
+## Static analysis with the workflowcheck tool
+
+The Temporal Go SDK also provides a command line tool called [`workflowcheck`](https://github.com/temporalio/sdk-go/blob/master/contrib/tools/workflowcheck/README.md) to statically analyze Workflow Definitions. This can help eliminate potential instances of non-determinism.
