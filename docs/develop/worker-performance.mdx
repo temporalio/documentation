@@ -105,11 +105,11 @@ The number of Task Pollers can be configured using `WorkerOptions` when creating
 
 Workers may eagerly execute Activity and Workflow Tasks under the right circumstances.
 
-Eager Activity Execution may happen automatically if the Worker processing a Workflow Task also has the Activity Definition being called registered. 
+Eager Activity Execution may happen automatically if the Worker processing a Workflow Task also has the Activity Definition being called registered.
 If it does, it may try to reserve an Activity Slot for the execution of the Activity, and the server may respond to the Workflow Task completion with the Activity Task for the worker to execute immediately.
 
-Eager Workflow execution is opt-in, and requires the Client which is starting the Workflow to be located in the same process as a Worker. When making the Start Workflow call, you can set the `request_eager_start` (or similar name) to true. 
-When set, and the Worker has a Workflow Task slot available and the Workflow Definition registered, the Worker can execute the first task of the Workflow locally without first making a round-trip to the Temporal Server. 
+Eager Workflow execution is opt-in, and requires the Client which is starting the Workflow to be located in the same process as a Worker. When making the Start Workflow call, you can set the `request_eager_start` (or similar name) to true.
+When set, and the Worker has a Workflow Task slot available and the Workflow Definition registered, the Worker can execute the first task of the Workflow locally without first making a round-trip to the Temporal Server.
 This is typically most useful in combination with a Local Activity executing in the first Workflow Task, since other Workflow API calls that require waiting on something will force a round-trip.
 
 ## Performance metrics for tuning {#metrics}
