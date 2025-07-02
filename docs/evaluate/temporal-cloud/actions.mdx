@@ -30,7 +30,7 @@ The following result in an action on Temporal Cloud:
 ## Workflows
 
 - **Workflow started**.
-  Occurs via client start, [Continue-As-New](/workflow-execution/continue-as-new), [Child Workflow](/child-workflows) start, or for any [Signal-With-Start](/sending-messages#signal-with-start). Also occurs with [Update-With-Start](/sending-messages#update-with-start) if the Workflow was not already started.
+  Occurs via client start, [Continue-As-New](/workflow-execution/continue-as-new), [Child Workflow](/child-workflows) start. Also occurs with [Update-With-Start](/sending-messages#update-with-start) if the Workflow was not already started.
   If a Workflow start fails, an Action is not recorded.
 - **Workflow reset**.
   Occurs when a [Workflow](/workflows) is reset.
@@ -43,7 +43,7 @@ The following result in an action on Temporal Cloud:
   Search Attributes specified during Workflow start are _excluded_ from Action counts.
   The `TemporalChangeVersion` Search Attribute, used for Workflow versioning, is also exempt from Action counting.
 - **Signal sent**.
-  An Action occurs for every [Signal](/sending-messages#sending-signals), whether sent from a Client or from a Workflow. Note that one total Action is created for [Signal-With-Start](/sending-messages#signal-with-start) regardless of whether the Workflow starts.
+  An Action occurs for every [Signal](/sending-messages#sending-signals), whether sent from a Client or from a Workflow. Also, one total action occurs for any [Signal-With-Start](/sending-messages#signal-with-start), regardless of whether the Workflow starts.
 - **Query received by Worker**.
   An Action occurs for every [Query](/sending-messages#sending-queries), including viewing the call stack in the Temporal Cloud UI, which results in a Query behind the scenes.
 - **Update received by Worker**.
