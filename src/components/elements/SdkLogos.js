@@ -1,4 +1,5 @@
 import React from "react";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 
 const supportedTech = [
   {
@@ -45,12 +46,12 @@ const supportedTech = [
   },
 ];
 
-const displayTechListItems = () => {
+const displayTechListItems = (useBaseUrl) => {
   return supportedTech.map((tech) => {
     return (
       <li className="list-logo" key={tech.alt}>
         <a href={tech.link}>
-          <img className={`${tech.class} pr-1 transition hover:scale-110 code-logo`} src={tech.image} alt={tech.alt} />
+          <img className={`${tech.class} pr-1 transition hover:scale-110 code-logo`} src={useBaseUrl(tech.image)} alt={tech.alt} />
         </a>
       </li>
     );
@@ -60,7 +61,7 @@ const displayTechListItems = () => {
 export const SdkLogos = () => {
   return (
     <div className="supported-tech tailwindcss">
-      <ul className="landing-card-list-b logos mb-4">{displayTechListItems()}</ul>
+      <ul className="landing-card-list-b logos mb-4">{displayTechListItems(useBaseUrl)}</ul>
     </div>
   );
 };
