@@ -1,0 +1,26 @@
+{
+  "logo.alt": {
+    "message": "Temporal 로고",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.Home": {
+    "message": "홈",
+    "description": "Navbar item with label Home"
+  },
+  "item.label.Start learning": {
+    "message": "학습 시작하기",
+    "description": "Navbar item with label Start learning"
+  },
+  "item.label.Start building": {
+    "message": "구축 시작하기",
+    "description": "Navbar item with label Start building"
+  },
+  "item.label.Code Exchange": {
+    "message": "코드 익스체인지",
+    "description": "Navbar item with label Code Exchange"
+  },
+  "item.label.Temporal Cloud": {
+    "message": "Temporal 클라우드",
+    "description": "Navbar item with label Temporal Cloud"
+  }
+}
