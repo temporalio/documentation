@@ -156,8 +156,9 @@ We strongly recommend that you write a Workflow Definition in a language that ha
 
 ### Deterministic constraints {#deterministic-constraints}
 
-A critical aspect of developing Workflow Definitions is ensuring they are deterministic.
-Generally speaking, this means you must take care to ensure that any time your Workflow code is executed it makes the same Workflow API calls in the same sequence, given the same input. Some changes to those API calls are safe to make.
+A critical aspect of developing Workflow Definitions is ensuring that they are deterministic.
+Generally speaking, this means you must take care to ensure that any time your Workflow code is executed it makes the same Workflow API calls in the same sequence, given the same input. 
+Some changes to those API calls are safe to make.
 
 For example, you can change:
 
@@ -178,7 +179,7 @@ The following Workflow API calls all can produce Commands, and thus must not be 
 - `Patched` or `GetVersion` calls for Versioning (although they may be added or removed according to the [patching](#patching) rules)
 - Upserting Workflow Search Attributes
 - Upserting Workflow Memos
-- Running a SideEffect or MutableSideEffect
+- Running a `SideEffect` or `MutableSideEffect`
 
 For a complete reference, see the [Command reference](/references/commands).
 
