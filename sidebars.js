@@ -81,6 +81,7 @@ module.exports = {
             "evaluate/temporal-cloud/limits",
             "evaluate/temporal-cloud/sla",
             "evaluate/temporal-cloud/pricing",
+            "evaluate/temporal-cloud/actions",
             "evaluate/temporal-cloud/support",
           ],
         },
@@ -636,6 +637,7 @@ module.exports = {
             "encyclopedia/workers/task-queue-naming",
             "encyclopedia/workers/task-routing-worker-sessions",
             "encyclopedia/workers/sticky-execution",
+            "encyclopedia/workers/worker-shutdown",
           ],
         },
         {
