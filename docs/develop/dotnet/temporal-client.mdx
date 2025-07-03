@@ -157,6 +157,6 @@ If the Workflow does not exist, this call fails.
 
 ```csharp
 var handle = client.GetWorkflowHandle("my-workflow-id");
-var result = await client.GetResultAsync<string>();
+var result = await handle.GetResultAsync<string>();
 Console.WriteLine("Result: {0}", result);
 ```
