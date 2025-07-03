@@ -1,0 +1,124 @@
+---
+id: set-up-your-local-java
+title: Set up your local with the Java SDK 
+sidebar_label: Quickstart - Setup 
+description: Configure your local development environment to get started developing with Temporal
+keywords:
+  - set up 
+  - getting started
+  - java sdk 
+tags:
+  - java guide
+  - java 
+  - setup
+  - getting started
+---
+
+import { SetupSteps, SetupStep, CodeSnippet } from '@site/src/components/elements/SetupSteps';
+import { CallToAction } from '@site/src/components/elements/CallToAction';
+
+# Setup
+
+Configure your local development environment to get started developing with Temporal.
+
+<SetupSteps>
+<SetupStep code={
+  <>
+    <CodeSnippet language="bash">
+    java -version
+    </CodeSnippet>
+  </>
+}>
+## Install the Java JDK
+
+Make sure you have the Java JDK installed. You can either download a copy directly from Oracle or select an OpenJDK distribution from your preferred vendor.
+
+Check the version of your current JDK installation by executing <code>java -version</code> at a command prompt. We developed and tested these Java tutorials with Java 21, but they should work with version 8 or higher.
+</SetupStep>
+
+<SetupStep code={
+<>
+<CodeSnippet language="xml">
+{`<dependencies>
+
+<!-- Temporal dependencies needed to compile, build, test, and run Temporal's Java SDK -->
+<dependency>
+    <groupId>io.temporal</groupId>
+    <artifactId>temporal-sdk</artifactId>
+    <version>1.23.1</version>
+  </dependency>
+  <dependency>
+    <groupId>io.temporal</groupId>
+    <artifactId>temporal-testing</artifactId>
+    <version>1.23.1</version>
+  </dependency>
+</dependencies>`}
+    </CodeSnippet>
+  </>
+}>
+## Add Temporal Java SDK Dependencies
+
+Our Java tutorials use Apache Maven to manage dependencies and build applications. You can also use Gradle or other build automation tools.
+
+Follow these steps to configure Maven or Gradle for Temporal. To install Apache Maven, download a copy and follow the instructions at <a href="https://maven.apache.org/install.html">Apache.org</a>.
+
+Add the following dependencies to your Maven POM file to compile, build, test, and run a Temporal Application in Java.
+</SetupStep>
+
+<SetupStep code={
+<>
+<CodeSnippet language="bash">
+brew install temporal
+</CodeSnippet>
+</>
+}>
+
+## Install Temporal CLI
+
+The fastest way to get a development version of the Temporal Service running on your local machine is to use [Temporal CLI](https://docs.temporal.io/cli).
+
+Install Temporal CLI on your local machine using the following instructions for your platform.
+</SetupStep>
+
+<SetupStep code={
+<>
+<CodeSnippet language="bash">
+temporal server start-dev
+</CodeSnippet>
+
+<div className="port-info">
+<h4>Change the Web UI port</h4>
+<p>The Temporal Web UI may be on a different port in some examples or tutorials. To change the port for the Web UI, use the <code>--ui-port</code> option when starting the server:</p>
+<CodeSnippet language="bash">
+temporal server start-dev --ui-port 8080
+</CodeSnippet>
+<p>The Temporal Web UI will now be available at http://localhost:8080.</p>
+</div>
+<style>
+{`.port-info { background: rgba(68, 76, 231, 0.1); border: 1px solid rgba(68, 76, 231, 0.2); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; transition: all 0.3s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); } [data-theme='dark'] .port-info { background: rgba(68, 76, 231, 0.15); border-color: rgba(68, 76, 231, 0.3); } .port-info h4 { margin-top: 0; margin-bottom: 1rem; color: var(--ifm-color-emphasis-900); font-weight: 600; } .port-info p { margin-bottom: 1rem; font-size: 0.95rem; line-height: 1.5; color: var(--ifm-color-emphasis-800); } .port-info p:last-child { margin-bottom: 0; } .port-info code { background: rgba(255, 255, 255, 0.5); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; } [data-theme='dark'] .port-info code { background: rgba(0, 0, 0, 0.2); } @media (max-width: 768px) { .port-info { padding: 1.25rem; } }`}
+</style>
+<CodeSnippet language="bash">
+temporal server start-dev --db-filename your_temporal.db
+</CodeSnippet>
+</>
+}>
+
+## Start the development server
+
+Once you've installed Temporal CLI and added it to your PATH, open a new Terminal window and run the following command.
+
+This command starts a local Temporal Service. It starts the Web UI, creates the default Namespaces, and uses an in-memory database.
+
+The Temporal Service will be available on <b>localhost:7233</b>.
+The Temporal Web UI will be available at <b>http://localhost:8233</b>.
+
+Leave the local Temporal Service running as you work through tutorials and other projects. You can stop the Temporal Service at any time by pressing CTRL+C.
+
+The <code>temporal server start-dev</code> command uses an in-memory database, so stopping the server will erase all your Workflows and all your Task Queues. If you want to retain those between runs, start the server and specify a database filename using the <code>--db-filename</code> option, like this:
+</SetupStep>
+</SetupSteps>
+
+<CallToAction href="/develop/java/core-application">
+  <h3>Next: Run your first Temporal Application</h3>
+  <p>Learn how to create a basic Workflow and run it with the Temporal Java SDK</p>
+</CallToAction>
