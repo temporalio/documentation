@@ -1,0 +1,30 @@
+---
+id: index
+title: Temporal Worker Deployments
+sidebar_label: Worker Deployments
+description: Learn how to programmatically scale and deploy your Temporal Workers into common production environments using our provided tooling and best practices.
+slug: /production-deployment/worker-deployments
+toc_max_heading_level: 4
+keywords:
+  - kubernetes
+  - scaling
+  - workers
+  - deploys
+  - versioning
+tags:
+  - Temporal Service
+  - Durable Execution
+---
+
+A core feature of Temporal is that you are able to deploy your Workers to any infrastructure where your Workflow and Activity code will actually run.
+This way, you have total control over your runtime environment, and can be responsive to any security or scaling needs that may arise over time, whether you are using Temporal Cloud or self-hosting a Temporal Service.
+
+However, if you do not already have some expertise in site reliability engineering, or do not know how to migrate from a Docker deployment to (for example) a Kubernetes pod of Temporal Workers, you may want more direct guidance here.
+For example, most of our [Tutorials and Courses](https://learn.temporal.io/) use only one or two Temporal Workers to demonstrate core functionality.
+The content in this section will provide clarity on real-world deployments that grow far beyond those examples.
+
+Our Worker Deployments guide provides documentation of Temporal product features that make it easier to scale and revise your Workflows.
+
+[Worker Versioning](/production-deployment/worker-deployments/worker-versioning) allows you to pin Workflows to individual versions of your workers, which are called Worker Deployment Versions.
+
+You can also refer to our [Code Exchange](https://temporal.io/code-exchange) for community-contributed strategies for deploying versioned workers.
