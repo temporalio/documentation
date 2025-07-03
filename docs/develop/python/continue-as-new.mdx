@@ -65,12 +65,12 @@ This stops the Workflow right away and starts a new one.
   in the context of the rest of the application code.
 </div>
 ```python
-  workflow.continue_as_new(
-      ClusterManagerInput(
-          state=self.state,
-          test_continue_as_new=input.test_continue_as_new,
-      )
+workflow.continue_as_new(
+  ClusterManagerInput(
+      state=self.state,
+      test_continue_as_new=input.test_continue_as_new,
   )
+)
 ````
 
 ### Considerations for Workflows with Message Handlers {#with-message-handlers}
@@ -81,7 +81,7 @@ See the [`all_handlers_finished`](message-passing#wait-for-message-handlers) exa
 
 ## When is it right to Continue-as-New using the Python SDK? {#when}
 
-Use Continue-as-New when your Workflow might hit [Event History Limits](/workflow-execution/event#event-history).
+Use Continue-as-New when your Workflow might encounter degraded performance or [Event History Limits](/workflow-execution/event#event-history).
 
 Temporal tracks your Workflow's progress against these limits to let you know when you should Continue-as-New.
 Call `workflow.info().is_continue_as_new_suggested()` to check if it's time.
