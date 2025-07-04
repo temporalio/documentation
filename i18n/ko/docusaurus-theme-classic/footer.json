@@ -1,0 +1,78 @@
+{
+  "link.item.label.Github": {
+    "message": "Github",
+    "description": "The label of footer link with label=Github linking to https://github.com/temporalio"
+  },
+  "link.item.label.Twitter": {
+    "message": "Twitter",
+    "description": "The label of footer link with label=Twitter linking to https://twitter.com/temporalio"
+  },
+  "link.item.label.YouTube": {
+    "message": "YouTube",
+    "description": "The label of footer link with label=YouTube linking to https://www.youtube.com/c/Temporalio"
+  },
+  "link.item.label.About the docs": {
+    "message": "About the docs",
+    "description": "The label of footer link with label=About the docs linking to https://github.com/temporalio/documentation/blob/master/README.md"
+  },
+  "link.item.label.Temporal Cloud": {
+    "message": "Temporal Cloud",
+    "description": "The label of footer link with label=Temporal Cloud linking to https://temporal.io/cloud"
+  },
+  "link.item.label.Meetups": {
+    "message": "Meetups",
+    "description": "The label of footer link with label=Meetups linking to https://temporal.io/community#events"
+  },
+  "link.item.label.Workshops": {
+    "message": "Workshops",
+    "description": "The label of footer link with label=Workshops linking to https://temporal.io/community#workshops"
+  },
+  "link.item.label.Support forum": {
+    "message": "Support forum",
+    "description": "The label of footer link with label=Support forum linking to https://community.temporal.io/"
+  },
+  "link.item.label.Ask an expert": {
+    "message": "Ask an expert",
+    "description": "The label of footer link with label=Ask an expert linking to https://pages.temporal.io/ask-an-expert"
+  },
+  "link.item.label.Learn Temporal": {
+    "message": "Learn Temporal",
+    "description": "The label of footer link with label=Learn Temporal linking to https://learn.temporal.io"
+  },
+  "link.item.label.Blog": {
+    "message": "Blog",
+    "description": "The label of footer link with label=Blog linking to https://temporal.io/blog"
+  },
+  "link.item.label.Use cases": {
+    "message": "Use cases",
+    "description": "The label of footer link with label=Use cases linking to https://temporal.io/use-cases"
+  },
+  "link.item.label.Newsletter signup": {
+    "message": "Newsletter signup",
+    "description": "The label of footer link with label=Newsletter signup linking to https://pages.temporal.io/newsletter-subscribe"
+  },
+  "link.item.label.Security": {
+    "message": "Security",
+    "description": "The label of footer link with label=Security linking to /security"
+  },
+  "link.item.label.Privacy policy": {
+    "message": "Privacy policy",
+    "description": "The label of footer link with label=Privacy policy linking to https://temporal.io/global-privacy-policy"
+  },
+  "link.item.label.Terms of service": {
+    "message": "Terms of service",
+    "description": "The label of footer link with label=Terms of service linking to https://docs.temporal.io/pdf/temporal-tos-2021-07-24.pdf"
+  },
+  "link.item.label.We're hiring": {
+    "message": "We're hiring",
+    "description": "The label of footer link with label=We're hiring linking to https://temporal.io/careers"
+  },
+  "copyright": {
+    "message": "Copyright © 2025</span> Temporal Technologies Inc.</div><noscript><iframe src=\"https://www.googletagmanager.com/ns.html?id=GTM-TSXFPF2\"\n        height=\"0\" width=\"0\" style=\"display:none;visibility:hidden\"></iframe></noscript>",
+    "description": "The footer copyright"
+  },
+  "logo.alt": {
+    "message": "Temporal logo",
+    "description": "The alt text of footer logo"
+  }
+}

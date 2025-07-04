@@ -106,6 +106,10 @@ module.exports = async function createConfigAsync() {
             activeBasePath: "cloud",
             position: "left",
           },
+          {
+            type: 'localeDropdown',
+            position: 'left',
+          },
         ],
       },
       footer: {
@@ -331,6 +335,14 @@ module.exports = async function createConfigAsync() {
         },
       ],
     ],
+    i18n: {
+      defaultLocale: 'en',
+      locales: ['en', 'ko'],
+      localeConfigs: {
+        ko: { label: '한국어' }
+      },
+      path: 'i18n'
+    },    
   };
 
   function convertIndent4ToIndent2(code) {
