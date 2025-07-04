@@ -1,0 +1,264 @@
+---
+id: testing-suite
+title: Testing - Ruby SDK
+sidebar_label: Testing
+description: The Ruby test-suite guide covers Workflow and integration testing for Temporal. It includes end-to-end, integration, and unit testing, emphasizing the use of the test server to optimize test execution.
+toc_max_heading_level: 4
+keywords:
+  - guide context
+  - ruby
+  - sdk
+  - testing
+  - time-skipping
+tags:
+  - Ruby SDK
+  - Temporal SDKs
+  - Testing
+---
+
+This page shows how to do the following:
+
+- [Understand types of tests](#types-of-tests)
+- [Use compatible test frameworks](#test-frameworks)
+- [Test Workflows](#testing-workflows)
+- [Test Activities](#test-activities)
+- [Replay tests](#replay-test)
+
+The Ruby test-suite feature guide describes the frameworks that facilitate Workflow and integration testing.
+
+## Types of Tests {#types-of-tests}
+
+In the context of Temporal, you can create these types of automated tests:
+
+- **End-to-end:** Running a Temporal Server and Worker with all its Workflows and Activities; starting and interacting with Workflows from a Client.
+- **Integration:** Anything between end-to-end and unit testing.
+  - Running Activities with mocked Context and other SDK imports (and usually network requests).
+  - Running Workers with mock Activities, and using a Client to start Workflows.
+  - Running Workflows with mocked SDK imports.
+- **Unit:** Running a piece of Workflow or Activity code and mocking any code it calls.
+
+We generally recommend writing the majority of your tests as integration tests.
+
+Because the test server supports skipping time, use the test server for both end-to-end and integration tests with Workers.
+
+## Test frameworks {#test-frameworks}
+
+**Compatible testing frameworks**
+
+The Ruby SDK is compatible with any testing framework and does not have a specific recommendation.
+Most Ruby SDK samples use [minitest](https://github.com/minitest/minitest).
+
+## Testing Workflows {#testing-workflows}
+
+Workflow testing can be done in an integration-test fashion against a real server, however it is hard to simulate timeouts and other long time-based code.
+Using the time-skipping Workflow test environment can help there.
+
+### Testing Workflows with standard server
+
+A non-time-skipping `Temporalio::Testing::WorkflowEnvironment` can be started via `start_local` which supports all standard Temporal features.
+It is actually the real Temporal dev server packaged in the Temporal CLI, lazily downloaded on first use, and run as a sub-process in the background.
+Assuming tests properly use separate Task Queues, the same server can and should be reused across tests.
+
+Here's a simple example of a Workflow:
+
+```ruby
+class SimpleWorkflow < Temporalio::Workflow::Definition
+  def execute(name)
+    "Hello, #{name}!"
+  end
+end
+```
+
+Here's how a test of that Workflow may appear in minitest:
+
+```ruby
+def test_simple_workflow
+  # Start local server that is stopped when block is done
+  Temporalio::Testing::WorkflowEnvironment.start_local do |env|
+    # Start worker that is stopped when block is done
+    worker = Temporalio::Worker.new(
+      env.client,
+      task_queue: "tq-#{SecureRandom.uuid}",
+      workflows: [SimpleWorkflow]
+    )
+    worker.run do
+      # Execute workflow and check result
+      result = env.client.execute_workflow(
+        SimpleWorkflow, 'some-name',
+        id: "wf-#{SecureRandom.uuid}", task_queue: worker.task_queue
+      )
+      assert_equal 'Hello, some-name!', result
+    end
+  end
+end
+```
+
+While this is just a demonstration, a local server is often used as a fixture across many tests.
+In minitest for instance, users often start the environment lazily (with no block), and shut it down inside a block passed to `Minitest.after_run`.
+
+### Testing Workflows with time skipping
+
+Sometimes there is a need to test Workflows that run a long time or to test that timeouts occur.
+A time-skipping `Temporalio::Testing::WorkflowEnvironment` can be started via `start_time_skipping` which is a reimplementation of the Temporal server with special time skipping capabilities.
+Like `start_local`, this also lazily downloads the process to run when first called.
+Note, unlike `start_local`, this class is not thread safe nor safe for use with independent tests.
+It can be technically be reused, but only for one test at a time because time skipping is locked/unlocked at the environment level.
+Developers are encouraged to run it per test needed.
+
+#### Automatic time skipping
+
+Here's a simple example of a Workflow that waits a day:
+
+```ruby
+class WaitADayWorkflow < Temporalio::Workflow::Definition
+  def execute
+    Temporalio::Workflow.sleep(1 * 24 * 60 * 60)
+    'all done'
+  end
+end
+```
+
+A regular integration test of this Workflow on a normal server would be way too slow.
+However, the time-skipping server automatically skips to the next event when we wait on the result.
+Here's a test for that Workflow in minitest:
+
+```ruby
+def test_wait_a_day_workflow
+  # Start time-skipping test server that is stopped when block is done
+  Temporalio::Testing::WorkflowEnvironment.start_time_skipping do |env|
+    # Start worker that is stopped when block is done
+    worker = Temporalio::Worker.new(
+      env.client,
+      task_queue: "tq-#{SecureRandom.uuid}",
+      workflows: [WaitADayWorkflow]
+    )
+    worker.run do
+      # Execute workflow and check result
+      result = env.client.execute_workflow(
+        WaitADayWorkflow,
+        id: "wf-#{SecureRandom.uuid}", task_queue: worker.task_queue
+      )
+      assert_equal 'all done', result
+    end
+  end
+end
+```
+
+This test will run almost instantly.
+This is because by calling `execute_workflow` on our client, we are actually calling `start_workflow` + `result`, and `result` automatically skips time as much as it can (basically until the end of the workflow or until an activity is run).
+
+To disable automatic time-skipping while waiting for a workflow result, run code in a block passed to `env.auto_time_skipping_disabled`.
+
+#### Manual time skipping
+
+Until a Workflow is waited on, all time skipping in the time-skipping environment is done manually via `WorkflowEnvironment#sleep`.
+
+Here's a Workflow that waits for a Signal or times out:
+
+```ruby
+class SignalWorkflow < Temporalio::Workflow::Definition
+  def execute
+    # Wait for signal or timeout in 45 seconds
+    Temporalio::Workflow.timeout(45 * 60) do
+      Temporalio::Workflow.wait_condition { @signal_received }
+    end
+    'got signal'
+  rescue Timeout::Error
+    'got timeout'
+  end
+
+  workflow_signal
+  def some_signal
+    @signal_received = true
+  end
+end
+```
+
+To test a normal Signal in minitest, you might:
+
+```ruby
+def test_signal_workflow
+  Temporalio::Testing::WorkflowEnvironment.start_time_skipping do |env|
+    worker = Temporalio::Worker.new(
+      env.client,
+      task_queue: "tq-#{SecureRandom.uuid}",
+      workflows: [SignalWorkflow]
+    )
+    worker.run do
+      handle = env.client.start_workflow(
+        SignalWorkflow,
+        id: "wf-#{SecureRandom.uuid}", task_queue: worker.task_queue
+      )
+      handle.signal(SignalWorkflow.some_signal)
+      assert_equal 'got signal', handle.result
+    end
+  end
+end
+```
+
+But how would you test the timeout part? Like so:
+
+```ruby
+def test_signal_workflow_timeout
+  Temporalio::Testing::WorkflowEnvironment.start_time_skipping do |env|
+    worker = Temporalio::Worker.new(
+      env.client,
+      task_queue: "tq-#{SecureRandom.uuid}",
+      workflows: [SignalWorkflow]
+    )
+    worker.run do
+      handle = env.client.start_workflow(
+        SignalWorkflow,
+        id: "wf-#{SecureRandom.uuid}", task_queue: worker.task_queue
+      )
+      # Advance 50 seconds
+      env.sleep(50)
+      assert_equal 'got timeout', handle.result
+    end
+  end
+end
+```
+
+### Mocking Activities
+
+When testing Workflows, often you don't want to actually run the Activities.
+Activities are just classes that extend `Temporalio::Activity::Definition`.
+Simply write different/empty/fake/asserting ones and pass those to the Worker to have different activities called during the test.
+
+## Testing Activities {#test-activities}
+
+Unit testing an Activity or any code that could run in an Activity is done via the `Temporalio::Testing::ActivityEnvironment` class.
+Simply instantiate the class, and any code inside the block to `run` will be invoked inside the activity context.
+Several things about the activity environment can be customized via parameters when constructing the environment including setting the info, providing a proc to call back on each heartbeat, setting the cancellation to be used, etc.
+
+## Replay test {#replay-test}
+
+Given a Workflow's history, it can be replayed locally to check for things like non-determinism errors.
+For example, assuming the `history_json` parameter below is given a JSON string of history exported from the CLI or web UI for workflow `MyWorkflow`, the following method will replay it:
+
+```ruby
+def replay_from_json(history_json)
+  # Create a replayer
+  replayer = Temporalio::Worker::WorkflowReplayer.new(workflows: [MyWorkflow])
+  # Replay the history
+  history = Temporalio::WorkflowHistory.from_history_json(history_json)
+  replayer.replay_workflow(history)
+end
+```
+
+If there is a non-determinism, this will raise an exception.
+
+Workflow history can be loaded from more than just JSON.
+It can be fetched individually from a Workflow handle, or even in a list.
+For example, the following code will check that all Workflow histories for a certain Workflow type (i.e. workflow class) are safe with the current Workflow code.
+
+```ruby
+# Create a replayer
+replayer = Temporalio::Worker::WorkflowReplayer.new(workflows: [MyWorkflow])
+# Replay all workflows from a list
+replayer.replay_workflows(client.list_workflows("WorkflowType = 'MyWorkflow'")).each do |result|
+  # Raise if any failed (could have just set raise_on_replay_failure: true, but this
+  # demonstrates iterating over the results)
+  raise result.replay_failure if result.replay_failure
+end
+```
