@@ -113,6 +113,8 @@ class MyActivity < Temporalio::Activity::Definition
 end
 ```
 
+Activity implementation code should be _idempotent_. Learn more about [idempotency](/activity-definition#idempotency).
+
 There is no explicit limit to the total number of parameters that an [Activity Definition](/activity-definition) may support.
 However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
 
@@ -123,11 +125,16 @@ Some SDKs require that you pass context objects, others do not.
 When it comes to your application data—that is, data that is serialized and encoded into a Payload—we recommend that you use a single hash or object as an argument that wraps the application data passed to Activities.
 This is so that you can change what data is passed to the Activity without breaking a method signature.
 
-Activity parameters are the method parameters of the `execute` method.
-These can be any data type Temporal can convert.
-Technically this can be multiple parameters, but Temporal strongly encourages a single parameter containing all input fields.
+The `execute` method in your Activity can technically accept multiple parameters of any data type that Temporal can convert. 
+However, Temporal strongly encourages using a single parameter object to simplify versioning and maintainability.
 
 ### Activity Concurrency and Executors {#activity-concurrency-and-executors}
+
+:::note
+
+This section covers advanced concurrency and execution options that most users will not need when getting started. 
+
+:::
 
 By default, activities run in the "thread pool executor" (i.e. `Temporalio::Worker::ActivityExecutor::ThreadPool`).
 This default is shared across all workers and is a naive thread pool that continually makes threads as needed when none are
@@ -147,9 +154,7 @@ Currently due to [an issue](https://github.com/temporalio/sdk-ruby/issues/162), 
 
 Calls to spawn [Activity Executions](/activity-execution) are written within a [Workflow Definition](/workflow-definition).
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
-This results in the set of three [Activity Task](/tasks#activity-task) related Events ([ActivityTaskScheduled](/references/events#activitytaskscheduled), [ActivityTaskStarted](/references/events#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
-
-Activity implementation code should be _idempotent_.
+This results in the set of three [Activity Task](/tasks#activity-task) related Events ([ActivityTaskScheduled](/references/events#activitytaskscheduled), [ActivityTaskStarted](/references/events#activitytaskstarted), and `ActivityTask[Closed]`)in your Workflow Execution Event History.
 
 The values passed to Activities through invocation parameters or returned through a result value are recorded in the Execution history.
 The entire Execution history is transferred from the Temporal service to Workflow Workers when a Workflow state needs to recover.
@@ -248,7 +253,9 @@ For more information, see the [Worker tuning guide](/develop/worker-performance)
 
 A Worker Entity contains a Workflow Worker and/or an Activity Worker, which makes progress on Workflow Executions and Activity Executions, respectively.
 
-To develop a Worker, create a new `Temporalio::Worker` providing the Client and worker options which include Task Queue, Workflows, and Activities and more.
+Workers are implemented in each Temporal SDK, and can be deployed with just a bit of boilerplate.
+To create a Worker, use `Temporalio::Worker.new()`, providing the Worker options which include Task Queue, Workflows, and Activities and more.
+
 The following code example creates a Worker that polls for tasks from the Task Queue and executes the Workflow.
 When a Worker is created, it accepts a list of Workflows, a list of Activities, or both.
 
