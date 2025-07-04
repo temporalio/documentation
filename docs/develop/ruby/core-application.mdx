@@ -125,14 +125,14 @@ Some SDKs require that you pass context objects, others do not.
 When it comes to your application data—that is, data that is serialized and encoded into a Payload—we recommend that you use a single hash or object as an argument that wraps the application data passed to Activities.
 This is so that you can change what data is passed to the Activity without breaking a method signature.
 
-The `execute` method in your Activity can technically accept multiple parameters of any data type that Temporal can convert. 
+The `execute` method in your Activity can technically accept multiple parameters of any data type that Temporal can convert.
 However, Temporal strongly encourages using a single parameter object to simplify versioning and maintainability.
 
 ### Activity Concurrency and Executors {#activity-concurrency-and-executors}
 
 :::note
 
-This section covers advanced concurrency and execution options that most users will not need when getting started. 
+This section covers advanced concurrency and execution options that most users will not need when getting started.
 
 :::
 
