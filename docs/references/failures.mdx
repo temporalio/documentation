@@ -185,7 +185,7 @@ PHP: [NextRetryDelay](/develop/php/failure-detection#activity-next-retry-delay)
 
 By default, Application Failures thrown from a Nexus Operation handler will be mapped to the following underlying Nexus Failures, based on what `non_retryable` is set to:
 
-| `non_retryable`   | Nexus error                | HTTP status code          |
+| `non_retryable` | Nexus error                | HTTP status code          |
 | :-------------- | :------------------------- | :------------------------ |
 | false (default) | HandlerErrorTypeInternal   | 500 Internal Server Error |
 | true            | UnsuccessfulOperationError | 424 Failed Dependency     |
@@ -202,7 +202,7 @@ For example the Nexus Go SDK provides
 #### Retryable Nexus errors
 
 | Nexus error type                  | `non_retryable` |
-| :-------------------------------- | :------------   |
+| :-------------------------------- | :-------------- |
 | HandlerErrorTypeResourceExhausted | false           |
 | HandlerErrorTypeInternal          | false           |
 | HandlerErrorTypeNotImplemented    | false           |
