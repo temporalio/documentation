@@ -15,6 +15,10 @@
     "message": "About the docs",
     "description": "The label of footer link with label=About the docs linking to https://github.com/temporalio/documentation/blob/master/README.md"
   },
+  "link.item.label.Translation Github": {
+    "message": "한국어 문서 Github",
+    "description": "The label of footer link with label=Translation Github linking to https://github.com/timothy-jeong/temporal-ko-docs"
+  },
   "link.item.label.Temporal Cloud": {
     "message": "Temporal Cloud",
     "description": "The label of footer link with label=Temporal Cloud linking to https://temporal.io/cloud"

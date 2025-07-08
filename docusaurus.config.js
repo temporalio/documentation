@@ -109,6 +109,11 @@ module.exports = async function createConfigAsync() {
           {
             type: 'localeDropdown',
             position: 'left',
+          },
+          {
+            label: "Translation Github",
+            href: "https://github.com/timothy-jeong/temporal-ko-docs",
+            position: 'left',
           },          
         ],
       },
@@ -139,6 +144,10 @@ module.exports = async function createConfigAsync() {
               {
                 label: "About the docs",
                 href: "https://github.com/temporalio/documentation/blob/master/README.md",
+              },
+              {
+                label: "Translation Github",
+                href: "https://github.com/timothy-jeong/temporal-ko-docs",
               },
             ],
           },

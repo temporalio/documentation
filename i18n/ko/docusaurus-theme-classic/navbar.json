@@ -22,5 +22,10 @@
   "item.label.Temporal Cloud": {
     "message": "Temporal Cloud",
     "description": "Navbar item with label Temporal Cloud"
+  },
+
+  "item.label.Translation Github": {
+    "message": "한국어 번역 기여하기",
+    "description": "Navbar item with label Korean Docs Github"
   }
 }
