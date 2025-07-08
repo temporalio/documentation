@@ -33,15 +33,13 @@ temporal worker deployment list
 Lists the Deployments in the client's namespace.
 
 Arguments can be Worker Deployment Versions associated with
-a Deployment, using a fully qualified Version identifier that
-concatenates the Deployment Name and the Build ID with the
-reserved separator ".".
+a Deployment, specified using the Deployment name and Build ID.
 
 For example:
 
 ```
 temporal worker deployment set-current-version \
-         --version YourDeploymentName.YourBuildID
+         --deployment-name YourDeploymentName --build-id YourBuildID
 ```
 
 Sets the current Deployment Version for a given Deployment.
@@ -110,6 +108,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -120,7 +148,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -142,13 +170,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -209,13 +247,21 @@ For example, skipping the drainage restriction:
 
 ```
 temporal worker deployment delete-version \
-    --version YourDeploymentName.YourBuildID \
+    --deployment-name YourDeploymentName --build-id YourBuildID \
     --skip-drainage
 ```
 
 Use the following options to change the behavior of this command.
 
 **Flags:**
+
+**--build-id** _string_
+
+Build ID of the Worker Deployment Version. Required.
+
+**--deployment-name** _string_
+
+Name of the Worker Deployment. Required.
 
 **--identity** _string_
 
@@ -224,10 +270,6 @@ Identity of the user submitting this request.
 **--skip-drainage** _bool_
 
 Ignore the deletion requirement of not draining.
-
-**--version**, **-v** _string_
-
-Fully-qualified name for a Worker Deployment Version. Use the format `YourDeploymentName.YourBuildID`. Required.
 
 **Global Flags:**
 
@@ -259,6 +301,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -269,7 +341,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -291,13 +363,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -392,6 +474,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -402,7 +514,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -424,13 +536,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -486,16 +608,20 @@ namespace:
 
 ```
 temporal worker deployment describe-version \
-    --version YourDeploymentName.YourBuildID
+    --deployment-name YourDeploymentName --build-id YourBuildID
 ```
 
 Use the following options to change the behavior of this command.
 
 **Flags:**
 
-**--version**, **-v** _string_
+**--build-id** _string_
 
-Fully-qualified name for a Worker Deployment Version. Use the format `YourDeploymentName.YourBuildID`. Required.
+Build ID of the Worker Deployment Version. Required.
+
+**--deployment-name** _string_
+
+Name of the Worker Deployment. Required.
 
 **Global Flags:**
 
@@ -527,6 +653,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -537,7 +693,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -559,13 +715,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -651,6 +817,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -661,7 +857,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -683,13 +879,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -751,26 +957,27 @@ in the default namespace:
 
 ```
 temporal worker deployment set-current-version \
-    --version YourDeploymentName.YourBuildID
+    --deployment-name YourDeploymentName --build-id YourBuildID
 ```
 
-The target of set-current-version can also be `__unversioned__`, which
-moves tasks to unversioned workers, but in this case we also need to
-specify the Deployment Name.
+The target of set-current-version can also be unversioned workers:
 
 ```
 temporal worker deployment set-current-version \
-    --version __unversioned__ \
-    --deployment-name YourDeploymentName
+    --deployment-name YourDeploymentName --unversioned
 ```
 
 Use the following options to change the behavior of this command.
 
 **Flags:**
 
+**--build-id** _string_
+
+Build ID of the Worker Deployment Version. Required unless --unversioned is specified.
+
 **--deployment-name** _string_
 
-Deployment name. Only needed when `--version` is `__unversioned__` or empty.
+Name of the Worker Deployment. Required.
 
 **--identity** _string_
 
@@ -780,9 +987,9 @@ Identity of the user submitting this request.
 
 Override protection to accidentally remove task queues.
 
-**--version**, **-v** _string_
+**--unversioned** _bool_
 
-Fully-qualified name for a Worker Deployment Version. Use the format `YourDeploymentName.YourBuildID`. Required.
+Set unversioned workers as the target version. Cannot be used with --build-id.
 
 **--yes**, **-y** _bool_
 
@@ -818,6 +1025,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -828,7 +1065,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -850,13 +1087,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -899,9 +1146,8 @@ Override target TLS server name.
 
 Set the Ramping Version and Percentage for a Deployment.
 
-The Ramping Version can be set to a fully-qualified Version of the form
-`YourDeploymentName.YourBuildID`, or set to "**unversioned**", a special
-value that represents all the unversioned workers.
+The Ramping Version can be set using deployment name and build ID,
+or set to unversioned workers using the --unversioned flag.
 
 The Ramping Percentage is a float with values in the range [0, 100].
 A value of 100 does not make the Ramping Version Current, use
@@ -926,7 +1172,7 @@ using the default namespace:
 
 ```
 temporal worker deployment set-ramping-version \
-    --version YourDeploymentName.YourBuildID
+    --deployment-name YourDeploymentName --build-id YourBuildID \
     --percentage 10.0
 ```
 
@@ -934,7 +1180,7 @@ And to remove that ramping:
 
 ```
 temporal worker deployment set-ramping-version \
-    --version YourDeploymentName.YourBuildID \
+    --deployment-name YourDeploymentName --build-id YourBuildID \
     --delete
 ```
 
@@ -942,13 +1188,17 @@ Use the following options to change the behavior of this command.
 
 **Flags:**
 
+**--build-id** _string_
+
+Build ID of the Worker Deployment Version. Required unless --unversioned is specified.
+
 **--delete** _bool_
 
 Delete the Ramping Version.
 
 **--deployment-name** _string_
 
-Deployment name. Only needed when `--version` is `__unversioned__`.
+Name of the Worker Deployment. Required.
 
 **--identity** _string_
 
@@ -962,9 +1212,9 @@ Override protection to accidentally remove task queues.
 
 Percentage of tasks redirected to the Ramping Version. Valid range [0,100].
 
-**--version**, **-v** _string_
+**--unversioned** _bool_
 
-Fully-qualified name for a Worker Deployment Version. Use the format `YourDeploymentName.YourBuildID`. Required.
+Set unversioned workers as the target version. Cannot be used with --build-id.
 
 **--yes**, **-y** _bool_
 
@@ -1000,6 +1250,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -1010,7 +1290,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -1032,13 +1312,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -1084,7 +1374,7 @@ For example:
 
 ```
 temporal worker deployment update-metadata-version \
-   --version YourDeploymentName.YourBuildID \
+   --deployment-name YourDeploymentName --build-id YourBuildID \
    --metadata bar=1 \
    --metadata foo=true
 ```
@@ -1093,12 +1383,20 @@ The current metadata is also returned with `describe-version`:
 
 ```
 temporal worker deployment describe-version \
-   --version YourDeploymentName.YourBuildID \
+   --deployment-name YourDeploymentName --build-id YourBuildID \
 ```
 
 Use the following options to change the behavior of this command.
 
 **Flags:**
+
+**--build-id** _string_
+
+Build ID of the Worker Deployment Version. Required.
+
+**--deployment-name** _string_
+
+Name of the Worker Deployment. Required.
 
 **--metadata** _string[]_
 
@@ -1107,10 +1405,6 @@ Set deployment metadata using `KEY="VALUE"` pairs. Keys must be identifiers, and
 **--remove-entries** _string[]_
 
 Keys of entries to be deleted from metadata. Can be passed multiple times.
-
-**--version**, **-v** _string_
-
-Fully-qualified name for a Worker Deployment Version. Use the format `YourDeploymentName.YourBuildID`. Required.
 
 **Global Flags:**
 
@@ -1142,6 +1436,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -1152,7 +1476,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -1174,13 +1498,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
