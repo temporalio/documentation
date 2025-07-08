@@ -125,6 +125,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -135,7 +165,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -157,13 +187,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -248,6 +288,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -258,7 +328,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -280,13 +350,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -393,6 +473,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -403,7 +513,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -425,13 +535,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -532,6 +652,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -542,7 +692,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -564,13 +714,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -628,7 +788,7 @@ Use the following options to change the behavior of this command.
 
 **--cron** _string_
 
-Cron schedule for the Workflow. Deprecated. Use Schedules instead.
+Cron schedule for the Workflow.
 
 **--detailed** _bool_
 
@@ -748,6 +908,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -758,7 +948,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -780,13 +970,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -845,7 +1045,7 @@ Use the following options to change the behavior of this command.
 
 **--cron** _string_
 
-Cron schedule for the Workflow. Deprecated. Use Schedules instead.
+Cron schedule for the Workflow.
 
 **--execution-timeout** _duration_
 
@@ -993,6 +1193,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -1003,7 +1233,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -1025,13 +1255,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -1117,6 +1357,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -1127,7 +1397,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -1149,13 +1419,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -1265,6 +1545,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -1275,7 +1585,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -1297,13 +1607,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -1393,6 +1713,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -1403,7 +1753,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -1425,13 +1775,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -1545,6 +1905,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -1555,7 +1945,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -1577,13 +1967,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -1664,7 +2064,7 @@ Exclude these event types from re-application. Accepted values: All, Signal, Upd
 
 **--reapply-type** _string-enum_
 
-Types of events to re-apply after reset point. Deprecated. Use --reapply-exclude instead. Accepted values: All, Signal, None. (default "All")
+Types of events to re-apply after reset point. Accepted values: All, Signal, None. (default "All")
 
 **--reason** _string_
 
@@ -1716,6 +2116,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -1726,7 +2156,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -1748,13 +2178,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -1839,6 +2279,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -1849,7 +2319,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -1871,13 +2341,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -1973,6 +2453,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -1983,7 +2493,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -2005,13 +2515,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -2139,6 +2659,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -2149,7 +2699,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -2171,13 +2721,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -2233,7 +2793,7 @@ Use the following options to change the behavior of this command.
 
 **--cron** _string_
 
-Cron schedule for the Workflow. Deprecated. Use Schedules instead.
+Cron schedule for the Workflow.
 
 **--execution-timeout** _duration_
 
@@ -2369,6 +2929,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -2379,7 +2969,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -2401,13 +2991,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -2498,6 +3098,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -2508,7 +3138,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -2530,13 +3160,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -2588,7 +3228,7 @@ Use the following options to change the behavior of this command.
 
 **--cron** _string_
 
-Cron schedule for the Workflow. Deprecated. Use Schedules instead.
+Cron schedule for the Workflow.
 
 **--execution-timeout** _duration_
 
@@ -2704,6 +3344,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -2714,7 +3384,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -2736,13 +3406,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -2779,7 +3459,7 @@ Override target TLS server name.
 ## start-update-with-start
 
 Send a message to a Workflow Execution to invoke an Update handler, and wait for
-the update to be accepted or rejected. If the Workflow Execution is not running,
+the update to be accepted or rejected. If the Workflow Execution is not running, 
 then a new workflow execution is started and the update is sent.
 
 Experimental.
@@ -2802,7 +3482,7 @@ Use the following options to change the behavior of this command.
 
 **--cron** _string_
 
-Cron schedule for the Workflow. Deprecated. Use Schedules instead.
+Cron schedule for the Workflow.
 
 **--execution-timeout** _duration_
 
@@ -2954,6 +3634,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -2964,7 +3674,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -2986,13 +3696,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -3112,6 +3832,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -3122,7 +3872,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -3144,13 +3894,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -3252,6 +4012,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -3262,7 +4052,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -3284,13 +4074,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -3386,6 +4186,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -3396,7 +4226,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -3418,13 +4248,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -3541,6 +4381,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -3551,7 +4421,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -3573,13 +4443,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -3670,6 +4550,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -3680,7 +4590,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -3702,13 +4612,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -3794,7 +4714,7 @@ Update ID. If unset, defaults to a UUID.
 
 **--wait-for-stage** _string-enum_
 
-Update stage to wait for. The only option is `accepted`, but this option is required. This is to allow a future version of the CLI to choose a default value. Required. Accepted values: accepted.
+Update stage to wait for. The only option is `accepted`, but this option is  required. This is to allow a future version of the CLI to choose a default value. Required. Accepted values: accepted.
 
 **--workflow-id**, **-w** _string_
 
@@ -3830,6 +4750,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -3840,7 +4790,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -3862,13 +4812,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -3906,7 +4866,7 @@ Override target TLS server name.
 
 +---------------------------------------------------------------------+
 | CAUTION: Worflow update-options is experimental. Workflow Execution |
-| properties are subject to change. |
+| properties are subject to change.                                   |
 +---------------------------------------------------------------------+
 
 Modify properties of Workflow Executions:
@@ -3934,8 +4894,8 @@ to `pinned`:
 temporal workflow update-options \
     --workflow-id YourWorkflowId \
     --versioning-override-behavior pinned \
-    --versioning-override-pinned-version \
-      YourDeploymentSeriesName.YourDeploymentBuildId
+    --versioning-override-deployment-name YourDeploymentName \
+    --versioning-override-build-id YourDeploymentBuildId
 ```
 
 To remove any previous overrides, set the behavior to
@@ -3973,9 +4933,13 @@ Run ID. Only use with --workflow-id. Cannot use with --query.
 
 Override the versioning behavior of a Workflow. Required. Accepted values: unspecified, pinned, auto_upgrade.
 
-**--versioning-override-pinned-version** _string_
+**--versioning-override-build-id** _string_
 
-Override Pinned Version for a Worker Deployment (Only for pinned).
+When overriding to a `pinned` behavior, specifies the Build ID of the version to target.
+
+**--versioning-override-deployment-name** _string_
+
+When overriding to a `pinned` behavior, specifies the Deployment Name of the version to target.
 
 **--workflow-id**, **-w** _string_
 
@@ -4015,6 +4979,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -4025,7 +5019,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -4047,13 +5041,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -4086,3 +5090,4 @@ Path to x509 private key. Can't be used with --tls-key-data.
 **--tls-server-name** _string_
 
 Override target TLS server name.
+
