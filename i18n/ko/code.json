@@ -460,5 +460,309 @@
   "theme.tags.tagsPageTitle": {
     "message": "태그",
     "description": "The title of the tag list page"
+  },
+  "intro.coreConcepts.setupDev": {
+    "message": "개발 환경 설정하기",
+    "description": "Core concepts link: Set up your development environment"
+  },
+  "intro.coreConcepts.runFirstProgram": {
+    "message": "첫 번째 프로그램 실행하기",
+    "description": "Core concepts link: Run your first program"
+  },
+  "intro.coreConcepts.buildApp": {
+    "message": "처음부터 애플리케이션 구축하기",
+    "description": "Core concepts link: Build an application from scratch"
+  },
+  "intro.coreConcepts.enrollCourse": {
+    "message": "무료 강좌 등록하기",
+    "description": "Core concepts link: Enroll in a free course"
+  },
+  "intro.appDevGuide.go": {
+    "message": "Go SDK 개발자 가이드",
+    "description": "App dev guide link: Go SDK developer guide"
+  },
+  "intro.appDevGuide.java": {
+    "message": "Java SDK 개발자 가이드",
+    "description": "App dev guide link: Java SDK developer guide"
+  },
+  "intro.appDevGuide.python": {
+    "message": "Python SDK 개발자 가이드",
+    "description": "App dev guide link: Python SDK developer guide"
+  },
+  "intro.appDevGuide.typescript": {
+    "message": "TypeScript SDK 개발자 가이드",
+    "description": "App dev guide link: TypeScript SDK developer guide"
+  },
+  "intro.appDevGuide.dotnet": {
+    "message": ".NET SDK 개발자 가이드",
+    "description": "App dev guide link: .NET SDK developer guide"
+  },
+  "intro.appDevGuide.php": {
+    "message": "PHP SDK 개발자 가이드",
+    "description": "App dev guide link: PHP SDK developer guide"
+  },
+  "intro.appDevGuide.ruby": {
+    "message": "Ruby SDK README",
+    "description": "App dev guide link: Ruby SDK README"
+  },
+  "intro.troubleshooting.deadlineExceeded": {
+    "message": "데드라인 초과",
+    "description": "Troubleshooting link: Deadline exceeded"
+  },
+  "intro.troubleshooting.lastConnection": {
+    "message": "마지막 연결",
+    "description": "Troubleshooting link: Last connection"
+  },
+  "intro.prodDeploy.getStarted": {
+    "message": "프로덕션 배포 시작하기",
+    "description": "Production deployment link: Get started deploying to production"
+  },
+  "intro.devTools.cli": {
+    "message": "Temporal CLI",
+    "description": "Dev tools link: Temporal CLI"
+  },
+  "intro.devTools.webUI": {
+    "message": "웹 UI",
+    "description": "Dev tools link: Web UI"
+  },
+  "intro.references.commands": {
+    "message": "명령어",
+    "description": "References link: Commands"
+  },
+  "intro.references.events": {
+    "message": "이벤트",
+    "description": "References link: Events"
+  },
+  "intro.references.sdkMetrics": {
+    "message": "SDK 메트릭",
+    "description": "References link: SDK metrics"
+  },
+  "intro.references.clusterMetrics": {
+    "message": "Temporal 서비스 메트릭",
+    "description": "References link: Temporal Service metrics"
+  },
+  "intro.references.errors": {
+    "message": "워크플로우 태스크 오류",
+    "description": "References link: Workflow Task errors"
+  },
+  "intro.selfHosted.introduction": {
+    "message": "소개",
+    "description": "Self-hosted deployment guide link: Introduction"
+  },
+  "intro.selfHosted.defaults": {
+    "message": "기본값",
+    "description": "Self-hosted deployment guide link: Defaults"
+  },
+  "intro.selfHosted.security": {
+    "message": "보안",
+    "description": "Self-hosted deployment guide link: Security"
+  },
+  "intro.selfHosted.productionChecklist": {
+    "message": "프로덕션 체크리스트",
+    "description": "Self-hosted deployment guide link: Production checklist"
+  },
+  "intro.selfHosted.monitoring": {
+    "message": "모니터링",
+    "description": "Self-hosted deployment guide link: Monitoring"
+  },
+  "intro.selfHosted.visibility": {
+    "message": "가시성",
+    "description": "Self-hosted deployment guide link: Visibility"
+  },
+  "intro.selfHosted.upgradeServer": {
+    "message": "서버 업그레이드",
+    "description": "Self-hosted deployment guide link: Upgrade server"
+  },
+  "intro.selfHosted.multiClusterReplication": {
+    "message": "다중 클러스터 복제",
+    "description": "Self-hosted deployment guide link: Multi-Cluster Replication"
+  },
+  "intro.cloudCard.title": {
+    "message": "프로덕션에 애플리케이션 배포하기",
+    "description": "Cloud card title: Deploy your application to production"
+  },
+  "intro.cloudCard.description": {
+    "message": "요구사항에 맞는 프로덕션 배포 환경을 선택하세요.",
+    "description": "Cloud card description: Choose a production deployment environment that suits your needs."
+  },
+  "intro.slides.temporalService.title": {
+    "message": "Temporal 서비스",
+    "description": "Slide title: Temporal Service"
+  },
+  "intro.slides.temporalService.description": {
+    "message": "안정적이고 확장 가능한 워크플로우 오케스트레이션을 제공합니다.",
+    "description": "Slide description: Provides reliable and scalable workflow orchestration."
+  },
+  "intro.slides.temporalService.content1": {
+    "message": "Temporal 서비스는 워크플로우 코드가 수행하는 각 단계를 저장하여 워크플로우의 복원력을 보장합니다. 또한 애플리케이션 코드에서 오류가 발생할 때마다 재시도를 예약합니다.",
+    "description": "Slide content: A Temporal Service ensures that Workflows are resilient by saving each step the Workflow code takes. It also schedules retries whenever there are errors in your application's code."
+  },
+  "intro.slides.temporalService.content2": {
+    "message": "원하는 곳 어디에서든 실행할 수 있으며, 단일 노트북에서 수천 대의 머신으로 확장할 수 있고, 필요한 때와 장소에 리소스를 추가할 수 있습니다. 개발용 경량 Temporal 서비스를 설정했지만, 프로덕션 Temporal 서비스를 가리키도록 코드를 변경하는 것은 연결 매개변수를 변경하는 것만으로도 가능합니다.",
+    "description": "Slide content: You can run it wherever you'd like and scale from a single laptop to thousands of machines, adding resources when and where you need them. And although you've just set up a lightweight Temporal Service for development, switching your code to point at a production Temporal Service only requires changing your connection parameters."
+  },
+  "intro.slides.sdks.title": {
+    "message": "SDK",
+    "description": "Slide title: SDKs"
+  },
+  "intro.slides.sdks.description": {
+    "message": "선택한 프로그래밍 언어로 코드를 작성하세요.",
+    "description": "Slide description: Write code in your programming language of choice."
+  },
+  "intro.slides.sdks.content1": {
+    "message": "Temporal SDK는 코드에서 사용하는 라이브러리입니다. 각 SDK는 API에 두 부분이 있습니다: 클라이언트와 워커입니다. 워커는 워크플로우 코드를 가진 장시간 실행 프로세스입니다. 클라이언트는 Temporal 서비스와 통신하는 데 사용됩니다. 예를 들어, 워크플로우를 시작하고 상호작용하기 위해 사용됩니다.",
+    "description": "Slide content: A Temporal SDK is a library you use in your code. Each SDK has two parts to its API: the Client and the Worker. The Worker is the long-running process that has your Workflow code. The Client is used to communicate with the Temporal Service—for instance, to start and interact with Workflows."
+  },
+  "intro.slides.workflows.title": {
+    "message": "워크플로우",
+    "description": "Slide title: Workflows"
+  },
+  "intro.slides.workflows.description": {
+    "message": "Temporal 워크플로우에서 비즈니스 로직을 코드로 작성하세요.",
+    "description": "Slide description: Write your business logic as code in a Temporal Workflow."
+  },
+  "intro.slides.workflows.content1": {
+    "message": "Temporal 애플리케이션은 워크플로우라는 추상화를 사용하여 구축됩니다. 워크플로우는 Go, Java, TypeScript, Python과 같은 범용 프로그래밍 언어로 작성된 함수 또는 메서드입니다.",
+    "description": "Slide content: Temporal applications are built using an abstraction called Workflows. Workflows are functions or methods written in a general-purpose programming language such as Go, Java, TypeScript, or Python."
+  },
+  "intro.slides.workflows.content2": {
+    "message": "Temporal은 워크플로우가 안정적으로 실행되도록 보장합니다. 기본 인프라가 실패하더라도 수년 동안 실행되고 계속 실행될 수 있습니다. 애플리케이션이 충돌하면 Temporal은 중단된 지점부터 계속할 수 있도록 실패 전 상태를 자동으로 재생성합니다.",
+    "description": "Slide content: Temporal ensures that your Workflows execute reliably. They can run—and keep running—for years, even if the underlying infrastructure fails. If the application crashes, Temporal will automatically recreate its pre-failure state so that it can continue right where it left off."
+  },
+  "intro.slides.determinism.title": {
+    "message": "결정론적 실행",
+    "description": "Slide title: Determinism"
+  },
+  "intro.slides.determinism.description": {
+    "message": "결정론적 워크플로우 작성은 실패 시 내구성을 보장합니다.",
+    "description": "Slide description: Writing deterministic Workflows guarantees durability in the case of failure."
+  },
+  "intro.slides.determinism.content1": {
+    "message": "워크플로우 코드가 계속 실행되지 않을 수 없다는 Temporal의 보장은 워크플로우의 코드가 결정론적이어야 한다는 것을 요구합니다. 간단히 말해, 동일한 입력이 주어졌을 때 워크플로우의 각 실행은 코드를 통해 동일한 경로를 따라야 하고 동일한 출력을 생성해야 한다는 것입니다.",
+    "description": "Slide content: Temporal's guarantee that your Workflow code can't fail to continue running requires that the code in your Workflow must be deterministic. Simply put, this means that each execution of a Workflow, given the same input, must follow the same path through the code and produce the same output."
+  },
+  "intro.slides.determinism.content2": {
+    "message": "이는 이러한 행동들이 본질적으로 비결정론적이기 때문에 난수를 생성하거나 외부 세계와 상호작용할 수 없다는 것을 의미합니다. 난수를 두 번 생성하면 다른 결과가 나올 가능성이 높으며, 파일, 데이터베이스, 네트워크 서비스에 액세스하면 다른 시간에 실패하거나 다른 결과를 얻을 수 있습니다.",
+    "description": "Slide content: This means that you can't generate a random number or interact with the outside world, as these actions are inherently non-deterministic. Generating a random number twice will likely produce different results, and if you access files, databases, or network services, you might get a failure or different results at different times."
+  },
+  "intro.slides.activities.title": {
+    "message": "액티비티",
+    "description": "Slide title: Activities"
+  },
+  "intro.slides.activities.description": {
+    "message": "액티비티는 코드의 실패하기 쉬운 부분을 포함하며 실패 시 자동으로 재시도됩니다.",
+    "description": "Slide description: Activities have the failure-prone parts of your code and are automatically retried upon failure."
+  },
+  "intro.slides.activities.content1": {
+    "message": "액티비티는 데이터베이스, 네트워크 서비스 또는 파일 시스템 액세스와 같이 비결정론적이거나 실패하기 쉬운 코드를 실행하는 데 사용할 수 있는 함수 또는 메서드입니다. 액티비티는 워크플로우 코드에서 호출되며, 실패하면 자동으로 재시도됩니다. 액티비티가 성공하면 워크플로우 코드는 계속 실행됩니다.",
+    "description": "Slide content: Activities are functions or methods that you can use to run code that is non-deterministic or prone to failure, such as accessing a database, network service, or file system. Activities are called from Workflow code, and they are automatically retried if they fail. Once the Activity succeeds, the Workflow code will continue executing."
+  },
+  "intro.slides.workers.title": {
+    "message": "워커",
+    "description": "Slide title: Workers"
+  },
+  "intro.slides.workers.description": {
+    "message": "워커는 워크플로우 및 액티비티 코드를 안정적이고 일관되게 실행합니다. 추가 워커를 실행하여 애플리케이션의 확장성과 가용성을 높일 수 있습니다.",
+    "description": "Slide description: Workers run Workflow and Activity code reliably and consistently. You can increase the scalability and availability of your application by running additional Workers."
+  },
+  "intro.slides.workers.content1": {
+    "message": "Temporal을 처음 접하는 사람들이 놀라워하는 것 중 하나는 Temporal 서비스가 코드를 실행하지 않는다는 것입니다.",
+    "description": "Slide content: One thing that people new to Temporal find surprising is that the Temporal Service does not execute your code."
+  },
+  "intro.slides.workers.content2": {
+    "message": "Temporal 서비스와 분리된 컨테이너나 머신에 코드를 배포합니다. Temporal SDK에서 제공하는 워커 API를 사용하여 Temporal 서비스에서 관리하는 태스크를 기반으로 워크플로우와 액티비티 코드를 실행할 하나 이상의 워커 프로세스를 실행합니다.",
+    "description": "Slide content: You deploy your code to containers or machines that are separate from the Temporal Service. Using the Worker API provided by the Temporal SDK, you will run one or more Worker processes that will execute your Workflow and Activity code based on tasks managed by the Temporal Service."
+  },
+  "intro.slides.workers.content3": {
+    "message": "Temporal 서비스는 워커에게 \"워크플로우 A 실행 시작\"과 같은 태스크를 제공하고, 워커는 해당 워크플로우 함수 또는 메서드를 실행합니다.",
+    "description": "Slide content: The Temporal Service gives the Workers tasks like \"Start running Workflow A,\" and the Workers run the corresponding Workflow function or method."
+  },
+  "intro.slides.temporalCli.title": {
+    "message": "Temporal CLI",
+    "description": "Slide title: Temporal CLI"
+  },
+  "intro.slides.temporalCli.description": {
+    "message": "터미널에서 명령을 입력하여 Temporal 서비스와 직접 통신하세요.",
+    "description": "Slide description: Communicate directly with the Temporal Service by entering commands in the terminal."
+  },
+  "intro.slides.temporalCli.content1": {
+    "message": "Temporal CLI는 Temporal 서비스의 개발 버전을 실행합니다. Temporal 서비스와 상호작용하여 워크플로우를 시작하고, 나열하고, 상태를 가져오는 등의 작업을 수행할 수 있습니다.",
+    "description": "Slide content: The Temporal CLI runs a development version of the Temporal Service. Interact with the Temporal Service - start Workflows, list them, get their status, and more."
+  },
+  "intro.slides.temporalCli.content2": {
+    "message": "temporal 명령을 사용하여 명령줄에서, SDK 클라이언트를 사용하여 코드에서, 웹 UI를 사용하여 브라우저에서 수행할 수 있습니다.",
+    "description": "Slide content: From the command line using the temporal command. From code, using an SDK Client. From your browser, using the Web UI."
+  },
+  "intro.slideInfo.title": {
+    "message": "핵심 개념 소개",
+    "description": "Slide info title: Introducing our core concepts"
+  },
+  "intro.explained.subtitle": {
+    "message": "Temporal 플랫폼 설명 및 사용 정보입니다.",
+    "description": "Explained subtitle: Temporal Platform explanation and usage information."
+  },
+  "intro.explained.getStarted.title": {
+    "message": "Temporal 시작하기",
+    "description": "Explained card title: Get started with Temporal"
+  },
+  "intro.explained.getStarted.content": {
+    "message": "Temporal을 처음 사용하시나요? 입문 튜토리얼과 강좌를 통해 개발자 경험과 Temporal 플랫폼의 가치를 느껴보세요.",
+    "description": "Explained card content: New to Temporal? Follow our introductory tutorials and courses to get a feel for the developer experience and the value of the Temporal Platform."
+  },
+  "intro.explained.startBuilding.title": {
+    "message": "다음 앱 구축 시작하기",
+    "description": "Explained card title: Start building your next app"
+  },
+  "intro.explained.startBuilding.content": {
+    "message": "사용 사례가 있으신가요? 개발자 가이드를 통해 Temporal로 다음 백엔드 애플리케이션 구축을 시작하세요.",
+    "description": "Explained card content: Have a use case? Jump into the developer guides to start building your next backend application with Temporal."
+  },
+  "intro.explained.devTools.title": {
+    "message": "개발 도구",
+    "description": "Explained card title: Dev tools"
+  },
+  "intro.explained.devTools.content": {
+    "message": "Temporal CLI와 웹 UI를 사용하여 워크플로우를 관리하고 모니터링하세요.",
+    "description": "Explained card content: Use the Temporal CLI and Web UI to manage and monitor your Workflows."
+  },
+  "intro.explained.references.title": {
+    "message": "참고 자료",
+    "description": "Explained card title: References"
+  },
+  "intro.explained.references.content": {
+    "message": "참고 가능한 플랫폼 정보",
+    "description": "Explained card content: Referable Platform information"
+  },
+  "intro.explained.helpfulResources.title": {
+    "message": "유용한 리소스",
+    "description": "Helpful resources title: Helpful resources"
+  },
+  "intro.explained.joinCommunity.title": {
+    "message": "커뮤니티 참여",
+    "description": "Join community title: Join our Community"
+  },
+  "intro.explained.joinCommunity.slack.title": {
+    "message": "Slack에 참여하여 인사하세요!",
+    "description": "Community card title: Join us in Slack and say hi!"
+  },
+  "intro.explained.joinCommunity.slack.link": {
+    "message": "Slack 실행하기",
+    "description": "Community card link: Launch Slack"
+  },
+  "intro.explained.joinCommunity.forum.title": {
+    "message": "궁금한 점이 있으신가요? 포럼을 확인해보세요",
+    "description": "Community card title: Got a Question? Check out the forum"
+  },
+  "intro.explained.joinCommunity.forum.link": {
+    "message": "커뮤니티 포럼으로 이동",
+    "description": "Community card link: Go to the community forum"
+  },
+  "intro.explained.joinCommunity.events.title": {
+    "message": "근처에서 열리는 이벤트 찾기",
+    "description": "Community card title: Find an upcoming event near you"
+  },
+  "intro.explained.joinCommunity.events.link": {
+    "message": "예정된 이벤트 확인하기",
+    "description": "Community card link: Check out upcoming events"
   }
 }
