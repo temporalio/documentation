@@ -1,0 +1,136 @@
+name: Upstream Sync
+on:
+  schedule:
+    - cron:  '0 20 * * *'  # 매일 한국시간 오전 5시
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_PAT }}
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Add upstream
+        run: |
+          git remote add upstream https://github.com/temporalio/documentation.git
+          git fetch upstream
+          
+      # 업스트림 변경사항 확인
+      - name: Check upstream changes
+        id: check-changes
+        run: |
+          UPSTREAM_COMMIT=$(git rev-parse upstream/main)
+          CURRENT_COMMIT=$(git rev-parse HEAD)
+          echo "upstream_commit=$UPSTREAM_COMMIT" >> $GITHUB_OUTPUT
+          echo "current_commit=$CURRENT_COMMIT" >> $GITHUB_OUTPUT
+          
+          if [ "$UPSTREAM_COMMIT" != "$CURRENT_COMMIT" ]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "업스트림에 새로운 변경사항이 있습니다"
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "변경사항이 없습니다"
+          fi
+          
+      # 변경사항이 있을 때만 동기화 실행
+      - name: Reset to upstream/main
+        if: steps.check-changes.outputs.has_changes == 'true'
+        run: |
+          git checkout -B upstream-sync upstream/main
+          
+      # 새 영어 문자열을 ko 번역 큐에 반영
+      - name: Write empty translations
+        if: steps.check-changes.outputs.has_changes == 'true'
+        run: |
+          npx docusaurus write-translations --locale ko --remove-unused-keys
+          
+      # 번역 파일 상태 확인
+      - name: Check translation changes
+        if: steps.check-changes.outputs.has_changes == 'true'
+        id: check-translations
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "translation_changes=true" >> $GITHUB_OUTPUT
+            echo "번역 파일 변경사항:"
+            git status --porcelain
+          else
+            echo "translation_changes=false" >> $GITHUB_OUTPUT
+            echo "번역 파일 변경사항 없음"
+          fi
+
+      # 변경 사항 커밋
+      - name: Commit changes
+        if: steps.check-changes.outputs.has_changes == 'true' && steps.check-translations.outputs.translation_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          
+          # 커밋 메시지에 더 자세한 정보 포함
+          COMMIT_MSG="chore: 🔄 업스트림 동기화 $(date -u +'%Y-%m-%d')
+
+          업스트림 커밋: ${{ steps.check-changes.outputs.upstream_commit }}
+          이전 커밋: ${{ steps.check-changes.outputs.current_commit }}
+          
+          자동 생성된 번역 키:
+          $(git diff --cached --name-only | grep -E '\.(json|md)$' | head -10)
+          "
+          
+          git commit -m "$COMMIT_MSG"
+
+      # 브랜치 푸시
+      - name: Push branch
+        if: steps.check-changes.outputs.has_changes == 'true' && steps.check-translations.outputs.translation_changes == 'true'
+        run: |
+          git push -f origin upstream-sync
+
+      # 자동 PR 생성
+      - name: Create Pull Request
+        if: steps.check-changes.outputs.has_changes == 'true' && steps.check-translations.outputs.translation_changes == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GH_PAT }}
+          base: main
+          branch: upstream-sync
+          title: "chore: 🔄 업스트림 동기화 ($(date -u +'%Y-%m-%d'))"
+          body: |
+            ## 📋 자동 업스트림 동기화
+            
+            **업스트림 커밋**: `${{ steps.check-changes.outputs.upstream_commit }}`
+            **이전 커밋**: `${{ steps.check-changes.outputs.current_commit }}`
+            
+            ### 🔄 변경사항
+            - 업스트림 최신 변경사항 반영
+            - 새로운 번역 키 자동 생성
+            - 사용하지 않는 번역 키 제거
+            
+            ### ✅ 다음 단계
+            1. 새로 추가된 영어 문자열 확인
+            2. 번역 작업 진행
+            3. 리뷰 후 머지
+            
+            ---
+            *이 PR은 자동으로 생성되었습니다.*
+          labels: |
+            sync
+            automated-pr
+            translation
+          draft: false
+          
+      # 변경사항 없음 알림
+      - name: No changes notification
+        if: steps.check-changes.outputs.has_changes == 'false'
+        run: |
+          echo "::notice::업스트림에 새로운 변경사항이 없습니다."
