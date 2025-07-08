@@ -287,6 +287,16 @@ Override target TLS server name.
 
 ## pause
 
+:::tip Stability
+
+In [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+
+Use in Temporal Cloud or with Temporal Server version [Temporal Server version 1.28](https://github.com/temporalio/temporal/releases/tag/v1.28.0)
+
+[CLI version v1.4](https://github.com/temporalio/cli/releases/tag/v1.4.0) or higher is recommended.
+
+:::
+
 Pause an Activity.
 
 If the Activity is not currently running (e.g. because it previously
@@ -599,6 +609,16 @@ Override target TLS server name.
 
 ## unpause
 
+:::tip Stability
+
+In [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+
+Use in Temporal Cloud or with Temporal Server version [Temporal Server version 1.28](https://github.com/temporalio/temporal/releases/tag/v1.28.0)
+
+[CLI version v1.4](https://github.com/temporalio/cli/releases/tag/v1.4.0) or higher is recommended.
+
+:::
+
 Re-schedule a previously-paused Activity for execution.
 
 If the Activity is not running and is past its retry timeout, it will be
@@ -792,6 +812,16 @@ Path to x509 private key. Can't be used with --tls-key-data.
 Override target TLS server name.
 
 ## update-options
+
+:::tip Stability
+
+In [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+
+Use in Temporal Cloud or with Temporal Server version [Temporal Server version 1.28](https://github.com/temporalio/temporal/releases/tag/v1.28.0)
+
+[CLI version v1.4](https://github.com/temporalio/cli/releases/tag/v1.4.0) or higher is recommended.
+
+:::
 
 Updates the options of a running Activity that were passed into it from a Workflow.
 Updates are incremental, only changing the specified options.
