@@ -636,13 +636,6 @@ Activities can be specified by their Activity ID or Activity Type.
 One of those parameters must be provided. If both are provided - Activity
 Type will be used, and Activity ID will be ignored.
 
-Activities can be unpaused in bulk via a visibility Query list filter:
-
-```
-temporal activity unpause \
-    --query YourQuery
-```
-
 Specify the Activity ID or Type and Workflow IDs:
 
 ```
@@ -653,21 +646,28 @@ temporal activity unpause \
     --reset-heartbeats
 ```
 
+Activities can be unpaused in bulk via a visibility Query list filter. For example, if you want to unpause activities of type Foo that you previously paused, do:
+
+```
+temporal activity unpause \
+    --query 'TemporalPauseInfo="property:activityType=Foo"'
+```
+
 Use the following options to change the behavior of this command.
 
 **Flags:**
 
 **--activity-id**, **-a** _string_
 
-Activity ID to unpause. Can only be used without --query.
+The Activity ID to unpause on a specific Workflow specified by --workflow-id.
 
 **--activity-type**, **-g** _string_
 
-Activity Type to unpause.
+The Activity Type to unpause.
 
 **--identity** _string_
 
-Identity of the user submitting this request.
+The identity of the user or client submitting this request.
 
 **--jitter**, **-j** _duration_
 
