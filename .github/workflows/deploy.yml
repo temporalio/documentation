@@ -3,7 +3,13 @@ name: Deploy Korean Translation to GitHub Pages
 on:
   push:
     branches: [main]
-  workflow_dispatch:   # 필요 시 수동 실행
+    paths: # 특정 파일이 변경된 경우만 실행
+      - 'docs/**'
+      - 'i18n/**'
+      - 'src/**'
+      - 'docusaurus.config.js'
+      - 'babel.config.js'
+  workflow_dispatch:   # 수동 실행 가능
 
 jobs:
   deploy:
