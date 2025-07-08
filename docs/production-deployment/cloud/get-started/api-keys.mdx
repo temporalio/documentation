@@ -68,8 +68,8 @@ API keys are used for the following scenarios:
 
 Use API keys to authenticate with:
 
-- [The Temporal CLI v 0.12 or higher](/cli)
-- [Temporal SDKs (latest recommended)](/develop)
+- [The Temporal CLI](/cli)
+- [Temporal SDKs](/develop)
 - [`tcld`](/production-deployment/cloud/tcld/index.mdx)
 - [The Cloud Operations API](/production-deployment/cloud/operation-api.mdx)
 - [Temporalʼs Terraform provider](/production-deployment/cloud/terraform-provider)
@@ -349,8 +349,8 @@ See the following documentation for [accessing Namespaces](/cloud/namespaces#acc
 
 Authenticate with Temporal Cloud using API keys with the following clients:
 
-- [Temporal CLI v0.12 or higher](/cli)
-- [SDKs (latest recommended)](/develop)
+- [Temporal CLI](/cli)
+- [SDKs](/develop)
 - [Temporal Cloud CLI `tcld`](/production-deployment/cloud/tcld/index.mdx)
 - [The Cloud Operations API](/production-deployment/cloud/operation-api.mdx)
 - [Temporal’s Terraform Provider](/production-deployment/cloud/terraform-provider)
@@ -368,7 +368,6 @@ In addition to the API key, the following client options are required:
 - `--namespace`: Provide the `namespace.accountId` from the top of the Namespace page in the UI.
   - Use the format `<namespace_id>.<account_id>`.
   - This can be set using an environment variable.
-- `--grpc-meta "temporal-namespace="`: Provide the `namespace.accountId` again as grpc-metadata.
 - `--tls`: Use for a secure connection with the appropriate options.
   - This can be set using an environment variable.
 
@@ -379,7 +378,6 @@ export TEMPORAL_API_KEY=<key-secret>
 temporal workflow list \
     --address <endpoint> \
     --namespace <namespace_id>.<account_id> \
-    --grpc-meta "temporal-namespace=<namespace_id>.<account_id>" \
     --tls
 ```
 
@@ -389,289 +387,19 @@ Do not confuse environment variables, set with your shell, with temporal env opt
 
 :::
 
-### SDK
+### SDKs
 
-To use your API key with a Temporal SDK, include the API key in the Bearer token header and specify the Namespace header.
-The Bearer token header indicates the authentication type, while the Namespace header routes the request.
+To use your API key with a Temporal SDK, see the instructions in each SDK section.
 
-**Go SDK (v 1.26.0+)**
+[How to connect to Temporal Cloud using an API Key with the Go SDK](/develop/go/temporal-clients#connect-to-temporal-cloud-api-key)
 
-Create an initial connection:
+[How to connect to Temporal Cloud using an API Key with the Java SDK](/develop/java/temporal-clients#connect-to-temporal-cloud-api-key)
 
-```go
-clientOptions := client.Options{
-    HostPort: <endpoint>,
-    Namespace: <namespace_id>.<account_id>,
-    ConnectionOptions: client.ConnectionOptions{
-        TLS: &tls.Config{},
-        DialOptions: []grpc.DialOption{
-            grpc.WithUnaryInterceptor(
-                func(ctx context.Context, method string, req any, reply any, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
-                    return invoker(
-                        metadata.AppendToOutgoingContext(ctx, "temporal-namespace", <namespace_id>.<account_id>),
-                        method,
-                        req,
-                        reply,
-                        cc,
-                        opts...,
-                    )
-                },
-            ),
-        },
-    },
-    Credentials: client.NewAPIKeyStaticCredentials(apiKey),
-}
-c, err := client.Dial(clientOptions)
-if err != nil {
-  log.Fatalf("error creating temporal client: %v", err)
-}
-```
+[How to connect to Temporal Cloud using an API Key with the Python SDK](/develop/python/temporal-clients#connect-to-temporal-cloud-api-key)
 
-Update an API key:
+[How to connect to Temporal Cloud using an API Key with the TypeScript SDK](/develop/typescript/temporal-clients#connect-to-temporal-cloud-api-key)
 
-```go
-// Assuming client Credentials created with
-var myKey string
-creds := client.NewAPIKeyDynamicCredentials(
-    func(context.Context) (string, error) { return myKey, nil })
-// Just update by replacing
-myKey = myKeyUpdated
-```
-
-#### Go SDK (pre v 1.26.0)
-
-Create an initial connection:
-
-```go
-// Create headers provider
-type APIKeyProvider struct {
-    APIKey string
-    Namespace string
-}
-
-func (a *APIKeyProvider) GetHeaders(context.Context) (map[string]string, error) {
-    return map[string]string{"Authorization": "Bearer " + a.APIKey, "temporal-namespace": a.Namespace}, nil
-}
-
-// Use headers provider
-apiKeyProvider := &APIKeyProvider{APIKey: <APIKey>, Namespace: <namespace_id>.<account_id>}
-c, err := client.Dial(client.Options{
-    HostPort: <endpoint>,
-    Namespace: <namespace_id>.<account_id>,
-    HeadersProvider: apiKeyProvider,
-    ConnectionOptions: client.ConnectionOptions{TLS: &tls.Config{
-    }},
-})
-```
-
-Update an API key:
-
-```go
-apiKeyProvider.APIKey = myKeyUpdated
-```
-
-#### Java SDK
-
-At a client level:
-
-```java
-// Create the Workflow service stub.
-WorkflowServiceStubsOptions.Builder stubOptions =
-    WorkflowServiceStubsOptions.newBuilder()
-        .addApiKey(() -> <APIKey>)
-        .setEnableHttps(true)
-        .setTarget(<endpoint>);
-
-WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(stubOptions.build());
-
-/*
- * Get a Workflow service client which can be used to start, Signal, and Query Workflow Executions.
- */
-WorkflowClient client =
-    WorkflowClient.newInstance(
-        service, WorkflowClientOptions.newBuilder().setNamespace(<namespace_id>.<account_id>).build());
-```
-
-At a per-call level:
-
-```java
-String myKey = <APIKey>;
-WorkflowServiceStubsOptions stubOptions =
-    WorkflowServiceStubsOptions.newBuilder()
-        .addApiKey(() -> myKey)
-        .build();
-
-// Just update by replacing, this must be done in a thread safe way
-myKey = "Bearer " + <new APIKey>;
-```
-
-#### Python SDK (v 1.6.0+)
-
-Create an initial connection:
-
-```python
-client = await Client.connect(
-    <endpoint>,
-    namespace=<namespace_id>.<account_id>,
-    rpc_metadata={"temporal-namespace": <namespace_id>.<account_id>},
-    api_key=<APIKey>,
-    tls=True,
-)
-```
-
-Update an API key (newer SDK):
-
-```python
-my_client.api_key = my_key_updated
-```
-
-#### Python SDK (pre v 1.6.0)
-
-Create an initial connection:
-
-```python
-client = await Client.connect(
-    <endpoint>,
-    namespace=<namespace_id>.<account_id>,
-    rpc_metadata={"temporal-namespace": <namespace_id>.<account_id>, "Authorization": f"Bearer {<APIKey>}"},
-    tls=True,
-)
-```
-
-Update an API key:
-
-```python
-my_client.rpc_metadata = {"Authorization": f"Bearer {<my_key_updated>}"}
-```
-
-#### .NET SDK (v 1.1.0+)
-
-Create an initial connection:
-
-```csharp
-var myClient = TemporalClient.ConnectAsync(new(<endpoint>)
-{
-    Namespace = <namespace_id>.<account_id>,
-    ApiKey = <APIKey>,
-    RpcMetadata = new Dictionary<string, string>()
-    {
-        ["temporal-namespace"] = "${<namespace_id>.<account_id>}",
-    },
-    Tls = new(),
-});
-```
-
-Update an API key:
-
-```csharp
-myClient.Connection.ApiKey = myKeyUpdated;
-```
-
-**.NET SDK (pre v 1.1.0)**
-
-Create an initial connection:
-
-```csharp
-var myClient = TemporalClient.ConnectAsync(new(<endpoint>)
-{
-    Namespace = <namespace_id>.<account_id>,
-    RpcMetadata = new Dictionary<string, string>()
-    {
-        ["Authorization"] = $"Bearer {<APIKey>}",
-        ["temporal-namespace"] = "${<namespace_id>.<account_id>}",
-    },
-    Tls = new(),
-});
-```
-
-Update an API key:
-
-```csharp
-myClient.Connection.RpcMetadata = new Dictionary<string, string>()
-{
-    ["Authorization"] = $"Bearer {myKeyUpdated}",
-};
-```
-
-#### TypeScript SDK (v 1.10.0+)
-
-Create an initial `Connection` (for use with `Client`):
-
-```typescript
-const connection = await Connection.connect({
-    address: <endpoint>,
-    tls: true,
-    apiKey: <APIKey>,
-    metadata: {
-        'temporal-namespace': <namespace_id>.<account_id>,
-    },
-});
-const client = new Client({
-    connection,
-    namespace: <namespace_id>.<account_id>,
-});
-```
-
-Create an initial Worker `NativeConnection` (for use with `Worker`):
-
-```typescript
-const connection = await NativeConnection.connect({
-    address: <endpoint>,
-    tls: true,
-    apiKey: <APIKey>,
-    metadata: {
-      'temporal-namespace': <namespace_id>.<account_id>,
-    },
-});
-const worker = await Worker.create({
-    connection,
-    namespace: <namespace_id>.<account_id>,
-    // ...
-});
-```
-
-Update the API key on an existing `Connection` or `NativeConnection`:
-
-```typescript
-connection.setApiKey(<APIKey>);
-```
-
-#### TypeScript SDK (pre v 1.10.0)
-
-Create an initial `Connection` (for use with `Client`):
-
-```typescript
-const connection = await Connection.connect({
-    address: <endpoint>,
-    tls: true,
-    metadata: {
-        'Authorization': `Bearer ${<APIKey>}`,
-        'temporal-namespace': <namespace_id>.<account_id>,
-    },
-})
-const client = new Client({
-    connection,
-    namespace: <namespace_id>.<account_id>,
-});
-```
-
-Create an initial Worker `NativeConnection` (for use with `Worker`):
-
-```typescript
-const connection = await NativeConnection.connect({
-    address: <endpoint>,
-    tls: true,
-    metadata: {
-        'Authorization': `Bearer ${<APIKey>}`
-        'temporal-namespace': <namespace_id>.<account_id>,
-    },
-})
-const worker = await Worker.create({
-    connection,
-    namespace: <namespace_id>.<account_id>,
-    // ...
-});
-```
+[How to connect to Temporal Cloud using an API Key with the .NET SDK](/develop/dotnet/temporal-client#connect-to-temporal-cloud-api-key)
 
 ### tcld
 
@@ -725,5 +453,5 @@ If you lose it, generate a new one.
 
 **Q: What is the `Generate API Key` button on the Namespace page?**
 
-A: The `Generate API Key` button on a Namespace page generates an API key with `Admin` permissions for the given Namespace.
+A: The `Generate API Key` button on a Namespace page generates an API key with `Admin` permissions for the given Namespace and the maximum expiration time, which is 2 years.
 For additional details, refer to [Namespace Scoped Service Accounts](/cloud/service-accounts#scoped).
