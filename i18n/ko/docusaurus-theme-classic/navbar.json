@@ -1,0 +1,26 @@
+{
+  "logo.alt": {
+    "message": "Temporal logo",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.Home": {
+    "message": "Home",
+    "description": "Navbar item with label Home"
+  },
+  "item.label.Start learning": {
+    "message": "Start learning",
+    "description": "Navbar item with label Start learning"
+  },
+  "item.label.Start building": {
+    "message": "Start building",
+    "description": "Navbar item with label Start building"
+  },
+  "item.label.Code Exchange": {
+    "message": "Code Exchange",
+    "description": "Navbar item with label Code Exchange"
+  },
+  "item.label.Temporal Cloud": {
+    "message": "Temporal Cloud",
+    "description": "Navbar item with label Temporal Cloud"
+  }
+}
