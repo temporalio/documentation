@@ -758,6 +758,7 @@ module.exports = {
             "encyclopedia/data-conversion/key-management",
           ],
         },
+        "web-ui",
       ],
     },
     "glossary",
