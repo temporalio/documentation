@@ -73,7 +73,7 @@ We use different namespaces to demonstrate cross-Namespace Nexus calls.
 
 After establishing caller and handler Namespaces, the next step is to create a Nexus Endpoint to route requests.
 
-```go
+```
 temporal operator nexus endpoint create \
   --name my-nexus-endpoint-name \
   --target-namespace my-target-namespace \
@@ -431,7 +431,7 @@ Follow the steps below to run the Nexus handler Worker, the Nexus caller Worker,
 
 Run the Nexus handler Worker:
 
-```go
+```
 cd handler
 go run ./worker \
     -target-host localhost:7233 \
@@ -440,7 +440,7 @@ go run ./worker \
 
 In another terminal window, run the Nexus caller Worker:
 
-```go
+```
 cd caller
 go run ./worker \
     -target-host localhost:7233 \
@@ -453,7 +453,7 @@ With the Workers running, the final step in the local development process is to 
 
 Run the starter:
 
-```go
+```
 cd caller
 go run ./starter \
     -target-host localhost:7233 \
@@ -549,7 +549,7 @@ Alternatively, you can create a Nexus Endpoint through the UI: [https://cloud.te
 
 Run the handler Worker:
 
-```go
+```
 cd handler
 
 go run ./worker \
@@ -561,7 +561,7 @@ go run ./worker \
 
 Run the caller Worker:
 
-```go
+```
 cd caller
 
 go run ./worker \
@@ -573,7 +573,7 @@ go run ./worker \
 
 ### Start a caller Workflow
 
-```go
+```
 cd caller
 
 go run ./starter \
@@ -596,7 +596,7 @@ This will result in:
 
 Run the handler Worker:
 
-```go
+```
 cd handler
 
 go run ./worker \
@@ -607,7 +607,7 @@ go run ./worker \
 
 Run the caller Worker:
 
-```go
+```
 cd caller
 
 go run ./worker \
@@ -618,7 +618,7 @@ go run ./worker \
 
 ### Start a caller Workflow
 
-```go
+```
 cd caller
 
 go run ./starter \
