@@ -212,8 +212,6 @@ if version  == 2 {
 }
 ```
 
-When `workflow.GetVersion()` is run for a new Workflow execution, it records a marker in the Workflow history so that all future calls to `GetVersion()` for this change ID — Step 1 in the example — on this Workflow execution will always return the given version number.
-
 Patching allows you to make changes to currently running Workflows.
 It is a powerful method for introducing compatible changes without introducing non-determinism errors.
 
