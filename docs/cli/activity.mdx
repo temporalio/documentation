@@ -394,15 +394,23 @@ Use the following options to change the behavior of this command.
 
 **--activity-id**, **-a** _string_
 
-Activity ID to pause.
+Activity ID to pause. Either `activity-id` or `activity-type` must be provided, but not both.
 
 **--activity-type**, **-g** _string_
 
-Activity Type to pause.
+Activity Type to pause. Either `activity-id` or `activity-type` must be provided, but not both.
 
 **--identity** _string_
 
 Identity of the user submitting this request.
+
+**--run-id** _string_
+
+Run ID.
+
+**--workflow-id** _string_
+
+Workflow ID to Pause. Required.
 
 **Global Flags:**
 
@@ -579,11 +587,11 @@ Use the following options to change the behavior of this command.
 
 **--activity-id**, **-a** _string_
 
-Activity ID to pause.
+Activity ID to reset. Either `activity-id` or `activity-type` must be provided, but not both.
 
 **--activity-type**, **-g** _string_
 
-Activity Type to pause.
+Activity Type to reset. Either `activity-id` or `activity-type` must be provided, but not both.
 
 **--identity** _string_
 
@@ -596,6 +604,14 @@ If activity was paused - it will stay paused.
 **--reset-heartbeats** _bool_
 
 Reset the Activity's heartbeat.
+
+**--run-id** _string_
+
+Run ID to reset.
+
+**--workflow-id** _string_
+
+Workflow ID to reset. Required.
 
 **Global Flags:**
 
@@ -782,11 +798,11 @@ Use the following options to change the behavior of this command.
 
 **--activity-id**, **-a** _string_
 
-Activity ID to unpause. Can only be used without --query.
+Activity ID to unpause. Can only be used without --query or --match-all. Either `activity-id` or `activity-type` must be provided, but not both.
 
 **--activity-type**, **-g** _string_
 
-Activity Type to unpause.
+Activity Type to unpause. Can only be used without --match-all. Either `activity-id` or `activity-type` must be provided, but not both.
 
 **--identity** _string_
 
