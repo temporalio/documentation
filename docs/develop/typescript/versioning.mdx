@@ -127,9 +127,7 @@ After ensuring that all Workflows started with `v1` code have finished, you can 
 
 Once you're confident that your Workflows are no longer running the pre-patch code paths, you can deploy your code with `deprecatePatch()`.
 These Workers will be running the most up-to-date version of the Workflow code, which no longer requires the patch.
-The `deprecatePatch()` function works similarly to the `patched()` function by recording a marker in the Workflow history.
-This marker does not fail replay when Workflow code does not emit it.
-Deprecated patches serve as a bridge between the pre-patch code paths and the post-patch code paths, and are useful for avoiding errors resulting from patched code paths in your Workflow history.
+Deprecated patches serve as a bridge between the final stage of the patching process and the final state that no longer has patches. They function similarly to regular patches by adding a marker to the Workflow History. However, this marker won't cause a replay failure when the Workflow code doesn't produce it.
 
 ```ts
 // v3
