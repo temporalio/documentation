@@ -343,3 +343,17 @@ This is most applicable to asynchronous Nexus Operations completed with an async
 For enhanced security, you may sign completion callbacks with a single-use token in the future, and the 60 day maximum allows you to rotate the asymmetric encryption keys used for completion callback request signing.
 
 While the caller of a Nexus Operation can configure the ScheduleToClose duration to be shorter than 60 days, the maximum duration can not extend beyond 60 days and capped by the server to 60 days.
+
+## Worker Versioning level
+
+### Max Worker deployments limits {#max-worker-deployments-limits}
+
+The maximum number of worker deployments that the server allows to be registered in a single namespace. Defaults to 100.
+
+### Max versions in deployment limits {#max-versions-in-deployment-limits}
+
+The maximum number of versions that the server allows to be registered in a single worker deployments at a given time. Note that unused versions will be deleted by the system automatically when this limit is reached. Defaults to 100.
+
+### Max Task Queues In Deployment Version limits {#max-task-queues-in-deployment-version-limits}
+
+The maximum number of task queues that the server allows to be registered in a single worker Deployment Version. Defaults to 100.
