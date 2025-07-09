@@ -57,10 +57,11 @@ Both methods will install the same Temporal SDK, which supports Ruby versions 3.
 > - Windows (MinGW) is not supported.
 > - `fibers`/`async` are only supported on Ruby **3.3+**.
 > - See [Platform Support](#) for full details.
-</SetupStep>
+  > </SetupStep>
 
 <SetupStep code={
 <>
+
 <p><strong>macOS:</strong></p>
 <CodeSnippet language="bash">
 brew install temporal
@@ -108,33 +109,40 @@ This will:
 Leave this running in a separate terminal tab or window while you develop.
 You'll be able to monitor your Workflows through the Web UI as they execute.
 
+> **Optional:** To retain data between runs, use:
+>
+> ```bash
+> temporal server start-dev --db-filename my_temporal.db
+> ```
 </SetupStep>
 
 <SetupStep code={
 <>
+
 <p><strong>Activity (say_hello_activity.rb):</strong></p>
 <CodeSnippet language="ruby">
 {`require 'temporalio/activity'
 
 class SayHelloActivity < Temporalio::Activity::Definition
-  def execute(name)
-    "Hello, #{name}!"
-  end
+def execute(name)
+"Hello, #{name}!"
+end
 end`}
 </CodeSnippet>
+
 <p><strong>Workflow (say_hello_workflow.rb):</strong></p>
 <CodeSnippet language="ruby">
 {`require 'temporalio/workflow'
 require_relative 'say_hello_activity'
 
 class SayHelloWorkflow < Temporalio::Workflow::Definition
-  def execute(name)
-    Temporalio::Workflow.execute_activity(
-      SayHelloActivity,
-      name,
-      schedule_to_close_timeout: 300
-    )
-  end
+def execute(name)
+Temporalio::Workflow.execute_activity(
+SayHelloActivity,
+name,
+schedule_to_close_timeout: 300
+)
+end
 end`}
 </CodeSnippet>
 </>
@@ -154,6 +162,7 @@ If an Activity fails, Temporal automatically retries it based on your configurat
 
 <SetupStep code={
 <>
+
 <p><strong>Worker (worker.rb):</strong></p>
 <CodeSnippet language="ruby">
 {`require 'temporalio/client'
@@ -164,10 +173,10 @@ require_relative 'say_hello_workflow'
 client = Temporalio::Client.connect('localhost:7233', 'my-namespace')
 
 worker = Temporalio::Worker.new(
-  client:,
-  task_queue: 'my-task-queue',
-  workflows: [SayHelloWorkflow],
-  activities: [SayHelloActivity]
+client:,
+task_queue: 'my-task-queue',
+workflows: [SayHelloWorkflow],
+activities: [SayHelloActivity]
 )
 
 worker.run(shutdown_signals: ['SIGINT'])`}
@@ -196,6 +205,7 @@ Running this will run the Worker until Ctrl+C is pressed.
 
 <SetupStep code={
 <>
+
 <p><strong>Execute Workflow (execute_workflow.rb):</strong></p>
 <CodeSnippet language="ruby">
 {`require 'temporalio/client'
@@ -204,29 +214,30 @@ require_relative 'say_hello_workflow'
 client = Temporalio::Client.connect('localhost:7233', 'my-namespace')
 
 result = client.execute_workflow(
-  SayHelloWorkflow,
-  'Temporal',
-  id: 'my-workflow-id',
-  task_queue: 'my-task-queue'
+SayHelloWorkflow,
+'Temporal',
+id: 'my-workflow-id',
+task_queue: 'my-task-queue'
 )
 
 puts "Result: #{result}"`}
 </CodeSnippet>
+
 <p><strong>Expected output:</strong></p>
 <CodeSnippet language="bash">
 Result: Hello, Temporal!
 </CodeSnippet>
 <div className="success-section">
 <h4>
-<svg 
-  viewBox="0 0 24 24" 
-  width="20" 
-  height="20" 
-  fill="none" 
-  stroke="currentColor" 
-  strokeWidth="2" 
-  strokeLinecap="round" 
-  strokeLinejoin="round" 
+<svg
+  viewBox="0 0 24 24"
+  width="20"
+  height="20"
+  fill="none"
+  stroke="currentColor"
+  strokeWidth="2"
+  strokeLinecap="round"
+  strokeLinejoin="round"
   className="success-icon"
 >
   <path d="M9 12l2 2 4-4" />
