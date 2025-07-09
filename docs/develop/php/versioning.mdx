@@ -143,7 +143,7 @@ class MyWorkflow
 ```
 
 Note that we changed `maxSupported` from 1 to 2.
-A Workflow that has already passed this `GetVersion()` call before it was introduced returns `DEFAULT_VERSION`.
+A Workflow that has already passed this `getVersion()` call before it was introduced returns `DEFAULT_VERSION`.
 A Workflow that was run with `maxSupported` set to 1 returns 1.
 New Workflows return 2.
 
