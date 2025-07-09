@@ -27,4 +27,11 @@ Our Worker Deployments guide provides documentation of Temporal product features
 
 [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) allows you to pin Workflows to individual versions of your workers, which are called Worker Deployment Versions.
 
+This section also covers specific Worker Deployment examples:
+
+- [**Deploy Workers to Amazon EKS**](/production-deployment/worker-deployments/deploy-workers-to-aws-eks)
+  Containerize your Worker, publish it to Amazon Elastic Container Registry (ECR), and deploy it to Amazon Elastic Kubernetes Service (EKS) using the Temporal Python SDK.
+  This guide covers the full deployment lifecycle and shows how to configure your Worker to connect to Temporal Cloud using Kubernetes-native tools like ConfigMaps and Secrets.
+  Running Workers on EKS gives you fine-grained control over scaling, resource allocation, and availability—ideal for production systems that need reliability and flexibility in the cloud.
+
 You can also refer to our [Code Exchange](https://temporal.io/code-exchange) for community-contributed strategies for deploying versioned workers.
