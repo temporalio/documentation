@@ -82,6 +82,10 @@ brew install temporal
 <CodeSnippet language="bash">
 temporal server start-dev
 </CodeSnippet>
+<p><strong>Optional:</strong> To retain data between runs, use:</p>
+<CodeSnippet language="bash">
+temporal server start-dev --db-filename my_temporal.db
+</CodeSnippet>
 </>
 }>
 
@@ -104,11 +108,6 @@ This will:
 Leave this running in a separate terminal tab or window while you develop.
 You'll be able to monitor your Workflows through the Web UI as they execute.
 
-> **Optional:** To retain data between runs, use:
->
-> ```bash
-> temporal server start-dev --db-filename my_temporal.db
-> ```
 </SetupStep>
 
 <SetupStep code={
