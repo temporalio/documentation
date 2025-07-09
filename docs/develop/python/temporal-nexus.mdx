@@ -40,12 +40,12 @@ The source code used in this documentation is taken from this [Python Nexus samp
 
 ## Run the Temporal Development Server with Nexus enabled {#run-the-temporal-nexus-development-server}
 
-The first step in working with Temporal Nexus involves starting a Temporal server with Nexus enabled.
-
 Prerequisites:
 
-- [Install the latest Temporal CLI](https://learn.temporal.io/getting_started/python/dev_environment/#set-up-a-local-temporal-service-for-development-with-temporal-cli) (v1.3.0 or higher recommended)
-- [Install the latest Temporal Python SDK](https://learn.temporal.io/getting_started/python/dev_environment/#add-temporal-python-sdk-dependencies) (v1.8.0 or higher recommended)
+- [Install the latest Temporal CLI](https://learn.temporal.io/getting_started/python/dev_environment/#set-up-a-local-temporal-service-for-development-with-temporal-cli) (`v1.3.0` or higher recommended)
+- [Install the latest Temporal Python SDK](https://learn.temporal.io/getting_started/python/dev_environment/#add-temporal-python-sdk-dependencies) (`v1.14.0` or higher)
+
+The first step in working with Temporal Nexus involves starting a Temporal server with Nexus enabled.
 
 ```
 temporal server start-dev
@@ -91,25 +91,9 @@ The default data converter encodes payloads in the following order: Null, Byte a
 In a polyglot environment, that is where more than one language and SDK is being used to develop a Temporal solution, Protobuf and JSON are common choices.
 This example uses Python dataclasses serialized into JSON.
 
-<!--SNIPSTART samples-python-nexus-service-->
-
-[hello_nexus/service.py](https://github.com/temporalio/samples-python/blob/main/hello_nexus/service.py)
+[hello_nexus/service.py](https://github.com/temporalio/samples-python/blob/nexus/hello_nexus/service.py)
 
 ```python
-"""
-This is a Nexus service definition.
-
-A service definition defines a Nexus service as a named collection of operations, each
-with input and output types. It does not implement operation handling: see the service
-handler and operation handlers in hello_nexus.handler.nexus_service for that.
-
-A Nexus service definition is used by Nexus callers (e.g. a Temporal workflow) to create
-type-safe clients, and it is used by Nexus handlers to validate that they implement
-correctly-named operation handlers with the correct input and output types.
-
-The service defined in this file features two operations: my_sync_operation and my_workflow_run_operation.
-"""
-
 from dataclasses import dataclass
 
 import nexusrpc
@@ -131,21 +115,16 @@ class MyNexusService:
     my_workflow_run_operation: nexusrpc.Operation[MyInput, MyOutput]
 ```
 
-<!--SNIPEND-->
-
-## Develop a Nexus Service and Operation handlers {#develop-nexus-service-operation-handlers}
+## Develop a Nexus Service handler and Operation handlers {#develop-nexus-service-operation-handlers}
 
 Nexus Operation handlers are typically defined in the same Worker as the underlying Temporal primitives they abstract.
 Operation handlers can decide if a given Nexus Operation will be synchronous or asynchronous.
 They can execute arbitrary code, and invoke underlying Temporal primitives such as a Workflow, Query, Signal, or Update.
 
-The `temporalio.nexus` and `nexusrpc.handler` packages have utilities to help create Nexus Operations:
+The `nexusrpc.handler` and `temporalio.nexus` modules have utilities to help create Nexus Operations:
 
-- `nexus.WorkflowRunOperationContext` - Get the Temporal Client and context for asynchronous handlers backed by Workflows
-- `nexusrpc.handler.sync_operation` - Create a synchronous operation handler  
+- `nexusrpc.handler.sync_operation` - Create a synchronous operation handler
 - `nexus.workflow_run_operation` - Create an asynchronous operation handler that starts a Workflow
-
-This example starts with a sync Operation handler example using the `@nexusrpc.handler.sync_operation` decorator, and then shows how to create an async Operation handler that uses `@nexus.workflow_run_operation` to start a handler Workflow from a Nexus Operation.
 
 ### Develop a Synchronous Nexus Operation handler
 
@@ -153,34 +132,13 @@ The `@nexusrpc.handler.sync_operation` decorator is for exposing simple RPC hand
 Its handler function can access an SDK client that can be used for signaling, querying, and listing Workflows.
 However, implementations are free to make arbitrary calls to other services or databases, or perform computations such as this one:
 
-<!--SNIPSTART samples-python-nexus-handler {"selectedLines": ["1-16", "40-50"]}-->
-
-[hello_nexus/handler/service_handler.py](https://github.com/temporalio/samples-python/blob/main/hello_nexus/handler/service_handler.py)
+[hello_nexus/handler/service_handler.py](https://github.com/temporalio/samples-python/blob/nexus/hello_nexus/handler/service_handler.py)
 
 ```python
-"""
-This file demonstrates how to implement a Nexus service.
-"""
-
-from __future__ import annotations
-
-import uuid
-
 import nexusrpc
-from temporalio import nexus
-
-from hello_nexus.handler.workflows import WorkflowStartedByNexusOperation
-from hello_nexus.service import MyInput, MyNexusService, MyOutput
-
 
 @nexusrpc.handler.service_handler(service=MyNexusService)
 class MyNexusServiceHandler:
-    # This is a Nexus operation that responds synchronously to all requests. That means
-    # that unlike the workflow run operation above, in this case the handler method
-    # returns the final operation result.
-    #
-    # Sync operations are free to make arbitrary network calls, or perform CPU-bound
-    # computations. Total execution duration must not exceed 10s.
     @nexusrpc.handler.sync_operation
     async def my_sync_operation(
         self, ctx: nexusrpc.handler.StartOperationContext, input: MyInput
@@ -188,24 +146,18 @@ class MyNexusServiceHandler:
         return MyOutput(message=f"Hello {input.name} from sync operation!")
 ```
 
-<!--SNIPEND-->
-
 ### Develop an Asynchronous Nexus Operation handler to start a Workflow
 
 Use the `@nexus.workflow_run_operation` decorator, which is the easiest way to expose a Workflow as an operation.
 
-<!--SNIPSTART samples-python-nexus-handler {"selectedLines": ["20-39"]}-->
-
-[hello_nexus/handler/service_handler.py](https://github.com/temporalio/samples-python/blob/main/hello_nexus/handler/service_handler.py)
+[hello_nexus/handler/service_handler.py](https://github.com/temporalio/samples-python/blob/nexus/hello_nexus/handler/service_handler.py)
 
 ```python
-    # This is a nexus operation that is backed by a Temporal workflow. The start method
-    # starts a workflow, and returns a nexus operation token. Meanwhile, the workflow
-    # executes in the background; Temporal server takes care of delivering the eventual
-    # workflow result (success or failure) to the calling workflow.
-    #
-    # The token will be used by the caller if it subsequently wants to cancel the Nexus
-    # operation.
+import nexusrpc
+from temporalio import nexus
+
+@nexusrpc.handler.service_handler(service=MyNexusService)
+class MyNexusServiceHandler:
     @nexus.workflow_run_operation
     async def my_workflow_run_operation(
         self, ctx: nexus.WorkflowRunOperationContext, input: MyInput
@@ -217,82 +169,39 @@ Use the `@nexus.workflow_run_operation` decorator, which is the easiest way to e
         )
 ```
 
-<!--SNIPEND-->
+Workflow IDs should typically be business-meaningful IDs and are used to dedupe Workflow starts. In general, the ID should be passed in the Operation input as part of the Nexus Service contract.
 
-Workflow IDs should typically be business-meaningful IDs and are used to dedupe Workflow starts. In general, business-meaningful IDs should be passed in the Operation input as part of the Nexus Service contract.
-
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+<!-- TODO: feature does not exist in Python pre-release yet -->
+<!-- :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
 [Attaching multiple Nexus callers to a handler Workflow](/nexus/operations#attaching-multiple-nexus-callers) using a [Conflict-Policy of Use-Existing](/workflow-execution/workflowid-runid#workflow-id-conflict-policy) is a [Pre-release feature](/evaluate/development-production-features/release-stages#pre-release).
 
-:::
+::: -->
 
-### Register a Nexus Service in a Worker
+### Register your Nexus Service handler in a Worker
 
-After developing an asynchronous Nexus Operation handler to start a Workflow, the next step is to register a Nexus Service in a Worker.
+After developing an asynchronous Nexus Operation handler to start a Workflow, the next step is to register your Nexus Service handler in a Worker.
+At this stage you can pass any arguments you need to your service handler's `__init__` method.
 
-<!--SNIPSTART samples-python-nexus-handler-worker-->
-
-[hello_nexus/handler/worker.py](https://github.com/temporalio/samples-python/blob/main/hello_nexus/handler/worker.py)
+[hello_nexus/handler/worker.py](https://github.com/temporalio/samples-python/blob/nexus/hello_nexus/handler/worker.py)
 
 ```python
-import asyncio
-import logging
-from typing import Optional
-
-from temporalio.client import Client
-from temporalio.worker import Worker
-
-from hello_nexus.handler.service_handler import MyNexusServiceHandler
-from hello_nexus.handler.workflows import WorkflowStartedByNexusOperation
-
-interrupt_event = asyncio.Event()
-
-NAMESPACE = "hello-nexus-basic-handler-namespace"
-TASK_QUEUE = "my-handler-task-queue"
-
-
-async def main(client: Optional[Client] = None):
-    logging.basicConfig(level=logging.INFO)
-
-    client = client or await Client.connect(
-        "localhost:7233",
-        namespace=NAMESPACE,
-    )
-
-    # Start the worker, passing the Nexus service handler instance, in addition to the
-    # workflow classes that are started by your nexus operations, and any activities
-    # needed. This Worker will poll for both workflow tasks and Nexus tasks (this example
-    # doesn't use any activities).
-    async with Worker(
+async def main():
+    client = await Client.connect("localhost:7233", namespace=NAMESPACE)
+    worker = Worker(
         client,
         task_queue=TASK_QUEUE,
         workflows=[WorkflowStartedByNexusOperation],
         nexus_service_handlers=[MyNexusServiceHandler()],
-    ):
-        logging.info("Worker started, ctrl+c to exit")
-        await interrupt_event.wait()
-        logging.info("Shutting down")
-
-
-if __name__ == "__main__":
-    loop = asyncio.new_event_loop()
-    try:
-        loop.run_until_complete(main())
-    except KeyboardInterrupt:
-        interrupt_event.set()
-        loop.run_until_complete(loop.shutdown_asyncgens())
+    )
+    await worker.run()
 ```
-
-<!--SNIPEND-->
 
 ## Develop a caller Workflow that uses the Nexus Service {#develop-caller-workflow-nexus-service}
 
-Import the Service API package that has the necessary service and operation names and input/output types to execute a Nexus Operation from the caller Workflow:
+To execute a Nexus Operation from the caller Workflow, import the necessary service definition and operation input/output types:
 
-<!--SNIPSTART samples-python-nexus-caller-workflow-->
-
-[hello_nexus/caller/workflows.py](https://github.com/temporalio/samples-python/blob/main/hello_nexus/caller/workflows.py)
+[hello_nexus/caller/workflows.py](https://github.com/temporalio/samples-python/blob/nexus/hello_nexus/caller/workflows.py)
 
 ```python
 from temporalio import workflow
@@ -300,25 +209,16 @@ from temporalio import workflow
 with workflow.unsafe.imports_passed_through():
     from hello_nexus.service import MyInput, MyNexusService, MyOutput
 
-NEXUS_ENDPOINT = "hello-nexus-basic-nexus-endpoint"
-
-
-# This is a workflow that calls two nexus operations.
 @workflow.defn
 class CallerWorkflow:
-    # An __init__ method is always optional on a workflow class. Here we use it to set the
-    # nexus client, but that could alternatively be done in the run method.
-    def __init__(self):
-        self.nexus_client = workflow.create_nexus_client(
+    @workflow.run
+    async def run(self, name: str) -> tuple[MyOutput, MyOutput]:
+        nexus_client = workflow.create_nexus_client(
             service=MyNexusService,
             endpoint=NEXUS_ENDPOINT,
         )
-
-    # The workflow run method invokes two nexus operations.
-    @workflow.run
-    async def run(self, name: str) -> tuple[MyOutput, MyOutput]:
         # Start the nexus operation and wait for the result in one go, using execute_operation.
-        wf_result = await self.nexus_client.execute_operation(
+        wf_result = await nexus_client.execute_operation(
             MyNexusService.my_workflow_run_operation,
             MyInput(name),
         )
@@ -332,98 +232,32 @@ class CallerWorkflow:
         return sync_result, wf_result
 ```
 
-<!--SNIPEND-->
-
-### Register the caller Workflow in a Worker
+### Register the caller Workflow in a Worker and start the caller Workflow
 
 After developing the caller Workflow, the next step is to register it with a Worker.
 
-<!--SNIPSTART samples-python-nexus-caller-worker-->
+Finally, the caller Workflow must be started using `client.start_workflow()` or `client.execute_workflow()`
 
-[hello_nexus/caller/app.py](https://github.com/temporalio/samples-python/blob/main/hello_nexus/caller/app.py)
+These steps are the same as for any normal Workflow.
+The Python sample combines them in a single application:
 
-```python
-import asyncio
-import uuid
-from typing import Optional
+[hello_nexus/caller/app.py](https://github.com/temporalio/samples-python/blob/nexus/hello_nexus/caller/app.py)
 
-from temporalio.client import Client
-from temporalio.worker import Worker
+## Errors in Nexus operations
 
-from hello_nexus.caller.workflows import CallerWorkflow
-from hello_nexus.service import MyOutput
+See the general Temporal documentation [Errors in Nexus operations](https://docs.temporal.io/references/failures#errors-in-nexus-operations).
+In Python, there are three Nexus-specific errror classes:
 
-NAMESPACE = "hello-nexus-basic-caller-namespace"
-TASK_QUEUE = "hello-nexus-basic-caller-task-queue"
+- [`nexusrpc.OperationError`](https://nexus-rpc.github.io/sdk-python/nexusrpc.OperationError.html): this is the exception type you should raise in a Nexus operation to indicate that it has failed according to its own application logic and should not be retried.
+- [`nexusrpc.HandlerError`](https://nexus-rpc.github.io/sdk-python/nexusrpc.HandlerError.html): you can raise this exception type in a Nexus operation with a specific [HandlerErrorType](https://nexus-rpc.github.io/sdk-python/nexusrpc.HandlerErrorType.html). The error will be marked retryable or non-retryable according to the type, following the [Nexus spec](https://github.com/nexus-rpc/api/blob/main/SPEC.md#predefined-handler-errors). The non-retryable handler error types are `BAD_REQUEST`, `UNAUTHENTICATED`, `UNAUTHORIZED`, `NOT_FOUND`, `NOT_IMPLEMENTED`; the retryable types are `RESOURCE_EXHAUSTED`, `INTERNAL`, `UNAVAILABLE`, `UPSTREAM_TIMEOUT`.
+- [`temporalio.exceptions.NexusOperationError`](https://python.temporal.io/temporalio.exceptions.NexusOperationError.html): this is the error raised inside a Workflow when a Nexus operation fails for any reason. Use the `__cause__` attribute on the exception to access the cause chain.
 
 
-async def execute_caller_workflow(
-    client: Optional[Client] = None,
-) -> tuple[MyOutput, MyOutput]:
-    client = client or await Client.connect(
-        "localhost:7233",
-        namespace=NAMESPACE,
-    )
-
-    async with Worker(
-        client,
-        task_queue=TASK_QUEUE,
-        workflows=[CallerWorkflow],
-    ):
-        return await client.execute_workflow(
-            CallerWorkflow.run,
-            arg="world",
-            id=str(uuid.uuid4()),
-            task_queue=TASK_QUEUE,
-        )
-
-
-if __name__ == "__main__":
-    loop = asyncio.new_event_loop()
-    try:
-        results = loop.run_until_complete(execute_caller_workflow())
-        for output in results:
-            print(output.message)
-    except KeyboardInterrupt:
-        loop.run_until_complete(loop.shutdown_asyncgens())
-```
-
-<!--SNIPEND-->
-
-### Develop a starter to start the caller Workflow
-
-To initiate the caller Workflow, a starter program is used. The Python sample combines the Worker and starter into a single application.
-
-## Make Nexus calls across Namespaces with a development Server {#nexus-calls-across-namespaces-dev-server}
-
-Follow the steps below to run the Nexus handler Worker, the Nexus caller Worker, and the starter app.
-
-### Run Workers connected to a local development server
-
-Run the Nexus handler Worker:
-
-```bash
-uv run hello_nexus/handler/worker.py
-```
-
-In another terminal window, run the Nexus caller Worker and start the caller Workflow:
-
-```bash
-uv run hello_nexus/caller/app.py
-```
-
-This will result in:
-
-```
-Hello world from sync operation!
-Hello world from workflow run operation!
-```
-
-### Canceling a Nexus Operation {#canceling-a-nexus-operation}
+## Canceling a Nexus Operation {#canceling-a-nexus-operation}
 
 <!--TODO: Add Python cancellation example once available-->
 
-To cancel a Nexus Operation from within a Workflow, use the `workflow.CancellationScope` API. Only asynchronous operations can be canceled in Nexus, as cancellation is sent using an operation token.
+To cancel a Nexus Operation from within a Workflow, call `handle.cancel()` on the operation handle. Only asynchronous operations can be canceled in Nexus, since cancellation is sent using an operation token.
 The Workflow or other resources backing the operation may choose to ignore the cancellation request.
 If ignored, the operation may enter a terminal state.
 
@@ -431,12 +265,10 @@ Once the caller Workflow completes, the caller's Nexus Machinery will not make a
 It's okay to leave operations running in some use cases.
 To ensure cancellations are delivered, wait for all pending operations to finish before exiting the Workflow.
 
-See the [Nexus cancellation sample](https://github.com/temporalio/samples-python/tree/main/hello_nexus) for reference.
-
 ## Make Nexus calls across Namespaces in Temporal Cloud {#nexus-calls-across-namespaces-temporal-cloud}
 
-This section assumes you are already familiar with [how to connect a Worker to Temporal Cloud](https://docs.temporal.io/develop/python/core-application#run-a-temporal-cloud-worker).
-The same [source code](https://github.com/temporalio/samples-python/tree/main/hello_nexus) is used in this section, but the `tcld` CLI will be used to create Namespaces and the Nexus Endpoint, and mTLS client certificates will be used to securely connect the caller and handler works to their respective Temporal Cloud Namespaces.
+This section assumes you are already familiar with how to connect a Worker to Temporal Cloud.
+The `tcld` CLI is used to create Namespaces and the Nexus Endpoint, and mTLS client certificates will be used to securely connect the caller and handler works to their respective Temporal Cloud Namespaces.
 
 ### Install the latest `tcld` CLI and generate certificates
 
@@ -493,38 +325,6 @@ tcld nexus endpoint create \
 The `--allow-namespace` is used to build an Endpoint allowlist of caller Namespaces that can use the Nexus Endpoint, as described in Runtime Access Control.
 
 Alternatively, you can create a Nexus Endpoint through the UI: [https://cloud.temporal.io/nexus](https://cloud.temporal.io/nexus).
-
-### Run Workers Connected to Temporal Cloud
-
-<!--TODO: Add Python Temporal Cloud connection examples - need to update with proper authentication-->
-
-Run the handler Worker:
-
-```
-# TODO: Update with proper Temporal Cloud authentication for Python
-# This needs to be updated with the correct way to connect Python workers to Temporal Cloud
-```
-
-Run the caller Worker:
-
-```
-# TODO: Update with proper Temporal Cloud authentication for Python
-# This needs to be updated with the correct way to connect Python workers to Temporal Cloud
-```
-
-### Start a caller Workflow
-
-```
-# TODO: Update with proper Temporal Cloud authentication for Python
-# This needs to be updated with the correct way to start workflows in Temporal Cloud
-```
-
-This will result in:
-
-```
-Hello world from sync operation!
-Hello world from workflow run operation!
-```
 
 ## Observability
 
