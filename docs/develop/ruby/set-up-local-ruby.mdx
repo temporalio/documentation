@@ -57,7 +57,7 @@ Both methods will install the same Temporal SDK, which supports Ruby versions 3.
 > - Windows (MinGW) is not supported.
 > - `fibers`/`async` are only supported on Ruby **3.3+**.
 > - See [Platform Support](#) for full details.
-  > </SetupStep>
+  </SetupStep>
 
 <SetupStep code={
 <>
@@ -109,11 +109,6 @@ This will:
 Leave this running in a separate terminal tab or window while you develop.
 You'll be able to monitor your Workflows through the Web UI as they execute.
 
-> **Optional:** To retain data between runs, use:
->
-> ```bash
-> temporal server start-dev --db-filename my_temporal.db
-> ```
 </SetupStep>
 
 <SetupStep code={
@@ -253,7 +248,47 @@ Verify Success
 </ul>
 </div>
 <style>
-{`.success-section { background: rgba(34, 197, 94, 0.08); border: 1px solid rgba(34, 197, 94, 0.2); border-radius: 0.75rem; padding: 1.25rem; margin: 1.5rem 0; } .success-section h4 { margin-top: 0; margin-bottom: 1rem; color: var(--ifm-color-success-dark); font-weight: 600; display: flex; align-items: center; gap: 0.5rem; } .success-icon { stroke: var(--ifm-color-success-dark); flex-shrink: 0; } .success-section p { margin-bottom: 1rem; font-size: 0.95rem; line-height: 1.5; color: var(--ifm-color-emphasis-800); } .success-section ul { margin-bottom: 0; padding-left: 1.5rem; } .success-section li { margin-bottom: 0.5rem; font-size: 0.95rem; color: var(--ifm-color-emphasis-800); } [data-theme='dark'] .success-section { background: rgba(34, 197, 94, 0.12); border-color: rgba(34, 197, 94, 0.3); }`}
+{`
+.success-section {
+  background: rgba(34, 197, 94, 0.08);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+}
+.success-section h4 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: var(--ifm-color-success-dark);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.success-icon {
+  stroke: var(--ifm-color-success-dark);
+  flex-shrink: 0;
+}
+.success-section p {
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--ifm-color-emphasis-800);
+}
+.success-section ul {
+  margin-bottom: 0;
+  padding-left: 1.5rem;
+}
+.success-section li {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  color: var(--ifm-color-emphasis-800);
+}
+[data-theme='dark'] .success-section {
+  background: rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.3);
+}
+`}
 </style>
 </>
 }>
