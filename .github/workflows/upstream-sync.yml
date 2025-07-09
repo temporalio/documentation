@@ -54,7 +54,62 @@ jobs:
       - name: Write empty translations
         if: steps.check-changes.outputs.has_changes == 'true'
         run: |
-          npx docusaurus write-translations --locale ko --remove-unused-keys
+          # 기존 번역 파일들 백업
+          echo "기존 번역 파일 백업 중..."
+          if [ -f "i18n/ko/code.json" ]; then
+            cp i18n/ko/code.json i18n/ko/code.json.backup
+          fi
+          if [ -f "i18n/ko/docusaurus-theme-classic/navbar.json" ]; then
+            cp i18n/ko/docusaurus-theme-classic/navbar.json i18n/ko/docusaurus-theme-classic/navbar.json.backup
+          fi
+          
+          # 새 번역 파일 생성
+          yarn docusaurus write-translations --locale ko
+          
+          # 커스텀 번역 복원 (Node.js를 사용하여 JSON 병합)
+          echo "커스텀 번역 복원 중..."
+          if [ -f "i18n/ko/code.json.backup" ]; then
+            node -e "
+              const fs = require('fs');
+              const backup = JSON.parse(fs.readFileSync('i18n/ko/code.json.backup', 'utf8'));
+              const generated = JSON.parse(fs.readFileSync('i18n/ko/code.json', 'utf8'));
+              
+              // intro.* 관련 커스텀 번역 복원
+              Object.keys(backup).forEach(key => {
+                if (key.startsWith('intro.') && backup[key].message) {
+                  generated[key] = backup[key];
+                }
+              });
+              
+              fs.writeFileSync('i18n/ko/code.json', JSON.stringify(generated, null, 2));
+              console.log('code.json 커스텀 번역 복원 완료');
+            "
+          fi
+          
+          if [ -f "i18n/ko/docusaurus-theme-classic/navbar.json.backup" ]; then
+            node -e "
+              const fs = require('fs');
+              const backup = JSON.parse(fs.readFileSync('i18n/ko/docusaurus-theme-classic/navbar.json.backup', 'utf8'));
+              const generated = JSON.parse(fs.readFileSync('i18n/ko/docusaurus-theme-classic/navbar.json', 'utf8'));
+              
+              // 커스텀 번역 복원
+              Object.keys(backup).forEach(key => {
+                if (backup[key].message && backup[key].message !== generated[key]?.message) {
+                  generated[key] = backup[key];
+                }
+              });
+              
+              fs.writeFileSync('i18n/ko/docusaurus-theme-classic/navbar.json', JSON.stringify(generated, null, 2));
+              console.log('navbar.json 커스텀 번역 복원 완료');
+            "
+          fi
+          
+          # 백업 파일 정리
+          rm -f i18n/ko/code.json.backup
+          rm -f i18n/ko/docusaurus-theme-classic/navbar.json.backup
+          
+          # blog 번역 파일 제거
+          rm -rf i18n/ko/docusaurus-plugin-content-blog
           
       # 번역 파일 상태 확인
       - name: Check translation changes
