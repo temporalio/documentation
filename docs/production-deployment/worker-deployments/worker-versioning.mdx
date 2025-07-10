@@ -369,6 +369,7 @@ In this scenario, you may also need to use the other [Versioning APIs](/workflow
 ## Sunsetting an old Deployment Version
 
 A Worker Deployment Version moves through the following states:
+
 1. **Inactive**: The version exists because a worker with that version has polled the server. If this version never becomes Active, it will never be Draining or Drained.
 2. **Active**: The version is either Current or Ramping, so it is accepting new workflows and existing auto-upgrade workflows.
 3. **Draining**: The version stopped being Current or Ramping, and it has open pinned workflows running on it. It is possible to be Draining and have no open pinned workflows for a short time, since the drainage status is updated periodically.
