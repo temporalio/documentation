@@ -66,7 +66,7 @@ Self-hosted users:
 
 ## Three deployment strategies {#deployment-strategies}
 
-You'll choose among three common deployment strategies for Workers:
+When preparing your Workers for production, you'll choose among three common deployment strategies:
 
 - A **rolling deployment** strategy upgrades Workers in place with little control over how quickly they cut over and only a slow ability to roll Workers back. We do not recommend rolling deploys for high-availability Worker services.
 - A **blue-green deployment** strategy maintains two "colors," or Worker Deployment Versions simultaneously and can control how traffic is routed between them. This allows you to maximize your uptime with features like instant rollback and ramping. Worker Versioning enables the routing control that blue-green deployments need.
