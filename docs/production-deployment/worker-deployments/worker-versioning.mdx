@@ -21,7 +21,7 @@ import SdkTabs from '@site/src/components';
 [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) is a Temporal feature that allows you to confidently deploy new changes to the Workflows running on your Workers without breaking them.
 Temporal enables this by helping you manage different builds or versions, formally called Worker Deployment Versions.
 
-Worker Versioning unlocks important benefits for users of [blue-green deployments](#deployment-strategies).
+Worker Versioning unlocks important benefits for users of [blue-green or rainbow deployments](#deployment-systems).
 
 - Ramping traffic gradually to a new Worker Deployment Version.
 - Verifying a new Deployment Version with tests before sending production traffic to it.
@@ -31,7 +31,7 @@ In addition, Worker Versioning introduces **Workflow Pinning**.
 For pinned Workflow Types, each execution runs entirely on the Worker Deployment Version where it started.
 You need not worry about making breaking code changes to running, pinned Workflows.
 
-To use Workflow Pinning, we recommend using [rainbow deployments](#deployment-strategies).
+To use Workflow Pinning, we recommend using [rainbow deployments](#deployment-systems).
 
 :::tip
 Watch this Temporal Replay 2025 talk to learn more about Worker Versioning and see a demo.
@@ -84,12 +84,19 @@ To get started with Worker Versioning, you should understand some concepts aroun
   - A **Pinned** Workflow is guaranteed to complete on a single Worker Deployment Version.
   - An **Auto-Upgrade** Workflow will move to the latest Worker Deployment Version automatically whenever you change the current version. Auto-upgrade Workflows are not restricted to a single Deployment Version and need to be kept replay-safe manually, i.e. with [patching](/workflow-definition#workflow-versioning).
   - Both Pinned and Auto-Upgrade workflows are guaranteed to start only on the Current or Ramping Version of their Worker Deployment.
-- Each Worker Deployment has a single **Current Version** which is where workflows are routed to unless they were previously pinned to a different version. Other versions should continue polling to allow their pinned Workflows to finish executing, or in case you need to roll back. If no current version is specified, the default is unversioned.
-- Each Worker Deployment can have a **Ramping Version** which is where a configurable percentage of workflows are routed to unless they were previously pinned to a different version. The ramp percentage can be in the range [0, 100]. Workflows that don't go to the Ramping Version will go to the Current Version. If no ramping version is specified, 100% of new workflows and auto-upgrade workflows will go to the Current Version.
+  - Workflow Pinning is designed for use with rainbow deployments. See [Deployment Systems](#deployment-systems).
+- Each Worker Deployment has a single **Current Version** which is where workflows are routed to unless they were previously pinned on a different version. Other versions can continue polling to allow pinned Workflows to finish executing, or in case you need to roll back. If no current version is specified, the default is unversioned.
+- Each Worker Deployment can have a **Ramping Version** which is where a configurable percentage of workflows are routed to unless they were previously pinned on a different version. The ramp percentage can be in the range [0, 100]. Workflows that don't go to the Ramping Version will go to the Current Version. If no ramping version is specified, 100% of new workflows and auto-upgrade workflows will go to the Current Version.
 
-Worker Versioning requires that you are using blue-green deployments.
-Using Workflow Pinning requires rainbow deployments.
-Rainbow deployments are described in [Deployment Strategies](#deployment-strategies).
+## Setting up your deployment system {#deployment-systems}
+
+If you haven't already, you'll want to pick a container deployment solution for your Workers.
+
+You also need to pick among three common deployment strategies:
+
+- A **rolling deployment** strategy upgrades Workers in place with little control over how quickly they cut over and only a slow ability to roll Workers back. Rolling deploys have minimal footprint but tend to provide lower availability than the other strategies and are incompatible with Worker Versioning.
+- A **blue-green deployment** strategy maintains two "colors," or Worker Deployment Versions simultaneously and can control how traffic is routed between them. This allows you to maximize your uptime with features like instant rollback and ramping. Worker Versioning enables the routing control that blue-green deployments need.
+- A **rainbow deployment** strategy is like blue-green but with more colors, allowing Workflow Pinning. You can deploy new revisions of your Workflows freely while older versions drain. Using Worker Versioning, Temporal lets you know when all the Workflows of a given version are drained so that you can sunset it.
 
 ## Configuring a Worker for Versioning
 
