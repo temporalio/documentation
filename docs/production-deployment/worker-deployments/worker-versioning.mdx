@@ -398,12 +398,12 @@ To do this, utilize pinning in your tests, following the examples below:
 <SdkTabs.Go>
 ```go
 workflowOptions := client.StartWorkflowOptions{
-ID:        "MyWorkflowId",
-	TaskQueue: "MyTaskQueue",
-       VersioningOverride = client.VersioningOverride{
-Behavior: workflow.VersioningBehaviorPinned,
-PinnedVersion: "$MY_TEST_DEPLOYMENT_VERSION",
-	}
+  ID:        "MyWorkflowId",
+  TaskQueue: "MyTaskQueue",
+  VersioningOverride: client.VersioningOverride{
+    Behavior:      workflow.VersioningBehaviorPinned,
+    PinnedVersion: "$MY_TEST_DEPLOYMENT_VERSION",
+  },
 }
 // c is an initialized Client
 we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, HelloWorld, "Hello")
