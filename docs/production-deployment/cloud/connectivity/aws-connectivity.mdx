@@ -1,25 +1,43 @@
 ---
-id: aws-privatelink
-title: Private Connectivity - AWS PrivateLink
-sidebar_label: AWS PrivateLink
-description: Secure your Temporal Cloud connections using AWS PrivateLink.
-slug: /cloud/security/aws-privatelink
-toc_max_heading_level: 4
-keywords:
-  - privatelink
-  - private connectivity
-  - security
-  - temporal cloud
-  - aws
+id: aws-connectivity
+title: AWS PrivateLink Connectivity
+sidebar_label: AWS Private Connect
+slug: /cloud/connectivity/aws-connectivity
+description: Temporal Cloud's High Availability Namespaces offer automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime.
 tags:
-  - Security
   - Temporal Cloud
-  - AWS
+  - Production
+  - High Availability
+keywords:
+  - availability
+  - explanation
+  - failover
+  - high-availability
+  - multi-region
+  - multi-region namespace
+  - namespaces
+  - temporal-cloud
+  - term
 ---
 
-import * as Components from '@site/src/components';
+import { ToolTipTerm, DiscoverableDisclosure } from '@site/src/components';
 
-#### AWS PrivateLink
+This page covers...
+
+## Creating an AWS PrivateLink connection
+
+## How to configure internal DNS 
+
+(optional)
+
+Why: simplify worker config in general (easier than SNI override) as well as potential failover/migration if using any HA capabilities
+
+## Configure internal DNS for MRR
+
+New cross-cloud diagram (multiple sets of workers)
+
+If you’re using a single worker fleet, you can use PrivateLink. 
+If you’re using Multi-cloud, you can’t use PrivateLink (or you need to solve cross-cloud networking)
 
 [AWS PrivateLink](https://aws.amazon.com/privatelink/) allows you to open a path to Temporal without opening a public egress.
 It establishes a private connection between your Amazon Virtual Private Cloud (VPC) and Temporal Cloud.
@@ -145,3 +163,4 @@ When using [API keys for namespace authentication](/cloud/api-keys#namespace-aut
       <DNS ASSOCIATED WITH VPC ENDPOINT>:7233 \
       temporal.api.workflowservice.v1.WorkflowService/GetSystemInfo
   ```
+
