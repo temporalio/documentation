@@ -69,7 +69,7 @@ Self-hosted users:
 You'll choose among three common deployment strategies for Workers:
 
 - A **rolling deployment** strategy upgrades Workers in place with little control over how quickly they cut over and only a slow ability to roll Workers back. We do not recommend rolling deploys for high-availability Worker services.
-- A **blue-green deployment** strategy maintains two "colors," or Worker Deployment Versions simultaneously and can control how traffic is routed between them. This allows you to maximize your uptime with features like instant rollback and ramping. If you are using blue-green deployments, we recommend Worker Versioning, though we do not recommend Workflow Pinning.
+- A **blue-green deployment** strategy maintains two "colors," or Worker Deployment Versions simultaneously and can control how traffic is routed between them. This allows you to maximize your uptime with features like instant rollback and ramping. Worker Versioning enables the routing control that blue-green deployments need.
 - A **rainbow deployment** strategy is like blue-green but with more colors, allowing Workflow Pinning. You can deploy new revisions of your Workflows freely while older versions drain. Using Worker Versioning, Temporal lets you know when all the Workflows of a given version are drained so that you can sunset it.
 
 ## Getting Started with Worker Versioning {#definition}
