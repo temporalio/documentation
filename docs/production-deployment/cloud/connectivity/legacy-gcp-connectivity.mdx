@@ -25,17 +25,19 @@ import { ToolTipTerm, DiscoverableDisclosure } from '@site/src/components';
 Pre-release experience for existing private connectivity users - could link to a Google doc vs having a permanent public docs link
 
 Customers who set up PrivateLink connectivity via Temporal support may have 0 connectivity rules for each namespace. That means:
-* Namespace IS DEFINITELY publicly accessible
-* Namespace MAY BE accessible over PL
+
+- Namespace IS DEFINITELY publicly accessible
+- Namespace MAY BE accessible over PL
 
 When you enable connectivity rules, it will block traffic that does not have a corresponding rule
 
 What does a customer do in this case?
-* If you don’t want to enforce private connectivity, no action is required
-* If you have 1 PL AND you want to enforce private connectivity only:
-  * Add a CR for your PL for all namespaces
-  * Now all namespaces will be only accessible via PL
-* If you have multiple PL AND you want to enforce private connectivity only:
-  * You need to determine which workers are using which connection to connect to which namespace
-  * Add a CR for each PL and the namespaces it should have access to
-  * Now all namespaces will be only accessible via PL
+
+- If you don’t want to enforce private connectivity, no action is required
+- If you have 1 PL AND you want to enforce private connectivity only:
+  - Add a CR for your PL for all namespaces
+  - Now all namespaces will be only accessible via PL
+- If you have multiple PL AND you want to enforce private connectivity only:
+  - You need to determine which workers are using which connection to connect to which namespace
+  - Add a CR for each PL and the namespaces it should have access to
+  - Now all namespaces will be only accessible via PL

@@ -26,7 +26,7 @@ This page covers...
 
 ## Creating an AWS PrivateLink connection
 
-## How to configure internal DNS 
+## How to configure internal DNS
 
 (optional)
 
@@ -36,7 +36,7 @@ Why: simplify worker config in general (easier than SNI override) as well as pot
 
 New cross-cloud diagram (multiple sets of workers)
 
-If you’re using a single worker fleet, you can use PrivateLink. 
+If you’re using a single worker fleet, you can use PrivateLink.
 If you’re using Multi-cloud, you can’t use PrivateLink (or you need to solve cross-cloud networking)
 
 [AWS PrivateLink](https://aws.amazon.com/privatelink/) allows you to open a path to Temporal without opening a public egress.
@@ -163,4 +163,3 @@ When using [API keys for namespace authentication](/cloud/api-keys#namespace-aut
       <DNS ASSOCIATED WITH VPC ENDPOINT>:7233 \
       temporal.api.workflowservice.v1.WorkflowService/GetSystemInfo
   ```
-
