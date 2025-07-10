@@ -1,0 +1,92 @@
+---
+id: index
+title: Connectivity
+sidebar_label: Connectivity
+slug: /cloud/connectivity
+description: Temporal Cloud's Namespace with High Availability features offers automated failover, synchronized data, and replication for workloads requiring disaster-tolerant deployment and 99.99% uptime.
+tags:
+  - Temporal Cloud
+  - Production
+  - Connectivity
+keywords:
+  - availability
+  - explanation
+  - failover
+  - replication
+  - namespaces
+  - temporal-cloud
+  - term
+---
+
+import { ToolTipTerm, DiscoverableDisclosure, CaptionedImage } from '@site/src/components';
+
+Introductory text goes here...
+
+## What are connectivity rules?
+
+Connectivity rules are Temporal Cloud's mechanism for limiting access to a namespace. 
+When you add connectivity rules, Temporal Cloud will block traffic that does not have a corresponding connectivity rule from accessing the namespace. 
+By default, a namespace has zero connectivity rules, and is accessible from the public internet.
+
+A connectivity rule specifies public (i.e. internet) or private (i.e. [AWS PrivateLink](https://aws.amazon.com/privatelink/) or [Google Cloud Private Service Connect](https://cloud.google.com/vpc/docs/private-service-connect)) access to a namespace.
+One namespace can have multiple connectivity rules, and may mix both public and private rules.
+
+Namespace access is always securely authenticated via [API keys](https://docs.temporal.io/cloud/api-keys#overview) or [mTLS](https://docs.temporal.io/cloud/certificates), regardless of connectivity rules.
+
+Connectivity rules can be managed with [tcld](https://docs.temporal.io/cloud/tcld/) or [Terraform](https://github.com/temporalio/terraform-provider-temporalcloud/).
+
+## Creating a connectivity rule
+
+### Temporal Cloud CLI (tcld)
+
+Public connectivity rule:
+```bash
+tcld connectivity-rule create --connectivity-type public
+```
+
+Private connectivity rule (AWS):
+```bash
+tcld connectivity-rule create --connectivity-type private --connection-id "conn-123" --region "us-east-1" --cloud-provider aws
+```
+
+Private connectivity rule (GCP):
+```bash
+tcld connectivity-rule create --connectivity-type private --connection-id "conn-456" --region "us-central1" --cloud-provider gcp --gcp-project-id "my-project-123"
+```
+
+Or using the `cr` alias:
+```bash
+tcld cr create --connectivity-type public
+```
+
+Private connectivity rule:
+```bash
+tcld cr create --connectivity-type private --connection-id "conn-123" --region "us-east-1" --cloud-provider aws
+```
+
+### Terraform
+
+[Example in the Terraform repo](https://github.com/temporalio/terraform-provider-temporalcloud/tree/main/examples/resources)
+
+## Update connectivity rules on a namespace
+
+### Temporal Cloud CLI (tcld)
+
+Set connectivity rules to a namespace:
+```bash
+tcld namespace set-connectivity-rules --namespace "my-namespace" --connectivity-rule-ids "rule-id-1" --connectivity-rule-ids "rule-id-2"
+```
+
+Or using aliases:
+```bash
+tcld n scrs -n "my-namespace" --ids "rule-id-1" --ids "rule-id-2"
+```
+
+Remove all connectivity rules:
+```bash
+tcld namespace set-connectivity-rules --namespace "my-namespace" --remove-all
+```
+
+### Terraform
+
+[Example in the Terraform repo](https://github.com/temporalio/terraform-provider-temporalcloud/tree/main/examples/resources)

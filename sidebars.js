@@ -65,19 +65,7 @@ module.exports = {
           },
           items: [
             "evaluate/temporal-cloud/overview",
-            {
-              type: "category",
-              label: "Security",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "evaluate/temporal-cloud/security",
-              },
-              items: [
-                "evaluate/temporal-cloud/aws-privatelink",
-                "evaluate/temporal-cloud/gcp-private-service-connect",
-              ],
-            },
+            "evaluate/temporal-cloud/security",
             "evaluate/temporal-cloud/service-availability",
             "evaluate/temporal-cloud/regions",
             "evaluate/temporal-cloud/limits",
@@ -381,6 +369,7 @@ module.exports = {
                     "production-deployment/cloud/high-availability/how-to/failovers",
                     "production-deployment/cloud/high-availability/how-to/secure-routing",
                     "production-deployment/cloud/high-availability/how-to/private-link",
+                    "production-deployment/cloud/high-availability/how-to/google-private-connect",
                   ],
                 },
                 {
@@ -399,6 +388,20 @@ module.exports = {
                     // "production-deployment/cloud/high-availability/references/faq",
                   ],
                 },
+              ],
+            },
+            {
+              type: "category",
+              label: "Connectivity",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "production-deployment/cloud/connectivity/index",
+              },
+              items: [
+                "production-deployment/cloud/connectivity/aws-connectivity",
+                "production-deployment/cloud/connectivity/gcp-connectivity",
+                "production-deployment/cloud/connectivity/legacy-gcp-connectivity",
               ],
             },
             "production-deployment/cloud/rpo-rto",

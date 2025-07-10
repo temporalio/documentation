@@ -1,27 +1,44 @@
 ---
-id: gcp-private-service-connect
-title: Private Communication - GCP Private Service Connect
-sidebar_label: GCP Private Service Connect
-description: Secure your Temporal Cloud connections using GCP Private Service Connect.
-slug: /cloud/security/gcp-private-service-connect
-toc_max_heading_level: 4
-keywords:
-  - private service connect
-  - private connectivity
-  - security
-  - temporal cloud
-  - gcp
-  - google cloud
+id: gcp-connectivity
+title: Google Private Service Connect Connectivity
+sidebar_label: GCP Private Connect
+slug: /cloud/connectivity/gcp-connectivity
+description: Temporal Cloud's High Availability Namespaces offer automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime.
 tags:
-  - security
+  - Temporal Cloud
+  - Production
+  - High Availability
+keywords:
+  - availability
+  - explanation
+  - failover
+  - high-availability
+  - multi-region
+  - multi-region namespace
+  - namespaces
   - temporal-cloud
-  - gcp
-  - google cloud
-  - private service connect
-  - private-connectivity
+  - term
 ---
 
-import * as Components from '@site/src/components';
+import { ToolTipTerm, DiscoverableDisclosure } from '@site/src/components';
+
+This page covers...
+
+## Creating a Private Service Connect connection
+
+## How to configure internal DNS 
+
+(optional)
+
+Why: simplify worker config in general (easier than SNI override) as well as potential failover/migration if using any HA capabilities
+
+## Configure internal DNS for Microservices
+
+New cross-cloud diagram (multiple sets of workers)
+
+If you’re using a single worker fleet, you can use PrivateLink. 
+If you’re using Multi-cloud, you can’t use PrivateLink (or you need to solve cross-cloud networking)
+
 
 #### Google Cloud Private Service Connect
 
