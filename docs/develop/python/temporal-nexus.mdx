@@ -31,7 +31,8 @@ This page shows how to do the following:
 - [Define the Nexus Service contract](#define-nexus-service-contract)
 - [Develop a Nexus Service and Operation handlers](#develop-nexus-service-operation-handlers)
 - [Develop a caller Workflow that uses a Nexus Service](#develop-caller-workflow-nexus-service)
-- [Make Nexus calls across Namespaces with a development Server](#nexus-calls-across-namespaces-dev-server)
+- [Understand exceptions in Nexus Operations]({#exceptions-in-nexus-operations})
+- [Cancel a Nexus Operation]({#canceling-a-nexus-operation})
 - [Make Nexus calls across Namespaces in Temporal Cloud](#nexus-calls-across-namespaces-temporal-cloud)
 
 <br />
@@ -243,10 +244,10 @@ The Python sample combines them in a single application:
 
 [hello_nexus/caller/app.py](https://github.com/temporalio/samples-python/blob/nexus/hello_nexus/caller/app.py)
 
-## Errors in Nexus operations
+## Exceptions in Nexus operations {#exceptions-in-nexus-operations}
 
 See the general Temporal documentation [Errors in Nexus operations](https://docs.temporal.io/references/failures#errors-in-nexus-operations).
-In Python, there are three Nexus-specific errror classes:
+In Python, there are three Nexus-specific exception classes:
 
 - [`nexusrpc.OperationError`](https://nexus-rpc.github.io/sdk-python/nexusrpc.OperationError.html): this is the exception type you should raise in a Nexus operation to indicate that it has failed according to its own application logic and should not be retried.
 - [`nexusrpc.HandlerError`](https://nexus-rpc.github.io/sdk-python/nexusrpc.HandlerError.html): you can raise this exception type in a Nexus operation with a specific [HandlerErrorType](https://nexus-rpc.github.io/sdk-python/nexusrpc.HandlerErrorType.html). The error will be marked retryable or non-retryable according to the type, following the [Nexus spec](https://github.com/nexus-rpc/api/blob/main/SPEC.md#predefined-handler-errors). The non-retryable handler error types are `BAD_REQUEST`, `UNAUTHENTICATED`, `UNAUTHORIZED`, `NOT_FOUND`, `NOT_IMPLEMENTED`; the retryable types are `RESOURCE_EXHAUSTED`, `INTERNAL`, `UNAVAILABLE`, `UPSTREAM_TIMEOUT`.
