@@ -253,7 +253,6 @@ In Python, there are three Nexus-specific exception classes:
 - [`nexusrpc.HandlerError`](https://nexus-rpc.github.io/sdk-python/nexusrpc.HandlerError.html): you can raise this exception type in a Nexus operation with a specific [HandlerErrorType](https://nexus-rpc.github.io/sdk-python/nexusrpc.HandlerErrorType.html). The error will be marked retryable or non-retryable according to the type, following the [Nexus spec](https://github.com/nexus-rpc/api/blob/main/SPEC.md#predefined-handler-errors). The non-retryable handler error types are `BAD_REQUEST`, `UNAUTHENTICATED`, `UNAUTHORIZED`, `NOT_FOUND`, `NOT_IMPLEMENTED`; the retryable types are `RESOURCE_EXHAUSTED`, `INTERNAL`, `UNAVAILABLE`, `UPSTREAM_TIMEOUT`.
 - [`temporalio.exceptions.NexusOperationError`](https://python.temporal.io/temporalio.exceptions.NexusOperationError.html): this is the error raised inside a Workflow when a Nexus operation fails for any reason. Use the `__cause__` attribute on the exception to access the cause chain.
 
-
 ## Canceling a Nexus Operation {#canceling-a-nexus-operation}
 
 <!--TODO: Add Python cancellation example once available-->
