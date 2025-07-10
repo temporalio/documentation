@@ -37,7 +37,11 @@ This page shows how to do the following:
 
 <br />
 
-The source code used in this documentation is taken from this [Python Nexus sample](https://github.com/temporalio/samples-python/tree/main/hello_nexus).
+:::note
+
+This documentation uses source code derived from the [Python Nexus sample](https://github.com/temporalio/samples-python/tree/main/hello_nexus).
+
+:::
 
 ## Run the Temporal Development Server with Nexus enabled {#run-the-temporal-nexus-development-server}
 
@@ -46,7 +50,7 @@ Prerequisites:
 - [Install the latest Temporal CLI](https://learn.temporal.io/getting_started/python/dev_environment/#set-up-a-local-temporal-service-for-development-with-temporal-cli) (`v1.3.0` or higher recommended)
 - [Install the latest Temporal Python SDK](https://learn.temporal.io/getting_started/python/dev_environment/#add-temporal-python-sdk-dependencies) (`v1.14.0` or higher)
 
-The first step in working with Temporal Nexus involves starting a Temporal server with Nexus enabled.
+The first step in working with Temporal Nexus involves starting a Temporal Server with Nexus enabled.
 
 ```
 temporal server start-dev
@@ -65,7 +69,7 @@ temporal operator namespace create --namespace my-target-namespace
 temporal operator namespace create --namespace my-caller-namespace
 ```
 
-`my-target-namespace` will contain the Nexus Operation handler, and we will use a Workflow in `my-caller-namespace` to call that Operation handler.
+For this example, `my-target-namespace` will contain the Nexus Operation handler, and you will use a Workflow in `my-caller-namespace` to call that Operation handler.
 We use different namespaces to demonstrate cross-Namespace Nexus calls.
 
 ## Create a Nexus Endpoint to route requests from caller to handler {#create-nexus-endpoint}
@@ -240,13 +244,12 @@ After developing the caller Workflow, the next step is to register it with a Wor
 Finally, the caller Workflow must be started using `client.start_workflow()` or `client.execute_workflow()`
 
 These steps are the same as for any normal Workflow.
-The Python sample combines them in a single application:
-
-[hello_nexus/caller/app.py](https://github.com/temporalio/samples-python/blob/nexus/hello_nexus/caller/app.py)
+The Python sample combines them in a single application. 
+See [hello_nexus/caller/app.py](https://github.com/temporalio/samples-python/blob/nexus/hello_nexus/caller/app.py) for reference. 
 
 ## Exceptions in Nexus operations {#exceptions-in-nexus-operations}
 
-See the general Temporal documentation [Errors in Nexus operations](https://docs.temporal.io/references/failures#errors-in-nexus-operations).
+Temporal provides general guidance on [Errors in Nexus operations](https://docs.temporal.io/references/failures#errors-in-nexus-operations).
 In Python, there are three Nexus-specific exception classes:
 
 - [`nexusrpc.OperationError`](https://nexus-rpc.github.io/sdk-python/nexusrpc.OperationError.html): this is the exception type you should raise in a Nexus operation to indicate that it has failed according to its own application logic and should not be retried.
@@ -272,7 +275,7 @@ The `tcld` CLI is used to create Namespaces and the Nexus Endpoint, and mTLS cli
 
 ### Install the latest `tcld` CLI and generate certificates
 
-To install the latest version of the `tcld` CLI, run the following command (on MacOS):
+To install the latest version of the `tcld` CLI, run the following command (on macOS):
 
 ```
 brew install temporalio/brew/tcld
