@@ -380,7 +380,7 @@ When a version is Draining or Drained, that is displayed in a value called `Drai
 Periodically, the Temporal Service will refresh this status by counting any open pinned workflows using that version.
 On each refresh, `DrainageInfo.last_checked_time` is updated.
 Eventually, `DrainageInfo` will report that the version is fully drained.
-At this point, no workflows are still running on that version and no more will be automatically routed to it, so you can consider shutting down the running Workers.
+At this point, no Workflows are still running on that version and no more will be automatically routed to it, so you can consider shutting down the running Workers.
 
 You can monitor this by checking `WorkerDeploymentInfo.VersionSummaries` or with `temporal worker deployment describe-version`:
 
