@@ -30,36 +30,59 @@ tags:
 
 import { CaptionedImage } from '@site/src/components';
 
-The definition code of a Temporal Workflow must be deterministic because Temporal uses event sourcing
-to reconstruct the Workflow state by replaying the saved history event data on the Workflow
-definition code. This means that any incompatible update to the Workflow Definition code could cause
-a non-deterministic issue if not handled correctly.
+Since Workflow Executions in Temporal can run for long periods — sometimes months or even years — it's common to need to make changes to a Workflow Definition, even while a particular Workflow Execution is in progress.
 
-## Introduction to Versioning
+The Temporal Platform requires that Workflow code is [deterministic](/workflow-definition#deterministic-constraints).
+If you make a change to your Workflow code that would cause non-deterministic behavior on Replay, you'll need to use one of our Versioning methods to gracefully update your running Workflows.
+With Versioning, you can modify your Workflow Definition so that new executions use the updated code, while existing ones continue running the original version.
+There are two primary Versioning methods that you can use:
 
-Because we design for potentially long running Workflows at scale, versioning with Temporal works differently. We explain more in this optional 30 minute introduction:
+- [Versioning with Patching](#patching). This method works by adding branches to your code tied to specific revisions. It can be used to revise in-progress Workflows.
+- [Worker Versioning](/production-deployment/worker-deployments/worker-versioning). The Worker Versioning feature allows you to tag your Workers and programmatically roll them out in versioned deployments, so that old Workers can run old code paths and new Workers can run new code paths. If you were using this method experimentally prior to summer 2025, refer to the [Worker Versioning Legacy](worker-versioning-legacy) docs.
 
-<div style={{ position: "relative", paddingBottom: "56.25%", height: 0 }}>
-  <iframe
-    src="https://www.youtube.com/embed/kkP899WxgzY?autoplay=0"
-    style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
-    frameborder="0"
-    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-    allowfullscreen>
-  </iframe>
-</div>
+## Versioning with Patching {#patching}
 
-## How to use the Python SDK Patching API {#python-sdk-patching-api}
+To understand why Patching is useful, it's helpful to first demonstrate cutting over an entire Workflow.
 
-In principle, the Python SDK's patching mechanism operates similarly to other SDKs in a "feature-flag" fashion. However, the "versioning" API now uses the concept of "patching in" code.
+### Workflow cutovers
 
-To understand this, you can break it down into three steps, which reflect three stages of migration:
+Since incompatible changes only affect open Workflow Executions of the same type, you can avoid determinism errors by creating a whole new Workflow when making changes.
+To do this, you can copy the Workflow Definition function, giving it a different name, and make sure that both names are registered with your Workers.
 
-- Running `pre_patch_activity` code while concurrently patching in `post_patch_activity`.
-- Running `post_patch_activity` code with deprecation markers for `my-patch` patches.
-- Running only the `post_patch_activity` code.
+For example, you would duplicate `PizzaWorkflow` as `PizzaWorkflowV2`:
 
-Let's walk through this process in sequence.
+```python
+@workflow.defn(name="PizzaWorkflow")
+class PizzaWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        # this function contains the original code
+
+@workflow.defn(name="PizzaWorkflowV2")
+class PizzaWorkflowV2:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        # this function contains the updated code
+```
+
+You would then need to update the Worker configuration, and any other identifier strings, to register both Workflow Types:
+
+```python
+worker = Worker(
+    client,
+    task_queue="your-task-queue",
+    workflows=[PizzaWorkflow, PizzaWorkflowV2],
+)
+```
+
+The downside of this method is that it requires you to duplicate code and to update any commands used to start the Workflow.
+This can become impractical over time.
+This method also does not provide a way to version any still-running Workflows -- it is essentially just a cutover, unlike Patching, which we will now demonstrate.
+
+### Adding a patch
+
+Patching essentially defines a logical branch for a specific change in the Workflow.
+If your Workflow is not [pinned to a specific Worker Deployment Version](/production-deployment/worker-deployments/worker-versioning) or you need to fix a bug in a running workflow, you can patch it.
 
 Suppose you have an initial Workflow version called `pre_patch_activity`:
 
@@ -115,27 +138,21 @@ class MyWorkflow:
         )
 ```
 
-**Problem: You cannot deploy `post_patch_activity` directly until you're certain there are no more running Workflows created using the `pre_patch_activity` code, otherwise you are likely to cause a nondeterminism error.**
-
+The problem is that you cannot deploy `post_patch_activity` directly until you're certain there are no more running Workflows created using the `pre_patch_activity` code, otherwise you are likely to cause a nondeterminism error.
 Instead, you'll need to deploy `post_patched_activity` and use the [patched](https://python.temporal.io/temporalio.workflow.html#patched) function to determine which version of the code to execute.
 
-Implementing patching involves three steps:
+Patching is a three-step process:
 
-1. Use [patched](https://python.temporal.io/temporalio.workflow.html#patched) to patch in new code and run it alongside the old code.
-2. Remove the old code and apply [deprecate_patch](https://python.temporal.io/temporalio.workflow.html#deprecate_patch).
-3. Once you're confident that all old Workflows have finished executing, remove `deprecate_patch`.
+1. Patch in any new, updated code using the `patched()` function. Run the new patched code alongside old code.
+2. Remove old code and use `deprecate_patch()` to mark a particular patch as deprecated.
+3. Once there are no longer any open Worklow Executions of the previous version of the code, remove `deprecate_patch()`.
+   Let's walk through this process in sequence.
 
 ### Patching in new code {#using-patched-for-workflow-history-markers}
 
-Using `patched()` inserts a marker into the Workflow History.
-
-<CaptionedImage
-    src="https://user-images.githubusercontent.com/6764957/139673361-35d61b38-ab94-401e-ae7b-feaa52eae8c6.png"
-    title="Using `patched` inserts a marker into the Workflow History"
-    zoom="true"
-/>
-
-During replay, if a Worker encounters a history with that marker, it will fail the Workflow task when the Workflow code doesn't produce the same patch marker (in this case, `my-patch`). This ensures you can safely deploy code from `post_patch_activity` as a "feature flag" alongside the original version (`pre_patch_activity`).
+Using `patched` inserts a marker into the Workflow History.
+During Replay, if a Worker encounters a history with that marker, it will fail the Workflow task when the Workflow code doesn't produce the same patch marker (in this case, `my-patch`).
+This ensures you can safely deploy code from `post_patch_activity` as a "feature flag" alongside the original version (`pre_patch_activity`).
 
 <div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_2_patched_dacx.py">
@@ -162,7 +179,7 @@ class MyWorkflow:
             )
 ```
 
-### Understanding deprecated Patches in the Python SDK {#deprecated-patches}
+### Deprecating patches {#deprecated-patches}
 
 After ensuring that all Workflows started with `pre_patch_activity` code have finished, you can [deprecate the patch](https://python.temporal.io/temporalio.workflow.html#deprecate_patch).
 
@@ -192,9 +209,9 @@ class MyWorkflow:
         )
 ```
 
-### Safe Deployment of post_patch_activity {#deploy-new-code}
+### Removing a patch {#deploy-new-code}
 
-Once you're sure that you will no longer need to Query or Replay any of your pre-patch Workflows, you can then safely deploy Workers that no longer use either the `patched()` or `deprecate_patch()` calls:
+Once you're sure that you will no longer need to [Query](/develop/python/message-passing#send-query) or Replay any of your pre-patch Workflows, you can then safely deploy Workers that no longer use either the `patched()` or `deprecate_patch()` calls:
 
 <div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_4_patch_complete_dacx.py">
@@ -215,9 +232,12 @@ class MyWorkflow:
         )
 ```
 
+Patching allows you to make changes to currently running Workflows.
+It is a powerful method for introducing compatible changes without introducing non-determinism errors.
+
 ### Detailed Description of the Patched Function
 
-This video series examines into the behavior of the `patched()` function:
+This video provides an in-depth overview of how the `patched()` function works:
 
 <div style={{ position: "relative", paddingBottom: "56.25%", height: 0 }}>
   <iframe
@@ -229,162 +249,10 @@ This video series examines into the behavior of the `patched()` function:
   </iframe>
 </div>
 
-#### Behavior When Not Replaying
+### Testing a Workflow for replay safety.
 
-If the execution is not replaying, when it encounters a call to `patched()`, it first checks the event history.
+To determine whether your Workflow your needs a patch, or that you've patched it successfully, you should incorporate [Replay Testing](/develop/python/testing-suite#replay).
 
-- If the patch ID is not in the event history, the execution adds a marker to the event history, upserts a search attribute, and returns `true`.
-  This happens in the first block of the patch ID.
-- If the patch ID is in the event history, the execution doesn't modify the history, and returns `true`.
-  This happens in a patch ID's subsequent blocks, because the event history was updated in the first block.
+## Worker Versioning
 
-There is a caveat to this behavior, which we will cover below.
-
-#### Behavior When Replaying With Marker Before-Or-At Current Location
-
-If the execution is replaying and has a call to `patched()`, and if the event history has a marker from a call to `patched()` in the same place
-(which means it will match the original event history), then it writes a marker to the replay event history and returns `true`.
-
-This is similar to the behavior of the non-replay case, and
-also happens in a given patch ID's first block.
-
-If the code has a call to `patched()`, and the event history
-has a marker with that Patch ID earlier in the history,
-it will return `true` and will not modify the
-replay event history.
-
-This is also similar to the behavior of the non-replay case, and
-also happens in a given patch ID's subsequent blocks.
-
-#### Behavior When Replaying With Marker After Current Location
-
-If the Event History's Marker Event is after the current execution point,
-that means the new patch is too early.
-The execution will encounter the new patch before the original.
-The execution will
-attempt to write the marker to the replay event
-history, but it will throw a non-deterministic
-exception because the replay and original event
-histories don't match.
-
-#### Behavior When Replaying With No Marker For that Patch ID
-
-During a Replay, if there is no marker for a given patch ID, the execution will return `false` and will not add a marker to
-the event history. In addition, all future calls to `patched()`
-with that ID will return `false` -- even after it is done replaying
-and is running new code.
-
-The [preceding section](#behavior-when-not-replaying) states that if the execution is not replaying,
-the `patched()` function will always return `true`. If
-the marker doesn't exist, it will be added, and if
-the marker already exists, it won't be re-added.
-
-However, this behavior doesn't occur if there was already
-a call to `patched()` with that ID in the replay code, but not
-in the event history. In this situation, the function won't return
-`true`.
-
-#### A Summary of the Two Potentially Unexpected Behaviors
-
-Recapping the potentially unexpected behaviors that may occur during a Replay:
-
-If the execution hits a call to `patched()`, but that patch ID isn't _at or before
-that point_ in the event history, you may not realize that
-the event history _after_ the current execution location matters.
-This behavior occurs because:
-
-- If that patch ID exists later, you get a non-determinism error
-- If the patch doesn't exist later, you don't get a non-determinism error, and the call returns `false`
-
-If the execution hits a call to `patched()` with an ID that
-doesn't exist in the history, then not only will it return
-`false` in that occurence, but it will also return `false` if
-the execution surpasses the Replay threshold and is running new code.
-
-#### Implications of the Behaviors
-
-If you deploy new code while Workflows are executing,
-any Workflows that were in the middle of executing will Replay
-up to the point they were at when the Worker was shut down.
-When they do this Replay, they will not follow the `patched()` branches in the code.
-For the rest of the execution after they have replayed to the point
-before the deployment and worker restart, they will either:
-
-- Use new code if there was no call to `patched()` in the replay code
-- If there was a call to `patched()` in the replay code, they will
-  run the non-patched code during and after replay
-
-This might sound odd, but it's actually exactly what's needed because
-that means that if the future patched code depends on earlier patched code,
-then it won't use the new code -- it will use the old code instead.
-
-But if
-there's new code in the future, and there was no code earlier in the
-body that required the new patch, then it can switch over to the new code,
-which it will do.
-
-Note that this behavior means that the Workflow _does not always run
-the newest code_. It only does that if not replaying or if replay is
-surpassed and there hasn't been a call to `patched()` (with that ID) throughout
-the replay.
-
-#### Recommendations
-
-Based on this behavior and the implications, when patching in new code, always put the newest code at the top of an if-patched-block.
-
-<!--SNIPSTART python-patching-example-->
-
-```python
-if patched('v3'):
-    # This is the newest version of the code.
-    # put this at the top, so when it is running
-    # a fresh execution and not replaying,
-    # this patched statement will return true
-    # and it will run the new code.
-    pass
-elif patched('v2'):
-    pass
-else:
-    pass
-```
-
-<!--SNIPEND-->
-
-The following sample shows how `patched()` will behave in a conditional block that's arranged differently.
-In this case, the code's conditional block doesn't have the newest code at the top.
-Because `patched()` will return `True` when not Replaying (except with the preceding caveats), this snippet will run the `v2` branch instead of `v3` in new executions.
-
-<!--SNIPSTART python-patching-anti-example-->
-
-```python
-if patched('v2'):
-    # This is bad because when doing a new execution (i.e. not replaying),
-    # patched statements evaluate to True (and put a marker
-    # in the event history), which means that new executions
-    # will use v2, and miss v3 below
-    pass
-elif patched('v3'):
-    pass
-else:
-  pass
-```
-
-<!--SNIPEND-->
-
-### Best Practice of Using Python Dataclasses as Arguments and Returns
-
-As a side note on the Patching API, its behavior is why Temporal recommends using single dataclasses as arguments and returns from Signals, Queries, Updates, and Activities, rather than using multiple arguments.
-The Patching API's main use case is to support branching in an `if` block of a method body.
-It is not designed to be used to set different methods or method signatures for different Workflow Versions.
-
-Because of this, Temporal recommends that each Signal, Activity, etc, accepts a single dataclass and returns a single dataclass, so the method signature can stay constant, and you can do your versioning logic using `patched()` within the method body.
-
-## How to use Worker Versioning in Python {#worker-versioning}
-
-This feature is coming soon!
-
-For now, please join #safe-deploys in our [Community Slack](https://temporal.io/slack) to find the latest status and pre-release docs.
-
-If you were using a previous pre-release version of Worker Versioning, it's now deprecated.
-
-See [Legacy Worker Versioning](worker-versioning-legacy) if you still need those docs.
+Temporal's [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) feature allows you to tag your Workers and programmatically roll them out in Deployment Versions, so that old Workers can run old code paths and new Workers can run new code paths. This way, you can pin your Workflows to specific revisions, avoiding the need for patching.
