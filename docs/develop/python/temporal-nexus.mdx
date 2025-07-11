@@ -96,7 +96,7 @@ The default data converter encodes payloads in the following order: Null, Byte a
 In a polyglot environment, that is where more than one language and SDK is being used to develop a Temporal solution, Protobuf and JSON are common choices.
 This example uses Python dataclasses serialized into JSON.
 
-[hello_nexus/service.py](https://github.com/temporalio/samples-python/blob/nexus/hello_nexus/service.py)
+[hello_nexus/service.py](https://github.com/temporalio/samples-python/blob/main/hello_nexus/service.py)
 
 ```python
 from dataclasses import dataclass
@@ -137,7 +137,7 @@ The `@nexusrpc.handler.sync_operation` decorator is for exposing simple RPC hand
 Its handler function can access an SDK client that can be used for signaling, querying, and listing Workflows.
 However, implementations are free to make arbitrary calls to other services or databases, or perform computations such as this one:
 
-[hello_nexus/handler/service_handler.py](https://github.com/temporalio/samples-python/blob/nexus/hello_nexus/handler/service_handler.py)
+[hello_nexus/handler/service_handler.py](https://github.com/temporalio/samples-python/blob/main/hello_nexus/handler/service_handler.py)
 
 ```python
 import nexusrpc
@@ -155,7 +155,7 @@ class MyNexusServiceHandler:
 
 Use the `@nexus.workflow_run_operation` decorator, which is the easiest way to expose a Workflow as an operation.
 
-[hello_nexus/handler/service_handler.py](https://github.com/temporalio/samples-python/blob/nexus/hello_nexus/handler/service_handler.py)
+[hello_nexus/handler/service_handler.py](https://github.com/temporalio/samples-python/blob/main/hello_nexus/handler/service_handler.py)
 
 ```python
 import nexusrpc
@@ -188,7 +188,7 @@ Workflow IDs should typically be business-meaningful IDs and are used to dedupe 
 After developing an asynchronous Nexus Operation handler to start a Workflow, the next step is to register your Nexus Service handler in a Worker.
 At this stage you can pass any arguments you need to your service handler's `__init__` method.
 
-[hello_nexus/handler/worker.py](https://github.com/temporalio/samples-python/blob/nexus/hello_nexus/handler/worker.py)
+[hello_nexus/handler/worker.py](https://github.com/temporalio/samples-python/blob/main/hello_nexus/handler/worker.py)
 
 ```python
 async def main():
@@ -206,7 +206,7 @@ async def main():
 
 To execute a Nexus Operation from the caller Workflow, import the necessary service definition and operation input/output types:
 
-[hello_nexus/caller/workflows.py](https://github.com/temporalio/samples-python/blob/nexus/hello_nexus/caller/workflows.py)
+[hello_nexus/caller/workflows.py](https://github.com/temporalio/samples-python/blob/main/hello_nexus/caller/workflows.py)
 
 ```python
 from temporalio import workflow
@@ -245,7 +245,7 @@ Finally, the caller Workflow must be started using `client.start_workflow()` or 
 
 These steps are the same as for any normal Workflow.
 The Python sample combines them in a single application.
-See [hello_nexus/caller/app.py](https://github.com/temporalio/samples-python/blob/nexus/hello_nexus/caller/app.py) for reference.
+See [hello_nexus/caller/app.py](https://github.com/temporalio/samples-python/blob/main/hello_nexus/caller/app.py) for reference.
 
 ## Exceptions in Nexus operations {#exceptions-in-nexus-operations}
 
