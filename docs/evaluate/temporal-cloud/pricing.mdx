@@ -138,17 +138,6 @@ Discounts are based on your account's total usage, metered and billed for each c
 | Next 100M, up to 200M | &#36;25                                                                                   |
 | Over 200M             | Contact [Sales](mailto:sales@temporal.io) for info<br /> _More discounts, helpful humans_ |
 
-:::tip Scheduled workflows and batch jobs contribute to action costs:
-
-Some pending entities accrue **action costs** even before they execute:
-
-- [**Scheduled Workflows**](https://docs.temporal.io/schedule): Each schedule counts as an action as long as it exists, regardless of whether it has triggered any workflows yet.
-- [**Batch Jobs**](https://docs.temporal.io/cli/batch): Batch executions that have been created but not started also incur action costs for their metadata and configuration.
-
-These pending actions remain billable until deleted. To optimize your action usage and reduce costs, consider cleaning up unused schedules and batch jobs proactively.
-
-:::
-
 **Example**
 
 If you consume 11.25M Actions in excess of your Temporal Cloud Plan allocation in one calendar month, your bill for Actions will be:
@@ -172,9 +161,10 @@ For additional storage within a calendar month, you are billed for Active and Re
 
 :::tip Storage costs are also affected by pending workflows, including:
 
-- [Schedules](https://docs.temporal.io/schedule): Each scheduled workflow that is yet to be triggered contributes to storage usage.
+- [Schedules](https://docs.temporal.io/schedule): Each scheduled workflow that is yet to be triggered contributes to storage usage. Supplied inputs, outputs, and failures all account for the storage usage incurred from scheduled workflows.
 - [Batch jobs](https://docs.temporal.io/cli/batch): Batch workflow executions that are created but not yet started also consume storage.
   These pending states are retained by the Temporal Cloud service until execution, and their metadata and configurations contribute to overall storage consumption. For cost optimization, consider managing the lifecycle of these entities carefully.
+
 
 :::
 
