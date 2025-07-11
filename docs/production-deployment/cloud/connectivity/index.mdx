@@ -24,7 +24,7 @@ Introductory text goes here...
 
 ## What are connectivity rules?
 
-Connectivity rules are Temporal Cloud's mechanism for limiting access to a namespace.
+Connectivity rules are Temporal Cloud's mechanism for limiting network access to a namespace.
 When you add connectivity rules, Temporal Cloud will block traffic that does not have a corresponding connectivity rule from accessing the namespace.
 By default, a namespace has zero connectivity rules, and is accessible from the public internet.
 
@@ -39,25 +39,25 @@ Connectivity rules can be managed with [tcld](https://docs.temporal.io/cloud/tcl
 
 ### Temporal Cloud CLI (tcld)
 
-Public connectivity rule:
 
+Create public connectivity rule:
 ```bash
 tcld connectivity-rule create --connectivity-type public
 ```
 
-Private connectivity rule (AWS):
+Create private connectivity rule (AWS):
 
 ```bash
 tcld connectivity-rule create --connectivity-type private --connection-id "conn-123" --region "us-east-1" --cloud-provider aws
 ```
 
-Private connectivity rule (GCP):
+Create private connectivity rule (GCP):
 
 ```bash
 tcld connectivity-rule create --connectivity-type private --connection-id "conn-456" --region "us-central1" --cloud-provider gcp --gcp-project-id "my-project-123"
 ```
 
-Or using the `cr` alias:
+The `cr` alias works the same way:
 
 ```bash
 tcld cr create --connectivity-type public
@@ -77,7 +77,7 @@ tcld cr create --connectivity-type private --connection-id "conn-123" --region "
 
 ### Temporal Cloud CLI (tcld)
 
-Set connectivity rules to a namespace:
+Setting the connectivity rules on a namespace:
 
 ```bash
 tcld namespace set-connectivity-rules --namespace "my-namespace" --connectivity-rule-ids "rule-id-1" --connectivity-rule-ids "rule-id-2"
