@@ -2,7 +2,7 @@
 id: scim
 title: SCIM user management - Temporal Cloud feature guide
 sidebar_label: SCIM
-description: Integrate SCIM with your Temporal Cloud account for secure user Management. Connect via Okta for seamless user and group management. Charges apply.
+description: Integrate SCIM with your Temporal Cloud account for secure user Management. Connect via IDP for seamless user and group management. Charges apply.
 slug: /cloud/scim
 toc_max_heading_level: 3
 keywords:
@@ -17,10 +17,21 @@ tags:
 
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
-This feature is in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
-Only Okta is currently supported as your upstream IDP.
+This feature is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
 
 :::
+
+## Supported IDP Vendors
+
+Supported upstream IDP vendors include:
+* [Okta](#configure-scim-with-okta)
+* Microsoft Entra ID (Azure AD)
+* Google Workspace
+* OneLogin
+* CyberArk
+* JumpCloud
+* PingFederate
+* Custom SCIM 2.0 providers
 
 ## Preparing for SCIM
 
@@ -29,10 +40,16 @@ Before starting your work with SCIM, you'll need to complete this checklist:
 1. Configure [SAML](/cloud/saml) SSO.
 1. Ensure that critical traffic is configured to authenticate using [mTLS](/cloud/certificates) or [API keys](/cloud/api-keys#overview) attached to Temporal Cloud accounts.
    This ensures that Workflows will continue uninterrupted if there is any problem with your integration.
-1. Decide on your **Okta administrator**, who is responsible for configuring and managing your SCIM integration.
+1. Decide on your **IDP administrator**, who is responsible for configuring and managing your SCIM integration.
    Specify their contact details when you reach out to support in the next stage of this process.
 
 After completing these steps, you're ready to submit your [support ticket](/cloud/support#support-ticket) to enable SCIM.
+
+:::tip Adding and removing users
+
+When you use SCIM for user management, you can manage users outside of SCIM until you disable user lifecycle management. You can change a user's or group's Account Role from the Temporal Cloud interface.
+
+:::
 
 ## Onboarding with SCIM and Okta {#configure-scim-with-okta}
 
