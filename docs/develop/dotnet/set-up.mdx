@@ -1,12 +1,12 @@
 ---
 id: set-up-your-local-dotnet
-title: Set up your local with the .NET SDK 
-sidebar_label: Quickstart - Setup 
+title: Set up your local with the .NET SDK
+sidebar_label: Quickstart - Setup
 description: Configure your local development environment to get started developing with Temporal
 keywords:
-  - set up 
+  - set up
   - getting started
-  - dotnet sdk 
+  - dotnet sdk
 tags:
   - developer guide
   - dotnet
@@ -15,9 +15,9 @@ tags:
 hide_table_of_contents: true
 ---
 
-import { SetupSteps, SetupStep, CodeSnippet } from '@site/src/components/elements/SetupSteps';
-import { InfoBox } from '@site/src/components/elements/InfoBox';
-import { CallToAction } from '@site/src/components/elements/CallToAction';
+import { SetupSteps, SetupStep, CodeSnippet } from "@site/src/components/elements/SetupSteps";
+import { InfoBox } from "@site/src/components/elements/InfoBox";
+import { CallToAction } from "@site/src/components/elements/CallToAction";
 
 # Quickstart - Setup
 
@@ -34,6 +34,7 @@ Configure your local development environment to get started developing with Temp
 
 The .NET SDK requires .NET 6.0 or later.
 Install .NET by following the [official .NET instructions](https://dotnet.microsoft.com/download/dotnet/6.0).
+
 </SetupStep>
 
 <SetupStep code={
@@ -59,6 +60,7 @@ Switch to the new directory for your project.
 Then, install the [Temporal .NET SDK](https://www.nuget.org/packages/Temporalio).
 
 Next, you'll configure a local Temporal service for development.
+
 </SetupStep>
 
 <SetupStep code={
@@ -91,6 +93,7 @@ The fastest way to get a development version of the Temporal Service running on 
 Temporal CLI is a tool for interacting with the Temporal Service from the command-line interface. It includes a self-contained distribution of the Temporal Service and [Web UI](https://docs.temporal.io/web-ui) that you can use for local development.
 
 Choose your operating system to install Temporal CLI:
+
 </SetupStep>
 
 <SetupStep code={
@@ -192,6 +195,7 @@ The Temporal Web UI will be available at http://localhost:8233.
 Leave the local Temporal Service running as you work through tutorials and other projects. You can stop the Temporal Service at any time by pressing CTRL+C.
 
 Once you have everything installed, you're ready to build apps with Temporal on your local machine.
+
 </SetupStep>
 </SetupSteps>
 
@@ -223,6 +227,7 @@ public class MyActivities
 [Activity]
 public string SayHello(string name) => $"Hello, {name}!";
 }`}
+
 </CodeSnippet>
 </>
 }>
@@ -230,6 +235,7 @@ public string SayHello(string name) => $"Hello, {name}!";
 ### Create the Activity
 
 Activities contain your business logic. Create a file called `MyActivities.cs`:
+
 </SetupStep>
 
 <SetupStep code={
@@ -257,6 +263,7 @@ return await Workflow.ExecuteActivityAsync(
 new() { StartToCloseTimeout = TimeSpan.FromMinutes(5) });
 }
 }`}
+
 </CodeSnippet>
 </>
 }>
@@ -264,6 +271,7 @@ new() { StartToCloseTimeout = TimeSpan.FromMinutes(5) });
 ### Create the Workflow
 
 Workflows orchestrate Activities and contain the application logic. Create a file called `SayHelloWorkflow.cs`:
+
 </SetupStep>
 
 <SetupStep code={
@@ -280,7 +288,7 @@ var client = await TemporalClient.ConnectAsync(new("localhost:7233"));
 
 // Cancellation token to shutdown worker on ctrl+c
 using var tokenSource = new CancellationTokenSource();
-Console.CancelKeyPress += (_, eventArgs) =>
+Console.CancelKeyPress += (\_, eventArgs) =>
 {
 tokenSource.Cancel();
 eventArgs.Cancel = true;
@@ -307,6 +315,7 @@ catch (OperationCanceledException)
 {
 Console.WriteLine("Worker cancelled");
 }`}
+
 </CodeSnippet>
 
     <p><strong>Run the Worker:</strong></p>
@@ -319,17 +328,18 @@ Console.WriteLine("Worker cancelled");
 
 ### Create and Run the Worker
 
-The Worker hosts your Workflows and Activities. Replace the contents of `Program.cs` with:
+The Worker hosts your Workflows and Activities. Create a file called `Program.cs`:
 
 Keep this terminal running - you should see "Running worker" displayed.
+
 </SetupStep>
 
 <SetupStep code={
 <>
 
 <div className="execution-options">
-<h4>Choose Your Execution Method</h4>
-<p>With the worker running, you can start a workflow in two ways:</p>
+  <h4>Choose Your Execution Method</h4>
+  <p>With the worker running, you can start a workflow in two ways:</p>
 </div>
 
     <div className="option-section">
@@ -357,6 +367,7 @@ var result = await client.ExecuteWorkflowAsync(
 new(id: "my-workflow-id", taskQueue: "my-task-queue"));
 
 Console.WriteLine("Workflow result: {0}", result);`}
+
 </CodeSnippet>
 
 <p>Then run: <code>dotnet run Client.cs</code></p>
@@ -364,15 +375,15 @@ Console.WriteLine("Workflow result: {0}", result);`}
 
     <div className="success-section">
       <h4>
-        <svg 
-          viewBox="0 0 24 24" 
-          width="20" 
-          height="20" 
-          fill="none" 
-          stroke="currentColor" 
-          strokeWidth="2" 
-          strokeLinecap="round" 
-          strokeLinejoin="round" 
+        <svg
+          viewBox="0 0 24 24"
+          width="20"
+          height="20"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           className="success-icon"
         >
           <path d="M9 12l2 2 4-4" />
@@ -384,7 +395,7 @@ Console.WriteLine("Workflow result: {0}", result);`}
       <ul>
         <li>Worker processing the workflow and activity</li>
         <li>Output: <code>Workflow result: Hello, Temporal!</code></li>
-        <li>Workflow execution details in the <a href="http://localhost:8233" target="_blank">Temporal Web UI</a></li>
+        <li>Workflow Execution details in the <a href="http://localhost:8233" target="_blank">Temporal Web UI</a></li>
       </ul>
     </div>
 
@@ -508,7 +519,8 @@ Console.WriteLine("Workflow result: {0}", result);`}
 
 ### Execute the Workflow
 
-Now that your worker is running, it's time to start a workflow execution.
+Now that your worker is running, it's time to start a Workflow Execution.
+
 </SetupStep>
 </SetupSteps>
 
