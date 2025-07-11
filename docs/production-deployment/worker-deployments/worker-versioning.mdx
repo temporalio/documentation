@@ -71,7 +71,7 @@ To get started with Worker Versioning, you should understand some concepts aroun
 - A **Worker Deployment** is a deployment or service across multiple versions. In a rainbow deployment, more than two active Deployment Versions can run at once.
 - A **Worker Deployment Version** is a version of a deployment or service. It can have multiple Workers polling on multiple Task Queues, but they all run the same build.
 - A **Build ID**, in combination with a Worker Deployment name, identifies a single Worker Deployment Version.
-- When a versioned worker polls on a task queue, that task queue becomes part of that worker's version. That version's Worker Deployment controls how the task queue matches workflow tasks with workers.
+- When a versioned worker polls on a task queue, that task queue becomes part of that Worker's version. That version's Worker Deployment controls how the task queue matches Workflow Tasks with Workers.
 - Using **Workflow Pinning**, you can declare each Workflow type to have a **Versioning Behavior**, either Pinned or Auto-Upgrade.
   - A **Pinned** Workflow is guaranteed to complete on a single Worker Deployment Version.
   - An **Auto-Upgrade** Workflow will move to the latest Worker Deployment Version automatically whenever you change the current version. Auto-upgrade Workflows are not restricted to a single Deployment Version and need to be kept replay-safe manually, i.e. with [patching](/workflow-definition#workflow-versioning).
