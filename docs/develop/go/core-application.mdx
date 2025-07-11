@@ -409,6 +409,14 @@ Activities written as struct methods can use shared struct variables, such as:
 
 Because this is such a common need, the rest of this guide shows Activities written as `struct` methods.
 
+:::note
+
+While it is possible to register struct methods as Workflows, this is strongly discouraged. 
+In some cases, struct methods as Workflows may cause non-deterministic errors. We recommend
+only using struct methods for Activities.
+
+:::
+
 <div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_activity_definition_dacx.go">
     View the source code
