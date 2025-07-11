@@ -138,6 +138,19 @@ Discounts are based on your account's total usage, metered and billed for each c
 | Next 100M, up to 200M | &#36;25                                                                                   |
 | Over 200M             | Contact [Sales](mailto:sales@temporal.io) for info<br /> _More discounts, helpful humans_ |
 
+
+:::tip Scheduled workflows and batch jobs contribute to action costs:
+
+Some pending entities accrue **action costs** even before they execute:
+
+- [**Scheduled Workflows**](https://docs.temporal.io/schedule): Each schedule counts as an action as long as it exists, regardless of whether it has triggered any workflows yet.
+- [**Batch Jobs**](https://docs.temporal.io/cli/batch): Batch executions that have been created but not started also incur action costs for their metadata and configuration.
+
+These pending actions remain billable until deleted. To optimize your action usage and reduce costs, consider cleaning up unused schedules and batch jobs proactively.
+
+:::
+
+
 **Example**
 
 If you consume 11.25M Actions in excess of your Temporal Cloud Plan allocation in one calendar month, your bill for Actions will be:
