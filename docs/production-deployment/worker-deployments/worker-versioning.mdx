@@ -75,7 +75,7 @@ To get started with Worker Versioning, you should understand some concepts aroun
 - Using **Workflow Pinning**, you can declare each Workflow type to have a **Versioning Behavior**, either Pinned or Auto-Upgrade.
   - A **Pinned** Workflow is guaranteed to complete on a single Worker Deployment Version.
   - An **Auto-Upgrade** Workflow will move to the latest Worker Deployment Version automatically whenever you change the current version. Auto-upgrade Workflows are not restricted to a single Deployment Version and need to be kept replay-safe manually, i.e. with [patching](/workflow-definition#workflow-versioning).
-  - Both Pinned and Auto-Upgrade workflows are guaranteed to start only on the Current or Ramping Version of their Worker Deployment.
+  - Both Pinned and Auto-Upgrade Workflows are guaranteed to start only on the Current or Ramping Version of their Worker Deployment.
   - Workflow Pinning is designed for use with rainbow deployments. See [Deployment Systems](#deployment-systems).
 - Each Worker Deployment has a single **Current Version** which is where workflows are routed to unless they were previously pinned on a different version. Other versions can continue polling to allow pinned Workflows to finish executing, or in case you need to roll back. If no current version is specified, the default is unversioned.
 - Each Worker Deployment can have a **Ramping Version** which is where a configurable percentage of workflows are routed to unless they were previously pinned on a different version. The ramp percentage can be in the range [0, 100]. Workflows that don't go to the Ramping Version will go to the Current Version. If no ramping version is specified, 100% of new workflows and auto-upgrade workflows will go to the Current Version.
