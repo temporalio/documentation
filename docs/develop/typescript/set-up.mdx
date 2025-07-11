@@ -155,8 +155,8 @@ startToCloseTimeout: '10 seconds',
 });
 
 export async function sayHelloWorkflow(name: string): Promise<string> {
-  const response = await activity(name);
-  return response;
+const response = await activity(name);
+return response;
 }
 `}
 

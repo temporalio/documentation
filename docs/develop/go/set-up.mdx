@@ -145,8 +145,8 @@ This test will confirm that:
 {`package greeting
 
 import (
-	"context"
-	"fmt"
+"context"
+"fmt"
 )
 
 func Greet(ctx context.Context, name string) (string, error) {
@@ -171,7 +171,7 @@ Activities contain your business logic. Create a file called `activity.go`:
 {`package greeting
 
 import (
-	"time"
+"time"
 
     "go.temporal.io/sdk/workflow"
 
@@ -212,8 +212,8 @@ Workflows orchestrate Activities and contain the application logic. Create a fil
 {`package main
 
 import (
-	"log"
-	"greeting"
+"log"
+"greeting"
 
     "go.temporal.io/sdk/client"
     "go.temporal.io/sdk/worker"
@@ -282,10 +282,10 @@ Keep this terminal running.
 {`package main
 
 import (
-	"context"
-	"log"
-	"os"
-	"temporal101/exercises/hello-workflow/greeting"
+"context"
+"log"
+"os"
+"temporal101/exercises/hello-workflow/greeting"
 
     "go.temporal.io/sdk/client"
 
