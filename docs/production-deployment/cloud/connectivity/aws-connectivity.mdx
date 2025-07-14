@@ -20,24 +20,9 @@ keywords:
   - term
 ---
 
-import { ToolTipTerm, DiscoverableDisclosure } from '@site/src/components';
+import { ToolTipTerm, DiscoverableDisclosure, CaptionedImage } from '@site/src/components';
 
 This page covers...
-
-## Creating an AWS PrivateLink connection
-
-## How to configure internal DNS
-
-(optional)
-
-Why: simplify worker config in general (easier than SNI override) as well as potential failover/migration if using any HA capabilities
-
-## Configure internal DNS for MRR
-
-New cross-cloud diagram (multiple sets of workers)
-
-If you’re using a single worker fleet, you can use PrivateLink.
-If you’re using Multi-cloud, you can’t use PrivateLink (or you need to solve cross-cloud networking)
 
 [AWS PrivateLink](https://aws.amazon.com/privatelink/) allows you to open a path to Temporal without opening a public egress.
 It establishes a private connection between your Amazon Virtual Private Cloud (VPC) and Temporal Cloud.
@@ -54,6 +39,8 @@ If you are interested in leveraging AWS PrivateLink in your Namespaces, [create 
 - Temporal Cloud Namespace names: The name of the Namespaces you want to enable AWS PrivateLink with.
 
 :::
+
+## Creating an AWS PrivateLink connection
 
 Set up PrivateLink connectivity with Temporal Cloud with these steps:
 
@@ -163,3 +150,177 @@ When using [API keys for namespace authentication](/cloud/api-keys#namespace-aut
       <DNS ASSOCIATED WITH VPC ENDPOINT>:7233 \
       temporal.api.workflowservice.v1.WorkflowService/GetSystemInfo
   ```
+
+## Configuring Private DNS for AWS PrivateLink
+
+### Why configure private DNS?
+
+When you connect to Temporal Cloud through AWS PrivateLink you normally must:
+
+1. **Point your SDKs/Workers at the PrivateLink DNS name** for the VPC Endpoint (e.g., `vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com`), **and**
+2. **Override the Server Name Indicator (SNI)** so that the TLS handshake still presents the public Temporal Cloud hostname (e.g., `my-namespace.my-account.tmprl.cloud`).
+
+By creating a Route 53 **private hosted zone (PHZ)** that maps the public Temporal Cloud hostname (or region hostname) to your VPC Endpoint, you can:
+
+* Keep using the standard Temporal Cloud hostnames in code and configuration.
+* Eliminate the need to set a custom SNI override.
+* Make future Endpoint rotations transparent—only the PHZ record changes.
+
+This approach is **optional**; Temporal Cloud works without it. It simply streamlines configuration and operations.
+
+### Prerequisites
+
+| Requirement                                           | Notes                                                                                                                              |
+| ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| AWS VPC with DNS resolution and DNS hostnames enabled | *VPC console → Edit DNS settings → enable both checkboxes.*                                                                        |
+| Interface VPC Endpoint for Temporal Cloud             | Subnets must be associated with the VPC and Security Group must allow TCP ingress traffic to port 7233 from the appropriate hosts. |
+| Route 53 available in your AWS account                | You need permission to create Private Hosted Zones and records.                                                                    |
+| Namespace details                                     | Needed to choose the correct override domain pattern below.                                                                        |
+
+###  Choose the override domain and endpoint
+
+| Temporal Cloud setup                   | Use this PHZ domain     | Example                                         |
+| -------------------------------------- | ----------------------- | ----------------------------------------------- |
+| Single-region namespace with mTLS auth     | `<account>.tmprl.cloud` | `payments.abcde.tmprl.cloud` ↔ `vpce-...`       |
+| Multi-region namespace **or** API-key auth | `region.tmprl.cloud`    | `aws-us-east-1.region.tmprl.cloud` ↔ `vpce-...` |
+
+### Step-by-step instructions
+
+#### 1. Collect your PrivateLink endpoint DNS name
+
+```bash
+aws ec2 describe-vpc-endpoints \
+  --vpc-endpoint-ids $VPC_ENDPOINT_ID \
+  --query "VpcEndpoints[0].DnsEntries[0].DnsName" \
+  --output text
+
+# Example output:
+# vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com
+```
+
+Save the **`vpce-*.amazonaws.com`** value -- you will target it in the CNAME record.
+
+#### 2. Create a Route 53 Private Hosted Zone
+
+1. **Open** *Route 53 → Hosted zones → Create hosted zone*.
+2. Enter the **domain** chosen from the table above, e.g., `payments.abcde.tmprl.cloud`.
+3. **Type:** *Private hosted zone for Temporal Cloud*.
+4. **Associate** the hosted zone with every VPC that contains Temporal Workers and/or SDK clients.
+5. **Create hosted zone**.
+
+#### 3. Add a CNAME record
+
+Inside the new PHZ:
+
+| Field           | Value                                                                                 |
+| --------------- | ------------------------------------------------------------------------------------- |
+| **Record name** | the namespace endpoint (e.g., `payments.abcde.tmprl.cloud`).                           |
+| **Record type** | `CNAME`                                                                               |
+| **Value**       | Your VPC Endpoint DNS name (`vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com`) |
+| **TTL**         | 60s is typical; 15s for MRN namespaces; adjust as needed.                             |
+
+#### 4. Verify DNS resolution from inside the VPC
+
+```bash
+dig payments.abcde.tmprl.cloud
+```
+
+If the record resolves to the VPC Endpoint, you are ready to use Temporal Cloud without SNI overrides.
+
+### Updating your workers/clients
+
+With private DNS in place, configure your SDKs exactly as the public-internet examples show:
+
+```go
+clientOptions := client.Options{
+    HostPort: "payments.abcde.tmprl.cloud:7233",
+    Namespace: "payments",
+    // No TLS SNI override needed
+}
+```
+
+The DNS resolver inside your VPC returns the private endpoint, while TLS still validates the original hostname—simplifying both code and certificate management.
+
+## Configure Private DNS for Multi-Region Namespaces
+
+:::tip Namespaces with High Availability features and AWS PrivateLink
+
+Proper networking configuration is required for failover to be transparent to clients and workers when using PrivateLink.
+This page describes how to configure routing for Namespaces with High Availability features on AWS PrivateLink.
+
+:::
+
+To use AWS PrivateLink with High Availability features, you may need to:
+
+- Override the regional DNS zone.
+- Ensure network connectivity between the two regions.
+
+This page provides the details you need to set this up.
+
+### Customer side solutions
+
+When using PrivateLink, you connect to Temporal Cloud through a VPC Endpoint, which uses addresses local to your network.
+Temporal treats each `region.<tmprl_domain>` as a separate zone.
+This setup allows you to override the default zone, ensuring that traffic is routed internally for the regions you’re using.
+
+A Namespace's active region is reflected in the target of a CNAME record.
+For example, if the active region of a Namespace is AWS us-west-2, the DNS configuration would look like this:
+
+| Record name | Record type | Value |
+| ----------- | ----------- | ----- |
+| ha-namespace.account-id.tmprl.cloud | CNAME | aws-us-west-2.region.tmprl.cloud |
+
+After a failover, the CNAME record will be updated to point to the failover region, for example:
+
+| Record name | Record type | Value |
+| ----------- | ----------- | ----- |
+| ha-namespace.account-id.tmprl.cloud | CNAME | aws-us-east-1.region.tmprl.cloud |
+
+The Temporal domain did not change, but the CNAME updated from us-west-2 to us-east-1.
+
+<CaptionedImage
+    src="/img/cloud/high-availability/private-link.png"
+    title="Customer side solution example"
+    zoom="true"
+/>
+
+### Setting up the DNS override
+
+To set up the DNS override, configure specific regions to target the internal VPC Endpoint IP addresses.
+For example, you might set aws-us-west-1.region.tmprl.cloud to target 192.168.1.2.
+In AWS, this can be done using a Route 53 private hosted zone for `region.tmprl.cloud`.
+Link that private zone to the VPCs you use for Workers.
+
+When your Workers connect to the Namespace, they first resolve the `<ns>.<acct>.<tmprl_domain>` record.
+This points to `<aws-active-region>.region.tmprl.cloud`, which then resolves to your internal IP addresses.
+
+Consider how you’ll configure Workers for this setup.
+You can either have Workers run in both regions continuously or establish connectivity between regions using Transit Gateway or VPC Peering.
+This way, Workers can access the newly activated region once failover occurs.
+
+## Available regions, PrivateLink endpoints, and DNS record overrides
+
+:::caution
+
+The `sa-east-1` region is not yet available for use with Multi-region Namespaces. Currently, it is the only region on the continent.
+
+:::
+
+The following table lists the available Temporal regions, PrivateLink endpoints, and DNS record overrides:
+
+| Region           | PrivateLink Service Name                                       | DNS Record Override                     |
+| ---------------- | -------------------------------------------------------------- | --------------------------------------- |
+| `ap-northeast-1` | `com.amazonaws.vpce.ap-northeast-1.vpce-svc-08f34c33f9fb8a48a` | `aws-ap-northeast-1.region.tmprl.cloud` |
+| `ap-northeast-2` | `com.amazonaws.vpce.ap-northeast-2.vpce-svc-08c4d5445a5aad308` | `aws-ap-northeast-2.region.tmprl.cloud` |
+| `ap-south-1`     | `com.amazonaws.vpce.ap-south-1.vpce-svc-0ad4f8ed56db15662`     | `aws-ap-south-1.region.tmprl.cloud`     |
+| `ap-south-2`     | `com.amazonaws.vpce.ap-south-2.vpce-svc-08bcf602b646c69c1`     | `aws-ap-south-2.region.tmprl.cloud`     |
+| `ap-southeast-1` | `com.amazonaws.vpce.ap-southeast-1.vpce-svc-05c24096fa89b0ccd` | `aws-ap-southeast-1.region.tmprl.cloud` |
+| `ap-southeast-2` | `com.amazonaws.vpce.ap-southeast-2.vpce-svc-0634f9628e3c15b08` | `aws-ap-southeast-2.region.tmprl.cloud` |
+| `ca-central-1`   | `com.amazonaws.vpce.ca-central-1.vpce-svc-080a781925d0b1d9d`   | `aws-ca-central-1.region.tmprl.cloud`   |
+| `eu-central-1`   | `com.amazonaws.vpce.eu-central-1.vpce-svc-073a419b36663a0f3`   | `aws-eu-central-1.region.tmprl.cloud`   |
+| `eu-west-1`      | `com.amazonaws.vpce.eu-west-1.vpce-svc-04388e89f3479b739`      | `aws-eu-west-1.region.tmprl.cloud`      |
+| `eu-west-2`      | `com.amazonaws.vpce.eu-west-2.vpce-svc-0ac7f9f07e7fb5695`      | `aws-eu-west-2.region.tmprl.cloud`      |
+| `sa-east-1`      | `com.amazonaws.vpce.sa-east-1.vpce-svc-0ca67a102f3ce525a`      | `aws-sa-east-1.region.tmprl.cloud`      |
+| `us-east-1`      | `com.amazonaws.vpce.us-east-1.vpce-svc-0822256b6575ea37f`      | `aws-us-east-1.region.tmprl.cloud`      |
+| `us-east-2`      | `com.amazonaws.vpce.us-east-2.vpce-svc-01b8dccfc6660d9d4`      | `aws-us-east-2.region.tmprl.cloud`      |
+| `us-west-2`      | `com.amazonaws.vpce.us-west-2.vpce-svc-0f44b3d7302816b94`      | `aws-us-west-2.region.tmprl.cloud`      |
