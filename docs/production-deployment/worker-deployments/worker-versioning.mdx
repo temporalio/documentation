@@ -350,21 +350,41 @@ If you need to move a pinned Workflow to a new version, use `temporal workflow u
 
 ```bash
 temporal workflow update-options \
-    --workflow-id="MyWorkflowId" \
-    --versioning-override-behavior=pinned \           
-    --versioning-override-pinned-version="$MY_DEPLOYMENT_VERSION"
+    --workflow-id "$WORKFLOW_ID" \
+    --versioning-override-behavior pinned \
+    --versioning-override-deployment-name "$TARGET_DEPLOYMENT" \
+    --versioning-override-build-id "$TARGET_BUILD_ID"
 ```
 
 You can move several Workflows at once matching a `--query` parameter:
 
 ```bash
 temporal workflow update-options \
-  --query="TemporalWorkerDeploymentVersion=$MY_BAD_DEPLOYMENT_VERSION" \
-  --versioning-override-behavior=pinned \
-  --versioning-override-pinned-version="$MY_PATCH_DEPLOYMENT_VERSION"
+  --query="TemporalWorkerDeploymentVersion=$TARGET_DEPLOYMENT:$BAD_BUILD_ID" \
+  --versioning-override-behavior pinned \
+  --versioning-override-deployment-name "$TARGET_DEPLOYMENT" \
+  --versioning-override-build-id "$FIXED_BUILD_ID"
 ```
 
 In this scenario, you may also need to use the other [Versioning APIs](/workflow-definition#workflow-versioning) to patch your Workflow.
+
+If the target Worker version that you want to move stuck Workflows to does not have the code paths necessary to reproduce the
+Events in the History of your stuck Workflows, you could use patching as mentioned above, or you could do a Workflow Reset.
+Only Reset your Workflow if you can tolerate losing progress and re-triggering Actions, among the other usual consequences of
+Workflow Reset. However, if your Workflow was broken and/or did not make much progress, Reset can be a very helpful tool!
+
+"Reset-with-Move" allows you to atomically Reset your Workflow and set a Versioning Override on the newly reset workflow execution,
+so when it resumes execution, all new workflow tasks will be executed on your new Worker.
+
+```bash
+temporal workflow reset with-workflow-update-options \
+    --workflow-id "$WORKFLOW_ID" \
+    --event-id "$EVENT_ID" \
+    --reason "$REASON" \
+    --versioning-override-behavior pinned \
+    --versioning-override-deployment-name "$TARGET_DEPLOYMENT" \
+    --versioning-override-build-id "$TARGET_BUILD_ID"
+```
 
 ## Sunsetting an old Deployment Version
 
