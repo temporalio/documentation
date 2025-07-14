@@ -1,20 +1,21 @@
-{/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
-This file is generated from https://github.com/temporalio/cli/blob/main/temporalcli/commandsgen/commands.yml */}
----
+## {/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.This file is generated from https://github.com/temporalio/cli/blob/main/temporalcli/commandsgen/commands.yml */}
+
 id: task-queue
 title: Temporal CLI task-queue command reference
 sidebar_label: task-queue
 description: Temporal Task Queue commands facilitate operations like describing poller info, displaying partitions, fetching compatible Build IDs, and determining Build ID reachability for effective Workflow and Activity management.
 toc_max_heading_level: 4
 keywords:
-  - cli reference
-  - command-line-interface-cli
-  - list partitions
-  - task queue
-  - task queue describe
-  - temporal cli
-tags:
-  - Temporal CLI
+
+- cli reference
+- command-line-interface-cli
+- list partitions
+- task queue
+- task queue describe
+- temporal cli
+  tags:
+- Temporal CLI
+
 ---
 
 ## describe
@@ -39,6 +40,7 @@ temporal task-queue describe \
 ```
 
 This command provides the following task queue statistics:
+
 - `ApproximateBacklogCount`: The approximate number of tasks backlogged in this
   task queue. May count expired tasks but eventually converges to the right
   value.
@@ -50,11 +52,11 @@ This command provides the following task queue statistics:
   (sync-matched tasks), as well as tasks added to the backlog. (See note below.)
 - `TasksDispatchRate`: Approximate rate at which tasks are being dispatched from
   the task queue, measured in tasks per second, averaged over the last 30
-  seconds.  Includes tasks dispatched immediately without going to the backlog
+  seconds. Includes tasks dispatched immediately without going to the backlog
   (sync-matched tasks), as well as tasks added to the backlog. (See note below.)
 - `BacklogIncreaseRate`: Approximate rate at which the backlog size is
   increasing (if positive) or decreasing (if negative), measured in tasks per
-  second, averaged over the last 30 seconds.  This is roughly equivalent to:
+  second, averaged over the last 30 seconds. This is roughly equivalent to:
   `TasksAddRate` - `TasksDispatchRate`.
 
 NOTE: The `TasksAddRate` and `TasksDispatchRate` metrics may differ from the
@@ -1001,9 +1003,9 @@ temporal task-queue update-build-ids add-new-default \
 ```
 
 +------------------------------------------------------------------------+
-| NOTICE: This command is limited to Namespaces that support Worker      |
+| NOTICE: This command is limited to Namespaces that support Worker |
 | versioning. Worker versioning is experimental. Versioning commands are |
-| subject to change.                                                     |
+| subject to change. |
 +------------------------------------------------------------------------+
 
 Use the following options to change the behavior of this command.
@@ -1176,9 +1178,9 @@ temporal task-queue update-build-ids promote-id-in-set \
 ```
 
 +------------------------------------------------------------------------+
-| NOTICE: This command is limited to Namespaces that support Worker      |
+| NOTICE: This command is limited to Namespaces that support Worker |
 | versioning. Worker versioning is experimental. Versioning commands are |
-| subject to change.                                                     |
+| subject to change. |
 +------------------------------------------------------------------------+
 
 Use the following options to change the behavior of this command.
@@ -1352,9 +1354,9 @@ temporal task-queue update-build-ids promote-set \
 ```
 
 +------------------------------------------------------------------------+
-| NOTICE: This command is limited to Namespaces that support Worker      |
+| NOTICE: This command is limited to Namespaces that support Worker |
 | versioning. Worker versioning is experimental. Versioning commands are |
-| subject to change.                                                     |
+| subject to change. |
 +------------------------------------------------------------------------+
 
 Use the following options to change the behavior of this command.
@@ -1514,7 +1516,7 @@ Override target TLS server name.
 ## versioning
 
 +---------------------------------------------------------------------+
-| CAUTION: This API has been deprecated by Worker Deployment.         |
+| CAUTION: This API has been deprecated by Worker Deployment. |
 +---------------------------------------------------------------------+
 
 Provides commands to add, list, remove, or replace Worker Build ID assignment
@@ -1549,7 +1551,7 @@ temporal task-queue versioning add-redirect-rule \
 ```
 
 +---------------------------------------------------------------------+
-| CAUTION: This API has been deprecated by Worker Deployment.         |
+| CAUTION: This API has been deprecated by Worker Deployment. |
 +---------------------------------------------------------------------+
 
 Use the following options to change the behavior of this command.
@@ -1734,7 +1736,7 @@ This prevents committing invalid Build IDs. Use the `--force` option to
 override this validation.
 
 +---------------------------------------------------------------------+
-| CAUTION: This API has been deprecated by Worker Deployment.         |
+| CAUTION: This API has been deprecated by Worker Deployment. |
 +---------------------------------------------------------------------+
 
 Use the following options to change the behavior of this command.
@@ -1911,7 +1913,7 @@ hint filter" or "percentage". Otherwise, the delete operation is rejected.
 Use the `--force` option to override this validation.
 
 +---------------------------------------------------------------------+
-| CAUTION: This API has been deprecated by Worker Deployment.         |
+| CAUTION: This API has been deprecated by Worker Deployment. |
 +---------------------------------------------------------------------+
 
 Use the following options to change the behavior of this command.
@@ -2083,7 +2085,7 @@ temporal task-queue versioning delete-redirect-rule \
 ```
 
 +---------------------------------------------------------------------+
-| CAUTION: This API has been deprecated by Worker Deployment.         |
+| CAUTION: This API has been deprecated by Worker Deployment. |
 +---------------------------------------------------------------------+
 
 Use the following options to change the behavior of this command.
@@ -2260,9 +2262,9 @@ Task Queues support the following versioning rules:
   Build ID. You may add at most one redirect rule for each source Build ID.
   Redirect rules require that a target Build ID is fully compatible with
   the source Build ID.
-+---------------------------------------------------------------------+
-| CAUTION: This API has been deprecated by Worker Deployment.         |
-+---------------------------------------------------------------------+
+  +---------------------------------------------------------------------+
+  | CAUTION: This API has been deprecated by Worker Deployment. |
+  +---------------------------------------------------------------------+
 
 Use the following options to change the behavior of this command.
 
@@ -2423,7 +2425,7 @@ temporal task-queue versioning insert-assignment-rule \
 If you do not specify a `--rule-index`, this command inserts at index 0.
 
 +---------------------------------------------------------------------+
-| CAUTION: This API has been deprecated by Worker Deployment.         |
+| CAUTION: This API has been deprecated by Worker Deployment. |
 +---------------------------------------------------------------------+
 
 Use the following options to change the behavior of this command.
@@ -2617,7 +2619,7 @@ temporal task-queue versioning replace-assignment-rule \
 Percent may vary between 0 and 100 (default).
 
 +---------------------------------------------------------------------+
-| CAUTION: This API has been deprecated by Worker Deployment.         |
+| CAUTION: This API has been deprecated by Worker Deployment. |
 +---------------------------------------------------------------------+
 
 Use the following options to change the behavior of this command.
@@ -2799,7 +2801,7 @@ temporal task-queue versioning replace-redirect-rule \
 ```
 
 +---------------------------------------------------------------------+
-| CAUTION: This API has been deprecated by Worker Deployment.         |
+| CAUTION: This API has been deprecated by Worker Deployment. |
 +---------------------------------------------------------------------+
 
 Use the following options to change the behavior of this command.
@@ -2959,4 +2961,3 @@ Path to x509 private key. Can't be used with --tls-key-data.
 **--tls-server-name** _string_
 
 Override target TLS server name.
-

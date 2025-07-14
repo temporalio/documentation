@@ -1,20 +1,21 @@
-{/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
-This file is generated from https://github.com/temporalio/cli/blob/main/temporalcli/commandsgen/commands.yml */}
----
+## {/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.This file is generated from https://github.com/temporalio/cli/blob/main/temporalcli/commandsgen/commands.yml */}
+
 id: server
 title: Temporal CLI server command reference
 sidebar_label: server
 description: Manage your Temporal Server easily with CLI commands. Start a local server using `temporal server start-dev` and access the Web UI at http://localhost:8233. Customize with multiple options.
 toc_max_heading_level: 4
 keywords:
-  - cli reference
-  - command-line-interface-cli
-  - server
-  - server start-dev
-  - temporal cli
-tags:
-  - Temporal CLI
-  - Development Server
+
+- cli reference
+- command-line-interface-cli
+- server
+- server start-dev
+- temporal cli
+  tags:
+- Temporal CLI
+- Development Server
+
 ---
 
 ## start-dev
@@ -22,11 +23,11 @@ tags:
 Run a development Temporal Server on your local system.
 
 +------------------------------------------------------------------------+
-| WARNING: The development server is not intended for production use.    |
-| It skips certain HTTP security checks to make local use simpler.       |
-|                                                                        |
-| For production use, see:                                               |
-| https://docs.temporal.io/production-deployment                         |
+| WARNING: The development server is not intended for production use. |
+| It skips certain HTTP security checks to make local use simpler. |
+| |
+| For production use, see: |
+| https://docs.temporal.io/production-deployment |
 +------------------------------------------------------------------------+
 
 View the Web UI for the default configuration at: http://localhost:8233
@@ -266,4 +267,3 @@ Path to x509 private key. Can't be used with --tls-key-data.
 **--tls-server-name** _string_
 
 Override target TLS server name.
-

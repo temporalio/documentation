@@ -1,27 +1,28 @@
-{/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
-This file is generated from https://github.com/temporalio/cli/blob/main/temporalcli/commandsgen/commands.yml */}
----
+## {/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.This file is generated from https://github.com/temporalio/cli/blob/main/temporalcli/commandsgen/commands.yml */}
+
 id: activity
 title: Temporal CLI activity command reference
 sidebar_label: activity
 description: Learn how to use Temporal Activity commands for completing or failing Activity Executions in your Workflow. Optimize your Temporal Workflow management effectively.
 toc_max_heading_level: 4
 keywords:
-  - activity
-  - activity complete
-  - activity update-options
-  - activity pause
-  - activity unpause
-  - activity reset
-  - activity execution
-  - activity fail
-  - cli reference
-  - cli-feature
-  - command-line-interface-cli
-  - temporal cli
-tags:
-  - Activities
-  - Temporal CLI
+
+- activity
+- activity complete
+- activity update-options
+- activity pause
+- activity unpause
+- activity reset
+- activity execution
+- activity fail
+- cli reference
+- cli-feature
+- command-line-interface-cli
+- temporal cli
+  tags:
+- Activities
+- Temporal CLI
+
 ---
 
 ## complete
@@ -374,7 +375,7 @@ Pause an Activity.
 If the Activity is not currently running (e.g. because it previously
 failed), it will not be run again until it is unpaused.
 
-However, if the Activity is currently running, it will run until the next 
+However, if the Activity is currently running, it will run until the next
 time it fails, completes, or times out, at which point the pause will kick in.
 
 If the Activity is on its last retry attempt and fails, the failure will
@@ -390,7 +391,7 @@ temporal activity pause \
     --workflow-id YourWorkflowId
 ```
 
-To later unpause the activity, see [unpause](#unpause). You may also want to 
+To later unpause the activity, see [unpause](#unpause). You may also want to
 [reset](#reset) the activity to unpause it while also starting it from the beginning.
 
 Use the following options to change the behavior of this command.
@@ -553,31 +554,31 @@ Override target TLS server name.
 
 ## reset
 
-Reset an activity. This restarts the activity as if it were first being 
-scheduled. That is, it will reset both the number of attempts and the 
-activity timeout, as well as, optionally, the 
+Reset an activity. This restarts the activity as if it were first being
+scheduled. That is, it will reset both the number of attempts and the
+activity timeout, as well as, optionally, the
 [heartbeat details](#reset-heartbeats).
 
-If the activity may be executing (i.e. it has not yet timed out), the 
+If the activity may be executing (i.e. it has not yet timed out), the
 reset will take effect the next time it fails, heartbeats, or times out.
-If is waiting for a retry (i.e. has failed or timed out), the reset 
+If is waiting for a retry (i.e. has failed or timed out), the reset
 will apply immediately.
 
-If the activity is already paused, it will be unpaused by default. 
+If the activity is already paused, it will be unpaused by default.
 You can specify `keep_paused` to prevent this.
 
-If the activity is paused and the `keep_paused` flag is not provided, 
-it will be unpaused. If the activity is paused and `keep_paused` flag 
+If the activity is paused and the `keep_paused` flag is not provided,
+it will be unpaused. If the activity is paused and `keep_paused` flag
 is provided - it will stay paused.
 
 Activities can be specified by their Activity ID or Activity Type.
 
 ### Resetting activities that heartbeat {#reset-heartbeats}
 
-Activities that heartbeat will receive a [Canceled failure](/references/failures#cancelled-failure) 
+Activities that heartbeat will receive a [Canceled failure](/references/failures#cancelled-failure)
 the next time they heartbeat after a reset.
 
-If, in your Activity, you need to do any cleanup when an Activity is 
+If, in your Activity, you need to do any cleanup when an Activity is
 reset, handle this error and then re-throw it when you've cleaned up.
 
 If the `reset_heartbeats` flag is set, the heartbeat details will also be cleared.
@@ -786,8 +787,8 @@ temporal activity unpause \
     --reset-heartbeats
 ```
 
-Activities can be unpaused in bulk via a visibility Query list filter. 
-For example, if you want to unpause activities of type Foo that you 
+Activities can be unpaused in bulk via a visibility Query list filter.
+For example, if you want to unpause activities of type Foo that you
 previously paused, do:
 
 ```
@@ -996,8 +997,8 @@ Override target TLS server name.
 ## update-options
 
 Update the options of a running Activity that were passed into it from
- a Workflow. Updates are incremental, only changing the specified 
- options.
+a Workflow. Updates are incremental, only changing the specified
+options.
 
 For example:
 
@@ -1207,4 +1208,3 @@ Path to x509 private key. Can't be used with --tls-key-data.
 **--tls-server-name** _string_
 
 Override target TLS server name.
-

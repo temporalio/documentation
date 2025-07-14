@@ -1,29 +1,30 @@
-{/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
-This file is generated from https://github.com/temporalio/cli/blob/main/temporalcli/commandsgen/commands.yml */}
----
+## {/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.This file is generated from https://github.com/temporalio/cli/blob/main/temporalcli/commandsgen/commands.yml */}
+
 id: schedule
 title: Temporal CLI schedule command reference
 sidebar_label: schedule
 description: Temporal's Schedule commands allow users to create, update, and manage Workflow Executions seamlessly for automation, supporting commands for creation, backfill, deletion, and more.
 toc_max_heading_level: 4
 keywords:
-  - backfill
-  - cli reference
-  - command-line-interface-cli
-  - schedule
-  - schedule backfill
-  - schedule create
-  - schedule delete
-  - schedule describe
-  - schedule list
-  - schedule toggle
-  - schedule trigger
-  - schedule update
-  - temporal cli
-  - updates
-tags:
-  - Temporal CLI
-  - Schedules
+
+- backfill
+- cli reference
+- command-line-interface-cli
+- schedule
+- schedule backfill
+- schedule create
+- schedule delete
+- schedule describe
+- schedule list
+- schedule toggle
+- schedule trigger
+- schedule update
+- temporal cli
+- updates
+  tags:
+- Temporal CLI
+- Schedules
+
 ---
 
 ## backfill
@@ -49,20 +50,20 @@ temporal schedule backfill \
 
 The policies include:
 
-* **AllowAll**: Allow unlimited concurrent Workflow Executions. This
+- **AllowAll**: Allow unlimited concurrent Workflow Executions. This
   significantly speeds up the backfilling process on systems that support
   concurrency. You must ensure running Workflow Executions do not interfere
   with each other.
-* **BufferAll**: Buffer all incoming Workflow Executions while waiting for
+- **BufferAll**: Buffer all incoming Workflow Executions while waiting for
   the running Workflow Execution to complete.
-* **Skip**: If a previous Workflow Execution is still running, discard new
+- **Skip**: If a previous Workflow Execution is still running, discard new
   Workflow Executions.
-* **BufferOne**: Same as 'Skip' but buffer a single Workflow Execution to be
+- **BufferOne**: Same as 'Skip' but buffer a single Workflow Execution to be
   run after the previous Execution completes. Discard other Workflow
   Executions.
-* **CancelOther**: Cancel the running Workflow Execution and replace it with
+- **CancelOther**: Cancel the running Workflow Execution and replace it with
   the incoming new Workflow Execution.
-* **TerminateOther**: Terminate the running Workflow Execution and replace
+- **TerminateOther**: Terminate the running Workflow Execution and replace
   it with the incoming new Workflow Execution.
 
 Use the following options to change the behavior of this command.
@@ -227,21 +228,21 @@ new Workflow Executions at the times you specify.
 For example:
 
 ```
-  temporal schedule create \
-    --schedule-id "YourScheduleId" \
-    --calendar '{"dayOfWeek":"Fri","hour":"3","minute":"30"}' \
-    --workflow-id YourBaseWorkflowIdName \
-    --task-queue YourTaskQueue \
-    --type YourWorkflowType
+temporal schedule create \
+  --schedule-id "YourScheduleId" \
+  --calendar '{"dayOfWeek":"Fri","hour":"3","minute":"30"}' \
+  --workflow-id YourBaseWorkflowIdName \
+  --task-queue YourTaskQueue \
+  --type YourWorkflowType
 ```
 
 Schedules support any combination of `--calendar`, `--interval`, and `--cron`:
 
-* Shorthand `--interval` strings.
+- Shorthand `--interval` strings.
   For example: 45m (every 45 minutes) or 6h/5h (every 6 hours, at the top of
   the 5th hour).
-* JSON `--calendar`, as in the preceding example.
-* Unix-style `--cron` strings and robfig declarations
+- JSON `--calendar`, as in the preceding example.
+- Unix-style `--cron` strings and robfig declarations
   (@daily/@weekly/@every X/etc).
   For example, every Friday at 12:30 PM: `30 12 * * Fri`.
 
@@ -533,8 +534,7 @@ temporal schedule delete \
 ```
 
 Removing a Schedule won't affect the Workflow Executions it started that are
-still running. To cancel or terminate these Workflow Executions, use `temporal
-workflow delete` with the `TemporalScheduledById` Search Attribute instead.
+still running. To cancel or terminate these Workflow Executions, use `temporal workflow delete` with the `TemporalScheduledById` Search Attribute instead.
 
 Use the following options to change the behavior of this command.
 
@@ -1650,4 +1650,3 @@ Path to x509 private key. Can't be used with --tls-key-data.
 **--tls-server-name** _string_
 
 Override target TLS server name.
-
