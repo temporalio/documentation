@@ -1,3 +1,5 @@
+{/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
+This file is generated from https://github.com/temporalio/cli/blob/main/temporalcli/commandsgen/commands.yml */}
 ---
 id: workflow
 title: Temporal CLI workflow command reference
@@ -2042,49 +2044,26 @@ BuildId. Do not use Workflow IDs, run IDs, or event IDs with this command.
 Visit https://docs.temporal.io/visibility to read more about Search
 Attributes and Query creation.
 
+### with-workflow-update-options
+
+Run Workflow Update Options atomically after the Workflow is reset.
+Workflows selected by the reset command are forwarded onto the subcommand.
+
 Use the following options to change the behavior of this command.
 
 **Flags:**
 
-**--build-id** _string_
+**--versioning-override-behavior** _string-enum_
 
-A Build ID. Use only with the BuildId `--type`. Resets the first Workflow task processed by this ID. By default, this reset may be in a prior run, earlier than a Continue as New point.
+Override the versioning behavior of a Workflow. Required. Accepted values: pinned, auto_upgrade.
 
-**--event-id**, **-e** _int_
+**--versioning-override-build-id** _string_
 
-Event ID to reset to. Event must occur after `WorkflowTaskStarted`. `WorkflowTaskCompleted`, `WorkflowTaskFailed`, etc. are valid.
+When overriding to a `pinned` behavior, specifies the Build ID of the version to target.
 
-**--query**, **-q** _string_
+**--versioning-override-deployment-name** _string_
 
-Content for an SQL-like `QUERY` List Filter.
-
-**--reapply-exclude** _string-enum[]_
-
-Exclude these event types from re-application. Accepted values: All, Signal, Update.
-
-**--reapply-type** _string-enum_
-
-Types of events to re-apply after reset point. Accepted values: All, Signal, None. (default "All")
-
-**--reason** _string_
-
-Reason for reset. Required.
-
-**--run-id**, **-r** _string_
-
-Run ID.
-
-**--type**, **-t** _string-enum_
-
-The event type for the reset. Accepted values: FirstWorkflowTask, LastWorkflowTask, LastContinuedAsNew, BuildId.
-
-**--workflow-id**, **-w** _string_
-
-Workflow ID. Required for non-batch reset operations.
-
-**--yes**, **-y** _bool_
-
-Don't prompt to confirm. Only allowed when `--query` is present.
+When overriding to a `pinned` behavior, specifies the Deployment Name of the version to target.
 
 **Global Flags:**
 
@@ -4714,7 +4693,7 @@ Update ID. If unset, defaults to a UUID.
 
 **--wait-for-stage** _string-enum_
 
-Update stage to wait for. The only option is `accepted`, but this option is required. This is to allow a future version of the CLI to choose a default value. Required. Accepted values: accepted.
+Update stage to wait for. The only option is `accepted`, but this option is  required. This is to allow a future version of the CLI to choose a default value. Required. Accepted values: accepted.
 
 **--workflow-id**, **-w** _string_
 
@@ -4866,7 +4845,7 @@ Override target TLS server name.
 
 +---------------------------------------------------------------------+
 | CAUTION: Worflow update-options is experimental. Workflow Execution |
-| properties are subject to change. |
+| properties are subject to change.                                   |
 +---------------------------------------------------------------------+
 
 Modify properties of Workflow Executions:
@@ -4888,7 +4867,7 @@ temporal workflow update-options \
 ```
 
 or to pin the workflow execution to a Worker Deployment, set behavior
-to Pinned:
+to `pinned`:
 
 ```
 temporal workflow update-options \
@@ -5090,3 +5069,4 @@ Path to x509 private key. Can't be used with --tls-key-data.
 **--tls-server-name** _string_
 
 Override target TLS server name.
+
