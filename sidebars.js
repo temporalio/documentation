@@ -215,6 +215,7 @@ module.exports = {
             "develop/python/schedules",
             "develop/python/converters-and-encryption",
             "develop/python/timers",
+            "develop/python/nexus",
             "develop/python/child-workflows",
             "develop/python/continue-as-new",
           ],
