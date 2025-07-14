@@ -1969,6 +1969,11 @@
       "source": "/develop/safe-deployments",
       "destination": "/develop/determinism",
       "permanent": true
+    },
+    {
+      "source": "/cloud/deploy-workers-to-aws-eks",
+      "destination": "/production-deployment/worker-deployments/deploy-workers-to-aws-eks",
+      "permanent": true
     }
   ]
 }
