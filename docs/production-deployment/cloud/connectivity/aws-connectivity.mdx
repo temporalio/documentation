@@ -162,9 +162,9 @@ When you connect to Temporal Cloud through AWS PrivateLink you normally must:
 
 By creating a Route 53 **private hosted zone (PHZ)** that maps the public Temporal Cloud hostname (or region hostname) to your VPC Endpoint, you can:
 
-* Keep using the standard Temporal Cloud hostnames in code and configuration.
-* Eliminate the need to set a custom SNI override.
-* Make future Endpoint rotations transparent—only the PHZ record changes.
+- Keep using the standard Temporal Cloud hostnames in code and configuration.
+- Eliminate the need to set a custom SNI override.
+- Make future Endpoint rotations transparent—only the PHZ record changes.
 
 This approach is **optional**; Temporal Cloud works without it. It simply streamlines configuration and operations.
 
@@ -172,15 +172,15 @@ This approach is **optional**; Temporal Cloud works without it. It simply stream
 
 | Requirement                                           | Notes                                                                                                                              |
 | ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| AWS VPC with DNS resolution and DNS hostnames enabled | *VPC console → Edit DNS settings → enable both checkboxes.*                                                                        |
+| AWS VPC with DNS resolution and DNS hostnames enabled | _VPC console → Edit DNS settings → enable both checkboxes._                                                                        |
 | Interface VPC Endpoint for Temporal Cloud             | Subnets must be associated with the VPC and Security Group must allow TCP ingress traffic to port 7233 from the appropriate hosts. |
 | Route 53 available in your AWS account                | You need permission to create Private Hosted Zones and records.                                                                    |
 | Namespace details                                     | Needed to choose the correct override domain pattern below.                                                                        |
 
-###  Choose the override domain and endpoint
+### Choose the override domain and endpoint
 
-| Temporal Cloud setup                   | Use this PHZ domain     | Example                                         |
-| -------------------------------------- | ----------------------- | ----------------------------------------------- |
+| Temporal Cloud setup                       | Use this PHZ domain     | Example                                         |
+| ------------------------------------------ | ----------------------- | ----------------------------------------------- |
 | Single-region namespace with mTLS auth     | `<account>.tmprl.cloud` | `payments.abcde.tmprl.cloud` ↔ `vpce-...`       |
 | Multi-region namespace **or** API-key auth | `region.tmprl.cloud`    | `aws-us-east-1.region.tmprl.cloud` ↔ `vpce-...` |
 
@@ -202,9 +202,9 @@ Save the **`vpce-*.amazonaws.com`** value -- you will target it in the CNAME rec
 
 #### 2. Create a Route 53 Private Hosted Zone
 
-1. **Open** *Route 53 → Hosted zones → Create hosted zone*.
+1. **Open** _Route 53 → Hosted zones → Create hosted zone_.
 2. Enter the **domain** chosen from the table above, e.g., `payments.abcde.tmprl.cloud`.
-3. **Type:** *Private hosted zone for Temporal Cloud*.
+3. **Type:** _Private hosted zone for Temporal Cloud_.
 4. **Associate** the hosted zone with every VPC that contains Temporal Workers and/or SDK clients.
 5. **Create hosted zone**.
 
@@ -214,7 +214,7 @@ Inside the new PHZ:
 
 | Field           | Value                                                                                 |
 | --------------- | ------------------------------------------------------------------------------------- |
-| **Record name** | the namespace endpoint (e.g., `payments.abcde.tmprl.cloud`).                           |
+| **Record name** | the namespace endpoint (e.g., `payments.abcde.tmprl.cloud`).                          |
 | **Record type** | `CNAME`                                                                               |
 | **Value**       | Your VPC Endpoint DNS name (`vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com`) |
 | **TTL**         | 60s is typical; 15s for MRN namespaces; adjust as needed.                             |
@@ -266,15 +266,15 @@ This setup allows you to override the default zone, ensuring that traffic is rou
 A Namespace's active region is reflected in the target of a CNAME record.
 For example, if the active region of a Namespace is AWS us-west-2, the DNS configuration would look like this:
 
-| Record name | Record type | Value |
-| ----------- | ----------- | ----- |
-| ha-namespace.account-id.tmprl.cloud | CNAME | aws-us-west-2.region.tmprl.cloud |
+| Record name                         | Record type | Value                            |
+| ----------------------------------- | ----------- | -------------------------------- |
+| ha-namespace.account-id.tmprl.cloud | CNAME       | aws-us-west-2.region.tmprl.cloud |
 
 After a failover, the CNAME record will be updated to point to the failover region, for example:
 
-| Record name | Record type | Value |
-| ----------- | ----------- | ----- |
-| ha-namespace.account-id.tmprl.cloud | CNAME | aws-us-east-1.region.tmprl.cloud |
+| Record name                         | Record type | Value                            |
+| ----------------------------------- | ----------- | -------------------------------- |
+| ha-namespace.account-id.tmprl.cloud | CNAME       | aws-us-east-1.region.tmprl.cloud |
 
 The Temporal domain did not change, but the CNAME updated from us-west-2 to us-east-1.
 
