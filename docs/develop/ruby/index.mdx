@@ -1,0 +1,181 @@
+---
+id: index
+title: Ruby SDK developer guide
+sidebar_label: Ruby SDK
+description: Use the Temporal Ruby SDK to develop Temporal Applications, connect to the Temporal Service, test Workflows and Activities, handle failures, send messages, and more.
+toc_max_heading_level: 4
+keywords:
+  - ruby
+  - sdk
+tags:
+  - Ruby SDK
+  - Temporal SDKs
+---
+
+import * as Components from '@site/src/components';
+
+<!-- Ruby SDK feature guidance landing page-->
+
+![Ruby SDK Banner](/img/assets/banner-ruby-temporal.png)
+
+:::tip Support, stability, and dependency info
+
+The Temporal Ruby SDK is currently in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+
+:::
+
+:::info Ruby SDK RESOURCES
+Build Temporal Applications with the Ruby SDK.
+
+**Temporal Ruby Technical Resources:**
+
+- [Ruby SDK Code Samples](https://github.com/temporalio/samples-ruby)
+- [Ruby API Documentation](https://ruby.temporal.io/)
+- [Ruby SDK GitHub](https://github.com/temporalio/sdk-ruby)
+
+**Get Connected with the Temporal Ruby Community:**
+
+- [Temporal Ruby Community Slack](https://temporalio.slack.com/archives/C052K5QFBNW)
+- [Ruby SDK Forum](https://community.temporal.io/tag/ruby-sdk)
+
+:::
+
+## [Core Application](/develop/ruby/core-application)
+
+Use the essential components of a Temporal Application (Workflows, Activities, and Workers) to build and run a Temporal application.
+
+- [Develop a basic Workflow Definition](/develop/ruby/core-application#develop-workflow): Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a Workflow Definition.
+- [Develop a basic Activity Definition](/develop/ruby/core-application#develop-activity): One of the primary things that Workflows do is orchestrate the execution of Activities.
+- [Start an Activity from a Workflow](/develop/ruby/core-application#activity-execution): Calls to spawn Activity Executions are written within a Workflow Definition.
+- [Run a Worker Process](/develop/ruby/core-application#run-worker-process): The Worker Process is where Workflow Functions and Activity Functions are executed.
+- [Set a Dynamic Workflow](/develop/ruby/core-application#set-a-dynamic-workflow): Set a Workflow that can be invoked dynamically at runtime.
+- [Set a Dynamic Activity](/develop/ruby/core-application#set-a-dynamic-activity): Set an Activity that can be invoked dynamically at runtime.
+
+## [Temporal Client](/develop/ruby/temporal-client)
+
+Connect to a Temporal Service and start a Workflow Execution.
+
+- [Create a Temporal Client](/develop/ruby/temporal-client#create-a-client): Learn to instantiate and configure a client to interact with the Temporal Service.
+- [Connect to Temporal Cloud](/develop/ruby/temporal-client#connect-to-temporal-cloud): Securely connect to the Temporal Cloud for a fully managed service.
+- [Start a Workflow](/develop/ruby/temporal-client#start-workflow): Initiate Workflows seamlessly via the Ruby SDK.
+- [Get Workflow results](/develop/ruby/temporal-client#get-workflow-results): Retrieve and process the results of your Workflows efficiently.
+
+## [Testing](/develop/ruby/testing-suite)
+
+Set up the testing suite and test Workflows and Activities.
+
+- [Test frameworks](/develop/ruby/testing-suite#test-frameworks): Testing provides a framework to facilitate Workflow and integration testing.
+- [Testing Workflows](/develop/ruby/testing-suite#testing-workflows): Ensure the functionality and reliability of your Workflows.
+- [Testing Activities](/develop/ruby/testing-suite#test-activities): Validate the execution and outcomes of your Activities.
+- [Replay test](/develop/ruby/testing-suite#replay-test): Replay recreates the exact state of a Workflow Execution.
+
+## [Failure detection](/develop/ruby/failure-detection)
+
+Explore how your application can detect failures using timeouts and automatically attempt to mitigate them with retries.
+
+- [Workflow timeouts](/develop/ruby/failure-detection#workflow-timeouts): Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
+- [Workflow retries](/develop/ruby/failure-detection#workflow-retries): A Workflow Retry Policy can be used to retry a Workflow Execution in the event of a failure.
+- [Activity timeouts](/develop/ruby/failure-detection#activity-timeouts): Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
+- [Set an Activity Retry Policy](/develop/ruby/failure-detection#activity-retries): Define retry logic for Activities to handle failures.
+- [Heartbeat an Activity](/develop/ruby/failure-detection#activity-heartbeats): An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Service.
+- [Heartbeat Timeout](/develop/ruby/failure-detection#heartbeat-timeout): A Heartbeat Timeout works in conjunction with Activity Heartbeats.
+
+## [Workflow message passing](/develop/go/message-passing)
+
+Send messages to and read the state of Workflow Executions.
+
+### Signals
+
+- [Define Signal](/develop/ruby/message-passing#signals): A Signal is a message sent to a running Workflow Execution.
+- [Send a Signal from a Temporal Client](/develop/ruby/message-passing#send-signal-from-client): Send a Signal to a Workflow from a Temporal Client.
+- [Send a Signal from a Workflow](/develop/ruby/message-passing#send-signal-from-workflow): Send a Signal to another Workflow from within a Workflow, this would also be called an External Signal.
+- [Signal-With-Start](/develop/ruby/message-passing#signal-with-start): Start a Workflow and send it a Signal in a single operation used from the Client.
+- [Dynamic Handler](/develop/ruby/message-passing#dynamic-handler): Dynamic Handlers provide flexibility to handle cases where the names of Workflows, Activities, Signals, or Queries aren't known at run time.
+- [Set a Dynamic Signal](/develop/ruby/message-passing#set-a-dynamic-signal): A Dynamic Signal in Temporal is a Signal that is invoked dynamically at runtime if no other Signal with the same input is registered.
+
+### Queries
+
+- [Define a Query](/develop/ruby/message-passing#queries): A Query is a synchronous operation that is used to get the state of a Workflow Execution.
+- [Send Queries](/develop/ruby/message-passing#send-query): Queries are sent from the Temporal Client.
+- [Set a Dynamic Query](/develop/ruby/message-passing#set-a-dynamic-signal): A Dynamic Query in Temporal is a Query that is invoked dynamically at runtime if no other Query with the same name is registered.
+
+### Updates
+
+- [Define an Update](/develop/ruby/message-passing#updates): An Update is an operation that can mutate the state of a Workflow Execution and return a response.
+- [Send an Update](/develop/ruby/message-passing#send-update-from-client): An Update is sent from the Temporal Client.
+
+## [Interrupt a Workflow](/develop/ruby/interrupt-workflow)
+
+Interrupt a Workflow Execution with a Cancel or Terminate action.
+
+- [Cancel a Workflow](/develop/ruby/interrupt-workflow#cancellation): Interrupt a Workflow Execution and its Activities through Workflow cancellation.
+- [Terminate a Workflow](/develop/ruby/interrupt-workflow#termination): Interrupt a Workflow Execution and its Activities through Workflow termination.
+
+## [Asynchronous Activity completion](/develop/ruby/asynchronous-activity)
+
+Complete Activities asynchronously.
+
+- [Asynchronous Activity](/develop/ruby/asynchronous-activity): Asynchronous Activity completion enables the Activity Function to return without the Activity Execution completing.
+
+## [Versioning](/develop/ruby/versioning)
+
+Change Workflow Definitions without causing non-deterministic behavior in running Workflows.
+
+- [Use the Ruby SDK Patching API](/develop/ruby/versioning#ruby-sdk-patching-api): Patching Workflows using the Ruby SDK.
+
+## [Observability](/develop/ruby/observability)
+
+Configure and use the Temporal Observability APIs.
+
+- [Emit Metrics](/develop/ruby/observability#metrics): Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
+- [Set up Tracing](/develop/ruby/observability#tracing): Explains how the Go SDK supports tracing and custom context propagation.
+- [Log from a Workflow](/develop/ruby/observability#logging): Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
+- [Use Visibility APIs](/develop/ruby/observability#visibility): The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Terminal Service.
+
+## [Debugging](/develop/ruby/debugging)
+
+Explore various ways to debug your application.
+
+- [Debug in a development environment](/develop/ruby/debugging#debug-in-a-development-environment): In addition to the normal development tools of logging and a debugger, you can also see what’s happening in your Workflow by using the Web UI and the Temporal CLI.
+- [Debug in a development production](/develop/ruby/debugging#debug-in-a-production-environment): Debug production Workflows using the Web UI, the Temporal CLI, Replays, Tracing, or Logging.
+
+## [Schedules](/develop/ruby/schedules)
+
+Run Workflows on a schedule and delay the start of a Workflow.
+
+- [Schedule a Workflow](/develop/ruby/schedules#schedule-a-workflow)
+  - [Create a Scheduled Workflow](/develop/ruby/schedules#create-a-workflow): Create a new schedule for a scheduled Workflow.
+  - [Backfill a Scheduled Workflow](/develop/ruby/schedules#backfill-a-scheduled-workflow): Backfills a past time range of actions for a scheduled Workflow.
+  - [Delete a Scheduled Workflow](/develop/ruby/schedules#delete-a-scheduled-workflow): Deletes a schedule for a scheduled Workflow.
+  - [Describe a Scheduled Workflow](/develop/ruby/schedules#describe-a-scheduled-workflow): Get schedule configuration and current state for a scheduled Workflow.
+  - [List a Scheduled Workflow](/develop/ruby/schedules#list-a-scheduled-workflow): List a schedule for a scheduled Workflow.
+  - [Pause a Scheduled Workflow](/develop/ruby/schedules#pause-a-scheduled-workflow): Pause a schedule for a scheduled Workflow.
+  - [Trigger a Scheduled Workflow](/develop/ruby/schedules#trigger-a-scheduled-workflow): Triggers an immediate action for a scheduled Workflow.
+  - [Update a Scheduled Workflow](/develop/ruby/schedules#update-a-scheduled-workflow): Updates a schedule with a new definition for a scheduled Workflow.
+- [Use Start Delay](/develop/ruby/schedules#start-delay): Start delay functionality if you need to delay the execution of the Workflow without the need for regular launches.
+
+## [Data encryption](/develop/ruby/converters-and-encryption)
+
+Use compression, encryption, and other data handling by implementing custom converters and codecs.
+
+- [Use a custom Payload Codec](/develop/ruby/converters-and-encryption#custom-payload-codec): Create a custom PayloadCodec implementation and define your encryption/compression and decryption/decompression logic.
+- [Use a custom Payload Converter](/develop/ruby/converters-and-encryption#custom-payload-converter): A custom data converter can be set via the `DataConverter` option when creating a client.
+
+## [Durable Timers](/develop/ruby/durable-timers)
+
+Use Timers to make a Workflow Execution pause or "sleep" for seconds, minutes, days, months, or years.
+
+- [Sleep](/develop/ruby/durable-timers): A Timer lets a Workflow sleep for a fixed time period.
+
+## [Child Workflows](/develop/ruby/child-workflows)
+
+Explore how to spawn a Child Workflow Execution and handle Child Workflow Events.
+
+- [Start a Child Workflow Execution](/develop/ruby/child-workflows): A Child Workflow Execution is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
+- [Set a Parent Close Policy](/develop/ruby/child-workflows#parent-close-policy): A Parent Close Policy determines what happens to a Child Workflow Execution if its Parent changes to a Closed status.
+
+## [Continue-As-New](/develop/ruby/continue-as-new)
+
+Continue the Workflow Execution with a new Workflow Execution using the same Workflow ID.
+
+- [Continue-As-New](/develop/ruby/continue-as-new): Continue-As-New enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.
