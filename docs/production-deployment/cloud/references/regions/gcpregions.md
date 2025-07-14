@@ -1,7 +1,63 @@
-| Area          | Code         | Region            | Notes                                          |
-| ------------- | ------------ | ----------------- | ---------------------------------------------- |
-| North America | us-central1  | Iowa              | Does not support<br /> Same-region Replication |
-| North America | us-west1     | Oregon            | Does not support<br /> Same-region Replication |
-| North America | us-east4     | Northern Virginia | Does not support<br /> Same-region Replication |
-| Europe        | europe-west3 | Frankfurt         | Does not support<br /> Multi-region or <br />Same-region Replication |
-| Asia Pacific  | asia-south1  | Mumbai            | Does not support<br /> Multi-region or <br /> Same-region Replication |
+### North America - Iowa (`us-central1`)
+
+- **Cloud API Code**: `gcp-us-central1`
+- **Same Region Replication**:  Not Available
+- **Multi-Region Replication**:
+  - `gcp-us-west1`
+  - `gcp-us-east4`
+- **Multi-Cloud Replication**:
+  - `aws-ca-central-1`
+  - `aws-us-east-1`
+  - `aws-us-east-2`
+  - `aws-us-west-2`
+
+### North America - Oregon (`us-west1`)
+
+- **Cloud API Code**: `gcp-us-west1`
+- **Same Region Replication**:  Not Available
+- **Multi-Region Replication**:
+  - `gcp-us-central1`
+  - `gcp-us-east4`
+- **Multi-Cloud Replication**:
+  - `aws-ca-central-1`
+  - `aws-us-east-1`
+  - `aws-us-east-2`
+  - `aws-us-west-2`
+
+### North America - Northern Virginia (`us-east4`)
+
+- **Cloud API Code**: `gcp-us-east4`
+- **Same Region Replication**:  Not Available
+- **Multi-Region Replication**:
+  - `gcp-us-central1`
+  - `gcp-us-west1`
+- **Multi-Cloud Replication**:
+  - `aws-ca-central-1`
+  - `aws-us-east-1`
+  - `aws-us-east-2`
+  - `aws-us-west-2`
+
+### Europe - Frankfurt (`europe-west3`)
+
+- **Cloud API Code**: `gcp-europe-west3`
+- **Same Region Replication**:  Not Available
+- **Multi-Region Replication**:
+  - None
+- **Multi-Cloud Replication**:
+  - `aws-eu-central-1`
+  - `aws-eu-west-1`
+  - `aws-eu-west-2`
+
+### Asia Pacific - Mumbai (`asia-south1`)
+
+- **Cloud API Code**: `gcp-asia-south1`
+- **Same Region Replication**:  Not Available
+- **Multi-Region Replication**:
+  - None
+- **Multi-Cloud Replication**:
+  - `aws-ap-northeast-1`
+  - `aws-ap-northeast-2`
+  - `aws-ap-south-1`
+  - `aws-ap-south-2`
+  - `aws-ap-southeast-1`
+  - `aws-ap-southeast-2`
