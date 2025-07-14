@@ -371,7 +371,7 @@ In this scenario, you may also need to use the other [Versioning APIs](/workflow
 If the target Worker version that you want to move stuck Workflows to does not have the code paths necessary to reproduce the
 Events in the History of your stuck Workflows, you could use patching as mentioned above, or you could do a Workflow Reset.
 Only Reset your Workflow if you can tolerate losing progress and re-triggering Actions, among the other usual consequences of
-Workflow Reset. However, if your Workflow was broken and/or did not make much progress, Reset can be a very helpful tool!
+Workflow Reset. However, especially if your Workflow was broken and/or did not make much progress, Reset can be a very helpful tool!
 
 "Reset-with-Move" allows you to atomically Reset your Workflow and set a Versioning Override on the newly reset workflow execution,
 so when it resumes execution, all new workflow tasks will be executed on your new Worker.
