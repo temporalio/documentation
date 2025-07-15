@@ -15,11 +15,11 @@ tags:
 ### Interceptors
 
 The behavior of the Python SDK can be customized in many useful ways by modifying inbound and outbound calls using interceptors.
-This is similar to the use of middleware in other frameworks.
+This is similar to the use of "middleware" in web frameworks such as [Django](https://docs.djangoproject.com/en/5.2/topics/http/middleware/), [Starlette](https://www.starlette.io/middleware/), and [Flask](https://flask.palletsprojects.com/en/stable/lifecycle/#middleware).
 
 There are five categories of inbound and outbound calls that you can modify in this way:
 
-1. Outbound Client calls, such as `start_workflow()`, `signal_workflow()`, `list_workflows()`, `update_schedule()`, etc.
+1. Outbound calls made by a [Temporal Client](https://docs.temporal.io/encyclopedia/temporal-sdks#temporal-client), such as `start_workflow()`, `signal_workflow()`, `list_workflows()`, `update_schedule()`, etc.
 
 2. Inbound Workflow calls: `execute_workflow()`, `handle_signal()`, `handle_update_handler()`, etc
 
