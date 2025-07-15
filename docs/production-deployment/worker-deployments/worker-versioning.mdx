@@ -368,12 +368,12 @@ temporal workflow update-options \
 
 In this scenario, you may also need to use the other [Versioning APIs](/workflow-definition#workflow-versioning) to patch
 your Workflow in the "fixed" build, so that your target Worker can handle the moved Workflows correctly.
-If you made a [version-incompatible change](/workflow-definition#deterministic-constraints) to your workflow, and you
+If you made a [version-incompatible change](/workflow-definition#deterministic-constraints) to your Workflow, and you
 want to roll back to an earlier version, it's not possible to patch it. Considering using [Workflow Reset](/workflow-execution/event#reset)
 along with your move.
 
-"Reset-with-Move" allows you to atomically Reset your Workflow and set a Versioning Override on the newly reset workflow execution,
-so when it resumes execution, all new workflow tasks will be executed on your new Worker.
+"Reset-with-Move" allows you to atomically Reset your Workflow and set a Versioning Override on the newly reset Workflow,
+so when it resumes execution, all new Workflow Tasks will be executed on your new Worker.
 
 ```bash
 temporal workflow reset with-workflow-update-options \
