@@ -28,7 +28,7 @@ Namespaces are created on the Temporal Service, and provide a range of controls 
   See the [Registration](#registration) section for details.
 - Namespaces created on self-hosted Temporal Service are case-sensitive. For example, `foo` and `Foo` are two different Namespaces.
   On Temporal Cloud, Namespaces are case-insensitive, and we recommend using lowercase for Namespace names to avoid potential issues.
-- **Membership:** [Task Queue](/task-queue) names and [Workflow Ids](/workflow/workflow-execution/workflowid-runid#workflow-id) must all correspond to a specific Namespace.
+- **Membership:** [Task Queue](/task-queue) names and [Workflow Ids](/workflow-execution/workflowid-runid#workflow-id) must all correspond to a specific Namespace.
   For example, when a Workflow Execution is spawned, it does so within a specific Namespace.
 - **Uniqueness:** Temporal guarantees a unique Workflow Id within a Namespace.
   Workflow Executions may have the same Workflow Id if they are in different Namespaces.
