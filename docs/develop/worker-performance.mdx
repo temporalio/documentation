@@ -156,7 +156,7 @@ The above figure shows EWS in action:
 1. The first task is included in the server response, no matching step required.
 1. The SDK extracts the task from the response, and dispatches it to the local worker.
 
-To recover from errors, EWS falls back to the non-eager path. For example, when the first Task is returned eagerly, but the local Worker refuses to honor the reserved slot, the server retries this task non-eagerly after WorkflowTaskTimeout.
+To recover from errors, Eager Workflow Start falls back to the non-eager path. For example, when the first Task is returned eagerly, but the local Worker fails or times out while processing the task, the server retries this task non-eagerly after WorkflowTaskTimeout.
 
 **Latency improvements**
 
