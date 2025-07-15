@@ -29,7 +29,6 @@ There are five categories of inbound and outbound calls that you can modify in t
 
 5. Outbound Activity calls: `info()` and `heartbeat()`
 
-
 To modify outbound Client calls, define a class inheriting from
 [`client.Interceptor`](https://python.temporal.io/temporalio.client.Interceptor.html), and implement the method
 `intercept_client()` to return an instance of
@@ -64,13 +63,10 @@ For convenience, you can create an interceptor class that inherits from _both_ `
 automatically pick up the interceptors from its underlying Client (and you should not pass them directly to the
 `Worker()` constructor).
 
-This is best explained by example. The [Context Propagation Interceptor
-Sample](https://github.com/temporalio/samples-python/tree/main/context_propagation) is a good starting point. In
+This is best explained by example. The [Context Propagation Interceptor Sample](https://github.com/temporalio/samples-python/tree/main/context_propagation) is a good starting point. In
 [context_propagation/interceptor.py](https://github.com/temporalio/samples-python/blob/main/context_propagation/interceptor.py)
 a class is defined that inherits from both `client.Interceptor` and `worker.Interceptor`. It implements the various
 methods such that the outbound Client and Workflow calls set a certain key in the outbound `headers` field, and the
 inbound Workflow and Activity calls retrieve the header value from the inbound Workflow/Activity input data. An instance
-of this interceptor class is passed to `Client.connect()` when [starting the
-worker](https://github.com/temporalio/samples-python/blob/main/context_propagation/worker.py) and when connecting the
-Client in the [Workflow starter
-code](https://github.com/temporalio/samples-python/blob/main/context_propagation/starter.py).
+of this interceptor class is passed to `Client.connect()` when [starting the worker](https://github.com/temporalio/samples-python/blob/main/context_propagation/worker.py) and when connecting the
+Client in the [Workflow starter code](https://github.com/temporalio/samples-python/blob/main/context_propagation/starter.py).
