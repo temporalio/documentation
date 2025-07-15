@@ -8,7 +8,7 @@ tags:
   - Workers
   - Performance
 ---
-
+import { CaptionedImage } from '@site/src/components';
 import * as Components from '@site/src/components';
 
 This page documents metrics and configurations that drive the efficiency of your Worker fleet.
@@ -103,14 +103,67 @@ The number of Task Pollers can be configured using `WorkerOptions` when creating
 
 ### Eager task execution
 
-Workers may eagerly execute Activity and Workflow Tasks under the right circumstances.
+As a latency optimization, Activity and Workflow Tasks may be started eagerly in a local Worker under the right circumstances.
 
-Eager Activity Execution may happen automatically if the Worker processing a Workflow Task also has the Activity Definition being called registered.
+#### Eager Activity Start
+
+Eager Activity Start may happen automatically if the Worker processing a Workflow Task also has the Activity Definition being called registered.
 If it does, it may try to reserve an Activity Slot for the execution of the Activity, and the server may respond to the Workflow Task completion with the Activity Task for the worker to execute immediately.
 
-Eager Workflow execution is opt-in, and requires the Client which is starting the Workflow to be located in the same process as a Worker. When making the Start Workflow call, you can set the `request_eager_start` (or similar name) to true.
+#### Eager Workflow Start
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Eager Workflow Start is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+
+:::
+
+Eager Workflow Start (EWS) is currently in Public Preview, with the goal of reducing the time it takes to start a Workflow.
+The target use case is short-lived Workflows that interact with other services using Local Activities, ideally initiating this interaction in the first Workflow Task, and deployed close to the Temporal Server.
+These Workflows have a happy path that needs to initiate interactions within low tens of milliseconds, but they also want to take advantage of server-driven retries, and reliable compensation processes, for those less happy days.
+
+**Quick Start**
+
+Eager Workflow Start is opt-in, and requires the Starter and the Worker to share a Client located in the same process.
+To share the Client between Worker and Starter:
+
+1. Start the Worker first in non-blocking mode: for example with the Go SDK [using Start instead of Run, and a handler for Worker errors with the option OnFatalError](https://github.com/temporalio/samples-go/tree/main/eager-workflow-start)
+2. Set the `request_eager_start` (or similar name) to true in the Start Workflow call.
+
 When set, and the Worker has a Workflow Task slot available and the Workflow Definition registered, the Worker can execute the first task of the Workflow locally without first making a round-trip to the Temporal Server.
 This is typically most useful in combination with a Local Activity executing in the first Workflow Task, since other Workflow API calls that require waiting on something will force a round-trip.
+
+**How it works**
+
+The traditional way to start a Workflow decouples the starter program from the worker by sharing a Task Queue name between them, similar to a publish/subscribe pattern.
+This has many advantages, for example, we can reliably schedule a Workflow Execution without a running Worker, or separate the Worker and Workflow implementation from the Starter application and host them independently.
+
+But decoupling also makes it harder to optimize for latency.
+Instead, when the Starter and Worker are collocated and aware of each other, they can interact while bypassing the server, saving a few time-intensive operations.
+
+<CaptionedImage
+    src="/img/develop/worker-performance/eager-workflow-start-flow.png"
+    title="Eager Workflow Start"
+/>
+
+The above figure shows EWS in action:
+
+1. The process begins with the Starter setting `request_eager_start` (or similar name) to true in the Start Workflow Options.
+1. The SDK will try to locate a local Worker that is willing to execute the first Workflow Task, and reserve an execution slot for it.
+1. If successful, the SDK will provide a hint to the server that eager mode is preferred for the new Workflow.
+1. The server not only registers the start of the Workflow in history, it also assigns the first Workflow Task to the Starter, all in the same DB update.
+1. The first task is included in the server response, no matching step required.
+1. The SDK extracts the task from the response, and dispatches it to the local worker.
+
+To recover from errors, EWS falls back to the non-eager path. For example, when the first Task is returned eagerly, but the local Worker refuses to honor the reserved slot, the server retries this task non-eagerly after WorkflowTaskTimeout.
+
+**Latency improvements**
+
+What are the savings? One database update plus the matching operation that associates polling workers with messages in task queues. It can also reduce latency variation because polling worker connections are not always ready when you need them.
+
+This translates into significantly lower latency. For example, a few months back we did a test measuring the time it takes to create a workflow and start executing its first task, a local activity. The goal was to estimate the minimum latency to interact with an external service, using a newly-created workflow, and the Temporal Cloud. The starter and worker were in the same AWS region as our Temporal Cloud namespace. The p50 latency was 16.7 ms (eager) vs 29.3 ms (non-eager), a 43% improvement. For p99 latency, we saw 30.9 ms (eager) vs 51.6 ms (non-eager), a 40% improvement.
+
+Note that these numbers are for illustrative purposes only, just to put EWS potential improvements in perspective.
 
 ## Performance metrics for tuning {#metrics}
 
