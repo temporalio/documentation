@@ -330,6 +330,13 @@ Multi-Cluster Replication is a feature which asynchronously replicates Workflow 
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
+#### [Multi-cloud Replication](/cloud/high-availability/enable)
+
+Multi-cloud Replication replicates Workflows and metadata to a different cloud provider (AWS or GCP).
+This is particularly beneficial for organizations required to be highly available across regions for compliance purposes.
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
+
 #### [Multi-region Replication](/cloud/high-availability/enable)
 
 Multi-region Replication replicates Workflows and metadata to a different region that is not co-located with the primary Namespace.

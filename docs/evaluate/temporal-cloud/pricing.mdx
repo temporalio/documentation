@@ -159,6 +159,15 @@ For additional storage within a calendar month, you are billed for Active and Re
 | Retained | &#36;0.00105 |
 | Active | &#36;0.042 |
 
+:::tip Storage costs are also affected by Temporal System Workflows that back features such as:
+
+- [Schedules](https://docs.temporal.io/schedule): Each Scheduled Workflow contributes to storage usage. Supplied inputs, outputs, and failures all account for the storage usage incurred from Scheduled Workflows.
+- [Batch jobs](https://docs.temporal.io/cli/batch): Batch Workflow executions also consume storage.
+
+These Workflow executions contribute to overall active and retained storage consumption.
+
+:::
+
 **Example**
 
 If you have 720 GBh of Active Storage and 3,600 GBh of Retained Storage in excess of your Base Tier allocations in one calendar month, your bill will be:
