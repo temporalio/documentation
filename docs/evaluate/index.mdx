@@ -84,18 +84,30 @@ Temporal allows you to develop with durable execution in different languages and
 
 Temporal is fully open source. You can self-host the Temporal Service or use Temporal Cloud, our fully-managed SaaS offering.
 
-<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '20px 0' }}>
+<div className="dark-mode-image" style={{ justifyContent: 'center', alignItems: 'center', margin: '20px 0' }}>
   <img src="/img/assets/self_hosted_cloud.svg" alt="Self-Hosted or Fully-Managed Service" style={{ maxWidth: '50%' }} />
 </div>
 
 <div className="cta-container">
-  <a href="/concepts/what-is-durable-execution" className="cta-link">
+  <a href="/evaluate/understanding-temporal" className="cta-link">
     <div className="cta-content">
       <span className="cta-prefix">Next:</span>
-      <span className="cta-title">What is Durable Execution?</span>
+      <span className="cta-title">Understanding Temporal</span>
     </div>
     <div className="cta-arrow">→</div>
   </a>
 </div>
 
----
+<style>
+{`
+  .dark-mode-image {
+    display: none;
+  }
+
+  [data-theme='dark'] .dark-mode-image {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+  }
+`}
+</style>
