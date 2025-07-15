@@ -19,15 +19,15 @@ This is similar to the use of "middleware" in web frameworks such as [Django](ht
 
 There are five categories of inbound and outbound calls that you can modify in this way:
 
-1. Outbound calls made by a [Temporal Client](https://docs.temporal.io/encyclopedia/temporal-sdks#temporal-client), such as `start_workflow()`, `signal_workflow()`, `list_workflows()`, `update_schedule()`, etc.
+1. [Outbound calls](https://python.temporal.io/temporalio.client.OutboundInterceptor.html) made by a [Temporal Client](https://docs.temporal.io/encyclopedia/temporal-sdks#temporal-client), such as `start_workflow()`, `signal_workflow()`, `list_workflows()`, `update_schedule()`, etc.
 
-2. Inbound Workflow calls: `execute_workflow()`, `handle_signal()`, `handle_update_handler()`, etc
+2. [Inbound Workflow calls](https://python.temporal.io/temporalio.worker.WorkflowInboundInterceptor.html): `execute_workflow()`, `handle_signal()`, `handle_update_handler()`, etc
 
-3. Outbound Workflow calls: `start_activity()`, `start_child_workflow()`, `start_nexus_operation()`, etc
+3. [Outbound Workflow calls](https://python.temporal.io/temporalio.worker.WorkflowOutboundInterceptor.html): `start_activity()`, `start_child_workflow()`, `start_nexus_operation()`, etc
 
-4. Inbound call to execute an Activity: `execute_activity()`
+4. [Inbound call](https://python.temporal.io/temporalio.worker.ActivityInboundInterceptor.html) to execute an Activity: `execute_activity()`
 
-5. Outbound Activity calls: `info()` and `heartbeat()`
+5. [Outbound Activity calls](https://python.temporal.io/temporalio.worker.ActivityOutboundInterceptor.html): `info()` and `heartbeat()`
 
 To modify outbound Client calls, define a class inheriting from [`client.Interceptor`](https://python.temporal.io/temporalio.client.Interceptor.html), and implement the method `intercept_client()` to return an instance of [`OutboundInterceptor`](https://python.temporal.io/temporalio.client.OutboundInterceptor.html) that implements the subset of outbound Client calls that you wish to modify.
 
