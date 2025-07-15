@@ -165,7 +165,7 @@ What are the savings? One database update plus the matching operation that assoc
 
 This translates into significantly lower latency. For example, a few months back we did a test measuring the time it takes to create a workflow and start executing its first task, a local activity. The goal was to estimate the minimum latency to interact with an external service, using a newly-created workflow, and the Temporal Cloud. The starter and worker were in the same AWS region as our Temporal Cloud namespace. The p50 latency was 16.7 ms (eager) vs 29.3 ms (non-eager), a 43% improvement. For p99 latency, we saw 30.9 ms (eager) vs 51.6 ms (non-eager), a 40% improvement.
 
-Note that these numbers are for illustrative purposes only, just to put EWS potential improvements in perspective.
+Note that these numbers are for illustrative purposes only, just to put potential improvements in perspective.
 
 ## Performance metrics for tuning {#metrics}
 
