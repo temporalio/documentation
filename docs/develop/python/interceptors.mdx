@@ -32,7 +32,7 @@ There are five categories of inbound and outbound calls that you can modify in t
 To modify outbound Client calls, define a class inheriting from [`client.Interceptor`](https://python.temporal.io/temporalio.client.Interceptor.html), and implement the method `intercept_client()` to return an instance of [`OutboundInterceptor`](https://python.temporal.io/temporalio.client.OutboundInterceptor.html) that implements the subset of outbound Client calls that you wish to modify.
 
 Then, pass a list containing an instance of your `client.Interceptor` class as the `interceptors` argument of [`Client.connect()`](https://python.temporal.io/temporalio.client.Client.html#connect).
-The purpose of the interceptor framework is that the methods you implement on your interceptor classes can perform arbitrary side effects and/or arbitrary modifications to the data, before it is received by the SDK's "real" implementation.
+The methods you implement on your interceptor classes can perform arbitrary side effects and/or arbitrary modifications to the data, before it is received by the SDK's "real" implementation.
 The `interceptors` list can contain multiple interceptors.
 In this case they form a chain: a method implemented on an interceptor instance in the list can perform side effects, and modify the data, before passing it on to the corresponding method on the next interceptor in the list.
 Your interceptor classes need not implement every method; the default implementation is always to pass the data on to the next method in the interceptor chain.
