@@ -366,12 +366,11 @@ temporal workflow update-options \
   --versioning-override-build-id "$FIXED_BUILD_ID"
 ```
 
-In this scenario, you may also need to use the other [Versioning APIs](/workflow-definition#workflow-versioning) to patch your Workflow.
-
-If the target Worker version that you want to move stuck Workflows to does not have the code paths necessary to reproduce the
-Events in the History of your stuck Workflows, you could use patching as mentioned above, or you could do a Workflow Reset.
-Only Reset your Workflow if you can tolerate losing progress and re-triggering Actions, among the other usual consequences of
-Workflow Reset. However, especially if your Workflow was broken and/or did not make much progress, Reset can be a very helpful tool!
+In this scenario, you may also need to use the other [Versioning APIs](/workflow-definition#workflow-versioning) to patch
+your Workflow in the "fixed" build, so that your target Worker can handle the moved Workflows correctly.
+If you made a [version-incompatible change](/workflow-definition#deterministic-constraints) to your workflow, and you
+want to roll back to an earlier version, it's not possible to patch it. Considering using [Workflow Reset](/workflow-execution/event#reset)
+along with your move.
 
 "Reset-with-Move" allows you to atomically Reset your Workflow and set a Versioning Override on the newly reset workflow execution,
 so when it resumes execution, all new workflow tasks will be executed on your new Worker.
