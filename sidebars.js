@@ -10,7 +10,6 @@ module.exports = {
         id: "evaluate/index",
       },
       items: [
-        "evaluate/why-temporal",
         "evaluate/understanding-temporal",
         {
           type: "category",
@@ -70,7 +69,6 @@ module.exports = {
           ],
         },
         "security",
-        "evaluate/use-cases-design-patterns",
       ],
     },
     {
