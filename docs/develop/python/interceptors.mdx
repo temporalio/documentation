@@ -67,6 +67,59 @@ This is best explained by example. The [Context Propagation Interceptor Sample](
 [context_propagation/interceptor.py](https://github.com/temporalio/samples-python/blob/main/context_propagation/interceptor.py)
 a class is defined that inherits from both `client.Interceptor` and `worker.Interceptor`. It implements the various
 methods such that the outbound Client and Workflow calls set a certain key in the outbound `headers` field, and the
-inbound Workflow and Activity calls retrieve the header value from the inbound Workflow/Activity input data. An instance
-of this interceptor class is passed to `Client.connect()` when [starting the worker](https://github.com/temporalio/samples-python/blob/main/context_propagation/worker.py) and when connecting the
-Client in the [Workflow starter code](https://github.com/temporalio/samples-python/blob/main/context_propagation/starter.py).
+inbound Workflow and Activity calls retrieve the header value from the inbound Workflow/Activity input data:
+
+
+```python
+class ContextPropagationInterceptor(
+    temporalio.client.Interceptor, temporalio.worker.Interceptor
+):
+    """Interceptor that propagates a value through client, workflow and activity calls.
+
+    This interceptor implements methods `temporalio.client.Interceptor` and  `temporalio.worker.Interceptor` so that
+
+    (1) a user ID key is taken from context by the client code and sent in a header field with outbound requests
+    (2) workflows take this value from their task input, set it in context, and propagate it into the header field of
+        their outbound calls
+    (3) activities similarly take the value from their task input and set it in context so that it's available for their
+        outbound calls
+    """
+
+    def __init__(
+        self,
+        payload_converter: temporalio.converter.PayloadConverter = temporalio.converter.default().payload_converter,
+    ) -> None:
+        self._payload_converter = payload_converter
+
+    def intercept_client(
+        self, next: temporalio.client.OutboundInterceptor
+    ) -> temporalio.client.OutboundInterceptor:
+        return _ContextPropagationClientOutboundInterceptor(
+            next, self._payload_converter
+        )
+
+    def intercept_activity(
+        self, next: temporalio.worker.ActivityInboundInterceptor
+    ) -> temporalio.worker.ActivityInboundInterceptor:
+        return _ContextPropagationActivityInboundInterceptor(next)
+
+    def workflow_interceptor_class(
+        self, input: temporalio.worker.WorkflowInterceptorClassInput
+    ) -> Type[_ContextPropagationWorkflowInboundInterceptor]:
+        return _ContextPropagationWorkflowInboundInterceptor
+```
+
+
+An instance of this interceptor class is passed to `Client.connect()` when [starting the
+worker](https://github.com/temporalio/samples-python/blob/main/context_propagation/worker.py) and when connecting the
+Client in the [Workflow starter
+code](https://github.com/temporalio/samples-python/blob/main/context_propagation/starter.py):
+
+```python
+    client = await Client.connect(
+        "localhost:7233",
+        # Use our interceptor
+        interceptors=[interceptor.ContextPropagationInterceptor()],
+    )
+```
+
