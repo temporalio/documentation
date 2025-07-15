@@ -14,72 +14,72 @@ Temporal SDKs provide the foundation for building reliable distributed applicati
 <div className="sdk-section">
   <div className="sdk-container">
     <div className="sdk-grid">
-      <div className="sdk-card">
-        <div className="sdk-card-header">
+      <div className="dev-sdk-card">
+        <div className="dev-sdk-card-header">
           <h2>Go SDK</h2>
           <img src="/img/sdks/svgs/sdk-box-logos/go.svg" alt="Go SDK" />
         </div>
-        <div className="sdk-card-links">
+        <div className="dev-sdk-card-links">
           <a href="http://t.mp/go-api">API Reference</a>
           <a href="/develop/go">Developer Guide</a>
         </div>
       </div>
-      <div className="sdk-card">
-        <div className="sdk-card-header">
+      <div className="dev-sdk-card">
+        <div className="dev-sdk-card-header">
           <h2>Java SDK</h2>
           <img src="/img/sdks/svgs/sdk-box-logos/java.svg" alt="Java SDK" />
         </div>
-        <div className="sdk-card-links">
+        <div className="dev-sdk-card-links">
           <a href="http://t.mp/java-api">API Reference</a>
           <a href="/develop/java">Developer Guide</a>
         </div>
       </div>
-      <div className="sdk-card">
-        <div className="sdk-card-header">
+      <div className="dev-sdk-card">
+        <div className="dev-sdk-card-header">
           <h2>TypeScript SDK</h2>
           <img src="/img/sdks/svgs/sdk-box-logos/typescript.svg" alt="TypeScript SDK" />
         </div>
-        <div className="sdk-card-links">
+        <div className="dev-sdk-card-links">
           <a href="https://typescript.temporal.io">API Reference</a>
           <a href="/develop/typescript">Developer Guide</a>
         </div>
       </div>
-      <div className="sdk-card">
-        <div className="sdk-card-header">
+      <div className="dev-sdk-card">
+        <div className="dev-sdk-card-header">
           <h2>Python SDK</h2>
           <img src="/img/sdks/svgs/sdk-box-logos/python.svg" alt="Python SDK" />
         </div>
-        <div className="sdk-card-links">
+        <div className="dev-sdk-card-links">
           <a href="https://python.temporal.io">API Reference</a>
           <a href="/develop/python">Developer Guide</a>
         </div>
       </div>
-      <div className="sdk-card">
-        <div className="sdk-card-header">
+      <div className="dev-sdk-card">
+        <div className="dev-sdk-card-header">
           <h2>PHP SDK</h2>
           <img src="/img/sdks/svgs/sdk-box-logos/php.svg" alt="PHP SDK" />
         </div>
-        <div className="sdk-card-links">
+        <div className="dev-sdk-card-links">
           <a href="https://php.temporal.io/namespaces/temporal.html">API Reference</a>
           <a href="/develop/php">Developer Guide</a>
         </div>
       </div>
-      <div className="sdk-card">
-        <div className="sdk-card-header">
+      <div className="dev-sdk-card">
+        <div className="dev-sdk-card-header">
           <h2>.NET SDK</h2>
           <img src="/img/sdks/svgs/sdk-box-logos/dotnet.svg" alt=".NET SDK" />
         </div>
-        <div className="sdk-card-links">
+        <div className="dev-sdk-card-links">
           <a href="https://dotnet.temporal.io/">API Reference</a>
           <a href="/develop/dotnet">Developer Guide</a>
         </div>
       </div>
-      <div className="sdk-card">
-        <div className="sdk-card-header">
+      <div className="dev-sdk-card">
+        <div className="dev-sdk-card-header">
           <h2>Ruby SDK</h2>
           <img src="/img/sdks/svgs/sdk-box-logos/ruby.png" alt="Ruby SDK" />
         </div>
-        <div className="sdk-card-links">
+        <div className="dev-sdk-card-links">
           <a href="https://www.rubydoc.info/gems/temporalio">API Reference</a>
           <a href="https://github.com/temporalio/sdk-ruby#readme">Developer Guide</a>
         </div>
@@ -105,29 +105,30 @@ Temporal SDKs provide the foundation for building reliable distributed applicati
     gap: 1rem;
   }
 
-  .sdk-card {
+  .dev-sdk-card {
     background: var(--ifm-background-surface-color);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 0;
     padding: 1.25rem;
     min-height: 200px;
     position: relative;
+    display: block;
   }
 
-  [data-theme='light'] .sdk-card {
+  [data-theme='light'] .dev-sdk-card {
     border: 1px solid var(--ifm-color-emphasis-300);
   }
 
-  .sdk-card-header {
+  .dev-sdk-card-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     width: 100%;
-    margin-bottom: 1.25rem;
+    margin-bottom: 0.75rem;
     gap: 1rem;
   }
 
-  .sdk-card-header h2 {
+  .dev-sdk-card-header h2 {
     margin: 0;
     font-size: 1.75rem;
     font-weight: 300;
@@ -136,22 +137,23 @@ Temporal SDKs provide the foundation for building reliable distributed applicati
     flex: 1;
   }
 
-  .sdk-card-header img {
+  .dev-sdk-card-header img {
     width: 48px;
     height: 48px;
     flex-shrink: 0;
   }
 
-  .sdk-card-links {
+  .dev-sdk-card-links {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
     position: absolute;
-    bottom: 1.25rem;
+    bottom: 0;
     left: 1.25rem;
+    padding-bottom: 1.25rem;
   }
 
-  .sdk-card-links a {
+  .dev-sdk-card-links a {
     color: #CACBF9;
     text-decoration: none;
     font-size: 1rem;
@@ -161,19 +163,19 @@ Temporal SDKs provide the foundation for building reliable distributed applicati
     position: relative;
   }
 
-  [data-theme='light'] .sdk-card-links a {
+  [data-theme='light'] .dev-sdk-card-links a {
     color: var(--ifm-color-primary);
   }
 
-  .sdk-card-links a:hover {
+  .dev-sdk-card-links a:hover {
     color: #FFFFFF;
   }
 
-  [data-theme='light'] .sdk-card-links a:hover {
+  [data-theme='light'] .dev-sdk-card-links a:hover {
     color: var(--ifm-color-primary-darker);
   }
 
-  .sdk-card-links a::after {
+  .dev-sdk-card-links a::after {
     content: '';
     position: absolute;
     width: 100%;
@@ -186,11 +188,11 @@ Temporal SDKs provide the foundation for building reliable distributed applicati
     transition: transform 0.15s ease;
   }
 
-  [data-theme='light'] .sdk-card-links a::after {
+  [data-theme='light'] .dev-sdk-card-links a::after {
     background-color: var(--ifm-color-primary-darker);
   }
 
-  .sdk-card-links a:hover::after {
+  .dev-sdk-card-links a:hover::after {
     transform: scaleX(1);
     transform-origin: bottom left;
   }
