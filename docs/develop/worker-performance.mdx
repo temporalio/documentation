@@ -125,12 +125,7 @@ These Workflows have a happy path that needs to initiate interactions within low
 
 **Quick Start**
 
-Eager Workflow Start is opt-in, and requires the Starter and the Worker to share a Client located in the same process.
-To share the Client between Worker and Starter:
-
-1. Start the Worker first in non-blocking mode: for example with the Go SDK [using Start instead of Run, and a handler for Worker errors with the option OnFatalError](https://github.com/temporalio/samples-go/tree/main/eager-workflow-start)
-2. Set the `request_eager_start` (or similar name) to true in the Start Workflow call.
-
+Eager Workflow Start is an opt-in feature that is disabled by default. It requires the Starter and the Worker to share a Client located in the same process and setting the `request_eager_start` (or similar name) to true in the Start Workflow call.
 When set, and the Worker has a Workflow Task slot available and the Workflow Definition registered, the Worker can execute the first task of the Workflow locally without first making a round-trip to the Temporal Server.
 This is typically most useful in combination with a Local Activity executing in the first Workflow Task, since other Workflow API calls that require waiting on something will force a round-trip.
 
