@@ -30,13 +30,14 @@
 
 html[data-theme="dark"] {
   --ifm-color-primary: #4fddbf;
+  --ifm-color-primary-darker: #60A5FA;
   --ifm-background-color: #161723;
   --ifm-footer-background-color: #161723;
   --ifm-navbar-background-color: #161723;
   --ifm-color: #f9fafb;
   --ifm-preview-text: #f9fafb;
-  --ifm-link-color: #f9fafb;
-  --ifm-link-hover-color: var(--ifm-color-primary);
+  --ifm-link-color: #4fddbf;
+  --ifm-link-hover-color: var(--ifm-color-primary-darker);
   --alert--competency-background: #161723;
   --alert--copycode-background: #161723;
   --alert--info-background: #161723;
@@ -70,8 +71,8 @@ html[data-theme="light"] {
   --ifm-footer-background-color: #ffffff;
   --ifm-navbar-background-color: #ffffff;
   --ifm-color: #111827;
-  --ifm-link-color: #111827;
-  --ifm-link-hover-color: var(--ifm-color-primary);
+  --ifm-link-color: #1d4ed8;
+  --ifm-link-hover-color: #1e40af;
   --ifm-preview-text: #141414;
   --alert--competency-background: #a8fcff;
   --alert--copycode-background: #e0cdfa;
@@ -89,6 +90,16 @@ html[data-theme="light"] {
 a,
 a:hover {
   text-decoration: none;
+}
+
+/* Global link styling to match Learn More links */
+a {
+  color: var(--ifm-link-color);
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--ifm-link-hover-color);
 }
 
 .alert {

@@ -262,14 +262,14 @@ body {
     letter-spacing: 0;
     text-decoration: none;
     position: relative;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
     width: fit-content;
     display: inline-flex;
 }
 
 .section-link:hover {
     color: var(--link-hover-color);
-    text-decoration: none;
+    text-decoration: underline;
 }
 
 .section-link::after {
