@@ -280,6 +280,48 @@ Workflow IDs should typically be business-meaningful IDs and are used to dedupe 
 
 :::
 
+#### Map a Nexus Operation input to multiple Workflow arguments
+
+A Nexus Operation can only take one input parameter. If you want a Nexus Operation to start a Workflow that takes multiple arguments use the `WorkflowRunOperation.fromWorkflowHandle` method.
+
+```java
+@ServiceImpl(service = NexusService.class)
+public class NexusServiceImpl {
+// ...
+  @OperationImpl
+  public OperationHandler<NexusService.HelloInput, NexusService.HelloOutput> hello() {
+    // If the operation input parameters are different from the workflow input parameters,
+    // use the WorkflowRunOperation.fromWorkflowHandler constructor and the appropriate constructor
+    // method on WorkflowHandle to map the Nexus input to the workflow parameters.
+    return WorkflowRunOperation.fromWorkflowHandle(
+        (ctx, details, input) ->
+            WorkflowHandle.fromWorkflowMethod(
+                Nexus.getOperationContext()
+                        .getWorkflowClient()
+                        .newWorkflowStub(
+                            HelloHandlerWorkflow.class,
+                            // Workflow IDs should typically be business meaningful IDs and are used
+                            // to
+                            // dedupe workflow starts.
+                            // For this example, we're using the request ID allocated by Temporal
+                            // when
+                            // the
+                            // caller workflow schedules
+                            // the operation, this ID is guaranteed to be stable across retries of
+                            // this
+                            // operation.
+                            //
+                            // Task queue defaults to the task queue this operation is handled on.
+                            WorkflowOptions.newBuilder()
+                                .setWorkflowId(details.getRequestId())
+                                .build())
+                    ::hello,
+                input.getName(),
+                input.getLanguage()));
+  }
+}
+```
+
 ### Register a Nexus Service in a Worker
 
 After developing an asynchronous Nexus Operation handler to start a Workflow, the next step is to register a Nexus Service in a Worker.
