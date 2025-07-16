@@ -132,7 +132,7 @@ This level is an interface with two methods named `intercept_activity` and `work
 `intercept_activity` returns an `ActivityInboundInterceptor`.
 
 During execution, when the SDK encounters an Inbound Activity call, it will look to the first Interceptor instance, get hold of the appropriate intercepted method, and call it.
-Ihe intercepted method will perform its function then call the same method on the next Interceptor in the chain.
+The intercepted method will perform its function then call the same method on the next Interceptor in the chain.
 At the end of the chain the SDK will call the "real" SDK method.
 
 This example demonstrates using an interceptor to measure [Schedule-To-Start](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout) latency:
