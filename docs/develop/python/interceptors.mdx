@@ -31,8 +31,7 @@ This is not an exhaustive list; refer to the [Python SDK methods](https://python
 
 #### [Inbound Workflow calls](https://python.temporal.io/temporalio.worker.WorkflowInboundInterceptor.html)
 
-- `execute_workflow()`
-  - Note that `execute_workflow()` is considered an Inbound Workflow call unlike `start_workflow()` because it blocks and waits for a result to be returned.
+- `execute_workflow()` (i.e. handle a Workflow Task that is starting a new Workflow Execution)
 - `handle_query()`
 - `handle_signal()`
 - `handle_update_handler()`
