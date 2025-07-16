@@ -367,20 +367,32 @@ Override target TLS server name.
 
 ## pause
 
+:::tip Stability
+
+In [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+
+Available in Temporal Cloud.
+
+Supported Open Source Versions:
+
+- [Temporal Server version 1.28](https://github.com/temporalio/temporal/releases/tag/v1.28.0) and higher.
+- [CLI version v1.4](https://github.com/temporalio/cli/releases/tag/v1.4.0) and higher.
+
+:::
+
 Pause an Activity.
 
 If the Activity is not currently running (e.g. because it previously
 failed), it will not be run again until it is unpaused.
 
-However, if the Activity is currently running, it will run to completion.
+However, if the Activity is currently running, it will run until the next time it fails, completes, or times out, at which point the pause will kick in.
+
 If the Activity is on its last retry attempt and fails, the failure will
 be returned to the caller, just as if the Activity had not been paused.
 
-Activities can be specified by their Activity ID or Activity Type.
-One of those parameters must be provided. If both are provided - Activity
-Type will be used, and Activity ID will be ignored.
+Activities should be specified either by their Activity ID or Activity Type.
 
-Specify the Activity and Workflow IDs:
+For example, specify the Activity and Workflow IDs like this:
 
 ```
 temporal activity pause \
@@ -388,21 +400,23 @@ temporal activity pause \
     --workflow-id YourWorkflowId
 ```
 
+To later unpause the activity, see [unpause](#unpause). You may also want to [reset](#reset) the activity to unpause it while also starting it from the beginning.
+
 Use the following options to change the behavior of this command.
 
 **Flags:**
 
 **--activity-id**, **-a** _string_
 
-Activity ID to pause. Either `activity-id` or `activity-type` must be provided, but not both.
+The Activity ID to pause. Either `activity-id` or `activity-type` must be provided, but not both.
 
 **--activity-type**, **-g** _string_
 
-Activity Type to pause. Either `activity-id` or `activity-type` must be provided, but not both.
+All activities of the Activity Type will be paused. Either `activity-id` or `activity-type` must be provided, but not both.
 
 **--identity** _string_
 
-Identity of the user submitting this request.
+The identity of the user or client submitting this request.
 
 **--run-id** _string_
 
@@ -556,20 +570,40 @@ Override target TLS server name.
 
 ## reset
 
-Resetting an activity resets both the number of attempts and the activity
-timeout.
+:::tip Stability
 
-If activity is paused and 'keep_paused' flag is not provided - it will be
+In [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+
+Available in Temporal Cloud.
+
+Supported Open Source Versions:
+
+- [Temporal Server version 1.28](https://github.com/temporalio/temporal/releases/tag/v1.28.0) and higher.
+- [CLI version v1.4](https://github.com/temporalio/cli/releases/tag/v1.4.0) and higher.
+
+:::
+
+Resetting an activity restarts the activity as if it were first being scheduled. That is, it will reset both the number of attempts and the activity timeout, as well as, optionally, the [heartbeat details](#reset-heartbeats).
+
+If the activity may be executing (i.e. it has not yet timed out), the reset will take effect the next time it fails, heartbeats, or times out.
+If is waiting for a retry (i.e. has failed or timed out), the reset will apply immediately.
+
+If the activity is already paused, it will be unpaused by default. You can specify `keep_paused` to prevent this.
+
+If the activity is paused and the `keep_paused` flag is not provided, it will be
 unpaused.
-If activity is paused and 'keep_paused' flag is provided - it will stay
+If the activity is paused and `keep_paused` flag is provided - it will stay
 paused.
-If activity is waiting for the retry, is will be rescheduled immediately.
-If the 'reset_heartbeats' flag is set, the activity heartbeat timer and
-heartbeats will be reset.
 
 Activities can be specified by their Activity ID or Activity Type.
-One of those parameters must be provided. If both are provided - Activity
-Type will be used, and Activity ID will be ignored.
+
+### Resetting activities that heartbeat {#reset-heartbeats}
+
+Activities that heartbeat will receive a [Canceled failure](/references/failures#cancelled-failure) the next time they heartbeat after a reset.
+
+If, in your Activity, you need to do any cleanup when an Activity is reset, handle this error and then re-throw it when you've cleaned up.
+
+If the `reset_heartbeats` flag is set, the heartbeat details will also be cleared.
 
 Specify the Activity Type of ID and Workflow IDs:
 
@@ -587,23 +621,23 @@ Use the following options to change the behavior of this command.
 
 **--activity-id**, **-a** _string_
 
-Activity ID to reset. Either `activity-id` or `activity-type` must be provided, but not both.
+The Activity ID to reset. Either `activity-id` or `activity-type` must be provided, but not both.
 
 **--activity-type**, **-g** _string_
 
-Activity Type to reset. Either `activity-id` or `activity-type` must be provided, but not both.
+to reset. Either `activity-id` or `activity-type` must be provided, but not both.
 
 **--identity** _string_
 
-Identity of the user submitting this request.
+The identity of the user or client submitting this request.
 
 **--keep-paused** _bool_
 
-If activity was paused - it will stay paused.
+If the activity was paused, it will stay paused.
 
 **--reset-heartbeats** _bool_
 
-Reset the Activity's heartbeat.
+Clear the Activity's heartbeat details.
 
 **--run-id** _string_
 
@@ -757,6 +791,19 @@ Override target TLS server name.
 
 ## unpause
 
+:::tip Stability
+
+In [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+
+Available in Temporal Cloud.
+
+Supported Open Source Versions:
+
+- [Temporal Server version 1.28](https://github.com/temporalio/temporal/releases/tag/v1.28.0) and higher.
+- [CLI version v1.4](https://github.com/temporalio/cli/releases/tag/v1.4.0) and higher.
+
+:::
+
 Re-schedule a previously-paused Activity for execution.
 
 If the Activity is not running and is past its retry timeout, it will be
@@ -771,16 +818,7 @@ Activity to be retried another N times after unpausing.
 Use `--reset-heartbeat` to reset the Activity's heartbeats.
 
 Activities can be specified by their Activity ID or Activity Type.
-One of those parameters must be provided. If both are provided - Activity
-Type will be used, and Activity ID will be ignored.
-
-Activities can be unpaused in bulk via a visibility Query list filter:
-
-```
-temporal activity unpause \
-    --query YourQuery \
-    --reason YourReasonForTermination
-```
+One of those parameters must be provided.
 
 Specify the Activity ID or Type and Workflow IDs:
 
@@ -792,21 +830,28 @@ temporal activity unpause \
     --reset-heartbeats
 ```
 
+Activities can be unpaused in bulk via a visibility Query list filter. For example, if you want to unpause activities of type Foo that you previously paused, do:
+
+```
+temporal activity unpause \
+    --query 'TemporalPauseInfo="property:activityType=Foo"'
+```
+
 Use the following options to change the behavior of this command.
 
 **Flags:**
 
 **--activity-id**, **-a** _string_
 
-Activity ID to unpause. Can only be used without --query or --match-all. Either `activity-id` or `activity-type` must be provided, but not both.
+The Activity ID to unpause. Can only be used without --query or --match-all. Either `activity-id` or `activity-type` must be provided, but not both.
 
 **--activity-type**, **-g** _string_
 
-Activity Type to unpause. Can only be used without --match-all. Either `activity-id` or `activity-type` must be provided, but not both.
+Activities of this Type will unpause. Can only be used without --match-all. Either `activity-id` or `activity-type` must be provided, but not both.
 
 **--identity** _string_
 
-Identity of the user submitting this request.
+The identity of the user or client submitting this request.
 
 **--jitter**, **-j** _duration_
 
@@ -992,9 +1037,23 @@ Override target TLS server name.
 
 ## update-options
 
-Update Activity options. Specify the Activity and Workflow IDs, and
-options you want to update.
+:::tip Stability
+
+In [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+
+Available in Temporal Cloud.
+
+Supported Open Source Versions:
+
+- [Temporal Server version 1.28](https://github.com/temporalio/temporal/releases/tag/v1.28.0) and higher.
+- [CLI version v1.4](https://github.com/temporalio/cli/releases/tag/v1.4.0) and higher.
+
+:::
+
+Updates the options of a running Activity that were passed into it from a Workflow.
 Updates are incremental, only changing the specified options.
+
+For example:
 
 ```
 temporal activity update-options \
@@ -1011,7 +1070,9 @@ temporal activity update-options \
     --retry-maximum-attempts NewMaximumAttempts
 ```
 
-Use the following options to change the behavior of this command.
+You may follow this command with `temporal activity reset`, and the new values will apply after the reset.
+
+Use the following options:
 
 **Flags:**
 
@@ -1021,39 +1082,40 @@ Activity ID. Required.
 
 **--heartbeat-timeout** _duration_
 
-Maximum permitted time between successful worker heartbeats.
+Modifies the Activity's [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout).
 
 **--identity** _string_
 
-Identity of the user submitting this request.
+The identity of the user or client submitting this request.
 
 **--retry-backoff-coefficient** _float_
 
-Coefficient used to calculate the next retry interval. The next retry interval is previous interval multiplied by the backoff coefficient. Must be 1 or larger.
+Modifies the [Backoff Coefficient](/encyclopedia/retry-policies#backoff-coefficient)
 
 **--retry-initial-interval** _duration_
 
-Interval of the first retry. If retryBackoffCoefficient is 1.0 then it is used for all retries.
+Modifies the [Initial Retry Interval](/encyclopedia/retry-policies#initial-interval) in the activity's Retry Policy.
+If your activity has already retried, this is only useful in conjunction with activity reset.
 
 **--retry-maximum-attempts** _int_
 
-Maximum number of attempts. When exceeded the retries stop even if not expired yet. Setting this value to 1 disables retries. Setting this value to 0 means unlimited attempts(up to the timeouts).
+Modifies the [Maximum Attempts](/encyclopedia/retry-policies#maximum-attempts) in the activity's Retry Policy.
 
 **--retry-maximum-interval** _duration_
 
-Maximum interval between retries. Exponential backoff leads to interval increase. This value is the cap of the increase.
+Modifies the [Maximum Interval](/encyclopedia/retry-policies#maximum-interval) in the activity's Retry Policy.
 
 **--schedule-to-close-timeout** _duration_
 
-Indicates how long the caller is willing to wait for an activity completion. Limits how long retries will be attempted.
+Modifies the activity's [Schedule-to-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout).
 
 **--schedule-to-start-timeout** _duration_
 
-Limits time an activity task can stay in a task queue before a worker picks it up. This timeout is always non retryable, as all a retry would achieve is to put it back into the same queue. Defaults to the schedule-to-close timeout or workflow execution timeout if not specified.
+Modifies the activity's [Schedule-to-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout).
 
 **--start-to-close-timeout** _duration_
 
-Maximum time an activity is allowed to execute after being picked up by a worker. This timeout is always retryable.
+Modifies the activity's [Start-to-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
 
 **--task-queue** _string_
 
