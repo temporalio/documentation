@@ -95,6 +95,10 @@ Because each region has multiple isolation domains, you can place your replica i
   This setup allows failovers between replicas without needing immediate consistency across regions.
   Replication across different regions enhances resilience and reliability.
 
+- **Multi-cloud Replication**:
+  Temporal asynchronously replicates all Workflows (live and historical) and data to a Namespace in a different cloud provider (AWS or GCP).
+  If a provider outage, regional outage, service disruption, or network issue occurs, traffic automatically shifts to the replica.
+
 :::caution
 
 Even as you adopt Temporal's High Availability features, don't forget to consider the reliability of your own infrastructure and dependencies.
@@ -105,10 +109,11 @@ Using physically separated regions provides fuller tolerance for your applicatio
 
 :::
 
-| **Deployment**                          | **Description**                                          |
-| --------------------------------------- | -------------------------------------------------------- |
-| **Same&#8209;region&nbsp;Replication**  | Isolation domains are co-located within the same region. |
-| **Multi&#8209;region&nbsp;Replication** | Isolation domains are located in separate regions.       |
+| **Deployment**                          | **Description**                                            |
+| --------------------------------------- | ---------------------------------------------------------- |
+| **Same&#8209;region&nbsp;Replication**  | Isolation domains are co-located within the same region.   |
+| **Multi&#8209;region&nbsp;Replication** | Isolation domains are located in separate regions.         |
+| **Multi&#8209;cloud&nbsp;Replication**  | Isolation domains are located in separate cloud providers. |
 
 ## Failovers
 
