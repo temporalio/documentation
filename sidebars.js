@@ -612,6 +612,7 @@ module.exports = {
                 "encyclopedia/workflow/dynamic-handler",
                 "encyclopedia/workflow/workflow-schedule",
                 "encyclopedia/workflow/cron-job",
+                "encyclopedia/workflow/patching",
               ],
             },
         {
