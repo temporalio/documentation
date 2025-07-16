@@ -35,6 +35,8 @@ module.exports = {
             "evaluate/development-production-features/cloud-automation",
             "evaluate/development-production-features/low-latency",
             "evaluate/development-production-features/multi-tenancy",
+            "evaluate/development-production-features/multi-region-namespace",
+            "evaluate/development-production-features/multi-cloud-namespace",
             {
               type: "category",
               label: "Product release stages",
@@ -213,6 +215,7 @@ module.exports = {
             "develop/python/schedules",
             "develop/python/converters-and-encryption",
             "develop/python/timers",
+            "develop/python/nexus",
             "develop/python/child-workflows",
             "develop/python/continue-as-new",
           ],
@@ -336,18 +339,6 @@ module.exports = {
                 "production-deployment/cloud/get-started/users",
                 "production-deployment/cloud/get-started/billing-and-cost",
                 "production-deployment/cloud/get-started/service-accounts",
-                {
-                  type: "category",
-                  label: "How-to guides",
-                  collapsed: true,
-                  link: {
-                    type: "doc",
-                    id: "production-deployment/cloud/get-started/how-to-guides/index",
-                  },
-                  items: [
-                    "production-deployment/cloud/get-started/how-to-guides/deploy-workers-to-aws-eks",
-                  ],
-                },
               ],
             },
             {
@@ -517,6 +508,7 @@ module.exports = {
           },
           items: [
             "production-deployment/worker-deployments/worker-versioning",
+            "production-deployment/worker-deployments/deploy-workers-to-aws-eks",
           ],
         },
       ],
