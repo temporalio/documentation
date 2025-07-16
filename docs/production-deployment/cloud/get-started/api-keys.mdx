@@ -368,8 +368,6 @@ In addition to the API key, the following client options are required:
 - `--namespace`: Provide the `namespace.accountId` from the top of the Namespace page in the UI.
   - Use the format `<namespace_id>.<account_id>`.
   - This can be set using an environment variable.
-- `--tls`: Use for a secure connection with the appropriate options.
-  - This can be set using an environment variable.
 
 For example, to connect to Temporal Cloud from the CLI using an environment variable for the API key:
 
@@ -377,8 +375,7 @@ For example, to connect to Temporal Cloud from the CLI using an environment vari
 export TEMPORAL_API_KEY=<key-secret>
 temporal workflow list \
     --address <endpoint> \
-    --namespace <namespace_id>.<account_id> \
-    --tls
+    --namespace <namespace_id>.<account_id>
 ```
 
 :::tip ENVIRONMENT VARIABLES

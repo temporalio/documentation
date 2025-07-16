@@ -36,7 +36,7 @@ Advantages of using Temporal Cloud’s High Availability features:
 
 :::tip Support, stability, and dependency info
 
-Same-region Replication is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for Temporal Cloud.
+Same-region Replication and Multi-cloud Replication are in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for Temporal Cloud.
 
 :::
 
@@ -51,6 +51,9 @@ Temporal offers the following High Availability features, which you can configur
   This is particularly beneficial for organizations with multi-regional architectures or those required to be highly available across regions for compliance purposes.
   This option is a good fit if your application is architected to be multi-region.
   GCP Namespaces support Multi-region Replication.
+- **Multi-cloud Replication**: Workflows are seamlessly replicated to a different cloud provider (AWS or GCP) that you choose.
+  Replicating Workflows across different cloud providers offers reliability in the event of a widespread provider failure.
+  This is particularly beneficial for organizations in highly regulated industries with requirements for multi-cloud availability.
 
 There are charges associated with Replication and enabling High Availability features.
 For pricing details, visit Temporal Cloud's [Pricing](/cloud/pricing) page.
@@ -70,6 +73,7 @@ The following instructions explain how:
     1. Select "Add a replica":
        - Adding a replica in the same region enables Same-region Replication.
        - Adding a replica in a different region (within the same continent) replicates across regions for Multi-region Replication.
+       - Adding a replica on a different cloud provider replicates across providers for Multi-cloud Replication.
        - You cannot create a Multi-region deployment on separate continents.
 
     The web interface will present an estimated time for replication to complete.
@@ -124,7 +128,7 @@ The following instructions explain how:
 1. Visit Temporal Cloud Namespaces in your Web browser.
 1. Navigate to the Namespace details page.
 1. Select the “Add a replica” button.
-1. Choose either **Same-region Replication** or **Multi-region Replication** (across regions).<br />
+1. Choose **Same-region Replication**, **Multi-region Replication** (across regions), or **Multi-cloud Repllication** (across cloud providers).<br />
    _If you select Multi-region Replication, specify which [region](/cloud/high-availability/regions).
    You cannot create a Multi-region deployment on separate continents._
 
