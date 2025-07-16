@@ -1,0 +1,222 @@
+---
+id: observability
+title: Observability - Ruby SDK
+sidebar_label: Observability
+description: Explore Temporal SDK observability features for Metrics, Tracing, Logging, and Visibility using the Ruby SDK.
+toc_max_heading_level: 4
+keywords:
+  - logging
+  - ruby
+  - sdk
+  - search attribute
+  - workflow
+  - observability
+tags:
+  - Ruby SDK
+  - Temporal SDKs
+  - Observability
+  - Search Attributes
+  - Workflows
+---
+
+This page covers capabilities related to viewing the state of the application, including:
+
+- [Metrics](#metrics)
+- [Tracing](#tracing)
+- [Logging](#logging)
+- [Visibility](#visibility)
+
+The observability guide covers the many ways to view the current state of your [Temporal Application](/temporal#temporal-application).
+This includes viewing [Workflow Executions](/workflow-execution) tracked by the [Temporal Platform](/temporal#temporal-platform), as well as inspecting state at any point during execution.
+
+## Emit metrics {#metrics}
+
+Each Temporal SDK can optionally emit metrics from either the Client or Worker process.
+
+- Metrics can be scraped by systems like [Prometheus](https://prometheus.io/docs/introduction/overview/).
+- Graphs can be created using tools like [Grafana](https://grafana.com/docs/).
+- For a list of metrics, see the [SDK metrics reference](/references/sdk-metrics).
+
+Metrics in Ruby are configured on the `metrics` argument of the `telemetry` argument when creating a global `Temporalio::Runtime`. That object should be created globally and should be used for all clients; therefore, you should configure this before any other Temporal code.
+
+## Set a Prometheus endpoint
+
+The following example exposes a Prometheus endpoint on port `9000`.
+
+```ruby
+Temporalio::Runtime.default = Temporalio::Runtime.new(
+  telemetry: Temporalio::Runtime::TelemetryOptions.new(
+    metrics: Temporalio::Runtime::MetricsOptions.new(
+      prometheus: Temporalio::Runtime::PrometheusMetricsOptions.new(
+        bind_address: '0.0.0.0:9000'
+      )
+    )
+  )
+)
+```
+
+### Custom metric handling
+
+Instead of Prometheus or OpenTelemetry, an instance of `Temporalio::Runtime::MetricBuffer` can be provided as a `buffer` argument to the `MetricsOptions`.
+`retrieve_updates` can then be periodically called on the buffer to get metric updates.
+
+## Setup Tracing {#tracing}
+
+Tracing enables observability into the sequence of calls across your application, including Workflows and Activities.
+
+OpenTelemetry tracing for clients, activities, and workflows can be enabled using the `Temporalio::Contrib::OpenTelemetry::TracingInterceptor`. Specifically, when creating a client, set the interceptor like so:
+
+```ruby
+require 'opentelemetry/api'
+require 'opentelemetry/sdk'
+require 'temporalio/client'
+require 'temporalio/contrib/open_telemetry'
+
+# ... assumes my_otel_tracer_provider is a tracer provider created by the user
+my_tracer = my_otel_tracer_provider.tracer('my-otel-tracer')
+
+my_client = Temporalio::Client.connect(
+  'localhost:7233', 'my-namespace',
+  interceptors: [Temporalio::Contrib::OpenTelemetry::TracingInterceptor.new(my_tracer)]
+)
+```
+
+When your Client is connected, spans are created for all Client calls, Activities, and Workflow invocations on the Worker.
+Spans are created and serialized through the server to give one trace for a Workflow Execution.
+
+## Log from a Workflow {#logging}
+
+Logging enables you to capture and persist important execution details from your Workflow and Activity code.
+
+Logging levels typically include:
+
+| Level   | Use                                                                                                       |
+| ------- | --------------------------------------------------------------------------------------------------------- |
+| `DEBUG` | Detailed information, typically useful for debugging purposes.                                            |
+| `INFO`  | General information about the application's operation.                                                    |
+| `WARN`  | Indicates potentially harmful situations or minor issues that don't prevent the application from working. |
+| `ERROR` | Indicates error conditions that might still allow the application to continue running.                    |
+
+Logging uses the Ruby standard logging APIs.
+The `logger` can be set when connecting a client.
+The following example shows logging on the console and sets the level to `INFO`.
+
+```ruby
+require 'logger'
+require 'temporalio/client'
+
+my_client = Temporalio::Client.connect(
+  'localhost:7233', 'my-namespace',
+  logger: Logger.new($stdout, level: Logger::INFO)
+)
+```
+
+You can log from a Workflow using `Temporalio::Workflow.logger` which is a special instance of Ruby's `Logger` that
+appends workflow details to every log and does not log during replay.
+
+```ruby
+Temporalio::Workflow.logger.info("Some log #{some_value}")
+```
+
+There's also one for use in activities that appends Activity details to every log:
+
+```ruby
+Temporalio::Activity::Context.current.logger.info("Some log #{some_value}")
+```
+
+## Use Visibility APIs {#visibility}
+
+Visibility refers to Temporal features for listing, filtering, and inspecting Workflow Executions.
+
+### Use Search Attributes {#search-attributes}
+
+- [Default Search Attributes](/search-attribute#default-search-attribute) like `WorkflowType`, `StartTime`, and `ExecutionStatus` are automatically indexed.
+- [Custom Search Attributes](/search-attribute#custom-search-attribute) let you store domain-specific metadata for Workflows.
+
+The typical method of retrieving a Workflow Execution is by its Workflow Id.
+
+However, sometimes you'll want to retrieve one or more Workflow Executions based on another property. For example, imagine you want to get all Workflow Executions of a certain type that have failed within a time range, so that you can start new ones with the same arguments.
+
+You can do this with [Search Attributes](/search-attribute).
+
+- [Default Search Attributes](/search-attribute#default-search-attribute) like `WorkflowType`, `StartTime` and `ExecutionStatus` are automatically added to Workflow Executions.
+- _Custom Search Attributes_ can contain their own domain-specific data (like `customerId` or `numItems`).
+- A few [generic Custom Search Attributes](/search-attribute#custom-search-attribute) like `CustomKeywordField` and `CustomIntField` are created by default in Temporal's [Docker Compose](https://github.com/temporalio/docker-compose).
+
+The steps to using custom Search Attributes are:
+
+- Create a new Search Attribute in your Temporal Service in the CLI or Web UI.
+  - For example: `temporal operator search-attribute create --name CustomKeywordField --type Text`
+    - Replace `CustomKeywordField` with the name of your Search Attribute.
+    - Replace `Text` with a type value associated with your Search Attribute: `Text` | `Keyword` | `Int` | `Double` | `Bool` | `Datetime` | `KeywordList`
+- Set the value of the Search Attribute for a Workflow Execution:
+  - On the Client by including it as an argument when starting the Execution.
+  - In the Workflow by calling `Temporalio::Workflow.upsert_search_attributes`.
+- Read the value of the Search Attribute:
+  - On the Client by calling `describe` on a `WorkflowHandle`.
+  - In the Workflow by looking at `Temporalio::Workflow.search_attributes`.
+- Query Workflow Executions by the Search Attribute using a [List Filter](/list-filter):
+  - [In the Temporal CLI](/cli/operator#list-2)
+  - In code by calling `list_workflows`.
+
+### List Workflow Executions {#list-workflow-executions}
+
+Use the [list_workflows](https://ruby.temporal.io/Temporalio/Client.html#list_workflows-instance_method) method on the Client and pass a [List Filter](/list-filter) as an argument to filter the listed Workflows.
+The result is a lazy enumerator/enumerable.
+
+```ruby
+my_client.list_workflows("WorkflowType='GreetingWorkflow'").each do |wf|
+  puts "Workflow: #{wf.id}"
+end
+```
+
+### Set Custom Search Attributes {#custom-search-attributes}
+
+After you've created custom Search Attributes in your Temporal Service (using `temporal operator search-attribute create`or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
+
+To set custom Search Attributes, use the `search_attributes` parameter for `start_workflow` or `execute_workflow`.
+Keys should be predefined for reuse.
+
+```ruby
+# Predefined search attribute key, usually a global somewhere
+MY_KEYWORD_KEY = Temporalio::SearchAttributes::Key.new(
+  'my-keyword',
+  Temporalio::SearchAttributes::IndexedValueType::KEYWORD
+)
+
+# ...
+
+# Start workflow with the search attribute set
+handle = my_client.start_workflow(
+  MyWorkflow, 'some-input',
+  id: 'my-workflow-id', task_queue: 'my-task-queue',
+  search_attributes: Temporalio::SearchAttributes.new({ MY_KEYWORD_KEY => 'some-value' })
+)
+```
+
+### Upsert Search Attributes {#upsert-search-attributes}
+
+You can upsert Search Attributes to add, update, or remove Search Attributes from within Workflow code.
+
+To upsert custom Search Attributes, use the [`upsert_search_attributes`](https://ruby.temporal.io/Temporalio/Workflow.html#upsert_search_attributes-class_method) method with a set of updates.
+Keys should be predefined for reuse.
+
+```ruby
+# Predefined search attribute key, usually a global somewhere
+MY_KEYWORD_KEY = Temporalio::SearchAttributes::Key.new(
+  'my-keyword',
+  Temporalio::SearchAttributes::IndexedValueType::KEYWORD
+)
+
+# ...
+
+class MyWorkflow < Temporalio::Workflow::Definition
+  def execute
+    # ...
+
+    Temporalio::Workflow.upsert_search_attributes(MY_KEYWORD_KEY.value_set('some-new-value'))
+
+    # ...
+  end
+end
+```
