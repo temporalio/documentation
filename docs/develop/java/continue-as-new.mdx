@@ -2,58 +2,110 @@
 id: continue-as-new
 title: Continue-As-New - Java SDK
 sidebar_label: Continue-As-New
-toc_max_heading_level: 4
+description: Learn how to use Temporal's Continue-As-New in Java to manage large Event Histories by atomically creating new Workflow Executions with the same Workflow Id and fresh parameters.
+toc_max_heading_level: 2
 keywords:
-  - continue-as-new
+  - continue-as-new workflow
+  - restart workflow
+  - fresh event history
+  - avoid large event histories
+  - temporal java continue-as-new
 tags:
   - Workflows
   - continue-as-new
   - Java SDK
   - Temporal SDKs
-description: Learn how to use Continue-As-New with the Java SDK to manage Workflow Executions efficiently in Temporal, ensuring optimal Event History management and flexible Workflow transitions.
 ---
 
-This page shows how to Continue-As-New using the Java SDK.
+This page answers the following questions for Java developers:
 
-[Continue-As-New](/workflow-execution/continue-as-new) enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.
-The Workflow Execution spawned from the use of Continue-As-New has the same Workflow Id, a new Run Id, and a fresh Event History and is passed all the appropriate parameters.
+- [What is Continue-As-New?](#what)
+- [How to Continue-As-New?](#how)
+- [When is it right to Continue-as-New?](#when)
+- [How to test Continue-as-New?](#how-to-test)
 
-Temporal SDK allows you to use [Continue-As-New](/workflow-execution/continue-as-new) in various ways.
+## What is Continue-As-New? {#what}
 
-To continue execution of the same Workflow that is currently running, use:
+[Continue-As-New](/workflow-execution/continue-as-new) lets a Workflow Execution close successfully and creates a new Workflow Execution.
+You can think of it as a checkpoint when your Workflow gets too long or approaches certain scaling limits.
+
+The new Workflow Execution is in the same [chain](/workflow-execution#workflow-execution-chain); it keeps the same Workflow Id but gets a new Run Id and a fresh Event History.
+It also receives your Workflow's usual parameters.
+
+## How to Continue-As-New using the Java SDK {#how}
+
+First, design your Workflow parameters so that you can pass in the "current state" when you Continue-As-New into the next Workflow run.
+This state is typically set to `None` for the original caller of the Workflow.
+
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/safemessagepassing/ClusterManagerWorkflow.java">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+```java
+class ClusterManagerInput {
+  private final Optional<ClusterManagerState> state;
+  private final boolean testContinueAsNew;
+}
+
+@WorkflowMethod
+ClusterManagerResult run(ClusterManagerInput input);
+
+````
+The test hook in the above snippet is covered [below](#how-to-test).
+
+Inside your Workflow, call the [`continueAsNew()`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#continueAsNew(io.temporal.workflow.ContinueAsNewOptions,java.lang.Object...)) function with the same type.
+This stops the Workflow right away and starts a new one.
+
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/safemessagepassing/ClusterManagerWorkflowImpl.java">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+```java
+Workflow.continueAsNew(
+  new ClusterManagerInput(Optional.of(state), input.isTestContinueAsNew()));
+````
+
+### Considerations for Workflows with Message Handlers {#with-message-handlers}
+
+If you use Updates or Signals, don't call Continue-as-New from the handlers.
+Instead, wait for your handlers to finish in your main Workflow before you run `continueAsNew`.
+
+## When is it right to Continue-as-New using the Java SDK? {#when}
+
+Use Continue-as-New when your Workflow might hit [Event History Limits](/workflow-execution/event#event-history).
+
+Temporal tracks your Workflow's progress against these limits to let you know when you should Continue-as-New.
+Call `Workflow.getInfo().isContinueAsNewSuggested()` to check if it's time.
+
+## How to test Continue-as-New using the Java SDK {#how-to-test}
+
+Testing Workflows that naturally Continue-as-New may be time-consuming and resource-intensive.
+Instead, add a test hook to check your Workflow's Continue-as-New behavior faster in automated tests.
+
+For example, when `testContinueAsNew == true`, this sample creates a test-only variable called `maxHistoryLength` and sets it to a small value.
+A helper method in the Workflow checks it each time it considers using Continue-as-New:
+
+<div class="copycode-notice-container">
+  <a href="https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/safemessagepassing/ClusterManagerWorkflowImpl.java">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
 
 ```java
-Workflow.continueAsNew(input1, ...);
+private boolean shouldContinueAsNew() {
+  if (Workflow.getInfo().isContinueAsNewSuggested()) {
+    return true;
+  }
+  // This is just for ease-of-testing.  In production, we trust temporal to tell us when to
+  // continue as new.
+  if (maxHistoryLength > 0 && Workflow.getInfo().getHistoryLength() > maxHistoryLength) {
+    return true;
+  }
+  return false;
+}
 ```
-
-To continue execution of a currently running Workflow as a completely different Workflow Type, use `Workflow.newContinueAsNewStub()`.
-For example, in a Workflow class called `YourWorkflow`, we can create a Workflow stub with a different type, and call its Workflow method to continue execution as that type:
-
-```java
-MyOtherWorkflow continueAsNew = Workflow.newContinueAsNewStub(MyOtherWorkflow.class);
-coninueAsNew.greet(input);
-```
-
-To provide `ContinueAsNewOptions` options in `Workflow.newContinueAsNewStub()` use:
-
-```java
-ContinueAsNewOptions options = ContinueAsNewOptions.newBuilder()
-        .setTaskQueue("newTaskQueueName")
-        .build();
-
-MyOtherWorkflow continueAsNew = Workflow.newContinueAsNewStub(MyOtherWorkflow.class, options);
-// ...
-continueAsNew.greet(input);
-```
-
-Providing these options allows you to continue Workflow Execution as a new Workflow run, with a different Workflow Type, and on a different Task Queue.
-
-Java Workflow reference: [https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html)
-
-:::warning Using Continue-as-New and Updates
-
-- Temporal _does not_ support Continue-as-New functionality within Update handlers.
-- Complete all handlers _before_ using Continue-as-New.
-- Use Continue-as-New from your main Workflow Definition method, just as you would complete or fail a Workflow Execution.
-
-:::
