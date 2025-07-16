@@ -158,7 +158,9 @@ return f"Hello {name}"`}
 
 ### Create the Activity
 
-Activities contain your business logic. Create a file called `activities.py`:
+An Activity is a normal function or method that executes a single, well-defined action (either short or long running), which often involve interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling an API, which are prone to failure. If an Activity fails, Temporal automatically retries it based on your configuration.
+
+Create a file called `activities.py`:
 
 </SetupStep>
 
@@ -188,7 +190,9 @@ schedule_to_close_timeout=timedelta(seconds=10),
 
 ### Create the Workflow
 
-Workflows orchestrate Activities and contain the application logic. Create a file called `workflows.py`:
+Workflows orchestrate Activities and contain the application logic. Temporal Workflows are resilient. They can run—and keeping running—for years, even if the underlying infrastructure fails. If the application itself crashes, Temporal will automatically recreate its pre-failure state so it can continue right where it left off.
+
+Create a file called `workflows.py`:
 
 </SetupStep>
 
@@ -229,7 +233,12 @@ asyncio.run(main())`}
 
 ### Create and Run the Worker
 
-The Worker hosts your Workflows and Activities. Create a file called `worker.py`:
+With your Activity and Workflow defined, you need a Worker to execute them. A Worker polls a Task Queue, that you configure it to poll, looking for work to do. Once the Worker dequeues the a Workflow or Activity task from the Task Queue, it then executes that task.
+
+Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your Workflows and Activities.
+For more information on Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
+
+Create a file called `worker.py`:
 
 Keep this terminal running - you should see "Worker started" displayed.
 
@@ -240,7 +249,7 @@ Keep this terminal running - you should see "Worker started" displayed.
 
 <div className="execution-options">
   <h4>Choose Your Execution Method</h4>
-  <p>With the worker running, you can start a workflow in two ways:</p>
+  <p>With the Worker running, you can start a Workflow in two ways:</p>
 </div>
 
     <div className="option-section">
@@ -425,7 +434,18 @@ asyncio.run(main())
 
 ### Execute the Workflow
 
-Now that your worker is running, it's time to start a Workflow Execution.
+Now that your Worker is running, it's time to start a Workflow Execution.
+
+This final step will validate that everything is working correctly with your file labeled `starer.py`.
+
+:::note ADDITIONAL DETAILS ABOUT THE WORKFLOW EXECUTION
+
+- Temporal clients are not explicitly closed.
+- To enable TLS, the `tls` option can be set to `true` or a `Temporalio::Client::Connection::TLSOptions` instance.
+- To start a Workflow Execution in Python, use either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods in the Client.
+- Use [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`get_workflow_handle()`](https://python.temporal.io/temporalio.client.Client.html#get_workflow_handle) to return a Workflow handle. Then use the `result` method to await on the result of the Workflow.
+- Use [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) to await the completion of the Workflow and directly return its result.
+  :::
 
 </SetupStep>
 </SetupSteps>

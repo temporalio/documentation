@@ -158,7 +158,9 @@ String greet(String name);
 
 ### Create the Activity
 
-Activities contain your business logic. Create a file called `GreetActivities.java`:
+An Activity is a normal function or method that executes a single, well-defined action (either short or long running), which often involve interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling an API, which are prone to failure. If an Activity fails, Temporal automatically retries it based on your configuration.
+
+Create a file called `GreetActivities.java`:
 
 </SetupStep>
 <SetupStep code={
@@ -208,7 +210,9 @@ String sayHello(String name);
 
 ### Create the Workflow
 
-Workflows orchestrate Activities and contain the application logic. Create a file called `SayHelloWorkflow.java`:
+Workflows orchestrate Activities and contain the application logic. Temporal Workflows are resilient. They can run—and keeping running—for years, even if the underlying infrastructure fails. If the application itself crashes, Temporal will automatically recreate its pre-failure state so it can continue right where it left off.
+
+Create a file called `SayHelloWorkflow.java`:
 
 </SetupStep>
 
@@ -294,7 +298,12 @@ public class SayHelloWorker {
 
 ### Create and Run the Worker
 
-The Worker hosts your Workflows and Activities. Create a file called `SayHelloWorker.java`:
+With your Activity and Workflow defined, you need a Worker to execute them. A Worker polls a Task Queue, that you configure it to poll, looking for work to do. Once the Worker dequeues the a Workflow or Activity task from the Task Queue, it then executes that task.
+
+Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your Workflows and Activities.
+For more information on Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
+
+Create a file within a `worker` subdirectory called `SayHelloWorker.java`:
 
 Keep this terminal running.
 
@@ -305,7 +314,7 @@ Keep this terminal running.
 
 <div className="execution-options">
   <h4>Choose Your Execution Method</h4>
-  <p>With the worker running, you can start a workflow in two ways:</p>
+  <p>With the Worker running, you can start a Workflow in two ways:</p>
 </div>
 
     <div className="option-section">
@@ -498,7 +507,16 @@ WorkflowClient client = WorkflowClient.newInstance(service);
 
 ### Execute the Workflow
 
-Now that your worker is running, it's time to start a Workflow Execution.
+Now that your Worker is running, it's time to start a Workflow Execution.
+
+This final step will validate that everything is working correctly with your file labeled `Starter.java`.
+
+:::note ADDITIONAL DETAILS ABOUT THE WORKFLOW EXECUTION
+
+- Temporal clients are not explicitly closed.
+- To enable TLS, the `tls` option can be set to `true` or a `Temporalio::Client::Connection::TLSOptions` instance.
+- The [`WorkflowClient`](https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/client/WorkflowClient.java) provides some static methods, such as `start`, `execute` etc., that help with starting your Workflows asynchronously.
+  :::
 
 </SetupStep>
 </SetupSteps>

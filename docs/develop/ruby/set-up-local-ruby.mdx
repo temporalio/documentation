@@ -158,8 +158,8 @@ Now that you have the server running, it's time to create your first Temporal ap
 In Temporal, you'll create two files: an Activity file labeled `say_hello_activity.rb` and a Workflow file labeled `say_hello_workflow.rb`.
 
 A Temporal Workflow is your business logic, defined in code, outlining each step in your process.
-Activities are the individual units of work in your Workflow.
-Activities often involve interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling an API, which are prone to failure.
+
+Activities are the individual units of work in your Workflow. Activities often involve interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling an API, which are prone to failure.
 You can call Activities directly from your Workflow code.
 If an Activity fails, Temporal automatically retries it based on your configuration.
 
