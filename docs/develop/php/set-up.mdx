@@ -74,19 +74,19 @@ Install Temporal CLI on your local machine using the following instructions for 
 version: "3"
 
 rpc:
-  listen: tcp://127.0.0.1:6001
+listen: tcp://127.0.0.1:6001
 
 server:
-  command: "php -d display_errors=stderr src/worker.php"
+command: "php -d display_errors=stderr src/worker.php"
 
 temporal:
-  {`address: \${TEMPORAL_HOST:-localhost}:\${TEMPORAL_PORT:-7233}`}
-  activities:
-    num_workers: 4
+{`address: \${TEMPORAL_HOST:-localhost}:\${TEMPORAL_PORT:-7233}`}
+activities:
+num_workers: 4
 
 logs:
-  level: info
-  mode: development
+level: info
+mode: development
 </CodeSnippet>
 </>
 }>
