@@ -16,7 +16,7 @@ The behavior of the Python SDK can be customized in many useful ways by modifyin
 This is similar to the use of "middleware" in web frameworks such as [Django](https://docs.djangoproject.com/en/5.2/topics/http/middleware/), [Starlette](https://www.starlette.io/middleware/), and [Flask](https://flask.palletsprojects.com/en/stable/lifecycle/#middleware).
 
 The methods you implement on your Interceptor classes can perform arbitrary side effects.
-Interceptors can also perform arbitrary modifications to data before it is received by the SDK's "real" implementation, e.g. for context propagation.
+Interceptors can also perform arbitrary modifications to incoming and outgoing data before it is received by the SDK's "real" implementation.
 
 There are five categories of inbound and outbound calls that you can modify in this way:
 
