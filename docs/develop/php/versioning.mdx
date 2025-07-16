@@ -185,7 +185,7 @@ Temporal's [Worker Versioning](/production-deployment/worker-deployments/worker-
 
 ## Runtime checking {#runtime-checking}
 
-The Temporal Go SDK performs a runtime check to help prevent obvious incompatible changes.
+The Temporal PHP SDK performs a runtime check to help prevent obvious incompatible changes.
 Adding, removing, or reordering any of these methods without Versioning triggers the runtime check and results in a nondeterminism error:
 
 - `workflow.ExecuteActivity()`
