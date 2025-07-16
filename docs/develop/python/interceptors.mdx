@@ -21,6 +21,7 @@ Interceptors can also perform arbitrary modifications to data before it is recei
 There are five categories of inbound and outbound calls that you can modify in this way:
 
 #### [Outbound Client calls](https://python.temporal.io/temporalio.client.OutboundInterceptor.html)
+
 - `start_workflow()`
 - `signal_workflow()`
 - `list_workflows()`
@@ -29,14 +30,16 @@ There are five categories of inbound and outbound calls that you can modify in t
 This is not an exhaustive list; refer to the [Python SDK methods](https://python.temporal.io/temporalio.client.OutboundInterceptor.html) for more.
 
 #### [Inbound Workflow calls](https://python.temporal.io/temporalio.worker.WorkflowInboundInterceptor.html)
+
 - `execute_workflow()`
-    - Note that `execute_workflow()` is considered an Inbound Workflow call unlike `start_workflow()` because it blocks and waits for a result to be returned.
+  - Note that `execute_workflow()` is considered an Inbound Workflow call unlike `start_workflow()` because it blocks and waits for a result to be returned.
 - `handle_query()`
 - `handle_signal()`
 - `handle_update_handler()`
 - `handle_update_validator()`
 
 #### [Outbound Workflow calls](https://python.temporal.io/temporalio.worker.WorkflowOutboundInterceptor.html)
+
 - `start_activity()`
 - `start_child_workflow()`
 - `signal_child_workflow()`
@@ -45,10 +48,12 @@ This is not an exhaustive list; refer to the [Python SDK methods](https://python
 - `start_local_activity()`
 
 #### [Inbound Activity calls](https://python.temporal.io/temporalio.worker.ActivityInboundInterceptor.html)
+
 - `execute_activity()`
-    - This is technically the only Inbound Activity call, with the same distinction as `execute_workflow()`.
+  - This is technically the only Inbound Activity call, with the same distinction as `execute_workflow()`.
 
 #### [Outbound Activity calls](https://python.temporal.io/temporalio.worker.ActivityOutboundInterceptor.html)
+
 - `info()`
 - `heartbeat()`
 
@@ -124,7 +129,7 @@ Your interceptor classes need not implement every method; the default implementa
 ## Worker call Interceptors
 
 At the top level, there's a `worker.Interceptor` class.
-This level is an interface with two methods named `intercept_activity` and `workflow_interceptor_class` which you can use to  configure interceptions of Activity and Workflow calls, respectively.
+This level is an interface with two methods named `intercept_activity` and `workflow_interceptor_class` which you can use to configure interceptions of Activity and Workflow calls, respectively.
 `intercept_activity` returns an `ActivityInboundInterceptor`.
 
 During execution, when the SDK encounters an Inbound Activity call, it will look to the first Interceptor instance, get hold of the appropriate intercepted method, and call it.
@@ -186,4 +191,3 @@ This will allow a Worker to use them from the underlying Client.
 :::
 
 The `workflow_interceptor_class` returns a `WorkflowInboundInterceptor` that works similarly to `ActivityInboundInterceptor`.
-
