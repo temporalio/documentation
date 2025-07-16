@@ -23,17 +23,18 @@ import { ToolTipTerm, DiscoverableDisclosure, CaptionedImage } from '@site/src/c
 ## What are connectivity rules?
 
 Connectivity rules are Temporal Cloud's mechanism for limiting network access to a namespace.
-When you add connectivity rules, Temporal Cloud will block traffic that does not have a corresponding connectivity rule from accessing the namespace.
-By default, a namespace has zero connectivity rules, and is accessible from the public internet.
 
-A connectivity rule specifies public (i.e. internet) or private (i.e. [AWS PrivateLink](https://aws.amazon.com/privatelink/) or [Google Cloud Private Service Connect](https://cloud.google.com/vpc/docs/private-service-connect)) access to a namespace.
-One namespace can have multiple connectivity rules, and may mix both public and private rules.
+By default, a namespace has zero connectivity rules, and is accessible from the public internet. When you add connectivity rules, Temporal Cloud will immediately block all traffic that does not have a corresponding connectivity rule from accessing the namespace. One namespace can have multiple connectivity rules, and may mix both public and private rules.
 
-Namespace access is always securely authenticated via [API keys](https://docs.temporal.io/cloud/api-keys#overview) or [mTLS](https://docs.temporal.io/cloud/certificates), regardless of connectivity rules.
+A connectivity rule specifies public (i.e. internet) or private (i.e. [AWS PrivateLink](/aws-connectivity) or [Google Cloud Private Service Connect](/gcp-connectivity)) access to a namespace. See the linked docs to learn more about setting up those private connections in your cloud provider and configuring DNS for your workers.
 
-Connectivity rules can be managed with [tcld](https://docs.temporal.io/cloud/tcld/) or [Terraform](https://github.com/temporalio/terraform-provider-temporalcloud/).
+Namespace access is always securely authenticated via [API keys](/cloud/api-keys#overview) or [mTLS](/cloud/certificates), regardless of connectivity rules.
+
+Only [Account Admins and Account Owners](/cloud/users#account-level-roles) can create and manage connectivity rules.
 
 ## Creating a connectivity rule
+
+Connectivity rules can be created and managed with [tcld](https://docs.temporal.io/cloud/tcld/) or [Terraform](https://github.com/temporalio/terraform-provider-temporalcloud/).
 
 ### Temporal Cloud CLI (tcld)
 
@@ -46,13 +47,13 @@ tcld connectivity-rule create --connectivity-type public
 Create private connectivity rule (AWS):
 
 ```bash
-tcld connectivity-rule create --connectivity-type private --connection-id "conn-123" --region "us-east-1" --cloud-provider aws
+tcld connectivity-rule create --connectivity-type private --connection-id "conn-123" --region "aws-us-east-1"
 ```
 
 Create private connectivity rule (GCP):
 
 ```bash
-tcld connectivity-rule create --connectivity-type private --connection-id "conn-456" --region "us-central1" --cloud-provider gcp --gcp-project-id "my-project-123"
+tcld connectivity-rule create --connectivity-type private --connection-id "conn-456" --region "gcp-us-central1" --gcp-project-id "my-project-123"
 ```
 
 The `cr` alias works the same way:
@@ -64,7 +65,7 @@ tcld cr create --connectivity-type public
 Private connectivity rule:
 
 ```bash
-tcld cr create --connectivity-type private --connection-id "conn-123" --region "us-east-1" --cloud-provider aws
+tcld cr create --connectivity-type private --connection-id "conn-123" --region "aws-us-east-1"
 ```
 
 ### Terraform
@@ -72,6 +73,8 @@ tcld cr create --connectivity-type private --connection-id "conn-123" --region "
 [Example in the Terraform repo](https://github.com/temporalio/terraform-provider-temporalcloud/tree/main/examples/resources//temporalcloud_connectivityrule/resource.tf)
 
 ## Update connectivity rules on a namespace
+
+Be careful! When any connectivity rules are set on a namespace, that namespace is ONLY accessible via the connections defined in those rules. If you remove a connectivity rule that your workers are using, your traffic will be interrupted.
 
 ### Temporal Cloud CLI (tcld)
 

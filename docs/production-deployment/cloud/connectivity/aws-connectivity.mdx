@@ -28,6 +28,12 @@ This one-way connection means Temporal cannot establish a connection back to you
 This is useful if normally you block traffic egress as part of your security protocols.
 If you use a private environment that does not allow external connectivity, you will remain isolated.
 
+## Requirements
+
+Your AWS PrivateLink endpoint must be in the same region as your Temporal Cloud namespace. If using [replication for High Availability](/cloud/high-availability), the PL connection must be in the same region as one of the replicas.
+
+AWS Cross Region endpoints are not supported.
+
 ## Creating an AWS PrivateLink connection
 
 Set up PrivateLink connectivity with Temporal Cloud with these steps:
