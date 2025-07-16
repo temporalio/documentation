@@ -59,7 +59,7 @@ Minimum versions:
 
 Self-hosted users:
 
-- Minimum Temporal CLI version [v1.4.0](https://github.com/temporalio/cli/releases/tag/v1.4.0)
+- Minimum Temporal CLI version [v1.4.1](https://github.com/temporalio/cli/releases/tag/v1.4.1)
 - Minimum Temporal Server version: [v1.28.0](https://github.com/temporalio/temporal/releases/tag/v1.28.0)
 - Minimum Temporal UI Version [v2.38.0](https://github.com/temporalio/ui/releases/tag/v2.38.0)
   :::
@@ -350,21 +350,40 @@ If you need to move a pinned Workflow to a new version, use `temporal workflow u
 
 ```bash
 temporal workflow update-options \
-    --workflow-id="MyWorkflowId" \
-    --versioning-override-behavior=pinned \           
-    --versioning-override-pinned-version="$MY_DEPLOYMENT_VERSION"
+    --workflow-id "$WORKFLOW_ID" \
+    --versioning-override-behavior pinned \
+    --versioning-override-deployment-name "$TARGET_DEPLOYMENT" \
+    --versioning-override-build-id "$TARGET_BUILD_ID"
 ```
 
 You can move several Workflows at once matching a `--query` parameter:
 
 ```bash
 temporal workflow update-options \
-  --query="TemporalWorkerDeploymentVersion=$MY_BAD_DEPLOYMENT_VERSION" \
-  --versioning-override-behavior=pinned \
-  --versioning-override-pinned-version="$MY_PATCH_DEPLOYMENT_VERSION"
+  --query="TemporalWorkerDeploymentVersion=$TARGET_DEPLOYMENT:$BAD_BUILD_ID" \
+  --versioning-override-behavior pinned \
+  --versioning-override-deployment-name "$TARGET_DEPLOYMENT" \
+  --versioning-override-build-id "$FIXED_BUILD_ID"
 ```
 
-In this scenario, you may also need to use the other [Versioning APIs](/workflow-definition#workflow-versioning) to patch your Workflow.
+In this scenario, you may also need to use the other [Versioning APIs](/workflow-definition#workflow-versioning) to patch
+your Workflow in the "fixed" build, so that your target Worker can handle the moved Workflows correctly.
+If you made a [version-incompatible change](/workflow-definition#deterministic-constraints) to your Workflow, and you
+want to roll back to an earlier version, it's not possible to patch it. Considering using [Workflow Reset](/workflow-execution/event#reset)
+along with your move.
+
+"Reset-with-Move" allows you to atomically Reset your Workflow and set a Versioning Override on the newly reset Workflow,
+so when it resumes execution, all new Workflow Tasks will be executed on your new Worker.
+
+```bash
+temporal workflow reset with-workflow-update-options \
+    --workflow-id "$WORKFLOW_ID" \
+    --event-id "$EVENT_ID" \
+    --reason "$REASON" \
+    --versioning-override-behavior pinned \
+    --versioning-override-deployment-name "$TARGET_DEPLOYMENT" \
+    --versioning-override-build-id "$TARGET_BUILD_ID"
+```
 
 ## Sunsetting an old Deployment Version
 
