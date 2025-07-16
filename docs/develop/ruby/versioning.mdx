@@ -111,7 +111,7 @@ end
 ```
 
 The problem is that you cannot deploy this new revision directly until you're certain there are no more running Workflows created using the `PrePatchActivity` code, otherwise you are likely to cause a nondeterminism error.
-Instead, you'll need to use the [`patched`](https://ruby.temporal.io/Temporalio/Workflow.html#deprecate_patch-class_method) function to check which version of the code should be executed.
+Instead, you'll need to use the [`patched`](https://ruby.temporal.io/Temporalio/Workflow.html#patched-class_method) function to check which version of the code should be executed.
 
 Patching is a three-step process:
 
