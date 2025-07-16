@@ -56,7 +56,7 @@ This is not an exhaustive list; refer to the [Python SDK methods](https://python
 - `info()`
 - `heartbeat()`
 
-Technically, the first of these categories is a Client call, and the remaining 4 are Worker calls.
+The first of these categories is a Client call, and the remaining 4 are Worker calls.
 It often happens that your Worker and Client interceptors will share code because they implement closely related logic.
 In the Python SDK, you will typically want to create an interceptor class that inherits from _both_ `client.Interceptor` and `worker.Interceptor`, since their method sets do not overlap.
 
