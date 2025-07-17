@@ -184,7 +184,7 @@ worker = Worker(
 
 :::note
 
-If you are inheriting methods from both `client.Interceptor` and `worker.Interceptor`, you should not pass your Interceptors directly to the `Worker()` constructor — instead, just pass it to `Client.connect()`.
+If you are inheriting methods from both `client.Interceptor` and `worker.Interceptor`, you should not pass your Interceptors directly to the `Worker()` constructor — instead, pass it to `Client.connect()`.
 This will allow a Worker to use them from the underlying Client.
 In other words, only pass the Interceptors to the `Worker()` if you are not using Client methods.
 
