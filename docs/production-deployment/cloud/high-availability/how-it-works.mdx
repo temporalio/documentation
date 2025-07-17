@@ -97,14 +97,16 @@ Because each region has multiple isolation domains, you can place your replica i
 
 - **Multi-cloud Replication**:
   Temporal asynchronously replicates all Workflows (live and historical) and data to a Namespace in a different cloud provider (AWS or GCP).
-  If a provider outage, regional outage, service disruption, or network issue occurs, traffic automatically shifts to the replica.
+  If a provider outage, regional outage, service disruption, or network issue occurs, traffic automatically shifts to the replica. 
+  Replicated data is securely encrypted and transmitted across the public internet between cloud providers.
+  Internet connectivity allows workers in one cloud to fail over to a replica in a different cloud.
 
 :::caution
 
-Even as you adopt Temporal's High Availability features, don't forget to consider the reliability of your own infrastructure and dependencies.
+Even as you adopt Temporal's High Availability features, don't forget to consider the reliability of your own workers, infrastructure, and dependencies.
 Issues like network outages, hardware failures, or misconfigurations in your own systems can affect your application performance.
 
-For the highest level of reliability, distribute your dependencies across regions, and choose our Multi-region replication feature.
+For the highest level of reliability, distribute your dependencies across regions, and use our Multi-region or Multi-cloud replication features.
 Using physically separated regions provides fuller tolerance for your application.
 
 :::
