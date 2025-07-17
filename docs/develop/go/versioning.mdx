@@ -90,7 +90,6 @@ func YourWorkflow(ctx workflow.Context, data string) (string, error) {
 
 Suppose you replaced `ActivityA` with `ActivityC` and deployed the updated code.
 
-Imagine you want to revise this Workflow by adding another Activity to calculate a file checksum.
 If an existing Workflow Execution was started by the original version of the Workflow code, where `ActivityA` was run, and then resumed running on a new Worker where it was replaced with `ActivityC`, the server side Event History would be out of sync.
 This would cause the Workflow to fail with a nondeterminism error.
 
@@ -212,8 +211,6 @@ if version  == 2 {
     err = workflow.ExecuteActivity(ctx, SendTweet).Get(ctx, nil)
 }
 ```
-
-When `workflow.GetVersion()` is run for a new Workflow execution, it records a marker in the Workflow history so that all future calls to `GetVersion()` for this change ID — Step 1 in the example — on this Workflow execution will always return the given version number.
 
 Patching allows you to make changes to currently running Workflows.
 It is a powerful method for introducing compatible changes without introducing non-determinism errors.
