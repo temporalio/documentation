@@ -114,6 +114,7 @@ module.exports = {
             id: "develop/go/index",
           },
           items: [
+            "develop/go/set-up-your-local-go",
             "develop/go/core-application",
             "develop/go/temporal-clients",
             "develop/go/go-sdk-multithreading",
@@ -146,6 +147,7 @@ module.exports = {
             id: "develop/java/index",
           },
           items: [
+            "develop/java/set-up-your-local-java",
             "develop/java/core-application",
             "develop/java/temporal-clients",
             "develop/java/namespaces",
@@ -174,6 +176,7 @@ module.exports = {
             id: "develop/php/index",
           },
           items: [
+            "develop/php/set-up-your-local-php",
             "develop/php/core-application",
             "develop/php/temporal-clients",
             "develop/php/testing-suite",
@@ -200,6 +203,7 @@ module.exports = {
             id: "develop/python/index",
           },
           items: [
+            "develop/python/set-up-your-local-python",
             "develop/python/core-application",
             "develop/python/temporal-clients",
             "develop/python/python-sdk-sandbox",
@@ -230,6 +234,7 @@ module.exports = {
             id: "develop/typescript/index",
           },
           items: [
+            "develop/typescript/set-up-your-local-typescript",
             "develop/typescript/core-application",
             "develop/typescript/temporal-clients",
             "develop/typescript/namespaces",
@@ -258,6 +263,7 @@ module.exports = {
             id: "develop/dotnet/index",
           },
           items: [
+            "develop/dotnet/set-up-your-local-dotnet",
             "develop/dotnet/core-application",
             "develop/dotnet/temporal-client",
             "develop/dotnet/testing-suite",
