@@ -1,8 +1,8 @@
 ---
 id: multi-cloud-namespace
-title: Multi-cloud Namespace - Temporal Cloud production feature
-description: Temporal Cloud's Multi-cloud Namespaces offer automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime.
-sidebar_label: Multi-cloud namespace
+title: Multi-cloud Replication - Temporal Cloud production feature
+description: Temporal Cloud's Multi-cloud Replication offers automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime.
+sidebar_label: Multi-cloud replication
 tags:
   - Temporal Cloud
   - High availability
@@ -13,6 +13,7 @@ keywords:
   - high-availability
   - multi-cloud
   - multi-cloud namespace
+  - multi-cloud replication
   - namespaces
   - temporal-cloud
   - term
@@ -22,11 +23,11 @@ Temporal Cloud offers disaster-tolerant deployment for workloads with stringent 
 With the multi-cloud feature enabled, Temporal Cloud automates [failover](/glossary#failover) and synchronizes data between Namespaces hosted on different cloud providers (either AWS or GCP).
 This page introduces Temporal Cloud patterns that support your workload's availability requirements.
 
-## Multi-cloud Namespaces
+## Multi-cloud Replication
 
-Multi-cloud Namespaces provide failover capabilities to mitigate service outages due to regional failures.
-They reduce risk and minimize operational disruption.
-This feature seamlessly shif​​ts Workflow execution between regions to maintain service availability.
+Multi-cloud Replication provides failover capabilities to mitigate service outages due to cloud provider failures.
+It reduces risk and minimize operational disruption.
+This feature seamlessly shif​​ts Workflow execution between cloud providers to maintain service availability.
 
 Your Clients use a single logical Namespace with a single endpoint that operates on two separate cloud providers: one active and one standby.
 As Workflows progress in the active provider, history events asynchronously replicate to the standby provider.
@@ -36,12 +37,12 @@ Should an incident or outage occur in the active provider, Temporal Cloud initia
 During a failover, the roles of the active and standby providers reverse.
 The standby takes over as the primary provider.
 
-### Advantages of multi-cloud Namespaces {#multi-region-advantages}
+### Advantages of Multi-cloud Replication {#multi-region-advantages}
 
-**Why choose multi-cloud replication (MCR)?**
+**Why choose Multi-cloud Replication (MCR)?**
 
 - **Reduce Risk**:
-  Protects your operations from unexpected regional outages.
+  Protects your operations from unexpected cloud provider outages.
   Automated disaster recovery features ensure that workloads remain available and continue execution.
 - **Minimize Operational Disruption**:
   Seamless failovers shift Workflow Executions to a secondary provider during outages.
@@ -52,7 +53,7 @@ The standby takes over as the primary provider.
   This eliminates the need for manual deployment or configuration.
 - **Fault tolerance**.
   Your open Workflows continue their progress in the standby region.
-  This minimizes interruption and data loss during regional failures.
+  This minimizes interruption and data loss during cloud provider failures.
 - **No code changes**.
   Your Workers and Workflow starter code don't need updates to take advantage of multi-cloud setup or to respond to failover conditions.
   This allows for a smooth transition and continued operation.
