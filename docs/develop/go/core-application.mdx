@@ -1607,6 +1607,7 @@ Only one Dynamic Workflow can be present on a Worker.
 
 The Workflow Definition must then accept a single argument of type `converter.EncodedValues`.
 This code snippet is taken from the [Dynamic Workflow example from samples-go](https://github.com/temporalio/samples-go/tree/main/dynamic-workflows).
+
 ```go
 func DynamicWorkflow(ctx workflow.Context, args converter.EncodedValues) (string, error) {
 	var result string
@@ -1643,6 +1644,7 @@ Only one Dynamic Activity can be present on a Worker.
 
 The Workflow Definition must then accept a single argument of type `converter.EncodedValues`.
 This code snippet is taken from the [Dynamic Workflow example from samples-go](https://github.com/temporalio/samples-go/tree/main/dynamic-workflows).
+
 ```go
 func DynamicActivity(ctx context.Context, args converter.EncodedValues) (string, error) {
 	var arg1, arg2 string
