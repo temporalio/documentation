@@ -35,8 +35,6 @@ module.exports = {
             "evaluate/development-production-features/cloud-automation",
             "evaluate/development-production-features/low-latency",
             "evaluate/development-production-features/multi-tenancy",
-            "evaluate/development-production-features/multi-region-namespace",
-            "evaluate/development-production-features/multi-cloud-namespace",
             {
               type: "category",
               label: "Product release stages",
@@ -85,6 +83,8 @@ module.exports = {
             "evaluate/temporal-cloud/pricing",
             "evaluate/temporal-cloud/actions",
             "evaluate/temporal-cloud/support",
+            "evaluate/development-production-features/multi-region-namespace",
+            "evaluate/development-production-features/multi-cloud-namespace",
           ],
         },
         "security",
