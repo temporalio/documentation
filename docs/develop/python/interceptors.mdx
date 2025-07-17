@@ -133,7 +133,7 @@ At the end of the chain the SDK will call the "real" SDK method.
 ## Worker call Interceptors
 
 To modify inbound and outbound Workflow and Activity calls, define a class inheriting from `worker.Interceptor`.
-This is an interface with two methods named `intercept_activity` and `workflow_interceptor_class` which you can use to configure interceptions of Activity and Workflow calls, respectively.
+This is an interface with two methods named `intercept_activity` and `workflow_interceptor_class`, which you can use to configure interceptions of Activity and Workflow calls, respectively.
 `intercept_activity` returns an `ActivityInboundInterceptor`.
 
 This example demonstrates using an interceptor to measure [Schedule-To-Start](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout) latency:
