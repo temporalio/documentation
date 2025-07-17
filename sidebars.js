@@ -218,6 +218,7 @@ module.exports = {
             "develop/python/nexus",
             "develop/python/child-workflows",
             "develop/python/continue-as-new",
+            "develop/python/interceptors",
           ],
         },
         {
