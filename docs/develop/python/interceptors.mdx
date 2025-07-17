@@ -57,12 +57,13 @@ This is not an exhaustive list; refer to the [Python SDK methods](https://python
 - `heartbeat()`
 
 The first of these categories is a Client call, and the remaining 4 are Worker calls.
-It often happens that your Worker and Client interceptors will share code because they implement closely related logic.
-In the Python SDK, you will typically want to create an interceptor class that inherits from _both_ `client.Interceptor` and `worker.Interceptor`, since their method sets do not overlap.
 
 ## Client call Interceptors
 
-To modify outbound Client calls, define a class inheriting from [`client.Interceptor`](https://python.temporal.io/temporalio.client.Interceptor.html), and implement the method `intercept_client()` to return an instance of [`OutboundInterceptor`](https://python.temporal.io/temporalio.client.OutboundInterceptor.html) that implements the subset of outbound Client calls that you wish to modify:
+To modify outbound Client calls, define a class inheriting from [`client.Interceptor`](https://python.temporal.io/temporalio.client.Interceptor.html), and implement the method `intercept_client()` to return an instance of [`OutboundInterceptor`](https://python.temporal.io/temporalio.client.OutboundInterceptor.html) that implements the subset of outbound Client calls that you wish to modify.
+
+This example implements an Interceptor on outbound Client calls that sets a certain key in the outbound `headers` field.
+A User ID is context-propagated by being sent in a header field with outbound requests:
 
 ```python
 class ContextPropagationInterceptor(
@@ -109,8 +110,8 @@ class _ContextPropagationClientOutboundInterceptor(
         return await super().start_workflow(input)
 ```
 
-This example implements an Interceptor on outbound Client calls that sets a certain key in the outbound `headers` field.
-A User ID is context-propagated by being sent in a header field with outbound requests.
+It often happens that your Worker and Client interceptors will share code because they implement closely related logic.
+In the Python SDK, you will typically want to create an interceptor class that inherits from _both_ `client.Interceptor` and `worker.Interceptor` as above, since their method sets do not overlap.
 
 You can then pass this in the `interceptors` argument of `Client.connect()` in your client/starter code:
 
@@ -123,17 +124,17 @@ client = await Client.connect(
 
 The `interceptors` list can contain multiple interceptors.
 In this case they form a chain: a method implemented on an interceptor instance in the list can perform side effects, and modify the data, before passing it on to the corresponding method on the next interceptor in the list.
+
 Your interceptor classes need not implement every method; the default implementation is always to pass the data on to the next method in the interceptor chain.
+During execution, when the SDK encounters an Inbound Activity call, it will look to the first Interceptor instance, get hold of the appropriate intercepted method, and call it.
+The intercepted method will perform its function then call the same method on the next Interceptor in the chain.
+At the end of the chain the SDK will call the "real" SDK method.
 
 ## Worker call Interceptors
 
 At the top level, there's a `worker.Interceptor` class.
 This level is an interface with two methods named `intercept_activity` and `workflow_interceptor_class` which you can use to configure interceptions of Activity and Workflow calls, respectively.
 `intercept_activity` returns an `ActivityInboundInterceptor`.
-
-During execution, when the SDK encounters an Inbound Activity call, it will look to the first Interceptor instance, get hold of the appropriate intercepted method, and call it.
-The intercepted method will perform its function then call the same method on the next Interceptor in the chain.
-At the end of the chain the SDK will call the "real" SDK method.
 
 This example demonstrates using an interceptor to measure [Schedule-To-Start](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout) latency:
 
@@ -173,19 +174,19 @@ class CustomScheduleToStartInterceptor(ActivityInboundInterceptor):
 
 client = await Client.connect(
     "localhost:7233",
-    interceptors=[SimpleWorkerInterceptor()],
 )
 worker = Worker(
     client,
+    interceptors=[SimpleWorkerInterceptor()],
     # ...
 )
 ```
 
 :::note
 
-You should not pass your Interceptors directly to the `Worker()` constructor.
-Although an interceptor class may _inherit_ from both `client.Interceptor` and `worker.Interceptor`, you should only ever pass it to `Client.connect()`.
+If you are inheriting methods from both `client.Interceptor` and `worker.Interceptor`, you should not pass your Interceptors directly to the `Worker()` constructor — instead, just pass it to `Client.connect()`.
 This will allow a Worker to use them from the underlying Client.
+In other words, only inherit from `worker.Interceptor` and pass the methods to the `Worker()` if you are not using Client methods.
 
 :::
 
