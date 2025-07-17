@@ -1,0 +1,66 @@
+---
+id: kubernetes-controller
+title: Temporal Worker Controller
+sidebar_label: Kubernetes controller
+description: Use Temporal's provided Kubernetes controller to programmatically scale your Worker deployments.
+slug: /production-deployment/worker-deployments/kubernetes-controller
+toc_max_heading_level: 4
+keywords:
+  - kubernetes
+  - scaling
+  - helm
+  - workers
+  - scaling
+  - versioning
+tags:
+  - Temporal Service
+  - Durable Execution
+---
+
+Temporal's [deterministic constraints](/workflow-definition#deterministic-constraints) require consideration when rolling out or rolling back workflow code changes.
+
+The traditional approach to workflow determinism is to add branches using the [Versioning APIs](/workflow-definition#workflow-versioning).
+Over time these checks can become a source of technical debt, as safely removing them from a codebase is a careful process that often involves querying all running workflows.
+
+[Worker Versioning](/production-deployment/worker-deployments/worker-versioning) is a Temporal feature that allows you to pin Workflows to individual versions of your workers, which are called Worker Deployment Versions.
+Using pinning, you will not need to add branching to your Workflows to avoid non-determinism errors.
+
+This allows you to bypass the other Versioning APIs.
+Instead, your deployment system must support multiple versions running simultaneously and allow you to control when they are sunsetted.
+This is typically known as a **rainbow deploy** and contrasts to a rolling deploy in which your Workers are upgraded in place without the ability to keep old versions around.
+A **blue-green** deploy is a kind of rainbow deploy that is typically used to gradually roll out a new update; our Safe Deploys feature facilitates blue-green deploys.
+
+This feature provides automation to enable rainbow deployments of your workers by simplifying the tracking of which versions still have active workflows, managing the lifecycle of versioned worker deployments, and calling Temporal APIs to update the routing config of Temporal Worker Deployments.
+This way, you can route Workflow traffic to new versions.
+
+Note that in Temporal, **Worker Deployment** is sometimes referred to as **Deployment**, but since the controller makes significant references to Kubernetes Deployment resource, within this page we will stick to these terms:
+
+- **Worker Deployment Version**: A version of a deployment or service. It can have multiple Workers, but they all run the same build. Sometimes shortened to "version" or "deployment version."
+- **Worker Deployment**: A deployment or service across multiple versions. In a rainbow deploy, a worker deployment can have multiple active deployment versions running at once.
+- **Deployment**: A Kubernetes Deployment resource. A Deployment is "versioned" if it is running versioned Temporal workers/pollers.
+
+## Running the Temporal Worker Controller
+
+Refer to [Github](https://github.com/DataDog/temporal-worker-controller/blob/main/internal/README.md) for instructions on how to run the Temporal Worker Controller with Minikube.
+
+## Configuring Worker Lifecycle
+
+To use the Temporal Worker Controller, tag your Workers following the guidance for using [Worker Versioning](/production-deployment/worker-deployments/worker-versioning). This means specifying a `TEMPORAL_DEPLOYMENT_NAME` and a `WORKER_BUILD_ID` in addition to the stock hostname and namespace configuration parameters.
+
+When a new worker deployment version is deployed, the worker controller detects it and automatically begins the process of making that version the new current (default) version of the worker deployment it is a part of. This could happen immediately if `cutover.strategy = AllAtOnce`, or gradually if `cutover.strategy = Progressive`.
+
+As older pinned workflows finish executing and deprecated deployment versions become drained, the worker controller also frees up resources by sunsetting the `Deployment` resources polling those versions.
+
+Here is an example of a progressive cut-over strategy gated on the success of the `HelloWorld` workflow:
+
+```
+cutover:
+  strategy: Progressive
+  steps:
+    - rampPercentage: 1
+      pauseDuration: 30s
+    - rampPercentage: 10
+      pauseDuration: 1m
+  gate:
+    workflowType: "HelloWorld"
+```
