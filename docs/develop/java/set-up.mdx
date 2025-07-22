@@ -164,7 +164,6 @@ An Activity is a method that executes a single, well-defined action (either shor
 
 You define Activities in Java as an annotated interface, and its implementation.
 
-
 Create a file called `GreetActivities.java`:
 
 </SetupStep>
@@ -303,9 +302,9 @@ public class SayHelloWorker {
 
     <p><strong>Run the Worker:</strong></p>
     <CodeSnippet language="bash">
-{`mvn compile exec:java \\
--Dexec.mainClass="helloworkflow.SayHelloWorker"`}
-    </CodeSnippet>
+
+{`mvn compile exec:java \\ -Dexec.mainClass="helloworkflow.SayHelloWorker"`}
+</CodeSnippet>
 
 </>
 }>
@@ -335,12 +334,11 @@ Keep this terminal running.
       <h5>Option 1: Using Temporal CLI (Recommended for testing)</h5>
       <p>Open a new terminal and run:</p>
       <CodeSnippet language="bash">
-{`temporal workflow start \\
---type SayHelloWorkflow \\
---task-queue my-task-queue \\
---input '"Temporal"'`}
-      </CodeSnippet>
-    </div>
+
+{`temporal workflow start \\ --type SayHelloWorkflow \ --task-queue my-task-queue \ --input '"Temporal"'`}
+</CodeSnippet>
+
+</div>
 
     <div className="option-section">
       <h5>Option 2: Create a Client Program</h5>
@@ -354,9 +352,9 @@ import io.temporal.client.WorkflowOptions;
 import io.temporal.serviceclient.WorkflowServiceStubs;
 
 public class Starter {
-    public static void main(String[] args) {
-      WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
-      WorkflowClient client = WorkflowClient.newInstance(service);
+public static void main(String[] args) {
+WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
+WorkflowClient client = WorkflowClient.newInstance(service);
 
       SayHelloWorkflow workflow = client.newWorkflowStub(
         SayHelloWorkflow.class,
@@ -380,7 +378,6 @@ public class Starter {
 {`mvn exec:java \\
 -Dexec.mainClass="helloworkflow.SayHelloWorker"`}
     </CodeSnippet>
-
 
 </div>
 
