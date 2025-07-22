@@ -281,14 +281,13 @@ The following arguments must be passed to `Authorizer`:
 - `DecisionDeny`: the requested API call is not invoked and an error is returned to the caller.
 - `DecisionAllow`: the requested API call is invoked.
 
-
 :::warning Security Warning
 
-If you do **not** explicitly configure an `Authorizer`, Temporal uses the default `noopAuthorizer`. This default allows **every** API request, 
-with no authentication or access control. Anyone who can reach your Temporal Server can invoke any API, including sensitive administrative operations. 
+If you do **not** explicitly configure an `Authorizer`, Temporal uses the default `noopAuthorizer`. This default allows **every** API request,
+with no authentication or access control. Anyone who can reach your Temporal Server can invoke any API, including sensitive administrative operations.
 This is **not secure** for production or for any environment that is accessible to untrusted clients (such as over the internet).
 
-**To protect your Temporal Server, you must configure an `Authorizer` plugin with a corresponding `ClaimMapper`.** Without this, your deployment is 
+**To protect your Temporal Server, you must configure an `Authorizer` plugin with a corresponding `ClaimMapper`.** Without this, your deployment is
 effectively open to anyone with network access.
 
 :::
