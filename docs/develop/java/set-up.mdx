@@ -148,8 +148,10 @@ import io.temporal.activity.ActivityMethod;
 
 @ActivityInterface
 public interface GreetActivities {
-@ActivityMethod
-String greet(String name);
+
+    @ActivityMethod
+    String greet(String name);
+
 }`}
 
 </CodeSnippet>
@@ -158,7 +160,10 @@ String greet(String name);
 
 ### Create the Activity
 
-An Activity is a normal function or method that executes a single, well-defined action (either short or long running), which often involve interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling an API, which are prone to failure. If an Activity fails, Temporal automatically retries it based on your configuration.
+An Activity is a method that executes a single, well-defined action (either short or long running), which often involve interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling an API, which are prone to failure. If an Activity fails, Temporal automatically retries it based on your configuration.
+
+You define Activities in Java as an annotated interface, and its implementation.
+
 
 Create a file called `GreetActivities.java`:
 
@@ -170,10 +175,12 @@ Create a file called `GreetActivities.java`:
 {`package helloworkflow;
 
 public class GreetActivitiesImpl implements GreetActivities {
-@Override
-public String greet(String name) {
-return "Hello " + name;
-}
+
+    @Override
+    public String greet(String name) {
+      return "Hello " + name;
+    }
+
 }
 `}
 
@@ -199,8 +206,10 @@ import io.temporal.workflow.WorkflowMethod;
 
 @WorkflowInterface
 public interface SayHelloWorkflow {
-@WorkflowMethod
-String sayHello(String name);
+
+    @WorkflowMethod
+    String sayHello(String name);
+
 }
 `}
 
@@ -211,6 +220,8 @@ String sayHello(String name);
 ### Create the Workflow
 
 Workflows orchestrate Activities and contain the application logic. Temporal Workflows are resilient. They can run—and keeping running—for years, even if the underlying infrastructure fails. If the application itself crashes, Temporal will automatically recreate its pre-failure state so it can continue right where it left off.
+
+You define Workflows in Java as an annotated interface, and its implementation.
 
 Create a file called `SayHelloWorkflow.java`:
 
@@ -231,15 +242,15 @@ import java.time.Duration;
 public class SayHelloWorkflowImpl implements SayHelloWorkflow {
 
     private final GreetActivities activities = Workflow.newActivityStub(
-        GreetActivities.class,
-        ActivityOptions.newBuilder()
-            .setStartToCloseTimeout(Duration.ofSeconds(5))
-            .build()
+      GreetActivities.class,
+      ActivityOptions.newBuilder()
+        .setStartToCloseTimeout(Duration.ofSeconds(5))
+        .build()
     );
 
     @Override
     public String sayHello(String name) {
-        return activities.greet(name);
+      return activities.greet(name);
     }
 
 }
@@ -271,16 +282,18 @@ public class SayHelloWorker {
 
     public static void main(String[] args) {
 
-        WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
-        WorkflowClient client = WorkflowClient.newInstance(service);
-        WorkerFactory factory = WorkerFactory.newInstance(client);
-        Worker worker = factory.newWorker("my-task-queue");
-        worker.registerWorkflowImplementationTypes(SayHelloWorkflowImpl.class);
-        worker.registerActivitiesImplementations(new GreetActivitiesImpl());
+      WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
+      WorkflowClient client = WorkflowClient.newInstance(service);
+      WorkerFactory factory = WorkerFactory.newInstance(client);
 
-        factory.start();
+      Worker worker = factory.newWorker("my-task-queue");
+      worker.registerWorkflowImplementationTypes(SayHelloWorkflowImpl.class);
+      worker.registerActivitiesImplementations(new GreetActivitiesImpl());
 
-        System.out.println("SayHelloWorker started for task queue 'my-task-queue'");
+      System.out.println("Starting SayHelloWorker for task queue 'my-task-queue'...");
+
+      factory.start();
+        
     }
 
 }
@@ -290,7 +303,8 @@ public class SayHelloWorker {
 
     <p><strong>Run the Worker:</strong></p>
     <CodeSnippet language="bash">
-    mvn compile exec:java -Dexec.mainClass="helloworkflow.SayHelloWorker"
+{`mvn compile exec:java \\
+-Dexec.mainClass="helloworkflow.SayHelloWorker"`}
     </CodeSnippet>
 
 </>
@@ -303,7 +317,7 @@ With your Activity and Workflow defined, you need a Worker to execute them. A Wo
 Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your Workflows and Activities.
 For more information on Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
 
-Create a file within a `worker` subdirectory called `SayHelloWorker.java`:
+Create a file called `SayHelloWorker.java`:
 
 Keep this terminal running.
 
@@ -321,7 +335,10 @@ Keep this terminal running.
       <h5>Option 1: Using Temporal CLI (Recommended for testing)</h5>
       <p>Open a new terminal and run:</p>
       <CodeSnippet language="bash">
-      temporal workflow start --type SayHelloWorkflow --task-queue my-task-queue --input '"Temporal"'
+{`temporal workflow start \\
+--type SayHelloWorkflow \\
+--task-queue my-task-queue \\
+--input '"Temporal"'`}
       </CodeSnippet>
     </div>
 
@@ -337,20 +354,20 @@ import io.temporal.client.WorkflowOptions;
 import io.temporal.serviceclient.WorkflowServiceStubs;
 
 public class Starter {
-public static void main(String[] args) {
-WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
-WorkflowClient client = WorkflowClient.newInstance(service);
+    public static void main(String[] args) {
+      WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
+      WorkflowClient client = WorkflowClient.newInstance(service);
 
-        SayHelloWorkflow workflow = client.newWorkflowStub(
-            SayHelloWorkflow.class,
-            WorkflowOptions.newBuilder()
-                .setTaskQueue("my-task-queue")
-                .setWorkflowId("say-hello-workflow-id")
-                .build()
+      SayHelloWorkflow workflow = client.newWorkflowStub(
+        SayHelloWorkflow.class,
+        WorkflowOptions.newBuilder()
+          .setTaskQueue("my-task-queue")
+          .setWorkflowId("say-hello-workflow-id")
+          .build()
         );
 
-        String result = workflow.sayHello("Temporal");
-        System.out.println("Workflow result: " + result);
+      String result = workflow.sayHello("Temporal");
+      System.out.println("Workflow result: " + result);
     }
 
 }
@@ -358,7 +375,13 @@ WorkflowClient client = WorkflowClient.newInstance(service);
 
 </CodeSnippet>
 
-<p>Then run: <code>mvn exec:java -Dexec.mainClass="helloworkflow.Starter"</code></p>
+<p>Then run:</p>
+    <CodeSnippet language="bash">
+{`mvn exec:java \\
+-Dexec.mainClass="helloworkflow.SayHelloWorker"`}
+    </CodeSnippet>
+
+
 </div>
 
     <div className="success-section">
