@@ -292,8 +292,8 @@ effectively open to anyone with network access.
 
 :::
 
-Configure your `Authorizer` using the [`temporal.WithAuthorizer`](/references/server-options#withauthorizer) and your `ClaimMapper` using the
-[`temporal.WithClaimMapper`](/references/server-options#withclaimmapper) server options.
+Configure your `Authorizer` with the [`temporal.WithAuthorizer`](/references/server-options#withauthorizer) server option, and your `ClaimMapper` with
+the [`temporal.WithClaimMapper`](/references/server-options#withclaimmapper) server option.
 
 ```go
 temporalServer, err := temporal.NewServer(
