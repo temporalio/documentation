@@ -1,0 +1,212 @@
+/* Base TopicCard styles */
+.topicCard {
+  display: block;
+  padding: 2rem;
+  background-color: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 0;
+  color: var(--ifm-color);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.topicCard:hover {
+  text-decoration: none;
+  color: var(--ifm-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] .topicCard {
+  background-color: #1C2128;
+  border-color: #30363D;
+}
+
+[data-theme='dark'] .topicCard:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Card content layout */
+.topicCardContent {
+  flex: 1;
+}
+
+.topicCardIcon {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.topicCardTitle {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin: 0 0 0.75rem 0;
+  color: var(--ifm-color);
+}
+
+.topicCardDescription {
+  font-size: 0.875rem;
+  margin: 0;
+  color: var(--ifm-color-emphasis-700);
+  line-height: 1.5;
+}
+
+.topicCardArrow {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  color: var(--ifm-color-emphasis-600);
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.topicCard:hover .topicCardArrow {
+  transform: translateX(4px);
+}
+
+/* Pattern variant (like your Introduction page) */
+.topicCardPattern {
+  /* Uses base styles */
+}
+
+/* Topic variant (like Temporal Cloud intro with gradient border) */
+.topicCardTopic {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background-image: linear-gradient(var(--ifm-card-background-color), var(--ifm-card-background-color)), 
+                    linear-gradient(135deg, #444CE7 0%, #B664FF 100%);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  border: 2px solid transparent;
+  border-radius: 8px;
+}
+
+[data-theme='dark'] .topicCardTopic {
+  background-image: linear-gradient(#161723, #161723), 
+                    linear-gradient(135deg, #444CE7 0%, #B664FF 100%);
+}
+
+.topicCardTopic:hover {
+  box-shadow: 0 8px 24px rgba(68, 76, 231, 0.2);
+}
+
+.topicCardTopic .topicCardTitle {
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.topicCardTopic .topicCardDescription {
+  display: none; /* Topics usually don't show descriptions */
+}
+
+.topicCardTopic .topicCardArrow {
+  position: static;
+  margin-left: auto;
+}
+
+/* Feature variant (like SDK feature cards) */
+.topicCardFeature {
+  background: var(--ifm-color-emphasis-0);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.topicCardFeature:hover {
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme='dark'] .topicCardFeature {
+  border-color: var(--ifm-color-emphasis-200);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] .topicCardFeature:hover {
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.topicCardFeature .topicCardArrow {
+  display: none; /* Feature cards usually don't show arrows */
+}
+
+/* Security variant (custom styled with gradients) */
+.topicCardSecurity {
+  background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+  border: 1px solid #e1e8ed;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  position: relative;
+  overflow: hidden;
+}
+
+.topicCardSecurity::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #444ce7 0%, #b664ff 100%);
+}
+
+.topicCardSecurity:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(68, 76, 231, 0.12);
+  border-color: #444ce7;
+}
+
+.topicCardSecurity .topicCardTitle {
+  font-size: 1.375rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.topicCardSecurity .topicCardArrow {
+  display: none; /* Security cards usually have custom buttons */
+}
+
+/* Grid layouts */
+.topicCardGrid {
+  display: grid;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.topicCardGrid2col {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.topicCardGrid3col {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.topicCardGrid4col {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .topicCardGrid2col,
+  .topicCardGrid3col {
+    grid-template-columns: 1fr;
+  }
+  
+  .topicCard {
+    padding: 1.5rem;
+  }
+  
+  .topicCardTopic {
+    padding: 0.875rem 1.25rem;
+  }
+  
+  .topicCardTitle {
+    font-size: 1.1rem;
+  }
+} 
