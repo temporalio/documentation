@@ -6,7 +6,6 @@ External client configuration is a feature that allows you to configure a Tempor
 
 This feature is currently supported across the Go and Python Temporal SDKs, as well as the Temporal CLI.
 
-
 ### Configuration Methods
 
 You can configure your client using a TOML file, environment variables, or a combination of both. The configuration is loaded with a specific order of precedence:
@@ -19,13 +18,11 @@ You can configure your client using a TOML file, environment variables, or a com
 
    2. The default configuration path: `~/.config/temporalio/temporal.toml` (or the equivalent standard user config directory on your OS).
 
-
 ### Configuration Profiles
 
 You can use configuration “profiles” to maintain separate configurations within a single file (for different environments). The "default" profile is used unless another is specified via the `TEMPORAL_PROFILE` environment variable or in the SDK's load options. If a specific profile is requested but doesn’t exist, an error will be returned.
 
 If you don't provide any configuration, the SDK will attempt to connect to a local Temporal server at `localhost:7233` in the `default` namespace.
-
 
 ### Configuration Settings
 
@@ -47,13 +44,9 @@ The following table details all available settings, their corresponding environm
 | Codec Auth                | `TEMPORAL_CODEC_AUTH`                        | `profile.<name>.codec.auth`                        | The authorization header value for the remote data converter.                                                                               |
 | gRPC Metadata             | `TEMPORAL_GRPC_META_*`                       | `profile.<name>.grpc_meta`                         | Sets gRPC headers. The part after `_META_` becomes the header key (e.g., `_SOME_KEY` -> `some-key`).                                        |
 
-
 ### TOML Configuration Example
 
 Here is an example `temporal.toml` file that defines two profiles: `default` for local development and `prod` for production.
-
-\
-
 
     # Default profile for local development
     [profile.default]
@@ -110,7 +103,6 @@ Here is an example `temporal.toml` file that defines two profiles: `default` for
     MIIPrivateKeyDataHere...
     -----END PRIVATE KEY-----"""
 
-
 ### CLI Integration
 
 The `temporal` CLI tool includes `temporal config` commands that allow you to read and write to the TOML configuration file. This provides a convenient way to manage your connection profiles without manually editing the file.
@@ -156,7 +148,6 @@ CLI Usage Example
     --type YourWorkflow \
     --task-queue your-task-queue \
     --input '"your-workflow-input"'
-
 
 ### SDK Usage Example (Python)
 
