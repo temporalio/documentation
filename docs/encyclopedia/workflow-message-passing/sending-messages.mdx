@@ -130,9 +130,14 @@ For open source server users, Temporal Server version [Temporal Server version 1
 
 :::
 
-Update-With-Start sends an Update that checks whether an already-running Workflow with that ID exists.
-If it does, the Update is processed normally.
-If not, it starts a new Workflow Execution with the supplied ID, and immediately processes the Update.
+Update-with-Start sends an Update request, starting a Workflow if necessary.
+A [`WorkflowIDConflictPolicy`](https://docs.temporal.io/workflow-execution/workflowid-runid#workflow-id-conflict-policy) must be specified.
+Workflow ID and Update ID can be used as idempotency keys as follows:
+
+- If the Workflow exists and you provided an Update ID, and the Update exists in the latest Workflow Run, then Update-With-Start attaches to the existing Update (regardless of `WorkflowIDConflictPolicy`)
+    - If the Workflow is closed, it attaches only if the Update has completed.
+- Otherwise it uses [`WorkflowIDConflictPolicy`](https://docs.temporal.io/workflow-execution/workflowid-runid#workflow-id-conflict-policy) and [`WorkflowIDReusePolicy`](https://docs.temporal.io/workflow-execution/workflowid-runid#workflow-id-reuse-policy) as usual to determine whether to start a Workflow, and then starts a new Update immediately.
+
 
 Update-With-Start is great for latency-sensitive use cases:
 
@@ -142,10 +147,12 @@ Update-With-Start is great for latency-sensitive use cases:
   Updates let you add and remove items from the cart.
   Update-With-Start lets the customer start shopping, whether the cart already exists or they've just started shopping.
   It ensures the cart, modeled by a Workflow Execution, exists before applying any Update that changes the state of items within the cart.
+  Set your `WorkflowIDConflictPolicy` to `USE_EXISTING` for this pattern.
 - **Early Return** -
   Using Update-With-Start you can begin a new Workflow Execution and synchronously receive a response, while the Workflow Execution continues to run to completion.
   For example, you might model a payment process using Update-With-Start.
   This allows you to send the payment validation results back to the client synchronously, while the transaction Workflow continues in the background.
+  Set your `WorkflowIDConflictPolicy` to `FAIL` and use a unique Update ID for this pattern if you want to assert it does not reuse an existing Workflow.
 
 :::caution
 
