@@ -135,9 +135,8 @@ A [`WorkflowIDConflictPolicy`](https://docs.temporal.io/workflow-execution/workf
 Workflow ID and Update ID can be used as idempotency keys as follows:
 
 - If the Workflow exists and you provided an Update ID, and the Update exists in the latest Workflow Run, then Update-With-Start attaches to the existing Update (regardless of `WorkflowIDConflictPolicy`)
-    - If the Workflow is closed, it attaches only if the Update has completed.
+  - If the Workflow is closed, it attaches only if the Update has completed.
 - Otherwise it uses [`WorkflowIDConflictPolicy`](https://docs.temporal.io/workflow-execution/workflowid-runid#workflow-id-conflict-policy) and [`WorkflowIDReusePolicy`](https://docs.temporal.io/workflow-execution/workflowid-runid#workflow-id-reuse-policy) as usual to determine whether to start a Workflow, and then starts a new Update immediately.
-
 
 Update-With-Start is great for latency-sensitive use cases:
 
