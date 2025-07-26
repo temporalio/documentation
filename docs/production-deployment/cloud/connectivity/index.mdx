@@ -36,6 +36,17 @@ Only [Account Admins and Account Owners](/cloud/users#account-level-roles) can c
 
 Connectivity rules can be created and managed with [tcld](https://docs.temporal.io/cloud/tcld/) or [Terraform](https://github.com/temporalio/terraform-provider-temporalcloud/).
 
+A public connectivity rule takes no parameters.
+
+An AWS PrivateLink (PL) connectivity rule requires the following parameters:
+- `connection-id`: The VPC endpoint ID of the PL connection (ex: `vpce-00939a7ed9EXAMPLE`)
+- `region`: The region of the PL connection, prefixed with aws (ex: `aws-us-east-1`). Must be the same region as the namespace. Refer to the [Temporal Cloud region list](/cloud/regions) for supported regions.
+
+A GCP Private Service Connect (PSC) connectivity rule requires the following parameters:
+- `connection-id`: The ID of the PSC connection (ex: `1234567890123456789`)
+- `region`: The region of the PSC connection, prefixed with gcp (ex: `gcp-us-east1`). Must be the same region as the namespace. Refer to the [Temporal Cloud region list](/cloud/regions) for supported regions.
+- `gcp-project-id`: The ID of the GCP project where you created the PSC connection (ex: `my-example-project-123`)
+
 ### Temporal Cloud CLI (tcld)
 
 Create public connectivity rule:
@@ -47,13 +58,13 @@ tcld connectivity-rule create --connectivity-type public
 Create private connectivity rule (AWS):
 
 ```bash
-tcld connectivity-rule create --connectivity-type private --connection-id "conn-123" --region "aws-us-east-1"
+tcld connectivity-rule create --connectivity-type private --connection-id "vpce-abcde" --region "aws-us-east-1"
 ```
 
 Create private connectivity rule (GCP):
 
 ```bash
-tcld connectivity-rule create --connectivity-type private --connection-id "conn-456" --region "gcp-us-central1" --gcp-project-id "my-project-123"
+tcld connectivity-rule create --connectivity-type private --connection-id "1234567890" --region "gcp-us-central1" --gcp-project-id "my-project-123"
 ```
 
 The `cr` alias works the same way:
@@ -65,7 +76,7 @@ tcld cr create --connectivity-type public
 Private connectivity rule:
 
 ```bash
-tcld cr create --connectivity-type private --connection-id "conn-123" --region "aws-us-east-1"
+tcld cr create --connectivity-type private --connection-id "vpce-abcde" --region "aws-us-east-1"
 ```
 
 ### Terraform
@@ -90,7 +101,7 @@ Or using aliases:
 tcld n scrs -n "my-namespace" --ids "rule-id-1" --ids "rule-id-2"
 ```
 
-Remove all connectivity rules:
+Remove all connectivity rules (this will make the namespace public):
 
 ```bash
 tcld namespace set-connectivity-rules --namespace "my-namespace" --remove-all
