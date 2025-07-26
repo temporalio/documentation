@@ -83,6 +83,8 @@ module.exports = {
             "evaluate/temporal-cloud/pricing",
             "evaluate/temporal-cloud/actions",
             "evaluate/temporal-cloud/support",
+            "evaluate/development-production-features/multi-region-namespace",
+            "evaluate/development-production-features/multi-cloud-namespace",
           ],
         },
         "security",
@@ -216,6 +218,7 @@ module.exports = {
             "develop/python/nexus",
             "develop/python/child-workflows",
             "develop/python/continue-as-new",
+            "develop/python/interceptors",
           ],
         },
         {
@@ -610,6 +613,7 @@ module.exports = {
                 "encyclopedia/workflow/dynamic-handler",
                 "encyclopedia/workflow/workflow-schedule",
                 "encyclopedia/workflow/cron-job",
+                "encyclopedia/workflow/patching",
               ],
             },
         {
