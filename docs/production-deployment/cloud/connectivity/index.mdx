@@ -39,10 +39,12 @@ Connectivity rules can be created and managed with [tcld](https://docs.temporal.
 A public connectivity rule takes no parameters.
 
 An AWS PrivateLink (PL) connectivity rule requires the following parameters:
+
 - `connection-id`: The VPC endpoint ID of the PL connection (ex: `vpce-00939a7ed9EXAMPLE`)
 - `region`: The region of the PL connection, prefixed with aws (ex: `aws-us-east-1`). Must be the same region as the namespace. Refer to the [Temporal Cloud region list](/cloud/regions) for supported regions.
 
 A GCP Private Service Connect (PSC) connectivity rule requires the following parameters:
+
 - `connection-id`: The ID of the PSC connection (ex: `1234567890123456789`)
 - `region`: The region of the PSC connection, prefixed with gcp (ex: `gcp-us-east1`). Must be the same region as the namespace. Refer to the [Temporal Cloud region list](/cloud/regions) for supported regions.
 - `gcp-project-id`: The ID of the GCP project where you created the PSC connection (ex: `my-example-project-123`)
