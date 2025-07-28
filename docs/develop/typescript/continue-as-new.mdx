@@ -37,7 +37,7 @@ It also receives your Workflow's usual parameters.
 First, design your Workflow parameters so that you can pass in the "current state" when you Continue-As-New into the next Workflow run.
 This state is typically set to `None` for the original caller of the Workflow.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/samples-typescript/blob/main/message-passing/safe-message-handlers/src/workflows.ts">
     View the source code
   </a>{' '}
@@ -56,7 +56,7 @@ The test hook in the above snippet is covered [below](#how-to-test).
 Inside your Workflow, call the [`continueAsNew()`](https://typescript.temporal.io/api/namespaces/workflow#continueasnew) function with the same type.
 This stops the Workflow right away and starts a new one.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/samples-typescript/blob/main/message-passing/safe-message-handlers/src/workflows.ts">
     View the source code
   </a>{' '}
@@ -90,7 +90,7 @@ Instead, add a test hook to check your Workflow's Continue-as-New behavior faste
 For example, when `testContinueAsNew == true`, this sample creates a test-only variable called `this.maxHistoryLength` and sets it to a small value.
 A helper method in the Workflow checks it each time it considers using Continue-as-New:
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/samples-typescript/blob/main/message-passing/safe-message-handlers/src/client.ts">
     View the source code
   </a>{' '}
