@@ -261,7 +261,7 @@ and prevent unauthorized access. Follow these steps:
 
 - **Identify the compromised certificate**: Determine which specific end-entity certificate has been compromised
   (by its Common Name (CN) or other identifying fields).
-- **Create the new certificate**: Before you revoke the compromised certificate, you should create the new certificate 
+- **Create the new certificate**: Before you revoke the compromised certificate, you should create the new certificate
   or update with a new CA used for the Namespace.
 - **Remove the certificate from authorization**:
   - If you are using certificate filters to restrict access, update or remove the filter associated with the compromised certificate.
@@ -269,7 +269,6 @@ and prevent unauthorized access. Follow these steps:
   - If the certificate isn't restricted by a filter, consider updating the CA certificate used for the Namespace to invalidate
     the compromised end-entity certificate (see [Update certificates using Temporal Cloud UI](#update-certificates-using-temporal-cloud-ui)
     or [Update certificates using tcld](#update-certificates-using-tcld)).
-
 
 ### 2. Generate and deploy a new end-entity certificate
 
