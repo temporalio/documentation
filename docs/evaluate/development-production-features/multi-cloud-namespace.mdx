@@ -1,0 +1,93 @@
+---
+id: multi-cloud-namespace
+title: Multi-cloud Replication - Temporal Cloud production feature
+description: Temporal Cloud's Multi-cloud Replication offers automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime.
+sidebar_label: Multi-cloud replication
+tags:
+  - Temporal Cloud
+  - High availability
+keywords:
+  - availability
+  - explanation
+  - failover
+  - high-availability
+  - multi-cloud
+  - multi-cloud namespace
+  - multi-cloud replication
+  - namespaces
+  - temporal-cloud
+  - term
+---
+
+Temporal Cloud offers disaster-tolerant deployment for workloads with stringent availability requirements.
+With the multi-cloud feature enabled, Temporal Cloud automates [failover](/glossary#failover) and synchronizes data between Namespaces hosted on different cloud providers (either AWS or GCP).
+This page introduces Temporal Cloud patterns that support your workload's availability requirements.
+
+## Multi-cloud Replication
+
+Multi-cloud Replication provides failover capabilities to mitigate service outages due to cloud provider failures.
+It reduces risk and minimize operational disruption.
+This feature seamlessly shif​​ts Workflow execution between cloud providers to maintain service availability.
+
+Your Clients use a single logical Namespace with a single endpoint that operates on two separate cloud providers: one active and one standby.
+As Workflows progress in the active provider, history events asynchronously replicate to the standby provider.
+Data replication ensures both providers are in sync so the standby is ready to take over when needed.
+
+Should an incident or outage occur in the active provider, Temporal Cloud initiates a "failover" to the standby provider.
+During a failover, the roles of the active and standby providers reverse.
+The standby takes over as the primary provider.
+
+### Advantages of Multi-cloud Replication {#multi-region-advantages}
+
+**Why choose Multi-cloud Replication (MCR)?**
+
+- **Reduce Risk**:
+  Protects your operations from unexpected cloud provider outages.
+  Automated disaster recovery features ensure that workloads remain available and continue execution.
+- **Minimize Operational Disruption**:
+  Seamless failovers shift Workflow Executions to a secondary provider during outages.
+  Maintains service availability without needing manual synchronization between Namespaces.
+  Real-time alerts during failover events keep you informed.
+- **No manual deployment or configuration needed:**
+  Temporal Cloud simplifies deployment with push-button operation.
+  This eliminates the need for manual deployment or configuration.
+- **Fault tolerance**.
+  Your open Workflows continue their progress in the standby region.
+  This minimizes interruption and data loss during cloud provider failures.
+- **No code changes**.
+  Your Workers and Workflow starter code don't need updates to take advantage of multi-cloud setup or to respond to failover conditions.
+  This allows for a smooth transition and continued operation.
+
+### Service Level Objectives (SLO) and guarantees {#cloud-region-SLO}
+
+**What reliability promises does this feature offer?**
+
+- Temporal provides a 99.99% Contractual SLA that provides redress in the event of downtime ([SLA](https://docs.temporal.io/cloud/sla)).
+- [RTO](https://csrc.nist.gov/glossary/term/recovery_time_objective): 20 minutes or less.
+- [RPO](https://csrc.nist.gov/glossary/term/recovery_point_objective): Near zero.
+
+### Target workloads {#target-workloads}
+
+**Who benefits from this feature?**
+
+Multi-cloud Namespaces are a great solution for Workloads where a regional cloud outage would cause:
+
+- Revenue loss
+- Poor customer experience
+- Problems stemming from policy/legal requirements that demand high availability
+
+Some examples: financial services, e-commerce, gaming, global SaaS platforms, bookings & reservations, delivery & shipping, order management.
+
+### Explore {#explore-multi-cloud}
+
+**Read more about our multi-cloud features**
+
+- [Multi-cloud Namespaces](/cloud/high-availability/enable) offer High Availability service for Temporal Cloud customers who need the highest level of availability at all times.
+- [Multi-cloud Pricing](/cloud/pricing) scales to use.
+- Multi-cloud replication supports [PrivateLink routing](/cloud/high-availability/private-link).
+
+### Explore {#explore-temporal-namespaces}
+
+**Read more about Namespaces**
+
+- [Temporal Cloud Namespaces](/cloud/namespaces) offer outstanding reliable service for Temporal Cloud customers.
