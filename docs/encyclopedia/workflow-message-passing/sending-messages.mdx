@@ -124,24 +124,19 @@ Use [Update Validators](/handling-messages#update-validators) and [Update IDs](/
 
 #### Update-With-Start {#update-with-start}
 
-:::tip Stability
+:::tip
 
-In [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in Temporal Cloud.
-
-Minimum Temporal Server version [Temporal Server version 1.26](https://github.com/temporalio/temporal/releases/tag/v1.26.2)
-
-- Available in [Go SDK](https://pkg.go.dev/go.temporal.io/sdk@v1.31.0/client#Client.UpdateWithStartWorkflow) since [v1.31.0](https://github.com/temporalio/sdk-go/releases/tag/v1.31.0)
-- Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/1.27.0/io/temporal/client/WorkflowStub.html#startUpdateWithStart(io.temporal.client.UpdateOptions,java.lang.Object%5B%5D,java.lang.Object%5B%5D)) since [v1.27.0](https://github.com/temporalio/sdk-java/releases/tag/v1.27.0)
-- Available in [Python SDK](/develop/python/message-passing#send-update-from-client) since [v1.9.0](https://github.com/temporalio/sdk-python/releases/tag/1.9.0)
-- Available in [TypeScript SDK](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#executeupdate) since [v1.11.6](https://github.com/temporalio/sdk-typescript/releases/tag/v1.11.6)
-- Available in [PHP SDK](https://php.temporal.io/classes/Temporal-Client-WorkflowClient.html#method_updateWithStart) since [v2.11.4](https://github.com/temporalio/sdk-php/releases/tag/v2.11.4)
-- Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowStartUpdateWithStartOptions.html) since [v1.4.0](https://github.com/temporalio/sdk-dotnet/releases/tag/1.4.0)
+For open source server users, Temporal Server version [Temporal Server version 1.28](https://github.com/temporalio/temporal/releases/tag/v1.28.0) is recommended.
 
 :::
 
-Update-With-Start sends an Update that checks whether an already-running Workflow with that ID exists.
-If it does, the Update is processed normally.
-If not, it starts a new Workflow Execution with the supplied ID, and immediately processes the Update.
+Update-with-Start sends an Update request, starting a Workflow if necessary.
+A [`WorkflowIDConflictPolicy`](https://docs.temporal.io/workflow-execution/workflowid-runid#workflow-id-conflict-policy) must be specified.
+Workflow ID and Update ID can be used as idempotency keys as follows:
+
+- If the Workflow exists and you provided an Update ID, and the Update exists in the latest Workflow Run, then Update-With-Start attaches to the existing Update (regardless of `WorkflowIDConflictPolicy`)
+  - If the Workflow is closed, it attaches only if the Update has completed.
+- Otherwise it uses [`WorkflowIDConflictPolicy`](https://docs.temporal.io/workflow-execution/workflowid-runid#workflow-id-conflict-policy) and [`WorkflowIDReusePolicy`](https://docs.temporal.io/workflow-execution/workflowid-runid#workflow-id-reuse-policy) as usual to determine whether to start a Workflow, and then starts a new Update immediately.
 
 Update-With-Start is great for latency-sensitive use cases:
 
@@ -151,10 +146,12 @@ Update-With-Start is great for latency-sensitive use cases:
   Updates let you add and remove items from the cart.
   Update-With-Start lets the customer start shopping, whether the cart already exists or they've just started shopping.
   It ensures the cart, modeled by a Workflow Execution, exists before applying any Update that changes the state of items within the cart.
+  Set your `WorkflowIDConflictPolicy` to `USE_EXISTING` for this pattern.
 - **Early Return** -
   Using Update-With-Start you can begin a new Workflow Execution and synchronously receive a response, while the Workflow Execution continues to run to completion.
   For example, you might model a payment process using Update-With-Start.
   This allows you to send the payment validation results back to the client synchronously, while the transaction Workflow continues in the background.
+  Set your `WorkflowIDConflictPolicy` to `FAIL` and use a unique Update ID for this pattern if you want to assert it does not reuse an existing Workflow.
 
 :::caution
 
