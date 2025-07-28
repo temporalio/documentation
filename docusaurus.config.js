@@ -330,6 +330,10 @@ module.exports = async function createConfigAsync() {
         },
       ],
     ],
+    future: {
+      v4: true,
+      experimental_faster: true,
+    },
   };
 
   function convertIndent4ToIndent2(code) {
