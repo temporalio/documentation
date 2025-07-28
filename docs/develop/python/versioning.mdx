@@ -185,9 +185,7 @@ After ensuring that all Workflows started with `pre_patch_activity` code have fi
 
 Once you're confident that your Workflows are no longer running the pre-patch code paths, you can deploy your code with `deprecate_patch()`.
 These Workers will be running the most up-to-date version of the Workflow code, which no longer requires the patch.
-The `deprecate_patch()` function works similarly to the `patched()` function by recording a marker in the Workflow history.
-This marker does not fail replay when Workflow code does not emit it.
-Deprecated patches serve as a bridge between the pre-patch code paths and the post-patch code paths, and are useful for avoiding errors resulting from patched code paths in your Workflow history.
+Deprecated patches serve as a bridge between the final stage of the patching process and the final state that no longer has patches. They function similarly to regular patches by adding a marker to the Workflow History. However, this marker won't cause a replay failure when the Workflow code doesn't produce it.
 
 <div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_3_patch_deprecated_dacx.py">
@@ -237,7 +235,7 @@ It is a powerful method for introducing compatible changes without introducing n
 
 ### Detailed Description of the Patched Function
 
-This video provides an in-depth overview of how the `patched()` function works:
+This video provides an overview of how the `patched()` function works:
 
 <div style={{ position: "relative", paddingBottom: "56.25%", height: 0 }}>
   <iframe
@@ -248,8 +246,10 @@ This video provides an in-depth overview of how the `patched()` function works:
     allowfullscreen>
   </iframe>
 </div>
+<br/>
+For a more in-depth explanation, refer to the [Patching](/patching) Encyclopedia entry.
 
-### Testing a Workflow for replay safety.
+### Testing a Workflow for replay safety
 
 To determine whether your Workflow your needs a patch, or that you've patched it successfully, you should incorporate [Replay Testing](/develop/python/testing-suite#replay).
 
