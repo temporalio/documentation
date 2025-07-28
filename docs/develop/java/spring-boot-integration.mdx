@@ -1,0 +1,242 @@
+---
+id: spring-boot-integration
+title: Spring Boot Integration - Java SDK
+sidebar_label: Spring Boot Integration
+slug: /develop/java/spring-boot-integration
+toc_max_heading_level: 2
+keywords:
+  - spring-boot-integration
+tags:
+  - Spring Boot
+  - Java SDK
+  - Temporal SDKs
+description: Learn about the Temporal Spring Boot integration
+---
+
+This guide introduces the Temporal [Spring Boot](https://spring.io/) integration. The Temporal Spring Boot integration is the easiest way to get started using the Temporal Java SDK if you are a current Spring user.
+
+This section includes the following topics:
+
+- [Setup Dependency](#setup-dependency)
+- [Connect to your Temporal Service](#connect)
+- [Configure Workers](#configure-workers)
+- [Customize Options](#customize-options)
+- [Interceptors](#interceptors)
+- [Integrations](#Integrations)
+- [Testing](#testing)
+
+## Setup Dependency {#setup-dependency}
+
+To start using the Temporal Spring Boot integration, you need to add [`io.temporal:temporal-spring-boot-starter`](https://search.maven.org/artifact/io.temporal/temporal-spring-boot-starter)
+as a dependency to your spring project:
+
+**[Apache Maven](https://maven.apache.org/):**
+
+```maven
+<dependency>
+    <groupId>io.temporal</groupId>
+    <artifactId>temporal-spring-boot-starter</artifactId>
+    <version>1.30.1</version>
+    <scope>test</scope>
+</dependency>
+```
+
+**[Gradle Groovy DSL](https://gradle.org/):**
+
+```groovy
+implementation ("io.temporal:temporal-spring-boot-starter:1.30.1")
+```
+
+## Connect {#connect}
+
+To create an autoconfigured `WorkflowClient` all you have to do is specify some connection details in your `application.yml`.
+
+For more details about connecting to Temporal see [here](/develop/java/temporal-clients)
+
+### Connect to your local Temporal Service
+
+```yaml
+spring.temporal:
+  connection:
+    target: local # you can specify a host:port here for a remote connection
+```
+
+This is enough to be able to autowire a WorkflowClient in your Spring Boot application:
+
+```java
+@SpringBootApplication
+class App {
+  @Autowire
+  private WorkflowClient workflowClient;
+}
+```
+
+### Connect to a custom Namespace
+
+You can also connect to a custom namespace by specifying the `spring.temporal.namespace` property.
+
+```yaml
+spring.temporal:
+  connection:
+    target: local # you can specify a host:port here for a remote connection
+  namespace: <custom namespace> # you can specify a custom namespace that you are using
+```
+
+## Connect to Temporal Cloud {#connect}
+
+You can also connect to Temporal Cloud with either API keys or mTLS.
+
+To learn more about connecting to Temporal Cloud see [here](/develop/java/temporal-clients#connect-to-temporal-cloud)
+
+### Using an API key
+
+```yaml
+spring.temporal:
+  connection:
+    target: <target>
+    apiKey: <API key>
+  namespace: <namespace>
+```
+
+### Using mTLS
+
+```
+spring.temporal:
+  connection:
+    mtls:
+      target: <target>
+      key-file: /path/to/key.key
+      cert-chain-file: /path/to/cert.pem # If you use PKCS12 (.pkcs12, .pfx or .p12), you don't need to set it because certificates chain is bundled into the key file
+  namespace: <namespace>
+```
+
+## Configure Workers {#configure-workers}
+
+Temporal's Spring Boot integration supports two ways to configure workers auto-discovery and an explicit configuration.
+
+### Explicit configuration
+
+```yaml
+spring.temporal:
+  workers:
+    - task-queue: your-task-queue-name
+      name: your-worker-name # unique name of the Worker. If not specified, Task Queue is used as the Worker name.
+      workflow-classes:
+        - your.package.YouWorkflowImpl
+      activity-beans:
+        - activity-bean-name1
+```
+
+### Auto Discovery
+
+Auto Discovery allows you to skip specifying Workflow classes, Activity beans, and Nexus Service beans explicitly in the config by referencing Worker Task Queue names or Worker Names on Workflow, Activity implementations, and Nexus Service implementations. Auto-discovery is applied after and on top of an explicit configuration.
+
+```
+spring.temporal:
+  workers-auto-discovery:
+    packages:
+      - your.package # enumerate all the packages that contain your workflow implementations.
+```
+
+#### What is auto-discovered:
+
+Workflows implementation classes annotated with `io.temporal.spring.boot.WorkflowImpl`
+Activity beans present Spring context whose implementations are annotated with `io.temporal.spring.boot.ActivityImpl`
+Nexus Service beans present in Spring context whose implementations are annotated with `io.temporal.spring.boot.NexusServiceImpl`
+Workers if a Task Queue is referenced by the annotations but not explicitly configured. Default configuration will be used.
+
+:::note
+`io.temporal.spring.boot.ActivityImpl` and `io.temporal.spring.boot.NexusServiceImpl` should be applied to Beans, one way to do this is to annotate you activity implementation class with `@Component`
+:::
+
+```
+@Component
+@ActivityImpl(workers = "myWorker")
+public class MyActivityImpl implements MyActivity {
+  @Override
+  public String execute(String input) {
+    return input;
+  }
+}
+```
+
+:::note
+Auto-discovered workflow implementation classes, activity beans, and nexus service beans will be registered with the configured workers if not already registered.
+:::
+
+## Interceptors {#interceptors}
+
+To enable interceptors users can create beans implementing the `io.temporal.common.interceptors.WorkflowClientInterceptor`, `io.temporal.common.interceptors.ScheduleClientInterceptor`, or `io.temporal.common.interceptors.WorkerInterceptor` interface. Interceptors will be registered in the order specified by the `@Order` annotation.
+
+## Integrations {#integrations}
+
+The Temporal Spring Boot integration also has built in support for various tools in the Spring ecosystem like metrics and tracing.
+
+#### Metrics
+
+You can set up built-in Spring Boot Metrics using [Spring Boot Actuator](https://docs.spring.io/spring-boot/reference/actuator/metrics.html). The Temporal Spring Boot integration will pick up the MeterRegistry bean and use it to report Temporal Metrics.
+
+Alternatively, you can define a custom `io.micrometer.core.instrument.MeterRegistry` bean in the application context.
+
+#### Tracing
+
+You can set up [Spring Cloud Sleuth](https://spring.io/projects/spring-cloud-sleuth) with OpenTelemetry export. The Temporal Spring Boot integration will pick up the OpenTelemetry bean configured by spring-cloud-sleuth-otel-autoconfigure and use it for Temporal Traces.
+
+Alternatively, you can define a custom
+
+`io.opentelemetry.api.OpenTelemetry` for OpenTelemetry or `io.opentracing.Tracer` for Opentracing bean in the application context.
+
+## Customization of Options {#customize-options}
+
+To programmatically customize the various options that are created by the Spring Boot integration, users can create beans that implement the `io.temporal.spring.boot.TemporalOptionsCustomizer<OptionsBuilderType>` interface. This will be called after the options in your properties files are applied.
+
+Where OptionsType may be one of:
+
+    * `WorkflowServiceStubsOptions.Builder`
+    * `WorkflowClientOption.Builder`
+    * `WorkerFactoryOptions.Builder`
+    * `WorkerOptions.Builder`
+    * `WorkflowImplementationOptions.Builder`
+    * `TestEnvironmentOptions.Builder`
+
+`io.temporal.spring.boot.WorkerOptionsCustomizer` may be used instead of `TemporalOptionsCustomizer<WorkerOptions.Builder>` if WorkerOptions needs to be customized on the Task Queue or Worker name.
+
+`io.temporal.spring.boot.WorkflowImplementationOptionsCustomizer` may be used instead of `TemporalOptionsCustomizer<WorkflowImplementationOptions.Builder>` if WorkflowImplementationOptions needs to be customized on Workflow typ.
+
+## Testing {#testing}
+
+The Temporal Spring Boot integration also has easy support for testing your Temporal code. Add the following to your `application.yml` to reconfigure the client work through `io.temporal.testing.TestWorkflowEnvironment` that uses in-memory Java Test Server:
+
+```
+spring.temporal:
+  test-server:
+    enabled: true
+```
+
+When `spring.temporal.test-server.enabled:true` is added, the `spring.temporal.connection` section is ignored. This allows to wire `TestWorkflowEnvironment` bean in your unit tests:
+
+```
+@SpringBootTest(classes = Test.Configuration.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+public class Test {
+  @Autowired ConfigurableApplicationContext applicationContext;
+  @Autowired TestWorkflowEnvironment testWorkflowEnvironment;
+  @Autowired WorkflowClient workflowClient;
+
+  @BeforeEach
+  void setUp() {
+    applicationContext.start();
+  }
+
+  @Test
+  @Timeout(value = 10)
+  public void test() {
+    # ...
+  }
+
+  @ComponentScan # to discover activity beans annotated with @Component
+  public static class Configuration {}
+}
+```
+
+To learn more about testing see [here](/develop/java/testing-suite#test-frameworks)
