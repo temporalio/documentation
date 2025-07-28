@@ -24,7 +24,9 @@ import { ToolTipTerm, DiscoverableDisclosure, CaptionedImage } from '@site/src/c
 
 Connectivity rules are Temporal Cloud's mechanism for limiting network access to a namespace.
 
-By default, a namespace has zero connectivity rules, and is accessible from the public internet. When you add connectivity rules, Temporal Cloud will immediately block all traffic that does not have a corresponding connectivity rule from accessing the namespace. One namespace can have multiple connectivity rules, and may mix both public and private rules.
+By default, a namespace has zero connectivity rules, and is accessible from 1. the public internet and 2. all private connections you've configured to the region containing the namespace. 
+
+When you add connectivity rules, Temporal Cloud will immediately block all traffic that does not have a corresponding connectivity rule from accessing the namespace. One namespace can have multiple connectivity rules, and may mix both public and private rules.
 
 A connectivity rule specifies public (i.e. internet) or private (i.e. [AWS PrivateLink](/cloud/connectivity/aws-connectivity) or [Google Cloud Private Service Connect](/cloud/connectivity/gcp-connectivity)) access to a namespace. See the linked docs to learn more about setting up those private connections in your cloud provider and configuring DNS for your workers.
 
