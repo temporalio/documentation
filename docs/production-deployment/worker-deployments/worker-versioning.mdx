@@ -441,10 +441,12 @@ To do this, utilize pinning in your tests, following the examples below:
 workflowOptions := client.StartWorkflowOptions{
 	ID:        "MyWorkflowId",
 	TaskQueue: "MyTaskQueue",
-	VersioningOverride: client.VersioningOverride{
-		Behavior: workflow.VersioningBehaviorPinned,
-		PinnedVersion: "$MY_TEST_DEPLOYMENT_VERSION",
-	},
+	VersioningOverride: &client.PinnedVersioningOverride{
+        Version: worker.WorkerDeploymentVersion{
+            DeploymentName: "DeployName",
+            BuildId:        "1.0",
+        },
+    },
 }
 // c is an initialized Client
 we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, HelloWorld, "Hello")
