@@ -492,49 +492,65 @@ We are continuing to improve this feature, and we welcome any feedback or featur
 
 ### Inheritance Semantics
 
-There are various ways in which one run of a workflow can start other workflow runs.
-The following section names each of those scenarios and describes how versioning behavior and/or version are inherited.
+When workflows start new runs, versioning behavior and version information may be inherited depending on the scenario. This section explains how inheritance works across different workflow execution patterns.
 
-A workflow can start a new run by:
+#### Ways Workflows Start New Runs
+
+A workflow can start a new run through:
 - Starting a [Child Workflow](https://docs.temporal.io/child-workflows)
 - Invoking [Continue-As-New](https://docs.temporal.io/workflow-execution/continue-as-new)
 - Retrying per its [Retry Policy](https://docs.temporal.io/encyclopedia/retry-policies)
 - Being [Reset](https://docs.temporal.io/workflow-execution/event#reset)
-- Starting another iteration of a [Cron Job](https://docs.temporal.io/cron-job) (superseded by [Schedules](https://docs.temporal.io/schedule)
+- Starting another iteration of a [Cron Job](https://docs.temporal.io/cron-job) (superseded by [Schedules](https://docs.temporal.io/schedule))
 
-When an AutoUpgrade workflow starts a new run, the version is never inherited.
+#### Inheritance Rules Overview
 
-When a Pinned Parent workflow starts a child, the child will inherit the parent's version. So the first workflow task of
-the child will execute in the same version as its parent. If the child is also Pinned, the user can enjoy the guarantee
-that the parent-child tree will run in the same version. If the child workflow is annotated as Auto-Upgrade, the workflow's
-behavior will change to Auto-Upgrade after the first task is completed.
+**Key Principle**: AutoUpgrade workflows never inherit versions, while Pinned workflows may inherit under specific conditions.
 
-If the child's task queue is not in the same Worker Deployment as the parent, then the child will not inherit, and it will
-start on the Current Version of its task queue.
+#### Inheritance by Scenario
 
-When an Auto-Upgrade Parent workflow starts a child, the child will inherit no initial versioning behavior, and will start
-on the current version of its Worker Deployment like all other new workflow executions.
+##### Child Workflows
 
----
+**When Parent is AutoUpgrade:**
+- Child inherits no initial Versioning Behavior
+- Child starts on the Current Version of its Worker Deployment like all new workflow executions
 
-When a Pinned workflow Continues-As-New, the Pinned version is inherited across the Continue-As-New chain.
+**When Parent is Pinned:**
+- Child inherits the parent's version if the child's Task Queue belongs to that version
+- Child's first workflow task executes in the same version as its parent
+- If child is also Pinned: child remains Pinned to the inherited version for its lifetime
+- If child is Auto-Upgrade: child's behavior changes to Auto-Upgrade after the first task completes
+- If child's Task Queue is not in the same Worker Deployment as parent: no inheritance occurs, child starts on Current Version of its task queue
 
----
-Versioning Override:
-    // Children, crons, retries, and continue-as-new will inherit source run's override if the override is pinned
-    // and if the new workflow's Task Queue belongs to the override version.
+##### Continue-As-New
 
-Non-Override Pinned Behavior and Version:
-    // Child of pinned parent will inherit the parent's version if the Child's Task Queue belongs to that version.
-    //
-    // New run initiated by workflow ContinueAsNew of pinned run, will inherit the previous run's version if the
-    // new run's Task Queue belongs to that version.
-    //
-    // New run initiated by workflow Cron will never inherit.
-    //
-    // New run initiated by workflow Retry will only inherit if the retried run is effectively pinned at the time
-    // of retry, and the retried run inherited a pinned version when it started (ie. it is a child of a pinned
-    // parent, or a CaN of a pinned run, and is running on a Task Queue in the inherited version).
-    //
-    // Pinned override is inherited if Task Queue of new run is compatible with the override version.
-    // Override is inherited separately and takes precedence over inherited base version.
+**When Original Workflow is Pinned:**
+- The Pinned version is inherited across the Continue-As-New chain
+- If the new run's Task Queue is not in the same Worker Deployment as the original workflow: no inheritance occurs, new run starts on Current Version of its task queue
+
+**When Original Workflow is AutoUpgrade:**
+- No version inheritance occurs
+
+##### Retries
+
+**Inheritance Conditions (all must be met):**
+- The retried run is effectively pinned at the time of retry
+- The retried run inherited a pinned version when it started (i.e., it is a child of a pinned parent, or a Continue-As-New of a pinned run)
+- The retried run is running on a Task Queue in the inherited version
+
+**When Conditions Not Met:**
+- No version inheritance occurs
+
+##### Cron Jobs
+- **Never inherit** versioning behavior or version
+
+##### Resets
+- Inheritance behavior follows the same rules as the execution type that would result from the reset
+
+#### Versioning Override vs. Non-Override Inheritance
+
+##### Versioning Override Inheritance
+- Children, crons, retries, and continue-as-new inherit the source run's override **if**:
+  - The override is pinned, **AND**
+  - The new workflow's Task Queue belongs to the override version
+- Override inheritance is evaluated separately and takes precedence over inherited base version
