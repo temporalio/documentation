@@ -497,6 +497,7 @@ When workflows start new runs, versioning behavior and version information may b
 #### Ways Workflows Start New Runs
 
 A workflow can start a new run through:
+
 - Starting a [Child Workflow](https://docs.temporal.io/child-workflows)
 - Invoking [Continue-As-New](https://docs.temporal.io/workflow-execution/continue-as-new)
 - Retrying per its [Retry Policy](https://docs.temporal.io/encyclopedia/retry-policies)
@@ -512,10 +513,12 @@ A workflow can start a new run through:
 ##### Child Workflows
 
 **When Parent is AutoUpgrade:**
+
 - Child inherits no initial Versioning Behavior
 - Child starts on the Current Version of its Worker Deployment like all new workflow executions
 
 **When Parent is Pinned:**
+
 - Child inherits the parent's version if the child's Task Queue belongs to that version
 - Child's first workflow task executes in the same version as its parent
 - If child is also Pinned: child remains Pinned to the inherited version for its lifetime
@@ -525,31 +528,38 @@ A workflow can start a new run through:
 ##### Continue-As-New
 
 **When Original Workflow is Pinned:**
+
 - The Pinned version is inherited across the Continue-As-New chain
 - If the new run's Task Queue is not in the same Worker Deployment as the original workflow: no inheritance occurs, new run starts on Current Version of its task queue
 
 **When Original Workflow is AutoUpgrade:**
+
 - No version inheritance occurs
 
 ##### Retries
 
 **Inheritance Conditions (all must be met):**
+
 - The retried run is effectively pinned at the time of retry
 - The retried run inherited a pinned version when it started (i.e., it is a child of a pinned parent, or a Continue-As-New of a pinned run)
 - The retried run is running on a Task Queue in the inherited version
 
 **When Conditions Not Met:**
+
 - No version inheritance occurs
 
 ##### Cron Jobs
+
 - **Never inherit** versioning behavior or version
 
 ##### Resets
+
 - Inheritance behavior follows the same rules as the execution type that would result from the reset
 
 #### Versioning Override vs. Non-Override Inheritance
 
 ##### Versioning Override Inheritance
+
 - Children, crons, retries, and continue-as-new inherit the source run's override **if**:
   - The override is pinned, **AND**
   - The new workflow's Task Queue belongs to the override version
