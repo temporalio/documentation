@@ -115,8 +115,7 @@ module.exports = async function createConfigAsync() {
           href: "https://temporal.io",
           width: 24,
         },
-        copyright: `Copyright © ${new Date().getFullYear()}</span> Temporal Technologies Inc.</div><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TSXFPF2"
-        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>`,
+        copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.`,
         links: [
           {
             items: [
@@ -331,6 +330,10 @@ module.exports = async function createConfigAsync() {
         },
       ],
     ],
+    future: {
+      v4: true,
+      experimental_faster: true,
+    },
   };
 
   function convertIndent4ToIndent2(code) {
