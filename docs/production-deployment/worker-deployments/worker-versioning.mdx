@@ -134,6 +134,9 @@ WorkerOptions options =
 </SdkTabs.Java>
 <SdkTabs.Python>
 ```python
+from temporalio.common import WorkerDeploymentVersion, VersioningBehavior
+from temporalio.worker import Worker, WorkerDeploymentConfig
+
 Worker(
     client,
     task_queue="mytaskqueue",
@@ -148,7 +151,6 @@ Worker(
     ),
 
 )
-
 ````
 </SdkTabs.Python>
 <SdkTabs.TypeScript>
