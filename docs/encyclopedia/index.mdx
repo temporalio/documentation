@@ -9,22 +9,82 @@ keywords:
 
 [Temporal](/evaluate/why-temporal) provides developers a suite of effective tools for building reliable applications at scale.
 
-The following Encyclopedia pages describe the concepts, components, and features of Temporal in detail:
+<div className="features-intro">
+  The following Encyclopedia pages describe the concepts, components, and features of Temporal in detail:
+</div>
 
-- [Temporal](/temporal)
-- [Temporal SDKs](/encyclopedia/temporal-sdks)
-- [Workflows](/workflows)
-- [Activities](/activities)
-- [Detecting application failures](/encyclopedia/detecting-application-failures)
-- [Workers](/workers)
-- [Event History](/encyclopedia/event-history/)
-- [Workflow Message Passing](/encyclopedia/workflow-message-passing/)
-- [Child Workflows](/child-workflows)
-- [Visibility](/visibility)
-- [Temporal Service](/temporal-service)
-- [Namespaces](/namespaces)
-- [Temporal Nexus](/nexus)
-- [Data conversion](/dataconversion)
+<div className="feature-grid">
+  <div className="feature-card">
+    <h3>Temporal</h3>
+    <p>Core concepts and overview of the Temporal platform for building reliable distributed applications.</p>
+    <a href="/temporal" className="feature-link">Learn more →</a>
+  </div>
+  <div className="feature-card">
+    <h3>Temporal SDKs</h3>
+    <p>Software development kits that provide APIs and tools for building Temporal applications.</p>
+    <a href="/encyclopedia/temporal-sdks" className="feature-link">Learn more →</a>
+  </div>
+  <div className="feature-card">
+    <h3>Workflows</h3>
+    <p>Durable functions that coordinate Activities and maintain state across failures and restarts.</p>
+    <a href="/workflows" className="feature-link">Learn more →</a>
+  </div>
+  <div className="feature-card">
+    <h3>Activities</h3>
+    <p>Functions that interact with external systems and can be retried independently of Workflows.</p>
+    <a href="/activities" className="feature-link">Learn more →</a>
+  </div>
+  <div className="feature-card">
+    <h3>Detecting application failures</h3>
+    <p>Mechanisms for identifying and handling failures in distributed Temporal applications.</p>
+    <a href="/encyclopedia/detecting-application-failures" className="feature-link">Learn more →</a>
+  </div>
+  <div className="feature-card">
+    <h3>Workers</h3>
+    <p>Processes that execute Workflow and Activity code, polling for tasks from the Temporal Service.</p>
+    <a href="/workers" className="feature-link">Learn more →</a>
+  </div>
+  <div className="feature-card">
+    <h3>Event History</h3>
+    <p>Complete record of all events that occurred during a Workflow Execution's lifetime.</p>
+    <a href="/encyclopedia/event-history/" className="feature-link">Learn more →</a>
+  </div>
+  <div className="feature-card">
+    <h3>Workflow Message Passing</h3>
+    <p>Communication patterns including Signals, Queries, and Updates for Workflow interactions.</p>
+    <a href="/encyclopedia/workflow-message-passing/" className="feature-link">Learn more →</a>
+  </div>
+  <div className="feature-card">
+    <h3>Child Workflows</h3>
+    <p>Workflows that are started by other Workflows, enabling composition and modularity.</p>
+    <a href="/child-workflows" className="feature-link">Learn more →</a>
+  </div>
+  <div className="feature-card">
+    <h3>Visibility</h3>
+    <p>Tools and APIs for observing and querying the state of Workflow Executions.</p>
+    <a href="/visibility" className="feature-link">Learn more →</a>
+  </div>
+  <div className="feature-card">
+    <h3>Temporal Service</h3>
+    <p>The backend service that manages Workflow state, task distribution, and durability.</p>
+    <a href="/temporal-service" className="feature-link">Learn more →</a>
+  </div>
+  <div className="feature-card">
+    <h3>Namespaces</h3>
+    <p>Logical isolation boundaries for organizing Workflows, Activities, and other resources.</p>
+    <a href="/namespaces" className="feature-link">Learn more →</a>
+  </div>
+  <div className="feature-card">
+    <h3>Temporal Nexus</h3>
+    <p>Service framework for building and operating resilient service APIs with Temporal.</p>
+    <a href="/nexus" className="feature-link">Learn more →</a>
+  </div>
+  <div className="feature-card">
+    <h3>Data conversion</h3>
+    <p>Mechanisms for serializing, deserializing, and transforming data in Temporal applications.</p>
+    <a href="/dataconversion" className="feature-link">Learn more →</a>
+  </div>
+</div>
 
 For a complete list of Temporal terms, see the [Glossary](/glossary).
 
