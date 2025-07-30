@@ -206,7 +206,7 @@ require 'temporalio/worker'
 require_relative 'say_hello_activity'
 require_relative 'say_hello_workflow'
 
-client = Temporalio::Client.connect('localhost:7233', 'my-namespace')
+client = Temporalio::Client.connect('localhost:7233', 'default')
 
 worker = Temporalio::Worker.new(
 client:,
@@ -247,7 +247,7 @@ Running this will run the Worker until Ctrl+C is pressed.
 {`require 'temporalio/client'
 require_relative 'say_hello_workflow'
 
-client = Temporalio::Client.connect('localhost:7233', 'my-namespace')
+client = Temporalio::Client.connect('localhost:7233', 'default')
 
 result = client.execute_workflow(
 SayHelloWorkflow,
