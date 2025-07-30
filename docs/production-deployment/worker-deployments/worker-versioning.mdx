@@ -138,19 +138,20 @@ from temporalio.common import WorkerDeploymentVersion, VersioningBehavior
 from temporalio.worker import Worker, WorkerDeploymentConfig
 
 Worker(
-    client,
-    task_queue="mytaskqueue",
-    workflows=workflows,
-    activities=activities,
-    deployment_config=WorkerDeploymentConfig(
-        version=WorkerDeploymentVersion(
-            deployment_name="llm_srv",
-            build_id=my_env.build_id),
-        use_worker_versioning=True,
-        default_versioning_behavior=VersioningBehavior.AUTO_UPGRADE
-    ),
+client,
+task_queue="mytaskqueue",
+workflows=workflows,
+activities=activities,
+deployment_config=WorkerDeploymentConfig(
+version=WorkerDeploymentVersion(
+deployment_name="llm_srv",
+build_id=my_env.build_id),
+use_worker_versioning=True,
+default_versioning_behavior=VersioningBehavior.AUTO_UPGRADE
+),
 
 )
+
 ````
 </SdkTabs.Python>
 <SdkTabs.TypeScript>
