@@ -40,9 +40,7 @@ The TypeScript SDK requires Node.js 16 or later. Install Node.js via your packag
 <CodeSnippet language="bash">
 npx @temporalio/create@latest ./my-app
 </CodeSnippet>
-<CodeSnippet language="bash">
-npm install @temporalio/client @temporalio/worker @temporalio/workflow
-</CodeSnippet>
+<p>When prompted to select a sample, choose the <strong>hello-world</strong> sample.</p>
 </>
 }>
 
@@ -50,9 +48,12 @@ npm install @temporalio/client @temporalio/worker @temporalio/workflow
 
 You can create a new project with the Temporal SDK:
 
+If you're creating a new project using `npx @temporalio/create`, the required SDK packages will be installed automatically. To add Temporal to an existing project, install the required packages manually with `npm install @temporalio/client @temporalio/worker @temporalio/workflow`.
+
 You can also add the Temporal TypeScript SDK to an existing project with the following command.
 
 Next, you'll configure a local Temporal Service for development.
+
 
 </SetupStep>
 
@@ -147,7 +148,7 @@ Create a file called `activity.ts`:
 <SetupStep code={
 <>
 
-<p><strong>Create a Workflow file (workflow.ts):</strong></p>
+<p><strong>Create a Workflow file (workflows.ts):</strong></p>
 <CodeSnippet language="typescript">
 {`import { proxyActivities } from '@temporalio/workflow';
 import type * as activityTypes from './activity';
@@ -218,7 +219,7 @@ process.exit(1);
 
 ### Create and Run the Worker
 
-With your Activity and Workflow defined, you need a Worker to execute them. A Worker polls a Task Queue, that you configure it to poll, looking for work to do. Once the Worker dequeues the a Workflow or Activity task from the Task Queue, it then executes that task.
+With your Activity and Workflow defined, you need a Worker to execute them. A Worker polls a Task Queue, that you configure it to poll, looking for work to do. Once the Worker dequeues a Workflow or Activity task from the Task Queue, it then executes that task.
 
 Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your Workflows and Activities.
 For more information on Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
@@ -250,7 +251,7 @@ Keep this terminal running.
       <p>Create a separate file called `client.ts` for a more programmatic approach:</p>
       <CodeSnippet language="typescript">
 
-{`uimport { Connection, WorkflowClient } from '@temporalio/client';
+{`import { Connection, WorkflowClient } from '@temporalio/client';
 import { sayHelloWorkflow } from './workflows';
 
 async function run() {
@@ -440,7 +441,8 @@ Now that your Worker is running, it's time to start a Workflow Execution.
 
 This final step will validate that everything is working correctly with your file labeled `client.ts`.
 
-:::note ADDITIONAL DETAILS ABOUT THE WORKFLOW EXECUTION
+<details>
+<summary><strong>Additional details about Workflow Execution</strong></summary>
 
 - Temporal clients are not explicitly closed.
 - To enable TLS, the `tls` option can be set to `true` or a `Temporalio::Client::Connection::TLSOptions` instance.
@@ -448,6 +450,8 @@ This final step will validate that everything is working correctly with your fil
 - If you started a Workflow with `client.workflow.start()`, you can choose to wait for the result anytime with handle.result().
 - Using a Workflow Handle isn't necessary with `client.workflow.execute()`.
   :::
+
+</details>
 
 </SetupStep>
 </SetupSteps>
