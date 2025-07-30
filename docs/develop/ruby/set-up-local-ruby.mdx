@@ -4,9 +4,9 @@ title: Set up your local with the Ruby SDK
 sidebar_label: Quickstart - Setup
 description: Configure your local development environment to get started developing with Temporal
 keywords:
-  - set up 
+  - set up
   - getting started
-  - ruby sdk 
+  - ruby sdk
 tags:
   - Ruby SDK
   - Temporal SDKs
@@ -15,8 +15,8 @@ tags:
 hide_table_of_contents: true
 ---
 
-import { SetupSteps, SetupStep, CodeSnippet } from '@site/src/components/elements/SetupSteps';
-import { CallToAction } from '@site/src/components/elements/CallToAction';
+import { SetupSteps, SetupStep, CodeSnippet } from "@site/src/components/elements/SetupSteps";
+import { CallToAction } from "@site/src/components/elements/CallToAction";
 
 # Quickstart - Setup
 
@@ -164,6 +164,7 @@ def execute(name)
 "Hello, #{name}!"
 end
 end`}
+
 </CodeSnippet>
 
 <p><strong>Workflow (say_hello_workflow.rb):</strong></p>
@@ -180,6 +181,7 @@ schedule_to_close_timeout: 300
 )
 end
 end`}
+
 </CodeSnippet>
 </>
 }>
@@ -190,10 +192,11 @@ Now that you have the server running, it's time to create your first Temporal ap
 In Temporal, you'll create two files: an Activity file labeled `say_hello_activity.rb` and a Workflow file labeled `say_hello_workflow.rb`.
 
 A Temporal Workflow is your business logic, defined in code, outlining each step in your process.
-Activities are the individual units of work in your Workflow.
-Activities often involve interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling an API, which are prone to failure.
+
+Activities are the individual units of work in your Workflow. Activities often involve interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling an API, which are prone to failure.
 You can call Activities directly from your Workflow code.
 If an Activity fails, Temporal automatically retries it based on your configuration.
+
 </SetupStep>
 
 <SetupStep code={
@@ -216,6 +219,7 @@ activities: [SayHelloActivity]
 )
 
 worker.run(shutdown_signals: ['SIGINT'])`}
+
 </CodeSnippet>
 </>
 }>
@@ -237,6 +241,7 @@ Keep this running in this terminal window.
 You should see output indicating that the Worker has started.
 Running this will run the Worker until Ctrl+C is pressed.
 :::
+
 </SetupStep>
 
 <SetupStep code={
@@ -257,6 +262,7 @@ task_queue: 'my-task-queue'
 )
 
 puts "Result: #{result}"`}
+
 </CodeSnippet>
 
 <p><strong>Expected output:</strong></p>
@@ -285,7 +291,7 @@ Verify Success
 <ul>
 <li>Worker processing the workflow and activity</li>
 <li>Output: <code>Workflow result: Hello, Temporal!</code></li>
-<li>Workflow execution details in the <a href="http://localhost:8233" target="_blank">Temporal Web UI</a></li>
+<li>Workflow Execution details in the <a href="http://localhost:8233" target="_blank">Temporal Web UI</a></li>
 </ul>
 </div>
 <style>
@@ -356,6 +362,7 @@ If you check the Temporal Web UI at http://localhost:8233, you'll gain visibilit
 - Clients are thread safe and are fiber-compatible (but fiber compatibility only supported for Ruby 3.3+ at this time).
 
 :::
+
 </SetupStep>
 </SetupSteps>
 

@@ -1,12 +1,12 @@
 ---
 id: set-up-your-local-php
-title: Set up your local with the PHP SDK 
-sidebar_label: Quickstart - Setup 
+title: Set up your local with the PHP SDK
+sidebar_label: Quickstart - Setup
 description: Configure your local development environment to get started developing with Temporal
 keywords:
-  - set up 
+  - set up
   - getting started
-  - PHP sdk 
+  - PHP sdk
 tags:
   - PHP guide
   - typescript
@@ -15,8 +15,8 @@ tags:
 hide_table_of_contents: true
 ---
 
-import { SetupSteps, SetupStep, CodeSnippet } from '@site/src/components/elements/SetupSteps';
-import { CallToAction } from '@site/src/components/elements/CallToAction';
+import { SetupSteps, SetupStep, CodeSnippet } from "@site/src/components/elements/SetupSteps";
+import { CallToAction } from "@site/src/components/elements/CallToAction";
 
 # Quickstart - Setup
 
@@ -33,6 +33,7 @@ Configure your local development environment to get started developing with Temp
 ## Install the Temporal PHP SDK
 
 Install the PHP SDK using Composer:
+
 </SetupStep>
 
 <SetupStep code={
@@ -47,6 +48,7 @@ Install the PHP SDK using Composer:
 See the RoadRunner README file for installation instructions.
 
 Next, you'll configure a local Temporal Service for development.
+
 </SetupStep>
 
 <SetupStep code={
@@ -62,6 +64,37 @@ brew install temporal
 The fastest way to get a development version of the Temporal Service running on your local machine is to use [Temporal CLI](https://docs.temporal.io/cli).
 
 Install Temporal CLI on your local machine using the following instructions for your platform.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+<CodeSnippet language="bash">
+
+version: "3"
+
+rpc:
+listen: tcp://127.0.0.1:6001
+
+server:
+command: "php -d display_errors=stderr src/worker.php"
+
+temporal:
+{`address: \${TEMPORAL_HOST:-localhost}:\${TEMPORAL_PORT:-7233}`}
+activities:
+num_workers: 4
+
+logs:
+level: info
+mode: development
+</CodeSnippet>
+</>
+}>
+
+## Create a RoadRunner configuration file
+
+To configure RoadRunner Temporal plugin create or open the `.rr.yaml` file in your project directory and make sure it contains the following:.
+
 </SetupStep>
 
 <SetupStep code={
@@ -91,14 +124,425 @@ temporal server start-dev --db-filename your_temporal.db
 
 Once you've installed Temporal CLI and added it to your PATH, open a new Terminal window and run the following command.
 
-This command starts a local Temporal Service. It starts the Web UI, creates the default Namespaces, and uses an in-memory database.
+This command starts a local Temporal Service. It starts the Web UI, creates the default Namespace, and uses an in-memory database.
 
-The Temporal Service will be available on <b>localhost:7233</b>.
-The Temporal Web UI will be available at <b>http://localhost:8233</b>.
+The Temporal Service will be available on localhost:7233.
+The Temporal Web UI will be available at http://localhost:8233.
 
 Leave the local Temporal Service running as you work through tutorials and other projects. You can stop the Temporal Service at any time by pressing CTRL+C.
 
-The <code>temporal server start-dev</code> command uses an in-memory database, so stopping the server will erase all your Workflows and all your Task Queues. If you want to retain those between runs, start the server and specify a database filename using the <code>--db-filename</code> option, like this:
+Once you have everything installed, you're ready to build apps with Temporal on your local machine.
+
+</SetupStep>
+</SetupSteps>
+
+## Run Hello World: Test Your Installation
+
+Now let's verify your setup is working by creating and running a complete Temporal application with both a Workflow and Activity.
+
+This test will confirm that:
+
+- Your PHP SDK installation is working
+- The Temporal PHP SDK is properly installed
+- Your local Temporal Service is running
+- You can successfully create and execute Workflows and Activities
+- The communication between components is functioning correctly
+
+<SetupSteps>
+<SetupStep code={
+  <>
+    <p><strong>Create an Activity file (GreetingActivity.php):</strong></p>
+    <CodeSnippet language="php">
+{`<?php
+
+declare(strict_types=1);
+
+namespace App\Activities;
+
+class GreetingActivity implements GreetingActivityInterface
+{
+public function greet(string $name): string
+{
+return "Hello {$name}";
+}
+}`}
+
+</CodeSnippet>
+</>
+}>
+
+### Create the Activity
+
+An Activity is a normal function or method that executes a single, well-defined action (either short or long running), which often involve interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling an API, which are prone to failure. If an Activity fails, Temporal automatically retries it based on your configuration.
+
+Create a file called `GreetingActivity.php` in an `Activities` submodule:
+
+</SetupStep>
+<SetupStep code={
+  <>
+    <p><strong>Create an Activity Interface file (GreetingActivityInterface.php):</strong></p>
+    <CodeSnippet language="php">
+{`<?php
+
+declare(strict_types=1);
+
+namespace App\Activities;
+
+use Temporal\Activity\ActivityInterface;
+use Temporal\Activity\ActivityMethod;
+
+#[ActivityInterface]
+interface GreetingActivityInterface
+{ #[ActivityMethod]
+public function greet(string $name): string;
+}
+`}
+
+</CodeSnippet>
+</>
+}>
+
+### Create the Activity Implementation File
+
+Create a file called `GreetingActivityInterface.php` in the `Activities` submodule:
+
+</SetupStep>
+
+<SetupStep code={
+<>
+
+<p><strong>Create a Workflow file (SayHelloWorkflow.php):</strong></p>
+<CodeSnippet language="php">
+{`<?php
+
+declare(strict_types=1);
+
+namespace App\Workflows;
+
+use App\Activities\GreetingActivityInterface;
+use Temporal\Workflow;
+use Temporal\Activity\ActivityOptions;
+use Carbon\CarbonInterval;
+
+class SayHelloWorkflow implements SayHelloWorkflowInterface
+{
+public function sayHello(string $name): \Generator
+{
+$activity = Workflow::newActivityStub(
+GreetingActivityInterface::class,
+ActivityOptions::new()->withStartToCloseTimeout(CarbonInterval::seconds(5))
+);
+
+        return yield $activity->greet($name);
+    }
+
+}
+`}
+
+</CodeSnippet>
+</>
+}>
+
+### Create the Workflow
+
+Workflows orchestrate Activities and contain the application logic. Temporal Workflows are resilient. They can run—and keeping running—for years, even if the underlying infrastructure fails. If the application itself crashes, Temporal will automatically recreate its pre-failure state so it can continue right where it left off.
+
+Create a file called `SayHelloWorkflow.php` in your `Workflows` submodule:
+
+</SetupStep>
+
+<SetupStep code={
+<>
+
+<p><strong>Create a Workflow Interface File (SayHelloWorkflowInterface.php):</strong></p>
+<CodeSnippet language="php">
+{`<?php
+
+declare(strict_types=1);
+
+namespace App\Workflows;
+
+use Temporal\Workflow\WorkflowInterface;
+use Temporal\Workflow\WorkflowMethod;
+
+#[WorkflowInterface]
+interface SayHelloWorkflowInterface
+{ #[WorkflowMethod]
+public function sayHello(string $name): \Generator;
+}
+`}
+
+</CodeSnippet>
+</>
+}>
+
+### Create the Workflow Implementation File
+
+Create a file called `SayHelloWorkflowInterface.php`:
+
+</SetupStep>
+
+<SetupStep code={
+<>
+
+<p><strong>Create a Worker file (worker.php):</strong></p>
+<CodeSnippet language="php">
+{`<?php
+
+declare(strict_types=1);
+
+use App\Activities\GreetingActivity;
+use App\Workflows\SayHelloWorkflow;
+use Temporal\Client\GRPC\ServiceClient;
+use Temporal\Client\WorkflowClient;
+use Temporal\WorkerFactory;
+
+require **DIR** . '/../vendor/autoload.php';
+
+$serviceClient = ServiceClient::create('localhost:7233');
+$client = WorkflowClient::create($serviceClient);
+
+$factory = WorkerFactory::create();
+$worker = $factory->newWorker('my-task-queue');
+$worker->registerWorkflowTypes(SayHelloWorkflow::class);
+$worker->registerActivity(GreetingActivity::class);
+
+$factory->run();
+`}
+
+</CodeSnippet>
+
+    <p><strong>Run the Worker from the directory of your RoadRunner configuration file:</strong></p>
+    <CodeSnippet language="bash">
+    rr serve
+    </CodeSnippet>
+
+</>
+}>
+
+### Create and Run the Worker
+
+With your Activity and Workflow defined, you need a Worker to execute them. A Worker polls a Task Queue, that you configure it to poll, looking for work to do. Once the Worker dequeues the a Workflow or Activity task from the Task Queue, it then executes that task.
+
+Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your Workflows and Activities.
+For more information on Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
+
+Create a file called `worker.php`:
+
+Keep this terminal running.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+
+<div className="execution-options">
+  <h4>Choose Your Execution Method</h4>
+  <p>With the Worker running, you can start a Workflow in two ways:</p>
+</div>
+
+    <div className="option-section">
+      <h5>Option 1: Using Temporal CLI (Recommended for testing)</h5>
+      <p>Open a new terminal and run:</p>
+      <CodeSnippet language="bash">
+      temporal workflow start --type SayHelloWorkflow --task-queue my-task-queue --input '"Temporal"'
+      </CodeSnippet>
+    </div>
+
+    <div className="option-section">
+      <h5>Option 2: Create a Client Program</h5>
+      <p>Create a separate file called `client.php` for a more programmatic approach:</p>
+      <CodeSnippet language="php">
+
+{`<?php
+
+declare(strict_types=1);
+
+use App\Workflows\SayHelloWorkflowInterface;
+use Temporal\Client\WorkflowClient;
+use Temporal\Client\WorkflowOptions;
+use Temporal\Client\GRPC\ServiceClient;
+use Carbon\CarbonInterval;
+
+require **DIR** . '/../vendor/autoload.php';
+
+$serviceClient = ServiceClient::create('localhost:7233');
+$client = WorkflowClient::create($serviceClient);
+
+$options = WorkflowOptions::new()
+->withWorkflowExecutionTimeout(CarbonInterval::minutes(1))
+->withTaskQueue('my-task-queue')
+->withWorkflowId('say-hello-workflow-id-' . uniqid());
+
+$workflow = $client->newWorkflowStub(SayHelloWorkflowInterface::class, $options);
+$run = $client->start($workflow, 'Temporal');
+$result = $run->getResult();
+
+echo "Workflow result: {$result}\n";
+`}
+
+</CodeSnippet>
+
+<p>Then run: <code>php client.php</code></p>
+</div>
+
+    <div className="success-section">
+      <h4>
+        <svg
+          viewBox="0 0 24 24"
+          width="20"
+          height="20"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="success-icon"
+        >
+          <path d="M9 12l2 2 4-4" />
+          <circle cx="12" cy="12" r="10" />
+        </svg>
+        Verify Success
+      </h4>
+      <p>If everything is working correctly, you should see:</p>
+      <ul>
+        <li>Worker processing the workflow and activity</li>
+        <li>Output: <code>Workflow result: Hello Temporal</code></li>
+        <li>Workflow Execution details in the <a href="http://localhost:8233" target="_blank">Temporal Web UI</a></li>
+      </ul>
+    </div>
+
+    <style>
+      {`
+        .execution-options {
+          background: rgba(68, 76, 231, 0.08);
+          border: 1px solid rgba(68, 76, 231, 0.15);
+          border-radius: 0.75rem;
+          padding: 1.25rem;
+          margin: 1.5rem 0 1rem 0;
+        }
+
+        .execution-options h4 {
+          margin-top: 0;
+          margin-bottom: 0.75rem;
+          color: var(--ifm-color-emphasis-900);
+          font-weight: 600;
+        }
+
+        .execution-options p {
+          margin-bottom: 0;
+          font-size: 0.95rem;
+          color: var(--ifm-color-emphasis-800);
+        }
+
+        .option-section {
+          background: var(--ifm-color-emphasis-50);
+          border: 1px solid var(--ifm-color-emphasis-200);
+          border-radius: 0.5rem;
+          padding: 1.25rem;
+          margin: 1rem 0;
+        }
+
+        .option-section h5 {
+          margin-top: 0;
+          margin-bottom: 0.75rem;
+          color: var(--ifm-color-emphasis-900);
+          font-size: 1.1rem;
+        }
+
+        .option-section p {
+          margin-bottom: 1rem;
+          font-size: 0.95rem;
+          line-height: 1.5;
+          color: var(--ifm-color-emphasis-800);
+        }
+
+        .option-section p:last-child {
+          margin-bottom: 0;
+        }
+
+        .success-section {
+          background: rgba(34, 197, 94, 0.08);
+          border: 1px solid rgba(34, 197, 94, 0.2);
+          border-radius: 0.75rem;
+          padding: 1.25rem;
+          margin: 1.5rem 0;
+        }
+
+        .success-section h4 {
+          margin-top: 0;
+          margin-bottom: 1rem;
+          color: var(--ifm-color-success-dark);
+          font-weight: 600;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+
+        .success-icon {
+          stroke: var(--ifm-color-success-dark);
+          flex-shrink: 0;
+        }
+
+        .success-section p {
+          margin-bottom: 1rem;
+          font-size: 0.95rem;
+          line-height: 1.5;
+          color: var(--ifm-color-emphasis-800);
+        }
+
+        .success-section ul {
+          margin-bottom: 0;
+          padding-left: 1.5rem;
+        }
+
+        .success-section li {
+          margin-bottom: 0.5rem;
+          font-size: 0.95rem;
+          color: var(--ifm-color-emphasis-800);
+        }
+
+        [data-theme='dark'] .execution-options {
+          background: rgba(68, 76, 231, 0.12);
+          border-color: rgba(68, 76, 231, 0.25);
+        }
+
+        [data-theme='dark'] .option-section {
+          background: var(--ifm-color-emphasis-100);
+          border-color: var(--ifm-color-emphasis-300);
+        }
+
+        [data-theme='dark'] .success-section {
+          background: rgba(34, 197, 94, 0.12);
+          border-color: rgba(34, 197, 94, 0.3);
+        }
+
+        @media (max-width: 768px) {
+          .execution-options,
+          .option-section,
+          .success-section {
+            padding: 1rem;
+          }
+        }
+      `}
+    </style>
+
+</>
+}>
+
+### Execute the Workflow
+
+Now that your Worker is running, it's time to start a Workflow Execution.
+
+This final step will validate that everything is working correctly with your file labeled `client.php`.
+
+:::note ADDITIONAL DETAILS ABOUT THE WORKFLOW EXECUTION
+
+- Temporal clients are not explicitly closed.
+- To enable TLS, the `tls` option can be set to `true` or a `Temporalio::Client::Connection::TLSOptions` instance.
+- To start a Workflow asynchronously, pass the Workflow stub instance and start parameters into the [WorkflowClient::start()](https://php.temporal.io/classes/Temporal-Client-WorkflowClientInterface.html#method_start) method.
+  :::
+
 </SetupStep>
 </SetupSteps>
 
