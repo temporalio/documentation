@@ -61,8 +61,10 @@ To validate that your local environment is correctly installed, we will execute 
     <CodeSnippet language="bash">
     bundle install
     </CodeSnippet>
-  </>
+
+</>
 }>
+
 ## 1. Installation
 
 This step sets up a new Ruby project using Bundler and installs the Temporal Ruby SDK.
@@ -71,8 +73,6 @@ We recommend using [Bundler](https://bundler.io/) to manage your Ruby project de
 
 Follow the steps to create a directory, initialize the project with a `Gemfile`, and add the Temporal SDK.
 
-
-
 > **Note:**
 >
 > - Only macOS ARM/x64 and Linux ARM/x64 are supported.
@@ -80,20 +80,21 @@ Follow the steps to create a directory, initialize the project with a `Gemfile`,
 > - Windows (MinGW) is not supported.
 > - `fibers`/`async` are only supported on Ruby **3.3+**.
 > - See [Platform Support](#) for full details.
-  </SetupStep>
-<SetupStep code={
-  <>
-    <Tabs>
-      <TabItem value="macos" label="macOS" default>
-        <p>Install the Temporal CLI using Homebrew:</p>
-        <CodeSnippet language="bash">
-        brew install temporal
-        </CodeSnippet>
-        <p>After installing, open a new Terminal window and start the development server:</p>
-        <CodeSnippet language="bash">
-        temporal server start-dev
-        </CodeSnippet>
-      </TabItem>
+  > </SetupStep>
+  > <SetupStep code={
+  > <>
+  > <Tabs>
+  > <TabItem value="macos" label="macOS" default>
+>
+> <p>Install the Temporal CLI using Homebrew:</p>
+> <CodeSnippet language="bash">
+> brew install temporal
+> </CodeSnippet>
+> <p>After installing, open a new Terminal window and start the development server:</p>
+> <CodeSnippet language="bash">
+> temporal server start-dev
+> </CodeSnippet>
+> </TabItem>
 
       <TabItem value="windows" label="Windows">
         <p>Download the Temporal CLI archive for your architecture:</p>
@@ -125,8 +126,7 @@ Follow the steps to create a directory, initialize the project with a `Gemfile`,
       </TabItem>
     </Tabs>
 
-
-  </>
+</>
 }>
 
 ## 2. Start the Temporal Server Locally
@@ -147,8 +147,6 @@ This will:
 
 Leave this running in a separate terminal tab or window while you develop.
 You'll be able to monitor your Workflows through the Web UI as they execute.
-
-
 
 </SetupStep>
 
