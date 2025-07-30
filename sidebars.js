@@ -107,6 +107,18 @@ module.exports = {
       items: [
         {
           type: "category",
+          label: "Experiment",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "develop/experiment/index",
+          },
+          items: [
+            "develop/experiment/observability",
+          ],
+        },
+         {
+          type: "category",
           label: "Go SDK",
           collapsed: true,
           link: {
