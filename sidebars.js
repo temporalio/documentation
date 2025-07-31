@@ -115,6 +115,7 @@ module.exports = {
           },
           items: [
             "develop/experiment/observability",
+            "develop/experiment/observability2",
           ],
         },
          {
