@@ -340,7 +340,7 @@ The Temporal PHP SDK goes not support emitting metrics from Client or Worker pro
 
 Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
 
-Logging enables you to record critical information during code execution. 
+Logging enables you to record critical information during code execution.
 Loggers create an audit trail and capture information about your Workflow's operation.
 An appropriate logging level depends on your specific needs.
 During development or troubleshooting, you might use debug or even trace.
@@ -425,6 +425,7 @@ func main() {
   // ...
 }
 ```
+
 </SdkTabs.Go>
 <SdkTabs.Python>
 
@@ -902,16 +903,15 @@ $worker = $workerFactory->newWorker(
     logger: $myLogger,
 );
 ```
+
 </SdkTabs.PHP>
 </SdkTabs>
-
 
 ## Visibility APIs {#visibility}
 
 The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Temporal Service.
 
 ### Search Attributes {#search-attributes}
-
 
 <SdkTabs>
 <SdkTabs.Go>
@@ -1119,6 +1119,7 @@ await foreach (var wf in client.ListWorkflowsAsync("WorkflowType='GreetingWorkfl
     Console.WriteLine("Workflow: {0}", wf.Id);
 }
 ```
+
 </SdkTabs.DotNet>
 <SdkTabs.Ruby>
 
@@ -1196,6 +1197,7 @@ foreach ($paginator as $info) {
     echo "Workflow ID: {$info->execution->getID()}\n";
 }
 ```
+
 </SdkTabs.PHP>
 </SdkTabs>
 
@@ -1355,6 +1357,7 @@ var handle = await client.StartWorkflowAsync(
             ToSearchAttributeCollection(),
     });
 ```
+
 </SdkTabs.DotNet>
 <SdkTabs.Ruby>
 
@@ -1379,6 +1382,7 @@ handle = my_client.start_workflow(
   search_attributes: Temporalio::SearchAttributes.new({ MY_KEYWORD_KEY => 'some-value' })
 )
 ```
+
 </SdkTabs.Ruby>
 <SdkTabs.PHP>
 After you've created custom Search Attributes in your Temporal Service (using `temporal operator search-attribute create` or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
@@ -1401,6 +1405,7 @@ $workflow = $workflowClient->newWorkflowStub(
         ),
 );
 ```
+
 </SdkTabs.PHP>
 </SdkTabs>
 
@@ -1443,6 +1448,7 @@ map[string]interface{}{
     "CustomKeywordField": "seattle",
 }
 ```
+
 </SdkTabs.Go>
 <SdkTabs.Python>
 
@@ -1455,6 +1461,7 @@ workflow.upsert_search_attributes(TypedSearchAttributes([
     SearchAttributePair(customer_id_key, "customer_2")
 ]))
 ```
+
 </SdkTabs.Python>
 <SdkTabs.Java>
 
@@ -1481,6 +1488,7 @@ This method is particularly useful for Workflows whose attributes need to change
     throw new NullPointerException("Unable to get distance");
   }
 ```
+
 </SdkTabs.Java>
 <SdkTabs.TypeScript>
 
@@ -1531,6 +1539,7 @@ Workflow.UpsertTypedSearchAttributes(
     myKeywordAttributeKey.ValueSet("SomeKeywordValue"),
     myTextAttrbiuteKey.ValueUnset());
 ```
+
 </SdkTabs.DotNet>
 <SdkTabs.Ruby>
 
@@ -1558,6 +1567,7 @@ class MyWorkflow < Temporalio::Workflow::Definition
   end
 end
 ```
+
 </SdkTabs.Ruby>
 <SdkTabs.PHP>
 Within the Workflow code, you can dynamically add or update Search Attributes using [`upsertTypedSearchAttributes`](https://php.temporal.io/classes/Temporal-Workflow.html#method_upsertTypedSearchAttributes).
@@ -1578,6 +1588,7 @@ public function postponeDestinationTime(\DateInterval $interval)
     );
 }
 ```
+
 </SdkTabs.PHP>
 </SdkTabs>
 
@@ -1604,6 +1615,7 @@ workflow.upsert_search_attributes(TypedSearchAttributes([
     SearchAttributePair(customer_id_key, [])
 ]))
 ```
+
 </SdkTabs.Python>
 <SdkTabs.Java>
 
@@ -1634,6 +1646,7 @@ async function yourWorkflow() {
   upsertSearchAttributes({ CustomIntField: [] });
 }
 ```
+
 </SdkTabs.TypeScript>
 <SdkTabs.DotNet>
 
@@ -1661,6 +1674,6 @@ public function unsetDestinationTime()
     );
 }
 ```
+
 </SdkTabs.PHP>
 </SdkTabs>
-
