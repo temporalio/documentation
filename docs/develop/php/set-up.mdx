@@ -26,6 +26,19 @@ Configure your local development environment to get started developing with Temp
 <SetupStep code={
   <>
     <CodeSnippet language="bash">
+    mkdir hello-world-temporalphp && cd hello-world-temporalphp
+    </CodeSnippet>
+  </>
+}>
+## Create your project directory
+
+First, create and navigate into your project directory:
+
+</SetupStep>
+
+<SetupStep code={
+  <>
+    <CodeSnippet language="bash">
     composer require temporal/sdk
     </CodeSnippet>
   </>
@@ -34,18 +47,30 @@ Configure your local development environment to get started developing with Temp
 
 Install the PHP SDK using Composer:
 
+If you don't already have Composer installed, you can install it using Homebrew on macOS:
+Or, [follow these instructions](https://getcomposer.org/download/) on the Composer website for Linux or Windows. 
+
+
+
 </SetupStep>
 
 <SetupStep code={
 <>
 
 <p>See the <a href="https://github.com/roadrunner-server/roadrunner/blob/master/README.md" target="_blank">RoadRunner README file</a> for installation instructions.</p>
-</>
+
+<p>Using Composer, you can install it with the following command:</p>
+<CodeSnippet language="bash">
+composer require spiral/roadrunner-cli
+./vendor/bin/rr get-binary
+</CodeSnippet></>
 }>
 
 ## Download RoadRunner
 
 See the RoadRunner README file for installation instructions.
+When prompted, enter yes to generate a default `.rr.yaml` file.
+You’ll update it later to configure the Temporal plugin.
 
 Next, you'll configure a local Temporal Service for development.
 
