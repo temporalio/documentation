@@ -253,11 +253,11 @@ module.exports = async function createConfigAsync() {
           theme: {
             customCss: require.resolve("./src/css/custom.css"),
           },
-          // gtag: {
-          //   trackingID: "GTM-TSXFPF2",
-          //   // Optional fields.
-          //   anonymizeIP: false, // Should IPs be anonymized?
-          // },
+          gtag: {
+            trackingID: "GTM-TSXFPF2",
+            // Optional fields.
+            anonymizeIP: false, // Should IPs be anonymized?
+          },
           // Will be passed to @docusaurus/plugin-content-sitemap
           sitemap: {
             // Per v2.0.0-alpha.72 cacheTime is now deprecated
