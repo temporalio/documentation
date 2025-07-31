@@ -127,16 +127,16 @@ import io.temporal.common.WorkerDeploymentVersion;
 import io.temporal.worker.WorkerDeploymentOptions;
 
 WorkerOptions options =
-    WorkerOptions.newBuilder()
-        .setDeploymentOptions(
-            WorkerDeploymentOptions.newBuilder()
-                .setVersion(new WorkerDeploymentVersion("llm_srv", "1.0"))
-                .setUseVersioning(true)
-                .setDefaultVersioningBehavior(VersioningBehavior.AUTO_UPGRADE)
-                .build())
-        .build();
+WorkerOptions.newBuilder()
+.setDeploymentOptions(
+WorkerDeploymentOptions.newBuilder()
+.setVersion(new WorkerDeploymentVersion("llm_srv", "1.0"))
+.setUseVersioning(true)
+.setDefaultVersioningBehavior(VersioningBehavior.AUTO_UPGRADE)
+.build())
+.build();
 
-```
+````
 </SdkTabs.Java>
 <SdkTabs.Python>
 ```python
@@ -156,22 +156,23 @@ Worker(
         default_versioning_behavior=VersioningBehavior.AUTO_UPGRADE
     ),
 )
-
 ````
+
 </SdkTabs.Python>
 <SdkTabs.TypeScript>
+
 ```ts
 const myWorker = await Worker.create({
-workflowsPath: require.resolve('./workflows'),
-taskQueue,
-workerDeploymentOptions: {
+  workflowsPath: require.resolve('./workflows'),
+  taskQueue,
+  workerDeploymentOptions: {
     useWorkerVersioning: true,
-    version: {	buildId: '1.0', deploymentName: 'llm_srv'},
+    version: { buildId: '1.0', deploymentName: 'llm_srv' },
     defaultVersioningBehavior: 'AUTO_UPGRADE',
-},
-connection: nativeConnection,
+  },
+  connection: nativeConnection,
 });
-````
+```
 
 </SdkTabs.TypeScript>
 <SdkTabs.DotNet>
