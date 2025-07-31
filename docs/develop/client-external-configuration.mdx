@@ -7,8 +7,7 @@ tags:
   - Temporal Client
 ---
 
-
-External client configuration is a feature that allows you to configure a Temporal Client using environment variables and/or TOML configuration files, rather than setting connection options programmatically in your code. 
+External client configuration is a feature that allows you to configure a Temporal Client using environment variables and/or TOML configuration files, rather than setting connection options programmatically in your code.
 This decouples connection settings from application logic, making it easier to manage different environments (like development, staging, and production) without code changes.
 
 This feature is currently supported across the Go and Python Temporal SDKs, as well as the Temporal CLI.
@@ -17,8 +16,8 @@ This feature is currently supported across the Go and Python Temporal SDKs, as w
 
 You can configure your client using a TOML file, environment variables, or a combination of both. The configuration is loaded with a specific order of precedence:
 
-1. Environment Variables: These have the highest precedence. 
-If a setting is defined as an environment variable, it will always override any value set in a configuration file (useful for dynamic environments or for providing secrets).
+1. Environment Variables: These have the highest precedence.
+   If a setting is defined as an environment variable, it will always override any value set in a configuration file (useful for dynamic environments or for providing secrets).
 
 2. TOML Configuration File: A TOML file can be used to define one or more configuration "profiles". This file is located by checking the following sources in order:
 
