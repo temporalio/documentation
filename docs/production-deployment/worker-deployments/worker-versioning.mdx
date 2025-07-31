@@ -121,6 +121,11 @@ w := worker.New(c, myTaskQueue, worker.Options{
 </SdkTabs.Go>
 <SdkTabs.Java>
 ```java
+import io.temporal.worker.WorkerOptions;
+import io.temporal.common.VersioningBehavior;
+import io.temporal.common.WorkerDeploymentVersion;
+import io.temporal.worker.WorkerDeploymentOptions;
+
 WorkerOptions options =
     WorkerOptions.newBuilder()
         .setDeploymentOptions(
@@ -130,10 +135,14 @@ WorkerOptions options =
                 .setDefaultVersioningBehavior(VersioningBehavior.AUTO_UPGRADE)
                 .build())
         .build();
+
 ```
 </SdkTabs.Java>
 <SdkTabs.Python>
 ```python
+from temporalio.common import WorkerDeploymentVersion, VersioningBehavior
+from temporalio.worker import Worker, WorkerDeploymentConfig
+
 Worker(
     client,
     task_queue="mytaskqueue",
@@ -146,7 +155,6 @@ Worker(
         use_worker_versioning=True,
         default_versioning_behavior=VersioningBehavior.AUTO_UPGRADE
     ),
-
 )
 
 ````
