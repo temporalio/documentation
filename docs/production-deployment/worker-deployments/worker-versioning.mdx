@@ -121,6 +121,11 @@ w := worker.New(c, myTaskQueue, worker.Options{
 </SdkTabs.Go>
 <SdkTabs.Java>
 ```java
+import io.temporal.worker.WorkerOptions;
+import io.temporal.common.VersioningBehavior;
+import io.temporal.common.WorkerDeploymentVersion;
+import io.temporal.worker.WorkerDeploymentOptions;
+
 WorkerOptions options =
     WorkerOptions.newBuilder()
         .setDeploymentOptions(
@@ -149,8 +154,8 @@ Worker(
         use_worker_versioning=True,
         default_versioning_behavior=VersioningBehavior.AUTO_UPGRADE
     ),
-
 )
+
 ````
 </SdkTabs.Python>
 <SdkTabs.TypeScript>
