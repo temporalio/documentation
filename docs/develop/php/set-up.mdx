@@ -37,20 +37,19 @@ First, create and navigate into your project directory:
 </SetupStep>
 
 <SetupStep code={
-  <>
-    <CodeSnippet language="bash">
-    composer require temporal/sdk
-    </CodeSnippet>
-  </>
+<>
+<CodeSnippet language="bash">
+composer require temporal/sdk
+</CodeSnippet>
+</>
 }>
+
 ## Install the Temporal PHP SDK
 
 Install the PHP SDK using Composer:
 
 If you don't already have Composer installed, you can install it using Homebrew on macOS:
-Or, [follow these instructions](https://getcomposer.org/download/) on the Composer website for Linux or Windows. 
-
-
+Or, [follow these instructions](https://getcomposer.org/download/) on the Composer website for Linux or Windows.
 
 </SetupStep>
 
@@ -97,33 +96,31 @@ Install Temporal CLI on your local machine using the following instructions for 
 {`version: "3"
 
 rpc:
-  listen: tcp://127.0.0.1:6001
+listen: tcp://127.0.0.1:6001
 
 server:
-  command: "php -d display_errors=stderr src/worker.php"
+command: "php -d display_errors=stderr src/worker.php"
 
 temporal:
-  address: \${TEMPORAL_HOST:-localhost}:\${TEMPORAL_PORT:-7233}
-  activities:
-    num_workers: 4
+address: \${TEMPORAL_HOST:-localhost}:\${TEMPORAL_PORT:-7233}
+activities:
+num_workers: 4
 
 logs:
-  level: info
-  mode: development`}
-    </CodeSnippet>
-  </>
+level: info
+mode: development`}
+</CodeSnippet>
+</>
 }>
+
 ## Create a RoadRunner configuration file
 
 To configure RoadRunner Temporal plugin create or open the `.rr.yaml` file in your project directory and make sure it contains the following:
 
 Replace the default contents of your `.rr.yaml` file with the following configuration, which is required to run the Temporal Worker:
-This example shows a minimal <code>.rr.yaml</code> configuration specifically for running a Temporal Worker. 
+This example shows a minimal <code>.rr.yaml</code> configuration specifically for running a Temporal Worker.
 
 </SetupStep>
-
-
-
 
 <SetupStep code={
 <>
@@ -185,15 +182,14 @@ namespace App\Activities;
 
 class GreetingActivity implements GreetingActivityInterface
 {
-    public function greet(string $name): string
-    {
-        return "Hello {$name}";
-    }
+public function greet(string $name): string
+{
+return "Hello {$name}";
+}
 }`}
-      </CodeSnippet>
-    </>
-  }>
-
+</CodeSnippet>
+</>
+}>
 
 ### Create the Activity
 
@@ -321,7 +317,7 @@ use Temporal\Client\GRPC\ServiceClient;
 use Temporal\Client\WorkflowClient;
 use Temporal\WorkerFactory;
 
-require __DIR__ . '/../vendor/autoload.php';
+require **DIR** . '/../vendor/autoload.php';
 
 $serviceClient = ServiceClient::create('localhost:7233');
 $client = WorkflowClient::create($serviceClient);
@@ -388,7 +384,7 @@ use Temporal\Client\WorkflowOptions;
 use Temporal\Client\GRPC\ServiceClient;
 use Carbon\CarbonInterval;
 
-require __DIR__ . '/../vendor/autoload.php';
+require **DIR** . '/../vendor/autoload.php';
 
 $serviceClient = ServiceClient::create('localhost:7233');
 $client = WorkflowClient::create($serviceClient);
