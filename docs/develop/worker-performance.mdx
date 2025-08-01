@@ -160,7 +160,9 @@ The `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecution
 `maxConcurrentWorkflowTaskPollers` (JavaSDK: `workflowPollThreadCount`) and `maxConcurrentActivityTaskPollers` (JavaSDK: `activityPollThreadCount`) define the maximum count of pollers performing poll requests on Workflow and Activity Task Queues.
 The Worker's requests deliver Tasks to the related executor slots.
 
-SDKs also have experimental support for automated poller tuning.
+SDKs also have experimental support for automated poller tuning, which automatically selects an
+appropriate number of pollers based on need. This option will likely result in more efficient poller usage, better throughput,
+or both, for all scenarios.
 This feature can be enabled by setting the `*_task_poller_behavior` options to `PollerBehaviorAutoscaling`.
 Names may vary slightly depending on the SDK.
 There are options within to configure minimum, maximum, and initial poller counts, but it is unlikely that you will need to adjust them.
@@ -669,8 +671,9 @@ Alternatively, consider using a resource-based slot supplier as described [here]
 
 Sometimes, it can be appropriate to increase the number of task pollers.
 This is usually more common in situations where your Workers have somewhat high latency when communicating with the server.
+You can simply use automated poller tuning to handle this automatically.
 
-You can use automated poller tuning, or consider adjustment if:
+Consider manual adjustment if:
 
 1. the `schedule_to_start` metric is abnormally long, and
 2. the Worker hosts are underutilized (there are no bottlenecks on CPU, load average, etc), and
