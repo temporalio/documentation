@@ -1,1 +1,1 @@
-# Temporal Go SDK docs-sepcific example applications
+# Temporal Go SDK docs-specific example applications
