@@ -121,6 +121,7 @@ w := worker.New(c, myTaskQueue, worker.Options{
 
 </SdkTabs.Go>
 <SdkTabs.Java>
+
 ```java
 import io.temporal.worker.WorkerOptions;
 import io.temporal.common.VersioningBehavior;
@@ -136,11 +137,11 @@ WorkerOptions options =
             .setDefaultVersioningBehavior(VersioningBehavior.AUTO_UPGRADE)
             .build())
         .build();
-
 ```
 
 </SdkTabs.Java>
 <SdkTabs.Python>
+
 ```python
 from temporalio.common import WorkerDeploymentVersion, VersioningBehavior
 from temporalio.worker import Worker, WorkerDeploymentConfig
@@ -297,8 +298,7 @@ return "Hello, World!";
 }
 }
 
-```
-
+````
 </SdkTabs.Java>
 <SdkTabs.Python>
 ```python
@@ -307,7 +307,7 @@ class HelloWorld:
     @workflow.run
     async def run(self):
         return "hello world!"
-```
+````
 
 </SdkTabs.Python>
 <SdkTabs.TypeScript>
@@ -466,18 +466,20 @@ we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, HelloWorld, 
 
 </SdkTabs.Go>
 <SdkTabs.TypeScript>
+
 ```ts
 const handle = await client.workflow.start('helloWorld', {
-taskQueue: 'MyTaskQueue',
-workflowId: 'MyWorkflowId',
-versioningOverride: {
-      pinnedTo: { buildId: '1.0', deploymentName: 'deploy-name' },
-},
+  taskQueue: 'MyTaskQueue',
+  workflowId: 'MyWorkflowId',
+  versioningOverride: {
+    pinnedTo: { buildId: '1.0', deploymentName: 'deploy-name' },
+  },
 });
 ```
 
 </SdkTabs.TypeScript>
 <SdkTabs.DotNet>
+
 ```csharp
 var workerV1 = new WorkerDeploymentVersion("deploy-name", "1.0");
 var handle = await Client.StartWorkflowAsync(
@@ -491,6 +493,7 @@ var handle = await Client.StartWorkflowAsync(
 
 </SdkTabs.DotNet>
 <SdkTabs.Ruby>
+
 ```ruby
 worker_v1 = Temporalio::WorkerDeploymentVersion.new(
   deployment_name: 'deploy-name',
