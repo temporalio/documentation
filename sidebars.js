@@ -382,6 +382,7 @@ module.exports = {
                     "production-deployment/cloud/high-availability/how-to/failovers",
                     "production-deployment/cloud/high-availability/how-to/secure-routing",
                     "production-deployment/cloud/high-availability/how-to/private-link",
+                    "production-deployment/cloud/high-availability/how-to/migrate",
                   ],
                 },
               ],
