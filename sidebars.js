@@ -359,7 +359,7 @@ module.exports = {
             },
             {
               type: "category",
-              label: "High Availabilty",
+              label: "High Availability",
               collapsed: true,
               link: {
                 type: "doc",
@@ -383,22 +383,6 @@ module.exports = {
                     "production-deployment/cloud/high-availability/how-to/secure-routing",
                     "production-deployment/cloud/high-availability/how-to/private-link",
                     "production-deployment/cloud/high-availability/how-to/migrate",
-                  ],
-                },
-                {
-                  type: "category",
-                  label: "References",
-                  collapsed: true,
-                  link: {
-                    type: "doc",
-                    id: "production-deployment/cloud/high-availability/references/index",
-                  },
-                  items: [
-                    "production-deployment/cloud/high-availability/references/regions",
-                    // "production-deployment/cloud/high-availability/references/concepts",
-                    // "production-deployment/cloud/high-availability/references/best-practices",
-                    // "production-deployment/cloud/high-availability/references/glossary",
-                    // "production-deployment/cloud/high-availability/references/faq",
                   ],
                 },
               ],
