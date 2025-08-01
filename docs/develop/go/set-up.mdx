@@ -155,8 +155,8 @@ return fmt.Sprintf("Hello %s", name), nil
 
 ### Create the Activity
 
-An Activity is a normal function or method that executes a single, well-defined action (either short- or long-running) that is typically prone to failure. 
-Examples include any action that interacts with the outside world, such as sending emails, making network requests, writing to a database, or calling an API. 
+An Activity is a normal function or method that executes a single, well-defined action (either short- or long-running) that is typically prone to failure.
+Examples include any action that interacts with the outside world, such as sending emails, making network requests, writing to a database, or calling an API.
 If an Activity fails, Temporal automatically retries it based on your configuration.
 
 Create a file called `activity.go`:
@@ -200,9 +200,9 @@ ctx = workflow.WithActivityOptions(ctx, ao)
 
 ### Create the Workflow
 
-Workflows orchestrate Activities and contain the application logic. 
-Temporal Workflows are resilient. 
-They can run—and keep running—for years, even if the underlying infrastructure fails. 
+Workflows orchestrate Activities and contain the application logic.
+Temporal Workflows are resilient.
+They can run—and keep running—for years, even if the underlying infrastructure fails.
 If the application itself crashes, Temporal will automatically recreate its pre-failure state so it can continue right where it left off.
 
 Create a file called `workflow.go`:
@@ -257,8 +257,8 @@ defer c.Close()
 
 ### Create and Run the Worker
 
-With your Activity and Workflow defined, you need a Worker to execute them. 
-You configure a Worker to poll a Task Queue, looking for work to do. 
+With your Activity and Workflow defined, you need a Worker to execute them.
+You configure a Worker to poll a Task Queue, looking for work to do.
 Once the Worker dequeues a Workflow task or Activity task from the Task Queue, it then executes that task.
 
 Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your Workflows and Activities.
