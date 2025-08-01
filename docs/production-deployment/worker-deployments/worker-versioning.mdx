@@ -115,9 +115,10 @@ w := worker.New(c, myTaskQueue, worker.Options{
               BuildId:        buildID,
           },
           DefaultVersioningBehavior: workflow.VersioningBehaviorAutoUpgrade,
-},
+    },
 })
 ```
+
 </SdkTabs.Go>
 <SdkTabs.Java>
 ```java
@@ -127,16 +128,17 @@ import io.temporal.common.WorkerDeploymentVersion;
 import io.temporal.worker.WorkerDeploymentOptions;
 
 WorkerOptions options =
-WorkerOptions.newBuilder()
-.setDeploymentOptions(
-WorkerDeploymentOptions.newBuilder()
-.setVersion(new WorkerDeploymentVersion("llm_srv", "1.0"))
-.setUseVersioning(true)
-.setDefaultVersioningBehavior(VersioningBehavior.AUTO_UPGRADE)
-.build())
-.build();
+    WorkerOptions.newBuilder()
+        .setDeploymentOptions(
+            WorkerDeploymentOptions.newBuilder()
+            .setVersion(new WorkerDeploymentVersion("llm_srv", "1.0"))
+            .setUseVersioning(true)
+            .setDefaultVersioningBehavior(VersioningBehavior.AUTO_UPGRADE)
+            .build())
+        .build();
 
-````
+```
+
 </SdkTabs.Java>
 <SdkTabs.Python>
 ```python
@@ -156,7 +158,7 @@ Worker(
         default_versioning_behavior=VersioningBehavior.AUTO_UPGRADE
     ),
 )
-````
+```
 
 </SdkTabs.Python>
 <SdkTabs.TypeScript>
@@ -295,7 +297,8 @@ return "Hello, World!";
 }
 }
 
-````
+```
+
 </SdkTabs.Java>
 <SdkTabs.Python>
 ```python
@@ -304,7 +307,7 @@ class HelloWorld:
     @workflow.run
     async def run(self):
         return "hello world!"
-````
+```
 
 </SdkTabs.Python>
 <SdkTabs.TypeScript>
@@ -460,6 +463,7 @@ workflowOptions := client.StartWorkflowOptions{
 // c is an initialized Client
 we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, HelloWorld, "Hello")
 ```
+
 </SdkTabs.Go>
 <SdkTabs.TypeScript>
 ```ts
@@ -471,6 +475,7 @@ versioningOverride: {
 },
 });
 ```
+
 </SdkTabs.TypeScript>
 <SdkTabs.DotNet>
 ```csharp
@@ -483,6 +488,7 @@ var handle = await Client.StartWorkflowAsync(
         }
 );
 ```
+
 </SdkTabs.DotNet>
 <SdkTabs.Ruby>
 ```ruby
@@ -497,6 +503,7 @@ handle = env.client.start_workflow(
   versioning_override: Temporalio::VersioningOverride.pinned(worker_v1)
 )
 ```
+
 </SdkTabs.Ruby>
 </SdkTabs>
 
