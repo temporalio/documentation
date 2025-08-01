@@ -21,37 +21,17 @@ keywords:
 
 import { ToolTipTerm } from '@site/src/components';
 
-You can enable High Availability features for a new or existing Namespace by adding a replica.
+You can enable High Availability (Single-region Replication, Multi-region Replication, Multi-cloud Replication) for a new or existing Namespace by adding a replica.
 When you add a replica, Temporal Cloud begins the replication of ongoing and existing Workflow Executions.
 Once the replication is complete and the replica is ready, your Namespace is ready for failover.
 
-Advantages of using Temporal Cloud’s High Availability features:
-
-- No manual deployment or configuration needed, just simple push-button operations.
-- Existing Workflows resume seamlessly in the replica with minimal interruption and data loss.
-- No changes needed for Worker and Workflow code during setup or failover.
-- 99.99% contractual SLA.
-
-## High Availability features
+## Enabling High Availability features
 
 :::tip Support, stability, and dependency info
 
 Same-region Replication and Multi-cloud Replication are in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for Temporal Cloud.
 
 :::
-
-Temporal offers the following High Availability features, which you can configure at a Namespace level.
-
-- **Same-region Replication**: Workflows are seamlessly replicated to a different <ToolTipTerm term="isolation domain" src="isolation domains" /> within the same region as the primary.
-  This option is a good fit if your application is architected to be in one region and you would prefer to failover within the same region.
-  It provides a reliable failover mechanism while maintaining deployment simplicity.
-- **Multi-region Replication**: Workflows are seamlessly replicated to a different [region](/cloud/regions) that you choose.
-  Replicating Workflows across different regions enhances resilience and reliability.
-  This is particularly beneficial for organizations with multi-regional architectures or those required to be highly available across regions for compliance purposes.
-  This option is a good fit if your application is architected to be multi-region within the same cloud provider.
-- **Multi-cloud Replication**: Workflows are seamlessly replicated to a different cloud provider and region that you choose.
-  Replicating Workflows across different cloud providers offers reliability in the event of a widespread provider failure.
-  This is particularly beneficial for organizations in highly regulated industries with requirements for multi-cloud availability.
 
 Not all replication options are available in all regions. See the [region documentation](/cloud/regions) for the replication options available in each region.
 
