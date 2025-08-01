@@ -47,23 +47,25 @@ When you enable High Availability features, Temporal deploys your primary and it
 | **Multi&#8209;region&nbsp;Replication** | Isolation domains are located in separate regions.         |
 | **Multi&#8209;cloud&nbsp;Replication**  | Isolation domains are located in separate cloud providers. |
 
-
 ### Same-region Replication
-  Temporal replicates Namespaces across isolation domains within one region.
-  This option is a good fit when your application is built for one region and you prefer to failover within that region.
-  This provides a reliable failover mechanism while maintaining deployment simplicity.
+
+Temporal replicates Namespaces across isolation domains within one region.
+This option is a good fit when your application is built for one region and you prefer to failover within that region.
+This provides a reliable failover mechanism while maintaining deployment simplicity.
 
 ### Multi-region Replication
-  Temporal replicates Namespaces across regions, making sure Workflows and data are available even if a region fails.
-  Asynchronous replication means changes aren’t immediately reflected in other regions but will sync over time, ensuring data integrity.
-  This setup allows failovers between replicas without needing immediate consistency across regions.
-  Replication across different regions enhances resilience and reliability.
+
+Temporal replicates Namespaces across regions, making sure Workflows and data are available even if a region fails.
+Asynchronous replication means changes aren’t immediately reflected in other regions but will sync over time, ensuring data integrity.
+This setup allows failovers between replicas without needing immediate consistency across regions.
+Replication across different regions enhances resilience and reliability.
 
 ### Multi-cloud Replication
-  Temporal asynchronously replicates all Workflows (live and historical) and data to a Namespace in an entirely different cloud provider.
-  If a provider outage, regional outage, service disruption, or network issue occurs, traffic automatically shifts to the replica.
-  Replicated data is securely encrypted and transmitted across the public internet between cloud providers.
-  Internet connectivity allows workers in one cloud to fail over to a replica in a different cloud.
+
+Temporal asynchronously replicates all Workflows (live and historical) and data to a Namespace in an entirely different cloud provider.
+If a provider outage, regional outage, service disruption, or network issue occurs, traffic automatically shifts to the replica.
+Replicated data is securely encrypted and transmitted across the public internet between cloud providers.
+Internet connectivity allows workers in one cloud to fail over to a replica in a different cloud.
 
 :::caution
 
