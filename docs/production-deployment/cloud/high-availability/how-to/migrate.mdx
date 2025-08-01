@@ -43,7 +43,7 @@ Temporal Cloud's High Availability features allow you to migrate a namespace fro
 />
 
 2. Wait for the replica to become active. The Cloud UI will display a time estimate, and namespace admins will receive an email when the replica is active.
-3. If your workers are using API key authentication: ensure your workers can [use the regional endpoint of the new replica](/cloud/namespaces#access-namespaces).
+3. If your workers are using API key authentication: ensure your workers (and all other client code) are updated to [use the regional endpoint of the new replica](/cloud/namespaces#access-namespaces).
 4. Trigger a failover to the new region.
 
 <CaptionedImage
