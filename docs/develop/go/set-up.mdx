@@ -103,9 +103,6 @@ temporal server start-dev --ui-port 8080
 <style>
 {`.port-info { background: rgba(68, 76, 231, 0.1); border: 1px solid rgba(68, 76, 231, 0.2); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; transition: all 0.3s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); } [data-theme='dark'] .port-info { background: rgba(68, 76, 231, 0.15); border-color: rgba(68, 76, 231, 0.3); } .port-info h4 { margin-top: 0; margin-bottom: 1rem; color: var(--ifm-color-emphasis-900); font-weight: 600; } .port-info p { margin-bottom: 1rem; font-size: 0.95rem; line-height: 1.5; color: var(--ifm-color-emphasis-800); } .port-info p:last-child { margin-bottom: 0; } .port-info code { background: rgba(255, 255, 255, 0.5); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; } [data-theme='dark'] .port-info code { background: rgba(0, 0, 0, 0.2); } @media (max-width: 768px) { .port-info { padding: 1.25rem; } }`}
 </style>
-<CodeSnippet language="bash">
-temporal server start-dev --db-filename your_temporal.db
-</CodeSnippet>
 </>
 }>
 
@@ -131,7 +128,6 @@ Now let's verify your setup is working by creating and running a complete Tempor
 
 This test will confirm that:
 
-- Your Go SDK installation is working
 - The Temporal Go SDK is properly installed
 - Your local Temporal Service is running
 - You can successfully create and execute Workflows and Activities
@@ -491,7 +487,7 @@ Now that your Worker is running, it's time to start a Workflow Execution.
 This final step will validate that everything is working correctly with your file labeled `main.go`.
 
 <details>
-<summary>Additional details about the Workflow Execution<summary>
+<summary>Additional details about the Workflow Execution</summary>
 
 - Temporal clients are not explicitly closed.
 - To enable TLS, the `tls` option can be set to `true` or a `Temporalio::Client::Connection::TLSOptions` instance.
