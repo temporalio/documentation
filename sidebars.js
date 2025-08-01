@@ -384,22 +384,6 @@ module.exports = {
                     "production-deployment/cloud/high-availability/how-to/private-link",
                   ],
                 },
-                {
-                  type: "category",
-                  label: "References",
-                  collapsed: true,
-                  link: {
-                    type: "doc",
-                    id: "production-deployment/cloud/high-availability/references/index",
-                  },
-                  items: [
-                    "production-deployment/cloud/high-availability/references/regions",
-                    // "production-deployment/cloud/high-availability/references/concepts",
-                    // "production-deployment/cloud/high-availability/references/best-practices",
-                    // "production-deployment/cloud/high-availability/references/glossary",
-                    // "production-deployment/cloud/high-availability/references/faq",
-                  ],
-                },
               ],
             },
             "production-deployment/cloud/rpo-rto",
