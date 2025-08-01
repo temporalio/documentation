@@ -50,7 +50,7 @@ mkdir goproject
 cd goproject
 </CodeSnippet>
 <CodeSnippet language="bash">
-go mod init
+go mod init my-org/greeting
 </CodeSnippet>
 <CodeSnippet language="bash">
 go get go.temporal.io/sdk
@@ -159,7 +159,9 @@ return fmt.Sprintf("Hello %s", name), nil
 
 ### Create the Activity
 
-An Activity is a normal function or method that executes a single, well-defined action (either short or long running), which often involve interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling an API, which are prone to failure. If an Activity fails, Temporal automatically retries it based on your configuration.
+An Activity is a normal function or method that executes a single, well-defined action (either short- or long-running) that is typically prone to failure. 
+Examples include any action that interacts with the outside world, such as sending emails, making network requests, writing to a database, or calling an API. 
+If an Activity fails, Temporal automatically retries it based on your configuration.
 
 Create a file called `activity.go`:
 
@@ -202,7 +204,10 @@ ctx = workflow.WithActivityOptions(ctx, ao)
 
 ### Create the Workflow
 
-Workflows orchestrate Activities and contain the application logic. Temporal Workflows are resilient. They can run—and keeping running—for years, even if the underlying infrastructure fails. If the application itself crashes, Temporal will automatically recreate its pre-failure state so it can continue right where it left off.
+Workflows orchestrate Activities and contain the application logic. 
+Temporal Workflows are resilient. 
+They can run—and keep running—for years, even if the underlying infrastructure fails. 
+If the application itself crashes, Temporal will automatically recreate its pre-failure state so it can continue right where it left off.
 
 Create a file called `workflow.go`:
 
@@ -217,7 +222,7 @@ Create a file called `workflow.go`:
 
 import (
 "log"
-"greeting"
+greeting "my-org/greeting"
 
     "go.temporal.io/sdk/client"
     "go.temporal.io/sdk/worker"
@@ -256,12 +261,14 @@ defer c.Close()
 
 ### Create and Run the Worker
 
-With your Activity and Workflow defined, you need a Worker to execute them. A Worker polls a Task Queue, that you configure it to poll, looking for work to do. Once the Worker dequeues the a Workflow or Activity task from the Task Queue, it then executes that task.
+With your Activity and Workflow defined, you need a Worker to execute them. 
+You configure a Worker to poll a Task Queue, looking for work to do. 
+Once the Worker dequeues a Workflow task or Activity task from the Task Queue, it then executes that task.
 
 Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your Workflows and Activities.
 For more information on Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
 
-Create a file within a `worker` subdirectory called `main.go`:
+Create a `worker` subdirectory, and a file within that subdirectory called `main.go`:
 
 Keep this terminal running.
 
@@ -285,7 +292,7 @@ Keep this terminal running.
 
     <div className="option-section">
       <h5>Option 2: Create a Client Program</h5>
-      <p>Create a separate file in a `start` subdirectory called `main.go` for a more programmatic approach:</p>
+      <p>For a more programmatic approach, create a `start` subdirectory, and a file in that subdirectory called `main.go`:</p>
       <CodeSnippet language="go">
 
 {`package main
@@ -294,7 +301,7 @@ import (
 "context"
 "log"
 "os"
-"temporal101/exercises/hello-workflow/greeting"
+greeting "my-org/greeting"
 
     "go.temporal.io/sdk/client"
 
@@ -483,13 +490,14 @@ Now that your Worker is running, it's time to start a Workflow Execution.
 
 This final step will validate that everything is working correctly with your file labeled `main.go`.
 
-:::note ADDITIONAL DETAILS ABOUT THE WORKFLOW EXECUTION
+<details>
+<summary>Additional details about the Workflow Execution<summary>
 
 - Temporal clients are not explicitly closed.
 - To enable TLS, the `tls` option can be set to `true` or a `Temporalio::Client::Connection::TLSOptions` instance.
 - The `ExecuteWorkflow()` call returns a Future, which can be used to get the result of the Workflow Execution.
   :::
-
+</details>
 </SetupStep>
 </SetupSteps>
 
