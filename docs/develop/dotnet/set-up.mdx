@@ -206,17 +206,17 @@ Now let's verify your setup is working by creating and running a complete Tempor
 This test will confirm that:
 
 - Your .NET SDK installation is working
-- The Temporal .NET SDK is properly installed
 - Your local Temporal Service is running
 - You can successfully create and execute Workflows and Activities
 - The communication between components is functioning correctly
 
-<SetupSteps>
-<SetupStep code={
-  <>
-    <p><strong>Create an Activity file (MyActivities.cs):</strong></p>
-    <CodeSnippet language="csharp">
-{`namespace MyNamespace;
+
+
+### 1. Create the Activity
+
+Create an Activity file (MyActivities.cs)
+```csharp
+namespace MyNamespace;
 
 using Temporalio.Activities;
 
@@ -226,26 +226,18 @@ public class MyActivities
 // methods since many will use them that way.
 [Activity]
 public string SayHello(string name) => $"Hello, {name}!";
-}`}
+}
+```
+An Activity is a normal function or method that executes a single, well-defined action (either short or long running), which often involve interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling an API, which are prone to failure. 
+If an Activity fails, Temporal automatically retries it based on your configuration.
 
-</CodeSnippet>
-</>
-}>
 
-### Create the Activity
+### 2. Create the Workflow
 
-An Activity is a normal function or method that executes a single, well-defined action (either short or long running), which often involve interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling an API, which are prone to failure. If an Activity fails, Temporal automatically retries it based on your configuration.
+Create a Workflow file (SayHelloWorkflow.cs)
 
-Create a file called `MyActivities.cs`:
-
-</SetupStep>
-
-<SetupStep code={
-<>
-
-<p><strong>Create a Workflow file (SayHelloWorkflow.cs):</strong></p>
-<CodeSnippet language="csharp">
-{`namespace MyNamespace;
+```csharp
+namespace MyNamespace;
 
 using Temporalio.Workflows;
 
@@ -264,26 +256,21 @@ return await Workflow.ExecuteActivityAsync(
 (MyActivities act) => act.SayHello(name),
 new() { StartToCloseTimeout = TimeSpan.FromMinutes(5) });
 }
-}`}
+}
+```
 
-</CodeSnippet>
-</>
-}>
 
-### Create the Workflow
+Workflows orchestrate Activities and contain the application logic. 
+Temporal Workflows are resilient. 
+They can run—and keeping running—for years, even if the underlying infrastructure fails. 
+If the application itself crashes, Temporal will automatically recreate its pre-failure state so it can continue right where it left off.
 
-Workflows orchestrate Activities and contain the application logic. Temporal Workflows are resilient. They can run—and keeping running—for years, even if the underlying infrastructure fails. If the application itself crashes, Temporal will automatically recreate its pre-failure state so it can continue right where it left off.
+### 3. Create and Run the Worker
 
-Create a file called `SayHelloWorkflow.cs`:
+Create a Worker file (Program.cs):
 
-</SetupStep>
-
-<SetupStep code={
-<>
-
-<p><strong>Create a Worker file (Program.cs):</strong></p>
-<CodeSnippet language="csharp">
-{`using MyNamespace;
+```csharp
+using MyNamespace;
 using Temporalio.Client;
 using Temporalio.Worker;
 
@@ -318,53 +305,34 @@ await worker.ExecuteAsync(tokenSource.Token);
 catch (OperationCanceledException)
 {
 Console.WriteLine("Worker cancelled");
-}`}
+}
+```
 
-</CodeSnippet>
 
-    <p><strong>Run the Worker:</strong></p>
-    <CodeSnippet language="bash">
-    dotnet run
-    </CodeSnippet>
 
-</>
-}>
+Run the Worker:
+Keep this terminal running - you should see "Running worker" displayed.
+```bash
+dotnet run
+```
 
-### Create and Run the Worker
 
 With your Activity and Workflow defined, you need a Worker to execute them. A Worker polls a Task Queue, that you configure it to poll, looking for work to do. Once the Worker dequeues the a Workflow or Activity task from the Task Queue, it then executes that task.
 
 Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your Workflows and Activities.
 For more information on Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
 
-Create a file called `Program.cs`:
 
-Keep this terminal running - you should see "Running worker" displayed.
+### 4. Execute the Workflow
 
-</SetupStep>
+Now that your Worker is running, it's time to start a Workflow Execution.
 
-<SetupStep code={
-<>
+This final step will validate that everything is working correctly with your file labeled `Client.cs`.
 
-<div className="execution-options">
-  <h4>Choose Your Execution Method</h4>
-  <p>With the Worker running, you can start a Workflow in two ways:</p>
-</div>
+Create a separate file called `Client.cs`. 
 
-    <div className="option-section">
-      <h5>Option 1: Using Temporal CLI (Recommended for testing)</h5>
-      <p>Open a new terminal and run:</p>
-      <CodeSnippet language="bash">
-      temporal workflow start --type SayHelloWorkflow --task-queue my-task-queue --input '"Temporal"'
-      </CodeSnippet>
-    </div>
-
-    <div className="option-section">
-      <h5>Option 2: Create a Client Program</h5>
-      <p>Create a separate file called `Client.cs` for a more programmatic approach:</p>
-      <CodeSnippet language="csharp">
-
-{`using MyNamespace;
+```csharp
+using MyNamespace;
 using Temporalio.Client;
 
 // Create a client to localhost on "default" namespace
@@ -375,12 +343,13 @@ var result = await client.ExecuteWorkflowAsync(
 (SayHelloWorkflow wf) => wf.RunAsync("Temporal"),
 new(id: "my-workflow-id", taskQueue: "my-task-queue"));
 
-Console.WriteLine("Workflow result: {0}", result);`}
+Console.WriteLine("Workflow result: {0}", result);
+```
 
-</CodeSnippet>
 
-<p>Then run: <code>dotnet run Client.cs</code></p>
-</div>
+Then run: 
+`dotnet run Client.cs`
+
 
     <div className="success-section">
       <h4>
@@ -523,15 +492,6 @@ Console.WriteLine("Workflow result: {0}", result);`}
       `}
     </style>
 
-</>
-}>
-
-### Execute the Workflow
-
-Now that your Worker is running, it's time to start a Workflow Execution.
-
-This final step will validate that everything is working correctly with your file labeled `Client.cs`.
-
 :::note ADDITIONAL DETAILS ABOUT THE WORKFLOW EXECUTION
 
 - Temporal clients are not explicitly closed.
@@ -539,10 +499,8 @@ This final step will validate that everything is working correctly with your fil
 - To start a Workflow Execution in .NET, use either the `StartWorkflowAsync()` or `ExecuteWorkflowAsync()` methods in the Client.
 - Use `StartWorkflowAsync()` if you do not plan to wait for the Workflow result in the same process.
 - Use `ExecuteWorkflowAsync()` to start a Workflow Execution and then wait for a result.
-  :::
+:::
 
-</SetupStep>
-</SetupSteps>
 
 <CallToAction href="/develop/dotnet/core-application">
   <h3>Next: Run your first Temporal Application</h3>
