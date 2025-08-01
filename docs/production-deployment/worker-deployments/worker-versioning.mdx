@@ -40,9 +40,9 @@ Watch this Temporal Replay 2025 talk to learn more about Worker Versioning and s
     <iframe width="560" height="315"
         src="https://www.youtube.com/embed/rm4BlD9WXqc"
         title="YouTube video player"
-        frameborder="0"
+        frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
 </div>
 :::
 
@@ -55,6 +55,8 @@ Minimum versions:
 - Python [v1.11](https://github.com/temporalio/sdk-python/releases/tag/1.11.0)
 - Java [v1.29](https://github.com/temporalio/sdk-java/releases/tag/v1.29.0)
 - Typescript [v1.12](https://github.com/temporalio/sdk-typescript/releases/tag/v1.12.0)
+- .NET [v1.7.0](https://github.com/temporalio/sdk-dotnet/releases/tag/1.7.0)
+- Ruby [v0.5.0](https://github.com/temporalio/sdk-ruby/releases/tag/v0.5.0)
 - Other SDKs: coming soon!
 
 Self-hosted users:
@@ -119,6 +121,11 @@ w := worker.New(c, myTaskQueue, worker.Options{
 </SdkTabs.Go>
 <SdkTabs.Java>
 ```java
+import io.temporal.worker.WorkerOptions;
+import io.temporal.common.VersioningBehavior;
+import io.temporal.common.WorkerDeploymentVersion;
+import io.temporal.worker.WorkerDeploymentOptions;
+
 WorkerOptions options =
     WorkerOptions.newBuilder()
         .setDeploymentOptions(
@@ -128,10 +135,14 @@ WorkerOptions options =
                 .setDefaultVersioningBehavior(VersioningBehavior.AUTO_UPGRADE)
                 .build())
         .build();
+
 ```
 </SdkTabs.Java>
 <SdkTabs.Python>
 ```python
+from temporalio.common import WorkerDeploymentVersion, VersioningBehavior
+from temporalio.worker import Worker, WorkerDeploymentConfig
+
 Worker(
     client,
     task_queue="mytaskqueue",
@@ -144,7 +155,6 @@ Worker(
         use_worker_versioning=True,
         default_versioning_behavior=VersioningBehavior.AUTO_UPGRADE
     ),
-
 )
 
 ````
@@ -439,10 +449,12 @@ To do this, utilize pinning in your tests, following the examples below:
 workflowOptions := client.StartWorkflowOptions{
 	ID:        "MyWorkflowId",
 	TaskQueue: "MyTaskQueue",
-	VersioningOverride: client.VersioningOverride{
-		Behavior: workflow.VersioningBehaviorPinned,
-		PinnedVersion: "$MY_TEST_DEPLOYMENT_VERSION",
-	},
+	VersioningOverride: &client.PinnedVersioningOverride{
+        Version: worker.WorkerDeploymentVersion{
+            DeploymentName: "DeployName",
+            BuildId:        "1.0",
+        },
+    },
 }
 // c is an initialized Client
 we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, HelloWorld, "Hello")
