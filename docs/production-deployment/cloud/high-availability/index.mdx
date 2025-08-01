@@ -60,18 +60,18 @@ When you enable High Availability features, Temporal deploys your primary and it
   Replication across different regions enhances resilience and reliability.
 
 ### Multi-cloud Replication
-  Temporal asynchronously replicates all Workflows (live and historical) and data to a Namespace in a different cloud provider (AWS or GCP).
+  Temporal asynchronously replicates all Workflows (live and historical) and data to a Namespace in an entirely different cloud provider.
   If a provider outage, regional outage, service disruption, or network issue occurs, traffic automatically shifts to the replica.
   Replicated data is securely encrypted and transmitted across the public internet between cloud providers.
   Internet connectivity allows workers in one cloud to fail over to a replica in a different cloud.
 
 :::caution
 
-Even as you adopt Temporal's High Availability features, don't forget to consider the reliability of your own workers, infrastructure, and dependencies.
+When you adopt Temporal's High Availability features, don't forget to consider the reliability of your own workers, infrastructure, and dependencies.
 Issues like network outages, hardware failures, or misconfigurations in your own systems can affect your application performance.
 
 For the highest level of reliability, distribute your dependencies across regions, and use our Multi-region or Multi-cloud replication features.
-Using physically separated regions provides fuller tolerance for your application.
+Using physically separated regions improves the fault tolerance of your application.
 
 :::
 
@@ -81,7 +81,7 @@ Using physically separated regions provides fuller tolerance for your applicatio
 
 In case of an incident or an outage, Temporal will automatically <ToolTipTerm term="fail over" src="failover" /> your Namespace from the primary to the replica.
 This lets Workflow Executions continue with minimal interruptions or data loss.
-Customers can also initiate failovers based on their situational monitoring or for testing.
+You can also [manually initiate failovers}(/cloud/high-availability/failovers) based on your situational monitoring or for testing.
 
 Returning control from the replica to the primary is called a <ToolTipTerm term="failback" />.
 The replica is active for a brief duration during an incident.
