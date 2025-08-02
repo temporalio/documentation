@@ -1,0 +1,42 @@
+.cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(to right, #2e2e60, #1e1e40);
+    border: 1px solid #3b3b7c;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    color: #e6e6fa;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  
+  .cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    color: #e6e6fa;
+  }
+  
+  .content {
+    flex: 1;
+  }
+  
+  .content h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #e6e6fa;
+  }
+  
+  .content p {
+    margin: 0.5rem 0 0 0;
+    color: #b4b4d4;
+    font-size: 0.95rem;
+  }
+  
+  .arrow {
+    font-size: 1.5rem;
+    margin-left: 1rem;
+    color: #8585ff;
+  }
