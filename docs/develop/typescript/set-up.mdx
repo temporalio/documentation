@@ -58,28 +58,51 @@ Next, you'll configure a local Temporal Service for development.
 </SetupStep>
 
 <SetupStep code={
-<>
-<CodeSnippet language="bash">
-brew install temporal
-</CodeSnippet>
-</>
-}>
+  <>
+  <Tabs>
+  <TabItem value="macos" label="macOS" default>
 
-## Install Temporal CLI
+        <p>Install the Temporal CLI using Homebrew:</p>
+        <CodeSnippet language="bash">
+        brew install temporal
+        </CodeSnippet>
+        <p>After installing, open a new Terminal window and start the development server:</p>
+        <CodeSnippet language="bash">
+        temporal server start-dev
+        </CodeSnippet>
+      </TabItem>
 
-The fastest way to get a development version of the Temporal Service running on your local machine is to use [Temporal CLI](https://docs.temporal.io/cli).
+      <TabItem value="windows" label="Windows">
+        <p>Download the Temporal CLI archive for your architecture:</p>
+        <ul>
+          <li><a href="https://temporal.download/cli/archive/latest?platform=windows&arch=amd64">Windows amd64</a></li>
+          <li><a href="https://temporal.download/cli/archive/latest?platform=windows&arch=arm64">Windows arm64</a></li>
+        </ul>
+        <p>Extract it and add <code>temporal.exe</code> to your PATH.</p>
+        <p>Then, open a new Terminal window and start the development server:</p>
+        <CodeSnippet language="bash">
+        temporal server start-dev
+        </CodeSnippet>
+      </TabItem>
 
-Install Temporal CLI on your local machine using the following instructions for your platform.
+      <TabItem value="linux" label="Linux">
+        <p>Download the Temporal CLI for your architecture:</p>
+        <ul>
+          <li><a href="https://temporal.download/cli/archive/latest?platform=linux&arch=amd64">Linux amd64</a></li>
+          <li><a href="https://temporal.download/cli/archive/latest?platform=linux&arch=arm64">Linux arm64</a></li>
+        </ul>
+        <p>Extract the archive and move the <code>temporal</code> binary into your PATH, for example:</p>
+        <CodeSnippet language="bash">
+        sudo mv temporal /usr/local/bin
+        </CodeSnippet>
+        <p>Then open a new Terminal window and start the development server:</p>
+        <CodeSnippet language="bash">
+        temporal server start-dev
+        </CodeSnippet>
+      </TabItem>
+    </Tabs>
 
-</SetupStep>
-
-<SetupStep code={
-<>
-<CodeSnippet language="bash">
-temporal server start-dev
-</CodeSnippet>
-
-<div className="port-info">
+    <div className="port-info">
 <h4>Change the Web UI port</h4>
 <p>The Temporal Web UI may be on a different port in some examples or tutorials. To change the port for the Web UI, use the <code>--ui-port</code> option when starting the server:</p>
 <CodeSnippet language="bash">
@@ -88,23 +111,34 @@ temporal server start-dev --ui-port 8080
 <p>The Temporal Web UI will now be available at http://localhost:8080.</p>
 </div>
 <style>
-{`.port-info { background: rgba(68, 76, 231, 0.1); border: 1px solid rgba(68, 76, 231, 0.2); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; transition: all 0.3s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); } [data-theme='dark'] .port-info { background: rgba(68, 76, 231, 0.15); border-color: rgba(68, 76, 231, 0.3); } .port-info h4 { margin-top: 0; margin-bottom: 1rem; color: var(--ifm-color-emphasis-900); font-weight: 600; } .port-info p { margin-bottom: 1rem; font-size: 0.95rem; line-height: 1.5; color: var(--ifm-color-emphasis-800); } .port-info p:last-child { margin-bottom: 0; } .port-info code { background: rgba(255, 255, 255, 0.5); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; } [data-theme='dark'] .port-info code { background: rgba(0, 0, 0, 0.2); } @media (max-width: 768px) { .port-info { padding: 1.25rem; } }`}
+{`.port-info { background: rgba(68, 76, 231, 0.1); border: 1px solid rgba(68, 76, 231, 0.2); border-radius: 0.75rem; padding: 1.5rem; margin: 0.75rem 0; transition: all 0.3s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); } [data-theme='dark'] .port-info { background: rgba(68, 76, 231, 0.15); border-color: rgba(68, 76, 231, 0.3); } .port-info h4 { margin-top: 0; margin-bottom: 0.5rem; color: var(--ifm-color-emphasis-900); font-weight: 600; } .port-info p { margin-bottom: 0.5rem; font-size: 0.95rem; line-height: 1.5; color: var(--ifm-color-emphasis-800); } .port-info p:last-child { margin-bottom: 0; } .port-info code { background: rgba(255, 255, 255, 0.5); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; } [data-theme='dark'] .port-info code { background: rgba(0, 0, 0, 0.2); } @media (max-width: 768px) { .port-info { padding: 1.25rem; } }`}
 </style>
 </>
 }>
 
-## Start the development server
+## Install Temporal CLI and Start the Temporal Server Locally
 
-Once you've installed Temporal CLI and added it to your PATH, open a new Terminal window and run the following command.
+With the SDK installed, you'll need a local Temporal Server to run your Workflows.
+The easiest way to do this is with [**Temporal CLI**](https://docs.temporal.io/dev-guide/cli/).
 
-This command starts a local Temporal Service. It starts the Web UI, creates the default Namespace, and uses an in-memory database.
+Choose your operating system to install Temporal CLI.
 
-The Temporal Service will be available on localhost:7233.
-The Temporal Web UI will be available at http://localhost:8233.
+Once installed, run the development server by opening up a new terminal window:
 
-Leave the local Temporal Service running as you work through tutorials and other projects. You can stop the Temporal Service at any time by pressing CTRL+C.
+This will:
 
-Once you have everything installed, you're ready to build apps with Temporal on your local machine.
+- Start a Temporal Service on `localhost:7233`
+- Launch the Web UI on [http://localhost:8233](http://localhost:8233)
+- Create the default namespace
+- Use an in-memory database (data is lost when you stop the server)
+
+Leave this running in a separate terminal tab or window while you develop.
+You'll be able to monitor your Workflows through the Web UI as they execute.
+
+</SetupStep>
+
+<SetupStep>
+
 
 </SetupStep>
 </SetupSteps>
@@ -115,39 +149,35 @@ Now let's verify your setup is working by creating and running a complete Tempor
 
 This test will confirm that:
 
-- Your TypeScript SDK installation is working
 - The Temporal TypeScript SDK is properly installed
 - Your local Temporal Service is running
 - You can successfully create and execute Workflows and Activities
 - The communication between components is functioning correctly
 
-<SetupSteps>
-<SetupStep code={
-  <>
-    <p><strong>Create an Activity file (activity.ts):</strong></p>
-    <CodeSnippet language="typescript">
-{`export async function activity(name: string): Promise<string> {
+
+
+
+### 1. Create the Activity
+Create an Activity file (activity.ts):
+```ts
+export async function activity(name: string): Promise<string> {
     return "Hello " + name;
 }
-`}
-</CodeSnippet>
-</>
-}>
-
-### Create the Activity
+```
 
 An Activity is a normal function or method that executes a single, well-defined action (either short or long running), which often involve interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling an API, which are prone to failure. If an Activity fails, Temporal automatically retries it based on your configuration.
 
-Create a file called `activity.ts`:
 
-</SetupStep>
 
-<SetupStep code={
-<>
 
-<p><strong>Create a Workflow file (workflows.ts):</strong></p>
-<CodeSnippet language="typescript">
-{`import { proxyActivities } from '@temporalio/workflow';
+
+
+### 2. Create the Workflow
+
+Create a Workflow file (workflows.ts):
+
+```ts
+import { proxyActivities } from '@temporalio/workflow';
 import type * as activityTypes from './activity';
 
 const { activity } = proxyActivities<typeof activityTypes>({
@@ -158,26 +188,20 @@ export async function sayHelloWorkflow(name: string): Promise<string> {
 const response = await activity(name);
 return response;
 }
-`}
+```
 
-</CodeSnippet>
-</>
-}>
 
-### Create the Workflow
+Workflows orchestrate Activities and contain the application logic. 
+Temporal Workflows are resilient. 
+They can run—and keeping running—for years, even if the underlying infrastructure fails. 
+If the application itself crashes, Temporal will automatically recreate its pre-failure state so it can continue right where it left off.
 
-Workflows orchestrate Activities and contain the application logic. Temporal Workflows are resilient. They can run—and keeping running—for years, even if the underlying infrastructure fails. If the application itself crashes, Temporal will automatically recreate its pre-failure state so it can continue right where it left off.
 
-Create a file called `workflows.ts`:
+### 3. Create and Run the Worker
 
-</SetupStep>
-
-<SetupStep code={
-<>
-
-<p><strong>Create a Worker file (worker.ts):</strong></p>
-<CodeSnippet language="typescript">
-{`import { Worker } from '@temporalio/worker';
+Create a Worker file (worker.ts):
+```ts
+import { Worker } from '@temporalio/worker';
 import * as activitiy from './activity';
 
 async function run() {
@@ -202,53 +226,30 @@ run().catch((err) => {
 console.error(err);
 process.exit(1);
 });
-`}
+```
 
-</CodeSnippet>
+Run the Worker and keep this terminal running:
+```bash
+npm run start
+```
 
-    <p><strong>Run the Worker:</strong></p>
-    <CodeSnippet language="bash">
-    npm run start
-    </CodeSnippet>
-
-</>
-}>
-
-### Create and Run the Worker
-
-With your Activity and Workflow defined, you need a Worker to execute them. A Worker polls a Task Queue, that you configure it to poll, looking for work to do. Once the Worker dequeues a Workflow or Activity task from the Task Queue, it then executes that task.
+With your Activity and Workflow defined, you need a Worker to execute them. 
+A Worker polls a Task Queue, that you configure it to poll, looking for work to do. Once the Worker dequeues a Workflow or Activity task from the Task Queue, it then executes that task.
 
 Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your Workflows and Activities.
 For more information on Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
 
-Create a Worker file (`worker.ts`):
 
-Keep this terminal running.
+### 4. Execute the Workflow
 
-</SetupStep>
+Now that your Worker is running, it's time to start a Workflow Execution.
 
-<SetupStep code={
-<>
+This final step will validate that everything is working correctly with your file labeled `client.ts`.
 
-<div className="execution-options">
-  <h4>Choose Your Execution Method</h4>
-  <p>With the Worker running, you can start a Workflow in two ways:</p>
-</div>
+Create a separate file called `client.ts`. 
 
-    <div className="option-section">
-      <h5>Option 1: Using Temporal CLI (Recommended for testing)</h5>
-      <p>Open a new terminal and run:</p>
-      <CodeSnippet language="bash">
-      temporal workflow start --type sayHelloWorkflow --task-queue my-task-queue --input '"Temporal"'
-      </CodeSnippet>
-    </div>
-
-    <div className="option-section">
-      <h5>Option 2: Create a Client Program</h5>
-      <p>Create a separate file called `client.ts` for a more programmatic approach:</p>
-      <CodeSnippet language="typescript">
-
-{`import { Connection, WorkflowClient } from '@temporalio/client';
+```ts
+import { Connection, WorkflowClient } from '@temporalio/client';
 import { sayHelloWorkflow } from './workflows';
 
 async function run() {
@@ -281,29 +282,18 @@ console.log(await handle.result()); // Hello, Temporal!
 run().catch((err) => {
 console.error(err);
 process.exit(1);
-});`}
+});
+```
 
-</CodeSnippet>
+Then run: 
 
-<p>Then run: <code>npm run workflow</code></p>
-</div>
+```bash
+npm run workflow
+```
 
-    <div className="success-section">
+
+<div className="success-section">
       <h4>
-        <svg
-          viewBox="0 0 24 24"
-          width="20"
-          height="20"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="success-icon"
-        >
-          <path d="M9 12l2 2 4-4" />
-          <circle cx="12" cy="12" r="10" />
-        </svg>
         Verify Success
       </h4>
       <p>If everything is working correctly, you should see:</p>
@@ -353,7 +343,7 @@ process.exit(1);
         }
 
         .option-section p {
-          margin-bottom: 1rem;
+          margin-bottom: 0.5rem;
           font-size: 0.95rem;
           line-height: 1.5;
           color: var(--ifm-color-emphasis-800);
@@ -368,12 +358,12 @@ process.exit(1);
           border: 1px solid rgba(34, 197, 94, 0.2);
           border-radius: 0.75rem;
           padding: 1.25rem;
-          margin: 1.5rem 0;
+          margin: 0.75rem 0;
         }
 
         .success-section h4 {
           margin-top: 0;
-          margin-bottom: 1rem;
+          margin-bottom: 0.5rem;
           color: var(--ifm-color-success-dark);
           font-weight: 600;
           display: flex;
@@ -381,13 +371,9 @@ process.exit(1);
           gap: 0.5rem;
         }
 
-        .success-icon {
-          stroke: var(--ifm-color-success-dark);
-          flex-shrink: 0;
-        }
 
         .success-section p {
-          margin-bottom: 1rem;
+          margin-bottom: 0.5rem;
           font-size: 0.95rem;
           line-height: 1.5;
           color: var(--ifm-color-emphasis-800);
@@ -429,14 +415,6 @@ process.exit(1);
       `}
     </style>
 
-</>
-}>
-
-### Execute the Workflow
-
-Now that your Worker is running, it's time to start a Workflow Execution.
-
-This final step will validate that everything is working correctly with your file labeled `client.ts`.
 
 <details>
 <summary><strong>Additional details about Workflow Execution</strong></summary>
@@ -449,8 +427,6 @@ This final step will validate that everything is working correctly with your fil
 
 </details>
 
-</SetupStep>
-</SetupSteps>
 
 <CallToAction href="https://learn.temporal.io/getting_started/typescript/first_program_in_typescript/">
   <h3>Next: Run your first Temporal Application</h3>
