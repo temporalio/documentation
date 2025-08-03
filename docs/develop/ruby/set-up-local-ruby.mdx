@@ -171,10 +171,11 @@ Create an Activity file (say_hello_activity.rb):
 ```ruby
 require 'temporalio/activity'
 
+# Implementation of a simple activity
 class SayHelloActivity < Temporalio::Activity::Definition
-def execute(name)
-"Hello, #{name}!"
-end
+  def execute(name)
+    "Hello, #{name}!"
+  end
 end
 ```
 
@@ -187,13 +188,13 @@ require 'temporalio/workflow'
 require_relative 'say_hello_activity'
 
 class SayHelloWorkflow < Temporalio::Workflow::Definition
-def execute(name)
-Temporalio::Workflow.execute_activity(
-SayHelloActivity,
-name,
-schedule_to_close_timeout: 300
-)
-end
+  def execute(name)
+    Temporalio::Workflow.execute_activity(
+      SayHelloActivity,
+      name,
+      schedule_to_close_timeout: 300
+    )
+  end
 end
 ```
 
@@ -211,15 +212,19 @@ require 'temporalio/worker'
 require_relative 'say_hello_activity'
 require_relative 'say_hello_workflow'
 
+# Create a client
 client = Temporalio::Client.connect('localhost:7233', 'default')
 
+# Create a worker with the client, activities, and workflows
 worker = Temporalio::Worker.new(
-client:,
-task_queue: 'my-task-queue',
-workflows: [SayHelloWorkflow],
-activities: [SayHelloActivity]
+  client:,
+  task_queue: 'my-task-queue',
+  workflows: [SayHelloWorkflow],
+  # There are various forms an activity can take, see "Activities" section for details
+  activities: [SayHelloActivity]
 )
 
+# Run the worker until SIGINT. This can be done in many ways, see "Workers" section for details.
 worker.run(shutdown_signals: ['SIGINT'])
 ```
 
@@ -239,16 +244,17 @@ Create a separate file called starter.rb:
 require 'temporalio/client'
 require_relative 'say_hello_workflow'
 
+# Create a client
 client = Temporalio::Client.connect('localhost:7233', 'default')
 
+# Run workflow
 result = client.execute_workflow(
-SayHelloWorkflow,
-'Temporal',
-id: 'say-hello-workflow-id',
-task_queue: 'my-task-queue'
+  SayHelloWorkflow,
+  'Temporal', # This is the input to the workflow
+  id: 'my-workflow-id',
+  task_queue: 'my-task-queue'
 )
-
-puts "Workflow result: #{result}"
+puts "Result: #{result}"
 ```
 
 Then run:
