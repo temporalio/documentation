@@ -65,7 +65,7 @@ To validate that your local environment is correctly installed, we will execute 
 </>
 }>
 
-## 1. Installation
+## Installation
 
 This step sets up a new Ruby project using Bundler and installs the Temporal Ruby SDK.
 
@@ -130,7 +130,7 @@ Follow the steps to create a directory, initialize the project with a `Gemfile`,
 </>
 }>
 
-## 2. Start the Temporal Server Locally
+## Start the Temporal Server Locally
 
 With the SDK installed, you'll need a local Temporal Server to run your Workflows.
 The easiest way to do this is with [**Temporal CLI**](https://docs.temporal.io/dev-guide/cli/).
@@ -150,25 +150,40 @@ Leave this running in a separate terminal tab or window while you develop.
 You'll be able to monitor your Workflows through the Web UI as they execute.
 
 </SetupStep>
+</SetupSteps>
 
-<SetupStep code={
-<>
+## Run Hello World: Test Your Installation
 
-<p><strong>Activity (say_hello_activity.rb):</strong></p>
-<CodeSnippet language="ruby">
-{`require 'temporalio/activity'
+Now let's verify your setup is working by creating and running a complete Temporal application with both a Workflow and Activity.
+
+This test will confirm that:
+
+- The Temporal Ruby SDK is properly installed
+- Your local Temporal Service is running
+- You can successfully create and execute Workflows and Activities
+- The communication between components is functioning correctly
+
+
+### 1. Create the Activity
+
+Create an Activity file (say_hello_activity.rb):
+
+```ruby
+require 'temporalio/activity'
 
 class SayHelloActivity < Temporalio::Activity::Definition
 def execute(name)
 "Hello, #{name}!"
 end
-end`}
+end
+```
 
-</CodeSnippet>
+### 2. Create the Workflow
 
-<p><strong>Workflow (say_hello_workflow.rb):</strong></p>
-<CodeSnippet language="ruby">
-{`require 'temporalio/workflow'
+Create a Workflow file (say_hello_workflow.rb):
+
+```ruby
+require 'temporalio/workflow'
 require_relative 'say_hello_activity'
 
 class SayHelloWorkflow < Temporalio::Workflow::Definition
@@ -179,31 +194,19 @@ name,
 schedule_to_close_timeout: 300
 )
 end
-end`}
+end
+```
 
-</CodeSnippet>
-</>
-}>
+### 3. Create and Run the Worker
 
-## 3. Write Your First Activity and Workflow
+With your Activity and Workflow defined, you need a Worker to execute them.
+Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your Workflows and Activities.
+For more information on Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
 
-Now that you have the server running, it's time to create your first Temporal application.
-In Temporal, you'll create two files: an Activity file labeled `say_hello_activity.rb` and a Workflow file labeled `say_hello_workflow.rb`.
+Create a Worker file (worker.rb):
 
-A Temporal Workflow is your business logic, defined in code, outlining each step in your process.
-
-Activities are the individual units of work in your Workflow. Activities often involve interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling an API, which are prone to failure.
-You can call Activities directly from your Workflow code.
-If an Activity fails, Temporal automatically retries it based on your configuration.
-
-</SetupStep>
-
-<SetupStep code={
-<>
-
-<p><strong>Worker (worker.rb):</strong></p>
-<CodeSnippet language="ruby">
-{`require 'temporalio/client'
+```ruby
+require 'temporalio/client'
 require 'temporalio/worker'
 require_relative 'say_hello_activity'
 require_relative 'say_hello_workflow'
@@ -217,38 +220,23 @@ workflows: [SayHelloWorkflow],
 activities: [SayHelloActivity]
 )
 
-worker.run(shutdown_signals: ['SIGINT'])`}
+worker.run(shutdown_signals: ['SIGINT'])
+```
 
-</CodeSnippet>
-</>
-}>
+Run the Worker:
 
-## 4. Run a Worker
+```bash
+ruby worker.rb
+```
 
-With your Activity and Workflow defined, you need a Worker to execute them.
-Create a file labeled `worker.rb`.
-Workers, which are part of your application and provided by the Temporal SDK, then carry out the tasks defined in your Workflow.
+### 4. Execute the Workflow
 
-Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your Workflows and Activities.
-For more information on Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
+Now that your Worker is running, it's time to start a Workflow Execution.
 
-:::note RUN THE WORKER
-In a terminal window, start your Worker by running:
-`ruby worker.rb`
+Create a separate file called starter.rb:
 
-Keep this running in this terminal window.
-You should see output indicating that the Worker has started.
-Running this will run the Worker until Ctrl+C is pressed.
-:::
-
-</SetupStep>
-
-<SetupStep code={
-<>
-
-<p><strong>Execute Workflow (execute_workflow.rb):</strong></p>
-<CodeSnippet language="ruby">
-{`require 'temporalio/client'
+```ruby
+require 'temporalio/client'
 require_relative 'say_hello_workflow'
 
 client = Temporalio::Client.connect('localhost:7233', 'default')
@@ -256,114 +244,26 @@ client = Temporalio::Client.connect('localhost:7233', 'default')
 result = client.execute_workflow(
 SayHelloWorkflow,
 'Temporal',
-id: 'my-workflow-id',
+id: 'say-hello-workflow-id',
 task_queue: 'my-task-queue'
 )
 
-puts "Result: #{result}"`}
+puts "Workflow result: #{result}"
+```
 
-</CodeSnippet>
+Then run:
 
-<p><strong>Expected output:</strong></p>
-<CodeSnippet language="bash">
-Result: Hello, Temporal!
-</CodeSnippet>
-<div className="success-section">
-<h4>
-<svg
-  viewBox="0 0 24 24"
-  width="20"
-  height="20"
-  fill="none"
-  stroke="currentColor"
-  strokeWidth="2"
-  strokeLinecap="round"
-  strokeLinejoin="round"
-  className="success-icon"
->
-  <path d="M9 12l2 2 4-4" />
-  <circle cx="12" cy="12" r="10" />
-</svg>
-Verify Success
-</h4>
-<p>If everything is working correctly, you should see:</p>
-<ul>
-<li>Worker processing the workflow and activity</li>
-<li>Output: <code>Workflow result: Hello, Temporal!</code></li>
-<li>Workflow Execution details in the <a href="http://localhost:8233" target="_blank">Temporal Web UI</a></li>
-</ul>
-</div>
-<style>
-{`
-.success-section {
-  background: rgba(34, 197, 94, 0.08);
-  border: 1px solid rgba(34, 197, 94, 0.2);
-  border-radius: 0.75rem;
-  padding: 1.25rem;
-  margin: 1.5rem 0;
-}
-.success-section h4 {
-  margin-top: 0;
-  margin-bottom: 1rem;
-  color: var(--ifm-color-success-dark);
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.success-icon {
-  stroke: var(--ifm-color-success-dark);
-  flex-shrink: 0;
-}
-.success-section p {
-  margin-bottom: 1rem;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  color: var(--ifm-color-emphasis-800);
-}
-.success-section ul {
-  margin-bottom: 0;
-  padding-left: 1.5rem;
-}
-.success-section li {
-  margin-bottom: 0.5rem;
-  font-size: 0.95rem;
-  color: var(--ifm-color-emphasis-800);
-}
-[data-theme='dark'] .success-section {
-  background: rgba(34, 197, 94, 0.12);
-  border-color: rgba(34, 197, 94, 0.3);
-}
-`}
-</style>
-</>
-}>
+```bash
+ruby starter.rb
+```
 
-## 5. Execute a Workflow and See the Result
+### Verify Success
 
-With your Worker running, you can now trigger a Workflow Execution.
-This final step will validate that everything is working correctly with your file labeled `execute_workflow.rb`.
+If everything is working correctly, you should see:
 
-:::note EXECUTE WORKFLOW
-To see the expected output, run this script in a new terminal window with the following command:
-`ruby execute_workflow.rb`
-:::
-
-You've successfully executed your first Temporal Workflow.
-If you check the Temporal Web UI at http://localhost:8233, you'll gain visibility into your Workflow Execution with details listed about its progress and completion.
-
-:::note ADDITIONAL DETAILS ABOUT THE WORKFLOW EXECUTION
-
-- Temporal clients are not explicitly closed.
-- To enable TLS, the `tls` option can be set to `true` or a `Temporalio::Client::Connection::TLSOptions` instance.
-- Instead of `execute_workflow` above, `start_workflow` can be used to just start and get a handle.
-- Both `start_workflow` and `execute_workflow` accept either the workflow class or the string/symbol name of the workflow.
-- Clients are thread safe and are fiber-compatible (but fiber compatibility only supported for Ruby 3.3+ at this time).
-
-:::
-
-</SetupStep>
-</SetupSteps>
+- Worker processing the workflow and activity
+- Output: `Workflow result: Hello, Temporal!`
+- Workflow Execution details in the [Temporal Web UI](http://localhost:8233)
 
 ## Next Steps
 
