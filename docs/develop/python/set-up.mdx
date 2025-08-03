@@ -165,13 +165,13 @@ from activities import greet
 
 @workflow.defn
 class SayHelloWorkflow:
-@workflow.run
-async def run(self, name: str) -> str:
-return await workflow.execute_activity(
-"greet",
-name,
-schedule_to_close_timeout=timedelta(seconds=10),
-)
+    @workflow.run
+    async def run(self, name: str) -> str:
+        return await workflow.execute_activity(
+            "greet",
+            name,
+            schedule_to_close_timeout=timedelta(seconds=10),
+        )
 ```
 
 Workflows orchestrate Activities and contain the application logic. Temporal Workflows are resilient. They can run—and keeping running—for years, even if the underlying infrastructure fails. If the application itself crashes, Temporal will automatically recreate its pre-failure state so it can continue right where it left off.
@@ -188,18 +188,18 @@ from workflows import SayHelloWorkflow
 from activities import greet
 
 async def main():
-client = await Client.connect("localhost:7233")
-worker = Worker(
-client,
-task_queue="my-task-queue",
-workflows=[SayHelloWorkflow],
-activities=[greet],
-)
-print("Worker started.")
-await worker.run()
+    client = await Client.connect("localhost:7233")
+    worker = Worker(
+        client,
+        task_queue="my-task-queue",
+        workflows=[SayHelloWorkflow],
+        activities=[greet],
+        )
+    print("Worker started.")
+    await worker.run()
 
-if **name** == "**main**":
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 Run the Worker and keep this terminal running:
