@@ -160,13 +160,13 @@ Once you have everything installed, you're ready to build apps with Temporal on 
 
 </SetupStep>
 </SetupSteps>
+
 ## Run Hello World: Test Your Installation
 
 Now let's verify your setup is working by creating and running a complete Temporal application with both a Workflow and Activity.
 
 This test will confirm that:
 
-- Your Java SDK installation is working
 - The Temporal Java SDK is properly installed
 - Your local Temporal Service is running
 - You can successfully create and execute Workflows and Activities
@@ -264,7 +264,7 @@ public class SayHelloWorkflowImpl implements SayHelloWorkflow {
 }
 ```
 
-### 5. Create the Worker
+### 5. Create and Run the Worker
 
 Create a Worker file (SayHelloWorker.java):
 
@@ -297,30 +297,70 @@ public class SayHelloWorker {
 }
 ```
 
-### 6. Run the Worker
 
-With your Activity and Workflow defined, you need a Worker to execute them. A Worker polls a Task Queue, that you configure it to poll, looking for work to do. Once the Worker dequeues the a Workflow or Activity task from the Task Queue, it then executes that task.
+With your Activity and Workflow defined, you need a Worker to execute them. 
+
+Run the Worker:
+
+```bash
+mvn compile exec:java -Dexec.mainClass="helloworkflow.SayHelloWorker"
+```
+A Worker polls a Task Queue, that you configure it to poll, looking for work to do.
+Once the Worker dequeues the a Workflow or Activity task from the Task Queue, it then executes that task.
 
 Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your Workflows and Activities.
 For more information on Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
 
-Create a file called `SayHelloWorker.java`:
 
-Keep this terminal running.
 
-### 7. Execute the Workflow
+
+### 6. Execute the Workflow
 
 Now that your Worker is running, it's time to start a Workflow Execution.
 
 This final step will validate that everything is working correctly with your file labeled `Starter.java`.
 
-:::note ADDITIONAL DETAILS ABOUT THE WORKFLOW EXECUTION
+Create a separate file called `Starter.java`:
 
-- Temporal clients are not explicitly closed.
-- To enable TLS, the `tls` option can be set to `true` or a `Temporalio::Client::Connection::TLSOptions` instance.
-- The [`WorkflowClient`](https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/client/WorkflowClient.java) provides some static methods, such as `start`, `execute` etc., that help with starting your Workflows asynchronously.
-  :::
+```java
+package helloworkflow;
 
+import io.temporal.client.WorkflowClient;
+import io.temporal.client.WorkflowOptions;
+import io.temporal.serviceclient.WorkflowServiceStubs;
+
+public class Starter {
+    public static void main(String[] args) {
+        WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
+        WorkflowClient client = WorkflowClient.newInstance(service);
+
+        SayHelloWorkflow workflow = client.newWorkflowStub(
+            SayHelloWorkflow.class,
+            WorkflowOptions.newBuilder()
+                .setTaskQueue("my-task-queue")
+                .setWorkflowId("say-hello-workflow-id")
+                .build()
+        );
+
+        String result = workflow.sayHello("Temporal");
+        System.out.println("Workflow result: " + result);
+    }
+}
+```
+
+Then run:
+
+```bash
+mvn compile exec:java -Dexec.mainClass="helloworkflow.Starter"
+```
+
+### Verify Success
+
+If everything is working correctly, you should see:
+
+- Worker processing the workflow and activity
+- Output: `Workflow result: Hello Temporal`
+- Workflow Execution details in the [Temporal Web UI](http://localhost:8233)
 
 <CallToAction href="https://learn.temporal.io/getting_started/java/first_program_in_java/">
   <h3>Next: Run your first Temporal Application</h3>
