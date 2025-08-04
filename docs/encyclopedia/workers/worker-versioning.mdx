@@ -21,7 +21,7 @@ This page defines some of the underlying concepts used in [Worker Versioning](/p
 
 - [Versioning Behaviors](#versioning-behaviors)
 - [Versioning Statuses](#versioning-statuses)
-- [Inheritance Semantics](#inheritance-semantics)
+- [Continue-as-new, Child Workflow, and Retry Semantics](#inheritance-semantics)
 
 ### Versioning Behaviors {#versioning-behaviors}
 
@@ -35,18 +35,18 @@ A **Pinned** Workflow is guaranteed to complete on a single Worker Deployment Ve
 
 A An **Auto-Upgrade** Workflow will move to the latest Worker Deployment Version automatically whenever you change the current version. Auto-upgrade Workflows are not restricted to a single Deployment Version and need to be kept replay-safe manually, i.e. with [patching](/workflow-definition#workflow-versioning).
 
-### Versioning Statueses {#versioning-statuses}
+### Versioning Statuses {#versioning-statuses}
 
 A Worker Deployment Version moves through the following states:
 
 1. **Inactive**: The version exists because a Worker with that version has polled the server. If this version never becomes Active, it will never be Draining or Drained.
 2. **Active**: The version is either Current or Ramping, so it is accepting new Workflows and existing auto-upgrade Workflows.
-3. **Draining**: The version stopped being Current or Ramping, and it has open pinned Workflows running on it. It is possible to be Draining and have no open pinned Workflows for a short time, since the drainage status is updated periodically.
-4. **Drained**: The version was draining and now all the pinned Workflows that were running on it are closed.
+3. **Draining**: The version has open pinned Workflows running on it, but stopped being Current or Ramping, usually because a newer version has been deployed. It is possible to be Draining and have no open pinned Workflows for a short time, since the drainage status is updated only periodically.
+4. **Drained**: The version was draining and now all the pinned Workflows that were running on it are closed. Closed Workflows may still re-run some code paths if they are [Queried](https://docs.temporal.io/sending-messages#sending-queries) within their [Retention Period](https://docs.temporal.io/temporal-service/temporal-server#retention-period) and Workers with that version are still polling.
 
-### Inheritance Semantics {#inheritance-semantics}
+### Continue-as-new, Child Workflow, and Retry Semantics {#inheritance-semantics}
 
-When Workflows start new runs, versioning behavior and version information may be inherited depending on the scenario. This section explains how inheritance works across different Workflow execution patterns.
+When Workflows start new runs (e.g. by continuing-as-new or retrying) the new run may inherit their versioning behavior. This section explains how inheritance works across different Workflow execution patterns.
 
 #### Ways Workflows Start New Runs
 
@@ -59,7 +59,7 @@ A Workflow can start a new run through:
 
 #### Inheritance Rules Overview
 
-**Key Principle**: Auto-upgrade Workflows never inherit versions, while Pinned workflows may inherit under specific conditions.
+**Key Principle**: Auto-upgrade Workflows never inherit versions, while Pinned workflows may inherit under specific conditions:
 
 #### Inheritance by Scenario
 
