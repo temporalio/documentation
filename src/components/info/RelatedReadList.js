@@ -115,7 +115,7 @@ export function Preview({
               style={{marginTop: "1rem", display: "block", fontSize: "0.75rem"}}
             >
               <a style={{color: "blue"}} href={metadata.permalink}>
-                see full article >>
+                see full article &gt;&gt;
               </a>
             </span>
           </div>

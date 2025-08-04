@@ -35,8 +35,6 @@ module.exports = {
             "evaluate/development-production-features/cloud-automation",
             "evaluate/development-production-features/low-latency",
             "evaluate/development-production-features/multi-tenancy",
-            "evaluate/development-production-features/multi-region-namespace",
-            "evaluate/development-production-features/multi-cloud-namespace",
             {
               type: "category",
               label: "Product release stages",
@@ -85,6 +83,8 @@ module.exports = {
             "evaluate/temporal-cloud/pricing",
             "evaluate/temporal-cloud/actions",
             "evaluate/temporal-cloud/support",
+            "evaluate/development-production-features/multi-region-namespace",
+            "evaluate/development-production-features/multi-cloud-namespace",
           ],
         },
         "security",
@@ -219,6 +219,7 @@ module.exports = {
             "develop/python/nexus",
             "develop/python/child-workflows",
             "develop/python/continue-as-new",
+            "develop/python/interceptors",
           ],
         },
         {
@@ -360,7 +361,7 @@ module.exports = {
             },
             {
               type: "category",
-              label: "High Availabilty",
+              label: "High Availability",
               collapsed: true,
               link: {
                 type: "doc",
@@ -383,22 +384,7 @@ module.exports = {
                     "production-deployment/cloud/high-availability/how-to/failovers",
                     "production-deployment/cloud/high-availability/how-to/secure-routing",
                     "production-deployment/cloud/high-availability/how-to/private-link",
-                  ],
-                },
-                {
-                  type: "category",
-                  label: "References",
-                  collapsed: true,
-                  link: {
-                    type: "doc",
-                    id: "production-deployment/cloud/high-availability/references/index",
-                  },
-                  items: [
-                    "production-deployment/cloud/high-availability/references/regions",
-                    // "production-deployment/cloud/high-availability/references/concepts",
-                    // "production-deployment/cloud/high-availability/references/best-practices",
-                    // "production-deployment/cloud/high-availability/references/glossary",
-                    // "production-deployment/cloud/high-availability/references/faq",
+                    "production-deployment/cloud/high-availability/how-to/migrate",
                   ],
                 },
               ],
@@ -614,6 +600,7 @@ module.exports = {
                 "encyclopedia/workflow/dynamic-handler",
                 "encyclopedia/workflow/workflow-schedule",
                 "encyclopedia/workflow/cron-job",
+                "encyclopedia/workflow/patching",
               ],
             },
         {
