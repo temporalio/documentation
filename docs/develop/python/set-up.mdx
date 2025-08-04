@@ -78,10 +78,6 @@ Next, you'll configure a local Temporal Service for development.
         <CodeSnippet language="bash">
         brew install temporal
         </CodeSnippet>
-        <p>After installing, open a new Terminal window and start the development server:</p>
-        <CodeSnippet language="bash">
-        temporal server start-dev
-        </CodeSnippet>
       </TabItem>
 
       <TabItem value="windows" label="Windows">
@@ -91,10 +87,6 @@ Next, you'll configure a local Temporal Service for development.
           <li><a href="https://temporal.download/cli/archive/latest?platform=windows&arch=arm64">Windows arm64</a></li>
         </ul>
         <p>Extract it and add <code>temporal.exe</code> to your PATH.</p>
-        <p>Then, open a new Terminal window and start the development server:</p>
-        <CodeSnippet language="bash">
-        temporal server start-dev
-        </CodeSnippet>
       </TabItem>
 
       <TabItem value="linux" label="Linux">
@@ -106,10 +98,6 @@ Next, you'll configure a local Temporal Service for development.
         <p>Extract the archive and move the <code>temporal</code> binary into your PATH, for example:</p>
         <CodeSnippet language="bash">
         sudo mv temporal /usr/local/bin
-        </CodeSnippet>
-        <p>Then open a new Terminal window and start the development server:</p>
-        <CodeSnippet language="bash">
-        temporal server start-dev
         </CodeSnippet>
       </TabItem>
     </Tabs>
@@ -127,6 +115,8 @@ Choose your operating system to install Temporal CLI.
 
 <SetupStep code={
 <>
+<p>After installing, open a new Terminal window and start the development server:</p>
+
 <CodeSnippet language="bash">
 temporal server start-dev
 </CodeSnippet>
@@ -160,7 +150,6 @@ Once you have everything installed, you're ready to build apps with Temporal on 
 
 </SetupStep>
 </SetupSteps>
-
 ## Run Hello World: Test Your Installation
 
 Now let's verify your setup is working by creating and running a complete Temporal application with both a Workflow and Activity.
