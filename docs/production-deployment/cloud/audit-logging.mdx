@@ -18,62 +18,68 @@ tags:
   - Logging
 ---
 
-Audit Logging is a feature of [Temporal Cloud](/cloud/overview) that provides forensic access information at the account level, the user level, [Namespace](/namespaces) level, and the Nexus Endpoint level.
+Audit Logging is a feature of [Temporal Cloud](/cloud/overview) that provides forensic access information for a variety of operations in the Temporal Cloud control plane.
 
 Audit Logging answers "who, when, and what" questions about Temporal Cloud resources.
 These answers can help you evaluate the security of your organization, and they can provide information that you need to satisfy audit and compliance requirements.
 
+:::info
+
+Audit Logging does NOT capture data plane events, like Workflow Start, Workflow Terminate, Schedule Create, etc.
+Instead, explore the [Export](/cloud/export) feature, which does let you send closed Workflow Histories to external storage.
+
+:::
+
 ## Which integrations are supported by Audit Logging? {#supported-integrations}
 
-Audit Logging supports the [Amazon Kinesis](https://docs.aws.amazon.com/kinesis/) streaming-data platform.
+Audit Logging supports both [Amazon Kinesis](/cloud/audit-logging-aws) and [Google Cloud Pub/Sub](/cloud/audit-logging-gcp) streaming-data platforms.
 
 ## Which events are supported by Audit Logging? {#supported-events}
 
-Audit Logging supports [Admin Operation events](#admin-operation-events) as well as [API Key Create, Update, and Delete events](#admin-operation-events).
-
-Please note that Audit Logging only captures operations in the Temporal Cloud control plane and not the data plane.
-This means events such as Workflow Start, Workflow Terminate, Schedule Create, etc. won't be logged.
-Instead, explore the [Export](/cloud/export) feature, which does let you send closed Workflow Histories to external storage.
-
-### Admin Operation events
-
-The following list specifies both the supported events and the Temporal APIs that emit the logs.
-
 - Account
-  - Configure Audit Logging: `UpdateAccount`
-  - Configure observability: `UpdateAccount`
+  - `ChangeAccountPlanType`: Change Account Plan Type
+  - `UpdateAccountAPI`: Configure Audit Logging, Configure Observability Endpoint
 - User
-  - Create user invitations: `InviteUsers`
-  - Delete users: `DeleteUser`
-  - Update user account-level Roles: `UpdateUser`
-  - Update user Namespace permissions: `UpdateUserNamespacePermissions`
-  - Log in user: `UserLogin`
+  - `CreateUserAPI`: Create Users
+  - `DeleteUserAPI`: Delete Users
+  - `InviteUsersAPI`: Invite Users
+  - `SetUserNamespaceAccessAPI`: Set User Namespace Access
+  - `UpdateIdentityNamespacePermissionsAPI`: Update Identity Namespace Permissions
+  - `UpdateUserAPI`: Update User Account-level Roles
+  - `UpdateUserNamespacePermissionsAPI`: Update User Namespace Permissions
+- User Groups
+  - `CreateUserGroup`: Create User Group
+  - `DeleteUserGroup`: Delete User Group
+  - `SetUserGroupNamespaceAccess`: Set User Group Namespace Access
+  - `UpdateUserGroup`: Update User Group
 - Namespace
-  - Create Namespace: `CreateNamespace`
-  - Update Namespace: `UpdateNamespace`
-  - Delete Namespace: `DeleteNamespace`
-  - Add or update certificates or certificate filters: `UpdateNamespace`
-  - Add custom Search Attributes: `UpdateNamespace`
-  - Rename custom Search Attribute: `RenameCustomSearchAttribute`
-  - Request increase in Retention Period: `UpdateNamespace`
-- High Availability Namespace
-  - Failover Namespace: `FailoverNamespace`
+  - `CreateNamespaceAPI`: Create Namespace
+  - `DeleteNamespaceAPI`: Delete Namespace
+  - `FailoverNamespacesAPI`: Failover (for High Availability Namespaces)
+  - `RenameCustomSearchAttributeAPI`: Rename Custom Search Attribute
+  - `UpdateNamespaceAPI`: Update Namespace (includes change retention period, edit replicas, update authentication methods, update custom search attributes)
 - Nexus Endpoint
-  - Create Nexus Endpoint: `CreateNexusEndpoint`
-  - Update Nexus Endpoint: `UpdateNexusEndpoint`
-  - Delete Nexus Endpoint: `DeleteNexusEndpoint`
-
-### API Key Operation events
-
-The following list specifies both the supported events and the Temporal APIs that emit the logs for API Key Operations:
-
-- Create API Key: `CreateAPIKey`
-- Delete API Key: `DeleteAPIKey`
-- Update API Key: `UpdateAPIKey`
+  - `CreateNexusEndpoint`: Create Nexus Endpoint
+  - `DeleteNexusEndpoint`: Delete Nexus Endpoint
+  - `UpdateNexusEndpoint`: Update Nexus Endpoint
+- API Keys
+  - `CreateAPIKey`: Create API Key
+  - `DeleteAPIKey`: Delete API Key
+  - `UpdateAPIKey`: Update API Key
+- Service Accounts
+  - `CreateServiceAccount`: Create Service Account
+  - `CreateServiceAccountAPIKey`: Create Service Account API Key
+  - `DeleteServiceAccount`: Delete Service Account
+  - `UpdateServiceAccount`: Update Service Account
+- Namespace Export
+  - `CreateNamespaceExportSink`: Create Namespace Export Sink
+  - `DeleteNamespaceExportSink`: Delete Namespace Export Sink
+  - `UpdateNamespaceExportSink`: Update Namespace Export Sink
+  - `ValidateNamespaceExportSink`: Validate Namespace Export Sink
 
 ### Audit Log format
 
-The log sent to the stream is JSON in the following format:
+Audit Logs use the following JSON format:
 
 ```json
 {
@@ -102,8 +108,6 @@ Temporal provides the caller IP address in that format to allow customers to ide
 
 ### Example of an Audit Log
 
-The following example shows the contents of an Audit Log.
-
 ```json
 {"emit_time":"2023-10-24T08:19:41Z","level":"LOG_LEVEL_INFO","caller_ip_address":"10.1.2.3, 10.4.5.6","user_email":"user1@example.com","operation":"UpdateAccount","details":{"client_ca_fingerprints":["5bb99d14fa602f7d39b7d048674a2251"],"search_attribute_update":{}},"status":"OK","category":"LOG_CATEGORY_ADMIN","log_id":"0mc69c0323b871293ce231dd1c7fb634","principal":{"id":"988cb80b-d6be-4bb5-9c87-d09f93f58ed3","type":"user","name":"user1@example.com"}}
 **********
@@ -121,9 +125,10 @@ The following example shows the contents of an Audit Log.
 
 ## How to configure Audit Logging {#configure-audit-logging}
 
-Audit logging can be configured in AWS Kinesis
+Audit logging can be configured in AWS Kinesis or GCP Pub/Sub.
 
 - [AWS Kinesis Instructions](/cloud/audit-logging-aws)
+- [GCP Pub/Sub Instructions](/cloud/audit-logging-gcp)
 
 ## Consume an Audit Log {#consume-an-audit-log}
 

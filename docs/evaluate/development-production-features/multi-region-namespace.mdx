@@ -1,8 +1,8 @@
 ---
 id: multi-region-namespace
-title: Multi-region Namespace - Temporal Cloud production feature
-description: Temporal Cloud's Multi-region Namespaces offer automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime.
-sidebar_label: Multi-region namespace
+title: Multi-region Replication - Temporal Cloud production feature
+description: Temporal Cloud's Multi-region Replication offers automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime.
+sidebar_label: Multi-region replication
 tags:
   - Temporal Cloud
   - High availability
@@ -13,6 +13,7 @@ keywords:
   - high-availability
   - multi-region
   - multi-region namespace
+  - multi-region replication
   - namespaces
   - temporal-cloud
   - term
@@ -22,10 +23,10 @@ Temporal Cloud offers disaster-tolerant deployment for workloads with stringent 
 With the multi-region feature enabled, Temporal Cloud automates [failover](/glossary#failover) and synchronizes data between Namespace regions.
 This page introduces Temporal Cloud patterns that support your workload's availability requirements.
 
-## Multi-region Namespaces
+## Multi-region Replication
 
-Multi-region Namespaces provide failover capabilities to mitigate service outages due to regional failures.
-They reduce risk and minimize operational disruption.
+Multi-region Replication provides failover capabilities to mitigate service outages due to regional failures.
+It reduces risk and minimize operational disruption.
 This feature seamlessly shif​​ts Workflow execution between regions to maintain service availability.
 
 Your Clients use a single logical Namespace with a single endpoint that operates in two physical regions: one active and one standby.
@@ -36,16 +37,16 @@ Should an incident or outage occur in the active region, Temporal Cloud initiate
 During a failover, the roles of the active and standby regions reverse.
 The standby takes over as the primary region.
 
-### Advantages of multi-region Namespaces {#multi-region-advantages}
+### Advantages of Multi-region Replication {#multi-region-advantages}
 
-**Why choose a multi-region Namespace (MRN)?**
+**Why choose a Multi-region Replication (MRR)?**
 
 - **Reduce Risk**:
-  MRN's protects your operations from unexpected regional outages.
+  MRR protects your operations from unexpected regional outages.
   Its automated disaster recovery features ensure that workloads remain available and continue execution.
 - **Minimize Operational Disruption**:
   Seamless failovers shift Workflow Executions to a secondary region during outages.
-  MRNs maintain service availability without needing manual synchronization between Namespaces.
+  MRR maintains service availability without needing manual synchronization between Namespaces.
   Real-time alerts during failover events keep you informed.
 - **No manual deployment or configuration needed:**
   Temporal Cloud simplifies deployment with push-button operation.
@@ -69,7 +70,7 @@ The standby takes over as the primary region.
 
 **Who benefits from this feature?**
 
-Multi-region Namespaces are a great solution for Workloads where a regional cloud outage would cause:
+Multi-region Replication is a great solution for Workloads where a regional cloud outage would cause:
 
 - Revenue loss
 - Poor customer experience
@@ -81,9 +82,9 @@ Some examples: financial services, e-commerce, gaming, global SaaS platforms, bo
 
 **Read more about our multi-region features**
 
-- [Multi-region Namespaces](/cloud/high-availability/enable) offer High Availability service for Temporal Cloud customers who need the highest level of availability at all times.
-- [Multi-region Pricing](/cloud/pricing) scales to use.
-- Multi-region replication supports [PrivateLink routing](/cloud/high-availability/private-link).
+- [Multi-region Replication](/cloud/high-availability/enable) offers High Availability service for Temporal Cloud customers who need the highest level of availability at all times.
+- [Multi-region Pricing](/cloud/pricing) scales with use.
+- Multi-region Replication supports [PrivateLink routing](/cloud/high-availability/private-link).
 
 ## Single-region Namespaces
 
@@ -99,7 +100,7 @@ It provides a great all-around solution that's suitable for most organizations.
 - Temporal Cloud provides 99.99% availability and a contractual service level agreement of 99.9% guarantee against service errors.
   Read more on our [SLA page](https://docs.temporal.io/cloud/sla).
 
-Some downsides of single-region Namespaces compared to multi-region Namespaces:
+Some downsides of single-region Namespaces compared to Multi-region Replication:
 
 - Stalled work during failures: Open Workflow Executions pause until the region/Namespace recovers.
 - Blocked work initiation: No new Workflow Executions will start until the region/Namespace recovers.
