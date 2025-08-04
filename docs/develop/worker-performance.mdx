@@ -116,6 +116,7 @@ If it does, it may try to reserve an Activity Slot for the execution of the Acti
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
 Eager Workflow Start is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in the Go, Java, Python, and .NET SDKs.
+Temporal Cloud and Temporal Server 1.29.0 and higher have Eager Workflow Start available for use by default, but you must explicitly `request_eager_start` (or similar name) when starting a Workflow.
 
 :::
 
@@ -125,7 +126,7 @@ These Workflows have a happy path that needs to initiate interactions within low
 
 **Quick Start**
 
-Eager Workflow Start is an opt-in feature that is disabled by default. It requires the Starter and the Worker to share a Client located in the same process and setting the `request_eager_start` (or similar name) to true in the Start Workflow call.
+Eager Workflow Start requires the Starter and the Worker to share a Client located in the same process and setting the `request_eager_start` (or similar name) to true in the Start Workflow call.
 When set, and the Worker has a Workflow Task slot available and the Workflow Definition registered, the Worker can execute the first task of the Workflow locally without first making a round-trip to the Temporal Server.
 This is typically most useful in combination with a Local Activity executing in the first Workflow Task, since other Workflow API calls that require waiting on something will force a round-trip.
 
@@ -133,6 +134,8 @@ This is typically most useful in combination with a Local Activity executing in 
 
 - [Go SDK - Code sample](https://github.com/temporalio/samples-go/tree/main/eager-workflow-start)
 - [Java SDK - Code sample](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/hello/HelloEagerWorkflowStart.java)
+- Python SDK - use something like `request_eager_start` in your Workflow-Start-Options
+- .NET SDK - use something like `request_eager_start` in your Workflow-Start-Options
 
 :::
 
