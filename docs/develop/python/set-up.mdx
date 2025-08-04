@@ -35,9 +35,8 @@ Configure your local development environment to get started developing with Temp
 }>
 ## Install Python
 
-Make sure you have Python installed. 
+Make sure you have Python installed.
 Check your version of Python with the following command:
-
 
 </SetupStep>
 
@@ -70,9 +69,9 @@ Next, you'll configure a local Temporal Service for development.
 </SetupStep>
 
 <SetupStep code={
-  <>
-  <Tabs>
-  <TabItem value="macos" label="macOS" default>
+<>
+<Tabs>
+<TabItem value="macos" label="macOS" default>
 
         <p>Install the Temporal CLI using Homebrew:</p>
         <CodeSnippet language="bash">
@@ -184,7 +183,7 @@ async def greet(name: str) -> str:
     return f"Hello {name}"
 ```
 
-An Activity is a normal function or method that executes a single, well-defined action (either short or long running), which often involve interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling an API, which are prone to failure. 
+An Activity is a normal function or method that executes a single, well-defined action (either short or long running), which often involve interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling an API, which are prone to failure.
 If an Activity fails, Temporal automatically retries it based on your configuration.
 
 ### 2. Create the Workflow
@@ -236,6 +235,7 @@ if __name__ == "__main__":
 ```
 
 Run the Worker and keep this terminal running:
+
 ```bash
 python3 worker.py
 ```
@@ -244,7 +244,6 @@ With your Activity and Workflow defined, you need a Worker to execute them. A Wo
 
 Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your Workflows and Activities.
 For more information on Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
-
 
 Keep this terminal running - you should see "Worker started" displayed.
 
@@ -276,6 +275,7 @@ if __name__ == "__main__":
 ```
 
 Then in a new terminal window, run:
+
 ```bash
 source venv/bin/activate
 python3 starter.py
@@ -288,7 +288,6 @@ If everything is working correctly, you should see:
 - Worker processing the workflow and activity
 - Output: `Workflow result: Hello Temporal`
 - Workflow Execution details in the [Temporal Web UI](http://localhost:8233)
-
 
 <CallToAction href="https://learn.temporal.io/getting_started/python/first_program_in_python/">
   <h3>Next: Run your first Temporal Application</h3>
