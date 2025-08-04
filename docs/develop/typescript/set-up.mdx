@@ -58,9 +58,9 @@ Next, you'll configure a local Temporal Service for development.
 </SetupStep>
 
 <SetupStep code={
-  <>
-  <Tabs>
-  <TabItem value="macos" label="macOS" default>
+<>
+<Tabs>
+<TabItem value="macos" label="macOS" default>
 
         <p>Install the Temporal CLI using Homebrew:</p>
         <CodeSnippet language="bash">
@@ -103,6 +103,7 @@ Next, you'll configure a local Temporal Service for development.
     </Tabs>
 
     <div className="port-info">
+
 <h4>Change the Web UI port</h4>
 <p>The Temporal Web UI may be on a different port in some examples or tutorials. To change the port for the Web UI, use the <code>--ui-port</code> option when starting the server:</p>
 <CodeSnippet language="bash">
@@ -139,7 +140,6 @@ You'll be able to monitor your Workflows through the Web UI as they execute.
 
 <SetupStep>
 
-
 </SetupStep>
 </SetupSteps>
 
@@ -154,23 +154,17 @@ This test will confirm that:
 - You can successfully create and execute Workflows and Activities
 - The communication between components is functioning correctly
 
-
-
-
 ### 1. Create the Activity
+
 Create an Activity file (activity.ts):
+
 ```ts
 export async function activity(name: string): Promise<string> {
-    return "Hello " + name;
+  return 'Hello ' + name;
 }
 ```
 
 An Activity is a normal function or method that executes a single, well-defined action (either short or long running), which often involve interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling an API, which are prone to failure. If an Activity fails, Temporal automatically retries it based on your configuration.
-
-
-
-
-
 
 ### 2. Create the Workflow
 
@@ -181,64 +175,63 @@ import { proxyActivities } from '@temporalio/workflow';
 import type * as activityTypes from './activity';
 
 const { activity } = proxyActivities<typeof activityTypes>({
-startToCloseTimeout: '10 seconds',
+  startToCloseTimeout: '10 seconds',
 });
 
 export async function sayHelloWorkflow(name: string): Promise<string> {
-const response = await activity(name);
-return response;
+  const response = await activity(name);
+  return response;
 }
 ```
 
-
-Workflows orchestrate Activities and contain the application logic. 
-Temporal Workflows are resilient. 
-They can run—and keeping running—for years, even if the underlying infrastructure fails. 
+Workflows orchestrate Activities and contain the application logic.
+Temporal Workflows are resilient.
+They can run—and keeping running—for years, even if the underlying infrastructure fails.
 If the application itself crashes, Temporal will automatically recreate its pre-failure state so it can continue right where it left off.
-
 
 ### 3. Create and Run the Worker
 
 Create a Worker file (worker.ts):
+
 ```ts
 import { Worker } from '@temporalio/worker';
 import * as activitiy from './activity';
 
 async function run() {
-// Step 1: Register Workflows and Activities with the Worker and connect to
-// the Temporal server.
-const worker = await Worker.create({
-workflowsPath: require.resolve('./workflows'),
-activities: activitiy,
-taskQueue: 'my-task-queue',
-});
-// Worker connects to localhost by default and uses console.error for logging.
-// Customize the Worker by passing more options to create():
-// https://typescript.temporal.io/api/classes/worker.Worker
-// If you need to configure server connection parameters, see docs:
-// https://docs.temporal.io/typescript/security#encryption-in-transit-with-mtls
+  // Step 1: Register Workflows and Activities with the Worker and connect to
+  // the Temporal server.
+  const worker = await Worker.create({
+    workflowsPath: require.resolve('./workflows'),
+    activities: activitiy,
+    taskQueue: 'my-task-queue',
+  });
+  // Worker connects to localhost by default and uses console.error for logging.
+  // Customize the Worker by passing more options to create():
+  // https://typescript.temporal.io/api/classes/worker.Worker
+  // If you need to configure server connection parameters, see docs:
+  // https://docs.temporal.io/typescript/security#encryption-in-transit-with-mtls
 
-// Step 2: Start accepting tasks on the my-task-queue queue
-await worker.run();
+  // Step 2: Start accepting tasks on the my-task-queue queue
+  await worker.run();
 }
 
 run().catch((err) => {
-console.error(err);
-process.exit(1);
+  console.error(err);
+  process.exit(1);
 });
 ```
 
 Run the Worker and keep this terminal running:
+
 ```bash
 npm run start
 ```
 
-With your Activity and Workflow defined, you need a Worker to execute them. 
+With your Activity and Workflow defined, you need a Worker to execute them.
 A Worker polls a Task Queue, that you configure it to poll, looking for work to do. Once the Worker dequeues a Workflow or Activity task from the Task Queue, it then executes that task.
 
 Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your Workflows and Activities.
 For more information on Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
-
 
 ### 4. Execute the Workflow
 
@@ -246,51 +239,50 @@ Now that your Worker is running, it's time to start a Workflow Execution.
 
 This final step will validate that everything is working correctly with your file labeled `client.ts`.
 
-Create a separate file called `client.ts`. 
+Create a separate file called `client.ts`.
 
 ```ts
 import { Connection, WorkflowClient } from '@temporalio/client';
 import { sayHelloWorkflow } from './workflows';
 
 async function run() {
-// Connect to the default Server location (localhost:7233)
-const connection = await Connection.connect();
-// In production, pass options to configure TLS and other settings:
-// {
-// address: 'foo.bar.tmprl.cloud',
-// tls: {}
-// }
+  // Connect to the default Server location (localhost:7233)
+  const connection = await Connection.connect();
+  // In production, pass options to configure TLS and other settings:
+  // {
+  // address: 'foo.bar.tmprl.cloud',
+  // tls: {}
+  // }
 
-const client = new WorkflowClient({
-connection,
-// namespace: 'foo.bar', // connects to 'default' namespace if not specified
-});
+  const client = new WorkflowClient({
+    connection,
+    // namespace: 'foo.bar', // connects to 'default' namespace if not specified
+  });
 
-const handle = await client.start(sayHelloWorkflow, {
-// type inference works! args: [name: string]
-args: ['Temporal'],
-taskQueue: 'my-task-queue',
-// in practice, use a meaningful business id, eg customerId or transactionId
-workflowId: 'my-first-workflow',
-});
-console.log('Started workflow ' + handle.workflowId);
+  const handle = await client.start(sayHelloWorkflow, {
+    // type inference works! args: [name: string]
+    args: ['Temporal'],
+    taskQueue: 'my-task-queue',
+    // in practice, use a meaningful business id, eg customerId or transactionId
+    workflowId: 'my-first-workflow',
+  });
+  console.log('Started workflow ' + handle.workflowId);
 
-// optional: wait for client result
-console.log(await handle.result()); // Hello, Temporal!
+  // optional: wait for client result
+  console.log(await handle.result()); // Hello, Temporal!
 }
 
 run().catch((err) => {
-console.error(err);
-process.exit(1);
+  console.error(err);
+  process.exit(1);
 });
 ```
 
-Then run: 
+Then run:
 
 ```bash
 npm run workflow
 ```
-
 
 <div className="success-section">
       <h4>
@@ -415,7 +407,6 @@ npm run workflow
       `}
     </style>
 
-
 <details>
 <summary><strong>Additional details about Workflow Execution</strong></summary>
 
@@ -426,7 +417,6 @@ npm run workflow
 - Using a Workflow Handle isn't necessary with `client.workflow.execute()`.
 
 </details>
-
 
 <CallToAction href="https://learn.temporal.io/getting_started/typescript/first_program_in_typescript/">
   <h3>Next: Run your first Temporal Application</h3>
