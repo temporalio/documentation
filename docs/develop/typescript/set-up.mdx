@@ -281,128 +281,13 @@ Then run:
 npm run workflow
 ```
 
-<div className="success-section">
-      <h4>
-        Verify Success
-      </h4>
-      <p>If everything is working correctly, you should see:</p>
-      <ul>
-        <li>Worker processing the workflow and activity</li>
-        <li>Output: <code>Workflow result: Hello Temporal</code></li>
-        <li>Workflow Execution details in the <a href="http://localhost:8233" target="_blank">Temporal Web UI</a></li>
-      </ul>
-    </div>
+### Verify Success
 
-    <style>
-      {`
-        .execution-options {
-          background: rgba(68, 76, 231, 0.08);
-          border: 1px solid rgba(68, 76, 231, 0.15);
-          border-radius: 0.75rem;
-          padding: 1.25rem;
-          margin: 1.5rem 0 1rem 0;
-        }
+If everything is working correctly, you should see:
 
-        .execution-options h4 {
-          margin-top: 0;
-          margin-bottom: 0.75rem;
-          color: var(--ifm-color-emphasis-900);
-          font-weight: 600;
-        }
-
-        .execution-options p {
-          margin-bottom: 0;
-          font-size: 0.95rem;
-          color: var(--ifm-color-emphasis-800);
-        }
-
-        .option-section {
-          background: var(--ifm-color-emphasis-50);
-          border: 1px solid var(--ifm-color-emphasis-200);
-          border-radius: 0.5rem;
-          padding: 1.25rem;
-          margin: 1rem 0;
-        }
-
-        .option-section h5 {
-          margin-top: 0;
-          margin-bottom: 0.75rem;
-          color: var(--ifm-color-emphasis-900);
-          font-size: 1.1rem;
-        }
-
-        .option-section p {
-          margin-bottom: 0.5rem;
-          font-size: 0.95rem;
-          line-height: 1.5;
-          color: var(--ifm-color-emphasis-800);
-        }
-
-        .option-section p:last-child {
-          margin-bottom: 0;
-        }
-
-        .success-section {
-          background: rgba(34, 197, 94, 0.08);
-          border: 1px solid rgba(34, 197, 94, 0.2);
-          border-radius: 0.75rem;
-          padding: 1.25rem;
-          margin: 0.75rem 0;
-        }
-
-        .success-section h4 {
-          margin-top: 0;
-          margin-bottom: 0.5rem;
-          color: var(--ifm-color-success-dark);
-          font-weight: 600;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-        }
-
-
-        .success-section p {
-          margin-bottom: 0.5rem;
-          font-size: 0.95rem;
-          line-height: 1.5;
-          color: var(--ifm-color-emphasis-800);
-        }
-
-        .success-section ul {
-          margin-bottom: 0;
-          padding-left: 1.5rem;
-        }
-
-        .success-section li {
-          margin-bottom: 0.5rem;
-          font-size: 0.95rem;
-          color: var(--ifm-color-emphasis-800);
-        }
-
-        [data-theme='dark'] .execution-options {
-          background: rgba(68, 76, 231, 0.12);
-          border-color: rgba(68, 76, 231, 0.25);
-        }
-
-        [data-theme='dark'] .option-section {
-          background: var(--ifm-color-emphasis-100);
-          border-color: var(--ifm-color-emphasis-300);
-        }
-
-        [data-theme='dark'] .success-section {
-          background: rgba(34, 197, 94, 0.12);
-          border-color: rgba(34, 197, 94, 0.3);
-        }
-
-        @media (max-width: 768px) {
-          .execution-options,
-          .option-section,
-          .success-section {
-            padding: 1rem;
-          }
-        }
-      `}
-    </style>
+- Worker processing the workflow and activity
+- Output: `Workflow result: Hello, Temporal!`
+- Workflow Execution details in the [Temporal Web UI](http://localhost:8233)
 
 <details>
 <summary><strong>Additional details about Workflow Execution</strong></summary>

@@ -82,10 +82,11 @@ Follow the steps to create a directory, initialize the project with a `Gemfile`,
 - See [Platform Support](#) for full details.
 
 </SetupStep>
+
 <SetupStep code={
-  <>
-  <Tabs>
-  <TabItem value="macos" label="macOS" default>
+<>
+<Tabs>
+<TabItem value="macos" label="macOS" default>
 
         <p>Install the Temporal CLI using Homebrew:</p>
         <CodeSnippet language="bash">
@@ -118,28 +119,49 @@ Follow the steps to create a directory, initialize the project with a `Gemfile`,
 </>
 }>
 
-## Start the Temporal Server Locally
+## Install Temporal CLI
 
-With the SDK installed, you'll need a local Temporal Server to run your Workflows.
-The easiest way to do this is with [**Temporal CLI**](https://docs.temporal.io/dev-guide/cli/).
+The fastest way to get a development version of the Temporal Service running on your local machine is to use [Temporal CLI](https://docs.temporal.io/cli).
 
-Choose your operating system to install Temporal CLI:
+Choose your operating system to install Temporal CLI.
 
-Once installed, run the development server by opening up a new terminal window:
+</SetupStep>
 
-```bash
+<SetupStep code={
+<>
+
+<p>After installing, open a new Terminal window and start the development server:</p>
+
+<CodeSnippet language="bash">
 temporal server start-dev
-```
+</CodeSnippet>
 
-This will:
+<div className="port-info">
+<h4>Change the Web UI port</h4>
+<p>The Temporal Web UI may be on a different port in some examples or tutorials. To change the port for the Web UI, use the <code>--ui-port</code> option when starting the server:</p>
+<CodeSnippet language="bash">
+temporal server start-dev --ui-port 8080
+</CodeSnippet>
+<p>The Temporal Web UI will now be available at http://localhost:8080.</p>
+</div>
+<style>
+{`.port-info { background: rgba(68, 76, 231, 0.1); border: 1px solid rgba(68, 76, 231, 0.2); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; transition: all 0.3s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); } [data-theme='dark'] .port-info { background: rgba(68, 76, 231, 0.15); border-color: rgba(68, 76, 231, 0.3); } .port-info h4 { margin-top: 0; margin-bottom: 1rem; color: var(--ifm-color-emphasis-900); font-weight: 600; } .port-info p { margin-bottom: 1rem; font-size: 0.95rem; line-height: 1.5; color: var(--ifm-color-emphasis-800); } .port-info p:last-child { margin-bottom: 0; } .port-info code { background: rgba(255, 255, 255, 0.5); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; } [data-theme='dark'] .port-info code { background: rgba(0, 0, 0, 0.2); } @media (max-width: 768px) { .port-info { padding: 1.25rem; } }`}
+</style>
+</>
+}>
 
-- Start a Temporal Service on `localhost:7233`
-- Launch the Web UI on [http://localhost:8233](http://localhost:8233)
-- Create the default namespace
-- Use an in-memory database (data is lost when you stop the server)
+## Start the development server
 
-Leave this running in a separate terminal tab or window while you develop.
-You'll be able to monitor your Workflows through the Web UI as they execute.
+Once you've installed Temporal CLI and added it to your PATH, open a new Terminal window and run the following command.
+
+This command starts a local Temporal Service. It starts the Web UI, creates the default Namespace, and uses an in-memory database.
+
+The Temporal Service will be available on localhost:7233.
+The Temporal Web UI will be available at http://localhost:8233.
+
+Leave the local Temporal Service running as you work through tutorials and other projects. You can stop the Temporal Service at any time by pressing CTRL+C.
+
+Once you have everything installed, you're ready to build apps with Temporal on your local machine.
 
 </SetupStep>
 </SetupSteps>
@@ -261,15 +283,6 @@ If everything is working correctly, you should see:
 - Worker processing the workflow and activity
 - Output: `Workflow result: Hello, Temporal!`
 - Workflow Execution details in the [Temporal Web UI](http://localhost:8233)
-
-## Next Steps
-
-Now that your local environment is set up, you're ready to explore more of what Temporal can do with the Ruby SDK.
-
-- **Build More Workflows:** Follow the [Getting Started with Ruby tutorials](https://learn.temporal.io/getting_started/ruby/) to building and running your first Workflow step-by-step to see Temporal's full capabilities.
-- **Understand the Core Concepts**: Visit [Understanding Temporal](/evaluate/understanding-temporal) for a high-level overview of how Temporal works behind the scenes.
-- **Learn by Example:** Explore our [Ruby code samples](https://github.com/temporalio/samples-ruby) on GitHub for practical examples that demonstrate how to use the Temporal Ruby SDK.
-- **Advance to Production-Ready:** Check out the [Core Application section](/develop/ruby/core-application) of the Ruby Developer Guide to learn how to structure Temporal applications for real-world use.
 
 <CallToAction href="https://learn.temporal.io/getting_started/ruby/first_program_in_ruby/">
   <h3>Next: Run your first Temporal Application</h3>
