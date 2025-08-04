@@ -114,7 +114,7 @@ w := worker.New(c, myTaskQueue, worker.Options{
               DeploymentName: "llm_srv",
               BuildId:        buildID,
           },
-          DefaultVersioningBehavior: workflow.VersioningBehaviorAutoUpgrade,
+          DefaultVersioningBehavior: workflow.VersioningBehaviorUnspecified,
 },
 })
 ```
@@ -132,11 +132,11 @@ WorkerOptions.newBuilder()
 WorkerDeploymentOptions.newBuilder()
 .setVersion(new WorkerDeploymentVersion("llm_srv", "1.0"))
 .setUseVersioning(true)
-.setDefaultVersioningBehavior(VersioningBehavior.AUTO_UPGRADE)
+.setDefaultVersioningBehavior(VersioningBehavior.UNSPECIFIED)
 .build())
 .build();
 
-````
+```
 </SdkTabs.Java>
 <SdkTabs.Python>
 ```python
@@ -153,10 +153,10 @@ Worker(
             deployment_name="llm_srv",
             build_id=my_env.build_id),
         use_worker_versioning=True,
-        default_versioning_behavior=VersioningBehavior.AUTO_UPGRADE
+        default_versioning_behavior=VersioningBehavior.UNSPECIFIED
     ),
 )
-````
+```
 
 </SdkTabs.Python>
 <SdkTabs.TypeScript>
@@ -168,7 +168,7 @@ const myWorker = await Worker.create({
   workerDeploymentOptions: {
     useWorkerVersioning: true,
     version: { buildId: '1.0', deploymentName: 'llm_srv' },
-    defaultVersioningBehavior: 'AUTO_UPGRADE',
+    defaultVersioningBehavior: 'UNSPECIFIED',
   },
   connection: nativeConnection,
 });
@@ -182,7 +182,7 @@ var myWorker = new TemporalWorker(
     Client,
     new TemporalWorkerOptions(taskQueue)
     {DeploymentOptions = new(new("llm_srv", "1.0"), true)
-      { DefaultVersioningBehavior = VersioningBehavior.AutoUpgrade },
+      { DefaultVersioningBehavior = VersioningBehavior.Unspecified },
     }.AddWorkflow<MyWorkflow>());
 ```
 
@@ -200,7 +200,7 @@ worker = Temporalio::Worker.new(
           build_id: '1.0'
       ),
       use_worker_versioning: true,
-      default_versioning_behavior: Temporalio::VersioningBehavior::AUTO_UPGRADE
+      default_versioning_behavior: Temporalio::VersioningBehavior::UNSPECIFIED
   )
 )
 ```
