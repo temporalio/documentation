@@ -84,10 +84,6 @@ Next, you'll configure a local Temporal Service for development.
         <CodeSnippet language="bash">
         brew install temporal
         </CodeSnippet>
-        <p>After installing, open a new Terminal window and start the development server:</p>
-        <CodeSnippet language="bash">
-        temporal server start-dev
-        </CodeSnippet>
       </TabItem>
 
       <TabItem value="windows" label="Windows">
@@ -97,10 +93,6 @@ Next, you'll configure a local Temporal Service for development.
           <li><a href="https://temporal.download/cli/archive/latest?platform=windows&arch=arm64">Windows arm64</a></li>
         </ul>
         <p>Extract it and add <code>temporal.exe</code> to your PATH.</p>
-        <p>Then, open a new Terminal window and start the development server:</p>
-        <CodeSnippet language="bash">
-        temporal server start-dev
-        </CodeSnippet>
       </TabItem>
 
       <TabItem value="linux" label="Linux">
@@ -112,10 +104,6 @@ Next, you'll configure a local Temporal Service for development.
         <p>Extract the archive and move the <code>temporal</code> binary into your PATH, for example:</p>
         <CodeSnippet language="bash">
         sudo mv temporal /usr/local/bin
-        </CodeSnippet>
-        <p>Then open a new Terminal window and start the development server:</p>
-        <CodeSnippet language="bash">
-        temporal server start-dev
         </CodeSnippet>
       </TabItem>
     </Tabs>
@@ -164,6 +152,7 @@ This example shows a minimal <code>.rr.yaml</code> configuration specifically fo
 
 <SetupStep code={
 <>
+<p>After installing, open a new Terminal window and start the development server:</p>
 <CodeSnippet language="bash">
 temporal server start-dev
 </CodeSnippet>
