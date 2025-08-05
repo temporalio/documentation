@@ -127,16 +127,16 @@ import io.temporal.common.WorkerDeploymentVersion;
 import io.temporal.worker.WorkerDeploymentOptions;
 
 WorkerOptions options =
-WorkerOptions.newBuilder()
-.setDeploymentOptions(
-WorkerDeploymentOptions.newBuilder()
-.setVersion(new WorkerDeploymentVersion("llm_srv", "1.0"))
-.setUseVersioning(true)
-.setDefaultVersioningBehavior(VersioningBehavior.AUTO_UPGRADE)
-.build())
-.build();
+  WorkerOptions.newBuilder()
+    .setDeploymentOptions(
+      WorkerDeploymentOptions.newBuilder()
+      .setVersion(new WorkerDeploymentVersion("llm_srv", "1.0"))
+      .setUseVersioning(true)
+      .setDefaultVersioningBehavior(VersioningBehavior.AUTO_UPGRADE)
+      .build())
+    .build();
 
-````
+```
 </SdkTabs.Java>
 <SdkTabs.Python>
 ```python
@@ -156,11 +156,10 @@ Worker(
         default_versioning_behavior=VersioningBehavior.AUTO_UPGRADE
     ),
 )
-````
 
+```
 </SdkTabs.Python>
 <SdkTabs.TypeScript>
-
 ```ts
 const myWorker = await Worker.create({
   workflowsPath: require.resolve('./workflows'),
@@ -173,10 +172,8 @@ const myWorker = await Worker.create({
   connection: nativeConnection,
 });
 ```
-
 </SdkTabs.TypeScript>
 <SdkTabs.DotNet>
-
 ```csharp
 var myWorker = new TemporalWorker(
     Client,
@@ -185,10 +182,8 @@ var myWorker = new TemporalWorker(
       { DefaultVersioningBehavior = VersioningBehavior.AutoUpgrade },
     }.AddWorkflow<MyWorkflow>());
 ```
-
 </SdkTabs.DotNet>
 <SdkTabs.Ruby>
-
 ```ruby
 worker = Temporalio::Worker.new(
   client: client,
@@ -204,7 +199,6 @@ worker = Temporalio::Worker.new(
   )
 )
 ```
-
 </SdkTabs.Ruby>
 </SdkTabs>
 
