@@ -200,6 +200,7 @@ module.exports = {
             id: "develop/python/index",
           },
           items: [
+            "develop/python/set-up-your-local-python",
             "develop/python/core-application",
             "develop/python/temporal-clients",
             "develop/python/python-sdk-sandbox",
@@ -230,6 +231,7 @@ module.exports = {
             id: "develop/typescript/index",
           },
           items: [
+            "develop/typescript/set-up-your-local-typescript",
             "develop/typescript/core-application",
             "develop/typescript/temporal-clients",
             "develop/typescript/namespaces",
