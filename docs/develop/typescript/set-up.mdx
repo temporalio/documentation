@@ -156,8 +156,8 @@ This test will confirm that:
 Create an Activity file (activity.ts):
 
 ```ts
-export async function activity(name: string): Promise<string> {
-  return 'Hello ' + name;
+export async function greet(name: string): Promise<string> {
+  return `Hello, ${name}!`;
 }
 ```
 
@@ -169,15 +169,16 @@ Create a Workflow file (workflows.ts):
 
 ```ts
 import { proxyActivities } from '@temporalio/workflow';
-import type * as activityTypes from './activity';
+// Only import the activity types
+import type * as activities from './activities';
 
-const { activity } = proxyActivities<typeof activityTypes>({
-  startToCloseTimeout: '10 seconds',
+const { greet } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '1 minute',
 });
 
-export async function sayHelloWorkflow(name: string): Promise<string> {
-  const response = await activity(name);
-  return response;
+/** A workflow that simply calls an activity */
+export async function example(name: string): Promise<string> {
+  return await greet(name);
 }
 ```
 
@@ -191,25 +192,42 @@ If the application itself crashes, Temporal will automatically recreate its pre-
 Create a Worker file (worker.ts):
 
 ```ts
-import { Worker } from '@temporalio/worker';
-import * as activitiy from './activity';
+import { NativeConnection, Worker } from '@temporalio/worker';
+import * as activities from './activities';
 
 async function run() {
-  // Step 1: Register Workflows and Activities with the Worker and connect to
-  // the Temporal server.
-  const worker = await Worker.create({
-    workflowsPath: require.resolve('./workflows'),
-    activities: activitiy,
-    taskQueue: 'my-task-queue',
+  // Step 1: Establish a connection with Temporal server.
+  //
+  // Worker code uses `@temporalio/worker.NativeConnection`.
+  // (But in your application code it's `@temporalio/client.Connection`.)
+  const connection = await NativeConnection.connect({
+    address: 'localhost:7233',
+    // TLS and gRPC metadata configuration goes here.
   });
-  // Worker connects to localhost by default and uses console.error for logging.
-  // Customize the Worker by passing more options to create():
-  // https://typescript.temporal.io/api/classes/worker.Worker
-  // If you need to configure server connection parameters, see docs:
-  // https://docs.temporal.io/typescript/security#encryption-in-transit-with-mtls
+  try {
+    // Step 2: Register Workflows and Activities with the Worker.
+    const worker = await Worker.create({
+      connection,
+      namespace: 'default',
+      taskQueue: 'hello-world',
+      // Workflows are registered using a path as they run in a separate JS context.
+      workflowsPath: require.resolve('./workflows'),
+      activities,
+    });
 
-  // Step 2: Start accepting tasks on the my-task-queue queue
-  await worker.run();
+    // Step 3: Start accepting tasks on the `hello-world` queue
+    //
+    // The worker runs until it encounters an unexpected error or the process receives a shutdown signal registered on
+    // the SDK Runtime object.
+    //
+    // By default, worker logs are written via the Runtime logger to STDERR at INFO level.
+    //
+    // See https://typescript.temporal.io/api/classes/worker.Runtime#install to customize these defaults.
+    await worker.run();
+  } finally {
+    // Close the connection once the worker has stopped
+    await connection.close();
+  }
 }
 
 run().catch((err) => {
@@ -239,31 +257,32 @@ This final step will validate that everything is working correctly with your fil
 Create a separate file called `client.ts`.
 
 ```ts
-import { Connection, WorkflowClient } from '@temporalio/client';
-import { sayHelloWorkflow } from './workflows';
+import { Client, Connection } from '@temporalio/client';
+import { nanoid } from 'nanoid';
+import { example } from './workflows';
 
 async function run() {
-  // Connect to the default Server location (localhost:7233)
-  const connection = await Connection.connect();
+  // Connect to the default Server location
+  const connection = await Connection.connect({ address: 'localhost:7233' });
   // In production, pass options to configure TLS and other settings:
   // {
-  // address: 'foo.bar.tmprl.cloud',
-  // tls: {}
+  //   address: 'foo.bar.tmprl.cloud',
+  //   tls: {}
   // }
 
-  const client = new WorkflowClient({
+  const client = new Client({
     connection,
     // namespace: 'foo.bar', // connects to 'default' namespace if not specified
   });
 
-  const handle = await client.start(sayHelloWorkflow, {
+  const handle = await client.workflow.start(example, {
+    taskQueue: 'hello-world',
     // type inference works! args: [name: string]
     args: ['Temporal'],
-    taskQueue: 'my-task-queue',
-    // in practice, use a meaningful business id, eg customerId or transactionId
-    workflowId: 'my-first-workflow',
+    // in practice, use a meaningful business ID, like customerId or transactionId
+    workflowId: 'workflow-' + nanoid(),
   });
-  console.log('Started workflow ' + handle.workflowId);
+  console.log(`Started workflow ${handle.workflowId}`);
 
   // optional: wait for client result
   console.log(await handle.result()); // Hello, Temporal!
