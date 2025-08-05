@@ -159,7 +159,6 @@ Create an Activity file (activity.ts):
 export async function greet(name: string): Promise<string> {
   return `Hello, ${name}!`;
 }
-
 ```
 
 An Activity is a normal function or method that executes a single, well-defined action (either short or long running), which often involve interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling an API, which are prone to failure. If an Activity fails, Temporal automatically retries it based on your configuration.
@@ -181,7 +180,6 @@ const { greet } = proxyActivities<typeof activities>({
 export async function example(name: string): Promise<string> {
   return await greet(name);
 }
-
 ```
 
 Workflows orchestrate Activities and contain the application logic.
@@ -236,7 +234,6 @@ run().catch((err) => {
   console.error(err);
   process.exit(1);
 });
-
 ```
 
 Run the Worker and keep this terminal running:
@@ -260,9 +257,9 @@ This final step will validate that everything is working correctly with your fil
 Create a separate file called `client.ts`.
 
 ```ts
-import { Connection, Client } from '@temporalio/client';
-import { example } from './workflows';
+import { Client, Connection } from '@temporalio/client';
 import { nanoid } from 'nanoid';
+import { example } from './workflows';
 
 async function run() {
   // Connect to the default Server location
@@ -295,7 +292,6 @@ run().catch((err) => {
   console.error(err);
   process.exit(1);
 });
-
 ```
 
 Then run:
