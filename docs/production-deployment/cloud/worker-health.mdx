@@ -86,7 +86,7 @@ Metrics to monitor:
 
 ### Schedule To Start latency
 
-The Schedule-To-Start metric represents how long Tasks are staying, unprocessed, in the Task Queues.
+The Schedule-To-Start metric represents how long Tasks are staying unprocessed, in the Task Queues.
 But differently, it is the time between when a Task is enqueued and when it is picked up by a Worker.
 This time being long (likely) means that your Workers can't keep up — either increase the number of Workers (if the host load is already high) or increase the number of pollers per Worker.
 
@@ -228,9 +228,9 @@ For high volume and low latency, try to target >95%.
 
 **Interpretation**
 
-There may be too Many Workers.
+There may be too many Workers.
 
-If you see the followign at the same time then you might have too many Workers:
+If you see the following at the same time then you might have too many Workers:
 
 - Low poll success rate, AND
 - Low `schedule_to_start_latency`, AND
@@ -303,7 +303,7 @@ Metrics to monitor:
 **Execution Size Configuration**
 
 The `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecutionSize` define the number of total available slots for the Worker.
-If this is set too low, the Worker would not be able to keep up processing Tasks.
+If this is set too low, the Worker will not be able to keep up processing Tasks.
 
 **Target**
 
@@ -351,7 +351,7 @@ Also, sticky_cache_total_forced_eviction should not be reporting high numbers (r
 
 If you see a high eviction count, verify there are no other inefficiencies in your Worker configuration or resource provisioning (backlog).
 If you see the cache size metric exceed the `WorkflowCacheSize`, increase this value if your Worker resources can accommodate it or provision more Workers.
-Finally, take time to review this document and see if this document further addresses potential cache issues.
+Finally, take time to review this document and see if it addresses other potential cache issues.
 
 #### Prometheus query samples
 
