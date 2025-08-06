@@ -146,6 +146,7 @@ module.exports = {
             id: "develop/java/index",
           },
           items: [
+            "develop/java/set-up-your-local-java",
             "develop/java/core-application",
             "develop/java/temporal-clients",
             "develop/java/namespaces",
