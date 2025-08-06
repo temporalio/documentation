@@ -1,0 +1,164 @@
+---
+id: cancellation
+title: Interrupt a Workflow Execution - Java SDK
+sidebar_label: Interrupt a Workflow
+description: Interrupt a Workflow Execution using the Temporal Java SDK. Choose between canceling for a graceful stop or terminating for a forceful stop.
+keywords:
+  - cancel workflow execution
+  - activity cancellation
+  - terminate workflow execution
+  - interrupt workflow execution
+  - graceful workflow cancelation
+  - forceful workflow termination
+  - workflow cancelation logic
+  - activity heartbeats
+tags:
+  - Workflows
+  - Java SDK
+  - Temporal SDKs
+---
+
+You can interrupt a Workflow Execution in one of the following ways:
+
+- [Cancel](#cancellation): Canceling a Workflow provides a graceful way to stop Workflow Execution.
+- [Terminate](#termination): Terminating a Workflow forcefully stops Workflow Execution.
+
+Terminating a Workflow forcefully stops Workflow Execution.
+This action resembles killing a process.
+
+- The system records a `WorkflowExecutionTerminated` event in the Workflow History.
+- The termination forcefully and immediately stops the Workflow Execution.
+- The Workflow code gets no chance to handle termination.
+- A Workflow Task doesn't get scheduled.
+
+In most cases, canceling is preferable because it allows the Workflow to finish gracefully.
+Terminate only if the Workflow is stuck and cannot be canceled normally.
+
+## Cancel a Workflow Execution {#cancellation}
+
+Canceling a Workflow provides a graceful way to stop Workflow Execution.
+This action resembles sending a `SIGTERM` to a process.
+
+- The system records a `WorkflowExecutionCancelRequested` event in the Workflow History.
+- A Workflow Task gets scheduled to process the cancelation.
+- The Workflow code can handle the cancelation and execute any cleanup logic.
+- The system doesn't forcefully stop the Workflow.
+
+To cancel a Workflow Execution in Java, use the [cancel()](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#cancel()) function on the WorkflowStub.
+
+```java
+WorkflowStub workflowStub = WorkflowStub.fromTyped(workflow);
+workflowStub.cancel();
+```
+
+## Cancellation scopes in Java {#cancellation-scopes}
+
+In the Java SDK, Workflows are represented internally by a tree of cancellation scopes, each with cancellation behaviors you can specify.
+By default, everything runs in the "root" scope.
+
+Scopes are created using the [Workflow.newCancellationScope](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newCancellationScope(io.temporal.workflow.Functions.Proc1)) constructor
+
+Cancellations are applied to cancellation scopes, which can encompass an entire Workflow or just part of one.
+Scopes can be nested, and cancellation propagates from outer scopes to inner ones.
+A Workflow's method runs in the outermost scope.
+Cancellations are handled by catching `CanceledFailure`s thrown by cancelable operations.
+
+You can also use the following APIs:
+
+- `CancellationScope.current()`: Get the current scope.
+- `scope.cancel()`: Cancel all operations inside a `scope`.
+- `scope.getCancellationRequest()`: A promise that resolves when a scope cancellation is requested, such as when Workflow code calls `cancel()` or the entire Workflow is cancelled by an external client.
+
+When a `CancellationScope` is cancelled, it propagates cancellation in any child scopes and of any cancelable operations created within it, such as the following:
+
+- Activities
+- Timers (created with the [sleep](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sleep(java.time.Duration)) function)
+- Child Workflows
+- Nexus Operations
+
+### Cancel an Activity from a Workflow {#cancel-activity}
+
+Canceling an Activity from within a Workflow requires that the Activity Execution sends Heartbeats and sets a Heartbeat Timeout.
+If the Heartbeat is not invoked, the Activity cannot receive a cancellation request.
+When any non-immediate Activity is executed, the Activity Execution should send Heartbeats and set a [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) to ensure that the server knows it is still working.
+
+When an Activity is canceled, an error is raised in the Activity at the next available opportunity.
+If cleanup logic needs to be performed, it can be done in a `finally` clause or inside a caught cancel error.
+However, for the Activity to appear canceled the exception needs to be re-raised.
+
+:::note
+
+Unlike regular Activities, [Local Activities](/local-activity) currently do not support cancellation.
+
+:::
+
+To cancel an Activity from a Workflow Execution, call the [cancel()](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/CancellationScope.html#cancel()) method on the CancellationScope that the activity was started in.
+
+```java
+public class GreetingWorkflowImpl implements GreetingWorkflow {
+    @Override
+    public String getGreeting(String name) {
+      List<Promise<String>> results = new ArrayList<>(greetings.length);
+
+      /*
+       * Create our CancellationScope. Within this scope we call the workflow activity
+       * composeGreeting method asynchronously for each of our defined greetings in different
+       * languages.
+       */
+      CancellationScope scope =
+          Workflow.newCancellationScope(
+              () -> {
+                for (String greeting : greetings) {
+                  results.add(Async.function(activities::composeGreeting, greeting, name));
+                }
+              });
+
+      /*
+       * Execute all activities within the CancellationScope. Note that this execution is
+       * non-blocking as the code inside our cancellation scope is also non-blocking.
+       */
+      scope.run();
+
+      // We use "anyOf" here to wait for one of the activity invocations to return
+      String result = Promise.anyOf(results).get();
+
+      // Trigger cancellation of all uncompleted activity invocations within the cancellation scope
+      scope.cancel();
+
+      /*
+       *  Wait for all activities to perform cleanup if needed.
+       *  For the sake of the example we ignore cancellations and
+       *  get all the results so that we can print them in the end.
+       *
+       *  Note that we cannot use "allOf" here as that fails on any Promise failures
+       */
+      for (Promise<String> activityResult : results) {
+        try {
+          activityResult.get();
+        } catch (ActivityFailure e) {
+          if (!(e.getCause() instanceof CanceledFailure)) {
+            throw e;
+          }
+        }
+      }
+      return result;
+    }
+}
+```
+
+## Terminate a Workflow Execution {#termination}
+
+Terminating a Workflow forcefully stops Workflow Execution.
+This action resembles killing a process.
+
+- The system records a `WorkflowExecutionTerminated` event in the Workflow History.
+- The termination forcefully and immediately stops the Workflow Execution.
+- The Workflow code gets no chance to handle termination.
+- A Workflow Task doesn't get scheduled.
+
+To terminate a Workflow Execution in Java, use the [terminate()](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#terminate(java.lang.String,java.lang.Object...)) function on the WorkflowStub.
+
+```java
+WorkflowStub untyped = WorkflowStub.fromTyped(myWorkflowStub);
+untyped.terminate("Sample reason");
+```
