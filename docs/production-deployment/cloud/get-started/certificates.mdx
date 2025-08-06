@@ -254,17 +254,26 @@ To change who receives certificate-expiration notifications for a Namespace (or 
 
 ## How to handle a compromised end-entity certificate
 
+:::warning
+
 Temporal does not support or check certificate revocation lists (CRLs). Customers are expected to keep their certifications up to date.
+
+:::
 
 If you suspect or confirm that an end-entity certificate has been compromised, take immediate action to secure your Temporal Cloud Namespace
 and prevent unauthorized access. Follow these steps:
 
-### 1. Revoke the compromised certificate
+### 1. Generate a new certificate
+
+- **Create a new end-entity certificate**: Use your existing certificate management infrastructure or tools like tcld or certstrap
+  to issue a new certificate. Follow the instructions in [How to issue root CA and end-entity certificates](#issue-certificates).
+  - Ensure the new certificate meets all requirements (X.509v3, CA: false, Digital Signature key usage, and SHA-256 or stronger).
+  - Set an expiration date shorter than the CA certificate's expiration.
+
+### 2. Revoke the compromised certificate
 
 - **Identify the compromised certificate**: Determine which specific end-entity certificate has been compromised
   (by its Common Name (CN) or other identifying fields).
-- **Create the new certificate**: Before you revoke the compromised certificate, you should create the new certificate
-  or update with a new CA used for the Namespace.
 - **Remove the certificate from authorization**:
   - If you are using certificate filters to restrict access, update or remove the filter associated with the compromised certificate.
     See [How to manage certificate filters in Temporal Cloud](#manage-certificate-filters) for instructions.
@@ -272,23 +281,19 @@ and prevent unauthorized access. Follow these steps:
     the compromised end-entity certificate (see [Update certificates using Temporal Cloud UI](#update-certificates-using-temporal-cloud-ui)
     or [Update certificates using tcld](#update-certificates-using-tcld)).
 
-### 2. Generate and deploy a new end-entity certificate
+### 3. Deploy a new end-entity certificate
 
-- **Create a new end-entity certificate**: Use your existing certificate management infrastructure or tools like tcld or certstrap
-  to issue a new certificate. Follow the instructions in [How to issue root CA and end-entity certificates](#issue-certificates).
-  - Ensure the new certificate meets all requirements (X.509v3, CA: false, Digital Signature key usage, and SHA-256 or stronger).
-  - Set an expiration date shorter than the CA certificate's expiration.
 - **Update Clients**: [Configure all clients](https://docs.temporal.io/cloud/certificates#configure-clients-to-use-client-certificates) (Temporal CLI, SDKs, or Workers) to use the new certificate and private key.
   Update client configuration as described in Configure clients to use client certificates.
 - **Verify Connectivity**: Test the new certificate to confirm clients can connect to the Namespace without issues.
 
-### 3. Update certificate filters (if applicable)
+### 4. Update certificate filters (if applicable)
 
 If you use certificate filters, add a new filter for the new certificate's attributes (CN, O, OU, or SAN).
 Remove the filter for the compromised certificate if it was explicitly defined.
 See [How to manage certificate filters in Temporal Cloud](#manage-certificate-filters) for detailed steps.
 
-### 4. Monitor and audit
+### 5. Monitor and audit
 
 - **Monitor Namespace activity**: After implementing the changes, monitor your Namespace for unauthorized access attempts or unusual activity in audit logs.
 - **Audit certificate usage**: Review your certificate management practices to identify how the compromise occurred.
@@ -296,13 +301,7 @@ See [How to manage certificate filters in Temporal Cloud](#manage-certificate-fi
   - Limiting end-entity certificates to specific Namespaces
   - Using short-lived certificates to reduce the impact of future compromises
   - Rotating certificates regularly as a preventive measure
-
-:::warning
-
-A compromised end-entity certificate can allow unauthorized access to your Temporal Cloud Namespace.
-Act quickly to revoke and replace the certificate to minimize the risk of data breaches or service disruptions.
-
-:::
+  - [Audit logs on a regular schedule](https://docs.temporal.io/cloud/audit-logging)
 
 ## How to add, update, and remove certificates in a Temporal Cloud Namespace {#manage-certificates}
 
