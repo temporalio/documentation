@@ -25,10 +25,20 @@ This section includes the following topics:
 - [Integrations](#Integrations)
 - [Testing](#testing)
 
+:::tip Stability
+
+In [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+
+:::
+
 ## Setup Dependency {#setup-dependency}
 
 To start using the Temporal Spring Boot integration, you need to add [`io.temporal:temporal-spring-boot-starter`](https://search.maven.org/artifact/io.temporal/temporal-spring-boot-starter)
 as a dependency to your spring project:
+
+:::note
+Temporal's Spring Boot integration currently supports Spring 2.x and 3.x
+:::
 
 **[Apache Maven](https://maven.apache.org/):**
 
@@ -112,7 +122,7 @@ spring.temporal:
 
 ## Configure Workers {#configure-workers}
 
-Temporal's Spring Boot integration supports two ways to configure workers auto-discovery and an explicit configuration.
+Temporal's Spring Boot integration supports two ways to configure, workers auto-discovery and explicit configuration.
 
 ### Explicit configuration
 
@@ -161,7 +171,7 @@ public class MyActivityImpl implements MyActivity {
 ```
 
 :::note
-Auto-discovered workflow implementation classes, activity beans, and nexus service beans will be registered with the configured workers if not already registered.
+Auto-discovered Workflow implementation classes, Activity beans, and Nexus Service beans will be registered with the configured workers if not already registered.
 :::
 
 ## Interceptors {#interceptors}
