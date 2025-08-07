@@ -55,9 +55,12 @@ cd temporal-hello-world
 </>
 }>
 
-## Create a Maven Project
+## Create a Maven or Gradle Project
 
 Now that you have Java installed, you will need to create a Maven project to manage your dependencies and build your Temporal application.
+To install [Apache Maven](https://maven.apache.org/), [download a copy](https://maven.apache.org/download.cgi) and follow the [instructions](https://maven.apache.org/install.html) at Apache.org.
+
+The [Gradle](https://gradle.org) build tool is bundled with [IntelliJ IDEA](https://www.jetbrains.com/idea/). To download and install it separately from IntelliJ, follow the [instructions](https://gradle.org/install/) at the Gradle.org site.
 
 First, create a project directory and navigate to it. Then, use Maven's archetype generator to create a basic Java project structure. This will create a standard Maven project with the necessary directories and a basic pom.xml file. Finally, navigate into your new project directory where you will add the Temporal dependencies.
 
@@ -65,34 +68,65 @@ First, create a project directory and navigate to it. Then, use Maven's archetyp
 
 <SetupStep code={
 <>
+<Tabs groupId="build-tool" queryString>
+<TabItem value="maven" label="Maven">
+
+
+Add the following dependencies to your Maven Project Object Model (POM) configuration file (`pom.xml`) to compile, build, test, and run a Temporal Application in Java.
+
 <CodeSnippet language="xml">
 {`<dependencies>
+  <!--
+    Temporal dependencies needed to compile, build,
+    test, and run Temporal's Java SDK
+  -->
 
-<!-- Temporal dependencies needed to compile, build, test, and run Temporal's Java SDK -->
-
-<dependency>
-    <groupId>io.temporal</groupId>
-    <artifactId>temporal-sdk</artifactId>
-    <version>1.23.1</version>
-  </dependency>
+  <!--
+    SDK
+  -->
   <dependency>
     <groupId>io.temporal</groupId>
+    <artifactId>temporal-sdk</artifactId>
+    <version>1.24.1</version>
+  </dependency>
+
+  <dependency>
+    <!--
+      Testing
+    -->
+    <groupId>io.temporal</groupId>
     <artifactId>temporal-testing</artifactId>
-    <version>1.23.1</version>
+    <version>1.24.1</version>
+    <scope>test</scope>
   </dependency>
 </dependencies>`}
-    </CodeSnippet>
-  </>
+</CodeSnippet>
+
+</TabItem>
+<TabItem value="gradle" label="Gradle">
+
+Add the following lines to `build.gradle`, your Gradle configuration file. This lets your installation works with the Temporal SDK so you can compile, build, test, and run a Temporal Application in Java.
+
+<CodeSnippet language="groovy">
+{`implementation 'io.temporal:temporal-sdk:1.24.1'
+testImplementation 'io.temporal:temporal-testing:1.24.1'`}
+</CodeSnippet>
+
+</TabItem>
+</Tabs>
+</>
 }>
+
 ## Add Temporal Java SDK Dependencies
 
-Our Java tutorials use Apache Maven to manage dependencies and build applications. You can also use Gradle or other build automation tools.
+Our Java tutorials use [Apache Maven](https://maven.apache.org/) to manage dependencies and build applications. You can also use [Gradle](https://gradle.org) or other build automation tools.
 
-Follow these steps to configure Maven or Gradle for Temporal. To install Apache Maven, download a copy and follow the instructions at <a href="https://maven.apache.org/install.html">Apache.org</a>.
+Follow these steps to configure Maven or Gradle for Temporal.
 
-Add the following dependencies to your Maven POM file to compile, build, test, and run a Temporal Application in Java.
+Next, you'll configure a local Temporal Service for development.
 
 </SetupStep>
+
 
 <SetupStep code={
 <>
