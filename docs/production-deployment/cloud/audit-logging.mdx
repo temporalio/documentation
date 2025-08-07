@@ -39,6 +39,33 @@ Audit Logging supports both [Amazon Kinesis](/cloud/audit-logging-aws) and [Goog
 - Account
   - `ChangeAccountPlanType`: Change Account Plan Type
   - `UpdateAccountAPI`: Configure Audit Logging, Configure Observability Endpoint
+- API Keys
+  - `CreateAPIKey`: Create API Key
+  - `DeleteAPIKey`: Delete API Key
+  - `UpdateAPIKey`: Update API Key
+- Connectivity Rules
+  - `CreateConnectivityRule`: Create Connectivity Rule
+  - `DeleteConnectivityRule`: Delete Connectivity Rule
+- Namespace
+  - `CreateNamespaceAPI`: Create Namespace
+  - `DeleteNamespaceAPI`: Delete Namespace
+  - `FailoverNamespacesAPI`: Failover (for High Availability Namespaces)
+  - `RenameCustomSearchAttributeAPI`: Rename Custom Search Attribute
+  - `UpdateNamespaceAPI`: Includes retention period changes, replica edits, authentication method updates, custom search attributes updates, and connectivity rule bindings
+- Namespace Export
+  - `CreateNamespaceExportSink`: Create Namespace Export Sink
+  - `DeleteNamespaceExportSink`: Delete Namespace Export Sink
+  - `UpdateNamespaceExportSink`: Update Namespace Export Sink
+  - `ValidateNamespaceExportSink`: Validate Namespace Export Sink
+- Nexus Endpoint
+  - `CreateNexusEndpoint`: Create Nexus Endpoint
+  - `DeleteNexusEndpoint`: Delete Nexus Endpoint
+  - `UpdateNexusEndpoint`: Update Nexus Endpoint
+- Service Accounts
+  - `CreateServiceAccount`: Create Service Account
+  - `CreateServiceAccountAPIKey`: Create Service Account API Key
+  - `DeleteServiceAccount`: Delete Service Account
+  - `UpdateServiceAccount`: Update Service Account
 - User
   - `CreateUserAPI`: Create Users
   - `DeleteUserAPI`: Delete Users
@@ -52,30 +79,6 @@ Audit Logging supports both [Amazon Kinesis](/cloud/audit-logging-aws) and [Goog
   - `DeleteUserGroup`: Delete User Group
   - `SetUserGroupNamespaceAccess`: Set User Group Namespace Access
   - `UpdateUserGroup`: Update User Group
-- Namespace
-  - `CreateNamespaceAPI`: Create Namespace
-  - `DeleteNamespaceAPI`: Delete Namespace
-  - `FailoverNamespacesAPI`: Failover (for High Availability Namespaces)
-  - `RenameCustomSearchAttributeAPI`: Rename Custom Search Attribute
-  - `UpdateNamespaceAPI`: Update Namespace (includes change retention period, edit replicas, update authentication methods, update custom search attributes)
-- Nexus Endpoint
-  - `CreateNexusEndpoint`: Create Nexus Endpoint
-  - `DeleteNexusEndpoint`: Delete Nexus Endpoint
-  - `UpdateNexusEndpoint`: Update Nexus Endpoint
-- API Keys
-  - `CreateAPIKey`: Create API Key
-  - `DeleteAPIKey`: Delete API Key
-  - `UpdateAPIKey`: Update API Key
-- Service Accounts
-  - `CreateServiceAccount`: Create Service Account
-  - `CreateServiceAccountAPIKey`: Create Service Account API Key
-  - `DeleteServiceAccount`: Delete Service Account
-  - `UpdateServiceAccount`: Update Service Account
-- Namespace Export
-  - `CreateNamespaceExportSink`: Create Namespace Export Sink
-  - `DeleteNamespaceExportSink`: Delete Namespace Export Sink
-  - `UpdateNamespaceExportSink`: Update Namespace Export Sink
-  - `ValidateNamespaceExportSink`: Validate Namespace Export Sink
 
 ### Audit Log format
 
@@ -83,18 +86,18 @@ Audit Logs use the following JSON format:
 
 ```json
 {
-  "emit_time": // Time the operation was recorded
-  "level": // Level of the log entry, such as info, warning, or error
+  "operation":  // Operation that was performed
+  "principal": // Information about who initiated the operation
+  "details":  // Details of the operation
   "user_email":  // Email address of the user who initiated the operation
   "caller_ip_address": // Customer IP address in the X-Forwarded-For format
-  "operation":  // Operation that was performed
-  "details":  // Details of the operation
-  "status": // Status, such as OK or ERROR
   "category":  // Category of the log entry: Admin or System
-  "version": // Version of the log entry
+  "emit_time": // Time the operation was recorded
+  "level": // Level of the log entry, such as info, warning, or error
   "log_id": // Unique ID of the log entry
-  "principal": // Information about who initiated the operation
   "request_id": // Optional async request id set by the user when sending a request
+  "status": // Status, such as OK or ERROR
+  "version": // Version of the log entry
 }
 ```
 
