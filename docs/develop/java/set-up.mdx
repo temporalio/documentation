@@ -17,6 +17,8 @@ hide_table_of_contents: true
 
 import { SetupSteps, SetupStep, CodeSnippet } from "@site/src/components/elements/SetupSteps";
 import { CallToAction } from "@site/src/components/elements/CallToAction";
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # Quickstart - Setup
 
@@ -32,14 +34,22 @@ Configure your local development environment to get started developing with Temp
 }>
 ## Install the Java JDK
 
-Make sure you have the Java JDK installed. You can either download a copy directly from Oracle or select an OpenJDK distribution from your preferred vendor.
+Make sure you have the Java JDK installed. 
+You can either download a copy directly from Oracle or select an OpenJDK distribution from your preferred vendor.
 
-Check the version of your current JDK installation by executing <code>java -version</code> at a command prompt. We developed and tested these Java tutorials with Java 21, but they should work with version 8 or higher.
 
+You'll also need either Maven or Gradle installed.
+
+**If you don't have Maven:** [Download](https://maven.apache.org/download.cgi) and [install](https://maven.apache.org/install.html) from Apache.org, or use Homebrew: `brew install maven`.
+
+**If you don't have Gradle:** [Download](https://gradle.org/install/) from Gradle.org, use [IntelliJ IDEA](https://www.jetbrains.com/idea/) (bundled), or use Homebrew: `brew install gradle`.
 </SetupStep>
 
 <SetupStep code={
 <>
+<Tabs groupId="build-tool" queryString>
+<TabItem value="maven" label="Maven">
+
 <CodeSnippet language="bash">
 mkdir temporal-java-project
 </CodeSnippet>
@@ -52,17 +62,30 @@ mvn archetype:generate -DgroupId=com.example.temporal -DartifactId=temporal-hell
 <CodeSnippet language="bash">
 cd temporal-hello-world
 </CodeSnippet>
+
+</TabItem>
+<TabItem value="gradle" label="Gradle">
+
+<CodeSnippet language="bash">
+mkdir temporal-hello-world
+</CodeSnippet>
+<CodeSnippet language="bash">
+cd temporal-hello-world
+</CodeSnippet>
+<CodeSnippet language="bash">
+gradle init --type java-application --package com.example.temporal --dsl groovy --test-framework junit
+</CodeSnippet>
+
+</TabItem>
+</Tabs>
 </>
 }>
 
-## Create a Maven or Gradle Project
+## Create a Project
 
-Now that you have Java installed, you will need to create a Maven project to manage your dependencies and build your Temporal application.
-To install [Apache Maven](https://maven.apache.org/), [download a copy](https://maven.apache.org/download.cgi) and follow the [instructions](https://maven.apache.org/install.html) at Apache.org.
+Now that you have your build tool installed, create a project to manage your dependencies and build your Temporal application.
 
-The [Gradle](https://gradle.org) build tool is bundled with [IntelliJ IDEA](https://www.jetbrains.com/idea/). To download and install it separately from IntelliJ, follow the [instructions](https://gradle.org/install/) at the Gradle.org site.
-
-First, create a project directory and navigate to it. Then, use Maven's archetype generator to create a basic Java project structure. This will create a standard Maven project with the necessary directories and a basic pom.xml file. Finally, navigate into your new project directory where you will add the Temporal dependencies.
+Choose your build tool to create the appropriate project structure. For Maven, this creates a standard project with the necessary directories and a basic pom.xml file. For Gradle, this creates a project with build.gradle and the standard Gradle directory structure.
 
 </SetupStep>
 
@@ -70,9 +93,6 @@ First, create a project directory and navigate to it. Then, use Maven's archetyp
 <>
 <Tabs groupId="build-tool" queryString>
 <TabItem value="maven" label="Maven">
-
-
-Add the following dependencies to your Maven Project Object Model (POM) configuration file (`pom.xml`) to compile, build, test, and run a Temporal Application in Java.
 
 <CodeSnippet language="xml">
 {`<dependencies>
@@ -105,8 +125,6 @@ Add the following dependencies to your Maven Project Object Model (POM) configur
 </TabItem>
 <TabItem value="gradle" label="Gradle">
 
-Add the following lines to `build.gradle`, your Gradle configuration file. This lets your installation works with the Temporal SDK so you can compile, build, test, and run a Temporal Application in Java.
-
 <CodeSnippet language="groovy">
 {`implementation 'io.temporal:temporal-sdk:1.24.1'
 testImplementation 'io.temporal:temporal-testing:1.24.1'`}
@@ -119,9 +137,9 @@ testImplementation 'io.temporal:temporal-testing:1.24.1'`}
 
 ## Add Temporal Java SDK Dependencies
 
-Our Java tutorials use [Apache Maven](https://maven.apache.org/) to manage dependencies and build applications. You can also use [Gradle](https://gradle.org) or other build automation tools.
+Now add the Temporal SDK dependencies to your project configuration file.
 
-Follow these steps to configure Maven or Gradle for Temporal.
+For Maven, add the following dependencies to your `pom.xml` file. For Gradle, add the following lines to your `build.gradle` file.
 
 Next, you'll configure a local Temporal Service for development.
 
@@ -209,14 +227,12 @@ Once you have everything installed, you're ready to build apps with Temporal on 
 
 </SetupStep>
 </SetupSteps>
-
 ## Run Hello World: Test Your Installation
 
 Now let's verify your setup is working by creating and running a complete Temporal application with both a Workflow and Activity.
 
 This test will confirm that:
 
-- Your Java SDK installation is working
 - The Temporal Java SDK is properly installed
 - Your local Temporal Service is running
 - You can successfully create and execute Workflows and Activities
@@ -281,7 +297,9 @@ public interface SayHelloWorkflow {
 }
 ```
 
-Workflows orchestrate Activities and contain the application logic. Temporal Workflows are resilient. They can run—and keeping running—for years, even if the underlying infrastructure fails. If the application itself crashes, Temporal will automatically recreate its pre-failure state so it can continue right where it left off.
+Workflows orchestrate Activities and contain the application logic. 
+Temporal Workflows are resilient. 
+They can run and keep running for years, even if the underlying infrastructure fails. If the application itself crashes, Temporal will automatically recreate its pre-failure state so it can continue right where it left off.
 
 You define Workflows in Java as an annotated interface, and its implementation.
 
@@ -349,9 +367,10 @@ public class SayHelloWorker {
 
 With your Activity and Workflow defined, you need a Worker to execute them.
 
-Run the Worker:
+Open a new terminal and run the Worker:
 
 ```bash
+cd temporal-hello-world
 mvn compile exec:java -Dexec.mainClass="helloworkflow.SayHelloWorker"
 ```
 
@@ -395,9 +414,10 @@ public class Starter {
 }
 ```
 
-Then run:
+While your worker is still running, open a new terminal and run:
 
 ```bash
+cd temporal-hello-world
 mvn compile exec:java -Dexec.mainClass="helloworkflow.Starter"
 ```
 
