@@ -125,11 +125,19 @@ Choose your build tool to create the appropriate project structure. For Maven, t
 </TabItem>
 <TabItem value="gradle" label="Gradle">
 
-<CodeSnippet language="groovy">
-{`implementation 'io.temporal:temporal-sdk:1.24.1'
-testImplementation 'io.temporal:temporal-testing:1.24.1'`}
+<CodeSnippet language="xml">
+{`dependencies {
+    // Temporal SDK
+    testImplementation 'io.temporal:temporal-testing:1.24.1'
+
+    // Optional: JUnit 5 for testing
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+}`}
 </CodeSnippet>
 
+<CodeSnippet language="bash">
+./gradlew build
+</CodeSnippet>
 </TabItem>
 </Tabs>
 </>
@@ -241,6 +249,8 @@ This test will confirm that:
 ### 1. Create the Activity Interface
 
 Create an Activity interface file (GreetActivities.java):
+
+_Note that all files for this quickstart will be created under src/main/java/helloworkflow._
 
 ```java
 package helloworkflow;
@@ -369,10 +379,24 @@ With your Activity and Workflow defined, you need a Worker to execute them.
 
 Open a new terminal and run the Worker:
 
+<Tabs>
+<TabItem value="maven" label="Maven">
+
 ```bash
 cd temporal-hello-world
 mvn compile exec:java -Dexec.mainClass="helloworkflow.SayHelloWorker"
 ```
+
+</TabItem>
+<TabItem value="gradle" label="Gradle">
+
+```bash
+cd temporal-hello-world
+./gradlew run --args="helloworkflow.SayHelloWorker"
+```
+
+</TabItem>
+</Tabs>
 
 A Worker polls a Task Queue, that you configure it to poll, looking for work to do.
 Once the Worker dequeues the a Workflow or Activity task from the Task Queue, it then executes that task.
@@ -416,10 +440,24 @@ public class Starter {
 
 While your worker is still running, open a new terminal and run:
 
+<Tabs>
+<TabItem value="maven" label="Maven">
+
 ```bash
 cd temporal-hello-world
 mvn compile exec:java -Dexec.mainClass="helloworkflow.Starter"
 ```
+
+</TabItem>
+<TabItem value="gradle" label="Gradle">
+
+```bash
+cd temporal-hello-world
+./gradlew run
+```
+
+</TabItem>
+</Tabs>
 
 ### Verify Success
 
