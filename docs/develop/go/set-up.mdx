@@ -179,12 +179,12 @@ Create an Activity file (activity.go):
 package greeting
 
 import (
-"context"
-"fmt"
+    "context"
+    "fmt"
 )
 
 func Greet(ctx context.Context, name string) (string, error) {
-return fmt.Sprintf("Hello %s", name), nil
+    return fmt.Sprintf("Hello %s", name), nil
 }
 ```
 
