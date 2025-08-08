@@ -1,15 +1,15 @@
 ---
-id: set-up-local-ruby
-title: Set up your local with the Ruby SDK
+id: set-up-your-local-python
+title: Set up your local with the Python SDK
 sidebar_label: Quickstart - Setup
 description: Configure your local development environment to get started developing with Temporal
 keywords:
   - set up
   - getting started
-  - ruby sdk
+  - python sdk
 tags:
-  - Ruby SDK
-  - Temporal SDKs
+  - python guide
+  - typescript
   - setup
   - getting started
 hide_table_of_contents: true
@@ -20,66 +20,51 @@ import { CallToAction } from "@site/src/components/elements/CallToAction";
 
 # Quickstart - Setup
 
-This guide walks you through setting up the Temporal Ruby SDK and running your first Workflow.
-In just a few steps, you'll install the SDK and start a local development server.
-To validate that your local environment is correctly installed, we will execute a Workflow that will output "Hello, Temporal".
+Configure your local development environment to get started developing with Temporal.
 
 <SetupSteps>
 <SetupStep code={
   <>
-    <p><strong>1. Check your Ruby version:</strong></p>
     <CodeSnippet language="bash">
-    ruby -v
+    python3 -V
     </CodeSnippet>
-    <p>You should see output like <code>ruby 3.4.3</code>. Ruby 3.2+ is required. We recommend Ruby 3.4.3.</p>
-
-    <p><strong>2. Create your project folder:</strong></p>
     <CodeSnippet language="bash">
-    mkdir temporal-project
-    cd temporal-project
+    python 3.13.3
     </CodeSnippet>
+  </>
+}>
+## Install Python
 
-    <p><strong>3. Initialize with Bundler:</strong></p>
-    <CodeSnippet language="bash">
-    bundle init
-    </CodeSnippet>
+Make sure you have Python installed.
+Check your version of Python with the following command:
 
-    <p><strong>4. Add the Temporal Ruby SDK:</strong></p>
-    <CodeSnippet language="bash">
-    bundle add temporalio
-    </CodeSnippet>
+</SetupStep>
 
-    <p>You should see output like:</p>
-    <CodeSnippet language="bash">
-    Fetching gem metadata from https://rubygems.org/...
-    Resolving dependencies...
-    Installing temporalio 0.4.0 (arm64-darwin)
-    Bundle complete! 1 Gemfile dependency, 6 gems now installed.
-    </CodeSnippet>
-
-    <p><strong>5. Install dependencies:</strong></p>
-    <CodeSnippet language="bash">
-    bundle install
-    </CodeSnippet>
-
+<SetupStep code={
+<>
+<CodeSnippet language="bash">
+mkdir temporal-project
+</CodeSnippet>
+<CodeSnippet language="bash">
+cd temporal-project
+</CodeSnippet>
+<CodeSnippet language="bash">
+python3 -m venv env
+</CodeSnippet>
+<CodeSnippet language="bash">
+source env/bin/activate
+</CodeSnippet>
+<CodeSnippet language="bash">
+pip install temporalio
+</CodeSnippet>
 </>
 }>
 
-## Installation
+## Install the Temporal Python SDK
 
-This step sets up a new Ruby project using Bundler and installs the Temporal Ruby SDK.
+You should install the Temporal Python SDK in your project using a virtual environment. Create a directory for your Temporal project, switch to the new directory, create a Python virtual environment, activate it, and then install the Temporal SDK.
 
-We recommend using [Bundler](https://bundler.io/) to manage your Ruby project dependencies, including the Temporal SDK. These tutorials assume Ruby 3.4.3 or higher.
-
-Follow the steps to create a directory, initialize the project with a `Gemfile`, and add the Temporal SDK.
-
-**Note:**
-
-- Only macOS ARM/x64 and Linux ARM/x64 are supported.
-- Source gem is published but **cannot be built directly**.
-- Windows (MinGW) is not supported.
-- `fibers`/`async` are only supported on Ruby **3.3+**.
-- See [Platform Support](#) for full details.
+Next, you'll configure a local Temporal Service for development.
 
 </SetupStep>
 
@@ -172,108 +157,121 @@ Now let's verify your setup is working by creating and running a complete Tempor
 
 This test will confirm that:
 
-- The Temporal Ruby SDK is properly installed
+- The Temporal Python SDK is properly installed
 - Your local Temporal Service is running
 - You can successfully create and execute Workflows and Activities
 - The communication between components is functioning correctly
 
 ### 1. Create the Activity
 
-Create an Activity file (say_hello_activity.rb):
+Create an Activity file (activities.py):
 
-```ruby
-require 'temporalio/activity'
+```python
+from temporalio import activity
 
-# Implementation of a simple activity
-class SayHelloActivity < Temporalio::Activity::Definition
-  def execute(name)
-    "Hello, #{name}!"
-  end
-end
+@activity.defn
+async def greet(name: str) -> str:
+    return f"Hello {name}"
 ```
+
+An Activity is a normal function or method that executes a single, well-defined action (either short or long running), which often involve interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling an API, which are prone to failure.
+If an Activity fails, Temporal automatically retries it based on your configuration.
 
 ### 2. Create the Workflow
 
-Create a Workflow file (say_hello_workflow.rb):
+Create a Workflow file (workflows.py):
 
-```ruby
-require 'temporalio/workflow'
-require_relative 'say_hello_activity'
+```python
+from datetime import timedelta
+from temporalio import workflow
+from activities import greet
 
-class SayHelloWorkflow < Temporalio::Workflow::Definition
-  def execute(name)
-    Temporalio::Workflow.execute_activity(
-      SayHelloActivity,
-      name,
-      schedule_to_close_timeout: 300
-    )
-  end
-end
+@workflow.defn
+class SayHelloWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        return await workflow.execute_activity(
+            "greet",
+            name,
+            schedule_to_close_timeout=timedelta(seconds=10),
+        )
 ```
 
-### 3. Create and Run the Worker
+Workflows orchestrate Activities and contain the application logic.
+Temporal Workflows are resilient.
+They can run and keep running for years, even if the underlying infrastructure fails. If the application itself crashes, Temporal will automatically recreate its pre-failure state so it can continue right where it left off.
 
-With your Activity and Workflow defined, you need a Worker to execute them.
+### 3. Create the Worker
+
+Create a Worker file (worker.py):
+
+```python
+import asyncio
+from temporalio.client import Client
+from temporalio.worker import Worker
+from workflows import SayHelloWorkflow
+from activities import greet
+
+async def main():
+    client = await Client.connect("localhost:7233")
+    worker = Worker(
+        client,
+        task_queue="my-task-queue",
+        workflows=[SayHelloWorkflow],
+        activities=[greet],
+        )
+    print("Worker started.")
+    await worker.run()
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+Run the Worker and keep this terminal running:
+
+```bash
+python3 worker.py
+```
+
+With your Activity and Workflow defined, you need a Worker to execute them. A Worker polls a Task Queue, that you configure it to poll, looking for work to do. Once the Worker dequeues the Workflow or Activity task from the Task Queue, it then executes that task.
+
 Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your Workflows and Activities.
 For more information on Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
 
-Create a Worker file (worker.rb):
-
-```ruby
-require 'temporalio/client'
-require 'temporalio/worker'
-require_relative 'say_hello_activity'
-require_relative 'say_hello_workflow'
-
-# Create a client
-client = Temporalio::Client.connect('localhost:7233', 'default')
-
-# Create a worker with the client, activities, and workflows
-worker = Temporalio::Worker.new(
-  client:,
-  task_queue: 'my-task-queue',
-  workflows: [SayHelloWorkflow],
-  # There are various forms an activity can take, see "Activities" section for details
-  activities: [SayHelloActivity]
-)
-
-# Run the worker until SIGINT. This can be done in many ways, see "Workers" section for details.
-worker.run(shutdown_signals: ['SIGINT'])
-```
-
-Run the Worker:
-
-```bash
-ruby worker.rb
-```
+Keep this terminal running - you should see "Worker started" displayed.
 
 ### 4. Execute the Workflow
 
 Now that your Worker is running, it's time to start a Workflow Execution.
 
-Create a separate file called starter.rb:
+This final step will validate that everything is working correctly with your file labeled `starter.py`.
 
-```ruby
-require 'temporalio/client'
-require_relative 'say_hello_workflow'
+Create a separate file called `starter.py`:
 
-# Create a client
-client = Temporalio::Client.connect('localhost:7233', 'default')
+```python
+import asyncio
+import uuid
+from temporalio.client import Client
 
-# Run workflow
-result = client.execute_workflow(
-  SayHelloWorkflow,
-  'Temporal', # This is the input to the workflow
-  id: 'my-workflow-id',
-  task_queue: 'my-task-queue'
-)
-puts "Result: #{result}"
+async def main():
+    client = await Client.connect("localhost:7233")
+    result = await client.execute_workflow(
+        "SayHelloWorkflow",
+        "Temporal",
+        id=f"say-hello-workflow-{uuid.uuid4()}",
+        task_queue="my-task-queue",
+    )
+    print("Workflow result:", result)
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
-Then run:
+Then in a new terminal window, run:
 
 ```bash
-ruby starter.rb
+source venv/bin/activate
+python3 starter.py
 ```
 
 ### Verify Success
@@ -281,10 +279,10 @@ ruby starter.rb
 If everything is working correctly, you should see:
 
 - Worker processing the workflow and activity
-- Output: `Workflow result: Hello, Temporal!`
+- Output: `Workflow result: Hello Temporal`
 - Workflow Execution details in the [Temporal Web UI](http://localhost:8233)
 
-<CallToAction href="https://learn.temporal.io/getting_started/ruby/first_program_in_ruby/">
+<CallToAction href="https://learn.temporal.io/getting_started/python/first_program_in_python/">
   <h3>Next: Run your first Temporal Application</h3>
-  <p>Learn how to create a basic Workflow and run it with the Temporal Ruby SDK</p>
+  <p>Learn how to create a basic Workflow and run it with the Temporal Python SDK</p>
 </CallToAction>
