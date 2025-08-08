@@ -274,29 +274,37 @@ If you need to replace a compromised certificate manually, follow these steps:
 
 ### 1. Generate a new CA certificate
 
-- **Create a new CA certificate**: Follow the instructions in [How to issue CA and end-entity certificates](#issue-certificates).
-  All end-entity certificates that can be reached by the previous CA must be regenerated.
-- **Check requirements**: Ensure the new CA certificate meets [the certificate requirements](#certificate-requirements).
+Follow the instructions in [How to issue CA and end-entity certificates](#issue-certificates).
+All end-entity certificates that can be reached by the previous CA must be regenerated.
+Ensure the new CA certificate meets [the certificate requirements](#certificate-requirements).
 
 ### 2. Deploy the new CA certificate to the Namespace
 
-- **Issue the new CA certificate**: Follow the instructions for issuing a [new CA certificate to a Namespace](#option-1-issue-a-separate-root-certificate-for-each-namespace).
+Follow the instructions for issuing a [new CA certificate to a Namespace](#option-1-issue-a-separate-root-certificate-for-each-namespace).
+Deploy the new CA certificate alongside the existing one, so you don’t lose connectivity with old end-entity certificates before the new ones are generated and deployed.
 
-### 3. Update Workers and Clients
+### 3. Regenerate end-entity certificates with the new CA certificate
 
-- **Regenerate end-entity certificates**: [Configure all clients](https://docs.temporal.io/cloud/certificates#configure-clients-to-use-client-certificates)
-  (Temporal CLI, SDKs, or Workers) to use the new certificate and private key alongside the compromised key.
-  Update the client configuration as described in [Configure clients to use client certificates](https://docs.temporal.io/cloud/certificates#configure-clients-to-use-client-certificates).
-- **Verify Connectivity**: Test the new certificate to confirm clients can connect to the Namespace without issues.
+[Configure all clients](https://docs.temporal.io/cloud/certificates#configure-clients-to-use-client-certificates)
+(Temporal CLI, SDKs, or Workers) to use the new certificate and private key alongside the compromised key.
+Update the client configuration as described in [Configure clients to use client certificates](#configure-clients-to-use-client-certificates).
 
-### 4. Monitor and audit
+Test the new certificate to confirm clients can connect to the Namespace without issues.
 
-- **Monitor Namespace activity**: After implementing the changes, monitor your Namespace for unauthorized access attempts or unusual activity in audit logs.
-- **Audit certificate usage**: Review your certificate management practices to identify how the compromise occurred.
-  Consider implementing stricter controls, such as:
-  - Limiting end-entity certificates to specific Namespaces
-  - Rotating certificates regularly as a preventive measure
-  - [Audit logs on a regular schedule](https://docs.temporal.io/cloud/audit-logging)
+### 4. Remove the compromised CA certificate
+
+Follow the instructions in [How to add, update, and remove certificates in a Temporal Cloud Namespace](#manage-certificates)
+to remove the compromised CA certificate from the Namespace.
+
+### 5. Monitor and audit
+
+After implementing the changes, monitor your Namespace for unauthorized access attempts or unusual activity in audit logs.
+Review your certificate management practices to identify how the compromise occurred.
+Consider implementing stricter controls, such as:
+
+- Limiting end-entity certificates to specific Namespaces
+- Rotating certificates regularly as a preventive measure
+- [Audit logs on a regular schedule](https://docs.temporal.io/cloud/audit-logging)
 
 ## How to add, update, and remove certificates in a Temporal Cloud Namespace {#manage-certificates}
 
