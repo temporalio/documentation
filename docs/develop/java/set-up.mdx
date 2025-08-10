@@ -57,7 +57,7 @@ mkdir temporal-java-project
 cd temporal-java-project
 </CodeSnippet>
 <CodeSnippet language="bash">
-mvn archetype:generate -DgroupId=com.example.temporal -DartifactId=temporal-hello-world -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+mvn archetype:generate -DgroupId=helloworkflow -DartifactId=temporal-hello-world -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
 </CodeSnippet>
 <CodeSnippet language="bash">
 cd temporal-hello-world
@@ -73,7 +73,7 @@ mkdir temporal-hello-world
 cd temporal-hello-world
 </CodeSnippet>
 <CodeSnippet language="bash">
-gradle init --type java-application --package com.example.temporal --dsl groovy --test-framework junit
+gradle init --type java-application --project-name temporal-hello-world --package helloworkflow
 </CodeSnippet>
 
 </TabItem>
@@ -201,7 +201,7 @@ Choose your operating system to install Temporal CLI:
 <SetupStep code={
 <>
 
-<p>After installing, open a new Terminal window and start the development server:</p>
+<p>After installing, open a new Terminal. Keep this running in the background:</p>
 <CodeSnippet language="bash">
 temporal server start-dev
 </CodeSnippet>
