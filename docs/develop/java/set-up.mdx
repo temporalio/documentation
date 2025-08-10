@@ -125,13 +125,38 @@ Choose your build tool to create the appropriate project structure. For Maven, t
 </TabItem>
 <TabItem value="gradle" label="Gradle">
 
-<CodeSnippet language="xml">
-{`dependencies {
-    // Temporal SDK
-    testImplementation 'io.temporal:temporal-testing:1.24.1'
+<CodeSnippet language="groovy">
+{`plugins {
+    id 'application'
+}
 
-    // Optional: JUnit 5 for testing
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'io.temporal:temporal-sdk:1.24.1'
+    testImplementation 'io.temporal:temporal-testing:1.24.1'
+}
+
+application {
+    // Define the main class for the application
+    mainClass = 'helloworkflow.Starter'
+}
+
+// Helper tasks to run the worker and the starter
+tasks.register('runWorker', JavaExec) {
+    group = 'application'
+    description = 'Run the Temporal worker'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'helloworkflow.SayHelloWorker'
+}
+
+tasks.register('runStarter', JavaExec) {
+    group = 'application'
+    description = 'Run the workflow starter'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'helloworkflow.Starter'
 }`}
 </CodeSnippet>
 
@@ -391,7 +416,6 @@ mvn compile exec:java -Dexec.mainClass="helloworkflow.SayHelloWorker"
 <TabItem value="gradle" label="Gradle">
 
 ```bash
-cd temporal-hello-world
 ./gradlew run --args="helloworkflow.SayHelloWorker"
 ```
 
@@ -452,7 +476,6 @@ mvn compile exec:java -Dexec.mainClass="helloworkflow.Starter"
 <TabItem value="gradle" label="Gradle">
 
 ```bash
-cd temporal-hello-world
 ./gradlew run
 ```
 
