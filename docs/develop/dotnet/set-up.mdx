@@ -42,17 +42,17 @@ Configure your local development environment to get started developing with Temp
     <>
       <CodeSnippet language="bash">
 {`# Create solution and projects
-mkdir temporalidotnethelloworld
-cd temporalidotnethelloworld
+mkdir temporaliodotnethelloworld
+cd temporaliodotnethelloworld
 
-dotnet new sln -n temporalidotnethelloworld
+dotnet new sln -n temporaliodotnethelloworld
 
 dotnet new classlib -o Workflow
 dotnet new console -o Worker
 dotnet new console -o Client
 
 # Add projects to the solution
-dotnet sln temporalidotnethelloworld.sln add Workflow/Workflow.csproj Worker/Worker.csproj Client/Client.csproj
+dotnet sln temporaliodotnethelloworld.sln add Workflow/Workflow.csproj Worker/Worker.csproj Client/Client.csproj
 
 # Install Temporal SDK in each project
 dotnet add Workflow/Workflow.csproj package Temporalio
@@ -178,7 +178,7 @@ TEMPORELIDOTNETHELLOWORLD/
 │   ├── Workflow.csproj
 │   ├── MyActivities.cs         # Activity definition
 │   └── SayHelloWorkflow.cs     # Workflow definition
-└── temporalidotnethelloworld.sln
+└── temporaliodotnethelloworld.sln
 ```
 
 </details>
