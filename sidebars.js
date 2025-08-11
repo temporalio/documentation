@@ -176,6 +176,7 @@ module.exports = {
             id: "develop/php/index",
           },
           items: [
+            "develop/php/set-up-your-local-php",
             "develop/php/core-application",
             "develop/php/temporal-clients",
             "develop/php/testing-suite",
