@@ -279,10 +279,10 @@ using Temporalio.Activities;
 
 public class MyActivities
 {
-// Activities can be async and/or static too! We just demonstrate instance
-// methods since many will use them that way.
-[Activity]
-public string SayHello(string name) => $"Hello, {name}!";
+    // Activities can be async and/or static too! We just demonstrate instance
+    // methods since many will use them that way.
+    [Activity]
+    public string SayHello(string name) => $"Hello, {name}!";
 }
 ```
 
@@ -301,18 +301,19 @@ using Temporalio.Workflows;
 [Workflow]
 public class SayHelloWorkflow
 {
-[WorkflowRun]
-public async Task<string> RunAsync(string name)
-{
-// This workflow just runs a simple activity to completion.
-// StartActivityAsync could be used to just start and there are many
-// other things that you can do inside a workflow.
-return await Workflow.ExecuteActivityAsync(
-// This is a lambda expression where the instance is typed. If this
-// were static, you wouldn't need a parameter.
-(MyActivities act) => act.SayHello(name),
-new() { StartToCloseTimeout = TimeSpan.FromMinutes(5) });
-}
+    [WorkflowRun]
+    public async Task<string> RunAsync(string name)
+    {
+        // This workflow just runs a simple activity to completion.
+        // StartActivityAsync could be used to just start and there are many
+        // other things that you can do inside a workflow.
+        return await Workflow.ExecuteActivityAsync(
+            // This is a lambda expression where the instance is typed. If this
+            // were static, you wouldn't need a parameter.
+            (MyActivities act) => act.SayHello(name),
+            new() { StartToCloseTimeout = TimeSpan.FromMinutes(5) }
+        );
+    }
 }
 ```
 
@@ -335,10 +336,10 @@ var client = await TemporalClient.ConnectAsync(new("localhost:7233"));
 
 // Cancellation token to shutdown worker on ctrl+c
 using var tokenSource = new CancellationTokenSource();
-Console.CancelKeyPress += (\_, eventArgs) =>
+Console.CancelKeyPress += (_, eventArgs) =>
 {
-tokenSource.Cancel();
-eventArgs.Cancel = true;
+    tokenSource.Cancel();
+    eventArgs.Cancel = true;
 };
 
 // Create an activity instance since we have instance activities. If we had
@@ -347,20 +348,21 @@ var activities = new MyActivities();
 
 // Create worker with the activity and workflow registered
 using var worker = new TemporalWorker(
-client,
-new TemporalWorkerOptions("my-task-queue").
-AddActivity(activities.SayHello).
-AddWorkflow<SayHelloWorkflow>());
+    client,
+    new TemporalWorkerOptions("my-task-queue")
+        .AddActivity(activities.SayHello)
+        .AddWorkflow<SayHelloWorkflow>()
+);
 
 // Run worker until cancelled
 Console.WriteLine("Running worker");
 try
 {
-await worker.ExecuteAsync(tokenSource.Token);
+    await worker.ExecuteAsync(tokenSource.Token);
 }
 catch (OperationCanceledException)
 {
-Console.WriteLine("Worker cancelled");
+    Console.WriteLine("Worker cancelled");
 }
 ```
 
@@ -369,4 +371,24 @@ Keep this terminal running - you should see `Running worker` displayed.
 
 ```bash
 dotnet run --project Worker
+```
+
+### 4. Create the Client Project (Client/)
+
+#### Create a Client file (Program.cs):
+
+```csharp
+using MyNamespace;
+using Temporalio.Client;
+
+// Create a client to localhost on "default" namespace
+var client = await TemporalClient.ConnectAsync(new("localhost:7233"));
+
+// Run workflow
+var result = await client.ExecuteWorkflowAsync(
+    (SayHelloWorkflow wf) => wf.RunAsync("Temporal"),
+    new(id: "my-workflow-id", taskQueue: "my-task-queue")
+);
+
+Console.WriteLine("Workflow result: {0}", result);
 ```
