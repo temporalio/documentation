@@ -9,7 +9,6 @@ keywords:
   - python sdk
 tags:
   - python guide
-  - typescript
   - setup
   - getting started
 hide_table_of_contents: true
@@ -36,7 +35,7 @@ Configure your local development environment to get started developing with Temp
 ## Install Python
 
 Make sure you have Python installed.
-Check your version of Python with the following command:
+Check your version of Python with the following command.
 
 </SetupStep>
 
@@ -227,18 +226,22 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-Run the Worker and keep this terminal running:
+Run the Worker by opening up a new terminal:
 
 ```bash
+source env/bin/activate
 python3 worker.py
 ```
 
-With your Activity and Workflow defined, you need a Worker to execute them. A Worker polls a Task Queue, that you configure it to poll, looking for work to do. Once the Worker dequeues the Workflow or Activity task from the Task Queue, it then executes that task.
+Keep this terminal running - you should see "Worker started" displayed.
+
+With your Activity and Workflow defined, you need a Worker to execute them. 
+A Worker polls a Task Queue, that you configure it to poll, looking for work to do. 
+Once the Worker dequeues the Workflow or Activity task from the Task Queue, it then executes that task.
 
 Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your Workflows and Activities.
 For more information on Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
 
-Keep this terminal running - you should see "Worker started" displayed.
 
 ### 4. Execute the Workflow
 
@@ -267,10 +270,10 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-Then in a new terminal window, run:
+While the worker is still running, run the following command in a new termainl:
 
 ```bash
-source venv/bin/activate
+source env/bin/activate
 python3 starter.py
 ```
 
@@ -278,7 +281,7 @@ python3 starter.py
 
 If everything is working correctly, you should see:
 
-- Worker processing the workflow and activity
+- Worker processing the Workflow and Activity
 - Output: `Workflow result: Hello Temporal`
 - Workflow Execution details in the [Temporal Web UI](http://localhost:8233)
 
