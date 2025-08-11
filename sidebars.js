@@ -114,6 +114,7 @@ module.exports = {
             id: "develop/go/index",
           },
           items: [
+            "develop/go/set-up-your-local-go",
             "develop/go/core-application",
             "develop/go/temporal-clients",
             "develop/go/go-sdk-multithreading",
