@@ -126,7 +126,6 @@ import io.temporal.common.VersioningBehavior;
 import io.temporal.common.WorkerDeploymentVersion;
 import io.temporal.worker.WorkerDeploymentOptions;
 
-WorkerOptions options =
     WorkerOptions.newBuilder()
     .setDeploymentOptions(
         WorkerDeploymentOptions.newBuilder()
@@ -136,6 +135,7 @@ WorkerOptions options =
         .build())
     .build();
 ```
+
 </SdkTabs.Java>
 <SdkTabs.Python>
 ```python
@@ -167,6 +167,7 @@ const myWorker = await Worker.create({
   workerDeploymentOptions: {
     useWorkerVersioning: true,
     version: { buildId: '1.0', deploymentName: 'llm_srv' },
+
     defaultVersioningBehavior: 'UNSPECIFIED',
   },
   connection: nativeConnection,
