@@ -18,6 +18,8 @@ hide_table_of_contents: true
 import { SetupSteps, SetupStep, CodeSnippet } from "@site/src/components/elements/SetupSteps";
 import { InfoBox } from "@site/src/components/elements/InfoBox";
 import { CallToAction } from "@site/src/components/elements/CallToAction";
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # Quickstart - Setup
 
@@ -40,10 +42,10 @@ Install .NET by following the [official .NET instructions](https://dotnet.micros
 <SetupStep code={
 <>
 <CodeSnippet language="bash">
-dotnet new console -n temporalidotnet
+dotnet new console -n temporaliodotnet
 </CodeSnippet>
 <CodeSnippet language="bash">
-cd temporalidotnet
+cd temporaliodotnet
 </CodeSnippet>
 <CodeSnippet language="bash">
 dotnet add package Temporalio
@@ -119,7 +121,7 @@ temporal server start-dev
       <h4>Change the Web UI port</h4>
       <p>
         The Temporal Web UI may be on a different port in some examples or tutorials.
-        To change the port for the Web UI, use the --ui-port option when starting the server:
+        To change the `--ui-port` option when starting the server:
       </p>
       <CodeSnippet language="bash">
       temporal server start-dev --ui-port 8080
@@ -223,9 +225,52 @@ This test will confirm that:
 - You can successfully create and execute Workflows and Activities
 - The communication between components is functioning correctly
 
-### 1. Create the Activity
+#### Project setup
 
-Create an Activity file (MyActivities.cs)
+Install dependencies (from the root of the solution):
+
+```bash
+dotnet add Workflow/Workflow.csproj package Temporalio
+dotnet add Worker/Worker.csproj package Temporalio
+dotnet add Client/Client.csproj package Temporalio
+```
+
+Add project references:
+
+```bash
+dotnet add Worker/Worker.csproj reference Workflow/Workflow.csproj
+dotnet add Client/Client.csproj reference Workflow/Workflow.csproj
+```
+
+Restore packages:
+
+```bash
+dotnet restore
+```
+
+<details>
+  <summary>Project directory structure</summary>
+
+  ```text
+  TEMPORELIDOTNETHELLOWORLD/
+  ├── Client/
+  │   ├── Client.csproj
+  │   └── Program.cs              # Starts a workflow
+  ├── Worker/
+  │   ├── Worker.csproj
+  │   └── Program.cs              # Runs a worker
+  ├── Workflow/
+  │   ├── Workflow.csproj
+  │   ├── MyActivities.cs         # Activity definition
+  │   └── SayHelloWorkflow.cs     # Workflow definition
+  └── temporalidotnethelloworld.sln
+  ```
+
+</details>
+
+### 1. Create the Workflow Project (Workflow/)
+
+#### Create an Activity file (MyActivities.cs)
 
 ```csharp
 namespace MyNamespace;
@@ -244,7 +289,7 @@ public string SayHello(string name) => $"Hello, {name}!";
 An Activity is a normal function or method that executes a single, well-defined action (either short or long running), which often involve interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling an API, which are prone to failure.
 If an Activity fails, Temporal automatically retries it based on your configuration.
 
-### 2. Create the Workflow
+#### Create the Workflow
 
 Create a Workflow file (SayHelloWorkflow.cs)
 
@@ -276,9 +321,9 @@ Temporal Workflows are resilient.
 They can run—and keeping running—for years, even if the underlying infrastructure fails.
 If the application itself crashes, Temporal will automatically recreate its pre-failure state so it can continue right where it left off.
 
-### 3. Create and Run the Worker
+### 3. Create the Worker Project (Worker/)
 
-Create a Worker file (Program.cs):
+#### Create a Worker file (Program.cs):
 
 ```csharp
 using MyNamespace;
@@ -320,194 +365,8 @@ Console.WriteLine("Worker cancelled");
 ```
 
 Run the Worker:
-Keep this terminal running - you should see "Running worker" displayed.
+Keep this terminal running - you should see `Running worker` displayed.
 
 ```bash
-dotnet run
+dotnet run --project Worker
 ```
-
-With your Activity and Workflow defined, you need a Worker to execute them. A Worker polls a Task Queue, that you configure it to poll, looking for work to do. Once the Worker dequeues the a Workflow or Activity task from the Task Queue, it then executes that task.
-
-Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your Workflows and Activities.
-For more information on Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
-
-### 4. Execute the Workflow
-
-Now that your Worker is running, it's time to start a Workflow Execution.
-
-This final step will validate that everything is working correctly with your file labeled `Client.cs`.
-
-Create a separate file called `Client.cs`.
-
-```csharp
-using MyNamespace;
-using Temporalio.Client;
-
-// Create a client to localhost on "default" namespace
-var client = await TemporalClient.ConnectAsync(new("localhost:7233"));
-
-// Run workflow
-var result = await client.ExecuteWorkflowAsync(
-(SayHelloWorkflow wf) => wf.RunAsync("Temporal"),
-new(id: "my-workflow-id", taskQueue: "my-task-queue"));
-
-Console.WriteLine("Workflow result: {0}", result);
-```
-
-Then run:
-`dotnet run Client.cs`
-
-    <div className="success-section">
-      <h4>
-        <svg
-          viewBox="0 0 24 24"
-          width="20"
-          height="20"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="success-icon"
-        >
-          <path d="M9 12l2 2 4-4" />
-          <circle cx="12" cy="12" r="10" />
-        </svg>
-        Verify Success
-      </h4>
-      <p>If everything is working correctly, you should see:</p>
-      <ul>
-        <li>Worker processing the workflow and activity</li>
-        <li>Output: <code>Workflow result: Hello, Temporal!</code></li>
-        <li>Workflow Execution details in the <a href="http://localhost:8233" target="_blank">Temporal Web UI</a></li>
-      </ul>
-    </div>
-
-    <style>
-      {`
-        .execution-options {
-          background: rgba(68, 76, 231, 0.08);
-          border: 1px solid rgba(68, 76, 231, 0.15);
-          border-radius: 0.75rem;
-          padding: 1.25rem;
-          margin: 1.5rem 0 1rem 0;
-        }
-
-        .execution-options h4 {
-          margin-top: 0;
-          margin-bottom: 0.75rem;
-          color: var(--ifm-color-emphasis-900);
-          font-weight: 600;
-        }
-
-        .execution-options p {
-          margin-bottom: 0;
-          font-size: 0.95rem;
-          color: var(--ifm-color-emphasis-800);
-        }
-
-        .option-section {
-          background: var(--ifm-color-emphasis-50);
-          border: 1px solid var(--ifm-color-emphasis-200);
-          border-radius: 0.5rem;
-          padding: 1.25rem;
-          margin: 1rem 0;
-        }
-
-        .option-section h5 {
-          margin-top: 0;
-          margin-bottom: 0.75rem;
-          color: var(--ifm-color-emphasis-900);
-          font-size: 1.1rem;
-        }
-
-        .option-section p {
-          margin-bottom: 1rem;
-          font-size: 0.95rem;
-          line-height: 1.5;
-          color: var(--ifm-color-emphasis-800);
-        }
-
-        .option-section p:last-child {
-          margin-bottom: 0;
-        }
-
-        .success-section {
-          background: rgba(34, 197, 94, 0.08);
-          border: 1px solid rgba(34, 197, 94, 0.2);
-          border-radius: 0.75rem;
-          padding: 1.25rem;
-          margin: 1.5rem 0;
-        }
-
-        .success-section h4 {
-          margin-top: 0;
-          margin-bottom: 1rem;
-          color: var(--ifm-color-success-dark);
-          font-weight: 600;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-        }
-
-        .success-icon {
-          stroke: var(--ifm-color-success-dark);
-          flex-shrink: 0;
-        }
-
-        .success-section p {
-          margin-bottom: 1rem;
-          font-size: 0.95rem;
-          line-height: 1.5;
-          color: var(--ifm-color-emphasis-800);
-        }
-
-        .success-section ul {
-          margin-bottom: 0;
-          padding-left: 1.5rem;
-        }
-
-        .success-section li {
-          margin-bottom: 0.5rem;
-          font-size: 0.95rem;
-          color: var(--ifm-color-emphasis-800);
-        }
-
-        [data-theme='dark'] .execution-options {
-          background: rgba(68, 76, 231, 0.12);
-          border-color: rgba(68, 76, 231, 0.25);
-        }
-
-        [data-theme='dark'] .option-section {
-          background: var(--ifm-color-emphasis-100);
-          border-color: var(--ifm-color-emphasis-300);
-        }
-
-        [data-theme='dark'] .success-section {
-          background: rgba(34, 197, 94, 0.12);
-          border-color: rgba(34, 197, 94, 0.3);
-        }
-
-        @media (max-width: 768px) {
-          .execution-options,
-          .option-section,
-          .success-section {
-            padding: 1rem;
-          }
-        }
-      `}
-    </style>
-
-:::note ADDITIONAL DETAILS ABOUT THE WORKFLOW EXECUTION
-
-- Temporal clients are not explicitly closed.
-- To enable TLS, the `tls` option can be set to `true` or a `Temporalio::Client::Connection::TLSOptions` instance.
-- To start a Workflow Execution in .NET, use either the `StartWorkflowAsync()` or `ExecuteWorkflowAsync()` methods in the Client.
-- Use `StartWorkflowAsync()` if you do not plan to wait for the Workflow result in the same process.
-- Use `ExecuteWorkflowAsync()` to start a Workflow Execution and then wait for a result.
-  :::
-
-<CallToAction href="https://learn.temporal.io/getting_started/dotnet/first_program_in_dotnet/">
-  <h3>Next: Run your first Temporal Application</h3>
-  <p>Learn how to create a basic Workflow and run it with the Temporal .NET SDK</p>
-</CallToAction>
