@@ -153,8 +153,8 @@ This test will confirm that:
 
 #### Project setup
 
+Run the following commands: 
 ```bash
-
 # Add project references
 dotnet add Worker/Worker.csproj reference Workflow/Workflow.csproj
 dotnet add Client/Client.csproj reference Workflow/Workflow.csproj
@@ -310,7 +310,7 @@ var client = await TemporalClient.ConnectAsync(new("localhost:7233"));
 // Run workflow
 var result = await client.ExecuteWorkflowAsync(
     (SayHelloWorkflow wf) => wf.RunAsync("Temporal"),
-    new(id: "my-workflow-id", taskQueue: "my-task-queue")
+    new(id: $"my-workflow-id-{Guid.NewGuid()}", taskQueue: "my-task-queue")
 );
 
 Console.WriteLine("Workflow result: {0}", result);
