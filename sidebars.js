@@ -153,6 +153,7 @@ module.exports = {
             "develop/java/testing-suite",
             "develop/java/failure-detection",
             "develop/java/message-passing",
+            "develop/java/cancellation",
             "develop/java/asynchronous-activity-completion",
             "develop/java/versioning",
             "develop/java/observability",
