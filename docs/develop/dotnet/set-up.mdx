@@ -227,25 +227,20 @@ This test will confirm that:
 
 #### Project setup
 
-Install dependencies (from the root of the solution):
-
 ```bash
+# Install dependencies (from the root of the solution)
 dotnet add Workflow/Workflow.csproj package Temporalio
 dotnet add Worker/Worker.csproj package Temporalio
 dotnet add Client/Client.csproj package Temporalio
-```
 
-Add project references:
-
-```bash
+# Add project references
 dotnet add Worker/Worker.csproj reference Workflow/Workflow.csproj
 dotnet add Client/Client.csproj reference Workflow/Workflow.csproj
 ```
 
-Restore packages:
-
+Build the solution: 
 ```bash
-dotnet restore
+dotnet build
 ```
 
 <details>
@@ -268,9 +263,9 @@ dotnet restore
 
 </details>
 
-### 1. Create the Workflow Project (Workflow/)
+### 1. Create the Activity and Workflow 
 
-#### Create an Activity file (MyActivities.cs)
+#### Create an Activity file (MyActivities.cs) in the Workflow project:
 
 ```csharp
 namespace MyNamespace;
@@ -291,7 +286,7 @@ If an Activity fails, Temporal automatically retries it based on your configurat
 
 #### Create the Workflow
 
-Create a Workflow file (SayHelloWorkflow.cs)
+Create a Workflow file (SayHelloWorkflow.cs) in the Workflow project: 
 
 ```csharp
 namespace MyNamespace;
@@ -319,12 +314,14 @@ public class SayHelloWorkflow
 
 Workflows orchestrate Activities and contain the application logic.
 Temporal Workflows are resilient.
-They can run—and keeping running—for years, even if the underlying infrastructure fails.
+They can run and keep running for years, even if the underlying infrastructure fails.
 If the application itself crashes, Temporal will automatically recreate its pre-failure state so it can continue right where it left off.
 
-### 3. Create the Worker Project (Worker/)
+### 3. Create the Worker 
 
-#### Create a Worker file (Program.cs):
+With your Activity and Workflow defined, you need a Worker to execute them.
+
+#### Create a Worker file (Program.cs) in the Worker project:
 
 ```csharp
 using MyNamespace;
@@ -367,15 +364,25 @@ catch (OperationCanceledException)
 ```
 
 Run the Worker:
-Keep this terminal running - you should see `Running worker` displayed.
 
 ```bash
 dotnet run --project Worker
 ```
+Keep this terminal running - you should see `Running worker` displayed.
 
-### 4. Create the Client Project (Client/)
 
-#### Create a Client file (Program.cs):
+A Worker polls a Task Queue, that you configure it to poll, looking for work to do. Once the Worker dequeues the a Workflow or Activity task from the Task Queue, it then executes that task.
+
+Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your Workflows and Activities.
+For more information on Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
+
+
+### 4. Execute the Workflow 
+
+Now that your Worker is running, it's time to start a Workflow Execution.
+This final step will validate that everything is working correctly. 
+
+#### Create a Client file (Program.cs) in the Client project: 
 
 ```csharp
 using MyNamespace;
@@ -392,3 +399,8 @@ var result = await client.ExecuteWorkflowAsync(
 
 Console.WriteLine("Workflow result: {0}", result);
 ```
+
+<CallToAction href="https://learn.temporal.io/getting_started/dotnet/first_program_in_dotneet/">
+  <h3>Next: Run your first Temporal Application</h3>
+  <p>Learn how to create a basic Workflow and run it with the Temporal .NET SDK</p>
+</CallToAction>
