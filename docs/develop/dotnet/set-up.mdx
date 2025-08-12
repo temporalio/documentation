@@ -42,17 +42,17 @@ Configure your local development environment to get started developing with Temp
     <>
       <CodeSnippet language="bash">
 {`# Create solution and projects
-mkdir temporaliodotnethelloworld
-cd temporaliodotnethelloworld
+mkdir TemporalioHelloWorld
+cd TemporalioHelloWorld
 
-dotnet new sln -n temporaliodotnethelloworld
+dotnet new sln -n TemporalioHelloWorld
 
 dotnet new classlib -o Workflow
 dotnet new console -o Worker
 dotnet new console -o Client
 
 # Add projects to the solution
-dotnet sln temporaliodotnethelloworld.sln add Workflow/Workflow.csproj Worker/Worker.csproj Client/Client.csproj
+dotnet sln TemporalioHelloWorld.sln add Workflow/Workflow.csproj Worker/Worker.csproj Client/Client.csproj
 
 # Install Temporal SDK in each project
 dotnet add Workflow/Workflow.csproj package Temporalio
@@ -159,7 +159,7 @@ Run the following commands:
 dotnet add Worker/Worker.csproj reference Workflow/Workflow.csproj
 dotnet add Client/Client.csproj reference Workflow/Workflow.csproj
 
-# Build the solution (restores packages automatically)
+# Build the solution 
 dotnet build
 ```
 
@@ -178,7 +178,7 @@ TEMPORELIDOTNETHELLOWORLD/
 │   ├── Workflow.csproj
 │   ├── MyActivities.cs         # Activity definition
 │   └── SayHelloWorkflow.cs     # Workflow definition
-└── temporaliodotnethelloworld.sln
+└── TemporalioHelloWorld.sln
 ```
 
 </details>
@@ -288,7 +288,8 @@ dotnet run --project Worker/Worker.csproj
 ```
 Keep this terminal running - you should see `Running worker` displayed.
 
-A Worker polls a Task Queue, that you configure it to poll, looking for work to do. Once the Worker dequeues the a Workflow or Activity task from the Task Queue, it then executes that task.
+A Worker polls a Task Queue, that you configure it to poll, looking for work to do. 
+Once the Worker dequeues the Workflow or Activity task from the Task Queue, it then executes that task.
 
 Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your Workflows and Activities.
 For more information on Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
