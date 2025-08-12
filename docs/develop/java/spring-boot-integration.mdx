@@ -59,7 +59,7 @@ implementation ("io.temporal:temporal-spring-boot-starter:1.30.1")
 
 ## Connect {#connect}
 
-To create an autoconfigured `WorkflowClient` all you have to do is specify some connection details in your `application.yml`.
+To create an autoconfigured `WorkflowClient`, you need only specify some connection details in your application.yml file, as described in the next section.
 
 See the [Temporal Client documentation](/develop/java/temporal-clients) for more information about connecting to a Temporal Service.
 
@@ -122,7 +122,7 @@ spring.temporal:
 
 ## Configure Workers {#configure-workers}
 
-Temporal's Spring Boot integration supports two ways to configure, workers auto-discovery and explicit configuration.
+Temporal's Spring Boot integration supports two configuration methods for Workers: auto-discovery and explicit configuration.
 
 ### Explicit configuration
 
@@ -192,9 +192,7 @@ Alternatively, you can define a custom `io.micrometer.core.instrument.MeterRegis
 
 You can set up [Spring Cloud Sleuth](https://spring.io/projects/spring-cloud-sleuth) with OpenTelemetry export. The Temporal Spring Boot integration will pick up the OpenTelemetry bean configured by spring-cloud-sleuth-otel-autoconfigure and use it for Temporal Traces.
 
-Alternatively, you can define a custom
-
-`io.opentelemetry.api.OpenTelemetry` for OpenTelemetry or `io.opentracing.Tracer` for OpenTracing bean in the application context.
+Alternatively, you can define a custom `io.opentelemetry.api.OpenTelemetry` for OpenTelemetry or `io.opentracing.Tracer` for OpenTracing bean in the application context.
 
 ## Customization of Options {#customize-options}
 
