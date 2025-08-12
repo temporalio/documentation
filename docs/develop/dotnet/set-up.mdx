@@ -54,11 +54,20 @@ dotnet new console -o Client
 # Add projects to the solution
 dotnet sln TemporalioHelloWorld.sln add Workflow/Workflow.csproj Worker/Worker.csproj Client/Client.csproj
 
+# Add project references
+dotnet add Worker/Worker.csproj reference Workflow/Workflow.csproj
+dotnet add Client/Client.csproj reference Workflow/Workflow.csproj
+
 # Install Temporal SDK in each project
 dotnet add Workflow/Workflow.csproj package Temporalio
 dotnet add Worker/Worker.csproj package Temporalio
-dotnet add Client/Client.csproj package Temporalio`}
+dotnet add Client/Client.csproj package Temporalio`
+}
       </CodeSnippet>
+
+Build the solution:
+      <div style={{ height: '0.75rem' }} />
+      <CodeSnippet language="bash">{`dotnet build`}</CodeSnippet>
     </>
   }>
     ## Install the Temporal .NET SDK
@@ -151,23 +160,13 @@ This test will confirm that:
 - You can successfully create and execute Workflows and Activities
 - The communication between components is functioning correctly
 
-#### Project setup
 
-Run the following commands: 
-```bash
-# Add project references
-dotnet add Worker/Worker.csproj reference Workflow/Workflow.csproj
-dotnet add Client/Client.csproj reference Workflow/Workflow.csproj
-
-# Build the solution 
-dotnet build
-```
 
 <details>
-  <summary>Project directory structure</summary>
+  <summary>Tip: Example Directory Structure</summary>
 
 ```text
-TEMPORELIDOTNETHELLOWORLD/
+TEMPORALIOHELLOWORLD/
 ├── Client/
 │   ├── Client.csproj
 │   └── Program.cs              # Starts a workflow
