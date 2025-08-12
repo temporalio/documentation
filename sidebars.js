@@ -263,6 +263,7 @@ module.exports = {
             id: "develop/dotnet/index",
           },
           items: [
+            "develop/dotnet/set-up-your-local-dotnet",
             "develop/dotnet/core-application",
             "develop/dotnet/temporal-client",
             "develop/dotnet/testing-suite",
