@@ -1,14 +1,15 @@
 ---
-id: set-up-your-local-python
-title: Set up your local with the Python SDK
+id: set-up-your-local-go
+title: Set up your local with the Go SDK
 sidebar_label: Quickstart - Setup
 description: Configure your local development environment to get started developing with Temporal
 keywords:
   - set up
   - getting started
-  - python sdk
+  - Go sdk
 tags:
-  - python guide
+  - Go guide
+  - Go
   - setup
   - getting started
 hide_table_of_contents: true
@@ -25,45 +26,54 @@ Configure your local development environment to get started developing with Temp
 <SetupStep code={
   <>
     <CodeSnippet language="bash">
-    python3 -V
+    go version
     </CodeSnippet>
     <CodeSnippet language="bash">
-    python 3.13.3
+    go version go1.18.1 darwin/amd64
     </CodeSnippet>
   </>
 }>
-## Install Python
 
-Make sure you have Python installed.
-Check your version of Python with the following command.
+## Install Go
+
+Make sure you have Go installed. These tutorials were produced using Go 1.18. Check your version of Go with the following command:
+
+This will return your installed Go version.
 
 </SetupStep>
 
 <SetupStep code={
 <>
 <CodeSnippet language="bash">
-mkdir temporal-project
+mkdir goproject
 </CodeSnippet>
 <CodeSnippet language="bash">
-cd temporal-project
+cd goproject
 </CodeSnippet>
 <CodeSnippet language="bash">
-python3 -m venv env
+go mod init my-org/greeting
 </CodeSnippet>
 <CodeSnippet language="bash">
-source env/bin/activate
+go get go.temporal.io/sdk
 </CodeSnippet>
 <CodeSnippet language="bash">
-pip install temporalio
+go get go.temporal.io/sdk/client
+</CodeSnippet>
+<CodeSnippet language="bash">
+go mod tidy
 </CodeSnippet>
 </>
 }>
 
-## Install the Temporal Python SDK
+## Install the Temporal Go SDK
 
-You should install the Temporal Python SDK in your project using a virtual environment. Create a directory for your Temporal project, switch to the new directory, create a Python virtual environment, activate it, and then install the Temporal SDK.
+If you are creating a new project using the Temporal Go SDK, you can start by creating a new directory.
 
-Next, you'll configure a local Temporal Service for development.
+Next, switch to the new directory.
+
+Then, initialize a Go project in that directory.
+
+Finally, install the Temporal SDK with `go get`.
 
 </SetupStep>
 
@@ -103,11 +113,11 @@ Next, you'll configure a local Temporal Service for development.
 </>
 }>
 
-## Install Temporal CLI
+## Install Temporal CLI and start the development server
 
 The fastest way to get a development version of the Temporal Service running on your local machine is to use [Temporal CLI](https://docs.temporal.io/cli).
 
-Choose your operating system to install Temporal CLI.
+Choose your operating system to install Temporal CLI:
 
 </SetupStep>
 
@@ -115,7 +125,6 @@ Choose your operating system to install Temporal CLI.
 <>
 
 <p>After installing, open a new Terminal window and start the development server:</p>
-
 <CodeSnippet language="bash">
 temporal server start-dev
 </CodeSnippet>
@@ -156,136 +165,177 @@ Now let's verify your setup is working by creating and running a complete Tempor
 
 This test will confirm that:
 
-- The Temporal Python SDK is properly installed
+- The Temporal Go SDK is properly installed
 - Your local Temporal Service is running
 - You can successfully create and execute Workflows and Activities
 - The communication between components is functioning correctly
 
 ### 1. Create the Activity
 
-Create an Activity file (activities.py):
-
-```python
-from temporalio import activity
-
-@activity.defn
-async def greet(name: str) -> str:
-    return f"Hello {name}"
-```
-
-An Activity is a normal function or method that executes a single, well-defined action (either short or long running), which often involve interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling an API, which are prone to failure.
+An Activity is a normal function or method that executes a single, well-defined action (either short- or long-running) that is typically prone to failure.
+Examples include any action that interacts with the outside world, such as sending emails, making network requests, writing to a database, or calling an API.
 If an Activity fails, Temporal automatically retries it based on your configuration.
+
+Create an Activity file (activity.go):
+
+```go
+package greeting
+
+import (
+    "context"
+    "fmt"
+)
+
+func Greet(ctx context.Context, name string) (string, error) {
+    return fmt.Sprintf("Hello %s", name), nil
+}
+```
 
 ### 2. Create the Workflow
 
-Create a Workflow file (workflows.py):
-
-```python
-from datetime import timedelta
-from temporalio import workflow
-from activities import greet
-
-@workflow.defn
-class SayHelloWorkflow:
-    @workflow.run
-    async def run(self, name: str) -> str:
-        return await workflow.execute_activity(
-            "greet",
-            name,
-            schedule_to_close_timeout=timedelta(seconds=10),
-        )
-```
-
 Workflows orchestrate Activities and contain the application logic.
 Temporal Workflows are resilient.
-They can run and keep running for years, even if the underlying infrastructure fails. If the application itself crashes, Temporal will automatically recreate its pre-failure state so it can continue right where it left off.
+They can run—and keep running—for years, even if the underlying infrastructure fails.
+If the application itself crashes, Temporal will automatically recreate its pre-failure state so it can continue right where it left off.
 
-### 3. Create the Worker
+Create a Workflow file (workflow.go):
 
-Create a Worker file (worker.py):
+```go
+package greeting
 
-```python
-import asyncio
-from temporalio.client import Client
-from temporalio.worker import Worker
-from workflows import SayHelloWorkflow
-from activities import greet
+import (
+"time"
 
-async def main():
-    client = await Client.connect("localhost:7233")
-    worker = Worker(
-        client,
-        task_queue="my-task-queue",
-        workflows=[SayHelloWorkflow],
-        activities=[greet],
-        )
-    print("Worker started.")
-    await worker.run()
+    "go.temporal.io/sdk/workflow"
 
-if __name__ == "__main__":
-    asyncio.run(main())
+)
+
+func SayHelloWorkflow(ctx workflow.Context, name string) (string, error) {
+ao := workflow.ActivityOptions{
+StartToCloseTimeout: time.Second * 10,
+}
+ctx = workflow.WithActivityOptions(ctx, ao)
+
+    var result string
+    err := workflow.ExecuteActivity(ctx, Greet, name).Get(ctx, &result)
+    if err != nil {
+    	return "", err
+    }
+
+    return result, nil
+
+}
 ```
 
-Run the Worker by opening up a new terminal:
+### 3. Create and Run the Worker
 
-```bash
-source env/bin/activate
-python3 worker.py
-```
-
-Keep this terminal running - you should see "Worker started" displayed.
-
-With your Activity and Workflow defined, you need a Worker to execute them. 
-A Worker polls a Task Queue, that you configure it to poll, looking for work to do. 
-Once the Worker dequeues the Workflow or Activity task from the Task Queue, it then executes that task.
+With your Activity and Workflow defined, you need a Worker to execute them. A Worker polls a Task Queue, that you configure it to poll, looking for work to do. Once the Worker dequeues the a Workflow or Activity task from the Task Queue, it then executes that task.
 
 Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your Workflows and Activities.
 For more information on Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
 
+Create a Worker file (worker/main.go):
+
+```go
+package main
+
+import (
+"log"
+
+    "go.temporal.io/sdk/client"
+    "go.temporal.io/sdk/worker"
+    "my-org/greeting"
+
+)
+
+func main() {
+c, err := client.Dial(client.Options{})
+if err != nil {
+log.Fatalln("Unable to create client", err)
+}
+defer c.Close()
+
+    w := worker.New(c, "my-task-queue", worker.Options{})
+
+    w.RegisterWorkflow(greeting.SayHelloWorkflow)
+    w.RegisterActivity(greeting.Greet)
+
+    err = w.Run(worker.InterruptCh())
+    if err != nil {
+    	log.Fatalln("Unable to start worker", err)
+    }
+
+}
+```
+
+Run the Worker:
+
+```bash
+go run worker/main.go
+```
 
 ### 4. Execute the Workflow
 
 Now that your Worker is running, it's time to start a Workflow Execution.
 
-This final step will validate that everything is working correctly with your file labeled `starter.py`.
+Create a separate file called start/main.go:
 
-Create a separate file called `starter.py`:
+```go
+package main
 
-```python
-import asyncio
-import uuid
-from temporalio.client import Client
+import (
+"context"
+"log"
+"os"
+greeting "my-org/greeting"
 
-async def main():
-    client = await Client.connect("localhost:7233")
-    result = await client.execute_workflow(
-        "SayHelloWorkflow",
-        "Temporal",
-        id=f"say-hello-workflow-{uuid.uuid4()}",
-        task_queue="my-task-queue",
-    )
-    print("Workflow result:", result)
+    "go.temporal.io/sdk/client"
 
-if __name__ == "__main__":
-    asyncio.run(main())
+)
+
+func main() {
+c, err := client.Dial(client.Options{})
+if err != nil {
+log.Fatalln("Unable to create client", err)
+}
+defer c.Close()
+
+    options := client.StartWorkflowOptions{
+    	ID:        "greeting-workflow",
+    	TaskQueue: "my-task-queue",
+    }
+
+    we, err := c.ExecuteWorkflow(context.Background(), options, greeting.SayHelloWorkflow, os.Args[1])
+    if err != nil {
+    	log.Fatalln("Unable to execute workflow", err)
+    }
+    log.Println("Started workflow", "WorkflowID", we.GetID(), "RunID", we.GetRunID())
+
+    var result string
+    err = we.Get(context.Background(), &result)
+    if err != nil {
+    	log.Fatalln("Unable get workflow result", err)
+    }
+    log.Println("Workflow result:", result)
+
+}
 ```
 
-While the Worker is still running, run the following command in a new terminal:
+Then run:
 
 ```bash
-source env/bin/activate
-python3 starter.py
+go run start/main.go Temporal
 ```
 
 ### Verify Success
 
 If everything is working correctly, you should see:
 
-- Worker processing the Workflow and Activity
+- Worker processing the workflow and activity
 - Output: `Workflow result: Hello Temporal`
 - Workflow Execution details in the [Temporal Web UI](http://localhost:8233)
 
-<CallToAction href="https://learn.temporal.io/getting_started/python/first_program_in_python/">
+<CallToAction href="https://learn.temporal.io/getting_started/go/first_program_in_go/">
   <h3>Next: Run your first Temporal Application</h3>
-  <p>Learn how to create a basic Workflow and run it with the Temporal Python SDK</p>
+  <p>Learn how to create a basic Workflow and run it with the Temporal Go SDK</p>
 </CallToAction>
