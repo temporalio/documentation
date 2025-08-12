@@ -61,7 +61,7 @@ implementation ("io.temporal:temporal-spring-boot-starter:1.30.1")
 
 To create an autoconfigured `WorkflowClient` all you have to do is specify some connection details in your `application.yml`.
 
-For more details about connecting to Temporal see [here](/develop/java/temporal-clients)
+See the [Temporal Client documentation](/develop/java/temporal-clients) for more information about connecting to a Temporal Service.
 
 ### Connect to your local Temporal Service
 
@@ -71,7 +71,7 @@ spring.temporal:
     target: local # you can specify a host:port here for a remote connection
 ```
 
-This is enough to be able to autowire a WorkflowClient in your Spring Boot application:
+This is enough to be able to autowire a `WorkflowClient` in your Spring Boot application:
 
 ```java
 @SpringBootApplication
@@ -83,7 +83,7 @@ class App {
 
 ### Connect to a custom Namespace
 
-You can also connect to a custom namespace by specifying the `spring.temporal.namespace` property.
+You can also connect to a custom Namespace by specifying the `spring.temporal.namespace` property.
 
 ```yaml
 spring.temporal:
@@ -94,9 +94,9 @@ spring.temporal:
 
 ## Connect to Temporal Cloud {#connect}
 
-You can also connect to Temporal Cloud with either API keys or mTLS.
+You can also connect to Temporal Cloud, using either an API key or mTLS for authentication.
 
-To learn more about connecting to Temporal Cloud see [here](/develop/java/temporal-clients#connect-to-temporal-cloud)
+See the [Connect to Temporal Cloud](/develop/java/temporal-clients#connect-to-temporal-cloud) section for more information about connecting to Temporal Cloud.
 
 ### Using an API key
 
@@ -116,7 +116,7 @@ spring.temporal:
     mtls:
       target: <target>
       key-file: /path/to/key.key
-      cert-chain-file: /path/to/cert.pem # If you use PKCS12 (.pkcs12, .pfx or .p12), you don't need to set it because certificates chain is bundled into the key file
+      cert-chain-file: /path/to/cert.pem # If you use PKCS12 (.pkcs12, .pfx or .p12), you don't need to set it because the certificates chain is bundled into the key file
   namespace: <namespace>
 ```
 
@@ -132,7 +132,7 @@ spring.temporal:
     - task-queue: your-task-queue-name
       name: your-worker-name # unique name of the Worker. If not specified, Task Queue is used as the Worker name.
       workflow-classes:
-        - your.package.YouWorkflowImpl
+        - your.package.YourWorkflowImpl
       activity-beans:
         - activity-bean-name1
 ```
@@ -156,7 +156,7 @@ Nexus Service beans present in Spring context whose implementations are annotate
 Workers if a Task Queue is referenced by the annotations but not explicitly configured. Default configuration will be used.
 
 :::note
-`io.temporal.spring.boot.ActivityImpl` and `io.temporal.spring.boot.NexusServiceImpl` should be applied to Beans, one way to do this is to annotate you activity implementation class with `@Component`
+`io.temporal.spring.boot.ActivityImpl` and `io.temporal.spring.boot.NexusServiceImpl` should be applied to beans, one way to do this is to annotate your Activity implementation class with `@Component`
 :::
 
 ```
@@ -171,16 +171,16 @@ public class MyActivityImpl implements MyActivity {
 ```
 
 :::note
-Auto-discovered Workflow implementation classes, Activity beans, and Nexus Service beans will be registered with the configured workers if not already registered.
+Auto-discovered Workflow implementation classes, Activity beans, and Nexus Service beans will be registered with the configured Workers if not already registered.
 :::
 
 ## Interceptors {#interceptors}
 
-To enable interceptors users can create beans implementing the `io.temporal.common.interceptors.WorkflowClientInterceptor`, `io.temporal.common.interceptors.ScheduleClientInterceptor`, or `io.temporal.common.interceptors.WorkerInterceptor` interface. Interceptors will be registered in the order specified by the `@Order` annotation.
+To enable Interceptors, users can create beans implementing the `io.temporal.common.interceptors.WorkflowClientInterceptor`, `io.temporal.common.interceptors.ScheduleClientInterceptor`, or `io.temporal.common.interceptors.WorkerInterceptor` interface. Interceptors will be registered in the order specified by the `@Order` annotation.
 
 ## Integrations {#integrations}
 
-The Temporal Spring Boot integration also has built in support for various tools in the Spring ecosystem like metrics and tracing.
+The Temporal Spring Boot integration also has built in support for various tools in the Spring ecosystem, such as metrics and tracing.
 
 #### Metrics
 
@@ -194,7 +194,7 @@ You can set up [Spring Cloud Sleuth](https://spring.io/projects/spring-cloud-sle
 
 Alternatively, you can define a custom
 
-`io.opentelemetry.api.OpenTelemetry` for OpenTelemetry or `io.opentracing.Tracer` for Opentracing bean in the application context.
+`io.opentelemetry.api.OpenTelemetry` for OpenTelemetry or `io.opentracing.Tracer` for OpenTracing bean in the application context.
 
 ## Customization of Options {#customize-options}
 
@@ -209,9 +209,9 @@ Where OptionsType may be one of:
     * `WorkflowImplementationOptions.Builder`
     * `TestEnvironmentOptions.Builder`
 
-`io.temporal.spring.boot.WorkerOptionsCustomizer` may be used instead of `TemporalOptionsCustomizer<WorkerOptions.Builder>` if WorkerOptions needs to be customized on the Task Queue or Worker name.
+`io.temporal.spring.boot.WorkerOptionsCustomizer` may be used instead of `TemporalOptionsCustomizer<WorkerOptions.Builder>` if `WorkerOptions` needs to be customized on the Task Queue or Worker name.
 
-`io.temporal.spring.boot.WorkflowImplementationOptionsCustomizer` may be used instead of `TemporalOptionsCustomizer<WorkflowImplementationOptions.Builder>` if WorkflowImplementationOptions needs to be customized on Workflow typ.
+`io.temporal.spring.boot.WorkflowImplementationOptionsCustomizer` may be used instead of `TemporalOptionsCustomizer<WorkflowImplementationOptions.Builder>` if `WorkflowImplementationOptions` needs to be customized on Workflow Type.
 
 ## Testing {#testing}
 
@@ -223,7 +223,7 @@ spring.temporal:
     enabled: true
 ```
 
-When `spring.temporal.test-server.enabled:true` is added, the `spring.temporal.connection` section is ignored. This allows to wire `TestWorkflowEnvironment` bean in your unit tests:
+When `spring.temporal.test-server.enabled:true` is added, the `spring.temporal.connection` section is ignored. This allows wiring the `TestWorkflowEnvironment` bean in your unit tests:
 
 ```
 @SpringBootTest(classes = Test.Configuration.class)
@@ -244,9 +244,9 @@ public class Test {
     # ...
   }
 
-  @ComponentScan # to discover activity beans annotated with @Component
+  @ComponentScan # to discover Activity beans annotated with @Component
   public static class Configuration {}
 }
 ```
 
-To learn more about testing see [here](/develop/java/testing-suite#test-frameworks)
+See the [Java SDK test frameworks documentation](/develop/java/testing-suite#test-frameworks) for more information about testing.
