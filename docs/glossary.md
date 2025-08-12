@@ -256,7 +256,7 @@ A Heartbeat Timeout is the maximum time between Activity Heartbeats.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_ -->
 
-#### [High Availability](/cloud/high-availability/how-it-works#high-availability)
+#### [High Availability](/cloud/high-availability/)
 
 High availability ensures that a system remains operational with minimal downtime.
 It achieves this with redundancy and failover mechanisms that handle failures, so end-users remain unaware of incidents.

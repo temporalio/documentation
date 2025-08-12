@@ -265,7 +265,7 @@ However, you can only send Signals to Workflow Executions that haven’t closed.
 
 Use [`Client.SignalWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.SignalWorkflow).
 
-Pass in both the [Workflow Id](/workflow-execution/workflowid-runid#workflow-id)and [Run Id](/workflow-execution/workflowid-runid#run-id) to uniquely identify the Workflow Execution.
+Pass in both the [Workflow Id](/workflow-execution/workflowid-runid#workflow-id) and [Run Id](/workflow-execution/workflowid-runid#run-id) to uniquely identify the Workflow Execution.
 If only the Workflow Id is supplied (provide an empty string as the Run Id param), the Workflow Execution that is running receives the Signal.
 
 ```go
@@ -377,11 +377,9 @@ if err != nil {
 
 #### Update-With-Start {#update-with-start}
 
-:::tip Stability
+:::tip
 
-In [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in Temporal Cloud.
-
-Minimum Temporal Server version [Temporal Server version 1.26](https://github.com/temporalio/temporal/releases/tag/v1.26.2)
+For open source server users, Temporal Server version [Temporal Server version 1.28](https://github.com/temporalio/temporal/releases/tag/v1.28.0) is recommended.
 
 :::
 
