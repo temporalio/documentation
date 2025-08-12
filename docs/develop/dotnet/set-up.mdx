@@ -74,8 +74,6 @@ Build the solution:
 
     Create a solution and the three projects used in this guide: `Workflow` (class library), `Worker` (console), and `Client` (console). Add them to the solution.
 
-    You'll add the Temporal .NET SDK package and project references in the next section.
-
     Tip: You can also centralize the `Temporalio` package for all projects using `Directory.Packages.props` and `Directory.Build.props` at the solution root.
   </SetupStep>
 
@@ -166,7 +164,7 @@ This test will confirm that:
   <summary>Tip: Example Directory Structure</summary>
 
 ```text
-TEMPORALIOHELLOWORLD/
+TemporalioHelloWorld/
 ├── Client/
 │   ├── Client.csproj
 │   └── Program.cs              # Starts a workflow
