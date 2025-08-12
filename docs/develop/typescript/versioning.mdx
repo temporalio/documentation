@@ -37,7 +37,7 @@ To understand why Patching is useful, it's helpful to first demonstrate cutting 
 ### Workflow cutovers
 
 Since incompatible changes only affect open Workflow Executions of the same type, you can avoid determinism errors by creating a whole new Workflow when making changes.
-To do this, you can copy the Workflow Definition function, giving it a different name, and make sure that both names are registered with your Workers.
+To do this, you can copy the Workflow Definition function, giving it a different name, and register both names with your Workers.
 
 For example, you would duplicate `PizzaWorkflow` as `PizzaWorkflowV2`:
 
@@ -123,9 +123,9 @@ export async function myWorkflow(): Promise<void> {
 
 ### Deprecating patches {#deprecated-patches}
 
-After ensuring that all Workflows started with `v1` code have finished, you can [deprecate the patch](https://typescript.temporal.io/api/namespaces/workflow#deprecatepatch).
+After ensuring that all Workflows started with `v1` code have left retention, you can [deprecate the patch](https://typescript.temporal.io/api/namespaces/workflow#deprecatepatch).
 
-Once you're confident that your Workflows are no longer running the pre-patch code paths, you can deploy your code with `deprecatePatch()`.
+Once your Workflows are no longer running the pre-patch code paths, you can deploy your code with `deprecatePatch()`.
 These Workers will be running the most up-to-date version of the Workflow code, which no longer requires the patch.
 Deprecated patches serve as a bridge between the final stage of the patching process and the final state that no longer has patches. They function similarly to regular patches by adding a marker to the Workflow History. However, this marker won't cause a replay failure when the Workflow code doesn't produce it.
 
@@ -142,7 +142,7 @@ export async function myWorkflow(): Promise<void> {
 
 ### Removing a patch {#deploy-new-code}
 
-Once you're sure that you will no longer need to [Query](/develop/typescript/message-passing#send-query) or Replay any of your pre-patch Workflows, you can then safely deploy Workers that no longer use either the `patched()` or `deprecatePatch()` calls:
+Once your pre-patch Workflows have left retention, you can then safely deploy Workers that no longer use either the `patched()` or `deprecatePatch()` calls:
 
 Patching allows you to make changes to currently running Workflows.
 It is a powerful method for introducing compatible changes without introducing non-determinism errors.

@@ -46,7 +46,7 @@ To understand why Patching is useful, it's helpful to first demonstrate cutting 
 ### Workflow cutovers
 
 Since incompatible changes only affect open Workflow Executions of the same type, you can avoid determinism errors by creating a whole new Workflow when making changes.
-To do this, you can copy the Workflow Definition function, giving it a different name, and make sure that both names are registered with your Workers.
+To do this, you can copy the Workflow Definition function, giving it a different name, and register both names with your Workers.
 
 For example, you would duplicate `SayHelloWorkflow` as `SayHelloWorkflowV2`:
 
@@ -128,7 +128,7 @@ Patching is a three step process:
 
 1. Use [Patched](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_Patched_System_String_) to patch in new code and run it alongside the old code.
 2. Remove the old code and apply [DeprecatePatch](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_DeprecatePatch_System_String_).
-3. Once you're confident that all old Workflows have finished executing, remove `DeprecatePatch`.
+3. Once all old Workflows have left retention, remove `DeprecatePatch`.
 
 ### Patching in new code {#using-patched-for-workflow-history-markers}
 
@@ -163,7 +163,7 @@ public class MyWorkflow
 
 ### Deprecating patches {#deprecated-patches}
 
-After ensuring that all Workflows started with `PrePatchActivity` code have finished, you can [deprecate the patch](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_DeprecatePatch_System_String_).
+After all Workflows started with `PrePatchActivity` code have left retention, you can [deprecate the patch](https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_DeprecatePatch_System_String_).
 
 Deprecated patches serve as a bridge between the final stage of the patching process and the final state that no longer has patches. They function similarly to regular patches by adding a marker to the Workflow History. However, this marker won't cause a replay failure when the Workflow code doesn't produce it.
 
@@ -188,7 +188,7 @@ public class MyWorkflow
 
 ### Removing a patch {#deploy-postpatchactivity}
 
-You can safely deploy `PostPatchActivity` once all Workflows labeled my-patch or earlier are finished, based on the previously mentioned assertion.
+You can safely deploy `PostPatchActivity` once all Workflows labeled my-patch or earlier have left retention, based on the previously mentioned assertion.
 
 ```csharp
 [Workflow]
