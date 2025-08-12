@@ -102,6 +102,7 @@ module.exports = {
             id: "develop/go/index",
           },
           items: [
+            "develop/go/set-up-your-local-go",
             "develop/go/core-application",
             "develop/go/temporal-clients",
             "develop/go/go-sdk-multithreading",
@@ -134,6 +135,7 @@ module.exports = {
             id: "develop/java/index",
           },
           items: [
+            "develop/java/set-up-your-local-java",
             "develop/java/core-application",
             "develop/java/temporal-clients",
             "develop/java/namespaces",
@@ -249,6 +251,7 @@ module.exports = {
             id: "develop/dotnet/index",
           },
           items: [
+            "develop/dotnet/set-up-your-local-dotnet",
             "develop/dotnet/core-application",
             "develop/dotnet/temporal-client",
             "develop/dotnet/testing-suite",
