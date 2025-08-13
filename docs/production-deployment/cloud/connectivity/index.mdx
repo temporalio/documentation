@@ -20,7 +20,15 @@ keywords:
 
 import { ToolTipTerm, DiscoverableDisclosure, CaptionedImage } from '@site/src/components';
 
-## What are connectivity rules?
+## Control plane connectivity
+
+Using the Temporal Cloud [web UI](/web-ui), [Terraform provider](/cloud/terraform-provider), [`tcld` CLI](/cloud/tcld), or [Cloud Ops APIs](/ops) requires network access to the Temporal Cloud control plane. Different hostnames are used for different parts of the service.
+
+- `saas-api.tmprl.cloud` (required for Terraform, tcld, and Cloud Ops APIs) 
+- `web.onboarding.tmprl.cloud` (required for Web UI)
+- `web.saas-api.tmprl.cloud` (required for Web UI)
+
+## Connectivity rules
 
 Connectivity rules are Temporal Cloud's mechanism for limiting network access to a namespace.
 
