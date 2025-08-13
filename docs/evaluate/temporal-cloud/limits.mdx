@@ -52,7 +52,7 @@ The following limits apply at the Temporal Cloud Account level (per account).
 
 ## Namespace level
 
-The following limits apply at the Namespace scope.
+The following limits apply at the Namespace level.
 
 ### Actions per second
 
@@ -88,7 +88,7 @@ See the [operations metric list](/production-deployment/cloud/metrics/reference#
 
 - Scope: Namespace
 - Default limit: 10 schedule requests per second (RPS)
-- How to increase: - [Contact support](/cloud/support#support-ticket)
+- How to increase: [Contact support](/cloud/support#support-ticket)
 
 To avoid throttling, don't schedule all your Workflow Executions to start at the same time (daily, weekly, monthly, etc.).
 Every Temporal SDK supports jittering, which adds small random delays to Schedule specifications, helping to reduce load at any specific moment.
@@ -126,13 +126,9 @@ For the target Namespace of a Nexus Endpoint, even though there are no Action re
 
 ### Certificates
 
-**What are the certificate limits?**
-
 Temporal Cloud limits each Namespace to a total of 32 KB or 16 certificates, whichever is reached first.
 
 ### Concurrent Task pollers
-
-**Is there a limit to concurrent Task pollers?**
 
 Temporal Cloud limits each Namespace to 20,000 concurrent Task pollers, regardless of whether they are Activity or Workflow Task pollers.
 
@@ -140,8 +136,6 @@ Each SDK offers a way to configure Workers for per-Worker maximum Activity and W
 Those values do not affect the global Namespace limit.
 
 ### Default Retention Period
-
-**What is the default Retention Period?**
 
 The [Retention Period](/temporal-service/temporal-server#retention-period) is set per Namespace.
 
@@ -164,15 +158,11 @@ You can set the Retention Period between 1 and 90 days.
 
 ### Batch jobs
 
-**How many batch jobs can run at a time?**
-
 A Namespace can have just one [Batch job](/cli/batch) running at a time.
 
 Each batch job operates on a maximum of 50 Workflow Executions per second.
 
 ### Number of Custom Search Attributes
-
-**How many custom Search Attributes are allowed per Namespace?**
 
 There is a limit to the number of custom Search Attributes per attribute type per Namespace:
 
@@ -188,8 +178,6 @@ There is a limit to the number of custom Search Attributes per attribute type pe
 
 ### Custom Search Attribute names
 
-**What constraints are there for Custom Search Attribute names in Temporal Cloud?**
-
 When creating custom Search Attributes in Temporal Cloud, the attribute names must adhere to the following constraints:
 
 - Maximum characters: 64
@@ -201,8 +189,6 @@ For more information on custom Search Attributes see [Custom Search Attributes l
 
 ### Nexus Endpoints limits
 
-**How many Nexus Endpoints can you create?​**
-
 By default, each account is provisioned with 10 Nexus Endpoints.
 You can request further increases beyond the initial 10 Endpoint limit by [opening a support ticket](/cloud/support#support-ticket).
 
@@ -213,21 +199,15 @@ See also: [Self-hosted Temporal Service defaults](/self-hosted-guide/defaults).
 
 ### Identifier length limit
 
-**What is the maximum length for identifiers?**
-
 Identifiers, such as Workflow Id, Workflow Type, and Task Queue names, are limited to a maximum length of 1,000 bytes.
 Note that Unicode characters may use multiple bytes.
 
 ### Per message gRPC limit
 
-**What is the gRPC limit for each message received?**
-
 Each gRPC message received has a limit of 4 MB.
 This limit applies to all gRPC endpoints across the Temporal Platform.
 
 ### Event History transaction size limit
-
-**What is the size limit for an Event History transaction?**
 
 An Event History transaction encompasses a set of operations such as initiating a new Workflow, scheduling an Activity, processing a Signal, or starting a Child Workflow.
 These operations create Events that are then logged in the Event History.
@@ -236,9 +216,9 @@ The transaction size limit restricts the total size of Events that can be accomm
 The size limit for any given [Event History](/workflow-execution/event#event-history) transaction is 4 MB.
 This limit is non-configurable for Temporal Cloud.
 
-**What is the blob size limit for a transaction?**
+### Transaction Payload size limit
 
-- **Blob size limit** for Payloads, including Workflow context and each Workflow and Activity argument and return value:
+Blob size limit for Payloads, including Workflow context and each Workflow and Activity argument and return value:
   - The max payload for a single request is 2 MB.
   - The max size limit for any given [Event History](/workflow-execution/event#event-history) transaction is 4 MB.
 
@@ -247,8 +227,6 @@ This limit is non-configurable for Temporal Cloud.
 The [BlobSizeLimitError guide](/troubleshooting/blob-size-limit-error) provides solutions for handling large payloads.
 
 ### Per Workflow Execution concurrency limits
-
-**How many incomplete concurrent operations can a Workflow Execution have?**
 
 If a Workflow Execution has 2,000 incomplete Activities, Signals, Child Workflows, or external Workflow Cancellation requests, additional [Commands](/workflow-execution#command) of that type will fail to be applied to that Workflow Execution:
 
@@ -262,20 +240,14 @@ This reduces Workflow's Event History size and decreases the loading time in the
 
 ### Per Workflow Execution Signal limit
 
-**What is the limit on the total number of Signals received per Workflow Execution?**
-
 A single Workflow Execution may receive up to 10,000 Signals.
 After that limit is reached, no more Signals will be processed for that Workflow Execution.
 
 ### Per Workflow Execution Update limits
 
-**What is the maximum number of Updates for a single Workflow Execution?**
-
 A single Workflow Execution can have a maximum of 10 in-flight Updates and 2000 total Updates in History.
 
 ### Workflow Execution Event History limits
-
-**What are the limits that apply to the Workflow Execution's Event History?**
 
 As a precautionary measure, a Workflow Execution's Event History is limited to 51,200 Events or 50 MB.
 It warns you after 10,240 Events or 10 MB.
@@ -283,8 +255,6 @@ This limit applies to all Temporal Workflow Executions, whether on Temporal Clou
 Read more about [Temporal Workflow Execution limits](/workflow-execution/limits) on the [Temporal Workflow](/workflows) documentation page.
 
 ### Per Workflow Callback limits
-
-**What is the maximum number of Callbacks that can be attached to a single Workflow Execution?**
 
 A single Workflow Execution can have a maximum of 32 total Callbacks.
 
@@ -294,15 +264,11 @@ See the Nexus Encyclopedia entry for [additional details](/workflow-execution/li
 
 ### Per Workflow Nexus Operation limits {#per-workflow-nexus-operation-limits}
 
-**What is the maximum number of Nexus Operations that can be started from a single Workflow Execution?**
-
 A single Workflow Execution can have a maximum of 30 in-flight Nexus Operations.
 
 See the Nexus Encyclopedia entry for [additional details](/workflow-execution/limits#workflow-execution-nexus-operation-limits).
 
 ### Nexus Operation request timeout {#nexus-operation-request-timeout}
-
-**What is the context deadline timeout for a Nexus handler to process a Nexus start or cancel request?**
 
 Less than 10 seconds is the maximum duration for a Nexus handler to process a single Nexus start or cancel request.
 
