@@ -47,7 +47,7 @@ To understand why Patching is useful, it's helpful to first demonstrate cutting 
 ### Workflow cutovers
 
 Since incompatible changes only affect open Workflow Executions of the same type, you can avoid determinism errors by creating a whole new Workflow when making changes.
-To do this, you can copy the Workflow Definition function, giving it a different name, and make sure that both names are registered with your Workers.
+To do this, you can copy the Workflow Definition function, giving it a different name, and register both names with your Workers.
 
 For example, you would duplicate `PizzaWorkflow` as `PizzaWorkflowV2`:
 
@@ -181,9 +181,9 @@ class MyWorkflow:
 
 ### Deprecating patches {#deprecated-patches}
 
-After ensuring that all Workflows started with `pre_patch_activity` code have finished, you can [deprecate the patch](https://python.temporal.io/temporalio.workflow.html#deprecate_patch).
+After ensuring that all Workflows started with `pre_patch_activity` code have left retention, you can [deprecate the patch](https://python.temporal.io/temporalio.workflow.html#deprecate_patch).
 
-Once you're confident that your Workflows are no longer running the pre-patch code paths, you can deploy your code with `deprecate_patch()`.
+Once your Workflows are no longer running the pre-patch code paths, you can deploy your code with `deprecate_patch()`.
 These Workers will be running the most up-to-date version of the Workflow code, which no longer requires the patch.
 Deprecated patches serve as a bridge between the final stage of the patching process and the final state that no longer has patches. They function similarly to regular patches by adding a marker to the Workflow History. However, this marker won't cause a replay failure when the Workflow code doesn't produce it.
 
@@ -209,7 +209,7 @@ class MyWorkflow:
 
 ### Removing a patch {#deploy-new-code}
 
-Once you're sure that you will no longer need to [Query](/develop/python/message-passing#send-query) or Replay any of your pre-patch Workflows, you can then safely deploy Workers that no longer use either the `patched()` or `deprecate_patch()` calls:
+Once your pre-patch Workflows have left retention, you can then safely deploy Workers that no longer use either the `patched()` or `deprecate_patch()` calls:
 
 <div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/version_your_workflows/workflow_4_patch_complete_dacx.py">
@@ -241,9 +241,9 @@ This video provides an overview of how the `patched()` function works:
   <iframe
     src="https://www.youtube.com/embed/videoseries?list=PLytZkHFJwKUdfxFQnuo0Fson0QM0VL9hL"
     style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
-    frameborder="0"
+    frameBorder="0"
     allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-    allowfullscreen>
+    allowFullScreen>
   </iframe>
 </div>
 <br/>

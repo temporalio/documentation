@@ -88,7 +88,7 @@ You can invert this to create a reminder pattern where the promise resolves _if_
 Be careful when racing a chained `sleep`.
 This might cause bugs because the chained `.then` will still continue to execute.
 
-```js
+```ts
 await Promise.race([
   sleep('5s').then(() => (status = 'timed_out')),
   somethingElse.then(() => (status = 'processed')),

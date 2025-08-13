@@ -36,7 +36,7 @@ To understand why Patching is useful, it's helpful to first demonstrate cutting 
 ### Workflow cutovers
 
 Since incompatible changes only affect open Workflow Executions of the same type, you can avoid determinism errors by creating a whole new Workflow when making changes.
-To do this, you can copy the Workflow Definition function, giving it a different name, and make sure that both names are registered with your Workers.
+To do this, you can copy the Workflow Definition function, giving it a different name, and register both names with your Workers.
 
 For example, you would duplicate `PizzaWorkflow` as `PizzaWorkflowV2`:
 
@@ -148,7 +148,7 @@ public void processFile(Arguments args) {
 
 When `workflow.GetVersion()` is run for the new Workflow Execution, it records a marker in the Event History so that all future calls to `GetVersion` for this change id — `checksumAdded` in the example — on this Workflow Execution will always return the given version number, which is `1` in the example.
 
-After you are sure that all of the Workflow Executions prior to version 1 have completed, you can remove the code for that version.
+After all the Workflow Executions prior to version 1 have left retention, you can remove the code for that version.
 
 ```java
 public void processFile(Arguments args) {
