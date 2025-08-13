@@ -1,0 +1,259 @@
+---
+id: user-metadata
+title: User Metadata - Python SDK
+sidebar_label: User Metadata
+description: Learn how to add user metadata to workflows, activities, timers, signals, queries, and updates in the Temporal Python SDK.
+toc_max_heading_level: 3
+keywords:
+  - user metadata
+  - workflow metadata
+  - static summary
+  - static details
+  - activity metadata
+  - timer metadata
+  - signal metadata
+  - query metadata
+  - update metadata
+tags:
+  - User Metadata
+  - Python SDK
+  - Temporal SDKs
+---
+
+# User Metadata
+
+User metadata allows you to attach arbitrary information to workflows and events. This information can be displayed in the Temporal UI, making it easier to identify and understand workflows and their operations.
+
+## Adding Metadata
+
+### Workflow
+
+#### Starting a Workflow
+
+When starting a workflow, you can provide a static summary and details to help identify the workflow in the UI:
+
+```python
+# Start a workflow with static summary and details
+handle = await client.start_workflow(
+    YourWorkflow.run,
+    "workflow input",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+    static_summary="Order processing for customer #12345",
+    static_details="Processing premium order with expedited shipping"
+)
+```
+
+The `static_summary` is a single-line description that appears in the workflow list view, while `static_details` can be multi-line and provides more comprehensive information that appears in the workflow details view.
+
+You can also use the `execute_workflow` method with the same parameters:
+
+```python
+result = await client.execute_workflow(
+    YourWorkflow.run,
+    "workflow input",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+    static_summary="Order processing for customer #12345",
+    static_details="Processing premium order with expedited shipping"
+)
+```
+
+#### Inside the Workflow
+
+Within a workflow, you can get and set the _current workflow details_. These details are distinct from the static details provided to workflow start/execute, and are included in what is returned from the `__temporal_workflow_metadata` query.
+
+```python
+@workflow.defn
+class YourWorkflow:
+    @workflow.run
+    async def run(self, input: str) -> str:
+        # Get the current details
+        current_details = workflow.get_current_details()
+        print(f"Current details: {current_details}")
+        
+        # Set/update the current details
+        workflow.set_current_details("Updated workflow details with new status")
+        
+        return "Workflow completed"
+```
+
+### Activity
+
+You can attach a summary to activities when starting them from within a workflow:
+
+```python
+@workflow.defn
+class YourWorkflow:
+    @workflow.run
+    async def run(self, input: str) -> str:
+        # Start an activity with a summary
+        result = await workflow.execute_activity(
+            your_activity,
+            input,
+            start_to_close_timeout=timedelta(seconds=10),
+            summary="Processing user data"
+        )
+        return result
+```
+
+### Timer
+
+You can attach a summary to timers within a workflow:
+
+```python
+@workflow.defn
+class YourWorkflow:
+    @workflow.run
+    async def run(self, input: str) -> str:
+        # Create a timer with a summary
+        await workflow.sleep(timedelta(minutes=5), summary="Waiting for payment confirmation")
+        return "Timer completed"
+```
+
+### Signal Handler
+
+When defining a signal handler in a workflow, you can include a description:
+
+```python
+@workflow.defn
+class YourWorkflow:
+    def __init__(self):
+        self._approved = False
+
+    @workflow.run
+    async def run(self, input: str) -> str:
+        # Wait for approval signal
+        await workflow.wait_condition(lambda: self._approved)
+        return "Workflow approved"
+
+    @workflow.signal(description="Signal to approve the workflow")
+    def approve(self) -> None:
+        self._approved = True
+```
+
+### Query Handler
+
+When defining a query handler in a workflow, you can include a description:
+
+```python
+@workflow.defn
+class YourWorkflow:
+    def __init__(self):
+        self._status = "pending"
+
+    @workflow.run
+    async def run(self, input: str) -> str:
+        # Workflow logic
+        self._status = "processing"
+        await workflow.sleep(timedelta(minutes=1))
+        self._status = "completed"
+        return "Workflow completed"
+
+    @workflow.query(description="Get the current status of the workflow")
+    def get_status(self) -> str:
+        return self._status
+```
+
+### Update Handler
+
+When defining an update handler in a workflow, you can include a description:
+
+```python
+@workflow.defn
+class YourWorkflow:
+    def __init__(self):
+        self._shipping_address = ""
+
+    @workflow.run
+    async def run(self, input: str) -> str:
+        # Workflow logic
+        return f"Order shipped to: {self._shipping_address}"
+
+    @workflow.update(description="Update the shipping address for the order")
+    def change_shipping_address(self, new_address: str) -> None:
+        self._shipping_address = new_address
+```
+
+## Retrieving Metadata
+
+### Workflow Metadata
+
+Workflow metadata can be retrieved from the client:
+
+```python
+# Get a handle to an existing workflow
+handle = client.get_workflow_handle("your-workflow-id")
+
+# Describe the workflow to get its details
+description = await handle.describe()
+
+# Get the static summary and details
+summary = await description.static_summary()
+details = await description.static_details()
+
+print(f"Summary: {summary}")
+print(f"Details: {details}")
+```
+
+### Metadata Query
+
+The builtin `__temporal_workflow_metadata` query includes:
+- descriptions for signals, queries, and updates
+- the current details of the workflow
+
+and can be accessed like so:
+
+```python
+
+# Query for workflow metadata
+handle = client.get_workflow_handle("your-workflow-id")
+metadata = await handle.query(
+    "__temporal_workflow_metadata",
+    result_type=WorkflowMetadata
+)
+
+# Access signal descriptions
+for signal_def in metadata.definition.signal_definitions:
+    print(f"Signal '{signal_def.name}': {signal_def.description}")
+
+# Access query descriptions  
+for query_def in metadata.definition.query_definitions:
+    print(f"Query '{query_def.name}': {query_def.description}")
+
+# Access update descriptions
+for update_def in metadata.definition.update_definitions:
+    print(f"Update '{update_def.name}': {update_def.description}")
+
+# Access current workflow details
+print(f"Current details: {metadata.current_details}")
+```
+
+### Activity and Timer Summaries
+
+Activity and timer summaries are stored in the workflow history and can be retrieved by examining the workflow history events:
+
+```python
+# Get workflow history
+response = await client.workflow_service.get_workflow_execution_history(
+    GetWorkflowExecutionHistoryRequest(
+        namespace=client.namespace,
+        execution=WorkflowExecution(workflow_id="your-workflow-id"),
+    )
+)
+
+# Extract metadata from events
+for event in response.history.events:
+    if event.event_type == EventType.EVENT_TYPE_ACTIVITY_TASK_SCHEDULED:
+        # Assuming the activity event has a summary
+        activity_summary = PayloadConverter.default.from_payload(
+            event.user_metadata.summary
+        )
+    elif event.event_type == EventType.EVENT_TYPE_TIMER_STARTED:
+        # Assuming the timer event has a summary
+        timer_summary = PayloadConverter.default.from_payload(
+            event.user_metadata.summary
+        )
+```
+
+Note that activity and timer summaries are primarily intended for display in the Temporal UI and for debugging purposes. They are not typically accessed programmatically during normal workflow execution.
