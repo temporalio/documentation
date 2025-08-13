@@ -1,0 +1,63 @@
+---
+id: quickstarts
+title: Quickstarts
+sidebar_label: Quickstarts
+description: Start building with Temporal using language-specific quickstarts.
+hide_table_of_contents: true
+---
+
+import { CallToAction } from "@site/src/components/elements/CallToAction";
+
+# Quickstarts
+
+Choose your language to get started quickly.
+
+<div className="quickstart-cards">
+  <a className="qs-card" href="/develop/go/set-up-your-local-go">
+    <h3>Go</h3>
+    <p>Set up your local environment and run your first Go Workflow.</p>
+  </a>
+  <a className="qs-card" href="/develop/java/set-up-your-local-java">
+    <h3>Java</h3>
+    <p>Install the Java SDK and run a Hello World Workflow.</p>
+  </a>
+  <a className="qs-card" href="/develop/php/set-up-your-local-php">
+    <h3>PHP</h3>
+    <p>Install the PHP SDK and run your first Workflow.</p>
+  </a>
+  <a className="qs-card" href="/develop/python/set-up-your-local-python">
+    <h3>Python</h3>
+    <p>Create a virtual environment and run your first Python Workflow.</p>
+  </a>
+  <a className="qs-card" href="/develop/typescript/set-up-your-local-typescript">
+    <h3>TypeScript</h3>
+    <p>Install the TypeScript SDK and run a Workflow.</p>
+  </a>
+  <a className="qs-card" href="/develop/dotnet/set-up-your-local-dotnet">
+    <h3>.NET</h3>
+    <p>Create a solution and run a Workflow in C#.</p>
+  </a>
+</div>
+
+<style>
+{`.quickstart-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.qs-card {
+  display: block;
+  padding: 1rem 1.25rem;
+  background: var(--ifm-card-background-color);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 0.75rem;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.2s ease, transform 0.1s ease;
+}
+.qs-card h3 { margin: 0 0 0.5rem; }
+.qs-card p { margin: 0; color: var(--ifm-color-emphasis-700); }
+.qs-card:hover { box-shadow: 0 6px 18px rgba(0,0,0,0.08); transform: translateY(-2px); }
+`}
+</style> 
