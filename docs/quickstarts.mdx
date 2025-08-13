@@ -6,117 +6,21 @@ description: Start building with Temporal using language-specific quickstarts.
 hide_table_of_contents: true
 ---
 
+import QuickstartCards from "@site/src/components/QuickstartCards";
 import { CallToAction } from "@site/src/components/elements/CallToAction";
 
 # Quickstarts
 
 Choose your language to get started quickly.
 
-<div className="quickstart-cards">
-  <a className="qs-card" href="/develop/go/set-up-your-local-go">
-    <h3>Go</h3>
-    <p>Set up your local environment and run your first Go Workflow.</p>
-  </a>
-  <a className="qs-card" href="/develop/java/set-up-your-local-java">
-    <h3>Java</h3>
-    <p>Install the Java SDK and run a Hello World Workflow.</p>
-  </a>
-  <a className="qs-card" href="/develop/php/set-up-your-local-php">
-    <h3>PHP</h3>
-    <p>Install the PHP SDK and run your first Workflow.</p>
-  </a>
-  <a className="qs-card" href="/develop/python/set-up-your-local-python">
-    <h3>Python</h3>
-    <p>Create a virtual environment and run your first Python Workflow.</p>
-  </a>
-  <a className="qs-card" href="/develop/typescript/set-up-your-local-typescript">
-    <h3>TypeScript</h3>
-    <p>Install the TypeScript SDK and run a Workflow.</p>
-  </a>
-  <a className="qs-card" href="/develop/dotnet/set-up-your-local-dotnet">
-    <h3>.NET</h3>
-    <p>Create a solution and run a Workflow in C#.</p>
-  </a>
-</div>
+<QuickstartCards
+  items={[
+    { href: "/develop/go/set-up-your-local-go", title: "Go", description: "Set up your local environment and run your first Go Workflow." },
+    { href: "/develop/java/set-up-your-local-java", title: "Java", description: "Install the Java SDK and run a Hello World Workflow." },
+    { href: "/develop/php/set-up-your-local-php", title: "PHP", description: "Install the PHP SDK and run your first Workflow." },
+    { href: "/develop/python/set-up-your-local-python", title: "Python", description: "Create a virtual environment and run your first Python Workflow." },
+    { href: "/develop/typescript/set-up-your-local-typescript", title: "TypeScript", description: "Install the TypeScript SDK and run a Workflow." },
+    { href: "/develop/dotnet/set-up-your-local-dotnet", title: ".NET", description: "Create a solution and run a Workflow in C#." },
+  ]}
+/>
 
-<CallToAction href="https://learn.temporal.io/getting_started/">
-  <h3>Next: Getting Started tutorials</h3>
-  <p>Explore language-specific walkthroughs and exercises on Learn Temporal.</p>
-</CallToAction>
-
-<style>
-{`.quickstart-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 1.25rem;
-  margin-top: 1rem;
-}
-
-.qs-card {
-  display: block;
-  padding: 1.1rem 1.25rem;
-  background: linear-gradient(
-    180deg,
-    rgba(127, 127, 127, 0.06) 0%,
-    rgba(127, 127, 127, 0.03) 100%
-  );
-  border: 1px solid var(--ifm-color-emphasis-200);
-  border-radius: 0;
-  text-decoration: none;
-  color: inherit;
-  box-shadow: inset 0 0 0 1px rgba(68, 76, 231, 0.25), 0 10px 24px rgba(0,0,0,0.10);
-  transition: transform 120ms ease, box-shadow 180ms ease, border-color 120ms ease;
-}
-
-.qs-card h3 {
-  margin: 0 0 0.4rem;
-  font-size: 1.05rem;
-}
-
-.qs-card p {
-  margin: 0;
-  color: var(--ifm-color-emphasis-700);
-  font-size: 0.95rem;
-}
-
-.qs-card:hover {
-  transform: translateY(-3px);
-  box-shadow: inset 0 0 0 1px rgba(68, 76, 231, 0.25), 0 10px 24px rgba(0,0,0,0.10);
-  border-color: var(--ifm-color-primary);
-  text-decoration: none;
-  border-image: linear-gradient(135deg, #444CE7 0%, #6366F1 100%);
-  border-image-slice: 1;
-}
-
-.qs-card:focus-visible {
-  outline: 3px solid var(--ifm-color-primary);
-  outline-offset: 2px;
-  text-decoration: none;
-}
-
-.qs-card:hover h3, .qs-card:hover p,
-.qs-card:focus-visible h3, .qs-card:focus-visible p {
-  text-decoration: none;
-}
-
-/* Dark theme tuning */
-[data-theme='dark'] .qs-card {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.04) 0%,
-    rgba(255, 255, 255, 0.02) 100%
-  );
-  border-color: var(--ifm-color-emphasis-300);
-  box-shadow: 0 2px 10px rgba(0,0,0,0.25);
-}
-
-[data-theme='dark'] .qs-card:hover {
-  border-image: linear-gradient(135deg, #444CE7 0%, #B664FF 100%);
-  border-image-slice: 1;
-}
-
-[data-theme='dark'] .qs-card p {
-  color: var(--ifm-color-emphasis-600);
-}
-`}
-</style>
