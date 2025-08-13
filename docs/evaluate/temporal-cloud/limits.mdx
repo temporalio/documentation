@@ -6,11 +6,16 @@ slug: /cloud/limits
 description: Learn about Temporal Cloud limits, including accounts, namespaces, throughput, retention, task pollers, batch jobs, gRPC, search attributes, and more.
 toc_max_heading_level: 3
 keywords:
+  - capacity
   - configuration
   - defaults
   - limits
+  - quotas
+  - rate limits
+  - scaling
   - settings
   - temporal cloud
+  - throttling
 tags:
   - Temporal Cloud
   - Limits
@@ -18,103 +23,106 @@ tags:
 
 import { CaptionedImage } from '@site/src/components';
 
-This page addresses the limits of the Temporal Cloud system.
-Reach out to your account team should you have any questions about these limits.
+Temporal Cloud enforces a variety of limits to keep the service reliable, including rate limits (how often something may occur in a unit of time), resource limits (how many of a given resource may exist at any one time), and configuration limits (minimum or maximum values for a setting)
 
-These limits fall into the following three main categories:
+Every limit applies at a specific scope (level of the application):
 
 - At the Temporal Cloud [Account level](#account-level)
 - At the [Namespace level](#namespace-level)
+- At the [Nexus endpoint level](#nexus-endpoint-level)
 - Within the [programming model](#programming-model-level) itself
-
-## Hard and soft limits
-
-Temporal Cloud enforces two types of limits:
-
-- **Hard limits** are fixed and cannot be exceeded under normal operation.
-  These limits are enforced to ensure system stability and cannot be adjusted.
-
-- **Soft limits** can be adjusted by Temporal Cloud based on usage or upon request.\
-  Some limits automatically increase as your usage grows.\
-  Temporal Cloud monitors usage and raises these limits as needed, so you don’t need to take action.\
-  For example, if your number of Namespaces or rate of Actions per second (APS) increases, Temporal Cloud will allocate more resources to keep up.\
-  You can request changes to _any_ soft limit—whether managed automatically or not—by reaching out to [Support](https://support.temporal.io).
-
-The following table lists Temporal Cloud's soft limits, indicating whether they are automatically managed based on usage:
-
-| Limit                     | Managed by Temporal Cloud | Adjustable via Support Request |
-| ------------------------- | ------------------------- | ------------------------------ |
-| Number of Namespaces      | ✅                        | ✅                             |
-| APS (Actions Per Second)  | ✅                        | ✅                             |
-| RPS (Requests Per Second) | ✅                        | ✅                             |
-| Number of users           |                           | ✅                             |
-| Number of Schedules       |                           | ✅                             |
-| Concurrent Task pollers   |                           | ✅                             |
-| Batch jobs                |                           | ✅                             |
-| Nexus endpoints           |                           | ✅                             |
 
 ## Account level
 
-The following aspects apply at the Temporal Cloud Account level (per account).
+The following limits apply at the Temporal Cloud Account level (per account).
 
 ### Users
 
-**How many users can I add?**
-
-By default, 300 users across all Namespaces.
+- Scope: Account
+- Default limit: 300 users
+- How to increase: [Contact support](/cloud/support#support-ticket) 
 
 ### Namespaces
 
-**How many namespaces can I create?​**
-
-By default, each account is provisioned with ten Namespaces.
-As you start using Namespaces by scheduling Workflows, Temporal Cloud automatically raises your allowance.
-This automatic adjustment happens whenever all your Namespaces are in use, up to a maximum of 100 Namespaces.
-You can request further increases beyond the 100 Namespace limit by opening a [support ticket](/cloud/support#support-ticket).
-
-### Retained Prometheus endpoint data
-
-**How much metrics data does the Prometheus endpoint retain?​**
-
-The Prometheus endpoint retains 30 days of data.
-
-### Supported operators in List Filters
-
-**Which operators aren't supported in Temporal Cloud?**
-
-The `ORDER BY` operator isn't supported in List Filters in Temporal Cloud.
-
-This means that custom ordering of Workflows with Temporal Cloud Visibility isn't possible.
-Lists of Workflows are still ordered by a default ordering rule, but be aware that this rule might change.
+- Scope: Account
+- Default limit: 10 namespaces
+- How to increase: 
+  - Automatically increased as you start creating namespaces, up to a limit of 100.
+  - [Contact support](/cloud/support#support-ticket)
 
 ## Namespace level
 
-The following aspects apply at the Namespace level (per Namespace).
+The following limits apply at the Namespace scope.
 
-### Throughput
+### Actions per second
 
-**What is the limit of Actions per second?**
+- Scope: Namespace
+- Default limit: 400 actions per second (APS)
+- How to increase:
+  - Automatically increases (and decreases) based on the last 7 days of APS usage. Will never go below the default limit.
+  - [Contact support](/cloud/support#support-ticket)
 
-Each Namespace has a rate limit, which is measured in Actions per second (APS).
-A Namespace may be throttled when its throughput becomes too high.
-Throttling means limiting the rate at which Actions are performed to prevent the Namespace from exceeding its APS limit.
+See the [Actions page](/cloud/actions) for the list of actions. 
 
-A Namespace's default limit is set at 400 APS and automatically adjusts based on recent usage (over the prior 7 days).
-Your throughput limit will never fall below this default value.
-You can request this limit be manually raised by opening a [support ticket](/cloud/support#support-ticket).
+### Requests per second
+
+- Scope: Namespace
+- Default limit: 1600 requests per second (RPS)
+- How to increase:
+  - Automatically increases (and decreases) based on the last 7 days of RPS usage. Will never go below the default limit.
+  - [Contact support](/cloud/support#support-ticket)
+
+See the [glossary](/glossary#requests-per-second-rps) for more about RPS.
+
+### Operations per second
+
+- Scope: Namespace
+- Default limit: 3200 operations per second (OPS)
+- How to increase:
+  - Automatically increases (and decreases) based on the last 7 days of OPS usage. Will never go below the default limit.
+  - [Contact support](/cloud/support#support-ticket)
+
+See the [operations metric list](/production-deployment/cloud/metrics/reference#metrics-operations) for the list of operations.
 
 ### Schedules rate limit
 
-Each Namespace has a default [Schedule](/glossary#schedule) rate limit of 10 requests per second (RPS).
-If too many Schedules trigger at once, they may be throttled.
-Throttling limits the rate at which Schedules create new Workflow Executions, ensuring the Namespace does not exceed its RPS limit.
+- Scope: Namespace
+- Default limit: 10 schedule requests per second (RPS)
+- How to increase: - [Contact support](/cloud/support#support-ticket)
 
 To avoid throttling, don't schedule all your Workflow Executions to start at the same time (daily, weekly, monthly, etc.).
 Every Temporal SDK supports jittering, which adds small random delays to Schedule specifications, helping to reduce load at any specific moment.
 Set the `jitter` value to the largest delay you will permit before your Workflow Execution must begin.
 This approach uniformly distributes the scheduled Workflow Execution launches through that period and reduces your Schedule Workflow Execution RPS load.
 
-If you need a higher Schedule RPS limit, open a [support ticket](/cloud/support#support-ticket).
+### Visibility API Rate Limit
+
+- Scope: Namespace
+- Default limit: 30 Visibility API calls per second
+- Not configurable
+
+Calls subject to the Visibility API rate limit:
+
+- `GetWorkerTaskReachability`
+- `ListSchedules`
+- `ListBatchOperations`
+- `DescribeTaskQueueWithReachability`
+- `ListDeployments`
+- `GetDeploymentReachability`
+
+### Nexus Rate Limit {#nexus-rate-limits}
+
+Nexus requests (such as starting a Nexus Operation or sending a Nexus completion callback) are counted as part of the overall Namespace RPS limit.
+If too many Nexus requests are sent at once, they may be throttled, along with other requests to the Namespace.
+Throttling limits the rate at which Nexus requests are processed, ensuring the RPS limit isn't exceeded.
+
+You can request this limit be manually raised by [opening a support ticket](https://docs.temporal.io/cloud/support#support-ticket).
+
+:::note
+
+For the target Namespace of a Nexus Endpoint, even though there are no Action results for handling a Nexus Operation itself, the Nexus requests on a target Namespace do count towards the overall RPS limit for the Namespace as a whole.
+
+:::
 
 ### Certificates
 
@@ -189,36 +197,6 @@ When creating custom Search Attributes in Temporal Cloud, the attribute names mu
 
 For more information on custom Search Attributes see [Custom Search Attributes limits](/search-attribute#custom-search-attribute).
 
-### Visibility API Rate Limit
-
-**What is the rate limit for requests to the Visibility APIs?**
-
-The rate limit for requests to the Visibility APIs varies, and may be as low as 30 requests per second.
-This limit is not configurable.
-
-**Which calls are subject to the Visibility API rate limit?**
-
-- `GetWorkerTaskReachability`
-- `ListSchedules`
-- `ListBatchOperations`
-- `DescribeTaskQueueWithReachability`
-- `ListDeployments`
-- `GetDeploymentReachability`
-
-### Nexus Rate Limit {#nexus-rate-limits}
-
-Nexus requests (such as starting a Nexus Operation or sending a Nexus completion callback) are counted as part of the overall Namespace RPS limit.
-If too many Nexus requests are sent at once, they may be throttled, along with other requests to the Namespace.
-Throttling limits the rate at which Nexus requests are processed, ensuring the RPS limit isn't exceeded.
-
-You can request this limit be manually raised by [opening a support ticket](https://docs.temporal.io/cloud/support#support-ticket).
-
-:::note
-
-For the target Namespace of a Nexus Endpoint, even though there are no Action results for handling a Nexus Operation itself, the Nexus requests on a target Namespace do count towards the overall RPS limit for the Namespace as a whole.
-
-:::
-
 ## Nexus Endpoint level
 
 ### Nexus Endpoints limits
@@ -230,7 +208,7 @@ You can request further increases beyond the initial 10 Endpoint limit by [openi
 
 ## Programming model level
 
-The following aspects apply at the programming model level.
+The following limits apply at the programming model level.
 See also: [Self-hosted Temporal Service defaults](/self-hosted-guide/defaults).
 
 ### Identifier length limit

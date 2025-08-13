@@ -19,7 +19,7 @@ When you execute a Temporal Workflow, its Actions create the ongoing state and p
 
 <!-- _Tags: [term](/tags/term), [pricing](/tags/pricing), [temporal-cloud](/tags/temporal-cloud), [explanation](/tags/explanation)_ -->
 
-#### [Actions Per Second (APS)](/cloud/limits#throughput)
+#### [Actions Per Second (APS)](/cloud/limits#actions-per-second)
 
 APS, or Actions per second, is specific to Temporal Cloud.
 Each Temporal Cloud Namespace enforces a rate limit, which is measured in Actions per second (APS).
