@@ -95,9 +95,11 @@ tcld cr create --connectivity-type private --connection-id "vpce-abcde" --region
 
 [Example in the Terraform repo](https://github.com/temporalio/terraform-provider-temporalcloud/blob/main/examples/resources/temporalcloud_connectivity_rule/resource.tf)
 
-## Update connectivity rules on a namespace
+## Attach connectivity rules to a namespace
 
 Be careful! When any connectivity rules are set on a namespace, that namespace is ONLY accessible via the connections defined in those rules. If you remove a connectivity rule that your workers are using, your traffic will be interrupted.
+
+If you already have workers using a namespace, adding both a public rule and any private rules simultaneously can help you avoid unintended loss of access. You can then ensure all workers are using private connections, and then remove the public rule.
 
 ### Temporal Cloud CLI (tcld)
 
@@ -122,3 +124,24 @@ tcld namespace set-connectivity-rules --namespace "my-namespace" --remove-all
 ### Terraform
 
 [Example in the Terraform repo](https://github.com/temporalio/terraform-provider-temporalcloud/tree/main/examples/resources/temporalcloud_namespace/resource.tf#L113-L128)
+
+
+## View the connectivity rules for a namespace
+
+You have two ways to view the connectivity rules attached to a particular namespace.
+
+### Get namespace
+
+Connectivity rules are included in the namespace details returned by the `namespace get` command. 
+
+```bash
+tcld namespace get -n "my-namespace"
+```
+
+### List connectivity rules by namespace
+
+To see only the connectivity rules for a specific namespace (without other namespace details), use the `connectivity-rule list` command with a namespace argument.
+
+```bash
+tcld connectivity-rule list -n "my-namespace"
+```
