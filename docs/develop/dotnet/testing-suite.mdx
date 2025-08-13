@@ -199,7 +199,7 @@ using Temporalio.Worker;
 [Fact]
 public async Task SignalWorkflow_SendSignal_HasExpectedResult()
 {
-    await using var env = WorkflowEnvironment.StartTimeSkippingAsync();
+    await using var env = await WorkflowEnvironment.StartTimeSkippingAsync();
     using var worker = new TemporalWorker(
         env.Client,
         new TemporalWorkerOptions($"task-queue-{Guid.NewGuid()}").
@@ -224,7 +224,7 @@ using Temporalio.Worker;
 [Fact]
 public async Task SignalWorkflow_SignalTimeout_HasExpectedResult()
 {
-    await using var env = WorkflowEnvironment.StartTimeSkippingAsync();
+    await using var env = await WorkflowEnvironment.StartTimeSkippingAsync();
     using var worker = new TemporalWorker(
         env.Client,
         new TemporalWorkerOptions($"task-queue-{Guid.NewGuid()}").
