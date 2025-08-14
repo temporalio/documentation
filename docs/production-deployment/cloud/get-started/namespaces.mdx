@@ -393,7 +393,7 @@ Tags are key-value metadata pairs that can be attached to namespaces in Temporal
 - Each namespace can have a maximum of 10 tags
 - Each key must be unique for a given namespace (e.g., a namespace cannot have both `team:foo` and `team:bar` tags)
 - Keys and values must be 1-63 characters in length
-- Allowed characters: lowercase letters (`a-z`), numbers (`0-9`), spaces representable in UTF-8, and the following characters: `+ - = . _ : / @`
+- Allowed characters: lowercase letters (`a-z`), numbers (`0-9`), periods (`.`), underscores (`_`), and hyphens (`-`)
 - Tags are not a secure storage mechanism and should not store PII or PHI
 - Tags will not change the behavior of the tagged resource
 - There is a soft limit of 1000 unique tag keys per account
