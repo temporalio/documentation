@@ -380,18 +380,23 @@ tcld namespace lifecycle set \
 
 ## How to tag a Namespace in Temporal Cloud {#tag-a-namespace}
 
-Tags are key-value pairs that can be attached to namespaces in Temporal Cloud to help operators organize, track, and manage namespaces more easily.
+:::tip Support, stability, and dependency info
+
+Namespace tags are currently in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+
+:::
+
+Tags are key-value metadata pairs that can be attached to namespaces in Temporal Cloud to help operators organize, track, and manage namespaces more easily.
 
 ### Tag Structure and Limits
 
 - Each namespace can have a maximum of 10 tags
-- Each key must be unique for a given namespace (e.g., a namespace cannot have both `team:foo` and `team:bar`)
+- Each key must be unique for a given namespace (e.g., a namespace cannot have both `team:foo` and `team:bar` tags)
 - Keys and values must be 1-63 characters in length
 - Allowed characters: lowercase letters (`a-z`), numbers (`0-9`), spaces representable in UTF-8, and the following characters: `+ - = . _ : / @`
-- Tags must be lowercase (requests with uppercase will fail)
 - Tags are not a secure storage mechanism and should not store PII or PHI
 - Tags will not change the behavior of the tagged resource
-- There is a soft limit of 1000 unique tag keys per account.
+- There is a soft limit of 1000 unique tag keys per account
 
 ### Permissions
 
