@@ -39,7 +39,7 @@ Internal timer that schedules the retry of a failed Activity execution.
 
 <NewDocsCell />
 
-Retry fires later, so the Activity stays in retry‑waiting state longer.
+Activity retry delayed.
 
 <NewDocsCell />
 
@@ -55,7 +55,7 @@ Marks an Activity as timed‑out when its deadline passes.
 
 <NewDocsCell />
 
-The over‑long Activity remains 'in‑flight' until the timeout task is serviced.
+Activity task stays in-flight longer and timeout is delayed. If there is a retry, retry is also delayed.
 
 <NewDocsCell />
 
@@ -87,7 +87,7 @@ Creates a Temporal Schedule (cron‑like trigger).
 
 <NewDocsCell />
 
-Schedule becomes active later.
+Client/SDK receives ResourceExhaustedError, leading to backoff and retry.
 
 <NewDocsCell />
 
@@ -103,7 +103,7 @@ Adds a worker build‑ID versioning rule for a task queue.
 
 <NewDocsCell />
 
-Rule enforcement is delayed.
+Client/SDK receives ResourceExhaustedError, leading to backoff and retry.
 
 <NewDocsCell />
 
@@ -647,7 +647,7 @@ Worker long‑poll for Activity tasks.
 
 <NewDocsCell />
 
-Worker idles longer before receiving work.
+Activity poller receives ResourceExhaustedError, leading to automatic backoff and retry, which slows down activity task processing.
 
 <NewDocsCell />
 
@@ -663,7 +663,7 @@ Worker long‑poll for Nexus tasks.
 
 <NewDocsCell />
 
-External‑call workers idle.
+Nexus poller receives ResourceExhaustedError, leading to automatic backoff and retry, which slows down Nexus task processing.
 
 <NewDocsCell />
 
@@ -695,7 +695,7 @@ Worker long‑poll for Workflow Tasks.
 
 <NewDocsCell />
 
-Workflow progress stalls.
+Workflow task poller receives ResourceExhaustedError, leading to automatic backoff and retry, which slows down workflow progress.
 
 <NewDocsCell />
 
@@ -1207,7 +1207,7 @@ Dispatches an Activity task to a worker on its task queue.
 
 <NewDocsCell />
 
-Workers wait longer for the task; workflow idles.
+Activity task scheduling is delayed.
 
 <NewDocsCell />
 
@@ -1303,7 +1303,7 @@ Schedules a Workflow Task for workers.
 
 <NewDocsCell />
 
-Workflow progress is slowed because workers receive WFT later.
+Workflow task scheduling is delayed.
 
 <NewDocsCell />
 
@@ -1431,7 +1431,7 @@ Fires a user‑defined timer created inside a workflow.
 
 <NewDocsCell />
 
-Timer completes late, extending 'sleep' duration.
+User timer (including workflow sleep) fire event delayed.
 
 <NewDocsCell />
 
@@ -1447,7 +1447,7 @@ Updates a closed workflow in Visibility store.
 
 <NewDocsCell />
 
-Workflow remains open in workflow list command output and workflow list in UI
+Closed workflow remains open in list workflow visibility API results until task is processed.
 
 <NewDocsCell />
 
@@ -1495,7 +1495,7 @@ Timer that delays retry or continued‑as‑new start per backoff policy.
 
 <NewDocsCell />
 
-Back‑off period extends beyond intended.
+Workflow start delayed beyond intended backoff time.
 
 <NewDocsCell />
 
@@ -1511,7 +1511,7 @@ Enforces the max total execution duration of a workflow.
 
 <NewDocsCell />
 
-Over‑length workflow is not timed‑out on schedule.
+Timeout of workflow execution chain is delayed.
 
 <NewDocsCell />
 
@@ -1527,7 +1527,7 @@ Enforces timeout of an individual workflow run.
 
 <NewDocsCell />
 
-Run keeps executing past its limit.
+Timeout on workflow run is delayed.
 
 <NewDocsCell />
 
@@ -1543,6 +1543,6 @@ Times out a Workflow Task that a worker hasn't completed in time.
 
 <NewDocsCell />
 
-Task remains outstanding; new WFT isn't scheduled.
+Timeout workflow task remains outstanding; retried workflow task is delayed.
 
 </DocsTable>
