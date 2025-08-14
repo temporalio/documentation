@@ -405,13 +405,7 @@ Tags are key-value metadata pairs that can be attached to namespaces in Temporal
 
 ### tcld
 
-```bash
-# Add/update or remove existing tags 
-tcld namespace update-tags --namespace testns.acct --tag-to-add "key1=value1" --tag-to-add "key2=value2" --tag-to-remove "key3"
-
-# Fetch the namespace object (which contains a map of the tags)
-tcld namespace get --namespace testns.acct | jq '.tags'
-```
+See the [tcld namespace tags](/cloud/tcld/namespace/#tags) command reference for details.
 
 ### Terraform
 
