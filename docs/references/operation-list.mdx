@@ -13,6 +13,8 @@ tags:
   - rate limiting
 ---
 
+import { DocsTable, NewDocsCell } from '@site/src/components';
+
 # Operations
 
 Temporal Cloud [rate limits operations per second (OPS)](/cloud/limits#operations-per-second) per namespace. An operation is anything 1. a user does directly, or 2. Temporal does on behalf of the user in the background that results in load on Temporal Server. The exception is visibility queries: they do hit the Server (the query is passed from the server to the visibility store), but primarily the load is on the visibility system. Visibility rate limits are separate from OPS rate limits.
@@ -23,488 +25,1556 @@ Below is the list of operations, including:
 - priority level (lower is higher priority)
 - effect of that operation being throttled
 
+<DocsTable Columns={["Operation", "Priority Level", "Description", "Effect of Throttling"]} sortable={true} defaultSort={{column: 1, direction: "asc"}}>
 
-## ActivityRetryTimer 
-- Description: Internal timer that schedules the retry of a failed Activity execution. 
-- Priority level: 4 
-- Effect of throttling: Retry fires later, so the Activity stays in retry‑waiting state longer.
-
-## ActivityTimeout 
-- Description: Marks an Activity as timed‑out when its deadline passes. 
-- Priority level: 5 
-- Effect of throttling: The over‑long Activity remains ‘in‑flight’ until the timeout task is serviced.
-
-## Chasm 
-- Description: Executes an advanced CHASM internal state transition for a workflow. 
-- Priority level: 4 
-- Effect of throttling: Transition is postponed, slowing that workflow’s progress.
-
-## ChasmPure 
-- Description: Runs the ‘pure’ CHASM transition path (experimental). 
-- Priority level: 4 
-- Effect of throttling: Same delay: pure transition is stalled.
-
-## CompleteNexusOperation 
-- Description: Finalises a Nexus operation after worker response. 
-- Priority level: 1 
-- Effect of throttling: External call clean‑up/commit delayed.
-
-## CreateSchedule 
-- Description: Creates a Temporal Schedule (cron‑like trigger). 
-- Priority level: 1 
-- Effect of throttling: Schedule becomes active later.
-
-## CreateWorkflowRule 
-- Description: Adds a worker build‑ID versioning rule for a task queue. 
-- Priority level: 2 
-- Effect of throttling: Rule enforcement is delayed.
-
-## DeleteSchedule 
-- Description: Deletes an existing Schedule. 
-- Priority level: 2 
-- Effect of throttling: Schedule may keep firing briefly.
-
-## DeleteWorkerDeployment 
-- Description: Deletes a worker deployment record. 
-- Priority level: 2 
-- Effect of throttling: Stale deployment metadata persists longer.
-
-## DeleteWorkerDeploymentVersion 
-- Description: Deletes one build‑ID version entry under a deployment. 
-- Priority level: 2 
-- Effect of throttling: Version appears valid until task processed.
-
-## DeleteWorkflowExecution 
-- Description: Hard‑deletes workflow history and state. 
-- Priority level: 2 
-- Effect of throttling: Storage is freed later; data visible longer.
-
-## DeleteWorkflowRule 
-- Description: Deletes a worker build‑ID rule. 
-- Priority level: 2 
-- Effect of throttling: Rule continues to exist until task handled.
-
-## DeprecateNamespace 
-- Description: Marks a namespace as deprecated in cluster metadata. 
-- Priority level: 0 
-- Effect of throttling: Clients still see it as active.
-
-## DescribeBatchOperation 
-- Description: Returns metadata for a batch operation. 
-- Priority level: 3 
-- Effect of throttling: Admin/UI read waits longer.
-
-## DescribeDeployment 
-- Description: Shows worker deployment details. 
-- Priority level: 3 
-- Effect of throttling: Info retrieval is delayed.
-
-## DescribeNamespace 
-- Description: Returns namespace configuration. 
-- Priority level: 0 
-- Effect of throttling: Admin read waits.
-
-## DescribeSchedule 
-- Description: Reads a Schedule’s current state. 
-- Priority level: 3 
-- Effect of throttling: Call responds slower.
-
-## DescribeTaskQueue 
-- Description: Returns stats and configuration of a task queue. 
-- Priority level: 3 
-- Effect of throttling: Monitoring dashboards lag.
-
-## DescribeWorkerDeployment 
-- Description: Shows details of a specific worker deployment. 
-- Priority level: 3 
-- Effect of throttling: Same delay in status.
-
-## DescribeWorkerDeploymentVersion 
-- Description: Shows a particular build‑ID version record. 
-- Priority level: 3 
-- Effect of throttling: Detail retrieval delayed.
-
-## DescribeWorkflowExecution 
-- Description: Returns high‑level info for a workflow execution. 
-- Priority level: 3 
-- Effect of throttling: Diagnostics/CLI wait longer.
-
-## DescribeWorkflowRule 
-- Description: Reads a worker versioning rule. 
-- Priority level: 2 
-- Effect of throttling: Admin tools wait.
-
-## DispatchByEndpoint 
-- Description: Routes a Nexus task to workers by endpoint name. 
-- Priority level: 1 
-- Effect of throttling: Task routing latencies increase.
-
-## DispatchByNamespaceAndTaskQueue 
-- Description: Routes a Nexus task by namespace and task queue. 
-- Priority level: 1 
-- Effect of throttling: Same: Nexus task starts later.
-
-## ExecuteMultiOperation 
-- Description: Runs a compound operation. 
-- Priority level: 1 
-- Effect of throttling: Operation is delayed
-
-## GetClusterInfo 
-- Description: Returns information about cluster capabilities and versions. 
-- Priority level: 0 
-- Effect of throttling: CLI/API calls take longer.
-
-## GetCurrentDeployment 
-- Description: Fetches the cluster‑wide current worker deployment. 
-- Priority level: 3 
-- Effect of throttling: Rollout tooling sees stale info.
-
-## GetSearchAttributes 
-- Description: Lists custom search attribute definitions. 
-- Priority level: 0 
-- Effect of throttling: SDK/CLI wait.
-
-## GetSystemInfo 
-- Description: Returns system build & feature info. 
-- Priority level: 0 
-- Effect of throttling: Diagnostic call delayed.
-
-## GetWorkerBuildIdCompatibility 
-- Description: Returns build‑ID compatibility matrix for a task queue. 
-- Priority level: 3 
-- Effect of throttling: Rollout decisions wait.
-
-## GetWorkerVersioningRules 
-- Description: Lists worker versioning rules. 
-- Priority level: 3 
-- Effect of throttling: Admin listing delayed.
-
-## GetWorkflowExecutionHistory 
-- Description: Streams workflow history in forward order. 
-- Priority level: 2 
-- Effect of throttling: History load in UI/CLI is slow.
-
-## GetWorkflowExecutionHistoryReverse 
-- Description: Streams history in reverse order. 
-- Priority level: 3 
-- Effect of throttling: Same slower history read.
-
-## ListNamespaces 
-- Description: Lists all namespaces in the cluster. 
-- Priority level: 0 
-- Effect of throttling: UI/CLI list paginates slower.
-
-## ListScheduleMatchingTimes 
-- Description: Computes future fire‑times for a Schedule. 
-- Priority level: 3 
-- Effect of throttling: Preview takes longer.
-
-## ListTaskQueuePartitions 
-- Description: Lists partitions backing a task queue. 
-- Priority level: 3 
-- Effect of throttling: Load‑balancing insight lag.
-
-## ListWorkerDeployments 
-- Description: Lists all worker deployments. 
-- Priority level: 3 
-- Effect of throttling: Deployment inventory delayed.
-
-## ListWorkflowRules 
-- Description: Lists all build‑ID versioning rules. 
-- Priority level: 3 
-- Effect of throttling: Admin list wait.
-
-## PatchSchedule 
-- Description: Modifies an existing Schedule (e.g., add interval). 
-- Priority level: 2 
-- Effect of throttling: Change becomes effective later.
-
-## PauseActivity 
-- Description: Server‑side API to pause a long‑running Activity. 
-- Priority level: 2 
-- Effect of throttling: Activity continues running until pause task processed.
-
-## PollActivityTaskQueue 
-- Description: Worker long‑poll for Activity tasks. 
-- Priority level: 4 
-- Effect of throttling: Worker idles longer before receiving work.
-
-## PollNexusTaskQueue 
-- Description: Worker long‑poll for Nexus tasks. 
-- Priority level: 4 
-- Effect of throttling: External‑call workers idle.
-
-## PollWorkflowExecutionUpdate 
-- Description: Client poll for workflow‑update completion. 
-- Priority level: 4 
-- Effect of throttling: Client waits extra for result.
-
-## PollWorkflowTaskQueue 
-- Description: Worker long‑poll for Workflow Tasks. 
-- Priority level: 4 
-- Effect of throttling: Workflow progress stalls.
-
-## QueryWorkflow 
-- Description: Read‑only query on workflow state. 
-- Priority level: 3 
-- Effect of throttling: Caller receives result later.
-
-## RecordActivityTaskHeartbeat 
-- Description: Worker heartbeat for an Activity (by task token). 
-- Priority level: 1 
-- Effect of throttling: Heartbeats delayed, risking false timeout.
-
-## RecordActivityTaskHeartbeatById 
-- Description: Same heartbeat call using Activity/Run IDs. 
-- Priority level: 1 
-- Effect of throttling: Same impact.
-
-## RequestCancelWorkflowExecution 
-- Description: Client request to cancel a workflow. 
-- Priority level: 2 
-- Effect of throttling: Cancellation propagates later.
-
-## ResetActivity 
-- Description: Force‑restarts an Activity from scratch. 
-- Priority level: 2 
-- Effect of throttling: Activity keeps running before reset takes effect.
-
-## ResetStickyTaskQueue 
-- Description: Clears workflow’s sticky queue affinity. 
-- Priority level: 4 
-- Effect of throttling: Tasks stay bound to prior worker longer.
-
-## ResetWorkflowExecution 
-- Description: Server‑side rewind to past event and continue as new. 
-- Priority level: 2 
-- Effect of throttling: Workflow continues in old state.
-
-## RespondActivityTaskCanceled 
-- Description: Worker confirms Activity canceled. 
-- Priority level: 2 
-- Effect of throttling: Workflow waits for ack.
-
-## RespondActivityTaskCanceledById 
-- Description: Same by ID. 
-- Priority level: 3 
-- Effect of throttling: Same wait.
-
-## RespondActivityTaskCompleted 
-- Description: Worker returns Activity result. 
-- Priority level: 1 
-- Effect of throttling: Workflow next step delayed.
-
-## RespondActivityTaskCompletedById 
-- Description: Same by ID. 
-- Priority level: 1 
-- Effect of throttling: Same delay.
-
-## RespondActivityTaskFailed 
-- Description: Worker reports Activity failure. 
-- Priority level: 3 
-- Effect of throttling: Retry/compensation delayed.
-
-## RespondActivityTaskFailedById 
-- Description: Same by ID. 
-- Priority level: 3 
-- Effect of throttling: Same delay.
-
-## RespondNexusTaskCompleted 
-- Description: Worker returns Nexus task success. 
-- Priority level: 1 
-- Effect of throttling: External call completion delayed.
-
-## RespondNexusTaskFailed 
-- Description: Worker returns Nexus task failure. 
-- Priority level: 3 
-- Effect of throttling: Error handling delayed.
-
-## RespondQueryTaskCompleted 
-- Description: Worker returns query result. 
-- Priority level: 1 
-- Effect of throttling: Client waits longer.
-
-## RespondWorkflowTaskCompleted 
-- Description: Worker returns new commands after WFT. 
-- Priority level: 1 
-- Effect of throttling: Workflow commands applied later.
-
-## RespondWorkflowTaskFailed 
-- Description: Worker reports WFT failure. 
-- Priority level: 2 
-- Effect of throttling: Retry/new task creation delayed.
-
-## SetCurrentDeployment 
-- Description: Sets which worker deployment is current for a queue. 
-- Priority level: 2 
-- Effect of throttling: Version switch postponed.
-
-## SetCurrentDeploymentVersion 
-- Description: Sets current build‑ID version number. 
-- Priority level: 2 
-- Effect of throttling: Rollout holds.
-
-## SetWorkerDeploymentCurrentVersion 
-- Description: Sets version for a specific deployment. 
-- Priority level: 2 
-- Effect of throttling: Deployment stays on old version.
-
-## SetWorkerDeploymentRampingVersion 
-- Description: Sets percentage ramp for new version. 
-- Priority level: 2 
-- Effect of throttling: Canary rollout paused.
-
-## ShutdownWorker 
-- Description: Gracefully shuts down a running worker via server call. 
-- Priority level: 4 
-- Effect of throttling: Worker keeps running a bit longer.
-
-## SignalWithStartWorkflowExecution 
-- Description: Signals an existing run or starts a new one with a signal. 
-- Priority level: 1 
-- Effect of throttling: Signal/start both delayed.
-
-## SignalWorkflowExecution 
-- Description: Sends an asynchronous signal to a workflow. 
-- Priority level: 1 
-- Effect of throttling: Signal arrives late.
-
-## StartBatchOperation 
-- Description: Starts a batch admin operation (e.g., bulk reset). 
-- Priority level: 1 
-- Effect of throttling: Batch begins later.
-
-## StartWorkflowExecution 
-- Description: Creates a new workflow run. 
-- Priority level: 1 
-- Effect of throttling: Start latency increases.
-
-## StateMachineOutbound 
-- Description: Emits outbound commands generated by the new state‑machine core. 
-- Priority level: 4 
-- Effect of throttling: Commands queue up, deferring their side‑effects.
-
-## StateMachineTimer 
-- Description: Fires timers managed by the state‑machine core. 
-- Priority level: 4 
-- Effect of throttling: Timed events (e.g., sleeps) occur later.
-
-## StopBatchOperation 
-- Description: Stops/cancels a batch operation. 
-- Priority level: 2 
-- Effect of throttling: Batch keeps working until task processed.
-
-## TerminateWorkflowExecution 
-- Description: Force‑terminates a workflow run. 
-- Priority level: 2 
-- Effect of throttling: Workflow continues running longer.
-
-## TransferActivityTask 
-- Description: Dispatches an Activity task to a worker on its task queue. 
-- Priority level: 4 
-- Effect of throttling: Workers wait longer for the task; workflow idles.
-
-## TransferCancelExecution 
-- Description: Sends a cancel request to the target workflow. 
-- Priority level: 4 
-- Effect of throttling: Target workflow receives the cancel later.
-
-## TransferCloseExecution 
-- Description: Close a running workflow execution 
-- Priority level: 4 
-- Effect of throttling: Workflow remains open.
-
-## TransferResetWorkflow 
-- Description: Initiates a reset of a workflow’s state/history. 
-- Priority level: 4 
-- Effect of throttling: Reset is postponed; old state continues.
-
-## TransferSignalExecution 
-- Description: Delivers a signal event to another workflow. 
-- Priority level: 4 
-- Effect of throttling: Signal arrives late, delaying downstream logic.
-
-## TransferStartChildExecution 
-- Description: Starts a configured child workflow run. 
-- Priority level: 4 
-- Effect of throttling: Child workflow starts later than expected.
-
-## TransferWorkflowTask 
-- Description: Schedules a Workflow Task for workers. 
-- Priority level: 4 
-- Effect of throttling: Workflow progress is slowed because workers receive WFT later.
-
-## TriggerWorkflowRule 
-- Description: Manually triggers a worker build‑ID rule. 
-- Priority level: 2 
-- Effect of throttling: Trigger effect deferred.
-
-## UnpauseActivity 
-- Description: Resumes a previously paused Activity. 
-- Priority level: 2 
-- Effect of throttling: Activity remains paused longer.
-
-## UpdateActivityOptions 
-- Description: Updates retry/timeout options of a running Activity. 
-- Priority level: 2 
-- Effect of throttling: New options take effect later.
-
-## UpdateSchedule 
-- Description: Updates fields of an existing Schedule. 
-- Priority level: 2 
-- Effect of throttling: Updated schedule behavior delayed.
-
-## UpdateWorkerDeploymentVersionMetadata 
-- Description: Updates metadata on a deployment version. 
-- Priority level: 2 
-- Effect of throttling: Metadata remains outdated.
-
-## UpdateWorkflowExecution 
-- Description: Server‑side update (workflow update API). 
-- Priority level: 1 
-- Effect of throttling: Update is accepted later.
-
-## UpdateWorkflowExecutionOptions 
-- Description: Changes execution options (memo, search attributes). 
-- Priority level: 2 
-- Effect of throttling: Option changes visible later.
-
-## UserTimer 
-- Description: Fires a user‑defined timer created inside a workflow. 
-- Priority level: 4 
-- Effect of throttling: Timer completes late, extending ‘sleep’ duration.
-
-## VisibilityCloseExecution 
-- Description: Updates a closed workflow in Visibility store. 
-- Priority level: 4 
-- Effect of throttling: Workflow remains open in workflow list command output and workflow list in UI
-
-## VisibilityStartExecution 
-- Description: Creates a record for the workflow in Visibility store. 
-- Priority level: 4 
-- Effect of throttling: New run is absent from lists in UI and CLI output until task processed.
-
-## VisibilityUpsertExecution 
-- Description: Updates search attributes for a workflow run. 
-- Priority level: 4 
-- Effect of throttling: Search attribute update is delayed.
-
-## WorkflowBackoffTimer 
-- Description: Timer that delays retry or continued‑as‑new start per backoff policy. 
-- Priority level: 4 
-- Effect of throttling: Back‑off period extends beyond intended.
-
-## WorkflowExecutionTimeout 
-- Description: Enforces the max total execution duration of a workflow. 
-- Priority level: 5 
-- Effect of throttling: Over‑length workflow is not timed‑out on schedule.
-
-## WorkflowRunTimeout 
-- Description: Enforces timeout of an individual workflow run. 
-- Priority level: 5 
-- Effect of throttling: Run keeps executing past its limit.
-
-## WorkflowTaskTimeout 
-- Description: Times out a Workflow Task that a worker hasn’t completed in time. 
-- Priority level: 5 
-- Effect of throttling: Task remains outstanding; new WFT isn’t scheduled.
+ActivityRetryTimer
+
+<NewDocsCell />
+
+4
+
+<NewDocsCell />
+
+Internal timer that schedules the retry of a failed Activity execution.
+
+<NewDocsCell />
+
+Retry fires later, so the Activity stays in retry‑waiting state longer.
+
+<NewDocsCell />
+
+ActivityTimeout
+
+<NewDocsCell />
+
+5
+
+<NewDocsCell />
+
+Marks an Activity as timed‑out when its deadline passes.
+
+<NewDocsCell />
+
+The over‑long Activity remains 'in‑flight' until the timeout task is serviced.
+
+<NewDocsCell />
+
+Chasm
+
+<NewDocsCell />
+
+4
+
+<NewDocsCell />
+
+Executes an advanced CHASM internal state transition for a workflow.
+
+<NewDocsCell />
+
+Transition is postponed, slowing that workflow's progress.
+
+<NewDocsCell />
+
+ChasmPure
+
+<NewDocsCell />
+
+4
+
+<NewDocsCell />
+
+Runs the 'pure' CHASM transition path (experimental).
+
+<NewDocsCell />
+
+Same delay: pure transition is stalled.
+
+<NewDocsCell />
+
+CompleteNexusOperation
+
+<NewDocsCell />
+
+1
+
+<NewDocsCell />
+
+Finalises a Nexus operation after worker response.
+
+<NewDocsCell />
+
+External call clean‑up/commit delayed.
+
+<NewDocsCell />
+
+CreateSchedule
+
+<NewDocsCell />
+
+1
+
+<NewDocsCell />
+
+Creates a Temporal Schedule (cron‑like trigger).
+
+<NewDocsCell />
+
+Schedule becomes active later.
+
+<NewDocsCell />
+
+CreateWorkflowRule
+
+<NewDocsCell />
+
+2
+
+<NewDocsCell />
+
+Adds a worker build‑ID versioning rule for a task queue.
+
+<NewDocsCell />
+
+Rule enforcement is delayed.
+
+<NewDocsCell />
+
+DeleteSchedule
+
+<NewDocsCell />
+
+2
+
+<NewDocsCell />
+
+Deletes an existing Schedule.
+
+<NewDocsCell />
+
+Schedule may keep firing briefly.
+
+<NewDocsCell />
+
+DeleteWorkerDeployment
+
+<NewDocsCell />
+
+2
+
+<NewDocsCell />
+
+Deletes a worker deployment record.
+
+<NewDocsCell />
+
+Stale deployment metadata persists longer.
+
+<NewDocsCell />
+
+DeleteWorkerDeploymentVersion
+
+<NewDocsCell />
+
+2
+
+<NewDocsCell />
+
+Deletes one build‑ID version entry under a deployment.
+
+<NewDocsCell />
+
+Version appears valid until task processed.
+
+<NewDocsCell />
+
+DeleteWorkflowExecution
+
+<NewDocsCell />
+
+2
+
+<NewDocsCell />
+
+Hard‑deletes workflow history and state.
+
+<NewDocsCell />
+
+Storage is freed later; data visible longer.
+
+<NewDocsCell />
+
+DeleteWorkflowRule
+
+<NewDocsCell />
+
+2
+
+<NewDocsCell />
+
+Deletes a worker build‑ID rule.
+
+<NewDocsCell />
+
+Rule continues to exist until task handled.
+
+<NewDocsCell />
+
+DeprecateNamespace
+
+<NewDocsCell />
+
+0
+
+<NewDocsCell />
+
+Marks a namespace as deprecated in cluster metadata.
+
+<NewDocsCell />
+
+Clients still see it as active.
+
+<NewDocsCell />
+
+DescribeBatchOperation
+
+<NewDocsCell />
+
+3
+
+<NewDocsCell />
+
+Returns metadata for a batch operation.
+
+<NewDocsCell />
+
+Admin/UI read waits longer.
+
+<NewDocsCell />
+
+DescribeDeployment
+
+<NewDocsCell />
+
+3
+
+<NewDocsCell />
+
+Shows worker deployment details.
+
+<NewDocsCell />
+
+Info retrieval is delayed.
+
+<NewDocsCell />
+
+DescribeNamespace
+
+<NewDocsCell />
+
+0
+
+<NewDocsCell />
+
+Returns namespace configuration.
+
+<NewDocsCell />
+
+Admin read waits.
+
+<NewDocsCell />
+
+DescribeSchedule
+
+<NewDocsCell />
+
+3
+
+<NewDocsCell />
+
+Reads a Schedule's current state.
+
+<NewDocsCell />
+
+Call responds slower.
+
+<NewDocsCell />
+
+DescribeTaskQueue
+
+<NewDocsCell />
+
+3
+
+<NewDocsCell />
+
+Returns stats and configuration of a task queue.
+
+<NewDocsCell />
+
+Monitoring dashboards lag.
+
+<NewDocsCell />
+
+DescribeWorkerDeployment
+
+<NewDocsCell />
+
+3
+
+<NewDocsCell />
+
+Shows details of a specific worker deployment.
+
+<NewDocsCell />
+
+Same delay in status.
+
+<NewDocsCell />
+
+DescribeWorkerDeploymentVersion
+
+<NewDocsCell />
+
+3
+
+<NewDocsCell />
+
+Shows a particular build‑ID version record.
+
+<NewDocsCell />
+
+Detail retrieval delayed.
+
+<NewDocsCell />
+
+DescribeWorkflowExecution
+
+<NewDocsCell />
+
+3
+
+<NewDocsCell />
+
+Returns high‑level info for a workflow execution.
+
+<NewDocsCell />
+
+Diagnostics/CLI wait longer.
+
+<NewDocsCell />
+
+DescribeWorkflowRule
+
+<NewDocsCell />
+
+2
+
+<NewDocsCell />
+
+Reads a worker versioning rule.
+
+<NewDocsCell />
+
+Admin tools wait.
+
+<NewDocsCell />
+
+DispatchByEndpoint
+
+<NewDocsCell />
+
+1
+
+<NewDocsCell />
+
+Routes a Nexus task to workers by endpoint name.
+
+<NewDocsCell />
+
+Task routing latencies increase.
+
+<NewDocsCell />
+
+DispatchByNamespaceAndTaskQueue
+
+<NewDocsCell />
+
+1
+
+<NewDocsCell />
+
+Routes a Nexus task by namespace and task queue.
+
+<NewDocsCell />
+
+Same: Nexus task starts later.
+
+<NewDocsCell />
+
+ExecuteMultiOperation
+
+<NewDocsCell />
+
+1
+
+<NewDocsCell />
+
+Runs a compound operation.
+
+<NewDocsCell />
+
+Operation is delayed
+
+<NewDocsCell />
+
+GetClusterInfo
+
+<NewDocsCell />
+
+0
+
+<NewDocsCell />
+
+Returns information about cluster capabilities and versions.
+
+<NewDocsCell />
+
+CLI/API calls take longer.
+
+<NewDocsCell />
+
+GetCurrentDeployment
+
+<NewDocsCell />
+
+3
+
+<NewDocsCell />
+
+Fetches the cluster‑wide current worker deployment.
+
+<NewDocsCell />
+
+Rollout tooling sees stale info.
+
+<NewDocsCell />
+
+GetSearchAttributes
+
+<NewDocsCell />
+
+0
+
+<NewDocsCell />
+
+Lists custom search attribute definitions.
+
+<NewDocsCell />
+
+SDK/CLI wait.
+
+<NewDocsCell />
+
+GetSystemInfo
+
+<NewDocsCell />
+
+0
+
+<NewDocsCell />
+
+Returns system build & feature info.
+
+<NewDocsCell />
+
+Diagnostic call delayed.
+
+<NewDocsCell />
+
+GetWorkerBuildIdCompatibility
+
+<NewDocsCell />
+
+3
+
+<NewDocsCell />
+
+Returns build‑ID compatibility matrix for a task queue.
+
+<NewDocsCell />
+
+Rollout decisions wait.
+
+<NewDocsCell />
+
+GetWorkerVersioningRules
+
+<NewDocsCell />
+
+3
+
+<NewDocsCell />
+
+Lists worker versioning rules.
+
+<NewDocsCell />
+
+Admin listing delayed.
+
+<NewDocsCell />
+
+GetWorkflowExecutionHistory
+
+<NewDocsCell />
+
+2
+
+<NewDocsCell />
+
+Streams workflow history in forward order.
+
+<NewDocsCell />
+
+History load in UI/CLI is slow.
+
+<NewDocsCell />
+
+GetWorkflowExecutionHistoryReverse
+
+<NewDocsCell />
+
+3
+
+<NewDocsCell />
+
+Streams history in reverse order.
+
+<NewDocsCell />
+
+Same slower history read.
+
+<NewDocsCell />
+
+ListNamespaces
+
+<NewDocsCell />
+
+0
+
+<NewDocsCell />
+
+Lists all namespaces in the cluster.
+
+<NewDocsCell />
+
+UI/CLI list paginates slower.
+
+<NewDocsCell />
+
+ListScheduleMatchingTimes
+
+<NewDocsCell />
+
+3
+
+<NewDocsCell />
+
+Computes future fire‑times for a Schedule.
+
+<NewDocsCell />
+
+Preview takes longer.
+
+<NewDocsCell />
+
+ListTaskQueuePartitions
+
+<NewDocsCell />
+
+3
+
+<NewDocsCell />
+
+Lists partitions backing a task queue.
+
+<NewDocsCell />
+
+Load‑balancing insight lag.
+
+<NewDocsCell />
+
+ListWorkerDeployments
+
+<NewDocsCell />
+
+3
+
+<NewDocsCell />
+
+Lists all worker deployments.
+
+<NewDocsCell />
+
+Deployment inventory delayed.
+
+<NewDocsCell />
+
+ListWorkflowRules
+
+<NewDocsCell />
+
+3
+
+<NewDocsCell />
+
+Lists all build‑ID versioning rules.
+
+<NewDocsCell />
+
+Admin list wait.
+
+<NewDocsCell />
+
+PatchSchedule
+
+<NewDocsCell />
+
+2
+
+<NewDocsCell />
+
+Modifies an existing Schedule (e.g., add interval).
+
+<NewDocsCell />
+
+Change becomes effective later.
+
+<NewDocsCell />
+
+PauseActivity
+
+<NewDocsCell />
+
+2
+
+<NewDocsCell />
+
+Server‑side API to pause a long‑running Activity.
+
+<NewDocsCell />
+
+Activity continues running until pause task processed.
+
+<NewDocsCell />
+
+PollActivityTaskQueue
+
+<NewDocsCell />
+
+4
+
+<NewDocsCell />
+
+Worker long‑poll for Activity tasks.
+
+<NewDocsCell />
+
+Worker idles longer before receiving work.
+
+<NewDocsCell />
+
+PollNexusTaskQueue
+
+<NewDocsCell />
+
+4
+
+<NewDocsCell />
+
+Worker long‑poll for Nexus tasks.
+
+<NewDocsCell />
+
+External‑call workers idle.
+
+<NewDocsCell />
+
+PollWorkflowExecutionUpdate
+
+<NewDocsCell />
+
+4
+
+<NewDocsCell />
+
+Client poll for workflow‑update completion.
+
+<NewDocsCell />
+
+Client waits extra for result.
+
+<NewDocsCell />
+
+PollWorkflowTaskQueue
+
+<NewDocsCell />
+
+4
+
+<NewDocsCell />
+
+Worker long‑poll for Workflow Tasks.
+
+<NewDocsCell />
+
+Workflow progress stalls.
+
+<NewDocsCell />
+
+QueryWorkflow
+
+<NewDocsCell />
+
+3
+
+<NewDocsCell />
+
+Read‑only query on workflow state.
+
+<NewDocsCell />
+
+Caller receives result later.
+
+<NewDocsCell />
+
+RecordActivityTaskHeartbeat
+
+<NewDocsCell />
+
+1
+
+<NewDocsCell />
+
+Worker heartbeat for an Activity (by task token).
+
+<NewDocsCell />
+
+Heartbeats delayed, risking false timeout.
+
+<NewDocsCell />
+
+RecordActivityTaskHeartbeatById
+
+<NewDocsCell />
+
+1
+
+<NewDocsCell />
+
+Same heartbeat call using Activity/Run IDs.
+
+<NewDocsCell />
+
+Same impact.
+
+<NewDocsCell />
+
+RequestCancelWorkflowExecution
+
+<NewDocsCell />
+
+2
+
+<NewDocsCell />
+
+Client request to cancel a workflow.
+
+<NewDocsCell />
+
+Cancellation propagates later.
+
+<NewDocsCell />
+
+ResetActivity
+
+<NewDocsCell />
+
+2
+
+<NewDocsCell />
+
+Force‑restarts an Activity from scratch.
+
+<NewDocsCell />
+
+Activity keeps running before reset takes effect.
+
+<NewDocsCell />
+
+ResetStickyTaskQueue
+
+<NewDocsCell />
+
+4
+
+<NewDocsCell />
+
+Clears workflow's sticky queue affinity.
+
+<NewDocsCell />
+
+Tasks stay bound to prior worker longer.
+
+<NewDocsCell />
+
+ResetWorkflowExecution
+
+<NewDocsCell />
+
+2
+
+<NewDocsCell />
+
+Server‑side rewind to past event and continue as new.
+
+<NewDocsCell />
+
+Workflow continues in old state.
+
+<NewDocsCell />
+
+RespondActivityTaskCanceled
+
+<NewDocsCell />
+
+2
+
+<NewDocsCell />
+
+Worker confirms Activity canceled.
+
+<NewDocsCell />
+
+Workflow waits for ack.
+
+<NewDocsCell />
+
+RespondActivityTaskCanceledById
+
+<NewDocsCell />
+
+3
+
+<NewDocsCell />
+
+Same by ID.
+
+<NewDocsCell />
+
+Same wait.
+
+<NewDocsCell />
+
+RespondActivityTaskCompleted
+
+<NewDocsCell />
+
+1
+
+<NewDocsCell />
+
+Worker returns Activity result.
+
+<NewDocsCell />
+
+Workflow next step delayed.
+
+<NewDocsCell />
+
+RespondActivityTaskCompletedById
+
+<NewDocsCell />
+
+1
+
+<NewDocsCell />
+
+Same by ID.
+
+<NewDocsCell />
+
+Same delay.
+
+<NewDocsCell />
+
+RespondActivityTaskFailed
+
+<NewDocsCell />
+
+3
+
+<NewDocsCell />
+
+Worker reports Activity failure.
+
+<NewDocsCell />
+
+Retry/compensation delayed.
+
+<NewDocsCell />
+
+RespondActivityTaskFailedById
+
+<NewDocsCell />
+
+3
+
+<NewDocsCell />
+
+Same by ID.
+
+<NewDocsCell />
+
+Same delay.
+
+<NewDocsCell />
+
+RespondNexusTaskCompleted
+
+<NewDocsCell />
+
+1
+
+<NewDocsCell />
+
+Worker returns Nexus task success.
+
+<NewDocsCell />
+
+External call completion delayed.
+
+<NewDocsCell />
+
+RespondNexusTaskFailed
+
+<NewDocsCell />
+
+3
+
+<NewDocsCell />
+
+Worker returns Nexus task failure.
+
+<NewDocsCell />
+
+Error handling delayed.
+
+<NewDocsCell />
+
+RespondQueryTaskCompleted
+
+<NewDocsCell />
+
+1
+
+<NewDocsCell />
+
+Worker returns query result.
+
+<NewDocsCell />
+
+Client waits longer.
+
+<NewDocsCell />
+
+RespondWorkflowTaskCompleted
+
+<NewDocsCell />
+
+1
+
+<NewDocsCell />
+
+Worker returns new commands after WFT.
+
+<NewDocsCell />
+
+Workflow commands applied later.
+
+<NewDocsCell />
+
+RespondWorkflowTaskFailed
+
+<NewDocsCell />
+
+2
+
+<NewDocsCell />
+
+Worker reports WFT failure.
+
+<NewDocsCell />
+
+Retry/new task creation delayed.
+
+<NewDocsCell />
+
+SetCurrentDeployment
+
+<NewDocsCell />
+
+2
+
+<NewDocsCell />
+
+Sets which worker deployment is current for a queue.
+
+<NewDocsCell />
+
+Version switch postponed.
+
+<NewDocsCell />
+
+SetCurrentDeploymentVersion
+
+<NewDocsCell />
+
+2
+
+<NewDocsCell />
+
+Sets current build‑ID version number.
+
+<NewDocsCell />
+
+Rollout holds.
+
+<NewDocsCell />
+
+SetWorkerDeploymentCurrentVersion
+
+<NewDocsCell />
+
+2
+
+<NewDocsCell />
+
+Sets version for a specific deployment.
+
+<NewDocsCell />
+
+Deployment stays on old version.
+
+<NewDocsCell />
+
+SetWorkerDeploymentRampingVersion
+
+<NewDocsCell />
+
+2
+
+<NewDocsCell />
+
+Sets percentage ramp for new version.
+
+<NewDocsCell />
+
+Canary rollout paused.
+
+<NewDocsCell />
+
+ShutdownWorker
+
+<NewDocsCell />
+
+4
+
+<NewDocsCell />
+
+Gracefully shuts down a running worker via server call.
+
+<NewDocsCell />
+
+Worker keeps running a bit longer.
+
+<NewDocsCell />
+
+SignalWithStartWorkflowExecution
+
+<NewDocsCell />
+
+1
+
+<NewDocsCell />
+
+Signals an existing run or starts a new one with a signal.
+
+<NewDocsCell />
+
+Signal/start both delayed.
+
+<NewDocsCell />
+
+SignalWorkflowExecution
+
+<NewDocsCell />
+
+1
+
+<NewDocsCell />
+
+Sends an asynchronous signal to a workflow.
+
+<NewDocsCell />
+
+Signal arrives late.
+
+<NewDocsCell />
+
+StartBatchOperation
+
+<NewDocsCell />
+
+1
+
+<NewDocsCell />
+
+Starts a batch admin operation (e.g., bulk reset).
+
+<NewDocsCell />
+
+Batch begins later.
+
+<NewDocsCell />
+
+StartWorkflowExecution
+
+<NewDocsCell />
+
+1
+
+<NewDocsCell />
+
+Creates a new workflow run.
+
+<NewDocsCell />
+
+Start latency increases.
+
+<NewDocsCell />
+
+StateMachineOutbound
+
+<NewDocsCell />
+
+4
+
+<NewDocsCell />
+
+Emits outbound commands generated by the new state‑machine core.
+
+<NewDocsCell />
+
+Commands queue up, deferring their side‑effects.
+
+<NewDocsCell />
+
+StateMachineTimer
+
+<NewDocsCell />
+
+4
+
+<NewDocsCell />
+
+Fires timers managed by the state‑machine core.
+
+<NewDocsCell />
+
+Timed events (e.g., sleeps) occur later.
+
+<NewDocsCell />
+
+StopBatchOperation
+
+<NewDocsCell />
+
+2
+
+<NewDocsCell />
+
+Stops/cancels a batch operation.
+
+<NewDocsCell />
+
+Batch keeps working until task processed.
+
+<NewDocsCell />
+
+TerminateWorkflowExecution
+
+<NewDocsCell />
+
+2
+
+<NewDocsCell />
+
+Force‑terminates a workflow run.
+
+<NewDocsCell />
+
+Workflow continues running longer.
+
+<NewDocsCell />
+
+TransferActivityTask
+
+<NewDocsCell />
+
+4
+
+<NewDocsCell />
+
+Dispatches an Activity task to a worker on its task queue.
+
+<NewDocsCell />
+
+Workers wait longer for the task; workflow idles.
+
+<NewDocsCell />
+
+TransferCancelExecution
+
+<NewDocsCell />
+
+4
+
+<NewDocsCell />
+
+Sends a cancel request to the target workflow.
+
+<NewDocsCell />
+
+Target workflow receives the cancel later.
+
+<NewDocsCell />
+
+TransferCloseExecution
+
+<NewDocsCell />
+
+4
+
+<NewDocsCell />
+
+Close a running workflow execution
+
+<NewDocsCell />
+
+Workflow remains open.
+
+<NewDocsCell />
+
+TransferResetWorkflow
+
+<NewDocsCell />
+
+4
+
+<NewDocsCell />
+
+Initiates a reset of a workflow's state/history.
+
+<NewDocsCell />
+
+Reset is postponed; old state continues.
+
+<NewDocsCell />
+
+TransferSignalExecution
+
+<NewDocsCell />
+
+4
+
+<NewDocsCell />
+
+Delivers a signal event to another workflow.
+
+<NewDocsCell />
+
+Signal arrives late, delaying downstream logic.
+
+<NewDocsCell />
+
+TransferStartChildExecution
+
+<NewDocsCell />
+
+4
+
+<NewDocsCell />
+
+Starts a configured child workflow run.
+
+<NewDocsCell />
+
+Child workflow starts later than expected.
+
+<NewDocsCell />
+
+TransferWorkflowTask
+
+<NewDocsCell />
+
+4
+
+<NewDocsCell />
+
+Schedules a Workflow Task for workers.
+
+<NewDocsCell />
+
+Workflow progress is slowed because workers receive WFT later.
+
+<NewDocsCell />
+
+TriggerWorkflowRule
+
+<NewDocsCell />
+
+2
+
+<NewDocsCell />
+
+Manually triggers a worker build‑ID rule.
+
+<NewDocsCell />
+
+Trigger effect deferred.
+
+<NewDocsCell />
+
+UnpauseActivity
+
+<NewDocsCell />
+
+2
+
+<NewDocsCell />
+
+Resumes a previously paused Activity.
+
+<NewDocsCell />
+
+Activity remains paused longer.
+
+<NewDocsCell />
+
+UpdateActivityOptions
+
+<NewDocsCell />
+
+2
+
+<NewDocsCell />
+
+Updates retry/timeout options of a running Activity.
+
+<NewDocsCell />
+
+New options take effect later.
+
+<NewDocsCell />
+
+UpdateSchedule
+
+<NewDocsCell />
+
+2
+
+<NewDocsCell />
+
+Updates fields of an existing Schedule.
+
+<NewDocsCell />
+
+Updated schedule behavior delayed.
+
+<NewDocsCell />
+
+UpdateWorkerDeploymentVersionMetadata
+
+<NewDocsCell />
+
+2
+
+<NewDocsCell />
+
+Updates metadata on a deployment version.
+
+<NewDocsCell />
+
+Metadata remains outdated.
+
+<NewDocsCell />
+
+UpdateWorkflowExecution
+
+<NewDocsCell />
+
+1
+
+<NewDocsCell />
+
+Server‑side update (workflow update API).
+
+<NewDocsCell />
+
+Update is accepted later.
+
+<NewDocsCell />
+
+UpdateWorkflowExecutionOptions
+
+<NewDocsCell />
+
+2
+
+<NewDocsCell />
+
+Changes execution options (memo, search attributes).
+
+<NewDocsCell />
+
+Option changes visible later.
+
+<NewDocsCell />
+
+UserTimer
+
+<NewDocsCell />
+
+4
+
+<NewDocsCell />
+
+Fires a user‑defined timer created inside a workflow.
+
+<NewDocsCell />
+
+Timer completes late, extending 'sleep' duration.
+
+<NewDocsCell />
+
+VisibilityCloseExecution
+
+<NewDocsCell />
+
+4
+
+<NewDocsCell />
+
+Updates a closed workflow in Visibility store.
+
+<NewDocsCell />
+
+Workflow remains open in workflow list command output and workflow list in UI
+
+<NewDocsCell />
+
+VisibilityStartExecution
+
+<NewDocsCell />
+
+4
+
+<NewDocsCell />
+
+Creates a record for the workflow in Visibility store.
+
+<NewDocsCell />
+
+New run is absent from lists in UI and CLI output until task processed.
+
+<NewDocsCell />
+
+VisibilityUpsertExecution
+
+<NewDocsCell />
+
+4
+
+<NewDocsCell />
+
+Updates search attributes for a workflow run.
+
+<NewDocsCell />
+
+Search attribute update is delayed.
+
+<NewDocsCell />
+
+WorkflowBackoffTimer
+
+<NewDocsCell />
+
+4
+
+<NewDocsCell />
+
+Timer that delays retry or continued‑as‑new start per backoff policy.
+
+<NewDocsCell />
+
+Back‑off period extends beyond intended.
+
+<NewDocsCell />
+
+WorkflowExecutionTimeout
+
+<NewDocsCell />
+
+5
+
+<NewDocsCell />
+
+Enforces the max total execution duration of a workflow.
+
+<NewDocsCell />
+
+Over‑length workflow is not timed‑out on schedule.
+
+<NewDocsCell />
+
+WorkflowRunTimeout
+
+<NewDocsCell />
+
+5
+
+<NewDocsCell />
+
+Enforces timeout of an individual workflow run.
+
+<NewDocsCell />
+
+Run keeps executing past its limit.
+
+<NewDocsCell />
+
+WorkflowTaskTimeout
+
+<NewDocsCell />
+
+5
+
+<NewDocsCell />
+
+Times out a Workflow Task that a worker hasn't completed in time.
+
+<NewDocsCell />
+
+Task remains outstanding; new WFT isn't scheduled.
+
+</DocsTable>
