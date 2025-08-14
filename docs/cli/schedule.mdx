@@ -1,3 +1,5 @@
+{/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
+This file is generated from https://github.com/temporalio/cli/blob/main/temporalcli/commandsgen/commands.yml */}
 ---
 id: schedule
 title: Temporal CLI schedule command reference
@@ -23,8 +25,6 @@ tags:
   - Temporal CLI
   - Schedules
 ---
-{/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
-This file is generated from https://github.com/temporalio/cli/blob/main/temporalcli/commandsgen/commands.yml */}
 
 ## backfill
 
@@ -49,20 +49,20 @@ temporal schedule backfill \
 
 The policies include:
 
-- **AllowAll**: Allow unlimited concurrent Workflow Executions. This
+* **AllowAll**: Allow unlimited concurrent Workflow Executions. This
   significantly speeds up the backfilling process on systems that support
   concurrency. You must ensure running Workflow Executions do not interfere
   with each other.
-- **BufferAll**: Buffer all incoming Workflow Executions while waiting for
+* **BufferAll**: Buffer all incoming Workflow Executions while waiting for
   the running Workflow Execution to complete.
-- **Skip**: If a previous Workflow Execution is still running, discard new
+* **Skip**: If a previous Workflow Execution is still running, discard new
   Workflow Executions.
-- **BufferOne**: Same as 'Skip' but buffer a single Workflow Execution to be
+* **BufferOne**: Same as 'Skip' but buffer a single Workflow Execution to be
   run after the previous Execution completes. Discard other Workflow
   Executions.
-- **CancelOther**: Cancel the running Workflow Execution and replace it with
+* **CancelOther**: Cancel the running Workflow Execution and replace it with
   the incoming new Workflow Execution.
-- **TerminateOther**: Terminate the running Workflow Execution and replace
+* **TerminateOther**: Terminate the running Workflow Execution and replace
   it with the incoming new Workflow Execution.
 
 Use the following options to change the behavior of this command.
@@ -73,6 +73,14 @@ Use the following options to change the behavior of this command.
 
 Backfill end time. Required.
 
+**--overlap-policy** _string-enum_
+
+Policy for handling overlapping Workflow Executions. Accepted values: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll. (default "Skip")
+
+**--schedule-id**, **-s** _string_
+
+Schedule ID. Required.
+
 **--start-time** _timestamp_
 
 Backfill start time. Required.
@@ -81,7 +89,7 @@ Backfill start time. Required.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -148,6 +156,10 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -227,21 +239,21 @@ new Workflow Executions at the times you specify.
 For example:
 
 ```
-temporal schedule create \
-  --schedule-id "YourScheduleId" \
-  --calendar '{"dayOfWeek":"Fri","hour":"3","minute":"30"}' \
-  --workflow-id YourBaseWorkflowIdName \
-  --task-queue YourTaskQueue \
-  --type YourWorkflowType
+  temporal schedule create \
+    --schedule-id "YourScheduleId" \
+    --calendar '{"dayOfWeek":"Fri","hour":"3","minute":"30"}' \
+    --workflow-id YourBaseWorkflowIdName \
+    --task-queue YourTaskQueue \
+    --type YourWorkflowType
 ```
 
 Schedules support any combination of `--calendar`, `--interval`, and `--cron`:
 
-- Shorthand `--interval` strings.
+* Shorthand `--interval` strings.
   For example: 45m (every 45 minutes) or 6h/5h (every 6 hours, at the top of
   the 5th hour).
-- JSON `--calendar`, as in the preceding example.
-- Unix-style `--cron` strings and robfig declarations
+* JSON `--calendar`, as in the preceding example.
+* Unix-style `--cron` strings and robfig declarations
   (@daily/@weekly/@every X/etc).
   For example, every Friday at 12:30 PM: `30 12 * * Fri`.
 
@@ -283,7 +295,7 @@ A path or paths for input file(s). Use JSON content or set --input-meta to overr
 
 **--input-meta** _string[]_
 
-Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times.
+Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order.
 
 **--interval** _string[]_
 
@@ -385,7 +397,7 @@ Workflow ID. If not supplied, the Service generates a unique ID.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -452,6 +464,10 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -533,7 +549,8 @@ temporal schedule delete \
 ```
 
 Removing a Schedule won't affect the Workflow Executions it started that are
-still running. To cancel or terminate these Workflow Executions, use `temporal workflow delete` with the `TemporalScheduledById` Search Attribute instead.
+still running. To cancel or terminate these Workflow Executions, use `temporal
+workflow delete` with the `TemporalScheduledById` Search Attribute instead.
 
 Use the following options to change the behavior of this command.
 
@@ -547,7 +564,7 @@ Schedule ID. Required.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -614,6 +631,10 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -707,7 +728,7 @@ Schedule ID. Required.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -774,6 +795,10 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -874,7 +899,7 @@ Show extensive information in non-table form.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -941,6 +966,10 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -1060,7 +1089,7 @@ Unpause the Schedule.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -1127,6 +1156,10 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -1223,7 +1256,7 @@ Schedule ID. Required.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -1290,6 +1323,10 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -1410,7 +1447,7 @@ A path or paths for input file(s). Use JSON content or set --input-meta to overr
 
 **--input-meta** _string[]_
 
-Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times.
+Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order.
 
 **--interval** _string[]_
 
@@ -1512,7 +1549,7 @@ Workflow ID. If not supplied, the Service generates a unique ID.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -1579,6 +1616,10 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -1649,3 +1690,4 @@ Path to x509 private key. Can't be used with --tls-key-data.
 **--tls-server-name** _string_
 
 Override target TLS server name.
+
