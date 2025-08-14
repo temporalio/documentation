@@ -25,6 +25,7 @@ A Namespace is a unit of isolation within the Temporal Platform.
 - [Access a Namespace](#access-namespaces)
 - [Manage Namespaces](#manage-namespaces)
 - [Delete a Namespace](#delete-a-namespace)
+- [Tag a Namespace](#tag-a-namespace)
 
 ## What is a Cloud Namespace Name? {#temporal-cloud-namespace-name}
 
@@ -376,3 +377,72 @@ tcld namespace lifecycle set \
     --namespace <namespace_id.account_id> \
     --enable-delete-protection <Boolean>
 ```
+
+## How to tag a Namespace in Temporal Cloud {#tag-a-namespace}
+
+Tags are key-value pairs that can be attached to namespaces in Temporal Cloud to help operators organize, track, and manage namespaces more easily.
+
+### Tag Structure and Limits
+
+- Each namespace can have a maximum of 10 tags
+- Each key must be unique for a given namespace (e.g., a namespace cannot have both `team:foo` and `team:bar`)
+- Keys and values must be 1-63 characters in length
+- Allowed characters: lowercase letters (`a-z`), numbers (`0-9`), spaces representable in UTF-8, and the following characters: `+ - = . _ : / @`
+- Tags must be lowercase (requests with uppercase will fail)
+- Tags are not a secure storage mechanism and should not store PII or PHI
+- Tags will not change the behavior of the tagged resource
+- There is a soft limit of 1000 unique tag keys per account.
+
+### Permissions
+
+- Only [**Account Admins** and **Account Owners**](/cloud/users#account-level-roles) can edit tags
+- All users with access to a namespace can view its tags
+
+### tcld
+
+```bash
+# Add/update or remove existing tags 
+tcld namespace update-tags --namespace testns.acct --tag-to-add "key1=value1" --tag-to-add "key2=value2" --tag-to-remove "key3"
+
+# Fetch the namespace object (which contains a map of the tags)
+tcld namespace get --namespace testns.acct | jq '.tags'
+```
+
+### Terraform
+
+```hcl
+# Simple example
+resource "temporalcloud_namespace_tags" "basic_example" {
+  namespace_id = "your-namespace-id"
+  
+  tags = {
+    environment = "production"
+    team        = "platform"
+    project     = "my-app"
+  }
+}
+
+# Example with namespace resource
+resource "temporalcloud_namespace" "example" {
+  name        = "my-namespace"
+  regions      = ["aws-us-east-1"]
+  # other attributes
+}
+
+resource "temporalcloud_namespace_tags" "example_tags" {
+  namespace_id = temporalcloud_namespace.example.id
+  
+  tags = {
+    environment = "production"
+    team        = "platform"
+    managed_by  = "terraform"
+    version     = "v1.0.0"
+  }
+}
+```
+
+### Web UI
+
+Tags can be viewed and managed through the Temporal Cloud web interface. When viewing a namespace, you'll see tags displayed and can add, edit, or remove them if you have the appropriate permissions.
+
+
