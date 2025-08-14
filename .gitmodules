@@ -1,0 +1,3 @@
+[submodule "temporal-learning"]
+	path = temporal-learning
+	url = org-56493103@github.com:temporalio/temporal-learning.git
