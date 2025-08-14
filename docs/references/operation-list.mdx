@@ -1,0 +1,510 @@
+---
+id: operation-list
+title: Operations
+sidebar_label: Operations
+description: Temporal Cloud limits the number of operations per second per namespace to keep the service reliable. This page lists all those operations.
+toc_max_heading_level: 4
+keywords:
+  - limits
+  - rate limiting
+tags:
+  - limits
+  - operations
+  - rate limiting
+---
+
+# Operations
+
+Temporal Cloud [rate limits operations per second (OPS)](/cloud/limits#operations-per-second) per namespace. An operation is anything 1. a user does directly, or 2. Temporal does on behalf of the user in the background that results in load on Temporal Server. The exception is visibility queries: they do hit the Server (the query is passed from the server to the visibility store), but primarily the load is on the visibility system. Visibility rate limits are separate from OPS rate limits.
+
+Below is the list of operations, including:
+- operation name
+- description
+- priority level (lower is higher priority)
+- effect of that operation being throttled
+
+
+## ActivityRetryTimer 
+- Description: Internal timer that schedules the retry of a failed Activity execution. 
+- Priority level: 4 
+- Effect of throttling: Retry fires later, so the Activity stays in retry‑waiting state longer.
+
+## ActivityTimeout 
+- Description: Marks an Activity as timed‑out when its deadline passes. 
+- Priority level: 5 
+- Effect of throttling: The over‑long Activity remains ‘in‑flight’ until the timeout task is serviced.
+
+## Chasm 
+- Description: Executes an advanced CHASM internal state transition for a workflow. 
+- Priority level: 4 
+- Effect of throttling: Transition is postponed, slowing that workflow’s progress.
+
+## ChasmPure 
+- Description: Runs the ‘pure’ CHASM transition path (experimental). 
+- Priority level: 4 
+- Effect of throttling: Same delay: pure transition is stalled.
+
+## CompleteNexusOperation 
+- Description: Finalises a Nexus operation after worker response. 
+- Priority level: 1 
+- Effect of throttling: External call clean‑up/commit delayed.
+
+## CreateSchedule 
+- Description: Creates a Temporal Schedule (cron‑like trigger). 
+- Priority level: 1 
+- Effect of throttling: Schedule becomes active later.
+
+## CreateWorkflowRule 
+- Description: Adds a worker build‑ID versioning rule for a task queue. 
+- Priority level: 2 
+- Effect of throttling: Rule enforcement is delayed.
+
+## DeleteSchedule 
+- Description: Deletes an existing Schedule. 
+- Priority level: 2 
+- Effect of throttling: Schedule may keep firing briefly.
+
+## DeleteWorkerDeployment 
+- Description: Deletes a worker deployment record. 
+- Priority level: 2 
+- Effect of throttling: Stale deployment metadata persists longer.
+
+## DeleteWorkerDeploymentVersion 
+- Description: Deletes one build‑ID version entry under a deployment. 
+- Priority level: 2 
+- Effect of throttling: Version appears valid until task processed.
+
+## DeleteWorkflowExecution 
+- Description: Hard‑deletes workflow history and state. 
+- Priority level: 2 
+- Effect of throttling: Storage is freed later; data visible longer.
+
+## DeleteWorkflowRule 
+- Description: Deletes a worker build‑ID rule. 
+- Priority level: 2 
+- Effect of throttling: Rule continues to exist until task handled.
+
+## DeprecateNamespace 
+- Description: Marks a namespace as deprecated in cluster metadata. 
+- Priority level: 0 
+- Effect of throttling: Clients still see it as active.
+
+## DescribeBatchOperation 
+- Description: Returns metadata for a batch operation. 
+- Priority level: 3 
+- Effect of throttling: Admin/UI read waits longer.
+
+## DescribeDeployment 
+- Description: Shows worker deployment details. 
+- Priority level: 3 
+- Effect of throttling: Info retrieval is delayed.
+
+## DescribeNamespace 
+- Description: Returns namespace configuration. 
+- Priority level: 0 
+- Effect of throttling: Admin read waits.
+
+## DescribeSchedule 
+- Description: Reads a Schedule’s current state. 
+- Priority level: 3 
+- Effect of throttling: Call responds slower.
+
+## DescribeTaskQueue 
+- Description: Returns stats and configuration of a task queue. 
+- Priority level: 3 
+- Effect of throttling: Monitoring dashboards lag.
+
+## DescribeWorkerDeployment 
+- Description: Shows details of a specific worker deployment. 
+- Priority level: 3 
+- Effect of throttling: Same delay in status.
+
+## DescribeWorkerDeploymentVersion 
+- Description: Shows a particular build‑ID version record. 
+- Priority level: 3 
+- Effect of throttling: Detail retrieval delayed.
+
+## DescribeWorkflowExecution 
+- Description: Returns high‑level info for a workflow execution. 
+- Priority level: 3 
+- Effect of throttling: Diagnostics/CLI wait longer.
+
+## DescribeWorkflowRule 
+- Description: Reads a worker versioning rule. 
+- Priority level: 2 
+- Effect of throttling: Admin tools wait.
+
+## DispatchByEndpoint 
+- Description: Routes a Nexus task to workers by endpoint name. 
+- Priority level: 1 
+- Effect of throttling: Task routing latencies increase.
+
+## DispatchByNamespaceAndTaskQueue 
+- Description: Routes a Nexus task by namespace and task queue. 
+- Priority level: 1 
+- Effect of throttling: Same: Nexus task starts later.
+
+## ExecuteMultiOperation 
+- Description: Runs a compound operation. 
+- Priority level: 1 
+- Effect of throttling: Operation is delayed
+
+## GetClusterInfo 
+- Description: Returns information about cluster capabilities and versions. 
+- Priority level: 0 
+- Effect of throttling: CLI/API calls take longer.
+
+## GetCurrentDeployment 
+- Description: Fetches the cluster‑wide current worker deployment. 
+- Priority level: 3 
+- Effect of throttling: Rollout tooling sees stale info.
+
+## GetSearchAttributes 
+- Description: Lists custom search attribute definitions. 
+- Priority level: 0 
+- Effect of throttling: SDK/CLI wait.
+
+## GetSystemInfo 
+- Description: Returns system build & feature info. 
+- Priority level: 0 
+- Effect of throttling: Diagnostic call delayed.
+
+## GetWorkerBuildIdCompatibility 
+- Description: Returns build‑ID compatibility matrix for a task queue. 
+- Priority level: 3 
+- Effect of throttling: Rollout decisions wait.
+
+## GetWorkerVersioningRules 
+- Description: Lists worker versioning rules. 
+- Priority level: 3 
+- Effect of throttling: Admin listing delayed.
+
+## GetWorkflowExecutionHistory 
+- Description: Streams workflow history in forward order. 
+- Priority level: 2 
+- Effect of throttling: History load in UI/CLI is slow.
+
+## GetWorkflowExecutionHistoryReverse 
+- Description: Streams history in reverse order. 
+- Priority level: 3 
+- Effect of throttling: Same slower history read.
+
+## ListNamespaces 
+- Description: Lists all namespaces in the cluster. 
+- Priority level: 0 
+- Effect of throttling: UI/CLI list paginates slower.
+
+## ListScheduleMatchingTimes 
+- Description: Computes future fire‑times for a Schedule. 
+- Priority level: 3 
+- Effect of throttling: Preview takes longer.
+
+## ListTaskQueuePartitions 
+- Description: Lists partitions backing a task queue. 
+- Priority level: 3 
+- Effect of throttling: Load‑balancing insight lag.
+
+## ListWorkerDeployments 
+- Description: Lists all worker deployments. 
+- Priority level: 3 
+- Effect of throttling: Deployment inventory delayed.
+
+## ListWorkflowRules 
+- Description: Lists all build‑ID versioning rules. 
+- Priority level: 3 
+- Effect of throttling: Admin list wait.
+
+## PatchSchedule 
+- Description: Modifies an existing Schedule (e.g., add interval). 
+- Priority level: 2 
+- Effect of throttling: Change becomes effective later.
+
+## PauseActivity 
+- Description: Server‑side API to pause a long‑running Activity. 
+- Priority level: 2 
+- Effect of throttling: Activity continues running until pause task processed.
+
+## PollActivityTaskQueue 
+- Description: Worker long‑poll for Activity tasks. 
+- Priority level: 4 
+- Effect of throttling: Worker idles longer before receiving work.
+
+## PollNexusTaskQueue 
+- Description: Worker long‑poll for Nexus tasks. 
+- Priority level: 4 
+- Effect of throttling: External‑call workers idle.
+
+## PollWorkflowExecutionUpdate 
+- Description: Client poll for workflow‑update completion. 
+- Priority level: 4 
+- Effect of throttling: Client waits extra for result.
+
+## PollWorkflowTaskQueue 
+- Description: Worker long‑poll for Workflow Tasks. 
+- Priority level: 4 
+- Effect of throttling: Workflow progress stalls.
+
+## QueryWorkflow 
+- Description: Read‑only query on workflow state. 
+- Priority level: 3 
+- Effect of throttling: Caller receives result later.
+
+## RecordActivityTaskHeartbeat 
+- Description: Worker heartbeat for an Activity (by task token). 
+- Priority level: 1 
+- Effect of throttling: Heartbeats delayed, risking false timeout.
+
+## RecordActivityTaskHeartbeatById 
+- Description: Same heartbeat call using Activity/Run IDs. 
+- Priority level: 1 
+- Effect of throttling: Same impact.
+
+## RequestCancelWorkflowExecution 
+- Description: Client request to cancel a workflow. 
+- Priority level: 2 
+- Effect of throttling: Cancellation propagates later.
+
+## ResetActivity 
+- Description: Force‑restarts an Activity from scratch. 
+- Priority level: 2 
+- Effect of throttling: Activity keeps running before reset takes effect.
+
+## ResetStickyTaskQueue 
+- Description: Clears workflow’s sticky queue affinity. 
+- Priority level: 4 
+- Effect of throttling: Tasks stay bound to prior worker longer.
+
+## ResetWorkflowExecution 
+- Description: Server‑side rewind to past event and continue as new. 
+- Priority level: 2 
+- Effect of throttling: Workflow continues in old state.
+
+## RespondActivityTaskCanceled 
+- Description: Worker confirms Activity canceled. 
+- Priority level: 2 
+- Effect of throttling: Workflow waits for ack.
+
+## RespondActivityTaskCanceledById 
+- Description: Same by ID. 
+- Priority level: 3 
+- Effect of throttling: Same wait.
+
+## RespondActivityTaskCompleted 
+- Description: Worker returns Activity result. 
+- Priority level: 1 
+- Effect of throttling: Workflow next step delayed.
+
+## RespondActivityTaskCompletedById 
+- Description: Same by ID. 
+- Priority level: 1 
+- Effect of throttling: Same delay.
+
+## RespondActivityTaskFailed 
+- Description: Worker reports Activity failure. 
+- Priority level: 3 
+- Effect of throttling: Retry/compensation delayed.
+
+## RespondActivityTaskFailedById 
+- Description: Same by ID. 
+- Priority level: 3 
+- Effect of throttling: Same delay.
+
+## RespondNexusTaskCompleted 
+- Description: Worker returns Nexus task success. 
+- Priority level: 1 
+- Effect of throttling: External call completion delayed.
+
+## RespondNexusTaskFailed 
+- Description: Worker returns Nexus task failure. 
+- Priority level: 3 
+- Effect of throttling: Error handling delayed.
+
+## RespondQueryTaskCompleted 
+- Description: Worker returns query result. 
+- Priority level: 1 
+- Effect of throttling: Client waits longer.
+
+## RespondWorkflowTaskCompleted 
+- Description: Worker returns new commands after WFT. 
+- Priority level: 1 
+- Effect of throttling: Workflow commands applied later.
+
+## RespondWorkflowTaskFailed 
+- Description: Worker reports WFT failure. 
+- Priority level: 2 
+- Effect of throttling: Retry/new task creation delayed.
+
+## SetCurrentDeployment 
+- Description: Sets which worker deployment is current for a queue. 
+- Priority level: 2 
+- Effect of throttling: Version switch postponed.
+
+## SetCurrentDeploymentVersion 
+- Description: Sets current build‑ID version number. 
+- Priority level: 2 
+- Effect of throttling: Rollout holds.
+
+## SetWorkerDeploymentCurrentVersion 
+- Description: Sets version for a specific deployment. 
+- Priority level: 2 
+- Effect of throttling: Deployment stays on old version.
+
+## SetWorkerDeploymentRampingVersion 
+- Description: Sets percentage ramp for new version. 
+- Priority level: 2 
+- Effect of throttling: Canary rollout paused.
+
+## ShutdownWorker 
+- Description: Gracefully shuts down a running worker via server call. 
+- Priority level: 4 
+- Effect of throttling: Worker keeps running a bit longer.
+
+## SignalWithStartWorkflowExecution 
+- Description: Signals an existing run or starts a new one with a signal. 
+- Priority level: 1 
+- Effect of throttling: Signal/start both delayed.
+
+## SignalWorkflowExecution 
+- Description: Sends an asynchronous signal to a workflow. 
+- Priority level: 1 
+- Effect of throttling: Signal arrives late.
+
+## StartBatchOperation 
+- Description: Starts a batch admin operation (e.g., bulk reset). 
+- Priority level: 1 
+- Effect of throttling: Batch begins later.
+
+## StartWorkflowExecution 
+- Description: Creates a new workflow run. 
+- Priority level: 1 
+- Effect of throttling: Start latency increases.
+
+## StateMachineOutbound 
+- Description: Emits outbound commands generated by the new state‑machine core. 
+- Priority level: 4 
+- Effect of throttling: Commands queue up, deferring their side‑effects.
+
+## StateMachineTimer 
+- Description: Fires timers managed by the state‑machine core. 
+- Priority level: 4 
+- Effect of throttling: Timed events (e.g., sleeps) occur later.
+
+## StopBatchOperation 
+- Description: Stops/cancels a batch operation. 
+- Priority level: 2 
+- Effect of throttling: Batch keeps working until task processed.
+
+## TerminateWorkflowExecution 
+- Description: Force‑terminates a workflow run. 
+- Priority level: 2 
+- Effect of throttling: Workflow continues running longer.
+
+## TransferActivityTask 
+- Description: Dispatches an Activity task to a worker on its task queue. 
+- Priority level: 4 
+- Effect of throttling: Workers wait longer for the task; workflow idles.
+
+## TransferCancelExecution 
+- Description: Sends a cancel request to the target workflow. 
+- Priority level: 4 
+- Effect of throttling: Target workflow receives the cancel later.
+
+## TransferCloseExecution 
+- Description: Close a running workflow execution 
+- Priority level: 4 
+- Effect of throttling: Workflow remains open.
+
+## TransferResetWorkflow 
+- Description: Initiates a reset of a workflow’s state/history. 
+- Priority level: 4 
+- Effect of throttling: Reset is postponed; old state continues.
+
+## TransferSignalExecution 
+- Description: Delivers a signal event to another workflow. 
+- Priority level: 4 
+- Effect of throttling: Signal arrives late, delaying downstream logic.
+
+## TransferStartChildExecution 
+- Description: Starts a configured child workflow run. 
+- Priority level: 4 
+- Effect of throttling: Child workflow starts later than expected.
+
+## TransferWorkflowTask 
+- Description: Schedules a Workflow Task for workers. 
+- Priority level: 4 
+- Effect of throttling: Workflow progress is slowed because workers receive WFT later.
+
+## TriggerWorkflowRule 
+- Description: Manually triggers a worker build‑ID rule. 
+- Priority level: 2 
+- Effect of throttling: Trigger effect deferred.
+
+## UnpauseActivity 
+- Description: Resumes a previously paused Activity. 
+- Priority level: 2 
+- Effect of throttling: Activity remains paused longer.
+
+## UpdateActivityOptions 
+- Description: Updates retry/timeout options of a running Activity. 
+- Priority level: 2 
+- Effect of throttling: New options take effect later.
+
+## UpdateSchedule 
+- Description: Updates fields of an existing Schedule. 
+- Priority level: 2 
+- Effect of throttling: Updated schedule behavior delayed.
+
+## UpdateWorkerDeploymentVersionMetadata 
+- Description: Updates metadata on a deployment version. 
+- Priority level: 2 
+- Effect of throttling: Metadata remains outdated.
+
+## UpdateWorkflowExecution 
+- Description: Server‑side update (workflow update API). 
+- Priority level: 1 
+- Effect of throttling: Update is accepted later.
+
+## UpdateWorkflowExecutionOptions 
+- Description: Changes execution options (memo, search attributes). 
+- Priority level: 2 
+- Effect of throttling: Option changes visible later.
+
+## UserTimer 
+- Description: Fires a user‑defined timer created inside a workflow. 
+- Priority level: 4 
+- Effect of throttling: Timer completes late, extending ‘sleep’ duration.
+
+## VisibilityCloseExecution 
+- Description: Updates a closed workflow in Visibility store. 
+- Priority level: 4 
+- Effect of throttling: Workflow remains open in workflow list command output and workflow list in UI
+
+## VisibilityStartExecution 
+- Description: Creates a record for the workflow in Visibility store. 
+- Priority level: 4 
+- Effect of throttling: New run is absent from lists in UI and CLI output until task processed.
+
+## VisibilityUpsertExecution 
+- Description: Updates search attributes for a workflow run. 
+- Priority level: 4 
+- Effect of throttling: Search attribute update is delayed.
+
+## WorkflowBackoffTimer 
+- Description: Timer that delays retry or continued‑as‑new start per backoff policy. 
+- Priority level: 4 
+- Effect of throttling: Back‑off period extends beyond intended.
+
+## WorkflowExecutionTimeout 
+- Description: Enforces the max total execution duration of a workflow. 
+- Priority level: 5 
+- Effect of throttling: Over‑length workflow is not timed‑out on schedule.
+
+## WorkflowRunTimeout 
+- Description: Enforces timeout of an individual workflow run. 
+- Priority level: 5 
+- Effect of throttling: Run keeps executing past its limit.
+
+## WorkflowTaskTimeout 
+- Description: Times out a Workflow Task that a worker hasn’t completed in time. 
+- Priority level: 5 
+- Effect of throttling: Task remains outstanding; new WFT isn’t scheduled.
