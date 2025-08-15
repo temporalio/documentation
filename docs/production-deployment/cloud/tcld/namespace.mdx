@@ -33,6 +33,7 @@ Alias: `n`
 - [tcld namespace retention](#retention)
 - [tcld namespace update-codec-server](#update-codec-server)
 - [tcld namespace update-high-availability](#update-high-availability)
+- [tcld namespace tags](#tags)
 
 ## add-region
 
@@ -273,6 +274,14 @@ Include cross-origin credentials (default: false).
 
 Alias: `--ic`
 
+#### --tag
+
+A tag in the form "_key_=_value_".
+
+[Tag structure and limits](/cloud/namespaces#tag-structure-and-limits).
+
+Alias: `--t`
+
 **Example**
 
 ```bash
@@ -286,7 +295,8 @@ tcld namespace create \
     --search-attribute "customer_name=Text" \
     --endpoint "https://test-codec-server.com" \
     --pass-access-token \
-    --include-credentials
+    --include-credentials \
+    --tag "key=value"
 ```
 
 ## delete
@@ -1777,3 +1787,98 @@ tcld --api-key <your_api_key> \
 ```
 
 Alias: `-daf`
+
+## tags
+
+The `tcld namespace tags` commands manage [Tags](/cloud/namespaces#tag-a-namespace) of the specified [Namespace](/namespaces) in Temporal Cloud.
+
+Alias: `t`
+
+- [tcld namespace tags upsert](#upsert)
+- [tcld namespace tags remove](#remove)
+
+### upsert
+
+Add new tags or update existing tag values for the specified Namespace.
+
+Alias: `u`
+
+The following modifier controls the behavior of the command.
+
+#### --namespace
+
+_Required modifier_
+
+Specify a Namespace hosted on Temporal Cloud.
+If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+
+Alias: `-n`
+
+#### --request-id
+
+The request identifier to use for the asynchronous operation.
+If not set, the server assigns an identifier.
+
+Alias: `-r`
+
+#### --tag
+
+_Required modifier; can be specified more than once_
+
+A tag in the form "_key_=_value_".
+
+[Tag structure and limits](/cloud/namespaces#tag-structure-and-limits).
+
+Alias: `--t`
+
+**Example**
+
+```bash
+tcld namespace tags upsert \
+    --namespace <namespace_id> \
+    --tag "key1=value1" \
+    --tag "key2=updated"
+```
+
+### remove
+
+Remove existing tags for the specified Namespace using the key.
+
+Alias: `rm`
+
+The following modifiers control the behavior of the command.
+
+#### --namespace
+
+_Required modifier_
+
+Specify a Namespace hosted on Temporal Cloud.
+If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+
+Alias: `-n`
+
+#### --request-id
+
+The request identifier to use for the asynchronous operation.
+If not set, the server assigns an identifier.
+
+Alias: `-r`
+
+#### --tag-key
+
+_Required modifier; can be specified more than once_
+
+A tag key string.
+
+[Tag Key structure and limits](/cloud/namespaces#tag-structure-and-limits).
+
+Alias: `--tk`
+
+**Example**
+
+```bash
+tcld namespace tags remove \
+    --namespace <namespace_id> \
+    --tag-key "key1" \
+    --tag-key "key2"
+```
