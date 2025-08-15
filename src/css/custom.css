@@ -7,6 +7,97 @@
 
 /* You can override the default Infima variables here. */
 
+/* Prevent theme flashing */
+html {
+  transition: none !important;
+}
+
+html[data-theme] * {
+  transition: none !important;
+}
+
+/* Re-enable transitions after initial load */
+html.loaded,
+html.loaded * {
+  transition: all 0.2s ease !important;
+}
+
+/* Remove all rounded corners globally */
+* {
+  border-radius: 0 !important;
+}
+
+/* Specific overrides for common elements */
+.card,
+.alert,
+.badge,
+.btn,
+button,
+input,
+textarea,
+select,
+.navbar,
+.footer,
+.sidebar,
+.menu,
+.dropdown,
+.modal,
+.tooltip,
+.popover,
+.tab,
+.pill,
+.pagination,
+.breadcrumb,
+.progress,
+.avatar,
+.image,
+img,
+.thumbnail,
+.well,
+.panel,
+.list-group-item,
+.table,
+.form-control,
+.input-group,
+.navbar-nav,
+.nav-pills,
+.nav-tabs,
+.jumbotron,
+.media,
+.code,
+pre,
+code,
+.highlight {
+  border-radius: 0 !important;
+}
+
+/* Docusaurus specific elements */
+.theme-doc-sidebar-container,
+.theme-doc-sidebar-menu,
+.menu__link,
+.navbar__item,
+.navbar__link,
+.dropdown__link,
+.pagination-nav__link,
+.theme-code-block,
+.prism-code,
+.token,
+.admonition,
+.alert,
+.tabs,
+.tab-item,
+[class*="admonition"],
+[class*="alert"],
+[class*="badge"],
+[class*="btn"],
+[class*="card"],
+[class*="menu"],
+[class*="nav"],
+[class*="tab"],
+[class*="theme-"] {
+  border-radius: 0 !important;
+}
+
 :root {
   /* --ifm-color-primary: #f2633f;
    --ifm-color-primary-dark: #111827; */
@@ -1309,7 +1400,7 @@ code {
   background: var(--ifm-card-background-color);
   padding: 1.5rem;
   border: 1px solid var(--ifm-color-emphasis-200);
-  border-radius: 8px;
+  border-radius: 0;
   text-decoration: none;
   color: var(--ifm-color);
   transition: all 0.3s ease;
@@ -1364,7 +1455,7 @@ code {
   justify-content: space-between;
   background: var(--ifm-card-background-color);
   border: 1px solid var(--ifm-color-emphasis-200);
-  border-radius: 8px;
+  border-radius: 0;
   padding: 1.5rem;
   text-decoration: none;
   color: var(--ifm-color);
@@ -1427,7 +1518,7 @@ code {
 .sdk-resources-container {
   background: var(--ifm-card-background-color);
   border: 1px solid var(--ifm-color-emphasis-200);
-  border-radius: 8px;
+  border-radius: 0;
   padding: 2rem;
   margin: 2rem 0 3rem 0;
 }
