@@ -2,29 +2,450 @@
 id: index
 title: Temporal Documentation
 sidebar_label: Home
-description: Explore Temporal's comprehensive documentation to build, scale, and manage reliable, fault-tolerant workflows with Workflow-as-Code solutions.
+description: Temporal is the open source platform that guarantees the successful execution of services and applications using the power of durable execution.
 ---
 
-<!--
-<div className="docs-landing-header">
-  <div className="container">
-    <h2> What is Temporal? </h2>
+# Temporal Docs
 
-    <div className="description-section">
+Temporal is an open-source development platform for building reliable and durable applications through crash-proof execution.
 
-      <p>Temporal is an open-source development platform for building reliable and durable applications.
-      Temporal ensures that your application behaves correctly despite failure conditions by guaranteeing that it will keep running, no matter what happens.</p>
-    </div>
+<div className="hero-cards">
+  <a href="/quickstarts" className="hero-card">
+    <h3>Quickstart Guides</h3>
+    <p>Get started quickly with Temporal by following our language-specific quickstart guides for your preferred SDK.</p>
+  </a>
+  
+  <a href="/evaluate" className="hero-card">
+    <h3>Understanding Temporal</h3>
+    <p>Learn about the core concepts and architecture that make Temporal unique and powerful.</p>
+  </a>
+</div>
 
-    <img
-      src="/homepage/sdk-logos-with-ruby.png"
-      alt="SDK Logo Banner"
-      className="fixed-size-logo"
-    />
+## Get Started
+
+<div className="sdk-grid">
+  <a href="/develop/go" className="sdk-card">
+    <img src="/img/sdks/svgs/sdk-box-logos/go.svg" alt="Go" className="sdk-logo" />
+    <h4>Go</h4>
+  </a>
+  
+  <a href="/develop/java" className="sdk-card">
+    <img src="/img/sdks/svgs/sdk-box-logos/java.svg" alt="Java" className="sdk-logo" />
+    <h4>Java</h4>
+  </a>
+  
+  
+  <a href="/develop/typescript" className="sdk-card">
+    <img src="/img/sdks/svgs/sdk-box-logos/typescript.svg" alt="TypeScript" className="sdk-logo" />
+    <h4>TypeScript</h4>
+  </a>
+  
+  <a href="/develop/dotnet" className="sdk-card">
+    <img src="/img/sdks/svgs/sdk-box-logos/dotnet.svg" alt=".NET" className="sdk-logo" />
+    <h4>.NET</h4>
+  </a>
+
+  <a href="/develop/python" className="sdk-card">
+    <img src="/img/sdks/svgs/sdk-box-logos/python.svg" alt="Python" className="sdk-logo" />
+    <h4>Python</h4>
+  </a>
+  
+  <a href="/develop/php" className="sdk-card">
+    <img src="/img/sdks/svgs/sdk-box-logos/php.svg" alt="PHP" className="sdk-logo" />
+    <h4>PHP</h4>
+  </a>
+  
+  <a href="/develop/ruby" className="sdk-card">
+    <img src="/img/sdks/svgs/sdk-box-logos/ruby.svg" alt="Ruby" className="sdk-logo" />
+    <h4>Ruby</h4>
+  </a>
+</div>
+
+## Learn Temporal
+
+<div className="learn-cards">
+  <a href="https://learn.temporal.io/courses/" className="learn-card">
+    <div className="learn-icon">101</div>
+    <h3>Temporal 101 and 102</h3>
+    <p>Take comprehensive courses on Temporal 101, 102, Error Handling, and Cloud.</p>
+  </a>
+
+  <a href="/quickstarts" className="learn-card">
+    <div className="learn-icon">&lt;/&gt;</div>
+    <h3>Code Exchange</h3>
+    <p>Get started quickly with Temporal by following our language-specific quickstart guides.</p>
+  </a>
+
+  <a href="/quickstarts" className="learn-card">
+    <div className="learn-icon">#</div>
+    <h3>Join our Slack community</h3>
+    <p>Get started quickly with Temporal by following our language-specific quickstart guides.</p>
+  </a>
+  
+  <a href="/develop" className="learn-card">
+    <div className="learn-icon">⚒</div>
+    <h3>Project Based Tutorials</h3>
+    <p>Learn to build scalable, production-ready applications with advanced Temporal patterns.</p>
+  </a>
+</div>
+
+## Build Reliable Apps 
+Ready to build production-ready applications? Explore these key areas to get started with Temporal.
+
+<div className="bottom-cards">
+  <div className="bottom-card">
+    <h3>Temporal Cloud</h3>
+    <p>Deploy production applications instantly with our fully-managed cloud platform - no infrastructure needed.</p>
+  </div>
+  <div className="bottom-card">
+    <h3>Use Cases</h3>
+    <p>Discover how to build reliable workflows for payment processing, data pipelines, user onboarding, and more.</p>
+  </div>
+  <div className="bottom-card">
+    <h3>Durable Execution</h3>
+    <p>Learn how Temporal's core technology ensures your code runs to completion, even through failures and outages.</p>
   </div>
 </div>
--->
 
-import TemporalDocsLanding from '@site/src/components/experimental/TemporalDocsLanding';
+<style>
+{`
+  .hero-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+  
+  .hero-card {
+    background: linear-gradient(135deg, var(--ifm-card-background-color) 0%, var(--ifm-background-surface-color, var(--ifm-card-background-color)) 100%);
+    border: 1px solid var(--ifm-color-emphasis-200);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  [data-theme="dark"] .hero-card {
+    background: var(--ifm-card-background-color);
+  }
+  
+  .hero-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    border-image: linear-gradient(135deg, #444CE7, #B664FF) 1;
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  [data-theme="dark"] .hero-card:hover {
+    border-image: linear-gradient(135deg, #1FF1A5, #444CE7) 1;
+  }
+  
+  .hero-card h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--ifm-color);
+  }
+  
+  .hero-card p {
+    margin: 0;
+    color: var(--ifm-color-emphasis-700);
+    line-height: 1.5;
+    font-size: 0.95rem;
+  }
+  
+  .sdk-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1rem;
+    margin: 2rem 0 3rem 0;
+  }
+  
+  .sdk-card {
+    background: transparent;
+    border: none;
+    padding: 1rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    overflow: hidden;
+    min-height: 100px;
+  }
+  
+  .sdk-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, transparent 0%, rgba(68, 76, 231, 0.05) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .sdk-card:hover::before {
+    opacity: 1;
+  }
+  
+  .sdk-card:hover {
+    transform: translateY(-4px);
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .sdk-logo {
+    width: 36px;
+    height: 36px;
+    transition: transform 0.3s ease;
+  }
+  
+  .sdk-card:hover .sdk-logo {
+    transform: scale(1.05);
+  }
+  
+  .sdk-card h4 {
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--ifm-color);
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    line-height: 1.2;
+  }
+  
+  .learn-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin: 2rem 0;
+    max-width: 800px;
+  }
+  
+  .learn-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    min-height: 200px;
+    box-shadow: 0 4px 12px rgba(68, 76, 231, 0.08), 0 0 0 1px rgba(68, 76, 231, 0.04);
+  }
+  
+  [data-theme="dark"] .learn-card {
+    background: #1a1b26;
+    border: 1px solid #2a2d3a;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .learn-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1rem;
+    background: #f0f4ff;
+    border: 2px solid #2563eb;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: #2563eb;
+    font-weight: 600;
+    box-shadow: none;
+  }
 
-<TemporalDocsLanding />
+  .learn-card:nth-child(4) .learn-icon {
+    font-size: 1.8rem;
+  }
+  
+  [data-theme="dark"] .learn-icon {
+    background: rgba(31, 241, 165, 0.1);
+    color: #1FF1A5;
+    border: 1px solid rgba(31, 241, 165, 0.2);
+    box-shadow: none;
+  }
+
+  [data-theme="dark"] .learn-card:nth-child(4) .learn-icon {
+    font-size: 1.6rem;
+  }
+  
+  .learn-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(68, 76, 231, 0.15), 0 0 24px rgba(68, 76, 231, 0.08);
+    border-color: #444CE7;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .learn-card:hover .learn-icon {
+    box-shadow: 0 6px 12px rgba(68, 76, 231, 0.35), 0 0 24px rgba(68, 76, 231, 0.15);
+  }
+  
+  [data-theme="dark"] .learn-card:hover {
+    border-image: linear-gradient(135deg, #1FF1A5, #444CE7) 1;
+    box-shadow: 0 12px 32px rgba(31, 241, 165, 0.15);
+  }
+  
+  .learn-card h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--ifm-color-emphasis-900);
+    position: relative;
+    z-index: 1;
+  }
+  
+  [data-theme="dark"] .learn-card h3 {
+    color: var(--ifm-color);
+  }
+  
+  .learn-card p {
+    margin: 0;
+    color: var(--ifm-color-emphasis-600);
+    line-height: 1.6;
+    flex-grow: 1;
+    position: relative;
+    z-index: 1;
+    font-size: 0.95rem;
+  }
+  
+  [data-theme="dark"] .learn-card p {
+    color: var(--ifm-color-emphasis-700);
+  }
+  
+  .bottom-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin: 2rem 0;
+  }
+  
+  .bottom-card {
+    background: var(--ifm-card-background-color);
+    border: 1px solid var(--ifm-color-emphasis-200);
+    padding: 1.5rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  [data-theme="dark"] .bottom-card {
+    background: #1a1b26;
+    border: 1px solid #2a2d3a;
+  }
+  
+  .bottom-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    border-color: var(--ifm-color-primary);
+  }
+  
+  .bottom-card h3 {
+    margin: 0 0 0.75rem 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--ifm-color);
+  }
+  
+  .bottom-card p {
+    margin: 0;
+    color: var(--ifm-color-emphasis-700);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  
+  /* Modern section headers */
+  h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--ifm-color);
+    margin-bottom: 1rem;
+  }
+  
+  h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--ifm-color);
+    margin: 3rem 0 1.5rem 0;
+  }
+  
+  /* ypography */
+  p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--ifm-color-emphasis-800);
+  }
+  
+  /* Ensure regular text links are properly colored */
+  p a,
+  li a,
+  .markdown a:not(.hero-card):not(.learn-card):not(.sdk-card) {
+    color: var(--ifm-link-color) !important;
+    text-decoration: none;
+  }
+  
+  p a:hover,
+  li a:hover,
+  .markdown a:not(.hero-card):not(.learn-card):not(.sdk-card):hover {
+    color: var(--ifm-link-hover-color) !important;
+    text-decoration: underline;
+  }
+  
+  /* Mobile responsiveness */
+  @media (max-width: 1024px) {
+    .sdk-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .hero-cards,
+    .learn-cards,
+    .bottom-cards {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    
+    .sdk-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+    }
+    
+    .hero-card,
+    .learn-card {
+      padding: 1.5rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .sdk-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    h1 {
+      font-size: 2rem;
+    }
+  }
+`}
+</style>
+
