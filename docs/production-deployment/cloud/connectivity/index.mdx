@@ -30,6 +30,18 @@ Using the Temporal Cloud [web UI](/web-ui), [Terraform provider](/production-dep
 
 ## Connectivity rules
 
+:::tip Support, stability, and dependency info
+
+Connectivity rules are currently in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+
+To enable connectivity rules when using the tcld CLI, run:
+
+```bash
+tcld feature tcr
+```
+
+:::
+
 Connectivity rules are Temporal Cloud's mechanism for limiting network access to a namespace.
 
 By default, a namespace has zero connectivity rules, and is accessible from 1. the public internet and 2. all private connections you've configured to the region containing the namespace.
