@@ -19,7 +19,7 @@
   /* --doc-sidebar-width: 275px !important;
    --ifm-link-hover-decoration: none;
    --ifm-link-hover-color: inherit; */
-  --ifm-link-decoration: underline;
+  --ifm-link-decoration: none;
   --tag-background-color-light: #eee;
   --tag-background-color-dark: #444;
   --tag-text-color-light: #333;
@@ -29,10 +29,11 @@
 }
 
 html[data-theme="dark"] {
-  --ifm-color-primary: #bfdbfe;
-  --ifm-background-color: #141414;
-  --ifm-footer-background-color: #000000;
-  --ifm-navbar-background-color: #000000;
+  --ifm-color-primary: #4fddbf;
+  --ifm-color-primary-darker: #60A5FA;
+  --ifm-background-color: #161723;
+  --ifm-footer-background-color: #161723;
+  --ifm-navbar-background-color: #161723;
   --ifm-color: #f9fafb;
   --ifm-preview-text: #f9fafb;
   --ifm-link-color: #f9fafb;
@@ -58,14 +59,15 @@ html[data-theme="dark"] {
   --ifm-badge-background-color: hsl(210deg, 15%, 20%); */
   --ifm-card-background-color: #1a1a1a;
   /* --card-color: var(--ifm-color-primary-dark); */
-  --docusaurus-highlighted-code-line-bg: rgb(57, 104, 77);
+  --docusaurus-highlighted-code-line-bg: #161723;
   --tag-background-color: var(--tag-background-color-dark);
   --tag-text-color: var(--tag-text-color-dark);
 }
 
 html[data-theme="light"] {
   --ifm-color-primary: #1d4ed8;
-  --ifm-background-color: #f9fafb;
+  --ifm-background-color: #ffffff;
+  --ifm-background-surface-color: #ffffff;
   --ifm-footer-background-color: #ffffff;
   --ifm-navbar-background-color: #ffffff;
   /* --ifm-color: var(--ifm-color-primary-dark); */
@@ -75,18 +77,6 @@ html[data-theme="light"] {
   --alert--competency-background: #a8fcff;
   --alert--copycode-background: #e0cdfa;
   --alert--info-background: #ebeded;
-  /* --ifm-menu-color-active: var(--ifm-color-primary);
-  --ifm-navbar-link-hover-color: var(--ifm-color-primary);
-  --ifm-toc-link-color: var(--ifm-color-primary-dark);
-  --ifm-blockquote-color: #000000;
-  --ifm-color-emphasis-300: #505050; */
-  /* --ifm-code-background: var(--ifm-color-primary-lightest); */
-  /* --ifm-color-input-background: #ffffff;
-  /* --ifm-color: var(--ifm-color-primary-dark);
-  --ifm-background-color: rgb(249, 250, 251);
-  --ifm-footer-background-color: #ffffff;
-  --ifm-card-background-color: #ffffff;
-  --ifm-badge-background-color: rgba(239, 246, 255); */
   --card-color: #ffffff;
   --docusaurus-highlighted-code-line-bg: rgb(57, 104, 77);
   --tag-background-color: var(--tag-background-color-light);
@@ -99,8 +89,44 @@ html[data-theme="light"] {
 
 a,
 a:hover {
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  text-decoration: none;
+}
+
+/* Global link styling to match Learn More links */
+a {
+  color: var(--ifm-link-color);
+  transition: color 0.2s ease;
+  text-decoration: none !important;
+}
+
+a:hover {
+  color: var(--ifm-link-hover-color);
+  text-decoration: none !important;
+}
+
+/* Force remove underlines from all possible link selectors */
+a:link,
+a:visited,
+a:active,
+a:focus {
+  text-decoration: none !important;
+}
+
+/* Override Docusaurus theme classes */
+.theme-doc-markdown a,
+.theme-doc-sidebar-item-link,
+.theme-doc-breadcrumbs a,
+.pagination-nav__link,
+[class*="theme-"] a {
+  text-decoration: none !important;
+}
+
+.theme-doc-markdown a:hover,
+.theme-doc-sidebar-item-link:hover,
+.theme-doc-breadcrumbs a:hover,
+.pagination-nav__link:hover,
+[class*="theme-"] a:hover {
+  text-decoration: none !important;
 }
 
 .alert {
@@ -1022,7 +1048,14 @@ h1 {
 .navbar__link,
 .dropdown__link,
 .table-of-contents__link {
-  text-decoration: none;
+  text-decoration: none !important;
+}
+
+.menu__link:hover,
+.navbar__link:hover,
+.dropdown__link:hover,
+.table-of-contents__link:hover {
+  text-decoration: none !important;
 }
 
 .announcementBar_node_modules-\@docusaurus-theme-classic-lib-next-theme-AnnouncementBar-styles-module {
