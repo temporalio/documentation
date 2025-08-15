@@ -11,129 +11,113 @@ tags:
   - Temporal SDKs
 ---
 
-import * as Components from '@site/src/components';
-
 ![PHP SDK Banner](/img/assets/banner-php-temporal.png)
 
-:::info PHP SPECIFIC RESOURCES
-Build Temporal Applications with the PHP SDK.
+# PHP SDK resources
 
-**Temporal PHP Technical Resources:**
+<div className="sdk-resources-container">
+  <div className="sdk-resources-grid">
+    <div className="sdk-resources-column">
+      <h2>Technical Resources</h2>
+      <ul>
+        <li><a href="https://php.temporal.io">PHP API Documentation</a></li>
+        <li><a href="https://github.com/temporalio/samples-php">PHP SDK Code Samples</a></li>
+        <li><a href="https://github.com/temporalio/sdk-php">PHP SDK GitHub</a></li>
+      </ul>
+    </div>
+    <div className="sdk-resources-column">
+      <h2>Community</h2>
+      <ul>
+        <li><a href="https://temporalio.slack.com/archives/C01LK9FAMM0">Temporal PHP Community Slack</a></li>
+        <li><a href="https://community.temporal.io/tag/php-sdk">PHP SDK Forum</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
 
-- [PHP API Documentation](https://php.temporal.io)
-- [PHP SDK Code Samples](https://github.com/temporalio/samples-php)
-- [PHP SDK GitHub](https://github.com/temporalio/sdk-php)
+<div className="feature-grid">
+  <div className="feature-card">
+    <h3><a href="/develop/php/core-application">Core Application</a></h3>
+    <p>Use the essential components of a Temporal Application (Workflows, Activities, and Workers) to build and run a Temporal application.</p>
+  </div>
 
-**Get Connected with the Temporal PHP Community:**
+  <div className="feature-card">
+    <h3><a href="/develop/php/temporal-clients">Temporal Client</a></h3>
+    <p>Connect to a Temporal Service and start a Workflow Execution.</p>
+  </div>
 
-- [Temporal PHP Community Slack](https://temporalio.slack.com/archives/C01LK9FAMM0)
-- [PHP SDK Forum](https://community.temporal.io/tag/php-sdk)
-  :::
+  <div className="feature-card">
+    <h3><a href="/develop/php/testing-suite">Testing</a></h3>
+    <p>Set up the testing suite and test Workflows and Activities.</p>
+  </div>
 
-## [Core Application](/develop/php/core-application)
+  <div className="feature-card">
+    <h3><a href="/develop/php/failure-detection">Failure detection</a></h3>
+    <p>Explore how your application can detect failures using timeouts and automatically attempt to mitigate them with retries.</p>
+  </div>
 
-Use the essential components of a Temporal Application (Workflows, Activities, and Workers) to build and run a Temporal application.
+  <div className="feature-card">
+    <h3><a href="/develop/php/message-passing">Workflow message passing</a></h3>
+    <p>Send messages to and read the state of Workflow Executions.</p>
+  </div>
 
-- [How to develop a basic Workflow](/develop/php/core-application#develop-workflows)
-- [How to develop a basic Activity](/develop/php/core-application#develop-activities)
-- [How to start an Activity Execution](/develop/php/core-application#activity-execution)
-- [How to run Worker Processes](/develop/php/core-application#run-a-dev-worker)
+  <div className="feature-card">
+    <h3><a href="/develop/php/cancellation">Interrupt a Workflow</a></h3>
+    <p>Interrupt a Workflow Execution with a Cancel or Terminate action.</p>
+  </div>
 
-## [Temporal Client](/develop/php/temporal-clients)
+  <div className="feature-card">
+    <h3><a href="/develop/php/asynchronous-activity-completion">Asynchronous Activity completion</a></h3>
+    <p>Complete Activities asynchronously.</p>
+  </div>
 
-Connect to a Temporal Service and start a Workflow Execution.
+  <div className="feature-card">
+    <h3><a href="/develop/php/versioning">Versioning</a></h3>
+    <p>Change Workflow Definitions without causing non-deterministic behavior in running Workflows.</p>
+  </div>
 
-- [How to connect a Temporal Client to a Temporal Service](/develop/php/temporal-clients#connect-to-a-dev-cluster)
-- [How to connect a Temporal Client to a Temporal Cloud](/develop/php/temporal-clients#connect-to-temporal-cloud)
-- [How to start a Workflow Execution](/develop/php/temporal-clients#start-workflow-execution)
-- [Advanced connection options](/develop/php/temporal-clients#advanced-connection-options)
+  <div className="feature-card">
+    <h3><a href="/develop/php/observability">Observability</a></h3>
+    <p>Configure and use the Temporal Observability APIs.</p>
+  </div>
 
-## [Testing](/develop/php/testing-suite)
+  <div className="feature-card">
+    <h3><a href="/develop/php/debugging">Debugging</a></h3>
+    <p>Explore various ways to debug your application.</p>
+  </div>
 
-Set up the testing suite to test Workflows and Activities.
+  <div className="feature-card">
+    <h3><a href="/develop/php/schedules">Schedules</a></h3>
+    <p>Run Workflows on a schedule and delay the start of a Workflow.</p>
+  </div>
 
-- [Testing Activities](/develop/php/testing-suite#test-activities)
-- [Testing Workflows](/develop/php/testing-suite#test-workflows)
-- [How to Replay a Workflow Execution](/develop/php/testing-suite#replay)
+  <div className="feature-card">
+    <h3><a href="/develop/php/data-encryption">Data encryption</a></h3>
+    <p>Use compression, encryption, and other data handling by implementing custom converters and codecs.</p>
+  </div>
 
-## [Failure detection](/develop/php/failure-detection)
+  <div className="feature-card">
+    <h3><a href="/develop/php/timers">Durable Timers</a></h3>
+    <p>Use Timers to make a Workflow Execution pause or "sleep" for seconds, minutes, days, months, or years.</p>
+  </div>
 
-Explore how your application can detect failures using timeouts and automatically attempt to mitigate them with retries.
+  <div className="feature-card">
+    <h3><a href="/develop/php/child-workflows">Child Workflows</a></h3>
+    <p>Explore how to spawn a Child Workflow Execution and handle Child Workflow Events.</p>
+  </div>
 
-- [Workflow timeouts](/develop/php/failure-detection#workflow-timeouts)
-- [How to set Activity timeouts](/develop/php/failure-detection#activity-timeouts)
-- [How to Heartbeat an Activity](/develop/php/failure-detection#activity-heartbeats)
+  <div className="feature-card">
+    <h3><a href="/develop/php/continue-as-new">Continue-As-New</a></h3>
+    <p>Continue the Workflow Execution with a new Workflow Execution using the same Workflow ID.</p>
+  </div>
 
-## [Workflow message passing](/develop/php/message-passing)
+  <div className="feature-card">
+    <h3><a href="/develop/php/side-effects">Side Effects</a></h3>
+    <p>Use Side Effects in Workflows.</p>
+  </div>
 
-Send messages to read the state of Workflow Executions.
-
-- [How to develop with Signals](/develop/php/message-passing#signals)
-- [How to develop with Queries](/develop/php/message-passing#queries)
-- [How to develop with Updates](/develop/php/message-passing#updates)
-- [Message handler patterns](/develop/php/message-passing#message-handler-patterns)
-- [Message handler troubleshooting](/develop/php/message-passing#message-handler-troubleshooting)
-- [How to develop with Dynamic Handlers](/develop/php/message-passing#dynamic-handler)
-
-## [Interrupt a Workflow feature guide](/develop/php/cancellation)
-
-Interrupt a Workflow Execution with a Cancel or Terminate action.
-
-- [Cancel an Activity from a Workflow](/develop/php/cancellation#cancel-an-activity)
-
-## [Versioning](/develop/php/versioning)
-
-The PHP SDK [Versioning developer guide](/develop/php/versioning) shows how to Change Workflow Definitions without causing non-deterministic behavior in running Workflows.
-
-- [How to use the PHP SDK Patching API](/develop/php/versioning#php-sdk-patching-api): Patching Workflows using the PHP SDK.
-- [Sanity checking](/develop/php/versioning#runtime-checking)
-
-## [Asynchronous Activity Completion](/develop/php/asynchronous-activity-completion)
-
-Complete Activities asynchronously.
-
-- [How to asynchronously complete an Activity](/develop/php/asynchronous-activity-completion#asynchronous-activity-completion)
-
-## [Observability](/develop/php/observability)
-
-Configure and use the Temporal Observability APIs.
-
-- [How to log from a Workflow](/develop/php/observability#logging)
-- [How to use Visibility APIs](/develop/php/observability#visibility)
-
-## [Debugging](/develop/php/debugging)
-
-Explore various ways to debug your application.
-
-- [Debugging](/develop/php/debugging#debug)
-
-## [Schedules](/develop/php/schedules)
-
-Run Workflows on a schedule and delay the start of a Workflow.
-
-- [How to use Start Delay](/develop/php/schedules#start-delay)
-- [How to use Temporal Cron Jobs](/develop/php/schedules#temporal-cron-jobs)
-
-## [Durable Timers](/develop/php/timers)
-
-Use Timers to make a Workflow Execution pause or "sleep" for seconds, minutes, days, months, or years.
-
-- [What is a Timer?](/develop/php/timers#timers)
-
-## [Child Workflows](/develop/php/child-workflows)
-
-Explore how to spawn a Child Workflow Execution and handle Child Workflow Events.
-
-- [How to start a Child Workflow Execution](/develop/php/child-workflows#child-workflows)
-
-## [Continue-As-New](/develop/php/continue-as-new)
-
-Continue the Workflow Execution with a new Workflow Execution using the same Workflow ID.
-
-- [How to Continue-As-New](/develop/php/continue-as-new)
-
-## [Side Effects](/develop/php/side-effects)
-
-Use Side Effects in Workflows.
-
-- [How to use Side Effects in PHP](/develop/php/side-effects#side-effects)
+  <div className="feature-card">
+    <h3><a href="/develop/php/namespaces">Manage Namespaces</a></h3>
+    <p>Create and manage Namespaces.</p>
+  </div>
+</div>

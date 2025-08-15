@@ -11,160 +11,120 @@ tags:
   - Temporal SDKs
 ---
 
-import * as Components from '@site/src/components';
-
 ![Java SDK Banner](/img/assets/banner-java-temporal.png)
 
-:::info JAVA SPECIFIC RESOURCES
-Build Temporal Applications with the Java SDK.
+# Java SDK resources
 
-**Temporal Java Technical Resources:**
+<div className="sdk-resources-container">
+  <div className="sdk-resources-grid">
+    <div className="sdk-resources-column">
+      <h2>Technical Resources</h2>
+      <ul>
+        <li><a href="/develop/java/set-up-your-local-java">Java SDK Quickstart - Setup Guide</a></li>
+        <li><a href="https://javadoc.io/doc/io.temporal/temporal-sdk">Java API Documentation</a></li>
+        <li><a href="https://github.com/temporalio/samples-java">Java SDK Code Samples</a></li>
+        <li><a href="https://github.com/temporalio/sdk-java">Java SDK GitHub</a></li>
+        <li><a href="https://learn.temporal.io/courses/temporal_101/java/">Temporal 101 in Java Free Course</a></li>
+      </ul>
+    </div>
+    <div className="sdk-resources-column">
+      <h2>Community</h2>
+      <ul>
+        <li><a href="https://temporalio.slack.com/archives/CTT84KXK9">Temporal Java Community Slack</a></li>
+        <li><a href="https://community.temporal.io/tag/java-sdk">Java SDK Forum</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
 
-- [Java SDK Quickstart - Setup Guide](https://docs.temporal.io/develop/java/set-up-your-local-java)
-- [Java API Documentation](https://javadoc.io/doc/io.temporal/temporal-sdk)
-- [Java SDK Code Samples](https://github.com/temporalio/samples-java)
-- [Java SDK GitHub](https://github.com/temporalio/sdk-java)
-- [Temporal 101 in Java Free Course](https://learn.temporal.io/courses/temporal_101/java/)
+<div className="feature-grid">
+  <div className="feature-card">
+    <h3><a href="/develop/java/core-application">Core application</a></h3>
+    <p>Use the essential components of a Temporal Application (Workflows, Activities, and Workers) to build and run a Temporal application.</p>
+  </div>
 
-**Get Connected with the Temporal Java Community:**
+  <div className="feature-card">
+    <h3><a href="/develop/java/temporal-clients">Temporal Client</a></h3>
+    <p>Connect to a Temporal Service and start a Workflow Execution.</p>
+  </div>
 
-- [Temporal Java Community Slack](https://temporalio.slack.com/archives/CTT84KXK9)
-- [Java SDK Forum](https://community.temporal.io/tag/java-sdk)
-  :::
+  <div className="feature-card">
+    <h3><a href="/develop/java/testing-suite">Testing</a></h3>
+    <p>Set up the testing suite and test Workflows and Activities.</p>
+  </div>
 
-## [Core application](/develop/java/core-application)
+  <div className="feature-card">
+    <h3><a href="/develop/java/failure-detection">Failure detection</a></h3>
+    <p>Explore how your application can detect failures using timeouts and automatically attempt to mitigate them with retries.</p>
+  </div>
 
-Use the essential components of a Temporal Application (Workflows, Activities, and Workers) to build and run a Temporal application.
+  <div className="feature-card">
+    <h3><a href="/develop/java/message-passing">Workflow message passing</a></h3>
+    <p>Send messages to and read the state of Workflow Executions.</p>
+  </div>
 
-- [How to develop a Workflow Definition in Java](/develop/java/core-application#develop-workflows)
-- [How to develop a basic Activity](/develop/java/core-application#develop-activities)
-- [How to start an Activity Execution](/develop/java/core-application#activity-execution)
-- [How to develop a Worker Program in Java](/develop/java/core-application#run-a-dev-worker)
+  <div className="feature-card">
+    <h3><a href="/develop/java/cancellation">Interrupt a Workflow</a></h3>
+    <p>Interrupt a Workflow Execution with a Cancel or Terminate action.</p>
+  </div>
 
-## [Temporal Client](/develop/java/temporal-clients)
+  <div className="feature-card">
+    <h3><a href="/develop/java/asynchronous-activity-completion">Asynchronous Activity completion</a></h3>
+    <p>Complete Activities asynchronously.</p>
+  </div>
 
-Connect to a Temporal Service and start a Workflow Execution.
+  <div className="feature-card">
+    <h3><a href="/develop/java/versioning">Versioning</a></h3>
+    <p>Change Workflow Definitions without causing non-deterministic behavior in running Workflows.</p>
+  </div>
 
-- [Connect to a development Temporal Service](/develop/java/temporal-clients#connect-to-development-service)
-- [Connect to a custom Namespace](/develop/java/temporal-clients#connect-to-custom-namespace)
-- [Connect to Temporal Cloud](/develop/java/temporal-clients#connect-to-temporal-cloud)
-- [Start a Workflow Execution](/develop/java/temporal-clients#start-workflow-execution)
+  <div className="feature-card">
+    <h3><a href="/develop/java/observability">Observability</a></h3>
+    <p>Configure and use the Temporal Observability APIs.</p>
+  </div>
 
-## [Testing](/develop/java/testing-suite)
+  <div className="feature-card">
+    <h3><a href="/develop/java/debugging">Debugging</a></h3>
+    <p>Explore various ways to debug your application.</p>
+  </div>
 
-Set up the testing suite and test Workflows and Activities.
+  <div className="feature-card">
+    <h3><a href="/develop/java/schedules">Schedules</a></h3>
+    <p>Run Workflows on a schedule and delay the start of a Workflow.</p>
+  </div>
 
-- [Test frameworks](/develop/java/testing-suite#test-frameworks)
-- [Test Activities](/develop/java/testing-suite#test-activities)
-- [Testing Workflows](/develop/java/testing-suite#test-workflows)
-- [How to Replay a Workflow Execution](/develop/java/testing-suite#replay)
+  <div className="feature-card">
+    <h3><a href="/develop/java/data-encryption">Data encryption</a></h3>
+    <p>Use compression, encryption, and other data handling by implementing custom converters and codecs.</p>
+  </div>
 
-## [Failure detection](/develop/java/failure-detection)
+  <div className="feature-card">
+    <h3><a href="/develop/java/nexus">Temporal Nexus</a></h3>
+    <p>Connect durable executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.</p>
+  </div>
 
-Explore how your application can detect failures using timeouts and automatically attempt to mitigate them with retries.
+  <div className="feature-card">
+    <h3><a href="/develop/java/timers">Durable Timers</a></h3>
+    <p>Use Timers to make a Workflow Execution pause or "sleep" for seconds, minutes, days, months, or years.</p>
+  </div>
 
-- [Workflow timeouts](/develop/java/failure-detection#workflow-timeouts)
-- [How to set Activity timeouts](/develop/java/failure-detection#activity-timeouts)
-- [How to Heartbeat an Activity](/develop/java/failure-detection#activity-heartbeats)
+  <div className="feature-card">
+    <h3><a href="/develop/java/child-workflows">Child Workflows</a></h3>
+    <p>Explore how to spawn a Child Workflow Execution and handle Child Workflow Events.</p>
+  </div>
 
-## [Workflow message passing](/develop/java/message-passing)
+  <div className="feature-card">
+    <h3><a href="/develop/java/continue-as-new">Continue-As-New</a></h3>
+    <p>Continue the Workflow Execution with a new Workflow Execution using the same Workflow ID.</p>
+  </div>
 
-Send messages to and read the state of Workflow Executions.
+  <div className="feature-card">
+    <h3><a href="/develop/java/side-effects">Side Effects</a></h3>
+    <p>Use Side Effects in Workflows.</p>
+  </div>
 
-- [How to develop with Signals](/develop/java/message-passing#signals)
-- [How to develop with Queries](/develop/java/message-passing#queries)
-- [What is a Dynamic Handler?](/develop/java/message-passing#dynamic-handler)
-- [How to develop with Updates](/develop/java/message-passing#updates)
-
-## [Asynchronous Activity completion](/develop/java/asynchronous-activity-completion)
-
-Complete Activities asynchronously.
-
-- [How to asynchronously complete an Activity](/develop/java/asynchronous-activity-completion)
-
-## [Versioning](/develop/java/versioning)
-
-Change Workflow Definitions without causing non-deterministic behavior in running Workflows.
-
-- [Temporal Java SDK Versioning APIs](/develop/java/versioning#patching)
-
-## [Observability](/develop/java/observability)
-
-Configure and use the Temporal Observability APIs.
-
-- [How to emit metrics](/develop/java/observability#metrics)
-- [How to setup Tracing](/develop/java/observability#tracing)
-- [How to log from a Workflow](/develop/java/observability#logging)
-- [How to use Visibility APIs](/develop/java/observability#visibility)
-
-## [Debugging](/develop/java/debugging)
-
-Explore various ways to debug your application.
-
-- [How to debug in a development environment](/develop/java/debugging#debug-in-a-development-environment)
-- [How to debug in a production environment](/develop/java/debugging#debug-in-a-production-environment)
-
-## [Schedules](/develop/java/schedules)
-
-Run Workflows on a schedule and delay the start of a Workflow.
-
-- [How to Schedule a Workflow](/develop/java/schedules#schedule-a-workflow)
-- [How to set a Cron Schedule in Java](/develop/java/schedules#cron-schedule)
-
-## [Data encryption](/develop/java/converters-and-encryption)
-
-Use compression, encryption, and other data handling by implementing custom converters and codecs.
-
-- [How to use a custom Payload Codec in Java](/develop/java/converters-and-encryption#custom-payload-codec)
-- [How to use custom Payload conversion](/develop/java/converters-and-encryption#custom-payload-conversion)
-
-## Temporal Nexus
-
-The [Temporal Nexus](/develop/java/nexus) feature guide shows how to use Temporal Nexus to connect Durable Executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
-
-- [Create a Nexus Endpoint to route requests from caller to handler](/develop/java/nexus#create-nexus-endpoint)
-- [Define the Nexus Service contract](/develop/java/nexus#define-nexus-service-contract)
-- [Develop a Nexus Service and Operation handlers](/develop/java/nexus#develop-nexus-service-operation-handlers)
-- [Develop a caller Workflow that uses a Nexus Service](/develop/java/nexus#develop-caller-workflow-nexus-service)
-- [Make Nexus calls across Namespaces with a development Server](/develop/java/nexus#nexus-calls-across-namespaces-dev-server)
-- [Make Nexus calls across Namespaces in Temporal Cloud](/develop/java/nexus#nexus-calls-across-namespaces-temporal-cloud)
-
-## [Interrupt a Workflow feature guide](/develop/java/cancellation)
-
-Interrupt a Workflow Execution with a Cancel or Terminate action.
-
-- [Cancel a Workflow](/develop/java/cancellation#cancellation)
-- [Terminate a Workflow](/develop/java/cancellation#termination)
-- [Cancel an Activity from a Workflow](/develop/java/cancellation#cancel-activity)
-
-## [Child Workflows](/develop/java/child-workflows)
-
-Explore how to spawn a Child Workflow Execution and handle Child Workflow Events.
-
-- [Start a Child Workflow Execution](/develop/java/child-workflows#start-child-workflow)
-- [Set a Parent Close Policy](/develop/java/child-workflows#parent-close-policy)
-
-## [Continue-As-New](/develop/java/continue-as-new)
-
-Continue the Workflow Execution with a new Workflow Execution using the same Workflow ID.
-
-- [Continue a Workflow as New](/develop/java/continue-as-new)
-
-## [Durable Timers](/develop/java/timers)
-
-Use Timers to make a Workflow Execution pause or "sleep" for seconds, minutes, days, months, or years.
-
-- [What is a Timer?](/develop/java/timers#timers)
-
-## [Side Effects](/develop/java/side-effects)
-
-Use Side Effects in Workflows.
-
-- [Side Effects](/develop/java/side-effects#side-effects)
-
-## [Manage Namespaces](/develop/java/namespaces)
-
-Create and manage Namespaces.
-
-- [Create a Namespace](/develop/java/namespaces#register-namespace)
-- [Manage Namespaces](/develop/java/namespaces#manage-namespaces)
+  <div className="feature-card">
+    <h3><a href="/develop/java/namespaces">Manage Namespaces</a></h3>
+    <p>Create and manage Namespaces.</p>
+  </div>
+</div>

@@ -7,6 +7,101 @@
 
 /* You can override the default Infima variables here. */
 
+/* Prevent theme flashing */
+html {
+  transition: none !important;
+}
+
+html[data-theme] * {
+  transition: none !important;
+}
+
+/* Re-enable transitions after initial load */
+html.loaded,
+html.loaded * {
+  transition: all 0.2s ease !important;
+}
+
+/* Remove all rounded corners globally, except code blocks */
+*:not(pre):not(code):not(.prism-code):not(.theme-code-block):not([class*="code"]):not([class*="highlight"]) {
+  border-radius: 0 !important;
+}
+
+/* Specific overrides for common elements (excluding code) */
+.card,
+.alert,
+.badge,
+.btn,
+button,
+input,
+textarea,
+select,
+.navbar,
+.footer,
+.sidebar,
+.menu,
+.dropdown,
+.modal,
+.tooltip,
+.popover,
+.tab,
+.pill,
+.pagination,
+.breadcrumb,
+.progress,
+.avatar,
+.image,
+img,
+.thumbnail,
+.well,
+.panel,
+.list-group-item,
+.table,
+.form-control,
+.input-group,
+.navbar-nav,
+.nav-pills,
+.nav-tabs,
+.jumbotron,
+.media {
+  border-radius: 0 !important;
+}
+
+/* Allow rounded corners for code blocks */
+pre,
+code,
+.prism-code,
+.theme-code-block,
+.highlight,
+[class*="code"],
+[class*="highlight"] {
+  border-radius: 6px !important;
+}
+
+/* Docusaurus specific elements (excluding code) */
+.theme-doc-sidebar-container,
+.theme-doc-sidebar-menu,
+.menu__link,
+.navbar__item,
+.navbar__link,
+.dropdown__link,
+.pagination-nav__link,
+.admonition,
+.alert,
+.tabs,
+.tab-item,
+[class*="admonition"],
+[class*="alert"],
+[class*="badge"],
+[class*="btn"],
+[class*="card"],
+[class*="menu"],
+[class*="nav"],
+[class*="tab"],
+[class*="theme-"]:not([class*="code"]) {
+  border-radius: 0 !important;
+}
+
 :root {
   /* --ifm-color-primary: #f2633f;
    --ifm-color-primary-dark: #111827; */
@@ -19,7 +114,7 @@
   /* --doc-sidebar-width: 275px !important;
    --ifm-link-hover-decoration: none;
    --ifm-link-hover-color: inherit; */
-  --ifm-link-decoration: underline;
+  --ifm-link-decoration: none;
   --tag-background-color-light: #eee;
   --tag-background-color-dark: #444;
   --tag-text-color-light: #333;
@@ -29,10 +124,11 @@
 }
 
 html[data-theme="dark"] {
-  --ifm-color-primary: #bfdbfe;
-  --ifm-background-color: #141414;
-  --ifm-footer-background-color: #000000;
-  --ifm-navbar-background-color: #000000;
+  --ifm-color-primary: #4fddbf;
+  --ifm-color-primary-darker: #60A5FA;
+  --ifm-background-color: #161723;
+  --ifm-footer-background-color: #161723;
+  --ifm-navbar-background-color: #161723;
   --ifm-color: #f9fafb;
   --ifm-preview-text: #f9fafb;
   --ifm-link-color: #f9fafb;
@@ -58,16 +154,19 @@ html[data-theme="dark"] {
   --ifm-badge-background-color: hsl(210deg, 15%, 20%); */
   --ifm-card-background-color: #1a1a1a;
   /* --card-color: var(--ifm-color-primary-dark); */
-  --docusaurus-highlighted-code-line-bg: rgb(57, 104, 77);
+  --docusaurus-highlighted-code-line-bg: #161723;
   --tag-background-color: var(--tag-background-color-dark);
   --tag-text-color: var(--tag-text-color-dark);
 }
 
 html[data-theme="light"] {
   --ifm-color-primary: #1d4ed8;
-  --ifm-background-color: #f9fafb;
+  --ifm-background-color: #ffffff;
+  --ifm-background-surface-color: #f8f9fa;
   --ifm-footer-background-color: #ffffff;
   --ifm-navbar-background-color: #ffffff;
+  --ifm-menu-color-background-active: #f8f9fa;
+  --ifm-menu-color-background-hover: #e9ecef;
   /* --ifm-color: var(--ifm-color-primary-dark); */
   --ifm-link-color: #111827;
   --ifm-link-hover-color: var(--ifm-color-primary);
@@ -75,18 +174,6 @@ html[data-theme="light"] {
   --alert--competency-background: #a8fcff;
   --alert--copycode-background: #e0cdfa;
   --alert--info-background: #ebeded;
-  /* --ifm-menu-color-active: var(--ifm-color-primary);
-  --ifm-navbar-link-hover-color: var(--ifm-color-primary);
-  --ifm-toc-link-color: var(--ifm-color-primary-dark);
-  --ifm-blockquote-color: #000000;
-  --ifm-color-emphasis-300: #505050; */
-  /* --ifm-code-background: var(--ifm-color-primary-lightest); */
-  /* --ifm-color-input-background: #ffffff;
-  /* --ifm-color: var(--ifm-color-primary-dark);
-  --ifm-background-color: rgb(249, 250, 251);
-  --ifm-footer-background-color: #ffffff;
-  --ifm-card-background-color: #ffffff;
-  --ifm-badge-background-color: rgba(239, 246, 255); */
   --card-color: #ffffff;
   --docusaurus-highlighted-code-line-bg: rgb(57, 104, 77);
   --tag-background-color: var(--tag-background-color-light);
@@ -99,8 +186,44 @@ html[data-theme="light"] {
 
 a,
 a:hover {
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  text-decoration: none;
+}
+
+/* Global link styling to match Learn More links */
+a {
+  color: var(--ifm-link-color);
+  transition: color 0.2s ease;
+  text-decoration: none !important;
+}
+
+a:hover {
+  color: var(--ifm-link-hover-color);
+  text-decoration: none !important;
+}
+
+/* Force remove underlines from all possible link selectors */
+a:link,
+a:visited,
+a:active,
+a:focus {
+  text-decoration: none !important;
+}
+
+/* Override Docusaurus theme classes */
+.theme-doc-markdown a,
+.theme-doc-sidebar-item-link,
+.theme-doc-breadcrumbs a,
+.pagination-nav__link,
+[class*="theme-"] a {
+  text-decoration: none !important;
+}
+
+.theme-doc-markdown a:hover,
+.theme-doc-sidebar-item-link:hover,
+.theme-doc-breadcrumbs a:hover,
+.pagination-nav__link:hover,
+[class*="theme-"] a:hover {
+  text-decoration: none !important;
 }
 
 .alert {
@@ -1022,7 +1145,14 @@ h1 {
 .navbar__link,
 .dropdown__link,
 .table-of-contents__link {
-  text-decoration: none;
+  text-decoration: none !important;
+}
+
+.menu__link:hover,
+.navbar__link:hover,
+.dropdown__link:hover,
+.table-of-contents__link:hover {
+  text-decoration: none !important;
 }
 
 .announcementBar_node_modules-\@docusaurus-theme-classic-lib-next-theme-AnnouncementBar-styles-module {
@@ -1191,5 +1321,257 @@ code {
 }
 #kapa-widget-container button {
   z-index: 10;
+}
+
+.features-intro {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: var(--ifm-color-emphasis-700);
+  margin-bottom: 2rem;
+  max-width: 800px;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.feature-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--ifm-card-background-color);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  height: 100%;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-color: var(--ifm-color-primary);
+}
+
+.feature-card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+  color: var(--ifm-color-emphasis-900);
+}
+
+.feature-card p {
+  color: var(--ifm-color-emphasis-600);
+  margin-bottom: 0.5rem;
+  flex-grow: 1;
+}
+
+.feature-link {
+  color: var(--ifm-color-primary);
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.2s ease;
+}
+
+.feature-link:hover {
+  color: var(--ifm-color-primary-darker);
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+  .features-intro {
+    font-size: 1.1rem;
+  }
+}
+
+/* Pattern Grid for Introduction Page */
+.pattern-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.pattern-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--ifm-card-background-color);
+  padding: 1.5rem;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 0;
+  text-decoration: none;
+  color: var(--ifm-color);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.pattern-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(68, 76, 231, 0.2);
+  text-decoration: none;
+  color: var(--ifm-color);
+  border-color: var(--ifm-color-primary);
+}
+
+.pattern-content h3 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin: 0 0 0.75rem 0;
+  color: var(--ifm-color);
+}
+
+.pattern-content p {
+  font-size: 0.875rem;
+  margin: 0;
+  color: var(--ifm-color-emphasis-700);
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .pattern-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .pattern-card {
+    padding: 1.25rem;
+  }
+  
+  .pattern-content h3 {
+    font-size: 1.1rem;
+  }
+}
+
+/* CTA (Call to Action) styling for intro page */
+.cta-container {
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+}
+
+.cta-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--ifm-card-background-color);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 0;
+  padding: 1.5rem;
+  text-decoration: none;
+  color: var(--ifm-color);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.cta-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(68, 76, 231, 0.2);
+  text-decoration: none;
+  color: var(--ifm-color);
+  border-color: var(--ifm-color-primary);
+}
+
+.cta-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.cta-prefix {
+  font-size: 0.875rem;
+  color: var(--ifm-color-emphasis-600);
+  font-weight: 500;
+}
+
+.cta-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--ifm-color);
+}
+
+.cta-arrow {
+  font-size: 1.5rem;
+  color: var(--ifm-color-primary);
+  font-weight: bold;
+  transition: transform 0.2s ease;
+}
+
+.cta-link:hover .cta-arrow {
+  transform: translateX(4px);
+}
+
+@media (max-width: 768px) {
+  .cta-container {
+    margin-top: 2rem;
+  }
+  
+  .cta-link {
+    padding: 1.25rem;
+  }
+  
+  .cta-title {
+    font-size: 1.1rem;
+  }
+}
+
+/* SDK Resources styling for developer guide landing pages */
+.sdk-resources-container {
+  background: var(--ifm-card-background-color);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 0;
+  padding: 2rem;
+  margin: 2rem 0 3rem 0;
+}
+
+.sdk-resources-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+
+.sdk-resources-column h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--ifm-color);
+  margin-bottom: 1rem;
+  margin-top: 0;
+}
+
+.sdk-resources-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sdk-resources-column li {
+  margin-bottom: 0.75rem;
+}
+
+.sdk-resources-column a {
+  color: var(--ifm-link-color);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.sdk-resources-column a:hover {
+  color: var(--ifm-link-hover-color);
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .sdk-resources-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .sdk-resources-container {
+    padding: 1.5rem;
+    margin: 1.5rem 0 2rem 0;
+  }
 }
 
