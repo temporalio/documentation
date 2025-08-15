@@ -1,31 +1,27 @@
 ---
-id: user-metadata
-title: User Metadata - Python SDK
-sidebar_label: User Metadata
-description: Learn how to add user metadata to workflows, activities, and timers in the Temporal Python SDK.
+id: enriching-ui
+title: Enriching the User Interface - Python SDK
+sidebar_label: Enriching the UI
+description: Learn how to add contextual information to workflows and events in the Temporal UI using the Python SDK.
 toc_max_heading_level: 3
 keywords:
-  - user metadata
-  - workflow metadata
+  - ui enrichment
+  - workflow context
   - static summary
   - static details
-  - activity metadata
-  - timer metadata
+  - activity summary
+  - timer summary
 tags:
-  - User Metadata
+  - UI Enrichment
   - Python SDK
   - Temporal SDKs
 ---
 
-# User Metadata
+# Enriching the User Interface
 
-User metadata allows you to attach arbitrary information to workflows and events in the form of Markdown. This information can be displayed in the Temporal UI, making it easier to identify and understand workflows and their operations.
+Enhance the Temporal UI by adding contextual information to workflows and events. This makes it easier to identify and understand workflows and their operations at a glance.
 
-Users of this feature are cautioned not to put untrusted content into their metadata.
-
-## Adding Metadata
-
-### Workflow
+## Adding Summary and Details to Workflows
 
 #### Starting a Workflow
 
@@ -43,8 +39,10 @@ handle = await client.start_workflow(
 )
 ```
 
-The `static_summary` is a single-line description that appears in the workflow list view, with a limit of 200 bytes.
-The `static_details` can be multi-line and provides more comprehensive information that appears in the workflow details view, and has a limit of 20K bytes.
+`static_summary` is a single-line description that appears in the workflow list view, limited to 200 bytes.
+`static_details` can be multi-line and provides more comprehensive information that appears in the workflow details view, with a larger limit of 20K bytes.
+
+The input format is normal Markdown excluding: images, html, and scripts. 
 
 You can also use the `execute_workflow` method with the same parameters:
 
@@ -61,7 +59,9 @@ result = await client.execute_workflow(
 
 #### Inside the Workflow
 
-Within a workflow, you can get and set its _current workflow details_. Unlike static summary/details set at workflow start, this value can be updated throughout the life of the workflow. _Current workflow details_ also takes Markdown format and can span multiple lines. 
+Within a workflow, you can get and set the _current workflow details_. Unlike static summary/details set at 
+workflow start, this value can be updated throughout the life of the workflow. Current workflow details 
+also takes Markdown format (again, excluding images, html, and scripts) and can span multiple lines. 
 
 ```python
 @workflow.defn
@@ -78,7 +78,7 @@ class YourWorkflow:
         return "Workflow completed"
 ```
 
-### Activity
+### Adding Summary to Activities and Timers
 
 You can attach a `summary` to activities when starting them from within a workflow:
 
@@ -97,11 +97,7 @@ class YourWorkflow:
         return result
 ```
 
-Activity `summary` has a limit of 200 bytes.
-
-### Timer
-
-You can attach a `summary` to timers within a workflow:
+Similarly, you can attach a `summary` to timers within a workflow:
 
 ```python
 @workflow.defn
@@ -112,5 +108,4 @@ class YourWorkflow:
         await workflow.sleep(timedelta(minutes=5), summary="Waiting for payment confirmation")
         return "Timer completed"
 ```
-
-Timer `summary` has a limit of 200 bytes.
+The input format for `summary` is a string, and limited to 200 bytes.
