@@ -63,7 +63,7 @@ This means that all Workers listening to a Task Queue must register all Workflow
 
 There are two exceptions to this "Task Queue Workers with identical registrations" rule.
 First, Worker Versioning may be used.
-During a Worker upgrade binary rollouts, it's okay to have temporarily misaligned registrations.
+During Worker upgrade binary rollouts, it's okay to have temporarily misaligned registrations.
 Second, dynamic Workflows or Activity components may be used.
 If a Task arrives with a recognized method signature, the Worker can use a pre-registered dynamic stand-in.
 
