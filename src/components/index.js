@@ -6,7 +6,7 @@ export { default as PhotoCarousel } from "./elements/PhotoCarousel";
 export { default as SdkTabs } from './elements/SdkTabs';
 
 // Formatting components
-export { default as DocsTable, NewDocsCell } from "./formatting/DocsTable";
+export { default as DocsTable, NewDocsCell, DocsTableRow } from "./formatting/DocsTable";
 
 // Image components
 export { default as CaptionedImage } from "./images/CaptionedImage";
