@@ -22,12 +22,12 @@ html.loaded * {
   transition: all 0.2s ease !important;
 }
 
-/* Remove all rounded corners globally */
-* {
+/* Remove all rounded corners globally, except code blocks */
+*:not(pre):not(code):not(.prism-code):not(.theme-code-block):not([class*="code"]):not([class*="highlight"]) {
   border-radius: 0 !important;
 }
 
-/* Specific overrides for common elements */
+/* Specific overrides for common elements (excluding code) */
 .card,
 .alert,
 .badge,
@@ -63,15 +63,22 @@ img,
 .nav-pills,
 .nav-tabs,
 .jumbotron,
-.media,
-.code,
-pre,
-code,
-.highlight {
+.media {
   border-radius: 0 !important;
 }
 
-/* Docusaurus specific elements */
+/* Allow rounded corners for code blocks */
+pre,
+code,
+.prism-code,
+.theme-code-block,
+.highlight,
+[class*="code"],
+[class*="highlight"] {
+  border-radius: 6px !important;
+}
+
+/* Docusaurus specific elements (excluding code) */
 .theme-doc-sidebar-container,
 .theme-doc-sidebar-menu,
 .menu__link,
@@ -79,9 +86,6 @@ code,
 .navbar__link,
 .dropdown__link,
 .pagination-nav__link,
-.theme-code-block,
-.prism-code,
-.token,
 .admonition,
 .alert,
 .tabs,
@@ -94,7 +98,7 @@ code,
 [class*="menu"],
 [class*="nav"],
 [class*="tab"],
-[class*="theme-"] {
+[class*="theme-"]:not([class*="code"]) {
   border-radius: 0 !important;
 }
 
