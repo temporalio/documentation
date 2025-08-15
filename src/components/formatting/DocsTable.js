@@ -16,8 +16,39 @@ export default function DocsTable({ Columns, children, sortable = false, default
     let currentCell = [];
 
     childArray.forEach((child) => {
-      if (child.type === NewDocsCell) {
-        currentRow.push(currentCell.length > 0 ? currentCell.flat() : null);
+      // Check if this is a DocsTableRow
+      if (child.type === DocsTableRow) {
+        // Parse the children of the row
+        const rowChildren = React.Children.toArray(child.props.children);
+        const rowCells = [];
+        let cellContent = [];
+
+        rowChildren.forEach((rowChild) => {
+          if (rowChild.type === NewDocsCell) {
+            // Extract content from NewDocsCell
+            rowCells.push(rowChild.props.children);
+          } else {
+            cellContent.push(rowChild);
+          }
+        });
+
+        // Add any remaining content as a cell
+        if (cellContent.length > 0) {
+          rowCells.push(cellContent.flat());
+        }
+
+        // Pad row to match column count
+        while (rowCells.length < columnsPerRow) {
+          rowCells.push("");
+        }
+
+        rows.push(rowCells);
+      }
+      // Fallback to old parsing method for backward compatibility
+      else if (child.type === NewDocsCell) {
+        // If NewDocsCell has content, use it; otherwise use accumulated content
+        const cellContent = child.props.children || (currentCell.length > 0 ? currentCell.flat() : null);
+        currentRow.push(cellContent);
         currentCell = [];
 
         if (currentRow.length === columnsPerRow) {
@@ -29,6 +60,7 @@ export default function DocsTable({ Columns, children, sortable = false, default
       }
     });
 
+    // Handle remaining cells from old method
     if (currentCell.length > 0) {
       currentRow.push(currentCell.flat());
     }
@@ -133,6 +165,10 @@ export default function DocsTable({ Columns, children, sortable = false, default
   );
 }
 
-export function NewDocsCell() {
-  return null;
+export function NewDocsCell({ children }) {
+  return <>{children}</>;
+}
+
+export function DocsTableRow({ children }) {
+  return <>{children}</>;
 }
