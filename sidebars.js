@@ -309,6 +309,7 @@ module.exports = {
           ],
         },
         "develop/client-external-configuration",
+        "develop/environment-configuration",
         "develop/activity-retry-simulator",
         "develop/worker-performance",
         "develop/safe-deployments",
