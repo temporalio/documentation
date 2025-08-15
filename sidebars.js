@@ -1,6 +1,7 @@
 module.exports = {
   documentation: [
     "index",
+    "quickstarts",
     {
       type: "category",
       label: "Evaluate",
