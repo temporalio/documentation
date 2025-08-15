@@ -60,7 +60,7 @@ Many SDKs default to the local host or IP address and port that Temporalite and 
 
 Use the `connect()` method on the Client class to create and connect to a Temporal Client to the Temporal Service.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">
     View the source code
   </a>{' '}
@@ -111,7 +111,7 @@ Many SDKs default to the local host or IP address and port that Temporalite and 
 
 Use the `connect()` method on the Client class to create and connect to a Temporal Client to the Temporal Service.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">
     View the source code
   </a>{' '}
@@ -193,7 +193,7 @@ Use the `connect()` method on the Client class to create and connect to a Tempor
 Then specify the [TLSConfig](https://python.temporal.io/temporalio.service.TLSConfig.html) arguments to connect to a Temporal Service with TLS enabled.
 The `client_cert` must be combined with `client_private_key` to authenticate the Client.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/connect_cloud_dacx.py">
     View the source code
   </a>{' '}
@@ -237,7 +237,7 @@ The Temporal Service then creates the first Workflow Task, resulting in the firs
 
 To start a Workflow Execution in Python, use either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods in the Client.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">
     View the source code
   </a>{' '}
@@ -273,7 +273,7 @@ For any code to execute, a Worker Process must be running that contains a Worker
 
 To set a Task Queue in Python, specify the `task_queue` argument when executing a Workflow with either [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) methods.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">
     View the source code
   </a>{' '}
@@ -311,7 +311,7 @@ To set a Workflow Id in Python, specify the `id` argument when executing a Workf
 
 The `id` argument should be a unique identifier for the Workflow Execution.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py">
     View the source code
   </a>{' '}
@@ -357,7 +357,7 @@ To get a handle for an existing Workflow by its Id, you can use [`get_workflow_h
 Then use [`describe()`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#describe) to get the current status of the Workflow.
 If the Workflow does not exist, this call fails.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/get_workflow_results_dacx.py">
     View the source code
   </a>{' '}

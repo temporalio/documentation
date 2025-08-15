@@ -26,20 +26,6 @@ Temporal’s replication and automated failover features ensure high availabilit
 By enabling High Availability replication, you allow Temporal to copy Namespace metadata and Workflow Executions to a <ToolTipTerm term="replica"/>.
 This redundancy, combined with failover capability, enhances availability during outages.
 
-## High availability {#high-availability}
-
-High availability ensures that a system remains operational with minimal downtime.
-It achieves this with redundancy and failover mechanisms that handle failures, so end-users remain unaware of incidents.
-Temporal Cloud guarantees this high availability with its Service Level Agreements ([SLA](/cloud/sla)).
-
-By default, Temporal Cloud provides high availability to all customers, even if you do not opt into additional High Availability features.
-Each Namespace is automatically distributed across three availability zones, offering the 99.9% uptime outlined in our SLA.
-
-For added resilience, you can enable a Namespace replica, which also delivers automated failovers to your deployment.
-Your replica can be configured within the same region ("same-region") or across separate regions ("multi-region").
-The failover process automatically configures the replica to assume the primary role during an outage.
-It ensures that even if parts of the Temporal Service fail or become unreachable, your application continues to function.
-
 ## Replication
 
 Replication is the process of copying and synchronizing data or services across Temporal Server deployments.
@@ -77,45 +63,6 @@ Replicas do not distribute Workflow or Activity Tasks.
 Instead, they perform verification tasks to confirm that intended operations are executed so Workflows reach the desired state.
 This mechanism ensures consistency and reliability in the replication process.
 </DiscoverableDisclosure>
-
-### Deployment options {#deployment-options}
-
-Temporal deploys your primary and its replica across separate isolation domains.
-These domains can be in the same region or in different regions, depending on your setup.
-Because each region has multiple isolation domains, you can place your replica in the same region as your primary (Same-region Replication) or in another region (Multi-region Replication).
-
-- **Same-region Replication**:
-  Temporal replicates Namespaces across isolation domains within one region.
-  This option is a good fit when your application is built for one region and you prefer to failover within that region.
-  This provides a reliable failover mechanism while maintaining deployment simplicity.
-
-- **Multi-region Replication**:
-  Temporal replicates Namespaces across regions, making sure Workflows and data are available even if a region fails.
-  Asynchronous replication means changes aren’t immediately reflected in other regions but will sync over time, ensuring data integrity.
-  This setup allows failovers between replicas without needing immediate consistency across regions.
-  Replication across different regions enhances resilience and reliability.
-
-- **Multi-cloud Replication**:
-  Temporal asynchronously replicates all Workflows (live and historical) and data to a Namespace in a different cloud provider (AWS or GCP).
-  If a provider outage, regional outage, service disruption, or network issue occurs, traffic automatically shifts to the replica.
-  Replicated data is securely encrypted and transmitted across the public internet between cloud providers.
-  Internet connectivity allows workers in one cloud to fail over to a replica in a different cloud.
-
-:::caution
-
-Even as you adopt Temporal's High Availability features, don't forget to consider the reliability of your own workers, infrastructure, and dependencies.
-Issues like network outages, hardware failures, or misconfigurations in your own systems can affect your application performance.
-
-For the highest level of reliability, distribute your dependencies across regions, and use our Multi-region or Multi-cloud replication features.
-Using physically separated regions provides fuller tolerance for your application.
-
-:::
-
-| **Deployment**                          | **Description**                                            |
-| --------------------------------------- | ---------------------------------------------------------- |
-| **Same&#8209;region&nbsp;Replication**  | Isolation domains are co-located within the same region.   |
-| **Multi&#8209;region&nbsp;Replication** | Isolation domains are located in separate regions.         |
-| **Multi&#8209;cloud&nbsp;Replication**  | Isolation domains are located in separate cloud providers. |
 
 ## Failovers
 

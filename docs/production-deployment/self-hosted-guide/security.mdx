@@ -281,18 +281,27 @@ The following arguments must be passed to `Authorizer`:
 - `DecisionDeny`: the requested API call is not invoked and an error is returned to the caller.
 - `DecisionAllow`: the requested API call is invoked.
 
-:::caution
+:::warning Security Warning
 
-`Authorizer` allows all API calls pass by default. Disable the `nopAuthority` authorizer and configure your own to prevent this behavior.
+If you do **not** explicitly configure an `Authorizer`, Temporal uses the default `noopAuthorizer`. This default allows **every** API request,
+with no authentication or access control. Anyone who can reach your Temporal Server can invoke any API, including sensitive administrative operations.
+This is **not secure** for production or for any environment that is accessible to untrusted clients (such as over the internet).
+
+**To protect your Temporal Server, you must configure an `Authorizer` plugin with a corresponding `ClaimMapper`.** Without this, your deployment is
+effectively open to anyone with network access.
 
 :::
 
-Configure your `Authorizer` when you start the server via the [`temporal.WithAuthorizer`](/references/server-options#withauthorizer) server option.
-
-If an `Authorizer` is not set in the server options, Temporal uses the `nopAuthority` authorizer that unconditionally allows all API calls to pass through.
+Configure your `Authorizer` with the [`temporal.WithAuthorizer`](/references/server-options#withauthorizer) server option, and your `ClaimMapper` with
+the [`temporal.WithClaimMapper`](/references/server-options#withclaimmapper) server option.
 
 ```go
-a := authorization.NewDefaultAuthorizer()
+temporalServer, err := temporal.NewServer(
+	temporal.WithAuthorizer(newCustomAuthorizer()),
+	temporal.WithClaimMapper(func(cfg *config.Config) authorization.ClaimMapper {
+		return newCustomClaimMapper(cfg)
+	}),
+)
 ```
 
 #### How to authorize SDK API calls {#authorize-api-calls}

@@ -63,7 +63,7 @@ _Required modifier_
 #### --region
 
 The region to add to the existing Namespace.
-See [Regions](/cloud/high-availability/regions) for a list of supported regions.
+See [Regions](/cloud/regions) for a list of supported regions.
 
 :::tip Choosing Replica Regions
 
@@ -81,7 +81,7 @@ _Required modifier_
 
 ```bash
 tcld namespace add-region \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id> \
     --region <replica_region>
 ```
 
@@ -90,7 +90,7 @@ When using API key authentication, add your API credentials before pressing Ente
 ```bash
 tcld --api-key <your_api_key> \
     add-region \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id> \
     --region <replica_region>
 ```
 
@@ -156,7 +156,7 @@ The region to create the Namespace in.
 
 ```bash
 tcld namespace create \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id> \
     --region <primary_region> [\]
     [--region <replica_region>] // if adding replica
 ```
@@ -166,7 +166,7 @@ When using API key authentication, add your API credentials before pressing Ente
 ```bash
 tcld --api-key <your_api_key> \
     namespace create \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id> \
     --region <primary_region> [\]
     [--region <replica_region>] // if adding replica
 ```
@@ -239,7 +239,7 @@ Alias: `--cfi`
 
 _Required modifier; can be specified more than once_
 
-A custom Search Attribute in the form `_name_=_type_`.
+A custom Search Attribute in the form '_name_=_type_'.
 
 Valid values for _type_: `Bool` | `Datetime` | `Double` | `Int` | `Keyword` | `Text`
 
@@ -249,7 +249,7 @@ Alias: `--sa`
 
 _Can be specified more than once_
 
-A [Namespace-level permission](/cloud/users#namespace-level-permissions) for a user in the form `_email_=_permission_`.
+A [Namespace-level permission](/cloud/users#namespace-level-permissions) for a user in the form '_email_=_permission_'.
 
 Valid values for _permission_: `Admin` | `Write` | `Read`
 
@@ -373,7 +373,7 @@ _Required modifier_
 
 ```bash
 tcld namespace delete-region \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id>\
     --region <replica_region>
 ```
 
@@ -382,7 +382,7 @@ When using API key authentication, add your API credentials before pressing Ente
 ```bash
 tcld --api-key <your_api_key> \
     delete-region \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id> \
     --region <replica_region>
 ```
 
@@ -401,7 +401,7 @@ A failover switches a Namespace region from a primary Namespace to its replica.
 
 ```bash
 tcld namespace failover \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id> \
     --region <target_region>
 ```
 
@@ -410,7 +410,7 @@ When using API key authentication, add your API credentials before pressing Ente
 ```bash
 tcld --api-key <your_api_key> \
     namespace failover \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id> \
     --region <target_region>
 ```
 
@@ -434,7 +434,7 @@ _Required modifier_
 
 The region to failover _to_.
 
-See [Regions](/cloud/high-availability/regions) for a list of supported regions.
+See [Regions](/cloud/regions) for a list of supported regions.
 
 Alias: `--re`
 
@@ -1763,7 +1763,7 @@ Pass `true` or `false` (default).
 
 ```
 tcld namespace update-high-availability \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id> \
     --disable-auto-failover=true
 ```
 
@@ -1772,7 +1772,7 @@ When using API key authentication, add your API credentials before pressing Ente
 ```
 tcld --api-key <your_api_key> \
     namespace update-high-availability \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id> \
     --disable-auto-failover=true
 ```
 

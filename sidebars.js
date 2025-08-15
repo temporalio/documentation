@@ -1,6 +1,7 @@
 module.exports = {
   documentation: [
     "index",
+    "quickstarts",
     {
       type: "category",
       label: "Introduction",
@@ -99,6 +100,7 @@ module.exports = {
             id: "develop/go/index",
           },
           items: [
+            "develop/go/set-up-your-local-go",
             "develop/go/core-application",
             "develop/go/temporal-clients",
             "develop/go/go-sdk-multithreading",
@@ -131,12 +133,14 @@ module.exports = {
             id: "develop/java/index",
           },
           items: [
+            "develop/java/set-up-your-local-java",
             "develop/java/core-application",
             "develop/java/temporal-clients",
             "develop/java/namespaces",
             "develop/java/testing-suite",
             "develop/java/failure-detection",
             "develop/java/message-passing",
+            "develop/java/cancellation",
             "develop/java/asynchronous-activity-completion",
             "develop/java/versioning",
             "develop/java/observability",
@@ -185,6 +189,7 @@ module.exports = {
             id: "develop/python/index",
           },
           items: [
+            "develop/python/set-up-your-local-python",
             "develop/python/core-application",
             "develop/python/temporal-clients",
             "develop/python/python-sdk-sandbox",
@@ -215,6 +220,7 @@ module.exports = {
             id: "develop/typescript/index",
           },
           items: [
+            "develop/typescript/set-up-your-local-typescript",
             "develop/typescript/core-application",
             "develop/typescript/temporal-clients",
             "develop/typescript/namespaces",
@@ -243,6 +249,7 @@ module.exports = {
             id: "develop/dotnet/index",
           },
           items: [
+            "develop/dotnet/set-up-your-local-dotnet",
             "develop/dotnet/core-application",
             "develop/dotnet/temporal-client",
             "develop/dotnet/testing-suite",
@@ -344,7 +351,7 @@ module.exports = {
             },
             {
               type: "category",
-              label: "High Availabilty",
+              label: "High Availability",
               collapsed: true,
               link: {
                 type: "doc",
@@ -367,22 +374,7 @@ module.exports = {
                     "production-deployment/cloud/high-availability/how-to/failovers",
                     "production-deployment/cloud/high-availability/how-to/secure-routing",
                     "production-deployment/cloud/high-availability/how-to/private-link",
-                  ],
-                },
-                {
-                  type: "category",
-                  label: "References",
-                  collapsed: true,
-                  link: {
-                    type: "doc",
-                    id: "production-deployment/cloud/high-availability/references/index",
-                  },
-                  items: [
-                    "production-deployment/cloud/high-availability/references/regions",
-                    // "production-deployment/cloud/high-availability/references/concepts",
-                    // "production-deployment/cloud/high-availability/references/best-practices",
-                    // "production-deployment/cloud/high-availability/references/glossary",
-                    // "production-deployment/cloud/high-availability/references/faq",
+                    "production-deployment/cloud/high-availability/how-to/migrate",
                   ],
                 },
               ],
