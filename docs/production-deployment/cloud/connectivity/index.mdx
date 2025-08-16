@@ -18,7 +18,8 @@ keywords:
   - term
 ---
 
-import { ToolTipTerm, DiscoverableDisclosure, CaptionedImage } from '@site/src/components';
+import { ToolTipTerm, DiscoverableDisclosure, CaptionedImage, SdkTabs } from '@site/src/components';
+import { LANGUAGE_TAB_GROUP, getLanguageLabel } from '@site/src/constants/languageTabs';
 
 ## Control plane connectivity
 
@@ -109,15 +110,6 @@ tcld cr create --connectivity-type private --connection-id "vpce-abcde" --region
 
 [Example in the Terraform repo](https://github.com/temporalio/terraform-provider-temporalcloud/blob/main/examples/resources/temporalcloud_connectivity_rule/resource.tf)
 
-:::caution Finish client setup
-
-After creating a private connectivity rule, you must update all clients you want to use the private connection OR set up private DNS.
-
-See [our AWS](/cloud/connectivity/aws-connectivity#configuring-private-dns-for-aws-privatelink) or [our GCP](/cloud/connectivity/gcp-connectivity#configuring-private-dns-for-gcp-private-service-connect) docs for exactly how to update your environment and/or your client configuration.
-
-:::
-
-
 ## Attach connectivity rules to a namespace
 
 Be careful! When any connectivity rules are set on a namespace, that namespace is ONLY accessible via the connections defined in those rules. If you remove a connectivity rule that your workers are using, your traffic will be interrupted.
@@ -148,6 +140,141 @@ tcld namespace set-connectivity-rules --namespace "my-namespace" --remove-all
 
 [Example in the Terraform repo](https://github.com/temporalio/terraform-provider-temporalcloud/tree/main/examples/resources/temporalcloud_namespace/resource.tf#L113-L128)
 
+
+## Update DNS or clients to use private connectivity
+
+:::caution Finish client setup
+
+After creating a private connectivity rule and attaching it to a namespace, you must set up private DNS or update the configuration of all clients you want to use the private connection.
+
+We recommend using private DNS.
+
+Without this step, your clients may connect to the namespace over the internet if they were previously using public connectivity, or they will not be able to connect at all.
+
+:::
+
+### AWS Private DNS
+
+See [our docs for how to set up private DNS in AWS](/cloud/connectivity/aws-connectivity#configuring-private-dns-for-aws-privatelink) 
+
+### GCP Private DNS
+
+See [our docs for how to set up private DNS in GCP](/cloud/connectivity/gcp-connectivity#configuring-private-dns-for-gcp-private-service-connect)
+
+### Update client server and TLS settings
+
+If you are unable to configure private DNS, you must update two settings in your Temporal clients:
+
+1. Set the endpoint server address to the PrivateLink or Private Services Connect endpoint (e.g. `vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com:7233` or `<GCP PSC IP address>:7233`)
+2. Set TLS configuration to override the TLS server name (e.g., my-namespace.my-account.tmprl.cloud)
+
+Updating these settings depends on the client you're using.
+
+#### temporal CLI
+```bash
+TEMPORAL_ADDRESS=vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com:7233
+TEMPORAL_NAMESPACE=my-namespace.my-account
+TEMPORAL_TLS_CERT=<path/to/cert.pem>
+TEMPORAL_TLS_KEY=<path/to/cert.key>
+TEMPORAL_TLS_SERVER_NAME=my-namespace.my-account.tmprl.cloud
+
+temporal workflow count -n $TEMPORAL_NAMESPACE
+```
+
+#### grcpurl
+```bash
+grpcurl \
+    -servername my-namespace.my-account.tmprl.cloud \
+    -cert path/to/cert.pem \
+    -key path/to/cert.key \
+    vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com:7233 \
+    temporal.api.workflowservice.v1.WorkflowService/GetSystemInfo
+```
+
+#### Temporal SDKs
+<SdkTabs>
+<SdkTabs.Go>
+```go
+c, err := client.Dial(client.Options{
+	HostPort:  "vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com:7233",
+	Namespace: "namespace-name.accId",
+	ConnectionOptions: client.ConnectionOptions{
+		TLS: &tls.Config{
+			Certificates: []tls.Certificate{cert},
+			ServerName:   "my-namespace.my-account.tmprl.cloud",
+		},
+	},
+})
+```
+</SdkTabs.Go>
+<SdkTabs.Java>
+```java
+WorkflowServiceStubs service =
+        WorkflowServiceStubs.newServiceStubs(
+            WorkflowServiceStubsOptions.newBuilder()
+                .setSslContext(sslContext)
+                .setTarget("vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com:7233")
+                .setChannelInitializer(
+                    c -> c.overrideAuthority("my-namespace.my-account.tmprl.cloud"))
+                .build());
+```
+</SdkTabs.Java>
+<SdkTabs.TypeScript>
+```ts
+const connection = await NativeConnection.connect({
+  address: "vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com:7233",
+  tls: {
+    serverNameOverride: "my-namespace.my-account.tmprl.cloud" ,
+    //serverRootCACertificate,
+    // See docs for other TLS options
+    clientCertPair: {
+      crt: fs.readFileSync(clientCertPath),
+      key: fs.readFileSync(clientKeyPath),
+    },
+  },
+});
+```
+</SdkTabs.TypeScript>
+<SdkTabs.Python>
+```python
+client_config["tls"] = TLSConfig(
+    client_cert=bytes(crt, "utf-8"),
+    client_private_key=bytes(key, "utf-8"),
+    domain="my-namespace.my-account.tmprl.cloud",
+)
+
+client = await Client.connect("vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com:7233")
+```
+</SdkTabs.Python>
+<SdkTabs.DotNet>
+```dotnet
+// Create client 
+var client = await TemporalClient.ConnectAsync(
+  new(ctx.ParseResult.GetValueForOption(targetHostOption)!)
+  {
+    Namespace = ctx.ParseResult.GetValueForOption (namespaceOption)!,
+    // Set TLS options with client certs. Note, more options could 
+    // be added here for server CA (i.e. "ServerRootCACert") or SNI 
+    // override (i.e. "Domain") for self-hosted environments with 
+    // self-signed certificates. 
+    Tls = new() 
+    {
+      ClientCert = 
+        await File.ReadAllBytesAsync(ctx.ParseResult.GetValueForOption(clientCertOption) !.FullName), 
+      ClientPrivateKey = 
+        await File.ReadAllBytesAsync(ctx.ParseResult.GetValueFor0ption(clientKey0ption)!.FullName), Domain = "my-namespace.my-account.tmprl.cloud",
+  },
+});
+
+// dotnet run --target-host "vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com:7233"
+```
+</SdkTabs.DotNet>
+</SdkTabs>
+
+To check whether your client has network connectivity to the private endpoint in question, run:
+```bash
+nc -zv vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com 7233
+```
 
 ## View the connectivity rules for a namespace
 
