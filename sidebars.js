@@ -167,6 +167,7 @@ module.exports = {
             "develop/java/child-workflows",
             "develop/java/continue-as-new",
             "develop/java/side-effects",
+            "develop/java/spring-boot-integration",
           ],
         },
         {
