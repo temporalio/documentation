@@ -1,0 +1,122 @@
+---
+id: enriching-ui
+title: Enriching the User Interface - PHP SDK
+sidebar_label: Enriching the UI
+description: Learn how to add contextual information to workflows and events in the Temporal UI using the PHP SDK.
+toc_max_heading_level: 3
+keywords:
+  - ui enrichment
+  - workflow context
+  - static summary
+  - static details
+  - activity summary
+  - timer summary
+tags:
+  - UI Enrichment
+  - PHP SDK
+  - Temporal SDKs
+---
+
+# Enriching the User Interface
+
+Enhance the Temporal UI by adding contextual information to workflows and events. This makes it easier to identify and understand workflows and their operations at a glance.
+
+## Adding Summary and Details to Workflows
+
+#### Starting a Workflow
+
+When starting a workflow, you can provide a static summary and details to help identify the workflow in the UI:
+
+```php
+use Temporal\Client\WorkflowClient;
+use Temporal\Client\WorkflowOptions;
+
+// Create workflow client
+$workflowClient = WorkflowClient::create($serviceClient);
+
+// Start a workflow with static summary and details
+$workflow = $workflowClient->newWorkflowStub(
+    YourWorkflow::class,
+    WorkflowOptions::new()
+        ->withWorkflowId('your-workflow-id')
+        ->withTaskQueue('your-task-queue')
+        ->withStaticSummary('Order processing for customer #12345')
+        ->withStaticDetails('Processing premium order with expedited shipping')
+);
+
+$result = $workflow->yourWorkflowMethod('workflow input');
+```
+
+`withStaticSummary()` sets a single-line description that appears in the workflow list view, limited to 200 bytes.
+`withStaticDetails()` sets multi-line comprehensive information that appears in the workflow details view, with a larger limit of 20K bytes.
+
+The input format is normal Markdown excluding: images, html, and scripts.
+
+You can also start a workflow asynchronously:
+
+```php
+// Start workflow asynchronously
+$workflowClient->start($workflow, 'workflow input');
+```
+
+#### Adding Summary to Activities and Timers
+
+You can attach a `summary` to timers within a workflow:
+
+```php
+use Temporal\Workflow;
+use Temporal\Workflow\TimerOptions;
+
+#[WorkflowInterface]
+interface YourWorkflow
+{
+    #[WorkflowMethod]
+    public function yourWorkflowMethod(string $input): string;
+}
+
+class YourWorkflowImpl implements YourWorkflow
+{
+    public function yourWorkflowMethod(string $input): \Generator
+    {
+        // Create a timer with a summary
+        yield Workflow::timer(
+            300, // 5 minutes in seconds
+            TimerOptions::new()->withSummary('Waiting for payment confirmation')
+        );
+        
+        return 'Timer completed';
+    }
+}
+```
+
+For activities, you can set a summary using activity options:
+
+```php
+use Temporal\Activity\ActivityOptions;
+use Temporal\Workflow;
+
+class YourWorkflowImpl implements YourWorkflow
+{
+    private YourActivitiesInterface $activities;
+    
+    public function __construct()
+    {
+        $this->activities = Workflow::newActivityStub(
+            YourActivitiesInterface::class,
+            ActivityOptions::new()
+                ->withStartToCloseTimeout('10 seconds')
+                ->withSummary('Processing user data')
+        );
+    }
+    
+    public function yourWorkflowMethod(string $input): \Generator
+    {
+        // Execute the activity with the summary
+        $result = yield $this->activities->yourActivity($input);
+        
+        return $result;
+    }
+}
+```
+
+The input format for `summary` is a string, and limited to 200 bytes.
