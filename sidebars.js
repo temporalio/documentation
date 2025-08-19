@@ -309,7 +309,6 @@ module.exports = {
             "develop/ruby/continue-as-new",
           ],
         },
-        "develop/client-external-configuration",
         "develop/environment-configuration",
         "develop/activity-retry-simulator",
         "develop/worker-performance",

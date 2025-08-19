@@ -10,15 +10,15 @@ tags:
   - TOML
 ---
 
-## Temporal Environment Configuration
-
-### Overview
-
 Temporal Environment Configuration is a feature that allows you to configure a Temporal Client using environment variables and/or TOML configuration files, rather than setting connection options programmatically in your code. This decouples connection settings from application logic, making it easier to manage different environments (like development, staging, and production) without code changes.
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
 This feature is currently supported across the Go and Python Temporal SDKs, as well as the Temporal CLI.
 
-### Configuration Methods
+:::
+
+## Configuration Methods
 
 You can configure your client using a TOML file, environment variables, or a combination of both. The configuration is loaded with a specific order of precedence:
 
@@ -27,11 +27,11 @@ You can configure your client using a TOML file, environment variables, or a com
    1. The path specified by the TEMPORAL\_CONFIG\_FILE environment variable.  
    2. The default configuration path: \~/.config/temporalio/temporal.toml (or the equivalent standard user config directory on your OS).
 
-### Configuration Profiles
+## Configuration Profiles
 
 You can use configuration “profiles” to maintain separate configurations within a single file (for different environments). The "default" profile is used unless another is specified via the TEMPORAL\_PROFILE environment variable or in the SDK's load options. If a specific profile is requested but doesn’t exist, an error will be returned.
 
-### Configuration Settings
+## Configuration Settings
 
 The following table details all available settings, their corresponding environment variables, and their TOML file paths.
 
@@ -51,7 +51,7 @@ The following table details all available settings, their corresponding environm
 | Codec Auth | TEMPORAL\_CODEC\_AUTH | profile.\<name\>.codec.auth | The authorization header value for the remote data converter. |
 | gRPC Metadata | TEMPORAL\_GRPC\_META\_\* | profile.\<name\>.grpc\_meta | Sets gRPC headers. The part after \_META\_ becomes the header key (e.g., \_SOME\_KEY \-\> some-key). |
 
-### TOML Configuration Example
+## TOML Configuration Example
 
 Here is an example temporal.toml file that defines two profiles: default for local development and prod for production.
 
@@ -100,7 +100,7 @@ MIIPrivateKeyDataHere...
 -----END PRIVATE KEY-----"""
 ```
 
-### CLI Integration
+## CLI Integration
 
 The temporal CLI tool includes temporal config commands that allow you to read and write to the TOML configuration file. This provides a convenient way to manage your connection profiles without manually editing the file.
 
@@ -145,11 +145,11 @@ temporal --profile prod workflow start \
 --input '"your-workflow-input"'
 ```
 
-### SDK Usage Example (Python)
+## SDK Usage Example (Python)
 
 The following Python examples demonstrate how to use `temporalio.envconfig` to load configuration from environment variables and TOML files.
 
-#### Load the default profile
+### Load the default profile
 
 The most common use case is to load the "default" profile from environment variables and the default TOML file location (`~/.config/temporalio/temporal.toml`). The `ClientConfigProfile.load()` method handles this automatically. Any `TEMPORAL_*` environment variables will override settings from the TOML file.
 
@@ -171,7 +171,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-#### Load a specific profile by name
+### Load a specific profile by name
 
 If your TOML configuration file contains multiple profiles, you can select one by passing its name to `ClientConfigProfile.load(profile="<your-profile-name>")`.
 
@@ -194,7 +194,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-#### Load configuration from a custom file path
+### Load configuration from a custom file path
 
 To load configuration from a non-standard file location, you can use the `ClientConfig.load_client_connect_config()` shorthand. This is useful if you store application-specific configurations separately.
 
@@ -222,7 +222,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-#### Override configuration programmatically
+### Override configuration programmatically
 
 You can also load a base configuration and then override specific settings programmatically in your code. The loaded configuration is a dictionary, so you can modify it before passing it to `Client.connect()`.
 
@@ -248,11 +248,11 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-### SDK Usage Example (temporal-go)
+## SDK Usage Example (temporal-go)
 
 The following Go examples demonstrate how to use `envconfig` to load configuration from different sources to connect a client.
 
-#### Load the default profile
+### Load the default profile
 
 The most common use case is to load the "default" profile from environment variables and the default TOML file location (`~/.config/temporalio/temporal.toml`). The `envconfig.MustLoadDefaultClientOptions()` function handles this automatically. Any `TEMPORAL_*` environment variables will override settings from the TOML file.
 
@@ -314,7 +314,7 @@ func main() {
 }
 ```
 
-#### Load configuration from a custom file path
+### Load configuration from a custom file path
 
 To load configuration from a non-standard file location, specify the path in `envconfig.LoadClientOptionsRequest`. This is useful if you store application-specific configurations separately.
 
@@ -350,7 +350,7 @@ func main() {
 }
 ```
 
-#### Override configuration programmatically
+### Override configuration programmatically
 
 You can also load a base configuration and then override specific settings programmatically in your code. The loaded `client.Options` struct can be modified before passing it to `client.Dial()`.
 
