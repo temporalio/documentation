@@ -22,7 +22,8 @@ This feature is currently supported across the Go and Python Temporal SDKs, as w
 
 You can configure your client using a TOML file, environment variables, or a combination of both. The configuration is loaded with a specific order of precedence:
 
-1. Environment Variables: These have the highest precedence. If a setting is defined as an environment variable, it will always override any value set in a configuration file (useful for dynamic environments or for providing secrets)  
+1. Environment Variables: These have the highest precedence. 
+If a setting is defined as an environment variable, it will always override any value set in a configuration file (useful for dynamic environments or for providing secrets).  
 2. TOML Configuration File: A TOML file can be used to define one or more configuration "profiles". This file is located by checking the following sources in order:  
    1. The path specified by the TEMPORAL\_CONFIG\_FILE environment variable.  
    2. The default configuration path: \~/.config/temporalio/temporal.toml (or the equivalent standard user config directory on your OS).
@@ -102,14 +103,17 @@ MIIPrivateKeyDataHere...
 
 ## CLI Integration
 
-The temporal CLI tool includes temporal config commands that allow you to read and write to the TOML configuration file. This provides a convenient way to manage your connection profiles without manually editing the file.
+The Temporal CLI tool includes temporal config commands that allow you to read and write to the TOML configuration file. This provides a convenient way to manage your connection profiles without manually editing the file.
 
 * temporal config get \<property\>: Reads a specific value from the current profile.  
 * temporal config set \<property\> \<value\>: Sets a property in the current profile.  
 * temporal config delete \<property\>: Deletes a property from the current profile.  
 * temporal config list: Lists all available profiles in the config file.
 
-These CLI commands directly manipulate the temporal.toml file. This differs from the SDKs, which only *read* from the file and environment at runtime to establish a client connection. The CLI is a tool for managing the configuration source, while the SDKs are consumers of that configuration.You can select a profile for the CLI to use with the \--profile flag (e.g., temporal \--profile prod ...).
+These CLI commands directly manipulate the temporal.toml file. 
+This differs from the SDKs, which only *read* from the file and environment at runtime to establish a client connection. 
+The CLI is a tool for managing the configuration source, while the SDKs are consumers of that configuration. 
+You can select a profile for the CLI to use with the \--profile flag (for example, temporal \--profile prod ...).
 
 CLI Usage Example
 
@@ -248,7 +252,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-## SDK Usage Example (temporal-go)
+## SDK Usage Example (Go)
 
 The following Go examples demonstrate how to use `envconfig` to load configuration from different sources to connect a client.
 
@@ -279,7 +283,7 @@ func main() {
 }
 ```
 
-#### Load a specific profile by name
+### Load a specific profile by name
 
 If your TOML configuration file contains multiple profiles, you can select one by passing its name in `envconfig.LoadClientOptionsRequest`.
 
