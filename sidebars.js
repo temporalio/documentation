@@ -4,21 +4,21 @@ module.exports = {
     "quickstarts",
     {
       type: "category",
-      label: "Evaluate",
-      collapsed: false,
+      label: "Getting Started",
+      collapsed: true,
       link: {
         type: "doc",
         id: "evaluate/index",
       },
       items: [
-        "evaluate/why-temporal",
         "evaluate/understanding-temporal",
+        
       ],
     },
     {
       type: "category",
       label: "Product Overview",
-      collapsed: false,
+      collapsed: true,
       link: {
         type: "doc",
         id: "evaluate/development-production-features/index",
@@ -38,11 +38,6 @@ module.exports = {
           label: "Development Patterns and Use Cases",
         },
       ],
-    },
-    {
-      type: "link",
-      label: "Get started",
-      href: "https://learn.temporal.io/getting_started/",
     },
     {
       type: "category",
@@ -262,7 +257,40 @@ module.exports = {
         "develop/safe-deployments",
       ],
     },
-  
+    {
+      type: "category",
+      label: "Introduction to Temporal Cloud",
+      collapsed: true,
+      link: {
+        type: "doc",
+        id: "evaluate/temporal-cloud/index",
+      },
+      items: [
+        "evaluate/temporal-cloud/overview",
+        {
+          type: "category",
+          label: "Security",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "evaluate/temporal-cloud/security",
+          },
+          items: [
+            "evaluate/temporal-cloud/aws-privatelink",
+            "evaluate/temporal-cloud/gcp-private-service-connect",
+          ],
+        },
+        "evaluate/temporal-cloud/service-availability",
+        "evaluate/temporal-cloud/regions",
+        "evaluate/temporal-cloud/limits",
+        "evaluate/temporal-cloud/sla",
+        "evaluate/temporal-cloud/pricing",
+        "evaluate/temporal-cloud/actions",
+        "evaluate/temporal-cloud/support",
+        "evaluate/development-production-features/multi-region-namespace",
+        "evaluate/development-production-features/multi-cloud-namespace",
+      ],
+    },
     {
       type: "category",
       label: "Deploy to production",
