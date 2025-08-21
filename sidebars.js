@@ -1,7 +1,6 @@
 module.exports = {
   documentation: [
     "index",
-    "quickstarts",
     {
       type: "category",
       label: "Getting Started",
@@ -11,6 +10,7 @@ module.exports = {
         id: "evaluate/index",
       },
       items: [
+        "quickstarts",
         "evaluate/understanding-temporal",
         
       ],
