@@ -13,83 +13,30 @@ module.exports = {
       items: [
         "evaluate/why-temporal",
         "evaluate/understanding-temporal",
+      ],
+    },
+    {
+      type: "category",
+      label: "Product Overview",
+      collapsed: false,
+      link: {
+        type: "doc",
+        id: "evaluate/development-production-features/index",
+      },
+      items: [
+        "evaluate/development-production-features/index",
+        "evaluate/development-production-features/release-stages",
         {
-          type: "category",
-          label: "Features",
-          collapsed: true,
-          link: {
-            type: "doc",
-            id: "evaluate/development-production-features/index",
-          },
-          items: [
-            "evaluate/development-production-features/core-application",
-            "evaluate/development-production-features/failure-detection",
-            "evaluate/development-production-features/throughput-composability",
-            "evaluate/development-production-features/nexus",
-            "evaluate/development-production-features/workflow-message-passing",
-            "evaluate/development-production-features/debugging",
-            "evaluate/development-production-features/interrupt-workflow",
-            "evaluate/development-production-features/testing-suite",
-            "evaluate/development-production-features/observability",
-            "evaluate/development-production-features/data-encryption",
-            "evaluate/development-production-features/schedules",
-            "evaluate/development-production-features/cloud-automation",
-            "evaluate/development-production-features/low-latency",
-            "evaluate/development-production-features/multi-tenancy",
-            {
-              type: "category",
-              label: "Product release stages",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "evaluate/development-production-features/release-stages",
-              },
-              items: [
-                {
-                  type: "link",
-                  label: "Change-log",
-                  href: "https://temporal.io/change-log",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          type: "category",
-          label: "Temporal Cloud",
-          collapsed: true,
-          link: {
-            type: "doc",
-            id: "evaluate/temporal-cloud/index",
-          },
-          items: [
-            "evaluate/temporal-cloud/overview",
-            {
-              type: "category",
-              label: "Security",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "evaluate/temporal-cloud/security",
-              },
-              items: [
-                "evaluate/temporal-cloud/aws-privatelink",
-                "evaluate/temporal-cloud/gcp-private-service-connect",
-              ],
-            },
-            "evaluate/temporal-cloud/service-availability",
-            "evaluate/temporal-cloud/regions",
-            "evaluate/temporal-cloud/limits",
-            "evaluate/temporal-cloud/sla",
-            "evaluate/temporal-cloud/pricing",
-            "evaluate/temporal-cloud/actions",
-            "evaluate/temporal-cloud/support",
-            "evaluate/development-production-features/multi-region-namespace",
-            "evaluate/development-production-features/multi-cloud-namespace",
-          ],
+          type: "link",
+          label: "Change-log",
+          href: "https://temporal.io/change-log",
         },
         "security",
-        "evaluate/use-cases-design-patterns",
+        {
+          type: "doc",
+          id: "evaluate/use-cases-design-patterns",
+          label: "Development Patterns and Use Cases",
+        },
       ],
     },
     {
@@ -315,6 +262,7 @@ module.exports = {
         "develop/safe-deployments",
       ],
     },
+  
     {
       type: "category",
       label: "Deploy to production",
