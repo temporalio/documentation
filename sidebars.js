@@ -1,6 +1,7 @@
 module.exports = {
   documentation: [
     "index",
+    "quickstarts",
     {
       type: "category",
       label: "Evaluate",
@@ -296,6 +297,7 @@ module.exports = {
             "develop/ruby/continue-as-new",
           ],
         },
+        "develop/environment-configuration",
         "develop/activity-retry-simulator",
         "develop/worker-performance",
         "develop/safe-deployments",
