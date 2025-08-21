@@ -21,58 +21,81 @@ keywords:
 import { ToolTipTerm, DiscoverableDisclosure, CaptionedImage, SdkTabs } from '@site/src/components';
 import { LANGUAGE_TAB_GROUP, getLanguageLabel } from '@site/src/constants/languageTabs';
 
-## Control plane connectivity
+## Private network connectivity for namespaces
 
-Using the Temporal Cloud [web UI](/web-ui), [Terraform provider](/production-deployment/cloud/terraform-provider), [`tcld` CLI](/cloud/tcld), or [Cloud Ops APIs](/ops) requires network access to the Temporal Cloud control plane. Different hostnames are used for different parts of the service.
+Temporal Cloud supports private connectivity to namespaces via AWS PrivateLink or GCP Private Services Connect in addition to the default internet endpoints.
 
-- `saas-api.tmprl.cloud` (required for Terraform, tcld, and Cloud Ops APIs) 
-- `web.onboarding.tmprl.cloud` (required for Web UI)
-- `web.saas-api.tmprl.cloud` (required for Web UI)
+Namespace access is always securely authenticated via [API keys](/cloud/api-keys#overview) or [mTLS](/cloud/certificates), regardless of how you choose to connect.
+
+### Required steps
+
+To use private connectivity with Temporal Cloud:
+
+1. Set up the private connection from your VPC to the region where your Temporal namespace is located.
+1. Update your private DNS and/or worker configuration to use the private connection.
+1. (Required to complete Google PSC setup, optional if using AWS PrivateLink): create a connectivity rule for the private connection and attach it to the target namespace(s). This will block all access to the namespace that is not over the private connection.
+
+For steps 1 and 2, follow our guides for the target namespace's cloud provider:
+- [AWS PrivateLink](/cloud/connectivity/aws-connectivity) creation and private DNS setup
+- [Google Cloud Private Service Connect](/cloud/connectivity/gcp-connectivity) creation and private DNS setup
+
+:::caution Finish client setup (complete step 2)
+
+After creating a private connection, you must set up private DNS or update the configuration of all clients you want to use the private connection.
+
+We recommend using private DNS.
+
+Without this step, your clients may connect to the namespace over the internet if they were previously using public connectivity, or they will not be able to connect at all.
+
+If that's not an option for you, refer to [our guide for updating the server and TLS settings on your clients](/cloud/connectivity#update-dns-or-clients-to-use-private-connectivity).
+
+:::
+
+For step 3, keep reading for details on [connectivity rules](/cloud/connectivity#connectivity-rules).
 
 ## Connectivity rules
 
 :::tip Support, stability, and dependency info
 
-Connectivity rules are currently in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
-
-[Contact support](/cloud/support#support-ticket) to request access.
-
-To enable connectivity rules when using the tcld CLI, run:
-
-```bash
-tcld feature tcr
-```
+Connectivity rules are currently in [public preview](/evaluate/development-production-features/release-stages#public-preview).
 
 :::
 
-Connectivity rules are Temporal Cloud's mechanism for limiting network access to a namespace.
+### Definition
 
-By default, a namespace has zero connectivity rules, and is accessible from 1. the public internet and 2. all private connections you've configured to the region containing the namespace.
+Connectivity rules are Temporal Cloud's mechanism for limiting the network access paths that can be used to access a namespace.
 
-When you add connectivity rules, Temporal Cloud will immediately block all traffic that does not have a corresponding connectivity rule from accessing the namespace. One namespace can have multiple connectivity rules, and may mix both public and private rules.
+By default, a namespace has zero connectivity rules, and is accessible from 1. the public internet and 2. all private connections you've configured to the region containing the namespace. Namespace access is always securely authenticated via [API keys](/cloud/api-keys#overview) or [mTLS](/cloud/certificates), regardless of connectivity rules.
 
-A connectivity rule specifies public (i.e. internet) or private (i.e. [AWS PrivateLink](/cloud/connectivity/aws-connectivity) or [Google Cloud Private Service Connect](/cloud/connectivity/gcp-connectivity)) access to a namespace. See the linked docs to learn more about setting up those private connections in your cloud provider and configuring DNS for your workers.
+When you attach one or more connectivity rules to a namespace, Temporal Cloud will immediately block all traffic that does not have a corresponding connectivity rule from accessing the namespace. One namespace can have multiple connectivity rules, and may mix both public and private rules.
 
-Namespace access is always securely authenticated via [API keys](/cloud/api-keys#overview) or [mTLS](/cloud/certificates), regardless of connectivity rules.
-
-Only [Account Admins and Account Owners](/cloud/users#account-level-roles) can create and manage connectivity rules. Connectivity rules are visible to Account Developers, Account Admins, and Account Owners.
-
-## Creating a connectivity rule
-
-Connectivity rules can be created and managed with [tcld](https://docs.temporal.io/cloud/tcld/) or [Terraform](https://github.com/temporalio/terraform-provider-temporalcloud/).
+Each connectivity rule specifies either generic public (i.e. internet) access or a specific private connection.
 
 A public connectivity rule takes no parameters.
 
-An AWS PrivateLink (PL) connectivity rule requires the following parameters:
+An AWS PrivateLink (PL) private connectivity rule requires the following parameters:
 
 - `connection-id`: The VPC endpoint ID of the PL connection (ex: `vpce-00939a7ed9EXAMPLE`)
 - `region`: The region of the PL connection, prefixed with aws (ex: `aws-us-east-1`). Must be the same region as the namespace. Refer to the [Temporal Cloud region list](/cloud/regions) for supported regions.
 
-A GCP Private Service Connect (PSC) connectivity rule requires the following parameters:
+A GCP Private Service Connect (PSC) private connectivity rule requires the following parameters:
 
 - `connection-id`: The ID of the PSC connection (ex: `1234567890123456789`)
 - `region`: The region of the PSC connection, prefixed with gcp (ex: `gcp-us-east1`). Must be the same region as the namespace. Refer to the [Temporal Cloud region list](/cloud/regions) for supported regions.
 - `gcp-project-id`: The ID of the GCP project where you created the PSC connection (ex: `my-example-project-123`)
+
+
+Connectivity rules can be created and managed with [tcld](https://docs.temporal.io/cloud/tcld/), [Terraform](https://github.com/temporalio/terraform-provider-temporalcloud/), or the [Cloud Ops API](/ops)
+
+### Permissions and limits
+
+Only [Account Admins and Account Owners](/cloud/users#account-level-roles) can create and manage connectivity rules. Connectivity rules are visible to Account Developers, Account Admins, and Account Owners.
+
+By default each account is limited to 5 private connectivity rules. You can [contact support](/cloud/support#support-ticket) to request a higher limit.
+
+There is only one public rule allowed per account, because it's generic and can be reused for all namespaces that you want to be available on the internet. Trying to create more than one public rule will throw an error.
+
+## Creating a connectivity rule
 
 ### Temporal Cloud CLI (tcld)
 
@@ -141,27 +164,32 @@ tcld namespace set-connectivity-rules --namespace "my-namespace" --remove-all
 [Example in the Terraform repo](https://github.com/temporalio/terraform-provider-temporalcloud/tree/main/examples/resources/temporalcloud_namespace/resource.tf#L113-L128)
 
 
+## View the connectivity rules for a namespace
+
+You have two ways to view the connectivity rules attached to a particular namespace.
+
+### Get namespace
+
+Connectivity rules are included in the namespace details returned by the `namespace get` command. 
+
+```bash
+tcld namespace get -n "my-namespace"
+```
+
+### List connectivity rules by namespace
+
+To see only the connectivity rules for a specific namespace (without other namespace details), use the `connectivity-rule list` command with a namespace argument.
+
+```bash
+tcld connectivity-rule list -n "my-namespace"
+```
+
 ## Update DNS or clients to use private connectivity
 
-:::caution Finish client setup
+We strongly recommend using private DNS instead of updating client server and TLS settings: 
 
-After creating a private connectivity rule and attaching it to a namespace, you must set up private DNS or update the configuration of all clients you want to use the private connection.
-
-We recommend using private DNS.
-
-Without this step, your clients may connect to the namespace over the internet if they were previously using public connectivity, or they will not be able to connect at all.
-
-:::
-
-### AWS Private DNS
-
-See [our docs for how to set up private DNS in AWS](/cloud/connectivity/aws-connectivity#configuring-private-dns-for-aws-privatelink) 
-
-### GCP Private DNS
-
-See [our docs for how to set up private DNS in GCP](/cloud/connectivity/gcp-connectivity#configuring-private-dns-for-gcp-private-service-connect)
-
-### Update client server and TLS settings
+- [How to set up private DNS in AWS](/cloud/connectivity/aws-connectivity#configuring-private-dns-for-aws-privatelink) 
+- [How to set up private DNS in GCP](/cloud/connectivity/gcp-connectivity#configuring-private-dns-for-gcp-private-service-connect)
 
 If you are unable to configure private DNS, you must update two settings in your Temporal clients:
 
@@ -276,22 +304,10 @@ To check whether your client has network connectivity to the private endpoint in
 nc -zv vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com 7233
 ```
 
-## View the connectivity rules for a namespace
+## Control plane connectivity
 
-You have two ways to view the connectivity rules attached to a particular namespace.
+Using the Temporal Cloud [web UI](/web-ui), [Terraform provider](/production-deployment/cloud/terraform-provider), [`tcld` CLI](/cloud/tcld), or [Cloud Ops APIs](/ops) requires network access to the Temporal Cloud control plane. Different hostnames are used for different parts of the service.
 
-### Get namespace
-
-Connectivity rules are included in the namespace details returned by the `namespace get` command. 
-
-```bash
-tcld namespace get -n "my-namespace"
-```
-
-### List connectivity rules by namespace
-
-To see only the connectivity rules for a specific namespace (without other namespace details), use the `connectivity-rule list` command with a namespace argument.
-
-```bash
-tcld connectivity-rule list -n "my-namespace"
-```
+- `saas-api.tmprl.cloud` (required for Terraform, tcld, and Cloud Ops APIs) 
+- `web.onboarding.tmprl.cloud` (required for Web UI)
+- `web.saas-api.tmprl.cloud` (required for Web UI)
