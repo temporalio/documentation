@@ -90,19 +90,13 @@ Connectivity rules can be created and managed with [tcld](https://docs.temporal.
 
 Only [Account Admins and Account Owners](/cloud/users#account-level-roles) can create and manage connectivity rules. Connectivity rules are visible to Account Developers, Account Admins, and Account Owners.
 
-By default each account is limited to 5 private connectivity rules. You can [contact support](/cloud/support#support-ticket) to request a higher limit.
+By default each namespace is limited to 5 private connectivity rules, and each account is limited to 50 private connectivity rules. You can [contact support](/cloud/support#support-ticket) to request a higher limit.
 
 There is only one public rule allowed per account, because it's generic and can be reused for all namespaces that you want to be available on the internet. Trying to create more than one public rule will throw an error.
 
 ## Creating a connectivity rule
 
 ### Temporal Cloud CLI (tcld)
-
-Create public connectivity rule:
-
-```bash
-tcld connectivity-rule create --connectivity-type public
-```
 
 Create private connectivity rule (AWS):
 
@@ -116,11 +110,13 @@ Create private connectivity rule (GCP):
 tcld connectivity-rule create --connectivity-type private --connection-id "1234567890" --region "gcp-us-central1" --gcp-project-id "my-project-123"
 ```
 
-The `cr` alias works the same way:
+Create public connectivity rule (you only need to do this once ever in your account):
 
 ```bash
-tcld cr create --connectivity-type public
+tcld connectivity-rule create --connectivity-type public
 ```
+
+The `cr` alias works the same way:
 
 Private connectivity rule:
 
@@ -128,9 +124,13 @@ Private connectivity rule:
 tcld cr create --connectivity-type private --connection-id "vpce-abcde" --region "aws-us-east-1"
 ```
 
+```bash
+tcld cr create --connectivity-type public
+```
+
 ### Terraform
 
-[Example in the Terraform repo](https://github.com/temporalio/terraform-provider-temporalcloud/blob/main/examples/resources/temporalcloud_connectivity_rule/resource.tf)
+[Examples in the Terraform repo](https://github.com/temporalio/terraform-provider-temporalcloud/blob/main/examples/resources/temporalcloud_connectivity_rule/resource.tf)
 
 ## Attach connectivity rules to a namespace
 
@@ -143,25 +143,25 @@ If you already have workers using a namespace, adding both a public rule and any
 Setting the connectivity rules on a namespace:
 
 ```bash
-tcld namespace set-connectivity-rules --namespace "my-namespace" --connectivity-rule-ids "rule-id-1" --connectivity-rule-ids "rule-id-2"
+tcld namespace set-connectivity-rules --namespace "my-namespace.abc123" --connectivity-rule-ids "rule-id-1" --connectivity-rule-ids "rule-id-2"
 ```
 
 Or using aliases:
 
 ```bash
-tcld n scrs -n "my-namespace" --ids "rule-id-1" --ids "rule-id-2"
+tcld n scrs -n "my-namespace.abc123" --ids "rule-id-1" --ids "rule-id-2"
 ```
 
 Connectivity rules are attached as a set, so if rules `rule-a`, `rule-b`, and `rule-c` were attached to a namespace and you wanted to detach `rule-c` only, you'd make one call attaching both `rule-a` and `rule-b`:
 
 ```bash
-tcld namespace set-connectivity-rules --namespace "my-namespace --ids rule-a --ids rule-b
+tcld namespace set-connectivity-rules --namespace "my-namespace.abc123 --ids rule-a --ids rule-b
 ```
 
 Remove all connectivity rules (this will make the namespace public):
 
 ```bash
-tcld namespace set-connectivity-rules --namespace "my-namespace" --remove-all
+tcld namespace set-connectivity-rules --namespace "my-namespace.abc123" --remove-all
 ```
 
 ### Terraform
@@ -178,7 +178,7 @@ You have two ways to view the connectivity rules attached to a particular namesp
 Connectivity rules are included in the namespace details returned by the `namespace get` command. 
 
 ```bash
-tcld namespace get -n "my-namespace"
+tcld namespace get -n "my-namespace.abc123"
 ```
 
 ### List connectivity rules by namespace
@@ -186,7 +186,7 @@ tcld namespace get -n "my-namespace"
 To see only the connectivity rules for a specific namespace (without other namespace details), use the `connectivity-rule list` command with a namespace argument.
 
 ```bash
-tcld connectivity-rule list -n "my-namespace"
+tcld connectivity-rule list -n "my-namespace.abc123"
 ```
 
 ## Update DNS or clients to use private connectivity
