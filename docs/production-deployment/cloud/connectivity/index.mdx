@@ -84,7 +84,6 @@ A GCP Private Service Connect (PSC) private connectivity rule requires the follo
 - `region`: The region of the PSC connection, prefixed with gcp (ex: `gcp-us-east1`). Must be the same region as the namespace. Refer to the [Temporal Cloud region list](/cloud/regions) for supported regions.
 - `gcp-project-id`: The ID of the GCP project where you created the PSC connection (ex: `my-example-project-123`)
 
-
 Connectivity rules can be created and managed with [tcld](https://docs.temporal.io/cloud/tcld/), [Terraform](https://github.com/temporalio/terraform-provider-temporalcloud/), or the [Cloud Ops API](/ops)
 
 ### Permissions and limits
@@ -151,6 +150,12 @@ Or using aliases:
 
 ```bash
 tcld n scrs -n "my-namespace" --ids "rule-id-1" --ids "rule-id-2"
+```
+
+Connectivity rules are attached as a set, so if rules `rule-a`, `rule-b`, and `rule-c` were attached to a namespace and you wanted to detach `rule-c` only, you'd make one call attaching both `rule-a` and `rule-b`:
+
+```bash
+tcld namespace set-connectivity-rules --namespace "my-namespace --ids rule-a --ids rule-b
 ```
 
 Remove all connectivity rules (this will make the namespace public):
