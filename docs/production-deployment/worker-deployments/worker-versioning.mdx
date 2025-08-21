@@ -134,8 +134,8 @@ import io.temporal.worker.WorkerDeploymentOptions;
         .setDefaultVersioningBehavior(VersioningBehavior.AUTO_UPGRADE)
         .build())
     .build();
-```
 
+````
 </SdkTabs.Java>
 <SdkTabs.Python>
 ```python
@@ -155,7 +155,7 @@ Worker(
         default_versioning_behavior=VersioningBehavior.UNSPECIFIED
     ),
 )
-```
+````
 
 </SdkTabs.Python>
 <SdkTabs.TypeScript>
@@ -210,11 +210,9 @@ worker = Temporalio::Worker.new(
 
 ### Which Default Versioning Behavior should you choose?
 
-If you are using blue-green deployments, you should default to Auto-Upgrade and should not use Workflow Pinning.
+In general, each Workflow Type should be annotated as Auto-Upgrade or Pinned. If you are using blue-green deployments and you expect your Workflow to run longer than your builds will exist, you should default to Auto-Upgrade and should not use Workflow Pinning. These Auto-Upgrade Workflows will still need to be [patched](https://docs.temporal.io/patching#patching).
 
-Otherwise, if your Worker and Workflows are new, we suggest not providing a `DefaultVersioningBehavior`.
-In general, each Workflow Type should be annotated as Auto-Upgrade or Pinned.
-If all of your Workflows will be short-running for the foreseeable future, you can default to Pinned.
+If you need more control over when you sunset workers and builds from one version to another, you should consider using Workflow Pinning. The Pinned Workflow Type doesn't need to be patched as they run on the same worker and build until all of the tasks are complete. Otherwise, if your Worker and Workflows are new, we suggest not providing a `DefaultVersioningBehavior`.
 
 Many users who are migrating to Worker Versioning will start by defaulting to Auto-Upgrade until they have had time to annotate their Workflows.
 This default is the most similar to the legacy behavior.
@@ -288,14 +286,14 @@ public interface HelloWorld {
 }
 
 public static class HelloWorldImpl implements HelloWorld {
-    @Override
-    @WorkflowVersioningBehavior(VersioningBehavior.PINNED)
-    public String hello() {
-        return "Hello, World!";
-    }
+@Override
+@WorkflowVersioningBehavior(VersioningBehavior.PINNED)
+public String hello() {
+return "Hello, World!";
+}
 }
 
-```
+````
 </SdkTabs.Java>
 <SdkTabs.Python>
 ```python
@@ -304,7 +302,7 @@ class HelloWorld:
     @workflow.run
     async def run(self):
         return "hello world!"
-```
+````
 
 </SdkTabs.Python>
 <SdkTabs.TypeScript>
