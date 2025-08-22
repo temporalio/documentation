@@ -50,6 +50,18 @@ Before configuring the Export sink, please complete the following steps in Googl
 
 You can use either the [Temporal Cloud UI](#using-temporal-cloud-ui) or [tcld](#using-tcld) to configure the Workflow History Export.
 
+:::note Why does Temporal Cloud provision multiple service accounts for Export?
+
+Temporal Cloud creates multiple intermediary service accounts for export operations primarily for security purposes. The system randomly selects from these accounts when writing to your storage sink, which provides several benefits:
+
+- **Security isolation**: If one service account is compromised or needs to be decommissioned, other accounts remain available
+- **Load distribution**: Prevents exclusively using a single account, reducing security risk
+- **Warm standby**: Keeps multiple accounts active to avoid potential throttling when switching between accounts
+- **Reliability**: Provides resilience against cloud provider account-level issues that could affect a single service account
+
+This approach prioritizes security and availability, ensuring robust export operations even if individual service accounts encounter issues.
+:::
+
 ### Using Temporal Cloud UI
 
 The following steps guide you through setting up Workflow History Export using the Temporal Cloud UI.

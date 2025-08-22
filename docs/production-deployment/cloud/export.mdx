@@ -1,116 +1,108 @@
 ---
 id: export
-title: Export - Temporal Cloud feature guide
-sidebar_label: Export
+title: Workflow History Export
+sidebar_label: Workflow History Export
 description: Workflow History Export in Temporal Cloud lets users export Closed Workflow Histories to an object storage for compliance and analytics. Configure via Cloud UI or tcld.
 slug: /cloud/export
 toc_max_heading_level: 4
 keywords:
-  - explanation
-  - how-to
+  - archival
+  - export
   - operations
   - temporal cloud
-  - term
   - verify
   - workflow history export
 tags:
+  - export
   - Temporal Cloud
+  - workflow history
 ---
 
 :::tip Support, stability, and dependency info
 
-- Workflow History Export is in a Public Preview release status for Temporal Cloud.
+Workflow History Export is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
 
 :::
 
-The Workflow History Export feature allows users to export Closed Workflow Histories to a user's Cloud Storage Sink.
+Workflow History Export allows users to export closed Workflow Histories from Temporal Cloud to cloud object storage (AWS S3 or GCP GCS), enabling:
 
-The Export feature in Temporal Cloud provides the following benefits:
+- Compliance and audit trails of complete Workflow History data in [proto format](https://github.com/temporalio/api/blob/master/temporal/api/export/v1/message.proto)
+- Analytics on Workflow History when ingested to the data platform of your choice
 
-- Preserve complete set of Workflow History data in [proto format](https://github.com/temporalio/api/blob/master/temporal/api/export/v1/message.proto) for compliance and auditing purposes.
-- Enables feeding Workflow History into data warehouses for analytics.
+Workflow History Export does for Temporal Cloud what [Archival](/self-hosted-guide/archival) does for self-hosted Temporal Server. Archival is not available in Temporal Cloud.
 
-For pricing information, see [Temporal Cloud Pricing](/cloud/pricing).
+Export runs hourly, 10 minutes after the hour. Individual export time varies: each closed Workflow is expected to be found in the exported file within one to four hours.
 
-:::note
+At least once delivery is guaranteed.
 
-If you have enabled encryption for the data handled in your Workflow Execution, the exported data will also be encrypted.
+## Prerequisites {#prerequisites}
 
-:::
-
-## Supported integrations for Workflow History Export {#supported-integrations}
-
-The Workflow History Export feature allows users to export Closed Workflow Histories to an object storage as the destination.
-
-You can enable Workflow History Export per Namespace in Temporal Cloud.
-
-### Prerequisites {#prerequisites}
-
-Before configuring the Export Sink, ensure you have the following:
+To use Workflow History Export, you must have:
 
 1. A cloud account in the cloud provider where your namespace is hosted.
-2. An object storage setup to receive the exported History.
+2. An object storage bucket available to receive the exported History.
 
 ## Configure Workflow History Export {#configure}
 
-You can configure your Workflow History Export in AWS.
+### AWS
 
-- [AWS S3 Instructions](/cloud/export/aws-export-s3)
-- [GCP GCS Instructions](/cloud/export/gcp-export-gcs)
+[AWS S3 Export Configuration](/cloud/export/aws-export-s3)
+
+### GCP
+
+[GCP GCS Export Configuration](/cloud/export/gcp-export-gcs)
 
 ## Verify export setup {#verify}
 
-**How to verify that the Export feature is correctly set up**
-
 From the Export configuration page, select **Verify**.
-This action checks if Temporal can successfully write a test file to the sink.
+This action checks if Temporal can successfully write a test file to your object storage.
 
-If everything is configured correctly, you will see a `Success` status indicating Temporal has written to your sink.
+If everything is configured correctly, you will see a `Success` status indicating Temporal has written to the object store.
 
 ## Monitor export progress {#monitor}
 
-**How to monitor the History export progress**
+After Export has been configured, you can check that it's still working in several ways:
 
-Once you've finalized the setup, here's how to monitor the export progress:
+1. **Object Storage**:
 
-1. **Export Job Execution**:
-
-   - **Schedule**: The Export job is scheduled to run on an hourly basis, starting at 10 minutes past each hour.
-   - **Duration**: The time taken for the export process can vary, so it might not be instantaneous.
-
-2. **Checking the Object Storage**:
-
-   - **Files Arrival**: Post the initial hour of setting up, inspect your object storage.
+   - File Delivery: After the initial hour of setting up, inspect your object storage.
      You should see the exported Workflow History files.
-     These files encapsulate the relevant data from the Closed Workflows.
-   - **Directory Structure**: Your exported files will adhere to the following naming convention and path:
+   - Directory Structure: Your exported files will adhere to the following naming convention and path:
 
-   ```
+   ```bash
    //[bucket-name]/temporal-workflow-history/export/[Namespace]/[Year]/[Month]/[Day]/[Hour]/[Minute]/
-   ```
+   ```   
 
-3. **Delivery guarantee**:
+2. **Temporal Cloud Web UI**:
 
-   - At least once delivery.
-   - Each Closed Workflow is expected to be found in the exported file within one to four hours.
+   - Export UI:
 
-4. **UI insights**:
+      - Last Successful Export: This displays the timestamp of the most recent successful export.
+      - Last Status Check: This reflects the timestamp of the latest internal Workflow healthcheck.
 
-   - **Last Successful Export**: This displays the timestamp of the most recent successful export.
-     It's an essential indicator of the last time your export process completed without any hitches.
-   - **Last Status Check**: This reflects the timestamp of the latest internal Workflow check.
-     This internal check routinely evaluates the health and status of the Export mechanism, ensuring its uninterrupted functioning.
+   - Usage Dashboard:
+      - Actions from the Export Job are included in the [Usage Dashboard](cloud/billing-and-cost).
 
-5. **Usage monitoring**:
-   - Actions from the Export Job are included in the Usage UI.
-   - **Metrics**: Export related metrics are available in `temporal_cloud_v0_total_action_count` with the label `is_background="true"`. For more information, see [Cloud metrics](/cloud/metrics/).
-
-For optimal results, review the S3 or GCS bucket for any new exported files and refer to the UI insights.
-This dual check ensures you remain abreast of the export progress and any potential issues.
+3. **Metrics**:
+   - Export-related metrics are available from the [Cloud metrics endpoint](/cloud/metrics/), specifically the metric `temporal_cloud_v0_total_action_count` with the label `is_background="true"`.
 
 ## Working with exported files
 
-The proto schema is defined in https://github.com/temporalio/api/blob/master/temporal/api/export/v1/message.proto. You could build your own custom deserializer for it.
-You can find sample go code to reference when you want to deserialize export file in the Appendix section of this document.
+Use the proto schema defined in https://github.com/temporalio/api/blob/master/temporal/api/export/v1/message.proto to deserialize exported files.
 
-{/* starting on `2024/03/01` UTC actions are charged. */}
+## Export and High Availability Namespaces {#export-ha}
+
+### Export Region Persistence
+
+When Export is configured for a [High Availability](/cloud/high-availability) Namespace, the export is tied to the specific region where it was initially set up. The export configuration does not automatically failover with the namespace.
+
+- If Export is configured in Region A, it will continue to export from Region A's storage even after a namespace failover to Region B
+- Exports always read from and write to the same region where they were originally configured
+- The export process is independent of namespace failover events
+- Export does not fail over automatically because we prioritize data completeness and consistency over real-time availability for exports. HA data replication has inherent latency, which could result in incomplete or inconsistent exports during a failover.
+
+### Failover Scenarios
+
+**Namespace Failover with Healthy Primary Region**: When a namespace fails over to a secondary region but the primary region remains healthy (including its blob storage), the export job continues to operate from the primary region. It does not automatically switch to export data from the secondary region.
+
+**Primary Region Outage**: If the primary region (where Export was configured) experiences a complete outage including S3/GCS storage: Exports will be unavailable until the primary region recovers. Once the primary region recovers, export will resume and include any workflow histories that occurred during the outage. There may be delays in export processing, but the complete dataset will eventually be available
