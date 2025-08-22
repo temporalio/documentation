@@ -75,6 +75,18 @@ To use Entra ID as your SAML IdP, create a Microsoft Entra ID Enterprise applica
    https://login.tmprl.cloud/login/callback?connection=f45a2-saml
    ```
 
+1. In **Sign on URL**, enter the following login url, including your Account Id where indicated:
+
+   ```bash
+   https://cloud.temporal.io/login/saml?connection=ACCOUNT_ID-saml
+   ```
+
+   A correctly formed login URL looks like this:
+
+   ```bash
+   https://cloud.temporal.io/login/saml?connection=f45a2-saml
+   ```
+
 1. You can leave the other fields blank.
    Near the top of the pane, select **Save**.
 1. In the **Attributes & Claims** section, select **Edit**.
