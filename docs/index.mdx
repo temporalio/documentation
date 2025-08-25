@@ -3,91 +3,62 @@ id: index
 title: Temporal Documentation
 sidebar_label: Home
 description: Temporal is the open source platform that guarantees the successful execution of services and applications using the power of durable execution.
+hide_table_of_contents: true
 ---
 
-Temporal is an open-source development platform for building reliable and durable applications through crash-proof execution.
+<div className="hero-section">
+  <div className="hero-content">
+    <h1>Build applications that never fail</h1>
 
-<div className="hero-cards">
-  <a href="/quickstarts" className="hero-card">
-    <h3>Quickstart Guides</h3>
-    <p>Get started quickly with Temporal by following our language-specific quickstart guides for your preferred SDK.</p>
-  </a>
+    
+ <p>Temporal is an open source platform for building reliable applications. 
+Temporal provides crash proof execution by making sure that when crashes, network failures, or infrastructure outages occur, it guarantees that your applications pick up exactly where they left off, whether that is seconds, days, or even years later.</p>
+    
+
+    <p>Temporal lets you focus on building features that matter to your business while ensuring your critical processes like order fulfillment, customer onboarding, or payment processing never fail or get lost, no matter what goes wrong.</p>
+    
+    <a href="/quickstarts" className="hero-cta">
+      Quickstart →
+    </a>
+  </div>
   
-  <a href="/evaluate" className="hero-card">
-    <h3>Understanding Temporal</h3>
-    <p>Learn about the core concepts and architecture that make Temporal unique and powerful.</p>
-  </a>
+  <div className="hero-actions">
+    <a href="/quickstarts" className="action-card">
+      <div className="action-icon quickstart-icon">⟋</div>
+      <div className="action-content">
+        <h3>Quickstart</h3>
+        <p>Setup your local and run a Hello World Workflow.</p>
+      </div>
+    </a>
+    
+    
+    <a href="/develop" className="action-card">
+      <div className="action-icon guide-icon">&lt;/&gt;</div>
+      <div className="action-content">
+        <h3>Developer Guide</h3>
+        <p>Dive into everything you need to know about building with Workflows.</p>
+      </div>
+    </a>
+    
+    <a href="/production-deployment" className="action-card">
+      <div className="action-icon deploy-icon">▲</div>
+      <div className="action-content">
+        <h3>Deploy your Workflows</h3>
+        <p>Deploy your Temporal Application to your environment, Self-Host the Temporal Service or use Temporal Cloud.</p>
+      </div>
+    </a>
+
+     <a href="https://temporal.io/cloud" className="action-card">
+      <div className="action-icon cloud-icon">∩</div>
+      <div className="action-content">
+        <h3>Get started for free with $1000 in credits</h3>
+        <p>Sign up for Temporal Cloud and let us host the Temporal Service for you.</p>
+      </div>
+    </a>
+  </div>
 </div>
 
 
-
-## Learn Temporal
-
-<div className="learn-cards">
-  <a href="https://learn.temporal.io/courses/" className="learn-card">
-    <div className="learn-icon">101</div>
-    <h3>Temporal 101 and 102</h3>
-    <p>Take comprehensive courses on Temporal 101, 102, Error Handling, and Cloud.</p>
-  </a>
-
-  <a href="/quickstarts" className="learn-card">
-    <div className="learn-icon">&lt;/&gt;</div>
-    <h3>Code Exchange</h3>
-    <p>Get started quickly with Temporal by following our language-specific quickstart guides.</p>
-  </a>
-
-  <a href="/quickstarts" className="learn-card">
-    <div className="learn-icon">#</div>
-    <h3>Resource Center</h3>
-    <p>Explore these resources to kickstart your Temporal journey.</p>
-  </a>
-  
-  <a href="/develop" className="learn-card">
-    <div className="learn-icon">( )</div>
-    <h3>Project Based Tutorials</h3>
-    <p>Learn to build scalable, production-ready applications with advanced Temporal patterns.</p>
-  </a>
-</div>
-
-## Build Reliable Apps 
-
-<div className="sdk-grid">
-  <a href="/develop/go" className="sdk-card">
-    <img src="/img/sdks/svgs/sdk-box-logos/go.svg" alt="Go" className="sdk-logo" />
-    <h4>Go</h4>
-  </a>
-  
-  <a href="/develop/java" className="sdk-card">
-    <img src="/img/sdks/svgs/sdk-box-logos/java.svg" alt="Java" className="sdk-logo" />
-    <h4>Java</h4>
-  </a>
-  
-  
-  <a href="/develop/typescript" className="sdk-card">
-    <img src="/img/sdks/svgs/sdk-box-logos/typescript.svg" alt="TypeScript" className="sdk-logo" />
-    <h4>TypeScript</h4>
-  </a>
-  
-  <a href="/develop/dotnet" className="sdk-card">
-    <img src="/img/sdks/svgs/sdk-box-logos/dotnet.svg" alt=".NET" className="sdk-logo" />
-    <h4>.NET</h4>
-  </a>
-
-  <a href="/develop/python" className="sdk-card">
-    <img src="/img/sdks/svgs/sdk-box-logos/python.svg" alt="Python" className="sdk-logo" />
-    <h4>Python</h4>
-  </a>
-  
-  <a href="/develop/php" className="sdk-card">
-    <img src="/img/sdks/svgs/sdk-box-logos/php.svg" alt="PHP" className="sdk-logo" />
-    <h4>PHP</h4>
-  </a>
-  
-  <a href="/develop/ruby" className="sdk-card">
-    <img src="/img/sdks/svgs/sdk-box-logos/ruby.svg" alt="Ruby" className="sdk-logo" />
-    <h4>Ruby</h4>
-  </a>
-</div>
 
 
 
@@ -110,8 +81,8 @@ Temporal is an open-source development platform for building reliable and durabl
         </svg>
       </a>
     </div>
-  </div>
-  
+    </div>
+
   <div className="community-card">
     <div className="community-icon ai-icon">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
@@ -133,54 +104,173 @@ Temporal is an open-source development platform for building reliable and durabl
 
 <style>
 {`
-  .hero-cards {
+  .hero-section {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    margin: 2rem 0;
+    grid-template-columns: 1fr 420px;
+    gap: 3.5rem;
+    margin: 3rem 0 5rem 0;
+    align-items: start;
+    background: #1a1d29;
+    padding: 3.5rem;
+    border-radius: 12px;
+    min-height: 480px;
   }
   
-  .hero-card {
-    background: linear-gradient(135deg, var(--ifm-card-background-color) 0%, var(--ifm-background-surface-color, var(--ifm-card-background-color)) 100%);
-    border: 1px solid var(--ifm-color-emphasis-200);
-    padding: 1.5rem;
+  [data-theme="light"] .hero-section {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+  
+  .hero-content {
+    color: #ffffff;
+  }
+  
+  [data-theme="light"] .hero-content {
+    color: #1f2937;
+  }
+  
+  .hero-content h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+  
+  [data-theme="light"] .hero-content h1 {
+    color: #1f2937;
+  }
+  
+  .hero-content p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #a1a8b3;
+    margin-bottom: 1.5rem;
+  }
+  
+  [data-theme="light"] .hero-content p {
+    color: #4b5563;
+  }
+  
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(255.4deg, #444CE7 0%, #B664FF 100%);
+    color: #ffffff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+  }
+  
+  .hero-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(68, 76, 231, 0.4);
+    text-decoration: none;
+    color: #ffffff;
+  }
+  
+  .hero-actions {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.625rem;
+  }
+  
+  .action-card {
+    background: transparent;
+    border: 1px solid #30394a;
+    border-radius: 8px;
+    padding: 1rem 1.125rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.875rem;
     text-decoration: none;
     color: inherit;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
   }
   
-  [data-theme="dark"] .hero-card {
-    background: var(--ifm-card-background-color);
+  [data-theme="light"] .action-card {
+    background: transparent;
+    border: 1px solid #e5e7eb;
   }
   
-  .hero-card:hover {
+  .action-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    border-image: linear-gradient(135deg, #444CE7, #B664FF) 1;
+    border-image: linear-gradient(135deg, #1FF1A5, #444CE7) 1;
+    background: transparent;
     text-decoration: none;
     color: inherit;
+    box-shadow: 0 12px 32px rgba(31, 241, 165, 0.15);
   }
   
-  [data-theme="dark"] .hero-card:hover {
+  [data-theme="light"] .action-card:hover {
+    transform: translateY(-3px);
     border-image: linear-gradient(135deg, #1FF1A5, #444CE7) 1;
+    background: transparent;
+    box-shadow: 0 12px 32px rgba(31, 241, 165, 0.15);
   }
   
-  .hero-card h3 {
-    margin: 0;
-    font-size: 1rem;
+  .action-icon {
+    width: 32px;
+    height: 32px;
+    background: rgba(31, 241, 165, 0.1);
+    border: 1px solid rgba(31, 241, 165, 0.2);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
     font-weight: 600;
-    color: var(--ifm-color);
+    color: #1FF1A5;
+    flex-shrink: 0;
+    margin-top: 1px;
+    letter-spacing: -0.02em;
   }
   
-  .hero-card p {
+  [data-theme="light"] .action-icon {
+    background: rgba(31, 241, 165, 0.1);
+    border: 1px solid rgba(31, 241, 165, 0.2);
+    color: #1FF1A5;
+  }
+  
+  .action-card:hover .action-icon {
+    box-shadow: 0 6px 12px rgba(31, 241, 165, 0.2), 0 0 24px rgba(31, 241, 165, 0.1);
+  }
+  
+  .action-content {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .action-card h3 {
+    margin: 0 0 0.375rem 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 1.3;
+  }
+  
+  [data-theme="light"] .action-card h3 {
+    color: #1f2937;
+  }
+  
+  .action-card p {
     margin: 0;
-    color: var(--ifm-color-emphasis-700);
-    line-height: 1.5;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    color: #CACBF9;
+  }
+  
+  [data-theme="light"] .action-card p {
+    color: #CACBF9;
   }
   
   .sdk-grid {
@@ -434,13 +524,37 @@ Temporal is an open-source development platform for building reliable and durabl
   
   /* Mobile responsiveness */
   @media (max-width: 1024px) {
+    .hero-section {
+      grid-template-columns: 1fr 350px;
+      gap: 2.5rem;
+      padding: 2.5rem;
+    }
+    
     .sdk-grid {
       grid-template-columns: repeat(4, 1fr);
     }
   }
   
   @media (max-width: 768px) {
-    .hero-cards,
+    .hero-section {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      padding: 2rem;
+      margin: 2rem 0 3rem 0;
+    }
+    
+    .hero-content {
+      order: 1;
+    }
+    
+    .hero-actions {
+      order: 2;
+    }
+    
+    .hero-content h1 {
+      font-size: 2rem;
+    }
+    
     .learn-cards,
     .bottom-cards,
     .community-cards {
@@ -456,7 +570,6 @@ Temporal is an open-source development platform for building reliable and durabl
       font-size: 1.75rem;
     }
     
-    .hero-card,
     .learn-card {
       padding: 1.5rem;
     }
@@ -474,6 +587,31 @@ Temporal is an open-source development platform for building reliable and durabl
   }
   
   @media (max-width: 480px) {
+    .hero-section {
+      padding: 1.5rem;
+      margin: 1rem 0 2rem 0;
+    }
+    
+    .hero-content h1 {
+      font-size: 1.75rem;
+    }
+    
+    .hero-content p {
+      font-size: 0.95rem;
+    }
+    
+    .action-card {
+      padding: 0.875rem 1rem;
+    }
+    
+    .action-card h3 {
+      font-size: 0.9rem;
+    }
+    
+    .action-card p {
+      font-size: 0.75rem;
+    }
+    
     .sdk-grid {
       grid-template-columns: 1fr;
     }
