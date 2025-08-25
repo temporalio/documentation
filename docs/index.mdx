@@ -117,7 +117,7 @@ Temporal provides crash proof execution by making sure that when crashes, networ
   }
   
   [data-theme="light"] .hero-section {
-    background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+    background: #ffffff;
     border: 1px solid #e0e0e0;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   }
@@ -172,7 +172,7 @@ Temporal provides crash proof execution by making sure that when crashes, networ
     line-height: 1.2;
     margin-top: 1rem;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border: none;
+    border: 1px solid rgba(68, 76, 231, 0.4);
     box-sizing: border-box;
     box-shadow: 0 4px 12px rgba(68, 76, 231, 0.3), 0 2px 4px rgba(0, 0, 0, 0.1);
     letter-spacing: 0.02em;
@@ -195,6 +195,7 @@ Temporal provides crash proof execution by making sure that when crashes, networ
     text-decoration: none !important;
     color: #ffffff !important;
     background: linear-gradient(255.4deg, #5a5ce7 0%, #c474ff 100%);
+    border-color: rgba(68, 76, 231, 0.6);
   }
   
   .hero-cta::before {
@@ -224,23 +225,23 @@ Temporal provides crash proof execution by making sure that when crashes, networ
   /* Light mode glass morphism button */
   [data-theme="light"] .hero-cta {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(0, 0, 0, 0.15);
     color: #000000 !important;
     backdrop-filter: blur(15px);
     box-shadow: 
-      0 8px 32px rgba(0, 0, 0, 0.12),
+      0 2px 8px rgba(0, 0, 0, 0.04),
       inset 0 1px 0 rgba(255, 255, 255, 1),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+      inset 0 -1px 0 rgba(0, 0, 0, 0.06);
   }
   
   [data-theme="light"] .hero-cta:hover {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.9) 100%);
-    border-color: rgba(255, 255, 255, 0.8);
+    border-color: rgba(0, 0, 0, 0.25);
     color: #000000 !important;
     box-shadow: 
-      0 12px 40px rgba(0, 0, 0, 0.18),
+      0 4px 16px rgba(0, 0, 0, 0.08),
       inset 0 2px 0 rgba(255, 255, 255, 1),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+      inset 0 -1px 0 rgba(0, 0, 0, 0.08);
     transform: translateY(-3px);
   }
   
