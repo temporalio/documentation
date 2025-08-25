@@ -146,7 +146,7 @@ Temporal provides crash proof execution by making sure that when crashes, networ
   .hero-content p {
     font-size: 1rem;
     line-height: 1.7;
-    color: #a1a8b3;
+    color: #ffffff;
     margin-bottom: 1.5rem;
   }
   
@@ -156,24 +156,69 @@ Temporal provides crash proof execution by making sure that when crashes, networ
   
   .hero-cta {
     display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 16px;
+    width: 181px;
+    height: 56px;
     background: linear-gradient(255.4deg, #444CE7 0%, #B664FF 100%);
-    color: #ffffff;
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.95rem;
+    color: #ffffff !important;
+    padding: 15px 24px 12px 24px;
+    border-radius: 12px;
+    text-decoration: none !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 1.2;
     margin-top: 1rem;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    box-sizing: border-box;
+    box-shadow: 0 4px 12px rgba(68, 76, 231, 0.3), 0 2px 4px rgba(0, 0, 0, 0.1);
+    letter-spacing: 0.02em;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    white-space: nowrap;
+  }
+  
+  .hero-cta,
+  .hero-cta:visited,
+  .hero-cta:link,
+  .hero-cta:active {
+    color: #ffffff !important;
   }
   
   .hero-cta:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(68, 76, 231, 0.4);
-    text-decoration: none;
-    color: #ffffff;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(68, 76, 231, 0.4), 0 4px 12px rgba(0, 0, 0, 0.15);
+    text-decoration: none !important;
+    color: #ffffff !important;
+    background: linear-gradient(255.4deg, #5a5ce7 0%, #c474ff 100%);
+  }
+  
+  .hero-cta::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+    border-radius: 12px;
+    pointer-events: none;
+  }
+  
+  .hero-cta:active {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(68, 76, 231, 0.35);
+  }
+  
+  .hero-cta:hover,
+  .hero-cta:hover:visited,
+  .hero-cta:hover:link,
+  .hero-cta:hover:active {
+    color: #ffffff !important;
   }
   
   .hero-actions {
