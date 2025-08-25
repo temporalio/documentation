@@ -11,150 +11,120 @@ tags:
   - Temporal SDKs
 ---
 
-import * as Components from '@site/src/components';
-
 ![Python SDK Banner](/img/assets/banner-python-temporal.png)
 
-:::info PYTHON SPECIFIC RESOURCES
-Build Temporal Applications with the Python SDK.
+# Python SDK resources
 
-**Temporal Python Technical Resources:**
+<div className="sdk-resources-container">
+  <div className="sdk-resources-grid">
+    <div className="sdk-resources-column">
+      <h2>Technical Resources</h2>
+      <ul>
+        <li><a href="/develop/python/set-up-your-local-python">Python SDK Quickstart - Setup Guide</a></li>
+        <li><a href="https://python.temporal.io">Python API Documentation</a></li>
+        <li><a href="https://github.com/temporalio/samples-python">Python SDK Code Samples</a></li>
+        <li><a href="https://github.com/temporalio/sdk-python">Python SDK GitHub</a></li>
+        <li><a href="https://learn.temporal.io/courses/temporal_101/python/">Temporal 101 in Python Free Course</a></li>
+      </ul>
+    </div>
+    <div className="sdk-resources-column">
+      <h2>Community</h2>
+      <ul>
+        <li><a href="https://app.slack.com/client/TNWA8QCGZ">Temporal Python Community Slack</a></li>
+        <li><a href="https://community.temporal.io/tag/python-sdk">Python SDK Forum</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
 
-- [Python SDK Quickstart - Setup Guide](https://docs.temporal.io/develop/python/set-up-your-local-python)
-- [Python API Documentation](https://python.temporal.io)
-- [Python SDK Code Samples](https://github.com/temporalio/samples-python)
-- [Python SDK Github](https://github.com/temporalio/sdk-python)
-- [Temporal 101 in Python Free Course](https://learn.temporal.io/courses/temporal_101/python/)
+<div className="feature-grid">
+  <div className="feature-card">
+    <h3><a href="/develop/python/core-application">Core Application</a></h3>
+    <p>Use the essential components of a Temporal Application (Workflows, Activities, and Workers) to build and run a Temporal application.</p>
+  </div>
 
-**Get Connected with the Temporal Python Community:**
+  <div className="feature-card">
+    <h3><a href="/develop/python/temporal-clients">Temporal Client</a></h3>
+    <p>Connect to a Temporal Service and start a Workflow Execution.</p>
+  </div>
 
-- [Temporal Python Community Slack](https://app.slack.com/client/TNWA8QCGZ)
-- [Python SDK Forum](https://community.temporal.io/tag/python-sdk)
-  :::
+  <div className="feature-card">
+    <h3><a href="/develop/python/testing-suite">Testing</a></h3>
+    <p>Set up the testing suite and test Workflows and Activities.</p>
+  </div>
 
-## [Core Application](/develop/python/core-application)
+  <div className="feature-card">
+    <h3><a href="/develop/python/failure-detection">Failure detection</a></h3>
+    <p>Explore how your application can detect failures using timeouts and automatically attempt to mitigate them with retries.</p>
+  </div>
 
-Use the essential components of a Temporal Application (Workflows, Activities, and Workers) to build and run a Temporal application.
+  <div className="feature-card">
+    <h3><a href="/develop/python/message-passing">Workflow message passing</a></h3>
+    <p>Send messages to and read the state of Workflow Executions.</p>
+  </div>
 
-- [Develop a Basic Workflow](/develop/python/core-application#develop-workflows)
-- [Develop a Basic Activity](/develop/python/core-application#develop-activities)
-- [Start an Activity Execution](/develop/python/core-application#activity-execution)
-- [Run Worker Processes](/develop/python/core-application#run-a-dev-worker)
+  <div className="feature-card">
+    <h3><a href="/develop/python/cancellation">Interrupt a Workflow</a></h3>
+    <p>Interrupt a Workflow Execution with a Cancel or Terminate action.</p>
+  </div>
 
-## [Temporal Client](/develop/python/temporal-clients)
+  <div className="feature-card">
+    <h3><a href="/develop/python/asynchronous-activity-completion">Asynchronous Activity completion</a></h3>
+    <p>Complete Activities asynchronously.</p>
+  </div>
 
-Connect to a Temporal Service and start a Workflow Execution.
+  <div className="feature-card">
+    <h3><a href="/develop/python/versioning">Versioning</a></h3>
+    <p>Change Workflow Definitions without causing non-deterministic behavior in running Workflows.</p>
+  </div>
 
-- [Connect to Development Temporal Service](/develop/python/temporal-clients#connect-to-development-service)
-- [Connect a Temporal Client to a Temporal Service](/develop/python/temporal-clients#connect-to-a-dev-cluster)
-- [Connect to Temporal Cloud](/develop/python/temporal-clients#connect-to-temporal-cloud)
-- [Start a Workflow Execution](/develop/python/temporal-clients#start-workflow-execution)
+  <div className="feature-card">
+    <h3><a href="/develop/python/observability">Observability</a></h3>
+    <p>Configure and use the Temporal Observability APIs.</p>
+  </div>
 
-## [Python SDK Sandbox](/develop/python/python-sdk-sandbox)
+  <div className="feature-card">
+    <h3><a href="/develop/python/debugging">Debugging</a></h3>
+    <p>Explore various ways to debug your application.</p>
+  </div>
 
-Use third-party Python modules without non-deterministic behavior.
+  <div className="feature-card">
+    <h3><a href="/develop/python/schedules">Schedules</a></h3>
+    <p>Run Workflows on a schedule and delay the start of a Workflow.</p>
+  </div>
 
-## [Python SDK sync vs. async implementations](/develop/python/python-sdk-sync-vs-async)
+  <div className="feature-card">
+    <h3><a href="/develop/python/data-encryption">Data encryption</a></h3>
+    <p>Use compression, encryption, and other data handling by implementing custom converters and codecs.</p>
+  </div>
 
-Implement synchronous or asynchronous Activities.
+  <div className="feature-card">
+    <h3><a href="/develop/python/nexus">Temporal Nexus</a></h3>
+    <p>Connect durable executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.</p>
+  </div>
 
-## [Testing](/develop/python/testing-suite)
+  <div className="feature-card">
+    <h3><a href="/develop/python/timers">Durable Timers</a></h3>
+    <p>Use Timers to make a Workflow Execution pause or "sleep" for seconds, minutes, days, months, or years.</p>
+  </div>
 
-Set up the testing suite and test Workflows and Activities.
+  <div className="feature-card">
+    <h3><a href="/develop/python/child-workflows">Child Workflows</a></h3>
+    <p>Explore how to spawn a Child Workflow Execution and handle Child Workflow Events.</p>
+  </div>
 
-- [Test Frameworks](/develop/python/testing-suite#test-frameworks)
-- [Testing Activities](/develop/python/testing-suite#test-activities)
-- [Testing Workflows](/develop/python/testing-suite#test-workflows)
-- [How to Replay a Workflow Execution](/develop/python/testing-suite#replay)
+  <div className="feature-card">
+    <h3><a href="/develop/python/continue-as-new">Continue-As-New</a></h3>
+    <p>Continue the Workflow Execution with a new Workflow Execution using the same Workflow ID.</p>
+  </div>
 
-## [Failure detection](/develop/python/failure-detection)
+  <div className="feature-card">
+    <h3><a href="/develop/python/side-effects">Side Effects</a></h3>
+    <p>Use Side Effects in Workflows.</p>
+  </div>
 
-Explore how your application can detect failures using timeouts and automatically attempt to mitigate them with retries.
-
-- [Workflow Timeouts](/develop/python/failure-detection#workflow-timeouts)
-- [Set Activity Timeouts](/develop/python/failure-detection#activity-timeouts)
-- [Heartbeat an Activity](/develop/python/failure-detection#activity-heartbeats)
-
-## [Workflow message passing](/develop/python/message-passing)
-
-Send messages to and read the state of Workflow Executions.
-
-- [Develop with Signals](/develop/python/message-passing#signals)
-- [Develop with Queries](/develop/python/message-passing#queries)
-- [Develop with Updates](/develop/python/message-passing#updates)
-- [What is a Dynamic Handler](/develop/python/message-passing#dynamic-handler)
-
-## [Interrupt a Workflow feature guide](/develop/python/cancellation)
-
-Interrupt a Workflow Execution with a Cancel or Terminate action.
-
-- [Cancel a Workflow](/develop/python/cancellation#cancellation)
-- [Terminate a Workflow](/develop/python/cancellation#termination)
-- [Cancel an Activity from a Workflow](/develop/python/cancellation#cancel-activity)
-
-## [Asynchronous Activity completion](/develop/python/asynchronous-activity-completion)
-
-Complete Activities asynchronously.
-
-- [Asynchronously Complete an Activity](/develop/python/asynchronous-activity-completion)
-
-## [Versioning](/develop/python/versioning)
-
-Change Workflow Definitions without causing non-deterministic behavior in running Workflows.
-
-- [Introduction to Versioning](/develop/python/versioning)
-- [How to Use the Patching API](/develop/python/versioning#patching)
-
-## [Observability](/develop/python/observability)
-
-Configure and use the Temporal Observability APIs.
-
-- [Emit Metrics](/develop/python/observability#metrics)
-- [Set up tracing](/develop/python/observability#tracing)
-- [Log from a Workflow](/develop/python/observability#logging)
-- [Use Visibility APIs](/develop/python/observability#visibility)
-
-## [Debugging](/develop/python/debugging)
-
-Explore various ways to debug your application.
-
-- [Debugging](/develop/python/debugging)
-
-## [Schedules](/develop/python/schedules)
-
-Run Workflows on a schedule and delay the start of a Workflow.
-
-- [Schedule a Workflow](/develop/python/schedules#schedule-a-workflow)
-- [Temporal Cron Jobs](/develop/python/schedules#temporal-cron-jobs)
-- [Start Delay](/develop/python/schedules#start-delay)
-
-## [Data encryption](/develop/python/converters-and-encryption)
-
-Use compression, encryption, and other data handling by implementing custom converters and codecs.
-
-- [Custom Payload Codec](/develop/python/converters-and-encryption#custom-payload-codec)
-- [Payload Conversion](/develop/python/converters-and-encryption#payload-conversion)
-
-## [Durable Timers](/develop/python/timers)
-
-Use Timers to make a Workflow Execution pause or "sleep" for seconds, minutes, days, months, or years.
-
-- [Sleep](/develop/python/timers)
-
-## [Child Workflows](/develop/python/child-workflows)
-
-Explore how to spawn a Child Workflow Execution and handle Child Workflow Events.
-
-- [Start a Child Workflow Execution](/develop/python/child-workflows)
-
-## [Continue-As-New](/develop/python/continue-as-new)
-
-Continue the Workflow Execution with a new Workflow Execution using the same Workflow ID.
-
-- [Continue-As-New](/develop/python/continue-as-new)
-
-## [Interceptors](/develop/python/interceptors)
-
-Manage inbound and outbound SDK calls, enhance tracing, and add authorization to your Workflows and Activities.
-
-- [Interceptors](/develop/python/interceptors)
+  <div className="feature-card">
+    <h3><a href="/develop/python/namespaces">Manage Namespaces</a></h3>
+    <p>Create and manage Namespaces.</p>
+  </div>
+</div>

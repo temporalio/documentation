@@ -11,4 +11,4 @@ export const InfoBox = ({ title, children }) => {
       </div>
     </div>
   );
-};  
+};
