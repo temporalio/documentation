@@ -33,7 +33,7 @@ A **Pinned** Workflow is guaranteed to complete on a single Worker Deployment Ve
 
 #### Auto-Upgrade Workflows {#auto-upgrade}
 
-A An **Auto-Upgrade** Workflow will move to the latest Worker Deployment Version automatically whenever you change the current version. Auto-upgrade Workflows are not restricted to a single Deployment Version and need to be kept replay-safe manually, i.e. with [patching](/workflow-definition#workflow-versioning).
+An **Auto-Upgrade** Workflow will move to the latest Worker Deployment Version automatically whenever you change the current version. Auto-upgrade Workflows are not restricted to a single Deployment Version and need to be kept replay-safe manually, i.e. with [patching](/workflow-definition#workflow-versioning).
 
 ### Versioning Statuses {#versioning-statuses}
 
@@ -59,7 +59,10 @@ A Workflow can start a new run through:
 
 #### Inheritance Rules Overview
 
-**Key Principle**: Auto-upgrade Workflows never inherit versions, while Pinned workflows may inherit under specific conditions:
+Auto-upgrade Workflows never inherit versions.
+By default, Pinned workflows will pass their version to any Pinned children.
+
+This section provides more detail on specific inheritance scenarios.
 
 #### Inheritance by Scenario
 
@@ -73,7 +76,7 @@ A Workflow can start a new run through:
 - If child is Auto-Upgrade: child's behavior changes to Auto-Upgrade after the first task completes
 - If child's Task Queue is not in the same Worker Deployment as parent: no inheritance occurs, child starts on Current Version of its task queue
 
-**When Parent is AutoUpgrade:**
+**When Parent is Auto-upgrade:**
 
 - Child inherits no initial Versioning Behavior
 - Child starts on the Current Version of its Worker Deployment like all new Workflow executions
@@ -85,7 +88,7 @@ A Workflow can start a new run through:
 - The Pinned version is inherited across the Continue-As-New chain
 - If the new run's Task Queue is not in the same Worker Deployment as the original Workflow: no inheritance occurs, new run starts on Current Version of its task queue
 
-**When Original Workflow is AutoUpgrade:**
+**When Original Workflow is Auto-upgrade:**
 
 - No version inheritance occurs
 
