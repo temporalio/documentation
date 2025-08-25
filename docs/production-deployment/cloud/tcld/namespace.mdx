@@ -33,6 +33,7 @@ Alias: `n`
 - [tcld namespace retention](#retention)
 - [tcld namespace update-codec-server](#update-codec-server)
 - [tcld namespace update-high-availability](#update-high-availability)
+- [tcld namespace tags](#tags)
 
 ## add-region
 
@@ -63,7 +64,7 @@ _Required modifier_
 #### --region
 
 The region to add to the existing Namespace.
-See [Regions](/cloud/high-availability/regions) for a list of supported regions.
+See [Regions](/cloud/regions) for a list of supported regions.
 
 :::tip Choosing Replica Regions
 
@@ -81,7 +82,7 @@ _Required modifier_
 
 ```bash
 tcld namespace add-region \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id> \
     --region <replica_region>
 ```
 
@@ -90,7 +91,7 @@ When using API key authentication, add your API credentials before pressing Ente
 ```bash
 tcld --api-key <your_api_key> \
     add-region \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id> \
     --region <replica_region>
 ```
 
@@ -156,7 +157,7 @@ The region to create the Namespace in.
 
 ```bash
 tcld namespace create \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id> \
     --region <primary_region> [\]
     [--region <replica_region>] // if adding replica
 ```
@@ -166,7 +167,7 @@ When using API key authentication, add your API credentials before pressing Ente
 ```bash
 tcld --api-key <your_api_key> \
     namespace create \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id> \
     --region <primary_region> [\]
     [--region <replica_region>] // if adding replica
 ```
@@ -239,7 +240,7 @@ Alias: `--cfi`
 
 _Required modifier; can be specified more than once_
 
-A custom Search Attribute in the form `_name_=_type_`.
+A custom Search Attribute in the form '_name_=_type_'.
 
 Valid values for _type_: `Bool` | `Datetime` | `Double` | `Int` | `Keyword` | `Text`
 
@@ -249,7 +250,7 @@ Alias: `--sa`
 
 _Can be specified more than once_
 
-A [Namespace-level permission](/cloud/users#namespace-level-permissions) for a user in the form `_email_=_permission_`.
+A [Namespace-level permission](/cloud/users#namespace-level-permissions) for a user in the form '_email_=_permission_'.
 
 Valid values for _permission_: `Admin` | `Write` | `Read`
 
@@ -273,6 +274,14 @@ Include cross-origin credentials (default: false).
 
 Alias: `--ic`
 
+#### --tag
+
+A tag in the form "_key_=_value_".
+
+[Tag structure and limits](/cloud/namespaces#tag-structure-and-limits).
+
+Alias: `--t`
+
 **Example**
 
 ```bash
@@ -286,7 +295,8 @@ tcld namespace create \
     --search-attribute "customer_name=Text" \
     --endpoint "https://test-codec-server.com" \
     --pass-access-token \
-    --include-credentials
+    --include-credentials \
+    --tag "key=value"
 ```
 
 ## delete
@@ -373,7 +383,7 @@ _Required modifier_
 
 ```bash
 tcld namespace delete-region \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id>\
     --region <replica_region>
 ```
 
@@ -382,7 +392,7 @@ When using API key authentication, add your API credentials before pressing Ente
 ```bash
 tcld --api-key <your_api_key> \
     delete-region \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id> \
     --region <replica_region>
 ```
 
@@ -401,7 +411,7 @@ A failover switches a Namespace region from a primary Namespace to its replica.
 
 ```bash
 tcld namespace failover \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id> \
     --region <target_region>
 ```
 
@@ -410,7 +420,7 @@ When using API key authentication, add your API credentials before pressing Ente
 ```bash
 tcld --api-key <your_api_key> \
     namespace failover \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id> \
     --region <target_region>
 ```
 
@@ -434,7 +444,7 @@ _Required modifier_
 
 The region to failover _to_.
 
-See [Regions](/cloud/high-availability/regions) for a list of supported regions.
+See [Regions](/cloud/regions) for a list of supported regions.
 
 Alias: `--re`
 
@@ -1763,7 +1773,7 @@ Pass `true` or `false` (default).
 
 ```
 tcld namespace update-high-availability \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id> \
     --disable-auto-failover=true
 ```
 
@@ -1772,8 +1782,103 @@ When using API key authentication, add your API credentials before pressing Ente
 ```
 tcld --api-key <your_api_key> \
     namespace update-high-availability \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id> \
     --disable-auto-failover=true
 ```
 
 Alias: `-daf`
+
+## tags
+
+The `tcld namespace tags` commands manage [Tags](/cloud/namespaces#tag-a-namespace) of the specified [Namespace](/namespaces) in Temporal Cloud.
+
+Alias: `t`
+
+- [tcld namespace tags upsert](#upsert)
+- [tcld namespace tags remove](#remove)
+
+### upsert
+
+Add new tags or update existing tag values for the specified Namespace.
+
+Alias: `u`
+
+The following modifier controls the behavior of the command.
+
+#### --namespace
+
+_Required modifier_
+
+Specify a Namespace hosted on Temporal Cloud.
+If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+
+Alias: `-n`
+
+#### --request-id
+
+The request identifier to use for the asynchronous operation.
+If not set, the server assigns an identifier.
+
+Alias: `-r`
+
+#### --tag
+
+_Required modifier; can be specified more than once_
+
+A tag in the form "_key_=_value_".
+
+[Tag structure and limits](/cloud/namespaces#tag-structure-and-limits).
+
+Alias: `--t`
+
+**Example**
+
+```bash
+tcld namespace tags upsert \
+    --namespace <namespace_id> \
+    --tag "key1=value1" \
+    --tag "key2=updated"
+```
+
+### remove
+
+Remove existing tags for the specified Namespace using the key.
+
+Alias: `rm`
+
+The following modifiers control the behavior of the command.
+
+#### --namespace
+
+_Required modifier_
+
+Specify a Namespace hosted on Temporal Cloud.
+If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+
+Alias: `-n`
+
+#### --request-id
+
+The request identifier to use for the asynchronous operation.
+If not set, the server assigns an identifier.
+
+Alias: `-r`
+
+#### --tag-key
+
+_Required modifier; can be specified more than once_
+
+A tag key string.
+
+[Tag Key structure and limits](/cloud/namespaces#tag-structure-and-limits).
+
+Alias: `--tk`
+
+**Example**
+
+```bash
+tcld namespace tags remove \
+    --namespace <namespace_id> \
+    --tag-key "key1" \
+    --tag-key "key2"
+```
