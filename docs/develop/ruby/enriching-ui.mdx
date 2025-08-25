@@ -1,0 +1,126 @@
+---
+id: enriching-ui
+title: Enriching the User Interface - Ruby SDK
+sidebar_label: Enriching the UI
+description: Learn how to add contextual information to workflows and events in the Temporal UI using the Ruby SDK.
+toc_max_heading_level: 3
+keywords:
+  - ui enrichment
+  - workflow context
+  - static summary
+  - static details
+  - activity summary
+  - timer summary
+tags:
+  - UI Enrichment
+  - Ruby SDK
+  - Temporal SDKs
+---
+
+# Enriching the User Interface
+
+Enhance the Temporal UI by adding contextual information to workflows and events. This makes it easier to identify and understand workflows and their operations at a glance.
+
+## Adding Summary and Details to Workflows
+
+#### Starting a Workflow
+
+When starting a workflow, you can provide a static summary and details to help identify the workflow in the UI:
+
+```ruby
+require 'temporalio/client'
+
+# Create client
+client = Temporalio::Client.connect('localhost:7233')
+
+# Start a workflow with static summary and details
+handle = client.start_workflow(
+  'YourWorkflow',
+  'workflow input',
+  id: 'your-workflow-id',
+  task_queue: 'your-task-queue',
+  static_summary: 'Order processing for customer #12345',
+  static_details: 'Processing premium order with expedited shipping'
+)
+```
+
+`static_summary:` is a single-line description that appears in the workflow list view, limited to 200 bytes.
+`static_details:` can be multi-line and provides more comprehensive information that appears in the workflow details view, with a larger limit of 20K bytes.
+
+The input format is normal Markdown excluding: images, html, and scripts.
+
+You can also use `execute_workflow` for synchronous execution:
+
+```ruby
+# Execute workflow synchronously
+result = client.execute_workflow(
+  'YourWorkflow',
+  'workflow input',
+  id: 'your-workflow-id',
+  task_queue: 'your-task-queue',
+  static_summary: 'Order processing for customer #12345',
+  static_details: 'Processing premium order with expedited shipping'
+)
+```
+
+#### Inside the Workflow
+
+Within a workflow, you can get and set the _current workflow details_. Unlike static summary/details set at 
+workflow start, this value can be updated throughout the life of the workflow. Current workflow details 
+also takes Markdown format (again, excluding images, html, and scripts) and can span multiple lines.
+
+```ruby
+require 'temporalio'
+
+class YourWorkflow < Temporalio::Workflow::Definition
+  def execute(input)
+    # Get the current details
+    current_details = Temporalio::Workflow.current_details
+    Temporalio::Workflow.logger.info("Current details: #{current_details}")
+    
+    # Set/update the current details
+    Temporalio::Workflow.current_details = 'Updated workflow details with new status'
+    
+    'Workflow completed'
+  end
+end
+```
+
+#### Adding Summary to Activities and Timers
+
+You can attach a `summary:` to activities when starting them from within a workflow:
+
+```ruby
+require 'temporalio'
+
+class YourWorkflow < Temporalio::Workflow::Definition
+  def execute(input)
+    # Execute an activity with a summary
+    result = Temporalio::Workflow.execute_activity(
+      'YourActivity',
+      input,
+      start_to_close_timeout: 10,
+      summary: 'Processing user data'
+    )
+    
+    result
+  end
+end
+```
+
+Similarly, you can attach a `summary:` to timers within a workflow:
+
+```ruby
+require 'temporalio'
+
+class YourWorkflow < Temporalio::Workflow::Definition
+  def execute(input)
+    # Create a timer with a summary
+    Temporalio::Workflow.sleep(300, summary: 'Waiting for payment confirmation')
+    
+    'Timer completed'
+  end
+end
+```
+
+The input format for `summary:` is a string, and limited to 200 bytes.
