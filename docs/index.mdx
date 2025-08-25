@@ -84,10 +84,8 @@ Temporal provides crash proof execution by making sure that when crashes, networ
     </div>
 
   <div className="community-card">
-    <div className="community-icon ai-icon">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/>
-      </svg>
+    <div className="community-icon temporal-icon">
+      <img src="/img/assets/temporal-logo.svg" alt="Temporal" width="24" height="24" />
     </div>
     <div className="community-content">
       <h3>Ask AI</h3>
@@ -797,8 +795,15 @@ Temporal provides crash proof execution by making sure that when crashes, networ
     background: linear-gradient(135deg, #4A154B 0%, #611f69 100%);
   }
   
-  .ai-icon {
+  .temporal-icon {
     background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  [data-theme="light"] .temporal-icon img {
+    content: url('/img/assets/temporal-logo-dark.svg');
   }
   
   .community-content {
