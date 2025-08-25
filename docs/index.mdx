@@ -117,9 +117,9 @@ Temporal provides crash proof execution by making sure that when crashes, networ
   }
   
   [data-theme="light"] .hero-section {
-    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   }
   
   .hero-content {
@@ -127,7 +127,7 @@ Temporal provides crash proof execution by making sure that when crashes, networ
   }
   
   [data-theme="light"] .hero-content {
-    color: #1f2937;
+    color: #000000;
   }
   
   .hero-content h1 {
@@ -140,7 +140,7 @@ Temporal provides crash proof execution by making sure that when crashes, networ
   }
   
   [data-theme="light"] .hero-content h1 {
-    color: #1f2937;
+    color: #000000;
   }
   
   .hero-content p {
@@ -151,7 +151,7 @@ Temporal provides crash proof execution by making sure that when crashes, networ
   }
   
   [data-theme="light"] .hero-content p {
-    color: #4b5563;
+    color: #333333;
   }
   
   .hero-cta {
@@ -221,6 +221,43 @@ Temporal provides crash proof execution by making sure that when crashes, networ
     color: #ffffff !important;
   }
   
+  /* Light mode glass morphism button */
+  [data-theme="light"] .hero-cta {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    color: #000000 !important;
+    backdrop-filter: blur(15px);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 1),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+  }
+  
+  [data-theme="light"] .hero-cta:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.9) 100%);
+    border-color: rgba(255, 255, 255, 0.8);
+    color: #000000 !important;
+    box-shadow: 
+      0 12px 40px rgba(0, 0, 0, 0.18),
+      inset 0 2px 0 rgba(255, 255, 255, 1),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
+  }
+  
+  [data-theme="light"] .hero-cta,
+  [data-theme="light"] .hero-cta:visited,
+  [data-theme="light"] .hero-cta:link,
+  [data-theme="light"] .hero-cta:active {
+    color: #000000 !important;
+  }
+  
+  [data-theme="light"] .hero-cta:hover,
+  [data-theme="light"] .hero-cta:hover:visited,
+  [data-theme="light"] .hero-cta:hover:link,
+  [data-theme="light"] .hero-cta:hover:active {
+    color: #000000 !important;
+  }
+  
   .hero-actions {
     display: flex;
     flex-direction: column;
@@ -244,7 +281,7 @@ Temporal provides crash proof execution by making sure that when crashes, networ
   
   [data-theme="light"] .action-card {
     background: transparent;
-    border: 1px solid #e5e7eb;
+    border: 1px solid #d0d0d0;
   }
   
   .action-card:hover {
@@ -258,9 +295,9 @@ Temporal provides crash proof execution by making sure that when crashes, networ
   
   [data-theme="light"] .action-card:hover {
     transform: translateY(-3px);
-    border-image: linear-gradient(135deg, #1FF1A5, #444CE7) 1;
-    background: transparent;
-    box-shadow: 0 12px 32px rgba(31, 241, 165, 0.15);
+    border-color: #666666;
+    background: rgba(0, 0, 0, 0.02);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
   }
   
   .action-icon {
@@ -281,13 +318,19 @@ Temporal provides crash proof execution by making sure that when crashes, networ
   }
   
   [data-theme="light"] .action-icon {
-    background: rgba(31, 241, 165, 0.1);
-    border: 1px solid rgba(31, 241, 165, 0.2);
-    color: #1FF1A5;
+    background: #f0f0f0;
+    border: 1px solid #cccccc;
+    color: #000000;
   }
   
   .action-card:hover .action-icon {
     box-shadow: 0 6px 12px rgba(31, 241, 165, 0.2), 0 0 24px rgba(31, 241, 165, 0.1);
+  }
+  
+  [data-theme="light"] .action-card:hover .action-icon {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: #e8e8e8;
+    border-color: #999999;
   }
   
   .action-content {
@@ -304,7 +347,7 @@ Temporal provides crash proof execution by making sure that when crashes, networ
   }
   
   [data-theme="light"] .action-card h3 {
-    color: #1f2937;
+    color: #000000;
   }
   
   .action-card p {
@@ -315,7 +358,7 @@ Temporal provides crash proof execution by making sure that when crashes, networ
   }
   
   [data-theme="light"] .action-card p {
-    color: #CACBF9;
+    color: #666666;
   }
   
   .sdk-grid {
