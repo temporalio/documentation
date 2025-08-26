@@ -1,0 +1,112 @@
+---
+id: enriching-ui
+title: Enriching the User Interface - Python SDK
+sidebar_label: Enriching the UI
+description: Learn how to add contextual information to workflows and events in the Temporal UI using the Python SDK.
+toc_max_heading_level: 3
+keywords:
+  - ui enrichment
+  - workflow context
+  - static summary
+  - static details
+  - activity summary
+  - timer summary
+tags:
+  - UI Enrichment
+  - Python SDK
+  - Temporal SDKs
+---
+
+
+Enhance the Temporal UI by adding contextual information to Workflows and Events. 
+This makes it easier to identify and understand Workflows and their operations at a glance.
+
+## Adding Summary and Details to Workflows
+Temporal supports adding summaries and details in several places: when starting a Workflow, from within the Workflow itself, and on Activities or Timers within a Workflow.
+
+### Starting a Workflow
+
+When starting a Workflow, you can provide a static summary and details to help identify the Workflow in the UI:
+
+```python
+# Start a Workflow with static summary and details
+handle = await client.start_workflow(
+    YourWorkflow.run,
+    "workflow input",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+    static_summary="Order processing for customer #12345",
+    static_details="Processing premium order with expedited shipping"
+)
+```
+
+`static_summary` is a single-line description that appears in the Workflow list view, limited to 200 bytes.
+`static_details` can be multi-line and provides more comprehensive information that appears in the Workflow details view, with a larger limit of 20K bytes.
+
+The input format is normal Markdown excluding: images, html, and scripts. 
+
+You can also use the `execute_workflow` method with the same parameters:
+
+```python
+result = await client.execute_workflow(
+    YourWorkflow.run,
+    "workflow input",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+    static_summary="Order processing for customer #12345",
+    static_details="Processing premium order with expedited shipping"
+)
+```
+
+### Inside the Workflow
+
+Within a Workflow, you can get and set the _current workflow details_. 
+Unlike static summary/details set at workflow start, this value can be updated throughout the life of the Workflow.
+Current workflow details also takes Markdown format (excluding images, html, and scripts) and can span multiple lines. 
+
+```python
+@workflow.defn
+class YourWorkflow:
+    @workflow.run
+    async def run(self, input: str) -> str:
+        # Get the current details
+        current_details = workflow.get_current_details()
+        print(f"Current details: {current_details}")
+        
+        # Set/update the current details
+        workflow.set_current_details("Updated workflow details with new status")
+        
+        return "Workflow completed"
+```
+
+### Adding Summary to Activities and Timers
+
+You can attach a `summary` to Activities when starting them from within a Workflow:
+
+```python
+@workflow.defn
+class YourWorkflow:
+    @workflow.run
+    async def run(self, input: str) -> str:
+        # Start an activity with a summary
+        result = await workflow.execute_activity(
+            your_activity,
+            input,
+            start_to_close_timeout=timedelta(seconds=10),
+            summary="Processing user data"
+        )
+        return result
+```
+
+Similarly, you can attach a `summary` to Timers within a Workflow:
+
+```python
+@workflow.defn
+class YourWorkflow:
+    @workflow.run
+    async def run(self, input: str) -> str:
+        # Create a timer with a summary
+        await workflow.sleep(timedelta(minutes=5), summary="Waiting for payment confirmation")
+        return "Timer completed"
+```
+The input format for `summary` is a string, and limited to 200 bytes.

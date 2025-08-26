@@ -216,6 +216,7 @@ module.exports = {
             "develop/python/asynchronous-activity-completion",
             "develop/python/versioning",
             "develop/python/observability",
+            "develop/python/enriching-ui",
             "develop/python/debugging",
             "develop/python/schedules",
             "develop/python/converters-and-encryption",
