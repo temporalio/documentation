@@ -23,19 +23,19 @@ This page defines some of the underlying concepts used in [Worker Versioning](/p
 - [Versioning Statuses](#versioning-statuses)
 - [Continue-as-new, Child Workflow, and Retry Semantics](#inheritance-semantics)
 
-### Versioning Behaviors {#versioning-behaviors}
+## Versioning Behaviors {#versioning-behaviors}
 
 Using **Workflow Pinning**, you can declare each Workflow type to have a **Versioning Behavior**, either Pinned or Auto-Upgrade.
 
-#### Pinned Workflows {#pinned}
+### Pinned Workflows {#pinned}
 
 A **Pinned** Workflow is guaranteed to complete on a single Worker Deployment Version. You can mark a Workflow Type as pinned when you register it by adding an additional Pinned parameter. If you need to move a pinned Workflow to a new version, use [`temporal workflow update-options`](https://docs.temporal.io/cli/workflow#update-options).
 
-#### Auto-Upgrade Workflows {#auto-upgrade}
+### Auto-Upgrade Workflows {#auto-upgrade}
 
 An **Auto-Upgrade** Workflow will move to the latest Worker Deployment Version automatically whenever you change the current version. Auto-upgrade Workflows are not restricted to a single Deployment Version and need to be kept replay-safe manually, i.e. with [patching](/workflow-definition#workflow-versioning).
 
-### Versioning Statuses {#versioning-statuses}
+## Versioning Statuses {#versioning-statuses}
 
 A Worker Deployment Version moves through the following states:
 
@@ -44,11 +44,11 @@ A Worker Deployment Version moves through the following states:
 3. **Draining**: The version has open pinned Workflows running on it, but stopped being Current or Ramping, usually because a newer version has been deployed. It is possible to be Draining and have no open pinned Workflows for a short time, since the drainage status is updated only periodically.
 4. **Drained**: The version was draining and now all the pinned Workflows that were running on it are closed. Closed Workflows may still re-run some code paths if they are [Queried](https://docs.temporal.io/sending-messages#sending-queries) within their [Retention Period](https://docs.temporal.io/temporal-service/temporal-server#retention-period) and Workers with that version are still polling.
 
-### Continue-as-new, Child Workflow, and Retry Semantics {#inheritance-semantics}
+## Continue-as-new, Child Workflow, and Retry Semantics {#inheritance-semantics}
 
 When Workflows start new runs (e.g. by continuing-as-new or retrying) the new run may inherit their versioning behavior. This section explains how inheritance works across different Workflow execution patterns.
 
-#### Ways Workflows Start New Runs
+### Ways Workflows Start New Runs
 
 A Workflow can start a new run through:
 
@@ -57,16 +57,16 @@ A Workflow can start a new run through:
 - Retrying per its [Retry Policy](https://docs.temporal.io/encyclopedia/retry-policies)
 - Starting another iteration of a [Cron Job](https://docs.temporal.io/cron-job) (superseded by [Schedules](https://docs.temporal.io/schedule))
 
-#### Inheritance Rules Overview
+### Inheritance Rules Overview
 
 Auto-upgrade Workflows never inherit versions.
 By default, Pinned workflows will pass their version to any Pinned children.
 
 This section provides more detail on specific inheritance scenarios.
 
-#### Inheritance by Scenario
+### Inheritance by Scenario
 
-##### Child Workflows
+#### Child Workflows
 
 **When Parent is Pinned:**
 
@@ -81,7 +81,7 @@ This section provides more detail on specific inheritance scenarios.
 - Child inherits no initial Versioning Behavior
 - Child starts on the Current Version of its Worker Deployment like all new Workflow executions
 
-##### Continue-As-New
+#### Continue-As-New
 
 **When Original Workflow is Pinned:**
 
@@ -92,7 +92,7 @@ This section provides more detail on specific inheritance scenarios.
 
 - No version inheritance occurs
 
-##### Retries
+#### Retries
 
 **Inheritance Conditions (all must be met):**
 
@@ -104,13 +104,11 @@ This section provides more detail on specific inheritance scenarios.
 
 - No version inheritance occurs
 
-##### Cron Jobs
+#### Cron Jobs
 
 - **Never inherit** versioning behavior or version
 
-#### Versioning Override vs. Non-Override Inheritance
-
-##### Versioning Override Inheritance
+### Versioning Override Inheritance
 
 - Children, crons, retries, and continue-as-new inherit the source run's override **if**:
   - The override is pinned, **AND**
