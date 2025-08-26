@@ -5,16 +5,202 @@ description: Discover comprehensive Temporal SDK feature guides and API referenc
 sidebar_label: Development
 ---
 
-import { SdkLogos } from '@site/src/components';
+import { SdkLogos } from '@site/src/components/elements/SdkLogos';
 
-The Temporal SDK developer guides provide a comprehensive overview of the structures, primitives, and features used in [Temporal Application](/temporal#temporal-application) development.
+## 100% Open Source
 
-<SdkLogos />
+Temporal SDKs provide the foundation for building reliable distributed applications. Each SDK is designed to help you implement durable Workflows, Activities, and Workers with native language support and comprehensive tooling.
 
-- Go SDK [developer guide](/develop/go) and [API reference](http://t.mp/go-api)
-- Java SDK [developer guide](/develop/java) and [API reference](http://t.mp/java-api)
-- PHP SDK [developer guide](/develop/php) and [API reference](https://php.temporal.io/namespaces/temporal.html)
-- Python SDK [developer guide](/develop/python) and [API reference](https://python.temporal.io)
-- TypeScript SDK [developer guide](/develop/typescript) and [API reference](https://typescript.temporal.io)
-- .NET SDK [developer guide](/develop/dotnet) and [API reference](https://dotnet.temporal.io/)
-- Ruby SDK [developer guide](/develop/ruby) and [API reference](https://ruby.temporal.io/)
+<div className="sdk-section">
+  <div className="sdk-container">
+    <div className="sdk-grid">
+      <div className="dev-sdk-card">
+        <div className="dev-sdk-card-header">
+          <h2>Go SDK</h2>
+          <img src="/img/sdks/svgs/sdk-box-logos/go.svg" alt="Go SDK" />
+        </div>
+        <div className="dev-sdk-card-links">
+          <a href="http://t.mp/go-api">API Reference</a>
+          <a href="/develop/go">Developer Guide</a>
+        </div>
+      </div>
+      <div className="dev-sdk-card">
+        <div className="dev-sdk-card-header">
+          <h2>Java SDK</h2>
+          <img src="/img/sdks/svgs/sdk-box-logos/java.svg" alt="Java SDK" />
+        </div>
+        <div className="dev-sdk-card-links">
+          <a href="http://t.mp/java-api">API Reference</a>
+          <a href="/develop/java">Developer Guide</a>
+        </div>
+      </div>
+      <div className="dev-sdk-card">
+        <div className="dev-sdk-card-header">
+          <h2>TypeScript SDK</h2>
+          <img src="/img/sdks/svgs/sdk-box-logos/typescript.svg" alt="TypeScript SDK" />
+        </div>
+        <div className="dev-sdk-card-links">
+          <a href="https://typescript.temporal.io">API Reference</a>
+          <a href="/develop/typescript">Developer Guide</a>
+        </div>
+      </div>
+      <div className="dev-sdk-card">
+        <div className="dev-sdk-card-header">
+          <h2>Python SDK</h2>
+          <img src="/img/sdks/svgs/sdk-box-logos/python.svg" alt="Python SDK" />
+        </div>
+        <div className="dev-sdk-card-links">
+          <a href="https://python.temporal.io">API Reference</a>
+          <a href="/develop/python">Developer Guide</a>
+        </div>
+      </div>
+      <div className="dev-sdk-card">
+        <div className="dev-sdk-card-header">
+          <h2>PHP SDK</h2>
+          <img src="/img/sdks/svgs/sdk-box-logos/php.svg" alt="PHP SDK" />
+        </div>
+        <div className="dev-sdk-card-links">
+          <a href="https://php.temporal.io/namespaces/temporal.html">API Reference</a>
+          <a href="/develop/php">Developer Guide</a>
+        </div>
+      </div>
+      <div className="dev-sdk-card">
+        <div className="dev-sdk-card-header">
+          <h2>.NET SDK</h2>
+          <img src="/img/sdks/svgs/sdk-box-logos/dotnet.svg" alt=".NET SDK" />
+        </div>
+        <div className="dev-sdk-card-links">
+          <a href="https://dotnet.temporal.io/">API Reference</a>
+          <a href="/develop/dotnet">Developer Guide</a>
+        </div>
+      </div>
+      <div className="dev-sdk-card">
+        <div className="dev-sdk-card-header">
+          <h2>Ruby SDK</h2>
+          <img src="/img/sdks/svgs/sdk-box-logos/ruby.png" alt="Ruby SDK" />
+        </div>
+        <div className="dev-sdk-card-links">
+          <a href="https://www.rubydoc.info/gems/temporalio">API Reference</a>
+          <a href="https://github.com/temporalio/sdk-ruby#readme">Developer Guide</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+{`
+  .sdk-section {
+    margin: 2rem 0;
+  }
+
+  .sdk-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .sdk-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+
+  .dev-sdk-card {
+    background: var(--ifm-background-surface-color);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0;
+    padding: 1.25rem;
+    min-height: 200px;
+    position: relative;
+    display: block;
+  }
+
+  [data-theme='light'] .dev-sdk-card {
+    border: 1px solid var(--ifm-color-emphasis-300);
+  }
+
+  .dev-sdk-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 0.75rem;
+    gap: 1rem;
+  }
+
+  .dev-sdk-card-header h2 {
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 300;
+    color: var(--ifm-color-emphasis-900);
+    line-height: 1;
+    flex: 1;
+  }
+
+  .dev-sdk-card-header img {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+  }
+
+  .dev-sdk-card-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    position: absolute;
+    bottom: 0;
+    left: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .dev-sdk-card-links a {
+    color: #CACBF9;
+    text-decoration: none;
+    font-size: 1rem;
+    font-family: var(--ifm-font-family-base);
+    line-height: 1;
+    transition: color 0.15s ease;
+    position: relative;
+  }
+
+  [data-theme='light'] .dev-sdk-card-links a {
+    color: var(--ifm-color-primary);
+  }
+
+  .dev-sdk-card-links a:hover {
+    color: #FFFFFF;
+  }
+
+  [data-theme='light'] .dev-sdk-card-links a:hover {
+    color: var(--ifm-color-primary-darker);
+  }
+
+  .dev-sdk-card-links a::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    background-color: #FFFFFF;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.15s ease;
+  }
+
+  [data-theme='light'] .dev-sdk-card-links a::after {
+    background-color: var(--ifm-color-primary-darker);
+  }
+
+  .dev-sdk-card-links a:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+  }
+
+  @media (max-width: 768px) {
+    .sdk-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+`}
+</style>

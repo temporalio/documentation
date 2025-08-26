@@ -4,14 +4,13 @@ module.exports = {
     "quickstarts",
     {
       type: "category",
-      label: "Evaluate",
+      label: "Introduction",
       collapsed: false,
       link: {
         type: "doc",
         id: "evaluate/index",
       },
       items: [
-        "evaluate/why-temporal",
         "evaluate/understanding-temporal",
         {
           type: "category",
@@ -21,36 +20,23 @@ module.exports = {
             type: "doc",
             id: "evaluate/development-production-features/index",
           },
+          items: [],
+        },
+        {
+          type: "category",
+          label: "Product release stages",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "evaluate/development-production-features/release-stages",
+          },
           items: [
-            "evaluate/development-production-features/core-application",
-            "evaluate/development-production-features/failure-detection",
-            "evaluate/development-production-features/throughput-composability",
-            "evaluate/development-production-features/nexus",
-            "evaluate/development-production-features/workflow-message-passing",
-            "evaluate/development-production-features/debugging",
-            "evaluate/development-production-features/interrupt-workflow",
-            "evaluate/development-production-features/testing-suite",
-            "evaluate/development-production-features/observability",
-            "evaluate/development-production-features/data-encryption",
-            "evaluate/development-production-features/schedules",
-            "evaluate/development-production-features/cloud-automation",
-            "evaluate/development-production-features/low-latency",
-            "evaluate/development-production-features/multi-tenancy",
             {
-              type: "category",
-              label: "Product release stages",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "evaluate/development-production-features/release-stages",
-              },
-              items: [
-                {
-                  type: "link",
-                  label: "Change-log",
-                  href: "https://temporal.io/change-log",
-                },
-              ],
+              type: "link",
+               label: "Change-log",
+
+
+               href: "https://temporal.io/change-log",
             },
           ],
         },
@@ -89,7 +75,6 @@ module.exports = {
           ],
         },
         "security",
-        "evaluate/use-cases-design-patterns",
       ],
     },
     {
