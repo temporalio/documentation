@@ -46,7 +46,7 @@ The Temporal Cloud UI provides two ways for configuring Workflow History Export:
 Temporal Cloud creates multiple intermediary service accounts for export operations primarily for security purposes. The system randomly selects from these accounts when writing to your storage sink, which provides several benefits:
 
 - **Security isolation**: If one service account is compromised or needs to be decommissioned, other accounts remain available
-- **Load distribution**: Prevents exclusively using a single account, reducing security risk
+- **Load distribution**: Avoid relying on a single account, reducing security risk
 - **Warm standby**: Keeps multiple accounts active to avoid potential throttling when switching between accounts
 - **Reliability**: Provides resilience against cloud provider account-level issues that could affect a single service account
 
