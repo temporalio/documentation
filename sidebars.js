@@ -4,13 +4,14 @@ module.exports = {
     "quickstarts",
     {
       type: "category",
-      label: "Introduction",
+      label: "Evaluate",
       collapsed: false,
       link: {
         type: "doc",
         id: "evaluate/index",
       },
       items: [
+        "evaluate/why-temporal",
         "evaluate/understanding-temporal",
         {
           type: "category",
