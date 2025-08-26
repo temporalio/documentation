@@ -17,16 +17,19 @@ tags:
   - Temporal SDKs
 ---
 
-Enhance the Temporal UI by adding contextual information to workflows and events. This makes it easier to identify and understand workflows and their operations at a glance.
+Enhance the Temporal UI by adding contextual information to workflows and events. 
+This makes it easier to identify and understand workflows and their operations at a glance.
 
 ## Adding Summary and Details to Workflows
+Temporal supports adding summaries and details in several places: when starting a Workflow, from within the Workflow itself, and on Activities or Timers within a Workflow.
+These values are displayed in the UI to make workflows easier to identify and interpret.
 
 ### Starting a Workflow
 
-When starting a workflow, you can provide a static summary and details to help identify the workflow in the UI:
+When starting a Workflow, you can provide a static summary and details to help identify the Workflow in the UI:
 
 ```python
-# Start a workflow with static summary and details
+# Start a Workflow with static summary and details
 handle = await client.start_workflow(
     YourWorkflow.run,
     "workflow input",
@@ -37,8 +40,8 @@ handle = await client.start_workflow(
 )
 ```
 
-`static_summary` is a single-line description that appears in the workflow list view, limited to 200 bytes.
-`static_details` can be multi-line and provides more comprehensive information that appears in the workflow details view, with a larger limit of 20K bytes.
+`static_summary` is a single-line description that appears in the Workflow list view, limited to 200 bytes.
+`static_details` can be multi-line and provides more comprehensive information that appears in the Workflow details view, with a larger limit of 20K bytes.
 
 The input format is normal Markdown excluding: images, html, and scripts. 
 
@@ -57,9 +60,9 @@ result = await client.execute_workflow(
 
 ### Inside the Workflow
 
-Within a workflow, you can get and set the _current workflow details_. Unlike static summary/details set at 
-workflow start, this value can be updated throughout the life of the workflow. Current workflow details 
-also takes Markdown format (again, excluding images, html, and scripts) and can span multiple lines. 
+Within a Workflow, you can get and set the _current workflow details_. 
+Unlike static summary/details set at workflow start, this value can be updated throughout the life of the Workflow.
+Current workflow details also takes Markdown format (excluding images, html, and scripts) and can span multiple lines. 
 
 ```python
 @workflow.defn
@@ -78,7 +81,7 @@ class YourWorkflow:
 
 ### Adding Summary to Activities and Timers
 
-You can attach a `summary` to activities when starting them from within a workflow:
+You can attach a `summary` to Activities when starting them from within a Workflow:
 
 ```python
 @workflow.defn
@@ -95,7 +98,7 @@ class YourWorkflow:
         return result
 ```
 
-Similarly, you can attach a `summary` to timers within a workflow:
+Similarly, you can attach a `summary` to Timers within a Workflow:
 
 ```python
 @workflow.defn
