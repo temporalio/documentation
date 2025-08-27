@@ -105,7 +105,7 @@ module.exports = {
           items: [
             "develop/go/set-up-your-local-go",
             "develop/go/core-application",
-            "develop/go/temporal-clients",
+            "develop/go/temporal-client",
             "develop/go/go-sdk-multithreading",
             "develop/go/namespaces",
             "develop/go/testing-suite",
@@ -138,7 +138,7 @@ module.exports = {
           items: [
             "develop/java/set-up-your-local-java",
             "develop/java/core-application",
-            "develop/java/temporal-clients",
+            "develop/java/temporal-client",
             "develop/java/namespaces",
             "develop/java/testing-suite",
             "develop/java/failure-detection",
@@ -167,7 +167,7 @@ module.exports = {
           },
           items: [
             "develop/php/core-application",
-            "develop/php/temporal-clients",
+            "develop/php/temporal-client",
             "develop/php/testing-suite",
             "develop/php/failure-detection",
             "develop/php/message-passing",
@@ -194,7 +194,7 @@ module.exports = {
           items: [
             "develop/python/set-up-your-local-python",
             "develop/python/core-application",
-            "develop/python/temporal-clients",
+            "develop/python/temporal-client",
             "develop/python/python-sdk-sandbox",
             "develop/python/python-sdk-sync-vs-async",
             "develop/python/testing-suite",
@@ -204,6 +204,7 @@ module.exports = {
             "develop/python/asynchronous-activity-completion",
             "develop/python/versioning",
             "develop/python/observability",
+            "develop/python/enriching-ui",
             "develop/python/debugging",
             "develop/python/schedules",
             "develop/python/converters-and-encryption",
@@ -225,7 +226,7 @@ module.exports = {
           items: [
             "develop/typescript/set-up-your-local-typescript",
             "develop/typescript/core-application",
-            "develop/typescript/temporal-clients",
+            "develop/typescript/temporal-client",
             "develop/typescript/namespaces",
             "develop/typescript/testing-suite",
             "develop/typescript/failure-detection",
@@ -653,6 +654,7 @@ module.exports = {
             "encyclopedia/workers/task-routing-worker-sessions",
             "encyclopedia/workers/sticky-execution",
             "encyclopedia/workers/worker-shutdown",
+            "encyclopedia/workers/worker-versioning",
           ],
         },
         {
