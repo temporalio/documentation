@@ -822,7 +822,7 @@ It is generally possible and safe to execute TypeScript SDK Workers using `distr
 However, some tools required for the build process (notably the `npm` command) are _not_ included in the `distroless/nodejs` image.
 This might result in various error messages during the Docker build.
 
-The recommanded solution is to use a multi-step Dockerfile.
+The recommended solution is to use a multi-step Dockerfile.
 For example:
 
 ```dockerfile
