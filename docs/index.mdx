@@ -25,7 +25,10 @@ Temporal provides crash proof execution by making sure that when crashes, networ
   <div className="hero-actions">
     
     <a href="/develop" className="action-card">
-      <div className="action-icon guide-icon">&lt;/&gt;</div>
+      <div className="action-icon guide-icon">
+        <img src="/img/icons/Code.svg" alt="Code icon" className="icon-dark-mode" />
+        <img src="/img/icons/Code-dark.svg" alt="Code icon" className="icon-light-mode" />
+      </div>
       <div className="action-content">
         <h3>Developer Guide</h3>
         <p>Dive into everything you need to know about building with Workflows.</p>
@@ -35,7 +38,10 @@ Temporal provides crash proof execution by making sure that when crashes, networ
 
     
     <a href="/production-deployment" className="action-card">
-      <div className="action-icon deploy-icon">▲</div>
+      <div className="action-icon deploy-icon">
+        <img src="/img/icons/Rocket.svg" alt="Rocket icon" className="icon-dark-mode" />
+        <img src="/img/icons/Rocket-dark.svg" alt="Rocket icon" className="icon-light-mode" />
+      </div>
       <div className="action-content">
         <h3>Deploy your Workflows</h3>
         <p>Deploy your Temporal Application to your environment, Self-Host the Temporal Service or use Temporal Cloud.</p>
@@ -43,7 +49,10 @@ Temporal provides crash proof execution by making sure that when crashes, networ
     </a>
 
         <a href="https://learn.temporal.io/courses/" className="action-card">
-       <div className="action-icon quickstart-icon">⟋</div>
+       <div className="action-icon quickstart-icon">
+         <img src="/img/icons/Education.svg" alt="Education icon" className="icon-dark-mode" />
+         <img src="/img/icons/Education-dark.svg" alt="Education icon" className="icon-light-mode" />
+       </div>
        <div className="action-content">
          <h3>Enroll in Temporal 101 and 102</h3>
          <p>Learn the fundamentals with comprehensive courses and become a Temporal expert.</p>
@@ -53,7 +62,10 @@ Temporal provides crash proof execution by making sure that when crashes, networ
 
 
      <a href="https://temporal.io/cloud" className="action-card">
-      <div className="action-icon cloud-icon">∩</div>
+      <div className="action-icon cloud-icon">
+        <img src="/img/icons/Cloud.svg" alt="Cloud icon" className="icon-dark-mode" />
+        <img src="/img/icons/Cloud-dark.svg" alt="Cloud icon" className="icon-light-mode" />
+      </div>
       <div className="action-content">
         <h3>Get started for free with $1000 in credits</h3>
         <p>Sign up for Temporal Cloud and let us host the Temporal Service for you.</p>
@@ -878,6 +890,28 @@ Temporal provides crash proof execution by making sure that when crashes, networ
   .community-link:hover svg {
     transform: translateX(2px);
     opacity: 1;
+  }
+
+  /* Icon theme switching */
+  .icon-dark-mode {
+    display: block;
+  }
+  
+  .icon-light-mode {
+    display: none;
+  }
+  
+  [data-theme="light"] .icon-dark-mode {
+    display: none;
+  }
+  
+  [data-theme="light"] .icon-light-mode {
+    display: block;
+  }
+  
+  .action-icon img {
+    width: 24px;
+    height: 24px;
   }
 `}
 </style>
