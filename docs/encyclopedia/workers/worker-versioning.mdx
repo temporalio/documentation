@@ -1,0 +1,116 @@
+---
+id: worker-versioning
+title: Worker Versioning
+sidebar_label: Worker Versioning
+description: This page 
+slug: /worker-versioning
+toc_max_heading_level: 4
+keywords:
+  - workers
+  - safe deploys
+  - draining
+  - inheritance
+  - pinning
+  - versioning
+tags:
+  - versioning
+  - safe deploys
+---
+
+This page defines some of the underlying concepts used in [Worker Versioning](/production-deployment/worker-deployments/worker-versioning):
+
+- [Versioning Behaviors](#versioning-behaviors)
+- [Versioning Statuses](#versioning-statuses)
+- [Continue-as-new, Child Workflow, and Retry Semantics](#inheritance-semantics)
+
+## Versioning Behaviors {#versioning-behaviors}
+
+Using **Workflow Pinning**, you can declare each Workflow type to have a **Versioning Behavior**, either Pinned or Auto-Upgrade.
+
+### Pinned Workflows {#pinned}
+
+A **Pinned** Workflow is guaranteed to complete on a single Worker Deployment Version. You can mark a Workflow Type as pinned when you register it by adding an additional Pinned parameter. If you need to move a pinned Workflow to a new version, use [`temporal workflow update-options`](https://docs.temporal.io/cli/workflow#update-options).
+
+### Auto-Upgrade Workflows {#auto-upgrade}
+
+An **Auto-Upgrade** Workflow will move to the latest Worker Deployment Version automatically whenever you change the current version. Auto-upgrade Workflows are not restricted to a single Deployment Version and need to be kept replay-safe manually, i.e. with [patching](/workflow-definition#workflow-versioning).
+
+## Versioning Statuses {#versioning-statuses}
+
+A Worker Deployment Version moves through the following states:
+
+1. **Inactive**: The version exists because a Worker with that version has polled the server. If this version never becomes Active, it will never be Draining or Drained.
+2. **Active**: The version is either Current or Ramping, so it is accepting new Workflows and existing auto-upgrade Workflows.
+3. **Draining**: The version has open pinned Workflows running on it, but stopped being Current or Ramping, usually because a newer version has been deployed. It is possible to be Draining and have no open pinned Workflows for a short time, since the drainage status is updated only periodically.
+4. **Drained**: The version was draining and now all the pinned Workflows that were running on it are closed. Closed Workflows may still re-run some code paths if they are [Queried](https://docs.temporal.io/sending-messages#sending-queries) within their [Retention Period](https://docs.temporal.io/temporal-service/temporal-server#retention-period) and Workers with that version are still polling.
+
+## Continue-as-new, Child Workflow, and Retry Semantics {#inheritance-semantics}
+
+When Workflows start new runs (e.g. by continuing-as-new or retrying) the new run may inherit their versioning behavior. This section explains how inheritance works across different Workflow execution patterns.
+
+### Ways Workflows Start New Runs
+
+A Workflow can start a new run through:
+
+- Starting a [Child Workflow](https://docs.temporal.io/child-workflows)
+- Invoking [Continue-As-New](https://docs.temporal.io/workflow-execution/continue-as-new)
+- Retrying per its [Retry Policy](https://docs.temporal.io/encyclopedia/retry-policies)
+- Starting another iteration of a [Cron Job](https://docs.temporal.io/cron-job) (superseded by [Schedules](https://docs.temporal.io/schedule))
+
+### Inheritance Rules Overview
+
+Auto-upgrade Workflows never inherit versions.
+By default, Pinned workflows will pass their version to any Pinned children.
+
+This section provides more detail on specific inheritance scenarios.
+
+### Inheritance by Scenario
+
+#### Child Workflows
+
+**When Parent is Pinned:**
+
+- Child inherits the parent's version if the child's Task Queue belongs to that version
+- Child's first Workflow task executes in the same version as its parent
+- If child is also Pinned: child remains Pinned to the inherited version for its lifetime
+- If child is Auto-Upgrade: child's behavior changes to Auto-Upgrade after the first task completes
+- If child's Task Queue is not in the same Worker Deployment as parent: no inheritance occurs, child starts on Current Version of its task queue
+
+**When Parent is Auto-upgrade:**
+
+- Child inherits no initial Versioning Behavior
+- Child starts on the Current Version of its Worker Deployment like all new Workflow executions
+
+#### Continue-As-New
+
+**When Original Workflow is Pinned:**
+
+- The Pinned version is inherited across the Continue-As-New chain
+- If the new run's Task Queue is not in the same Worker Deployment as the original Workflow: no inheritance occurs, new run starts on Current Version of its task queue
+
+**When Original Workflow is Auto-upgrade:**
+
+- No version inheritance occurs
+
+#### Retries
+
+**Inheritance Conditions (all must be met):**
+
+- The retried run is effectively pinned at the time of retry
+- The retried run inherited a pinned version when it started (i.e., it is a child of a pinned parent, or a Continue-As-New of a pinned run)
+- The retried run is running on a Task Queue in the inherited version
+
+**When Conditions Not Met:**
+
+- No version inheritance occurs
+
+#### Cron Jobs
+
+- **Never inherit** versioning behavior or version
+
+### Versioning Override Inheritance
+
+- Children, crons, retries, and continue-as-new inherit the source run's override **if**:
+  - The override is pinned, **AND**
+  - The new Workflow's Task Queue belongs to the override version
+- Override inheritance is evaluated separately and takes precedence over inherited base version
