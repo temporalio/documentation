@@ -122,6 +122,14 @@ Count of state transitions for each Namespace.
 
 Approximate count of Temporal Cloud Actions.
 
+#### temporal_cloud_v0_operations_count
+
+Approximate count of Temporal Cloud [operations](/references/operation-list) attempted.
+
+#### temporal_cloud_v0_operations_throttled_count
+
+Approximate count of Temporal Cloud [operations](/references/operation-list) throttled.
+
 ### Poll metrics {#poll}
 
 #### temporal_cloud_v0_poll_success_count
@@ -223,7 +231,7 @@ Use the following labels to filter metrics:
 | Label                      | Explanation                                                                                                                                                                                                                                                                                |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `le`                       | Less than or equal to (`le`) is used in histograms to categorize observations into buckets based on their value being less than or equal to a predefined upper limit.                                                                                                                      |
-| `operation`                | This includes operations such as:<ul><li>SignalWorkflowExecution</li><li>StartBatchOperation</li><li>StartWorkflowExecution</li><li>TaskQueueMgr</li><li>TerminateWorkflowExecution</li><li>UpdateNamespace</li><li>UpdateSchedule</li></ul> See: [Metric Operations](#metrics-operations) |
+| `operation`                | This includes gRPC operations and general Cloud operations such as:<ul><li>SignalWorkflowExecution</li><li>StartBatchOperation</li><li>StartWorkflowExecution</li><li>TaskQueueMgr</li><li>TerminateWorkflowExecution</li><li>UpdateNamespace</li><li>UpdateSchedule</li></ul> See: [Metric Operations](#metrics-operations) and [Temporal Cloud Operation reference](/references/operation-list)|
 | `resource_exhausted_cause` | Cause for resource exhaustion.                                                                                                                                                                                                                                                             |
 | `task_type`                | Activity, Workflow, or Nexus.                                                                                                                                                                                                                                                              |
 | `temporal_account`         | Temporal Account.                                                                                                                                                                                                                                                                          |
@@ -244,7 +252,12 @@ temporal_cloud_v0_poll_success_count{__rollup__="true", operation="TaskQueueMgr"
 
 Operations are a special class of metrics label.
 They describe the context during which a metric was captured.
-Temporal Cloud includes the following operations labels:
+
+The possible operations can vary by metric.
+
+For `temporal_cloud_v0_operations_count` and `temporal_cloud_v0_operations_throttled_count` see the Temporal Cloud [operations list](/references/operation-list).
+
+For all other metrics, Temporal Cloud includes the following operations labels:
 
 - AdminDescribeMutableState
 - AdminGetWorkflowExecutionRawHistory
