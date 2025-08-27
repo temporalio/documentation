@@ -29,11 +29,13 @@ Workflow History Export allows users to export closed Workflow Histories from Te
 - Compliance and audit trails of complete Workflow History data in [proto format](https://github.com/temporalio/api/blob/master/temporal/api/export/v1/message.proto)
 - Analytics on Workflow History when ingested to the data platform of your choice
 
-Workflow History Export in Temporal Cloud provides similar functionality as [Archival](/self-hosted-guide/archival) in a self-hosted Temporal Server. Archival is not supported in Temporal Cloud.
+Workflow History Export in Temporal Cloud provides similar functionality as [Archival](/self-hosted-guide/archival) in a self-hosted Temporal Server. 
+Archival is not supported in Temporal Cloud.
 
-Exports run hourly, beginning 10 minutes after the hour. The time at which a closed Workflow appears in the exported file may vary, but it is typically available within one to four hours. Delivery is guaranteed at least once.
+Exports run hourly, beginning 10 minutes after the hour. 
+The time at which a closed Workflow appears in the exported file may vary, but it is typically available within one to four hours. 
+Delivery is guaranteed at least once.
 
-At least once delivery is guaranteed.
 
 ## Prerequisites {#prerequisites}
 
@@ -88,7 +90,7 @@ After Export has been configured, you can check that it's still working in sever
 
 ## Working with exported files
 
-Use the proto schema defined in https://github.com/temporalio/api/blob/master/temporal/api/export/v1/message.proto to deserialize exported files.
+Use the proto schema defined [here](https://github.com/temporalio/api/blob/master/temporal/api/export/v1/message.proto) to deserialize exported files.
 
 ## Export and High Availability Namespaces {#export-ha}
 

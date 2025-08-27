@@ -25,14 +25,12 @@ import * as Components from '@site/src/components';
 
 Before configuring the Export Sink, ensure you have the following:
 
-1. An AWS Account with write permission to an S3 bucket.
+1. An AWS account with write permission to an S3 bucket.
 2. An AWS S3 bucket.
    - The S3 bucket must reside in the same region as your Namespace.
 3. (optional) A KMS ARN associated with the S3 bucket.
 
-## Configure Workflow History Export
-
-How to Configure Workflow History Export Using Temporal Cloud UI or `tcld`
+## Configure Workflow History Export using Temporal Cloud UI or `tcld`
 
 You can use either the [Temporal Cloud UI](#using-temporal-cloud-ui) or [`tcld`](#using-tcld) to configure the Workflow History Export.
 
@@ -43,7 +41,8 @@ The Temporal Cloud UI provides two ways for configuring Workflow History Export:
 
 :::note Why does Temporal Cloud provision multiple service accounts for Export?
 
-Temporal Cloud creates multiple intermediary service accounts for export operations primarily for security purposes. The system randomly selects from these accounts when writing to your storage sink, which provides several benefits:
+Temporal Cloud creates multiple intermediary service accounts for export operations primarily for security purposes. 
+The system randomly selects from these accounts when writing to your storage sink, which provides several benefits:
 
 - **Security isolation**: If one service account is compromised or needs to be decommissioned, other accounts remain available
 - **Load distribution**: Avoid relying on a single account, reducing security risk
@@ -104,7 +103,7 @@ Run the `tcld namespace export s3 create` command and provide the following info
 For example:
 
 ```command
-tcld namespace export s3 create --namespace "your-namespace.your-account" --sink-name "your-sink-name" --role-arn "arn:aws:iam::123456789012:role/test-sink" --s3-bucket-name "your-aws-s3-bucket-name”
+tcld namespace export s3 create --namespace "your-namespace.your-account" --sink-name "your-sink-name" --role-arn "arn:aws:iam::123456789012:role/test-sink" --s3-bucket-name "your-aws-s3-bucket-name"
 ```
 
 Retrieve the status of this command by running the `tcld namespace export s3 get` command.
