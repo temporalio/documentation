@@ -47,6 +47,12 @@ Set up PrivateLink connectivity with Temporal Cloud with these steps:
 5. Under _Type_ category, select _Endpoint services that use NLBs and GWLBs_.
    This option lets you find services shared with you by service name.
 6. Under _Service settings_, fill in the _Service name_ with the PrivateLink Service Name for the region you’re trying to connect from:
+:::tip
+
+PrivateLink endpoint services are regional.
+Individual Namespaces do not use separate services.
+
+:::
 
    | Region           | PrivateLink Service Name                                       |
    | ---------------- | -------------------------------------------------------------- |
@@ -79,72 +85,16 @@ Set up PrivateLink connectivity with Temporal Cloud with these steps:
 11. Click on the VPC endpoint ID in the Endpoints list to check its status.
     Wait for the status to be “Available”.
     This can take up to 10 minutes.
-12. Once available, you can use AWS PrivateLink.
-    Use the first value under “DNS names” as your hostname to connect to Temporal Cloud using port 7233.
-    To establish a valid mTLS session, you must override the TLS server name used for the connection to `<namespace_id>.<account_id>.tmprl.cloud`.
-    Alternatively, you can [configure private DNS for AWS PrivateLink](#configuring-private-dns-for-aws-privatelink).
+12. Once the status is "Available", the AWS PrivateLink is ready for use.
 
+:::caution
+You still need to set up private DNS or override client configuration for your clients to actually use the new PrivateLink connection to connect to Temporal Cloud.
+
+See [configure private DNS for AWS PrivateLink](#configuring-private-dns-for-aws-privatelink)
+:::
+    
     ![Highlighted DNS names section shows your hostname](/img/cloud/privatelink/details.png)
 
-You are ready to start using Private Link with Temporal Cloud.
-
-:::tip
-
-PrivateLink endpoint services are regional.
-Individual Namespaces do not use separate services.
-
-:::
-
-Once set up, you can test your PrivateLink connectivity using the following methods.
-When connecting, you must override the TLS server name to target your Namespace’s individual hostname (`<namespace_id>.<account_id>.tmprl.cloud`) to establish a valid mTLS session:
-
-- The Temporal CLI, using the `--tls-server-name` parameter to override the TLS server name. For example:
-
-  ```
-  temporal workflow count \
-      --address <DNS associated with VPC endpoint>:7233 \
-      --tls-cert-path /path/to/client.pem \
-      --tls-key-path /path/to/client.key \
-      --tls-server-name <namespace_id>.<account_id>.tmprl.cloud \
-      --namespace <namespace_id>.<account_id>
-  ```
-
-- Non-Temporal tools like grpcURL, useful for testing from environments that restrict tool usage, using the `-servername` parameter to override the TLS server name. For example:
-
-  ```
-  grpcurl \
-      -servername <namespace_id>.<account_id>.tmprl.cloud \
-      -cert /path/to/client.pem \
-      -key /path/to/client.key \
-      <DNS ASSOCIATED WITH VPC ENDPOINT>:7233 \
-      temporal.api.workflowservice.v1.WorkflowService/GetSystemInfo
-  ```
-
-- Temporal SDKs, by setting the endpoint server address argument to the PrivateLink endpoint (`<DNS associated with VPC endpoint>:7233`) and using the TLS configuration options to override the TLS server name.
-
-When using [API keys for namespace authentication](/cloud/api-keys#namespace-authentication), the TLS server name must be set to the Namespace's gRPC endpoint (`<region>.<cloud_provider>.api.temporal.io`) using one of the following methods:
-
-- The Temporal CLI, using `--tls-server-name` parameter to override the TLS server name and the `--tls` flag to enforce the use of TLS. For example:
-
-  ```
-  temporal workflow count \
-      --address <DNS associated with VPC endpoint>:7233 \
-      --namespace <namespace>.<account> \
-      --api-key <api_key> \
-      --tls-server-name <region>.<cloud_provider>.api.temporal.io \
-      --tls
-  ```
-
-- Non-Temporal tools like grpcURL, setting the `authorization` and `temporal-namespace` headers, and the `-servername` parameter to override the TLS server name. For example:
-
-  ```
-  grpcurl \
-      -H "authorization: Bearer <api_key>" \
-      -H "temporal-namespace: <namespace>.<account>" \
-      -servername <region>.<cloud_provider>.api.temporal.io \
-      <DNS ASSOCIATED WITH VPC ENDPOINT>:7233 \
-      temporal.api.workflowservice.v1.WorkflowService/GetSystemInfo
-  ```
 
 ## Configuring Private DNS for AWS PrivateLink
 
@@ -161,7 +111,7 @@ By creating a Route 53 **private hosted zone (PHZ)** that maps the public Tempor
 - Eliminate the need to set a custom SNI override.
 - Make future Endpoint rotations transparent—only the PHZ record changes.
 
-This approach is **optional**; Temporal Cloud works without it. It simply streamlines configuration and operations.
+This approach is **optional**; Temporal Cloud works without it. It simply streamlines configuration and operations. If you cannot use private DNS, refer to [our guide for updating the server and TLS settings on your clients](/cloud/connectivity#update-dns-or-clients-to-use-private-connectivity).
 
 ### Prerequisites
 

@@ -58,6 +58,13 @@ Set up Private Service Connect with Temporal Cloud with these steps:
 
 - For **Target service**, fill in the **Service name** with the Private Service Connect Service Name for the region you’re trying to connect to:
 
+:::tip
+
+GCP Private Service Connect services are regional.
+Individual Namespaces do not use separate services.
+
+:::
+
   | Region         | Private Service Connect Service Name                                                       |
   | -------------- | ------------------------------------------------------------------------------------------ |
   | `asia-south1`  | `projects/prod-d5spc2sfeshws33bg33vwdef7/regions/asia-south1/serviceAttachments/pl-7w7tw`  |
@@ -72,70 +79,16 @@ Set up Private Service Connect with Temporal Cloud with these steps:
 - Check **Enable global access** if you intend to connect the endpoint to virtual machines outside of the selected region. We recommend regional connectivity instead of global access, as it can be better in terms of latency for your workers. _**Note:** this requires the network routing mode to be set to **GLOBAL**._
 
 5. Click the **Add endpoint** button at the bottom of the screen.
-   If successful, the status of your new endpoint will appear as **Accepted**.
-   Take note of the **IP address** that has been assigned to your endpoint, as it will be used to connect to Temporal Cloud.
 
-6. You can now use GCP Private Service Connect.
-   You can use the **IP address** of the previous step to connect to Temporal Cloud using port 7233.
-   To establish a valid mTLS session, you must override the TLS server name used for the connection to `<namespace>.<account>.tmprl.cloud`.
+6. Once the status is "Accepted", the GCP Private Service Connect endpoint is ready for use.
+   
+  - Take note of the **IP address** that has been assigned to your endpoint, as it will be used to connect to Temporal Cloud.
 
-:::tip
+:::caution
+You still need to set up private DNS or override client configuration for your clients to actually use the new Private Service Connect connection to connect to Temporal Cloud.
 
-GCP Private Service Connect services are regional.
-Individual Namespaces do not use separate services.
-
+See [configuring private DNS for GCP Private Service Connect](#configuring-private-dns-for-gcp-private-service-connect)
 :::
-
-Once set up, you can test your Private Service Connect connectivity using the following methods.
-When connecting, you must override the TLS server name to target your Namespace’s individual hostname (`<namespace>.<account>.tmprl.cloud`) to establish a valid mTLS session:
-
-- The Temporal CLI, using the `--tls-server-name` parameter to override the TLS server name. For example:
-
-  ```
-  temporal workflow count \
-      --address <IP address of the PSC endpoint>:7233 \
-      --tls-cert-path /path/to/client.pem \
-      --tls-key-path /path/to/client.key \
-      --tls-server-name <namespace>.<account>.tmprl.cloud \
-      --namespace <namespace>
-  ```
-
-- Non-Temporal tools like grpcURL, useful for testing from environments that restrict tool usage, using the `-servername` parameter to override the TLS server name. For example:
-
-  ```
-  grpcurl \
-      -servername <name>.<account>.tmprl.cloud \
-      -cert /path/to/client.pem \
-      -key /path/to/client.key \
-      <IP address of the PSC endpoint>:7233 \
-      temporal.api.workflowservice.v1.WorkflowService/GetSystemInfo
-  ```
-
-- Temporal SDKs, by setting the endpoint server address argument to the Private Service Connect endpoint (`<IP address of the PSC endpoint>:7233`) and using the TLS configuration options to override the TLS server name.
-
-When using [API keys for namespace authentication](/cloud/api-keys#namespace-authentication), the TLS server name must be set to the Namespace's gRPC endpoint (`<region>.<cloud_provider>.api.temporal.io`) using one of the following methods:
-
-- The Temporal CLI, using `--tls-server-name` parameter to override the TLS server name and the `--tls` flag to enforce the use of TLS. For example:
-
-  ```
-  temporal workflow count \
-      --address <IP address of the PSC endpoint>:7233 \
-      --namespace <namespace>.<account> \
-      --api-key <api_key> \
-      --tls-server-name <region>.<cloud_provider>.api.temporal.io \
-      --tls
-  ```
-
-- Non-Temporal tools like grpcURL, setting the `authorization` and `temporal-namespace` headers, and the `-servername` parameter to override the TLS server name. For example:
-
-  ```
-  grpcurl \
-      -H "authorization: Bearer <api_key>" \
-      -H "temporal-namespace: <namespace>.<account>" \
-      -servername <region>.<cloud_provider>.api.temporal.io \
-      <IP address of the PSC endpoint>:7233 \
-      temporal.api.workflowservice.v1.WorkflowService/GetSystemInfo
-  ```
 
 ## Configuring Private DNS for GCP Private Service Connect
 
@@ -152,7 +105,7 @@ By creating a **private Cloud DNS zone (PZ)** that maps the public TemporalC Clo
 - Eliminate the need to set a custom SNI override.
 - Make future endpoint rotations transparent—only the DNS record changes.
 
-This approach is **optional**; Temporal Cloud works without it, but it streamlines configuration and operations.
+This approach is **optional**; Temporal Cloud works without it. It simply streamlines configuration and operations. If you cannot use private DNS, refer to [our guide for updating the server and TLS settings on your clients](/cloud/connectivity#update-dns-or-clients-to-use-private-connectivity).
 
 ### Prerequisites
 
