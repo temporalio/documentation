@@ -139,6 +139,19 @@ If both `--ca-certificate` and `--ca-certificate-file` are specified, only `--ca
 
 Alias: `-c`
 
+### --connectivity-rule-ids
+
+The list of connectivity rule IDs, can be used in create namespace and update namespace. example: --ids id1 --ids id2 --ids id3.
+
+Alias: `ids`
+
+```bash
+tcld namespace create \
+    --namespace <namespace_id> \
+    --ids <rule_id1> \
+    --ids <rule_id2> // if adding multiple rules
+```
+
 #### --namespace
 
 Specify a Namespace hosted on Temporal Cloud.
