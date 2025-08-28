@@ -46,7 +46,7 @@ Temporal's Spring Boot integration currently supports Spring 2.x and 3.x
 <dependency>
     <groupId>io.temporal</groupId>
     <artifactId>temporal-spring-boot-starter</artifactId>
-    <version>1.30.1</version>
+    <version>1.31.0</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -54,14 +54,14 @@ Temporal's Spring Boot integration currently supports Spring 2.x and 3.x
 **[Gradle Groovy DSL](https://gradle.org/):**
 
 ```groovy
-implementation ("io.temporal:temporal-spring-boot-starter:1.30.1")
+implementation ("io.temporal:temporal-spring-boot-starter:1.31.0")
 ```
 
 ## Connect {#connect}
 
-To create an autoconfigured `WorkflowClient`, you need to specify some connection details in your `application.yml` file, as described in the next section.
-
 See the [Temporal Client documentation](/develop/java/temporal-clients) for more information about connecting to a Temporal Service.
+
+To create an autoconfigured `WorkflowClient`, you need to specify some connection details in your `application.yml` file, as described in the next section.
 
 ### Connect to your local Temporal Service
 
@@ -150,10 +150,10 @@ spring.temporal:
 
 #### What is auto-discovered:
 
-Workflow implementation classes annotated with `io.temporal.spring.boot.WorkflowImpl`
-Activity beans present Spring context whose implementations are annotated with `io.temporal.spring.boot.ActivityImpl`
-Nexus Service beans present in Spring context whose implementations are annotated with `io.temporal.spring.boot.NexusServiceImpl`
-Workers if a Task Queue is referenced by the annotations but not explicitly configured. Default configuration will be used.
+  * Workflow implementation classes annotated with `io.temporal.spring.boot.WorkflowImpl`
+  * Activity beans present Spring context whose implementations are annotated with `io.temporal.spring.boot.ActivityImpl`
+  * Nexus Service beans present in Spring context whose implementations are annotated with `io.temporal.spring.boot.NexusServiceImpl`
+  * Workers if a Task Queue is referenced by the annotations but not explicitly configured. Default configuration will be used.
 
 :::note
 `io.temporal.spring.boot.ActivityImpl` and `io.temporal.spring.boot.NexusServiceImpl` should be applied to beans, one way to do this is to annotate your Activity implementation class with `@Component`
