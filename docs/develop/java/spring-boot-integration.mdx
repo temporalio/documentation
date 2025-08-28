@@ -59,7 +59,7 @@ implementation ("io.temporal:temporal-spring-boot-starter:1.30.1")
 
 ## Connect {#connect}
 
-To create an autoconfigured `WorkflowClient`, you need only specify some connection details in your application.yml file, as described in the next section.
+To create an autoconfigured `WorkflowClient`, you need to specify some connection details in your `application.yml` file, as described in the next section.
 
 See the [Temporal Client documentation](/develop/java/temporal-clients) for more information about connecting to a Temporal Service.
 
@@ -71,7 +71,7 @@ spring.temporal:
     target: local # you can specify a host:port here for a remote connection
 ```
 
-This is enough to be able to autowire a `WorkflowClient` in your Spring Boot application:
+This is enough to autowire a `WorkflowClient` in your Spring Boot application:
 
 ```java
 @SpringBootApplication
@@ -122,7 +122,7 @@ spring.temporal:
 
 ## Configure Workers {#configure-workers}
 
-Temporal's Spring Boot integration supports two configuration methods for Workers: auto-discovery and explicit configuration.
+Temporal's Spring Boot integration supports two configuration methods for Workers: explicit configuration and auto-discovery.
 
 ### Explicit configuration
 
@@ -150,7 +150,7 @@ spring.temporal:
 
 #### What is auto-discovered:
 
-Workflows implementation classes annotated with `io.temporal.spring.boot.WorkflowImpl`
+Workflow implementation classes annotated with `io.temporal.spring.boot.WorkflowImpl`
 Activity beans present Spring context whose implementations are annotated with `io.temporal.spring.boot.ActivityImpl`
 Nexus Service beans present in Spring context whose implementations are annotated with `io.temporal.spring.boot.NexusServiceImpl`
 Workers if a Task Queue is referenced by the annotations but not explicitly configured. Default configuration will be used.
@@ -176,29 +176,29 @@ Auto-discovered Workflow implementation classes, Activity beans, and Nexus Servi
 
 ## Interceptors {#interceptors}
 
-To enable Interceptors, users can create beans implementing the `io.temporal.common.interceptors.WorkflowClientInterceptor`, `io.temporal.common.interceptors.ScheduleClientInterceptor`, or `io.temporal.common.interceptors.WorkerInterceptor` interface. Interceptors will be registered in the order specified by the `@Order` annotation.
+To enable Interceptors, you can create beans by implementing the `io.temporal.common.interceptors.WorkflowClientInterceptor`, `io.temporal.common.interceptors.ScheduleClientInterceptor`, or `io.temporal.common.interceptors.WorkerInterceptor` interface. Interceptors will be registered in the order specified by the `@Order` annotation.
 
 ## Integrations {#integrations}
 
 The Temporal Spring Boot integration also has built in support for various tools in the Spring ecosystem, such as metrics and tracing.
 
-#### Metrics
+### Metrics
 
-You can set up built-in Spring Boot Metrics using [Spring Boot Actuator](https://docs.spring.io/spring-boot/reference/actuator/metrics.html). The Temporal Spring Boot integration will pick up the MeterRegistry bean and use it to report Temporal Metrics.
+You can set up built-in Spring Boot metrics using [Spring Boot Actuator](https://docs.spring.io/spring-boot/reference/actuator/metrics.html). The Temporal Spring Boot integration will pick up the `MeterRegistry` bean and use it to report Temporal metrics.
 
 Alternatively, you can define a custom `io.micrometer.core.instrument.MeterRegistry` bean in the application context.
 
-#### Tracing
+### Tracing
 
-You can set up [Spring Cloud Sleuth](https://spring.io/projects/spring-cloud-sleuth) with OpenTelemetry export. The Temporal Spring Boot integration will pick up the OpenTelemetry bean configured by spring-cloud-sleuth-otel-autoconfigure and use it for Temporal Traces.
+You can set up [Spring Cloud Sleuth](https://spring.io/projects/spring-cloud-sleuth) with an OpenTelemetry export. The Temporal Spring Boot integration will pick up the OpenTelemetry bean configured by `spring-cloud-sleuth-otel-autoconfigure` and use it for Temporal traces.
 
-Alternatively, you can define a custom `io.opentelemetry.api.OpenTelemetry` for OpenTelemetry or `io.opentracing.Tracer` for OpenTracing bean in the application context.
+Alternatively, you can define a custom `io.opentelemetry.api.OpenTelemetry` for OpenTelemetry or `io.opentracing.Tracer` for an OpenTracing bean in the application context.
 
 ## Customization of Options {#customize-options}
 
-To programmatically customize the various options that are created by the Spring Boot integration, users can create beans that implement the `io.temporal.spring.boot.TemporalOptionsCustomizer<OptionsBuilderType>` interface. This will be called after the options in your properties files are applied.
+To programmatically customize the various options that are created by the Spring Boot integration, you can create beans that implement the `io.temporal.spring.boot.TemporalOptionsCustomizer<OptionsBuilderType>` interface. This will be called after the options in your properties files are applied.
 
-Where OptionsType may be one of:
+Where `OptionsType` may be one of:
 
     * `WorkflowServiceStubsOptions.Builder`
     * `WorkflowClientOption.Builder`
