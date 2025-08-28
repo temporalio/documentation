@@ -83,9 +83,8 @@ Temporal provides crash proof execution by making sure that when crashes, networ
 <div className="community-cards">
   <div className="community-card">
     <div className="community-icon slack-icon">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.527 2.527 0 0 1 2.521 2.521 2.527 2.527 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zM18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zM15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/>
-      </svg>
+      <img src="/img/icons/Slack.svg" alt="Slack" width="24" height="24" className="icon-dark-mode" />
+      <img src="/img/icons/Slack-dark.svg" alt="Slack" width="24" height="24" className="icon-light-mode" />
     </div>
     <div className="community-content">
       <h3>Join our Slack</h3>
@@ -100,8 +99,26 @@ Temporal provides crash proof execution by making sure that when crashes, networ
     </div>
 
   <div className="community-card">
+    <div className="community-icon forum-icon">
+      <img src="/img/icons/Book.svg" alt="Book" width="24" height="24" className="icon-dark-mode" />
+      <img src="/img/icons/Book-dark.svg" alt="Book" width="24" height="24" className="icon-light-mode" />
+    </div>
+    <div className="community-content">
+      <h3>Developer Forum</h3>
+              <p>Ask questions, browse discussions, and search for solutions. Learn from other developers in the community.</p>
+      <a href="https://community.temporal.io" className="community-link">
+        Visit Forum
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M13.5 7.5L17 11L13.5 14.5M17 11H7"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <div className="community-card">
     <div className="community-icon temporal-icon">
-      <img src="/img/assets/temporal-logo.svg" alt="Temporal" width="24" height="24" />
+      <img src="/img/icons/Message.svg" alt="Message" width="24" height="24" className="icon-dark-mode" />
+      <img src="/img/icons/Message-dark.svg" alt="Message" width="24" height="24" className="icon-light-mode" />
     </div>
     <div className="community-content">
       <h3>Ask AI</h3>
@@ -736,9 +753,21 @@ Temporal provides crash proof execution by making sure that when crashes, networ
   /* Community Cards */
   .community-cards {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 1.25rem;
     margin: 3rem 0 2rem 0;
+  }
+  
+  @media (max-width: 768px) {
+    .community-cards {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .community-cards {
+      grid-template-columns: 1fr 1fr;
+    }
   }
   
   .community-card {
@@ -798,29 +827,32 @@ Temporal provides crash proof execution by making sure that when crashes, networ
     height: 44px;
     border-radius: 12px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     flex-shrink: 0;
     color: white;
     position: relative;
     z-index: 1;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+    padding-top: 8px;
   }
   
   .slack-icon {
-    background: linear-gradient(135deg, #4A154B 0%, #611f69 100%);
+    background: none;
+  }
+  
+  .forum-icon {
+    background: none;
   }
   
   .temporal-icon {
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    background: none;
     display: flex;
     align-items: center;
     justify-content: center;
   }
   
-  [data-theme="light"] .temporal-icon img {
-    content: url('/img/assets/temporal-logo-dark.svg');
-  }
+
   
   .community-content {
     flex: 1;
