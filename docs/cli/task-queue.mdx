@@ -14,6 +14,7 @@ keywords:
 tags:
   - Temporal CLI
 ---
+
 {/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
 This file is generated from https://github.com/temporalio/cli/blob/main/temporalcli/commandsgen/commands.yml */}
 
@@ -148,7 +149,7 @@ Task Queue type (legacy mode only). Accepted values: workflow, activity. (defaul
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -215,6 +216,10 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -325,7 +330,7 @@ Search only the specified task queue(s). Can be passed multiple times.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -392,6 +397,10 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -495,7 +504,7 @@ Task Queue name. Required.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -562,6 +571,10 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -654,7 +667,7 @@ Task Queue name. Required.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -721,6 +734,10 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -847,7 +864,7 @@ Task Queue name. Required.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -914,6 +931,10 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -1023,7 +1044,7 @@ Task Queue name. Required.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -1090,6 +1111,10 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -1198,7 +1223,7 @@ Task Queue name. Required.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -1265,6 +1290,10 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -1374,7 +1403,7 @@ Task Queue name. Required.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -1441,6 +1470,10 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -1573,7 +1606,7 @@ Don't prompt to confirm.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -1640,6 +1673,10 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -1758,7 +1795,7 @@ Don't prompt to confirm.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -1825,6 +1862,10 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -1935,7 +1976,7 @@ Don't prompt to confirm.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -2002,6 +2043,10 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -2103,7 +2148,7 @@ Don't prompt to confirm.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -2170,6 +2215,10 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -2271,7 +2320,7 @@ Use the following options to change the behavior of this command.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -2338,6 +2387,10 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -2451,7 +2504,7 @@ Don't prompt to confirm.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -2518,6 +2571,10 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -2649,7 +2706,7 @@ Don't prompt to confirm.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -2716,6 +2773,10 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -2823,7 +2884,7 @@ Don't prompt to confirm.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -2890,6 +2951,10 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 

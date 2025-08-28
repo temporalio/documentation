@@ -155,6 +155,7 @@ module.exports = {
             "develop/java/child-workflows",
             "develop/java/continue-as-new",
             "develop/java/side-effects",
+            "develop/java/spring-boot-integration",
           ],
         },
         {
@@ -547,10 +548,12 @@ module.exports = {
         "references/errors",
         "references/events",
         "references/failures",
+        "references/operation-list",
         "references/sdk-metrics",
         "references/server-options",
         "references/web-ui-configuration",
         "references/web-ui-environment-variables",
+        
       ],
     },
     {
