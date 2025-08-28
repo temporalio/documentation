@@ -1,5 +1,3 @@
-{/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
-This file is generated from https://github.com/temporalio/cli/blob/main/temporalcli/commandsgen/commands.yml */}
 ---
 id: activity
 title: Temporal CLI activity command reference
@@ -23,6 +21,9 @@ tags:
   - Activities
   - Temporal CLI
 ---
+
+{/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
+This file is generated from https://github.com/temporalio/cli/blob/main/temporalcli/commandsgen/commands.yml */}
 
 ## complete
 
@@ -622,7 +623,7 @@ temporal activity reset \
 
 Either `activity-id`, `activity-type`, or `--match-all` must be specified.
 
-Activities can be reset in bulk with a visibility query list filter. 
+Activities can be reset in bulk with a visibility query list filter.
 For example, if you want to reset activities of type Foo:
 
 ```
@@ -1082,7 +1083,7 @@ Override target TLS server name.
 ## update-options
 
 Update the options of a running Activity that were passed into it from
- a Workflow. Updates are incremental, only changing the specified
+a Workflow. Updates are incremental, only changing the specified
 options.
 
 For example:
@@ -1106,7 +1107,7 @@ You may follow this command with `temporal activity reset`, and the new values w
 
 Either `activity-id`, `activity-type`, or `--match-all` must be specified.
 
-Activity options can be updated in bulk with a visibility query list filter. 
+Activity options can be updated in bulk with a visibility query list filter.
 For example, if you want to reset for activities of type Foo, do:
 
 ```
@@ -1342,4 +1343,3 @@ Path to x509 private key. Can't be used with --tls-key-data.
 **--tls-server-name** _string_
 
 Override target TLS server name.
-
