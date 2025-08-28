@@ -148,6 +148,15 @@ Alias: `ids`
 ```bash
 tcld namespace create \
     --namespace <namespace_id> \
+    --region us-west-2 \
+    --retention-days 60 \
+    --certificate-filter-input '{"filters": [{"commonName": "test1"}]}' \
+    --user-namespace-permission "user@example.com=Admin" \
+    --search-attribute "customer_id=Int" \
+    --search-attribute "customer_name=Text" \
+    --endpoint "https://test-codec-server.com" \
+    --pass-access-token \
+    --include-credentials \
     --ids <rule_id1> \
     --ids <rule_id2> // if adding multiple rules
 ```
