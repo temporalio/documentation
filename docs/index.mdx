@@ -76,61 +76,33 @@ Temporal provides crash proof execution by making sure that when crashes, networ
 
 
 
-
-
-## Need Help? 
-
 <div className="community-cards">
-  <div className="community-card">
-    <div className="community-icon slack-icon">
+  <a href="https://temporal.io/slack" className="community-card">
+    <div className="community-icon">
       <img src="/img/icons/Slack.svg" alt="Slack" width="24" height="24" className="icon-dark-mode" />
       <img src="/img/icons/Slack-dark.svg" alt="Slack" width="24" height="24" className="icon-light-mode" />
     </div>
-    <div className="community-content">
-      <h3>Join our Slack</h3>
-      <p>Join our official Slack community to chat with us directly and become a part of the Temporal community.</p>
-      <a href="https://temporal.io/slack" className="community-link">
-        Join Slack
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M13.5 7.5L17 11L13.5 14.5M17 11H7"/>
-        </svg>
-      </a>
-    </div>
-    </div>
+    <h3>Slack Community</h3>
+    <p>Join us on temporal.io/slack and chat with us directly.</p>
+  </a>
 
-  <div className="community-card">
-    <div className="community-icon forum-icon">
+  <a href="https://community.temporal.io" className="community-card">
+    <div className="community-icon">
       <img src="/img/icons/Book.svg" alt="Book" width="24" height="24" className="icon-dark-mode" />
       <img src="/img/icons/Book-dark.svg" alt="Book" width="24" height="24" className="icon-light-mode" />
     </div>
-    <div className="community-content">
-      <h3>Developer Forum</h3>
-              <p>Ask questions, browse discussions, and search for solutions. Learn from other developers in the community.</p>
-      <a href="https://community.temporal.io" className="community-link">
-        Visit Forum
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M13.5 7.5L17 11L13.5 14.5M17 11H7"/>
-        </svg>
-      </a>
-    </div>
-  </div>
+    <h3>Developer Forum</h3>
+    <p>Ask questions, search solutions, and learn from other developers.</p>
+  </a>
 
-  <div className="community-card">
-    <div className="community-icon temporal-icon">
+  <a href="#" className="community-card">
+    <div className="community-icon">
       <img src="/img/icons/Message.svg" alt="Message" width="24" height="24" className="icon-dark-mode" />
       <img src="/img/icons/Message-dark.svg" alt="Message" width="24" height="24" className="icon-light-mode" />
     </div>
-    <div className="community-content">
-      <h3>Ask AI</h3>
-      <p>Get instant answers to your Temporal questions. Click the "Ask AI" button for personalized help and code examples.</p>
-      <a href="#" className="community-link">
-        Try Ask AI
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M13.5 7.5L17 11L13.5 14.5M17 11H7"/>
-        </svg>
-      </a>
-    </div>
-  </div>
+    <h3>Ask AI</h3>
+    <p>Try our AI for instant answers and personalized help.</p>
+  </a>
 </div>
 
 <style>
@@ -754,175 +726,84 @@ Temporal provides crash proof execution by making sure that when crashes, networ
   .community-cards {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 1.25rem;
+    gap: 3rem;
     margin: 3rem 0 2rem 0;
+    text-align: center;
   }
   
   @media (max-width: 768px) {
     .community-cards {
       grid-template-columns: 1fr;
+      gap: 2rem;
     }
   }
   
   @media (min-width: 769px) and (max-width: 1024px) {
     .community-cards {
       grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
     }
   }
   
   .community-card {
-    background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
-    border: 1px solid #e5e7eb;
-    border-radius: 16px;
-    padding: 1.75rem;
     display: flex;
-    flex-direction: row;
-    gap: 1.25rem;
-    align-items: flex-start;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.02);
-  }
-  
-  [data-theme="dark"] .community-card {
-    background: #1a1b26;
-    border: 1px solid #2a2d3a;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  .community-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, transparent 0%, rgba(99, 102, 241, 0.03) 100%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  
-  [data-theme="dark"] .community-card::before {
-    background: linear-gradient(135deg, transparent 0%, rgba(68, 76, 231, 0.02) 100%);
-  }
-  
-  .community-card:hover::before {
-    opacity: 1;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid transparent;
   }
   
   .community-card:hover {
+    text-decoration: none;
+    color: inherit;
     transform: translateY(-4px);
-    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
-    border-color: rgba(99, 102, 241, 0.15);
+    border-color: #6366f1;
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.15);
   }
   
   [data-theme="dark"] .community-card:hover {
     border-color: #444CE7;
-    box-shadow: 0 8px 32px rgba(68, 76, 231, 0.15);
+    box-shadow: 0 4px 16px rgba(68, 76, 231, 0.2);
   }
   
   .community-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    flex-shrink: 0;
-    color: white;
-    position: relative;
-    z-index: 1;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
-    padding-top: 8px;
-  }
-  
-  .slack-icon {
-    background: none;
-  }
-  
-  .forum-icon {
-    background: none;
-  }
-  
-  .temporal-icon {
-    background: none;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: 0.5rem;
   }
   
 
   
-  .community-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    position: relative;
-    z-index: 1;
-  }
-  
-  .community-content h3 {
+  .community-card h3 {
     margin: 0;
-    font-size: 1.1rem;
+    font-size: 1.25rem;
     font-weight: 600;
     color: #1f2937;
     letter-spacing: -0.01em;
   }
   
-  [data-theme="dark"] .community-content h3 {
+  [data-theme="dark"] .community-card h3 {
     color: var(--ifm-color);
   }
   
-  .community-content p {
+  .community-card p {
     margin: 0;
     color: #6b7280;
     line-height: 1.5;
-    font-size: 0.85rem;
+    font-size: 0.95rem;
   }
   
-  [data-theme="dark"] .community-content p {
+  [data-theme="dark"] .community-card p {
     color: var(--ifm-color-emphasis-700);
   }
   
-  .community-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #6366f1;
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 0.85rem;
-    margin-top: 0.5rem;
-    transition: all 0.2s ease;
-    opacity: 0.9;
-  }
-  
-  [data-theme="dark"] .community-link {
-    color: #8b5cf6;
-  }
-  
-  .community-link:hover {
-    color: #4f46e5;
-    text-decoration: none;
-    transform: translateX(2px);
-    opacity: 1;
-  }
-  
-  [data-theme="dark"] .community-link:hover {
-    color: #a78bfa;
-  }
-  
-  .community-link svg {
-    transition: transform 0.2s ease;
-    opacity: 0.8;
-  }
-  
-  .community-link:hover svg {
-    transform: translateX(2px);
-    opacity: 1;
-  }
+
 
   /* Icon theme switching */
   .icon-dark-mode {
