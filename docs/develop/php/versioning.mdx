@@ -46,7 +46,7 @@ To understand why Patching is useful, it's helpful to first demonstrate cutting 
 Since incompatible changes only affect open Workflow Executions of the same type, you can avoid determinism errors by creating a whole new Workflow when making changes.
 To do this, you can copy the Workflow Definition function, giving it a different name, and register both names with your Workers.
 
-For example, you would duplicate `MyWorkflow` as `MyWorkflowV2V2`:
+For example, you would duplicate `MyWorkflow` as `MyWorkflowV2`:
 
 ```php
 #[WorkflowInterface]
