@@ -33,7 +33,7 @@ To use private connectivity with Temporal Cloud:
 
 1. Set up the private connection from your VPC to the region where your Temporal namespace is located.
 1. Update your private DNS and/or worker configuration to use the private connection.
-1. (Required to complete Google PSC setup, optional if using AWS PrivateLink): create a connectivity rule for the private connection and attach it to the target namespace(s). This will block all access to the namespace that is not over the private connection.
+1. (Required to complete Google PSC setup, optional if using AWS PrivateLink): create a connectivity rule for the private connection and attach it to the target namespace(s). This will block all access to the namespace that is not over the private connection, but you can also add a public rule to also allow internet connectivity.
 
 For steps 1 and 2, follow our guides for the target namespace's cloud provider:
 - [AWS PrivateLink](/cloud/connectivity/aws-connectivity) creation and private DNS setup
