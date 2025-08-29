@@ -17,7 +17,7 @@ import OperationsTable from '@site/src/components/formatting/OperationsTable';
 
 # Operations
 
-Temporal Cloud [rate limits operations per second (OPS)](/cloud/limits#operations-per-second) per namespace. An operation is anything 1. a user does directly, or 2. Temporal does on behalf of the user in the background that results in load on Temporal Server. The exception is visibility queries: they do hit the Server (the query is passed from the server to the visibility store), but primarily the load is on the visibility system. Visibility rate limits are separate from OPS rate limits.
+Temporal Cloud [rate limits operations per second (OPS)](/cloud/limits#operations-per-second) per namespace. An operation is anything 1. a user does directly, or 2. Temporal does on behalf of the user in the background that results in load on Temporal Server. The exception is visibility queries: they do hit the Server (the query is passed from the server to the visibility store), but primarily the load is on the visibility system. Visibility rate limits are separate from OPS rate limits. Monitor current OPS versus rate limits using [operations count metrics](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_operations_count).
 
 Below is the list of operations, including:
 - operation name
