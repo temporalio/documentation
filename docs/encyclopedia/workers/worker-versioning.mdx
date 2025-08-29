@@ -19,9 +19,22 @@ tags:
 
 This page defines some of the underlying concepts used in [Worker Versioning](/production-deployment/worker-deployments/worker-versioning):
 
+- [Worker Deployments](#deployments)
+- [Worker Deployment Versions](#deployment-versions)
 - [Versioning Behaviors](#versioning-behaviors)
 - [Versioning Statuses](#versioning-statuses)
 - [Continue-as-new, Child Workflow, and Retry Semantics](#inheritance-semantics)
+
+## Worker Deployments {#deployments}
+
+A Worker Deployment is a logical service that groups similar Workers together for unified management.
+Each Deployment has a name (such as your service name) and supports versioning through a series of Worker Deployment Versions.
+
+## Worker Deployment Versions {#deployment-versions}
+
+A Worker Deployment Version represents an iteration of a Worker Deployment.
+Each Deployment Version consists of Workers that share the same code build and environment.
+When a Worker starts polling for Workflow and Activity Tasks, it reports its Deployment Version to the Temporal Server.
 
 ## Versioning Behaviors {#versioning-behaviors}
 
