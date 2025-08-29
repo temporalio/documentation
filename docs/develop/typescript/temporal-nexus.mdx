@@ -98,7 +98,7 @@ The default data converter encodes payloads in the following order: Null, Byte a
 In a polyglot environment, that is where more than one language and SDK is being used to develop a Temporal solution, JSON is a common choice.
 This example uses plain TypeScript objects, serialized into JSON.
 
-{/* FIXME: The absence of Protobuf JSON in the list above is intentional. The TypeScript SDK does not support Protobuf JSON encoding by default. But it looks like this is not indicated clearly anywhere. */}.
+{/* FIXME: The absence of Protobuf JSON in the list above is intentional. The TypeScript SDK does not support Protobuf JSON encoding by default. But it looks like this is not indicated clearly anywhere. */}
 
 <!--SNIPSTART typescript-nexus-hello-service-->
 
@@ -147,7 +147,7 @@ export type LanguageCode = "en" | "fr" | "de" | "es" | "tr";
 
 A Nexus Service handler is defined using the `nexus-rpc`'s `serviceHandler` function. {/* Added */}
 Nexus Service handlers are typically defined in the same Worker as the underlying Temporal primitives they abstract.
-A Service handler must provide Operation handlers for each Operations declared by the Service. {/* Added */}
+A Service handler must provide Operation handlers for each Operation declared by the Service. {/* Added */}
 Operation handlers can decide if a given Nexus Operation will be synchronous or asynchronous.
 They can execute arbitrary code, and invoke underlying Temporal primitives such as a Workflow, Query, Signal, or Update.
 
@@ -173,7 +173,7 @@ import { helloService, EchoInput, EchoOutput, HelloInput, HelloOutput } from "..
 
 export const helloServiceHandler = nexus.serviceHandler(helloService, {
   echo: async (ctx, input: EchoInput): Promise<EchoOutput> => {
-    // A simple async function can be used to defined a Synchronous Nexus Operation.
+    // A simple async function can be used to define a Synchronous Nexus Operation.
     // This is often sufficient for Operations that simply make arbitrary short calls to
     // other services or databases, or that perform simple computations such as this one.
     //
