@@ -122,14 +122,6 @@ Count of state transitions for each Namespace.
 
 Approximate count of Temporal Cloud Actions.
 
-#### temporal_cloud_v0_operations_count
-
-Approximate count of Temporal Cloud [operations](/references/operation-list) attempted.
-
-#### temporal_cloud_v0_operations_throttled_count
-
-Approximate count of Temporal Cloud [operations](/references/operation-list) throttled.
-
 ### Poll metrics {#poll}
 
 #### temporal_cloud_v0_poll_success_count
@@ -252,12 +244,7 @@ temporal_cloud_v0_poll_success_count{__rollup__="true", operation="TaskQueueMgr"
 
 Operations are a special class of metrics label.
 They describe the context during which a metric was captured.
-
-The possible operations can vary by metric.
-
-For `temporal_cloud_v0_operations_count` and `temporal_cloud_v0_operations_throttled_count` see the Temporal Cloud [operations list](/references/operation-list).
-
-For all other metrics, Temporal Cloud includes the following operations labels:
+Temporal Cloud includes the following operations labels:
 
 - AdminDescribeMutableState
 - AdminGetWorkflowExecutionRawHistory
