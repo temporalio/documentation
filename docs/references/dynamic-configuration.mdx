@@ -222,12 +222,20 @@ For details on platform limits, see the [Temporal Platform limits sheet](/self-h
 | `limit.numPendingChildExecutions.error` | Int  | Maximum number of pending Child Workflows that a Workflow Execution can have before the `StartChildWorkflowExecution` commands fail with an error.                                                                                              | 2000                     |
 | `frontend.visibilityMaxPageSize`        | Int  | Maximum number of Workflow Executions shown from the ListWorkflowExecutions API in one page.                                                                                                                                                    | 1000                     |
 
-### Secondary Visibility settings
+### Secondary visibility settings
 
-Secondary Visibility configuration keys enable Dual Visibility on your Temporal Cluster.
+Secondary visibility configuration keys enable Dual Visibility on your Temporal Cluster.
 This can be useful when migrating a Visibility database or creating a backup Visibility store.
 
 | Dynamic configuration key                  | Type    | Description                                                                                                                                                                                                                                                                                                                                                                                                          | Default value |
 | ------------------------------------------ | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| `system.enableReadFromSecondaryVisibility` | Boolean | Enables reading from the [secondary Visibility store](/dual-visibility), and can be set per Namespace. Allowed values are `true` or `false`.                                                                                                                                                                                                                                                                         | `false`       |
+| `system.enableReadFromSecondaryVisibility` | Boolean | Enables reading from the [secondary visibility store](/dual-visibility), and can be set per Namespace. Allowed values are `true` or `false`.                                                                                                                                                                                                                                                                         | `false`       |
 | `system.secondaryVisibilityWritingMode`    |         | Enables writing Visibility data to the secondary Visibility store and can be set per Namespace. Setting this value to `on` disables write operations to the primary Visibility store. Allowed values:<br /> `off`: Enables writing to primary Visibility store only. <br /> `on`: Enables writing to secondary Visibility store only.<br /> `dual`: Enables writing to both primary and secondary Visibility stores. | `off`         |
+
+### Server version check settings
+
+The Temporal server reports the server version and the version of the SDK that it is connected to in order to determine if the Web UI should show a banner that states a new version is available to install. This can be disabled by defining the following value or by setting the `TEMPORAL_VERSION_CHECK_DISABLED` environment variable to `1`.
+
+| Dynamic configuration key           | Type    | Description                                                                                                                       | Default value |
+| ----------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| `frontend.enableServerVersionCheck` | Boolean | Enables the Temporal server to report version information about the current server and SDK. Allowed values are `true` or `false`. | `true`        |
