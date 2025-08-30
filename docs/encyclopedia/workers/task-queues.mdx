@@ -136,14 +136,13 @@ There are five places where the name of the Task Queue can be set by the develop
 #### Task ordering
 
 Task Queues can be scaled by adding partitions.
-The [default](/references/dynamic-configuration#service-level-rps-limits) number of partitions is 4.
-
-Task Queues with multiple partitions do not have any ordering guarantees.
-Once there is a backlog of Tasks that have been written to disk, Tasks that can be dispatched immediately (“sync matches”) are delivered before tasks from the backlog (“async matches”).
-This approach optimizes throughput.
+By [default](/references/dynamic-configuration#service-level-rps-limits) each Task Queue has 4 partitions.
 
 Task Queues with a single partition are almost always first-in, first-out, with rare edge case exceptions.
 However, using a single partition limits you to low- and medium-throughput use cases.
+
+In Task Queues with multiple partitions, each task is assigned to a random partition.
+Generally partitions will act as FIFO queues, so even sync matches (Tasks that can be dispatched immediately) are not delivered before async matches (older tasks).
 
 :::note
 
