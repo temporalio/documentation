@@ -17,9 +17,9 @@ This page discusses [Patching](#patching).
 
 ## What is Patching? {#patching}
 
-Patching essentially defines a logical branch for a specific change in the Workflow.
-It can be used to revise in-progress Workflows.
-If your Workflow is not [pinned to a specific Worker Deployment Version](/production-deployment/worker-deployments/worker-versioning) or you need to fix a bug in a running workflow, you can patch it.
+A Patch defines a logical branch in a Workflow for a specific change, similar to a feature flag.
+It applies a code change to new Workflow Executions while avoiding disruptive changes to in-progress ones.
+When you want to make substantive code changes that may affect existing Workflow executions, create a patch. Note that there's no need to patch [Pinned Workflows](/encyclopedia/workers/worker-versioning).
 
 ### Detailed Description of the `patched()` Function
 
