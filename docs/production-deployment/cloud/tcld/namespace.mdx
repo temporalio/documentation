@@ -34,6 +34,8 @@ Alias: `n`
 - [tcld namespace update-codec-server](#update-codec-server)
 - [tcld namespace update-high-availability](#update-high-availability)
 - [tcld namespace tags](#tags)
+- [tcld namespace set-connectivity-rules](#set-connectivity-rules)
+
 
 ## add-region
 
@@ -136,6 +138,28 @@ A base64-encoded CA certificate.
 If both `--ca-certificate` and `--ca-certificate-file` are specified, only `--ca-certificate` is used.
 
 Alias: `-c`
+
+#### --connectivity-rule-ids
+
+The list of connectivity rule IDs, can be used in create namespace and update namespace. example: --ids id1 --ids id2 --ids id3.
+
+Alias: `ids`
+
+```bash
+tcld namespace create \
+    --namespace <namespace_id> \
+    --region us-west-2 \
+    --retention-days 60 \
+    --certificate-filter-input '{"filters": [{"commonName": "test1"}]}' \
+    --user-namespace-permission "user@example.com=Admin" \
+    --search-attribute "customer_id=Int" \
+    --search-attribute "customer_name=Text" \
+    --endpoint "https://test-codec-server.com" \
+    --pass-access-token \
+    --include-credentials \
+    --connectivity-rule-ids <rule_id1> \
+    --connectivity-rule-ids <rule_id2> // if adding multiple rules
+```
 
 #### --namespace
 
@@ -1882,3 +1906,25 @@ tcld namespace tags remove \
     --tag-key "key1" \
     --tag-key "key2"
 ```
+
+## set-connectivity-rules
+
+The `tcld namespace set-connectivity-rules` command enables you to set connectivity rules on your [Namespace](/namespaces).
+
+Alias: `scrs`
+
+#### --connectivity-rule-ids
+
+The list of connectivity rule IDs, can be used in create namespace and update namespace. example: --ids id1 --ids id2 --ids id3.
+
+Alias: `ids`
+
+#### --namespace
+
+The namespace hosted on temporal cloud.
+
+Alias: `n`
+
+#### --remove-all
+
+Acknowledge that all connectivity rules will be removed, enabling connectivity from any source.
