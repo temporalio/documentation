@@ -29,13 +29,13 @@ import * as Components from '@site/src/components';
 
 ## Prerequisites {#prerequisites}
 
-Before configuring the Export sink, please complete the following steps in Google Cloud.
+Before configuring the Export sink, complete the following steps in Google Cloud.
 
 1. Create a GCS bucket and take note of its bucket name, for example, "test-export"
 
 - Enable customer-managed encryption keys (CMEK) if you need additional security for your GCS bucket.
-- For now we only support single region (or “Region” option when creating the bucket in GCS, not “Multi-region” or “Same-region”)
-- The region of the bucket has to be the same as the region of your Temporal Cloud Namespace.
+- Currently, only single region buckets are supported (or “Region” option when creating the bucket in GCS, not “Multi-region” or “Same-region”)
+- The region of the bucket must be the same as the region of your Temporal Cloud Namespace.
 
 2. Record the GCP Project ID that owns the bucket.
 3. Create a service account in the same project that grants Temporal permission to write to your GCS bucket.
@@ -50,6 +50,18 @@ Before configuring the Export sink, please complete the following steps in Googl
 
 You can use either the [Temporal Cloud UI](#using-temporal-cloud-ui) or [tcld](#using-tcld) to configure the Workflow History Export.
 
+:::note Why does Temporal Cloud provision multiple service accounts for Export?
+
+Temporal Cloud creates multiple intermediary service accounts for export operations primarily for security purposes. The system randomly selects from these accounts when writing to your storage sink, which provides several benefits:
+
+- **Security isolation**: If one service account is compromised or needs to be decommissioned, other accounts remain available
+- **Load distribution**: Prevents exclusively using a single account, reducing security risk
+- **Warm standby**: Keeps multiple accounts active to avoid potential throttling when switching between accounts
+- **Reliability**: Provides resilience against cloud provider account-level issues that could affect a single service account
+
+This approach prioritizes security and availability, ensuring robust export operations even if individual service accounts encounter issues.
+:::
+
 ### Using Temporal Cloud UI
 
 The following steps guide you through setting up Workflow History Export using the Temporal Cloud UI.
@@ -57,7 +69,7 @@ The following steps guide you through setting up Workflow History Export using t
 ![](/img/cloud/gcp/export-sink-ui-gcp.png)
 
 1. In the Cloud UI, navigate to the Namespaces section. Confirm that the Export feature is visible and properly displayed.
-2. Configure the Export sink for a Namespace:
+2. Configure the Export Sink for a Namespace:
    1. Choose GCS as the Sink type.
    2. Provide the following information:
       1. Name
@@ -116,7 +128,7 @@ To access export-related commands in tcld, please follow these steps:
    - For Example:
 
    ```bash
-   tcld n export gcs create -n test.ns --sink-name test-sink --service-account-email test-sink@test-export-sink.iam.gserviceaccount.com --gcs-bucket test-export-validation`
+   tcld n export gcs create -n test.ns --sink-name test-sink --service-account-email test-sink@test-export-sink.iam.gserviceaccount.com --gcs-bucket test-export-validation
    ```
 5. Check the status of this command by either viewing the Namespace Export status in the Temporal Cloud UI or using the following command and looking for the state of “Active”.
 
@@ -133,7 +145,7 @@ tcld n export gcs g -n test.ns --sink-name test-sink
 		"s3Sink": null,
 		"gcsSink": {
 			"saId": "test-sink",
-			"bucketName": "test-export-validationn",
+			"bucketName": "test-export-validation",
 			"gcpProjectId": "test-export-sink",
 		}
 	},
