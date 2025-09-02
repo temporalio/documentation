@@ -58,7 +58,7 @@ Prices are outlined in the following table:
 | ----------------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Support Targeting | Basic use                                                                      | Production deployments<br />that scale                                                                                            | Enterprise deployments<br/>w/ stringent uptime demands                                                                                                     | Mission-critical applications<br />w/ the highest support needs                                                                                            |
 | Support Features  | Access to Support                                                              | <li>P0 Response Times</li>                                                                                                        | <li>P0: \<30 Min, 24/7</li><li>Private Slack</li>                                                                                                          | <li>P0: \<15 Min, 24/7</li><li>Private Slack</li><li>Dedicated DSE</li>                                                                                    |
-| Product Features  | <li>1M Actions</li><li>1 GB Active Storage</li><li>40 GB Retained Storage</li> | <li>Commit discounts</li><li>SSO (Add-on)</li><li>2.5M Actions</li><li>2.5 GB Active Storage</li><li>100 GB Retained Storage</li> | <li>Commit discounts</li><li>SSO included</li><li>SCIM (Add-on)</li><li>10M Actions</li><li>10 GB Active Storage</li><li>400 GB Retained Storage</li> | <li>Commit discounts</li><li>SSO included</li><li>SCIM (Add-on)</li><li>10M Actions</li><li>10 GB Active Storage</li><li>400 GB Retained Storage</li> |
+| Product Features  | <li>1M Actions</li><li>1 GB Active Storage</li><li>40 GB Retained Storage</li> | <li>Commit discounts</li><li>SAML included</li><li>SCIM (Add-on)</li><li>2.5M Actions</li><li>2.5 GB Active Storage</li><li>100 GB Retained Storage</li> | <li>Commit discounts</li><li>SAML included</li><li>SCIM included</li><li>10M Actions</li><li>10 GB Active Storage</li><li>400 GB Retained Storage</li> | <li>Commit discounts</li><li>SAML included</li><li>SCIM included</li><li>10M Actions</li><li>10 GB Active Storage</li><li>400 GB Retained Storage</li> |
 | Plan Pricing      | Greater of<li>&#36;100/mo or</li><li>5% of Usage Spend</li>                    | Greater of<li>&#36;500/mo or</li><li>10% of Usage Spend</li>                                                                      | Priced annually:<br /> [contact Sales](mailto:sales@temporal.io) for details                                                                               | Priced annually:<br /> [contact Sales](mailto:sales@temporal.io) for details                                                                               |
 | Usage Pricing     | [Pay-As-You-Go](#payg) Pricing                                                 | Choose from <br /> [Pay-As-You-Go](#payg) or [Commitment Pricing](#commitment-pricing)                                            | Choose from <br /> [Pay-As-You-Go](#payg) or [Commitment Pricing](#commitment-pricing)                                                                     | Choose from <br /> [Pay-As-You-Go](#payg) or [Commitment Pricing](#commitment-pricing)                                                                     |
 
@@ -292,18 +292,11 @@ When upgrading an existing Namespace, some points to consider:
 
 **What costs are associated with SSO/SAML use?**
 
-Single sign-on (SSO) integration using SAML is included for all customers on the Enterprise and Mission Critical Plans.
-For business plan customers, a monthly fixed fee based on the number of users registered in Temporal Cloud is required:
-
-| **Users** | **Cost per month** |
-| --------- | ------------------ |
-| 0 to 25   | &#36;200           |
-| 26 to 50  | &#36;300           |
-| 51+       | &#36;500           |
+Single sign-on (SSO) integration using SAML is included for all customers on the Business, Enterprise, and Mission Critical Plans.
 
 **What costs are associated with SCIM?**
 
-To enable SCIM (System for Cross-domain Identity Management), you need an Enterprise or Mission Critical plan.
+To enable SCIM (System for Cross-domain Identity Management), you need an Enterprise or Mission Critical plan or an add-on for the Business plan.
 Please note that you must configure SSO via SAML to use SCIM.
 
 ### Use case cost estimates {#pricing-estimates}
