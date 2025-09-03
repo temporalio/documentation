@@ -145,7 +145,7 @@ export type LanguageCode = "en" | "fr" | "de" | "es" | "tr";
 
 ## Develop a Nexus Service handler and Operation handlers {#develop-nexus-service-operation-handlers}
 
-A Nexus Service handler is defined using the `nexus-rpc`'s `serviceHandler` function. {/* Added */}
+A Nexus Service handler is defined using the `nexus-rpc`'s [`serviceHandler`](https://nexus-rpc.github.io/sdk-typescript/functions/serviceHandler.html) function. {/* Added */}
 Nexus Service handlers are typically defined in the same Worker as the underlying Temporal primitives they abstract.
 A Service handler must provide Operation handlers for each Operation declared by the Service. {/* Added */}
 Operation handlers can decide if a given Nexus Operation will be synchronous or asynchronous.
@@ -307,11 +307,9 @@ Refer to the [complete TypeScript sample](https://github.com/temporalio/samples-
 Temporal provides general guidance on [Errors in Nexus operations](https://docs.temporal.io/references/failures#errors-in-nexus-operations).
 In TypeScript, there are three Nexus-specific exception classes:
 
-- `nexus-rpc`'s [`OperationError`](https://nexus-rpc.github.io/sdk-typescript/nexusrpc.OperationError.html): this is the exception type you should throw in a Nexus operation to indicate that it has failed according to its own application logic and should not be retried.
-- `nexus-rpc`'s [`HandlerError`](https://nexus-rpc.github.io/sdk-typescript/nexusrpc.HandlerError.html): you can throw this exception type in a Nexus operation with a specific [HandlerErrorType](https://nexus-rpc.github.io/sdk-typescript/nexusrpc.HandlerErrorType.html). The error will be marked as either retryable or non-retryable according to the type, following the [Nexus spec](https://github.com/nexus-rpc/api/blob/main/SPEC.md#predefined-handler-errors). The non-retryable handler error types are `BAD_REQUEST`, `UNAUTHENTICATED`, `UNAUTHORIZED`, `NOT_FOUND`, `NOT_IMPLEMENTED`; the retryable types are `RESOURCE_EXHAUSTED`, `INTERNAL`, `UNAVAILABLE`, `UPSTREAM_TIMEOUT`.
+- `nexus-rpc`'s [`OperationError`](https://nexus-rpc.github.io/sdk-typescript/classes/OperationError.html): this is the exception type you should throw in a Nexus operation to indicate that it has failed according to its own application logic and should not be retried.
+- `nexus-rpc`'s [`HandlerError`](https://nexus-rpc.github.io/sdk-typescript/classes/HandlerError.html): you can throw this exception type in a Nexus operation with a specific [HandlerErrorType](https://nexus-rpc.github.io/sdk-typescript/nexusrpc.HandlerErrorType.html). The error will be marked as either retryable or non-retryable according to the type, following the [Nexus spec](https://github.com/nexus-rpc/api/blob/main/SPEC.md#predefined-handler-errors). The non-retryable handler error types are `BAD_REQUEST`, `UNAUTHENTICATED`, `UNAUTHORIZED`, `NOT_FOUND`, `NOT_IMPLEMENTED`; the retryable types are `RESOURCE_EXHAUSTED`, `INTERNAL`, `UNAVAILABLE`, `UPSTREAM_TIMEOUT`.
 - `@temporalio/nexus`'s [`NexusOperationFailure`](https://typescript.temporal.io/temporalio.exceptions.NexusOperationError.html): this is the error thrown inside a Workflow when a Nexus operation fails for any reason. Use the `cause` attribute on the exception to access the cause chain.
-
-{/* FIXME: The Nexus RPC API has yet been published to github.io. Links are likely incorrect, and definitely broken. */}
 
 ## Canceling a Nexus Operation {#canceling-a-nexus-operation}
 
