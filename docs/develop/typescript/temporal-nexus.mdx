@@ -98,7 +98,7 @@ The default data converter encodes payloads in the following order: Null, Byte a
 In a polyglot environment, that is where more than one language and SDK is being used to develop a Temporal solution, JSON is a common choice.
 This example uses plain TypeScript objects, serialized into JSON.
 
-{/* FIXME: The absence of Protobuf JSON in the list above is intentional. The TypeScript SDK does not support Protobuf JSON encoding by default. But it looks like this is not indicated clearly anywhere. */}
+Note: By default, the TypeScript SDK [does not support Protobuf JSON encoding](https://typescript.temporal.io/api/interfaces/common.PayloadConverter). If passing Protobuf payloads use the [ProtobufJsonPayloadConverter](https://typescript.temporal.io/api/classes/protobufs.ProtobufJsonPayloadConverter) instead. 
 
 <!--SNIPSTART typescript-nexus-hello-service-->
 
