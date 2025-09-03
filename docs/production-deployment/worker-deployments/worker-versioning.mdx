@@ -78,7 +78,8 @@ To get started with Worker Versioning, you should understand some concepts aroun
   - A **Pinned** Workflow is guaranteed to complete on a single Worker Deployment Version.
   - An **Auto-Upgrade** Workflow will move to the latest Worker Deployment Version automatically whenever you change the current version. Auto-upgrade Workflows are not restricted to a single Deployment Version and need to be kept replay-safe manually, i.e. with [patching](/workflow-definition#workflow-versioning).
   - Both Pinned and Auto-Upgrade Workflows are guaranteed to start only on the Current or Ramping Version of their Worker Deployment.
-  - Workflow Pinning is designed for use with rainbow deployments. See [Deployment Systems](#deployment-systems).
+  - Workflow Pinning is designed for use with rainbow deployments and when you need more control over when you sunset workers and builds from one version to another. See [Deployment Systems](#deployment-systems). The Pinned Workflow Type doesn't need to be patched as they run on the same worker and build until all of the tasks are complete.
+  - If you are using blue-green deployments and you expect your Workflow to run longer than your builds will exist, you should default to Auto-Upgrade and should not use Workflow Pinning.
 - Each Worker Deployment has a single **Current Version** which is where workflows are routed to unless they were previously pinned on a different version. Other versions can continue polling to allow pinned Workflows to finish executing, or in case you need to roll back. If no current version is specified, the default is unversioned.
 - Each Worker Deployment can have a **Ramping Version** which is where a configurable percentage of Workflows are routed to unless they were previously pinned on a different version. The ramp percentage can be in the range [0, 100]. Workflows that don't go to the Ramping Version will go to the Current Version. If no Ramping Version is specified, 100% of new Workflows and auto-upgrade Workflows will go to the Current Version.
 
@@ -210,9 +211,9 @@ worker = Temporalio::Worker.new(
 
 ### Which Default Versioning Behavior should you choose?
 
-In general, each Workflow Type should be annotated as Auto-Upgrade or Pinned. If you are using blue-green deployments and you expect your Workflow to run longer than your builds will exist, you should default to Auto-Upgrade and should not use Workflow Pinning. These Auto-Upgrade Workflows will still need to be [patched](https://docs.temporal.io/patching#patching).
+If you are using blue-green deployments, you should default to Auto-Upgrade and should not use Workflow Pinning. Otherwise, if your Worker and Workflows are new, we suggest not providing a `DefaultVersioningBehavior`.
 
-If you need more control over when you sunset workers and builds from one version to another, you should consider using Workflow Pinning. The Pinned Workflow Type doesn't need to be patched as they run on the same worker and build until all of the tasks are complete. Otherwise, if your Worker and Workflows are new, we suggest not providing a `DefaultVersioningBehavior`.
+In general, each Workflow Type should be annotated as Auto-Upgrade or Pinned. If all of your Workflows will be short-running for the foreseeable future, you can default to Pinned.
 
 Many users who are migrating to Worker Versioning will start by defaulting to Auto-Upgrade until they have had time to annotate their Workflows.
 This default is the most similar to the legacy behavior.
