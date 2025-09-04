@@ -338,6 +338,7 @@ module.exports = {
                 "production-deployment/cloud/get-started/users",
                 "production-deployment/cloud/get-started/billing-and-cost",
                 "production-deployment/cloud/get-started/service-accounts",
+                "production-deployment/cloud/get-started/user-groups",
               ],
             },
             {
@@ -466,6 +467,7 @@ module.exports = {
                 "production-deployment/cloud/tcld/nexus",
                 "production-deployment/cloud/tcld/request",
                 "production-deployment/cloud/tcld/user",
+                "production-deployment/cloud/tcld/user-group",
                 "production-deployment/cloud/tcld/version",
               ],
             },
