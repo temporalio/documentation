@@ -102,11 +102,19 @@ Don't prompt to confirm signaling. Only allowed when --query is present.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -169,10 +177,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -269,11 +273,19 @@ Content for an SQL-like `QUERY` List Filter.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -336,10 +348,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -458,11 +466,19 @@ Don't prompt to confirm signaling. Only allowed when --query is present.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -525,10 +541,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -641,11 +653,19 @@ Workflow ID. Required.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -708,10 +728,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -821,14 +837,6 @@ Fail a WorkflowExecution if it lasts longer than `DURATION`. This time-out inclu
 
 Fail if the Workflow already exists.
 
-**--fairness-key** _string_
-
-Fairness key (max 64 bytes) for proportional task dispatch. Tasks with same key share capacity based on their weight.
-
-**--fairness-weight** _float_
-
-Weight [0.001-1000] for this fairness key. Keys are dispatched proportionally to their weights.
-
 **--id-conflict-policy** _string-enum_
 
 Determines how to resolve a conflict when spawning a new Workflow Execution with a particular Workflow Id used by an existing Open Workflow Execution. Accepted values: Fail, UseExisting, TerminateExisting.
@@ -851,15 +859,11 @@ A path or paths for input file(s). Use JSON content or set --input-meta to overr
 
 **--input-meta** _string[]_
 
-Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order.
+Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times.
 
 **--memo** _string[]_
 
 Memo using 'KEY="VALUE"' pairs. Use JSON values.
-
-**--priority-key** _int_
-
-Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified.
 
 **--run-timeout** _duration_
 
@@ -913,11 +917,19 @@ Workflow ID. If not supplied, the Service generates a unique ID.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -980,10 +992,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -1090,14 +1098,6 @@ Fail a WorkflowExecution if it lasts longer than `DURATION`. This time-out inclu
 
 Fail if the Workflow already exists.
 
-**--fairness-key** _string_
-
-Fairness key (max 64 bytes) for proportional task dispatch. Tasks with same key share capacity based on their weight.
-
-**--fairness-weight** _float_
-
-Weight [0.001-1000] for this fairness key. Keys are dispatched proportionally to their weights.
-
 **--id-conflict-policy** _string-enum_
 
 Determines how to resolve a conflict when spawning a new Workflow Execution with a particular Workflow Id used by an existing Open Workflow Execution. Accepted values: Fail, UseExisting, TerminateExisting.
@@ -1120,15 +1120,11 @@ A path or paths for input file(s). Use JSON content or set --input-meta to overr
 
 **--input-meta** _string[]_
 
-Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order.
+Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times.
 
 **--memo** _string[]_
 
 Memo using 'KEY="VALUE"' pairs. Use JSON values.
-
-**--priority-key** _int_
-
-Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified.
 
 **--run-id**, **-r** _string_
 
@@ -1214,11 +1210,19 @@ Workflow ID. If not supplied, the Service generates a unique ID.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -1281,10 +1285,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -1382,11 +1382,19 @@ Path to the results file. When omitted, output is sent to stdout.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -1449,10 +1457,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -1574,11 +1578,19 @@ Content for an SQL-like `QUERY` List Filter.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -1641,10 +1653,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -1746,11 +1754,19 @@ Workflow ID. Required.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -1813,10 +1829,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -1920,7 +1932,7 @@ A path or paths for input file(s). Use JSON content or set --input-meta to overr
 
 **--input-meta** _string[]_
 
-Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order.
+Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times.
 
 **--name** _string_
 
@@ -1942,11 +1954,19 @@ Workflow ID. Required.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -2009,10 +2029,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -2134,11 +2150,19 @@ When overriding to a `pinned` behavior, specifies the Deployment Name of the ver
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -2201,10 +2225,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -2301,11 +2321,19 @@ Workflow ID. Required.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -2368,10 +2396,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -2479,11 +2503,19 @@ Workflow ID. Required.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -2546,10 +2578,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -2655,7 +2683,7 @@ A path or paths for input file(s). Use JSON content or set --input-meta to overr
 
 **--input-meta** _string[]_
 
-Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order.
+Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times.
 
 **--name** _string_
 
@@ -2689,11 +2717,19 @@ Don't prompt to confirm signaling. Only allowed when --query is present.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -2756,10 +2792,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -2863,14 +2895,6 @@ Fail a WorkflowExecution if it lasts longer than `DURATION`. This time-out inclu
 
 Fail if the Workflow already exists.
 
-**--fairness-key** _string_
-
-Fairness key (max 64 bytes) for proportional task dispatch. Tasks with same key share capacity based on their weight.
-
-**--fairness-weight** _float_
-
-Weight [0.001-1000] for this fairness key. Keys are dispatched proportionally to their weights.
-
 **--id-conflict-policy** _string-enum_
 
 Determines how to resolve a conflict when spawning a new Workflow Execution with a particular Workflow Id used by an existing Open Workflow Execution. Accepted values: Fail, UseExisting, TerminateExisting.
@@ -2893,15 +2917,11 @@ A path or paths for input file(s). Use JSON content or set --input-meta to overr
 
 **--input-meta** _string[]_
 
-Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order.
+Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times.
 
 **--memo** _string[]_
 
 Memo using 'KEY="VALUE"' pairs. Use JSON values.
-
-**--priority-key** _int_
-
-Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified.
 
 **--run-timeout** _duration_
 
@@ -2975,11 +2995,19 @@ Workflow ID. If not supplied, the Service generates a unique ID.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -3042,10 +3070,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -3148,11 +3172,19 @@ Workflow ID. Required.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -3215,10 +3247,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -3318,14 +3346,6 @@ Fail a WorkflowExecution if it lasts longer than `DURATION`. This time-out inclu
 
 Fail if the Workflow already exists.
 
-**--fairness-key** _string_
-
-Fairness key (max 64 bytes) for proportional task dispatch. Tasks with same key share capacity based on their weight.
-
-**--fairness-weight** _float_
-
-Weight [0.001-1000] for this fairness key. Keys are dispatched proportionally to their weights.
-
 **--id-conflict-policy** _string-enum_
 
 Determines how to resolve a conflict when spawning a new Workflow Execution with a particular Workflow Id used by an existing Open Workflow Execution. Accepted values: Fail, UseExisting, TerminateExisting.
@@ -3348,15 +3368,11 @@ A path or paths for input file(s). Use JSON content or set --input-meta to overr
 
 **--input-meta** _string[]_
 
-Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order.
+Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times.
 
 **--memo** _string[]_
 
 Memo using 'KEY="VALUE"' pairs. Use JSON values.
-
-**--priority-key** _int_
-
-Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified.
 
 **--run-timeout** _duration_
 
@@ -3410,11 +3426,19 @@ Workflow ID. If not supplied, the Service generates a unique ID.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -3477,10 +3501,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -3588,14 +3608,6 @@ Fail a WorkflowExecution if it lasts longer than `DURATION`. This time-out inclu
 
 Fail if the Workflow already exists.
 
-**--fairness-key** _string_
-
-Fairness key (max 64 bytes) for proportional task dispatch. Tasks with same key share capacity based on their weight.
-
-**--fairness-weight** _float_
-
-Weight [0.001-1000] for this fairness key. Keys are dispatched proportionally to their weights.
-
 **--id-conflict-policy** _string-enum_
 
 Determines how to resolve a conflict when spawning a new Workflow Execution with a particular Workflow Id used by an existing Open Workflow Execution. Accepted values: Fail, UseExisting, TerminateExisting.
@@ -3618,15 +3630,11 @@ A path or paths for input file(s). Use JSON content or set --input-meta to overr
 
 **--input-meta** _string[]_
 
-Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order.
+Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times.
 
 **--memo** _string[]_
 
 Memo using 'KEY="VALUE"' pairs. Use JSON values.
-
-**--priority-key** _int_
-
-Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified.
 
 **--run-id**, **-r** _string_
 
@@ -3716,11 +3724,19 @@ Workflow ID. If not supplied, the Service generates a unique ID.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -3783,10 +3799,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -3918,11 +3930,19 @@ Don't prompt to confirm termination. Can only be used with --query.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -3985,10 +4005,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -4102,11 +4118,19 @@ Workflow ID. Required.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -4169,10 +4193,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -4280,11 +4300,19 @@ Workflow ID. Required.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -4347,10 +4375,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -4457,7 +4481,7 @@ A path or paths for input file(s). Use JSON content or set --input-meta to overr
 
 **--input-meta** _string[]_
 
-Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order.
+Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times.
 
 **--name** _string_
 
@@ -4479,11 +4503,19 @@ Workflow ID. Required.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -4546,10 +4578,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -4652,11 +4680,19 @@ Workflow ID. Required.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -4719,10 +4755,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -4830,7 +4862,7 @@ A path or paths for input file(s). Use JSON content or set --input-meta to overr
 
 **--input-meta** _string[]_
 
-Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order.
+Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times.
 
 **--name** _string_
 
@@ -4856,11 +4888,19 @@ Workflow ID. Required.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -4923,10 +4963,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -5000,10 +5036,12 @@ Override target TLS server name.
 
 ## update-options
 
+```
 +---------------------------------------------------------------------+
 | CAUTION: Worflow update-options is experimental. Workflow Execution |
-| properties are subject to change. |
+| properties are subject to change.                                   |
 +---------------------------------------------------------------------+
+```
 
 Modify properties of Workflow Executions:
 
@@ -5089,11 +5127,19 @@ Don't prompt to confirm signaling. Only allowed when --query is present.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -5156,10 +5202,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 

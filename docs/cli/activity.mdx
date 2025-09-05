@@ -45,6 +45,10 @@ Use the following options to change the behavior of this command.
 
 Activity ID to complete. Required.
 
+**--identity** _string_
+
+Identity of the user submitting this request.
+
 **--result** _string_
 
 Result `JSON` to return. Required.
@@ -61,11 +65,19 @@ Workflow ID. Required.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -128,10 +140,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -226,6 +234,10 @@ Activity ID to fail. Required.
 
 Reason for failing the Activity (JSON).
 
+**--identity** _string_
+
+Identity of the user submitting this request.
+
 **--reason** _string_
 
 Reason for failing the Activity.
@@ -242,11 +254,19 @@ Workflow ID. Required.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -309,10 +329,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -418,7 +434,7 @@ Use the following options to change the behavior of this command.
 
 The Activity ID to pause. Either `activity-id` or `activity-type` must be provided, but not both.
 
-**--activity-type** _string_
+**--activity-type**, **-g** _string_
 
 All activities of the Activity Type will be paused. Either `activity-id` or `activity-type` must be provided, but not both.
 
@@ -438,11 +454,19 @@ Workflow ID. Required.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -505,10 +529,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -621,16 +641,6 @@ temporal activity reset \
     --reset-heartbeats
 ```
 
-Either `activity-id`, `activity-type`, or `--match-all` must be specified.
-
-Activities can be reset in bulk with a visibility query list filter.
-For example, if you want to reset activities of type Foo:
-
-```
-temporal activity reset \
-    --query 'TemporalResetInfo="property:activityType=Foo"'
-```
-
 Use the following options to change the behavior of this command.
 
 **Flags:**
@@ -639,7 +649,7 @@ Use the following options to change the behavior of this command.
 
 The Activity ID to reset. Either `activity-id` or `activity-type` must be provided, but not both.
 
-**--activity-type** _string_
+**--activity-type**, **-g** _string_
 
 The Activity Type to reset. Either `activity-id` or `activity-type` must be provided, but not both.
 
@@ -647,63 +657,39 @@ The Activity Type to reset. Either `activity-id` or `activity-type` must be prov
 
 The identity of the user or client submitting this request.
 
-**--jitter** _duration_
-
-The activity will reset at random a time within the specified duration. Can only be used with --query.
-
 **--keep-paused** _bool_
 
 If the activity was paused, it will stay paused.
-
-**--match-all** _bool_
-
-Every activity should be reset. Every activity should be updated. Mutually exclusive with `--activity-id` and `--activity-type`.
-
-**--query**, **-q** _string_
-
-Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query.
-
-**--reason** _string_
-
-Reason for batch operation. Only use with --query. Defaults to user name.
-
-**--reset-attempts** _bool_
-
-Reset the activity attempts.
 
 **--reset-heartbeats** _bool_
 
 Clear the Activity's heartbeat details.
 
-**--restore-original-options** _bool_
-
-Restore the original options of the activity.
-
-**--rps** _float_
-
-Limit batch's requests per second. Only allowed if query is present.
-
 **--run-id**, **-r** _string_
 
-Run ID. Only use with --workflow-id. Cannot use with --query.
+Run ID.
 
 **--workflow-id**, **-w** _string_
 
-Workflow ID. You must set either --workflow-id or --query.
-
-**--yes**, **-y** _bool_
-
-Don't prompt to confirm signaling. Only allowed when --query is present.
+Workflow ID. Required.
 
 **Global Flags:**
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -766,10 +752,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -894,13 +876,13 @@ Activities of this Type will unpause. Can only be used without --match-all. Eith
 
 The identity of the user or client submitting this request.
 
-**--jitter** _duration_
+**--jitter**, **-j** _duration_
 
 The activity will start at random a time within the specified duration. Can only be used with --query.
 
 **--match-all** _bool_
 
-Every paused activity should be unpaused. This flag is ignored if activity-type is provided.
+Every paused activity should be unpaused. This flag is ignored if activity-type is provided. Can only be used with --query.
 
 **--query**, **-q** _string_
 
@@ -912,7 +894,7 @@ Reason for batch operation. Only use with --query. Defaults to user name.
 
 **--reset-attempts** _bool_
 
-Reset the activity attempts.
+Also reset the activity attempts.
 
 **--reset-heartbeats** _bool_
 
@@ -938,11 +920,19 @@ Don't prompt to confirm signaling. Only allowed when --query is present.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -1005,10 +995,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -1105,50 +1091,21 @@ temporal activity update-options \
 
 You may follow this command with `temporal activity reset`, and the new values will apply after the reset.
 
-Either `activity-id`, `activity-type`, or `--match-all` must be specified.
-
-Activity options can be updated in bulk with a visibility query list filter.
-For example, if you want to reset for activities of type Foo, do:
-
-```
-temporal activity update-options \
-    --query 'TemporalPauseInfo="property:activityType=Foo"'
-    ...
-```
-
-You may follow this command with `temporal activity reset`, and the new values will apply after the reset.
-
 Use the following options to change the behavior of this command.
 
 **Flags:**
 
-**--activity-id**, **-a** _string_
+**--activity-id** _string_
 
-The Activity ID to update options. Mutually exclusive with `--query`, `--match-all`, and `--activity-type`. Requires `--workflow-id` to be specified.
-
-**--activity-type** _string_
-
-Activities of this Type will be updated. Mutually exclusive with `--match-all` and `activity-id`.
+Activity ID. Required.
 
 **--heartbeat-timeout** _duration_
 
 Maximum permitted time between successful worker heartbeats.
 
-**--match-all** _bool_
+**--identity** _string_
 
-Every activity should be updated. Mutually exclusive with `--activity-id` and `--activity-type`.
-
-**--query**, **-q** _string_
-
-Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query.
-
-**--reason** _string_
-
-Reason for batch operation. Only use with --query. Defaults to user name.
-
-**--restore-original-options** _bool_
-
-Restore the original options of the activity.
+Identity of the user submitting this request.
 
 **--retry-backoff-coefficient** _float_
 
@@ -1166,13 +1123,9 @@ Maximum number of attempts. When exceeded the retries stop even if not expired y
 
 Maximum interval between retries. Exponential backoff leads to interval increase. This value is the cap of the increase.
 
-**--rps** _float_
-
-Limit batch's requests per second. Only allowed if query is present.
-
 **--run-id**, **-r** _string_
 
-Run ID. Only use with --workflow-id. Cannot use with --query.
+Run ID.
 
 **--schedule-to-close-timeout** _duration_
 
@@ -1192,21 +1145,25 @@ Name of the task queue for the Activity.
 
 **--workflow-id**, **-w** _string_
 
-Workflow ID. You must set either --workflow-id or --query.
-
-**--yes**, **-y** _bool_
-
-Don't prompt to confirm signaling. Only allowed when --query is present.
+Workflow ID. Required.
 
 **Global Flags:**
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -1269,10 +1226,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
