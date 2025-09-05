@@ -9,6 +9,8 @@ tags:
   - Reference
 ---
 
+<!-- This is a test comment. -->
+
 The following terms are used in [Temporal Platform](/temporal) documentation.
 
 #### [Action](/cloud/pricing#action)
