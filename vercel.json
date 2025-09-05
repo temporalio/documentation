@@ -1976,7 +1976,7 @@
       "permanent": true
     },
     {
-      "source": "cloud/security/aws-privatelink",
+      "source": "/cloud/security/aws-privatelink",
       "destination": "/cloud/connectivity/aws-connectivity",
       "permanent": true
     }
