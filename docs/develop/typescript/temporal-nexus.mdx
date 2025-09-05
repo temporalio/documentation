@@ -41,7 +41,7 @@ This page shows how to do the following:
 
 :::note
 
-This documentation uses source code derived from the [TypeScript Nexus sample](https://github.com/temporalio/samples-typescript/tree/main/hello_nexus).
+This documentation uses source code derived from the [TypeScript Nexus sample](https://github.com/temporalio/samples-typescript/tree/main/nexus-hello).
 
 :::
 
@@ -232,9 +232,9 @@ export const helloServiceHandler = nexus.serviceHandler(helloService, {
 Workflow IDs should typically be business-meaningful IDs and are used to dedupe Workflow starts.
 In general, the ID should be passed in the Operation input as part of the Nexus Service contract.
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+:::tip RESOURCES
 
-[Attaching multiple Nexus callers to a handler Workflow](/nexus/operations#attaching-multiple-nexus-callers) using a [Conflict-Policy of Use-Existing](/workflow-execution/workflowid-runid#workflow-id-conflict-policy) is a [Pre-release feature](/evaluate/development-production-features/release-stages#pre-release).
+[Attach multiple Nexus callers to a handler Workflow](/nexus/operations#attaching-multiple-nexus-callers) with a Conflict-Policy of Use-Existing.
 
 :::
 
@@ -295,6 +295,8 @@ export async function helloCallerWorkflow(name: string, language: LanguageCode):
 ```
 
 <!--SNIPEND-->
+
+### Register the caller Workflow in a Worker and start the caller Workflow
 
 This Workflow can be registered with a Worker and started using `client.startWorkflow()` or `client.executeWorkflow()`, as usual.
 Refer to the [complete TypeScript sample](https://github.com/temporalio/samples-typescript/blob/main/nexus-hello) for reference.
