@@ -127,11 +127,9 @@ public class MessagePassingIntro {
     public static class GreetingWorkflowImpl implements GreetingWorkflow {
         ...
         @Override
-        public Language setLanguage(Language language) {
+        public void approve(ApproveInput input) {
             // 👉 The Signal handler mutates the Workflow state but cannot return a value.
-            Language previousLanguage = this.language;
-            this.language = language;
-            return previousLanguage;
+            this.approvedBy = input.name;
         }
     }
 }
