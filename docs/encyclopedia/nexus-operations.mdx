@@ -336,6 +336,12 @@ Using a [Conflict-Policy of Use-Existing](/workflow-execution/workflowid-runid#w
 
 :::
 
+:::tip CLOUD LIMITS
+
+In [Cloud](https://docs.temporal.io/cloud/limits#per-workflow-callback-limits), this is limited to 32, and in OSS, it can be configured with the [Callback limit](/workflow-execution/limits#workflow-execution-callback-limits) 
+
+:::
+
 Nexus Operations that start a Workflow with the [New-Workflow-Run-Operation](/nexus/operations#sdk-support) SDK helper will automatically attach a completion Callback on the handler Workflow, so the Nexus caller receives the result.
 Additional Nexus callers may attach to the same handler Workflow if the Nexus handler uses a [Conflict-Policy of Use-Existing](/workflow-execution/workflowid-runid#workflow-id-conflict-policy).
 
