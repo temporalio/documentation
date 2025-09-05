@@ -240,6 +240,7 @@ module.exports = {
             "develop/typescript/schedules",
             "develop/typescript/converters-and-encryption",
             "develop/typescript/timers",
+            "develop/typescript/nexus",
             "develop/typescript/child-workflows",
             "develop/typescript/continue-as-new",
             "develop/typescript/interceptors",
