@@ -41,7 +41,7 @@ This page shows how to do the following:
 
 :::note
 
-This documentation uses source code derived from the [TypeScript Nexus sample](https://github.com/temporalio/samples-typescript/tree/main/hello_nexus).
+This documentation uses source code derived from the [TypeScript Nexus sample](https://github.com/temporalio/samples-typescript/tree/main/nexus-hello).
 
 :::
 
@@ -99,15 +99,16 @@ In a polyglot environment, that is where more than one language and SDK is being
 This example uses plain TypeScript objects, serialized into JSON.
 
 Note: By default, the TypeScript SDK [does not support Protobuf JSON encoding](https://typescript.temporal.io/api/interfaces/common.PayloadConverter). If passing Protobuf payloads use the [ProtobufJsonPayloadConverter](https://typescript.temporal.io/api/classes/protobufs.ProtobufJsonPayloadConverter) instead.
+Note: By default, the TypeScript SDK [does not support Protobuf JSON encoding](https://typescript.temporal.io/api/interfaces/common.PayloadConverter). If passing Protobuf payloads use the [ProtobufJsonPayloadConverter](https://typescript.temporal.io/api/classes/protobufs.ProtobufJsonPayloadConverter) instead.
 
 <!--SNIPSTART typescript-nexus-hello-service-->
 
 [nexus-hello/src/api.ts](https://github.com/temporalio/samples-typescript/blob/main/nexus-hello/src/api.ts)
 
 ```ts
-import * as nexus from "nexus-rpc";
+import * as nexus from 'nexus-rpc';
 
-export const helloService = nexus.service("hello", {
+export const helloService = nexus.service('hello', {
   /**
    * Return the input message, unmodified. In the present sample, this Operation
    * will be implemented using the Synchronous Nexus Operation handler syntax.
@@ -138,16 +139,16 @@ export interface HelloOutput {
   message: string;
 }
 
-export type LanguageCode = "en" | "fr" | "de" | "es" | "tr";
+export type LanguageCode = 'en' | 'fr' | 'de' | 'es' | 'tr';
 ```
 
 <!--SNIPEND-->
 
 ## Develop a Nexus Service handler and Operation handlers {#develop-nexus-service-operation-handlers}
 
-A Nexus Service handler is defined using the `nexus-rpc`'s [`serviceHandler`](https://nexus-rpc.github.io/sdk-typescript/functions/serviceHandler.html) function. {/* Added */}
+A Nexus Service handler is defined using the `nexus-rpc`'s [`serviceHandler`](https://nexus-rpc.github.io/sdk-typescript/functions/serviceHandler.html) function. {/* Added _/}
 Nexus Service handlers are typically defined in the same Worker as the underlying Temporal primitives they abstract.
-A Service handler must provide Operation handlers for each Operation declared by the Service. {/* Added */}
+A Service handler must provide Operation handlers for each Operation declared by the Service. {/_ Added */}
 Operation handlers can decide if a given Nexus Operation will be synchronous or asynchronous.
 They can execute arbitrary code, and invoke underlying Temporal primitives such as a Workflow, Query, Signal, or Update.
 
@@ -168,8 +169,14 @@ However, implementations are free to make arbitrary calls to other services or d
 [nexus-hello/src/service/handler.ts](https://github.com/temporalio/samples-typescript/blob/main/nexus-hello/src/service/handler.ts)
 
 ```ts
-import * as nexus from "nexus-rpc";
-import { helloService, EchoInput, EchoOutput, HelloInput, HelloOutput } from "../api";
+import * as nexus from 'nexus-rpc';
+import {
+  EchoInput,
+  EchoOutput,
+  HelloInput,
+  HelloOutput,
+  helloService,
+} from '../api';
 
 export const helloServiceHandler = nexus.serviceHandler(helloService, {
   echo: async (ctx, input: EchoInput): Promise<EchoOutput> => {
@@ -197,11 +204,17 @@ Use `@temporalio/nexus`'s `WorkflowRunOperationHandler` helper class to easily e
 [nexus-hello/src/service/handler.ts](https://github.com/temporalio/samples-typescript/blob/main/nexus-hello/src/service/handler.ts)
 
 ```ts
-import { randomUUID } from "crypto";
-import * as nexus from "nexus-rpc";
-import * as temporalNexus from "@temporalio/nexus";
-import { helloService, EchoInput, EchoOutput, HelloInput, HelloOutput } from "../api";
-import { helloWorkflow } from "./workflows";
+import * as temporalNexus from '@temporalio/nexus';
+import { randomUUID } from 'crypto';
+import * as nexus from 'nexus-rpc';
+import {
+  EchoInput,
+  EchoOutput,
+  HelloInput,
+  HelloOutput,
+  helloService,
+} from '../api';
+import { helloWorkflow } from './workflows';
 
 export const helloServiceHandler = nexus.serviceHandler(helloService, {
   // ...
@@ -219,10 +232,9 @@ export const helloServiceHandler = nexus.serviceHandler(helloService, {
         // For this example, we're using the request ID allocated by Temporal when the caller workflow schedules
         // the operation, this ID is guaranteed to be stable across retries of this operation.
         workflowId: ctx.requestId ?? randomUUID(),
-
         // Task queue defaults to the task queue this Operation is handled on.
       });
-    }
+    },
   ),
 });
 ```
@@ -247,16 +259,16 @@ After developing an asynchronous Nexus Operation handler to start a Workflow, th
 [nexus-hello/src/service/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/nexus-hello/src/service/worker.ts)
 
 ```ts
-import { Worker, NativeConnection } from "@temporalio/worker";
-import { helloServiceHandler } from "./handler";
+import { NativeConnection, Worker } from '@temporalio/worker';
+import { helloServiceHandler } from './handler';
 
-const namespace = "my-target-namespace";
-const serviceTaskQueue = "my-handler-task-queue";
+const namespace = 'my-target-namespace';
+const serviceTaskQueue = 'my-handler-task-queue';
 const worker = await Worker.create({
   connection,
   namespace,
   taskQueue: serviceTaskQueue,
-  workflowsPath: require.resolve("./workflows"),
+  workflowsPath: require.resolve('./workflows'),
   nexusServices: [helloServiceHandler],
 });
 ```
@@ -273,21 +285,24 @@ You will need to provide the Nexus Endpoint name, which you registered previousl
 [nexus-hello/src/caller/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/nexus-hello/src/caller/workflows.ts)
 
 ```ts
-import * as wf from "@temporalio/workflow";
-import { helloService, LanguageCode } from "../service/api";
+import * as wf from '@temporalio/workflow';
+import { helloService, LanguageCode } from '../service/api';
 
-const HELLO_SERVICE_ENDPOINT = "hello-service-endpoint-name";
+const HELLO_SERVICE_ENDPOINT = 'hello-service-endpoint-name';
 
-export async function helloCallerWorkflow(name: string, language: LanguageCode): Promise<string> {
+export async function helloCallerWorkflow(
+  name: string,
+  language: LanguageCode,
+): Promise<string> {
   const nexusClient = wf.createNexusClient({
     service: helloService,
     endpoint: HELLO_SERVICE_ENDPOINT,
   });
 
   const helloResult = await nexusClient.executeOperation(
-    "hello",
+    'hello',
     { name, language },
-    { scheduleToCloseTimeout: "10s" }
+    { scheduleToCloseTimeout: '10s' },
   );
 
   return helloResult.message;
@@ -308,7 +323,7 @@ Temporal provides general guidance on [Errors in Nexus operations](https://docs.
 In TypeScript, there are three Nexus-specific exception classes:
 
 - `nexus-rpc`'s [`OperationError`](https://nexus-rpc.github.io/sdk-typescript/classes/OperationError.html): this is the exception type you should throw in a Nexus operation to indicate that it has failed according to its own application logic and should not be retried.
-- `nexus-rpc`'s [`HandlerError`](https://nexus-rpc.github.io/sdk-typescript/classes/HandlerError.html): you can throw this exception type in a Nexus operation with a specific [HandlerErrorType](https://nexus-rpc.github.io/sdk-typescript/nexusrpc.HandlerErrorType.html). The error will be marked as either retryable or non-retryable according to the type, following the [Nexus spec](https://github.com/nexus-rpc/api/blob/main/SPEC.md#predefined-handler-errors). The non-retryable handler error types are `BAD_REQUEST`, `UNAUTHENTICATED`, `UNAUTHORIZED`, `NOT_FOUND`, `NOT_IMPLEMENTED`; the retryable types are `RESOURCE_EXHAUSTED`, `INTERNAL`, `UNAVAILABLE`, `UPSTREAM_TIMEOUT`.
+- `nexus-rpc`'s [`HandlerError`](https://nexus-rpc.github.io/sdk-typescript/classes/HandlerError.html): you can throw this exception type in a Nexus operation with a specific [HandlerErrorType](https://nexus-rpc.github.io/sdk-typescript/types/HandlerErrorType.html). The error will be marked as either retryable or non-retryable according to the type, following the [Nexus spec](https://github.com/nexus-rpc/api/blob/main/SPEC.md#predefined-handler-errors). The non-retryable handler error types are `BAD_REQUEST`, `UNAUTHENTICATED`, `UNAUTHORIZED`, `NOT_FOUND`, `NOT_IMPLEMENTED`; the retryable types are `RESOURCE_EXHAUSTED`, `INTERNAL`, `UNAVAILABLE`, `UPSTREAM_TIMEOUT`.
 - `@temporalio/nexus`'s [`NexusOperationFailure`](https://typescript.temporal.io/api/classes/common.NexusOperationFailure): this is the error thrown inside a Workflow when a Nexus operation fails for any reason. Use the `cause` attribute on the exception to access the cause chain.
 
 ## Canceling a Nexus Operation {#canceling-a-nexus-operation}
@@ -322,7 +337,7 @@ To provide more granular control over cancellation of a specific Nexus Operation
 For example:
 
 ```ts
-import * as wf from "@temporalio/workflow";
+import * as wf from '@temporalio/workflow';
 
 async function cancellableCallerWorkflow() {
   const nexusClient = wf.createNexusClient({
@@ -332,7 +347,9 @@ async function cancellableCallerWorkflow() {
 
   const cancellableScope = new wf.CancellationScope({ cancellable: true });
   const nexusOperationHandle = await cancellableScope.run(async () =>
-    nexusClient.startOperation("hello", { name, language }, { scheduleToCloseTimeout: "60s" })
+    nexusClient.startOperation('hello', { name, language }, {
+      scheduleToCloseTimeout: '60s',
+    })
   );
 
   // Request cancellation of the Nexus Operation when a signal is received.
@@ -397,7 +414,7 @@ tcld namespace create \
 	--retention-days 1
 ```
 
-Alternatively, you can create Namespaces through the UI: [https://cloud.temporal.io/Namespaces](https://cloud.temporal.io/Namespaces).
+Alternatively, you can create Namespaces through the UI: [https://cloud.temporal.io/namespaces](https://cloud.temporal.io/namespaces).
 
 ### Create a Nexus Endpoint to route requests from caller to handler
 
