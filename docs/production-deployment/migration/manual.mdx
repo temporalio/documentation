@@ -1,9 +1,9 @@
 ---
-id: migration
-title: Migrate to Cloud
-sidebar_label: Migrate to Cloud
-description: Migrating to Temporal Cloud from self-hosted Temporal Service varies by Workflow requirements. This guide covers changing Client code, Workflow migration strategies, and necessary code adjustments.
-slug: /production-deployments/migration
+id: manual
+title: Manual Migration
+sidebar_label: Manual Migration
+description: Manually migrating to Temporal Cloud from self-hosted Temporal Service varies by Workflow requirements. This guide covers changing Client code, Workflow migration strategies, and necessary code adjustments.
+slug: /production-deployments/migration/manual
 toc_max_heading_level: 4
 keywords:
   - migration
@@ -16,14 +16,14 @@ tags:
   - Production
 ---
 
-Migrating to Temporal Cloud from a self-hosted Temporal Service will have different requirements depending on your usage.
+Manually migrating to Temporal Cloud from a self-hosted Temporal Service will have different requirements depending on your usage.
 This guide provides some guidance based on our experience helping customers of all sizes successfully migrate.
 
 ### What to expect from a migration
 
 Depending on your Workflows' requirements, the migration process may be as simple as changing a few parameters, or may require more extensive code changes.
 There are two aspects to consider when migrating: your Temporal Client connection code and your Workflow Executions.
-Here's a high-level overview of what you can expect:
+Here is a high-level overview of what you can expect:
 
 - **Introduce another Temporal Client to your Starter and Worker Processes:** Configure and deploy a new Temporal Client so that Temporal Cloud becomes responsible for new Workflow Executions.
 - **Migrate Workflow Executions:** There are different approaches for new, running, and completed Workflow Executions.
