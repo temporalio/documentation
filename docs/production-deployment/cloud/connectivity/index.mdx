@@ -329,9 +329,9 @@ Control plane access is always securely authenticated via [API keys](/cloud/api-
 
 To set up a PrivateLink connection to the Temporal Cloud control plane, follow [these instructions](/cloud/connectivity/aws-connectivity), but use the control plane endpoint information below:
 
-| Region      | Control Plane PrivateLink Service Name                    |
-| ----------- | --------------------------------------------------------- |
-| `us-west-2` | `com.amazonaws.vpce.us-west-2.vpce-svc-0c57a5930b6f6be0e` |
+| Hostname               | Region      | Control Plane PrivateLink Service Name                    |
+| ---------------------- | ----------- | --------------------------------------------------------- |
+| `saas-api.tmprl.cloud` | `us-west-2` | `com.amazonaws.vpce.us-west-2.vpce-svc-0c57a5930b6f6be0e` |
 
 The control plane PrivateLink endpoint includes a [private DNS name](https://docs.aws.amazon.com/vpc/latest/privatelink/manage-dns-names.html), which lets your clients use the PrivateLink connection without having to set up private DNS or having to override client configuration. To use the DNS name, make sure your VPC has the `Enable DNS hostnames` and `Enable DNS support` options enabled. If you cannot use the DNS name, you can also manually [set up private DNS](/cloud/connectivity/aws-connectivity#configuring-private-dns-for-aws-privatelink) or [override the server and TLS settings on your clients](/cloud/connectivity#update-dns-or-clients-to-use-private-connectivity).
 
