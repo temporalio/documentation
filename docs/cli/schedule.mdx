@@ -23,6 +23,7 @@ tags:
   - Temporal CLI
   - Schedules
 ---
+
 {/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
 This file is generated from https://github.com/temporalio/cli/blob/main/temporalcli/commandsgen/commands.yml */}
 
@@ -73,6 +74,14 @@ Use the following options to change the behavior of this command.
 
 Backfill end time. Required.
 
+**--overlap-policy** _string-enum_
+
+Policy for handling overlapping Workflow Executions. Accepted values: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll. (default "Skip")
+
+**--schedule-id**, **-s** _string_
+
+Schedule ID. Required.
+
 **--start-time** _timestamp_
 
 Backfill start time. Required.
@@ -86,6 +95,14 @@ Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -391,6 +408,14 @@ Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 API key for request.
 
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
+
 **--codec-auth** _string_
 
 Authorization header for Codec Server requests.
@@ -553,6 +578,14 @@ Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 API key for request.
 
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
+
 **--codec-auth** _string_
 
 Authorization header for Codec Server requests.
@@ -712,6 +745,14 @@ Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -879,6 +920,14 @@ Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -1066,6 +1115,14 @@ Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 API key for request.
 
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
+
 **--codec-auth** _string_
 
 Authorization header for Codec Server requests.
@@ -1228,6 +1285,14 @@ Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -1517,6 +1582,14 @@ Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 

@@ -14,6 +14,7 @@ tags:
   - Temporal CLI
   - Development Server
 ---
+
 {/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
 This file is generated from https://github.com/temporalio/cli/blob/main/temporalcli/commandsgen/commands.yml */}
 
@@ -21,13 +22,15 @@ This file is generated from https://github.com/temporalio/cli/blob/main/temporal
 
 Run a development Temporal Server on your local system.
 
+```
 +------------------------------------------------------------------------+
-| WARNING: The development server is not intended for production use. |
-| It skips certain HTTP security checks to make local use simpler. |
-| |
-| For production use, see: |
-| https://docs.temporal.io/production-deployment |
+| WARNING: The development server is not intended for production use.    |
+| It skips certain HTTP security checks to make local use simpler.       |
+|                                                                        |
+| For production use, see:                                               |
+| https://docs.temporal.io/production-deployment                         |
 +------------------------------------------------------------------------+
+```
 
 View the Web UI for the default configuration at: http://localhost:8233
 
@@ -134,6 +137,14 @@ Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
