@@ -126,6 +126,8 @@ public class MessagePassingIntro {
 
     public static class GreetingWorkflowImpl implements GreetingWorkflow {
         ...
+        private String approvedBy;
+
         @Override
         public void approve(ApproveInput input) {
             // 👉 The Signal handler mutates the Workflow state but cannot return a value.
