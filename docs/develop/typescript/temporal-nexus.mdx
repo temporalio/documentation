@@ -309,7 +309,7 @@ In TypeScript, there are three Nexus-specific exception classes:
 
 - `nexus-rpc`'s [`OperationError`](https://nexus-rpc.github.io/sdk-typescript/classes/OperationError.html): this is the exception type you should throw in a Nexus operation to indicate that it has failed according to its own application logic and should not be retried.
 - `nexus-rpc`'s [`HandlerError`](https://nexus-rpc.github.io/sdk-typescript/classes/HandlerError.html): you can throw this exception type in a Nexus operation with a specific [HandlerErrorType](https://nexus-rpc.github.io/sdk-typescript/nexusrpc.HandlerErrorType.html). The error will be marked as either retryable or non-retryable according to the type, following the [Nexus spec](https://github.com/nexus-rpc/api/blob/main/SPEC.md#predefined-handler-errors). The non-retryable handler error types are `BAD_REQUEST`, `UNAUTHENTICATED`, `UNAUTHORIZED`, `NOT_FOUND`, `NOT_IMPLEMENTED`; the retryable types are `RESOURCE_EXHAUSTED`, `INTERNAL`, `UNAVAILABLE`, `UPSTREAM_TIMEOUT`.
-- `@temporalio/nexus`'s [`NexusOperationFailure`](https://typescript.temporal.io/temporalio.exceptions.NexusOperationFailure.html): this is the error thrown inside a Workflow when a Nexus operation fails for any reason. Use the `cause` attribute on the exception to access the cause chain.
+- `@temporalio/nexus`'s [`NexusOperationFailure`](https://typescript.temporal.io/api/classes/common.NexusOperationFailure): this is the error thrown inside a Workflow when a Nexus operation fails for any reason. Use the `cause` attribute on the exception to access the cause chain.
 
 ## Canceling a Nexus Operation {#canceling-a-nexus-operation}
 
