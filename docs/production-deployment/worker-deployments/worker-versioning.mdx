@@ -78,8 +78,8 @@ To get started with Worker Versioning, you should understand some concepts aroun
   - A **Pinned** Workflow is guaranteed to complete on a single Worker Deployment Version.
   - An **Auto-Upgrade** Workflow will move to the latest Worker Deployment Version automatically whenever you change the current version. Auto-upgrade Workflows are not restricted to a single Deployment Version and need to be kept replay-safe manually, i.e. with [patching](/workflow-definition#workflow-versioning).
   - Both Pinned and Auto-Upgrade Workflows are guaranteed to start only on the Current or Ramping Version of their Worker Deployment.
-  - Pinned Workflows are designed for use with rainbow deployments. See [Deployment Systems](#deployment-systems). 
-  - Pinned Workflows don't need to be patched. as they run on the same worker and build until they complete.
+  - Pinned Workflows are designed for use with rainbow deployments. See [Deployment Systems](#deployment-systems).
+  - Pinned Workflows don't need to be patched, as they run on the same worker and build until they complete.
   - If you expect your Workflow to run longer than you want your Worker Deployment Versions to exist, you should mark your Workflow Type as Auto-Upgrade.
 - Each Worker Deployment has a single **Current Version** which is where workflows are routed to unless they were previously pinned on a different version. Other versions can continue polling to allow pinned Workflows to finish executing, or in case you need to roll back. If no current version is specified, the default is unversioned.
 - Each Worker Deployment can have a **Ramping Version** which is where a configurable percentage of Workflows are routed to unless they were previously pinned on a different version. The ramp percentage can be in the range [0, 100]. Workflows that don't go to the Ramping Version will go to the Current Version. If no Ramping Version is specified, 100% of new Workflows and auto-upgrade Workflows will go to the Current Version.
@@ -288,14 +288,13 @@ public interface HelloWorld {
 }
 
 public static class HelloWorldImpl implements HelloWorld {
-@Override
-@WorkflowVersioningBehavior(VersioningBehavior.PINNED)
-public String hello() {
-return "Hello, World!";
+    @Override
+    @WorkflowVersioningBehavior(VersioningBehavior.PINNED)
+    public String hello() {
+        return "Hello, World!";
+    }
 }
-}
-
-````
+```
 </SdkTabs.Java>
 <SdkTabs.Python>
 ```python
@@ -304,7 +303,7 @@ class HelloWorld:
     @workflow.run
     async def run(self):
         return "hello world!"
-````
+```
 
 </SdkTabs.Python>
 <SdkTabs.TypeScript>
