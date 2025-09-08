@@ -126,12 +126,14 @@ public class MessagePassingIntro {
 
     public static class GreetingWorkflowImpl implements GreetingWorkflow {
         ...
-        private String approvedBy;
+        private Boolean approvedForRelease;
+        private String approverName;
 
         @Override
         public void approve(ApproveInput input) {
             // 👉 The Signal handler mutates the Workflow state but cannot return a value.
-            this.approvedBy = input.name;
+            this.approvedForRelease = true;
+            this.approverName = input.name;
         }
     }
 }
