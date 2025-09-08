@@ -64,19 +64,7 @@ module.exports = {
           },
           items: [
             "evaluate/temporal-cloud/overview",
-            {
-              type: "category",
-              label: "Security",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "evaluate/temporal-cloud/security",
-              },
-              items: [
-                "evaluate/temporal-cloud/aws-privatelink",
-                "evaluate/temporal-cloud/gcp-private-service-connect",
-              ],
-            },
+            "evaluate/temporal-cloud/security",
             "evaluate/temporal-cloud/service-availability",
             "evaluate/temporal-cloud/regions",
             "evaluate/temporal-cloud/limits",
@@ -252,6 +240,7 @@ module.exports = {
             "develop/typescript/schedules",
             "develop/typescript/converters-and-encryption",
             "develop/typescript/timers",
+            "develop/typescript/nexus",
             "develop/typescript/child-workflows",
             "develop/typescript/continue-as-new",
             "develop/typescript/interceptors",
@@ -395,6 +384,19 @@ module.exports = {
                     "production-deployment/cloud/high-availability/how-to/migrate",
                   ],
                 },
+              ],
+            },
+            {
+              type: "category",
+              label: "Connectivity",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "production-deployment/cloud/connectivity/index",
+              },
+              items: [
+                "production-deployment/cloud/connectivity/aws-connectivity",
+                "production-deployment/cloud/connectivity/gcp-connectivity",
               ],
             },
             "production-deployment/cloud/rpo-rto",
