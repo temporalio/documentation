@@ -1,6 +1,7 @@
 module.exports = {
   documentation: [
     "index",
+    "quickstarts",
     {
       type: "category",
       label: "Evaluate",
@@ -63,19 +64,7 @@ module.exports = {
           },
           items: [
             "evaluate/temporal-cloud/overview",
-            {
-              type: "category",
-              label: "Security",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "evaluate/temporal-cloud/security",
-              },
-              items: [
-                "evaluate/temporal-cloud/aws-privatelink",
-                "evaluate/temporal-cloud/gcp-private-service-connect",
-              ],
-            },
+            "evaluate/temporal-cloud/security",
             "evaluate/temporal-cloud/service-availability",
             "evaluate/temporal-cloud/regions",
             "evaluate/temporal-cloud/limits",
@@ -116,7 +105,7 @@ module.exports = {
           items: [
             "develop/go/set-up-your-local-go",
             "develop/go/core-application",
-            "develop/go/temporal-clients",
+            "develop/go/temporal-client",
             "develop/go/go-sdk-multithreading",
             "develop/go/namespaces",
             "develop/go/testing-suite",
@@ -149,7 +138,7 @@ module.exports = {
           items: [
             "develop/java/set-up-your-local-java",
             "develop/java/core-application",
-            "develop/java/temporal-clients",
+            "develop/java/temporal-client",
             "develop/java/namespaces",
             "develop/java/testing-suite",
             "develop/java/failure-detection",
@@ -166,6 +155,7 @@ module.exports = {
             "develop/java/child-workflows",
             "develop/java/continue-as-new",
             "develop/java/side-effects",
+            "develop/java/spring-boot-integration",
           ],
         },
         {
@@ -178,7 +168,7 @@ module.exports = {
           },
           items: [
             "develop/php/core-application",
-            "develop/php/temporal-clients",
+            "develop/php/temporal-client",
             "develop/php/testing-suite",
             "develop/php/failure-detection",
             "develop/php/message-passing",
@@ -205,7 +195,7 @@ module.exports = {
           items: [
             "develop/python/set-up-your-local-python",
             "develop/python/core-application",
-            "develop/python/temporal-clients",
+            "develop/python/temporal-client",
             "develop/python/python-sdk-sandbox",
             "develop/python/python-sdk-sync-vs-async",
             "develop/python/testing-suite",
@@ -215,6 +205,7 @@ module.exports = {
             "develop/python/asynchronous-activity-completion",
             "develop/python/versioning",
             "develop/python/observability",
+            "develop/python/enriching-ui",
             "develop/python/debugging",
             "develop/python/schedules",
             "develop/python/converters-and-encryption",
@@ -236,7 +227,7 @@ module.exports = {
           items: [
             "develop/typescript/set-up-your-local-typescript",
             "develop/typescript/core-application",
-            "develop/typescript/temporal-clients",
+            "develop/typescript/temporal-client",
             "develop/typescript/namespaces",
             "develop/typescript/testing-suite",
             "develop/typescript/failure-detection",
@@ -249,6 +240,7 @@ module.exports = {
             "develop/typescript/schedules",
             "develop/typescript/converters-and-encryption",
             "develop/typescript/timers",
+            "develop/typescript/nexus",
             "develop/typescript/child-workflows",
             "develop/typescript/continue-as-new",
             "develop/typescript/interceptors",
@@ -308,6 +300,7 @@ module.exports = {
             "develop/ruby/continue-as-new",
           ],
         },
+        "develop/environment-configuration",
         "develop/activity-retry-simulator",
         "develop/worker-performance",
         "develop/safe-deployments",
@@ -391,6 +384,19 @@ module.exports = {
                     "production-deployment/cloud/high-availability/how-to/migrate",
                   ],
                 },
+              ],
+            },
+            {
+              type: "category",
+              label: "Connectivity",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "production-deployment/cloud/connectivity/index",
+              },
+              items: [
+                "production-deployment/cloud/connectivity/aws-connectivity",
+                "production-deployment/cloud/connectivity/gcp-connectivity",
               ],
             },
             "production-deployment/cloud/rpo-rto",
@@ -544,10 +550,12 @@ module.exports = {
         "references/errors",
         "references/events",
         "references/failures",
+        "references/operation-list",
         "references/sdk-metrics",
         "references/server-options",
         "references/web-ui-configuration",
         "references/web-ui-environment-variables",
+        
       ],
     },
     {
@@ -651,6 +659,7 @@ module.exports = {
             "encyclopedia/workers/task-routing-worker-sessions",
             "encyclopedia/workers/sticky-execution",
             "encyclopedia/workers/worker-shutdown",
+            "encyclopedia/workers/worker-versioning",
           ],
         },
         {

@@ -41,14 +41,14 @@ Use the essential components of a Temporal Application (Workflows, Activities, a
 - [Start an Activity Execution](/develop/python/core-application#activity-execution)
 - [Run Worker Processes](/develop/python/core-application#run-a-dev-worker)
 
-## [Temporal Client](/develop/python/temporal-clients)
+## [Temporal Client](/develop/python/temporal-client)
 
 Connect to a Temporal Service and start a Workflow Execution.
 
-- [Connect to Development Temporal Service](/develop/python/temporal-clients#connect-to-development-service)
-- [Connect a Temporal Client to a Temporal Service](/develop/python/temporal-clients#connect-to-a-dev-cluster)
-- [Connect to Temporal Cloud](/develop/python/temporal-clients#connect-to-temporal-cloud)
-- [Start a Workflow Execution](/develop/python/temporal-clients#start-workflow-execution)
+- [Connect to Development Temporal Service](/develop/python/temporal-client#connect-to-development-service)
+- [Connect a Temporal Client to a Temporal Service](/develop/python/temporal-client#connect-to-a-dev-cluster)
+- [Connect to Temporal Cloud](/develop/python/temporal-client#connect-to-temporal-cloud)
+- [Start a Workflow Execution](/develop/python/temporal-client#start-workflow-execution)
 
 ## [Python SDK Sandbox](/develop/python/python-sdk-sandbox)
 
@@ -135,6 +135,17 @@ Use compression, encryption, and other data handling by implementing custom conv
 - [Custom Payload Codec](/develop/python/converters-and-encryption#custom-payload-codec)
 - [Payload Conversion](/develop/python/converters-and-encryption#payload-conversion)
 
+## Temporal Nexus
+
+The [Temporal Nexus](/develop/python/nexus) feature guide shows how to use Temporal Nexus to connect durable executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
+
+- [Create a Nexus Endpoint to route requests from caller to handler](/develop/python/nexus#create-nexus-endpoint)
+- [Define the Nexus Service contract](/develop/python/nexus#define-nexus-service-contract)
+- [Develop a Nexus Service and Operation handlers](/develop/python/nexus#develop-nexus-service-operation-handlers)
+- [Develop a caller Workflow that uses a Nexus Service](/develop/python/nexus#develop-caller-workflow-nexus-service)
+- [Make Nexus calls across Namespaces with a dev Server](/develop/python/nexus#register-the-caller-workflow-in-a-worker-and-start-the-caller-workflow)
+- [Make Nexus calls across Namespaces in Temporal Cloud](/develop/python/nexus#nexus-calls-across-namespaces-temporal-cloud)
+
 ## [Durable Timers](/develop/python/timers)
 
 Use Timers to make a Workflow Execution pause or "sleep" for seconds, minutes, days, months, or years.
@@ -158,3 +169,9 @@ Continue the Workflow Execution with a new Workflow Execution using the same Wor
 Manage inbound and outbound SDK calls, enhance tracing, and add authorization to your Workflows and Activities.
 
 - [Interceptors](/develop/python/interceptors)
+
+## [Enriching the User Interface](/develop/python/enriching-ui)
+
+Add descriptive information to workflows and events for better visibility and context in the UI.
+
+- [Adding Summary and Details to Workflows](/develop/python/enriching-ui#adding-summary-and-details-to-workflows)

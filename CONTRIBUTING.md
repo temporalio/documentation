@@ -125,7 +125,7 @@ This repository is configured for [Snipsync](https://github.com/temporalio/snips
 
 The reason we use Snipsync is because this repo does not lint or build code samples directly, but the [samples repos](https://github.com/search?q=org%3Atemporalio+samples-&type=repositories) used throughout our organization do. As a general rule, we prefer all code samples presented in docs to be directly extracted from a CI-enabled code repo using Snipsync to benefit from this. While this may not be practical for every single line of code embedded in docs, it is a best practice.
 
-If you are making changes to code surrounded by Snipsync wrappers, i.e. `<--SNIPSTART someid --->` && `<!--SNIPEND-->` then you will want to make those edits to the actual source code.
+If you are making changes to code surrounded by Snipsync wrappers, i.e. `<!--SNIPSTART someid-->` && `<!--SNIPEND-->` then you will want to make those edits to the actual source code.
 The location of the source code is written just inside the wrappers.
 
 After you have edited the source code, then you can run `yarn snipsync` to update that code snippet.

@@ -25,6 +25,7 @@ A Namespace is a unit of isolation within the Temporal Platform.
 - [Access a Namespace](#access-namespaces)
 - [Manage Namespaces](#manage-namespaces)
 - [Delete a Namespace](#delete-a-namespace)
+- [Tag a Namespace](#tag-a-namespace)
 
 ## What is a Cloud Namespace Name? {#temporal-cloud-namespace-name}
 
@@ -376,3 +377,60 @@ tcld namespace lifecycle set \
     --namespace <namespace_id.account_id> \
     --enable-delete-protection <Boolean>
 ```
+
+## How to tag a Namespace in Temporal Cloud {#tag-a-namespace}
+
+:::tip Support, stability, and dependency info
+
+Namespace tags are currently in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+
+:::
+
+Tags are key-value metadata pairs that can be attached to namespaces in Temporal Cloud to help operators organize, track, and manage namespaces more easily.
+
+### Tag Structure and Limits
+
+- Each namespace can have a maximum of 10 tags
+- Each key must be unique for a given namespace (e.g., a namespace cannot have both `team:foo` and `team:bar` tags)
+- Keys and values must be 1-63 characters in length
+- Allowed characters: lowercase letters (`a-z`), numbers (`0-9`), periods (`.`), underscores (`_`), and hyphens (`-`)
+- Tags are not a secure storage mechanism and should not store PII or PHI
+- Tags will not change the behavior of the tagged resource
+- There is a soft limit of 1000 unique tag keys per account
+
+### Permissions
+
+- Only [**Account Admins** and **Account Owners**](/cloud/users#account-level-roles) can create and edit tags
+- All users with access to a namespace can view its tags
+
+### tcld
+
+See the [tcld namespace tags](/cloud/tcld/namespace/#tags) command reference for details.
+
+### Terraform
+
+See the [Terraform provider](https://github.com/temporalio/terraform-provider-temporalcloud/blob/main/docs/resources/namespace_tags.md) for details.
+
+### Web UI
+
+Tags can be viewed and managed through the Temporal Cloud web interface. When viewing a namespace, you'll see tags displayed and can add, edit, or remove them if you have the appropriate permissions.
+
+<CaptionedImage
+    src="/img/cloud/tags/Namespace-DetailsWithTags.png"
+    title="Tags appear in namespace details"
+/>
+
+<CaptionedImage
+    src="/img/cloud/tags/Namespaces-IndexWithTags.png"
+    title="Tags appear on the list of namespaces"
+/>
+
+<CaptionedImage
+    src="/img/cloud/tags/CreateNamespace-AddNewTag.png"
+    title="Where to add tags during namespace creation"
+/>
+
+<CaptionedImage
+    src="/img/cloud/tags/CreateNamespace-AddedTag.png"
+    title="After adding a tag during namespace creation"
+/>
