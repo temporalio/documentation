@@ -17,24 +17,25 @@ tags:
   - Durable Execution
 ---
 
-Temporal's [deterministic constraints](/workflow-definition#deterministic-constraints) require consideration when rolling out or rolling back workflow code changes.
+The [Temporal Worker Controller](https://github.com/temporalio/temporal-worker-controller) provides automation to enable rainbow deployments of your workers by simplifying the tracking of which versions still have active workflows, managing the lifecycle of versioned worker deployments, and calling Temporal APIs to update the routing config of Temporal Worker Deployments.
+This way, you can route Workflow traffic to new versions.
 
-The traditional approach to workflow determinism is to add branches using the [Versioning APIs](/workflow-definition#workflow-versioning).
+### Why adopt the Worker Controller?
+
+The traditional approach to revising Temporal Workflows is to add branches using the [Versioning APIs](/workflow-definition#workflow-versioning).
 Over time these checks can become a source of technical debt, as safely removing them from a codebase is a careful process that often involves querying all running workflows.
 
 [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) is a Temporal feature that allows you to pin Workflows to individual versions of your workers, which are called Worker Deployment Versions.
 Using pinning, you will not need to add branching to your Workflows to avoid non-determinism errors.
-
 This allows you to bypass the other Versioning APIs.
-Instead, your [deployment system](/production-deployment/worker-deployments/worker-versioning#deployment-systems) must support multiple versions running simultaneously and allow you to control when they are sunsetted.
 
-This Temporal Worker Controller provides automation to enable rainbow deployments of your workers by simplifying the tracking of which versions still have active workflows, managing the lifecycle of versioned worker deployments, and calling Temporal APIs to update the routing config of Temporal Worker Deployments.
-This way, you can route Workflow traffic to new versions.
+The Worker Controller gives you direct, programmatic control over your Worker deployments, and integrates with the [Temporal CLI](/production-deployment/worker-deployments/worker-versioning#rolling-out-changes-with-the-cli).
+You do not need to use the Worker Controller to use Worker Versioning, but when used together, Worker Versioning and the Worker Controller can provide more graceful deployments and upgrades, and less need to manually tune your Workers.
 
-Note that in Temporal, **Worker Deployment** is sometimes referred to as **Deployment**, but since the controller makes significant references to Kubernetes Deployment resource, within this page we will stick to these terms:
+Note that in Temporal, **Worker Deployment** is sometimes referred to as **Deployment**, but since the Worker Controller makes significant references to Kubernetes Deployment resource, within this page we will stick to these terms:
 
-- **Worker Deployment Version**: A version of a deployment or service. It can have multiple Workers, but they all run the same build. Sometimes shortened to "version" or "deployment version."
-- **Worker Deployment**: A deployment or service across multiple versions. In a rainbow deploy, a worker deployment can have multiple active deployment versions running at once.
+- [**Worker Deployment**](/worker-versioning#deployments): A Worker Deployment is a logical service that groups similar Workers together for unified management. Each Deployment has a name (such as your service name) and supports versioning through a series of Worker Deployment Versions.
+- [**Worker Deployment Version**](/worker-versioning#deployment-versions): A Worker Deployment Version represents an iteration of a Worker Deployment. Each Deployment Version consists of Workers that share the same code build and environment. When a Worker starts polling for Workflow and Activity Tasks, it reports its Deployment Version to the Temporal Server.
 - **Deployment**: A Kubernetes Deployment resource. A Deployment is "versioned" if it is running versioned Temporal workers/pollers.
 
 ### Features
