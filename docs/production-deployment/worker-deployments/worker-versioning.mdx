@@ -19,7 +19,7 @@ import { LANGUAGE_TAB_GROUP, getLanguageLabel } from '@site/src/constants/langua
 import SdkTabs from '@site/src/components';
 
 Worker Versioning is a Temporal feature that allows you to confidently deploy new changes to the Workflows running on your Workers without breaking them.
-Temporal enables this by helping you manage different builds or versions, formally called Worker Deployment Versions.
+Temporal enables this by helping you manage different builds or versions, formally called [Worker Deployment Versions](/worker-versioning#deployment-versions).
 
 Worker Versioning unlocks important benefits for users of [blue-green or rainbow deployments](#deployment-systems).
 
@@ -78,7 +78,9 @@ To get started with Worker Versioning, you should understand some concepts aroun
   - A **Pinned** Workflow is guaranteed to complete on a single Worker Deployment Version.
   - An **Auto-Upgrade** Workflow will move to the latest Worker Deployment Version automatically whenever you change the current version. Auto-upgrade Workflows are not restricted to a single Deployment Version and need to be kept replay-safe manually, i.e. with [patching](/workflow-definition#workflow-versioning).
   - Both Pinned and Auto-Upgrade Workflows are guaranteed to start only on the Current or Ramping Version of their Worker Deployment.
-  - Workflow Pinning is designed for use with rainbow deployments. See [Deployment Systems](#deployment-systems).
+  - Pinned Workflows are designed for use with rainbow deployments. See [Deployment Systems](#deployment-systems).
+  - Pinned Workflows don't need to be patched, as they run on the same worker and build until they complete.
+  - If you expect your Workflow to run longer than you want your Worker Deployment Versions to exist, you should mark your Workflow Type as Auto-Upgrade.
 - Each Worker Deployment has a single **Current Version** which is where workflows are routed to unless they were previously pinned on a different version. Other versions can continue polling to allow pinned Workflows to finish executing, or in case you need to roll back. If no current version is specified, the default is unversioned.
 - Each Worker Deployment can have a **Ramping Version** which is where a configurable percentage of Workflows are routed to unless they were previously pinned on a different version. The ramp percentage can be in the range [0, 100]. Workflows that don't go to the Ramping Version will go to the Current Version. If no Ramping Version is specified, 100% of new Workflows and auto-upgrade Workflows will go to the Current Version.
 
@@ -108,14 +110,14 @@ Follow the example for your SDK below:
 ```go
 buildID:= mustGetEnv("MY_BUILD_ID")
 w := worker.New(c, myTaskQueue, worker.Options{
-      DeploymentOptions: worker.DeploymentOptions{
-          UseVersioning: true,
-          Version: worker.WorkerDeploymentVersion{
-              DeploymentName: "llm_srv",
-              BuildId:        buildID,
-          },
-          DefaultVersioningBehavior: workflow.VersioningBehaviorUnspecified,
-},
+  DeploymentOptions: worker.DeploymentOptions{
+    UseVersioning: true,
+    Version: worker.WorkerDeploymentVersion{
+      DeploymentName: "llm_srv",
+      BuildId:        buildID,
+    },
+    DefaultVersioningBehavior: workflow.VersioningBehaviorUnspecified,
+  },
 })
 ```
 </SdkTabs.Go>
@@ -126,16 +128,16 @@ import io.temporal.common.VersioningBehavior;
 import io.temporal.common.WorkerDeploymentVersion;
 import io.temporal.worker.WorkerDeploymentOptions;
 
-    WorkerOptions.newBuilder()
-    .setDeploymentOptions(
-        WorkerDeploymentOptions.newBuilder()
-        .setVersion(new WorkerDeploymentVersion("llm_srv", "1.0"))
-        .setUseVersioning(true)
-        .setDefaultVersioningBehavior(VersioningBehavior.AUTO_UPGRADE)
-        .build())
-    .build();
-```
+  WorkerOptions.newBuilder()
+  .setDeploymentOptions(
+      WorkerDeploymentOptions.newBuilder()
+      .setVersion(new WorkerDeploymentVersion("llm_srv", "1.0"))
+      .setUseVersioning(true)
+      .setDefaultVersioningBehavior(VersioningBehavior.AUTO_UPGRADE)
+      .build())
+  .build();
 
+```
 </SdkTabs.Java>
 <SdkTabs.Python>
 ```python
@@ -210,11 +212,9 @@ worker = Temporalio::Worker.new(
 
 ### Which Default Versioning Behavior should you choose?
 
-If you are using blue-green deployments, you should default to Auto-Upgrade and should not use Workflow Pinning.
+If you are using blue-green deployments, you should default to Auto-Upgrade and should not use Workflow Pinning. Otherwise, if your Worker and Workflows are new, we suggest not providing a `DefaultVersioningBehavior`.
 
-Otherwise, if your Worker and Workflows are new, we suggest not providing a `DefaultVersioningBehavior`.
-In general, each Workflow Type should be annotated as Auto-Upgrade or Pinned.
-If all of your Workflows will be short-running for the foreseeable future, you can default to Pinned.
+In general, each Workflow Type should be annotated as Auto-Upgrade or Pinned. If all of your Workflows will be short-running for the foreseeable future, you can default to Pinned.
 
 Many users who are migrating to Worker Versioning will start by defaulting to Auto-Upgrade until they have had time to annotate their Workflows.
 This default is the most similar to the legacy behavior.
@@ -294,7 +294,6 @@ public static class HelloWorldImpl implements HelloWorld {
         return "Hello, World!";
     }
 }
-
 ```
 </SdkTabs.Java>
 <SdkTabs.Python>
@@ -464,11 +463,11 @@ we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, HelloWorld, 
 <SdkTabs.TypeScript>
 ```ts
 const handle = await client.workflow.start('helloWorld', {
-taskQueue: 'MyTaskQueue',
-workflowId: 'MyWorkflowId',
-versioningOverride: {
-      pinnedTo: { buildId: '1.0', deploymentName: 'deploy-name' },
-},
+  taskQueue: 'MyTaskQueue',
+  workflowId: 'MyWorkflowId',
+  versioningOverride: {
+    pinnedTo: { buildId: '1.0', deploymentName: 'deploy-name' },
+  },
 });
 ```
 </SdkTabs.TypeScript>

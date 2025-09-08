@@ -16,10 +16,12 @@ This file is generated from https://github.com/temporalio/cli/blob/main/temporal
 
 ## deployment
 
+```
 +---------------------------------------------------------------------+
 | CAUTION: Worker Deployment is experimental. Deployment commands are |
-| subject to change. |
+| subject to change.                                                  |
 +---------------------------------------------------------------------+
+```
 
 Deployment commands perform operations on Worker Deployments:
 
@@ -49,10 +51,12 @@ Sets the current Deployment Version for a given Deployment.
 
 ### delete
 
+```
 +---------------------------------------------------------------------+
 | CAUTION: Worker Deployment is experimental. Deployment commands are |
-| subject to change. |
+| subject to change.                                                  |
 +---------------------------------------------------------------------+
+```
 
 Remove a Worker Deployment given its Deployment Name.
 A Deployment can only be deleted if it has no Version in it.
@@ -73,6 +77,10 @@ Use the following options to change the behavior of this command.
 
 **Flags:**
 
+**--identity** _string_
+
+Identity of the user submitting this request.
+
 **--name**, **-d** _string_
 
 Name for a Worker Deployment. Required.
@@ -81,11 +89,19 @@ Name for a Worker Deployment. Required.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -148,10 +164,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -225,10 +237,12 @@ Override target TLS server name.
 
 ### delete-version
 
+```
 +---------------------------------------------------------------------+
 | CAUTION: Worker Deployment is experimental. Deployment commands are |
-| subject to change. |
+| subject to change.                                                  |
 +---------------------------------------------------------------------+
+```
 
 Remove a Worker Deployment Version given its fully-qualified identifier.
 This is rarely needed during normal operation
@@ -266,6 +280,10 @@ Build ID of the Worker Deployment Version. Required.
 
 Name of the Worker Deployment. Required.
 
+**--identity** _string_
+
+Identity of the user submitting this request.
+
 **--skip-drainage** _bool_
 
 Ignore the deletion requirement of not draining.
@@ -274,11 +292,19 @@ Ignore the deletion requirement of not draining.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -341,10 +367,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -418,10 +440,12 @@ Override target TLS server name.
 
 ### describe
 
+```
 +---------------------------------------------------------------------+
 | CAUTION: Worker Deployment is experimental. Deployment commands are |
-| subject to change. |
+| subject to change.                                                  |
 +---------------------------------------------------------------------+
+```
 
 Describe properties of a Worker Deployment, such as the versions
 associated with it, routing information of new or existing tasks
@@ -451,11 +475,19 @@ Name for a Worker Deployment. Required.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -518,10 +550,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -595,10 +623,12 @@ Override target TLS server name.
 
 ### describe-version
 
+```
 +---------------------------------------------------------------------+
 | CAUTION: Worker Deployment is experimental. Deployment commands are |
-| subject to change. |
+| subject to change.                                                  |
 +---------------------------------------------------------------------+
+```
 
 Describe properties of a Worker Deployment Version, such as the task
 queues polled by workers in this Deployment Version, or drainage
@@ -634,11 +664,19 @@ Name of the Worker Deployment. Required.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -701,10 +739,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -778,10 +812,12 @@ Override target TLS server name.
 
 ### list
 
+```
 +---------------------------------------------------------------------+
 | CAUTION: Worker Deployment is experimental. Deployment commands are |
-| subject to change. |
+| subject to change.                                                  |
 +---------------------------------------------------------------------+
+```
 
 List existing Worker Deployments in the client's namespace.
 
@@ -802,11 +838,19 @@ Use the following options to change the behavior of this command.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -869,10 +913,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -946,10 +986,12 @@ Override target TLS server name.
 
 ### set-current-version
 
+```
 +---------------------------------------------------------------------+
 | CAUTION: Worker Deployment is experimental. Deployment commands are |
-| subject to change. |
+| subject to change.                                                  |
 +---------------------------------------------------------------------+
+```
 
 Set the Current Version for a Deployment.
 When a Version is current, Workers of that Deployment Version will receive
@@ -994,6 +1036,10 @@ Build ID of the Worker Deployment Version. Required unless --unversioned is spec
 
 Name of the Worker Deployment. Required.
 
+**--identity** _string_
+
+Identity of the user submitting this request.
+
 **--ignore-missing-task-queues** _bool_
 
 Override protection to accidentally remove task queues.
@@ -1010,11 +1056,19 @@ Don't prompt to confirm set Current Version.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -1077,10 +1131,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -1154,10 +1204,12 @@ Override target TLS server name.
 
 ### set-ramping-version
 
+```
 +---------------------------------------------------------------------+
 | CAUTION: Worker Deployment is experimental. Deployment commands are |
-| subject to change. |
+| subject to change.                                                  |
 +---------------------------------------------------------------------+
+```
 
 Set the Ramping Version and Percentage for a Deployment.
 
@@ -1215,6 +1267,10 @@ Delete the Ramping Version.
 
 Name of the Worker Deployment. Required.
 
+**--identity** _string_
+
+Identity of the user submitting this request.
+
 **--ignore-missing-task-queues** _bool_
 
 Override protection to accidentally remove task queues.
@@ -1235,11 +1291,19 @@ Don't prompt to confirm set Ramping Version.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -1302,10 +1366,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -1379,10 +1439,13 @@ Override target TLS server name.
 
 ### update-metadata-version
 
+```
 +---------------------------------------------------------------------+
 | CAUTION: Worker Deployment is experimental. Deployment commands are |
-| subject to change. |
+| subject to change.                                                  |
 +---------------------------------------------------------------------+
+```
+
 Update metadata associated with a Worker Deployment Version.
 
 For example:
@@ -1425,11 +1488,19 @@ Keys of entries to be deleted from metadata. Can be passed multiple times.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "localhost:7233")
+Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -1492,10 +1563,6 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 **--grpc-meta** _string[]_
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
