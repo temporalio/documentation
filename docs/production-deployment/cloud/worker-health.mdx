@@ -134,7 +134,11 @@ Anything else indicates bottlenecking.
 
 ### Sync Match Rate {#sync-match-rate}
 
-The Sync Match Rate measures the rate of Tasks that can be delivered to Workers without having to be persisted (Workers are up and available to pick them up) to the rate of all delivered Tasks.
+The Sync Match Rate measures the proportion of Tasks that are delivered directly to Stickied Cached Workflows on Workers, compared to the total number of delivered Tasks.
+
+A sync match is when a task is immediately matched to a Stickied Cached Workflow on a Worker.
+
+An async match is when a Task cannot be matched to the Sticky Queue for a Worker. This can happen when no Worker has cached the Workflow, or if the Task times out during processing. In this case, the Task returns to the general Task Queue.
 
 **Calculate Sync Match Rate**
 
@@ -166,35 +170,40 @@ The Sync Match Rate should be at least >95%, but preferably >99%.
 
 **Interpretation**
 
-There is not enough or under-powered resources.
-If the Schedule-To-Start latency is high and the Sync Match Rate is high, the TaskQueue is experiencing a backlog of Tasks.
+Consider if this acceptable for your use case to have low Sync Match Rate.
+For example if you have known workloads, or you intentionally throttle tasks.
 
-There are three typical causes for this:
+If Schedule-To-Start latencies are high, the Task Queue is experiencing a backlog of Tasks.
 
-- There are not enough Workers to perform work
-- Each Worker is either under resourced, or is misconfigured, to handle enough work
-- There is congestion caused by the environment (eg., network) hosting the Worker(s) and Temporal Cloud.
+It's also important to understand the fill and drain rates of the async tasks are during these windows:
+
+Successful async polls
+```
+temporal_cloud_v0_poll_success_count - temporal_cloud_v0_poll_success_sync_count = N
+```
+
+```
+sum(rate(temporal_cloud_v0_poll_success_count{temporal_namespace=~"$temporal_namespace"}[5m])) by (temporal_namespace, task_type)
+-
+sum(rate(temporal_cloud_v0_poll_success_sync_count{temporal_namespace=~"$temporal_namespace"}[5m])) by (temporal_namespace, task_type)
+```
+
+[//]: # (add `temporal_cloud_v1_approximate_backlog_count` once the v2 metrics has been GA'd)
 
 **Actions**
 
-Consider the following:
-
-- Increasing either the number of available Workers, OR
-- Verifying that your Worker hosts are appropriately resourced, OR
-- Increasing the Worker configuration value for concurrent pollers for Workers/Task executions (if your Worker resources can accommodate the increased load), OR
-  - TypeScript: [Workflows](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#maxconcurrentworkflowtaskexecutions)
-  - Golang: [Workflows](/develop/go/core-application#maxconcurrentworkflowtaskpollers)
-- Doing some combination of the above
-
-**Temporal Cloud bottleneck**
-
-If the Schedule-To-Start latency is _high_ and the Sync Match Rate is also _low_, Temporal Cloud could very well be the bottleneck and you should reach out via support channels for us to confirm.
+- Verify that your Worker setup is optimized for your instance
+  - Check the system cpu usage against `task_slots` and adjust `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecutionSize` settings as necessary
+  - Check the system memory usage against `sticky_cache_size` and adjust sticky cache size as necessary
+  - For a detailed explanation of settings, see [Worker Performance](/develop/worker-performance#task-queues-processing-tuning) section
+- Increasing the Worker config for concurrent pollers for Workflow/Activity `task_slots` (if your Worker resources can accommodate the increased load)
+  - See [Worker Performance > Poller Count](/develop/worker-performance#poller-count)
+- Increasing either the number of available Workers
 
 :::warning
 
 Setting the [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout) in your Activity Options can skew your observations.
-Avoid setting a Schedule-To-Start Timeout when profiling latency.
-You should avoid setting a Schedule-To-Start Timeout when profiling latency.
+Avoid setting a Schedule-To-Start Timeout when load testing for latency.
 
 :::
 
@@ -228,13 +237,12 @@ For high volume and low latency, try to target >95%.
 
 **Interpretation**
 
-There may be too many Workers.
+There may be too many Pollers for the amount of Workers.
 
 If you see the following at the same time then you might have too many Workers:
 
-- Low poll success rate, AND
-- Low `schedule_to_start_latency`, AND
-- Low Worker hosts resource utilization
+- ResourceExhausted on poll operations, e.g. `temporal_long_request_failure{operation=~"Poll.*"}`
+- Low poll success rate
 
 **Actions**
 
