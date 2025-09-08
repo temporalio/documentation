@@ -100,7 +100,7 @@ To skip a sandbox environment for a Worker, set the `workflow_runner` keyword a
 When creating the Worker, the `workflow_runner` defaults to [`SandboxedWorkflowRunner()`](https://python.temporal.io/temporalio.worker.workflow_sandbox.SandboxedWorkflowRunner.html).
 The `SandboxedWorkflowRunner` init accepts a `restrictions` keyword argument that defines a set of restrictions to apply to this sandbox.
 
-The `SandboxRestrictions` dataclass is immutable and contains three fields that can be customized, but only two have notable values.
+The [`SandboxRestrictions`](https://python.temporal.io/temporalio.worker.workflow_sandbox.SandboxRestrictions.html) dataclass is immutable and contains three fields that can be customized, but only two have notable values.
 
 - [`passthrough_modules`](https://python.temporal.io/temporalio.worker.workflow_sandbox.SandboxRestrictions.html#passthrough_modules)
 - [`invalid_modules_members`](https://python.temporal.io/temporalio.worker.workflow_sandbox.SandboxRestrictions.html#invalid_module_members)
@@ -132,6 +132,11 @@ class MyWorkflow:
 Alternatively, this can be done at worker creation time by customizing the runner's restrictions.
 
 ```python
+# my_worker_file.py
+
+from temporalio.worker import Worker
+from temporalio.worker.workflow_sandbox import SandboxedWorkflowRunner, SandboxRestrictions
+
 my_worker = Worker(
   ...,
   workflow_runner=SandboxedWorkflowRunner(
@@ -151,6 +156,12 @@ Checks are compared against the fully qualified path to the item.
 For example, to remove a restriction on `datetime.date.today()`, see the following example.
 
 ```python
+# my_worker_file.py
+
+import dataclasses
+from temporalio.worker import Worker
+from temporalio.worker.workflow_sandbox import SandboxedWorkflowRunner, SandboxRestrictions
+
 my_restrictions = dataclasses.replace(
     SandboxRestrictions.default,
     invalid_module_members=SandboxRestrictions.invalid_module_members_default.with_child_unrestricted(
@@ -160,11 +171,21 @@ my_restrictions = dataclasses.replace(
 my_worker = Worker(..., workflow_runner=SandboxedWorkflowRunner(restrictions=my_restrictions))
 ```
 
-Restrictions can also be added by piping (`|`) together matchers.
+Restrictions can also be added by piping (`|`) together [`SandboxMatcher`](https://python.temporal.io/temporalio.worker.workflow_sandbox.SandboxMatcher.html) instances.
 
 The following example restricts the `datetime.date` class from being used.
 
 ```python
+# my_worker_file.py
+
+import dataclasses
+from temporalio.worker import Worker
+from temporalio.worker.workflow_sandbox import (
+  SandboxedWorkflowRunner,
+  SandboxMatcher,
+  SandboxRestrictions,
+)
+
 my_restrictions = dataclasses.replace(
     SandboxRestrictions.default,
     invalid_module_members=SandboxRestrictions.invalid_module_members_default | SandboxMatcher(
