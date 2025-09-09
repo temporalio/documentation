@@ -142,7 +142,7 @@ Task Queues with a single partition are almost always first-in, first-out, with 
 However, using a single partition limits you to low- and medium-throughput use cases.
 
 In Task Queues with multiple partitions, each task is assigned to a random partition.
-Generally partitions will act as FIFO queues, so even sync matches (Tasks that can be dispatched immediately) are not delivered before async matches (older tasks).
+Generally partitions will act as FIFO queues, so once a task queue builds up a backlog, the sync match (tasks that can be dispatched immediately) rate will drop to nearly zero because the task queue will instead dispatch tasks from the backlog (i.e. async matches) first.
 
 :::note
 
