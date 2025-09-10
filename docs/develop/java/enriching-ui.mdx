@@ -17,15 +17,14 @@ tags:
   - Temporal SDKs
 ---
 
-
-Temporal supports adding context to workflows and events with metadata. 
-This helps users identify and understand workflows and their operations.
+Temporal supports adding context to Workflows and Events with metadata. 
+This helps users identify and understand Workflows and their operations.
 
 ## Adding Summary and Details to Workflows
 
-#### Starting a Workflow
+### Starting a Workflow
 
-When starting a workflow, you can provide a static summary and details to help identify the workflow in the UI:
+When starting a workflow, you can provide a static summary and details to help identify the Workflow in the UI:
 
 ```java
 import io.temporal.client.WorkflowClient;
@@ -55,8 +54,8 @@ public class Main {
 }
 ```
 
-`setStaticSummary()` sets a single-line description that appears in the workflow list view, limited to 200 bytes.
-`setStaticDetails()` sets multi-line comprehensive information that appears in the workflow details view, with a larger limit of 20K bytes.
+`setStaticSummary()` sets a single-line description that appears in the Workflow list view, limited to 200 bytes.
+`setStaticDetails()` sets multi-line comprehensive information that appears in the Workflow details view, with a larger limit of 20K bytes.
 
 The input format is normal Markdown excluding: images, html, and scripts.
 
@@ -67,11 +66,11 @@ You can also use `WorkflowClient.start()` for async execution:
 WorkflowExecution execution = WorkflowClient.start(workflow::yourWorkflowMethod, "workflow input");
 ```
 
-#### Inside the Workflow
+### Inside the Workflow
 
-Within a workflow, you can get and set the _current workflow details_. Unlike static summary/details set at 
-workflow start, this value can be updated throughout the life of the workflow. Current workflow details 
-also takes Markdown format (again, excluding images, html, and scripts) and can span multiple lines.
+Within a Workflow, you can get and set the _current workflow details_. 
+Unlike static summary/details set at Workflow start, this value can be updated throughout the life of the Workflow. 
+Current Workflow details also takes Markdown format (again, excluding images, html, and scripts) and can span multiple lines.
 
 ```java
 import io.temporal.workflow.Workflow;
@@ -91,9 +90,9 @@ public class YourWorkflowImpl implements YourWorkflow {
 }
 ```
 
-#### Adding Summary to Activities and Timers
+### Adding Summary to Activities and Timers
 
-You can attach a `setSummary()` to activities when starting them from within a workflow:
+You can attach a `setSummary()` to Activities when starting them from within a Workflow:
 
 ```java
 import io.temporal.activity.ActivityOptions;
@@ -117,7 +116,7 @@ public class YourWorkflowImpl implements YourWorkflow {
 }
 ```
 
-Similarly, you can attach a `setSummary()` to timers within a workflow:
+Similarly, you can attach a `setSummary()` to timers within a Workflow:
 
 ```java
 import io.temporal.workflow.Workflow;

@@ -17,14 +17,14 @@ tags:
   - Temporal SDKs
 ---
 
-Temporal supports adding context to workflows and events with metadata. 
-This helps users identify and understand workflows and their operations.
+Temporal supports adding context to Workflows and Events with metadata. 
+This helps users identify and understand Workflows and their operations.
 
 ## Adding Summary and Details to Workflows
 
-#### Starting a Workflow
+### Starting a Workflow
 
-When starting a workflow, you can provide a static summary and details to help identify the workflow in the UI:
+When starting a Workflow, you can provide a static summary and details to help identify the Workflow in the UI:
 
 ```php
 use Temporal\Client\WorkflowClient;
@@ -46,19 +46,19 @@ $workflow = $workflowClient->newWorkflowStub(
 $result = $workflow->yourWorkflowMethod('workflow input');
 ```
 
-`withStaticSummary()` sets a single-line description that appears in the workflow list view, limited to 200 bytes.
-`withStaticDetails()` sets multi-line comprehensive information that appears in the workflow details view, with a larger limit of 20K bytes.
+`withStaticSummary()` sets a single-line description that appears in the Workflow list view, limited to 200 bytes.
+`withStaticDetails()` sets multi-line comprehensive information that appears in the Workflow details view, with a larger limit of 20K bytes.
 
 The input format is normal Markdown excluding: images, html, and scripts.
 
-You can also start a workflow asynchronously:
+You can also start a Workflow asynchronously:
 
 ```php
 // Start workflow asynchronously
 $workflowClient->start($workflow, 'workflow input');
 ```
 
-#### Adding Summary to Activities and Timers
+### Adding Summary to Activities and Timers
 
 You can attach a `summary` to timers within a workflow:
 
@@ -88,7 +88,7 @@ class YourWorkflowImpl implements YourWorkflow
 }
 ```
 
-For activities, you can set a summary using activity options:
+For Activities, you can set a summary using Activity options:
 
 ```php
 use Temporal\Activity\ActivityOptions;

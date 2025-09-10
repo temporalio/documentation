@@ -17,12 +17,12 @@ tags:
   - Temporal SDKs
 ---
 
-Temporal supports adding context to workflows and events with metadata. 
-This helps users identify and understand workflows and their operations.
+Temporal supports adding context to Workflows and events with metadata. 
+This helps users identify and understand Workflows and their operations.
 
 ## Adding Summary and Details to Workflows
 
-#### Starting a Workflow
+### Starting a Workflow
 
 When starting a workflow, you can provide a static summary and details to help identify the workflow in the UI:
 
@@ -63,11 +63,11 @@ var result = await client.ExecuteWorkflowAsync(
     });
 ```
 
-#### Inside the Workflow
+### Inside the Workflow
 
-Within a workflow, you can get and set the _current workflow details_. Unlike static summary/details set at 
-workflow start, this value can be updated throughout the life of the workflow. Current workflow details 
-also takes Markdown format (again, excluding images, html, and scripts) and can span multiple lines.
+Within a Workflow, you can get and set the _current workflow details_. 
+Unlike static summary/details set at Workflow start, this value can be updated throughout the life of the Workflow. 
+Current Workflow details also takes Markdown format (again, excluding images, html, and scripts) and can span multiple lines.
 
 ```csharp
 using Temporalio.Workflows;
@@ -90,9 +90,9 @@ public class YourWorkflow
 }
 ```
 
-#### Adding Summary to Activities and Timers
+### Adding Summary to Activities and Timers
 
-You can attach a `Summary` to activities when starting them from within a workflow:
+You can attach a `Summary` to activities when starting them from within a Workflow:
 
 ```csharp
 using Temporalio.Activities;
@@ -118,7 +118,7 @@ public class YourWorkflow
 }
 ```
 
-Similarly, you can attach a `Summary` to timers within a workflow:
+Similarly, you can attach a `Summary` to timers within a Workflow:
 
 ```csharp
 using Temporalio.Workflows;
