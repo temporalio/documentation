@@ -30,7 +30,7 @@ Automated migration is currently in [Pre-release](/evaluate/development-producti
 As illustrated below, there are 2 components that support automated migrations:
 
 1. Migration proxy - The [s2s proxy](https://hub.docker.com/r/temporalio/s2s-proxy/tags) provides a security layer between the self-hosted server
-   and the migration server. The customer-side proxy is installed on your infrastructure, while the cloud-side proxy is managed by Temporal. Communications between the
+   and the migration server. The customer-side proxy is installed on your infrastructure, while the cloud-side proxy is managed by Temporal. Communications to the
    proxies are secured via [mutual TLS](https://www.cloudflare.com/learning/access-management/what-is-mutual-tls/) (mTLS).
 2. Migration server - A Temporal service (server) enables secure connections between your self-hosted setup and Temporal Cloud. It provides the core
    functionality of the service.
