@@ -59,13 +59,13 @@ func main() {
 `StaticSummary` is a single-line description that appears in the Workflow list view, limited to 200 bytes.
 `StaticDetails` can be multi-line and provides more comprehensive information that appears in the Workflow details view, with a larger limit of 20K bytes.
 
-The input format is normal Markdown excluding: images, html, and scripts.
+The input format is standard Markdown excluding images, HTML, and scripts.
 
 ### Inside the Workflow
 
 Within a Workflow, you can get and set the _current workflow details_. 
 Unlike static summary/details set at Workflow start, this value can be updated throughout the life of the Workflow. 
-Current Workflow details also takes Markdown format (again, excluding images, html, and scripts) and can span multiple lines.
+Current Workflow details also takes Markdown format (excluding images, HTML, and scripts) and can span multiple lines.
 
 ```go
 import (
@@ -86,7 +86,7 @@ func YourWorkflow(ctx workflow.Context, input string) (string, error) {
 
 ### Adding Summary to Activities and Timers
 
-You can attach a `Summary` to activities when starting them from within a Workflow:
+You can attach a metadata parameter `Summary` to Activities when starting them from within a Workflow:
 
 ```go
 import (

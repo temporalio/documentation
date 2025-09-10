@@ -44,7 +44,7 @@ const handle = await client.workflow.start(yourWorkflow, {
 `staticSummary` is a single-line description that appears in the workflow list view, limited to 200 bytes.
 `staticDetails` can be multi-line and provides more comprehensive information that appears in the workflow details view, with a larger limit of 20K bytes.
 
-The input format is normal Markdown excluding: images, html, and scripts.
+The input format is standard Markdown excluding images, HTML, and scripts.
 
 You can also use the `execute` method with the same parameters:
 
@@ -62,7 +62,7 @@ const result = await client.workflow.execute(yourWorkflow, {
 
 Within a Workflow, you can get and set the _current workflow details_. 
 Unlike static summary/details set at Workflow start, this value can be updated throughout the life of the Workflow. 
-Current Workflow details also takes Markdown format (again, excluding images, html, and scripts) and can span multiple lines.
+Current Workflow details also takes Markdown format (excluding images, HTML, and scripts) and can span multiple lines.
 
 ```typescript
 import { getCurrentDetails, setCurrentDetails } from '@temporalio/workflow';

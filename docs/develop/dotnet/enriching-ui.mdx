@@ -47,9 +47,9 @@ var handle = await client.StartWorkflowAsync(
 `StaticSummary` is a single-line description that appears in the workflow list view, limited to 200 bytes.
 `StaticDetails` can be multi-line and provides more comprehensive information that appears in the workflow details view, with a larger limit of 20K bytes.
 
-The input format is normal Markdown excluding: images, html, and scripts.
+The input format is standard Markdown excluding images, HTML, and scripts.
 
-You can also use `ExecuteWorkflowAsync` for synchronous execution:
+You can also use the `ExecuteWorkflowAsync` method with the same parameters:
 
 ```csharp
 var result = await client.ExecuteWorkflowAsync(
@@ -67,7 +67,7 @@ var result = await client.ExecuteWorkflowAsync(
 
 Within a Workflow, you can get and set the _current workflow details_. 
 Unlike static summary/details set at Workflow start, this value can be updated throughout the life of the Workflow. 
-Current Workflow details also takes Markdown format (again, excluding images, html, and scripts) and can span multiple lines.
+Current Workflow details also takes Markdown format (excluding images, HTML, and scripts) and can span multiple lines.
 
 ```csharp
 using Temporalio.Workflows;
@@ -92,7 +92,7 @@ public class YourWorkflow
 
 ### Adding Summary to Activities and Timers
 
-You can attach a `Summary` to activities when starting them from within a Workflow:
+You can attach a metadata parameter `Summary` to Activities when starting them from within a Workflow:
 
 ```csharp
 using Temporalio.Activities;
