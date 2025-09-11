@@ -192,7 +192,7 @@ sum(rate(temporal_cloud_v0_poll_success_sync_count{temporal_namespace=~"$tempora
 
 **Actions**
 
-- Verify that your Worker setup is optimized for your instance
+- Verify that your Worker setup is optimized for your instance:
   - Check the system cpu usage against `task_slots` and adjust `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecutionSize` settings as necessary
   - Check the system memory usage against `sticky_cache_size` and adjust sticky cache size as necessary
   - For a detailed explanation of settings, see [Worker Performance](/develop/worker-performance#task-queues-processing-tuning) section
