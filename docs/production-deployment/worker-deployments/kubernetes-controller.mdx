@@ -18,7 +18,7 @@ tags:
 ---
 
 The [Temporal Worker Controller](https://github.com/temporalio/temporal-worker-controller) provides automation to enable rainbow deployments of your workers by simplifying the tracking of which versions still have active workflows, managing the lifecycle of versioned worker deployments, and calling Temporal APIs to update the routing config of Temporal Worker Deployments.
-This way, you can route Workflow traffic to new versions.
+The Temporal Worker Controller makes it simple and safe to deploy Temporal workers on Kubernetes.
 
 ### Why adopt the Worker Controller?
 
@@ -47,6 +47,8 @@ Note that in Temporal, **Worker Deployment** is sometimes referred to as **Deplo
 - Ability to specify a "gate" workflow that must succeed on the new version before routing real traffic to that version
 - (Coming soon) Autoscaling of versioned Deployments
 
+Refer to the [Temporal Worker Controller repo](https://github.com/temporalio/temporal-worker-controller/) for usage details.
+
 ## Configuring Worker Lifecycle
 
 To use the Temporal Worker Controller, tag your Workers following the guidance for using [Worker Versioning](/production-deployment/worker-deployments/worker-versioning). Workers need to be configured using these environment variables:
@@ -56,9 +58,6 @@ To use the Temporal Worker Controller, tag your Workers following the guidance f
 - `TEMPORAL_DEPLOYMENT_NAME`: The name of the worker deployment. This must be unique to the worker deployment and should not change between versions.
 - `TEMPORAL_WORKER_BUILD_ID`: The build ID of the worker. This should change with each new worker rollout.
 Each of these will be automatically set by the controller, and must not be manually specified in the worker's pod template.
-
-When a new worker deployment version is deployed, the worker controller detects it and automatically begins the process of making that version the new **Current Version** of the worker deployment it is a part of.
-This could happen immediately if `cutover.strategy = AllAtOnce`, or gradually if `cutover.strategy = Progressive`.
 
 As older pinned workflows finish executing and deprecated deployment versions become drained, the worker controller also frees up resources by sunsetting the `Deployment` resources polling those versions.
 
@@ -91,7 +90,7 @@ helm install $RELEASE oci://docker.io/temporalio/helm-charts/temporal-worker-con
   --create-namespace
   
 helm install temporal-worker-controller ./helm/temporal-worker-controller \
-  --namespace temporal-system \
+  --namespace $NAMESPACE \
   --create-namespace 
 ```
 
