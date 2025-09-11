@@ -62,7 +62,7 @@ This could happen immediately if `cutover.strategy = AllAtOnce`, or gradually if
 
 As older pinned workflows finish executing and deprecated deployment versions become drained, the worker controller also frees up resources by sunsetting the `Deployment` resources polling those versions.
 
-Here is an example of a progressive cut-over strategy gated on the success of the `HelloWorld` workflow:
+Here is an example of a progressive rollout strategy gated on the success of the `HelloWorld` workflow:
 
 ```
 rollout:
