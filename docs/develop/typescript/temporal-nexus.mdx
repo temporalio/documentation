@@ -101,11 +101,13 @@ This example uses plain TypeScript objects, serialized into JSON.
 Note: By default, the TypeScript SDK [does not support Protobuf JSON encoding](https://typescript.temporal.io/api/interfaces/common.PayloadConverter). If passing Protobuf payloads use the [ProtobufJsonPayloadConverter](https://typescript.temporal.io/api/classes/protobufs.ProtobufJsonPayloadConverter) instead.
 
 <!--SNIPSTART typescript-nexus-hello-service-->
-[nexus-hello/src/api.ts](https://github.com/temporalio/samples-typescript/blob/main/nexus-hello/src/api.ts)
-```ts
-import * as nexus from 'nexus-rpc';
 
-export const helloService = nexus.service('hello', {
+[nexus-hello/src/api.ts](https://github.com/temporalio/samples-typescript/blob/main/nexus-hello/src/api.ts)
+
+```ts
+import * as nexus from "nexus-rpc";
+
+export const helloService = nexus.service("hello", {
   /**
    * Return the input message, unmodified. In the present sample, this Operation
    * will be implemented using the Synchronous Nexus Operation handler syntax.
@@ -136,8 +138,9 @@ export interface HelloOutput {
   message: string;
 }
 
-export type LanguageCode = 'en' | 'fr' | 'de' | 'es' | 'tr';
+export type LanguageCode = "en" | "fr" | "de" | "es" | "tr";
 ```
+
 <!--SNIPEND-->
 
 ## Develop a Nexus Service handler and Operation handlers {#develop-nexus-service-operation-handlers}
@@ -161,17 +164,16 @@ The handler function can obtain a Temporal Client, using `getClient()`, which ca
 However, implementations are free to make arbitrary calls to other services or databases, or perform computations such as this one:
 
 <!--SNIPSTART typescript-nexus-hello-service-handler {"selectedLines": ["2","4","6-17","37"]}-->
+
 [nexus-hello/src/service/handler.ts](https://github.com/temporalio/samples-typescript/blob/main/nexus-hello/src/service/handler.ts)
+
 ```ts
-// ...
-import * as nexus from 'nexus-rpc';
-// ...
-import { helloService, EchoInput, EchoOutput, HelloInput, HelloOutput } from '../api';
-// ...
+import * as nexus from "nexus-rpc";
+import { helloService, EchoInput, EchoOutput, HelloInput, HelloOutput } from "../api";
 
 export const helloServiceHandler = nexus.serviceHandler(helloService, {
   echo: async (ctx, input: EchoInput): Promise<EchoOutput> => {
-    // A simple async function can be used to defined a Synchronous Nexus Operation.
+    // A simple async function can be used to define a Synchronous Nexus Operation.
     // This is often sufficient for Operations that simply make arbitrary short calls to
     // other services or databases, or that perform simple computations such as this one.
     //
@@ -180,9 +182,10 @@ export const helloServiceHandler = nexus.serviceHandler(helloService, {
     // or listing workflows.
     return input;
   },
-// ...
+  // ...
 });
 ```
+
 <!--SNIPEND-->
 
 ### Develop an Asynchronous Nexus Operation handler to start a Workflow
@@ -193,16 +196,18 @@ multiple arguments through to the workflow, you can do so by using multiple prop
 the array provided to the `args` option when calling `startWorkflow`.
 
 <!--SNIPSTART typescript-nexus-hello-service-handler {"selectedLines": ["1-7","18-37"]}-->
+
 [nexus-hello/src/service/handler.ts](https://github.com/temporalio/samples-typescript/blob/main/nexus-hello/src/service/handler.ts)
+
 ```ts
-import { randomUUID } from 'crypto';
-import * as nexus from 'nexus-rpc';
-import * as temporalNexus from '@temporalio/nexus';
-import { helloService, EchoInput, EchoOutput, HelloInput, HelloOutput } from '../api';
-import { helloWorkflow } from './workflows';
+import { randomUUID } from "crypto";
+import * as nexus from "nexus-rpc";
+import * as temporalNexus from "@temporalio/nexus";
+import { helloService, EchoInput, EchoOutput, HelloInput, HelloOutput } from "../api";
+import { helloWorkflow } from "./workflows";
 
 export const helloServiceHandler = nexus.serviceHandler(helloService, {
-// ...
+  // ...
   hello: new temporalNexus.WorkflowRunOperationHandler<HelloInput, HelloOutput>(
     // WorkflowRunOperationHandler takes a function that receives the Operation's context and input.
     // That function can be used to validate and/or transform the input before passing it to
@@ -220,10 +225,11 @@ export const helloServiceHandler = nexus.serviceHandler(helloService, {
 
         // Task queue defaults to the task queue this Operation is handled on.
       });
-    },
+    }
   ),
 });
 ```
+
 <!--SNIPEND-->
 
 Workflow IDs should typically be business-meaningful IDs and are used to dedupe Workflow starts.
@@ -240,22 +246,24 @@ In general, the ID should be passed in the Operation input as part of the Nexus 
 After developing an asynchronous Nexus Operation handler to start a Workflow, the next step is to register your Nexus Service handler in a Worker.
 
 <!--SNIPSTART typescript-nexus-hello-service-worker {"selectedLines": ["1-3","9-17"]}-->
-[nexus-hello/src/service/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/nexus-hello/src/service/worker.ts)
-```ts
-import { Worker, NativeConnection } from '@temporalio/worker';
-import { helloServiceHandler } from './handler';
 
-// ...
-    const namespace = 'my-target-namespace';
-    const serviceTaskQueue = 'my-handler-task-queue';
-    const worker = await Worker.create({
-      connection,
-      namespace,
-      taskQueue: serviceTaskQueue,
-      workflowsPath: require.resolve('./workflows'),
-      nexusServices: [helloServiceHandler],
-    });
+[nexus-hello/src/service/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/nexus-hello/src/service/worker.ts)
+
+```ts
+import { Worker, NativeConnection } from "@temporalio/worker";
+import { helloServiceHandler } from "./handler";
+
+const namespace = "my-target-namespace";
+const serviceTaskQueue = "my-handler-task-queue";
+const worker = await Worker.create({
+  connection,
+  namespace,
+  taskQueue: serviceTaskQueue,
+  workflowsPath: require.resolve("./workflows"),
+  nexusServices: [helloServiceHandler],
+});
 ```
+
 <!--SNIPEND-->
 
 ## Develop a caller Workflow that uses the Nexus Service {#develop-caller-workflow-nexus-service}
