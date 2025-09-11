@@ -574,6 +574,20 @@ module.exports = {
     },
     {
       type: "category",
+      label: "Best Practices",
+      collapsed: true,
+      link: {
+        type: "doc",
+        id: "best-practices/index",
+      },
+      items: [
+        "best-practices/managing-namespace",
+        "best-practices/cloud-access-control",
+        "best-practices/security-controls",
+      ],
+    },
+    {
+      type: "category",
       label: "Encyclopedia",
       collapsed: true,
       link: {
