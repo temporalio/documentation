@@ -65,7 +65,7 @@ As older pinned workflows finish executing and deprecated deployment versions be
 Here is an example of a progressive cut-over strategy gated on the success of the `HelloWorld` workflow:
 
 ```
-cutover:
+rollout:
   strategy: Progressive
   steps:
     - rampPercentage: 1
