@@ -3,13 +3,15 @@ id: index
 title: Develop durable applications with Temporal SDKs
 description: Discover comprehensive Temporal SDK feature guides and API references. Enhance your Temporal Application development with Ruby, Go, Java, PHP, Python, TypeScript, and .NET.
 sidebar_label: Development
+hide_table_of_contents: true
 ---
 
 import { SdkLogos } from '@site/src/components/elements/SdkLogos';
 
 ## 100% Open Source
 
-Temporal SDKs provide the foundation for building reliable distributed applications. Each SDK is designed to help you implement durable Workflows, Activities, and Workers with native language support and comprehensive tooling.
+Temporal SDKs provide the foundation for building reliable distributed applications. 
+Each SDK is designed to help you implement durable Workflows, Activities, and Workers with native language support and comprehensive tooling.
 
 <div className="sdk-section">
   <div className="sdk-container">
@@ -101,22 +103,96 @@ Temporal SDKs provide the foundation for building reliable distributed applicati
 
   .sdk-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 1rem;
   }
 
   .dev-sdk-card {
-    background: var(--ifm-background-surface-color);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: transparent;
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
     border-radius: 0;
-    padding: 1.25rem;
-    min-height: 200px;
+    padding: 1rem;
+    min-height: 140px;
     position: relative;
     display: block;
+    transition: all 0.3s ease;
   }
 
   [data-theme='light'] .dev-sdk-card {
-    border: 1px solid var(--ifm-color-emphasis-300);
+    background: transparent;
+    border: 0.5px solid var(--ifm-color-emphasis-300);
+  }
+
+  /* SDK-specific hover effects for light mode */
+  [data-theme='light'] .dev-sdk-card:nth-child(1):hover {
+    border: 1px solid #1f4ed8;
+    transform: translateY(-2px);
+  }
+
+  [data-theme='light'] .dev-sdk-card:nth-child(2):hover {
+    border: 1px solid #dc2626;
+    transform: translateY(-2px);
+  }
+
+  [data-theme='light'] .dev-sdk-card:nth-child(3):hover {
+    border: 1px solid #2d7d32;
+    transform: translateY(-2px);
+  }
+
+  [data-theme='light'] .dev-sdk-card:nth-child(4):hover {
+    border: 1px solid #6a1b9a;
+    transform: translateY(-2px);
+  }
+
+  [data-theme='light'] .dev-sdk-card:nth-child(5):hover {
+    border: 1px solid #e91e63;
+    transform: translateY(-2px);
+  }
+
+  [data-theme='light'] .dev-sdk-card:nth-child(6):hover {
+    border: 1px solid #f57f17;
+    transform: translateY(-2px);
+  }
+
+  [data-theme='light'] .dev-sdk-card:nth-child(7):hover {
+    border: 1px solid #ef6c00;
+    transform: translateY(-2px);
+  }
+
+  /* SDK-specific hover effects for dark mode - lighter vibrant colors */
+  [data-theme='dark'] .dev-sdk-card:nth-child(1):hover {
+    border: 1px solid #5b9bd5;
+    transform: translateY(-2px);
+  }
+
+  [data-theme='dark'] .dev-sdk-card:nth-child(2):hover {
+    border: 1px solid #ff6b6b;
+    transform: translateY(-2px);
+  }
+
+  [data-theme='dark'] .dev-sdk-card:nth-child(3):hover {
+    border: 1px solid #4caf50;
+    transform: translateY(-2px);
+  }
+
+  [data-theme='dark'] .dev-sdk-card:nth-child(4):hover {
+    border: 1px solid #ba68c8;
+    transform: translateY(-2px);
+  }
+
+  [data-theme='dark'] .dev-sdk-card:nth-child(5):hover {
+    border: 1px solid #ff4081;
+    transform: translateY(-2px);
+  }
+
+  [data-theme='dark'] .dev-sdk-card:nth-child(6):hover {
+    border: 1px solid #ffca28;
+    transform: translateY(-2px);
+  }
+
+  [data-theme='dark'] .dev-sdk-card:nth-child(7):hover {
+    border: 1px solid #ff9800;
+    transform: translateY(-2px);
   }
 
   .dev-sdk-card-header {
@@ -125,42 +201,41 @@ Temporal SDKs provide the foundation for building reliable distributed applicati
     align-items: flex-start;
     width: 100%;
     margin-bottom: 0.75rem;
-    gap: 1rem;
+    gap: 0.75rem;
   }
 
   .dev-sdk-card-header h2 {
     margin: 0;
-    font-size: 1.75rem;
-    font-weight: 300;
+    font-size: 1.2rem;
+    font-weight: 400;
     color: var(--ifm-color-emphasis-900);
     line-height: 1;
     flex: 1;
   }
 
   .dev-sdk-card-header img {
-    width: 48px;
-    height: 48px;
+    width: 32px;
+    height: 32px;
     flex-shrink: 0;
   }
 
   .dev-sdk-card-links {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.5rem;
     position: absolute;
     bottom: 0;
-    left: 1.25rem;
-    padding-bottom: 1.25rem;
+    left: 1rem;
+    padding-bottom: 1rem;
   }
 
   .dev-sdk-card-links a {
     color: #CACBF9;
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 0.85rem;
     font-family: var(--ifm-font-family-base);
-    line-height: 1;
+    line-height: 1.2;
     transition: color 0.15s ease;
-    position: relative;
   }
 
   [data-theme='light'] .dev-sdk-card-links a {
@@ -175,27 +250,6 @@ Temporal SDKs provide the foundation for building reliable distributed applicati
     color: var(--ifm-color-primary-darker);
   }
 
-  .dev-sdk-card-links a::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 1px;
-    bottom: -2px;
-    left: 0;
-    background-color: #FFFFFF;
-    transform: scaleX(0);
-    transform-origin: bottom right;
-    transition: transform 0.15s ease;
-  }
-
-  [data-theme='light'] .dev-sdk-card-links a::after {
-    background-color: var(--ifm-color-primary-darker);
-  }
-
-  .dev-sdk-card-links a:hover::after {
-    transform: scaleX(1);
-    transform-origin: bottom left;
-  }
 
   @media (max-width: 768px) {
     .sdk-grid {
