@@ -677,7 +677,7 @@ Consider manual adjustment if:
 
 1. The Worker hosts are underutilized, for example, there are no bottlenecks on CPU, load average, etc.
 2. `worker_task_slots_available` metric from the corresponding Worker type shows that a significant percentage of Worker slots are available on a regular basis.
-3. the `schedule_to_start` metric is abnormally long, and
+3. The `schedule_to_start` metric is abnormally long.
 
 then consider increasing the number of pollers by adjusting `maxConcurrentWorkflowTaskPollers` or `maxConcurrentActivityTaskPollers`, depending on which type of `schedule_to_start` metric is elevated.
 
