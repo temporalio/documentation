@@ -60,23 +60,35 @@ Temporal is a developer-first, open source platform that ensures the successful 
   </a>
 </div>
 
-## How does Temporal work?
-
-Temporal provides durable execution for your applications through its unique architecture. Write your business logic as Workflows and Activities, deploy them to Workers, and let Temporal handle the rest.
 
 ## What programming languages are supported?
 
 Temporal allows you to develop with durable execution in different languages and multiple languages can be used to build single services, enabling polyglot development.
 
 <div className="sdk-logos">
-  <img src="/img/sdks/svgs/sdk-box-logos/go.svg" alt="Go SDK" />
-  <img src="/img/sdks/svgs/sdk-box-logos/java.svg" alt="Java SDK" />
-  <img src="/img/sdks/svgs/sdk-box-logos/typescript.svg" alt="TypeScript SDK" />
-  <img src="/img/sdks/svgs/sdk-box-logos/python.svg" alt="Python SDK" />
-  <img src="/img/sdks/svgs/sdk-box-logos/php.svg" alt="PHP SDK" />
-  <img src="/img/sdks/svgs/sdk-box-logos/dotnet.svg" alt=".NET SDK" />
-  <img src="/img/sdks/svgs/sdk-box-logos/ruby.svg" alt="Ruby SDK" />
+  <a href="/develop/go" title="Go SDK Developer Guide">
+    <img src="/img/sdks/svgs/sdk-box-logos/go.svg" alt="Go SDK" />
+  </a>
+  <a href="/develop/java" title="Java SDK Developer Guide">
+    <img src="/img/sdks/svgs/sdk-box-logos/java.svg" alt="Java SDK" />
+  </a>
+  <a href="/develop/typescript" title="TypeScript SDK Developer Guide">
+    <img src="/img/sdks/svgs/sdk-box-logos/typescript.svg" alt="TypeScript SDK" />
+  </a>
+  <a href="/develop/python" title="Python SDK Developer Guide">
+    <img src="/img/sdks/svgs/sdk-box-logos/python.svg" alt="Python SDK" />
+  </a>
+  <a href="/develop/php" title="PHP SDK Developer Guide">
+    <img src="/img/sdks/svgs/sdk-box-logos/php.svg" alt="PHP SDK" />
+  </a>
+  <a href="/develop/dotnet" title=".NET SDK Developer Guide">
+    <img src="/img/sdks/svgs/sdk-box-logos/dotnet.svg" alt=".NET SDK" />
+  </a>
+  <a href="/develop/ruby" title="Ruby SDK Developer Guide">
+    <img src="/img/sdks/svgs/sdk-box-logos/ruby.png" alt="Ruby SDK" />
+  </a>
 </div>
+
 
 ## Self-Hosted or Fully-Managed Service
 
@@ -109,29 +121,52 @@ Temporal is fully open source. You can self-host the Temporal Service or use Tem
   .sdk-logos {
     display: flex;
     flex-wrap: wrap;
+    gap: 1rem;
     justify-content: center;
-    align-items: center;
-    gap: 2rem;
     margin: 2rem 0;
   }
 
-  .sdk-logos img {
-    max-width: 120px;
-    height: auto;
-    transition: transform 0.2s ease;
+  .sdk-logos a {
+    transition: all 0.2s ease;
+    border-radius: 8px;
+    padding: 0.5rem;
+    display: inline-block;
   }
 
-  .sdk-logos img:hover {
-    transform: scale(1.05);
+  .sdk-logos a:hover {
+    transform: translateY(-2px) scale(1.05);
+    opacity: 0.8;
+  }
+
+  .sdk-logos img {
+    width: 48px;
+    height: 48px;
+    display: block;
+  }
+
+  /* Disable hover effects for pattern cards */
+  .pattern-card {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .pattern-card:hover {
+    transform: none !important;
+    opacity: 1 !important;
+    box-shadow: none !important;
+    border-color: initial !important;
+    text-decoration: none;
+    color: inherit;
   }
 
   @media (max-width: 768px) {
     .sdk-logos {
-      gap: 1.5rem;
+      gap: 0.75rem;
     }
     
     .sdk-logos img {
-      max-width: 100px;
+      width: 30px;
+      height: 30px;
     }
   }
 `}
