@@ -197,7 +197,7 @@ sum(rate(temporal_cloud_v0_poll_success_sync_count{temporal_namespace=~"$tempora
   - Check the system memory usage against `sticky_cache_size` and adjust sticky cache size as necessary.
   - For a detailed explanation of settings, see the [Worker Performance](/develop/worker-performance#task-queues-processing-tuning) section.
 - Increase the Worker config for concurrent pollers for Workflow or Activity `task_slots`, if your Worker resources can accommodate the increased load.
-  - See [Worker Performance > Poller Count](/develop/worker-performance#poller-count)
+  - Reference [Worker Performance > Poller Count](/develop/worker-performance#poller-count).
 - Increasing either the number of available Workers
 
 :::warning
