@@ -141,7 +141,7 @@ This is typically most useful in combination with a Local Activity executing in 
 **How it works**
 
 The traditional way to start a Workflow decouples the starter program from the worker by sharing a Task Queue name between them, similar to a publish/subscribe pattern.
-This has many advantages, for example, we can reliably schedule a Workflow Execution without a running Worker, or separate the Worker and Workflow implementation from the Starter application and host them independently.
+This has many advantages: for example, we can reliably schedule a Workflow Execution without a running Worker, or separate the Worker and Workflow implementation from the Starter application and host them independently.
 
 But decoupling also makes it harder to optimize for latency.
 Instead, when the **Starter and Worker are collocated in the same process** and aware of each other, they can interact while bypassing the server, saving a few time-intensive operations.
