@@ -321,34 +321,7 @@ The Workflow itself defines the root Cancellation Scope.
 Requesting cancellation of the Workflow therefore propagates the cancellation request to all cancellable operations started by that workflow, including Nexus Operations.
 
 To provide more granular control over cancellation of a specific Nexus Operation, you may explicitly create a new Cancellation Scope, and start the Nexus Operation from within that scope.
-For example:
-
-```ts
-import * as wf from "@temporalio/workflow";
-
-async function cancellableCallerWorkflow() {
-  const nexusClient = wf.createNexusClient({
-    service: helloService,
-    endpoint: HELLO_SERVICE_ENDPOINT,
-  });
-
-  const cancellableScope = new wf.CancellationScope({ cancellable: true });
-  const nexusOperationHandle = await cancellableScope.run(async () =>
-    nexusClient.startOperation("hello", { name, language }, { scheduleToCloseTimeout: "60s" })
-  );
-
-  // Request cancellation of the Nexus Operation when a signal is received.
-  wf.setHandler(cancelNexusCallSignal, async () => {
-    await nexusOperationHandle.cancel();
-  });
-
-  // If cancellation of the operation is requested and completes before the operation completes normally,
-  // this will throw a NexusOperationFailure, with `cause` set to a CancelledFailure.
-  return await nexusOperationHandle.result();
-}
-```
-
-{/* FIXME: include this snippet in a proper sample */}
+An example demonstrating this can be found at our [nexus cancellation sample](https://github.com/temporalio/samples-typescript/tree/main/nexus-cancellation).
 
 Only asynchronous operations can be canceled in Nexus, since cancellation is sent using an operation token.
 The Workflow or other resources backing the operation may choose to ignore the cancellation request.
