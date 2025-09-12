@@ -21,7 +21,6 @@
     "snipsync": "snipsync",
     "start": "docusaurus start",
     "swizzle": "docusaurus swizzle",
-    "vale": "./assembly/run-vale.sh",
     "write-heading-ids": "docusaurus write-heading-ids",
     "write-translations": "docusaurus write-translations"
   },
