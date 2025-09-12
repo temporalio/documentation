@@ -240,7 +240,6 @@ module.exports = {
             "develop/typescript/schedules",
             "develop/typescript/converters-and-encryption",
             "develop/typescript/timers",
-            "develop/typescript/nexus",
             "develop/typescript/child-workflows",
             "develop/typescript/continue-as-new",
             "develop/typescript/interceptors",
@@ -473,7 +472,19 @@ module.exports = {
           ],
         },
         "production-deployment/data-encryption",
-        "production-deployment/migration",
+        {
+          type: "category",
+          label: "Migrate to Cloud",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "production-deployment/migration/index",
+          },
+          items: [
+            "production-deployment/migration/automated",
+            "production-deployment/migration/manual",
+          ],
+        },
         {
           type: "category",
           label: "Self-host",
