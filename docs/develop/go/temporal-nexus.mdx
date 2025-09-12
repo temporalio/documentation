@@ -96,9 +96,7 @@ In a polyglot environment, that is where more than one language and SDK is being
 This example uses native Go types.
 
 <!--SNIPSTART samples-go-nexus-service {"selectedLines": ["2-13"]}-->
-
 [nexus/service/api.go](https://github.com/temporalio/samples-go/blob/main/nexus/service/api.go)
-
 ```go
 // ...
 
@@ -112,8 +110,8 @@ type EchoInput struct {
 }
 
 type EchoOutput EchoInput
-```
 
+```
 <!--SNIPEND-->
 
 ## Develop a Nexus Service and Operation handlers {#develop-nexus-service-operation-handlers}
@@ -137,9 +135,7 @@ Typically to use SDK client, which is obtained via `temporalnexus.GetClient(ctx)
 However, implementations are free to make arbitrary calls to other services or databases, or perform computations such as this one:
 
 <!--SNIPSTART samples-go-nexus-handler {"selectedLines": ["2-23"]}-->
-
 [nexus/handler/app.go](https://github.com/temporalio/samples-go/blob/main/nexus/handler/app.go)
-
 ```go
 // ...
 
@@ -163,8 +159,8 @@ var EchoOperation = nexus.NewSyncOperation(service.EchoOperationName, func(ctx c
 	// services or databases, or perform simple computations such as this one.
 	return service.EchoOutput(input), nil
 })
-```
 
+```
 <!--SNIPEND-->
 
 ### Develop an Asynchronous Nexus Operation handler to start a Workflow
@@ -173,22 +169,20 @@ Use the `NewWorkflowRunOperation` constructor, which is the easiest way to expos
 See alternatives [here](https://pkg.go.dev/go.temporal.io/sdk/temporalnexus).
 
 <!--SNIPSTART samples-go-nexus-handler {"selectedLines": ["26-35"]}-->
-
 [nexus/handler/app.go](https://github.com/temporalio/samples-go/blob/main/nexus/handler/app.go)
-
 ```go
 // ...
 var HelloOperation = temporalnexus.NewWorkflowRunOperation(service.HelloOperationName, HelloHandlerWorkflow, func(ctx context.Context, input service.HelloInput, options nexus.StartOperationOptions) (client.StartWorkflowOptions, error) {
 	return client.StartWorkflowOptions{
-		// Workflow IDs should typically be business-meaningful IDs and are used to dedupe workflow starts.
+		// Workflow IDs should typically be business meaningful IDs and are used to dedupe workflow starts.
 		// For this example, we're using the request ID allocated by Temporal when the caller workflow schedules
 		// the operation, this ID is guaranteed to be stable across retries of this operation.
 		ID: options.RequestID,
 		// Task queue defaults to the task queue this operation is handled on.
 	}, nil
 })
-```
 
+```
 <!--SNIPEND-->
 
 Workflow IDs should typically be business-meaningful IDs and are used to dedupe Workflow starts.
@@ -205,9 +199,7 @@ For the `HelloOperation`, `input.ID` is passed as part of the Nexus Service cont
 After developing an asynchronous Nexus Operation handler to start a Workflow, the next step is to register a Nexus Service in a Worker.
 
 <!--SNIPSTART samples-go-nexus-handler-worker-->
-
 [nexus/handler/worker/main.go](https://github.com/temporalio/samples-go/blob/main/nexus/handler/worker/main.go)
-
 ```go
 package main
 
@@ -255,7 +247,6 @@ func main() {
 	}
 }
 ```
-
 <!--SNIPEND-->
 
 ## Develop a caller Workflow that uses the Nexus Service {#develop-caller-workflow-nexus-service}
@@ -263,9 +254,7 @@ func main() {
 Import the Service API package that has the necessary service and operation names and input/output types to execute a Nexus Operation from the caller Workflow:
 
 <!--SNIPSTART samples-go-nexus-caller-workflow-->
-
 [nexus/caller/workflows.go](https://github.com/temporalio/samples-go/blob/main/nexus/caller/workflows.go)
-
 ```go
 package caller
 
@@ -299,7 +288,8 @@ func HelloCallerWorkflow(ctx workflow.Context, name string, language service.Lan
 	var res service.HelloOutput
 
 	// Optionally wait for the operation to be started. NexusOperationExecution will contain the operation token in
-	// case this operation is asynchronous.
+	// case this operation is asynchronous, which is a handle that can be used to perform additional actions like
+	// cancelling an operation.
 	var exec workflow.NexusOperationExecution
 	if err := fut.GetNexusOperationExecution().Get(ctx, &exec); err != nil {
 		return "", err
@@ -310,8 +300,8 @@ func HelloCallerWorkflow(ctx workflow.Context, name string, language service.Lan
 
 	return res.Message, nil
 }
-```
 
+```
 <!--SNIPEND-->
 
 ### Register the caller Workflow in a Worker
@@ -319,9 +309,7 @@ func HelloCallerWorkflow(ctx workflow.Context, name string, language service.Lan
 After developing the caller Workflow, the next step is to register it with a Worker.
 
 <!--SNIPSTART samples-go-nexus-caller-worker-->
-
 [nexus/caller/worker/main.go](https://github.com/temporalio/samples-go/blob/main/nexus/caller/worker/main.go)
-
 ```go
 package main
 
@@ -359,7 +347,6 @@ func main() {
 	}
 }
 ```
-
 <!--SNIPEND-->
 
 ### Develop a starter to start the caller Workflow
@@ -367,9 +354,7 @@ func main() {
 To initiate the caller Workflow, a starter program is required.
 
 <!--SNIPSTART samples-go-nexus-caller-starter-->
-
 [nexus/caller/starter/main.go](https://github.com/temporalio/samples-go/blob/main/nexus/caller/starter/main.go)
-
 ```go
 package main
 
@@ -422,7 +407,6 @@ func runWorkflow(c client.Client, workflow interface{}, args ...interface{}) {
 	log.Println("Workflow result:", result)
 }
 ```
-
 <!--SNIPEND-->
 
 ## Make Nexus calls across Namespaces with a development Server {#nexus-calls-across-namespaces-dev-server}
