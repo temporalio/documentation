@@ -115,11 +115,11 @@ If it does, it may try to reserve an Activity Slot for the execution of the Acti
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
 Eager Workflow Start is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in the Go, Java, Python, and .NET SDKs.
-Temporal Cloud and Temporal Server 1.29.0 and higher have Eager Workflow Start available for use by default, but you must explicitly `request_eager_start` (or similar name) when starting a Workflow.
+Temporal Cloud and Temporal Server 1.29.0 and higher have Eager Workflow Start available for use by default, but you must explicitly Request-Eager-Start when starting a Workflow.
 
 :::
 
-Eager Workflow Start is currently in Public Preview, with the goal of reducing the time it takes to start a Workflow.
+Eager Workflow Start is feature that reduces the time it takes to start a Workflow.
 The target use case is short-lived Workflows that interact with other services using Local Activities, ideally initiating this interaction in the first Workflow Task, and deployed close to the Temporal Server.
 These Workflows have a happy path that needs to initiate interactions within low tens of milliseconds, but they also want to take advantage of server-driven retries, and reliable compensation processes, for those less happy days.
 
@@ -135,6 +135,7 @@ This is typically most useful in combination with a Local Activity executing in 
 - [Java SDK - Code sample](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/hello/HelloEagerWorkflowStart.java)
 - Python SDK - use `request_eager_start` when calling `start_workflow` or `execute_workflow`
 - .NET SDK - use `RequestEagerStart` in your `WorkflowOptions` when starting a workflow
+- [Blog: Improving Latency with Eager Workflow Start](https://temporal.io/blog/improving-latency-with-eager-workflow-start)
 
 :::
 
@@ -161,14 +162,6 @@ The above figure shows Eager Workflow Start in action:
 1. The SDK extracts the task from the response, and dispatches it to the local worker.
 
 To recover from errors, Eager Workflow Start falls back to the non-eager path. For example, when the first Task is returned eagerly, but the local Worker fails or times out while processing the task, the server retries this task non-eagerly after WorkflowTaskTimeout.
-
-**Latency improvements**
-
-What are the savings? One database update plus the matching operation that associates polling workers with messages in task queues. It can also reduce latency variation because polling worker connections are not always ready when you need them.
-
-This translates into significantly lower latency. For example, a few months back we did a test measuring the time it takes to create a workflow and start executing its first task, a local activity. The goal was to estimate the minimum latency to interact with an external service, using a newly-created workflow, and the Temporal Cloud. The starter and worker were in the same AWS region as our Temporal Cloud namespace. The p50 latency was 16.7 ms (eager) vs 29.3 ms (non-eager), a 43% improvement. For p99 latency, we saw 30.9 ms (eager) vs 51.6 ms (non-eager), a 40% improvement.
-
-Note that these numbers are for illustrative purposes only, just to put potential improvements in perspective.
 
 ## Performance metrics for tuning {#metrics}
 
