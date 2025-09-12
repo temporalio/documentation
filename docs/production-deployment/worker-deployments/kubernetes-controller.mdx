@@ -49,17 +49,9 @@ Note that in Temporal, **Worker Deployment** is sometimes referred to as **Deplo
 
 Refer to the [Temporal Worker Controller repo](https://github.com/temporalio/temporal-worker-controller/) for usage details.
 
-## Configuring Worker Lifecycle
+## Configuring Worker Lifecycles
 
-To use the Temporal Worker Controller, tag your Workers following the guidance for using [Worker Versioning](/production-deployment/worker-deployments/worker-versioning). Workers need to be configured using these environment variables:
-
-- `TEMPORAL_HOST_PORT`: The host and port of the Temporal server, e.g. default.foo.tmprl.cloud:7233
-- `TEMPORAL_NAMESPACE`: The Temporal namespace to connect to, e.g. default
-- `TEMPORAL_DEPLOYMENT_NAME`: The name of the worker deployment. This must be unique to the worker deployment and should not change between versions.
-- `TEMPORAL_WORKER_BUILD_ID`: The build ID of the worker. This should change with each new worker rollout.
-Each of these will be automatically set by the controller, and must not be manually specified in the worker's pod template.
-
-As older pinned workflows finish executing and deprecated deployment versions become drained, the worker controller also frees up resources by sunsetting the `Deployment` resources polling those versions.
+To use the Temporal Worker Controller, tag your Workers following the guidance for using [Worker Versioning](/production-deployment/worker-deployments/worker-versioning).
 
 Here is an example of a progressive rollout strategy gated on the success of the `HelloWorld` workflow:
 
@@ -74,6 +66,9 @@ rollout:
   gate:
     workflowType: "HelloWorld"
 ```
+
+As you ship new deployment versions, the Worker Controller automatically detects them and gradually makthat version the new **Current Version** of the worker deployment it is a part of.
+As older pinned workflows finish executing and deprecated deployment versions become drained, the worker controller also frees up resources by sunsetting the `Deployment` resources polling those versions.
 
 ## Running the Temporal Worker Controller
 
