@@ -169,7 +169,7 @@ async def main():
 
     # Connect to the client using the loaded configuration.
     client = await Client.connect(**connect_config)
-    print(f"✅ Client connected to {client.target} in namespace '{client.namespace}'")
+    print(f"✅ Client connected to {client.service_client.config.target_host} in namespace '{client.namespace}'")
 
 if __name__ == "__main__":
     asyncio.run(main())
