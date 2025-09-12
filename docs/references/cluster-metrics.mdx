@@ -68,7 +68,7 @@ Example: P95 service latency by operation for the Frontend Service
 
 (Available only in v1.17.0+) Identifies errors encountered by the service.
 Example: Service errors by type for the Frontend Service
-`sum(rate(service_errors_with_type{service_name="frontend"}[5m])) by (error_type)`
+`sum(rate(service_error_with_type{service_name="frontend"}[5m])) by (error_type)`
 
 ### `client_errors`
 
@@ -151,7 +151,7 @@ Measures the duration, end-to-end, from when the Task should be executed (from t
 If fewer than 100 Tasks are in the Task channel for 30 seconds, the latency is scaled to 100 Tasks upon emission.
 Note: This is still an experimental metric and is subject to change.
 
-### `task_latency_userlatency`
+### `service_latency_userlatency`
 
 Shows the latency introduced because of Workflow logic.
 For example, if you have one Workflow scheduling many Activities or Child Workflows at the same time, it can cause a per-Workflow lock contention.
