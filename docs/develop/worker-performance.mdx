@@ -107,7 +107,7 @@ As a latency optimization, Activity and Workflow Tasks may be started eagerly in
 
 #### Eager Activity Start
 
-Eager Activity Start may happen automatically if the Worker processing a Workflow Task also has the Activity Definition being called registered.
+Eager Activity Start may happen automatically if the Worker processing a Workflow Task has also registered the Activity Definition being called.
 If it does, it may try to reserve an Activity Slot for the execution of the Activity, and the server may respond to the Workflow Task completion with the Activity Task for the worker to execute immediately.
 
 #### Eager Workflow Start
