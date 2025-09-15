@@ -31,11 +31,9 @@ This section covers features related to viewing the state of the application, in
 Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
 For a complete list of metrics capable of being emitted, see the [SDK metrics reference](/references/sdk-metrics).
 
-Metrics can be scraped and stored in time series databases, such as [Prometheus](https://prometheus.io/docs/introduction/overview/).
-Temporal also provides a dashboard you can integrate with graphing services like [Grafana](https://grafana.com/docs/). For more information, see:
-
-- Temporal's implementation of the [Grafana dashboard](https://github.com/temporalio/dashboards)
-- [How to export metrics in Grafana](https://github.com/temporalio/helm-charts#exploring-metrics-via-grafana)
+- For an overview of Prometheus and Grafana integration, refer to the [Monitoring](/self-hosted-guide/monitoring) guide.
+- For a list of metrics, see the [SDK metrics reference](/references/sdk-metrics).
+- For an end-to-end example that exposes metrics with the TypeScript SDK, refer to the [samples-typescript](https://github.com/temporalio/samples-typescript/tree/main/interceptors-opentelemetry) repo.
 
 Workers can emit metrics and traces. There are a few [telemetry options](https://typescript.temporal.io/api/interfaces/worker.TelemetryOptions) that can be provided to [`Runtime.install`](https://typescript.temporal.io/api/classes/worker.Runtime/#install). The common options are:
 
