@@ -860,68 +860,6 @@ h1 {
   line-height: 120%;
 }
 
-.main-card {
-  position: relative;
-  width: 100%;
-  border-radius: 20px;
-  border: 2px solid var(--ifm-link-color);
-  background-color: var(--ifm-background-color);
-  padding: 32px;
-  margin: 12px 0;
-  text-align: left;
-  z-index: 2;
-}
-
-.main-card h1 {
-  font-family: Aeonik;
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 110%;
-}
-
-.main-card p {
-  font-family: Aeonik;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 120%;
-}
-
-.w-third {
-  width: 1/3;
-}
-
-.resource-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.resource-img {
-  border-radius: 9999px;
-  width: 2.5rem;
-  min-width: 2.5rem;
-  height: 2.5rem;
-  background: linear-gradient(255deg, #444ce7 0%, #b664ff 100%);
-}
-
-.resource-card h1 {
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 120%;
-}
-
-.resource-card p {
-  margin: 0;
-}
-
-.resource-card .author p {
-  font-size: 14px;
-  font-style: normal;
-  line-height: 120%;
-}
 
 .community-card h1 {
   font-size: 24px;
@@ -1407,17 +1345,8 @@ code {
   border-radius: 0;
   text-decoration: none;
   color: var(--ifm-color);
-  transition: all 0.3s ease;
-  cursor: pointer;
 }
 
-.pattern-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(68, 76, 231, 0.2);
-  text-decoration: none;
-  color: var(--ifm-color);
-  border-color: var(--ifm-color-primary);
-}
 
 .pattern-content h3 {
   font-size: 1.25rem;
