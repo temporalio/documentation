@@ -103,7 +103,7 @@ Cloud-side resources must be in-place prior to starting a migration. Complete th
 
 1. Create one or more empty namespaces in Temporal Cloud to serve as the migration targets. Since migration cannot proceed into a namespace that's already in use, these namespaces should
    remain empty (no workflows).
-2. Create a support ticket and supply these namespaces, the target services regions, and a request to configure these namespaces with the [system limit](https://docs.temporal.io/cloud/limits)
+2. Create a support ticket requesting these namespaces be configured with [system limits](https://docs.temporal.io/cloud/limits)
    (including APS/RPS) matching your existing self-hosted workload.
 3. Verify that migration endpoint has been created in Temporal Cloud (e.g., `your-endpoint.{your-acct}.tmprl.cloud`). If you don't have one, request one via a support ticket.
 4. Create any required custom search attributes used by your workflow.
@@ -138,7 +138,7 @@ Cloud-side resources must be in-place prior to starting a migration. Complete th
          rpcAddress: _NO_CHANGE_
    ```
 
-3. Run `tctl admin cluster describe` to check the output. The following output is expected:
+3. Run `temporal operator cluster describe` to check the output. The following output is expected:
 
    ```yaml
    "failoverVersionIncrement": "1000000",
