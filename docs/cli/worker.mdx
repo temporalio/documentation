@@ -10,15 +10,18 @@ keywords:
 tags:
   - Temporal CLI
 ---
+
 {/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
 This file is generated from https://github.com/temporalio/cli/blob/main/temporalcli/commandsgen/commands.yml */}
 
 ## deployment
 
+```
 +---------------------------------------------------------------------+
 | CAUTION: Worker Deployment is experimental. Deployment commands are |
-| subject to change. |
+| subject to change.                                                  |
 +---------------------------------------------------------------------+
+```
 
 Deployment commands perform operations on Worker Deployments:
 
@@ -48,10 +51,12 @@ Sets the current Deployment Version for a given Deployment.
 
 ### delete
 
+```
 +---------------------------------------------------------------------+
 | CAUTION: Worker Deployment is experimental. Deployment commands are |
-| subject to change. |
+| subject to change.                                                  |
 +---------------------------------------------------------------------+
+```
 
 Remove a Worker Deployment given its Deployment Name.
 A Deployment can only be deleted if it has no Version in it.
@@ -89,6 +94,14 @@ Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -224,10 +237,12 @@ Override target TLS server name.
 
 ### delete-version
 
+```
 +---------------------------------------------------------------------+
 | CAUTION: Worker Deployment is experimental. Deployment commands are |
-| subject to change. |
+| subject to change.                                                  |
 +---------------------------------------------------------------------+
+```
 
 Remove a Worker Deployment Version given its fully-qualified identifier.
 This is rarely needed during normal operation
@@ -282,6 +297,14 @@ Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -417,10 +440,12 @@ Override target TLS server name.
 
 ### describe
 
+```
 +---------------------------------------------------------------------+
 | CAUTION: Worker Deployment is experimental. Deployment commands are |
-| subject to change. |
+| subject to change.                                                  |
 +---------------------------------------------------------------------+
+```
 
 Describe properties of a Worker Deployment, such as the versions
 associated with it, routing information of new or existing tasks
@@ -455,6 +480,14 @@ Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -590,10 +623,12 @@ Override target TLS server name.
 
 ### describe-version
 
+```
 +---------------------------------------------------------------------+
 | CAUTION: Worker Deployment is experimental. Deployment commands are |
-| subject to change. |
+| subject to change.                                                  |
 +---------------------------------------------------------------------+
+```
 
 Describe properties of a Worker Deployment Version, such as the task
 queues polled by workers in this Deployment Version, or drainage
@@ -634,6 +669,14 @@ Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -769,10 +812,12 @@ Override target TLS server name.
 
 ### list
 
+```
 +---------------------------------------------------------------------+
 | CAUTION: Worker Deployment is experimental. Deployment commands are |
-| subject to change. |
+| subject to change.                                                  |
 +---------------------------------------------------------------------+
+```
 
 List existing Worker Deployments in the client's namespace.
 
@@ -798,6 +843,14 @@ Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -933,10 +986,12 @@ Override target TLS server name.
 
 ### set-current-version
 
+```
 +---------------------------------------------------------------------+
 | CAUTION: Worker Deployment is experimental. Deployment commands are |
-| subject to change. |
+| subject to change.                                                  |
 +---------------------------------------------------------------------+
+```
 
 Set the Current Version for a Deployment.
 When a Version is current, Workers of that Deployment Version will receive
@@ -1006,6 +1061,14 @@ Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -1141,10 +1204,12 @@ Override target TLS server name.
 
 ### set-ramping-version
 
+```
 +---------------------------------------------------------------------+
 | CAUTION: Worker Deployment is experimental. Deployment commands are |
-| subject to change. |
+| subject to change.                                                  |
 +---------------------------------------------------------------------+
+```
 
 Set the Ramping Version and Percentage for a Deployment.
 
@@ -1231,6 +1296,14 @@ Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -1366,10 +1439,13 @@ Override target TLS server name.
 
 ### update-metadata-version
 
+```
 +---------------------------------------------------------------------+
 | CAUTION: Worker Deployment is experimental. Deployment commands are |
-| subject to change. |
+| subject to change.                                                  |
 +---------------------------------------------------------------------+
+```
+
 Update metadata associated with a Worker Deployment Version.
 
 For example:
@@ -1417,6 +1493,14 @@ Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 

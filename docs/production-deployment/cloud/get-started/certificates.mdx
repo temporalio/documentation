@@ -2,7 +2,7 @@
 id: certificates
 title: Manage certificates
 sidebar_label: Manage certificates
-description: Temporal Cloud uses mTLS, requiring CA certificates for secure communication. Keep certificates updated to avoid disruptions in Workflow Execution. Manage and update certificates easily via the Temporal Cloud UI or tcld tool.
+description: Temporal Cloud supports mTLS, which requires CA certificates for secure communication. Keep certificates updated to avoid disruptions in Workflow Execution. Manage and update certificates easily via the Temporal Cloud UI or tcld tool.
 slug: /cloud/certificates
 toc_max_heading_level: 4
 keywords:
@@ -17,11 +17,9 @@ tags:
   - Temporal Cloud
 ---
 
-[Temporal Cloud](https://temporal.io/cloud) requires security certificates for secure access and communication.
+[Temporal Cloud](https://temporal.io/cloud) supports both mTLS and [API key](/cloud/api-keys) authentication for namespace access.
 
-Temporal Cloud access is secured by the mutual Transport Layer Security (mTLS) protocol, which requires a CA certificate from the user.
-
-A [Worker Process](/workers#worker-process) requires a CA certificate and private key to connect to Temporal Cloud.
+When using mTLS authentication, each [Worker Process](/workers#worker-process) uses a CA certificate and private key to connect to Temporal Cloud.
 Temporal Cloud does not require an exchange of secrets; only the certificates produced by private keys are used for verification.
 
 :::caution Don't let your certificates expire
@@ -101,7 +99,9 @@ Follow the instructions to [upload the CA certificate](/cloud/certificates#updat
 
 ### Option 2: You don't have certificate management infrastructure
 
-If you don't have an existing certificate management infrastructure, issue the CA and end-entity certificates using [tcld](#use-tcld-to-generate-certificates) or open source tools such as [certstrap](#use-certstrap-to-generate-certificates).
+If you don't have an existing certificate management infrastructure, we recommend using API keys for authentication instead. API keys are generally easier to manage than mTLS certs if you're not using certificate management infrastructure otherwise.
+
+If you still want to use mTLS, issue the CA and end-entity certificates using [tcld](#use-tcld-to-generate-certificates) or open source tools such as [certstrap](#use-certstrap-to-generate-certificates).
 
 #### Use tcld to generate certificates
 
@@ -223,7 +223,7 @@ Follow the instructions to [upload the CA certificate](/cloud/certificates#updat
 
 ## How to control authorization for Temporal Cloud Namespaces {#control-authorization}
 
-Because Temporal Cloud uses mTLS for authorization, we recommend that an end-entity certificate be scoped to a specific Namespace.
+We recommend that an end-entity certificate be scoped to a specific Namespace to enforce the principle of least privilege.
 Temporal Cloud requires full CA chains, so you can achieve authorization in two ways.
 
 ### Option 1: Issue a separate root certificate for each Namespace
@@ -428,7 +428,7 @@ AuthorizedClientCertificate {
 When using a `*` wildcard, the following values are valid:
 
 - `*.example.com` matches `code.example.com` and `text.example.com`.
-- `Example Code*` matches `Example code` and `Example Code Inc`.
+- `Example Code*` matches `Example Code` and `Example Code Inc`.
 
 The following values are not valid:
 
@@ -463,11 +463,11 @@ To view the current certificate filters, use the [tcld namespace certificate-fil
 
 ## Configure clients to use client certificates {#configure-clients-to-use-client-certificates}
 
-- [Go SDK](/develop/go/temporal-clients#connect-to-temporal-cloud)
-- [Java SDK](/develop/java/temporal-clients#connect-to-temporal-cloud)
-- [PHP SDK](/develop/php/temporal-clients#connect-to-a-dev-cluster)
-- [Python SDK](/develop/python/temporal-clients#connect-to-temporal-cloud)
-- [TypeScript SDK](/develop/typescript/temporal-clients#connect-to-temporal-cloud)
+- [Go SDK](/develop/go/temporal-client#connect-to-temporal-cloud)
+- [Java SDK](/develop/java/temporal-client#connect-to-temporal-cloud)
+- [PHP SDK](/develop/php/temporal-client#connect-to-a-dev-cluster)
+- [Python SDK](/develop/python/temporal-client#connect-to-temporal-cloud)
+- [TypeScript SDK](/develop/typescript/temporal-client#connect-to-temporal-cloud)
 - [.NET SDK](/develop/dotnet/temporal-client#connect-to-temporal-cloud)
 
 ### Configure Temporal CLI {#configure-temporal-cli}

@@ -50,6 +50,7 @@
     "chart.js": "^4.4.1",
     "clsx": "^1.1.1",
     "comlink": "^4.4.2",
+    "docusaurus-plugin-llms": "^0.2.0",
     "docusaurus-pushfeedback": "^1.0.3",
     "path": "^0.12.7",
     "react": "^19.1.0",
