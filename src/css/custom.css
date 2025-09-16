@@ -1210,6 +1210,18 @@ code {
   border-radius: 0;
   text-decoration: none;
   color: var(--ifm-color);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.pattern-card:hover {
+  border-color: var(--ifm-color-primary);
+  text-decoration: none;
+  color: var(--ifm-color);
+}
+
+.pattern-card:hover .pattern-content h3 {
+  color: var(--ifm-color-primary);
 }
 
 .pattern-content h3 {
@@ -1217,6 +1229,7 @@ code {
   font-weight: 500;
   margin: 0 0 0.75rem 0;
   color: var(--ifm-color);
+  transition: color 0.3s ease;
 }
 
 .pattern-content p {
