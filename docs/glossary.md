@@ -473,7 +473,7 @@ Remote data encoding is using your custom Data Converter to decode (and encode) 
 
 <!-- _Tags: [term](/tags/term), [queries](/tags/queries), [explanation](/tags/explanation)_ -->
 
-#### [Replication Lag](/cloud/high-availability/monitor)
+#### [Replication Lag](/cloud/high-availability/enable#replication-lag-metric)
 
 The transmission delay of Workflow updates and history events from the active region to the standby region.
 
