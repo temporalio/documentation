@@ -72,8 +72,6 @@ module.exports = {
             "evaluate/temporal-cloud/pricing",
             "evaluate/temporal-cloud/actions",
             "evaluate/temporal-cloud/support",
-            "evaluate/development-production-features/multi-region-namespace",
-            "evaluate/development-production-features/multi-cloud-namespace",
           ],
         },
         "security",
@@ -358,36 +356,6 @@ module.exports = {
             },
             {
               type: "category",
-              label: "High Availability",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "production-deployment/cloud/high-availability/index",
-              },
-              items: [
-                "production-deployment/cloud/high-availability/how-it-works",
-                "production-deployment/cloud/high-availability/enable",
-                "production-deployment/cloud/high-availability/monitor",
-                {
-                  type: "category",
-                  label: "How-to guides",
-                  collapsed: true,
-                  link: {
-                    type: "doc",
-                    id: "production-deployment/cloud/high-availability/how-to/index",
-                  },
-                  items: [
-                    "production-deployment/cloud/high-availability/how-to/api-authentication",
-                    "production-deployment/cloud/high-availability/how-to/failovers",
-                    "production-deployment/cloud/high-availability/how-to/secure-routing",
-                    "production-deployment/cloud/high-availability/how-to/private-link",
-                    "production-deployment/cloud/high-availability/how-to/migrate",
-                  ],
-                },
-              ],
-            },
-            {
-              type: "category",
               label: "Connectivity",
               collapsed: true,
               link: {
@@ -397,6 +365,21 @@ module.exports = {
               items: [
                 "production-deployment/cloud/connectivity/aws-connectivity",
                 "production-deployment/cloud/connectivity/gcp-connectivity",
+              ],
+            },
+            {
+              type: "category",
+              label: "High Availability",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "production-deployment/cloud/high-availability/index",
+              },
+              items: [
+                "production-deployment/cloud/high-availability/enable",
+                "production-deployment/cloud/high-availability/monitoring",
+                "production-deployment/cloud/high-availability/failovers",
+                "production-deployment/cloud/high-availability/ha-connectivity",
               ],
             },
             "production-deployment/cloud/rpo-rto",
@@ -470,10 +453,22 @@ module.exports = {
                 "production-deployment/cloud/tcld/version",
               ],
             },
+            {
+              type: "category",
+              label: "Migrate",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "production-deployment/cloud/migrate/index",
+              },
+              items: [
+                "production-deployment/migration",
+                "production-deployment/cloud/migrate/migrate-within-cloud"
+              ],
+            },
           ],
         },
         "production-deployment/data-encryption",
-        "production-deployment/migration",
         {
           type: "category",
           label: "Self-host",
