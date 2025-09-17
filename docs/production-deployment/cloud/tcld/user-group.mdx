@@ -19,6 +19,7 @@ Alias: `ug`
 
 - [tcld user-group add-users](#add-users)
 - [tcld user-group create](#create)
+- [tcld user-group delete](#delete)
 - [tcld user-group get](#get)
 - [tcld user-group list](#list)
 - [tcld user-group list-members](#list-members)
@@ -64,6 +65,18 @@ The account role that the group should have. One of `admin`, `read`, `developer`
 
 Specifies a namespace role that the group should have. Can be repeated multiple times to add
 multiple namespace roles to the group. Value is the form of `<namspaceid>-<role>` where the namspace ID is the full ID of the namespace and role is one of `admin`, `read`, or `write`. Example: `mynamespace.abc123-read` adds the read role for the `mynamespace.abc123` namespace.
+
+## delete
+
+Deletes the user group.
+
+Alias: `d`
+
+The following flags control the behavior of the command.
+
+#### --id (--group-id)
+
+Specify the ID of the group to delete.
 
 ## get
 
