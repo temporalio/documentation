@@ -100,8 +100,10 @@ In this mode, Temporal Cloud fully processes and drains replication Tasks.
 Temporal Cloud pauses traffic to the Namespace before the failover.
 Graceful failover prevents the loss of progress and avoids data conflicts.
 
-The Namespace experiences a short period of unavailability, defaulting to 10 seconds.
-During this period:
+During graceful failover, the Namespace may experience a brief period of unavailability. 
+This duration can be limited by the caller and defaults to 10 seconds. 
+If the system is unable to reach a consistent state within this timeout, the failover attempt is aborted and the Namespace reverts to its previous state.
+During this unavailable period:
 
 - Existing Workflows stop progress.
 - Temporal Cloud returns a "Service unavailable error".
