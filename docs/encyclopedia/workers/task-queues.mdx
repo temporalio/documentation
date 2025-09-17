@@ -63,7 +63,7 @@ This means that all Workers listening to a Task Queue must register all Workflow
 
 There are two exceptions to this "Task Queue Workers with identical registrations" rule.
 First, Worker Versioning may be used.
-During a Worker upgrade binary rollouts, it's okay to have temporarily misaligned registrations.
+During Worker upgrade binary rollouts, it's okay to have temporarily misaligned registrations.
 Second, dynamic Workflows or Activity components may be used.
 If a Task arrives with a recognized method signature, the Worker can use a pre-registered dynamic stand-in.
 
@@ -79,11 +79,11 @@ There are five places where the name of the Task Queue can be set by the develop
 1. A Task Queue must be set when spawning a Workflow Execution:
 
    - [How to start a Workflow Execution using the Temporal CLI](/cli/workflow#start)
-   - [How to start a Workflow Execution using the Go SDK](/develop/go/temporal-clients#start-workflow-execution)
-   - [How to start a Workflow Execution using the Java SDK](/develop/java/temporal-clients#start-workflow-execution)
-   - [How to start a Workflow Execution using the PHP SDK](/develop/php/temporal-clients#start-workflow-execution)
-   - [How to start a Workflow Execution using the Python SDK](/develop/python/temporal-clients#start-workflow-execution)
-   - [How to start a Workflow Execution using the TypeScript SDK](/develop/typescript/temporal-clients#start-workflow-execution)
+   - [How to start a Workflow Execution using the Go SDK](/develop/go/temporal-client#start-workflow-execution)
+   - [How to start a Workflow Execution using the Java SDK](/develop/java/temporal-client#start-workflow-execution)
+   - [How to start a Workflow Execution using the PHP SDK](/develop/php/temporal-client#start-workflow-execution)
+   - [How to start a Workflow Execution using the Python SDK](/develop/python/temporal-client#start-workflow-execution)
+   - [How to start a Workflow Execution using the TypeScript SDK](/develop/typescript/temporal-client#start-workflow-execution)
    - [How to start a Workflow Execution using the .NET SDK](/develop/dotnet/temporal-client#start-workflow)
 
 2. A Task Queue name must be set when creating a Worker Entity and when running a Worker Process:
@@ -136,14 +136,13 @@ There are five places where the name of the Task Queue can be set by the develop
 #### Task ordering
 
 Task Queues can be scaled by adding partitions.
-The [default](/references/dynamic-configuration#service-level-rps-limits) number of partitions is 4.
-
-Task Queues with multiple partitions do not have any ordering guarantees.
-Once there is a backlog of Tasks that have been written to disk, Tasks that can be dispatched immediately (“sync matches”) are delivered before tasks from the backlog (“async matches”).
-This approach optimizes throughput.
+By [default](/references/dynamic-configuration#service-level-rps-limits) each Task Queue has 4 partitions.
 
 Task Queues with a single partition are almost always first-in, first-out, with rare edge case exceptions.
 However, using a single partition limits you to low- and medium-throughput use cases.
+
+In Task Queues with multiple partitions, each task is assigned to a random partition.
+Generally partitions will act as FIFO queues, so once a task queue builds up a backlog, the sync match (tasks that can be dispatched immediately) rate will drop to nearly zero because the task queue will instead dispatch tasks from the backlog (i.e. async matches) first.
 
 :::note
 

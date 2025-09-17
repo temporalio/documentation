@@ -140,15 +140,15 @@ When no tasks are available for a poller before timing out.
 
 #### temporal_cloud_v0_replication_lag_bucket
 
-A histogram of [replication lag](/cloud/high-availability/monitor) during a specific time interval for a Namespace with high availability.
+A histogram of [replication lag](/cloud/high-availability/monitoring#replication-lag-metric) during a specific time interval for a Namespace with high availability.
 
 #### temporal_cloud_v0_replication_lag_count
 
-The [replication lag](/cloud/high-availability/monitor) count during a specific time interval for a Namespace with high availability.
+The [replication lag](/cloud/high-availability/monitoring#replication-lag-metric) count during a specific time interval for a Namespace with high availability.
 
 #### temporal_cloud_v0_replication_lag_sum
 
-The sum of [replication lag](/cloud/high-availability/monitor) during a specific time interval for a Namespace with high availability.
+The sum of [replication lag](/cloud/high-availability/monitoring#replication-lag-metric) during a specific time interval for a Namespace with high availability.
 
 ### Schedule metrics {#schedule}
 
@@ -223,7 +223,7 @@ Use the following labels to filter metrics:
 | Label                      | Explanation                                                                                                                                                                                                                                                                                |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `le`                       | Less than or equal to (`le`) is used in histograms to categorize observations into buckets based on their value being less than or equal to a predefined upper limit.                                                                                                                      |
-| `operation`                | This includes operations such as:<ul><li>SignalWorkflowExecution</li><li>StartBatchOperation</li><li>StartWorkflowExecution</li><li>TaskQueueMgr</li><li>TerminateWorkflowExecution</li><li>UpdateNamespace</li><li>UpdateSchedule</li></ul> See: [Metric Operations](#metrics-operations) |
+| `operation`                | This includes gRPC operations and general Cloud operations such as:<ul><li>SignalWorkflowExecution</li><li>StartBatchOperation</li><li>StartWorkflowExecution</li><li>TaskQueueMgr</li><li>TerminateWorkflowExecution</li><li>UpdateNamespace</li><li>UpdateSchedule</li></ul> See: [Metric Operations](#metrics-operations) and [Temporal Cloud Operation reference](/references/operation-list)|
 | `resource_exhausted_cause` | Cause for resource exhaustion.                                                                                                                                                                                                                                                             |
 | `task_type`                | Activity, Workflow, or Nexus.                                                                                                                                                                                                                                                              |
 | `temporal_account`         | Temporal Account.                                                                                                                                                                                                                                                                          |

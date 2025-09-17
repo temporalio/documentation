@@ -117,7 +117,7 @@ When your workflow Continues-As-New, you should handle deduplication yourself in
 
 To deduplicate in your message handler, you can use an idempotency key.
 
-Clients can provide an idempotency key. This can be important because Temporal's SDKs provide a randomized key by default, which means Temporal only deduplicates retries from the same call. For Updates, if you craft an Update ID, temporal will deduplicate any calls that use that key. This is useful when you have two different callsites that may send the same Update, or when your client itself may get retried. For Signals, you can provide a key as part of your Signal arguments.
+Clients can provide an idempotency key. This can be important because Temporal's SDKs provide a randomized key by default, which means Temporal only deduplicates retries from the same call. For Updates, if you craft an Update ID, Temporal will deduplicate any calls that use that key. This is useful when you have two different callsites that may send the same Update, or when your client itself may get retried. For Signals, you can provide a key as part of your Signal arguments.
 
 Inside your message handler, you can check your idempotency key--the Update ID or the one you provided to the Signal--to check whether the Workflow has already handled the update.
 
@@ -133,7 +133,7 @@ See examples of the above patterns.
     <RelatedReadItem path="/develop/java/message-passing" text="Author message handler patterns in Java" archetype="feature-guide" />
     <RelatedReadItem path="/develop/php/message-passing" text="Author message handler patterns in PHP" archetype="feature-guide" />
     <RelatedReadItem path="/develop/python/message-passing#message-handler-patterns" text="Author message handler patterns in Python" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/typescript/message-passing#message-handler-patterns" text="Author message handler patterns in Typescript" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/message-passing#message-handler-patterns" text="Author message handler patterns in TypeScript" archetype="feature-guide" />
 </RelatedReadContainer>
 
 ### Update Validators {#update-validators}
@@ -156,7 +156,7 @@ Once the Update handler is finished and has returned a value, the operation is c
     <RelatedReadItem path="/develop/java/message-passing#updates" text="Validate updates in Java" archetype="feature-guide" />
     <RelatedReadItem path="/develop/dotnet/message-passing#updates" text="Validate updates in .NET" archetype="feature-guide" />
     <RelatedReadItem path="/develop/python/message-passing#updates" text="Validate updates in Python" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/typescript/message-passing#updates" text="Validate updates in Typescript" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/message-passing#updates" text="Validate updates in TypeScript" archetype="feature-guide" />
     <RelatedReadItem path="/develop/php/message-passing#handle-updates" text="Validate updates in PHP" archetype="feature-guide" />
 </RelatedReadContainer>
 
@@ -199,7 +199,7 @@ Use these links to see a simple Signal handler.
     <RelatedReadItem path="/develop/go/message-passing#signals" text="Handle Signals in Go" archetype="feature-guide" />
     <RelatedReadItem path="/develop/java/message-passing#signals" text="Handle Signals in Java" archetype="feature-guide" />
     <RelatedReadItem path="/develop/python/message-passing#signals" text="Handle Signals in Python" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/typescript/message-passing#signals" text="Handle Signals in Typescript" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/message-passing#signals" text="Handle Signals in TypeScript" archetype="feature-guide" />
     <RelatedReadItem path="/develop/dotnet/message-passing#signals" text="Handle Signals in .NET" archetype="feature-guide" />
     <RelatedReadItem path="/develop/php/message-passing#handle-signal" text="Handle Signals in PHP" archetype="feature-guide" />
 </RelatedReadContainer>
@@ -212,7 +212,7 @@ Use these links to see a simple update handler.
     <RelatedReadItem path="/develop/go/message-passing#updates" text="Handle Updates in Go" archetype="feature-guide" />
     <RelatedReadItem path="/develop/java/message-passing#updates" text="Handle Updates in Java" archetype="feature-guide" />
     <RelatedReadItem path="/develop/python/message-passing#updates" text="Handle Updates in Python" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/typescript/message-passing#updates" text="Handle Updates in Typescript" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/message-passing#updates" text="Handle Updates in TypeScript" archetype="feature-guide" />
     <RelatedReadItem path="/develop/dotnet/message-passing#updates" text="Handle Updates in .NET" archetype="feature-guide" />
     <RelatedReadItem path="/develop/php/message-passing#handle-updates" text="Handle Updates in PHP" archetype="feature-guide" />
 </RelatedReadContainer>
@@ -225,7 +225,7 @@ Author queries using these per-language guides.
     <RelatedReadItem path="/develop/go/message-passing#queries" text="Handle Queries in Go" archetype="feature-guide" />
     <RelatedReadItem path="/develop/java/message-passing#queries" text="Handle Queries in Java" archetype="feature-guide" />
     <RelatedReadItem path="/develop/python/message-passing#queries" text="Handle Queries in Python" archetype="feature-guide" />
-    <RelatedReadItem path="/develop/typescript/message-passing#queries" text="Handle Queries in Typescript" archetype="feature-guide" />
+    <RelatedReadItem path="/develop/typescript/message-passing#queries" text="Handle Queries in TypeScript" archetype="feature-guide" />
     <RelatedReadItem path="/develop/dotnet/message-passing#queries" text="Handle Queries in .NET" archetype="feature-guide" />
     <RelatedReadItem path="/develop/php/message-passing#handle-query" text="Handle Queries in PHP" archetype="feature-guide" />
 </RelatedReadContainer>

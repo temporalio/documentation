@@ -17,9 +17,11 @@ import { CaptionedImage } from '@site/src/components';
 
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
-Temporal Python SDK support for Nexus is at [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+Temporal Python SDK support for Nexus is at [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
 
-All APIs are experimental and may be subject to backwards-incompatible changes.
+Features in public preview may undergo further development and testing before they are made Generally Available.
+These features are being refined and are recommended for production usage.
+The APIs may undergo changes; however, Temporal's goal is to maintain backward compatibility.
 
 :::
 
@@ -178,12 +180,48 @@ class MyNexusServiceHandler:
 
 Workflow IDs should typically be business-meaningful IDs and are used to dedupe Workflow starts. In general, the ID should be passed in the Operation input as part of the Nexus Service contract.
 
-<!-- TODO: feature does not exist in Python pre-release yet -->
-<!-- :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+:::tip RESOURCES
 
-[Attaching multiple Nexus callers to a handler Workflow](/nexus/operations#attaching-multiple-nexus-callers) using a [Conflict-Policy of Use-Existing](/workflow-execution/workflowid-runid#workflow-id-conflict-policy) is a [Pre-release feature](/evaluate/development-production-features/release-stages#pre-release).
+[Attach multiple Nexus callers to a handler Workflow](/nexus/operations#attaching-multiple-nexus-callers) with a Conflict-Policy of Use-Existing.
 
-::: -->
+:::
+
+#### Map a Nexus Operation input to multiple Workflow arguments
+
+A Nexus Operation can only take one input parameter. If you want a Nexus Operation to start a Workflow that takes multiple arguments use the `ctx.start_workflow` method.
+
+<!--SNIPSTART samples-python-nexus-handler-multiargs-->
+[nexus_multiple_args/handler/service_handler.py](https://github.com/temporalio/samples-python/blob/main/nexus_multiple_args/handler/service_handler.py)
+```py
+@nexusrpc.handler.service_handler(service=MyNexusService)
+class MyNexusServiceHandler:
+    """
+    Service handler that demonstrates multiple argument handling in Nexus operations.
+    """
+
+    # This is a nexus operation that is backed by a Temporal workflow.
+    # The key feature here is that it demonstrates how to map a single input object
+    # (HelloInput) to a workflow that takes multiple individual arguments.
+    @nexus.workflow_run_operation
+    async def hello(
+        self, ctx: nexus.WorkflowRunOperationContext, input: HelloInput
+    ) -> nexus.WorkflowHandle[HelloOutput]:
+        """
+        Start a workflow with multiple arguments unpacked from the input object.
+        """
+        return await ctx.start_workflow(
+            HelloHandlerWorkflow.run,
+            args=[
+                input.name,  # First argument: name
+                input.language,  # Second argument: language
+            ],
+            id=str(uuid.uuid4()),
+        )
+
+
+```
+<!--SNIPEND-->
+
 
 ### Register your Nexus Service handler in a Worker
 

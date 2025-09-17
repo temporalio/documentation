@@ -680,29 +680,20 @@ ApplicationFailure: Activity function actC is not registered on this Worker, ava
 ## How to start an Activity Execution {#activity-execution}
 
 Calls to spawn [Activity Executions](/activity-execution) are written within a [Workflow Definition](/workflow-definition).
-The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
-This results in the set of three [Activity Task](/tasks#activity-task) related Events ([ActivityTaskScheduled](/references/events#activitytaskscheduled), [ActivityTaskStarted](/references/events#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
-
-A single instance of the Activities implementation is shared across multiple simultaneous Activity invocations.
-Activity implementation code should be _idempotent_.
-
-The values passed to Activities through invocation parameters or returned through a result value are recorded in the Execution history.
-The entire Execution history is transferred from the Temporal service to Workflow Workers when a Workflow state needs to recover.
-A large Execution history can thus adversely impact the performance of your Workflow.
-
-Therefore, be mindful of the amount of data you transfer through Activity invocation parameters or Return Values.
-Otherwise, no additional limitations exist on Activity implementations.
-
-To spawn an Activity Execution, you must retrieve the _Activity handle_ in your Workflow.
+In TypeScript, you never call an Activity function directly. Instead, you pass in the _types_ of your Activities and Activity options to the `proxyActivities` function. This will give you an _Activity Handle_, a type-safe proxy object with the same function names and signatures as your real activities. From the Activity Handle, you can call your Activities as if they were normal async functions.
 
 ```typescript
 import { proxyActivities } from '@temporalio/workflow';
-// Only import the activity types
+// Only import the activity types, not the functions themselves
 import type * as activities from './activities';
 
-const { greet } = proxyActivities<typeof activities>({
+// Retrieve the Activity Handle by passing in the Activity types and options
+const activityHandle = proxyActivities<typeof activities>({
   startToCloseTimeout: '1 minute',
 });
+
+// Deconstruct the individual Activity functions from the Activity Handle
+const { greet } = activityHandle;
 
 // A workflow that calls an activity
 export async function example(name: string): Promise<string> {
@@ -710,7 +701,16 @@ export async function example(name: string): Promise<string> {
 }
 ```
 
-This imports the individual Activities and declares the type alias for each Activity.
+When you call a proxied function, the Workflow does not execute the Activity code directly. Instead, it schedules an Activity Task. After the Activity Task is scheduled, it becomes available for a Worker to pick up and execute.
+This results in the set of three [Activity Task](/tasks#activity-task) related Events: [ActivityTaskScheduled](/references/events#activitytaskscheduled), [ActivityTaskStarted](/references/events#activitytaskstarted), and [ActivityTaskCompleted](/references/events#activitytaskcompleted) in your Workflow Execution Event History.
+
+The Worker may run many Activity executions at the same time, all using the same Activity function code. Temporal can also retry an Activity if it fails or times out.
+For this reason, you should write Activities to be [idempotent](../../encyclopedia/activities/activity-definition.mdx#idempotency): calling them multiple times with the same input should have the same effect as calling them once.
+
+:::tip
+Every Activity call you make is recorded in the Workflow’s execution history, including the parameters you pass in and the value that comes back. This history is what allows Temporal to recover a Workflow after a failure.
+Because the entire history must be stored and replayed, avoid passing large objects as Activity inputs or return values. Keeping payloads small will help your Workflows replay and recover efficiently.
+:::
 
 ### How to set the required Activity Timeouts {#required-timeout}
 
@@ -822,7 +822,7 @@ It is generally possible and safe to execute TypeScript SDK Workers using `distr
 However, some tools required for the build process (notably the `npm` command) are _not_ included in the `distroless/nodejs` image.
 This might result in various error messages during the Docker build.
 
-The recommanded solution is to use a multi-step Dockerfile.
+The recommended solution is to use a multi-step Dockerfile.
 For example:
 
 ```dockerfile

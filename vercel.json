@@ -1974,6 +1974,26 @@
       "source": "/cloud/high-availability/regions",
       "destination": "/cloud/regions",
       "permanent": true
-    }
+    },
+    {
+      "source": "/cloud/security/aws-privatelink",
+      "destination": "/cloud/connectivity/aws-connectivity",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/multi-region-namespace",
+      "destination": "/cloud/high-availability",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/multi-cloud-namespace",
+      "destination": "/cloud/high-availability",
+      "permanent": true
+    },
+    {
+      "source": "/evaluate/development-production-features/high-availability",
+      "destination": "/cloud/high-availability",
+      "permanent": true
+    }      
   ]
 }

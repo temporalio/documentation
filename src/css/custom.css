@@ -1193,3 +1193,63 @@ code {
   z-index: 10;
 }
 
+/* Pattern Grid and Cards*/
+.pattern-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.pattern-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--ifm-card-background-color);
+  padding: 1.5rem;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 0;
+  text-decoration: none;
+  color: var(--ifm-color);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.pattern-card:hover {
+  border-color: var(--ifm-color-primary);
+  text-decoration: none;
+  color: var(--ifm-color);
+}
+
+.pattern-card:hover .pattern-content h3 {
+  color: var(--ifm-color-primary);
+}
+
+.pattern-content h3 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin: 0 0 0.75rem 0;
+  color: var(--ifm-color);
+  transition: color 0.3s ease;
+}
+
+.pattern-content p {
+  font-size: 0.875rem;
+  margin: 0;
+  color: var(--ifm-color-emphasis-700);
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .pattern-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pattern-card {
+    padding: 1.25rem;
+  }
+
+  .pattern-content h3 {
+    font-size: 1.1rem;
+  }
+}
+

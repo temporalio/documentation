@@ -41,13 +41,13 @@ Use the essential components of a Temporal Application (Workflows, Activities, a
 - [Start an Activity Execution](/develop/typescript/core-application#activity-execution)
 - [Run Worker Processes](/develop/typescript/core-application#run-a-dev-worker)
 
-## [Temporal Client](/develop/typescript/temporal-clients)
+## [Temporal Client](/develop/typescript/temporal-client)
 
 Connect to a Temporal Service and start a Workflow Execution.
 
-- [Connect to Development Temporal Service](/develop/typescript/temporal-clients#connect-to-development-service)
-- [Connect to Temporal Cloud](/develop/typescript/temporal-clients#connect-to-temporal-cloud)
-- [Start a Workflow Execution](/develop/typescript/temporal-clients#start-workflow-execution)
+- [Connect to Development Temporal Service](/develop/typescript/temporal-client#connect-to-development-service)
+- [Connect to Temporal Cloud](/develop/typescript/temporal-client#connect-to-temporal-cloud)
+- [Start a Workflow Execution](/develop/typescript/temporal-client#start-workflow-execution)
 
 ## [Testing](/develop/typescript/testing-suite)
 
@@ -121,6 +121,17 @@ Run Workflows on a schedule and delay the start of a Workflow.
 Use compression, encryption, and other data handling by implementing custom converters and codecs.
 
 - [Custom Payload Codec](/develop/typescript/converters-and-encryption#custom-payload-conversion)
+
+## Temporal Nexus
+
+The [Temporal Nexus](/develop/typescript/nexus) feature guide shows how to use Temporal Nexus to connect durable executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
+
+- [Create a Nexus Endpoint to route requests from caller to handler](/develop/typescript/nexus#create-nexus-endpoint)
+- [Define the Nexus Service contract](/develop/typescript/nexus#define-nexus-service-contract)
+- [Develop a Nexus Service and Operation handlers](/develop/typescript/nexus#develop-nexus-service-operation-handlers)
+- [Develop a caller Workflow that uses a Nexus Service](/develop/typescript/nexus#develop-caller-workflow-nexus-service)
+- [Make Nexus calls across Namespaces with a dev Server](/develop/typescript/nexus#register-the-caller-workflow-in-a-worker-and-start-the-caller-workflow)
+- [Make Nexus calls across Namespaces in Temporal Cloud](/develop/typescript/nexus#nexus-calls-across-namespaces-temporal-cloud)
 
 ## [Durable Timers](/develop/typescript/timers)
 

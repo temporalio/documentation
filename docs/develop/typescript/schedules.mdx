@@ -45,33 +45,221 @@ The Temporal Service doesn't guarantee when this removal will happen.
 
 :::
 
+<!--SNIPSTART typescript-create-a-scheduled-workflow-->
+[schedules/src/start-schedule.ts](https://github.com/temporalio/samples-typescript/blob/main/schedules/src/start-schedule.ts)
+```ts
+async function run() {
+  const client = new Client({
+    connection: await Connection.connect(),
+  });
+
+  // https://typescript.temporal.io/api/classes/client.ScheduleClient#create
+  const schedule = await client.schedule.create({
+    action: {
+      type: 'startWorkflow',
+      workflowType: reminder,
+      args: ['♻️ Dear future self, please take out the recycling tonight. Sincerely, past you ❤️'],
+      taskQueue: 'schedules',
+    },
+    scheduleId: 'sample-schedule',
+    policies: {
+      catchupWindow: '1 day',
+      overlap: ScheduleOverlapPolicy.ALLOW_ALL,
+    },
+    spec: {
+      intervals: [{ every: '10s' }],
+      // or periodic calendar times:
+      // calendars: [
+      //   {
+      //     comment: 'every wednesday at 8:30pm',
+      //     dayOfWeek: 'WEDNESDAY',
+      //     hour: 20,
+      //     minute: 30,
+      //   },
+      // ],
+      // or a single datetime:
+      // calendars: [
+      //   {
+      //     comment: '1/1/23 at 9am',
+      //     year: 2023,
+      //     month: 1,
+      //     dayOfMonth: 1,
+      //     hour: 9,
+      //   },
+      // ],
+    },
+  });
+```
+<!--SNIPEND-->
+
 ### How to Backfill a Scheduled Workflow {#backfill}
 
 The backfill action executes Actions ahead of their specified time range. This command is useful when you need to execute a missed or delayed Action, or when you want to test the Workflow before its scheduled time.
+
+<!--SNIPSTART typescript-backfill-a-scheduled-workflow-->
+[schedules/src/backfill-schedule.ts](https://github.com/temporalio/samples-typescript/blob/main/schedules/src/backfill-schedule.ts)
+```ts
+function subtractMinutes(minutes: number): Date {
+  const now = new Date();
+  return new Date(now.getTime() - minutes * 60 * 1000);
+}
+
+async function run() {
+  const client = new Client({
+    connection: await Connection.connect(),
+  });
+
+  const backfillOptions: Backfill = {
+    start: subtractMinutes(10),
+    end: subtractMinutes(9),
+    overlap: ScheduleOverlapPolicy.ALLOW_ALL,
+  };
+
+  const handle = client.schedule.getHandle('sample-schedule');
+  await handle.backfill(backfillOptions);
+
+  console.log(`Schedule is now backfilled.`);
+}
+```
+<!--SNIPEND-->
 
 ### How to Delete a Scheduled Workflow {#delete}
 
 The delete action enables you to delete a Schedule. When you delete a Schedule, it does not affect any Workflows that were started by the Schedule.
 
+<!--SNIPSTART typescript-delete-a-scheduled-workflow-->
+[schedules/src/delete-schedule.ts](https://github.com/temporalio/samples-typescript/blob/main/schedules/src/delete-schedule.ts)
+```ts
+async function run() {
+  const client = new Client({
+    connection: await Connection.connect(),
+  });
+
+  const handle = client.schedule.getHandle('sample-schedule');
+  await handle.delete();
+
+  console.log(`Schedule is now deleted.`);
+}
+```
+<!--SNIPEND-->
+
 ### How to Describe a Scheduled Workflow {#describe}
 
 The describe action shows the current Schedule configuration, including information about past, current, and future Workflow Runs. This command is helpful when you want to get a detailed view of the Schedule and its associated Workflow Runs.
+
+<!--SNIPSTART typescript-describe-a-scheduled-workflow-->
+[schedules/src/describe-schedule.ts](https://github.com/temporalio/samples-typescript/blob/main/schedules/src/describe-schedule.ts)
+```ts
+async function run() {
+  const client = new Client({
+    connection: await Connection.connect(),
+  });
+
+  const handle = client.schedule.getHandle('sample-schedule');
+
+  const result = await handle.describe();
+
+  console.log(`Schedule description: ${JSON.stringify(result)}`);
+}
+```
+<!--SNIPEND-->
 
 ### How to List a Scheduled Workflow {#list}
 
 The list action lists all the available Schedules. This command is useful when you want to view a list of all the Schedules and their respective Schedule IDs.
 
+<!--SNIPSTART typescript-list-a-scheduled-workflow-->
+[schedules/src/list-schedule.ts](https://github.com/temporalio/samples-typescript/blob/main/schedules/src/list-schedule.ts)
+```ts
+async function run() {
+  const client = new Client({
+    connection: await Connection.connect(),
+  });
+
+  const schedules = [];
+
+  const scheduleList = client.schedule.list();
+
+  for await (const schedule of scheduleList) {
+    schedules.push(schedule);
+  }
+
+  console.log(`Schedules are now listed: ${JSON.stringify(schedules)}`);
+}
+```
+<!--SNIPEND-->
+
 ### How to Pause a Scheduled Workflow {#pause}
 
 The pause action enables you to pause and unpause a Schedule. When you pause a Schedule, all the future Workflow Runs associated with the Schedule are temporarily stopped. This command is useful when you want to temporarily halt a Workflow due to maintenance or any other reason.
+
+<!--SNIPSTART typescript-pause-a-scheduled-workflow-->
+[schedules/src/pause-schedule.ts](https://github.com/temporalio/samples-typescript/blob/main/schedules/src/pause-schedule.ts)
+```ts
+async function run() {
+  const client = new Client({
+    connection: await Connection.connect(),
+  });
+
+  const handle = client.schedule.getHandle('sample-schedule');
+  await handle.pause();
+
+  console.log(`Schedule is now paused.`);
+}
+```
+<!--SNIPEND-->
 
 ### How to Trigger a Scheduled Workflow {#trigger}
 
 The trigger action triggers an immediate action with a given Schedule. By default, this action is subject to the Overlap Policy of the Schedule. This command is helpful when you want to execute a Workflow outside of its scheduled time.
 
+<!--SNIPSTART typescript-trigger-a-scheduled-workflow-->
+[schedules/src/trigger-schedule.ts](https://github.com/temporalio/samples-typescript/blob/main/schedules/src/trigger-schedule.ts)
+```ts
+async function run() {
+  const client = new Client({
+    connection: await Connection.connect(),
+  });
+
+  const handle = client.schedule.getHandle('sample-schedule');
+
+  await handle.trigger();
+
+  console.log(`Schedule is now triggered.`);
+}
+```
+<!--SNIPEND-->
+
 ### How to Update a Scheduled Workflow {#update}
 
 The update action enables you to update an existing Schedule. This command is useful when you need to modify the Schedule's configuration, such as changing the start time, end time, or interval.
+
+<!--SNIPSTART typescript-update-a-scheduled-workflow-->
+[schedules/src/update-schedule.ts](https://github.com/temporalio/samples-typescript/blob/main/schedules/src/update-schedule.ts)
+```ts
+const updateSchedule = (
+  input: ScheduleDescription,
+): ScheduleUpdateOptions<ScheduleOptionsStartWorkflowAction<Workflow>> => {
+  const scheduleAction = input.action;
+
+  scheduleAction.args = ['my updated schedule arg'];
+
+  return { ...input, ...scheduleAction };
+};
+
+async function run() {
+  const client = new Client({
+    connection: await Connection.connect(),
+  });
+
+  const handle = client.schedule.getHandle('sample-schedule');
+
+  await handle.update(updateSchedule);
+
+  console.log(`Schedule is now updated.`);
+}
+```
+<!--SNIPEND-->
 
 ## How to use Temporal Cron Jobs {#temporal-cron-jobs}
 

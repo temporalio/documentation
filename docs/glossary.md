@@ -19,7 +19,7 @@ When you execute a Temporal Workflow, its Actions create the ongoing state and p
 
 <!-- _Tags: [term](/tags/term), [pricing](/tags/pricing), [temporal-cloud](/tags/temporal-cloud), [explanation](/tags/explanation)_ -->
 
-#### [Actions Per Second (APS)](/cloud/limits#throughput)
+#### [Actions Per Second (APS)](/cloud/limits#actions-per-second)
 
 APS, or Actions per second, is specific to Temporal Cloud.
 Each Temporal Cloud Namespace enforces a rate limit, which is measured in Actions per second (APS).
@@ -293,7 +293,7 @@ Run-once actions maintain data integrity and prevent costly errors.
 
 <!-- _Tags: [term](/tags/term)_ -->
 
-#### [Isolation Domain](/cloud/high-availability/how-it-works)
+#### [Isolation Domain](/cloud/high-availability)
 
 An isolation domain is a defined area within Temporal Cloud's infrastructure.
 It helps contain failures and prevents them from spreading to other parts of the system, providing redundancy and fault tolerance.
@@ -473,7 +473,7 @@ Remote data encoding is using your custom Data Converter to decode (and encode) 
 
 <!-- _Tags: [term](/tags/term), [queries](/tags/queries), [explanation](/tags/explanation)_ -->
 
-#### [Replication Lag](/cloud/high-availability/monitor)
+#### [Replication Lag](/cloud/high-availability/monitoring#replication-lag-metric)
 
 The transmission delay of Workflow updates and history events from the active region to the standby region.
 
