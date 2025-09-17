@@ -1,9 +1,9 @@
 ---
-id: monitor
-title: Monitoring health
-sidebar_label: Monitoring health
-slug: /cloud/high-availability/monitor
-description: Temporal Cloud's High Availability Namespaces offer automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime.
+id: monitoring
+title: Monitoring High Availability
+sidebar_label: Monitoring
+slug: /cloud/high-availability/monitoring
+description: How to track the health and performance of your High Availability Namespaces.
 tags:
   - Temporal Cloud
   - Production
@@ -13,29 +13,19 @@ keywords:
   - explanation
   - failover
   - high-availability
-  - multi-region
-  - multi-region namespace
+  - logs
+  - metrics
+  - monitoring
   - namespaces
+  - replication
   - temporal-cloud
-  - term
 ---
 
 import { ToolTipTerm } from '@site/src/components';
 
-:::tip Support, stability, and dependency info
+Temporal Cloud offers several ways for you to track the health and performance of your [High Availability](/cloud/high-availability) namespaces.
 
-Same-region Replication is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for Temporal Cloud.
-
-:::
-
-This section provides how-to instructions for monitoring replica and Service health when using Namespaces with High Availability features:
-
-- [Replica health](#replica-health)
-- [Service health and latency metrics](#metrics)
-  - [Monitoring and observability](#observe)
-  - [Checking failovers](#auditing)
-
-## Replica health {#replica-health}
+## Replication status
 
 You can monitor your replica status with the Temporal Cloud UI.
 If the replica is unhealthy, Temporal Cloud diables the “Trigger a failover” option to prevent failing over to an unhealthy replica.
@@ -48,7 +38,7 @@ An unhealthy replica might be due to:
 
 These issues prevent the replica from being used during a failover, ensuring system stability and consistency.
 
-## Service health and latency metrics {#metrics}
+## Replication lag metric
 
 Temporal Cloud’s High Availability features use asynchronous replication between the primary and the replica.
 Workflow updates in the primary, along with associated History Events, are transmitted to the replica.
@@ -81,24 +71,11 @@ sum(rate(temporal_cloud_v0_replication_lag_sum[$__rate_interval])) by (temporal_
 sum(rate(temporal_cloud_v0_replication_lag_count[$__rate_interval])) by (temporal_namespace)
 ```
 
-### Monitoring and observability {#observe}
+When a Namespace is using a replica, you may notice that the Action count in `temporal_cloud_v0_total_action_count` is 2x what it was before adding a replica.
+This happens because Actions are replicated; they occur on both the primary and the replica.
 
-You can view and set alerts for key Cloud metrics using the Web UI, the 'tcld' CLI utility, or Temporal Cloud APIs.
-For instance, when adding a region to a Namespace, you can track how Workflow replication progresses.
-If any errors occur, they will be displayed in the Namespace Web UI.
+## Failover audit log
 
-:::tip
+When Temporal triggers failovers, the [audit log](/cloud/audit-logging) will update with details.
 
-If a Namespace is using a replica, you may notice that the Action count in `temporal_cloud_v0_total_action_count` is doubled (2x).
-This happens because operations are replicated; they occur on both the primary and the replica.
-
-:::
-
-### Checking failovers {#auditing}
-
-Temporal Cloud offers several ways to monitor failovers:
-
-- When Temporal triggers failovers, the audit log will update with details.
-  Look for `"operation": "FailoverNamespace"` in the logs.
-- You can set up alerts for Temporal-initiated failover events.
-- After a failover, verify that the Namespace is active in the new region using the Temporal Cloud Web UI.
+Look for `"operation": "FailoverNamespace"` in the logs.
