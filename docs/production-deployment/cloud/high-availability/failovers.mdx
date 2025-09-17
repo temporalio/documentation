@@ -1,7 +1,7 @@
 ---
 id: failovers
-title: Failovers
-sidebar_label: Failovers
+title: Configure and Trigger Failovers
+sidebar_label: Configure and Trigger Failovers
 slug: /cloud/high-availability/failovers
 description: How automatic and manual failovers work with Temporal Cloud HA
 tags:
@@ -323,7 +323,7 @@ Failover testing (also known as "<ToolTipTerm term="trigger testing" />)" can:
   Manual testing confirms the failover mechanism works as expected, so your system handles incidents effectively.
 
 - **Assess replication lag**:
-  In multi-region deployment, monitoring [replication lag](/cloud/high-availability/enable#replication-lag-metric) between regions is crucial.
+  In multi-region deployment, monitoring [replication lag](/cloud/high-availability/monitoring#replication-lag-metric) between regions is crucial.
   Check the lag before initiating a failover to avoid rolling back Workflow progress.
   This is less important when using isolation domains as failover is usually instantaneous.
   Manual testing helps you practice this critical step and understand its impact.

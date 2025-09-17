@@ -293,7 +293,7 @@ Run-once actions maintain data integrity and prevent costly errors.
 
 <!-- _Tags: [term](/tags/term)_ -->
 
-#### [Isolation Domain](/cloud/high-availability/how-it-works)
+#### [Isolation Domain](/cloud/high-availability)
 
 An isolation domain is a defined area within Temporal Cloud's infrastructure.
 It helps contain failures and prevents them from spreading to other parts of the system, providing redundancy and fault tolerance.
@@ -473,7 +473,7 @@ Remote data encoding is using your custom Data Converter to decode (and encode) 
 
 <!-- _Tags: [term](/tags/term), [queries](/tags/queries), [explanation](/tags/explanation)_ -->
 
-#### [Replication Lag](/cloud/high-availability/enable#replication-lag-metric)
+#### [Replication Lag](/cloud/high-availability/monitoring#replication-lag-metric)
 
 The transmission delay of Workflow updates and history events from the active region to the standby region.
 

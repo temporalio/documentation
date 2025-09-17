@@ -377,6 +377,7 @@ module.exports = {
               },
               items: [
                 "production-deployment/cloud/high-availability/enable",
+                "production-deployment/cloud/high-availability/monitoring",
                 "production-deployment/cloud/high-availability/failovers",
                 "production-deployment/cloud/high-availability/ha-connectivity",
               ],
