@@ -191,6 +191,9 @@ export const helloServiceHandler = nexus.serviceHandler(helloService, {
 ### Develop an Asynchronous Nexus Operation handler to start a Workflow
 
 Use `@temporalio/nexus`'s `WorkflowRunOperationHandler` helper class to easily expose a Temporal Workflow as a Nexus Operation.
+Note that even though a Nexus operation can only take one input parameter, if you need to pass
+multiple arguments through to the workflow, you can do so by using multiple properties of the input object, and placing them in
+the array provided to the `args` option when calling `startWorkflow`.
 
 <!--SNIPSTART typescript-nexus-hello-service-handler {"selectedLines": ["1-7","18-37"]}-->
 
