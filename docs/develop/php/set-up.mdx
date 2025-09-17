@@ -54,23 +54,42 @@ Or, [follow these instructions](https://getcomposer.org/download/) on the Compos
 
 <SetupStep code={
 <>
-
-<p>See the <a href="https://github.com/roadrunner-server/roadrunner/blob/master/README.md" target="_blank">RoadRunner README file</a> for installation instructions.</p>
-
-<p>Using Composer, you can install it with the following command:</p>
 <CodeSnippet language="bash">
-composer require spiral/roadrunner-cli
-./vendor/bin/rr get-binary
+sudo pecl install grpc
+</CodeSnippet>
+
+<p>Then verify the extension is loaded:</p>
+<CodeSnippet language="bash">
+php -m | grep grpc
+</CodeSnippet>
+</>
+}>
+
+## Install the gRPC extension
+
+The Temporal PHP SDK requires the gRPC extension for client operations. 
+Install it using PECL:
+
+**Note:** After installation, you may need to restart your terminal or web server. 
+Use `php --ini` to find your php.ini location if needed.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+
+<p>The Temporal PHP SDK includes RoadRunner for running workers. 
+You'll create a configuration file for it.</p>
+
+<CodeSnippet language="bash">
+touch .rr.yaml
 </CodeSnippet></>
 }>
 
-## Download RoadRunner
+## Create RoadRunner Configuration
 
-See the RoadRunner README file for installation instructions.
-When prompted, enter yes to generate a default `.rr.yaml` file.
-You’ll update it later to configure the Temporal plugin.
 
-Next, you'll configure a local Temporal Service for development.
+Create a `.rr.yaml` file in your project directory - you'll configure it in the next step.
 
 </SetupStep>
 
@@ -123,19 +142,19 @@ Choose your operating system to install Temporal CLI:
 {`version: "3"
 
 rpc:
-listen: tcp://127.0.0.1:6001
+  listen: tcp://127.0.0.1:6001
 
 server:
-command: "php -d display_errors=stderr src/worker.php"
+  command: "php -d display_errors=stderr src/worker.php"
 
 temporal:
-address: \${TEMPORAL_HOST:-localhost}:\${TEMPORAL_PORT:-7233}
-activities:
-num_workers: 4
+  address: \${TEMPORAL_HOST:-localhost}:\${TEMPORAL_PORT:-7233}
+  activities:
+    num_workers: 4
 
 logs:
-level: info
-mode: development`}
+  level: info
+  mode: development`}
 </CodeSnippet>
 </>
 }>
@@ -197,6 +216,30 @@ This test will confirm that:
 - Your local Temporal Service is running
 - You can successfully create and execute Workflows and Activities
 - The communication between components is functioning correctly
+
+### 0. Configure Composer Autoloading
+
+First, configure Composer to autoload your classes. 
+Add the following to your `composer.json` file above the "require" section:
+
+```json
+{
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "require": {
+    "temporal/sdk": "^2.0"
+  }
+}
+```
+
+Then run:
+
+```bash
+composer dump-autoload -o --classmap-authoritative
+```
 
 ### 1. Create the Activity Interface
 
