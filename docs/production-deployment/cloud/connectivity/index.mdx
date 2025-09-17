@@ -27,6 +27,8 @@ Temporal Cloud supports private connectivity to namespaces via AWS PrivateLink o
 
 Namespace access is always securely authenticated via [API keys](/cloud/api-keys#overview) or [mTLS](/cloud/certificates), regardless of how you choose to connect.
 
+For information about IP address stability and allowlisting, see [IP addresses](/cloud/connectivity/ip-addresses).
+
 ### Required steps
 
 To use private connectivity with Temporal Cloud:
@@ -311,8 +313,35 @@ nc -zv vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com 7233
 
 ## Control plane connectivity
 
-Using the Temporal Cloud [web UI](/web-ui), [Terraform provider](/production-deployment/cloud/terraform-provider), [`tcld` CLI](/cloud/tcld), or [Cloud Ops APIs](/ops) requires network access to the Temporal Cloud control plane. Different hostnames are used for different parts of the service.
+Using the Temporal Cloud [web UI](/web-ui), [Terraform provider](/production-deployment/cloud/terraform-provider), [`tcld` CLI](/cloud/tcld), or [Cloud Ops APIs](/ops) requires network access to the Temporal Cloud control plane. 
+
+### Control plane hostnames
+
+Different hostnames are used for different parts of the service.
 
 - `saas-api.tmprl.cloud` (required for Terraform, tcld, and Cloud Ops APIs) 
 - `web.onboarding.tmprl.cloud` (required for Web UI)
 - `web.saas-api.tmprl.cloud` (required for Web UI)
+
+### AWS PrivateLink connectivity to Temporal Cloud control plane
+
+Temporal Cloud supports [AWS PrivateLink](https://aws.amazon.com/privatelink/) connections to the control plane, which allows access from applications running in VPCs that cannot egress to the public internet. Temporal Cloud does **not** support restricting an account so that private connectivity is the sole connectivity method to the control plane; the control plane is always accessible via public internet.
+
+Control plane access is always securely authenticated via [API keys](/cloud/api-keys#overview) or JWT tokens, regardless of how you choose to connect.
+
+To set up a PrivateLink connection to the Temporal Cloud control plane, follow [these instructions](/cloud/connectivity/aws-connectivity), but use the control plane endpoint information below:
+
+| Hostname               | Region      | Control Plane PrivateLink Service Name                    |
+| ---------------------- | ----------- | --------------------------------------------------------- |
+| `saas-api.tmprl.cloud` | `us-west-2` | `com.amazonaws.vpce.us-west-2.vpce-svc-0c57a5930b6f6be0e` |
+
+The control plane PrivateLink endpoint includes a [private DNS name](https://docs.aws.amazon.com/vpc/latest/privatelink/manage-dns-names.html), which lets your clients use the PrivateLink connection without having to set up private DNS or having to override client configuration. To use the DNS name, make sure your VPC has the `Enable DNS hostnames` and `Enable DNS support` options enabled. If you cannot use the DNS name, you can also manually [set up private DNS](/cloud/connectivity/aws-connectivity#configuring-private-dns-for-aws-privatelink) or [override the server and TLS settings on your clients](/cloud/connectivity#update-dns-or-clients-to-use-private-connectivity).
+
+:::caution Finish client setup
+
+After creating a private connection, you must use the provided DNS name, set up private DNS, or update the configuration of all clients you want to use the private connection.
+
+Without this step, your clients may connect to the control plane over the internet if they were previously using public connectivity, or they will not be able to connect at all.
+:::
+
+The control plane is also accessible via the PrivateLink endpoint in AWS us-west-2 that can be used for namespace traffic, but we strongly recommend using the control-plane specific endpoint for control plane traffic.
