@@ -194,11 +194,41 @@ var HelloOperation = temporalnexus.NewWorkflowRunOperation(service.HelloOperatio
 Workflow IDs should typically be business-meaningful IDs and are used to dedupe Workflow starts.
 For the `HelloOperation`, `input.ID` is passed as part of the Nexus Service contract.
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+:::tip RESOURCES
 
-[Attaching multiple Nexus callers to a handler Workflow](/nexus/operations#attaching-multiple-nexus-callers) using a [Conflict-Policy of Use-Existing](/workflow-execution/workflowid-runid#workflow-id-conflict-policy) is a [Pre-release feature](/evaluate/development-production-features/release-stages#pre-release).
+[Attach multiple Nexus callers to a handler Workflow](/nexus/operations#attaching-multiple-nexus-callers) with a Conflict-Policy of Use-Existing.
 
 :::
+
+#### Map a Nexus Operation input to multiple Workflow arguments
+
+A Nexus Operation can only take one input parameter. If you want a Nexus Operation to start a Workflow that takes multiple arguments use
+`NewWorkflowRunOperationWithOptions` or `MustNewWorkflowRunOperationWithOptions`.
+
+<!--SNIPSTART samples-go-nexus-handler-multiargs-->
+[nexus-multiple-arguments/handler/app.go](https://github.com/temporalio/samples-go/blob/main/nexus-multiple-arguments/handler/app.go)
+```go
+var HelloOperation = temporalnexus.MustNewWorkflowRunOperationWithOptions(temporalnexus.WorkflowRunOperationOptions[service.HelloInput, service.HelloOutput]{
+	Name: service.HelloOperationName,
+	Handler: func(ctx context.Context, input service.HelloInput, options nexus.StartOperationOptions) (temporalnexus.WorkflowHandle[service.HelloOutput], error) {
+		return temporalnexus.ExecuteUntypedWorkflow[service.HelloOutput](
+			ctx,
+			options,
+			client.StartWorkflowOptions{
+				// Workflow IDs should typically be business meaningful IDs and are used to dedupe workflow starts.
+				// For this example, we're using the request ID allocated by Temporal when the caller workflow schedules
+				// the operation, this ID is guaranteed to be stable across retries of this operation.
+				ID: options.RequestID,
+			},
+			HelloHandlerWorkflow,
+			input.Name,
+			input.Language,
+		)
+	},
+})
+
+```
+<!--SNIPEND-->
 
 ### Register a Nexus Service in a Worker
 
