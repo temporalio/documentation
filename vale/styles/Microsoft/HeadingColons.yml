@@ -2,7 +2,7 @@ extends: existence
 message: "Capitalize '%s'."
 link: https://docs.microsoft.com/en-us/style-guide/punctuation/colons
 nonword: true
-level: error
+level: suggestion
 scope: heading
 tokens:
   - ':\s[a-z]'
