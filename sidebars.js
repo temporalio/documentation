@@ -397,6 +397,7 @@ module.exports = {
               items: [
                 "production-deployment/cloud/connectivity/aws-connectivity",
                 "production-deployment/cloud/connectivity/gcp-connectivity",
+                "production-deployment/cloud/connectivity/ip-addresses",
               ],
             },
             "production-deployment/cloud/rpo-rto",
