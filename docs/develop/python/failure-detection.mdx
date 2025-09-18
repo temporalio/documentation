@@ -101,7 +101,7 @@ You can alternately specify a list of errors that are non-retryable in your Acti
 
 ## Failing Workflows {#workflow-failure}
 
-One of the core design principles of Temporal is that an Activity Failure will never directly cause a Workflow Failure — a Workflow should never return as Failed except deliberately.
+One of the core design principles of Temporal is that an Activity Failure will never directly cause a Workflow Failure — a Workflow should never return as Failed unless deliberately.
 The default retry policy associated with Temporal Activities is to retry them until reaching a certain timeout threshold.
 Activities will not actually *return* a failure to your Workflow until this condition or another non-retryable condition is met.
 At this point, you can decide how to handle an error returned by your Activity the way you would in any other program.
