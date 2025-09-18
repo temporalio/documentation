@@ -57,7 +57,7 @@ All user group administration requires an Account Owner or Global Admin account-
 
 <Tabs>
 
-<TabItem value="create-webui" label="Web UI">
+<TabItem value="create-group-webui" label="Web UI">
 
 1. Navigate to the [identities page](https://cloud.temporal.io/settings/identities)
 1. Click the Create Group button
@@ -67,11 +67,14 @@ All user group administration requires an Account Owner or Global Admin account-
 
 </TabItem>
 
-<TabItem value="create-tcld" label="tcld">
-
+<TabItem value="create-group-tcld" label="tcld">
 See the [`tcld` user-group create](/cloud/tcld/user-group/#create) command reference for details.
-
 </TabItem>
+
+<TabItem value="create-group-tf" label="Terraform">
+See the [Terraform provider documentation](https://registry.terraform.io/providers/temporalio/temporalcloud/latest/docs/resources/group) for details.
+</TabItem>
+
 </Tabs>
 
 ## How to assign roles to a user group {#assign-group-roles}
@@ -107,6 +110,11 @@ To edit or remove namespace permissions from a group:
 <TabItem value="assign-roles-tcld" label="tcld">
 See the [`tcld` user-group set-access](/cloud/tcld/user-group/#set-access) command reference for details.
 </TabItem>
+
+<TabItem value="assign-roles-tf" label="Terraform">
+See the [Terraform provider documentation](https://registry.terraform.io/providers/temporalio/temporalcloud/latest/docs/resources/group) for details.
+</TabItem>
+
 </Tabs>
 
 ## How to manage users in a group {#assign-group-members}
@@ -128,8 +136,12 @@ To remove a user from the group:
 
 </TabItem>
 
-<TabItem value="assign-roles-tcld" label="tcld">
+<TabItem value="assign-group-members-tcld" label="tcld">
 See the [`tcld` user-group add-users](/cloud/tcld/user-group/#add-users) and the [`tcld` user-group remove-users](/cloud/tcld/user-group/#remove-users) command reference for details.
+</TabItem>
+
+<TabItem value="assign-group-members-tf" label="Terraform">
+See the [Terraform provider documentation](https://registry.terraform.io/providers/temporalio/temporalcloud/latest/docs/resources/group) for details.
 </TabItem>
 
 </Tabs>
@@ -137,7 +149,7 @@ See the [`tcld` user-group add-users](/cloud/tcld/user-group/#add-users) and the
 ## Delete a user group
 
 <Tabs>
-<TabItem value="assign-group-members-webui" label="Web UI">
+<TabItem value="delete-group-webui" label="Web UI">
 
   1. Navigate to the [identities page](https://cloud.temporal.io/settings/identities)
   1. Find the group to edit (You can filter the list of identities to only show groups to find the relevant group by clicking the Groups tab on the table)
@@ -147,8 +159,12 @@ See the [`tcld` user-group add-users](/cloud/tcld/user-group/#add-users) and the
 
 </TabItem>
 
-<TabItem value="assign-roles-tcld" label="tcld">
+<TabItem value="delete-group-tcld" label="tcld">
 See the [`tcld` user-group delete](/cloud/tcld/user-group/#delete) command reference for details.
+</TabItem>
+
+<TabItem value="delete-group-tf" label="Terraform">
+See the [Terraform provider documentation](https://registry.terraform.io/providers/temporalio/temporalcloud/latest/docs/resources/group) for details.
 </TabItem>
 
 </Tabs>
