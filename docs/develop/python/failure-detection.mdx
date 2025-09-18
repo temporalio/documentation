@@ -103,7 +103,7 @@ You can alternately specify a list of errors that are non-retryable in your Acti
 
 One of the core design principles of Temporal is that an Activity Failure will never directly cause a Workflow Failure.
 The default retry policy associated with Temporal Activities is to retry them until reaching a certain timeout threshold.
-Activities will not actually *return* a failure to your Workflow until this condition, or another non-retryable condition is met.
+Activities will not actually *return* a failure to your Workflow until this condition or another non-retryable condition is met.
 At this point, you can decide how to handle an error returned by your Activity the way you would in any other program.
 For example, you could implement a [Saga Pattern](https://learn.temporal.io/tutorials/python/trip-booking-app/) that uses `try` and `except` blocks to "unwind" some of the steps your Workflow has performed up to the point of Activity Failure.
 
@@ -121,9 +121,9 @@ if err != nil {
 }
 ```
 
-This works differently in a Workflow than raising errors from Activities.
-In an Activity, all raised errors are converted to Temporal `ApplicationError`.
-In a Workflow, any errors that are raised other than an explicit Temporal `ApplicationError` will only fail that particular [Workflow Task](https://docs.temporal.io/tasks#workflow-task-execution) and be retried.
+This works differently in a Workflow than raising exceptions from Activities.
+In an Activity, any Python exceptions or custom exceptions are converted to a Temporal `ApplicationError`.
+In a Workflow, any exceptions that are raised other than an explicit Temporal `ApplicationError` will only fail that particular [Workflow Task](https://docs.temporal.io/tasks#workflow-task-execution) and be retried.
 This includes any typical Python runtime errors like a `NameError` or a `TypeError` that are raised automatically.
 These errors are treated as bugs that can be corrected with a fixed deployment, rather than a reason for a Temporal Workflow Execution to return unexpectedly.
 
