@@ -1,6 +1,6 @@
 extends: existence
 message: Don't use '%s', it’s profane.
-level: warning
+level: suggestion
 ignorecase: true
 tokens:
     - abeed
