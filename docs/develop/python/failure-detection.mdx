@@ -123,7 +123,7 @@ if err != nil {
 
 This works differently in a Workflow than raising errors from Activities.
 In an Activity, all raised errors are converted to Temporal `ApplicationError`.
-In a Workflow, any errors that are raised other than an explicit Temporal `ApplicationError` will only fail that particular [Workflow Task](https://docs.temporal.io/tasks#workflow-task-execution) and be retried automatically.
+In a Workflow, any errors that are raised other than an explicit Temporal `ApplicationError` will only fail that particular [Workflow Task](https://docs.temporal.io/tasks#workflow-task-execution) and be retried.
 This includes any typical Python runtime errors like a `NameError` or a `TypeError` that are raised automatically.
 These errors are treated as bugs that can be corrected with a fixed deployment, rather than a reason for a Temporal Workflow Execution to return unexpectedly.
 
