@@ -35,11 +35,11 @@ This page shows how to do the following:
 ## Raise and Handle Exceptions {#exception-handling}
 
 In each Temporal SDK, error handling is implemented idiomatically, following the convetions of the language.
-Temporal uses several different error classes internally -- for example, [`CancelledError`](https://python.temporal.io/temporalio.exceptions.CancelledError.html) in the Python SDK, to handle a Workflow cancellation. 
+Temporal uses several different error classes internally — for example, [`CancelledError`](https://python.temporal.io/temporalio.exceptions.CancelledError.html) in the Python SDK, to handle a Workflow cancellation. 
 You should not raise or otherwise implement these manually, as they are tied to Temporal platform logic.
 
 The one Temporal error class that you will typically raise deliberately is [`ApplicationError`](https://python.temporal.io/temporalio.exceptions.ApplicationError.html).
-In fact, *any* exceptions that are raised from your Python code in a Temporal Activity will be converted to an `ApplicationError` internally.
+In fact, *any* other exceptions that are raised from your Python code in a Temporal Activity will be converted to an `ApplicationError` internally.
 This way, an error's type, severity, and any additional details can be sent to the Temporal Service, indexed by the Web UI, and even serialized across language boundaries.
 
 In other words, these two code samples do the same thing:
