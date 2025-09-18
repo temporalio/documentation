@@ -332,23 +332,23 @@ module.exports = {
               },
               items: [
                 "production-deployment/cloud/get-started/namespaces",
+                "production-deployment/cloud/get-started/api-keys",
+                "production-deployment/cloud/get-started/certificates",
                 "production-deployment/cloud/get-started/billing-and-cost",
               ],
             },
             {
               type: "category",
-              label: "Manage Access",
+              label: "Account Access",
               collapsed: false,
               link: {
                 type: "doc",
                 id: "production-deployment/cloud/manage-access/index",
               },
               items: [
-                "production-deployment/cloud/get-started/certificates",
-                "production-deployment/cloud/get-started/api-keys",
                 "production-deployment/cloud/get-started/users",
-                "production-deployment/cloud/get-started/service-accounts",
                 "production-deployment/cloud/get-started/user-groups",
+                "production-deployment/cloud/get-started/service-accounts",
                 "production-deployment/cloud/saml",
                 "production-deployment/cloud/scim",
               ],
