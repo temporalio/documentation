@@ -77,7 +77,11 @@ The following alerts build on the above to dive deeper into specific potential c
 
 ## Detect Task Backlog {#detect-task-backlog}
 
-**How to detect a backlog of Tasks.**
+### Symptoms of high Task backlog
+
+If the Task backlog is too high, you will find that tasks are waiting to find Workers to run on. This can cause a delay in
+Workflow execution. Detecting a growing Task backlog is possible by watching the schedule to start latency and sync match rate.
+
 
 Metrics to monitor:
 
@@ -86,10 +90,10 @@ Metrics to monitor:
 - **Temporal Cloud metric**: [temporal_cloud_v0_poll_success_count](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_poll_success_count)
 - **Temporal Cloud metric**: [temporal_cloud_v0_poll_success_sync_count](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_poll_success_sync_count)
 
-### Schedule To Start latency
+### Schedule to start latency
 
-The Schedule-To-Start metric represents how long Tasks are staying unprocessed, in the Task Queues.
-But differently, it is the time between when a Task is enqueued and when it is picked up by a Worker.
+The schedule to start metric represents how long Tasks are staying unprocessed in the Task Queues.
+It is the time between when a Task is enqueued and when it is started by a Worker.
 This time being long (likely) means that your Workers can't keep up — either increase the number of Workers (if the host load is already high) or increase the number of pollers per Worker.
 
 If your Schedule-To-Start latency alert triggers or is high, check the [Sync Match Rate](#sync-match-rate) to decide if you need to adjust your Worker or fleet, or contact Temporal Cloud support.
@@ -132,13 +136,12 @@ sum(increase(temporal_activity_schedule_to_start_latency_seconds_count[5m])) by 
 
 This latency should be very low, close to zero.
 Any higher value indicates a bottleneck.
-Anything else indicates bottlenecking.
 
 ### Sync Match Rate {#sync-match-rate}
 
-The Sync Match Rate measures the proportion of Tasks that are delivered directly to Stickied Cached Workflows on Workers, compared to the total number of delivered Tasks.
+The sync match rate measures the rate of Tasks that are delivered to workers without having to be persisted (workers are up and available to pick them up) to the rate of all delivered tasks.
 
-A sync match is when a task is immediately matched to a Stickied Cached Workflow on a Worker.
+A sync match is when a task is immediately matched to a Worker via the Sticky Queue.
 
 An async match is when a Task cannot be matched to the Sticky Queue for a Worker. This can happen when no Worker has cached the Workflow, or if the Task times out during processing. In this case, the Task returns to the general Task Queue.
 
@@ -170,14 +173,32 @@ sum by(temporal_namespace) (
 
 The Sync Match Rate should be at least >95%, but preferably >99%.
 
-**Interpretation**
+### Handling Task backlog issues {#task-backlog-handling}
 
-Consider if this acceptable for your use case to have low Sync Match Rate.
+Once you have detected the condition of a high Task backlog, consider the scenarios below to take action.
+
+#### High schedule to start latency and high sync match rate
+
+There are three typical causes for this:
+
+- There are not enough workers to perform work
+- Each worker is either under resourced, or is misconfigured, to handle enough work
+- There is congestion caused by the environment (eg., network) hosting the worker(s) and Temporal Cloud.
+
+Consider
+- Increasing either the number of available workers, OR 
+- Verifying that your worker hosts are appropriately resourced, OR
+- Increasing the worker configuration value for concurrent pollers for workers/task executions (if your worker resources can accommodate the increased load), OR
+- Doing some combination of these
+
+#### High schedule to start latency and low sync match rate
+
+Verify that you have not set a value for `ScheduleToStartTimeout` in your Activity Options. This may skew your observations.
+
+It may be acceptable for your use case to have low Sync Match Rate.
 For example, if you have known workloads or you intentionally throttle tasks.
 
-If Schedule-To-Start latencies are high, the Task Queue is experiencing a backlog of Tasks.
-
-It's also important to understand the fill and drain rates of the async tasks are during these windows:
+In this case it's also important to understand the fill and drain rates of the async tasks are during these windows:
 
 Successful async polls
 ```
@@ -243,8 +264,9 @@ There may be too many Pollers for the amount of Workers.
 
 If you see the following at the same time then you might have too many Workers:
 
-- ResourceExhausted on poll operations, e.g. `temporal_long_request_failure{operation=~"Poll.*"}`
-- Low poll success rate
+- Low poll success rate AND
+- Low schedule to start latency AND
+- Low worker host resource utilization
 
 **Actions**
 
@@ -347,11 +369,6 @@ Increase the `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivity
 Sticky Execution means that a Worker caches a Workflow Execution Event History and creates a dedicated Task Queue to listen on.
 It significantly improves performance because the Temporal Service only sends new events to the Worker instead of entire Event Histories.
 
-**How to configure your Workflow Sticky cache.**
-
-The `WorkflowCacheSize` should always be greater than the `sticky_cache_size` metric value.
-Additionally, you can watch `sticky_cache_total_forced_eviction` for unusually high numbers that are likely an indicator of inefficiency, since Workflows are being evicted from the cache.
-
 **Target**
 
 The `sticky_cache_size` should report less than or equal to your `WorkflowCacheSize` value.
@@ -361,7 +378,7 @@ Also, sticky_cache_total_forced_eviction should not be reporting high numbers (r
 
 If you see a high eviction count, verify there are no other inefficiencies in your Worker configuration or resource provisioning (backlog).
 If you see the cache size metric exceed the `WorkflowCacheSize`, increase this value if your Worker resources can accommodate it or provision more Workers.
-Finally, take time to review this document and see if it addresses other potential cache issues.
+Finally, take time to review [the Worker performance guide](/develop/worker-performance) and see if it addresses other potential cache issues.
 
 #### Prometheus query samples
 
