@@ -111,14 +111,13 @@ For example, you could implement a [Saga Pattern](https://learn.temporal.io/tuto
 You could do this in response to an Activity Failure, if the failure of that Activity means that your Workflow should not continue:
 
 ```python
-err = workflow.ExecuteActivity(ctx, ProcessCreditCard, order.Address).Get(ctx, &chargestatus)
-if err != nil {
-	var applicationErr *temporal.ApplicationError
-	if errors.As(err, &applicationErr) {
-		logger.Error("Unable to charge credit card", "Error", err)
-	}
-	return OrderConfirmation{}, err
-}
+try:
+	credit_card_confirmation = await workflow.execute_activity_method()
+except ActivityError as e:
+	workflow.logger.error(f"Unable to process credit card {e.message}")
+	raise ApplicationError(
+		"Unable to process credit card", "CreditCardProcessingError"
+	)
 ```
 
 This works differently in a Workflow than raising exceptions from Activities.
