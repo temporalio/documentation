@@ -51,7 +51,7 @@ Migration involves the following phases:
 3. Monitor - The _[GetMigrationResponse](https://pkg.go.dev/github.com/temporalio/tcld#readme-get-a-migration)_ API allows you to track replication progress, including workflows
    replicated, remaining workflows, and estimated
    time for completion.
-4. Handover - Once replication is complete, you may use the _HandoverNamespaceRequest_ API to switch traffic between your source namespace (self-hosted)
+4. Handover - Once replication is complete, you may use the _[HandoverNamespaceRequest](https://pkg.go.dev/github.com/temporalio/tcld#readme-perform-handover-during-a-migration)_ API to switch traffic between your source namespace (self-hosted)
    and target namespace (cloud). This is the opportunity to validate functionality within Temporal Cloud prior to finalizing the migration.
 5. Finalize - Use _[ConfirmMigrationRequest](https://pkg.go.dev/github.com/temporalio/tcld#readme-confirm-a-migration)_ API to finalize the migration. In the event of issues, you may use
    the _[AbortMigrationRequest](https://pkg.go.dev/github.com/temporalio/tcld#readme-abort-a-migration)_ to
@@ -66,7 +66,7 @@ The following are known limitations for the Pre-release phase of this service.
 - Enabling payload encryption as part of migration is not yet supported. If payloads are already [encrypted](https://docs.temporal.io/payload-codec#encryption) in your self-hosted server
   via data converter, then they will remain encrypted during and after migration.
 - If you are using multi-cluster replication in your self-hosted setup and have previously failed over namespaces, then this may impact your eligibility for automated migration.
-- If you have multiple self-hosted servers and they are all configured with the same cluster name (by default Temporal uses active as cluster name), they cannot be connected to
+- If you have multiple self-hosted servers and they are all configured with the same cluster name (by default Temporal uses 'active' as cluster name), they cannot be connected to
   a single migration server simultaneously due to cluster name collision. There are 2 available options:
   1. Migrate one server at a time using a single migration server.
   2. Create multiple migration servers (one for each self-hosted server) if you need to migrate all servers simultaneously.
@@ -81,7 +81,7 @@ Submit a support ticket with the following details:
 
 - A list of your Temporal accounts
 - Target Temporal Cloud service regions
-- For each cluster, provide the server configuration by running `tctl --address <frontend:7233> admin cluster describe`
+- For each cluster, provide the server configuration by running `temporal operator cluster describe --address <frontend:7233> admin cluster describe`
 - Metrics for the namespaces to be migrated:
   - number of open/closed workflows
   - storage used
