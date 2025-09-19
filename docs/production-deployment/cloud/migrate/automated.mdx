@@ -155,7 +155,7 @@ Cloud-side resources must be in-place prior to starting a migration. Complete th
 Complete the following steps in order to deploy and test the self-hosted s2s proxy. The proxy needs to be accessible from your server and requires a public internet connection to connect
 to the Temporal s2s-proxy via migration endpoint.
 
-1. Obtain the latest Docker image from the temporalio/s2s-proxy [repository](https://hub.docker.com/r/temporalio/s2s-proxy/tags).
+1. Obtain the latest Docker image from the [temporalio/s2s-proxy repository](https://hub.docker.com/r/temporalio/s2s-proxy/tags).
 2. Gather the CA certificate generated in the previous steps.
 3. Deploy 1 replica of the s2s-proxy (minimum 4 CPU and 512mb memory) and configure s2s-proxy using our [helm chart example](https://github.com/temporalio/s2s-proxy/blob/main/charts/s2s-proxy/README.md) as a reference.
 4. Test access by running `tctl --ad {the-outbound-external-address-of-your-proxy} admin cl d`. It should display the information of the migration server.
