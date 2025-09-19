@@ -2,6 +2,7 @@ module.exports = {
   documentation: [
     "index",
     "quickstarts",
+    "ai-cookbook",
     {
       type: "category",
       label: "Evaluate",
