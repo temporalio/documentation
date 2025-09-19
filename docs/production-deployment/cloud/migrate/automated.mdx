@@ -52,7 +52,7 @@ Migration involves the following phases:
    replicated, remaining workflows, and estimated
    time for completion.
 4. Handover - Once replication is complete, you may use the _HandoverNamespaceRequest_ API to switch traffic between your source namespace (self-hosted)
-   and target namespace (cloud). This is the opportunity to validate functionality within Temporal Cloud prior finalizing the migration.
+   and target namespace (cloud). This is the opportunity to validate functionality within Temporal Cloud prior to finalizing the migration.
 5. Finalize - Use _[ConfirmMigrationRequest](https://pkg.go.dev/github.com/temporalio/tcld#readme-confirm-a-migration)_ API to finalize the migration. In the event of issues, you may use
    the _[AbortMigrationRequest](https://pkg.go.dev/github.com/temporalio/tcld#readme-abort-a-migration)_ to
    roll-back changes without impacting your workflows. These APIs provide granular control over every step of the process, ensuring transparency and flexibility.
