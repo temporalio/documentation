@@ -70,7 +70,7 @@ The following are known limitations for the Pre-release phase of this service.
   a single migration server simultaneously due to cluster name collision. There are 2 available options:
   1. Migrate one server at a time using a single migration server.
   2. Create multiple migration servers (one for each self-hosted server) if you need to migrate all servers simultaneously.
-- OSS supports cross-namespace commands (e.g., parent-child, SignalExternal, CancelExternal) through the _system.enableCrossNamespaceCommands_ configuration. This
+- OSS supports cross-namespace commands (e.g., parent-child, SignalExternal, CancelExternal) through the `system.enableCrossNamespaceCommands` configuration. This
   configuration is disabled on Temporal Cloud. If cross-namespace calls exist within workflow code, they must be updated or removed prior to migration.
 
 ### Getting started
