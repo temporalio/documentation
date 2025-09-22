@@ -463,7 +463,8 @@ module.exports = {
                 id: "production-deployment/cloud/migrate/index",
               },
               items: [
-                "production-deployment/migration",
+                "production-deployment/cloud/migrate/automated",
+                "production-deployment/cloud/migrate/manual",
                 "production-deployment/cloud/migrate/migrate-within-cloud"
               ],
             },
