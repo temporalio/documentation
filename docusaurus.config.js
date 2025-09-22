@@ -277,6 +277,7 @@ module.exports = async function createConfigAsync() {
       },
       {
         src: "https://widget.kapa.ai/kapa-widget.bundle.js",
+        "data-button-hide": "true",
         "data-website-id": "91a88508-9cdc-441f-b1df-37aa9329e6bc",
         "data-project-name": "Temporal",
         "data-project-color": "#000000",
