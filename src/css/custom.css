@@ -1189,9 +1189,6 @@ code {
     transform: translateY(-15px);
   }
 }
-#kapa-widget-container button {
-  z-index: 10;
-}
 
 /* Pattern Grid and Cards*/
 .pattern-grid {
