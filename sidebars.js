@@ -3,6 +3,11 @@ module.exports = {
     "index",
     "quickstarts",
     {
+      type: "link",
+      label: "Courses and Tutorials",
+      href: "https://learn.temporal.io/",
+    },
+    {
       type: "category",
       label: "Evaluate",
       collapsed: false,
@@ -77,11 +82,6 @@ module.exports = {
         "security",
         "evaluate/use-cases-design-patterns",
       ],
-    },
-    {
-      type: "link",
-      label: "Get started",
-      href: "https://learn.temporal.io/getting_started/",
     },
     {
       type: "category",
