@@ -96,8 +96,8 @@ workflow_failure_rate = temporal_cloud_v0_workflow_failed_count / temporal_activ
 ```
 
 What to watch for:
-- High ratio (>0.1): Poor error handling - activities failing are causing workflow failures
-- Low ratio (<0.01): Good resilience - activities fail but workflows recover
+- High ratio (greater than 0.1): Poor error handling - activities failing are causing workflow failures
+- Low ratio (less than 0.01): Good resilience - activities fail but workflows recover
 - Sudden spikes: May indicate systematic issues
 
 #### Activity success rate
