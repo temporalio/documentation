@@ -8,7 +8,7 @@ keywords:
   - getting started
   - python sdk
 tags:
-  - python guide
+  - Python SDK
   - setup
   - getting started
 hide_table_of_contents: true
@@ -190,7 +190,7 @@ class SayHelloWorkflow:
     @workflow.run
     async def run(self, name: str) -> str:
         return await workflow.execute_activity(
-            "greet",
+            greet,
             name,
             schedule_to_close_timeout=timedelta(seconds=10),
         )
@@ -218,7 +218,7 @@ async def main():
         task_queue="my-task-queue",
         workflows=[SayHelloWorkflow],
         activities=[greet],
-        )
+    )
     print("Worker started.")
     await worker.run()
 
@@ -235,8 +235,8 @@ python3 worker.py
 
 Keep this terminal running - you should see "Worker started" displayed.
 
-With your Activity and Workflow defined, you need a Worker to execute them. 
-A Worker polls a Task Queue, that you configure it to poll, looking for work to do. 
+With your Activity and Workflow defined, you need a Worker to execute them.
+A Worker polls a Task Queue, that you configure it to poll, looking for work to do.
 Once the Worker dequeues the Workflow or Activity task from the Task Queue, it then executes that task.
 
 Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your Workflows and Activities.
