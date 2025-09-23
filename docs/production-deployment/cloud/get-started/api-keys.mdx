@@ -79,8 +79,9 @@ Use API keys to authenticate with:
 API keys support both users and Service Accounts.
 Here are the differences in their permissions:
 
-- Any user can create, delete, and update their own API key access using the Cloud UI or `tcld`.
-- Only Global Administrators and Account Owners can create, delete, and update access to API keys for Service Accounts.
+- Any user can create, delete, and update their *own* API key access using the Cloud UI or `tcld`.
+- Only Global Administrators and Account Owners can create, delete, and update access to API keys for all types of Service Accounts.
+- Namespace Admins can create, delete, and update access to API keys for Namespace-scoped Service Accounts they administer.
 
 ### API key prerequisites
 
@@ -218,8 +219,10 @@ Follow these steps to rotate API keys:
 
 ## Manage API keys for Service Accounts {#serviceaccount-api-keys}
 
-Global Administrators and Account Owners can manage API keys for all Service Accounts in their account and generate API keys for Service Accounts.
-This is different for users, who generate their own API keys.
+Global Administrators and Account Owners can manage and generate API keys for *all* Service Accounts in their account.
+Namespace Admins can manage and generate API keys for Namespace-scoped Service Accounts they administer.
+
+This is different for users, who manage and generate their own API keys.
 
 ### Generate an API Key for a Service Account
 
@@ -243,6 +246,13 @@ In the "Mapped to identity" input box, select a Service account and provide the 
 - **Expiration date**: The end date for the API key
 
 Finish by selecting **Generate API key**.
+
+:::info
+
+This view currently is limited to Global Administrators and Account Owners.
+Namespace Admins can generate an API key for a scoped Service Account using `tcld` or by following the steps [here](/cloud/service-accounts#scoped-ui).
+
+:::
 
 #### Generate API keys with tcld
 
