@@ -24,6 +24,56 @@ function loadFixMapFromDirectory(stylesDir) {
   return allFixes;
 }
 
+function groupErrorsByLine(errors) {
+  const map = new Map();
+  for (const err of errors) {
+    const line = err.Line;
+    if (!map.has(line)) map.set(line, []);
+    map.get(line).push(err);
+  }
+  return map;
+}
+
+function applyFixesByLine(errors, fixMap, filename) {
+  console.log(`🔧 Fixing: ${filename}`);
+  let content = fs.readFileSync(filename, "utf8");
+  const lines = content.split("\n");
+
+  // Group errors by line number
+  const grouped = groupErrorsByLine(errors);
+
+  // For each line with issues
+  for (const [lineNum, errs] of grouped.entries()) {
+    const lineIndex = lineNum - 1;
+    const originalLine = lines[lineIndex];
+
+    let updatedLine = originalLine;
+
+    for (const err of errs) {
+      const [start, end] = err.Span;
+      const startInLine = start - 1;
+      const endInLine = end + 1;
+      const replacement = fixMap[err.Match] || '';
+
+      updatedLine =
+        updatedLine.slice(0, startInLine) +
+        replacement +
+        updatedLine.slice(endInLine);
+
+      console.log(
+        `✅ Replaced '${err.Match}' → '${replacement}' on line ${lineNum}`
+      );
+    }
+
+    // Update the line in the file
+    lines[lineIndex] = updatedLine;
+  }
+
+  // Write updated content
+  const updatedContent = lines.join("\n");
+  fs.writeFileSync(filename, updatedContent, "utf8");
+}
+
 // Apply fixes to files
 function applyFixes(errors, fixMap) {
   for (const err in errors) {
@@ -36,18 +86,20 @@ function applyFixes(errors, fixMap) {
     // Sort issues in reverse order to avoid messing up spans
     const sortedTemporalErrors = temporalOnlyErrors.sort((a, b) => b.Span[0] - a.Span[0]);
 
-    for (temporalError of sortedTemporalErrors) {
-      console.log(`🔧 Fixing: ${filename}`);
-      let content = fs.readFileSync(filename, "utf8");
 
-      console.log(`######temporalError: ${JSON.stringify(temporalError)}`)
+      applyFixesByLine(sortedTemporalErrors, fixMap, filename)
+    // for (temporalError of sortedTemporalErrors) {
+    //   console.log(`🔧 Fixing: ${filename}`);
+    //   let content = fs.readFileSync(filename, "utf8");
 
-      const replacement = fixMap[temporalError["Match"]] || '';
-      const [start, end] = temporalError.Span;
-      content = content.slice(0, start) + replacement + content.slice(end);
+    //   console.log(`######temporalError: ${JSON.stringify(temporalError)}`)
 
-      fs.writeFileSync(filename, content, "utf8");
-    }
+    //   const replacement = fixMap[temporalError["Match"]] || '';
+    //   const [start, end] = temporalError.Span;
+    //   content = content.slice(0, start) + replacement + content.slice(end);
+
+    //   fs.writeFileSync(filename, content, "utf8");
+    // }
     console.log(`✅ Fixed ${sortedTemporalErrors.length} issue(s)`);
   }
 }
