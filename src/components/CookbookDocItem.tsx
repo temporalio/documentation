@@ -9,6 +9,7 @@ import DocItemTOCDesktop from '@theme/DocItem/TOC/Desktop';
 import DocItemTOCMobile from '@theme/DocItem/TOC/Mobile';
 import Link from '@docusaurus/Link';
 import {MDXProvider} from '@mdx-js/react';
+import MDXComponents from '@theme/MDXComponents';
 import clsx from 'clsx';
 
 import styles from './CookbookDocItem.module.css';
@@ -54,12 +55,15 @@ function InnerCookbookDocItem({content, tags}: CookbookDocItemProps) {
   const dataTags = resolvedTags.length ? resolvedTags.join(',') : undefined;
   const githubHref = '';
   const isGithubEnabled = Boolean(githubHref);
-  const handleGithubClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    if (!isGithubEnabled) {
-      event.preventDefault();
-    }
-  };
-  const renderActions = () => (
+  const handleGithubClick = React.useCallback(
+    (event: React.MouseEvent<HTMLAnchorElement>) => {
+      if (!isGithubEnabled) {
+        event.preventDefault();
+      }
+    },
+    [isGithubEnabled],
+  );
+  const renderActions = React.useCallback(() => (
     <div className={styles.actionsRow}>
       <Link className={styles.actionLink} to="/cookbook">
         <BackArrowIcon className={styles.actionIcon} />
@@ -76,23 +80,30 @@ function InnerCookbookDocItem({content, tags}: CookbookDocItemProps) {
         Open in GitHub
       </a>
     </div>
-  );
+  ), [githubHref, handleGithubClick, isGithubEnabled]);
 
-  let actionsInjected = Boolean(syntheticTitle);
-  const components = {
-    h1: (props: React.HTMLAttributes<HTMLHeadingElement>) => {
-      if (!actionsInjected) {
-        actionsInjected = true;
-        return (
-          <>
-            <h1 {...props} />
-            {renderActions()}
-          </>
-        );
-      }
-      return <h1 {...props} />;
-    },
-  };
+  const components = React.useMemo(() => {
+    const DefaultH1 =
+      (MDXComponents?.h1 as React.ComponentType<React.HTMLAttributes<HTMLHeadingElement>>) ??
+      ((props: React.HTMLAttributes<HTMLHeadingElement>) => <h1 {...props} />);
+
+    let actionsInjected = Boolean(syntheticTitle);
+    return {
+      ...MDXComponents,
+      h1: (props: React.HTMLAttributes<HTMLHeadingElement>) => {
+        if (!actionsInjected) {
+          actionsInjected = true;
+          return (
+            <>
+              <DefaultH1 {...props} />
+              {renderActions()}
+            </>
+          );
+        }
+        return <DefaultH1 {...props} />;
+      },
+    } as typeof MDXComponents;
+  }, [renderActions, syntheticTitle]);
 
   return (
     <HtmlClassNameProvider className="cookbook--centered">
