@@ -106,6 +106,10 @@ module.exports = async function createConfigAsync() {
             activeBasePath: "cloud",
             position: "left",
           },
+          {
+            type: 'custom-askAI',
+            position: 'right',
+          },
         ],
       },
       footer: {
