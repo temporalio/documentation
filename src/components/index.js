@@ -4,12 +4,6 @@ export { Intro } from "./elements/Intro";
 export { SdkLogos } from "./elements/SdkLogos";
 export { default as PhotoCarousel } from "./elements/PhotoCarousel";
 export { default as SdkTabs } from './elements/SdkTabs';
-export { default as Card } from './elements/Card/Card';
-export { default as CardHeader } from './elements/Card/CardHeader';
-export { default as CardBody } from './elements/Card/CardBody';
-export { default as CardFooter } from './elements/Card/CardFooter';
-export { default as Column } from './elements/Columns/Column';
-export { default as Row} from './elements/Columns/Row';
 
 // Formatting components
 export { default as DocsTable, NewDocsCell, DocsTableRow } from "./formatting/DocsTable";
