@@ -9,7 +9,7 @@ export { default as CardHeader } from './elements/Card/CardHeader';
 export { default as CardBody } from './elements/Card/CardBody';
 export { default as CardFooter } from './elements/Card/CardFooter';
 export { default as Column } from './elements/Columns/Column';
-export { default as Container} from './elements/Columns/Container';
+export { default as Row} from './elements/Columns/Row';
 
 // Formatting components
 export { default as DocsTable, NewDocsCell, DocsTableRow } from "./formatting/DocsTable";

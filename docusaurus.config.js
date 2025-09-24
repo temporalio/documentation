@@ -96,9 +96,10 @@ module.exports = async function createConfigAsync() {
             right: "left",
           },
           {
-            label: "Code Exchange",
-            href: "https://temporal.io/code-exchange",
-            right: "left",
+            label: "Cookbook",
+            to: "/cookbook",
+            activeBasePath: "cookbook",
+            position: "left",
           },
           {
             label: "Temporal Cloud",
@@ -221,7 +222,7 @@ module.exports = async function createConfigAsync() {
           docs: {
             sidebarPath: require.resolve("./sidebars.js"),
             routeBasePath: "/",
-            exclude: ["**/clusters/**"], // do not render context content
+            exclude: ["**/clusters/**", "**/cookbook/**"], // do not render context content
             editUrl: "https://github.com/temporalio/documentation/edit/main/docs/",
             /**
              * Whether to display the author who last updated the doc.
@@ -327,6 +328,20 @@ module.exports = async function createConfigAsync() {
           buttonPosition: "center-right",
           modalPosition: "sidebar-right",
           modalTitle: "Feedback",
+        },
+      ],
+          [
+        '@docusaurus/plugin-content-docs',
+        {
+          id: 'cookbook',
+          path: 'cookbook',        
+          routeBasePath: 'cookbook',    // published at /cookbook/* ✅
+          sidebarPath: false,           // no left nav for these pages ✅
+          // optional polish:
+          showLastUpdateAuthor: true,
+          showLastUpdateTime: true,
+          // use a custom item to center the content:
+          docItemComponent: '@site/src/components/CookbookDocItem',
         },
       ],
       [

@@ -1,16 +1,39 @@
 {
-    "compilerOptions": {
-      "moduleResolution": "node",
-      "noUnusedLocals": false,
-      "noUnusedParameters": false,
-      "noResolve": true,
-      "allowUnusedLabels": true,
-      "skipLibCheck": true,
-      "noEmitOnError": true,
-      "strict": false,
-      "removeComments": false,
-      "module": "ESNext",
-      "target": "ESNext",
-      "alwaysStrict": false
-    }
-  }
+  "compilerOptions": {
+    "moduleResolution": "bundler",
+    "module": "ESNext",
+    "target": "ESNext",
+
+    "jsx": "react-jsx",
+
+    "allowJs": true,
+    "checkJs": true,
+    "skipLibCheck": true,
+
+    "strict": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+
+    "baseUrl": ".",
+    "paths": {
+      "@site/*": ["./*"],
+      "@generated/*": [".docusaurus/*"]
+    },
+    "types": ["@docusaurus/module-type-aliases", "react", "react-dom"]
+  },
+  "include": [
+    "src",
+    "docs",
+    "plugins",
+    "static",
+    "types",
+    "docusaurus.config.*",
+    "sidebars.*"
+
+  ],
+  "exclude": [
+    "node_modules",
+    "build",
+    ".docusaurus"
+  ]
+}
