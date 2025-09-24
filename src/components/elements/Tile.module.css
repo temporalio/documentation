@@ -3,6 +3,7 @@
 	flex-direction: column;
 	height: 100%;
 	text-decoration: none;
+	color: var(--ifm-color-emphasis-900);
 }
 
 
@@ -41,6 +42,7 @@ line-height: 1;
 margin: 0;
 font-size: 1.1rem;
 font-weight: 600;
+color: inherit;
 }
 
 
