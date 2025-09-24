@@ -251,9 +251,6 @@ module.exports = async function createConfigAsync() {
           // options: https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-blog
           // blog: {},
           // Will be passed to @docusaurus/theme-classic.
-          theme: {
-            customCss: require.resolve('./src/css/custom.css'),
-          },
           // gtag: {
           //   trackingID: "GTM-TSXFPF2",
           //   // Optional fields.
