@@ -15,6 +15,14 @@ import styles from './CookbookDocItem.module.css';
 
 type CookbookDocItemProps = DocItemProps & { tags?: string[] };
 
+function BackArrowIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 16 16" role="img" aria-hidden="true" {...props}>
+      <path d="M6.28 3.22a.75.75 0 0 1 0 1.06L4.06 6.5H13a.75.75 0 0 1 0 1.5H4.06l2.22 2.22a.75.75 0 0 1-1.06 1.06l-3.5-3.5a.75.75 0 0 1 0-1.06l3.5-3.5a.75.75 0 0 1 1.06 0Z" />
+    </svg>
+  );
+}
+
 function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" role="img" aria-hidden="true" {...props}>
@@ -54,6 +62,7 @@ function InnerCookbookDocItem({content, tags}: CookbookDocItemProps) {
   const renderActions = () => (
     <div className={styles.actionsRow}>
       <Link className={clsx(styles.actionLink, styles.actionBack)} to="/cookbook">
+        <BackArrowIcon className={styles.actionIcon} />
         Back to Cookbook
       </Link>
       <a
