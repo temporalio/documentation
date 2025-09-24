@@ -1,13 +1,26 @@
 .tile {
-height: 100%;
-text-decoration: none;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	text-decoration: none;
 }
 
 
-.tile:hover {
-transform: translateY(-2px);
-box-shadow: var(--ifm-shadow-md);
-border-color: var(--ifm-color-primary);
+.tile[data-clickable='true'] {
+	cursor: pointer;
+}
+
+
+.tile:hover,
+.tile[data-clickable='true']:focus-visible {
+	transform: translateY(-2px);
+	box-shadow: var(--ifm-shadow-md);
+	border-color: var(--ifm-color-primary);
+}
+
+
+.tile[data-clickable='true']:focus-visible {
+	outline: none;
 }
 
 

@@ -81,7 +81,7 @@
   fill: currentColor;
 }
 
-.actionsRow :is(.actionBack, .actionGithub) {
+.actionsRow :is(.actionLink, .actionGithub) {
   white-space: nowrap;
 }
 
@@ -116,7 +116,7 @@
     margin-left: 0;
   }
 
-  .actionsRow :is(.actionBack, .actionGithub) {
+  .actionsRow :is(.actionLink, .actionGithub) {
     width: 100%;
     text-align: center;
   }

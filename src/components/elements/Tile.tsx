@@ -13,14 +13,16 @@ export type TileProps = {
 };
 
 export default function Tile({ title, description, tags = [], href, icon, className }: TileProps) {
-  const Container: React.ElementType = href ? Link : 'div';
-  const containerProps = href ? { to: href } : {};
+  const isLink = typeof href === 'string' && href.length > 0;
+  const Container: React.ElementType = isLink ? Link : 'div';
+  const containerProps = isLink ? { to: href, href } : {};
 
   return (
     <Container
-      {...containerProps}
+      {...(containerProps as any)}
       className={clsx('card', styles.tile, className)}
       data-tags={tags.join(',')}
+      data-clickable={isLink ? 'true' : undefined}
       aria-label={href ? title : undefined}
     >
       <div className={clsx('card__header', styles.header)}>

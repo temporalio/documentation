@@ -61,7 +61,7 @@ function InnerCookbookDocItem({content, tags}: CookbookDocItemProps) {
   };
   const renderActions = () => (
     <div className={styles.actionsRow}>
-      <Link className={clsx(styles.actionLink, styles.actionBack)} to="/cookbook">
+      <Link className={styles.actionLink} to="/cookbook">
         <BackArrowIcon className={styles.actionIcon} />
         Back to Cookbook
       </Link>
