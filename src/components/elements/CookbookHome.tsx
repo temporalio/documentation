@@ -2,6 +2,15 @@ import React from 'react';
 import Tile from '@site/src/components/elements/Tile';
 import {useDocsData, useDocById} from '@docusaurus/plugin-content-docs/client';
 import styles from './CookbookHome.module.css';
+import useGlobalData, {usePluginData} from '@docusaurus/useGlobalData';
+
+type CookbookItem = {
+  id: string;
+  title: string;
+  description: string;
+  tags: string[];
+  permalink: string;
+};
 
 function DocTile({id}: {id: string}) {
   // Try bare id first; fall back to namespaced in case this renders outside the plugin context
@@ -37,20 +46,30 @@ function DocTile({id}: {id: string}) {
 }
 
 export default function CookbookHome() {
-  const {versions} = useDocsData('cookbook');
-  const docsList: any[] = Object.values((versions?.[0]?.docs ?? {}) as Record<string, unknown>);
-  const ids = docsList
-    .map((doc: any) => doc?.id)
-    .filter((id: string | undefined): id is string => Boolean(id) && id !== 'cookbook');
+  const global = useGlobalData();
+  console.log('[CookbookHome] plugins:', Object.keys(global?.plugins ?? {})); // should include 'cookbook-index'
 
-  if (ids.length === 0) {
-    throw new Error('CookbookHome: found 0 docs in the cookbook plugin (besides index).');
+  const dataAny = usePluginData('cookbook-index') as any;
+
+
+  const raw = (dataAny?.items ?? []) as (CookbookItem | null | undefined)[];
+  raw.forEach((x, i) => {
+  if (!x || typeof (x as any).title !== 'string') {
+    console.warn('[CookbookHome] invalid item at index', i, x);
+  }
+});
+
+  const items: CookbookItem[] = raw
+    .filter((x): x is CookbookItem => !!x && typeof x === 'object' && typeof (x as any).title === 'string');
+
+
+  if (items.length === 0) {
+    throw new Error('CookbookHome: no items found by cookbook-index plugin (check server logs for [cookbook-index]).');
   }
 
-  return (
+   return (
     <section className={styles.page}>
       <div className={styles.inner}>
-        {/* Hero header */}
         <header className={styles.hero} aria-label="Cookbook overview">
           <p className={styles.eyebrow}>Cookbook</p>
           <h1 className={styles.heroTitle}>Practical AI recipes for Temporal</h1>
@@ -59,12 +78,15 @@ export default function CookbookHome() {
             covering prompts, tools, retries, and production‑ready workflows. Dive in below.
           </p>
         </header>
-
-        {/* 3-up grid */}
         <div className={styles.grid}>
-          {ids.map((id) => (
-            <div key={id} className={styles.cell}>
-              <DocTile id={id} />
+          {items.map((it) => (
+            <div key={it.id} className={styles.cell}>
+              <Tile
+                title={it.title}
+                description={it.description}
+                href={it.permalink}
+                tags={it.tags}
+              />
             </div>
           ))}
         </div>

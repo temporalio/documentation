@@ -330,7 +330,7 @@ module.exports = async function createConfigAsync() {
           modalTitle: "Feedback",
         },
       ],
-          [
+      [
         '@docusaurus/plugin-content-docs',
         {
           id: 'cookbook',
@@ -342,6 +342,12 @@ module.exports = async function createConfigAsync() {
           showLastUpdateTime: true,
           // use a custom item to center the content:
           docItemComponent: '@site/src/components/CookbookDocItem',
+        },
+      ],
+      [
+        require.resolve('./plugins/cookbook-index'), {
+          docsDir: 'cookbook',      // change if your folder differs
+          routeBasePath: 'cookbook',     // change if you use a different base
         },
       ],
       [

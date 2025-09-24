@@ -23,6 +23,7 @@ return (
 <Container
 {...containerProps}
 className={clsx('card', styles.tile, className)}
+data-tags={tags.join(',')}
 aria-label={href ? title : undefined}
 >
 <div className={clsx('card__header', styles.header)}>

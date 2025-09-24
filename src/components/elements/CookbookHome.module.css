@@ -41,10 +41,10 @@
 }
 
 .inner {
-  width: 100%;
-  max-width: 1440px;
+  width: min(100%, 1440px);
   margin: 0 auto;
-  padding: var(--ifm-spacing-xl) var(--ifm-spacing-horizontal);
+  padding: var(--ifm-spacing-xl, var(--cbk-space-xl, 32px))
+           var(--ifm-spacing-horizontal, var(--cbk-space-md, 16px));
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -54,8 +54,8 @@
 /* Hero */
 .hero {
   text-align: center;
-  width: min(100%, 960px);
-  margin-bottom: var(--ifm-spacing-xl);
+  margin: 0 auto var(--ifm-spacing-xl, var(--cbk-space-xl, 32px));
+  max-width: 820px;
 }
 
 .eyebrow {
@@ -81,7 +81,7 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: calc(var(--ifm-spacing-lg) * 1.5);
+  gap: var(--ifm-spacing-lg, var(--cbk-space-lg, 24px));
   width: 100%;
 }
 
