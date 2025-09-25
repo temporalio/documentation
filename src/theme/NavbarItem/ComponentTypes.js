@@ -1,7 +1,7 @@
 import ComponentTypes from '@theme-original/NavbarItem/ComponentTypes';
-import AskAINavbarItem from '@site/src/components/AskAINavbarItem';
+import AskAiNavbarItem from '@site/src/components/AskAiNavbarItem';
 
 export default {
   ...ComponentTypes,
-  'custom-askAI': AskAINavbarItem,
+  'custom-askAI': AskAiNavbarItem,
 }; 
