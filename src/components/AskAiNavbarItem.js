@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function AskAINavbarItem() {
+export default function AskAiNavbarItem() {
   const handleAskAI = () => {
     if (typeof window !== 'undefined') {
       // Try global Kapa functions
