@@ -67,7 +67,7 @@ rollout:
     workflowType: "HelloWorld"
 ```
 
-As you ship new deployment versions, the Worker Controller automatically detects them and gradually makthat version the new **Current Version** of the worker deployment it is a part of.
+As you ship new deployment versions, the Worker Controller automatically detects them and gradually makes that version the new **Current Version** of the worker deployment it is a part of.
 As older pinned workflows finish executing and deprecated deployment versions become drained, the worker controller also frees up resources by sunsetting the `Deployment` resources polling those versions.
 
 ## Running the Temporal Worker Controller
