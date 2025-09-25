@@ -108,7 +108,7 @@ Prometheus is an open-source toolkit for alerting and monitoring.
 The Temporal Service exposes Cloud metrics with a [Prometheus HTTP API endpoint](https://prometheus.io/docs/prometheus/latest/querying/api/).
 Temporal Cloud metrics provide a compatible data source for visualizing, monitoring, and observability platforms like Grafana and Datadog.
 
-You can use functions like `rate` or `increase` to calculate the rate of increase for a Temporal Cloud metric:
+You can use functions like [rate](https://prometheus.io/docs/prometheus/latest/querying/functions/#rate) or [increase](https://prometheus.io/docs/prometheus/latest/querying/functions/#increase) to calculate the rate of increase for a Temporal Cloud metric:
 
 ```
 rate(temporal_cloud_v0_frontend_service_request_count[$__rate_interval])
