@@ -247,6 +247,9 @@ module.exports = async function createConfigAsync() {
             remarkPlugins: [(await import('remark-math')).default],
             rehypePlugins: [(await import('rehype-katex')).default],
           },
+          theme: {
+            customCss: require.resolve('./src/css/custom.css'),
+          },
           // Will be passed to @docusaurus/plugin-content-blog
           // options: https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-blog
           // blog: {},
