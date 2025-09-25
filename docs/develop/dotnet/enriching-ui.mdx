@@ -2,11 +2,11 @@
 id: enriching-ui
 title: Enriching the User Interface - .NET SDK
 sidebar_label: Enriching the UI
-description: Learn how to add contextual information to workflows and events in the Temporal UI using the .NET SDK.
+description: Learn how to add contextual information to Workflows and events in the Temporal UI using the .NET SDK.
 toc_max_heading_level: 3
 keywords:
   - ui enrichment
-  - workflow context
+  - Workflow context
   - static summary
   - static details
   - activity summary
@@ -24,7 +24,7 @@ This helps users identify and understand Workflows and their operations.
 
 ### Starting a Workflow
 
-When starting a workflow, you can provide a static summary and details to help identify the workflow in the UI:
+When starting a Workflow, you can provide a static summary and details to help identify the Workflow in the UI:
 
 ```csharp
 using Temporalio.Client;
@@ -32,20 +32,20 @@ using Temporalio.Client;
 // Create client
 var client = await TemporalClient.ConnectAsync(new("localhost:7233"));
 
-// Start a workflow with static summary and details
+// Start a Workflow with static summary and details
 var handle = await client.StartWorkflowAsync(
-    (YourWorkflow wf) => wf.RunAsync("workflow input"),
+    (YourWorkflow wf) => wf.RunAsync("Workflow input"),
     new WorkflowOptions
     {
-        Id = "your-workflow-id",
+        Id = "your-Workflow-id",
         TaskQueue = "your-task-queue",
         StaticSummary = "Order processing for customer #12345",
         StaticDetails = "Processing premium order with expedited shipping"
     });
 ```
 
-`StaticSummary` is a single-line description that appears in the workflow list view, limited to 200 bytes.
-`StaticDetails` can be multi-line and provides more comprehensive information that appears in the workflow details view, with a larger limit of 20K bytes.
+`StaticSummary` is a single-line description that appears in the Workflow list view, limited to 200 bytes.
+`StaticDetails` can be multi-line and provides more comprehensive information that appears in the Workflow details view, with a larger limit of 20K bytes.
 
 The input format is standard Markdown excluding images, HTML, and scripts.
 
@@ -53,10 +53,10 @@ You can also use the `ExecuteWorkflowAsync` method with the same parameters:
 
 ```csharp
 var result = await client.ExecuteWorkflowAsync(
-    (YourWorkflow wf) => wf.RunAsync("workflow input"),
+    (YourWorkflow wf) => wf.RunAsync("Workflow input"),
     new WorkflowOptions
     {
-        Id = "your-workflow-id",
+        Id = "your-Workflow-id",
         TaskQueue = "your-task-queue",
         StaticSummary = "Order processing for customer #12345",
         StaticDetails = "Processing premium order with expedited shipping"
@@ -65,7 +65,7 @@ var result = await client.ExecuteWorkflowAsync(
 
 ### Inside the Workflow
 
-Within a Workflow, you can get and set the _current workflow details_. 
+Within a Workflow, you can get and set the _current Workflow details_. 
 Unlike static summary/details set at Workflow start, this value can be updated throughout the life of the Workflow. 
 Current Workflow details also takes Markdown format (excluding images, HTML, and scripts) and can span multiple lines.
 
@@ -83,7 +83,7 @@ public class YourWorkflow
         Workflow.Logger.LogInformation($"Current details: {currentDetails}");
         
         // Set/update the current details
-        Workflow.CurrentDetails = "Updated workflow details with new status";
+        Workflow.CurrentDetails = "Updated Workflow details with new status";
         
         return "Workflow completed";
     }
@@ -144,23 +144,21 @@ The input format for `Summary` is a string, and limited to 200 bytes.
 
 ## Viewing Summary and Details in the UI
 
-Once you've added summaries and details to your workflows, activities, and timers, you can view this enriched information in the Temporal Web UI. Navigate to your workflow's details page to see the metadata displayed in two key locations:
+Once you've added summaries and details to your Workflows, Activities, and timers, you can view this enriched information in the Temporal Web UI. 
+Navigate to your Workflow's details page to see the metadata displayed in two key locations:
 
 ### Workflow Overview Section
 
-At the top of the workflow details page, you'll find the workflow-level metadata:
+At the top of the Workflow details page, you'll find the Workflow-level metadata:
 
-- **Summary & Details** - Displays the static summary and static details set when starting the workflow
-- **Current Details** - Displays the dynamic details that can be updated during workflow execution
+- **Summary & Details** - Displays the static summary and static details set when starting the Workflow
+- **Current Details** - Displays the dynamic details that can be updated during Workflow execution
 
-![Summary and details on the Workflow Details page](/static/img/webui/workflow-summary-and-details.png)
-
-All workflow details support standard Markdown formatting (excluding images, HTML, and scripts), allowing you to create rich, structured information displays.
+All Workflow details support standard Markdown formatting (excluding images, HTML, and scripts), allowing you to create rich, structured information displays.
 
 ### Event History
 
-Individual events in the workflow's event history display their associated summaries when available:
+Individual events in the Workflow's Event History display their associated summaries when available.
 
-![Event history displaying summaries attached to events](/static/img/webui/event-history-summaries.png)
-
-Workflow, activity and timer summaries appear in purple text next to their corresponding events, providing immediate context without requiring you to expand the event details. When you do expand an event, the summary is also prominently displayed in the detailed view.
+Workflow, Activity and Timer summaries appear in purple text next to their corresponding events, providing immediate context without requiring you to expand the Event details. 
+When you do expand an Event, the summary is also prominently displayed in the detailed view.
