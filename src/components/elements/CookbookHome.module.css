@@ -38,6 +38,14 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  --cookbook-tile-border-color: rgba(15, 23, 42, 0.08);
+  --cookbook-tile-shadow: 0 0 1rem 0.5rem rgba(139, 143, 150, 0.2);
+}
+
+
+:global([data-theme='dark']) .page {
+  --cookbook-tile-border-color: rgba(226, 232, 240, 0.5);
+  --cookbook-tile-shadow: 0 0 1rem 0.5rem rgba(142, 145, 153, 0.78);
 }
 
 .inner {
