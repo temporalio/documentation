@@ -1,6 +1,6 @@
 extends: existence
 message: Reconsider using '%s', it may be profane.
-level: warning
+level: suggestion
 ignorecase: true
 tokens:
   - abbo

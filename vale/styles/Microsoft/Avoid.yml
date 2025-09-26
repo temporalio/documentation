@@ -3,7 +3,7 @@ message: "Don't use '%s'. See the A-Z word list for details."
 # See the A-Z word list
 link: https://docs.microsoft.com/en-us/style-guide
 ignorecase: true
-level: error
+level: suggestion
 tokens:
   - abortion
   - and so on

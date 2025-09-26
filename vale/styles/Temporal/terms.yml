@@ -115,7 +115,6 @@ swap:
   workflow id: Workflow Id
   workflow id reuse policy: Workflow Id Reuse Policy
   workflow ids: Workflow Ids
-  workflow id reuse policy: Workflow Id Reuse Policy
   workflow run timeout: Workflow Run Timeout
   workflow task: Workflow Task
   workflow tasks: Workflow Tasks
