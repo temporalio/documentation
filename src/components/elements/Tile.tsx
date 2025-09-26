@@ -19,7 +19,7 @@ export default function Tile({ title, description, tags = [], href, icon, classN
   return (
     <Container
       {...(containerProps as any)}
-      className={clsx('card', styles.tile, className)}
+      className={clsx('tile', styles.tile, className)}
       data-tags={tags.join(',')}
       data-clickable={isLink ? 'true' : undefined}
       aria-label={href ? title : undefined}
@@ -38,7 +38,7 @@ export default function Tile({ title, description, tags = [], href, icon, classN
           <ul className={styles.tags} aria-label="labels">
             {tags.map((t) => (
               <li key={t} className={clsx('badge badge--secondary', styles.tag)}>
-                {t}
+                {t.toUpperCase()}
               </li>
             ))}
           </ul>

@@ -59,7 +59,7 @@
 }
 
 .eyebrow {
-  margin: 0 0 var(--ifm-spacing-xs) 0;
+  margin: var(--ifm-spacing-lg) 0;
   font-size: 0.8rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
