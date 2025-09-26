@@ -539,7 +539,7 @@ If ignored, the operation may enter a terminal state.
 When a Nexus operation is started the caller can specify different cancellation types that will control how the caller reacts to cancellation:
 
 - `ABANDON` - Do not request cancellation of the operation.
-- `TRY_CANCEL` - Initiate a cancellation request and immediately report cancellation to the caller. Note that it doesn't guarantee that cancellation is delivered to the operation handler if the caller exits before the delivery is done.
+- `TRY_CANCEL` - Initiate a cancellation request and immediately report cancellation to the caller. Note that this type doesn't guarantee that cancellation is delivered to the operation handler if the caller exits before the delivery is done.
 - `WAIT_REQUESTED` ` Request cancellation of the operation and wait for confirmation that the request was received. Doesn't wait for actual cancellation.
 - `WAIT_COMPLETED` - Wait for operation completion. Operation may or may not complete as cancelled.
 
@@ -547,7 +547,7 @@ The default is `WAIT_COMPLETED`. Users can set a different option on the `NexusS
 
 Once the caller Workflow completes, the caller's Nexus Machinery stops attempting to cancel operations that have not yet been canceled, letting them run to completion.
 It's okay to leave operations running in some use cases.
-To ensure cancelations are delivered, wait for all pending operations to deliver their cancellation request before exiting the Workflow.
+To ensure cancelations are delivered, wait for all pending operations to deliver their cancellation requests before exiting the Workflow.
 
 See the [Nexus cancelation sample](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/nexuscancellation) for reference.
 
