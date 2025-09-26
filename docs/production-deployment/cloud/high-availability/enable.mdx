@@ -1,48 +1,34 @@
 ---
 id: enable
-title: How to enable replication
-sidebar_label: How to enable replication
+title: Enable High Availability
+sidebar_label: Enable High Availability
 slug: /cloud/high-availability/enable
-description: Temporal Cloud's High Availability Namespaces offer automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime.
-tags:
-  - Temporal Cloud
-  - Production
-  - High Availability
-keywords:
-  - availability
-  - explanation
-  - failover
-  - high-availability
-  - replication
-  - namespaces
-  - temporal-cloud
-  - term
+description: Get started with HA features
 ---
 
 import { ToolTipTerm } from '@site/src/components';
 
-You can enable High Availability (Single-region Replication, Multi-region Replication, Multi-cloud Replication) for a new or existing Namespace by adding a replica.
-When you add a replica, Temporal Cloud begins the replication of ongoing and existing Workflow Executions.
-Once the replication is complete and the replica is ready, your Namespace is ready for failover.
-
-## Enabling High Availability features
-
 :::tip Support, stability, and dependency info
 
-Same-region Replication and Multi-cloud Replication are in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for Temporal Cloud.
+Same-region Replication and Multi-cloud Replication are in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+
+Multi-cloud Replication is in [General Availability](/evaluate/development-production-features/release-stages#general-availability)
 
 :::
 
+You can enable High Availability features ([Single-region Replication](/cloud/high-availability#same-region-replication), [Multi-region Replication](/cloud/high-availability#multi-region-replication), or [Multi-cloud Replication](/cloud/high-availability#multi-cloud-replication)) for a new or existing Namespace by adding a replica.
+When you add a replica, Temporal Cloud begins asynchronously replicating ongoing and existing Workflow Executions.
+
 Not all replication options are available in all regions. See the [region documentation](/cloud/regions) for the replication options available in each region.
+
+Using private network connectivity with a HA namespace requires extra setup. See [Connectivity for HA](/cloud/high-availability/ha-connectivity).
 
 There are charges associated with Replication and enabling High Availability features.
 For pricing details, visit Temporal Cloud's [Pricing](/cloud/pricing) page.
-This page explains how to enable and manage these features.
 
 ## Create a Namespace with High Availability features {#create}
 
 To create a new Namespace with High Availability features, you can use the Temporal Cloud UI or the tcld command line utility.
-The following instructions explain how:
 
 <Tabs>
 
@@ -55,8 +41,6 @@ The following instructions explain how:
 
     The web interface will present an estimated time for replication to complete.
     This time is based on your selection and the size and scale of the Workflows in your Namespace.
-
-    Temporal Cloud sends an email alert to all Namespace Admins once your Namespace replica is ready for use.
 
 </TabItem>
 
@@ -82,12 +66,11 @@ If using API key authentication with the `--api-key` flag, you must add it direc
 
 </Tabs>
 
-## Upgrade an existing Namespace with High Availability functionality {#upgrade}
+Temporal Cloud sends an email alert to all Namespace Admins once your Namespace replica is ready for use.
 
-Upgrade an existing standard Namespace by adding High Availability features.
-Adding a replica unlocks that functionality.
+## Add High Availability to an existing Namespace {#upgrade}
 
-The following instructions explain how:
+A replica can be added after a namespace has already been created.
 
 <Tabs>
 
@@ -183,3 +166,4 @@ Your Namespace will no longer use High Availability features and you will no lon
 After removing a replica, Temporal Cloud can't re-enable replication for a given Namespace for seven days.
 
 :::
+

@@ -3,11 +3,12 @@ id: gcp-connectivity
 title: Google Private Service Connect Connectivity
 sidebar_label: GCP Private Connect
 slug: /cloud/connectivity/gcp-connectivity
-description: Temporal Cloud's High Availability Namespaces offer automated failover, synchronized data replication, and high availability for workloads requiring disaster-tolerant deployment and 99.99% uptime.
+description: Connect to Temporal Cloud using Google Private Services Connect
 tags:
-  - Temporal Cloud
+  - Connectivity
+  - GCP
   - Production
-  - High Availability
+  - Temporal Cloud
 keywords:
   - availability
   - explanation
@@ -80,7 +81,9 @@ Individual Namespaces do not use separate services.
 
 5. Click the **Add endpoint** button at the bottom of the screen.
 
-6. Once the status is "Accepted", the GCP Private Service Connect endpoint is ready for use.
+6. [Create a Temporal Cloud Connectivity Rule](/cloud/connectivity#creating-a-connectivity-rule) using the Connection ID of the newly created endpoint and the corresponding GCP Project.
+
+7. Once the status is "Accepted", the GCP Private Service Connect endpoint is ready for use.
    
   - Take note of the **IP address** that has been assigned to your endpoint, as it will be used to connect to Temporal Cloud.
 

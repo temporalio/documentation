@@ -3,6 +3,11 @@ module.exports = {
     "index",
     "quickstarts",
     {
+      type: "link",
+      label: "Courses and Tutorials",
+      href: "https://learn.temporal.io/",
+    },
+    {
       type: "category",
       label: "Evaluate",
       collapsed: false,
@@ -72,18 +77,11 @@ module.exports = {
             "evaluate/temporal-cloud/pricing",
             "evaluate/temporal-cloud/actions",
             "evaluate/temporal-cloud/support",
-            "evaluate/development-production-features/multi-region-namespace",
-            "evaluate/development-production-features/multi-cloud-namespace",
           ],
         },
         "security",
         "evaluate/use-cases-design-patterns",
       ],
-    },
-    {
-      type: "link",
-      label: "Get started",
-      href: "https://learn.temporal.io/getting_started/",
     },
     {
       type: "category",
@@ -115,6 +113,7 @@ module.exports = {
             "develop/go/asynchronous-activity-completion",
             "develop/go/versioning",
             "develop/go/observability",
+            "develop/go/enriching-ui",
             "develop/go/debugging",
             "develop/go/schedules",
             "develop/go/converters-and-encryption",
@@ -147,6 +146,7 @@ module.exports = {
             "develop/java/asynchronous-activity-completion",
             "develop/java/versioning",
             "develop/java/observability",
+            "develop/java/enriching-ui",
             "develop/java/debugging",
             "develop/java/schedules",
             "develop/java/converters-and-encryption",
@@ -176,6 +176,7 @@ module.exports = {
             "develop/php/asynchronous-activity-completion",
             "develop/php/versioning",
             "develop/php/observability",
+            "develop/php/enriching-ui",
             "develop/php/debugging",
             "develop/php/schedules",
             "develop/php/timers",
@@ -236,6 +237,7 @@ module.exports = {
             "develop/typescript/asynchronous-activity-completion",
             "develop/typescript/versioning",
             "develop/typescript/observability",
+            "develop/typescript/enriching-ui",
             "develop/typescript/debugging",
             "develop/typescript/schedules",
             "develop/typescript/converters-and-encryption",
@@ -265,6 +267,7 @@ module.exports = {
             "develop/dotnet/asynchronous-activity",
             "develop/dotnet/versioning",
             "develop/dotnet/observability",
+            "develop/dotnet/enriching-ui",
             "develop/dotnet/debugging",
             "develop/dotnet/schedules",
             "develop/dotnet/converters-and-encryption",
@@ -292,6 +295,7 @@ module.exports = {
             "develop/ruby/asynchronous-activity",
             "develop/ruby/versioning",
             "develop/ruby/observability",
+            "develop/ruby/enriching-ui",
             "develop/ruby/debugging",
             "develop/ruby/schedules",
             "develop/ruby/converters-and-encryption",
@@ -358,36 +362,6 @@ module.exports = {
             },
             {
               type: "category",
-              label: "High Availability",
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "production-deployment/cloud/high-availability/index",
-              },
-              items: [
-                "production-deployment/cloud/high-availability/how-it-works",
-                "production-deployment/cloud/high-availability/enable",
-                "production-deployment/cloud/high-availability/monitor",
-                {
-                  type: "category",
-                  label: "How-to guides",
-                  collapsed: true,
-                  link: {
-                    type: "doc",
-                    id: "production-deployment/cloud/high-availability/how-to/index",
-                  },
-                  items: [
-                    "production-deployment/cloud/high-availability/how-to/api-authentication",
-                    "production-deployment/cloud/high-availability/how-to/failovers",
-                    "production-deployment/cloud/high-availability/how-to/secure-routing",
-                    "production-deployment/cloud/high-availability/how-to/private-link",
-                    "production-deployment/cloud/high-availability/how-to/migrate",
-                  ],
-                },
-              ],
-            },
-            {
-              type: "category",
               label: "Connectivity",
               collapsed: true,
               link: {
@@ -397,6 +371,22 @@ module.exports = {
               items: [
                 "production-deployment/cloud/connectivity/aws-connectivity",
                 "production-deployment/cloud/connectivity/gcp-connectivity",
+                "production-deployment/cloud/connectivity/ip-addresses",
+              ],
+            },
+            {
+              type: "category",
+              label: "High Availability",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "production-deployment/cloud/high-availability/index",
+              },
+              items: [
+                "production-deployment/cloud/high-availability/enable",
+                "production-deployment/cloud/high-availability/monitoring",
+                "production-deployment/cloud/high-availability/failovers",
+                "production-deployment/cloud/high-availability/ha-connectivity",
               ],
             },
             "production-deployment/cloud/rpo-rto",
@@ -470,10 +460,23 @@ module.exports = {
                 "production-deployment/cloud/tcld/version",
               ],
             },
+            {
+              type: "category",
+              label: "Migrate",
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "production-deployment/cloud/migrate/index",
+              },
+              items: [
+                "production-deployment/cloud/migrate/automated",
+                "production-deployment/cloud/migrate/manual",
+                "production-deployment/cloud/migrate/migrate-within-cloud"
+              ],
+            },
           ],
         },
         "production-deployment/data-encryption",
-        "production-deployment/migration",
         {
           type: "category",
           label: "Self-host",
