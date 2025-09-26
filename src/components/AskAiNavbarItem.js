@@ -13,35 +13,6 @@ export default function AskAiNavbarItem() {
         window.Kapa.open();
         return;
       }
-      
-      // Try to trigger the existing widget button
-      const kapaButton = document.querySelector('#kapa-widget-container button');
-      if (kapaButton) {
-        kapaButton.click();
-        return;
-      }
-      
-      // Look for any Kapa-related buttons
-      const kapaElements = document.querySelectorAll('[class*="kapa"], [id*="kapa"]');
-      for (const element of kapaElements) {
-        if (element.tagName === 'BUTTON' || element.querySelector('button')) {
-          const button = element.tagName === 'BUTTON' ? element : element.querySelector('button');
-          button.click();
-          return;
-        }
-      }
-      
-      // Try to find any fixed-position button (likely the widget)
-      const allButtons = document.querySelectorAll('button');
-      for (const button of allButtons) {
-        const style = window.getComputedStyle(button);
-        if (style.position === 'fixed' && 
-            button.offsetParent !== null && 
-            !button.classList.contains('ask-ai-navbar-button')) {
-          button.click();
-          return;
-        }
-      }
     }
   };
 
