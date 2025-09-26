@@ -48,6 +48,7 @@ using Temporalio.Workflows;
 [Workflow]
 public class MyWorkflow
 {
+    [WorkflowRun]
     public async Task<string> RunAsync(string name)
     {
         var param = MyActivityParams("Hello", name);

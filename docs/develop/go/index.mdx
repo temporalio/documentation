@@ -20,6 +20,7 @@ Build Temporal Applications with the Go SDK.
 
 **Temporal Go Technical Resources:**
 
+- [Go SDK Quickstart - Setup Guide](https://docs.temporal.io/develop/go/set-up-your-local-go)
 - [Go API Documentation](https://pkg.go.dev/go.temporal.io/sdk)
 - [Go SDK Code Samples](https://github.com/temporalio/samples-go)
 - [Go SDK GitHub](https://github.com/temporalio/sdk-go)
@@ -41,14 +42,14 @@ Use the essential components of a Temporal Application (Workflows, Activities, a
 - [How to develop a Worker in Go](/develop/go/core-application#develop-worker)
 - [How to run a Temporal Cloud Worker](/develop/go/core-application#run-a-temporal-cloud-worker)
 
-## [Temporal Client](/develop/go/temporal-clients)
+## [Temporal Client](/develop/go/temporal-client)
 
 Connect to a Temporal Service and start a Workflow Execution.
 
-- [Connect to development Temporal Service](/develop/go/temporal-clients#connect-to-development-service)
-- [Connect to Temporal Cloud](/develop/go/temporal-clients#connect-to-temporal-cloud)
-- [Start Workflow Execution](/develop/go/temporal-clients#start-workflow-execution)
-- [How to start a Workflow Execution](/develop/go/temporal-clients#start-workflow-execution)
+- [Connect to development Temporal Service](/develop/go/temporal-client#connect-to-development-service)
+- [Connect to Temporal Cloud](/develop/go/temporal-client#connect-to-temporal-cloud)
+- [Start Workflow Execution](/develop/go/temporal-client#start-workflow-execution)
+- [How to start a Workflow Execution](/develop/go/temporal-client#start-workflow-execution)
 
 ## [Multithreading](/develop/go/go-sdk-multithreading)
 
@@ -98,9 +99,8 @@ Complete Activities asynchronously.
 
 Change Workflow Definitions without causing non-deterministic behavior in running Workflows.
 
-- [Temporal Go SDK Patching APIs](/develop/go/versioning#patching)
-- [Sanity checking](/develop/go/versioning#sanity-checking)
-- [How to use Worker Versioning in Go](/develop/go/versioning#worker-versioning)
+- [Temporal Go SDK Versioning APIs](/develop/go/versioning#patching)
+- [Runtime checking](/develop/go/versioning#runtime-checking)
 
 ## [Observability](/develop/go/observability)
 
@@ -176,6 +176,12 @@ Use Worker Session APIs.
 Use Side Effects in Workflows.
 
 - [Side Effects](/develop/go/side-effects)
+
+## [Enriching the User Interface](/develop/go/enriching-ui)
+
+Add descriptive information to workflows and events for better visibility and context in the UI.
+
+- [Adding Summary and Details to Workflows](/develop/go/enriching-ui#adding-summary-and-details-to-workflows)
 
 ## [Manage Namespaces](/develop/go/namespaces)
 

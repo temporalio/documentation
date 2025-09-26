@@ -2,7 +2,7 @@
 id: api-keys
 title: Manage API keys
 sidebar_label: Manage API keys
-description: Temporal Cloud supports secure programmatic access through API key authentication, ensuring user-level and RBAC-based authorization. Manage your API keys via Cloud UI or CLI.
+description: Temporal Cloud supports secure programmatic access through API key authentication, ensuring user-level and RBAC-based authorization.
 slug: /cloud/api-keys
 toc_max_heading_level: 4
 keywords:
@@ -79,8 +79,9 @@ Use API keys to authenticate with:
 API keys support both users and Service Accounts.
 Here are the differences in their permissions:
 
-- Any user can create, delete, and update their own API key access using the Cloud UI or `tcld`.
-- Only Global Administrators and Account Owners can create, delete, and update access to API keys for Service Accounts.
+- Any user can create, delete, and update their *own* API key using the Cloud UI or `tcld`.
+- Only Global Administrators and Account Owners can create, delete, and update access to API keys for all types of Service Accounts.
+- Namespace Admins can create, delete, and update access to API keys for the Namespace Scoped Service Accounts they administer.
 
 ### API key prerequisites
 
@@ -218,8 +219,10 @@ Follow these steps to rotate API keys:
 
 ## Manage API keys for Service Accounts {#serviceaccount-api-keys}
 
-Global Administrators and Account Owners can manage API keys for all Service Accounts in their account and generate API keys for Service Accounts.
-This is different for users, who generate their own API keys.
+Global Administrators and Account Owners can manage and generate API keys for *all* Service Accounts in their account.
+Namespace Admins can manage and generate API keys for the Namespace Scoped Service Accounts they administer.
+
+This is different for non-admin users, who manage and generate their own API keys.
 
 ### Generate an API Key for a Service Account
 
@@ -243,6 +246,13 @@ In the "Mapped to identity" input box, select a Service account and provide the 
 - **Expiration date**: The end date for the API key
 
 Finish by selecting **Generate API key**.
+
+:::info
+
+This view currently is limited to Global Administrators and Account Owners.
+Namespace Admins can generate an API key for a scoped Service Account using `tcld` or by following the steps [here](/cloud/service-accounts#scoped-ui).
+
+:::
 
 #### Generate API keys with tcld
 
@@ -368,8 +378,6 @@ In addition to the API key, the following client options are required:
 - `--namespace`: Provide the `namespace.accountId` from the top of the Namespace page in the UI.
   - Use the format `<namespace_id>.<account_id>`.
   - This can be set using an environment variable.
-- `--tls`: Use for a secure connection with the appropriate options.
-  - This can be set using an environment variable.
 
 For example, to connect to Temporal Cloud from the CLI using an environment variable for the API key:
 
@@ -377,8 +385,7 @@ For example, to connect to Temporal Cloud from the CLI using an environment vari
 export TEMPORAL_API_KEY=<key-secret>
 temporal workflow list \
     --address <endpoint> \
-    --namespace <namespace_id>.<account_id> \
-    --tls
+    --namespace <namespace_id>.<account_id>
 ```
 
 :::tip ENVIRONMENT VARIABLES
@@ -391,13 +398,13 @@ Do not confuse environment variables, set with your shell, with temporal env opt
 
 To use your API key with a Temporal SDK, see the instructions in each SDK section.
 
-[How to connect to Temporal Cloud using an API Key with the Go SDK](/develop/go/temporal-clients#connect-to-temporal-cloud-api-key)
+[How to connect to Temporal Cloud using an API Key with the Go SDK](/develop/go/temporal-client#connect-to-temporal-cloud-api-key)
 
-[How to connect to Temporal Cloud using an API Key with the Java SDK](/develop/java/temporal-clients#connect-to-temporal-cloud-api-key)
+[How to connect to Temporal Cloud using an API Key with the Java SDK](/develop/java/temporal-client#connect-to-temporal-cloud-api-key)
 
-[How to connect to Temporal Cloud using an API Key with the Python SDK](/develop/python/temporal-clients#connect-to-temporal-cloud-api-key)
+[How to connect to Temporal Cloud using an API Key with the Python SDK](/develop/python/temporal-client#connect-to-temporal-cloud-api-key)
 
-[How to connect to Temporal Cloud using an API Key with the TypeScript SDK](/develop/typescript/temporal-clients#connect-to-temporal-cloud-api-key)
+[How to connect to Temporal Cloud using an API Key with the TypeScript SDK](/develop/typescript/temporal-client#connect-to-temporal-cloud-api-key)
 
 [How to connect to Temporal Cloud using an API Key with the .NET SDK](/develop/dotnet/temporal-client#connect-to-temporal-cloud-api-key)
 

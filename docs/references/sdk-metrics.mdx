@@ -32,7 +32,7 @@ The Temporal SDKs emit a set of metrics from Temporal Client usage and Worker Pr
 - [How to emit metrics using the Python SDK](/develop/python/observability#metrics)
 - [How to emit metrics using the TypeScript SDK](/develop/typescript/observability#metrics)
 - [How to emit metrics using the .NET SDK](/develop/dotnet/observability#metrics)
-
+- [How to emit metrics using the Ruby SDK](/develop/ruby/observability#metrics)
 - [How to tune Worker performance based on metrics](/develop/worker-performance)
 
 All metrics are prefixed with `temporal_` before being exported to their configured destination.
@@ -127,11 +127,11 @@ Some keys may not be available in every SDK, and Histogram metrics may have diff
 | [temporal_workflow_task_queue_poll_succeed](#workflow_task_queue_poll_succeed)                   | Worker         | Counter     | Core, Go, Java |
 | [temporal_workflow_task_replay_latency](#workflow_task_replay_latency)                           | Worker         | Histogram   | Core, Go, Java |
 | [temporal_workflow_task_schedule_to_start_latency](#workflow_task_schedule_to_start_latency)     | Worker         | Histogram   | Core, Go, Java |
-| [temporal_nexus_poll_no_task](#nexus_poll_no_task)                                               | Worker         | Counter     | Go, Java       |
-| [temporal_nexus_task_schedule_to_start_latency](#nexus_task_schedule_to_start_latency)           | Worker         | Histogram   | Go, Java       |
-| [temporal_nexus_task_execution_failed](#nexus_task_execution_failed)                             | Worker         | Counter     | Go, Java       |
-| [temporal_nexus_task_execution_latency](#nexus_task_execution_latency)                           | Worker         | Histogram   | Go, Java       |
-| [temporal_nexus_task_endtoend_latency](#nexus_task_endtoend_latency)                             | Worker         | Histogram   | Go, Java       |
+| [temporal_nexus_poll_no_task](#nexus_poll_no_task)                                               | Worker         | Counter     | Core, Go, Java |
+| [temporal_nexus_task_schedule_to_start_latency](#nexus_task_schedule_to_start_latency)           | Worker         | Histogram   | Core, Go, Java |
+| [temporal_nexus_task_execution_failed](#nexus_task_execution_failed)                             | Worker         | Counter     | Core, Go, Java |
+| [temporal_nexus_task_execution_latency](#nexus_task_execution_latency)                           | Worker         | Histogram   | Core, Go, Java |
+| [temporal_nexus_task_endtoend_latency](#nexus_task_endtoend_latency)                             | Worker         | Histogram   | Core, Go, Java |
 
 ### activity_execution_cancelled
 
@@ -273,7 +273,7 @@ Latency of a Temporal Client gRPC long poll request.
 Current number of Worker Entities that are polling.
 
 - Type: Gauge
-- Available in: Core, Go
+- Available in: Core, Go, Java
 - Tags: `namespace`, `poller_type`, `task_queue`
 
 ### poller_start

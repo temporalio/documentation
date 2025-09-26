@@ -115,8 +115,7 @@ module.exports = async function createConfigAsync() {
           href: "https://temporal.io",
           width: 24,
         },
-        copyright: `Copyright © ${new Date().getFullYear()}</span> Temporal Technologies Inc.</div><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TSXFPF2"
-        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>`,
+        copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.`,
         links: [
           {
             items: [
@@ -330,7 +329,59 @@ module.exports = async function createConfigAsync() {
           modalTitle: "Feedback",
         },
       ],
+      [
+        "docusaurus-plugin-llms",
+        {
+          // Generate both llms.txt (index) and llms-full.txt (complete content)
+          generateLLMsTxt: true,
+          generateLLMsFullTxt: true,
+          
+          // Clean up content for better LLM consumption
+          excludeImports: true,
+          removeDuplicateHeadings: true,
+          
+          // Organize content in a logical order for LLMs
+          includeOrder: [
+            "quickstarts/**",
+            "evaluate/**", 
+            "develop/**",
+            "production-deployment/**",
+            "cli/**",
+            "references/**",
+            "troubleshooting/**",
+            "encyclopedia/**",
+            "security*",
+            "web-ui*",
+            "glossary*",
+          ],
+          
+          // Path transformation to clean URLs
+          pathTransformation: {
+            ignorePaths: ["docs"]
+          },
+          
+          // Custom LLM files for specific use cases
+          customLLMFiles: [
+            {
+              filename: "llms-quickstart.txt",
+              includePatterns: ["quickstarts/**", "develop/**/set-up-*"],
+              fullContent: true,
+              title: "Temporal Quickstart Guide"
+            },
+            {
+              filename: "llms-api-reference.txt", 
+              includePatterns: ["references/**", "cli/**"],
+              fullContent: true,
+              title: "Temporal API and CLI Reference"
+            }
+          ]
+        },
+      ],
     ],
+    future: {
+      v4: true,
+      experimental_faster: true,
+    },
   };
 
   function convertIndent4ToIndent2(code) {

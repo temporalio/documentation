@@ -67,7 +67,7 @@ You can find the Namespace and Account ID, as well as the endpoint, on the Names
 
 ![The Namespace and Account ID combination on the left, and the regional endpoint on the right](/img/cloud/apikeys/namespaces-and-regional-endpoints.png)
 
-Now, when instantiating a Temporal `client in your .NET SDK code, provide the`Namespace`and`ApiKey` values.
+Now, when instantiating a Temporal client in your .NET SDK code, provide the `Namespace` and `ApiKey` values.
 
 To create an initial connection:
 
@@ -157,6 +157,6 @@ If the Workflow does not exist, this call fails.
 
 ```csharp
 var handle = client.GetWorkflowHandle("my-workflow-id");
-var result = await client.GetResultAsync<string>();
+var result = await handle.GetResultAsync<string>();
 Console.WriteLine("Result: {0}", result);
 ```

@@ -1,0 +1,50 @@
+---
+id: debugging
+title: Debugging - Ruby SDK
+sidebar_label: Debugging
+description: Learn how to debug Workflows in development and production environments using Temporal Ruby SDK. Utilize logging, debugger, CLI, replay, tracing, and more.
+toc_max_heading_level: 4
+keywords:
+  - sdk
+  - ruby
+  - debugging
+tags:
+  - Ruby SDK
+  - Temporal SDKs
+  - Debugging
+  - Errors
+---
+
+## Debugging {#debug}
+
+This page shows how to do the following:
+
+- [Debug in a development environment](#debug-in-a-development-environment)
+- [Debug in a development production](#debug-in-a-development-environment)
+
+## Debug in a development environment {#debug-in-a-development-environment}
+
+In developing Workflows, you can use the normal development tools of logging and a debugger to see what’s happening in your Workflow.
+
+In addition to the normal development tools of logging and a debugger, you can also see what’s happening in your Workflow by using the [Web UI](/web-ui) or [Temporal CLI](/cli).
+The Web UI provides insight into your Workflows, making it easier to identify issues and monitor the state of your Workflows in real time.
+
+## Debug in a production environment {#debug-in-a-production-environment}
+
+For production Workflows, debugging options include:
+
+- [Web UI](/web-ui)
+- [Temporal CLI](/cli)
+- [Replay](/develop/ruby/testing-suite#replay-test)
+- [Tracing](/develop/ruby/observability#tracing)
+- [Logging](/develop/ruby/observability#logging)
+
+You can analyze Worker performance using:
+
+- [Metrics](/develop/ruby/observability#metrics)
+- [Worker performance guide](/develop/worker-performance)
+
+To monitor Server performance:
+
+- Use [Cloud metrics](/cloud/metrics/) if you're on Temporal Cloud
+- Or [self-hosted Server metrics](/self-hosted-guide/production-checklist#scaling-and-metrics) if running your own deployment

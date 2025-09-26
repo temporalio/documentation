@@ -176,7 +176,7 @@ The following Workflow API calls all can produce Commands, and thus must not be 
 - Signalling or cancelling signals to external Workflow Executions
 - Scheduling or cancelling Nexus operations
 - Ending the Workflow Execution in any way (completing, failing, cancelling, or continuing-as-new)
-- `Patched` or `GetVersion` calls for Versioning (although they may be added or removed according to the [patching](#patching) rules)
+- `Patched` or `GetVersion` calls for Versioning (although they may be added or removed according to the [patching](#workflow-patching) rules)
 - Upserting Workflow Search Attributes
 - Upserting Workflow Memos
 - Running a `SideEffect` or `MutableSideEffect`
@@ -258,28 +258,38 @@ When those APIs are used, the results are stored as part of the Event History, w
 
 In other words, all operations that do not purely mutate the Workflow Execution's state should occur through a Temporal SDK API.
 
-### Versioning Workflow code {#workflow-versioning}
+### Versioning Workflows {#workflow-versioning}
 
 The Temporal Platform requires that Workflow code (Workflow Definitions) be deterministic in nature.
 This requirement means that developers should consider how they plan to handle changes to Workflow code over time.
 
-A versioning strategy is even more important if your Workflow Executions live long enough that a Worker must be able to execute multiple versions of the same Workflow Type.
+A versioning strategy is even more important if your Workflow Executions live long enough to run on multiple versions of your Worker. Temporal Platform provides Workflow Versioning APIs.
 
-Apart from the ability to create new Task Queues for Workflow Types with the same name, the Temporal Platform provides Workflow Patching APIs and Worker Build Id–based versioning features.
+Temporal offers two Versioning strategies:
 
-#### Patching {#patching}
+- [Versioning with patching](#workflow-patching): make sure your code changes are compatible across versions of your Workflow.
+- [Worker Versioning](#worker-versioning): keep Workers tied to specific code revisions, so that old Workers can run old code paths and new Workers can run new code paths. (Note: If you were using this method experimentally prior to 2025, refer to the [Worker Versioning Legacy](/encyclopedia/worker-versioning-legacy) docs, but note that these are planned for deprecation.)
 
-Patching APIs enable the creation of logical branching inside a Workflow Definition based on a developer-specified version identifier.
-This feature is useful for Workflow Definition logic that needs to be updated but still has running Workflow Executions that depend on it.
+You can use either strategy, or a combination.
+
+#### Versioning with Patching {#workflow-patching}
+
+When keeping Workflows compatible, you should learn how to patch and ideally how to test your running Workflows will be safe to run on a new code version.
+
+To patch:
 
 - [How to patch Workflow code in Go](/develop/go/versioning#patching)
 - [How to patch Workflow code in Java](/develop/java/versioning#patching)
-- [How to patch Workflow code in Python](/develop/python/versioning#python-sdk-patching-api)
+- [How to patch Workflow code in Python](/develop/python/versioning#patching)
 - [How to patch Workflow code in PHP](/develop/php/versioning#php-sdk-patching-api)
 - [How to patch Workflow code in TypeScript](/develop/typescript/versioning#patching)
-- [How to patch Workflow code in .NET](/develop/dotnet/versioning#dotnet-sdk-patching-api)
+- [How to patch Workflow code in .NET](/develop/dotnet/versioning#patching)
 
-You can also use [Worker Versioning](/worker-versioning) instead of Patching.
+To test, see [Safe Deployments](/develop/safe-deployments.mdx).
+
+#### Worker Versioning {#worker-versioning}
+
+To learn more about Worker Versioning, see our [Worker Versioning](production-deployment/worker-deployments/worker-versioning) page.
 
 ### Handling unreliable Worker Processes {#unreliable-worker-processes}
 

@@ -647,7 +647,7 @@ See [Finishing handlers before the Workflow completes](/handling-messages#finish
 
 Normally, your Workflows constructor won't have any parameters.
 However, if you use the `#[WorkflowInit]` attribute on your constructor, you can give it the same [Workflow parameters](/develop/php/core-application#workflow-parameters) as your `#[WorkflowMethod]`.
-The SDK will then ensure that your constructor receives the Workflow input arguments that the [Client sent](/develop/php/temporal-clients#start-workflow-execution).
+The SDK will then ensure that your constructor receives the Workflow input arguments that the [Client sent](/develop/php/temporal-client#start-workflow-execution).
 The Workflow input arguments are also passed to your `#[WorkflowMethod]` method -- that always happens, whether or not you use the `#[WorkflowInit]` attribute.
 This is useful if you have message handlers that need access to Workflow input: see [Initializing the Workflow first](/sending-messages).
 
@@ -771,11 +771,11 @@ When sending a Signal, Update, or Query to a Workflow, your Client might encount
 
 - **The client can't contact the server**:
   You'll receive a [`ServiceClientException`](https://php.temporal.io/classes/Temporal-Exception-Client-ServiceClientException.html) in case of a server connection error.
-  [How to configure RPC Retry Policy](/develop/php/temporal-clients#configure-rpc-retry-policy)
+  [How to configure RPC Retry Policy](/develop/php/temporal-client#configure-rpc-retry-policy)
 
 - **RPC timout**:
   You'll receive a [`TimeoutException`](https://php.temporal.io/classes/Temporal-Exception-Client-TimeoutException.html) in case of an RPC timeout.
-  [How to configure RPC timeout](/develop/php/temporal-clients#configure-rpc-timeout)
+  [How to configure RPC timeout](/develop/php/temporal-client#configure-rpc-timeout)
 
 - **The workflow does not exist**:
   You'll receive a [`WorkflowNotFoundException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowNotFoundException.html) exception.
@@ -796,7 +796,7 @@ When working with Updates, you may encounter these errors:
 
 - **No Workflow Workers are polling the Task Queue**:
   Your request will be retried by the SDK Client indefinitely.
-  You can [configure RPC timeout](/develop/php/temporal-clients#configure-rpc-timeout) to impose a timeout.
+  You can [configure RPC timeout](/develop/php/temporal-client#configure-rpc-timeout) to impose a timeout.
   This raises a [`WorkflowUpdateRPCTimeoutOrCanceledException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowUpdateRPCTimeoutOrCanceledException.html).
 
 - **Update failed**: You'll receive a [`WorkflowUpdateException`](https://php.temporal.io/classes/Temporal-Exception-Client-WorkflowUpdateException.html) exception.

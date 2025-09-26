@@ -22,6 +22,9 @@ tags:
   - Temporal CLI
 ---
 
+{/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
+This file is generated from https://github.com/temporalio/cli/blob/main/temporalcli/commandsgen/commands.yml */}
+
 ## complete
 
 Complete an Activity, marking it as successfully finished. Specify the
@@ -50,6 +53,14 @@ Identity of the user submitting this request.
 
 Result `JSON` to return. Required.
 
+**--run-id**, **-r** _string_
+
+Run ID.
+
+**--workflow-id**, **-w** _string_
+
+Workflow ID. Required.
+
 **Global Flags:**
 
 **--address** _string_
@@ -59,6 +70,14 @@ Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -80,6 +99,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -90,7 +139,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -112,13 +161,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -183,6 +242,14 @@ Identity of the user submitting this request.
 
 Reason for failing the Activity.
 
+**--run-id**, **-r** _string_
+
+Run ID.
+
+**--workflow-id**, **-w** _string_
+
+Workflow ID. Required.
+
 **Global Flags:**
 
 **--address** _string_
@@ -192,6 +259,14 @@ Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -213,6 +288,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -223,7 +328,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -245,13 +350,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -292,15 +407,15 @@ Pause an Activity.
 If the Activity is not currently running (e.g. because it previously
 failed), it will not be run again until it is unpaused.
 
-However, if the Activity is currently running, it will run to completion.
+However, if the Activity is currently running, it will run until the next
+time it fails, completes, or times out, at which point the pause will kick in.
+
 If the Activity is on its last retry attempt and fails, the failure will
 be returned to the caller, just as if the Activity had not been paused.
 
-Activities can be specified by their Activity ID or Activity Type.
-One of those parameters must be provided. If both are provided - Activity
-Type will be used, and Activity ID will be ignored.
+Activities should be specified either by their Activity ID or Activity Type.
 
-Specify the Activity and Workflow IDs:
+For example, specify the Activity and Workflow IDs like this:
 
 ```
 temporal activity pause \
@@ -308,21 +423,32 @@ temporal activity pause \
     --workflow-id YourWorkflowId
 ```
 
+To later unpause the activity, see [unpause](#unpause). You may also want to
+[reset](#reset) the activity to unpause it while also starting it from the beginning.
+
 Use the following options to change the behavior of this command.
 
 **Flags:**
 
 **--activity-id**, **-a** _string_
 
-Activity ID to pause.
+The Activity ID to pause. Either `activity-id` or `activity-type` must be provided, but not both.
 
 **--activity-type**, **-g** _string_
 
-Activity Type to pause.
+All activities of the Activity Type will be paused. Either `activity-id` or `activity-type` must be provided, but not both.
 
 **--identity** _string_
 
-Identity of the user submitting this request.
+The identity of the user or client submitting this request.
+
+**--run-id**, **-r** _string_
+
+Run ID.
+
+**--workflow-id**, **-w** _string_
+
+Workflow ID. Required.
 
 **Global Flags:**
 
@@ -333,6 +459,14 @@ Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -354,6 +488,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -364,7 +528,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -386,13 +550,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -428,20 +602,34 @@ Override target TLS server name.
 
 ## reset
 
-Resetting an activity resets both the number of attempts and the activity
-timeout.
+Reset an activity. This restarts the activity as if it were first being
+scheduled. That is, it will reset both the number of attempts and the
+activity timeout, as well as, optionally, the
+[heartbeat details](#reset-heartbeats).
 
-If activity is paused and 'keep_paused' flag is not provided - it will be
-unpaused.
-If activity is paused and 'keep_paused' flag is provided - it will stay
-paused.
-If activity is waiting for the retry, is will be rescheduled immediately.
-If the 'reset_heartbeats' flag is set, the activity heartbeat timer and
-heartbeats will be reset.
+If the activity may be executing (i.e. it has not yet timed out), the
+reset will take effect the next time it fails, heartbeats, or times out.
+If is waiting for a retry (i.e. has failed or timed out), the reset
+will apply immediately.
+
+If the activity is already paused, it will be unpaused by default.
+You can specify `keep_paused` to prevent this.
+
+If the activity is paused and the `keep_paused` flag is not provided,
+it will be unpaused. If the activity is paused and `keep_paused` flag
+is provided - it will stay paused.
 
 Activities can be specified by their Activity ID or Activity Type.
-One of those parameters must be provided. If both are provided - Activity
-Type will be used, and Activity ID will be ignored.
+
+### Resetting activities that heartbeat {#reset-heartbeats}
+
+Activities that heartbeat will receive a [Canceled failure](/references/failures#cancelled-failure)
+the next time they heartbeat after a reset.
+
+If, in your Activity, you need to do any cleanup when an Activity is
+reset, handle this error and then re-throw it when you've cleaned up.
+
+If the `reset_heartbeats` flag is set, the heartbeat details will also be cleared.
 
 Specify the Activity Type of ID and Workflow IDs:
 
@@ -459,23 +647,31 @@ Use the following options to change the behavior of this command.
 
 **--activity-id**, **-a** _string_
 
-Activity ID to pause.
+The Activity ID to reset. Either `activity-id` or `activity-type` must be provided, but not both.
 
 **--activity-type**, **-g** _string_
 
-Activity Type to pause.
+The Activity Type to reset. Either `activity-id` or `activity-type` must be provided, but not both.
 
 **--identity** _string_
 
-Identity of the user submitting this request.
+The identity of the user or client submitting this request.
 
 **--keep-paused** _bool_
 
-If activity was paused - it will stay paused.
+If the activity was paused, it will stay paused.
 
 **--reset-heartbeats** _bool_
 
-Reset the Activity's heartbeat.
+Clear the Activity's heartbeat details.
+
+**--run-id**, **-r** _string_
+
+Run ID.
+
+**--workflow-id**, **-w** _string_
+
+Workflow ID. Required.
 
 **Global Flags:**
 
@@ -486,6 +682,14 @@ Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -507,6 +711,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -517,7 +751,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -539,13 +773,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -595,16 +839,7 @@ Activity to be retried another N times after unpausing.
 Use `--reset-heartbeat` to reset the Activity's heartbeats.
 
 Activities can be specified by their Activity ID or Activity Type.
-One of those parameters must be provided. If both are provided - Activity
-Type will be used, and Activity ID will be ignored.
-
-Activities can be unpaused in bulk via a visibility Query list filter:
-
-```
-temporal activity unpause \
-    --query YourQuery \
-    --reason YourReasonForTermination
-```
+One of those parameters must be provided.
 
 Specify the Activity ID or Type and Workflow IDs:
 
@@ -616,21 +851,30 @@ temporal activity unpause \
     --reset-heartbeats
 ```
 
+Activities can be unpaused in bulk via a visibility Query list filter.
+For example, if you want to unpause activities of type Foo that you
+previously paused, do:
+
+```
+temporal activity unpause \
+    --query 'TemporalPauseInfo="property:activityType=Foo"'
+```
+
 Use the following options to change the behavior of this command.
 
 **Flags:**
 
 **--activity-id**, **-a** _string_
 
-Activity ID to unpause. Can only be used without --query.
+The Activity ID to unpause. Can only be used without --query or --match-all. Either `activity-id` or `activity-type` must be provided, but not both.
 
 **--activity-type**, **-g** _string_
 
-Activity Type to unpause.
+Activities of this Type will unpause. Can only be used without --match-all. Either `activity-id` or `activity-type` must be provided, but not both.
 
 **--identity** _string_
 
-Identity of the user submitting this request.
+The identity of the user or client submitting this request.
 
 **--jitter**, **-j** _duration_
 
@@ -682,6 +926,14 @@ Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 
 API key for request.
 
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
+
 **--codec-auth** _string_
 
 Authorization header for Codec Server requests.
@@ -702,6 +954,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -712,7 +994,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -734,13 +1016,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -776,9 +1068,11 @@ Override target TLS server name.
 
 ## update-options
 
-Update Activity options. Specify the Activity and Workflow IDs, and
-options you want to update.
-Updates are incremental, only changing the specified options.
+Update the options of a running Activity that were passed into it from
+a Workflow. Updates are incremental, only changing the specified
+options.
+
+For example:
 
 ```
 temporal activity update-options \
@@ -794,6 +1088,8 @@ temporal activity update-options \
     --retry-backoff-coefficient NewBackoffCoefficient \
     --retry-maximum-attempts NewMaximumAttempts
 ```
+
+You may follow this command with `temporal activity reset`, and the new values will apply after the reset.
 
 Use the following options to change the behavior of this command.
 
@@ -827,6 +1123,10 @@ Maximum number of attempts. When exceeded the retries stop even if not expired y
 
 Maximum interval between retries. Exponential backoff leads to interval increase. This value is the cap of the increase.
 
+**--run-id**, **-r** _string_
+
+Run ID.
+
 **--schedule-to-close-timeout** _duration_
 
 Indicates how long the caller is willing to wait for an activity completion. Limits how long retries will be attempted.
@@ -843,6 +1143,10 @@ Maximum time an activity is allowed to execute after being picked up by a worker
 
 Name of the task queue for the Activity.
 
+**--workflow-id**, **-w** _string_
+
+Workflow ID. Required.
+
 **Global Flags:**
 
 **--address** _string_
@@ -852,6 +1156,14 @@ Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
 **--api-key** _string_
 
 API key for request.
+
+**--client-authority** _string_
+
+Temporal gRPC client :authority pseudoheader.
+
+**--client-connect-timeout** _duration_
+
+The client connection timeout. 0s means no timeout.
 
 **--codec-auth** _string_
 
@@ -873,6 +1185,36 @@ Output coloring. Accepted values: always, never, auto. (default "auto")
 
 The command execution timeout. 0s means no timeout.
 
+**--config-file** _string_
+
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-env** _bool_
+
+If set, disables loading environment config from environment variables.
+
+:::note
+
+Option is experimental.
+
+:::
+
+**--disable-config-file** _bool_
+
+If set, disables loading environment config from config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--env** _string_
 
 Active environment name (`ENV`). (default "default")
@@ -883,7 +1225,7 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
 **--log-format** _string-enum_
 
@@ -905,13 +1247,23 @@ Raw payload output, even if the JSON option was used.
 
 Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
 
+**--profile** _string_
+
+Profile to use for config file.
+
+:::note
+
+Option is experimental.
+
+:::
+
 **--time-format** _string-enum_
 
 Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 

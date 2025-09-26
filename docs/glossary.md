@@ -19,7 +19,7 @@ When you execute a Temporal Workflow, its Actions create the ongoing state and p
 
 <!-- _Tags: [term](/tags/term), [pricing](/tags/pricing), [temporal-cloud](/tags/temporal-cloud), [explanation](/tags/explanation)_ -->
 
-#### [Actions Per Second (APS)](/cloud/limits#throughput)
+#### [Actions Per Second (APS)](/cloud/limits#actions-per-second)
 
 APS, or Actions per second, is specific to Temporal Cloud.
 Each Temporal Cloud Namespace enforces a rate limit, which is measured in Actions per second (APS).
@@ -256,7 +256,7 @@ A Heartbeat Timeout is the maximum time between Activity Heartbeats.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_ -->
 
-#### [High Availability](/cloud/high-availability/how-it-works#high-availability)
+#### [High Availability](/cloud/high-availability/)
 
 High availability ensures that a system remains operational with minimal downtime.
 It achieves this with redundancy and failover mechanisms that handle failures, so end-users remain unaware of incidents.
@@ -293,7 +293,7 @@ Run-once actions maintain data integrity and prevent costly errors.
 
 <!-- _Tags: [term](/tags/term)_ -->
 
-#### [Isolation Domain](/cloud/high-availability/how-it-works)
+#### [Isolation Domain](/cloud/high-availability)
 
 An isolation domain is a defined area within Temporal Cloud's infrastructure.
 It helps contain failures and prevents them from spreading to other parts of the system, providing redundancy and fault tolerance.
@@ -327,6 +327,13 @@ A Memo is a non-indexed user-supplied set of Workflow Execution metadata that is
 #### [Multi-Cluster Replication](/self-hosted-guide/multi-cluster-replication)
 
 Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.
+
+<!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
+
+#### [Multi-cloud Replication](/cloud/high-availability/enable)
+
+Multi-cloud Replication replicates Workflows and metadata to a different cloud provider (AWS or GCP).
+This is particularly beneficial for organizations required to be highly available across regions for compliance purposes.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation)_ -->
 
@@ -466,7 +473,7 @@ Remote data encoding is using your custom Data Converter to decode (and encode) 
 
 <!-- _Tags: [term](/tags/term), [queries](/tags/queries), [explanation](/tags/explanation)_ -->
 
-#### [Replication Lag](/cloud/high-availability/monitor)
+#### [Replication Lag](/cloud/high-availability/monitoring#replication-lag-metric)
 
 The transmission delay of Workflow updates and history events from the active region to the standby region.
 

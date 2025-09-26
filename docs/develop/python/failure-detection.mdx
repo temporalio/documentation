@@ -24,11 +24,107 @@ description: Learn how to set Workflow and Activity timeouts, retries, retry pol
 
 This page shows how to do the following:
 
+- [Raise and Handle Exceptions](#exception-handling)
+- [Deliberately Fail Workflows](#workflow-failure)
 - [Set Workflow Timeouts](#workflow-timeouts)
 - [Set Workflow Retries](#workflow-retries)
 - [Set Activity Timeouts](#activity-timeouts)
 - [Set an Activity Retry Policy](#activity-retries)
 - [Heartbeat an Activity](#activity-heartbeats)
+
+## Raise and Handle Exceptions {#exception-handling}
+
+In each Temporal SDK, error handling is implemented idiomatically, following the conventions of the language.
+Temporal uses several different error classes internally — for example, [`CancelledError`](https://python.temporal.io/temporalio.exceptions.CancelledError.html) in the Python SDK, to handle a Workflow cancellation. 
+You should not raise or otherwise implement these manually, as they are tied to Temporal platform logic.
+
+The one Temporal error class that you will typically raise deliberately is [`ApplicationError`](https://python.temporal.io/temporalio.exceptions.ApplicationError.html).
+In fact, *any* other exceptions that are raised from your Python code in a Temporal Activity will be converted to an `ApplicationError` internally.
+This way, an error's type, severity, and any additional details can be sent to the Temporal Service, indexed by the Web UI, and even serialized across language boundaries.
+
+In other words, these two code samples do the same thing:
+
+```python 
+class MyCustomError(Exception):
+    def __init__(self, message, error_code):
+        super().__init__(message)
+        self.error_code = error_code
+
+    def __str__(self):
+        return f"{self.message} (Error Code: {self.error_code})"
+
+@activity.defn
+async def my_activity(input: MyActivityInput):
+    try:
+        # Your activity logic goes here
+    except Exception as e:
+        raise MyCustomError(
+            f"Error encountered on attempt {attempt}",
+        ) from e
+```
+
+```python 
+from temporalio.exceptions import ApplicationError
+
+@activity.defn
+async def my_activity(input: MyActivityInput):
+    try:
+        # Your activity logic goes here
+    except Exception as e:
+        raise ApplicationError(
+            type="MyCustomError",
+            message=f"Error encountered on attempt {attempt}",
+        ) from e
+```
+
+Depending on your implementation, you may decide to use either method.
+One reason to use the Temporal `ApplicationError` class is because it allows you to set an additional `non_retryable` parameter.
+This way, you can decide whether an error should not be retried automatically by Temporal.
+This can be useful for deliberately failing a Workflow due to bad input data, rather than waiting for a timeout to elapse:
+
+```python
+from temporalio.exceptions import ApplicationError
+
+@activity.defn
+async def my_activity(input: MyActivityInput):
+    try:
+        # Your activity logic goes here
+    except Exception as e:
+        raise ApplicationError(
+            type="MyNonRetryableError",
+            message=f"Error encountered on attempt {attempt}",
+            non_retryable=True,
+        ) from e
+```
+
+You can alternately specify a list of errors that are non-retryable in your Activity [Retry Policy](#activity-retries).
+
+## Failing Workflows {#workflow-failure}
+
+One of the core design principles of Temporal is that an Activity Failure will never directly cause a Workflow Failure — a Workflow should never return as Failed unless deliberately.
+The default retry policy associated with Temporal Activities is to retry them until reaching a certain timeout threshold.
+Activities will not actually *return* a failure to your Workflow until this condition or another non-retryable condition is met.
+At this point, you can decide how to handle an error returned by your Activity the way you would in any other program.
+For example, you could implement a [Saga Pattern](https://learn.temporal.io/tutorials/python/trip-booking-app/) that uses `try` and `except` blocks to "unwind" some of the steps your Workflow has performed up to the point of Activity Failure.
+
+**You will only fail a Workflow by manually raising an `ApplicationError` from the Workflow code.**
+You could do this in response to an Activity Failure, if the failure of that Activity means that your Workflow should not continue:
+
+```python
+try:
+	credit_card_confirmation = await workflow.execute_activity_method()
+except ActivityError as e:
+	workflow.logger.error(f"Unable to process credit card {e.message}")
+	raise ApplicationError(
+		"Unable to process credit card", "CreditCardProcessingError"
+	)
+```
+
+This works differently in a Workflow than raising exceptions from Activities.
+In an Activity, any Python exceptions or custom exceptions are converted to a Temporal `ApplicationError`.
+In a Workflow, any exceptions that are raised other than an explicit Temporal `ApplicationError` will only fail that particular [Workflow Task](https://docs.temporal.io/tasks#workflow-task-execution) and be retried.
+This includes any typical Python runtime errors like a `NameError` or a `TypeError` that are raised automatically.
+These errors are treated as bugs that can be corrected with a fixed deployment, rather than a reason for a Temporal Workflow Execution to return unexpectedly.
 
 ## Workflow timeouts {#workflow-timeouts}
 
@@ -54,7 +150,7 @@ Available timeouts are:
 - `run_timeout`
 - `task_timeout`
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/workflow_timeouts_retries/workflows_dacx.py">
     View the source code
   </a>{' '}
@@ -87,7 +183,7 @@ Workflow Executions do not retry by default, and Retry Policies should be used w
 
 Set the Retry Policy to either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/workflow_timeouts_retries/workflows_dacx.py">
     View the source code
   </a>{' '}
@@ -127,7 +223,7 @@ Available timeouts are:
 - schedule_to_start_timeout
 - start_to_close_timeout
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/activity_timeouts_retires/your_workflows_dacx.py">
     View the source code
   </a>{' '}
@@ -156,7 +252,7 @@ Activity Executions are automatically associated with a default [Retry Policy](/
 
 To create an Activity Retry Policy in Python, set the [RetryPolicy](https://python.temporal.io/temporalio.common.RetryPolicy.html) class within the [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) or [`execute_activity()`](https://python.temporal.io/temporalio.workflow.html#execute_activity) function.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/activity_timeouts_retires/your_workflows_dacx.py">
     View the source code
   </a>{' '}

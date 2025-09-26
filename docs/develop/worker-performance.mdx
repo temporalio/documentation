@@ -9,7 +9,7 @@ tags:
   - Performance
 ---
 
-import * as Components from '@site/src/components';
+import { CaptionedImage } from '@site/src/components';
 
 This page documents metrics and configurations that drive the efficiency of your Worker fleet.
 It provides coverage of performance metric families, Worker configuration options, Task Queue information, backlog counts, Task rates, and how to evaluate Worker availability.
@@ -103,14 +103,65 @@ The number of Task Pollers can be configured using `WorkerOptions` when creating
 
 ### Eager task execution
 
-Workers may eagerly execute Activity and Workflow Tasks under the right circumstances.
+As a latency optimization, Activity and Workflow Tasks may be started eagerly in a local Worker under the right circumstances.
 
-Eager Activity Execution may happen automatically if the Worker processing a Workflow Task also has the Activity Definition being called registered.
+#### Eager Activity Start
+
+Eager Activity Start may happen automatically if the Worker processing a Workflow Task has also registered the Activity Definition being called.
 If it does, it may try to reserve an Activity Slot for the execution of the Activity, and the server may respond to the Workflow Task completion with the Activity Task for the worker to execute immediately.
 
-Eager Workflow execution is opt-in, and requires the Client which is starting the Workflow to be located in the same process as a Worker. When making the Start Workflow call, you can set the `request_eager_start` (or similar name) to true.
+#### Eager Workflow Start
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Eager Workflow Start is available in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) in the Go, Java, Python, and .NET SDKs.
+Temporal Cloud and Temporal Server 1.29.0 and higher have Eager Workflow Start available for use by default, but you must explicitly Request-Eager-Start when starting a Workflow.
+
+:::
+
+Eager Workflow Start is feature that reduces the time it takes to start a Workflow.
+The target use case is short-lived Workflows that interact with other services using Local Activities, ideally initiating this interaction in the first Workflow Task, and deployed close to the Temporal Server.
+These Workflows have a happy path that needs to initiate interactions within low tens of milliseconds, but they also want to take advantage of server-driven retries, and reliable compensation processes, for those less happy days.
+
+**Quick Start**
+
+Eager Workflow Start requires the Starter and the Worker to share a Client located in the same process and setting the `request_eager_start` (or similar name) to true in the Start Workflow call.
 When set, and the Worker has a Workflow Task slot available and the Workflow Definition registered, the Worker can execute the first task of the Workflow locally without first making a round-trip to the Temporal Server.
 This is typically most useful in combination with a Local Activity executing in the first Workflow Task, since other Workflow API calls that require waiting on something will force a round-trip.
+
+:::tip RESOURCES
+
+- [Go SDK - Code sample](https://github.com/temporalio/samples-go/tree/main/eager-workflow-start)
+- [Java SDK - Code sample](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/hello/HelloEagerWorkflowStart.java)
+- Python SDK - use `request_eager_start` when calling `start_workflow` or `execute_workflow`
+- .NET SDK - use `RequestEagerStart` in your `WorkflowOptions` when starting a workflow
+- [Blog: Improving Latency with Eager Workflow Start](https://temporal.io/blog/improving-latency-with-eager-workflow-start)
+
+:::
+
+**How it works**
+
+The traditional way to start a Workflow decouples the starter program from the worker by sharing a Task Queue name between them, similar to a publish/subscribe pattern.
+This has many advantages: for example, we can reliably schedule a Workflow Execution without a running Worker, or separate the Worker and Workflow implementation from the Starter application and host them independently.
+
+But decoupling also makes it harder to optimize for latency.
+Instead, when the **Starter and Worker are collocated in the same process** and aware of each other, they can interact while bypassing the server, saving a few time-intensive operations.
+
+<CaptionedImage
+    src="/img/develop/worker-performance/eager-workflow-start-flow.png"
+    title="Eager Workflow Start"
+/>
+
+The above figure shows Eager Workflow Start in action:
+
+1. The process begins with the Starter setting `request_eager_start` (or similar name) to true in the Start Workflow Options.
+1. The SDK will try to locate a local Worker that is willing to execute the first Workflow Task, and reserve an execution slot for it.
+1. If successful, the SDK will provide a hint to the server that eager mode is preferred for the new Workflow.
+1. The server not only registers the start of the Workflow in history, it also assigns the first Workflow Task to the Starter, all in the same DB update.
+1. The first task is included in the server response, no matching step required.
+1. The SDK extracts the task from the response, and dispatches it to the local worker.
+
+To recover from errors, Eager Workflow Start falls back to the non-eager path. For example, when the first Task is returned eagerly, but the local Worker fails or times out while processing the task, the server retries this task non-eagerly after WorkflowTaskTimeout.
 
 ## Performance metrics for tuning {#metrics}
 
@@ -160,7 +211,9 @@ The `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecution
 `maxConcurrentWorkflowTaskPollers` (JavaSDK: `workflowPollThreadCount`) and `maxConcurrentActivityTaskPollers` (JavaSDK: `activityPollThreadCount`) define the maximum count of pollers performing poll requests on Workflow and Activity Task Queues.
 The Worker's requests deliver Tasks to the related executor slots.
 
-Some SDKs (currently Python) have enabled experimental support for automated poller tuning.
+SDKs also have experimental support for automated poller tuning, which automatically selects an
+appropriate number of pollers based on need. This option will likely result in more efficient poller usage, better throughput,
+or both, for all scenarios.
 This feature can be enabled by setting the `*_task_poller_behavior` options to `PollerBehaviorAutoscaling`.
 Names may vary slightly depending on the SDK.
 There are options within to configure minimum, maximum, and initial poller counts, but it is unlikely that you will need to adjust them.
@@ -669,14 +722,15 @@ Alternatively, consider using a resource-based slot supplier as described [here]
 
 Sometimes, it can be appropriate to increase the number of task pollers.
 This is usually more common in situations where your Workers have somewhat high latency when communicating with the server.
+You can simply use automated poller tuning to handle this automatically.
 
-You can use automated poller tuning, or consider adjustment if:
+Consider manual adjustment if:
 
-1. the `schedule_to_start` metric is abnormally long, and
-2. the Worker hosts are underutilized (there are no bottlenecks on CPU, load average, etc), and
-3. `worker_task_slots_available` metric from the corresponding Worker type shows that a significant percentage of Worker slots are available on a regular basis,
+1. The Worker hosts are underutilized, for example, there are no bottlenecks on CPU, load average, etc.
+2. `worker_task_slots_available` metric from the corresponding Worker type shows that a significant percentage of Worker slots are available on a regular basis.
+3. The `schedule_to_start` metric is abnormally long.
 
-then consider increasing the number of pollers by adjusting `maxConcurrentWorkflowTaskPollers` or `maxConcurrentActivityTaskPollers`, depending on which type of `schedule_to_start` metric is elevated.
+Then consider increasing the number of pollers by adjusting `maxConcurrentWorkflowTaskPollers` or `maxConcurrentActivityTaskPollers`, depending on which type of `schedule_to_start` metric is elevated.
 
 ### Rate Limiting
 

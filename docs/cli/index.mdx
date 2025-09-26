@@ -33,7 +33,7 @@ For details, see [CLI release notes](https://github.com/temporalio/cli/releases/
 
 **How to download and install the Temporal CLI**
 
-The Temporal CLI is available on macOS, Windows, and Linux.
+The Temporal CLI is available on macOS, Windows, and Linux, or as a Docker image.
 
 ### How to install the Temporal CLI on macOS
 
@@ -85,6 +85,26 @@ Choose one of the following methods to install the Temporal CLI on Windows:
   2. Extract the downloaded archive.
 
   3. Add the `temporal.exe` binary to your PATH.
+
+### How to run the Temporal CLI inside Docker
+
+Temporal CLI container image is available on [DockerHub](https://hub.docker.com/r/temporalio/temporal) and can be run directly:
+
+```shell
+docker run --rm temporalio/temporal --help
+```
+
+:::note
+
+When running the CLI inside Docker, for the development server to be accessible from the host system,
+the server needs to be configured to listen on external IP and the ports need to be forwarded:
+
+```shell
+docker run --rm -p 7233:7233 -p 8233:8233 temporalio/temporal server start-dev --ip 0.0.0.0
+# UI is now accessible from host at http://localhost:8233/
+```
+
+:::
 
 ## Command set
 

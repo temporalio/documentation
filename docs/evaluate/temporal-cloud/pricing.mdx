@@ -44,11 +44,6 @@ Your total invoice each calendar month is the combination of Temporal Cloud cons
 
 **How plans work**
 
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-SCIM support is available in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
-
-:::
 
 Each Temporal Cloud account includes a plan with Support, Actions, Active Storage, Retained Storage and platform features.
 Base allocations help you get started with the Temporal platform, so you can better estimate costs.
@@ -63,7 +58,7 @@ Prices are outlined in the following table:
 | ----------------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Support Targeting | Basic use                                                                      | Production deployments<br />that scale                                                                                            | Enterprise deployments<br/>w/ stringent uptime demands                                                                                                     | Mission-critical applications<br />w/ the highest support needs                                                                                            |
 | Support Features  | Access to Support                                                              | <li>P0 Response Times</li>                                                                                                        | <li>P0: \<30 Min, 24/7</li><li>Private Slack</li>                                                                                                          | <li>P0: \<15 Min, 24/7</li><li>Private Slack</li><li>Dedicated DSE</li>                                                                                    |
-| Product Features  | <li>1M Actions</li><li>1 GB Active Storage</li><li>40 GB Retained Storage</li> | <li>Commit discounts</li><li>SSO (Add-on)</li><li>2.5M Actions</li><li>2.5 GB Active Storage</li><li>100 GB Retained Storage</li> | <li>Commit discounts</li><li>SSO included</li><li>SCIM (Pre-release)</li><li>10M Actions</li><li>10 GB Active Storage</li><li>400 GB Retained Storage</li> | <li>Commit discounts</li><li>SSO included</li><li>SCIM (Pre-release)</li><li>10M Actions</li><li>10 GB Active Storage</li><li>400 GB Retained Storage</li> |
+| Product Features  | <li>1M Actions</li><li>1 GB Active Storage</li><li>40 GB Retained Storage</li> | <li>Commit discounts</li><li>SAML included</li><li>SCIM (Add-on)</li><li>2.5M Actions</li><li>2.5 GB Active Storage</li><li>100 GB Retained Storage</li> | <li>Commit discounts</li><li>SAML included</li><li>SCIM included</li><li>10M Actions</li><li>10 GB Active Storage</li><li>400 GB Retained Storage</li> | <li>Commit discounts</li><li>SAML included</li><li>SCIM included</li><li>10M Actions</li><li>10 GB Active Storage</li><li>400 GB Retained Storage</li> |
 | Plan Pricing      | Greater of<li>&#36;100/mo or</li><li>5% of Usage Spend</li>                    | Greater of<li>&#36;500/mo or</li><li>10% of Usage Spend</li>                                                                      | Priced annually:<br /> [contact Sales](mailto:sales@temporal.io) for details                                                                               | Priced annually:<br /> [contact Sales](mailto:sales@temporal.io) for details                                                                               |
 | Usage Pricing     | [Pay-As-You-Go](#payg) Pricing                                                 | Choose from <br /> [Pay-As-You-Go](#payg) or [Commitment Pricing](#commitment-pricing)                                            | Choose from <br /> [Pay-As-You-Go](#payg) or [Commitment Pricing](#commitment-pricing)                                                                     | Choose from <br /> [Pay-As-You-Go](#payg) or [Commitment Pricing](#commitment-pricing)                                                                     |
 
@@ -158,6 +153,15 @@ For additional storage within a calendar month, you are billed for Active and Re
 | ----------- | ----------------------- |
 | Retained | &#36;0.00105 |
 | Active | &#36;0.042 |
+
+:::tip Storage costs are also affected by Temporal System Workflows that back features such as:
+
+- [Schedules](https://docs.temporal.io/schedule): Each Scheduled Workflow contributes to storage usage. Supplied inputs, outputs, and failures all account for the storage usage incurred from Scheduled Workflows.
+- [Batch jobs](https://docs.temporal.io/cli/batch): Batch Workflow executions also consume storage.
+
+These Workflow executions contribute to overall active and retained storage consumption.
+
+:::
 
 **Example**
 
@@ -261,7 +265,7 @@ Following are additional pricing considerations for High Availability features a
 
 **How does the pricing for High Availability (HA) features work?**
 
-For workloads with stringent high availability requirements, Temporal Cloud provides same-region and multi-region replicas, which add a failover capability.
+For workloads with stringent high availability requirements, Temporal Cloud provides same-region, multi-region, and multi-cloud replicas, which add a failover capability.
 Enabling HA features for Namespace automatically replicates Workflow Execution data and metadata to a replica in the same region or in a different region.
 This allows for a near-seamless failover when incidents or outages occur.
 
@@ -271,9 +275,9 @@ To estimate costs for this deployment model, apply a 2x multiplier to the Action
 
 :::tip Future Pricing Update
 
-To align with cloud provider network traffic pricing, we are introducing adjustments for multi-region replication.
+To align with cloud provider network traffic pricing, we are introducing adjustments for multi-region and multi-cloud replication.
 Your plan will include a generous base allocation, with additional pay-per-use charges for any network usage beyond that threshold.
-Most multi-region customers will not be impacted by this change.
+Most multi-region and multi-cloud customers will not be impacted by this change.
 
 :::
 
@@ -288,25 +292,12 @@ When upgrading an existing Namespace, some points to consider:
 
 **What costs are associated with SSO/SAML use?**
 
-Single sign-on (SSO) integration using SAML is included for all customers on the Enterprise and Mission Critical Plans.
-For business plan customers, a monthly fixed fee based on the number of users registered in Temporal Cloud is required:
-
-| **Users** | **Cost per month** |
-| --------- | ------------------ |
-| 0 to 25   | &#36;200           |
-| 26 to 50  | &#36;300           |
-| 51+       | &#36;500           |
+Single sign-on (SSO) integration using SAML is included for all customers on the Business, Enterprise, and Mission Critical Plans.
 
 **What costs are associated with SCIM?**
 
-To enable SCIM (System for Cross-domain Identity Management), you need an Enterprise or Mission Critical plan.
+To enable SCIM (System for Cross-domain Identity Management), you need an Enterprise or Mission Critical plan or an add-on for the Business plan ($500/month).
 Please note that you must configure SSO via SAML to use SCIM.
-
-:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
-
-SCIM support is available in [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
-
-:::
 
 ### Use case cost estimates {#pricing-estimates}
 

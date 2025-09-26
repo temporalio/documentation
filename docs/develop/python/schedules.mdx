@@ -59,7 +59,7 @@ Set the `action` parameter to `ScheduleActionStartWorkflow` to start a Workflow 
 Optionally, you can set the `spec` parameter to `ScheduleSpec` to specify the schedule or set the `intervals` parameter to `ScheduleIntervalSpec` to specify the interval.
 Other options include: `cron_expressions`, `skip`, `start_at`, and `jitter`.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/schedule_your_workflow/start_schedule_dacx.py">
     View the source code
   </a>{' '}
@@ -104,7 +104,7 @@ The backfill action executes Actions ahead of their specified time range. This c
 To Backfill a Scheduled Workflow Execution in Python, use the [backfill()](https://python.temporal.io/temporalio.client.ScheduleHandle.html#backfill) asynchronous
 method on the Schedule Handle.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/schedule_your_workflow/backfill_schedule_dacx.py">
     View the source code
   </a>{' '}
@@ -144,7 +144,7 @@ The delete action enables you to delete a Schedule. When you delete a Schedule, 
 
 To delete a Scheduled Workflow Execution in Python, use the [delete()](https://python.temporal.io/temporalio.client.ScheduleHandle.html#delete) asynchronous method on the Schedule Handle.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/schedule_your_workflow/delete_schedule_dacx.py">
     View the source code
   </a>{' '}
@@ -170,7 +170,7 @@ The describe action shows the current Schedule configuration, including informat
 To describe a Scheduled Workflow Execution in Python, use the [describe()](https://python.temporal.io/temporalio.client.ScheduleHandle.html#delete) asynchronous method on the Schedule Handle.
 You can get a complete list of the attributes of the Scheduled Workflow Execution from the [ScheduleDescription](https://python.temporal.io/temporalio.client.ScheduleDescription.html) class.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/schedule_your_workflow/describe_schedule_dacx.py">
     View the source code
   </a>{' '}
@@ -199,7 +199,7 @@ The list action lists all the available Schedules. This command is useful when y
 To list all schedules, use the [list_schedules()](https://python.temporal.io/temporalio.client.Client.html#list_schedules) asynchronous method on the Client.
 If a schedule is added or deleted, it may not be available in the list immediately.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/schedule_your_workflow/list_schedule_dacx.py">
     View the source code
   </a>{' '}
@@ -223,7 +223,7 @@ The pause action enables you to pause and unpause a Schedule. When you pause a S
 To pause a Scheduled Workflow Execution in Python, use the [pause()](https://python.temporal.io/temporalio.client.ScheduleHandle.html#pause) asynchronous method on the Schedule Handle.
 You can pass a `note` to the `pause()` method to provide a reason for pausing the schedule.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/schedule_your_workflow/pause_schedule_dacx.py">
     View the source code
   </a>{' '}
@@ -249,7 +249,7 @@ The trigger action triggers an immediate action with a given Schedule. By defaul
 
 To trigger a Scheduled Workflow Execution in Python, use the [trigger()](https://python.temporal.io/temporalio.client.ScheduleHandle.html#trigger) asynchronous method on the Schedule Handle.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/schedule_your_workflow/trigger_schedule_dacx.py">
     View the source code
   </a>{' '}
@@ -277,7 +277,7 @@ Create a function that takes `ScheduleUpdateInput` and returns `ScheduleUpdate`.
 To update a Schedule, use a callback to build the update from the description.
 The following example updates the Schedule to use a new argument.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/schedule_your_workflow/update_schedule_dacx.py">
     View the source code
   </a>{' '}
@@ -311,7 +311,7 @@ A Cron Schedule is provided as an option when the call to spawn a Workflow Execu
 
 You can set each Workflow to repeat on a schedule with the `cron_schedule` option from either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
 
-<div class="copycode-notice-container">
+<div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_cron_job/your_cron_dacx.py">
     View the source code
   </a>{' '}

@@ -39,14 +39,14 @@ Use the essential components of a Temporal Application (Workflows, Activities, a
 - [How to start an Activity Execution](/develop/php/core-application#activity-execution)
 - [How to run Worker Processes](/develop/php/core-application#run-a-dev-worker)
 
-## [Temporal Client](/develop/php/temporal-clients)
+## [Temporal Client](/develop/php/temporal-client)
 
 Connect to a Temporal Service and start a Workflow Execution.
 
-- [How to connect a Temporal Client to a Temporal Service](/develop/php/temporal-clients#connect-to-a-dev-cluster)
-- [How to connect a Temporal Client to a Temporal Cloud](/develop/php/temporal-clients#connect-to-temporal-cloud)
-- [How to start a Workflow Execution](/develop/php/temporal-clients#start-workflow-execution)
-- [Advanced connection options](/develop/php/temporal-clients#advanced-connection-options)
+- [How to connect a Temporal Client to a Temporal Service](/develop/php/temporal-client#connect-to-a-dev-cluster)
+- [How to connect a Temporal Client to a Temporal Cloud](/develop/php/temporal-client#connect-to-temporal-cloud)
+- [How to start a Workflow Execution](/develop/php/temporal-client#start-workflow-execution)
+- [Advanced connection options](/develop/php/temporal-client#advanced-connection-options)
 
 ## [Testing](/develop/php/testing-suite)
 
@@ -85,9 +85,8 @@ Interrupt a Workflow Execution with a Cancel or Terminate action.
 
 The PHP SDK [Versioning developer guide](/develop/php/versioning) shows how to Change Workflow Definitions without causing non-deterministic behavior in running Workflows.
 
-- [Introduction to Versioning](/develop/php/versioning#introduction-to-versioning)
 - [How to use the PHP SDK Patching API](/develop/php/versioning#php-sdk-patching-api): Patching Workflows using the PHP SDK.
-- [Sanity checking](/develop/php/versioning#sanity-checking)
+- [Sanity checking](/develop/php/versioning#runtime-checking)
 
 ## [Asynchronous Activity Completion](/develop/php/asynchronous-activity-completion)
 
@@ -138,3 +137,9 @@ Continue the Workflow Execution with a new Workflow Execution using the same Wor
 Use Side Effects in Workflows.
 
 - [How to use Side Effects in PHP](/develop/php/side-effects#side-effects)
+
+## [Enriching the User Interface](/develop/php/enriching-ui)
+
+Add descriptive information to workflows and events for better visibility and context in the UI.
+
+- [Adding Summary and Details to Workflows](/develop/php/enriching-ui#adding-summary-and-details-to-workflows)
