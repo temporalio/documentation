@@ -2,6 +2,7 @@ import Tile from '@site/src/components/elements/Tile';
 import {useDocsData, useDocById} from '@docusaurus/plugin-content-docs/client';
 import styles from './CookbookHome.module.css';
 import useGlobalData, {usePluginData} from '@docusaurus/useGlobalData';
+import clsx from 'clsx';
 
 type CookbookItem = {
   id: string;
@@ -68,7 +69,7 @@ export default function CookbookHome() {
   }
 
    return (
-    <section className={styles.page}>
+    <section className={clsx('cookbook--centered', styles.page)}>
       <div className={styles.inner}>
         <header className={styles.hero} aria-label="Cookbook overview">
           <p className={styles.eyebrow}>Cookbook</p>
