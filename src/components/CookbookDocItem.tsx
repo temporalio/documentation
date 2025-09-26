@@ -10,10 +10,16 @@ import Link from '@docusaurus/Link';
 import {MDXProvider} from '@mdx-js/react';
 import MDXComponents from '@theme/MDXComponents';
 import clsx from 'clsx';
+import {usePluginData} from '@docusaurus/useGlobalData';
 
 import styles from './CookbookDocItem.module.css';
 
 type CookbookDocItemProps = DocItemProps & { tags?: string[] };
+
+type CookbookIndexItem = {
+  id: string;
+  source?: string;
+};
 
 function BackArrowIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -45,14 +51,32 @@ function InnerCookbookDocItem({content, tags}: CookbookDocItemProps) {
 
   // Now we're under <DocProvider>, so useDoc() is safe:
   const {metadata, frontMatter, toc, contentTitle} = useDoc();
-  const {title, description, id, tags: metaTags = []} = metadata;
+  const {title, description, id, unversionedId, tags: metaTags = []} = metadata as typeof metadata & {
+    unversionedId?: string;
+  };
+  const indexData = usePluginData('cookbook-index') as {items?: CookbookIndexItem[]} | undefined;
   const hasTOC = !frontMatter?.hide_table_of_contents && (toc?.length ?? 0) > 0;
   const shouldRenderSyntheticTitle = !frontMatter?.hide_title && typeof contentTitle === 'undefined';
   const syntheticTitle = shouldRenderSyntheticTitle ? title : undefined;
 
   const resolvedTags = (tags ?? metaTags.map((t: any) => t.label)) as string[];
   const dataTags = resolvedTags.length ? resolvedTags.join(',') : undefined;
-  const githubHref = '';
+  const cookbookFrontMatter = frontMatter as {source?: string} | undefined;
+  const pluginSource = React.useMemo(() => {
+    const items = indexData?.items;
+    if (!Array.isArray(items)) {
+      return undefined;
+    }
+    const match = items.find((item) => {
+      if (!item) {
+        return false;
+      }
+      return item.id === id || (!!unversionedId && item.id === unversionedId);
+    });
+    return match?.source?.trim();
+  }, [id, indexData, unversionedId]);
+  const frontMatterSource = cookbookFrontMatter?.source?.trim();
+  const githubHref = pluginSource || frontMatterSource || '';
   const isGithubEnabled = Boolean(githubHref);
   const handleGithubClick = React.useCallback(
     (event: React.MouseEvent<HTMLAnchorElement>) => {

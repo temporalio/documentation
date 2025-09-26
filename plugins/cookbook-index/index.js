@@ -55,7 +55,9 @@ console.log('[cookbook-index] init with docsDir:', options.docsDir);
         : [];
       const permalink = `/${routeBasePath}/${slug}`.replace(/\/+/g, '/');
 
-      const item = { id, title, description, tags, permalink };
+      const source = typeof data.source === 'string' ? data.source : undefined;
+
+      const item = { id, title, description, tags, permalink, source };
 
       return item; // ← IMPORTANT: actually return the object
     })

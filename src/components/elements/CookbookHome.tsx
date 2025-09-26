@@ -9,6 +9,7 @@ type CookbookItem = {
   description: string;
   tags: string[];
   permalink: string;
+  source?: string;
 };
 
 function DocTile({id}: {id: string}) {
