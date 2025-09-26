@@ -1,4 +1,3 @@
-import React from 'react';
 import Tile from '@site/src/components/elements/Tile';
 import {useDocsData, useDocById} from '@docusaurus/plugin-content-docs/client';
 import styles from './CookbookHome.module.css';

@@ -1,4 +1,3 @@
-// src/components/CookbookDocItem.tsx
 import React from 'react';
 import Head from '@docusaurus/Head';
 import {DocProvider, useDoc} from '@docusaurus/plugin-content-docs/client';
