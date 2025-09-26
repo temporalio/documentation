@@ -1,5 +1,6 @@
+import React from "react";
 import Tile from "@site/src/components/elements/Tile";
-import { useDocsData, useDocById } from "@docusaurus/plugin-content-docs/client";
+import { useAllDocsData } from "@docusaurus/plugin-content-docs/client";
 import styles from "./CookbookHome.module.css";
 import useGlobalData, { usePluginData } from "@docusaurus/useGlobalData";
 import clsx from "clsx";
@@ -13,12 +14,26 @@ type CookbookItem = {
   source?: string;
 };
 
-function DocTile({ id }: { id: string }) {
-  // Try bare id first; fall back to namespaced in case this renders outside the plugin context
-  const meta: any = useDocById(id) ?? useDocById(`cookbook:${id}`);
+type DocMeta = {
+  id: string;
+  unversionedId?: string;
+  title?: string;
+  description?: string;
+  frontMatter?: { title?: string; description?: string; tags?: any[] };
+  tags?: { label: string }[];
+  permalink?: string;
+};
 
-  const title = meta?.title ?? meta?.frontMatter?.title;
-  const description = meta?.description ?? meta?.frontMatter?.description;
+function DocTile({ item, docsById }: { item: CookbookItem; docsById: Map<string, DocMeta> }) {
+  const { id, title: pluginTitle, description: pluginDescription, tags: pluginTags, permalink: pluginPermalink } = item;
+
+  const docMeta =
+    docsById.get(id) ??
+    docsById.get(`cookbook:${id}`) ??
+    docsById.get(item.id.replace(/^cookbook:/, ""));
+
+  const title = docMeta?.title ?? docMeta?.frontMatter?.title ?? pluginTitle;
+  const description = docMeta?.description ?? docMeta?.frontMatter?.description ?? pluginDescription;
 
   if (!title || !description) {
     throw new Error(
@@ -28,13 +43,15 @@ function DocTile({ id }: { id: string }) {
     );
   }
 
-  const tags =
-    meta?.tags?.map((t: any) => t.label) ??
-    (Array.isArray(meta?.frontMatter?.tags)
-      ? meta.frontMatter.tags.map((t: any) => (typeof t === "string" ? t : t?.label)).filter(Boolean)
-      : []);
+  const tagsFromMeta = docMeta?.tags?.map((t: any) => t.label);
+  const tagsFromFrontMatter = Array.isArray(docMeta?.frontMatter?.tags)
+    ? docMeta.frontMatter.tags.map((t: any) => (typeof t === "string" ? t : t?.label)).filter(Boolean)
+    : undefined;
+  const resolvedTags = (tagsFromMeta ?? tagsFromFrontMatter ?? pluginTags) as string[];
 
-  return <Tile title={title} description={description} href={meta?.permalink ?? "#"} tags={tags as string[]} />;
+  const href = docMeta?.permalink ?? pluginPermalink ?? "#";
+
+  return <Tile title={title} description={description} href={href} tags={resolvedTags} />;
 }
 
 export default function CookbookHome() {
@@ -42,6 +59,23 @@ export default function CookbookHome() {
   console.log("[CookbookHome] plugins:", Object.keys(global?.plugins ?? {})); // should include 'cookbook-index'
 
   const dataAny = usePluginData("cookbook-index") as any;
+  const allDocsData = useAllDocsData();
+  const cookbookDocs = allDocsData?.cookbook?.versions?.find((version: any) => version?.isLast) ??
+    allDocsData?.cookbook?.versions?.[0];
+
+  const docsById = React.useMemo(() => {
+    const map = new Map<string, DocMeta>();
+    const docs: DocMeta[] = cookbookDocs?.docs ?? [];
+    docs.forEach((doc) => {
+      map.set(doc.id, doc);
+      map.set(`cookbook:${doc.id}`, doc);
+      if (doc.unversionedId) {
+        map.set(doc.unversionedId, doc);
+        map.set(`cookbook:${doc.unversionedId}`, doc);
+      }
+    });
+    return map;
+  }, [cookbookDocs]);
 
   const raw = (dataAny?.items ?? []) as (CookbookItem | null | undefined)[];
   raw.forEach((x, i) => {
@@ -72,7 +106,7 @@ export default function CookbookHome() {
         <div className={styles.grid}>
           {items.map((it) => (
             <div key={it.id} className={styles.cell}>
-              <Tile title={it.title} description={it.description} href={it.permalink} tags={it.tags} />
+              <DocTile item={it} docsById={docsById} />
             </div>
           ))}
         </div>
