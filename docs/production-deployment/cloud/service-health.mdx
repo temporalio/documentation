@@ -1,8 +1,8 @@
 ---
 id: service-health
-title: Service health
-sidebar_label: Service health
-description: Use Temporal Cloud metrics to monitor your production deployment Service health.
+title: Monitor Temporal Cloud
+sidebar_label: Monitor Temporal Cloud
+description: Use Temporal Cloud metrics to monitor your production deployment Temporal Cloud.
 toc_max_heading_level: 4
 keywords:
   - temporal-cloud
@@ -14,8 +14,8 @@ tags:
   - Observability
 ---
 
-Temporal Cloud metrics help monitor the Service health of production deployments.
-This documentation covers best practices for monitoring Service health.
+Temporal Cloud metrics help monitor production deployments.
+This documentation covers best practices for monitoring Temporal Cloud.
 
 ## Monitor availability issues
 
@@ -69,6 +69,49 @@ avg_over_time((
     )[1d:10m])
 ```
 
+## Detecting Activity and Workflow Failures
+
+The metrics `temporal_activity_execution_failed` and `temporal_cloud_v0_workflow_failed_count` together provide failure detection for Temporal applications. These metrics work in tandem to give you both granular component-level visibility and high-level workflow health insights.
+
+### Activity failure cascade
+
+If not using infinite retry policies, Activity failures can lead to Workflow failures:
+
+```
+Activity Failure --> Retry Logic --> More Activity Failures --> Workflow Decision --> Potential Workflow Failure
+```
+
+Activity failures are often recoverable and expected. Workflow failures represent terminal states requiring immediate attention.
+A spike in activity failures may precede workflow failures.
+Generally Temporal recommends that Workflows should be designed to always succeed. If an Activity fails more than its retry policy allows, we suggest having the Workflow handle Activity failure and take action to notify a human to take corrective action or be aware of the error.
+
+### Ratio-based monitoring
+
+#### Failure conversion rate
+
+Monitor the ratio of workflow failures to activity failures:
+
+```
+workflow_failure_rate = temporal_cloud_v0_workflow_failed_count / temporal_activity_execution_failed
+```
+
+What to watch for:
+- High ratio (greater than 0.1): Poor error handling - activities failing are causing workflow failures
+- Low ratio (less than 0.01): Good resilience - activities fail but workflows recover
+- Sudden spikes: May indicate systematic issues
+
+#### Activity success rate
+
+```
+activity_success_rate = (total_activities - temporal_activity_execution_failed) / total_activities
+```
+
+Target: >95% for most applications. Lower success rate can be a sign of system troubles.
+See also:
+- [Crafting an Error Handling Strategy](https://learn.temporal.io/courses/errstrat/)
+- [Temporal Failures reference](/references/failures)
+- [Detecting Workflow failures](/encyclopedia/detecting-workflow-failures)
+
 ## Monitor replication lag for Namespaces with High Availability features
 
 Replication lag refers to the transmission delay of Workflow updates and history events from the primary Namespace to the replica.
@@ -113,3 +156,20 @@ sum(rate(temporal_cloud_v0_replication_lag_sum[$__rate_interval])) by (temporal_
 /
 sum(rate(temporal_cloud_v0_replication_lag_count[$__rate_interval])) by (temporal_namespace)
 ```
+
+## Usage and Detecting Resource Exhaustion & Namespace RPS and APS Rate Limits
+
+The Cloud metric `temporal_cloud_v0_resource_exhausted_error_count` is the primary indicator for Cloud-side throttling, signaling that namespace limits
+ are being hit and `ResourceExhausted` gRPC errors are occurring. This generally does not break workflow processing due to how resources are prioritized. 
+In fact, some workloads often run with high amounts of resource exhaustion errors because they are not latency sensitive. Being APS or RPS resource 
+constrained can slow down throughput and is a good indicator that you should request additional capacity. 
+
+To specifically identify whether RPS or APS limits are being hit, this metric can be filtered using the `resource_exhausted_cause` label, which will show values 
+like `ApsLimit` or `RpsLimit`. This label also helps identify the specific operation that was throttled (e.g., polling, respond activity tasks).
+
+Related useful information:
+- Namespace Limits (APS is visible in the Namespace UI)
+- `temporal_cloud_v0_total_action_count`: Useful for tracking the overall action rate (APS)
+- `temporal_cloud_v0_frontend_service_request_count`: Useful for tracking the request rate (RPS)
+- SDK metric `long_request_failure` with cause `resource_exhausted`
+
