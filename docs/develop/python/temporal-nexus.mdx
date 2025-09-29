@@ -139,8 +139,6 @@ The `nexusrpc.handler` and `temporalio.nexus` modules have utilities to help cre
 ### Develop a Synchronous Nexus Operation handler
 
 The `@nexusrpc.handler.sync_operation` decorator is for exposing simple RPC handlers.
-Its handler function can access an SDK client that can be used for signaling, querying, and listing Workflows.
-However, implementations are free to make arbitrary calls to other services or databases, or perform computations such as this one:
 
 [hello_nexus/handler/service_handler.py](https://github.com/temporalio/samples-python/blob/main/hello_nexus/handler/service_handler.py)
 
@@ -155,6 +153,33 @@ class MyNexusServiceHandler:
     ) -> MyOutput:
         return MyOutput(message=f"Hello {input.name} from sync operation!")
 ```
+
+
+A synchronous operation handler must return quickly (less than `10s`).
+In addition to performing simple CPU-bound computations such as the one above, implementations are free to make arbitrary calls to other services or databases.
+The handler function can access an SDK client that can be used to execute signals, updates, or queries against a workflow, or to do other client operations such as listing Workflows.
+The [nexus_sync_operations](https://github.com/temporalio/samples-python/blob/main/nexus_sync_operations) shows how to create a nexus service uses synchronous operations to send updates and queries:
+
+[nexus_sync_operations/handler/service_handler.py](https://github.com/temporalio/samples-python/blob/main/nexus_sync_operations/handler/service_handler.py)
+
+
+```python
+from temporalio import nexus
+
+@nexusrpc.handler.service_handler(service=GreetingService)
+class GreetingServiceHandler:
+
+    @property
+    def greeting_workflow_handle(self) -> WorkflowHandle[GreetingWorkflow, str]:
+        return nexus.client().get_workflow_handle_for(
+            GreetingWorkflow.run, self.workflow_id
+        )
+
+    ...
+```
+
+In addition to `nexus.client()`, you can use `nexus.info()` to access information about the currently-executing nexus operation including its task queue.
+
 
 ### Develop an Asynchronous Nexus Operation handler to start a Workflow
 
