@@ -95,7 +95,7 @@ export default function CookbookHome() {
   return (
     <section className={clsx("cookbook--centered", styles.page)}>
       <div className={styles.inner}>
-        <header className={styles.hero} aria-label="Cookbook overview">
+        <header data-testid="cookbook-hero" className={styles.hero} aria-label="Cookbook overview">
           <p className={styles.eyebrow}>Cookbook</p>
           <h1 className={styles.heroTitle}>AI recipes for Temporal.</h1>
           <p className={styles.heroBlurb}>
