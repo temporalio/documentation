@@ -21,13 +21,11 @@ tags:
   - Temporal Cloud
 ---
 
-import { RelatedReadContainer, RelatedReadItem } from '@site/src/components';
+You will learn how to do the following:
 
-This page shows how to do the following:
-
-- [How to configure an endpoint using the UI](#configure-via-ui)
-- [How to configure an endpoint using tcld](#configure-via-cli-tcld)
-- [How to query for metrics with a PromQL endpoint](#query-promql)
+- [Configure an endpoint using the UI](#configure-via-ui)
+- [Configure an endpoint using tcld](#configure-via-cli-tcld)
+- [Query for metrics with a PromQL endpoint](#query-promql)
 
 ## Configure using the UI {#configure-via-ui}
 
@@ -101,14 +99,14 @@ To disable a metrics endpoint, use [`tcld account metrics disable`](/cloud/tcld/
 
 For more information, see [tcld account metrics command](/cloud/tcld/account#metrics).
 
-## How to query for metrics with a PromQL endpoint {#query-promql}
+## Query for metrics with a PromQL endpoint {#query-promql}
 
 Temporal Cloud emits metrics in a Prometheus-supported format.
 Prometheus is an open-source toolkit for alerting and monitoring.
 The Temporal Service exposes Cloud metrics with a [Prometheus HTTP API endpoint](https://prometheus.io/docs/prometheus/latest/querying/api/).
-Temporal Cloud metrics provide a compatible data source for visualizing, monitoring, and observability platforms like Grafana and Data Dog.
+Temporal Cloud metrics provide a compatible data source for visualizing, monitoring, and observability platforms like Grafana and Datadog.
 
-You can use functions like `rate` or `increase` to calculate the rate of increase for a Temporal Cloud metric:
+You can use functions like [rate](https://prometheus.io/docs/prometheus/latest/querying/functions/#rate) or [increase](https://prometheus.io/docs/prometheus/latest/querying/functions/#increase) to calculate the rate of increase for a Temporal Cloud metric:
 
 ```
 rate(temporal_cloud_v0_frontend_service_request_count[$__rate_interval])

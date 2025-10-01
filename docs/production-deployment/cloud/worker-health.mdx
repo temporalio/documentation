@@ -183,19 +183,19 @@ There are three typical causes for this:
 
 - There are not enough workers to perform work
 - Each worker is either under resourced, or is misconfigured, to handle enough work
-- There is congestion caused by the environment (eg., network) hosting the worker(s) and Temporal Cloud.
+- There is congestion caused by the environment (eg., network) hosting the worker(s) and Temporal Cloud
 
 Consider
-- Increasing either the number of available workers, OR 
-- Verifying that your worker hosts are appropriately resourced, OR
-- Increasing the worker configuration value for concurrent pollers for workers/task executions (if your worker resources can accommodate the increased load), OR
+- Increasing either the number of available workers
+- Verifying that your worker hosts are appropriately resourced
+- Increasing the worker configuration value for concurrent pollers for workers/task executions (if your worker resources can accommodate the increased load)
 - Doing some combination of these
 
 #### High Schedule To Start latency and low sync match rate
 
 Verify that you have not set a value for `ScheduleToStartTimeout` in your Activity Options. This may skew your observations.
 
-It may be acceptable for your use case to have low Sync Match Rate.
+It may be acceptable for your use case to have low sync match rate.
 For example, if you have known workloads or you intentionally throttle tasks.
 
 In this case it's also important to understand the fill and drain rates of the async tasks are during these windows:
@@ -262,10 +262,10 @@ For high volume and low latency, try to target >95%.
 
 There may be too many Pollers for the amount of Workers.
 
-If you see the following at the same time then you might have too many Workers:
+If you see all of the following at the same time then you might have too many Workers:
 
-- Low poll success rate AND
-- Low Schedule To Start latency AND
+- Low poll success rate
+- Low Schedule To Start latency
 - Low worker host resource utilization
 
 **Actions**
