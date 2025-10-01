@@ -51,8 +51,18 @@ function InnerCookbookDocItem({content, tags}: CookbookDocItemProps) {
 
   // Now we're under <DocProvider>, so useDoc() is safe:
   const {metadata, frontMatter, toc, contentTitle} = useDoc();
-  const {title, description, id, unversionedId, tags: metaTags = []} = metadata as typeof metadata & {
+  const {
+    title,
+    description,
+    id,
+    unversionedId,
+    tags: metaTags = [],
+    formattedLastUpdatedAt,
+    lastUpdatedAt,
+  } = metadata as typeof metadata & {
     unversionedId?: string;
+    formattedLastUpdatedAt?: string;
+    lastUpdatedAt?: number | string | null;
   };
   const indexData = usePluginData('cookbook-index') as {items?: CookbookIndexItem[]} | undefined;
   const hasTOC = !frontMatter?.hide_table_of_contents && (toc?.length ?? 0) > 0;
@@ -86,6 +96,43 @@ function InnerCookbookDocItem({content, tags}: CookbookDocItemProps) {
     },
     [isGithubEnabled],
   );
+  const lastUpdatedLabel = React.useMemo(() => {
+    if (formattedLastUpdatedAt) {
+      return formattedLastUpdatedAt;
+    }
+
+    const rawTimestamp = (() => {
+      if (typeof lastUpdatedAt === 'number') {
+        return lastUpdatedAt;
+      }
+      if (typeof lastUpdatedAt === 'string') {
+        const parsed = Number(lastUpdatedAt);
+        return Number.isNaN(parsed) ? undefined : parsed;
+      }
+      return undefined;
+    })();
+
+    if (typeof rawTimestamp !== 'number') {
+      return undefined;
+    }
+
+    try {
+      const formatter = new Intl.DateTimeFormat(undefined, {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      });
+      return formatter.format(new Date(rawTimestamp));
+    } catch {
+      return new Date(rawTimestamp).toLocaleDateString();
+    }
+  }, [formattedLastUpdatedAt, lastUpdatedAt]);
+  const renderLastUpdated = React.useCallback(() => {
+    if (!lastUpdatedLabel) {
+      return null;
+    }
+    return <p className={styles.lastUpdated}>Last updated {lastUpdatedLabel}</p>;
+  }, [lastUpdatedLabel]);
   const renderActions = React.useCallback(() => (
     <div className={styles.actionsRow}>
       <Link className={styles.actionLink} to="/cookbook">
@@ -95,6 +142,8 @@ function InnerCookbookDocItem({content, tags}: CookbookDocItemProps) {
       <a
         className={clsx(styles.actionLink, styles.actionGithub)}
         href={githubHref || undefined}
+        target="_blank"
+        rel="noopener noreferrer"
         aria-disabled={isGithubEnabled ? undefined : 'true'}
         onClick={handleGithubClick}
         tabIndex={isGithubEnabled ? undefined : -1}
@@ -119,6 +168,7 @@ function InnerCookbookDocItem({content, tags}: CookbookDocItemProps) {
           return (
             <>
               <DefaultH1 {...props} />
+              {renderLastUpdated()}
               {renderActions()}
             </>
           );
@@ -126,7 +176,7 @@ function InnerCookbookDocItem({content, tags}: CookbookDocItemProps) {
         return <DefaultH1 {...props} />;
       },
     } as typeof MDXComponents;
-  }, [renderActions, syntheticTitle]);
+  }, [renderActions, renderLastUpdated, syntheticTitle]);
 
   return (
     <HtmlClassNameProvider className="cookbook--centered">
@@ -142,6 +192,7 @@ function InnerCookbookDocItem({content, tags}: CookbookDocItemProps) {
             {syntheticTitle && (
               <header className={styles.syntheticHeader}>
                 <h1>{syntheticTitle}</h1>
+                {renderLastUpdated()}
                 {renderActions()}
               </header>
             )}

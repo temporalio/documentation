@@ -31,6 +31,12 @@
   margin-bottom: var(--ifm-spacing-md, 1rem);
 }
 
+.lastUpdated {
+  margin: 0 0 var(--ifm-spacing-sm, 0.75rem);
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.95rem;
+}
+
 .actionsRow {
   display: flex;
   align-items: center;
