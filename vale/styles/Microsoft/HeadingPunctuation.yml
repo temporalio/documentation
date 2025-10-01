@@ -2,7 +2,7 @@ extends: existence
 message: "Don't use end punctuation in headings."
 link: https://docs.microsoft.com/en-us/style-guide/punctuation/periods
 nonword: true
-level: warning
+level: suggestion
 scope: heading
 action:
   name: edit

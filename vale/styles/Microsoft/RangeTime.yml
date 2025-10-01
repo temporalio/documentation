@@ -2,7 +2,7 @@ extends: existence
 message: "Use 'to' instead of a dash in '%s'."
 link: https://docs.microsoft.com/en-us/style-guide/numbers
 nonword: true
-level: error
+level: suggestion
 action:
   name: edit
   params:
