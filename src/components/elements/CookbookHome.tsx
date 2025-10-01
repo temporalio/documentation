@@ -12,6 +12,7 @@ type CookbookItem = {
   tags: string[];
   permalink: string;
   source?: string;
+  priority?: number;
 };
 
 type DocMeta = {
@@ -22,15 +23,22 @@ type DocMeta = {
   frontMatter?: { title?: string; description?: string; tags?: any[] };
   tags?: { label: string }[];
   permalink?: string;
+  lastUpdatedAt?: number | string | null;
 };
+
+function resolveDocMeta(item: CookbookItem, docsById: Map<string, DocMeta>) {
+  return (
+    docsById.get(item.id) ??
+    docsById.get(`cookbook:${item.id}`) ??
+    docsById.get(item.id.replace(/^cookbook:/, "")) ??
+    null
+  );
+}
 
 function DocTile({ item, docsById }: { item: CookbookItem; docsById: Map<string, DocMeta> }) {
   const { id, title: pluginTitle, description: pluginDescription, tags: pluginTags, permalink: pluginPermalink } = item;
 
-  const docMeta =
-    docsById.get(id) ??
-    docsById.get(`cookbook:${id}`) ??
-    docsById.get(item.id.replace(/^cookbook:/, ""));
+  const docMeta = resolveDocMeta(item, docsById);
 
   const title = docMeta?.title ?? docMeta?.frontMatter?.title ?? pluginTitle;
   const description = docMeta?.description ?? docMeta?.frontMatter?.description ?? pluginDescription;
@@ -92,6 +100,47 @@ export default function CookbookHome() {
     throw new Error("CookbookHome: no items found by cookbook-index plugin (check server logs for [cookbook-index]).");
   }
 
+  const getLastUpdatedTimestamp = React.useCallback(
+    (item: CookbookItem) => {
+      const meta = resolveDocMeta(item, docsById);
+      const rawTimestamp = meta?.lastUpdatedAt;
+      if (typeof rawTimestamp === "number") {
+        return Number.isFinite(rawTimestamp) ? rawTimestamp : 0;
+      }
+      if (typeof rawTimestamp === "string") {
+        const parsed = Number(rawTimestamp);
+        return Number.isFinite(parsed) ? parsed : 0;
+      }
+      return 0;
+    },
+    [docsById]
+  );
+
+  const sortedItems = React.useMemo(() => {
+    return [...items].sort((a, b) => {
+      const priorityA = typeof a.priority === "number" && Number.isFinite(a.priority) ? a.priority : null;
+      const priorityB = typeof b.priority === "number" && Number.isFinite(b.priority) ? b.priority : null;
+
+      if (priorityA !== null && priorityB !== null) {
+        if (priorityA !== priorityB) {
+          return priorityB - priorityA;
+        }
+      } else if (priorityA !== null) {
+        return -1;
+      } else if (priorityB !== null) {
+        return 1;
+      }
+
+      const updatedA = getLastUpdatedTimestamp(a);
+      const updatedB = getLastUpdatedTimestamp(b);
+
+      if (updatedA === updatedB) {
+        return 0;
+      }
+      return updatedB - updatedA;
+    });
+  }, [getLastUpdatedTimestamp, items]);
+
   return (
     <section className={clsx("cookbook--centered", styles.page)}>
       <div className={styles.inner}>
@@ -104,7 +153,7 @@ export default function CookbookHome() {
           </p>
         </header>
         <div className={styles.grid}>
-          {items.map((it) => (
+          {sortedItems.map((it) => (
             <div key={it.id} className={styles.cell}>
               <DocTile item={it} docsById={docsById} />
             </div>

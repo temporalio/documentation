@@ -57,7 +57,19 @@ console.log('[cookbook-index] init with docsDir:', options.docsDir);
 
       const source = typeof data.source === 'string' ? data.source : undefined;
 
+      const rawPriority = data.priority;
+      let priority;
+      if (typeof rawPriority === 'number') {
+        priority = Number.isFinite(rawPriority) ? rawPriority : undefined;
+      } else if (typeof rawPriority === 'string') {
+        const parsed = Number(rawPriority);
+        priority = Number.isFinite(parsed) ? parsed : undefined;
+      }
+
       const item = { id, title, description, tags, permalink, source };
+      if (typeof priority === 'number') {
+        item.priority = priority;
+      }
 
       return item; // ← IMPORTANT: actually return the object
     })
