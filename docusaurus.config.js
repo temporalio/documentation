@@ -96,7 +96,7 @@ module.exports = async function createConfigAsync() {
             right: 'left',
           },
           {
-            label: 'Cookbook',
+            label: 'AI Cookbook',
             to: '/cookbook',
             activeBasePath: 'cookbook',
             position: 'left',

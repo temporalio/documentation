@@ -145,7 +145,7 @@ export default function CookbookHome() {
     <section className={clsx("cookbook--centered", styles.page)}>
       <div className={styles.inner}>
         <header data-testid="cookbook-hero" className={styles.hero} aria-label="Cookbook overview">
-          <p className={styles.eyebrow}>Cookbook</p>
+          <p className={styles.eyebrow}>AI Cookbook</p>
           <h1 className={styles.heroTitle}>AI recipes for Temporal.</h1>
           <p className={styles.heroBlurb}>
             Step-by-step solutions that show how to build reliable, production-ready AI systems with Temporal. Learn
