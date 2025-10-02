@@ -54,7 +54,7 @@ public class InvalidDepartmentException : Exception
 [Activity]
 public Task<OrderConfirmation> SendBillAsync(Bill bill)
 {
-    throw new InvalidDepartmentException();
+    throw new InvalidDepartmentException("Invalid department");
 }
 ```
 
@@ -62,7 +62,7 @@ public Task<OrderConfirmation> SendBillAsync(Bill bill)
 [Activity]
 public Task<OrderConfirmation> SendBillAsync(Bill bill)
 {
-    throw new ApplicationFailureException("InvalidDepartmentException");
+    throw new ApplicationFailureException("Invalid department", errorType: "InvalidDepartmentException");
 }
 ```
 
@@ -75,7 +75,7 @@ This can be useful for deliberately failing a Workflow due to bad input data, ra
 [Activity]
 public Task<OrderConfirmation> SendBillAsync(Bill bill)
 {
-    throw new ApplicationFailureException("InvalidDepartmentException", nonRetryable: true);
+    throw new ApplicationFailureException("Invalid department", nonRetryable: true);
 }
 ```
 

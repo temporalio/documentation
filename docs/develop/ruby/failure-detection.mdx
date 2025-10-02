@@ -61,7 +61,7 @@ class SomethingThatFails < Temporalio::Activity::Definition
     Temporalio::Activity::Context.current.logger.info(
       "We have a problem."
     )
-    raise Temporalio::Error::ApplicationError.new('MyError')
+    raise Temporalio::Error::ApplicationError.new('Simulated failure', type: 'MyError')
   end
 end
 ```
