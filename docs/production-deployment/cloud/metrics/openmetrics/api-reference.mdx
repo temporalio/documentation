@@ -48,13 +48,13 @@ API keys can be created using the [Temporal Cloud UI](https://cloud.temporal.io)
 
 1. Navigate to Settings → Service Accounts  
 2. Create a service account with **"Metrics Read-Only"** Account Level Role
-
-<CaptionedImage
-    src="/img/cloud/metrics/service-account-with-metrics-role.png"
-    title="Creating a Service Account with Metrics Read-Only Role"
-/>
-
 3. Generate an API key within the service account
+
+:::info
+
+See the [docs](https://docs.temporal.io/cloud/api-keys#serviceaccount-api-keys) for more details on generating API keys.
+
+:::
 
 ### Using API Keys
 
@@ -89,7 +89,7 @@ Common labels include:
 
 * **`temporal_namespace`**: The Temporal namespace  
 * **`temporal_account`**: The Temporal account  
-* **`region`**: The AWS/GCP region where the metric originated  
+* **`region`**: The cloud region where the metric originated  
 * **`temporal_workflow_type`**: The workflow type (where applicable)  
 * **`temporal_task_queue`**: The task queue name (where applicable)
 
@@ -161,7 +161,7 @@ To account for metric data latency, this endpoint returns metrics from the curre
 
 | Parameter | Type | Description |
 | ----- | ----- | ----- |
-| `namespaces` | string array | Filter to specific namespaces. Supports wildcards (e.g., `production-*`) |
+| `namespaces` | string array | Filter to specific Namespaces. Supports wildcards (e.g., `production-*`) |
 | `metrics` | string array | Filter to specific metrics |
 
 #### Response Headers
@@ -312,7 +312,7 @@ service:
 
 :::info
 
-Examples for these integrations \+ more live [here](https://github.com/temporal-community/cloud-metrics-scrape-examples).
+Examples for these integrations and more live [here](https://github.com/temporal-community/cloud-metrics-scrape-examples).
 
 :::
 
@@ -380,10 +380,7 @@ scrape_configs:
 
 ```
 
-
-
 :::
-
 
 
 ### Label Management

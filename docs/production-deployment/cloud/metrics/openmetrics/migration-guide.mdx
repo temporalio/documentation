@@ -121,8 +121,8 @@ temporal_cloud_v1_service_latency_p95
 
 **Important Tradeoff**: While pre-calculated percentiles are more accurate for individual time series, they **cannot be accurately aggregated**. For example:
 
-* ❌ Cannot sum or average p95 values across namespaces to get a global p95  
-* ❌ Cannot aggregate p95 values across regions or task queues  
+* ❌ Cannot sum or average p95 values across Namespaces to get a global p95  
+* ❌ Cannot aggregate p95 values across regions or Task Queues  
 * ✅ Can still view individual namespace/task queue percentiles accurately  
 * ✅ More accurate percentile calculations for individual series, especially with outliers
 
@@ -306,7 +306,7 @@ The new endpoint provides access to high-cardinality labels that can significant
 
 ##### Namespace/Metric filtering
 
-Namespace filtering can be used to ensure that metrics are scraped for relevant namespaces, thereby reducing cardinality.
+Namespace filtering can be used to ensure that metrics are scraped for relevant Namespaces, thereby reducing cardinality.
 
 ```
 https://metrics.temporal.io/v1/metrics?namespaces=production-*
