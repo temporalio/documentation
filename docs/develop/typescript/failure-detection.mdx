@@ -58,7 +58,7 @@ if (chargeAmount < 0) {
 if (chargeAmount < 0) {
   throw ApplicationFailure.create({
     message: `Invalid charge amount: ${chargeAmount} (must be above zero)`,
-    type: 'InvalidChargeAmount',
+    type: 'InvalidChargeError',
   });
 }
 ```
