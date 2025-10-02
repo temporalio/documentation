@@ -1,0 +1,199 @@
+name: Visual Comparison
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, labeled]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  HTML_REPORT_URL_PATH: visual-tests/${{ github.head_ref || github.ref_name }}/${{ github.run_id }}/${{ github.run_attempt }}
+
+concurrency:
+  group: visual-comparison-${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  guard:
+    name: Check Trigger Conditions
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      (
+        github.event.pull_request.draft == false &&
+        github.actor != 'dependabot[bot]' &&
+        github.actor != 'dependabot-preview[bot]' &&
+        contains(github.event.pull_request.labels.*.name, 'visual-tests')
+      )
+    steps:
+      - run: |
+          echo "Visual comparison enabled for this run"
+          echo "base ref: ${{ github.base_ref }}"
+          echo "head ref: ${{ github.head_ref }}"
+          echo "report path: ${{ env.HTML_REPORT_URL_PATH }}"
+
+  build-site:
+    name: Build Docusaurus Site
+    needs: guard
+    if: ${{ needs.guard.result == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build static site
+        run: npm run build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: static-site
+          path: build
+          retention-days: 1
+
+  visual-tests:
+    name: Run Playwright Visual Tests
+    needs: [guard, build-site]
+    if: ${{ needs.guard.result == 'success' && needs['build-site'].result == 'success' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shardIndex: [1, 2, 3, 4]
+        shardTotal: [4]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: static-site
+          path: build
+
+      - name: Run Playwright tests
+        run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+
+      - name: Upload blob report
+        uses: actions/upload-artifact@v4
+        with:
+          name: blob-report-${{ matrix.shardIndex }}
+          path: blob-report
+          retention-days: 1
+
+  merge-report:
+    name: Merge HTML Report
+    needs: visual-tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download blob reports
+        uses: actions/download-artifact@v5
+        with:
+          path: all-blob-reports
+          pattern: blob-report-*
+          merge-multiple: true
+
+      - name: Merge into HTML report
+        run: npx playwright merge-reports --reporter html ./all-blob-reports
+
+      - name: Upload HTML report
+        uses: actions/upload-artifact@v4
+        with:
+          name: html-report
+          path: playwright-report
+          retention-days: 3
+
+  publish-report:
+    name: Publish HTML Report
+    needs: [guard, visual-tests, merge-report]
+    runs-on: ubuntu-latest
+    if: ${{ needs.guard.result == 'success' && needs['visual-tests'].result == 'success' && needs['merge-report'].result == 'success' }}
+    steps:
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v5
+        with:
+          ref: gh-pages
+          fetch-depth: 0
+
+      - name: Configure git user
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Download HTML report
+        uses: actions/download-artifact@v5
+        with:
+          name: html-report
+          path: ${{ env.HTML_REPORT_URL_PATH }}
+
+      - name: Commit report
+        run: |
+          if git status --short | grep .; then
+            git add ${{ env.HTML_REPORT_URL_PATH }}
+            git commit -m "workflow: add visual report for run ${{ github.run_id }} (attempt ${{ github.run_attempt }})"
+            for attempt in {1..5}; do
+              git pull --rebase
+              if git push; then
+                exit 0
+              fi
+              echo "Push failed (attempt $attempt). Retrying in 5s..."
+              sleep 5
+            done
+            echo "Unable to push HTML report after 5 attempts"
+            exit 1
+          else
+            echo "No report changes to commit"
+          fi
+
+      - name: Display report URL
+        run: |
+          echo "::notice title=Playwright Visual Report::https://temporalio.github.io/documentation/${{ env.HTML_REPORT_URL_PATH }}"
+
+      - name: Comment on PR with report URL
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: mshick/add-pr-comment@v2
+        with:
+          message: |
+            📋 Visual comparison report for `${{ github.head_ref || github.ref_name }}` (run ${{ github.run_id }}, attempt ${{ github.run_attempt }}) is ready:
+              https://temporalio.github.io/documentation/${{ env.HTML_REPORT_URL_PATH }}
+
+            💡 If the page 404s, wait for GitHub Pages to publish the new commit and try again.
+          message-failure: 👎 Unable to publish the visual comparison report link.
+          refresh-message-position: true
+          update-only: false

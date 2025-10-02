@@ -4,6 +4,9 @@ secure
 
 # Production
 build
+playwright-report
+blob-report
+test-results
 
 # Generated files
 .docusaurus

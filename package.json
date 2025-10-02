@@ -20,6 +20,7 @@
     "start": "docusaurus start",
     "swizzle": "docusaurus swizzle",
     "vale": "./assembly/run-vale.sh",
+    "test:visual": "playwright test",
     "write-heading-ids": "docusaurus write-heading-ids",
     "write-translations": "docusaurus write-translations"
   },
@@ -66,6 +67,7 @@
     "webpack-font-preload-plugin": "^1.5.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.55.1",
     "dprint": "^0.45.0",
     "eslint": "^7.32.0",
     "eslint-plugin-react": "^7.23.2",
