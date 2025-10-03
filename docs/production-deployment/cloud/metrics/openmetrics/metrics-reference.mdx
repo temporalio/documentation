@@ -2,7 +2,7 @@
 id: metrics-reference
 title: OpenMetrics Metrics Reference
 sidebar_label: Metrics Reference
-description: Detailed API documentation for the Temporal Cloud OpenMetrics endpoint
+description: Detailed API documentation for the Temporal Cloud OpenMetrics endpoint.
 keywords:
   - temporal cloud metrics configuration
   - configure metrics endpoint
@@ -33,11 +33,11 @@ Temporal Cloud OpenMetrics support is available in  [Public Preview](/evaluate/d
 
 ### Metric Types
 
-All metrics are exposed as OpenMetrics gauges but represent different measurement types:
+All metrics are exposed as OpenMetrics gauges, but represent different measurement types:
 
-* **Rate Metrics**: per-second rate of the aggregated values  
-* **Value Metrics**: The most recent aggregate value within some lookback window(e.g., backlogs, limits)  
-* **Percentile Metrics**: Pre-calculated aggregated latency percentiles in seconds
+* *Rate Metrics*: per-second rate of the aggregated values  
+* *Value Metrics*: The most recent aggregate value within a look-back window (e.g. backlogs, limits)  
+* *Percentile Metrics*: Pre-calculated aggregated latency percentiles in seconds
 
 :::note
 
@@ -53,7 +53,7 @@ All metrics include these base labels:
 | ----- | ----- |
 | `temporal_namespace` | The Temporal namespace |
 | `temporal_account` | The Temporal account identifier |
-| `region` | cloud region where the metric originated |
+| `region` | Cloud region where the metric originated |
 
 ## Metrics Catalog
 
@@ -66,7 +66,7 @@ The number of frontend service gRPC requests received per second.
 | Label | Description |
 | ----- | ----- |
 | `operation` | The name of the RPC operation |
-| `temporal_service_type` | The temporal service type |
+| `temporal_service_type` | The Temporal service type |
 
 **Type**: Rate
 
@@ -83,12 +83,12 @@ The number of frontend service gRPC errors per second.
 
 #### temporal\_cloud\_v1\_frontend\_service\_pending\_requests
 
-The number of pollers that are waiting for a task
+The number of pollers that are waiting for a task.
 
 | Label | Description |
 | ----- | ----- |
 | `operation` | The name of the operation |
-| `temporal_service_type` | The temporal service type |
+| `temporal_service_type` | The Temporal service type |
 
 **Type**: Value
 
@@ -106,7 +106,7 @@ The number of resource exhaustion errors per second.
 
 :::caution
 
-Avoid aggregating this metric across dimensions as the percentile won't be accurate.
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
 
 :::
 
@@ -115,7 +115,7 @@ The 50th percentile latency of service requests in seconds
 | Label | Description |
 | ----- | ----- |
 | `operation` | The name of the operation |
-| `temporal_service_type` | The temporal service type |
+| `temporal_service_type` | The Temporal service type |
 
 **Type**: Latency  
 
@@ -123,7 +123,7 @@ The 50th percentile latency of service requests in seconds
 
 :::caution
 
-Avoid aggregating this metric across dimensions as the percentile won't be accurate.
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
 
 :::
 
@@ -132,7 +132,7 @@ The 95th percentile latency of service requests in seconds
 | Label | Description |
 | ----- | ----- |
 | `operation` | The name of the operation |
-| `temporal_service_type` | The temporal service type |
+| `temporal_service_type` | The Temporal service type |
 
 **Type**: Latency  
 
@@ -149,7 +149,7 @@ The 99th percentile latency of service requests in seconds
 | Label | Description |
 | ----- | ----- |
 | `operation` | The name of the operation |
-| `temporal_service_type` | The temporal service type |
+| `temporal_service_type` | The Temporal service type |
 
 **Type**: Latency  
 
@@ -157,7 +157,7 @@ The 99th percentile latency of service requests in seconds
 
 :::caution High Cardinality
 
-These metrics could have high cardinality depending on number of workflow types and task queues
+These metrics could have high cardinality depending on number of workflow types and task queues.
 
 :::
 
@@ -168,7 +168,7 @@ The number of successful workflow completions per second.
 | Label | Description |
 | ----- | ----- |
 | `operation` | The operation name |
-| `temporal_service_type` | The temporal service type |
+| `temporal_service_type` | The Temporal service type |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 
@@ -181,7 +181,7 @@ The number of workflow failures per second.
 | Label | Description |
 | ----- | ----- |
 | `operation` | The operation name |
-| `temporal_service_type` | The temporal service type |
+| `temporal_service_type` | The Temporal service type |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 
@@ -194,7 +194,7 @@ The number of workflow timeouts per second.
 | Label | Description |
 | ----- | ----- |
 | `operation` | The operation name |
-| `temporal_service_type` | The temporal service type |
+| `temporal_service_type` | The Temporal service type |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 
@@ -207,7 +207,7 @@ The number of workflow cancellations per second.
 | Label | Description |
 | ----- | ----- |
 | `operation` | The operation name |
-| `temporal_service_type` | The temporal service type |
+| `temporal_service_type` | The Temporal service type |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 
@@ -220,7 +220,7 @@ The number of workflow terminations per second.
 | Label | Description |
 | ----- | ----- |
 | `operation` | The operation name |
-| `temporal_service_type` | The temporal service type |
+| `temporal_service_type` | The Temporal service type |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 
@@ -233,7 +233,7 @@ The number of workflows continued as new per second.
 | Label | Description |
 | ----- | ----- |
 | `operation` | The operation name |
-| `temporal_service_type` | The temporal service type |
+| `temporal_service_type` | The Temporal service type |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 
@@ -243,7 +243,7 @@ The number of workflows continued as new per second.
 
 :::caution High Cardinality
 
-These metrics could have high cardinality depending on number of task queues present
+These metrics could have high cardinality depending on number of task queues present.
 
 :::
 
@@ -266,7 +266,7 @@ The number of successfully matched tasks per second.
 | ----- | ----- |
 | `operation` | The poll operation name |
 | `task_type` | Type of task: `workflow` or `activity` |
-| `temporal_service_type` | The temporal service type |
+| `temporal_service_type` | The Temporal service type |
 | `temporal_task_queue` | The task queue name |
 
 **Type**: Rate
@@ -279,7 +279,7 @@ The number of tasks matched synchronously per second (no polling wait).
 | ----- | ----- |
 | `operation` | The poll operation name |
 | `task_type` | Type of task: `workflow` or `activity` |
-| `temporal_service_type` | The temporal service type |
+| `temporal_service_type` | The Temporal service type |
 | `temporal_task_queue` | The task queue name |
 
 **Type**: Rate
@@ -292,7 +292,7 @@ The rate of poll requests that timed out without receiving a task.
 | ----- | ----- |
 | `operation` | The poll operation name |
 | `task_type` | Type of task: `workflow` or `activity` |
-| `temporal_service_type` | The temporal service type |
+| `temporal_service_type` | The Temporal service type |
 | `temporal_task_queue` | The task queue name |
 
 **Type**: Rate
@@ -316,8 +316,8 @@ The current number of open workflows in a namespace.
 
 | Label | Description |
 | ----- | ----- |
-| `service_name` | The name of the temporal service |
-| `temporal_service_type` | The temporal service type |
+| `service_name` | The name of the Temporal service |
+| `temporal_service_type` | The Temporal service type |
 
 **Type**: Value
 
@@ -345,7 +345,7 @@ The number of operations performed per second.
 | Label | Description |
 | ----- | ----- |
 | `operation` | The name of the operation |
-| `is_background` | Whether background operation: `true` or `false` |
+| `is_background` | State of the background operation: `true` or `false` |
 | `namespace_mode` | The namespace mode |
 
 **Type**: Rate
@@ -357,7 +357,7 @@ The number of operations throttled due to rate limits per second.
 | Label | Description |
 | ----- | ----- |
 | `operation` | The name of the operation |
-| `is_background` | Whether background operation: `true` or `false` |
+| `is_background` | State of the background operation: `true` or `false` |
 | `namespace_mode` | The namespace mode |
 
 **Type**: Rate
@@ -392,19 +392,19 @@ The rate of scheduled workflows delayed due to rate limiting.
 
 #### temporal\_cloud\_v1\_replication\_lag\_p50
 
-The 50th percentile cross-region replication lag in seconds
+The 50th percentile cross-region replication lag in seconds.
 
 **Type**: Latency
 
 #### temporal\_cloud\_v1\_replication\_lag\_p95
 
-The 95th percentile cross-region replication lag in seconds
+The 95th percentile cross-region replication lag in seconds.
 
 **Type**: Latency
 
 #### temporal\_cloud\_v1\_replication\_lag\_p99
 
-The 99th percentile cross-region replication lag in seconds
+The 99th percentile cross-region replication lag in seconds.
 
 **Type**: Latency
 
@@ -418,13 +418,13 @@ The current configured actions per second limit for a namespace.
 
 #### temporal\_cloud\_v1\_frontend\_rps\_limit
 
-The current configured frontend service RPS limit for a namespace
+The current configured frontend service RPS limit for a namespace.
 
 **Type**: Value
 
 #### temporal\_cloud\_v1\_poller\_limit
 
-The current configured poller limit for a namespace
+The current configured poller limit for a namespace.
 
 **Type**: Value
 
