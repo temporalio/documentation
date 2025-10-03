@@ -59,7 +59,7 @@ function DocTile({ item, docsById }: { item: CookbookItem; docsById: Map<string,
 
   const href = docMeta?.permalink ?? pluginPermalink ?? "#";
 
-  return <Tile title={title} description={description} href={href} tags={resolvedTags} />;
+  return <Tile title={title} description={description} href={href} tags={resolvedTags} headingLevel="h2" />;
 }
 
 export default function CookbookHome() {
@@ -147,7 +147,7 @@ export default function CookbookHome() {
         <header data-testid="cookbook-hero" className={styles.hero} aria-label="Cookbook overview">
           <h1 className={styles.heroTitle}>AI Cookbook</h1>
           <p className={styles.heroBlurb}>
-            Step-by-step solutions that show how to build reliable, production-ready AI systems with Temporal. Learn
+            Step-by-step solutions that show you how to build reliable, production-ready AI systems with Temporal. Learn
             practical paradigms for prompts, tools, retries, and Workflow design.
           </p>
         </header>

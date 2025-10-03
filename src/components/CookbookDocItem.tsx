@@ -167,9 +167,9 @@ function InnerCookbookDocItem({content, tags}: CookbookDocItemProps) {
           actionsInjected = true;
           return (
             <>
+              {renderActions()}
               <DefaultH1 {...props} />
               {renderLastUpdated()}
-              {renderActions()}
             </>
           );
         }
@@ -191,9 +191,9 @@ function InnerCookbookDocItem({content, tags}: CookbookDocItemProps) {
           <article className={styles.article} data-tags={dataTags} data-doc-id={id}>
             {syntheticTitle && (
               <header className={styles.syntheticHeader}>
+                {renderActions()}
                 <h1>{syntheticTitle}</h1>
                 {renderLastUpdated()}
-                {renderActions()}
               </header>
             )}
             {hasTOC && (
