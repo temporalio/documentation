@@ -68,8 +68,8 @@ export default function CookbookHome() {
 
   const dataAny = usePluginData("cookbook-index") as any;
   const allDocsData = useAllDocsData();
-  const cookbookDocs = allDocsData?.cookbook?.versions?.find((version: any) => version?.isLast) ??
-    allDocsData?.cookbook?.versions?.[0];
+  const cookbookDocs =
+    allDocsData?.cookbook?.versions?.find((version: any) => version?.isLast) ?? allDocsData?.cookbook?.versions?.[0];
 
   const docsById = React.useMemo(() => {
     const map = new Map<string, DocMeta>();
@@ -145,11 +145,10 @@ export default function CookbookHome() {
     <section className={clsx("cookbook--centered", styles.page)}>
       <div className={styles.inner}>
         <header data-testid="cookbook-hero" className={styles.hero} aria-label="Cookbook overview">
-          <p className={styles.eyebrow}>AI Cookbook</p>
-          <h1 className={styles.heroTitle}>AI recipes for Temporal.</h1>
+          <h1 className={styles.heroTitle}>AI Cookbook</h1>
           <p className={styles.heroBlurb}>
             Step-by-step solutions that show how to build reliable, production-ready AI systems with Temporal. Learn
-            practical paradigms for prompts, tools, retries, and workflow design.
+            practical paradigms for prompts, tools, retries, and Workflow design.
           </p>
         </header>
         <div className={styles.grid}>
