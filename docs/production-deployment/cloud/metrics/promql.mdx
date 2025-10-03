@@ -23,15 +23,13 @@ tags:
 
 :::tip
 
-Need to scrape metrics into your observability stack? Try out the new [OpenMetrics endpoint](/cloud/metrics/openmetrics)
+Need to scrape metrics into your observability stack? Try out the new [OpenMetrics endpoint](/cloud/metrics/openmetrics).
 
 :::
 
-Metrics for all Namespaces in your account are available from your metrics endpoint.
+Metrics for all Namespaces in your account are available from your metrics endpoint. Keep in mind that your Temporal Cloud metrics lag real-time performance by about one minute. Temporal Cloud also only retains raw metrics for seven days.
 
-Metrics lag real-time performance by about one minute.
 
-Temporal Cloud retains raw metrics for seven days.
 
 To ensure security of your metrics, a CA certificate dedicated to observability is required.
 Only clients that use certificates signed by that CA, or that chain up to the CA, can query the metrics endpoint.
