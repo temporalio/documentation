@@ -196,7 +196,8 @@ scrape_configs:
     scheme: https
     metrics_path: '/v1/metrics'
     honor_timestamps: true
-    scrape_interval: 30s
+    scrape_interval: 60s
+    scrape_timeout: 30s
     authorization:
       type: Bearer
       credentials: 'API_KEY'
