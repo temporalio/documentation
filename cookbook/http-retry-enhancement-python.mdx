@@ -1,11 +1,12 @@
 ---
 title: Retry Policy from HTTP Responses
-description: This is my second recipe.
-tags: [retry, python]
-source: https://github.com/jssmith/temporal-ai-cookbook/tree/simple-agent/hello_world/http_retry_enhancement_python
+description: Extract retry information from HTTP response headers and make it available to Temporal's retry mechanisms.
+tags: [foundations, openai, python]
+priority: 920
+source: https://github.com/temporalio/ai-cookbook/tree/main/foundations/http_retry_enhancement_python
 ---
 
-This recipe extends the [Basic Example](./basic_python) to show how to extract retry information from HTTP response headers and make it available to Temporal's retry mechanisms.
+This recipe extends the [Basic Example](./basic-python) to show how to extract retry information from HTTP response headers and make it available to Temporal's retry mechanisms.
 
 HTTP response codes and headers on API calls have implications for retry behavior.
 For example, an HTTP `404 Not Found` generally represents an application-level error that should not be retried.
