@@ -327,28 +327,28 @@ For example, in Prometheus this can be done via [relabeling rules](https://prome
 
 ```yaml
 metric_relabel_configs:
-   - source_labels: [__name__]
-     regex: 'temporal_cloud_v1_poll_success_count'
-     action: labeldrop
-     regex: 'temporal_task_queue'
+- source_labels: [__name__]
+  regex: 'temporal_cloud_v1_poll_success_count'
+  action: labeldrop
+  regex: 'temporal_task_queue'
 ```
 
 Or you can even relabel certain label values in order to keep significant ones. For example, it’s possible to rename less important task queues to “unknown” while retaining important ones.
 
 ```yaml
 metric_relabel_configs:
-  - source_labels: [temporal_task_queue]
-    regex: '(critical-queue|payment-queue)'
-    target_label: __tmp_keep_original
-    replacement: 'true'
-  # For anything without the keep flag, replace with "unknown"  
-  - source_labels: [__tmp_keep_original]
-    regex: ''  # empty/missing value
-    target_label: temporal_task_queue
-    replacement: 'unknown'
-  # Clean up the temporary label
-  - regex: '__tmp_keep_original'
-    action: labeldrop
+- source_labels: [temporal_task_queue]
+  regex: '(critical-queue|payment-queue)'
+  target_label: __tmp_keep_original
+  replacement: 'true'
+# For anything without the keep flag, replace with "unknown"  
+- source_labels: [__tmp_keep_original]
+  regex: ''  # empty/missing value
+  target_label: temporal_task_queue
+  replacement: 'unknown'
+# Clean up the temporary label
+- regex: '__tmp_keep_original'
+  action: labeldrop
 ```
 
 ## Limits
@@ -374,7 +374,7 @@ Historical data from the query endpoint will remain in your observability platfo
 
 ### Q: Are there limits to how frequently I can scrape or how much data will be returned?
 
-The limits are documented on the main OpenMetrics endpoint documentation page.
+The limits are documented [here](/production-deployment/cloud/metrics/openmetrics/api-reference#api-limits).
 
 ### Q: Why are some metrics missing from my scrapes? I don’t see all the metrics documented.
 

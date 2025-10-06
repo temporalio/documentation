@@ -280,17 +280,17 @@ receivers:
   prometheus:
     config:
       scrape_configs:
-        - job_name: 'temporal-cloud'
-          scrape_interval: 60s
-          scrape_timeout: 30s
-          honor_timestamps: true
-          scheme: https
-          authorization:
-            type: Bearer
-            credentials_file: <API_KEY_FILE>
-          static_configs:
-            - targets: ['metrics.temporal.io']
-          metrics_path: '/v1/metrics'
+      - job_name: 'temporal-cloud'
+        scrape_interval: 60s
+        scrape_timeout: 30s
+        honor_timestamps: true
+        scheme: https
+        authorization:
+          type: Bearer
+          credentials_file: <API_KEY_FILE>
+        static_configs:
+          - targets: ['metrics.temporal.io']
+        metrics_path: '/v1/metrics'
 
 processors:
   batch:
@@ -366,14 +366,14 @@ In Prometheus, the `params` config can be set to match the same behavior as abov
 
 ```yaml
 scrape_configs:
-  - job_name: 'temporal-cloud'
-    ...
-    static_configs:
-      - targets: ['metrics.temporal.io']
-    metrics_path: '/v1/metrics'
-    params:
-      namespaces: ['prod-*']
-      metrics: ['temporal_cloud_v1_approximate_backlog_count']
+- job_name: 'temporal-cloud'
+  ...
+  static_configs:
+    - targets: ['metrics.temporal.io']
+  metrics_path: '/v1/metrics'
+  params:
+    namespaces: ['prod-*']
+    metrics: ['temporal_cloud_v1_approximate_backlog_count']
 
 ```
 
@@ -388,19 +388,19 @@ If using Prometheus, you can configure it to drop metrics with a specific label 
 
 ```yaml
 metric_relabel_configs:
-  # Consolidate non-critical task queues
-  - source_labels: [temporal_task_queue]
-    regex: '(critical-queue|payment-queue)'
-    target_label: __tmp_keep_original
-    replacement: 'true'
-    
-  - source_labels: [__tmp_keep_original]
-    regex: ''
-    target_label: temporal_task_queue
-    replacement: 'other'
-    
-  - regex: '__tmp_keep_original'
-    action: labeldrop
+# Consolidate non-critical task queues
+- source_labels: [temporal_task_queue]
+  regex: '(critical-queue|payment-queue)'
+  target_label: __tmp_keep_original
+  replacement: 'true'
+  
+- source_labels: [__tmp_keep_original]
+  regex: ''
+  target_label: temporal_task_queue
+  replacement: 'other'
+  
+- regex: '__tmp_keep_original'
+  action: labeldrop
 ```
 
 #### OpenTelemetry Collector
