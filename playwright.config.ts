@@ -1,37 +1,42 @@
-import { devices, defineConfig } from "@playwright/test";
+import { defineConfig, devices } from '@playwright/test';
+import path from 'path';
 
-const DEFAULT_BASE_URL = "http://127.0.0.1:3000";
+const PORT = Number(process.env.PORT ?? 3000);
+const BASE_URL = process.env.PLAYWRIGHT_BASE_URL ?? `http://localhost:${PORT}`;
+const SNAPSHOT_DIR = process.env.PLAYWRIGHT_SNAPSHOT_DIR
+  ? path.resolve(process.env.PLAYWRIGHT_SNAPSHOT_DIR)
+  : path.resolve(__dirname, 'screenshots');
 
 export default defineConfig({
-  snapshotDir: "screenshots",
-  testDir: "visuals",
-  fullyParallel: true,
-  retries: process.env.CI ? 1 : 0,
+  testDir: './tests/playwright',
+  timeout: 60_000,
   expect: {
-    toMatchSnapshot: {
-      maxDiffPixels: 100,
-    },
-    toHaveScreenshot: {
-      maxDiffPixels: 100,
-    },
-    timeout: 30_000,
+    timeout: 10_000,
   },
-  reporter: process.env.CI ? "blob" : "html",
-  webServer: {
-    command: "npm run serve -- --dir build --no-open --host 127.0.0.1 --port 3000",
-    url: process.env.PLAYWRIGHT_BASE_URL ?? DEFAULT_BASE_URL,
-    reuseExistingServer: !process.env.CI,
-    timeout: 120 * 1000,
+  snapshotDir: SNAPSHOT_DIR,
+  snapshotPathTemplate: '{snapshotDir}/{projectName}/{testFilePath}/{arg}{ext}',
+  fullyParallel: true,
+  forbidOnly: !!process.env.CI,
+  retries: process.env.CI ? 2 : 0,
+  workers: process.env.CI ? 1 : undefined,
+  use: {
+    baseURL: BASE_URL,
+    trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
   },
+  webServer: process.env.PLAYWRIGHT_BASE_URL
+    ? undefined
+    : {
+        command: 'yarn start',
+        url: BASE_URL,
+        reuseExistingServer: !process.env.CI,
+        timeout: 120_000,
+      },
   projects: [
     {
-      name: "chromium",
-      use: {
-        ...devices["Desktop Chrome"],
-        baseURL: process.env.PLAYWRIGHT_BASE_URL ?? DEFAULT_BASE_URL,
-        trace: process.env.CI ? "retain-on-failure" : "off",
-        video: process.env.CI ? "retain-on-failure" : "off",
-      },
+      name: 'chromium-desktop',
+      use: { ...devices['Desktop Chrome'] },
     },
   ],
 });
