@@ -26,34 +26,38 @@ import * as Components from '@site/src/components';
 
 Before configuring the Export Sink, ensure you have the following:
 
-1. An AWS account with write permission to an S3 bucket.
-2. An AWS S3 bucket.
+1. An AWS S3 bucket.
    - The S3 bucket must reside in the same region as your Namespace.
+2. (optional) An IAM role that has write permission to the above S3 bucket.
+   - You can follow the automation in the UI to create the IAM role. Please pre-create the role if setting up Export via terraform/tcld. 
 3. (optional) A KMS ARN associated with the S3 bucket.
 
-## Configure Workflow History Export using Temporal Cloud UI or `tcld`
+## Configure Workflow History export
 
-You can use either the [Temporal Cloud UI](#using-temporal-cloud-ui) or [`tcld`](#using-tcld) to configure the Workflow History Export.
+There are multiple ways to configure export: through the [Temporal Cloud UI](#using-temporal-cloud-ui), [`tcld`](#using-tcld), or [`terraform`](#using-terraform).
+
+### Using Temporal Cloud UI
+
+You can use the Temporal Cloud UI to configure the Workflow History Export.
 
 The Temporal Cloud UI provides two ways for configuring Workflow History Export:
 
-- [Automated setup](#automated-setup) (recommended): The Cloud UI launches the AWS CloudFormation Console to create a stack, with write permission to the S3 bucket.
+- [Automated setup](#automated-setup) (recommended): The Cloud UI launches the AWS CloudFormation Console to create a stack with write permission to the S3 bucket.
 - [Manual setup](#manual-setup): The Cloud UI provides a CloudFormation template for users to manually configure a CloudFormation stack.
 
-:::note Why does Temporal Cloud provision multiple service accounts for Export?
+:::note Why does Temporal Cloud provision multiple internal IAM roles to trust for Export?
 
-Temporal Cloud creates multiple intermediary service accounts for export operations primarily for security purposes. 
-The system randomly selects from these accounts when writing to your storage sink, which provides several benefits:
+Temporal Cloud creates multiple intermediary IAM roles for export operations primarily for security purposes. 
+The system randomly selects from these roles when writing to your storage sink, which provides several benefits:
 
-- **Security isolation**: If one service account is compromised or needs to be decommissioned, other accounts remain available
-- **Load distribution**: Avoid relying on a single account, reducing security risk
-- **Warm standby**: Keeps multiple accounts active to avoid potential throttling when switching between accounts
-- **Reliability**: Provides resilience against cloud provider account-level issues that could affect a single service account
+- **Security isolation**: If one IAM role is compromised or needs to be decommissioned, other IAM roles remain available
+- **Load distribution**: Avoids relying on a single IAM role, reducing security risk
+- **Warm standby**: Keeps multiple IAM roles active to avoid potential throttling when switching between IAM roles
+- **Reliability**: Provides resilience against cloud provider account-level issues that could affect a single IAM role
 
-This approach prioritizes security and availability, ensuring robust export operations even if individual service accounts encounter issues.
+This approach prioritizes security and availability, ensuring robust export operations even if individual IAM roles encounter issues.
 :::
 
-### Using Temporal Cloud UI
 
 The following steps guide you through setting up Workflow History Export using the Temporal Cloud UI.
 
@@ -94,9 +98,9 @@ You can manually configure a CloudFormation stack using the provided template.
 
 ### Using `tcld`
 
-Run the `tcld namespace export s3 create` command and provide the following information.
+Run the `tcld namespace export s3 create` command and provide the following information:
 
-- `--namespace` : The Namespace to configure export for.
+- `--namespace`: The Namespace to configure export for.
 - `--sink-name`: The name of the export sink.
 - `--role-arn`: The ARN of the AWS IAM role to use for the CloudFormation stack that has write permission to the S3 bucket.
 - `--s3-bucket-name`: The name of the AWS S3 bucket.
@@ -140,6 +144,11 @@ The following is an example of the output:
   "lastHealthCheckTime": "2023-08-14T21:30:02Z"
 }
 ```
+
+### Using `terraform`
+
+See the [terraform export support](https://registry.terraform.io/providers/temporalio/temporalcloud/latest/docs/resources/namespace_export_sink) for setup instructions.
+
 
 ### Next Steps
 
