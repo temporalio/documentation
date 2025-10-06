@@ -12,7 +12,7 @@ type SomeData struct {
 	X string
 }
 
-// YourWorkflow is a simple Workflow Defintion.
+// YourWorkflow is a simple Workflow Definition.
 func YourWorkflow(ctx workflow.Context) (*SomeData, error) {
 	activityOptions := workflow.ActivityOptions{
 		StartToCloseTimeout: 10 * time.Second,

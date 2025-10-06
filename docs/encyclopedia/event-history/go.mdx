@@ -212,7 +212,7 @@ captions={[
 "The Worker dequeues the Task and resumes execution of the Workflow. The `WorkflowTaskStarted` Event gets appended to the Event History.",
 "The Worker then executes the next few lines of code, evaluating the distance.",
 "The Worker reaches the request to start the Timer. Therefore, it notifies the Service to complete the current Workflow Task.",
-"The Worker will complete the current Workflow Task, adding `WorkflowTaskCompleted` to the Event History. This Event includes the the `StartTimer` Command.",
+"The Worker will complete the current Workflow Task, adding `WorkflowTaskCompleted` to the Event History. This Event includes the `StartTimer` Command.",
 "The Worker issues a `StartTimer` Command to the Service, requesting it to set the Timer for 30 minutes. The Service records a `TimerStarted` Event in response.",
 "The Workflow does not progress until the Timer fires.",
 "After 30 minutes has elapsed, the Timer fires, and the Service records a `TimerFired` Event.",

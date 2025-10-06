@@ -28,7 +28,7 @@
   --feedback-white-color: #fff;
 }
 
-html[data-theme="dark"] {
+html[data-theme="dark"]:root {
   --ifm-color-primary: #bfdbfe;
   --ifm-background-color: #141414;
   --ifm-footer-background-color: #000000;
@@ -63,7 +63,7 @@ html[data-theme="dark"] {
   --tag-text-color: var(--tag-text-color-dark);
 }
 
-html[data-theme="light"] {
+html[data-theme="light"]:root {
   --ifm-color-primary: #1d4ed8;
   --ifm-background-color: #f9fafb;
   --ifm-footer-background-color: #ffffff;
