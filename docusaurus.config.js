@@ -97,8 +97,8 @@ module.exports = async function createConfigAsync() {
           },
           {
             label: 'AI Cookbook',
-            to: '/cookbook',
-            activeBasePath: 'cookbook',
+            to: '/ai-cookbook',
+            activeBasePath: 'ai-cookbook',
             position: 'left',
           },
           {
@@ -222,7 +222,7 @@ module.exports = async function createConfigAsync() {
           docs: {
             sidebarPath: require.resolve('./sidebars.js'),
             routeBasePath: '/',
-            exclude: ['**/clusters/**', '**/cookbook/**'], // do not render context content
+            exclude: ['**/clusters/**', '**/ai-cookbook/**'], // do not render context content
             editUrl: 'https://github.com/temporalio/documentation/edit/main/docs/',
             /**
              * Whether to display the author who last updated the doc.
@@ -333,13 +333,13 @@ module.exports = async function createConfigAsync() {
       [
         '@docusaurus/plugin-content-docs',
         {
-          id: 'cookbook',
-          path: 'cookbook',
-          routeBasePath: 'cookbook', // published at /cookbook/* ✅
+          id: 'ai-cookbook',
+          path: 'ai-cookbook',
+          routeBasePath: 'ai-cookbook', // published at /ai-cookbook/* ✅
           sidebarPath: false, // no left nav for these pages ✅
           // optional polish:
           showLastUpdateAuthor: true,
-          showLastUpdateTime: true,
+          showLastUpdateTime: true, 
           // use a custom item to center the content:
           docItemComponent: '@site/src/components/CookbookDocItem',
           docCategoryGeneratedIndexComponent: '@site/src/components/CookbookCategoryIndex', // ⬅️ isolated override
@@ -348,8 +348,8 @@ module.exports = async function createConfigAsync() {
       [
         require.resolve('./plugins/cookbook-index'),
         {
-          docsDir: 'cookbook', // change if your folder differs
-          routeBasePath: 'cookbook', // change if you use a different base
+          docsDir: 'ai-cookbook', // change if your folder differs
+          routeBasePath: 'ai-cookbook', // change if you use a different base
         },
       ],
       [
