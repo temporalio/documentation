@@ -126,7 +126,6 @@ The `X-Completeness` header indicates whether the response contains all availabl
 
 * `complete`: The response contains all metrics requested  
 * `limited`: Response truncated due to size limits (30k metric data points max). Use namespace or metric filtering to reduce the response size.
-  * use namespace or metric filtering to reduce the response size  
 * `unknown`: Completeness cannot be determined (possibly due to regional issues or timeouts). Clients are encouraged to retry.
 
 ### Retry Logic
