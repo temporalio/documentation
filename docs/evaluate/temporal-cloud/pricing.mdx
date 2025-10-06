@@ -91,7 +91,7 @@ Under this framework, a Workflow Execution has only two states, open (Active Sto
 
 - _Active Storage_ measures the amount of storage used by active Workflows.
 
-- When the execution of a Workflow finishes, Temporal Cloud stores Event History for a defined Retention Period, which is set by the user per Namespace.
+- When the execution of a Workflow finishes, Temporal Cloud stores Event History for a defined [Retention Period](/temporal-service/temporal-server#retention-period), which is set by the user per Namespace.
   This is _Retained Storage_.
   Typical uses of Retained Storage include compliance, debugging, workload refresh, and business analytics.
   When closed Workflow Histories need to be retained for more than the 90-day maximum period on Temporal Cloud, we recommend using our [**Export**](/cloud/export) feature.

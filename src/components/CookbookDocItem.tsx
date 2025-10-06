@@ -135,7 +135,7 @@ function InnerCookbookDocItem({content, tags}: CookbookDocItemProps) {
   }, [lastUpdatedLabel]);
   const renderActions = React.useCallback(() => (
     <div className={styles.actionsRow}>
-      <Link className={styles.actionLink} to="/cookbook">
+      <Link className={styles.actionLink} to="/ai-cookbook">
         <BackArrowIcon className={styles.actionIcon} />
         Back to Cookbook
       </Link>
