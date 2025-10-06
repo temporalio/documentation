@@ -29,6 +29,8 @@ An expired root CA certificate invalidates all downstream certificates.
 An expired end-entity certificate prevents a [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) from connecting to a Namespace or starting a Workflow Execution.
 If the client is on a Worker, any current Workflow Executions that are processed by that Worker either run indefinitely without making progress until the Worker resumes or fail because of timeouts.
 
+Temporal Cloud sends courtesy emails 15 days, 10 days, and 5 days prior to certificate expiry. Emails are sent to Global and Namespace Admins.
+
 To update certificates, see [How to add, update, and remove certificates in a Temporal Cloud Namespace](#manage-certificates).
 
 :::
