@@ -22,15 +22,15 @@ tags:
 
 import * as Components from '@site/src/components';
 
-## Prerequisites {#prerequisites}
+## Prerequisites
 
 Before configuring the Export Sink, ensure you have the following:
 
-1. An AWS S3 bucket.
+- An AWS S3 bucket.
    - The S3 bucket must reside in the same region as your Namespace.
-2. (optional) An IAM role that has write permission to the above S3 bucket.
-   - You can follow the automation in the UI to create the IAM role. Please pre-create the role if setting up Export via terraform/tcld. 
-3. (optional) A KMS ARN associated with the S3 bucket.
+- (Optional) An IAM role that has write permission to the above S3 bucket.
+   - You can follow the automation in the UI to create the IAM role. Please pre-create the role if setting up Export via terraform/tcld.
+- (Optional) A KMS ARN associated with the S3 bucket.
 
 ## Configure Workflow History export
 
@@ -45,9 +45,9 @@ The Temporal Cloud UI provides two ways for configuring Workflow History Export:
 - [Automated setup](#automated-setup) (recommended): The Cloud UI launches the AWS CloudFormation Console to create a stack with write permission to the S3 bucket.
 - [Manual setup](#manual-setup): The Cloud UI provides a CloudFormation template for users to manually configure a CloudFormation stack.
 
-:::note Why does Temporal Cloud provision multiple internal IAM roles to trust for Export?
+:::info Why does Temporal Cloud provision multiple internal IAM roles to trust for Export?
 
-Temporal Cloud creates multiple intermediary IAM roles for export operations primarily for security purposes. 
+Temporal Cloud creates multiple intermediary IAM roles for export operations for security purposes. 
 The system randomly selects from these roles when writing to your storage sink, which provides several benefits:
 
 - **Security isolation**: If one IAM role is compromised or needs to be decommissioned, other IAM roles remain available
