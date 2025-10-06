@@ -66,7 +66,7 @@ Individual Namespaces do not use separate services.
 
 :::
 
-<JsonTable filename="/json/privatelink_gcp.json"></JsonTable>
+<JsonTable filename="/json/privatelink_gcp.json" />
 
 - For **Endpoint name**, enter a unique identifier to use for this endpoint. It could be for instance `temporal-api` or `temporal-api-<namespace>` if you want a different endpoint per namespace.
 - For **Network** and **Subnetwork**, choose the network and subnetwork where you want to publish your endpoint.
@@ -75,7 +75,9 @@ Individual Namespaces do not use separate services.
 
 5. Click the **Add endpoint** button at the bottom of the screen.
 
-6. Once the status is "Accepted", the GCP Private Service Connect endpoint is ready for use.
+6. [Create a Temporal Cloud Connectivity Rule](/cloud/connectivity#creating-a-connectivity-rule) using the Connection ID of the newly created endpoint and the corresponding GCP Project.
+
+7. Once the status is "Accepted", the GCP Private Service Connect endpoint is ready for use.
 
 - Take note of the **IP address** that has been assigned to your endpoint, as it will be used to connect to Temporal Cloud.
 
@@ -173,14 +175,6 @@ clientOptions := client.Options{
 ```
 
 The DNS resolver inside your network returns the private endpoint IP address, while TLS still validates the original hostname—simplifying both code and certificate management.
-
-## Available GCP regions, PSC endpoints, and DNS record overrides
-
-The following table lists the available Temporal regions, PrivateLink endpoints, and regional endpoints used for DNS record overrides:
-
-import GCPRegions from '@site/docs/production-deployment/cloud/references/regions/gcpregions.md';
-
-<GCPRegions />
 
 ## Available GCP regions, PSC endpoints, and DNS record overrides
 
