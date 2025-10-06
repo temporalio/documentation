@@ -59,21 +59,29 @@ The OpenMetrics endpoint is available in  [Public Preview](/evaluate/development
 
 ## Migration Timeline
 
-```
-[Now - Public Preview Available]
-        ↓
-[TBD - General Availability (GA)]
-        ↓
-[GA + 6 months - Query Endpoint Deprecated]
-        ↓
-[Sunset - Query Endpoint Removed]
-```
+Here is the current estimated timeline for migrating from the Prometheus query endpoint to the OpenMetrics endpoint. 
 
-* **Now**: OpenMetrics endpoint available in Public Preview for testing.
-* **During Public Preview**: Both endpoints run in parallel with no changes required.
-* **GA Release [TBA]**: OpenMetrics endpoint becomes production-ready.
-* **6 months after GA Release**: Prometheus query endpoint deprecated and eventually removed.
-* **Action Required**: Complete migration before the 6 month deprecation window ends.
+:::caution
+
+Timelines can shift so be sure to stay up to date on upcoming releases
+
+:::
+
+**Public Preview (Current)**
+* OpenMetrics endpoint available for onboarding. 
+* Both endpoints run in parallel with no changes required.
+
+**General Availability [TBA]**:
+* OpenMetrics endpoint becomes production-ready and the standard for metrics collection.
+
+**Query Endpoint Deprecation (6 months after GA)**: 
+* Prometheus query endpoint deprecated and eventually removed.
+
+:::important Action Required
+
+Complete migration before the 6 month deprecation window ends.
+
+:::
 
 ## Notable Differences
 
