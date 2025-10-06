@@ -18,9 +18,15 @@ Temporal Cloud Operations API is in [Public Preview](/evaluate/development-produ
 
 :::
 
-The [Temporal Cloud Operations API](https://github.com/temporalio/api-cloud/tree/main) (Cloud Ops API) is a library for managing the automation of Users, Namespaces, and Temporal Cloud Accounts.
+The [Temporal Cloud Operations API](https://github.com/temporalio/cloud-api/tree/main) (Cloud Ops API) is a library for managing the automation of Users, Namespaces, and Temporal Cloud Accounts.
 
-Cloud Ops API is an open source, public gRPC API. You can use the provided proto files to generate client libraries in your desired programming language. In addition to being available on GitHub, the proto files are also hosted on [Buf](https://buf.build/temporalio/cloud-api/docs/main:temporal.api.cloud.account.v1), which provides a clean web interface for browsing and visualizing the APIs, and offers more streamlined dependency management.
+Cloud Ops API is an open source, public gRPC API. You can use the provided proto files to generate client libraries in your desired programming language. In addition to being available on GitHub, the proto files are also hosted on [Buf](https://buf.build/temporalio/cloud-api/docs), which provides a clean web interface for browsing and visualizing the APIs, and offers more streamlined dependency management.
+
+## SDKs and samples
+
+We provide a [Go SDK](https://github.com/temporalio/cloud-sdk-go) that compiles the proto files into Go bindings and offers a more idiomatic interface for Go developers. This SDK eliminates the need to manually compile protobuf files when working with Go.
+
+We also provide [Go samples](https://github.com/temporalio/cloud-samples-go) to help you get started with the Cloud Ops API using the Go SDK.
 
 ## Get started
 
@@ -31,24 +37,38 @@ Explore API functionalities through [Go language samples](https://github.com/tem
 
 **Prerequisites:**
 
-This process assumes you have basic familiarity with gRPC and Protocol Buffers (protobuf).
-
 - [Temporal Cloud user account](/cloud/get-started)
 - [API Key](/cloud/tcld/apikey#create) for authentication
+
+**For Go developers:**
+- Use the [Go SDK](https://github.com/temporalio/cloud-sdk-go) for the simplest setup experience
+
+**For other programming languages:**
+- Basic familiarity with gRPC and Protocol Buffers (protobuf)
 - [Protocol Buffers](https://github.com/protocolbuffers/protobuf/releases)
 - [gRPC](https://grpc.io/docs/languages/) in your preferred programming language
 
-### Compile the API
+### Using the Go SDK (Recommended for Go)
 
-Download the gRPC protobufs from the [Cloud Ops API repository](https://github.com/temporalio/api-cloud/tree/main/temporal/api/cloud).
+If you're developing in Go, we recommend using the [Go SDK](https://github.com/temporalio/cloud-sdk-go) which provides pre-compiled Go bindings and a more idiomatic interface:
+
+```go
+go get github.com/temporalio/cloud-sdk-go
+```
+
+The Go SDK handles all the protobuf compilation and provides ready-to-use Go types and client interfaces.
+
+### Compile the API (For other languages)
+
+For programming languages other than Go, download the gRPC protobufs from the [Cloud Ops API repository](https://github.com/temporalio/cloud-api/tree/main/temporal/api/cloud) and compile them manually.
 
 Use [gRPC](https://grpc.io/docs/) to compile and generate code in your preferred [programming language](https://grpc.io/docs/#official-support).
 
 1. **Clone the Temporal Cloud API repository:**
 
    ```command
-   git clone https://github.com/temporalio/api-cloud.git
-   cd api-cloud
+   git clone https://github.com/temporalio/cloud-api.git
+   cd cloud-api
    ```
 
 2. **Copy Protobuf files:**
@@ -69,7 +89,28 @@ Use [gRPC](https://grpc.io/docs/) to compile and generate code in your preferred
    - `--grpc_python_out=` sets the output directory for generated gRPC service classes.
    - `*.proto` processes all `.proto` files.
 
-## Use the generated code
+## Use the Go SDK
+
+If you're using Go, the Go SDK provides a more streamlined experience compared to working with generated protobuf code directly:
+
+1. **Install the Go SDK:**
+   ```go
+   go get github.com/temporalio/cloud-sdk-go
+   ```
+
+2. **Import and use the SDK:**
+   ```go
+   import (
+       "github.com/temporalio/cloud-sdk-go/client"
+   )
+   ```
+
+3. **Create a client:**
+   The Go SDK provides pre-built client interfaces that handle authentication and connection setup. Refer to the [Go samples](https://github.com/temporalio/cloud-samples-go) for detailed usage examples.
+
+The Go SDK eliminates the need to work directly with generated protobuf files and provides a more idiomatic Go experience.
+
+## Use the generated code (For other languages)
 
 After compiling the Protobuf files, you will have generated code files in your project directory.
 These files enable interaction with the Temporal Cloud API in your chosen programming language.
@@ -94,7 +135,7 @@ When interacting with the Temporal Cloud Ops API, follow these guidelines:
 1. **API Version Header:**
 
    - Always include the `temporal-cloud-api-version` header in your requests, specifying the API version identifier.
-   - The current API version can be found [here](https://github.com/temporalio/api-cloud/blob/main/VERSION#L1C1-L1C14).
+   - The current API version can be found [here](https://github.com/temporalio/cloud-api/blob/main/VERSION#L1C1-L1C14).
 
 2. **Connection URL:**
 
@@ -153,4 +194,4 @@ While the Temporal Cloud Ops API is in a Public Preview release status, we welco
 You can provide feedback through the following channels:
 
 - Submit request or feedback through a ZenDesk [ticket](/cloud/support#support-ticket)
-- Open an issue in the [GitHub Repo](https://github.com/temporalio/api-cloud)
+- Open an issue in the [GitHub Repo](https://github.com/temporalio/cloud-api)
