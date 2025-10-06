@@ -44,7 +44,7 @@ In the Temporal Go SDK programming model, a [Workflow Definition](/concepts/what
 Below is an example of a basic Workflow Definition.
 */
 
-// YourSimpleWorkflowDefintiion is the most basic Workflow Defintion.
+// YourSimpleWorkflowDefinition is the most basic Workflow Definition.
 func YourSimpleWorkflowDefinition(ctx workflow.Context) error {
 	// ...
 	return nil
