@@ -120,7 +120,7 @@ cd temporal-certs
 tcld gen ca --org temporal -d 1y --ca-cert ca.pem --ca-key ca.key
 ```
 
-The contents of the generated `ca.pem` should be pasted into the "CA Certificates" section of your Namespace settings page.
+The contents of the generated `ca.pem` should be pasted into the "Authentication" section of your Namespace settings page.
 
 To create a new end-entity certificate, use `tcld gen leaf`.
 
@@ -130,7 +130,7 @@ tcld gen leaf --org temporal -d 364d --ca-cert ca.pem --ca-key ca.key --cert cli
 
 You can now use the generated CA certificate (`ca.pem`) with Temporal Cloud and configure your client with these certs (`client.pem`, `client.key`).
 
-Upload the contents of the `ca.pem` file to the **CA Certificates** section of your **Namespace** settings.
+Upload the contents of the `ca.pem` file to the **Authentication** section of your **Namespace** settings.
 
 Follow the instructions to [upload the CA certificate](/cloud/certificates#update-certificates-using-temporal-cloud-ui) and [configure your client](/cloud/certificates#configure-clients-to-use-client-certificates) with the end-entity certificate.
 
@@ -244,13 +244,9 @@ Temporal uses the root CA certificate as the trusted authority for access to you
 
 To keep your Namespace secure and online, you must update the CA certificate for the Namespace _before_ the certificate expires.
 
-To help you remember to do so, Temporal Cloud sends email notifications to users who have the Account Owner or Global Admin [roles](/cloud/users#account-level-roles) or the Namespace Admin [permission](/cloud/users#namespace-level-permissions) 15 days before expiration and, if necessary, 10 days before expiration.
-
-If the certificate is not updated, 5 days before expiration Temporal Cloud creates a support ticket on behalf of the Account Owner, Global Admins, and Namespace Admins.
+To help you remember to do so, Temporal Cloud sends email notifications to users who have the Account Owner or Global Admin [roles](/cloud/users#account-level-roles) or the Namespace Admin [permission](/cloud/users#namespace-level-permissions) 15 days, 10 days and 5 days before expiration.
 
 To ensure that you receive email notifications, configure your junk-email filters to permit email from `noreply@temporal.io`.
-
-After a support ticket is created, admins should expect a follow-up from the Temporal Developer Success team.
 
 To change who receives certificate-expiration notifications for a Namespace (or to provide feedback about such notifications), [create a support ticket](/cloud/support#support-ticket).
 
@@ -338,7 +334,7 @@ Updating certificates using the following strategy allows for a zero-downtime ro
 
 3. In the top-right portion of the page for the Namespace, select **Edit**.
 
-4. On the **Edit** page, select the **CA Certificates** card to expand it.
+4. On the **Edit** page, select the **Authentication** card to expand it.
 
 5. In the certificates box, scroll to the end of the existing certificate (that is, past `-----END CERTIFICATE-----`).
 
