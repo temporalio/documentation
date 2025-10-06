@@ -102,6 +102,11 @@ module.exports = async function createConfigAsync() {
             position: 'left',
           },
           {
+            label: 'Code Exchange',
+            href: 'https://temporal.io/code-exchange',
+            position: 'left',
+          },
+          {
             label: 'Temporal Cloud',
             to: '/cloud',
             activeBasePath: 'cloud',
