@@ -1288,6 +1288,16 @@ code {
   outline-offset: 2px;
 }
 
+.clean-btn {
+  margin-left: 6px;
+}
+
+@media (max-width: 1400px) {
+  .clean-btn {
+    margin-left: unset;
+  }
+}
+
 @media (max-width: 996px) {
   .ask-ai-text {
     display: none;
