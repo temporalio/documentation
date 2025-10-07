@@ -39,5 +39,8 @@ package-lock.json
 .env
 /assembly/.env
 
+# Tests
+test-results/*
+
 # screenshots
 screenshots
