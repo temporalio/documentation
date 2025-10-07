@@ -24,7 +24,7 @@ Audit Logging is a feature of [Temporal Cloud](/cloud/overview) that provides fo
 Audit Logging answers "who, when, and what" questions about Temporal Cloud resources.
 These answers can help you evaluate the security of your organization, and they can provide information that you need to satisfy audit and compliance requirements.
 
-UpdateAccount permission (Account Owner and higher roles) is required to view an Audit Log via UI, use the API, or to configure an Audit Log sink.
+Account Owner or Global Administrator is required to view an Audit Log via UI, use the API, or to configure an Audit Log sink.
 
 :::info
 
@@ -135,7 +135,6 @@ Temporal provides the caller IP address in that format to allow customers to ide
 ```json
 [
   {
-    "$typeName": "temporal.api.cloud.auditlog.v1.LogRecord",
     "operation": "UserLogin",
     "status": "OK",
     "version": 2,
@@ -148,7 +147,6 @@ Temporal provides the caller IP address in that format to allow customers to ide
       "nanos": 48000000
     },
     "principal": {
-      "$typeName": "temporal.api.cloud.auditlog.v1.Principal",
       "type": "user",
       "id": "",
       "name": "user@email.com",
@@ -156,7 +154,6 @@ Temporal provides the caller IP address in that format to allow customers to ide
     }
   },
   {
-    "$typeName": "temporal.api.cloud.auditlog.v1.LogRecord",
     "operation": "UserLogin",
     "status": "OK",
     "version": 2,
@@ -164,12 +161,10 @@ Temporal provides the caller IP address in that format to allow customers to ide
     "xForwardedFor": "10.1.2.3",
     "asyncOperationId": "",
     "emitTime": {
-      "$typeName": "google.protobuf.Timestamp",
       "seconds": 1759178573,
       "nanos": 671000000
     },
     "principal": {
-      "$typeName": "temporal.api.cloud.auditlog.v1.Principal",
       "type": "user",
       "id": "",
       "name": "user@email.com",
