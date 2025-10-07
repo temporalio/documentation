@@ -20,7 +20,13 @@ type DocMeta = {
   unversionedId?: string;
   title?: string;
   description?: string;
-  frontMatter?: { title?: string; description?: string; tags?: any[] };
+  frontMatter?: {
+    title?: string;
+    description?: string;
+    tags?: any[];
+    last_updated?: unknown;
+    last_updated_at?: unknown;
+  };
   tags?: { label: string }[];
   permalink?: string;
   lastUpdatedAt?: number | string | null;
@@ -100,20 +106,57 @@ export default function CookbookHome() {
     throw new Error("CookbookHome: no items found by cookbook-index plugin (check server logs for [cookbook-index]).");
   }
 
+  const normalizeTimestamp = React.useCallback((value: unknown): number | undefined => {
+    const normalizeNumber = (input: number): number | undefined => {
+      if (!Number.isFinite(input)) {
+        return undefined;
+      }
+      return input < 1e11 ? input * 1000 : input;
+    };
+
+    if (typeof value === "number") {
+      return normalizeNumber(value);
+    }
+    if (typeof value === "string") {
+      const trimmed = value.trim();
+      if (!trimmed) {
+        return undefined;
+      }
+      const numeric = Number(trimmed);
+      if (!Number.isNaN(numeric)) {
+        return normalizeNumber(numeric);
+      }
+      const parsed = Date.parse(trimmed);
+      return Number.isNaN(parsed) ? undefined : normalizeNumber(parsed);
+    }
+    if (value instanceof Date) {
+      const time = value.getTime();
+      return Number.isNaN(time) ? undefined : normalizeNumber(time);
+    }
+    return undefined;
+  }, []);
+
   const getLastUpdatedTimestamp = React.useCallback(
     (item: CookbookItem) => {
       const meta = resolveDocMeta(item, docsById);
-      const rawTimestamp = meta?.lastUpdatedAt;
-      if (typeof rawTimestamp === "number") {
-        return Number.isFinite(rawTimestamp) ? rawTimestamp : 0;
+      const frontMatterTimestampCandidates = [
+        meta?.frontMatter?.last_updated,
+        meta?.frontMatter?.last_updated_at,
+      ];
+      for (const candidate of frontMatterTimestampCandidates) {
+        const normalized = normalizeTimestamp(candidate);
+        if (typeof normalized === "number") {
+          return normalized;
+        }
       }
-      if (typeof rawTimestamp === "string") {
-        const parsed = Number(rawTimestamp);
-        return Number.isFinite(parsed) ? parsed : 0;
+
+      const normalizedMeta = normalizeTimestamp(meta?.lastUpdatedAt ?? null);
+      if (typeof normalizedMeta === "number") {
+        return normalizedMeta;
       }
       return 0;
     },
-    [docsById]
+    [docsById, normalizeTimestamp]
   );
 
   const sortedItems = React.useMemo(() => {
