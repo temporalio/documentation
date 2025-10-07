@@ -43,7 +43,7 @@ Before configuring the manual Audit Log sink, complete the following steps in Go
 
 1. In the Temporal Cloud UI, select **Settings**.
 1. On the **Settings** page, select **Audit Logging**.
-1. In the **Audit Logging** card, select **Set Up Audit Log Integration**.
+1. In the **Audit Logging** card, select **Setup Audit Log Integration**.
 1. On the Set Up Audit Log Integration page, select **Pub/Sub**.
 1. In the **service account email** field, enter the email of the service account you created in the prerequisites.
 1. In the **Topic name** field, enter the topic name of the Pub/Sub topic you created in the prerequisites.
@@ -53,7 +53,7 @@ Before configuring the manual Audit Log sink, complete the following steps in Go
 1. To ensure that audit logs can reach your Pub/Sub topic, you can use the **Verify** button to confirm it is set up correctly. This validates that Temporal can successfully write to your topic.
 If everything is configured correctly, you will see a `Success` status indicating Temporal has written to the Pub/Sub topic.
 1. Click **Create** to configure the audit log.
-   This process may take a few minutes.
+   Audit logs should begin to show up in Pub/Sub within 10 minutes 
 
 ![Temporal Cloud UI Setup for Audit Logging with GCP Pub/Sub](/img/cloud/gcp/audit-logging-pub-sub-gcp.png)
 
