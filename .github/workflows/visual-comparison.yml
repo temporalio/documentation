@@ -9,18 +9,7 @@ on:
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  PALETTE_API_KEY: ${{ secrets.PALETTE_API_KEY }}
-  FULLSTORY_ORGID: ${{ secrets.FULLSTORY_ORGID }}
-  ALGOLIA_ADMIN_KEY: ${{ secrets.ALGOLIA_ADMIN_KEY }}
-  ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
-  ALGOLIA_SEARCH_KEY: ${{ secrets.ALGOLIA_SEARCH_KEY }}
-  ALGOLIA_INDEX_NAME: ${{ secrets.ALGOLIA_INDEX_NAME }}
   HTML_REPORT_URL_PATH: reports/${{ github.head_ref }}/${{ github.run_id }}/${{ github.run_attempt }}
-  DISABLE_PACKS_INTEGRATIONS: ${{ secrets.DISABLE_PACKS_INTEGRATIONS }}
-  DISABLE_SECURITY_INTEGRATIONS: ${{ secrets.DISABLE_SECURITY_INTEGRATIONS }}
-  SHOW_LAST_UPDATE_TIME: ${{ secrets.SHOW_LAST_UPDATE_TIME }}
-  DSO_AUTH_TOKEN: ${{ secrets.DSO_AUTH_TOKEN }}
-  SEERS_CMP_KEY: ${{ secrets.SEERS_CMP_KEY }}
 
 concurrency:
   group: visual-comparison-${{ github.workflow }}-${{ github.head_ref }}
@@ -127,7 +116,7 @@ jobs:
             path: build
 
       - name: Download reference screenshots
-        run: ./scripts/screenshot_artifacts.sh ./screenshots
+        run: ./static/scripts/screenshot-artifacts.sh ./screenshots
 
       - name: Take screenshots with Playwright
         env:
