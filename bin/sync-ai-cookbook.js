@@ -10,8 +10,8 @@ const yaml = require('js-yaml');
 const REPO_URL = process.env.AI_COOKBOOK_REPO ?? 'https://github.com/temporalio/ai-cookbook.git';
 const REPO_BRANCH = process.env.AI_COOKBOOK_BRANCH ?? 'main';
 const WORKSPACE_ROOT = path.resolve(__dirname, '..');
-const CACHE_ROOT = path.join(WORKSPACE_ROOT, '.cache');
-const REPO_CACHE_DIR = path.join(CACHE_ROOT, 'ai-cookbook-repo');
+const TEMP_ROOT = path.join(os.tmpdir(), 'ai-cookbook-sync');
+const REPO_TEMP_DIR = path.join(TEMP_ROOT, 'repo');
 const OUTPUT_SUBDIR = process.env.AI_COOKBOOK_OUTPUT_DIR ?? 'ai-cookbook-test';
 const OUTPUT_DIR = path.join(WORKSPACE_ROOT, OUTPUT_SUBDIR);
 
@@ -27,21 +27,16 @@ function runGit(args, options = {}) {
 }
 
 async function ensureRepo() {
-  if (!existsSync(CACHE_ROOT)) {
-    mkdirSync(CACHE_ROOT, {recursive: true});
+  if (!existsSync(TEMP_ROOT)) {
+    mkdirSync(TEMP_ROOT, {recursive: true});
   }
 
-  if (!existsSync(REPO_CACHE_DIR) || !existsSync(path.join(REPO_CACHE_DIR, '.git'))) {
-    console.log(`[sync-ai-cookbook] cloning ${REPO_URL} (${REPO_BRANCH})`);
-    runGit(['clone', '--depth=1', '--branch', REPO_BRANCH, REPO_URL, REPO_CACHE_DIR], {cwd: CACHE_ROOT});
-    return;
+  if (existsSync(REPO_TEMP_DIR)) {
+    await fs.rm(REPO_TEMP_DIR, {recursive: true, force: true});
   }
 
-  console.log('[sync-ai-cookbook] updating cached repository');
-  runGit(['fetch', 'origin', REPO_BRANCH, '--depth=1'], {cwd: REPO_CACHE_DIR});
-  runGit(['checkout', REPO_BRANCH], {cwd: REPO_CACHE_DIR});
-  runGit(['reset', '--hard', `origin/${REPO_BRANCH}`], {cwd: REPO_CACHE_DIR});
-  runGit(['clean', '-fdx'], {cwd: REPO_CACHE_DIR});
+  console.log(`[sync-ai-cookbook] cloning ${REPO_URL} (${REPO_BRANCH})`);
+  runGit(['clone', '--depth=1', '--branch', REPO_BRANCH, REPO_URL, REPO_TEMP_DIR], {cwd: TEMP_ROOT});
 }
 
 function slugifySegment(segment) {
@@ -150,9 +145,9 @@ function extractTitleFromBody(body) {
 }
 
 function getLastUpdatedDate(readmePath) {
-  const relative = path.relative(REPO_CACHE_DIR, readmePath);
+  const relative = path.relative(REPO_TEMP_DIR, readmePath);
   const result = spawnSync('git', ['log', '-1', '--format=%cI', '--', relative], {
-    cwd: REPO_CACHE_DIR,
+    cwd: REPO_TEMP_DIR,
     encoding: 'utf8',
     stdio: ['ignore', 'pipe', 'pipe'],
   });
@@ -193,7 +188,7 @@ function buildFrontMatter({baseData, title, lastUpdated}) {
 async function transformReadme(readmePath) {
   const parentDir = path.basename(path.dirname(readmePath));
   const slug = slugifySegment(parentDir);
-  const relativePath = path.relative(REPO_CACHE_DIR, readmePath);
+  const relativePath = path.relative(REPO_TEMP_DIR, readmePath);
   const rawContent = await readFile(readmePath);
 
   const commentParse = extractFrontMatterComment(rawContent);
@@ -228,7 +223,7 @@ async function transformReadme(readmePath) {
 
 async function syncReadmes() {
   await ensureRepo();
-  const readmes = await collectReadmeFiles(REPO_CACHE_DIR);
+  const readmes = await collectReadmeFiles(REPO_TEMP_DIR);
   if (readmes.length === 0) {
     console.warn('[sync-ai-cookbook] no README.md files found in repository');
     return;
@@ -239,15 +234,12 @@ async function syncReadmes() {
   const writeOperations = readmes.map(async (readmePath) => {
     try {
       const transformed = await transformReadme(readmePath);
-      if (!transformed) {
-        return null;
-      }
       const targetPath = path.join(OUTPUT_DIR, `${transformed.slug}.mdx`);
       await writeFile(targetPath, transformed.content);
       return {slug: transformed.slug, source: transformed.source};
     } catch (error) {
       console.warn(
-        `[sync-ai-cookbook] skipped ${path.relative(REPO_CACHE_DIR, readmePath)}: ${error.message ?? String(error)}`,
+        `[sync-ai-cookbook] skipped ${path.relative(REPO_TEMP_DIR, readmePath)}: ${error.message ?? String(error)}`,
       );
       return null;
     }
