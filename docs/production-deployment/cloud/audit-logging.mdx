@@ -223,7 +223,12 @@ Up to 1000 events can be downloaded from the Audit Log UI to a local file.
 
 ## Access an Audit Log via API {#audit-log-api}
 
-Audit logs are accessible for the past 30 days using a query API for an Audit Log.
+An Audit Log can be accessed using the [Temporal Cloud Ops API](/ops). Use the API to access
+an Audit Log if you wish to make dashboards for viewing an Audit Log outside of Temporal Cloud.
+If your goal is to export an Audit Log, it is better to use an Audit Log sink and capture each 
+entry as it is generated.
+
+Audit logs are accessible for the past 30 days using the API.
 
 The API allows:
 - StartTimeInclusive: Filter for UTC time >= (defaults to 30 days ago) - optional
