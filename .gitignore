@@ -38,3 +38,6 @@ package-lock.json
 
 # Tests
 test-results/*
+
+# cache
+.cache
