@@ -5,7 +5,7 @@ const collectTileData = async (locator: Locator) => {
   return locator.evaluateAll((elements) => {
     return elements.map((element) => {
       const link = element as HTMLAnchorElement;
-      const heading = element.querySelector('h3');
+      const heading = element.querySelector('h2, h3, h4, h5, h6');
       const title = heading?.textContent?.trim() ?? '';
       const href = link.getAttribute('href') ?? link.getAttribute('to') ?? '';
       return { title, href };
@@ -15,7 +15,7 @@ const collectTileData = async (locator: Locator) => {
 
 test.describe('Cookbook home', () => {
   test('renders cookbook tiles with expected metadata and layout on desktop', async ({ page }) => {
-    await page.goto('/cookbook');
+    await page.goto('/ai-cookbook');
 
     await expect(page.getByTestId('cookbook-hero')).toBeVisible();
 
@@ -27,7 +27,7 @@ test.describe('Cookbook home', () => {
 
     for (const { title, href } of tileData) {
       expect(title).not.toEqual('');
-      expect(href).toMatch(/\/cookbook\//);
+      expect(href).toMatch(/\/ai-cookbook\//);
     }
 
     const gridMetrics = await tiles.evaluateAll((elements) => {
@@ -59,7 +59,7 @@ test.describe('Cookbook home', () => {
 
   test('stacks tiles into a single column on mobile viewports', async ({ page }) => {
     await page.setViewportSize({ width: 600, height: 900 });
-    await page.goto('/cookbook');
+    await page.goto('/ai-cookbook');
 
     const tiles = page.locator('.tile');
     await expect(tiles).not.toHaveCount(0);
