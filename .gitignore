@@ -4,6 +4,9 @@ secure
 
 # Production
 build
+playwright-report
+blob-report
+test-results
 
 # Generated files
 .docusaurus
@@ -38,3 +41,6 @@ package-lock.json
 
 # Tests
 test-results/*
+
+# screenshots
+screenshots
