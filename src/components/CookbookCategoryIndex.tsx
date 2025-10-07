@@ -5,9 +5,9 @@ import Original from '@theme-original/DocCategoryGeneratedIndexPage';
 
 export default function CookbookCategoryIndex(props: Props) {
   const {categoryGeneratedIndex} = props;
-  const isRoot = categoryGeneratedIndex.permalink.replace(/\/+$/, '').endsWith('/cookbook');
+  const isRoot = categoryGeneratedIndex.permalink.replace(/\/+$/, '').endsWith('/ai-cookbook');
 
-  // Root /cookbook uses your custom React page (no MDX, no DocCardList)
+  // Root /ai-cookbook uses your custom React page (no MDX, no DocCardList)
   if (isRoot) return <CookbookHome />;
 
   // Everything else (including /docs) stays default
