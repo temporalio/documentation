@@ -3,6 +3,11 @@ module.exports = {
     "index",
     "quickstarts",
     {
+      type: "link",
+      label: "Courses and Tutorials",
+      href: "https://learn.temporal.io/",
+    },
+    {
       type: "category",
       label: "Evaluate",
       collapsed: false,
@@ -79,11 +84,6 @@ module.exports = {
       ],
     },
     {
-      type: "link",
-      label: "Get started",
-      href: "https://learn.temporal.io/getting_started/",
-    },
-    {
       type: "category",
       label: "Develop",
       collapsed: false,
@@ -113,6 +113,7 @@ module.exports = {
             "develop/go/asynchronous-activity-completion",
             "develop/go/versioning",
             "develop/go/observability",
+            "develop/go/enriching-ui",
             "develop/go/debugging",
             "develop/go/schedules",
             "develop/go/converters-and-encryption",
@@ -145,6 +146,7 @@ module.exports = {
             "develop/java/asynchronous-activity-completion",
             "develop/java/versioning",
             "develop/java/observability",
+            "develop/java/enriching-ui",
             "develop/java/debugging",
             "develop/java/schedules",
             "develop/java/converters-and-encryption",
@@ -174,6 +176,7 @@ module.exports = {
             "develop/php/asynchronous-activity-completion",
             "develop/php/versioning",
             "develop/php/observability",
+            "develop/php/enriching-ui",
             "develop/php/debugging",
             "develop/php/schedules",
             "develop/php/timers",
@@ -234,6 +237,7 @@ module.exports = {
             "develop/typescript/asynchronous-activity-completion",
             "develop/typescript/versioning",
             "develop/typescript/observability",
+            "develop/typescript/enriching-ui",
             "develop/typescript/debugging",
             "develop/typescript/schedules",
             "develop/typescript/converters-and-encryption",
@@ -263,6 +267,7 @@ module.exports = {
             "develop/dotnet/asynchronous-activity",
             "develop/dotnet/versioning",
             "develop/dotnet/observability",
+            "develop/dotnet/enriching-ui",
             "develop/dotnet/debugging",
             "develop/dotnet/schedules",
             "develop/dotnet/converters-and-encryption",
@@ -290,6 +295,7 @@ module.exports = {
             "develop/ruby/asynchronous-activity",
             "develop/ruby/versioning",
             "develop/ruby/observability",
+            "develop/ruby/enriching-ui",
             "develop/ruby/debugging",
             "develop/ruby/schedules",
             "develop/ruby/converters-and-encryption",
@@ -362,10 +368,35 @@ module.exports = {
                 id: "production-deployment/cloud/metrics/index",
               },
               items: [
-                "production-deployment/cloud/metrics/general-setup",
-                "production-deployment/cloud/metrics/reference",
-                "production-deployment/cloud/metrics/datadog",
-                "production-deployment/cloud/metrics/prometheus-grafana",
+                {
+                  type: "category",
+                  label: "OpenMetrics",
+                  collapsed: true,
+                  link: {
+                    type: "doc",
+                    id: "production-deployment/cloud/metrics/openmetrics/index",
+                  },
+                  items: [
+                    "production-deployment/cloud/metrics/openmetrics/migration-guide",
+                    "production-deployment/cloud/metrics/openmetrics/api-reference",
+                    "production-deployment/cloud/metrics/openmetrics/metrics-reference",
+                  ],
+                },
+                {
+                  type: "category",
+                  label: "PromQL",
+                  collapsed: true,
+                  link: {
+                    type: "doc",
+                    id: "production-deployment/cloud/metrics/promql",
+                  },
+                  items: [
+                    "production-deployment/cloud/metrics/general-setup",
+                    "production-deployment/cloud/metrics/reference",
+                    "production-deployment/cloud/metrics/datadog",
+                    "production-deployment/cloud/metrics/prometheus-grafana",
+                  ],
+                },
               ],
             },
             {
@@ -476,7 +507,8 @@ module.exports = {
                 id: "production-deployment/cloud/migrate/index",
               },
               items: [
-                "production-deployment/migration",
+                "production-deployment/cloud/migrate/automated",
+                "production-deployment/cloud/migrate/manual",
                 "production-deployment/cloud/migrate/migrate-within-cloud"
               ],
             },
@@ -580,6 +612,20 @@ module.exports = {
         "troubleshooting/deadline-exceeded-error",
         "troubleshooting/last-connection-error",
             "troubleshooting/performance-bottlenecks"
+      ],
+    },
+    {
+      type: "category",
+      label: "Best Practices",
+      collapsed: true,
+      link: {
+        type: "doc",
+        id: "best-practices/index",
+      },
+      items: [
+        "best-practices/managing-namespace",
+        "best-practices/cloud-access-control",
+        "best-practices/security-controls",
       ],
     },
     {
