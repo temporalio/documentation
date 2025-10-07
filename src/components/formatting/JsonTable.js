@@ -43,7 +43,7 @@ const JsonTable = ({ filename }) => {
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div className='theme-admonition theme-admonition-warning alert alert--danger admonition_WoCw'>Please reload the page to see this table.</div>;
   }
 
   if (data.length === 0 || headers.length === 0) {
