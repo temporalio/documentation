@@ -74,7 +74,7 @@ Explore how your application can detect failures using timeouts and automaticall
 - [Heartbeat an Activity](/develop/dotnet/failure-detection#activity-heartbeats): An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Service.
 - [Heartbeat Timeout](/develop/dotnet/failure-detection#heartbeat-timeout): A Heartbeat Timeout works in conjunction with Activity Heartbeats.
 
-## [Workflow message passing](/develop/go/message-passing)
+## [Workflow message passing](/develop/dotnet/message-passing)
 
 Send messages to and read the state of Workflow Executions.
 
@@ -155,7 +155,7 @@ Use compression, encryption, and other data handling by implementing custom conv
 - [Use a custom Payload Codec](/develop/dotnet/converters-and-encryption#custom-payload-codec): Create a custom PayloadCodec implementation and define your encryption/compression and decryption/decompression logic.
 - [Use a custom Payload Converter](/develop/dotnet/converters-and-encryption#custom-payload-converter): A custom data converter can be set via the `DataConverter` option when creating a client.
 
-## [Durable Timers](/develop/go/timers)
+## [Durable Timers](/develop/dotnet/durable-timers)
 
 Use Timers to make a Workflow Execution pause or "sleep" for seconds, minutes, days, months, or years.
 
@@ -173,3 +173,9 @@ Explore how to spawn a Child Workflow Execution and handle Child Workflow Events
 Continue the Workflow Execution with a new Workflow Execution using the same Workflow ID.
 
 - [Continue-As-New](/develop/dotnet/continue-as-new): Continue-As-New enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.
+
+## [Enriching the User Interface](/develop/dotnet/enriching-ui)
+
+Add descriptive information to workflows and events for better visibility and context in the UI.
+
+- [Adding Summary and Details to Workflows](/develop/dotnet/enriching-ui#adding-summary-and-details-to-workflows)
