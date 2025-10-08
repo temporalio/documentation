@@ -130,6 +130,10 @@ function extractFrontMatterComment(source) {
   return {data, body};
 }
 
+function normalizePathKey(filePath) {
+  return path.normalize(filePath).replace(/\\/g, '/').toLowerCase();
+}
+
 function extractTitleFromBody(body) {
   const headingPattern = /^#\s*(.+?)(?:\n+|$)/;
   const match = headingPattern.exec(body);
@@ -185,7 +189,94 @@ function buildFrontMatter({baseData, title, lastUpdated}) {
   return `---\n${yamlString}\n---`;
 }
 
-async function transformReadme(readmePath) {
+function rewriteDocsLink(href) {
+  try {
+    const url = new URL(href);
+    if (url.hostname === 'docs.temporal.io') {
+      const pathname = url.pathname || '/';
+      const search = url.search ?? '';
+      const hash = url.hash ?? '';
+      return `${pathname}${search}${hash}` || '/';
+    }
+  } catch {
+    // Ignore parsing errors for relative URLs.
+  }
+  return null;
+}
+
+function rewriteLinks(body, readmePath, slugLookup) {
+  const baseDir = path.dirname(readmePath);
+  return body.replace(/\[([^\]]+)]\(([^)]+)\)/g, (match, text, rawHref) => {
+    const href = rawHref.trim();
+    if (!href) {
+      return match;
+    }
+
+    if (href.startsWith('#')) {
+      return match;
+    }
+
+    if (/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(href)) {
+      const rewritten = rewriteDocsLink(href);
+      if (rewritten !== null) {
+        return `[${text}](${rewritten})`;
+      }
+      return match;
+    }
+
+    if (href.startsWith('//') || href.startsWith('/')) {
+      const rewritten = href.startsWith('https://docs.temporal.io') ? rewriteDocsLink(`https:${href}`) : null;
+      if (rewritten !== null) {
+        return `[${text}](${rewritten})`;
+      }
+      return match;
+    }
+
+    const linkParts = href.match(/^([^?#]*)(\?[^#]*)?(#.*)?$/);
+    if (!linkParts) {
+      return match;
+    }
+    const [, pathname = '', search = '', hash = ''] = linkParts;
+    const resolved = path.resolve(baseDir, pathname || '.');
+    const candidates = [];
+    candidates.push(resolved);
+    if (!/\.[a-z0-9]+$/i.test(resolved)) {
+      candidates.push(path.join(resolved, 'README.md'));
+    }
+    if (!resolved.toLowerCase().endsWith('readme.md')) {
+      candidates.push(`${resolved}.md`);
+    }
+
+    let slug = null;
+    for (const candidate of candidates) {
+      const normalizedKey = normalizePathKey(candidate);
+      if (slugLookup.has(normalizedKey)) {
+        slug = slugLookup.get(normalizedKey);
+        break;
+      }
+    }
+
+    if (!slug) {
+      const targetExt = path.extname(resolved).toLowerCase();
+      if (targetExt === '.md' || targetExt === '.mdx') {
+        const baseName = path.basename(resolved, targetExt);
+        if (/^readme$/i.test(baseName)) {
+          slug = slugifySegment(path.basename(path.dirname(resolved)));
+        } else if (baseName) {
+          slug = slugifySegment(baseName);
+        }
+      }
+    }
+
+    if (!slug) {
+      return match;
+    }
+
+    return `[${text}](./${slug}.mdx${search ?? ''}${hash ?? ''})`;
+  });
+}
+
+async function transformReadme(readmePath, slugLookup) {
   const parentDir = path.basename(path.dirname(readmePath));
   const slug = slugifySegment(parentDir);
   const relativePath = path.relative(REPO_TEMP_DIR, readmePath);
@@ -212,7 +303,8 @@ async function transformReadme(readmePath) {
   });
 
   const trimmedBody = body.replace(/\s+$/, '');
-  const finalContent = `${frontMatterBlock}\n\n${trimmedBody.length > 0 ? `${trimmedBody}\n` : ''}`;
+  const rewrittenBody = rewriteLinks(trimmedBody, readmePath, slugLookup);
+  const finalContent = `${frontMatterBlock}\n\n${rewrittenBody.length > 0 ? `${rewrittenBody}\n` : ''}`;
 
   return {
     slug,
@@ -224,6 +316,10 @@ async function transformReadme(readmePath) {
 async function syncReadmes() {
   await ensureRepo();
   const readmes = await collectReadmeFiles(REPO_TEMP_DIR);
+  const slugLookup = new Map();
+  readmes.forEach((readme) => {
+    slugLookup.set(normalizePathKey(readme), slugifySegment(path.basename(path.dirname(readme))));
+  });
   if (readmes.length === 0) {
     console.warn('[sync-ai-cookbook] no README.md files found in repository');
     return;
@@ -233,7 +329,7 @@ async function syncReadmes() {
 
   const writeOperations = readmes.map(async (readmePath) => {
     try {
-      const transformed = await transformReadme(readmePath);
+      const transformed = await transformReadme(readmePath, slugLookup);
       const targetPath = path.join(OUTPUT_DIR, `${transformed.slug}.mdx`);
       await writeFile(targetPath, transformed.content);
       return {slug: transformed.slug, source: transformed.source};
