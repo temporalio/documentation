@@ -1,0 +1,41 @@
+---
+title: Worker deployment and performance
+sidebar_label: Worker Deployment and Performance
+description: Best practices for deploying and optimizing Temporal Workers for performance and reliability.
+toc_max_heading_level: 4
+keywords:
+    - temporal worker
+    - worker deployment
+    - performance optimization
+    - best practices
+tags:
+  - Best Practices
+  - Workers
+---
+
+ This document outlines best practices for deploying and optimizing Workers to ensure high performance, reliability, and scalability.
+
+## Core tenets
+
+[Workers](../encyclopedia/workers/workers.mdx) are the execution layer of Temporal applications — they poll task queues, execute Workflows and Activities, and report results back to the Temporal Server. As such, Worker deployments have the following core tenets:
+
+- Stateless and ephemeral. Workers are independent pods/processes; all state lives in Temporal; Workers are designed to tolerate restarts and rescheduling.
+
+- Horizontally scalable. The number of worker replicas must be adjustable based on workload demands.
+
+- Observable and tunable. Effective Worker tuning requires various metrics, traces, and logs to be collected and acted on.
+
+These core tenets inform all best practices recommended in the following sections.
+
+## Deployment model 
+
+This section covers best practices for Worker deployment models.
+
+### Scope each Worker pool to a single application and environment
+
+Because workers must be horizontally scalable, it is best to deploy them in pools. A worker pool is a number of workers that run a Temporal application. We recommend each pool be dedicated to a single application and environment. However, one application can have multiple pools, for example, to separate different types of workloads.
+
+
+### Separate Workflow and Activity Worker pools if their resource needs differ significantly
+
+Even within a single Temporal application, there are often multiple Workflow and Activity types. If your application workloads are small and similar, a single Worker pool can handle all types. However, if your application has distinct workloads with different resource requirements or scaling characteristics, consider separating them into different Worker pools.
