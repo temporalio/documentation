@@ -17,9 +17,9 @@ keywords:
   - gcp
   - pubsub
 tags:
-  - audit-logging
-  - temporal-cloud
-  - gcp
+  - GCP
+  - Logging
+  - Temporal Cloud
 ---
 
 import * as Components from '@site/src/components';
@@ -50,6 +50,8 @@ Before configuring the manual Audit Log sink, complete the following steps in Go
 1. There are two ways to configure the service account to write to the Pub/Sub sink: select **Manual** to configure the account manually, or **Deploy with Terraform** to use Terraform.
    If you use Terraform, you don't need to complete the prerequisite steps above.
 1. Follow the instructions in the Temporal Cloud UI for the method you chose.
+1. To ensure that audit logs can reach your Pub/Sub topic, you can use the **Verify** button to confirm it is set up correctly. This validates that Temporal can successfully write to your topic.
+If everything is configured correctly, you will see a `Success` status indicating Temporal has written to the Pub/Sub topic.
 1. Click **Create** to configure the audit log.
    This process may take a few minutes.
 

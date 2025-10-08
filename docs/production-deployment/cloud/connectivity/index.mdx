@@ -3,7 +3,7 @@ id: index
 title: Connectivity
 sidebar_label: Connectivity
 slug: /cloud/connectivity
-description: Temporal Cloud's Namespace with High Availability features offers automated failover, synchronized data, and replication for workloads requiring disaster-tolerant deployment and 99.99% uptime.
+description: Network connectivity details for using Temporal Cloud
 tags:
   - Temporal Cloud
   - Production
@@ -259,7 +259,7 @@ WorkflowServiceStubs service =
 const connection = await NativeConnection.connect({
   address: "vpce-0123456789abcdef-abc.us-east-1.vpce.amazonaws.com:7233",
   tls: {
-    serverNameOverride: "my-namespace.my-account.tmprl.cloud" ,
+    serverNameOverride: "my-namespace.my-account.tmprl.cloud",
     //serverRootCACertificate,
     // See docs for other TLS options
     clientCertPair: {

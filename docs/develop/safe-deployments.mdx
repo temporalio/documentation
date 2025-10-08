@@ -73,7 +73,6 @@ if args.mode == 'verify':
     histories = workflows.map_histories()
     replayer = Replayer(
         workflows=my_workflows,
-        activities=my_activities,
     )
     await replayer.replay_workflows(histories)
     return

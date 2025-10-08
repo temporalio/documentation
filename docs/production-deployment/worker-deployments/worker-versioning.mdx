@@ -430,7 +430,7 @@ Worker Deployment Version:
   DrainageLastCheckedTime  31 seconds ago
 
 Task Queues:
-     Name        Type  
+     Name        Type
   hello-world  activity
   hello-world  workflow
 ```
@@ -460,6 +460,33 @@ workflowOptions := client.StartWorkflowOptions{
 we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, HelloWorld, "Hello")
 ```
 </SdkTabs.Go>
+<SdkTabs.Java>
+```java
+MyWorkflow handle = client.newWorkflowStub(
+    MyWorkflow.class,
+    WorkflowOptions.newBuilder()
+        .setWorkflowId("MyWorkflowId")
+        .setTaskQueue("MyTaskQueue")
+        .setVersioningOverride(new VersioningOverride.PinnedVersioningOverride(
+            new WorkerDeploymentVersion("DeployName", "1.0")))
+        .build()
+);
+WorkflowExecution we = WorkflowClient.start(handle::execute, "Hello");
+```
+</SdkTabs.Java>
+<SdkTabs.Python>
+```python
+handle = client.start_workflow(
+    MyWorkflow.run,
+    "Hello",
+    id="MyWorkflowId",
+    task_queue="MyTaskQueue",
+    versioning_override=PinnedVersioningOverride(
+        WorkerDeploymentVersion("DeployName", "1.0")
+    ),
+)
+```
+</SdkTabs.Python>
 <SdkTabs.TypeScript>
 ```ts
 const handle = await client.workflow.start('helloWorld', {

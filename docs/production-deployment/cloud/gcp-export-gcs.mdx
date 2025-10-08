@@ -15,14 +15,9 @@ keywords:
   - workflow history export
   - gcp
 tags:
-  - explanation
-  - how-to
-  - operations
-  - temporal-cloud
-  - term
-  - verify
-  - workflow-history-export
-  - gcp
+  - Export Workflow History
+  - GCP
+  - Temporal Cloud
 ---
 
 import * as Components from '@site/src/components';
@@ -34,12 +29,12 @@ Before configuring the Export sink, complete the following steps in Google Cloud
 1. Create a GCS bucket and take note of its bucket name, for example, "test-export"
 
 - Enable customer-managed encryption keys (CMEK) if you need additional security for your GCS bucket.
-- Currently, only single region buckets are supported (or “Region” option when creating the bucket in GCS, not “Multi-region” or “Same-region”)
+- Currently, only single region buckets are supported (choose "Region" option when creating the bucket in GCS, not "Multi-region" or "Same-region")
 - The region of the bucket must be the same as the region of your Temporal Cloud Namespace.
 
 2. Record the GCP Project ID that owns the bucket.
 3. Create a service account in the same project that grants Temporal permission to write to your GCS bucket.
-4. Follow the instructions in the Temporal Cloud UI, there are two ways to set up this service account:
+4. Follow the instructions in the Temporal Cloud UI. There are two ways to set up this service account:
    - Manual Setup:
      - Input the service account ID, GCP project ID and GCS bucket name.
      - Follow the instructions, manually set up a new service account.
@@ -48,7 +43,8 @@ Before configuring the Export sink, complete the following steps in Google Cloud
 
 ## Configure Workflow History Export
 
-You can use either the [Temporal Cloud UI](#using-temporal-cloud-ui) or [tcld](#using-tcld) to configure the Workflow History Export.
+There are multiple ways to configure export: through the [Temporal Cloud UI](#using-temporal-cloud-ui), [`tcld`](#using-tcld), or [`terraform`](#using-terraform).
+
 
 :::note Why does Temporal Cloud provision multiple service accounts for Export?
 
@@ -69,8 +65,8 @@ The following steps guide you through setting up Workflow History Export using t
 ![](/img/cloud/gcp/export-sink-ui-gcp.png)
 
 1. In the Cloud UI, navigate to the Namespaces section. Confirm that the Export feature is visible and properly displayed.
-2. Configure the Export Sink for a Namespace:
-   1. Choose GCS as the Sink type.
+2. Configure the Export sink for a Namespace:
+   1. Choose GCS as the sink type.
    2. Provide the following information:
       1. Name
       2. Service account ID
@@ -79,8 +75,8 @@ The following steps guide you through setting up Workflow History Export using t
 3. After inputting the necessary values, click on **Verify**.
    You should be able to write to the sink successfully.
    If not, please fix any errors or reach out to support for help.
-   - If you just created the GCS bucket and granted the permission for your service account, it may take some time for it to populate the permission, thus, you may need to wait for several minutes (up to 5 minutes) then you can click the **Verify** button to verify the connection.
-4. Clicking **Create** will complete the Export sink set up
+   - If you just created the GCS bucket and granted permission for your service account, it may take some time for the permission to propagate. You may need to wait up to 5 minutes before clicking the **Verify** button to verify the connection.
+4. Clicking **Create** will complete the Export sink setup.
 5. The page will auto-refresh and you should see the status “Enabled” on the Export screen.
    You are now ready to export Workflow histories.
 6. You can toggle the enable button if you want to stop export and resume in the future.
@@ -97,8 +93,8 @@ Don't forget to click Create at the end of your setup to confirm your export.
 
 To access export-related commands in tcld, please follow these steps:
 
-1. Download the latest version of tcld. [https://docs.temporal.io/cloud/tcld/#install-tcld]
-2. Make sure tcld version is v0.35.0 or above.
+1. Download the latest version of tcld from following instructions (here)[https://docs.temporal.io/cloud/tcld/#install-tcld].
+2. Make sure your tcld version is v0.35.0 or above.
 3. Run the command: `tcld n export gcs`:
    ```bash
    NAME:
@@ -121,16 +117,17 @@ To access export-related commands in tcld, please follow these steps:
    ```
 
 4. Run the `tcld n export gcs create` command and provide the following information:
-   - —namespace
-   - —sink-name
-   - —service-account-email
-   - —gcs-bucket
-   - For Example:
+   - `--namespace`: The Namespace to configure export for.
+   - `--sink-name`: The name of the export sink.
+   - `--service-account-email`: The service account that has access to the sink.
+   - `--gcs-bucket`: The name of the GCP GCS bucket.
+   
+   For example:
 
    ```bash
    tcld n export gcs create -n test.ns --sink-name test-sink --service-account-email test-sink@test-export-sink.iam.gserviceaccount.com --gcs-bucket test-export-validation
    ```
-5. Check the status of this command by either viewing the Namespace Export status in the Temporal Cloud UI or using the following command and looking for the state of “Active”.
+5. Check the status of this command by either viewing the Namespace Export status in the Temporal Cloud UI or using the following command and looking for the state of "Active":
 
 ```bash
 tcld n export gcs g -n test.ns --sink-name test-sink
@@ -155,6 +152,11 @@ tcld n export gcs g -n test.ns --sink-name test-sink
 	"lastHealthCheckTime": "2024-01-23T06:40:02Z"
 }
 ```
+
+### Using `terraform`
+
+See the [Terraform export support](https://registry.terraform.io/providers/temporalio/temporalcloud/latest/docs/resources/namespace_export_sink) for setup instructions.
+
 
 ### Next Steps
 
