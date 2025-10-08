@@ -19,7 +19,7 @@ tags:
 
 [Workers](../encyclopedia/workers/workers.mdx) are the execution layer of Temporal applications — they poll task queues, execute Workflows and Activities, and report results back to the Temporal Server. As such, Worker deployments have the following core tenets:
 
-- Stateless and ephemeral. Workers are independent pods/processes; all state lives in Temporal; Workers are designed to tolerate restarts and rescheduling.
+- Stateless and ephemeral. Even though Workers retain a cache to increase performance during execution of the same workloads, at their core they are stateless processes. All state that your applications rely on for durable execution lives in Temporal. Workers are designed to tolerate restarts and rescheduling.
 
 - Horizontally scalable. The number of worker replicas must be adjustable based on workload demands.
 
@@ -39,3 +39,17 @@ Because workers must be horizontally scalable, it is best to deploy them in pool
 ### Separate Workflow and Activity Worker pools if their resource needs differ significantly
 
 Even within a single Temporal application, there are often multiple Workflow and Activity types. If your application workloads are small and similar, a single Worker pool can handle all types. However, if your application has distinct workloads with different resource requirements or scaling characteristics, consider separating them into different Worker pools.
+
+
+### Use one Kubernetes pod per Worker
+
+Because workers are stateless and horizontally scalable, Kubernetes is a natural fit for deploying them. We recommend using one pod per Worker instance. This approach simplifies resource allocation, scaling, and monitoring.
+
+## Resource allocation and monitoring
+
+This section covers best practices for allocating resources to Workers and monitoring their performance.
+
+### Monitor both CPU and memory usage
+    
+
+
