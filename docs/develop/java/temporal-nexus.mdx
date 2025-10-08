@@ -618,12 +618,14 @@ tcld login
 
 tcld namespace create \
 	--namespace <your-caller-namespace> \
+	--cloud-provider aws \
 	--region us-west-2 \
 	--ca-certificate-file 'path/to/your/ca.pem' \
 	--retention-days 1
 
 tcld namespace create \
 	--namespace <your-target-namespace> \
+	--cloud-provider aws \
 	--region us-west-2 \
 	--ca-certificate-file 'path/to/your/ca.pem' \
 	--retention-days 1
