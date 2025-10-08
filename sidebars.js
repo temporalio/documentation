@@ -272,6 +272,7 @@ module.exports = {
             "develop/dotnet/schedules",
             "develop/dotnet/converters-and-encryption",
             "develop/dotnet/durable-timers",
+            "develop/dotnet/nexus",
             "develop/dotnet/child-workflows",
             "develop/dotnet/continue-as-new",
           ],
