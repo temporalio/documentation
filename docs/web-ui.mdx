@@ -23,9 +23,7 @@ Web UI open source repos:
 - [temporalio/ui](https://github.com/temporalio/ui)
 - [temporalio/ui-server](https://github.com/temporalio/ui-server)
 
-The Web UI is packed with several features.
-
-### Namespaces
+## Namespaces
 
 All Namespaces in your self-hosted Temporal Service or Temporal Cloud account are listed under **Namespaces** in the left section of the window.
 You can also switch Namespaces from the Workflows view by selecting from the Namespace switcher at the top right corner of the window.
@@ -54,9 +52,83 @@ For start time and end time, users can set their preferred date and time format 
 
 Select a Workflow Execution to view the Workflow Execution's History, Workers, Relationships, pending Activities and Nexus Operations, Queries and Metadata.
 
-#### History
+### Saved Views
 
-This is a view of the [Events](/workflow-execution/event#event) and Event fields within the Workflow Execution.
+Saved Views let you save and reuse your frequently used visibility queries in the Temporal Web UI. 
+Instead of recreating complex filters every time, you can save them once and apply them with a single click.
+
+Saved Views are stored locally in your browser and are available to you whenever you use the Temporal Web UI in this browser. 
+Each user will have their own private collection.
+
+#### Apply a Saved View
+
+By default, The Workflows page has several default Saved Views. You can also create your own Saved Views.
+
+Click the name of a Saved View in the list to display the corresponding Workflows that match the query.
+
+The Workflow List page will refresh with the results of the Saved View.
+
+#### Create a Saved View
+
+You can create a new Saved View from the Workflows page.
+
+1. Create a Saved View by using the filter UI to build your criteria, or you can use the raw query editor to write custom query strings. 
+1. Your new view will appear in the Custom Views list as New View. Click the Save as New button to bring up the Save as View window. Name your Saved View. Names must be unique to each user and can contain a max of 255 characters.
+1. Click Save. Your new view will appear in the Custom Views list
+
+You can create up to 20 Saved Views. When you reach this limit, you'll need to delete some Saved Views before you can save new ones.
+
+#### Make Temporary Changes to a Saved View query
+
+You can modify a Saved View temporarily without changing the saved criteria.
+
+1. Select the Saved View you want to change.
+1. Adjust the UI filters as needed.
+1. The Workflows page will refresh with the results of the new query, without changing the Saved View.
+1. If you want to keep your temporary changes, you can:
+    - Click Save, which will replace the original Saved View with your modifications.
+    - Click Edit, modify the name, and click Save, which will replace the original Saved View with your modifications and change the name.
+    - Click Edit, modify the name, and click Create New, which will create a new Saved View with your new settings and a new name.
+
+#### Rename a Saved View Query
+
+You can rename an existing Saved View from the Workflows page.
+
+1. Select the Saved View you want to change.
+1. Click Edit.
+1. In the Edit View dialog box, enter a new name for the Saved View.
+1. Click Save to apply your changes and rename the existing Saved View, or click Create Copy to create a new Saved View with the new name.
+
+#### Deleting Saved Views
+
+You can delete a Saved View from the Workflows page, because it is no longer useful, or to create room for new Saved Views.
+
+1. Select the Saved View you want to delete. You can only delete queries you’ve created; you cannot delete the system defaults.
+1. Click “Edit” and then "Delete this Saved View". 
+
+:::note Deleting Saved Views is permanent
+
+Deleted queries cannot be recovered, so make sure you won't need them again. 
+If you accidentally delete a Saved List, you will need to recreate it.
+
+:::
+
+#### Share a Saved View
+
+You can share a Saved View as a URL.
+
+1. Select the Saved View you want to share.
+1. Click the “Share” button to copy the URL for this Saved View to the clipboard. You can also copy the URL directly from the browser. 
+
+:::note Saved Views and time
+
+Saved Views that use relative times will be shared with absolute time.
+
+:::
+
+## History
+
+A Workflow Execution History is a view of the [Events](/workflow-execution/event#event) and Event fields within the Workflow Execution.
 Approximately [40 different Events](/references/events) can appear in a Workflow Execution's Event History.
 
 The top of the page lists the following execution metadata:
@@ -87,8 +159,14 @@ The entire Workflow Execution Event History, in JSON format, can be downloaded f
 
 #### Workflow Actions
 
-Workflow Executions can be Terminated directly from the UI.
-A custom note can be logged from the UI when that happens.
+Workflow Executions can request a Cancellation, send a Signal or Update, as well as Reset and Terminate directly from the UI. 
+Start a new Workflow Execution with pre-filled values with Start Workflow Like This One button.
+
+
+#### Relationships
+
+Displays the full hierarchy of a Workflow Execution with all parent and child nodes displayed in a tree.
+
 
 #### Workers
 
@@ -110,7 +188,12 @@ It works only if a Worker is running and available to return the call stack. The
 
 Lists all Queries sent to the Workflow Execution.
 
-### Schedules
+#### Metadata
+
+View User Metadata which includes static Workflow Summary and Details and dynamic Current Details. 
+Lists all Events with User Metadata data as well to give you a human-readable log of what's happening in your Workflow.
+
+## Schedules
 
 On Temporal Cloud and self-hosted Temporal Service Web UI, the Schedules page lists all the [Schedules](/schedule) created on the selected Namespace.
 
@@ -142,6 +225,7 @@ To read more about Schedules, explore these links:
     <RelatedReadItem path="/develop/typescript/schedules" text="Schedules using the TypeScript SDK" archetype="feature-guide" />
     <RelatedReadItem path="/develop/dotnet/schedules" text="Schedules using the .NET SDK" archetype="feature-guide" />
 </RelatedReadContainer>
+
 
 ### Settings
 
