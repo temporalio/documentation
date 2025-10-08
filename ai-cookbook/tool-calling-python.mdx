@@ -297,7 +297,7 @@ async def main():
 
     query = sys.argv[1] if len(sys.argv) > 1 else "Hello, how are you?"
 
-    # Submit the Hello World workflow for execution
+    # Submit the Tool Calling workflow for execution
     result = await client.execute_workflow(
         ToolCallingWorkflow.run,
         query,
