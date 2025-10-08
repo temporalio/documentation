@@ -8,7 +8,6 @@
     "clear": "docusaurus clear",
     "deploy": "docusaurus deploy",
     "docusaurus": "docusaurus",
-    "format": "dprint fmt",
     "check-links": "hyperlink build/index.html --recursive --check-anchors",
     "lint": "vale docs-src/**/*.md",
     "lint:go": "vale docs-src/go/*.md",
@@ -21,7 +20,10 @@
     "swizzle": "docusaurus swizzle",
     "vale": "./assembly/run-vale.sh",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "write-translations": "docusaurus write-translations"
+    "write-translations": "docusaurus write-translations",
+    "e2e:install": "npx playwright install --with-deps",
+    "e2e:dev": "concurrently \"docusaurus start\" \"wait-on http://localhost:3000 && playwright test --project=chromium-desktop\"",
+    "e2e": "playwright test"
   },
   "browserslist": {
     "production": [
@@ -63,10 +65,12 @@
     "snipsync": "^1.9.0",
     "tar-fs": "^2.1.4",
     "uuid": "^11.1.0",
-    "webpack-font-preload-plugin": "^1.5.0"
+    "webpack-font-preload-plugin": "^1.5.0",
+    "@playwright/test": "^1.47.0",
+    "concurrently": "^8.2.2",
+    "wait-on": "^7.2.0"
   },
   "devDependencies": {
-    "dprint": "^0.45.0",
     "eslint": "^7.32.0",
     "eslint-plugin-react": "^7.23.2",
     "hyperlink": "^5.0.4"
