@@ -108,7 +108,7 @@ To find an API key, you can filter by API key state and identity type (Global Ad
 :::caution DISABLED API KEYS
 
 Deleting or disabling a key removes its ability to authenticate into Temporal Cloud.
-If you delete or disable an API key being used by workers to run a Workflow, those workers will be unable to connect to Temporal until a new API key secret is created and configured.
+If you delete or disable an API key being used by Workers to run a Workflow, those Workers will be unable to connect to Temporal until a new API key secret is created and configured.
 
 :::
 
@@ -183,7 +183,7 @@ Deleting an API key stops it from authenticating with Temporal Cloud.
 
 :::caution
 
-Deleting an API key used by workers to run a Workflow will cause it to fail unless you rotate the key with a new one.
+Deleting an API key used by Workers to run a Workflow will cause it to fail unless you rotate the key with a new one.
 This can affect long-running Workflows that outlast the API key's lifetime.
 
 :::
@@ -296,7 +296,7 @@ This command is the same for users and Service Accounts.
 
 Global Administrators and Account Owners can delete API keys for any user or Service Account in their account using the Temporal Cloud UI or `tcld`.
 Deleting a key removes its ability to authenticate with Temporal Cloud.
-If you delete an API key used by a worker to run a Workflow, that worker will fail to connect to Temporal server unless you rotate the API key with a new one.
+If you delete an API key used by a Worker to run a Workflow, that Worker will fail to connect to Temporal server unless you rotate the API key with a new one.
 
 #### Delete a Service Account API key with Temporal Cloud UI
 
