@@ -81,7 +81,7 @@ Here are the differences in their permissions:
 
 - Any user can create, delete, and update their *own* API key using the Cloud UI or `tcld`.
 - Only Global Administrators and Account Owners can create, delete, and update access to API keys for all types of Service Accounts.
-- Namespace Admins can create, delete, and update access to API keys for the Namespace Scoped Service Accounts they administer.
+- Namespace Admins can create, delete, and update access to API keys for the Namespace-scoped Service Accounts they administer.
 
 ### API key prerequisites
 
@@ -96,12 +96,12 @@ Global Administrators and Account Owners can monitor, manage, disable, and delet
 To manage your account’s API keys:
 
 1. [Log in](https://cloud.temporal.io/) to the Temporal Cloud UI.
-1. [Select **Settings** and choose **API keys**](https://cloud.temporal.io/settings/api-keys).
+1. Go to [Settings → API Keys](https://cloud.temporal.io/settings/api-keys)
 
-Administrators can disable the creation of new API keys using the **Disable API Keys** button on the **API Keys** Settings page.
+Administrators can disable the creation of new API keys using the **Disable Create API Keys** button on the **API Keys** Settings page.
 Existing API keys can still be used to authenticate into Temporal Cloud normally until they are either disabled, deleted, or expired.
 
-To disable or delete an individual API key use the vertical ellipsis next to the API key row or view the API key detail page.
+To disable or delete an individual API key use the vertical ellipsis menu in the API key table row.
 
 To find an API key, you can filter by API key state and identity type (Global Administrators and Account Owners only).
 
@@ -130,14 +130,14 @@ Create API keys using one of the following methods:
 
 #### Generate API keys with the Temporal Cloud UI
 
-[Log in](https://cloud.temporal.io/) to the Temporal Cloud UI and navigate to your [Profile Page → API keys](https://cloud.temporal.io/profile/api-keys).
+[Log in](https://cloud.temporal.io/) to the Temporal Cloud UI and navigate to your [Profile Page → API Keys](https://cloud.temporal.io/profile/api-keys).
 Then select **Create API key** and provide the following information:
 
-- API key name: a short identifiable name for the key
-- API key description: a longer form description of the key's use
-- Expiration date: the end-date for the API key
+- **API key name**: A short, identifiable name for the key
+- **API key description**: A longer description of the key's use
+- **Expiration date**: The end date for the API key
 
-Finish by selecting **Generate API key**.
+Finish by selecting **Generate API Key**.
 
 #### Generate API keys with tcld
 
@@ -153,18 +153,18 @@ tcld apikey create \
 
 Duration specifies the time until the API key expires, for example: "30d", "4d12h", etc.
 
-### Enable or Disable an API Key
+### Enable or Disable an API key
 
 You can enable or disable API keys.
 When disabled, an API key cannot authenticate with Temporal Cloud.
 
-#### Manage API Key State with the Temporal Cloud UI
+#### Manage API key state with the Temporal Cloud UI
 
 Follow these steps:
 
 1. [Log in](https://cloud.temporal.io/) to the Temporal Cloud UI.
 1. Go to your [Profile Page → API Keys](https://cloud.temporal.io/profile/api-keys).
-1. Select the three vertical dots next to the API key’s row.
+1. Select the vertical ellipsis menu in the API key table row.
 1. Choose **Enable** or **Disable**.
 
 #### Manage API Key State with tcld
@@ -193,8 +193,8 @@ This can affect long-running Workflows that outlast the API key's lifetime.
 Follow these steps to remove API keys:
 
 1. [Log in](https://cloud.temporal.io/) to the Temporal Cloud UI.
-1. Navigate to your [Profile Page → API keys](https://cloud.temporal.io/profile/api-keys).
-1. Select the three vertical dots next to the API key's row.
+1. Navigate to your [Profile Page → API Keys](https://cloud.temporal.io/profile/api-keys).
+1. Select the vertical ellipsis menu in the API key table row.
 1. Choose **Delete**.
 
 #### Delete API keys with tcld
@@ -220,7 +220,7 @@ Follow these steps to rotate API keys:
 ## Manage API keys for Service Accounts {#serviceaccount-api-keys}
 
 Global Administrators and Account Owners can manage and generate API keys for *all* Service Accounts in their account.
-Namespace Admins can manage and generate API keys for the Namespace Scoped Service Accounts they administer.
+Namespace Admins can manage and generate API keys for the Namespace-scoped Service Accounts they administer.
 
 This is different for non-admin users, who manage and generate their own API keys.
 
@@ -237,22 +237,15 @@ Create API keys for Service Accounts using one of the following methods:
 
 #### Generate API Keys with the Temporal Cloud UI
 
-[Log in](https://cloud.temporal.io/) to the Temporal Cloud UI and go to [API keys settings](https://cloud.temporal.io/settings/api-keys).
-Select **Create API key**, then choose **Service Account** from the "Create an API key for" dropdown.
-In the "Mapped to identity" input box, select a Service account and provide the following information:
+[Log in](https://cloud.temporal.io/) to the Temporal Cloud UI. Global Administrators or Account Owners can go to [Settings → API Keys](https://cloud.temporal.io/settings/api-keys). Namespace Admins can go to [Profile Page → API Keys](https://cloud.temporal.io/profile/api-keys). 
+Select **Create API Key**, then choose **Service Account** from the "Create an API key for" dropdown.
+In the "Mapped to identity" input box, select a Service Account and provide the following information:
 
 - **API key name**: A short, identifiable name for the key
 - **API key description**: A longer description of the key's use
 - **Expiration date**: The end date for the API key
 
-Finish by selecting **Generate API key**.
-
-:::info
-
-This view currently is limited to Global Administrators and Account Owners.
-Namespace Admins can generate an API key for a scoped Service Account using `tcld` or by following the steps [here](/cloud/service-accounts#scoped-ui).
-
-:::
+Finish by selecting **Generate API Key**.
 
 #### Generate API keys with tcld
 
@@ -266,7 +259,7 @@ tcld apikey create \
     --service-account-id <service-account-id>
 ```
 
-### Enable or disable an API key
+### Enable or Disable an API key
 
 Global Administrators and Account Owners can manage API key access for any user in their account using the Temporal Cloud UI or `tcld`.
 
@@ -274,9 +267,9 @@ Global Administrators and Account Owners can manage API key access for any user 
 
 Follow these steps:
 
-1. Log into Temporal Cloud.
-1. Go to [https://cloud.temporal.io/settings/api-keys](https://cloud.temporal.io/settings/api-keys) and find the identity that owns the API key.
-1. Click the Disable/Enable button to perform the action.
+1. [Log in](https://cloud.temporal.io/) to the Temporal Cloud UI.
+1. Global Administrators or Account Owners can go to [Settings → API Keys](https://cloud.temporal.io/settings/api-keys). Namespace Admins can go to [Profile Page → API Keys](https://cloud.temporal.io/profile/api-keys). 
+1. Find the API key. Use the vertical ellipsis menu in the table row and select the Disable/Enable option to perform the action.
    There may be a delay after changing the status.
    Once successful, the updated API key status will be shown in the row.
 
@@ -302,9 +295,8 @@ If you delete an API key for a running Workflow, that Workflow will fail unless 
 
 Follow these steps:
 
-1. Navigate to [https://cloud.temporal.io/settings/api-keys](https://cloud.temporal.io/settings/api-keys).
-1. Locate the identity that owns the API key and click on the row to view the API keys associated with that identity.
-1. Click the Delete button.
+1. Go to [Settings → API Keys](https://cloud.temporal.io/settings/api-keys).
+1. Locate the API key. Use the vertical ellipsis menu in the table row and select the Delete option.
    There may be a delay after deleting the API key.
 1. Once successful, the updated API key status will be reflected in the row.
 
@@ -461,4 +453,4 @@ If you lose it, generate a new one.
 **Q: What is the `Generate API Key` button on the Namespace page?**
 
 A: The `Generate API Key` button on a Namespace page generates an API key with `Admin` permissions for the given Namespace and the maximum expiration time, which is 2 years.
-For additional details, refer to [Namespace Scoped Service Accounts](/cloud/service-accounts#scoped).
+For additional details, refer to [Namespace-scoped Service Accounts](/cloud/service-accounts#scoped).
