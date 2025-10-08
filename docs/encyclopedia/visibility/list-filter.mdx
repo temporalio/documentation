@@ -186,6 +186,47 @@ ExecutionTime < '2021-08-28T15:04:05+00:00' or ExecutionTime > '2021-08-22T15:04
 WorkflowType STARTS_WITH '<workflow-type-prefix>'
 ```
 
+### Search Attribute Aliasing
+
+:::info Server Version Requirement
+
+Search Attribute aliasing is available from Temporal Server version 1.30 and greater.
+
+:::
+
+Temporal supports aliasing of system attributes with the `Temporal` prefix. This allows custom search attributes that would previously collide with reserved search attributes.
+
+
+
+#### Search Attribute Aliasing Examples
+
+The following queries are equivalent and will return the same results:
+
+```sql
+-- Using the original attribute name
+WorkflowVersioningBehavior = 'pinned'
+
+-- Using the Temporal-prefixed alias (equivalent)
+TemporalWorkflowVersioningBehavior = 'pinned'
+```
+
+#### Custom Search Attribute Override Behavior
+
+When you have custom search attributes that conflict with system attributes, the aliasing system respects your custom definitions:
+
+- **Custom attributes take precedence**: If you've defined a custom search attribute that clashes with a reserved search attribute, the system search attribute will be accessible with `TemporalMySearchAttribute` and your search attribute with `MySearchAttribute`.(
+
+Example with custom attribute override:
+
+```sql
+-- If you have a custom search attribute named 'TemporalWorkflowId'
+-- This will use your custom attribute, not the system alias
+TemporalWorkflowId = 'custom-workflow-id-123'
+
+-- The original system attribute still works
+WorkflowId = 'system-workflow-id-456'
+```
+
 {/*
 
 ```sql
