@@ -1,7 +1,7 @@
 extends: existence
 message: "Don't use ordinal numbers for dates."
 link: https://docs.microsoft.com/en-us/style-guide/numbers#numbers-in-dates
-level: error
+level: suggestion
 nonword: true
 ignorecase: true
 raw:
