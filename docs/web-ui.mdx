@@ -42,7 +42,7 @@ Users can list Workflow Executions by any of the following:
 - [Workflow Type](/workflow-definition#workflow-type)
 - Start time
 - End time
-- Any other Default or Custom [Search Attribute](/search-attribute)] which use [List Filter](/list-filter)
+- Any other Default or Custom [Search Attribute](/search-attribute) that uses [List Filter](/list-filter)
 
 For start time and end time, users can set their preferred date and time format as one of the following:
 
@@ -50,7 +50,7 @@ For start time and end time, users can set their preferred date and time format 
 - Local
 - Relative
 
-Select a Workflow Execution to view the Workflow Execution's History, Workers, Relationships, pending Activities and Nexus Operations, Queries and Metadata.
+Select a Workflow Execution to view the Workflow Execution's History, Workers, Relationships, pending Activities and Nexus Operations, Queries, and Metadata.
 
 ### Saved Views
 
@@ -140,7 +140,7 @@ The top of the page lists the following execution metadata:
 - Parent and Parent ID
 - SDK
 - [State Transitions](/workflow-execution#state-transition)
-- Billable Actions Count (Cloud Only) (/cloud/actions#actions-in-workflows)
+- [Billable Actions Count](/cloud/actions#actions-in-workflows) (Temporal Cloud only) 
 
 The Input and Results section displays the function arguments and return values for debugging purposes.
 Results are not available until the Workflow finishes.
@@ -153,45 +153,45 @@ The History tab has the following views:
 - Compact: A logical grouping of Activities, Signals and Timers.
 - JSON: The full JSON code for the workflow.
 
-#### Download Event History
+### Download Event History
 
 The entire Workflow Execution Event History, in JSON format, can be downloaded from this section.
 
-#### Workflow Actions
+### Workflow Actions
 
-Workflow Executions can request a Cancellation, send a Signal or Update, as well as Reset and Terminate directly from the UI. 
-Start a new Workflow Execution with pre-filled values with Start Workflow Like This One button.
+Workflow Executions can request a Cancellation, send a Signal or Update, or Reset and Terminate directly from the UI. 
+Start a new Workflow Execution with pre-filled values with the Start Workflow Like This One button.
 
 
-#### Relationships
+### Relationships
 
 Displays the full hierarchy of a Workflow Execution with all parent and child nodes displayed in a tree.
 
 
-#### Workers
+### Workers
 
 Displays the Workers currently polling on the Workflow Task Queue with a count.
 If no Workers are polling, an error displays.
 
-#### Pending Activities
+### Pending Activities
 
 Displays a summary of recently active and/or pending Activity Executions.
 Clicking a pending Activity directs the user to the Pending Activities tab to view details.
 
-#### Call Stack
+### Call Stack
 
 The screen shows the captured result from the [\_\_stack_trace](/sending-messages#stack-trace-query) Query.
 The Query is performed when the tab is selected.
 It works only if a Worker is running and available to return the call stack. The call stack shows each location where Workflow code is waiting.
 
-#### Queries
+### Queries
 
 Lists all Queries sent to the Workflow Execution.
 
-#### Metadata
+### Metadata
 
-View User Metadata which includes static Workflow Summary and Details and dynamic Current Details. 
-Lists all Events with User Metadata data as well to give you a human-readable log of what's happening in your Workflow.
+Displays User Metadata including static Workflow Summary and Details and dynamic Current Details. 
+Lists all Events with User Metadata data to give you a human-readable log of what's happening in your Workflow.
 
 ## Schedules
 
