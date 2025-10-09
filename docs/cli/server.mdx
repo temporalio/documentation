@@ -17,7 +17,6 @@ tags:
 
 {/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
 This file is generated from https://github.com/temporalio/cli/blob/main/temporalcli/commandsgen/commands.yml */}
-
 ## start-dev
 
 Run a development Temporal Server on your local system.
@@ -90,7 +89,7 @@ Log the server config to stderr.
 
 **--metrics-port** _int_
 
-Port for '/metrics'. Default is off.
+Port for the '/metrics' HTTP endpoint. Defaults to a random free port.
 
 **--namespace**, **-n** _string[]_
 
@@ -118,21 +117,21 @@ UI remote codec HTTP endpoint.
 
 **--ui-ip** _string_
 
-IP address bound to the Web UI. Default is same as '--ip' value.
+IP address bound to the Web UI. Defaults to same as '--ip' value.
 
 **--ui-port** _int_
 
-Port for the Web UI. Default is '--port' value + 1000.
+Port for the Web UI. Defaults to '--port' value + 1000.
 
 **--ui-public-path** _string_
 
-The public base path for the Web UI. Default is `/`.
+The public base path for the Web UI. Defaults to `/`.
 
 **Global Flags:**
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -208,6 +207,10 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
 
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
+
 **--log-format** _string-enum_
 
 Log format. Accepted values: text, json. (default "text")
@@ -277,3 +280,4 @@ Path to x509 private key. Can't be used with --tls-key-data.
 **--tls-server-name** _string_
 
 Override target TLS server name.
+

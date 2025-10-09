@@ -2,7 +2,7 @@
 extends: existence
 message: Using '%s' may come across as condescending.
 link: https://css-tricks.com/words-avoid-educational-writing/
-level: error
+level: suggestion
 ignorecase: true
 tokens:
   - obvious
