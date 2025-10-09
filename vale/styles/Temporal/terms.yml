@@ -29,7 +29,7 @@ swap:
   custom data converter: Custom Data Converter
   data converter: Data Converter
   default data converter: Default Data Converter
-  durable exeuction: Durable Execution
+  durable execution: Durable Execution
   event history: Event History
   failure converter: Failure Converter
   frontend service: Frontend Service

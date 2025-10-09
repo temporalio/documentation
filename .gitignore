@@ -38,3 +38,6 @@ package-lock.json
 # Env
 .env
 /assembly/.env
+
+# Tests
+test-results/*

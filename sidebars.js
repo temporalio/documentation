@@ -354,10 +354,35 @@ module.exports = {
                 id: "production-deployment/cloud/metrics/index",
               },
               items: [
-                "production-deployment/cloud/metrics/general-setup",
-                "production-deployment/cloud/metrics/reference",
-                "production-deployment/cloud/metrics/datadog",
-                "production-deployment/cloud/metrics/prometheus-grafana",
+                {
+                  type: "category",
+                  label: "OpenMetrics",
+                  collapsed: true,
+                  link: {
+                    type: "doc",
+                    id: "production-deployment/cloud/metrics/openmetrics/index",
+                  },
+                  items: [
+                    "production-deployment/cloud/metrics/openmetrics/migration-guide",
+                    "production-deployment/cloud/metrics/openmetrics/api-reference",
+                    "production-deployment/cloud/metrics/openmetrics/metrics-reference",
+                  ],
+                },
+                {
+                  type: "category",
+                  label: "PromQL",
+                  collapsed: true,
+                  link: {
+                    type: "doc",
+                    id: "production-deployment/cloud/metrics/promql",
+                  },
+                  items: [
+                    "production-deployment/cloud/metrics/general-setup",
+                    "production-deployment/cloud/metrics/reference",
+                    "production-deployment/cloud/metrics/datadog",
+                    "production-deployment/cloud/metrics/prometheus-grafana",
+                  ],
+                },
               ],
             },
             {
@@ -574,6 +599,20 @@ module.exports = {
         "troubleshooting/deadline-exceeded-error",
         "troubleshooting/last-connection-error",
             "troubleshooting/performance-bottlenecks"
+      ],
+    },
+    {
+      type: "category",
+      label: "Best Practices",
+      collapsed: true,
+      link: {
+        type: "doc",
+        id: "best-practices/index",
+      },
+      items: [
+        "best-practices/managing-namespace",
+        "best-practices/cloud-access-control",
+        "best-practices/security-controls",
       ],
     },
     {
