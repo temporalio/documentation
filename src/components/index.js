@@ -7,6 +7,7 @@ export { default as SdkTabs } from './elements/SdkTabs';
 
 // Formatting components
 export { default as DocsTable, NewDocsCell, DocsTableRow } from "./formatting/DocsTable";
+export { default as JsonTable } from "./formatting/JsonTable";
 
 // Image components
 export { default as CaptionedImage } from "./images/CaptionedImage";
