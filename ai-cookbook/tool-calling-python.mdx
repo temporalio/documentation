@@ -3,6 +3,7 @@ title: Tool Calling Agent
 description: Build a simple, non-looping agent that gives agency to the LLM to choose tools, and then invokes chosen tools. 
 tags: [agents, python]
 priority: 775
+source: https://github.com/temporalio/ai-cookbook/tree/main/agents/tool_call_openai_python
 ---
 
 In this example, we demonstrate how function calling (also known as tool calling) works with the [Open AI API](https://github.com/openai/openai-python) and Temporal. Tool calling allows the model to make decisions on which, if any, functions should be invoked. It also provides information to the LLM that will allow it to structure the response in such a way that the agent can easily invoke the functions.
