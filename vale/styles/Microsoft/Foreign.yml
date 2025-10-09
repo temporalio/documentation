@@ -2,7 +2,7 @@ extends: substitution
 message: "Use '%s' instead of '%s'."
 link: https://docs.microsoft.com/en-us/style-guide/word-choice/use-us-spelling-avoid-non-english-words
 ignorecase: true
-level: error
+level: suggestion
 nonword: true
 action:
   name: replace

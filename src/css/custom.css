@@ -1049,15 +1049,27 @@ h1 {
   margin-right: 40px;
 }
 
+.navbar__items--right {
+  flex-direction: row-reverse;
+}
+
+@media (max-width: 1241px) {
+  .navbar__link {
+    display: none;
+  }
+
+  a[href^="/ai-cookbook"] {
+    display: inline;
+  }
+}
+
 @media only screen and (min-width: 1400px) {
   .navbar__items--right {
-    width: 35vw;
-    flex-direction: row-reverse;
     justify-content: space-between;
   }
 
   .DocSearch {
-    width: 30vw;
+    width: fit-content;
   }
 }
 
