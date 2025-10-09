@@ -81,23 +81,15 @@ Instead, explore the [Export](/cloud/export) feature, which does let you send cl
 
 ### Audit Log format
 
-:::info
+:::info DEPRECATION NOTICE
 
-Audit logs in Temporal Cloud are being updated beginning October 2025. This update will include several new features such as a UI to explore audit logs and an API to programmatically query audit logs. 
+The following fields are deprecated and are planned for removal on or after April 1 2026. 
 
-As part of the work to add these features, we are starting the deprecation notice period for the several fields in audit logs. Below are the fields that will be deprecated and the recommended field to use in place of those that are being deprecated.
-
-user_email (duplicated by principal.name for principals of type ‘user’, other principal types do not have associated emails)
-
-level (duplicated by status)
-
-caller_ip_address (replaced by x_forwarded_for to be more accurate)
-
-details (replaced by raw_details that includes request details)
-
-category (this is no longer used)
-
-These deprecated fields are planned for removal on or after April 1 2026.
+- `user_email`.  This field is duplicated by `principal.name` for principals of type `user`. Other principal types do not have associated emails.
+- `level`.  This field is duplicated by `status`.
+- `caller_ip_address`.  This field is replaced by `x_forwarded_for`.
+- `details`.  This field is replaced by `raw_details` that includes request details.
+- `category`.  This field is no longer used.
 
 :::
 
