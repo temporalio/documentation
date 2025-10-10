@@ -232,13 +232,26 @@ function getLastUpdatedDate(readmePath) {
   if (Number.isNaN(parsed.getTime())) {
     return {error: `unable to parse timestamp "${isoTimestamp}"`};
   }
-  return {lastUpdated: parsed.toISOString().slice(0, 10)};
+  let formattedLabel;
+  try {
+    const formatter = new Intl.DateTimeFormat(undefined, {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      timeZone: 'UTC',
+    });
+    formattedLabel = formatter.format(parsed);
+  } catch {
+    formattedLabel = isoTimestamp.replace(/T.*/, '');
+  }
+  return {lastUpdatedIso: parsed.toISOString(), formattedLabel};
 }
 
-function buildFrontMatter({baseData, title, lastUpdated, sourceUrl}) {
+function buildFrontMatter({baseData, title, lastUpdated, lastUpdatedLabel, sourceUrl}) {
   const sanitized = {...baseData};
   delete sanitized.title;
   delete sanitized.last_updated;
+  delete sanitized.last_updated_label;
   delete sanitized.lastUpdated;
   delete sanitized.lastUpdatedAt;
   delete sanitized.last_updated_at;
@@ -252,6 +265,9 @@ function buildFrontMatter({baseData, title, lastUpdated, sourceUrl}) {
     ordered[key] = value;
   }
   ordered.last_updated = lastUpdated;
+  if (lastUpdatedLabel) {
+    ordered.last_updated_label = lastUpdatedLabel;
+  }
   if (sourceUrl) {
     ordered.source = sourceUrl;
   }
@@ -429,7 +445,8 @@ async function transformReadme(readmePath, slugLookup) {
   const frontMatterBlock = buildFrontMatter({
     baseData: commentData,
     title,
-    lastUpdated: lastUpdatedResult.lastUpdated,
+    lastUpdated: lastUpdatedResult.lastUpdatedIso,
+    lastUpdatedLabel: lastUpdatedResult.formattedLabel,
     sourceUrl,
   });
 
