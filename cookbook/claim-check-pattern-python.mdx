@@ -119,84 +119,204 @@ class ClaimCheckPlugin(Plugin):
         return super().configure_client(config)
 ```
 
-## Example: Large Data Processing Workflow
+## Example: Two-Stage Large Data Processing Workflow
 
-This example demonstrates processing large datasets using the Claim Check pattern.
+This example demonstrates the Claim Check pattern with a realistic data processing pipeline that shows how large payloads are handled at multiple stages.
+
+### Data Models
 
 ```python
-from temporalio import workflow, activity
 from dataclasses import dataclass
-from typing import List
-import json
+from typing import List, Dict, Any
 
 @dataclass
 class LargeDataset:
     """Represents a large dataset that would benefit from claim check pattern."""
-    data: List[dict]
-    metadata: dict
+    data: List[Dict[str, Any]]
+    metadata: Dict[str, Any]
 
 @dataclass
-class ProcessingResult:
-    """Result of processing the large dataset."""
-    processed_count: int
-    summary: dict
+class TransformedDataset:
+    """Large dataset after transformation - still large but processed."""
+    data: List[Dict[str, Any]]
+    metadata: Dict[str, Any]
+    transformation_stats: Dict[str, Any]
+
+@dataclass
+class SummaryResult:
+    """Final summary result - small payload."""
+    total_items: int
+    processed_items: int
+    transformation_stats: Dict[str, Any]
+    summary_stats: Dict[str, Any]
     errors: List[str]
+```
+
+### Activities
+
+```python
+from temporalio import activity
 
 @activity.defn
-async def process_large_dataset(dataset: LargeDataset) -> ProcessingResult:
-    """Process a large dataset - this would normally cause payload size issues.
+async def transform_large_dataset(dataset: LargeDataset) -> TransformedDataset:
+    """Transform a large dataset - produces another large dataset.
     
     This activity demonstrates how the claim check pattern allows processing
     of large datasets without hitting Temporal's payload size limits.
-    
-    Note: For production workloads processing very large datasets, consider adding
-    activity heartbeats to prevent timeout issues during long-running processing.
-    
-    Args:
-        dataset: Large dataset to process
-        
-    Returns:
-        ProcessingResult with processing statistics and any errors
+    The transformation produces another large dataset that gets passed to
+    the next activity.
     """
     processed_count = 0
     errors = []
-    summary = {"total_items": len(dataset.data)}
+    transformation_stats = {
+        "total_items": len(dataset.data),
+        "transformations_applied": []
+    }
+    
+    # Create a copy of the data to transform
+    transformed_data = []
     
     for item in dataset.data:
         try:
-            # Simulate processing each item
+            # Create a new item with transformations
+            transformed_item = item.copy()
+            
+            # Apply various transformations
             if "value" in item:
-                item["processed_value"] = item["value"] * 2
+                transformed_item["processed_value"] = item["value"] * 2
+                transformed_item["value_category"] = "high" if item["value"] > 1000 else "low"
                 processed_count += 1
-            elif "text" in item:
+                
+            if "text" in item:
                 # Simulate text processing
-                item["word_count"] = len(item["text"].split())
+                words = item["text"].split()
+                transformed_item["word_count"] = len(words)
+                transformed_item["avg_word_length"] = sum(len(word) for word in words) / len(words) if words else 0
+                transformed_item["text_sentiment"] = "positive" if "good" in item["text"].lower() else "neutral"
                 processed_count += 1
+                
+            # Add additional computed fields
+            transformed_item["computed_score"] = (
+                transformed_item.get("processed_value", 0) * 0.7 + 
+                transformed_item.get("word_count", 0) * 0.3
+            )
+            
+            transformed_data.append(transformed_item)
+            
         except Exception as e:
-            errors.append(f"Error processing item {item.get('id', 'unknown')}: {str(e)}")
+            errors.append(f"Error transforming item {item.get('id', 'unknown')}: {str(e)}")
+            # Still add the original item even if transformation failed
+            transformed_data.append(item)
     
-    summary["processed_items"] = processed_count
-    summary["error_count"] = len(errors)
+    transformation_stats["processed_items"] = processed_count
+    transformation_stats["error_count"] = len(errors)
+    transformation_stats["transformations_applied"] = [
+        "value_doubling", "category_assignment", "text_analysis", 
+        "sentiment_analysis", "score_computation"
+    ]
     
-    return ProcessingResult(
-        processed_count=processed_count,
-        summary=summary,
-        errors=errors
+    # Update metadata
+    updated_metadata = dataset.metadata.copy()
+    updated_metadata["transformed_at"] = "2024-01-01T00:00:00Z"
+    updated_metadata["transformation_version"] = "1.0"
+    
+    return TransformedDataset(
+        data=transformed_data,
+        metadata=updated_metadata,
+        transformation_stats=transformation_stats
     )
+
+@activity.defn
+async def generate_summary(transformed_dataset: TransformedDataset) -> SummaryResult:
+    """Generate a summary from the transformed dataset.
+    
+    This activity takes the large transformed dataset and produces a small
+    summary result, demonstrating the claim check pattern with large activity
+    input and small output.
+    """
+    data = transformed_dataset.data
+    total_items = len(data)
+    
+    # Calculate summary statistics
+    summary_stats = {
+        "total_items": total_items,
+        "value_stats": {
+            "min_value": min(item.get("value", 0) for item in data),
+            "max_value": max(item.get("value", 0) for item in data),
+            "avg_value": sum(item.get("value", 0) for item in data) / total_items if total_items > 0 else 0,
+            "high_value_count": sum(1 for item in data if item.get("value_category") == "high")
+        },
+        "text_stats": {
+            "total_words": sum(item.get("word_count", 0) for item in data),
+            "avg_word_count": sum(item.get("word_count", 0) for item in data) / total_items if total_items > 0 else 0,
+            "avg_word_length": sum(item.get("avg_word_length", 0) for item in data) / total_items if total_items > 0 else 0,
+            "positive_sentiment_count": sum(1 for item in data if item.get("text_sentiment") == "positive")
+        },
+        "score_stats": {
+            "min_score": min(item.get("computed_score", 0) for item in data),
+            "max_score": max(item.get("computed_score", 0) for item in data),
+            "avg_score": sum(item.get("computed_score", 0) for item in data) / total_items if total_items > 0 else 0
+        }
+    }
+    
+    return SummaryResult(
+        total_items=total_items,
+        processed_items=transformed_dataset.transformation_stats.get("processed_items", 0),
+        transformation_stats=transformed_dataset.transformation_stats,
+        summary_stats=summary_stats,
+        errors=transformed_dataset.transformation_stats.get("error_count", 0)
+    )
+```
+
+### Workflow
+
+```python
+from temporalio import workflow
+from datetime import timedelta
 
 @workflow.defn
 class LargeDataProcessingWorkflow:
+    """Workflow that demonstrates the Claim Check pattern with large datasets.
+    
+    This workflow demonstrates the claim check pattern by:
+    1. Taking a large dataset as input (large workflow input)
+    2. Transforming it into another large dataset (large activity input/output)
+    3. Generating a summary from the transformed data (large activity input, small output)
+    
+    This shows how the claim check pattern handles large payloads at multiple stages.
+    """
+
     @workflow.run
-    async def run(self, dataset: LargeDataset) -> ProcessingResult:
-        """Process large dataset using claim check pattern."""
-        result = await workflow.execute_activity(
-            process_large_dataset,
+    async def run(self, dataset: LargeDataset) -> SummaryResult:
+        """Process large dataset using claim check pattern with two-stage processing."""
+        # Step 1: Transform the large dataset (large input -> large output)
+        transformed_dataset = await workflow.execute_activity(
+            transform_large_dataset,
             dataset,
             start_to_close_timeout=timedelta(minutes=10),
-            summary="Process large dataset"
+            summary="Transform large dataset"
         )
-        return result
+        
+        # Step 2: Generate summary from transformed data (large input -> small output)
+        summary_result = await workflow.execute_activity(
+            generate_summary,
+            transformed_dataset,
+            start_to_close_timeout=timedelta(minutes=5),
+            summary="Generate summary from transformed data"
+        )
+        
+        return summary_result
 ```
+
+### How This Demonstrates the Claim Check Pattern
+
+This example shows the Claim Check pattern in action across multiple stages:
+
+1. **Large Workflow Input**: The workflow receives a large dataset from the client
+2. **Large Activity Input/Output**: The first activity transforms the large dataset, producing another large dataset
+3. **Large Activity Input, Small Output**: The second activity takes the transformed data and produces a compact summary
+
+This flow demonstrates how the claim check pattern handles large payloads at multiple stages of processing, making it transparent to your workflow logic while avoiding Temporal's payload size limits.
 
 ## Configuration
 
