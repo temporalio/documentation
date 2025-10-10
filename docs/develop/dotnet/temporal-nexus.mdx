@@ -207,7 +207,7 @@ Workflow IDs should typically be business-meaningful IDs and are used to dedupe 
 
 #### Map a Nexus Operation input to multiple Workflow arguments
 
-A Nexus Operation can only take one input parameter. If you want a Nexus Operation to start a Workflow that takes multiple arguments, simple pass in different arguments.
+A Nexus Operation can only take one input parameter. If you want a Nexus Operation to start a Workflow that takes multiple arguments, simply pass in different arguments using `RunAsync`.
 
 [NexusMultiArg/Handler/HelloService.cs](https://github.com/temporalio/samples-dotnet/blob/main/src/NexusMultiArg/Handler/HelloService.cs)
 ```csharp
