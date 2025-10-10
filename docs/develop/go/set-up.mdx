@@ -203,26 +203,24 @@ Create a Workflow file (workflow.go):
 package greeting
 
 import (
-"time"
+	"time"
 
-    "go.temporal.io/sdk/workflow"
-
+	"go.temporal.io/sdk/workflow"
 )
 
 func SayHelloWorkflow(ctx workflow.Context, name string) (string, error) {
-ao := workflow.ActivityOptions{
-StartToCloseTimeout: time.Second * 10,
-}
-ctx = workflow.WithActivityOptions(ctx, ao)
+	ao := workflow.ActivityOptions{
+		StartToCloseTimeout: time.Second * 10,
+	}
+	ctx = workflow.WithActivityOptions(ctx, ao)
 
-    var result string
-    err := workflow.ExecuteActivity(ctx, Greet, name).Get(ctx, &result)
-    if err != nil {
-    	return "", err
-    }
+	var result string
+	err := workflow.ExecuteActivity(ctx, Greet, name).Get(ctx, &result)
+	if err != nil {
+		return "", err
+	}
 
-    return result, nil
-
+	return result, nil
 }
 ```
 
@@ -239,31 +237,29 @@ Create a Worker file (worker/main.go):
 package main
 
 import (
-"log"
+	"log"
 
-    "go.temporal.io/sdk/client"
-    "go.temporal.io/sdk/worker"
-    "my-org/greeting"
-
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/worker"
+	"my-org/greeting"
 )
 
 func main() {
-c, err := client.Dial(client.Options{})
-if err != nil {
-log.Fatalln("Unable to create client", err)
-}
-defer c.Close()
+	c, err := client.Dial(client.Options{})
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer c.Close()
 
-    w := worker.New(c, "my-task-queue", worker.Options{})
+	w := worker.New(c, "my-task-queue", worker.Options{})
 
-    w.RegisterWorkflow(greeting.SayHelloWorkflow)
-    w.RegisterActivity(greeting.Greet)
+	w.RegisterWorkflow(greeting.SayHelloWorkflow)
+	w.RegisterActivity(greeting.Greet)
 
-    err = w.Run(worker.InterruptCh())
-    if err != nil {
-    	log.Fatalln("Unable to start worker", err)
-    }
-
+	err = w.Run(worker.InterruptCh())
+	if err != nil {
+		log.Fatalln("Unable to start worker", err)
+	}
 }
 ```
 
@@ -283,40 +279,39 @@ Create a separate file called start/main.go:
 package main
 
 import (
-"context"
-"log"
-"os"
-greeting "my-org/greeting"
+	"context"
+	"log"
+	"os"
 
-    "go.temporal.io/sdk/client"
+	greeting "my-org/greeting"
 
+	"go.temporal.io/sdk/client"
 )
 
 func main() {
-c, err := client.Dial(client.Options{})
-if err != nil {
-log.Fatalln("Unable to create client", err)
-}
-defer c.Close()
+	c, err := client.Dial(client.Options{})
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer c.Close()
 
-    options := client.StartWorkflowOptions{
-    	ID:        "greeting-workflow",
-    	TaskQueue: "my-task-queue",
-    }
+	options := client.StartWorkflowOptions{
+		ID:        "greeting-workflow",
+		TaskQueue: "my-task-queue",
+	}
 
-    we, err := c.ExecuteWorkflow(context.Background(), options, greeting.SayHelloWorkflow, os.Args[1])
-    if err != nil {
-    	log.Fatalln("Unable to execute workflow", err)
-    }
-    log.Println("Started workflow", "WorkflowID", we.GetID(), "RunID", we.GetRunID())
+	we, err := c.ExecuteWorkflow(context.Background(), options, greeting.SayHelloWorkflow, os.Args[1])
+	if err != nil {
+		log.Fatalln("Unable to execute workflow", err)
+	}
+	log.Println("Started workflow", "WorkflowID", we.GetID(), "RunID", we.GetRunID())
 
-    var result string
-    err = we.Get(context.Background(), &result)
-    if err != nil {
-    	log.Fatalln("Unable get workflow result", err)
-    }
-    log.Println("Workflow result:", result)
-
+	var result string
+	err = we.Get(context.Background(), &result)
+	if err != nil {
+		log.Fatalln("Unable get workflow result", err)
+	}
+	log.Println("Workflow result:", result)
 }
 ```
 
