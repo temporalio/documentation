@@ -21,7 +21,7 @@ keywords:
   - term
 ---
 
-import { ToolTipTerm, DiscoverableDisclosure } from '@site/src/components';
+import { ToolTipTerm, DiscoverableDisclosure, JsonTable } from '@site/src/components';
 
 [Google Cloud Private Service Connect](https://cloud.google.com/vpc/docs/private-service-connect) allows you to open a path to Temporal without opening a public egress.
 It establishes a private connection between your Google Virtual Private Cloud (VPC) and Temporal Cloud.
@@ -66,13 +66,7 @@ Individual Namespaces do not use separate services.
 
 :::
 
-  | Region         | Private Service Connect Service Name                                                       |
-  | -------------- | ------------------------------------------------------------------------------------------ |
-  | `asia-south1`  | `projects/prod-d5spc2sfeshws33bg33vwdef7/regions/asia-south1/serviceAttachments/pl-7w7tw`  |
-  | `europe-west3` | `projects/prod-kwy7d4faxp6qgrgd9x94du36g/regions/europe-west3/serviceAttachments/pl-acgsh` |
-  | `us-central1`  | `projects/prod-d9ch6v2ybver8d2a8fyf7qru9/regions/us-central1/serviceAttachments/pl-5xzng`  |
-  | `us-east4`     | `projects/prod-y399cvr9c2b43es2w3q3e4gvw/regions/us-east4/serviceAttachments/pl-8awsy`     |
-  | `us-west1`     | `projects/prod-rbe76zxxzydz4cbdz2xt5b59q/regions/us-west1/serviceAttachments/pl-94w0x`     |
+<JsonTable filename="/json/privatelink_gcp.json" />
 
 - For **Endpoint name**, enter a unique identifier to use for this endpoint. It could be for instance `temporal-api` or `temporal-api-<namespace>` if you want a different endpoint per namespace.
 - For **Network** and **Subnetwork**, choose the network and subnetwork where you want to publish your endpoint.
@@ -84,8 +78,8 @@ Individual Namespaces do not use separate services.
 6. [Create a Temporal Cloud Connectivity Rule](/cloud/connectivity#creating-a-connectivity-rule) using the Connection ID of the newly created endpoint and the corresponding GCP Project.
 
 7. Once the status is "Accepted", the GCP Private Service Connect endpoint is ready for use.
-   
-  - Take note of the **IP address** that has been assigned to your endpoint, as it will be used to connect to Temporal Cloud.
+
+- Take note of the **IP address** that has been assigned to your endpoint, as it will be used to connect to Temporal Cloud.
 
 :::caution
 You still need to set up private DNS or override client configuration for your clients to actually use the new Private Service Connect connection to connect to Temporal Cloud.
