@@ -12,7 +12,7 @@ const REPO_BRANCH = process.env.AI_COOKBOOK_BRANCH ?? 'main';
 const WORKSPACE_ROOT = path.resolve(__dirname, '..');
 const TEMP_ROOT = path.join(os.tmpdir(), 'ai-cookbook-sync');
 const REPO_TEMP_DIR = path.join(TEMP_ROOT, 'repo');
-const OUTPUT_SUBDIR = process.env.AI_COOKBOOK_OUTPUT_DIR ?? 'ai-cookbook-test';
+const OUTPUT_SUBDIR = process.env.AI_COOKBOOK_OUTPUT_DIR ?? 'ai-cookbook';
 const OUTPUT_DIR = path.join(WORKSPACE_ROOT, OUTPUT_SUBDIR);
 
 function runGit(args, options = {}) {
