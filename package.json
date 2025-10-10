@@ -4,6 +4,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
+    "prebuild": "node ./bin/sync-ai-cookbook.js",
     "build": "docusaurus build",
     "clear": "docusaurus clear",
     "deploy": "docusaurus deploy",
@@ -53,6 +54,7 @@
     "@mdx-js/react": "^3.0.0",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
+    "js-yaml": "^4.1.0",
     "chart.js": "^4.4.1",
     "clsx": "^1.1.1",
     "comlink": "^4.4.2",

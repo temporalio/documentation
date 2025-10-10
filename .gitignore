@@ -41,3 +41,6 @@ package-lock.json
 
 # Tests
 test-results/*
+
+# Ignore cookbook recipes since they are synced from the remote repo
+ai-cookbook
