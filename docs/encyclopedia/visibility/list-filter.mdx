@@ -24,7 +24,7 @@ The [Visibility](/temporal-service/visibility) List API requires you to provide 
 
 A List Filter includes [Search Attribute](/search-attribute) names, Search Attribute values, and [operators](#supported-operators) so that it can retrieve a filtered list of Workflow Executions from the Visibility Store.
 
-List Filter [Search Attribute](/search-attribute) names are case sensitive.
+List Filter [Search attribute](/search-attribute) names are case sensitive.
 A single [Namespace](/namespaces) scopes each List Filter.
 
 A List Filter using a time range provides a resolution of 1 ns on [Elasticsearch](/self-hosted-guide/visibility#elasticsearch) and 1 µs for [SQL databases](/self-hosted-guide/visibility).
@@ -55,7 +55,7 @@ There are different options for partial string matching when the type of the Sea
 
 #### Text
 
-Search Attributes of type `Text` are [broken up into words](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) that match with the `=` operator.
+Search attributes of type `Text` are [broken up into words](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) that match with the `=` operator.
 
 For example, if you have a custom `Text` Search Attribute named `Description` with either of the following values—
 
@@ -121,7 +121,7 @@ For Search Attributes of type `Keyword` like `WorkflowId`, perform partial strin
 
 - Wrap attributes with backticks if it contains characters not in
   `[a-zA-Z0-9]`.
-- `STARTS_WITH` is only available for Keyword search attributes.
+- `STARTS_WITH` is only available for Keyword Search Attributes.
 
 :::
 
@@ -186,19 +186,40 @@ ExecutionTime < '2021-08-28T15:04:05+00:00' or ExecutionTime > '2021-08-22T15:04
 WorkflowType STARTS_WITH '<workflow-type-prefix>'
 ```
 
-### Search Attribute Aliasing
+### Search attribute aliasing
+
+Temporal supports aliasing of [default Search Attributes](/search-attribute#default-search-attribute) with the `Temporal` prefix. This makes it possible to define custom Search Attributes that use the same names as default attributes without causing collisions.
 
 :::info Server Version Requirement
 
-Search Attribute aliasing is available from Temporal Server version 1.30 and greater.
+Search attribute aliasing requires Temporal Server version 1.30 and greater.
 
 :::
 
-Temporal supports aliasing of [default search attributes](/search-attribute#default-search-attribute) with the `Temporal` prefix. This allows custom search attributes that would previously collide with reserved search attributes.
+#### How alias resolution works
 
-#### Search Attribute Aliasing Examples
+When resolving a Search Attribute in a List Filter, Temporal Server checks for matches in the following order:
 
-The following queries are equivalent and will return the same results:
+1. Custom Search Attributes defined in the current Namespace
+
+2. Default Search Attributes
+
+This means that if you define a custom Search Attribute with the same name as a default Search Attribute, the unprefixed name will refer to your custom attribute. You can still search by the default Search Attribute by using the Temporal prefix.
+
+For example, if you have a custom Search Attribute named `WorkflowId`, List Filters using the following Search Attributes will return different results:
+
+```sql
+-- If you have a custom Search Attribute named 'WorkflowId'
+-- This will use your custom attribute, not the default Search Attribute
+WorkflowId = 'custom-workflow-id-123'
+
+-- The original system attribute still works by using the Temporal prefix
+TemporalWorkflowId = 'system-workflow-id-456'
+```
+
+`WorkflowId` will refer to your custom Search Attribute, while `TemporalWorkflowId` will refer to the default Search Attribute.
+
+If you don't have a custom Search Attribute that uses the same name as a default Search Attribute, the Search Attribute and the `Temporal`-prefixed alias will return the same results. For example, if you don't have a custom Search Attribute `WorkflowVersioningBehavior` defined, List Filters using the following Search Attributes will return the same results:
 
 ```sql
 -- Using the original attribute name
@@ -207,36 +228,3 @@ WorkflowVersioningBehavior = 'pinned'
 -- Using the Temporal-prefixed alias (equivalent)
 TemporalWorkflowVersioningBehavior = 'pinned'
 ```
-
-#### Custom Search Attribute Override Behavior
-
-When you have custom search attributes that conflict with default search attributes, aliasing respects your custom definitions:
-
-- **Custom attributes take precedence**: If you've defined a custom search attribute that clashes with a default search attribute, the default search attribute will be accessible with `TemporalMySearchAttribute` and your search attribute with `MySearchAttribute`.
-
-Example with custom attribute override:
-
-```sql
--- If you have a custom search attribute named 'WorkflowId'
--- This will use your custom attribute, not the default search attribute
-WorkflowId = 'custom-workflow-id-123'
-
--- The original system attribute still works
-TemporalWorkflowId = 'system-workflow-id-456'
-```
-
-{/*
-
-```sql
-order by ExecutionTime
-```
-
-```sql
-order by StartTime desc, CloseTime asc
-```
-
-```sql
-order by CustomIntField asc
-```
-
-*/}
