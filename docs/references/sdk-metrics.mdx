@@ -102,11 +102,18 @@ Some keys may not be available in every SDK, and Histogram metrics may have diff
 | [temporal_long_request](#long_request)                                                           | Service Client | Counter     | Core, Go, Java |
 | [temporal_long_request_failure](#long_request_failure)                                           | Service Client | Counter     | Core, Go, Java |
 | [temporal_long_request_latency](#long_request_latency)                                           | Service Client | Histogram   | Core, Go, Java |
+| [temporal_nexus_poll_no_task](#nexus_poll_no_task)                                               | Worker         | Counter     | Core, Go, Java |
+| [temporal_nexus_task_schedule_to_start_latency](#nexus_task_schedule_to_start_latency)           | Worker         | Histogram   | Core, Go, Java |
+| [temporal_nexus_task_execution_failed](#nexus_task_execution_failed)                             | Worker         | Counter     | Core, Go, Java |
+| [temporal_nexus_task_execution_latency](#nexus_task_execution_latency)                           | Worker         | Histogram   | Core, Go, Java |
+| [temporal_nexus_task_endtoend_latency](#nexus_task_endtoend_latency)                             | Worker         | Histogram   | Core, Go, Java |
 | [temporal_num_pollers](#num_pollers)                                                             | Worker         | Gauge       | Core, Go       |
 | [temporal_poller_start](#poller_start)                                                           | Worker         | Counter     | Go, Java       |
 | [temporal_request](#request)                                                                     | Service Client | Counter     | Core, Go, Java |
 | [temporal_request_failure](#request_failure)                                                     | Service Client | Counter     | Core, Go, Java |
 | [temporal_request_latency](#request_latency)                                                     | Service Client | Histogram   | Core, Go, Java |
+| [temporal_resource_slots_mem_usage](#resource_slots_cpu_usage)                                   | Worker         | Gauge       | Core, Java     |
+| [temporal_resource_slots_cpu_usage](#resource_slots_mem_usage)                                   | Worker         | Gauge       | Core, Java     |
 | [temporal_sticky_cache_hit](#sticky_cache_hit)                                                   | Worker         | Counter     | Core, Go, Java |
 | [temporal_sticky_cache_miss](#sticky_cache_miss)                                                 | Worker         | Counter     | Core, Go, Java |
 | [temporal_sticky_cache_size](#sticky_cache_size)                                                 | Worker         | Gauge       | Core, Go, Java |
@@ -127,11 +134,6 @@ Some keys may not be available in every SDK, and Histogram metrics may have diff
 | [temporal_workflow_task_queue_poll_succeed](#workflow_task_queue_poll_succeed)                   | Worker         | Counter     | Core, Go, Java |
 | [temporal_workflow_task_replay_latency](#workflow_task_replay_latency)                           | Worker         | Histogram   | Core, Go, Java |
 | [temporal_workflow_task_schedule_to_start_latency](#workflow_task_schedule_to_start_latency)     | Worker         | Histogram   | Core, Go, Java |
-| [temporal_nexus_poll_no_task](#nexus_poll_no_task)                                               | Worker         | Counter     | Core, Go, Java |
-| [temporal_nexus_task_schedule_to_start_latency](#nexus_task_schedule_to_start_latency)           | Worker         | Histogram   | Core, Go, Java |
-| [temporal_nexus_task_execution_failed](#nexus_task_execution_failed)                             | Worker         | Counter     | Core, Go, Java |
-| [temporal_nexus_task_execution_latency](#nexus_task_execution_latency)                           | Worker         | Histogram   | Core, Go, Java |
-| [temporal_nexus_task_endtoend_latency](#nexus_task_endtoend_latency)                             | Worker         | Histogram   | Core, Go, Java |
 
 ### activity_execution_cancelled
 
@@ -268,6 +270,64 @@ Latency of a Temporal Client gRPC long poll request.
 - Available in: Core, Go, Java
 - Tags: `namespace`, `operation`
 
+### nexus_poll_no_task
+
+A Nexus Worker poll for a Nexus Task timed out, and no Nexus Task is available to pick from the Task Queue.
+
+- Type: Counter
+- Available in: Go, Java
+- Tags: `namespace`, `task_queue`
+
+### nexus_task_schedule_to_start_latency
+
+The Schedule-To-Start time of a Nexus Task in seconds. The schedule time is taken from when the corresponding request
+hit the Frontend service to when the SDK started processing the task.
+
+This time is limited by the `Request-Timeout` header given to the Frontend when handling this request.
+
+- Type: Histogram
+- Available in: Core, Go, Java
+- Tags: `namespace`, `task_queue`
+
+### nexus_task_execution_failed
+
+Handling of a Nexus Task resulted in an error. This includes any error returned from a user handler and unexpected
+internal errors in the SDK.
+
+- Type: Counter
+- Available in: Go, Java
+- Tags: `namespace`, `task_queue`, `nexus_service`, `nexus_operation`, `failure_reason`
+
+Valid values for the `failure_reason` tag:
+
+- `internal_sdk_error`: There was an unexpected internal error within the SDK while handling the Nexus task. Indicates a
+  bug in the SDK.
+- `handler_error_{TYPE}`: The user handler code returned a predefined error, as specified in the [Nexus spec](https://github.com/nexus-rpc/api/blob/main/SPEC.md#predefined-handler-errors).
+  If the handler returns an unexpected error, the TYPE is set to `INTERNAL`.
+- `timeout`: The user handler code did not return within the request timeout.
+- `operation_failed`: The user handler code has indicated that the operation has failed. In Go, this maps to an
+  `UnsuccessfulOperationError` with a `failed` state.
+- `operation_canceled`: The user handler code has indicated that the operation has completed as canceled. In Go, this maps
+  to an `UnsuccessfulOperationError` with a `canceled` state.
+
+### nexus_task_execution_latency
+
+Time to complete a Nexus Task, from the time the Nexus Task processing starts in the SDK to the time the user handler
+completes.
+
+- Type: Histogram
+- Available in: Go, Java
+- Tags: `namespace`, `task_queue`, `nexus_service`, `nexus_operation`
+
+### nexus_task_endtoend_latency
+
+Total latency of Nexus Tasks from the time the corresponding request hit the Frontend to after the SDK gets
+acknowledgment from the server for task completion.
+
+- Type: Histogram
+- Available in: Go, Java
+- Tags: `namespace`, `task_queue`, `nexus_service`, `nexus_operation`
+
 ### num_pollers
 
 Current number of Worker Entities that are polling.
@@ -308,6 +368,22 @@ Latency of a Temporal Client gRPC request.
 - Type: Histogram
 - Available in: Core, Go, Java
 - Tags: `namespace`, `operation`
+
+### resource_slots_cpu_usage
+
+CPU usage as a value between 0 and 100. As percieved by the resource-based slots tuner, if
+enabled.
+
+- Type: Gauge
+- Available in: Core, Java
+
+### resource_slots_mem_usage
+
+Memory usage as a value between 0 and 100. As percieved by the resource-based slots tuner, if
+enabled.
+
+- Type: Gauge
+- Available in: Core, Java
 
 ### sticky_cache_hit
 
@@ -478,61 +554,3 @@ The Schedule-To-Start time of a Workflow Task.
 - Type: Histogram
 - Available in: Core, Go, Java
 - Tags: `namespace`, `task_queue`
-
-### nexus_poll_no_task
-
-A Nexus Worker poll for a Nexus Task timed out, and no Nexus Task is available to pick from the Task Queue.
-
-- Type: Counter
-- Available in: Go, Java
-- Tags: `namespace`, `task_queue`
-
-### nexus_task_schedule_to_start_latency
-
-The Schedule-To-Start time of a Nexus Task in seconds. The schedule time is taken from when the corresponding request
-hit the Frontend service to when the SDK started processing the task.
-
-This time is limited by the `Request-Timeout` header given to the Frontend when handling this request.
-
-- Type: Histogram
-- Available in: Core, Go, Java
-- Tags: `namespace`, `task_queue`
-
-### nexus_task_execution_failed
-
-Handling of a Nexus Task resulted in an error. This includes any error returned from a user handler and unexpected
-internal errors in the SDK.
-
-- Type: Counter
-- Available in: Go, Java
-- Tags: `namespace`, `task_queue`, `nexus_service`, `nexus_operation`, `failure_reason`
-
-Valid values for the `failure_reason` tag:
-
-- `internal_sdk_error`: There was an unexpected internal error within the SDK while handling the Nexus task. Indicates a
-  bug in the SDK.
-- `handler_error_{TYPE}`: The user handler code returned a predefined error, as specified in the [Nexus spec](https://github.com/nexus-rpc/api/blob/main/SPEC.md#predefined-handler-errors).
-  If the handler returns an unexpected error, the TYPE is set to `INTERNAL`.
-- `timeout`: The user handler code did not return within the request timeout.
-- `operation_failed`: The user handler code has indicated that the operation has failed. In Go, this maps to an
-  `UnsuccessfulOperationError` with a `failed` state.
-- `operation_canceled`: The user handler code has indicated that the operation has completed as canceled. In Go, this maps
-  to an `UnsuccessfulOperationError` with a `canceled` state.
-
-### nexus_task_execution_latency
-
-Time to complete a Nexus Task, from the time the Nexus Task processing starts in the SDK to the time the user handler
-completes.
-
-- Type: Histogram
-- Available in: Go, Java
-- Tags: `namespace`, `task_queue`, `nexus_service`, `nexus_operation`
-
-### nexus_task_endtoend_latency
-
-Total latency of Nexus Tasks from the time the corresponding request hit the Frontend to after the SDK gets
-acknowledgment from the server for task completion.
-
-- Type: Histogram
-- Available in: Go, Java
-- Tags: `namespace`, `task_queue`, `nexus_service`, `nexus_operation`
