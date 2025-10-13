@@ -1049,8 +1049,13 @@ h1 {
   margin-right: 40px;
 }
 
+/* Start navbar styles */
 .navbar__items--right {
   flex-direction: row-reverse;
+}
+
+.navbar-sidebar__brand {
+  justify-content: space-between;
 }
 
 @media (max-width: 1241px) {
@@ -1076,6 +1081,8 @@ h1 {
 .DocSearch-Container {
   min-width: 100vw;
 }
+
+/* End navbar styles */
 
 .nowrap {
   white-space: nowrap;
