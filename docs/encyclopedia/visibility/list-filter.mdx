@@ -204,7 +204,7 @@ When resolving a Search Attribute in a List Filter, Temporal Server checks for m
 
 2. Default Search Attributes
 
-This means that if you define a custom Search Attribute with the same name as a default Search Attribute, the unprefixed name will refer to your custom attribute. You can still search by the default Search Attribute by using the Temporal prefix.
+This means that if you define a custom Search Attribute with the same name as a default Search Attribute, the non `Temporal` prefixed name will refer to your custom attribute. You can still search with the default Search Attribute by using the `Temporal` prefix.
 
 For example, if you have a custom Search Attribute named `WorkflowId`, List Filters using the following Search Attributes will return different results:
 
