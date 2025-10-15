@@ -121,7 +121,7 @@ For Search Attributes of type `Keyword` like `WorkflowId`, perform partial strin
 
 - Wrap attributes with backticks if it contains characters not in
   `[a-zA-Z0-9]`.
-- `STARTS_WITH` is only available for Keyword search attributes.
+- `STARTS_WITH` is only available for Keyword Search Attributes.
 
 :::
 
@@ -186,18 +186,48 @@ ExecutionTime < '2021-08-28T15:04:05+00:00' or ExecutionTime > '2021-08-22T15:04
 WorkflowType STARTS_WITH '<workflow-type-prefix>'
 ```
 
-{/*
+### Search Attribute aliasing
+
+Temporal prefixes most [default Search Attributes](./search-attributes.mdx#default-search-attribute) with `Temporal` to avoid naming conflicts with custom Search Attributes.
+To make it easier to reference default Search Attributes in List Filters, Temporal supports aliasing, which lets you use the non-prefixed name of a default Search Attribute. However, if you choose to define a custom Search Attribute with the same name as the non-prefixed alias of a default Search Attribute, your custom Search Attribute overrides the alias.
+
+:::info Server Version Requirement
+
+Search Attribute aliasing requires Temporal Server version 1.30 and greater.
+
+:::
+
+For example, the default Search Attribute `TemporalWorkflowVersioningBehavior` has the alias `WorkflowVersioningBehavior`. If you haven't defined a custom Search Attribute named `WorkflowVersioningBehavior`, you can use either name in a List Filter, and both refer to the same Search Attribute.
 
 ```sql
-order by ExecutionTime
+-- Using the original attribute name
+WorkflowVersioningBehavior = 'pinned'
+
+-- Using the Temporal-prefixed alias (equivalent)
+TemporalWorkflowVersioningBehavior = 'pinned'
 ```
+
+#### Alias resolution with custom Search Attributes
+
+When resolving a Search Attribute in a List Filter, Temporal Server checks for matches in the following order:
+
+1. Custom Search Attributes defined in the current Namespace
+
+2. Default Search Attributes
+
+This means that if you define a custom Search Attribute with the same name as the alias of a default Search Attribute, the non `Temporal` prefixed name will refer to your custom attribute. You can still search with the default Search Attribute by using the `Temporal` prefix.
+
+For example, if you have a custom Search Attribute named `SchedulePaused`, List Filters using the following Search Attributes will return different results:
 
 ```sql
-order by StartTime desc, CloseTime asc
+-- If you have a custom Search Attribute named 'SchedulePaused'
+-- This will use your custom attribute, not the default Search Attribute
+SchedulePaused = true
+
+-- The original system attribute still works by using the Temporal prefix
+TemporalSchedulePaused = true
 ```
 
-```sql
-order by CustomIntField asc
-```
+`SchedulePaused` will refer to your custom Search Attribute, while `TemporalSchedulePaused` will refer to the default Search Attribute.
 
-*/}
+
