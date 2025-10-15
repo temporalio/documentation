@@ -395,6 +395,23 @@ temporal workflow reset with-workflow-update-options \
     --versioning-override-build-id "$TARGET_BUILD_ID"
 ```
 
+## Migrating a Workflow from Pinned to Auto-Upgrade
+
+There may be times when you need to migrate your Workflow from Pinned to Auto-Upgrade because you support rainbow deployments now or there has been another update and you no longer want a specific Workflow using the pinned behavior.
+
+There are a few steps you need to take in order to make that change. Since Auto-Upgrade Workflows need to be replay-safe, you need to [patch](/workflow-definition#workflow-patching) your Workflow code to ensure it supports multiple versions.
+
+Next, you need to update the versioning behavior for your Workflow from Pinned to Auto-Upgrade. You can use `temporal workflow update-options` for this.
+
+```bash
+temporal workflow update-options \
+    --workflow-id "$WORKFLOW_ID" \
+    --versioning-override-behavior auto_upgrade \
+    --versioning-override-deployment-name "$TARGET_DEPLOYMENT"
+```
+
+If there are still Tasks running in the Workflow, you should consider waiting for them to drain from the Workflow before doing this migration to avoid version issues.
+
 ## Sunsetting an old Deployment Version
 
 A Worker Deployment Version moves through the following states:
@@ -406,7 +423,8 @@ A Worker Deployment Version moves through the following states:
 
 You can see these statuses when you describe a Worker Deployment in the `WorkerDeploymentVersionStatus` of each `VersionSummary`, or by describing the version directly.
 When a version is Draining or Drained, that is displayed in a value called `DrainageStatus`.
-Periodically, the Temporal Service will refresh this status by counting any open pinned workflows using that version.
+Periodically, the Temporal Service will refresh this status by counting any open pinned Workflows using that version.
+
 On each refresh, `DrainageInfo.last_checked_time` is updated.
 Eventually, `DrainageInfo` will report that the version is fully drained.
 At this point, no Workflows are still running on that version and no more will be automatically routed to it, so you can consider shutting down the running Workers.
