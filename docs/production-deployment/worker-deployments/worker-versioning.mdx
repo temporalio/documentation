@@ -397,11 +397,11 @@ temporal workflow reset with-workflow-update-options \
 
 ## Migrating a Workflow from Pinned to Auto-Upgrade
 
-There may be times when you need to migrate your Workflow from Pinned to Auto-Upgrade because you support rainbow deployments now or there has been another update and you no longer want a specific Workflow using the pinned behavior.
+There may be times when you need to migrate your Workflow from Pinned to Auto-Upgrade because you configured your Workflow Type with the wrong behavior or you've pinned a really long-running Workflow by mistake.
 
-There are a few steps you need to take in order to make that change. Since Auto-Upgrade Workflows need to be replay-safe, you need to [patch](/workflow-definition#workflow-patching) your Workflow code to ensure it supports multiple versions.
+Pinned Workflows get stuck on versions and Workflows prevent versions from draining, long-running Workflows could be preventing drainage. You could move the Workflow to a new build, but that would just push the problem to the next build.
 
-Next, you need to update the versioning behavior for your Workflow from Pinned to Auto-Upgrade. You can use `temporal workflow update-options` for this.
+In order to make this change, you need to change the versioning behavior for your Workflow from Pinned to Auto-Upgrade. You can use `temporal workflow update-options` for this:
 
 ```bash
 temporal workflow update-options \
@@ -410,7 +410,29 @@ temporal workflow update-options \
     --versioning-override-deployment-name "$TARGET_DEPLOYMENT"
 ```
 
-If there are still Tasks running in the Workflow, you should consider waiting for them to drain from the Workflow before doing this migration to avoid version issues.
+If you want to move all of your Workflows of a certain type to this new configuration, you can do it with this command:
+
+```bash
+temporal workflow update-options \
+    --query="WorkflowType="$WORKFLOW_TYPE" \
+    --workflow-id "$WORKFLOW_ID" \
+    --versioning-override-behavior auto_upgrade \
+    --versioning-override-deployment-name "$TARGET_DEPLOYMENT"
+```
+
+You can also filter on a certain build ID to limit the number of Workflows you apply it to:
+
+```bash
+temporal workflow update-options \
+    --query "WorkflowType="$WORKFLOW_TYPE" AND --TemporalWorkerDeploymentVersion=$TARGET_DEPLOYMENT:$OLD_VERSION" \
+    --workflow-id "$WORKFLOW_ID" \
+    --versioning-override-behavior auto_upgrade \
+    --versioning-override-deployment-name "$TARGET_DEPLOYMENT"
+```
+
+:::note
+[Patching](/patching#patching) will be necessary going forward once you move to Auto-Upgrade behavior, but you don't need to patch the code before you switch from Pinned behavior. You will eventually need to patch your newly Auto-Upgrade Workflows since they need to be replay-safe to supports multiple versions after the migration.
+:::
 
 ## Sunsetting an old Deployment Version
 
