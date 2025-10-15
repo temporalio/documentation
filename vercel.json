@@ -205,6 +205,11 @@
       "permanent": true
     },
     {
+      "source": "/workflows#retry-policy",
+      "destination": "/encyclopedia/retry-policies",
+      "permanent": true
+    },
+    {
       "source": "/concepts/task-queues",
       "destination": "/workers",
       "permanent": true
