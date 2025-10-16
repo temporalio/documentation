@@ -2,7 +2,7 @@
 id: index
 title: Temporal Cloud OpenMetrics
 sidebar_label: OpenMetrics
-description: Get detailed insights into your Temporal Cloud Namespace metrics using your own observability tool. Access data with a CA certificate and retain raw metrics for seven days.
+description: Export metrics from Temporal Cloud using the OpenMetrics standard and third party integrations.
 slug: /cloud/metrics/openmetrics/
 toc_max_heading_level: 4
 keywords:
@@ -11,10 +11,11 @@ keywords:
   - introduction
   - metrics
   - observability
-  - promentheus
+  - prometheus
   - reference
   - tcld cli
   - temporal cloud
+  - grafana
 tags:
   - Metrics
   - Observability
@@ -36,10 +37,10 @@ Future pricing may apply to high-volume usage that exceeds standard [limits](/pr
 Temporal Cloud's [OpenMetrics](https://openmetrics.io/) endpoint provides operational metrics for your Temporal Cloud workloads in industry-standard Prometheus format, enabling comprehensive monitoring across Namespaces, Workflows, and Task Queues with your existing observability stack.
 
 ## Quick Links
-* [API Documentation](/production-deployment/cloud/metrics/openmetrics/api-reference) - Endpoint specification and integration examples
+* [Integrations](/production-deployment/cloud/metrics/openmetrics/integrations) - Get started exporting metrics with common integrations
+* [API Documentation](/production-deployment/cloud/metrics/openmetrics/api-reference) - Endpoint specification and advanced configuration
 * [Metrics Reference](/production-deployment/cloud/metrics/openmetrics/metrics-reference) - Complete catalog of all metrics with descriptions and labels
 * [Migration Guide](/production-deployment/cloud/metrics/openmetrics/migration-guide) - Guide on how to transition from the Prometheus query endpoint
-* [Integration examples](https://github.com/temporal-community/cloud-metrics-scrape-examples) - Practical examples for various platforms
 
 ## Overview
 Temporal Cloud OpenMetrics exposes 30+ metrics covering workflow lifecycles, task queue operations, service performance, and system limits. All metrics are aggregated over one-minute windows and available for scraping within two minutes.
