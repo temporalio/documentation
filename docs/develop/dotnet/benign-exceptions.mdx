@@ -1,0 +1,59 @@
+---
+id: benign-exceptions
+title: Benign exceptions - .NET SDK
+sidebar_label: Benign exceptions
+description: Mark expected or non-severe Activity errors as benign to reduce noise in logs, metrics, and OpenTelemetry traces.
+toc_max_heading_level: 2
+keywords:
+  - benign exceptions
+  - application failure
+  - error handling
+  - observability
+  - dotnet
+tags:
+  - Activities
+  - Errors
+  - Failures
+  - .NET SDK
+  - Temporal SDKs
+---
+
+**How to mark an Activity error as benign using the Temporal .NET SDK**
+
+When Activities throw errors that are expected or not severe, they can create noise in your logs, metrics, and OpenTelemetry traces, making it harder to identify real issues.
+By marking these errors as benign, you can exclude them from your observability data while still handling them in your Workflow logic.
+
+To mark an error as benign, set the `category` parameter to `ApplicationErrorCategory.Benign` when throwing an [`ApplicationFailureException`](https://dotnet.temporal.io/api/Temporalio.Exceptions.ApplicationFailureException.html).
+
+Benign errors:
+- Have Activity failure logs downgraded to DEBUG level
+- Do not emit Activity failure metrics
+- Do not set the OpenTelemetry failure status to ERROR
+
+```csharp
+using Temporalio.Activities;
+using Temporalio.Api.Enums.V1;
+using Temporalio.Exceptions;
+
+public class MyActivities
+{
+    [Activity]
+    public async Task<string> MyActivityAsync()
+    {
+        try
+        {
+            return await CallExternalServiceAsync();
+        }
+        catch (Exception e)
+        {
+            // Mark this error as benign since it's expected
+            throw new ApplicationFailureException(
+                "Service is down",
+                inner: e,
+                category: ApplicationErrorCategory.Benign);
+        }
+    }
+}
+```
+
+Use benign exceptions for Activity errors that occur regularly as part of normal operations, such as polling an external service that isn't ready yet, or handling expected transient failures that will be retried.
