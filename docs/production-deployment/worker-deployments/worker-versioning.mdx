@@ -406,30 +406,27 @@ In order to make this change, you need to change the versioning behavior for you
 ```bash
 temporal workflow update-options \
     --workflow-id "$WORKFLOW_ID" \
-    --versioning-override-behavior auto_upgrade \
-    --versioning-override-deployment-name "$TARGET_DEPLOYMENT"
+    --versioning-override-behavior auto_upgrade
 ```
 
-If you want to move all of your Workflows of a certain type to this new configuration, you can do it with this command:
+If you want to move all your Workflows of a certain type to this new configuration, you can do it with this command:
 
 ```bash
 temporal workflow update-options \
-    --query="WorkflowType="$WORKFLOW_TYPE" \
-    --versioning-override-behavior auto_upgrade \
-    --versioning-override-deployment-name "$TARGET_DEPLOYMENT"
+    --query="WorkflowType='$WORKFLOW_TYPE'" \
+    --versioning-override-behavior auto_upgrade
 ```
 
 You can also filter on a certain build ID to limit the number of Workflows you apply it to:
 
 ```bash
 temporal workflow update-options \
-    --query "WorkflowType="$WORKFLOW_TYPE" AND --TemporalWorkerDeploymentVersion=$TARGET_DEPLOYMENT:$OLD_VERSION" \
-    --versioning-override-behavior auto_upgrade \
-    --versioning-override-deployment-name "$TARGET_DEPLOYMENT"
+    --query="WorkflowType='$WORKFLOW_TYPE' AND  TemporalWorkerDeploymentVersion='$TARGET_DEPLOYMENT:$OLD_VERSION'" \
+    --versioning-override-behavior auto_upgrade
 ```
 
 :::note
-When you change the behavior to Auto-Upgrade, the Workflows will resume work on the Current version. So if the Current version is different from the previous Pinned version of the Workflows, you should make sure you [patch](/patching#patching) the Workflows. Patching ensures your Workflows are replay-safe to support multiple versions after the migration. Otherwise, the Workflow will can get stuck on the Current version.
+When you change the behavior to Auto-Upgrade, the Workflows will resume work on the Workflow's Target Version. So if the Workflow's Target Version is different from the previous Pinned version of the Workflows, you should make sure you [patch](/patching#patching) the Workflows. Patching ensures your Workflows are replay-safe to support multiple versions after the migration. Otherwise, the Workflow will can get stuck on the Workflow's Target Version.
 :::
 
 ## Sunsetting an old Deployment Version
