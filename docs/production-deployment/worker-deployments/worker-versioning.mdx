@@ -421,12 +421,12 @@ You can also filter on a certain build ID to limit the number of Workflows you a
 
 ```bash
 temporal workflow update-options \
-    --query="WorkflowType='$WORKFLOW_TYPE' AND  TemporalWorkerDeploymentVersion='$TARGET_DEPLOYMENT:$OLD_VERSION'" \
+    --query="WorkflowType='$WORKFLOW_TYPE' AND TemporalWorkerDeploymentVersion='$TARGET_DEPLOYMENT:$OLD_VERSION'" \
     --versioning-override-behavior auto_upgrade
 ```
 
 :::note
-When you change the behavior to Auto-Upgrade, the Workflows will resume work on the Workflow's Target Version. So if the Workflow's Target Version is different from the previous Pinned version of the Workflows, you should make sure you [patch](/patching#patching) the Workflows. Patching ensures your Workflows are replay-safe to support multiple versions after the migration. Otherwise, the Workflow will can get stuck on the Workflow's Target Version.
+When you change the behavior to Auto-Upgrade, the Workflow will resume work on the Workflow's Target Version. So if the Workflow's Target Version is different from the earlier Pinned Version, you should make sure you [patch](/patching#patching) the Workflow code.
 :::
 
 ## Sunsetting an old Deployment Version
