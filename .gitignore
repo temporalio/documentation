@@ -8,6 +8,7 @@ build
 # Generated files
 .docusaurus
 .cache-loader
+temp/
 
 # Misc
 .DS_Store
