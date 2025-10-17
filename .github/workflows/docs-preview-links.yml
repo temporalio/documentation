@@ -1,0 +1,112 @@
+name: Docs Preview Links
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  comment-preview-links:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Compute preview base URL
+        id: preview-url
+        env:
+          REPO_PREVIEW_BASE_URL: ${{ vars.DOCS_PREVIEW_BASE_URL }}
+          REPO_PREVIEW_TEMPLATE: ${{ vars.DOCS_PREVIEW_BASE_URL_TEMPLATE }}
+        run: |
+          BRANCH_NAME="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
+          BRANCH_SLUG=$(echo "$BRANCH_NAME" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$//')
+
+          if [ -n "$REPO_PREVIEW_BASE_URL" ]; then
+            BASE_URL="$REPO_PREVIEW_BASE_URL"
+          elif [ -n "$REPO_PREVIEW_TEMPLATE" ]; then
+            BASE_URL="${REPO_PREVIEW_TEMPLATE//\{branch\}/$BRANCH_SLUG}"
+          else
+            BASE_URL="https://temporal-documentation-git-${BRANCH_SLUG}.preview.thundergun.io"
+          fi
+
+          echo "DOCS_PREVIEW_BASE_URL=$BASE_URL" >> "$GITHUB_ENV"
+          echo "BRANCH_SLUG=$BRANCH_SLUG" >> "$GITHUB_ENV"
+          echo "base_url=$BASE_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Generate docs preview list
+        id: docs-summary
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          DOCS_PREVIEW_BASE_URL: ${{ env.DOCS_PREVIEW_BASE_URL }}
+        run: |
+          node bin/generate-docs-preview-list.js > doc-preview-summary.md
+          if [ -s doc-preview-summary.md ]; then
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Comment with changed docs
+        if: steps.docs-summary.outputs.has_changes == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- docs-preview-links -->';
+            const summary = fs.readFileSync('doc-preview-summary.md', 'utf8').trim();
+            if (!summary) {
+              core.info('No summary generated, skipping comment.');
+              return;
+            }
+
+            const body = `${marker}
+
+### Docs preview links
+
+${summary}
+`;
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              per_page: 100,
+            });
+
+            const existing = comments.find(
+              (comment) => comment.user?.login === 'github-actions[bot]' && comment.body?.includes(marker),
+            );
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+              core.info(`Updated existing preview comment (${existing.id}).`);
+            } else {
+              const { data: newComment } = await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+              core.info(`Created new preview comment (${newComment.id}).`);
+            }
