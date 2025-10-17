@@ -3,7 +3,6 @@
 const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
-const YAML = require('yaml');
 
 const DOCS_DIR = path.join(process.cwd(), 'docs');
 const BASE_SHA = process.env.BASE_SHA;
@@ -40,12 +39,18 @@ function extractFrontMatter(filePath) {
     return {};
   }
 
-  try {
-    return YAML.parse(match[1]) || {};
-  } catch (error) {
-    console.warn(`Could not parse frontmatter for ${filePath}: ${error.message}`);
-    return {};
-  }
+  const block = match[1];
+  const result = {};
+
+  ['slug', 'title', 'sidebar_label'].forEach((key) => {
+    const pattern = new RegExp(`^${key}:\\s*(.+)$`, 'm');
+    const valueMatch = block.match(pattern);
+    if (valueMatch) {
+      result[key] = valueMatch[1].trim().replace(/^['"]|['"]$/g, '');
+    }
+  });
+
+  return result;
 }
 
 function relativeSlugFromPath(filePath) {
