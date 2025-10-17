@@ -13,17 +13,14 @@ if (!BASE_SHA) {
   process.exit(1);
 }
 
-function getChangedDocFiles(baseSha) {
-  const diffCommand = [
-    'git',
-    'diff',
-    '--name-only',
-    `${baseSha}..HEAD`,
-    '--',
-    'docs/'
-  ].join(' ');
+function getChangedDocFiles(baseBranch = 'origin/main') {
+  // Find the common ancestor (merge base)
+  const mergeBase = execSync(`git merge-base HEAD ${baseBranch}`, { encoding: 'utf8' }).trim();
+
+  const diffCommand = ['git', 'diff', '--name-only', `${mergeBase}..HEAD`, '--', 'docs/'].join(' ');
 
   const output = execSync(diffCommand, { encoding: 'utf8' });
+
   return output
     .split('\n')
     .map((line) => line.trim())
@@ -88,9 +85,7 @@ function buildUrlForSlug(slug) {
     return normalized;
   }
 
-  const base = PREVIEW_BASE_URL.endsWith('/')
-    ? PREVIEW_BASE_URL.slice(0, -1)
-    : PREVIEW_BASE_URL;
+  const base = PREVIEW_BASE_URL.endsWith('/') ? PREVIEW_BASE_URL.slice(0, -1) : PREVIEW_BASE_URL;
   return `${base}${normalized}`;
 }
 
@@ -115,7 +110,7 @@ function insertIntoTree(tree, docInfo) {
       currentLevel.children.set(segment, {
         segment,
         label: humanizeSegment(segment),
-        children: new Map()
+        children: new Map(),
       });
     }
 
@@ -133,7 +128,7 @@ function insertIntoTree(tree, docInfo) {
       label: docInfo.label,
       url: docInfo.url,
       filePath: docInfo.filePath,
-      children: new Map()
+      children: new Map(),
     });
   }
 }
@@ -143,9 +138,7 @@ function renderNode(node, depth) {
   const label = node.url ? `[${node.label}](${node.url})` : node.label;
   const lines = [`${indentation}- ${label}`];
 
-  const sortedChildren = Array.from(node.children.values()).sort((a, b) =>
-    a.label.localeCompare(b.label)
-  );
+  const sortedChildren = Array.from(node.children.values()).sort((a, b) => a.label.localeCompare(b.label));
 
   sortedChildren.forEach((child) => {
     lines.push(...renderNode(child, depth + 1));
@@ -173,7 +166,7 @@ function renderTree(tree) {
 }
 
 function main() {
-  const changedFiles = getChangedDocFiles(BASE_SHA);
+  const changedFiles = getChangedDocFiles('origin/main');
 
   if (changedFiles.length === 0) {
     process.stdout.write('');
@@ -201,6 +194,6 @@ if (require.main === module) {
     collectDocInfo,
     insertIntoTree,
     renderTree,
-    main
+    main,
   };
 }
