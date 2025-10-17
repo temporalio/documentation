@@ -20,8 +20,7 @@ function getChangedDocFiles(baseSha) {
     '--name-only',
     `${baseSha}..HEAD`,
     '--',
-    'docs/**/*.mdx',
-    'docs/**/*.md'
+    'docs/'
   ].join(' ');
 
   const output = execSync(diffCommand, { encoding: 'utf8' });
@@ -29,6 +28,7 @@ function getChangedDocFiles(baseSha) {
     .split('\n')
     .map((line) => line.trim())
     .filter((line) => line.length > 0)
+    .filter((line) => /\.(mdx|md)$/.test(line))
     .filter((line) => fs.existsSync(line));
 }
 
@@ -104,7 +104,7 @@ function collectDocInfo(filePath) {
     humanizeSegment(segments[segments.length - 1] || path.basename(filePath, path.extname(filePath)));
   const url = buildUrlForSlug(slug);
 
-  return { filePath, slug, segments, label };
+  return { filePath, slug, segments, label, url };
 }
 
 function insertIntoTree(tree, docInfo) {
@@ -192,4 +192,15 @@ function main() {
   process.stdout.write(rendered);
 }
 
-main();
+if (require.main === module) {
+  main();
+} else {
+  module.exports = {
+    getChangedDocFiles,
+    extractFrontMatter,
+    collectDocInfo,
+    insertIntoTree,
+    renderTree,
+    main
+  };
+}
