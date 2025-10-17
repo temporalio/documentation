@@ -75,12 +75,13 @@ jobs:
               return;
             }
 
-            const body = `${marker}
-
-### Docs preview links
-
-${summary}
-`;
+            const body = [
+              marker,
+              '',
+              '### Docs preview links',
+              '',
+              summary,
+            ].join('\n');
 
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
