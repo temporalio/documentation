@@ -33,7 +33,7 @@ This page covers the many ways to view the current state of your [Temporal Appli
 This section covers features related to viewing the state of the application, including:
 
 - [Metrics](#metrics)
-- [Tracing](#tracing-and-context-propogation)
+- [Tracing](#tracing-and-context-propagation)
 - [Logging](#logging)
 - [Visibility](#visibility)
 
@@ -62,7 +62,7 @@ The Go SDK currently supports the [Tally](https://pkg.go.dev/go.temporal.io/sdk/
 
 For more information, see the [Go sample for metrics](https://github.com/temporalio/samples-go/tree/main/metrics).
 
-## Tracing and Context Propagation {#tracing-and-context-propogation}
+## Tracing and Context Propagation {#tracing-and-context-propagation}
 
 The Temporal Go SDK supports three tracing implementations: [Datadog](https://pkg.go.dev/go.temporal.io/sdk/contrib/datadog), [OpenTelemetry](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentelemetry), and [OpenTracing](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentracing).
 
@@ -77,7 +77,7 @@ For details on how to configure and leverage tracing, see the respective documen
 - [OpenTracing](https://opentracing.io/)
 
 The OpenTracing support has been validated using Jaeger, but other implementations should also work.
-Tracing functionality utilizes generic context propagation provided by the client.
+Tracing functionality uses generic context propagation provided by the client.
 
 ### Context Propagation
 

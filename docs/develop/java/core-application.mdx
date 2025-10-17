@@ -2,7 +2,7 @@
 id: core-application
 title: Core application - Java SDK
 sidebar_label: Core application
-description: Learn how to create a Workflow Definition, develop a basic Activity, initiate Activity Execution, and run a Development Worker using the Temporal Java SDK. Master essential concepts such as Workflow interface annotations, Activity definitions, custom Activity Types, and asynchronous Activity invocations to build robust and scalable Temporal applications.
+description: Create a Workflow Definition, develop a basic Activity, initiate Activity Execution, and run a Development Worker using the Temporal Java SDK. Master essential concepts such as Workflow interface annotations, Activity definitions, custom Activity Types, and asynchronous Activity invocations to build robust and scalable Temporal applications.
 toc_max_heading_level: 4
 keywords:
   - Java
@@ -578,7 +578,7 @@ This is useful when the Activity type is not known at compile time, or to invoke
         .build();
 
     ActivityStub activity = Workflow.newUntypedActivityStub(activityOptions);
-    activity.execute("ComposeGreeting", String.class, "Hello World" , "Spanish");
+    activity.execute("ComposeGreeting", String.class, "Hello World", "Spanish");
 ```
 
 **Invoking Activities Asynchronously**

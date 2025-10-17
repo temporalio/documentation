@@ -6,6 +6,16 @@
   },
   "redirects": [
     {
+      "source": "/cookbook/:path*",
+      "destination": "/ai-cookbook/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/cookbook",
+      "destination": "/ai-cookbook",
+      "permanent": true
+    },
+    {
       "source": "/leadership",
       "destination": "https://temporal.io/about",
       "permanent": true
@@ -192,6 +202,11 @@
     {
       "source": "/concepts/queries",
       "destination": "/workflows#queries",
+      "permanent": true
+    },
+    {
+      "source": "/workflows#retry-policy",
+      "destination": "/encyclopedia/retry-policies",
       "permanent": true
     },
     {
@@ -1994,6 +2009,6 @@
       "source": "/evaluate/development-production-features/high-availability",
       "destination": "/cloud/high-availability",
       "permanent": true
-    }      
+    }
   ]
 }

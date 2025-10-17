@@ -2,7 +2,7 @@
 id: testing-suite
 title: Testing - Python SDK
 sidebar_label: Testing
-description: The Temporal Application Testing guide covers Frameworks facilitating Workflow and integration testing, including end-to-end, integration, and unit tests. Learn to use mocked Activities, skip time in tests, and replay Workflow Executions.
+description: The Temporal Application Testing guide covers Frameworks facilitating Workflow and integration testing, including end-to-end, integration, and unit tests. Use mocked Activities, skip time in tests, and replay Workflow Executions.
 toc_max_heading_level: 2
 keywords:
   - python
@@ -148,7 +148,7 @@ Use the [`from_client()`](https://python.temporal.io/temporalio.testing.Workflow
 
 #### Skip time manually {#manual-method}
 
-Learn to skip time manually in the SDK of your choice.
+Skip time manually in the SDK of your choice.
 
 To implement time skipping, use the [`start_time_skipping()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#start_time_skipping) static method.
 
@@ -215,4 +215,8 @@ You can choose to wait until all histories have been replayed with `replay_workf
 
 If the Workflow History is exported by [Temporal Web UI](/web-ui) or through [Temporal CLI](/cli), you can pass the JSON file history object as a JSON string or as a Python dictionary through the `json.load()` function, which takes a file object and returns the JSON object.
 
+:::tip
+When fetching event histories directly from the server or exporting them, be aware that the data can be protobuf-encoded (`bytes`). The `Replayer`, however, often works with decoded histories (like a `dict`).
+
+If you encounter `TypeError` exceptions related to `dict` vs. `bytes` mismatches during replay, ensure your event history is properly decoded before passing it to the Replayer.
 :::

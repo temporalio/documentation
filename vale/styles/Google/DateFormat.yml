@@ -2,7 +2,7 @@ extends: existence
 message: "Use 'July 31, 2016' format, not '%s'."
 link: 'https://developers.google.com/style/dates-times'
 ignorecase: true
-level: error
+level: suggestion
 nonword: true
 tokens:
   - '\d{1,2}(?:\.|/)\d{1,2}(?:\.|/)\d{4}'
