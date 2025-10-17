@@ -76,7 +76,7 @@ To get started with Worker Versioning, you should understand some concepts aroun
 - When a versioned worker polls on a task queue, that task queue becomes part of that Worker's version. That version's Worker Deployment controls how the task queue matches Workflow Tasks with Workers.
 - Using **Workflow Pinning**, you can declare each Workflow type to have a **Versioning Behavior**, either Pinned or Auto-Upgrade.
   - A **Pinned** Workflow is guaranteed to complete on a single Worker Deployment Version.
-  - An **Auto-Upgrade** Workflow will automatically move to new a code version as you roll it out, specifically its Target Worker Deployment Version (defined below). Therefore, Auto-Upgrade Workflows are not restricted to a single Deployment Version and need to be kept replay-safe manually, i.e. with [patching](/workflow-definition#workflow-versioning).
+  - An **Auto-Upgrade** Workflow will automatically move to a new code version as you roll it out, specifically its Target Worker Deployment Version (defined below). Therefore, Auto-Upgrade Workflows are not restricted to a single Deployment Version and need to be kept replay-safe manually, i.e. with [patching](/workflow-definition#workflow-versioning).
   - Both Pinned and Auto-Upgrade Workflows are guaranteed to start only on the Current or Ramping Version of their Worker Deployment.
   - Pinned Workflows are designed for use with rainbow deployments. See [Deployment Systems](#deployment-systems).
   - Pinned Workflows don't need to be patched, as they run on the same worker and build until they complete.
