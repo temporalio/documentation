@@ -201,7 +201,7 @@ The `OperationHandler.sync` method is for exposing simple RPC handlers.
 Its handler function can access an SDK client that can be used for signaling, querying, and listing Workflows.
 However, implementations are free to make arbitrary calls to other services or databases, or perform computations such as this one:
 
-<!--SNIPSTART samples-java-nexus-handler {"selectedLines": ["1-16", "40"]}-->
+{/* SNIPSTART samples-java-nexus-handler {"selectedLines": ["1-16", "43"]} */}
 [core/src/main/java/io/temporal/samples/nexus/handler/NexusServiceImpl.java](https://github.com/temporalio/samples-java/blob/nexus-snip-sync/core/src/main/java/io/temporal/samples/nexus/handler/NexusServiceImpl.java)
 ```java
 // To create a service implementation, annotate the class with @ServiceImpl and provide the
@@ -221,9 +221,9 @@ public class NexusServiceImpl {
         (ctx, details, input) -> new NexusService.EchoOutput(input.getMessage()));
   }
 // ...
-                        WorkflowOptions.newBuilder().setWorkflowId(details.getRequestId()).build())
+}
 ```
-<!--SNIPEND-->
+{/* SNIPEND */}
 
 ### Develop an Asynchronous Nexus Operation handler to start a Workflow
 
