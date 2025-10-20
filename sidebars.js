@@ -378,6 +378,7 @@ module.exports = {
                     id: "production-deployment/cloud/metrics/openmetrics/index",
                   },
                   items: [
+                    "production-deployment/cloud/metrics/openmetrics/metrics-integrations",
                     "production-deployment/cloud/metrics/openmetrics/migration-guide",
                     "production-deployment/cloud/metrics/openmetrics/api-reference",
                     "production-deployment/cloud/metrics/openmetrics/metrics-reference",
