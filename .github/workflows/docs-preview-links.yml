@@ -78,7 +78,7 @@ jobs:
             const body = [
               marker,
               '',
-              '### Docs preview links',
+              '### 📖 Docs PR preview links',
               '',
               summary,
             ].join('\n');
