@@ -395,6 +395,40 @@ temporal workflow reset with-workflow-update-options \
     --versioning-override-build-id "$TARGET_BUILD_ID"
 ```
 
+## Migrating a Workflow from Pinned to Auto-Upgrade
+
+There may be times when you need to migrate your Workflow from Pinned to Auto-Upgrade because you configured your Workflow Type with the wrong behavior or you've pinned a really long-running Workflow by mistake.
+
+Pinned Workflows can block version drainage, especially when they run for a long time. You could move the Workflow to a new build, but that would just push the problem to the next build.
+
+In order to make this change, you need to change the versioning behavior for your Workflow from Pinned to Auto-Upgrade. You can use `temporal workflow update-options` for this:
+
+```bash
+temporal workflow update-options \
+    --workflow-id "$WORKFLOW_ID" \
+    --versioning-override-behavior auto_upgrade
+```
+
+If you want to move all your Workflows of a certain type to this new configuration, you can do it with this command:
+
+```bash
+temporal workflow update-options \
+    --query="WorkflowType='$WORKFLOW_TYPE'" \
+    --versioning-override-behavior auto_upgrade
+```
+
+You can also filter on a certain build ID to limit the number of Workflows you apply it to:
+
+```bash
+temporal workflow update-options \
+    --query="WorkflowType='$WORKFLOW_TYPE' AND TemporalWorkerDeploymentVersion='$TARGET_DEPLOYMENT:$OLD_VERSION'" \
+    --versioning-override-behavior auto_upgrade
+```
+
+:::note
+When you change the behavior to Auto-Upgrade, the Workflow will resume work on the Workflow's Target Version. So if the Workflow's Target Version is different from the earlier Pinned Version, you should make sure you [patch](/patching#patching) the Workflow code.
+:::
+
 ## Sunsetting an old Deployment Version
 
 A Worker Deployment Version moves through the following states:
@@ -406,7 +440,8 @@ A Worker Deployment Version moves through the following states:
 
 You can see these statuses when you describe a Worker Deployment in the `WorkerDeploymentVersionStatus` of each `VersionSummary`, or by describing the version directly.
 When a version is Draining or Drained, that is displayed in a value called `DrainageStatus`.
-Periodically, the Temporal Service will refresh this status by counting any open pinned workflows using that version.
+Periodically, the Temporal Service will refresh this status by counting any open pinned Workflows using that version.
+
 On each refresh, `DrainageInfo.last_checked_time` is updated.
 Eventually, `DrainageInfo` will report that the version is fully drained.
 At this point, no Workflows are still running on that version and no more will be automatically routed to it, so you can consider shutting down the running Workers.
