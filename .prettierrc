@@ -1,1 +1,11 @@
-printWidth: 120
+{
+  "printWidth": 120,
+  "proseWrap": "always",
+  "singleQuote": true,
+  "tabWidth": 2,
+  "trailingComma": "es5",
+  "semi": true,
+  "arrowParens": "always",
+  "bracketSpacing": true,
+  "overrides": [{ "files": "**/*.{md,mx}", "options": { "parser": "mdx" } }]
+}

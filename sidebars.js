@@ -272,6 +272,7 @@ module.exports = {
             "develop/dotnet/schedules",
             "develop/dotnet/converters-and-encryption",
             "develop/dotnet/durable-timers",
+            "develop/dotnet/nexus",
             "develop/dotnet/child-workflows",
             "develop/dotnet/continue-as-new",
           ],
@@ -363,6 +364,7 @@ module.exports = {
                     id: "production-deployment/cloud/metrics/openmetrics/index",
                   },
                   items: [
+                    "production-deployment/cloud/metrics/openmetrics/metrics-integrations",
                     "production-deployment/cloud/metrics/openmetrics/migration-guide",
                     "production-deployment/cloud/metrics/openmetrics/api-reference",
                     "production-deployment/cloud/metrics/openmetrics/metrics-reference",
