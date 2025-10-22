@@ -32,7 +32,7 @@ const SdkTabs = ({ children, hideUnsupportedLanguages = false }) => {
   React.Children.forEach(children, (child) => {
     if (child?.type?.displayName) {
       const langKey = child.type.displayName.toLowerCase();
-      contentMap[langKey] = child;
+      contentMap[langKey] = child.props?.children;
     }
   });
 
