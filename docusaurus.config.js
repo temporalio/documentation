@@ -27,8 +27,9 @@ module.exports = async function createConfigAsync() {
     clientModules: ['./src/client/remote-amplitude-analytics.js'],
     themeConfig: {
       colorMode: {
-        defaultMode: 'light',
+        defaultMode: 'dark',
         disableSwitch: false,
+        respectPrefersColorScheme: true,
         // switchConfig: {
         //   darkIcon: "🌙",
         //   darkIconStyle: {
