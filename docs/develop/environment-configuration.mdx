@@ -115,8 +115,8 @@ MIIPrivateKeyDataHere...
 
 ## CLI Integration
 
-The Temporal CLI tool includes temporal config commands that allow you to read and write to the TOML configuration file.
-This provides a convenient way to manage your connection profiles without manually editing the file.
+The Temporal CLI tool includes `temporal config` commands that allow you to read and write to the TOML configuration
+file. This provides a convenient way to manage your connection profiles without manually editing the file.
 
 - temporal config get \<property\>: Reads a specific value from the current profile.
 - temporal config set \<property\> \<value\>: Sets a property in the current profile.
@@ -162,16 +162,17 @@ temporal --profile prod workflow start \
 --input '"your-workflow-input"'
 ```
 
-## SDK Usage Example (Python)
+## Load the default profile and environment variables
 
-The following Python examples demonstrate how to use `temporalio.envconfig` to load configuration from environment
-variables and TOML files.
+If you don't specify a profile, the SDKs load the `default` profile and the environment variables.
 
-### Load the default profile
+No matter what profile you choose to load, environment variables are always loaded when you use the APIs in the
+`envconfig` package to load Temporal Client connection options. They always take precedence over TOML file settings in
+the profile.
 
-The most common use case is to load the "default" profile from environment variables and the default TOML file location
-(`~/.config/temporalio/temporal.toml`). The `ClientConfigProfile.load()` method handles this automatically. Any
-`TEMPORAL_*` environment variables will override settings from the TOML file.
+<Tabs groupId="language" defaultValue="python">
+
+<TabItem value="python" label="Python">
 
 ```py
 import asyncio
@@ -191,31 +192,38 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-### Load a specific profile by name
+</TabItem>
 
-If your TOML configuration file contains multiple profiles, you can select one by passing its name to
-`ClientConfigProfile.load(profile="<your-profile-name>")`.
+<TabItem value="go" label="Go">
 
-```py
-import asyncio
-from temporalio.client import Client
-from temporalio.envconfig import ClientConfigProfile
+```go
+package main
 
-async def main():
-    # Load a specific, named profile from default locations.
-    # This requires a [profile.prod] section in your TOML file.
-    prod_profile = ClientConfigProfile.load(profile="prod")
-    connect_config = prod_profile.to_client_connect_config()
+import (
+	"fmt"
+	"log"
 
-    # Connect to the client using the loaded configuration.
-    client = await Client.connect(**connect_config)
-    print(f"✅ Client connected to {client.target} in namespace '{client.namespace}'")
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/contrib/envconfig"
+)
 
-if __name__ == "__main__":
-    asyncio.run(main())
+func main() {
+	// Loads the "default" profile from the standard location and environment variables.
+	c, err := client.Dial(envconfig.MustLoadDefaultClientOptions())
+	if err != nil {
+		log.Fatalf("Failed to create client: %v", err)
+	}
+	defer c.Close()
+
+	fmt.Printf("✅ Connected to Temporal namespace %q on %s\n", c.Options().Namespace, c.Options().HostPort)
+}
 ```
 
-### Load configuration from a custom file path
+</TabItem>
+
+</Tabs>
+
+## Load configuration from a custom filepath
 
 To load configuration from a non-standard file location, you can use the `ClientConfig.load_client_connect_config()`
 shorthand. This is useful if you store application-specific configurations separately.
@@ -244,7 +252,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-### Override configuration programmatically
+## Override configuration programmatically
 
 You can also load a base configuration and then override specific settings programmatically in your code. The loaded
 configuration is a dictionary, so you can modify it before passing it to `Client.connect()`.
