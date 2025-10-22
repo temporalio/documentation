@@ -131,7 +131,7 @@ module.exports = async function createConfigAsync() {
           {
             items: [
               {
-                label: 'Github',
+                label: 'GitHub',
                 href: 'https://github.com/temporalio',
               },
               {
