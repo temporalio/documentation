@@ -10,6 +10,9 @@ tags:
   - TOML
 ---
 
+import { LANGUAGE_TAB_GROUP, getLanguageLabel } from '@site/src/constants/languageTabs';
+import SdkTabs from '@site/src/components';
+
 Temporal CLI and SDKs support configuring a Temporal Client using environment variables and TOML configuration files,
 rather than setting connection options programmatically in your code. This decouples connection settings from
 application logic, making it easier to manage different environments such as development, staging, and production
@@ -170,14 +173,14 @@ No matter what profile you choose to load, environment variables are always load
 `envconfig` package to load Temporal Client connection options. They always take precedence over TOML file settings in
 the profile.
 
-<Tabs groupId="language" defaultValue="python">
+<SdkTabs hideUnsupportedLanguages>
+  <SdkTabs.Python>
 
-<TabItem value="python" label="Python">
-
-```py
+```python
 import asyncio
 from temporalio.client import Client
 from temporalio.envconfig import ClientConfigProfile
+
 
 async def main():
     # Load the "default" profile from default locations and environment variables.
@@ -188,13 +191,13 @@ async def main():
     client = await Client.connect(**connect_config)
     print(f"✅ Client connected to {client.service_client.config.target_host} in namespace '{client.namespace}'")
 
+
 if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-</TabItem>
-
-<TabItem value="go" label="Go">
+  </SdkTabs.Python>
+  <SdkTabs.Go>
 
 ```go
 package main
@@ -219,16 +222,26 @@ func main() {
 }
 ```
 
-</TabItem>
-
-</Tabs>
+  </SdkTabs.Go>
+</SdkTabs>
 
 ## Load configuration from a custom filepath
 
-To load configuration from a non-standard file location, you can use the `ClientConfig.load_client_connect_config()`
-shorthand. This is useful if you store application-specific configurations separately.
+To load configuration from a non-standard file location without relying on the `TEMPORAL_CONFIG_FILE` environment
+variable, you can use a function from the `temporalio.envconfig` package. The specific method you need to call depends
+on the SDK you are using.
 
-```py
+This is useful if you store application-specific configurations separately. Loading connection options using this method
+will still respect environment variables, which take precedence over the file settings.
+
+<SdkTabs hideUnsupportedLanguages>
+
+<SdkTabs.Python>
+
+To load a specific profile from a custom filepath in Python, use the `ClientConfig.load_client_connect_config()` method
+with the `config_file` parameter.
+
+```py {10,11}
 import asyncio
 from pathlib import Path
 from temporalio.client import Client
@@ -251,6 +264,45 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+
+</SdkTabs.Python>
+
+<SdkTabs.Go>
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/contrib/envconfig"
+)
+
+func main() {
+	// Load a specific profile from the TOML config file.
+	// This requires a [profile.prod] section in your config.
+	opts, err := envconfig.LoadClientOptions(envconfig.LoadClientOptionsRequest{
+		ConfigFileProfile: "prod",
+	})
+	if err != nil {
+		log.Fatalf("Failed to load 'prod' profile: %v", err)
+	}
+
+	c, err := client.Dial(opts)
+	if err != nil {
+		log.Fatalf("Failed to connect using 'prod' profile: %v", err)
+	}
+	defer c.Close()
+
+	fmt.Printf("✅ Connected to Temporal namespace %q on %s using 'prod' profile\n", c.Options().Namespace, c.Options().HostPort)
+}
+```
+
+</SdkTabs.Go>
+
+</SdkTabs>
 
 ## Override configuration programmatically
 
