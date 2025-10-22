@@ -338,12 +338,26 @@ module.exports = {
                 id: "production-deployment/cloud/get-started/index",
               },
               items: [
-                "production-deployment/cloud/get-started/certificates",
-                "production-deployment/cloud/get-started/api-keys",
                 "production-deployment/cloud/get-started/namespaces",
-                "production-deployment/cloud/get-started/users",
+                "production-deployment/cloud/get-started/api-keys",
+                "production-deployment/cloud/get-started/certificates",
                 "production-deployment/cloud/get-started/billing-and-cost",
+              ],
+            },
+            {
+              type: "category",
+              label: "Account Access",
+              collapsed: false,
+              link: {
+                type: "doc",
+                id: "production-deployment/cloud/manage-access/index",
+              },
+              items: [
+                "production-deployment/cloud/get-started/users",
+                "production-deployment/cloud/get-started/user-groups",
                 "production-deployment/cloud/get-started/service-accounts",
+                "production-deployment/cloud/saml",
+                "production-deployment/cloud/scim",
               ],
             },
             {
@@ -435,8 +449,6 @@ module.exports = {
             },
             "production-deployment/cloud/worker-health",
             "production-deployment/cloud/service-health",
-            "production-deployment/cloud/saml",
-            "production-deployment/cloud/scim",
             "production-deployment/cloud/operation-api",
             "production-deployment/cloud/terraform-provider",
             {
@@ -484,6 +496,7 @@ module.exports = {
                 "production-deployment/cloud/tcld/nexus",
                 "production-deployment/cloud/tcld/request",
                 "production-deployment/cloud/tcld/user",
+                "production-deployment/cloud/tcld/user-group",
                 "production-deployment/cloud/tcld/version",
               ],
             },
