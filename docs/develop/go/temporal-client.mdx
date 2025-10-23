@@ -161,7 +161,7 @@ func main() {
 
 Use the `envconfig` package to set connection options for the Temporal Client using environment variables. For a list of
 all available environment variables and their default values, refer to
-[Environment Configuration](../environment-configuration) .
+[Environment Configuration](../environment-configuration).
 
 For example, the following code snippet loads all environment variables and creates a Temporal Client with the options
 specified in those variables. If you have defined a configuration file at either the default location
@@ -241,9 +241,14 @@ func main() {
 
 ## Connect to Temporal Cloud {#connect-to-temporal-cloud}
 
-### How to connect to Temporal Cloud using an API Key {#connect-to-temporal-cloud-api-key}
+Connection to Temporal Cloud or any secured Temporal Service requires additional connection options compared to
+connecting to an unsecured local development instance. You can connect to Temporal Cloud using either an
+[API key](/cloud/api-keys) or through mTLS.
 
-To use an [API key](/cloud/api-keys) with the Temporal Go SDK, you will need to provide additional connection options:
+### Connect to Temporal Cloud using an API key {#connect-to-temporal-cloud-api-key}
+
+To use an [API key](/cloud/api-keys) with the Temporal Go SDK, you will need to provide the following connection
+options:
 
 - Your _API Key_ value
 - Your _Namespace and Account id_ combination, which follows the format `<namespace_id>.<account_id>`.
@@ -255,6 +260,85 @@ To use an [API key](/cloud/api-keys) with the Temporal Go SDK, you will need to 
 You can find the Namespace and Account ID, as well as the endpoint, on the Namespaces tab:
 
 ![The Namespace and Account ID combination on the left, and the regional endpoint on the right](/img/cloud/apikeys/namespaces-and-regional-endpoints.png)
+
+You can provide these connection options using environment variables, a configuration file, or directly in code.
+
+<Tabs groupId="connect-api-key-options" defaultValue="env-vars" >
+
+<TabItem value="env-vars" label="Environment Variables">
+
+Use the `envconfig` package to set connection options for the Temporal Client using environment variables. The following
+environment variables are required to connect to Temporal Cloud using an API key:
+
+- `TEMPORAL_API_KEY`: Your API key value.
+- `TEMPORAL_NAMESPACE`: Your Namespace and Account ID combination in the format `<namespace_id>.<account_id>`.
+- `TEMPORAL_ADDRESS`: The gRPC endpoint for your Temporal Cloud Namespace.
+
+Ensure these environment variables are set in your environment before running your Go application. For a list of all
+available environment variables and their default values, refer to
+[Environment Configuration](../environment-configuration).
+
+For example, the following code snippet loads all environment variables and creates a Temporal Client with the options
+specified in those variables. If you have defined a configuration file at either the default location
+(`~/.config/temporalio/temporal.toml`) or a custom location specified by the `TEMPORAL_CONFIG_FILE` environment
+variable, this will also load the default profile in the configuration file. However, any options set via environment
+variables will take precedence.
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/contrib/envconfig"
+)
+
+func main() {
+	// Loads the "default" profile from the standard location and environment variables.
+	c, err := client.Dial(envconfig.MustLoadDefaultClientOptions())
+	if err != nil {
+		log.Fatalf("Failed to create client: %v", err)
+	}
+	defer c.Close()
+
+	fmt.Printf("✅ Connected to Temporal namespace %q on %s\n", c.Options().Namespace, c.Options().HostPort)
+}
+```
+
+</TabItem>
+
+<TabItem value="config-file" label="Configuration File">
+
+You can use a TOML configuration file to set connection options for the Temporal Client. The configuration file lets you
+configure multiple profiles, each with its own set of connection options. You can then specify which profile to use when
+creating the Temporal Client. You can use the environment variable `TEMPORAL_CONFIG_FILE` to specify the location of the
+TOML file or provide the path to the file directly in code. If you don't provide the configuration file path, the SDK
+looks for it at the path `~/.config/temporalio/temporal.toml`.
+
+:::info
+
+The connection options set in configuration files have lower precedence than environment variables. This means that if
+you set the same option in both the configuration file and as an environment variable, the environment variable value
+overrides the option set in the configuration file.
+
+:::
+
+For example, the following TOML configuration file defines a `cloud` profile with the necessary connection options to
+connect to Temporal Cloud via an API key:
+
+```toml
+# Cloud profile for Temporal Cloud
+[profile.cloud]
+address = "your-namespace.a1b2c.tmprl.cloud:7233"
+namespace = "your-namespace"
+api_key = "your-api-key-here"
+```
+
+</TabItem>
+
+<TabItem value="code" label="Code">
 
 Now, when instantiating a Temporal `client` in your Temporal Go SDK code, provide the API key with the following
 `clientOptions`:
@@ -366,6 +450,10 @@ apiKeyProvider.APIKey = myKeyUpdated
 ```
 
 </details>
+
+</TabItem>
+
+</Tabs>
 
 ### How to connect to Temporal Cloud using mTLS {#connect-to-temporal-cloud-tls}
 
