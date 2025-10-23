@@ -97,7 +97,7 @@ var client = await Temporalio.ConnectAsync(new("localhost:7233") { Runtime = run
 
 **How to configure tracing using the Temporal .NET SDK**
 
-Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.
+Tracing allows you to view the call graph of a Workflow along with its Activities, Nexus Operations, and any Child Workflows.
 
 To configure OpenTelemetry tracing in .NET, use the [Temporalio.Extensions.OpenTelemetry](https://github.com/temporalio/sdk-dotnet/tree/main/src/Temporalio.Extensions.OpenTelemetry) extension.
 
