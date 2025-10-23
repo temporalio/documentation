@@ -2,7 +2,7 @@
 id: temporal-client
 title: Temporal Client - Go SDK
 sidebar_label: Temporal Client
-description: Learn how to connect to Temporal Service or Cloud, start Workflow Executions, manage Workflow options, and retrieve Workflow results using the Go SDK. Follow detailed steps and code examples to effectively utilize Temporal’s capabilities.
+description: Connect to Temporal Service or Cloud, start Workflow Executions, manage Workflow options, and retrieve Workflow results using the Go SDK. Follow detailed steps and code examples to effectively use Temporal’s capabilities.
 toc_max_heading_level: 4
 keywords:
   - temporal go sdk
@@ -67,9 +67,7 @@ If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk/internal
 If you don't set a custom Namespace name in the Namespace field, the client connects to the default Namespace.
 
 <!--SNIPSTART samples-apps-go-yourapp-gateway {"selectedLines": ["1-23", "32"]} -->
-
 [sample-apps/go/yourapp/gateway/main.go](https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/gateway/main.go)
-
 ```go
 package main
 
@@ -85,7 +83,7 @@ import (
 )
 
 func main() {
-	// Create a Temporal Client to communicate with the Temporal Service.
+	// Create a Temporal Client to communicate with the Temporal Cluster.
 	// A Temporal Client is a heavyweight object that should be created just once per process.
 	temporalClient, err := client.Dial(client.Options{
 		HostPort: client.DefaultHostPort,
@@ -97,7 +95,6 @@ func main() {
 // ...
 }
 ```
-
 <!--SNIPEND-->
 
 ## Connect to Temporal Cloud {#connect-to-temporal-cloud}
@@ -254,9 +251,7 @@ For more information about managing and generating client certificates for Tempo
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
 <!--SNIPSTART sample-apps-go-cloud-client {"selectedLines": ["1-38", "64"]} -->
-
 [sample-apps/go/cloud/client/main.go](https://github.com/temporalio/documentation/blob/main/sample-apps/go/cloud/client/main.go)
-
 ```go
 package main
 
@@ -299,7 +294,6 @@ func main() {
 // ...
 }
 ```
-
 <!--SNIPEND-->
 
 ## Start Workflow Execution {#start-workflow-execution}

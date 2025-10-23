@@ -2,7 +2,7 @@ extends: existence
 message: "Always spell out the name of the month."
 link: https://docs.microsoft.com/en-us/style-guide/numbers#numbers-in-dates
 ignorecase: true
-level: error
+level: suggestion
 nonword: true
 tokens:
   - '\b\d{1,2}/\d{1,2}/(?:\d{4}|\d{2})\b'

@@ -2,7 +2,7 @@
 id: nexus
 title: Temporal Nexus - Java SDK Feature Guide
 sidebar_label: Temporal Nexus
-description: Learn how to use Temporal Nexus within the Java SDK to connect Durable Executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
+description: Use Temporal Nexus within the Java SDK to connect Durable Executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
 toc_max_heading_level: 4
 keywords:
   - temporal
@@ -201,7 +201,7 @@ The `OperationHandler.sync` method is for exposing simple RPC handlers.
 Its handler function can access an SDK client that can be used for signaling, querying, and listing Workflows.
 However, implementations are free to make arbitrary calls to other services or databases, or perform computations such as this one:
 
-<!--SNIPSTART samples-java-nexus-handler {"selectedLines": ["1-16", "40"]}-->
+{/* SNIPSTART samples-java-nexus-handler {"selectedLines": ["1-16", "43"]} */}
 [core/src/main/java/io/temporal/samples/nexus/handler/NexusServiceImpl.java](https://github.com/temporalio/samples-java/blob/nexus-snip-sync/core/src/main/java/io/temporal/samples/nexus/handler/NexusServiceImpl.java)
 ```java
 // To create a service implementation, annotate the class with @ServiceImpl and provide the
@@ -211,19 +211,19 @@ However, implementations are free to make arbitrary calls to other services or d
 public class NexusServiceImpl {
   @OperationImpl
   public OperationHandler<NexusService.EchoInput, NexusService.EchoOutput> echo() {
-    // OperationHandler.sync is intended for exposing simple RPC handlers.
+    // OperationHandler.sync is a meant for exposing simple RPC handlers.
     return OperationHandler.sync(
         // The method is for making arbitrary short calls to other services or databases, or
-        // performing simple computations such as this one. Users can also access a workflow client by
+        // perform simple computations such as this one. Users can also access a workflow client by
         // calling
-        // Nexus.getOperationContext().getWorkflowClient(ctx) to make arbitrary Temporal client
-        // calls such as signaling, querying, or listing workflows.
+        // Nexus.getOperationContext().getWorkflowClient(ctx) to make arbitrary calls such as
+        // signaling, querying, or listing workflows.
         (ctx, details, input) -> new NexusService.EchoOutput(input.getMessage()));
   }
 // ...
 }
 ```
-<!--SNIPEND-->
+{/* SNIPEND */}
 
 ### Develop an Asynchronous Nexus Operation handler to start a Workflow
 
@@ -618,12 +618,14 @@ tcld login
 
 tcld namespace create \
 	--namespace <your-caller-namespace> \
+	--cloud-provider aws \
 	--region us-west-2 \
 	--ca-certificate-file 'path/to/your/ca.pem' \
 	--retention-days 1
 
 tcld namespace create \
 	--namespace <your-target-namespace> \
+	--cloud-provider aws \
 	--region us-west-2 \
 	--ca-certificate-file 'path/to/your/ca.pem' \
 	--retention-days 1
