@@ -628,6 +628,7 @@ module.exports = {
         "best-practices/managing-namespace",
         "best-practices/cloud-access-control",
         "best-practices/security-controls",
+        "best-practices/worker",
       ],
     },
     {
