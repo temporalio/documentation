@@ -90,7 +90,7 @@ For more on how to configure and use Worker tuners, see [Worker runtime performa
 
 :::
 
-# **Task Pollers**
+### Task Pollers 
 
 A Worker's **Task Pollers** play a crucial role in the Temporal architecture by efficiently ingesting work to Workers to support scalable, resilient Workflow Execution. 
 Pollers create long-polling connections to the Temporal Service and actively poll a Task Queue for Tasks to process.  When a Task Poller receives a Task, it delivers to the appropriate Executor Slot for processing.
@@ -204,7 +204,7 @@ The `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecution
 
 :::
 
-### **Configuring Poller Options**
+### Configuring Poller Options
 
 **Recommended Approach**
 
