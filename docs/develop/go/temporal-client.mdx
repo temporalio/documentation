@@ -354,7 +354,7 @@ tls_client_key_path = "your-tls-client-key-path"
 With the connections options defined in the configuration file, use the `LoadClientOptions` function in the `envconfig`
 package to create a Temporal Client using the `cloud` profile as follows:
 
-```go
+```go {13-15}
 package main
 
 import (
