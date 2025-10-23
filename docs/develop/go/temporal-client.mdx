@@ -243,14 +243,11 @@ func main() {
 
 Connection to Temporal Cloud or any secured Temporal Service requires additional connection options compared to
 connecting to an unsecured local development instance. You can connect to Temporal Cloud using either an
-[API key](/cloud/api-keys) or through mTLS.
+[API key](/cloud/api-keys) or through mTLS. You need to provide the following mandatory connection options:
 
-### Connect to Temporal Cloud using an API key {#connect-to-temporal-cloud-api-key}
-
-To use an [API key](/cloud/api-keys) with the Temporal Go SDK, you will need to provide the following connection
-options:
-
-- Your _API Key_ value
+- Your credentials for authentication.
+  - If you are using an API key, provide the API key value.
+  - If you are using mTLS, provide the mTLS CA certificate and mTLS private key.
 - Your _Namespace and Account id_ combination, which follows the format `<namespace_id>.<account_id>`.
 - The _endpoint_ may vary. The most common endpoint used is the gRPC regional endpoint, which follows the format:
   `<region>.<cloud_provider>.api.temporal.io:7233`.
@@ -268,13 +265,17 @@ You can provide these connection options using environment variables, a configur
 <TabItem value="env-vars" label="Environment Variables">
 
 Use the `envconfig` package to set connection options for the Temporal Client using environment variables. The following
-environment variables are required to connect to Temporal Cloud using an API key:
+environment variables are required to connect to Temporal Cloud:
 
-- `TEMPORAL_API_KEY`: Your API key value.
 - `TEMPORAL_NAMESPACE`: Your Namespace and Account ID combination in the format `<namespace_id>.<account_id>`.
 - `TEMPORAL_ADDRESS`: The gRPC endpoint for your Temporal Cloud Namespace.
+- `TEMPORAL_API_KEY`: Your API key value. Required if you are using API key authentication.
+- `TEMPORAL_TLS_CLIENT_CERT_DATA` or `TEMPORAL_TLS_CLIENT_CERT_PATH`: Your mTLS client certificate data or file path.
+  Required if you are using mTLS authentication.
+- `TEMPORAL_TLS_CLIENT_KEY_DATA` or `TEMPORAL_TLS_CLIENT_KEY_PATH`: Your mTLS client private key data or file path.
+  Required if you are using mTLS authentication.
 
-Ensure these environment variables are set in your environment before running your Go application. For a list of all
+Ensure these environment variables exist in your environment before running your Go application. For a list of all
 available environment variables and their default values, refer to
 [Environment Configuration](../environment-configuration).
 
@@ -336,7 +337,52 @@ namespace = "your-namespace"
 api_key = "your-api-key-here"
 ```
 
-</TabItem>
+If you want to use mTLS authentication instead of an API key, replace the `api_key` field with your mTLS certificate and
+private key:
+
+```toml
+# Cloud profile for Temporal Cloud
+[profile.cloud]
+address = "your-namespace.a1b2c.tmprl.cloud:7233"
+namespace = "your-namespace"
+tls_client_cert_data = "your-tls-client-cert-data"
+tls_client_key_path = "your-tls-client-key-path"
+```
+
+With the connections options defined in the configuration file, you can create a Temporal Client using the `cloud`
+profile as follows:
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/contrib/envconfig"
+)
+
+func main() {
+	// Replace with the actual path to your TOML file.
+	configFilePath := "/Users/yourname/.config/my-app/temporal.toml"
+
+	opts, err := envconfig.LoadClientOptions(envconfig.LoadClientOptionsRequest{
+		ConfigFilePath: configFilePath,
+	})
+	if err != nil {
+		log.Fatalf("Failed to load client config from custom file: %v", err)
+	}
+
+	c, err := client.Dial(opts)
+	if err != nil {
+		log.Fatalf("Failed to connect using custom config file: %v", err)
+	}
+	defer c.Close()
+
+	fmt.Printf("✅ Connected using custom config at: %s\n", configFilePath)
+}
+```
 
 <TabItem value="code" label="Code">
 
@@ -454,89 +500,6 @@ apiKeyProvider.APIKey = myKeyUpdated
 </TabItem>
 
 </Tabs>
-
-### How to connect to Temporal Cloud using mTLS {#connect-to-temporal-cloud-tls}
-
-When you connect to [Temporal Cloud](/cloud) with mTLS, you need to provide additional connection and client options
-that include the following:
-
-- The [Temporal Cloud Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id).
-- The [Namespace's gRPC endpoint](/cloud/namespaces#temporal-cloud-grpc-endpoint). An endpoint listing is available at
-  the [Temporal Cloud Website](https://cloud.temporal.io/namespaces) on each Namespace detail page. The endpoint
-  contains the Namespace Id and port.
-- mTLS CA certificate.
-- mTLS private key.
-
-For more information about managing and generating client certificates for Temporal Cloud, see
-[How to manage certificates in Temporal Cloud](/cloud/certificates).
-
-For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see
-[Temporal Customization Samples](https://github.com/temporalio/samples-server).
-
-To connect to and run Workflows through Temporal Cloud, you need the following:
-
-- A compatible mTLS CA certificate and mTLS private key that has been added to your Namespace. See
-  [certificate requirements](/cloud/certificates#certificate-requirements).
-- Your [Temporal Cloud Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id), which includes your
-  [Temporal Cloud Namespace Name](/cloud/namespaces#temporal-cloud-namespace-name) and the unique five- or six-digit
-  [Temporal Cloud Account Id](/cloud/namespaces#temporal-cloud-account-id) that is appended to it. This information can
-  be found in the URL of your Namespace; for example, `https://cloud.temporal.io/namespaces/yournamespace.a2fx6/`.
-  Remember that the Namespace Id must include the Account Id: `yournamespace.a2fx6`.
-
-For more information about managing and generating client certificates for Temporal Cloud, see
-[How to manage certificates in Temporal Cloud](/cloud/certificates).
-
-For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see
-[Temporal Customization Samples](https://github.com/temporalio/samples-server).
-
-<!--SNIPSTART sample-apps-go-cloud-client {"selectedLines": ["1-38", "64"]} -->
-
-[sample-apps/go/cloud/client/main.go](https://github.com/temporalio/documentation/blob/main/sample-apps/go/cloud/client/main.go)
-
-```go
-package main
-
-import (
-	"context"
-	"crypto/tls"
-	"encoding/json"
-	"log"
-
-	"documentation-samples-go/cloud"
-
-	"go.temporal.io/sdk/client"
-)
-
-func main() {
-	// Get the key and cert from your env or local machine
-	clientKeyPath := "./secrets/yourkey.key"
-	clientCertPath := "./secrets/yourcert.pem"
-	// Specify the host and port of your Temporal Cloud Namespace
-	// Host and port format: namespace.unique_id.tmprl.cloud:port
-	hostPort := "<yournamespace>.<id>.tmprl.cloud:7233"
-	namespace := "<yournamespace>.<id>"
-	// Use the crypto/tls package to create a cert object
-	cert, err := tls.LoadX509KeyPair(clientCertPath, clientKeyPath)
-	if err != nil {
-		log.Fatalln("Unable to load cert and key pair.", err)
-	}
-	// Add the cert to the tls certificates in the ConnectionOptions of the Client
-	temporalClient, err := client.Dial(client.Options{
-		HostPort:  hostPort,
-		Namespace: namespace,
-		ConnectionOptions: client.ConnectionOptions{
-			TLS: &tls.Config{Certificates: []tls.Certificate{cert}},
-		},
-	})
-	if err != nil {
-		log.Fatalln("Unable to connect to Temporal Cloud.", err)
-	}
-	defer temporalClient.Close()
-// ...
-}
-```
-
-<!--SNIPEND-->
 
 ## Start Workflow Execution {#start-workflow-execution}
 
