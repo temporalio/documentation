@@ -72,6 +72,44 @@ If you don't set a custom Namespace name in the Namespace field, the client conn
 
 <Tabs groupId="connect-options" defaultValue="env-vars" >
 
+<TabItem value="env-vars" label="Environment Variables">
+
+Use the `envconfig` package to set connection options for the Temporal Client using environment variables. For a list of
+all available environment variables and their default values, refer to
+[Environment Configuration](../environment-configuration).
+
+For example, the following code snippet loads all environment variables and creates a Temporal Client with the options
+specified in those variables. If you have defined a configuration file at either the default location
+(`~/.config/temporalio/temporal.toml`) or a custom location specified by the `TEMPORAL_CONFIG_FILE` environment
+variable, this will also load the default profile in the configuration file. However, any options set via environment
+variables will take precedence.
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/contrib/envconfig"
+)
+
+func main() {
+	// Loads the "default" profile from the standard location and environment variables.
+	c, err := client.Dial(envconfig.MustLoadDefaultClientOptions())
+	if err != nil {
+		log.Fatalf("Failed to create client: %v", err)
+	}
+	defer c.Close()
+
+	fmt.Printf("✅ Connected to Temporal namespace %q on %s\n", c.Options().Namespace, c.Options().HostPort)
+}
+
+```
+
+</TabItem>
+
 <TabItem value="config-file" label="Configuration File">
 
 You can use a TOML configuration file to set connection options for the Temporal Client. The configuration file lets you
@@ -157,44 +195,6 @@ func main() {
 
 </TabItem>
 
-<TabItem value="env-vars" label="Environment Variables">
-
-Use the `envconfig` package to set connection options for the Temporal Client using environment variables. For a list of
-all available environment variables and their default values, refer to
-[Environment Configuration](../environment-configuration).
-
-For example, the following code snippet loads all environment variables and creates a Temporal Client with the options
-specified in those variables. If you have defined a configuration file at either the default location
-(`~/.config/temporalio/temporal.toml`) or a custom location specified by the `TEMPORAL_CONFIG_FILE` environment
-variable, this will also load the default profile in the configuration file. However, any options set via environment
-variables will take precedence.
-
-```go
-package main
-
-import (
-	"fmt"
-	"log"
-
-	"go.temporal.io/sdk/client"
-	"go.temporal.io/sdk/contrib/envconfig"
-)
-
-func main() {
-	// Loads the "default" profile from the standard location and environment variables.
-	c, err := client.Dial(envconfig.MustLoadDefaultClientOptions())
-	if err != nil {
-		log.Fatalf("Failed to create client: %v", err)
-	}
-	defer c.Close()
-
-	fmt.Printf("✅ Connected to Temporal namespace %q on %s\n", c.Options().Namespace, c.Options().HostPort)
-}
-
-```
-
-</TabItem>
-
 <TabItem value="code" label="Code">
 
 If you don't want to use environment variables or a configuration file, you can specify connection options directly in
@@ -204,6 +204,7 @@ variables or a configuration file, and then override specific options in code.
 {/* SNIPSTART samples-apps-go-yourapp-gateway {"selectedLines": ["1-23", "32"]} */}
 
 [sample-apps/go/yourapp/gateway/main.go](https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/gateway/main.go)
+
 ```go
 package main
 
@@ -262,9 +263,7 @@ You can provide these connection options using environment variables, a configur
 <Tabs groupId="connect-api-key-options" defaultValue="env-vars" >
 
 <TabItem value="env-vars" label="Environment Variables">
-
-Use the `envconfig` package to set connection options for the Temporal Client using environment variables. The following
-environment variables are required to connect to Temporal Cloud:
+The following environment variables are required to connect to Temporal Cloud:
 
 - `TEMPORAL_NAMESPACE`: Your Namespace and Account ID combination in the format `<namespace_id>.<account_id>`.
 - `TEMPORAL_ADDRESS`: The gRPC endpoint for your Temporal Cloud Namespace.
@@ -274,9 +273,11 @@ environment variables are required to connect to Temporal Cloud:
 - `TEMPORAL_TLS_CLIENT_KEY_DATA` or `TEMPORAL_TLS_CLIENT_KEY_PATH`: Your mTLS client private key data or file path.
   Required if you are using mTLS authentication.
 
-Ensure these environment variables exist in your environment before running your Go application. For a list of all
-available environment variables and their default values, refer to
-[Environment Configuration](../environment-configuration).
+Ensure these environment variables exist in your environment before running your Go application.
+
+Import the `envconfig` package to set connection options for the Temporal Client using environment variables. The
+`MustLoadDefaultClientOptions` function will automatically load all environment variables. For a list of all available
+environment variables and their default values, refer to [Environment Configuration](../environment-configuration).
 
 For example, the following code snippet loads all environment variables and creates a Temporal Client with the options
 specified in those variables. If you have defined a configuration file at either the default location
@@ -284,7 +285,7 @@ specified in those variables. If you have defined a configuration file at either
 variable, this will also load the default profile in the configuration file. However, any options set via environment
 variables will take precedence.
 
-```go
+```go {13}
 package main
 
 import (
@@ -313,9 +314,11 @@ func main() {
 
 You can use a TOML configuration file to set connection options for the Temporal Client. The configuration file lets you
 configure multiple profiles, each with its own set of connection options. You can then specify which profile to use when
-creating the Temporal Client. You can use the environment variable `TEMPORAL_CONFIG_FILE` to specify the location of the
-TOML file or provide the path to the file directly in code. If you don't provide the configuration file path, the SDK
-looks for it at the path `~/.config/temporalio/temporal.toml`.
+creating the Temporal Client.
+
+You can use the environment variable `TEMPORAL_CONFIG_FILE` to specify the location of the TOML file or provide the path
+to the file directly in code. If you don't provide the path to the configuration file, the SDK looks for it at the
+default path `~/.config/temporalio/temporal.toml`.
 
 :::info
 
@@ -348,8 +351,8 @@ tls_client_cert_data = "your-tls-client-cert-data"
 tls_client_key_path = "your-tls-client-key-path"
 ```
 
-With the connections options defined in the configuration file, you can create a Temporal Client using the `cloud`
-profile as follows:
+With the connections options defined in the configuration file, use the `LoadClientOptions` function in the `envconfig`
+package to create a Temporal Client using the `cloud` profile as follows:
 
 ```go
 package main
