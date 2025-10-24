@@ -95,7 +95,7 @@ For more on how to configure and use Worker tuners, see [Worker runtime performa
 ### Task Pollers 
 
 A Worker's **Task Pollers** play a crucial role in the Temporal architecture by efficiently ingesting work to Workers to support scalable, resilient Workflow Execution. 
-Pollers create long-polling connections to the Temporal Service and actively poll a Task Queue for Tasks to process.  When a Task Poller receives a Task, it delivers the Task to the appropriate Executor Slot for processing.
+Pollers create long-polling connections to the Temporal Service and actively poll a Task Queue for Tasks to process. When a Task Poller receives a Task, it delivers the Task to the appropriate Executor Slot for processing.
 
 Temporal SDKs implement support for *Poller Autoscaling*, which dynamically adjusts the number of pollers in use to maximize throughput for a given number of workers and the size of the task backlog. 
 Temporal recommends using Poller Autoscaling for the majority of use cases, as manually setting the number of pollers too high or too low for your workload will result in decreased performance. 
