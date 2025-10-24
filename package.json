@@ -9,11 +9,14 @@
     "deploy": "docusaurus deploy",
     "docusaurus": "docusaurus",
     "check-links": "hyperlink build/index.html --recursive --check-anchors",
-    "lint": "vale docs-src/**/*.md",
-    "lint:go": "vale docs-src/go/*.md",
-    "lint:java": "vale docs-src/java/*.md",
-    "lint:py": "vale docs-src/python/*.md",
-    "lint:ts": "vale docs-src/typescript/*.md",
+    "lint": "vale --output=JSON docs/**/**/*.mdx > vale-output.json; vale --output=JSON docs/**/**/*.md > vale-md-output.json",
+    "lint:go": "vale docs/develop/go/*.mdx",
+    "lint:java": "vale docs/develop/java/*.mdx",
+    "lint:php": "vale docs/develop/php/*.mdx",
+    "lint:py": "vale docs/develop/python/*.mdx",
+    "lint:ruby": "vale docs/develop/ruby/*.mdx",
+    "lint:ts": "vale docs/develop/typescript/*.mdx",
+    "fix-vale": "node vale/auto-fix-vale.js vale-output.json",
     "serve": "docusaurus serve",
     "snipsync": "snipsync",
     "start": "docusaurus start",
@@ -21,6 +24,7 @@
     "vale": "./assembly/run-vale.sh",
     "write-heading-ids": "docusaurus write-heading-ids",
     "write-translations": "docusaurus write-translations",
+    "prepare": "husky",
     "e2e:install": "npx playwright install --with-deps",
     "e2e:dev": "concurrently \"docusaurus start\" \"wait-on http://localhost:3000 && playwright test --project=chromium-desktop\"",
     "e2e": "playwright test"
@@ -62,17 +66,21 @@
     "react-player": "^2.6.0",
     "rehype-katex": "7",
     "remark-math": "6",
-    "snipsync": "^1.9.0",
+    "snipsync": "^1.12.0",
     "tar-fs": "^2.1.4",
     "uuid": "^11.1.0",
     "webpack-font-preload-plugin": "^1.5.0",
     "@playwright/test": "^1.47.0",
     "concurrently": "^8.2.2",
-    "wait-on": "^7.2.0"
+    "wait-on": "^7.2.0",
+    "yaml": "^2.8.1"
   },
   "devDependencies": {
+    "@types/node": "^24.5.1",
+    "@types/yaml": "^1.9.7",
     "eslint": "^7.32.0",
     "eslint-plugin-react": "^7.23.2",
+    "husky": "^9.1.7",
     "hyperlink": "^5.0.4"
   }
 }

@@ -2,7 +2,7 @@
 id: observability
 title: Observability - .NET SDK
 sidebar_label: Observability
-description: Explore Temporal SDK observability features for Metrics, Tracing, Logging, and Visibility. Learn to track Workflow Executions, set up Prometheus endpoints, customize metrics, configure tracing, and more.
+description: Explore Temporal SDK observability features for Metrics, Tracing, Logging, and Visibility. Track Workflow Executions, set up Prometheus endpoints, customize metrics, configure tracing, and more.
 toc_max_heading_level: 4
 keywords:
   - client
@@ -97,7 +97,7 @@ var client = await Temporalio.ConnectAsync(new("localhost:7233") { Runtime = run
 
 **How to configure tracing using the Temporal .NET SDK**
 
-Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.
+Tracing allows you to view the call graph of a Workflow along with its Activities, Nexus Operations, and any Child Workflows.
 
 To configure OpenTelemetry tracing in .NET, use the [Temporalio.Extensions.OpenTelemetry](https://github.com/temporalio/sdk-dotnet/tree/main/src/Temporalio.Extensions.OpenTelemetry) extension.
 

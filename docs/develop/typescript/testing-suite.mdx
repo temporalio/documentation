@@ -171,7 +171,7 @@ For example, you could run all tests with automatic time skipping in parallel, a
 
 #### Set up time skipping {#setting-up}
 
-Learn to set up the time-skipping test framework in the SDK of your choice.
+Set up the time-skipping test framework in the SDK of your choice.
 
 ```bash
 npm install @temporalio/testing
@@ -266,6 +266,8 @@ test('sleep completes almost immediately', async () => {
 
 #### Skip time manually {#manual-method}
 
+Skip time manually in the SDK of your choice.
+
 You can call `testEnv.sleep()` from your test code to advance the test server's time.
 This is useful for testing intermediate states or indefinitely long-running Workflows.
 However, to use `testEnv.sleep()`, you need to avoid automatic time skipping by starting the Workflow with `.start()` instead of `.execute()` (and not calling `.result()`).
@@ -326,7 +328,7 @@ test('sleeperWorkflow counts days correctly', async () => {
 
 #### Skip time in Activities {#skip-time-in-activities}
 
-Learn to skip time in Activities in the SDK of your choice.
+Skip time in Activities in the SDK of your choice.
 
 Call [`TestWorkflowEnvironment.sleep`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#sleep) from the mock Activity.
 
@@ -341,9 +343,7 @@ Workflow implementation
 </summary>
 
 <!--SNIPSTART typescript-timer-reminder-workflow-->
-
 [timer-examples/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/timer-examples/src/workflows.ts)
-
 ```ts
 export async function processOrderWorkflow({
   orderProcessingMS,
@@ -351,11 +351,9 @@ export async function processOrderWorkflow({
 }: ProcessOrderOptions): Promise<string> {
   let processing = true;
   // Dynamically define the timeout based on given input
-  const { processOrder } = proxyActivities<ReturnType<typeof createActivities>>(
-    {
-      startToCloseTimeout: orderProcessingMS,
-    },
-  );
+  const { processOrder } = proxyActivities<ReturnType<typeof createActivities>>({
+    startToCloseTimeout: orderProcessingMS,
+  });
 
   const processOrderPromise = processOrder().then(() => {
     processing = false;
@@ -372,15 +370,12 @@ export async function processOrderWorkflow({
   return 'Order completed!';
 }
 ```
-
 <!--SNIPEND-->
 
 </details>
 
 <!--SNIPSTART typescript-timer-reminder-test-->
-
 [timer-examples/src/test/workflows.test.ts](https://github.com/temporalio/samples-typescript/blob/main/timer-examples/src/test/workflows.test.ts)
-
 ```ts
 it('sends reminder email if processOrder does not complete in time', async () => {
   // This test doesn't actually take days to complete: the TestWorkflowEnvironment starts the
@@ -407,18 +402,12 @@ it('sends reminder email if processOrder does not complete in time', async () =>
     env.client.workflow.execute(processOrderWorkflow, {
       workflowId: uuid(),
       taskQueue: 'test',
-      args: [
-        {
-          orderProcessingMS: ms('3 days'),
-          sendDelayedEmailTimeoutMS: ms('1 day'),
-        },
-      ],
+      args: [{ orderProcessingMS: ms('3 days'), sendDelayedEmailTimeoutMS: ms('1 day') }],
     }),
   );
   assert.ok(emailSent);
 });
 ```
-
 <!--SNIPEND-->
 
 ### Test functions in Workflow context {#workflow-context}

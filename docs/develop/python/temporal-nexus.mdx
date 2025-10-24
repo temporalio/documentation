@@ -2,7 +2,7 @@
 id: nexus
 title: Temporal Nexus - Python SDK Feature Guide
 sidebar_label: Temporal Nexus
-description: Learn how to use Temporal Nexus within the Python SDK to connect Durable Executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
+description: Use Temporal Nexus within the Python SDK to connect Durable Executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
 toc_max_heading_level: 4
 keywords:
   - temporal
@@ -158,7 +158,7 @@ class MyNexusServiceHandler:
 A synchronous operation handler must return quickly (less than `10s`).
 In addition to performing simple CPU-bound computations such as the one above, implementations are free to make arbitrary calls to other services or databases.
 The handler function can access an SDK client that can be used to execute Signals, Updates, or Queries against a Workflow, or to do other client operations such as listing Workflows.
-The [nexus_sync_operations](https://github.com/temporalio/samples-python/blob/main/nexus_sync_operations) shows how to create a Nexus Service uses synchronous operations to send Updates and Queries:
+The [nexus_sync_operations](https://github.com/temporalio/samples-python/blob/main/nexus_sync_operations) sample shows how to create a Nexus Service uses synchronous operations to send Updates and Queries:
 
 [nexus_sync_operations/handler/service_handler.py](https://github.com/temporalio/samples-python/blob/main/nexus_sync_operations/handler/service_handler.py)
 
@@ -365,12 +365,14 @@ tcld login
 
 tcld namespace create \
 	--namespace <your-caller-namespace> \
+    --cloud-provider aws \
 	--region us-west-2 \
 	--ca-certificate-file 'path/to/your/ca.pem' \
 	--retention-days 1
 
 tcld namespace create \
 	--namespace <your-target-namespace> \
+    --cloud-provider aws \
 	--region us-west-2 \
 	--ca-certificate-file 'path/to/your/ca.pem' \
 	--retention-days 1

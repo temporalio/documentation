@@ -107,7 +107,7 @@ Temporal Cloud sends an email alert once your Namespace is ready for use.
 
 #### --cloud-provider
 
-The cloud provider of the region.
+The cloud provider of the region. One of [aws, gcp].
 
 Default: aws (default: "aws")
 
@@ -138,28 +138,6 @@ A base64-encoded CA certificate.
 If both `--ca-certificate` and `--ca-certificate-file` are specified, only `--ca-certificate` is used.
 
 Alias: `-c`
-
-#### --connectivity-rule-ids
-
-The list of connectivity rule IDs, can be used in create namespace and update namespace. example: --ids id1 --ids id2 --ids id3.
-
-Alias: `ids`
-
-```bash
-tcld namespace create \
-    --namespace <namespace_id> \
-    --region us-west-2 \
-    --retention-days 60 \
-    --certificate-filter-input '{"filters": [{"commonName": "test1"}]}' \
-    --user-namespace-permission "user@example.com=Admin" \
-    --search-attribute "customer_id=Int" \
-    --search-attribute "customer_name=Text" \
-    --endpoint "https://test-codec-server.com" \
-    --pass-access-token \
-    --include-credentials \
-    --connectivity-rule-ids <rule_id1> \
-    --connectivity-rule-ids <rule_id2> // if adding multiple rules
-```
 
 #### --namespace
 
@@ -224,6 +202,10 @@ The number of days that data about closed Workflow Executions will be retained (
 
 Alias: `--rd`
 
+#### --auth-method
+
+The authentication method to use for the namespace (e.g. 'mtls', 'api_key') (default: "mtls")
+
 #### --ca-certificate-file
 
 _Required modifier unless `--ca-certificate` is specified_
@@ -280,6 +262,12 @@ Valid values for _permission_: `Admin` | `Write` | `Read`
 
 Alias: `-p`
 
+#### --enable-delete-protection
+
+Enable delete protection on the namespace. (default: false)
+
+Alias: `--edp`
+
 #### --endpoint
 
 The codec server endpoint to decode payloads for all users interacting with this Namespace. Must be HTTPS.
@@ -298,6 +286,12 @@ Include cross-origin credentials (default: false).
 
 Alias: `--ic`
 
+#### --cloud-provider
+
+The cloud provider of the region. One of ['aws', 'gcp']. (default: "aws")
+
+Alias: `--cp`
+
 #### --tag
 
 A tag in the form "_key_=_value_".
@@ -311,6 +305,7 @@ Alias: `--t`
 ```bash
 tcld namespace create \
     --namespace <namespace_id> \
+    --cloud-provider aws \
     --region us-west-2 \
     --retention-days 60 \
     --certificate-filter-input '{"filters": [{"commonName": "test1"}]}' \
@@ -321,6 +316,29 @@ tcld namespace create \
     --pass-access-token \
     --include-credentials \
     --tag "key=value"
+```
+
+#### --connectivity-rule-ids
+
+The list of connectivity rule IDs, can be used in create namespace and update namespace. example: --ids id1 --ids id2 --ids id3.
+
+Alias: `--ids`
+
+```bash
+tcld namespace create \
+    --namespace <namespace_id> \
+    --cloud-provider aws \
+    --region us-west-2 \
+    --retention-days 60 \
+    --certificate-filter-input '{"filters": [{"commonName": "test1"}]}' \
+    --user-namespace-permission "user@example.com=Admin" \
+    --search-attribute "customer_id=Int" \
+    --search-attribute "customer_name=Text" \
+    --endpoint "https://test-codec-server.com" \
+    --pass-access-token \
+    --include-credentials \
+    --connectivity-rule-ids <rule_id1> \
+    --connectivity-rule-ids <rule_id2> // if adding multiple rules
 ```
 
 ## delete
@@ -422,7 +440,7 @@ tcld --api-key <your_api_key> \
 
 #### --cloud-provider
 
-The cloud provider of the region to failover to.
+The cloud provider of the region to failover to. One of [aws, gcp].
 
 Default: aws (default: "aws")
 
@@ -486,7 +504,7 @@ Alias: `-c`
 
 #### --cloud-provider
 
-The cloud provider of the region to failover to.
+The cloud provider of the region to failover to. One of [aws, gcp].
 
 Default: aws (default: "aws")
 
