@@ -225,7 +225,7 @@ These options define the maximum count of pollers performing poll requests on Wo
 
 <SdkTabs>
 <SdkTabs.Go>
-GO SDK: https://pkg.go.dev/go.temporal.io/sdk/worker#PollerBehaviorAutoscalingOptions
+[Go SDK docs](https://pkg.go.dev/go.temporal.io/sdk/worker#PollerBehaviorAutoscalingOptions)
 ```go
     w := worker.New(c, "my-task-queue", worker.Options{
         WorkflowTaskPollerBehavior: worker.NewPollerBehaviorAutoscaling(),
