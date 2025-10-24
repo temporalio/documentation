@@ -2010,5 +2010,10 @@
       "destination": "/cloud/high-availability",
       "permanent": true
     }
+    {
+      "source": "/cloud/high-availability/how-it-works#deployment-options",
+      "destination": "/cloud/high-availability/enable",
+      "permanent": true
+    }
   ]
 }
