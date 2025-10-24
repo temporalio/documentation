@@ -2012,7 +2012,7 @@
     },
     {
       "source": "/cloud/high-availability/how-it-works",
-      "destination": "/cloud/high-availability/enable",
+      "destination": "/cloud/high-availability/ha-connectivity",
       "permanent": true
     }
   ]
