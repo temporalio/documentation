@@ -1,7 +1,29 @@
 module.exports = {
   documentation: [
     "index",
-    "quickstarts",
+    {
+      type: "category",
+      label: "Quickstarts",
+      collapsed: false,
+      link: {
+        type: "doc",
+        id: "quickstarts",
+      },
+      items: [
+        {
+          type: "category",
+          label: "Build your First Basic Workflow",
+          collapsed: false,
+          link: {
+            type: "doc",
+            id: "build-your-first-basic-workflow",
+          },
+          items: [
+            "build-your-first-basic-workflow/python",
+          ],
+        },
+      ],
+    },
     {
       type: "link",
       label: "Courses and Tutorials",
@@ -598,7 +620,7 @@ module.exports = {
         "references/server-options",
         "references/web-ui-configuration",
         "references/web-ui-environment-variables",
-        
+
       ],
     },
     {
@@ -613,7 +635,7 @@ module.exports = {
         "troubleshooting/blob-size-limit-error",
         "troubleshooting/deadline-exceeded-error",
         "troubleshooting/last-connection-error",
-            "troubleshooting/performance-bottlenecks"
+        "troubleshooting/performance-bottlenecks"
       ],
     },
     {
@@ -642,37 +664,37 @@ module.exports = {
         "encyclopedia/temporal",
         "encyclopedia/temporal-sdks",
         {
+          type: "category",
+          label: "Workflows",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "encyclopedia/workflow/workflow-overview",
+          },
+          items: [
+            "encyclopedia/workflow/workflow-definition",
+            {
               type: "category",
-              label: "Workflows",
+              label: "Workflow Execution",
               collapsed: true,
               link: {
                 type: "doc",
-                id: "encyclopedia/workflow/workflow-overview",
+                id: "encyclopedia/workflow/workflow-execution/workflow-execution",
               },
               items: [
-                "encyclopedia/workflow/workflow-definition",
-                {
-                  type: "category",
-                  label: "Workflow Execution",
-                  collapsed: true,
-                  link: {
-                    type: "doc",
-                    id: "encyclopedia/workflow/workflow-execution/workflow-execution",
-                  },
-                  items: [
-                    "encyclopedia/workflow/workflow-execution/workflowid-runid",
-                    "encyclopedia/workflow/workflow-execution/event",
-                    "encyclopedia/workflow/workflow-execution/continue-as-new",
-                    "encyclopedia/workflow/workflow-execution/limits",
-                    "encyclopedia/workflow/workflow-execution/timers-delays",
-                  ],
-                },
-                "encyclopedia/workflow/dynamic-handler",
-                "encyclopedia/workflow/workflow-schedule",
-                "encyclopedia/workflow/cron-job",
-                "encyclopedia/workflow/patching",
+                "encyclopedia/workflow/workflow-execution/workflowid-runid",
+                "encyclopedia/workflow/workflow-execution/event",
+                "encyclopedia/workflow/workflow-execution/continue-as-new",
+                "encyclopedia/workflow/workflow-execution/limits",
+                "encyclopedia/workflow/workflow-execution/timers-delays",
               ],
             },
+            "encyclopedia/workflow/dynamic-handler",
+            "encyclopedia/workflow/workflow-schedule",
+            "encyclopedia/workflow/cron-job",
+            "encyclopedia/workflow/patching",
+          ],
+        },
         {
           type: "category",
           label: "Activities",

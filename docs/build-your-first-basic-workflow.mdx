@@ -1,0 +1,173 @@
+---
+id: build-your-first-basic-workflow
+title: Build your First Basic Workflow
+sidebar_label: Build your First Basic Workflow
+description: Learn Temporal's core concepts by building and running a money transfer Workflow that demonstrates reliability, failure handling, and live debugging.
+keywords:
+  - temporal
+  - workflow
+  - getting started
+  - tutorial
+  - reliability
+  - money transfer
+tags:
+  - Getting Started
+  - Tutorial
+  - Workflows
+---
+
+import { CallToAction } from "@site/src/components/elements/CallToAction";
+
+# Build your First Basic Workflow
+
+Learn Temporal's core concepts by building a money transfer application that demonstrates reliability, failure handling, and live debugging capabilities.
+
+## What you'll learn
+
+In this tutorial, you'll discover why Temporal is a "cure-all" for building reliable applications by:
+
+- ✅ **Running your first Temporal Workflow** with real failure scenarios
+- ✅ **Understanding core concepts** like Workflows, Activities, and Workers  
+- ✅ **Exploring the Temporal Web UI** for application state visibility
+- ✅ **Experiencing live debugging** - fix bugs in running applications without losing state
+- ✅ **Seeing automatic retries** handle transient failures gracefully
+
+## Prerequisites
+
+Before starting this tutorial:
+
+- **Local development environment** set up for Temporal (choose your language below)
+- **Git installed** to clone the example project
+- **Basic programming knowledge** in your chosen language
+
+<CallToAction 
+  href="/quickstarts"
+  buttonText="Set up your development environment →"
+  description="Choose your language and set up Temporal locally first"
+/>
+
+## The Money Transfer Application
+
+You'll build a **money transfer application** that simulates real-world financial transactions with these critical operations:
+
+1. **Withdraw** money from source account
+2. **Deposit** money to target account  
+3. **Refund** money if deposit fails
+
+### Why This Matters
+
+In traditional applications, handling failures in this flow is complex:
+- What if withdrawal succeeds but deposit fails?
+- How do you retry operations safely?
+- How do you maintain transaction state during server crashes?
+
+**Temporal solves all of these problems automatically.** 🎯
+
+## Key Concepts You'll Experience
+
+### Workflows
+Define the overall business logic flow. In our case: withdraw → deposit → (refund if needed).
+
+### Activities  
+Individual operations that can fail and be retried (calling external services, database operations, etc.).
+
+### Workers
+Temporal processes that execute your Workflows and Activities reliably.
+
+### Retry Policies
+Automatic retry configuration that handles transient failures without custom code.
+
+## What Makes This Tutorial Special
+
+Unlike typical "Hello World" examples, this tutorial shows:
+
+1. **Real failure scenarios** - See how Temporal handles actual problems
+2. **Live debugging** - Fix bugs in running applications without restarting
+3. **State persistence** - Applications survive server crashes and resume exactly where they left off
+4. **Automatic retries** - Temporal handles retry logic so you don't have to
+
+## Choose Your Language to Get Started
+
+The money transfer tutorial is available in multiple languages. Pick your preferred SDK:
+
+import QuickstartCards from "@site/src/components/QuickstartCards";
+
+<QuickstartCards
+  items={[
+    { 
+      href: "https://learn.temporal.io/getting_started/python/first_program_in_python/", 
+      title: "Python Tutorial", 
+      description: "Build a money transfer Workflow with the Python SDK. Perfect for beginners." 
+    },
+    { 
+      href: "https://learn.temporal.io/getting_started/go/first_program_in_go/", 
+      title: "Go Tutorial", 
+      description: "Build a money transfer Workflow with the Go SDK. Great for performance-focused developers." 
+    },
+    { 
+      href: "https://learn.temporal.io/getting_started/java/first_program_in_java/", 
+      title: "Java Tutorial", 
+      description: "Build a money transfer Workflow with the Java SDK. Ideal for enterprise applications." 
+    },
+    { 
+      href: "https://learn.temporal.io/getting_started/typescript/first_program_in_typescript/", 
+      title: "TypeScript Tutorial", 
+      description: "Build a money transfer Workflow with the TypeScript SDK. Perfect for web developers." 
+    },
+  ]}
+/>
+
+## What You'll Experience Step-by-Step
+
+### 1. **Download and Explore** (5 minutes)
+Clone the money transfer project and examine the Workflow and Activity definitions.
+
+### 2. **Run Your First Workflow** (3 minutes)  
+Start the application and see a successful money transfer in action.
+
+### 3. **Explore the Web UI** (2 minutes)
+Use Temporal's built-in Web UI to inspect Workflow state and execution history.
+
+### 4. **Simulate Failures** (5 minutes)
+Introduce failures and watch Temporal's automatic retry mechanisms in action.
+
+### 5. **Live Debug a Running Workflow** (5 minutes)
+The magic moment - fix a bug in a running application without losing state or restarting the transaction.
+
+## Key Advantages You'll Discover
+
+By the end of this tutorial, you'll understand how Temporal provides:
+
+### 🔍 **Full Visibility**
+See exactly what your application is doing at every step with detailed execution history.
+
+### 🛡️ **Guaranteed Execution**  
+Your Workflows run to completion even through server crashes, network failures, and code deployments.
+
+### ⚙️ **Declarative Retries**
+Configure retry policies in your code instead of implementing complex retry logic.
+
+### 🔧 **Live Debugging**
+Debug and fix issues in production applications while they're running.
+
+### 🏗️ **Focus on Business Logic**
+Write application code without worrying about infrastructure concerns like state management and failure recovery.
+
+## Ready to Build?
+
+<CallToAction 
+  href="https://learn.temporal.io/getting_started/python/first_program_in_python/"
+  buttonText="Start the Python Tutorial →"
+  description="Begin with our most popular getting started tutorial"
+/>
+
+## Alternative Learning Paths
+
+**Prefer a different approach?**
+- 📖 **[Conceptual Overview](/evaluate/why-temporal)** - Understand Temporal's value proposition first
+- 🛠️ **[SDK-specific Quickstarts](/quickstarts)** - Set up your development environment  
+- 🎓 **[Courses and Tutorials](https://learn.temporal.io/)** - Comprehensive learning paths
+
+---
+
+**Questions?** Join our [community forum](https://community.temporal.io/) or [Slack workspace](https://temporal.io/slack) for help from Temporal experts and fellow developers.
