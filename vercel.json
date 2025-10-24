@@ -2009,7 +2009,7 @@
       "source": "/evaluate/development-production-features/high-availability",
       "destination": "/cloud/high-availability",
       "permanent": true
-    }
+    },
     {
       "source": "/cloud/high-availability/how-it-works",
       "destination": "/cloud/high-availability/enable",
