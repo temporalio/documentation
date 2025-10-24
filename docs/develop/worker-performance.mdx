@@ -216,7 +216,7 @@ The Temporal SDKs support Poller Autoscaling, which automatically selects an app
 
 There are options available to manually configure minimum, maximum, and initial poller counts, but it is not recommended to set these values manually for production use cases. To set these values manually, the following options are available: 
 
-- `maxConcurrentWorkflowTaskPollers` (JavaSDK: `workflowPollThreadCount`)
+- `maxConcurrentWorkflowTaskPollers` (in the JavaSDK: `workflowPollThreadCount`)
 - `maxConcurrentActivityTaskPollers` (JavaSDK: `activityPollThreadCount`)
 
 These options define the maximum count of pollers performing poll requests on Workflow and Activity Task Queues, respectively. 
