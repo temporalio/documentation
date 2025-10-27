@@ -241,14 +241,14 @@ func main() {
 
 ## Connect to Temporal Cloud {#connect-to-temporal-cloud}
 
-Connection to Temporal Cloud or any secured Temporal Service requires additional connection options compared to
-connecting to an unsecured local development instance. You can connect to Temporal Cloud using either an
-[API key](/cloud/api-keys) or through mTLS. You need to provide the following mandatory connection options:
+You can connect to Temporal Cloud using either an [API key](/cloud/api-keys) or through mTLS. Connection to Temporal
+Cloud or any secured Temporal Service requires additional connection options compared to connecting to an unsecured
+local development instance:
 
 - Your credentials for authentication.
   - If you are using an API key, provide the API key value.
   - If you are using mTLS, provide the mTLS CA certificate and mTLS private key.
-- Your _Namespace and Account id_ combination, which follows the format `<namespace_id>.<account_id>`.
+- Your _Namespace and Account ID_ combination, which follows the format `<namespace_id>.<account_id>`.
 - The _endpoint_ may vary. The most common endpoint used is the gRPC regional endpoint, which follows the format:
   `<region>.<cloud_provider>.api.temporal.io:7233`.
 - For Namespaces with High Availability features with API key authentication enabled, use the gRPC Namespace endpoint:
@@ -260,61 +260,14 @@ You can find the Namespace and Account ID, as well as the endpoint, on the Names
 
 You can provide these connection options using environment variables, a configuration file, or directly in code.
 
-<Tabs groupId="connect-api-key-options" defaultValue="env-vars" >
-
-<TabItem value="env-vars" label="Environment Variables">
-The following environment variables are required to connect to Temporal Cloud:
-
-- `TEMPORAL_NAMESPACE`: Your Namespace and Account ID combination in the format `<namespace_id>.<account_id>`.
-- `TEMPORAL_ADDRESS`: The gRPC endpoint for your Temporal Cloud Namespace.
-- `TEMPORAL_API_KEY`: Your API key value. Required if you are using API key authentication.
-- `TEMPORAL_TLS_CLIENT_CERT_DATA` or `TEMPORAL_TLS_CLIENT_CERT_PATH`: Your mTLS client certificate data or file path.
-  Required if you are using mTLS authentication.
-- `TEMPORAL_TLS_CLIENT_KEY_DATA` or `TEMPORAL_TLS_CLIENT_KEY_PATH`: Your mTLS client private key data or file path.
-  Required if you are using mTLS authentication.
-
-Ensure these environment variables exist in your environment before running your Go application.
-
-Import the `envconfig` package to set connection options for the Temporal Client using environment variables. The
-`MustLoadDefaultClientOptions` function will automatically load all environment variables. For a list of all available
-environment variables and their default values, refer to [Environment Configuration](../environment-configuration).
-
-For example, the following code snippet loads all environment variables and creates a Temporal Client with the options
-specified in those variables. If you have defined a configuration file at either the default location
-(`~/.config/temporalio/temporal.toml`) or a custom location specified by the `TEMPORAL_CONFIG_FILE` environment
-variable, this will also load the default profile in the configuration file. However, any options set via environment
-variables will take precedence.
-
-```go {13}
-package main
-
-import (
-	"fmt"
-	"log"
-
-	"go.temporal.io/sdk/client"
-	"go.temporal.io/sdk/contrib/envconfig"
-)
-
-func main() {
-	// Loads the "default" profile from the standard location and environment variables.
-	c, err := client.Dial(envconfig.MustLoadDefaultClientOptions())
-	if err != nil {
-		log.Fatalf("Failed to create client: %v", err)
-	}
-	defer c.Close()
-
-	fmt.Printf("✅ Connected to Temporal namespace %q on %s\n", c.Options().Namespace, c.Options().HostPort)
-}
-```
-
-</TabItem>
+<Tabs groupId="connect-api-key-options" defaultValue="config-file" >
 
 <TabItem value="config-file" label="Configuration File">
 
 You can use a TOML configuration file to set connection options for the Temporal Client. The configuration file lets you
 configure multiple profiles, each with its own set of connection options. You can then specify which profile to use when
-creating the Temporal Client.
+creating the Temporal Client. For a list of all available configuration options you can set in the TOML file, refer to
+[Environment configuration](../environment-configuration).
 
 You can use the environment variable `TEMPORAL_CONFIG_FILE` to specify the location of the TOML file or provide the path
 to the file directly in code. If you don't provide the path to the configuration file, the SDK looks for it at the
@@ -388,13 +341,58 @@ func main() {
 
 </TabItem>
 
+<TabItem value="env-vars" label="Environment Variables">
+The following environment variables are required to connect to Temporal Cloud:
+
+- `TEMPORAL_NAMESPACE`: Your Namespace and Account ID combination in the format `<namespace_id>.<account_id>`.
+- `TEMPORAL_ADDRESS`: The gRPC endpoint for your Temporal Cloud Namespace.
+- `TEMPORAL_API_KEY`: Your API key value. Required if you are using API key authentication.
+- `TEMPORAL_TLS_CLIENT_CERT_DATA` or `TEMPORAL_TLS_CLIENT_CERT_PATH`: Your mTLS client certificate data or file path.
+  Required if you are using mTLS authentication.
+- `TEMPORAL_TLS_CLIENT_KEY_DATA` or `TEMPORAL_TLS_CLIENT_KEY_PATH`: Your mTLS client private key data or file path.
+  Required if you are using mTLS authentication.
+
+Ensure these environment variables exist in your environment before running your Go application.
+
+Import the `envconfig` package to set connection options for the Temporal Client using environment variables. The
+`MustLoadDefaultClientOptions` function will automatically load all environment variables. For a list of all available
+environment variables and their default values, refer to [Environment Configuration](../environment-configuration).
+
+For example, the following code snippet loads all environment variables and creates a Temporal Client with the options
+specified in those variables. If you have defined a configuration file at either the default location
+(`~/.config/temporalio/temporal.toml`) or a custom location specified by the `TEMPORAL_CONFIG_FILE` environment
+variable, this will also load the default profile in the configuration file. However, any options set via environment
+variables will take precedence.
+
+```go {13}
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/contrib/envconfig"
+)
+
+func main() {
+	// Loads the "default" profile from the standard location and environment variables.
+	c, err := client.Dial(envconfig.MustLoadDefaultClientOptions())
+	if err != nil {
+		log.Fatalf("Failed to create client: %v", err)
+	}
+	defer c.Close()
+
+	fmt.Printf("✅ Connected to Temporal namespace %q on %s\n", c.Options().Namespace, c.Options().HostPort)
+}
+```
+
+</TabItem>
+
 <TabItem value="code" label="Code">
 
 You can also provide connections options in your Go code directly. When instantiating a Temporal `client` in your
 Temporal Go SDK code, provide the following `clientOptions`:
-
-<details>
-<summary><strong>v1.33.0+</strong></summary>
 
 ```go
 clientOptions := client.Options{
@@ -417,10 +415,47 @@ creds := client.NewAPIKeyDynamicCredentials(
 myKey = myKeyUpdated
 ```
 
-</details>
+You can use a combination of environment variables, configuration files, and code to set connection options. For
+example, you can load a base configuration from environment variables or a configuration file, and then override
+specific options in code.
+
+For example, the following code snippet loads the base configuration from environment variables and the default profile
+with `envconfig.MustLoadDefaultClientOptions()`. It then overrides the `HostPort` and `Namespace` options
+programmatically. Refer to
+[Client Options type in the Go SDK](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions) for a list of all
+available connection options you can override.
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/contrib/envconfig"
+)
+
+func main() {
+	// Load the base configuration (e.g., from the default profile).
+	opts := envconfig.MustLoadDefaultClientOptions()
+
+	// Apply overrides programmatically.
+	opts.HostPort = "localhost:7233"
+	opts.Namespace = "test-namespace"
+
+	c, err := client.Dial(opts)
+	if err != nil {
+		log.Fatalf("Failed to connect with overridden options: %v", err)
+	}
+	defer c.Close()
+
+	fmt.Printf("✅ Connected with overridden config to: %s in namespace: %s\n", opts.HostPort, opts.Namespace)
+}
+```
 
 <details>
-<summary><strong>v1.26.0 to v1.33.0 (exclusive)</strong></summary>
+<summary><strong>v1.26.0 to v1.32.x </strong></summary>
 
 Create an initial connection:
 
