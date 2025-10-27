@@ -72,7 +72,9 @@ After Export has been configured, you can check that it's still working in sever
 
    ```bash
    //[bucket-name]/temporal-workflow-history/export/[Namespace]/[Year]/[Month]/[Day]/[Hour]/[Minute]/
-   ```   
+   ```
+The exported file name will include a randomly generated ID. The time recorded in the directory structure
+is the time the export uploads to object storage, not the Workflow completion time.
 
 2. **Temporal Cloud Web UI**:
 
@@ -85,11 +87,22 @@ After Export has been configured, you can check that it's still working in sever
       - Actions from the Export Job are included in the [Usage Dashboard](/cloud/billing-and-cost).
 
 3. **Metrics**:
-   - Export-related metrics are available from the [Cloud metrics endpoint](/cloud/metrics/), specifically the metric `temporal_cloud_v0_total_action_count` with the label `is_background="true"`.
+   - Export-related metrics are available from the [Cloud metrics endpoint](/cloud/metrics/), specifically the metric `temporal_cloud_v1_total_action_count` with the label `is_background="true"`.
+
+4. **Email**:
+   - Emails are sent to `Account Owner` and `Global Administrator` roles when a Workflow History Export job fails due to a user related error (e.g. Object Store permissions issue).
 
 ## Working with exported files
 
 Use the proto schema defined [here](https://github.com/temporalio/api/blob/master/temporal/api/export/v1/message.proto) to deserialize exported files.
+
+### Using exported files in analytics
+
+It can be useful to convert protos to another format to perform analytics on the data. To convert protos to parquet, follow 
+[the example Python Workflow](https://github.com/temporalio/samples-python/tree/main/cloud_export_to_parquet). Note that this example Workflow:
+* Transforms the nested proto structure into a flat, tabular format.
+* Each row in the table represents a single history event from a Workflow. To preserve their relationship post-conversion the `workflowID` and `runID` is included in every row.
+* If you have enabled the codec server, the payload field is encrypted. This field may contain characters that are not recognized when loaded into a database so the payload field is excluded in this example.
 
 ## Export and High Availability Namespaces {#export-ha}
 
