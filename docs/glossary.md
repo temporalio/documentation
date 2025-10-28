@@ -167,7 +167,7 @@ The default Data Converter is used by the Temporal SDK to convert objects into b
 
 #### [Delay Workflow Execution](/workflow-execution/timers-delays)
 
-Start Delay determines the amount of time to wait before initiating a Workflow Execution. If the Workflow receives a Signal-With-Start during the delay, it dispatches a Workflow Task and the remaining delay is bypassed.
+Start Delay determines the amount of time to wait before initiating a Workflow Execution. If the Workflow receives a Signal-With-Start or Update-With-Start during the delay, it dispatches a Workflow Task and the remaining delay is bypassed.
 
 <!-- _Tags: [term](/tags/term), [explanation](/tags/explanation), [delay-workflow](/tags/delay-workflow)_ -->
 
