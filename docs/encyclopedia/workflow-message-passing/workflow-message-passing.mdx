@@ -52,6 +52,7 @@ Use Signals instead of Updates when:
 - The Workflow's clients want to quickly move on after sending an asynchronous message.
 - The clients are willing to "fire and forget": they don't want a result or exception from the message.
 - The clients don't want to rely on the Worker being available.
+- You don't want to limit the number of messages that can be processed concurrently by a single Workflow.
 
 Use Updates instead of Signals when:
 
@@ -59,6 +60,7 @@ Use Updates instead of Signals when:
 - The clients need a result or an exception from your message without having to query subsequently.
 - You’d like to “validate” the Update before accepting it into the Workflow and its history.
 - The clients want a low-latency end-to-end operation and are willing to wait for it to finish or be validated.
+- You don't require more concurrent Updates per Workflow than the permitted limits for [Cloud](/cloud/limits#per-workflow-execution-update-limits) or [Self-Hosted](/self-hosted-guide/defaults).
 
 ### For read requests
 
