@@ -84,7 +84,7 @@ is the time the export uploads to object storage, not the Workflow completion ti
    - Export-related metrics are available from the [Cloud metrics endpoint](/cloud/metrics/), specifically the metric `temporal_cloud_v1_total_action_count` with the label `is_background="true"`.
 
 4. **Email**:
-   - Emails are sent to `Account Owner` and `Global Administrator` roles when a Workflow History Export job fails due to a user related error (e.g. Object Store permissions issue).
+   - Emails are sent to `Namespace Administrator`, `Account Owner`, and `Global Administrator` roles when a Workflow History Export job fails due to a user related error (e.g. Object Store permissions issue).
 
 ## Working with exported files
 
