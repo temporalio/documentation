@@ -433,7 +433,7 @@ After loading the connection options, you can override specific settings program
 `client.Dial()`. Refer to the [GO SDK API documentation](https://pkg.go.dev/go.temporal.io/sdk/contrib/envconfig) for
 all available options.
 
-```go {14-15}
+```go {14-16}
 package main
 
 import (
@@ -445,25 +445,26 @@ import (
 )
 
 func main() {
-	// Load a specific profile from the TOML config file.
-	// This requires a [profile.prod] section in your config.
-	opts, err := envconfig.LoadClientOptions(envconfig.LoadClientOptionsRequest{
-		ConfigFileProfile: "prod",
-	})
-	if err != nil {
-		log.Fatalf("Failed to load 'prod' profile: %v", err)
-	}
+  // Load a specific profile from the TOML config file.
+  // This requires a [profile.prod] section in your config.
+  opts, err := envconfig.LoadClientOptions(envconfig.LoadClientOptionsRequest{
+    ConfigFileProfile: "prod",
+    ConfigFilePath:    "/Users/yourname/.config/my-app/temporal.toml",
+  })
+  if err != nil {
+    log.Fatalf("Failed to load 'prod' profile: %v", err)
+  }
 
   // Programmatically override the Namespace value.
   opts.Namespace = "new-namespace"
 
-	c, err := client.Dial(opts)
-	if err != nil {
-		log.Fatalf("Failed to connect using 'prod' profile: %v", err)
-	}
-	defer c.Close()
+  c, err := client.Dial(opts)
+  if err != nil {
+    log.Fatalf("Failed to connect using 'prod' profile: %v", err)
+  }
+  defer c.Close()
 
-	fmt.Printf("✅ Connected to Temporal namespace %q on %s using 'prod' profile\n", c.Options().Namespace, c.Options().HostPort)
+  fmt.Printf("✅ Connected to Temporal namespace %q on %s using 'prod' profile\n", c.Options().Namespace, c.Options().HostPort)
 }
 ```
 
