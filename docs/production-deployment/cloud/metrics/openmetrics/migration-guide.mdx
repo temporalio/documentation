@@ -366,7 +366,7 @@ See [API limits](/production-deployment/cloud/metrics/openmetrics/api-reference#
 ## FAQ
 
 ### Q: Will metrics match between promQL and OpenMetrics endpoints?
-No. The metrics will be approximately the same but due to aggregation differences and windowing, it is not expected for values to match exactly between the two endpoints. 
+No. The metrics will be approximately the same but due to aggregation differences and windowing, values likely won't match exactly between the two endpoints. 
 Some metrics may be consistently different such as `temporal_cloud_v1_total_action_count` which includes History Export actions in the OpenMetrics endpoint. In the case of consistent differences
 the OpenMetrics endpoint is considered to be more accurate.
 
