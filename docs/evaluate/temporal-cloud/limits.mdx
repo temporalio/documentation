@@ -101,14 +101,7 @@ This approach uniformly distributes the scheduled Workflow Execution launches th
 - Default limit: 30 Visibility API calls per second
 - Not configurable
 
-Calls subject to the Visibility API rate limit:
-
-- `GetWorkerTaskReachability`
-- `ListSchedules`
-- `ListBatchOperations`
-- `DescribeTaskQueueWithReachability`
-- `ListDeployments`
-- `GetDeploymentReachability`
+All read calls are subject to the Visibility API rate limit.
 
 ### Nexus Rate Limit {#nexus-rate-limits}
 
@@ -252,6 +245,9 @@ A single Workflow Execution can have a maximum of 10 in-flight Updates and 2000 
 As a precautionary measure, a Workflow Execution's Event History is limited to 51,200 Events or 50 MB.
 It warns you after 10,240 Events or 10 MB.
 This limit applies to all Temporal Workflow Executions, whether on Temporal Cloud or other deployments.
+
+This limit is non-configurable for Temporal Cloud.
+
 Read more about [Temporal Workflow Execution limits](/workflow-execution/limits) on the [Temporal Workflow](/workflows) documentation page.
 
 ### Per Workflow Callback limits
