@@ -31,7 +31,7 @@ if err != nil {
 	var applicationErr *ApplicationError
 	if errors.As(err, &applicationErr) {
 		// retrieve error message
-		fmt.Println(applicationError.Error())
+		fmt.Println(applicationErr.Error())
 
 		// handle Activity errors (created via NewApplicationError() API)
 		var detailMsg string // assuming Activity return error by NewApplicationError("message", true, "string details")
