@@ -20,6 +20,7 @@ module.exports = {
           },
           items: [
             "build-your-first-basic-workflow/python",
+            "build-your-first-basic-workflow/python-failure-simulation",
           ],
         },
       ],

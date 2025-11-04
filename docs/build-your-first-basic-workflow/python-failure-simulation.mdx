@@ -1,0 +1,173 @@
+---
+id: python-failure-simulation
+title: Simulate Failures with Temporal Python SDK
+sidebar_label: Failure Simulation
+description: Learn how Temporal handles failures, recovers from crashes, and enables live debugging of your Python workflows.
+keywords:
+  - temporal
+  - python
+  - failure simulation
+  - crash recovery
+  - live debugging
+  - reliability
+tags:
+  - Python
+  - SDK
+  - Testing
+  - Debugging
+---
+
+import { CallToAction } from "@site/src/components/elements/CallToAction";
+
+# Simulate Failures with Temporal Python SDK
+
+So far, you've seen how Temporal executes a Workflow. In this section, you'll explore Temporal's ability to handle failures.
+
+## Recover from a server crash
+
+Unlike other solutions, Temporal is designed with failure in mind. To demonstrate this, you'll simulate some failures for the Workflow to recover from.
+
+**Start by simulating a server crash.** When any process crashes, you lose the progress of your code, unless you've designed a way to handle such failures.
+
+1. **Make sure your Worker is stopped** before proceeding. If the Worker is running, press `Ctrl+C` to stop it.
+
+2. **Start the Worker in Terminal 2:**
+   ```bash
+   python run_worker.py
+   ```
+
+3. **In Terminal 3, start the Workflow:**
+   ```bash
+   python run_workflow.py
+   ```
+
+4. **Inspect the Workflow Execution** using the Web UI. You can see the Worker is executing the Workflow and its Activities:
+
+5. **Return to Terminal 2** and stop the Worker by pressing `Ctrl+C`.
+
+6. **Switch back to the Web UI** and refresh the page. Your Workflow is still listed as "Running".
+
+   The Workflow is still in progress because the Temporal Server maintains the state of the Workflow, even when the Worker crashes.
+
+7. **Restart your Worker** by switching back to Terminal 2 and running the Worker command:
+   ```bash
+   python run_worker.py
+   ```
+
+8. **Switch back to Terminal 3** where you ran `python run_workflow.py`. You'll see the program complete and you'll see the result message.
+
+You just simulated killing the Worker process and restarting it. The Workflow resumed where it left off without losing any application state.
+
+## Recover from an unknown error in an Activity
+
+Sometimes, the code has a bug. Let's simulate a bug in your code and see how Temporal reacts.
+
+1. **Make sure your Worker is stopped** before proceeding.
+
+2. **Edit the `activities.py` file** and uncomment the following line in the `deposit` method:
+   ```python
+   # Comment/uncomment the next line to simulate failures.
+   raise Exception("This deposit has failed.")
+   ```
+
+3. **Save the file**.
+
+4. **Switch back to Terminal 2** and start the Worker:
+   ```bash
+   python run_worker.py
+   ```
+
+5. **Switch to Terminal 3** and start the Workflow:
+   ```bash
+   python run_workflow.py
+   ```
+
+6. **Let the Workflow run for a little bit**, then **switch back to Terminal 2** to see the Worker output.
+
+   You'll see log output similar to this:
+   ```
+   2024/02/12 10:59:09 Withdrawing $250 from account 85-150.
+   2024/02/12 10:59:09 Depositing $250 into account 43-812.
+   2024/02/12 10:59:09 ERROR Activity error. This deposit has failed.
+   2024/02/12 10:59:10 Depositing $250 into account 43-812.
+   2024/02/12 10:59:10 ERROR Activity error. This deposit has failed.
+   2024/02/12 10:59:12 Depositing $250 into account 43-812.
+   ```
+
+   The Workflow keeps retrying using the `RetryPolicy` specified when the Workflow first executes the Activity.
+
+7. **While the Activity continues to fail**, switch back to the Web UI to see more information about the process. You can see the state, the number of attempts run, and the next scheduled run time.
+
+8. **Pretend that you found a fix** for the issue. Switch the comments back to the `return` statements of the `deposit()` method in the `activities.py` file and save your changes.
+
+9. **To restart the Worker**, cancel the currently running worker with `Ctrl+C`, then restart the Worker by running:
+   ```bash
+   python run_worker.py
+   ```
+
+10. **The Worker starts again**. On the next scheduled attempt, the Worker picks up right where the Workflow was failing and successfully executes the newly compiled `deposit()` Activity method.
+
+11. **Switch back to Terminal 3** where your `run_workflow.py` program is running, and you'll see it complete:
+    ```
+    Transfer complete.
+    Withdraw: {'amount': 250, 'receiver': '43-812', 'reference_id': '1f35f7c6-4376-4fb8-881a-569dfd64d472', 'sender': '85-150'}
+    Deposit: {'amount': 250, 'receiver': '43-812', 'reference_id': '1f35f7c6-4376-4fb8-881a-569dfd64d472', 'sender': '85-150'}
+    ```
+
+12. **Visit the Web UI again**, and you'll see the Workflow has completed successfully.
+
+**You have just fixed a bug in a running application without losing the state of the Workflow or restarting the transaction!**
+
+## Key Advantages Demonstrated
+
+### Exploring the key advantages Temporal offers:
+
+1. **Temporal gives you full visibility** in the state of your Workflow and code execution.
+2. **Temporal maintains the state** of your Workflow, even through server outages and errors.
+3. **Temporal lets you time out and retry** Activity code using options that exist outside your business logic.
+4. **Temporal enables you to perform "live debugging"** of your business logic while the Workflow is running.
+
+## Further Exploration
+
+Try the following things before moving on to get more practice working with a Temporal application:
+
+- **Change the Retry Policy** in `workflows.py` so it only retries 1 time. Then change the `deposit()` Activity in `activities.py`, so it uses the `refund()` method.
+  - **Does the Workflow place the money back into the original account?**
+
+## Review Questions
+
+Answer the following questions to see if you remember some of the more important concepts from this tutorial:
+
+**Why do we recommend defining a shared constant to store the Task Queue name?**
+
+Because the Task Queue name is specified in two different parts of the code (the first starts the Workflow and the second configures the Worker). If their values differ, the Worker and Temporal Cluster would not share the same Task Queue, and the Workflow Execution would not progress.
+
+**What do you have to do if you modify Activity code for a Workflow that is running?**
+
+Restart the Worker.
+
+## Continue Your Learning
+
+<div className="row">
+  <div className="col col--4">
+    <CallToAction 
+      href="/develop/python/core-application"
+      buttonText="Build from Scratch →"
+      description="Learn to create Temporal apps step by step"
+    />
+  </div>
+  <div className="col col--4">
+    <CallToAction 
+      href="https://learn.temporal.io/courses/"
+      buttonText="Take a Course →"
+      description="Comprehensive learning paths"
+    />
+  </div>
+  <div className="col col--4">
+    <CallToAction 
+      href="/develop/python"
+      buttonText="Python SDK Guide →"
+      description="Complete developer documentation"
+    />
+  </div>
+</div>

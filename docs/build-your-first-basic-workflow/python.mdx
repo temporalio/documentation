@@ -20,32 +20,20 @@ hide_table_of_contents: false
 import { SetupSteps, SetupStep, CodeSnippet } from "@site/src/components/elements/SetupSteps";
 import { CallToAction } from "@site/src/components/elements/CallToAction";
 
-# Run your first Temporal application with the Python SDK
-
 You can think of Temporal as a sort of "cure-all" for the pains you experience as a developer when trying to build reliable applications. Whether you're writing a complex transaction-based Workflow or working with remote APIs, you know that creating reliable applications is a complex process.
 
 <div style={{display: 'flex', gap: '0.5rem', marginBottom: '2rem'}}>
   <span className="badge badge--primary">⭐ Temporal beginner</span>
-  <span className="badge badge--secondary">⏱️ ~10 minutes</span>
   <span className="badge badge--success">🐍 Python SDK</span>
 </div>
 
-## 🙌 Goals
-
-- **Explore** Temporal's core terminology and concepts
-- **Complete** several runs of a Temporal Workflow application using a Temporal Cluster and the Python SDK
-- **Practice** reviewing the state of the Workflow
-- **Understand** the inherent reliability of Workflow methods
 
 ## Introduction
 
-The language-specific SDK, in this case the Temporal Python SDK, provides a comprehensive solution to the complexities that arise from modern application development.
+In this tutorial, you'll run your first Temporal Application. 
+You'll use Temporal's Web UI for application state visibility, and then explore how Temporal helps you recover from a couple of common failures.
 
-Temporal provides reliability primitives to ensure durable execution of your code, such as seamless and fault-tolerant application state tracking, automatic retries, timeouts, rollbacks due to process failures, and more.
-
-In this tutorial, you'll run your first Temporal Application. You'll use Temporal's Web UI for application state visibility, and then explore how Temporal helps you recover from a couple of common failures.
-
-## Prerequisites
+### Prerequisites
 
 Before starting this tutorial:
 
@@ -54,13 +42,18 @@ Before starting this tutorial:
 
 <CallToAction 
   href="/develop/python/set-up-your-local-python"
-  buttonText="Set up Python Environment First →"
-  description="Need to install the Python SDK? Complete setup before continuing"
+  buttonText="Python Quickstart Guide"
+  description="Run through the Quickstart to get your set up complete."
 />
 
-## Application overview
+### Application overview
 
 This project in this tutorial simulates a **money transfer application**, focusing on essential transactions such as withdrawals, deposits, and refunds. The importance of Temporal in this context lies in its ability to handle your code efficiently and reliably.
+
+<div style={{textAlign: 'center', margin: '2rem 0'}}>
+  <img src="/img/moneytransfer/money-withdrawal.png" alt="Money Transfer Application Flow" style={{maxWidth: '100%', height: 'auto'}} />
+</div>
+
 
 In this sample application, money comes out of one account and goes into another. However, there are a few things that can go wrong with this process. If the withdrawal fails, then there is no need to try to make a deposit. But if the withdrawal succeeds, but the deposit fails, then the money needs to go back to the original account.
 
@@ -75,48 +68,38 @@ cd money-transfer-project-template-python
   </CodeSnippet>
 }>
 
-## Download the example application
+### Download the example application
 
 The application you'll use in this tutorial is available in a GitHub repository.
 
 Open a new terminal window and use `git` to clone the repository, then change to the project directory.
 
-:::tip
-The repository for this tutorial is a GitHub Template repository, which means you could clone it to your own account and use it as the foundation for your own Temporal application.
-:::
 
 Now that you've downloaded the project, let's dive into the code.
 
+
+
 </SetupStep>
+:::tip
+The repository for this tutorial is a GitHub Template repository, which means you could clone it to your own account and use it as the foundation for your own Temporal application.
+:::
 
 <SetupStep code={
   <div style={{textAlign: 'center', padding: '2rem', background: 'rgba(99, 102, 241, 0.1)', borderRadius: '0.5rem'}}>
     <div style={{marginBottom: '1rem'}}>
       <strong>Temporal Application Components</strong>
     </div>
-    <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap'}}>
-      <div style={{textAlign: 'center'}}>
-        <div style={{fontSize: '2rem', marginBottom: '0.5rem'}}>🔄</div>
-        <div><strong>Workflow</strong></div>
-        <div style={{fontSize: '0.8rem'}}>Defines overall flow</div>
-      </div>
-      <div style={{fontSize: '1.5rem'}}>→</div>
-      <div style={{textAlign: 'center'}}>
-        <div style={{fontSize: '2rem', marginBottom: '0.5rem'}}>⚙️</div>
-        <div><strong>Activities</strong></div>
-        <div style={{fontSize: '0.8rem'}}>Business logic prone to failure</div>
-      </div>
-      <div style={{fontSize: '1.5rem'}}>→</div>
-      <div style={{textAlign: 'center'}}>
-        <div style={{fontSize: '2rem', marginBottom: '0.5rem'}}>👷</div>
-        <div><strong>Worker</strong></div>
-        <div style={{fontSize: '0.8rem'}}>Runs reliably and consistently</div>
-      </div>
+    <div style={{textAlign: 'center', margin: '2rem 0'}}>
+  <img src="/img/moneytransfer/yourapplication.png" alt="Your Temporal Application" style={{maxWidth: '100%', height: 'auto'}} />
+</div>
+    
     </div>
-  </div>
+
 }>
 
-## Explore the application's Workflow and Activity Definitions
+
+
+### Let's Recap: Temporal's Application Structure 
 
 The Temporal Application will consist of the following pieces:
 
@@ -124,20 +107,21 @@ The Temporal Application will consist of the following pieces:
 2. **An Activity** is a method that encapsulates business logic prone to failure (e.g., calling a service that may go down). These Activities can be automatically retried upon some failure.
 3. **A Worker**, provided by the Temporal SDK, which runs your Workflow and Activities reliably and consistently.
 
-In the money transfer application, you have three Activity methods: `withdraw()`, `deposit()`, and `refund()`. These symbolize the movement of funds between accounts.
 
+
+
+</SetupStep>
 :::important
 None of your application code runs on the Temporal Server. Your Worker, Workflow, and Activity run on your infrastructure, along with the rest of your applications.
 :::
 
-</SetupStep>
+## Run a Money Transfer Flow 
+### Step 1: Workflow Definition
 
-<SetupStep code={
-  <div>
-    <div style={{background: '#f8f9fa', padding: '0.5rem 1rem', borderRadius: '0.25rem 0.25rem 0 0', fontWeight: 'bold', fontSize: '0.9rem'}}>
-      workflows.py
-    </div>
-    <CodeSnippet language="python">
+A Workflow Definition in Python uses the `@workflow.defn` decorator on the Workflow class to identify a Workflow.
+
+**workflows.py**
+```python
 from datetime import timedelta
 from temporalio import workflow
 from temporalio.common import RetryPolicy
@@ -192,26 +176,22 @@ class MoneyTransfer:
             except ActivityError as refund_error:
                 workflow.logger.error("Refund failed: " + str(refund_error))
                 raise refund_error
-    </CodeSnippet>
-  </div>
-}>
-
-## Workflow Definition
-
-A Workflow Definition in Python uses the `@workflow.defn` decorator on the Workflow class to identify a Workflow.
+```
 
 The `MoneyTransfer` class takes in transaction details. It executes Activities to withdraw and deposit the money. It also returns the results of the process.
 
 The asynchronous `run` method signature includes an `input` variable typed as `PaymentDetails`. This class stores details that the Workflow uses to perform the money transfer.
 
-</SetupStep>
+### Step 2: Activity Definition
 
-<SetupStep code={
-  <div>
-    <div style={{background: '#f8f9fa', padding: '0.5rem 1rem', borderRadius: '0.25rem 0.25rem 0 0', fontWeight: 'bold', fontSize: '0.9rem'}}>
-      activities.py
-    </div>
-    <CodeSnippet language="python">
+Each Activity method simulates calling an external service. 
+Each method can fail or succeed independently.
+
+In the money transfer application, you have three Activity methods: `withdraw()`, `deposit()`, and `refund()`. These symbolize the movement of funds between accounts.
+
+
+**activities.py**
+```python
 import asyncio
 from dataclasses import dataclass
 from temporalio import activity
@@ -251,11 +231,10 @@ class BankingActivities:
         await asyncio.sleep(1)
         
         return "Refunded money back to account"
-    </CodeSnippet>
-    <div style={{marginTop: '1rem', background: '#f8f9fa', padding: '0.5rem 1rem', borderRadius: '0.25rem 0.25rem 0 0', fontWeight: 'bold', fontSize: '0.9rem'}}>
-      shared.py
-    </div>
-    <CodeSnippet language="python">
+```
+
+**shared.py**
+```python
 from dataclasses import dataclass
 
 MONEY_TRANSFER_TASK_QUEUE_NAME = "money-transfer"
@@ -266,19 +245,46 @@ class PaymentDetails:
     target_account: str
     amount: int
     reference_id: str
-    </CodeSnippet>
-  </div>
-}>
-
-## Activity Definition
-
-Each Activity method simulates calling an external service. Each method can fail or succeed independently.
+```
 
 The Activities are defined as static methods with the `@activity.defn` decorator.
 
 Note the `PaymentDetails` type, defined in `shared.py`. This contains the transaction information passed between the Workflow and Activities.
 
-</SetupStep>
+### Step 3: Start the Worker
+
+The Worker hosts the Workflow and Activity functions and executes them one at a time.
+
+The Worker is configured to execute Workflows and Activities from the Task Queue. Since the Worker and Workflow are both configured to use the same Task Queue, the Worker will execute any Workflows and Activities sent to the Task Queue.
+
+**run_worker.py**
+```python
+import asyncio
+from temporalio.client import Client
+from temporalio.worker import Worker
+from activities import BankingActivities
+from shared import MONEY_TRANSFER_TASK_QUEUE_NAME
+from workflows import MoneyTransfer
+
+async def main():
+    client = await Client.connect("localhost:7233")
+    
+    worker = Worker(
+        client,
+        task_queue=MONEY_TRANSFER_TASK_QUEUE_NAME,
+        workflows=[MoneyTransfer],
+        activities=[BankingActivities.withdraw, BankingActivities.deposit, BankingActivities.refund],
+    )
+    
+    await worker.run()
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+
+
+When you start the Worker, it begins polling the Temporal Server for work.
 
 <SetupStep code={
   <div>
@@ -309,9 +315,11 @@ Result: Transfer complete (transaction IDs: Withdrew $250 from account 85-150. R
   </div>
 }>
 
-## Start the Workflow
+### Run Your Application 
 
-In a new terminal window, run the following command to start the Workflow:
+Now that your Worker is running and polling for tasks, you can start a Workflow execution.
+
+**In Terminal 3, start the Workflow:**
 
 The `run_workflow.py` script starts a Workflow Execution. Each time you run this file, the Temporal Server starts a new Workflow Execution.
 
@@ -326,6 +334,7 @@ A Workflow Execution has exclusive access to its local state and executes concur
     description="View the state of the Workflow with the Temporal Web UI"
   />
 }>
+
 
 ## View the state of the Workflow with the Temporal Web UI
 
@@ -342,201 +351,34 @@ The Temporal Web UI lets you see details about the Workflow you just ran.
 
 </SetupStep>
 
-<SetupStep code={
-  <div>
-    <div style={{background: '#f8f9fa', padding: '0.5rem 1rem', borderRadius: '0.25rem 0.25rem 0 0', fontWeight: 'bold', fontSize: '0.9rem'}}>
-      run_worker.py
-    </div>
-    <CodeSnippet language="python">
-import asyncio
-from temporalio.client import Client
-from temporalio.worker import Worker
-from activities import BankingActivities
-from shared import MONEY_TRANSFER_TASK_QUEUE_NAME
-from workflows import MoneyTransfer
-
-async def main():
-    client = await Client.connect("localhost:7233")
-    
-    worker = Worker(
-        client,
-        task_queue=MONEY_TRANSFER_TASK_QUEUE_NAME,
-        workflows=[MoneyTransfer],
-        activities=[BankingActivities.withdraw, BankingActivities.deposit, BankingActivities.refund],
-    )
-    
-    await worker.run()
-
-if __name__ == "__main__":
-    asyncio.run(main())
-    </CodeSnippet>
-  </div>
-}>
-
-## Start the Worker
-
-The Worker hosts the Workflow and Activity functions and executes them one at a time.
-
-The Worker is configured to execute Workflows and Activities from the Task Queue. Since the Worker and Workflow are both configured to use the same Task Queue, the Worker will execute any Workflows and Activities sent to the Task Queue.
-
-When you start the Worker, it begins polling the Temporal Server for work.
-
-</SetupStep>
+<div style={{textAlign: 'center', margin: '2rem 0'}}>
+  <img src="/img/moneytransfer/webuisample.png" alt="Money Transfer Web UI " style={{maxWidth: '100%', height: 'auto'}} />
+</div>
 
 </SetupSteps>
 
-## Simulate failures
 
-So far, you've seen how Temporal executes a Workflow. In this section, you'll explore Temporal's ability to handle failures.
 
-### Recover from a server crash
-
-Unlike other solutions, Temporal is designed with failure in mind. To demonstrate this, you'll simulate some failures for the Workflow to recover from.
-
-**Start by simulating a server crash.** When any process crashes, you lose the progress of your code, unless you've designed a way to handle such failures.
-
-1. **Make sure your Worker is stopped** before proceeding. If the Worker is running, press `Ctrl+C` to stop it.
-
-2. **Start the Worker in Terminal 2:**
-   ```bash
-   python run_worker.py
-   ```
-
-3. **In Terminal 3, start the Workflow:**
-   ```bash
-   python run_workflow.py
-   ```
-
-4. **Inspect the Workflow Execution** using the Web UI. You can see the Worker is executing the Workflow and its Activities:
-
-5. **Return to Terminal 2** and stop the Worker by pressing `Ctrl+C`.
-
-6. **Switch back to the Web UI** and refresh the page. Your Workflow is still listed as "Running".
-
-   The Workflow is still in progress because the Temporal Server maintains the state of the Workflow, even when the Worker crashes.
-
-7. **Restart your Worker** by switching back to Terminal 2 and running the Worker command:
-   ```bash
-   python run_worker.py
-   ```
-
-8. **Switch back to Terminal 3** where you ran `python run_workflow.py`. You'll see the program complete and you'll see the result message.
-
-You just simulated killing the Worker process and restarting it. The Workflow resumed where it left off without losing any application state.
-
-### Recover from an unknown error in an Activity
-
-Sometimes, the code has a bug. Let's simulate a bug in your code and see how Temporal reacts.
-
-1. **Make sure your Worker is stopped** before proceeding.
-
-2. **Edit the `activities.py` file** and uncomment the following line in the `deposit` method:
-   ```python
-   # Comment/uncomment the next line to simulate failures.
-   raise Exception("This deposit has failed.")
-   ```
-
-3. **Save the file**.
-
-4. **Switch back to Terminal 2** and start the Worker:
-   ```bash
-   python run_worker.py
-   ```
-
-5. **Switch to Terminal 3** and start the Workflow:
-   ```bash
-   python run_workflow.py
-   ```
-
-6. **Let the Workflow run for a little bit**, then **switch back to Terminal 2** to see the Worker output.
-
-   You'll see log output similar to this:
-   ```
-   2024/02/12 10:59:09 Withdrawing $250 from account 85-150.
-   2024/02/12 10:59:09 Depositing $250 into account 43-812.
-   2024/02/12 10:59:09 ERROR Activity error. This deposit has failed.
-   2024/02/12 10:59:10 Depositing $250 into account 43-812.
-   2024/02/12 10:59:10 ERROR Activity error. This deposit has failed.
-   2024/02/12 10:59:12 Depositing $250 into account 43-812.
-   ```
-
-   The Workflow keeps retrying using the `RetryPolicy` specified when the Workflow first executes the Activity.
-
-7. **While the Activity continues to fail**, switch back to the Web UI to see more information about the process. You can see the state, the number of attempts run, and the next scheduled run time.
-
-8. **Pretend that you found a fix** for the issue. Switch the comments back to the `return` statements of the `deposit()` method in the `activities.py` file and save your changes.
-
-9. **To restart the Worker**, cancel the currently running worker with `Ctrl+C`, then restart the Worker by running:
-   ```bash
-   python run_worker.py
-   ```
-
-10. **The Worker starts again**. On the next scheduled attempt, the Worker picks up right where the Workflow was failing and successfully executes the newly compiled `deposit()` Activity method.
-
-11. **Switch back to Terminal 3** where your `run_workflow.py` program is running, and you'll see it complete:
-    ```
-    Transfer complete.
-    Withdraw: {'amount': 250, 'receiver': '43-812', 'reference_id': '1f35f7c6-4376-4fb8-881a-569dfd64d472', 'sender': '85-150'}
-    Deposit: {'amount': 250, 'receiver': '43-812', 'reference_id': '1f35f7c6-4376-4fb8-881a-569dfd64d472', 'sender': '85-150'}
-    ```
-
-12. **Visit the Web UI again**, and you'll see the Workflow has completed successfully.
-
-**You have just fixed a bug in a running application without losing the state of the Workflow or restarting the transaction!**
-
-## Conclusion
-
-You now know how to run a Temporal Workflow and understand some value Temporal offers. You explored Workflows and Activities, you started a Workflow Execution, and you ran a Worker to handle that execution.
-
-You also saw how Temporal recovers from failures and how it retries Activities.
-
-### Exploring the key advantages Temporal offers:
-
-1. **Temporal gives you full visibility** in the state of your Workflow and code execution.
-2. **Temporal maintains the state** of your Workflow, even through server outages and errors.
-3. **Temporal lets you time out and retry** Activity code using options that exist outside your business logic.
-4. **Temporal enables you to perform "live debugging"** of your business logic while the Workflow is running.
-
-### Further exploration
-
-Try the following things before moving on to get more practice working with a Temporal application:
-
-- **Change the Retry Policy** in `workflows.py` so it only retries 1 time. Then change the `deposit()` Activity in `activities.py`, so it uses the `refund()` method.
-  - **Does the Workflow place the money back into the original account?**
-
-### Review
-
-Answer the following questions to see if you remember some of the more important concepts from this tutorial:
-
-**Why do we recommend defining a shared constant to store the Task Queue name?**
-
-Because the Task Queue name is specified in two different parts of the code (the first starts the Workflow and the second configures the Worker). If their values differ, the Worker and Temporal Cluster would not share the same Task Queue, and the Workflow Execution would not progress.
-
-**What do you have to do if you modify Activity code for a Workflow that is running?**
-
-Restart the Worker.
-
-## Continue Your Journey
 
 <div className="row">
   <div className="col col--4">
     <CallToAction 
       href="/develop/python/core-application"
-      buttonText="Build from Scratch →"
+      buttonText="Build from Scratch"
       description="Learn to create Temporal apps step by step"
     />
   </div>
   <div className="col col--4">
     <CallToAction 
       href="https://learn.temporal.io/courses/"
-      buttonText="Take a Course →"
+      buttonText="Take a Free Course"
       description="Comprehensive learning paths"
     />
   </div>
   <div className="col col--4">
     <CallToAction 
       href="/develop/python"
-      buttonText="Python SDK Guide →"
+      buttonText="Python SDK Guide"
       description="Complete developer documentation"
     />
   </div>
