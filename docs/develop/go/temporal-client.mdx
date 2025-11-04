@@ -42,7 +42,7 @@ This page shows you how to do the following using the Go SDK with the Temporal C
 - [Connect to a local development Temporal Service](#connect-to-development-service)
 - [Connect to Temporal Cloud](#connect-to-temporal-cloud)
 - [Start a Workflow Execution](#start-workflow-execution)
-- [How to start a Workflow Execution](/develop/go/temporal-client#start-workflow-execution)
+- [Get Workflow results](#get-workflow-results)
 
 :::caution
 
@@ -60,55 +60,14 @@ Temporal Server address, the Namespace to connect to, and Transport Layer Securi
 these options in the function call, or specify them using environment variables or a configuration file. We recommend
 you use environment variables or a configuration file to manage these connection options securely.
 
-When you are running a Temporal Service locally (such as the
-[Temporal CLI](https://docs.temporal.io/cli/server#start-dev)), the number of connection options you must provide is
-minimal. Many SDKs default to the local host or IP address and port that Temporalite and
-[Docker Compose](https://github.com/temporalio/docker-compose) serve (`127.0.0.1:7233`).
+When you are running a Temporal Service locally, such as the
+[Temporal CLI](https://docs.temporal.io/cli/server#start-dev), the connection options you must provide are minimal.
 
 If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions), the Client defaults the
-address and port number to `127.0.0.1:7233`, which is the port of the development Temporal Service.
-
-If you don't set a custom Namespace name in the Namespace field, the client connects to the default Namespace.
+address and port number to `127.0.0.1:7233`, which is the port of the development Temporal Service. If you don't set a
+custom Namespace name in the Namespace field, the client connects to the default Namespace.
 
 <Tabs groupId="connect-options" defaultValue="env-vars" >
-
-<TabItem value="env-vars" label="Environment Variables">
-
-Use the `envconfig` package to set connection options for the Temporal Client using environment variables. For a list of
-all available environment variables and their default values, refer to
-[Environment Configuration](../environment-configuration).
-
-For example, the following code snippet loads all environment variables and creates a Temporal Client with the options
-specified in those variables. If you have defined a configuration file at either the default location
-(`~/.config/temporalio/temporal.toml`) or a custom location specified by the `TEMPORAL_CONFIG_FILE` environment
-variable, this will also load the default profile in the configuration file. However, any options set via environment
-variables will take precedence.
-
-```go
-package main
-
-import (
-	"fmt"
-	"log"
-
-	"go.temporal.io/sdk/client"
-	"go.temporal.io/sdk/contrib/envconfig"
-)
-
-func main() {
-	// Loads the "default" profile from the standard location and environment variables.
-	c, err := client.Dial(envconfig.MustLoadDefaultClientOptions())
-	if err != nil {
-		log.Fatalf("Failed to create client: %v", err)
-	}
-	defer c.Close()
-
-	fmt.Printf("✅ Connected to Temporal namespace %q on %s\n", c.Options().Namespace, c.Options().HostPort)
-}
-
-```
-
-</TabItem>
 
 <TabItem value="config-file" label="Configuration File">
 
@@ -191,6 +150,44 @@ func main() {
 
 	fmt.Printf("✅ Connected to Temporal namespace %q on %s using 'prod' profile\n", c.Options().Namespace, c.Options().HostPort)
 }
+```
+
+</TabItem>
+
+<TabItem value="env-vars" label="Environment Variables">
+
+Use the `envconfig` package to set connection options for the Temporal Client using environment variables. For a list of
+all available environment variables and their default values, refer to
+[Environment Configuration](../environment-configuration).
+
+For example, the following code snippet loads all environment variables and creates a Temporal Client with the options
+specified in those variables. If you have defined a configuration file at either the default location
+(`~/.config/temporalio/temporal.toml`) or a custom location specified by the `TEMPORAL_CONFIG_FILE` environment
+variable, this will also load the default profile in the configuration file. However, any options set via environment
+variables will take precedence.
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/contrib/envconfig"
+)
+
+func main() {
+	// Loads the "default" profile from the standard location and environment variables.
+	c, err := client.Dial(envconfig.MustLoadDefaultClientOptions())
+	if err != nil {
+		log.Fatalf("Failed to create client: %v", err)
+	}
+	defer c.Close()
+
+	fmt.Printf("✅ Connected to Temporal namespace %q on %s\n", c.Options().Namespace, c.Options().HostPort)
+}
+
 ```
 
 </TabItem>
