@@ -76,13 +76,14 @@ To get started with Worker Versioning, you should understand some concepts aroun
 - When a versioned worker polls on a task queue, that task queue becomes part of that Worker's version. That version's Worker Deployment controls how the task queue matches Workflow Tasks with Workers.
 - Using **Workflow Pinning**, you can declare each Workflow type to have a **Versioning Behavior**, either Pinned or Auto-Upgrade.
   - A **Pinned** Workflow is guaranteed to complete on a single Worker Deployment Version.
-  - An **Auto-Upgrade** Workflow will move to the latest Worker Deployment Version automatically whenever you change the current version. Auto-upgrade Workflows are not restricted to a single Deployment Version and need to be kept replay-safe manually, i.e. with [patching](/workflow-definition#workflow-versioning).
+  - An **Auto-Upgrade** Workflow will automatically move to a new code version as you roll it out, specifically its Target Worker Deployment Version (defined below). Therefore, Auto-Upgrade Workflows are not restricted to a single Deployment Version and need to be kept replay-safe manually, i.e. with [patching](/workflow-definition#workflow-versioning).
   - Both Pinned and Auto-Upgrade Workflows are guaranteed to start only on the Current or Ramping Version of their Worker Deployment.
   - Pinned Workflows are designed for use with rainbow deployments. See [Deployment Systems](#deployment-systems).
   - Pinned Workflows don't need to be patched, as they run on the same worker and build until they complete.
   - If you expect your Workflow to run longer than you want your Worker Deployment Versions to exist, you should mark your Workflow Type as Auto-Upgrade.
 - Each Worker Deployment has a single **Current Version** which is where workflows are routed to unless they were previously pinned on a different version. Other versions can continue polling to allow pinned Workflows to finish executing, or in case you need to roll back. If no current version is specified, the default is unversioned.
-- Each Worker Deployment can have a **Ramping Version** which is where a configurable percentage of Workflows are routed to unless they were previously pinned on a different version. The ramp percentage can be in the range [0, 100]. Workflows that don't go to the Ramping Version will go to the Current Version. If no Ramping Version is specified, 100% of new Workflows and auto-upgrade Workflows will go to the Current Version.
+- Each Worker Deployment can have a **Ramping Version** which is where a configurable percentage of Workflows are routed to unless they were previously pinned on a different version. The ramp percentage can be in the range [0, 100]. Workflows that don't go to the Ramping Version will go to the Current Version. If no Ramping Version is specified, 100% of new Workflows and Auto-Upgrade Workflows will go to the Current Version.
+- For a given Workflow, its **Target Worker Deployment Version** is the version it will move to next. This could be the Deployment's Current Version or the Ramping Version. For example, if an Auto-Upgrade Workflow was running on Version A, the Current Version is B, and there is a 5% ramp to C, there is a 95% chance that its Target Version is B and 5% that it's C.
 
 ## Setting up your deployment system {#deployment-systems}
 
@@ -395,18 +396,53 @@ temporal workflow reset with-workflow-update-options \
     --versioning-override-build-id "$TARGET_BUILD_ID"
 ```
 
+## Migrating a Workflow from Pinned to Auto-Upgrade
+
+There may be times when you need to migrate your Workflow from Pinned to Auto-Upgrade because you configured your Workflow Type with the wrong behavior or you've pinned a really long-running Workflow by mistake.
+
+Pinned Workflows can block version drainage, especially when they run for a long time. You could move the Workflow to a new build, but that would just push the problem to the next build.
+
+In order to make this change, you need to change the versioning behavior for your Workflow from Pinned to Auto-Upgrade. You can use `temporal workflow update-options` for this:
+
+```bash
+temporal workflow update-options \
+    --workflow-id "$WORKFLOW_ID" \
+    --versioning-override-behavior auto_upgrade
+```
+
+If you want to move all your Workflows of a certain type to this new configuration, you can do it with this command:
+
+```bash
+temporal workflow update-options \
+    --query="WorkflowType='$WORKFLOW_TYPE'" \
+    --versioning-override-behavior auto_upgrade
+```
+
+You can also filter on a certain build ID to limit the number of Workflows you apply it to:
+
+```bash
+temporal workflow update-options \
+    --query="WorkflowType='$WORKFLOW_TYPE' AND TemporalWorkerDeploymentVersion='$TARGET_DEPLOYMENT:$OLD_VERSION'" \
+    --versioning-override-behavior auto_upgrade
+```
+
+:::note
+When you change the behavior to Auto-Upgrade, the Workflow will resume work on the Workflow's Target Version. So if the Workflow's Target Version is different from the earlier Pinned Version, you should make sure you [patch](/patching#patching) the Workflow code.
+:::
+
 ## Sunsetting an old Deployment Version
 
 A Worker Deployment Version moves through the following states:
 
 1. **Inactive**: The version exists because a Worker with that version has polled the server. If this version never becomes Active, it will never be Draining or Drained.
-2. **Active**: The version is either Current or Ramping, so it is accepting new Workflows and existing auto-upgrade Workflows.
+2. **Active**: The version is either Current or Ramping, so it is accepting new Workflows and existing Auto-Upgrade Workflows.
 3. **Draining**: The version stopped being Current or Ramping, and it has open pinned Workflows running on it. It is possible to be Draining and have no open pinned Workflows for a short time, since the drainage status is updated periodically.
 4. **Drained**: The version was draining and now all the pinned Workflows that were running on it are closed.
 
 You can see these statuses when you describe a Worker Deployment in the `WorkerDeploymentVersionStatus` of each `VersionSummary`, or by describing the version directly.
 When a version is Draining or Drained, that is displayed in a value called `DrainageStatus`.
-Periodically, the Temporal Service will refresh this status by counting any open pinned workflows using that version.
+Periodically, the Temporal Service will refresh this status by counting any open pinned Workflows using that version.
+
 On each refresh, `DrainageInfo.last_checked_time` is updated.
 Eventually, `DrainageInfo` will report that the version is fully drained.
 At this point, no Workflows are still running on that version and no more will be automatically routed to it, so you can consider shutting down the running Workers.

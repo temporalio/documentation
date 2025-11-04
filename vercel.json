@@ -205,6 +205,11 @@
       "permanent": true
     },
     {
+      "source": "/workflows#retry-policy",
+      "destination": "/encyclopedia/retry-policies",
+      "permanent": true
+    },
+    {
       "source": "/concepts/task-queues",
       "destination": "/workers",
       "permanent": true
@@ -2003,6 +2008,11 @@
     {
       "source": "/evaluate/development-production-features/high-availability",
       "destination": "/cloud/high-availability",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/high-availability/how-it-works",
+      "destination": "/cloud/high-availability/ha-connectivity",
       "permanent": true
     }
   ]

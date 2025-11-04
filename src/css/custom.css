@@ -1057,10 +1057,6 @@ h1 {
   .navbar__link {
     display: none;
   }
-
-  a[href^="/ai-cookbook"] {
-    display: inline;
-  }
 }
 
 @media only screen and (min-width: 1400px) {

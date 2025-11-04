@@ -272,6 +272,7 @@ module.exports = {
             "develop/dotnet/schedules",
             "develop/dotnet/converters-and-encryption",
             "develop/dotnet/durable-timers",
+            "develop/dotnet/nexus",
             "develop/dotnet/child-workflows",
             "develop/dotnet/continue-as-new",
           ],
@@ -337,12 +338,26 @@ module.exports = {
                 id: "production-deployment/cloud/get-started/index",
               },
               items: [
-                "production-deployment/cloud/get-started/certificates",
-                "production-deployment/cloud/get-started/api-keys",
                 "production-deployment/cloud/get-started/namespaces",
-                "production-deployment/cloud/get-started/users",
+                "production-deployment/cloud/get-started/api-keys",
+                "production-deployment/cloud/get-started/certificates",
                 "production-deployment/cloud/get-started/billing-and-cost",
+              ],
+            },
+            {
+              type: "category",
+              label: "Account access",
+              collapsed: false,
+              link: {
+                type: "doc",
+                id: "production-deployment/cloud/manage-access/index",
+              },
+              items: [
+                "production-deployment/cloud/get-started/users",
+                "production-deployment/cloud/get-started/user-groups",
                 "production-deployment/cloud/get-started/service-accounts",
+                "production-deployment/cloud/saml",
+                "production-deployment/cloud/scim",
               ],
             },
             {
@@ -363,6 +378,7 @@ module.exports = {
                     id: "production-deployment/cloud/metrics/openmetrics/index",
                   },
                   items: [
+                    "production-deployment/cloud/metrics/openmetrics/metrics-integrations",
                     "production-deployment/cloud/metrics/openmetrics/migration-guide",
                     "production-deployment/cloud/metrics/openmetrics/api-reference",
                     "production-deployment/cloud/metrics/openmetrics/metrics-reference",
@@ -433,8 +449,6 @@ module.exports = {
             },
             "production-deployment/cloud/worker-health",
             "production-deployment/cloud/service-health",
-            "production-deployment/cloud/saml",
-            "production-deployment/cloud/scim",
             "production-deployment/cloud/operation-api",
             "production-deployment/cloud/terraform-provider",
             {
@@ -482,6 +496,7 @@ module.exports = {
                 "production-deployment/cloud/tcld/nexus",
                 "production-deployment/cloud/tcld/request",
                 "production-deployment/cloud/tcld/user",
+                "production-deployment/cloud/tcld/user-group",
                 "production-deployment/cloud/tcld/version",
               ],
             },
@@ -583,7 +598,7 @@ module.exports = {
         "references/server-options",
         "references/web-ui-configuration",
         "references/web-ui-environment-variables",
-        
+
       ],
     },
     {
@@ -598,7 +613,7 @@ module.exports = {
         "troubleshooting/blob-size-limit-error",
         "troubleshooting/deadline-exceeded-error",
         "troubleshooting/last-connection-error",
-            "troubleshooting/performance-bottlenecks"
+        "troubleshooting/performance-bottlenecks"
       ],
     },
     {
@@ -627,37 +642,37 @@ module.exports = {
         "encyclopedia/temporal",
         "encyclopedia/temporal-sdks",
         {
+          type: "category",
+          label: "Workflows",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "encyclopedia/workflow/workflow-overview",
+          },
+          items: [
+            "encyclopedia/workflow/workflow-definition",
+            {
               type: "category",
-              label: "Workflows",
+              label: "Workflow Execution",
               collapsed: true,
               link: {
                 type: "doc",
-                id: "encyclopedia/workflow/workflow-overview",
+                id: "encyclopedia/workflow/workflow-execution/workflow-execution",
               },
               items: [
-                "encyclopedia/workflow/workflow-definition",
-                {
-                  type: "category",
-                  label: "Workflow Execution",
-                  collapsed: true,
-                  link: {
-                    type: "doc",
-                    id: "encyclopedia/workflow/workflow-execution/workflow-execution",
-                  },
-                  items: [
-                    "encyclopedia/workflow/workflow-execution/workflowid-runid",
-                    "encyclopedia/workflow/workflow-execution/event",
-                    "encyclopedia/workflow/workflow-execution/continue-as-new",
-                    "encyclopedia/workflow/workflow-execution/limits",
-                    "encyclopedia/workflow/workflow-execution/timers-delays",
-                  ],
-                },
-                "encyclopedia/workflow/dynamic-handler",
-                "encyclopedia/workflow/workflow-schedule",
-                "encyclopedia/workflow/cron-job",
-                "encyclopedia/workflow/patching",
+                "encyclopedia/workflow/workflow-execution/workflowid-runid",
+                "encyclopedia/workflow/workflow-execution/event",
+                "encyclopedia/workflow/workflow-execution/continue-as-new",
+                "encyclopedia/workflow/workflow-execution/limits",
+                "encyclopedia/workflow/workflow-execution/timers-delays",
               ],
             },
+            "encyclopedia/workflow/dynamic-handler",
+            "encyclopedia/workflow/workflow-schedule",
+            "encyclopedia/workflow/cron-job",
+            "encyclopedia/workflow/patching",
+          ],
+        },
         {
           type: "category",
           label: "Activities",
