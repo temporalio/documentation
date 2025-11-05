@@ -1,1 +1,8 @@
 * @temporalio/education
+
+# PM owners of sensitive pages
+docs/evaluate/temporal-cloud/pricing.mdx @tlotemporal
+docs/evaluate/temporal-cloud/support.mdx @tlotemporal
+docs/evaluate/temporal-cloud/sla.mdx @bechols
+docs/evaluate/temporal-cloud/limits.mdx @bechols
+docs/evaluate/temporal-cloud/service-availability.mdx @bechols
