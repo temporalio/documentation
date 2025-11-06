@@ -1,0 +1,43 @@
+.temporalProgress {
+    display: flex;
+    align-items: center;
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #444CE7 0%, #7C3AED 100%);
+    border-radius: 12px;
+    color: white;
+}
+
+.progressStep {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    min-width: 200px;
+    text-align: center;
+}
+
+.progressStep.completed {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.progressStep.active {
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.progressStep.pending {
+    background: rgba(255, 255, 255, 0.1);
+    opacity: 0.6;
+}
+
+.progressConnector {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+    margin: 0 1rem;
+}

@@ -18,16 +18,83 @@ tags:
 ---
 
 import { CallToAction } from "@site/src/components/elements/CallToAction";
+import { TemporalProgress } from "@site/src/components/TemporalProgress";
+import { MissionStatus } from "@site/src/components/MissionStatus";
+import { StatusIndicators } from "@site/src/components/StatusIndicators";
+import { WorkflowDiagram } from "@site/src/components/WorkflowDiagram";
+import { RetryCounter } from "@site/src/components/RetryCounter";
+import { TemporalCheckbox } from "@site/src/components/TemporalCheckbox";
+import { CodeComparison } from "@site/src/components/CodeComparison";
 
 # Simulate Failures with Temporal Python SDK
 
-So far, you've seen how Temporal executes a Workflow. In this section, you'll explore Temporal's ability to handle failures.
 
-## Recover from a server crash
+**Your mission**: Break things on purpose and watch Temporal work its magic. 
+You're about to discover why developers sleep better at night knowing Temporal is handling their critical processes.
 
-Unlike other solutions, Temporal is designed with failure in mind. To demonstrate this, you'll simulate some failures for the Workflow to recover from.
+<TemporalProgress steps={[
+  { id: 'part1', label: 'Part 1: Basic Workflow', status: 'completed' },
+  { id: 'part2', label: 'Part 2: Failure Simulation', status: 'active' }
+]} />
 
-**Start by simulating a server crash.** When any process crashes, you lose the progress of your code, unless you've designed a way to handle such failures.
+<MissionStatus items={[
+  { id: 'crash-test', number: '1', label: 'Crash Recovery Test', status: 'pending' },
+  { id: 'bug-fixing', number: '2', label: 'Live Bug Fixing', status: 'pending' },
+  { id: 'advanced', number: '3', label: 'Advanced Missions', status: 'pending' }
+]} />
+
+**What you'll accomplish**:
+- Crash a server mid-transaction and see zero data loss
+- Inject bugs into production code and fix them live
+- Experience reliability that makes traditional error handling look primitive
+
+**Difficulty**: Intermediate | **Time**: 15 minutes
+
+Ready to break some stuff? Let's go.
+
+## Experiment 1 of 2: Crash Recovery Test
+
+<TemporalProgress steps={[
+  { id: 'crash-recovery', label: 'Crash Recovery', status: 'active' },
+  { id: 'bug-fixing', label: 'Live Bug Fixing', status: 'pending' }
+]} />
+
+Unlike other solutions, Temporal is designed with failure in mind. You're about to simulate a server crash mid-transaction and watch Temporal handle it flawlessly.
+
+**The Challenge**: Kill your Worker process while money is being transferred. In traditional systems, this would corrupt the transaction or lose data entirely.
+
+<WorkflowDiagram 
+  title="What We're Testing"
+  nodes={[
+    { id: 'worker', label: 'Worker', status: 'default' },
+    { id: 'crash', label: 'CRASH', status: 'crashed' },
+    { id: 'recovery', label: 'Recovery', status: 'recovered' },
+    { id: 'success', label: 'Success', status: 'default' }
+  ]}
+/>
+
+### Pre-Flight Checklist
+
+<TemporalCheckbox id="worker-stopped">
+  Worker is currently stopped
+</TemporalCheckbox>
+
+<TemporalCheckbox id="terminals-ready">
+  You have terminals ready (Terminal 2 for Worker, Terminal 3 for Workflow)
+</TemporalCheckbox>
+
+<TemporalCheckbox id="webui-open">
+  Web UI is open at `http://localhost:8233`
+</TemporalCheckbox>
+
+<details>
+<summary><strong>What's happening behind the scenes?</strong></summary>
+
+The Temporal Server acts like a persistent state machine for your Workflow. When you kill the Worker, you're only killing the process that executes the code - but the Workflow state lives safely in Temporal's durable storage. When a new Worker starts, it picks up exactly where the previous one left off.
+
+This is fundamentally different from traditional applications where process crashes mean lost work.
+
+</details>
 
 1. **Make sure your Worker is stopped** before proceeding. If the Worker is running, press `Ctrl+C` to stop it.
 
@@ -56,11 +123,70 @@ Unlike other solutions, Temporal is designed with failure in mind. To demonstrat
 
 8. **Switch back to Terminal 3** where you ran `python run_workflow.py`. You'll see the program complete and you'll see the result message.
 
-You just simulated killing the Worker process and restarting it. The Workflow resumed where it left off without losing any application state.
+<StatusIndicators items={[
+  { id: 'worker-status', label: 'Worker Status', value: 'RUNNING', status: 'running' },
+  { id: 'workflow-status', label: 'Workflow Status', value: 'COMPLETED', status: 'running' },
+  { id: 'transaction', label: 'Transaction', value: 'SUCCESS', status: 'running' }
+]} />
 
-## Recover from an unknown error in an Activity
+**Mission Accomplished!** You just simulated killing the Worker process and restarting it. The Workflow resumed where it left off without losing any application state.
 
-Sometimes, the code has a bug. Let's simulate a bug in your code and see how Temporal reacts.
+:::tip **Try This Challenge**
+**Advanced Experiment**: Try killing the Worker at different points during execution. Start the Workflow, kill the Worker during the withdrawal, then restart it. Kill it during the deposit. Each time, notice how Temporal maintains perfect state consistency.
+
+**Bonus points**: Check the Web UI while the Worker is down - you'll see the Workflow is still "Running" even though no code is executing.
+:::
+
+## Experiment 2 of 2: Live Bug Fixing
+
+<TemporalProgress steps={[
+  { id: 'crash-recovery', label: 'Crash Recovery', status: 'completed' },
+  { id: 'bug-fixing', label: 'Live Bug Fixing', status: 'active' }
+]} />
+
+**The Challenge**: Inject a bug into your production code, watch Temporal retry automatically, then fix the bug while the Workflow is still running. This is every developer's dream scenario.
+
+<WorkflowDiagram 
+  title="Live Debugging Flow"
+  nodes={[
+    { id: 'bug', label: 'Bug', status: 'default' },
+    { id: 'retry', label: 'Retry', status: 'crashed' },
+    { id: 'fix', label: 'Fix', status: 'default' },
+    { id: 'success', label: 'Success', status: 'recovered' }
+  ]}
+/>
+
+### Pre-Flight Checklist
+
+<TemporalCheckbox id="worker-stopped-2">
+  Worker is stopped
+</TemporalCheckbox>
+
+<TemporalCheckbox id="code-editor">
+  Code editor open with `activities.py`
+</TemporalCheckbox>
+
+<TemporalCheckbox id="failure-ready">
+  Ready to uncomment the failure line
+</TemporalCheckbox>
+
+<TemporalCheckbox id="webui-ready">
+  Web UI open to watch the retries
+</TemporalCheckbox>
+
+<details>
+<summary><strong>What makes live debugging possible?</strong></summary>
+
+Traditional applications lose all context when they crash or fail. Temporal maintains the complete execution history and state of your Workflow in durable storage. This means you can:
+
+1. **Fix bugs in running code** without losing progress
+2. **Deploy new versions** while Workflows continue executing  
+3. **Retry failed operations** with updated logic
+4. **Maintain perfect audit trails** of what happened and when
+
+This is like having version control for your running application state.
+
+</details>
 
 1. **Make sure your Worker is stopped** before proceeding.
 
@@ -84,21 +210,44 @@ Sometimes, the code has a bug. Let's simulate a bug in your code and see how Tem
 
 6. **Let the Workflow run for a little bit**, then **switch back to Terminal 2** to see the Worker output.
 
-   You'll see log output similar to this:
-   ```
-   2024/02/12 10:59:09 Withdrawing $250 from account 85-150.
-   2024/02/12 10:59:09 Depositing $250 into account 43-812.
-   2024/02/12 10:59:09 ERROR Activity error. This deposit has failed.
-   2024/02/12 10:59:10 Depositing $250 into account 43-812.
-   2024/02/12 10:59:10 ERROR Activity error. This deposit has failed.
-   2024/02/12 10:59:12 Depositing $250 into account 43-812.
-   ```
+<RetryCounter 
+  title="Retry Progress"
+  attempt={2}
+  maxAttempts={3}
+  nextRetryIn="2 seconds"
+/>
 
-   The Workflow keeps retrying using the `RetryPolicy` specified when the Workflow first executes the Activity.
+You'll see log output similar to this:
+```
+2024/02/12 10:59:09 Withdrawing $250 from account 85-150.
+2024/02/12 10:59:09 Depositing $250 into account 43-812.
+2024/02/12 10:59:09 ERROR Activity error. This deposit has failed.
+2024/02/12 10:59:10 Depositing $250 into account 43-812.
+2024/02/12 10:59:10 ERROR Activity error. This deposit has failed.
+2024/02/12 10:59:12 Depositing $250 into account 43-812.
+```
+
+The Workflow keeps retrying using the `RetryPolicy` specified when the Workflow first executes the Activity.
+
+<StatusIndicators items={[
+  { id: 'activity-status', label: 'Activity Status', value: 'RETRYING', status: 'retrying' },
+  { id: 'deposit-operation', label: 'Deposit Operation', value: 'FAILING', status: 'crashed' },
+  { id: 'workflow', label: 'Workflow', value: 'ACTIVE', status: 'running' }
+]} />
 
 7. **While the Activity continues to fail**, switch back to the Web UI to see more information about the process. You can see the state, the number of attempts run, and the next scheduled run time.
 
 8. **Pretend that you found a fix** for the issue. Switch the comments back to the `return` statements of the `deposit()` method in the `activities.py` file and save your changes.
+
+<CodeComparison brokenLabel="BROKEN CODE" fixedLabel="FIXED CODE" />
+
+```python
+# BROKEN VERSION:
+# raise Exception("This deposit has failed.")
+
+# FIXED VERSION:
+return "Deposited money into account"
+```
 
 9. **To restart the Worker**, cancel the currently running worker with `Ctrl+C`, then restart the Worker by running:
    ```bash
@@ -116,35 +265,120 @@ Sometimes, the code has a bug. Let's simulate a bug in your code and see how Tem
 
 12. **Visit the Web UI again**, and you'll see the Workflow has completed successfully.
 
-**You have just fixed a bug in a running application without losing the state of the Workflow or restarting the transaction!**
+**Mission Accomplished!** You have just fixed a bug in a running application without losing the state of the Workflow or restarting the transaction!
 
-## Key Advantages Demonstrated
+:::tip **Try This Challenge**
+**Real-World Scenario**: Try this advanced experiment:
+1. **Change the retry policy** in `workflows.py` to only retry 1 time
+2. **Introduce a bug** that triggers the refund logic  
+3. **Watch the Web UI** as Temporal automatically executes the compensating transaction
 
-### Exploring the key advantages Temporal offers:
+**Question to consider**: How would you handle this scenario in a traditional microservices architecture?
+:::
 
-1. **Temporal gives you full visibility** in the state of your Workflow and code execution.
-2. **Temporal maintains the state** of your Workflow, even through server outages and errors.
-3. **Temporal lets you time out and retry** Activity code using options that exist outside your business logic.
-4. **Temporal enables you to perform "live debugging"** of your business logic while the Workflow is running.
+## Mission Debrief: What You Just Accomplished
 
-## Further Exploration
+**Congratulations!** You've experienced firsthand why Temporal is a game-changer for reliable applications. Here's what you proved:
 
-Try the following things before moving on to get more practice working with a Temporal application:
+### Your New Superpowers
 
-- **Change the Retry Policy** in `workflows.py` so it only retries 1 time. Then change the `deposit()` Activity in `activities.py`, so it uses the `refund()` method.
-  - **Does the Workflow place the money back into the original account?**
+<details>
+<summary><strong>Crash-Proof Execution</strong></summary>
 
-## Review Questions
+You killed a Worker mid-transaction and watched Temporal recover seamlessly. Traditional applications would lose this work entirely, requiring complex checkpointing and recovery logic.
 
-Answer the following questions to see if you remember some of the more important concepts from this tutorial:
+</details>
 
-**Why do we recommend defining a shared constant to store the Task Queue name?**
+<details>
+<summary><strong>Live Production Debugging</strong></summary>
 
-Because the Task Queue name is specified in two different parts of the code (the first starts the Workflow and the second configures the Worker). If their values differ, the Worker and Temporal Cluster would not share the same Task Queue, and the Workflow Execution would not progress.
+You fixed a bug in running code without losing any state. Most systems require you to restart everything, losing all progress and context.
 
-**What do you have to do if you modify Activity code for a Workflow that is running?**
+</details>
 
-Restart the Worker.
+<details>
+<summary><strong>Automatic Retry Management</strong></summary>
+
+Temporal handled retries intelligently based on your policy, without cluttering your business logic with error-handling code.
+
+</details>
+
+<details>
+<summary><strong>Complete Observability</strong></summary>
+
+The Web UI gave you full visibility into every step, retry attempt, and state transition. No more debugging mysterious failures.
+
+</details>
+
+### Mission Complete Checklist
+
+<TemporalCheckbox id="crash-recovery">
+  Successfully recovered from a Worker crash
+</TemporalCheckbox>
+
+<TemporalCheckbox id="bug-fixing">
+  Fixed a bug in a running Workflow
+</TemporalCheckbox>
+
+<TemporalCheckbox id="retry-behavior">
+  Observed automatic retry behavior
+</TemporalCheckbox>
+
+<TemporalCheckbox id="webui-debugging">
+  Used the Web UI for debugging
+</TemporalCheckbox>
+
+<TemporalCheckbox id="zero-data-loss">
+  Experienced zero data loss through failures
+</TemporalCheckbox>
+
+<TemporalProgress steps={[
+  { id: 'crash-recovery', label: 'Crash Recovery', status: 'completed' },
+  { id: 'bug-fixing', label: 'Live Bug Fixing', status: 'completed' },
+  { id: 'mission-complete', label: 'Mission Complete!', status: 'completed' }
+]} />
+
+## Advanced Training Missions
+
+Ready for more chaos engineering? Try these advanced scenarios:
+
+:::tip **Mission: Compensating Transactions**
+1. **Modify the retry policy** in `workflows.py` to only retry 1 time
+2. **Force the deposit to fail permanently** 
+3. **Watch the automatic refund** execute
+
+**Mission objective**: Prove that Temporal can handle complex business logic flows even when things go wrong.
+:::
+
+:::tip **Mission: Network Partition Simulation**  
+1. **Start a long-running Workflow**
+2. **Disconnect your network** (or pause the Temporal Server container)
+3. **Reconnect after 30 seconds**
+
+**Mission objective**: Demonstrate Temporal's resilience to network failures.
+:::
+
+## Knowledge Check
+
+Test your understanding of what you just experienced:
+
+<details>
+<summary><strong>Q: Why do we use a shared constant for the Task Queue name?</strong></summary>
+
+**Answer**: Because the Task Queue name connects your Workflow starter to your Worker. If they don't match exactly, your Worker will never see the Workflow tasks, and execution will stall indefinitely.
+
+**Real-world impact**: This is like having the wrong radio frequency - your messages never get delivered.
+
+</details>
+
+<details>
+<summary><strong>Q: What happens when you modify Activity code for a running Workflow?</strong></summary>
+
+**Answer**: You must restart the Worker to load the new code. The Workflow will continue from where it left off, but with your updated Activity logic.
+
+**Real-world impact**: This enables hot-fixes in production without losing transaction state.
+
+</details>
 
 ## Continue Your Learning
 

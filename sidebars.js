@@ -9,20 +9,19 @@ module.exports = {
         type: "doc",
         id: "quickstarts",
       },
+      items: [],
+    },
+    {
+      type: "category",
+      label: "Build your First Basic Workflow",
+      collapsed: false,
+      link: {
+        type: "doc",
+        id: "build-your-first-basic-workflow/index",
+      },
       items: [
-        {
-          type: "category",
-          label: "Build your First Basic Workflow",
-          collapsed: false,
-          link: {
-            type: "doc",
-            id: "build-your-first-basic-workflow",
-          },
-          items: [
-            "build-your-first-basic-workflow/python",
-            "build-your-first-basic-workflow/python-failure-simulation",
-          ],
-        },
+        "build-your-first-basic-workflow/python",
+        "build-your-first-basic-workflow/python-failure-simulation",
       ],
     },
     {

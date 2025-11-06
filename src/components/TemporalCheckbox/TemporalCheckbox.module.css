@@ -1,0 +1,39 @@
+.temporalCheckbox {
+    display: flex;
+    align-items: center;
+    margin: 0.5rem 0;
+    cursor: pointer;
+}
+
+.temporalCheckbox input[type="checkbox"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #444CE7;
+    border-radius: 4px;
+    margin-right: 0.75rem;
+    position: relative;
+    cursor: pointer;
+}
+
+.temporalCheckbox input[type="checkbox"]:checked {
+  background: linear-gradient(135deg, #444CE7 0%, #7C3AED 100%);
+}
+
+.checkboxIcon {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.temporalCheckbox input[type="checkbox"]:checked + .checkboxIcon {
+  opacity: 1;
+}
+
+.temporalCheckbox label {
+    font-weight: 500;
+    cursor: pointer;
+}

@@ -19,6 +19,10 @@ hide_table_of_contents: false
 
 import { SetupSteps, SetupStep, CodeSnippet } from "@site/src/components/elements/SetupSteps";
 import { CallToAction } from "@site/src/components/elements/CallToAction";
+import { TemporalProgress } from "@site/src/components/TemporalProgress";
+import { MissionStatus } from "@site/src/components/MissionStatus";
+import { StatusIndicators } from "@site/src/components/StatusIndicators";
+import { SearchIcon } from "@site/src/components/icons";
 
 You can think of Temporal as a sort of "cure-all" for the pains you experience as a developer when trying to build reliable applications. Whether you're writing a complex transaction-based Workflow or working with remote APIs, you know that creating reliable applications is a complex process.
 
@@ -27,11 +31,16 @@ You can think of Temporal as a sort of "cure-all" for the pains you experience a
   <span className="badge badge--success">🐍 Python SDK</span>
 </div>
 
+<TemporalProgress steps={[
+  { id: 'part1', label: 'Part 1: Build Your First Workflow', status: 'active' },
+  { id: 'part2', label: 'Part 2: Failure Simulation', status: 'pending' }
+]} />
+
 
 ## Introduction
 
-In this tutorial, you'll run your first Temporal Application. 
-You'll use Temporal's Web UI for application state visibility, and then explore how Temporal helps you recover from a couple of common failures.
+In this tutorial, you'll build and run your first Temporal Application. 
+You'll learn how to construct Workflows and Activities, understand the core building blocks, and see you can get full visibility into its execution.
 
 ### Prerequisites
 
@@ -46,9 +55,11 @@ Before starting this tutorial:
   description="Run through the Quickstart to get your set up complete."
 />
 
-### Application overview
+### What You'll Build
 
-This project in this tutorial simulates a **money transfer application**, focusing on essential transactions such as withdrawals, deposits, and refunds. The importance of Temporal in this context lies in its ability to handle your code efficiently and reliably.
+You'll construct a **money transfer application** from the ground up, learning to design and implement essential transactions such as withdrawals, deposits, and refunds using Temporal's powerful building blocks. 
+
+**Why This Application?** It demonstrates real-world complexity while teaching you how to build reliable, fault-tolerant systems that handle money safely.
 
 <div style={{textAlign: 'center', margin: '2rem 0'}}>
   <img src="/img/moneytransfer/money-withdrawal.png" alt="Money Transfer Application Flow" style={{maxWidth: '100%', height: 'auto'}} />
@@ -281,10 +292,8 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
-
-
-
 When you start the Worker, it begins polling the Temporal Server for work.
+
 
 <SetupStep code={
   <div>
@@ -307,9 +316,12 @@ python run_workflow.py
       </CodeSnippet>
     </div>
     <div style={{marginTop: '2rem', padding: '1rem', background: 'rgba(16, 185, 129, 0.1)', borderRadius: '0.5rem'}}>
-      <strong>✅ Expected Success Output:</strong>
+      <strong> Expected Success Output: 
+      
+      </strong>
       <CodeSnippet language="text">
 Result: Transfer complete (transaction IDs: Withdrew $250 from account 85-150. ReferenceId: 12345, Deposited $250 into account 43-812. ReferenceId: 12345)
+
       </CodeSnippet>
     </div>
   </div>
@@ -323,14 +335,19 @@ Now that your Worker is running and polling for tasks, you can start a Workflow 
 
 The `run_workflow.py` script starts a Workflow Execution. Each time you run this file, the Temporal Server starts a new Workflow Execution.
 
-A Workflow Execution has exclusive access to its local state and executes concurrently to all other Workflow Executions.
+<StatusIndicators items={[
+  { id: 'workflow', label: 'Workflow Status', value: 'EXECUTING', status: 'running' },
+  { id: 'withdraw', label: 'Withdraw Activity', value: 'RUNNING', status: 'running' },
+  { id: 'deposit', label: 'Deposit Activity', value: 'RUNNING', status: 'running' },
+  { id: 'transaction', label: 'Transaction', value: 'COMPLETED', status: 'success' }
+]} />
 
 </SetupStep>
 
 <SetupStep code={
   <CallToAction 
     href="http://localhost:8233"
-    buttonText="🔍 Open Temporal Web UI →"
+    buttonText="Open the Temporal UI "
     description="View the state of the Workflow with the Temporal Web UI"
   />
 }>
@@ -359,6 +376,7 @@ The Temporal Web UI lets you see details about the Workflow you just ran.
 
 
 
+## Continue Your Learning
 
 <div className="row">
   <div className="col col--4">

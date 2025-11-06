@@ -1,0 +1,71 @@
+.statusIndicators {
+    background: linear-gradient(135deg, #1F203F 0%, #312E81 100%);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.statusRow {
+    display: flex;
+    align-items: center;
+    margin: 0.75rem 0;
+    color: white;
+}
+
+.statusDot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+}
+
+.statusDot.running {
+    background: #10B981;
+    animation: pulseGreen 2s infinite;
+}
+
+.statusDot.crashed {
+    background: #EF4444;
+}
+
+.statusDot.retrying {
+    background: #F59E0B;
+    animation: pulseYellow 2s infinite;
+}
+
+.statusDot.pending {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.statusDot.success {
+    background: #10B981;
+}
+
+@keyframes pulseGreen {
+    0% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    }
+}
+
+@keyframes pulseYellow {
+    0% {
+        box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(245, 158, 11, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+    }
+}
