@@ -134,15 +134,15 @@ func main() {
 }
 ```
 
-## Heartbeating after a Cancellation.
+## Heartbeating after a Cancellation
 
 Sometimes you may want to continue running your Activity, even after a Cancellation has been issued.
-Some scenarios for this could be you want to completely ignore the cancellation and continue Activity
-execution, including Heartbeating, or you would like to send one final Heartbeat after Cancellation.
+You may want to completely ignore the cancellation and continue Activity
+execution, including Heartbeating, or you may want to send one final Heartbeat after Cancellation.
 Even though the context is cancelled when the Workflow is Cancelled, you are still able to send
 Activity Heartbeats.
 
-When you call `activity.RecordHeartbeat` after cancellation has occurred, a 
+When you call `activity.RecordHeartbeat` after Cancellation has occurred, a 
 `WARN  RecordActivityHeartbeat with error Error context canceled` message will be logged, and a 
-`context canceled` error will be returned from the call. However, do note that the 
+`context canceled` error will be returned from the call. However, the 
 Heartbeat **has** still been sent.
