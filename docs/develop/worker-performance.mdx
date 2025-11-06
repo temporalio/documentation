@@ -230,7 +230,7 @@ These options define the maximum count of pollers performing poll requests on Wo
 w := worker.New(c, "my-task-queue", worker.Options{
   WorkflowTaskPollerBehavior: worker.NewPollerBehaviorAutoscaling(worker.PollerBehaviorAutoscalingOptions{}),
   ActivityTaskPollerBehavior: worker.NewPollerBehaviorAutoscaling(worker.PollerBehaviorAutoscalingOptions{}),
-  NexusTaskPollerBehavior: worker.NewPollerBehaviorAutoscaling(),
+  NexusTaskPollerBehavior: worker.NewPollerBehaviorAutoscaling(worker.PollerBehaviorAutoscalingOptions{}),
 })
 ```
 </SdkTabs.Go>
