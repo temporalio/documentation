@@ -198,7 +198,7 @@ my_worker = Worker(..., workflow_runner=SandboxedWorkflowRunner(restrictions=my_
 
 ### Import Notification Policy
 
-The sandbox's import notification policy specifies how the sandbox behaves when it imports modules in a way that may be unintentional. It covers two common scenarios, dynamic imports and enforcing module passthrough, and allows for controlling each separately.
+The sandbox's import notification policy specifies how the sandbox behaves when it imports modules in a way that may be unintentional. It covers two common scenarios: dynamic imports and enforcing module passthrough. Each can be controlled independently.
 
 A dynamic import occurs when a module is imported after the Workflow is loaded into the sandbox. These imports are often invisible and, if they don't do anything restricted by the sandbox, cause memory overhead. By default the [`WARN_ON_DYNAMIC_IMPORT`](https://python.temporal.io/temporalio.workflow.SandboxImportNotificationPolicy.html#WARN_ON_DYNAMIC_IMPORT) policy setting is enabled and a warning will be emitted when one of these imports occurs.
 
