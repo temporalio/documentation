@@ -81,7 +81,7 @@ Submit a support ticket with the following details:
 
 - A list of your Temporal accounts
 - Target Temporal Cloud service regions
-- For each cluster, provide the server configuration by running `temporal operator cluster describe --address <frontend:7233>`
+- For each cluster, provide the server configuration by running `temporal operator cluster describe --address <frontend:7233>` (see [notes](#alternative-commands-for-versions-1281-and-prior) for Version 1.28.1 and prior).
 - Metrics for the namespaces to be migrated:
   - number of open/closed workflows
   - storage used
@@ -209,3 +209,17 @@ Before failing over your namespace to Temporal Cloud, review the following produ
 - Learn how capacity management works in Temporal Cloud, including how to request capacity increases.
 - Plan for a worker tuning session - performance change between Temporal Cloud v.s. self-hosted cluster, which could lead to unexpected symptoms and optimizations.
 - Know how to reach out to your Temporal Solutions Architect (SA) and Account Executive (AE) for assistance.
+
+
+### Additional Notes
+
+#### Alternative Commands for Versions 1.28.1 and Prior
+Version 1.28.1 and older do not provide the details necessary for setting up migration. If you are running an older version of Temporal, then substitute the below
+commands for the "temporal operator cluster describe" command cited in this document. 
+
+If you are using tctl, then substitute the following command: `tctl --address <frontend:7233> admin cluster describe`
+
+If you are not a tctl user, then use the following alternative:
+`grpcurl -v -plaintext <your temporal address and port> temporal.server.api.adminservice.v1.AdminService.DescribeCluster`
+
+
