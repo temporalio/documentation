@@ -594,7 +594,7 @@ module.exports = {
         'references/operation-list',
         'references/sdk-metrics',
         'references/server-options',
-        'references/client-environmental-configuration',
+        'references/client-environment-configuration',
         'references/web-ui-configuration',
         'references/web-ui-environment-variables',
       ],
