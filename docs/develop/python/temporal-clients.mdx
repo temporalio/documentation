@@ -30,7 +30,7 @@ A [Temporal Client](https://chatgpt.com/encyclopedia/temporal-sdks#temporal-clie
 Temporal Service. Communication with a Temporal Service lets you perform actions such as starting Workflow Executions,
 sending Signals and Queries to Workflow Executions, getting Workflow results, and more.
 
-This page shows you how to do the following using the .NET SDK with the Temporal Client:
+This page shows you how to do the following using the Python SDK with the Temporal Client:
 
 - [Connect to a local development Temporal Service](#connect-to-development-service)
 - [Connect to Temporal Cloud](#connect-to-temporal-cloud)
@@ -167,7 +167,7 @@ specified in those variables. If you have defined a configuration file at either
 variable, this will also load the default profile in the configuration file. However, any options set via environment
 variables will take precedence.
 
-Set the following environment variables before running your .NET application. Replace the placeholder values with your
+Set the following environment variables before running your Python application. Replace the placeholder values with your
 actual configuration. Since this is for a local development Temporal Service, the values connect to `localhost:7233` and
 the `default` Namespace. You may omit these variables entirely since they're the defaults.
 
@@ -384,7 +384,7 @@ The following environment variables are required to connect to Temporal Cloud:
 - `TEMPORAL_TLS_CLIENT_KEY_DATA` or `TEMPORAL_TLS_CLIENT_KEY_PATH`: Your mTLS client private key data or file path.
   Required if you are using mTLS authentication.
 
-Ensure these environment variables exist in your environment before running your .NET application.
+Ensure these environment variables exist in your environment before running your Python application.
 
 Import the `EnvConfig` package to set connection options for the Temporal Client using environment variables. The
 `MustLoadDefaultClientOptions` function will automatically load all environment variables. For a list of all available
