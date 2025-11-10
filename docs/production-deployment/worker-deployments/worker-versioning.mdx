@@ -347,15 +347,9 @@ end
 </SdkTabs.Ruby>
 </SdkTabs>
 
-You can check your set of Deployment Versions with `temporal worker deployment describe`:
-
-```bash
-temporal worker deployment describe --name="$MY_DEPLOYMENT"
-```
-
 ## Moving a pinned Workflow
 
-Sometimes you'll need to manually move a set of pinned workflows off of a version that has a bug to a version with the fix.
+Sometimes you'll need to manually move a set of pinned Workflows off of a version that has a bug to a version with the fix.
 
 If you need to move a pinned Workflow to a new version, use `temporal workflow update-options`:
 
