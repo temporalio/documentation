@@ -44,7 +44,7 @@ If you prefer to learn by getting hands-on with code, check out some existing pl
 There are a number of features you can give your users with a plugin. Here's a short list of some of the things you can do and more are being added.
 
 - [Built-in Activities](#built-in-activity)
-- [Workflow libraries](#workflow-librarires)
+- [Workflow libraries](#workflow-libraries)
 - [Built-in Child Workflows](#built-in-child-workflows)
 - [Built-in Nexus Operations](#built-in-nexus-operations)
 - [Custom Data Converters](#custom-data-converters)
@@ -91,7 +91,7 @@ plugin = SimplePlugin(
 </SdkTabs.Python>
 </SdkTabs>
 
-### Workflow librarires
+### Workflow libraries
 
 You can provide a library with functionality for use within a Workflow. Your library will call elements you include in your Plugin Activities, Child Workflows, Signals, Updates, Queries, Nexus Operations, Interceptors, Data Converters, and any other code as long as it follows these requirements:
 
@@ -282,7 +282,7 @@ class MyAdvancedClientPlugin(temporalio.client.Plugin):
 </SdkTabs.Python>
 </SdkTabs>
 
-The primary use case for integrations so far is setting a `DataConverter`, like in the [Data Converter example](#data-converter).
+The primary use case for integrations so far is setting a `DataConverter`, like in the [Data Converter example](#custom-data-converters).
 
 ### Worker Plugin
 
