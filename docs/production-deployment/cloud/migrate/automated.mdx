@@ -192,7 +192,8 @@ There are two options for switching Temporal clients to the cloud:
      automatically forward from your server to the cloud.
   4. Complete migration. Your self-hosted Temporal clients will no longer receive any tasks from your server, allowing you to stop these clients.
 
-- Option 2 (not recommended)- Deploy one set of Temporal clients and switch the namespace endpoint during migration. With this option, your workflows will stop making progress.
+- Option 2 - Deploy one set of Temporal clients and switch the namespace endpoint during migration. With this option, if your workers are misconfigured during the switch, then it is
+  possible that workflows can stop making progress. It is important to ensure that all workers maintain connectivity to cloud to avoid this scenario.
   The process is as follows:
   1. Start migration.
   2. Switch your Temporal clients to point to the cloud namespace endpoint. Requests from your Temporal clients will automatically forward from the cloud to your server.
