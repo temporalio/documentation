@@ -30,7 +30,7 @@ Here are some common use cases for plugins:
 
 The recommended way to start building plugins is with a `SimplePlugin`. This abstraction will tackle the vast majority of plugins people want to write.  
 
-For advanced use cases, you can extend the methods in lower-level classes that Simple Plugin is based on without re-implementing what you’ve done. See the [advanced topics section](#advanced-topics-for-plugins) for more information.
+For advanced use cases, you can extend the methods in lower-level classes that Simple Plugin is based on without re-implementing what you’ve done. See the [Advanced Topics section](#advanced-topics-for-plugins) for more information.
 
 ### Example Plugins
 
@@ -44,7 +44,7 @@ If you prefer to learn by getting hands-on with code, check out some existing pl
 There are a number of features you can give your users with a plugin. Here's a short list of some of the things you can do and more are being added.
 
 - [Built-in Activities](#built-in-activity)
-- [Workflow libraries](#workflow-libraries)
+- [Workflow libraries](#workflow-librarires)
 - [Built-in Child Workflows](#built-in-child-workflows)
 - [Built-in Nexus Operations](#built-in-nexus-operations)
 - [Custom Data Converters](#custom-data-converters)
@@ -119,7 +119,7 @@ Therefore, as you make changes, you need to use [patching](https://docs.temporal
 - [Implementation of the `OpenAIAgentsPlugin`](https://github.com/temporalio/sdk-python/tree/main/temporalio/contrib/openai_agents)
 - [Example of replay testing](https://github.com/temporalio/sdk-python/blob/main/tests/contrib/openai_agents/test_openai_replay.py)
 
-### Child Workflow
+### Built-in Child Workflows
 
 You can provide a built-in Workflow in a `SimplePlugin`. It’s callable as a Child Workflow or standalone. When you want to provide a piece of functionality that's more complex than an Activity, you can:
 
@@ -170,7 +170,7 @@ async with Worker(
 </SdkTabs.Python>
 </SdkTabs>
 
-### Nexus Operation
+### Built-in Nexus Operations
 
 Nexus calls are used from Workflows similar to Activities and you can check out some common [Nexus Use Cases](https://docs.temporal.io/nexus/use-cases). Like Activities, Nexus Call arguments and return values must be serializable.
 
@@ -200,7 +200,7 @@ plugin = SimplePlugin(
 </SdkTabs.Python>
 </SdkTabs>
 
-### Data Converter
+### Custom Data Converters
 
 A [Custom Data Converter](https://docs.temporal.io/default-custom-data-converters#custom-data-converter) can alter data formats or provide compression or encryption.
 
