@@ -69,7 +69,7 @@ To simplify checking for cancellation, use the
 <!--SNIPSTART typescript-cancel-a-timer-from-workflow-->
 [packages/test/src/workflows/cancel-timer-immediately.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/cancel-timer-immediately.ts)
 ```ts
-import { CancellationScope, CancelledFailure, sleep } from '@temporalio/workflow';
+import { CancelledFailure, CancellationScope, sleep } from '@temporalio/workflow';
 
 export async function cancelTimer(): Promise<void> {
   // Timers and Activities are automatically cancelled when their containing scope is cancelled.
@@ -95,7 +95,7 @@ Alternatively, the preceding can be written as the following.
 <!--SNIPSTART typescript-cancel-a-timer-from-workflow-alternative-impl-->
 [packages/test/src/workflows/cancel-timer-immediately-alternative-impl.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/cancel-timer-immediately-alternative-impl.ts)
 ```ts
-import { CancellationScope, CancelledFailure, sleep } from '@temporalio/workflow';
+import { CancelledFailure, CancellationScope, sleep } from '@temporalio/workflow';
 
 export async function cancelTimerAltImpl(): Promise<void> {
   try {
@@ -123,7 +123,7 @@ The following code shows how to handle Workflow cancellation by an external clie
 <!--SNIPSTART typescript-handle-external-workflow-cancellation-while-activity-running-->
 [packages/test/src/workflows/handle-external-workflow-cancellation-while-activity-running.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/handle-external-workflow-cancellation-while-activity-running.ts)
 ```ts
-import { CancellationScope, isCancellation, proxyActivities } from '@temporalio/workflow';
+import { CancellationScope, proxyActivities, isCancellation } from '@temporalio/workflow';
 import type * as activities from '../activities';
 
 const { httpPostJSON, cleanup } = proxyActivities<typeof activities>({
@@ -248,7 +248,7 @@ You can achieve complex flows by nesting cancellation scopes.
 <!--SNIPSTART typescript-nested-cancellation-scopes-->
 [packages/test/src/workflows/nested-cancellation.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/nested-cancellation.ts)
 ```ts
-import { CancellationScope, isCancellation, proxyActivities } from '@temporalio/workflow';
+import { CancellationScope, proxyActivities, isCancellation } from '@temporalio/workflow';
 
 import type * as activities from '../activities';
 
