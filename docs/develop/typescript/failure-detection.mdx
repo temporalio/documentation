@@ -238,6 +238,19 @@ If the Temporal Service does not receive a Heartbeat within a [Heartbeat Timeout
 Activity Cancellations are delivered to Activities from the Temporal Service when they Heartbeat.
 Activities that don't Heartbeat can't get notified of Cancellation requests.
 
+:::note Handling Activity Cancellation
+In the TypeScript SDK, Activity implementations must opt in to observe cancellation.
+
+Use one of the following in your Activity to be notified of cancellation:
+- `await Context.current().cancelled` — rejects with `CancelledFailure`.
+- `await Context.current().sleep(ms)` — rejects on cancellation.
+- Pass `Context.current().cancellationSignal` (an `AbortSignal`) to libraries that support abort.
+
+> **Important:** Activities receive cancellation notifications when they heartbeat; if an Activity doesn’t heartbeat, delivery of the cancellation notification can be delayed.
+
+See [Activity namespace reference](https://typescript.temporal.io/api/namespaces/activity#cancellation) and [Context API](https://typescript.temporal.io/api/classes/activity.Context) for more information.
+:::
+
 Heartbeats may not always be sent to the Temporal Service—they may be [throttled](/encyclopedia/detecting-activity-failures#throttling) by the Worker.
 Heartbeat throttling may lead to Cancellation getting delivered later than expected.
 
