@@ -66,7 +66,7 @@ Here are some best practices you can use when you are making Activity plugins:
 - Activity arguments and return values must be serializable.
 - Activities that perform writes should be idempotent.
 - Activities have [timeouts](https://docs.temporal.io/develop/python/failure-detection#heartbeat-timeout) and [retry policies](https://docs.temporal.io/encyclopedia/retry-policies). To be Activity-friendly, your operation should either complete within a few minutes or it should support the ability to heartbeat or poll for a result. This way it will be clear to the Workflow when the Activity is still making progress.
-- You need to specify at least one timeout, typically the [start_to_close_timeout](https://docs.temporal.io/encyclopedia/detecting-activity-failures#start-to-close-timeout). Keep in mind that the shorter the timeout, the faster Temporal will retry upon failure. See the [timeouts and retry policies](/timeouts-and-retry-policies) to learn more.
+- You need to specify at least one timeout, typically the [start_to_close_timeout](https://docs.temporal.io/encyclopedia/detecting-activity-failures#start-to-close-timeout). Keep in mind that the shorter the timeout, the faster Temporal will retry upon failure. See the [timeouts and retry policies](#timeouts-and-retry-policies) to learn more.
 
 #### Timeouts and retry policies
 
