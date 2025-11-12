@@ -81,7 +81,7 @@ Submit a support ticket with the following details:
 
 - A list of your Temporal accounts
 - Target Temporal Cloud service regions
-- For each cluster, provide the server configuration by running `temporal operator cluster describe --address <frontend:7233>` (see [notes](#alternative-commands-for-versions-1281-and-prior) for Temporal server version 1.28.1 and prior).
+- For each cluster, provide the server configuration by running `temporal operator cluster describe --address <frontend:7233> --output json` (see [notes](#alternative-commands-for-versions-1281-and-prior) for Temporal server version 1.28.1 and prior).
 - Metrics for the namespaces to be migrated:
   - number of open/closed workflows
   - storage used
