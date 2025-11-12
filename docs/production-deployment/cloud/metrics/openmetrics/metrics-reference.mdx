@@ -334,7 +334,7 @@ The total number of actions performed per second.
 | Label | Description |
 | ----- | ----- |
 | `is_background` | Whether the action was background: `true` or `false` |
-| `namespace_mode` | The namespace mode |
+| `namespace_mode` | Indicates if actions are produced by an `active` or a `standby` Namespace |
 
 **Type**: Rate
 
@@ -346,7 +346,7 @@ The number of operations performed per second.
 | ----- | ----- |
 | `operation` | The name of the operation |
 | `is_background` | State of the background operation: `true` or `false` |
-| `namespace_mode` | The namespace mode |
+| `namespace_mode` | Indicates if operations are produced by an `active` or a `standby` Namespace |
 
 **Type**: Rate
 
@@ -358,7 +358,7 @@ The number of operations throttled due to rate limits per second.
 | ----- | ----- |
 | `operation` | The name of the operation |
 | `is_background` | State of the background operation: `true` or `false` |
-| `namespace_mode` | The namespace mode |
+| `namespace_mode` | Indicates if actions are throttled in an `active` or a `standby` Namespace |
 
 **Type**: Rate
 
