@@ -320,7 +320,7 @@ With the connections options defined in the configuration file, use the `ClientE
 method to create a Temporal Client using the `staging` profile as follows. After loading the profile, you can also
 programmatically override specific connection options before creating the client.
 
-```csharp title="LoadProfile.cs" {19-20}
+```csharp title="LoadProfile.cs" {25. 41}
 using Temporalio.Client;
 using Temporalio.Client.EnvConfig;
 
@@ -402,7 +402,7 @@ specified in those variables. If you have defined a configuration file at either
 variable, this will also load the default profile in the configuration file. However, any options set via environment
 variables will take precedence.
 
-```csharp
+```csharp {16,20}
 using Temporalio.Client;
 using Temporalio.Client.EnvConfig;
 
