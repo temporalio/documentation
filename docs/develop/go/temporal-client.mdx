@@ -81,7 +81,8 @@ You can use a TOML configuration file to set connection options for the Temporal
 configure multiple profiles, each with its own set of connection options. You can then specify which profile to use when
 creating the Temporal Client. You can use the environment variable `TEMPORAL_CONFIG_FILE` to specify the location of the
 TOML file or provide the path to the file directly in code. If you don't provide the configuration file path, the SDK
-looks for it at the path `~/.config/temporalio/temporal.toml`.
+looks for it at the path `~/.config/temporalio/temporal.toml`. For a list of all available configuration options, refer
+to [Environment Configuration](/references/client-environment-configuration)
 
 :::info
 
@@ -164,7 +165,7 @@ func main() {
 
 Use the `envconfig` package to set connection options for the Temporal Client using environment variables. For a list of
 all available environment variables and their default values, refer to
-[Environment Configuration](../environment-configuration).
+[Environment Configuration](/references/client-environment-configuration).
 
 For example, the following code snippet loads all environment variables and creates a Temporal Client with the options
 specified in those variables. If you have defined a configuration file at either the default location
@@ -270,7 +271,7 @@ You can provide these connection options using environment variables, a configur
 You can use a TOML configuration file to set connection options for the Temporal Client. The configuration file lets you
 configure multiple profiles, each with its own set of connection options. You can then specify which profile to use when
 creating the Temporal Client. For a list of all available configuration options you can set in the TOML file, refer to
-[Environment configuration](../environment-configuration).
+[Environment Configuration](/references/client-environment-configuration).
 
 You can use the environment variable `TEMPORAL_CONFIG_FILE` to specify the location of the TOML file or provide the path
 to the file directly in code. If you don't provide the path to the configuration file, the SDK looks for it at the
