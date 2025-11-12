@@ -36,8 +36,18 @@ If you use Terraform for your deployment, you don't need to complete these prere
 Before configuring the manual Audit Log sink, complete the following steps in Google Cloud:
 
 1. Create a Pub/Sub topic and make a note of its topic name, such as `test-auditlog`.
-1. Set up a service account in the same project in Google Cloud and follow the instructions in the
-   Temporal Cloud UI to configure the permissions for that service account.
+1. Set up a service account in the same project in Google Cloud.
+1. If you are using the UI, follow the instructions in the Temporal Cloud UI to configure the permissions for that service account.
+1. If you are using the API, you should set up the permissions as follows, or use the [Terraform Module](https://github.com/temporalio/terraform-modules/tree/main/modules/auditlog-sa)):
+   - Grant the role **Pub/Sub Publisher** to the service account from the PubSub topic.
+   - to set up the trust relationship, or grant the role **Service Account Token Creator** to the following service accounts. Replace {account_id} with your Temporal Cloud account ID.
+      - auditlog-{account_id}@prod-vs4padk9dkczcey6d6st9c58e.iam.gserviceaccount.com
+      - auditlog-{account_id}@prod-sbe56h6wr4sykaw47a6yg4h66.iam.gserviceaccount.com
+      - auditlog-{account_id}@prod-97gr6tp6zkv2t4epubffpz7kt.iam.gserviceaccount.com
+      - auditlog-{account_id}@prod-cAcqaqgbfzy23vpzkbxzrx378.iam.gserviceaccount.com
+      - auditlog-{account_id}@prod-79z2c6d76au6g5fcq768buqf9.iam.gserviceaccount.com
+   - To verify the above is set up correctly, you may use the **ValidateAccountAuditLogSink** API call.
+
 
 ## Create an Audit Log sink
 
