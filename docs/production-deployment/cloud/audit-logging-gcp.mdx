@@ -38,7 +38,7 @@ Before configuring the manual Audit Log sink, complete the following steps in Go
 1. Create a Pub/Sub topic and make a note of its topic name, such as `test-auditlog`.
 1. Set up a service account in the same project in Google Cloud.
 1. If you are using the UI, follow the instructions in the Temporal Cloud UI to configure the permissions for that service account.
-1. If you are using the API, you should set up the permissions as follows, or use the [Terraform Module](https://github.com/temporalio/terraform-modules/tree/main/modules/auditlog-sa)):
+1. If you are using the API, you should set up the permissions as follows, or use the [Terraform Module](https://github.com/temporalio/terraform-modules/tree/main/modules/auditlog-sa):
    - Grant the role **Pub/Sub Publisher** to the service account from the PubSub topic.
    - to set up the trust relationship, or grant the role **Service Account Token Creator** to the following service accounts. Replace {account_id} with your Temporal Cloud account ID.
       - auditlog-{account_id}@prod-vs4padk9dkczcey6d6st9c58e.iam.gserviceaccount.com
