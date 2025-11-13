@@ -26,7 +26,7 @@ export const Ruby = ({ children }) => children;
 Ruby.displayName = 'rb';
 
 // Main wrapper
-const SdkTabs = ({ children }) => {
+const SdkTabs = ({ children, languageOrder }) => {
   const contentMap = {};
 
   React.Children.forEach(children, (child) => {
@@ -36,9 +36,11 @@ const SdkTabs = ({ children }) => {
     }
   });
 
+  const languages = languageOrder || SDK_LANGUAGES;
+
   return (
     <Tabs groupId={LANGUAGE_TAB_GROUP}>
-      {SDK_LANGUAGES.map(({ key, icon: Icon, label }) => (
+      {languages.map(({ key, icon: Icon, label }) => (
         <TabItem key={key} value={key} label={<Icon title={label} />}>
           {contentMap[key] || (
             <div style={{ backgroundColor: '#ffffcc', padding: '1rem', borderRadius: '6px' }}>

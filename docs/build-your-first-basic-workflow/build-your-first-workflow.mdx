@@ -21,6 +21,18 @@ import { TemporalProgress } from "@site/src/components/TemporalProgress";
 import { StatusIndicators } from "@site/src/components/StatusIndicators";
 import { NextButton } from "@site/src/components/TutorialNavigation";
 import SdkTabs from "@site/src/components/elements/SdkTabs";
+import { FaPython, FaJava } from 'react-icons/fa';
+import { SiGo, SiTypescript, SiPhp, SiDotnet, SiRuby } from 'react-icons/si';
+
+export const TUTORIAL_LANGUAGE_ORDER = [
+  { key: 'py', label: 'Python', icon: FaPython },
+  { key: 'go', label: 'Go', icon: SiGo },
+  { key: 'java', label: 'Java', icon: FaJava },
+  { key: 'ts', label: 'TypeScript', icon: SiTypescript },
+  { key: 'php', label: 'PHP', icon: SiPhp },
+  { key: 'dotnet', label: '.NET', icon: SiDotnet },
+  { key: 'rb', label: 'Ruby', icon: SiRuby },
+];
 
 You can think of Temporal as a sort of "cure-all" for the pains you experience as a developer when trying to build reliable applications. Whether you're writing a complex transaction-based Workflow or working with remote APIs, you know that creating reliable applications is a complex process.
 
@@ -124,7 +136,7 @@ None of your application code runs on the Temporal Server. Your Worker, Workflow
 
 ## Build your Workflow and Activities 
 
-<SdkTabs>
+<SdkTabs languageOrder={TUTORIAL_LANGUAGE_ORDER}>
 <SdkTabs.Python>
 
 <h3>Workflow Definition</h3>
@@ -223,115 +235,100 @@ class BankingActivities:
 
 </SdkTabs.Python>
 
-<SdkTabs.DotNet>
+<SdkTabs.Go>
 
 <h3>Workflow Definition</h3>
 
-In the Temporal .NET SDK, a Workflow Definition is marked by the `[Workflow]` attribute placed above the class.
+In the Temporal Go SDK, a Workflow Definition is a Go function that follows the Workflow function signature.
 
 This is what the Workflow Definition looks like for this process:
 
-**MoneyTransferWorker/Workflow.cs**
+**workflows.go**
 
-```csharp
-namespace Temporalio.MoneyTransferProject.MoneyTransferWorker;
-using Temporalio.MoneyTransferProject.BankingService.Exceptions;
-using Temporalio.Workflows;
-using Temporalio.Common;
-using Temporalio.Exceptions;
+```go
+package workflows
 
-[Workflow]
-public class MoneyTransferWorkflow
-{
-    [WorkflowRun]
-    public async Task<string> RunAsync(PaymentDetails details)
-    {
-        // Retry policy
-        var retryPolicy = new RetryPolicy
-        {
-            InitialInterval = TimeSpan.FromSeconds(1),
-            MaximumInterval = TimeSpan.FromSeconds(100),
-            BackoffCoefficient = 2,
-            MaximumAttempts = 3,
-            NonRetryableErrorTypes = new[] { "InvalidAccountException", "InsufficientFundsException" }
-        };
+import (
+	"context"
+	"time"
 
-        string withdrawResult;
-        try
-        {
-            withdrawResult = await Workflow.ExecuteActivityAsync(
-                () => BankingActivities.WithdrawAsync(details),
-                new ActivityOptions { StartToCloseTimeout = TimeSpan.FromMinutes(5), RetryPolicy = retryPolicy }
-            );
-        }
-        catch (ApplicationFailureException ex) when (ex.ErrorType == "InsufficientFundsException")
-        {
-            throw new ApplicationFailureException("Withdrawal failed due to insufficient funds.", ex);
-        }
+	"go.temporal.io/sdk/temporal"
+	"go.temporal.io/sdk/workflow"
+)
 
-        string depositResult;
-        try
-        {
-            depositResult = await Workflow.ExecuteActivityAsync(
-                () => BankingActivities.DepositAsync(details),
-                new ActivityOptions { StartToCloseTimeout = TimeSpan.FromMinutes(5), RetryPolicy = retryPolicy }
-            );
-            // If everything succeeds, return transfer complete
-            return $"Transfer complete (transaction IDs: {withdrawResult}, {depositResult})";
-        }
-        catch (Exception depositEx)
-        {
-            try
-            {
-                // if the deposit fails, attempt to refund the withdrawal
-                string refundResult = await Workflow.ExecuteActivityAsync(
-                    () => BankingActivities.RefundAsync(details),
-                    new ActivityOptions { StartToCloseTimeout = TimeSpan.FromMinutes(5), RetryPolicy = retryPolicy }
-                );
-                // If refund is successful, but deposit failed
-                throw new ApplicationFailureException($"Failed to deposit money into account {details.TargetAccount}. Money returned to {details.SourceAccount}.", depositEx);
-            }
-            catch (Exception refundEx)
-            {
-                // If both deposit and refund fail
-                throw new ApplicationFailureException($"Failed to deposit money into account {details.TargetAccount}. Money could not be returned to {details.SourceAccount}. Cause: {refundEx.Message}", refundEx);
-            }
-        }
-    }
+func MoneyTransferWorkflow(ctx workflow.Context, input PaymentDetails) (string, error) {
+	// Retry policy
+	retryPolicy := &temporal.RetryPolicy{
+		InitialInterval:        time.Second,
+		BackoffCoefficient:     2.0,
+		MaximumInterval:        time.Second * 100,
+		MaximumAttempts:        3,
+		NonRetryableErrorTypes: []string{"InvalidAccountError", "InsufficientFundsError"},
+	}
+
+	options := workflow.ActivityOptions{
+		StartToCloseTimeout: 5 * time.Minute,
+		RetryPolicy:         retryPolicy,
+	}
+	ctx = workflow.WithActivityOptions(ctx, options)
+
+	// Withdraw money
+	var withdrawResult string
+	err := workflow.ExecuteActivity(ctx, WithdrawActivity, input).Get(ctx, &withdrawResult)
+	if err != nil {
+		return "", err
+	}
+
+	// Deposit money
+	var depositResult string
+	err = workflow.ExecuteActivity(ctx, DepositActivity, input).Get(ctx, &depositResult)
+	if err != nil {
+		// If deposit fails, attempt to refund
+		var refundResult string
+		refundErr := workflow.ExecuteActivity(ctx, RefundActivity, input).Get(ctx, &refundResult)
+		if refundErr != nil {
+			return "", temporal.NewApplicationError("Failed to deposit and refund", "DepositRefundFailed", err)
+		}
+		return "", temporal.NewApplicationError("Deposit failed, money refunded", "DepositFailed", err)
+	}
+
+	return "Transfer complete (transaction IDs: " + withdrawResult + ", " + depositResult + ")", nil
 }
 ```
 
 <h3>Activity Definition</h3>
 
-Activities handle the business logic. Each activity method calls an external banking service:
+Activities handle the business logic. Each activity function calls an external banking service:
 
-**MoneyTransferWorker/Activities.cs**
+**activities.go**
 
-```csharp
-namespace Temporalio.MoneyTransferProject.MoneyTransferWorker;
-using Temporalio.Activities;
-using Temporalio.Exceptions;
+```go
+package activities
 
-public class BankingActivities
-{
-    [Activity]
-    public static async Task<string> WithdrawAsync(PaymentDetails details)
-    {
-        var bankService = new BankingService("bank1.example.com");
-        Console.WriteLine($"Withdrawing ${details.Amount} from account {details.SourceAccount}.");
-        try
-        {
-            return await bankService.WithdrawAsync(details.SourceAccount, details.Amount, details.ReferenceId).ConfigureAwait(false);
-        }
-        catch (Exception ex)
-        {
-            throw new ApplicationFailureException("Withdrawal failed", ex);
-        }
-    }
+import (
+	"context"
+	"fmt"
+
+	"go.temporal.io/sdk/activity"
+)
+
+func WithdrawActivity(ctx context.Context, input PaymentDetails) (string, error) {
+	logger := activity.GetLogger(ctx)
+	logger.Info("Withdrawing money", "Amount", input.Amount, "Account", input.SourceAccount)
+
+	bankService := NewBankingService("bank1.example.com")
+	referenceID := input.ReferenceID + "-withdrawal"
+	
+	result, err := bankService.Withdraw(input.SourceAccount, input.Amount, referenceID)
+	if err != nil {
+		return "", err
+	}
+
+	return result, nil
 }
 ```
 
-</SdkTabs.DotNet>
+</SdkTabs.Go>
 
 </SdkTabs>
 
