@@ -1,1 +1,1 @@
-export { BackButton, NextButton, TutorialProgress } from './TutorialNavigation';
+export { NextButton } from './TutorialNavigation';
