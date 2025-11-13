@@ -1,8 +1,9 @@
 ---
 id: python-failure-simulation
 title: Simulate Failures with Temporal Python SDK
-sidebar_label: Failure Simulation
+sidebar_label: "Part 2: Failure Simulation"
 description: Learn how Temporal handles failures, recovers from crashes, and enables live debugging of your Python workflows.
+hide_table_of_contents: true
 keywords:
   - temporal
   - python
@@ -19,49 +20,45 @@ tags:
 
 import { CallToAction } from "@site/src/components/elements/CallToAction";
 import { TemporalProgress } from "@site/src/components/TemporalProgress";
-import { MissionStatus } from "@site/src/components/MissionStatus";
+
 import { StatusIndicators } from "@site/src/components/StatusIndicators";
 import { WorkflowDiagram } from "@site/src/components/WorkflowDiagram";
 import { RetryCounter } from "@site/src/components/RetryCounter";
 import { TemporalCheckbox } from "@site/src/components/TemporalCheckbox";
 import { CodeComparison } from "@site/src/components/CodeComparison";
 
-# Simulate Failures with Temporal Python SDK
+# Part 2: Simulate Failures 
 
-
-**Your mission**: Break things on purpose and watch Temporal work its magic. 
-You're about to discover why developers sleep better at night knowing Temporal is handling their critical processes.
 
 <TemporalProgress steps={[
   { id: 'part1', label: 'Part 1: Basic Workflow', status: 'completed' },
   { id: 'part2', label: 'Part 2: Failure Simulation', status: 'active' }
 ]} />
+**Your mission**: Break things on purpose and watch Temporal work its magic. 
+You're about to discover why developers sleep better at night knowing Temporal is handling their critical processes.
 
-<MissionStatus items={[
-  { id: 'crash-test', number: '1', label: 'Crash Recovery Test', status: 'pending' },
-  { id: 'bug-fixing', number: '2', label: 'Live Bug Fixing', status: 'pending' },
-  { id: 'advanced', number: '3', label: 'Advanced Missions', status: 'pending' }
-]} />
+
+**Durable execution** means your workflow's progress is saved after every step. When failures happen - server crashes, network issues, bugs in your code - Temporal resumes your workflow exactly where it stopped. No lost work, no restarting from the beginning.
 
 **What you'll accomplish**:
 - Crash a server mid-transaction and see zero data loss
 - Inject bugs into production code and fix them live
 - Experience reliability that makes traditional error handling look primitive
 
-**Difficulty**: Intermediate | **Time**: 15 minutes
+**Difficulty**: Intermediate 
 
 Ready to break some stuff? Let's go.
 
 ## Experiment 1 of 2: Crash Recovery Test
 
-<TemporalProgress steps={[
-  { id: 'crash-recovery', label: 'Crash Recovery', status: 'active' },
-  { id: 'bug-fixing', label: 'Live Bug Fixing', status: 'pending' }
-]} />
 
-Unlike other solutions, Temporal is designed with failure in mind. You're about to simulate a server crash mid-transaction and watch Temporal handle it flawlessly.
+
+Unlike other solutions, Temporal is designed with failure in mind. 
+You're about to simulate a server crash mid-transaction and watch Temporal handle it flawlessly.
 
 **The Challenge**: Kill your Worker process while money is being transferred. In traditional systems, this would corrupt the transaction or lose data entirely.
+
+
 
 <WorkflowDiagram 
   title="What We're Testing"
@@ -73,7 +70,7 @@ Unlike other solutions, Temporal is designed with failure in mind. You're about 
   ]}
 />
 
-### Pre-Flight Checklist
+### Before You Start
 
 <TemporalCheckbox id="worker-stopped">
   Worker is currently stopped
@@ -96,7 +93,10 @@ This is fundamentally different from traditional applications where process cras
 
 </details>
 
-1. **Make sure your Worker is stopped** before proceeding. If the Worker is running, press `Ctrl+C` to stop it.
+### Instructions
+
+1. **Make sure your Worker is stopped** before proceeding. 
+If the Worker is running, press `Ctrl+C` to stop it.
 
 2. **Start the Worker in Terminal 2:**
    ```bash
@@ -132,19 +132,15 @@ This is fundamentally different from traditional applications where process cras
 **Mission Accomplished!** You just simulated killing the Worker process and restarting it. The Workflow resumed where it left off without losing any application state.
 
 :::tip **Try This Challenge**
-**Advanced Experiment**: Try killing the Worker at different points during execution. Start the Workflow, kill the Worker during the withdrawal, then restart it. Kill it during the deposit. Each time, notice how Temporal maintains perfect state consistency.
+Try killing the Worker at different points during execution. Start the Workflow, kill the Worker during the withdrawal, then restart it. Kill it during the deposit. Each time, notice how Temporal maintains perfect state consistency.
 
-**Bonus points**: Check the Web UI while the Worker is down - you'll see the Workflow is still "Running" even though no code is executing.
+Check the Web UI while the Worker is down - you'll see the Workflow is still "Running" even though no code is executing.
 :::
 
 ## Experiment 2 of 2: Live Bug Fixing
 
-<TemporalProgress steps={[
-  { id: 'crash-recovery', label: 'Crash Recovery', status: 'completed' },
-  { id: 'bug-fixing', label: 'Live Bug Fixing', status: 'active' }
-]} />
 
-**The Challenge**: Inject a bug into your production code, watch Temporal retry automatically, then fix the bug while the Workflow is still running. This is every developer's dream scenario.
+**The Challenge**: Inject a bug into your production code, watch Temporal retry automatically, then fix the bug while the Workflow is still running. 
 
 <WorkflowDiagram 
   title="Live Debugging Flow"
@@ -156,7 +152,7 @@ This is fundamentally different from traditional applications where process cras
   ]}
 />
 
-### Pre-Flight Checklist
+### Before You Start
 
 <TemporalCheckbox id="worker-stopped-2">
   Worker is stopped
@@ -187,6 +183,8 @@ Traditional applications lose all context when they crash or fail. Temporal main
 This is like having version control for your running application state.
 
 </details>
+
+### Instructions
 
 1. **Make sure your Worker is stopped** before proceeding.
 
@@ -276,11 +274,11 @@ return "Deposited money into account"
 **Question to consider**: How would you handle this scenario in a traditional microservices architecture?
 :::
 
-## Mission Debrief: What You Just Accomplished
+## Summary: What You Accomplished
 
-**Congratulations!** You've experienced firsthand why Temporal is a game-changer for reliable applications. Here's what you proved:
+**Congratulations!** You've experienced firsthand why Temporal is a game-changer for reliable applications. Here's what you demonstrated:
 
-### Your New Superpowers
+### What You Learned
 
 <details>
 <summary><strong>Crash-Proof Execution</strong></summary>
@@ -310,7 +308,7 @@ The Web UI gave you full visibility into every step, retry attempt, and state tr
 
 </details>
 
-### Mission Complete Checklist
+#### Summary
 
 <TemporalCheckbox id="crash-recovery">
   Successfully recovered from a Worker crash
@@ -332,15 +330,11 @@ The Web UI gave you full visibility into every step, retry attempt, and state tr
   Experienced zero data loss through failures
 </TemporalCheckbox>
 
-<TemporalProgress steps={[
-  { id: 'crash-recovery', label: 'Crash Recovery', status: 'completed' },
-  { id: 'bug-fixing', label: 'Live Bug Fixing', status: 'completed' },
-  { id: 'mission-complete', label: 'Mission Complete!', status: 'completed' }
-]} />
 
-## Advanced Training Missions
 
-Ready for more chaos engineering? Try these advanced scenarios:
+## Advanced Challenges 
+
+Try these advanced scenarios:
 
 :::tip **Mission: Compensating Transactions**
 1. **Modify the retry policy** in `workflows.py` to only retry 1 time

@@ -1,7 +1,7 @@
 ---
 id: python
 title: Run your first Temporal application with the Python SDK
-sidebar_label: Python
+sidebar_label: "Part 1: Python"
 description: Learn Temporal's core concepts by building a money transfer Workflow with the Python SDK. Experience reliability, failure handling, and live debugging in a 10-minute tutorial.
 keywords:
   - temporal
@@ -20,9 +20,10 @@ hide_table_of_contents: false
 import { SetupSteps, SetupStep, CodeSnippet } from "@site/src/components/elements/SetupSteps";
 import { CallToAction } from "@site/src/components/elements/CallToAction";
 import { TemporalProgress } from "@site/src/components/TemporalProgress";
-import { MissionStatus } from "@site/src/components/MissionStatus";
 import { StatusIndicators } from "@site/src/components/StatusIndicators";
 import { SearchIcon } from "@site/src/components/icons";
+import { NextButton } from "@site/src/components/TutorialNavigation";
+import SdkTabs from "@site/src/components/elements/SdkTabs";
 
 You can think of Temporal as a sort of "cure-all" for the pains you experience as a developer when trying to build reliable applications. Whether you're writing a complex transaction-based Workflow or working with remote APIs, you know that creating reliable applications is a complex process.
 
@@ -118,20 +119,34 @@ The Temporal Application will consist of the following pieces:
 2. **An Activity** is a method that encapsulates business logic prone to failure (e.g., calling a service that may go down). These Activities can be automatically retried upon some failure.
 3. **A Worker**, provided by the Temporal SDK, which runs your Workflow and Activities reliably and consistently.
 
-
-
-
 </SetupStep>
+
+</SetupSteps>
+
 :::important
 None of your application code runs on the Temporal Server. Your Worker, Workflow, and Activity run on your infrastructure, along with the rest of your applications.
 :::
 
-## Run a Money Transfer Flow 
-### Step 1: Workflow Definition
+## Explore the Application's Workflow and Activity Definitions
+
+<SdkTabs>
+<SdkTabs.Python>
+
+In the money transfer application, you have:
+- **Workflow**: Orchestrates the overall money transfer process
+- **Activities**: Handle individual tasks like `withdraw()`, `deposit()`, and `refund()`  
+- **Worker**: Executes your Workflow and Activities
+
+![High-level project design](/img/moneytransfer/money-withdrawal.png)
+
+<h3>Workflow Definition</h3>
 
 A Workflow Definition in Python uses the `@workflow.defn` decorator on the Workflow class to identify a Workflow.
 
+This is what the Workflow Definition looks like for this kind of process:
+
 **workflows.py**
+
 ```python
 from datetime import timedelta
 from temporalio import workflow
@@ -145,7 +160,7 @@ with workflow.unsafe.imports_passed_through():
 @workflow.defn
 class MoneyTransfer:
     @workflow.run
-    async def run(self, payment_details: PaymentDetails):
+    async def run(self, payment_details: PaymentDetails) -> str:
         retry_policy = RetryPolicy(
             maximum_attempts=3,
             maximum_interval=timedelta(seconds=2),
@@ -169,11 +184,11 @@ class MoneyTransfer:
                 retry_policy=retry_policy,
             )
 
-            result = "Transfer complete (transaction IDs: " + str(withdraw_output) + ", " + str(deposit_output) + ")"
+            result = f"Transfer complete (transaction IDs: {withdraw_output}, {deposit_output})"
             return result
         except ActivityError as deposit_err:
             # Handle deposit error
-            workflow.logger.error("Deposit failed: " + str(deposit_err))
+            workflow.logger.error(f"Deposit failed: {deposit_err}")
             # Attempt to refund
             try:
                 refund_output = await workflow.execute_activity_method(
@@ -182,118 +197,182 @@ class MoneyTransfer:
                     start_to_close_timeout=timedelta(seconds=5),
                     retry_policy=retry_policy,
                 )
-                workflow.logger.info("Refund successful. Confirmation ID: " + str(refund_output))
+                workflow.logger.info(
+                    f"Refund successful. Confirmation ID: {refund_output}"
+                )
                 raise deposit_err
             except ActivityError as refund_error:
-                workflow.logger.error("Refund failed: " + str(refund_error))
+                workflow.logger.error(f"Refund failed: {refund_error}")
                 raise refund_error
 ```
 
-The `MoneyTransfer` class takes in transaction details. It executes Activities to withdraw and deposit the money. It also returns the results of the process.
+<h3>Activity Definition</h3>
 
-The asynchronous `run` method signature includes an `input` variable typed as `PaymentDetails`. This class stores details that the Workflow uses to perform the money transfer.
-
-### Step 2: Activity Definition
-
-Each Activity method simulates calling an external service. 
-Each method can fail or succeed independently.
-
-In the money transfer application, you have three Activity methods: `withdraw()`, `deposit()`, and `refund()`. These symbolize the movement of funds between accounts.
-
+Activities handle the business logic. Each activity method calls an external banking service:
 
 **activities.py**
+
 ```python
 import asyncio
-from dataclasses import dataclass
 from temporalio import activity
 from shared import PaymentDetails
 
-@dataclass
 class BankingActivities:
     @activity.defn
-    @staticmethod
-    async def withdraw(data: PaymentDetails):
-        print("Withdrawing money from account")
-        
-        # Simulate time to call other services that may fail
-        await asyncio.sleep(1)
-        
-        return "Withdrew money from account"
-
-    @activity.defn
-    @staticmethod
-    async def deposit(data: PaymentDetails):
-        print("Depositing money into account")
-        
-        # Simulate time to call other services that may fail
-        await asyncio.sleep(1)
-        
-        # Comment/uncomment the next line to simulate failures.
-        # raise Exception("This deposit has failed.")
-
-        return "Deposited money into account"
-
-    @activity.defn
-    @staticmethod
-    async def refund(data: PaymentDetails):
-        print("Refunding money back to account")
-        
-        # Simulate time to call other services that may fail
-        await asyncio.sleep(1)
-        
-        return "Refunded money back to account"
+    async def withdraw(self, data: PaymentDetails) -> str:
+        reference_id = f"{data.reference_id}-withdrawal"
+        try:
+            confirmation = await asyncio.to_thread(
+                self.bank.withdraw, data.source_account, data.amount, reference_id
+            )
+            return confirmation
+        except InvalidAccountError:
+            raise
+        except Exception:
+            activity.logger.exception("Withdrawal failed")
+            raise
 ```
 
-**shared.py**
+</SdkTabs.Python>
+
+<SdkTabs.DotNet>
+
+In the money transfer application, you have:
+- **Workflow**: Orchestrates the overall money transfer process using C#
+- **Activities**: Handle individual tasks like `WithdrawAsync()`, `DepositAsync()`, and `RefundAsync()`  
+- **Worker**: Executes your Workflow and Activities
+
+![High-level project design](/img/moneytransfer/money-withdrawal.png)
+
+<h3>Workflow Definition</h3>
+
+In the Temporal .NET SDK, a Workflow Definition is marked by the `[Workflow]` attribute placed above the class.
+
+This is what the Workflow Definition looks like for this process:
+
+**MoneyTransferWorker/Workflow.cs**
+
+```csharp
+namespace Temporalio.MoneyTransferProject.MoneyTransferWorker;
+using Temporalio.MoneyTransferProject.BankingService.Exceptions;
+using Temporalio.Workflows;
+using Temporalio.Common;
+using Temporalio.Exceptions;
+
+[Workflow]
+public class MoneyTransferWorkflow
+{
+    [WorkflowRun]
+    public async Task<string> RunAsync(PaymentDetails details)
+    {
+        // Retry policy
+        var retryPolicy = new RetryPolicy
+        {
+            InitialInterval = TimeSpan.FromSeconds(1),
+            MaximumInterval = TimeSpan.FromSeconds(100),
+            BackoffCoefficient = 2,
+            MaximumAttempts = 3,
+            NonRetryableErrorTypes = new[] { "InvalidAccountException", "InsufficientFundsException" }
+        };
+
+        string withdrawResult;
+        try
+        {
+            withdrawResult = await Workflow.ExecuteActivityAsync(
+                () => BankingActivities.WithdrawAsync(details),
+                new ActivityOptions { StartToCloseTimeout = TimeSpan.FromMinutes(5), RetryPolicy = retryPolicy }
+            );
+        }
+        catch (ApplicationFailureException ex) when (ex.ErrorType == "InsufficientFundsException")
+        {
+            throw new ApplicationFailureException("Withdrawal failed due to insufficient funds.", ex);
+        }
+
+        string depositResult;
+        try
+        {
+            depositResult = await Workflow.ExecuteActivityAsync(
+                () => BankingActivities.DepositAsync(details),
+                new ActivityOptions { StartToCloseTimeout = TimeSpan.FromMinutes(5), RetryPolicy = retryPolicy }
+            );
+            // If everything succeeds, return transfer complete
+            return $"Transfer complete (transaction IDs: {withdrawResult}, {depositResult})";
+        }
+        catch (Exception depositEx)
+        {
+            try
+            {
+                // if the deposit fails, attempt to refund the withdrawal
+                string refundResult = await Workflow.ExecuteActivityAsync(
+                    () => BankingActivities.RefundAsync(details),
+                    new ActivityOptions { StartToCloseTimeout = TimeSpan.FromMinutes(5), RetryPolicy = retryPolicy }
+                );
+                // If refund is successful, but deposit failed
+                throw new ApplicationFailureException($"Failed to deposit money into account {details.TargetAccount}. Money returned to {details.SourceAccount}.", depositEx);
+            }
+            catch (Exception refundEx)
+            {
+                // If both deposit and refund fail
+                throw new ApplicationFailureException($"Failed to deposit money into account {details.TargetAccount}. Money could not be returned to {details.SourceAccount}. Cause: {refundEx.Message}", refundEx);
+            }
+        }
+    }
+}
+```
+
+<h3>Activity Definition</h3>
+
+Activities handle the business logic. Each activity method calls an external banking service:
+
+**MoneyTransferWorker/Activities.cs**
+
+```csharp
+namespace Temporalio.MoneyTransferProject.MoneyTransferWorker;
+using Temporalio.Activities;
+using Temporalio.Exceptions;
+
+public class BankingActivities
+{
+    [Activity]
+    public static async Task<string> WithdrawAsync(PaymentDetails details)
+    {
+        var bankService = new BankingService("bank1.example.com");
+        Console.WriteLine($"Withdrawing ${details.Amount} from account {details.SourceAccount}.");
+        try
+        {
+            return await bankService.WithdrawAsync(details.SourceAccount, details.Amount, details.ReferenceId).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationFailureException("Withdrawal failed", ex);
+        }
+    }
+}
+```
+
+</SdkTabs.DotNet>
+
+</SdkTabs>
+
+## Set the Retry Policy
+
+Temporal makes your software durable and fault tolerant by default. If an Activity fails, Temporal automatically retries it, but you can customize this behavior through a Retry Policy.
+
+In the `MoneyTransfer` Workflow, you'll see a Retry Policy that retries failed Activities up to 3 times, with specific errors that shouldn't be retried:
+
 ```python
-from dataclasses import dataclass
-
-MONEY_TRANSFER_TASK_QUEUE_NAME = "money-transfer"
-
-@dataclass
-class PaymentDetails:
-    source_account: str
-    target_account: str
-    amount: int
-    reference_id: str
+retry_policy = RetryPolicy(
+    maximum_attempts=3,
+    maximum_interval=timedelta(seconds=2),
+    non_retryable_error_types=["InvalidAccountError", "InsufficientFundsError"],
+)
 ```
 
-The Activities are defined as static methods with the `@activity.defn` decorator.
+:::important This is a Simplified Example
+This tutorial shows core Temporal features and is not intended for production use. A real money transfer system would need additional logic for edge cases, cancellations, and error handling.
+:::
 
-Note the `PaymentDetails` type, defined in `shared.py`. This contains the transaction information passed between the Workflow and Activities.
-
-### Step 3: Start the Worker
-
-The Worker hosts the Workflow and Activity functions and executes them one at a time.
-
-The Worker is configured to execute Workflows and Activities from the Task Queue. Since the Worker and Workflow are both configured to use the same Task Queue, the Worker will execute any Workflows and Activities sent to the Task Queue.
-
-**run_worker.py**
-```python
-import asyncio
-from temporalio.client import Client
-from temporalio.worker import Worker
-from activities import BankingActivities
-from shared import MONEY_TRANSFER_TASK_QUEUE_NAME
-from workflows import MoneyTransfer
-
-async def main():
-    client = await Client.connect("localhost:7233")
-    
-    worker = Worker(
-        client,
-        task_queue=MONEY_TRANSFER_TASK_QUEUE_NAME,
-        workflows=[MoneyTransfer],
-        activities=[BankingActivities.withdraw, BankingActivities.deposit, BankingActivities.refund],
-    )
-    
-    await worker.run()
-
-if __name__ == "__main__":
-    asyncio.run(main())
-```
-When you start the Worker, it begins polling the Temporal Server for work.
-
+## Run Your Money Transfer
 
 <SetupStep code={
   <div>
@@ -327,8 +406,6 @@ Result: Transfer complete (transaction IDs: Withdrew $250 from account 85-150. R
   </div>
 }>
 
-### Run Your Application 
-
 Now that your Worker is running and polling for tasks, you can start a Workflow execution.
 
 **In Terminal 3, start the Workflow:**
@@ -344,13 +421,23 @@ The `run_workflow.py` script starts a Workflow Execution. Each time you run this
 
 </SetupStep>
 
-<SetupStep code={
-  <CallToAction 
-    href="http://localhost:8233"
-    buttonText="Open the Temporal UI "
-    description="View the state of the Workflow with the Temporal Web UI"
-  />
-}>
+<CallToAction href="/develop/python/set-up" >
+
+<div style={{display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
+  <SearchIcon size={16} color="white" />
+  <div>
+    <h3>Python Environment Setup</h3>
+    <p>Run through the Quickstart to get your set up complete.</p>
+  </div>
+</div>
+
+</CallToAction>
+
+<CallToAction 
+  href="http://localhost:8233"
+  buttonText="Open the Temporal UI "
+  description="View the state of the Workflow with the Temporal Web UI"
+/>
 
 
 ## View the state of the Workflow with the Temporal Web UI
@@ -366,15 +453,20 @@ The Temporal Web UI lets you see details about the Workflow you just ran.
 
 **Try This:** Click on a Workflow in the list to see all the details of the Workflow Execution.
 
-</SetupStep>
-
 <div style={{textAlign: 'center', margin: '2rem 0'}}>
   <img src="/img/moneytransfer/webuisample.png" alt="Money Transfer Web UI " style={{maxWidth: '100%', height: 'auto'}} />
 </div>
 
-</SetupSteps>
 
 
+## Ready for Part 2?
+
+<NextButton 
+  href="/build-your-first-basic-workflow/python-failure-simulation" 
+  description="Simulate crashes, fix bugs in running workflows, and experience Temporal's reliability superpowers"
+>
+  Continue to Part 2: Simulate Failures
+</NextButton>
 
 ## Continue Your Learning
 
