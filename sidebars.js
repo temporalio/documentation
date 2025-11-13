@@ -20,8 +20,8 @@ module.exports = {
         id: "build-your-first-basic-workflow/index",
       },
       items: [
-        "build-your-first-basic-workflow/python",
-        "build-your-first-basic-workflow/python-failure-simulation",
+        "build-your-first-basic-workflow/build-your-first-workflow",
+        "build-your-first-basic-workflow/failure-simulation",
       ],
     },
     {

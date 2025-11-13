@@ -1,7 +1,7 @@
 ---
-id: python
+id: build-your-first-workflow
 title: Run your first Temporal application with the Python SDK
-sidebar_label: "Part 1: Python"
+sidebar_label: "Part 1: Build Your First Workflow"
 description: Learn Temporal's core concepts by building a money transfer Workflow with the Python SDK. Experience reliability, failure handling, and live debugging in a 10-minute tutorial.
 keywords:
   - temporal
@@ -11,10 +11,8 @@ keywords:
   - money transfer
   - reliability
 tags:
-  - Python
-  - SDK
   - Getting Started
-hide_table_of_contents: false
+  - Tutorial
 ---
 
 import { SetupSteps, SetupStep, CodeSnippet } from "@site/src/components/elements/SetupSteps";
@@ -28,8 +26,7 @@ import SdkTabs from "@site/src/components/elements/SdkTabs";
 You can think of Temporal as a sort of "cure-all" for the pains you experience as a developer when trying to build reliable applications. Whether you're writing a complex transaction-based Workflow or working with remote APIs, you know that creating reliable applications is a complex process.
 
 <div style={{display: 'flex', gap: '0.5rem', marginBottom: '2rem'}}>
-  <span className="badge badge--primary">⭐ Temporal beginner</span>
-  <span className="badge badge--success">🐍 Python SDK</span>
+  <span className="badge badge--success">Temporal beginner</span>
 </div>
 
 <TemporalProgress steps={[
@@ -51,8 +48,8 @@ Before starting this tutorial:
 - **Ensure you have Git installed** to clone the project
 
 <CallToAction 
-  href="/develop/python/set-up-your-local-python"
-  buttonText="Python Quickstart Guide"
+  href="/quickstarts"
+  buttonText="Quickstart Guide"
   description="Run through the Quickstart to get your set up complete."
 />
 
@@ -86,7 +83,6 @@ The application you'll use in this tutorial is available in a GitHub repository.
 
 Open a new terminal window and use `git` to clone the repository, then change to the project directory.
 
-
 Now that you've downloaded the project, let's dive into the code.
 
 
@@ -116,7 +112,7 @@ The repository for this tutorial is a GitHub Template repository, which means yo
 The Temporal Application will consist of the following pieces:
 
 1. **A Workflow** written in Python using the Python SDK. A Workflow defines the overall flow of the application.
-2. **An Activity** is a method that encapsulates business logic prone to failure (e.g., calling a service that may go down). These Activities can be automatically retried upon some failure.
+2. **An Activity** is a method that encapsulates business logic prone to failure (e.g., calling a service that may go down). These Activities can be automatically retried upon some failure. They handle individual tasks like withdraw(), deposit(), and refund().
 3. **A Worker**, provided by the Temporal SDK, which runs your Workflow and Activities reliably and consistently.
 
 </SetupStep>
@@ -131,13 +127,6 @@ None of your application code runs on the Temporal Server. Your Worker, Workflow
 
 <SdkTabs>
 <SdkTabs.Python>
-
-In the money transfer application, you have:
-- **Workflow**: Orchestrates the overall money transfer process
-- **Activities**: Handle individual tasks like `withdraw()`, `deposit()`, and `refund()`  
-- **Worker**: Executes your Workflow and Activities
-
-![High-level project design](/img/moneytransfer/money-withdrawal.png)
 
 <h3>Workflow Definition</h3>
 
@@ -236,13 +225,6 @@ class BankingActivities:
 </SdkTabs.Python>
 
 <SdkTabs.DotNet>
-
-In the money transfer application, you have:
-- **Workflow**: Orchestrates the overall money transfer process using C#
-- **Activities**: Handle individual tasks like `WithdrawAsync()`, `DepositAsync()`, and `RefundAsync()`  
-- **Worker**: Executes your Workflow and Activities
-
-![High-level project design](/img/moneytransfer/money-withdrawal.png)
 
 <h3>Workflow Definition</h3>
 
@@ -421,26 +403,17 @@ The `run_workflow.py` script starts a Workflow Execution. Each time you run this
 
 </SetupStep>
 
-<CallToAction href="/develop/python/set-up" >
-
-<div style={{display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
-  <SearchIcon size={16} color="white" />
-  <div>
-    <h3>Python Environment Setup</h3>
-    <p>Run through the Quickstart to get your set up complete.</p>
-  </div>
-</div>
-
-</CallToAction>
-
-<CallToAction 
-  href="http://localhost:8233"
-  buttonText="Open the Temporal UI "
-  description="View the state of the Workflow with the Temporal Web UI"
-/>
 
 
 ## View the state of the Workflow with the Temporal Web UI
+
+<SetupStep code={
+  <CallToAction 
+    href="http://localhost:8233"
+    buttonText="Open the Temporal UI "
+    description="View the state of the Workflow with the Temporal Web UI"
+  />
+}>
 
 The Temporal Web UI lets you see details about the Workflow you just ran.
 
@@ -453,11 +426,13 @@ The Temporal Web UI lets you see details about the Workflow you just ran.
 
 **Try This:** Click on a Workflow in the list to see all the details of the Workflow Execution.
 
+
+
+</SetupStep>
+
 <div style={{textAlign: 'center', margin: '2rem 0'}}>
   <img src="/img/moneytransfer/webuisample.png" alt="Money Transfer Web UI " style={{maxWidth: '100%', height: 'auto'}} />
 </div>
-
-
 
 ## Ready for Part 2?
 
