@@ -365,6 +365,11 @@ See [API limits](/production-deployment/cloud/metrics/openmetrics/api-reference#
 
 ## FAQ
 
+### Q: Will metrics match between promQL and OpenMetrics endpoints?
+No. The metrics will be approximately the same but due to aggregation differences and windowing, values likely won't match exactly between the two endpoints. 
+Some metrics may be consistently different such as `temporal_cloud_v1_total_action_count` which includes History Export actions in the OpenMetrics endpoint. In the case of consistent differences
+the OpenMetrics endpoint is considered to be more accurate.
+
 ### Q: Can I still query metrics directly (e.g. with a Grafana dashboard)?
 
 Currently, the OpenMetrics endpoint requires an observability platform to collect and query metrics. Direct querying via API to return a time series of data is not supported. Supporting this type of query pattern is a future roadmap item.

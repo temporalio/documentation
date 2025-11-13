@@ -27,8 +27,9 @@ module.exports = async function createConfigAsync() {
     clientModules: ['./src/client/remote-amplitude-analytics.js'],
     themeConfig: {
       colorMode: {
-        defaultMode: 'light',
+        defaultMode: 'dark',
         disableSwitch: false,
+        respectPrefersColorScheme: true,
         // switchConfig: {
         //   darkIcon: "🌙",
         //   darkIconStyle: {
@@ -48,7 +49,7 @@ module.exports = async function createConfigAsync() {
       prism: {
         //theme: require("prism-react-renderer/themes/nightOwlLight"),
         // darkTheme: require("prism-react-renderer/themes/dracula"),
-        additionalLanguages: ['java', 'ruby', 'php', 'csharp'],
+        additionalLanguages: ['java', 'ruby', 'php', 'csharp', 'toml', 'bash'],
       },
       docs: {
         sidebar: {
@@ -97,8 +98,13 @@ module.exports = async function createConfigAsync() {
           },
           {
             label: 'AI Cookbook',
-            to: '/cookbook',
-            activeBasePath: 'cookbook',
+            to: '/ai-cookbook',
+            activeBasePath: 'ai-cookbook',
+            position: 'left',
+          },
+          {
+            label: 'Code Exchange',
+            href: 'https://temporal.io/code-exchange',
             position: 'left',
           },
           {
@@ -106,6 +112,10 @@ module.exports = async function createConfigAsync() {
             to: '/cloud',
             activeBasePath: 'cloud',
             position: 'left',
+          },
+          {
+            type: 'custom-askAI',
+            position: 'right',
           },
         ],
       },
@@ -121,7 +131,7 @@ module.exports = async function createConfigAsync() {
           {
             items: [
               {
-                label: 'Github',
+                label: 'GitHub',
                 href: 'https://github.com/temporalio',
               },
               {
@@ -222,7 +232,7 @@ module.exports = async function createConfigAsync() {
           docs: {
             sidebarPath: require.resolve('./sidebars.js'),
             routeBasePath: '/',
-            exclude: ['**/clusters/**', '**/cookbook/**'], // do not render context content
+            exclude: ['**/clusters/**', '**/ai-cookbook/**'], // do not render context content
             editUrl: 'https://github.com/temporalio/documentation/edit/main/docs/',
             /**
              * Whether to display the author who last updated the doc.
@@ -278,6 +288,7 @@ module.exports = async function createConfigAsync() {
       },
       {
         src: 'https://widget.kapa.ai/kapa-widget.bundle.js',
+        'data-button-hide': 'true',
         'data-website-id': '91a88508-9cdc-441f-b1df-37aa9329e6bc',
         'data-project-name': 'Temporal',
         'data-project-color': '#000000',
@@ -333,9 +344,9 @@ module.exports = async function createConfigAsync() {
       [
         '@docusaurus/plugin-content-docs',
         {
-          id: 'cookbook',
-          path: 'cookbook',
-          routeBasePath: 'cookbook', // published at /cookbook/* ✅
+          id: 'ai-cookbook',
+          path: 'ai-cookbook',
+          routeBasePath: 'ai-cookbook', // published at /ai-cookbook/* ✅
           sidebarPath: false, // no left nav for these pages ✅
           // optional polish:
           showLastUpdateAuthor: true,
@@ -348,8 +359,8 @@ module.exports = async function createConfigAsync() {
       [
         require.resolve('./plugins/cookbook-index'),
         {
-          docsDir: 'cookbook', // change if your folder differs
-          routeBasePath: 'cookbook', // change if you use a different base
+          docsDir: 'ai-cookbook', // change if your folder differs
+          routeBasePath: 'ai-cookbook', // change if you use a different base
         },
       ],
       [

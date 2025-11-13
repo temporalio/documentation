@@ -151,11 +151,6 @@ Note that the `/build` directory is ignored by Git.
 
 This command spins up a local web server and serves the contents of the `/build` directory to [localhost:3000](http://localhost:3000/).
 
-## `yarn format`
-
-This command formats the documents per the `dprint.json` configuration.
-The repository CI now automatically applies `dprint` formatting on upload and merges any changes back to the submitted branch.
-
 ## `yarn snipsync`
 
 This command runs the Snipsync tool per the snipsync.config.yaml file.

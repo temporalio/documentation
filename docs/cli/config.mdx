@@ -2,7 +2,9 @@
 id: config
 title: Temporal CLI config command reference
 sidebar_label: config
-description: Temporal CLI 'config' commands allow the getting, setting, deleting, and listing of configuration properties for connecting to Temporal.
+description:
+  Temporal CLI 'config' commands allow the getting, setting, deleting, and listing of configuration properties for
+  connecting to Temporal.
 toc_max_heading_level: 4
 keywords:
   - cli reference
@@ -19,8 +21,8 @@ tags:
   - Temporal CLI
 ---
 
-{/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
-This file is generated from https://github.com/temporalio/cli/blob/main/temporalcli/commandsgen/commands.yml */}
+{/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten. This file is generated from
+https://github.com/temporalio/cli/blob/main/temporalcli/commandsgen/commands.yml  */}
 
 ## delete
 
@@ -43,7 +45,7 @@ Specific property to delete. If unset, deletes entire profile. Required.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -67,7 +69,8 @@ Remote Codec Server endpoint.
 
 **--codec-header** _string[]_
 
-HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple
+headers.
 
 **--color** _string-enum_
 
@@ -79,7 +82,8 @@ The command execution timeout. 0s means no timeout.
 
 **--config-file** _string_
 
-File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporalio/temporal.toml` where `$CONFIG_PATH` is defined
+as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
 
 :::note
 
@@ -117,7 +121,12 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also
+be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -125,7 +134,8 @@ Log format. Accepted values: text, json. (default "text")
 
 **--log-level** _string-enum_
 
-Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. (default "info")
+Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn,
+error, never. (default "info")
 
 **--namespace**, **-n** _string_
 
@@ -155,7 +165,8 @@ Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if
+api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -204,7 +215,7 @@ Use the following options to change the behavior of this command.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -228,7 +239,8 @@ Remote Codec Server endpoint.
 
 **--codec-header** _string[]_
 
-HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple
+headers.
 
 **--color** _string-enum_
 
@@ -240,7 +252,8 @@ The command execution timeout. 0s means no timeout.
 
 **--config-file** _string_
 
-File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as
+`$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
 
 :::note
 
@@ -278,7 +291,12 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also
+be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -286,7 +304,8 @@ Log format. Accepted values: text, json. (default "text")
 
 **--log-level** _string-enum_
 
-Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. (default "info")
+Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn,
+error, never. (default "info")
 
 **--namespace**, **-n** _string_
 
@@ -316,7 +335,8 @@ Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if
+api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -377,7 +397,7 @@ Specific property to get.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -401,7 +421,8 @@ Remote Codec Server endpoint.
 
 **--codec-header** _string[]_
 
-HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple
+headers.
 
 **--color** _string-enum_
 
@@ -413,7 +434,8 @@ The command execution timeout. 0s means no timeout.
 
 **--config-file** _string_
 
-File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as
+`$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
 
 :::note
 
@@ -451,7 +473,12 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also
+be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -459,7 +486,8 @@ Log format. Accepted values: text, json. (default "text")
 
 **--log-level** _string-enum_
 
-Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. (default "info")
+Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn,
+error, never. (default "info")
 
 **--namespace**, **-n** _string_
 
@@ -489,7 +517,8 @@ Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if
+api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -537,7 +566,7 @@ Use the following options to change the behavior of this command.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -561,7 +590,8 @@ Remote Codec Server endpoint.
 
 **--codec-header** _string[]_
 
-HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple
+headers.
 
 **--color** _string-enum_
 
@@ -573,7 +603,8 @@ The command execution timeout. 0s means no timeout.
 
 **--config-file** _string_
 
-File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as
+`$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
 
 :::note
 
@@ -611,7 +642,12 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also
+be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -619,7 +655,8 @@ Log format. Accepted values: text, json. (default "text")
 
 **--log-level** _string-enum_
 
-Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. (default "info")
+Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn,
+error, never. (default "info")
 
 **--namespace**, **-n** _string_
 
@@ -649,7 +686,8 @@ Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if
+api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
@@ -709,7 +747,7 @@ Property value. Required.
 
 **--address** _string_
 
-Temporal Service gRPC endpoint. (default "127.0.0.1:7233")
+Temporal Service gRPC endpoint. (default "localhost:7233")
 
 **--api-key** _string_
 
@@ -733,7 +771,8 @@ Remote Codec Server endpoint.
 
 **--codec-header** _string[]_
 
-HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
+HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple
+headers.
 
 **--color** _string-enum_
 
@@ -745,7 +784,8 @@ The command execution timeout. 0s means no timeout.
 
 **--config-file** _string_
 
-File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as
+`$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
 
 :::note
 
@@ -783,7 +823,12 @@ Path to environment settings file. Defaults to `$HOME/.config/temporalio/tempora
 
 **--grpc-meta** _string[]_
 
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also
+be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
+
+**--identity** _string_
+
+The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
 
 **--log-format** _string-enum_
 
@@ -791,7 +836,8 @@ Log format. Accepted values: text, json. (default "text")
 
 **--log-level** _string-enum_
 
-Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. (default "info")
+Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn,
+error, never. (default "info")
 
 **--namespace**, **-n** _string_
 
@@ -821,7 +867,8 @@ Time format. Accepted values: relative, iso, raw. (default "relative")
 
 **--tls** _bool_
 
-Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
+Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if
+api-key or any other TLS options are present. Use --tls=false to explicitly disable.
 
 **--tls-ca-data** _string_
 
