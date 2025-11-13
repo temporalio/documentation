@@ -3,31 +3,38 @@ module.exports = {
     "index",
     {
       type: "category",
-      label: "Quickstarts",
+      label: "Getting Started",
       collapsed: false,
-      link: {
-        type: "doc",
-        id: "quickstarts",
-      },
-      items: [],
-    },
-    {
-      type: "category",
-      label: "Build your First Basic Workflow",
-      collapsed: false,
-      link: {
-        type: "doc",
-        id: "build-your-first-basic-workflow/index",
-      },
       items: [
-        "build-your-first-basic-workflow/build-your-first-workflow",
-        "build-your-first-basic-workflow/failure-simulation",
+        {
+          type: "category",
+          label: "Quickstarts",
+          collapsed: false,
+          link: {
+            type: "doc",
+            id: "quickstarts",
+          },
+          items: [],
+        },
+        {
+          type: "category",
+          label: "Build your First Basic Workflow",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "build-your-first-basic-workflow/index",
+          },
+          items: [
+            "build-your-first-basic-workflow/build-your-first-workflow",
+            "build-your-first-basic-workflow/failure-simulation",
+          ],
+        },
+        {
+          type: "link",
+          label: "Courses and Tutorials",
+          href: "https://learn.temporal.io/",
+        },
       ],
-    },
-    {
-      type: "link",
-      label: "Courses and Tutorials",
-      href: "https://learn.temporal.io/",
     },
     {
       type: "category",
