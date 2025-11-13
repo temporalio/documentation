@@ -123,7 +123,7 @@ The Temporal Application will consist of the following pieces:
 None of your application code runs on the Temporal Server. Your Worker, Workflow, and Activity run on your infrastructure, along with the rest of your applications.
 :::
 
-## Explore the Application's Workflow and Activity Definitions
+## Build your Workflow and Activities 
 
 <SdkTabs>
 <SdkTabs.Python>
@@ -388,7 +388,7 @@ Result: Transfer complete (transaction IDs: Withdrew $250 from account 85-150. R
   </div>
 }>
 
-Now that your Worker is running and polling for tasks, you can start a Workflow execution.
+Now that your Worker is running and polling for tasks, you can start a Workflow Execution.
 
 **In Terminal 3, start the Workflow:**
 
@@ -403,9 +403,7 @@ The `run_workflow.py` script starts a Workflow Execution. Each time you run this
 
 </SetupStep>
 
-
-
-## View the state of the Workflow with the Temporal Web UI
+## Check the Temporal Web UI
 
 <SetupStep code={
   <CallToAction 
@@ -437,7 +435,7 @@ The Temporal Web UI lets you see details about the Workflow you just ran.
 ## Ready for Part 2?
 
 <NextButton 
-  href="/build-your-first-basic-workflow/python-failure-simulation" 
+  href="/build-your-first-basic-workflow/failure-simulation" 
   description="Simulate crashes, fix bugs in running workflows, and experience Temporal's reliability superpowers"
 >
   Continue to Part 2: Simulate Failures

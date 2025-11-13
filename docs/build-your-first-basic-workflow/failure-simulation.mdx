@@ -32,24 +32,21 @@ import { CodeComparison } from "@site/src/components/CodeComparison";
   { id: 'part1', label: 'Part 1: Basic Workflow', status: 'completed' },
   { id: 'part2', label: 'Part 2: Failure Simulation', status: 'active' }
 ]} />
-**Your mission**: Break things on purpose and watch Temporal work its magic. 
-You're about to discover why developers sleep better at night knowing Temporal is handling their critical processes.
+In this part, you'll simulate failures to see how Temporal handles them. 
+This demonstrates why Temporal is particularly useful for building reliable systems.
 
-
-**Durable execution** means your workflow's progress is saved after every step. When failures happen - server crashes, network issues, bugs in your code - Temporal resumes your workflow exactly where it stopped. No lost work, no restarting from the beginning.
+The key concept here is **durable execution**: your workflow's progress is saved after every step. 
+When failures and crashes happen (network issues, bugs in your code, server restarts), Temporal resumes your workflow exactly where it stopped. No lost work, no restarting from the beginning.
 
 **What you'll accomplish**:
 - Crash a server mid-transaction and see zero data loss
-- Inject bugs into production code and fix them live
-- Experience reliability that makes traditional error handling look primitive
+- Inject bugs into code and fix them live
 
 **Difficulty**: Intermediate 
 
 Ready to break some stuff? Let's go.
 
 ## Experiment 1 of 2: Crash Recovery Test
-
-
 
 Unlike other solutions, Temporal is designed with failure in mind. 
 You're about to simulate a server crash mid-transaction and watch Temporal handle it flawlessly.
