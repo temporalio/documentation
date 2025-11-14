@@ -73,7 +73,7 @@ Here are some best practices you can use when you are making Activity plugins:
 Temporal's Activity retry mechanism gives applications the benefits of durable execution.
 For example, Temporal will keep track of the exponential backoff delay even if the Worker crashes. Since Temporal can’t tell when a Worker crashes, Workflows rely on the [start_to_close_timeout](https://docs.temporal.io/encyclopedia/detecting-activity-failures#start-to-close-timeout) to know how long to wait before assuming that an Activity is inactive. 
 
-Be cautious when doing retries within your Activity because it lengthens this overall timeout to be longer than the longest possible retry sequence. That means it takes too long to recover from other causes of failure. Such internal retries also prevent users from counting failure metrics and make it harder for users to debug in Temporal UI when something is wrong.
+Be cautious when doing retries within your Activity because it lengthens the needed Activity timeout.  Such internal retries also prevent users from counting failure metrics and make it harder for users to debug in Temporal UI when something is wrong.
 
 Follow the example for your SDK below:
 
