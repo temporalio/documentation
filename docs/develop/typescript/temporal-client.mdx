@@ -52,7 +52,7 @@ connecting from a Worker.
 ## Connect to development Temporal Service {#connect-to-development-service}
 
 To connect to a development Temporal service from a Temporal Application or from within an Activity, import the
-`Connection` class from `@temporalio/client` and use
+[`Connection` class](https://typescript.temporal.io/api/classes/client.Connection) from `@temporalio/client` and use
 [`Connection.connect`](https://typescript.temporal.io/api/classes/client.Connection#connect) to create a Connection
 object to connect to the Temporal Service. Then pass in that connection when you create a new `Client` instance. If you
 leave the connection options empty, the SDK defaults to connecting to `127.0.0.1:7233` in the `default` Namespace.
@@ -481,7 +481,8 @@ connection.setApiKey(<APIKey>);
 
 Connecting to Temporal Service from a Worker requires the same set of connections options as connecting from a Temporal
 Application or from within an Activity, but the connection type is different. When connecting from a Worker, you create
-a `NativeConnection` object instead of a `Connection` object. The `NativeConnection` class is imported from
+a `NativeConnection` object instead of a `Connection` object. The
+[`NativeConnection` class](https://typescript.temporal.io/api/classes/worker.NativeConnection) is imported from
 `@temporalio/worker` instead of `@temporalio/client`. After you create the `NativeConnection` object, you pass it to
 `Worker.create()` when creating the Worker.
 
