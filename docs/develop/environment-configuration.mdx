@@ -334,36 +334,33 @@ public static class LoadFromFile
   <SdkTabs.TypeScript>
 To load the `default` profile along with any environment variables in TypeScript, use the `loadClientConnectConfig` helper from `@temporalio/envconfig` package.
 
-{/* SNIPSTART typescript-env-config-load-profile-with-overrides {"highlightedLines": "15-18,30-31"} */}
-[env-config/src/load-profile.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-profile.ts)
-
-```ts {15-18,30-31}
+{/* SNIPSTART typescript-env-config-load-default-profile {"highlightedLines": "17-19,28-29"} */}
+[env-config/src/load-from-file.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-from-file.ts)
+```ts {17-19,28-29}
 import { Connection, Client } from '@temporalio/client';
 import { loadClientConnectConfig } from '@temporalio/envconfig';
 import { resolve } from 'path';
 
 async function main() {
-  console.log("--- Loading 'staging' profile with programmatic overrides ---");
+  console.log('--- Loading default profile from config.toml ---');
 
+  // For this sample to be self-contained, we explicitly provide the path to
+  // the config.toml file included in this directory.
+  // By default though, the config.toml file will be loaded from
+  // ~/.config/temporalio/temporal.toml (or the equivalent standard config directory on your OS).
   const configFile = resolve(__dirname, '../config.toml');
-  const profileName = 'staging';
 
-  // The 'staging' profile in config.toml has an incorrect address (localhost:9999)
-  // We'll programmatically override it to the correct address
-
-  // Load the 'staging' profile.
+  // loadClientConnectConfig is a helper that loads a profile and prepares
+  // the configuration for Connection.connect and Client. By default, it loads the
+  // "default" profile.
   const config = loadClientConnectConfig({
-    profile: profileName,
     configSource: { path: configFile },
   });
 
-  // Override the target host to the correct address.
-  // This is the recommended way to override configuration values.
-  config.connectionOptions.address = 'localhost:7233';
-
-  console.log(`\nLoaded '${profileName}' profile from ${configFile} with overrides.`);
-  console.log(`  Address: ${config.connectionOptions.address} (overridden from localhost:9999)`);
+  console.log(`Loaded 'default' profile from ${configFile}.`);
+  console.log(`  Address: ${config.connectionOptions.address}`);
   console.log(`  Namespace: ${config.namespace}`);
+  console.log(`  gRPC Metadata: ${JSON.stringify(config.connectionOptions.metadata)}`);
 
   console.log('\nAttempting to connect to client...');
   try {
@@ -381,7 +378,6 @@ main().catch((err) => {
   process.exit(1);
 });
 ```
-
 {/* SNIPEND */}
 
   </SdkTabs.TypeScript>
@@ -630,36 +626,33 @@ public static class LoadProfile
 To load a specific profile from a custom path in TypeScript, use the `loadClientConnectConfig` helper from
 `@temporalio/envconfig` package with the `profile` and `configFile` options.
 
-{/* SNIPSTART typescript-env-config-load-profile-with-overrides {"highlightedLines": "15-18,30-31"} */}
-[env-config/src/load-profile.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-profile.ts)
-
-```ts {15-18,30-31}
+{/* SNIPSTART typescript-env-config-load-default-profile {"highlightedLines": "17-19,28-29"} */}
+[env-config/src/load-from-file.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-from-file.ts)
+```ts {17-19,28-29}
 import { Connection, Client } from '@temporalio/client';
 import { loadClientConnectConfig } from '@temporalio/envconfig';
 import { resolve } from 'path';
 
 async function main() {
-  console.log("--- Loading 'staging' profile with programmatic overrides ---");
+  console.log('--- Loading default profile from config.toml ---');
 
+  // For this sample to be self-contained, we explicitly provide the path to
+  // the config.toml file included in this directory.
+  // By default though, the config.toml file will be loaded from
+  // ~/.config/temporalio/temporal.toml (or the equivalent standard config directory on your OS).
   const configFile = resolve(__dirname, '../config.toml');
-  const profileName = 'staging';
 
-  // The 'staging' profile in config.toml has an incorrect address (localhost:9999)
-  // We'll programmatically override it to the correct address
-
-  // Load the 'staging' profile.
+  // loadClientConnectConfig is a helper that loads a profile and prepares
+  // the configuration for Connection.connect and Client. By default, it loads the
+  // "default" profile.
   const config = loadClientConnectConfig({
-    profile: profileName,
     configSource: { path: configFile },
   });
 
-  // Override the target host to the correct address.
-  // This is the recommended way to override configuration values.
-  config.connectionOptions.address = 'localhost:7233';
-
-  console.log(`\nLoaded '${profileName}' profile from ${configFile} with overrides.`);
-  console.log(`  Address: ${config.connectionOptions.address} (overridden from localhost:9999)`);
+  console.log(`Loaded 'default' profile from ${configFile}.`);
+  console.log(`  Address: ${config.connectionOptions.address}`);
   console.log(`  Namespace: ${config.namespace}`);
+  console.log(`  gRPC Metadata: ${JSON.stringify(config.connectionOptions.metadata)}`);
 
   console.log('\nAttempting to connect to client...');
   try {
@@ -677,7 +670,6 @@ main().catch((err) => {
   process.exit(1);
 });
 ```
-
 {/* SNIPEND */}
 
 </SdkTabs.TypeScript>
