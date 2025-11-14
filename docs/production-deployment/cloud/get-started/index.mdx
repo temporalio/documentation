@@ -1,0 +1,82 @@
+---
+id: index
+title: Get started with Temporal Cloud
+sidebar_label: Get started
+slug: /cloud/get-started/
+description:
+  Get started with Temporal Cloud. Sign up, verify your Account Owner or Global Admin role, set up authentication,
+  create a Namespace, invite users, and connect your Temporal Client and Workers.
+toc_max_heading_level: 3
+keywords:
+  - introduction
+  - temporal cloud
+tags:
+  - Temporal Cloud
+  - Authentication
+  - API
+---
+
+import { DiscoverableDisclosure } from "@site/src/components";
+
+Getting started with Temporal Cloud involves a few key steps:
+
+1. [Sign up for Temporal Cloud](#sign-up-for-temporal-cloud)
+1. [Create a Namespace](#create-a-namespace)
+1. [Set up your Clients and Workers](#set-up-your-clients-and-workers)
+1. [Run your first Workflow](#run-your-first-workflow)
+1. [Invite your team](#invite-your-team)
+
+## Sign up for Temporal Cloud
+
+To create a Temporal Cloud account, you can:
+
+- Sign up [directly](https://temporal.io/get-cloud); or
+- Subscribe at the AWS Marketplace for
+  [Temporal Cloud Pay-As-You-Go](https://aws.amazon.com/marketplace/pp/prodview-xx2x66m6fp2lo). Signing up through the
+  AWS Marketplace is similar to signing up directly on the Temporal Cloud site, but billing goes through your AWS
+  account.
+- To purchase Temporal Cloud on the Google Cloud Marketplace, please contact our team at sales@temporal.io.
+
+For information about Temporal Cloud Pricing, see our [Pricing Page](/cloud/pricing).
+
+## Create a Namespace
+
+See [Managing Namespaces](/cloud/namespaces#create-a-namespace) to create your first namespace.
+
+Temporal Cloud supports either [API key](/cloud/api-keys) or [mTLS](/cloud/certificates) authentication for each
+namespace. If you're not sure which to use, we recommend using [API keys](/cloud/api-keys) because they're easier to
+manage and rotate for most teams. If your organization already has private key infrastructure (PKI) and is familiar with
+cert management, then [mTLS](/cloud/certificates) is an excellent choice.
+
+## Set up your Clients and Workers
+
+See our guides for connecting each SDK to your Temporal Cloud Namespace:
+
+- [Connect to Temporal Cloud in Go](/develop/go/temporal-client#connect-to-temporal-cloud)
+- [Connect to Temporal Cloud in Java](/develop/java/temporal-client#connect-to-temporal-cloud)
+- [Connect to Temporal Cloud in Python](/develop/python/temporal-client#connect-to-temporal-cloud)
+- [Connect to Temporal Cloud in TypeScript](/develop/typescript/core-application#connect-to-temporal-cloud)
+- [Connect to Temporal Cloud in .NET](/develop/dotnet/temporal-client#connect-to-temporal-cloud)
+- [Connect to Temporal Cloud in PHP](/develop/php/temporal-client#connect-to-temporal-cloud)
+- [Connect to Temporal Cloud in Ruby](/develop/ruby/temporal-client#connect-to-temporal-cloud)
+
+## Run your first Workflow
+
+See our guides for starting a workflow using each SDK:
+
+- [Start a workflow in Go](/develop/go/temporal-client#start-workflow-execution)
+- [Start a workflow in Java](/develop/java/temporal-client#start-workflow-execution)
+- [Start a workflow in Python](/develop/python/temporal-client#start-workflow-execution)
+- [Start a workflow in TypeScript](/develop/typescript/core-application#start-workflow-execution)
+- [Start a workflow in .NET](/develop/dotnet/temporal-client#start-workflow)
+- [Start a workflow in PHP](/develop/php/temporal-client#start-workflow-execution)
+- [Start a workflow in Ruby](/develop/ruby/temporal-client#start-workflow)
+
+## Invite your team
+
+See [Managing users](/cloud/users) to add other users and assign them roles.
+
+You can also use [Service Accounts](/cloud/service-accounts) to represent machine identities.
+
+Since you created the account when you signed up, your email address is the first
+[Account Owner](/cloud/users#account-level-roles) for your account.

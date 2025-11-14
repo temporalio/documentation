@@ -1,0 +1,155 @@
+---
+id: temporal-service-configuration
+title: Temporal Service configuration
+sidebar_label: Configuration
+description: Temporal Service configuration is the setup and configuration details of your self-hosted Temporal Service, defined using YAML.
+slug: /temporal-service/configuration
+toc_max_heading_level: 4
+keywords:
+  - configuration
+  - observability
+tags:
+  - Concepts
+  - Temporal Service
+---
+
+This page discusses the following:
+
+- [Static Configuration](#static-configuration)
+- [Dynamic Configuration](#dynamic-configuration)
+- [Security Configuration](#temporal-cluster-security-configuration)
+- [Observability](#monitoring-and-observation)
+
+## What is Temporal Service configuration? {#cluster-configuration}
+
+Temporal Service configuration is the setup and configuration details of your self-hosted Temporal Service, defined using YAML.
+You must define your Temporal Service configuration when setting up your self-hosted Temporal Service.
+
+For details on using Temporal Cloud, see [Temporal Cloud documentation](/cloud).
+
+Temporal Service configuration is composed of two types of configuration: [Static configuration](#static-configuration) and [Dynamic configuration](#dynamic-configuration).
+
+### Static configuration
+
+Static configuration contains details of how the Temporal Service should be set up.
+The static configuration is read just once and used to configure service nodes at startup.
+Depending on how you want to deploy your self-hosted Temporal Service, your static configuration must contain details for setting up:
+
+- Temporal Services—Frontend, History, Matching, Worker
+- Membership ports for the Temporal Services
+- Persistence (including History Shard count), Visibility, Archival store setups.
+- TLS, authentication, authorization
+- Server log level
+- Metrics
+- Temporal Service metadata
+- Dynamic config Client
+
+Static configuration values cannot be changed at runtime.
+Some values, such as the Metrics configuration or Server log level can be changed in the static configuration but require restarting the Temporal Service for the changes to take effect.
+
+For details on static configuration keys, see [Temporal Service configuration reference](/references/configuration).
+
+For static configuration examples, see [https://github.com/temporalio/temporal/tree/master/config](https://github.com/temporalio/temporal/tree/master/config).
+
+### Dynamic configuration
+
+Dynamic configuration contains configuration keys that you can update in your Temporal Service setup without having to restart the server processes.
+
+All dynamic configuration keys provided by Temporal have default values that are used by the Temporal Service.
+You can override the default values by setting different values for the keys in a YAML file and setting the [dynamic configuration client](/references/configuration#dynamicconfigclient) to poll this file for updates.
+Setting dynamic configuration for your Temporal Service is optional.
+
+Setting overrides for some configuration keys updates the Temporal Service configuration immediately.
+However, for configuration fields that are checked at startup (such as thread pool size), you must restart the server for the changes to take effect.
+
+Use dynamic configuration keys to fine-tune your self-deployed Temporal Service setup.
+
+For details on dynamic configuration keys, see [Dynamic configuration reference](/references/dynamic-configuration).
+
+For dynamic configuration examples, see [https://github.com/temporalio/temporal/tree/master/config/dynamicconfig](https://github.com/temporalio/temporal/tree/master/config/dynamicconfig).
+
+## What is Temporal Service security configuration? {#temporal-cluster-security-configuration}
+
+Secure your Temporal Service (self-hosted and Temporal Cloud) by encrypting your network communication and setting authentication and authorization protocols for API calls.
+
+For details on setting up your Temporal Service security, see [Temporal Platform security features](/security).
+
+### mTLS encryption
+
+Temporal supports Mutual Transport Layer Security (mTLS) to encrypt network traffic between services within a Temporal Service, or between application processes and a Temporal Service.
+
+On the self-hosted Temporal Service, configure mTLS in the `tls` section of the [Temporal Service configuration](/references/configuration#tls).
+mTLS configuration is a [static configuration](#static-configuration) property.
+
+You can then use either the [`WithConfig`](/references/server-options#withconfig) or [`WithConfigLoader`](/references/server-options#withconfigloader) server option to start your Temporal Service with this configuration.
+
+The mTLS configuration includes two sections that serve to separate communication within a Temporal Service and client calls made from your application to the Temporal Service.
+
+- `internode`: configuration for encrypting communication between nodes within the Temporal Service.
+- `frontend`: configuration for encrypting the public endpoints of the Frontend Service.
+
+Setting mTLS for `internode` and `frontend` separately lets you use different certificates and settings to encrypt each section of traffic.
+
+### Using certificates for Client connections
+
+Use CA certificates to authenticate client connections to your Temporal Service.
+
+On Temporal Cloud, you can [set your CA certificates in your Temporal Cloud settings](/cloud/certificates) and use the end-entity certificates in your client calls.
+
+On the self-hosted Temporal Service, you can restrict access to Temporal Service endpoints by using the `clientCAFiles` or `clientCAData` property and the [`requireClientAuth`](/references/configuration#tls) property in your Temporal Service configuration.
+These properties can be specified in both the `internode` and `frontend` sections of the [mTLS configuration](/references/configuration#tls).
+For details, see the [tls configuration reference](/references/configuration#tls).
+
+### Server name specification
+
+On the self-hosted Temporal Service, you can specify `serverName` in the `client` section of your mTLS configuration to prevent spoofing and [MITM attacks](https://en.wikipedia.org/wiki/Man-in-the-middle_attack).
+
+Entering a value for `serverName` enables established connections to authenticate the endpoint.
+This ensures that the server certificate presented to any connected client has the specified server name in its CN property.
+
+This measure can be used for `internode` and `frontend` endpoints.
+
+For more information on mTLS configuration, see [tls configuration reference](/references/configuration#tls).
+
+### Authentication and authorization
+
+{/* commenting this very generic explanation out. Can include it back in if everyone feels strongly.
+**Authentication** is the process of verifying users who want to access your application are actually the users you want accessing it.
+**Authorization** is the verification of applications and data that a user on your Temporal Service or application has access to. */}
+
+Temporal provides authentication interfaces that can be set to restrict access to your data.
+These protocols address three areas: servers, client connections, and users.
+
+Temporal offers two plugin interfaces for authentication and authorization of API calls.
+
+- [`ClaimMapper`](/self-hosted-guide/security#claim-mapper)
+- [`Authorizer`](/self-hosted-guide/security#authorizer-plugin)
+
+The logic of both plugins can be customized to fit a variety of use cases.
+When plugins are provided, the Frontend Service invokes their implementation before running the requested operation.
+
+## What is Temporal Service observability? {#monitoring-and-observation}
+
+You can monitor and observe performance with metrics emitted by your self-hosted Temporal Service or by Temporal Cloud.
+
+Temporal emits metrics by default in a format that is supported by Prometheus.
+Any metrics software that supports the same format can be used.
+Currently, we test with the following Prometheus and Grafana versions:
+
+- **Prometheus >= v2.0**
+- **Grafana >= v2.5**
+
+Temporal Cloud emits metrics through a Prometheus HTTP API endpoint, which can be directly used as a Prometheus data source in Grafana or to query and export Cloud metrics to any observability platform.
+
+For details on Cloud metrics and setup, see the following:
+
+- [Temporal Cloud metrics reference](/cloud/metrics/)
+- [Set up Grafana with Temporal Cloud observability to view metrics](/cloud/metrics/prometheus-grafana#grafana-data-sources-configuration)
+
+On the self-hosted Temporal Service, expose Prometheus endpoints in your Temporal Service configuration and configure Prometheus to scrape metrics from the endpoints.
+You can then set up your observability platform (such as Grafana) to use Prometheus as a data source.
+
+For details on self-hosted Temporal Service metrics and setup, see the following:
+
+- [Temporal Service OSS metrics reference](/references/cluster-metrics)
+- [Set up Prometheus and Grafana to view SDK and self-hosted Temporal Service metrics](/self-hosted-guide/monitoring)

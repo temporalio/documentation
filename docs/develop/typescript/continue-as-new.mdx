@@ -1,0 +1,113 @@
+---
+id: continue-as-new
+title: Continue-As-New - Typescript SDK
+sidebar_label: Continue-As-New
+description: Use Temporal's Continue-As-New in Typescript to manage large Event Histories by atomically creating new Workflow Executions with the same Workflow Id and fresh parameters.
+toc_max_heading_level: 2
+keywords:
+  - continue-as-new workflow
+  - restart workflow
+  - fresh event history
+  - avoid large event histories
+  - temporal typescript continue-as-new
+tags:
+  - Workflows
+  - continue-as-new
+  - TypeScript SDK
+  - Temporal SDKs
+---
+
+This page answers the following questions for Typescript developers:
+
+- [What is Continue-As-New?](#what)
+- [How to Continue-As-New?](#how)
+- [When is it right to Continue-as-New?](#when)
+- [How to test Continue-as-New?](#how-to-test)
+
+## What is Continue-As-New? {#what}
+
+[Continue-As-New](/workflow-execution/continue-as-new) lets a Workflow Execution close successfully and creates a new Workflow Execution.
+You can think of it as a checkpoint when your Workflow gets too long or approaches certain scaling limits.
+
+The new Workflow Execution is in the same [chain](/workflow-execution#workflow-execution-chain); it keeps the same Workflow Id but gets a new Run Id and a fresh Event History.
+It also receives your Workflow's usual parameters.
+
+## How to Continue-As-New using the Typescript SDK {#how}
+
+First, design your Workflow parameters so that you can pass in the "current state" when you Continue-As-New into the next Workflow run.
+This state is typically set to `None` for the original caller of the Workflow.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/samples-typescript/blob/main/message-passing/safe-message-handlers/src/workflows.ts">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+```typescript
+export interface ClusterManagerInput {
+  state?: ClusterManagerState;
+}
+
+export async function clusterManagerWorkflow(input: ClusterManagerInput = {}): Promise<ClusterManagerStateSummary> {
+
+````
+The test hook in the above snippet is covered [below](#how-to-test).
+
+Inside your Workflow, call the [`continueAsNew()`](https://typescript.temporal.io/api/namespaces/workflow#continueasnew) function with the same type.
+This stops the Workflow right away and starts a new one.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/samples-typescript/blob/main/message-passing/safe-message-handlers/src/workflows.ts">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+```typescript
+return await wf.continueAsNew<typeof clusterManagerWorkflow>({ 
+  state: manager.getState(),
+  testContinueAsNew: input.testContinueAsNew 
+});
+````
+
+### Considerations for Workflows with Message Handlers {#with-message-handlers}
+
+If you use Updates or Signals, don't call Continue-as-New from the handlers.
+Instead, wait for your handlers to finish in your main Workflow before you run `ContinueAsNew`.
+See the [`allHandlersFinished`](message-passing#wait-for-message-handlers) example for guidance.
+
+## When is it right to Continue-as-New using the Typescript SDK? {#when}
+
+Use Continue-as-New when your Workflow might hit [Event History Limits](/workflow-execution/event#event-history).
+
+Temporal tracks your Workflow's progress against these limits to let you know when you should Continue-as-New.
+Call `wf.workflowInfo().continueAsNewSuggested` to check if it's time.
+
+## How to test Continue-as-New using the Typescript SDK {#how-to-test}
+
+Testing Workflows that naturally Continue-as-New may be time-consuming and resource-intensive.
+Instead, add a test hook to check your Workflow's Continue-as-New behavior faster in automated tests.
+
+For example, when `testContinueAsNew == true`, this sample creates a test-only variable called `this.maxHistoryLength` and sets it to a small value.
+A helper method in the Workflow checks it each time it considers using Continue-as-New:
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/samples-typescript/blob/main/message-passing/safe-message-handlers/src/client.ts">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```typescript
+shouldContinueAsNew(): boolean {
+  if (wf.workflowInfo().continueAsNewSuggested) {
+    return true;
+  }
+
+  // This is just for ease-of-testing. In production, we trust temporal to tell us when to continue-as-new.
+  if (this.maxHistoryLength !== undefined && wf.workflowInfo().historyLength > this.maxHistoryLength) {
+    return true;
+  }
+
+  return false;
+}
+```

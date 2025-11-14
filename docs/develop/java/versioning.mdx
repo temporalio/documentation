@@ -1,0 +1,245 @@
+---
+id: versioning
+title: Versioning - Java SDK
+sidebar_label: Versioning
+slug: /develop/java/versioning
+toc_max_heading_level: 2
+description: The Temporal Platform ensures deterministic Workflow code, offering versioning features in the Java SDK with Workflow Patching APIs and Worker Build Ids for efficient updates.
+keywords:
+  - determinism
+  - go sdk
+  - patching
+  - versioning
+  - workflows
+tags:
+  - Workflows
+  - Versioning
+  - Patching
+  - Java SDK
+  - Temporal SDKs
+---
+
+Since Workflow Executions in Temporal can run for long periods — sometimes months or even years — it's common to need to make changes to a Workflow Definition, even while a particular Workflow Execution is in progress.
+
+The Temporal Platform requires that Workflow code is [deterministic](/workflow-definition#deterministic-constraints).
+If you make a change to your Workflow code that would cause non-deterministic behavior on Replay, you'll need to use one of our Versioning methods to gracefully update your running Workflows.
+With Versioning, you can modify your Workflow Definition so that new executions use the updated code, while existing ones continue running the original version.
+There are two primary Versioning methods that you can use:
+
+- [Versioning with Patching](#patching). This method works by adding branches to your code tied to specific revisions. It applies a code change to new Workflow Executions while avoiding disruptive changes to in-progress ones.
+- [Worker Versioning](/production-deployment/worker-deployments/worker-versioning). The Worker Versioning feature allows you to tag your Workers and programmatically roll them out in versioned deployments, so that old Workers can run old code paths and new Workers can run new code paths. If you were using this method experimentally prior to summer 2025, refer to the [Worker Versioning Legacy](worker-versioning-legacy) docs.
+
+## Versioning with Patching {#patching}
+
+To understand why Patching is useful, it's helpful to first demonstrate cutting over an entire Workflow.
+
+### Workflow cutovers
+
+Since incompatible changes only affect open Workflow Executions of the same type, you can avoid determinism errors by creating a whole new Workflow when making changes.
+To do this, you can copy the Workflow Definition function, giving it a different name, and register both names with your Workers.
+
+For example, you would duplicate `PizzaWorkflow` as `PizzaWorkflowV2`:
+
+```java
+import io.temporal.workflow.WorkflowInterface;
+import io.temporal.workflow.WorkflowMethod;
+
+@WorkflowInterface
+public interface PizzaWorkflow {
+
+  @WorkflowMethod
+  public OrderConfirmation pizzaWorkflow(PizzaOrder order);
+}
+
+public class PizzaWorkflowImpl{
+
+  @Override
+  public OrderConfirmation pizzaWorkflow(PizzaOrder order){
+      // implementation code omitted for this example
+  }
+}
+
+@WorkflowInterface
+public interface PizzaWorkflowV2 {
+
+  @WorkflowMethod
+  public OrderConfirmation pizzaWorkflow(PizzaOrder order);
+}
+
+public class PizzaWorkflowImplV2 implements PizzaWorkflowV2{
+
+  @Override
+  public OrderConfirmation pizzaWorkflow(PizzaOrder order){
+      // implementation code omitted for this example
+  }
+}
+```
+
+It is necessary to create a separate interface because a Workflow Interface can only have one Workflow Method.
+
+You would then need to update the Worker configuration, and any other identifier strings, to register both Workflow Types:
+
+```java
+worker.registerWorkflowImplementationTypes(PizzaWorkflowImpl.class);
+worker.registerWorkflowImplementationTypes(PizzaWorkflowImplV2.class);
+```
+
+The downside of this method is that it requires you to duplicate code and to update any commands used to start the Workflow.
+This can become impractical over time.
+This method also does not provide a way to version any still-running Workflows -- it is essentially just a cutover, unlike Patching, which we will now demonstrate.
+
+### Patching with GetVersion
+
+A Patch defines a logical branch in a Workflow for a specific change, similar to a feature flag.
+It applies a code change to new Workflow Executions while avoiding disruptive changes to in-progress ones.
+When you want to make substantive code changes that may affect existing Workflow Executions, create a patch. Note that there's no need to patch [Pinned Workflows](/worker-versioning).
+
+Consider the following Workflow Definition:
+
+```java
+public void processFile(Arguments args) {
+    String localName = null;
+    String processedName = null;
+    try {
+        localName = activities.download(args.getSourceBucketName(), args.getSourceFilename());
+        processedName = activities.processFile(localName);
+        activities.upload(args.getTargetBucketName(), args.getTargetFilename(), processedName);
+    } finally {
+        if (localName != null) { // File was downloaded.
+            activities.deleteLocalFile(localName);
+        }
+        if (processedName != null) { // File was processed.
+            activities.deleteLocalFile(processedName);
+        }
+    }
+}
+```
+
+Imagine you want to revise this Workflow by adding another Activity to calculate a file checksum.
+If an existing Workflow Execution was started by the original version of the Workflow code, where there was no `calculateChecksum()` Activity, and then resumed running on a new Worker where this Activity had been added, the server side Event History would be out of sync.
+This would cause the Workflow to fail with a nondeterminism error.
+
+To resolve this, you can use `workflow.GetVersion()` to patch to your Workflow:
+
+```java
+public void processFile(Arguments args) {
+    String localName = null;
+    String processedName = null;
+    try {
+        localName = activities.download(args.getSourceBucketName(), args.getSourceFilename());
+        processedName = activities.processFile(localName);
+        int version = Workflow.getVersion("checksumAdded", Workflow.DEFAULT_VERSION, 1);
+        if (version == Workflow.DEFAULT_VERSION) {
+            activities.upload(args.getTargetBucketName(), args.getTargetFilename(), processedName);
+        } else {
+            long checksum = activities.calculateChecksum(processedName);
+            activities.uploadWithChecksum(
+                args.getTargetBucketName(), args.getTargetFilename(), processedName, checksum);
+        }
+    } finally {
+        if (localName != null) { // File was downloaded.
+            activities.deleteLocalFile(localName);
+        }
+        if (processedName != null) { // File was processed.
+            activities.deleteLocalFile(processedName);
+        }
+    }
+}
+```
+
+When `workflow.GetVersion()` is run for the new Workflow Execution, it records a marker in the Event History so that all future calls to `GetVersion` for this change id — `checksumAdded` in the example — on this Workflow Execution will always return the given version number, which is `1` in the example.
+
+After all the Workflow Executions prior to version 1 have left retention, you can remove the code for that version.
+
+```java
+public void processFile(Arguments args) {
+    String localName = null;
+    String processedName = null;
+    try {
+        localName = activities.download(args.getSourceBucketName(), args.getSourceFilename());
+        processedName = activities.processFile(localName);
+        // getVersion call is left here to ensure that any attempt to replay history
+        // for a different version fails. It can be removed later when there is no possibility
+        // of this happening.
+        Workflow.getVersion("checksumAdded", 1, 1);
+        long checksum = activities.calculateChecksum(processedName);
+        activities.uploadWithChecksum(
+            args.getTargetBucketName(), args.getTargetFilename(), processedName, checksum);
+    } finally {
+        if (localName != null) { // File was downloaded.
+            activities.deleteLocalFile(localName);
+        }
+        if (processedName != null) { // File was processed.
+            activities.deleteLocalFile(processedName);
+        }
+    }
+}
+```
+
+### Adding Support for Versioned Workflow Visibility in the Event History
+
+In other Temporal SDKs, when you invoke `getVersion` or the patching API, the SDK records an
+`UpsertWorkflowSearchAttribute` Event in the history.
+This adds support for a custom query parameter in the web UI named `TemporalChangeVersion` that allows you to filter Workflows based on their version.
+The Java SDK does not automatically add this attribute, so you'll likely want to do it manually.
+
+Within your Workflow Implementation code you'll need to perform the following steps:
+
+#### Import the `SearchAttributes` class
+
+```java
+import io.temporal.common.SearchAttributeKey;
+```
+
+#### Define the `SearchAttributesKey` object
+
+This object will be used as the key within the search attributes. This is done as an instance variable.
+
+```java
+public static final SearchAttributeKey<List<String>> TEMPORAL_CHANGE_VERSION = SearchAttributeKey.forKeywordList("TemporalChangeVersion");
+```
+
+#### Set the Search Attribute using `upsert`
+
+You should set this attribute when you make the call to `getVersion`.
+
+```java
+int version = Workflow.getVersion("MovedThankYouAfterLoop", Workflow.DEFAULT_VERSION, 1);
+
+if (version != Workflow.DEFAULT_VERSION) {
+  Workflow.upsertTypedSearchAttributes(Constants.TEMPORAL_CHANGE_VERSION
+      .valueSet(Arrays.asList(("MovedThankYouAfterLoop-" + version))));
+}
+```
+
+You should only set the attribute on new versions.
+
+#### Setting Attributes for Multiple `getVersion` Calls
+
+The code in the previous section works well for code that only has one call to `getVersion()`.
+However, you may encounter situations where you have to have multiple calls to `getVersion()` to handle multiple independent changes to your Workflow.
+In this case, you should create a list of all the version changes and then set the attribute value:
+
+```java
+List<String> list = new ArrayList<String>();
+int versionOne = Workflow.getVersion("versionOne", Workflow.DEFAULT_VERSION, 1);
+int versionTwo = Workflow.getVersion("versionTwo", Workflow.DEFAULT_VERSION, 1);
+if ( versionOne != Workflow.DEFAULT_VERSION ) {
+   list.append("versionOne-" + versionOne);
+}
+if (versionTwo != Workflow.DEFAULT_VERSION) {
+   list.append("versionTwo-" + versionTwo);
+}
+Workflow.upsertTypedSearchAttributes(Constants.TEMPORAL_CHANGE_VERSION.valueSet(list));
+```
+
+Patching allows you to make changes to currently running Workflows.
+It is a powerful method for introducing compatible changes without introducing non-determinism errors.
+
+### Testing a Workflow for replay safety
+
+To determine whether your Workflow your needs a patch, or that you've patched it successfully, you should incorporate [Replay Testing](/develop/java/testing-suite#replay).
+
+## Worker Versioning
+
+Temporal's [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) feature allows you to tag your Workers and programmatically roll them out in Deployment Versions, so that old Workers can run old code paths and new Workers can run new code paths. This way, you can pin your Workflows to specific revisions, avoiding the need for patching.

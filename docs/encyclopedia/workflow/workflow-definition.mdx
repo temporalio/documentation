@@ -1,0 +1,312 @@
+---
+id: workflow-definition
+title: Temporal Workflow Definition
+sidebar_label: Workflow Definition
+description: A Workflow Definition in Temporal is the code that defines the constraints of a Workflow Execution.
+slug: /workflow-definition
+toc_max_heading_level: 4
+keywords:
+  - workflow definition
+tags:
+  - Concepts
+  - Workflows
+
+---
+
+import { CaptionedImage } from '@site/src/components';
+
+This pages covers the following:
+
+- [What is a Workflow Definition?](/workflow-definition)
+- [Determinism and constraints](#deterministic-constraints)
+- [Handling code changes and non-deterministic behavior](#non-deterministic-change)
+- [Intrinsic non-determinism logic](#intrinsic-nondeterministic-logic)
+- [Versioning Workflow code and Patching](#workflow-versioning)
+- [Handling unreliable Worker Processes](#unreliable-worker-processes)
+- [What is a Workflow Type?](#workflow-type)
+
+A Temporal Workflow defines the overall flow of the application.
+Conceptually, a Workflow is a sequence of steps written in a general-purpose programming language.
+With Temporal, those steps are defined by writing code, known as a Workflow Definition, and are carried out by running that code, which results in a Workflow Execution.
+
+In day-to-day conversations, the term _Workflow_ might refer to [Workflow Type](#workflow-type), a [Workflow Definition](/workflow-definition), or a [Workflow Execution](/workflow-execution).
+Temporal documentation aims to be explicit and differentiate between them.
+
+## What is a Workflow Definition? {#workflow-definition}
+
+A Workflow Definition is the code that defines the Workflow.
+It is written with a programming language and corresponding Temporal SDK.
+Depending on the programming language, it's typically implemented as a function or an object method and encompasses the end-to-end series of steps of a Temporal application.
+
+Below are different ways to develop a basic Workflow Definition.
+
+<Tabs groupId="basic-workflow-definition" queryString>
+<TabItem value="go" label="Go">
+
+**[Workflow Definition in Go](/develop/go/core-application#develop-workflows)**
+
+```go
+func YourBasicWorkflow(ctx workflow.Context) error {
+    // ...
+    return nil
+}
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+**[Workflow Definition in Java (Interface)](/develop/java/core-application#develop-workflows)**
+
+```java
+// Workflow interface
+@WorkflowInterface
+public interface YourBasicWorkflow {
+
+    @WorkflowMethod
+    String workflowMethod(Arguments args);
+}
+```
+
+**[Workflow Definition in Java (Implementation)](/develop/java/core-application#develop-workflows)**
+
+```java
+// Workflow implementation
+public class YourBasicWorkflowImpl implements YourBasicWorkflow {
+    // ...
+}
+```
+
+</TabItem>
+<TabItem value="php" label="PHP">
+
+**[Workflow Definition in PHP (Interface)](/develop/php/core-application#develop-workflows)**
+
+```php
+#[WorkflowInterface]
+interface YourBasicWorkflow {
+    #[WorkflowMethod]
+    public function workflowMethod(Arguments args);
+}
+```
+
+**[Workflow Definition in PHP (Implementation)](/develop/php/core-application#develop-workflows)**
+
+```php
+class YourBasicWorkflowImpl implements YourBasicWorkflow {
+    // ...
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+**[Workflow Definition in Python](/develop/python/core-application#develop-workflows)**
+
+```Python
+@workflow.defn
+class YourWorkflow:
+    @workflow.run
+    async def YourBasicWorkflow(self, input: str) -> str:
+        # ...
+```
+
+</TabItem>
+<TabItem value="typescript" label="Typescript">
+
+**[Workflow Definition in Typescript](/develop/typescript/core-application#develop-workflows)**
+
+```Typescript
+type BasicWorkflowArgs = {
+  param: string;
+};
+
+export async function WorkflowExample(
+  args: BasicWorkflowArgs,
+): Promise<{ result: string }> {
+  // ...
+}
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+**[Workflow Definition in C# and .NET](/develop/dotnet/core-application#develop-workflow)**
+
+```csharp
+[Workflow]
+public class YourBasicWorkflow {
+
+    [WorkflowRun]
+    public async Task<string> workflowExample(string param) {
+        // ...
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+A Workflow Definition may be also referred to as a Workflow Function.
+In Temporal's documentation, a Workflow Definition refers to the source for the instance of a Workflow Execution, while a Workflow Function refers to the source for the instance of a Workflow Function Execution.
+
+A Workflow Execution effectively executes once to completion, while a Workflow Function Execution occurs many times during the life of a Workflow Execution.
+
+We strongly recommend that you write a Workflow Definition in a language that has a corresponding Temporal SDK.
+
+### Deterministic constraints {#deterministic-constraints}
+
+A critical aspect of developing Workflow Definitions is ensuring that they are deterministic.
+Generally speaking, this means you must take care to ensure that any time your Workflow code is executed it makes the same Workflow API calls in the same sequence, given the same input.
+Some changes to those API calls are safe to make.
+
+For example, you can change:
+
+- The input parameters, return values, and execution timeouts of Child Workflows and Activities
+  - However, it is not safe to change the types or IDs of Child Workflows or Activities
+- The input parameters used to Signal an external Workflow
+- The duration of Timers (although changing them to 0 is not safe in all SDKs)
+- Add or remove calls to Workflow APIs that don't produce [Commands](/workflow-execution#command) (For example - `workflow.GetInfo` in the Go SDK or its equivalent in other SDKs)
+
+The following Workflow API calls all can produce Commands, and thus must not be reordered, added, or removed without proper [Versioning techniques](#workflow-versioning):
+
+- Starting or cancelling a Timer
+- Scheduling or cancelling Activity Executions (including local Activities)
+- Starting or cancelling Child Workflow executions
+- Signalling or cancelling signals to external Workflow Executions
+- Scheduling or cancelling Nexus operations
+- Ending the Workflow Execution in any way (completing, failing, cancelling, or continuing-as-new)
+- `Patched` or `GetVersion` calls for Versioning (although they may be added or removed according to the [patching](#workflow-patching) rules)
+- Upserting Workflow Search Attributes
+- Upserting Workflow Memos
+- Running a `SideEffect` or `MutableSideEffect`
+
+For a complete reference, see the [Command reference](/references/commands).
+
+More formally, the use of certain Workflow APIs in the function is what generates Commands.
+Commands tell the Temporal Service which Events to create and add to the Workflow Execution's [Event History](/workflow-execution/event#event-history).
+When the Workflow's code [replays](/workflow-execution#replay), the Commands that are emitted are compared with the existing Event History.
+If a corresponding Event already exists within the Event History that matches that command, then the Execution progresses.
+See [Event History](/encyclopedia/event-history/) for a detailed walkthrough of the process.
+
+For example, using an SDK's "Execute Activity" API generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
+When this API is called upon re-execution, that Command is compared with the Event that is in the same location within the sequence.
+The Event in the sequence must be an [ActivityTaskScheduled](/references/events#activitytaskscheduled) Event, where the Activity name is the same as what is in the Command.
+
+If a generated Command doesn't match what it needs to in the existing Event History, then the Workflow Execution returns a _non-deterministic_ error.
+
+The following are the two reasons why a Command might be generated out of sequence or the wrong Command might be generated altogether:
+
+1. Code changes are made to a Workflow Definition that is in use by a running Workflow Execution.
+2. There is intrinsic non-deterministic logic (such as inline random branching).
+
+### Code changes can cause non-deterministic behavior {#non-deterministic-change}
+
+The Workflow Definition can change in very limited ways once there is a Workflow Execution depending on it.
+To alleviate non-deterministic issues that arise from code changes, we recommend using [Workflow Versioning](#workflow-versioning).
+
+For example, let's say we have a Workflow Definition that defines the following sequence:
+
+1. Start and wait on a Timer/sleep.
+2. Spawn and wait on an Activity Execution.
+3. Complete.
+
+We start a Worker and spawn a Workflow Execution that uses that Workflow Definition.
+The Worker would emit the [StartTimer](/references/commands#starttimer) Command and the Workflow Execution would become suspended.
+
+Before the Timer is up, we change the Workflow Definition to the following sequence:
+
+1. Spawn and wait on an Activity Execution.
+2. Start and wait on a Timer/sleep.
+3. Complete.
+
+When the Timer fires, the next Workflow Task will cause the Workflow Function to re-execute.
+The first Command the Worker sees would be ScheduleActivityTask Command, which wouldn't match up to the expected [TimerStarted](/references/events#timerstarted) Event.
+
+The Workflow Execution would fail and return a nondeterminism error.
+
+The following are examples of minor changes that would not result in non-determinism errors when re-executing a History which already contain the Events:
+
+- Changing the duration of a Timer, with the following exceptions:
+  - In Java, Python, and Go, changing a Timer's duration from or to 0 is a non-deterministic behavior.
+  - In .NET, changing a Timer's duration from or to -1 (which means "infinite") is a non-deterministic behavior.
+- Changing the arguments to:
+  - The Activity Options in a call to spawn an Activity Execution (local or nonlocal).
+  - The Child Workflow Options in a call to spawn a Child Workflow Execution.
+  - Call to Signal an External Workflow Execution.
+- Adding a Signal Handler for a Signal Type that has not been sent to this Workflow Execution.
+
+### Intrinsic non-deterministic logic {#intrinsic-nondeterministic-logic}
+
+Intrinsic non-determinism is when a Workflow Function Execution might emit a different sequence of Commands on re-execution, regardless of whether all the input parameters are the same.
+
+For example, a Workflow Definition can not have inline logic that branches (emits a different Command sequence) based off a local time setting or a random number.
+In the representative pseudocode below, the `local_clock()` function returns the local time, rather than Temporal-defined time:
+
+```text
+fn your_workflow() {
+  if local_clock().is_before("12pm") {
+    await workflow.sleep(duration_until("12pm"))
+  } else {
+    await your_afternoon_activity()
+  }
+}
+```
+
+Each Temporal SDK offers APIs that enable Workflow Definitions to have logic that gets and uses time, random numbers, and data from unreliable resources.
+When those APIs are used, the results are stored as part of the Event History, which means that a re-executed Workflow Function will issue the same sequence of Commands, even if there is branching involved.
+
+In other words, all operations that do not purely mutate the Workflow Execution's state should occur through a Temporal SDK API.
+
+### Versioning Workflows {#workflow-versioning}
+
+The Temporal Platform requires that Workflow code (Workflow Definitions) be deterministic in nature.
+This requirement means that developers should consider how they plan to handle changes to Workflow code over time.
+
+A versioning strategy is even more important if your Workflow Executions live long enough to run on multiple versions of your Worker. Temporal Platform provides Workflow Versioning APIs.
+
+Temporal offers two Versioning strategies:
+
+- [Versioning with patching](#workflow-patching): make sure your code changes are compatible across versions of your Workflow.
+- [Worker Versioning](#worker-versioning): keep Workers tied to specific code revisions, so that old Workers can run old code paths and new Workers can run new code paths. (Note: If you were using this method experimentally prior to 2025, refer to the [Worker Versioning Legacy](/encyclopedia/worker-versioning-legacy) docs, but note that these are planned for deprecation.)
+
+You can use either strategy, or a combination.
+
+#### Versioning with Patching {#workflow-patching}
+
+When keeping Workflows compatible, you should patch and ideally how to test your running Workflows will be safe to run on a new code version.
+
+To patch:
+
+- [How to patch Workflow code in Go](/develop/go/versioning#patching)
+- [How to patch Workflow code in Java](/develop/java/versioning#patching)
+- [How to patch Workflow code in Python](/develop/python/versioning#patching)
+- [How to patch Workflow code in PHP](/develop/php/versioning#php-sdk-patching-api)
+- [How to patch Workflow code in TypeScript](/develop/typescript/versioning#patching)
+- [How to patch Workflow code in .NET](/develop/dotnet/versioning#patching)
+
+To test, see [Safe Deployments](/develop/safe-deployments.mdx).
+
+#### Worker Versioning {#worker-versioning}
+
+To learn more about Worker Versioning, see our [Worker Versioning](production-deployment/worker-deployments/worker-versioning) page.
+
+### Handling unreliable Worker Processes {#unreliable-worker-processes}
+
+You do not handle Worker Process failure or restarts in a Workflow Definition.
+
+Workflow Function Executions are completely oblivious to the Worker Process in terms of failures or downtime.
+The Temporal Platform ensures that the state of a Workflow Execution is recovered and progress resumes if there is an outage of either Worker Processes or the Temporal Service itself.
+The only reason a Workflow Execution might fail is due to the code throwing an error or exception, not because of underlying infrastructure outages.
+
+### What is a Workflow Type? {#workflow-type}
+
+A Workflow Type is a name that maps to a Workflow Definition.
+
+- A single Workflow Type can be instantiated as multiple Workflow Executions.
+- A Workflow Type is scoped by a Task Queue.
+  It is acceptable to have the same Workflow Type name map to different Workflow Definitions if they are using completely different Workers.
+
+<CaptionedImage
+    src="/diagrams/workflow-type-cardinality.svg"
+    title="Workflow Type cardinality with Workflow Definitions and Workflow Executions" />
