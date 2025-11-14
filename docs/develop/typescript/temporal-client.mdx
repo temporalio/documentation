@@ -39,7 +39,7 @@ This page shows you how to do the following using the TypeScript SDK with the Te
 - [Connect to a local development Temporal Service](#connect-to-development-service)
 - [Connect to Temporal Cloud](#connect-to-temporal-cloud)
 - [Connect to Temporal Service from a Worker](#connect-to-temporal-service-from-a-worker)
-- [Start a Workflow Execution](#start-workflow)
+- [Start a Workflow Execution](#start-workflow-execution)
 - [Get Workflow results](#get-workflow-results)
 
 In the TypeScript SDK, connecting to Temporal Service from a Temporal Application and from within an Activity rely on a
@@ -51,16 +51,24 @@ connecting from a Worker.
 
 ## Connect to development Temporal Service {#connect-to-development-service}
 
-To connect to a development Temporal service from a Temporal Application or from within an Activity, use
-[`Connect.connect`](https://typescript.temporal.io/api/classes/client.Connection#connect) to create a Connection object
-to connect to the Temporal Service, and pass in that connection when you create a new `Client` instance. You can provide
-connections directly in code, load them from **environment variables**, or a **TOML configuration file** using the
-`@temporalio/envconfig` helpers. We recommend environment variables or a configuration file for secure, repeatable
-configuration.
+To connect to a development Temporal service from a Temporal Application or from within an Activity, import the
+`Connection` class from `@temporalio/client` and use
+[`Connection.connect`](https://typescript.temporal.io/api/classes/client.Connection#connect) to create a Connection
+object to connect to the Temporal Service. Then pass in that connection when you create a new `Client` instance. If you
+leave the connection options empty, the SDK defaults to connecting to `127.0.0.1:7233` in the `default` Namespace.
 
-When you’re running a Temporal Service locally, such as with the
-[Temporal CLI dev server](https://docs.temporal.io/cli/server#start-dev), the required options are minimal. If you don't
-specify a host/port, the SDK defaults to `127.0.0.1:7233` and the `default` Namespace.
+```ts
+import { Connection, Client } from '@temporalio/client';
+
+async function run() {
+  const connection = await Connection.connect();
+  const client = new Client({ connection });
+}
+```
+
+If you need to connect to a Temporal Service with custom options, you can provide connection options directly in code,
+load them from **environment variables**, or a **TOML configuration file** using the `@temporalio/envconfig` helpers. We
+recommend environment variables or a configuration file for secure, repeatable configuration.
 
 <Tabs groupId="connect-options-dotnet" defaultValue="config-file" >
 
@@ -68,11 +76,12 @@ specify a host/port, the SDK defaults to `127.0.0.1:7233` and the `default` Name
 
 You can use a TOML configuration file to set connection options for the Temporal Client. The configuration file lets you
 configure multiple profiles, each with its own set of connection options. You can then specify which profile to use when
-creating the Temporal Client. You can use the environment variable `TEMPORAL_CONFIG_FILE` to specify the location of the
-TOML file or provide the path to the file directly in code. If you don't provide the configuration file path, the SDK
-looks for it at the path `~/.config/temporalio/temporal.toml` or the equivalent on your OS. Refer to
-[Environment Configuration](../environment-configuration.mdx#configuration-methods) for more details about configuration
-files and profiles.
+creating the Temporal Client.
+
+You can use the environment variable `TEMPORAL_CONFIG_FILE` to specify the location of the TOML file or provide the path
+to the file directly in code. If you don't provide the configuration file path, the SDK looks for it at the path
+`~/.config/temporalio/temporal.toml` or the equivalent on your OS. Refer to
+[Environment Configuration](../environment-configuration.mdx) for more details about configuration files and profiles.
 
 :::info
 
@@ -118,10 +127,10 @@ service-version = "v1.2.3"
 You can create a Temporal Client using a profile from the configuration file as follows. In this example, you load the
 `default` profile for local development:
 
-{/* SNIPSTART typescript-env-config-load-default-profile {"highlightedLines": "{17-19}"} */}
+{/* SNIPSTART typescript-env-config-load-default-profile {"highlightedLines": "17-19,28-29"} */}
 [env-config/src/load-from-file.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-from-file.ts)
 
-```ts
+```ts {17-19,28-29}
 import { Connection, Client } from '@temporalio/client';
 import { loadClientConnectConfig } from '@temporalio/envconfig';
 import { resolve } from 'path';
@@ -170,8 +179,8 @@ main().catch((err) => {
 
 <TabItem value="env-vars" label="Environment Variables">
 
-Use the `EnvConfig` package to set connection options for the Temporal Client using environment variables. For a list of
-all available environment variables and their default values, refer to
+Use the `@temporalio/envconfig` module to set connection options for the Temporal Client using environment variables.
+For a list of all available environment variables and their default values, refer to
 [Environment Configuration](/references/client-environment-configuration).
 
 For example, the following code snippet loads all environment variables and creates a Temporal Client with the options
@@ -189,38 +198,46 @@ export TEMPORAL_NAMESPACE="default"
 export TEMPORAL_ADDRESS="localhost:7233"
 ```
 
-After setting the environment variables, use the following code to create the Temporal Client:
+After setting the environment variables, use the following code to create the Temporal Client. Since the environment
+variables take precedence, they will override any values set in the configuration file. Therefore, you may leave
+`loadClientConnectConfig`'s arguments empty:
 
-```csharp
-using Temporalio.Client;
-using Temporalio.Client.EnvConfig;
+{/* SNIPSTART typescript-env-config-load-default-profile {"highlightedLines": "7,17-18", "selectedLines": ["1-5","17","19","22-40"]} */}
+[env-config/src/load-from-file.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-from-file.ts)
 
-namespace TemporalioSamples.EnvConfig;
+```ts {17-19,28-29}
+import { Connection, Client } from '@temporalio/client';
+import { loadClientConnectConfig } from '@temporalio/envconfig';
+import { resolve } from 'path';
 
-/// <summary>
-/// Sample demonstrating loading the default environment configuration profile
-/// from a TOML file.
-/// </summary>
-public static class LoadFromFile
-{
-    public static async Task RunAsync()
-    {
-        try
-        {
-            var connectOptions = ClientEnvConfig.LoadClientConnectOptions();
+async function main() {
+  // ...
+  const config = loadClientConnectConfig({
+    // ...
+  });
+  // ...
+  console.log(`  Address: ${config.connectionOptions.address}`);
+  console.log(`  Namespace: ${config.namespace}`);
+  console.log(`  gRPC Metadata: ${JSON.stringify(config.connectionOptions.metadata)}`);
 
-            Console.WriteLine("\nAttempting to connect to client...");
-
-            var client = await TemporalClient.ConnectAsync(connectOptions);
-            Console.WriteLine("✅ Client connected successfully!");
-        }
-        catch (Exception ex) when (ex is not OperationCanceledException)
-        {
-            Console.WriteLine($"❌ Failed to connect: {ex.Message}");
-        }
-    }
+  console.log('\nAttempting to connect to client...');
+  try {
+    const connection = await Connection.connect(config.connectionOptions);
+    const client = new Client({ connection, namespace: config.namespace });
+    console.log('✅ Client connected successfully!');
+    await connection.close();
+  } catch (err) {
+    console.log(`❌ Failed to connect: ${err}`);
+  }
 }
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
 ```
+
+{/* SNIPEND */}
 
 </TabItem>
 
@@ -230,30 +247,16 @@ If you don't want to use environment variables or a configuration file, you can 
 code. This is convenient for local development and testing. You can also load a base configuration from environment
 variables or a configuration file, and then override specific options in code.
 
-```csharp
-using System;
-using System.Threading.Tasks;
-using Temporalio.Client;
-
-namespace TemporalioSamples.Manual
-{
-    public static class ManualConnect
-    {
-        public static async Task RunAsync()
-        {
-            Console.WriteLine("--- Connecting manually to Temporal ---");
-
-            var client = await TemporalClient.ConnectAsync(new TemporalClientConnectOptions
-            {
-                TargetHost = "localhost:7233",
-                Namespace  = "default",
-            });
-
-            Console.WriteLine("✅ Connected to local Temporal service!");
-        }
-    }
-}
-
+```ts
+const connection = await Connection.connect({
+    address: <endpoint>,
+    tls: true,
+    apiKey: <APIKey>,
+});
+const client = new Client({
+    connection,
+    namespace: <namespace_id>.<account_id>,
+});
 ```
 
 </TabItem>
@@ -302,12 +305,12 @@ overrides the option set in the configuration file.
 
 :::
 
-For example, the following TOML configuration file defines a `cloud` profile with the necessary connection options to
+For example, the following TOML configuration file defines a `staging` profile with the necessary connection options to
 connect to Temporal Cloud via an API key:
 
 ```toml
 # Cloud profile for Temporal Cloud
-[profile.cloud]
+[profile.staging]
 address = "your-namespace.a1b2c.tmprl.cloud:7233"
 namespace = "your-namespace"
 api_key = "your-api-key-here"
@@ -318,7 +321,7 @@ private key:
 
 ```toml
 # Cloud profile for Temporal Cloud
-[profile.cloud]
+[profile.staging]
 address = "your-namespace.a1b2c.tmprl.cloud:7233"
 namespace = "your-namespace"
 tls_client_cert_data = "your-tls-client-cert-data"
@@ -329,61 +332,55 @@ With the connections options defined in the configuration file, use the `ClientE
 method to create a Temporal Client using the `staging` profile as follows. After loading the profile, you can also
 programmatically override specific connection options before creating the client.
 
-```csharp title="LoadProfile.cs" {25. 41}
-using Temporalio.Client;
-using Temporalio.Client.EnvConfig;
+{/* SNIPSTART typescript-env-config-load-profile-with-overrides {"highlightedLines": "25,41"} */}
+[env-config/src/load-profile.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-profile.ts)
 
-namespace TemporalioSamples.EnvConfig;
+```ts {25,41}
+import { Connection, Client } from '@temporalio/client';
+import { loadClientConnectConfig } from '@temporalio/envconfig';
+import { resolve } from 'path';
 
-/// <summary>
-/// Sample demonstrating loading a named environment configuration profile and
-/// programmatically overriding its values.
-/// </summary>
-public static class LoadProfile
-{
-    public static async Task RunAsync()
-    {
-        Console.WriteLine("--- Loading 'staging' profile with programmatic overrides ---");
+async function main() {
+  console.log("--- Loading 'staging' profile with programmatic overrides ---");
 
-        try
-        {
-            var configFile = Path.Combine(Directory.GetCurrentDirectory(), "config.toml");
-            var profileName = "staging";
+  const configFile = resolve(__dirname, '../config.toml');
+  const profileName = 'staging';
 
-            Console.WriteLine("The 'staging' profile in config.toml has an incorrect address (localhost:9999).");
-            Console.WriteLine("We'll programmatically override it to the correct address.");
+  // The 'staging' profile in config.toml has an incorrect address (localhost:9999)
+  // We'll programmatically override it to the correct address
 
-            // Load the 'staging' profile
-            var connectOptions = ClientEnvConfig.LoadClientConnectOptions(new ClientEnvConfig.ProfileLoadOptions
-            {
-                Profile = profileName,
-                ConfigSource = DataSource.FromPath(configFile),
-            });
+  // Load the 'staging' profile.
+  const config = loadClientConnectConfig({
+    profile: profileName,
+    configSource: { path: configFile },
+  });
 
-            // Override the target host to the correct address.
-            // This is the recommended way to override configuration values.
-            connectOptions.TargetHost = "localhost:7233";
+  // Override the target host to the correct address.
+  // This is the recommended way to override configuration values.
+  config.connectionOptions.address = 'localhost:7233';
 
-            Console.WriteLine($"\nLoaded '{profileName}' profile from {configFile} with overrides.");
-            Console.WriteLine($"  Address: {connectOptions.TargetHost} (overridden from localhost:9999)");
-            Console.WriteLine($"  Namespace: {connectOptions.Namespace}");
+  console.log(`\nLoaded '${profileName}' profile from ${configFile} with overrides.`);
+  console.log(`  Address: ${config.connectionOptions.address} (overridden from localhost:9999)`);
+  console.log(`  Namespace: ${config.namespace}`);
 
-            Console.WriteLine("\nAttempting to connect to client...");
-
-            var client = await TemporalClient.ConnectAsync(connectOptions);
-            Console.WriteLine("✅ Client connected successfully!");
-
-            // Test the connection by checking the service
-            var sysInfo = await client.Connection.WorkflowService.GetSystemInfoAsync(new());
-            Console.WriteLine("✅ Successfully verified connection to Temporal server!\n{0}", sysInfo);
-        }
-        catch (Exception ex) when (ex is not OperationCanceledException)
-        {
-            Console.WriteLine($"❌ Failed to connect: {ex.Message}");
-        }
-    }
+  console.log('\nAttempting to connect to client...');
+  try {
+    const connection = await Connection.connect(config.connectionOptions);
+    const client = new Client({ connection, namespace: config.namespace });
+    console.log('✅ Client connected successfully!');
+    await connection.close();
+  } catch (err) {
+    console.log(`❌ Failed to connect: ${err}`);
+  }
 }
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
 ```
+
+{/* SNIPEND */}
 
 </TabItem>
 
@@ -412,36 +409,42 @@ specified in those variables. If you have defined a configuration file at either
 variable, this will also load the default profile in the configuration file. However, any options set via environment
 variables will take precedence.
 
-```csharp {16,20}
-using Temporalio.Client;
-using Temporalio.Client.EnvConfig;
+{/* SNIPSTART typescript-env-config-load-default-profile {"highlightedLines": "17-19,28-29", "selectedLines": ["1-5","17","19","22-40"]} */}
+[env-config/src/load-from-file.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-from-file.ts)
 
-namespace TemporalioSamples.EnvConfig;
+```ts {17-19,28-29}
+import { Connection, Client } from '@temporalio/client';
+import { loadClientConnectConfig } from '@temporalio/envconfig';
+import { resolve } from 'path';
 
-/// <summary>
-/// Sample demonstrating loading the default environment configuration profile
-/// from a TOML file.
-/// </summary>
-public static class LoadFromFile
-{
-    public static async Task RunAsync()
-    {
-        try
-        {
-            var connectOptions = ClientEnvConfig.LoadClientConnectOptions();
+async function main() {
+  // ...
+  const config = loadClientConnectConfig({
+    // ...
+  });
+  // ...
+  console.log(`  Address: ${config.connectionOptions.address}`);
+  console.log(`  Namespace: ${config.namespace}`);
+  console.log(`  gRPC Metadata: ${JSON.stringify(config.connectionOptions.metadata)}`);
 
-            Console.WriteLine("\nAttempting to connect to client...");
-
-            var client = await TemporalClient.ConnectAsync(connectOptions);
-            Console.WriteLine("✅ Client connected successfully!");
-        }
-        catch (Exception ex) when (ex is not OperationCanceledException)
-        {
-            Console.WriteLine($"❌ Failed to connect: {ex.Message}");
-        }
-    }
+  console.log('\nAttempting to connect to client...');
+  try {
+    const connection = await Connection.connect(config.connectionOptions);
+    const client = new Client({ connection, namespace: config.namespace });
+    console.log('✅ Client connected successfully!');
+    await connection.close();
+  } catch (err) {
+    console.log(`❌ Failed to connect: ${err}`);
+  }
 }
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
 ```
+
+{/* SNIPEND */}
 
 </TabItem>
 
@@ -450,19 +453,139 @@ public static class LoadFromFile
 You can also provide connections options in your Go code directly. To create an initial connection, provide the
 Namespace and API key values to the ` TemporalClient.ConnectAsync` method.
 
-```csharp
-var myClient = TemporalClient.ConnectAsync(new(<endpoint>)
-{
-    Namespace = "<namespace_id>.<account_id>",
-    ApiKey = "<APIKey>",
-    Tls = new(),
+```ts
+const connection = await Connection.connect({
+    address: <endpoint>,
+    tls: true,
+    apiKey: <APIKey>,
+});
+const client = new Client({
+    connection,
+    namespace: <namespace_id>.<account_id>,
 });
 ```
 
-To update an API key, update the value of `ApiKey` on the existing client connection:
+To update an API key, use the `setApiKey` method on the Connection object:
 
-```csharp
-myClient.Connection.ApiKey = myKeyUpdated;
+```ts
+connection.setApiKey(<APIKey>);
+```
+
+</TabItem>
+
+</Tabs>
+
+## Connect to Temporal Service from a Worker {#connect-to-temporal-service-from-a-worker}
+
+Connecting to Temporal Service from a Worker requires the same set of connections options as connecting from a Temporal
+Application or from within an Activity, but the connection type is different. When connecting from a Worker, you create
+a `NativeConnection` object instead of a `Connection` object. The `NativeConnection` class is imported from
+`@temporalio/worker` instead of `@temporalio/client`. After you create the `NativeConnection` object, you pass it to
+`Worker.create()` when creating the Worker.
+
+To provide connection options to the `NativeConnection`, you can use environment variables, a configuration file, or
+directly in code. The following code snippets show how to create a `NativeConnection` object using each method. Refer to
+[Connect to a local development Temporal Service](#connect-to-development-service) and
+[Connect to Temporal Cloud](#connect-to-temporal-cloud) for details on how to provide connection options using each
+method.
+
+<Tabs groupId="worker-connect-options" defaultValue="config-file" >
+
+<TabItem value="config-file" label="Configuration File">
+
+Ensure you have a TOML configuration file with the necessary connection options defined. For example, the following TOML
+configuration file defines a `staging` profile with the necessary connection options to connect to Temporal Cloud via an
+API key:
+
+```toml
+# Cloud profile for Temporal Cloud
+[profile.staging]
+address = "your-namespace.a1b2c.tmprl.cloud:7233"
+namespace = "your-namespace"
+api_key = "your-api-key-here"
+```
+
+Use the `loadClientConnectConfig` helper from `@temporalio/envconfig` to load the `staging` profile from the
+configuration file and create a `NativeConnection` object as follows:
+
+```ts {1,30}
+import { NativeConnection } from '@temporalio/worker';
+import { loadClientConnectConfig } from '@temporalio/envconfig';
+import { resolve } from 'path';
+
+async function main() {
+  const configFile = resolve(__dirname, '../config.toml');
+  const profileName = 'staging'
+
+  // Load the 'staging' profile.
+  const config = loadClientConnectConfig({
+    profile: profileName,
+    configSource: { path: configFile },
+  });
+
+  const worker = await Worker.create({
+    connection,
+    namespace: <namespace_id>.<account_id>,
+    // ...
+});
+}
+```
+
+</TabItem>
+
+<TabItem value="env-vars" label="Environment Variables">
+
+Ensure you have set the necessary environment variables to connect to Temporal Cloud. For example:
+
+```bash
+export TEMPORAL_NAMESPACE="your-namespace.your-account-id"
+export TEMPORAL_ADDRESS="your-namespace.a1b2c.tmprl.cloud:7233"
+export TEMPORAL_TLS_CLIENT_CERT_PATH="/path/to/your/client/cert.pem"
+export TEMPORAL_TLS_CLIENT_KEY_PATH="/path/to/your/client/key.pem"
+```
+
+After setting the environment variables, use the following code to create a `NativeConnection` object using the
+`loadClientConnectConfig` helper from `@temporalio/envconfig`:
+
+```ts {1,5}
+import { NativeConnection } from '@temporalio/worker';
+import { loadClientConnectConfig } from '@temporalio/envconfig';
+
+async function main() {
+  const config = loadClientConnectConfig();
+
+  const connection = await NativeConnection.connect(config);
+
+  const worker = await Worker.create({
+    connection,
+    namespace: process.env.TEMPORAL_NAMESPACE,
+    // ...
+  });
+}
+```
+
+</TabItem>
+
+<TabItem value="code" label="Code">
+
+You can also provide connections options in your TypeScript code directly. To create an initial connection, provide the
+connections to the ` NativeConnection.connect` method, and then pass the resulting `NativeConnection` object to
+`Worker.create()` when creating the Worker:
+
+```ts {1,4,9}
+import { NativeConnection } from '@temporalio/worker';
+import { loadClientConnectConfig } from '@temporalio/envconfig';
+
+const connection = await NativeConnection.connect({
+    address: <endpoint>,
+    tls: true,
+    apiKey: <APIKey>,
+});
+const worker = await Worker.create({
+    connection,
+    namespace: <namespace_id>.<account_id>,
+    // ...
+});
 ```
 
 </TabItem>
