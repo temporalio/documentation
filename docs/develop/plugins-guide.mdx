@@ -241,8 +241,7 @@ To add one to a Plugin, follow the example for your SDK below::
 class SomeWorkerInterceptor(
   temporalio.worker.Interceptor
 ):
-
-#  ...
+  pass  # Your implementation
 
 plugin = SimplePlugin(
   worker_interceptors = [SomeWorkerInterceptor()]
