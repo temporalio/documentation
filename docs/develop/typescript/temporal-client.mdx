@@ -129,6 +129,7 @@ You can create a Temporal Client using a profile from the configuration file as 
 
 {/* SNIPSTART typescript-env-config-load-default-profile {"highlightedLines": "17-19,28-29"} */}
 [env-config/src/load-from-file.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-from-file.ts)
+
 ```ts {17-19,28-29}
 import { Connection, Client } from '@temporalio/client';
 import { loadClientConnectConfig } from '@temporalio/envconfig';
@@ -171,6 +172,7 @@ main().catch((err) => {
   process.exit(1);
 });
 ```
+
 {/* SNIPEND */}
 
 </TabItem>
@@ -202,17 +204,18 @@ variables take precedence, they will override any values set in the configuratio
 
 {/* SNIPSTART typescript-env-config-load-default-profile {"highlightedLines": "7,17-18", "selectedLines": ["1-5","17","19","22-40"]} */}
 [env-config/src/load-from-file.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-from-file.ts)
+
 ```ts {7,17-18}
 import { Connection, Client } from '@temporalio/client';
 import { loadClientConnectConfig } from '@temporalio/envconfig';
 import { resolve } from 'path';
 
 async function main() {
-// ...
+  // ...
   const config = loadClientConnectConfig({
-// ...
+    // ...
   });
-// ...
+  // ...
   console.log(`  Address: ${config.connectionOptions.address}`);
   console.log(`  Namespace: ${config.namespace}`);
   console.log(`  gRPC Metadata: ${JSON.stringify(config.connectionOptions.metadata)}`);
@@ -233,6 +236,7 @@ main().catch((err) => {
   process.exit(1);
 });
 ```
+
 {/* SNIPEND */}
 
 </TabItem>
@@ -324,13 +328,16 @@ tls_client_cert_data = "your-tls-client-cert-data"
 tls_client_key_path = "your-tls-client-key-path"
 ```
 
-With the connections options defined in the configuration file, use the `ClientEnvConfig.LoadClientConnectOptions`
-method to create a Temporal Client using the `staging` profile as follows. After loading the profile, you can also
-programmatically override specific connection options before creating the client.
+With the connections options defined in the configuration file, use the `loadClientConnectConfig` helper from
+`@temporalio/envconfig` to load the `staging` profile from the configuration file. You can then pass the resulting
+configuration to the `Connection.connect` method to create a Temporal Client using the `staging` profile as follows.
+After loading the profile, you can also programmatically override specific connection options before creating the
+client.
 
-{/* SNIPSTART typescript-env-config-load-profile-with-overrides {"highlightedLines": "25,41"} */}
+{/* SNIPSTART typescript-env-config-load-profile-with-overrides {"highlightedLines": "15-18,30-31"} */}
 [env-config/src/load-profile.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-profile.ts)
-```ts {25,41}
+
+```ts {15-18,30-31}
 import { Connection, Client } from '@temporalio/client';
 import { loadClientConnectConfig } from '@temporalio/envconfig';
 import { resolve } from 'path';
@@ -374,6 +381,7 @@ main().catch((err) => {
   process.exit(1);
 });
 ```
+
 {/* SNIPEND */}
 
 </TabItem>
@@ -405,17 +413,18 @@ variables will take precedence.
 
 {/* SNIPSTART typescript-env-config-load-default-profile {"highlightedLines": "17-19,28-29", "selectedLines": ["1-5","17","19","22-40"]} */}
 [env-config/src/load-from-file.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-from-file.ts)
+
 ```ts {17-19,28-29}
 import { Connection, Client } from '@temporalio/client';
 import { loadClientConnectConfig } from '@temporalio/envconfig';
 import { resolve } from 'path';
 
 async function main() {
-// ...
+  // ...
   const config = loadClientConnectConfig({
-// ...
+    // ...
   });
-// ...
+  // ...
   console.log(`  Address: ${config.connectionOptions.address}`);
   console.log(`  Namespace: ${config.namespace}`);
   console.log(`  gRPC Metadata: ${JSON.stringify(config.connectionOptions.metadata)}`);
@@ -436,6 +445,7 @@ main().catch((err) => {
   process.exit(1);
 });
 ```
+
 {/* SNIPEND */}
 
 </TabItem>

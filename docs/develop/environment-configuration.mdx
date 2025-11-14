@@ -334,9 +334,10 @@ public static class LoadFromFile
   <SdkTabs.TypeScript>
 To load the `default` profile along with any environment variables in TypeScript, use the `loadClientConnectConfig` helper from `@temporalio/envconfig` package.
 
-{/* SNIPSTART typescript-env-config-load-profile-with-overrides {"highlightedLines": "25,41"} */}
+{/* SNIPSTART typescript-env-config-load-profile-with-overrides {"highlightedLines": "15-18,30-31"} */}
 [env-config/src/load-profile.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-profile.ts)
-```ts {25,41}
+
+```ts {15-18,30-31}
 import { Connection, Client } from '@temporalio/client';
 import { loadClientConnectConfig } from '@temporalio/envconfig';
 import { resolve } from 'path';
@@ -380,6 +381,7 @@ main().catch((err) => {
   process.exit(1);
 });
 ```
+
 {/* SNIPEND */}
 
   </SdkTabs.TypeScript>
@@ -628,9 +630,10 @@ public static class LoadProfile
 To load a specific profile from a custom path in TypeScript, use the `loadClientConnectConfig` helper from
 `@temporalio/envconfig` package with the `profile` and `configFile` options.
 
-{/* SNIPSTART typescript-env-config-load-profile-with-overrides {"highlightedLines": "25,41"} */}
+{/* SNIPSTART typescript-env-config-load-profile-with-overrides {"highlightedLines": "15-18,30-31"} */}
 [env-config/src/load-profile.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-profile.ts)
-```ts {25,41}
+
+```ts {15-18,30-31}
 import { Connection, Client } from '@temporalio/client';
 import { loadClientConnectConfig } from '@temporalio/envconfig';
 import { resolve } from 'path';
@@ -674,6 +677,7 @@ main().catch((err) => {
   process.exit(1);
 });
 ```
+
 {/* SNIPEND */}
 
 </SdkTabs.TypeScript>
