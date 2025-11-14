@@ -110,7 +110,7 @@ Users use Workflows for:
 
 #### Making changes to your Workflow Library
 
-Your users may want to keep their Workflows running across deployments of their code. If their deployment includes a new version of your Plugin, changes to your Plugin could break Workflow code that started before the new version was deployed. This can be due to [non-deterministic behavior from code changes](https://docs.temporal.io/workflow-definition#non-deterministic-change) in your Plugin.
+Your users may want to keep their Workflows running across deployments of their worker code. If their deployment includes a new version of your Plugin, changes to your Plugin could break Workflow code that started before the new version was deployed. This can be due to [non-deterministic behavior from code changes](https://docs.temporal.io/workflow-definition#non-deterministic-change) in your Plugin.
 
 Therefore, as you make changes, you need to use [patching](https://docs.temporal.io/patching) and [replay testing](https://docs.temporal.io/develop/python/testing-suite#replay) to make sure that you’re not causing non-determinism errors for your users.
 
