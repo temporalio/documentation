@@ -93,7 +93,7 @@ plugin = SimplePlugin(
 
 ### Workflow libraries
 
-You can provide a library with functionality for use within a Workflow. Your library will call elements you include in your Plugin Activities, Child Workflows, Signals, Updates, Queries, Nexus Operations, Interceptors, Data Converters, and any other code as long as it follows these requirements:
+You can provide a library with functionality for use within a Workflow. Your library will call elements you include in your Plugin: Activities, Child Workflows, Signals, Updates, Queries, Nexus Operations, Interceptors, Data Converters, and any other code as long as it follows these requirements:
 
 - It should be [deterministic](https://docs.temporal.io/workflows#deterministic-constraints), running the same way every time it’s executed. Non-deterministic code should go in Activities or Nexus Operations.
 - It should be used in the Python [sandbox](https://docs.temporal.io/develop/python/python-sdk-sandbox).
