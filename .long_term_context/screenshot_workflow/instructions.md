@@ -1,0 +1,1 @@
+No screenshot capture guidance provided yet.
