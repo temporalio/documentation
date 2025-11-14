@@ -97,7 +97,7 @@ You can provide a library with functionality for use within a Workflow. Your lib
 
 - It should be [deterministic](https://docs.temporal.io/workflows#deterministic-constraints), running the same way every time it’s executed. Non-deterministic code should go in Activities or Nexus Operations.
 - It should be used in the Python [sandbox](https://docs.temporal.io/develop/python/python-sdk-sandbox).
-- It should be designed to handle being restarted, resumed, or executed independently of where or how it originally began without losing correctness or state consistency.
+- It should be designed to handle being restarted, resumed, or executed in a different process from where it originally began without losing correctness or state consistency.
 - It should run quickly since it may be replayed many times during a long Workflow execution.  More expensive code should go in Activities or Nexus Operations.
 
 A Plugin should allow a user to decompose their Workflows into Activities, as well as Child Workflows and Nexus Calls when needed. This gives users granular control through retries and timeouts, debuggability through the Temporal UI, operability with resets, pauses, and cancels, memoization for efficiency and resumability, and scalability using task queues and Workers.
