@@ -330,6 +330,59 @@ public static class LoadFromFile
 ```
 
   </SdkTabs.DotNet>
+
+  <SdkTabs.TypeScript>
+To load the `default` profile along with any environment variables in TypeScript, use the `loadClientConnectConfig` helper from `@temporalio/envconfig` package.
+
+{/* SNIPSTART typescript-env-config-load-profile-with-overrides {"highlightedLines": "25,41"} */}
+[env-config/src/load-profile.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-profile.ts)
+```ts {25,41}
+import { Connection, Client } from '@temporalio/client';
+import { loadClientConnectConfig } from '@temporalio/envconfig';
+import { resolve } from 'path';
+
+async function main() {
+  console.log("--- Loading 'staging' profile with programmatic overrides ---");
+
+  const configFile = resolve(__dirname, '../config.toml');
+  const profileName = 'staging';
+
+  // The 'staging' profile in config.toml has an incorrect address (localhost:9999)
+  // We'll programmatically override it to the correct address
+
+  // Load the 'staging' profile.
+  const config = loadClientConnectConfig({
+    profile: profileName,
+    configSource: { path: configFile },
+  });
+
+  // Override the target host to the correct address.
+  // This is the recommended way to override configuration values.
+  config.connectionOptions.address = 'localhost:7233';
+
+  console.log(`\nLoaded '${profileName}' profile from ${configFile} with overrides.`);
+  console.log(`  Address: ${config.connectionOptions.address} (overridden from localhost:9999)`);
+  console.log(`  Namespace: ${config.namespace}`);
+
+  console.log('\nAttempting to connect to client...');
+  try {
+    const connection = await Connection.connect(config.connectionOptions);
+    const client = new Client({ connection, namespace: config.namespace });
+    console.log('✅ Client connected successfully!');
+    await connection.close();
+  } catch (err) {
+    console.log(`❌ Failed to connect: ${err}`);
+  }
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+{/* SNIPEND */}
+
+  </SdkTabs.TypeScript>
 </SdkTabs>
 
 ## Load configuration from a custom path
@@ -570,4 +623,60 @@ public static class LoadProfile
 
 </SdkTabs.DotNet>
 
+<SdkTabs.TypeScript>
+
+To load a specific profile from a custom path in TypeScript, use the `loadClientConnectConfig` helper from
+`@temporalio/envconfig` package with the `profile` and `configFile` options.
+
+{/* SNIPSTART typescript-env-config-load-profile-with-overrides {"highlightedLines": "25,41"} */}
+[env-config/src/load-profile.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-profile.ts)
+```ts {25,41}
+import { Connection, Client } from '@temporalio/client';
+import { loadClientConnectConfig } from '@temporalio/envconfig';
+import { resolve } from 'path';
+
+async function main() {
+  console.log("--- Loading 'staging' profile with programmatic overrides ---");
+
+  const configFile = resolve(__dirname, '../config.toml');
+  const profileName = 'staging';
+
+  // The 'staging' profile in config.toml has an incorrect address (localhost:9999)
+  // We'll programmatically override it to the correct address
+
+  // Load the 'staging' profile.
+  const config = loadClientConnectConfig({
+    profile: profileName,
+    configSource: { path: configFile },
+  });
+
+  // Override the target host to the correct address.
+  // This is the recommended way to override configuration values.
+  config.connectionOptions.address = 'localhost:7233';
+
+  console.log(`\nLoaded '${profileName}' profile from ${configFile} with overrides.`);
+  console.log(`  Address: ${config.connectionOptions.address} (overridden from localhost:9999)`);
+  console.log(`  Namespace: ${config.namespace}`);
+
+  console.log('\nAttempting to connect to client...');
+  try {
+    const connection = await Connection.connect(config.connectionOptions);
+    const client = new Client({ connection, namespace: config.namespace });
+    console.log('✅ Client connected successfully!');
+    await connection.close();
+  } catch (err) {
+    console.log(`❌ Failed to connect: ${err}`);
+  }
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+{/* SNIPEND */}
+
+</SdkTabs.TypeScript>
+
 </SdkTabs>
+```
