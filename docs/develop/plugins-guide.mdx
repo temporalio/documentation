@@ -211,7 +211,7 @@ To add a Custom Data Converter to a Plugin, follow the example for your SDK belo
 <SdkTabs>
 <SdkTabs.Python>
 ```python
-def add_converter(converter: Optional[DataConverter]) -> DataConverte
+def add_converter(converter: Optional[DataConverter]) -> DataConverter
   if converter is None or converter == temporalio.converter.DataConverter.default
     return pydantic_data_converter
   # Should consider interactions with other plugins, 
