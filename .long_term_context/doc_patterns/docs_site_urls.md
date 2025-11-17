@@ -174,7 +174,7 @@ Use them exactly as shown when creating cross-links.
 - docs/develop/typescript/observability.mdx: (/develop/typescript/observability)
 - docs/develop/typescript/schedules.mdx: (/develop/typescript/schedules)
 - docs/develop/typescript/set-up.mdx: (/develop/typescript/set-up)
-- docs/develop/typescript/temporal-clients.mdx: (/develop/typescript/temporal-clients)
+- docs/develop/typescript/temporal-client.mdx: (/develop/typescript/temporal-client)
 - docs/develop/typescript/temporal-nexus.mdx: (/develop/typescript/temporal-nexus)
 - docs/develop/typescript/testing-suite.mdx: (/develop/typescript/testing-suite)
 - docs/develop/typescript/timers.mdx: (/develop/typescript/timers)
