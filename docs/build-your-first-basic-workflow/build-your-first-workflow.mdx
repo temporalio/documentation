@@ -1221,6 +1221,105 @@ worker.run(shutdown_signals: ['SIGINT'])
 
 </SdkTabs>
 
+## Step 4: Define the Task Queue
+
+A Task Queue is where Temporal Workers look for Tasks about Workflows and Activities to execute. 
+Each Task Queue is identified by a name, which you will specify when you configure the Worker and again in the code that starts the Workflow Execution. 
+To ensure that the same name is used in both places, this project follows the recommended practice of specifying the Task Queue name in a constant referenced from both places.
+
+### Set Your Task Queue Name
+
+To ensure your Worker and Workflow starter use the same queue, define the Task Queue name as a constant:
+
+<SdkTabs languageOrder={TUTORIAL_LANGUAGE_ORDER}>
+<SdkTabs.Python>
+
+**shared.py**
+
+```python
+# Task Queue name - used by both Worker and Workflow starter
+MONEY_TRANSFER_TASK_QUEUE_NAME = "MONEY_TRANSFER_TASK_QUEUE"
+```
+
+</SdkTabs.Python>
+
+<SdkTabs.Go>
+
+**app/shared.go**
+
+```go
+package app
+
+// MoneyTransferTaskQueueName is the task queue name used by both
+// the Worker and the Workflow starter
+const MoneyTransferTaskQueueName = "MONEY_TRANSFER_TASK_QUEUE"
+```
+
+</SdkTabs.Go>
+
+<SdkTabs.Java>
+
+**src/main/java/moneytransfer/Shared.java**
+
+```java
+package moneytransferapp;
+
+public class Shared {
+    // Task Queue name used by both Worker and Workflow starter
+    public static final String MONEY_TRANSFER_TASK_QUEUE = "MONEY_TRANSFER_TASK_QUEUE";
+}
+```
+
+</SdkTabs.Java>
+
+<SdkTabs.TypeScript>
+
+**src/shared.ts**
+
+```typescript
+// Task Queue name - used by both Worker and Workflow starter
+export const taskQueueName = 'MONEY_TRANSFER_TASK_QUEUE';
+export const namespace = 'default';
+```
+
+</SdkTabs.TypeScript>
+
+<SdkTabs.DotNet>
+
+**Shared/Constants.cs**
+
+```csharp
+namespace MoneyTransferProject.Shared
+{
+    public static class Constants
+    {
+        // Task Queue name used by both Worker and Workflow starter
+        public const string MONEY_TRANSFER_TASK_QUEUE = "MONEY_TRANSFER_TASK_QUEUE";
+    }
+}
+```
+
+</SdkTabs.DotNet>
+
+<SdkTabs.Ruby>
+
+**shared.rb**
+
+```ruby
+module MoneyTransfer
+  # Task Queue name used by both Worker and Workflow starter
+  TASK_QUEUE_NAME = "MONEY_TRANSFER_TASK_QUEUE".freeze
+end
+```
+
+</SdkTabs.Ruby>
+
+</SdkTabs>
+
+:::tip Why Use Constants?
+Using a shared constant prevents typos that would cause your Worker to listen to a different Task Queue than where your Workflow tasks are being sent. It's a common source of "Why isn't my Workflow running?" issues.
+:::
+
 ## Run Your Money Transfer
 
 <SetupStep code={
