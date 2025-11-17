@@ -872,19 +872,16 @@ retry_policy = RetryPolicy(
 // ...
 // RetryPolicy specifies how to automatically handle retries if an Activity fails.
 retrypolicy := &temporal.RetryPolicy{
-    InitialInterval:        time.Second,
-    BackoffCoefficient:     2.0,
-    MaximumInterval:        100 * time.Second,
-    MaximumAttempts:        500, // 0 is unlimited retries
-    NonRetryableErrorTypes: []string{"InvalidAccountError", "InsufficientFundsError"},
+    InitialInterval:        time.Second,                                             // Start with 1 second wait
+    BackoffCoefficient:     2.0,                                                     // Double the wait each time
+    MaximumInterval:        100 * time.Second,                                       // Don't wait longer than 100s
+    MaximumAttempts:        500,                                                     // Stop after 500 tries (0 = unlimited)
+    NonRetryableErrorTypes: []string{"InvalidAccountError", "InsufficientFundsError"}, // Never retry these errors
 }
 
 options := workflow.ActivityOptions{
-    // Timeout options specify when to automatically timeout Activity functions.
-    StartToCloseTimeout: time.Minute,
-    // Optionally provide a customized RetryPolicy.
-    // Temporal retries failed Activities by default.
-    RetryPolicy: retrypolicy,
+    StartToCloseTimeout: time.Minute, 
+    RetryPolicy: retrypolicy,         
 }
 
 // Apply the options.
@@ -902,11 +899,11 @@ private static final String WITHDRAW = "Withdraw";
 
 // RetryOptions specify how to automatically handle retries when Activities fail
 private final RetryOptions retryoptions = RetryOptions.newBuilder()
-    .setInitialInterval(Duration.ofSeconds(1)) // Wait 1 second before first retry
-    .setMaximumInterval(Duration.ofSeconds(20)) // Do not exceed 20 seconds between retries
-    .setBackoffCoefficient(2) // Wait 1 second, then 2, then 4, etc
-    .setMaximumAttempts(5000) // Fail after 5000 attempts
-    .build();
+    .setInitialInterval(Duration.ofSeconds(1))  // Start with 1 second wait
+    .setMaximumInterval(Duration.ofSeconds(20)) // Don't wait longer than 20s
+    .setBackoffCoefficient(2)                   // Double the wait each time (1s, 2s, 4s, etc)
+    .setMaximumAttempts(5000)                   // Stop after 5000 tries
+    .build();                                   
 ```
 
 </SdkTabs.Java>
@@ -920,13 +917,13 @@ private final RetryOptions retryoptions = RetryOptions.newBuilder()
 const { withdraw, deposit, refund } = proxyActivities<typeof activities>({
   // RetryPolicy specifies how to automatically handle retries if an Activity fails.
   retry: {
-    initialInterval: '1 second',
-    maximumInterval: '1 minute',
-    backoffCoefficient: 2,
-    maximumAttempts: 500,
-    nonRetryableErrorTypes: ['InvalidAccountError', 'InsufficientFundsError'],
+    initialInterval: '1 second',                                                    // Start with 1 second wait
+    maximumInterval: '1 minute',                                                    // Don't wait longer than 1 minute
+    backoffCoefficient: 2,                                                          // Double the wait each time
+    maximumAttempts: 500,                                                           // Stop after 500 tries
+    nonRetryableErrorTypes: ['InvalidAccountError', 'InsufficientFundsError'],      // Never retry these errors
   },
-  startToCloseTimeout: '1 minute',
+  startToCloseTimeout: '1 minute',                                                   // Activity must complete within 1 minute
 });
 ```
 
@@ -941,11 +938,11 @@ const { withdraw, deposit, refund } = proxyActivities<typeof activities>({
 // Retry policy
 var retryPolicy = new RetryPolicy
 {
-    InitialInterval = TimeSpan.FromSeconds(1),
-    MaximumInterval = TimeSpan.FromSeconds(100),
-    BackoffCoefficient = 2,
-    MaximumAttempts = 3,
-    NonRetryableErrorTypes = new[] { "InvalidAccountException", "InsufficientFundsException" }
+    InitialInterval = TimeSpan.FromSeconds(1),                                                 // Start with 1 second wait
+    MaximumInterval = TimeSpan.FromSeconds(100),                                               // Don't wait longer than 100s
+    BackoffCoefficient = 2,                                                                    // Double the wait each time
+    MaximumAttempts = 3,                                                                       // Stop after 3 tries
+    NonRetryableErrorTypes = new[] { "InvalidAccountException", "InsufficientFundsException" } // Never retry these errors
 };
 ```
 
@@ -962,8 +959,8 @@ var retryPolicy = new RetryPolicy
 class MoneyTransferWorkflow < Temporalio::Workflow::Definition
   def execute(details)
     retry_policy = Temporalio::RetryPolicy.new(
-      max_interval: 10,
-      non_retryable_error_types: [
+      max_interval: 10,                    # Don't wait longer than 10s
+      non_retryable_error_types: [         # Never retry these errors
         'InvalidAccountError',
         'InsufficientFundsError'
       ]
