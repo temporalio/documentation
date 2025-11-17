@@ -2,6 +2,7 @@
 id: build-your-first-workflow
 title: Build Your First Workflow
 sidebar_label: "Part 1: Build Your First Workflow"
+hide_table_of_contents: true
 description: Learn Temporal's core concepts by building a money transfer Workflow. Experience reliability, failure handling, and live debugging in a short tutorial.
 keywords:
   - temporal
@@ -109,7 +110,7 @@ The repository for this tutorial is a GitHub Template repository, which means yo
       <strong>Temporal Application Components</strong>
     </div>
     <div style={{textAlign: 'center', margin: '2rem 0'}}>
-  <img src="/img/moneytransfer/yourapplication.png" alt="Your Temporal Application" style={{maxWidth: '100%', height: 'auto'}} />
+  <img src="/img/moneytransfer/yourapplication.png" alt="Your Temporal Application" style={{maxWidth: '250px', height: 'auto'}} />
 </div>
     
     </div>
@@ -1319,6 +1320,268 @@ end
 :::tip Why Use Constants?
 Using a shared constant prevents typos that would cause your Worker to listen to a different Task Queue than where your Workflow tasks are being sent. It's a common source of "Why isn't my Workflow running?" issues.
 :::
+
+## Step 5: Execute the Workflow
+
+Now you'll create a client program that starts a Workflow execution. This code connects to the Temporal Service and submits a Workflow execution request:
+
+<SdkTabs languageOrder={TUTORIAL_LANGUAGE_ORDER}>
+<SdkTabs.Python>
+
+**start_workflow.py**
+
+```python
+import asyncio
+from temporalio.client import Client
+from workflows import MoneyTransfer
+from shared import MONEY_TRANSFER_TASK_QUEUE_NAME
+
+async def main():
+    # Create the Temporal Client to connect to the Temporal Service
+    client = await Client.connect("localhost:7233", namespace="default")
+    
+    # Define the money transfer details
+    details = {
+        "source_account": "A1001",
+        "target_account": "B2002", 
+        "amount": 100,
+        "reference_id": "12345"
+    }
+    
+    # Start the Workflow execution
+    handle = await client.start_workflow(
+        MoneyTransfer.run,
+        details,
+        id=f"money-transfer-{details['reference_id']}",
+        task_queue=MONEY_TRANSFER_TASK_QUEUE_NAME,
+    )
+    
+    print(f"Started Workflow {handle.id}")
+    print(f"Transferring ${details['amount']} from {details['source_account']} to {details['target_account']}")
+    
+    # Wait for the result
+    result = await handle.result()
+    print(f"Workflow result: {result}")
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+</SdkTabs.Python>
+
+<SdkTabs.Go>
+
+**start/main.go**
+
+```go
+func main() {
+    // Create the client object just once per process
+    c, err := client.Dial(client.Options{})
+    if err != nil {
+        log.Fatalln("Unable to create Temporal client:", err)
+    }
+    defer c.Close()
+
+    input := app.PaymentDetails{
+        SourceAccount: "85-150",
+        TargetAccount: "43-812",
+        Amount:        250,
+        ReferenceID:   "12345",
+    }
+
+    options := client.StartWorkflowOptions{
+        ID:        "pay-invoice-701",
+        TaskQueue: app.MoneyTransferTaskQueueName,
+    }
+
+    log.Printf("Starting transfer from account %s to account %s for %d", 
+               input.SourceAccount, input.TargetAccount, input.Amount)
+
+    we, err := c.ExecuteWorkflow(context.Background(), options, app.MoneyTransfer, input)
+    if err != nil {
+        log.Fatalln("Unable to start the Workflow:", err)
+    }
+
+    log.Printf("WorkflowID: %s RunID: %s\n", we.GetID(), we.GetRunID())
+
+    var result string
+    err = we.Get(context.Background(), &result)
+    if err != nil {
+        log.Fatalln("Unable to get Workflow result:", err)
+    }
+
+    log.Println(result)
+}
+```
+
+</SdkTabs.Go>
+
+<SdkTabs.Java>
+
+**src/main/java/moneytransfer/TransferApp.java**
+
+```java
+public class TransferApp {
+    public static void main(String[] args) throws Exception {
+        // A WorkflowServiceStubs communicates with the Temporal front-end service.
+        WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newLocalServiceStubs();
+
+        // A WorkflowClient wraps the stub and can be used to start, signal, query, cancel, and terminate Workflows.
+        WorkflowClient client = WorkflowClient.newInstance(serviceStub);
+
+        // Workflow options configure Workflow stubs.
+        // A WorkflowId prevents duplicate instances.
+        WorkflowOptions options = WorkflowOptions.newBuilder()
+                .setTaskQueue(Shared.MONEY_TRANSFER_TASK_QUEUE)
+                .setWorkflowId("money-transfer-workflow")
+                .build();
+
+        // WorkflowStubs enable calls to methods as if the Workflow object is local
+        // but actually perform a gRPC call to the Temporal Service.
+        MoneyTransferWorkflow workflow = client.newWorkflowStub(MoneyTransferWorkflow.class, options);
+        
+        // Configure the details for this money transfer request
+        String referenceId = UUID.randomUUID().toString().substring(0, 18);
+        String fromAccount = "A1001";
+        String toAccount = "B2002";
+        int amountToTransfer = 100;
+        TransactionDetails transaction = new CoreTransactionDetails(fromAccount, toAccount, referenceId, amountToTransfer);
+
+        // Perform asynchronous execution
+        WorkflowExecution we = WorkflowClient.start(workflow::transfer, transaction);
+
+        System.out.printf("Initiating transfer of $%d from [Account %s] to [Account %s].\n",
+                          amountToTransfer, fromAccount, toAccount);
+        System.out.printf("[WorkflowID: %s] [RunID: %s] [Reference: %s]\n", 
+                          we.getWorkflowId(), we.getRunId(), referenceId);
+    }
+}
+```
+
+</SdkTabs.Java>
+
+<SdkTabs.TypeScript>
+
+**src/client.ts**
+
+```typescript
+import { Connection, Client } from '@temporalio/client';
+import { moneyTransfer } from './workflows';
+import type { PaymentDetails } from './shared';
+import { namespace, taskQueueName } from './shared';
+
+async function run() {
+  const connection = await Connection.connect();
+  const client = new Client({ connection, namespace });
+
+  const details: PaymentDetails = {
+    amount: 400,
+    sourceAccount: '85-150',
+    targetAccount: '43-812',
+    referenceId: '12345',
+  };
+
+  console.log(
+    `Starting transfer from account ${details.sourceAccount} to account ${details.targetAccount} for $${details.amount}`
+  );
+
+  const handle = await client.workflow.start(moneyTransfer, {
+    args: [details],
+    taskQueue: taskQueueName,
+    workflowId: 'pay-invoice-801',
+  });
+
+  console.log(
+    `Started Workflow ${handle.workflowId} with RunID ${handle.firstExecutionRunId}`
+  );
+  console.log(await handle.result());
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
+</SdkTabs.TypeScript>
+
+<SdkTabs.DotNet>
+
+**MoneyTransferStarter/Program.cs**
+
+```csharp
+using Temporalio.Client;
+using Temporalio.MoneyTransferProject.MoneyTransferWorker;
+
+// Create a client to connect to localhost on "default" namespace
+var client = await TemporalClient.ConnectAsync(new("localhost:7233"));
+
+// Configure the money transfer details
+var transferDetails = new TransferDetails
+{
+    SourceAccount = "A1001",
+    TargetAccount = "B2002", 
+    Amount = 100,
+    ReferenceId = "12345"
+};
+
+Console.WriteLine($"Starting transfer of ${transferDetails.Amount} from {transferDetails.SourceAccount} to {transferDetails.TargetAccount}");
+
+// Start the workflow
+var handle = await client.StartWorkflowAsync(
+    (MoneyTransferWorkflow wf) => wf.RunAsync(transferDetails),
+    new(id: $"money-transfer-{transferDetails.ReferenceId}", taskQueue: "MONEY_TRANSFER_TASK_QUEUE"));
+
+Console.WriteLine($"Started workflow {handle.Id}");
+
+// Wait for result
+var result = await handle.GetResultAsync();
+Console.WriteLine($"Workflow result: {result}");
+```
+
+</SdkTabs.DotNet>
+
+<SdkTabs.Ruby>
+
+**starter.rb**
+
+```ruby
+require_relative 'shared'
+require_relative 'workflow'
+require 'securerandom'
+require 'temporalio/client'
+
+# Create the Temporal Client that connects to the Temporal Service
+client = Temporalio::Client.connect('localhost:7233', 'default')
+
+# Default values for the payment details
+details = MoneyTransfer::TransferDetails.new('A1001', 'B2002', 100, SecureRandom.uuid)
+
+# Use the Temporal Client to submit a Workflow Execution request
+handle = client.start_workflow(
+  MoneyTransfer::MoneyTransferWorkflow,
+  details,
+  id: "moneytransfer-#{details.reference_id}",
+  task_queue: MoneyTransfer::TASK_QUEUE_NAME
+)
+
+puts "Initiated transfer of $#{details.amount} from #{details.source_account} to #{details.target_account}"
+puts "Workflow ID: #{handle.id}"
+
+# Keep running (and retry) if the Temporal Service becomes unavailable
+begin
+  puts "Workflow result: #{handle.result}"
+rescue Temporalio::Error::RPCError
+  puts 'Temporal Service unavailable while awaiting result'
+  retry
+end
+```
+
+</SdkTabs.Ruby>
+
+</SdkTabs>
+
+This code uses a Temporal Client to connect to the Temporal Service, calling its workflow start method to request execution. This returns a handle, and calling result on that handle will block until execution is complete, at which point it provides the result.
 
 ## Run Your Money Transfer
 
