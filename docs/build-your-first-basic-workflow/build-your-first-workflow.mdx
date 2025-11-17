@@ -134,7 +134,7 @@ The Temporal Application will consist of the following pieces:
 None of your application code runs on the Temporal Server. Your Worker, Workflow, and Activity run on your infrastructure, along with the rest of your applications.
 :::
 
-## Build your Workflow and Activities 
+## Step 1: Build your Workflow and Activities 
 
 <SdkTabs languageOrder={TUTORIAL_LANGUAGE_ORDER}>
 <SdkTabs.Python>
@@ -837,7 +837,7 @@ public class BankingActivities
 
 </SdkTabs>
 
-## Set the Retry Policy
+## Step 2: Set the Retry Policy
 
 Temporal makes your software durable and fault tolerant by default. If an Activity fails, Temporal automatically retries it, but you can customize this behavior through a Retry Policy.
 
@@ -980,6 +980,246 @@ Without retry policies, a temporary network glitch could cause your entire money
 :::important This is a Simplified Example
 This tutorial shows core Temporal features and is not intended for production use. A real money transfer system would need additional logic for edge cases, cancellations, and error handling.
 :::
+
+## Step 3: Create a Worker file
+
+A Worker is responsible for executing your Workflow and Activity code. It:
+
+- Can only execute Workflows and Activities registered to it
+- Knows which piece of code to execute based on Tasks from the Task Queue
+- Only listens to the Task Queue that it's registered to
+- Returns execution results back to the Temporal Server
+
+<SdkTabs languageOrder={TUTORIAL_LANGUAGE_ORDER}>
+<SdkTabs.Python>
+
+**run_worker.py**
+
+```python
+import asyncio
+
+from temporalio.client import Client
+from temporalio.worker import Worker
+
+from activities import BankingActivities
+from shared import MONEY_TRANSFER_TASK_QUEUE_NAME
+from workflows import MoneyTransfer
+
+
+async def main() -> None:
+    client: Client = await Client.connect("localhost:7233", namespace="default")
+    # Run the worker
+    activities = BankingActivities()
+    worker: Worker = Worker(
+        client,
+        task_queue=MONEY_TRANSFER_TASK_QUEUE_NAME,
+        workflows=[MoneyTransfer],
+        activities=[activities.withdraw, activities.deposit, activities.refund],
+    )
+    await worker.run()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+</SdkTabs.Python>
+
+<SdkTabs.Go>
+
+**worker/main.go**
+
+```go
+func main() {
+    c, err := client.Dial(client.Options{})
+    if err != nil {
+        log.Fatalln("Unable to create Temporal client.", err)
+    }
+    defer c.Close()
+
+    w := worker.New(c, app.MoneyTransferTaskQueueName, worker.Options{})
+
+    // This worker hosts both Workflow and Activity functions.
+    w.RegisterWorkflow(app.MoneyTransfer)
+    w.RegisterActivity(app.Withdraw)
+    w.RegisterActivity(app.Deposit)
+    w.RegisterActivity(app.Refund)
+
+    // Start listening to the Task Queue.
+    err = w.Run(worker.InterruptCh())
+    if err != nil {
+        log.Fatalln("unable to start Worker", err)
+    }
+}
+```
+
+</SdkTabs.Go>
+
+<SdkTabs.Java>
+
+**src/main/java/moneytransfer/MoneyTransferWorker.java**
+
+```java
+package moneytransferapp;
+
+import io.temporal.client.WorkflowClient;
+import io.temporal.serviceclient.WorkflowServiceStubs;
+import io.temporal.worker.Worker;
+import io.temporal.worker.WorkerFactory;
+
+public class MoneyTransferWorker {
+    public static void main(String[] args) {
+        // Create a stub that accesses a Temporal Service on the local development machine
+        WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newLocalServiceStubs();
+
+        // The Worker uses the Client to communicate with the Temporal Service
+        WorkflowClient client = WorkflowClient.newInstance(serviceStub);
+
+        // A WorkerFactory creates Workers
+        WorkerFactory factory = WorkerFactory.newInstance(client);
+
+        // A Worker listens to one Task Queue.
+        // This Worker processes both Workflows and Activities
+        Worker worker = factory.newWorker(Shared.MONEY_TRANSFER_TASK_QUEUE);
+
+        // Register a Workflow implementation with this Worker
+        // The implementation must be known at runtime to dispatch Workflow tasks
+        // Workflows are stateful so a type is needed to create instances.
+        worker.registerWorkflowImplementationTypes(MoneyTransferWorkflowImpl.class);
+
+        // Register Activity implementation(s) with this Worker.
+        // The implementation must be known at runtime to dispatch Activity tasks
+        // Activities are stateless and thread safe so a shared instance is used.
+        worker.registerActivitiesImplementations(new AccountActivityImpl());
+
+        System.out.println("Worker is running and actively polling the Task Queue.");
+        System.out.println("To quit, use ^C to interrupt.");
+
+        // Start all registered Workers. The Workers will start polling the Task Queue.
+        factory.start();
+    }
+}
+```
+
+</SdkTabs.Java>
+
+<SdkTabs.TypeScript>
+
+**src/worker.ts**
+
+```typescript
+import { Worker } from '@temporalio/worker';
+import * as activities from './activities';
+import { namespace, taskQueueName } from './shared';
+
+async function run() {
+  // Register Workflows and Activities with the Worker and connect to
+  // the Temporal server.
+  const worker = await Worker.create({
+    workflowsPath: require.resolve('./workflows'),
+    activities,
+    namespace,
+    taskQueue: taskQueueName,
+  });
+
+  // Start accepting tasks from the Task Queue.
+  await worker.run();
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
+</SdkTabs.TypeScript>
+
+<SdkTabs.DotNet>
+
+**MoneyTransferWorker/Program.cs**
+
+```csharp
+// This file is designated to run the worker
+using Temporalio.Client;
+using Temporalio.Worker;
+using Temporalio.MoneyTransferProject.MoneyTransferWorker;
+
+// Create a client to connect to localhost on "default" namespace
+var client = await TemporalClient.ConnectAsync(new("localhost:7233"));
+
+// Cancellation token to shutdown worker on ctrl+c
+using var tokenSource = new CancellationTokenSource();
+Console.CancelKeyPress += (_, eventArgs) =>
+{
+    tokenSource.Cancel();
+    eventArgs.Cancel = true;
+};
+
+// Create an instance of the activities since we have instance activities.
+// If we had all static activities, we could just reference those directly.
+var activities = new BankingActivities();
+
+// Create a worker with the activity and workflow registered
+using var worker = new TemporalWorker(
+    client, // client
+    new TemporalWorkerOptions(taskQueue: "MONEY_TRANSFER_TASK_QUEUE")
+        .AddAllActivities(activities) // Register activities
+        .AddWorkflow<MoneyTransferWorkflow>() // Register workflow
+);
+
+// Run the worker until it's cancelled
+Console.WriteLine("Running worker...");
+try
+{
+    await worker.ExecuteAsync(tokenSource.Token);
+}
+catch (OperationCanceledException)
+{
+    Console.WriteLine("Worker cancelled");
+}
+```
+
+</SdkTabs.DotNet>
+
+<SdkTabs.Ruby>
+
+**worker.rb**
+
+```ruby
+require_relative 'activities'
+require_relative 'shared'
+require_relative 'workflow'
+require 'logger'
+require 'temporalio/client'
+require 'temporalio/worker'
+
+# Create a Temporal Client that connects to a local Temporal Service, uses
+# a Namespace called 'default', and displays log messages to standard output
+client = Temporalio::Client.connect(
+  'localhost:7233',
+  'default',
+  logger: Logger.new($stdout, level: Logger::INFO)
+)
+
+# Create a Worker that polls the specified Task Queue and can 
+# fulfill requests for the specified Workflow and Activities
+worker = Temporalio::Worker.new(
+  client:,
+  task_queue: MoneyTransfer::TASK_QUEUE_NAME,
+  workflows: [MoneyTransfer::MoneyTransferWorkflow],
+  activities: [MoneyTransfer::BankActivities::Withdraw, 
+               MoneyTransfer::BankActivities::Deposit,
+               MoneyTransfer::BankActivities::Refund]
+)
+
+# Start the Worker, which will poll the Task Queue until stopped
+puts 'Starting Worker (press Ctrl+C to exit)'
+worker.run(shutdown_signals: ['SIGINT'])
+```
+
+</SdkTabs.Ruby>
+
+</SdkTabs>
 
 ## Run Your Money Transfer
 
