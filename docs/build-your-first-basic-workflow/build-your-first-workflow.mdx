@@ -238,96 +238,601 @@ class BankingActivities:
 
 <h3>Workflow Definition</h3>
 
-In the Temporal Go SDK, a Workflow Definition is a Go function that follows the Workflow function signature.
+In the Temporal Go SDK, a Workflow Definition is a Go function that accepts a Workflow Context and input parameters.
 
-This is what the Workflow Definition looks like for this process:
+This is what the Workflow Definition looks like for the money transfer process:
 
-**workflows.go**
+**workflow.go**
 
 ```go
-package workflows
+func MoneyTransfer(ctx workflow.Context, input PaymentDetails) (string, error) {
+    // RetryPolicy specifies how to automatically handle retries if an Activity fails.
+    retrypolicy := &temporal.RetryPolicy{
+        InitialInterval:        time.Second,
+        BackoffCoefficient:     2.0,
+        MaximumInterval:        100 * time.Second,
+        MaximumAttempts:        500, // 0 is unlimited retries
+        NonRetryableErrorTypes: []string{"InvalidAccountError", "InsufficientFundsError"},
+    }
 
-import (
-	"context"
-	"time"
+    options := workflow.ActivityOptions{
+        // Timeout options specify when to automatically timeout Activity functions.
+        StartToCloseTimeout: time.Minute,
+        // Optionally provide a customized RetryPolicy.
+        // Temporal retries failed Activities by default.
+        RetryPolicy: retrypolicy,
+    }
 
-	"go.temporal.io/sdk/temporal"
-	"go.temporal.io/sdk/workflow"
-)
+    // Apply the options.
+    ctx = workflow.WithActivityOptions(ctx, options)
 
-func MoneyTransferWorkflow(ctx workflow.Context, input PaymentDetails) (string, error) {
-	// Retry policy
-	retryPolicy := &temporal.RetryPolicy{
-		InitialInterval:        time.Second,
-		BackoffCoefficient:     2.0,
-		MaximumInterval:        time.Second * 100,
-		MaximumAttempts:        3,
-		NonRetryableErrorTypes: []string{"InvalidAccountError", "InsufficientFundsError"},
-	}
+    // Withdraw money.
+    var withdrawOutput string
+    withdrawErr := workflow.ExecuteActivity(ctx, Withdraw, input).Get(ctx, &withdrawOutput)
+    if withdrawErr != nil {
+        return "", withdrawErr
+    }
 
-	options := workflow.ActivityOptions{
-		StartToCloseTimeout: 5 * time.Minute,
-		RetryPolicy:         retryPolicy,
-	}
-	ctx = workflow.WithActivityOptions(ctx, options)
+    // Deposit money.
+    var depositOutput string
+    depositErr := workflow.ExecuteActivity(ctx, Deposit, input).Get(ctx, &depositOutput)
+    if depositErr != nil {
+        // The deposit failed; put money back in original account.
+        var result string
+        refundErr := workflow.ExecuteActivity(ctx, Refund, input).Get(ctx, &result)
+        if refundErr != nil {
+            return "",
+                fmt.Errorf("Deposit: failed to deposit money into %v: %v. Money could not be returned to %v: %w",
+                    input.TargetAccount, depositErr, input.SourceAccount, refundErr)
+        }
+        return "", fmt.Errorf("Deposit: failed to deposit money into %v: Money returned to %v: %w",
+            input.TargetAccount, input.SourceAccount, depositErr)
+    }
 
-	// Withdraw money
-	var withdrawResult string
-	err := workflow.ExecuteActivity(ctx, WithdrawActivity, input).Get(ctx, &withdrawResult)
-	if err != nil {
-		return "", err
-	}
+    result := fmt.Sprintf("Transfer complete (transaction IDs: %s, %s)", withdrawOutput, depositOutput)
+    return result, nil
+}
+```
 
-	// Deposit money
-	var depositResult string
-	err = workflow.ExecuteActivity(ctx, DepositActivity, input).Get(ctx, &depositResult)
-	if err != nil {
-		// If deposit fails, attempt to refund
-		var refundResult string
-		refundErr := workflow.ExecuteActivity(ctx, RefundActivity, input).Get(ctx, &refundResult)
-		if refundErr != nil {
-			return "", temporal.NewApplicationError("Failed to deposit and refund", "DepositRefundFailed", err)
-		}
-		return "", temporal.NewApplicationError("Deposit failed, money refunded", "DepositFailed", err)
-	}
+The `MoneyTransfer` function takes in the details about the transaction, executes Activities to withdraw and deposit the money, and returns the results of the process. The `PaymentDetails` type is defined in `shared.go`:
 
-	return "Transfer complete (transaction IDs: " + withdrawResult + ", " + depositResult + ")", nil
+**shared.go**
+
+```go
+type PaymentDetails struct {
+    SourceAccount string
+    TargetAccount string
+    Amount        int
+    ReferenceID   string
 }
 ```
 
 <h3>Activity Definition</h3>
 
-Activities handle the business logic. Each activity function calls an external banking service:
+Activities handle the business logic. Each Activity function calls an external banking service:
 
-**activities.go**
+**activity.go**
 
 ```go
-package activities
+func Withdraw(ctx context.Context, data PaymentDetails) (string, error) {
+    log.Printf("Withdrawing $%d from account %s.\n\n",
+        data.Amount,
+        data.SourceAccount,
+    )
 
-import (
-	"context"
-	"fmt"
+    referenceID := fmt.Sprintf("%s-withdrawal", data.ReferenceID)
+    bank := BankingService{"bank-api.example.com"}
+    confirmation, err := bank.Withdraw(data.SourceAccount, data.Amount, referenceID)
+    return confirmation, err
+}
 
-	"go.temporal.io/sdk/activity"
-)
+func Deposit(ctx context.Context, data PaymentDetails) (string, error) {
+    log.Printf("Depositing $%d into account %s.\n\n",
+        data.Amount,
+        data.TargetAccount,
+    )
 
-func WithdrawActivity(ctx context.Context, input PaymentDetails) (string, error) {
-	logger := activity.GetLogger(ctx)
-	logger.Info("Withdrawing money", "Amount", input.Amount, "Account", input.SourceAccount)
-
-	bankService := NewBankingService("bank1.example.com")
-	referenceID := input.ReferenceID + "-withdrawal"
-	
-	result, err := bankService.Withdraw(input.SourceAccount, input.Amount, referenceID)
-	if err != nil {
-		return "", err
-	}
-
-	return result, nil
+    referenceID := fmt.Sprintf("%s-deposit", data.ReferenceID)
+    bank := BankingService{"bank-api.example.com"}
+    confirmation, err := bank.Deposit(data.TargetAccount, data.Amount, referenceID)
+    return confirmation, err
 }
 ```
 
 </SdkTabs.Go>
+
+<SdkTabs.Java>
+
+<h3>Workflow Definition</h3>
+
+In the Temporal Java SDK, a Workflow Definition is marked by the `@WorkflowInterface` attribute placed above the class interface.
+
+**MoneyTransferWorkflow.java**
+
+```java
+@WorkflowInterface
+public interface MoneyTransferWorkflow {
+    @WorkflowMethod
+    void transfer(TransactionDetails transaction);
+}
+```
+
+**MoneyTransferWorkflowImpl.java**
+
+```java
+public class MoneyTransferWorkflowImpl implements MoneyTransferWorkflow {
+    
+    // RetryOptions specify how to automatically handle retries when Activities fail
+    private final RetryOptions retryoptions = RetryOptions.newBuilder()
+        .setInitialInterval(Duration.ofSeconds(1))
+        .setMaximumInterval(Duration.ofSeconds(20))
+        .setBackoffCoefficient(2)
+        .setMaximumAttempts(5000)
+        .build();
+
+    private final ActivityOptions defaultActivityOptions = ActivityOptions.newBuilder()
+        .setRetryOptions(retryoptions)
+        .setStartToCloseTimeout(Duration.ofSeconds(2))
+        .setScheduleToCloseTimeout(Duration.ofSeconds(5000))
+        .build();
+
+    private final AccountActivity accountActivityStub = 
+        Workflow.newActivityStub(AccountActivity.class, defaultActivityOptions);
+
+    @Override
+    public void transfer(TransactionDetails transaction) {
+        String sourceAccountId = transaction.getSourceAccountId();
+        String destinationAccountId = transaction.getDestinationAccountId();
+        String transactionReferenceId = transaction.getTransactionReferenceId();
+        int amountToTransfer = transaction.getAmountToTransfer();
+
+        // Stage 1: Withdraw funds from source
+        try {
+            accountActivityStub.withdraw(sourceAccountId, transactionReferenceId, amountToTransfer);
+        } catch (Exception e) {
+            System.out.printf("[%s] Withdrawal of $%d from account %s failed", 
+                            transactionReferenceId, amountToTransfer, sourceAccountId);
+            return;
+        }
+
+        // Stage 2: Deposit funds to destination
+        try {
+            accountActivityStub.deposit(destinationAccountId, transactionReferenceId, amountToTransfer);
+            System.out.printf("[%s] Transaction succeeded.\n", transactionReferenceId);
+            return;
+        } catch (Exception e) {
+            System.out.printf("[%s] Deposit of $%d to account %s failed.\n", 
+                            transactionReferenceId, amountToTransfer, destinationAccountId);
+        }
+
+        // Compensate with a refund
+        try {
+            System.out.printf("[%s] Refunding $%d to account %s.\n", 
+                            transactionReferenceId, amountToTransfer, sourceAccountId);
+            accountActivityStub.refund(sourceAccountId, transactionReferenceId, amountToTransfer);
+            System.out.printf("[%s] Refund to originating account was successful.\n", transactionReferenceId);
+        } catch (Exception e) {
+            System.out.printf("[%s] Workflow failed.", transactionReferenceId);
+            throw(e);
+        }
+    }
+}
+```
+
+The `TransactionDetails` interface:
+
+**TransactionDetails.java**
+
+```java
+public interface TransactionDetails {
+    String getSourceAccountId();
+    String getDestinationAccountId();
+    String getTransactionReferenceId();
+    int getAmountToTransfer();
+}
+```
+
+<h3>Activity Definition</h3>
+
+Activities handle the business logic. Each Activity method calls an external banking service:
+
+**AccountActivity.java**
+
+```java
+@ActivityInterface
+public interface AccountActivity {
+    @ActivityMethod
+    void withdraw(String accountId, String referenceId, int amount);
+
+    @ActivityMethod
+    void deposit(String accountId, String referenceId, int amount);
+
+    @ActivityMethod
+    void refund(String accountId, String referenceId, int amount);
+}
+```
+
+**AccountActivityImpl.java**
+
+```java
+public class AccountActivityImpl implements AccountActivity {
+    @Override
+    public void withdraw(String accountId, String referenceId, int amount) {
+        System.out.printf("\nWithdrawing $%d from account %s.\n[ReferenceId: %s]\n", 
+                         amount, accountId, referenceId);
+    }
+
+    @Override
+    public void deposit(String accountId, String referenceId, int amount) {
+        System.out.printf("\nDepositing $%d into account %s.\n[ReferenceId: %s]\n", 
+                         amount, accountId, referenceId);
+    }
+
+    @Override
+    public void refund(String accountId, String referenceId, int amount) {
+        System.out.printf("\nRefunding $%d to account %s.\n[ReferenceId: %s]\n", 
+                         amount, accountId, referenceId);
+    }
+}
+```
+
+</SdkTabs.Java>
+
+<SdkTabs.TypeScript>
+
+<h3>Workflow Definition</h3>
+
+In the Temporal TypeScript SDK, a Workflow Definition is a regular TypeScript function that accepts some input values.
+
+This is what the Workflow Definition looks like for the money transfer process:
+
+**workflows.ts**
+
+```typescript
+import { proxyActivities } from '@temporalio/workflow';
+import { ApplicationFailure } from '@temporalio/common';
+
+import type * as activities from './activities';
+import type { PaymentDetails } from './shared';
+
+export async function moneyTransfer(details: PaymentDetails): Promise<string> {
+  // Get the Activities for the Workflow and set up the Activity Options.
+  const { withdraw, deposit, refund } = proxyActivities<typeof activities>({
+    // RetryPolicy specifies how to automatically handle retries if an Activity fails.
+    retry: {
+      initialInterval: '1 second',
+      maximumInterval: '1 minute',
+      backoffCoefficient: 2,
+      maximumAttempts: 500,
+      nonRetryableErrorTypes: ['InvalidAccountError', 'InsufficientFundsError'],
+    },
+    startToCloseTimeout: '1 minute',
+  });
+
+  // Execute the withdraw Activity
+  let withdrawResult: string;
+  try {
+    withdrawResult = await withdraw(details);
+  } catch (withdrawErr) {
+    throw new ApplicationFailure(`Withdrawal failed. Error: ${withdrawErr}`);
+  }
+
+  //Execute the deposit Activity
+  let depositResult: string;
+  try {
+    depositResult = await deposit(details);
+  } catch (depositErr) {
+    // The deposit failed; try to refund the money.
+    let refundResult;
+    try {
+      refundResult = await refund(details);
+      throw ApplicationFailure.create({
+        message: `Failed to deposit money into account ${details.targetAccount}. Money returned to ${details.sourceAccount}. Cause: ${depositErr}.`,
+      });
+    } catch (refundErr) {
+      throw ApplicationFailure.create({
+        message: `Failed to deposit money into account ${details.targetAccount}. Money could not be returned to ${details.sourceAccount}. Cause: ${refundErr}.`,
+      });
+    }
+  }
+  return `Transfer complete (transaction IDs: ${withdrawResult}, ${depositResult})`;
+}
+```
+
+The `PaymentDetails` type is defined in `shared.ts`:
+
+**shared.ts**
+
+```typescript
+export type PaymentDetails = {
+  amount: number;
+  sourceAccount: string;
+  targetAccount: string;
+  referenceId: string;
+};
+```
+
+<h3>Activity Definition</h3>
+
+Activities handle the business logic. Each Activity function calls an external banking service:
+
+**activities.ts**
+
+```typescript
+import type { PaymentDetails } from './shared';
+import { BankingService } from './banking-client';
+
+export async function withdraw(details: PaymentDetails): Promise<string> {
+  console.log(
+    `Withdrawing $${details.amount} from account ${details.sourceAccount}.\n\n`
+  );
+  const bank1 = new BankingService('bank1.example.com');
+  return await bank1.withdraw(
+    details.sourceAccount,
+    details.amount,
+    details.referenceId
+  );
+}
+
+export async function deposit(details: PaymentDetails): Promise<string> {
+  console.log(
+    `Depositing $${details.amount} into account ${details.targetAccount}.\n\n`
+  );
+  const bank2 = new BankingService('bank2.example.com');
+  return await bank2.deposit(
+    details.targetAccount,
+    details.amount,
+    details.referenceId
+  );
+}
+
+export async function refund(details: PaymentDetails): Promise<string> {
+  console.log(
+    `Refunding $${details.amount} to account ${details.sourceAccount}.\n\n`
+  );
+  const bank1 = new BankingService('bank1.example.com');
+  return await bank1.deposit(
+    details.sourceAccount,
+    details.amount,
+    details.referenceId
+  );
+}
+```
+
+</SdkTabs.TypeScript>
+
+<SdkTabs.Ruby>
+
+<h3>Workflow Definition</h3>
+
+In the Temporal Ruby SDK, a Workflow Definition is a class that extends `Temporalio::Workflow::Definition`.
+
+This is what the Workflow Definition looks like for the money transfer process:
+
+**workflow.rb**
+
+```ruby
+class MoneyTransferWorkflow < Temporalio::Workflow::Definition
+  def execute(details)
+    retry_policy = Temporalio::RetryPolicy.new(
+      max_interval: 10,
+      non_retryable_error_types: [
+        'InvalidAccountError',
+        'InsufficientFundsError'
+      ]
+    )
+
+    Temporalio::Workflow.logger.info("Starting workflow (#{details})")
+
+    withdraw_result = Temporalio::Workflow.execute_activity(
+      BankActivities::Withdraw,
+      details,
+      start_to_close_timeout: 5,
+      retry_policy: retry_policy
+    )
+
+    begin
+      deposit_result = Temporalio::Workflow.execute_activity(
+        BankActivities::Deposit,
+        details,
+        start_to_close_timeout: 5,
+        retry_policy: retry_policy
+      )
+      
+      "Transfer complete (transaction IDs: #{withdraw_result}, #{deposit_result})"
+    rescue Temporalio::Error::ActivityError => e
+      # Since the deposit failed, attempt to recover by refunding
+      begin
+        refund_result = Temporalio::Workflow.execute_activity(
+          BankActivities::Refund,
+          details,
+          start_to_close_timeout: 5,
+          retry_policy: retry_policy
+        )
+        
+        "Transfer complete (transaction IDs: #{withdraw_result}, #{refund_result})"
+      rescue Temporalio::Error::ActivityError => refund_error
+        Temporalio::Workflow.logger.error("Refund failed: #{refund_error}")
+      end
+    end
+  end
+end
+```
+
+The `TransferDetails` struct is defined in `shared.rb`:
+
+**shared.rb**
+
+```ruby
+TransferDetails = Struct.new(:source_account, :target_account, :amount, :reference_id) do
+  def to_s
+    "TransferDetails { #{source_account}, #{target_account}, #{amount}, #{reference_id} }"
+  end
+end
+```
+
+<h3>Activity Definition</h3>
+
+Activities handle the business logic. Each Activity class calls an external banking service:
+
+**activities.rb**
+
+```ruby
+module BankActivities
+  class Withdraw < Temporalio::Activity::Definition
+    def execute(details)
+      puts("Doing a withdrawal from #{details.source_account} for #{details.amount}")
+      raise InsufficientFundsError, 'Transfer amount too large' if details.amount > 1000
+      
+      "OKW-#{details.amount}-#{details.source_account}"
+    end
+  end
+
+  class Deposit < Temporalio::Activity::Definition
+    def execute(details)
+      puts("Doing a deposit into #{details.target_account} for #{details.amount}")
+      raise InvalidAccountError, 'Invalid account number' if details.target_account == 'B5555'
+      
+      "OKD-#{details.amount}-#{details.target_account}"
+    end
+  end
+
+  class Refund < Temporalio::Activity::Definition
+    def execute(details)
+      puts("Refunding #{details.amount} back to account #{details.source_account}")
+      
+      "OKR-#{details.amount}-#{details.source_account}"
+    end
+  end
+end
+```
+
+</SdkTabs.Ruby>
+
+<SdkTabs.DotNet>
+
+<h3>Workflow Definition</h3>
+
+In the Temporal .NET SDK, a Workflow Definition is marked by the `[Workflow]` attribute placed above the class.
+
+This is what the Workflow Definition looks like for this process:
+
+**MoneyTransferWorker/Workflow.cs**
+
+```csharp
+[Workflow]
+public class MoneyTransferWorkflow
+{
+    [WorkflowRun]
+    public async Task<string> RunAsync(PaymentDetails details)
+    {
+        // Retry policy
+        var retryPolicy = new RetryPolicy
+        {
+            InitialInterval = TimeSpan.FromSeconds(1),
+            MaximumInterval = TimeSpan.FromSeconds(100),
+            BackoffCoefficient = 2,
+            MaximumAttempts = 3,
+            NonRetryableErrorTypes = new[] { "InvalidAccountException", "InsufficientFundsException" }
+        };
+
+        string withdrawResult;
+        try
+        {
+            withdrawResult = await Workflow.ExecuteActivityAsync(
+                () => BankingActivities.WithdrawAsync(details),
+                new ActivityOptions { StartToCloseTimeout = TimeSpan.FromMinutes(5), RetryPolicy = retryPolicy }
+            );
+        }
+        catch (ApplicationFailureException ex) when (ex.ErrorType == "InsufficientFundsException")
+        {
+            throw new ApplicationFailureException("Withdrawal failed due to insufficient funds.", ex);
+        }
+
+        string depositResult;
+        try
+        {
+            depositResult = await Workflow.ExecuteActivityAsync(
+                () => BankingActivities.DepositAsync(details),
+                new ActivityOptions { StartToCloseTimeout = TimeSpan.FromMinutes(5), RetryPolicy = retryPolicy }
+            );
+            return $"Transfer complete (transaction IDs: {withdrawResult}, {depositResult})";
+        }
+        catch (Exception depositEx)
+        {
+            try
+            {
+                // if the deposit fails, attempt to refund the withdrawal
+                string refundResult = await Workflow.ExecuteActivityAsync(
+                    () => BankingActivities.RefundAsync(details),
+                    new ActivityOptions { StartToCloseTimeout = TimeSpan.FromMinutes(5), RetryPolicy = retryPolicy }
+                );
+                throw new ApplicationFailureException($"Failed to deposit money into account {details.TargetAccount}. Money returned to {details.SourceAccount}.", depositEx);
+            }
+            catch (Exception refundEx)
+            {
+                throw new ApplicationFailureException($"Failed to deposit money into account {details.TargetAccount}. Money could not be returned to {details.SourceAccount}. Cause: {refundEx.Message}", refundEx);
+            }
+        }
+    }
+}
+```
+
+The `PaymentDetails` record is defined in `PaymentDetails.cs`:
+
+**MoneyTransferWorker/PaymentDetails.cs**
+
+```csharp
+public record PaymentDetails(
+    string SourceAccount,
+    string TargetAccount,
+    int Amount,
+    string ReferenceId);
+```
+
+<h3>Activity Definition</h3>
+
+Activities handle the business logic. Each Activity method calls an external banking service:
+
+**MoneyTransferWorker/Activities.cs**
+
+```csharp
+public class BankingActivities
+{
+    [Activity]
+    public static async Task<string> WithdrawAsync(PaymentDetails details)
+    {
+        var bankService = new BankingService("bank1.example.com");
+        Console.WriteLine($"Withdrawing ${details.Amount} from account {details.SourceAccount}.");
+        try
+        {
+            return await bankService.WithdrawAsync(details.SourceAccount, details.Amount, details.ReferenceId).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationFailureException("Withdrawal failed", ex);
+        }
+    }
+
+    [Activity]
+    public static async Task<string> DepositAsync(PaymentDetails details)
+    {
+        var bankService = new BankingService("bank2.example.com");
+        Console.WriteLine($"Depositing ${details.Amount} into account {details.TargetAccount}.");
+        
+        try
+        {
+            return await bankService.DepositAsync(details.TargetAccount, details.Amount, details.ReferenceId);
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationFailureException("Deposit failed", ex);
+        }
+    }
+}
+```
+
+</SdkTabs.DotNet>
 
 </SdkTabs>
 
@@ -435,29 +940,3 @@ The Temporal Web UI lets you see details about the Workflow you just ran.
 >
   Continue to Part 2: Simulate Failures
 </NextButton>
-
-## Continue Your Learning
-
-<div className="row">
-  <div className="col col--4">
-    <CallToAction 
-      href="/develop/python/core-application"
-      buttonText="Build from Scratch"
-      description="Learn to create Temporal apps step by step"
-    />
-  </div>
-  <div className="col col--4">
-    <CallToAction 
-      href="https://learn.temporal.io/courses/"
-      buttonText="Take a Free Course"
-      description="Comprehensive learning paths"
-    />
-  </div>
-  <div className="col col--4">
-    <CallToAction 
-      href="/develop/python"
-      buttonText="Python SDK Guide"
-      description="Complete developer documentation"
-    />
-  </div>
-</div>
