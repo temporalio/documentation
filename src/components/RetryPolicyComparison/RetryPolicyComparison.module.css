@@ -1,0 +1,87 @@
+.comparisonContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.errorType {
+    display: flex;
+}
+
+.errorBox {
+    padding: 1rem;
+    border-radius: 8px;
+    border: 2px solid;
+    flex: 1;
+}
+
+.noRetry {
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.doRetry {
+    border-color: #22c55e;
+    background: rgba(34, 197, 94, 0.1);
+}
+
+.errorTitle {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+}
+
+.noRetry .errorTitle {
+    color: #ef4444;
+}
+
+.doRetry .errorTitle {
+    color: #22c55e;
+}
+
+.errorList {
+    margin: 0;
+    padding-left: 1.2rem;
+}
+
+.errorList li {
+    margin-bottom: 0.25rem;
+}
+
+.errorDescription {
+    font-size: 0.9rem;
+    margin: 0.5rem 0 0;
+    opacity: 0.8;
+}
+
+/* Dark mode adjustments */
+:global([data-theme='dark']) .noRetry {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: #f87171;
+}
+
+:global([data-theme='dark']) .doRetry {
+    background: rgba(34, 197, 94, 0.15);
+    border-color: #4ade80;
+}
+
+:global([data-theme='dark']) .noRetry .errorTitle {
+    color: #f87171;
+}
+
+:global([data-theme='dark']) .doRetry .errorTitle {
+    color: #4ade80;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .comparisonContainer {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .errorBox {
+        padding: 0.75rem;
+    }
+}

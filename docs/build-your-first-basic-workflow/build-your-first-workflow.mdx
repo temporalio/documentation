@@ -18,6 +18,7 @@ import { SetupSteps, SetupStep, CodeSnippet } from "@site/src/components/element
 import { CallToAction } from "@site/src/components/elements/CallToAction";
 import { TemporalProgress } from "@site/src/components/TemporalProgress";
 import { StatusIndicators } from "@site/src/components/StatusIndicators";
+import { RetryPolicyComparison } from "@site/src/components/RetryPolicyComparison";
 import { NextButton } from "@site/src/components/TutorialNavigation";
 import SdkTabs from "@site/src/components/elements/SdkTabs";
 import { FaPython, FaJava } from 'react-icons/fa';
@@ -840,15 +841,144 @@ public class BankingActivities
 
 Temporal makes your software durable and fault tolerant by default. If an Activity fails, Temporal automatically retries it, but you can customize this behavior through a Retry Policy.
 
-In the `MoneyTransfer` Workflow, you'll see a Retry Policy that retries failed Activities up to 3 times, with specific errors that shouldn't be retried:
+### Retry Policy Configuration
+
+In the `MoneyTransfer` Workflow, you'll see a Retry Policy that controls this behavior:
+
+<SdkTabs languageOrder={TUTORIAL_LANGUAGE_ORDER}>
+<SdkTabs.Python>
+
+**workflows.py**
 
 ```python
+# ...
 retry_policy = RetryPolicy(
-    maximum_attempts=3,
-    maximum_interval=timedelta(seconds=2),
-    non_retryable_error_types=["InvalidAccountError", "InsufficientFundsError"],
+    maximum_attempts=3,                    # Stop after 3 tries
+    maximum_interval=timedelta(seconds=2), # Don't wait longer than 2s
+    non_retryable_error_types=[           # Never retry these errors
+        "InvalidAccountError", 
+        "InsufficientFundsError"
+    ],
 )
 ```
+
+</SdkTabs.Python>
+
+<SdkTabs.Go>
+
+**workflow.go**
+
+```go
+// ...
+// RetryPolicy specifies how to automatically handle retries if an Activity fails.
+retrypolicy := &temporal.RetryPolicy{
+    InitialInterval:        time.Second,
+    BackoffCoefficient:     2.0,
+    MaximumInterval:        100 * time.Second,
+    MaximumAttempts:        500, // 0 is unlimited retries
+    NonRetryableErrorTypes: []string{"InvalidAccountError", "InsufficientFundsError"},
+}
+
+options := workflow.ActivityOptions{
+    // Timeout options specify when to automatically timeout Activity functions.
+    StartToCloseTimeout: time.Minute,
+    // Optionally provide a customized RetryPolicy.
+    // Temporal retries failed Activities by default.
+    RetryPolicy: retrypolicy,
+}
+
+// Apply the options.
+```
+
+</SdkTabs.Go>
+
+<SdkTabs.Java>
+
+**src/main/java/moneytransfer/MoneyTransferWorkflowImpl.java**
+
+```java
+// ...
+private static final String WITHDRAW = "Withdraw";
+
+// RetryOptions specify how to automatically handle retries when Activities fail
+private final RetryOptions retryoptions = RetryOptions.newBuilder()
+    .setInitialInterval(Duration.ofSeconds(1)) // Wait 1 second before first retry
+    .setMaximumInterval(Duration.ofSeconds(20)) // Do not exceed 20 seconds between retries
+    .setBackoffCoefficient(2) // Wait 1 second, then 2, then 4, etc
+    .setMaximumAttempts(5000) // Fail after 5000 attempts
+    .build();
+```
+
+</SdkTabs.Java>
+
+<SdkTabs.TypeScript>
+
+**src/workflows.ts**
+
+```typescript
+// ...
+const { withdraw, deposit, refund } = proxyActivities<typeof activities>({
+  // RetryPolicy specifies how to automatically handle retries if an Activity fails.
+  retry: {
+    initialInterval: '1 second',
+    maximumInterval: '1 minute',
+    backoffCoefficient: 2,
+    maximumAttempts: 500,
+    nonRetryableErrorTypes: ['InvalidAccountError', 'InsufficientFundsError'],
+  },
+  startToCloseTimeout: '1 minute',
+});
+```
+
+</SdkTabs.TypeScript>
+
+<SdkTabs.DotNet>
+
+**MoneyTransferWorker/Workflow.cs**
+
+```csharp
+// ...
+// Retry policy
+var retryPolicy = new RetryPolicy
+{
+    InitialInterval = TimeSpan.FromSeconds(1),
+    MaximumInterval = TimeSpan.FromSeconds(100),
+    BackoffCoefficient = 2,
+    MaximumAttempts = 3,
+    NonRetryableErrorTypes = new[] { "InvalidAccountException", "InsufficientFundsException" }
+};
+```
+
+</SdkTabs.DotNet>
+
+<SdkTabs.Ruby>
+
+**workflow.rb**
+
+```ruby
+# Temporal Workflow that withdraws the specified amount from the source
+# account and deposits it into the target account, refunding the source
+# account if the deposit cannot be completed.
+class MoneyTransferWorkflow < Temporalio::Workflow::Definition
+  def execute(details)
+    retry_policy = Temporalio::RetryPolicy.new(
+      max_interval: 10,
+      non_retryable_error_types: [
+        'InvalidAccountError',
+        'InsufficientFundsError'
+      ]
+    )
+```
+
+</SdkTabs.Ruby>
+
+</SdkTabs>
+
+### What Makes Errors Non-Retryable?
+Without retry policies, a temporary network glitch could cause your entire money transfer to fail. With Temporal's intelligent retries, your workflow becomes resilient to these common infrastructure issues.
+
+
+<RetryPolicyComparison />
 
 :::important This is a Simplified Example
 This tutorial shows core Temporal features and is not intended for production use. A real money transfer system would need additional logic for edge cases, cancellations, and error handling.
