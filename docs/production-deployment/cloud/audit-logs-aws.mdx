@@ -1,12 +1,12 @@
 ---
-id: audit-logging-aws
-title: Audit Logging - AWS Kinesis
+id: audit-logs-aws
+title: Audit Logs - AWS Kinesis
 sidebar_label: Amazon Kinesis
-description: Audit Logging in Temporal Cloud provides forensic information, integrating with AWS Kinesis for secure data handling and supporting key Admin and API Key operations. This streamlines audit and compliance processes.
-slug: /cloud/audit-logging-aws
+description: Audit Logs in Temporal Cloud provides forensic information, integrating with AWS Kinesis for secure data handling and supporting key Admin and API Key operations. This streamlines audit and compliance processes.
+slug: /cloud/audit-logs-aws
 toc_max_heading_level: 4
 keywords:
-  - audit logging
+  - audit logs
   - explanation
   - how-to
   - operations
@@ -17,13 +17,13 @@ keywords:
   - kinesis
 tags:
   - Temporal Cloud
-  - Logging
+  - Logs
   - AWS
 ---
 
-## Configure Audit Logging using AWS Kinesis {#configure-audit-logging}
+## Configure Audit Logs using AWS Kinesis {#configure-audit-log}
 
-To set up Audit Logging, you must have an Amazon Web Services (AWS) account and set up Kinesis Data Streams.
+To set up Audit Logs, you must have an Amazon Web Services (AWS) account and set up Kinesis Data Streams.
 
 1. If you don't have an AWS account, follow the instructions from AWS in [Create and activate an AWS account](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/).
 2. To set up Kinesis Data Streams, open the [AWS Management Console](https://aws.amazon.com/console/), search for Kinesis, and start the setup process.
@@ -36,9 +36,9 @@ For more information, see [Why is my Kinesis data stream throttling?](https://aw
 ### Create an Audit Log sink
 
 1. In the Temporal Cloud UI, select **Settings**.
-1. On the **Settings** page, select **Integrations**.
-1. In the **Audit Logging** card, select **Configure Audit Logs**.
-1. On the **Audit Logging** page, choose your **Access method** (either **Auto** or **Manual**).
+1. On the **Settings** page, select **Audit Logs**.
+1. In the **Audit Log Integration** card, select **Setup**.
+1. On the **Audit Log Integration** page, choose your **Access method** (either **Auto** or **Manual**).
    - **Auto:** Configure the AWS CloudFormation stack in your AWS account from the Cloud UI.
    - **Manual:** Use a generated AWS CloudFormation template to set up Kinesis manually.
 1. In **Kinesis ARN**, paste the Kinesis ARN from your AWS account.
@@ -61,7 +61,7 @@ If you chose the **Manual** access method, continue with the following steps:
 1. Select **Next** on this page and on the next two pages.
 1. On the **Review** page, select **Create stack**.
 
-To ensure that audit logs can flow into the Kinesis stream, you can use the **Verify** button to confirm it is set up correctly. This validates that Temporal can successfully write to your stream.
+To ensure that Audit Logs can flow into the Kinesis stream, you can use the **Verify** button to confirm it is set up correctly. This validates that Temporal can successfully write to your stream.
 If everything is configured correctly, you will see a `Success` status indicating Temporal has written to the kinesis stream.
 
 ## Consume an Audit Log {#consume-an-audit-log}
