@@ -17,7 +17,9 @@ import SdkTabs from '@site/src/components';
 
 # Plugins
 
-A **Plugin** is an abstraction that will let your users add your feature to their Workflows in one line. It makes it seamless for platform developers to add their own custom functionality to many Workflows. Using plugins, you can build reusable open source libraries or build add-ons for engineers at your company.
+A **Plugin** is an abstraction that will let your users add your feature to their Temporal primitives, like Workflows and Activities, in one line. It makes it seamless for platform engineers to add their own custom functionality to many primitives. Using plugins, you can build reusable open source libraries or build add-ons for engineers at your company.
+
+This guide will teach you how to create plugins and give platform engineers general guidance on using and managing Temporal's primitives.
 
 Here are some common use cases for plugins:
 
@@ -95,7 +97,6 @@ plugin = SimplePlugin(
 You can provide a library with functionality for use within a Workflow if you'd like to abstract away some Temporal-specific details for your users. Your library will call elements you include in your Plugin: Activities, Child Workflows, Signals, Updates, Queries, Nexus Operations, Interceptors, Data Converters, and any other code as long as it follows these requirements:
 
 - It should be [deterministic](https://docs.temporal.io/workflows#deterministic-constraints), running the same way every time it’s executed. Non-deterministic code should go in Activities or Nexus Operations.
-- It should be used in the Python [sandbox](https://docs.temporal.io/develop/python/python-sdk-sandbox).
 - It should be designed to handle being restarted, resumed, or executed in a different process from where it originally began without losing correctness or state consistency.
 - It should run quickly since it may be replayed many times during a long Workflow execution. More expensive code should go in Activities or Nexus Operations.
 
