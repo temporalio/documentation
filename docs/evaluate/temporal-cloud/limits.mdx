@@ -123,7 +123,7 @@ Temporal Cloud limits each Namespace to a total of 32 KB or 16 certificates, whi
 
 ### Concurrent Task pollers
 
-Temporal Cloud limits each Namespace to 20,000 concurrent Task pollers, regardless of whether they are Activity or Workflow Task pollers.
+Temporal Cloud limits each Namespace to 20,000 Activity pollers and 20,000 Workflow Task pollers concurrently. 
 
 Each SDK offers a way to configure Workers for per-Worker maximum Activity and Workflow Task pollers.
 Those values do not affect the global Namespace limit.
