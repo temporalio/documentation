@@ -261,6 +261,7 @@ const worker = await Worker.create({
 [ejson/src/client.ts](https://github.com/temporalio/samples-typescript/blob/main/ejson/src/client.ts)
 ```ts
 const client = new Client({
+  connection,
   dataConverter: { payloadConverterPath: require.resolve('./payload-converter') },
 });
 ```
@@ -398,13 +399,17 @@ const worker = await Worker.create({
 <!--SNIPSTART typescript-protobuf-client -->
 [protobufs/src/client.ts](https://github.com/temporalio/samples-typescript/blob/main/protobufs/src/client.ts)
 ```ts
-import { Client } from '@temporalio/client';
+import { Client, Connection } from '@temporalio/client';
+import { loadClientConnectConfig } from '@temporalio/envconfig';
 import { v4 as uuid } from 'uuid';
 import { foo, ProtoResult } from '../protos/root';
 import { example } from './workflows';
 
 async function run() {
+  const config = loadClientConnectConfig();
+  const connection = await Connection.connect(config.connectionOptions);
   const client = new Client({
+    connection,
     dataConverter: { payloadConverterPath: require.resolve('./payload-converter') },
   });
 
@@ -558,6 +563,7 @@ As before, we provide a custom Data Converter to the Client and Worker:
 [encryption/src/client.ts](https://github.com/temporalio/samples-typescript/blob/main/encryption/src/client.ts)
 ```ts
 const client = new Client({
+  connection,
   dataConverter: await getDataConverter(),
 });
 
