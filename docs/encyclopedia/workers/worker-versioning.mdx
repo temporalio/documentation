@@ -48,6 +48,12 @@ A **Pinned** Workflow is guaranteed to complete on a single Worker Deployment Ve
 
 An **Auto-Upgrade** Workflow will move to the latest Worker Deployment Version automatically whenever you change the current version. Auto-upgrade Workflows are not restricted to a single Deployment Version and need to be kept replay-safe manually, i.e. with [patching](/workflow-definition#workflow-versioning).
 
+## Versioning Types
+
+- **Current Worker Deployment Version**: the version where Workflows are routed to unless they were previously pinned on a different version. Other versions can continue polling to allow pinned Workflows to finish executing or in case you need to roll back. If no current version is specified, the default is unversioned.
+- **Ramping Worker Deployment Version**: the version where a configurable percentage of Workflows are routed to unless they were previously pinned on a different version. The ramp percentage can be in the range [0, 100]. Workflows that don't go to the Ramping Version will go to the Current Version. If no Ramping Version is specified, 100% of new Workflows and Auto-Upgrade Workflows will go to the Current Version.
+- **Target Worker Deployment Version**: the version your Workflow will move to next. This could be the Deployment's Current Version or the Ramping Version. For example, if an Auto-Upgrade Workflow was running on Version A, the Current Version is B, and there is a 5% ramp to C, there is a 95% chance that its Target Version is B and 5% that it's C.
+
 ## Versioning Statuses {#versioning-statuses}
 
 A Worker Deployment Version moves through the following states:
