@@ -2014,6 +2014,21 @@
       "source": "/cloud/high-availability/how-it-works",
       "destination": "/cloud/high-availability/ha-connectivity",
       "permanent": true
+    },
+    {
+      "source": "/production-deployment/cloud/audit-logging",
+      "destination": "/production-deployment/cloud/audit-logs",
+      "permanent": true
+    },
+    {
+      "source": "/production-deployment/cloud/audit-logging-aws",
+      "destination": "/production-deployment/cloud/audit-logs-aws",
+      "permanent": true
+    },
+    {
+      "source": "/production-deployment/cloud/audit-logging-gcp",
+      "destination": "/production-deployment/cloud/audit-logs-gcp",
+      "permanent": true
     }
   ]
 }
