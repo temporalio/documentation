@@ -37,27 +37,38 @@ export const TUTORIAL_LANGUAGE_ORDER = [
 ];
 import { SetupSteps, SetupStep, CodeSnippet } from "@site/src/components/elements/SetupSteps";
 import { CodeComparison } from "@site/src/components/CodeComparison";
+import { AnimatedTerminal } from "@site/src/components/AnimatedTerminal";
+
+export const getTodayDate = () => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
+};
+
+export const getTodayDateISO = () => {
+  return new Date().toISOString();
+};
 
 # Part 2: Simulate Failures 
+In this part, you'll simulate failures to see how Temporal handles them. 
+This demonstrates why Temporal is particularly useful for building reliable systems.
 
 
 <TemporalProgress steps={[
   { id: 'part1', label: 'Part 1: Basic Workflow', status: 'completed' },
   { id: 'part2', label: 'Part 2: Failure Simulation', status: 'active' }
 ]} />
-In this part, you'll simulate failures to see how Temporal handles them. 
-This demonstrates why Temporal is particularly useful for building reliable systems.
 
 The key concept here is **durable execution**: your workflow's progress is saved after every step. 
 When failures and crashes happen (network issues, bugs in your code, server restarts), Temporal resumes your workflow exactly where it stopped. No lost work, no restarting from the beginning.
 
-**What you'll accomplish**:
-- Crash a server mid-transaction and see zero data loss
-- Inject bugs into code and fix them live
+You'll crash a server mid-transaction and see zero data loss, then inject bugs into code and fix them live while your application continues running.
 
-**Difficulty**: Intermediate 
-
-Ready to break some stuff? Let's go.
 
 ## Experiment 1 of 2: Crash Recovery Test
 
@@ -188,7 +199,7 @@ Now in Terminal 3, start the Workflow. Check the Web UI - you'll see your Worker
     <strong>The Crash Test</strong>
     <p style={{margin: '0.5rem 0 0 0'}}>Go back to Terminal 2 and kill the Worker with <code>Ctrl+C</code></p>
   </div>
-}>
+} style={{background: 'transparent'}}>
 
 ### Step 3: Simulate the Crash
 
@@ -252,6 +263,7 @@ Restart your Worker in Terminal 2. Watch Terminal 3 - you'll see the Workflow fi
 **Mission Accomplished!** You just simulated killing the Worker process and restarting it. The Workflow resumed where it left off without losing any application state.
 
 :::tip **Try This Challenge**
+
 Try killing the Worker at different points during execution. Start the Workflow, kill the Worker during the withdrawal, then restart it. Kill it during the deposit. Each time, notice how Temporal maintains perfect state consistency.
 
 Check the Web UI while the Worker is down - you'll see the Workflow is still "Running" even though no code is executing.
@@ -279,7 +291,7 @@ Check the Web UI while the Worker is down - you'll see the Workflow is still "Ru
 </TemporalCheckbox>
 
 <TemporalCheckbox id="code-editor">
-  Code editor open with `activities.py`
+  Code editor open with the Activities file
 </TemporalCheckbox>
 
 <TemporalCheckbox id="failure-ready">
@@ -485,13 +497,21 @@ python run_worker.py
 - The `withdraw()` Activity completes successfully
 - The `deposit()` Activity fails and retries automatically
 
-```
-2024/02/12 10:59:09 Withdrawing $250 from account 85-150.
-2024/02/12 10:59:09 Depositing $250 into account 43-812.
-2024/02/12 10:59:09 ERROR Activity error. This deposit has failed.
-2024/02/12 10:59:10 Depositing $250 into account 43-812.
-2024/02/12 10:59:10 ERROR Activity error. This deposit has failed.
-```
+<AnimatedTerminal 
+  lines={[
+    `${getTodayDate()} Withdrawing $250 from account 85-150.`,
+    `${getTodayDate()} Depositing $250 into account 43-812.`,
+    `${getTodayDate()} ERROR Activity error. This deposit has failed.`,
+    `${getTodayDate()} Depositing $250 into account 43-812.`,
+    `${getTodayDate()} ERROR Activity error. This deposit has failed.`
+  ]}
+  delay={800}
+  typingSpeed={30}
+  prompt=""
+  loop={true}
+  restartDelay={60000}
+  startOnVisible={true}
+/>
 
 </SdkTabs.Python>
 
@@ -505,14 +525,22 @@ go run worker/main.go
 - The `Withdraw()` Activity completes successfully
 - The `Deposit()` Activity fails and retries automatically
 
-```
-2022/11/14 10:59:09 INFO  Started Worker Namespace default TaskQueue TRANSFER_MONEY_TASK_QUEUE
-2022/11/14 10:59:09 Withdrawing $250 from account 85-150.
-2022/11/14 10:59:09 Depositing $250 into account 43-812.
-2022/11/14 10:59:09 ERROR Activity error. This deposit has failed.
-2022/11/14 10:59:10 Depositing $250 into account 43-812.
-2022/11/14 10:59:10 ERROR Activity error. This deposit has failed.
-```
+<AnimatedTerminal 
+  lines={[
+    `${getTodayDate()} INFO  Started Worker Namespace default TaskQueue TRANSFER_MONEY_TASK_QUEUE`,
+    `${getTodayDate()} Withdrawing $250 from account 85-150.`,
+    `${getTodayDate()} Depositing $250 into account 43-812.`,
+    `${getTodayDate()} ERROR Activity error. This deposit has failed.`,
+    `${getTodayDate()} Depositing $250 into account 43-812.`,
+    `${getTodayDate()} ERROR Activity error. This deposit has failed.`
+  ]}
+  delay={800}
+  typingSpeed={30}
+  prompt=""
+  loop={true}
+  restartDelay={60000}
+  startOnVisible={true}
+/>
 
 </SdkTabs.Go>
 
@@ -529,14 +557,22 @@ mvn compile exec:java -Dexec.mainClass="moneytransferapp.MoneyTransferWorker" -D
 - The `withdraw()` Activity completes successfully
 - The `deposit()` Activity fails and retries automatically
 
-```
-Withdrawing $32 from account 612849675.
-[ReferenceId: d3d9bcf0-a897-4326]
-Deposit failed
-Deposit failed
-Deposit failed
-Deposit failed
-```
+<AnimatedTerminal 
+  lines={[
+    "Withdrawing $32 from account 612849675.",
+    "[ReferenceId: d3d9bcf0-a897-4326]",
+    "Deposit failed",
+    "Deposit failed", 
+    "Deposit failed",
+    "Deposit failed"
+  ]}
+  delay={800}
+  typingSpeed={30}
+  prompt=""
+  loop={true}
+  restartDelay={60000}
+  startOnVisible={true}
+/>
 
 </SdkTabs.Java>
 
@@ -550,18 +586,26 @@ npm run worker
 - The `withdraw()` Activity completes successfully
 - The `deposit()` Activity fails and retries automatically
 
-```
-2023-10-11T19:03:25.778Z [INFO] Worker state changed { state: 'RUNNING' }
-Withdrawing $400 from account 85-150.
-Depositing $400 into account 43-812.
-2023-10-11T19:03:29.445Z [WARN] Activity failed {
-  attempt: 1,
-  activityType: 'deposit',
-  taskQueue: 'money-transfer',
-  error: Error: This deposit has failed
-}
-Depositing $400 into account 43-812.
-```
+<AnimatedTerminal 
+  lines={[
+    `${getTodayDateISO()} [INFO] Worker state changed { state: 'RUNNING' }`,
+    "Withdrawing $400 from account 85-150.",
+    "Depositing $400 into account 43-812.",
+    `${getTodayDateISO()} [WARN] Activity failed {`,
+    "  attempt: 1,",
+    "  activityType: 'deposit',", 
+    "  taskQueue: 'money-transfer',",
+    "  error: Error: This deposit has failed",
+    "}",
+    "Depositing $400 into account 43-812."
+  ]}
+  delay={800}
+  typingSpeed={30}
+  prompt=""
+  loop={true}
+  restartDelay={60000}
+  startOnVisible={true}
+/>
 
 </SdkTabs.TypeScript>
 
@@ -575,14 +619,22 @@ dotnet run --project MoneyTransferWorker
 - The `WithdrawAsync()` Activity completes successfully
 - The `DepositAsync()` Activity fails and retries automatically
 
-```
-Running worker...
-Withdrawing $400 from account 85-150.
-Depositing $400 into account 43-812.
-Depositing $400 into account 43-812.
-Depositing $400 into account 43-812.
-Depositing $400 into account 43-812.
-```
+<AnimatedTerminal 
+  lines={[
+    "Running worker...",
+    "Withdrawing $400 from account 85-150.",
+    "Depositing $400 into account 43-812.",
+    "Depositing $400 into account 43-812.",
+    "Depositing $400 into account 43-812.",
+    "Depositing $400 into account 43-812."
+  ]}
+  delay={800}
+  typingSpeed={30}
+  prompt=""
+  loop={true}
+  restartDelay={60000}
+  startOnVisible={true}
+/>
 
 </SdkTabs.DotNet>
 
@@ -601,6 +653,24 @@ bundle exec ruby starter.rb
 **Here's what you'll see:**
 - The `withdraw` Activity completes successfully
 - The `deposit` Activity fails and retries automatically
+
+<AnimatedTerminal 
+  lines={[
+    "Starting Ruby worker...",
+    "Withdraw completed: $150 from account 85-150",
+    "Attempting deposit: $150 to account 43-812",
+    "Error: Deposit failed - divide by zero error",
+    "Retrying deposit: $150 to account 43-812", 
+    "Error: Deposit failed - divide by zero error",
+    "Retrying deposit: $150 to account 43-812"
+  ]}
+  delay={800}
+  typingSpeed={30}
+  prompt=""
+  loop={true}
+  restartDelay={60000}
+  startOnVisible={true}
+/>
 
 Check the Web UI - click on your Workflow to see the failure details and retry attempts.
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from './WorkflowDiagram.module.css';
 
-export const WorkflowDiagram = ({ title, nodes }) => {
+export const WorkflowDiagram = ({ title, nodes, style }) => {
     return (
-        <div className={styles.workflowDiagram}>
+        <div className={styles.workflowDiagram} style={style}>
             <h4>{title}</h4>
             <div className={styles.diagramFlow}>
                 {nodes.map((node, index) => (
