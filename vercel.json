@@ -1736,7 +1736,7 @@
     },
     {
       "source": "/cloud/how-to-manage-audit-logging:path*",
-      "destination": "/cloud/audit-logging:path*"
+      "destination": "/cloud/audit-logs:path*"
     },
     {
       "source": "/kb/prometheus-grafana-setup-cloud",
@@ -2013,6 +2013,21 @@
     {
       "source": "/cloud/high-availability/how-it-works",
       "destination": "/cloud/high-availability/ha-connectivity",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/audit-logging",
+      "destination": "/cloud/audit-logs",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/audit-logging-aws",
+      "destination": "/cloud/audit-logs-aws",
+      "permanent": true
+    },
+    {
+      "source": "/cloud/audit-logging-gcp",
+      "destination": "/cloud/audit-logs-gcp",
       "permanent": true
     }
   ]
