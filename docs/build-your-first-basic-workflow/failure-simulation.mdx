@@ -22,6 +22,7 @@ import { StatusIndicators } from "@site/src/components/StatusIndicators";
 import { WorkflowDiagram } from "@site/src/components/WorkflowDiagram";
 import { RetryCounter } from "@site/src/components/RetryCounter";
 import { TemporalCheckbox } from "@site/src/components/TemporalCheckbox";
+import { SetupSteps, SetupStep, CodeSnippet } from "@site/src/components/elements/SetupSteps";
 import SdkTabs from "@site/src/components/elements/SdkTabs";
 import { FaPython, FaJava } from 'react-icons/fa';
 import { SiGo, SiTypescript, SiPhp, SiDotnet, SiRuby } from 'react-icons/si';
@@ -102,206 +103,151 @@ This is fundamentally different from traditional applications where process cras
 
 ### Instructions
 
-<SdkTabs languageOrder={TUTORIAL_LANGUAGE_ORDER}>
-<SdkTabs.Python>
-
-1. **Stop your Worker if it's running.**
-   Press `Ctrl+C` in the terminal to stop it.
-
-2. **Start the Worker in Terminal 2:**
-   ```bash
-   python run_worker.py
-   ```
-
-3. **Now in Terminal 3, start the Workflow:**
-   ```bash
-   python run_workflow.py
-   ```
-
-4. **Check out the Workflow** in the Web UI. You'll see your Worker busy executing the Workflow and its Activities.
-
-5. **Go back to Terminal 2** and kill the Worker with `Ctrl+C`.
-
-6. **Jump back to the Web UI** and refresh. Your Workflow is still showing as "Running".
-
-   That's the magic! The Workflow keeps running because Temporal saved its state, even though we killed the Worker.
-
-7. **Bring your Worker back to life** by going to Terminal 2 and running:
-   ```bash
-   python run_worker.py
-   ```
-
-8. **Head back to Terminal 3** where you started the Workflow. You'll see it finish up and show the result!
-
-</SdkTabs.Python>
-
-<SdkTabs.Go>
-
-1. **Stop your Worker if it's running.**
-   Press `Ctrl+C` in the terminal to stop it.
-
-2. **Start the Worker in Terminal 2:**
-   ```bash
-   go run worker/main.go
-   ```
-
-3. **Now in Terminal 3, start the Workflow:**
-   ```bash
-   go run start/main.go
-   ```
-
-4. **Check out the Workflow** in the Web UI. You'll see your Worker busy executing the Workflow and its Activities.
-
-5. **Go back to Terminal 2** and kill the Worker with `Ctrl+C`.
-
-6. **Jump back to the Web UI** and refresh. Your Workflow is still showing as "Running".
-
-   That's the magic! The Workflow keeps running because Temporal saved its state, even though we killed the Worker.
-
-7. **Bring your Worker back to life** by going to Terminal 2 and running:
-   ```bash
-   go run worker/main.go
-   ```
-
-8. **Head back to Terminal 3** where you started the Workflow. You'll see it finish up and show the result!
-
-</SdkTabs.Go>
-
-<SdkTabs.Java>
-
-1. **Stop your Worker if it's running.**
-   Press `Ctrl+C` in the terminal to stop it.
-
-2. **Start the Worker in Terminal 2:**
-   ```bash
-   mvn compile exec:java -Dexec.mainClass="moneytransferapp.MoneyTransferWorker"
-   ```
-
-3. **Now in Terminal 3, start the Workflow:**
-   ```bash
-   mvn compile exec:java -Dexec.mainClass="moneytransferapp.TransferApp"
-   ```
-
-4. **Inspect the Workflow Execution** using the Web UI at `localhost:8080`. You can see the Worker is executing the Workflow and its Activities.
-
-5. **Go back to Terminal 2** and kill the Worker with `Ctrl+C`.
-
-6. **Jump back to the Web UI** and refresh. Your Workflow is still showing as "Running".
-
-   That's the magic! The Workflow keeps running because Temporal saved its state, even though we killed the Worker.
-
-7. **Bring your Worker back to life** by going to Terminal 2 and running:
-   ```bash
-   mvn compile exec:java -Dexec.mainClass="moneytransferapp.MoneyTransferWorker"
-   ```
-
-8. **Head back to Terminal 3** where you started the Workflow. You'll see it finish up and show the result!
-
-</SdkTabs.Java>
-
-<SdkTabs.TypeScript>
-
-1. **Stop your Worker if it's running.**
-   Press `Ctrl+C` in the terminal to stop it.
-
-2. **Start the Worker in Terminal 2:**
-   ```bash
-   npm run worker
-   ```
-
-3. **Now in Terminal 3, start the Workflow:**
-   ```bash
-   npm run client
-   ```
-
-4. **Check out the Workflow** in the Web UI. You'll see your Worker busy executing the Workflow and its Activities.
-
-5. **Go back to Terminal 2** and kill the Worker with `Ctrl+C`.
-
-6. **Jump back to the Web UI** and refresh. Your Workflow is still showing as "Running".
-
-   That's the magic! The Workflow keeps running because Temporal saved its state, even though we killed the Worker.
-
-7. **Bring your Worker back to life** by going to Terminal 2 and running:
-   ```bash
-   npm run worker
-   ```
-
-8. **Head back to Terminal 3** where you started the Workflow. You'll see it finish up and show the result!
-
-</SdkTabs.TypeScript>
-
-<SdkTabs.DotNet>
-
-1. **Stop your Worker if it's running.**
-   Press `Ctrl+C` in the terminal to stop it.
-
-2. **Start the Worker in Terminal 2:**
-   ```bash
-   dotnet run --project MoneyTransferWorker
-   ```
-
-3. **Now in Terminal 3, start the Workflow:**
-   ```bash
-   dotnet run --project MoneyTransferClient
-   ```
-
-4. **Check out the Workflow** in the Web UI. You'll see your Worker busy executing the Workflow and its Activities.
-
-5. **Go back to Terminal 2** and kill the Worker with `Ctrl+C`.
-
-6. **Jump back to the Web UI** and refresh. Your Workflow is still showing as "Running".
-
-   That's the magic! The Workflow keeps running because Temporal saved its state, even though we killed the Worker.
-
-7. **Bring your Worker back to life** by going to Terminal 2 and running:
-   ```bash
-   dotnet run --project MoneyTransferWorker
-   ```
-
-8. **Head back to Terminal 3** where you started the Workflow. You'll see it finish up and show the result!
-
-</SdkTabs.DotNet>
-
-<SdkTabs.Ruby>
-
-1. **Stop your Worker if it's running.**
-   Press `Ctrl+C` in the terminal to stop it.
-
-2. **Start the Worker in Terminal 2:**
-   ```bash
-   bundle exec ruby worker.rb
-   ```
-
-3. **Now in Terminal 3, start the Workflow:**
-   ```bash
-   bundle exec ruby starter.rb
-   ```
-
-4. **Check out the Workflow** in the Web UI. You'll see your Worker busy executing the Workflow and its Activities.
-
-5. **Go back to Terminal 2** and kill the Worker with `Ctrl+C`.
-
-6. **Jump back to the Web UI** and refresh. Your Workflow is still showing as "Running".
-
-   That's the magic! The Workflow keeps running because Temporal saved its state, even though we killed the Worker.
-
-7. **Bring your Worker back to life** by going to Terminal 2 and running:
-   ```bash
-   bundle exec ruby worker.rb
-   ```
-
-8. **Head back to Terminal 3** where you started the Workflow. You'll see it finish up and show the result!
-
-</SdkTabs.Ruby>
-
-</SdkTabs>
+<SetupSteps>
+
+<SetupStep code={
+  <div>
+    <div style={{marginBottom: '1rem'}}>
+      <strong>Terminal 2 - Worker</strong>
+    </div>
+    <SdkTabs languageOrder={TUTORIAL_LANGUAGE_ORDER}>
+      <SdkTabs.Python>
+        <CodeSnippet language="bash">python run_worker.py</CodeSnippet>
+      </SdkTabs.Python>
+      <SdkTabs.Go>
+        <CodeSnippet language="bash">go run worker/main.go</CodeSnippet>
+      </SdkTabs.Go>
+      <SdkTabs.Java>
+        <CodeSnippet language="bash">mvn compile exec:java -Dexec.mainClass="moneytransferapp.MoneyTransferWorker"</CodeSnippet>
+      </SdkTabs.Java>
+      <SdkTabs.TypeScript>
+        <CodeSnippet language="bash">npm run worker</CodeSnippet>
+      </SdkTabs.TypeScript>
+      <SdkTabs.DotNet>
+        <CodeSnippet language="bash">dotnet run --project MoneyTransferWorker</CodeSnippet>
+      </SdkTabs.DotNet>
+      <SdkTabs.Ruby>
+        <CodeSnippet language="bash">bundle exec ruby worker.rb</CodeSnippet>
+      </SdkTabs.Ruby>
+    </SdkTabs>
+  </div>
+}>
+
+### Step 1: Start Your Worker
+
+First, stop any running Worker (`Ctrl+C`) and start a fresh one in Terminal 2.
 
 <StatusIndicators items={[
   { id: 'worker-status', label: 'Worker Status', value: 'RUNNING', status: 'running' },
-  { id: 'workflow-status', label: 'Workflow Status', value: 'COMPLETED', status: 'running' },
-  { id: 'transaction', label: 'Transaction', value: 'SUCCESS', status: 'running' }
+  { id: 'workflow-status', label: 'Workflow Status', value: 'WAITING', status: 'pending' }
 ]} />
+
+</SetupStep>
+
+<SetupStep code={
+  <div>
+    <div style={{marginBottom: '1rem'}}>
+      <strong>Terminal 3 - Workflow</strong>
+    </div>
+    <SdkTabs languageOrder={TUTORIAL_LANGUAGE_ORDER}>
+      <SdkTabs.Python>
+        <CodeSnippet language="bash">python run_workflow.py</CodeSnippet>
+      </SdkTabs.Python>
+      <SdkTabs.Go>
+        <CodeSnippet language="bash">go run start/main.go</CodeSnippet>
+      </SdkTabs.Go>
+      <SdkTabs.Java>
+        <CodeSnippet language="bash">mvn compile exec:java -Dexec.mainClass="moneytransferapp.TransferApp"</CodeSnippet>
+      </SdkTabs.Java>
+      <SdkTabs.TypeScript>
+        <CodeSnippet language="bash">npm run client</CodeSnippet>
+      </SdkTabs.TypeScript>
+      <SdkTabs.DotNet>
+        <CodeSnippet language="bash">dotnet run --project MoneyTransferClient</CodeSnippet>
+      </SdkTabs.DotNet>
+      <SdkTabs.Ruby>
+        <CodeSnippet language="bash">bundle exec ruby starter.rb</CodeSnippet>
+      </SdkTabs.Ruby>
+    </SdkTabs>
+  </div>
+}>
+
+### Step 2: Start the Workflow
+
+Now in Terminal 3, start the Workflow. Check the Web UI - you'll see your Worker busy executing the Workflow and its Activities.
+
+<StatusIndicators items={[
+  { id: 'worker-status', label: 'Worker Status', value: 'EXECUTING', status: 'running' },
+  { id: 'workflow-status', label: 'Workflow Status', value: 'RUNNING', status: 'running' }
+]} />
+
+</SetupStep>
+
+<SetupStep code={
+  <div style={{backgroundColor: 'rgba(239, 68, 68, 0.1)', border: '2px solid #ef4444', padding: '1rem', borderRadius: '0.5rem'}}>
+    <strong>The Crash Test</strong>
+    <p style={{margin: '0.5rem 0 0 0'}}>Go back to Terminal 2 and kill the Worker with <code>Ctrl+C</code></p>
+  </div>
+}>
+
+### Step 3: Simulate the Crash
+
+**The moment of truth!** Kill your Worker while it's processing the transaction.
+
+**Jump back to the Web UI** and refresh. Your Workflow is still showing as "Running"!
+
+That's the magic! The Workflow keeps running because Temporal saved its state, even though we killed the Worker.
+
+<StatusIndicators items={[
+  { id: 'worker-status', label: 'Worker Status', value: 'CRASHED', status: 'crashed' },
+  { id: 'workflow-status', label: 'Workflow Status', value: 'RUNNING', status: 'running' }
+]} />
+
+</SetupStep>
+
+<SetupStep code={
+  <div>
+    <div style={{marginBottom: '1rem'}}>
+      <strong>Terminal 2 - Recovery</strong>
+    </div>
+    <SdkTabs languageOrder={TUTORIAL_LANGUAGE_ORDER}>
+      <SdkTabs.Python>
+        <CodeSnippet language="bash">python run_worker.py</CodeSnippet>
+      </SdkTabs.Python>
+      <SdkTabs.Go>
+        <CodeSnippet language="bash">go run worker/main.go</CodeSnippet>
+      </SdkTabs.Go>
+      <SdkTabs.Java>
+        <CodeSnippet language="bash">mvn compile exec:java -Dexec.mainClass="moneytransferapp.MoneyTransferWorker"</CodeSnippet>
+      </SdkTabs.Java>
+      <SdkTabs.TypeScript>
+        <CodeSnippet language="bash">npm run worker</CodeSnippet>
+      </SdkTabs.TypeScript>
+      <SdkTabs.DotNet>
+        <CodeSnippet language="bash">dotnet run --project MoneyTransferWorker</CodeSnippet>
+      </SdkTabs.DotNet>
+      <SdkTabs.Ruby>
+        <CodeSnippet language="bash">bundle exec ruby worker.rb</CodeSnippet>
+      </SdkTabs.Ruby>
+    </SdkTabs>
+  </div>
+}>
+
+### Step 4: Bring Your Worker Back
+
+Restart your Worker in Terminal 2. Watch Terminal 3 - you'll see the Workflow finish up and show the result!
+
+<StatusIndicators items={[
+  { id: 'worker-status', label: 'Worker Status', value: 'RECOVERED', status: 'success' },
+  { id: 'workflow-status', label: 'Workflow Status', value: 'COMPLETED', status: 'success' },
+  { id: 'transaction', label: 'Transaction', value: 'SUCCESS', status: 'success'}
+]} />
+
+</SetupStep>
+
+</SetupSteps>
+
+
 
 **Mission Accomplished!** You just simulated killing the Worker process and restarting it. The Workflow resumed where it left off without losing any application state.
 
