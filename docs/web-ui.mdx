@@ -54,7 +54,7 @@ For start time and end time, users can set their preferred date and time format 
 Select a Workflow Execution to view the Workflow Execution's History, Workers, Relationships, pending Activities and
 Nexus Operations, Queries, and Metadata.
 
-### Saved Views
+### Saved Views {#saved-views}
 
 Saved Views let you save and reuse your frequently used visibility queries in the Temporal Web UI. Instead of recreating
 complex filters every time, you can save them once and apply them with a single click.
@@ -136,6 +136,58 @@ You can share a Saved View as a URL.
 Saved Views that use relative times will be shared with absolute time.
 
 :::
+
+## Task Failures View {#task-failures-view}
+
+The Task Failures view is a pre-defined Saved View that displays Workflows that have a Workflow Task failure.
+These Workflows are still running, but one of their Tasks has failed. 
+
+The details of the Task Failures View displays the Workflow's ID, the Run ID, and the Workflow type. 
+Clicking on any of the links in the details opens the Workflow page for that Workflow. 
+On this page, you will find more information about the Task that failed and remaining pending tasks.
+You can also cancel the Workflow by clicking the Request Cancellation button on this page.
+
+### Activating Task Failure View for AWS Namespaces {#activate-task-failures-view-for-aws}
+
+To enable the Task Failures View for a Namespace running on AWS, you need to update the Dynamic Config first.
+To turn the feature on for a Namespace, use the following command:
+
+``` command
+
+omni ocld dynamic-config namespace patch --namespace "$NS" --json '{
+		"system.numConsecutiveWorkflowTaskProblemsToTriggerSearchAttribute": 5
+}'
+
+```
+
+`$NS` is the name of the Namespace where you want to set up Task Failures view. 
+`numConsecutiveWorkflowTaskProblemsToTriggerSearchAttribute` is the number of consecutive Workflow Task Failures 
+required to trigger the `TemporalReportedProblems` search attribute. 
+The default value is 5. If adding this search attribute causes strain on the visibility system, consider increasing this number.
+
+To turn off the feature for a Namespace, set `numConsecutiveWorkflowTaskProblemsToTriggerSearchAttribute` to 0.
+You can also deactivate the feature by removing the key:
+
+``` command
+
+omni ocld dynamic-config namespace remove \
+		-n "$NS" \
+		--key "system.numConsecutiveWorkflowTaskProblemsToTriggerSearchAttribute"
+
+```
+
+where `$NS` is the name of the Namespace for which you wish to deactivate the feature.
+
+To determine which Namespaces in your fleet have the feature activated, use the following command:
+
+``` command
+
+omni ocld dc search \
+		--namespace \
+		--key-regex 'system.numConsecutiveWorkflowTaskProblemsToTriggerSearchAttribute' \
+		--all
+
+```
 
 ## History
 
