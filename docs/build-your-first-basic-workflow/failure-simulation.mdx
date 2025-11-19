@@ -22,7 +22,6 @@ import { StatusIndicators } from "@site/src/components/StatusIndicators";
 import { WorkflowDiagram } from "@site/src/components/WorkflowDiagram";
 import { RetryCounter } from "@site/src/components/RetryCounter";
 import { TemporalCheckbox } from "@site/src/components/TemporalCheckbox";
-import { SetupSteps, SetupStep, CodeSnippet } from "@site/src/components/elements/SetupSteps";
 import SdkTabs from "@site/src/components/elements/SdkTabs";
 import { FaPython, FaJava } from 'react-icons/fa';
 import { SiGo, SiTypescript, SiPhp, SiDotnet, SiRuby } from 'react-icons/si';
@@ -36,6 +35,7 @@ export const TUTORIAL_LANGUAGE_ORDER = [
   { key: 'dotnet', label: '.NET', icon: SiDotnet },
   { key: 'rb', label: 'Ruby', icon: SiRuby },
 ];
+import { SetupSteps, SetupStep, CodeSnippet } from "@site/src/components/elements/SetupSteps";
 import { CodeComparison } from "@site/src/components/CodeComparison";
 
 # Part 2: Simulate Failures 
@@ -304,18 +304,24 @@ This is like having version control for your running application state.
 
 </details>
 
-### Instructions
+## Instructions
+
+### Step 1: Stop Your Worker
+
+Before we can simulate a failure, we need to stop the current Worker process. This allows us to modify the Activity code safely.
+
+In Terminal 2 (where your Worker is running), stop it with `Ctrl+C`.
+
+**What's happening?** You're about to modify Activity code to introduce a deliberate failure. The Worker process needs to restart to pick up code changes, but the Workflow execution will continue running in Temporal's service - this separation between execution state and code is a core Temporal concept.
+
+### Step 2: Introduce the Bug
+
+Now we'll intentionally introduce a failure in the deposit Activity to simulate real-world scenarios like network timeouts, database connection issues, or external service failures. This demonstrates how Temporal handles partial failures in multi-step processes.
 
 <SdkTabs languageOrder={TUTORIAL_LANGUAGE_ORDER}>
 <SdkTabs.Python>
 
-This demo application makes a call to an external service in an Activity. If that call fails due to a bug in your code, the Activity produces an error.
-
-To test this out and see how Temporal responds, you'll simulate a bug in the `deposit()` Activity method.
-
-Let your Workflow continue to run but don't start the Worker yet.
-
-Open the `activities.py` file and switch out the comments on the return statements so that the `deposit()` method returns an error:
+Find the `deposit()` method and **uncomment the failing line** while **commenting out the working line**:
 
 **activities.py**
 ```python
@@ -323,17 +329,18 @@ Open the `activities.py` file and switch out the comments on the return statemen
 async def deposit(self, data: PaymentDetails) -> str:
     reference_id = f"{data.reference_id}-deposit"
     try:
-        confirmation = await asyncio.to_thread(
-            self.bank.deposit, data.target_account, data.amount, reference_id
-        )
-        """
+        # Comment out this working line:
+        # confirmation = await asyncio.to_thread(
+        #     self.bank.deposit, data.target_account, data.amount, reference_id
+        # )
+        
+        # Uncomment this failing line:
         confirmation = await asyncio.to_thread(
             self.bank.deposit_that_fails,
             data.target_account,
             data.amount,
             reference_id,
         )
-        """
         return confirmation
     except InvalidAccountError:
         raise
@@ -342,65 +349,13 @@ async def deposit(self, data: PaymentDetails) -> str:
         raise
 ```
 
-Save your changes and switch to the terminal that was running your Worker.
-
-Start the Worker again:
-```bash
-python run_worker.py
-```
-
-Note, that you must restart the Worker every time there's a change in code. You will see the Worker complete the `withdraw()` Activity method, but it errors when it attempts the `deposit()` Activity method.
-
-The important thing to note here is that the Worker keeps retrying the `deposit()` method:
-
-```
-2024/02/12 10:59:09 INFO  No logger configured for temporal client. Created default one.
-2024/02/12 10:59:09 INFO  Started Worker Namespace default TaskQueue money-transfer WorkerID 77310@temporal.local@
-2024/02/12 10:59:09 Withdrawing $250 from account 85-150.
-2024/02/12 10:59:09 Depositing $250 into account 43-812.
-2024/02/12 10:59:09 ERROR Activity error. This deposit has failed.
-2024/02/12 10:59:10 Depositing $250 into account 43-812.
-2024/02/12 10:59:10 ERROR Activity error. This deposit has failed.
-2024/02/12 10:59:12 Depositing $250 into account 43-812.
-```
-
-The Workflow keeps retrying using the RetryPolicy specified when the Workflow first executes the Activity.
-
-You can view more information about the process in the Temporal Web UI. Click the Workflow. You'll see more details including the state, the number of attempts run, and the next scheduled run time.
-
-Your Workflow is running, but only the `withdraw()` Activity method has succeeded. In any other application, you would likely have to abandon the entire process and perform a rollback.
-
-With Temporal, you can debug and resolve the issue while the Workflow is running.
-
-Pretend that you found a fix for the issue. Switch the comments back to the return statements of the `deposit()` method in the `activities.py` file and save your changes.
-
-How can you possibly update a Workflow that's already halfway complete? You restart the Worker.
-
-To restart the Worker, cancel the currently running worker with `Ctrl+C`, then restart the Worker by running:
-```bash
-python run_worker.py
-```
-
-The Worker starts again. On the next scheduled attempt, the Worker picks up right where the Workflow was failing and successfully executes the newly compiled `deposit()` Activity method.
-
-Switch back to the terminal where your `run_workflow.py` program is running, and you'll see it complete:
-```
-Transfer complete.
-Withdraw: {'amount': 250, 'receiver': '43-812', 'reference_id': '1f35f7c6-4376-4fb8-881a-569dfd64d472', 'sender': '85-150'}
-Deposit: {'amount': 250, 'receiver': '43-812', 'reference_id': '1f35f7c6-4376-4fb8-881a-569dfd64d472', 'sender': '85-150'}
-```
-
-Visit the Web UI again, and you'll see the Workflow has completed. You have just fixed a bug in a running application without losing the state of the Workflow or restarting the transaction!
+Save your changes. You've now created a deliberate failure point in your deposit Activity. This simulates a real-world scenario where external service calls might fail intermittently.
 
 </SdkTabs.Python>
 
 <SdkTabs.Go>
 
-This demo application makes a call to an external service in an Activity. If that call fails due to a bug in your code, the Activity produces an error.
-
-To test this out and see how Temporal responds, you'll simulate a bug in the `Deposit()` Activity function. Let your Workflow continue to run but don't start the Worker yet.
-
-Open the `activity.go` file and switch out the comments on the return statements so that the `Deposit()` function returns an error:
+Find the `Deposit()` function and **uncomment the failing line** while **commenting out the working line**:
 
 **activity.go**
 ```go
@@ -412,84 +367,167 @@ func Deposit(ctx context.Context, data PaymentDetails) (string, error) {
 
     referenceID := fmt.Sprintf("%s-deposit", data.ReferenceID)
     bank := BankingService{"bank-api.example.com"}
-    // Uncomment the next line and comment the one after that to simulate an unknown failure
+    
+    // Uncomment this failing line:
     confirmation, err := bank.DepositThatFails(data.TargetAccount, data.Amount, referenceID)
+    // Comment out this working line:
     // confirmation, err := bank.Deposit(data.TargetAccount, data.Amount, referenceID)
+    
     return confirmation, err
 }
 ```
 
-Ensure you're calling `bank.DepositThatFails`.
-
-Save your changes and switch to the terminal that was running your Worker. Start the Worker again:
-```bash
-go run worker/main.go
-```
-
-You will see the Worker complete the `Withdraw()` Activity function, but it errors when it attempts the `Deposit()` Activity function. The important thing to note here is that the Worker keeps retrying the `Deposit()` function:
-
-```
-2022/11/14 10:59:09 INFO  No logger configured for temporal client. Created default one.
-2022/11/14 10:59:09 INFO  Started Worker Namespace default TaskQueue TRANSFER_MONEY_TASK_QUEUE WorkerID 77310@temporal.local@
-2022/11/14 10:59:09 Withdrawing $250 from account 85-150.
-2022/11/14 10:59:09 Depositing $250 into account 43-812.
-2022/11/14 10:59:09 ERROR Activity error. This deposit has failed.
-2022/11/14 10:59:10 Depositing $250 into account 43-812.
-2022/11/14 10:59:10 ERROR Activity error. This deposit has failed.
-2022/11/14 10:59:12 Depositing $250 into account 43-812.
-```
-
-The Workflow keeps retrying using the RetryPolicy specified when the Workflow first executes the Activity.
-
-Your Workflow is running, but only the `Withdraw()` Activity function has succeeded. In any other application, the whole process would likely have to be abandoned and rolled back.
-
-With Temporal, you can debug and fix the issue while the Workflow is running.
-
-Pretend that you found a fix for the issue. Switch the comments back on the return statements of the `Deposit()` function in the `activity.go` file and save your changes.
-
-How can you possibly update a Workflow that's already halfway complete? You restart the Worker.
-
-First, cancel the currently running worker with `Ctrl+C`, then restart the worker:
-```bash
-go run worker/main.go
-```
-
-The Worker starts again. On the next scheduled attempt, the Worker picks up right where the Workflow was failing and successfully executes the newly compiled `Deposit()` Activity function.
-
-Switch back to the terminal where your `start/main.go` program is running, and you'll see it complete:
-```
-Transfer complete (transaction IDs: W1779185060, D1779185060)
-```
-
-Visit the Web UI again, and you'll see the Workflow has completed. You have just fixed a bug in a running application without losing the state of the Workflow or restarting the transaction.
+Save your changes. You've now created a deliberate failure point in your deposit Activity. This simulates a real-world scenario where external service calls might fail intermittently.
 
 </SdkTabs.Go>
 
 <SdkTabs.Java>
 
-This demo application makes a call to an external service in an Activity. If that call fails due to a bug in your code, the Activity produces an error.
+Find the `deposit()` method and **change `activityShouldSucceed` to `false`**:
 
-To test this out and see how Temporal responds, you'll simulate a bug in the deposit Activity method.
+**AccountActivityImpl.java**
+```java
+public String deposit(PaymentDetails details) {
+    // Change this to false to simulate failure:
+    boolean activityShouldSucceed = false;
+    
+    // ... rest of your method
+}
+```
 
-Try it out by following these steps:
+Save your changes. You've now created a deliberate failure point in your deposit Activity. This simulates a real-world scenario where external service calls might fail intermittently.
 
-Make sure your Worker is stopped before proceeding, so your Workflow doesn't finish. Switch to the terminal that's running your Worker and stop it by pressing `Ctrl+C`.
+</SdkTabs.Java>
 
-Open the `AccountActivityImpl` file and modify the deposit method so `activityShouldSucceed` is set to false.
+<SdkTabs.TypeScript>
 
-Save your changes and switch to the terminal that was running your Worker.
+Find the `deposit()` function and **uncomment the failing line** while **commenting out the working line**:
 
-Verify the Workflow is running in the Web UI. If finished, restart it using the Maven command.
+**activities.ts**
+```typescript
+export async function deposit(details: PaymentDetails): Promise<string> {
+  // Comment out this working line:
+  // return await bank.deposit(details.targetAccount, details.amount, details.referenceId);
+  
+  // Uncomment this failing line:
+  return await bank.depositThatFails(details.targetAccount, details.amount, details.referenceId);
+}
+```
 
-Start the Worker again:
+Save your changes. You've now created a deliberate failure point in your deposit Activity. This simulates a real-world scenario where external service calls might fail intermittently.
+
+</SdkTabs.TypeScript>
+
+<SdkTabs.DotNet>
+
+Find the `DepositAsync()` method and **uncomment the failing line** while **commenting out the working block**:
+
+**MoneyTransferWorker/Activities.cs**
+```csharp
+[Activity]
+public static async Task<string> DepositAsync(PaymentDetails details)
+{
+    var bankService = new BankingService("bank2.example.com");
+    Console.WriteLine($"Depositing ${details.Amount} into account {details.TargetAccount}.");
+
+    // Uncomment this failing line:
+    return await bankService.DepositThatFailsAsync(details.TargetAccount, details.Amount, details.ReferenceId);
+    
+    // Comment out this working block:
+    /*
+    try
+    {
+        return await bankService.DepositAsync(details.TargetAccount, details.Amount, details.ReferenceId);
+    }
+    catch (Exception ex)
+    {
+        throw new ApplicationFailureException("Deposit failed", ex);
+    }
+    */
+}
+```
+
+Save your changes. You've now created a deliberate failure point in your deposit Activity. This simulates a real-world scenario where external service calls might fail intermittently.
+
+</SdkTabs.DotNet>
+
+<SdkTabs.Ruby>
+
+Find the `deposit` method and **uncomment the failing line** that causes a divide-by-zero error:
+
+**activities.rb**
+```ruby
+def deposit(details)
+  # Uncomment this line to introduce the bug:
+  result = 100 / 0  # This will cause a divide-by-zero error
+  
+  # Your existing deposit logic here...
+end
+```
+
+Save your changes. You've now created a deliberate failure point in your deposit Activity. This simulates a real-world scenario where external service calls might fail intermittently.
+
+</SdkTabs.Ruby>
+</SdkTabs>
+
+### Step 3: Start Worker & Observe Retry Behavior
+
+Now let's see how Temporal handles this failure. When you start your Worker, it will execute the withdraw Activity successfully, but hit the failing deposit Activity. Instead of the entire Workflow failing permanently, Temporal will retry the failed Activity according to your retry policy.
+
+<SdkTabs languageOrder={TUTORIAL_LANGUAGE_ORDER}>
+<SdkTabs.Python>
+
+```bash
+python run_worker.py
+```
+
+**Here's what you'll see:**
+- The `withdraw()` Activity completes successfully
+- The `deposit()` Activity fails and retries automatically
+
+```
+2024/02/12 10:59:09 Withdrawing $250 from account 85-150.
+2024/02/12 10:59:09 Depositing $250 into account 43-812.
+2024/02/12 10:59:09 ERROR Activity error. This deposit has failed.
+2024/02/12 10:59:10 Depositing $250 into account 43-812.
+2024/02/12 10:59:10 ERROR Activity error. This deposit has failed.
+```
+
+</SdkTabs.Python>
+
+<SdkTabs.Go>
+
+```bash
+go run worker/main.go
+```
+
+**Here's what you'll see:**
+- The `Withdraw()` Activity completes successfully
+- The `Deposit()` Activity fails and retries automatically
+
+```
+2022/11/14 10:59:09 INFO  Started Worker Namespace default TaskQueue TRANSFER_MONEY_TASK_QUEUE
+2022/11/14 10:59:09 Withdrawing $250 from account 85-150.
+2022/11/14 10:59:09 Depositing $250 into account 43-812.
+2022/11/14 10:59:09 ERROR Activity error. This deposit has failed.
+2022/11/14 10:59:10 Depositing $250 into account 43-812.
+2022/11/14 10:59:10 ERROR Activity error. This deposit has failed.
+```
+
+</SdkTabs.Go>
+
+<SdkTabs.Java>
+
+Make sure your Workflow is still running in the Web UI, then start your Worker:
+
 ```bash
 mvn clean install -Dorg.slf4j.simpleLogger.defaultLogLevel=info 2>/dev/null
 mvn compile exec:java -Dexec.mainClass="moneytransferapp.MoneyTransferWorker" -Dorg.slf4j.simpleLogger.defaultLogLevel=warn
 ```
 
-Note, that you must restart the Worker every time there's a change in code. You will see the Worker complete the withdraw Activity method, but it errors when it attempts the deposit Activity method.
-
-The important thing to note here is that the Worker keeps retrying the deposit method:
+**Here's what you'll see:**
+- The `withdraw()` Activity completes successfully
+- The `deposit()` Activity fails and retries automatically
 
 ```
 Withdrawing $32 from account 612849675.
@@ -500,50 +538,17 @@ Deposit failed
 Deposit failed
 ```
 
-The Workflow keeps retrying using the RetryPolicy specified when the Workflow first executes the Activity.
-
-Your Workflow is running, but only the withdraw Activity method has succeeded. In any other application, you would likely have to abandon the entire process and perform a rollback.
-
-With Temporal, you can debug and resolve the issue while the Workflow is running.
-
-Pretend that you found a fix for the issue. Switch `activityShouldSucceed` back to true and save your changes.
-
-How can you possibly update a Workflow that's already halfway complete? You restart the Worker.
-
-To restart the Worker, go to the terminal where the Worker is running and cancel the Worker with `Ctrl+C`. Then restart the Worker by running the following command:
-```bash
-mvn clean install -Dorg.slf4j.simpleLogger.defaultLogLevel=info 2>/dev/null
-mvn compile exec:java -Dexec.mainClass="moneytransferapp.MoneyTransferWorker" -Dorg.slf4j.simpleLogger.defaultLogLevel=warn
-```
-
-The Worker starts again. On the next scheduled attempt, the Worker picks up right where the Workflow was failing and successfully executes the newly compiled deposit Activity method:
-
-```
-Depositing $32 into account 872878204.
-[ReferenceId: d3d9bcf0-a897-4326]
-[d3d9bcf0-a897-4326] Transaction succeeded.
-```
-
-Visit the Web UI again, and you'll see the Workflow has completed. You have just fixed a bug in a running application without losing the state of the Workflow or restarting the transaction!
-
 </SdkTabs.Java>
 
 <SdkTabs.TypeScript>
 
-This demo application makes a call to an external service in an Activity. If that call fails due to a bug in your code, the Activity produces an error.
-
-To test this out and see how Temporal responds, you'll simulate a bug in the deposit Activity function. Let your Workflow continue to run but don't start the Worker yet.
-
-Open the `activities.ts` file and switch out the comments on the return statements so that the deposit function returns an error:
-
-Ensure you're calling `bank2.depositThatFails`.
-
-Save your changes and switch to the terminal that was running your Worker. Start the Worker again:
 ```bash
 npm run worker
 ```
 
-You will see the Worker complete the withdraw Activity function, but it errors when it attempts the deposit Activity function. The important thing to note here is that the Worker keeps retrying the deposit function:
+**Here's what you'll see:**
+- The `withdraw()` Activity completes successfully
+- The `deposit()` Activity fails and retries automatically
 
 ```
 2023-10-11T19:03:25.778Z [INFO] Worker state changed { state: 'RUNNING' }
@@ -558,80 +563,17 @@ Depositing $400 into account 43-812.
 Depositing $400 into account 43-812.
 ```
 
-The Workflow keeps retrying using the RetryPolicy specified when the Workflow first executes the Activity.
-
-You can view more information about the process in the Temporal Web UI. Click the Workflow. You'll see more details including the state, the number of times it has been attempted, and the next scheduled run time.
-
-Traditionally, you're forced to implement timeout and retry logic within the service code itself. This is repetitive and prone to errors. With Temporal, you can specify timeout configurations in the Workflow code as Activity options.
-
-Your Workflow is running, but only the withdraw Activity function has succeeded. In any other application, the whole process would likely have to be abandoned and rolled back.
-
-With Temporal, you can debug and fix the issue while the Workflow is running.
-
-Pretend that you found a fix for the issue. Switch the comments back on the return statements of the deposit function in the `activities.ts` file and save your changes.
-
-How can you possibly update a Workflow that's already halfway complete? You restart the Worker.
-
-First, cancel the currently running worker with `Ctrl+C`, then restart the worker:
-```bash
-npm run worker
-```
-
-The Worker starts again. On the next scheduled attempt, the Worker picks up right where the Workflow was failing and successfully executes the newly compiled deposit Activity function.
-
-Switch back to the terminal where your `npm run client` program is running, and you'll see it complete:
-```
-Transfer complete (transaction IDs: W3436600150, D9270097234)
-```
-
-Visit the Web UI again, and you'll see the Workflow has completed. You have just fixed a bug in a running application without losing the state of the Workflow or restarting the transaction.
-
 </SdkTabs.TypeScript>
 
 <SdkTabs.DotNet>
 
-This demo application makes a call to an external service in an Activity. If that call fails due to a bug in your code, the Activity produces an error.
-
-To test this out and see how Temporal responds, you'll simulate a bug in the `DepositAsync()` Activity method.
-
-Let your Workflow continue to run but don't start the Worker yet.
-
-Open the `Activities.cs` file and switch out the comments on the return statements so that the `DepositAsync()` method throws an exception:
-
-**MoneyTransferWorker/Activities.cs**
-```csharp
-[Activity]
-public static async Task<string> DepositAsync(PaymentDetails details)
-{
-    var bankService = new BankingService("bank2.example.com");
-    Console.WriteLine($"Depositing ${details.Amount} into account {details.TargetAccount}.");
-
-    // Uncomment below and comment out the try-catch block below to simulate unknown failure
-    return await bankService.DepositThatFailsAsync(details.TargetAccount, details.Amount, details.ReferenceId);
-    
-    /*
-    try
-    {
-        return await bankService.DepositAsync(details.TargetAccount, details.Amount, details.ReferenceId);
-    }
-    catch (Exception ex)
-    {
-        throw new ApplicationFailureException("Deposit failed", ex);
-    }
-    */
-}
-```
-
-Save your changes and switch to the terminal that was running your Worker.
-
-Start the Worker again:
 ```bash
 dotnet run --project MoneyTransferWorker
 ```
 
-Note, that you must restart the Worker every time there's a change in code. You will see the Worker complete the `WithdrawAsync()` Activity method, but it errors when it attempts the `DepositAsync()` Activity method.
-
-The important thing to note here is that the Worker keeps retrying the `DepositAsync()` method:
+**Here's what you'll see:**
+- The `WithdrawAsync()` Activity completes successfully
+- The `DepositAsync()` Activity fails and retries automatically
 
 ```
 Running worker...
@@ -642,59 +584,293 @@ Depositing $400 into account 43-812.
 Depositing $400 into account 43-812.
 ```
 
-The Workflow keeps retrying using the RetryPolicy specified when the Workflow first executes the Activity.
+</SdkTabs.DotNet>
 
-Your Workflow is running, but only the `WithdrawAsync()` Activity method has succeeded. In any other application, you would likely have to abandon the entire process and perform a rollback.
+<SdkTabs.Ruby>
 
-With Temporal, you can debug and resolve the issue while the Workflow is running.
-
-Pretend that you found a fix for the issue. Switch the comments back to the return statements of the `DepositAsync()` method in the `Activities.cs` file and save your changes.
-
-How can you possibly update a Workflow that's already halfway complete? You restart the Worker.
-
-To restart the Worker, go to the terminal where the Worker is running and cancel the Worker with `Ctrl+C`, then restart the Worker by running:
 ```bash
-dotnet run --project MoneyTransferWorker
+bundle exec ruby worker.rb
 ```
 
-The Worker starts again. On the next scheduled attempt, the Worker picks up right where the Workflow was failing and successfully executes the newly compiled `DepositAsync()` Activity method.
+In another terminal, start a new Workflow:
 
-Switch back to the terminal where your `Program.cs` file in MoneyTransferClient folder is running, and you'll see it complete:
-```
-Workflow result: Transfer complete (transaction IDs: W-caa90e06-3a48-406d-86ff-e3e958a280f8, D-1910468b-5951-4f1d-ab51-75da5bba230b)
+```bash
+bundle exec ruby starter.rb
 ```
 
-Visit the Web UI again, and you'll see the Workflow has completed. You have just fixed a bug in a running application without losing the state of the Workflow or restarting the transaction!
+**Here's what you'll see:**
+- The `withdraw` Activity completes successfully
+- The `deposit` Activity fails and retries automatically
+
+Check the Web UI - click on your Workflow to see the failure details and retry attempts.
+
+</SdkTabs.Ruby>
+</SdkTabs>
+
+**Key observation:** Your Workflow isn't stuck or terminated. Temporal automatically retries the failed Activity according to your configured retry policy, while maintaining the overall Workflow state. The successful withdraw Activity doesn't get re-executed - only the failed deposit Activity is retried.
+
+### Step 4: Fix the Bug
+
+Here's where Temporal really shines - you can fix bugs in production code while Workflows are still executing. The Workflow state is preserved in Temporal's durable storage, so you can deploy fixes and let the retry mechanism pick up your corrected code.
+
+<SdkTabs languageOrder={TUTORIAL_LANGUAGE_ORDER}>
+<SdkTabs.Python>
+
+Go back to `activities.py` and **reverse the comments** - comment out the failing line and uncomment the working line:
+
+**activities.py**
+```python
+@activity.defn
+async def deposit(self, data: PaymentDetails) -> str:
+    reference_id = f"{data.reference_id}-deposit"
+    try:
+        # Uncomment this working line:
+        confirmation = await asyncio.to_thread(
+            self.bank.deposit, data.target_account, data.amount, reference_id
+        )
+        
+        # Comment out this failing line:
+        # confirmation = await asyncio.to_thread(
+        #     self.bank.deposit_that_fails,
+        #     data.target_account,
+        #     data.amount,
+        #     reference_id,
+        # )
+        return confirmation
+    except InvalidAccountError:
+        raise
+    except Exception:
+        activity.logger.exception("Deposit failed")
+        raise
+```
+
+</SdkTabs.Python>
+
+<SdkTabs.Go>
+
+Go back to `activity.go` and **reverse the comments** - comment out the failing line and uncomment the working line:
+
+**activity.go**
+```go
+func Deposit(ctx context.Context, data PaymentDetails) (string, error) {
+    log.Printf("Depositing $%d into account %s.\n\n",
+        data.Amount,
+        data.TargetAccount,
+    )
+
+    referenceID := fmt.Sprintf("%s-deposit", data.ReferenceID)
+    bank := BankingService{"bank-api.example.com"}
+    
+    // Comment out this failing line:
+    // confirmation, err := bank.DepositThatFails(data.TargetAccount, data.Amount, referenceID)
+    // Uncomment this working line:
+    confirmation, err := bank.Deposit(data.TargetAccount, data.Amount, referenceID)
+    
+    return confirmation, err
+}
+```
+
+</SdkTabs.Go>
+
+<SdkTabs.Java>
+
+Go back to `AccountActivityImpl.java` and **change `activityShouldSucceed` back to `true`**:
+
+**AccountActivityImpl.java**
+```java
+public String deposit(PaymentDetails details) {
+    // Change this back to true to fix the bug:
+    boolean activityShouldSucceed = true;
+    
+    // ... rest of your method
+}
+```
+
+</SdkTabs.Java>
+
+<SdkTabs.TypeScript>
+
+Go back to `activities.ts` and **reverse the comments** - comment out the failing line and uncomment the working line:
+
+**activities.ts**
+```typescript
+export async function deposit(details: PaymentDetails): Promise<string> {
+  // Uncomment this working line:
+  return await bank.deposit(details.targetAccount, details.amount, details.referenceId);
+  
+  // Comment out this failing line:
+  // return await bank.depositThatFails(details.targetAccount, details.amount, details.referenceId);
+}
+```
+
+</SdkTabs.TypeScript>
+
+<SdkTabs.DotNet>
+
+Go back to `Activities.cs` and **reverse the comments** - comment out the failing line and uncomment the working block:
+
+**MoneyTransferWorker/Activities.cs**
+```csharp
+[Activity]
+public static async Task<string> DepositAsync(PaymentDetails details)
+{
+    var bankService = new BankingService("bank2.example.com");
+    Console.WriteLine($"Depositing ${details.Amount} into account {details.TargetAccount}.");
+
+    // Comment out this failing line:
+    // return await bankService.DepositThatFailsAsync(details.TargetAccount, details.Amount, details.ReferenceId);
+    
+    // Uncomment this working block:
+    try
+    {
+        return await bankService.DepositAsync(details.TargetAccount, details.Amount, details.ReferenceId);
+    }
+    catch (Exception ex)
+    {
+        throw new ApplicationFailureException("Deposit failed", ex);
+    }
+}
+```
 
 </SdkTabs.DotNet>
 
 <SdkTabs.Ruby>
 
-The Withdraw Activity contains a bug, although it hasn't been a problem yet because that statement is currently commented out. You will now uncomment it to expose the bug. You'll see that this causes the Activity to fail, but you'll also see that it retries automatically. More importantly, you'll observe that after you fix the bug, the Workflow Execution that was failing will complete successfully.
+Go back to `activities.rb` and **comment out the failing line**:
 
-Try it out by following these steps:
-
-1. **Whenever you modify the code, you must restart the Worker** for the changes to take effect. Press `Ctrl+C` in the terminal where your Worker is running to stop the Worker so that you can introduce the bug in the next step.
-
-2. **Edit the `activities.rb` file**, uncomment the line in the Withdraw Activity that causes a divide-by-zero error, and save the change
-
-3. **Start the Worker again** by running `bundle exec ruby worker.rb`
-
-4. **Start a new Workflow Execution** by running `bundle exec ruby starter.rb`
-
-5. **Go to the main page** in the Temporal Web UI and click the Workflow Execution you just started to view its detail page. You should see that the Withdraw Activity is failing. Click the Pending Activities tab to see the cause, and then click the History tab to return to the previous view.
-
-6. **Edit the `activities.rb` file**, comment out the line with the divide-by-zero error, and then save the change.
-
-7. **Press `Ctrl+C`** in the terminal where your Worker is running and then run `bundle exec ruby worker.rb` to start it again. The Worker will now use the code that contains the change you made in the previous step.
-
-8. **You should see that the Workflow Execution completes successfully.** This will be visible both in the Web UI and in the terminal where you started the Workflow Execution.
+**activities.rb**
+```ruby
+def deposit(details)
+  # Comment out this problematic line:
+  # result = 100 / 0  # This will cause a divide-by-zero error
+  
+  # Your existing deposit logic here...
+end
+```
 
 </SdkTabs.Ruby>
-
 </SdkTabs>
 
-**Mission Accomplished!** You have just fixed a bug in a running application without losing the state of the Workflow or restarting the transaction!
+Save your changes. You've now restored the working implementation. The key insight here is that you can deploy fixes to Activities while Workflows are still executing - Temporal will pick up your changes on the next retry attempt.
+
+### Step 5: Restart Worker
+
+To apply your fix, you need to restart the Worker process so it picks up the code changes. Since the Workflow execution state is stored in Temporal's servers (not in your Worker process), restarting the Worker won't affect the running Workflow.
+
+<SdkTabs languageOrder={TUTORIAL_LANGUAGE_ORDER}>
+<SdkTabs.Python>
+
+```bash
+# Stop the current Worker
+Ctrl+C
+
+# Start it again with the fix
+python run_worker.py
+```
+
+**On the next retry attempt,** your fixed `deposit()` Activity will succeed, and you'll see the completed transaction in Terminal 3:
+
+```
+Transfer complete.
+Withdraw: {'amount': 250, 'receiver': '43-812', 'reference_id': '1f35f7c6-4376-4fb8-881a-569dfd64d472', 'sender': '85-150'}
+Deposit: {'amount': 250, 'receiver': '43-812', 'reference_id': '1f35f7c6-4376-4fb8-881a-569dfd64d472', 'sender': '85-150'}
+```
+
+</SdkTabs.Python>
+
+<SdkTabs.Go>
+
+```bash
+# Stop the current Worker
+Ctrl+C
+
+# Start it again with the fix
+go run worker/main.go
+```
+
+**On the next retry attempt,** your fixed `Deposit()` Activity will succeed, and you'll see the completed transaction in your starter terminal:
+
+```
+Transfer complete (transaction IDs: W1779185060, D1779185060)
+```
+
+</SdkTabs.Go>
+
+<SdkTabs.Java>
+
+```bash
+# Stop the current Worker
+Ctrl+C
+
+# Start it again with the fix
+mvn clean install -Dorg.slf4j.simpleLogger.defaultLogLevel=info 2>/dev/null
+mvn compile exec:java -Dexec.mainClass="moneytransferapp.MoneyTransferWorker" -Dorg.slf4j.simpleLogger.defaultLogLevel=warn
+```
+
+**On the next retry attempt,** your fixed `deposit()` Activity will succeed:
+
+```
+Depositing $32 into account 872878204.
+[ReferenceId: d3d9bcf0-a897-4326]
+[d3d9bcf0-a897-4326] Transaction succeeded.
+```
+
+</SdkTabs.Java>
+
+<SdkTabs.TypeScript>
+
+```bash
+# Stop the current Worker
+Ctrl+C
+
+# Start it again with the fix
+npm run worker
+```
+
+**On the next retry attempt,** your fixed `deposit()` Activity will succeed, and you'll see the completed transaction in your client terminal:
+
+```
+Transfer complete (transaction IDs: W3436600150, D9270097234)
+```
+
+</SdkTabs.TypeScript>
+
+<SdkTabs.DotNet>
+
+```bash
+# Stop the current Worker
+Ctrl+C
+
+# Start it again with the fix
+dotnet run --project MoneyTransferWorker
+```
+
+**On the next retry attempt,** your fixed `DepositAsync()` Activity will succeed, and you'll see the completed transaction in your client terminal:
+
+```
+Workflow result: Transfer complete (transaction IDs: W-caa90e06-3a48-406d-86ff-e3e958a280f8, D-1910468b-5951-4f1d-ab51-75da5bba230b)
+```
+
+</SdkTabs.DotNet>
+
+<SdkTabs.Ruby>
+
+```bash
+# Stop the current Worker
+Ctrl+C
+
+# Start it again with the fix
+bundle exec ruby worker.rb
+```
+
+**On the next retry attempt,** your fixed `deposit` Activity will succeed, and you'll see the Workflow complete successfully.
+
+</SdkTabs.Ruby>
+</SdkTabs>
+
+Check the Web UI - your Workflow shows as completed. You've just demonstrated Temporal's key differentiator: the ability to fix production bugs in running applications without losing transaction state or progress. This is possible because Temporal stores execution state separately from your application code.
+
+**Mission Accomplished.** You have just fixed a bug in a running application without losing the state of the Workflow or restarting the transaction.
 
 :::tip **Try This Challenge**
 **Real-World Scenario**: Try this advanced experiment:
@@ -728,7 +904,7 @@ You fixed a bug in running code without losing any state. Most systems require y
 <details>
 <summary><strong>Automatic Retry Management</strong></summary>
 
-Temporal handled retries intelligently based on your policy, without cluttering your business logic with error-handling code.
+Temporal handled retries according to your configured policy, without cluttering your business logic with error-handling code.
 
 </details>
 
