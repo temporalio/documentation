@@ -58,16 +58,21 @@ export const getTodayDateISO = () => {
 In this part, you'll simulate failures to see how Temporal handles them. 
 This demonstrates why Temporal is particularly useful for building reliable systems.
 
-
 <TemporalProgress steps={[
   { id: 'part1', label: 'Part 1: Basic Workflow', status: 'completed' },
   { id: 'part2', label: 'Part 2: Failure Simulation', status: 'active' }
 ]} />
 
-The key concept here is **durable execution**: your workflow's progress is saved after every step. 
-When failures and crashes happen (network issues, bugs in your code, server restarts), Temporal resumes your workflow exactly where it stopped. No lost work, no restarting from the beginning.
+We've all been there: a seemingly harmless deployment brings down production, a database connection times out during peak traffic, or a third-party service decides to have an outage right when you need it most. 
+Despite our best efforts with comprehensive testing and monitoring, systems are inherently unpredictable and complex. 
+Networks fail, servers restart unexpectedly, and dependencies we trust can become unavailable without warning.
 
-You'll crash a server mid-transaction and see zero data loss, then inject bugs into code and fix them live while your application continues running.
+Traditional systems aren't equipped to handle these realities. 
+When something fails halfway through a multi-step process, you're left with partial state, inconsistent data, and the complex task of figuring out where things went wrong and how to recover. 
+Most applications either lose progress entirely or require you to build extensive checkpointing and recovery logic. 
+
+In this tutorial, you'll see Temporal's durable execution in action by running two tests: crashing a server while it's working and fixing code problems on the fly without stopping your application.
+
 
 
 ## Experiment 1 of 2: Crash Recovery Test
