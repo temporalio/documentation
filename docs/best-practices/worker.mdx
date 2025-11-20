@@ -14,68 +14,167 @@ tags:
 ---
 
 This document outlines best practices for deploying and optimizing Workers to ensure high performance, reliability, and
-scalability.
+scalability. It covers deployment strategies, scaling techniques, tuning recommendations, and monitoring approaches to
+help you get the most out of your Temporal Workers.
 
-## Core tenets
+We also provide a reference application: Order Management System (OMS) that demonstrates the deployment best practices
+in action. You can find the OMS codebase on
+[GitHub](https://github.com/temporalio/reference-app-orders-go/tree/main/docs).
 
-[Workers](../encyclopedia/workers/workers.mdx) are the execution layer of Temporal applications. They poll task queues,
-execute Workflows and Activities, and report results back to the Temporal Server. As such, Worker deployments have the
-following core tenets:
+## Deployment and lifecycle management
 
-- Stateless and ephemeral. Even though Workers retain a cache to increase performance during execution of the same
-  workloads, at their core, workers are stateless processes. All state that your applications rely on for durable
-  execution lives in Temporal. Workers are designed to tolerate restarts and rescheduling.
+Well-designed Worker deployment ensures resilience, observability, and maintainability. A Worker should be treated as a
+long-running service that can be deployed, upgraded, and scaled in a controlled way.
 
-- Horizontally scalable. The number of workers must be adjustable based on workload demands.
+### Package and configure Workers for flexibility
 
-- Observable and tunable. Effective Worker tuning requires various metrics, traces, and logs to be collected and acted
-  on.
+Workers should be artifacts produced by a CI/CD pipeline. Inject all required parameters for connecting to Temporal
+Cloud or a self-hosted Temporal Service at runtime via environment variables, configuration files, or command-line
+parameters. This allows for more granularity, easier testability, upgrade, scalability, and isolation of workers.
 
-These core tenets inform all best practices recommended in the following sections.
+In the order management reference app, Workers are packaged as Docker images with configuration provided via environment
+variables and mounted configuration files. The following code snippet shows how the Dockerfile is structured to create
+the Worker image:
 
-## Deployment model
+```Dockerfile
+FROM golang:1.23.8 AS oms-builder
 
-This section covers best practices for Worker deployment models.
+WORKDIR /usr/src/oms
 
-### At least two workers per task queue
+COPY go.mod go.sum ./
+RUN --mount=type=cache,target=/go/pkg/mod \
+    --mount=type=cache,target=/root/.cache/go-build \
+    go mod download
 
-### Scope each Worker pool to a single application and environment
+COPY app ./app
+COPY cmd ./cmd
 
-Because workers must be horizontally scalable, it is best to deploy them in pools. A worker pool is a number of workers
-that run a Temporal Application. We recommend you dedicate each pool to a single application and environment. However,
-one application can have multiple pools.
+RUN --mount=type=cache,target=/go/pkg/mod \
+    --mount=type=cache,target=/root/.cache/go-build \
+    CGO_ENABLED=0 go build -v -o /usr/local/bin/oms ./cmd/oms
 
-### Separate Workflow and Activity Worker pools if their resource needs differ significantly
+FROM busybox AS oms-worker
 
-Even within a single Temporal Application, there are often multiple Workflow and Activity types. If your application
-workloads are small and similar, a single Worker pool can handle all types. However, if your application has distinct
-workloads with different resource requirements or scaling characteristics, consider separating them into different
-Worker pools.
+COPY --from=oms-builder /usr/local/bin/oms /usr/local/bin/oms
 
-### Use one Kubernetes pod per Worker
+ENTRYPOINT ["/usr/local/bin/oms", "worker"]
+```
 
-Because workers are stateless and horizontally scalable, Kubernetes is a natural fit for deploying them. If you use
-Kubernetes to deploy Workers, we recommend using one pod per Worker instance. This approach simplifies resource
-allocation, scaling, and monitoring.
+The entry point `oms worker` starts the Worker process, which reads configuration from environment variables at runtime.
+For example, the Billing Worker deployment in Kubernetes uses environment variables to configure the Worker:
 
-## Resource allocation and monitoring
+```yaml
+spec:
+  containers:
+    - args:
+        - -k
+        - supersecretkey
+        - -s
+        - billing
+      env:
+        - name: FRAUD_API_URL
+          value: http://billing-api:8084
+        - name: TEMPORAL_ADDRESS
+          value: temporal-frontend.temporal:7233
+      image: ghcr.io/temporalio/reference-app-orders-go-worker:latest
+      name: billing-worker
+      imagePullPolicy: Always
+  enableServiceLinks: false
+```
 
-This section covers best practices for allocating resources to Workers and monitoring their performance.
+### Separate Task Queues logically
 
-### Monitor both CPU and memory usage
+Use separate Task Queues for distinct workloads. This isolation allows you to control rate limiting, prioritize certain
+workloads, and prevent one workload from starving another. All Workers polling a given Task Queue must register the same
+Workflows and Activities to avoid dispatch failures.
 
-Worker processes are constrained by both CPU and memory. Monitor both metrics to ensure that Workers have sufficient
-resources to handle their workloads.
+In the order management reference app, each microservice has its own Task Queue. For example, the Billing Worker polls
+the `billing` Task Queue, while the Order Worker polls the `order` Task Queue. This separation allows each service to
+scale independently based on its workload. The following code snippet shows how the Billing Worker is set up to poll its
+Task Queue. The default value for `TaskQueue` comes from the `api.go` configuration file and is set to `billing`.
 
-TODO: Steps to find out why they are high.
+<CaptionedImage
+  src="/diagrams/worker-best-practice-oms-architecture.png"
+  title="Diagram showing separate Task Queues for different Workers"
+/>
 
-1.
+```go
+func RunWorker(ctx context.Context, config config.AppConfig, client client.Client) error {
+	w := worker.New(client, TaskQueue, worker.Options{
+		MaxConcurrentWorkflowTaskPollers: 8,
+		MaxConcurrentActivityTaskPollers: 8,
+	})
 
-### Latency metrics inform resource allocation
+	w.RegisterWorkflow(Charge)
+	w.RegisterActivity(&Activities{FraudCheckURL: config.FraudURL})
 
-Monitor Worker latency metrics, such as Workflow and Activity task latencies, to identify bottlenecks. High latencies
+	return w.Run(temporalutil.WorkerInterruptFromContext(ctx))
+}
+```
 
-## Starting points for production worker deployments
+### Version Workflows safely
 
-While optimal Worker deployment configurations depend on your specific application workloads, the following starting
-points can help you get started:
+Use **Worker Versioning** to deploy new Workflow code without breaking running Executions.  
+Worker Versioning lets you map each Workflow Execution to a specific Worker Deployment Version identified by a build ID.
+This guarantees that pinned Workflows always run on the same Worker version where they started
+
+To learn more about versioning Workflows, see the
+[Workflow Versioning](../production-deployment/worker-deployments/worker-versioning.mdx) guide.
+
+### Manage Workflow History growth
+
+The maximum Event History is 50,000 events for a given Workflow. Workflows that accumulate large histories can
+experience replay delays. For long-running Workflows, track the Event History size and use ContinueAsNew to reset the
+Event History when it starts to degrade performance. All Temporal SDKs provide functions to suggest whether to use
+continue-as-new based on the current history size. For example, Python SDK has the
+[`is_continue_as_new_suggested()`](https://python.temporal.io/temporalio.workflow.Info.html#is_continue_as_new_suggested)
+function that returns a boolean indicating whether to use continue-as-new.
+
+If you don't want to rely on the built-in function, aim to keep the Event History to fewer than 20,000 events to
+maintain optimal performance.
+
+## Scaling, monitoring, and tuning
+
+Scaling and tuning are critical to Worker performance and cost efficiency. The goal is to balance concurrency,
+throughput, and resource utilization while maintaining low task latency.
+
+### Interpret metrics as a whole
+
+No single metric tells the full story. The following are some of the most useful Worker-related metrics to monitor. We
+recommend having all metrics listed below on your Worker monitoring dashboard. When you observe anomolies, correlate
+across multiple metrics to identify root causes.
+
+- Worker CPU and memory utilization
+- `workflow_task_schedule_to_start_latency` and `activity_task_schedule_to_start_latency`
+- `worker_task_slots_available`
+- `temporal_long_request_failure` and `temporal_long_request_latency`
+
+Schedule-to-Start latency measures how long a Task waits in the queue before a Worker starts it. High latency means your
+Workers or pollers can’t keep up with incoming Tasks, but the root cause depends on your resource metrics:
+
+- High latency and high CPU/memory: Workers are saturated. Add more Worker processes or replicas.
+- High latency and low CPU/memory: Workers are underutilized. Increase the number of pollers, executor slots, or both.
+  If this is accompanied by high `temporal_long_request_latency` or `temporal_long_request_failure`, your Workers are
+  struggling to reach the Temporal Service. Refer to
+  [Troubleshooting](../troubleshooting/performance-bottlenecks.mdx#high-temporal_long_request_failure) for guidance.
+
+### Optimize Worker cache
+
+Workers keep a cache of Workflow Executions to improve performance by reducing replay overhead. However, larger caches
+consume more memory. The `temporal_sticky_cache_size` tracks the size of the cache. If you observe high memory usage for
+your Workers and high `temporal_sticky_cache_size`, you can be reasonably sure the cache is contributing to memory
+pressure.
+
+Having a high `temporal_sticky_cache_size` by itself isn't necessarily an issue, but if your Workers are memory-bound,
+consider reducing the cache size to allow more concurrent executions. We recommend you experiment with different cache
+sizes in a staging environment to find the optimal setting for your Workflows. Refer to
+[Troubleshooting - Caching](../troubleshooting/performance-bottlenecks.mdx#caching) for more details on how to interpret
+the different cache-related metrics.
+
+### Manage scale-down safely
+
+Before shutting down a Worker, verify that it does not have too many active Tasks. This is especially relevant if your
+Workers are handling long-running, expensive Activities.
+
+If `worker_task_slots_available` is or near zero, the Worker is running active Tasks. Shutting it down could trigger
+expensive retries or timeouts for long-running Activities.
