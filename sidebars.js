@@ -714,7 +714,7 @@ module.exports = {
             'encyclopedia/workers/task-routing-worker-sessions',
             'encyclopedia/workers/sticky-execution',
             'encyclopedia/workers/worker-shutdown',
-            'encyclopedia/workers/worker-versioning-concepts',
+            'encyclopedia/workers/worker-versioning',
           ],
         },
         {
