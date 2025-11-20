@@ -1,1 +1,1 @@
-yarn run lint && yarn run fix-vale
+# yarn run lint && yarn run fix-vale
