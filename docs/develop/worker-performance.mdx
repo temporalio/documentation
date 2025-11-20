@@ -10,6 +10,8 @@ tags:
 ---
 
 import { CaptionedImage } from '@site/src/components';
+import { LANGUAGE_TAB_GROUP, getLanguageLabel } from '@site/src/constants/languageTabs';
+import SdkTabs from '@site/src/components';
 
 This page documents metrics and configurations that drive the efficiency of your Worker fleet.
 It provides coverage of performance metric families, Worker configuration options, Task Queue information, backlog counts, Task rates, and how to evaluate Worker availability.
@@ -90,16 +92,14 @@ Worker tuners supersede the existing `maxConcurrentXXXTask` style Worker options
 
 :::
 
-### Task pollers {#task-poller}
+### Task Pollers 
 
-A Worker's **Task pollers** play a crucial role in the Temporal architecture by efficiently
-distributing work to Workers to support scalable, resilient Workflow Execution.
-They actively poll a Task Queue for Tasks to process.
-Pollers create long-polling connections to the Temporal Service, allowing the service to dispatch Tasks to Workers.
-When a Task Poller receives a Task, it delivers to the appropriate Executor Slot for processing.
+A Worker's **Task Pollers** play a crucial role in the Temporal architecture by efficiently ingesting work to Workers to support scalable, resilient Workflow Execution. 
+Pollers create long-polling connections to the Temporal Service and actively poll a Task Queue for Tasks to process. When a Task Poller receives a Task, it delivers the Task to the appropriate Executor Slot for processing.
 
-Task Pollers enable efficient load balancing across multiple Worker processes.
-The number of Task Pollers can be configured using `WorkerOptions` when creating a new Worker instance.
+Temporal SDKs implement support for *Poller Autoscaling*, which dynamically adjusts the number of pollers in use to maximize throughput for a given number of workers and the size of the task backlog. 
+Temporal recommends using Poller Autoscaling for the majority of use cases, as manually setting the number of pollers too high or too low for your workload will result in decreased performance. 
+To configure Poller Autoscaling, see [Configuring Poller Options](#configuring-poller-options) and samples for each Temporal SDK.
 
 ### Eager task execution
 
@@ -207,17 +207,117 @@ The `maxConcurrentWorkflowTaskExecutionSize` and `maxConcurrentActivityExecution
 
 :::
 
-### Poller options
+### Configuring Poller Options 
 
-`maxConcurrentWorkflowTaskPollers` (JavaSDK: `workflowPollThreadCount`) and `maxConcurrentActivityTaskPollers` (JavaSDK: `activityPollThreadCount`) define the maximum count of pollers performing poll requests on Workflow and Activity Task Queues.
-The Worker's requests deliver Tasks to the related executor slots.
+#### Recommended Approach
 
-SDKs also have experimental support for automated poller tuning, which automatically selects an
-appropriate number of pollers based on need. This option will likely result in more efficient poller usage, better throughput,
-or both, for all scenarios.
-This feature can be enabled by setting the `*_task_poller_behavior` options to `PollerBehaviorAutoscaling`.
-Names may vary slightly depending on the SDK.
-There are options within to configure minimum, maximum, and initial poller counts, but it is unlikely that you will need to adjust them.
+The Temporal SDKs support Poller Autoscaling, which automatically selects an appropriate number of pollers based on need. Using this feature results in more efficient poller usage, better throughput, and schedule-to-start latency improvements. You can enable this feature by setting the `*_task_poller_behavior` options to `PollerBehaviorAutoscaling`. Names may vary slightly depending on the SDK. For specific examples of enabling Poller Autoscaling, see the SDK Examples section below. Poller Autoscaling will be the default configuration in future versions of Temporal SDKs. 
+
+#### Manual Configuration
+
+There are options available to manually configure minimum, maximum, and initial poller counts, but it is not recommended to set these values manually for production use cases. To set these values manually, the following options are available: 
+
+- `maxConcurrentWorkflowTaskPollers` (in the JavaSDK: `workflowPollThreadCount`)
+- `maxConcurrentActivityTaskPollers` (in the JavaSDK: `activityPollThreadCount`)
+
+These options define the maximum count of pollers performing poll requests on Workflow and Activity Task Queues, respectively. 
+
+#### SDK Examples
+
+<SdkTabs>
+<SdkTabs.Go>
+[Go SDK docs](https://pkg.go.dev/go.temporal.io/sdk/worker#PollerBehaviorAutoscalingOptions)
+```go
+w := worker.New(c, "my-task-queue", worker.Options{
+  WorkflowTaskPollerBehavior: worker.NewPollerBehaviorAutoscaling(worker.PollerBehaviorAutoscalingOptions{}),
+  ActivityTaskPollerBehavior: worker.NewPollerBehaviorAutoscaling(worker.PollerBehaviorAutoscalingOptions{}),
+  NexusTaskPollerBehavior: worker.NewPollerBehaviorAutoscaling(worker.PollerBehaviorAutoscalingOptions{}),
+})
+```
+</SdkTabs.Go>
+<SdkTabs.Java>
+[Java SDK docs](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/tuning/PollerBehaviorAutoscaling.html)
+```java
+public class WorkerExample {
+    public static void main(String[] args) {
+        WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
+        WorkflowClient client = WorkflowClient.newInstance(service);
+        WorkerFactory factory = WorkerFactory.newInstance(client);
+        WorkerOptions workerOptions = WorkerOptions.newBuilder()
+            .setWorkflowTaskPollersBehavior(new PollerBehaviorAutoscaling())
+            .setActivityTaskPollersBehavior(new PollerBehaviorAutoscaling())
+            .setNexusTaskPollersBehavior(new PollerBehaviorAutoscaling())
+            .build();
+
+        Worker worker = factory.newWorker("my-task-queue", workerOptions);
+    }
+}
+```
+</SdkTabs.Java>
+<SdkTabs.Python>
+[Python SDK docs](https://python.temporal.io/temporalio.worker.PollerBehaviorAutoscaling.html)
+```python
+worker = Worker(
+    client,
+    task_queue="my-task-queue",
+    workflows=[MyWorkflow],
+    activities=[my_activity],
+    
+    workflow_task_poller_behavior=PollerBehaviorAutoscaling(),
+    activity_task_poller_behavior=PollerBehaviorAutoscaling(),
+    nexus_task_poller_behavior=PollerBehaviorAutoscaling(),
+)
+```
+</SdkTabs.Python>
+<SdkTabs.TypeScript>
+[TypeScript SDK docs](https://typescript.temporal.io/api/interfaces/proto.temporal.api.sdk.v1.WorkerConfig.IAutoscalingPollerBehavior)
+```ts
+const worker = await Worker.create({
+  connection,
+  taskQueue: 'my-task-queue',
+  workflowsPath: require.resolve('./workflows'),
+  activities,
+  
+  workflowTaskPollerBehavior: PollerBehavior.autoscaling(),
+  activityTaskPollerBehavior: PollerBehavior.autoscaling(),
+  nexusTaskPollerBehavior: PollerBehavior.autoscaling(),
+});
+```
+</SdkTabs.TypeScript>
+<SdkTabs.DotNet>
+[DotNet SDK docs](https://dotnet.temporal.io/api/Temporalio.Worker.Tuning.PollerBehavior.Autoscaling.html)
+```csharp
+using var worker = new TemporalWorker(
+    client,
+    new TemporalWorkerOptions("my-task-queue")
+    {
+        WorkflowTaskPollerBehavior = new PollerBehavior.Autoscaling(),
+        ActivityTaskPollerBehavior = new PollerBehavior.Autoscaling(),
+        NexusTaskPollerBehavior = new PollerBehavior.Autoscaling(),
+    }
+    .AddWorkflow<MyWorkflow>()
+    .AddActivity(MyActivities.MyActivity)
+);
+```
+</SdkTabs.DotNet>
+<SdkTabs.Ruby>
+[Ruby SDK docs](https://ruby.temporal.io/Temporalio/Worker/PollerBehavior/Autoscaling.html)
+```ruby
+worker = Temporalio::Worker.new(
+  client,
+  'my-task-queue',
+  workflows: [MyWorkflow],
+  activities: [MyActivity],
+  
+  workflow_task_poller_behavior: Temporalio::Worker::PollerBehaviorAutoscaling.new,
+  activity_task_poller_behavior: Temporalio::Worker::PollerBehaviorAutoscaling.new,
+  nexus_task_poller_behavior: Temporalio::Worker::PollerBehaviorAutoscaling.new,
+)
+
+```
+
+</SdkTabs.Ruby>
+</SdkTabs>
 
 ### Cache options
 

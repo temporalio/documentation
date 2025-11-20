@@ -1,12 +1,12 @@
 ---
-id: audit-logging
-title: Audit Logging
-sidebar_label: Audit Logging
-description: Audit Logging in Temporal Cloud provides forensic information, integrating with a data streaming service for secure data handling and supporting key Admin and API Key operations. This streamlines audit and compliance processes.
-slug: /cloud/audit-logging
+id: audit-logs
+title: Audit Logs
+sidebar_label: Audit Logs
+description: Audit Logs in Temporal Cloud provide forensic information, integrating with a data streaming service for secure data handling and supporting key Admin and API Key operations. This streamlines audit and compliance processes.
+slug: /cloud/audit-logs
 toc_max_heading_level: 4
 keywords:
-  - audit logging
+  - audit logs
   - explanation
   - how-to
   - operations
@@ -14,30 +14,30 @@ keywords:
   - term
   - troubleshooting
 tags:
-  - Logging
+  - Logs
   - Security
   - Temporal Cloud
 ---
 
-Audit Logging is a feature of [Temporal Cloud](/cloud/overview) that provides forensic access information for a variety of operations in the Temporal Cloud control plane.
+Audit Logs is a feature of [Temporal Cloud](/cloud/overview) that provides forensic access information for a variety of operations in the Temporal Cloud control plane.
 
-Audit Logging answers "who, when, and what" questions about Temporal Cloud resources.
+Audit Logs answers "who, when, and what" questions about Temporal Cloud resources.
 These answers can help you evaluate the security of your organization, and they can provide information that you need to satisfy audit and compliance requirements.
 
-You need the Account Owner or Global Administrator role to view audit logs via UI, use the API, or to configure an Audit Log sink.
+You need the Account Owner or Global Administrator role to view Audit Logs via UI, use the API, or to configure an Audit Log Integration with [AWS Kinesis](/cloud/audit-logs-aws) or [GCP Pub/Sub](/cloud/audit-logs-gcp).
 
 :::info
 
-Audit Logging does NOT capture data plane events, like Workflow Start, Workflow Terminate, Schedule Create, etc.
+Audit Logs do NOT capture data plane events, like Workflow Start, Workflow Terminate, Schedule Create, etc.
 Instead, explore the [Export](/cloud/export) feature, which does let you send closed Workflow Histories to external storage.
 
 :::
 
-## Which events are supported by Audit Logging? {#supported-events}
+## Which events are supported by Audit Logs? {#supported-events}
 
 - Account
   - `ChangeAccountPlanType`: Change Account Plan Type
-  - `UpdateAccountAPI`: Configure Audit Logging, Configure Observability Endpoint
+  - `UpdateAccountAPI`: Configure Audit Logs, Configure Observability Endpoint
 - API Keys
   - `CreateAPIKey`: Create API Key
   - `DeleteAPIKey`: Delete API Key
@@ -166,19 +166,19 @@ Temporal provides the caller IP address in that format to allow customers to ide
 ]
 ```
 
-## How to configure an Audit Log sink {#configure-audit-logging}
+## How to configure an Audit Log Integration {#configure-audit-logs}
 
-Audit logging can be configured in AWS Kinesis or GCP Pub/Sub.
+Audit Logs can be configured in AWS Kinesis or GCP Pub/Sub.
 
-- [AWS Kinesis Instructions](/cloud/audit-logging-aws)
-- [GCP Pub/Sub Instructions](/cloud/audit-logging-gcp)
+- [AWS Kinesis Instructions](/cloud/audit-logs-aws)
+- [GCP Pub/Sub Instructions](/cloud/audit-logs-gcp)
 
-## How to troubleshoot Audit Log sink {#troubleshoot-audit-logging}
+## How to troubleshoot Audit Log sink {#troubleshoot-audit-logs}
 
-The Audit Logging page of the Temporal Cloud UI provides the current status of an Audit Log sink.
+The Audit Logs page of the Temporal Cloud UI provides the current status of an Audit Log Integration.
 
 - If an error is detected, a summary of the error appears below the page title.
-- If the Audit Log sink is functioning normally, an **On** badge appears next to the page heading.
+- If the Audit Log Integration is functioning normally, an **On** badge appears next to the page heading.
 
 After an Admin Operation is performed, users can see Audit Log messages flow through the stream.
 
@@ -194,9 +194,9 @@ Open a support ticket to request assistance.
 To delete an Audit Log sink, follow these steps:
 
 1. In the Temporal Cloud UI, select **Settings**.
-1. On the **Settings** page, select **Integrations**.
-1. In the **Audit Logging** card, select **Configure Audit Logs**.
-1. At the bottom of the **Audit Logging** page, choose **Delete**.
+1. On the **Settings** page, select **Audit Logs**.
+1. In the **Audit Logs Integration** card, select **Edit**.
+1. At the bottom of the **Audit Logs Integration** page, choose **Delete**.
 
 After you confirm the deletion, the Audit Log Sink is removed from your account and logs stop flowing to your stream.
 
@@ -209,7 +209,7 @@ Audit Log UI and API access is currently in public preview.
 
 An Audit Log can be viewed in the Temporal Cloud UI.
 1. In the Temporal Cloud UI, select **Settings**.
-1. On the **Settings** page, select **Audit Logging**.
+1. On the **Settings** page, select **Audit Logs**.
 
 Up to 1000 events can be downloaded from the Audit Log UI to a local file.
 
@@ -220,7 +220,7 @@ an Audit Log if you wish to make dashboards for viewing an Audit Log outside of 
 If your goal is to export an Audit Log, it is better to use an Audit Log sink and capture each 
 entry as it is generated.
 
-Audit logs are accessible for the past 30 days using the API.
+Audit Logs are accessible for the past 30 days using the API.
 
 The API allows:
 - StartTimeInclusive: Filter for UTC time >= (defaults to 30 days ago) - optional
