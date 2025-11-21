@@ -147,13 +147,13 @@ Clicking on any of the links in the details opens the Workflow page for that Wor
 On this page, you will find more information about the Task that failed and remaining pending tasks.
 You can also cancel the Workflow by clicking the Request Cancellation button on this page.
 
-Our system monitors Workflow task execution patterns in real-time. When a Workflow experiences two consecutive task failures or timeouts, it gets automatically flagged. The moment the Workflow recovers with a successful task, the flag clears. This smart threshold filters out minor glitches while surfacing Workflows with genuine problems.
+Our system monitors Workflow task execution patterns in real-time. When a Workflow experiences five consecutive task failures or timeouts, it gets automatically flagged. The moment the Workflow recovers with a successful task, the flag clears. This smart threshold filters out minor glitches while surfacing Workflows with genuine problems.
 
 ### Activating Task Failures View {#activate-task-failures-view}
 
 This is enabled by default for Temporal Cloud users. If you're self-hosting Temporal, you'll need to update the `system.numConsecutiveWorkflowTaskProblemsToTriggerSearchAttribute` [dynamic config](/references/dynamic-configuration).
 
-Here's an example of how to make the config update:
+Here's an example of how to make the config update for the dev server:
 
 ```command
 temporal server start-dev \
