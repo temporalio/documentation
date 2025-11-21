@@ -467,11 +467,11 @@ module.exports = {
               collapsed: true,
               link: {
                 type: 'doc',
-                id: 'production-deployment/cloud/audit-logging',
+                id: 'production-deployment/cloud/audit-logs',
               },
               items: [
-                'production-deployment/cloud/audit-logging-aws',
-                'production-deployment/cloud/audit-logging-gcp', // pre-release
+                'production-deployment/cloud/audit-logs-aws',
+                'production-deployment/cloud/audit-logs-gcp', // pre-release
               ],
             },
             {
