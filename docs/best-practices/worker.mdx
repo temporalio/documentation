@@ -38,7 +38,10 @@ In the order management reference app, Workers are packaged as Docker images wit
 variables and mounted configuration files. The following Dockerfile uses a multi-stage build to create a minimal,
 production-ready Worker image:
 
-```docker
+{/* SNIPSTART oms-dockerfile-worker */}
+[Dockerfile](https://github.com/temporalio/reference-app-orders-go/blob/main/Dockerfile)
+
+```Dockerfile
 FROM golang:1.23.8 AS oms-builder
 
 WORKDIR /usr/src/oms
@@ -56,11 +59,9 @@ RUN --mount=type=cache,target=/go/pkg/mod \
     CGO_ENABLED=0 go build -v -o /usr/local/bin/oms ./cmd/oms
 
 FROM busybox AS oms-worker
-
-COPY --from=oms-builder /usr/local/bin/oms /usr/local/bin/oms
-
-ENTRYPOINT ["/usr/local/bin/oms", "worker"]
 ```
+
+{/* SNIPEND oms-dockerfile-worker */}
 
 This Dockerfile uses a multi-stage build pattern with two stages:
 
@@ -76,26 +77,25 @@ This Dockerfile uses a multi-stage build pattern with two stages:
    2. Sets the entrypoint to run the Worker process.
 
 The entry point `oms worker` starts the Worker process, which reads configuration from environment variables at runtime.
-For example, the Billing Worker deployment in Kubernetes uses environment variables to configure the Worker:
+For example, the
+[Billing Worker deployment in Kubernetes](https://github.com/temporalio/reference-app-orders-go/blob/main/deployments/k8s/billing-worker-deployment.yaml)
+uses environment variables to configure the Worker:
+
+{/* SNIPSTART oms-billing-worker-deployment {"selectedLines": "20-35"} */}
+[deployments/k8s/billing-worker-deployment.yaml](https://github.com/temporalio/reference-app-orders-go/blob/main/deployments/k8s/billing-worker-deployment.yaml)
 
 ```yaml
-spec:
-  containers:
-    - args:
-        - -k
-        - supersecretkey
-        - -s
-        - billing
-      env:
-        - name: FRAUD_API_URL
-          value: http://billing-api:8084
-        - name: TEMPORAL_ADDRESS
-          value: temporal-frontend.temporal:7233
-      image: ghcr.io/temporalio/reference-app-orders-go-worker:latest
-      name: billing-worker
-      imagePullPolicy: Always
-  enableServiceLinks: false
+# ...
+kind: Deployment
+# ...
+# ...
+# ...
+metadata:
+  # ...
+  app.kubernetes.io/component: billing-worker
 ```
+
+{/* SNIPEND */}
 
 ### Separate Task Queues logically
 
@@ -140,15 +140,34 @@ To learn more about versioning Workflows, see the
 
 ### Manage Workflow History growth
 
-The maximum Event History is 50,000 events for a given Workflow. Workflows that accumulate large histories can
-experience replay delays. For long-running Workflows, track the Event History size and use ContinueAsNew to reset the
-Event History when it starts to degrade performance. All Temporal SDKs provide functions to suggest whether to use
-continue-as-new based on the current history size. For example, Python SDK has the
-[`is_continue_as_new_suggested()`](https://python.temporal.io/temporalio.workflow.Info.html#is_continue_as_new_suggested)
-function that returns a boolean indicating whether to use continue-as-new.
+The Temporal Cluster begins logging warnings after 10K (10,240) events and will log additional warnings as new Events
+are appended to the history. If the Event History exceeds 50K (51,200) Events, the Workflow Execution is automatically
+terminated.
 
-If you don't want to rely on the built-in function, aim to keep the Event History to fewer than 20,000 events to
-maintain optimal performance.
+We recommend not exceeding a few thousand Events in a single Workflow Execution to provide you with plenty of time to
+address it before the Workflow is terminated. There are several techniques for dealing with this, but one is to use the
+[Continue-As-New](/workflow-execution/continue-as-new) mechanism to continue under a new Workflow Execution with a new
+Event History, potentially repeating this as you approach the limits again.
+
+In addition to the number of Events in the Event History, also monitor the size of the Event History. Input parameters
+and output values of both Workflows and Activities are stored in the Event History. Storing large amounts of data can
+lead to performance problems, so the Temporal Cluster limits both the size of the Event History and values stored within
+it. A Workflow Execution may be terminated if the size of any payload, which includes the input passed into, or the
+result returned by, an Activity or Workflow, exceeds 2 MB, or if the entire Event History exceeds 50 MB.
+
+All Temporal SDKs provide functions to suggest whether to use [Continue-As-New](/workflow-execution/continue-as-new)
+based on the current history size. For example, the Python SDK has the
+[`is_continue_as_new_suggested()`](https://python.temporal.io/temporalio.workflow.Info.html#is_continue_as_new_suggested)
+function that returns a `bool` indicating whether to use Continue-As-New.
+
+To avoid hitting these limits, avoid passing large amounts of data into and out of Workflows and Activities. A common
+way of dealing with this is by using the
+[Claim Check](https://dataengineering.wiki/Concepts/Software+Engineering/Claim+Check+Pattern) pattern, which is widely
+used with messaging systems such as Apache Kafka. Instead of passing a large amount of data into your function, store
+that data external to Temporal, perhaps in a database or file system. Pass the identifier for the data, such as the
+primary key or file path, into the function, and use an Activity to retrieve it as needed. If your Activity produces a
+large amount of data, you could use a similar approach, writing that data to an external system and returning as output
+an identifier that could subsequently be used to retrieve it.
 
 ## Scaling, monitoring, and tuning
 
@@ -166,14 +185,22 @@ across multiple metrics to identify root causes.
 - `worker_task_slots_available`
 - `temporal_long_request_failure` and `temporal_long_request_latency`
 
-Schedule-to-Start latency measures how long a Task waits in the queue before a Worker starts it. High latency means your
-Workers or pollers can’t keep up with incoming Tasks, but the root cause depends on your resource metrics:
+For example, Schedule-to-Start latency measures how long a Task waits in the queue before a Worker starts it. High
+latency means your Workers or pollers can’t keep up with incoming Tasks, but the root cause depends on your resource
+metrics:
 
-- High latency and high CPU/memory: Workers are saturated. Add more Worker processes or replicas.
-- High latency and low CPU/memory: Workers are underutilized. Increase the number of pollers, executor slots, or both.
-  If this is accompanied by high `temporal_long_request_latency` or `temporal_long_request_failure`, your Workers are
-  struggling to reach the Temporal Service. Refer to
-  [Troubleshooting](../troubleshooting/performance-bottlenecks.mdx#high-temporal_long_request_failure) for guidance.
+- High Schedule-to-Start latency and high CPU/memory: Workers are saturated. Scale up your Workers or add more Workers.
+  It's also possible your Workers are blocked on Activities. Refer to
+  [Troubleshooting - Depletion of Activity Task Slots](../troubleshooting/performance-bottlenecks.mdx#depletion-of-temporal_worker_task_slots_available-for-activityworker)
+  for guidance.
+- High Schedule-to-Start latency and low CPU/memory: Workers are underutilized. Increase the number of pollers, executor
+  slots, or both. If this is accompanied by high `temporal_long_request_latency` or `temporal_long_request_failure`,
+  your Workers are struggling to reach the Temporal Service. Refer to
+  [Troubleshooting - Long Request Latency](../troubleshooting/performance-bottlenecks.mdx#high-temporal_long_request_failure)
+  for guidance.
+- Low Schedule-to-Start latency and low CPU/memory: Depending on your workload, this could be normal. If you are
+  consistently seeing low memory usage and low CPU usage, you may be over-provisioning your Workers and can considering
+  scaling down.
 
 ### Optimize Worker cache
 
