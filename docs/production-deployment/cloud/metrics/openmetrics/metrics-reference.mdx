@@ -61,7 +61,7 @@ All metrics include these base labels:
 
 #### temporal\_cloud\_v1\_frontend\_service\_request\_count
 
-The number of frontend service gRPC requests received per second.
+Frontend service gRPC requests received per second.
 
 | Label | Description |
 | ----- | ----- |
@@ -72,7 +72,7 @@ The number of frontend service gRPC requests received per second.
 
 #### temporal\_cloud\_v1\_frontend\_service\_error\_count
 
-The number of frontend service gRPC errors per second.
+Frontend service gRPC errors per second.
 
 | Label | Description |
 | ----- | ----- |
@@ -94,7 +94,7 @@ The number of pollers that are waiting for a task.
 
 #### temporal\_cloud\_v1\_resource\_exhausted\_error\_count
 
-The number of resource exhaustion errors per second.
+Resource exhaustion errors per second.
 
 | Label | Description |
 | ----- | ----- |
@@ -163,7 +163,7 @@ These metrics could have high cardinality depending on number of workflow types 
 
 #### temporal\_cloud\_v1\_workflow\_success\_count
 
-The number of successful workflow completions per second.
+Successful workflow completions per second.
 
 | Label | Description |
 | ----- | ----- |
@@ -176,7 +176,7 @@ The number of successful workflow completions per second.
 
 #### temporal\_cloud\_v1\_workflow\_failed\_count
 
-The number of workflow failures per second.
+Workflow failures per second.
 
 | Label | Description |
 | ----- | ----- |
@@ -189,7 +189,7 @@ The number of workflow failures per second.
 
 #### temporal\_cloud\_v1\_workflow\_timeout\_count
 
-The number of workflow timeouts per second.
+Workflow timeouts per second.
 
 | Label | Description |
 | ----- | ----- |
@@ -202,7 +202,7 @@ The number of workflow timeouts per second.
 
 #### temporal\_cloud\_v1\_workflow\_cancel\_count
 
-The number of workflow cancellations per second.
+Workflow cancellations per second.
 
 | Label | Description |
 | ----- | ----- |
@@ -215,7 +215,7 @@ The number of workflow cancellations per second.
 
 #### temporal\_cloud\_v1\_workflow\_terminate\_count
 
-The number of workflow terminations per second.
+Workflow terminations per second.
 
 | Label | Description |
 | ----- | ----- |
@@ -228,7 +228,7 @@ The number of workflow terminations per second.
 
 #### temporal\_cloud\_v1\_workflow\_continued\_as\_new\_count
 
-The number of workflows continued as new per second.
+Workflows continued as new per second.
 
 | Label | Description |
 | ----- | ----- |
@@ -260,7 +260,7 @@ The approximate number of tasks pending in a task queue. Started Activities are 
 
 #### temporal\_cloud\_v1\_poll\_success\_count
 
-The number of successfully matched tasks per second.
+Successfully matched tasks per second.
 
 | Label | Description |
 | ----- | ----- |
@@ -273,7 +273,7 @@ The number of successfully matched tasks per second.
 
 #### temporal\_cloud\_v1\_poll\_success\_sync\_count
 
-The number of tasks matched synchronously per second (no polling wait).
+Tasks matched synchronously per second (no polling wait).
 
 | Label | Description |
 | ----- | ----- |
@@ -323,7 +323,7 @@ The current number of open workflows in a namespace.
 
 #### temporal\_cloud\_v1\_state\_transition\_count
 
-The number of workflow state transitions per second.
+Workflow state transitions per second.
 
 **Type**: Rate
 
@@ -333,31 +333,31 @@ The total number of actions performed per second.
 
 | Label | Description |
 | ----- | ----- |
-| `is_background` | Whether the action was background: `true` or `false` |
+| `is_background` | Whether the action was background: `true` or `false`. Background actions (e.g. History export) do not count toward the action rate limit |
 | `namespace_mode` | Indicates if actions are produced by an `active` or a `standby` Namespace |
 
 **Type**: Rate
 
 #### temporal\_cloud\_v1\_operations\_count
 
-The number of operations performed per second.
+Operations performed per second.
 
 | Label | Description |
 | ----- | ----- |
 | `operation` | The name of the operation |
-| `is_background` | State of the background operation: `true` or `false` |
+| `is_background` | Whether the operation was background: `true` or `false`. Background operations do not count toward the operation rate limit |
 | `namespace_mode` | Indicates if operations are produced by an `active` or a `standby` Namespace |
 
 **Type**: Rate
 
 #### temporal\_cloud\_v1\_operations\_throttled\_count
 
-The number of operations throttled due to rate limits per second.
+Operations throttled due to rate limits per second.
 
 | Label | Description |
 | ----- | ----- |
 | `operation` | The name of the operation |
-| `is_background` | State of the background operation: `true` or `false` |
+| `is_background` | Whether the operation was background: `true` or `false`. Background operations do not count toward the operation rate limit |
 | `namespace_mode` | Indicates if actions are throttled in an `active` or a `standby` Namespace |
 
 **Type**: Rate
@@ -366,7 +366,7 @@ The number of operations throttled due to rate limits per second.
 
 #### temporal\_cloud\_v1\_schedule\_action\_success\_count
 
-The number of successfully executed scheduled workflows per second.
+Successfully executed scheduled workflows per second.
 
 **Type**: Rate
 
