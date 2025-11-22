@@ -98,7 +98,9 @@ plugin = SimplePlugin(
 You can provide a library with functionality for use within a Workflow if you'd like to abstract away some Temporal-specific details for your users. Your library will call elements you include in your Plugin: Activities, Child Workflows, Signals, Updates, Queries, Nexus Operations, Interceptors, Data Converters, and any other code as long as it follows these requirements:
 
 - It should be [deterministic](https://docs.temporal.io/workflows#deterministic-constraints), running the same way every time it’s executed. Non-deterministic code should go in Activities or Nexus Operations.
-- It should be designed to handle being restarted, resumed, or executed in a different process from where it originally began without losing correctness or state consistency.
+- See [observability](https://docs.temporal.io/evaluate/development-production-features/observability) to avoid duplicating observation side effects when Workflows replay.
+- Put other side effects inside of Activities or [Local Activities](https://docs.temporal.io/local-activity).  This helps your Workflow handle being restarted, resumed, or executed in a different process from where it originally began without losing correctness or state consistency.   
+- See [testing your Plugin](#testing-your-plugin) to write tests that check for issues with side effects.
 - It should run quickly since it may be replayed many times during a long Workflow execution. More expensive code should go in Activities or Nexus Operations.
 
 A Plugin should allow a user to decompose their Workflows into Activities, as well as Child Workflows and Nexus Calls when needed. This gives users granular control through retries and timeouts, debuggability through the Temporal UI, operability with resets, pauses, and cancels, memoization for efficiency and resumability, and scalability using task queues and Workers.
@@ -109,11 +111,11 @@ Users use Workflows for:
 - Interactivity via [message-passing](https://docs.temporal.io/evaluate/development-production-features/workflow-message-passing)
 - Tracing and observability.
 
-#### Making changes to your Workflow Library
+#### Making changes to your library
 
 Your users may want to keep their Workflows running across deployments of their Worker code. If their deployment includes a new version of your Plugin, changes to your Plugin could break Workflow code that started before the new version was deployed. This can be due to [non-deterministic behavior from code changes](https://docs.temporal.io/workflow-definition#non-deterministic-change) in your Plugin.
 
-Therefore, it's recommended that you set up [replay testing](https://docs.temporal.io/develop/python/testing-suite#replay) to make sure that you’re not causing non-determinism errors for your users.  If you make substantive changes, you need to use [patching](https://docs.temporal.io/patching).
+See [testing](#testing-your-plugin) to see how to test for this.  And, if you make substantive changes, you need to use [patching](https://docs.temporal.io/patching).
 
 #### Example of a Workflow library that uses a Plugin in Python
 
@@ -250,6 +252,47 @@ plugin = SimplePlugin(
 ```
 </SdkTabs.Python>
 </SdkTabs>
+
+## Testing your Plugin {#testing-your-plugin}
+
+To test your Plugin, you'll write a normal Temporal Workflow tests, having included the plugin in your Client. 
+
+Two special concerns are versioning tests, for when you're making changes to your plugin, and testing unwanted side effects.
+
+### Versioning tests 
+
+When you make changes to your plugin after it has already shipped to users, it's recommended that you set up [replay testing](https://docs.temporal.io/develop/python/testing-suite#replay) on each important change to make sure that you’re not causing non-determinism errors for your users.
+
+### Side effects tests
+
+Your Plugin should cater to Workflows resuming in different processes than the ones they started on and then replaying from the beginning, which can happen, for example, after an intermittent failure.
+
+You can ensure you're not depending on local side effects by turning Workflow caching off, which will mean that the Workflow replays from the top each time it progresses:
+
+<SdkTabs>
+<SdkTabs.Python>
+```python
+import my_module
+
+client = await Client.connect(
+  "localhost:7233",
+  plugins=[
+    my_module.my_plugin,
+  ],
+)
+async with Worker(
+  client,
+  task_queue="task-queue",
+  max_cached_workflows=0
+):
+    # Start a workflow ...
+```
+</SdkTabs.Python>
+</SdkTabs>
+
+Check for duplicate side effects or other types of failures.
+
+It's harder to test against side effects to global variables, so this practice is best avoided entirely.
 
 ## Advanced Topics for Plugins
 
