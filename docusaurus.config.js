@@ -49,7 +49,7 @@ module.exports = async function createConfigAsync() {
       prism: {
         //theme: require("prism-react-renderer/themes/nightOwlLight"),
         // darkTheme: require("prism-react-renderer/themes/dracula"),
-        additionalLanguages: ['java', 'ruby', 'php', 'csharp', 'toml', 'bash'],
+        additionalLanguages: ['java', 'ruby', 'php', 'csharp', 'toml', 'bash', 'docker'],
       },
       docs: {
         sidebar: {

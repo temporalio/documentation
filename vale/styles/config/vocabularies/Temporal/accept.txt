@@ -2,8 +2,6 @@ Temporal's
 APIs
 Temporal Application
 application
-ensure
-Ensure
 extract
 sample
 samples
@@ -15,3 +13,4 @@ gRPC
 tctl
 SDKs
 TOML
+Dockerfile
