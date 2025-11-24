@@ -19,8 +19,8 @@ This document outlines best practices for deploying and optimizing Workers to en
 scalability. It covers deployment strategies, scaling techniques, tuning recommendations, and monitoring approaches to
 help you get the most out of your Temporal Workers.
 
-We also provide a reference application: Order Management System (OMS) that demonstrates the deployment best practices
-in action. You can find the OMS codebase on
+We also provide a reference application, the Order Management System (OMS), that demonstrates the deployment best
+practices in action. You can find the OMS codebase on
 [GitHub](https://github.com/temporalio/reference-app-orders-go/tree/main/docs).
 
 ## Deployment and lifecycle management
@@ -32,7 +32,8 @@ long-running service that can be deployed, upgraded, and scaled in a controlled 
 
 Workers should be artifacts produced by a CI/CD pipeline. Inject all required parameters for connecting to Temporal
 Cloud or a self-hosted Temporal Service at runtime via environment variables, configuration files, or command-line
-parameters. This allows for more granularity, easier testability, upgrade, scalability, and isolation of workers.
+parameters. This allows for more granularity, easier testability, easier upgrades, scalability, and isolation of
+Workers.
 
 In the order management reference app, Workers are packaged as Docker images with configuration provided via environment
 variables and mounted configuration files. The following Dockerfile uses a multi-stage build to create a minimal,
@@ -65,18 +66,18 @@ FROM busybox AS oms-worker
 
 This Dockerfile uses a multi-stage build pattern with two stages:
 
-1. `oms-builder` stage: compile the Worker binary.
+1. `oms-builder` stage: compiles the Worker binary.
 
    1. Copies dependency files and downloads dependencies using BuildKit cache mounts to speed up subsequent builds.
    2. Copies the application code and builds a statically linked binary that doesn't require external libraries at
       runtime.
 
-2. `oms-worker` stage: create a minimal final image.
+2. `oms-worker` stage: creates a minimal final image.
 
    1. Copies only the compiled binary from the `oms-builder` stage
    2. Sets the entrypoint to run the Worker process.
 
-The entry point `oms worker` starts the Worker process, which reads configuration from environment variables at runtime.
+The entrypoint `oms worker` starts the Worker process, which reads configuration from environment variables at runtime.
 For example, the
 [Billing Worker deployment in Kubernetes](https://github.com/temporalio/reference-app-orders-go/blob/main/deployments/k8s/billing-worker-deployment.yaml)
 uses environment variables to configure the Worker:
@@ -131,7 +132,7 @@ func RunWorker(ctx context.Context, config config.AppConfig, client client.Clien
 
 ### Use Worker Versioning to safely deploy new Workflow code
 
-Use **Worker Versioning** to deploy new Workflow code without breaking running Executions.  
+Use Worker Versioning to deploy new Workflow code without breaking running Executions.  
 Worker Versioning lets you map each Workflow Execution to a specific Worker Deployment Version identified by a build ID.
 This guarantees that pinned Workflows always run on the same Worker version where they started.
 
@@ -173,9 +174,9 @@ way of reducing payload and Event History size is by using the
 [Claim Check](https://dataengineering.wiki/Concepts/Software+Engineering/Claim+Check+Pattern) pattern, which is widely
 used with messaging systems such as Apache Kafka. Instead of passing a large amount of data into your function, store
 that data external to Temporal, perhaps in a database or file system. Pass the identifier for the data, such as the
-primary key or file path, into the function, and use an Activity to retrieve it as needed. If your Activity produces a
-large amount of data, you could use a similar approach, writing that data to an external system and returning as output
-an identifier that could subsequently be used to retrieve it.
+primary key or path, into the function, and use an Activity to retrieve it as needed. If your Activity produces a large
+amount of data, you could use a similar approach, writing that data to an external system and returning as output an
+identifier that could subsequently be used to retrieve it.
 
 ## Scaling, monitoring, and tuning
 
@@ -191,7 +192,7 @@ across multiple metrics to identify root causes.
 - Worker CPU and memory utilization
 - `workflow_task_schedule_to_start_latency` and `activity_task_schedule_to_start_latency`
 - `worker_task_slots_available`
-- `temporal_long_request_failure`, `temporal_request_failure`, `temporal_long_request_latency` and
+- `temporal_long_request_failure`, `temporal_request_failure`, `temporal_long_request_latency`, and
   `temporal_request_latency`
 
 For example, Schedule-to-Start latency measures how long a Task waits in the queue before a Worker starts it. High
@@ -208,7 +209,7 @@ metrics:
   [Troubleshooting - Long Request Latency](../troubleshooting/performance-bottlenecks.mdx#high-temporal_long_request_failure)
   for guidance.
 - Low Schedule-to-Start latency and low CPU/memory: Depending on your workload, this could be normal. If you are
-  consistently seeing low memory usage and low CPU usage, you may be over-provisioning your Workers and can considering
+  consistently seeing low memory usage and low CPU usage, you may be over-provisioning your Workers and can consider
   scaling down.
 
 ### Optimize Worker cache
@@ -229,7 +230,7 @@ the different cache-related metrics.
 Before shutting down a Worker, verify that it does not have too many active Tasks. This is especially relevant if your
 Workers are handling long-running, expensive Activities.
 
-If `worker_task_slots_available` is or near zero, the Worker is running active Tasks. Shutting it down could trigger
+If `worker_task_slots_available` is at or near zero, the Worker is running active Tasks. Shutting it down could trigger
 expensive retries or timeouts for long-running Activities. Use
 [Graceful Shutdowns](/encyclopedia/workers/worker-shutdown#graceful-shutdown) to allow the Worker to complete its
 current Task before shutting down. All SDKs provide a way to configure Graceful Shutdowns. For example, the Go SDK has
