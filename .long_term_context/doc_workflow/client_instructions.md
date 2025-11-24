@@ -3,6 +3,23 @@
 # Documentation updates regarding SDKs
 
 When making updates to documentation about an SDK, you should generally see if similar documentation exists for another SDK, so you can generally follow the patterns in that documentation. Note: this does not mean that if you don't see documenation for that feature for another SDK, you should avoid creating it for this one. 
+
+# Cross-repository PR references
+
+When creating suggestion descriptions that reference PRs from other repositories (e.g., sdk-python, sdk-go, temporal server, etc.), always use full URLs instead of shorthand notation like "PR #1222" or "sdk-python PR #1222".
+
+**Why:** GitHub auto-links "#1222" to the current repository's PR #1222, not to the intended repository. This creates confusion and broken/incorrect links.
+
+**Do:**
+- ✅ "This reflects the bug fix in https://github.com/temporalio/sdk-python/pull/1222"
+- ✅ "Based on changes in https://github.com/temporalio/temporal/pull/5678"
+
+**Don't:**
+- ❌ "This reflects the bug fix in sdk-python PR #1222" (GitHub will link to temporalio/documentation#1222)
+- ❌ "Based on PR #5678" (ambiguous which repository)
+
+This applies to suggestion titles, descriptions, and any PR comments you make.
+
 # Scope control: Be surgical with edits
 
 When making documentation updates, be very focused and minimal in your changes. If the trigger event is about a simple value change (e.g., a configuration default changing from 5 to 10, a version number update, a parameter name change), limit your edits to only what's necessary to reflect that specific change.
