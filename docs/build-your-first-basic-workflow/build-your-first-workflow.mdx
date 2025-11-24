@@ -35,7 +35,9 @@ export const TUTORIAL_LANGUAGE_ORDER = [
   { key: 'rb', label: 'Ruby', icon: SiRuby },
 ];
 
-You can think of Temporal as a sort of "cure-all" for the pains you experience as a developer when trying to build reliable applications. Whether you're writing a complex transaction-based Workflow or working with remote APIs, you know that creating reliable applications is a complex process.
+In this tutorial, you'll build and run your first Temporal application. 
+You'll understand the core building blocks of Temporal and learn how Temporal helps you build crash proof applications through durable execution. 
+
 
 <div style={{display: 'flex', gap: '0.5rem', marginBottom: '2rem'}}>
   <span className="badge badge--success">Temporal beginner</span>
@@ -49,14 +51,12 @@ You can think of Temporal as a sort of "cure-all" for the pains you experience a
 
 ## Introduction
 
-In this tutorial, you'll build and run your first Temporal Application. 
-You'll learn how to construct Workflows and Activities, understand the core building blocks, and see you can get full visibility into its execution.
 
 ### Prerequisites
 
 Before starting this tutorial:
 
-- **Set up a local development environment** for developing Temporal Applications
+- **Set up a local development environment** for developing Temporal applications
 - **Ensure you have Git installed** to clone the project
 
 <CallToAction 
@@ -67,18 +67,24 @@ Before starting this tutorial:
 
 ### What You'll Build
 
-You'll construct a **money transfer application** from the ground up, learning to design and implement essential transactions such as withdrawals, deposits, and refunds using Temporal's powerful building blocks. 
+You’ll build a basic money transfer app from the ground up, learning how to handle essential transactions like deposits, withdrawals, and refunds using Temporal.
 
-**Why This Application?** It demonstrates real-world complexity while teaching you how to build reliable, fault-tolerant systems that handle money safely.
-
+**Why This Application?:** 
+Most applications require multiple coordinated steps - processing payments, sending emails, updating databases. 
+This tutorial uses money transfers to demonstrate how Temporal ensures these multi-step processes complete reliably, resuming exactly where they left off even after any failure.
 <div style={{textAlign: 'center', margin: '2rem 0'}}>
   <img src="/img/moneytransfer/money-withdrawal.png" alt="Money Transfer Application Flow" style={{maxWidth: '100%', height: 'auto'}} />
 </div>
 
 
-In this sample application, money comes out of one account and goes into another. However, there are a few things that can go wrong with this process. If the withdrawal fails, then there is no need to try to make a deposit. But if the withdrawal succeeds, but the deposit fails, then the money needs to go back to the original account.
+In this sample application, money comes out of one account and goes into another. 
+However, there are a few things that can go wrong with this process. 
+If the withdrawal fails, then there is no need to try to make a deposit. 
+But if the withdrawal succeeds, but the deposit fails, then the money needs to go back to the original account.
 
-One of Temporal's most important features is its ability to **maintain the application state when something fails**. When failures happen, Temporal recovers processes where they left off or rolls them back correctly. This allows you to focus on business logic, instead of writing application code to recover from failure.
+One of Temporal's most important features is its ability to **maintain the application state when something fails**. 
+When failures happen, Temporal recovers processes where they left off or rolls them back correctly. 
+This allows you to focus on business logic, instead of writing application code to recover from failure.
 
 <SetupSteps>
 
@@ -123,13 +129,28 @@ The repository for this tutorial is a GitHub Template repository, which means yo
 
 The Temporal Application will consist of the following pieces:
 
-1. **A Workflow** written in Python using the Python SDK. A Workflow defines the overall flow of the application.
-2. **An Activity** is a method that encapsulates business logic prone to failure (e.g., calling a service that may go down). These Activities can be automatically retried upon some failure. They handle individual tasks like withdraw(), deposit(), and refund().
+1. **A Workflow** written in your programming language of choice and your installed Temporal SDK in that language. A Workflow defines the overall flow of the application.
+2. **An Activity** is a function or method that does specific operation - like withdrawing money, sending an email, or calling an API. Since these operations often depend on external services that can be unreliable, Temporal automatically retries Activities when they fail. 
+In this application, you'll write Activities for withdraw, deposit, and refund operations.
 3. **A Worker**, provided by the Temporal SDK, which runs your Workflow and Activities reliably and consistently.
 
 </SetupStep>
 
 </SetupSteps>
+
+<details>
+<summary><strong>What You'll Build and Run</strong></summary>
+
+The project in this tutorial mimics a "money transfer" application. 
+It is implemented with a single Workflow, which orchestrates the execution of three Activities (Withdraw, Deposit, and Refund) that move money between the accounts.
+
+To perform a money transfer, you will do the following:
+
+1. **Launch a Worker**: Since a Worker is responsible for executing the Workflow and Activity code, at least one Worker must be running for the money transfer to make progress.
+
+2. **Submit a Workflow Execution request** to the Temporal Service: After the Worker communicates with the Temporal Service, the Worker will begin executing the Workflow and Activity code. It reports the results to the Temporal Service, which tracks the progress of the Workflow Execution.
+
+</details>
 
 :::important
 None of your application code runs on the Temporal Server. Your Worker, Workflow, and Activity run on your infrastructure, along with the rest of your applications.
