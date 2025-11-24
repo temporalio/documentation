@@ -6,17 +6,21 @@ When making updates to documentation about an SDK, you should generally see if s
 
 # Cross-repository PR references
 
-When creating suggestion descriptions that reference PRs from other repositories (e.g., sdk-python, sdk-go, temporal server, etc.), always use full URLs instead of shorthand notation like "PR #1222" or "sdk-python PR #1222".
+When creating suggestion descriptions that reference PRs from other repositories (e.g., sdk-python, sdk-go, temporal server, etc.), always use either GitHub's cross-repo syntax or full URLs instead of shorthand notation like "PR #1222" or "sdk-python PR #1222".
 
 **Why:** GitHub auto-links "#1222" to the current repository's PR #1222, not to the intended repository. This creates confusion and broken/incorrect links.
 
 **Do:**
-- ✅ "This reflects the bug fix in https://github.com/temporalio/sdk-python/pull/1222"
-- ✅ "Based on changes in https://github.com/temporalio/temporal/pull/5678"
+- ✅ "This reflects the bug fix in temporalio/sdk-python#1222" (preferred - uses GitHub's cross-repo syntax)
+- ✅ "Based on changes in temporalio/temporal#5678"
+- ✅ "This reflects the bug fix in https://github.com/temporalio/sdk-python/pull/1222" (also acceptable, more verbose)
 
 **Don't:**
 - ❌ "This reflects the bug fix in sdk-python PR #1222" (GitHub will link to temporalio/documentation#1222)
 - ❌ "Based on PR #5678" (ambiguous which repository)
+- ❌ "sdk-python#1222" (missing organization name)
+
+**Format:** `owner/repo#number` (e.g., `temporalio/sdk-python#1222`)
 
 This applies to suggestion titles, descriptions, and any PR comments you make.
 
