@@ -41,6 +41,8 @@ When a Worker starts polling for Workflow and Activity Tasks, it reports its Dep
 
 Using **Workflow Pinning**, you can declare each Workflow type to have a **Versioning Behavior**, either Pinned or Auto-Upgrade.
 
+To learn more about implementing Worker Versioning, see our [Worker Versioning in production](production-deployment/worker-deployments/worker-versioning) page.
+
 ### Pinned Workflows {#pinned}
 
 A **Pinned** Workflow is guaranteed to complete on a single Worker Deployment Version. You can mark a Workflow Type as pinned when you register it by adding an additional Pinned parameter. If you need to move a pinned Workflow to a new version, use [`temporal workflow update-options`](https://docs.temporal.io/cli/workflow#update-options).
