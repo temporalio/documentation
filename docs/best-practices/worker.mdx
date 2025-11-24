@@ -129,25 +129,38 @@ func RunWorker(ctx context.Context, config config.AppConfig, client client.Clien
 }
 ```
 
-### Version Workflows safely
+### Use Worker Versioning to safely deploy new Workflow code
 
 Use **Worker Versioning** to deploy new Workflow code without breaking running Executions.  
 Worker Versioning lets you map each Workflow Execution to a specific Worker Deployment Version identified by a build ID.
-This guarantees that pinned Workflows always run on the same Worker version where they started
+This guarantees that pinned Workflows always run on the same Worker version where they started.
 
 To learn more about versioning Workflows, see the
 [Workflow Versioning](../production-deployment/worker-deployments/worker-versioning.mdx) guide.
 
-### Manage Workflow History growth
+:::tip
 
-The Temporal Cluster begins logging warnings after 10K (10,240) events and will log additional warnings as new Events
-are appended to the history. If the Event History exceeds 50K (51,200) Events, the Workflow Execution is automatically
-terminated.
+In addition to Worker Versioning, you can also use [Patching](/patching) to introduce changes to your Workflow code
+without breaking running Executions. Patching reduces complexity on the infrastructure side compared to Worker
+Versioning, but it introduces some complexity on the Workflow code side. Choose the approach that best fits your needs.
 
-We recommend not exceeding a few thousand Events in a single Workflow Execution to provide you with plenty of time to
-address it before the Workflow is terminated. There are several techniques for dealing with this, but one is to use the
-[Continue-As-New](/workflow-execution/continue-as-new) mechanism to continue under a new Workflow Execution with a new
-Event History, potentially repeating this as you approach the limits again.
+:::
+
+### Manage Event History growth
+
+If a Worker goes offline, and another Worker picks up the same Workflow Execution, the new Worker must replay the
+existing Event History to resume the Workflow Execution. If the Event History is too large or has too many Events, it
+will affect the performance of the new Worker, and may even cause timeout errors well before the hard limit of 51,200
+events is reached.
+
+We recommend not exceeding a few thousand Events in a single Workflow Execution. The best way to handle Event History
+growth is to use the [Continue-As-New](/workflow-execution/continue-as-new) mechanism to continue under a new Workflow
+Execution with a new Event History, repeating this process as you approach the limits again.
+
+All Temporal SDKs provide functions to suggest when to use [Continue-As-New](/workflow-execution/continue-as-new). For
+example, the Python SDK has the
+[`is_continue_as_new_suggested()`](https://python.temporal.io/temporalio.workflow.Info.html#is_continue_as_new_suggested)
+function that returns a `bool` indicating whether to use Continue-As-New.
 
 In addition to the number of Events in the Event History, also monitor the size of the Event History. Input parameters
 and output values of both Workflows and Activities are stored in the Event History. Storing large amounts of data can
@@ -155,13 +168,8 @@ lead to performance problems, so the Temporal Cluster limits both the size of th
 it. A Workflow Execution may be terminated if the size of any payload, which includes the input passed into, or the
 result returned by, an Activity or Workflow, exceeds 2 MB, or if the entire Event History exceeds 50 MB.
 
-All Temporal SDKs provide functions to suggest whether to use [Continue-As-New](/workflow-execution/continue-as-new)
-based on the current history size. For example, the Python SDK has the
-[`is_continue_as_new_suggested()`](https://python.temporal.io/temporalio.workflow.Info.html#is_continue_as_new_suggested)
-function that returns a `bool` indicating whether to use Continue-As-New.
-
 To avoid hitting these limits, avoid passing large amounts of data into and out of Workflows and Activities. A common
-way of dealing with this is by using the
+way of reducing payload and Event History size is by using the
 [Claim Check](https://dataengineering.wiki/Concepts/Software+Engineering/Claim+Check+Pattern) pattern, which is widely
 used with messaging systems such as Apache Kafka. Instead of passing a large amount of data into your function, store
 that data external to Temporal, perhaps in a database or file system. Pass the identifier for the data, such as the
@@ -172,7 +180,7 @@ an identifier that could subsequently be used to retrieve it.
 ## Scaling, monitoring, and tuning
 
 Scaling and tuning are critical to Worker performance and cost efficiency. The goal is to balance concurrency,
-throughput, and resource utilization while maintaining low task latency.
+throughput, and resource utilization while maintaining low Task latency.
 
 ### Interpret metrics as a whole
 
@@ -183,7 +191,8 @@ across multiple metrics to identify root causes.
 - Worker CPU and memory utilization
 - `workflow_task_schedule_to_start_latency` and `activity_task_schedule_to_start_latency`
 - `worker_task_slots_available`
-- `temporal_long_request_failure` and `temporal_long_request_latency`
+- `temporal_long_request_failure`, `temporal_request_failure`, `temporal_long_request_latency` and
+  `temporal_request_latency`
 
 For example, Schedule-to-Start latency measures how long a Task waits in the queue before a Worker starts it. High
 latency means your Workers or pollers can’t keep up with incoming Tasks, but the root cause depends on your resource
@@ -221,4 +230,8 @@ Before shutting down a Worker, verify that it does not have too many active Task
 Workers are handling long-running, expensive Activities.
 
 If `worker_task_slots_available` is or near zero, the Worker is running active Tasks. Shutting it down could trigger
-expensive retries or timeouts for long-running Activities.
+expensive retries or timeouts for long-running Activities. Use
+[Graceful Shutdowns](/encyclopedia/workers/worker-shutdown#graceful-shutdown) to allow the Worker to complete its
+current Task before shutting down. All SDKs provide a way to configure Graceful Shutdowns. For example, the Go SDK has
+the [`WorkerStopTimeout` option](https://pkg.go.dev/go.temporal.io/sdk@v1.38.0/internal#WorkerOptions) that lets you
+configure the amount of time the Worker has to complete its current Task before shutting down.
