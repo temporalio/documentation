@@ -8,6 +8,7 @@ Use them exactly as shown when creating cross-links.
 - docs/best-practices/index.mdx: (/best-practices)
 - docs/best-practices/managing-namespace.mdx: (/best-practices/managing-namespace)
 - docs/best-practices/security-controls.mdx: (/best-practices/security-controls)
+- docs/best-practices/worker.mdx: (/best-practices/worker)
 - docs/cli/activity.mdx: (/cli/activity)
 - docs/cli/batch.mdx: (/cli/batch)
 - docs/cli/cmd-options.mdx: (/cli/cmd-options)
