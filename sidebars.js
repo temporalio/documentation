@@ -467,11 +467,11 @@ module.exports = {
               collapsed: true,
               link: {
                 type: 'doc',
-                id: 'production-deployment/cloud/audit-logging',
+                id: 'production-deployment/cloud/audit-logs',
               },
               items: [
-                'production-deployment/cloud/audit-logging-aws',
-                'production-deployment/cloud/audit-logging-gcp', // pre-release
+                'production-deployment/cloud/audit-logs-aws',
+                'production-deployment/cloud/audit-logs-gcp', // pre-release
               ],
             },
             {
@@ -623,9 +623,10 @@ module.exports = {
         id: 'best-practices/index',
       },
       items: [
-        'best-practices/managing-namespace',
-        'best-practices/cloud-access-control',
-        'best-practices/security-controls',
+        "best-practices/managing-namespace",
+        "best-practices/cloud-access-control",
+        "best-practices/security-controls",
+        "best-practices/worker",
       ],
     },
     {
