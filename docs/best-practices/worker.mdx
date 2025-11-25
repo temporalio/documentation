@@ -41,6 +41,7 @@ production-ready Worker image:
 
 {/* SNIPSTART oms-dockerfile-worker */}
 [Dockerfile](https://github.com/temporalio/reference-app-orders-go/blob/main/Dockerfile)
+
 ```Dockerfile
 FROM golang:1.23.8 AS oms-builder
 
@@ -60,6 +61,7 @@ RUN --mount=type=cache,target=/go/pkg/mod \
 
 FROM busybox AS oms-worker
 ```
+
 {/* SNIPEND oms-dockerfile-worker */}
 
 This Dockerfile uses a multi-stage build pattern with two stages:
@@ -82,25 +84,27 @@ uses environment variables to configure the Worker:
 
 {/* SNIPSTART oms-billing-worker-deployment {"selectedLines": ["20-35"]} */}
 [deployments/k8s/billing-worker-deployment.yaml](https://github.com/temporalio/reference-app-orders-go/blob/main/deployments/k8s/billing-worker-deployment.yaml)
+
 ```yaml
 # ...
-    spec:
-      containers:
-        - args:
-            - -k
-            - supersecretkey
-            - -s
-            - billing
-          env:
-            - name: FRAUD_API_URL
-              value: http://billing-api:8084
-            - name: TEMPORAL_ADDRESS
-              value: temporal-frontend.temporal:7233
-          image: ghcr.io/temporalio/reference-app-orders-go-worker:latest
-          name: billing-worker
-          imagePullPolicy: Always
-      enableServiceLinks: false
+spec:
+  containers:
+    - args:
+        - -k
+        - supersecretkey
+        - -s
+        - billing
+      env:
+        - name: FRAUD_API_URL
+          value: http://billing-api:8084
+        - name: TEMPORAL_ADDRESS
+          value: temporal-frontend.temporal:7233
+      image: ghcr.io/temporalio/reference-app-orders-go-worker:latest
+      name: billing-worker
+      imagePullPolicy: Always
+  enableServiceLinks: false
 ```
+
 {/* SNIPEND */}
 
 ### Separate Task Queues logically
@@ -118,11 +122,18 @@ scale independently based on its workload.
   title="Diagram showing separate Task Queues for different Workers"
 />
 
+Since Task Queues are created dynamically when they are first used, a mismatch between these two values does not result
+in an error. Instead, it will result in the creation of two different Task Queues. Consequently, the Worker will not
+receive any tasks from the Temporal Service and the Workflow Execution will not progress. Therefore, we recommend that
+you define the Task Queue name in a constant that is referenced by the Client and Worker if possible, as this will
+ensure that they always use the same value.
+
 The following code snippet shows how the Billing Worker is set up to poll its Task Queue. The default value for
-`TaskQueue` comes from the `api.go` configuration file and is set to `billing`.
+`TaskQueue` is a constant that comes from the `api.go` configuration file and is set to `billing`.
 
 {/* SNIPSTART oms-billing-worker-go {"selectedLines": ["12-23"]} */}
 [app/billing/worker.go](https://github.com/temporalio/reference-app-orders-go/blob/main/app/billing/worker.go)
+
 ```go
 // ...
 // RunWorker runs a Workflow and Activity worker for the Billing system.
@@ -138,6 +149,7 @@ func RunWorker(ctx context.Context, config config.AppConfig, client client.Clien
 	return w.Run(temporalutil.WorkerInterruptFromContext(ctx))
 }
 ```
+
 {/* SNIPEND */}
 
 ### Use Worker Versioning to safely deploy new Workflow code
