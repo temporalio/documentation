@@ -51,19 +51,12 @@ function InnerCookbookDocItem({content, tags}: CookbookDocItemProps) {
 
   // Now we're under <DocProvider>, so useDoc() is safe:
   const {metadata, frontMatter, toc, contentTitle} = useDoc();
-  const {
-    title,
-    description,
-    id,
-    unversionedId,
-    tags: metaTags = [],
-    formattedLastUpdatedAt,
-    lastUpdatedAt,
-  } = metadata as typeof metadata & {
-    unversionedId?: string;
-    formattedLastUpdatedAt?: string;
-    lastUpdatedAt?: number | string | null;
-  };
+  const {title, description, id, unversionedId, tags: metaTags = [], formattedLastUpdatedAt, lastUpdatedAt} = metadata as
+    typeof metadata & {
+      unversionedId?: string;
+      formattedLastUpdatedAt?: string;
+      lastUpdatedAt?: number | string | null;
+    };
   const indexData = usePluginData('cookbook-index') as {items?: CookbookIndexItem[]} | undefined;
   const hasTOC = !frontMatter?.hide_table_of_contents && (toc?.length ?? 0) > 0;
   const shouldRenderSyntheticTitle = !frontMatter?.hide_title && typeof contentTitle === 'undefined';
@@ -71,7 +64,95 @@ function InnerCookbookDocItem({content, tags}: CookbookDocItemProps) {
 
   const resolvedTags = (tags ?? metaTags.map((t: any) => t.label)) as string[];
   const dataTags = resolvedTags.length ? resolvedTags.join(',') : undefined;
-  const cookbookFrontMatter = frontMatter as {source?: string} | undefined;
+  const cookbookFrontMatter = frontMatter as
+    | {
+        source?: string;
+        last_updated?: unknown;
+        last_updated_at?: unknown;
+        last_updated_label?: string;
+        formatted_last_updated?: string;
+      }
+    | undefined;
+  const normalizeTimestamp = React.useCallback((value: unknown): number | undefined => {
+    const normalizeNumber = (input: number): number | undefined => {
+      if (!Number.isFinite(input)) {
+        return undefined;
+      }
+      // Treat smaller values (e.g. seconds) as seconds since epoch.
+      return input < 1e11 ? input * 1000 : input;
+    };
+
+    if (typeof value === 'number') {
+      return normalizeNumber(value);
+    }
+    if (typeof value === 'string') {
+      const trimmed = value.trim();
+      if (!trimmed) {
+        return undefined;
+      }
+      const numeric = Number(trimmed);
+      if (!Number.isNaN(numeric)) {
+        return normalizeNumber(numeric);
+      }
+      const parsed = Date.parse(trimmed);
+      return Number.isNaN(parsed) ? undefined : normalizeNumber(parsed);
+    }
+    if (value instanceof Date) {
+      const time = value.getTime();
+      return Number.isNaN(time) ? undefined : normalizeNumber(time);
+    }
+    return undefined;
+  }, []);
+  const formatTimestamp = React.useCallback(
+    (value: number): string | undefined => {
+      if (!Number.isFinite(value)) {
+        return undefined;
+      }
+      try {
+        const formatter = new Intl.DateTimeFormat(undefined, {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        });
+        return formatter.format(new Date(value));
+      } catch {
+        return new Date(value).toLocaleDateString();
+      }
+    },
+    [],
+  );
+  const frontMatterLastUpdatedLabel = React.useMemo(() => {
+    const formattedCandidates = [
+      cookbookFrontMatter?.last_updated_label,
+      cookbookFrontMatter?.formatted_last_updated,
+    ].map((value) => (typeof value === 'string' ? value.trim() : ''));
+    const formatted = formattedCandidates.find((candidate) => candidate.length > 0);
+    if (formatted) {
+      return formatted;
+    }
+
+    const rawCandidates = [
+      cookbookFrontMatter?.last_updated,
+      cookbookFrontMatter?.last_updated_at,
+    ];
+    for (const raw of rawCandidates) {
+      const normalized = normalizeTimestamp(raw);
+      if (typeof normalized === 'number') {
+        const formattedTimestamp = formatTimestamp(normalized);
+        if (formattedTimestamp) {
+          return formattedTimestamp;
+        }
+      }
+      if (typeof raw === 'string') {
+        const trimmed = raw.trim();
+        if (trimmed.length > 0) {
+          return trimmed;
+        }
+      }
+    }
+
+    return undefined;
+  }, [cookbookFrontMatter, formatTimestamp, normalizeTimestamp]);
   const pluginSource = React.useMemo(() => {
     const items = indexData?.items;
     if (!Array.isArray(items)) {
@@ -97,36 +178,20 @@ function InnerCookbookDocItem({content, tags}: CookbookDocItemProps) {
     [isGithubEnabled],
   );
   const lastUpdatedLabel = React.useMemo(() => {
+    if (frontMatterLastUpdatedLabel) {
+      return frontMatterLastUpdatedLabel;
+    }
     if (formattedLastUpdatedAt) {
       return formattedLastUpdatedAt;
     }
 
-    const rawTimestamp = (() => {
-      if (typeof lastUpdatedAt === 'number') {
-        return lastUpdatedAt;
-      }
-      if (typeof lastUpdatedAt === 'string') {
-        const parsed = Number(lastUpdatedAt);
-        return Number.isNaN(parsed) ? undefined : parsed;
-      }
-      return undefined;
-    })();
-
-    if (typeof rawTimestamp !== 'number') {
+    const normalizedTimestamp = normalizeTimestamp(lastUpdatedAt);
+    if (typeof normalizedTimestamp !== 'number') {
       return undefined;
     }
 
-    try {
-      const formatter = new Intl.DateTimeFormat(undefined, {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      });
-      return formatter.format(new Date(rawTimestamp));
-    } catch {
-      return new Date(rawTimestamp).toLocaleDateString();
-    }
-  }, [formattedLastUpdatedAt, lastUpdatedAt]);
+    return formatTimestamp(normalizedTimestamp);
+  }, [formatTimestamp, frontMatterLastUpdatedLabel, formattedLastUpdatedAt, lastUpdatedAt, normalizeTimestamp]);
   const renderLastUpdated = React.useCallback(() => {
     if (!lastUpdatedLabel) {
       return null;
