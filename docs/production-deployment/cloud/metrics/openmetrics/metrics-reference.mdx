@@ -66,7 +66,7 @@ The number of frontend service gRPC requests received per second.
 | Label | Description |
 | ----- | ----- |
 | `operation` | The name of the RPC operation |
-| `temporal_service_type` | The Temporal service type |
+| `temporal_service_type` | The Temporal service type: Frontend, Matching, History, or Worker. |
 
 **Type**: Rate
 
@@ -77,7 +77,7 @@ The number of frontend service gRPC errors per second.
 | Label | Description |
 | ----- | ----- |
 | `operation` | The name of the RPC operation |
-| `temporal_service_type` | The temporal service type |
+| `temporal_service_type` | The Temporal service type: Frontend, Matching, History, or Worker. |
 
 **Type**: Rate
 
@@ -88,7 +88,7 @@ The number of pollers that are waiting for a task.
 | Label | Description |
 | ----- | ----- |
 | `operation` | The name of the operation |
-| `temporal_service_type` | The Temporal service type |
+| `temporal_service_type` | The Temporal service type: Frontend, Matching, History, or Worker. |
 
 **Type**: Value
 
@@ -115,7 +115,7 @@ The 50th percentile latency of service requests in seconds
 | Label | Description |
 | ----- | ----- |
 | `operation` | The name of the operation |
-| `temporal_service_type` | The Temporal service type |
+| `temporal_service_type` | The Temporal service type: Frontend, Matching, History, or Worker. |
 
 **Type**: Latency  
 
@@ -132,7 +132,7 @@ The 95th percentile latency of service requests in seconds
 | Label | Description |
 | ----- | ----- |
 | `operation` | The name of the operation |
-| `temporal_service_type` | The Temporal service type |
+| `temporal_service_type` | The Temporal service type: Frontend, Matching, History, or Worker. |
 
 **Type**: Latency  
 
@@ -149,7 +149,7 @@ The 99th percentile latency of service requests in seconds
 | Label | Description |
 | ----- | ----- |
 | `operation` | The name of the operation |
-| `temporal_service_type` | The Temporal service type |
+| `temporal_service_type` | The Temporal service type: Frontend, Matching, History, or Worker. |
 
 **Type**: Latency  
 
@@ -168,7 +168,7 @@ The number of successful workflow completions per second.
 | Label | Description |
 | ----- | ----- |
 | `operation` | The operation name |
-| `temporal_service_type` | The Temporal service type |
+| `temporal_service_type` | The Temporal service type: Frontend, Matching, History, or Worker. |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 
@@ -181,7 +181,7 @@ The number of workflow failures per second.
 | Label | Description |
 | ----- | ----- |
 | `operation` | The operation name |
-| `temporal_service_type` | The Temporal service type |
+| `temporal_service_type` | The Temporal service type: Frontend, Matching, History, or Worker. |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 
@@ -194,7 +194,7 @@ The number of workflow timeouts per second.
 | Label | Description |
 | ----- | ----- |
 | `operation` | The operation name |
-| `temporal_service_type` | The Temporal service type |
+| `temporal_service_type` | The Temporal service type: Frontend, Matching, History, or Worker. |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 
@@ -207,7 +207,7 @@ The number of workflow cancellations per second.
 | Label | Description |
 | ----- | ----- |
 | `operation` | The operation name |
-| `temporal_service_type` | The Temporal service type |
+| `temporal_service_type` | The Temporal service type: Frontend, Matching, History, or Worker. |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 
@@ -220,7 +220,7 @@ The number of workflow terminations per second.
 | Label | Description |
 | ----- | ----- |
 | `operation` | The operation name |
-| `temporal_service_type` | The Temporal service type |
+| `temporal_service_type` | The Temporal service type: Frontend, Matching, History, or Worker. |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 
@@ -233,7 +233,7 @@ The number of workflows continued as new per second.
 | Label | Description |
 | ----- | ----- |
 | `operation` | The operation name |
-| `temporal_service_type` | The Temporal service type |
+| `temporal_service_type` | The Temporal service type: Frontend, Matching, History, or Worker. |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 
@@ -249,7 +249,7 @@ These metrics could have high cardinality depending on number of task queues pre
 
 #### temporal\_cloud\_v1\_approximate\_backlog\_count
 
-The approximate number of tasks pending in a task queue.
+The approximate number of tasks pending in a task queue. Started Activities are not included in the count as they have been dequeued from the task queue.
 
 | Label | Description |
 | ----- | ----- |
@@ -279,7 +279,7 @@ The number of tasks matched synchronously per second (no polling wait).
 | ----- | ----- |
 | `operation` | The poll operation name |
 | `task_type` | Type of task: `workflow` or `activity` |
-| `temporal_service_type` | The Temporal service type |
+| `temporal_service_type` | The Temporal service type: Frontend, Matching, History, or Worker. |
 | `temporal_task_queue` | The task queue name |
 
 **Type**: Rate
@@ -292,7 +292,7 @@ The rate of poll requests that timed out without receiving a task.
 | ----- | ----- |
 | `operation` | The poll operation name |
 | `task_type` | Type of task: `workflow` or `activity` |
-| `temporal_service_type` | The Temporal service type |
+| `temporal_service_type` | The Temporal service type: Frontend, Matching, History, or Worker. |
 | `temporal_task_queue` | The task queue name |
 
 **Type**: Rate
@@ -317,7 +317,7 @@ The current number of open workflows in a namespace.
 | Label | Description |
 | ----- | ----- |
 | `service_name` | The name of the Temporal service |
-| `temporal_service_type` | The Temporal service type |
+| `temporal_service_type` | The Temporal service type: Frontend, Matching, History, or Worker. |
 
 **Type**: Value
 
@@ -334,7 +334,7 @@ The total number of actions performed per second.
 | Label | Description |
 | ----- | ----- |
 | `is_background` | Whether the action was background: `true` or `false` |
-| `namespace_mode` | The namespace mode |
+| `namespace_mode` | Indicates if actions are produced by an `active` or a `standby` Namespace |
 
 **Type**: Rate
 
@@ -346,7 +346,7 @@ The number of operations performed per second.
 | ----- | ----- |
 | `operation` | The name of the operation |
 | `is_background` | State of the background operation: `true` or `false` |
-| `namespace_mode` | The namespace mode |
+| `namespace_mode` | Indicates if operations are produced by an `active` or a `standby` Namespace |
 
 **Type**: Rate
 
@@ -358,7 +358,7 @@ The number of operations throttled due to rate limits per second.
 | ----- | ----- |
 | `operation` | The name of the operation |
 | `is_background` | State of the background operation: `true` or `false` |
-| `namespace_mode` | The namespace mode |
+| `namespace_mode` | Indicates if actions are throttled in an `active` or a `standby` Namespace |
 
 **Type**: Rate
 

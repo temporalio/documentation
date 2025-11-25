@@ -2,7 +2,9 @@
 id: cmd-options
 title: Temporal CLI command options reference
 sidebar_label: cmd options
-description: Discover how to manage Temporal Workflows, from Activity Execution to Workflow Ids, using clusters, cron schedules, dynamic configurations, and logging. Perfect for developers.
+description:
+  Discover how to manage Temporal Workflows, from Activity Execution to Workflow Ids, using clusters, cron schedules,
+  dynamic configurations, and logging. Perfect for developers.
 toc_max_heading_level: 4
 keywords:
   - actions
@@ -152,12 +154,12 @@ Caution: `--archived` is experimental.
 
 ## build-id
 
-Identifies the build to retrieve reachability information for.
-Can be specified multiple times.
+Identifies the build to retrieve reachability information for. Can be specified multiple times.
 
 ## calendar
 
-Calendar specification in JSON `({"dayOfWeek":"Fri","hour":"17","minute":"5"})` or as a Cron string `("30 2 \* \* 5" or "@daily")`.
+Calendar specification in JSON `({"dayOfWeek":"Fri","hour":"17","minute":"5"})` or as a Cron string
+`("30 2 \* \* 5" or "@daily")`.
 
 ## catchup-window
 
@@ -209,23 +211,19 @@ Values must be in JSON format.
 
 ## db-filename
 
-File in which to persist Temporal state.
-By default, Workflows are lost when the process dies.
+File in which to persist Temporal state. By default, Workflows are lost when the process dies.
 
 ## depth
 
-The number of Child Workflows to fetch and expand.
-Use `-1` to fetch Child Workflows at any depth.
+The number of Child Workflows to fetch and expand. Use `-1` to fetch Child Workflows at any depth.
 
 ## description
 
-Namespace description or Nexus Endpoint description.
-You may use Markdown formatting in the Nexus Endpoint description.
+Namespace description or Nexus Endpoint description. You may use Markdown formatting in the Nexus Endpoint description.
 
 ## description-file
 
-Path to the Nexus Endpoint description file.
-The contents of the description file may use Markdown formatting.
+Path to the Nexus Endpoint description file. The contents of the description file may use Markdown formatting.
 
 ## detail
 
@@ -237,8 +235,7 @@ Simulate reset without resetting any Workflow Executions.
 
 ## dynamic-config-value
 
-Dynamic config value, formatted as `KEY=JSON_VALUE`.
-String values require quotation marks.
+Dynamic config value, formatted as `KEY=JSON_VALUE`. String values require quotation marks.
 
 ## email
 
@@ -254,17 +251,16 @@ Backfill end time.
 
 ## env
 
-Name of the environment to read environmental variables from.
+Name of the environment to read environment variables from.
 
 ## env-file
 
-Path to environment settings file.
-Defaults to `$HOME/.config/temporalio/temporal.yaml`.
+Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`.
 
 ## event-id
 
-The Event Id for any Event after WorkflowTaskStarted you want to reset to (exclusive).
-It can be WorkflowTaskCompleted, WorkflowTaskFailed or others.
+The Event Id for any Event after WorkflowTaskStarted you want to reset to (exclusive). It can be WorkflowTaskCompleted,
+WorkflowTaskFailed or others.
 
 ## exclude-file
 
@@ -276,13 +272,12 @@ Timeout (in seconds) for a [Workflow Execution](/workflow-execution), including 
 
 ## existing-compatible-build-id
 
-A Build Id that already exists in the version sets known by the Task Queue.
-New Build Ids are stored in the version set containing this Id, making them compatible with the versions in that set.
+A Build Id that already exists in the version sets known by the Task Queue. New Build Ids are stored in the version set
+containing this Id, making them compatible with the versions in that set.
 
 ## fields
 
-Customize fields to print.
-Set to 'long' to automatically print more of main fields.
+Customize fields to print. Set to 'long' to automatically print more of main fields.
 
 ## first-execution-run-id
 
@@ -307,8 +302,7 @@ Flag to indicate whether a Namespace is a Global Namespace.
 
 ## grpc-meta
 
-Contains gRPC metadata to send with requests (format: `key=value`).
-Values must be in a valid JSON format.
+Contains gRPC metadata to send with requests (format: `key=value`). Values must be in a valid JSON format.
 
 ## headless
 
@@ -320,8 +314,7 @@ Maximum permitted time between successful Worker Heartbeats.
 
 ## history-archival-state
 
-Sets the history archival state.
-Valid values are "disabled" and "enabled".
+Sets the history archival state. Valid values are "disabled" and "enabled".
 
 ## history-uri
 
@@ -329,8 +322,8 @@ Optionally specify history archival URI (cannot be changed after first time arch
 
 ## id-reuse-policy
 
-Allows the same Workflow Id to be used in a new Workflow Execution.
-Options: AllowDuplicate, AllowDuplicateFailedOnly, RejectDuplicate, TerminateIfRunning.
+Allows the same Workflow Id to be used in a new Workflow Execution. Options: AllowDuplicate, AllowDuplicateFailedOnly,
+RejectDuplicate, TerminateIfRunning.
 
 ## identity
 
@@ -340,11 +333,11 @@ Specify operator's identity.
 
 Use the `--input` command option to include data in the command.
 
-This command option accepts a valid JSON string.
-If the entity that the command is acting on accepts multiple parameters, pass "null" for null values within the JSON string.
+This command option accepts a valid JSON string. If the entity that the command is acting on accepts multiple
+parameters, pass "null" for null values within the JSON string.
 
-The following is an example of starting a Workflow with the `--input` command option.
-This Workflow expects a single string as a parameter:
+The following is an example of starting a Workflow with the `--input` command option. This Workflow expects a single
+string as a parameter:
 
 ```shell
 temporal workflow start --input '"+1 555-555-5555"'
@@ -352,14 +345,12 @@ temporal workflow start --input '"+1 555-555-5555"'
 
 ## input-file
 
-Passes optional input for the Workflow from a JSON file.
-If there are multiple JSON files, concatenate them and separate by space or newline.
-Input from the command line will overwrite file input.
+Passes optional input for the Workflow from a JSON file. If there are multiple JSON files, concatenate them and separate
+by space or newline. Input from the command line will overwrite file input.
 
 ## input-parallelism
 
-Number of goroutines to run in parallel.
-Each goroutine processes one line for every second.
+Number of goroutines to run in parallel. Each goroutine processes one line for every second.
 
 ## input-separator
 
@@ -371,8 +362,7 @@ Interval duration, such as 90m, or 90m/13m to include phase offset.
 
 ## ip
 
-IPv4 address to bind the frontend service to.
-(default: 127.0.0.1)
+IPv4 address to bind the frontend service to. (default: 127.0.0.1)
 
 ## jitter
 
@@ -392,13 +382,11 @@ Number of items to print on a page.
 
 ## log-format
 
-Set the log formatting.
-Options: ["json", "pretty"].
+Set the log formatting. Options: ["json", "pretty"].
 
 ## log-level
 
-Set the log level.
-Options: ["debug" "info" "warn" "error" "fatal"].
+Set the log level. Options: ["debug" "info" "warn" "error" "fatal"].
 
 ## match-all
 
@@ -410,25 +398,20 @@ Maximum length for each attribute field.
 
 ## max-sets
 
-Limits how many compatible sets will be returned.
-Specify 1 to return only the current default major version set.
-0 returns all sets.
+Limits how many compatible sets will be returned. Specify 1 to return only the current default major version set. 0
+returns all sets.
 
 ## memo
 
-Set a memo on a schedule (format: key=value).
-Use valid JSON formats for value.
+Set a memo on a schedule (format: key=value). Use valid JSON formats for value.
 
 ## memo-file
 
-Set a memo from a file.
-Each line should follow the format key=value.
-Use valid JSON formats for value.
+Set a memo from a file. Each line should follow the format key=value. Use valid JSON formats for value.
 
 ## metrics-port
 
-Port for `/metrics`.
-Enabled by default with a randomly assigned port.
+Port for `/metrics`. Enabled by default with a randomly assigned port.
 
 ## name
 
@@ -444,8 +427,7 @@ Namespace Id.
 
 ## no-fold
 
-Disable folding.
-All Child Workflows within the set depth will be fetched and displayed.
+Disable folding. All Child Workflows within the set depth will be fetched and displayed.
 
 ## no-json-shorthand-payloads
 
@@ -465,18 +447,15 @@ Initial value of notes field.
 
 ## output
 
-Format of output.
-Options: table, json, card.
+Format of output. Options: table, json, card.
 
 ## overlap-policy
 
-Overlap policy.
-Options: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll.
+Overlap policy. Options: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll.
 
 ## pager
 
-Sets the pager for the Temporal CLI to use.
-Options are less, more, and favoritePager.
+Sets the pager for the Temporal CLI to use. Options are less, more, and favoritePager.
 
 ## pause
 
@@ -496,18 +475,16 @@ Promote local Namespace to Global Namespace.
 
 ## query
 
-Provides a SQL-like Query of Search Attributes to return Workflow Executions to reset.
-For more information, refer to the [`temporal workflow list`](/cli/workflow#list) command.
+Provides a SQL-like Query of Search Attributes to return Workflow Executions to reset. For more information, refer to
+the [`temporal workflow list`](/cli/workflow#list) command.
 
 ## raw
 
-Print raw data in a JSON format.
-For scripting, we recommend using this option instead of `-o json`.
+Print raw data in a JSON format. For scripting, we recommend using this option instead of `-o json`.
 
 ## reachability-type
 
-Specify how you'd like to filter the reachability of Build IDs.
-The following are valid choices:
+Specify how you'd like to filter the reachability of Build IDs. The following are valid choices:
 
 - `open`: reachable by one or more open Workflows.
 - `closed`: reachable by one or more closed Workflows.
@@ -517,8 +494,7 @@ Build IDs that are reachable by new Workflows are always reported.
 
 ## reapply-type
 
-Event types to reapply after the reset point.
-Options: Signal, None.
+Event types to reapply after the reset point. Options: Signal, None.
 
 ## reason
 
@@ -526,8 +502,7 @@ Reason for the operation.
 
 ## reject-condition
 
-Optional flag for rejecting Queries based on Workflow state.
-Valid values are "not_open" and "not_completed_cleanly".
+Optional flag for rejecting Queries based on Workflow state. Valid values are "not_open" and "not_completed_cleanly".
 
 ## remaining-actions
 
@@ -555,9 +530,8 @@ Workflow Execution retention.
 
 ## retry-backoff-coefficient
 
-Coefficient used to calculate the next retry interval.
-The next retry interval is previous interval multiplied by the coefficient.
-Must be 1 or larger.
+Coefficient used to calculate the next retry interval. The next retry interval is previous interval multiplied by the
+coefficient. Must be 1 or larger.
 
 ## retry-initial-interval
 
@@ -565,13 +539,13 @@ Interval of the first retry. If retryBackoffCoefficient is 1.0 then it is used f
 
 ## retry-maximum-attempts
 
-Maximum number of attempts. When exceeded the retries stop even if not expired yet.
-1 disables retries. 0 means unlimited (up to the timeouts).
+Maximum number of attempts. When exceeded the retries stop even if not expired yet. 1 disables retries. 0 means
+unlimited (up to the timeouts).
 
 ## retry-maximum-interval
 
-Maximum interval between retries. Exponential backoff leads to interval increase.
-This value is the cap of the increase. Default is 100x of the initial interval.
+Maximum interval between retries. Exponential backoff leads to interval increase. This value is the cap of the increase.
+Default is 100x of the initial interval.
 
 ## run-id
 
@@ -587,19 +561,17 @@ Schedule Id.
 
 ## schedule-to-close-timeout
 
-Indicates how long the caller is willing to wait for an Activity completion.
-Limits how long retries will be attempted.
+Indicates how long the caller is willing to wait for an Activity completion. Limits how long retries will be attempted.
 
 ## schedule-to-start-timeout
 
-Limits time an Activity Task can stay in a task queue before a Worker picks it up.
-This timeout is always non retryable, as all a retry would achieve is to put it back into the same queue.
-Defaults to `schedule_to_close_timeout` or workflow execution timeout if not specified.
+Limits time an Activity Task can stay in a task queue before a Worker picks it up. This timeout is always non retryable,
+as all a retry would achieve is to put it back into the same queue. Defaults to `schedule_to_close_timeout` or workflow
+execution timeout if not specified.
 
 ## search-attribute
 
-Set Search Attribute on a Schedule (formatted as `key=value`).
-Use valid JSON formats for value.
+Set Search Attribute on a Schedule (formatted as `key=value`). Use valid JSON formats for value.
 
 ## set-as-default
 
@@ -617,8 +589,7 @@ Skip a Workflow Execution if the current Run is open for the same Workflow Id as
 
 ## sqlite-pragma
 
-Specify sqlite pragma statements in pragma=value format.
-Pragma options: ["journal_mode" "synchronous"].
+Specify sqlite pragma statements in pragma=value format. Pragma options: ["journal_mode" "synchronous"].
 
 ## start-delay
 
@@ -630,8 +601,7 @@ Backfill start time.
 
 ## start-to-close-timeout
 
-Maximum time an Activity is allowed to execute after being picked up by a Worker.
-This Timeout is always retryable.
+Maximum time an Activity is allowed to execute after being picked up by a Worker. This Timeout is always retryable.
 
 ## target-namespace
 
@@ -643,8 +613,8 @@ Task Queue in which a handler Worker will poll for Nexus tasks.
 
 ## target-url
 
-An external Nexus Endpoint where Nexus requests are forwarded to.
-May be used as an alternative to `--target-namespace` and `--target-task-queue`.
+An external Nexus Endpoint where Nexus requests are forwarded to. May be used as an alternative to `--target-namespace`
+and `--target-task-queue`.
 
 :::note
 
@@ -658,8 +628,7 @@ Task Queue.
 
 ## task-queue-type
 
-Task Queue type, which can be either Workflow or Activity.
-The default type is Workflow.
+Task Queue type, which can be either Workflow or Activity. The default type is Workflow.
 
 ## task-timeout
 
@@ -711,8 +680,7 @@ Overrides the target TLS server name.
 
 ## type
 
-Search attribute type.
-Options: Text, Keyword, Int, Double, Bool, Datetime, KeywordList.
+Search attribute type. Options: Text, Keyword, Int, Double, Bool, Datetime, KeywordList.
 
 ## ui-asset-path
 
@@ -728,8 +696,7 @@ IPv4 address to bind the Web UI to.
 
 ## ui-port
 
-Port for the Web UI.
-Default: `--port` + 1000 (for example, 4000).
+Port for the Web UI. Default: `--port` + 1000 (for example, 4000).
 
 ## unpause
 
@@ -745,13 +712,11 @@ Print applied Namespace changes.
 
 ## visibility-archival-state
 
-Visibility Archival state.
-Valid values: "disabled", "enabled".
+Visibility Archival state. Valid values: "disabled", "enabled".
 
 ## visibility-uri
 
-Specify URI for Visibility Archival.
-This cannot be changed after Archival is enabled.
+Specify URI for Visibility Archival. This cannot be changed after Archival is enabled.
 
 ## workflow-id
 

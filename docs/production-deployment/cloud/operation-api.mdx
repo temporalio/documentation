@@ -2,7 +2,7 @@
 id: operation-api
 title: Cloud Ops API
 sidebar_label: Cloud Ops API
-description: The Temporal Cloud Operations API (Cloud Ops) streamlines automation of Users, Namespaces, and Accounts with gRPC integration for diverse programming languages, enabling efficient resource management.
+description: The Temporal Cloud Operations API (Cloud Ops) allows programmatic management of Temporal Cloud control plane resources.
 slug: /ops
 toc_max_heading_level: 4
 keywords:
@@ -14,13 +14,17 @@ tags:
 
 :::tip Support, stability, and dependency info
 
-Temporal Cloud Operations API is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview) for Temporal Cloud.
+The Temporal Cloud Operations API is in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
 
 :::
 
-The [Temporal Cloud Operations API](https://github.com/temporalio/cloud-api/tree/main) (Cloud Ops API) is an open source, public gRPC API for managing the automation of Users, Namespaces, and Temporal Cloud Accounts.
+The [Temporal Cloud Operations API](https://github.com/temporalio/cloud-api/tree/main) (aka Cloud Ops API) is an open source, public gRPC API for programmatically managing Temporal Cloud control plane resources, including [Namespaces](/cloud/namespaces), [Users](/cloud/users), [Service Accounts](/cloud/service-accounts), [API keys](/cloud/api-keys), and many more.
 
-In addition to being available on GitHub, the proto files are also hosted on [Buf](https://buf.build/temporalio/cloud-api/docs), which provides a clean web interface for browsing and visualizing the APIs, and offers more streamlined dependency management. You can use the provided proto files to generate client libraries in your desired programming language. 
+[Full docs are available on Buf](https://buf.build/temporalio/cloud-api/docs/main:temporal.api.cloud.cloudservice.v1#temporal.api.cloud.cloudservice.v1.CloudService).
+
+You can use the provided proto files to generate client libraries in your desired programming language, and then use that client to access the API.
+
+The Temporal Cloud [Terraform Provider](/production-deployment/cloud/terraform-provider), [tcld CLI](/cloud/tcld), and Web UI all use the Cloud Ops API.
 
 ## SDKs and samples
 
@@ -29,8 +33,6 @@ We provide a [Go SDK](https://github.com/temporalio/cloud-sdk-go) that compiles 
 We also provide [Go samples](https://github.com/temporalio/cloud-samples-go) to help you get started with the Cloud Ops API using the Go SDK.
 
 ## Develop applications with the Cloud Ops API
-
-This section walks you through the steps to develop applications with the Cloud Ops API, either through the Go SDK or by compiling the protobuf files for other programming languages.
 
 ### Prerequisites
 
@@ -45,7 +47,7 @@ This section walks you through the steps to develop applications with the Cloud 
 - [Protocol Buffers](https://github.com/protocolbuffers/protobuf/releases)
 - [gRPC](https://grpc.io/docs/languages/) in your preferred programming language
 
-### Using the Go SDK (Recommended for Go)
+### Using the Go SDK
 
 If you're developing in Go, we recommend using the [Go SDK](https://github.com/temporalio/cloud-sdk-go) which provides pre-compiled Go bindings and a more idiomatic interface. The Go SDK handles all the protobuf compilation and provides ready-to-use Go types and client interfaces. 
 
@@ -165,10 +167,9 @@ If your use case requires higher rate limits, you can request an increase by [su
 
 ### Provide feedback
 
-Your input is valuable.
-While the Temporal Cloud Ops API is in a Public Preview release status, we welcome your feedback.
+Your input is valuable!
 
 You can provide feedback through the following channels:
 
-- Submit request or feedback through a ZenDesk [ticket](/cloud/support#support-ticket)
+- Submit request or feedback through a [support ticket](/cloud/support#support-ticket)
 - Open an issue in the [GitHub Repo](https://github.com/temporalio/cloud-api)
