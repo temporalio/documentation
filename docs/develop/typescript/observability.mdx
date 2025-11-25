@@ -291,15 +291,17 @@ However, they differ from Activities in important ways:
 Explicitly declaring a sink's interface is optional but is useful for ensuring type safety in subsequent steps:
 
 <!--SNIPSTART typescript-logger-sink-interface-->
-[packages/test/src/workflows/log-sink-tester.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/log-sink-tester.ts)
+[sinks/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/sinks/src/workflows.ts)
 ```ts
-import type { Sinks } from '@temporalio/workflow';
+import { log, proxySinks, Sinks } from '@temporalio/workflow';
 
-export interface CustomLoggerSinks extends Sinks {
-  customLogger: {
-    info(message: string): void;
+export interface AlertSinks extends Sinks {
+  alerter: {
+    alert(message: string): void;
   };
 }
+
+export type MySinks = AlertSinks;
 ```
 <!--SNIPEND-->
 
@@ -352,12 +354,14 @@ main().catch((err) => {
 #### Proxy and call a sink function from a Workflow
 
 <!--SNIPSTART typescript-logger-sink-workflow-->
-[packages/test/src/workflows/log-sample.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/log-sample.ts)
+[sinks/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/sinks/src/workflows.ts)
 ```ts
-import * as wf from '@temporalio/workflow';
+const { alerter } = proxySinks<MySinks>();
 
-export async function logSampleWorkflow(): Promise<void> {
-  wf.log.info('Workflow execution started');
+export async function sinkWorkflow(): Promise<string> {
+  log.info('Workflow Execution started');
+  alerter.alert('alerter: Workflow Execution started');
+  return 'Hello, Temporal!';
 }
 ```
 <!--SNIPEND-->
