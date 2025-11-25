@@ -74,7 +74,7 @@ This Dockerfile uses a multi-stage build pattern with two stages:
 
 2. `oms-worker` stage: creates a minimal final image.
 
-   1. Copies only the compiled binary from the `oms-builder` stage
+   1. Copies only the compiled binary from the `oms-builder` stage.
    2. Sets the entrypoint to run the Worker process.
 
 The entrypoint `oms worker` starts the Worker process, which reads configuration from environment variables at runtime.
@@ -122,14 +122,13 @@ scale independently based on its workload.
   title="Diagram showing separate Task Queues for different Workers"
 />
 
-Since Task Queues are created dynamically when they are first used, a mismatch between these two values does not result
-in an error. Instead, it will result in the creation of two different Task Queues. Consequently, the Worker will not
-receive any tasks from the Temporal Service and the Workflow Execution will not progress. Therefore, we recommend that
-you define the Task Queue name in a constant that is referenced by the Client and Worker if possible, as this will
-ensure that they always use the same value.
-
 The following code snippet shows how the Billing Worker is set up to poll its Task Queue. The default value for
-`TaskQueue` is a constant that comes from the `api.go` configuration file and is set to `billing`.
+`TaskQueue` is a constant defined in the `api.go` configuration file and is set to `billing`.
+
+Since Task Queues are created dynamically when first used, a mismatch between the Client and Worker Task Queue names
+does not result in an error. Instead, it creates two different Task Queues, and the Worker never receives Tasks from the
+Temporal Service because it's polling the wrong queue. Define the Task Queue name as a constant that both the Client and
+Worker reference to avoid this issue.
 
 {/* SNIPSTART oms-billing-worker-go {"selectedLines": ["12-23"]} */}
 [app/billing/worker.go](https://github.com/temporalio/reference-app-orders-go/blob/main/app/billing/worker.go)
@@ -154,9 +153,9 @@ func RunWorker(ctx context.Context, config config.AppConfig, client client.Clien
 
 ### Use Worker Versioning to safely deploy new Workflow code
 
-Use Worker Versioning to deploy new Workflow code without breaking running Executions.  
-Worker Versioning lets you map each Workflow Execution to a specific Worker Deployment Version identified by a build ID.
-This guarantees that pinned Workflows always run on the same Worker version where they started.
+Use Worker Versioning to deploy new Workflow code without breaking running Executions. Worker Versioning lets you map
+each Workflow Execution to a specific Worker Deployment Version identified by a build ID, which guarantees that pinned
+Workflows always run on the same Worker version where they started.
 
 To learn more about versioning Workflows, see the
 [Workflow Versioning](../production-deployment/worker-deployments/worker-versioning.mdx) guide.
@@ -171,10 +170,10 @@ Versioning, but it introduces some complexity on the Workflow code side. Choose 
 
 ### Manage Event History growth
 
-If a Worker goes offline, and another Worker picks up the same Workflow Execution, the new Worker must replay the
-existing Event History to resume the Workflow Execution. If the Event History is too large or has too many Events, it
-will affect the performance of the new Worker, and may even cause timeout errors well before the hard limit of 51,200
-events is reached.
+If a Worker goes offline and another Worker picks up the same Workflow Execution, the new Worker must replay the
+existing Event History to resume the Workflow Execution. If the Event History is too large or has too many Events,
+replay affects the performance of the new Worker and may even cause timeout errors well before the hard limit of 51,200
+Events is reached.
 
 We recommend not exceeding a few thousand Events in a single Workflow Execution. The best way to handle Event History
 growth is to use the [Continue-As-New](/workflow-execution/continue-as-new) mechanism to continue under a new Workflow
@@ -185,20 +184,18 @@ example, the Python SDK has the
 [`is_continue_as_new_suggested()`](https://python.temporal.io/temporalio.workflow.Info.html#is_continue_as_new_suggested)
 function that returns a `bool` indicating whether to use Continue-As-New.
 
-In addition to the number of Events in the Event History, also monitor the size of the Event History. Input parameters
-and output values of both Workflows and Activities are stored in the Event History. Storing large amounts of data can
-lead to performance problems, so the Temporal Cluster limits both the size of the Event History and values stored within
-it. A Workflow Execution may be terminated if the size of any payload, which includes the input passed into, or the
-result returned by, an Activity or Workflow, exceeds 2 MB, or if the entire Event History exceeds 50 MB.
+In addition to the number of Events, monitor the size of the Event History. Input parameters and output values of both
+Workflows and Activities are stored in the Event History. Storing large amounts of data can lead to performance
+problems, so the Temporal Cluster limits both the size of individual payloads and the total Event History size. A
+Workflow Execution may be terminated if any single payload exceeds 2 MB or if the entire Event History exceeds 50 MB.
 
 To avoid hitting these limits, avoid passing large amounts of data into and out of Workflows and Activities. A common
-way of reducing payload and Event History size is by using the
-[Claim Check](https://dataengineering.wiki/Concepts/Software+Engineering/Claim+Check+Pattern) pattern, which is widely
-used with messaging systems such as Apache Kafka. Instead of passing a large amount of data into your function, store
-that data external to Temporal, perhaps in a database or file system. Pass the identifier for the data, such as the
-primary key or path, into the function, and use an Activity to retrieve it as needed. If your Activity produces a large
-amount of data, you could use a similar approach, writing that data to an external system and returning as output an
-identifier that could subsequently be used to retrieve it.
+way to reduce payload and Event History size is the
+[Claim Check](https://dataengineering.wiki/Concepts/Software+Engineering/Claim+Check+Pattern) pattern, widely used with
+messaging systems such as Apache Kafka. Instead of passing large data into your function, store that data external to
+Temporal in a database or file system. Pass an identifier for the data, such as a primary key or path, into the function
+and use an Activity to retrieve it as needed. If your Activity produces large output, use a similar approach: write the
+data to an external system and return an identifier that can be used to retrieve it later.
 
 ## Scaling, monitoring, and tuning
 
@@ -255,6 +252,6 @@ Workers are handling long-running, expensive Activities.
 If `worker_task_slots_available` is at or near zero, the Worker is running active Tasks. Shutting it down could trigger
 expensive retries or timeouts for long-running Activities. Use
 [Graceful Shutdowns](/encyclopedia/workers/worker-shutdown#graceful-shutdown) to allow the Worker to complete its
-current Task before shutting down. All SDKs provide a way to configure Graceful Shutdowns. For example, the Go SDK has
+current Tasks before shutting down. All SDKs provide a way to configure Graceful Shutdowns. For example, the Go SDK has
 the [`WorkerStopTimeout` option](https://pkg.go.dev/go.temporal.io/sdk@v1.38.0/internal#WorkerOptions) that lets you
-configure the amount of time the Worker has to complete its current Task before shutting down.
+configure how long the Worker has to complete its current Tasks before shutting down.
