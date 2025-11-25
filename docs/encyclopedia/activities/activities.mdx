@@ -21,9 +21,9 @@ This guide provides a comprehensive overview of Temporal Activities including
 [Activity Definition](/activity-definition), [Activity Type](/activity-definition#activity-type),
 [Activity Execution](/activity-execution), and [Local Activity](/local-activity).
 
-An Activity is a normal function or method that executes a single, well-defined action, such as calling another service,
-transcoding a media file, or sending an email message. An Activity can either be short or long-running. Activity code
-can be non-deterministic. We recommend that it be [idempotent](/activity-definition#idempotency).
+An Activity is a normal function or method that executes a single, well-defined action (either short or long running),
+such as calling another service, transcoding a media file, or sending an email message. Activity code can be
+non-deterministic. We recommend that it be [idempotent](/activity-definition#idempotency).
 
 Workflow code orchestrates the execution of Activities, persisting the results. If an Activity Function Execution fails,
 any future execution starts from initial state (except

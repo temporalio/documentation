@@ -20,6 +20,7 @@ This pages shows the following:
 - How to set an Activity Heartbeat Timeout.
 - How to listen for and handle a Cancellation request within an Activity.
 - How to send a Cancellation request from a Temporal Client.
+- Heartbeating after a Cancellation.
 
 ## Handle Cancellation in Workflow {#handle-cancellation-in-workflow}
 
@@ -132,3 +133,16 @@ func main() {
 // ...
 }
 ```
+
+## Heartbeating after a Cancellation
+
+Sometimes you may want to continue running your Activity, even after a Cancellation has been issued.
+You may want to completely ignore the cancellation and continue Activity
+execution, including Heartbeating, or you may want to send one final Heartbeat after Cancellation.
+Even though the context is cancelled when the Workflow is Cancelled, you are still able to send
+Activity Heartbeats.
+
+When you call `activity.RecordHeartbeat` after Cancellation has occurred, a 
+`WARN  RecordActivityHeartbeat with error Error context canceled` message will be logged, and a 
+`context canceled` error will be returned from the call. However, the 
+Heartbeat **has** still been sent.

@@ -1,0 +1,34 @@
+---
+id: client-environment-configuration
+title: Environment configuration
+sidebar_label: Environment configuration
+description: Reference for configuring Temporal Clients using environment variables and TOML configuration files.
+tags:
+  - Temporal Client
+  - Configuration
+  - Environment Variables
+  - TOML
+---
+
+The following table details all available settings, their corresponding environment variables, and their TOML file
+paths. For more information on using environment variables and configuration files to set up your Temporal Client, refer
+to the [Environment Configuration](/develop/environment-configuration).
+
+| Setting                   | Environment Variable                     | TOML Path                                      | Description                                                                                                                                                                                                                 |
+| :------------------------ | :--------------------------------------- | :--------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Configuration File Path   | `TEMPORAL_CONFIG_FILE`                   | **NA**                                         | Path to the TOML configuration file                                                                                                                                                                                         |
+| Server Address            | `TEMPORAL_ADDRESS`                       | `profile.<name>.address`                       | The host and port of the Temporal Frontend service (e.g., "localhost:7233").                                                                                                                                                |
+| Namespace                 | `TEMPORAL_NAMESPACE`                     | `profile.<name>.namespace`                     | The Temporal Namespace to connect to.                                                                                                                                                                                       |
+| API Key                   | `TEMPORAL_API_KEY`                       | `profile.<name>.api_key`                       | An API key for authentication. If present, TLS is enabled by default.                                                                                                                                                       |
+| Enable/Disable TLS        | `TEMPORAL_TLS`                           | `profile.<name>.tls.disabled`                  | Set to "true" to enable TLS, "false" to disable. In TOML, disabled = true turns TLS off.                                                                                                                                    |
+| Client Certificate        | `TEMPORAL_TLS_CLIENT_CERT_DATA`          | `profile.<name>.tls.client_cert_data`          | The raw PEM data containing the client's public TLS certificate. Alternatively, you can use `TEMPORAL_TLS_CLIENT_CERT_PATH` to provide a path to the certificate or the TOML `profile.<name>.tls.client_cert_path`.         |
+| Client Certificate Path   | `TEMPORAL_TLS_CLIENT_CERT_PATH`          | `profile.<name>.tls.client_cert_path`          | A filesystem path to the client's public TLS certificate. Alternatively, you can provide the raw PEM data using `TEMPORAL_TLS_CLIENT_CERT_DATA` or the TOML `profile.<name>.tls.client_cert_data`.                          |
+| Client Key                | `TEMPORAL_TLS_CLIENT_KEY_DATA`           | `profile.<name>.tls.client_key_data`           | The raw PEM data containing the client's private TLS key. Alternatively, you can use `TEMPORAL_TLS_CLIENT_KEY_PATH` to provide a path to the key or the TOML `profile.<name>.tls.client_key_path`.                          |
+| Client Key Path           | `TEMPORAL_TLS_CLIENT_KEY_PATH`           | `profile.<name>.tls.client_key_path`           | A filesystem path to the client's private TLS key. Alternatively, you can provide the raw PEM data using `TEMPORAL_TLS_CLIENT_KEY_DATA` or the TOML `profile.<name>.tls.client_key_data`.                                   |
+| Server CA Cert            | `TEMPORAL_TLS_SERVER_CA_CERT_DATA`       | `profile.<name>.tls.server_ca_cert_data`       | The raw PEM data for the Certificate Authority certificate used to verify the server. Alternatively, you can use `TEMPORAL_TLS_SERVER_CA_CERT_PATH` to provide a path or the TOML `profile.<name>.tls.server_ca_cert_path`. |
+| Server CA Cert Path       | `TEMPORAL_TLS_SERVER_CA_CERT_PATH`       | `profile.<name>.tls.server_ca_cert_path`       | A filesystem path to the Certificate Authority certificate. Alternatively, you can provide the raw PEM data using `TEMPORAL_TLS_SERVER_CA_CERT_DATA` or the TOML `profile.<name>.tls.server_ca_cert_data`.                  |
+| TLS Server Name           | `TEMPORAL_TLS_SERVER_NAME`               | `profile.<name>.tls.server_name`               | Overrides the server name used for Server Name Indication (SNI) in the TLS handshake.                                                                                                                                       |
+| Disable Host Verification | `TEMPORAL_TLS_DISABLE_HOST_VERIFICATION` | `profile.<name>.tls.disable_host_verification` | A boolean to disable server hostname verification. Use with caution. Not supported by all SDKs.                                                                                                                             |
+| Codec Endpoint            | `TEMPORAL_CODEC_ENDPOINT`                | `profile.<name>.codec.endpoint`                | The endpoint for a remote Data Converter. This is not supported by all SDKs. SDKs that support this configuration don't apply it by default. Intended mostly for CLI use.                                                   |
+| Codec Auth                | `TEMPORAL_CODEC_AUTH`                    | `profile.<name>.codec.auth`                    | The authorization header value for the remote data converter.                                                                                                                                                               |
+| gRPC Metadata             | `TEMPORAL_GRPC_META_*`                   | `profile.<name>.grpc_meta`                     | Sets gRPC headers. The part after `_META_` becomes the header key (e.g., `_SOME_KEY` -> `some-key`).                                                                                                                        |
