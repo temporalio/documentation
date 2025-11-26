@@ -185,7 +185,7 @@ Temporalio::Workflow.execute_activity(
 If you raise an application-level error, you can override the Retry Policy's delay by specifying a new delay.
 
 ```ruby
-raise Temporalio::ApplicationError.new(
+raise Temporalio::Error::ApplicationError.new(
   'Some error',
   type: 'SomeErrorType',
   next_retry_delay: 3 * Temporalio::Activity::Context.current.info.attempt

@@ -212,6 +212,7 @@ This table provides API-level details for the permissions granted to a user thro
 | Permission                        | Read-only | Developer | Finance Admin | Global Admin | Account Owner |
 | --------------------------------- | --------- | --------- | ------------- | ------------ | ------------- |
 | CountIdentities                   | ✔         | ✔         | ✔             | ✔            | ✔             |
+| CreateAccountAuditLogSink         |           |           |               | ✔            | ✔             |
 | CreateAPIKey                      | ✔         | ✔         | ✔             | ✔            | ✔             |
 | CreateNamespace                   |           | ✔         |               | ✔            | ✔             |
 | CreateNexusEndpoint               |           | ✔         |               | ✔            | ✔             |
@@ -219,11 +220,14 @@ This table provides API-level details for the permissions granted to a user thro
 | CreateServiceAccountAPIKey        |           |           |               | ✔            | ✔             |
 | CreateStripeCustomerPortalSession |           |           | ✔             |              | ✔             |
 | CreateUser                        |           |           |               | ✔            | ✔             |
+| DeleteAccountAuditLogSink         |           |           |               | ✔            | ✔             |
 | DeleteAPIKey                      | ✔         | ✔         | ✔             | ✔            | ✔             |
 | DeleteNexusEndpoint               |           | ✔         |               | ✔            | ✔             |
 | DeleteServiceAccount              |           |           |               | ✔            | ✔             |
 | DeleteUser                        |           |           |               | ✔            | ✔             |
 | GetAccount                        | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetAccountAuditLogSink            |           |           |               | ✔            | ✔             |
+| GetAccountAuditLogSinks           |           |           |               | ✔            | ✔             |
 | GetAccountFeatureFlags            | ✔         | ✔         | ✔             | ✔            | ✔             |
 | GetAccountLimits                  | ✔         | ✔         | ✔             | ✔            | ✔             |
 | GetAccountSettings                | ✔         | ✔         | ✔             | ✔            | ✔             |
@@ -231,6 +235,7 @@ This table provides API-level details for the permissions granted to a user thro
 | GetAPIKey                         | ✔         | ✔         | ✔             | ✔            | ✔             |
 | GetAPIKeys                        | ✔         | ✔         | ✔             | ✔            | ✔             |
 | GetAsyncOperation                 | ✔         | ✔         | ✔             | ✔            | ✔             |
+| GetAuditLogs                      |           |           |               | ✔            | ✔             |
 | GetDecodedCertificate             | ✔         | ✔         | ✔             | ✔            | ✔             |
 | GetIdentities                     | ✔         | ✔         | ✔             | ✔            | ✔             |
 | GetIdentity                       | ✔         | ✔         | ✔             | ✔            | ✔             |
@@ -263,10 +268,12 @@ This table provides API-level details for the permissions granted to a user thro
 | SetAccountSettings                |           |           |               | ✔            | ✔             |
 | SyncCurrentUserInvite             | ✔         | ✔         | ✔             | ✔            | ✔             |
 | UpdateAccount                     |           |           |               | ✔            | ✔             |
+| UpdateAccountAuditLogSink         |           |           |               | ✔            | ✔             |
 | UpdateAPIKey                      | ✔         | ✔         | ✔             | ✔            | ✔             |
 | UpdateNexusEndpoint               |           | ✔         |               | ✔            | ✔             |
 | UpdateServiceAccount              |           |           |               | ✔            | ✔             |
 | UpdateUser                        |           |           |               | ✔            | ✔             |
+| ValidateAccountAuditLogSink       |           |           |               | ✔            | ✔             |
 
 #### Namespace-level permissions details
 
