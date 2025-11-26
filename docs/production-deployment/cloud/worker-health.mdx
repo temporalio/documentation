@@ -394,3 +394,43 @@ max_over_time(temporal_sticky_cache_size{namespace="$namespace"}[10m])
 ```
 rate(temporal_sticky_cache_total_forced_eviction_total{namespace="$namespace"}[5m]))
 ```
+
+## Manage Worker Heartbeating {#manage-worker-heartbeating}
+
+Workers send a heartbeat to Temporal Server every 60 seconds by default. This heartbeat serves to provide liveness and configuration data from the Worker to the Server.
+Specific data sent can be found in the [API](https://github.com/temporalio/api/blob/master/temporal/api/worker/v1/message.proto). By providing a consistent heartbeat from
+Workers, the Server can obtain an accurate count of Workers, understand Worker performance, and respond to Worker heartbeats with commands. Some examples of how this is useful:
+
+- understanding the difference between a Worker that is down and a Worker that is processing tasks for a long time
+- enabling Activity cancellation without the need to implement bespoke heartbeat logic
+- identifying a Worker with high CPU usage fom the Server point of view
+
+If you wish to disable Worker heartbeating or set heartbeating to be more frequent than every 60 seconds, set the configuration relevant to your SDK.
+
+#### Python SDK
+
+Disable Worker heartbeats
+
+```
+runtime = Runtime(
+    telemetry=TelemetryConfig(),
+    worker_heartbeat_interval=None,
+)
+```
+Set Worker heartbeats to every 30 seconds
+
+```
+runtime = Runtime(
+    telemetry=TelemetryConfig(),
+    worker_heartbeat_interval=timedelta(seconds=30),
+)
+```
+After setting the configuration, then connect to Temporal Server
+
+```
+client = await Client.connect(
+    "localhost:7233",
+    runtime=runtime,
+)
+```
+
