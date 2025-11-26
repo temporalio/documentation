@@ -110,10 +110,11 @@ This approach is **optional**; Temporal Cloud works without it. It simply stream
 
 ### Choose the override domain and endpoint
 
-| Temporal Cloud setup                       | Use this PHZ domain     | Example                                         |
-| ------------------------------------------ | ----------------------- | ----------------------------------------------- |
-| Single-region namespace with mTLS auth     | `<account>.tmprl.cloud` | `payments.abcde.tmprl.cloud` ↔ `vpce-...`       |
-| Multi-region namespace **or** API-key auth | `region.tmprl.cloud`    | `aws-us-east-1.region.tmprl.cloud` ↔ `vpce-...` |
+| Temporal Cloud setup                      | Use this PHZ domain                | Example                                         |
+| ----------------------------------------- | ---------------------------------- | ----------------------------------------------- |
+| Single-region namespace with mTLS auth    | `<account>.tmprl.cloud`            | `payments.abcde.tmprl.cloud` ↔ `vpce-...`       |
+| Single-region namespace with API-key auth | `<cloud_provider>.api.temporal.io` | `us-east-1.aws.api.temporal.io` ↔ `vpce-...`    |
+| Multi-region namespace                    | `region.tmprl.cloud`               | `aws-us-east-1.region.tmprl.cloud` ↔ `vpce-...` |
 
 ### Step-by-step instructions
 
