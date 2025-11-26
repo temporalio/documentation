@@ -402,12 +402,11 @@ Specific data sent can be found in the [API](https://github.com/temporalio/api/b
 Workers, the Server can obtain an accurate count of Workers, understand Worker performance, and respond to Worker heartbeats with commands. Some examples of how this is useful:
 
 - understanding the difference between a Worker that is down and a Worker that is processing tasks for a long time
-- enabling Activity cancellation without the need to implement bespoke heartbeat logic
-- identifying a Worker with high CPU usage fom the Server point of view
+- identifying a Worker with high CPU usage from the Server point of view
 
 Use the Temporal CLI to view information about all Workers connected to Temporal Server. Use `temporal worker describe` to see details of a specific Worker. Use `temporal worker list` to get a complete list of all connected Workers.
 
-If you wish to disable Worker heartbeating (features above will not work with this feature disabled) or set heartbeating to be more frequent than every 60 seconds, set the configuration relevant to your SDK.
+If you wish to disable Worker heartbeating (features above will not work with this feature disabled) or set heartbeating to be more frequent than every 60 seconds (allowed range is 1s to 60s), set the configuration relevant to your SDK.
 
 #### Python SDK
 
