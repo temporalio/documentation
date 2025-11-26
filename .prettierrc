@@ -7,5 +7,5 @@
   "semi": true,
   "arrowParens": "always",
   "bracketSpacing": true,
-  "overrides": [{ "files": "**/*.{md,mx}", "options": { "parser": "mdx" } }]
+  "overrides": [{ "files": "**/*.{md,mdx}", "options": { "parser": "mdx" } }]
 }
