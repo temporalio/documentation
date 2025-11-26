@@ -397,6 +397,12 @@ rate(temporal_sticky_cache_total_forced_eviction_total{namespace="$namespace"}[5
 
 ## Manage Worker Heartbeating {#manage-worker-heartbeating}
 
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+This feature is currently in [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+
+:::
+
 Workers send a heartbeat to Temporal Server every 60 seconds by default. This heartbeat serves to provide liveness and configuration data from the Worker to the Server.
 Specific data sent can be found in the [API](https://github.com/temporalio/api/blob/master/temporal/api/worker/v1/message.proto). By providing a consistent heartbeat from
 Workers, the Server can obtain an accurate count of Workers, understand Worker performance, and respond to Worker heartbeats with commands. Some examples of how this is useful:
