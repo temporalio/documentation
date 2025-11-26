@@ -158,7 +158,8 @@ each Workflow Execution to a specific Worker Deployment Version identified by a 
 Workflows always run on the same Worker version where they started.
 
 To learn more about versioning Workflows, see the
-[Workflow Versioning](../production-deployment/worker-deployments/worker-versioning.mdx) guide.
+[Workflow Versioning](../production-deployment/worker-deployments/worker-versioning.mdx) guide or take our
+[Worker Versioning course](https://learn.temporal.io/courses/worker_versioning/).
 
 :::tip
 
@@ -230,6 +231,9 @@ metrics:
 - Low Schedule-to-Start latency and low CPU/memory: Depending on your workload, this could be normal. If you are
   consistently seeing low memory usage and low CPU usage, you may be over-provisioning your Workers and can consider
   scaling down.
+
+Refer to [Intro to Worker Tuning](https://temporal.io/blog/an-introduction-to-worker-tuning) for more details and
+examples on how to interpret Worker metrics.
 
 ### Optimize Worker cache
 
