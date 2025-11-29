@@ -1,0 +1,40 @@
+#!/bin/bash
+
+SIDEBARS_FILE="sidebars.js"
+CLEANED_SIDEBAR="/tmp/cleaned_sidebars.txt"
+
+# 1. Preprocess sidebars.js
+# Remove // comments and /* block comments */
+sed '/^\s*\/\//d' "$SIDEBARS_FILE" | sed '/\/\*/,/\*\//d' > "$CLEANED_SIDEBAR"
+
+# 2. Extract IDs from cleaned sidebars
+# IDs can appear like "foo/bar" or id: "foo/bar"
+grep -oE '"[^"]+"' "$CLEANED_SIDEBAR" | tr -d '"' | sort | uniq > /tmp/sidebar_ids.txt
+
+# 3. Now audit all docs
+find docs \( -name "*.mdx" -o -name "*.md" \) | while read -r filepath; do
+  # Get default ID
+  default_id=$(echo "$filepath" | sed -E 's|^docs/||;s|\.mdx$||;s|\.md$||')
+
+  # Check if default_id is in the sidebar IDs
+  if grep -qxF "$default_id" /tmp/sidebar_ids.txt; then
+    continue
+  fi
+
+  # If not found, check for custom ID
+  custom_id=$(grep -m 1 '^id:' "$filepath" | sed 's/id:[[:space:]]*//' | tr -d '\r')
+  if [ -n "$custom_id" ]; then
+    custom_id=$(echo "$custom_id" | xargs)
+    if grep -qxF "$custom_id" /tmp/sidebar_ids.txt; then
+      continue
+    fi
+  fi
+
+  # Neither found — this is a potential stray file
+  # Removing something linked but deprecated will break the build
+  # Prefer to remove intentional items (commented out in sidebars.js)
+  # Investigate items that may be unintentional.
+  # Try to add slugs to all affected files that match the file names
+  # and search for those
+  echo "$filepath"
+done

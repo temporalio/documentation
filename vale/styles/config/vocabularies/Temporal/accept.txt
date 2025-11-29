@@ -1,0 +1,16 @@
+Temporal's
+APIs
+Temporal Application
+application
+extract
+sample
+samples
+attempt
+multiple
+serverless
+Namespace
+gRPC
+tctl
+SDKs
+TOML
+Dockerfile
