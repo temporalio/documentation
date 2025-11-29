@@ -499,6 +499,33 @@ Temporal features go through defined release stages:
 - **Public Preview**: Feature-complete but may have limitations, feedback welcome
 - **General Availability**: Production-ready, fully supported, SLA coverage
 
+## AI Cookbook
+
+Temporal provides an AI Cookbook with recipes and patterns for building AI applications:
+
+### Core AI Patterns
+- **Hello World with OpenAI**: Simple LLM invocation from Temporal Activities using OpenAI Python API
+- **Structured Outputs**: Using OpenAI's Structured Outputs API with Pydantic models for type-safe responses
+- **Tool Calling Agent**: Building agents that intelligently choose and invoke tools (Activities)
+- **Durable Agent with OpenAI Agents SDK**: Integration with OpenAI Agents SDK for sophisticated agent workflows
+- **Deep Research System**: Multi-agent research pipeline with planning, query generation, web search, and synthesis phases
+- **LiteLLM Integration**: Multi-provider LLM support through LiteLLM library
+
+### AI-Specific Best Practices
+- **Retry Management**: Disable SDK client retries (set max_retries=0), let Temporal handle retries
+- **HTTP Response Handling**: Parse HTTP headers (Retry-After) and status codes to inform Temporal's retry logic
+- **Generic Activities**: Create reusable Activities for LLM invocations with configurable parameters
+- **Data Converter Configuration**: Use pydantic_data_converter for serializing/deserializing Pydantic types and LLM responses
+- **Structured Output Validation**: Implement Pydantic validators for fields to catch sporadic LLM errors
+- **Activity Timeout Configuration**: Set appropriate start_to_close_timeout for varying response times of reasoning models
+
+### AI Use Cases Demonstrated
+- Multi-phase research workflows with concurrent execution
+- Agent-based tool selection and execution
+- Data cleaning and extraction with LLM-powered parsing
+- Recursive thinking and planning agents
+- Web exploration with citation management
+
 ## Additional Features
 
 ### Temporal Cron Jobs
