@@ -216,6 +216,8 @@ When creating the intro:
 - Use bullet points or short paragraphs for clarity, if needed.
 - Ensure each section of the intro logically transitions to the next.
 
+**When documenting destructive operations:** If documenting an operation that terminates/destroys existing resources and then creates new ones, lead with the destructive aspect first to set proper expectations. For example, when documenting workflow reset: "Resetting a Workflow Execution terminates the current workflow execution and starts a new Workflow Execution from a point you specify..." rather than "Resetting a Workflow Execution resumes it from an earlier point..."
+
 This helps the reader understand why they might need this reference material and sets them up to absorb the technical details that follow.
 
 ### Sections and subsections
@@ -356,6 +358,20 @@ Use sentence casing for titles and headings.Sentence casing means that only the 
 
 - Correct: "How to get started with Temporal"
 - Incorrect: "How To Get Started With Temporal"
+
+### Avoid redundant bold text after headings
+
+Don't add bold text immediately after a heading that repeats or restates what the heading already says. The heading provides sufficient structure and emphasis.
+
+- Correct: `## Reset a Workflow Execution {#reset}`
+  
+  Followed directly by the explanation text.
+
+- Incorrect: `## Reset a Workflow Execution {#reset}`
+  
+  `**How to reset a Workflow Execution**`
+  
+  The bold text is redundant with the heading.
 
 ### Subheadings
 

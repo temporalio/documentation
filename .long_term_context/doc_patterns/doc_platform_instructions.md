@@ -117,6 +117,47 @@ Common edits:
 - Changing `url`/`baseUrl` when the docs are moved under a new domain or sub‑path.
 - Swapping `favicon` and other branding assets.
 
+## Using Tabs for alternative approaches
+
+Use the `<Tabs>` and `<TabItem>` components to organize multiple alternative approaches to accomplish the same task. This is particularly useful when documenting:
+
+- Different methods (e.g., Web UI vs CLI vs API)
+- Different operating systems (e.g., macOS vs Windows vs Linux)
+- Different environments (e.g., local development vs Temporal Cloud)
+
+Example usage:
+
+```mdx
+<Tabs>
+
+<TabItem value="web-ui" label="Web UI">
+
+Instructions for using the Web UI...
+
+</TabItem>
+
+<TabItem value="cli" label="Temporal CLI">
+
+Instructions for using the CLI...
+
+```bash
+temporal workflow reset --workflow-id my-workflow
+```
+
+</TabItem>
+
+</Tabs>
+```
+
+**When to use Tabs:**
+- When presenting multiple ways to achieve the same goal
+- When the reader should choose one approach based on their preference or environment
+- When you want to reduce repetition and organize related content compactly
+
+**When NOT to use Tabs:**
+- For sequential steps where the reader needs to complete all of them
+- For unrelated content that happens to be in the same section
+
 When changing `url`/`baseUrl`, be careful:
 
 - Check for **hard‑coded absolute links** in docs that might assume the old URL.
