@@ -1931,30 +1931,118 @@ This code uses a Temporal Client to connect to the Temporal Service, calling its
   <div>
     <div style={{marginBottom: '1rem'}}>
       <strong>Terminal 1 - Start the Temporal server:</strong>
-      <CodeSnippet language="bash">
-temporal server start-dev
-      </CodeSnippet>
+      <SdkTabs languageOrder={TUTORIAL_LANGUAGE_ORDER}>
+        <SdkTabs.Python>
+          <CodeSnippet language="bash">temporal server start-dev</CodeSnippet>
+        </SdkTabs.Python>
+        <SdkTabs.Go>
+          <CodeSnippet language="bash">temporal server start-dev</CodeSnippet>
+        </SdkTabs.Go>
+        <SdkTabs.Java>
+          <CodeSnippet language="bash">temporal server start-dev</CodeSnippet>
+        </SdkTabs.Java>
+        <SdkTabs.TypeScript>
+          <CodeSnippet language="bash">temporal server start-dev</CodeSnippet>
+        </SdkTabs.TypeScript>
+        <SdkTabs.DotNet>
+          <CodeSnippet language="bash">temporal server start-dev</CodeSnippet>
+        </SdkTabs.DotNet>
+        <SdkTabs.Ruby>
+          <CodeSnippet language="bash">temporal server start-dev</CodeSnippet>
+        </SdkTabs.Ruby>
+        <SdkTabs.PHP>
+          <CodeSnippet language="bash">temporal server start-dev</CodeSnippet>
+        </SdkTabs.PHP>
+      </SdkTabs>
     </div>
     <div style={{marginBottom: '1rem'}}>
       <strong>Terminal 2 - Start the Worker:</strong>
-      <CodeSnippet language="bash">
-python run_worker.py
-      </CodeSnippet>
+      <SdkTabs languageOrder={TUTORIAL_LANGUAGE_ORDER}>
+        <SdkTabs.Python>
+          <CodeSnippet language="bash">python run_worker.py</CodeSnippet>
+        </SdkTabs.Python>
+        <SdkTabs.Go>
+          <CodeSnippet language="bash">go run worker/main.go</CodeSnippet>
+        </SdkTabs.Go>
+        <SdkTabs.Java>
+          <CodeSnippet language="bash">mvn compile exec:java -Dexec.mainClass="moneytransferapp.MoneyTransferWorker" -Dorg.slf4j.simpleLogger.defaultLogLevel=warn</CodeSnippet>
+        </SdkTabs.Java>
+        <SdkTabs.TypeScript>
+          <CodeSnippet language="bash">npm run worker</CodeSnippet>
+        </SdkTabs.TypeScript>
+        <SdkTabs.DotNet>
+          <CodeSnippet language="bash">dotnet run --project MoneyTransferWorker</CodeSnippet>
+        </SdkTabs.DotNet>
+        <SdkTabs.Ruby>
+          <CodeSnippet language="bash">bundle exec ruby worker.rb</CodeSnippet>
+        </SdkTabs.Ruby>
+        <SdkTabs.PHP>
+          <CodeSnippet language="bash">./rr serve</CodeSnippet>
+        </SdkTabs.PHP>
+      </SdkTabs>
     </div>
     <div style={{marginBottom: '1rem'}}>
       <strong>Terminal 3 - Start the Workflow:</strong>
-      <CodeSnippet language="bash">
-python run_workflow.py
-      </CodeSnippet>
+      <SdkTabs languageOrder={TUTORIAL_LANGUAGE_ORDER}>
+        <SdkTabs.Python>
+          <CodeSnippet language="bash">python run_workflow.py</CodeSnippet>
+        </SdkTabs.Python>
+        <SdkTabs.Go>
+          <CodeSnippet language="bash">go run start/main.go</CodeSnippet>
+        </SdkTabs.Go>
+        <SdkTabs.Java>
+          <CodeSnippet language="bash">mvn compile exec:java -Dexec.mainClass="moneytransferapp.TransferApp"</CodeSnippet>
+        </SdkTabs.Java>
+        <SdkTabs.TypeScript>
+          <CodeSnippet language="bash">npm run client</CodeSnippet>
+        </SdkTabs.TypeScript>
+        <SdkTabs.DotNet>
+          <CodeSnippet language="bash">dotnet run --project MoneyTransferClient</CodeSnippet>
+        </SdkTabs.DotNet>
+        <SdkTabs.Ruby>
+          <CodeSnippet language="bash">bundle exec ruby starter.rb</CodeSnippet>
+        </SdkTabs.Ruby>
+        <SdkTabs.PHP>
+          <CodeSnippet language="bash">php src/transfer.php</CodeSnippet>
+        </SdkTabs.PHP>
+      </SdkTabs>
     </div>
     <div style={{marginTop: '2rem', padding: '1rem', background: 'rgba(16, 185, 129, 0.1)', borderRadius: '0.5rem'}}>
-      <strong> Expected Success Output: 
-      
-      </strong>
-      <CodeSnippet language="text">
-Result: Transfer complete (transaction IDs: Withdrew $250 from account 85-150. ReferenceId: 12345, Deposited $250 into account 43-812. ReferenceId: 12345)
+      <strong>Expected Success Output:</strong>
+      <SdkTabs languageOrder={TUTORIAL_LANGUAGE_ORDER}>
+        <SdkTabs.Python>
+          <CodeSnippet language="text">Result: Transfer complete (transaction IDs: Withdrew $250 from account 85-150. ReferenceId: 12345, Deposited $250 into account 43-812. ReferenceId: 12345)</CodeSnippet>
+        </SdkTabs.Python>
+        <SdkTabs.Go>
+          <CodeSnippet language="text">Starting transfer from account 85-150 to account 43-812 for 250
+2022/11/14 10:52:20 WorkflowID: pay-invoice-701 RunID: 3312715c-9fea-4dc3-8040-cf8f270eb53c
+Transfer complete (transaction IDs: W1779185060, D1779185060)</CodeSnippet>
+        </SdkTabs.Go>
+        <SdkTabs.Java>
+          <CodeSnippet language="text">Worker is running and actively polling the Task Queue.
+To quit, use ^C to interrupt.
 
-      </CodeSnippet>
+Withdrawing $62 from account 249946050.
+[ReferenceId: 1480a22d-d0fc-4361]
+Depositing $62 into account 591856595.
+[ReferenceId: 1480a22d-d0fc-4361]
+[1480a22d-d0fc-4361] Transaction succeeded.</CodeSnippet>
+        </SdkTabs.Java>
+        <SdkTabs.TypeScript>
+          <CodeSnippet language="text">Transfer complete (transaction IDs: W3436600150, D9270097234)</CodeSnippet>
+        </SdkTabs.TypeScript>
+        <SdkTabs.DotNet>
+          <CodeSnippet language="text">Workflow result: Transfer complete (transaction IDs: W-caa90e06-3a48-406d-86ff-e3e958a280f8, D-1910468b-5951-4f1d-ab51-75da5bba230b)</CodeSnippet>
+        </SdkTabs.DotNet>
+        <SdkTabs.Ruby>
+          <CodeSnippet language="text">Initiated transfer of $100 from A1001 to B2002
+Workflow ID: moneytransfer-2926a650-1aaf-49d9-bf87-0e3a09ef7b32
+Workflow result: Transfer complete (transaction IDs: OKW-100-A1001, OKD-100-B2002)</CodeSnippet>
+        </SdkTabs.Ruby>
+        <SdkTabs.PHP>
+          <CodeSnippet language="text">Result: Transfer complete (transaction IDs: W12345, D12345)</CodeSnippet>
+        </SdkTabs.PHP>
+      </SdkTabs>
     </div>
   </div>
 }>
@@ -1963,7 +2051,7 @@ Now that your Worker is running and polling for tasks, you can start a Workflow 
 
 **In Terminal 3, start the Workflow:**
 
-The `run_workflow.py` script starts a Workflow Execution. Each time you run this file, the Temporal Server starts a new Workflow Execution.
+The workflow starter script starts a Workflow Execution. Each time you run it, the Temporal Server starts a new Workflow Execution.
 
 <StatusIndicators items={[
   { id: 'workflow', label: 'Workflow Status', value: 'EXECUTING', status: 'running' },
