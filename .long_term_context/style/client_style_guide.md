@@ -36,6 +36,8 @@ We explicitly include every command a reader needs to go from their first comman
 
 We avoid words like "simple,” "straightforward,” “easy,” “simply,” “obviously,” and “just,” as these words make assumptions about the reader’s knowledge. While authors use these words to encourage and motivate readers to push through challenging topics, they often have the opposite effect; a reader who hears that something is “easy” may be frustrated when they encounter an issue. Instead, we encourage our readers by providing the explanations they need to be successful. 
 
+**Avoid overly technical jargon**: When explaining SDK behavior or technical concepts, avoid using highly specialized terms that most developers won't be familiar with. Instead, describe the actual behavior in plain language. For example, instead of using technical terms like "yield points" (specific to JavaScript/TypeScript async internals), describe what actually happens: "operations that pause execution" or "using `await`." This makes the content more accessible without sacrificing technical accuracy. 
+
 ### Technically detailed and correct
 
 Developers use our learning resources to level up their skills with Temporal, and that means that the content we publish must be technically correct in both code and explanations.
