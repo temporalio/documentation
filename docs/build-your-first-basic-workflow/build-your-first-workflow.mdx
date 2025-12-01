@@ -789,6 +789,135 @@ end
 
 </SdkTabs.Ruby>
 
+<SdkTabs.PHP>
+
+<h3>Workflow Definition</h3>
+
+In the Temporal PHP SDK, a Workflow Definition is a class marked with the `#[WorkflowInterface]` attribute.
+
+This is what the Workflow Definition looks like for the money transfer process:
+
+**MoneyTransfer.php**
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Workflow;
+
+use App\Banking\Banking;
+use App\Banking\Exception\InsufficientFunds;
+use App\Banking\Exception\InvalidAccount;
+use App\Banking\PaymentDetails;
+use Temporal\Activity\ActivityOptions;
+use Temporal\Common\RetryOptions;
+use Temporal\DataConverter\Type;
+use Temporal\Exception\Failure\ActivityFailure;
+use Temporal\Internal\Workflow\ActivityProxy;
+use Temporal\Workflow;
+use Temporal\Workflow\ReturnType;
+use Temporal\Workflow\WorkflowInterface;
+use Temporal\Workflow\WorkflowMethod;
+
+#[WorkflowInterface]
+final class MoneyTransfer
+{
+    private Banking|ActivityProxy $bankingActivity;
+
+    public function __construct()
+    {
+        $this->bankingActivity = Workflow::newActivityStub(
+            Banking::class,
+            ActivityOptions::new()
+                ->withStartToCloseTimeout('5 seconds')
+                ->withRetryOptions(
+                    RetryOptions::new()
+                        ->withMaximumAttempts(3)
+                        ->withMaximumInterval('2 seconds')
+                        ->withNonRetryableExceptions([InvalidAccount::class, InsufficientFunds::class]),
+                ),
+        );
+    }
+
+    #[WorkflowMethod('money_transfer')]
+    #[ReturnType(Type::TYPE_STRING)]
+    public function handle(PaymentDetails $paymentDetails): \Generator
+    {
+        # Withdraw money
+        $withdrawOutput = yield $this->bankingActivity->withdraw($paymentDetails);
+
+        # Deposit money
+        try {
+            $depositOutput = yield $this->bankingActivity->deposit($paymentDetails);
+            return "Transfer complete (transaction IDs: {$withdrawOutput}, {$depositOutput})";
+        } catch (\Throwable $depositError) {
+            # Handle deposit error
+            Workflow::getLogger()->error("Deposit failed: {$depositError->getMessage()}");
+
+            # Attempt to refund
+            try {
+                $refundOutput = yield $this->bankingActivity->refund($paymentDetails);
+                Workflow::getLogger()->info('Refund successful. Confirmation ID: ' . $refundOutput);
+            } catch (ActivityFailure $refundError) {
+                Workflow::getLogger()->error("Refund failed: {$refundError->getMessage()}");
+                throw $refundError;
+            }
+
+            # Re-raise deposit error if refund was successful
+            throw $depositError;
+        }
+    }
+}
+```
+
+<h3>Activity Definition</h3>
+
+Activities handle the business logic. Each Activity method calls an external banking service:
+
+**BankingActivity.php**
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Banking\Internal;
+
+use App\Banking\Exception\InvalidAccount;
+use App\Banking\PaymentDetails;
+use Psr\Log\LoggerInterface;
+
+final class BankingActivity implements Banking
+{
+    public function __construct(
+        private readonly LoggerInterface $logger,
+        private readonly Service $bank,
+    ) {}
+
+    #[\Override]
+    public function withdraw(PaymentDetails $data): string
+    {
+        $referenceId = $data->referenceId . "-withdrawal";
+        try {
+            $confirmation = $this->bank->withdraw(
+                $data->sourceAccount,
+                $data->amount,
+                $referenceId,
+            );
+            return $confirmation;
+        } catch (InvalidAccount $e) {
+            throw $e;
+        } catch (\Throwable $e) {
+            $this->logger->error("Withdrawal failed", ['exception' => $e]);
+            throw $e;
+        }
+    }
+}
+```
+
+</SdkTabs.PHP>
+
 <SdkTabs.DotNet>
 
 <h3>Workflow Definition</h3>
@@ -1048,6 +1177,30 @@ class MoneyTransferWorkflow < Temporalio::Workflow::Definition
 
 </SdkTabs.Ruby>
 
+<SdkTabs.PHP>
+
+**MoneyTransfer.php**
+
+```php
+// ...
+$this->bankingActivity = Workflow::newActivityStub(
+    Banking::class,
+    ActivityOptions::new()
+        ->withStartToCloseTimeout('5 seconds')
+        ->withRetryOptions(
+            RetryOptions::new()
+                ->withMaximumAttempts(3)                    // Stop after 3 tries
+                ->withMaximumInterval('2 seconds')          // Don't wait longer than 2s
+                ->withNonRetryableExceptions([              // Never retry these errors
+                    InvalidAccount::class,
+                    InsufficientFunds::class
+                ]),
+        ),
+);
+```
+
+</SdkTabs.PHP>
+
 </SdkTabs>
 
 ### What Makes Errors Non-Retryable?
@@ -1298,6 +1451,47 @@ worker.run(shutdown_signals: ['SIGINT'])
 
 </SdkTabs.Ruby>
 
+<SdkTabs.PHP>
+
+**Worker.php**
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Worker;
+
+use App\Banking\Internal\BankingActivity;
+use App\Banking\Internal\Service;
+use Temporal\Worker\FeatureFlags;
+use Temporal\Worker\Logger\StderrLogger;
+use Temporal\WorkerFactory;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+# Configure Worker behavior
+FeatureFlags::$workflowDeferredHandlerStart = true;
+
+# Create a Worker Factory
+$logger = new StderrLogger();
+$factory = WorkerFactory::create();
+$worker = $factory->newWorker('default', logger: $logger);
+
+# Register Workflows
+$worker->registerWorkflowTypes(\App\Workflow\MoneyTransfer::class);
+
+# Register Activities
+$worker->registerActivity(BankingActivity::class, static fn(): BankingActivity => new BankingActivity(
+    $logger,
+    new Service('bank-api.example.com'),
+));
+
+$factory->run();
+```
+
+</SdkTabs.PHP>
+
 </SdkTabs>
 
 ## Step 4: Define the Task Queue
@@ -1392,6 +1586,23 @@ end
 ```
 
 </SdkTabs.Ruby>
+
+<SdkTabs.PHP>
+
+**shared.php** or in your Worker.php
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Shared;
+
+# Task Queue name used by both Worker and Workflow starter
+const MONEY_TRANSFER_TASK_QUEUE = 'MONEY_TRANSFER_TASK_QUEUE';
+```
+
+</SdkTabs.PHP>
 
 </SdkTabs>
 
@@ -1656,6 +1867,59 @@ end
 ```
 
 </SdkTabs.Ruby>
+
+<SdkTabs.PHP>
+
+**transfer.php**
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Worker;
+
+use App\Banking\PaymentDetails;
+use App\Workflow\MoneyTransfer;
+use Temporal\Client\GRPC\ServiceClient;
+use Temporal\Client\WorkflowClient;
+use Temporal\Client\WorkflowOptions;
+use Temporal\Common\IdReusePolicy;
+use Temporal\Exception\Client\WorkflowFailedException;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+# Create client connected to server at the given address
+$client = WorkflowClient::create(
+    ServiceClient::create('127.0.0.1:7233'),
+);
+
+$paymentDetails = new PaymentDetails(
+    sourceAccount: '85-150',
+    targetAccount: '43-812',
+    amount: 250,
+    referenceId: '12345',
+);
+
+$workflow = $client->newWorkflowStub(
+    MoneyTransfer::class,
+    WorkflowOptions::new()
+        ->withWorkflowIdReusePolicy(IdReusePolicy::AllowDuplicate)
+        ->withWorkflowRunTimeout(20)
+        ->withWorkflowExecutionTimeout(30),
+);
+
+try {
+    $result = $workflow->handle($paymentDetails);
+    echo "\e[32mResult: $result\e[0m\n";
+} catch (WorkflowFailedException $e) {
+    echo "\e[31mWorkflow failed: {$e->getMessage()}\e[0m\n";
+} catch (\Throwable $e) {
+    echo "\e[31mError: {$e->getMessage()}\e[0m\n";
+}
+```
+
+</SdkTabs.PHP>
 
 </SdkTabs>
 
