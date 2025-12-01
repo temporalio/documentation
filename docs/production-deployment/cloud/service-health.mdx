@@ -63,7 +63,9 @@ avg_over_time((
 
 ## Detecting Activity and Workflow Failures
 
-The metrics `temporal_cloud_v1_activity_fail_count` and `temporal_cloud_v1_workflow_failed_count` together provide failure detection for Temporal applications. These metrics work in tandem to give you both granular component-level visibility and high-level workflow health insights.
+The metrics `temporal_activity_execution_failed` and `temporal_cloud_v1_workflow_failed_count` together provide failure detection for Temporal applications. These metrics work in tandem to give you both granular component-level visibility and high-level workflow health insights.
+
+Note that `temporal_activity_execution_failed` is an SDK metric that must be collected from the Worker.
 
 ### Activity failure cascade
 
@@ -84,7 +86,7 @@ Generally Temporal recommends that Workflows should be designed to always succee
 Monitor the ratio of workflow failures to activity failures:
 
 ```
-workflow_failure_rate = temporal_cloud_v1_workflow_failed_count / temporal_cloud_v1_activity_fail_count
+workflow_failure_rate = temporal_cloud_v1_workflow_failed_count / temporal_activity_execution_failed
 ```
 
 What to watch for:
@@ -95,7 +97,7 @@ What to watch for:
 #### Activity success rate
 
 ```
-activity_success_rate = temporal_cloud_v1_activity_success_count / (temporal_cloud_v1_activity_success_count + temporal_cloud_v1_activity_fail_count)
+activity_success_rate = (total_activities - temporal_activity_execution_failed) / total_activities
 ```
 
 Target: >95% for most applications. Lower success rate can be a sign of system troubles.
