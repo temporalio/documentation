@@ -67,13 +67,13 @@ Here are some best practices you can use when you are making Activity plugins:
 
 - Activity arguments and return values must be serializable.
 - Activities that perform writes should be idempotent.
-- Activities have [timeouts](https://docs.temporal.io/develop/python/failure-detection#heartbeat-timeout) and [retry policies](https://docs.temporal.io/encyclopedia/retry-policies). To be Activity-friendly, your operation should either complete within a few minutes or it should support the ability to heartbeat or poll for a result. This way it will be clear to the Workflow when the Activity is still making progress.
-- You need to specify at least one timeout, typically the [start_to_close_timeout](https://docs.temporal.io/encyclopedia/detecting-activity-failures#start-to-close-timeout). Keep in mind that the shorter the timeout, the faster Temporal will retry upon failure. See the [timeouts and retry policies](#timeouts-and-retry-policies) to learn more.
+- Activities have [timeouts](/develop/python/failure-detection#heartbeat-timeout) and [retry policies](/encyclopedia/retry-policies). To be Activity-friendly, your operation should either complete within a few minutes or it should support the ability to heartbeat or poll for a result. This way it will be clear to the Workflow when the Activity is still making progress.
+- You need to specify at least one timeout, typically the [start_to_close_timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout). Keep in mind that the shorter the timeout, the faster Temporal will retry upon failure. See the [timeouts and retry policies](#timeouts-and-retry-policies) to learn more.
 
 #### Timeouts and retry policies
 
 Temporal's Activity retry mechanism gives applications the benefits of durable execution.
-For example, Temporal will keep track of the exponential backoff delay even if the Worker crashes. Since Temporal can’t tell when a Worker crashes, Workflows rely on the [start_to_close_timeout](https://docs.temporal.io/encyclopedia/detecting-activity-failures#start-to-close-timeout) to know how long to wait before assuming that an Activity is inactive. 
+For example, Temporal will keep track of the exponential backoff delay even if the Worker crashes. Since Temporal can’t tell when a Worker crashes, Workflows rely on the [start_to_close_timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) to know how long to wait before assuming that an Activity is inactive. 
 
 Be cautious when doing retries within your Activity because it lengthens the needed Activity timeout.  Such internal retries also prevent users from counting failure metrics and make it harder for users to debug in Temporal UI when something is wrong.
 
@@ -84,10 +84,10 @@ Follow the example for your SDK below:
 ```python
 @activity.defn
 async def some_activity() -> None:
-		return None
+  return None
 
 plugin = SimplePlugin(
-	activities = [some_activity]
+  activities = [some_activity]
 )
 ```
 </SdkTabs.Python>
@@ -97,9 +97,9 @@ plugin = SimplePlugin(
 
 You can provide a library with functionality for use within a Workflow if you'd like to abstract away some Temporal-specific details for your users. Your library will call elements you include in your Plugin: Activities, Child Workflows, Signals, Updates, Queries, Nexus Operations, Interceptors, Data Converters, and any other code as long as it follows these requirements:
 
-- It should be [deterministic](https://docs.temporal.io/workflows#deterministic-constraints), running the same way every time it’s executed. Non-deterministic code should go in Activities or Nexus Operations.
-- See [observability](https://docs.temporal.io/evaluate/development-production-features/observability) to avoid duplicating observation side effects when Workflows replay.
-- Put other side effects inside of Activities or [Local Activities](https://docs.temporal.io/local-activity). This helps your Workflow handle being restarted, resumed, or executed in a different process from where it originally began without losing correctness or state consistency.
+- It should be [deterministic](/workflow-definition#deterministic-constraints), running the same way every time it’s executed. Non-deterministic code should go in Activities or Nexus Operations.
+- See [observability](/evaluate/development-production-features/observability) to avoid duplicating observation side effects when Workflows replay.
+- Put other side effects inside of Activities or [Local Activities](/local-activity). This helps your Workflow handle being restarted, resumed, or executed in a different process from where it originally began without losing correctness or state consistency.
 - See [testing your Plugin](#testing-your-plugin) to write tests that check for issues with side effects.
 - It should run quickly since it may be replayed many times during a long Workflow execution. More expensive code should go in Activities or Nexus Operations.
 
@@ -130,14 +130,14 @@ SimplePlugin(..., workflow_runner=workflow_runner)
 Users use Workflows for:
 
 - Orchestration and decision-making
-- Interactivity via [message-passing](https://docs.temporal.io/evaluate/development-production-features/workflow-message-passing)
+- Interactivity via [message-passing](/evaluate/development-production-features/workflow-message-passing)
 - Tracing and observability.
 
 #### Making changes to your library
 
-Your users may want to keep their Workflows running across deployments of their Worker code. If their deployment includes a new version of your Plugin, changes to your Plugin could break Workflow code that started before the new version was deployed. This can be due to [non-deterministic behavior from code changes](https://docs.temporal.io/workflow-definition#non-deterministic-change) in your Plugin.
+Your users may want to keep their Workflows running across deployments of their Worker code. If their deployment includes a new version of your Plugin, changes to your Plugin could break Workflow code that started before the new version was deployed. This can be due to [non-deterministic behavior from code changes](/workflow-definition#non-deterministic-change) in your Plugin.
 
-See [testing](#testing-your-plugin) to see how to test for this.  And, if you make substantive changes, you need to use [patching](https://docs.temporal.io/patching).
+See [testing](#testing-your-plugin) to see how to test for this. And, if you make substantive changes, you need to use [patching](/patching).
 
 #### Example of a Workflow library that uses a Plugin in Python
 
@@ -154,7 +154,7 @@ You can provide a built-in Workflow in a `SimplePlugin`. It’s callable as a Ch
 Consider adding a Child Workflow when one or more of these conditions applies:
 
 - That child should outlive the parent.
-- The Workflow Event History would otherwise [not scale](https://docs.temporal.io/workflow-execution/event#event-history-limits) in parent Workflows.
+- The Workflow Event History would otherwise [not scale](/workflow-execution/event#event-history-limits) in parent Workflows.
 - When you want a separate Workflow ID for the child so that it can be operated independently of the parent's state (canceled, terminated, paused).
 
 Any Workflow can be run as a standalone Workflow or as a Child Workflow, so registering a Child Workflow in a `SimplePlugin` is the same as registering any Workflow.
@@ -197,7 +197,7 @@ async with Worker(
 
 ### Built-in Nexus Operations
 
-Nexus calls are used from Workflows similar to Activities and you can check out some common [Nexus Use Cases](https://docs.temporal.io/nexus/use-cases). Like Activities, Nexus Call arguments and return values must be serializable.
+Nexus calls are used from Workflows similar to Activities and you can check out some common [Nexus Use Cases](/nexus/use-cases). Like Activities, Nexus Call arguments and return values must be serializable.
 
 To register Nexus handlers in Workflows, follow the example for your SDK below:
 
@@ -227,9 +227,9 @@ plugin = SimplePlugin(
 
 ### Custom Data Converters
 
-A [Custom Data Converter](https://docs.temporal.io/default-custom-data-converters#custom-data-converter) can alter data formats or provide compression or encryption.
+A [custom Data Converter](/default-custom-data-converters#custom-data-converter) can alter data formats or provide compression or encryption.
 
-Note that you can use an existing Data Converter such as, in python, `PydanticPayloadConverter` in your Plugin.
+Note that you can use an existing Data Converter such as, in Python, `PydanticPayloadConverter` in your Plugin.
 
 To add a Custom Data Converter to a Plugin, follow the example for your SDK below:
 
@@ -253,7 +253,7 @@ plugin = SimplePlugin(
 
 ### Interceptors
 
-Interceptors are middleware that can run before and after various calls such as Activities, Workflows, and Signals. You can [learn more about interceptors](https://docs.temporal.io/develop/python/interceptors) for the details of implementing them. They're used to:
+Interceptors are middleware that can run before and after various calls such as Activities, Workflows, and Signals. You can [learn more about interceptors](/develop/python/interceptors) for the details of implementing them. They're used to:
 
 - Create side effects such as logging and tracing.
 - Modify arguments, such as adding headers for authorization or tracing propagation.
@@ -283,7 +283,7 @@ Two special concerns are versioning tests, for when you're making changes to you
 
 ### Versioning tests 
 
-When you make changes to your plugin after it has already shipped to users, it's recommended that you set up [replay testing](https://docs.temporal.io/develop/python/testing-suite#replay) on each important change to make sure that you’re not causing non-determinism errors for your users.
+When you make changes to your plugin after it has already shipped to users, it's recommended that you set up [replay testing](/develop/python/testing-suite#replay) on each important change to make sure that you’re not causing non-determinism errors for your users.
 
 ### Side effects tests
 
