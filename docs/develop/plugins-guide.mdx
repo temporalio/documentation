@@ -105,28 +105,6 @@ You can provide a library with functionality for use within a Workflow if you'd 
 
 A Plugin should allow a user to decompose their Workflows into Activities, as well as Child Workflows and Nexus Calls when needed. This gives users granular control through retries and timeouts, debuggability through the Temporal UI, operability with resets, pauses, and cancels, memoization for efficiency and resumability, and scalability using task queues and Workers.
 
-To explicitly define the Workflow runner for your Plugin, follow the example for your SDK below:
-
-<SdkTabs>
-<SdkTabs.Python>
-```python
-def workflow_runner(runner: Optional[WorkflowRunner]) -> WorkflowRunner:
-  if not runner:
-    raise ValueError("No WorkflowRunner provided to the OpenAI plugin.")
-
-  # If in sandbox, add additional passthrough
-  if isinstance(runner, SandboxedWorkflowRunner):
-    return dataclasses.replace(
-      runner,
-      restrictions=runner.restrictions.with_passthrough_modules("mcp"),
-    )
-  return runner
-
-SimplePlugin(..., workflow_runner=workflow_runner)
-```
-</SdkTabs.Python>
-</SdkTabs>
-
 Users use Workflows for:
 
 - Orchestration and decision-making
@@ -271,6 +249,34 @@ class SomeWorkerInterceptor(
 plugin = SimplePlugin(
   worker_interceptors = [SomeWorkerInterceptor()]
 )
+```
+</SdkTabs.Python>
+</SdkTabs>
+
+### Special considerations for different languages
+
+Each of the SDKs has nuances you should be aware of so you can account for it in your code.
+
+For example, you can choose to [run your Workflows in a sandbox in Python](/develop/python/python-sdk-sandbox). This lets you run Workflow code in a sandbox environment to help prevent non-determinism errors in your application. If you're working with a Plugin, you may want to specify the Workflow runner that it uses.
+
+To explicitly define the Workflow runner for your Plugin, follow the example for your SDK below:
+
+<SdkTabs>
+<SdkTabs.Python>
+```python
+def workflow_runner(runner: Optional[WorkflowRunner]) -> WorkflowRunner:
+  if not runner:
+    raise ValueError("No WorkflowRunner provided to the OpenAI plugin.")
+
+  # If in sandbox, add additional passthrough
+  if isinstance(runner, SandboxedWorkflowRunner):
+    return dataclasses.replace(
+      runner,
+      restrictions=runner.restrictions.with_passthrough_modules("mcp"),
+    )
+  return runner
+
+SimplePlugin(..., workflow_runner=workflow_runner)
 ```
 </SdkTabs.Python>
 </SdkTabs>
