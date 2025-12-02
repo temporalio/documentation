@@ -174,7 +174,7 @@ Workflow Executions can also be Terminated directly from the WebUI. In this case
 
 Resetting a Workflow Execution terminates the current workflow execution and starts a new Workflow Execution from a point you specify in its Event History. Use reset when a Workflow is blocked due to a non-deterministic error or other issues that prevent it from completing.
 
-When you reset a Workflow, the Event History up to the reset point is copied to the new execution, and the Workflow resumes from that point with the current code. Reset only works if you've fixed the underlying issue (such as removing non-deterministic code). Any progress made after the reset point will be discarded. Provide a reason when resetting, as it will be recorded in the Event History.
+When you reset a Workflow, the Event History up to the reset point is copied to the new execution, and the Workflow resumes from that point with the current code. Reset only works if you've fixed the underlying issue, such as removing non-deterministic code. Any progress made after the reset point will be discarded. Provide a reason when resetting, as it will be recorded in the Event History.
 
 <Tabs>
 
@@ -182,7 +182,7 @@ When you reset a Workflow, the Event History up to the reset point is copied to 
 
 1. Navigate to the Workflow Execution details page
 2. Click the **Reset** button in the top right dropdown menu
-3. Select the Event ID to reset to (typically a `WorkflowTaskCompleted` event before the failure)
+3. Select the Event ID to reset to
 4. Provide a reason for the reset
 5. Confirm the reset
 
