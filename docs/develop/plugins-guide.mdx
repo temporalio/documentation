@@ -257,7 +257,7 @@ plugin = SimplePlugin(
 
 Each of the SDKs has nuances you should be aware of so you can account for it in your code.
 
-For example, you can choose to [run your Workflows in a sandbox in Python](/develop/python/python-sdk-sandbox). This lets you run Workflow code in a sandbox environment to help prevent non-determinism errors in your application. If you're working with a Plugin, you may want to specify the Workflow runner that it uses.
+For example, you can choose to [run your Workflows in a sandbox in Python](/develop/python/python-sdk-sandbox). This lets you run Workflow code in a sandbox environment to help prevent non-determinism errors in your application. To work for users who use sandboxing, your Plugin should specify the Workflow runner that it uses.
 
 To explicitly define the Workflow runner for your Plugin, follow the example for your SDK below:
 
