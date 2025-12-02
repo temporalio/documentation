@@ -33,11 +33,9 @@ commands. For details, see [CLI release notes](https://github.com/temporalio/cli
 
 ## Install the Temporal CLI {#install}
 
-**How to download and install the Temporal CLI**
-
 The Temporal CLI is available on macOS, Windows, and Linux, or as a Docker image.
 
-### How to install the Temporal CLI on macOS
+### macOS
 
 Choose one of the following install methods to install the Temporal CLI on macOS:
 
@@ -58,7 +56,7 @@ brew install temporal
 
   3. Add the Temporal CLI binary to your PATH.
 
-### How to install the Temporal CLI on Linux
+### Linux
 
 Choose one of the following install methods to install the Temporal CLI on Linux:
 
@@ -73,7 +71,7 @@ Choose one of the following install methods to install the Temporal CLI on Linux
 
   3. Add the `temporal` binary to your PATH.
 
-### How to install the Temporal CLI on Windows
+### Windows
 
 Choose one of the following methods to install the Temporal CLI on Windows:
 
@@ -88,10 +86,10 @@ Choose one of the following methods to install the Temporal CLI on Windows:
 
   3. Add the `temporal.exe` binary to your PATH.
 
-### How to run the Temporal CLI inside Docker
+### Docker
 
-Temporal CLI container image is available on [DockerHub](https://hub.docker.com/r/temporalio/temporal) and can be run
-directly:
+The Temporal CLI container image is available on [DockerHub](https://hub.docker.com/r/temporalio/temporal) and can be
+run directly:
 
 ```shell
 docker run --rm temporalio/temporal --help
@@ -99,8 +97,8 @@ docker run --rm temporalio/temporal --help
 
 :::note
 
-When running the CLI inside Docker, for the development server to be accessible from the host system, the server needs
-to be configured to listen on external IP and the ports need to be forwarded:
+When running the Temporal CLI inside Docker, for the development server to be accessible from the host system, the
+server needs to be configured to listen on external IP and the ports need to be forwarded:
 
 ```shell
 docker run --rm -p 7233:7233 -p 8233:8233 temporalio/temporal server start-dev --ip 0.0.0.0
@@ -108,6 +106,41 @@ docker run --rm -p 7233:7233 -p 8233:8233 temporalio/temporal server start-dev -
 ```
 
 :::
+
+## Start a Temporal development server {#start-dev-server}
+
+To start a Temporal development server, run the following command:
+
+```bash
+temporal server start-dev
+```
+
+This command automatically starts the Web UI, creates the `default` [Namespace](/namespaces), and uses an in-memory
+database.
+
+The Temporal Server will be available on `localhost:7233` and the Temporal Web UI will be available at
+[`http://localhost:8233`](http://localhost:8233/).
+
+The in-memory SQLite database does not persist if you stop the development server. Use the `--db-filename` option to
+specify a database file, persisting application state. This is helpful if you plan on stopping and re-starting the
+development server.
+
+```shell
+temporal server start-dev --db-filename temporal.db
+```
+
+:::note
+
+Local databases created with `--db-filename` may not be compatible with newer versions of the Temporal CLI. The
+`temporal server start-dev` command is only intended for development environments.
+
+:::
+
+For the full list of development server options, use the `--help` flag:
+
+```shell
+temporal server start-dev --help
+```
 
 ## Command set
 
@@ -188,6 +221,12 @@ The following table describes the environment variables you can set for the Temp
 Do not confuse environment variables, set with your shell, with temporal env options.
 
 :::
+
+## Create and modify configuration files {#configuration-files}
+
+The Temporal CLI lets you create and modify TOML configuration files to store your environment variables and other
+settings. Refer to [Environment Configuration](../develop/environment-configuration#cli-integration) for more
+information.
 
 ## Proxy support
 
@@ -284,42 +323,6 @@ shell for `temporal` auto-completion to work.
    ```fish
    source ~/.config/fish/completions/temporal.fish
    ```
-
-## Temporal dev server {#start-dev-server}
-
-**How to start the Temporal development server**
-
-To start the Temporal development server run the following command:
-
-```bash
-temporal server start-dev
-```
-
-This command automatically starts the Web UI, creates the `default` [Namespace](/namespaces), and uses an in-memory
-database.
-
-The Temporal Server should be available on `localhost:7233` and the Temporal Web UI should be available at
-[`http://localhost:8233`](http://localhost:8233/).
-
-The in-memory SQLite database does not persist if you stop the dev server. Use the `--db-filename` option to specify a
-database file, persisting application state. This is helpful if you plan on stopping and re-starting the dev server.
-
-```shell
-temporal server start-dev --db-filename temporal.db
-```
-
-:::note
-
-Local databases created with `--db-filename` may not be compatible with newer versions of the Temporal CLI. The
-`temporal server` command is only intended for development environments.
-
-:::
-
-For the full list of dev server options use the `--help` flag:
-
-```shell
-temporal server start-dev --help
-```
 
 ## Common CLI operations {#common-operations}
 
