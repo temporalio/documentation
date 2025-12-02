@@ -121,17 +121,24 @@ Temporal Cloud can't change replica locations directly.
 To update the location, you need to remove the current replica and add a new one.
 Follow these steps to change the replica location:
 
-1. [Remove your replica](#discontinuing).
+1. [Remove your replica](#disable).
    This disables High Availability for your Namespace.
 2. Wait through the required 7-day waiting period.
 3. [Add a new replica](#upgrade) to your Namespace.
 
 You will receive an email alert once your Namespace is ready for use.
 
-## Discontinue High Availability features {#discontinuing}
+## Disable High Availability (remove a replica) {#disable}
 
-Removing a Namespace replica disables High Availability and automatic failover features.
-Follow these steps to disable these features and end High Availability charges:
+To disable High Availability features on a Namespace, remove the replica from that Namespace. Removing a replica disables all High Availability features: 
+
+- Discontinues replication of the Workflows in the Namespace.
+- Disables the Namespace's ability to trigger a failover to a different region or cloud.
+- For Workers and Clients that use API keys, requires connecting to the Namespace using the published [regional endpoint](/cloud/regions) for the Namespace's region.
+    - Disables connecting to the Namespace with API keys and the Namespace's endpoint or the replica region's regional endpoint.
+- Ends High Availability charges.
+
+Follow these steps to remove a replica from a Namespace:
 
 <Tabs>
 
@@ -158,12 +165,16 @@ If using API key authentication with the `--api-key` flag, you must add it direc
 
 </Tabs>
 
-After following these instructions, Temporal Cloud deletes the replica.
-Your Namespace will no longer use High Availability features and you will no longer be charged for this feature.
+:::caution
 
-:::note
-
-After removing a replica, Temporal Cloud can't re-enable replication for a given Namespace for seven days.
+After removing a Namespace's replica, you cannot re-enable replication on that same Temporal Cloud Namespace for seven days.
 
 :::
 
+:::note
+
+Namespaces with API keys enabled need assistance from Temporal Support to remove a replica. Please [contact support](/cloud/support#support-ticket) with the Namespace ID of the Namespace on which to remove a replica. You must confirm that Workers and Clients with API keys have been configured to connect to the Namespace using the published [regional endpoint](/cloud/regions). 
+
+This safeguard ensures that Workers and Clients continue running uninterrupted once Temporal Support removes the replica. After the replica is removed, if Workers and Clients with API keys attempt to use the Namespace endpoint or the former replica's regional endpoint, their requests will fail.
+
+:::
