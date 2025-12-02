@@ -333,3 +333,61 @@ Activities are handled locally, and all the information needed to handle the can
 Worker process.
 
 :::
+
+## Reset a Workflow Execution {#reset}
+
+Resetting a Workflow Execution terminates the current workflow execution and starts a new Workflow Execution from a point you specify in its Event History. Use reset when a Workflow is blocked due to a non-deterministic error or other issues that prevent it from completing.
+
+When you reset a Workflow, the Event History up to the reset point is copied to the new execution, and the Workflow resumes from that point with the current code. Reset only works if you've fixed the underlying issue (such as removing non-deterministic code). Any progress made after the reset point will be discarded. Provide a reason when resetting, as it will be recorded in the Event History.
+
+<Tabs>
+
+<TabItem value="web-ui" label="Web UI">
+
+1. Navigate to the Workflow Execution details page
+2. Click the **Reset** button in the top right dropdown menu
+3. Select the Event ID to reset to (typically a `WorkflowTaskCompleted` event before the failure)
+4. Provide a reason for the reset
+5. Confirm the reset
+
+The Web UI shows available reset points and creates a link to the new Workflow Execution after the reset completes.
+
+</TabItem>
+
+<TabItem value="cli" label="Temporal CLI">
+
+Use the `temporal workflow reset` command to reset a Workflow Execution:
+
+```bash
+temporal workflow reset \
+    --workflow-id <workflow-id> \
+    --event-id <event-id> \
+    --reason "Reason for reset"
+```
+
+For example:
+
+```bash
+temporal workflow reset \
+    --workflow-id my-background-check \
+    --event-id 4 \
+    --reason "Fixed non-deterministic code"
+```
+
+Use `--run-id` to reset a specific run (otherwise resets the latest run). The `--reapply-type` option controls which Events to reapply after the reset point (Signals, Updates). For Temporal Cloud, specify the namespace with `--namespace`:
+
+```bash
+temporal workflow reset \
+    --workflow-id my-background-check \
+    --event-id 4 \
+    --reason "Fixed non-deterministic code" \
+    --namespace my-namespace \
+    --tls-cert-path /path/to/cert.pem \
+    --tls-key-path /path/to/key.pem
+```
+
+Monitor the new Workflow Execution after resetting to ensure it completes successfully.
+
+</TabItem>
+
+</Tabs>
