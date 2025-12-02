@@ -327,7 +327,6 @@ Use them exactly as shown when creating cross-links.
 - docs/production-deployment/cloud/get-started/billing-and-cost.mdx: (/production-deployment/cloud/get-started/billing-and-cost)
 - docs/production-deployment/cloud/get-started/certificates.mdx: (/production-deployment/cloud/get-started/certificates)
 - docs/production-deployment/cloud/get-started/index.mdx: (/production-deployment/cloud/get-started)
-- docs/production-deployment/cloud/get-started/namespace-creation.mdx: (/production-deployment/cloud/get-started/namespace-creation)
 - docs/production-deployment/cloud/get-started/namespaces.mdx: (/production-deployment/cloud/get-started/namespaces)
 - docs/production-deployment/cloud/get-started/service-accounts.mdx: (/production-deployment/cloud/get-started/service-accounts)
 - docs/production-deployment/cloud/get-started/user-groups.mdx: (/production-deployment/cloud/get-started/user-groups)
