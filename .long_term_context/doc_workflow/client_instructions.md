@@ -4,6 +4,8 @@
 
 When making updates to documentation about an SDK, you should generally see if similar documentation exists for another SDK, so you can generally follow the patterns in that documentation. Note: this does not mean that if you don't see documenation for that feature for another SDK, you should avoid creating it for this one. 
 
+**Platform-wide features:** When documenting features that are server-side or platform-wide (such as workflow reset, Web UI functionality, CLI commands, or other operations that work identically across SDKs), consider whether the documentation should be added to all SDK pages rather than just one. These features often don't require SDK-specific code examples and should be consistently documented across all SDKs for discoverability. 
+
 # Key Terms and Proper Nouns
 
 Only introduce new proper nouns when really necessary. If you do ever have to introduce a proper noun, you should also include an entry in the glossary at docs/glossary.md to explain that proper noun. 
