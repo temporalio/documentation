@@ -58,3 +58,19 @@ When documenting CLI commands, options, or flags, always verify they actually ex
 **Common mistake:** Inferring that a flag like `--reapply-type` exists because the opposite pattern `--reapply-exclude` exists. These are not equivalent and the inverse may not exist.
 
 **When in doubt:** Document only what you can verify. It's better to have incomplete documentation that's accurate than complete documentation that includes non-existent options.
+
+# Avoid incorrectly claiming features are platform-specific
+
+Don't claim that CLI flags, commands, or features are specific to Temporal Cloud or Temporal Server when they work across both platforms. Many CLI flags and features work identically regardless of whether you're connecting to a local Temporal Server or Temporal Cloud.
+
+**Common mistake:** Stating "For Temporal Cloud, specify the namespace with `--namespace`" when the `--namespace` flag works for both Temporal Server and Temporal Cloud (and defaults to `default` if not specified).
+
+**Do:**
+- ✅ "Use `--namespace` to specify a different Namespace (defaults to `default`):"
+- ✅ "The `--namespace` flag lets you target a specific Namespace."
+
+**Don't:**
+- ❌ "For Temporal Cloud, specify the namespace with `--namespace`"
+- ❌ "Temporal Cloud users should use `--namespace`"
+
+**When to distinguish:** Only explicitly call out Cloud vs. Server differences when features are genuinely exclusive to one platform (e.g., Cloud-specific authentication requirements with certificates, or Server-specific local database options).
