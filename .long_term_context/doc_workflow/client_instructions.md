@@ -44,3 +44,17 @@ When making documentation updates, be very focused and minimal in your changes.
 - Make the specific change requested (e.g., update the value in a code example)
 - Fix any directly related references to that value in the immediate context
 - Ensure technical accuracy of the specific change
+
+# Verify CLI commands and flags before documenting
+
+When documenting CLI commands, options, or flags, always verify they actually exist before including them in documentation. Do not infer or assume that flags exist based on typical CLI patterns.
+
+**How to verify:**
+- Check the CLI reference documentation in the docs repo (e.g., `docs/cli/*.mdx` files)
+- Run `temporal [command] --help` if you have access to the CLI
+- Search the temporal/cli repository for the flag name
+- If you can't verify a flag exists, leave it out rather than documenting something incorrect
+
+**Common mistake:** Inferring that a flag like `--reapply-type` exists because the opposite pattern `--reapply-exclude` exists. These are not equivalent and the inverse may not exist.
+
+**When in doubt:** Document only what you can verify. It's better to have incomplete documentation that's accurate than complete documentation that includes non-existent options.

@@ -109,20 +109,25 @@ Note: It's acceptable to use "should" when describing general best practices, sy
 
 ### Avoid unnecessary parentheses
 
-When adding clarifying or supplementary information, prefer using commas instead of parentheses. This keeps the text flow more natural and readable.
+Avoid using parentheses in almost all cases. When adding clarifying or supplementary information, prefer using commas or restructure into separate sentences. This keeps the text flow more natural and readable.
 
+**Use commas for examples and clarifications:**
 - Correct: "Reset only works if you've fixed the underlying issue, such as removing non-deterministic code."
 - Incorrect: "Reset only works if you've fixed the underlying issue (such as removing non-deterministic code)."
 
-Remove parenthetical clarifications entirely if they're not essential to understanding the instruction.
-
+**Remove optional clarifications entirely if not essential:**
 - Correct: "Select the Event ID to reset to"
 - Incorrect: "Select the Event ID to reset to (typically a `WorkflowTaskCompleted` event before the failure)"
 
-Parentheses are still appropriate for:
+**Restructure into separate sentences for "otherwise" statements:**
+- Correct: "By default, the command resets the latest workflow execution. Use `--run-id` to reset a specific run."
+- Incorrect: "Use `--run-id` to reset a specific run (otherwise resets the latest run)."
+
+**Very limited exceptions where parentheses are acceptable:**
 - Abbreviations on first use: "Transport Layer Security (TLS)"
 - Technical specifications: "at least 2048-bit RSA"
-- Aside notes that are truly supplementary and would break sentence flow otherwise
+
+If you find yourself wanting to use parentheses, step back and restructure the sentence using commas or split it into multiple sentences instead.
 
 ### Focus on specific outcomes rather than "Learn to/Learn how to" language.
 
@@ -431,9 +436,23 @@ Use in-line code formatting for:
 - Use a bulleted list for things that have something in common but don’t need to appear in a particular order.
 - Use a numbered list for sequential items (like a procedure) or prioritized items (like a top 10 list).
 - Begin each item in a list with a capital letter unless there's a reason not to (for example, it’s a command that's always lowercase). If necessary, rewrite the list item so that all items begin with capital letters or all items begin with lowercase words.
-- If the list is introduced by a sentence fragment that ends with a colon, end all the items in the list with a period if any item forms a complete sentence when combined with the introduction.
+
+**For bulleted lists:**
 - Don’t use semicolons, commas, or conjunctions (like *and* or *or*) at the end of list items.
 - Don’t use a period at the end of list items unless they’re complete sentences, even if the complete sentence is very short.
+- If the list is introduced by a sentence fragment that ends with a colon, end all the items in the list with a period if any item forms a complete sentence when combined with the introduction.
+
+**For numbered procedural lists (step-by-step instructions):**
+- Add a comma at the end of each list item except the last one.
+- Add a period at the end of the last list item.
+- Example:
+  ```
+  1. Navigate to the Workflow Execution details page,
+  2. Click the **Reset** button in the top right dropdown menu,
+  3. Select the Event ID to reset to,
+  4. Provide a reason for the reset,
+  5. Confirm the reset.
+  ```
 
 ## Code blocks
 
