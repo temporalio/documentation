@@ -35,8 +35,8 @@ connecting to a Namespace or starting a Workflow Execution. If the client is on 
 Executions that are processed by that Worker either run indefinitely without making progress until the Worker resumes or
 fail because of timeouts.
 
-Temporal Cloud sends courtesy emails 15 days, 10 days, and 5 days prior to certificate expiry. Emails are sent to Global
-and Namespace Admins.
+Temporal Cloud sends [courtesy emails](/cloud/notifications#admin-notifications) prior to certificate expiry.
+
 
 To update certificates, see
 [How to add, update, and remove certificates in a Temporal Cloud Namespace](#manage-certificates).
@@ -272,15 +272,7 @@ trusted authority for access to your Namespaces.
 To keep your Namespace secure and online, you must update the CA certificate for the Namespace _before_ the certificate
 expires.
 
-To help you remember to do so, Temporal Cloud sends email notifications to users who have the Account Owner or Global
-Admin [roles](/cloud/users#account-level-roles) or the Namespace Admin
-[permission](/cloud/users#namespace-level-permissions) 15 days, 10 days and 5 days before expiration.
-
-To ensure that you receive email notifications, configure your junk-email filters to permit email from
-`noreply@temporal.io`.
-
-To change who receives certificate-expiration notifications for a Namespace (or to provide feedback about such
-notifications), [create a support ticket](/cloud/support#support-ticket).
+To help you remember to do so, Temporal Cloud sends [email notifications](/cloud/notifications#admin-notifications). 
 
 ## How to handle a compromised end-entity certificate
 

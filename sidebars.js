@@ -431,6 +431,7 @@ module.exports = {
               ],
             },
             'production-deployment/cloud/rpo-rto',
+            'production-deployment/cloud/notifications',
             {
               type: 'category',
               label: 'Temporal Nexus',
