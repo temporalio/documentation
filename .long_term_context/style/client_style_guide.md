@@ -98,6 +98,32 @@ In most cases when providing direct instruction, the imperative works better.
 - Correct: Next, add the following code:
 - Incorrect: Next, we add the following code:
 
+### Avoid "should" in user instructions
+
+When giving instructions to users, use the imperative mood directly rather than saying users "should" do something. This makes instructions clearer and more direct.
+
+- Correct: "Provide a reason when resetting, as it will be recorded in the Event History."
+- Incorrect: "You should provide a reason when resetting."
+
+Note: It's acceptable to use "should" when describing general best practices, system behavior, or outcomes (e.g., "the reader should have a usable environment").
+
+### Avoid unnecessary parentheses
+
+When adding clarifying or supplementary information, prefer using commas instead of parentheses. This keeps the text flow more natural and readable.
+
+- Correct: "Reset only works if you've fixed the underlying issue, such as removing non-deterministic code."
+- Incorrect: "Reset only works if you've fixed the underlying issue (such as removing non-deterministic code)."
+
+Remove parenthetical clarifications entirely if they're not essential to understanding the instruction.
+
+- Correct: "Select the Event ID to reset to"
+- Incorrect: "Select the Event ID to reset to (typically a `WorkflowTaskCompleted` event before the failure)"
+
+Parentheses are still appropriate for:
+- Abbreviations on first use: "Transport Layer Security (TLS)"
+- Technical specifications: "at least 2048-bit RSA"
+- Aside notes that are truly supplementary and would break sentence flow otherwise
+
 ### Focus on specific outcomes rather than "Learn to/Learn how to" language.
 
 Focus on the skill the learner will gain rather than the act of gaining the skill. Look for "learn to/learn how to" and remove them and you'll have tighter sentences.
