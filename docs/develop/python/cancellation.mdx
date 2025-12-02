@@ -127,9 +127,9 @@ await client.get_workflow_handle("your_workflow_id").terminate()
 
 ## Reset a Workflow Execution {#reset}
 
-Resetting a Workflow Execution terminates the current workflow execution and starts a new Workflow Execution from a point you specify in its Event History. Use reset when a Workflow is blocked due to a non-deterministic error or other issues that prevent it from completing.
+Resetting a Workflow Execution terminates the current Workflow Execution and starts a new Workflow Execution from a point you specify in its Event History. Use reset when a Workflow is blocked due to a non-deterministic error or other issues that prevent it from completing.
 
-When you reset a Workflow, the Event History up to the reset point is copied to the new execution, and the Workflow resumes from that point with the current code. Reset only works if you've fixed the underlying issue, such as removing non-deterministic code. Any progress made after the reset point will be discarded. Provide a reason when resetting, as it will be recorded in the Event History.
+When you reset a Workflow, the Event History up to the reset point is copied to the new Workflow Execution, and the Workflow resumes from that point with the current code. Reset only works if you've fixed the underlying issue, such as removing non-deterministic code. Any progress made after the reset point will be discarded. Provide a reason when resetting, as it will be recorded in the Event History.
 
 <Tabs>
 
@@ -165,7 +165,7 @@ temporal workflow reset \
     --reason "Fixed non-deterministic code"
 ```
 
-By default, the command resets the latest workflow execution. Use `--run-id` to reset a specific run. For Temporal Cloud, specify the namespace with `--namespace`:
+By default, the command resets the latest Workflow Execution. Use `--run-id` to reset a specific run. Use `--namespace` to specify a different Namespace (defaults to `default`):
 
 ```bash
 temporal workflow reset \
