@@ -135,11 +135,11 @@ When you reset a Workflow, the Event History up to the reset point is copied to 
 
 <TabItem value="web-ui" label="Web UI">
 
-1. Navigate to the Workflow Execution details page
-2. Click the **Reset** button in the top right dropdown menu
-3. Select the Event ID to reset to
-4. Provide a reason for the reset
-5. Confirm the reset
+1. Navigate to the Workflow Execution details page,
+2. Click the **Reset** button in the top right dropdown menu,
+3. Select the Event ID to reset to,
+4. Provide a reason for the reset,
+5. Confirm the reset.
 
 The Web UI shows available reset points and creates a link to the new Workflow Execution after the reset completes.
 
@@ -165,7 +165,7 @@ temporal workflow reset \
     --reason "Fixed non-deterministic code"
 ```
 
-Use `--run-id` to reset a specific run (otherwise resets the latest run). The `--reapply-type` option controls which Events to reapply after the reset point (Signals, Updates). For Temporal Cloud, specify the namespace with `--namespace`:
+By default, the command resets the latest workflow execution. Use `--run-id` to reset a specific run. For Temporal Cloud, specify the namespace with `--namespace`:
 
 ```bash
 temporal workflow reset \
