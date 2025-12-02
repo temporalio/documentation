@@ -99,11 +99,33 @@ You can provide a library with functionality for use within a Workflow if you'd 
 
 - It should be [deterministic](https://docs.temporal.io/workflows#deterministic-constraints), running the same way every time it’s executed. Non-deterministic code should go in Activities or Nexus Operations.
 - See [observability](https://docs.temporal.io/evaluate/development-production-features/observability) to avoid duplicating observation side effects when Workflows replay.
-- Put other side effects inside of Activities or [Local Activities](https://docs.temporal.io/local-activity).  This helps your Workflow handle being restarted, resumed, or executed in a different process from where it originally began without losing correctness or state consistency.   
+- Put other side effects inside of Activities or [Local Activities](https://docs.temporal.io/local-activity). This helps your Workflow handle being restarted, resumed, or executed in a different process from where it originally began without losing correctness or state consistency.
 - See [testing your Plugin](#testing-your-plugin) to write tests that check for issues with side effects.
 - It should run quickly since it may be replayed many times during a long Workflow execution. More expensive code should go in Activities or Nexus Operations.
 
 A Plugin should allow a user to decompose their Workflows into Activities, as well as Child Workflows and Nexus Calls when needed. This gives users granular control through retries and timeouts, debuggability through the Temporal UI, operability with resets, pauses, and cancels, memoization for efficiency and resumability, and scalability using task queues and Workers.
+
+To explicitly define the Workflow runner for your Plugin, follow the example for your SDK below:
+
+<SdkTabs>
+<SdkTabs.Python>
+```python
+def workflow_runner(runner: Optional[WorkflowRunner]) -> WorkflowRunner:
+  if not runner:
+    raise ValueError("No WorkflowRunner provided to the OpenAI plugin.")
+
+  # If in sandbox, add additional passthrough
+  if isinstance(runner, SandboxedWorkflowRunner):
+    return dataclasses.replace(
+      runner,
+      restrictions=runner.restrictions.with_passthrough_modules("mcp"),
+    )
+  return runner
+
+SimplePlugin(..., workflow_runner=workflow_runner)
+```
+</SdkTabs.Python>
+</SdkTabs>
 
 Users use Workflows for:
 
