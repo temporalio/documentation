@@ -2,7 +2,9 @@
 id: cancellation
 title: Interrupt a Workflow - .NET SDK
 sidebar_label: Interrupt a Workflow
-description: Interrupt Workflow Execution in .NET using the Temporal SDK. Cancel for graceful stops; terminate for forceful stops. Handle Cancellation in Workflow and Activities efficiently.
+description:
+  Interrupt Workflow Execution in .NET using the Temporal SDK. Cancel for graceful stops; terminate for forceful stops.
+  Handle Cancellation in Workflow and Activities efficiently.
 toc_max_heading_level: 4
 keywords:
   - interrupt workflow execution
@@ -39,16 +41,15 @@ You can interrupt a Workflow Execution in one of the following ways:
 - [Cancel](#cancellation): Canceling a Workflow provides a graceful way to stop Workflow Execution.
 - [Terminate](#termination): Terminating a Workflow forcefully stops Workflow Execution.
 
-Terminating a Workflow forcefully stops Workflow Execution.
-This action resembles killing a process.
+Terminating a Workflow forcefully stops Workflow Execution. This action resembles killing a process.
 
 - The system records a `WorkflowExecutionTerminated` event in the Workflow History.
 - The termination forcefully and immediately stops the Workflow Execution.
 - The Workflow code gets no chance to handle termination.
 - A Workflow Task doesn't get scheduled.
 
-In most cases, canceling is preferable because it allows the Workflow to finish gracefully.
-Terminate only if the Workflow is stuck and cannot be canceled normally.
+In most cases, canceling is preferable because it allows the Workflow to finish gracefully. Terminate only if the
+Workflow is stuck and cannot be canceled normally.
 
 ## Cancellation {#cancellation}
 
@@ -63,11 +64,12 @@ To give a Workflow and its Activities the ability to be cancelled, do the follow
 
 **How to handle a Cancellation in a Workflow in .NET.**
 
-Workflow Definitions can be written to respond to cancellation requests.
-It is common for an Activity to be run on Cancellation to perform cleanup.
+Workflow Definitions can be written to respond to cancellation requests. It is common for an Activity to be run on
+Cancellation to perform cleanup.
 
-Cancellation Requests on Workflows cancel the `Workflow.CancellationToken`.
-This is the token that is implicitly used for all calls within the workflow as well (e.g. Timers, Activities, etc) and therefore cancellation is propagated to them to be handled and bubble out.
+Cancellation Requests on Workflows cancel the `Workflow.CancellationToken`. This is the token that is implicitly used
+for all calls within the workflow as well (e.g. Timers, Activities, etc) and therefore cancellation is propagated to
+them to be handled and bubble out.
 
 ```csharp
 [WorkflowRun]
@@ -111,9 +113,10 @@ public async Task RunAsync()
 
 **How to handle a Cancellation in an Activity using the Temporal .NET SDK**
 
-Ensure that the Activity is [Heartbeating](/develop/dotnet/failure-detection#activity-heartbeats) to receive the Cancellation request and stop execution.
-Also make sure that the [Heartbeat Timeout](/develop/dotnet/failure-detection#heartbeat-timeout) is set on the Activity Options when calling from the Workflow.
-An Activity Cancellation Request cancels the `CancellationToken` on the `ActivityExecutionContext`.
+Ensure that the Activity is [Heartbeating](/develop/dotnet/failure-detection#activity-heartbeats) to receive the
+Cancellation request and stop execution. Also make sure that the
+[Heartbeat Timeout](/develop/dotnet/failure-detection#heartbeat-timeout) is set on the Activity Options when calling
+from the Workflow. An Activity Cancellation Request cancels the `CancellationToken` on the `ActivityExecutionContext`.
 
 ```csharp
 [Activity]
@@ -150,8 +153,8 @@ await handle.CancelAsync();
 
 **How to request Cancellation of an Activity in .NET using the Temporal .NET SDK**
 
-By default, Activities are automatically cancelled when the Workflow is cancelled since the workflow cancellation token is used by activities by default.
-To issue a cancellation explicitly, a new cancellation token can be created.
+By default, Activities are automatically cancelled when the Workflow is cancelled since the workflow cancellation token
+is used by activities by default. To issue a cancellation explicitly, a new cancellation token can be created.
 
 ```csharp
 [WorkflowRun]
@@ -187,7 +190,9 @@ public async Task RunAsync()
 
 **How to Terminate a Workflow Execution in .NET using the Temporal .NET SDK**
 
-To Terminate a Workflow Execution in .NET, use the [TerminateAsync()](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_TerminateAsync_System_String_Temporalio_Client_WorkflowTerminateOptions_) method on the Workflow handle.
+To Terminate a Workflow Execution in .NET, use the
+[TerminateAsync()](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowHandle.html#Temporalio_Client_WorkflowHandle_TerminateAsync_System_String_Temporalio_Client_WorkflowTerminateOptions_)
+method on the Workflow handle.
 
 ```csharp
 // Get a workflow handle by its workflow ID. This could be made specific to a run by passing run ID.
@@ -198,4 +203,69 @@ var handle = myClient.GetWorkflowHandle("my-workflow-id");
 await handle.TerminateAsync();
 ```
 
-Workflow Executions can also be Terminated directly from the WebUI. In this case, a custom note can be logged from the UI when that happens.
+Workflow Executions can also be Terminated directly from the WebUI. In this case, a custom note can be logged from the
+UI when that happens.
+
+## Reset a Workflow Execution {#reset}
+
+Resetting a Workflow Execution terminates the current Workflow Execution and starts a new Workflow Execution from a
+point you specify in its Event History. Use reset when a Workflow is blocked due to a non-deterministic error or other
+issues that prevent it from completing.
+
+When you reset a Workflow, the Event History up to the reset point is copied to the new Workflow Execution, and the
+Workflow resumes from that point with the current code. Reset only works if you've fixed the underlying issue, such as
+removing non-deterministic code. Any progress made after the reset point will be discarded. Provide a reason when
+resetting, as it will be recorded in the Event History.
+
+<Tabs>
+
+<TabItem value="web-ui" label="Web UI">
+
+1. Navigate to the Workflow Execution details page,
+2. Click the **Reset** button in the top right dropdown menu,
+3. Select the Event ID to reset to,
+4. Provide a reason for the reset,
+5. Confirm the reset.
+
+The Web UI shows available reset points and creates a link to the new Workflow Execution after the reset completes.
+
+</TabItem>
+
+<TabItem value="cli" label="Temporal CLI">
+
+Use the `temporal workflow reset` command to reset a Workflow Execution:
+
+```bash
+temporal workflow reset \
+    --workflow-id <workflow-id> \
+    --event-id <event-id> \
+    --reason "Reason for reset"
+```
+
+For example:
+
+```bash
+temporal workflow reset \
+    --workflow-id my-background-check \
+    --event-id 4 \
+    --reason "Fixed non-deterministic code"
+```
+
+By default, the command resets the latest Workflow Execution in the `default` Namespace. Use `--run-id` to reset a
+specific run. Use `--namespace` to specify a different Namespace:
+
+```bash
+temporal workflow reset \
+    --workflow-id my-background-check \
+    --event-id 4 \
+    --reason "Fixed non-deterministic code" \
+    --namespace my-namespace \
+    --tls-cert-path /path/to/cert.pem \
+    --tls-key-path /path/to/key.pem
+```
+
+Monitor the new Workflow Execution after resetting to ensure it completes successfully.
+
+</TabItem>
+
+</Tabs>
