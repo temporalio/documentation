@@ -310,6 +310,7 @@ module.exports = {
         'develop/activity-retry-simulator',
         'develop/worker-performance',
         'develop/safe-deployments',
+        'develop/plugins-guide',
       ],
     },
     {
