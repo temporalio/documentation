@@ -13,6 +13,8 @@ tags:
 ---
 
 import { CaptionedImage, RelatedReadContainer, RelatedReadItem } from '@site/src/components';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
@@ -101,13 +103,151 @@ Non-Retryable Errors = []
 - **Use case:** Use this attribute to ensure that retries do not continue indefinitely.
   In most cases, we recommend using the Workflow Execution Timeout for [Workflows](/workflows) or the Schedule-To-Close Timeout for Activities to limit the total duration of retries, rather than using this attribute.
 
-### Non-Retryable Errors
+### Non-Retryable Errors {#non-retryable-errors}
 
 - **Description:** Specifies errors that shouldn't be retried.
   - **Default is none.**
   - Errors are matched against the `type` field of the [Application Failure](/references/failures#application-failure).
   - If one of those errors occurs, a retry does not occur.
 - **Use case:** If you know of errors that should not trigger a retry, you can specify that, if they occur, the execution is not retried.
+
+#### Non-Retryable Errors for Activities
+
+When writing software applications, you will encounter three types of failures: transient, intermittent, and permanent.
+While transient and intermittent failures may resolve themselves upon retrying without further intervention, permanent failures will not.
+Permanent failures, by definition, require you to make some change to your logic or your input.
+Therefore, it is better to surface them than to retry them.
+
+Non-Retryable Errors are errors that will not be retried, regardless of a Retry Policy.
+
+<Tabs groupId="sdk-language" queryString>
+<TabItem value="ruby" label="Ruby">
+
+To raise a non-retryable error, specify the `non_retryable` flag when raising an `ApplicationError`:
+
+```ruby
+raise Temporalio::Error::ApplicationError.new(
+  "Invalid credit card number: #{credit_card_number}",
+  type: 'InvalidChargeAmount',
+  non_retryable: true
+)
+```
+
+This will designate the `ApplicationError` as non-retryable.
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+To raise a non-retryable error, specify the `non_retryable` flag when raising an `ApplicationError`:
+
+```python
+    raise ApplicationError(
+        f"Invalid credit card number: {credit_card_number}",
+        type="InvalidChargeAmount",
+        non_retryable=True,
+    )
+```
+
+This will designate the `ApplicationError` as non-retryable.
+
+</TabItem>
+<TabItem value="typescript" label="TypeScript">
+
+To throw a non-retryable error, add `nonRetryable: true` to `ApplicationFailure.create({})`:
+
+```typescript
+throw ApplicationFailure.create({
+    message: `Invalid charge amount: ${chargeAmount} (must be above zero)`,
+    details: [chargeAmount],
+    nonRetryable: true
+});
+```
+
+This will designate the Error as non-retryable.
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+To throw a non-retryable error, use the `newNonRetryableFailure` method:
+
+```java
+    throw ApplicationFailure.newNonRetryableFailure(
+      "Invalid credit card number: " + creditCardNumber,
+      InvalidChargeAmountException.class.getName());
+```
+
+This will designate the `ApplicationFailure` as non-retryable.
+
+</TabItem>
+<TabItem value="go" label="Go">
+
+To return a non-retryable error, replace your call to `NewApplicationError()` with `NewNonRetryableApplicationError()`:
+
+```go
+temporal.NewNonRetryableApplicationError("Credit Card Charge Error", "CreditCardError", nil, nil)
+```
+
+This will designate the Error as non-retryable.
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+To throw a non-retryable error, specify the `nonRetryable` flag when throwing an `ApplicationFailureException`:
+
+```csharp
+var attempt = ActivityExecutionContext.Current.Info.Attempt;
+
+throw new ApplicationFailureException(
+    $"Something bad happened on attempt {attempt}",
+    errorType: "my_failure_type",
+    nonRetryable: true);
+```
+
+This will designate the `ApplicationFailureException` as non-retryable.
+
+</TabItem>
+</Tabs>
+
+Use non-retryable errors in your code sparingly.
+
+<Tabs groupId="sdk-language" queryString>
+<TabItem value="ruby" label="Ruby">
+
+If you do not specify the failure as non-retryable within the definition, you can always mark that error type as non-retryable in your Activity's Retry Policy, but an `ApplicationError` with the `non_retryable` keyword argument set to `true` will always be non-retryable.
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+If you do not specify the failure as non-retryable within the definition, you can always mark that error type as non-retryable in your Activity's Retry Policy, but an `ApplicationError` with the `non_retryable` keyword argument set to `True` will always be non-retryable.
+
+</TabItem>
+<TabItem value="typescript" label="TypeScript">
+
+If you do not specify the failure as non-retryable within the definition, you can always mark that error type as non-retryable in your Activity's Retry Policy, but an error with `nonRetryable: true` set will always be non-retryable.
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+If you throw a regular `newFailure()`, you can always mark that error _type_ as non-retryable in your Activity's Retry Policy, but a `newNonRetryableFailure()` will always be non-retryable.
+
+</TabItem>
+<TabItem value="go" label="Go">
+
+If you return a regular `NewApplicationError()`, you can always mark that error _type_ as non-retryable in your Activity's Retry Policy, but a `NewNonRetryableApplicationError()` will always be non-retryable.
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+If you do not specify the failure as non-retryable within the definition, you can always mark that error type as non-retryable in your Activity's Retry Policy, but an `ApplicationFailureException` with the `nonRetryable` parameter set to `true` will always be non-retryable.
+
+</TabItem>
+</Tabs>
+
+For example, checking for bad input data is a reasonable time to use a non-retryable error.
+If the Activity cannot proceed with the input it has, that error should be surfaced immediately so that the input can be corrected on the next attempt.
+
+If responsibility for your application is distributed across multiple maintainers, or if you are developing a library to integrate into somebody else's application, you can think of the decision to hardcode non-retryable errors as following a "caller vs. implementer" dichotomy.
+Anyone who is calling your Activity would be able to make decisions about their Retry Policy, but only the implementer can decide whether an error should never be retryable out of the box.
 
 ## Retry interval
 
