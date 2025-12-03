@@ -25,7 +25,7 @@ tags:
 ---
 
 {/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
-This file is generated from https://github.com/temporalio/cli/blob/main/temporalcli/commandsgen/commands.yml */}
+This file is generated from https://github.com/temporalio/cli/blob/main/internal/commandsgen/commands.yml via internal/cmd/gen-docs */}
 ## backfill
 
 Batch-execute actions that would have run during a specified time interval.
@@ -67,177 +67,12 @@ The policies include:
 
 Use the following options to change the behavior of this command.
 
-**Flags:**
-
-**--end-time** _timestamp_
-
-Backfill end time. Required.
-
-**--overlap-policy** _string-enum_
-
-Policy for handling overlapping Workflow Executions. Accepted values: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll. (default "Skip")
-
-**--schedule-id**, **-s** _string_
-
-Schedule ID. Required.
-
-**--start-time** _timestamp_
-
-Backfill start time. Required.
-
-**Global Flags:**
-
-**--address** _string_
-
-Temporal Service gRPC endpoint. (default "localhost:7233")
-
-**--api-key** _string_
-
-API key for request.
-
-**--client-authority** _string_
-
-Temporal gRPC client :authority pseudoheader.
-
-**--client-connect-timeout** _duration_
-
-The client connection timeout. 0s means no timeout.
-
-**--codec-auth** _string_
-
-Authorization header for Codec Server requests.
-
-**--codec-endpoint** _string_
-
-Remote Codec Server endpoint.
-
-**--codec-header** _string[]_
-
-HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
-
-**--color** _string-enum_
-
-Output coloring. Accepted values: always, never, auto. (default "auto")
-
-**--command-timeout** _duration_
-
-The command execution timeout. 0s means no timeout.
-
-**--config-file** _string_
-
-File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--disable-config-env** _bool_
-
-If set, disables loading environment config from environment variables.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--disable-config-file** _bool_
-
-If set, disables loading environment config from config file.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--env** _string_
-
-Active environment name (`ENV`). (default "default")
-
-**--env-file** _string_
-
-Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`.
-
-**--grpc-meta** _string[]_
-
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
-
-**--log-format** _string-enum_
-
-Log format. Accepted values: text, json. (default "text")
-
-**--log-level** _string-enum_
-
-Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. (default "info")
-
-**--namespace**, **-n** _string_
-
-Temporal Service Namespace. (default "default")
-
-**--no-json-shorthand-payloads** _bool_
-
-Raw payload output, even if the JSON option was used.
-
-**--output**, **-o** _string-enum_
-
-Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
-
-**--profile** _string_
-
-Profile to use for config file.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--time-format** _string-enum_
-
-Time format. Accepted values: relative, iso, raw. (default "relative")
-
-**--tls** _bool_
-
-Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
-
-**--tls-ca-data** _string_
-
-Data for server CA certificate. Can't be used with --tls-ca-path.
-
-**--tls-ca-path** _string_
-
-Path to server CA certificate. Can't be used with --tls-ca-data.
-
-**--tls-cert-data** _string_
-
-Data for x509 certificate. Can't be used with --tls-cert-path.
-
-**--tls-cert-path** _string_
-
-Path to x509 certificate. Can't be used with --tls-cert-data.
-
-**--tls-disable-host-verification** _bool_
-
-Disable TLS host-name verification.
-
-**--tls-key-data** _string_
-
-Private certificate key data. Can't be used with --tls-key-path.
-
-**--tls-key-path** _string_
-
-Path to x509 private key. Can't be used with --tls-key-data.
-
-**--tls-server-name** _string_
-
-Override target TLS server name.
+| Flag | Required | Description | Default |
+|------|----------|-------------|--------|
+| `--end-time` | Yes | **timestamp** Backfill end time. |  |
+| `--overlap-policy` | No | **string-enum** Policy for handling overlapping Workflow Executions. Accepted values: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll. | `Skip` |
+| `--schedule-id`, `-s` | Yes | **string** Schedule ID. |  |
+| `--start-time` | Yes | **timestamp** Backfill start time. |  |
 
 ## create
 
@@ -267,305 +102,41 @@ Schedules support any combination of `--calendar`, `--interval`, and `--cron`:
 
 Use the following options to change the behavior of this command.
 
-**Flags:**
-
-**--calendar** _string[]_
-
-Calendar specification in JSON. For example: `{"dayOfWeek":"Fri","hour":"17","minute":"5"}`.
-
-**--catchup-window** _duration_
-
-Maximum catch-up time for when the Service is unavailable.
-
-**--cron** _string[]_
-
-Calendar specification in cron string format. For example: `"30 12 * * Fri"`.
-
-**--end-time** _timestamp_
-
-Schedule end time.
-
-**--execution-timeout** _duration_
-
-Fail a WorkflowExecution if it lasts longer than `DURATION`. This time-out includes retries and ContinueAsNew tasks.
-
-**--fairness-key** _string_
-
-Fairness key (max 64 bytes) for proportional task dispatch. Tasks with same key share capacity based on their weight.
-
-**--fairness-weight** _float_
-
-Weight [0.001-1000] for this fairness key. Keys are dispatched proportionally to their weights.
-
-**--input**, **-i** _string[]_
-
-Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments.
-
-**--input-base64** _bool_
-
-Assume inputs are base64-encoded and attempt to decode them.
-
-**--input-file** _string[]_
-
-A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments.
-
-**--input-meta** _string[]_
-
-Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order.
-
-**--interval** _string[]_
-
-Interval duration. For example, 90m, or 60m/15m to include phase offset.
-
-**--jitter** _duration_
-
-Max difference in time from the specification. Vary the start time randomly within this amount.
-
-**--memo** _string[]_
-
-Memo using 'KEY="VALUE"' pairs. Use JSON values.
-
-**--notes** _string_
-
-Initial notes field value.
-
-**--overlap-policy** _string-enum_
-
-Policy for handling overlapping Workflow Executions. Accepted values: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll. (default "Skip")
-
-**--pause-on-failure** _bool_
-
-Pause schedule after Workflow failures.
-
-**--paused** _bool_
-
-Pause the Schedule immediately on creation.
-
-**--priority-key** _int_
-
-Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified.
-
-**--remaining-actions** _int_
-
-Total allowed actions. Default is zero (unlimited).
-
-**--run-timeout** _duration_
-
-Fail a Workflow Run if it lasts longer than `DURATION`.
-
-**--schedule-id**, **-s** _string_
-
-Schedule ID. Required.
-
-**--schedule-memo** _string[]_
-
-Set schedule memo using `KEY="VALUE` pairs. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times.
-
-**--schedule-search-attribute** _string[]_
-
-Set schedule Search Attributes using `KEY="VALUE` pairs. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times.
-
-**--search-attribute** _string[]_
-
-Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times.
-
-**--start-time** _timestamp_
-
-Schedule start time.
-
-**--static-details** _string_
-
-Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--static-summary** _string_
-
-Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--task-queue**, **-t** _string_
-
-Workflow Task queue. Required.
-
-**--task-timeout** _duration_
-
-Fail a Workflow Task if it lasts longer than `DURATION`. This is the Start-to-close timeout for a Workflow Task. (default "10s")
-
-**--time-zone** _string_
-
-Interpret calendar specs with the `TZ` time zone. For a list of time zones, see: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones.
-
-**--type** _string_
-
-Workflow Type name. Required.
-
-**--workflow-id**, **-w** _string_
-
-Workflow ID. If not supplied, the Service generates a unique ID.
-
-**Global Flags:**
-
-**--address** _string_
-
-Temporal Service gRPC endpoint. (default "localhost:7233")
-
-**--api-key** _string_
-
-API key for request.
-
-**--client-authority** _string_
-
-Temporal gRPC client :authority pseudoheader.
-
-**--client-connect-timeout** _duration_
-
-The client connection timeout. 0s means no timeout.
-
-**--codec-auth** _string_
-
-Authorization header for Codec Server requests.
-
-**--codec-endpoint** _string_
-
-Remote Codec Server endpoint.
-
-**--codec-header** _string[]_
-
-HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
-
-**--color** _string-enum_
-
-Output coloring. Accepted values: always, never, auto. (default "auto")
-
-**--command-timeout** _duration_
-
-The command execution timeout. 0s means no timeout.
-
-**--config-file** _string_
-
-File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--disable-config-env** _bool_
-
-If set, disables loading environment config from environment variables.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--disable-config-file** _bool_
-
-If set, disables loading environment config from config file.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--env** _string_
-
-Active environment name (`ENV`). (default "default")
-
-**--env-file** _string_
-
-Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`.
-
-**--grpc-meta** _string[]_
-
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
-
-**--log-format** _string-enum_
-
-Log format. Accepted values: text, json. (default "text")
-
-**--log-level** _string-enum_
-
-Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. (default "info")
-
-**--namespace**, **-n** _string_
-
-Temporal Service Namespace. (default "default")
-
-**--no-json-shorthand-payloads** _bool_
-
-Raw payload output, even if the JSON option was used.
-
-**--output**, **-o** _string-enum_
-
-Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
-
-**--profile** _string_
-
-Profile to use for config file.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--time-format** _string-enum_
-
-Time format. Accepted values: relative, iso, raw. (default "relative")
-
-**--tls** _bool_
-
-Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
-
-**--tls-ca-data** _string_
-
-Data for server CA certificate. Can't be used with --tls-ca-path.
-
-**--tls-ca-path** _string_
-
-Path to server CA certificate. Can't be used with --tls-ca-data.
-
-**--tls-cert-data** _string_
-
-Data for x509 certificate. Can't be used with --tls-cert-path.
-
-**--tls-cert-path** _string_
-
-Path to x509 certificate. Can't be used with --tls-cert-data.
-
-**--tls-disable-host-verification** _bool_
-
-Disable TLS host-name verification.
-
-**--tls-key-data** _string_
-
-Private certificate key data. Can't be used with --tls-key-path.
-
-**--tls-key-path** _string_
-
-Path to x509 private key. Can't be used with --tls-key-data.
-
-**--tls-server-name** _string_
-
-Override target TLS server name.
+| Flag | Required | Description | Default |
+|------|----------|-------------|--------|
+| `--calendar` | No | **string[]** Calendar specification in JSON. For example: `{"dayOfWeek":"Fri","hour":"17","minute":"5"}`. |  |
+| `--catchup-window` | No | **duration** Maximum catch-up time for when the Service is unavailable. |  |
+| `--cron` | No | **string[]** Calendar specification in cron string format. For example: `"30 12 * * Fri"`. |  |
+| `--end-time` | No | **timestamp** Schedule end time. |  |
+| `--execution-timeout` | No | **duration** Fail a WorkflowExecution if it lasts longer than `DURATION`. This time-out includes retries and ContinueAsNew tasks. |  |
+| `--fairness-key` | No | **string** Fairness key (max 64 bytes) for proportional task dispatch. Tasks with same key share capacity based on their weight. |  |
+| `--fairness-weight` | No | **float** Weight [0.001-1000] for this fairness key. Keys are dispatched proportionally to their weights. |  |
+| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |  |
+| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |  |
+| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |  |
+| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |  |
+| `--interval` | No | **string[]** Interval duration. For example, 90m, or 60m/15m to include phase offset. |  |
+| `--jitter` | No | **duration** Max difference in time from the specification. Vary the start time randomly within this amount. |  |
+| `--memo` | No | **string[]** Memo using 'KEY="VALUE"' pairs. Use JSON values. |  |
+| `--notes` | No | **string** Initial notes field value. |  |
+| `--overlap-policy` | No | **string-enum** Policy for handling overlapping Workflow Executions. Accepted values: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll. | `Skip` |
+| `--pause-on-failure` | No | **bool** Pause schedule after Workflow failures. |  |
+| `--paused` | No | **bool** Pause the Schedule immediately on creation. |  |
+| `--priority-key` | No | **int** Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified. |  |
+| `--remaining-actions` | No | **int** Total allowed actions. Default is zero (unlimited). |  |
+| `--run-timeout` | No | **duration** Fail a Workflow Run if it lasts longer than `DURATION`. |  |
+| `--schedule-id`, `-s` | Yes | **string** Schedule ID. |  |
+| `--schedule-memo` | No | **string[]** Set schedule memo using `KEY="VALUE` pairs. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |  |
+| `--schedule-search-attribute` | No | **string[]** Set schedule Search Attributes using `KEY="VALUE` pairs. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |  |
+| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |  |
+| `--start-time` | No | **timestamp** Schedule start time. |  |
+| `--static-details` | No | **string** Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines. _(Experimental)_ |  |
+| `--static-summary` | No | **string** Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line. _(Experimental)_ |  |
+| `--task-queue`, `-t` | Yes | **string** Workflow Task queue. |  |
+| `--task-timeout` | No | **duration** Fail a Workflow Task if it lasts longer than `DURATION`. This is the Start-to-close timeout for a Workflow Task. | `10s` |
+| `--time-zone` | No | **string** Interpret calendar specs with the `TZ` time zone. For a list of time zones, see: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones. |  |
+| `--type` | Yes | **string** Workflow Type name. |  |
+| `--workflow-id`, `-w` | No | **string** Workflow ID. If not supplied, the Service generates a unique ID. |  |
 
 ## delete
 
@@ -582,165 +153,9 @@ workflow delete` with the `TemporalScheduledById` Search Attribute instead.
 
 Use the following options to change the behavior of this command.
 
-**Flags:**
-
-**--schedule-id**, **-s** _string_
-
-Schedule ID. Required.
-
-**Global Flags:**
-
-**--address** _string_
-
-Temporal Service gRPC endpoint. (default "localhost:7233")
-
-**--api-key** _string_
-
-API key for request.
-
-**--client-authority** _string_
-
-Temporal gRPC client :authority pseudoheader.
-
-**--client-connect-timeout** _duration_
-
-The client connection timeout. 0s means no timeout.
-
-**--codec-auth** _string_
-
-Authorization header for Codec Server requests.
-
-**--codec-endpoint** _string_
-
-Remote Codec Server endpoint.
-
-**--codec-header** _string[]_
-
-HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
-
-**--color** _string-enum_
-
-Output coloring. Accepted values: always, never, auto. (default "auto")
-
-**--command-timeout** _duration_
-
-The command execution timeout. 0s means no timeout.
-
-**--config-file** _string_
-
-File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--disable-config-env** _bool_
-
-If set, disables loading environment config from environment variables.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--disable-config-file** _bool_
-
-If set, disables loading environment config from config file.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--env** _string_
-
-Active environment name (`ENV`). (default "default")
-
-**--env-file** _string_
-
-Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`.
-
-**--grpc-meta** _string[]_
-
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
-
-**--log-format** _string-enum_
-
-Log format. Accepted values: text, json. (default "text")
-
-**--log-level** _string-enum_
-
-Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. (default "info")
-
-**--namespace**, **-n** _string_
-
-Temporal Service Namespace. (default "default")
-
-**--no-json-shorthand-payloads** _bool_
-
-Raw payload output, even if the JSON option was used.
-
-**--output**, **-o** _string-enum_
-
-Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
-
-**--profile** _string_
-
-Profile to use for config file.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--time-format** _string-enum_
-
-Time format. Accepted values: relative, iso, raw. (default "relative")
-
-**--tls** _bool_
-
-Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
-
-**--tls-ca-data** _string_
-
-Data for server CA certificate. Can't be used with --tls-ca-path.
-
-**--tls-ca-path** _string_
-
-Path to server CA certificate. Can't be used with --tls-ca-data.
-
-**--tls-cert-data** _string_
-
-Data for x509 certificate. Can't be used with --tls-cert-path.
-
-**--tls-cert-path** _string_
-
-Path to x509 certificate. Can't be used with --tls-cert-data.
-
-**--tls-disable-host-verification** _bool_
-
-Disable TLS host-name verification.
-
-**--tls-key-data** _string_
-
-Private certificate key data. Can't be used with --tls-key-path.
-
-**--tls-key-path** _string_
-
-Path to x509 private key. Can't be used with --tls-key-data.
-
-**--tls-server-name** _string_
-
-Override target TLS server name.
+| Flag | Required | Description | Default |
+|------|----------|-------------|--------|
+| `--schedule-id`, `-s` | Yes | **string** Schedule ID. |  |
 
 ## describe
 
@@ -754,165 +169,9 @@ temporal schedule describe \
 
 Use the following options to change the behavior of this command.
 
-**Flags:**
-
-**--schedule-id**, **-s** _string_
-
-Schedule ID. Required.
-
-**Global Flags:**
-
-**--address** _string_
-
-Temporal Service gRPC endpoint. (default "localhost:7233")
-
-**--api-key** _string_
-
-API key for request.
-
-**--client-authority** _string_
-
-Temporal gRPC client :authority pseudoheader.
-
-**--client-connect-timeout** _duration_
-
-The client connection timeout. 0s means no timeout.
-
-**--codec-auth** _string_
-
-Authorization header for Codec Server requests.
-
-**--codec-endpoint** _string_
-
-Remote Codec Server endpoint.
-
-**--codec-header** _string[]_
-
-HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
-
-**--color** _string-enum_
-
-Output coloring. Accepted values: always, never, auto. (default "auto")
-
-**--command-timeout** _duration_
-
-The command execution timeout. 0s means no timeout.
-
-**--config-file** _string_
-
-File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--disable-config-env** _bool_
-
-If set, disables loading environment config from environment variables.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--disable-config-file** _bool_
-
-If set, disables loading environment config from config file.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--env** _string_
-
-Active environment name (`ENV`). (default "default")
-
-**--env-file** _string_
-
-Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`.
-
-**--grpc-meta** _string[]_
-
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
-
-**--log-format** _string-enum_
-
-Log format. Accepted values: text, json. (default "text")
-
-**--log-level** _string-enum_
-
-Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. (default "info")
-
-**--namespace**, **-n** _string_
-
-Temporal Service Namespace. (default "default")
-
-**--no-json-shorthand-payloads** _bool_
-
-Raw payload output, even if the JSON option was used.
-
-**--output**, **-o** _string-enum_
-
-Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
-
-**--profile** _string_
-
-Profile to use for config file.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--time-format** _string-enum_
-
-Time format. Accepted values: relative, iso, raw. (default "relative")
-
-**--tls** _bool_
-
-Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
-
-**--tls-ca-data** _string_
-
-Data for server CA certificate. Can't be used with --tls-ca-path.
-
-**--tls-ca-path** _string_
-
-Path to server CA certificate. Can't be used with --tls-ca-data.
-
-**--tls-cert-data** _string_
-
-Data for x509 certificate. Can't be used with --tls-cert-path.
-
-**--tls-cert-path** _string_
-
-Path to x509 certificate. Can't be used with --tls-cert-data.
-
-**--tls-disable-host-verification** _bool_
-
-Disable TLS host-name verification.
-
-**--tls-key-data** _string_
-
-Private certificate key data. Can't be used with --tls-key-path.
-
-**--tls-key-path** _string_
-
-Path to x509 private key. Can't be used with --tls-key-data.
-
-**--tls-server-name** _string_
-
-Override target TLS server name.
+| Flag | Required | Description | Default |
+|------|----------|-------------|--------|
+| `--schedule-id`, `-s` | Yes | **string** Schedule ID. |  |
 
 ## list
 
@@ -925,173 +184,11 @@ temporal schedule list \
 
 Use the following options to change the behavior of this command.
 
-**Flags:**
-
-**--long**, **-l** _bool_
-
-Show detailed information.
-
-**--query**, **-q** _string_
-
-Filter results using given List Filter.
-
-**--really-long** _bool_
-
-Show extensive information in non-table form.
-
-**Global Flags:**
-
-**--address** _string_
-
-Temporal Service gRPC endpoint. (default "localhost:7233")
-
-**--api-key** _string_
-
-API key for request.
-
-**--client-authority** _string_
-
-Temporal gRPC client :authority pseudoheader.
-
-**--client-connect-timeout** _duration_
-
-The client connection timeout. 0s means no timeout.
-
-**--codec-auth** _string_
-
-Authorization header for Codec Server requests.
-
-**--codec-endpoint** _string_
-
-Remote Codec Server endpoint.
-
-**--codec-header** _string[]_
-
-HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
-
-**--color** _string-enum_
-
-Output coloring. Accepted values: always, never, auto. (default "auto")
-
-**--command-timeout** _duration_
-
-The command execution timeout. 0s means no timeout.
-
-**--config-file** _string_
-
-File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--disable-config-env** _bool_
-
-If set, disables loading environment config from environment variables.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--disable-config-file** _bool_
-
-If set, disables loading environment config from config file.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--env** _string_
-
-Active environment name (`ENV`). (default "default")
-
-**--env-file** _string_
-
-Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`.
-
-**--grpc-meta** _string[]_
-
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
-
-**--log-format** _string-enum_
-
-Log format. Accepted values: text, json. (default "text")
-
-**--log-level** _string-enum_
-
-Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. (default "info")
-
-**--namespace**, **-n** _string_
-
-Temporal Service Namespace. (default "default")
-
-**--no-json-shorthand-payloads** _bool_
-
-Raw payload output, even if the JSON option was used.
-
-**--output**, **-o** _string-enum_
-
-Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
-
-**--profile** _string_
-
-Profile to use for config file.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--time-format** _string-enum_
-
-Time format. Accepted values: relative, iso, raw. (default "relative")
-
-**--tls** _bool_
-
-Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
-
-**--tls-ca-data** _string_
-
-Data for server CA certificate. Can't be used with --tls-ca-path.
-
-**--tls-ca-path** _string_
-
-Path to server CA certificate. Can't be used with --tls-ca-data.
-
-**--tls-cert-data** _string_
-
-Data for x509 certificate. Can't be used with --tls-cert-path.
-
-**--tls-cert-path** _string_
-
-Path to x509 certificate. Can't be used with --tls-cert-data.
-
-**--tls-disable-host-verification** _bool_
-
-Disable TLS host-name verification.
-
-**--tls-key-data** _string_
-
-Private certificate key data. Can't be used with --tls-key-path.
-
-**--tls-key-path** _string_
-
-Path to x509 private key. Can't be used with --tls-key-data.
-
-**--tls-server-name** _string_
-
-Override target TLS server name.
+| Flag | Required | Description | Default |
+|------|----------|-------------|--------|
+| `--long`, `-l` | No | **bool** Show detailed information. |  |
+| `--query`, `-q` | No | **string** Filter results using given List Filter. |  |
+| `--really-long` | No | **bool** Show extensive information in non-table form. |  |
 
 ## toggle
 
@@ -1119,177 +216,12 @@ also visible on the Service Web UI.
 
 Use the following options to change the behavior of this command.
 
-**Flags:**
-
-**--pause** _bool_
-
-Pause the Schedule.
-
-**--reason** _string_
-
-Reason for pausing or unpausing the Schedule. (default "(no reason provided)")
-
-**--schedule-id**, **-s** _string_
-
-Schedule ID. Required.
-
-**--unpause** _bool_
-
-Unpause the Schedule.
-
-**Global Flags:**
-
-**--address** _string_
-
-Temporal Service gRPC endpoint. (default "localhost:7233")
-
-**--api-key** _string_
-
-API key for request.
-
-**--client-authority** _string_
-
-Temporal gRPC client :authority pseudoheader.
-
-**--client-connect-timeout** _duration_
-
-The client connection timeout. 0s means no timeout.
-
-**--codec-auth** _string_
-
-Authorization header for Codec Server requests.
-
-**--codec-endpoint** _string_
-
-Remote Codec Server endpoint.
-
-**--codec-header** _string[]_
-
-HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
-
-**--color** _string-enum_
-
-Output coloring. Accepted values: always, never, auto. (default "auto")
-
-**--command-timeout** _duration_
-
-The command execution timeout. 0s means no timeout.
-
-**--config-file** _string_
-
-File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--disable-config-env** _bool_
-
-If set, disables loading environment config from environment variables.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--disable-config-file** _bool_
-
-If set, disables loading environment config from config file.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--env** _string_
-
-Active environment name (`ENV`). (default "default")
-
-**--env-file** _string_
-
-Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`.
-
-**--grpc-meta** _string[]_
-
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
-
-**--log-format** _string-enum_
-
-Log format. Accepted values: text, json. (default "text")
-
-**--log-level** _string-enum_
-
-Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. (default "info")
-
-**--namespace**, **-n** _string_
-
-Temporal Service Namespace. (default "default")
-
-**--no-json-shorthand-payloads** _bool_
-
-Raw payload output, even if the JSON option was used.
-
-**--output**, **-o** _string-enum_
-
-Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
-
-**--profile** _string_
-
-Profile to use for config file.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--time-format** _string-enum_
-
-Time format. Accepted values: relative, iso, raw. (default "relative")
-
-**--tls** _bool_
-
-Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
-
-**--tls-ca-data** _string_
-
-Data for server CA certificate. Can't be used with --tls-ca-path.
-
-**--tls-ca-path** _string_
-
-Path to server CA certificate. Can't be used with --tls-ca-data.
-
-**--tls-cert-data** _string_
-
-Data for x509 certificate. Can't be used with --tls-cert-path.
-
-**--tls-cert-path** _string_
-
-Path to x509 certificate. Can't be used with --tls-cert-data.
-
-**--tls-disable-host-verification** _bool_
-
-Disable TLS host-name verification.
-
-**--tls-key-data** _string_
-
-Private certificate key data. Can't be used with --tls-key-path.
-
-**--tls-key-path** _string_
-
-Path to x509 private key. Can't be used with --tls-key-data.
-
-**--tls-server-name** _string_
-
-Override target TLS server name.
+| Flag | Required | Description | Default |
+|------|----------|-------------|--------|
+| `--pause` | No | **bool** Pause the Schedule. |  |
+| `--reason` | No | **string** Reason for pausing or unpausing the Schedule. | `(no reason provided)` |
+| `--schedule-id`, `-s` | Yes | **string** Schedule ID. |  |
+| `--unpause` | No | **bool** Unpause the Schedule. |  |
 
 ## trigger
 
@@ -1302,169 +234,10 @@ temporal schedule trigger \
 
 Use the following options to change the behavior of this command.
 
-**Flags:**
-
-**--overlap-policy** _string-enum_
-
-Policy for handling overlapping Workflow Executions. Accepted values: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll. (default "Skip")
-
-**--schedule-id**, **-s** _string_
-
-Schedule ID. Required.
-
-**Global Flags:**
-
-**--address** _string_
-
-Temporal Service gRPC endpoint. (default "localhost:7233")
-
-**--api-key** _string_
-
-API key for request.
-
-**--client-authority** _string_
-
-Temporal gRPC client :authority pseudoheader.
-
-**--client-connect-timeout** _duration_
-
-The client connection timeout. 0s means no timeout.
-
-**--codec-auth** _string_
-
-Authorization header for Codec Server requests.
-
-**--codec-endpoint** _string_
-
-Remote Codec Server endpoint.
-
-**--codec-header** _string[]_
-
-HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
-
-**--color** _string-enum_
-
-Output coloring. Accepted values: always, never, auto. (default "auto")
-
-**--command-timeout** _duration_
-
-The command execution timeout. 0s means no timeout.
-
-**--config-file** _string_
-
-File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--disable-config-env** _bool_
-
-If set, disables loading environment config from environment variables.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--disable-config-file** _bool_
-
-If set, disables loading environment config from config file.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--env** _string_
-
-Active environment name (`ENV`). (default "default")
-
-**--env-file** _string_
-
-Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`.
-
-**--grpc-meta** _string[]_
-
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
-
-**--log-format** _string-enum_
-
-Log format. Accepted values: text, json. (default "text")
-
-**--log-level** _string-enum_
-
-Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. (default "info")
-
-**--namespace**, **-n** _string_
-
-Temporal Service Namespace. (default "default")
-
-**--no-json-shorthand-payloads** _bool_
-
-Raw payload output, even if the JSON option was used.
-
-**--output**, **-o** _string-enum_
-
-Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
-
-**--profile** _string_
-
-Profile to use for config file.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--time-format** _string-enum_
-
-Time format. Accepted values: relative, iso, raw. (default "relative")
-
-**--tls** _bool_
-
-Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
-
-**--tls-ca-data** _string_
-
-Data for server CA certificate. Can't be used with --tls-ca-path.
-
-**--tls-ca-path** _string_
-
-Path to server CA certificate. Can't be used with --tls-ca-data.
-
-**--tls-cert-data** _string_
-
-Data for x509 certificate. Can't be used with --tls-cert-path.
-
-**--tls-cert-path** _string_
-
-Path to x509 certificate. Can't be used with --tls-cert-data.
-
-**--tls-disable-host-verification** _bool_
-
-Disable TLS host-name verification.
-
-**--tls-key-data** _string_
-
-Private certificate key data. Can't be used with --tls-key-path.
-
-**--tls-key-path** _string_
-
-Path to x509 private key. Can't be used with --tls-key-data.
-
-**--tls-server-name** _string_
-
-Override target TLS server name.
+| Flag | Required | Description | Default |
+|------|----------|-------------|--------|
+| `--overlap-policy` | No | **string-enum** Policy for handling overlapping Workflow Executions. Accepted values: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll. | `Skip` |
+| `--schedule-id`, `-s` | Yes | **string** Schedule ID. |  |
 
 ## update
 
@@ -1479,303 +252,78 @@ temporal schedule update \
 
 Use the following options to change the behavior of this command.
 
-**Flags:**
-
-**--calendar** _string[]_
-
-Calendar specification in JSON. For example: `{"dayOfWeek":"Fri","hour":"17","minute":"5"}`.
-
-**--catchup-window** _duration_
-
-Maximum catch-up time for when the Service is unavailable.
-
-**--cron** _string[]_
-
-Calendar specification in cron string format. For example: `"30 12 * * Fri"`.
-
-**--end-time** _timestamp_
-
-Schedule end time.
-
-**--execution-timeout** _duration_
-
-Fail a WorkflowExecution if it lasts longer than `DURATION`. This time-out includes retries and ContinueAsNew tasks.
-
-**--fairness-key** _string_
-
-Fairness key (max 64 bytes) for proportional task dispatch. Tasks with same key share capacity based on their weight.
-
-**--fairness-weight** _float_
-
-Weight [0.001-1000] for this fairness key. Keys are dispatched proportionally to their weights.
-
-**--input**, **-i** _string[]_
-
-Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments.
-
-**--input-base64** _bool_
-
-Assume inputs are base64-encoded and attempt to decode them.
-
-**--input-file** _string[]_
-
-A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments.
-
-**--input-meta** _string[]_
-
-Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order.
-
-**--interval** _string[]_
-
-Interval duration. For example, 90m, or 60m/15m to include phase offset.
-
-**--jitter** _duration_
-
-Max difference in time from the specification. Vary the start time randomly within this amount.
-
-**--memo** _string[]_
-
-Memo using 'KEY="VALUE"' pairs. Use JSON values.
-
-**--notes** _string_
-
-Initial notes field value.
-
-**--overlap-policy** _string-enum_
-
-Policy for handling overlapping Workflow Executions. Accepted values: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll. (default "Skip")
-
-**--pause-on-failure** _bool_
-
-Pause schedule after Workflow failures.
-
-**--paused** _bool_
-
-Pause the Schedule immediately on creation.
-
-**--priority-key** _int_
-
-Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified.
-
-**--remaining-actions** _int_
-
-Total allowed actions. Default is zero (unlimited).
-
-**--run-timeout** _duration_
-
-Fail a Workflow Run if it lasts longer than `DURATION`.
-
-**--schedule-id**, **-s** _string_
-
-Schedule ID. Required.
-
-**--schedule-memo** _string[]_
-
-Set schedule memo using `KEY="VALUE` pairs. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times.
-
-**--schedule-search-attribute** _string[]_
-
-Set schedule Search Attributes using `KEY="VALUE` pairs. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times.
-
-**--search-attribute** _string[]_
-
-Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times.
-
-**--start-time** _timestamp_
-
-Schedule start time.
-
-**--static-details** _string_
-
-Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--static-summary** _string_
-
-Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--task-queue**, **-t** _string_
-
-Workflow Task queue. Required.
-
-**--task-timeout** _duration_
-
-Fail a Workflow Task if it lasts longer than `DURATION`. This is the Start-to-close timeout for a Workflow Task. (default "10s")
-
-**--time-zone** _string_
-
-Interpret calendar specs with the `TZ` time zone. For a list of time zones, see: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones.
-
-**--type** _string_
-
-Workflow Type name. Required.
-
-**--workflow-id**, **-w** _string_
-
-Workflow ID. If not supplied, the Service generates a unique ID.
-
-**Global Flags:**
-
-**--address** _string_
-
-Temporal Service gRPC endpoint. (default "localhost:7233")
-
-**--api-key** _string_
-
-API key for request.
-
-**--client-authority** _string_
-
-Temporal gRPC client :authority pseudoheader.
-
-**--client-connect-timeout** _duration_
-
-The client connection timeout. 0s means no timeout.
-
-**--codec-auth** _string_
-
-Authorization header for Codec Server requests.
-
-**--codec-endpoint** _string_
-
-Remote Codec Server endpoint.
-
-**--codec-header** _string[]_
-
-HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers.
-
-**--color** _string-enum_
-
-Output coloring. Accepted values: always, never, auto. (default "auto")
-
-**--command-timeout** _duration_
-
-The command execution timeout. 0s means no timeout.
-
-**--config-file** _string_
-
-File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--disable-config-env** _bool_
-
-If set, disables loading environment config from environment variables.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--disable-config-file** _bool_
-
-If set, disables loading environment config from config file.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--env** _string_
-
-Active environment name (`ENV`). (default "default")
-
-**--env-file** _string_
-
-Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`.
-
-**--grpc-meta** _string[]_
-
-HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`.
-
-**--identity** _string_
-
-The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST".
-
-**--log-format** _string-enum_
-
-Log format. Accepted values: text, json. (default "text")
-
-**--log-level** _string-enum_
-
-Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. (default "info")
-
-**--namespace**, **-n** _string_
-
-Temporal Service Namespace. (default "default")
-
-**--no-json-shorthand-payloads** _bool_
-
-Raw payload output, even if the JSON option was used.
-
-**--output**, **-o** _string-enum_
-
-Non-logging data output format. Accepted values: text, json, jsonl, none. (default "text")
-
-**--profile** _string_
-
-Profile to use for config file.
-
-:::note
-
-Option is experimental.
-
-:::
-
-**--time-format** _string-enum_
-
-Time format. Accepted values: relative, iso, raw. (default "relative")
-
-**--tls** _bool_
-
-Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
-
-**--tls-ca-data** _string_
-
-Data for server CA certificate. Can't be used with --tls-ca-path.
-
-**--tls-ca-path** _string_
-
-Path to server CA certificate. Can't be used with --tls-ca-data.
-
-**--tls-cert-data** _string_
-
-Data for x509 certificate. Can't be used with --tls-cert-path.
-
-**--tls-cert-path** _string_
-
-Path to x509 certificate. Can't be used with --tls-cert-data.
-
-**--tls-disable-host-verification** _bool_
-
-Disable TLS host-name verification.
-
-**--tls-key-data** _string_
-
-Private certificate key data. Can't be used with --tls-key-path.
-
-**--tls-key-path** _string_
-
-Path to x509 private key. Can't be used with --tls-key-data.
-
-**--tls-server-name** _string_
-
-Override target TLS server name.
+| Flag | Required | Description | Default |
+|------|----------|-------------|--------|
+| `--calendar` | No | **string[]** Calendar specification in JSON. For example: `{"dayOfWeek":"Fri","hour":"17","minute":"5"}`. |  |
+| `--catchup-window` | No | **duration** Maximum catch-up time for when the Service is unavailable. |  |
+| `--cron` | No | **string[]** Calendar specification in cron string format. For example: `"30 12 * * Fri"`. |  |
+| `--end-time` | No | **timestamp** Schedule end time. |  |
+| `--execution-timeout` | No | **duration** Fail a WorkflowExecution if it lasts longer than `DURATION`. This time-out includes retries and ContinueAsNew tasks. |  |
+| `--fairness-key` | No | **string** Fairness key (max 64 bytes) for proportional task dispatch. Tasks with same key share capacity based on their weight. |  |
+| `--fairness-weight` | No | **float** Weight [0.001-1000] for this fairness key. Keys are dispatched proportionally to their weights. |  |
+| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |  |
+| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |  |
+| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |  |
+| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |  |
+| `--interval` | No | **string[]** Interval duration. For example, 90m, or 60m/15m to include phase offset. |  |
+| `--jitter` | No | **duration** Max difference in time from the specification. Vary the start time randomly within this amount. |  |
+| `--memo` | No | **string[]** Memo using 'KEY="VALUE"' pairs. Use JSON values. |  |
+| `--notes` | No | **string** Initial notes field value. |  |
+| `--overlap-policy` | No | **string-enum** Policy for handling overlapping Workflow Executions. Accepted values: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll. | `Skip` |
+| `--pause-on-failure` | No | **bool** Pause schedule after Workflow failures. |  |
+| `--paused` | No | **bool** Pause the Schedule immediately on creation. |  |
+| `--priority-key` | No | **int** Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified. |  |
+| `--remaining-actions` | No | **int** Total allowed actions. Default is zero (unlimited). |  |
+| `--run-timeout` | No | **duration** Fail a Workflow Run if it lasts longer than `DURATION`. |  |
+| `--schedule-id`, `-s` | Yes | **string** Schedule ID. |  |
+| `--schedule-memo` | No | **string[]** Set schedule memo using `KEY="VALUE` pairs. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |  |
+| `--schedule-search-attribute` | No | **string[]** Set schedule Search Attributes using `KEY="VALUE` pairs. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |  |
+| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |  |
+| `--start-time` | No | **timestamp** Schedule start time. |  |
+| `--static-details` | No | **string** Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines. _(Experimental)_ |  |
+| `--static-summary` | No | **string** Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line. _(Experimental)_ |  |
+| `--task-queue`, `-t` | Yes | **string** Workflow Task queue. |  |
+| `--task-timeout` | No | **duration** Fail a Workflow Task if it lasts longer than `DURATION`. This is the Start-to-close timeout for a Workflow Task. | `10s` |
+| `--time-zone` | No | **string** Interpret calendar specs with the `TZ` time zone. For a list of time zones, see: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones. |  |
+| `--type` | Yes | **string** Workflow Type name. |  |
+| `--workflow-id`, `-w` | No | **string** Workflow ID. If not supplied, the Service generates a unique ID. |  |
+
+## Global Flags
+
+The following options can be used with any command.
+
+| Flag | Required | Description | Default |
+|------|----------|-------------|--------|
+| `--address` | No | **string** Temporal Service gRPC endpoint. | `localhost:7233` |
+| `--api-key` | No | **string** API key for request. |  |
+| `--client-authority` | No | **string** Temporal gRPC client :authority pseudoheader. |  |
+| `--client-connect-timeout` | No | **duration** The client connection timeout. 0s means no timeout. |  |
+| `--codec-auth` | No | **string** Authorization header for Codec Server requests. |  |
+| `--codec-endpoint` | No | **string** Remote Codec Server endpoint. |  |
+| `--codec-header` | No | **string[]** HTTP headers for requests to codec server. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. |  |
+| `--color` | No | **string-enum** Output coloring. Accepted values: always, never, auto. | `auto` |
+| `--command-timeout` | No | **duration** The command execution timeout. 0s means no timeout. |  |
+| `--config-file` | No | **string** File path to read TOML config from, defaults to `$CONFIG_PATH/temporal/temporal.toml` where `$CONFIG_PATH` is defined as `$HOME/.config` on Unix, `$HOME/Library/Application Support` on macOS, and `%AppData%` on Windows. _(Experimental)_ |  |
+| `--disable-config-env` | No | **bool** If set, disables loading environment config from environment variables. _(Experimental)_ |  |
+| `--disable-config-file` | No | **bool** If set, disables loading environment config from config file. _(Experimental)_ |  |
+| `--env` | No | **string** Active environment name (`ENV`). | `default` |
+| `--env-file` | No | **string** Path to environment settings file. Defaults to `$HOME/.config/temporalio/temporal.yaml`. |  |
+| `--grpc-meta` | No | **string[]** HTTP headers for requests. Format as a `KEY=VALUE` pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as `TEMPORAL_GRPC_META_[name]`. |  |
+| `--identity` | No | **string** The identity of the user or client submitting this request. Defaults to "temporal-cli:$USER@$HOST". |  |
+| `--log-format` | No | **string-enum** Log format. Accepted values: text, json. | `text` |
+| `--log-level` | No | **string-enum** Log level. Default is "info" for most commands and "warn" for `server start-dev`. Accepted values: debug, info, warn, error, never. | `info` |
+| `--namespace`, `-n` | No | **string** Temporal Service Namespace. | `default` |
+| `--no-json-shorthand-payloads` | No | **bool** Raw payload output, even if the JSON option was used. |  |
+| `--output`, `-o` | No | **string-enum** Non-logging data output format. Accepted values: text, json, jsonl, none. | `text` |
+| `--profile` | No | **string** Profile to use for config file. _(Experimental)_ |  |
+| `--time-format` | No | **string-enum** Time format. Accepted values: relative, iso, raw. | `relative` |
+| `--tls` | No | **bool** Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable. |  |
+| `--tls-ca-data` | No | **string** Data for server CA certificate. Can't be used with --tls-ca-path. |  |
+| `--tls-ca-path` | No | **string** Path to server CA certificate. Can't be used with --tls-ca-data. |  |
+| `--tls-cert-data` | No | **string** Data for x509 certificate. Can't be used with --tls-cert-path. |  |
+| `--tls-cert-path` | No | **string** Path to x509 certificate. Can't be used with --tls-cert-data. |  |
+| `--tls-disable-host-verification` | No | **bool** Disable TLS host-name verification. |  |
+| `--tls-key-data` | No | **string** Private certificate key data. Can't be used with --tls-key-path. |  |
+| `--tls-key-path` | No | **string** Path to x509 private key. Can't be used with --tls-key-data. |  |
+| `--tls-server-name` | No | **string** Override target TLS server name. |  |
 
