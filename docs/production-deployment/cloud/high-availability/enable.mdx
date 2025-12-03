@@ -144,7 +144,7 @@ Follow these steps to remove a replica from a Namespace:
 
 <TabItem value="webui" label="Web UI">
 
-1. (if using API keys on this Namespace) Ensure that any Workers or Clients with API keys have been configured to use the [regional endpoint](/cloud/regions) for the Namespace's region.
+1. If using API keys on this Namespace, configure Workers and Clients that use API keys to [connect with the regional Temporal Cloud endpoint](/cloud/api-keys#namespace-authentication) for the Namespace's primary region.
 1. Navigate to the Namespace details page in Temporal Cloud
 1. Select the option to "Remove Replica" on the "Region" card.
 
@@ -152,7 +152,7 @@ Follow these steps to remove a replica from a Namespace:
 
 <TabItem value="tcldcli" label="tcld">
 
-First, ensure that any Workers or Clients with API keys have been configured to use the [regional endpoint](/cloud/regions) for the Namespace's region.
+First, if using API keys on this Namespace, configure Workers and Clients that use API keys to [connect with the regional Temporal Cloud endpoint](/cloud/api-keys#namespace-authentication) for the Namespace's primary region.
 
 Then, at the command line, enter:
 
@@ -162,7 +162,7 @@ tcld namespace delete-region \
     --region <replica_region>
 ```
 
-If using API key authentication with the `--api-key` flag to issue this CLI command, you must add it directly after the tcld command and before `namespace delete-region`
+If using the `--api-key` flag to issue this CLI command, you must add it directly after the tcld command and before `namespace delete-region`
 
 </TabItem>
 
