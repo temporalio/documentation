@@ -142,6 +142,70 @@ For the full list of development server options, use the `--help` flag:
 temporal server start-dev --help
 ```
 
+## Enable auto-completion {#enable-auto-completion}
+
+Enable auto-completion using the following commands.
+
+### zsh auto-completion
+
+1. Add the following line to your `~/.zshrc` startup script:
+
+   ```sh
+   eval "$(temporal completion zsh)"
+   ```
+
+2. Re-launch your shell or run:
+
+   ```sh
+   source ~/.zshrc
+   ```
+
+### Bash auto-completion
+
+1. Install [bash-completion](https://github.com/scop/bash-completion#installation) and add the software to your
+   `~/.bashrc`.
+
+2. Add the following line to your `~/.bashrc` startup script:
+
+   ```sh
+   eval "$(temporal completion bash)"
+   ```
+
+3. Re-launch your shell or run:
+
+   ```sh
+   source ~/.bashrc
+   ```
+
+:::note
+
+If auto-completion fails with the error: `bash: _get_comp_words_by_ref: command not found`, you did not successfully
+install [bash-completion](https://github.com/scop/bash-completion#installation). This package must be loaded into your
+shell for `temporal` auto-completion to work.
+
+:::
+
+### Fish auto-completion
+
+1. Create the Fish custom completions directory if it does not already exist:
+
+   ```fish
+   mkdir -p ~/.config/fish/completions
+   ```
+
+2. Configure the completions to load when needed. Note: the file name must be `temporal.fish` or the completions will
+   not be found:
+
+   ```fish
+   echo 'eval "$(temporal completion fish)"' >~/.config/fish/completions/temporal.fish
+   ```
+
+3. Re-launch your shell or run:
+
+   ```fish
+   source ~/.config/fish/completions/temporal.fish
+   ```
+
 ## Command set
 
 - [temporal activity](/cli/activity/)
@@ -259,70 +323,6 @@ specific addresses or domains you wish to exclude from proxying.
 
 For more information, see [Proxy](https://github.com/grpc/grpc-go/blob/master/Documentation/proxy.md) in the gRPC
 documentation.
-
-## Auto-completion
-
-Enable auto-completion using the following commands.
-
-### zsh auto-completion
-
-1. Add the following line to your `~/.zshrc` startup script:
-
-   ```sh
-   eval "$(temporal completion zsh)"
-   ```
-
-2. Re-launch your shell or run:
-
-   ```sh
-   source ~/.zshrc
-   ```
-
-### Bash auto-completion
-
-1. Install [bash-completion](https://github.com/scop/bash-completion#installation) and add the software to your
-   `~/.bashrc`.
-
-2. Add the following line to your `~/.bashrc` startup script:
-
-   ```sh
-   eval "$(temporal completion bash)"
-   ```
-
-3. Re-launch your shell or run:
-
-   ```sh
-   source ~/.bashrc
-   ```
-
-:::note
-
-If auto-completion fails with the error: `bash: _get_comp_words_by_ref: command not found`, you did not successfully
-install [bash-completion](https://github.com/scop/bash-completion#installation). This package must be loaded into your
-shell for `temporal` auto-completion to work.
-
-:::
-
-### Fish auto-completion
-
-1. Create the Fish custom completions directory if it does not already exist:
-
-   ```fish
-   mkdir -p ~/.config/fish/completions
-   ```
-
-2. Configure the completions to load when needed. Note: the file name must be `temporal.fish` or the completions will
-   not be found:
-
-   ```fish
-   echo 'eval "$(temporal completion fish)"' >~/.config/fish/completions/temporal.fish
-   ```
-
-3. Re-launch your shell or run:
-
-   ```fish
-   source ~/.config/fish/completions/temporal.fish
-   ```
 
 ## Common CLI operations {#common-operations}
 
