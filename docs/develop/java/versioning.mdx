@@ -27,7 +27,11 @@ With Versioning, you can modify your Workflow Definition so that new executions 
 There are two primary Versioning methods that you can use:
 
 - [Versioning with Patching](#patching). This method works by adding branches to your code tied to specific revisions. It applies a code change to new Workflow Executions while avoiding disruptive changes to in-progress ones.
-- [Worker Versioning](/production-deployment/worker-deployments/worker-versioning). The Worker Versioning feature allows you to tag your Workers and programmatically roll them out in versioned deployments, so that old Workers can run old code paths and new Workers can run new code paths. If you were using this method experimentally prior to summer 2025, refer to the [Worker Versioning Legacy](worker-versioning-legacy) docs.
+- [Worker Versioning](/production-deployment/worker-deployments/worker-versioning). The Worker Versioning feature allows you to tag your Workers and programmatically roll them out in versioned deployments, so that old Workers can run old code paths and new Workers can run new code paths.
+
+:::danger
+Support for the experimental Worker Versioning method before 2025 will be removed from Temporal Server in March 2026. Refer to the [latest Worker Versioning docs](/worker-versioning) for guidance. You can still refer to the [Worker Versioning Legacy](worker-versioning-legacy) docs if needed. 
+:::
 
 ## Versioning with Patching {#patching}
 

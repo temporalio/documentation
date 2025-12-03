@@ -300,6 +300,7 @@ module.exports = {
             'develop/ruby/debugging',
             'develop/ruby/schedules',
             'develop/ruby/converters-and-encryption',
+            'develop/ruby/rails-integration',
             'develop/ruby/durable-timers',
             'develop/ruby/child-workflows',
             'develop/ruby/continue-as-new',
@@ -309,6 +310,7 @@ module.exports = {
         'develop/activity-retry-simulator',
         'develop/worker-performance',
         'develop/safe-deployments',
+        'develop/plugins-guide',
       ],
     },
     {
@@ -623,9 +625,10 @@ module.exports = {
         id: 'best-practices/index',
       },
       items: [
-        'best-practices/managing-namespace',
-        'best-practices/cloud-access-control',
-        'best-practices/security-controls',
+        "best-practices/managing-namespace",
+        "best-practices/cloud-access-control",
+        "best-practices/security-controls",
+        "best-practices/worker",
       ],
     },
     {

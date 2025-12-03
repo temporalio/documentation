@@ -80,11 +80,6 @@
       "permanent": true
     },
     {
-      "source": "/tasks:path*",
-      "destination": "/workers:path*",
-      "permanent": true
-    },
-    {
       "source": "/cluster-deployment-guide:path*",
       "destination": "/self-hosted-guide",
       "permanent": true

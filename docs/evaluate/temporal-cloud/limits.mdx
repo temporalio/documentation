@@ -123,7 +123,7 @@ Temporal Cloud limits each Namespace to a total of 32 KB or 16 certificates, whi
 
 ### Concurrent Task pollers
 
-Temporal Cloud limits each Namespace to 20,000 concurrent Task pollers, regardless of whether they are Activity or Workflow Task pollers.
+Temporal Cloud limits each Namespace to 20,000 Activity pollers and 20,000 Workflow Task pollers concurrently. 
 
 Each SDK offers a way to configure Workers for per-Worker maximum Activity and Workflow Task pollers.
 Those values do not affect the global Namespace limit.
@@ -283,6 +283,10 @@ This is most applicable to asynchronous Nexus Operations completed with an async
 For enhanced security, you may sign completion callbacks with a single-use token in the future, and the 60 day maximum allows you to rotate the asymmetric encryption keys used for completion callback request signing.
 
 While the caller of a Nexus Operation can configure the ScheduleToClose duration to be shorter than 60 days, the maximum duration can not extend beyond 60 days and capped by the server to 60 days.
+
+### Timer duration limit
+
+Timers have a maximum duration of 100 years in Temporal Cloud.
 
 ## Worker Versioning level
 
