@@ -33,7 +33,7 @@ See the [ActiveModel section](/develop/ruby/converters-and-encryption#active-mod
 ## Lazy/Eager Loading
 
 By default, Rails eagerly loads all application code on application start in production, but lazily loads it in non-production environments.
-Temporal workflows by default disallow use of IO during the workflow run.
+Temporal Workflows by default disallow use of IO during the Workflow run.
 With lazy loading enabled in dev/test environments, when an activity class is referenced in a workflow before it has been explicitly required, it can give an error like:
 
 ```
