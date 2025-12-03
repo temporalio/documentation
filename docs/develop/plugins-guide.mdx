@@ -25,14 +25,14 @@ Here are some common use cases for plugins:
 
 - AI Agent SDKs
 - Observability, tracing, or logging middleware
-- Adding reliable built-in functionality such as LLM calls, corporate messaging, and payments infrastructure
+- Adding reliable built-in functionality such as LLM calls, messaging systems, and payments infrastructure
 - Encryption or compliance middleware
 
 ## How to build a Plugin
 
 The recommended way to start building plugins is with a `SimplePlugin`. This abstraction will tackle the vast majority of plugins people want to write.  
 
-Later, for advanced use cases, you can extend the methods in lower-level classes that Simple Plugin is based on without re-implementing what you’ve done. See the [Advanced Topics section](#advanced-topics-for-plugins) for more information.
+For advanced use cases, you can extend the methods in lower-level classes that Simple Plugin is based on without re-implementing what you’ve done. See the [Advanced Topics section](#advanced-topics-for-plugins) for more information.
 
 ### Example Plugins
 
@@ -67,7 +67,7 @@ Here are some best practices you can use when you are making Activity plugins:
 
 - Activity arguments and return values must be serializable.
 - Activities that perform writes should be idempotent.
-- Activities have [timeouts](/develop/python/failure-detection#heartbeat-timeout) and [retry policies](/encyclopedia/retry-policies). To be Activity-friendly, your operation should either complete within a few minutes or it should support the ability to heartbeat or poll for a result. This way it will be clear to the Workflow when the Activity is still making progress.
+- Activities have [timeouts](/develop/python/failure-detection#heartbeat-timeout) and [retry policies](/encyclopedia/retry-policies). For Activities, your operation should either complete within a few minutes or it should support the ability to heartbeat or poll for a result. This way it will be clear to the Workflow when the Activity is still making progress.
 - You need to specify at least one timeout, typically the [start_to_close_timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout). Keep in mind that the shorter the timeout, the faster Temporal will retry upon failure. See the [timeouts and retry policies](#timeouts-and-retry-policies) to learn more.
 
 #### Timeouts and retry policies
@@ -77,10 +77,8 @@ For example, Temporal will keep track of the exponential backoff delay even if t
 
 Be cautious when doing retries within your Activity because it lengthens the needed Activity timeout.  Such internal retries also prevent users from counting failure metrics and make it harder for users to debug in Temporal UI when something is wrong.
 
-Follow the example for your SDK below:
+Here is an example with Python:
 
-<SdkTabs>
-<SdkTabs.Python>
 ```python
 @activity.defn
 async def some_activity() -> None:
@@ -90,12 +88,10 @@ plugin = SimplePlugin(
   activities = [some_activity]
 )
 ```
-</SdkTabs.Python>
-</SdkTabs>
 
 ### Workflow-friendly libraries
 
-You can provide a library with functionality for use within a Workflow if you'd like to abstract away some Temporal-specific details for your users. Your library will call elements you include in your Plugin: Activities, Child Workflows, Signals, Updates, Queries, Nexus Operations, Interceptors, Data Converters, and any other code as long as it follows these requirements:
+You can provide a library with functionality for use within a Workflow if you'd like to abstract away some Temporal-specific details for your users. Your library will call elements you include in your Plugin such as Activities, Child Workflows, Signals, Updates, Queries, Nexus Operations, Interceptors, Data Converters, and any other code as long as it follows these requirements:
 
 - It should be [deterministic](/workflow-definition#deterministic-constraints), running the same way every time it’s executed. Non-deterministic code should go in Activities or Nexus Operations.
 - See [observability](/evaluate/development-production-features/observability) to avoid duplicating observation side effects when Workflows replay.
@@ -109,7 +105,7 @@ Users use Workflows for:
 
 - Orchestration and decision-making
 - Interactivity via [message-passing](/evaluate/development-production-features/workflow-message-passing)
-- Tracing and observability.
+- Tracing and observability
 
 #### Making changes to your library
 
@@ -137,10 +133,8 @@ Consider adding a Child Workflow when one or more of these conditions applies:
 
 Any Workflow can be run as a standalone Workflow or as a Child Workflow, so registering a Child Workflow in a `SimplePlugin` is the same as registering any Workflow.
 
-Follow the example for your SDK below:
+Here is an example with Python:
 
-<SdkTabs>
-<SdkTabs.Python>
 ```python
 @workflow.defn
 class HelloWorkflow:
@@ -170,17 +164,13 @@ async with Worker(
       task_queue=worker.task_queue,
     )
 ```
-</SdkTabs.Python>
-</SdkTabs>
 
 ### Built-in Nexus Operations
 
 Nexus calls are used from Workflows similar to Activities and you can check out some common [Nexus Use Cases](/nexus/use-cases). Like Activities, Nexus Call arguments and return values must be serializable.
 
-To register Nexus handlers in Workflows, follow the example for your SDK below:
+Here's an example of how to register Nexus handlers in Workflows with Python:
 
-<SdkTabs>
-<SdkTabs.Python>
 ```python
 @nexusrpc.service
 class WeatherService:
@@ -200,8 +190,6 @@ plugin = SimplePlugin(
   nexus_service_handlers = [WeatherServiceHandler()]
 )
 ```
-</SdkTabs.Python>
-</SdkTabs>
 
 ### Custom Data Converters
 
@@ -209,10 +197,8 @@ A [custom Data Converter](/default-custom-data-converters#custom-data-converter)
 
 Note that you can use an existing Data Converter such as, in Python, `PydanticPayloadConverter` in your Plugin.
 
-To add a Custom Data Converter to a Plugin, follow the example for your SDK below:
+Here's an example of how to add a Custom Data Converter to a Plugin with Python:
 
-<SdkTabs>
-<SdkTabs.Python>
 ```python
 def add_converter(converter: Optional[DataConverter]) -> DataConverter
   if converter is None or converter == temporalio.converter.DataConverter.default
@@ -226,8 +212,6 @@ plugin = SimplePlugin(
   data_converter = add_converter
 )
 ```
-</SdkTabs.Python>
-</SdkTabs>
 
 ### Interceptors
 
@@ -236,10 +220,8 @@ Interceptors are middleware that can run before and after various calls such as 
 - Create side effects such as logging and tracing.
 - Modify arguments, such as adding headers for authorization or tracing propagation.
 
-To add one to a Plugin, follow the example for your SDK below::
+Here's an example of how to add one to a Plugin with Python:
 
-<SdkTabs>
-<SdkTabs.Python>
 ```python
 class SomeWorkerInterceptor(
   temporalio.worker.Interceptor
@@ -250,8 +232,6 @@ plugin = SimplePlugin(
   worker_interceptors = [SomeWorkerInterceptor()]
 )
 ```
-</SdkTabs.Python>
-</SdkTabs>
 
 ### Special considerations for different languages
 
@@ -259,10 +239,8 @@ Each of the SDKs has nuances you should be aware of so you can account for it in
 
 For example, you can choose to [run your Workflows in a sandbox in Python](/develop/python/python-sdk-sandbox). This lets you run Workflow code in a sandbox environment to help prevent non-determinism errors in your application. To work for users who use sandboxing, your Plugin should specify the Workflow runner that it uses.
 
-To explicitly define the Workflow runner for your Plugin, follow the example for your SDK below:
+Here's an example of how to explicitly define the Workflow runner for your Plugin with Python:
 
-<SdkTabs>
-<SdkTabs.Python>
 ```python
 def workflow_runner(runner: Optional[WorkflowRunner]) -> WorkflowRunner:
   if not runner:
@@ -278,8 +256,6 @@ def workflow_runner(runner: Optional[WorkflowRunner]) -> WorkflowRunner:
 
 SimplePlugin(..., workflow_runner=workflow_runner)
 ```
-</SdkTabs.Python>
-</SdkTabs>
 
 ## Testing your Plugin {#testing-your-plugin}
 
@@ -295,10 +271,8 @@ When you make changes to your plugin after it has already shipped to users, it's
 
 Your Plugin should cater to Workflows resuming in different processes than the ones they started on and then replaying from the beginning, which can happen, for example, after an intermittent failure.
 
-You can ensure you're not depending on local side effects by turning Workflow caching off, which will mean that the Workflow replays from the top each time it progresses:
+You can ensure you're not depending on local side effects by turning Workflow caching off, which will mean that the Workflow replays from the top each time it progresses. Here's an example with Python:
 
-<SdkTabs>
-<SdkTabs.Python>
 ```python
 import my_module
 
@@ -315,8 +289,6 @@ async with Worker(
 ):
     # Start a workflow ...
 ```
-</SdkTabs.Python>
-</SdkTabs>
 
 Check for duplicate side effects or other types of failures.
 
@@ -333,10 +305,8 @@ If your Plugin implements both of them, registering it in the client will also r
 
 ### Client Plugin
 
-Client Plugins are provided to the Temporal client on creation. They can change client configurations and service client configurations. `ClientConfig` contains settings like client Interceptors and DataConverters. `ConnectConfig` configures the actual network connections to the local or cloud Temporal server with values like an API key. This is the basic implementation of a client Plugin:
+Client Plugins are provided to the Temporal client on creation. They can change client configurations and service client configurations. `ClientConfig` contains settings like client Interceptors and DataConverters. `ConnectConfig` configures the actual network connections to the local or cloud Temporal server with values like an API key. This is the basic implementation of a client Plugin using Python:
 
-<SdkTabs>
-<SdkTabs.Python>
 ```python
 class MyAdvancedClientPlugin(temporalio.client.Plugin):
 
@@ -350,8 +320,6 @@ class MyAdvancedClientPlugin(temporalio.client.Plugin):
   ) -> temporalio.service.ServiceClient:
     return await next(config)
 ```
-</SdkTabs.Python>
-</SdkTabs>
 
 The primary use case for integrations so far is setting a `DataConverter`, like in the [Data Converter example](#custom-data-converters).
 
@@ -359,10 +327,8 @@ The primary use case for integrations so far is setting a `DataConverter`, like 
 
 Worker Plugins are provided at Worker creation and have more capabilities and corresponding implementation than client Plugins. They can change Worker configurations, run code during the Worker lifetime, and manage the Replayer in a similar way. You can learn more about the [Replayer](#replayer) in a later section.
 
-Similar to `configure_client` above, you implement `configure_worker` and `configure_replayer` to change any necessary configurations. In addition, `run_worker` allows you to execute code before and after the Worker runs. This can be used to set up resources or globals for use during the Worker execution. `run_replayer` does the same for the Replayer, but keep in mind that the Replayer has a more complex return type. This is a basic implementation of a Worker plugin:
+Similar to `configure_client` above, you implement `configure_worker` and `configure_replayer` to change any necessary configurations. In addition, `run_worker` allows you to execute code before and after the Worker runs. This can be used to set up resources or globals for use during the Worker execution. `run_replayer` does the same for the Replayer, but keep in mind that the Replayer has a more complex return type. This is a basic implementation of a Worker plugin using Python:
 
-<SdkTabs>
-<SdkTabs.Python>
 ```python
 class MyAdvancedWorkerPlugin(temporalio.worker.Plugin):
   def configure_worker(self, config: WorkerConfig) -> WorkerConfig:
@@ -387,8 +353,6 @@ class MyAdvancedWorkerPlugin(temporalio.worker.Plugin):
   ) -> AbstractAsyncContextManager[AsyncIterator[WorkflowReplayResult]]:
     return next(replayer, histories)
 ```
-</SdkTabs.Python>
-</SdkTabs>
 
 ### Replayer
 
@@ -398,10 +362,8 @@ The Replayer runs on a Workflow History created by a previous Workflow run. Supp
 
 The Replayer is typically configured identically to the Worker and client. Ff you’re using `SimplePlugin`, this is already handled for you.
 
-If you need to do something custom for the Replayer, you can configure it directly:
+If you need to do something custom for the Replayer, you can configure it directly. Here's an example of how to do that with Python:
 
-<SdkTabs>
-<SdkTabs.Python>
 ```python
 class MyAdvancedWorkerPlugin(temporalio.worker.Plugin):
   def configure_replayer(self, config: ReplayerConfig) -> ReplayerConfig:
@@ -418,5 +380,3 @@ class MyAdvancedWorkerPlugin(temporalio.worker.Plugin):
   ) -> AbstractAsyncContextManager[AsyncIterator[WorkflowReplayResult]]:
     return next(replayer, histories)
 ```
-</SdkTabs.Python>
-</SdkTabs>
