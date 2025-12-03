@@ -41,7 +41,7 @@ Cannot access File path from inside a workflow. If this is known to be safe, the
 ```
 
 This comes from bootsnap via zeitwerk because it is lazily loading a class/module at Workflow runtime.
-It is not good to lazily load code during a workflow run because it can be side effecting.
+It is not good to lazily load code during a Workflow run because it can be side effecting.
 Workflows and the classes they reference should be eagerly loaded.
 
 To resolve this, either always eagerly load (e.g. `config.eager_load = true`) or explicitly require what is used by a workflow at the top of the file.
