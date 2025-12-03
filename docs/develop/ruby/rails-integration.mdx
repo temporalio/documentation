@@ -27,7 +27,7 @@ See the [rails_app sample](https://github.com/temporalio/samples-ruby/tree/main/
 For ActiveRecord, or other general/ORM models that are used for a different purpose, it is not recommended to try to reuse them as Temporal models.
 Eventually model purposes diverge and models for a Temporal workflows/activities should be specific to their use for clarity and compatibility reasons.
 Also many Ruby ORMs do many lazy things and therefore provide unclear serialization semantics.
-Instead, consider having models specific for workflows/activities and translate to/from existing models as needed.
+Instead, consider having models specific for Workflows/Activities and translate to/from existing models as needed.
 See the [ActiveModel section](/develop/ruby/converters-and-encryption#active-model) on how to do this with ActiveModel objects.
 
 ## Lazy/Eager Loading
