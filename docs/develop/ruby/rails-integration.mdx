@@ -34,7 +34,7 @@ See the [ActiveModel section](/develop/ruby/converters-and-encryption#active-mod
 
 By default, Rails eagerly loads all application code on application start in production, but lazily loads it in non-production environments.
 Temporal Workflows by default disallow use of IO during the Workflow run.
-With lazy loading enabled in dev/test environments, when an activity class is referenced in a workflow before it has been explicitly required, it can give an error like:
+With lazy loading enabled in dev/test environments, when an Activity class is referenced in a Workflow before it has been explicitly required, it can give an error like:
 
 ```
 Cannot access File path from inside a workflow. If this is known to be safe, the code can be run in a Temporalio::Workflow::Unsafe.illegal_call_tracing_disabled block.
