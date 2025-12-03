@@ -300,6 +300,7 @@ module.exports = {
             'develop/ruby/debugging',
             'develop/ruby/schedules',
             'develop/ruby/converters-and-encryption',
+            'develop/ruby/rails-integration',
             'develop/ruby/durable-timers',
             'develop/ruby/child-workflows',
             'develop/ruby/continue-as-new',
