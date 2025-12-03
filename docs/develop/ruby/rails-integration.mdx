@@ -40,7 +40,7 @@ With lazy loading enabled in dev/test environments, when an Activity class is re
 Cannot access File path from inside a workflow. If this is known to be safe, the code can be run in a Temporalio::Workflow::Unsafe.illegal_call_tracing_disabled block.
 ```
 
-This comes from bootsnap via zeitwerk because it is lazily loading a class/module at workflow runtime.
+This comes from bootsnap via zeitwerk because it is lazily loading a class/module at Workflow runtime.
 It is not good to lazily load code during a workflow run because it can be side effecting.
 Workflows and the classes they reference should be eagerly loaded.
 
