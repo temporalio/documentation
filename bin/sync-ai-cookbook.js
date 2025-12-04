@@ -416,6 +416,25 @@ function rewriteLinks(body, readmePath, slugLookup, assetMap) {
   });
 }
 
+function fixUnclosedHtmlTags(body) {
+  // Convert HTML void elements to JSX self-closing syntax for MDX compatibility
+  // Handles: <img>, <br>, <hr>, <input>, <meta>, <link>, <area>, <base>, <col>, <embed>, <source>, <track>, <wbr>
+  const voidElements = ['img', 'br', 'hr', 'input', 'meta', 'link', 'area', 'base', 'col', 'embed', 'source', 'track', 'wbr'];
+  let result = body;
+  for (const tag of voidElements) {
+    // Match <tag ...> that isn't already self-closing (doesn't end with />)
+    const pattern = new RegExp(`<${tag}\\b([^>]*?)(?<!/)>`, 'gi');
+    result = result.replace(pattern, (match, attrs) => {
+      const trimmedAttrs = attrs.trimEnd();
+      if (trimmedAttrs.length > 0) {
+        return `<${tag}${trimmedAttrs} />`;
+      }
+      return `<${tag} />`;
+    });
+  }
+  return result;
+}
+
 async function transformReadme(readmePath, slugLookup) {
   const parentDir = path.basename(path.dirname(readmePath));
   const slug = slugifySegment(parentDir);
@@ -452,7 +471,8 @@ async function transformReadme(readmePath, slugLookup) {
 
   const trimmedBody = body.replace(/\s+$/, '');
   const rewrittenBody = rewriteLinks(trimmedBody, readmePath, slugLookup, assetMap);
-  const finalContent = `${frontMatterBlock}\n\n${rewrittenBody.length > 0 ? `${rewrittenBody}\n` : ''}`;
+  const mdxCompatibleBody = fixUnclosedHtmlTags(rewrittenBody);
+  const finalContent = `${frontMatterBlock}\n\n${mdxCompatibleBody.length > 0 ? `${mdxCompatibleBody}\n` : ''}`;
 
   return {
     slug,
