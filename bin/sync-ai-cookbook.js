@@ -1,10 +1,10 @@
 'use strict';
 
-const {existsSync, mkdirSync} = require('fs');
+const { existsSync, mkdirSync } = require('fs');
 const fs = require('fs/promises');
 const path = require('path');
 const os = require('os');
-const {spawnSync} = require('child_process');
+const { spawnSync } = require('child_process');
 const yaml = require('js-yaml');
 
 const REPO_URL = process.env.AI_COOKBOOK_REPO ?? 'https://github.com/temporalio/ai-cookbook.git';
@@ -15,6 +15,13 @@ const REPO_TEMP_DIR = path.join(TEMP_ROOT, 'repo');
 const OUTPUT_SUBDIR = process.env.AI_COOKBOOK_OUTPUT_DIR ?? 'ai-cookbook';
 const OUTPUT_DIR = path.join(WORKSPACE_ROOT, OUTPUT_SUBDIR);
 const IMAGE_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.gif', '.svg', '.webp', '.avif', '.bmp']);
+
+// Map of old/aliased slugs to current slugs for internal cookbook links.
+// When source files link to renamed recipes, this ensures the links resolve correctly.
+const SLUG_ALIASES = new Map([
+  ['tool-calling-python', 'tool-call-openai-python'],
+  // Add more aliases as recipes are renamed: ['old-slug', 'new-slug']
+]);
 
 function runGit(args, options = {}) {
   const result = spawnSync('git', args, {
@@ -29,15 +36,15 @@ function runGit(args, options = {}) {
 
 async function ensureRepo() {
   if (!existsSync(TEMP_ROOT)) {
-    mkdirSync(TEMP_ROOT, {recursive: true});
+    mkdirSync(TEMP_ROOT, { recursive: true });
   }
 
   if (existsSync(REPO_TEMP_DIR)) {
-    await fs.rm(REPO_TEMP_DIR, {recursive: true, force: true});
+    await fs.rm(REPO_TEMP_DIR, { recursive: true, force: true });
   }
 
   console.log(`[sync-ai-cookbook] cloning ${REPO_URL} (${REPO_BRANCH})`);
-  runGit(['clone', '--branch', REPO_BRANCH, REPO_URL, REPO_TEMP_DIR], {cwd: TEMP_ROOT});
+  runGit(['clone', '--branch', REPO_BRANCH, REPO_URL, REPO_TEMP_DIR], { cwd: TEMP_ROOT });
 }
 
 function slugifySegment(segment) {
@@ -56,7 +63,7 @@ async function collectReadmeFiles(rootDir) {
 
   while (stack.length > 0) {
     const current = stack.pop();
-    const entries = await fs.readdir(current, {withFileTypes: true});
+    const entries = await fs.readdir(current, { withFileTypes: true });
     for (const entry of entries) {
       if (entry.name === '.git' || entry.name === '.github') {
         continue;
@@ -80,7 +87,7 @@ async function readFile(filePath) {
 }
 
 async function writeFile(targetPath, content) {
-  await fs.mkdir(path.dirname(targetPath), {recursive: true});
+  await fs.mkdir(path.dirname(targetPath), { recursive: true });
   await fs.writeFile(targetPath, content, 'utf8');
 }
 
@@ -89,11 +96,11 @@ async function clearExistingOutput() {
     return;
   }
 
-  const entries = await fs.readdir(OUTPUT_DIR, {withFileTypes: true});
+  const entries = await fs.readdir(OUTPUT_DIR, { withFileTypes: true });
   await Promise.all(
     entries
       .filter((entry) => entry.isFile() && entry.name.toLowerCase().endsWith('.mdx'))
-      .map((entry) => fs.unlink(path.join(OUTPUT_DIR, entry.name))),
+      .map((entry) => fs.unlink(path.join(OUTPUT_DIR, entry.name)))
   );
 }
 
@@ -101,7 +108,7 @@ function extractFrontMatterComment(source) {
   const commentPattern = /^\s*<!--([\s\S]*?)-->/;
   const match = commentPattern.exec(source);
   if (!match) {
-    return {error: 'missing front matter comment'};
+    return { error: 'missing front matter comment' };
   }
   const commentBody = match[1].replace(/\r/g, '').trim();
   let data;
@@ -121,14 +128,14 @@ function extractFrontMatterComment(source) {
       .replace(/(^|\n)([ \t]*[\w-]+):(?=\S)/g, (full, prefix, key) => `${prefix}${key}: `);
     data = yaml.load(normalizedComment) ?? {};
   } catch (error) {
-    return {error: `invalid front matter comment: ${error.message}`};
+    return { error: `invalid front matter comment: ${error.message}` };
   }
   if (data === null || typeof data !== 'object' || Array.isArray(data)) {
-    return {error: 'front matter comment must resolve to an object'};
+    return { error: 'front matter comment must resolve to an object' };
   }
   const rest = source.slice(match.index + match[0].length);
   const body = rest.replace(/^\s+/, '');
-  return {data, body};
+  return { data, body };
 }
 
 function normalizePathKey(filePath) {
@@ -136,7 +143,10 @@ function normalizePathKey(filePath) {
 }
 
 function sanitizeFilenameSegment(segment) {
-  const sanitized = segment.replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase();
+  const sanitized = segment
+    .replace(/[^a-zA-Z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .toLowerCase();
   return sanitized.length > 0 ? sanitized : 'part';
 }
 
@@ -168,11 +178,11 @@ async function copyRecipeAssets(readmePath, slug) {
   const assetMap = new Map();
   const usedNames = new Set();
 
-  await fs.mkdir(OUTPUT_DIR, {recursive: true});
+  await fs.mkdir(OUTPUT_DIR, { recursive: true });
 
   while (stack.length > 0) {
     const current = stack.pop();
-    const entries = await fs.readdir(current, {withFileTypes: true});
+    const entries = await fs.readdir(current, { withFileTypes: true });
     for (const entry of entries) {
       if (entry.name === '.git' || entry.name === '.github') {
         continue;
@@ -204,14 +214,14 @@ function extractTitleFromBody(body) {
   const headingPattern = /^#\s*(.+?)(?:\n+|$)/;
   const match = headingPattern.exec(body);
   if (!match) {
-    return {error: 'missing H1 title'};
+    return { error: 'missing H1 title' };
   }
   const title = match[1].trim();
   if (!title) {
-    return {error: 'empty H1 title'};
+    return { error: 'empty H1 title' };
   }
   const remainder = body.slice(match.index + match[0].length).replace(/^\s+/, '');
-  return {title, body: remainder};
+  return { title, body: remainder };
 }
 
 function getLastUpdatedDate(readmePath) {
@@ -222,15 +232,15 @@ function getLastUpdatedDate(readmePath) {
     stdio: ['ignore', 'pipe', 'pipe'],
   });
   if (result.status !== 0) {
-    return {error: `unable to read git history (exit ${result.status})`};
+    return { error: `unable to read git history (exit ${result.status})` };
   }
   const isoTimestamp = result.stdout.trim();
   if (!isoTimestamp) {
-    return {error: 'git history returned empty timestamp'};
+    return { error: 'git history returned empty timestamp' };
   }
   const parsed = new Date(isoTimestamp);
   if (Number.isNaN(parsed.getTime())) {
-    return {error: `unable to parse timestamp "${isoTimestamp}"`};
+    return { error: `unable to parse timestamp "${isoTimestamp}"` };
   }
   let formattedLabel;
   try {
@@ -244,11 +254,11 @@ function getLastUpdatedDate(readmePath) {
   } catch {
     formattedLabel = isoTimestamp.replace(/T.*/, '');
   }
-  return {lastUpdatedIso: parsed.toISOString(), formattedLabel};
+  return { lastUpdatedIso: parsed.toISOString(), formattedLabel };
 }
 
-function buildFrontMatter({baseData, title, lastUpdated, lastUpdatedLabel, sourceUrl}) {
-  const sanitized = {...baseData};
+function buildFrontMatter({ baseData, title, lastUpdated, lastUpdatedLabel, sourceUrl }) {
+  const sanitized = { ...baseData };
   delete sanitized.title;
   delete sanitized.last_updated;
   delete sanitized.last_updated_label;
@@ -257,7 +267,7 @@ function buildFrontMatter({baseData, title, lastUpdated, lastUpdatedLabel, sourc
   delete sanitized.last_updated_at;
   delete sanitized.source;
 
-  const ordered = {title};
+  const ordered = { title };
   for (const [key, value] of Object.entries(sanitized)) {
     if (value === undefined) {
       continue;
@@ -271,7 +281,7 @@ function buildFrontMatter({baseData, title, lastUpdated, lastUpdatedLabel, sourc
   if (sourceUrl) {
     ordered.source = sourceUrl;
   }
-  const yamlString = yaml.dump(ordered, {lineWidth: 120, sortKeys: false}).trimEnd();
+  const yamlString = yaml.dump(ordered, { lineWidth: 120, sortKeys: false }).trimEnd();
   return `---\n${yamlString}\n---`;
 }
 
@@ -302,7 +312,7 @@ function rewriteDocsLink(href) {
 }
 
 function processHref(href, baseDir, slugLookup, assetMap, options = {}) {
-  const {isImage = false} = options;
+  const { isImage = false } = options;
   const trimmed = href.trim();
   if (!trimmed) {
     return null;
@@ -397,9 +407,10 @@ function processHref(href, baseDir, slugLookup, assetMap, options = {}) {
 
 function rewriteLinks(body, readmePath, slugLookup, assetMap) {
   const baseDir = path.dirname(readmePath);
+  // Rewrite markdown links: [text](url) and ![alt](url)
   const markdownRewritten = body.replace(/(!)?\[([^\]]*?)\]\(([^)]+)\)/g, (match, bang, text, rawHref) => {
     const isImage = bang === '!';
-    const rewritten = processHref(rawHref, baseDir, slugLookup, assetMap, {isImage});
+    const rewritten = processHref(rawHref, baseDir, slugLookup, assetMap, { isImage });
     if (rewritten === null) {
       return match;
     }
@@ -407,19 +418,70 @@ function rewriteLinks(body, readmePath, slugLookup, assetMap) {
     return `${prefix}[${text}](${rewritten})`;
   });
 
-  return markdownRewritten.replace(/<img\b([^>]*?)\bsrc=(['"])([^'"]+)\2/gi, (match, preAttrs, quote, rawHref) => {
-    const rewritten = processHref(rawHref, baseDir, slugLookup, assetMap, {isImage: true});
+  // Rewrite <img src="..."> tags
+  const imgRewritten = markdownRewritten.replace(
+    /<img\b([^>]*?)\bsrc=(['"])([^'"]+)\2/gi,
+    (match, preAttrs, quote, rawHref) => {
+      const rewritten = processHref(rawHref, baseDir, slugLookup, assetMap, { isImage: true });
+      if (rewritten === null) {
+        return match;
+      }
+      return `<img${preAttrs}src=${quote}${rewritten}${quote}`;
+    }
+  );
+
+  // Rewrite <a href="..."> tags
+  return imgRewritten.replace(/<a\b([^>]*?)\bhref=(['"])([^'"]+)\2/gi, (match, preAttrs, quote, rawHref) => {
+    const rewritten = processHref(rawHref, baseDir, slugLookup, assetMap, { isImage: false });
     if (rewritten === null) {
       return match;
     }
-    return `<img${preAttrs}src=${quote}${rewritten}${quote}`;
+    return `<a${preAttrs}href=${quote}${rewritten}${quote}`;
   });
+}
+
+function applyCookbookSlugAliases(body) {
+  // Resolve aliased/renamed cookbook slugs in links to their current slugs.
+  // Handles both relative (./slug.mdx) and absolute (/ai-cookbook/slug) formats.
+  if (SLUG_ALIASES.size === 0) {
+    return body;
+  }
+
+  let result = body;
+  for (const [oldSlug, newSlug] of SLUG_ALIASES) {
+    // Match relative links: ./old-slug.mdx or ./old-slug (with optional query/hash)
+    const relativePattern = new RegExp(`(\\./|\\()${oldSlug}(\\.mdx)?([?#][^)\\s]*)?(?=[)\\s])`, 'g');
+    result = result.replace(relativePattern, (match, prefix, ext, suffix) => {
+      return `${prefix}${newSlug}${ext || ''}${suffix || ''}`;
+    });
+
+    // Match absolute links: /ai-cookbook/old-slug (with optional query/hash)
+    const absolutePattern = new RegExp(`(/ai-cookbook/)${oldSlug}([?#][^)\\s"']*)?(?=[)\\s"'])`, 'g');
+    result = result.replace(absolutePattern, (match, prefix, suffix) => {
+      return `${prefix}${newSlug}${suffix || ''}`;
+    });
+  }
+  return result;
 }
 
 function fixUnclosedHtmlTags(body) {
   // Convert HTML void elements to JSX self-closing syntax for MDX compatibility
   // Handles: <img>, <br>, <hr>, <input>, <meta>, <link>, <area>, <base>, <col>, <embed>, <source>, <track>, <wbr>
-  const voidElements = ['img', 'br', 'hr', 'input', 'meta', 'link', 'area', 'base', 'col', 'embed', 'source', 'track', 'wbr'];
+  const voidElements = [
+    'img',
+    'br',
+    'hr',
+    'input',
+    'meta',
+    'link',
+    'area',
+    'base',
+    'col',
+    'embed',
+    'source',
+    'track',
+    'wbr',
+  ];
   let result = body;
   for (const tag of voidElements) {
     // Match <tag ...> that isn't already self-closing (doesn't end with />)
@@ -450,12 +512,12 @@ async function transformReadme(readmePath, slugLookup) {
   if ('error' in commentParse) {
     throw new Error(commentParse.error);
   }
-  const {data: commentData, body: withoutComment} = commentParse;
+  const { data: commentData, body: withoutComment } = commentParse;
   const titleExtraction = extractTitleFromBody(withoutComment);
   if ('error' in titleExtraction) {
     throw new Error(titleExtraction.error);
   }
-  const {title, body} = titleExtraction;
+  const { title, body } = titleExtraction;
   const lastUpdatedResult = getLastUpdatedDate(readmePath);
   if ('error' in lastUpdatedResult) {
     throw new Error(lastUpdatedResult.error);
@@ -472,7 +534,8 @@ async function transformReadme(readmePath, slugLookup) {
   const trimmedBody = body.replace(/\s+$/, '');
   const rewrittenBody = rewriteLinks(trimmedBody, readmePath, slugLookup, assetMap);
   const mdxCompatibleBody = fixUnclosedHtmlTags(rewrittenBody);
-  const finalContent = `${frontMatterBlock}\n\n${mdxCompatibleBody.length > 0 ? `${mdxCompatibleBody}\n` : ''}`;
+  const aliasResolvedBody = applyCookbookSlugAliases(mdxCompatibleBody);
+  const finalContent = `${frontMatterBlock}\n\n${aliasResolvedBody.length > 0 ? `${aliasResolvedBody}\n` : ''}`;
 
   return {
     slug,
@@ -500,10 +563,10 @@ async function syncReadmes() {
       const transformed = await transformReadme(readmePath, slugLookup);
       const targetPath = path.join(OUTPUT_DIR, `${transformed.slug}.mdx`);
       await writeFile(targetPath, transformed.content);
-      return {slug: transformed.slug, source: transformed.source};
+      return { slug: transformed.slug, source: transformed.source };
     } catch (error) {
       console.warn(
-        `[sync-ai-cookbook] skipped ${path.relative(REPO_TEMP_DIR, readmePath)}: ${error.message ?? String(error)}`,
+        `[sync-ai-cookbook] skipped ${path.relative(REPO_TEMP_DIR, readmePath)}: ${error.message ?? String(error)}`
       );
       return null;
     }
@@ -519,7 +582,7 @@ async function syncReadmes() {
 
   console.log(
     `[sync-ai-cookbook] wrote ${results.length} file(s):\n` +
-      results.map((item) => `  - ${item.slug}.mdx ← ${item.source}`).join(os.EOL),
+      results.map((item) => `  - ${item.slug}.mdx ← ${item.source}`).join(os.EOL)
   );
 }
 
