@@ -341,14 +341,16 @@ Workflow access secure.
 ## API keys for Namespace authentication {#namespace-authentication}
 
 Create a Namespace with API key authentication as an alternative to mTLS-based authentication by selecting "Allow API
-key authentication" during setup. The gRPC endpoint format for the Namespace depends on the authentication method and whether or not High Availability features are enabled.
+key authentication" during setup. The gRPC endpoint format for the Namespace depends on the authentication method and
+whether or not High Availability features are enabled.
 
 See the following documentation for [accessing Namespaces](/cloud/namespaces#access-namespaces) for more information.
 
 :::info
 
-The difference between the two endpoints means that when switching on or off High Availability features for a Namespace, you may need to update the gRPC endpoint used by your clients.
-See [Disable High Availability](/cloud/high-availability/enable#disable) for more information.
+When switching on or off High Availability features for a Namespace, you may need to update the gRPC endpoint used by
+your Workers and Clients, because the Namespace endpoint changes based on whether High Availability features are
+enabled. See [Disable High Availability](/cloud/high-availability/enable#disable) for more information.
 
 :::
 
@@ -358,7 +360,9 @@ Use the gRPC regional endpoint `<region>.<cloud_provider>.api.temporal.io:7233`.
 
 ### With High Availability features
 
-Use the gRPC Namespace endpoint: `<namespace>.<account>.tmprl.cloud:7233`. This allows automated failover without needing to configure worker(s) with both endpoints. These endpoints will still work, but in the event of a failover, there is a brief period of unavailability between your workers and Temporal server. 
+Use the gRPC Namespace endpoint: `<namespace>.<account>.tmprl.cloud:7233`. This allows automated failover without
+needing to configure Worker with the regional endpoints of both the primary Namespace and the replica. In addition,
+using the Namespace endpoint also reduces the unavailability window during a failover event.
 
 ## Use API keys to authenticate {#using-apikeys}
 
