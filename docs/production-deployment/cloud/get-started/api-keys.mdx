@@ -360,9 +360,9 @@ Use the gRPC regional endpoint `<region>.<cloud_provider>.api.temporal.io:7233`.
 
 ### With High Availability features
 
-Use the gRPC Namespace endpoint: `<namespace>.<account>.tmprl.cloud:7233`. This allows automated failover without
-needing to configure Worker with the regional endpoints of both the primary Namespace and the replica. In addition,
-using the Namespace endpoint also reduces the unavailability window during a failover event.
+Use the gRPC Namespace endpoint: `<namespace>.<account>.tmprl.cloud:7233`. This allows Workers and Clients to always
+connect to the active region of the Namespace. In a failover event, Temporal Cloud changes the Namespace's active region
+and points this Namespace endpoint to the new active region.
 
 ## Use API keys to authenticate {#using-apikeys}
 
