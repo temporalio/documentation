@@ -485,6 +485,44 @@ function convertHtmlImagesToMarkdown(body) {
   });
 }
 
+function convertGitHubAdmonitions(body) {
+  // Convert GitHub-style admonitions to Docusaurus admonitions
+  // GitHub: > [!NOTE], > [!WARNING], > [!TIP], > [!IMPORTANT], > [!CAUTION]
+  // Docusaurus: :::note, :::caution, :::tip, :::info, :::danger
+  const admonitionMap = {
+    NOTE: 'note',
+    TIP: 'tip',
+    IMPORTANT: 'info',
+    WARNING: 'caution',
+    CAUTION: 'danger',
+  };
+
+  // Match GitHub admonition blocks: > [!TYPE] followed by continuation lines starting with >
+  const admonitionPattern = /^> \[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\s*\n((?:>.*(?:\n|$))*)/gim;
+
+  return body.replace(admonitionPattern, (match, type, content) => {
+    const docusaurusType = admonitionMap[type.toUpperCase()] || 'note';
+
+    // Remove the > prefix from each line of content and trim
+    const cleanedContent = content
+      .split('\n')
+      .map((line) => {
+        // Remove leading > and optional single space
+        if (line.startsWith('> ')) {
+          return line.slice(2);
+        }
+        if (line.startsWith('>')) {
+          return line.slice(1);
+        }
+        return line;
+      })
+      .join('\n')
+      .trim();
+
+    return `:::${docusaurusType}\n${cleanedContent}\n:::\n`;
+  });
+}
+
 function fixUnclosedHtmlTags(body) {
   // Convert HTML void elements to JSX self-closing syntax for MDX compatibility
   // Note: <img> is handled separately by convertHtmlImagesToMarkdown
@@ -542,7 +580,8 @@ async function transformReadme(readmePath, slugLookup) {
   const trimmedBody = body.replace(/\s+$/, '');
   const rewrittenBody = rewriteLinks(trimmedBody, readmePath, slugLookup, assetMap);
   const markdownImages = convertHtmlImagesToMarkdown(rewrittenBody);
-  const mdxCompatibleBody = fixUnclosedHtmlTags(markdownImages);
+  const docusaurusAdmonitions = convertGitHubAdmonitions(markdownImages);
+  const mdxCompatibleBody = fixUnclosedHtmlTags(docusaurusAdmonitions);
   const aliasResolvedBody = applyCookbookSlugAliases(mdxCompatibleBody);
   const finalContent = `${frontMatterBlock}\n\n${aliasResolvedBody.length > 0 ? `${aliasResolvedBody}\n` : ''}`;
 
