@@ -226,7 +226,9 @@ function extractTitleFromBody(body) {
 
 function getLastUpdatedDate(readmePath) {
   const relative = path.relative(REPO_TEMP_DIR, readmePath);
-  const result = spawnSync('git', ['log', '-1', '--format=%cI', '--', relative], {
+  // Use %aI (author date) instead of %cI (committer date) to get the actual
+  // content modification date. Committer dates change on rebase/cherry-pick.
+  const result = spawnSync('git', ['log', '-1', '--format=%aI', '--', relative], {
     cwd: REPO_TEMP_DIR,
     encoding: 'utf8',
     stdio: ['ignore', 'pipe', 'pipe'],
@@ -464,24 +466,30 @@ function applyCookbookSlugAliases(body) {
   return result;
 }
 
+function convertHtmlImagesToMarkdown(body) {
+  // Convert <img> tags to Markdown image syntax ![alt](src) for Docusaurus compatibility
+  // Matches both self-closing <img ... /> and unclosed <img ...> tags
+  return body.replace(/<img\b([^>]*?)\/?>/gi, (match, attrsString) => {
+    // Extract src attribute
+    const srcMatch = attrsString.match(/\bsrc=(['"])([^'"]*)\1/i);
+    if (!srcMatch) {
+      return match; // No src, leave as-is
+    }
+    const src = srcMatch[2];
+
+    // Extract alt attribute (optional)
+    const altMatch = attrsString.match(/\balt=(['"])([^'"]*)\1/i);
+    const alt = altMatch ? altMatch[2] : '';
+
+    return `![${alt}](${src})`;
+  });
+}
+
 function fixUnclosedHtmlTags(body) {
   // Convert HTML void elements to JSX self-closing syntax for MDX compatibility
-  // Handles: <img>, <br>, <hr>, <input>, <meta>, <link>, <area>, <base>, <col>, <embed>, <source>, <track>, <wbr>
-  const voidElements = [
-    'img',
-    'br',
-    'hr',
-    'input',
-    'meta',
-    'link',
-    'area',
-    'base',
-    'col',
-    'embed',
-    'source',
-    'track',
-    'wbr',
-  ];
+  // Note: <img> is handled separately by convertHtmlImagesToMarkdown
+  // Handles: <br>, <hr>, <input>, <meta>, <link>, <area>, <base>, <col>, <embed>, <source>, <track>, <wbr>
+  const voidElements = ['br', 'hr', 'input', 'meta', 'link', 'area', 'base', 'col', 'embed', 'source', 'track', 'wbr'];
   let result = body;
   for (const tag of voidElements) {
     // Match <tag ...> that isn't already self-closing (doesn't end with />)
@@ -533,7 +541,8 @@ async function transformReadme(readmePath, slugLookup) {
 
   const trimmedBody = body.replace(/\s+$/, '');
   const rewrittenBody = rewriteLinks(trimmedBody, readmePath, slugLookup, assetMap);
-  const mdxCompatibleBody = fixUnclosedHtmlTags(rewrittenBody);
+  const markdownImages = convertHtmlImagesToMarkdown(rewrittenBody);
+  const mdxCompatibleBody = fixUnclosedHtmlTags(markdownImages);
   const aliasResolvedBody = applyCookbookSlugAliases(mdxCompatibleBody);
   const finalContent = `${frontMatterBlock}\n\n${aliasResolvedBody.length > 0 ? `${aliasResolvedBody}\n` : ''}`;
 
