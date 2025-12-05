@@ -34,7 +34,7 @@ With Provisioned Capacity, you can control your capacity limits by requesting Te
 
 ## Namespace Capacity
 
-Namespaces in Temporal can be set to either an On-Demand or Provisioned Capacity Mode. 
+Namespaces in Temporal can be set to either an **On-Demand** or **Provisioned Capacity** Mode. 
 These modes govern how limits are assigned to a Namespace.  
 
 Actions Per Second (APS) is the primary limit for Namespaces and is based on the operating billable Actions that occur each second.
@@ -89,8 +89,9 @@ Using On-Demand Capacity, your rate limit grows automatically along with your us
 |               | Actions Per Second | Requests Per Second | Operations Per Second|
 |---------------|--------------------|---------------------|----------------------|
 | Default Limit | 500                | 2000                | 4000                 |
-| Scaling       | Automatically adjusts based on the lesser of 4 * APS Average or 2 * APS P90 over the past 7 days |
 
+
+Scaling automatically adjusts based on the lesser of 4 * APS Average or 2 * APS P90 over the past 7 days.
 
 If you experience usage spikes, you may hit a throughput limit. 
 In that case, consider switching to [Provisioned Capacity](#provisioned-capacity). 
@@ -112,7 +113,7 @@ Greater of:
 
 This means that your default limit would be 800 APS.
 
-![image]
+![Usage graph showing increasing APS usage for one month, with occasional spikes, and a rising APS limit](/static/img/provisioned-capacity/usage_graph.png)
 
 ## Provisioned Capacity {#provisioned-capacity}
 
@@ -127,8 +128,9 @@ Provisioned Capacity provides an alternative to On-Demand Capacity by allowing y
 
 |               | Actions Per Second | Requests Per Second | Operations Per Second|
 |---------------|--------------------|---------------------|----------------------|
-| Default Limit | 500                | 2000                | 4000                 |
-| Scaling       | Customers can set 2, 3, 4, 6, 8, 10, 12 TRUs, subject to availability. TRUs can be adjusted hourly. |
+| TRU           | 500                | 2000                | 4000                 |
+
+Customers can set 2, 3, 4, 6, 8, 10, 12 TRUs, subject to availability. TRUs can be adjusted hourly.
 
 See [Capacity Mode Pricing](/cloud/pricing#capacity-modes-pricing) for pricing implications.
 
@@ -172,7 +174,7 @@ Capacity modes can be set and adjusted by Global Admin and Namespace Admin.
 You can set Capacity Modes for an individual Namespace by navigating to the Namespace page in the Temporal Cloud UI (`https://cloud.temporal.io/namespaces/<Namespace ID>`). 
 To view your current capacity configuration and change your capacity mode, navigate to the capacity tile and click *Manage Capacity*.
 
-![image]
+![Manage Capacity button in the Temporal UI](/static/img/provisioned-capacity/manage_capacity_button.png)
 
 Under *Manage Capacity* you will be able to select between *On-Demand* and *Provisioned Capacity* modes. 
 The *On-Demand* section will display your available On-Demand capacity. 
@@ -189,7 +191,7 @@ In addition to the Capacity Mode selections, a summary of APS usage over the las
 For more detailed information, we recommend setting up metrics that track your APS and Limits. 
 See [Monitoring Trends Against Limits](/production-deployment/cloud/service-health#rps-aps-rate-limits) to track usage trends.
 
-![image]
+![Manage Capacity panel in the Temporal UI](/static/img/provisioned-capacity/manage_capacity_panel.png)
 
 ### Setting Capacity Modes from the CLI
 
