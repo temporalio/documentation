@@ -1,16 +1,16 @@
 import React from 'react';
 import Head from '@docusaurus/Head';
-import {DocProvider, useDoc} from '@docusaurus/plugin-content-docs/client';
+import { DocProvider, useDoc } from '@docusaurus/plugin-content-docs/client';
 import DocItemMetadata from '@theme/DocItem/Metadata';
-import type {Props as DocItemProps} from '@theme/DocItem';
-import {HtmlClassNameProvider} from '@docusaurus/theme-common';
+import type { Props as DocItemProps } from '@theme/DocItem';
+import { HtmlClassNameProvider } from '@docusaurus/theme-common';
 import DocItemTOCDesktop from '@theme/DocItem/TOC/Desktop';
 import DocItemTOCMobile from '@theme/DocItem/TOC/Mobile';
 import Link from '@docusaurus/Link';
-import {MDXProvider} from '@mdx-js/react';
+import { MDXProvider } from '@mdx-js/react';
 import MDXComponents from '@theme/MDXComponents';
 import clsx from 'clsx';
-import {usePluginData} from '@docusaurus/useGlobalData';
+import { usePluginData } from '@docusaurus/useGlobalData';
 
 import styles from './CookbookDocItem.module.css';
 
@@ -37,7 +37,7 @@ function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-export default function CookbookDocItem({content, tags}: CookbookDocItemProps) {
+export default function CookbookDocItem({ content, tags }: CookbookDocItemProps) {
   // IMPORTANT: don't call useDoc() here.
   return (
     <DocProvider content={content}>
@@ -46,18 +46,25 @@ export default function CookbookDocItem({content, tags}: CookbookDocItemProps) {
   );
 }
 
-function InnerCookbookDocItem({content, tags}: CookbookDocItemProps) {
+function InnerCookbookDocItem({ content, tags }: CookbookDocItemProps) {
   const DocContent = content;
 
   // Now we're under <DocProvider>, so useDoc() is safe:
-  const {metadata, frontMatter, toc, contentTitle} = useDoc();
-  const {title, description, id, unversionedId, tags: metaTags = [], formattedLastUpdatedAt, lastUpdatedAt} = metadata as
-    typeof metadata & {
-      unversionedId?: string;
-      formattedLastUpdatedAt?: string;
-      lastUpdatedAt?: number | string | null;
-    };
-  const indexData = usePluginData('cookbook-index') as {items?: CookbookIndexItem[]} | undefined;
+  const { metadata, frontMatter, toc, contentTitle } = useDoc();
+  const {
+    title,
+    description,
+    id,
+    unversionedId,
+    tags: metaTags = [],
+    formattedLastUpdatedAt,
+    lastUpdatedAt,
+  } = metadata as typeof metadata & {
+    unversionedId?: string;
+    formattedLastUpdatedAt?: string;
+    lastUpdatedAt?: number | string | null;
+  };
+  const indexData = usePluginData('cookbook-index') as { items?: CookbookIndexItem[] } | undefined;
   const hasTOC = !frontMatter?.hide_table_of_contents && (toc?.length ?? 0) > 0;
   const shouldRenderSyntheticTitle = !frontMatter?.hide_title && typeof contentTitle === 'undefined';
   const syntheticTitle = shouldRenderSyntheticTitle ? title : undefined;
@@ -103,24 +110,21 @@ function InnerCookbookDocItem({content, tags}: CookbookDocItemProps) {
     }
     return undefined;
   }, []);
-  const formatTimestamp = React.useCallback(
-    (value: number): string | undefined => {
-      if (!Number.isFinite(value)) {
-        return undefined;
-      }
-      try {
-        const formatter = new Intl.DateTimeFormat(undefined, {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-        });
-        return formatter.format(new Date(value));
-      } catch {
-        return new Date(value).toLocaleDateString();
-      }
-    },
-    [],
-  );
+  const formatTimestamp = React.useCallback((value: number): string | undefined => {
+    if (!Number.isFinite(value)) {
+      return undefined;
+    }
+    try {
+      const formatter = new Intl.DateTimeFormat(undefined, {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      });
+      return formatter.format(new Date(value));
+    } catch {
+      return new Date(value).toLocaleDateString();
+    }
+  }, []);
   const frontMatterLastUpdatedLabel = React.useMemo(() => {
     const formattedCandidates = [
       cookbookFrontMatter?.last_updated_label,
@@ -131,10 +135,7 @@ function InnerCookbookDocItem({content, tags}: CookbookDocItemProps) {
       return formatted;
     }
 
-    const rawCandidates = [
-      cookbookFrontMatter?.last_updated,
-      cookbookFrontMatter?.last_updated_at,
-    ];
+    const rawCandidates = [cookbookFrontMatter?.last_updated, cookbookFrontMatter?.last_updated_at];
     for (const raw of rawCandidates) {
       const normalized = normalizeTimestamp(raw);
       if (typeof normalized === 'number') {
@@ -175,7 +176,7 @@ function InnerCookbookDocItem({content, tags}: CookbookDocItemProps) {
         event.preventDefault();
       }
     },
-    [isGithubEnabled],
+    [isGithubEnabled]
   );
   const lastUpdatedLabel = React.useMemo(() => {
     if (frontMatterLastUpdatedLabel) {
@@ -198,26 +199,29 @@ function InnerCookbookDocItem({content, tags}: CookbookDocItemProps) {
     }
     return <p className={styles.lastUpdated}>Last updated {lastUpdatedLabel}</p>;
   }, [lastUpdatedLabel]);
-  const renderActions = React.useCallback(() => (
-    <div className={styles.actionsRow}>
-      <Link className={styles.actionLink} to="/ai-cookbook">
-        <BackArrowIcon className={styles.actionIcon} />
-        Back to Cookbook
-      </Link>
-      <a
-        className={clsx(styles.actionLink, styles.actionGithub)}
-        href={githubHref || undefined}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-disabled={isGithubEnabled ? undefined : 'true'}
-        onClick={handleGithubClick}
-        tabIndex={isGithubEnabled ? undefined : -1}
-      >
-        <GithubIcon className={styles.actionIcon} />
-        Open in GitHub
-      </a>
-    </div>
-  ), [githubHref, handleGithubClick, isGithubEnabled]);
+  const renderActions = React.useCallback(
+    () => (
+      <div className={styles.actionsRow}>
+        <Link className={styles.actionLink} to="/ai-cookbook">
+          <BackArrowIcon className={styles.actionIcon} />
+          Back to Cookbook
+        </Link>
+        <a
+          className={clsx(styles.actionLink, styles.actionGithub)}
+          href={githubHref || undefined}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-disabled={isGithubEnabled ? undefined : 'true'}
+          onClick={handleGithubClick}
+          tabIndex={isGithubEnabled ? undefined : -1}
+        >
+          <GithubIcon className={styles.actionIcon} />
+          Open in GitHub
+        </a>
+      </div>
+    ),
+    [githubHref, handleGithubClick, isGithubEnabled]
+  );
 
   const components = React.useMemo(() => {
     const DefaultH1 =
