@@ -8054,9 +8054,9 @@ mdast-util-phrasing@^4.0.0:
     unist-util-is "^6.0.0"
 
 mdast-util-to-hast@^13.0.0:
-  version "13.2.0"
-  resolved "https://registry.npmjs.org/mdast-util-to-hast/-/mdast-util-to-hast-13.2.0.tgz"
-  integrity sha512-QGYKEuUsYT9ykKBCMOEDLsU5JRObWQusAolFMeko/tYPufNkRffBAQjIE+99jbA87xv6FgmjLtwjh9wBWajwAA==
+  version "13.2.1"
+  resolved "https://registry.yarnpkg.com/mdast-util-to-hast/-/mdast-util-to-hast-13.2.1.tgz#d7ff84ca499a57e2c060ae67548ad950e689a053"
+  integrity sha512-cctsq2wp5vTsLIcaymblUriiTcZd0CwWtCbLvrOzYCDZoWyMNV8sZ7krj09FSnsiJi3WVsHLM4k6Dq/yaPyCXA==
   dependencies:
     "@types/hast" "^3.0.0"
     "@types/mdast" "^4.0.0"
@@ -11185,10 +11185,10 @@ snake-case@^3.0.4:
     dot-case "^3.0.4"
     tslib "^2.0.3"
 
-snipsync@^1.9.0:
-  version "1.11.0"
-  resolved "https://registry.npmjs.org/snipsync/-/snipsync-1.11.0.tgz"
-  integrity sha512-KiYVtRE65/h+sIho7PF4yL++RI0zro3mTCJwxHPM6Lvz92Sq3uvtIFyqKea8u7eDgPzoiJz+61wG27taW4D/gg==
+snipsync@^1.12.0:
+  version "1.12.0"
+  resolved "https://registry.yarnpkg.com/snipsync/-/snipsync-1.12.0.tgz#8134d51e9b150ad6c48560857dd9526b95f7eb78"
+  integrity sha512-UHvct6DAVjCu2y+5/tSNKIbdGoANlpUICQD+QDXyGUuX9nH6QcepRinNoCDDnaBYTvLcs7qDozp+nw0WY4E2DA==
   dependencies:
     "@octokit/rest" "^18.12.0"
     anzip "^0.2.0"
