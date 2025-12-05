@@ -450,6 +450,7 @@ module.exports = {
               ],
             },
             'production-deployment/cloud/worker-health',
+            'production-deployment/cloud/capacity-modes',
             'production-deployment/cloud/service-health',
             'production-deployment/cloud/operation-api',
             'production-deployment/cloud/terraform-provider',
@@ -626,6 +627,7 @@ module.exports = {
       },
       items: [
         "best-practices/managing-namespace",
+        "best-practices/managing-aps-limits",
         "best-practices/cloud-access-control",
         "best-practices/security-controls",
         "best-practices/worker",

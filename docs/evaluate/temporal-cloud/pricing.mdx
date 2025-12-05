@@ -259,7 +259,58 @@ If you have additional questions about credits and volume-based pricing, please 
 ## Other pricing {#other-pricing}
 
 Temporal Cloud has additional pricing for other elements of the platform.
-Following are additional pricing considerations for High Availability features and SSO/SAML.
+
+### Capacity Modes {#capacity-modes-pricing}
+
+**What are Capacity Modes?** 
+
+Temporal offers On-Demand and Provisioned Capacity modes. 
+On-Demand capacity is automatically adjusted based on past usage. 
+Provisioned Capacity modes lets you define the capacity that is needed by your Workflow and is useful to handle traffic outside of the standard on-demand limits.
+See details on how capacity is set and the associated limits at [Capacity Modes](/cloud/capacity-modes).
+
+:::tip Support, stability, and dependency info
+
+Provisioned Capacity is currently in [pre-release](/evaluate/development-production-features/release-stages#pre-release). 
+Please contact your AE or Support to enable this feature.
+
+:::
+
+**How does pricing for Capacity Modes work?**
+
+The number of Actions accrued can be impacted by your capacity mode. 
+For On-Demand Capacity Mode, Actions are accrued as usual. 
+For Provisioned Capacity there is a minimum number of Actions that must be used per hour for each [Temporal Resource Unit (TRU)](/cloud/capacity-modes) that is provisioned.
+If Action volume in an hour does not exceed the minimum allocation, Actions of the subtype `ns_capacity:tru` will be recorded to the required volume. 
+The minimum requirement for the first TRU is 0 Actions as it aligns with the default rate limits on Temporal. 
+For each additional TRU, there is a minimum hourly requirement of 360,000 Actions Per Hour. 
+360,000 Actions per hour represents a 20% utilization of requested resources. 
+This can be calculated as 500 APS Per TRU * 3600 Seconds (1 Hour) * 20%= 360,000 Actions. 
+
+For example: 
+
+If you have a namespace that requests 4 TRUs (ie 2,000 APS) for 4 hours and have usage as follows:
+* Hour 1: 2,000,000 Actions
+* Hour 2: 5,000,000 Actions
+* Hour 3: 4,000,000 Actions
+* Hour 4: 500,000 Actions
+Then the cost of Provisioned Capacity would be calculated as:
+
+4 TRUs Requested - 1 Default TRU included = 3 TRUs with a minimum usage requirement
+3 TRUs * 360,000 Actions per Hour= 1,080,000 minimum Actions per Hour
+* Hour 1: 2,000,000 Actions > 1,080,000 minimum Actions = No additional Actions accrued
+* Hour 2: 5,000,000 Actions > 1,080,000 minimum Actions = No additional Actions accrued
+* Hour 3: 4,000,000 Actions > 1,080,000 minimum Actions = No additional Actions accrued
+* Hour 4: 500,000 Actions < 1,080,000 minimum Actions so 1,080,000-500,000 Actions = 580,000 additional actions will be added to the hour
+Total for 4 hours: 2,000,000+5,000,000+4,000,000+1,080,000=12,080,000 Actions
+
+It TRUs are changed multiple times within an hour, the highest value within that hour will be used to calculate the minimum actions required.
+
+Temporal’s approach to pricing Provisioned Capacity aligns with our goal to only charge for what you use. 
+The minimum hourly allocation will have no impact on your price if you utilize the requested capacity above your default by 20% or more, and will only incur an additional charge if the requested capacity is not used. 
+To avoid being charged for provisioned capacity it is advised to "return" capacity to the pool and switch back to the On-demand mode when usage is stable. 
+
+
 
 ### High Availability feature pricing {#high-availability-features}
 
