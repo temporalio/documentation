@@ -78,7 +78,7 @@ temporal worker deployment delete \
 
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -115,7 +115,7 @@ temporal worker deployment delete-version \
     --skip-drainage
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -148,7 +148,7 @@ temporal worker deployment describe \
     --name YourDeploymentName
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -181,7 +181,7 @@ temporal worker deployment describe-version \
     --deployment-name YourDeploymentName --build-id YourBuildID
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -209,6 +209,8 @@ For example, listing Deployments in YourDeploymentNamespace:
 temporal worker deployment list \
     --namespace YourDeploymentNamespace
 ```
+
+Use [global flags](#global-flags) to customize the connection to the Temporal Service for this command.
 
 ### manager-identity
 
@@ -288,7 +290,7 @@ temporal worker deployment manager-identity set \
 
 Sets the Manager Identity of the Deployment to any string.
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -331,7 +333,7 @@ temporal worker deployment manager-identity unset \
 
 Clears the Manager Identity field for a given Deployment.
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -378,7 +380,7 @@ temporal worker deployment set-current-version \
     --deployment-name YourDeploymentName --unversioned
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -437,7 +439,7 @@ temporal worker deployment set-ramping-version \
     --delete
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -476,7 +478,7 @@ The current metadata is also returned with `describe-version`:
     --deployment-name YourDeploymentName --build-id YourBuildID \
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -493,7 +495,7 @@ Look up information of a specific worker.
 temporal worker describe --namespace YourNamespace --worker-instance-key YourKey
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -507,7 +509,7 @@ Get a list of workers to the specified namespace.
 temporal worker list --namespace YourNamespace --query 'taskQueue="YourTaskQueue"'
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|

@@ -65,7 +65,7 @@ persistence store, and visibility store. Add `--detail` for additional info:
 temporal operator cluster describe [--detail]
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -79,6 +79,8 @@ View information about the health of a Temporal Service:
 temporal operator cluster health
 ```
 
+Use [global flags](#global-flags) to customize the connection to the Temporal Service for this command.
+
 ### list
 
 Print a list of remote Temporal Clusters (Services) registered to the local
@@ -89,7 +91,7 @@ count, Failover version, and availability:
 temporal operator cluster list [--limit max-count]
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -104,7 +106,7 @@ temporal operator cluster remove \
     --name YourClusterName
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -124,6 +126,8 @@ temporal operator cluster system \
     --frontend-address "YourRemoteEndpoint:YourRemotePort"
 ```
 
+Use [global flags](#global-flags) to customize the connection to the Temporal Service for this command.
+
 ### upsert
 
 Add, remove, or update a registered ("remote") Temporal Cluster (Service).
@@ -140,7 +144,7 @@ temporal operator cluster upsert \
     --enable-connection false
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -193,7 +197,7 @@ temporal operator namespace create \
 
 Note: URI values for archival states can't be changed once enabled.
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -224,7 +228,7 @@ temporal operator namespace delete \
     --namespace YourNamespaceName
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -246,7 +250,7 @@ temporal operator namespace describe \
     --namespace YourNamespaceName
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -259,6 +263,8 @@ Display a detailed listing for all Namespaces on the Service:
 ```
 temporal operator namespace list
 ```
+
+Use [global flags](#global-flags) to customize the connection to the Temporal Service for this command.
 
 ### update
 
@@ -294,7 +300,7 @@ temporal operator namespace update \
     --visibility-archival-state disabled
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -351,7 +357,7 @@ temporal operator nexus endpoint create \
   --description-file DESCRIPTION.md
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -370,7 +376,7 @@ Delete a Nexus Endpoint from the Server.
 temporal operator nexus endpoint delete --name your-endpoint
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -384,7 +390,7 @@ Get a Nexus Endpoint by name from the Server.
 temporal operator nexus endpoint get --name your-endpoint
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -397,6 +403,8 @@ List all Nexus Endpoints on the Server.
 ```
 temporal operator nexus endpoint list
 ```
+
+Use [global flags](#global-flags) to customize the connection to the Temporal Service for this command.
 
 #### update
 
@@ -426,7 +434,7 @@ temporal operator nexus endpoint update \
   --description-file DESCRIPTION.md
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -465,7 +473,7 @@ temporal operator search-attribute create \
     --type Keyword
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -480,6 +488,8 @@ Workflow Queries. You can manage this list and add attributes as needed:
 ```
 temporal operator search-attribute list
 ```
+
+Use [global flags](#global-flags) to customize the connection to the Temporal Service for this command.
 
 ### remove
 
@@ -499,7 +509,7 @@ temporal operator search-attribute remove \
     --yes
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|

@@ -50,7 +50,7 @@ This command returns the current configuration including:
   If set, each individual fairness key will be limited to this rate,
   scaled by the weight of the fairness key.
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -82,7 +82,7 @@ This command supports updating:
 
 To unset a rate limit, pass in 'default', for example: --queue-rps-limit default
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -175,7 +175,7 @@ reachability converges to the most accurate value. This is designed to act
 in the most conservative way until convergence. For example, `Reachable` is
 more conservative than `ClosedWorkflowsOnly`.
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -212,7 +212,7 @@ You can specify the `--build-id` and `--task-queue` flags multiple times. If
 `--task-queue` is omitted, the command checks Build ID reachability against
 all Task Queues.
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -238,7 +238,7 @@ temporal task-queue get-build-ids \
 
 This command is limited to Namespaces that support Worker versioning.
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -254,7 +254,7 @@ temporal task-queue list-partition \
     --task-queue YourTaskQueue
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -293,7 +293,7 @@ default for that set.
 
 This command is limited to Namespaces that support Worker versioning.
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -328,7 +328,7 @@ temporal task-queue update-build-ids add-new-default \
 +------------------------------------------------------------------------+
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -360,7 +360,7 @@ temporal task-queue update-build-ids promote-id-in-set \
 +------------------------------------------------------------------------+
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -393,7 +393,7 @@ temporal task-queue update-build-ids promote-set \
 +------------------------------------------------------------------------+
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -445,7 +445,7 @@ temporal task-queue versioning add-redirect-rule \
 +---------------------------------------------------------------------+
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -482,7 +482,7 @@ override this validation.
 +---------------------------------------------------------------------+
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -511,7 +511,7 @@ Use the `--force` option to override this validation.
 +---------------------------------------------------------------------+
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -535,7 +535,7 @@ temporal task-queue versioning delete-redirect-rule \
 +---------------------------------------------------------------------+
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -568,6 +568,8 @@ Task Queues support the following versioning rules:
 +---------------------------------------------------------------------+
 ```
 
+Use [global flags](#global-flags) to customize the connection to the Temporal Service for this command.
+
 ### insert-assignment-rule
 
 Inserts a new assignment rule for this Task Queue. Rules are evaluated in
@@ -588,7 +590,7 @@ If you do not specify a `--rule-index`, this command inserts at index 0.
 +---------------------------------------------------------------------+
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -631,7 +633,7 @@ Percent may vary between 0 and 100 (default).
 +---------------------------------------------------------------------+
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -659,7 +661,7 @@ temporal task-queue versioning replace-redirect-rule \
 +---------------------------------------------------------------------+
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|

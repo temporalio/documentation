@@ -68,7 +68,7 @@ The policies include:
 * **TerminateOther**: Terminate the running Workflow Execution and replace
   it with the incoming new Workflow Execution.
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -103,7 +103,7 @@ Schedules support any combination of `--calendar`, `--interval`, and `--cron`:
   (@daily/@weekly/@every X/etc).
   For example, every Friday at 12:30 PM: `30 12 * * Fri`.
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -154,7 +154,7 @@ Removing a Schedule won't affect the Workflow Executions it started that are
 still running. To cancel or terminate these Workflow Executions, use `temporal
 workflow delete` with the `TemporalScheduledById` Search Attribute instead.
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -170,7 +170,7 @@ temporal schedule describe \
     --schedule-id YourScheduleId
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -185,7 +185,7 @@ temporal schedule list \
     --namespace YourNamespace
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -217,7 +217,7 @@ The `--reason` text updates the Schedule's `notes` field for operations
 communication. It defaults to "(no reason provided)" if omitted. This field is
 also visible on the Service Web UI.
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -235,7 +235,7 @@ temporal schedule trigger \
     --schedule-id "YourScheduleId"
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -253,7 +253,7 @@ temporal schedule update \
     --workflow-type "NewWorkflowType"
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|

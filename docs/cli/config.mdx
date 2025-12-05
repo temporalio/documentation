@@ -33,7 +33,7 @@ temporal env delete \
     --prop tls.client_cert_path
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -47,6 +47,8 @@ Remove a full profile entirely. The `--profile` must be set explicitly.
 temporal env delete-profile \
     --profile my-profile
 ```
+
+Use [global flags](#global-flags) to customize the connection to the Temporal Service for this command.
 
 ## get
 
@@ -63,7 +65,7 @@ or
 temporal config get
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
@@ -77,6 +79,8 @@ List profile names in the config file.
 temporal config list
 ```
 
+Use [global flags](#global-flags) to customize the connection to the Temporal Service for this command.
+
 ## set
 
 Assign a value to a property and store it in the config file:
@@ -87,7 +91,7 @@ temporal config set \
     --value us-west-2.aws.api.temporal.io:7233
 ```
 
-Use the following options to change the behavior of this command.
+Use the following options to change the behavior of this command. You can also use any of the [global flags](#global-flags) that apply to all subcommands.
 
 | Flag | Required | Description |
 |------|----------|-------------|
