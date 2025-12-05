@@ -113,7 +113,7 @@ This challenge additionally compounds when you have multiple levels of nesting--
 
 #### How to Mitigate
 
-- Evaluate whether Child Workflows are necessary--other options include activities or Workflows in another Namespace (via Nexus)
+- Evaluate whether Child Workflows are necessary--other options include Activities or Workflows in another Namespace (via Nexus)
 - When you do use Child Workflows, limit fan-out size--design a Child Workflow to process its work in batches rather than one Child per work item. [This sample application](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/batch/slidingwindow) shows more detail.
 - Consider flattening deeply nested hierarchies into shallower structures. 
 
