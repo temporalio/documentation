@@ -1642,7 +1642,7 @@ A Workflow can be registered as dynamic by using `worker.RegisterDynamicActivity
 You must register the Activity with the Worker before it can be invoked.
 Only one Dynamic Activity can be present on a Worker.
 
-The Workflow Definition must then accept a single argument of type `converter.EncodedValues`.
+The Activity Definition must then accept a single argument of type `converter.EncodedValues`.
 This code snippet is taken from the [Dynamic Workflow example from samples-go](https://github.com/temporalio/samples-go/tree/main/dynamic-workflows).
 
 ```go
