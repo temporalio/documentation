@@ -31,6 +31,20 @@ When deserializing from Payloads, codecs are applied first to last to reverse th
 
 Use a custom Payload Codec to transform your Payloads; for example, implementing compression and/or encryption on your Workflow Execution data.
 
+## Encryption in transit vs at rest
+
+By default, Temporal supports TLS and mTLS to encrypt Payloads during transit between your Workers, Clients, and the Temporal Service. However, TLS only protects data in transit. When data reaches the Temporal Service, it is decrypted so the server can process and store it.
+
+Without additional encryption, your data is stored unencrypted in the Temporal Server's database. Anyone with database access or access to the Temporal Web UI can view your sensitive data in plain text.
+
+### Client-side encryption
+
+Use a custom Payload Codec to implement client-side encryption. This encrypts data in your Worker or Client before it is sent to the Temporal Service, and decrypts it only when it returns to your Workers or Clients.
+
+With a custom Payload Codec, the Temporal Service stores and processes only encrypted data. Data remains encrypted in the Event History and database. Only your Workers and Clients with the encryption key can decrypt the data. The Temporal Web UI and CLI display encrypted data unless you configure a [Codec Server](/codec-server) to decode it.
+
+You maintain the encryption keys and algorithms. The Temporal Service itself cannot access your unencrypted data.
+
 ### Encryption {#encryption}
 
 Using end-to-end encryption in your custom Data Converter ensures that sensitive application data is secure when handled by the Temporal Server.

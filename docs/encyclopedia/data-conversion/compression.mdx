@@ -1,0 +1,59 @@
+---
+id: compression
+title: Payload Compression
+sidebar_label: Compression
+description: Learn how to compress Payloads in Temporal to reduce payload sizes and stay within the 4MB limit while handling large amounts of Workflow and Activity data.
+slug: /compression
+toc_max_heading_level: 4
+keywords:
+  - compression
+  - payloads
+  - data-converters
+  - payload-codec
+  - encryption
+tags:
+  - Concepts
+  - Data Converters
+  - Compression
+---
+
+This page discusses [Payload compression](#compression).
+
+## What is Payload compression? {#compression}
+
+Payload compression reduces the size of data in your Workflow and Activity [Payloads](/dataconversion#payload). Temporal limits payload sizes to 4MB by default. Plain text data often compresses well, so compression helps you stay within this limit while working with larger data sets.
+
+The Temporal Service retains payloads directly by default. Over time, payload size can impact indexing speed and responsiveness. This is one reason to use [Continue-As-New](/workflows#continue-as-new) for long-running Workflows. Compressing payloads can help mitigate these issues.
+
+## When to use compression {#when-to-use}
+
+Compression is particularly useful when:
+
+- Working with large text-based payloads that approach the 4MB limit
+- Reducing storage costs for [Event Histories](/event-history) with many large payloads
+- Improving network transfer speeds for data-heavy Workflows
+
+## Compression is not a substitute for encryption {#not-encryption}
+
+**Important:** Compression does not protect the confidentiality of your data. Unlike encryption, which uses a secret key to convert data back to its original form, compression does not require a secret key. If working with sensitive data, use encryption. See [What is Key Management?](/key-management) for more guidance.
+
+## Compress before encrypting {#order-of-operations}
+
+If using both compression and encryption, compress first, then encrypt. Never compress after encrypting your data.
+
+Encryption creates very high entropy output that appears random. Compression works best when entropy is low and patterns exist in the data. Compressing encrypted data will not reduce the message size.
+
+Attempting to compress after encryption can increase the likelihood of side-channel attacks and data leakage by adding unnecessary steps to your encryption workflow.
+
+## Implementation {#implementation}
+
+When implementing compression with Temporal:
+
+- Use a compression library like `snappy`, `zlib`, or `gzip` depending on your performance and compression ratio needs
+- Implement compression in your [Payload Codec](/payload-codec)'s `encode()` method
+- Implement decompression in your Payload Codec's `decode()` method
+- Consider using compression in combination with other strategies, such as persisting large payloads to external storage like S3
+
+## Alternatives to compression {#alternatives}
+
+If considering compression primarily for storage reasons, implement a codec that persists payloads to an external data store, such as an S3 bucket. This approach keeps Event Histories lightweight while maintaining access to full payload data.

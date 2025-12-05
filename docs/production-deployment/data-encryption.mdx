@@ -135,38 +135,84 @@ The following example shows a sample `POST` request body with base64 encoding.
 
 #### CORS
 
-By default, in cross-origin Fetch/XHR invocations, browsers will not send credentials.
-Enable [Cross-Origin Resource Sharing (CORS)](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) requests on your Codec Server to receive HTTP/HTTPS requests from the Temporal Web UI.
+To query your Codec Server from the Temporal Web UI, enable Cross-Origin Resource Sharing (CORS) on your Codec Server.
 
-At a minimum, enable the following responses from your Codec Server to allow requests coming from the Temporal Web UI:
+Enable the following CORS headers to allow requests from the Temporal Web UI:
 
 - `Access-Control-Allow-Origin`
 - `Access-Control-Allow-Methods`
 - `Access-Control-Allow-Headers`
 
-For example, for Temporal Cloud Web UI hosted at https://cloud.temporal.io, enable the following in your Codec Server:
+For example, for Temporal Cloud Web UI hosted at https://cloud.temporal.io, configure the following:
 
 - `Access-Control-Allow-Origin: https://cloud.temporal.io`
 - `Access-Control-Allow-Methods: POST, GET, OPTIONS`
 - `Access-Control-Allow-Headers: X-Namespace, Content-Type`
 
-For details on what a sample request/response looks like from the Temporal Web UI, see [Sample Request/Response](#sample-requestresponse).
 If setting authorization, include `Authorization` in your `Access-Control-Allow-Headers`.
+
+##### Implementation example
+
+The following example shows how to configure CORS in a TypeScript Codec Server using Express and the `cors` middleware package:
+
+```typescript
+import express from 'express';
+import cors from 'cors';
+
+async function main({ port = 8888 }) {
+  const app = express();
+  
+  // Configure CORS middleware
+  app.use(cors({ 
+    allowedHeaders: ['x-namespace', 'content-type', 'authorization'] 
+  }));
+  
+  // Express application setup
+  app.use(express.json());
+  
+  // Define your /encode and /decode endpoints here
+  // ...
+  
+  app.listen(port);
+}
+```
+
+Configure CORS early in your application setup, before defining any routes. This ensures all incoming requests are checked against your CORS policy before any route handlers execute.
+
+The `allowedHeaders` option specifies which HTTP headers can be included in requests to your server. For Codec Servers, include:
+
+- `x-namespace`: Custom header sent by Temporal Web UI to identify the Namespace
+- `content-type`: Standard header for JSON requests
+- `authorization`: Required if your Codec Server implements authentication
+
+For details on what a sample request/response looks like from the Temporal Web UI, see [Sample Request/Response](#sample-requestresponse).
 For details on setting up authorization, see [Authorization](#authorization).
 
 #### Authorization
 
-It is important to establish how you will provide access to your Codec Server.
-Because it is designed to decode potentially sensitive data with a single API call, access to a production Codec Server should be restricted.
+Restrict access to your Codec Server because it can decode potentially sensitive data with a single API call.
 
-Depending on your infrastructure and risk levels, it might be sufficient to restrict HTTP ingress to your Codec Server (such as by using a VPN like [WireGuard](https://www.wireguard.com/)).
-The Temporal Web UI can communicate with a Codec Server that is only accessible on `localhost`, so this is a legitimate security pattern.
-However, if your Codec Server is exposed to the internet at all, you will likely need an authentication solution.
+##### Localhost and ingress restriction
 
-If you are already using an organization-wide authentication provider, you should integrate it with your Codec Server. Remember, a Codec Server is just a standalone HTTP server, so you can use existing libraries for OAuth, [Auth0](https://auth0.com/), or any other protocol.
+Depending on your infrastructure and risk levels, restricting HTTP ingress to your Codec Server may be sufficient, such as by using a VPN like [WireGuard](https://www.wireguard.com/) or deploying it on a private network.
+
+The Temporal Web UI can communicate with a Codec Server that is only accessible on `localhost`, so this is a legitimate security pattern. This works well when users access the Web UI and Codec Server from the same machine or within the same secure network.
+
+However, if your Codec Server is exposed to the internet at all, you need an authentication solution.
+
+##### Implementing authentication
+
+When implementing authentication, consider user management. If multiple users need to interact with your Codec Server to decode packages, do not share the same authentication route. Even with token-based authentication, you may need to distinguish between users for audit purposes.
+
+If you already use an organization-wide authentication provider, integrate it with your Codec Server. A Codec Server is a standalone HTTP server, so you can use existing libraries and protocols for authentication, including:
+
+- **OAuth 2.0-based identity services**: Auth0, Okta, Google Auth, Microsoft AD, Amazon Cognito
+- **JWT (JSON Web Tokens)**: Temporal Cloud uses JWTs for authorization
+- **Custom authentication**: Implement your own authentication logic based on your organization's requirements
+
 [This repository](https://github.com/pvsone/codec-cors-credentials) contains an example of using Auth0 to handle browser-based auth to a Codec Server.
 
-To enable authorization from the Web UI (for both a self-hosted Temporal Service and Temporal Cloud), your Codec Server must be an HTTPS Server.
+To enable authorization from the Web UI for both a self-hosted Temporal Service and Temporal Cloud, your Codec Server must be an HTTPS Server.
 
 **Temporal Cloud**
 
