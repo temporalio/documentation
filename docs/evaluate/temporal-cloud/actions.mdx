@@ -94,6 +94,7 @@ Each execution of a Schedule accrues three actions:
 
 - **Workflow exported**.
   Each Workflow exported accrues a single action.
+- Excluded from APS calculations.
 
 ## Temporal Nexus
 
@@ -101,6 +102,12 @@ Each execution of a Schedule accrues three actions:
 - For [Nexus Operation canceled](/references/events#nexusoperationcanceled), the caller Workflow canceling a Nexus Operation results in one Action on the caller Namespace.
 - The underlying Temporal primitives (such as Workflows, Activities, and Signals) created by a Nexus Operation handler (directly or indirectly) result in the normal Actions for those primitives billed to the handler’s Namespace.
   This includes retries for underlying Temporal primitives like Activities but _not_ for handling the Nexus Operation itself or a retry of the Nexus Operation itself.
+
+## Capacity
+
+- For Namespace Capacity TRUs, Actions are generated up to the included hourly allocation for TRUs in any hour where TRUs are set and actual usage falls beneath the included hourly Action allocation.
+- Excluded from APS calculations.
+
 
 ## Usage
 

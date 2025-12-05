@@ -22,45 +22,15 @@ If you need more details, [contact us](https://pages.temporal.io/contact-us).
 
 **What kind of throughput can I get with Temporal Cloud?**
 
-Each Namespace has a rate limit, which is measured in [Actions](/cloud/pricing#action) per second (APS).
-A Namespace's default limit is set at 400 APS and automatically adjusts based on recent usage (over the prior 7 days).
-Your throughput limit will never fall below this default value.
+Each Namespace in Temporal has a rate limit, which is measure in [Actions](/cloud/pricing#action) per second. 
+Temporal offers two different modes for adjusting capacity: On-Demand Capacity or Provisioned Capacity.
+With On-Demand Capacity, Namespace capacity is increased automatically along with usage.
+With Provisioned Capacity, you can control your capacity limits by requesting Temporal Resource Units (TRUs).
 
-When your Action rate exceeds your quota, Temporal Cloud throttles Actions until the rate matches your quota.
-Throttling means limiting the rate at which Actions are performed to prevent the Namespace from exceeding its APS limit.
+:::tip Support, stability, and dependency info
 
-Critical calls to external events, such starting or Signaling a Workflow, are always prioritized and never throttled.
-There are four priority levels for Temporal Cloud API calls:
-
-1. External events (Critical calls)
-2. Workflow progress updates
-3. Visibility API calls
-4. Cloud operations such as Namespace creation
-
-When you exceed your APS limits, you might receive warnings about throttling.
-However, requests are never dropped, and high-priority calls are never delayed.
-Workers might take longer to complete Workflows.
-
-If your usage grows slowly, your throughput limit grows with your usage.
-At times, you may hit a maximum throughput threshold and need to switch to a higher consumption tier.
-Learn more about our tiers by visiting our [information page](/cloud/pricing#action) or [reach out to our team](https://pages.temporal.io/contact-us) to help size your number of Actions.
-Temporal Cloud can provide more than 150,000 Actions per second at its highest tier.
-
-:::tip MEASURING THROUGHPUT WITH APS AND RPS
-
-APS and RPS are both measures of throughput, but apply to different aspects of Temporal.
-
-APS, or Actions Per Second, is specific to Temporal Cloud.
-It measures the rate at which Actions, like starting or signaling a Workflow, can be performed in a specific Namespace.
-Temporal Cloud uses APS to manage and throttle Actions, preventing a Namespace from exceeding its limit.
-APS measures how many high-level operations (Actions) a user can perform in Temporal Cloud each second.
-
-RPS, or Requests Per Second, is used in the Temporal Service, both in self-hosted Temporal and Temporal Cloud.
-It measures and controls the rate of gRPC requests to the Service.
-This is a lower-level measure that manages rates at the service level, such as the Frontend, History, or Matching Services.
-
-In summary, APS is a higher-level measure to limit and mitigate Action spikes in Temporal Cloud.
-RPS is a lower-level measure to control and balance request rates at the service level.
+Provisioned Capacity is currently in [pre-release](/evaluate/development-production-features/release-stages#pre-release). 
+Please contact your AE or Support to enable this feature.
 
 :::
 
