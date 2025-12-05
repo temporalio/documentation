@@ -44,6 +44,9 @@ tags:
 
 {/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
 This file is generated from https://github.com/temporalio/cli/blob/main/internal/commandsgen/commands.yml via internal/cmd/gen-docs */}
+
+This page provides a reference for the `temporal` CLI `workflow` command. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
+
 ## cancel
 
 Canceling a running Workflow Execution records a
@@ -71,14 +74,14 @@ and Query creation. See `temporal batch --help` for a quick reference.
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. |  |
-| `--reason` | No | **string** Reason for batch operation. Only use with --query. Defaults to user name. |  |
-| `--rps` | No | **float** Limit batch's requests per second. Only allowed if query is present. |  |
-| `--run-id`, `-r` | No | **string** Run ID. Only use with --workflow-id. Cannot use with --query. |  |
-| `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |  |
-| `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. |
+| `--reason` | No | **string** Reason for batch operation. Only use with --query. Defaults to user name. |
+| `--rps` | No | **float** Limit batch's requests per second. Only allowed if query is present. |
+| `--run-id`, `-r` | No | **string** Run ID. Only use with --workflow-id. Cannot use with --query. |
+| `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |
+| `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |
 
 ## count
 
@@ -95,9 +98,9 @@ and Query creation. See `temporal batch --help` for a quick reference.
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. |
 
 ## delete
 
@@ -116,14 +119,14 @@ and Query creation. See `temporal batch --help` for a quick reference.
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. |  |
-| `--reason` | No | **string** Reason for batch operation. Only use with --query. Defaults to user name. |  |
-| `--rps` | No | **float** Limit batch's requests per second. Only allowed if query is present. |  |
-| `--run-id`, `-r` | No | **string** Run ID. Only use with --workflow-id. Cannot use with --query. |  |
-| `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |  |
-| `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. |
+| `--reason` | No | **string** Reason for batch operation. Only use with --query. Defaults to user name. |
+| `--rps` | No | **float** Limit batch's requests per second. Only allowed if query is present. |
+| `--run-id`, `-r` | No | **string** Run ID. Only use with --workflow-id. Cannot use with --query. |
+| `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |
+| `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |
 
 ## describe
 
@@ -144,12 +147,12 @@ temporal workflow describe \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--raw` | No | **bool** Print properties without changing their format. |  |
-| `--reset-points` | No | **bool** Show auto-reset points only. |  |
-| `--run-id`, `-r` | No | **string** Run ID. |  |
-| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--raw` | No | **bool** Print properties without changing their format. |
+| `--reset-points` | No | **bool** Show auto-reset points only. |
+| `--run-id`, `-r` | No | **string** Run ID. |
+| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
 ## execute
 
@@ -171,31 +174,31 @@ format. When using JSON output (`--output json`), this includes the entire
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--cron` | No | **string** Cron schedule for the Workflow. |  |
-| `--detailed` | No | **bool** Display events as sections instead of table. Does not apply to JSON output. |  |
-| `--execution-timeout` | No | **duration** Fail a WorkflowExecution if it lasts longer than `DURATION`. This time-out includes retries and ContinueAsNew tasks. |  |
-| `--fail-existing` | No | **bool** Fail if the Workflow already exists. |  |
-| `--fairness-key` | No | **string** Fairness key (max 64 bytes) for proportional task dispatch. Tasks with same key share capacity based on their weight. |  |
-| `--fairness-weight` | No | **float** Weight [0.001-1000] for this fairness key. Keys are dispatched proportionally to their weights. |  |
-| `--id-conflict-policy` | No | **string-enum** Determines how to resolve a conflict when spawning a new Workflow Execution with a particular Workflow Id used by an existing Open Workflow Execution. Accepted values: Fail, UseExisting, TerminateExisting. |  |
-| `--id-reuse-policy` | No | **string-enum** Re-use policy for the Workflow ID in new Workflow Executions. Accepted values: AllowDuplicate, AllowDuplicateFailedOnly, RejectDuplicate, TerminateIfRunning. |  |
-| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |  |
-| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |  |
-| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |  |
-| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |  |
-| `--memo` | No | **string[]** Memo using 'KEY="VALUE"' pairs. Use JSON values. |  |
-| `--priority-key` | No | **int** Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified. |  |
-| `--run-timeout` | No | **duration** Fail a Workflow Run if it lasts longer than `DURATION`. |  |
-| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |  |
-| `--start-delay` | No | **duration** Delay before starting the Workflow Execution. Can't be used with cron schedules. If the Workflow receives a signal or update prior to this time, the Workflow Execution starts immediately. |  |
-| `--static-details` | No | **string** Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines. _(Experimental)_ |  |
-| `--static-summary` | No | **string** Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line. _(Experimental)_ |  |
-| `--task-queue`, `-t` | Yes | **string** Workflow Task queue. |  |
-| `--task-timeout` | No | **duration** Fail a Workflow Task if it lasts longer than `DURATION`. This is the Start-to-close timeout for a Workflow Task. | `10s` |
-| `--type` | Yes | **string** Workflow Type name. |  |
-| `--workflow-id`, `-w` | No | **string** Workflow ID. If not supplied, the Service generates a unique ID. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--cron` | No | **string** Cron schedule for the Workflow. |
+| `--detailed` | No | **bool** Display events as sections instead of table. Does not apply to JSON output. |
+| `--execution-timeout` | No | **duration** Fail a WorkflowExecution if it lasts longer than `DURATION`. This time-out includes retries and ContinueAsNew tasks. |
+| `--fail-existing` | No | **bool** Fail if the Workflow already exists. |
+| `--fairness-key` | No | **string** Fairness key (max 64 bytes) for proportional task dispatch. Tasks with same key share capacity based on their weight. |
+| `--fairness-weight` | No | **float** Weight [0.001-1000] for this fairness key. Keys are dispatched proportionally to their weights. |
+| `--id-conflict-policy` | No | **string-enum** Determines how to resolve a conflict when spawning a new Workflow Execution with a particular Workflow Id used by an existing Open Workflow Execution. Accepted values: Fail, UseExisting, TerminateExisting. |
+| `--id-reuse-policy` | No | **string-enum** Re-use policy for the Workflow ID in new Workflow Executions. Accepted values: AllowDuplicate, AllowDuplicateFailedOnly, RejectDuplicate, TerminateIfRunning. |
+| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |
+| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |
+| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |
+| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |
+| `--memo` | No | **string[]** Memo using 'KEY="VALUE"' pairs. Use JSON values. |
+| `--priority-key` | No | **int** Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified. |
+| `--run-timeout` | No | **duration** Fail a Workflow Run if it lasts longer than `DURATION`. |
+| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |
+| `--start-delay` | No | **duration** Delay before starting the Workflow Execution. Can't be used with cron schedules. If the Workflow receives a signal or update prior to this time, the Workflow Execution starts immediately. |
+| `--static-details` | No | **string** Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines. _(Experimental)_ |
+| `--static-summary` | No | **string** Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line. _(Experimental)_ |
+| `--task-queue`, `-t` | Yes | **string** Workflow Task queue. |
+| `--task-timeout` | No | **duration** Fail a Workflow Task if it lasts longer than `DURATION`. This is the Start-to-close timeout for a Workflow Task. |
+| `--type` | Yes | **string** Workflow Type name. |
+| `--workflow-id`, `-w` | No | **string** Workflow ID. If not supplied, the Service generates a unique ID. |
 
 ## execute-update-with-start
 
@@ -218,38 +221,38 @@ temporal workflow execute-update-with-start \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--cron` | No | **string** Cron schedule for the Workflow. |  |
-| `--execution-timeout` | No | **duration** Fail a WorkflowExecution if it lasts longer than `DURATION`. This time-out includes retries and ContinueAsNew tasks. |  |
-| `--fail-existing` | No | **bool** Fail if the Workflow already exists. |  |
-| `--fairness-key` | No | **string** Fairness key (max 64 bytes) for proportional task dispatch. Tasks with same key share capacity based on their weight. |  |
-| `--fairness-weight` | No | **float** Weight [0.001-1000] for this fairness key. Keys are dispatched proportionally to their weights. |  |
-| `--id-conflict-policy` | No | **string-enum** Determines how to resolve a conflict when spawning a new Workflow Execution with a particular Workflow Id used by an existing Open Workflow Execution. Accepted values: Fail, UseExisting, TerminateExisting. |  |
-| `--id-reuse-policy` | No | **string-enum** Re-use policy for the Workflow ID in new Workflow Executions. Accepted values: AllowDuplicate, AllowDuplicateFailedOnly, RejectDuplicate, TerminateIfRunning. |  |
-| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |  |
-| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |  |
-| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |  |
-| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |  |
-| `--memo` | No | **string[]** Memo using 'KEY="VALUE"' pairs. Use JSON values. |  |
-| `--priority-key` | No | **int** Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified. |  |
-| `--run-id`, `-r` | No | **string** Run ID. If unset, looks for an Update against the currently-running Workflow Execution. |  |
-| `--run-timeout` | No | **duration** Fail a Workflow Run if it lasts longer than `DURATION`. |  |
-| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |  |
-| `--start-delay` | No | **duration** Delay before starting the Workflow Execution. Can't be used with cron schedules. If the Workflow receives a signal or update prior to this time, the Workflow Execution starts immediately. |  |
-| `--static-details` | No | **string** Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines. _(Experimental)_ |  |
-| `--static-summary` | No | **string** Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line. _(Experimental)_ |  |
-| `--task-queue`, `-t` | Yes | **string** Workflow Task queue. |  |
-| `--task-timeout` | No | **duration** Fail a Workflow Task if it lasts longer than `DURATION`. This is the Start-to-close timeout for a Workflow Task. | `10s` |
-| `--type` | Yes | **string** Workflow Type name. |  |
-| `--update-first-execution-run-id` | No | **string** Parent Run ID. The update is sent to the last Workflow Execution in the chain started with this Run ID. |  |
-| `--update-id` | No | **string** Update ID. If unset, defaults to a UUID. |  |
-| `--update-input` | No | **string[]** Update input value. Use JSON content or set --update-input-meta to override. Can't be combined with --update-input-file. Can be passed multiple times to pass multiple arguments. |  |
-| `--update-input-base64` | No | **bool** Assume update inputs are base64-encoded and attempt to decode them. |  |
-| `--update-input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --update-input-meta to override. Can't be combined with --update-input. Can be passed multiple times to pass multiple arguments. |  |
-| `--update-input-meta` | No | **string[]** Input update payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. |  |
-| `--update-name` | Yes | **string** Update name. |  |
-| `--workflow-id`, `-w` | No | **string** Workflow ID. If not supplied, the Service generates a unique ID. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--cron` | No | **string** Cron schedule for the Workflow. |
+| `--execution-timeout` | No | **duration** Fail a WorkflowExecution if it lasts longer than `DURATION`. This time-out includes retries and ContinueAsNew tasks. |
+| `--fail-existing` | No | **bool** Fail if the Workflow already exists. |
+| `--fairness-key` | No | **string** Fairness key (max 64 bytes) for proportional task dispatch. Tasks with same key share capacity based on their weight. |
+| `--fairness-weight` | No | **float** Weight [0.001-1000] for this fairness key. Keys are dispatched proportionally to their weights. |
+| `--id-conflict-policy` | No | **string-enum** Determines how to resolve a conflict when spawning a new Workflow Execution with a particular Workflow Id used by an existing Open Workflow Execution. Accepted values: Fail, UseExisting, TerminateExisting. |
+| `--id-reuse-policy` | No | **string-enum** Re-use policy for the Workflow ID in new Workflow Executions. Accepted values: AllowDuplicate, AllowDuplicateFailedOnly, RejectDuplicate, TerminateIfRunning. |
+| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |
+| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |
+| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |
+| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |
+| `--memo` | No | **string[]** Memo using 'KEY="VALUE"' pairs. Use JSON values. |
+| `--priority-key` | No | **int** Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified. |
+| `--run-id`, `-r` | No | **string** Run ID. If unset, looks for an Update against the currently-running Workflow Execution. |
+| `--run-timeout` | No | **duration** Fail a Workflow Run if it lasts longer than `DURATION`. |
+| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |
+| `--start-delay` | No | **duration** Delay before starting the Workflow Execution. Can't be used with cron schedules. If the Workflow receives a signal or update prior to this time, the Workflow Execution starts immediately. |
+| `--static-details` | No | **string** Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines. _(Experimental)_ |
+| `--static-summary` | No | **string** Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line. _(Experimental)_ |
+| `--task-queue`, `-t` | Yes | **string** Workflow Task queue. |
+| `--task-timeout` | No | **duration** Fail a Workflow Task if it lasts longer than `DURATION`. This is the Start-to-close timeout for a Workflow Task. |
+| `--type` | Yes | **string** Workflow Type name. |
+| `--update-first-execution-run-id` | No | **string** Parent Run ID. The update is sent to the last Workflow Execution in the chain started with this Run ID. |
+| `--update-id` | No | **string** Update ID. If unset, defaults to a UUID. |
+| `--update-input` | No | **string[]** Update input value. Use JSON content or set --update-input-meta to override. Can't be combined with --update-input-file. Can be passed multiple times to pass multiple arguments. |
+| `--update-input-base64` | No | **bool** Assume update inputs are base64-encoded and attempt to decode them. |
+| `--update-input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --update-input-meta to override. Can't be combined with --update-input. Can be passed multiple times to pass multiple arguments. |
+| `--update-input-meta` | No | **string[]** Input update payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. |
+| `--update-name` | Yes | **string** Update name. |
+| `--workflow-id`, `-w` | No | **string** Workflow ID. If not supplied, the Service generates a unique ID. |
 
 ## fix-history-json
 
@@ -263,10 +266,10 @@ temporal workflow fix-history-json \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--source`, `-s` | Yes | **string** Path to the original file. |  |
-| `--target`, `-t` | No | **string** Path to the results file. When omitted, output is sent to stdout. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--source`, `-s` | Yes | **string** Path to the original file. |
+| `--target`, `-t` | No | **string** Path to the results file. When omitted, output is sent to stdout. |
 
 ## list
 
@@ -290,12 +293,12 @@ temporal workflow list \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--archived` | No | **bool** Limit output to archived Workflow Executions. _(Experimental)_ |  |
-| `--limit` | No | **int** Maximum number of Workflow Executions to display. |  |
-| `--page-size` | No | **int** Maximum number of Workflow Executions to fetch at a time from the server. |  |
-| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--archived` | No | **bool** Limit output to archived Workflow Executions. _(Experimental)_ |
+| `--limit` | No | **int** Maximum number of Workflow Executions to display. |
+| `--page-size` | No | **int** Maximum number of Workflow Executions to fetch at a time from the server. |
+| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. |
 
 ## metadata
 
@@ -309,11 +312,11 @@ temporal workflow metadata \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--reject-condition` | No | **string-enum** Optional flag for rejecting Queries based on Workflow state. Accepted values: not_open, not_completed_cleanly. |  |
-| `--run-id`, `-r` | No | **string** Run ID. |  |
-| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--reject-condition` | No | **string-enum** Optional flag for rejecting Queries based on Workflow state. Accepted values: not_open, not_completed_cleanly. |
+| `--run-id`, `-r` | No | **string** Run ID. |
+| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
 ## query
 
@@ -331,16 +334,16 @@ temporal workflow query \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |  |
-| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |  |
-| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |  |
-| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |  |
-| `--name` | Yes | **string** Query Type/Name. |  |
-| `--reject-condition` | No | **string-enum** Optional flag for rejecting Queries based on Workflow state. Accepted values: not_open, not_completed_cleanly. |  |
-| `--run-id`, `-r` | No | **string** Run ID. |  |
-| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |
+| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |
+| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |
+| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |
+| `--name` | Yes | **string** Query Type/Name. |
+| `--reject-condition` | No | **string-enum** Optional flag for rejecting Queries based on Workflow state. Accepted values: not_open, not_completed_cleanly. |
+| `--run-id`, `-r` | No | **string** Run ID. |
+| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
 ## reset
 
@@ -374,11 +377,11 @@ Workflows selected by the reset command are forwarded onto the subcommand.
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--versioning-override-behavior` | Yes | **string-enum** Override the versioning behavior of a Workflow. Accepted values: pinned, auto_upgrade. |  |
-| `--versioning-override-build-id` | No | **string** When overriding to a `pinned` behavior, specifies the Build ID of the version to target. |  |
-| `--versioning-override-deployment-name` | No | **string** When overriding to a `pinned` behavior, specifies the Deployment Name of the version to target. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--versioning-override-behavior` | Yes | **string-enum** Override the versioning behavior of a Workflow. Accepted values: pinned, auto_upgrade. |
+| `--versioning-override-build-id` | No | **string** When overriding to a `pinned` behavior, specifies the Build ID of the version to target. |
+| `--versioning-override-deployment-name` | No | **string** When overriding to a `pinned` behavior, specifies the Deployment Name of the version to target. |
 
 ## result
 
@@ -391,10 +394,10 @@ temporal workflow result \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--run-id`, `-r` | No | **string** Run ID. |  |
-| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--run-id`, `-r` | No | **string** Run ID. |
+| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
 ## show
 
@@ -410,12 +413,12 @@ temporal workflow show \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--detailed` | No | **bool** Display events as detailed sections instead of table. Does not apply to JSON output. |  |
-| `--follow`, `-f` | No | **bool** Follow the Workflow Execution progress in real time. Does not apply to JSON output. |  |
-| `--run-id`, `-r` | No | **string** Run ID. |  |
-| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--detailed` | No | **bool** Display events as detailed sections instead of table. Does not apply to JSON output. |
+| `--follow`, `-f` | No | **bool** Follow the Workflow Execution progress in real time. Does not apply to JSON output. |
+| `--run-id`, `-r` | No | **string** Run ID. |
+| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
 ## signal
 
@@ -435,19 +438,19 @@ and Query creation. See `temporal batch --help` for a quick reference.
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |  |
-| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |  |
-| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |  |
-| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |  |
-| `--name` | Yes | **string** Signal name. |  |
-| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. |  |
-| `--reason` | No | **string** Reason for batch operation. Only use with --query. Defaults to user name. |  |
-| `--rps` | No | **float** Limit batch's requests per second. Only allowed if query is present. |  |
-| `--run-id`, `-r` | No | **string** Run ID. Only use with --workflow-id. Cannot use with --query. |  |
-| `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |  |
-| `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |
+| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |
+| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |
+| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |
+| `--name` | Yes | **string** Signal name. |
+| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. |
+| `--reason` | No | **string** Reason for batch operation. Only use with --query. Defaults to user name. |
+| `--rps` | No | **float** Limit batch's requests per second. Only allowed if query is present. |
+| `--run-id`, `-r` | No | **string** Run ID. Only use with --workflow-id. Cannot use with --query. |
+| `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |
+| `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |
 
 ## signal-with-start
 
@@ -467,35 +470,35 @@ temporal workflow signal-with-start \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--cron` | No | **string** Cron schedule for the Workflow. |  |
-| `--execution-timeout` | No | **duration** Fail a WorkflowExecution if it lasts longer than `DURATION`. This time-out includes retries and ContinueAsNew tasks. |  |
-| `--fail-existing` | No | **bool** Fail if the Workflow already exists. |  |
-| `--fairness-key` | No | **string** Fairness key (max 64 bytes) for proportional task dispatch. Tasks with same key share capacity based on their weight. |  |
-| `--fairness-weight` | No | **float** Weight [0.001-1000] for this fairness key. Keys are dispatched proportionally to their weights. |  |
-| `--id-conflict-policy` | No | **string-enum** Determines how to resolve a conflict when spawning a new Workflow Execution with a particular Workflow Id used by an existing Open Workflow Execution. Accepted values: Fail, UseExisting, TerminateExisting. |  |
-| `--id-reuse-policy` | No | **string-enum** Re-use policy for the Workflow ID in new Workflow Executions. Accepted values: AllowDuplicate, AllowDuplicateFailedOnly, RejectDuplicate, TerminateIfRunning. |  |
-| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |  |
-| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |  |
-| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |  |
-| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |  |
-| `--memo` | No | **string[]** Memo using 'KEY="VALUE"' pairs. Use JSON values. |  |
-| `--priority-key` | No | **int** Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified. |  |
-| `--run-timeout` | No | **duration** Fail a Workflow Run if it lasts longer than `DURATION`. |  |
-| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |  |
-| `--signal-input` | No | **string[]** Signal input value. Use JSON content or set --signal-input-meta to override. Can't be combined with --signal-input-file. Can be passed multiple times to pass multiple arguments. |  |
-| `--signal-input-base64` | No | **bool** Assume signal inputs are base64-encoded and attempt to decode them. |  |
-| `--signal-input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --signal-input-meta to override. Can't be combined with --signal-input. Can be passed multiple times to pass multiple arguments. |  |
-| `--signal-input-meta` | No | **string[]** Input signal payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. |  |
-| `--signal-name` | Yes | **string** Signal name. |  |
-| `--start-delay` | No | **duration** Delay before starting the Workflow Execution. Can't be used with cron schedules. If the Workflow receives a signal or update prior to this time, the Workflow Execution starts immediately. |  |
-| `--static-details` | No | **string** Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines. _(Experimental)_ |  |
-| `--static-summary` | No | **string** Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line. _(Experimental)_ |  |
-| `--task-queue`, `-t` | Yes | **string** Workflow Task queue. |  |
-| `--task-timeout` | No | **duration** Fail a Workflow Task if it lasts longer than `DURATION`. This is the Start-to-close timeout for a Workflow Task. | `10s` |
-| `--type` | Yes | **string** Workflow Type name. |  |
-| `--workflow-id`, `-w` | No | **string** Workflow ID. If not supplied, the Service generates a unique ID. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--cron` | No | **string** Cron schedule for the Workflow. |
+| `--execution-timeout` | No | **duration** Fail a WorkflowExecution if it lasts longer than `DURATION`. This time-out includes retries and ContinueAsNew tasks. |
+| `--fail-existing` | No | **bool** Fail if the Workflow already exists. |
+| `--fairness-key` | No | **string** Fairness key (max 64 bytes) for proportional task dispatch. Tasks with same key share capacity based on their weight. |
+| `--fairness-weight` | No | **float** Weight [0.001-1000] for this fairness key. Keys are dispatched proportionally to their weights. |
+| `--id-conflict-policy` | No | **string-enum** Determines how to resolve a conflict when spawning a new Workflow Execution with a particular Workflow Id used by an existing Open Workflow Execution. Accepted values: Fail, UseExisting, TerminateExisting. |
+| `--id-reuse-policy` | No | **string-enum** Re-use policy for the Workflow ID in new Workflow Executions. Accepted values: AllowDuplicate, AllowDuplicateFailedOnly, RejectDuplicate, TerminateIfRunning. |
+| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |
+| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |
+| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |
+| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |
+| `--memo` | No | **string[]** Memo using 'KEY="VALUE"' pairs. Use JSON values. |
+| `--priority-key` | No | **int** Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified. |
+| `--run-timeout` | No | **duration** Fail a Workflow Run if it lasts longer than `DURATION`. |
+| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |
+| `--signal-input` | No | **string[]** Signal input value. Use JSON content or set --signal-input-meta to override. Can't be combined with --signal-input-file. Can be passed multiple times to pass multiple arguments. |
+| `--signal-input-base64` | No | **bool** Assume signal inputs are base64-encoded and attempt to decode them. |
+| `--signal-input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --signal-input-meta to override. Can't be combined with --signal-input. Can be passed multiple times to pass multiple arguments. |
+| `--signal-input-meta` | No | **string[]** Input signal payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. |
+| `--signal-name` | Yes | **string** Signal name. |
+| `--start-delay` | No | **duration** Delay before starting the Workflow Execution. Can't be used with cron schedules. If the Workflow receives a signal or update prior to this time, the Workflow Execution starts immediately. |
+| `--static-details` | No | **string** Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines. _(Experimental)_ |
+| `--static-summary` | No | **string** Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line. _(Experimental)_ |
+| `--task-queue`, `-t` | Yes | **string** Workflow Task queue. |
+| `--task-timeout` | No | **duration** Fail a Workflow Task if it lasts longer than `DURATION`. This is the Start-to-close timeout for a Workflow Task. |
+| `--type` | Yes | **string** Workflow Type name. |
+| `--workflow-id`, `-w` | No | **string** Workflow ID. If not supplied, the Service generates a unique ID. |
 
 ## stack
 
@@ -510,11 +513,11 @@ temporal workflow stack \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--reject-condition` | No | **string-enum** Optional flag to reject Queries based on Workflow state. Accepted values: not_open, not_completed_cleanly. |  |
-| `--run-id`, `-r` | No | **string** Run ID. |  |
-| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--reject-condition` | No | **string-enum** Optional flag to reject Queries based on Workflow state. Accepted values: not_open, not_completed_cleanly. |
+| `--run-id`, `-r` | No | **string** Run ID. |
+| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
 ## start
 
@@ -530,30 +533,30 @@ temporal workflow start \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--cron` | No | **string** Cron schedule for the Workflow. |  |
-| `--execution-timeout` | No | **duration** Fail a WorkflowExecution if it lasts longer than `DURATION`. This time-out includes retries and ContinueAsNew tasks. |  |
-| `--fail-existing` | No | **bool** Fail if the Workflow already exists. |  |
-| `--fairness-key` | No | **string** Fairness key (max 64 bytes) for proportional task dispatch. Tasks with same key share capacity based on their weight. |  |
-| `--fairness-weight` | No | **float** Weight [0.001-1000] for this fairness key. Keys are dispatched proportionally to their weights. |  |
-| `--id-conflict-policy` | No | **string-enum** Determines how to resolve a conflict when spawning a new Workflow Execution with a particular Workflow Id used by an existing Open Workflow Execution. Accepted values: Fail, UseExisting, TerminateExisting. |  |
-| `--id-reuse-policy` | No | **string-enum** Re-use policy for the Workflow ID in new Workflow Executions. Accepted values: AllowDuplicate, AllowDuplicateFailedOnly, RejectDuplicate, TerminateIfRunning. |  |
-| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |  |
-| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |  |
-| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |  |
-| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |  |
-| `--memo` | No | **string[]** Memo using 'KEY="VALUE"' pairs. Use JSON values. |  |
-| `--priority-key` | No | **int** Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified. |  |
-| `--run-timeout` | No | **duration** Fail a Workflow Run if it lasts longer than `DURATION`. |  |
-| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |  |
-| `--start-delay` | No | **duration** Delay before starting the Workflow Execution. Can't be used with cron schedules. If the Workflow receives a signal or update prior to this time, the Workflow Execution starts immediately. |  |
-| `--static-details` | No | **string** Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines. _(Experimental)_ |  |
-| `--static-summary` | No | **string** Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line. _(Experimental)_ |  |
-| `--task-queue`, `-t` | Yes | **string** Workflow Task queue. |  |
-| `--task-timeout` | No | **duration** Fail a Workflow Task if it lasts longer than `DURATION`. This is the Start-to-close timeout for a Workflow Task. | `10s` |
-| `--type` | Yes | **string** Workflow Type name. |  |
-| `--workflow-id`, `-w` | No | **string** Workflow ID. If not supplied, the Service generates a unique ID. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--cron` | No | **string** Cron schedule for the Workflow. |
+| `--execution-timeout` | No | **duration** Fail a WorkflowExecution if it lasts longer than `DURATION`. This time-out includes retries and ContinueAsNew tasks. |
+| `--fail-existing` | No | **bool** Fail if the Workflow already exists. |
+| `--fairness-key` | No | **string** Fairness key (max 64 bytes) for proportional task dispatch. Tasks with same key share capacity based on their weight. |
+| `--fairness-weight` | No | **float** Weight [0.001-1000] for this fairness key. Keys are dispatched proportionally to their weights. |
+| `--id-conflict-policy` | No | **string-enum** Determines how to resolve a conflict when spawning a new Workflow Execution with a particular Workflow Id used by an existing Open Workflow Execution. Accepted values: Fail, UseExisting, TerminateExisting. |
+| `--id-reuse-policy` | No | **string-enum** Re-use policy for the Workflow ID in new Workflow Executions. Accepted values: AllowDuplicate, AllowDuplicateFailedOnly, RejectDuplicate, TerminateIfRunning. |
+| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |
+| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |
+| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |
+| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |
+| `--memo` | No | **string[]** Memo using 'KEY="VALUE"' pairs. Use JSON values. |
+| `--priority-key` | No | **int** Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified. |
+| `--run-timeout` | No | **duration** Fail a Workflow Run if it lasts longer than `DURATION`. |
+| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |
+| `--start-delay` | No | **duration** Delay before starting the Workflow Execution. Can't be used with cron schedules. If the Workflow receives a signal or update prior to this time, the Workflow Execution starts immediately. |
+| `--static-details` | No | **string** Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines. _(Experimental)_ |
+| `--static-summary` | No | **string** Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line. _(Experimental)_ |
+| `--task-queue`, `-t` | Yes | **string** Workflow Task queue. |
+| `--task-timeout` | No | **duration** Fail a Workflow Task if it lasts longer than `DURATION`. This is the Start-to-close timeout for a Workflow Task. |
+| `--type` | Yes | **string** Workflow Type name. |
+| `--workflow-id`, `-w` | No | **string** Workflow ID. If not supplied, the Service generates a unique ID. |
 
 ## start-update-with-start
 
@@ -577,39 +580,39 @@ temporal workflow start-update-with-start \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--cron` | No | **string** Cron schedule for the Workflow. |  |
-| `--execution-timeout` | No | **duration** Fail a WorkflowExecution if it lasts longer than `DURATION`. This time-out includes retries and ContinueAsNew tasks. |  |
-| `--fail-existing` | No | **bool** Fail if the Workflow already exists. |  |
-| `--fairness-key` | No | **string** Fairness key (max 64 bytes) for proportional task dispatch. Tasks with same key share capacity based on their weight. |  |
-| `--fairness-weight` | No | **float** Weight [0.001-1000] for this fairness key. Keys are dispatched proportionally to their weights. |  |
-| `--id-conflict-policy` | No | **string-enum** Determines how to resolve a conflict when spawning a new Workflow Execution with a particular Workflow Id used by an existing Open Workflow Execution. Accepted values: Fail, UseExisting, TerminateExisting. |  |
-| `--id-reuse-policy` | No | **string-enum** Re-use policy for the Workflow ID in new Workflow Executions. Accepted values: AllowDuplicate, AllowDuplicateFailedOnly, RejectDuplicate, TerminateIfRunning. |  |
-| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |  |
-| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |  |
-| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |  |
-| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |  |
-| `--memo` | No | **string[]** Memo using 'KEY="VALUE"' pairs. Use JSON values. |  |
-| `--priority-key` | No | **int** Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified. |  |
-| `--run-id`, `-r` | No | **string** Run ID. If unset, looks for an Update against the currently-running Workflow Execution. |  |
-| `--run-timeout` | No | **duration** Fail a Workflow Run if it lasts longer than `DURATION`. |  |
-| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |  |
-| `--start-delay` | No | **duration** Delay before starting the Workflow Execution. Can't be used with cron schedules. If the Workflow receives a signal or update prior to this time, the Workflow Execution starts immediately. |  |
-| `--static-details` | No | **string** Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines. _(Experimental)_ |  |
-| `--static-summary` | No | **string** Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line. _(Experimental)_ |  |
-| `--task-queue`, `-t` | Yes | **string** Workflow Task queue. |  |
-| `--task-timeout` | No | **duration** Fail a Workflow Task if it lasts longer than `DURATION`. This is the Start-to-close timeout for a Workflow Task. | `10s` |
-| `--type` | Yes | **string** Workflow Type name. |  |
-| `--update-first-execution-run-id` | No | **string** Parent Run ID. The update is sent to the last Workflow Execution in the chain started with this Run ID. |  |
-| `--update-id` | No | **string** Update ID. If unset, defaults to a UUID. |  |
-| `--update-input` | No | **string[]** Update input value. Use JSON content or set --update-input-meta to override. Can't be combined with --update-input-file. Can be passed multiple times to pass multiple arguments. |  |
-| `--update-input-base64` | No | **bool** Assume update inputs are base64-encoded and attempt to decode them. |  |
-| `--update-input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --update-input-meta to override. Can't be combined with --update-input. Can be passed multiple times to pass multiple arguments. |  |
-| `--update-input-meta` | No | **string[]** Input update payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. |  |
-| `--update-name` | Yes | **string** Update name. |  |
-| `--update-wait-for-stage` | Yes | **string-enum** Update stage to wait for. The only option is `accepted`, but this option is required. This is to allow a future version of the CLI to choose a default value. Accepted values: accepted. |  |
-| `--workflow-id`, `-w` | No | **string** Workflow ID. If not supplied, the Service generates a unique ID. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--cron` | No | **string** Cron schedule for the Workflow. |
+| `--execution-timeout` | No | **duration** Fail a WorkflowExecution if it lasts longer than `DURATION`. This time-out includes retries and ContinueAsNew tasks. |
+| `--fail-existing` | No | **bool** Fail if the Workflow already exists. |
+| `--fairness-key` | No | **string** Fairness key (max 64 bytes) for proportional task dispatch. Tasks with same key share capacity based on their weight. |
+| `--fairness-weight` | No | **float** Weight [0.001-1000] for this fairness key. Keys are dispatched proportionally to their weights. |
+| `--id-conflict-policy` | No | **string-enum** Determines how to resolve a conflict when spawning a new Workflow Execution with a particular Workflow Id used by an existing Open Workflow Execution. Accepted values: Fail, UseExisting, TerminateExisting. |
+| `--id-reuse-policy` | No | **string-enum** Re-use policy for the Workflow ID in new Workflow Executions. Accepted values: AllowDuplicate, AllowDuplicateFailedOnly, RejectDuplicate, TerminateIfRunning. |
+| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |
+| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |
+| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |
+| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |
+| `--memo` | No | **string[]** Memo using 'KEY="VALUE"' pairs. Use JSON values. |
+| `--priority-key` | No | **int** Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified. |
+| `--run-id`, `-r` | No | **string** Run ID. If unset, looks for an Update against the currently-running Workflow Execution. |
+| `--run-timeout` | No | **duration** Fail a Workflow Run if it lasts longer than `DURATION`. |
+| `--search-attribute` | No | **string[]** Search Attribute in `KEY=VALUE` format. Keys must be identifiers, and values must be JSON values. For example: `'YourKey={"your": "value"}'`. Can be passed multiple times. |
+| `--start-delay` | No | **duration** Delay before starting the Workflow Execution. Can't be used with cron schedules. If the Workflow receives a signal or update prior to this time, the Workflow Execution starts immediately. |
+| `--static-details` | No | **string** Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines. _(Experimental)_ |
+| `--static-summary` | No | **string** Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line. _(Experimental)_ |
+| `--task-queue`, `-t` | Yes | **string** Workflow Task queue. |
+| `--task-timeout` | No | **duration** Fail a Workflow Task if it lasts longer than `DURATION`. This is the Start-to-close timeout for a Workflow Task. |
+| `--type` | Yes | **string** Workflow Type name. |
+| `--update-first-execution-run-id` | No | **string** Parent Run ID. The update is sent to the last Workflow Execution in the chain started with this Run ID. |
+| `--update-id` | No | **string** Update ID. If unset, defaults to a UUID. |
+| `--update-input` | No | **string[]** Update input value. Use JSON content or set --update-input-meta to override. Can't be combined with --update-input-file. Can be passed multiple times to pass multiple arguments. |
+| `--update-input-base64` | No | **bool** Assume update inputs are base64-encoded and attempt to decode them. |
+| `--update-input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --update-input-meta to override. Can't be combined with --update-input. Can be passed multiple times to pass multiple arguments. |
+| `--update-input-meta` | No | **string[]** Input update payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. |
+| `--update-name` | Yes | **string** Update name. |
+| `--update-wait-for-stage` | Yes | **string-enum** Update stage to wait for. The only option is `accepted`, but this option is required. This is to allow a future version of the CLI to choose a default value. Accepted values: accepted. |
+| `--workflow-id`, `-w` | No | **string** Workflow ID. If not supplied, the Service generates a unique ID. |
 
 ## terminate
 
@@ -641,14 +644,14 @@ and Query creation. See `temporal batch --help` for a quick reference.
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. |  |
-| `--reason` | No | **string** Reason for termination. Defaults to message with the current user's name. |  |
-| `--rps` | No | **float** Limit batch's requests per second. Only allowed if query is present. |  |
-| `--run-id`, `-r` | No | **string** Run ID. Can only be set with --workflow-id. Do not use with --query. |  |
-| `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |  |
-| `--yes`, `-y` | No | **bool** Don't prompt to confirm termination. Can only be used with --query. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. |
+| `--reason` | No | **string** Reason for termination. Defaults to message with the current user's name. |
+| `--rps` | No | **float** Limit batch's requests per second. Only allowed if query is present. |
+| `--run-id`, `-r` | No | **string** Run ID. Can only be set with --workflow-id. Do not use with --query. |
+| `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |
+| `--yes`, `-y` | No | **bool** Don't prompt to confirm termination. Can only be used with --query. |
 
 ## trace
 
@@ -662,14 +665,14 @@ temporal workflow trace \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--concurrency` | No | **int** Number of Workflow Histories to fetch at a time. | `10` |
-| `--depth` | No | **int** Set depth for your Child Workflow fetches. Pass -1 to fetch child workflows at any depth. | `-1` |
-| `--fold` | No | **string[]** Fold away Child Workflows with the specified statuses. Case-insensitive. Ignored if --no-fold supplied. Available values: running, completed, failed, canceled, terminated, timedout, continueasnew. Can be passed multiple times. |  |
-| `--no-fold` | No | **bool** Disable folding. Fetch and display Child Workflows within the set depth. |  |
-| `--run-id`, `-r` | No | **string** Run ID. |  |
-| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--concurrency` | No | **int** Number of Workflow Histories to fetch at a time. |
+| `--depth` | No | **int** Set depth for your Child Workflow fetches. Pass -1 to fetch child workflows at any depth. |
+| `--fold` | No | **string[]** Fold away Child Workflows with the specified statuses. Case-insensitive. Ignored if --no-fold supplied. Available values: running, completed, failed, canceled, terminated, timedout, continueasnew. Can be passed multiple times. |
+| `--no-fold` | No | **bool** Disable folding. Fetch and display Child Workflows within the set depth. |
+| `--run-id`, `-r` | No | **string** Run ID. |
+| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
 ## update
 
@@ -689,11 +692,11 @@ temporal workflow update describe \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--run-id`, `-r` | No | **string** Run ID. If unset, updates the currently-running Workflow Execution. |  |
-| `--update-id` | Yes | **string** Update ID. Must be unique per Workflow Execution. |  |
-| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--run-id`, `-r` | No | **string** Run ID. If unset, updates the currently-running Workflow Execution. |
+| `--update-id` | Yes | **string** Update ID. Must be unique per Workflow Execution. |
+| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
 ### execute
 
@@ -710,17 +713,17 @@ temporal workflow update execute \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--first-execution-run-id` | No | **string** Parent Run ID. The update is sent to the last Workflow Execution in the chain started with this Run ID. |  |
-| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |  |
-| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |  |
-| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |  |
-| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |  |
-| `--name` | Yes | **string** Handler method name. |  |
-| `--run-id`, `-r` | No | **string** Run ID. If unset, looks for an Update against the currently-running Workflow Execution. |  |
-| `--update-id` | No | **string** Update ID. If unset, defaults to a UUID. |  |
-| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--first-execution-run-id` | No | **string** Parent Run ID. The update is sent to the last Workflow Execution in the chain started with this Run ID. |
+| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |
+| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |
+| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |
+| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |
+| `--name` | Yes | **string** Handler method name. |
+| `--run-id`, `-r` | No | **string** Run ID. If unset, looks for an Update against the currently-running Workflow Execution. |
+| `--update-id` | No | **string** Update ID. If unset, defaults to a UUID. |
+| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
 ### result
 
@@ -735,11 +738,11 @@ temporal workflow update result \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--run-id`, `-r` | No | **string** Run ID. If unset, updates the currently-running Workflow Execution. |  |
-| `--update-id` | Yes | **string** Update ID. Must be unique per Workflow Execution. |  |
-| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--run-id`, `-r` | No | **string** Run ID. If unset, updates the currently-running Workflow Execution. |
+| `--update-id` | Yes | **string** Update ID. Must be unique per Workflow Execution. |
+| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
 ### start
 
@@ -757,18 +760,18 @@ temporal workflow update start \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--first-execution-run-id` | No | **string** Parent Run ID. The update is sent to the last Workflow Execution in the chain started with this Run ID. |  |
-| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |  |
-| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |  |
-| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |  |
-| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |  |
-| `--name` | Yes | **string** Handler method name. |  |
-| `--run-id`, `-r` | No | **string** Run ID. If unset, looks for an Update against the currently-running Workflow Execution. |  |
-| `--update-id` | No | **string** Update ID. If unset, defaults to a UUID. |  |
-| `--wait-for-stage` | Yes | **string-enum** Update stage to wait for. The only option is `accepted`, but this option is  required. This is to allow a future version of the CLI to choose a default value. Accepted values: accepted. |  |
-| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--first-execution-run-id` | No | **string** Parent Run ID. The update is sent to the last Workflow Execution in the chain started with this Run ID. |
+| `--input`, `-i` | No | **string[]** Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments. |
+| `--input-base64` | No | **bool** Assume inputs are base64-encoded and attempt to decode them. |
+| `--input-file` | No | **string[]** A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments. |
+| `--input-meta` | No | **string[]** Input payload metadata as a `KEY=VALUE` pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order. |
+| `--name` | Yes | **string** Handler method name. |
+| `--run-id`, `-r` | No | **string** Run ID. If unset, looks for an Update against the currently-running Workflow Execution. |
+| `--update-id` | No | **string** Update ID. If unset, defaults to a UUID. |
+| `--wait-for-stage` | Yes | **string-enum** Update stage to wait for. The only option is `accepted`, but this option is  required. This is to allow a future version of the CLI to choose a default value. Accepted values: accepted. |
+| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
 ## update-options
 
@@ -821,17 +824,17 @@ To see the current override use `temporal workflow describe`
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. |  |
-| `--reason` | No | **string** Reason for batch operation. Only use with --query. Defaults to user name. |  |
-| `--rps` | No | **float** Limit batch's requests per second. Only allowed if query is present. |  |
-| `--run-id`, `-r` | No | **string** Run ID. Only use with --workflow-id. Cannot use with --query. |  |
-| `--versioning-override-behavior` | Yes | **string-enum** Override the versioning behavior of a Workflow. Accepted values: unspecified, pinned, auto_upgrade. |  |
-| `--versioning-override-build-id` | No | **string** When overriding to a `pinned` behavior, specifies the Build ID of the version to target. |  |
-| `--versioning-override-deployment-name` | No | **string** When overriding to a `pinned` behavior, specifies the Deployment Name of the version to target. |  |
-| `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |  |
-| `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. |
+| `--reason` | No | **string** Reason for batch operation. Only use with --query. Defaults to user name. |
+| `--rps` | No | **float** Limit batch's requests per second. Only allowed if query is present. |
+| `--run-id`, `-r` | No | **string** Run ID. Only use with --workflow-id. Cannot use with --query. |
+| `--versioning-override-behavior` | Yes | **string-enum** Override the versioning behavior of a Workflow. Accepted values: unspecified, pinned, auto_upgrade. |
+| `--versioning-override-build-id` | No | **string** When overriding to a `pinned` behavior, specifies the Build ID of the version to target. |
+| `--versioning-override-deployment-name` | No | **string** When overriding to a `pinned` behavior, specifies the Deployment Name of the version to target. |
+| `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |
+| `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |
 
 ## Global Flags
 

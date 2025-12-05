@@ -19,6 +19,9 @@ tags:
 
 {/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
 This file is generated from https://github.com/temporalio/cli/blob/main/internal/commandsgen/commands.yml via internal/cmd/gen-docs */}
+
+This page provides a reference for the `temporal` CLI `batch` command. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
+
 ## describe
 
 Show the progress of an ongoing batch job. Pass a valid job ID to display its
@@ -31,9 +34,9 @@ temporal batch describe \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--job-id` | Yes | **string** Batch job ID. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--job-id` | Yes | **string** Batch job ID. |
 
 ## list
 
@@ -47,9 +50,9 @@ temporal batch list \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--limit` | No | **int** Maximum number of batch jobs to display. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--limit` | No | **int** Maximum number of batch jobs to display. |
 
 ## terminate
 
@@ -65,10 +68,10 @@ temporal batch terminate \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--job-id` | Yes | **string** Job ID to terminate. |  |
-| `--reason` | Yes | **string** Reason for terminating the batch job. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--job-id` | Yes | **string** Job ID to terminate. |
+| `--reason` | Yes | **string** Reason for terminating the batch job. |
 
 ## Global Flags
 

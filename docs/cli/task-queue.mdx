@@ -17,6 +17,9 @@ tags:
 
 {/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
 This file is generated from https://github.com/temporalio/cli/blob/main/internal/commandsgen/commands.yml via internal/cmd/gen-docs */}
+
+This page provides a reference for the `temporal` CLI `task-queue` command. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
+
 ## config
 
 Manage Task Queue configuration:
@@ -49,10 +52,10 @@ This command returns the current configuration including:
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--task-queue`, `-t` | Yes | **string** Task Queue name. |  |
-| `--task-queue-type` | Yes | **string-enum** Task Queue type. Accepted values: workflow, activity, nexus. Accepted values: workflow, activity, nexus. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--task-queue`, `-t` | Yes | **string** Task Queue name. |
+| `--task-queue-type` | Yes | **string-enum** Task Queue type. Accepted values: workflow, activity, nexus. Accepted values: workflow, activity, nexus. |
 
 ### set
 
@@ -81,14 +84,14 @@ To unset a rate limit, pass in 'default', for example: --queue-rps-limit default
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--fairness-key-rps-limit-default` | No | **float\|default** Fairness key rate limit default in requests per second. Accepts a float; or 'default' to unset. |  |
-| `--fairness-key-rps-limit-reason` | No | **string** Reason for fairness key rate limit update. |  |
-| `--queue-rps-limit` | No | **float\|default** Queue rate limit in requests per second. Accepts a float; or 'default' to unset. |  |
-| `--queue-rps-limit-reason` | No | **string** Reason for queue rate limit update. |  |
-| `--task-queue`, `-t` | Yes | **string** Task Queue name. |  |
-| `--task-queue-type` | Yes | **string-enum** Task Queue type. Accepted values: workflow, activity, nexus. Accepted values: workflow, activity, nexus. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--fairness-key-rps-limit-default` | No | **float\|default** Fairness key rate limit default in requests per second. Accepts a float; or 'default' to unset. |
+| `--fairness-key-rps-limit-reason` | No | **string** Reason for fairness key rate limit update. |
+| `--queue-rps-limit` | No | **float\|default** Queue rate limit in requests per second. Accepts a float; or 'default' to unset. |
+| `--queue-rps-limit-reason` | No | **string** Reason for queue rate limit update. |
+| `--task-queue`, `-t` | Yes | **string** Task Queue name. |
+| `--task-queue-type` | Yes | **string-enum** Task Queue type. Accepted values: workflow, activity, nexus. Accepted values: workflow, activity, nexus. |
 
 ## describe
 
@@ -174,19 +177,19 @@ more conservative than `ClosedWorkflowsOnly`.
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--disable-stats` | No | **bool** Disable task queue statistics. |  |
-| `--legacy-mode` | No | **bool** Enable a legacy mode for servers that do not support rules-based worker versioning. This mode only provides pollers info. |  |
-| `--partitions-legacy` | No | **int** Query partitions 1 through `N`. Experimental/Temporary feature. Legacy mode only. | `1` |
-| `--report-config` | No | **bool** Include task queue configuration in the response. When enabled, the command will return the current rate limit configuration for the task queue. |  |
-| `--report-reachability` | No | **bool** Display task reachability information. |  |
-| `--select-all-active` | No | **bool** Include all active versions. A version is active if it had new tasks or polls recently. |  |
-| `--select-build-id` | No | **string[]** Filter the Task Queue based on Build ID. |  |
-| `--select-unversioned` | No | **bool** Include the unversioned queue. |  |
-| `--task-queue`, `-t` | Yes | **string** Task Queue name. |  |
-| `--task-queue-type` | No | **string-enum[]** Task Queue type. If not specified, all types are reported. Accepted values: workflow, activity, nexus. |  |
-| `--task-queue-type-legacy` | No | **string-enum** Task Queue type (legacy mode only). Accepted values: workflow, activity. | `workflow` |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--disable-stats` | No | **bool** Disable task queue statistics. |
+| `--legacy-mode` | No | **bool** Enable a legacy mode for servers that do not support rules-based worker versioning. This mode only provides pollers info. |
+| `--partitions-legacy` | No | **int** Query partitions 1 through `N`. Experimental/Temporary feature. Legacy mode only. |
+| `--report-config` | No | **bool** Include task queue configuration in the response. When enabled, the command will return the current rate limit configuration for the task queue. |
+| `--report-reachability` | No | **bool** Display task reachability information. |
+| `--select-all-active` | No | **bool** Include all active versions. A version is active if it had new tasks or polls recently. |
+| `--select-build-id` | No | **string[]** Filter the Task Queue based on Build ID. |
+| `--select-unversioned` | No | **bool** Include the unversioned queue. |
+| `--task-queue`, `-t` | Yes | **string** Task Queue name. |
+| `--task-queue-type` | No | **string-enum[]** Task Queue type. If not specified, all types are reported. Accepted values: workflow, activity, nexus. |
+| `--task-queue-type-legacy` | No | **string-enum** Task Queue type (legacy mode only). Accepted values: workflow, activity. |
 
 ## get-build-id-reachability
 
@@ -211,11 +214,11 @@ all Task Queues.
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--build-id` | No | **string[]** One or more Build ID strings. Can be passed multiple times. |  |
-| `--reachability-type` | No | **string-enum** Reachability filter. `open`: reachable by one or more open workflows. `closed`: reachable by one or more closed workflows. `existing`: reachable by either. New Workflow Executions reachable by a Build ID are always reported. Accepted values: open, closed, existing. | `existing` |
-| `--task-queue`, `-t` | No | **string[]** Search only the specified task queue(s). Can be passed multiple times. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--build-id` | No | **string[]** One or more Build ID strings. Can be passed multiple times. |
+| `--reachability-type` | No | **string-enum** Reachability filter. `open`: reachable by one or more open workflows. `closed`: reachable by one or more closed workflows. `existing`: reachable by either. New Workflow Executions reachable by a Build ID are always reported. Accepted values: open, closed, existing. |
+| `--task-queue`, `-t` | No | **string[]** Search only the specified task queue(s). Can be passed multiple times. |
 
 ## get-build-ids
 
@@ -237,10 +240,10 @@ This command is limited to Namespaces that support Worker versioning.
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--max-sets` | No | **int** Max return count. Use 1 for default major version. Use 0 for all sets. | `0` |
-| `--task-queue`, `-t` | Yes | **string** Task Queue name. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--max-sets` | No | **int** Max return count. Use 1 for default major version. Use 0 for all sets. |
+| `--task-queue`, `-t` | Yes | **string** Task Queue name. |
 
 ## list-partition
 
@@ -253,9 +256,9 @@ temporal task-queue list-partition \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--task-queue`, `-t` | Yes | **string** Task Queue name. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--task-queue`, `-t` | Yes | **string** Task Queue name. |
 
 ## update-build-ids
 
@@ -292,12 +295,12 @@ This command is limited to Namespaces that support Worker versioning.
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--build-id` | Yes | **string** Build ID to be added. |  |
-| `--existing-compatible-build-id` | Yes | **string** Pre-existing Build ID in this Task Queue. |  |
-| `--set-as-default` | No | **bool** Set the expanded Build ID set as the Task Queue default. |  |
-| `--task-queue`, `-t` | Yes | **string** Task Queue name. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--build-id` | Yes | **string** Build ID to be added. |
+| `--existing-compatible-build-id` | Yes | **string** Pre-existing Build ID in this Task Queue. |
+| `--set-as-default` | No | **bool** Set the expanded Build ID set as the Task Queue default. |
+| `--task-queue`, `-t` | Yes | **string** Task Queue name. |
 
 ### add-new-default
 
@@ -327,10 +330,10 @@ temporal task-queue update-build-ids add-new-default \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--build-id` | Yes | **string** Build ID to be added. |  |
-| `--task-queue`, `-t` | Yes | **string** Task Queue name. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--build-id` | Yes | **string** Build ID to be added. |
+| `--task-queue`, `-t` | Yes | **string** Task Queue name. |
 
 ### promote-id-in-set
 
@@ -359,10 +362,10 @@ temporal task-queue update-build-ids promote-id-in-set \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--build-id` | Yes | **string** Build ID to set as default. |  |
-| `--task-queue`, `-t` | Yes | **string** Task Queue name. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--build-id` | Yes | **string** Build ID to set as default. |
+| `--task-queue`, `-t` | Yes | **string** Task Queue name. |
 
 ### promote-set
 
@@ -392,10 +395,10 @@ temporal task-queue update-build-ids promote-set \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--build-id` | Yes | **string** Build ID within the promoted set. |  |
-| `--task-queue`, `-t` | Yes | **string** Task Queue name. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--build-id` | Yes | **string** Build ID within the promoted set. |
+| `--task-queue`, `-t` | Yes | **string** Task Queue name. |
 
 ## versioning
 
@@ -444,11 +447,11 @@ temporal task-queue versioning add-redirect-rule \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--source-build-id` | Yes | **string** Source build ID. |  |
-| `--target-build-id` | Yes | **string** Target build ID. |  |
-| `--yes`, `-y` | No | **bool** Don't prompt to confirm. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--source-build-id` | Yes | **string** Source build ID. |
+| `--target-build-id` | Yes | **string** Target build ID. |
+| `--yes`, `-y` | No | **bool** Don't prompt to confirm. |
 
 ### commit-build-id
 
@@ -481,11 +484,11 @@ override this validation.
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--build-id` | Yes | **string** Target build ID. |  |
-| `--force` | No | **bool** Bypass recent-poller validation. |  |
-| `--yes`, `-y` | No | **bool** Don't prompt to confirm. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--build-id` | Yes | **string** Target build ID. |
+| `--force` | No | **bool** Bypass recent-poller validation. |
+| `--yes`, `-y` | No | **bool** Don't prompt to confirm. |
 
 ### delete-assignment-rule
 
@@ -510,11 +513,11 @@ Use the `--force` option to override this validation.
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--force` | No | **bool** Bypass one-unconditional-rule validation. |  |
-| `--rule-index`, `-i` | Yes | **int** Position of the assignment rule to be replaced. Requests for invalid indices will fail. |  |
-| `--yes`, `-y` | No | **bool** Don't prompt to confirm. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--force` | No | **bool** Bypass one-unconditional-rule validation. |
+| `--rule-index`, `-i` | Yes | **int** Position of the assignment rule to be replaced. Requests for invalid indices will fail. |
+| `--yes`, `-y` | No | **bool** Don't prompt to confirm. |
 
 ### delete-redirect-rule
 
@@ -534,10 +537,10 @@ temporal task-queue versioning delete-redirect-rule \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--source-build-id` | Yes | **string** Source Build ID. |  |
-| `--yes`, `-y` | No | **bool** Don't prompt to confirm. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--source-build-id` | Yes | **string** Source Build ID. |
+| `--yes`, `-y` | No | **bool** Don't prompt to confirm. |
 
 ### get-rules
 
@@ -587,12 +590,12 @@ If you do not specify a `--rule-index`, this command inserts at index 0.
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--build-id` | Yes | **string** Target Build ID. |  |
-| `--percentage` | No | **int** Traffic percent to send to target Build ID. | `100` |
-| `--rule-index`, `-i` | No | **int** Insertion position. Ranges from 0 (insert at start) to count (append). Any number greater than the count is treated as "append". | `0` |
-| `--yes`, `-y` | No | **bool** Don't prompt to confirm. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--build-id` | Yes | **string** Target Build ID. |
+| `--percentage` | No | **int** Traffic percent to send to target Build ID. |
+| `--rule-index`, `-i` | No | **int** Insertion position. Ranges from 0 (insert at start) to count (append). Any number greater than the count is treated as "append". |
+| `--yes`, `-y` | No | **bool** Don't prompt to confirm. |
 
 ### replace-assignment-rule
 
@@ -630,13 +633,13 @@ Percent may vary between 0 and 100 (default).
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--build-id` | Yes | **string** Target Build ID. |  |
-| `--force` | No | **bool** Bypass the validation that one unconditional rule remains. |  |
-| `--percentage` | No | **int** Divert percent of traffic to target Build ID. | `100` |
-| `--rule-index`, `-i` | Yes | **int** Position of the assignment rule to be replaced. Requests for invalid indices will fail. |  |
-| `--yes`, `-y` | No | **bool** Don't prompt to confirm. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--build-id` | Yes | **string** Target Build ID. |
+| `--force` | No | **bool** Bypass the validation that one unconditional rule remains. |
+| `--percentage` | No | **int** Divert percent of traffic to target Build ID. |
+| `--rule-index`, `-i` | Yes | **int** Position of the assignment rule to be replaced. Requests for invalid indices will fail. |
+| `--yes`, `-y` | No | **bool** Don't prompt to confirm. |
 
 ### replace-redirect-rule
 
@@ -658,11 +661,11 @@ temporal task-queue versioning replace-redirect-rule \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--source-build-id` | Yes | **string** Source Build ID. |  |
-| `--target-build-id` | Yes | **string** Target Build ID. |  |
-| `--yes`, `-y` | No | **bool** Don't prompt to confirm. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--source-build-id` | Yes | **string** Source Build ID. |
+| `--target-build-id` | Yes | **string** Target Build ID. |
+| `--yes`, `-y` | No | **bool** Don't prompt to confirm. |
 
 ## Global Flags
 

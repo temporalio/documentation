@@ -17,6 +17,9 @@ tags:
 
 {/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
 This file is generated from https://github.com/temporalio/cli/blob/main/internal/commandsgen/commands.yml via internal/cmd/gen-docs */}
+
+This page provides a reference for the `temporal` CLI `server` command. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
+
 ## start-dev
 
 Run a development Temporal Server on your local system.
@@ -61,24 +64,24 @@ temporal server start-dev \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--db-filename`, `-f` | No | **string** Path to file for persistent Temporal state store. By default, Workflow Executions are lost when the server process dies. |  |
-| `--dynamic-config-value` | No | **string[]** Dynamic configuration value using `KEY=VALUE` pairs. Keys must be identifiers, and values must be JSON values. For example: `YourKey="YourString"` Can be passed multiple times. |  |
-| `--headless` | No | **bool** Disable the Web UI. |  |
-| `--http-port` | No | **int** Port for the HTTP API service. Defaults to a random free port. | `0` |
-| `--ip` | No | **string** IP address bound to the front-end Service. | `localhost` |
-| `--log-config` | No | **bool** Log the server config to stderr. |  |
-| `--metrics-port` | No | **int** Port for the '/metrics' HTTP endpoint. Defaults to a random free port. |  |
-| `--namespace`, `-n` | No | **string[]** Namespaces to be created at launch. The "default" Namespace is always created automatically. |  |
-| `--port`, `-p` | No | **int** Port for the front-end gRPC Service. | `7233` |
-| `--search-attribute` | No | **string[]** Search attributes to register using `KEY=VALUE` pairs. Keys must be identifiers, and values must be the search attribute type, which is one of the following: Text, Keyword, Int, Double, Bool, Datetime, KeywordList. |  |
-| `--sqlite-pragma` | No | **string[]** SQLite pragma statements in "PRAGMA=VALUE" format. |  |
-| `--ui-asset-path` | No | **string** UI custom assets path. |  |
-| `--ui-codec-endpoint` | No | **string** UI remote codec HTTP endpoint. |  |
-| `--ui-ip` | No | **string** IP address bound to the Web UI. Defaults to same as '--ip' value. |  |
-| `--ui-port` | No | **int** Port for the Web UI. Defaults to '--port' value + 1000. |  |
-| `--ui-public-path` | No | **string** The public base path for the Web UI. Defaults to `/`. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--db-filename`, `-f` | No | **string** Path to file for persistent Temporal state store. By default, Workflow Executions are lost when the server process dies. |
+| `--dynamic-config-value` | No | **string[]** Dynamic configuration value using `KEY=VALUE` pairs. Keys must be identifiers, and values must be JSON values. For example: `YourKey="YourString"` Can be passed multiple times. |
+| `--headless` | No | **bool** Disable the Web UI. |
+| `--http-port` | No | **int** Port for the HTTP API service. Defaults to a random free port. |
+| `--ip` | No | **string** IP address bound to the front-end Service. |
+| `--log-config` | No | **bool** Log the server config to stderr. |
+| `--metrics-port` | No | **int** Port for the '/metrics' HTTP endpoint. Defaults to a random free port. |
+| `--namespace`, `-n` | No | **string[]** Namespaces to be created at launch. The "default" Namespace is always created automatically. |
+| `--port`, `-p` | No | **int** Port for the front-end gRPC Service. |
+| `--search-attribute` | No | **string[]** Search attributes to register using `KEY=VALUE` pairs. Keys must be identifiers, and values must be the search attribute type, which is one of the following: Text, Keyword, Int, Double, Bool, Datetime, KeywordList. |
+| `--sqlite-pragma` | No | **string[]** SQLite pragma statements in "PRAGMA=VALUE" format. |
+| `--ui-asset-path` | No | **string** UI custom assets path. |
+| `--ui-codec-endpoint` | No | **string** UI remote codec HTTP endpoint. |
+| `--ui-ip` | No | **string** IP address bound to the Web UI. Defaults to same as '--ip' value. |
+| `--ui-port` | No | **int** Port for the Web UI. Defaults to '--port' value + 1000. |
+| `--ui-public-path` | No | **string** The public base path for the Web UI. Defaults to `/`. |
 
 ## Global Flags
 

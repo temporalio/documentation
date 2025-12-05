@@ -39,6 +39,9 @@ tags:
 
 {/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
 This file is generated from https://github.com/temporalio/cli/blob/main/internal/commandsgen/commands.yml via internal/cmd/gen-docs */}
+
+This page provides a reference for the `temporal` CLI `operator` command. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
+
 ## cluster
 
 Perform operator actions on Temporal Services (also known as Clusters).
@@ -64,9 +67,9 @@ temporal operator cluster describe [--detail]
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--detail` | No | **bool** Show history shard count and Cluster/Service version information. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--detail` | No | **bool** Show history shard count and Cluster/Service version information. |
 
 ### health
 
@@ -88,9 +91,9 @@ temporal operator cluster list [--limit max-count]
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--limit` | No | **int** Maximum number of Clusters to display. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--limit` | No | **int** Maximum number of Clusters to display. |
 
 ### remove
 
@@ -103,9 +106,9 @@ temporal operator cluster remove \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--name` | Yes | **string** Cluster/Service name. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--name` | Yes | **string** Cluster/Service name. |
 
 ### system
 
@@ -139,10 +142,10 @@ temporal operator cluster upsert \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--enable-connection` | No | **bool** Set the connection to "enabled". |  |
-| `--frontend-address` | Yes | **string** Remote endpoint. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--enable-connection` | No | **bool** Set the connection to "enabled". |
+| `--frontend-address` | Yes | **string** Remote endpoint. |
 
 ## namespace
 
@@ -192,19 +195,19 @@ Note: URI values for archival states can't be changed once enabled.
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--active-cluster` | No | **string** Active Cluster (Service) name. |  |
-| `--cluster` | No | **string[]** Cluster (Service) names for Namespace creation. Can be passed multiple times. |  |
-| `--data` | No | **string[]** Namespace data as `KEY=VALUE` pairs. Keys must be identifiers, and values must be JSON values. For example: `YourKey={"your": "value"}` Can be passed multiple times. |  |
-| `--description` | No | **string** Namespace description. |  |
-| `--email` | No | **string** Owner email. |  |
-| `--global` | No | **bool** Enable multi-region data replication. |  |
-| `--history-archival-state` | No | **string-enum** History archival state. Accepted values: disabled, enabled. | `disabled` |
-| `--history-uri` | No | **string** Archive history to this `URI`. Once enabled, can't be changed. |  |
-| `--retention` | No | **duration** Time to preserve closed Workflows before deletion. | `72h` |
-| `--visibility-archival-state` | No | **string-enum** Visibility archival state. Accepted values: disabled, enabled. | `disabled` |
-| `--visibility-uri` | No | **string** Archive visibility data to this `URI`. Once enabled, can't be changed. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--active-cluster` | No | **string** Active Cluster (Service) name. |
+| `--cluster` | No | **string[]** Cluster (Service) names for Namespace creation. Can be passed multiple times. |
+| `--data` | No | **string[]** Namespace data as `KEY=VALUE` pairs. Keys must be identifiers, and values must be JSON values. For example: `YourKey={"your": "value"}` Can be passed multiple times. |
+| `--description` | No | **string** Namespace description. |
+| `--email` | No | **string** Owner email. |
+| `--global` | No | **bool** Enable multi-region data replication. |
+| `--history-archival-state` | No | **string-enum** History archival state. Accepted values: disabled, enabled. |
+| `--history-uri` | No | **string** Archive history to this `URI`. Once enabled, can't be changed. |
+| `--retention` | No | **duration** Time to preserve closed Workflows before deletion. |
+| `--visibility-archival-state` | No | **string-enum** Visibility archival state. Accepted values: disabled, enabled. |
+| `--visibility-uri` | No | **string** Archive visibility data to this `URI`. Once enabled, can't be changed. |
 
 ### delete
 
@@ -223,9 +226,9 @@ temporal operator namespace delete \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--yes`, `-y` | No | **bool** Request confirmation before deletion. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--yes`, `-y` | No | **bool** Request confirmation before deletion. |
 
 ### describe
 
@@ -245,9 +248,9 @@ temporal operator namespace describe \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--namespace-id` | No | **string** Namespace ID. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--namespace-id` | No | **string** Namespace ID. |
 
 ### list
 
@@ -293,20 +296,20 @@ temporal operator namespace update \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--active-cluster` | No | **string** Active Cluster (Service) name. |  |
-| `--cluster` | No | **string[]** Cluster (Service) names. |  |
-| `--data` | No | **string[]** Namespace data as `KEY=VALUE` pairs. Keys must be identifiers, and values must be JSON values. For example: `YourKey={"your": "value"}` Can be passed multiple times. |  |
-| `--description` | No | **string** Namespace description. |  |
-| `--email` | No | **string** Owner email. |  |
-| `--history-archival-state` | No | **string-enum** History archival state. Accepted values: disabled, enabled. |  |
-| `--history-uri` | No | **string** Archive history to this `URI`. Once enabled, can't be changed. |  |
-| `--promote-global` | No | **bool** Enable multi-region data replication. |  |
-| `--replication-state` | No | **string-enum** Replication state. Accepted values: normal, handover. |  |
-| `--retention` | No | **duration** Length of time a closed Workflow is preserved before deletion. |  |
-| `--visibility-archival-state` | No | **string-enum** Visibility archival state. Accepted values: disabled, enabled. |  |
-| `--visibility-uri` | No | **string** Archive visibility data to this `URI`. Once enabled, can't be changed. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--active-cluster` | No | **string** Active Cluster (Service) name. |
+| `--cluster` | No | **string[]** Cluster (Service) names. |
+| `--data` | No | **string[]** Namespace data as `KEY=VALUE` pairs. Keys must be identifiers, and values must be JSON values. For example: `YourKey={"your": "value"}` Can be passed multiple times. |
+| `--description` | No | **string** Namespace description. |
+| `--email` | No | **string** Owner email. |
+| `--history-archival-state` | No | **string-enum** History archival state. Accepted values: disabled, enabled. |
+| `--history-uri` | No | **string** Archive history to this `URI`. Once enabled, can't be changed. |
+| `--promote-global` | No | **bool** Enable multi-region data replication. |
+| `--replication-state` | No | **string-enum** Replication state. Accepted values: normal, handover. |
+| `--retention` | No | **duration** Length of time a closed Workflow is preserved before deletion. |
+| `--visibility-archival-state` | No | **string-enum** Visibility archival state. Accepted values: disabled, enabled. |
+| `--visibility-uri` | No | **string** Archive visibility data to this `URI`. Once enabled, can't be changed. |
 
 ## nexus
 
@@ -350,14 +353,14 @@ temporal operator nexus endpoint create \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--description` | No | **string** Nexus Endpoint description. You may use Markdown formatting in the Nexus Endpoint description. |  |
-| `--description-file` | No | **string** Path to the Nexus Endpoint description file. The contents of the description file may use Markdown formatting. |  |
-| `--name` | Yes | **string** Endpoint name. |  |
-| `--target-namespace` | No | **string** Namespace where a handler Worker polls for Nexus tasks. |  |
-| `--target-task-queue` | No | **string** Task Queue that a handler Worker polls for Nexus tasks. |  |
-| `--target-url` | No | **string** An external Nexus Endpoint that receives forwarded Nexus requests. May be used as an alternative to `--target-namespace` and `--target-task-queue`. _(Experimental)_ |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--description` | No | **string** Nexus Endpoint description. You may use Markdown formatting in the Nexus Endpoint description. |
+| `--description-file` | No | **string** Path to the Nexus Endpoint description file. The contents of the description file may use Markdown formatting. |
+| `--name` | Yes | **string** Endpoint name. |
+| `--target-namespace` | No | **string** Namespace where a handler Worker polls for Nexus tasks. |
+| `--target-task-queue` | No | **string** Task Queue that a handler Worker polls for Nexus tasks. |
+| `--target-url` | No | **string** An external Nexus Endpoint that receives forwarded Nexus requests. May be used as an alternative to `--target-namespace` and `--target-task-queue`. _(Experimental)_ |
 
 #### delete
 
@@ -369,9 +372,9 @@ temporal operator nexus endpoint delete --name your-endpoint
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--name` | Yes | **string** Endpoint name. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--name` | Yes | **string** Endpoint name. |
 
 #### get
 
@@ -383,9 +386,9 @@ temporal operator nexus endpoint get --name your-endpoint
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--name` | Yes | **string** Endpoint name. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--name` | Yes | **string** Endpoint name. |
 
 #### list
 
@@ -425,15 +428,15 @@ temporal operator nexus endpoint update \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--description` | No | **string** Nexus Endpoint description. You may use Markdown formatting in the Nexus Endpoint description. |  |
-| `--description-file` | No | **string** Path to the Nexus Endpoint description file. The contents of the description file may use Markdown formatting. |  |
-| `--name` | Yes | **string** Endpoint name. |  |
-| `--target-namespace` | No | **string** Namespace where a handler Worker polls for Nexus tasks. |  |
-| `--target-task-queue` | No | **string** Task Queue that a handler Worker polls for Nexus tasks. |  |
-| `--target-url` | No | **string** An external Nexus Endpoint that receives forwarded Nexus requests. May be used as an alternative to `--target-namespace` and `--target-task-queue`. _(Experimental)_ |  |
-| `--unset-description` | No | **bool** Unset the description. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--description` | No | **string** Nexus Endpoint description. You may use Markdown formatting in the Nexus Endpoint description. |
+| `--description-file` | No | **string** Path to the Nexus Endpoint description file. The contents of the description file may use Markdown formatting. |
+| `--name` | Yes | **string** Endpoint name. |
+| `--target-namespace` | No | **string** Namespace where a handler Worker polls for Nexus tasks. |
+| `--target-task-queue` | No | **string** Task Queue that a handler Worker polls for Nexus tasks. |
+| `--target-url` | No | **string** An external Nexus Endpoint that receives forwarded Nexus requests. May be used as an alternative to `--target-namespace` and `--target-task-queue`. _(Experimental)_ |
+| `--unset-description` | No | **bool** Unset the description. |
 
 ## search-attribute
 
@@ -464,10 +467,10 @@ temporal operator search-attribute create \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--name` | Yes | **string[]** Search Attribute name. |  |
-| `--type` | Yes | **string-enum[]** Search Attribute type. Accepted values: Text, Keyword, Int, Double, Bool, Datetime, KeywordList. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--name` | Yes | **string[]** Search Attribute name. |
+| `--type` | Yes | **string-enum[]** Search Attribute type. Accepted values: Text, Keyword, Int, Double, Bool, Datetime, KeywordList. |
 
 ### list
 
@@ -498,10 +501,10 @@ temporal operator search-attribute remove \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--name` | Yes | **string[]** Search Attribute name. |  |
-| `--yes`, `-y` | No | **bool** Don't prompt to confirm removal. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--name` | Yes | **string[]** Search Attribute name. |
+| `--yes`, `-y` | No | **bool** Don't prompt to confirm removal. |
 
 ## Global Flags
 

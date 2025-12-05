@@ -15,6 +15,9 @@ tags:
 
 {/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
 This file is generated from https://github.com/temporalio/cli/blob/main/internal/commandsgen/commands.yml via internal/cmd/gen-docs */}
+
+This page provides a reference for the `temporal` CLI `worker` command. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
+
 ## deployment
 
 ```
@@ -77,9 +80,9 @@ temporal worker deployment delete \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--name`, `-d` | Yes | **string** Name for a Worker Deployment. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--name`, `-d` | Yes | **string** Name for a Worker Deployment. |
 
 ### delete-version
 
@@ -114,11 +117,11 @@ temporal worker deployment delete-version \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--build-id` | Yes | **string** Build ID of the Worker Deployment Version. |  |
-| `--deployment-name` | Yes | **string** Name of the Worker Deployment. |  |
-| `--skip-drainage` | No | **bool** Ignore the deletion requirement of not draining. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--build-id` | Yes | **string** Build ID of the Worker Deployment Version. |
+| `--deployment-name` | Yes | **string** Name of the Worker Deployment. |
+| `--skip-drainage` | No | **bool** Ignore the deletion requirement of not draining. |
 
 ### describe
 
@@ -147,9 +150,9 @@ temporal worker deployment describe \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--name`, `-d` | Yes | **string** Name for a Worker Deployment. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--name`, `-d` | Yes | **string** Name for a Worker Deployment. |
 
 ### describe-version
 
@@ -180,10 +183,10 @@ temporal worker deployment describe-version \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--build-id` | Yes | **string** Build ID of the Worker Deployment Version. |  |
-| `--deployment-name` | Yes | **string** Name of the Worker Deployment. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--build-id` | Yes | **string** Build ID of the Worker Deployment Version. |
+| `--deployment-name` | Yes | **string** Name of the Worker Deployment. |
 
 ### list
 
@@ -287,12 +290,12 @@ Sets the Manager Identity of the Deployment to any string.
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--deployment-name` | No | **string** Name for a Worker Deployment. Required. |  |
-| `--manager-identity` | No | **string** New Manager Identity. Required unless --self is specified. |  |
-| `--self` | No | **bool** Set Manager Identity to the identity of the user submitting this request. Required unless --manager-identity is specified. |  |
-| `--yes`, `-y` | No | **bool** Don't prompt to confirm set Manager Identity. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--deployment-name` | No | **string** Name for a Worker Deployment. Required. |
+| `--manager-identity` | No | **string** New Manager Identity. Required unless --self is specified. |
+| `--self` | No | **bool** Set Manager Identity to the identity of the user submitting this request. Required unless --manager-identity is specified. |
+| `--yes`, `-y` | No | **bool** Don't prompt to confirm set Manager Identity. |
 
 #### unset
 
@@ -330,10 +333,10 @@ Clears the Manager Identity field for a given Deployment.
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--deployment-name` | No | **string** Name for a Worker Deployment. Required. |  |
-| `--yes`, `-y` | No | **bool** Don't prompt to confirm unset Manager Identity. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--deployment-name` | No | **string** Name for a Worker Deployment. Required. |
+| `--yes`, `-y` | No | **bool** Don't prompt to confirm unset Manager Identity. |
 
 ### set-current-version
 
@@ -377,14 +380,14 @@ temporal worker deployment set-current-version \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--allow-no-pollers` | No | **bool** Override protection and set version as current even if it has no pollers. |  |
-| `--build-id` | No | **string** Build ID of the Worker Deployment Version. Required unless --unversioned is specified. |  |
-| `--deployment-name` | Yes | **string** Name of the Worker Deployment. |  |
-| `--ignore-missing-task-queues` | No | **bool** Override protection to accidentally remove task queues. |  |
-| `--unversioned` | No | **bool** Set unversioned workers as the target version. Cannot be used with --build-id. |  |
-| `--yes`, `-y` | No | **bool** Don't prompt to confirm set Current Version. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--allow-no-pollers` | No | **bool** Override protection and set version as current even if it has no pollers. |
+| `--build-id` | No | **string** Build ID of the Worker Deployment Version. Required unless --unversioned is specified. |
+| `--deployment-name` | Yes | **string** Name of the Worker Deployment. |
+| `--ignore-missing-task-queues` | No | **bool** Override protection to accidentally remove task queues. |
+| `--unversioned` | No | **bool** Set unversioned workers as the target version. Cannot be used with --build-id. |
+| `--yes`, `-y` | No | **bool** Don't prompt to confirm set Current Version. |
 
 ### set-ramping-version
 
@@ -436,16 +439,16 @@ temporal worker deployment set-ramping-version \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--allow-no-pollers` | No | **bool** Override protection and set version as ramping even if it has no pollers. |  |
-| `--build-id` | No | **string** Build ID of the Worker Deployment Version. Required unless --unversioned is specified. |  |
-| `--delete` | No | **bool** Delete the Ramping Version. |  |
-| `--deployment-name` | Yes | **string** Name of the Worker Deployment. |  |
-| `--ignore-missing-task-queues` | No | **bool** Override protection to accidentally remove task queues. |  |
-| `--percentage` | No | **float** Percentage of tasks redirected to the Ramping Version. Valid range [0,100]. |  |
-| `--unversioned` | No | **bool** Set unversioned workers as the target version. Cannot be used with --build-id. |  |
-| `--yes`, `-y` | No | **bool** Don't prompt to confirm set Ramping Version. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--allow-no-pollers` | No | **bool** Override protection and set version as ramping even if it has no pollers. |
+| `--build-id` | No | **string** Build ID of the Worker Deployment Version. Required unless --unversioned is specified. |
+| `--delete` | No | **bool** Delete the Ramping Version. |
+| `--deployment-name` | Yes | **string** Name of the Worker Deployment. |
+| `--ignore-missing-task-queues` | No | **bool** Override protection to accidentally remove task queues. |
+| `--percentage` | No | **float** Percentage of tasks redirected to the Ramping Version. Valid range [0,100]. |
+| `--unversioned` | No | **bool** Set unversioned workers as the target version. Cannot be used with --build-id. |
+| `--yes`, `-y` | No | **bool** Don't prompt to confirm set Ramping Version. |
 
 ### update-metadata-version
 
@@ -475,12 +478,12 @@ The current metadata is also returned with `describe-version`:
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--build-id` | Yes | **string** Build ID of the Worker Deployment Version. |  |
-| `--deployment-name` | Yes | **string** Name of the Worker Deployment. |  |
-| `--metadata` | No | **string[]** Set deployment metadata using `KEY="VALUE"` pairs. Keys must be identifiers, and values must be JSON values. For example: `YourKey={"your": "value"}` Can be passed multiple times. |  |
-| `--remove-entries` | No | **string[]** Keys of entries to be deleted from metadata. Can be passed multiple times. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--build-id` | Yes | **string** Build ID of the Worker Deployment Version. |
+| `--deployment-name` | Yes | **string** Name of the Worker Deployment. |
+| `--metadata` | No | **string[]** Set deployment metadata using `KEY="VALUE"` pairs. Keys must be identifiers, and values must be JSON values. For example: `YourKey={"your": "value"}` Can be passed multiple times. |
+| `--remove-entries` | No | **string[]** Keys of entries to be deleted from metadata. Can be passed multiple times. |
 
 ## describe
 
@@ -492,9 +495,9 @@ temporal worker describe --namespace YourNamespace --worker-instance-key YourKey
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--worker-instance-key` | Yes | **string** Worker instance key to describe. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--worker-instance-key` | Yes | **string** Worker instance key to describe. |
 
 ## list
 
@@ -506,10 +509,10 @@ temporal worker list --namespace YourNamespace --query 'taskQueue="YourTaskQueue
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--limit` | No | **int** Maximum number of workers to display. |  |
-| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--limit` | No | **int** Maximum number of workers to display. |
+| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. |
 
 ## Global Flags
 

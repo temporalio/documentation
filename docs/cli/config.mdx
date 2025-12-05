@@ -21,6 +21,9 @@ tags:
 
 {/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
 This file is generated from https://github.com/temporalio/cli/blob/main/internal/commandsgen/commands.yml via internal/cmd/gen-docs */}
+
+This page provides a reference for the `temporal` CLI `config` command. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
+
 ## delete
 
 Remove a property within a profile.
@@ -32,9 +35,9 @@ temporal env delete \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--prop`, `-p` | Yes | **string** Specific property to delete. If unset, deletes entire profile. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--prop`, `-p` | Yes | **string** Specific property to delete. If unset, deletes entire profile. |
 
 ## delete-profile
 
@@ -62,9 +65,9 @@ temporal config get
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--prop`, `-p` | No | **string** Specific property to get. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--prop`, `-p` | No | **string** Specific property to get. |
 
 ## list
 
@@ -86,10 +89,10 @@ temporal config set \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--prop`, `-p` | Yes | **string** Property name. |  |
-| `--value`, `-v` | Yes | **string** Property value. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--prop`, `-p` | Yes | **string** Property name. |
+| `--value`, `-v` | Yes | **string** Property value. |
 
 ## Global Flags
 

@@ -24,6 +24,9 @@ tags:
 
 {/* NOTE: This is an auto-generated file. Any edit to this file will be overwritten.
 This file is generated from https://github.com/temporalio/cli/blob/main/internal/commandsgen/commands.yml via internal/cmd/gen-docs */}
+
+This page provides a reference for the `temporal` CLI `activity` command. The flags applicable to each subcommand are presented in a table within the heading for the subcommand. Refer to [Global Flags](#global-flags) for flags that you can use with every subcommand.
+
 ## complete
 
 Complete an Activity, marking it as successfully finished. Specify the
@@ -38,12 +41,12 @@ temporal activity complete \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--activity-id` | Yes | **string** Activity ID to complete. |  |
-| `--result` | Yes | **string** Result `JSON` to return. |  |
-| `--run-id`, `-r` | No | **string** Run ID. |  |
-| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--activity-id` | Yes | **string** Activity ID to complete. |
+| `--result` | Yes | **string** Result `JSON` to return. |
+| `--run-id`, `-r` | No | **string** Run ID. |
+| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
 ## fail
 
@@ -58,13 +61,13 @@ temporal activity fail \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--activity-id` | Yes | **string** Activity ID to fail. |  |
-| `--detail` | No | **string** Reason for failing the Activity (JSON). |  |
-| `--reason` | No | **string** Reason for failing the Activity. |  |
-| `--run-id`, `-r` | No | **string** Run ID. |  |
-| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--activity-id` | Yes | **string** Activity ID to fail. |
+| `--detail` | No | **string** Reason for failing the Activity (JSON). |
+| `--reason` | No | **string** Reason for failing the Activity. |
+| `--run-id`, `-r` | No | **string** Run ID. |
+| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
 ## pause
 
@@ -94,13 +97,13 @@ To later unpause the activity, see [unpause](#unpause). You may also want to
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--activity-id`, `-a` | No | **string** The Activity ID to pause. Either `activity-id` or `activity-type` must be provided, but not both. |  |
-| `--activity-type` | No | **string** All activities of the Activity Type will be paused. Either `activity-id` or `activity-type` must be provided, but not both. Note: Pausing Activity by Type is an experimental feature and may change in the future. |  |
-| `--identity` | No | **string** The identity of the user or client submitting this request. |  |
-| `--run-id`, `-r` | No | **string** Run ID. |  |
-| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--activity-id`, `-a` | No | **string** The Activity ID to pause. Either `activity-id` or `activity-type` must be provided, but not both. |
+| `--activity-type` | No | **string** All activities of the Activity Type will be paused. Either `activity-id` or `activity-type` must be provided, but not both. Note: Pausing Activity by Type is an experimental feature and may change in the future. |
+| `--identity` | No | **string** The identity of the user or client submitting this request. |
+| `--run-id`, `-r` | No | **string** Run ID. |
+| `--workflow-id`, `-w` | Yes | **string** Workflow ID. |
 
 ## reset
 
@@ -155,22 +158,22 @@ temporal activity reset \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--activity-id`, `-a` | No | **string** The Activity ID to reset.  Mutually exclusive with `--query`, `--match-all`, and `--activity-type`. Requires `--workflow-id` to be specified. |  |
-| `--activity-type` | No | **string** Activities of this Type will be reset. Mutually exclusive with `--match-all` and `activity-id`. |  |
-| `--jitter` | No | **duration** The activity will reset at random a time within the specified duration. Can only be used with --query. |  |
-| `--keep-paused` | No | **bool** If the activity was paused, it will stay paused. |  |
-| `--match-all` | No | **bool** Every activity should be reset. Every activity should be updated. Mutually exclusive with `--activity-id` and `--activity-type`. |  |
-| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. |  |
-| `--reason` | No | **string** Reason for batch operation. Only use with --query. Defaults to user name. |  |
-| `--reset-attempts` | No | **bool** Reset the activity attempts. |  |
-| `--reset-heartbeats` | No | **bool** Reset the Activity's heartbeats. Only works with --reset-attempts. |  |
-| `--restore-original-options` | No | **bool** Restore the original options of the activity. |  |
-| `--rps` | No | **float** Limit batch's requests per second. Only allowed if query is present. |  |
-| `--run-id`, `-r` | No | **string** Run ID. Only use with --workflow-id. Cannot use with --query. |  |
-| `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |  |
-| `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--activity-id`, `-a` | No | **string** The Activity ID to reset.  Mutually exclusive with `--query`, `--match-all`, and `--activity-type`. Requires `--workflow-id` to be specified. |
+| `--activity-type` | No | **string** Activities of this Type will be reset. Mutually exclusive with `--match-all` and `activity-id`. |
+| `--jitter` | No | **duration** The activity will reset at random a time within the specified duration. Can only be used with --query. |
+| `--keep-paused` | No | **bool** If the activity was paused, it will stay paused. |
+| `--match-all` | No | **bool** Every activity should be reset. Every activity should be updated. Mutually exclusive with `--activity-id` and `--activity-type`. |
+| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. |
+| `--reason` | No | **string** Reason for batch operation. Only use with --query. Defaults to user name. |
+| `--reset-attempts` | No | **bool** Reset the activity attempts. |
+| `--reset-heartbeats` | No | **bool** Reset the Activity's heartbeats. Only works with --reset-attempts. |
+| `--restore-original-options` | No | **bool** Restore the original options of the activity. |
+| `--rps` | No | **float** Limit batch's requests per second. Only allowed if query is present. |
+| `--run-id`, `-r` | No | **string** Run ID. Only use with --workflow-id. Cannot use with --query. |
+| `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |
+| `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |
 
 ## unpause
 
@@ -211,20 +214,20 @@ temporal activity unpause \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--activity-id`, `-a` | No | **string** The Activity ID to unpause.  Mutually exclusive with `--query`, `--match-all`, and `--activity-type`. Requires `--workflow-id` to be specified. |  |
-| `--activity-type` | No | **string** Activities of this Type will unpause. Can only be used without --match-all. Either `activity-id` or `activity-type` must be provided, but not both. |  |
-| `--jitter` | No | **duration** The activity will start at random a time within the specified duration. Can only be used with --query. |  |
-| `--match-all` | No | **bool** Every paused activity should be unpaused. This flag is ignored if activity-type is provided. |  |
-| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. |  |
-| `--reason` | No | **string** Reason for batch operation. Only use with --query. Defaults to user name. |  |
-| `--reset-attempts` | No | **bool** Reset the activity attempts. |  |
-| `--reset-heartbeats` | No | **bool** Reset the Activity's heartbeats. Only works with --reset-attempts. |  |
-| `--rps` | No | **float** Limit batch's requests per second. Only allowed if query is present. |  |
-| `--run-id`, `-r` | No | **string** Run ID. Only use with --workflow-id. Cannot use with --query. |  |
-| `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |  |
-| `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--activity-id`, `-a` | No | **string** The Activity ID to unpause.  Mutually exclusive with `--query`, `--match-all`, and `--activity-type`. Requires `--workflow-id` to be specified. |
+| `--activity-type` | No | **string** Activities of this Type will unpause. Can only be used without --match-all. Either `activity-id` or `activity-type` must be provided, but not both. |
+| `--jitter` | No | **duration** The activity will start at random a time within the specified duration. Can only be used with --query. |
+| `--match-all` | No | **bool** Every paused activity should be unpaused. This flag is ignored if activity-type is provided. |
+| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. |
+| `--reason` | No | **string** Reason for batch operation. Only use with --query. Defaults to user name. |
+| `--reset-attempts` | No | **bool** Reset the activity attempts. |
+| `--reset-heartbeats` | No | **bool** Reset the Activity's heartbeats. Only works with --reset-attempts. |
+| `--rps` | No | **float** Limit batch's requests per second. Only allowed if query is present. |
+| `--run-id`, `-r` | No | **string** Run ID. Only use with --workflow-id. Cannot use with --query. |
+| `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |
+| `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |
 
 ## update-options
 
@@ -263,27 +266,27 @@ temporal activity update-options \
 
 Use the following options to change the behavior of this command.
 
-| Flag | Required | Description | Default |
-|------|----------|-------------|--------|
-| `--activity-id`, `-a` | No | **string** The Activity ID to update options. Mutually exclusive with `--query`, `--match-all`, and `--activity-type`. Requires `--workflow-id` to be specified. |  |
-| `--activity-type` | No | **string** Activities of this Type will be updated. Mutually exclusive with `--match-all` and `activity-id`. |  |
-| `--heartbeat-timeout` | No | **duration** Maximum permitted time between successful worker heartbeats. |  |
-| `--match-all` | No | **bool** Every activity should be updated. Mutually exclusive with `--activity-id` and `--activity-type`. |  |
-| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. |  |
-| `--reason` | No | **string** Reason for batch operation. Only use with --query. Defaults to user name. |  |
-| `--restore-original-options` | No | **bool** Restore the original options of the activity. |  |
-| `--retry-backoff-coefficient` | No | **float** Coefficient used to calculate the next retry interval. The next retry interval is previous interval multiplied by the backoff coefficient. Must be 1 or larger. |  |
-| `--retry-initial-interval` | No | **duration** Interval of the first retry. If retryBackoffCoefficient is 1.0 then it is used for all retries. |  |
-| `--retry-maximum-attempts` | No | **int** Maximum number of attempts. When exceeded the retries stop even if not expired yet. Setting this value to 1 disables retries. Setting this value to 0 means unlimited attempts(up to the timeouts). |  |
-| `--retry-maximum-interval` | No | **duration** Maximum interval between retries. Exponential backoff leads to interval increase. This value is the cap of the increase. |  |
-| `--rps` | No | **float** Limit batch's requests per second. Only allowed if query is present. |  |
-| `--run-id`, `-r` | No | **string** Run ID. Only use with --workflow-id. Cannot use with --query. |  |
-| `--schedule-to-close-timeout` | No | **duration** Indicates how long the caller is willing to wait for an activity completion. Limits how long retries will be attempted. |  |
-| `--schedule-to-start-timeout` | No | **duration** Limits time an activity task can stay in a task queue before a worker picks it up. This timeout is always non retryable, as all a retry would achieve is to put it back into the same queue. Defaults to the schedule-to-close timeout or workflow execution timeout if not specified. |  |
-| `--start-to-close-timeout` | No | **duration** Maximum time an activity is allowed to execute after being picked up by a worker. This timeout is always retryable. |  |
-| `--task-queue` | No | **string** Name of the task queue for the Activity. |  |
-| `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |  |
-| `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |  |
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--activity-id`, `-a` | No | **string** The Activity ID to update options. Mutually exclusive with `--query`, `--match-all`, and `--activity-type`. Requires `--workflow-id` to be specified. |
+| `--activity-type` | No | **string** Activities of this Type will be updated. Mutually exclusive with `--match-all` and `activity-id`. |
+| `--heartbeat-timeout` | No | **duration** Maximum permitted time between successful worker heartbeats. |
+| `--match-all` | No | **bool** Every activity should be updated. Mutually exclusive with `--activity-id` and `--activity-type`. |
+| `--query`, `-q` | No | **string** Content for an SQL-like `QUERY` List Filter. You must set either --workflow-id or --query. |
+| `--reason` | No | **string** Reason for batch operation. Only use with --query. Defaults to user name. |
+| `--restore-original-options` | No | **bool** Restore the original options of the activity. |
+| `--retry-backoff-coefficient` | No | **float** Coefficient used to calculate the next retry interval. The next retry interval is previous interval multiplied by the backoff coefficient. Must be 1 or larger. |
+| `--retry-initial-interval` | No | **duration** Interval of the first retry. If retryBackoffCoefficient is 1.0 then it is used for all retries. |
+| `--retry-maximum-attempts` | No | **int** Maximum number of attempts. When exceeded the retries stop even if not expired yet. Setting this value to 1 disables retries. Setting this value to 0 means unlimited attempts(up to the timeouts). |
+| `--retry-maximum-interval` | No | **duration** Maximum interval between retries. Exponential backoff leads to interval increase. This value is the cap of the increase. |
+| `--rps` | No | **float** Limit batch's requests per second. Only allowed if query is present. |
+| `--run-id`, `-r` | No | **string** Run ID. Only use with --workflow-id. Cannot use with --query. |
+| `--schedule-to-close-timeout` | No | **duration** Indicates how long the caller is willing to wait for an activity completion. Limits how long retries will be attempted. |
+| `--schedule-to-start-timeout` | No | **duration** Limits time an activity task can stay in a task queue before a worker picks it up. This timeout is always non retryable, as all a retry would achieve is to put it back into the same queue. Defaults to the schedule-to-close timeout or workflow execution timeout if not specified. |
+| `--start-to-close-timeout` | No | **duration** Maximum time an activity is allowed to execute after being picked up by a worker. This timeout is always retryable. |
+| `--task-queue` | No | **string** Name of the task queue for the Activity. |
+| `--workflow-id`, `-w` | No | **string** Workflow ID. You must set either --workflow-id or --query. |
+| `--yes`, `-y` | No | **bool** Don't prompt to confirm signaling. Only allowed when --query is present. |
 
 ## Global Flags
 
