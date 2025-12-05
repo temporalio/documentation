@@ -6,6 +6,5 @@
   "trailingComma": "es5",
   "semi": true,
   "arrowParens": "always",
-  "bracketSpacing": true,
-  "overrides": [{ "files": "**/*.{md,mdx}", "options": { "parser": "mdx" } }]
+  "bracketSpacing": true
 }
