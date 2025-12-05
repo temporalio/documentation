@@ -22,7 +22,7 @@ The Temporal Cloud Operations API, or the Cloud Ops API, is an open source, publ
 
 ## Develop applications with the Cloud Ops API
 
-You can use the HTTP API or the gRPC API depending on how you need to integrate with your platform.
+You can use the HTTP API or the gRPC API depending on how you need to integrate with your platform. The URL to access both the HTTP and gRPC Cloud Ops API is `saas-api.tmprl.cloud`.
 
 ### Prerequisites
 
@@ -44,7 +44,9 @@ Some common reasons you might use the API are to:
 
 [The HTTP API](https://saas-api.tmprl.cloud/docs/httpapi.html#description/introduction) supports the same operations as the [gRPC API](#using-grpc), but it's usable via standard HTTP methods and authentication. This may be a more convenient option if you are writing automation scripts for CI/CD or you can't use gRPC due to network policies, proxies, tooling gaps, or language/runtime constraints. Since it's standard HTTP, it's language agnostic giving you the ability to run cloud operations consistently.
 
-**Note:** This *does not* allow interaction with individual Workflows or Activities via HTTP.
+:::note
+This *does not* allow interaction with individual Workflows or Activities via HTTP.
+:::
 
 ### Using gRPC
 
