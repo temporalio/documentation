@@ -135,15 +135,14 @@ See [operations and metrics](/cloud/high-availability) for Namespaces with High 
 - [temporal\_cloud\_v1\_replication\_lag\_p95](/production-deployment/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p95)
 - [temporal\_cloud\_v1\_replication\_lag\_p50](/production-deployment/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p50)
 
-## Usage and Detecting Resource Exhaustion & Namespace RPS and APS Rate Limits
+## Detecting Resource Exhaustion
 
 The Cloud metric `temporal_cloud_v1_resource_exhausted_error_count` is the primary indicator for Cloud-side throttling, signaling that namespace limits
  are being hit and `ResourceExhausted` gRPC errors are occurring. This generally does not break workflow processing due to how resources are prioritized. 
 In fact, some workloads often run with high amounts of resource exhaustion errors because they are not latency sensitive. Being APS or RPS resource 
-constrained can slow down throughput and is a good indicator that you should request additional capacity. 
+constrained can slow down throughput and is a good indicator that you should request additional capacity.
 
-To specifically identify whether RPS or APS limits are being hit, this metric can be filtered using the `resource_exhausted_cause` label, which will show values 
-like `ApsLimit` or `RpsLimit`. This label also helps identify the specific operation that was throttled (e.g., polling, respond activity tasks).
+This metric can be filtered using the `resource_exhausted_cause` label. When this label shows a value other than `APSLimit`, `OPSLimit`, or `RPSLimit` it is unexpected.
 
 ## Monitoring Trends Against Limits
 
@@ -157,5 +156,12 @@ metrics with their corresponding count metrics to monitor general trends against
 
 The [Grafana dashboard example](https://github.com/grafana/jsonnet-libs/blob/master/temporal-mixin/dashboards/temporal-overview.json) includes a Usage & Quotas section
 that creates demo charts for these limits and count metrics respectively.
+
+The limit metrics and count metrics are already directly comparable as per second rates. Keep in mind that each `count` metric is represented as a per second rate averaged 
+over each minute. For example, to get the total count of Actions, you must multiply this metric by 60.  
+When setting alerts against limits, consider if your workload is spikey or sensitive to throttling (e.g. does latency matter?). If your workload is sensitive, consider alerting
+for `temporal_cloud_v1_total_action_count` at a 50% threshold of the `temporal_cloud_v1_action_limit`. If your workload is not sensitive, consider an alert at 90% of this threshold
+or directly when throttling is detected as a value greater than zero for `temporal_cloud_v1_total_action_throttled_count`. This logic can also be used to automatically scale Temporal
+Resource Units up or down as needed.
 
 
