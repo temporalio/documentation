@@ -37,7 +37,7 @@ This approach ensures near-zero-downtime rotation and prevents authentication fa
 
 For mutual TLS (mTLS) implementations, using Let's Encrypt is not recommended, as it is designed primarily for public-facing services and lacks support for internal certificate requirements. 
 
-While we are not making a specific product recommendation, there are several valid options for managing certificates. Many organizations choose vendor solutions such as AWS Private CA, Setigo, Microsoft Certification Authority, or DigiCert for their robust integration and lifecycle features. Alternatively, self-signed certificates are a valid and commonly used approach, even in production environments. If you choose to self-sign, tools like OpenSSL, Certstrap, and CFSSL will help generate and manage certificates effectively. 
+While we are not making a specific product recommendation, there are several valid options for managing certificates. Many organizations choose vendor solutions such as AWS Private CA, Setigo, Microsoft Certification Authority, or DigiCert for their robust integration and lifecycle features. Alternatively, self-signed certificates are a valid and commonly used approach, even in production environments. If you choose to self-sign, tools like [OpenSSL](https://openssl-library.org/), [CFSSL](https://github.com/cloudflare/cfssl), or [step CLI](https://github.com/smallstep/cli) can help generate and manage certificates effectively. 
 
 Select the option that aligns best with your infrastructure, security requirements, and operational needs.
 

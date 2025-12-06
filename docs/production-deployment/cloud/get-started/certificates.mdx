@@ -120,7 +120,7 @@ instead. API keys are generally easier to manage than mTLS certs if you're not u
 infrastructure otherwise.
 
 If you still want to use mTLS, issue the CA and end-entity certificates using [tcld](#use-tcld-to-generate-certificates)
-or open source tools such as [certstrap](#use-certstrap-to-generate-certificates).
+or open source tools like OpenSSL or [step CLI](#use-step-cli-to-generate-certificates).
 
 #### Use tcld to generate certificates
 
@@ -156,13 +156,13 @@ Follow the instructions to [upload the CA certificate](/cloud/certificates#updat
 and [configure your client](/cloud/certificates#configure-clients-to-use-client-certificates) with the end-entity
 certificate.
 
-#### Use certstrap to generate certificates
+#### Use step CLI to generate certificates
 
 Temporal Cloud requires client certificates for authentication and secure communication.
-[Certstrap](https://github.com/square/certstrap) is a popular and easy-to-use tool for issuing certificates.
+[The step CLI](https://github.com/smallstep/cli) is a popular and easy-to-use tool for issuing certificates.
 
-Before you begin, ensure you have installed Certstrap by following the instructions in the
-[Certstrap README](https://github.com/square/certstrap#getting-started).
+Before you begin, ensure you have installed smallstep/cli by following the instructions in the
+[installation guide](https://github.com/smallstep/cli#installation).
 
 A Certificate Authority (CA) is a trusted entity that issues digital certificates. These certificates certify the
 ownership of a public key by the named subject of the certificate. End-entity certificates are issued and signed by a
@@ -172,14 +172,13 @@ Create a self-signed CA certificate and use it to issue an end-entity certificat
 
 ##### 1. Create a Certificate Authority (CA)
 
-Create a new Certificate Authority (CA) using Certstrap:
+Create a new Certificate Authority (CA) using step CLI:
 
 ```command
-./certstrap init --common-name "CertAuth"
+step certificate create "CertAuth" CertAuth.crt CertAuth.key --profile root-ca --no-password --insecure
 ```
 
-This command creates a self-signed CA certificate named `CertAuth.crt` in the `out` folder within the Certstrap
-directory. This CA certificate will be used to sign and issue end-entity certificates.
+This command creates a self-signed CA certificate named `CertAuth.crt` and private key `CertAuth.key`. This CA certificate will be used to sign and issue end-entity certificates.
 
 ##### 2. Set the Namespace Name
 
@@ -208,38 +207,26 @@ set NAMESPACE_NAME=your-namespace
 
 Replace `your-namespace` with the name of your Temporal Cloud namespace.
 
-##### 3. Request an End-Entity Certificate
+##### 3. Create and Sign an End-Entity Certificate
 
-Next, request a certificate with a common name equal to the Namespace Name:
-
-```command
-./certstrap request-cert --common-name ${NAMESPACE_NAME}
-```
-
-This command creates a Certificate Signing Request (CSR) for an end-entity certificate, but not the actual certificate
-itself.
-
-##### 4. Sign the Certificate Request
-
-Sign the certificate request and generate the end-entity certificate:
+Create and sign an end-entity certificate with a common name equal to the Namespace Name:
 
 ```command
-./certstrap sign ${NAMESPACE_NAME} --CA "CertAuth"
+step certificate create ${NAMESPACE_NAME} ${NAMESPACE_NAME}.crt ${NAMESPACE_NAME}.key --ca CertAuth.crt --ca-key CertAuth.key --no-password --insecure --not-after 8760h
 ```
 
-This command takes the CSR from the previous step and signs it with your CA (`CertAuth`). The result is an end-entity
-certificate (`your-namespace.crt`) that is now a valid certificate signed by your CA.
+This command creates an end-entity certificate (`your-namespace.crt`) and private key (`your-namespace.key`) that is signed by your CA (`CertAuth`).
 
-##### 5. (optional) Convert to PKCS8 Format for Java SDK
+##### 4. (optional) Convert to PKCS8 Format for Java SDK
 
 If you are using the Temporal Java SDK, you will need to convert the PKCS1 file format to PKCS8 file format. Export the
 end-entity's private key to a PKCS8 file:
 
 ```command
-openssl pkcs8 -topk8 -inform PEM -outform PEM -in out/${NAMESPACE_NAME}.key -out out/${NAMESPACE_NAME}.pkcs8.key -nocrypt
+openssl pkcs8 -topk8 -inform PEM -outform PEM -in ${NAMESPACE_NAME}.key -out ${NAMESPACE_NAME}.pkcs8.key -nocrypt
 ```
 
-##### 6. Use the Certificates with Temporal Cloud
+##### 5. Use the Certificates with Temporal Cloud
 
 You can now use the generated client certificate (`your-namespace.crt`) and the CA certificate (`CertAuth.crt`) with
 Temporal Cloud.
