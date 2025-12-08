@@ -183,12 +183,10 @@ Then, run the following command to remove the replica:
 
 ```
 tcld namespace delete-region \
+    --api-key <api_key> \
     --namespace <namespace_id>.<account_id> \
     --region <replica_region>
 ```
-
-If you are using the `--api-key` flag to issue this CLI command, you must add it directly after the tcld command and
-before `namespace delete-region`
 
 </TabItem>
 
