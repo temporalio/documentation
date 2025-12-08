@@ -11185,10 +11185,10 @@ snake-case@^3.0.4:
     dot-case "^3.0.4"
     tslib "^2.0.3"
 
-snipsync@^1.9.0:
-  version "1.11.0"
-  resolved "https://registry.npmjs.org/snipsync/-/snipsync-1.11.0.tgz"
-  integrity sha512-KiYVtRE65/h+sIho7PF4yL++RI0zro3mTCJwxHPM6Lvz92Sq3uvtIFyqKea8u7eDgPzoiJz+61wG27taW4D/gg==
+snipsync@^1.12.0:
+  version "1.12.0"
+  resolved "https://registry.yarnpkg.com/snipsync/-/snipsync-1.12.0.tgz#8134d51e9b150ad6c48560857dd9526b95f7eb78"
+  integrity sha512-UHvct6DAVjCu2y+5/tSNKIbdGoANlpUICQD+QDXyGUuX9nH6QcepRinNoCDDnaBYTvLcs7qDozp+nw0WY4E2DA==
   dependencies:
     "@octokit/rest" "^18.12.0"
     anzip "^0.2.0"
