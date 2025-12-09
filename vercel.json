@@ -16,6 +16,26 @@
       "permanent": true
     },
     {
+      "source": "/ai-cookbook/basic-python",
+      "destination": "/ai-cookbook/hello-world-openai-responses-python",
+      "permanent": true
+    },
+    {
+      "source": "/ai-cookbook/deep-research-python",
+      "destination": "/ai-cookbook/basic-openai-python",
+      "permanent": true
+    },
+    {
+      "source": "/ai-cookbook/durable-agent-with-tools",
+      "destination": "/ai-cookbook/openai-agents-sdk-python",
+      "permanent": true
+    },
+    {
+      "source": "/ai-cookbook/tool-calling-python",
+      "destination": "/ai-cookbook/tool-call-openai-python",
+      "permanent": true
+    },
+    {
       "source": "/leadership",
       "destination": "https://temporal.io/about",
       "permanent": true
