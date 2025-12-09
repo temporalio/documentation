@@ -115,7 +115,9 @@ For example, Temporal will keep track of the [exponential backoff delay](/encycl
 
 For an Activity with a [Retry Policy](/encyclopedia/retry-policies) that allows retries, Temporal guarantees that the Activity will be observed as completed exactly once. However, the Activity may be executed multiple times and may even partially complete more than once during this process. This could lead to a scenario where certain parts of the Activity are executed multiple times before a successful execution is completed.
 
+:::caution
 Be cautious when doing retries within your Activity because it lengthens the needed Activity timeout.  Such internal retries also prevent users from counting failure metrics and make it harder for users to debug in Temporal UI when something is wrong.
+:::
 
 ### Constraints {#activity-constraints}
 
