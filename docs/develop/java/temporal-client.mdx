@@ -31,7 +31,7 @@ tags:
 ---
 
 A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the
-[Temporal Service](/temporal-service). Communication with a Temporal Service  lets you perform actions such as
+[Temporal Service](/temporal-service). Communication with a Temporal Service lets you perform actions such as
 starting Workflow Executions, sending Signals to Workflow Executions, sending Queries to Workflow Executions, getting
 the results of a Workflow Execution, and providing Activity Task Tokens.
 
@@ -124,7 +124,7 @@ environment = "production"
 service-version = "v1.2.3"
 ```
 
-You can create a Temporal Client using a specific profile from the configuration file as follows.  First use `ClientConfigProfile.load` to load the profile from the configuration file. Then use `profile.toWorkflowServiceStubsOptions` and `profile.toWorkflowClientOptions` to convert the profile to `WorkflowServiceStubsOptions` and `WorkflowClientOptions` respectively. Then use `WorkflowClient.newInstance` to create a Temporal Client.
+You can create a Temporal Client using a specific profile from the configuration file as follows. First use `ClientConfigProfile.load` to load the profile from the configuration file. Then use `profile.toWorkflowServiceStubsOptions` and `profile.toWorkflowClientOptions` to convert the profile to `WorkflowServiceStubsOptions` and `WorkflowClientOptions` respectively. Then use `WorkflowClient.newInstance` to create a Temporal Client.
 
 ```java {21-25,32-34}
 import io.temporal.client.WorkflowClient;
@@ -283,7 +283,7 @@ variables or a configuration file, and then override specific options in code.
 
 ## Connect to Temporal Cloud {#connect-to-temporal-cloud}
 
-You can connect to Temporal Cloud using either an [API key](/cloud/api-keys) or through mTLS. Connection to Temporal
+You can connect to Temporal Cloud using either an [API key](/cloud/api-keys) or through [mTLS](/cloud/certificates). Connection to Temporal
 Cloud or any secured Temporal Service requires additional connection options compared to connecting to an unsecured
 local development instance:
 
