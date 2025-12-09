@@ -199,6 +199,7 @@ variable, this will also load the default profile in the configuration file. How
 variables will take precedence.
 
 ```java
+import io.temporal.client.WorkflowClient;
 import io.temporal.client.WorkflowClientOptions;
 import io.temporal.envconfig.ClientConfigProfile;
 import io.temporal.envconfig.LoadClientConfigProfileOptions;
@@ -215,14 +216,8 @@ public class LoadFromFile {
   public static void main(String[] args) {
     try {
 
-      String configFilePath =
-          Paths.get(LoadFromFile.class.getResource("/config.toml").toURI()).toString();
-
       ClientConfigProfile profile =
-          ClientConfigProfile.load(
-              LoadClientConfigProfileOptions.newBuilder()
-                  .setConfigFilePath(configFilePath)
-                  .build());
+          ClientConfigProfile.load(LoadClientConfigProfileOptions.newBuilder().build());
 
       WorkflowServiceStubsOptions serviceStubsOptions = profile.toWorkflowServiceStubsOptions();
       WorkflowClientOptions clientOptions = profile.toWorkflowClientOptions();
@@ -471,14 +466,8 @@ public class LoadFromFile {
   public static void main(String[] args) {
     try {
 
-      String configFilePath =
-          Paths.get(LoadFromFile.class.getResource("/config.toml").toURI()).toString();
-
       ClientConfigProfile profile =
-          ClientConfigProfile.load(
-              LoadClientConfigProfileOptions.newBuilder()
-                  .setConfigFilePath(configFilePath)
-                  .build());
+          ClientConfigProfile.load(LoadClientConfigProfileOptions.newBuilder().build());
 
       WorkflowServiceStubsOptions serviceStubsOptions = profile.toWorkflowServiceStubsOptions();
       WorkflowClientOptions clientOptions = profile.toWorkflowClientOptions();
