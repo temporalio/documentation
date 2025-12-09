@@ -198,7 +198,7 @@ specified in those variables. If you have defined a configuration file at either
 variable, this will also load the default profile in the configuration file. However, any options set via environment
 variables will take precedence.
 
-```java
+```java {18-19, 26-28}
 import io.temporal.client.WorkflowClient;
 import io.temporal.client.WorkflowClientOptions;
 import io.temporal.envconfig.ClientConfigProfile;
@@ -355,7 +355,7 @@ tls_client_key_path = "your-tls-client-key-path"
 With the connections options defined in the configuration file, use the `LoadClientOptions` function in the `envconfig`
 package to create a Temporal Client using the `cloud` profile as follows. After loading the profile, you can also programmatically override specific connection options before creating the client.
 
-```java
+```java {25-30, 33-35, 42-44}
 import io.temporal.client.WorkflowClient;
 import io.temporal.client.WorkflowClientOptions;
 import io.temporal.envconfig.ClientConfigProfile;
@@ -449,7 +449,7 @@ specified in those variables. If you have defined a configuration file at either
 variable, this will also load the default profile in the configuration file. However, any options set via environment
 variables will take precedence.
 
-```java
+```java {17-18, 25-27}
 import io.temporal.client.WorkflowClientOptions;
 import io.temporal.envconfig.ClientConfigProfile;
 import io.temporal.envconfig.LoadClientConfigProfileOptions;
