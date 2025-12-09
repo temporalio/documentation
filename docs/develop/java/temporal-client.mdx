@@ -31,11 +31,11 @@ tags:
 ---
 
 A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the
-[Temporal Service](/temporal-service). Communication with a Temporal Service includes lets you perform actions such as
+[Temporal Service](/temporal-service). Communication with a Temporal Service  lets you perform actions such as
 starting Workflow Executions, sending Signals to Workflow Executions, sending Queries to Workflow Executions, getting
 the results of a Workflow Execution, and providing Activity Task Tokens.
 
-This page shows you how to do the following using the Go SDK with the Temporal Client:
+This page shows you how to do the following using the Java SDK with the Temporal Client:
 
 - [Connect to a local development Temporal Service](#connect-to-development-service)
 - [Connect to Temporal Cloud](#connect-to-temporal-cloud)
@@ -67,7 +67,7 @@ Use the `newLocalServiceStubs` method to create a stub that points to the Tempor
 ```
 <!--SNIPEND-->
 
-When you use create a new Client with an instance of `newLocalServiceStubs`, the Client connects to the default local port at port 7233. When you don't specify a custom Namespace, the Client connects to the `default` Namespace.
+When you create a new Client with an instance of `newLocalServiceStubs`, the Client connects to the default local port at port 7233. When you don't specify a custom Namespace, the Client connects to the `default` Namespace.
 
 To connect to a custom Namespace, use the `WorkflowClientOptions.Builder.setNamespace` method to set the Namespace. Then pass the `clientOptions` to the `WorkflowClient.newInstance` method.
 
@@ -302,12 +302,6 @@ You can find the Namespace and Account ID, as well as the endpoint, on the Names
 
 You can provide these connection options using environment variables, a configuration file, or directly in code.
 
-You can find the Namespace and Account ID, as well as the endpoint, on the Namespaces tab:
-
-![The Namespace and Account ID combination on the left, and the regional endpoint on the right](/img/cloud/apikeys/namespaces-and-regional-endpoints.png)
-
-You can provide these connection options using environment variables, a configuration file, or directly in code.
-
 <Tabs groupId="connect-options" defaultValue="config-file" >
 
 <TabItem value="config-file" label="Configuration File">
@@ -437,7 +431,7 @@ The following environment variables are required to connect to Temporal Cloud:
 - `TEMPORAL_TLS_CLIENT_KEY_DATA` or `TEMPORAL_TLS_CLIENT_KEY_PATH`: Your mTLS client private key data or file path.
   Required if you are using mTLS authentication.
 
-Ensure these environment variables exist in your environment before running your Go application.
+Ensure these environment variables exist in your environment before running your Java application.
 
 Import the `envconfig` package to set connection options for the Temporal Client using environment variables. The
 `MustLoadDefaultClientOptions` function will automatically load all environment variables. For a list of all available
@@ -845,7 +839,7 @@ YourWorkflowInterface workflow1 =
 
 Set the [Workflow Execution Timeout](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout) with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setWorkflowExecutionTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
 
-- Type: `time.Duration`
+- Type: `Duration`
 - Default: Unlimited
 
 ```java
@@ -865,7 +859,7 @@ YourWorkflowInterface workflow1 =
 
 Set the Workflow Run Timeout with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setWorkflowRunTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
 
-- Type: `time.Duration`
+- Type: `Duration`
 - Default: Same as [WorkflowExecutionTimeout](#workflowexecutiontimeout).
 
 ```java
@@ -885,7 +879,7 @@ YourWorkflowInterface workflow1 =
 
 Set the Workflow Task Timeout with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setWorkflowTaskTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
 
-- Type: `time.Duration`
+- Type: `Duration`
 - Default: 10 seconds.
 - Values: Maximum accepted value is 60 seconds.
 
