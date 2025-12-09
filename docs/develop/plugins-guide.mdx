@@ -54,28 +54,13 @@ There are a number of features you can give your users with a plugin. Here's a s
 
 ### Built-in Activity
 
-You can provide built-in Activities in a Plugin for users to call from their Workflows. Activities are the most common Temporal primitive and encompass small units of work such as:
+You can provide built-in Activities in a Plugin for users to call from their Workflows. Check out the [Activities doc](/activities) for more detail on how these work.
 
-- Single write operations
-- Batches of similar writes
-- One or more read operations followed by a write operation
-- A read that should be memoized, like an LLM call, a large download, or a slow-polling read
-
-Larger pieces of functionality should be broken up into multiple activities. This makes it easier to do failure recovery, have short timeouts, and be idempotent.
-
-Here are some best practices you can use when you are making Activity plugins:
-
-- Activity arguments and return values must be serializable.
-- Activities that perform writes should be idempotent.
-- Activities have [timeouts](/develop/python/failure-detection#heartbeat-timeout) and [retry policies](/encyclopedia/retry-policies). For Activities, your operation should either complete within a few minutes or it should support the ability to heartbeat or poll for a result. This way it will be clear to the Workflow when the Activity is still making progress.
-- You need to specify at least one timeout, typically the [start_to_close_timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout). Keep in mind that the shorter the timeout, the faster Temporal will retry upon failure. See the [timeouts and retry policies](#timeouts-and-retry-policies) to learn more.
+You should refer to the [best practices for creating Activities](/activity-definition#best-practices-for-defining-activities) when you are making Activity plugins.
 
 #### Timeouts and retry policies
 
-Temporal's Activity retry mechanism gives applications the benefits of durable execution.
-For example, Temporal will keep track of the exponential backoff delay even if the Worker crashes. Since Temporal can’t tell when a Worker crashes, Workflows rely on the [start_to_close_timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) to know how long to wait before assuming that an Activity is inactive. 
-
-Be cautious when doing retries within your Activity because it lengthens the needed Activity timeout.  Such internal retries also prevent users from counting failure metrics and make it harder for users to debug in Temporal UI when something is wrong.
+Temporal's Activity retry mechanism gives applications the benefits of durable execution. See the [Activity retry policy explanation](/activity-definition#activity-retry-policy) for more details.
 
 Here is an example with Python:
 
