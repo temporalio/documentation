@@ -32,6 +32,7 @@ import type {
 
 import type {AutocompleteState} from '@algolia/autocomplete-core';
 import type {FacetFilters} from 'algoliasearch/lite';
+import AskAIButton from "./AskAIButton";
 
 type DocSearchProps = Omit<
   DocSearchModalProps,
@@ -138,17 +139,21 @@ type ResultsFooterProps = {
   onClose: () => void;
 };
 
-function ResultsFooter({state, onClose}: ResultsFooterProps) {
+function ResultsFooter({ state, onClose }: ResultsFooterProps) {
   const createSearchLink = useSearchLinkCreator();
 
   return (
-    <Link to={createSearchLink(state.query)} onClick={onClose}>
-      <Translate
-        id="theme.SearchBar.seeAll"
-        values={{count: state.context.nbHits}}>
-        {'See all {count} results'}
-      </Translate>
-    </Link>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <AskAIButton query={state.query} closeDocSearch={onClose} />
+      <Link to={createSearchLink(state.query)} onClick={onClose}>
+        <Translate
+          id="theme.SearchBar.seeAll"
+          values={{ count: state.context.nbHits }}
+        >
+          {"See all {count} results"}
+        </Translate>
+      </Link>
+    </div>
   );
 }
 
