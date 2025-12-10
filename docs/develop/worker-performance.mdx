@@ -80,14 +80,14 @@ Available slot suppliers include:
 
 ### Worker tuning {#worker-tuning}
 
-**Worker tuning** lets you manage and customize a Worker's runtime performance characteristics.
-They use special types called **Worker tuners** that assign slot suppliers to various Task Types, including Worker, Activity, Nexus, and Local Activity Tasks.
+Worker tuning is the process of defining customized slot suppliers for the different task slots of a Worker to fine-tune its performance.
+You use special types called **Worker tuners** that assign slot suppliers to various Task Types, including Worker, Activity, Nexus, and Local Activity Tasks.
 
-For more on how to configure and use Worker tuners, see [Worker runtime performance tuning](#worker-performance-tuning) below.
+For more on how to configure and use Worker tuners, refer to [Worker runtime performance tuning](#worker-performance-tuning).
 
 :::caution
 
-- Worker tuners supersede the existing `maxConcurrentXXXTask` style Worker options.
+Worker tuners supersede the existing `maxConcurrentXXXTask` style Worker options.
   Using both styles will cause an error at Worker initialization time.
 
 :::
@@ -119,9 +119,10 @@ Temporal Cloud and Temporal Server 1.29.0 and higher have Eager Workflow Start a
 
 :::
 
-Eager Workflow Start is feature that reduces the time it takes to start a Workflow.
-The target use case is short-lived Workflows that interact with other services using Local Activities, ideally initiating this interaction in the first Workflow Task, and deployed close to the Temporal Server.
-These Workflows have a happy path that needs to initiate interactions within low tens of milliseconds, but they also want to take advantage of server-driven retries, and reliable compensation processes, for those less happy days.
+Eager Workflow Start reduces the latency required to initiate a Workflow execution.
+It is recommended for short-lived Workflows that use Local Activities to interact with external services, especially when these interactions are initiated in the first Workflow Task and the Workflow is deployed near the Temporal Server to minimize network delay.
+
+This feature is particularly beneficial for Workflows with a “happy path” that must begin external interactions within tens of milliseconds, while still relying on Temporal’s server-driven retries and compensation mechanisms to ensure reliability in failure scenarios.
 
 **Quick Start**
 
@@ -227,11 +228,11 @@ These options define the maximum count of pollers performing poll requests on Wo
 <SdkTabs.Go>
 [Go SDK docs](https://pkg.go.dev/go.temporal.io/sdk/worker#PollerBehaviorAutoscalingOptions)
 ```go
-    w := worker.New(c, "my-task-queue", worker.Options{
-        WorkflowTaskPollerBehavior: worker.NewPollerBehaviorAutoscaling(),
-        ActivityTaskPollerBehavior: worker.NewPollerBehaviorAutoscaling(),
-        NexusTaskPollerBehavior: worker.NewPollerBehaviorAutoscaling(),
-    })
+w := worker.New(c, "my-task-queue", worker.Options{
+  WorkflowTaskPollerBehavior: worker.NewPollerBehaviorAutoscaling(worker.PollerBehaviorAutoscalingOptions{}),
+  ActivityTaskPollerBehavior: worker.NewPollerBehaviorAutoscaling(worker.PollerBehaviorAutoscalingOptions{}),
+  NexusTaskPollerBehavior: worker.NewPollerBehaviorAutoscaling(worker.PollerBehaviorAutoscalingOptions{}),
+})
 ```
 </SdkTabs.Go>
 <SdkTabs.Java>
@@ -243,60 +244,60 @@ public class WorkerExample {
         WorkflowClient client = WorkflowClient.newInstance(service);
         WorkerFactory factory = WorkerFactory.newInstance(client);
         WorkerOptions workerOptions = WorkerOptions.newBuilder()
-
-            .setWorkflowTaskPollersBehavior(PollerBehaviorAutoscaling.DEFAULT)
-            .setActivityTaskPollersBehavior(PollerBehaviorAutoscaling.DEFAULT)
-            .setNexusTaskPollersBehavior(PollerBehaviorAutoscaling.DEFAULT)
-
+            .setWorkflowTaskPollersBehavior(new PollerBehaviorAutoscaling())
+            .setActivityTaskPollersBehavior(new PollerBehaviorAutoscaling())
+            .setNexusTaskPollersBehavior(new PollerBehaviorAutoscaling())
             .build();
 
         Worker worker = factory.newWorker("my-task-queue", workerOptions);
+    }
+}
 ```
 </SdkTabs.Java>
 <SdkTabs.Python>
 [Python SDK docs](https://python.temporal.io/temporalio.worker.PollerBehaviorAutoscaling.html)
 ```python
-    worker = Worker(
-        client,
-        task_queue="my-task-queue",
-        workflows=[MyWorkflow],
-        activities=[my_activity],
-        
-        workflow_task_poller_behavior=PollerBehaviorAutoscaling(),
-        activity_task_poller_behavior=PollerBehaviorAutoscaling(),
-        nexus_task_poller_behavior=PollerBehaviorAutoscaling(),
-    )
+worker = Worker(
+    client,
+    task_queue="my-task-queue",
+    workflows=[MyWorkflow],
+    activities=[my_activity],
+    
+    workflow_task_poller_behavior=PollerBehaviorAutoscaling(),
+    activity_task_poller_behavior=PollerBehaviorAutoscaling(),
+    nexus_task_poller_behavior=PollerBehaviorAutoscaling(),
+)
 ```
 </SdkTabs.Python>
 <SdkTabs.TypeScript>
 [TypeScript SDK docs](https://typescript.temporal.io/api/interfaces/proto.temporal.api.sdk.v1.WorkerConfig.IAutoscalingPollerBehavior)
 ```ts
-  const worker = await Worker.create({
-    connection,
-    taskQueue: 'my-task-queue',
-    workflowsPath: require.resolve('./workflows'),
-    activities,
-    
-    workflowTaskPollerBehavior: PollerBehavior.autoscaling(),
-    activityTaskPollerBehavior: PollerBehavior.autoscaling(),
-    nexusTaskPollerBehavior: PollerBehavior.autoscaling(),
-  });
+const worker = await Worker.create({
+  connection,
+  taskQueue: 'my-task-queue',
+  workflowsPath: require.resolve('./workflows'),
+  activities,
+  
+  workflowTaskPollerBehavior: PollerBehavior.autoscaling(),
+  activityTaskPollerBehavior: PollerBehavior.autoscaling(),
+  nexusTaskPollerBehavior: PollerBehavior.autoscaling(),
+});
 ```
 </SdkTabs.TypeScript>
 <SdkTabs.DotNet>
 [DotNet SDK docs](https://dotnet.temporal.io/api/Temporalio.Worker.Tuning.PollerBehavior.Autoscaling.html)
 ```csharp
-        using var worker = new TemporalWorker(
-            client,
-            new TemporalWorkerOptions("my-task-queue")
-            {
-                WorkflowTaskPollerBehavior = new PollerBehavior.Autoscaling(),
-                ActivityTaskPollerBehavior = new PollerBehavior.Autoscaling(),
-                NexusTaskPollerBehavior = new PollerBehavior.Autoscaling(),
-            }
-            .AddWorkflow<MyWorkflow>()
-            .AddActivity(MyActivities.MyActivity)
-        );
+using var worker = new TemporalWorker(
+    client,
+    new TemporalWorkerOptions("my-task-queue")
+    {
+        WorkflowTaskPollerBehavior = new PollerBehavior.Autoscaling(),
+        ActivityTaskPollerBehavior = new PollerBehavior.Autoscaling(),
+        NexusTaskPollerBehavior = new PollerBehavior.Autoscaling(),
+    }
+    .AddWorkflow<MyWorkflow>()
+    .AddActivity(MyActivities.MyActivity)
+);
 ```
 </SdkTabs.DotNet>
 <SdkTabs.Ruby>
