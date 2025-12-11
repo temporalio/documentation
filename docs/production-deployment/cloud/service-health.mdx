@@ -162,6 +162,6 @@ over each minute. For example, to get the total count of Actions, you must multi
 When setting alerts against limits, consider if your workload is spiky or sensitive to throttling (e.g. does latency matter?). If your workload is sensitive, consider alerting
 for `temporal_cloud_v1_total_action_count` at a 50% threshold of the `temporal_cloud_v1_action_limit`. If your workload is not sensitive, consider an alert at 90% of this threshold
 or directly when throttling is detected as a value greater than zero for `temporal_cloud_v1_total_action_throttled_count`. This logic can also be used to automatically scale [Temporal
-Resource Units](/cloud/capacity-modes#provisioned-capacity) up or down as needed.
+Resource Units](/production-deployment/cloud/capacity-modes#provisioned-capacity) up or down as needed.
 
 
