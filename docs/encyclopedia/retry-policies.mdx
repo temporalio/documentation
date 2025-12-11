@@ -18,7 +18,7 @@ A Retry Policy is a collection of settings that tells Temporal how and when to t
 
 Temporal's default behavior is to automatically retry an Activity that fails, so transient or intermittent failures require no action on your part. This behavior is defined by the Retry Policy. 
 
-A Retry Policy is declarative. You do not need to implement your own logic for handling the retries, you only need to specify the desired behavior and Temporal will provide it.
+A Retry Policy is declarative. You do not need to implement your own logic for handling the retries; you only need to specify the desired behavior and Temporal will provide it.
 
 In contrast to the Activities it contains, a Workflow Execution itself is not associated with a Retry Policy by default. This may seem counterintuitive, but consider the different roles that Workflows and Activities perform. Activities are intended for operations that may fail, so having a default Retry Policy increases the likelihood that they will ultimately complete successfully, even if the initial attempt failed. On the other hand, Workflows must be deterministic and are not intended to perform failure-prone operations. While it is possible to assign a Retry Policy to a Workflow Execution, this is not the default and it is uncommon to do so. 
 
