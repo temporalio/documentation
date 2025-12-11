@@ -1,16 +1,16 @@
 import React from 'react';
 import Head from '@docusaurus/Head';
-import {DocProvider, useDoc} from '@docusaurus/plugin-content-docs/client';
+import { DocProvider, useDoc } from '@docusaurus/plugin-content-docs/client';
 import DocItemMetadata from '@theme/DocItem/Metadata';
-import type {Props as DocItemProps} from '@theme/DocItem';
-import {HtmlClassNameProvider} from '@docusaurus/theme-common';
+import type { Props as DocItemProps } from '@theme/DocItem';
+import { HtmlClassNameProvider } from '@docusaurus/theme-common';
 import DocItemTOCDesktop from '@theme/DocItem/TOC/Desktop';
 import DocItemTOCMobile from '@theme/DocItem/TOC/Mobile';
 import Link from '@docusaurus/Link';
-import {MDXProvider} from '@mdx-js/react';
+import { MDXProvider } from '@mdx-js/react';
 import MDXComponents from '@theme/MDXComponents';
 import clsx from 'clsx';
-import {usePluginData} from '@docusaurus/useGlobalData';
+import { usePluginData } from '@docusaurus/useGlobalData';
 
 import styles from './CookbookDocItem.module.css';
 
@@ -37,7 +37,7 @@ function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-export default function CookbookDocItem({content, tags}: CookbookDocItemProps) {
+export default function CookbookDocItem({ content, tags }: CookbookDocItemProps) {
   // IMPORTANT: don't call useDoc() here.
   return (
     <DocProvider content={content}>
@@ -46,11 +46,11 @@ export default function CookbookDocItem({content, tags}: CookbookDocItemProps) {
   );
 }
 
-function InnerCookbookDocItem({content, tags}: CookbookDocItemProps) {
+function InnerCookbookDocItem({ content, tags }: CookbookDocItemProps) {
   const DocContent = content;
 
   // Now we're under <DocProvider>, so useDoc() is safe:
-  const {metadata, frontMatter, toc, contentTitle} = useDoc();
+  const { metadata, frontMatter, toc, contentTitle } = useDoc();
   const {
     title,
     description,
@@ -64,14 +64,96 @@ function InnerCookbookDocItem({content, tags}: CookbookDocItemProps) {
     formattedLastUpdatedAt?: string;
     lastUpdatedAt?: number | string | null;
   };
-  const indexData = usePluginData('cookbook-index') as {items?: CookbookIndexItem[]} | undefined;
+  const indexData = usePluginData('cookbook-index') as { items?: CookbookIndexItem[] } | undefined;
   const hasTOC = !frontMatter?.hide_table_of_contents && (toc?.length ?? 0) > 0;
   const shouldRenderSyntheticTitle = !frontMatter?.hide_title && typeof contentTitle === 'undefined';
   const syntheticTitle = shouldRenderSyntheticTitle ? title : undefined;
 
   const resolvedTags = (tags ?? metaTags.map((t: any) => t.label)) as string[];
   const dataTags = resolvedTags.length ? resolvedTags.join(',') : undefined;
-  const cookbookFrontMatter = frontMatter as {source?: string} | undefined;
+  const cookbookFrontMatter = frontMatter as
+    | {
+        source?: string;
+        last_updated?: unknown;
+        last_updated_at?: unknown;
+        last_updated_label?: string;
+        formatted_last_updated?: string;
+      }
+    | undefined;
+  const normalizeTimestamp = React.useCallback((value: unknown): number | undefined => {
+    const normalizeNumber = (input: number): number | undefined => {
+      if (!Number.isFinite(input)) {
+        return undefined;
+      }
+      // Treat smaller values (e.g. seconds) as seconds since epoch.
+      return input < 1e11 ? input * 1000 : input;
+    };
+
+    if (typeof value === 'number') {
+      return normalizeNumber(value);
+    }
+    if (typeof value === 'string') {
+      const trimmed = value.trim();
+      if (!trimmed) {
+        return undefined;
+      }
+      const numeric = Number(trimmed);
+      if (!Number.isNaN(numeric)) {
+        return normalizeNumber(numeric);
+      }
+      const parsed = Date.parse(trimmed);
+      return Number.isNaN(parsed) ? undefined : normalizeNumber(parsed);
+    }
+    if (value instanceof Date) {
+      const time = value.getTime();
+      return Number.isNaN(time) ? undefined : normalizeNumber(time);
+    }
+    return undefined;
+  }, []);
+  const formatTimestamp = React.useCallback((value: number): string | undefined => {
+    if (!Number.isFinite(value)) {
+      return undefined;
+    }
+    try {
+      const formatter = new Intl.DateTimeFormat(undefined, {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      });
+      return formatter.format(new Date(value));
+    } catch {
+      return new Date(value).toLocaleDateString();
+    }
+  }, []);
+  const frontMatterLastUpdatedLabel = React.useMemo(() => {
+    const formattedCandidates = [
+      cookbookFrontMatter?.last_updated_label,
+      cookbookFrontMatter?.formatted_last_updated,
+    ].map((value) => (typeof value === 'string' ? value.trim() : ''));
+    const formatted = formattedCandidates.find((candidate) => candidate.length > 0);
+    if (formatted) {
+      return formatted;
+    }
+
+    const rawCandidates = [cookbookFrontMatter?.last_updated, cookbookFrontMatter?.last_updated_at];
+    for (const raw of rawCandidates) {
+      const normalized = normalizeTimestamp(raw);
+      if (typeof normalized === 'number') {
+        const formattedTimestamp = formatTimestamp(normalized);
+        if (formattedTimestamp) {
+          return formattedTimestamp;
+        }
+      }
+      if (typeof raw === 'string') {
+        const trimmed = raw.trim();
+        if (trimmed.length > 0) {
+          return trimmed;
+        }
+      }
+    }
+
+    return undefined;
+  }, [cookbookFrontMatter, formatTimestamp, normalizeTimestamp]);
   const pluginSource = React.useMemo(() => {
     const items = indexData?.items;
     if (!Array.isArray(items)) {
@@ -94,65 +176,52 @@ function InnerCookbookDocItem({content, tags}: CookbookDocItemProps) {
         event.preventDefault();
       }
     },
-    [isGithubEnabled],
+    [isGithubEnabled]
   );
   const lastUpdatedLabel = React.useMemo(() => {
+    if (frontMatterLastUpdatedLabel) {
+      return frontMatterLastUpdatedLabel;
+    }
     if (formattedLastUpdatedAt) {
       return formattedLastUpdatedAt;
     }
 
-    const rawTimestamp = (() => {
-      if (typeof lastUpdatedAt === 'number') {
-        return lastUpdatedAt;
-      }
-      if (typeof lastUpdatedAt === 'string') {
-        const parsed = Number(lastUpdatedAt);
-        return Number.isNaN(parsed) ? undefined : parsed;
-      }
-      return undefined;
-    })();
-
-    if (typeof rawTimestamp !== 'number') {
+    const normalizedTimestamp = normalizeTimestamp(lastUpdatedAt);
+    if (typeof normalizedTimestamp !== 'number') {
       return undefined;
     }
 
-    try {
-      const formatter = new Intl.DateTimeFormat(undefined, {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      });
-      return formatter.format(new Date(rawTimestamp));
-    } catch {
-      return new Date(rawTimestamp).toLocaleDateString();
-    }
-  }, [formattedLastUpdatedAt, lastUpdatedAt]);
+    return formatTimestamp(normalizedTimestamp);
+  }, [formatTimestamp, frontMatterLastUpdatedLabel, formattedLastUpdatedAt, lastUpdatedAt, normalizeTimestamp]);
   const renderLastUpdated = React.useCallback(() => {
     if (!lastUpdatedLabel) {
       return null;
     }
     return <p className={styles.lastUpdated}>Last updated {lastUpdatedLabel}</p>;
   }, [lastUpdatedLabel]);
-  const renderActions = React.useCallback(() => (
-    <div className={styles.actionsRow}>
-      <Link className={styles.actionLink} to="/ai-cookbook">
-        <BackArrowIcon className={styles.actionIcon} />
-        Back to Cookbook
-      </Link>
-      <a
-        className={clsx(styles.actionLink, styles.actionGithub)}
-        href={githubHref || undefined}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-disabled={isGithubEnabled ? undefined : 'true'}
-        onClick={handleGithubClick}
-        tabIndex={isGithubEnabled ? undefined : -1}
-      >
-        <GithubIcon className={styles.actionIcon} />
-        Open in GitHub
-      </a>
-    </div>
-  ), [githubHref, handleGithubClick, isGithubEnabled]);
+  const renderActions = React.useCallback(
+    () => (
+      <div className={styles.actionsRow}>
+        <Link className={styles.actionLink} to="/ai-cookbook">
+          <BackArrowIcon className={styles.actionIcon} />
+          Back to Cookbook
+        </Link>
+        <a
+          className={clsx(styles.actionLink, styles.actionGithub)}
+          href={githubHref || undefined}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-disabled={isGithubEnabled ? undefined : 'true'}
+          onClick={handleGithubClick}
+          tabIndex={isGithubEnabled ? undefined : -1}
+        >
+          <GithubIcon className={styles.actionIcon} />
+          Open in GitHub
+        </a>
+      </div>
+    ),
+    [githubHref, handleGithubClick, isGithubEnabled]
+  );
 
   const components = React.useMemo(() => {
     const DefaultH1 =
