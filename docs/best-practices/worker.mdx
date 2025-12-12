@@ -23,6 +23,24 @@ We also provide a reference application, the Order Management System (OMS), that
 practices in action. You can find the OMS codebase on
 [GitHub](https://github.com/temporalio/reference-app-orders-go/tree/main/docs).
 
+## Quick checklist
+
+Designing a comprehensive Worker deployment strategy involves a lot of considerations. We provide a quick checklist to
+help you get started. Before deploying Workers to production, ensure you address the following. Follow the links to the
+relevant sections for more details.
+
+- **[Configure each Worker appropriately](#actively-tune-worker-options-instead-of-relying-on-defaults)**: Actively tune
+  Worker options based on your code, language runtime limits, and system resource constraints. Don't rely on defaults,
+  which are designed for ease in development and testing, but not optimal for production environments.
+- **[Deploy enough Workers](#interpret-metrics-as-a-whole)**: Monitor performance metrics and scale Workers to meet your
+  workload requirements.
+- **[Separate Task Queues logically](#separate-task-queues-logically)**: Size and split work across Task types
+  (Activities and Workflows) and Task Queues based on workload characteristics.
+- **[Version Workers for safe deployments](#use-worker-versioning-to-safely-deploy-new-workflow-code)**: Ensure you can
+  deploy new Workflow code without breaking running Executions.
+- **Run benchmarks**: Test your configuration under realistic load to confirm limits and settings are appropriate for
+  your environment.
+
 ## Deployment and lifecycle management
 
 Well-designed Worker deployment ensures resilience, observability, and maintainability. A Worker should be treated as a
@@ -41,6 +59,7 @@ production-ready Worker image:
 
 {/* SNIPSTART oms-dockerfile-worker */}
 [Dockerfile](https://github.com/temporalio/reference-app-orders-go/blob/main/Dockerfile)
+
 ```Dockerfile
 FROM golang:1.23.8 AS oms-builder
 
@@ -60,6 +79,7 @@ RUN --mount=type=cache,target=/go/pkg/mod \
 
 FROM busybox AS oms-worker
 ```
+
 {/* SNIPEND oms-dockerfile-worker */}
 
 This Dockerfile uses a multi-stage build pattern with two stages:
@@ -82,25 +102,27 @@ uses environment variables to configure the Worker:
 
 {/* SNIPSTART oms-billing-worker-deployment {"selectedLines": ["20-35"]} */}
 [deployments/k8s/billing-worker-deployment.yaml](https://github.com/temporalio/reference-app-orders-go/blob/main/deployments/k8s/billing-worker-deployment.yaml)
+
 ```yaml
 # ...
-    spec:
-      containers:
-        - args:
-            - -k
-            - supersecretkey
-            - -s
-            - billing
-          env:
-            - name: FRAUD_API_URL
-              value: http://billing-api:8084
-            - name: TEMPORAL_ADDRESS
-              value: temporal-frontend.temporal:7233
-          image: ghcr.io/temporalio/reference-app-orders-go-worker:latest
-          name: billing-worker
-          imagePullPolicy: Always
-      enableServiceLinks: false
+spec:
+  containers:
+    - args:
+        - -k
+        - supersecretkey
+        - -s
+        - billing
+      env:
+        - name: FRAUD_API_URL
+          value: http://billing-api:8084
+        - name: TEMPORAL_ADDRESS
+          value: temporal-frontend.temporal:7233
+      image: ghcr.io/temporalio/reference-app-orders-go-worker:latest
+      name: billing-worker
+      imagePullPolicy: Always
+  enableServiceLinks: false
 ```
+
 {/* SNIPEND */}
 
 ### Separate Task Queues logically
@@ -128,6 +150,7 @@ Worker reference to avoid this issue.
 
 {/* SNIPSTART oms-billing-worker-go {"selectedLines": ["12-23"]} */}
 [app/billing/worker.go](https://github.com/temporalio/reference-app-orders-go/blob/main/app/billing/worker.go)
+
 ```go
 // ...
 // RunWorker runs a Workflow and Activity worker for the Billing system.
@@ -143,6 +166,7 @@ func RunWorker(ctx context.Context, config config.AppConfig, client client.Clien
 	return w.Run(temporalutil.WorkerInterruptFromContext(ctx))
 }
 ```
+
 {/* SNIPEND */}
 
 ### Use Worker Versioning to safely deploy new Workflow code
@@ -196,6 +220,29 @@ data to an external system and return an identifier that can be used to retrieve
 
 Scaling and tuning are critical to Worker performance and cost efficiency. The goal is to balance concurrency,
 throughput, and resource utilization while maintaining low Task latency.
+
+### Actively tune Worker options instead of relying on defaults
+
+Default Worker settings are designed to work across a wide range of use cases primarily for ease in development and
+testing. In production environments, your Workflow complexity, Activity duration, payload sizes, and infrastructure
+constraints all influence optimal Worker configuration. Actively tuning your Workers ensures they perform well under
+your specific workload conditions.
+
+Focus on these key settings based on your workload characteristics:
+
+- **Task slot**: Limits how many tasks execute concurrently. Set based on your Worker's CPU, memory, and the resource
+  demands of your code. You can choose different types of Slot Suppliers or implement a custom Slot Supplier to control
+  how task slots are assigned to different task types. Refer to
+  [Slot Suppliers](/develop/worker-performance#slot-suppliers) for more details.
+- **Sticky cache size** (`WorkflowCacheSize`): Controls how many Workflow Executions are cached. Larger caches reduce
+  replay overhead but consume more memory. Refer to
+  [Workflow Cache Tuning](/develop/worker-performance#workflow-cache-tuning) for more details.
+- **Poller counts** (`MaxConcurrentWorkflowTaskPollers`, `MaxConcurrentActivityTaskPollers`): Controls the number of
+  pollers for Tasks. We recommend you use the Poller Autoscaling feature to automatically adjust the number of pollers
+  based on your workload. Refer to [Configuring Poller Options](/develop/worker-performance#configuring-poller-options)
+  for more details.
+
+Use the metrics listed in [Interpret metrics as a whole](#interpret-metrics-as-a-whole) to guide your tuning decisions.
 
 ### Interpret metrics as a whole
 
