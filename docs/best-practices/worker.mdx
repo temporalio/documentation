@@ -228,11 +228,11 @@ testing. In production environments, your Workflow complexity, Activity duration
 constraints all influence optimal Worker configuration. Actively tuning your Workers ensures they perform well under
 your specific workload conditions.
 
-Focus on these key settings based on your workload characteristics:
+To get started, focus on these key Worker options:
 
-- **Task slot**: Limits how many tasks execute concurrently. Set based on your Worker's CPU, memory, and the resource
+- **Task slots**: Limits how many Tasks execute concurrently. Set based on your Worker's CPU, memory, and the resource
   demands of your code. You can choose different types of Slot Suppliers or implement a custom Slot Supplier to control
-  how task slots are assigned to different task types. Refer to
+  how Task slots are assigned to different Task types. Refer to
   [Slot Suppliers](/develop/worker-performance#slot-suppliers) for more details.
 - **Sticky cache size**: Controls the size of the sticky cache for Workflow Executions. Larger caches reduce replay
   overhead but consume more memory. Refer to [Workflow Cache Tuning](/develop/worker-performance#workflow-cache-tuning)
