@@ -573,7 +573,6 @@ module.exports = {
         'cli/setup-cli',
         'cli/activity',
         'cli/batch',
-        'cli/cmd-options',
         'cli/config',
         'cli/env',
         'cli/operator',
