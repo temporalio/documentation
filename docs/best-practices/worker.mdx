@@ -234,13 +234,12 @@ Focus on these key settings based on your workload characteristics:
   demands of your code. You can choose different types of Slot Suppliers or implement a custom Slot Supplier to control
   how task slots are assigned to different task types. Refer to
   [Slot Suppliers](/develop/worker-performance#slot-suppliers) for more details.
-- **Sticky cache size** (`WorkflowCacheSize`): Controls how many Workflow Executions are cached. Larger caches reduce
-  replay overhead but consume more memory. Refer to
-  [Workflow Cache Tuning](/develop/worker-performance#workflow-cache-tuning) for more details.
-- **Poller counts** (`MaxConcurrentWorkflowTaskPollers`, `MaxConcurrentActivityTaskPollers`): Controls the number of
-  pollers for Tasks. We recommend you use the Poller Autoscaling feature to automatically adjust the number of pollers
-  based on your workload. Refer to [Configuring Poller Options](/develop/worker-performance#configuring-poller-options)
+- **Sticky cache size**: Controls the size of the sticky cache for Workflow Executions. Larger caches reduce replay
+  overhead but consume more memory. Refer to [Workflow Cache Tuning](/develop/worker-performance#workflow-cache-tuning)
   for more details.
+- **Poller counts**: Controls the number of pollers for Tasks. We recommend you use the Poller Autoscaling feature to
+  automatically adjust the number of pollers based on your workload. Refer to
+  [Configuring Poller Options](/develop/worker-performance#configuring-poller-options) for more details.
 
 Use the metrics listed in [Interpret metrics as a whole](#interpret-metrics-as-a-whole) to guide your tuning decisions.
 
