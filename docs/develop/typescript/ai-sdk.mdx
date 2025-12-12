@@ -1,0 +1,126 @@
+---
+id: ai-sdk
+title: AI SDK - TypeScript SDK
+sidebar_label: AI SDK
+toc_max_heading_level: 2
+keywords:
+  - ai
+  - agents
+tags:
+  - AI SDK
+  - TypeScript SDK
+  - Temporal SDKs
+description: Implement Agentic applications in TypeScript using the Temporal TypeScript SDK and the AI SDK.
+---
+
+Temporal's integration with the [AI SDK](https://ai-sdk.dev/) in Typescript brings Temporal's durability to the easy development of agentic applications provided by the AI SDK.
+
+## How to configure to use the AI SDK
+
+The TypeScript SDK comes with an optional ai-sdk package that provides a plugin which configures workers to use the AI SDK.
+See how to use it in the [ai-sdk](https://github.com/temporalio/samples-typescript/tree/main/ai-sdk/src/worker.ts) code sample.
+
+`modelProvider` is a `ProviderV2` which will be used to create models.
+
+```ts
+import { openai } from '@ai-sdk/openai';
+
+const worker = await Worker.create({
+      plugins: [
+        new AiSDKPlugin({
+          modelProvider: openai,
+        }),
+      ],
+      ...
+);
+```
+
+## How to write a workflow
+
+When writing a workflow, the only thing which needs to change from the normal use of the AI SDK is the `model`. Because the `model` needs to be created in an activity which is potentially running on another machine entirely, it needs to be uniquely identified by a string identifier given to `temporalProvider`, `gpt-4o-mini` in this case. That identifier will be given to the `modelProvider` registered on the worker to create the `model` to call.
+
+```ts
+import { generateText } from 'ai';
+import { temporalProvider } from '@temporalio/ai-sdk';
+
+export async function haikuAgent(prompt: string): Promise<string> {
+  const result = await generateText({
+    model: temporalProvider.languageModel('gpt-4o-mini'),
+    prompt,
+    system: 'You only respond in haikus.',
+  });
+  return result.text;
+}
+```
+
+From the samples at [ai-sdk](https://github.com/temporalio/samples-typescript/tree/main/ai-sdk/src/workflows.ts)
+
+## Tool Calling
+
+Tools provided to the AI SDK will be executed in the workflow if the models decide to, but they can only do the same things normal workflow code can: deterministic operations. Notably however this includes executing activities, child workflows and nexus operations. In this example, we define a tool which runs an activity to get the weather.
+
+```ts
+import { proxyActivities } from '@temporalio/workflow';
+const { getWeather } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '1 minute',
+});
+
+export async function toolsAgent(question: string): Promise<string> {
+  const result = await generateText({
+    model: temporalProvider.languageModel('gpt-4o-mini'),
+    prompt: question,
+    system: 'You are a helpful agent.',
+    tools: {
+      getWeather: tool({
+        description: 'Get the weather for a given city',
+        inputSchema: z.object({
+          location: z.string().describe('The location to get the weather for'),
+        }),
+        execute: getWeather,
+      }),
+    },
+    stopWhen: stepCountIs(5),
+  });
+  return result.text;
+}
+```
+
+From the samples at [ai-sdk](https://github.com/temporalio/samples-typescript/tree/main/ai-sdk/src/workflows.ts)
+
+## MCP Tools
+
+Temporal also provides a built in implementation of a stateless MCP client for use inside workflows. The worker should be configured with an additional parameter to define how to create the underlying MCP clients:
+
+```ts
+const mcpClientFactory = () =>
+  createMCPClient({
+    transport: new StdioClientTransport({
+      command: 'node',
+      args: ['lib/mcp-server.js'],
+    }),
+  });
+
+const worker = await Worker.create({
+  plugins: [
+    new AiSDKPlugin({
+      modelProvider: openai,
+      mcpClientFactory
+    }),
+  ],
+  ...
+);
+```
+
+Then a workflow can use `TemporalMCPClient` to produce a list of tools. Listing the tools and each of the tools run as activities.
+
+```ts
+const mcpClient = new TemporalMCPClient();
+const tools = await mcpClient.tools();
+const result = await generateText({
+  model: temporalProvider.languageModel('gpt-4o-mini'),
+  prompt,
+  tools,
+  system: 'You are a helpful agent, You always use your tools when needed.',
+  stopWhen: stepCountIs(5),
+});
+```
