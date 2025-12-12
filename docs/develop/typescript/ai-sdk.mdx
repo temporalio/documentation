@@ -10,34 +10,49 @@ tags:
   - AI SDK
   - TypeScript SDK
   - Temporal SDKs
-description: Implement Agentic applications in TypeScript using the Temporal TypeScript SDK and the AI SDK.
+description: Implement AI applications in TypeScript using the Temporal TypeScript SDK and the AI SDK.
 ---
 
-Temporal's integration with the [AI SDK](https://ai-sdk.dev/) in Typescript brings Temporal's durability to the easy development of agentic applications provided by the AI SDK.
+Temporal's integration with[Vercel's AI SDK](https://ai-sdk.dev/) lets you use the AI SDK's API directly in Workflow code while Temporal handles Durable Execution.
+If you're already familiar with the Vercel AI SDK, this integration lets you bring that experience to Temporal.
 
-## How to configure to use the AI SDK
+## How it works
 
-The TypeScript SDK comes with an optional ai-sdk package that provides a plugin which configures workers to use the AI SDK.
-See how to use it in the [ai-sdk](https://github.com/temporalio/samples-typescript/tree/main/ai-sdk/src/worker.ts) code sample.
+LLM API calls are non-deterministic, so they run as Activities.
+The AI SDK plugin handles this automatically: when you call functions with LLM calls such as `generateText()` or other AI SDK methods in a Workflow, the plugin routes those calls through Activities behind the scenes.
 
-`modelProvider` is a `ProviderV2` which will be used to create models.
+You configure the model provider on the Worker, and use `temporalProvider.languageModel()` in your Workflow to reference models by name.
+The plugin connects the two.
+
+## Configure the Worker
+
+Install the `@temporalio/ai-sdk` package and add the plugin to your Worker.
+The `modelProvider` specifies which AI provider to use when creating models (OpenAI, Anthropic, etc.).
 
 ```ts
 import { openai } from '@ai-sdk/openai';
+import { AiSDKPlugin } from '@temporalio/ai-sdk';
 
 const worker = await Worker.create({
-      plugins: [
-        new AiSDKPlugin({
-          modelProvider: openai,
-        }),
-      ],
-      ...
-);
+  plugins: [
+    new AiSDKPlugin({
+      modelProvider: openai,
+    }),
+  ],
+  connection,
+  namespace: 'default',
+  taskQueue: 'ai-sdk',
+  workflowsPath: require.resolve('./workflows'),
+  activities,
+});
 ```
 
-## How to write a workflow
+See the full example at [ai-sdk samples](https://github.com/temporalio/samples-typescript/tree/main/ai-sdk).
 
-When writing a workflow, the only thing which needs to change from the normal use of the AI SDK is the `model`. Because the `model` needs to be created in an activity which is potentially running on another machine entirely, it needs to be uniquely identified by a string identifier given to `temporalProvider`, `gpt-4o-mini` in this case. That identifier will be given to the `modelProvider` registered on the worker to create the `model` to call.
+## Write a Workflow
+
+Use the AI SDK as you normally would, but pass `temporalProvider.languageModel()` as the model.
+The string you provide (like `'gpt-4o-mini'`) is passed to your configured `modelProvider` to create the model.
 
 ```ts
 import { generateText } from 'ai';
@@ -53,14 +68,19 @@ export async function haikuAgent(prompt: string): Promise<string> {
 }
 ```
 
-From the samples at [ai-sdk](https://github.com/temporalio/samples-typescript/tree/main/ai-sdk/src/workflows.ts)
+## Tool calling
 
-## Tool Calling
+You can provide tools to the AI SDK, and when the model calls them, they execute in the Workflow.
+Tool functions follow the same rules as Workflow code: they must be deterministic, but they can call Activities and Child Workflows.
 
-Tools provided to the AI SDK will be executed in the workflow if the models decide to, but they can only do the same things normal workflow code can: deterministic operations. Notably however this includes executing activities, child workflows and nexus operations. In this example, we define a tool which runs an activity to get the weather.
+In this example, the `getWeather` tool calls an Activity:
 
 ```ts
 import { proxyActivities } from '@temporalio/workflow';
+import { generateText, tool } from 'ai';
+import { temporalProvider } from '@temporalio/ai-sdk';
+import { z } from 'zod';
+
 const { getWeather } = proxyActivities<typeof activities>({
   startToCloseTimeout: '1 minute',
 });
@@ -85,13 +105,15 @@ export async function toolsAgent(question: string): Promise<string> {
 }
 ```
 
-From the samples at [ai-sdk](https://github.com/temporalio/samples-typescript/tree/main/ai-sdk/src/workflows.ts)
+## MCP tools
 
-## MCP Tools
-
-Temporal also provides a built in implementation of a stateless MCP client for use inside workflows. The worker should be configured with an additional parameter to define how to create the underlying MCP clients:
+The integration includes a stateless MCP client for use in Workflows.
+Configure the Worker with an `mcpClientFactory` to define how MCP clients are created:
 
 ```ts
+import { experimental_createMCPClient as createMCPClient } from '@ai-sdk/mcp';
+import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
+
 const mcpClientFactory = () =>
   createMCPClient({
     transport: new StdioClientTransport({
@@ -104,23 +126,27 @@ const worker = await Worker.create({
   plugins: [
     new AiSDKPlugin({
       modelProvider: openai,
-      mcpClientFactory
+      mcpClientFactory,
     }),
   ],
-  ...
-);
+  // ... other config
+});
 ```
 
-Then a workflow can use `TemporalMCPClient` to produce a list of tools. Listing the tools and each of the tools run as activities.
+In a Workflow, use `TemporalMCPClient` to get the available tools.
+Both listing tools and calling them run as Activities.
 
 ```ts
+import { TemporalMCPClient } from '@temporalio/ai-sdk';
+
 const mcpClient = new TemporalMCPClient();
 const tools = await mcpClient.tools();
+
 const result = await generateText({
   model: temporalProvider.languageModel('gpt-4o-mini'),
   prompt,
   tools,
-  system: 'You are a helpful agent, You always use your tools when needed.',
+  system: 'You are a helpful agent. You always use your tools when needed.',
   stopWhen: stepCountIs(5),
 });
 ```
