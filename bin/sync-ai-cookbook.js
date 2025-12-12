@@ -592,8 +592,35 @@ async function transformReadme(readmePath, slugLookup) {
   };
 }
 
+async function createPlaceholder() {
+  await fs.mkdir(OUTPUT_DIR, { recursive: true });
+  const placeholderPath = path.join(OUTPUT_DIR, 'recipes-not-synced.mdx');
+  const content = `---
+id: recipes-not-synced
+title: AI Cookbook
+description: Recipes and patterns for building AI applications with Temporal.
+sidebar_label: AI Cookbook
+---
+
+# AI Cookbook
+
+Content could not be synced from the remote repository.
+
+Run \`yarn sync:ai-cookbook\` to fetch the recipes when you have an internet connection.
+`;
+  await fs.writeFile(placeholderPath, content, 'utf8');
+  console.warn(`[sync-ai-cookbook] created placeholder at ${OUTPUT_SUBDIR}/recipes-not-synced.mdx`);
+}
+
 async function syncReadmes() {
-  await ensureRepo();
+  try {
+    await ensureRepo();
+  } catch (error) {
+    console.warn(`[sync-ai-cookbook] WARNING: Could not fetch remote content: ${error.message ?? String(error)}`);
+    console.warn('[sync-ai-cookbook] Creating placeholder directory instead. Run yarn sync:ai-cookbook when online.');
+    await createPlaceholder();
+    return;
+  }
   const readmes = await collectReadmeFiles(REPO_TEMP_DIR);
   const slugLookup = new Map();
   readmes.forEach((readme) => {

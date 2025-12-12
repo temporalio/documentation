@@ -135,7 +135,7 @@ See [operations and metrics](/cloud/high-availability) for Namespaces with High 
 - [temporal\_cloud\_v1\_replication\_lag\_p95](/production-deployment/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p95)
 - [temporal\_cloud\_v1\_replication\_lag\_p50](/production-deployment/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p50)
 
-## Detecting Resource Exhaustion
+## Usage and Detecting Resource Exhaustion & Namespace RPS and APS Rate Limits {#rps-aps-rate-limits}
 
 The Cloud metric `temporal_cloud_v1_resource_exhausted_error_count` is the primary indicator for Cloud-side throttling, signaling that namespace limits
  are being hit and `ResourceExhausted` gRPC errors are occurring. This generally does not break workflow processing due to how resources are prioritized. 
