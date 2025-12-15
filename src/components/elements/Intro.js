@@ -5,20 +5,8 @@ import { SdkLogos } from "./SdkLogos";
 
 const coreConcepts = [
   {
-    path: "https://learn.temporal.io/getting_started#set-up-your-development-environment",
-    name: "Set up your development environment",
-  },
-  {
-    path: "https://learn.temporal.io/getting_started/#run-your-first-program",
-    name: "Run your first program",
-  },
-  {
-    path: "https://learn.temporal.io/getting_started/#run-your-first-program",
-    name: "Build an application from scratch",
-  },
-  {
-    path: "https://learn.temporal.io/courses/",
-    name: "Enroll in a free course",
+    path: "https://https://docs.temporal.io/quickstarts",
+    name: "Quickstarts",
   },
 ];
 
@@ -360,7 +348,7 @@ function Explained() {
       <div className="grid md:grid-cols-2">
         <SimpleCard
           title="Get started with Temporal"
-          content="New to Temporal? Follow our introductory tutorials and courses to get a feel for the developer experience and the value of the Temporal Platform."
+          content="New to Temporal? Follow our Quickstarts to get a feel for the developer experience and the value of the Temporal Platform."
           links={coreConcepts}
         />
         <SimpleCard
