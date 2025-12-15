@@ -96,6 +96,10 @@ You also need to pick among three common deployment strategies:
 - A **blue-green deployment** strategy maintains two "colors," or Worker Deployment Versions simultaneously and can control how traffic is routed between them. This allows you to maximize your uptime with features like instant rollback and ramping. Worker Versioning enables the routing control that blue-green deployments need.
 - A **rainbow deployment** strategy is like blue-green but with more colors, allowing Workflow Pinning. You can deploy new revisions of your Workflows freely while older versions drain. Using Worker Versioning, Temporal lets you know when all the Workflows of a given version are drained so that you can sunset it.
 
+:::note
+You also have the option to use the [Temporal Worker Controller](/production-deployment/worker-deployments/kubernetes-controller) to automatically enable rainbow deployments of your Workers if you're using Kubernetes.
+:::
+
 ## Configuring a Worker for Versioning
 
 You'll need to add a few additional configuration parameters to your Workers to toggle on Worker Versioning.
@@ -221,6 +225,14 @@ In general, each Workflow Type should be annotated as Auto-Upgrade or Pinned. If
 Many users who are migrating to Worker Versioning will start by defaulting to Auto-Upgrade until they have had time to annotate their Workflows.
 This default is the most similar to the legacy behavior.
 Once each Workflow Type is annotated, you can remove the `DefaultVersioningBehavior`.
+
+There is a possibility of a queue blocking limitation for new or Auto-Upgrade Workflows if there is a ramp, but one of the Current or Ramping versions is down or doesn't have enough capacity. This leads to other versions not getting Tasks or slowing down.
+
+For example, you have a Current Version and a Ramping Version at 50%. If all of your Current Version Workers go down, you would expect at least 50% of new Workflows to go to the Ramping Version. This won't happen because the Tasks for the Current Version are blocking the queue.
+
+:::note
+Keep in mind that Child Workflows of a parent or previous Auto-Upgrade Workflow default to Auto-Upgrade behavior and not Unspecified.
+:::
 
 ## Rolling out changes with the CLI
 
@@ -556,6 +568,19 @@ handle = env.client.start_workflow(
 ```
 </SdkTabs.Ruby>
 </SdkTabs>
+
+## Garbage collection
+
+Worker Deployments are never garbage collected, but *Worker Deployment Versions* (often referred to as Versions, Worker Versions, Deployment Versions) are.
+
+Versions are deleted to keep the total number of versions in one Worker Deployment less than or equal to [`matching.maxVersionsInDeployment`](https://github.com/temporalio/temporal/blob/a3a53266c002ae33b630a41977274f8b5b587031/common/dynamicconfig/constants.go#L1317-L1321), which is currently set to 100 in Temporal Cloud, but that's a conservative number and it could be increased if needed.
+
+For example, when you deploy your 101st Worker version in a Worker Deployment, the server looks at the oldest drained version in the Worker deployment. If it has had no pollers in the last 5 minutes, the server deletes it. If that version still has pollers, the server will try the next oldest version.
+If none of the 100 versions are eligible for deletion (ie. none of them are drained with no pollers), then no version will be deleted and the poll from the 101st version would fail.
+
+At that point, to successfully deploy your 101st version, you would need to increase `matching.maxVersionsInDeployment` or stop polling from one of the old drained versions to make it eligible for clean up.
+
+If you want to re-deploy a previously deleted version, start polling with a Worker that has the same build ID and Deployment Name as the deleted version and the server will recreate it.
 
 This covers the complete lifecycle of working with Worker Versioning.
 We are continuing to improve this feature, and we welcome any feedback or feature requests using the sidebar link!
