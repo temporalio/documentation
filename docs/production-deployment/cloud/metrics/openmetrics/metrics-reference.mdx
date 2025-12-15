@@ -318,6 +318,12 @@ The total number of actions performed per second. Actions with `is_background=fa
 
 **Type**: Rate
 
+#### temporal\_cloud\_v1\_total\_action\_throttled\_count
+
+The total number of actions throttled per second.
+
+**Type**: Rate
+
 #### temporal\_cloud\_v1\_operations\_count
 
 Operations performed per second.
@@ -398,7 +404,7 @@ The current configured operations per second limit for a namespace.
 
 #### temporal\_cloud\_v1\_action\_limit
 
-The current configured actions per second limit for a namespace. Track utilization against this limit with ``temporal\_cloud\_v1\_total\_action\_count`` and `is_background=false`.
+The current configured actions per second limit for a namespace. Track utilization against this limit with ``temporal_cloud_v1_total_action_count`` and `is_background=false`.
 
 **Type**: Value
 
