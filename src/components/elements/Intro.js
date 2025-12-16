@@ -26,7 +26,7 @@ const quickstartLinks = [
   },
   {
     path: "/develop/ruby/set-up-local-ruby",
-    name: "Go Quickstart",
+    name: "Ruby Quickstart",
   },
 ];
 
