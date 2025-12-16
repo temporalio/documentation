@@ -5,7 +5,7 @@ import { SdkLogos } from "./SdkLogos";
 
 const coreConcepts = [
   {
-    path: "https://https://docs.temporal.io/quickstarts",
+    path: "https://docs.temporal.io/quickstarts",
     name: "Quickstarts",
   },
 ];
