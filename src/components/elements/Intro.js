@@ -25,7 +25,7 @@ const quickstartLinks = [
     name: ".NET Quickstart",
   },
   {
-    path: "/develop/ruby/set-up-your-local-ruby",
+    path: "/develop/ruby/set-up-local-ruby",
     name: "Go Quickstart",
   },
 ];
