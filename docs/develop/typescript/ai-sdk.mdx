@@ -13,21 +13,21 @@ tags:
 description: Implement AI applications in TypeScript using the Temporal TypeScript SDK and the AI SDK.
 ---
 
-Temporal's integration with[Vercel's AI SDK](https://ai-sdk.dev/) lets you use the AI SDK's API directly in Workflow code while Temporal handles Durable Execution.
-If you're already familiar with the Vercel AI SDK, this integration lets you bring that experience to Temporal.
+Temporal's integration with[Vercel's AI SDK](https://ai-sdk.dev/) lets you use the AI SDK's API directly in Workflow
+code while Temporal handles Durable Execution. If you're already familiar with the Vercel AI SDK, this integration lets
+you bring that experience to Temporal.
 
 ## How it works
 
-LLM API calls are non-deterministic, so they run as Activities.
-The AI SDK plugin handles this automatically: when you call functions with LLM calls such as `generateText()` or other AI SDK methods in a Workflow, the plugin routes those calls through Activities behind the scenes.
-
-You configure the model provider on the Worker, and use `temporalProvider.languageModel()` in your Workflow to reference models by name.
-The plugin connects the two.
+Like all API calls, LLM API calls are non-deterministic, so they usually run as Activities. The AI SDK plugin handles
+this automatically: when you call methods in the AI SDK such as `generateText()`, the plugin wraps those calls in
+Activities behind the scenes. This preserves the Vercel AI SDK's developer experience that you are already familiar with
+while Temporal handles Durable Execution.
 
 ## Configure the Worker
 
-Install the `@temporalio/ai-sdk` package and add the plugin to your Worker.
-The `modelProvider` specifies which AI provider to use when creating models (OpenAI, Anthropic, etc.).
+Install the `@temporalio/ai-sdk` package and add the plugin to your Worker. The `modelProvider` specifies which AI
+provider to use when creating models (OpenAI, Anthropic, etc.).
 
 ```ts
 import { openai } from '@ai-sdk/openai';
@@ -51,8 +51,8 @@ See the full example at [ai-sdk samples](https://github.com/temporalio/samples-t
 
 ## Write a Workflow
 
-Use the AI SDK as you normally would, but pass `temporalProvider.languageModel()` as the model.
-The string you provide (like `'gpt-4o-mini'`) is passed to your configured `modelProvider` to create the model.
+Use the AI SDK as you normally would, but pass `temporalProvider.languageModel()` as the model. The string you provide
+(like `'gpt-4o-mini'`) is passed to your configured `modelProvider` to create the model.
 
 ```ts
 import { generateText } from 'ai';
@@ -70,8 +70,8 @@ export async function haikuAgent(prompt: string): Promise<string> {
 
 ## Tool calling
 
-You can provide tools to the AI SDK, and when the model calls them, they execute in the Workflow.
-Tool functions follow the same rules as Workflow code: they must be deterministic, but they can call Activities and Child Workflows.
+You can provide tools to the AI SDK, and when the model calls them, they execute in the Workflow. Tool functions follow
+the same rules as Workflow code: they must be deterministic, but they can call Activities and Child Workflows.
 
 In this example, the `getWeather` tool calls an Activity:
 
@@ -107,8 +107,8 @@ export async function toolsAgent(question: string): Promise<string> {
 
 ## MCP tools
 
-The integration includes a stateless MCP client for use in Workflows.
-Configure the Worker with an `mcpClientFactory` to define how MCP clients are created:
+The integration includes a stateless MCP client for use in Workflows. Configure the Worker with an `mcpClientFactory` to
+define how MCP clients are created:
 
 ```ts
 import { experimental_createMCPClient as createMCPClient } from '@ai-sdk/mcp';
@@ -133,8 +133,8 @@ const worker = await Worker.create({
 });
 ```
 
-In a Workflow, use `TemporalMCPClient` to get the available tools.
-Both listing tools and calling them run as Activities.
+In a Workflow, use `TemporalMCPClient` to get the available tools. Both listing tools and calling them run as
+Activities.
 
 ```ts
 import { TemporalMCPClient } from '@temporalio/ai-sdk';
