@@ -3,10 +3,30 @@ import Link from "@docusaurus/Link";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 import { SdkLogos } from "./SdkLogos";
 
-const coreConcepts = [
+const quickstartLinks = [
   {
-    path: "https://docs.temporal.io/quickstarts",
-    name: "Quickstarts",
+    path: "/develop/go/set-up-your-local-go",
+    name: "Go Quickstart",
+  },
+  {
+    path: "/develop/java/set-up-your-local-java",
+    name: "Java Quickstart",
+  },
+  {
+    path: "/develop/python/set-up-your-local-python",
+    name: "Python Quickstart",
+  },
+  {
+    path: "/develop/typescript/set-up-your-local-typescript",
+    name: "TypeScript Quickstart",
+  },
+  {
+    path: "/develop/dotnet/set-up-your-local-dotnet",
+    name: ".NET Quickstart",
+  },
+  {
+    path: "/develop/ruby/set-up-your-local-ruby",
+    name: "Go Quickstart",
   },
 ];
 
@@ -349,7 +369,7 @@ function Explained() {
         <SimpleCard
           title="Get started with Temporal"
           content="New to Temporal? Follow our Quickstarts to get a feel for the developer experience and the value of the Temporal Platform."
-          links={coreConcepts}
+          links={quickstartLinks}
         />
         <SimpleCard
           title="Start building your next app"
