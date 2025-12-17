@@ -23,7 +23,7 @@ A Retry Policy is declarative. You do not need to implement your own logic for h
 
 In contrast to the Activities it contains, a Workflow Execution itself is not associated with a Retry Policy by default. This may seem counterintuitive, but Workflows and Activities perform different roles. Activities are intended for operations that may fail, so having a default Retry Policy increases the likelihood that they will ultimately complete successfully, even if the initial attempt failed. On the other hand, Workflows must be deterministic and are not intended to perform failure-prone operations. While it is possible to assign a Retry Policy to a Workflow Execution, this is not the default and it is uncommon to do so. 
 
-Retry Policies do not apply to Workflow Task Executions, which retry until the Workflow Execution Timeout (which is unlimited by default) with an exponential backoff and a max interval of 10 minutes. It instructs the Temporal Service how to retry a failure of either a [Workflow Execution](/workflow-execution) or an [Activity Task Execution](/tasks#activity-task-execution).
+Retry Policies do not apply to Workflow Task Executions, which retry until the Workflow Execution Timeout (which is unlimited by default) with an exponential backoff and a max interval of 10 minutes. A Retry Policy instructs the Temporal Service how to retry a failure of either a [Workflow Execution](/workflow-execution) or an [Activity Task Execution](/tasks#activity-task-execution).
 
 Try out the [Activity retry simulator](/develop/activity-retry-simulator) to visualize how a Retry Policy works.
 
