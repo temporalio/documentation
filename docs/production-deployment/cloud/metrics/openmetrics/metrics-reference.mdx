@@ -61,7 +61,17 @@ All metrics include these base labels:
 
 #### temporal\_cloud\_v1\_frontend\_service\_request\_count
 
-Frontend service gRPC requests received per second.
+gRPC requests received per second.
+
+| Label | Description |
+| ----- | ----- |
+| `operation` | The name of the RPC operation |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_service\_request\_throttled\_count
+
+gRPC requests throttled per second.
 
 | Label | Description |
 | ----- | ----- |
@@ -71,7 +81,7 @@ Frontend service gRPC requests received per second.
 
 #### temporal\_cloud\_v1\_frontend\_service\_error\_count
 
-Frontend service gRPC errors per second.
+gRPC errors per second.
 
 | Label | Description |
 | ----- | ----- |
@@ -91,11 +101,11 @@ The number of pollers that are waiting for a task. Use this to track against ``t
 
 #### temporal\_cloud\_v1\_resource\_exhausted\_error\_count
 
-Resource exhaustion errors per second.
+Resource exhaustion errors per second. This metric does not include throttling due to Namespace limits.
 
 | Label | Description |
 | ----- | ----- |
-| `resource_exhausted_cause` | The specific cause of resource exhaustion |
+| `operation` | The name of the operation |
 
 **Type**: Rate
 
@@ -410,7 +420,7 @@ The current configured actions per second limit for a namespace. Track utilizati
 
 #### temporal\_cloud\_v1\_frontend\_rps\_limit
 
-The current configured frontend service RPS limit for a namespace.
+The current configured frontend service RPS limit for a namespace. Track utilization against this limit with ``temporal_cloud_v1_frontend_service_request_count``
 
 **Type**: Value
 

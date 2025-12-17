@@ -87,12 +87,12 @@ module.exports = async function createConfigAsync() {
             activeBasePath: 'none',
           },
           {
-            label: 'Start learning',
+            label: 'Courses',
             href: 'https://learn.temporal.io/getting_started/',
             right: 'left',
           },
           {
-            label: 'Start building',
+            label: 'SDKs',
             href: '/develop',
             right: 'left',
           },
