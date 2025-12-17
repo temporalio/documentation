@@ -3,11 +3,6 @@ module.exports = {
     'index',
     'quickstarts',
     {
-      type: 'link',
-      label: 'Courses and Tutorials',
-      href: 'https://learn.temporal.io/',
-    },
-    {
       type: 'category',
       label: 'Evaluate',
       collapsed: false,
