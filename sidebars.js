@@ -250,6 +250,7 @@ module.exports = {
             'develop/typescript/child-workflows',
             'develop/typescript/continue-as-new',
             'develop/typescript/interceptors',
+            'develop/typescript/ai-sdk',
           ],
         },
         {
@@ -632,11 +633,11 @@ module.exports = {
         id: 'best-practices/index',
       },
       items: [
-        "best-practices/managing-namespace",
-        "best-practices/managing-aps-limits",
-        "best-practices/cloud-access-control",
-        "best-practices/security-controls",
-        "best-practices/worker",
+        'best-practices/managing-namespace',
+        'best-practices/managing-aps-limits',
+        'best-practices/cloud-access-control',
+        'best-practices/security-controls',
+        'best-practices/worker',
       ],
     },
     {
