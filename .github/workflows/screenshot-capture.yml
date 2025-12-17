@@ -1,9 +1,8 @@
 name: Screenshot Capture
 
 on:
-  workflow_run:
-    workflows: ["Release to Production"]
-    types: [completed]
+  schedule:
+    - cron: '0 0 * * 0'  # Weekly on Sunday at midnight UTC
   workflow_dispatch:
 
 env:
@@ -122,4 +121,4 @@ jobs:
           name: screenshots
           path: screenshots/
           if-no-files-found: error
-          retention-days: 7
+          retention-days: 14

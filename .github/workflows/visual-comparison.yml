@@ -47,11 +47,35 @@ jobs:
           node-version: "20"
           cache: 'yarn'
 
+      - name: Check for reference screenshots
+        id: check-references
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        continue-on-error: true
+        run: |
+          WORKFLOW_FILE="screenshot-capture.yml"
+          TOKEN="${GITHUB_TOKEN}"
+          REPO="${GITHUB_REPOSITORY}"
+          DEFAULT_BRANCH="${{ github.base_ref }}"
+
+          RUN_ID=$(curl -sSL \
+            -H "Authorization: Bearer ${TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${REPO}/actions/workflows/${WORKFLOW_FILE}/runs?branch=${DEFAULT_BRANCH}&status=completed&per_page=1" \
+            | jq -r '.workflow_runs | map(select(.conclusion == "success")) | first | .id')
+
+          if [[ -z "${RUN_ID}" || "${RUN_ID}" == "null" ]]; then
+            echo "has_references=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_references=true" >> $GITHUB_OUTPUT
+          fi
+
       - name: Post PR comment
         uses: mshick/add-pr-comment@v2
         with:
           message: |
             🤖 Starting the visual tests. This will take approximately an hour.
+            ${{ steps.check-references.outputs.has_references == 'false' && '⚠️ **Note:** No reference screenshots found on the base branch. This run will create new baselines instead of performing comparisons.' || '' }}
           refresh-message-position: true
 
       - name: Install dependencies
@@ -116,12 +140,29 @@ jobs:
             path: build
 
       - name: Download reference screenshots
-        run: ./static/scripts/screenshot-artifacts.sh ./screenshots
+        id: download-references
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        continue-on-error: true
+        run: |
+          if ./static/scripts/screenshot-artifacts.sh ./screenshots; then
+            echo "has_references=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_references=false" >> $GITHUB_OUTPUT
+            echo "⚠️ No reference screenshots found. This will create new baselines instead of comparing."
+          fi
 
       - name: Take screenshots with Playwright
         env:
           PLAYWRIGHT_SNAPSHOT_DIR: ${{ github.workspace }}/screenshots
-        run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} || exit 0
+        run: |
+          if [ "${{ steps.download-references.outputs.has_references }}" = "false" ]; then
+            echo "Creating new baseline screenshots..."
+            npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} --update-snapshots || exit 0
+          else
+            echo "Comparing against reference screenshots..."
+            npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} || exit 0
+          fi
 
       - name: Upload blob report
         uses: actions/upload-artifact@v4
