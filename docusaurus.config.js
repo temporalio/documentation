@@ -27,8 +27,9 @@ module.exports = async function createConfigAsync() {
     clientModules: ['./src/client/remote-amplitude-analytics.js'],
     themeConfig: {
       colorMode: {
-        defaultMode: 'light',
+        defaultMode: 'dark',
         disableSwitch: false,
+        respectPrefersColorScheme: true,
         // switchConfig: {
         //   darkIcon: "🌙",
         //   darkIconStyle: {
@@ -48,7 +49,7 @@ module.exports = async function createConfigAsync() {
       prism: {
         //theme: require("prism-react-renderer/themes/nightOwlLight"),
         // darkTheme: require("prism-react-renderer/themes/dracula"),
-        additionalLanguages: ['java', 'ruby', 'php', 'csharp'],
+        additionalLanguages: ['java', 'ruby', 'php', 'csharp', 'toml', 'bash', 'docker'],
       },
       docs: {
         sidebar: {
@@ -86,12 +87,12 @@ module.exports = async function createConfigAsync() {
             activeBasePath: 'none',
           },
           {
-            label: 'Start learning',
+            label: 'Courses',
             href: 'https://learn.temporal.io/getting_started/',
             right: 'left',
           },
           {
-            label: 'Start building',
+            label: 'SDKs',
             href: '/develop',
             right: 'left',
           },
@@ -112,6 +113,10 @@ module.exports = async function createConfigAsync() {
             activeBasePath: 'cloud',
             position: 'left',
           },
+          {
+            type: 'custom-askAI',
+            position: 'right',
+          },
         ],
       },
       footer: {
@@ -126,7 +131,7 @@ module.exports = async function createConfigAsync() {
           {
             items: [
               {
-                label: 'Github',
+                label: 'GitHub',
                 href: 'https://github.com/temporalio',
               },
               {
@@ -283,6 +288,7 @@ module.exports = async function createConfigAsync() {
       },
       {
         src: 'https://widget.kapa.ai/kapa-widget.bundle.js',
+        'data-button-hide': 'true',
         'data-website-id': '91a88508-9cdc-441f-b1df-37aa9329e6bc',
         'data-project-name': 'Temporal',
         'data-project-color': '#000000',
@@ -344,7 +350,7 @@ module.exports = async function createConfigAsync() {
           sidebarPath: false, // no left nav for these pages ✅
           // optional polish:
           showLastUpdateAuthor: true,
-          showLastUpdateTime: true, 
+          showLastUpdateTime: true,
           // use a custom item to center the content:
           docItemComponent: '@site/src/components/CookbookDocItem',
           docCategoryGeneratedIndexComponent: '@site/src/components/CookbookCategoryIndex', // ⬅️ isolated override

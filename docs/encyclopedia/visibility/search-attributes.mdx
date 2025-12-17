@@ -73,6 +73,7 @@ These Search Attributes are created when the initial index is created.
 | StateTransitionCount               | Int          | The number of times that Workflow Execution has persisted its state. Available only for closed Workflows.                                                                                                    |
 | TaskQueue                          | Keyword      | Task Queue used by Workflow Execution.                                                                                                                                                                       |
 | TemporalChangeVersion              | Keyword List | Stores change/version pairs if the GetVersion API is enabled.                                                                                                                                                |
+| TemporalReportedProblems           | Keyword List | Stores information about Workflow task failures. Formatted as `category=<category> cause=<cause>`.
 | TemporalScheduledStartTime         | Datetime     | The time that the Workflow is schedule to start according to the Schedule Spec. Can be manually triggered. Set on Schedules.                                                                                 |
 | TemporalScheduledById              | Keyword      | The Id of the Schedule that started the Workflow.                                                                                                                                                            |
 | TemporalSchedulePaused             | Boolean      | Indicates whether the Schedule has been paused. Set on Schedules.                                                                                                                                            |
@@ -87,6 +88,9 @@ These Search Attributes are created when the initial index is created.
 
 - Search attributes are not encrypted in the system.
   Do not use PII as either the search attribute name or the value.
+
+- To use default Search Attributes with the `Temporal` prefix in a List Filter, you can use their non-prefixed alias.
+  Refer to [Search Attribute aliasing](./list-filter.mdx#search-attribute-aliasing) for details.
 
 - ExecutionStatus values correspond to Workflow Execution statuses: Running, Completed, Failed, Canceled, Terminated, ContinuedAsNew, TimedOut.
 

@@ -1,25 +1,29 @@
 # Contribute to Temporal Documentation Locally 
 
-1. **Clone the Repository**  
+1. **Fork the Repository**
+   Create a fork of this repository.
+   *This creates a copy of this repository to your github account*
+
+2. **Clone the Repository**  
    Run the following commands in your terminal to clone the repository and navigate into it:
    ```bash
    git clone https://github.com/YOUR_USERNAME/documentation.git
    cd documentation
    ```
 
-2. **Open the Repository in Your IDE**  
+3. **Open the Repository in Your IDE**  
    Open the project in your preferred IDE, such as Visual Studio Code. Locate the `/docs` directory, which contains all the content served on `docs.temporal.io`. Identify the changes you want to make.
 
-3. **Create a New Branch**  
+4. **Create a New Branch**  
    If you're creating a pull request, create a new branch and switch to it:  
    ```bash
    git checkout -b my-documentation-contribution
    ```
 
-4. **Follow the Style Guide**  
+5. **Follow the Style Guide**  
    Refer to [STYLE.md](./STYLE.md) for the documentation style guidelines.
 
-5. **Preview Your Changes Locally**  
+6. **Preview Your Changes Locally**  
    Run the following commands to preview the site locally:
    ```bash
    yarn            # Install site dependencies
@@ -27,7 +31,7 @@
    yarn build      # Check for build warnings or errors
    ```
 
-6. **Stage Your Changes**  
+7. **Stage Your Changes**  
    Use the following commands to stage and commit your changes:
    ```bash
    git status                         # Check the status of your changes
@@ -36,7 +40,7 @@
    git push origin my-documentation-contribution  # Push changes
    ```
 
-7. **Create a Pull Request**  
+8. **Create a Pull Request**  
    - After pushing, GitHub provides a link in the terminal to create a PR. Open the link or navigate to your fork on GitHub.
    - Click the option to create a Pull Request (PR).
    - Provide a descriptive PR title and explanation.
@@ -146,11 +150,6 @@ Note that the `/build` directory is ignored by Git.
 ## `yarn start`
 
 This command spins up a local web server and serves the contents of the `/build` directory to [localhost:3000](http://localhost:3000/).
-
-## `yarn format`
-
-This command formats the documents per the `dprint.json` configuration.
-The repository CI now automatically applies `dprint` formatting on upload and merges any changes back to the submitted branch.
 
 ## `yarn snipsync`
 

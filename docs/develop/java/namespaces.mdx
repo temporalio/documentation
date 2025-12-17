@@ -9,7 +9,7 @@ tags:
   - Namespaces
   - Java SDK
   - Temporal SDKs
-description: Learn how to register, update, deprecate, and delete Namespaces using Temporal CLI or SDK APIs. Manage Workflow Executions with isolated Namespaces to match your needs.
+description: Register, update, deprecate, and delete Namespaces using Temporal CLI or SDK APIs. Manage Workflow Executions with isolated Namespaces to match your needs.
 ---
 
 This page shows how to do the following:
@@ -67,7 +67,7 @@ The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandato
 The minimum value you can set for this period is 1 day.
 
 Once registered, set Namespace using `WorkflowClientOptions` within a Workflow Client to run your Workflow Executions within that Namespace.
-See [how to set Namespace in a Client in Java](/develop/java/temporal-client#connect-to-custom-namespace) for details.
+See [Connect to a Development Temporal Service](/develop/java/temporal-client#connect-to-development-service) for details.
 
 Note that Namespace registration using this API takes up to 10 seconds to complete.
 Ensure that you wait for this registration to complete before starting the Workflow Execution against the Namespace.

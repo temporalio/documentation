@@ -2,7 +2,7 @@
 id: observability
 title: Observability - Python SDK
 sidebar_label: Observability
-description: Discover how to monitor your Temporal Application using metrics, tracing, logging, and visibility APIs. Learn to emit metrics, set up tracing, log from Workflows, and use custom Search Attributes.
+description: Discover how to monitor your Temporal Application using metrics, tracing, logging, and visibility APIs. Emit metrics, set up tracing, log from Workflows, and use custom Search Attributes.
 slug: /develop/python/observability
 toc_max_heading_level: 2
 keywords:
@@ -211,20 +211,21 @@ These attributes are useful for querying Workflows based on the customer ID or t
 
 You can upsert Search Attributes to add or update Search Attributes from within Workflow code.
 
-To upsert custom Search Attributes, use the [`upsert_search_attributes()`](https://python.temporal.io/temporalio.workflow.html#upsert_search_attributes) method to pass instances of `SearchAttributePair()` containing each of your keys and starting values to a parameter to a `TypedSearchAttributes()` object:
+To upsert custom Search Attributes, use the [`upsert_search_attributes()`](https://python.temporal.io/temporalio.workflow.html#upsert_search_attributes) method to pass a list of `SearchAttributeUpdate()`.
+These can be created via value_set calls on Search Attribute keys:
 
 ```python
-workflow.upsert_search_attributes(TypedSearchAttributes([
-    SearchAttributePair(customer_id_key, "customer_2")
-]))
+workflow.upsert_search_attributes([
+    customer_id_key.value_set("customer_2")
+])
 ```
 
 ### Remove a Search Attribute from a Workflow {#remove-search-attribute}
 
-To remove a Search Attribute that was previously set, set it to an empty array: `[]`.
+To remove a Search Attribute that was previously set, use `value_unset call` on the Search Attribute key.
 
 ```python
-workflow.upsert_search_attributes(TypedSearchAttributes([
-    SearchAttributePair(customer_id_key, [])
-]))
+workflow.upsert_search_attributes([
+    customer_id_key.value_unset()
+])
 ```

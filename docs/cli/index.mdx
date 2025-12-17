@@ -2,7 +2,9 @@
 id: index
 title: Temporal CLI command reference
 sidebar_label: Temporal CLI
-description: The Temporal CLI offers terminal access to Temporal Services for managing, monitoring, and debugging Workflows and Activities, including Namespace and Task Queue management, with embedded development support.
+description:
+  The Temporal CLI offers terminal access to Temporal Services for managing, monitoring, and debugging Workflows and
+  Activities, including Namespace and Task Queue management, with embedded development support.
 slug: /cli
 toc_max_heading_level: 4
 keywords:
@@ -15,27 +17,25 @@ tags:
   - Temporal CLI
 ---
 
-The Temporal CLI provides direct access to a Temporal Service via the terminal.
-It's a powerful tool for managing, monitoring, and debugging Temporal Applications.
-You can use it to start, stop, inspect and operate on Workflows and Activities, and perform administrative tasks such as Namespace, Schedule, and Task Queue management.
+The Temporal CLI provides direct access to a Temporal Service via the terminal. It's a powerful tool for managing,
+monitoring, and debugging Temporal Applications. You can use it to start, stop, inspect and operate on Workflows and
+Activities, and perform administrative tasks such as Namespace, Schedule, and Task Queue management.
 
-The Temporal CLI also includes an embedded Temporal Service suitable for use in development and CI/CD.
-It includes the [Temporal Server](/temporal-service/temporal-server), SQLite persistence, and the [Temporal Web UI](/web-ui).
+The Temporal CLI also includes an embedded Temporal Service suitable for use in development and CI/CD. It includes the
+[Temporal Server](/temporal-service/temporal-server), SQLite persistence, and the [Temporal Web UI](/web-ui).
 
 :::note
 
-When upgrading from [tctl](/tctl-v1) to the Temporal CLI, make sure to update your environment variables and use updated commands.
-For details, see [CLI release notes](https://github.com/temporalio/cli/releases/).
+When upgrading from [tctl](/tctl-v1) to the Temporal CLI, make sure to update your environment variables and use updated
+commands. For details, see [CLI release notes](https://github.com/temporalio/cli/releases/).
 
 :::
 
 ## Install the Temporal CLI {#install}
 
-**How to download and install the Temporal CLI**
-
 The Temporal CLI is available on macOS, Windows, and Linux, or as a Docker image.
 
-### How to install the Temporal CLI on macOS
+### macOS
 
 Choose one of the following install methods to install the Temporal CLI on macOS:
 
@@ -56,7 +56,7 @@ brew install temporal
 
   3. Add the Temporal CLI binary to your PATH.
 
-### How to install the Temporal CLI on Linux
+### Linux
 
 Choose one of the following install methods to install the Temporal CLI on Linux:
 
@@ -71,7 +71,7 @@ Choose one of the following install methods to install the Temporal CLI on Linux
 
   3. Add the `temporal` binary to your PATH.
 
-### How to install the Temporal CLI on Windows
+### Windows
 
 Choose one of the following methods to install the Temporal CLI on Windows:
 
@@ -86,9 +86,10 @@ Choose one of the following methods to install the Temporal CLI on Windows:
 
   3. Add the `temporal.exe` binary to your PATH.
 
-### How to run the Temporal CLI inside Docker
+### Docker
 
-Temporal CLI container image is available on [DockerHub](https://hub.docker.com/r/temporalio/temporal) and can be run directly:
+The Temporal CLI container image is available on [DockerHub](https://hub.docker.com/r/temporalio/temporal) and can be
+run directly:
 
 ```shell
 docker run --rm temporalio/temporal --help
@@ -96,8 +97,8 @@ docker run --rm temporalio/temporal --help
 
 :::note
 
-When running the CLI inside Docker, for the development server to be accessible from the host system,
-the server needs to be configured to listen on external IP and the ports need to be forwarded:
+When running the Temporal CLI inside Docker, for the development server to be accessible from the host system, the
+server needs to be configured to listen on external IP and the ports need to be forwarded:
 
 ```shell
 docker run --rm -p 7233:7233 -p 8233:8233 temporalio/temporal server start-dev --ip 0.0.0.0
@@ -105,6 +106,105 @@ docker run --rm -p 7233:7233 -p 8233:8233 temporalio/temporal server start-dev -
 ```
 
 :::
+
+## Start a Temporal development server {#start-dev-server}
+
+To start a Temporal development server, run the following command:
+
+```bash
+temporal server start-dev
+```
+
+This command automatically starts the Web UI, creates the `default` [Namespace](/namespaces), and uses an in-memory
+database.
+
+The Temporal Server will be available on `localhost:7233` and the Temporal Web UI will be available at
+[`http://localhost:8233`](http://localhost:8233/).
+
+The in-memory SQLite database does not persist if you stop the development server. Use the `--db-filename` option to
+specify a database file, persisting application state. This is helpful if you plan on stopping and re-starting the
+development server.
+
+```shell
+temporal server start-dev --db-filename temporal.db
+```
+
+:::note
+
+Local databases created with `--db-filename` may not be compatible with newer versions of the Temporal CLI. The
+`temporal server start-dev` command is only intended for development environments.
+
+:::
+
+For the full list of development server options, use the `--help` flag:
+
+```shell
+temporal server start-dev --help
+```
+
+## Enable auto-completion {#enable-auto-completion}
+
+Enable auto-completion using the following commands.
+
+### zsh auto-completion
+
+1. Add the following line to your `~/.zshrc` startup script:
+
+   ```sh
+   eval "$(temporal completion zsh)"
+   ```
+
+2. Re-launch your shell or run:
+
+   ```sh
+   source ~/.zshrc
+   ```
+
+### Bash auto-completion
+
+1. Install [bash-completion](https://github.com/scop/bash-completion#installation) and add the software to your
+   `~/.bashrc`.
+
+2. Add the following line to your `~/.bashrc` startup script:
+
+   ```sh
+   eval "$(temporal completion bash)"
+   ```
+
+3. Re-launch your shell or run:
+
+   ```sh
+   source ~/.bashrc
+   ```
+
+:::note
+
+If auto-completion fails with the error: `bash: _get_comp_words_by_ref: command not found`, you did not successfully
+install [bash-completion](https://github.com/scop/bash-completion#installation). This package must be loaded into your
+shell for `temporal` auto-completion to work.
+
+:::
+
+### Fish auto-completion
+
+1. Create the Fish custom completions directory if it does not already exist:
+
+   ```fish
+   mkdir -p ~/.config/fish/completions
+   ```
+
+2. Configure the completions to load when needed. Note: the file name must be `temporal.fish` or the completions will
+   not be found:
+
+   ```fish
+   echo 'eval "$(temporal completion fish)"' >~/.config/fish/completions/temporal.fish
+   ```
+
+3. Re-launch your shell or run:
+
+   ```fish
+   source ~/.config/fish/completions/temporal.fish
+   ```
 
 ## Command set
 
@@ -123,8 +223,8 @@ The following information provides important configuration details.
 
 ### Namespace registration
 
-Namespaces are pre-registered at startup for immediate use.
-Customize pre-registered Namespaces with the following command:
+Namespaces are pre-registered at startup for immediate use. Customize pre-registered Namespaces with the following
+command:
 
 ```shell
 temporal server start-dev --namespace foo --namespace bar
@@ -138,8 +238,8 @@ temporal operator namespace create --namespace foo
 
 ### Enable or disable Temporal UI
 
-By default, the Temporal UI is enabled when running the development server using the Temporal CLI.
-To disable the UI, use the `--headless` modifier:
+By default, the Temporal UI is enabled when running the development server using the Temporal CLI. To disable the UI,
+use the `--headless` modifier:
 
 ```shell
 temporal server start-dev --headless
@@ -149,8 +249,8 @@ temporal server start-dev --headless
 
 Advanced Temporal CLI configuration requires a dynamic configuration file.
 
-To set values on the command line, use `--dynamic-config-value KEY=JSON_VALUE`.
-For example, enable the Search Attribute cache:
+To set values on the command line, use `--dynamic-config-value KEY=JSON_VALUE`. For example, enable the Search Attribute
+cache:
 
 ```bash
 temporal server start-dev --dynamic-config-value system.forceSearchAttributesCacheRefreshOnRead=false
@@ -186,15 +286,21 @@ Do not confuse environment variables, set with your shell, with temporal env opt
 
 :::
 
+## Create and modify configuration files {#configuration-files}
+
+The Temporal CLI lets you create and modify TOML configuration files to store your environment variables and other
+settings. Refer to [Environment Configuration](../develop/environment-configuration#cli-integration) for more
+information.
+
 ## Proxy support
 
-The Temporal CLI provides support for users who are operating behind a proxy.
-This feature ensures seamless communication even in network-restricted environments.
+The Temporal CLI provides support for users who are operating behind a proxy. This feature ensures seamless
+communication even in network-restricted environments.
 
 #### Setting up proxy support
 
-If you are behind a proxy, you'll need to instruct the Temporal CLI to route its requests via that proxy.
-You can achieve this by setting the `HTTPS_PROXY` environment variable.
+If you are behind a proxy, you'll need to instruct the Temporal CLI to route its requests via that proxy. You can
+achieve this by setting the `HTTPS_PROXY` environment variable.
 
 ```command
 export HTTPS_PROXY=<host>:<port>
@@ -206,109 +312,17 @@ Once set, you can run the Temporal CLI commands as you normally would.
 
 :::note
 
-Temporal CLI uses the gRPC library which natively supports HTTP CONNECT proxies. The gRPC library checks for the `HTTPS_PROXY` (and its case-insensitive variants) environment variable to determine if it should route requests through a proxy.
+Temporal CLI uses the gRPC library which natively supports HTTP CONNECT proxies. The gRPC library checks for the
+`HTTPS_PROXY` (and its case-insensitive variants) environment variable to determine if it should route requests through
+a proxy.
 
 :::
 
-In addition to `HTTPS_PROXY`, gRPC also respects the `NO_PROXY` environment variable.
-This can be useful if there are specific addresses or domains you wish to exclude from proxying.
+In addition to `HTTPS_PROXY`, gRPC also respects the `NO_PROXY` environment variable. This can be useful if there are
+specific addresses or domains you wish to exclude from proxying.
 
-For more information, see [Proxy](https://github.com/grpc/grpc-go/blob/master/Documentation/proxy.md) in the gRPC documentation.
-
-## Auto-completion
-
-Enable auto-completion using the following commands.
-
-### zsh auto-completion
-
-1. Add the following line to your `~/.zshrc` startup script:
-
-   ```sh
-   eval "$(temporal completion zsh)"
-   ```
-
-2. Re-launch your shell or run:
-
-   ```sh
-   source ~/.zshrc
-   ```
-
-### Bash auto-completion
-
-1. Install [bash-completion](https://github.com/scop/bash-completion#installation) and add the software to your `~/.bashrc`.
-
-2. Add the following line to your `~/.bashrc` startup script:
-
-   ```sh
-   eval "$(temporal completion bash)"
-   ```
-
-3. Re-launch your shell or run:
-
-   ```sh
-   source ~/.bashrc
-   ```
-
-:::note
-
-If auto-completion fails with the error: `bash: _get_comp_words_by_ref: command not found`, you did not successfully install [bash-completion](https://github.com/scop/bash-completion#installation). This package must be loaded into your shell for `temporal` auto-completion to work.
-
-:::
-
-### Fish auto-completion
-
-1. Create the Fish custom completions directory if it does not already exist:
-
-   ```fish
-   mkdir -p ~/.config/fish/completions
-   ```
-
-2. Configure the completions to load when needed. Note: the file name must be `temporal.fish` or the completions will not be found:
-
-   ```fish
-   echo 'eval "$(temporal completion fish)"' >~/.config/fish/completions/temporal.fish
-   ```
-
-3. Re-launch your shell or run:
-
-   ```fish
-   source ~/.config/fish/completions/temporal.fish
-   ```
-
-## Temporal dev server {#start-dev-server}
-
-**How to start the Temporal development server**
-
-To start the Temporal development server run the following command:
-
-```bash
-temporal server start-dev
-```
-
-This command automatically starts the Web UI, creates the `default` [Namespace](/namespaces), and uses an in-memory database.
-
-The Temporal Server should be available on `localhost:7233` and the Temporal Web UI should be available at [`http://localhost:8233`](http://localhost:8233/).
-
-The in-memory SQLite database does not persist if you stop the dev server.
-Use the `--db-filename` option to specify a database file, persisting application state.
-This is helpful if you plan on stopping and re-starting the dev server.
-
-```shell
-temporal server start-dev --db-filename temporal.db
-```
-
-:::note
-
-Local databases created with `--db-filename` may not be compatible with newer versions of the Temporal CLI.
-The `temporal server` command is only intended for development environments.
-
-:::
-
-For the full list of dev server options use the `--help` flag:
-
-```shell
-temporal server start-dev --help
-```
+For more information, see [Proxy](https://github.com/grpc/grpc-go/blob/master/Documentation/proxy.md) in the gRPC
+documentation.
 
 ## Common CLI operations {#common-operations}
 
@@ -316,8 +330,7 @@ The following are some of the more common operations you can perform with the Te
 
 ### Start a Workflow
 
-In another terminal, use the following commands to interact with the Server.
-The following command starts a Workflow:
+In another terminal, use the following commands to interact with the Server. The following command starts a Workflow:
 
 ```shell
 $ temporal workflow start \
@@ -393,7 +406,7 @@ $ temporal workflow describe --workflow-id 123
 For more detailed output in JSON format, use the following command:
 
 ```shell
-$ temporal workflow list --fields long --output json
+$ temporal workflow list --output json
 
 [
   {
@@ -416,7 +429,7 @@ $ temporal workflow list --fields long --output json
 Filter out Workflows based on Workflow Type with [jq](https://stedolan.github.io/jq/):
 
 ```shell
-$ temporal workflow list --fields long --output json | jq '.[].type.name'
+$ temporal workflow list --output json | jq '.[].type.name'
 
 "OtherWorkflow"
 "MyWorkflow"
@@ -426,13 +439,14 @@ $ temporal workflow list --fields long --output json | jq '.[].type.name'
 To count the number of Workflows, use the following command:
 
 ```shell
-$ temporal workflow list --fields long --output json | jq '.[].type.name' | uniq -c
+$ temporal workflow list --output json | jq '.[].type.name' | uniq -c
 
    1 "OtherWorkflow"
    2 "MyWorkflow"
 ```
 
-To see the full range of Workflow-related commands, run `temporal workflow` or see the [Temporal CLI workflow command reference](/cli/workflow).
+To see the full range of Workflow-related commands, run `temporal workflow` or see the
+[Temporal CLI workflow command reference](/cli/workflow).
 
 For a full list of available commands, run `temporal` without arguments or see [Available commands](#command-set).
 
@@ -481,7 +495,7 @@ OPTIONS:
    --codec-auth value                       Sets the authorization header on requests to the Codec Server. [$TEMPORAL_CLI_CODEC_AUTH]
    --codec-endpoint value                   Endpoint for a remote Codec Server. [$TEMPORAL_CLI_CODEC_ENDPOINT]
    --command-timeout duration               Timeout for the span of a command. (default 0s)
-   --env value                              Name of the environment to read environmental variables from. (default: "default")
+   --env value                              Name of the environment to read environment variables from. (default: "default")
    --grpc-meta value [ --grpc-meta value ]  Contains gRPC metadata to send with requests (format: key=value). Values must be in a valid JSON format.
    --namespace value, -n value              Identifies a Namespace in the Temporal Workflow. (default: "default") [$TEMPORAL_CLI_NAMESPACE]
    --tls-ca-path value                      Path to server CA certificate. [$TEMPORAL_CLI_TLS_CA]

@@ -23,19 +23,11 @@ When you see a sudden drop in Worker resource utilization, verify whether Tempor
 
 ### Reference Metrics
 
-- [temporal\_cloud\_v0\_service\_latency\_bucket](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_service_latency_bucket)
+- [temporal\_cloud\_v1\_service\_latency\_p99](/production-deployment/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_service_latency_p99)
 
 This metric measures latency for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations.
 These operations are mission critical and never [throttled](/cloud/service-availability#throughput).
-This metric is a good indicator of your lowest possible latency.
-
-### Prometheus Query for this Metric
-
-P99 service lag (histogram):
-
-```
-histogram_quantile(0.99, sum(rate(temporal_cloud_v0_service_latency_bucket[$__rate_interval])) by (temporal_namespace, operation, le))
-```
+This metric is a good indicator of your lowest possible latency for the 99th percentile of requests.
 
 ## Monitor Temporal Service errors
 
@@ -44,8 +36,8 @@ Note that Service API errors are not equivalent to guarantees mentioned in the [
 
 ### Reference Metrics
 
-- [temporal\_cloud\_v0\_frontend\_service\_error\_count](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_frontend_service_error_count)
-- [temporal\_cloud\_v0\_frontend\_service\_request\_count](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_frontend_service_request_count)
+- [temporal\_cloud\_v1\_frontend\_service\_error\_count](/production-deployment/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_frontend_service_error_count)
+- [temporal\_cloud\_v1\_frontend\_service\_request\_count](/production-deployment/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_frontend_service_request_count)
 
 ### Prometheus Query for this Metric
 
@@ -56,12 +48,12 @@ avg_over_time((
     (
 
         (
-            sum(increase(temporal_cloud_v0_frontend_service_request_count{temporal_namespace=~"$namespace", operation=~"StartWorkflowExecution|SignalWorkflowExecution|SignalWithStartWorkflowExecution|RequestCancelWorkflowExecution|TerminateWorkflowExecution"}[10m]))
+            sum(increase(temporal_cloud_v1_frontend_service_request_count{temporal_namespace=~"$namespace", operation=~"StartWorkflowExecution|SignalWorkflowExecution|SignalWithStartWorkflowExecution|RequestCancelWorkflowExecution|TerminateWorkflowExecution"}[10m]))
             -
-            sum(increase(temporal_cloud_v0_frontend_service_error_count{temporal_namespace=~"$namespace", operation=~"StartWorkflowExecution|SignalWorkflowExecution|SignalWithStartWorkflowExecution|RequestCancelWorkflowExecution|TerminateWorkflowExecution"}[10m]))
+            sum(increase(temporal_cloud_v1_frontend_service_error_count{temporal_namespace=~"$namespace", operation=~"StartWorkflowExecution|SignalWorkflowExecution|SignalWithStartWorkflowExecution|RequestCancelWorkflowExecution|TerminateWorkflowExecution"}[10m]))
         )
         /
-        sum(increase(temporal_cloud_v0_frontend_service_request_count{temporal_namespace=~"$namespace", operation=~"StartWorkflowExecution|SignalWorkflowExecution|SignalWithStartWorkflowExecution|RequestCancelWorkflowExecution|TerminateWorkflowExecution"}[10m]))
+        sum(increase(temporal_cloud_v1_frontend_service_request_count{temporal_namespace=~"$namespace", operation=~"StartWorkflowExecution|SignalWorkflowExecution|SignalWithStartWorkflowExecution|RequestCancelWorkflowExecution|TerminateWorkflowExecution"}[10m]))
     )
 
     or vector(1)
@@ -71,7 +63,9 @@ avg_over_time((
 
 ## Detecting Activity and Workflow Failures
 
-The metrics `temporal_activity_execution_failed` and `temporal_cloud_v0_workflow_failed_count` together provide failure detection for Temporal applications. These metrics work in tandem to give you both granular component-level visibility and high-level workflow health insights.
+The metrics `temporal_activity_execution_failed` and `temporal_cloud_v1_workflow_failed_count` together provide failure detection for Temporal applications. These metrics work in tandem to give you both granular component-level visibility and high-level workflow health insights.
+
+Note that `temporal_activity_execution_failed` is an SDK metric that must be collected from the Worker.
 
 ### Activity failure cascade
 
@@ -92,7 +86,7 @@ Generally Temporal recommends that Workflows should be designed to always succee
 Monitor the ratio of workflow failures to activity failures:
 
 ```
-workflow_failure_rate = temporal_cloud_v0_workflow_failed_count / temporal_activity_execution_failed
+workflow_failure_rate = temporal_cloud_v1_workflow_failed_count / temporal_activity_execution_failed
 ```
 
 What to watch for:
@@ -115,7 +109,7 @@ See also:
 ## Monitor replication lag for Namespaces with High Availability features
 
 Replication lag refers to the transmission delay of Workflow updates and history events from the primary Namespace to the replica.
-Always check the [metric replication lag](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_replication_lag_bucket) before initiating a failover.
+Always check the [metric replication lag](/production-deployment/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p99) before initiating a failover.
 A forced failover when there is a large replication lag has a higher likelihood of rolling back Workflow progress.
 
 **Who owns the replication lag?**
@@ -137,39 +131,34 @@ See [operations and metrics](/cloud/high-availability) for Namespaces with High 
 
 ### Reference Metrics
 
-- [temporal\_cloud\_v0\_replication\_lag\_bucket](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_replication_lag_bucket)
-- [temporal\_cloud\_v0\_replication\_lag\_sum](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_replication_lag_sum)
-- [temporal\_cloud\_v0\_replication\_lag\_count](/production-deployment/cloud/metrics/reference#temporal_cloud_v0_replication_lag_count)
+- [temporal\_cloud\_v1\_replication\_lag\_p99](/production-deployment/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p99)
+- [temporal\_cloud\_v1\_replication\_lag\_p95](/production-deployment/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p95)
+- [temporal\_cloud\_v1\_replication\_lag\_p50](/production-deployment/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p50)
 
-### Prometheus Query for this Metric
+## Detecting Resource Exhaustion
 
-P99 replication lag (histogram):
+The Cloud metric `temporal_cloud_v1_resource_exhausted_error_count` is the primary indicator for Cloud-side throttling, signaling system limits
+are exceeded and `ResourceExhausted` gRPC errors are occurring. This generally does not break workflow processing due to how resources are prioritized. 
 
-```
-histogram_quantile(0.99, sum(rate(temporal_cloud_v0_replication_lag_bucket[$__rate_interval])) by (temporal_namespace, le))
-```
+Persistent non-zero values of this metric are unexpected.
 
-Average replication lag:
+## Monitoring Trends Against Limits {#rps-aps-rate-limits}
 
-```
-sum(rate(temporal_cloud_v0_replication_lag_sum[$__rate_interval])) by (temporal_namespace)
-/
-sum(rate(temporal_cloud_v0_replication_lag_count[$__rate_interval])) by (temporal_namespace)
-```
+The set of [limit metrics](/production-deployment/cloud/metrics/openmetrics/metrics-reference#limit-metrics) provide a time series of values for limits. Use these 
+metrics with their corresponding count metrics to monitor general trends against limits and set alerts when limits are exceeded. Use the corresponding throttle metrics
+to determine the severity of any active rate limiting.
+| Limit Metric | Count Metric | Throttle Metric |
+| ------------ | ------------ | --------------- |
+| `temporal_cloud_v1_action_limit` | `temporal_cloud_v1_total_action_count` | `temporal_cloud_v1_total_action_throttled_count` |
+| `temporal_cloud_v1_frontend_rps_limit` | `temporal_cloud_v1_frontend_service_request_count` | `temporal_cloud_v1_service_request_throttled_count` |
+| `temporal_cloud_v1_operations_limit` | `temporal_cloud_v1_operations_count` | `temporal_cloud_v1_operations_throttled_count` |
 
-## Usage and Detecting Resource Exhaustion & Namespace RPS and APS Rate Limits
+The [Grafana dashboard example](https://github.com/grafana/jsonnet-libs/blob/master/temporal-mixin/dashboards/temporal-overview.json) includes a Usage & Quotas section
+that creates demo charts for these limits and count metrics respectively.
 
-The Cloud metric `temporal_cloud_v0_resource_exhausted_error_count` is the primary indicator for Cloud-side throttling, signaling that namespace limits
- are being hit and `ResourceExhausted` gRPC errors are occurring. This generally does not break workflow processing due to how resources are prioritized. 
-In fact, some workloads often run with high amounts of resource exhaustion errors because they are not latency sensitive. Being APS or RPS resource 
-constrained can slow down throughput and is a good indicator that you should request additional capacity. 
-
-To specifically identify whether RPS or APS limits are being hit, this metric can be filtered using the `resource_exhausted_cause` label, which will show values 
-like `ApsLimit` or `RpsLimit`. This label also helps identify the specific operation that was throttled (e.g., polling, respond activity tasks).
-
-Related useful information:
-- Namespace Limits (APS is visible in the Namespace UI)
-- `temporal_cloud_v0_total_action_count`: Useful for tracking the overall action rate (APS)
-- `temporal_cloud_v0_frontend_service_request_count`: Useful for tracking the request rate (RPS)
-- SDK metric `long_request_failure` with cause `resource_exhausted`
-
+The limit metrics, throttle metrics, and count metrics are already directly comparable as per second rates. Keep in mind that each `count` metric is represented as a per second rate averaged 
+over each minute. For example, to get the total count of Actions, you must multiply this metric by 60.  
+When setting alerts against limits, consider if your workload is spiky or sensitive to throttling (e.g. does latency matter?). If your workload is sensitive, consider alerting
+for `temporal_cloud_v1_total_action_count` at a 50% threshold of the `temporal_cloud_v1_action_limit`. If your workload is not sensitive, consider an alert at 90% of this threshold
+or directly when throttling is detected as a value greater than zero for `temporal_cloud_v1_total_action_throttled_count`. This logic can also be used to automatically scale [Temporal
+Resource Units](/cloud/capacity-modes#provisioned-capacity) up or down as needed. Some workloads choose to exceed limits and accept throttling because they are not latency sensitive.

@@ -11,6 +11,7 @@ test-results
 # Generated files
 .docusaurus
 .cache-loader
+temp/
 
 # Misc
 .DS_Store
@@ -24,6 +25,9 @@ test-results
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+vale-md-output.json
+vale-mdx-output.json
+vale-output.json
 
 # Local Netlify folder
 .netlify
@@ -44,3 +48,5 @@ test-results/*
 
 # screenshots
 screenshots
+# Ignore cookbook recipes since they are synced from the remote repo
+ai-cookbook

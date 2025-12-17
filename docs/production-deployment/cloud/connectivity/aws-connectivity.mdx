@@ -21,7 +21,7 @@ keywords:
   - term
 ---
 
-import { ToolTipTerm, DiscoverableDisclosure, CaptionedImage } from '@site/src/components';
+import { ToolTipTerm, DiscoverableDisclosure, CaptionedImage, JsonTable } from '@site/src/components';
 
 [AWS PrivateLink](https://aws.amazon.com/privatelink/) allows you to open a path to Temporal without opening a public egress.
 It establishes a private connection between your Amazon Virtual Private Cloud (VPC) and Temporal Cloud.
@@ -48,6 +48,7 @@ Set up PrivateLink connectivity with Temporal Cloud with these steps:
 5. Under _Type_ category, select _Endpoint services that use NLBs and GWLBs_.
    This option lets you find services shared with you by service name.
 6. Under _Service settings_, fill in the _Service name_ with the PrivateLink Service Name for the region you’re trying to connect from:
+
 :::tip
 
 PrivateLink endpoint services are regional.
@@ -55,22 +56,7 @@ Individual Namespaces do not use separate services.
 
 :::
 
-   | Region           | PrivateLink Service Name                                       |
-   | ---------------- | -------------------------------------------------------------- |
-   | `ap-northeast-1` | `com.amazonaws.vpce.ap-northeast-1.vpce-svc-08f34c33f9fb8a48a` |
-   | `ap-northeast-2` | `com.amazonaws.vpce.ap-northeast-2.vpce-svc-08c4d5445a5aad308` |
-   | `ap-south-1`     | `com.amazonaws.vpce.ap-south-1.vpce-svc-0ad4f8ed56db15662`     |
-   | `ap-south-2`     | `com.amazonaws.vpce.ap-south-2.vpce-svc-08bcf602b646c69c1`     |
-   | `ap-southeast-1` | `com.amazonaws.vpce.ap-southeast-1.vpce-svc-05c24096fa89b0ccd` |
-   | `ap-southeast-2` | `com.amazonaws.vpce.ap-southeast-2.vpce-svc-0634f9628e3c15b08` |
-   | `ca-central-1`   | `com.amazonaws.vpce.ca-central-1.vpce-svc-080a781925d0b1d9d`   |
-   | `eu-central-1`   | `com.amazonaws.vpce.eu-central-1.vpce-svc-073a419b36663a0f3`   |
-   | `eu-west-1`      | `com.amazonaws.vpce.eu-west-1.vpce-svc-04388e89f3479b739`      |
-   | `eu-west-2`      | `com.amazonaws.vpce.eu-west-2.vpce-svc-0ac7f9f07e7fb5695`      |
-   | `sa-east-1`      | `com.amazonaws.vpce.sa-east-1.vpce-svc-0ca67a102f3ce525a`      |
-   | `us-east-1`      | `com.amazonaws.vpce.us-east-1.vpce-svc-0822256b6575ea37f`      |
-   | `us-east-2`      | `com.amazonaws.vpce.us-east-2.vpce-svc-01b8dccfc6660d9d4`      |
-   | `us-west-2`      | `com.amazonaws.vpce.us-west-2.vpce-svc-0f44b3d7302816b94`      |
+<JsonTable filename="/json/privatelink_aws.json" />
 
 7. Confirm your service by clicking on the _Verify service_ button. AWS should respond "Service name verified."
 
@@ -93,9 +79,8 @@ You still need to set up private DNS or override client configuration for your c
 
 See [configure private DNS for AWS PrivateLink](#configuring-private-dns-for-aws-privatelink)
 :::
-    
-    ![Highlighted DNS names section shows your hostname](/img/cloud/privatelink/details.png)
 
+    ![Highlighted DNS names section shows your hostname](/img/cloud/privatelink/details.png)
 
 ## Configuring Private DNS for AWS PrivateLink
 
@@ -125,10 +110,11 @@ This approach is **optional**; Temporal Cloud works without it. It simply stream
 
 ### Choose the override domain and endpoint
 
-| Temporal Cloud setup                       | Use this PHZ domain     | Example                                         |
-| ------------------------------------------ | ----------------------- | ----------------------------------------------- |
-| Single-region namespace with mTLS auth     | `<account>.tmprl.cloud` | `payments.abcde.tmprl.cloud` ↔ `vpce-...`       |
-| Multi-region namespace **or** API-key auth | `region.tmprl.cloud`    | `aws-us-east-1.region.tmprl.cloud` ↔ `vpce-...` |
+| Temporal Cloud setup                      | Use this PHZ domain                | Example                                         |
+| ----------------------------------------- | ---------------------------------- | ----------------------------------------------- |
+| Single-region namespace with mTLS auth    | `<account>.tmprl.cloud`            | `payments.abcde.tmprl.cloud` ↔ `vpce-...`       |
+| Single-region namespace with API-key auth | `<cloud_provider>.api.temporal.io` | `us-east-1.aws.api.temporal.io` ↔ `vpce-...`    |
+| Multi-region namespace                    | `region.tmprl.cloud`               | `aws-us-east-1.region.tmprl.cloud` ↔ `vpce-...` |
 
 ### Step-by-step instructions
 

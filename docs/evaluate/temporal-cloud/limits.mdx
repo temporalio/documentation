@@ -57,30 +57,33 @@ The following limits apply at the Namespace level.
 ### Actions per second
 
 - Scope: Namespace
-- Default limit: 400 actions per second (APS)
+- Default limit: 500 actions per second (APS)
 - How to increase:
   - Automatically increases (and decreases) based on the last 7 days of APS usage. Will never go below the default limit.
-  - [Contact support](/cloud/support#support-ticket)
+  - See [Capacity Modes](/cloud/capacity-modes).
+  - [Contact support](/cloud/support#support-ticket).
 
 See the [Actions page](/cloud/actions) for the list of actions. 
 
 ### Requests per second
 
 - Scope: Namespace
-- Default limit: 1600 requests per second (RPS)
+- Default limit: 2000 requests per second (RPS)
 - How to increase:
   - Automatically increases (and decreases) based on the last 7 days of RPS usage. Will never go below the default limit.
-  - [Contact support](/cloud/support#support-ticket)
+  - See [Capacity Modes](/cloud/capacity-modes).
+  - [Contact support](/cloud/support#support-ticket).
 
 See the [glossary](/glossary#requests-per-second-rps) for more about RPS.
 
 ### Operations per second
 
 - Scope: Namespace
-- Default limit: 3200 operations per second (OPS)
+- Default limit: 4000 operations per second (OPS)
 - How to increase:
   - Automatically increases (and decreases) based on the last 7 days of OPS usage. Will never go below the default limit.
-  - [Contact support](/cloud/support#support-ticket)
+  - See [Capacity Modes](/cloud/capacity-modes).
+  - [Contact support](/cloud/support#support-ticket).
 
 See the [operations list](/references/operation-list) for the list of operations.
 
@@ -101,14 +104,7 @@ This approach uniformly distributes the scheduled Workflow Execution launches th
 - Default limit: 30 Visibility API calls per second
 - Not configurable
 
-Calls subject to the Visibility API rate limit:
-
-- `GetWorkerTaskReachability`
-- `ListSchedules`
-- `ListBatchOperations`
-- `DescribeTaskQueueWithReachability`
-- `ListDeployments`
-- `GetDeploymentReachability`
+All read calls are subject to the Visibility API rate limit.
 
 ### Nexus Rate Limit {#nexus-rate-limits}
 
@@ -130,7 +126,7 @@ Temporal Cloud limits each Namespace to a total of 32 KB or 16 certificates, whi
 
 ### Concurrent Task pollers
 
-Temporal Cloud limits each Namespace to 20,000 concurrent Task pollers, regardless of whether they are Activity or Workflow Task pollers.
+Temporal Cloud limits each Namespace to 20,000 Activity pollers and 20,000 Workflow Task pollers concurrently. 
 
 Each SDK offers a way to configure Workers for per-Worker maximum Activity and Workflow Task pollers.
 Those values do not affect the global Namespace limit.
@@ -252,6 +248,9 @@ A single Workflow Execution can have a maximum of 10 in-flight Updates and 2000 
 As a precautionary measure, a Workflow Execution's Event History is limited to 51,200 Events or 50 MB.
 It warns you after 10,240 Events or 10 MB.
 This limit applies to all Temporal Workflow Executions, whether on Temporal Cloud or other deployments.
+
+This limit is non-configurable for Temporal Cloud.
+
 Read more about [Temporal Workflow Execution limits](/workflow-execution/limits) on the [Temporal Workflow](/workflows) documentation page.
 
 ### Per Workflow Callback limits
@@ -288,16 +287,20 @@ For enhanced security, you may sign completion callbacks with a single-use token
 
 While the caller of a Nexus Operation can configure the ScheduleToClose duration to be shorter than 60 days, the maximum duration can not extend beyond 60 days and capped by the server to 60 days.
 
+### Timer duration limit
+
+Timers have a maximum duration of 100 years in Temporal Cloud.
+
 ## Worker Versioning level
 
 ### Max Worker deployments limits {#max-worker-deployments-limits}
 
-The maximum number of worker deployments that the server allows to be registered in a single namespace. Defaults to 100.
+The maximum number of Worker deployments that the server allows to be registered in a single Namespace. Defaults to 100.
 
 ### Max versions in deployment limits {#max-versions-in-deployment-limits}
 
-The maximum number of versions that the server allows to be registered in a single worker deployments at a given time. Note that unused versions will be deleted by the system automatically when this limit is reached. Defaults to 100.
+The maximum number of versions that the server allows to be registered in a single Worker deployments at a given time. Note that unused versions will be deleted by the system automatically when this limit is reached. Defaults to 100.
 
 ### Max Task Queues In Deployment Version limits {#max-task-queues-in-deployment-version-limits}
 
-The maximum number of task queues that the server allows to be registered in a single worker Deployment Version. Defaults to 100.
+The maximum number of Task Queues that the server allows to be registered in a single Worker Deployment Version. Defaults to 100.
