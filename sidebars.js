@@ -439,6 +439,7 @@ module.exports = {
               ],
             },
             'production-deployment/cloud/rpo-rto',
+            'production-deployment/cloud/notifications',
             {
               type: 'category',
               label: 'Temporal Nexus',
@@ -573,7 +574,6 @@ module.exports = {
         'cli/setup-cli',
         'cli/activity',
         'cli/batch',
-        'cli/cmd-options',
         'cli/config',
         'cli/env',
         'cli/operator',
