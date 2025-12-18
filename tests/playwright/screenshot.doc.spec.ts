@@ -45,7 +45,7 @@ function screenshotPathname(pathname: string) {
 
     await page.goto(url, { waitUntil: 'domcontentloaded' });
     await page.waitForFunction(WaitForDocusaurusHydration);
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('networkidle', { timeout: 60000 });
 
     if (stylesheet) {
       await page.addStyleTag({ content: stylesheet });
