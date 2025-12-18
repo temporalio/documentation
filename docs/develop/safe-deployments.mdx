@@ -18,6 +18,10 @@ We strongly recommend using Worker Versioning as users see improved error rates 
 
 In this article, we’ll provide some advice on how you can safely validate changes to your Workflow code, ensuring that you won’t experience unexpected non-determinism errors in production when rolling them out.
 
+:::caution
+Eager start does not respect Worker versioning. An eagerly started Workflow may run on any available local Worker even if that Worker is not the Current or Ramping version of its Worker deployment.
+:::
+
 ## Use Replay Testing before and during your deployments
 
 The best way to verify that your code won’t cause non-determinism errors once deployed is to make use of [replay testing](/workflow-execution#replay).
