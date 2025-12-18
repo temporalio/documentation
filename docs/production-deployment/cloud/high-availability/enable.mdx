@@ -122,20 +122,23 @@ Temporal Cloud sends an email alert once your Namespace is ready for use.
 
 ## Change a replica location {#changing}
 
+Temporal Cloud can't change replica locations directly. To update the location, you need to remove the current replica
+and add a new one. If you remove a replica from a region, you must wait seven days before you can re-enable High
+Availability (HA) in that same location. During this period, you may add a replica to a different region, provided you
+have not had one active there within the last seven days.
+
 :::caution
 
 We discourage changing the location of your replica for deployed applications, except under exceptional circumstances.
-Changing the location of your Namespace replica will result in a mandatory 7-day waiting period before you can re-enable
-High Availability Namespace features.
+If you remove your replica, you lose the availability guarantees of the namespace, and it can take time to add another
+replica.
 
 :::
 
-Temporal Cloud can't change replica locations directly. To update the location, you need to remove the current replica
-and add a new one. Follow these steps to change the replica location:
+Follow these steps to change the replica location:
 
 1. [Remove your replica](#disable). This disables High Availability for your Namespace.
-2. Wait through the required 7-day waiting period.
-3. [Add a new replica](#upgrade) to your Namespace.
+2. [Add a new replica](#upgrade) to your Namespace.
 
 You will receive an email alert once your Namespace is ready for use.
 
