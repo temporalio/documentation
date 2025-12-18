@@ -224,9 +224,9 @@ Follow the steps below to integrate your agent with an MCP server.
    };
    ```
 
-   The example above uses `StdioClientTransport` for local development and testing. For production deployments, use
-   `StreamableHTTPClientTransport` to connect to a centralized MCP server over HTTP. You can register multiple MCP
-   servers by providing multiple factory functions in `mcpClientFactories`.
+   The example uses `StdioClientTransport` as the transport mechanisms for client-server communication. Each time the
+   Worker processes a Task that requires communication with the MCP server, it will start the server process and connect
+   to it as required by the Task.
 
 2. Configure the Worker to use the MCP client factories.
 
@@ -237,7 +237,7 @@ Follow the steps below to integrate your agent with an MCP server.
          modelProvider: openai,
          mcpClientFactories
        }),
-     ],
+     ]},
      ...
    );
    ```
