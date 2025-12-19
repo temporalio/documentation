@@ -3,9 +3,6 @@ name: Visual Comparison
 on:
   pull_request:
     types: [opened, reopened, synchronize, labeled]
-    branches-ignore:
-      - "version-*"
-      - "docs-rel-*"
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -25,7 +22,7 @@ jobs:
         !github.event.pull_request.draft &&
         github.actor != 'dependabot[bot]' &&
         github.actor != 'dependabot-preview[bot]' &&
-        contains(github.event.pull_request.labels.*.name, 'visual-tests')
+        contains(github.event.pull_request.labels.*.name, 'visual-comparison')
       }}
     steps:
       - name: PR metadata
