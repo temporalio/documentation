@@ -103,6 +103,10 @@ To configure Poller Autoscaling, see [Configuring Poller Options](#configuring-p
 
 ### Eager task execution
 
+:::caution
+Eager start does not respect Worker versioning. An eagerly started Workflow may run on any available local Worker even if that Worker is not the Current or Ramping version of its Worker deployment.
+:::
+
 As a latency optimization, Activity and Workflow Tasks may be started eagerly in a local Worker under the right circumstances.
 
 #### Eager Activity Start
