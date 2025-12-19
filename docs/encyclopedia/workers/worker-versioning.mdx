@@ -51,6 +51,25 @@ A **Pinned** Workflow is guaranteed to complete on a single Worker Deployment Ve
 
 An **Auto-Upgrade** Workflow will move to the latest Worker Deployment Version automatically whenever you change the current version. Auto-upgrade Workflows are not restricted to a single Deployment Version and need to be kept replay-safe manually, i.e. with [patching](/workflow-definition#workflow-versioning).
 
+### Actvity behavior across versions
+
+There are a few scenarios to consider for your Activities when you're handling your Worker Deployment versions.
+
+- Activities generally start on the Worker Deployment Version of their Workflow which means:
+  - For Pinned Workflows, an Activity starts on the pinned version.
+  - For Auto-Upgrade Workflows, an Activity starts on the Target Worker Deployment Version of the Workflow. In this case, Workflow Execution moves to its Target Version immediately before starting the Activity if the Target Version is different from the last used Version. The Target Worker Deployment Version of a Workflow is the Current or Ramping Version of the Workflow's Task Queue, depending on the Ramp Percentage and Workflow ID.
+
+There is an exception where you will have **Independent Activities**. Independent Activities are specific to Worker Versioning. They start on the Current or Ramping Version of their own Task Queue independently from their Workflow.
+
+- For a Pinned Workflow, Independent Activities are Activities that start on a Task Queue that's not a member of the calling Workflow's Pinned Worker Deployment Version.
+- For an Auto-Upgrade Workflow, Independent Activities are Activities that start on a Task Queue that's not a member of the calling Workflow's Target Worker Deployment Version.
+
+Since Independent Activities aren't part of a Workflow's version, they can run in a few different ways:
+
+- The Activity Task Queue is running in a separate Worker Deployment that only has the Independent Activity.
+- The Independent Activity is in an unversioned Task Queue.
+- The Independent Activity is in a separate Worker Deployment that has its own Workflows, but other Workflows reuse the Activity from other Worker Deployments.
+
 ## Versioning Definitions
 
 - **Current Worker Deployment Version**: The version where Workflows are routed to unless they were previously pinned on a different version. Other versions can continue polling to allow pinned Workflows to finish executing or in case you need to roll back. If no current version is specified, the default is unversioned.
