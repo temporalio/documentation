@@ -29,10 +29,14 @@ jobs:
       }}
     steps:
       - name: PR metadata
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          HEAD_REF: ${{ github.head_ref }}
+          REF_NAME: ${{ github.ref_name }}
         run: |
-          echo "GITHUB_BASE_REF: ${{ github.base_ref }}"
-          echo "GITHUB_HEAD_REF: ${{ github.head_ref }}"
-          echo "GITHUB_REF_NAME: ${{ github.ref_name }}"
+          echo "GITHUB_BASE_REF: ${BASE_REF}"
+          echo "GITHUB_HEAD_REF: ${HEAD_REF}"
+          echo "GITHUB_REF_NAME: ${REF_NAME}"
           echo "HTML_REPORT_URL_PATH ${{ env.HTML_REPORT_URL_PATH }}"
 
   create-assets:
@@ -57,12 +61,12 @@ jobs:
         id: check-references
         env:
           GITHUB_REPOSITORY: ${{ github.repository }}
+          DEFAULT_BRANCH: ${{ github.base_ref }}
         continue-on-error: true
         run: |
           WORKFLOW_FILE="screenshot-capture.yml"
           TOKEN="${GITHUB_TOKEN}"
           REPO="${GITHUB_REPOSITORY}"
-          DEFAULT_BRANCH="${{ github.base_ref }}"
 
           RUN_ID=$(curl -sSL \
             -H "Authorization: Bearer ${TOKEN}" \
@@ -253,9 +257,12 @@ jobs:
 
       - name: Push HTML report
         timeout-minutes: 5
+        env:
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
         run: |
           git add .
-          git commit -m "workflow: add HTML report for run-id ${{ github.run_id }} (attempt: ${{ github.run_attempt }})"
+          git commit -m "workflow: add HTML report for run-id ${RUN_ID} (attempt: ${RUN_ATTEMPT})"
           while true; do
             git pull --rebase
             if [ $? -ne 0 ]; then
@@ -279,9 +286,13 @@ jobs:
 
       - name: Post report URL comment
         uses: mshick/add-pr-comment@v2
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
         with:
           message: |
-            📋 Visual Report for branch ${{ github.head_ref }} with CI run ${{ github.run_id }} and attempt ${{ github.run_attempt }} is ready at
+            📋 Visual Report for branch ${{ env.HEAD_REF }} with CI run ${{ env.RUN_ID }} and attempt ${{ env.RUN_ATTEMPT }} is ready at
               https://temporalio.github.io/documentation/${{ env.HTML_REPORT_URL_PATH }}
 
               💡 You may have to wait for DNS to resolve or the GitHub Pages job to complete. You can view the progress of the GitHub Pages job [here](https://github.com/temporalio/documentation/actions/workflows/pages/pages-build-deployment).

@@ -38,11 +38,13 @@ jobs:
       - name: Delete reports from repo for branch
         if: ${{ env.BRANCH_REPORTS_EXIST == 'true' }}
         timeout-minutes: 3
+        env:
+          DELETED_BRANCH: ${{ github.event.ref }}
         run: |
           cd "$(dirname "$BRANCH_REPORTS_DIR")"
-          rm -rf "${{ github.event.ref }}"
+          rm -rf "${DELETED_BRANCH}"
           git add .
-          git commit -m "workflow: remove all reports for branch ${{ github.event.ref }}"
+          git commit -m "workflow: remove all reports for branch ${DELETED_BRANCH}"
           while true; do
             git pull --rebase
             if [ $? -ne 0 ]; then
