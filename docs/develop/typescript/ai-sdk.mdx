@@ -27,6 +27,13 @@ All code snippets in this guide are taken from the TypeScript SDK
 [ai-sdk samples](https://github.com/temporalio/samples-typescript/tree/main/ai-sdk). Refer to the samples for the
 complete code and run them locally.
 
+:::info
+
+The Vercel AI SDK Integration is in Pre-release. Refer to the
+[Temporal product release stages guide](/evaluate/development-production-features/release-stages) for more information.
+
+:::
+
 ## Prerequisites
 
 - This guide assumes you are already familiar with the Vercel AI SDK. If you aren't, refer to the
@@ -151,11 +158,12 @@ Child Workflows to perform non-deterministic operations like API calls.
 For example, if you want to call an external API to get the weather, you would implement it as an Activity and call it
 from the tool function. The following is an example of an Activity that gets the weather for a given location:
 
+<!--SNIPSTART typescript-vercel-ai-sdk-weather-activity -->
+
 ```ts
 export async function getWeather(input: {
   location: string;
 }): Promise<{ city: string; temperatureRange: string; conditions: string }> {
-  console.log('Activity execution');
   return {
     city: input.location,
     temperatureRange: '14-20C',
@@ -163,6 +171,8 @@ export async function getWeather(input: {
   };
 }
 ```
+
+<!--SNIPEND-->
 
 Then in your agent implementation, provide the tool to the model using the `tools` option and instruct the model to use
 the tool when needed.
