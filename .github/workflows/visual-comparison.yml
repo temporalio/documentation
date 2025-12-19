@@ -18,6 +18,8 @@ concurrency:
 jobs:
   run-ci:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     if: >-
       ${{
         !github.event.pull_request.draft &&
@@ -37,6 +39,10 @@ jobs:
     name: Create Build Assets
     needs: run-ci
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -104,6 +110,9 @@ jobs:
       - run-ci
       - create-assets
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
     strategy:
       fail-fast: false
       matrix:
@@ -175,6 +184,9 @@ jobs:
     name: Merge Reports
     needs: take-screenshots
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -218,6 +230,9 @@ jobs:
       - take-screenshots
       - merge-reports
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     continue-on-error: true
     steps:
       - name: Checkout GitHub Pages branch
