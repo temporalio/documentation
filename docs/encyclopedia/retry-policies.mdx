@@ -49,11 +49,36 @@ Try out the [Activity retry simulator](/develop/activity-retry-simulator) to vis
 
 ## Default behavior
 
-- **Workflow Execution:** When a Workflow Execution is spawned, it is not associated with a default Retry Policy and thus does not retry by default.
-  The intention is that a Workflow Definition should be written to never fail due to intermittent issues; an Activity is designed to handle such issues.
+Activities in Temporal are associated with a Retry Policy by default, while Workflows are not. 
+The Temporal SDK provides a Retry Policy instance with default behavior. 
+While this object is not specific to either a Workflow or Activity, you'll use different methods to apply it to the execution of each.
 
-- **Activity Execution:** When an Activity Execution is spawned, it is associated with a default Retry Policy, and thus Activity Task Executions are retried by default.
-  When an Activity Task Execution is retried, the Temporal Service places a new [Activity Task](/tasks#activity-task) into its respective [Activity Task Queue](/task-queue), which results in a new Activity Task Execution.
+This section details the default retry behavior for both Activities and Workflows to provide context for any further customization.
+
+### Activity Execution
+
+Temporal's default behavior is to automatically retry an Activity, with a short delay between each attempt that increases exponentially, until it either succeeds or is canceled.
+When a subsequent request succeeds, your Workflow code will resume as if the failure never occurred.
+
+When an Activity Task Execution is retried, the Temporal Service places a new [Activity Task](/tasks#activity-task) into its respective [Activity Task Queue](/task-queue), which results in a new Activity Task Execution.
+
+The default Retry Policy uses exponential backoff with a 2.0 backoff coefficient, starting with a 1-second initial interval and capping at a maximum interval of 100 seconds.
+By default, the maximum attempt of retries are set to zero which is evaluated as unlimited and non-retryable errors default to none.
+For detailed information about all Retry Policy attributes and their default values, see the [Properties](#properties) section.
+
+### Workflow Execution
+
+Unlike Activities, Workflow Executions do not retry by default. When a Workflow Execution is spawned, it is not associated with a default Retry Policy and thus does not retry by default.
+
+Temporal provides guidance around idempotence of Activity code with the expectation that Activities will need to re-execute upon failure; this is not typically true of Workflows.
+In most use cases, a Workflow failure would indicate an issue with the design or deployment of your application; for example, a permanent failure that may require different input data.
+
+Retrying an entire Workflow Execution is not recommended due to Temporal's deterministic design.
+Since Workflows replay the same sequence of events to reach the same state, retrying the whole workflow would repeat the same logic without resolving the underlying issue that caused the failure.
+This repetition does not address problems related to external dependencies or unchanged conditions and can lead to unnecessary resource consumption and higher costs.
+Instead, it's more efficient to retry only the failed Activities.
+This approach targets specific points of failure, allowing the workflow to progress without redundant operations, thereby saving on resources and ensuring a more focused and effective error recovery process.
+If you need to retry parts of your Workflow Definition, we recommend you implement this in your Workflow code.
 
 ## Custom Retry Policy
 
@@ -117,7 +142,8 @@ Non-Retryable Errors = []
 
 ## Retry interval
 
-The wait time before a retry is the _retry interval_. A retry interval is the smaller of two values:
+The wait time before a retry is the _retry interval_.
+A retry interval is the smaller of two values:
 
 - The [Initial Interval](#initial-interval) multiplied by the [Backoff Coefficient](#backoff-coefficient) raised to the power of the number of retries.
 - The [Maximum Interval](#maximum-interval).
@@ -129,8 +155,11 @@ The wait time before a retry is the _retry interval_. A retry interval is the sm
 ### Per-error next Retry delay
 
 Sometimes, your Activity or Workflow raises a special exception that needs a different retry interval from the Retry Policy.
-To accomplish this, you may throw an [Application Failure](/references/failures#application-failure) with the next Retry delay field set. This value will replace and override whatever the retry interval would be on the Retry Policy.
-Note that your retries will still cap out under the Retry Policy's Maximum Attempts, as well as overall timeouts. For an Activity, its Schedule-to-Close Timeout applies. For a Workflow, the Execution Timeout applies.
+To accomplish this, you may throw an [Application Failure](/references/failures#application-failure) with the next Retry delay field set.
+This value will replace and override whatever the retry interval would be on the Retry Policy.
+Note that your retries will still cap out under the Retry Policy's Maximum Attempts, as well as overall timeouts.
+For an Activity, its Schedule-to-Close Timeout applies.
+For a Workflow, the Execution Timeout applies.
 
 <RelatedReadContainer>
   <RelatedReadItem path="/develop/java/failure-detection#activity-next-retry-delay" text="Customize retry delays per error in the Java SDK." archetype="feature-guide" />
