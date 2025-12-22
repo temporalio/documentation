@@ -54,7 +54,6 @@
     "@docusaurus/theme-common": "^3.8.1",
     "@docusaurus/types": "^3.8.1",
     "@mdx-js/react": "^3.0.0",
-    "@playwright/test": "^1.47.0",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
     "js-yaml": "^4.1.1",
