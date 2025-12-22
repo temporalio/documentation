@@ -159,11 +159,12 @@ For example, if you want to call an external API to get the weather, you would i
 from the tool function. The following is an example of an Activity that gets the weather for a given location:
 
 <!--SNIPSTART typescript-vercel-ai-sdk-weather-activity -->
-
+[ai-sdk/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/main/ai-sdk/src/activities.ts)
 ```ts
 export async function getWeather(input: {
   location: string;
 }): Promise<{ city: string; temperatureRange: string; conditions: string }> {
+  console.log('Activity execution');
   return {
     city: input.location,
     temperatureRange: '14-20C',
@@ -171,7 +172,6 @@ export async function getWeather(input: {
   };
 }
 ```
-
 <!--SNIPEND-->
 
 Then in your agent implementation, provide the tool to the model using the `tools` option and instruct the model to use
