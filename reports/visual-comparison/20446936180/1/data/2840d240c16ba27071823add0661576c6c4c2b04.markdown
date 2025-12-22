@@ -1,0 +1,743 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - region "Skip to main content":
+      - link "Skip to main content" [ref=e3] [cursor=pointer]:
+        - /url: "#__docusaurus_skipToContent_fallback"
+    - navigation "Main" [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - link "Temporal logo" [ref=e7] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e9]
+          - link "Home" [ref=e10] [cursor=pointer]:
+            - /url: /
+          - link "Courses" [ref=e11] [cursor=pointer]:
+            - /url: https://learn.temporal.io/getting_started/
+            - text: Courses
+            - img [ref=e12]
+          - link "SDKs" [ref=e14] [cursor=pointer]:
+            - /url: /develop
+          - link "AI Cookbook" [ref=e15] [cursor=pointer]:
+            - /url: /ai-cookbook
+          - link "Code Exchange" [ref=e16] [cursor=pointer]:
+            - /url: https://temporal.io/code-exchange
+            - text: Code Exchange
+            - img [ref=e17]
+          - link "Temporal Cloud" [ref=e19] [cursor=pointer]:
+            - /url: /cloud
+        - generic [ref=e20]:
+          - button "Ask AI" [ref=e21] [cursor=pointer]:
+            - img [ref=e22]
+            - generic [ref=e26]: Ask AI
+          - button "Switch between dark and light mode (currently system mode)" [ref=e28] [cursor=pointer]:
+            - img [ref=e29]
+          - button "Search (Ctrl+K)" [ref=e32] [cursor=pointer]:
+            - generic [ref=e33]:
+              - img [ref=e34]
+              - generic [ref=e36]: Search
+            - generic [ref=e37]:
+              - img [ref=e39]
+              - generic [ref=e41]: K
+    - generic [ref=e44]:
+      - complementary [ref=e45]:
+        - generic [ref=e47]:
+          - navigation "Docs sidebar" [ref=e48]:
+            - list [ref=e49]:
+              - listitem [ref=e50]:
+                - link "Documentation Home" [ref=e51] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=e52]:
+                - link "Quickstarts" [ref=e53] [cursor=pointer]:
+                  - /url: /quickstarts
+              - listitem [ref=e54]:
+                - generic [ref=e55]:
+                  - link "Evaluate" [ref=e56] [cursor=pointer]:
+                    - /url: /evaluate/
+                  - button "Collapse sidebar category 'Evaluate'" [expanded] [ref=e57] [cursor=pointer]
+                - list [ref=e58]:
+                  - listitem [ref=e59]:
+                    - link "Why Temporal" [ref=e60] [cursor=pointer]:
+                      - /url: /evaluate/why-temporal
+                  - listitem [ref=e61]:
+                    - link "Understanding Temporal" [ref=e62] [cursor=pointer]:
+                      - /url: /evaluate/understanding-temporal
+                  - listitem [ref=e63]:
+                    - generic [ref=e64]:
+                      - link "Features" [ref=e65] [cursor=pointer]:
+                        - /url: /evaluate/development-production-features/
+                      - button "Expand sidebar category 'Features'" [ref=e66] [cursor=pointer]
+                  - listitem [ref=e67]:
+                    - generic [ref=e68]:
+                      - link "Temporal Cloud" [ref=e69] [cursor=pointer]:
+                        - /url: /cloud/introduction
+                      - button "Expand sidebar category 'Temporal Cloud'" [ref=e70] [cursor=pointer]
+                  - listitem [ref=e71]:
+                    - link "Security" [ref=e72] [cursor=pointer]:
+                      - /url: /security
+                  - listitem [ref=e73]:
+                    - link "Use Cases" [ref=e74] [cursor=pointer]:
+                      - /url: /evaluate/use-cases-design-patterns
+              - listitem [ref=e75]:
+                - generic [ref=e76]:
+                  - link "Develop" [ref=e77] [cursor=pointer]:
+                    - /url: /develop/
+                  - button "Collapse sidebar category 'Develop'" [expanded] [ref=e78] [cursor=pointer]
+                - list [ref=e79]:
+                  - listitem [ref=e80]:
+                    - generic [ref=e81]:
+                      - link "Go SDK" [ref=e82] [cursor=pointer]:
+                        - /url: /develop/go/
+                      - button "Expand sidebar category 'Go SDK'" [ref=e83] [cursor=pointer]
+                  - listitem [ref=e84]:
+                    - generic [ref=e85]:
+                      - link "Java SDK" [ref=e86] [cursor=pointer]:
+                        - /url: /develop/java/
+                      - button "Expand sidebar category 'Java SDK'" [ref=e87] [cursor=pointer]
+                  - listitem [ref=e88]:
+                    - generic [ref=e89]:
+                      - link "PHP SDK" [ref=e90] [cursor=pointer]:
+                        - /url: /develop/php/
+                      - button "Expand sidebar category 'PHP SDK'" [ref=e91] [cursor=pointer]
+                  - listitem [ref=e92]:
+                    - generic [ref=e93]:
+                      - link "Python SDK" [ref=e94] [cursor=pointer]:
+                        - /url: /develop/python/
+                      - button "Expand sidebar category 'Python SDK'" [ref=e95] [cursor=pointer]
+                  - listitem [ref=e96]:
+                    - generic [ref=e97]:
+                      - link "TypeScript SDK" [ref=e98] [cursor=pointer]:
+                        - /url: /develop/typescript/
+                      - button "Expand sidebar category 'TypeScript SDK'" [ref=e99] [cursor=pointer]
+                  - listitem [ref=e100]:
+                    - generic [ref=e101]:
+                      - link ".NET SDK" [ref=e102] [cursor=pointer]:
+                        - /url: /develop/dotnet/
+                      - button "Collapse sidebar category '.NET SDK'" [expanded] [ref=e103] [cursor=pointer]
+                    - list [ref=e104]:
+                      - listitem [ref=e105]:
+                        - link "Quickstart - Setup" [ref=e106] [cursor=pointer]:
+                          - /url: /develop/dotnet/set-up-your-local-dotnet
+                      - listitem [ref=e107]:
+                        - link "Core application" [ref=e108] [cursor=pointer]:
+                          - /url: /develop/dotnet/core-application
+                      - listitem [ref=e109]:
+                        - link "Temporal Client" [ref=e110] [cursor=pointer]:
+                          - /url: /develop/dotnet/temporal-client
+                      - listitem [ref=e111]:
+                        - link "Testing" [ref=e112] [cursor=pointer]:
+                          - /url: /develop/dotnet/testing-suite
+                      - listitem [ref=e113]:
+                        - link "Failure detection" [ref=e114] [cursor=pointer]:
+                          - /url: /develop/dotnet/failure-detection
+                      - listitem [ref=e115]:
+                        - link "Messages" [ref=e116] [cursor=pointer]:
+                          - /url: /develop/dotnet/message-passing
+                      - listitem [ref=e117]:
+                        - link "Interrupt a Workflow" [ref=e118] [cursor=pointer]:
+                          - /url: /develop/dotnet/cancellation
+                      - listitem [ref=e119]:
+                        - link "Asynchronous Activity completion" [ref=e120] [cursor=pointer]:
+                          - /url: /develop/dotnet/asynchronous-activity
+                      - listitem [ref=e121]:
+                        - link "Versioning" [ref=e122] [cursor=pointer]:
+                          - /url: /develop/dotnet/versioning
+                      - listitem [ref=e123]:
+                        - link "Observability" [ref=e124] [cursor=pointer]:
+                          - /url: /develop/dotnet/observability
+                      - listitem [ref=e125]:
+                        - link "Benign exceptions" [ref=e126] [cursor=pointer]:
+                          - /url: /develop/dotnet/benign-exceptions
+                      - listitem [ref=e127]:
+                        - link "Enriching the UI" [ref=e128] [cursor=pointer]:
+                          - /url: /develop/dotnet/enriching-ui
+                      - listitem [ref=e129]:
+                        - link "Debugging" [ref=e130] [cursor=pointer]:
+                          - /url: /develop/dotnet/debugging
+                      - listitem [ref=e131]:
+                        - link "Schedules" [ref=e132] [cursor=pointer]:
+                          - /url: /develop/dotnet/schedules
+                      - listitem [ref=e133]:
+                        - link "Converters and encryption" [ref=e134] [cursor=pointer]:
+                          - /url: /develop/dotnet/converters-and-encryption
+                      - listitem [ref=e135]:
+                        - link "Durable Timers" [ref=e136] [cursor=pointer]:
+                          - /url: /develop/dotnet/durable-timers
+                      - listitem [ref=e137]:
+                        - link "Temporal Nexus" [ref=e138] [cursor=pointer]:
+                          - /url: /develop/dotnet/nexus
+                      - listitem [ref=e139]:
+                        - link "Child Workflows" [ref=e140] [cursor=pointer]:
+                          - /url: /develop/dotnet/child-workflows
+                      - listitem [ref=e141]:
+                        - link "Continue-As-New" [ref=e142] [cursor=pointer]:
+                          - /url: /develop/dotnet/continue-as-new
+                  - listitem [ref=e143]:
+                    - generic [ref=e144]:
+                      - link "Ruby SDK" [ref=e145] [cursor=pointer]:
+                        - /url: /develop/ruby/
+                      - button "Expand sidebar category 'Ruby SDK'" [ref=e146] [cursor=pointer]
+                  - listitem [ref=e147]:
+                    - link "Environment configuration" [ref=e148] [cursor=pointer]:
+                      - /url: /develop/environment-configuration
+                  - listitem [ref=e149]:
+                    - link "Activity retry simulator" [ref=e150] [cursor=pointer]:
+                      - /url: /develop/activity-retry-simulator
+                  - listitem [ref=e151]:
+                    - link "Worker performance" [ref=e152] [cursor=pointer]:
+                      - /url: /develop/worker-performance
+                  - listitem [ref=e153]:
+                    - link "Safe deployments" [ref=e154] [cursor=pointer]:
+                      - /url: /develop/safe-deployments
+                  - listitem [ref=e155]:
+                    - link "Plugins guide" [ref=e156] [cursor=pointer]:
+                      - /url: /develop/plugins-guide
+              - listitem [ref=e157]:
+                - generic [ref=e158]:
+                  - link "Deploy to production" [ref=e159] [cursor=pointer]:
+                    - /url: /production-deployment
+                  - button "Collapse sidebar category 'Deploy to production'" [expanded] [ref=e160] [cursor=pointer]
+                - list [ref=e161]:
+                  - listitem [ref=e162]:
+                    - generic [ref=e163]:
+                      - link "Temporal Cloud" [ref=e164] [cursor=pointer]:
+                        - /url: /cloud
+                      - button "Expand sidebar category 'Temporal Cloud'" [ref=e165] [cursor=pointer]
+                  - listitem [ref=e166]:
+                    - link "Codecs and Encryption" [ref=e167] [cursor=pointer]:
+                      - /url: /production-deployment/data-encryption
+                  - listitem [ref=e168]:
+                    - generic [ref=e169]:
+                      - link "Self-host" [ref=e170] [cursor=pointer]:
+                        - /url: /self-hosted-guide
+                      - button "Expand sidebar category 'Self-host'" [ref=e171] [cursor=pointer]
+                  - listitem [ref=e172]:
+                    - generic [ref=e173]:
+                      - link "Worker deployments" [ref=e174] [cursor=pointer]:
+                        - /url: /production-deployment/worker-deployments
+                      - button "Expand sidebar category 'Worker deployments'" [ref=e175] [cursor=pointer]
+              - listitem [ref=e176]:
+                - generic [ref=e177]:
+                  - link "CLI (temporal)" [ref=e178] [cursor=pointer]:
+                    - /url: /cli
+                  - button "Expand sidebar category 'CLI (temporal)'" [ref=e179] [cursor=pointer]
+              - listitem [ref=e180]:
+                - generic [ref=e181]:
+                  - link "References" [ref=e182] [cursor=pointer]:
+                    - /url: /references/
+                  - button "Expand sidebar category 'References'" [ref=e183] [cursor=pointer]
+              - listitem [ref=e184]:
+                - generic [ref=e185]:
+                  - link "Troubleshooting" [ref=e186] [cursor=pointer]:
+                    - /url: /troubleshooting/
+                  - button "Expand sidebar category 'Troubleshooting'" [ref=e187] [cursor=pointer]
+              - listitem [ref=e188]:
+                - generic [ref=e189]:
+                  - link "Best Practices" [ref=e190] [cursor=pointer]:
+                    - /url: /best-practices/
+                  - button "Expand sidebar category 'Best Practices'" [ref=e191] [cursor=pointer]
+              - listitem [ref=e192]:
+                - generic [ref=e193]:
+                  - link "Encyclopedia" [ref=e194] [cursor=pointer]:
+                    - /url: /encyclopedia/
+                  - button "Expand sidebar category 'Encyclopedia'" [ref=e195] [cursor=pointer]
+              - listitem [ref=e196]:
+                - link "Glossary" [ref=e197] [cursor=pointer]:
+                  - /url: /glossary
+          - button "Collapse sidebar" [ref=e198] [cursor=pointer]:
+            - img [ref=e199]
+      - main [ref=e203]:
+        - generic [ref=e205]:
+          - generic [ref=e207]:
+            - article [ref=e208]:
+              - navigation "Breadcrumbs" [ref=e209]:
+                - list [ref=e210]:
+                  - listitem [ref=e211]:
+                    - link "Home page" [ref=e212] [cursor=pointer]:
+                      - /url: /
+                      - img [ref=e213]
+                  - listitem [ref=e215]:
+                    - link "Develop" [ref=e216] [cursor=pointer]:
+                      - /url: /develop/
+                  - listitem [ref=e217]:
+                    - link ".NET SDK" [ref=e218] [cursor=pointer]:
+                      - /url: /develop/dotnet/
+                  - listitem [ref=e219]:
+                    - generic [ref=e220]: Versioning
+              - generic [ref=e221]:
+                - heading "Versioning - .NET SDK" [level=1] [ref=e223]
+                - paragraph [ref=e224]: Since Workflow Executions in Temporal can run for long periods — sometimes months or even years — it's common to need to make changes to a Workflow Definition, even while a particular Workflow Execution is in progress.
+                - paragraph [ref=e225]:
+                  - text: The Temporal Platform requires that Workflow code is
+                  - link "deterministic" [ref=e226] [cursor=pointer]:
+                    - /url: /workflow-definition#deterministic-constraints
+                  - text: ". If you make a change to your Workflow code that would cause non-deterministic behavior on Replay, you'll need to use one of our Versioning methods to gracefully update your running Workflows. With Versioning, you can modify your Workflow Definition so that new executions use the updated code, while existing ones continue running the original version. There are two primary Versioning methods that you can use:"
+                - list [ref=e227]:
+                  - listitem [ref=e228]:
+                    - link "Worker Versioning" [ref=e229] [cursor=pointer]:
+                      - /url: /production-deployment/worker-deployments/worker-versioning
+                    - text: . The Worker Versioning feature allows you to tag your Workers and programmatically roll them out in versioned deployments, so that old Workers can run old code paths and new Workers can run new code paths.
+                  - listitem [ref=e230]:
+                    - link "Versioning with Patching" [ref=e231] [cursor=pointer]:
+                      - /url: "#patching"
+                    - text: . This method works by adding branches to your code tied to specific revisions. It applies a code change to new Workflow Executions while avoiding disruptive changes to in-progress Workflow Executions.
+                - heading "Worker VersioningDirect link to Worker Versioning" [level=2] [ref=e232]:
+                  - text: Worker Versioning
+                  - link "Direct link to Worker Versioning" [ref=e233] [cursor=pointer]:
+                    - /url: "#worker-versioning"
+                    - text: "#"
+                - paragraph [ref=e234]:
+                  - text: Temporal's
+                  - link "Worker Versioning" [ref=e235] [cursor=pointer]:
+                    - /url: /production-deployment/worker-deployments/worker-versioning
+                  - text: feature allows you to tag your Workers and programmatically roll them out in Deployment Versions, so that old Workers can run old code paths and new Workers can run new code paths. This way, you can pin your Workflows to specific revisions, avoiding the need for patching.
+                - heading "Versioning with PatchingDirect link to Versioning with Patching" [level=2] [ref=e236]:
+                  - text: Versioning with Patching
+                  - link "Direct link to Versioning with Patching" [ref=e237] [cursor=pointer]:
+                    - /url: "#patching"
+                    - text: "#"
+                - heading "Adding a patchDirect link to Adding a patch" [level=3] [ref=e238]:
+                  - text: Adding a patch
+                  - link "Direct link to Adding a patch" [ref=e239] [cursor=pointer]:
+                    - /url: "#adding-a-patch"
+                    - text: "#"
+                - paragraph [ref=e240]:
+                  - text: A Patch defines a logical branch in a Workflow for a specific change, similar to a feature flag. It applies a code change to new Workflow Executions while avoiding disruptive changes to in-progress Workflow Executions. When you want to make substantive code changes that may affect existing Workflow Executions, create a patch. Note that there's no need to patch
+                  - link "Pinned Workflows" [ref=e241] [cursor=pointer]:
+                    - /url: /worker-versioning
+                  - text: .
+                - paragraph [ref=e242]:
+                  - text: Suppose you have an initial Workflow version called
+                  - code [ref=e243]: PrePatchActivity
+                  - text: ":"
+                - generic [ref=e245]:
+                  - code [ref=e247]:
+                    - generic [ref=e248]: "[Workflow]"
+                    - generic [ref=e249]: public class MyWorkflow
+                    - generic [ref=e250]: "{"
+                    - generic [ref=e251]: "[WorkflowRun]"
+                    - generic [ref=e252]: public async Task RunAsync()
+                    - generic [ref=e253]: "{"
+                    - generic [ref=e254]: this.result = await Workflow.ExecuteActivityAsync(
+                    - generic [ref=e255]: (MyActivities a) => a.PrePatchActivity(),
+                    - generic [ref=e256]: "new() { StartToCloseTimeout = TimeSpan.FromMinutes(5) });"
+                    - generic [ref=e257]: // ...
+                    - generic [ref=e258]: "}"
+                    - generic [ref=e259]: "}"
+                  - button "Copy code to clipboard" [ref=e261] [cursor=pointer]:
+                    - generic [ref=e262]:
+                      - img [ref=e263]
+                      - img [ref=e265]
+                - paragraph [ref=e267]:
+                  - text: Now, you want to update your code to run
+                  - code [ref=e268]: PostPatchActivity
+                  - text: instead. This represents your desired end state.
+                - generic [ref=e270]:
+                  - code [ref=e272]:
+                    - generic [ref=e273]: "[Workflow]"
+                    - generic [ref=e274]: public class MyWorkflow
+                    - generic [ref=e275]: "{"
+                    - generic [ref=e276]: "[WorkflowRun]"
+                    - generic [ref=e277]: public async Task RunAsync()
+                    - generic [ref=e278]: "{"
+                    - generic [ref=e279]: this.result = await Workflow.ExecuteActivityAsync(
+                    - generic [ref=e280]: (MyActivities a) => a.PostPatchActivity(),
+                    - generic [ref=e281]: "new() { StartToCloseTimeout = TimeSpan.FromMinutes(5) });"
+                    - generic [ref=e282]: // ...
+                    - generic [ref=e283]: "}"
+                    - generic [ref=e284]: "}"
+                  - button "Copy code to clipboard" [ref=e286] [cursor=pointer]:
+                    - generic [ref=e287]:
+                      - img [ref=e288]
+                      - img [ref=e290]
+                - paragraph [ref=e292]:
+                  - text: The problem is that you cannot deploy
+                  - code [ref=e293]: PostPatchActivity
+                  - text: directly until you're certain there are no more running Workflows created using the
+                  - code [ref=e294]: PrePatchActivity
+                  - text: code, otherwise you are likely to cause a nondeterminism error. Instead, you'll need to deploy
+                  - code [ref=e295]: PostPatchActivity
+                  - text: and use the
+                  - link "Patched" [ref=e296] [cursor=pointer]:
+                    - /url: https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_Patched_System_String_
+                  - text: method to determine which version of the code to execute.
+                - paragraph [ref=e297]: "Patching is a three step process:"
+                - list [ref=e298]:
+                  - listitem [ref=e299]:
+                    - text: Use
+                    - link "Patched" [ref=e300] [cursor=pointer]:
+                      - /url: https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_Patched_System_String_
+                    - text: to patch in new code and run it alongside the old code.
+                  - listitem [ref=e301]:
+                    - text: Remove the old code and apply
+                    - link "DeprecatePatch" [ref=e302] [cursor=pointer]:
+                      - /url: https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_DeprecatePatch_System_String_
+                    - text: .
+                  - listitem [ref=e303]:
+                    - text: Once all old Workflows have left retention, remove
+                    - code [ref=e304]: DeprecatePatch
+                    - text: .
+                - heading "Patching in new codeDirect link to Patching in new code" [level=3] [ref=e305]:
+                  - text: Patching in new code
+                  - link "Direct link to Patching in new code" [ref=e306] [cursor=pointer]:
+                    - /url: "#using-patched-for-workflow-history-markers"
+                    - text: "#"
+                - paragraph [ref=e307]:
+                  - text: Using
+                  - code [ref=e308]: Patched
+                  - text: inserts a marker into the Workflow History.
+                - paragraph [ref=e309]:
+                  - text: During replay, if a Worker encounters a history with that marker, it will fail the Workflow task when the Workflow code doesn't produce the same patch marker (in this case,
+                  - code [ref=e310]: my-patch
+                  - text: ). This ensures you can safely deploy code from
+                  - code [ref=e311]: PostPatchActivity
+                  - text: as a "feature flag" alongside the original version (
+                  - code [ref=e312]: PrePatchActivity
+                  - text: ).
+                - generic [ref=e314]:
+                  - code [ref=e316]:
+                    - generic [ref=e317]: "[Workflow]"
+                    - generic [ref=e318]: public class MyWorkflow
+                    - generic [ref=e319]: "{"
+                    - generic [ref=e320]: "[WorkflowRun]"
+                    - generic [ref=e321]: public async Task RunAsync()
+                    - generic [ref=e322]: "{"
+                    - generic [ref=e323]: if (Workflow.Patched("my-patch"))
+                    - generic [ref=e324]: "{"
+                    - generic [ref=e325]: this.result = await Workflow.ExecuteActivityAsync(
+                    - generic [ref=e326]: (MyActivities a) => a.PostPatchActivity(),
+                    - generic [ref=e327]: "new() { StartToCloseTimeout = TimeSpan.FromMinutes(5) });"
+                    - generic [ref=e328]: "}"
+                    - generic [ref=e329]: else
+                    - generic [ref=e330]: "{"
+                    - generic [ref=e331]: this.result = await Workflow.ExecuteActivityAsync(
+                    - generic [ref=e332]: (MyActivities a) => a.PrePatchActivity(),
+                    - generic [ref=e333]: "new() { StartToCloseTimeout = TimeSpan.FromMinutes(5) });"
+                    - generic [ref=e334]: "}"
+                    - generic [ref=e335]: // ...
+                    - generic [ref=e336]: "}"
+                    - generic [ref=e337]: "}"
+                  - button "Copy code to clipboard" [ref=e339] [cursor=pointer]:
+                    - generic [ref=e340]:
+                      - img [ref=e341]
+                      - img [ref=e343]
+                - heading "Deprecating patchesDirect link to Deprecating patches" [level=3] [ref=e345]:
+                  - text: Deprecating patches
+                  - link "Direct link to Deprecating patches" [ref=e346] [cursor=pointer]:
+                    - /url: "#deprecated-patches"
+                    - text: "#"
+                - paragraph [ref=e347]:
+                  - text: After all Workflows started with
+                  - code [ref=e348]: PrePatchActivity
+                  - text: code have left retention, you can
+                  - link "deprecate the patch" [ref=e349] [cursor=pointer]:
+                    - /url: https://dotnet.temporal.io/api/Temporalio.Workflows.Workflow.html#Temporalio_Workflows_Workflow_DeprecatePatch_System_String_
+                  - text: .
+                - paragraph [ref=e350]: Deprecated patches serve as a bridge between the final stage of the patching process and the final state that no longer has patches. They function similarly to regular patches by adding a marker to the Workflow History. However, this marker won't cause a replay failure when the Workflow code doesn't produce it.
+                - paragraph [ref=e351]:
+                  - text: If, during the deployment of
+                  - code [ref=e352]: PostPatchActivity
+                  - text: ", there are still live Workers running"
+                  - code [ref=e353]: PrePatchActivity
+                  - text: code and these Workers pick up Workflow histories generated by
+                  - code [ref=e354]: PostPatchActivity
+                  - text: ", they will safely use the patched branch."
+                - generic [ref=e356]:
+                  - code [ref=e358]:
+                    - generic [ref=e359]: "[Workflow]"
+                    - generic [ref=e360]: public class MyWorkflow
+                    - generic [ref=e361]: "{"
+                    - generic [ref=e362]: "[WorkflowRun]"
+                    - generic [ref=e363]: public async Task RunAsync()
+                    - generic [ref=e364]: "{"
+                    - generic [ref=e365]: Workflow.DeprecatePatch("my-patch")
+                    - generic [ref=e366]: this.result = await Workflow.ExecuteActivityAsync(
+                    - generic [ref=e367]: (MyActivities a) => a.PostPatchActivity(),
+                    - generic [ref=e368]: "new() { StartToCloseTimeout = TimeSpan.FromMinutes(5) });"
+                    - generic [ref=e369]: // ...
+                    - generic [ref=e370]: "}"
+                    - generic [ref=e371]: "}"
+                  - button "Copy code to clipboard" [ref=e373] [cursor=pointer]:
+                    - generic [ref=e374]:
+                      - img [ref=e375]
+                      - img [ref=e377]
+                - heading "Removing a patchDirect link to Removing a patch" [level=3] [ref=e379]:
+                  - text: Removing a patch
+                  - link "Direct link to Removing a patch" [ref=e380] [cursor=pointer]:
+                    - /url: "#deploy-postpatchactivity"
+                    - text: "#"
+                - paragraph [ref=e381]:
+                  - text: You can safely deploy
+                  - code [ref=e382]: PostPatchActivity
+                  - text: once all Workflows labeled my-patch or earlier have left retention, based on the previously mentioned assertion.
+                - generic [ref=e384]:
+                  - code [ref=e386]:
+                    - generic [ref=e387]: "[Workflow]"
+                    - generic [ref=e388]: public class MyWorkflow
+                    - generic [ref=e389]: "{"
+                    - generic [ref=e390]: "[WorkflowRun]"
+                    - generic [ref=e391]: public async Task RunAsync()
+                    - generic [ref=e392]: "{"
+                    - generic [ref=e393]: this.result = await Workflow.ExecuteActivityAsync(
+                    - generic [ref=e394]: (MyActivities a) => a.PostPatchActivity(),
+                    - generic [ref=e395]: "new() { StartToCloseTimeout = TimeSpan.FromMinutes(5) });"
+                    - generic [ref=e396]: // ...
+                    - generic [ref=e397]: "}"
+                    - generic [ref=e398]: "}"
+                  - button "Copy code to clipboard" [ref=e400] [cursor=pointer]:
+                    - generic [ref=e401]:
+                      - img [ref=e402]
+                      - img [ref=e404]
+                - paragraph [ref=e406]: Patching allows you to make changes to currently running Workflows. It is a powerful method for introducing compatible changes without introducing non-determinism errors.
+                - heading "Detailed Overview of the Patched FunctionDirect link to Detailed Overview of the Patched Function" [level=3] [ref=e407]:
+                  - text: Detailed Overview of the Patched Function
+                  - link "Direct link to Detailed Overview of the Patched Function" [ref=e408] [cursor=pointer]:
+                    - /url: "#detailed-overview-of-the-patched-function"
+                    - text: "#"
+                - paragraph [ref=e409]:
+                  - text: This video provides an overview of how the
+                  - code [ref=e410]: patched()
+                  - text: "function works:"
+                - iframe [ref=e412]:
+                  - generic "YouTube Video Player" [ref=f2e3]:
+                    - generic [ref=f2e5]:
+                      - link "Photo image of Grant Smith" [ref=f2e8] [cursor=pointer]:
+                        - /url: https://www.youtube.com/channel/UC1uCJ8CxTPBmYdJAyXmvgFg?embeds_referring_euri=http%3A%2F%2Flocalhost%3A3000%2F&embeds_referring_origin=http%3A%2F%2Flocalhost%3A3000
+                      - link "Temporal Patched Function Deep Dive Part 1 - Not Replaying" [ref=f2e11] [cursor=pointer]:
+                        - /url: https://www.youtube.com/watch?list=PLytZkHFJwKUdfxFQnuo0Fson0QM0VL9hL&v=lpcYKSDVJFo
+                      - generic [ref=f2e12]:
+                        - button "Share" [ref=f2e13] [cursor=pointer]:
+                          - generic [ref=f2e14]:
+                            - img
+                          - generic [ref=f2e15]: Share
+                        - button "Playlist" [ref=f2e16] [cursor=pointer]:
+                          - generic [ref=f2e17]:
+                            - img
+                          - generic [ref=f2e18]: 1/5
+                    - button "Play" [ref=f2e21] [cursor=pointer]:
+                      - img
+                    - link "Watch on YouTube" [ref=f2e22] [cursor=pointer]:
+                      - /url: https://www.youtube.com/watch?list=PLytZkHFJwKUdfxFQnuo0Fson0QM0VL9hL&v=lpcYKSDVJFo&embeds_referring_euri=http%3A%2F%2Flocalhost%3A3000%2F&embeds_referring_origin=http%3A%2F%2Flocalhost%3A3000
+                      - generic [ref=f2e23]: Watch on
+                      - generic [ref=f2e24]:
+                        - img
+                - paragraph [ref=e413]:
+                  - text: For a more in-depth explanation, refer to the
+                  - link "Patching" [ref=e414] [cursor=pointer]:
+                    - /url: /patching
+                  - text: Encyclopedia entry.
+                - heading "Workflow cutoversDirect link to Workflow cutovers" [level=3] [ref=e415]:
+                  - text: Workflow cutovers
+                  - link "Direct link to Workflow cutovers" [ref=e416] [cursor=pointer]:
+                    - /url: "#workflow-cutovers"
+                    - text: "#"
+                - paragraph [ref=e417]: To understand why Patching is useful, it's helpful to demonstrate cutting over an entire Workflow.
+                - paragraph [ref=e418]: Since incompatible changes only affect open Workflow Executions of the same type, you can avoid determinism errors by creating a whole new Workflow when making changes. To do this, you can copy the Workflow Definition function, giving it a different name, and register both names with your Workers.
+                - paragraph [ref=e419]:
+                  - text: For example, you would duplicate
+                  - code [ref=e420]: SayHelloWorkflow
+                  - text: as
+                  - code [ref=e421]: SayHelloWorkflowV2
+                  - text: ":"
+                - generic [ref=e423]:
+                  - code [ref=e425]:
+                    - generic [ref=e426]: "[Workflow]"
+                    - generic [ref=e427]: public class SayHelloWorkflow
+                    - generic [ref=e428]: "{"
+                    - generic [ref=e429]: "[WorkflowRun]"
+                    - generic [ref=e430]: "# this function contains the original code"
+                    - generic [ref=e431]: "}"
+                    - generic [ref=e433]: "[Workflow]"
+                    - generic [ref=e434]: public class SayHelloWorkflowV2
+                    - generic [ref=e435]: "{"
+                    - generic [ref=e436]: "[WorkflowRun]"
+                    - generic [ref=e437]: "# this function contains the updated code"
+                    - generic [ref=e438]: "}"
+                  - button "Copy code to clipboard" [ref=e440] [cursor=pointer]:
+                    - generic [ref=e441]:
+                      - img [ref=e442]
+                      - img [ref=e444]
+                - paragraph [ref=e446]: "You would then need to update the Worker configuration, and any other identifier strings, to register both Workflow Types:"
+                - generic [ref=e448]:
+                  - code [ref=e450]:
+                    - generic [ref=e451]: using var worker = new TemporalWorker(
+                    - generic [ref=e452]: client,
+                    - generic [ref=e453]: new TemporalWorkerOptions("greeting-tasks")
+                    - generic [ref=e454]: .AddWorkflow<SayHelloWorkflow>()
+                    - generic [ref=e455]: .AddWorkflow<SayHelloWorkflowV2>());
+                  - button "Copy code to clipboard" [ref=e457] [cursor=pointer]:
+                    - generic [ref=e458]:
+                      - img [ref=e459]
+                      - img [ref=e461]
+                - paragraph [ref=e463]: The downside of this method is that it requires you to duplicate code and to update any commands used to start the Workflow. This can become impractical over time. This method also does not provide a way to version any still-running Workflows -- it is essentially just a cutover, unlike Patching.
+                - heading "Testing a Workflow for replay safetyDirect link to Testing a Workflow for replay safety" [level=3] [ref=e464]:
+                  - text: Testing a Workflow for replay safety
+                  - link "Direct link to Testing a Workflow for replay safety" [ref=e465] [cursor=pointer]:
+                    - /url: "#testing-a-workflow-for-replay-safety"
+                    - text: "#"
+                - paragraph [ref=e466]:
+                  - text: To determine whether your Workflow your needs a patch, or that you've patched it successfully, you should incorporate
+                  - link "Replay Testing" [ref=e467] [cursor=pointer]:
+                    - /url: /develop/dotnet/testing-suite#replay
+                  - text: .
+              - generic [ref=e468]:
+                - generic [ref=e470]:
+                  - text: "Tags:"
+                  - list [ref=e471]:
+                    - listitem [ref=e472]:
+                      - link "Workflows" [ref=e473] [cursor=pointer]:
+                        - /url: /tags/workflows
+                    - listitem [ref=e474]:
+                      - link ".Net SDK" [ref=e475] [cursor=pointer]:
+                        - /url: /tags/net-sdk
+                    - listitem [ref=e476]:
+                      - link "Temporal SDKs" [ref=e477] [cursor=pointer]:
+                        - /url: /tags/temporal-sd-ks
+                    - listitem [ref=e478]:
+                      - link "Versioning" [ref=e479] [cursor=pointer]:
+                        - /url: /tags/versioning
+                    - listitem [ref=e480]:
+                      - link "Patching" [ref=e481] [cursor=pointer]:
+                        - /url: /tags/patching
+                - paragraph [ref=e485]:
+                  - text: Help us make Temporal better. Contribute to our
+                  - link "documentation" [ref=e486] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation
+                  - text: .
+            - navigation "Docs pages" [ref=e488]:
+              - link "Previous « Asynchronous Activity completion" [ref=e489] [cursor=pointer]:
+                - /url: /develop/dotnet/asynchronous-activity
+                - generic [ref=e490]: Previous
+                - generic [ref=e491]: « Asynchronous Activity completion
+              - link "Next Observability »" [ref=e492] [cursor=pointer]:
+                - /url: /develop/dotnet/observability
+                - generic [ref=e493]: Next
+                - generic [ref=e494]: Observability »
+          - list [ref=e497]:
+            - listitem [ref=e498]:
+              - link "Worker Versioning" [ref=e499] [cursor=pointer]:
+                - /url: "#worker-versioning"
+            - listitem [ref=e500]:
+              - link "Versioning with Patching" [ref=e501] [cursor=pointer]:
+                - /url: "#patching"
+              - list [ref=e502]:
+                - listitem [ref=e503]:
+                  - link "Adding a patch" [ref=e504] [cursor=pointer]:
+                    - /url: "#adding-a-patch"
+                - listitem [ref=e505]:
+                  - link "Patching in new code" [ref=e506] [cursor=pointer]:
+                    - /url: "#using-patched-for-workflow-history-markers"
+                - listitem [ref=e507]:
+                  - link "Deprecating patches" [ref=e508] [cursor=pointer]:
+                    - /url: "#deprecated-patches"
+                - listitem [ref=e509]:
+                  - link "Removing a patch" [ref=e510] [cursor=pointer]:
+                    - /url: "#deploy-postpatchactivity"
+                - listitem [ref=e511]:
+                  - link "Detailed Overview of the Patched Function" [ref=e512] [cursor=pointer]:
+                    - /url: "#detailed-overview-of-the-patched-function"
+                - listitem [ref=e513]:
+                  - link "Workflow cutovers" [ref=e514] [cursor=pointer]:
+                    - /url: "#workflow-cutovers"
+                - listitem [ref=e515]:
+                  - link "Testing a Workflow for replay safety" [ref=e516] [cursor=pointer]:
+                    - /url: "#testing-a-workflow-for-replay-safety"
+    - contentinfo [ref=e517]:
+      - generic [ref=e518]:
+        - generic [ref=e519]:
+          - list [ref=e521]:
+            - listitem [ref=e522]:
+              - link "GitHub" [ref=e523] [cursor=pointer]:
+                - /url: https://github.com/temporalio
+                - text: GitHub
+                - img [ref=e524]
+            - listitem [ref=e526]:
+              - link "Twitter" [ref=e527] [cursor=pointer]:
+                - /url: https://twitter.com/temporalio
+                - text: Twitter
+                - img [ref=e528]
+            - listitem [ref=e530]:
+              - link "YouTube" [ref=e531] [cursor=pointer]:
+                - /url: https://www.youtube.com/c/Temporalio
+                - text: YouTube
+                - img [ref=e532]
+            - listitem [ref=e534]:
+              - link "About the docs" [ref=e535] [cursor=pointer]:
+                - /url: https://github.com/temporalio/documentation/blob/master/README.md
+                - text: About the docs
+                - img [ref=e536]
+          - list [ref=e539]:
+            - listitem [ref=e540]:
+              - link "Temporal Cloud" [ref=e541] [cursor=pointer]:
+                - /url: https://temporal.io/cloud
+                - text: Temporal Cloud
+                - img [ref=e542]
+            - listitem [ref=e544]:
+              - link "Meetups" [ref=e545] [cursor=pointer]:
+                - /url: https://temporal.io/community#events
+                - text: Meetups
+                - img [ref=e546]
+            - listitem [ref=e548]:
+              - link "Workshops" [ref=e549] [cursor=pointer]:
+                - /url: https://temporal.io/community#workshops
+                - text: Workshops
+                - img [ref=e550]
+            - listitem [ref=e552]:
+              - link "Support forum" [ref=e553] [cursor=pointer]:
+                - /url: https://community.temporal.io/
+                - text: Support forum
+                - img [ref=e554]
+            - listitem [ref=e556]:
+              - link "Ask an expert" [ref=e557] [cursor=pointer]:
+                - /url: https://pages.temporal.io/ask-an-expert
+                - text: Ask an expert
+                - img [ref=e558]
+          - list [ref=e561]:
+            - listitem [ref=e562]:
+              - link "Learn Temporal" [ref=e563] [cursor=pointer]:
+                - /url: https://learn.temporal.io
+                - text: Learn Temporal
+                - img [ref=e564]
+            - listitem [ref=e566]:
+              - link "Blog" [ref=e567] [cursor=pointer]:
+                - /url: https://temporal.io/blog
+                - text: Blog
+                - img [ref=e568]
+            - listitem [ref=e570]:
+              - link "Use cases" [ref=e571] [cursor=pointer]:
+                - /url: https://temporal.io/use-cases
+                - text: Use cases
+                - img [ref=e572]
+            - listitem [ref=e574]:
+              - link "Newsletter signup" [ref=e575] [cursor=pointer]:
+                - /url: https://pages.temporal.io/newsletter-subscribe
+                - text: Newsletter signup
+                - img [ref=e576]
+          - list [ref=e579]:
+            - listitem [ref=e580]:
+              - link "Security" [ref=e581] [cursor=pointer]:
+                - /url: /security
+            - listitem [ref=e582]:
+              - link "Privacy policy" [ref=e583] [cursor=pointer]:
+                - /url: https://temporal.io/global-privacy-policy
+            - listitem [ref=e584]:
+              - link "Terms of service" [ref=e585] [cursor=pointer]:
+                - /url: https://docs.temporal.io/pdf/temporal-tos-2021-07-24.pdf
+                - text: Terms of service
+                - img [ref=e586]
+            - listitem [ref=e588]:
+              - link "We're hiring" [ref=e589] [cursor=pointer]:
+                - /url: https://temporal.io/careers
+                - text: We're hiring
+                - img [ref=e590]
+        - generic [ref=e592]:
+          - link "Temporal logo" [ref=e594] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e595]
+          - generic [ref=e596]: Copyright © 2025 Temporal Technologies Inc.
+  - generic [ref=e597] [cursor=pointer]:
+    - img [ref=e599]
+    - generic: Feedback
+```

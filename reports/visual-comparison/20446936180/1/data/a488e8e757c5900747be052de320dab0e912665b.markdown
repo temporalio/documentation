@@ -1,0 +1,570 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - region "Skip to main content":
+      - link "Skip to main content" [ref=e3] [cursor=pointer]:
+        - /url: "#__docusaurus_skipToContent_fallback"
+    - navigation "Main" [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - link "Temporal logo" [ref=e7] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e9]
+          - link "Home" [ref=e10] [cursor=pointer]:
+            - /url: /
+          - link "Courses" [ref=e11] [cursor=pointer]:
+            - /url: https://learn.temporal.io/getting_started/
+            - text: Courses
+            - img [ref=e12]
+          - link "SDKs" [ref=e14] [cursor=pointer]:
+            - /url: /develop
+          - link "AI Cookbook" [ref=e15] [cursor=pointer]:
+            - /url: /ai-cookbook
+          - link "Code Exchange" [ref=e16] [cursor=pointer]:
+            - /url: https://temporal.io/code-exchange
+            - text: Code Exchange
+            - img [ref=e17]
+          - link "Temporal Cloud" [ref=e19] [cursor=pointer]:
+            - /url: /cloud
+        - generic [ref=e20]:
+          - button "Ask AI" [ref=e21] [cursor=pointer]:
+            - img [ref=e22]
+            - generic [ref=e26]: Ask AI
+          - button "Switch between dark and light mode (currently system mode)" [ref=e28] [cursor=pointer]:
+            - img [ref=e29]
+          - button "Search (Ctrl+K)" [ref=e32] [cursor=pointer]:
+            - generic [ref=e33]:
+              - img [ref=e34]
+              - generic [ref=e36]: Search
+            - generic [ref=e37]:
+              - img [ref=e39]
+              - generic [ref=e41]: K
+    - generic [ref=e44]:
+      - complementary [ref=e45]:
+        - generic [ref=e47]:
+          - navigation "Docs sidebar" [ref=e48]:
+            - list [ref=e49]:
+              - listitem [ref=e50]:
+                - link "Documentation Home" [ref=e51] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=e52]:
+                - link "Quickstarts" [ref=e53] [cursor=pointer]:
+                  - /url: /quickstarts
+              - listitem [ref=e54]:
+                - generic [ref=e55]:
+                  - link "Evaluate" [ref=e56] [cursor=pointer]:
+                    - /url: /evaluate/
+                  - button "Collapse sidebar category 'Evaluate'" [expanded] [ref=e57] [cursor=pointer]
+                - list [ref=e58]:
+                  - listitem [ref=e59]:
+                    - link "Why Temporal" [ref=e60] [cursor=pointer]:
+                      - /url: /evaluate/why-temporal
+                  - listitem [ref=e61]:
+                    - link "Understanding Temporal" [ref=e62] [cursor=pointer]:
+                      - /url: /evaluate/understanding-temporal
+                  - listitem [ref=e63]:
+                    - generic [ref=e64]:
+                      - link "Features" [ref=e65] [cursor=pointer]:
+                        - /url: /evaluate/development-production-features/
+                      - button "Expand sidebar category 'Features'" [ref=e66] [cursor=pointer]
+                  - listitem [ref=e67]:
+                    - generic [ref=e68]:
+                      - link "Temporal Cloud" [ref=e69] [cursor=pointer]:
+                        - /url: /cloud/introduction
+                      - button "Expand sidebar category 'Temporal Cloud'" [ref=e70] [cursor=pointer]
+                  - listitem [ref=e71]:
+                    - link "Security" [ref=e72] [cursor=pointer]:
+                      - /url: /security
+                  - listitem [ref=e73]:
+                    - link "Use Cases" [ref=e74] [cursor=pointer]:
+                      - /url: /evaluate/use-cases-design-patterns
+              - listitem [ref=e75]:
+                - generic [ref=e76]:
+                  - link "Develop" [ref=e77] [cursor=pointer]:
+                    - /url: /develop/
+                  - button "Collapse sidebar category 'Develop'" [expanded] [ref=e78] [cursor=pointer]
+                - list [ref=e79]:
+                  - listitem [ref=e80]:
+                    - generic [ref=e81]:
+                      - link "Go SDK" [ref=e82] [cursor=pointer]:
+                        - /url: /develop/go/
+                      - button "Expand sidebar category 'Go SDK'" [ref=e83] [cursor=pointer]
+                  - listitem [ref=e84]:
+                    - generic [ref=e85]:
+                      - link "Java SDK" [ref=e86] [cursor=pointer]:
+                        - /url: /develop/java/
+                      - button "Expand sidebar category 'Java SDK'" [ref=e87] [cursor=pointer]
+                  - listitem [ref=e88]:
+                    - generic [ref=e89]:
+                      - link "PHP SDK" [ref=e90] [cursor=pointer]:
+                        - /url: /develop/php/
+                      - button "Expand sidebar category 'PHP SDK'" [ref=e91] [cursor=pointer]
+                  - listitem [ref=e92]:
+                    - generic [ref=e93]:
+                      - link "Python SDK" [ref=e94] [cursor=pointer]:
+                        - /url: /develop/python/
+                      - button "Expand sidebar category 'Python SDK'" [ref=e95] [cursor=pointer]
+                  - listitem [ref=e96]:
+                    - generic [ref=e97]:
+                      - link "TypeScript SDK" [ref=e98] [cursor=pointer]:
+                        - /url: /develop/typescript/
+                      - button "Expand sidebar category 'TypeScript SDK'" [ref=e99] [cursor=pointer]
+                  - listitem [ref=e100]:
+                    - generic [ref=e101]:
+                      - link ".NET SDK" [ref=e102] [cursor=pointer]:
+                        - /url: /develop/dotnet/
+                      - button "Expand sidebar category '.NET SDK'" [ref=e103] [cursor=pointer]
+                  - listitem [ref=e104]:
+                    - generic [ref=e105]:
+                      - link "Ruby SDK" [ref=e106] [cursor=pointer]:
+                        - /url: /develop/ruby/
+                      - button "Expand sidebar category 'Ruby SDK'" [ref=e107] [cursor=pointer]
+                  - listitem [ref=e108]:
+                    - link "Environment configuration" [ref=e109] [cursor=pointer]:
+                      - /url: /develop/environment-configuration
+                  - listitem [ref=e110]:
+                    - link "Activity retry simulator" [ref=e111] [cursor=pointer]:
+                      - /url: /develop/activity-retry-simulator
+                  - listitem [ref=e112]:
+                    - link "Worker performance" [ref=e113] [cursor=pointer]:
+                      - /url: /develop/worker-performance
+                  - listitem [ref=e114]:
+                    - link "Safe deployments" [ref=e115] [cursor=pointer]:
+                      - /url: /develop/safe-deployments
+                  - listitem [ref=e116]:
+                    - link "Plugins guide" [ref=e117] [cursor=pointer]:
+                      - /url: /develop/plugins-guide
+              - listitem [ref=e118]:
+                - generic [ref=e119]:
+                  - link "Deploy to production" [ref=e120] [cursor=pointer]:
+                    - /url: /production-deployment
+                  - button "Collapse sidebar category 'Deploy to production'" [expanded] [ref=e121] [cursor=pointer]
+                - list [ref=e122]:
+                  - listitem [ref=e123]:
+                    - generic [ref=e124]:
+                      - link "Temporal Cloud" [ref=e125] [cursor=pointer]:
+                        - /url: /cloud
+                      - button "Expand sidebar category 'Temporal Cloud'" [ref=e126] [cursor=pointer]
+                  - listitem [ref=e127]:
+                    - link "Codecs and Encryption" [ref=e128] [cursor=pointer]:
+                      - /url: /production-deployment/data-encryption
+                  - listitem [ref=e129]:
+                    - generic [ref=e130]:
+                      - link "Self-host" [ref=e131] [cursor=pointer]:
+                        - /url: /self-hosted-guide
+                      - button "Collapse sidebar category 'Self-host'" [expanded] [ref=e132] [cursor=pointer]
+                    - list [ref=e133]:
+                      - listitem [ref=e134]:
+                        - link "Deployment" [ref=e135] [cursor=pointer]:
+                          - /url: /self-hosted-guide/deployment
+                      - listitem [ref=e136]:
+                        - link "Production checklist" [ref=e137] [cursor=pointer]:
+                          - /url: /self-hosted-guide/production-checklist
+                      - listitem [ref=e138]:
+                        - link "Configurable defaults" [ref=e139] [cursor=pointer]:
+                          - /url: /self-hosted-guide/defaults
+                      - listitem [ref=e140]:
+                        - link "Security" [ref=e141] [cursor=pointer]:
+                          - /url: /self-hosted-guide/security
+                      - listitem [ref=e142]:
+                        - link "Monitoring" [ref=e143] [cursor=pointer]:
+                          - /url: /self-hosted-guide/monitoring
+                      - listitem [ref=e144]:
+                        - link "Visibility" [ref=e145] [cursor=pointer]:
+                          - /url: /self-hosted-guide/visibility
+                      - listitem [ref=e146]:
+                        - link "Upgrade server" [ref=e147] [cursor=pointer]:
+                          - /url: /self-hosted-guide/upgrade-server
+                      - listitem [ref=e148]:
+                        - link "Archival" [ref=e149] [cursor=pointer]:
+                          - /url: /self-hosted-guide/archival
+                      - listitem [ref=e150]:
+                        - link "Multi-Cluster Replication" [ref=e151] [cursor=pointer]:
+                          - /url: /self-hosted-guide/multi-cluster-replication
+                      - listitem [ref=e152]:
+                        - link "Temporal Nexus" [ref=e153] [cursor=pointer]:
+                          - /url: /production-deployment/self-hosted-guide/nexus
+                      - listitem [ref=e154]:
+                        - link "Server API" [ref=e155] [cursor=pointer]:
+                          - /url: /self-hosted-guide/server-frontend-api-reference
+                  - listitem [ref=e156]:
+                    - generic [ref=e157]:
+                      - link "Worker deployments" [ref=e158] [cursor=pointer]:
+                        - /url: /production-deployment/worker-deployments
+                      - button "Expand sidebar category 'Worker deployments'" [ref=e159] [cursor=pointer]
+              - listitem [ref=e160]:
+                - generic [ref=e161]:
+                  - link "CLI (temporal)" [ref=e162] [cursor=pointer]:
+                    - /url: /cli
+                  - button "Expand sidebar category 'CLI (temporal)'" [ref=e163] [cursor=pointer]
+              - listitem [ref=e164]:
+                - generic [ref=e165]:
+                  - link "References" [ref=e166] [cursor=pointer]:
+                    - /url: /references/
+                  - button "Expand sidebar category 'References'" [ref=e167] [cursor=pointer]
+              - listitem [ref=e168]:
+                - generic [ref=e169]:
+                  - link "Troubleshooting" [ref=e170] [cursor=pointer]:
+                    - /url: /troubleshooting/
+                  - button "Expand sidebar category 'Troubleshooting'" [ref=e171] [cursor=pointer]
+              - listitem [ref=e172]:
+                - generic [ref=e173]:
+                  - link "Best Practices" [ref=e174] [cursor=pointer]:
+                    - /url: /best-practices/
+                  - button "Expand sidebar category 'Best Practices'" [ref=e175] [cursor=pointer]
+              - listitem [ref=e176]:
+                - generic [ref=e177]:
+                  - link "Encyclopedia" [ref=e178] [cursor=pointer]:
+                    - /url: /encyclopedia/
+                  - button "Expand sidebar category 'Encyclopedia'" [ref=e179] [cursor=pointer]
+              - listitem [ref=e180]:
+                - link "Glossary" [ref=e181] [cursor=pointer]:
+                  - /url: /glossary
+          - button "Collapse sidebar" [ref=e182] [cursor=pointer]:
+            - img [ref=e183]
+      - main [ref=e187]:
+        - generic [ref=e189]:
+          - generic [ref=e191]:
+            - article [ref=e192]:
+              - navigation "Breadcrumbs" [ref=e193]:
+                - list [ref=e194]:
+                  - listitem [ref=e195]:
+                    - link "Home page" [ref=e196] [cursor=pointer]:
+                      - /url: /
+                      - img [ref=e197]
+                  - listitem [ref=e199]:
+                    - link "Deploy to production" [ref=e200] [cursor=pointer]:
+                      - /url: /production-deployment
+                  - listitem [ref=e201]:
+                    - link "Self-host" [ref=e202] [cursor=pointer]:
+                      - /url: /self-hosted-guide
+                  - listitem [ref=e203]:
+                    - generic [ref=e204]: Production checklist
+              - generic [ref=e205]:
+                - heading "Temporal Platform's production readiness checklist" [level=1] [ref=e207]
+                - paragraph [ref=e208]: This page describes common challenges customers face who self-host Temporal and it shares recommendations to mitigate those issues.
+                - paragraph [ref=e209]: Temporal at its core is about durability and reliability. To ensure this durability and reliability, a Temporal Service must be deployed according to best practices.
+                - paragraph [ref=e210]: This guide provides a path to demonstrate that Temporal consumers can be confident in a Temporal Service and provides a list of key tests you as a user should perform against the service.
+                - heading "Self-Hosting Challenge AreasDirect link to Self-Hosting Challenge Areas" [level=2] [ref=e211]:
+                  - text: Self-Hosting Challenge Areas
+                  - link "Direct link to Self-Hosting Challenge Areas" [ref=e212] [cursor=pointer]:
+                    - /url: "#self-hosting-challenge-areas"
+                    - text: "#"
+                - paragraph [ref=e213]: "Significant engineering and ongoing effort is required to resolve several potential challenges:"
+                - list [ref=e214]:
+                  - listitem [ref=e215]: Scalability with spiky or growing workloads
+                  - listitem [ref=e216]: Global hosting
+                  - listitem [ref=e217]: Uptime, availability and reliability
+                  - listitem [ref=e218]: Management and control plane
+                  - listitem [ref=e219]: Latency, which must be kept low and consistent
+                  - listitem [ref=e220]:
+                    - link "Security" [ref=e221] [cursor=pointer]:
+                      - /url: /self-hosted-guide/security
+                  - listitem [ref=e222]: Maintenance and upgrades
+                  - listitem [ref=e223]: Expert support to users of the service
+                  - listitem [ref=e224]: Cost management
+                - paragraph [ref=e225]:
+                  - text: Each of these components is an essential part of building a mission critical Temporal Service. Without demonstrated architectural durability, the value of Temporal's
+                  - link "Durable Execution" [ref=e226] [cursor=pointer]:
+                    - /url: https://temporal.io/how-it-works
+                  - text: model is compromised.
+                - heading "Scalability with Variable or Growing WorkloadsDirect link to Scalability with Variable or Growing Workloads" [level=2] [ref=e227]:
+                  - text: Scalability with Variable or Growing Workloads
+                  - link "Direct link to Scalability with Variable or Growing Workloads" [ref=e228] [cursor=pointer]:
+                    - /url: "#scaling-and-metrics"
+                    - text: "#"
+                - paragraph [ref=e229]:
+                  - text: Workloads can be highly variable, and you may experience sustained workload spikes. Temporal recommends scaling your clusters to well above the average throughput. See
+                  - 'link "Scaling Temporal: The Basics" [ref=e230] [cursor=pointer]':
+                    - /url: https://temporal.io/blog/scaling-temporal-the-basics
+                  - text: for an introduction to the topic.
+                - paragraph [ref=e231]:
+                  - text: Temporal server throughput is often limited by the number of
+                  - link "Shards" [ref=e232] [cursor=pointer]:
+                    - /url: /temporal-service/temporal-server#history-shard
+                  - text: configured for the Temporal Service. A Shard is an unit within a Temporal Service by which concurrent Workflow Execution throughput can be scaled. Shard capacity, and often overall cluster throughput, is set at build time for a cluster and that cluster setting cannot be adjusted later. Adding more Shards if needed requires a cluster rebuild, and a migration to the new cluster.
+                - paragraph [ref=e233]: The requirements of your Temporal Service will vary widely based on your intended production workload. You will want to run your own proof of concept tests and watch for key metrics to understand the system health and scaling needs.
+                - paragraph [ref=e234]:
+                  - strong [ref=e235]: Load testing.
+                  - text: You can use
+                  - link "the Omes benchmarking tool" [ref=e236] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/omes/
+                  - text: ", see how we ourselves"
+                  - link "stress test Temporal" [ref=e237] [cursor=pointer]:
+                    - /url: https://temporal.io/blog/temporal-deep-dive-stress-testing/
+                  - text: ", or write your own."
+                - paragraph [ref=e238]:
+                  - text: All metrics emitted by the server are
+                  - link "listed in Temporal's source" [ref=e239] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/temporal/blob/main/common/metrics/defs.go
+                  - text: ". There are also equivalent metrics that you can configure from the client side. At a high level, you will want to track these 3 categories of metrics:"
+                - list [ref=e240]:
+                  - listitem [ref=e241]:
+                    - strong [ref=e242]: Service metrics
+                    - text: ": For each request made by the service handler we emit"
+                    - code [ref=e243]: service_requests
+                    - text: ","
+                    - code [ref=e244]: service_errors
+                    - text: ", and"
+                    - code [ref=e245]: service_latency
+                    - text: metrics with
+                    - code [ref=e246]: type
+                    - text: ","
+                    - code [ref=e247]: operation
+                    - text: ", and"
+                    - code [ref=e248]: namespace
+                    - text: tags. This gives you basic visibility into service usage and allows you to look at request rates across services, namespaces and even operations.
+                  - listitem [ref=e249]:
+                    - strong [ref=e250]: Persistence metrics
+                    - text: ": The Server emits"
+                    - code [ref=e251]: persistence_requests
+                    - text: ","
+                    - code [ref=e252]: persistence_errors
+                    - text: and
+                    - code [ref=e253]: persistence_latency
+                    - text: metrics for each persistence operation. These metrics include the
+                    - code [ref=e254]: operation
+                    - text: tag such that you can get the request rates, error rates or latencies per operation. These are super useful in identifying issues caused by the database.
+                  - listitem [ref=e255]:
+                    - strong [ref=e256]: Workflow Execution stats
+                    - text: ": The Server also emits counters for when Workflow Executions are complete. These are useful in getting overall stats about Workflow Execution completions. Use"
+                    - code [ref=e257]: workflow_success
+                    - text: ","
+                    - code [ref=e258]: workflow_failed
+                    - text: ","
+                    - code [ref=e259]: workflow_timeout
+                    - text: ","
+                    - code [ref=e260]: workflow_terminate
+                    - text: and
+                    - code [ref=e261]: workflow_cancel
+                    - text: counters for each type of Workflow Execution completion. These include the
+                    - code [ref=e262]: namespace
+                    - text: tag.
+                - heading "AvailabilityDirect link to Availability" [level=2] [ref=e263]:
+                  - text: Availability
+                  - link "Direct link to Availability" [ref=e264] [cursor=pointer]:
+                    - /url: "#availability"
+                    - text: "#"
+                - paragraph [ref=e265]: A high level of availability and reliability (99.99%) is a requirement for mission critical deployments. Temporal recommends testing for this availability level while load testing. We also recommend validating this level of reliability while doing server upgrades, to ensure no loss of service availability.
+                - paragraph [ref=e266]: "Temporal Clusters can be deployed in as many regions as needed to meet various requirements:"
+                - list [ref=e267]:
+                  - listitem [ref=e268]: Data Residency
+                  - listitem [ref=e269]: Latency
+                  - listitem [ref=e270]: Security / Isolation This can multiply the effort to implement and maintain clusters.
+                - paragraph [ref=e271]:
+                  - link "Temporal Cloud is available in various cloud provider regions" [ref=e272] [cursor=pointer]:
+                    - /url: /cloud/service-availability
+                  - text: .
+                - heading "Management and Control PlaneDirect link to Management and Control Plane" [level=2] [ref=e273]:
+                  - text: Management and Control Plane
+                  - link "Direct link to Management and Control Plane" [ref=e274] [cursor=pointer]:
+                    - /url: "#management-and-control-plane"
+                    - text: "#"
+                - paragraph [ref=e275]: Temporal success leads to larger Temporal deployments. Needs can increase, and can go from having one or two production use cases in a single region to many use cases in many regions. Running multiple Temporal Services is complex work, as each needs its own setup, tuning, and configuration.
+                - paragraph [ref=e276]: "Needing to monitor and manage all your Temporal Services in a unified way leads to operational management pain. Consider adding a layer on top of Temporal to manage multiple Temporal Services: a control plane. A control plane manages and directs data flow, deciding where data packets should be sent. A Temporal Service data plan can streamline operations and improve efficiency. Since Temporal does not ship its own open source data plane, rolling your own can be complex and take effort to add."
+                - paragraph [ref=e277]:
+                  - text: Temporal Cloud provides exactly that support. With Temporal Cloud, all Namespaces in all regions can be managed from a single view.
+                  - link "Temporal Cloud" [ref=e278] [cursor=pointer]:
+                    - /url: https://temporal.io/cloud
+                  - text: also has RBAC functionality that can delegate responsibilities for individual Namespaces.
+                - paragraph [ref=e279]: Self-hosted Temporal does not support RBAC or audit logging out of the box. Temporal Cloud provides RBAC and SSO support, audit logging, data encryption, third party penetration test validation, and SOC 2-Type II and HIPAA compliance.
+                - heading "Maintenance and UpgradesDirect link to Maintenance and Upgrades" [level=2] [ref=e280]:
+                  - text: Maintenance and Upgrades
+                  - link "Direct link to Maintenance and Upgrades" [ref=e281] [cursor=pointer]:
+                    - /url: "#maintenance-and-upgrades"
+                    - text: "#"
+                - paragraph [ref=e282]: Temporal recommends keeping up-to-date and not falling behind on your server versions.
+                - paragraph [ref=e283]:
+                  - text: Temporal Server is proactively updated, and releases as often as every two weeks. Temporal recommends
+                  - link "upgrading sequentially" [ref=e284] [cursor=pointer]:
+                    - /url: /self-hosted-guide/upgrade-server
+                  - text: ", not skipping any minor versions, although you can skip patch versions. No support is guaranteed for Temporal Server, but very old servers will be hard for even the community to support, so we encourage you to keep up to date. You must create and maintain the infrastructure to host and run your self-hosted Temporal installation, such as Kubernetes, as well as data stores for persistence."
+                - paragraph [ref=e285]: Server upgrades can negatively affect self-hosted Temporal Service availability. Temporal recommends load and availability testing during the upgrade process to understand the performance implications.
+                - paragraph [ref=e286]: Temporal Cloud updates are managed by the Temporal Cloud team; Cloud upgrades are seamless.
+                - heading "Expert SupportDirect link to Expert Support" [level=2] [ref=e287]:
+                  - text: Expert Support
+                  - link "Direct link to Expert Support" [ref=e288] [cursor=pointer]:
+                    - /url: "#expert-support"
+                    - text: "#"
+                - paragraph [ref=e289]: Temporal recommends that customer platform teams who are building out a Temporal service gain deep experience across the lifecycle and breadth of a Temporal application.
+                - paragraph [ref=e290]: "Specific activities include:"
+                - list [ref=e291]:
+                  - listitem [ref=e292]:
+                    - link "Worker tuning" [ref=e293] [cursor=pointer]:
+                      - /url: /develop/worker-performance
+                  - listitem [ref=e294]:
+                    - link "Worker best practices" [ref=e295] [cursor=pointer]:
+                      - /url: /workers
+                  - listitem [ref=e296]: Code reviews
+                  - listitem [ref=e297]: Design guidance
+                  - listitem [ref=e298]: Training
+                  - listitem [ref=e299]: Code reviews
+                  - listitem [ref=e300]: Security reviews
+                  - listitem [ref=e301]:
+                    - link "Metrics" [ref=e302] [cursor=pointer]:
+                      - /url: /references/sdk-metrics
+                    - text: and monitoring
+                  - listitem [ref=e303]: Technical onboarding
+                - paragraph [ref=e304]:
+                  - link "Temporal support" [ref=e305] [cursor=pointer]:
+                    - /url: /cloud/support
+                  - text: provides guidance on all of the above.
+                - heading "Cost ManagementDirect link to Cost Management" [level=2] [ref=e306]:
+                  - text: Cost Management
+                  - link "Direct link to Cost Management" [ref=e307] [cursor=pointer]:
+                    - /url: "#cost-management"
+                    - text: "#"
+                - paragraph [ref=e308]: Running a mission critical, global Temporal Service can be expensive. Temporal Server is a complex system to run and scale. Temporal recommends performance testing and planning scaling as your performance requirements evolve. Following our guidance can oversize your self-hosted Temporal Server installs, but this is necessary to handle unpredictable spiky workloads. Performance testing can help you right-size your environments. Running mission critical Temporal as a Service requires multiple Temporal Clusters for high availability and global coverage.
+                - paragraph [ref=e309]: It is a good practice to have trained, experienced administrators familiar with Temporal Service architecture to maintain your Temporal servers and provide a mission critical service. Staffing, training and skill development can be significant costs to maintaining a Temporal Service.
+                - paragraph [ref=e310]:
+                  - link "Temporal Cloud" [ref=e311] [cursor=pointer]:
+                    - /url: https://temporal.io/cloud
+                  - text: can be significantly less expensive to set up and scale.
+              - generic [ref=e312]:
+                - generic [ref=e314]:
+                  - text: "Tags:"
+                  - list [ref=e315]:
+                    - listitem [ref=e316]:
+                      - link "Temporal Service" [ref=e317] [cursor=pointer]:
+                        - /url: /tags/temporal-service
+                    - listitem [ref=e318]:
+                      - link "Self-hosting" [ref=e319] [cursor=pointer]:
+                        - /url: /tags/self-hosting
+                    - listitem [ref=e320]:
+                      - link "Durable Execution" [ref=e321] [cursor=pointer]:
+                        - /url: /tags/durable-execution
+                - paragraph [ref=e325]:
+                  - text: Help us make Temporal better. Contribute to our
+                  - link "documentation" [ref=e326] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation
+                  - text: .
+            - navigation "Docs pages" [ref=e328]:
+              - link "Previous « Deployment" [ref=e329] [cursor=pointer]:
+                - /url: /self-hosted-guide/deployment
+                - generic [ref=e330]: Previous
+                - generic [ref=e331]: « Deployment
+              - link "Next Configurable defaults »" [ref=e332] [cursor=pointer]:
+                - /url: /self-hosted-guide/defaults
+                - generic [ref=e333]: Next
+                - generic [ref=e334]: Configurable defaults »
+          - list [ref=e337]:
+            - listitem [ref=e338]:
+              - link "Self-Hosting Challenge Areas" [ref=e339] [cursor=pointer]:
+                - /url: "#self-hosting-challenge-areas"
+            - listitem [ref=e340]:
+              - link "Scalability with Variable or Growing Workloads" [ref=e341] [cursor=pointer]:
+                - /url: "#scaling-and-metrics"
+            - listitem [ref=e342]:
+              - link "Availability" [ref=e343] [cursor=pointer]:
+                - /url: "#availability"
+            - listitem [ref=e344]:
+              - link "Management and Control Plane" [ref=e345] [cursor=pointer]:
+                - /url: "#management-and-control-plane"
+            - listitem [ref=e346]:
+              - link "Maintenance and Upgrades" [ref=e347] [cursor=pointer]:
+                - /url: "#maintenance-and-upgrades"
+            - listitem [ref=e348]:
+              - link "Expert Support" [ref=e349] [cursor=pointer]:
+                - /url: "#expert-support"
+            - listitem [ref=e350]:
+              - link "Cost Management" [ref=e351] [cursor=pointer]:
+                - /url: "#cost-management"
+    - contentinfo [ref=e352]:
+      - generic [ref=e353]:
+        - generic [ref=e354]:
+          - list [ref=e356]:
+            - listitem [ref=e357]:
+              - link "GitHub" [ref=e358] [cursor=pointer]:
+                - /url: https://github.com/temporalio
+                - text: GitHub
+                - img [ref=e359]
+            - listitem [ref=e361]:
+              - link "Twitter" [ref=e362] [cursor=pointer]:
+                - /url: https://twitter.com/temporalio
+                - text: Twitter
+                - img [ref=e363]
+            - listitem [ref=e365]:
+              - link "YouTube" [ref=e366] [cursor=pointer]:
+                - /url: https://www.youtube.com/c/Temporalio
+                - text: YouTube
+                - img [ref=e367]
+            - listitem [ref=e369]:
+              - link "About the docs" [ref=e370] [cursor=pointer]:
+                - /url: https://github.com/temporalio/documentation/blob/master/README.md
+                - text: About the docs
+                - img [ref=e371]
+          - list [ref=e374]:
+            - listitem [ref=e375]:
+              - link "Temporal Cloud" [ref=e376] [cursor=pointer]:
+                - /url: https://temporal.io/cloud
+                - text: Temporal Cloud
+                - img [ref=e377]
+            - listitem [ref=e379]:
+              - link "Meetups" [ref=e380] [cursor=pointer]:
+                - /url: https://temporal.io/community#events
+                - text: Meetups
+                - img [ref=e381]
+            - listitem [ref=e383]:
+              - link "Workshops" [ref=e384] [cursor=pointer]:
+                - /url: https://temporal.io/community#workshops
+                - text: Workshops
+                - img [ref=e385]
+            - listitem [ref=e387]:
+              - link "Support forum" [ref=e388] [cursor=pointer]:
+                - /url: https://community.temporal.io/
+                - text: Support forum
+                - img [ref=e389]
+            - listitem [ref=e391]:
+              - link "Ask an expert" [ref=e392] [cursor=pointer]:
+                - /url: https://pages.temporal.io/ask-an-expert
+                - text: Ask an expert
+                - img [ref=e393]
+          - list [ref=e396]:
+            - listitem [ref=e397]:
+              - link "Learn Temporal" [ref=e398] [cursor=pointer]:
+                - /url: https://learn.temporal.io
+                - text: Learn Temporal
+                - img [ref=e399]
+            - listitem [ref=e401]:
+              - link "Blog" [ref=e402] [cursor=pointer]:
+                - /url: https://temporal.io/blog
+                - text: Blog
+                - img [ref=e403]
+            - listitem [ref=e405]:
+              - link "Use cases" [ref=e406] [cursor=pointer]:
+                - /url: https://temporal.io/use-cases
+                - text: Use cases
+                - img [ref=e407]
+            - listitem [ref=e409]:
+              - link "Newsletter signup" [ref=e410] [cursor=pointer]:
+                - /url: https://pages.temporal.io/newsletter-subscribe
+                - text: Newsletter signup
+                - img [ref=e411]
+          - list [ref=e414]:
+            - listitem [ref=e415]:
+              - link "Security" [ref=e416] [cursor=pointer]:
+                - /url: /security
+            - listitem [ref=e417]:
+              - link "Privacy policy" [ref=e418] [cursor=pointer]:
+                - /url: https://temporal.io/global-privacy-policy
+            - listitem [ref=e419]:
+              - link "Terms of service" [ref=e420] [cursor=pointer]:
+                - /url: https://docs.temporal.io/pdf/temporal-tos-2021-07-24.pdf
+                - text: Terms of service
+                - img [ref=e421]
+            - listitem [ref=e423]:
+              - link "We're hiring" [ref=e424] [cursor=pointer]:
+                - /url: https://temporal.io/careers
+                - text: We're hiring
+                - img [ref=e425]
+        - generic [ref=e427]:
+          - link "Temporal logo" [ref=e429] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e430]
+          - generic [ref=e431]: Copyright © 2025 Temporal Technologies Inc.
+  - generic [ref=e432] [cursor=pointer]:
+    - img [ref=e434]
+    - generic: Feedback
+```

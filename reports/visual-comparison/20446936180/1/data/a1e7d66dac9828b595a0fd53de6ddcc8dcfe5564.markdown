@@ -1,0 +1,838 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - region "Skip to main content":
+      - link "Skip to main content" [ref=e3] [cursor=pointer]:
+        - /url: "#__docusaurus_skipToContent_fallback"
+    - navigation "Main" [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - link "Temporal logo" [ref=e7] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e9]
+          - link "Home" [ref=e10] [cursor=pointer]:
+            - /url: /
+          - link "Courses" [ref=e11] [cursor=pointer]:
+            - /url: https://learn.temporal.io/getting_started/
+            - text: Courses
+            - img [ref=e12]
+          - link "SDKs" [ref=e14] [cursor=pointer]:
+            - /url: /develop
+          - link "AI Cookbook" [ref=e15] [cursor=pointer]:
+            - /url: /ai-cookbook
+          - link "Code Exchange" [ref=e16] [cursor=pointer]:
+            - /url: https://temporal.io/code-exchange
+            - text: Code Exchange
+            - img [ref=e17]
+          - link "Temporal Cloud" [ref=e19] [cursor=pointer]:
+            - /url: /cloud
+        - generic [ref=e20]:
+          - button "Ask AI" [ref=e21] [cursor=pointer]:
+            - img [ref=e22]
+            - generic [ref=e26]: Ask AI
+          - button "Switch between dark and light mode (currently system mode)" [ref=e28] [cursor=pointer]:
+            - img [ref=e29]
+          - button "Search (Ctrl+K)" [ref=e32] [cursor=pointer]:
+            - generic [ref=e33]:
+              - img [ref=e34]
+              - generic [ref=e36]: Search
+            - generic [ref=e37]:
+              - img [ref=e39]
+              - generic [ref=e41]: K
+    - generic [ref=e44]:
+      - complementary [ref=e45]:
+        - generic [ref=e47]:
+          - navigation "Docs sidebar" [ref=e48]:
+            - list [ref=e49]:
+              - listitem [ref=e50]:
+                - link "Documentation Home" [ref=e51] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=e52]:
+                - link "Quickstarts" [ref=e53] [cursor=pointer]:
+                  - /url: /quickstarts
+              - listitem [ref=e54]:
+                - generic [ref=e55]:
+                  - link "Evaluate" [ref=e56] [cursor=pointer]:
+                    - /url: /evaluate/
+                  - button "Collapse sidebar category 'Evaluate'" [expanded] [ref=e57] [cursor=pointer]
+                - list [ref=e58]:
+                  - listitem [ref=e59]:
+                    - link "Why Temporal" [ref=e60] [cursor=pointer]:
+                      - /url: /evaluate/why-temporal
+                  - listitem [ref=e61]:
+                    - link "Understanding Temporal" [ref=e62] [cursor=pointer]:
+                      - /url: /evaluate/understanding-temporal
+                  - listitem [ref=e63]:
+                    - generic [ref=e64]:
+                      - link "Features" [ref=e65] [cursor=pointer]:
+                        - /url: /evaluate/development-production-features/
+                      - button "Expand sidebar category 'Features'" [ref=e66] [cursor=pointer]
+                  - listitem [ref=e67]:
+                    - generic [ref=e68]:
+                      - link "Temporal Cloud" [ref=e69] [cursor=pointer]:
+                        - /url: /cloud/introduction
+                      - button "Expand sidebar category 'Temporal Cloud'" [ref=e70] [cursor=pointer]
+                  - listitem [ref=e71]:
+                    - link "Security" [ref=e72] [cursor=pointer]:
+                      - /url: /security
+                  - listitem [ref=e73]:
+                    - link "Use Cases" [ref=e74] [cursor=pointer]:
+                      - /url: /evaluate/use-cases-design-patterns
+              - listitem [ref=e75]:
+                - generic [ref=e76]:
+                  - link "Develop" [ref=e77] [cursor=pointer]:
+                    - /url: /develop/
+                  - button "Collapse sidebar category 'Develop'" [expanded] [ref=e78] [cursor=pointer]
+                - list [ref=e79]:
+                  - listitem [ref=e80]:
+                    - generic [ref=e81]:
+                      - link "Go SDK" [ref=e82] [cursor=pointer]:
+                        - /url: /develop/go/
+                      - button "Expand sidebar category 'Go SDK'" [ref=e83] [cursor=pointer]
+                  - listitem [ref=e84]:
+                    - generic [ref=e85]:
+                      - link "Java SDK" [ref=e86] [cursor=pointer]:
+                        - /url: /develop/java/
+                      - button "Expand sidebar category 'Java SDK'" [ref=e87] [cursor=pointer]
+                  - listitem [ref=e88]:
+                    - generic [ref=e89]:
+                      - link "PHP SDK" [ref=e90] [cursor=pointer]:
+                        - /url: /develop/php/
+                      - button "Expand sidebar category 'PHP SDK'" [ref=e91] [cursor=pointer]
+                  - listitem [ref=e92]:
+                    - generic [ref=e93]:
+                      - link "Python SDK" [ref=e94] [cursor=pointer]:
+                        - /url: /develop/python/
+                      - button "Expand sidebar category 'Python SDK'" [ref=e95] [cursor=pointer]
+                  - listitem [ref=e96]:
+                    - generic [ref=e97]:
+                      - link "TypeScript SDK" [ref=e98] [cursor=pointer]:
+                        - /url: /develop/typescript/
+                      - button "Expand sidebar category 'TypeScript SDK'" [ref=e99] [cursor=pointer]
+                  - listitem [ref=e100]:
+                    - generic [ref=e101]:
+                      - link ".NET SDK" [ref=e102] [cursor=pointer]:
+                        - /url: /develop/dotnet/
+                      - button "Expand sidebar category '.NET SDK'" [ref=e103] [cursor=pointer]
+                  - listitem [ref=e104]:
+                    - generic [ref=e105]:
+                      - link "Ruby SDK" [ref=e106] [cursor=pointer]:
+                        - /url: /develop/ruby/
+                      - button "Expand sidebar category 'Ruby SDK'" [ref=e107] [cursor=pointer]
+                  - listitem [ref=e108]:
+                    - link "Environment configuration" [ref=e109] [cursor=pointer]:
+                      - /url: /develop/environment-configuration
+                  - listitem [ref=e110]:
+                    - link "Activity retry simulator" [ref=e111] [cursor=pointer]:
+                      - /url: /develop/activity-retry-simulator
+                  - listitem [ref=e112]:
+                    - link "Worker performance" [ref=e113] [cursor=pointer]:
+                      - /url: /develop/worker-performance
+                  - listitem [ref=e114]:
+                    - link "Safe deployments" [ref=e115] [cursor=pointer]:
+                      - /url: /develop/safe-deployments
+                  - listitem [ref=e116]:
+                    - link "Plugins guide" [ref=e117] [cursor=pointer]:
+                      - /url: /develop/plugins-guide
+              - listitem [ref=e118]:
+                - generic [ref=e119]:
+                  - link "Deploy to production" [ref=e120] [cursor=pointer]:
+                    - /url: /production-deployment
+                  - button "Collapse sidebar category 'Deploy to production'" [expanded] [ref=e121] [cursor=pointer]
+                - list [ref=e122]:
+                  - listitem [ref=e123]:
+                    - generic [ref=e124]:
+                      - link "Temporal Cloud" [ref=e125] [cursor=pointer]:
+                        - /url: /cloud
+                      - button "Expand sidebar category 'Temporal Cloud'" [ref=e126] [cursor=pointer]
+                  - listitem [ref=e127]:
+                    - link "Codecs and Encryption" [ref=e128] [cursor=pointer]:
+                      - /url: /production-deployment/data-encryption
+                  - listitem [ref=e129]:
+                    - generic [ref=e130]:
+                      - link "Self-host" [ref=e131] [cursor=pointer]:
+                        - /url: /self-hosted-guide
+                      - button "Expand sidebar category 'Self-host'" [ref=e132] [cursor=pointer]
+                  - listitem [ref=e133]:
+                    - generic [ref=e134]:
+                      - link "Worker deployments" [ref=e135] [cursor=pointer]:
+                        - /url: /production-deployment/worker-deployments
+                      - button "Expand sidebar category 'Worker deployments'" [ref=e136] [cursor=pointer]
+              - listitem [ref=e137]:
+                - generic [ref=e138]:
+                  - link "CLI (temporal)" [ref=e139] [cursor=pointer]:
+                    - /url: /cli
+                  - button "Expand sidebar category 'CLI (temporal)'" [ref=e140] [cursor=pointer]
+              - listitem [ref=e141]:
+                - generic [ref=e142]:
+                  - link "References" [ref=e143] [cursor=pointer]:
+                    - /url: /references/
+                  - button "Collapse sidebar category 'References'" [expanded] [ref=e144] [cursor=pointer]
+                - list [ref=e145]:
+                  - listitem [ref=e146]:
+                    - link "Temporal Service metrics" [ref=e147] [cursor=pointer]:
+                      - /url: /references/cluster-metrics
+                  - listitem [ref=e148]:
+                    - link "Commands" [ref=e149] [cursor=pointer]:
+                      - /url: /references/commands
+                  - listitem [ref=e150]:
+                    - link "Cluster configuration" [ref=e151] [cursor=pointer]:
+                      - /url: /references/configuration
+                  - listitem [ref=e152]:
+                    - link "Dynamic configuration" [ref=e153] [cursor=pointer]:
+                      - /url: /references/dynamic-configuration
+                  - listitem [ref=e154]:
+                    - link "Errors" [ref=e155] [cursor=pointer]:
+                      - /url: /references/errors
+                  - listitem [ref=e156]:
+                    - link "Events" [ref=e157] [cursor=pointer]:
+                      - /url: /references/events
+                  - listitem [ref=e158]:
+                    - link "Environment configuration" [ref=e159] [cursor=pointer]:
+                      - /url: /references/client-environment-configuration
+                  - listitem [ref=e160]:
+                    - link "Failures" [ref=e161] [cursor=pointer]:
+                      - /url: /references/failures
+                  - listitem [ref=e162]:
+                    - link "Operations" [ref=e163] [cursor=pointer]:
+                      - /url: /references/operation-list
+                  - listitem [ref=e164]:
+                    - link "SDK metrics" [ref=e165] [cursor=pointer]:
+                      - /url: /references/sdk-metrics
+                  - listitem [ref=e166]:
+                    - link "Server options" [ref=e167] [cursor=pointer]:
+                      - /url: /references/server-options
+                  - listitem [ref=e168]:
+                    - link "Web UI config" [ref=e169] [cursor=pointer]:
+                      - /url: /references/web-ui-configuration
+                  - listitem [ref=e170]:
+                    - link "Web UI env vars" [ref=e171] [cursor=pointer]:
+                      - /url: /references/web-ui-environment-variables
+              - listitem [ref=e172]:
+                - generic [ref=e173]:
+                  - link "Troubleshooting" [ref=e174] [cursor=pointer]:
+                    - /url: /troubleshooting/
+                  - button "Expand sidebar category 'Troubleshooting'" [ref=e175] [cursor=pointer]
+              - listitem [ref=e176]:
+                - generic [ref=e177]:
+                  - link "Best Practices" [ref=e178] [cursor=pointer]:
+                    - /url: /best-practices/
+                  - button "Expand sidebar category 'Best Practices'" [ref=e179] [cursor=pointer]
+              - listitem [ref=e180]:
+                - generic [ref=e181]:
+                  - link "Encyclopedia" [ref=e182] [cursor=pointer]:
+                    - /url: /encyclopedia/
+                  - button "Expand sidebar category 'Encyclopedia'" [ref=e183] [cursor=pointer]
+              - listitem [ref=e184]:
+                - link "Glossary" [ref=e185] [cursor=pointer]:
+                  - /url: /glossary
+          - button "Collapse sidebar" [ref=e186] [cursor=pointer]:
+            - img [ref=e187]
+      - main [ref=e191]:
+        - generic [ref=e193]:
+          - generic [ref=e195]:
+            - article [ref=e196]:
+              - navigation "Breadcrumbs" [ref=e197]:
+                - list [ref=e198]:
+                  - listitem [ref=e199]:
+                    - link "Home page" [ref=e200] [cursor=pointer]:
+                      - /url: /
+                      - img [ref=e201]
+                  - listitem [ref=e203]:
+                    - link "References" [ref=e204] [cursor=pointer]:
+                      - /url: /references/
+                  - listitem [ref=e205]:
+                    - generic [ref=e206]: Web UI env vars
+              - generic [ref=e207]:
+                - heading "Temporal Web UI environment variables reference" [level=1] [ref=e209]
+                - paragraph [ref=e210]: You can use environment variables to dynamically alter the configuration of your Temporal Web UI.
+                - paragraph [ref=e211]: "These can be used in many environments, such as with Docker. For example:"
+                - generic [ref=e213]:
+                  - code [ref=e215]:
+                    - generic [ref=e216]: docker run\
+                    - generic [ref=e217]: "-e TEMPORAL_ADDRESS=127.0.0.1:7233\\"
+                    - generic [ref=e218]: "-e TEMPORAL_UI_PORT=8080\\"
+                    - generic [ref=e219]: "-e TEMPORAL_UI_PUBLIC_PATH=path/to/webui\\"
+                    - generic [ref=e220]: "-e TEMPORAL_UI_ENABLED=true\\"
+                    - generic [ref=e221]: "-e TEMPORAL_BANNER_TEXT=\"Some banner text\"\\"
+                    - generic [ref=e222]: "-e TEMPORAL_CLOUD_UI=false\\"
+                    - generic [ref=e223]: "-e TEMPORAL_DEFAULT_NAMESPACE=default\\"
+                    - generic [ref=e224]: "-e TEMPORAL_FEEDBACK_URL=https://feedback.here\\"
+                    - generic [ref=e225]: "-e TEMPORAL_NOTIFY_ON_NEW_VERSION=true\\"
+                    - generic [ref=e226]: "-e TEMPORAL_CONFIG_REFRESH_INTERVAL=0s\\"
+                    - generic [ref=e227]: "-e TEMPORAL_SHOW_TEMPORAL_SYSTEM_NAMESPACE=false\\"
+                    - generic [ref=e228]: "-e TEMPORAL_DISABLE_WRITE_ACTIONS=false\\"
+                    - generic [ref=e229]: "-e TEMPORAL_AUTH_ENABLED=true\\"
+                    - generic [ref=e230]: "-e TEMPORAL_AUTH_TYPE=oidc\\"
+                    - generic [ref=e231]: "-e TEMPORAL_AUTH_PROVIDER_URL=https://accounts.google.com\\"
+                    - generic [ref=e232]: "-e TEMPORAL_AUTH_ISSUER_URL=https://accounts.google.com\\"
+                    - generic [ref=e233]: "-e TEMPORAL_AUTH_CLIENT_ID=xxxxx-xxxx.apps.googleusercontent.com\\"
+                    - generic [ref=e234]: "-e TEMPORAL_AUTH_CLIENT_SECRET=xxxxxxxxxxxxxxx\\"
+                    - generic [ref=e235]: "-e TEMPORAL_AUTH_CALLBACK_URL=https://xxxx.com:8080/auth/sso/callback\\"
+                    - generic [ref=e236]: "-e TEMPORAL_AUTH_SCOPES=openid,email,profile\\"
+                    - generic [ref=e237]: "-e TEMPORAL_TLS_CA=../ca.cert\\"
+                    - generic [ref=e238]: "-e TEMPORAL_TLS_CERT=../cluster.pem\\"
+                    - generic [ref=e239]: "-e TEMPORAL_TLS_KEY=../cluster.key\\"
+                    - generic [ref=e240]: "-e TEMPORAL_TLS_ENABLE_HOST_VERIFICATION=true\\"
+                    - generic [ref=e241]: "-e TEMPORAL_TLS_SERVER_NAME=tls-server\\"
+                    - generic [ref=e242]: "-e TEMPORAL_CODEC_ENDPOINT=https://codec.server\\"
+                    - generic [ref=e243]: "-e TEMPORAL_CODEC_PASS_ACCESS_TOKEN=false\\"
+                    - generic [ref=e244]: "-e TEMPORAL_CODEC_INCLUDE_CREDENTIALS=false\\"
+                    - generic [ref=e245]: "-e TEMPORAL_HIDE_LOGS=false\\"
+                    - generic [ref=e246]: temporalio/ui:<tag>
+                  - button "Copy code to clipboard" [ref=e248] [cursor=pointer]:
+                    - generic [ref=e249]:
+                      - img [ref=e250]
+                      - img [ref=e252]
+                - paragraph [ref=e254]:
+                  - text: The environment variables are defined in the
+                  - link "UI server configuration template file" [ref=e255] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/ui-server/blob/main/config/docker.yaml
+                  - text: and described in more detail below.
+                - heading "TEMPORAL_ADDRESSDirect link to temporal_address" [level=2] [ref=e256]:
+                  - code [ref=e257]: TEMPORAL_ADDRESS
+                  - link "Direct link to temporal_address" [ref=e258] [cursor=pointer]:
+                    - /url: "#temporal_address"
+                    - text: "#"
+                - paragraph [ref=e259]:
+                  - text: The
+                  - link "Frontend Service" [ref=e260] [cursor=pointer]:
+                    - /url: /temporal-service/temporal-server#frontend-service
+                  - text: address for the Temporal Cluster. This variable can be set
+                  - link "in the base configuration file" [ref=e261] [cursor=pointer]:
+                    - /url: /references/web-ui-configuration#temporalgrpcaddress
+                  - text: using
+                  - code [ref=e262]: temporalGrpcAddress
+                  - text: .
+                - paragraph [ref=e263]: This variable is required for setting other environment variables.
+                - heading "TEMPORAL_UI_PORTDirect link to temporal_ui_port" [level=2] [ref=e264]:
+                  - code [ref=e265]: TEMPORAL_UI_PORT
+                  - link "Direct link to temporal_ui_port" [ref=e266] [cursor=pointer]:
+                    - /url: "#temporal_ui_port"
+                    - text: "#"
+                - paragraph [ref=e267]: The port used by the Temporal WebUI Server and the HTTP API.
+                - paragraph [ref=e268]:
+                  - text: This variable is needed for
+                  - code [ref=e269]: TEMPORAL_OPENAPI_ENABLED
+                  - text: and all auth-related settings to work properly.
+                - heading "TEMPORAL_UI_PUBLIC_PATHDirect link to temporal_ui_public_path" [level=2] [ref=e270]:
+                  - code [ref=e271]: TEMPORAL_UI_PUBLIC_PATH
+                  - link "Direct link to temporal_ui_public_path" [ref=e272] [cursor=pointer]:
+                    - /url: "#temporal_ui_public_path"
+                    - text: "#"
+                - paragraph [ref=e273]: Stores a value such as "" or "/custom-path" that allows the UI to be served from a subpath.
+                - heading "TEMPORAL_UI_ENABLEDDirect link to temporal_ui_enabled" [level=2] [ref=e274]:
+                  - code [ref=e275]: TEMPORAL_UI_ENABLED
+                  - link "Direct link to temporal_ui_enabled" [ref=e276] [cursor=pointer]:
+                    - /url: "#temporal_ui_enabled"
+                    - text: "#"
+                - paragraph [ref=e277]:
+                  - text: Enables or disables the
+                  - link "browser UI" [ref=e278] [cursor=pointer]:
+                    - /url: /references/web-ui-configuration#enableui
+                  - text: for the Temporal Cluster.
+                - paragraph [ref=e279]: Enabling the browser UI allows the Server to be accessed from your web browser. If disabled, the server cannot be viewed on the web, but the UI server APIs remain available for use.
+                - heading "TEMPORAL_BANNER_TEXTDirect link to temporal_banner_text" [level=2] [ref=e280]:
+                  - code [ref=e281]: TEMPORAL_BANNER_TEXT
+                  - link "Direct link to temporal_banner_text" [ref=e282] [cursor=pointer]:
+                    - /url: "#temporal_banner_text"
+                    - text: "#"
+                - paragraph [ref=e283]: Provides banner text to display on the Web UI.
+                - heading "TEMPORAL_CLOUD_UIDirect link to temporal_cloud_ui" [level=2] [ref=e284]:
+                  - code [ref=e285]: TEMPORAL_CLOUD_UI
+                  - link "Direct link to temporal_cloud_ui" [ref=e286] [cursor=pointer]:
+                    - /url: "#temporal_cloud_ui"
+                    - text: "#"
+                - paragraph [ref=e287]: If enabled, use the alternate UI from Temporal Cloud.
+                - heading "TEMPORAL_DEFAULT_NAMESPACEDirect link to temporal_default_namespace" [level=2] [ref=e288]:
+                  - code [ref=e289]: TEMPORAL_DEFAULT_NAMESPACE
+                  - link "Direct link to temporal_default_namespace" [ref=e290] [cursor=pointer]:
+                    - /url: "#temporal_default_namespace"
+                    - text: "#"
+                - paragraph [ref=e291]:
+                  - text: The default
+                  - link "Namespace" [ref=e292] [cursor=pointer]:
+                    - /url: /namespaces
+                  - text: that the Web UI opens first.
+                - heading "TEMPORAL_FEEDBACK_URLDirect link to temporal_feedback_url" [level=2] [ref=e293]:
+                  - code [ref=e294]: TEMPORAL_FEEDBACK_URL
+                  - link "Direct link to temporal_feedback_url" [ref=e295] [cursor=pointer]:
+                    - /url: "#temporal_feedback_url"
+                    - text: "#"
+                - paragraph [ref=e296]: The URL that users are directed to when they click the Feedback button in the UI.
+                - paragraph [ref=e297]: If not specified, this variable defaults to the UI's GitHub Issue page.
+                - heading "TEMPORAL_NOTIFY_ON_NEW_VERSIONDirect link to temporal_notify_on_new_version" [level=2] [ref=e298]:
+                  - code [ref=e299]: TEMPORAL_NOTIFY_ON_NEW_VERSION
+                  - link "Direct link to temporal_notify_on_new_version" [ref=e300] [cursor=pointer]:
+                    - /url: "#temporal_notify_on_new_version"
+                    - text: "#"
+                - paragraph [ref=e301]: Enables or disables notifications that appear in the UI whenever a newer version of the Temporal Cluster is available.
+                - heading "TEMPORAL_CONFIG_REFRESH_INTERVALDirect link to temporal_config_refresh_interval" [level=2] [ref=e302]:
+                  - code [ref=e303]: TEMPORAL_CONFIG_REFRESH_INTERVAL
+                  - link "Direct link to temporal_config_refresh_interval" [ref=e304] [cursor=pointer]:
+                    - /url: "#temporal_config_refresh_interval"
+                    - text: "#"
+                - paragraph [ref=e305]: Determines how often the UI Server reads the configuration file for new values.
+                - heading "TEMPORAL_SHOW_TEMPORAL_SYSTEM_NAMESPACEDirect link to temporal_show_temporal_system_namespace" [level=2] [ref=e306]:
+                  - code [ref=e307]: TEMPORAL_SHOW_TEMPORAL_SYSTEM_NAMESPACE
+                  - link "Direct link to temporal_show_temporal_system_namespace" [ref=e308] [cursor=pointer]:
+                    - /url: "#temporal_show_temporal_system_namespace"
+                    - text: "#"
+                - paragraph [ref=e309]: If enabled, shows the System Namespace that handles internal Temporal Workflows in the Web UI.
+                - heading "TEMPORAL_DISABLE_WRITE_ACTIONSDirect link to temporal_disable_write_actions" [level=2] [ref=e310]:
+                  - code [ref=e311]: TEMPORAL_DISABLE_WRITE_ACTIONS
+                  - link "Direct link to temporal_disable_write_actions" [ref=e312] [cursor=pointer]:
+                    - /url: "#temporal_disable_write_actions"
+                    - text: "#"
+                - paragraph [ref=e313]: Disables any button in the UI that allows the user to modify Workflows or Activities.
+                - heading "TEMPORAL_AUTH_ENABLEDDirect link to temporal_auth_enabled" [level=2] [ref=e314]:
+                  - code [ref=e315]: TEMPORAL_AUTH_ENABLED
+                  - link "Direct link to temporal_auth_enabled" [ref=e316] [cursor=pointer]:
+                    - /url: "#temporal_auth_enabled"
+                    - text: "#"
+                - paragraph [ref=e317]: Enables or disables Web UI authentication and authorization methods.
+                - paragraph [ref=e318]:
+                  - text: When enabled, the Web UI will use the provider information in the
+                  - link "UI configuration file" [ref=e319] [cursor=pointer]:
+                    - /url: /references/web-ui-configuration#auth
+                  - text: to verify the identity of users.
+                - paragraph [ref=e320]:
+                  - text: All auth-related variables can be defined when
+                  - code [ref=e321]: TEMPORAL_AUTH_ENABLED
+                  - text: is set to "true". Disabling the variable will retain given values.
+                - heading "TEMPORAL_AUTH_TYPEDirect link to temporal_auth_type" [level=2] [ref=e322]:
+                  - code [ref=e323]: TEMPORAL_AUTH_TYPE
+                  - link "Direct link to temporal_auth_type" [ref=e324] [cursor=pointer]:
+                    - /url: "#temporal_auth_type"
+                    - text: "#"
+                - paragraph [ref=e325]:
+                  - text: Specifies the type of authentication. Defaults to
+                  - code [ref=e326]: oidc
+                  - text: .
+                - heading "TEMPORAL_AUTH_PROVIDER_URLDirect link to temporal_auth_provider_url" [level=2] [ref=e327]:
+                  - code [ref=e328]: TEMPORAL_AUTH_PROVIDER_URL
+                  - link "Direct link to temporal_auth_provider_url" [ref=e329] [cursor=pointer]:
+                    - /url: "#temporal_auth_provider_url"
+                    - text: "#"
+                - paragraph [ref=e330]: The .well-known IDP discovery URL for authentication and authorization.
+                - paragraph [ref=e331]:
+                  - text: This can be set as in the UI server configuration with
+                  - link "auth" [ref=e332] [cursor=pointer]:
+                    - /url: /references/web-ui-configuration#auth
+                  - text: .
+                - heading "TEMPORAL_AUTH_ISSUER_URLDirect link to temporal_auth_issuer_url" [level=2] [ref=e333]:
+                  - code [ref=e334]: TEMPORAL_AUTH_ISSUER_URL
+                  - link "Direct link to temporal_auth_issuer_url" [ref=e335] [cursor=pointer]:
+                    - /url: "#temporal_auth_issuer_url"
+                    - text: "#"
+                - paragraph [ref=e336]: The URL for the authentication or authorization issuer.
+                - paragraph [ref=e337]: This value is only needed when the issuer differes from the auth provider URL.
+                - heading "TEMPORAL_AUTH_CLIENT_IDDirect link to temporal_auth_client_id" [level=2] [ref=e338]:
+                  - code [ref=e339]: TEMPORAL_AUTH_CLIENT_ID
+                  - link "Direct link to temporal_auth_client_id" [ref=e340] [cursor=pointer]:
+                    - /url: "#temporal_auth_client_id"
+                    - text: "#"
+                - paragraph [ref=e341]: The client ID used for authentication or authorization.
+                - paragraph [ref=e342]: This value is a required parameter.
+                - heading "TEMPORAL_AUTH_CLIENT_SECRETDirect link to temporal_auth_client_secret" [level=2] [ref=e343]:
+                  - code [ref=e344]: TEMPORAL_AUTH_CLIENT_SECRET
+                  - link "Direct link to temporal_auth_client_secret" [ref=e345] [cursor=pointer]:
+                    - /url: "#temporal_auth_client_secret"
+                    - text: "#"
+                - paragraph [ref=e346]: The client secret used for authentication and authorization.
+                - paragraph [ref=e347]: Client Secrets are used by the oAuth Client for authentication.
+                - heading "TEMPORAL_AUTH_CALLBACK_URLDirect link to temporal_auth_callback_url" [level=2] [ref=e348]:
+                  - code [ref=e349]: TEMPORAL_AUTH_CALLBACK_URL
+                  - link "Direct link to temporal_auth_callback_url" [ref=e350] [cursor=pointer]:
+                    - /url: "#temporal_auth_callback_url"
+                    - text: "#"
+                - paragraph [ref=e351]: The callback URL used by Temporal for authentication and authorization.
+                - paragraph [ref=e352]: Callback URLs are invoked by IDP after user has finished authenticating in IDP.
+                - heading "TEMPORAL_AUTH_SCOPESDirect link to temporal_auth_scopes" [level=2] [ref=e353]:
+                  - code [ref=e354]: TEMPORAL_AUTH_SCOPES
+                  - link "Direct link to temporal_auth_scopes" [ref=e355] [cursor=pointer]:
+                    - /url: "#temporal_auth_scopes"
+                    - text: "#"
+                - paragraph [ref=e356]:
+                  - text: Specifies a set of scopes for auth. Typically, this is
+                  - code [ref=e357]: openid
+                  - text: ","
+                  - code [ref=e358]: profile
+                  - text: ","
+                  - code [ref=e359]: email
+                  - text: .
+                - heading "TEMPORAL_TLS_CADirect link to temporal_tls_ca" [level=2] [ref=e360]:
+                  - code [ref=e361]: TEMPORAL_TLS_CA
+                  - link "Direct link to temporal_tls_ca" [ref=e362] [cursor=pointer]:
+                    - /url: "#temporal_tls_ca"
+                    - text: "#"
+                - paragraph [ref=e363]: The path for the Transport Layer Security (TLS) Certificate Authority file.
+                - paragraph [ref=e364]:
+                  - text: In order to
+                  - link "configure TLS for your server" [ref=e365] [cursor=pointer]:
+                    - /url: /references/web-ui-configuration#tls
+                  - text: ", you'll need a CA certificate issued by a trusted Certificate Authority. Set this variable to properly locate and use the file."
+                - heading "TEMPORAL_TLS_CERTDirect link to temporal_tls_cert" [level=2] [ref=e366]:
+                  - code [ref=e367]: TEMPORAL_TLS_CERT
+                  - link "Direct link to temporal_tls_cert" [ref=e368] [cursor=pointer]:
+                    - /url: "#temporal_tls_cert"
+                    - text: "#"
+                - paragraph [ref=e369]: The path for the Transport Layer Security (TLS) Certificate.
+                - paragraph [ref=e370]:
+                  - text: In order to
+                  - link "configure TLS for your server" [ref=e371] [cursor=pointer]:
+                    - /url: /references/web-ui-configuration#tls
+                  - text: ", you'll need a self-signed certificate. Set the path to allow the environment to locate and use the certificate."
+                - heading "TEMPORAL_TLS_KEYDirect link to temporal_tls_key" [level=2] [ref=e372]:
+                  - code [ref=e373]: TEMPORAL_TLS_KEY
+                  - link "Direct link to temporal_tls_key" [ref=e374] [cursor=pointer]:
+                    - /url: "#temporal_tls_key"
+                    - text: "#"
+                - paragraph [ref=e375]:
+                  - text: The path for the Transport Layer Security (TLS)
+                  - link "key file" [ref=e376] [cursor=pointer]:
+                    - /url: /references/web-ui-configuration#tls
+                  - text: .
+                - paragraph [ref=e377]: A key file is used to create private and public keys for encryption and signing. Together, these keys are used to create certificates.
+                - heading "TEMPORAL_TLS_CA_DATADirect link to temporal_tls_ca_data" [level=2] [ref=e378]:
+                  - code [ref=e379]: TEMPORAL_TLS_CA_DATA
+                  - link "Direct link to temporal_tls_ca_data" [ref=e380] [cursor=pointer]:
+                    - /url: "#temporal_tls_ca_data"
+                    - text: "#"
+                - paragraph [ref=e381]: Stores the data for a TLS CA file.
+                - paragraph [ref=e382]:
+                  - text: This variable can be used instead of providing a path for
+                  - code [ref=e383]: TEMPORAL_TLS_CA
+                  - text: .
+                - heading "TEMPORAL_TLS_CERT_DATADirect link to temporal_tls_cert_data" [level=2] [ref=e384]:
+                  - code [ref=e385]: TEMPORAL_TLS_CERT_DATA
+                  - link "Direct link to temporal_tls_cert_data" [ref=e386] [cursor=pointer]:
+                    - /url: "#temporal_tls_cert_data"
+                    - text: "#"
+                - paragraph [ref=e387]: Stores the data for a TLS cert file.
+                - paragraph [ref=e388]:
+                  - text: This variable can be used instead of providing a path for
+                  - code [ref=e389]: TEMPORAL_TLS_CERT
+                  - text: .
+                - heading "TEMPORAL_TLS_KEY_DATADirect link to temporal_tls_key_data" [level=2] [ref=e390]:
+                  - code [ref=e391]: TEMPORAL_TLS_KEY_DATA
+                  - link "Direct link to temporal_tls_key_data" [ref=e392] [cursor=pointer]:
+                    - /url: "#temporal_tls_key_data"
+                    - text: "#"
+                - paragraph [ref=e393]: Stores the data for a TLS key file.
+                - paragraph [ref=e394]:
+                  - text: This variable can be used instead of providing a path for
+                  - code [ref=e395]: TEMPORAL_TLS_KEY
+                  - text: .
+                - heading "TEMPORAL_TLS_ENABLE_HOST_VERIFICATIONDirect link to temporal_tls_enable_host_verification" [level=2] [ref=e396]:
+                  - code [ref=e397]: TEMPORAL_TLS_ENABLE_HOST_VERIFICATION
+                  - link "Direct link to temporal_tls_enable_host_verification" [ref=e398] [cursor=pointer]:
+                    - /url: "#temporal_tls_enable_host_verification"
+                    - text: "#"
+                - paragraph [ref=e399]:
+                  - text: Enables or disables
+                  - link "Transport Layer Security (TLS) host verification" [ref=e400] [cursor=pointer]:
+                    - /url: /references/web-ui-configuration#tls
+                  - text: .
+                - paragraph [ref=e401]: When enabled, TLS checks the Host Server to ensure that files are being sent to and from the correct URL.
+                - heading "TEMPORAL_TLS_SERVER_NAMEDirect link to temporal_tls_server_name" [level=2] [ref=e402]:
+                  - code [ref=e403]: TEMPORAL_TLS_SERVER_NAME
+                  - link "Direct link to temporal_tls_server_name" [ref=e404] [cursor=pointer]:
+                    - /url: "#temporal_tls_server_name"
+                    - text: "#"
+                - paragraph [ref=e405]:
+                  - text: The server on which to operate
+                  - link "Transport Layer Security (TLS) protocols" [ref=e406] [cursor=pointer]:
+                    - /url: /references/web-ui-configuration#tls
+                  - text: .
+                - paragraph [ref=e407]: TLS allows the current server to transmit encrypted files to other URLs without having to reveal itself. Because of this, TLS operates a go-between server.
+                - heading "TEMPORAL_CODEC_ENDPOINTDirect link to temporal_codec_endpoint" [level=2] [ref=e408]:
+                  - code [ref=e409]: TEMPORAL_CODEC_ENDPOINT
+                  - link "Direct link to temporal_codec_endpoint" [ref=e410] [cursor=pointer]:
+                    - /url: "#temporal_codec_endpoint"
+                    - text: "#"
+                - paragraph [ref=e411]:
+                  - text: The endpoint for the
+                  - link "Codec Server" [ref=e412] [cursor=pointer]:
+                    - /url: /codec-server
+                  - text: ", if configured."
+                - heading "TEMPORAL_CODEC_PASS_ACCESS_TOKENDirect link to temporal_codec_pass_access_token" [level=2] [ref=e413]:
+                  - code [ref=e414]: TEMPORAL_CODEC_PASS_ACCESS_TOKEN
+                  - link "Direct link to temporal_codec_pass_access_token" [ref=e415] [cursor=pointer]:
+                    - /url: "#temporal_codec_pass_access_token"
+                    - text: "#"
+                - paragraph [ref=e416]: Specifies whether to send a JWT access token as ‘authorization' header in requests with the Codec Server.
+                - heading "TEMPORAL_CODEC_INCLUDE_CREDENTIALSDirect link to temporal_codec_include_credentials" [level=2] [ref=e417]:
+                  - code [ref=e418]: TEMPORAL_CODEC_INCLUDE_CREDENTIALS
+                  - link "Direct link to temporal_codec_include_credentials" [ref=e419] [cursor=pointer]:
+                    - /url: "#temporal_codec_include_credentials"
+                    - text: "#"
+                - paragraph [ref=e420]: Specifies whether to include credentials along with requests to the Codec Server.
+                - heading "TEMPORAL_FORWARD_HEADERSDirect link to temporal_forward_headers" [level=2] [ref=e421]:
+                  - code [ref=e422]: TEMPORAL_FORWARD_HEADERS
+                  - link "Direct link to temporal_forward_headers" [ref=e423] [cursor=pointer]:
+                    - /url: "#temporal_forward_headers"
+                    - text: "#"
+                - paragraph [ref=e424]: Forward-specified HTTP headers to direct from HTTP API requests to the Temporal gRPC backend. This is a comma-delimited list of the HTTP headers to be forwarded.
+                - heading "TEMPORAL_HIDE_LOGSDirect link to temporal_hide_logs" [level=2] [ref=e425]:
+                  - code [ref=e426]: TEMPORAL_HIDE_LOGS
+                  - link "Direct link to temporal_hide_logs" [ref=e427] [cursor=pointer]:
+                    - /url: "#temporal_hide_logs"
+                    - text: "#"
+                - paragraph [ref=e428]: If enabled, does not print logs from the Temporal Service.
+              - generic [ref=e429]:
+                - generic [ref=e431]:
+                  - text: "Tags:"
+                  - list [ref=e432]:
+                    - listitem [ref=e433]:
+                      - link "Reference" [ref=e434] [cursor=pointer]:
+                        - /url: /tags/reference
+                    - listitem [ref=e435]:
+                      - link "Temporal Web UI" [ref=e436] [cursor=pointer]:
+                        - /url: /tags/temporal-web-ui
+                - paragraph [ref=e440]:
+                  - text: Help us make Temporal better. Contribute to our
+                  - link "documentation" [ref=e441] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation
+                  - text: .
+            - navigation "Docs pages" [ref=e443]:
+              - link "Previous « Web UI config" [ref=e444] [cursor=pointer]:
+                - /url: /references/web-ui-configuration
+                - generic [ref=e445]: Previous
+                - generic [ref=e446]: « Web UI config
+              - link "Next Troubleshooting »" [ref=e447] [cursor=pointer]:
+                - /url: /troubleshooting/
+                - generic [ref=e448]: Next
+                - generic [ref=e449]: Troubleshooting »
+          - list [ref=e452]:
+            - listitem [ref=e453]:
+              - link "TEMPORAL_ADDRESS" [ref=e454] [cursor=pointer]:
+                - /url: "#temporal_address"
+                - code [ref=e455]: TEMPORAL_ADDRESS
+            - listitem [ref=e456]:
+              - link "TEMPORAL_UI_PORT" [ref=e457] [cursor=pointer]:
+                - /url: "#temporal_ui_port"
+                - code [ref=e458]: TEMPORAL_UI_PORT
+            - listitem [ref=e459]:
+              - link "TEMPORAL_UI_PUBLIC_PATH" [ref=e460] [cursor=pointer]:
+                - /url: "#temporal_ui_public_path"
+                - code [ref=e461]: TEMPORAL_UI_PUBLIC_PATH
+            - listitem [ref=e462]:
+              - link "TEMPORAL_UI_ENABLED" [ref=e463] [cursor=pointer]:
+                - /url: "#temporal_ui_enabled"
+                - code [ref=e464]: TEMPORAL_UI_ENABLED
+            - listitem [ref=e465]:
+              - link "TEMPORAL_BANNER_TEXT" [ref=e466] [cursor=pointer]:
+                - /url: "#temporal_banner_text"
+                - code [ref=e467]: TEMPORAL_BANNER_TEXT
+            - listitem [ref=e468]:
+              - link "TEMPORAL_CLOUD_UI" [ref=e469] [cursor=pointer]:
+                - /url: "#temporal_cloud_ui"
+                - code [ref=e470]: TEMPORAL_CLOUD_UI
+            - listitem [ref=e471]:
+              - link "TEMPORAL_DEFAULT_NAMESPACE" [ref=e472] [cursor=pointer]:
+                - /url: "#temporal_default_namespace"
+                - code [ref=e473]: TEMPORAL_DEFAULT_NAMESPACE
+            - listitem [ref=e474]:
+              - link "TEMPORAL_FEEDBACK_URL" [ref=e475] [cursor=pointer]:
+                - /url: "#temporal_feedback_url"
+                - code [ref=e476]: TEMPORAL_FEEDBACK_URL
+            - listitem [ref=e477]:
+              - link "TEMPORAL_NOTIFY_ON_NEW_VERSION" [ref=e478] [cursor=pointer]:
+                - /url: "#temporal_notify_on_new_version"
+                - code [ref=e479]: TEMPORAL_NOTIFY_ON_NEW_VERSION
+            - listitem [ref=e480]:
+              - link "TEMPORAL_CONFIG_REFRESH_INTERVAL" [ref=e481] [cursor=pointer]:
+                - /url: "#temporal_config_refresh_interval"
+                - code [ref=e482]: TEMPORAL_CONFIG_REFRESH_INTERVAL
+            - listitem [ref=e483]:
+              - link "TEMPORAL_SHOW_TEMPORAL_SYSTEM_NAMESPACE" [ref=e484] [cursor=pointer]:
+                - /url: "#temporal_show_temporal_system_namespace"
+                - code [ref=e485]: TEMPORAL_SHOW_TEMPORAL_SYSTEM_NAMESPACE
+            - listitem [ref=e486]:
+              - link "TEMPORAL_DISABLE_WRITE_ACTIONS" [ref=e487] [cursor=pointer]:
+                - /url: "#temporal_disable_write_actions"
+                - code [ref=e488]: TEMPORAL_DISABLE_WRITE_ACTIONS
+            - listitem [ref=e489]:
+              - link "TEMPORAL_AUTH_ENABLED" [ref=e490] [cursor=pointer]:
+                - /url: "#temporal_auth_enabled"
+                - code [ref=e491]: TEMPORAL_AUTH_ENABLED
+            - listitem [ref=e492]:
+              - link "TEMPORAL_AUTH_TYPE" [ref=e493] [cursor=pointer]:
+                - /url: "#temporal_auth_type"
+                - code [ref=e494]: TEMPORAL_AUTH_TYPE
+            - listitem [ref=e495]:
+              - link "TEMPORAL_AUTH_PROVIDER_URL" [ref=e496] [cursor=pointer]:
+                - /url: "#temporal_auth_provider_url"
+                - code [ref=e497]: TEMPORAL_AUTH_PROVIDER_URL
+            - listitem [ref=e498]:
+              - link "TEMPORAL_AUTH_ISSUER_URL" [ref=e499] [cursor=pointer]:
+                - /url: "#temporal_auth_issuer_url"
+                - code [ref=e500]: TEMPORAL_AUTH_ISSUER_URL
+            - listitem [ref=e501]:
+              - link "TEMPORAL_AUTH_CLIENT_ID" [ref=e502] [cursor=pointer]:
+                - /url: "#temporal_auth_client_id"
+                - code [ref=e503]: TEMPORAL_AUTH_CLIENT_ID
+            - listitem [ref=e504]:
+              - link "TEMPORAL_AUTH_CLIENT_SECRET" [ref=e505] [cursor=pointer]:
+                - /url: "#temporal_auth_client_secret"
+                - code [ref=e506]: TEMPORAL_AUTH_CLIENT_SECRET
+            - listitem [ref=e507]:
+              - link "TEMPORAL_AUTH_CALLBACK_URL" [ref=e508] [cursor=pointer]:
+                - /url: "#temporal_auth_callback_url"
+                - code [ref=e509]: TEMPORAL_AUTH_CALLBACK_URL
+            - listitem [ref=e510]:
+              - link "TEMPORAL_AUTH_SCOPES" [ref=e511] [cursor=pointer]:
+                - /url: "#temporal_auth_scopes"
+                - code [ref=e512]: TEMPORAL_AUTH_SCOPES
+            - listitem [ref=e513]:
+              - link "TEMPORAL_TLS_CA" [ref=e514] [cursor=pointer]:
+                - /url: "#temporal_tls_ca"
+                - code [ref=e515]: TEMPORAL_TLS_CA
+            - listitem [ref=e516]:
+              - link "TEMPORAL_TLS_CERT" [ref=e517] [cursor=pointer]:
+                - /url: "#temporal_tls_cert"
+                - code [ref=e518]: TEMPORAL_TLS_CERT
+            - listitem [ref=e519]:
+              - link "TEMPORAL_TLS_KEY" [ref=e520] [cursor=pointer]:
+                - /url: "#temporal_tls_key"
+                - code [ref=e521]: TEMPORAL_TLS_KEY
+            - listitem [ref=e522]:
+              - link "TEMPORAL_TLS_CA_DATA" [ref=e523] [cursor=pointer]:
+                - /url: "#temporal_tls_ca_data"
+                - code [ref=e524]: TEMPORAL_TLS_CA_DATA
+            - listitem [ref=e525]:
+              - link "TEMPORAL_TLS_CERT_DATA" [ref=e526] [cursor=pointer]:
+                - /url: "#temporal_tls_cert_data"
+                - code [ref=e527]: TEMPORAL_TLS_CERT_DATA
+            - listitem [ref=e528]:
+              - link "TEMPORAL_TLS_KEY_DATA" [ref=e529] [cursor=pointer]:
+                - /url: "#temporal_tls_key_data"
+                - code [ref=e530]: TEMPORAL_TLS_KEY_DATA
+            - listitem [ref=e531]:
+              - link "TEMPORAL_TLS_ENABLE_HOST_VERIFICATION" [ref=e532] [cursor=pointer]:
+                - /url: "#temporal_tls_enable_host_verification"
+                - code [ref=e533]: TEMPORAL_TLS_ENABLE_HOST_VERIFICATION
+            - listitem [ref=e534]:
+              - link "TEMPORAL_TLS_SERVER_NAME" [ref=e535] [cursor=pointer]:
+                - /url: "#temporal_tls_server_name"
+                - code [ref=e536]: TEMPORAL_TLS_SERVER_NAME
+            - listitem [ref=e537]:
+              - link "TEMPORAL_CODEC_ENDPOINT" [ref=e538] [cursor=pointer]:
+                - /url: "#temporal_codec_endpoint"
+                - code [ref=e539]: TEMPORAL_CODEC_ENDPOINT
+            - listitem [ref=e540]:
+              - link "TEMPORAL_CODEC_PASS_ACCESS_TOKEN" [ref=e541] [cursor=pointer]:
+                - /url: "#temporal_codec_pass_access_token"
+                - code [ref=e542]: TEMPORAL_CODEC_PASS_ACCESS_TOKEN
+            - listitem [ref=e543]:
+              - link "TEMPORAL_CODEC_INCLUDE_CREDENTIALS" [ref=e544] [cursor=pointer]:
+                - /url: "#temporal_codec_include_credentials"
+                - code [ref=e545]: TEMPORAL_CODEC_INCLUDE_CREDENTIALS
+            - listitem [ref=e546]:
+              - link "TEMPORAL_FORWARD_HEADERS" [ref=e547] [cursor=pointer]:
+                - /url: "#temporal_forward_headers"
+                - code [ref=e548]: TEMPORAL_FORWARD_HEADERS
+            - listitem [ref=e549]:
+              - link "TEMPORAL_HIDE_LOGS" [ref=e550] [cursor=pointer]:
+                - /url: "#temporal_hide_logs"
+                - code [ref=e551]: TEMPORAL_HIDE_LOGS
+    - contentinfo [ref=e552]:
+      - generic [ref=e553]:
+        - generic [ref=e554]:
+          - list [ref=e556]:
+            - listitem [ref=e557]:
+              - link "GitHub" [ref=e558] [cursor=pointer]:
+                - /url: https://github.com/temporalio
+                - text: GitHub
+                - img [ref=e559]
+            - listitem [ref=e561]:
+              - link "Twitter" [ref=e562] [cursor=pointer]:
+                - /url: https://twitter.com/temporalio
+                - text: Twitter
+                - img [ref=e563]
+            - listitem [ref=e565]:
+              - link "YouTube" [ref=e566] [cursor=pointer]:
+                - /url: https://www.youtube.com/c/Temporalio
+                - text: YouTube
+                - img [ref=e567]
+            - listitem [ref=e569]:
+              - link "About the docs" [ref=e570] [cursor=pointer]:
+                - /url: https://github.com/temporalio/documentation/blob/master/README.md
+                - text: About the docs
+                - img [ref=e571]
+          - list [ref=e574]:
+            - listitem [ref=e575]:
+              - link "Temporal Cloud" [ref=e576] [cursor=pointer]:
+                - /url: https://temporal.io/cloud
+                - text: Temporal Cloud
+                - img [ref=e577]
+            - listitem [ref=e579]:
+              - link "Meetups" [ref=e580] [cursor=pointer]:
+                - /url: https://temporal.io/community#events
+                - text: Meetups
+                - img [ref=e581]
+            - listitem [ref=e583]:
+              - link "Workshops" [ref=e584] [cursor=pointer]:
+                - /url: https://temporal.io/community#workshops
+                - text: Workshops
+                - img [ref=e585]
+            - listitem [ref=e587]:
+              - link "Support forum" [ref=e588] [cursor=pointer]:
+                - /url: https://community.temporal.io/
+                - text: Support forum
+                - img [ref=e589]
+            - listitem [ref=e591]:
+              - link "Ask an expert" [ref=e592] [cursor=pointer]:
+                - /url: https://pages.temporal.io/ask-an-expert
+                - text: Ask an expert
+                - img [ref=e593]
+          - list [ref=e596]:
+            - listitem [ref=e597]:
+              - link "Learn Temporal" [ref=e598] [cursor=pointer]:
+                - /url: https://learn.temporal.io
+                - text: Learn Temporal
+                - img [ref=e599]
+            - listitem [ref=e601]:
+              - link "Blog" [ref=e602] [cursor=pointer]:
+                - /url: https://temporal.io/blog
+                - text: Blog
+                - img [ref=e603]
+            - listitem [ref=e605]:
+              - link "Use cases" [ref=e606] [cursor=pointer]:
+                - /url: https://temporal.io/use-cases
+                - text: Use cases
+                - img [ref=e607]
+            - listitem [ref=e609]:
+              - link "Newsletter signup" [ref=e610] [cursor=pointer]:
+                - /url: https://pages.temporal.io/newsletter-subscribe
+                - text: Newsletter signup
+                - img [ref=e611]
+          - list [ref=e614]:
+            - listitem [ref=e615]:
+              - link "Security" [ref=e616] [cursor=pointer]:
+                - /url: /security
+            - listitem [ref=e617]:
+              - link "Privacy policy" [ref=e618] [cursor=pointer]:
+                - /url: https://temporal.io/global-privacy-policy
+            - listitem [ref=e619]:
+              - link "Terms of service" [ref=e620] [cursor=pointer]:
+                - /url: https://docs.temporal.io/pdf/temporal-tos-2021-07-24.pdf
+                - text: Terms of service
+                - img [ref=e621]
+            - listitem [ref=e623]:
+              - link "We're hiring" [ref=e624] [cursor=pointer]:
+                - /url: https://temporal.io/careers
+                - text: We're hiring
+                - img [ref=e625]
+        - generic [ref=e627]:
+          - link "Temporal logo" [ref=e629] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e630]
+          - generic [ref=e631]: Copyright © 2025 Temporal Technologies Inc.
+  - generic [ref=e632] [cursor=pointer]:
+    - img [ref=e634]
+    - generic: Feedback
+```

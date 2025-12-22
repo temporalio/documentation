@@ -1,0 +1,668 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - region "Skip to main content":
+      - link "Skip to main content" [ref=e3] [cursor=pointer]:
+        - /url: "#__docusaurus_skipToContent_fallback"
+    - navigation "Main" [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - link "Temporal logo" [ref=e7] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e9]
+          - link "Home" [ref=e10] [cursor=pointer]:
+            - /url: /
+          - link "Courses" [ref=e11] [cursor=pointer]:
+            - /url: https://learn.temporal.io/getting_started/
+            - text: Courses
+            - img [ref=e12]
+          - link "SDKs" [ref=e14] [cursor=pointer]:
+            - /url: /develop
+          - link "AI Cookbook" [ref=e15] [cursor=pointer]:
+            - /url: /ai-cookbook
+          - link "Code Exchange" [ref=e16] [cursor=pointer]:
+            - /url: https://temporal.io/code-exchange
+            - text: Code Exchange
+            - img [ref=e17]
+          - link "Temporal Cloud" [ref=e19] [cursor=pointer]:
+            - /url: /cloud
+        - generic [ref=e20]:
+          - button "Ask AI" [ref=e21] [cursor=pointer]:
+            - img [ref=e22]
+            - generic [ref=e26]: Ask AI
+          - button "Switch between dark and light mode (currently system mode)" [ref=e28] [cursor=pointer]:
+            - img [ref=e29]
+          - button "Search (Ctrl+K)" [ref=e32] [cursor=pointer]:
+            - generic [ref=e33]:
+              - img [ref=e34]
+              - generic [ref=e36]: Search
+            - generic [ref=e37]:
+              - img [ref=e39]
+              - generic [ref=e41]: K
+    - generic [ref=e44]:
+      - complementary [ref=e45]:
+        - generic [ref=e47]:
+          - navigation "Docs sidebar" [ref=e48]:
+            - list [ref=e49]:
+              - listitem [ref=e50]:
+                - link "Documentation Home" [ref=e51] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=e52]:
+                - link "Quickstarts" [ref=e53] [cursor=pointer]:
+                  - /url: /quickstarts
+              - listitem [ref=e54]:
+                - generic [ref=e55]:
+                  - link "Evaluate" [ref=e56] [cursor=pointer]:
+                    - /url: /evaluate/
+                  - button "Collapse sidebar category 'Evaluate'" [expanded] [ref=e57] [cursor=pointer]
+                - list [ref=e58]:
+                  - listitem [ref=e59]:
+                    - link "Why Temporal" [ref=e60] [cursor=pointer]:
+                      - /url: /evaluate/why-temporal
+                  - listitem [ref=e61]:
+                    - link "Understanding Temporal" [ref=e62] [cursor=pointer]:
+                      - /url: /evaluate/understanding-temporal
+                  - listitem [ref=e63]:
+                    - generic [ref=e64]:
+                      - link "Features" [ref=e65] [cursor=pointer]:
+                        - /url: /evaluate/development-production-features/
+                      - button "Expand sidebar category 'Features'" [ref=e66] [cursor=pointer]
+                  - listitem [ref=e67]:
+                    - generic [ref=e68]:
+                      - link "Temporal Cloud" [ref=e69] [cursor=pointer]:
+                        - /url: /cloud/introduction
+                      - button "Expand sidebar category 'Temporal Cloud'" [ref=e70] [cursor=pointer]
+                  - listitem [ref=e71]:
+                    - link "Security" [ref=e72] [cursor=pointer]:
+                      - /url: /security
+                  - listitem [ref=e73]:
+                    - link "Use Cases" [ref=e74] [cursor=pointer]:
+                      - /url: /evaluate/use-cases-design-patterns
+              - listitem [ref=e75]:
+                - generic [ref=e76]:
+                  - link "Develop" [ref=e77] [cursor=pointer]:
+                    - /url: /develop/
+                  - button "Collapse sidebar category 'Develop'" [expanded] [ref=e78] [cursor=pointer]
+                - list [ref=e79]:
+                  - listitem [ref=e80]:
+                    - generic [ref=e81]:
+                      - link "Go SDK" [ref=e82] [cursor=pointer]:
+                        - /url: /develop/go/
+                      - button "Expand sidebar category 'Go SDK'" [ref=e83] [cursor=pointer]
+                  - listitem [ref=e84]:
+                    - generic [ref=e85]:
+                      - link "Java SDK" [ref=e86] [cursor=pointer]:
+                        - /url: /develop/java/
+                      - button "Expand sidebar category 'Java SDK'" [ref=e87] [cursor=pointer]
+                  - listitem [ref=e88]:
+                    - generic [ref=e89]:
+                      - link "PHP SDK" [ref=e90] [cursor=pointer]:
+                        - /url: /develop/php/
+                      - button "Expand sidebar category 'PHP SDK'" [ref=e91] [cursor=pointer]
+                  - listitem [ref=e92]:
+                    - generic [ref=e93]:
+                      - link "Python SDK" [ref=e94] [cursor=pointer]:
+                        - /url: /develop/python/
+                      - button "Expand sidebar category 'Python SDK'" [ref=e95] [cursor=pointer]
+                  - listitem [ref=e96]:
+                    - generic [ref=e97]:
+                      - link "TypeScript SDK" [ref=e98] [cursor=pointer]:
+                        - /url: /develop/typescript/
+                      - button "Expand sidebar category 'TypeScript SDK'" [ref=e99] [cursor=pointer]
+                  - listitem [ref=e100]:
+                    - generic [ref=e101]:
+                      - link ".NET SDK" [ref=e102] [cursor=pointer]:
+                        - /url: /develop/dotnet/
+                      - button "Expand sidebar category '.NET SDK'" [ref=e103] [cursor=pointer]
+                  - listitem [ref=e104]:
+                    - generic [ref=e105]:
+                      - link "Ruby SDK" [ref=e106] [cursor=pointer]:
+                        - /url: /develop/ruby/
+                      - button "Expand sidebar category 'Ruby SDK'" [ref=e107] [cursor=pointer]
+                  - listitem [ref=e108]:
+                    - link "Environment configuration" [ref=e109] [cursor=pointer]:
+                      - /url: /develop/environment-configuration
+                  - listitem [ref=e110]:
+                    - link "Activity retry simulator" [ref=e111] [cursor=pointer]:
+                      - /url: /develop/activity-retry-simulator
+                  - listitem [ref=e112]:
+                    - link "Worker performance" [ref=e113] [cursor=pointer]:
+                      - /url: /develop/worker-performance
+                  - listitem [ref=e114]:
+                    - link "Safe deployments" [ref=e115] [cursor=pointer]:
+                      - /url: /develop/safe-deployments
+                  - listitem [ref=e116]:
+                    - link "Plugins guide" [ref=e117] [cursor=pointer]:
+                      - /url: /develop/plugins-guide
+              - listitem [ref=e118]:
+                - generic [ref=e119]:
+                  - link "Deploy to production" [ref=e120] [cursor=pointer]:
+                    - /url: /production-deployment
+                  - button "Collapse sidebar category 'Deploy to production'" [expanded] [ref=e121] [cursor=pointer]
+                - list [ref=e122]:
+                  - listitem [ref=e123]:
+                    - generic [ref=e124]:
+                      - link "Temporal Cloud" [ref=e125] [cursor=pointer]:
+                        - /url: /cloud
+                      - button "Expand sidebar category 'Temporal Cloud'" [ref=e126] [cursor=pointer]
+                  - listitem [ref=e127]:
+                    - link "Codecs and Encryption" [ref=e128] [cursor=pointer]:
+                      - /url: /production-deployment/data-encryption
+                  - listitem [ref=e129]:
+                    - generic [ref=e130]:
+                      - link "Self-host" [ref=e131] [cursor=pointer]:
+                        - /url: /self-hosted-guide
+                      - button "Collapse sidebar category 'Self-host'" [expanded] [ref=e132] [cursor=pointer]
+                    - list [ref=e133]:
+                      - listitem [ref=e134]:
+                        - link "Deployment" [ref=e135] [cursor=pointer]:
+                          - /url: /self-hosted-guide/deployment
+                      - listitem [ref=e136]:
+                        - link "Production checklist" [ref=e137] [cursor=pointer]:
+                          - /url: /self-hosted-guide/production-checklist
+                      - listitem [ref=e138]:
+                        - link "Configurable defaults" [ref=e139] [cursor=pointer]:
+                          - /url: /self-hosted-guide/defaults
+                      - listitem [ref=e140]:
+                        - link "Security" [ref=e141] [cursor=pointer]:
+                          - /url: /self-hosted-guide/security
+                      - listitem [ref=e142]:
+                        - link "Monitoring" [ref=e143] [cursor=pointer]:
+                          - /url: /self-hosted-guide/monitoring
+                      - listitem [ref=e144]:
+                        - link "Visibility" [ref=e145] [cursor=pointer]:
+                          - /url: /self-hosted-guide/visibility
+                      - listitem [ref=e146]:
+                        - link "Upgrade server" [ref=e147] [cursor=pointer]:
+                          - /url: /self-hosted-guide/upgrade-server
+                      - listitem [ref=e148]:
+                        - link "Archival" [ref=e149] [cursor=pointer]:
+                          - /url: /self-hosted-guide/archival
+                      - listitem [ref=e150]:
+                        - link "Multi-Cluster Replication" [ref=e151] [cursor=pointer]:
+                          - /url: /self-hosted-guide/multi-cluster-replication
+                      - listitem [ref=e152]:
+                        - link "Temporal Nexus" [ref=e153] [cursor=pointer]:
+                          - /url: /production-deployment/self-hosted-guide/nexus
+                      - listitem [ref=e154]:
+                        - link "Server API" [ref=e155] [cursor=pointer]:
+                          - /url: /self-hosted-guide/server-frontend-api-reference
+                  - listitem [ref=e156]:
+                    - generic [ref=e157]:
+                      - link "Worker deployments" [ref=e158] [cursor=pointer]:
+                        - /url: /production-deployment/worker-deployments
+                      - button "Expand sidebar category 'Worker deployments'" [ref=e159] [cursor=pointer]
+              - listitem [ref=e160]:
+                - generic [ref=e161]:
+                  - link "CLI (temporal)" [ref=e162] [cursor=pointer]:
+                    - /url: /cli
+                  - button "Expand sidebar category 'CLI (temporal)'" [ref=e163] [cursor=pointer]
+              - listitem [ref=e164]:
+                - generic [ref=e165]:
+                  - link "References" [ref=e166] [cursor=pointer]:
+                    - /url: /references/
+                  - button "Expand sidebar category 'References'" [ref=e167] [cursor=pointer]
+              - listitem [ref=e168]:
+                - generic [ref=e169]:
+                  - link "Troubleshooting" [ref=e170] [cursor=pointer]:
+                    - /url: /troubleshooting/
+                  - button "Expand sidebar category 'Troubleshooting'" [ref=e171] [cursor=pointer]
+              - listitem [ref=e172]:
+                - generic [ref=e173]:
+                  - link "Best Practices" [ref=e174] [cursor=pointer]:
+                    - /url: /best-practices/
+                  - button "Expand sidebar category 'Best Practices'" [ref=e175] [cursor=pointer]
+              - listitem [ref=e176]:
+                - generic [ref=e177]:
+                  - link "Encyclopedia" [ref=e178] [cursor=pointer]:
+                    - /url: /encyclopedia/
+                  - button "Expand sidebar category 'Encyclopedia'" [ref=e179] [cursor=pointer]
+              - listitem [ref=e180]:
+                - link "Glossary" [ref=e181] [cursor=pointer]:
+                  - /url: /glossary
+          - button "Collapse sidebar" [ref=e182] [cursor=pointer]:
+            - img [ref=e183]
+      - main [ref=e187]:
+        - generic [ref=e189]:
+          - generic [ref=e191]:
+            - article [ref=e192]:
+              - navigation "Breadcrumbs" [ref=e193]:
+                - list [ref=e194]:
+                  - listitem [ref=e195]:
+                    - link "Home page" [ref=e196] [cursor=pointer]:
+                      - /url: /
+                      - img [ref=e197]
+                  - listitem [ref=e199]:
+                    - link "Deploy to production" [ref=e200] [cursor=pointer]:
+                      - /url: /production-deployment
+                  - listitem [ref=e201]:
+                    - link "Self-host" [ref=e202] [cursor=pointer]:
+                      - /url: /self-hosted-guide
+                  - listitem [ref=e203]:
+                    - generic [ref=e204]: Upgrade server
+              - generic [ref=e205]:
+                - heading "Upgrade the Temporal Server" [level=1] [ref=e207]
+                - heading "How to upgrade the Temporal Server versionDirect link to How to upgrade the Temporal Server version" [level=2] [ref=e208]:
+                  - text: How to upgrade the Temporal Server version
+                  - link "Direct link to How to upgrade the Temporal Server version" [ref=e209] [cursor=pointer]:
+                    - /url: "#upgrade-server"
+                    - text: "#"
+                - paragraph [ref=e210]:
+                  - text: If a newer version of the
+                  - link "Temporal Server" [ref=e211] [cursor=pointer]:
+                    - /url: /temporal-service/temporal-server
+                  - text: is available, a notification appears in the Temporal Web UI.
+                - generic [ref=e212]:
+                  - generic [ref=e213]:
+                    - img [ref=e215]
+                    - text: info
+                  - paragraph [ref=e218]:
+                    - text: If you are using a version that is older than 1.0.0, reach out to us at
+                    - link "community.temporal.io" [ref=e219] [cursor=pointer]:
+                      - /url: http://community.temporal.io
+                    - text: to ask how to upgrade.
+                - paragraph [ref=e220]:
+                  - text: First check to see if an upgrade to the database schema is required for the version you wish to upgrade to. If a database schema upgrade is required, it will be called out directly in the
+                  - link "release notes" [ref=e221] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/temporal/releases
+                  - text: . Some releases require changes to the schema, and some do not. We ensure that any consecutive versions are compatible in terms of database schema upgrades, features, and system behavior; however there is no guarantee that there is compatibility between
+                  - emphasis [ref=e222]: any
+                  - text: two non-consecutive versions.
+                - heading "Key considerationsDirect link to Key considerations" [level=3] [ref=e223]:
+                  - text: Key considerations
+                  - link "Direct link to Key considerations" [ref=e224] [cursor=pointer]:
+                    - /url: "#key-considerations"
+                    - text: "#"
+                - paragraph [ref=e225]: "When upgrading the Temporal Server, there are two key considerations to keep in mind:"
+                - list [ref=e226]:
+                  - listitem [ref=e227]:
+                    - paragraph [ref=e228]:
+                      - strong [ref=e229]: "Sequential Upgrades:"
+                      - text: Temporal Server should be upgraded sequentially. That is, if you're on version (v1.n.x), your next upgrade should be to (v1.n+1.x) or the closest available subsequent version. This sequence should be repeated until your desired version is reached.
+                  - listitem [ref=e230]:
+                    - paragraph [ref=e231]:
+                      - strong [ref=e232]: "Data Compatibility:"
+                      - text: During an upgrade, the Temporal Server either updates or restructures the existing version data to match the data format of the newer version. Temporal Server ensures backward compatibility only between two successive minor versions. Consequently, skipping versions during an upgrade may lead to older data formats becoming unreadable. If the previous data format cannot be interpreted and converted to the newer format, the upgrade process will be unsuccessful.
+                - heading "Step-by-Step Upgrade Procedure:Direct link to Step-by-Step Upgrade Procedure:" [level=3] [ref=e233]:
+                  - text: "Step-by-Step Upgrade Procedure:"
+                  - link "Direct link to Step-by-Step Upgrade Procedure:" [ref=e234] [cursor=pointer]:
+                    - /url: "#step-by-step-upgrade-procedure"
+                    - text: "#"
+                - paragraph [ref=e235]: Upgrading the Temporal Server requires a methodical approach to ensure data integrity, compatibility, and seamless transition between versions. The following documentation outlines the step-by-step process to successfully upgrade your Temporal Server.
+                - paragraph [ref=e236]: When upgrading your Temporal Server version, ensure that you upgrade sequentially.
+                - list [ref=e237]:
+                  - listitem [ref=e238]:
+                    - strong [ref=e239]: "Upgrade Database Schema:"
+                    - text: Before initiating the Temporal Server upgrade, use one of the recommended upgrade tools to update your database schema. This ensures it is aligned with the version of Temporal Server you aim to upgrade to.
+                  - listitem [ref=e240]:
+                    - strong [ref=e241]: "Upgrade Temporal Server:"
+                    - text: Once the database schema is updated, proceed to upgrade the Temporal Server deployment to the next sequential version.
+                  - listitem [ref=e242]:
+                    - strong [ref=e243]: Iterative Upgrades
+                    - text: "(optional): Continue this process (steps 1 and 2) iteratively until you reach the desired Temporal Server version."
+                - paragraph [ref=e244]: By adhering to the above guidelines and following the step-by-step procedure, you can ensure a smooth and successful upgrade of your Temporal Server.
+                - paragraph [ref=e245]: The Temporal Server upgrade updates or rewrites the old version data with the format introduced in the newer version. Because Temporal Server guarantees backward compatibility between two consecutive minor versions, and because older versions of the code are eventually removed from the code base, skipping versions when upgrading might cause older formats to become unrecognizable. If the old format of the data can't be read to be rewritten to the new format, the upgrades fail.
+                - paragraph [ref=e246]:
+                  - text: Check the
+                  - link "Temporal Server releases" [ref=e247] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/temporal/releases
+                  - text: and follow these releases in order. You can skip patch versions; use the latest patch of a minor version when upgrading.
+                - paragraph [ref=e248]: Also, be aware that each upgrade requires the History Service to load all Shards and update the Shard metadata, so allow approximately 10 minutes on each version for these processes to complete before upgrading to the next version.
+                - paragraph [ref=e249]: Use one of the upgrade tools to upgrade your database schema to be compatible with the Temporal Server version being upgraded to.
+                - paragraph [ref=e250]:
+                  - text: If you are using a schema tools version prior to Temporal Server v1.8.0, we strongly recommend
+                  - emphasis [ref=e251]: never
+                  - text: using the "dryrun" (
+                  - code [ref=e252]: "-y"
+                  - text: ", or"
+                  - code [ref=e253]: "--dryrun"
+                  - text: ) options in any of your schema update commands. Using this option might lead to potential loss of data, as when using it will create a new database and drop your existing one. This flag was removed in the 1.8.0 release.
+                - heading "Upgrade Cassandra schemaDirect link to Upgrade Cassandra schema" [level=3] [ref=e254]:
+                  - text: Upgrade Cassandra schema
+                  - link "Direct link to Upgrade Cassandra schema" [ref=e255] [cursor=pointer]:
+                    - /url: "#upgrade-cassandra-schema"
+                    - text: "#"
+                - paragraph [ref=e256]:
+                  - text: If you are using Cassandra for your Temporal Service's persistence, use the
+                  - code [ref=e257]: temporal-cassandra-tool
+                  - text: to upgrade both the default Persistence and Visibility schemas.
+                - paragraph [ref=e258]:
+                  - strong [ref=e259]: "Example default schema upgrade:"
+                - generic [ref=e261]:
+                  - code [ref=e263]:
+                    - generic [ref=e264]: temporal_v1.2.1 $ temporal-cassandra-tool \
+                    - generic [ref=e265]: "--tls \\"
+                    - generic [ref=e266]: "--tls-ca-file <...> \\"
+                    - generic [ref=e267]: "--user <cassandra-user> \\"
+                    - generic [ref=e268]: "--password <cassandra-password> \\"
+                    - generic [ref=e269]: "--endpoint <cassandra.example.com> \\"
+                    - generic [ref=e270]: "--keyspace temporal \\"
+                    - generic [ref=e271]: "--timeout 120 \\"
+                    - generic [ref=e272]: update \
+                    - generic [ref=e273]: "--schema-dir ./schema/cassandra/temporal/versioned"
+                  - button "Copy code to clipboard" [ref=e275] [cursor=pointer]:
+                    - generic [ref=e276]:
+                      - img [ref=e277]
+                      - img [ref=e279]
+                - paragraph [ref=e281]:
+                  - strong [ref=e282]: "Example visibility schema upgrade:"
+                - generic [ref=e284]:
+                  - code [ref=e286]:
+                    - generic [ref=e287]: temporal_v1.2.1 $ temporal-cassandra-tool \
+                    - generic [ref=e288]: "--tls \\"
+                    - generic [ref=e289]: "--tls-ca-file <...> \\"
+                    - generic [ref=e290]: "--user <cassandra-user> \\"
+                    - generic [ref=e291]: "--password <cassandra-password> \\"
+                    - generic [ref=e292]: "--endpoint <cassandra.example.com> \\"
+                    - generic [ref=e293]: "--keyspace temporal_visibility \\"
+                    - generic [ref=e294]: "--timeout 120 \\"
+                    - generic [ref=e295]: update \
+                    - generic [ref=e296]: "--schema-dir ./schema/cassandra/visibility/versioned"
+                  - button "Copy code to clipboard" [ref=e298] [cursor=pointer]:
+                    - generic [ref=e299]:
+                      - img [ref=e300]
+                      - img [ref=e302]
+                - heading "Upgrade PostgreSQL or MySQL schemaDirect link to Upgrade PostgreSQL or MySQL schema" [level=3] [ref=e304]:
+                  - text: Upgrade PostgreSQL or MySQL schema
+                  - link "Direct link to Upgrade PostgreSQL or MySQL schema" [ref=e305] [cursor=pointer]:
+                    - /url: "#upgrade-postgresql-or-mysql-schema"
+                    - text: "#"
+                - paragraph [ref=e306]:
+                  - text: If you are using MySQL or PostgreSQL use the
+                  - code [ref=e307]: temporal-sql-tool
+                  - text: ", which works similarly to the"
+                  - code [ref=e308]: temporal-cassandra-tool
+                  - text: .
+                - paragraph [ref=e309]:
+                  - text: Refer to this
+                  - link "Makefile" [ref=e310] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/temporal/blob/v1.4.1/Makefile#L367-L383
+                  - text: for context.
+                - heading "PostgreSQLDirect link to PostgreSQL" [level=4] [ref=e311]:
+                  - text: PostgreSQL
+                  - link "Direct link to PostgreSQL" [ref=e312] [cursor=pointer]:
+                    - /url: "#postgresql"
+                    - text: "#"
+                - paragraph [ref=e313]:
+                  - strong [ref=e314]: "Example default schema upgrade:"
+                - generic [ref=e316]:
+                  - code [ref=e318]:
+                    - generic [ref=e319]: ./temporal-sql-tool \
+                    - generic [ref=e320]: "--tls \\"
+                    - generic [ref=e321]: "--tls-enable-host-verification \\"
+                    - generic [ref=e322]: "--tls-cert-file <path to your client cert> \\"
+                    - generic [ref=e323]: "--tls-key-file <path to your client key> \\"
+                    - generic [ref=e324]: "--tls-ca-file <path to your CA> \\"
+                    - generic [ref=e325]: "--ep localhost -p 5432 -u temporal -pw temporal --pl postgres --db temporal update-schema -d ./schema/postgresql/v96/temporal/versioned"
+                  - generic [ref=e326]:
+                    - button "Toggle word wrap" [ref=e327] [cursor=pointer]:
+                      - img [ref=e328]
+                    - button "Copy code to clipboard" [ref=e330] [cursor=pointer]:
+                      - generic [ref=e331]:
+                        - img [ref=e332]
+                        - img [ref=e334]
+                - paragraph [ref=e336]:
+                  - strong [ref=e337]: "Example visibility schema upgrade:"
+                - generic [ref=e339]:
+                  - code [ref=e341]:
+                    - generic [ref=e342]: ./temporal-sql-tool \
+                    - generic [ref=e343]: "--tls \\"
+                    - generic [ref=e344]: "--tls-enable-host-verification \\"
+                    - generic [ref=e345]: "--tls-cert-file <path to your client cert> \\"
+                    - generic [ref=e346]: "--tls-key-file <path to your client key> \\"
+                    - generic [ref=e347]: "--tls-ca-file <path to your CA> \\"
+                    - generic [ref=e348]: "--ep localhost -p 5432 -u temporal -pw temporal --pl postgres --db temporal_visibility update-schema -d ./schema/postgresql/v96/visibility/versioned"
+                  - generic [ref=e349]:
+                    - button "Toggle word wrap" [ref=e350] [cursor=pointer]:
+                      - img [ref=e351]
+                    - button "Copy code to clipboard" [ref=e353] [cursor=pointer]:
+                      - generic [ref=e354]:
+                        - img [ref=e355]
+                        - img [ref=e357]
+                - paragraph [ref=e359]:
+                  - text: If you're upgrading PostgreSQL to v12 or later to enable advanced Visibility features with Temporal Server v1.20, upgrade your PostgreSQL version first, and then run
+                  - code [ref=e360]: temporal-sql-tool
+                  - text: with the
+                  - code [ref=e361]: postgres12
+                  - text: "plugin, as shown in the following example:"
+                - generic [ref=e363]:
+                  - code [ref=e365]:
+                    - generic [ref=e366]: ./temporal-sql-tool \
+                    - generic [ref=e367]: "--tls \\"
+                    - generic [ref=e368]: "--tls-enable-host-verification \\"
+                    - generic [ref=e369]: "--tls-cert-file <path to your client cert> \\"
+                    - generic [ref=e370]: "--tls-key-file <path to your client key> \\"
+                    - generic [ref=e371]: "--tls-ca-file <path to your CA> \\"
+                    - generic [ref=e372]: "--ep localhost -p 5432 -u temporal -pw temporal --pl postgres12 --db temporal_visibility update-schema -d ./schema/postgresql/v12/visibility/versioned"
+                  - generic [ref=e373]:
+                    - button "Toggle word wrap" [ref=e374] [cursor=pointer]:
+                      - img [ref=e375]
+                    - button "Copy code to clipboard" [ref=e377] [cursor=pointer]:
+                      - generic [ref=e378]:
+                        - img [ref=e379]
+                        - img [ref=e381]
+                - heading "MySQLDirect link to MySQL" [level=4] [ref=e383]:
+                  - text: MySQL
+                  - link "Direct link to MySQL" [ref=e384] [cursor=pointer]:
+                    - /url: "#mysql"
+                    - text: "#"
+                - paragraph [ref=e385]:
+                  - strong [ref=e386]: "Example default schema upgrade:"
+                - generic [ref=e388]:
+                  - code [ref=e390]:
+                    - generic [ref=e391]: ./temporal-sql-tool \
+                    - generic [ref=e392]: "--tls \\"
+                    - generic [ref=e393]: "--tls-enable-host-verification \\"
+                    - generic [ref=e394]: "--tls-cert-file <path to your client cert> \\"
+                    - generic [ref=e395]: "--tls-key-file <path to your client key> \\"
+                    - generic [ref=e396]: "--tls-ca-file <path to your CA> \\"
+                    - generic [ref=e397]: "--ep localhost -p 3036 -u root -pw root --pl mysql --db temporal update-schema -d ./schema/mysql/v57/temporal/versioned/"
+                  - generic [ref=e398]:
+                    - button "Toggle word wrap" [ref=e399] [cursor=pointer]:
+                      - img [ref=e400]
+                    - button "Copy code to clipboard" [ref=e402] [cursor=pointer]:
+                      - generic [ref=e403]:
+                        - img [ref=e404]
+                        - img [ref=e406]
+                - paragraph [ref=e408]:
+                  - strong [ref=e409]: "Example visibility schema upgrade:"
+                - generic [ref=e411]:
+                  - code [ref=e413]:
+                    - generic [ref=e414]: ./temporal-sql-tool \
+                    - generic [ref=e415]: "--tls \\"
+                    - generic [ref=e416]: "--tls-enable-host-verification \\"
+                    - generic [ref=e417]: "--tls-cert-file <path to your client cert> \\"
+                    - generic [ref=e418]: "--tls-key-file <path to your client key> \\"
+                    - generic [ref=e419]: "--tls-ca-file <path to your CA> \\"
+                    - generic [ref=e420]: "--ep localhost -p 3036 -u root -pw root --pl mysql --db temporal_visibility update-schema -d ./schema/mysql/v57/visibility/versioned/"
+                  - generic [ref=e421]:
+                    - button "Toggle word wrap" [ref=e422] [cursor=pointer]:
+                      - img [ref=e423]
+                    - button "Copy code to clipboard" [ref=e425] [cursor=pointer]:
+                      - generic [ref=e426]:
+                        - img [ref=e427]
+                        - img [ref=e429]
+                - paragraph [ref=e431]:
+                  - text: If you're upgrading MySQL to v8.0.17 or later to enable advanced Visibility features with Temporal Server v1.20, upgrade your MySQL version first, and then run
+                  - code [ref=e432]: temporal-sql-tool
+                  - text: with the
+                  - code [ref=e433]: mysql8
+                  - text: "plugin, as shown in the following example:"
+                - generic [ref=e435]:
+                  - code [ref=e437]:
+                    - generic [ref=e438]: ./temporal-sql-tool \
+                    - generic [ref=e439]: "--tls \\"
+                    - generic [ref=e440]: "--tls-enable-host-verification \\"
+                    - generic [ref=e441]: "--tls-cert-file <path to your client cert> \\"
+                    - generic [ref=e442]: "--tls-key-file <path to your client key> \\"
+                    - generic [ref=e443]: "--tls-ca-file <path to your CA> \\"
+                    - generic [ref=e444]: "--ep localhost -p 5432 -u temporal -pw temporal --pl mysql8 --db temporal_visibility update-schema -d ./schema/mysql/v8/visibility/versioned."
+                  - generic [ref=e445]:
+                    - button "Toggle word wrap" [ref=e446] [cursor=pointer]:
+                      - img [ref=e447]
+                    - button "Copy code to clipboard" [ref=e449] [cursor=pointer]:
+                      - generic [ref=e450]:
+                        - img [ref=e451]
+                        - img [ref=e453]
+                - heading "Roll-out techniqueDirect link to Roll-out technique" [level=3] [ref=e455]:
+                  - text: Roll-out technique
+                  - link "Direct link to Roll-out technique" [ref=e456] [cursor=pointer]:
+                    - /url: "#roll-out-technique"
+                    - text: "#"
+                - paragraph [ref=e457]: "We recommend preparing a staging Temporal Service and then do the following to verify the upgrade is successful:"
+                - list [ref=e458]:
+                  - listitem [ref=e459]: Create some simulation load on the staging Temporal Service.
+                  - listitem [ref=e460]: Upgrade the database schema in the staging Temporal Service.
+                  - listitem [ref=e461]: Wait and observe for a few minutes to verify that there is no unstable behavior from both the server and the simulation load logic.
+                  - listitem [ref=e462]: Upgrade the server.
+                  - listitem [ref=e463]: Now do the same to the live environment Temporal Service.
+              - generic [ref=e464]:
+                - generic [ref=e466]:
+                  - text: "Tags:"
+                  - list [ref=e467]:
+                    - listitem [ref=e468]:
+                      - link "Temporal Service" [ref=e469] [cursor=pointer]:
+                        - /url: /tags/temporal-service
+                    - listitem [ref=e470]:
+                      - link "Self-hosting" [ref=e471] [cursor=pointer]:
+                        - /url: /tags/self-hosting
+                - paragraph [ref=e475]:
+                  - text: Help us make Temporal better. Contribute to our
+                  - link "documentation" [ref=e476] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation
+                  - text: .
+            - navigation "Docs pages" [ref=e478]:
+              - link "Previous « Visibility" [ref=e479] [cursor=pointer]:
+                - /url: /self-hosted-guide/visibility
+                - generic [ref=e480]: Previous
+                - generic [ref=e481]: « Visibility
+              - link "Next Archival »" [ref=e482] [cursor=pointer]:
+                - /url: /self-hosted-guide/archival
+                - generic [ref=e483]: Next
+                - generic [ref=e484]: Archival »
+          - list [ref=e487]:
+            - listitem [ref=e488]:
+              - link "How to upgrade the Temporal Server version" [ref=e489] [cursor=pointer]:
+                - /url: "#upgrade-server"
+              - list [ref=e490]:
+                - listitem [ref=e491]:
+                  - link "Key considerations" [ref=e492] [cursor=pointer]:
+                    - /url: "#key-considerations"
+                - listitem [ref=e493]:
+                  - link "Step-by-Step Upgrade Procedure:" [ref=e494] [cursor=pointer]:
+                    - /url: "#step-by-step-upgrade-procedure"
+                - listitem [ref=e495]:
+                  - link "Upgrade Cassandra schema" [ref=e496] [cursor=pointer]:
+                    - /url: "#upgrade-cassandra-schema"
+                - listitem [ref=e497]:
+                  - link "Upgrade PostgreSQL or MySQL schema" [ref=e498] [cursor=pointer]:
+                    - /url: "#upgrade-postgresql-or-mysql-schema"
+                  - list [ref=e499]:
+                    - listitem [ref=e500]:
+                      - link "PostgreSQL" [ref=e501] [cursor=pointer]:
+                        - /url: "#postgresql"
+                    - listitem [ref=e502]:
+                      - link "MySQL" [ref=e503] [cursor=pointer]:
+                        - /url: "#mysql"
+                - listitem [ref=e504]:
+                  - link "Roll-out technique" [ref=e505] [cursor=pointer]:
+                    - /url: "#roll-out-technique"
+    - contentinfo [ref=e506]:
+      - generic [ref=e507]:
+        - generic [ref=e508]:
+          - list [ref=e510]:
+            - listitem [ref=e511]:
+              - link "GitHub" [ref=e512] [cursor=pointer]:
+                - /url: https://github.com/temporalio
+                - text: GitHub
+                - img [ref=e513]
+            - listitem [ref=e515]:
+              - link "Twitter" [ref=e516] [cursor=pointer]:
+                - /url: https://twitter.com/temporalio
+                - text: Twitter
+                - img [ref=e517]
+            - listitem [ref=e519]:
+              - link "YouTube" [ref=e520] [cursor=pointer]:
+                - /url: https://www.youtube.com/c/Temporalio
+                - text: YouTube
+                - img [ref=e521]
+            - listitem [ref=e523]:
+              - link "About the docs" [ref=e524] [cursor=pointer]:
+                - /url: https://github.com/temporalio/documentation/blob/master/README.md
+                - text: About the docs
+                - img [ref=e525]
+          - list [ref=e528]:
+            - listitem [ref=e529]:
+              - link "Temporal Cloud" [ref=e530] [cursor=pointer]:
+                - /url: https://temporal.io/cloud
+                - text: Temporal Cloud
+                - img [ref=e531]
+            - listitem [ref=e533]:
+              - link "Meetups" [ref=e534] [cursor=pointer]:
+                - /url: https://temporal.io/community#events
+                - text: Meetups
+                - img [ref=e535]
+            - listitem [ref=e537]:
+              - link "Workshops" [ref=e538] [cursor=pointer]:
+                - /url: https://temporal.io/community#workshops
+                - text: Workshops
+                - img [ref=e539]
+            - listitem [ref=e541]:
+              - link "Support forum" [ref=e542] [cursor=pointer]:
+                - /url: https://community.temporal.io/
+                - text: Support forum
+                - img [ref=e543]
+            - listitem [ref=e545]:
+              - link "Ask an expert" [ref=e546] [cursor=pointer]:
+                - /url: https://pages.temporal.io/ask-an-expert
+                - text: Ask an expert
+                - img [ref=e547]
+          - list [ref=e550]:
+            - listitem [ref=e551]:
+              - link "Learn Temporal" [ref=e552] [cursor=pointer]:
+                - /url: https://learn.temporal.io
+                - text: Learn Temporal
+                - img [ref=e553]
+            - listitem [ref=e555]:
+              - link "Blog" [ref=e556] [cursor=pointer]:
+                - /url: https://temporal.io/blog
+                - text: Blog
+                - img [ref=e557]
+            - listitem [ref=e559]:
+              - link "Use cases" [ref=e560] [cursor=pointer]:
+                - /url: https://temporal.io/use-cases
+                - text: Use cases
+                - img [ref=e561]
+            - listitem [ref=e563]:
+              - link "Newsletter signup" [ref=e564] [cursor=pointer]:
+                - /url: https://pages.temporal.io/newsletter-subscribe
+                - text: Newsletter signup
+                - img [ref=e565]
+          - list [ref=e568]:
+            - listitem [ref=e569]:
+              - link "Security" [ref=e570] [cursor=pointer]:
+                - /url: /security
+            - listitem [ref=e571]:
+              - link "Privacy policy" [ref=e572] [cursor=pointer]:
+                - /url: https://temporal.io/global-privacy-policy
+            - listitem [ref=e573]:
+              - link "Terms of service" [ref=e574] [cursor=pointer]:
+                - /url: https://docs.temporal.io/pdf/temporal-tos-2021-07-24.pdf
+                - text: Terms of service
+                - img [ref=e575]
+            - listitem [ref=e577]:
+              - link "We're hiring" [ref=e578] [cursor=pointer]:
+                - /url: https://temporal.io/careers
+                - text: We're hiring
+                - img [ref=e579]
+        - generic [ref=e581]:
+          - link "Temporal logo" [ref=e583] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e584]
+          - generic [ref=e585]: Copyright © 2025 Temporal Technologies Inc.
+  - generic [ref=e586] [cursor=pointer]:
+    - img [ref=e588]
+    - generic: Feedback
+```

@@ -1,0 +1,3644 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - region "Skip to main content":
+      - link "Skip to main content" [ref=e3] [cursor=pointer]:
+        - /url: "#__docusaurus_skipToContent_fallback"
+    - navigation "Main" [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - link "Temporal logo" [ref=e7] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e9]
+          - link "Home" [ref=e10] [cursor=pointer]:
+            - /url: /
+          - link "Courses" [ref=e11] [cursor=pointer]:
+            - /url: https://learn.temporal.io/getting_started/
+            - text: Courses
+            - img [ref=e12]
+          - link "SDKs" [ref=e14] [cursor=pointer]:
+            - /url: /develop
+          - link "AI Cookbook" [ref=e15] [cursor=pointer]:
+            - /url: /ai-cookbook
+          - link "Code Exchange" [ref=e16] [cursor=pointer]:
+            - /url: https://temporal.io/code-exchange
+            - text: Code Exchange
+            - img [ref=e17]
+          - link "Temporal Cloud" [ref=e19] [cursor=pointer]:
+            - /url: /cloud
+        - generic [ref=e20]:
+          - button "Ask AI" [ref=e21] [cursor=pointer]:
+            - img [ref=e22]
+            - generic [ref=e26]: Ask AI
+          - button "Switch between dark and light mode (currently system mode)" [ref=e28] [cursor=pointer]:
+            - img [ref=e29]
+          - button "Search (Ctrl+K)" [ref=e32] [cursor=pointer]:
+            - generic [ref=e33]:
+              - img [ref=e34]
+              - generic [ref=e36]: Search
+            - generic [ref=e37]:
+              - img [ref=e39]
+              - generic [ref=e41]: K
+    - generic [ref=e44]:
+      - complementary [ref=e45]:
+        - generic [ref=e47]:
+          - navigation "Docs sidebar" [ref=e48]:
+            - list [ref=e49]:
+              - listitem [ref=e50]:
+                - link "Documentation Home" [ref=e51] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=e52]:
+                - link "Quickstarts" [ref=e53] [cursor=pointer]:
+                  - /url: /quickstarts
+              - listitem [ref=e54]:
+                - generic [ref=e55]:
+                  - link "Evaluate" [ref=e56] [cursor=pointer]:
+                    - /url: /evaluate/
+                  - button "Collapse sidebar category 'Evaluate'" [expanded] [ref=e57] [cursor=pointer]
+                - list [ref=e58]:
+                  - listitem [ref=e59]:
+                    - link "Why Temporal" [ref=e60] [cursor=pointer]:
+                      - /url: /evaluate/why-temporal
+                  - listitem [ref=e61]:
+                    - link "Understanding Temporal" [ref=e62] [cursor=pointer]:
+                      - /url: /evaluate/understanding-temporal
+                  - listitem [ref=e63]:
+                    - generic [ref=e64]:
+                      - link "Features" [ref=e65] [cursor=pointer]:
+                        - /url: /evaluate/development-production-features/
+                      - button "Expand sidebar category 'Features'" [ref=e66] [cursor=pointer]
+                  - listitem [ref=e67]:
+                    - generic [ref=e68]:
+                      - link "Temporal Cloud" [ref=e69] [cursor=pointer]:
+                        - /url: /cloud/introduction
+                      - button "Expand sidebar category 'Temporal Cloud'" [ref=e70] [cursor=pointer]
+                  - listitem [ref=e71]:
+                    - link "Security" [ref=e72] [cursor=pointer]:
+                      - /url: /security
+                  - listitem [ref=e73]:
+                    - link "Use Cases" [ref=e74] [cursor=pointer]:
+                      - /url: /evaluate/use-cases-design-patterns
+              - listitem [ref=e75]:
+                - generic [ref=e76]:
+                  - link "Develop" [ref=e77] [cursor=pointer]:
+                    - /url: /develop/
+                  - button "Collapse sidebar category 'Develop'" [expanded] [ref=e78] [cursor=pointer]
+                - list [ref=e79]:
+                  - listitem [ref=e80]:
+                    - generic [ref=e81]:
+                      - link "Go SDK" [ref=e82] [cursor=pointer]:
+                        - /url: /develop/go/
+                      - button "Expand sidebar category 'Go SDK'" [ref=e83] [cursor=pointer]
+                  - listitem [ref=e84]:
+                    - generic [ref=e85]:
+                      - link "Java SDK" [ref=e86] [cursor=pointer]:
+                        - /url: /develop/java/
+                      - button "Expand sidebar category 'Java SDK'" [ref=e87] [cursor=pointer]
+                  - listitem [ref=e88]:
+                    - generic [ref=e89]:
+                      - link "PHP SDK" [ref=e90] [cursor=pointer]:
+                        - /url: /develop/php/
+                      - button "Expand sidebar category 'PHP SDK'" [ref=e91] [cursor=pointer]
+                  - listitem [ref=e92]:
+                    - generic [ref=e93]:
+                      - link "Python SDK" [ref=e94] [cursor=pointer]:
+                        - /url: /develop/python/
+                      - button "Expand sidebar category 'Python SDK'" [ref=e95] [cursor=pointer]
+                  - listitem [ref=e96]:
+                    - generic [ref=e97]:
+                      - link "TypeScript SDK" [ref=e98] [cursor=pointer]:
+                        - /url: /develop/typescript/
+                      - button "Expand sidebar category 'TypeScript SDK'" [ref=e99] [cursor=pointer]
+                  - listitem [ref=e100]:
+                    - generic [ref=e101]:
+                      - link ".NET SDK" [ref=e102] [cursor=pointer]:
+                        - /url: /develop/dotnet/
+                      - button "Expand sidebar category '.NET SDK'" [ref=e103] [cursor=pointer]
+                  - listitem [ref=e104]:
+                    - generic [ref=e105]:
+                      - link "Ruby SDK" [ref=e106] [cursor=pointer]:
+                        - /url: /develop/ruby/
+                      - button "Expand sidebar category 'Ruby SDK'" [ref=e107] [cursor=pointer]
+                  - listitem [ref=e108]:
+                    - link "Environment configuration" [ref=e109] [cursor=pointer]:
+                      - /url: /develop/environment-configuration
+                  - listitem [ref=e110]:
+                    - link "Activity retry simulator" [ref=e111] [cursor=pointer]:
+                      - /url: /develop/activity-retry-simulator
+                  - listitem [ref=e112]:
+                    - link "Worker performance" [ref=e113] [cursor=pointer]:
+                      - /url: /develop/worker-performance
+                  - listitem [ref=e114]:
+                    - link "Safe deployments" [ref=e115] [cursor=pointer]:
+                      - /url: /develop/safe-deployments
+                  - listitem [ref=e116]:
+                    - link "Plugins guide" [ref=e117] [cursor=pointer]:
+                      - /url: /develop/plugins-guide
+              - listitem [ref=e118]:
+                - generic [ref=e119]:
+                  - link "Deploy to production" [ref=e120] [cursor=pointer]:
+                    - /url: /production-deployment
+                  - button "Collapse sidebar category 'Deploy to production'" [expanded] [ref=e121] [cursor=pointer]
+                - list [ref=e122]:
+                  - listitem [ref=e123]:
+                    - generic [ref=e124]:
+                      - link "Temporal Cloud" [ref=e125] [cursor=pointer]:
+                        - /url: /cloud
+                      - button "Collapse sidebar category 'Temporal Cloud'" [expanded] [ref=e126] [cursor=pointer]
+                    - list [ref=e127]:
+                      - listitem [ref=e128]:
+                        - generic [ref=e129]:
+                          - link "Get started with Cloud" [ref=e130] [cursor=pointer]:
+                            - /url: /cloud/get-started/
+                          - button "Collapse sidebar category 'Get started with Cloud'" [expanded] [ref=e131] [cursor=pointer]
+                        - list [ref=e132]:
+                          - listitem [ref=e133]:
+                            - link "Namespaces" [ref=e134] [cursor=pointer]:
+                              - /url: /cloud/namespaces
+                          - listitem [ref=e135]:
+                            - link "Manage API keys" [ref=e136] [cursor=pointer]:
+                              - /url: /cloud/api-keys
+                          - listitem [ref=e137]:
+                            - link "Authenticate with mTLS certificates" [ref=e138] [cursor=pointer]:
+                              - /url: /cloud/certificates
+                          - listitem [ref=e139]:
+                            - link "Usage and billing" [ref=e140] [cursor=pointer]:
+                              - /url: /cloud/billing-and-cost
+                      - listitem [ref=e141]:
+                        - generic [ref=e142]:
+                          - link "Account access" [ref=e143] [cursor=pointer]:
+                            - /url: /cloud/manage-access/
+                          - button "Collapse sidebar category 'Account access'" [expanded] [ref=e144] [cursor=pointer]
+                        - list [ref=e145]:
+                          - listitem [ref=e146]:
+                            - link "Manage users" [ref=e147] [cursor=pointer]:
+                              - /url: /cloud/users
+                          - listitem [ref=e148]:
+                            - link "Manage user groups" [ref=e149] [cursor=pointer]:
+                              - /url: /cloud/user-groups
+                          - listitem [ref=e150]:
+                            - link "Manage service accounts" [ref=e151] [cursor=pointer]:
+                              - /url: /cloud/service-accounts
+                          - listitem [ref=e152]:
+                            - link "SAML authentication" [ref=e153] [cursor=pointer]:
+                              - /url: /cloud/saml
+                          - listitem [ref=e154]:
+                            - link "SCIM user management" [ref=e155] [cursor=pointer]:
+                              - /url: /cloud/scim
+                      - listitem [ref=e156]:
+                        - generic [ref=e157]:
+                          - link "Metrics" [ref=e158] [cursor=pointer]:
+                            - /url: /cloud/metrics/
+                          - button "Expand sidebar category 'Metrics'" [ref=e159] [cursor=pointer]
+                      - listitem [ref=e160]:
+                        - generic [ref=e161]:
+                          - link "Connectivity" [ref=e162] [cursor=pointer]:
+                            - /url: /cloud/connectivity
+                          - button "Expand sidebar category 'Connectivity'" [ref=e163] [cursor=pointer]
+                      - listitem [ref=e164]:
+                        - generic [ref=e165]:
+                          - link "High Availability" [ref=e166] [cursor=pointer]:
+                            - /url: /cloud/high-availability
+                          - button "Expand sidebar category 'High Availability'" [ref=e167] [cursor=pointer]
+                      - listitem [ref=e168]:
+                        - link "RPO and RTO" [ref=e169] [cursor=pointer]:
+                          - /url: /cloud/rpo-rto
+                      - listitem [ref=e170]:
+                        - link "Notifications" [ref=e171] [cursor=pointer]:
+                          - /url: /cloud/notifications
+                      - listitem [ref=e172]:
+                        - generic [ref=e173]:
+                          - link "Temporal Nexus" [ref=e174] [cursor=pointer]:
+                            - /url: /cloud/nexus
+                          - button "Expand sidebar category 'Temporal Nexus'" [ref=e175] [cursor=pointer]
+                      - listitem [ref=e176]:
+                        - link "Monitor worker health" [ref=e177] [cursor=pointer]:
+                          - /url: /production-deployment/cloud/worker-health
+                      - listitem [ref=e178]:
+                        - link "Capacity Modes" [ref=e179] [cursor=pointer]:
+                          - /url: /cloud/capacity-modes
+                      - listitem [ref=e180]:
+                        - link "Monitor Temporal Cloud" [ref=e181] [cursor=pointer]:
+                          - /url: /production-deployment/cloud/service-health
+                      - listitem [ref=e182]:
+                        - link "Cloud Ops API" [ref=e183] [cursor=pointer]:
+                          - /url: /ops
+                      - listitem [ref=e184]:
+                        - link "Terraform provider" [ref=e185] [cursor=pointer]:
+                          - /url: /production-deployment/cloud/terraform-provider
+                      - listitem [ref=e186]:
+                        - generic [ref=e187]:
+                          - link "Export" [ref=e188] [cursor=pointer]:
+                            - /url: /cloud/export
+                          - button "Expand sidebar category 'Export'" [ref=e189] [cursor=pointer]
+                      - listitem [ref=e190]:
+                        - generic [ref=e191]:
+                          - link "Audit Logging" [ref=e192] [cursor=pointer]:
+                            - /url: /cloud/audit-logs
+                          - button "Expand sidebar category 'Audit Logging'" [ref=e193] [cursor=pointer]
+                      - listitem [ref=e194]:
+                        - generic [ref=e195]:
+                          - link "CLI (tcld)" [ref=e196] [cursor=pointer]:
+                            - /url: /cloud/tcld
+                          - button "Collapse sidebar category 'CLI (tcld)'" [expanded] [ref=e197] [cursor=pointer]
+                        - list [ref=e198]:
+                          - listitem [ref=e199]:
+                            - link "account" [ref=e200] [cursor=pointer]:
+                              - /url: /cloud/tcld/account
+                          - listitem [ref=e201]:
+                            - link "apikey" [ref=e202] [cursor=pointer]:
+                              - /url: /cloud/tcld/apikey
+                          - listitem [ref=e203]:
+                            - link "feature" [ref=e204] [cursor=pointer]:
+                              - /url: /production-deployment/cloud/tcld/feature
+                          - listitem [ref=e205]:
+                            - link "generate-certificates" [ref=e206] [cursor=pointer]:
+                              - /url: /cloud/tcld/generate-certificates/
+                          - listitem [ref=e207]:
+                            - link "login" [ref=e208] [cursor=pointer]:
+                              - /url: /cloud/tcld/login
+                          - listitem [ref=e209]:
+                            - link "logout" [ref=e210] [cursor=pointer]:
+                              - /url: /cloud/tcld/logout/
+                          - listitem [ref=e211]:
+                            - link "namespace" [ref=e212] [cursor=pointer]:
+                              - /url: /cloud/tcld/namespace/
+                          - listitem [ref=e213]:
+                            - link "nexus" [ref=e214] [cursor=pointer]:
+                              - /url: /cloud/tcld/nexus
+                          - listitem [ref=e215]:
+                            - link "request" [ref=e216] [cursor=pointer]:
+                              - /url: /cloud/tcld/request/
+                          - listitem [ref=e217]:
+                            - link "user" [ref=e218] [cursor=pointer]:
+                              - /url: /cloud/tcld/user/
+                          - listitem [ref=e219]:
+                            - link "user-group" [ref=e220] [cursor=pointer]:
+                              - /url: /cloud/tcld/user-group/
+                          - listitem [ref=e221]:
+                            - link "version" [ref=e222] [cursor=pointer]:
+                              - /url: /cloud/tcld/version/
+                      - listitem [ref=e223]:
+                        - generic [ref=e224]:
+                          - link "Migrate" [ref=e225] [cursor=pointer]:
+                            - /url: /cloud/migrate
+                          - button "Expand sidebar category 'Migrate'" [ref=e226] [cursor=pointer]
+                  - listitem [ref=e227]:
+                    - link "Codecs and Encryption" [ref=e228] [cursor=pointer]:
+                      - /url: /production-deployment/data-encryption
+                  - listitem [ref=e229]:
+                    - generic [ref=e230]:
+                      - link "Self-host" [ref=e231] [cursor=pointer]:
+                        - /url: /self-hosted-guide
+                      - button "Expand sidebar category 'Self-host'" [ref=e232] [cursor=pointer]
+                  - listitem [ref=e233]:
+                    - generic [ref=e234]:
+                      - link "Worker deployments" [ref=e235] [cursor=pointer]:
+                        - /url: /production-deployment/worker-deployments
+                      - button "Expand sidebar category 'Worker deployments'" [ref=e236] [cursor=pointer]
+              - listitem [ref=e237]:
+                - generic [ref=e238]:
+                  - link "CLI (temporal)" [ref=e239] [cursor=pointer]:
+                    - /url: /cli
+                  - button "Expand sidebar category 'CLI (temporal)'" [ref=e240] [cursor=pointer]
+              - listitem [ref=e241]:
+                - generic [ref=e242]:
+                  - link "References" [ref=e243] [cursor=pointer]:
+                    - /url: /references/
+                  - button "Expand sidebar category 'References'" [ref=e244] [cursor=pointer]
+              - listitem [ref=e245]:
+                - generic [ref=e246]:
+                  - link "Troubleshooting" [ref=e247] [cursor=pointer]:
+                    - /url: /troubleshooting/
+                  - button "Expand sidebar category 'Troubleshooting'" [ref=e248] [cursor=pointer]
+              - listitem [ref=e249]:
+                - generic [ref=e250]:
+                  - link "Best Practices" [ref=e251] [cursor=pointer]:
+                    - /url: /best-practices/
+                  - button "Expand sidebar category 'Best Practices'" [ref=e252] [cursor=pointer]
+              - listitem [ref=e253]:
+                - generic [ref=e254]:
+                  - link "Encyclopedia" [ref=e255] [cursor=pointer]:
+                    - /url: /encyclopedia/
+                  - button "Expand sidebar category 'Encyclopedia'" [ref=e256] [cursor=pointer]
+              - listitem [ref=e257]:
+                - link "Glossary" [ref=e258] [cursor=pointer]:
+                  - /url: /glossary
+          - button "Collapse sidebar" [ref=e259] [cursor=pointer]:
+            - img [ref=e260]
+      - main [ref=e264]:
+        - generic [ref=e266]:
+          - generic [ref=e268]:
+            - article [ref=e269]:
+              - navigation "Breadcrumbs" [ref=e270]:
+                - list [ref=e271]:
+                  - listitem [ref=e272]:
+                    - link "Home page" [ref=e273] [cursor=pointer]:
+                      - /url: /
+                      - img [ref=e274]
+                  - listitem [ref=e276]:
+                    - link "Deploy to production" [ref=e277] [cursor=pointer]:
+                      - /url: /production-deployment
+                  - listitem [ref=e278]:
+                    - link "Temporal Cloud" [ref=e279] [cursor=pointer]:
+                      - /url: /cloud
+                  - listitem [ref=e280]:
+                    - link "CLI (tcld)" [ref=e281] [cursor=pointer]:
+                      - /url: /cloud/tcld
+                  - listitem [ref=e282]:
+                    - generic [ref=e283]: namespace
+              - generic [ref=e284]:
+                - heading "tcld namespace command reference" [level=1] [ref=e286]
+                - paragraph [ref=e287]:
+                  - text: The
+                  - code [ref=e288]: tcld namespace
+                  - text: commands enable
+                  - link "Namespace" [ref=e289] [cursor=pointer]:
+                    - /url: /namespaces
+                  - text: operations in Temporal Cloud.
+                - paragraph [ref=e290]:
+                  - text: "Alias:"
+                  - code [ref=e291]: "n"
+                - list [ref=e292]:
+                  - listitem [ref=e293]:
+                    - link "tcld namespace add-region" [ref=e294] [cursor=pointer]:
+                      - /url: "#add-region"
+                  - listitem [ref=e295]:
+                    - link "tcld namespace create" [ref=e296] [cursor=pointer]:
+                      - /url: "#create"
+                  - listitem [ref=e297]:
+                    - link "tcld namespace delete" [ref=e298] [cursor=pointer]:
+                      - /url: "#delete"
+                  - listitem [ref=e299]:
+                    - link "tcld namespace failover" [ref=e300] [cursor=pointer]:
+                      - /url: "#failover"
+                  - listitem [ref=e301]:
+                    - link "tcld namespace get" [ref=e302] [cursor=pointer]:
+                      - /url: "#get"
+                  - listitem [ref=e303]:
+                    - link "tcld namespace list" [ref=e304] [cursor=pointer]:
+                      - /url: "#list"
+                  - listitem [ref=e305]:
+                    - link "tcld namespace export" [ref=e306] [cursor=pointer]:
+                      - /url: "#export"
+                  - listitem [ref=e307]:
+                    - link "tcld namespace accepted-client-ca" [ref=e308] [cursor=pointer]:
+                      - /url: "#accepted-client-ca"
+                  - listitem [ref=e309]:
+                    - link "tcld namespace certificate-filters" [ref=e310] [cursor=pointer]:
+                      - /url: "#certificate-filters"
+                  - listitem [ref=e311]:
+                    - link "tcld namespace search-attributes" [ref=e312] [cursor=pointer]:
+                      - /url: "#search-attributes"
+                  - listitem [ref=e313]:
+                    - link "tcld namespace retention" [ref=e314] [cursor=pointer]:
+                      - /url: "#retention"
+                  - listitem [ref=e315]:
+                    - link "tcld namespace update-codec-server" [ref=e316] [cursor=pointer]:
+                      - /url: "#update-codec-server"
+                  - listitem [ref=e317]:
+                    - link "tcld namespace update-high-availability" [ref=e318] [cursor=pointer]:
+                      - /url: "#update-high-availability"
+                  - listitem [ref=e319]:
+                    - link "tcld namespace tags" [ref=e320] [cursor=pointer]:
+                      - /url: "#tags"
+                  - listitem [ref=e321]:
+                    - link "tcld namespace set-connectivity-rules" [ref=e322] [cursor=pointer]:
+                      - /url: "#set-connectivity-rules"
+                - heading "add-regionDirect link to add-region" [level=2] [ref=e323]:
+                  - text: add-region
+                  - link "Direct link to add-region" [ref=e324] [cursor=pointer]:
+                    - /url: "#add-region"
+                    - text: "#"
+                - paragraph [ref=e325]:
+                  - text: Use
+                  - code [ref=e326]: tcld namespace add-region
+                  - text: to add a
+                  - button "replica" [ref=e328]
+                  - text: to an existing Temporal Cloud
+                  - link "Namespace" [ref=e329] [cursor=pointer]:
+                    - /url: /namespaces
+                  - text: . Adding a replica upgrades the Namespace to
+                  - link "High Availability features" [ref=e330] [cursor=pointer]:
+                    - /url: /cloud/high-availability
+                  - text: . Once provisioned, High Availability features enable Temporal Cloud to start replicating Workflow Execution data from the primary to the replica and trigger failover during adverse conditions.
+                - paragraph [ref=e331]:
+                  - text: "Alias:"
+                  - emphasis [ref=e332]: none
+                - paragraph [ref=e333]: The following modifiers control the behavior of the command.
+                - heading "--request-idDirect link to --request-id" [level=4] [ref=e334]:
+                  - text: "--request-id"
+                  - link "Direct link to --request-id" [ref=e335] [cursor=pointer]:
+                    - /url: "#--request-id"
+                    - text: "#"
+                - paragraph [ref=e336]: The request identifier to use for the asynchronous operation. If not set, the server assigns an identifier.
+                - paragraph [ref=e337]:
+                  - text: "Alias:"
+                  - code [ref=e338]: "-r"
+                - heading "--namespaceDirect link to --namespace" [level=4] [ref=e339]:
+                  - text: "--namespace"
+                  - link "Direct link to --namespace" [ref=e340] [cursor=pointer]:
+                    - /url: "#--namespace"
+                    - text: "#"
+                - paragraph [ref=e341]:
+                  - text: Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
+                  - code [ref=e342]: $TEMPORAL_CLOUD_NAMESPACE
+                  - text: is used.
+                - paragraph [ref=e343]:
+                  - text: "Alias:"
+                  - code [ref=e344]: "-n"
+                - paragraph [ref=e345]:
+                  - emphasis [ref=e346]: Required modifier
+                - heading "--regionDirect link to --region" [level=4] [ref=e347]:
+                  - text: "--region"
+                  - link "Direct link to --region" [ref=e348] [cursor=pointer]:
+                    - /url: "#--region"
+                    - text: "#"
+                - paragraph [ref=e349]:
+                  - text: The region to add to the existing Namespace. See
+                  - link "Regions" [ref=e350] [cursor=pointer]:
+                    - /url: /cloud/regions
+                  - text: for a list of supported regions.
+                - generic [ref=e351]:
+                  - generic [ref=e352]:
+                    - img [ref=e354]
+                    - text: Choosing Replica Regions
+                  - list [ref=e357]:
+                    - listitem [ref=e358]: GCP Namespaces support Multi-region Replication but do not support Same-region Replication.
+                    - listitem [ref=e359]:
+                      - text: The AWS
+                      - code [ref=e360]: sa-east-1
+                      - text: region supports Same-region Replication but does not support Multi-region Replication.
+                    - listitem [ref=e361]: You must select a region using the same Cloud provider for your replica as your primary.
+                - paragraph [ref=e362]:
+                  - text: "Alias:"
+                  - code [ref=e363]: "--re"
+                - paragraph [ref=e364]:
+                  - emphasis [ref=e365]: Required modifier
+                - paragraph [ref=e366]:
+                  - strong [ref=e367]: Example
+                - generic [ref=e369]:
+                  - code [ref=e371]:
+                    - generic [ref=e372]: tcld namespace add-region \
+                    - generic [ref=e373]: "--namespace <namespace_id> \\"
+                    - generic [ref=e374]: "--region <replica_region>"
+                  - button "Copy code to clipboard" [ref=e376] [cursor=pointer]:
+                    - generic [ref=e377]:
+                      - img [ref=e378]
+                      - img [ref=e380]
+                - paragraph [ref=e382]: "When using API key authentication, add your API credentials before pressing Enter:"
+                - generic [ref=e384]:
+                  - code [ref=e386]:
+                    - generic [ref=e387]: tcld --api-key <your_api_key> \
+                    - generic [ref=e388]: add-region \
+                    - generic [ref=e389]: "--namespace <namespace_id> \\"
+                    - generic [ref=e390]: "--region <replica_region>"
+                  - button "Copy code to clipboard" [ref=e392] [cursor=pointer]:
+                    - generic [ref=e393]:
+                      - img [ref=e394]
+                      - img [ref=e396]
+                - paragraph [ref=e398]:
+                  - text: Specify the region code of the region where you want to create the replica as an argument to the
+                  - code [ref=e399]: "--region"
+                  - text: "flag:"
+                - list [ref=e400]:
+                  - listitem [ref=e401]:
+                    - text: Using the current region replicates to an
+                    - button "isolation domain" [ref=e403]
+                    - text: within your existing region.
+                  - listitem [ref=e404]: Using a different region (within the same continent) replicates across regions.
+                  - listitem [ref=e405]: You cannot create a Multi-region deployment on separate continents.
+                - paragraph [ref=e406]: Temporal Cloud sends an email alert once your Namespace is ready for use.
+                - heading "--cloud-providerDirect link to --cloud-provider" [level=4] [ref=e407]:
+                  - text: "--cloud-provider"
+                  - link "Direct link to --cloud-provider" [ref=e408] [cursor=pointer]:
+                    - /url: "#--cloud-provider"
+                    - text: "#"
+                - paragraph [ref=e409]: The cloud provider of the region. One of [aws, gcp].
+                - paragraph [ref=e410]: "Default: aws (default: \"aws\")"
+                - heading "createDirect link to create" [level=2] [ref=e411]:
+                  - text: create
+                  - link "Direct link to create" [ref=e412] [cursor=pointer]:
+                    - /url: "#create"
+                    - text: "#"
+                - paragraph [ref=e413]:
+                  - text: The
+                  - code [ref=e414]: tcld namespace create
+                  - text: command creates a Temporal
+                  - link "Namespace" [ref=e415] [cursor=pointer]:
+                    - /url: /namespaces
+                  - text: in Temporal Cloud. Use it to create a standard Namespace or a Namespace with
+                  - link "High Availability features" [ref=e416] [cursor=pointer]:
+                    - /url: /cloud/high-availability
+                  - text: .
+                - paragraph [ref=e417]:
+                  - text: "Alias:"
+                  - code [ref=e418]: c
+                - paragraph [ref=e419]:
+                  - code [ref=e420]: tcld namespace create
+                - paragraph [ref=e421]: The following modifiers control the behavior of the command.
+                - heading "--request-idDirect link to --request-id" [level=4] [ref=e422]:
+                  - text: "--request-id"
+                  - link "Direct link to --request-id" [ref=e423] [cursor=pointer]:
+                    - /url: "#--request-id-1"
+                    - text: "#"
+                - paragraph [ref=e424]: The request identifier to use for the asynchronous operation. If not set, the server assigns an identifier.
+                - paragraph [ref=e425]:
+                  - text: "Alias:"
+                  - code [ref=e426]: "-r"
+                - heading "--ca-certificateDirect link to --ca-certificate" [level=4] [ref=e427]:
+                  - text: "--ca-certificate"
+                  - link "Direct link to --ca-certificate" [ref=e428] [cursor=pointer]:
+                    - /url: "#--ca-certificate"
+                    - text: "#"
+                - paragraph [ref=e429]:
+                  - emphasis [ref=e430]:
+                    - text: Required modifier unless
+                    - code [ref=e431]: "--ca-certificate-file"
+                    - text: is specified
+                - paragraph [ref=e432]: A base64-encoded CA certificate.
+                - paragraph [ref=e433]:
+                  - text: If both
+                  - code [ref=e434]: "--ca-certificate"
+                  - text: and
+                  - code [ref=e435]: "--ca-certificate-file"
+                  - text: are specified, only
+                  - code [ref=e436]: "--ca-certificate"
+                  - text: is used.
+                - paragraph [ref=e437]:
+                  - text: "Alias:"
+                  - code [ref=e438]: "-c"
+                - heading "--namespaceDirect link to --namespace" [level=4] [ref=e439]:
+                  - text: "--namespace"
+                  - link "Direct link to --namespace" [ref=e440] [cursor=pointer]:
+                    - /url: "#--namespace-1"
+                    - text: "#"
+                - paragraph [ref=e441]: Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+                - paragraph [ref=e442]:
+                  - text: "Alias:"
+                  - code [ref=e443]: "-n"
+                - paragraph [ref=e444]:
+                  - emphasis [ref=e445]: Required modifier
+                - heading "--regionDirect link to --region" [level=4] [ref=e446]:
+                  - text: "--region"
+                  - link "Direct link to --region" [ref=e447] [cursor=pointer]:
+                    - /url: "#--region-1"
+                    - text: "#"
+                - paragraph [ref=e448]: The region to create the Namespace in.
+                - list [ref=e449]:
+                  - listitem [ref=e450]:
+                    - text: Supplying a single
+                    - code [ref=e451]: "--region"
+                    - text: flags creates a standard Namespace.
+                  - listitem [ref=e452]:
+                    - text: Supplying two
+                    - code [ref=e453]: "--region"
+                    - text: flags creates a Namespace that uses
+                    - button "replication" [ref=e455]
+                    - text: and
+                    - button "failover" [ref=e457]
+                    - text: for continued service availability in case of failures of incidents.
+                - paragraph [ref=e458]:
+                  - strong [ref=e459]: Example
+                - generic [ref=e461]:
+                  - code [ref=e463]:
+                    - generic [ref=e464]: tcld namespace create \
+                    - generic [ref=e465]: "--namespace <namespace_id> \\"
+                    - generic [ref=e466]: "--region <primary_region> [\\]"
+                    - generic [ref=e467]: "[--region <replica_region>] // if adding replica"
+                  - button "Copy code to clipboard" [ref=e469] [cursor=pointer]:
+                    - generic [ref=e470]:
+                      - img [ref=e471]
+                      - img [ref=e473]
+                - paragraph [ref=e475]: "When using API key authentication, add your API credentials before pressing Enter:"
+                - generic [ref=e477]:
+                  - code [ref=e479]:
+                    - generic [ref=e480]: tcld --api-key <your_api_key> \
+                    - generic [ref=e481]: namespace create \
+                    - generic [ref=e482]: "--namespace <namespace_id> \\"
+                    - generic [ref=e483]: "--region <primary_region> [\\]"
+                    - generic [ref=e484]: "[--region <replica_region>] // if adding replica"
+                  - button "Copy code to clipboard" [ref=e486] [cursor=pointer]:
+                    - generic [ref=e487]:
+                      - img [ref=e488]
+                      - img [ref=e490]
+                - paragraph [ref=e492]:
+                  - text: When using High Availability features, specify the region code of the region where you want to create the replica as an argument to the
+                  - code [ref=e493]: "--region"
+                  - text: "flag:"
+                - list [ref=e494]:
+                  - listitem [ref=e495]:
+                    - text: Using the current region replicates to an
+                    - button "isolation domain" [ref=e497]
+                    - text: within your existing region. This enables Same-region replication.
+                  - listitem [ref=e498]: Using a different region (within the same continent) replicates across regions. This enables Multi-region replication.
+                - paragraph [ref=e499]: Temporal Cloud sends an email alert once your Namespace is ready for use.
+                - generic [ref=e500]:
+                  - generic [ref=e501]:
+                    - img [ref=e503]
+                    - text: Choosing Replica Regions
+                  - list [ref=e506]:
+                    - listitem [ref=e507]: GCP Namespaces support Multi-region Replication but do not support Same-region Replication.
+                    - listitem [ref=e508]:
+                      - text: The AWS
+                      - code [ref=e509]: sa-east-1
+                      - text: region supports Same-region Replication but does not support Multi-region Replication.
+                    - listitem [ref=e510]: You must select a region using the same Cloud provider for your replica as your primary.
+                    - listitem [ref=e511]: You cannot create a Multi-region deployment on separate continents.
+                - paragraph [ref=e512]:
+                  - text: "Alias:"
+                  - code [ref=e513]: "--re"
+                - paragraph [ref=e514]:
+                  - emphasis [ref=e515]: Required modifier
+                - heading "--retention-daysDirect link to --retention-days" [level=4] [ref=e516]:
+                  - text: "--retention-days"
+                  - link "Direct link to --retention-days" [ref=e517] [cursor=pointer]:
+                    - /url: "#--retention-days"
+                    - text: "#"
+                - paragraph [ref=e518]: "The number of days that data about closed Workflow Executions will be retained (default: 30)."
+                - paragraph [ref=e519]:
+                  - text: "Alias:"
+                  - code [ref=e520]: "--rd"
+                - heading "--auth-methodDirect link to --auth-method" [level=4] [ref=e521]:
+                  - text: "--auth-method"
+                  - link "Direct link to --auth-method" [ref=e522] [cursor=pointer]:
+                    - /url: "#--auth-method"
+                    - text: "#"
+                - paragraph [ref=e523]: "The authentication method to use for the namespace (e.g. 'mtls', 'api_key') (default: \"mtls\")"
+                - heading "--ca-certificate-fileDirect link to --ca-certificate-file" [level=4] [ref=e524]:
+                  - text: "--ca-certificate-file"
+                  - link "Direct link to --ca-certificate-file" [ref=e525] [cursor=pointer]:
+                    - /url: "#--ca-certificate-file"
+                    - text: "#"
+                - paragraph [ref=e526]:
+                  - emphasis [ref=e527]:
+                    - text: Required modifier unless
+                    - code [ref=e528]: "--ca-certificate"
+                    - text: is specified
+                - paragraph [ref=e529]: A path to a CA certificate PEM file.
+                - paragraph [ref=e530]:
+                  - text: If both
+                  - code [ref=e531]: "--ca-certificate"
+                  - text: and
+                  - code [ref=e532]: "--ca-certificate-file"
+                  - text: are specified, only
+                  - code [ref=e533]: "--ca-certificate"
+                  - text: is used.
+                - paragraph [ref=e534]:
+                  - text: "Alias:"
+                  - code [ref=e535]: "--cf"
+                - heading "--certificate-filter-fileDirect link to --certificate-filter-file" [level=4] [ref=e536]:
+                  - text: "--certificate-filter-file"
+                  - link "Direct link to --certificate-filter-file" [ref=e537] [cursor=pointer]:
+                    - /url: "#--certificate-filter-file"
+                    - text: "#"
+                - paragraph [ref=e538]:
+                  - emphasis [ref=e539]:
+                    - text: Required modifier unless
+                    - code [ref=e540]: "--certificate-filter-input"
+                    - text: is specified
+                - paragraph [ref=e541]: Path to a JSON file that defines the certificate filters to be applied to the Namespace. The specified filters replace any existing filters.
+                - paragraph [ref=e542]:
+                  - text: "Sample JSON:"
+                  - code [ref=e543]: "{ \"filters\": [ { \"commonName\": \"test1\" } ] }"
+                - paragraph [ref=e544]:
+                  - text: If both
+                  - code [ref=e545]: "--certificate-filter-file"
+                  - text: and
+                  - code [ref=e546]: "--certificate-filter-input"
+                  - text: are specified, the command returns an error.
+                - paragraph [ref=e547]:
+                  - text: "Alias:"
+                  - code [ref=e548]: "--cff"
+                - heading "--certificate-filter-inputDirect link to --certificate-filter-input" [level=4] [ref=e549]:
+                  - text: "--certificate-filter-input"
+                  - link "Direct link to --certificate-filter-input" [ref=e550] [cursor=pointer]:
+                    - /url: "#--certificate-filter-input"
+                    - text: "#"
+                - paragraph [ref=e551]:
+                  - emphasis [ref=e552]:
+                    - text: Required modifier unless
+                    - code [ref=e553]: "--certificate-filter-file"
+                    - text: is specified
+                - paragraph [ref=e554]: A JSON string that defines the certificate filters to be applied to the Namespace. The specified filters replace any existing filters.
+                - paragraph [ref=e555]:
+                  - text: "Sample JSON:"
+                  - code [ref=e556]: "{ \"filters\": [ { \"commonName\": \"test1\" } ] }"
+                - paragraph [ref=e557]:
+                  - text: If both
+                  - code [ref=e558]: "--certificate-filter-input"
+                  - text: and
+                  - code [ref=e559]: "--certificate-filter-file"
+                  - text: are specified, the command returns an error.
+                - paragraph [ref=e560]:
+                  - text: "Alias:"
+                  - code [ref=e561]: "--cfi"
+                - heading "--search-attributeDirect link to --search-attribute" [level=4] [ref=e562]:
+                  - text: "--search-attribute"
+                  - link "Direct link to --search-attribute" [ref=e563] [cursor=pointer]:
+                    - /url: "#--search-attribute"
+                    - text: "#"
+                - paragraph [ref=e564]:
+                  - emphasis [ref=e565]: Required modifier; can be specified more than once
+                - paragraph [ref=e566]:
+                  - text: A custom Search Attribute in the form '
+                  - emphasis [ref=e567]: name
+                  - text: =
+                  - emphasis [ref=e568]: type
+                  - text: "'."
+                - paragraph [ref=e569]:
+                  - text: Valid values for
+                  - emphasis [ref=e570]: type
+                  - text: ":"
+                  - code [ref=e571]: Bool
+                  - text: "|"
+                  - code [ref=e572]: Datetime
+                  - text: "|"
+                  - code [ref=e573]: Double
+                  - text: "|"
+                  - code [ref=e574]: Int
+                  - text: "|"
+                  - code [ref=e575]: Keyword
+                  - text: "|"
+                  - code [ref=e576]: Text
+                - paragraph [ref=e577]:
+                  - text: "Alias:"
+                  - code [ref=e578]: "--sa"
+                - heading "--user-namespace-permissionDirect link to --user-namespace-permission" [level=4] [ref=e579]:
+                  - text: "--user-namespace-permission"
+                  - link "Direct link to --user-namespace-permission" [ref=e580] [cursor=pointer]:
+                    - /url: "#--user-namespace-permission"
+                    - text: "#"
+                - paragraph [ref=e581]:
+                  - emphasis [ref=e582]: Can be specified more than once
+                - paragraph [ref=e583]:
+                  - text: A
+                  - link "Namespace-level permission" [ref=e584] [cursor=pointer]:
+                    - /url: /cloud/users#namespace-level-permissions
+                  - text: for a user in the form '
+                  - emphasis [ref=e585]: email
+                  - text: =
+                  - emphasis [ref=e586]: permission
+                  - text: "'."
+                - paragraph [ref=e587]:
+                  - text: Valid values for
+                  - emphasis [ref=e588]: permission
+                  - text: ":"
+                  - code [ref=e589]: Admin
+                  - text: "|"
+                  - code [ref=e590]: Write
+                  - text: "|"
+                  - code [ref=e591]: Read
+                - paragraph [ref=e592]:
+                  - text: "Alias:"
+                  - code [ref=e593]: "-p"
+                - heading "--enable-delete-protectionDirect link to --enable-delete-protection" [level=4] [ref=e594]:
+                  - text: "--enable-delete-protection"
+                  - link "Direct link to --enable-delete-protection" [ref=e595] [cursor=pointer]:
+                    - /url: "#--enable-delete-protection"
+                    - text: "#"
+                - paragraph [ref=e596]: "Enable delete protection on the namespace. (default: false)"
+                - paragraph [ref=e597]:
+                  - text: "Alias:"
+                  - code [ref=e598]: "--edp"
+                - heading "--endpointDirect link to --endpoint" [level=4] [ref=e599]:
+                  - text: "--endpoint"
+                  - link "Direct link to --endpoint" [ref=e600] [cursor=pointer]:
+                    - /url: "#--endpoint"
+                    - text: "#"
+                - paragraph [ref=e601]: The codec server endpoint to decode payloads for all users interacting with this Namespace. Must be HTTPS.
+                - paragraph [ref=e602]:
+                  - text: "Alias:"
+                  - code [ref=e603]: "-e"
+                - heading "--pass-access-tokenDirect link to --pass-access-token" [level=4] [ref=e604]:
+                  - text: "--pass-access-token"
+                  - link "Direct link to --pass-access-token" [ref=e605] [cursor=pointer]:
+                    - /url: "#--pass-access-token"
+                    - text: "#"
+                - paragraph [ref=e606]: "Pass the user access token to the remote endpoint (default: false)."
+                - paragraph [ref=e607]:
+                  - text: "Alias:"
+                  - code [ref=e608]: "--pat"
+                - heading "--include-credentialsDirect link to --include-credentials" [level=4] [ref=e609]:
+                  - text: "--include-credentials"
+                  - link "Direct link to --include-credentials" [ref=e610] [cursor=pointer]:
+                    - /url: "#--include-credentials"
+                    - text: "#"
+                - paragraph [ref=e611]: "Include cross-origin credentials (default: false)."
+                - paragraph [ref=e612]:
+                  - text: "Alias:"
+                  - code [ref=e613]: "--ic"
+                - heading "--cloud-providerDirect link to --cloud-provider" [level=4] [ref=e614]:
+                  - text: "--cloud-provider"
+                  - link "Direct link to --cloud-provider" [ref=e615] [cursor=pointer]:
+                    - /url: "#--cloud-provider-1"
+                    - text: "#"
+                - paragraph [ref=e616]: "The cloud provider of the region. One of ['aws', 'gcp']. (default: \"aws\")"
+                - paragraph [ref=e617]:
+                  - text: "Alias:"
+                  - code [ref=e618]: "--cp"
+                - heading "--tagDirect link to --tag" [level=4] [ref=e619]:
+                  - text: "--tag"
+                  - link "Direct link to --tag" [ref=e620] [cursor=pointer]:
+                    - /url: "#--tag"
+                    - text: "#"
+                - paragraph [ref=e621]:
+                  - text: A tag in the form "
+                  - emphasis [ref=e622]: key
+                  - text: =
+                  - emphasis [ref=e623]: value
+                  - text: "\"."
+                - paragraph [ref=e624]:
+                  - link "Tag structure and limits" [ref=e625] [cursor=pointer]:
+                    - /url: /cloud/namespaces#tag-structure-and-limits
+                  - text: .
+                - paragraph [ref=e626]:
+                  - text: "Alias:"
+                  - code [ref=e627]: "--t"
+                - paragraph [ref=e628]:
+                  - strong [ref=e629]: Example
+                - generic [ref=e631]:
+                  - code [ref=e633]:
+                    - generic [ref=e634]: tcld namespace create \
+                    - generic [ref=e635]: "--namespace <namespace_id> \\"
+                    - generic [ref=e636]: "--cloud-provider aws \\"
+                    - generic [ref=e637]: "--region us-west-2 \\"
+                    - generic [ref=e638]: "--retention-days 60 \\"
+                    - generic [ref=e639]: "--certificate-filter-input '{\"filters\": [{\"commonName\": \"test1\"}]}' \\"
+                    - generic [ref=e640]: "--user-namespace-permission \"user@example.com=Admin\" \\"
+                    - generic [ref=e641]: "--search-attribute \"customer_id=Int\" \\"
+                    - generic [ref=e642]: "--search-attribute \"customer_name=Text\" \\"
+                    - generic [ref=e643]: "--endpoint \"https://test-codec-server.com\" \\"
+                    - generic [ref=e644]: "--pass-access-token \\"
+                    - generic [ref=e645]: "--include-credentials \\"
+                    - generic [ref=e646]: "--tag \"key=value\""
+                  - button "Copy code to clipboard" [ref=e648] [cursor=pointer]:
+                    - generic [ref=e649]:
+                      - img [ref=e650]
+                      - img [ref=e652]
+                - heading "--connectivity-rule-idsDirect link to --connectivity-rule-ids" [level=4] [ref=e654]:
+                  - text: "--connectivity-rule-ids"
+                  - link "Direct link to --connectivity-rule-ids" [ref=e655] [cursor=pointer]:
+                    - /url: "#--connectivity-rule-ids"
+                    - text: "#"
+                - paragraph [ref=e656]: "The list of connectivity rule IDs, can be used in create namespace and update namespace. example: --ids id1 --ids id2 --ids id3."
+                - paragraph [ref=e657]:
+                  - text: "Alias:"
+                  - code [ref=e658]: "--ids"
+                - generic [ref=e660]:
+                  - code [ref=e662]:
+                    - generic [ref=e663]: tcld namespace create \
+                    - generic [ref=e664]: "--namespace <namespace_id> \\"
+                    - generic [ref=e665]: "--cloud-provider aws \\"
+                    - generic [ref=e666]: "--region us-west-2 \\"
+                    - generic [ref=e667]: "--retention-days 60 \\"
+                    - generic [ref=e668]: "--certificate-filter-input '{\"filters\": [{\"commonName\": \"test1\"}]}' \\"
+                    - generic [ref=e669]: "--user-namespace-permission \"user@example.com=Admin\" \\"
+                    - generic [ref=e670]: "--search-attribute \"customer_id=Int\" \\"
+                    - generic [ref=e671]: "--search-attribute \"customer_name=Text\" \\"
+                    - generic [ref=e672]: "--endpoint \"https://test-codec-server.com\" \\"
+                    - generic [ref=e673]: "--pass-access-token \\"
+                    - generic [ref=e674]: "--include-credentials \\"
+                    - generic [ref=e675]: "--connectivity-rule-ids <rule_id1> \\"
+                    - generic [ref=e676]: "--connectivity-rule-ids <rule_id2> // if adding multiple rules"
+                  - button "Copy code to clipboard" [ref=e678] [cursor=pointer]:
+                    - generic [ref=e679]:
+                      - img [ref=e680]
+                      - img [ref=e682]
+                - heading "deleteDirect link to delete" [level=2] [ref=e684]:
+                  - text: delete
+                  - link "Direct link to delete" [ref=e685] [cursor=pointer]:
+                    - /url: "#delete"
+                    - text: "#"
+                - paragraph [ref=e686]:
+                  - text: The
+                  - code [ref=e687]: tcld namespace delete
+                  - text: command deletes the specified
+                  - link "Namespace" [ref=e688] [cursor=pointer]:
+                    - /url: /namespaces
+                  - text: in Temporal Cloud.
+                - paragraph [ref=e689]:
+                  - text: "Alias:"
+                  - code [ref=e690]: d
+                - paragraph [ref=e691]:
+                  - code [ref=e692]: tcld namespace delete
+                - paragraph [ref=e693]: The following modifiers control the behavior of the command.
+                - heading "--namespaceDirect link to --namespace" [level=4] [ref=e694]:
+                  - text: "--namespace"
+                  - link "Direct link to --namespace" [ref=e695] [cursor=pointer]:
+                    - /url: "#--namespace-2"
+                    - text: "#"
+                - paragraph [ref=e696]: Specify the Namespace hosted on Temporal Cloud to be deleted.
+                - paragraph [ref=e697]:
+                  - text: "Alias:"
+                  - code [ref=e698]: "-n"
+                - paragraph [ref=e699]:
+                  - emphasis [ref=e700]: Required modifier
+                - heading "--request-idDirect link to --request-id" [level=4] [ref=e701]:
+                  - text: "--request-id"
+                  - link "Direct link to --request-id" [ref=e702] [cursor=pointer]:
+                    - /url: "#--request-id-2"
+                    - text: "#"
+                - paragraph [ref=e703]: The request identifier to use for the asynchronous operation. If not set, the server assigns an identifier.
+                - paragraph [ref=e704]:
+                  - text: "Alias:"
+                  - code [ref=e705]: "-r"
+                - heading "--resource-versionDirect link to --resource-version" [level=4] [ref=e706]:
+                  - text: "--resource-version"
+                  - link "Direct link to --resource-version" [ref=e707] [cursor=pointer]:
+                    - /url: "#--resource-version"
+                    - text: "#"
+                - paragraph [ref=e708]: A resource version (ETag) to update from. If not set, the CLI uses the latest.
+                - paragraph [ref=e709]:
+                  - text: "Alias:"
+                  - code [ref=e710]: "-v"
+                - paragraph [ref=e711]:
+                  - strong [ref=e712]: Example
+                - generic [ref=e714]:
+                  - code [ref=e716]:
+                    - generic [ref=e717]: tcld namespace delete \
+                    - generic [ref=e718]: "--namespace <namespace_id>"
+                  - button "Copy code to clipboard" [ref=e720] [cursor=pointer]:
+                    - generic [ref=e721]:
+                      - img [ref=e722]
+                      - img [ref=e724]
+                - heading "delete-regionDirect link to delete-region" [level=2] [ref=e726]:
+                  - text: delete-region
+                  - link "Direct link to delete-region" [ref=e727] [cursor=pointer]:
+                    - /url: "#delete-region"
+                    - text: "#"
+                - paragraph [ref=e728]:
+                  - text: Use
+                  - code [ref=e729]: tcld namespace delete-region
+                  - text: to remove a
+                  - button "replica" [ref=e731]
+                  - text: for an existing Temporal Cloud
+                  - link "Namespace" [ref=e732] [cursor=pointer]:
+                    - /url: /namespaces
+                  - text: . Removing a replica disables
+                  - link "High Availability features" [ref=e733] [cursor=pointer]:
+                    - /url: /cloud/high-availability
+                  - text: and results in a mandatory 7-day waiting period before you can re-enable High Availability features in the same location. Refer to
+                  - link "Enable High Availability" [ref=e734] [cursor=pointer]:
+                    - /url: /cloud/high-availability/enable
+                  - text: for more information.
+                - paragraph [ref=e735]:
+                  - text: "Alias:"
+                  - emphasis [ref=e736]: none
+                - paragraph [ref=e737]: The following modifiers control the behavior of the command.
+                - heading "--request-idDirect link to --request-id" [level=4] [ref=e738]:
+                  - text: "--request-id"
+                  - link "Direct link to --request-id" [ref=e739] [cursor=pointer]:
+                    - /url: "#--request-id-3"
+                    - text: "#"
+                - paragraph [ref=e740]: The request identifier to use for the asynchronous operation. If not set, the server assigns an identifier.
+                - paragraph [ref=e741]:
+                  - text: "Alias:"
+                  - code [ref=e742]: "-r"
+                - heading "--namespaceDirect link to --namespace" [level=4] [ref=e743]:
+                  - text: "--namespace"
+                  - link "Direct link to --namespace" [ref=e744] [cursor=pointer]:
+                    - /url: "#--namespace-3"
+                    - text: "#"
+                - paragraph [ref=e745]:
+                  - text: Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
+                  - code [ref=e746]: $TEMPORAL_CLOUD_NAMESPACE
+                  - text: is used.
+                - paragraph [ref=e747]:
+                  - text: "Alias:"
+                  - code [ref=e748]: "-n"
+                - paragraph [ref=e749]:
+                  - emphasis [ref=e750]: Required modifier
+                - heading "--regionDirect link to --region" [level=4] [ref=e751]:
+                  - text: "--region"
+                  - link "Direct link to --region" [ref=e752] [cursor=pointer]:
+                    - /url: "#--region-2"
+                    - text: "#"
+                - paragraph [ref=e753]: The region to remove from the Namespace. Upon removal, Temporal stops replication and the Namespace becomes a Standard Namespace. You cannot re-add a region or add a new region for seven days after removing a Namespace region.
+                - paragraph [ref=e754]:
+                  - text: "Alias:"
+                  - code [ref=e755]: "--re"
+                - paragraph [ref=e756]:
+                  - emphasis [ref=e757]: Required modifier
+                - paragraph [ref=e758]:
+                  - strong [ref=e759]: Example
+                - generic [ref=e761]:
+                  - code [ref=e763]:
+                    - generic [ref=e764]: tcld namespace delete-region \
+                    - generic [ref=e765]: "--namespace <namespace_id>\\"
+                    - generic [ref=e766]: "--region <replica_region>"
+                  - button "Copy code to clipboard" [ref=e768] [cursor=pointer]:
+                    - generic [ref=e769]:
+                      - img [ref=e770]
+                      - img [ref=e772]
+                - paragraph [ref=e774]: "When using API key authentication, add your API credentials before pressing Enter:"
+                - generic [ref=e776]:
+                  - code [ref=e778]:
+                    - generic [ref=e779]: tcld --api-key <your_api_key> \
+                    - generic [ref=e780]: delete-region \
+                    - generic [ref=e781]: "--namespace <namespace_id> \\"
+                    - generic [ref=e782]: "--region <replica_region>"
+                  - button "Copy code to clipboard" [ref=e784] [cursor=pointer]:
+                    - generic [ref=e785]:
+                      - img [ref=e786]
+                      - img [ref=e788]
+                - heading "--cloud-providerDirect link to --cloud-provider" [level=4] [ref=e790]:
+                  - text: "--cloud-provider"
+                  - link "Direct link to --cloud-provider" [ref=e791] [cursor=pointer]:
+                    - /url: "#--cloud-provider-2"
+                    - text: "#"
+                - paragraph [ref=e792]: The cloud provider of the region to failover to. One of [aws, gcp].
+                - paragraph [ref=e793]: "Default: aws (default: \"aws\")"
+                - heading "failoverDirect link to failover" [level=2] [ref=e794]:
+                  - text: failover
+                  - link "Direct link to failover" [ref=e795] [cursor=pointer]:
+                    - /url: "#failover"
+                    - text: "#"
+                - paragraph [ref=e796]:
+                  - text: Failover a Temporal Namespace with
+                  - link "High Availability features" [ref=e797] [cursor=pointer]:
+                    - /url: /cloud/high-availability
+                  - text: . A failover switches a Namespace region from a primary Namespace to its replica.
+                - paragraph [ref=e798]:
+                  - strong [ref=e799]: Example
+                - generic [ref=e801]:
+                  - code [ref=e803]:
+                    - generic [ref=e804]: tcld namespace failover \
+                    - generic [ref=e805]: "--namespace <namespace_id> \\"
+                    - generic [ref=e806]: "--region <target_region>"
+                  - button "Copy code to clipboard" [ref=e808] [cursor=pointer]:
+                    - generic [ref=e809]:
+                      - img [ref=e810]
+                      - img [ref=e812]
+                - paragraph [ref=e814]: "When using API key authentication, add your API credentials before pressing Enter:"
+                - generic [ref=e816]:
+                  - code [ref=e818]:
+                    - generic [ref=e819]: tcld --api-key <your_api_key> \
+                    - generic [ref=e820]: namespace failover \
+                    - generic [ref=e821]: "--namespace <namespace_id> \\"
+                    - generic [ref=e822]: "--region <target_region>"
+                  - button "Copy code to clipboard" [ref=e824] [cursor=pointer]:
+                    - generic [ref=e825]:
+                      - img [ref=e826]
+                      - img [ref=e828]
+                - heading "--request-idDirect link to --request-id" [level=4] [ref=e830]:
+                  - text: "--request-id"
+                  - link "Direct link to --request-id" [ref=e831] [cursor=pointer]:
+                    - /url: "#--request-id-4"
+                    - text: "#"
+                - paragraph [ref=e832]: Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
+                - paragraph [ref=e833]:
+                  - text: "Alias:"
+                  - code [ref=e834]: "-r"
+                - heading "--namespaceDirect link to --namespace" [level=4] [ref=e835]:
+                  - text: "--namespace"
+                  - link "Direct link to --namespace" [ref=e836] [cursor=pointer]:
+                    - /url: "#--namespace-4"
+                    - text: "#"
+                - paragraph [ref=e837]: Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+                - paragraph [ref=e838]:
+                  - text: "Alias:"
+                  - code [ref=e839]: "-n"
+                - paragraph [ref=e840]:
+                  - emphasis [ref=e841]: Required modifier
+                - heading "--regionDirect link to --region" [level=4] [ref=e842]:
+                  - text: "--region"
+                  - link "Direct link to --region" [ref=e843] [cursor=pointer]:
+                    - /url: "#--region-3"
+                    - text: "#"
+                - paragraph [ref=e844]:
+                  - text: The region to failover
+                  - emphasis [ref=e845]: to
+                  - text: .
+                - paragraph [ref=e846]:
+                  - text: See
+                  - link "Regions" [ref=e847] [cursor=pointer]:
+                    - /url: /cloud/regions
+                  - text: for a list of supported regions.
+                - paragraph [ref=e848]:
+                  - text: "Alias:"
+                  - code [ref=e849]: "--re"
+                - paragraph [ref=e850]:
+                  - emphasis [ref=e851]: Required modifier
+                - heading "--ca-certificateDirect link to --ca-certificate" [level=4] [ref=e852]:
+                  - text: "--ca-certificate"
+                  - link "Direct link to --ca-certificate" [ref=e853] [cursor=pointer]:
+                    - /url: "#--ca-certificate-1"
+                    - text: "#"
+                - paragraph [ref=e854]:
+                  - emphasis [ref=e855]:
+                    - text: Required modifier unless
+                    - code [ref=e856]: "--ca-certificate-file"
+                    - text: is specified
+                  - text: .
+                - paragraph [ref=e857]: A base64-encoded CA certificate.
+                - paragraph [ref=e858]:
+                  - text: If both
+                  - code [ref=e859]: "--ca-certificate"
+                  - text: and
+                  - code [ref=e860]: "--ca-certificate-file"
+                  - text: are specified, only
+                  - code [ref=e861]: "--ca-certificate"
+                  - text: is used.
+                - paragraph [ref=e862]:
+                  - text: "Alias:"
+                  - code [ref=e863]: "-c"
+                - heading "--cloud-providerDirect link to --cloud-provider" [level=4] [ref=e864]:
+                  - text: "--cloud-provider"
+                  - link "Direct link to --cloud-provider" [ref=e865] [cursor=pointer]:
+                    - /url: "#--cloud-provider-3"
+                    - text: "#"
+                - paragraph [ref=e866]: The cloud provider of the region to failover to. One of [aws, gcp].
+                - paragraph [ref=e867]: "Default: aws (default: \"aws\")"
+                - heading "getDirect link to get" [level=2] [ref=e868]:
+                  - text: get
+                  - link "Direct link to get" [ref=e869] [cursor=pointer]:
+                    - /url: "#get"
+                    - text: "#"
+                - paragraph [ref=e870]:
+                  - text: The
+                  - code [ref=e871]: tcld namespace get
+                  - text: command gets information about the specified
+                  - link "Namespace" [ref=e872] [cursor=pointer]:
+                    - /url: /namespaces
+                  - text: in Temporal Cloud.
+                - paragraph [ref=e873]:
+                  - text: "Alias:"
+                  - code [ref=e874]: g
+                - paragraph [ref=e875]:
+                  - code [ref=e876]: tcld namespace get
+                - paragraph [ref=e877]: The following modifier controls the behavior of the command.
+                - heading "--namespaceDirect link to --namespace" [level=4] [ref=e878]:
+                  - text: "--namespace"
+                  - link "Direct link to --namespace" [ref=e879] [cursor=pointer]:
+                    - /url: "#--namespace-5"
+                    - text: "#"
+                - paragraph [ref=e880]: Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+                - paragraph [ref=e881]:
+                  - text: "Alias:"
+                  - code [ref=e882]: "-n"
+                - paragraph [ref=e883]:
+                  - strong [ref=e884]: Example
+                - generic [ref=e886]:
+                  - code [ref=e888]:
+                    - generic [ref=e889]: tcld namespace get \
+                    - generic [ref=e890]: "--namespace <namespace_id>"
+                  - button "Copy code to clipboard" [ref=e892] [cursor=pointer]:
+                    - generic [ref=e893]:
+                      - img [ref=e894]
+                      - img [ref=e896]
+                - heading "listDirect link to list" [level=2] [ref=e898]:
+                  - text: list
+                  - link "Direct link to list" [ref=e899] [cursor=pointer]:
+                    - /url: "#list"
+                    - text: "#"
+                - paragraph [ref=e900]:
+                  - text: The
+                  - code [ref=e901]: tcld namespace list
+                  - text: command lists all
+                  - link "Namespaces" [ref=e902] [cursor=pointer]:
+                    - /url: /namespaces
+                  - text: in Temporal Cloud.
+                - paragraph [ref=e903]:
+                  - text: "Alias:"
+                  - code [ref=e904]: l
+                - paragraph [ref=e905]:
+                  - code [ref=e906]: tcld namespace list
+                - paragraph [ref=e907]: The command has no modifiers.
+                - heading "exportDirect link to export" [level=2] [ref=e908]:
+                  - text: export
+                  - link "Direct link to export" [ref=e909] [cursor=pointer]:
+                    - /url: "#export"
+                    - text: "#"
+                - paragraph [ref=e910]:
+                  - text: The
+                  - code [ref=e911]: tcld namespace export s3
+                  - text: commands manage Workflow History Exports.
+                - paragraph [ref=e912]:
+                  - text: "Valid options:"
+                  - code [ref=e913]: s3
+                - paragraph [ref=e914]:
+                  - text: "Alias:"
+                  - code [ref=e915]: es
+                - list [ref=e916]:
+                  - listitem [ref=e917]:
+                    - link "tcld namespace export s3 create" [ref=e918] [cursor=pointer]:
+                      - /url: "#create"
+                  - listitem [ref=e919]:
+                    - link "tcld namespace export s3 get" [ref=e920] [cursor=pointer]:
+                      - /url: "#get"
+                  - listitem [ref=e921]:
+                    - link "tcld namespace export s3 delete" [ref=e922] [cursor=pointer]:
+                      - /url: "#delete"
+                  - listitem [ref=e923]:
+                    - link "tcld namespace export s3 list" [ref=e924] [cursor=pointer]:
+                      - /url: "#list"
+                  - listitem [ref=e925]:
+                    - link "tcld namespace export s3 update" [ref=e926] [cursor=pointer]:
+                      - /url: "#update"
+                  - listitem [ref=e927]:
+                    - link "tcld namespace export s3 validate" [ref=e928] [cursor=pointer]:
+                      - /url: "#validate"
+                - heading "createDirect link to create" [level=3] [ref=e929]:
+                  - text: create
+                  - link "Direct link to create" [ref=e930] [cursor=pointer]:
+                    - /url: "#create-1"
+                    - text: "#"
+                - paragraph [ref=e931]:
+                  - text: The
+                  - code [ref=e932]: tcld namespace export s3 create
+                  - text: command allows users to create an export sink for the Namespace of a Temporal Cloud account.
+                - paragraph [ref=e933]:
+                  - strong [ref=e934]: Example
+                - generic [ref=e936]:
+                  - code [ref=e938]:
+                    - generic [ref=e939]: tcld namespace export s3 create \
+                    - generic [ref=e940]: "--namespace <namespace_id> \\"
+                    - generic [ref=e941]: "--sink-name <sink_name> \\"
+                    - generic [ref=e942]: "--s3-bucket-name <bucket_name> \\"
+                    - generic [ref=e943]: "--role-arn <role_arn>"
+                  - button "Copy code to clipboard" [ref=e945] [cursor=pointer]:
+                    - generic [ref=e946]:
+                      - img [ref=e947]
+                      - img [ref=e949]
+                - paragraph [ref=e951]: The following modifiers control the behavior of the command.
+                - heading "--namespaceDirect link to --namespace" [level=4] [ref=e952]:
+                  - text: "--namespace"
+                  - link "Direct link to --namespace" [ref=e953] [cursor=pointer]:
+                    - /url: "#--namespace-6"
+                    - text: "#"
+                - paragraph [ref=e954]: Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+                - paragraph [ref=e955]:
+                  - text: "Alias:"
+                  - code [ref=e956]: "-n"
+                - paragraph [ref=e957]:
+                  - emphasis [ref=e958]: Required modifier
+                - heading "--sink-nameDirect link to --sink-name" [level=4] [ref=e959]:
+                  - text: "--sink-name"
+                  - link "Direct link to --sink-name" [ref=e960] [cursor=pointer]:
+                    - /url: "#--sink-name"
+                    - text: "#"
+                - paragraph [ref=e961]: Provide a name for the export sink.
+                - paragraph [ref=e962]:
+                  - emphasis [ref=e963]: Required modifier
+                - heading "--role-arnDirect link to --role-arn" [level=4] [ref=e964]:
+                  - text: "--role-arn"
+                  - link "Direct link to --role-arn" [ref=e965] [cursor=pointer]:
+                    - /url: "#--role-arn"
+                    - text: "#"
+                - paragraph [ref=e966]: Provide role arn for the IAM Role.
+                - paragraph [ref=e967]:
+                  - emphasis [ref=e968]: Required modifier
+                - heading "--s3-bucket-nameDirect link to --s3-bucket-name" [level=4] [ref=e969]:
+                  - text: "--s3-bucket-name"
+                  - link "Direct link to --s3-bucket-name" [ref=e970] [cursor=pointer]:
+                    - /url: "#--s3-bucket-name"
+                    - text: "#"
+                - paragraph [ref=e971]: Provide the name of an AWS S3 bucket that Temporal will send closed workflow histories to.
+                - paragraph [ref=e972]:
+                  - emphasis [ref=e973]: Required modifier
+                - heading "--request-idDirect link to --request-id" [level=4] [ref=e974]:
+                  - text: "--request-id"
+                  - link "Direct link to --request-id" [ref=e975] [cursor=pointer]:
+                    - /url: "#--request-id-5"
+                    - text: "#"
+                - paragraph [ref=e976]: Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
+                - paragraph [ref=e977]:
+                  - text: "Alias:"
+                  - code [ref=e978]: "-r"
+                - heading "--kms-arnDirect link to --kms-arn" [level=4] [ref=e979]:
+                  - text: "--kms-arn"
+                  - link "Direct link to --kms-arn" [ref=e980] [cursor=pointer]:
+                    - /url: "#--kms-arn"
+                    - text: "#"
+                - paragraph [ref=e981]: "Provide the ARN of the KMS key to use for encryption. Note: If the KMS ARN needs to be added or updated, users should create the IAM Role with KMS or modify the created IAM Role accordingly. Providing it as part of the input won't help."
+                - heading "getDirect link to get" [level=3] [ref=e982]:
+                  - text: get
+                  - link "Direct link to get" [ref=e983] [cursor=pointer]:
+                    - /url: "#get-1"
+                    - text: "#"
+                - paragraph [ref=e984]:
+                  - text: The
+                  - code [ref=e985]: tcld namespace export s3 get
+                  - text: command allows users to retrieve details about an existing export sink from the Namespace of a Temporal Cloud account.
+                - paragraph [ref=e986]:
+                  - strong [ref=e987]: Example
+                - generic [ref=e989]:
+                  - code [ref=e991]:
+                    - generic [ref=e992]: tcld namespace export s3 get \
+                    - generic [ref=e993]: "--namespace <namespace_id> \\"
+                    - generic [ref=e994]: "--sink-name <sink_name>"
+                  - button "Copy code to clipboard" [ref=e996] [cursor=pointer]:
+                    - generic [ref=e997]:
+                      - img [ref=e998]
+                      - img [ref=e1000]
+                - paragraph [ref=e1002]: The following modifiers control the behavior of the command.
+                - heading "--namespaceDirect link to --namespace" [level=4] [ref=e1003]:
+                  - text: "--namespace"
+                  - link "Direct link to --namespace" [ref=e1004] [cursor=pointer]:
+                    - /url: "#--namespace-7"
+                    - text: "#"
+                - paragraph [ref=e1005]: Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+                - paragraph [ref=e1006]:
+                  - text: "Alias:"
+                  - code [ref=e1007]: "-n"
+                - paragraph [ref=e1008]:
+                  - emphasis [ref=e1009]: Required modifier
+                - heading "--sink-nameDirect link to --sink-name" [level=4] [ref=e1010]:
+                  - text: "--sink-name"
+                  - link "Direct link to --sink-name" [ref=e1011] [cursor=pointer]:
+                    - /url: "#--sink-name-1"
+                    - text: "#"
+                - paragraph [ref=e1012]: Provide the name of the export sink you wish to retrieve details for.
+                - paragraph [ref=e1013]:
+                  - emphasis [ref=e1014]: Required modifier
+                - heading "deleteDirect link to delete" [level=3] [ref=e1015]:
+                  - text: delete
+                  - link "Direct link to delete" [ref=e1016] [cursor=pointer]:
+                    - /url: "#delete-1"
+                    - text: "#"
+                - paragraph [ref=e1017]:
+                  - text: The
+                  - code [ref=e1018]: tcld namespace export s3 delete
+                  - text: command allows users to delete an existing export sink from the Namespace of a Temporal Cloud account.
+                - paragraph [ref=e1019]:
+                  - strong [ref=e1020]: Example
+                - generic [ref=e1022]:
+                  - code [ref=e1024]:
+                    - generic [ref=e1025]: tcld namespace export s3 delete \
+                    - generic [ref=e1026]: "--namespace <namespace_id> \\"
+                    - generic [ref=e1027]: "--sink-name <sink_name>"
+                  - button "Copy code to clipboard" [ref=e1029] [cursor=pointer]:
+                    - generic [ref=e1030]:
+                      - img [ref=e1031]
+                      - img [ref=e1033]
+                - paragraph [ref=e1035]: The following modifiers control the behavior of the command.
+                - heading "--namespaceDirect link to --namespace" [level=4] [ref=e1036]:
+                  - text: "--namespace"
+                  - link "Direct link to --namespace" [ref=e1037] [cursor=pointer]:
+                    - /url: "#--namespace-8"
+                    - text: "#"
+                - paragraph [ref=e1038]: Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+                - paragraph [ref=e1039]:
+                  - text: "Alias:"
+                  - code [ref=e1040]: "-n"
+                - paragraph [ref=e1041]:
+                  - emphasis [ref=e1042]: Required modifier
+                - heading "--sink-nameDirect link to --sink-name" [level=4] [ref=e1043]:
+                  - text: "--sink-name"
+                  - link "Direct link to --sink-name" [ref=e1044] [cursor=pointer]:
+                    - /url: "#--sink-name-2"
+                    - text: "#"
+                - paragraph [ref=e1045]: Provide the name of the export sink you wish to delete.
+                - paragraph [ref=e1046]:
+                  - emphasis [ref=e1047]: Required modifier
+                - heading "--resource-versionDirect link to --resource-version" [level=4] [ref=e1048]:
+                  - text: "--resource-version"
+                  - link "Direct link to --resource-version" [ref=e1049] [cursor=pointer]:
+                    - /url: "#--resource-version-1"
+                    - text: "#"
+                - paragraph [ref=e1050]: Specify a resource version (ETag) to delete from. If not specified, the CLI will use the latest version.
+                - paragraph [ref=e1051]:
+                  - text: "Alias:"
+                  - code [ref=e1052]: "-v"
+                - heading "--request-idDirect link to --request-id" [level=4] [ref=e1053]:
+                  - text: "--request-id"
+                  - link "Direct link to --request-id" [ref=e1054] [cursor=pointer]:
+                    - /url: "#--request-id-6"
+                    - text: "#"
+                - paragraph [ref=e1055]: Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
+                - paragraph [ref=e1056]:
+                  - text: "Alias:"
+                  - code [ref=e1057]: "-r"
+                - heading "listDirect link to list" [level=3] [ref=e1058]:
+                  - text: list
+                  - link "Direct link to list" [ref=e1059] [cursor=pointer]:
+                    - /url: "#list-1"
+                    - text: "#"
+                - paragraph [ref=e1060]:
+                  - text: The
+                  - code [ref=e1061]: tcld namespace export s3 list
+                  - text: command allows users to list all existing export sinks within the Namespace of a Temporal Cloud account.
+                - paragraph [ref=e1062]:
+                  - strong [ref=e1063]: Example
+                - generic [ref=e1065]:
+                  - code [ref=e1067]:
+                    - generic [ref=e1068]: tcld namespace export s3 list \
+                    - generic [ref=e1069]: "--namespace <namespace_id>"
+                  - button "Copy code to clipboard" [ref=e1071] [cursor=pointer]:
+                    - generic [ref=e1072]:
+                      - img [ref=e1073]
+                      - img [ref=e1075]
+                - paragraph [ref=e1077]: The following modifiers control the behavior of the command.
+                - heading "--namespaceDirect link to --namespace" [level=4] [ref=e1078]:
+                  - text: "--namespace"
+                  - link "Direct link to --namespace" [ref=e1079] [cursor=pointer]:
+                    - /url: "#--namespace-9"
+                    - text: "#"
+                - paragraph [ref=e1080]: Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+                - paragraph [ref=e1081]:
+                  - text: "Alias:"
+                  - code [ref=e1082]: "-n"
+                - paragraph [ref=e1083]:
+                  - emphasis [ref=e1084]: Required modifier
+                - heading "--page-sizeDirect link to --page-size" [level=4] [ref=e1085]:
+                  - text: "--page-size"
+                  - link "Direct link to --page-size" [ref=e1086] [cursor=pointer]:
+                    - /url: "#--page-size"
+                    - text: "#"
+                - paragraph [ref=e1087]: Determine the number of results to return per page for list operations. If not specified, the default value is 100.
+                - heading "--page-tokenDirect link to --page-token" [level=4] [ref=e1088]:
+                  - text: "--page-token"
+                  - link "Direct link to --page-token" [ref=e1089] [cursor=pointer]:
+                    - /url: "#--page-token"
+                    - text: "#"
+                - paragraph [ref=e1090]: Provide the page token to continue listing results from where the previous list operation left off.
+                - heading "updateDirect link to update" [level=3] [ref=e1091]:
+                  - text: update
+                  - link "Direct link to update" [ref=e1092] [cursor=pointer]:
+                    - /url: "#update"
+                    - text: "#"
+                - paragraph [ref=e1093]:
+                  - text: The
+                  - code [ref=e1094]: tcld namespace export s3 update
+                  - text: command allows users to modify the details of an existing export sink within the Namespace of a Temporal Cloud account.
+                - paragraph [ref=e1095]:
+                  - strong [ref=e1096]: Example
+                - generic [ref=e1098]:
+                  - code [ref=e1100]:
+                    - generic [ref=e1101]: tcld namespace export s3 update \
+                    - generic [ref=e1102]: "--namespace <namespace_id> \\"
+                    - generic [ref=e1103]: "--sink-name <sink_name> \\"
+                    - generic [ref=e1104]: "--enabled true"
+                  - button "Copy code to clipboard" [ref=e1106] [cursor=pointer]:
+                    - generic [ref=e1107]:
+                      - img [ref=e1108]
+                      - img [ref=e1110]
+                - paragraph [ref=e1112]: The following modifiers control the behavior of the command.
+                - heading "--namespaceDirect link to --namespace" [level=4] [ref=e1113]:
+                  - text: "--namespace"
+                  - link "Direct link to --namespace" [ref=e1114] [cursor=pointer]:
+                    - /url: "#--namespace-10"
+                    - text: "#"
+                - paragraph [ref=e1115]: Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+                - paragraph [ref=e1116]:
+                  - text: "Alias:"
+                  - code [ref=e1117]: "-n"
+                - paragraph [ref=e1118]:
+                  - emphasis [ref=e1119]: Required modifier
+                - heading "--sink-nameDirect link to --sink-name" [level=4] [ref=e1120]:
+                  - text: "--sink-name"
+                  - link "Direct link to --sink-name" [ref=e1121] [cursor=pointer]:
+                    - /url: "#--sink-name-3"
+                    - text: "#"
+                - paragraph [ref=e1122]: Provide the name of the export sink you wish to update.
+                - paragraph [ref=e1123]:
+                  - emphasis [ref=e1124]: Required modifier
+                - heading "--enabledDirect link to --enabled" [level=4] [ref=e1125]:
+                  - text: "--enabled"
+                  - link "Direct link to --enabled" [ref=e1126] [cursor=pointer]:
+                    - /url: "#--enabled"
+                    - text: "#"
+                - paragraph [ref=e1127]: Specify whether the export is enabled or not.
+                - heading "--role-arnDirect link to --role-arn" [level=4] [ref=e1128]:
+                  - text: "--role-arn"
+                  - link "Direct link to --role-arn" [ref=e1129] [cursor=pointer]:
+                    - /url: "#--role-arn-1"
+                    - text: "#"
+                - paragraph [ref=e1130]: Update the role ARN for the IAM Role.
+                - heading "--s3-bucket-nameDirect link to --s3-bucket-name" [level=4] [ref=e1131]:
+                  - text: "--s3-bucket-name"
+                  - link "Direct link to --s3-bucket-name" [ref=e1132] [cursor=pointer]:
+                    - /url: "#--s3-bucket-name-1"
+                    - text: "#"
+                - paragraph [ref=e1133]: Update the name of the AWS S3 bucket that Temporal will send closed workflow histories to.
+                - heading "--resource-versionDirect link to --resource-version" [level=4] [ref=e1134]:
+                  - text: "--resource-version"
+                  - link "Direct link to --resource-version" [ref=e1135] [cursor=pointer]:
+                    - /url: "#--resource-version-2"
+                    - text: "#"
+                - paragraph [ref=e1136]: Specify a resource version (ETag) to update from. If not specified, the CLI will use the latest version.
+                - paragraph [ref=e1137]:
+                  - text: "Alias:"
+                  - code [ref=e1138]: "-v"
+                - heading "--kms-arnDirect link to --kms-arn" [level=4] [ref=e1139]:
+                  - text: "--kms-arn"
+                  - link "Direct link to --kms-arn" [ref=e1140] [cursor=pointer]:
+                    - /url: "#--kms-arn-1"
+                    - text: "#"
+                - paragraph [ref=e1141]: "Update the ARN of the KMS key used for encryption. Note: If the KMS ARN needs to be added or updated, users should create the IAM Role with KMS or modify the created IAM Role accordingly. Providing it as part of the input won't help."
+                - heading "--request-idDirect link to --request-id" [level=4] [ref=e1142]:
+                  - text: "--request-id"
+                  - link "Direct link to --request-id" [ref=e1143] [cursor=pointer]:
+                    - /url: "#--request-id-7"
+                    - text: "#"
+                - paragraph [ref=e1144]: Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
+                - paragraph [ref=e1145]:
+                  - text: "Alias:"
+                  - code [ref=e1146]: "-r"
+                - heading "validateDirect link to validate" [level=3] [ref=e1147]:
+                  - text: validate
+                  - link "Direct link to validate" [ref=e1148] [cursor=pointer]:
+                    - /url: "#validate"
+                    - text: "#"
+                - paragraph [ref=e1149]:
+                  - text: The
+                  - code [ref=e1150]: tcld namespace export s3 validate
+                  - text: command allows users to validate an export sink from the Namespace of a Temporal Cloud account.
+                - paragraph [ref=e1151]:
+                  - strong [ref=e1152]: Example
+                - generic [ref=e1154]:
+                  - code [ref=e1156]:
+                    - generic [ref=e1157]: tcld namespace export s3 validate \
+                    - generic [ref=e1158]: "--namespace <namespace_id> \\"
+                    - generic [ref=e1159]: "--sink-name <sink_name> \\"
+                    - generic [ref=e1160]: "--s3-bucket-name <bucket_name> \\"
+                    - generic [ref=e1161]: "--role-arn <role_arn>"
+                  - button "Copy code to clipboard" [ref=e1163] [cursor=pointer]:
+                    - generic [ref=e1164]:
+                      - img [ref=e1165]
+                      - img [ref=e1167]
+                - paragraph [ref=e1169]: The following modifiers control the behavior of the command.
+                - heading "--namespaceDirect link to --namespace" [level=4] [ref=e1170]:
+                  - text: "--namespace"
+                  - link "Direct link to --namespace" [ref=e1171] [cursor=pointer]:
+                    - /url: "#--namespace-11"
+                    - text: "#"
+                - paragraph [ref=e1172]: Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+                - paragraph [ref=e1173]:
+                  - text: "Alias:"
+                  - code [ref=e1174]: "-n"
+                - paragraph [ref=e1175]:
+                  - emphasis [ref=e1176]: Required modifier
+                - heading "--sink-nameDirect link to --sink-name" [level=4] [ref=e1177]:
+                  - text: "--sink-name"
+                  - link "Direct link to --sink-name" [ref=e1178] [cursor=pointer]:
+                    - /url: "#--sink-name-4"
+                    - text: "#"
+                - paragraph [ref=e1179]: Provide the name of the export sink you wish to retrieve details for.
+                - paragraph [ref=e1180]:
+                  - emphasis [ref=e1181]: Required modifier
+                - heading "--role-arnDirect link to --role-arn" [level=4] [ref=e1182]:
+                  - text: "--role-arn"
+                  - link "Direct link to --role-arn" [ref=e1183] [cursor=pointer]:
+                    - /url: "#--role-arn-2"
+                    - text: "#"
+                - paragraph [ref=e1184]: Provide role arn for the IAM Role.
+                - paragraph [ref=e1185]:
+                  - emphasis [ref=e1186]: Required modifier
+                - heading "--s3-bucket-nameDirect link to --s3-bucket-name" [level=4] [ref=e1187]:
+                  - text: "--s3-bucket-name"
+                  - link "Direct link to --s3-bucket-name" [ref=e1188] [cursor=pointer]:
+                    - /url: "#--s3-bucket-name-2"
+                    - text: "#"
+                - paragraph [ref=e1189]: Update the name of the AWS S3 bucket that Temporal will send closed workflow histories to.
+                - heading "--kms-arnDirect link to --kms-arn" [level=4] [ref=e1190]:
+                  - text: "--kms-arn"
+                  - link "Direct link to --kms-arn" [ref=e1191] [cursor=pointer]:
+                    - /url: "#--kms-arn-2"
+                    - text: "#"
+                - paragraph [ref=e1192]: "Update the ARN of the KMS key used for encryption. Note: If the KMS ARN needs to be added or updated, users should create the IAM Role with KMS or modify the created IAM Role accordingly. Providing it as part of the input won't help."
+                - heading "accepted-client-caDirect link to accepted-client-ca" [level=2] [ref=e1193]:
+                  - text: accepted-client-ca
+                  - link "Direct link to accepted-client-ca" [ref=e1194] [cursor=pointer]:
+                    - /url: "#accepted-client-ca"
+                    - text: "#"
+                - paragraph [ref=e1195]:
+                  - text: The
+                  - code [ref=e1196]: tcld namespace accepted-client-ca
+                  - text: commands manage the client CA certificates of the specified
+                  - link "Namespace" [ref=e1197] [cursor=pointer]:
+                    - /url: /namespaces
+                  - text: in Temporal Cloud. The certificates are used to verify client connections.
+                - generic [ref=e1198]:
+                  - generic [ref=e1199]:
+                    - img [ref=e1201]
+                    - text: note
+                  - paragraph [ref=e1204]: Base64 versions of the CA certificate files are accepted by these commands.
+                - paragraph [ref=e1205]:
+                  - text: "Alias:"
+                  - code [ref=e1206]: ca
+                - list [ref=e1207]:
+                  - listitem [ref=e1208]:
+                    - link "tcld namespace accepted-client-ca add" [ref=e1209] [cursor=pointer]:
+                      - /url: "#add"
+                  - listitem [ref=e1210]:
+                    - link "tcld namespace accepted-client-ca list" [ref=e1211] [cursor=pointer]:
+                      - /url: "#list"
+                  - listitem [ref=e1212]:
+                    - link "tcld namespace accepted-client-ca set" [ref=e1213] [cursor=pointer]:
+                      - /url: "#set"
+                  - listitem [ref=e1214]:
+                    - link "tcld namespace accepted-client-ca remove" [ref=e1215] [cursor=pointer]:
+                      - /url: "#remove"
+                - generic [ref=e1216]:
+                  - generic [ref=e1217]:
+                    - img [ref=e1219]
+                    - text: info
+                  - generic [ref=e1221]:
+                    - paragraph [ref=e1222]: Do not use a CA certificate that is signed with an insecure signature algorithm, such as SHA-1. Such signatures will be rejected. Existing CA certificates that use SHA-1 can stop working without warning.
+                    - paragraph [ref=e1223]:
+                      - text: For more information about the vulnerabilities of SHA-1, see
+                      - link "SHAttered" [ref=e1224] [cursor=pointer]:
+                        - /url: https://shattered.io/
+                      - text: .
+                - heading "addDirect link to add" [level=3] [ref=e1225]:
+                  - text: add
+                  - link "Direct link to add" [ref=e1226] [cursor=pointer]:
+                    - /url: "#add"
+                    - text: "#"
+                - paragraph [ref=e1227]:
+                  - text: The
+                  - code [ref=e1228]: tcld namespace accepted-client-ca add
+                  - text: command adds client CA certificates to a
+                  - link "Namespace" [ref=e1229] [cursor=pointer]:
+                    - /url: /namespaces
+                  - text: in Temporal Cloud.
+                - paragraph [ref=e1230]:
+                  - code [ref=e1231]: tcld namespace accepted-client-ca add --ca-certificate <value>
+                - paragraph [ref=e1232]:
+                  - text: "Alias:"
+                  - code [ref=e1233]: a
+                - paragraph [ref=e1234]: The following modifiers control the behavior of the command.
+                - heading "--namespaceDirect link to --namespace" [level=4] [ref=e1235]:
+                  - text: "--namespace"
+                  - link "Direct link to --namespace" [ref=e1236] [cursor=pointer]:
+                    - /url: "#--namespace-12"
+                    - text: "#"
+                - paragraph [ref=e1237]: Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+                - paragraph [ref=e1238]:
+                  - text: "Alias:"
+                  - code [ref=e1239]: "-n"
+                - paragraph [ref=e1240]:
+                  - strong [ref=e1241]: Example
+                - generic [ref=e1243]:
+                  - code [ref=e1245]:
+                    - generic [ref=e1246]: tcld namespace accepted-client-ca add \
+                    - generic [ref=e1247]: "--namespace <namespace_id> \\"
+                    - generic [ref=e1248]: "--ca-certificate <encoded_certificate>"
+                  - button "Copy code to clipboard" [ref=e1250] [cursor=pointer]:
+                    - generic [ref=e1251]:
+                      - img [ref=e1252]
+                      - img [ref=e1254]
+                - heading "--request-idDirect link to --request-id" [level=4] [ref=e1256]:
+                  - text: "--request-id"
+                  - link "Direct link to --request-id" [ref=e1257] [cursor=pointer]:
+                    - /url: "#--request-id-8"
+                    - text: "#"
+                - paragraph [ref=e1258]: Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
+                - paragraph [ref=e1259]:
+                  - text: "Alias:"
+                  - code [ref=e1260]: "-r"
+                - paragraph [ref=e1261]:
+                  - strong [ref=e1262]: Example
+                - generic [ref=e1264]:
+                  - code [ref=e1266]:
+                    - generic [ref=e1267]: tcld namespace accepted-client-ca add \
+                    - generic [ref=e1268]: "--request-id <request_id> \\"
+                    - generic [ref=e1269]: "--ca-certificate <encoded_certificate>"
+                  - button "Copy code to clipboard" [ref=e1271] [cursor=pointer]:
+                    - generic [ref=e1272]:
+                      - img [ref=e1273]
+                      - img [ref=e1275]
+                - heading "--resource-versionDirect link to --resource-version" [level=4] [ref=e1277]:
+                  - text: "--resource-version"
+                  - link "Direct link to --resource-version" [ref=e1278] [cursor=pointer]:
+                    - /url: "#--resource-version-3"
+                    - text: "#"
+                - paragraph [ref=e1279]: Specify a resource version (ETag) to update from. If not specified, the latest version is used.
+                - paragraph [ref=e1280]:
+                  - text: "Alias:"
+                  - code [ref=e1281]: "-v"
+                - paragraph [ref=e1282]:
+                  - strong [ref=e1283]: Example
+                - generic [ref=e1285]:
+                  - code [ref=e1287]:
+                    - generic [ref=e1288]: tcld namespace accepted-client-ca add \
+                    - generic [ref=e1289]: "--resource-version <etag> \\"
+                    - generic [ref=e1290]: "--ca-certificate <encoded_certificate>"
+                  - button "Copy code to clipboard" [ref=e1292] [cursor=pointer]:
+                    - generic [ref=e1293]:
+                      - img [ref=e1294]
+                      - img [ref=e1296]
+                - heading "--ca-certificateDirect link to --ca-certificate" [level=4] [ref=e1298]:
+                  - text: "--ca-certificate"
+                  - link "Direct link to --ca-certificate" [ref=e1299] [cursor=pointer]:
+                    - /url: "#--ca-certificate-2"
+                    - text: "#"
+                - paragraph [ref=e1300]:
+                  - emphasis [ref=e1301]:
+                    - text: Required modifier unless
+                    - code [ref=e1302]: "--ca-certificate-file"
+                    - text: is specified
+                - paragraph [ref=e1303]: Specify a base64-encoded string of a CA certificate PEM file.
+                - paragraph [ref=e1304]:
+                  - text: If both
+                  - code [ref=e1305]: "--ca-certificate"
+                  - text: and
+                  - code [ref=e1306]: "--ca-certificate-file"
+                  - text: are specified, only
+                  - code [ref=e1307]: "--ca-certificate"
+                  - text: is used.
+                - paragraph [ref=e1308]:
+                  - text: "Alias:"
+                  - code [ref=e1309]: "-c"
+                - paragraph [ref=e1310]:
+                  - strong [ref=e1311]: Example
+                - generic [ref=e1313]:
+                  - code [ref=e1315]:
+                    - generic [ref=e1316]: tcld namespace accepted-client-ca add \
+                    - generic [ref=e1317]: "--ca-certificate <encoded_certificate>"
+                  - button "Copy code to clipboard" [ref=e1319] [cursor=pointer]:
+                    - generic [ref=e1320]:
+                      - img [ref=e1321]
+                      - img [ref=e1323]
+                - heading "--ca-certificate-fileDirect link to --ca-certificate-file" [level=4] [ref=e1325]:
+                  - text: "--ca-certificate-file"
+                  - link "Direct link to --ca-certificate-file" [ref=e1326] [cursor=pointer]:
+                    - /url: "#--ca-certificate-file-1"
+                    - text: "#"
+                - paragraph [ref=e1327]:
+                  - emphasis [ref=e1328]:
+                    - text: Required modifier unless
+                    - code [ref=e1329]: "--ca-certificate"
+                    - text: is specified
+                - paragraph [ref=e1330]: Specify a path to a CA certificate PEM file.
+                - paragraph [ref=e1331]:
+                  - text: If both
+                  - code [ref=e1332]: "--ca-certificate"
+                  - text: and
+                  - code [ref=e1333]: "--ca-certificate-file"
+                  - text: are specified, only
+                  - code [ref=e1334]: "--ca-certificate"
+                  - text: is used.
+                - paragraph [ref=e1335]:
+                  - text: "Alias:"
+                  - code [ref=e1336]: "-f"
+                - paragraph [ref=e1337]:
+                  - strong [ref=e1338]: Example
+                - generic [ref=e1340]:
+                  - code [ref=e1342]:
+                    - generic [ref=e1343]: tcld namespace accepted-client-ca add \
+                    - generic [ref=e1344]: "--ca-certificate-file <path>"
+                  - button "Copy code to clipboard" [ref=e1346] [cursor=pointer]:
+                    - generic [ref=e1347]:
+                      - img [ref=e1348]
+                      - img [ref=e1350]
+                - heading "listDirect link to list" [level=3] [ref=e1352]:
+                  - text: list
+                  - link "Direct link to list" [ref=e1353] [cursor=pointer]:
+                    - /url: "#list-2"
+                    - text: "#"
+                - paragraph [ref=e1354]:
+                  - text: The
+                  - code [ref=e1355]: tcld namespace accepted-client-ca list
+                  - text: command lists the client CA certificates that are currently configured for a
+                  - link "Namespace" [ref=e1356] [cursor=pointer]:
+                    - /url: /namespaces
+                  - text: in Temporal Cloud.
+                - paragraph [ref=e1357]:
+                  - code [ref=e1358]: tcld namespace accepted-client-ca list
+                - paragraph [ref=e1359]:
+                  - text: "Alias:"
+                  - code [ref=e1360]: l
+                - paragraph [ref=e1361]: The following modifier controls the behavior of the command.
+                - heading "--namespaceDirect link to --namespace" [level=4] [ref=e1362]:
+                  - text: "--namespace"
+                  - link "Direct link to --namespace" [ref=e1363] [cursor=pointer]:
+                    - /url: "#--namespace-13"
+                    - text: "#"
+                - paragraph [ref=e1364]: Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+                - paragraph [ref=e1365]:
+                  - text: "Alias:"
+                  - code [ref=e1366]: "-n"
+                - paragraph [ref=e1367]:
+                  - strong [ref=e1368]: Example
+                - generic [ref=e1370]:
+                  - code [ref=e1372]:
+                    - generic [ref=e1373]: tcld namespace accepted-client-ca list \
+                    - generic [ref=e1374]: "--namespace <namespace_id>"
+                  - button "Copy code to clipboard" [ref=e1376] [cursor=pointer]:
+                    - generic [ref=e1377]:
+                      - img [ref=e1378]
+                      - img [ref=e1380]
+                - heading "removeDirect link to remove" [level=3] [ref=e1382]:
+                  - text: remove
+                  - link "Direct link to remove" [ref=e1383] [cursor=pointer]:
+                    - /url: "#remove"
+                    - text: "#"
+                - paragraph [ref=e1384]:
+                  - text: The
+                  - code [ref=e1385]: tcld namespace accepted-client-ca remove
+                  - text: command removes client CA certificates from a
+                  - link "Namespace" [ref=e1386] [cursor=pointer]:
+                    - /url: /namespaces
+                  - text: in Temporal Cloud.
+                - paragraph [ref=e1387]:
+                  - code [ref=e1388]: tcld namespace accepted-client-ca remove --ca-certificate <value>
+                - paragraph [ref=e1389]:
+                  - text: "Alias:"
+                  - code [ref=e1390]: r
+                - paragraph [ref=e1391]: The following modifiers control the behavior of the command.
+                - heading "--namespaceDirect link to --namespace" [level=4] [ref=e1392]:
+                  - text: "--namespace"
+                  - link "Direct link to --namespace" [ref=e1393] [cursor=pointer]:
+                    - /url: "#--namespace-14"
+                    - text: "#"
+                - paragraph [ref=e1394]: Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+                - paragraph [ref=e1395]:
+                  - text: "Alias:"
+                  - code [ref=e1396]: "-n"
+                - paragraph [ref=e1397]:
+                  - strong [ref=e1398]: Example
+                - generic [ref=e1400]:
+                  - code [ref=e1402]:
+                    - generic [ref=e1403]: tcld namespace accepted-client-ca remove \
+                    - generic [ref=e1404]: "--namespace <namespace_id> \\"
+                    - generic [ref=e1405]: "--ca-certificate <encoded_certificate>"
+                  - button "Copy code to clipboard" [ref=e1407] [cursor=pointer]:
+                    - generic [ref=e1408]:
+                      - img [ref=e1409]
+                      - img [ref=e1411]
+                - heading "--request-idDirect link to --request-id" [level=4] [ref=e1413]:
+                  - text: "--request-id"
+                  - link "Direct link to --request-id" [ref=e1414] [cursor=pointer]:
+                    - /url: "#--request-id-9"
+                    - text: "#"
+                - paragraph [ref=e1415]: Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
+                - paragraph [ref=e1416]:
+                  - text: "Alias:"
+                  - code [ref=e1417]: "-r"
+                - paragraph [ref=e1418]:
+                  - strong [ref=e1419]: Example
+                - generic [ref=e1421]:
+                  - code [ref=e1423]:
+                    - generic [ref=e1424]: tcld namespace accepted-client-ca remove \
+                    - generic [ref=e1425]: "--request-id <request_id> \\"
+                    - generic [ref=e1426]: "--ca-certificate <encoded_certificate>"
+                  - button "Copy code to clipboard" [ref=e1428] [cursor=pointer]:
+                    - generic [ref=e1429]:
+                      - img [ref=e1430]
+                      - img [ref=e1432]
+                - heading "--resource-versionDirect link to --resource-version" [level=4] [ref=e1434]:
+                  - text: "--resource-version"
+                  - link "Direct link to --resource-version" [ref=e1435] [cursor=pointer]:
+                    - /url: "#--resource-version-4"
+                    - text: "#"
+                - paragraph [ref=e1436]: Specify a resource version (ETag) to update from. If not specified, the latest version is used.
+                - paragraph [ref=e1437]:
+                  - text: "Alias:"
+                  - code [ref=e1438]: "-v"
+                - paragraph [ref=e1439]:
+                  - strong [ref=e1440]: Example
+                - generic [ref=e1442]:
+                  - code [ref=e1444]:
+                    - generic [ref=e1445]: tcld namespace accepted-client-ca remove \
+                    - generic [ref=e1446]: "--resource-version <etag> \\"
+                    - generic [ref=e1447]: "--ca-certificate <encoded_certificate>"
+                  - button "Copy code to clipboard" [ref=e1449] [cursor=pointer]:
+                    - generic [ref=e1450]:
+                      - img [ref=e1451]
+                      - img [ref=e1453]
+                - heading "--ca-certificateDirect link to --ca-certificate" [level=4] [ref=e1455]:
+                  - text: "--ca-certificate"
+                  - link "Direct link to --ca-certificate" [ref=e1456] [cursor=pointer]:
+                    - /url: "#--ca-certificate-3"
+                    - text: "#"
+                - paragraph [ref=e1457]:
+                  - emphasis [ref=e1458]:
+                    - text: Required modifier unless
+                    - code [ref=e1459]: "--ca-certificate-fingerprint"
+                    - text: or
+                    - code [ref=e1460]: "--ca-certificate-file"
+                    - text: is specified
+                - paragraph [ref=e1461]: Specify the base64-encoded string of a CA certificate PEM file.
+                - paragraph [ref=e1462]:
+                  - text: If
+                  - code [ref=e1463]: "--ca-certificate-fingerprint"
+                  - text: is also specified, both
+                  - code [ref=e1464]: "--ca-certificate"
+                  - text: and
+                  - code [ref=e1465]: "--ca-certificate-file"
+                  - text: are ignored.
+                - paragraph [ref=e1466]:
+                  - text: If
+                  - code [ref=e1467]: "--ca-certificate-file"
+                  - text: is also specified but
+                  - code [ref=e1468]: "--ca-certificate-fingerprint"
+                  - text: is not, only
+                  - code [ref=e1469]: "--ca-certificate"
+                  - text: is used.
+                - paragraph [ref=e1470]:
+                  - text: "Alias:"
+                  - code [ref=e1471]: "-c"
+                - paragraph [ref=e1472]:
+                  - strong [ref=e1473]: Example
+                - generic [ref=e1475]:
+                  - code [ref=e1477]:
+                    - generic [ref=e1478]: tcld namespace accepted-client-ca remove \
+                    - generic [ref=e1479]: "--ca-certificate <encoded_certificate>"
+                  - button "Copy code to clipboard" [ref=e1481] [cursor=pointer]:
+                    - generic [ref=e1482]:
+                      - img [ref=e1483]
+                      - img [ref=e1485]
+                - heading "--ca-certificate-fileDirect link to --ca-certificate-file" [level=4] [ref=e1487]:
+                  - text: "--ca-certificate-file"
+                  - link "Direct link to --ca-certificate-file" [ref=e1488] [cursor=pointer]:
+                    - /url: "#--ca-certificate-file-2"
+                    - text: "#"
+                - paragraph [ref=e1489]:
+                  - emphasis [ref=e1490]:
+                    - text: Required modifier unless
+                    - code [ref=e1491]: "--ca-certificate-fingerprint"
+                    - text: or
+                    - code [ref=e1492]: "--ca-certificate"
+                    - text: is specified
+                - paragraph [ref=e1493]: Specify a path to a CA certificate PEM file.
+                - paragraph [ref=e1494]:
+                  - text: If
+                  - code [ref=e1495]: "--ca-certificate-fingerprint"
+                  - text: is also specified, both
+                  - code [ref=e1496]: "--ca-certificate-file"
+                  - text: and
+                  - code [ref=e1497]: "--ca-certificate"
+                  - text: are ignored.
+                - paragraph [ref=e1498]:
+                  - text: If
+                  - code [ref=e1499]: "--ca-certificate"
+                  - text: is also specified but
+                  - code [ref=e1500]: "--ca-certificate-fingerprint"
+                  - text: is not, only
+                  - code [ref=e1501]: "--ca-certificate"
+                  - text: is used.
+                - paragraph [ref=e1502]:
+                  - text: "Alias:"
+                  - code [ref=e1503]: "-f"
+                - paragraph [ref=e1504]:
+                  - strong [ref=e1505]: Example
+                - generic [ref=e1507]:
+                  - code [ref=e1509]:
+                    - generic [ref=e1510]: tcld namespace accepted-client-ca remove \
+                    - generic [ref=e1511]: "--ca-certificate-file <path>"
+                  - button "Copy code to clipboard" [ref=e1513] [cursor=pointer]:
+                    - generic [ref=e1514]:
+                      - img [ref=e1515]
+                      - img [ref=e1517]
+                - heading "--ca-certificate-fingerprintDirect link to --ca-certificate-fingerprint" [level=4] [ref=e1519]:
+                  - text: "--ca-certificate-fingerprint"
+                  - link "Direct link to --ca-certificate-fingerprint" [ref=e1520] [cursor=pointer]:
+                    - /url: "#--ca-certificate-fingerprint"
+                    - text: "#"
+                - paragraph [ref=e1521]:
+                  - emphasis [ref=e1522]:
+                    - text: Required modifier unless
+                    - code [ref=e1523]: "--ca-certificate"
+                    - text: or
+                    - code [ref=e1524]: "--ca-certificate-file"
+                    - text: is specified
+                - paragraph [ref=e1525]: Specify the fingerprint of a CA certificate.
+                - paragraph [ref=e1526]:
+                  - text: If
+                  - code [ref=e1527]: "--ca-certificate"
+                  - text: ","
+                  - code [ref=e1528]: "--ca-certificate-file"
+                  - text: ", or both are also specified, they are ignored."
+                - paragraph [ref=e1529]:
+                  - text: "Alias:"
+                  - code [ref=e1530]: "--fp"
+                - paragraph [ref=e1531]:
+                  - strong [ref=e1532]: Example
+                - generic [ref=e1534]:
+                  - code [ref=e1536]:
+                    - generic [ref=e1537]: tcld namespace accepted-client-ca remove \
+                    - generic [ref=e1538]: "--ca-certificate-fingerprint <fingerprint>"
+                  - button "Copy code to clipboard" [ref=e1540] [cursor=pointer]:
+                    - generic [ref=e1541]:
+                      - img [ref=e1542]
+                      - img [ref=e1544]
+                - heading "setDirect link to set" [level=3] [ref=e1546]:
+                  - text: set
+                  - link "Direct link to set" [ref=e1547] [cursor=pointer]:
+                    - /url: "#set"
+                    - text: "#"
+                - paragraph [ref=e1548]:
+                  - text: The
+                  - code [ref=e1549]: tcld namespace accepted-client-ca set
+                  - text: command sets the client CA certificates for a
+                  - link "Namespace" [ref=e1550] [cursor=pointer]:
+                    - /url: /namespaces
+                  - text: in Temporal Cloud.
+                - paragraph [ref=e1551]:
+                  - code [ref=e1552]: tcld namespace accepted-client-ca set --ca-certificate <value>
+                - paragraph [ref=e1553]:
+                  - text: "Alias:"
+                  - code [ref=e1554]: s
+                - paragraph [ref=e1555]: When updating CA certificates, it's important to follow a rollover process. Doing so enables your Namespace to serve both CA certificates for a period of time until traffic to your old CA certificate ceases.
+                - list [ref=e1556]:
+                  - listitem [ref=e1557]:
+                    - paragraph [ref=e1558]: Create a single file that contains both your old and new CA certificate PEM blocks. Just concatenate the PEM blocks on adjacent lines.
+                    - generic [ref=e1560]:
+                      - code [ref=e1562]:
+                        - generic [ref=e1563]: "-----BEGIN CERTIFICATE-----"
+                        - generic [ref=e1564]: ... old CA cert ...
+                        - generic [ref=e1565]: "-----END CERTIFICATE-----"
+                        - generic [ref=e1566]: "-----BEGIN CERTIFICATE-----"
+                        - generic [ref=e1567]: ... new CA cert ...
+                        - generic [ref=e1568]: "-----END CERTIFICATE-----"
+                      - button "Copy code to clipboard" [ref=e1570] [cursor=pointer]:
+                        - generic [ref=e1571]:
+                          - img [ref=e1572]
+                          - img [ref=e1574]
+                  - listitem [ref=e1576]:
+                    - paragraph [ref=e1577]:
+                      - text: Run the
+                      - code [ref=e1578]: tcld namespace accepted-client-ca set
+                      - text: command with the CA certificate bundle file.
+                    - generic [ref=e1580]:
+                      - code [ref=e1582]:
+                        - generic [ref=e1583]: tcld namespace accepted-client-ca set \
+                        - generic [ref=e1584]: "--ca-certificate-file <path>"
+                      - button "Copy code to clipboard" [ref=e1586] [cursor=pointer]:
+                        - generic [ref=e1587]:
+                          - img [ref=e1588]
+                          - img [ref=e1590]
+                  - listitem [ref=e1592]:
+                    - paragraph [ref=e1593]: Monitor traffic to your old certificate until it ceases.
+                  - listitem [ref=e1594]:
+                    - paragraph [ref=e1595]: Create another file that contains only the new CA certificate.
+                  - listitem [ref=e1596]:
+                    - paragraph [ref=e1597]:
+                      - text: Run the
+                      - code [ref=e1598]: tcld namespace accepted-client-ca set
+                      - text: command again with the updated CA certificate bundle file.
+                - paragraph [ref=e1599]: The following modifiers control the behavior of the command.
+                - heading "--namespaceDirect link to --namespace" [level=4] [ref=e1600]:
+                  - text: "--namespace"
+                  - link "Direct link to --namespace" [ref=e1601] [cursor=pointer]:
+                    - /url: "#--namespace-15"
+                    - text: "#"
+                - paragraph [ref=e1602]: Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+                - paragraph [ref=e1603]:
+                  - text: "Alias:"
+                  - code [ref=e1604]: "-n"
+                - paragraph [ref=e1605]:
+                  - strong [ref=e1606]: Example
+                - generic [ref=e1608]:
+                  - code [ref=e1610]:
+                    - generic [ref=e1611]: tcld namespace accepted-client-ca set \
+                    - generic [ref=e1612]: "--namespace <namespace_id>"
+                    - generic [ref=e1613]: "--ca-certificate <encoded_certificate>"
+                  - button "Copy code to clipboard" [ref=e1615] [cursor=pointer]:
+                    - generic [ref=e1616]:
+                      - img [ref=e1617]
+                      - img [ref=e1619]
+                - heading "--request-idDirect link to --request-id" [level=4] [ref=e1621]:
+                  - text: "--request-id"
+                  - link "Direct link to --request-id" [ref=e1622] [cursor=pointer]:
+                    - /url: "#--request-id-10"
+                    - text: "#"
+                - paragraph [ref=e1623]: Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
+                - paragraph [ref=e1624]:
+                  - text: "Alias:"
+                  - code [ref=e1625]: "-r"
+                - paragraph [ref=e1626]:
+                  - strong [ref=e1627]: Example
+                - generic [ref=e1629]:
+                  - code [ref=e1631]:
+                    - generic [ref=e1632]: tcld namespace accepted-client-ca set \
+                    - generic [ref=e1633]: "--request-id <request_id> \\"
+                    - generic [ref=e1634]: "--ca-certificate <encoded_certificate>"
+                  - button "Copy code to clipboard" [ref=e1636] [cursor=pointer]:
+                    - generic [ref=e1637]:
+                      - img [ref=e1638]
+                      - img [ref=e1640]
+                - heading "--resource-versionDirect link to --resource-version" [level=4] [ref=e1642]:
+                  - text: "--resource-version"
+                  - link "Direct link to --resource-version" [ref=e1643] [cursor=pointer]:
+                    - /url: "#--resource-version-5"
+                    - text: "#"
+                - paragraph [ref=e1644]: Specify a resource version (ETag) to update from. If not specified, the latest version is used.
+                - paragraph [ref=e1645]:
+                  - text: "Alias:"
+                  - code [ref=e1646]: "-v"
+                - paragraph [ref=e1647]:
+                  - strong [ref=e1648]: Example
+                - generic [ref=e1650]:
+                  - code [ref=e1652]:
+                    - generic [ref=e1653]: tcld namespace accepted-client-ca set \
+                    - generic [ref=e1654]: "--resource-version <etag> \\"
+                    - generic [ref=e1655]: "--ca-certificate <encoded_certificate>"
+                  - button "Copy code to clipboard" [ref=e1657] [cursor=pointer]:
+                    - generic [ref=e1658]:
+                      - img [ref=e1659]
+                      - img [ref=e1661]
+                - heading "--ca-certificateDirect link to --ca-certificate" [level=4] [ref=e1663]:
+                  - text: "--ca-certificate"
+                  - link "Direct link to --ca-certificate" [ref=e1664] [cursor=pointer]:
+                    - /url: "#--ca-certificate-4"
+                    - text: "#"
+                - paragraph [ref=e1665]:
+                  - emphasis [ref=e1666]:
+                    - text: Required modifier unless
+                    - code [ref=e1667]: "--ca-certificate-file"
+                    - text: is specified
+                - paragraph [ref=e1668]: Specify a base64-encoded string of a CA certificate PEM file.
+                - paragraph [ref=e1669]:
+                  - text: If both
+                  - code [ref=e1670]: "--ca-certificate"
+                  - text: and
+                  - code [ref=e1671]: "--ca-certificate-file"
+                  - text: are specified, only
+                  - code [ref=e1672]: "--ca-certificate"
+                  - text: is used.
+                - paragraph [ref=e1673]:
+                  - text: "Alias:"
+                  - code [ref=e1674]: "-c"
+                - paragraph [ref=e1675]:
+                  - strong [ref=e1676]: Example
+                - generic [ref=e1678]:
+                  - code [ref=e1680]:
+                    - generic [ref=e1681]: tcld namespace accepted-client-ca set \
+                    - generic [ref=e1682]: "--ca-certificate <encoded_certificate>"
+                  - button "Copy code to clipboard" [ref=e1684] [cursor=pointer]:
+                    - generic [ref=e1685]:
+                      - img [ref=e1686]
+                      - img [ref=e1688]
+                - heading "--ca-certificate-fileDirect link to --ca-certificate-file" [level=4] [ref=e1690]:
+                  - text: "--ca-certificate-file"
+                  - link "Direct link to --ca-certificate-file" [ref=e1691] [cursor=pointer]:
+                    - /url: "#--ca-certificate-file-3"
+                    - text: "#"
+                - paragraph [ref=e1692]:
+                  - emphasis [ref=e1693]:
+                    - text: Required modifier unless
+                    - code [ref=e1694]: "--ca-certificate"
+                    - text: is specified
+                - paragraph [ref=e1695]: Specify a path to a CA certificate PEM file.
+                - paragraph [ref=e1696]:
+                  - text: If both
+                  - code [ref=e1697]: "--ca-certificate"
+                  - text: and
+                  - code [ref=e1698]: "--ca-certificate-file"
+                  - text: are specified, only
+                  - code [ref=e1699]: "--ca-certificate"
+                  - text: is used.
+                - paragraph [ref=e1700]:
+                  - text: "Alias:"
+                  - code [ref=e1701]: "-f"
+                - paragraph [ref=e1702]:
+                  - strong [ref=e1703]: Example
+                - generic [ref=e1705]:
+                  - code [ref=e1707]:
+                    - generic [ref=e1708]: tcld namespace accepted-client-ca set \
+                    - generic [ref=e1709]: "--ca-certificate-file <path>"
+                  - button "Copy code to clipboard" [ref=e1711] [cursor=pointer]:
+                    - generic [ref=e1712]:
+                      - img [ref=e1713]
+                      - img [ref=e1715]
+                - heading "certificate-filtersDirect link to certificate-filters" [level=2] [ref=e1717]:
+                  - text: certificate-filters
+                  - link "Direct link to certificate-filters" [ref=e1718] [cursor=pointer]:
+                    - /url: "#certificate-filters"
+                    - text: "#"
+                - paragraph [ref=e1719]:
+                  - text: The
+                  - code [ref=e1720]: tcld namespace certificate-filters
+                  - text: commands manage optional certificate filters for the specified
+                  - link "Namespace" [ref=e1721] [cursor=pointer]:
+                    - /url: /namespaces
+                  - text: in Temporal Cloud. The Namespace can use certificate filters to authorize client certificates based on distinguished name (DN) fields.
+                - paragraph [ref=e1722]:
+                  - text: "Alias:"
+                  - code [ref=e1723]: cf
+                - list [ref=e1724]:
+                  - listitem [ref=e1725]:
+                    - link "tcld namespace certificate-filters import" [ref=e1726] [cursor=pointer]:
+                      - /url: "#import"
+                  - listitem [ref=e1727]:
+                    - link "tcld namespace certificate-filters export" [ref=e1728] [cursor=pointer]:
+                      - /url: "#export"
+                  - listitem [ref=e1729]:
+                    - link "tcld namespace certificate-filters clear" [ref=e1730] [cursor=pointer]:
+                      - /url: "#clear"
+                - heading "addDirect link to add" [level=3] [ref=e1731]:
+                  - text: add
+                  - link "Direct link to add" [ref=e1732] [cursor=pointer]:
+                    - /url: "#add-1"
+                    - text: "#"
+                - paragraph [ref=e1733]:
+                  - text: The
+                  - code [ref=e1734]: tcld namespace certificates-filter add
+                  - text: command adds additional certificate filters to the Namespace of a Temporal Cloud account.
+                - paragraph [ref=e1735]: The following modifiers control the behavior of the command.
+                - heading "--namespaceDirect link to --namespace" [level=4] [ref=e1736]:
+                  - text: "--namespace"
+                  - link "Direct link to --namespace" [ref=e1737] [cursor=pointer]:
+                    - /url: "#--namespace-16"
+                    - text: "#"
+                - paragraph [ref=e1738]: Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+                - paragraph [ref=e1739]:
+                  - text: "Alias:"
+                  - code [ref=e1740]: "-n"
+                - paragraph [ref=e1741]:
+                  - strong [ref=e1742]: Example
+                - generic [ref=e1744]:
+                  - code [ref=e1746]:
+                    - generic [ref=e1747]: tcld namespace certificate-filters add \
+                    - generic [ref=e1748]: "--namespace <namespace_id> \\"
+                    - generic [ref=e1749]: "--certificate-filter-file <file>"
+                  - button "Copy code to clipboard" [ref=e1751] [cursor=pointer]:
+                    - generic [ref=e1752]:
+                      - img [ref=e1753]
+                      - img [ref=e1755]
+                - heading "--request-idDirect link to --request-id" [level=4] [ref=e1757]:
+                  - text: "--request-id"
+                  - link "Direct link to --request-id" [ref=e1758] [cursor=pointer]:
+                    - /url: "#--request-id-11"
+                    - text: "#"
+                - paragraph [ref=e1759]: Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
+                - paragraph [ref=e1760]:
+                  - text: "Alias:"
+                  - code [ref=e1761]: "-r"
+                - paragraph [ref=e1762]:
+                  - strong [ref=e1763]: Example
+                - generic [ref=e1765]:
+                  - code [ref=e1767]:
+                    - generic [ref=e1768]: tcld namespace certificate-filters add \
+                    - generic [ref=e1769]: "--request-id <request_id> \\"
+                    - generic [ref=e1770]: "--certificate-filter-file <file>"
+                  - button "Copy code to clipboard" [ref=e1772] [cursor=pointer]:
+                    - generic [ref=e1773]:
+                      - img [ref=e1774]
+                      - img [ref=e1776]
+                - heading "--resource-versionDirect link to --resource-version" [level=4] [ref=e1778]:
+                  - text: "--resource-version"
+                  - link "Direct link to --resource-version" [ref=e1779] [cursor=pointer]:
+                    - /url: "#--resource-version-6"
+                    - text: "#"
+                - paragraph [ref=e1780]: Specify a resource version (ETag) to update from. If not specified, the latest version is used.
+                - paragraph [ref=e1781]:
+                  - text: "Alias:"
+                  - code [ref=e1782]: "-v"
+                - paragraph [ref=e1783]:
+                  - strong [ref=e1784]: Example
+                - generic [ref=e1786]:
+                  - code [ref=e1788]:
+                    - generic [ref=e1789]: tcld namespace certificate-filters add \
+                    - generic [ref=e1790]: "--resource-version <etag> \\"
+                    - generic [ref=e1791]: "--certificate-filter-file <file>"
+                  - button "Copy code to clipboard" [ref=e1793] [cursor=pointer]:
+                    - generic [ref=e1794]:
+                      - img [ref=e1795]
+                      - img [ref=e1797]
+                - heading "--certificate-filter-fileDirect link to --certificate-filter-file" [level=4] [ref=e1799]:
+                  - text: "--certificate-filter-file"
+                  - link "Direct link to --certificate-filter-file" [ref=e1800] [cursor=pointer]:
+                    - /url: "#--certificate-filter-file-1"
+                    - text: "#"
+                - paragraph [ref=e1801]:
+                  - emphasis [ref=e1802]:
+                    - text: Required modifier unless
+                    - code [ref=e1803]: "--certificate-filter-value"
+                    - text: is specified.
+                - paragraph [ref=e1804]: Specify a path to a JSON file defining the certificate filters for the Namespace.
+                - paragraph [ref=e1805]:
+                  - text: "Aliases:"
+                  - code [ref=e1806]: "-f"
+                  - text: ","
+                  - code [ref=e1807]: "--file"
+                - paragraph [ref=e1808]:
+                  - strong [ref=e1809]: Example
+                - generic [ref=e1811]:
+                  - code [ref=e1813]:
+                    - generic [ref=e1814]: tcld namespace certificate-filters add \
+                    - generic [ref=e1815]: "--certificate-filter-file <file>"
+                  - button "Copy code to clipboard" [ref=e1817] [cursor=pointer]:
+                    - generic [ref=e1818]:
+                      - img [ref=e1819]
+                      - img [ref=e1821]
+                - heading "--certificate-filter-inputDirect link to --certificate-filter-input" [level=4] [ref=e1823]:
+                  - text: "--certificate-filter-input"
+                  - link "Direct link to --certificate-filter-input" [ref=e1824] [cursor=pointer]:
+                    - /url: "#--certificate-filter-input-1"
+                    - text: "#"
+                - paragraph [ref=e1825]:
+                  - emphasis [ref=e1826]:
+                    - text: Required modifier unless
+                    - code [ref=e1827]: "--certificate-filter-file"
+                    - text: is specified.
+                - paragraph [ref=e1828]: The certificate filters, in JSON, that will be added to the Namespace.
+                - paragraph [ref=e1829]:
+                  - text: "Aliases:"
+                  - code [ref=e1830]: "-i"
+                  - text: ","
+                  - code [ref=e1831]: "--input"
+                - paragraph [ref=e1832]:
+                  - strong [ref=e1833]: Example
+                - generic [ref=e1835]:
+                  - code [ref=e1837]:
+                    - generic [ref=e1838]: tcld namespace certificate-filters add \
+                    - generic [ref=e1839]: "--certificate-filter-input <JSON>"
+                  - button "Copy code to clipboard" [ref=e1841] [cursor=pointer]:
+                    - generic [ref=e1842]:
+                      - img [ref=e1843]
+                      - img [ref=e1845]
+                - heading "clearDirect link to clear" [level=3] [ref=e1847]:
+                  - text: clear
+                  - link "Direct link to clear" [ref=e1848] [cursor=pointer]:
+                    - /url: "#clear"
+                    - text: "#"
+                - paragraph [ref=e1849]:
+                  - text: The
+                  - code [ref=e1850]: tcld namespace certificate-filters clear
+                  - text: command clears all certificate filters from a
+                  - link "Namespace" [ref=e1851] [cursor=pointer]:
+                    - /url: /namespaces
+                  - text: in Temporal Cloud.
+                - generic [ref=e1852]:
+                  - generic [ref=e1853]:
+                    - img [ref=e1855]
+                    - text: caution
+                  - paragraph [ref=e1858]:
+                    - text: Using this command allows
+                    - emphasis [ref=e1859]: any
+                    - text: client certificate that chains up to a configured CA certificate to connect to the Namespace.
+                - paragraph [ref=e1860]:
+                  - code [ref=e1861]: tcld namespace certificate-filters clear
+                - paragraph [ref=e1862]: The following modifiers control the behavior of the command.
+                - heading "--namespaceDirect link to --namespace" [level=4] [ref=e1863]:
+                  - text: "--namespace"
+                  - link "Direct link to --namespace" [ref=e1864] [cursor=pointer]:
+                    - /url: "#--namespace-17"
+                    - text: "#"
+                - paragraph [ref=e1865]: Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+                - paragraph [ref=e1866]:
+                  - text: "Alias:"
+                  - code [ref=e1867]: "-n"
+                - paragraph [ref=e1868]:
+                  - strong [ref=e1869]: Example
+                - generic [ref=e1871]:
+                  - code [ref=e1873]:
+                    - generic [ref=e1874]: tcld namespace certificate-filters clear \
+                    - generic [ref=e1875]: "--namespace <namespace_id>"
+                  - button "Copy code to clipboard" [ref=e1877] [cursor=pointer]:
+                    - generic [ref=e1878]:
+                      - img [ref=e1879]
+                      - img [ref=e1881]
+                - heading "--request-idDirect link to --request-id" [level=4] [ref=e1883]:
+                  - text: "--request-id"
+                  - link "Direct link to --request-id" [ref=e1884] [cursor=pointer]:
+                    - /url: "#--request-id-12"
+                    - text: "#"
+                - paragraph [ref=e1885]: Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
+                - paragraph [ref=e1886]:
+                  - text: "Alias:"
+                  - code [ref=e1887]: "-r"
+                - paragraph [ref=e1888]:
+                  - strong [ref=e1889]: Example
+                - generic [ref=e1891]:
+                  - code [ref=e1893]:
+                    - generic [ref=e1894]: tcld namespace certificate-filters clear
+                    - generic [ref=e1895]: "--request-id <request_id>"
+                  - button "Copy code to clipboard" [ref=e1897] [cursor=pointer]:
+                    - generic [ref=e1898]:
+                      - img [ref=e1899]
+                      - img [ref=e1901]
+                - heading "--resource-versionDirect link to --resource-version" [level=4] [ref=e1903]:
+                  - text: "--resource-version"
+                  - link "Direct link to --resource-version" [ref=e1904] [cursor=pointer]:
+                    - /url: "#--resource-version-7"
+                    - text: "#"
+                - paragraph [ref=e1905]: Specify a resource version (ETag) to update from. If not specified, the latest version is used.
+                - paragraph [ref=e1906]:
+                  - text: "Alias:"
+                  - code [ref=e1907]: "-v"
+                - paragraph [ref=e1908]:
+                  - strong [ref=e1909]: Example
+                - generic [ref=e1911]:
+                  - code [ref=e1913]:
+                    - generic [ref=e1914]: tcld namespace certificate-filters clear \
+                    - generic [ref=e1915]: "--resource-version <etag>"
+                  - button "Copy code to clipboard" [ref=e1917] [cursor=pointer]:
+                    - generic [ref=e1918]:
+                      - img [ref=e1919]
+                      - img [ref=e1921]
+                - heading "exportDirect link to export" [level=3] [ref=e1923]:
+                  - text: export
+                  - link "Direct link to export" [ref=e1924] [cursor=pointer]:
+                    - /url: "#export-1"
+                    - text: "#"
+                - paragraph [ref=e1925]:
+                  - text: The
+                  - code [ref=e1926]: tcld namespace certificate-filters export
+                  - text: command exports existing certificate filters from a
+                  - link "Namespace" [ref=e1927] [cursor=pointer]:
+                    - /url: /namespaces
+                  - text: in Temporal Cloud.
+                - paragraph [ref=e1928]:
+                  - code [ref=e1929]: tcld namespace certificate-filters export --certificate-filter-file <path>
+                - paragraph [ref=e1930]:
+                  - text: "Alias:"
+                  - code [ref=e1931]: exp
+                - paragraph [ref=e1932]: The following modifiers control the behavior of the command.
+                - heading "--certificate-filter-fileDirect link to --certificate-filter-file" [level=4] [ref=e1933]:
+                  - text: "--certificate-filter-file"
+                  - link "Direct link to --certificate-filter-file" [ref=e1934] [cursor=pointer]:
+                    - /url: "#--certificate-filter-file-2"
+                    - text: "#"
+                - paragraph [ref=e1935]: Specify a path to a JSON file where tcld can export the certificate filters.
+                - paragraph [ref=e1936]:
+                  - text: "Aliases:"
+                  - code [ref=e1937]: "--file"
+                  - text: ","
+                  - code [ref=e1938]: "-f"
+                - paragraph [ref=e1939]:
+                  - strong [ref=e1940]: Example
+                - generic [ref=e1942]:
+                  - code [ref=e1944]:
+                    - generic [ref=e1945]: tcld namespace certificate-filters export \
+                    - generic [ref=e1946]: "--certificate-filter-file <path>"
+                  - button "Copy code to clipboard" [ref=e1948] [cursor=pointer]:
+                    - generic [ref=e1949]:
+                      - img [ref=e1950]
+                      - img [ref=e1952]
+                - heading "--namespaceDirect link to --namespace" [level=4] [ref=e1954]:
+                  - text: "--namespace"
+                  - link "Direct link to --namespace" [ref=e1955] [cursor=pointer]:
+                    - /url: "#--namespace-18"
+                    - text: "#"
+                - paragraph [ref=e1956]: Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+                - paragraph [ref=e1957]:
+                  - text: "Alias:"
+                  - code [ref=e1958]: "-n"
+                - paragraph [ref=e1959]:
+                  - strong [ref=e1960]: Example
+                - generic [ref=e1962]:
+                  - code [ref=e1964]:
+                    - generic [ref=e1965]: tcld namespace certificate-filters import \
+                    - generic [ref=e1966]: "--namespace <namespace_id> \\"
+                    - generic [ref=e1967]: "--certificate-filter-input <json>"
+                  - button "Copy code to clipboard" [ref=e1969] [cursor=pointer]:
+                    - generic [ref=e1970]:
+                      - img [ref=e1971]
+                      - img [ref=e1973]
+                - heading "--request-idDirect link to --request-id" [level=4] [ref=e1975]:
+                  - text: "--request-id"
+                  - link "Direct link to --request-id" [ref=e1976] [cursor=pointer]:
+                    - /url: "#--request-id-13"
+                    - text: "#"
+                - paragraph [ref=e1977]: Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
+                - paragraph [ref=e1978]:
+                  - text: "Alias:"
+                  - code [ref=e1979]: "-r"
+                - paragraph [ref=e1980]:
+                  - strong [ref=e1981]: Example
+                - generic [ref=e1983]:
+                  - code [ref=e1985]:
+                    - generic [ref=e1986]: tcld namespace certificate-filters import \
+                    - generic [ref=e1987]: "--request-id <request_id> \\"
+                    - generic [ref=e1988]: "--certificate-filter-input <json>"
+                  - button "Copy code to clipboard" [ref=e1990] [cursor=pointer]:
+                    - generic [ref=e1991]:
+                      - img [ref=e1992]
+                      - img [ref=e1994]
+                - heading "--resource-versionDirect link to --resource-version" [level=4] [ref=e1996]:
+                  - text: "--resource-version"
+                  - link "Direct link to --resource-version" [ref=e1997] [cursor=pointer]:
+                    - /url: "#--resource-version-8"
+                    - text: "#"
+                - paragraph [ref=e1998]: Specify a resource version (ETag) to update from. If not specified, the latest version is used.
+                - paragraph [ref=e1999]:
+                  - text: "Alias:"
+                  - code [ref=e2000]: "-v"
+                - paragraph [ref=e2001]:
+                  - strong [ref=e2002]: Example
+                - generic [ref=e2004]:
+                  - code [ref=e2006]:
+                    - generic [ref=e2007]: tcld namespace certificate-filters import \
+                    - generic [ref=e2008]: "--resource-version <etag> \\"
+                    - generic [ref=e2009]: "--certificate-filter-input <json>"
+                  - button "Copy code to clipboard" [ref=e2011] [cursor=pointer]:
+                    - generic [ref=e2012]:
+                      - img [ref=e2013]
+                      - img [ref=e2015]
+                - heading "importDirect link to import" [level=3] [ref=e2017]:
+                  - text: import
+                  - link "Direct link to import" [ref=e2018] [cursor=pointer]:
+                    - /url: "#import"
+                    - text: "#"
+                - paragraph [ref=e2019]:
+                  - text: The
+                  - code [ref=e2020]: tcld namespace certificate-filters import
+                  - text: command sets certificate filters for a
+                  - link "Namespace" [ref=e2021] [cursor=pointer]:
+                    - /url: /namespaces
+                  - text: in Temporal Cloud.
+                - paragraph [ref=e2022]:
+                  - code [ref=e2023]: tcld namespace certificate-filters import --certificate-filter-file <path>
+                - paragraph [ref=e2024]:
+                  - text: "Alias:"
+                  - code [ref=e2025]: imp
+                - paragraph [ref=e2026]: "A certificate filter can include any combination (and at least one) of the following:"
+                - list [ref=e2027]:
+                  - listitem [ref=e2028]:
+                    - code [ref=e2029]: commonName
+                  - listitem [ref=e2030]:
+                    - code [ref=e2031]: organization
+                  - listitem [ref=e2032]:
+                    - code [ref=e2033]: organizationalUnit
+                  - listitem [ref=e2034]:
+                    - code [ref=e2035]: subjectAlternativeName
+                - paragraph [ref=e2036]: The following modifiers control the behavior of the command.
+                - heading "--certificate-filter-fileDirect link to --certificate-filter-file" [level=4] [ref=e2037]:
+                  - text: "--certificate-filter-file"
+                  - link "Direct link to --certificate-filter-file" [ref=e2038] [cursor=pointer]:
+                    - /url: "#--certificate-filter-file-3"
+                    - text: "#"
+                - paragraph [ref=e2039]:
+                  - emphasis [ref=e2040]:
+                    - text: Required modifier unless
+                    - code [ref=e2041]: "--certificate-filter-input"
+                    - text: is specified
+                - paragraph [ref=e2042]:
+                  - text: Specify a path to a JSON file that defines certificate filters to be applied to the Namespace, such as
+                  - code [ref=e2043]: "{ \"filters\": [ { \"commonName\": \"test1\" } ] }"
+                  - text: . The specified filters replace any existing filters.
+                - paragraph [ref=e2044]:
+                  - text: If both
+                  - code [ref=e2045]: "--certificate-filter-file"
+                  - text: and
+                  - code [ref=e2046]: "--certificate-filter-input"
+                  - text: are specified, the command returns an error.
+                - paragraph [ref=e2047]:
+                  - text: "Aliases:"
+                  - code [ref=e2048]: "--file"
+                  - text: ","
+                  - code [ref=e2049]: "-f"
+                - paragraph [ref=e2050]:
+                  - strong [ref=e2051]: Example
+                - generic [ref=e2053]:
+                  - code [ref=e2055]:
+                    - generic [ref=e2056]: tcld namespace certificate-filters import \
+                    - generic [ref=e2057]: "--certificate-filter-file <path>"
+                  - button "Copy code to clipboard" [ref=e2059] [cursor=pointer]:
+                    - generic [ref=e2060]:
+                      - img [ref=e2061]
+                      - img [ref=e2063]
+                - heading "--certificate-filter-inputDirect link to --certificate-filter-input" [level=4] [ref=e2065]:
+                  - text: "--certificate-filter-input"
+                  - link "Direct link to --certificate-filter-input" [ref=e2066] [cursor=pointer]:
+                    - /url: "#--certificate-filter-input-2"
+                    - text: "#"
+                - paragraph [ref=e2067]:
+                  - emphasis [ref=e2068]:
+                    - text: Required modifier unless
+                    - code [ref=e2069]: "--certificate-filter-file"
+                    - text: is specified
+                - paragraph [ref=e2070]:
+                  - text: Specify a JSON string that defines certificate filters to be applied to the Namespace, such as
+                  - code [ref=e2071]: "{ \"filters\": [ { \"commonName\": \"test1\" } ] }"
+                  - text: . The specified filters replace any existing filters.
+                - paragraph [ref=e2072]:
+                  - text: If both
+                  - code [ref=e2073]: "--certificate-filter-input"
+                  - text: and
+                  - code [ref=e2074]: "--certificate-filter-file"
+                  - text: are specified, the command returns an error.
+                - paragraph [ref=e2075]:
+                  - text: "Aliases:"
+                  - code [ref=e2076]: "--input"
+                  - text: ","
+                  - code [ref=e2077]: "-i"
+                - paragraph [ref=e2078]:
+                  - strong [ref=e2079]: Example
+                - generic [ref=e2081]:
+                  - code [ref=e2083]:
+                    - generic [ref=e2084]: tcld namespace certificate-filters import \
+                    - generic [ref=e2085]: "--certificate-filter-input <json>"
+                  - button "Copy code to clipboard" [ref=e2087] [cursor=pointer]:
+                    - generic [ref=e2088]:
+                      - img [ref=e2089]
+                      - img [ref=e2091]
+                - heading "--namespaceDirect link to --namespace" [level=4] [ref=e2093]:
+                  - text: "--namespace"
+                  - link "Direct link to --namespace" [ref=e2094] [cursor=pointer]:
+                    - /url: "#--namespace-19"
+                    - text: "#"
+                - paragraph [ref=e2095]: Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+                - paragraph [ref=e2096]:
+                  - text: "Alias:"
+                  - code [ref=e2097]: "-n"
+                - paragraph [ref=e2098]:
+                  - strong [ref=e2099]: Example
+                - generic [ref=e2101]:
+                  - code [ref=e2103]:
+                    - generic [ref=e2104]: tcld namespace certificate-filters import \
+                    - generic [ref=e2105]: "--namespace <namespace_id> \\"
+                    - generic [ref=e2106]: "--certificate-filter-input <json>"
+                  - button "Copy code to clipboard" [ref=e2108] [cursor=pointer]:
+                    - generic [ref=e2109]:
+                      - img [ref=e2110]
+                      - img [ref=e2112]
+                - heading "--request-idDirect link to --request-id" [level=4] [ref=e2114]:
+                  - text: "--request-id"
+                  - link "Direct link to --request-id" [ref=e2115] [cursor=pointer]:
+                    - /url: "#--request-id-14"
+                    - text: "#"
+                - paragraph [ref=e2116]: Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
+                - paragraph [ref=e2117]:
+                  - text: "Alias:"
+                  - code [ref=e2118]: "-r"
+                - paragraph [ref=e2119]:
+                  - strong [ref=e2120]: Example
+                - generic [ref=e2122]:
+                  - code [ref=e2124]:
+                    - generic [ref=e2125]: tcld namespace certificate-filters import \
+                    - generic [ref=e2126]: "--request-id <request_id> \\"
+                    - generic [ref=e2127]: "--certificate-filter-input <json>"
+                  - button "Copy code to clipboard" [ref=e2129] [cursor=pointer]:
+                    - generic [ref=e2130]:
+                      - img [ref=e2131]
+                      - img [ref=e2133]
+                - heading "--resource-versionDirect link to --resource-version" [level=4] [ref=e2135]:
+                  - text: "--resource-version"
+                  - link "Direct link to --resource-version" [ref=e2136] [cursor=pointer]:
+                    - /url: "#--resource-version-9"
+                    - text: "#"
+                - paragraph [ref=e2137]: Specify a resource version (ETag) to update from. If not specified, the latest version is used.
+                - paragraph [ref=e2138]:
+                  - text: "Alias:"
+                  - code [ref=e2139]: "-v"
+                - paragraph [ref=e2140]:
+                  - strong [ref=e2141]: Example
+                - generic [ref=e2143]:
+                  - code [ref=e2145]:
+                    - generic [ref=e2146]: tcld namespace certificate-filters import \
+                    - generic [ref=e2147]: "--resource-version <etag> \\"
+                    - generic [ref=e2148]: "--certificate-filter-input <json>"
+                  - button "Copy code to clipboard" [ref=e2150] [cursor=pointer]:
+                    - generic [ref=e2151]:
+                      - img [ref=e2152]
+                      - img [ref=e2154]
+                - heading "search-attributesDirect link to search-attributes" [level=2] [ref=e2156]:
+                  - text: search-attributes
+                  - link "Direct link to search-attributes" [ref=e2157] [cursor=pointer]:
+                    - /url: "#search-attributes"
+                    - text: "#"
+                - paragraph [ref=e2158]:
+                  - text: The
+                  - code [ref=e2159]: tcld namespace search-attributes
+                  - text: commands manage
+                  - link "Search Attributes" [ref=e2160] [cursor=pointer]:
+                    - /url: /search-attribute
+                  - text: of the specified
+                  - link "Namespace" [ref=e2161] [cursor=pointer]:
+                    - /url: /namespaces
+                  - text: in Temporal Cloud.
+                - paragraph [ref=e2162]:
+                  - text: "Alias:"
+                  - code [ref=e2163]: sa
+                - list [ref=e2164]:
+                  - listitem [ref=e2165]:
+                    - link "tcld namespace search-attributes add" [ref=e2166] [cursor=pointer]:
+                      - /url: "#add"
+                  - listitem [ref=e2167]:
+                    - link "tcld namespace search-attributes rename" [ref=e2168] [cursor=pointer]:
+                      - /url: "#rename"
+                - paragraph [ref=e2169]:
+                  - text: If you wish to delete a Search Attribute, please contact
+                  - link "Support" [ref=e2170] [cursor=pointer]:
+                    - /url: /cloud/support
+                  - text: at
+                  - link "support.temporal.io" [ref=e2171] [cursor=pointer]:
+                    - /url: https://support.temporal.io
+                  - text: .
+                - heading "addDirect link to add" [level=3] [ref=e2172]:
+                  - text: add
+                  - link "Direct link to add" [ref=e2173] [cursor=pointer]:
+                    - /url: "#add-2"
+                    - text: "#"
+                - paragraph [ref=e2174]:
+                  - text: The
+                  - code [ref=e2175]: tcld namespace search-attributes add
+                  - text: command adds custom
+                  - link "Search Attributes" [ref=e2176] [cursor=pointer]:
+                    - /url: /search-attribute
+                  - text: to a Namespace in Temporal Cloud.
+                - paragraph [ref=e2177]:
+                  - code [ref=e2178]: tcld namespace search-attributes add --search-attribute <value>
+                - paragraph [ref=e2179]:
+                  - text: "Alias:"
+                  - code [ref=e2180]: a
+                - paragraph [ref=e2181]: The following modifiers control the behavior of the command.
+                - heading "--namespaceDirect link to --namespace" [level=4] [ref=e2182]:
+                  - text: "--namespace"
+                  - link "Direct link to --namespace" [ref=e2183] [cursor=pointer]:
+                    - /url: "#--namespace-20"
+                    - text: "#"
+                - paragraph [ref=e2184]: Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+                - paragraph [ref=e2185]:
+                  - text: "Alias:"
+                  - code [ref=e2186]: "-n"
+                - paragraph [ref=e2187]:
+                  - strong [ref=e2188]: Example
+                - generic [ref=e2190]:
+                  - code [ref=e2192]:
+                    - generic [ref=e2193]: tcld namespace search-attributes add \
+                    - generic [ref=e2194]: "--namespace <namespace_id> \\"
+                    - generic [ref=e2195]: "--search-attribute <value>"
+                  - button "Copy code to clipboard" [ref=e2197] [cursor=pointer]:
+                    - generic [ref=e2198]:
+                      - img [ref=e2199]
+                      - img [ref=e2201]
+                - heading "--request-idDirect link to --request-id" [level=4] [ref=e2203]:
+                  - text: "--request-id"
+                  - link "Direct link to --request-id" [ref=e2204] [cursor=pointer]:
+                    - /url: "#--request-id-15"
+                    - text: "#"
+                - paragraph [ref=e2205]: Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
+                - paragraph [ref=e2206]:
+                  - text: "Alias:"
+                  - code [ref=e2207]: "-r"
+                - paragraph [ref=e2208]:
+                  - strong [ref=e2209]: Example
+                - generic [ref=e2211]:
+                  - code [ref=e2213]:
+                    - generic [ref=e2214]: tcld namespace search-attributes add \
+                    - generic [ref=e2215]: "--request-id <request_id> \\"
+                    - generic [ref=e2216]: "--search-attribute <value>"
+                  - button "Copy code to clipboard" [ref=e2218] [cursor=pointer]:
+                    - generic [ref=e2219]:
+                      - img [ref=e2220]
+                      - img [ref=e2222]
+                - heading "--resource-versionDirect link to --resource-version" [level=4] [ref=e2224]:
+                  - text: "--resource-version"
+                  - link "Direct link to --resource-version" [ref=e2225] [cursor=pointer]:
+                    - /url: "#--resource-version-10"
+                    - text: "#"
+                - paragraph [ref=e2226]: Specify a resource version (ETag) to update from. If not specified, the latest version is used.
+                - paragraph [ref=e2227]:
+                  - text: "Alias:"
+                  - code [ref=e2228]: "-v"
+                - paragraph [ref=e2229]:
+                  - strong [ref=e2230]: Example
+                - generic [ref=e2232]:
+                  - code [ref=e2234]:
+                    - generic [ref=e2235]: tcld namespace search-attributes add \
+                    - generic [ref=e2236]: "--resource-version <etag> \\"
+                    - generic [ref=e2237]: "--search-attribute <value>"
+                  - button "Copy code to clipboard" [ref=e2239] [cursor=pointer]:
+                    - generic [ref=e2240]:
+                      - img [ref=e2241]
+                      - img [ref=e2243]
+                - heading "--search-attributeDirect link to --search-attribute" [level=4] [ref=e2245]:
+                  - text: "--search-attribute"
+                  - link "Direct link to --search-attribute" [ref=e2246] [cursor=pointer]:
+                    - /url: "#--search-attribute-1"
+                    - text: "#"
+                - paragraph [ref=e2247]:
+                  - emphasis [ref=e2248]: Required modifier; can be specified more than once
+                - paragraph [ref=e2249]:
+                  - text: Specify a custom Search Attribute in the form "
+                  - emphasis [ref=e2250]: name
+                  - text: =
+                  - emphasis [ref=e2251]: type
+                  - text: "\". Valid values for"
+                  - emphasis [ref=e2252]: type
+                  - text: "are as follows:"
+                - list [ref=e2253]:
+                  - listitem [ref=e2254]: Bool
+                  - listitem [ref=e2255]: Datetime
+                  - listitem [ref=e2256]: Double
+                  - listitem [ref=e2257]: Int
+                  - listitem [ref=e2258]: Keyword
+                  - listitem [ref=e2259]: Text
+                - paragraph [ref=e2260]:
+                  - text: "Alias:"
+                  - code [ref=e2261]: "--sa"
+                - paragraph [ref=e2262]:
+                  - strong [ref=e2263]: Example
+                - generic [ref=e2265]:
+                  - code [ref=e2267]:
+                    - generic [ref=e2268]: tcld namespace search-attributes add \
+                    - generic [ref=e2269]: "--search-attribute \"YourSearchAttribute1=Text\" \\"
+                    - generic [ref=e2270]: "--search-attribute \"YourSearchAttribute2=Double\""
+                  - button "Copy code to clipboard" [ref=e2272] [cursor=pointer]:
+                    - generic [ref=e2273]:
+                      - img [ref=e2274]
+                      - img [ref=e2276]
+                - heading "renameDirect link to rename" [level=3] [ref=e2278]:
+                  - text: rename
+                  - link "Direct link to rename" [ref=e2279] [cursor=pointer]:
+                    - /url: "#rename"
+                    - text: "#"
+                - paragraph [ref=e2280]:
+                  - text: The
+                  - code [ref=e2281]: tcld namespace search-attributes rename
+                  - text: command renames a custom
+                  - link "Search Attribute" [ref=e2282] [cursor=pointer]:
+                    - /url: /search-attribute
+                  - text: in Temporal Cloud.
+                - paragraph [ref=e2283]:
+                  - code [ref=e2284]: tcld namespace search-attributes rename --existing-name <value> --new-name <value>
+                - paragraph [ref=e2285]: The following modifiers control the behavior of the command.
+                - heading "--namespaceDirect link to --namespace" [level=4] [ref=e2286]:
+                  - text: "--namespace"
+                  - link "Direct link to --namespace" [ref=e2287] [cursor=pointer]:
+                    - /url: "#--namespace-21"
+                    - text: "#"
+                - paragraph [ref=e2288]: Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+                - paragraph [ref=e2289]:
+                  - text: "Alias:"
+                  - code [ref=e2290]: "-n"
+                - paragraph [ref=e2291]:
+                  - strong [ref=e2292]: Example
+                - generic [ref=e2294]:
+                  - code [ref=e2296]:
+                    - generic [ref=e2297]: tcld namespace search-attributes rename \
+                    - generic [ref=e2298]: "--namespace <namespace_id> \\"
+                    - generic [ref=e2299]: "--existing-name <value> \\"
+                    - generic [ref=e2300]: "--new-name <value>"
+                  - button "Copy code to clipboard" [ref=e2302] [cursor=pointer]:
+                    - generic [ref=e2303]:
+                      - img [ref=e2304]
+                      - img [ref=e2306]
+                - heading "--request-idDirect link to --request-id" [level=4] [ref=e2308]:
+                  - text: "--request-id"
+                  - link "Direct link to --request-id" [ref=e2309] [cursor=pointer]:
+                    - /url: "#--request-id-16"
+                    - text: "#"
+                - paragraph [ref=e2310]: Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
+                - paragraph [ref=e2311]:
+                  - text: "Alias:"
+                  - code [ref=e2312]: "-r"
+                - paragraph [ref=e2313]:
+                  - strong [ref=e2314]: Example
+                - generic [ref=e2316]:
+                  - code [ref=e2318]:
+                    - generic [ref=e2319]: tcld namespace search-attributes rename \
+                    - generic [ref=e2320]: "--request-id <request_id> \\"
+                    - generic [ref=e2321]: "--existing-name <value> \\"
+                    - generic [ref=e2322]: "--new-name <value>"
+                  - button "Copy code to clipboard" [ref=e2324] [cursor=pointer]:
+                    - generic [ref=e2325]:
+                      - img [ref=e2326]
+                      - img [ref=e2328]
+                - heading "--resource-versionDirect link to --resource-version" [level=4] [ref=e2330]:
+                  - text: "--resource-version"
+                  - link "Direct link to --resource-version" [ref=e2331] [cursor=pointer]:
+                    - /url: "#--resource-version-11"
+                    - text: "#"
+                - paragraph [ref=e2332]: Specify a resource version (ETag) to update from. If not specified, the latest version is used.
+                - paragraph [ref=e2333]:
+                  - text: "Alias:"
+                  - code [ref=e2334]: "-v"
+                - paragraph [ref=e2335]:
+                  - strong [ref=e2336]: Example
+                - generic [ref=e2338]:
+                  - code [ref=e2340]:
+                    - generic [ref=e2341]: tcld namespace search-attributes rename \
+                    - generic [ref=e2342]: "--resource-version <etag> \\"
+                    - generic [ref=e2343]: "--existing-name <value> \\"
+                    - generic [ref=e2344]: "--new-name <value>"
+                  - button "Copy code to clipboard" [ref=e2346] [cursor=pointer]:
+                    - generic [ref=e2347]:
+                      - img [ref=e2348]
+                      - img [ref=e2350]
+                - heading "--existing-nameDirect link to --existing-name" [level=4] [ref=e2352]:
+                  - text: "--existing-name"
+                  - link "Direct link to --existing-name" [ref=e2353] [cursor=pointer]:
+                    - /url: "#--existing-name"
+                    - text: "#"
+                - paragraph [ref=e2354]:
+                  - emphasis [ref=e2355]: Required modifier
+                - paragraph [ref=e2356]: Specify the name of an existing Search Attribute.
+                - paragraph [ref=e2357]:
+                  - text: "Alias:"
+                  - code [ref=e2358]: "--en"
+                - paragraph [ref=e2359]:
+                  - strong [ref=e2360]: Example
+                - generic [ref=e2362]:
+                  - code [ref=e2364]:
+                    - generic [ref=e2365]: tcld namespace search-attributes rename \
+                    - generic [ref=e2366]: "--existing-name <value> \\"
+                    - generic [ref=e2367]: "--new-name <value>"
+                  - button "Copy code to clipboard" [ref=e2369] [cursor=pointer]:
+                    - generic [ref=e2370]:
+                      - img [ref=e2371]
+                      - img [ref=e2373]
+                - heading "--new-nameDirect link to --new-name" [level=4] [ref=e2375]:
+                  - text: "--new-name"
+                  - link "Direct link to --new-name" [ref=e2376] [cursor=pointer]:
+                    - /url: "#--new-name"
+                    - text: "#"
+                - paragraph [ref=e2377]:
+                  - emphasis [ref=e2378]: Required modifier
+                - paragraph [ref=e2379]: Specify a new name for the Search Attribute.
+                - paragraph [ref=e2380]:
+                  - text: "Alias:"
+                  - code [ref=e2381]: "--nn"
+                - paragraph [ref=e2382]:
+                  - strong [ref=e2383]: Example
+                - generic [ref=e2385]:
+                  - code [ref=e2387]:
+                    - generic [ref=e2388]: tcld namespace search-attributes rename \
+                    - generic [ref=e2389]: "--existing-name <value> \\"
+                    - generic [ref=e2390]: "--new-name <value>"
+                  - button "Copy code to clipboard" [ref=e2392] [cursor=pointer]:
+                    - generic [ref=e2393]:
+                      - img [ref=e2394]
+                      - img [ref=e2396]
+                - heading "retentionDirect link to retention" [level=2] [ref=e2398]:
+                  - text: retention
+                  - link "Direct link to retention" [ref=e2399] [cursor=pointer]:
+                    - /url: "#retention"
+                    - text: "#"
+                - paragraph [ref=e2400]:
+                  - text: The
+                  - code [ref=e2401]: tcld namespace retention
+                  - text: commands manage the length of time (in days) a closed Workflow is preserved before deletion for a given Namespace in Temporal Cloud.
+                - paragraph [ref=e2402]:
+                  - text: "Alias:"
+                  - code [ref=e2403]: r
+                - list [ref=e2404]:
+                  - listitem [ref=e2405]:
+                    - link "tcld namespace retention get" [ref=e2406] [cursor=pointer]:
+                      - /url: "#get"
+                  - listitem [ref=e2407]:
+                    - link "tcld namespace retention set" [ref=e2408] [cursor=pointer]:
+                      - /url: "#set"
+                - heading "getDirect link to get" [level=3] [ref=e2409]:
+                  - text: get
+                  - link "Direct link to get" [ref=e2410] [cursor=pointer]:
+                    - /url: "#get-2"
+                    - text: "#"
+                - paragraph [ref=e2411]: Retrieve the length of time (in days) a closed Workflow will be preserved before deletion for the specified Namespace.
+                - paragraph [ref=e2412]:
+                  - text: "Alias:"
+                  - code [ref=e2413]: g
+                - paragraph [ref=e2414]: The following modifier controls the behavior of the command.
+                - heading "--namespaceDirect link to --namespace" [level=4] [ref=e2415]:
+                  - text: "--namespace"
+                  - link "Direct link to --namespace" [ref=e2416] [cursor=pointer]:
+                    - /url: "#--namespace-22"
+                    - text: "#"
+                - paragraph [ref=e2417]:
+                  - emphasis [ref=e2418]: Required modifier
+                - paragraph [ref=e2419]: Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+                - paragraph [ref=e2420]:
+                  - text: "Alias:"
+                  - code [ref=e2421]: "-n"
+                - paragraph [ref=e2422]:
+                  - strong [ref=e2423]: Example
+                - generic [ref=e2425]:
+                  - code [ref=e2427]:
+                    - generic [ref=e2428]: tcld namespace retention get \
+                    - generic [ref=e2429]: "--namespace <namespace_id>"
+                  - button "Copy code to clipboard" [ref=e2431] [cursor=pointer]:
+                    - generic [ref=e2432]:
+                      - img [ref=e2433]
+                      - img [ref=e2435]
+                - heading "setDirect link to set" [level=3] [ref=e2437]:
+                  - text: set
+                  - link "Direct link to set" [ref=e2438] [cursor=pointer]:
+                    - /url: "#set-1"
+                    - text: "#"
+                - paragraph [ref=e2439]: Set the length of time (in days) a closed Workflow will be preserved before deletion for the specified Namespace.
+                - paragraph [ref=e2440]:
+                  - text: "Alias:"
+                  - code [ref=e2441]: s
+                - paragraph [ref=e2442]: The following modifiers control the behavior of the command.
+                - heading "--namespaceDirect link to --namespace" [level=4] [ref=e2443]:
+                  - text: "--namespace"
+                  - link "Direct link to --namespace" [ref=e2444] [cursor=pointer]:
+                    - /url: "#--namespace-23"
+                    - text: "#"
+                - paragraph [ref=e2445]:
+                  - emphasis [ref=e2446]: Required modifier
+                - paragraph [ref=e2447]: Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+                - paragraph [ref=e2448]:
+                  - text: "Alias:"
+                  - code [ref=e2449]: "-n"
+                - heading "--retention-daysDirect link to --retention-days" [level=4] [ref=e2450]:
+                  - text: "--retention-days"
+                  - link "Direct link to --retention-days" [ref=e2451] [cursor=pointer]:
+                    - /url: "#--retention-days-1"
+                    - text: "#"
+                - paragraph [ref=e2452]:
+                  - emphasis [ref=e2453]: Required modifier
+                - paragraph [ref=e2454]: Specify the number of days a closed Workflow will be preserved before deletion.
+                - paragraph [ref=e2455]:
+                  - text: "Alias:"
+                  - code [ref=e2456]: "--rd"
+                - paragraph [ref=e2457]:
+                  - strong [ref=e2458]: Example
+                - generic [ref=e2460]:
+                  - code [ref=e2462]:
+                    - generic [ref=e2463]: tcld namespace retention set \
+                    - generic [ref=e2464]: "--namespace <namespace_id> \\"
+                    - generic [ref=e2465]: "--retention-days <retention_days>"
+                  - button "Copy code to clipboard" [ref=e2467] [cursor=pointer]:
+                    - generic [ref=e2468]:
+                      - img [ref=e2469]
+                      - img [ref=e2471]
+                - heading "update-codec-serverDirect link to update-codec-server" [level=2] [ref=e2473]:
+                  - text: update-codec-server
+                  - link "Direct link to update-codec-server" [ref=e2474] [cursor=pointer]:
+                    - /url: "#update-codec-server"
+                    - text: "#"
+                - paragraph [ref=e2475]:
+                  - text: The
+                  - code [ref=e2476]: tcld namespace update-codec-server
+                  - text: command updates the configuration of a codec server for Temporal Cloud, which allows payloads to be decodec through a remote endpoint.
+                - paragraph [ref=e2477]:
+                  - text: "Alias:"
+                  - code [ref=e2478]: ucs
+                - paragraph [ref=e2479]: The following modifiers control the behavior of the command.
+                - heading "--namespaceDirect link to --namespace" [level=4] [ref=e2480]:
+                  - text: "--namespace"
+                  - link "Direct link to --namespace" [ref=e2481] [cursor=pointer]:
+                    - /url: "#--namespace-24"
+                    - text: "#"
+                - paragraph [ref=e2482]:
+                  - emphasis [ref=e2483]: Required modifier.
+                - paragraph [ref=e2484]: Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+                - paragraph [ref=e2485]:
+                  - text: "Alias:"
+                  - code [ref=e2486]: "-n"
+                - paragraph [ref=e2487]:
+                  - strong [ref=e2488]: Example
+                - generic [ref=e2490]:
+                  - code [ref=e2492]:
+                    - generic [ref=e2493]: tcld namespace update-codec-server \
+                    - generic [ref=e2494]: "--namespace <namespace_id> \\"
+                    - generic [ref=e2495]: "--endpoint <http_url>"
+                  - button "Copy code to clipboard" [ref=e2497] [cursor=pointer]:
+                    - generic [ref=e2498]:
+                      - img [ref=e2499]
+                      - img [ref=e2501]
+                - heading "--endpointDirect link to --endpoint" [level=4] [ref=e2503]:
+                  - text: "--endpoint"
+                  - link "Direct link to --endpoint" [ref=e2504] [cursor=pointer]:
+                    - /url: "#--endpoint-1"
+                    - text: "#"
+                - paragraph [ref=e2505]:
+                  - emphasis [ref=e2506]: Required modifier.
+                - paragraph [ref=e2507]: Specify an endpoint to decode payloads for all users interacting with this Namespace. Endpoints must be valid https URLs.
+                - paragraph [ref=e2508]:
+                  - text: "Alias:"
+                  - code [ref=e2509]: "-e"
+                - paragraph [ref=e2510]:
+                  - strong [ref=e2511]: Example
+                - generic [ref=e2513]:
+                  - code [ref=e2515]:
+                    - generic [ref=e2516]: tcld namespace update-codec-server \
+                    - generic [ref=e2517]: "--namespace <namespace_id> \\"
+                    - generic [ref=e2518]: "--endpoint <https_url>"
+                  - button "Copy code to clipboard" [ref=e2520] [cursor=pointer]:
+                    - generic [ref=e2521]:
+                      - img [ref=e2522]
+                      - img [ref=e2524]
+                - heading "--pass-access-tokenDirect link to --pass-access-token" [level=4] [ref=e2526]:
+                  - text: "--pass-access-token"
+                  - link "Direct link to --pass-access-token" [ref=e2527] [cursor=pointer]:
+                    - /url: "#--pass-access-token-1"
+                    - text: "#"
+                - paragraph [ref=e2528]:
+                  - text: Enables a user access token to be passed with the remote endpoint. This is set to
+                  - code [ref=e2529]: "false"
+                  - text: by default.
+                - paragraph [ref=e2530]:
+                  - text: "Alias:"
+                  - code [ref=e2531]: "--pat"
+                - paragraph [ref=e2532]:
+                  - strong [ref=e2533]: Example
+                - generic [ref=e2535]:
+                  - code [ref=e2537]:
+                    - generic [ref=e2538]: tcld namespace update-codec-server \
+                    - generic [ref=e2539]: "--namespace <namespace_id> \\"
+                    - generic [ref=e2540]: "--endpoint <https_url> \\"
+                    - generic [ref=e2541]: "--pass-access-token <bool>"
+                  - button "Copy code to clipboard" [ref=e2543] [cursor=pointer]:
+                    - generic [ref=e2544]:
+                      - img [ref=e2545]
+                      - img [ref=e2547]
+                - heading "--include-credentialsDirect link to --include-credentials" [level=4] [ref=e2549]:
+                  - text: "--include-credentials"
+                  - link "Direct link to --include-credentials" [ref=e2550] [cursor=pointer]:
+                    - /url: "#--include-credentials-1"
+                    - text: "#"
+                - paragraph [ref=e2551]:
+                  - text: Enables the inclusion of cross-origin credentials. This is set to
+                  - code [ref=e2552]: "false"
+                  - text: by default.
+                - paragraph [ref=e2553]:
+                  - text: "Alias:"
+                  - code [ref=e2554]: "--ic"
+                - paragraph [ref=e2555]:
+                  - strong [ref=e2556]: Example
+                - generic [ref=e2558]:
+                  - code [ref=e2560]:
+                    - generic [ref=e2561]: tcld namespace update-codec-server \
+                    - generic [ref=e2562]: "--namespace <namespace_id> \\"
+                    - generic [ref=e2563]: "--endpoint <https_url> \\"
+                    - generic [ref=e2564]: "--include-credentials true"
+                  - button "Copy code to clipboard" [ref=e2566] [cursor=pointer]:
+                    - generic [ref=e2567]:
+                      - img [ref=e2568]
+                      - img [ref=e2570]
+                - heading "update-high-availabilityDirect link to update-high-availability" [level=2] [ref=e2572]:
+                  - text: update-high-availability
+                  - link "Direct link to update-high-availability" [ref=e2573] [cursor=pointer]:
+                    - /url: "#update-high-availability"
+                    - text: "#"
+                - paragraph [ref=e2574]:
+                  - text: The
+                  - code [ref=e2575]: tcld namespace update-high-availability
+                  - text: command enables you to adjust settings for your
+                  - link "Namespace" [ref=e2576] [cursor=pointer]:
+                    - /url: /namespaces
+                  - text: with
+                  - link "High Availability features" [ref=e2577] [cursor=pointer]:
+                    - /url: /cloud/high-availability
+                  - text: . This is set to
+                  - code [ref=e2578]: "false"
+                  - text: by default.
+                - paragraph [ref=e2579]:
+                  - text: "Alias:"
+                  - code [ref=e2580]: uha
+                - paragraph [ref=e2581]: The following modifiers control the behavior of the command.
+                - heading "--namespaceDirect link to --namespace" [level=4] [ref=e2582]:
+                  - text: "--namespace"
+                  - link "Direct link to --namespace" [ref=e2583] [cursor=pointer]:
+                    - /url: "#--namespace-25"
+                    - text: "#"
+                - paragraph [ref=e2584]:
+                  - emphasis [ref=e2585]: Required modifier.
+                - paragraph [ref=e2586]: Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+                - paragraph [ref=e2587]:
+                  - text: "Alias:"
+                  - code [ref=e2588]: "-n"
+                - heading "--disable-auto-failoverDirect link to --disable-auto-failover" [level=4] [ref=e2589]:
+                  - text: "--disable-auto-failover"
+                  - link "Direct link to --disable-auto-failover" [ref=e2590] [cursor=pointer]:
+                    - /url: "#--disable-auto-failover"
+                    - text: "#"
+                - paragraph [ref=e2591]:
+                  - text: Specify whether Temporal Cloud should perform
+                  - button "health checks" [ref=e2593]
+                  - text: and trigger automatic failovers.
+                - paragraph [ref=e2594]:
+                  - text: Pass
+                  - code [ref=e2595]: "true"
+                  - text: or
+                  - code [ref=e2596]: "false"
+                  - text: (default).
+                - paragraph [ref=e2597]:
+                  - strong [ref=e2598]: Example
+                - generic [ref=e2600]:
+                  - code [ref=e2602]:
+                    - generic [ref=e2603]: tcld namespace update-high-availability \
+                    - generic [ref=e2604]: "--namespace <namespace_id> \\"
+                    - generic [ref=e2605]: "--disable-auto-failover=true"
+                  - button "Copy code to clipboard" [ref=e2607] [cursor=pointer]:
+                    - generic [ref=e2608]:
+                      - img [ref=e2609]
+                      - img [ref=e2611]
+                - paragraph [ref=e2613]: "When using API key authentication, add your API credentials before pressing Enter:"
+                - generic [ref=e2615]:
+                  - code [ref=e2617]:
+                    - generic [ref=e2618]: tcld --api-key <your_api_key> \
+                    - generic [ref=e2619]: namespace update-high-availability \
+                    - generic [ref=e2620]: "--namespace <namespace_id> \\"
+                    - generic [ref=e2621]: "--disable-auto-failover=true"
+                  - button "Copy code to clipboard" [ref=e2623] [cursor=pointer]:
+                    - generic [ref=e2624]:
+                      - img [ref=e2625]
+                      - img [ref=e2627]
+                - paragraph [ref=e2629]:
+                  - text: "Alias:"
+                  - code [ref=e2630]: "-daf"
+                - heading "tagsDirect link to tags" [level=2] [ref=e2631]:
+                  - text: tags
+                  - link "Direct link to tags" [ref=e2632] [cursor=pointer]:
+                    - /url: "#tags"
+                    - text: "#"
+                - paragraph [ref=e2633]:
+                  - text: The
+                  - code [ref=e2634]: tcld namespace tags
+                  - text: commands manage
+                  - link "Tags" [ref=e2635] [cursor=pointer]:
+                    - /url: /cloud/namespaces#tag-a-namespace
+                  - text: of the specified
+                  - link "Namespace" [ref=e2636] [cursor=pointer]:
+                    - /url: /namespaces
+                  - text: in Temporal Cloud.
+                - paragraph [ref=e2637]:
+                  - text: "Alias:"
+                  - code [ref=e2638]: t
+                - list [ref=e2639]:
+                  - listitem [ref=e2640]:
+                    - link "tcld namespace tags upsert" [ref=e2641] [cursor=pointer]:
+                      - /url: "#upsert"
+                  - listitem [ref=e2642]:
+                    - link "tcld namespace tags remove" [ref=e2643] [cursor=pointer]:
+                      - /url: "#remove"
+                - heading "upsertDirect link to upsert" [level=3] [ref=e2644]:
+                  - text: upsert
+                  - link "Direct link to upsert" [ref=e2645] [cursor=pointer]:
+                    - /url: "#upsert"
+                    - text: "#"
+                - paragraph [ref=e2646]: Add new tags or update existing tag values for the specified Namespace.
+                - paragraph [ref=e2647]:
+                  - text: "Alias:"
+                  - code [ref=e2648]: u
+                - paragraph [ref=e2649]: The following modifier controls the behavior of the command.
+                - heading "--namespaceDirect link to --namespace" [level=4] [ref=e2650]:
+                  - text: "--namespace"
+                  - link "Direct link to --namespace" [ref=e2651] [cursor=pointer]:
+                    - /url: "#--namespace-26"
+                    - text: "#"
+                - paragraph [ref=e2652]:
+                  - emphasis [ref=e2653]: Required modifier
+                - paragraph [ref=e2654]: Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+                - paragraph [ref=e2655]:
+                  - text: "Alias:"
+                  - code [ref=e2656]: "-n"
+                - heading "--request-idDirect link to --request-id" [level=4] [ref=e2657]:
+                  - text: "--request-id"
+                  - link "Direct link to --request-id" [ref=e2658] [cursor=pointer]:
+                    - /url: "#--request-id-17"
+                    - text: "#"
+                - paragraph [ref=e2659]: The request identifier to use for the asynchronous operation. If not set, the server assigns an identifier.
+                - paragraph [ref=e2660]:
+                  - text: "Alias:"
+                  - code [ref=e2661]: "-r"
+                - heading "--tagDirect link to --tag" [level=4] [ref=e2662]:
+                  - text: "--tag"
+                  - link "Direct link to --tag" [ref=e2663] [cursor=pointer]:
+                    - /url: "#--tag-1"
+                    - text: "#"
+                - paragraph [ref=e2664]:
+                  - emphasis [ref=e2665]: Required modifier; can be specified more than once
+                - paragraph [ref=e2666]:
+                  - text: A tag in the form "
+                  - emphasis [ref=e2667]: key
+                  - text: =
+                  - emphasis [ref=e2668]: value
+                  - text: "\"."
+                - paragraph [ref=e2669]:
+                  - link "Tag structure and limits" [ref=e2670] [cursor=pointer]:
+                    - /url: /cloud/namespaces#tag-structure-and-limits
+                  - text: .
+                - paragraph [ref=e2671]:
+                  - text: "Alias:"
+                  - code [ref=e2672]: "--t"
+                - paragraph [ref=e2673]:
+                  - strong [ref=e2674]: Example
+                - generic [ref=e2676]:
+                  - code [ref=e2678]:
+                    - generic [ref=e2679]: tcld namespace tags upsert \
+                    - generic [ref=e2680]: "--namespace <namespace_id> \\"
+                    - generic [ref=e2681]: "--tag \"key1=value1\" \\"
+                    - generic [ref=e2682]: "--tag \"key2=updated\""
+                  - button "Copy code to clipboard" [ref=e2684] [cursor=pointer]:
+                    - generic [ref=e2685]:
+                      - img [ref=e2686]
+                      - img [ref=e2688]
+                - heading "removeDirect link to remove" [level=3] [ref=e2690]:
+                  - text: remove
+                  - link "Direct link to remove" [ref=e2691] [cursor=pointer]:
+                    - /url: "#remove-1"
+                    - text: "#"
+                - paragraph [ref=e2692]: Remove existing tags for the specified Namespace using the key.
+                - paragraph [ref=e2693]:
+                  - text: "Alias:"
+                  - code [ref=e2694]: rm
+                - paragraph [ref=e2695]: The following modifiers control the behavior of the command.
+                - heading "--namespaceDirect link to --namespace" [level=4] [ref=e2696]:
+                  - text: "--namespace"
+                  - link "Direct link to --namespace" [ref=e2697] [cursor=pointer]:
+                    - /url: "#--namespace-27"
+                    - text: "#"
+                - paragraph [ref=e2698]:
+                  - emphasis [ref=e2699]: Required modifier
+                - paragraph [ref=e2700]: Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+                - paragraph [ref=e2701]:
+                  - text: "Alias:"
+                  - code [ref=e2702]: "-n"
+                - heading "--request-idDirect link to --request-id" [level=4] [ref=e2703]:
+                  - text: "--request-id"
+                  - link "Direct link to --request-id" [ref=e2704] [cursor=pointer]:
+                    - /url: "#--request-id-18"
+                    - text: "#"
+                - paragraph [ref=e2705]: The request identifier to use for the asynchronous operation. If not set, the server assigns an identifier.
+                - paragraph [ref=e2706]:
+                  - text: "Alias:"
+                  - code [ref=e2707]: "-r"
+                - heading "--tag-keyDirect link to --tag-key" [level=4] [ref=e2708]:
+                  - text: "--tag-key"
+                  - link "Direct link to --tag-key" [ref=e2709] [cursor=pointer]:
+                    - /url: "#--tag-key"
+                    - text: "#"
+                - paragraph [ref=e2710]:
+                  - emphasis [ref=e2711]: Required modifier; can be specified more than once
+                - paragraph [ref=e2712]: A tag key string.
+                - paragraph [ref=e2713]:
+                  - link "Tag Key structure and limits" [ref=e2714] [cursor=pointer]:
+                    - /url: /cloud/namespaces#tag-structure-and-limits
+                  - text: .
+                - paragraph [ref=e2715]:
+                  - text: "Alias:"
+                  - code [ref=e2716]: "--tk"
+                - paragraph [ref=e2717]:
+                  - strong [ref=e2718]: Example
+                - generic [ref=e2720]:
+                  - code [ref=e2722]:
+                    - generic [ref=e2723]: tcld namespace tags remove \
+                    - generic [ref=e2724]: "--namespace <namespace_id> \\"
+                    - generic [ref=e2725]: "--tag-key \"key1\" \\"
+                    - generic [ref=e2726]: "--tag-key \"key2\""
+                  - button "Copy code to clipboard" [ref=e2728] [cursor=pointer]:
+                    - generic [ref=e2729]:
+                      - img [ref=e2730]
+                      - img [ref=e2732]
+                - heading "set-connectivity-rulesDirect link to set-connectivity-rules" [level=2] [ref=e2734]:
+                  - text: set-connectivity-rules
+                  - link "Direct link to set-connectivity-rules" [ref=e2735] [cursor=pointer]:
+                    - /url: "#set-connectivity-rules"
+                    - text: "#"
+                - paragraph [ref=e2736]:
+                  - text: The
+                  - code [ref=e2737]: tcld namespace set-connectivity-rules
+                  - text: command enables you to set connectivity rules on your
+                  - link "Namespace" [ref=e2738] [cursor=pointer]:
+                    - /url: /namespaces
+                  - text: .
+                - paragraph [ref=e2739]:
+                  - text: "Alias:"
+                  - code [ref=e2740]: scrs
+                - heading "--connectivity-rule-idsDirect link to --connectivity-rule-ids" [level=4] [ref=e2741]:
+                  - text: "--connectivity-rule-ids"
+                  - link "Direct link to --connectivity-rule-ids" [ref=e2742] [cursor=pointer]:
+                    - /url: "#--connectivity-rule-ids-1"
+                    - text: "#"
+                - paragraph [ref=e2743]: "The list of connectivity rule IDs, can be used in create namespace and update namespace. example: --ids id1 --ids id2 --ids id3."
+                - paragraph [ref=e2744]:
+                  - text: "Alias:"
+                  - code [ref=e2745]: ids
+                - heading "--namespaceDirect link to --namespace" [level=4] [ref=e2746]:
+                  - text: "--namespace"
+                  - link "Direct link to --namespace" [ref=e2747] [cursor=pointer]:
+                    - /url: "#--namespace-28"
+                    - text: "#"
+                - paragraph [ref=e2748]: The namespace hosted on temporal cloud.
+                - paragraph [ref=e2749]:
+                  - text: "Alias:"
+                  - code [ref=e2750]: "n"
+                - heading "--remove-allDirect link to --remove-all" [level=4] [ref=e2751]:
+                  - text: "--remove-all"
+                  - link "Direct link to --remove-all" [ref=e2752] [cursor=pointer]:
+                    - /url: "#--remove-all"
+                    - text: "#"
+                - paragraph [ref=e2753]: Acknowledge that all connectivity rules will be removed, enabling connectivity from any source.
+              - generic [ref=e2754]:
+                - generic [ref=e2756]:
+                  - text: "Tags:"
+                  - list [ref=e2757]:
+                    - listitem [ref=e2758]:
+                      - link "Temporal Cloud" [ref=e2759] [cursor=pointer]:
+                        - /url: /tags/temporal-cloud
+                    - listitem [ref=e2760]:
+                      - link "tcld" [ref=e2761] [cursor=pointer]:
+                        - /url: /tags/tcld
+                    - listitem [ref=e2762]:
+                      - link "Namespaces" [ref=e2763] [cursor=pointer]:
+                        - /url: /tags/namespaces
+                - paragraph [ref=e2767]:
+                  - text: Help us make Temporal better. Contribute to our
+                  - link "documentation" [ref=e2768] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation
+                  - text: .
+            - navigation "Docs pages" [ref=e2770]:
+              - link "Previous « logout" [ref=e2771] [cursor=pointer]:
+                - /url: /cloud/tcld/logout/
+                - generic [ref=e2772]: Previous
+                - generic [ref=e2773]: « logout
+              - link "Next nexus »" [ref=e2774] [cursor=pointer]:
+                - /url: /cloud/tcld/nexus
+                - generic [ref=e2775]: Next
+                - generic [ref=e2776]: nexus »
+          - list [ref=e2779]:
+            - listitem [ref=e2780]:
+              - link "add-region" [ref=e2781] [cursor=pointer]:
+                - /url: "#add-region"
+            - listitem [ref=e2782]:
+              - link "create" [ref=e2783] [cursor=pointer]:
+                - /url: "#create"
+            - listitem [ref=e2784]:
+              - link "delete" [ref=e2785] [cursor=pointer]:
+                - /url: "#delete"
+            - listitem [ref=e2786]:
+              - link "delete-region" [ref=e2787] [cursor=pointer]:
+                - /url: "#delete-region"
+            - listitem [ref=e2788]:
+              - link "failover" [ref=e2789] [cursor=pointer]:
+                - /url: "#failover"
+            - listitem [ref=e2790]:
+              - link "get" [ref=e2791] [cursor=pointer]:
+                - /url: "#get"
+            - listitem [ref=e2792]:
+              - link "list" [ref=e2793] [cursor=pointer]:
+                - /url: "#list"
+            - listitem [ref=e2794]:
+              - link "export" [ref=e2795] [cursor=pointer]:
+                - /url: "#export"
+              - list [ref=e2796]:
+                - listitem [ref=e2797]:
+                  - link "create" [ref=e2798] [cursor=pointer]:
+                    - /url: "#create-1"
+                - listitem [ref=e2799]:
+                  - link "get" [ref=e2800] [cursor=pointer]:
+                    - /url: "#get-1"
+                - listitem [ref=e2801]:
+                  - link "delete" [ref=e2802] [cursor=pointer]:
+                    - /url: "#delete-1"
+                - listitem [ref=e2803]:
+                  - link "list" [ref=e2804] [cursor=pointer]:
+                    - /url: "#list-1"
+                - listitem [ref=e2805]:
+                  - link "update" [ref=e2806] [cursor=pointer]:
+                    - /url: "#update"
+                - listitem [ref=e2807]:
+                  - link "validate" [ref=e2808] [cursor=pointer]:
+                    - /url: "#validate"
+            - listitem [ref=e2809]:
+              - link "accepted-client-ca" [ref=e2810] [cursor=pointer]:
+                - /url: "#accepted-client-ca"
+              - list [ref=e2811]:
+                - listitem [ref=e2812]:
+                  - link "add" [ref=e2813] [cursor=pointer]:
+                    - /url: "#add"
+                - listitem [ref=e2814]:
+                  - link "list" [ref=e2815] [cursor=pointer]:
+                    - /url: "#list-2"
+                - listitem [ref=e2816]:
+                  - link "remove" [ref=e2817] [cursor=pointer]:
+                    - /url: "#remove"
+                - listitem [ref=e2818]:
+                  - link "set" [ref=e2819] [cursor=pointer]:
+                    - /url: "#set"
+            - listitem [ref=e2820]:
+              - link "certificate-filters" [ref=e2821] [cursor=pointer]:
+                - /url: "#certificate-filters"
+              - list [ref=e2822]:
+                - listitem [ref=e2823]:
+                  - link "add" [ref=e2824] [cursor=pointer]:
+                    - /url: "#add-1"
+                - listitem [ref=e2825]:
+                  - link "clear" [ref=e2826] [cursor=pointer]:
+                    - /url: "#clear"
+                - listitem [ref=e2827]:
+                  - link "export" [ref=e2828] [cursor=pointer]:
+                    - /url: "#export-1"
+                - listitem [ref=e2829]:
+                  - link "import" [ref=e2830] [cursor=pointer]:
+                    - /url: "#import"
+            - listitem [ref=e2831]:
+              - link "search-attributes" [ref=e2832] [cursor=pointer]:
+                - /url: "#search-attributes"
+              - list [ref=e2833]:
+                - listitem [ref=e2834]:
+                  - link "add" [ref=e2835] [cursor=pointer]:
+                    - /url: "#add-2"
+                - listitem [ref=e2836]:
+                  - link "rename" [ref=e2837] [cursor=pointer]:
+                    - /url: "#rename"
+            - listitem [ref=e2838]:
+              - link "retention" [ref=e2839] [cursor=pointer]:
+                - /url: "#retention"
+              - list [ref=e2840]:
+                - listitem [ref=e2841]:
+                  - link "get" [ref=e2842] [cursor=pointer]:
+                    - /url: "#get-2"
+                - listitem [ref=e2843]:
+                  - link "set" [ref=e2844] [cursor=pointer]:
+                    - /url: "#set-1"
+            - listitem [ref=e2845]:
+              - link "update-codec-server" [ref=e2846] [cursor=pointer]:
+                - /url: "#update-codec-server"
+            - listitem [ref=e2847]:
+              - link "update-high-availability" [ref=e2848] [cursor=pointer]:
+                - /url: "#update-high-availability"
+            - listitem [ref=e2849]:
+              - link "tags" [ref=e2850] [cursor=pointer]:
+                - /url: "#tags"
+              - list [ref=e2851]:
+                - listitem [ref=e2852]:
+                  - link "upsert" [ref=e2853] [cursor=pointer]:
+                    - /url: "#upsert"
+                - listitem [ref=e2854]:
+                  - link "remove" [ref=e2855] [cursor=pointer]:
+                    - /url: "#remove-1"
+            - listitem [ref=e2856]:
+              - link "set-connectivity-rules" [ref=e2857] [cursor=pointer]:
+                - /url: "#set-connectivity-rules"
+    - contentinfo [ref=e2858]:
+      - generic [ref=e2859]:
+        - generic [ref=e2860]:
+          - list [ref=e2862]:
+            - listitem [ref=e2863]:
+              - link "GitHub" [ref=e2864] [cursor=pointer]:
+                - /url: https://github.com/temporalio
+                - text: GitHub
+                - img [ref=e2865]
+            - listitem [ref=e2867]:
+              - link "Twitter" [ref=e2868] [cursor=pointer]:
+                - /url: https://twitter.com/temporalio
+                - text: Twitter
+                - img [ref=e2869]
+            - listitem [ref=e2871]:
+              - link "YouTube" [ref=e2872] [cursor=pointer]:
+                - /url: https://www.youtube.com/c/Temporalio
+                - text: YouTube
+                - img [ref=e2873]
+            - listitem [ref=e2875]:
+              - link "About the docs" [ref=e2876] [cursor=pointer]:
+                - /url: https://github.com/temporalio/documentation/blob/master/README.md
+                - text: About the docs
+                - img [ref=e2877]
+          - list [ref=e2880]:
+            - listitem [ref=e2881]:
+              - link "Temporal Cloud" [ref=e2882] [cursor=pointer]:
+                - /url: https://temporal.io/cloud
+                - text: Temporal Cloud
+                - img [ref=e2883]
+            - listitem [ref=e2885]:
+              - link "Meetups" [ref=e2886] [cursor=pointer]:
+                - /url: https://temporal.io/community#events
+                - text: Meetups
+                - img [ref=e2887]
+            - listitem [ref=e2889]:
+              - link "Workshops" [ref=e2890] [cursor=pointer]:
+                - /url: https://temporal.io/community#workshops
+                - text: Workshops
+                - img [ref=e2891]
+            - listitem [ref=e2893]:
+              - link "Support forum" [ref=e2894] [cursor=pointer]:
+                - /url: https://community.temporal.io/
+                - text: Support forum
+                - img [ref=e2895]
+            - listitem [ref=e2897]:
+              - link "Ask an expert" [ref=e2898] [cursor=pointer]:
+                - /url: https://pages.temporal.io/ask-an-expert
+                - text: Ask an expert
+                - img [ref=e2899]
+          - list [ref=e2902]:
+            - listitem [ref=e2903]:
+              - link "Learn Temporal" [ref=e2904] [cursor=pointer]:
+                - /url: https://learn.temporal.io
+                - text: Learn Temporal
+                - img [ref=e2905]
+            - listitem [ref=e2907]:
+              - link "Blog" [ref=e2908] [cursor=pointer]:
+                - /url: https://temporal.io/blog
+                - text: Blog
+                - img [ref=e2909]
+            - listitem [ref=e2911]:
+              - link "Use cases" [ref=e2912] [cursor=pointer]:
+                - /url: https://temporal.io/use-cases
+                - text: Use cases
+                - img [ref=e2913]
+            - listitem [ref=e2915]:
+              - link "Newsletter signup" [ref=e2916] [cursor=pointer]:
+                - /url: https://pages.temporal.io/newsletter-subscribe
+                - text: Newsletter signup
+                - img [ref=e2917]
+          - list [ref=e2920]:
+            - listitem [ref=e2921]:
+              - link "Security" [ref=e2922] [cursor=pointer]:
+                - /url: /security
+            - listitem [ref=e2923]:
+              - link "Privacy policy" [ref=e2924] [cursor=pointer]:
+                - /url: https://temporal.io/global-privacy-policy
+            - listitem [ref=e2925]:
+              - link "Terms of service" [ref=e2926] [cursor=pointer]:
+                - /url: https://docs.temporal.io/pdf/temporal-tos-2021-07-24.pdf
+                - text: Terms of service
+                - img [ref=e2927]
+            - listitem [ref=e2929]:
+              - link "We're hiring" [ref=e2930] [cursor=pointer]:
+                - /url: https://temporal.io/careers
+                - text: We're hiring
+                - img [ref=e2931]
+        - generic [ref=e2933]:
+          - link "Temporal logo" [ref=e2935] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e2936]
+          - generic [ref=e2937]: Copyright © 2025 Temporal Technologies Inc.
+  - generic [ref=e2938] [cursor=pointer]:
+    - img [ref=e2940]
+    - generic: Feedback
+```

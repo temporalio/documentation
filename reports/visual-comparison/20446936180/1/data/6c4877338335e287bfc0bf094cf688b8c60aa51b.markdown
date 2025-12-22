@@ -1,0 +1,2573 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - region "Skip to main content":
+      - link "Skip to main content" [ref=e3] [cursor=pointer]:
+        - /url: "#__docusaurus_skipToContent_fallback"
+    - navigation "Main" [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - link "Temporal logo" [ref=e7] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e9]
+          - link "Home" [ref=e10] [cursor=pointer]:
+            - /url: /
+          - link "Courses" [ref=e11] [cursor=pointer]:
+            - /url: https://learn.temporal.io/getting_started/
+            - text: Courses
+            - img [ref=e12]
+          - link "SDKs" [ref=e14] [cursor=pointer]:
+            - /url: /develop
+          - link "AI Cookbook" [ref=e15] [cursor=pointer]:
+            - /url: /ai-cookbook
+          - link "Code Exchange" [ref=e16] [cursor=pointer]:
+            - /url: https://temporal.io/code-exchange
+            - text: Code Exchange
+            - img [ref=e17]
+          - link "Temporal Cloud" [ref=e19] [cursor=pointer]:
+            - /url: /cloud
+        - generic [ref=e20]:
+          - button "Ask AI" [ref=e21] [cursor=pointer]:
+            - img [ref=e22]
+            - generic [ref=e26]: Ask AI
+          - button "Switch between dark and light mode (currently system mode)" [ref=e28] [cursor=pointer]:
+            - img [ref=e29]
+          - button "Search (Ctrl+K)" [ref=e32] [cursor=pointer]:
+            - generic [ref=e33]:
+              - img [ref=e34]
+              - generic [ref=e36]: Search
+            - generic [ref=e37]:
+              - img [ref=e39]
+              - generic [ref=e41]: K
+    - generic [ref=e44]:
+      - complementary [ref=e45]:
+        - generic [ref=e47]:
+          - navigation "Docs sidebar" [ref=e48]:
+            - list [ref=e49]:
+              - listitem [ref=e50]:
+                - link "Documentation Home" [ref=e51] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=e52]:
+                - link "Quickstarts" [ref=e53] [cursor=pointer]:
+                  - /url: /quickstarts
+              - listitem [ref=e54]:
+                - generic [ref=e55]:
+                  - link "Evaluate" [ref=e56] [cursor=pointer]:
+                    - /url: /evaluate/
+                  - button "Collapse sidebar category 'Evaluate'" [expanded] [ref=e57] [cursor=pointer]
+                - list [ref=e58]:
+                  - listitem [ref=e59]:
+                    - link "Why Temporal" [ref=e60] [cursor=pointer]:
+                      - /url: /evaluate/why-temporal
+                  - listitem [ref=e61]:
+                    - link "Understanding Temporal" [ref=e62] [cursor=pointer]:
+                      - /url: /evaluate/understanding-temporal
+                  - listitem [ref=e63]:
+                    - generic [ref=e64]:
+                      - link "Features" [ref=e65] [cursor=pointer]:
+                        - /url: /evaluate/development-production-features/
+                      - button "Expand sidebar category 'Features'" [ref=e66] [cursor=pointer]
+                  - listitem [ref=e67]:
+                    - generic [ref=e68]:
+                      - link "Temporal Cloud" [ref=e69] [cursor=pointer]:
+                        - /url: /cloud/introduction
+                      - button "Expand sidebar category 'Temporal Cloud'" [ref=e70] [cursor=pointer]
+                  - listitem [ref=e71]:
+                    - link "Security" [ref=e72] [cursor=pointer]:
+                      - /url: /security
+                  - listitem [ref=e73]:
+                    - link "Use Cases" [ref=e74] [cursor=pointer]:
+                      - /url: /evaluate/use-cases-design-patterns
+              - listitem [ref=e75]:
+                - generic [ref=e76]:
+                  - link "Develop" [ref=e77] [cursor=pointer]:
+                    - /url: /develop/
+                  - button "Collapse sidebar category 'Develop'" [expanded] [ref=e78] [cursor=pointer]
+                - list [ref=e79]:
+                  - listitem [ref=e80]:
+                    - generic [ref=e81]:
+                      - link "Go SDK" [ref=e82] [cursor=pointer]:
+                        - /url: /develop/go/
+                      - button "Expand sidebar category 'Go SDK'" [ref=e83] [cursor=pointer]
+                  - listitem [ref=e84]:
+                    - generic [ref=e85]:
+                      - link "Java SDK" [ref=e86] [cursor=pointer]:
+                        - /url: /develop/java/
+                      - button "Expand sidebar category 'Java SDK'" [ref=e87] [cursor=pointer]
+                  - listitem [ref=e88]:
+                    - generic [ref=e89]:
+                      - link "PHP SDK" [ref=e90] [cursor=pointer]:
+                        - /url: /develop/php/
+                      - button "Expand sidebar category 'PHP SDK'" [ref=e91] [cursor=pointer]
+                  - listitem [ref=e92]:
+                    - generic [ref=e93]:
+                      - link "Python SDK" [ref=e94] [cursor=pointer]:
+                        - /url: /develop/python/
+                      - button "Expand sidebar category 'Python SDK'" [ref=e95] [cursor=pointer]
+                  - listitem [ref=e96]:
+                    - generic [ref=e97]:
+                      - link "TypeScript SDK" [ref=e98] [cursor=pointer]:
+                        - /url: /develop/typescript/
+                      - button "Expand sidebar category 'TypeScript SDK'" [ref=e99] [cursor=pointer]
+                  - listitem [ref=e100]:
+                    - generic [ref=e101]:
+                      - link ".NET SDK" [ref=e102] [cursor=pointer]:
+                        - /url: /develop/dotnet/
+                      - button "Expand sidebar category '.NET SDK'" [ref=e103] [cursor=pointer]
+                  - listitem [ref=e104]:
+                    - generic [ref=e105]:
+                      - link "Ruby SDK" [ref=e106] [cursor=pointer]:
+                        - /url: /develop/ruby/
+                      - button "Expand sidebar category 'Ruby SDK'" [ref=e107] [cursor=pointer]
+                  - listitem [ref=e108]:
+                    - link "Environment configuration" [ref=e109] [cursor=pointer]:
+                      - /url: /develop/environment-configuration
+                  - listitem [ref=e110]:
+                    - link "Activity retry simulator" [ref=e111] [cursor=pointer]:
+                      - /url: /develop/activity-retry-simulator
+                  - listitem [ref=e112]:
+                    - link "Worker performance" [ref=e113] [cursor=pointer]:
+                      - /url: /develop/worker-performance
+                  - listitem [ref=e114]:
+                    - link "Safe deployments" [ref=e115] [cursor=pointer]:
+                      - /url: /develop/safe-deployments
+                  - listitem [ref=e116]:
+                    - link "Plugins guide" [ref=e117] [cursor=pointer]:
+                      - /url: /develop/plugins-guide
+              - listitem [ref=e118]:
+                - generic [ref=e119]:
+                  - link "Deploy to production" [ref=e120] [cursor=pointer]:
+                    - /url: /production-deployment
+                  - button "Collapse sidebar category 'Deploy to production'" [expanded] [ref=e121] [cursor=pointer]
+                - list [ref=e122]:
+                  - listitem [ref=e123]:
+                    - generic [ref=e124]:
+                      - link "Temporal Cloud" [ref=e125] [cursor=pointer]:
+                        - /url: /cloud
+                      - button "Expand sidebar category 'Temporal Cloud'" [ref=e126] [cursor=pointer]
+                  - listitem [ref=e127]:
+                    - link "Codecs and Encryption" [ref=e128] [cursor=pointer]:
+                      - /url: /production-deployment/data-encryption
+                  - listitem [ref=e129]:
+                    - generic [ref=e130]:
+                      - link "Self-host" [ref=e131] [cursor=pointer]:
+                        - /url: /self-hosted-guide
+                      - button "Expand sidebar category 'Self-host'" [ref=e132] [cursor=pointer]
+                  - listitem [ref=e133]:
+                    - generic [ref=e134]:
+                      - link "Worker deployments" [ref=e135] [cursor=pointer]:
+                        - /url: /production-deployment/worker-deployments
+                      - button "Expand sidebar category 'Worker deployments'" [ref=e136] [cursor=pointer]
+              - listitem [ref=e137]:
+                - generic [ref=e138]:
+                  - link "CLI (temporal)" [ref=e139] [cursor=pointer]:
+                    - /url: /cli
+                  - button "Collapse sidebar category 'CLI (temporal)'" [expanded] [ref=e140] [cursor=pointer]
+                - list [ref=e141]:
+                  - listitem [ref=e142]:
+                    - link "Set up the CLI" [ref=e143] [cursor=pointer]:
+                      - /url: /cli/setup-cli
+                  - listitem [ref=e144]:
+                    - link "activity" [ref=e145] [cursor=pointer]:
+                      - /url: /cli/activity
+                  - listitem [ref=e146]:
+                    - link "batch" [ref=e147] [cursor=pointer]:
+                      - /url: /cli/batch
+                  - listitem [ref=e148]:
+                    - link "config" [ref=e149] [cursor=pointer]:
+                      - /url: /cli/config
+                  - listitem [ref=e150]:
+                    - link "env" [ref=e151] [cursor=pointer]:
+                      - /url: /cli/env
+                  - listitem [ref=e152]:
+                    - link "operator" [ref=e153] [cursor=pointer]:
+                      - /url: /cli/operator
+                  - listitem [ref=e154]:
+                    - link "schedule" [ref=e155] [cursor=pointer]:
+                      - /url: /cli/schedule
+                  - listitem [ref=e156]:
+                    - link "server" [ref=e157] [cursor=pointer]:
+                      - /url: /cli/server
+                  - listitem [ref=e158]:
+                    - link "task-queue" [ref=e159] [cursor=pointer]:
+                      - /url: /cli/task-queue
+                  - listitem [ref=e160]:
+                    - link "worker" [ref=e161] [cursor=pointer]:
+                      - /url: /cli/worker
+                  - listitem [ref=e162]:
+                    - link "workflow" [ref=e163] [cursor=pointer]:
+                      - /url: /cli/workflow
+              - listitem [ref=e164]:
+                - generic [ref=e165]:
+                  - link "References" [ref=e166] [cursor=pointer]:
+                    - /url: /references/
+                  - button "Expand sidebar category 'References'" [ref=e167] [cursor=pointer]
+              - listitem [ref=e168]:
+                - generic [ref=e169]:
+                  - link "Troubleshooting" [ref=e170] [cursor=pointer]:
+                    - /url: /troubleshooting/
+                  - button "Expand sidebar category 'Troubleshooting'" [ref=e171] [cursor=pointer]
+              - listitem [ref=e172]:
+                - generic [ref=e173]:
+                  - link "Best Practices" [ref=e174] [cursor=pointer]:
+                    - /url: /best-practices/
+                  - button "Expand sidebar category 'Best Practices'" [ref=e175] [cursor=pointer]
+              - listitem [ref=e176]:
+                - generic [ref=e177]:
+                  - link "Encyclopedia" [ref=e178] [cursor=pointer]:
+                    - /url: /encyclopedia/
+                  - button "Expand sidebar category 'Encyclopedia'" [ref=e179] [cursor=pointer]
+              - listitem [ref=e180]:
+                - link "Glossary" [ref=e181] [cursor=pointer]:
+                  - /url: /glossary
+          - button "Collapse sidebar" [ref=e182] [cursor=pointer]:
+            - img [ref=e183]
+      - main [ref=e187]:
+        - generic [ref=e189]:
+          - generic [ref=e191]:
+            - article [ref=e192]:
+              - navigation "Breadcrumbs" [ref=e193]:
+                - list [ref=e194]:
+                  - listitem [ref=e195]:
+                    - link "Home page" [ref=e196] [cursor=pointer]:
+                      - /url: /
+                      - img [ref=e197]
+                  - listitem [ref=e199]:
+                    - link "CLI (temporal)" [ref=e200] [cursor=pointer]:
+                      - /url: /cli
+                  - listitem [ref=e201]:
+                    - generic [ref=e202]: schedule
+              - generic [ref=e203]:
+                - heading "Temporal CLI schedule command reference" [level=1] [ref=e205]
+                - heading "backfillDirect link to backfill" [level=2] [ref=e206]:
+                  - text: backfill
+                  - link "Direct link to backfill" [ref=e207] [cursor=pointer]:
+                    - /url: "#backfill"
+                    - text: "#"
+                - paragraph [ref=e208]: Batch-execute actions that would have run during a specified time interval. Use this command to fill in Workflow runs from when a Schedule was paused, before a Schedule was created, from the future, or to re-process a previously executed interval.
+                - paragraph [ref=e209]:
+                  - text: Backfills require a Schedule ID and the time period covered by the request. It's best to use the
+                  - code [ref=e210]: BufferAll
+                  - text: or
+                  - code [ref=e211]: AllowAll
+                  - text: policies to avoid conflicts and ensure no Workflow Executions are skipped.
+                - paragraph [ref=e212]: "For example:"
+                - generic [ref=e214]:
+                  - code [ref=e216]:
+                    - generic [ref=e217]: temporal schedule backfill \
+                    - generic [ref=e218]: "--schedule-id \"YourScheduleId\" \\"
+                    - generic [ref=e219]: "--start-time \"2022-05-01T00:00:00Z\" \\"
+                    - generic [ref=e220]: "--end-time \"2022-05-31T23:59:59Z\" \\"
+                    - generic [ref=e221]: "--overlap-policy BufferAll"
+                  - button "Copy code to clipboard" [ref=e223] [cursor=pointer]:
+                    - generic [ref=e224]:
+                      - img [ref=e225]
+                      - img [ref=e227]
+                - paragraph [ref=e229]: "The policies include:"
+                - list [ref=e230]:
+                  - listitem [ref=e231]:
+                    - strong [ref=e232]: AllowAll
+                    - text: ": Allow unlimited concurrent Workflow Executions. This significantly speeds up the backfilling process on systems that support concurrency. You must ensure running Workflow Executions do not interfere with each other."
+                  - listitem [ref=e233]:
+                    - strong [ref=e234]: BufferAll
+                    - text: ": Buffer all incoming Workflow Executions while waiting for the running Workflow Execution to complete."
+                  - listitem [ref=e235]:
+                    - strong [ref=e236]: Skip
+                    - text: ": If a previous Workflow Execution is still running, discard new Workflow Executions."
+                  - listitem [ref=e237]:
+                    - strong [ref=e238]: BufferOne
+                    - text: ": Same as 'Skip' but buffer a single Workflow Execution to be run after the previous Execution completes. Discard other Workflow Executions."
+                  - listitem [ref=e239]:
+                    - strong [ref=e240]: CancelOther
+                    - text: ": Cancel the running Workflow Execution and replace it with the incoming new Workflow Execution."
+                  - listitem [ref=e241]:
+                    - strong [ref=e242]: TerminateOther
+                    - text: ": Terminate the running Workflow Execution and replace it with the incoming new Workflow Execution."
+                - paragraph [ref=e243]: Use the following options to change the behavior of this command.
+                - paragraph [ref=e244]:
+                  - strong [ref=e245]: "Flags:"
+                - paragraph [ref=e246]:
+                  - strong [ref=e247]: "--end-time"
+                  - emphasis [ref=e248]: timestamp
+                - paragraph [ref=e249]: Backfill end time. Required.
+                - paragraph [ref=e250]:
+                  - strong [ref=e251]: "--overlap-policy"
+                  - emphasis [ref=e252]: string-enum
+                - paragraph [ref=e253]: "Policy for handling overlapping Workflow Executions. Accepted values: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll. (default \"Skip\")"
+                - paragraph [ref=e254]:
+                  - strong [ref=e255]: "--schedule-id"
+                  - text: ","
+                  - strong [ref=e256]: "-s"
+                  - emphasis [ref=e257]: string
+                - paragraph [ref=e258]: Schedule ID. Required.
+                - paragraph [ref=e259]:
+                  - strong [ref=e260]: "--start-time"
+                  - emphasis [ref=e261]: timestamp
+                - paragraph [ref=e262]: Backfill start time. Required.
+                - paragraph [ref=e263]:
+                  - strong [ref=e264]: "Global Flags:"
+                - paragraph [ref=e265]:
+                  - strong [ref=e266]: "--address"
+                  - emphasis [ref=e267]: string
+                - paragraph [ref=e268]: Temporal Service gRPC endpoint. (default "localhost:7233")
+                - paragraph [ref=e269]:
+                  - strong [ref=e270]: "--api-key"
+                  - emphasis [ref=e271]: string
+                - paragraph [ref=e272]: API key for request.
+                - paragraph [ref=e273]:
+                  - strong [ref=e274]: "--client-authority"
+                  - emphasis [ref=e275]: string
+                - paragraph [ref=e276]: Temporal gRPC client :authority pseudoheader.
+                - paragraph [ref=e277]:
+                  - strong [ref=e278]: "--client-connect-timeout"
+                  - emphasis [ref=e279]: duration
+                - paragraph [ref=e280]: The client connection timeout. 0s means no timeout.
+                - paragraph [ref=e281]:
+                  - strong [ref=e282]: "--codec-auth"
+                  - emphasis [ref=e283]: string
+                - paragraph [ref=e284]: Authorization header for Codec Server requests.
+                - paragraph [ref=e285]:
+                  - strong [ref=e286]: "--codec-endpoint"
+                  - emphasis [ref=e287]: string
+                - paragraph [ref=e288]: Remote Codec Server endpoint.
+                - paragraph [ref=e289]:
+                  - strong [ref=e290]: "--codec-header"
+                  - emphasis [ref=e291]: string[]
+                - paragraph [ref=e292]:
+                  - text: HTTP headers for requests to codec server. Format as a
+                  - code [ref=e293]: KEY=VALUE
+                  - text: pair. May be passed multiple times to set multiple headers.
+                - paragraph [ref=e294]:
+                  - strong [ref=e295]: "--color"
+                  - emphasis [ref=e296]: string-enum
+                - paragraph [ref=e297]: "Output coloring. Accepted values: always, never, auto. (default \"auto\")"
+                - paragraph [ref=e298]:
+                  - strong [ref=e299]: "--command-timeout"
+                  - emphasis [ref=e300]: duration
+                - paragraph [ref=e301]: The command execution timeout. 0s means no timeout.
+                - paragraph [ref=e302]:
+                  - strong [ref=e303]: "--config-file"
+                  - emphasis [ref=e304]: string
+                - paragraph [ref=e305]:
+                  - text: File path to read TOML config from, defaults to
+                  - code [ref=e306]: $CONFIG_PATH/temporal/temporal.toml
+                  - text: where
+                  - code [ref=e307]: $CONFIG_PATH
+                  - text: is defined as
+                  - code [ref=e308]: $HOME/.config
+                  - text: on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+                - generic [ref=e309]:
+                  - generic [ref=e310]:
+                    - img [ref=e312]
+                    - text: note
+                  - paragraph [ref=e315]: Option is experimental.
+                - paragraph [ref=e316]:
+                  - strong [ref=e317]: "--disable-config-env"
+                  - emphasis [ref=e318]: bool
+                - paragraph [ref=e319]: If set, disables loading environment config from environment variables.
+                - generic [ref=e320]:
+                  - generic [ref=e321]:
+                    - img [ref=e323]
+                    - text: note
+                  - paragraph [ref=e326]: Option is experimental.
+                - paragraph [ref=e327]:
+                  - strong [ref=e328]: "--disable-config-file"
+                  - emphasis [ref=e329]: bool
+                - paragraph [ref=e330]: If set, disables loading environment config from config file.
+                - generic [ref=e331]:
+                  - generic [ref=e332]:
+                    - img [ref=e334]
+                    - text: note
+                  - paragraph [ref=e337]: Option is experimental.
+                - paragraph [ref=e338]:
+                  - strong [ref=e339]: "--env"
+                  - emphasis [ref=e340]: string
+                - paragraph [ref=e341]:
+                  - text: Active environment name (
+                  - code [ref=e342]: ENV
+                  - text: ). (default "default")
+                - paragraph [ref=e343]:
+                  - strong [ref=e344]: "--env-file"
+                  - emphasis [ref=e345]: string
+                - paragraph [ref=e346]:
+                  - text: Path to environment settings file. Defaults to
+                  - code [ref=e347]: $HOME/.config/temporalio/temporal.yaml
+                  - text: .
+                - paragraph [ref=e348]:
+                  - strong [ref=e349]: "--grpc-meta"
+                  - emphasis [ref=e350]: string[]
+                - paragraph [ref=e351]:
+                  - text: HTTP headers for requests. Format as a
+                  - code [ref=e352]: KEY=VALUE
+                  - text: pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as
+                  - code [ref=e353]: TEMPORAL_GRPC_META_[name]
+                  - text: .
+                - paragraph [ref=e354]:
+                  - strong [ref=e355]: "--identity"
+                  - emphasis [ref=e356]: string
+                - paragraph [ref=e357]:
+                  - text: "The identity of the user or client submitting this request. Defaults to \"temporal-cli:"
+                  - generic [ref=e358]:
+                    - math [ref=e360]:
+                      - generic [ref=e362]:
+                        - generic [ref=e363]: U
+                        - generic [ref=e364]: S
+                        - generic [ref=e365]: E
+                        - generic [ref=e366]: R
+                        - generic [ref=e367]: "@"
+                    - generic [ref=e369]: USER@
+                  - text: HOST".
+                - paragraph [ref=e370]:
+                  - strong [ref=e371]: "--log-format"
+                  - emphasis [ref=e372]: string-enum
+                - paragraph [ref=e373]: "Log format. Accepted values: text, json. (default \"text\")"
+                - paragraph [ref=e374]:
+                  - strong [ref=e375]: "--log-level"
+                  - emphasis [ref=e376]: string-enum
+                - paragraph [ref=e377]:
+                  - text: Log level. Default is "info" for most commands and "warn" for
+                  - code [ref=e378]: server start-dev
+                  - text: ". Accepted values: debug, info, warn, error, never. (default \"info\")"
+                - paragraph [ref=e379]:
+                  - strong [ref=e380]: "--namespace"
+                  - text: ","
+                  - strong [ref=e381]: "-n"
+                  - emphasis [ref=e382]: string
+                - paragraph [ref=e383]: Temporal Service Namespace. (default "default")
+                - paragraph [ref=e384]:
+                  - strong [ref=e385]: "--no-json-shorthand-payloads"
+                  - emphasis [ref=e386]: bool
+                - paragraph [ref=e387]: Raw payload output, even if the JSON option was used.
+                - paragraph [ref=e388]:
+                  - strong [ref=e389]: "--output"
+                  - text: ","
+                  - strong [ref=e390]: "-o"
+                  - emphasis [ref=e391]: string-enum
+                - paragraph [ref=e392]: "Non-logging data output format. Accepted values: text, json, jsonl, none. (default \"text\")"
+                - paragraph [ref=e393]:
+                  - strong [ref=e394]: "--profile"
+                  - emphasis [ref=e395]: string
+                - paragraph [ref=e396]: Profile to use for config file.
+                - generic [ref=e397]:
+                  - generic [ref=e398]:
+                    - img [ref=e400]
+                    - text: note
+                  - paragraph [ref=e403]: Option is experimental.
+                - paragraph [ref=e404]:
+                  - strong [ref=e405]: "--time-format"
+                  - emphasis [ref=e406]: string-enum
+                - paragraph [ref=e407]: "Time format. Accepted values: relative, iso, raw. (default \"relative\")"
+                - paragraph [ref=e408]:
+                  - strong [ref=e409]: "--tls"
+                  - emphasis [ref=e410]: bool
+                - paragraph [ref=e411]: Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
+                - paragraph [ref=e412]:
+                  - strong [ref=e413]: "--tls-ca-data"
+                  - emphasis [ref=e414]: string
+                - paragraph [ref=e415]: Data for server CA certificate. Can't be used with --tls-ca-path.
+                - paragraph [ref=e416]:
+                  - strong [ref=e417]: "--tls-ca-path"
+                  - emphasis [ref=e418]: string
+                - paragraph [ref=e419]: Path to server CA certificate. Can't be used with --tls-ca-data.
+                - paragraph [ref=e420]:
+                  - strong [ref=e421]: "--tls-cert-data"
+                  - emphasis [ref=e422]: string
+                - paragraph [ref=e423]: Data for x509 certificate. Can't be used with --tls-cert-path.
+                - paragraph [ref=e424]:
+                  - strong [ref=e425]: "--tls-cert-path"
+                  - emphasis [ref=e426]: string
+                - paragraph [ref=e427]: Path to x509 certificate. Can't be used with --tls-cert-data.
+                - paragraph [ref=e428]:
+                  - strong [ref=e429]: "--tls-disable-host-verification"
+                  - emphasis [ref=e430]: bool
+                - paragraph [ref=e431]: Disable TLS host-name verification.
+                - paragraph [ref=e432]:
+                  - strong [ref=e433]: "--tls-key-data"
+                  - emphasis [ref=e434]: string
+                - paragraph [ref=e435]: Private certificate key data. Can't be used with --tls-key-path.
+                - paragraph [ref=e436]:
+                  - strong [ref=e437]: "--tls-key-path"
+                  - emphasis [ref=e438]: string
+                - paragraph [ref=e439]: Path to x509 private key. Can't be used with --tls-key-data.
+                - paragraph [ref=e440]:
+                  - strong [ref=e441]: "--tls-server-name"
+                  - emphasis [ref=e442]: string
+                - paragraph [ref=e443]: Override target TLS server name.
+                - heading "createDirect link to create" [level=2] [ref=e444]:
+                  - text: create
+                  - link "Direct link to create" [ref=e445] [cursor=pointer]:
+                    - /url: "#create"
+                    - text: "#"
+                - paragraph [ref=e446]: Create a new Schedule on the Temporal Service. A Schedule automatically starts new Workflow Executions at the times you specify.
+                - paragraph [ref=e447]: "For example:"
+                - generic [ref=e449]:
+                  - code [ref=e451]:
+                    - generic [ref=e452]: temporal schedule create \
+                    - generic [ref=e453]: "--schedule-id \"YourScheduleId\" \\"
+                    - generic [ref=e454]: "--calendar '{\"dayOfWeek\":\"Fri\",\"hour\":\"3\",\"minute\":\"30\"}' \\"
+                    - generic [ref=e455]: "--workflow-id YourBaseWorkflowIdName \\"
+                    - generic [ref=e456]: "--task-queue YourTaskQueue \\"
+                    - generic [ref=e457]: "--type YourWorkflowType"
+                  - button "Copy code to clipboard" [ref=e459] [cursor=pointer]:
+                    - generic [ref=e460]:
+                      - img [ref=e461]
+                      - img [ref=e463]
+                - paragraph [ref=e465]:
+                  - text: Schedules support any combination of
+                  - code [ref=e466]: "--calendar"
+                  - text: ","
+                  - code [ref=e467]: "--interval"
+                  - text: ", and"
+                  - code [ref=e468]: "--cron"
+                  - text: ":"
+                - list [ref=e469]:
+                  - listitem [ref=e470]:
+                    - text: Shorthand
+                    - code [ref=e471]: "--interval"
+                    - text: "strings. For example: 45m (every 45 minutes) or 6h/5h (every 6 hours, at the top of the 5th hour)."
+                  - listitem [ref=e472]:
+                    - text: JSON
+                    - code [ref=e473]: "--calendar"
+                    - text: ", as in the preceding example."
+                  - listitem [ref=e474]:
+                    - text: Unix-style
+                    - code [ref=e475]: "--cron"
+                    - text: "strings and robfig declarations (@daily/@weekly/@every X/etc). For example, every Friday at 12:30 PM:"
+                    - code [ref=e476]: 30 12 * * Fri
+                    - text: .
+                - paragraph [ref=e477]: Use the following options to change the behavior of this command.
+                - paragraph [ref=e478]:
+                  - strong [ref=e479]: "Flags:"
+                - paragraph [ref=e480]:
+                  - strong [ref=e481]: "--calendar"
+                  - emphasis [ref=e482]: string[]
+                - paragraph [ref=e483]:
+                  - text: "Calendar specification in JSON. For example:"
+                  - code [ref=e484]: "{\"dayOfWeek\":\"Fri\",\"hour\":\"17\",\"minute\":\"5\"}"
+                  - text: .
+                - paragraph [ref=e485]:
+                  - strong [ref=e486]: "--catchup-window"
+                  - emphasis [ref=e487]: duration
+                - paragraph [ref=e488]: Maximum catch-up time for when the Service is unavailable.
+                - paragraph [ref=e489]:
+                  - strong [ref=e490]: "--cron"
+                  - emphasis [ref=e491]: string[]
+                - paragraph [ref=e492]:
+                  - text: "Calendar specification in cron string format. For example:"
+                  - code [ref=e493]: "\"30 12 * * Fri\""
+                  - text: .
+                - paragraph [ref=e494]:
+                  - strong [ref=e495]: "--end-time"
+                  - emphasis [ref=e496]: timestamp
+                - paragraph [ref=e497]: Schedule end time.
+                - paragraph [ref=e498]:
+                  - strong [ref=e499]: "--execution-timeout"
+                  - emphasis [ref=e500]: duration
+                - paragraph [ref=e501]:
+                  - text: Fail a WorkflowExecution if it lasts longer than
+                  - code [ref=e502]: DURATION
+                  - text: . This time-out includes retries and ContinueAsNew tasks.
+                - paragraph [ref=e503]:
+                  - strong [ref=e504]: "--fairness-key"
+                  - emphasis [ref=e505]: string
+                - paragraph [ref=e506]: Fairness key (max 64 bytes) for proportional task dispatch. Tasks with same key share capacity based on their weight.
+                - paragraph [ref=e507]:
+                  - strong [ref=e508]: "--fairness-weight"
+                  - emphasis [ref=e509]: float
+                - paragraph [ref=e510]: Weight [0.001-1000] for this fairness key. Keys are dispatched proportionally to their weights.
+                - paragraph [ref=e511]:
+                  - strong [ref=e512]: "--input"
+                  - text: ","
+                  - strong [ref=e513]: "-i"
+                  - emphasis [ref=e514]: string[]
+                - paragraph [ref=e515]: Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments.
+                - paragraph [ref=e516]:
+                  - strong [ref=e517]: "--input-base64"
+                  - emphasis [ref=e518]: bool
+                - paragraph [ref=e519]: Assume inputs are base64-encoded and attempt to decode them.
+                - paragraph [ref=e520]:
+                  - strong [ref=e521]: "--input-file"
+                  - emphasis [ref=e522]: string[]
+                - paragraph [ref=e523]: A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments.
+                - paragraph [ref=e524]:
+                  - strong [ref=e525]: "--input-meta"
+                  - emphasis [ref=e526]: string[]
+                - paragraph [ref=e527]:
+                  - text: Input payload metadata as a
+                  - code [ref=e528]: KEY=VALUE
+                  - text: pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order.
+                - paragraph [ref=e529]:
+                  - strong [ref=e530]: "--interval"
+                  - emphasis [ref=e531]: string[]
+                - paragraph [ref=e532]: Interval duration. For example, 90m, or 60m/15m to include phase offset.
+                - paragraph [ref=e533]:
+                  - strong [ref=e534]: "--jitter"
+                  - emphasis [ref=e535]: duration
+                - paragraph [ref=e536]: Max difference in time from the specification. Vary the start time randomly within this amount.
+                - paragraph [ref=e537]:
+                  - strong [ref=e538]: "--memo"
+                  - emphasis [ref=e539]: string[]
+                - paragraph [ref=e540]: Memo using 'KEY="VALUE"' pairs. Use JSON values.
+                - paragraph [ref=e541]:
+                  - strong [ref=e542]: "--notes"
+                  - emphasis [ref=e543]: string
+                - paragraph [ref=e544]: Initial notes field value.
+                - paragraph [ref=e545]:
+                  - strong [ref=e546]: "--overlap-policy"
+                  - emphasis [ref=e547]: string-enum
+                - paragraph [ref=e548]: "Policy for handling overlapping Workflow Executions. Accepted values: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll. (default \"Skip\")"
+                - paragraph [ref=e549]:
+                  - strong [ref=e550]: "--pause-on-failure"
+                  - emphasis [ref=e551]: bool
+                - paragraph [ref=e552]: Pause schedule after Workflow failures.
+                - paragraph [ref=e553]:
+                  - strong [ref=e554]: "--paused"
+                  - emphasis [ref=e555]: bool
+                - paragraph [ref=e556]: Pause the Schedule immediately on creation.
+                - paragraph [ref=e557]:
+                  - strong [ref=e558]: "--priority-key"
+                  - emphasis [ref=e559]: int
+                - paragraph [ref=e560]: Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified.
+                - paragraph [ref=e561]:
+                  - strong [ref=e562]: "--remaining-actions"
+                  - emphasis [ref=e563]: int
+                - paragraph [ref=e564]: Total allowed actions. Default is zero (unlimited).
+                - paragraph [ref=e565]:
+                  - strong [ref=e566]: "--run-timeout"
+                  - emphasis [ref=e567]: duration
+                - paragraph [ref=e568]:
+                  - text: Fail a Workflow Run if it lasts longer than
+                  - code [ref=e569]: DURATION
+                  - text: .
+                - paragraph [ref=e570]:
+                  - strong [ref=e571]: "--schedule-id"
+                  - text: ","
+                  - strong [ref=e572]: "-s"
+                  - emphasis [ref=e573]: string
+                - paragraph [ref=e574]: Schedule ID. Required.
+                - paragraph [ref=e575]:
+                  - strong [ref=e576]: "--schedule-memo"
+                  - emphasis [ref=e577]: string[]
+                - paragraph [ref=e578]:
+                  - text: Set schedule memo using
+                  - code [ref=e579]: KEY="VALUE
+                  - text: "pairs. Keys must be identifiers, and values must be JSON values. For example:"
+                  - code [ref=e580]: "'YourKey={\"your\": \"value\"}'"
+                  - text: . Can be passed multiple times.
+                - paragraph [ref=e581]:
+                  - strong [ref=e582]: "--schedule-search-attribute"
+                  - emphasis [ref=e583]: string[]
+                - paragraph [ref=e584]:
+                  - text: Set schedule Search Attributes using
+                  - code [ref=e585]: KEY="VALUE
+                  - text: "pairs. Keys must be identifiers, and values must be JSON values. For example:"
+                  - code [ref=e586]: "'YourKey={\"your\": \"value\"}'"
+                  - text: . Can be passed multiple times.
+                - paragraph [ref=e587]:
+                  - strong [ref=e588]: "--search-attribute"
+                  - emphasis [ref=e589]: string[]
+                - paragraph [ref=e590]:
+                  - text: Search Attribute in
+                  - code [ref=e591]: KEY=VALUE
+                  - text: "format. Keys must be identifiers, and values must be JSON values. For example:"
+                  - code [ref=e592]: "'YourKey={\"your\": \"value\"}'"
+                  - text: . Can be passed multiple times.
+                - paragraph [ref=e593]:
+                  - strong [ref=e594]: "--start-time"
+                  - emphasis [ref=e595]: timestamp
+                - paragraph [ref=e596]: Schedule start time.
+                - paragraph [ref=e597]:
+                  - strong [ref=e598]: "--static-details"
+                  - emphasis [ref=e599]: string
+                - paragraph [ref=e600]: Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines.
+                - generic [ref=e601]:
+                  - generic [ref=e602]:
+                    - img [ref=e604]
+                    - text: note
+                  - paragraph [ref=e607]: Option is experimental.
+                - paragraph [ref=e608]:
+                  - strong [ref=e609]: "--static-summary"
+                  - emphasis [ref=e610]: string
+                - paragraph [ref=e611]: Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line.
+                - generic [ref=e612]:
+                  - generic [ref=e613]:
+                    - img [ref=e615]
+                    - text: note
+                  - paragraph [ref=e618]: Option is experimental.
+                - paragraph [ref=e619]:
+                  - strong [ref=e620]: "--task-queue"
+                  - text: ","
+                  - strong [ref=e621]: "-t"
+                  - emphasis [ref=e622]: string
+                - paragraph [ref=e623]: Workflow Task queue. Required.
+                - paragraph [ref=e624]:
+                  - strong [ref=e625]: "--task-timeout"
+                  - emphasis [ref=e626]: duration
+                - paragraph [ref=e627]:
+                  - text: Fail a Workflow Task if it lasts longer than
+                  - code [ref=e628]: DURATION
+                  - text: . This is the Start-to-close timeout for a Workflow Task. (default "10s")
+                - paragraph [ref=e629]:
+                  - strong [ref=e630]: "--time-zone"
+                  - emphasis [ref=e631]: string
+                - paragraph [ref=e632]:
+                  - text: Interpret calendar specs with the
+                  - code [ref=e633]: TZ
+                  - text: "time zone. For a list of time zones, see:"
+                  - link "https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" [ref=e634] [cursor=pointer]:
+                    - /url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+                  - text: .
+                - paragraph [ref=e635]:
+                  - strong [ref=e636]: "--type"
+                  - emphasis [ref=e637]: string
+                - paragraph [ref=e638]: Workflow Type name. Required.
+                - paragraph [ref=e639]:
+                  - strong [ref=e640]: "--workflow-id"
+                  - text: ","
+                  - strong [ref=e641]: "-w"
+                  - emphasis [ref=e642]: string
+                - paragraph [ref=e643]: Workflow ID. If not supplied, the Service generates a unique ID.
+                - paragraph [ref=e644]:
+                  - strong [ref=e645]: "Global Flags:"
+                - paragraph [ref=e646]:
+                  - strong [ref=e647]: "--address"
+                  - emphasis [ref=e648]: string
+                - paragraph [ref=e649]: Temporal Service gRPC endpoint. (default "localhost:7233")
+                - paragraph [ref=e650]:
+                  - strong [ref=e651]: "--api-key"
+                  - emphasis [ref=e652]: string
+                - paragraph [ref=e653]: API key for request.
+                - paragraph [ref=e654]:
+                  - strong [ref=e655]: "--client-authority"
+                  - emphasis [ref=e656]: string
+                - paragraph [ref=e657]: Temporal gRPC client :authority pseudoheader.
+                - paragraph [ref=e658]:
+                  - strong [ref=e659]: "--client-connect-timeout"
+                  - emphasis [ref=e660]: duration
+                - paragraph [ref=e661]: The client connection timeout. 0s means no timeout.
+                - paragraph [ref=e662]:
+                  - strong [ref=e663]: "--codec-auth"
+                  - emphasis [ref=e664]: string
+                - paragraph [ref=e665]: Authorization header for Codec Server requests.
+                - paragraph [ref=e666]:
+                  - strong [ref=e667]: "--codec-endpoint"
+                  - emphasis [ref=e668]: string
+                - paragraph [ref=e669]: Remote Codec Server endpoint.
+                - paragraph [ref=e670]:
+                  - strong [ref=e671]: "--codec-header"
+                  - emphasis [ref=e672]: string[]
+                - paragraph [ref=e673]:
+                  - text: HTTP headers for requests to codec server. Format as a
+                  - code [ref=e674]: KEY=VALUE
+                  - text: pair. May be passed multiple times to set multiple headers.
+                - paragraph [ref=e675]:
+                  - strong [ref=e676]: "--color"
+                  - emphasis [ref=e677]: string-enum
+                - paragraph [ref=e678]: "Output coloring. Accepted values: always, never, auto. (default \"auto\")"
+                - paragraph [ref=e679]:
+                  - strong [ref=e680]: "--command-timeout"
+                  - emphasis [ref=e681]: duration
+                - paragraph [ref=e682]: The command execution timeout. 0s means no timeout.
+                - paragraph [ref=e683]:
+                  - strong [ref=e684]: "--config-file"
+                  - emphasis [ref=e685]: string
+                - paragraph [ref=e686]:
+                  - text: File path to read TOML config from, defaults to
+                  - code [ref=e687]: $CONFIG_PATH/temporal/temporal.toml
+                  - text: where
+                  - code [ref=e688]: $CONFIG_PATH
+                  - text: is defined as
+                  - code [ref=e689]: $HOME/.config
+                  - text: on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+                - generic [ref=e690]:
+                  - generic [ref=e691]:
+                    - img [ref=e693]
+                    - text: note
+                  - paragraph [ref=e696]: Option is experimental.
+                - paragraph [ref=e697]:
+                  - strong [ref=e698]: "--disable-config-env"
+                  - emphasis [ref=e699]: bool
+                - paragraph [ref=e700]: If set, disables loading environment config from environment variables.
+                - generic [ref=e701]:
+                  - generic [ref=e702]:
+                    - img [ref=e704]
+                    - text: note
+                  - paragraph [ref=e707]: Option is experimental.
+                - paragraph [ref=e708]:
+                  - strong [ref=e709]: "--disable-config-file"
+                  - emphasis [ref=e710]: bool
+                - paragraph [ref=e711]: If set, disables loading environment config from config file.
+                - generic [ref=e712]:
+                  - generic [ref=e713]:
+                    - img [ref=e715]
+                    - text: note
+                  - paragraph [ref=e718]: Option is experimental.
+                - paragraph [ref=e719]:
+                  - strong [ref=e720]: "--env"
+                  - emphasis [ref=e721]: string
+                - paragraph [ref=e722]:
+                  - text: Active environment name (
+                  - code [ref=e723]: ENV
+                  - text: ). (default "default")
+                - paragraph [ref=e724]:
+                  - strong [ref=e725]: "--env-file"
+                  - emphasis [ref=e726]: string
+                - paragraph [ref=e727]:
+                  - text: Path to environment settings file. Defaults to
+                  - code [ref=e728]: $HOME/.config/temporalio/temporal.yaml
+                  - text: .
+                - paragraph [ref=e729]:
+                  - strong [ref=e730]: "--grpc-meta"
+                  - emphasis [ref=e731]: string[]
+                - paragraph [ref=e732]:
+                  - text: HTTP headers for requests. Format as a
+                  - code [ref=e733]: KEY=VALUE
+                  - text: pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as
+                  - code [ref=e734]: TEMPORAL_GRPC_META_[name]
+                  - text: .
+                - paragraph [ref=e735]:
+                  - strong [ref=e736]: "--identity"
+                  - emphasis [ref=e737]: string
+                - paragraph [ref=e738]:
+                  - text: "The identity of the user or client submitting this request. Defaults to \"temporal-cli:"
+                  - generic [ref=e739]:
+                    - math [ref=e741]:
+                      - generic [ref=e743]:
+                        - generic [ref=e744]: U
+                        - generic [ref=e745]: S
+                        - generic [ref=e746]: E
+                        - generic [ref=e747]: R
+                        - generic [ref=e748]: "@"
+                    - generic [ref=e750]: USER@
+                  - text: HOST".
+                - paragraph [ref=e751]:
+                  - strong [ref=e752]: "--log-format"
+                  - emphasis [ref=e753]: string-enum
+                - paragraph [ref=e754]: "Log format. Accepted values: text, json. (default \"text\")"
+                - paragraph [ref=e755]:
+                  - strong [ref=e756]: "--log-level"
+                  - emphasis [ref=e757]: string-enum
+                - paragraph [ref=e758]:
+                  - text: Log level. Default is "info" for most commands and "warn" for
+                  - code [ref=e759]: server start-dev
+                  - text: ". Accepted values: debug, info, warn, error, never. (default \"info\")"
+                - paragraph [ref=e760]:
+                  - strong [ref=e761]: "--namespace"
+                  - text: ","
+                  - strong [ref=e762]: "-n"
+                  - emphasis [ref=e763]: string
+                - paragraph [ref=e764]: Temporal Service Namespace. (default "default")
+                - paragraph [ref=e765]:
+                  - strong [ref=e766]: "--no-json-shorthand-payloads"
+                  - emphasis [ref=e767]: bool
+                - paragraph [ref=e768]: Raw payload output, even if the JSON option was used.
+                - paragraph [ref=e769]:
+                  - strong [ref=e770]: "--output"
+                  - text: ","
+                  - strong [ref=e771]: "-o"
+                  - emphasis [ref=e772]: string-enum
+                - paragraph [ref=e773]: "Non-logging data output format. Accepted values: text, json, jsonl, none. (default \"text\")"
+                - paragraph [ref=e774]:
+                  - strong [ref=e775]: "--profile"
+                  - emphasis [ref=e776]: string
+                - paragraph [ref=e777]: Profile to use for config file.
+                - generic [ref=e778]:
+                  - generic [ref=e779]:
+                    - img [ref=e781]
+                    - text: note
+                  - paragraph [ref=e784]: Option is experimental.
+                - paragraph [ref=e785]:
+                  - strong [ref=e786]: "--time-format"
+                  - emphasis [ref=e787]: string-enum
+                - paragraph [ref=e788]: "Time format. Accepted values: relative, iso, raw. (default \"relative\")"
+                - paragraph [ref=e789]:
+                  - strong [ref=e790]: "--tls"
+                  - emphasis [ref=e791]: bool
+                - paragraph [ref=e792]: Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
+                - paragraph [ref=e793]:
+                  - strong [ref=e794]: "--tls-ca-data"
+                  - emphasis [ref=e795]: string
+                - paragraph [ref=e796]: Data for server CA certificate. Can't be used with --tls-ca-path.
+                - paragraph [ref=e797]:
+                  - strong [ref=e798]: "--tls-ca-path"
+                  - emphasis [ref=e799]: string
+                - paragraph [ref=e800]: Path to server CA certificate. Can't be used with --tls-ca-data.
+                - paragraph [ref=e801]:
+                  - strong [ref=e802]: "--tls-cert-data"
+                  - emphasis [ref=e803]: string
+                - paragraph [ref=e804]: Data for x509 certificate. Can't be used with --tls-cert-path.
+                - paragraph [ref=e805]:
+                  - strong [ref=e806]: "--tls-cert-path"
+                  - emphasis [ref=e807]: string
+                - paragraph [ref=e808]: Path to x509 certificate. Can't be used with --tls-cert-data.
+                - paragraph [ref=e809]:
+                  - strong [ref=e810]: "--tls-disable-host-verification"
+                  - emphasis [ref=e811]: bool
+                - paragraph [ref=e812]: Disable TLS host-name verification.
+                - paragraph [ref=e813]:
+                  - strong [ref=e814]: "--tls-key-data"
+                  - emphasis [ref=e815]: string
+                - paragraph [ref=e816]: Private certificate key data. Can't be used with --tls-key-path.
+                - paragraph [ref=e817]:
+                  - strong [ref=e818]: "--tls-key-path"
+                  - emphasis [ref=e819]: string
+                - paragraph [ref=e820]: Path to x509 private key. Can't be used with --tls-key-data.
+                - paragraph [ref=e821]:
+                  - strong [ref=e822]: "--tls-server-name"
+                  - emphasis [ref=e823]: string
+                - paragraph [ref=e824]: Override target TLS server name.
+                - heading "deleteDirect link to delete" [level=2] [ref=e825]:
+                  - text: delete
+                  - link "Direct link to delete" [ref=e826] [cursor=pointer]:
+                    - /url: "#delete"
+                    - text: "#"
+                - paragraph [ref=e827]: "Deletes a Schedule on the front end Service:"
+                - generic [ref=e829]:
+                  - code [ref=e831]:
+                    - generic [ref=e832]: temporal schedule delete \
+                    - generic [ref=e833]: "--schedule-id YourScheduleId"
+                  - button "Copy code to clipboard" [ref=e835] [cursor=pointer]:
+                    - generic [ref=e836]:
+                      - img [ref=e837]
+                      - img [ref=e839]
+                - paragraph [ref=e841]:
+                  - text: Removing a Schedule won't affect the Workflow Executions it started that are still running. To cancel or terminate these Workflow Executions, use
+                  - code [ref=e842]: temporal workflow delete
+                  - text: with the
+                  - code [ref=e843]: TemporalScheduledById
+                  - text: Search Attribute instead.
+                - paragraph [ref=e844]: Use the following options to change the behavior of this command.
+                - paragraph [ref=e845]:
+                  - strong [ref=e846]: "Flags:"
+                - paragraph [ref=e847]:
+                  - strong [ref=e848]: "--schedule-id"
+                  - text: ","
+                  - strong [ref=e849]: "-s"
+                  - emphasis [ref=e850]: string
+                - paragraph [ref=e851]: Schedule ID. Required.
+                - paragraph [ref=e852]:
+                  - strong [ref=e853]: "Global Flags:"
+                - paragraph [ref=e854]:
+                  - strong [ref=e855]: "--address"
+                  - emphasis [ref=e856]: string
+                - paragraph [ref=e857]: Temporal Service gRPC endpoint. (default "localhost:7233")
+                - paragraph [ref=e858]:
+                  - strong [ref=e859]: "--api-key"
+                  - emphasis [ref=e860]: string
+                - paragraph [ref=e861]: API key for request.
+                - paragraph [ref=e862]:
+                  - strong [ref=e863]: "--client-authority"
+                  - emphasis [ref=e864]: string
+                - paragraph [ref=e865]: Temporal gRPC client :authority pseudoheader.
+                - paragraph [ref=e866]:
+                  - strong [ref=e867]: "--client-connect-timeout"
+                  - emphasis [ref=e868]: duration
+                - paragraph [ref=e869]: The client connection timeout. 0s means no timeout.
+                - paragraph [ref=e870]:
+                  - strong [ref=e871]: "--codec-auth"
+                  - emphasis [ref=e872]: string
+                - paragraph [ref=e873]: Authorization header for Codec Server requests.
+                - paragraph [ref=e874]:
+                  - strong [ref=e875]: "--codec-endpoint"
+                  - emphasis [ref=e876]: string
+                - paragraph [ref=e877]: Remote Codec Server endpoint.
+                - paragraph [ref=e878]:
+                  - strong [ref=e879]: "--codec-header"
+                  - emphasis [ref=e880]: string[]
+                - paragraph [ref=e881]:
+                  - text: HTTP headers for requests to codec server. Format as a
+                  - code [ref=e882]: KEY=VALUE
+                  - text: pair. May be passed multiple times to set multiple headers.
+                - paragraph [ref=e883]:
+                  - strong [ref=e884]: "--color"
+                  - emphasis [ref=e885]: string-enum
+                - paragraph [ref=e886]: "Output coloring. Accepted values: always, never, auto. (default \"auto\")"
+                - paragraph [ref=e887]:
+                  - strong [ref=e888]: "--command-timeout"
+                  - emphasis [ref=e889]: duration
+                - paragraph [ref=e890]: The command execution timeout. 0s means no timeout.
+                - paragraph [ref=e891]:
+                  - strong [ref=e892]: "--config-file"
+                  - emphasis [ref=e893]: string
+                - paragraph [ref=e894]:
+                  - text: File path to read TOML config from, defaults to
+                  - code [ref=e895]: $CONFIG_PATH/temporal/temporal.toml
+                  - text: where
+                  - code [ref=e896]: $CONFIG_PATH
+                  - text: is defined as
+                  - code [ref=e897]: $HOME/.config
+                  - text: on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+                - generic [ref=e898]:
+                  - generic [ref=e899]:
+                    - img [ref=e901]
+                    - text: note
+                  - paragraph [ref=e904]: Option is experimental.
+                - paragraph [ref=e905]:
+                  - strong [ref=e906]: "--disable-config-env"
+                  - emphasis [ref=e907]: bool
+                - paragraph [ref=e908]: If set, disables loading environment config from environment variables.
+                - generic [ref=e909]:
+                  - generic [ref=e910]:
+                    - img [ref=e912]
+                    - text: note
+                  - paragraph [ref=e915]: Option is experimental.
+                - paragraph [ref=e916]:
+                  - strong [ref=e917]: "--disable-config-file"
+                  - emphasis [ref=e918]: bool
+                - paragraph [ref=e919]: If set, disables loading environment config from config file.
+                - generic [ref=e920]:
+                  - generic [ref=e921]:
+                    - img [ref=e923]
+                    - text: note
+                  - paragraph [ref=e926]: Option is experimental.
+                - paragraph [ref=e927]:
+                  - strong [ref=e928]: "--env"
+                  - emphasis [ref=e929]: string
+                - paragraph [ref=e930]:
+                  - text: Active environment name (
+                  - code [ref=e931]: ENV
+                  - text: ). (default "default")
+                - paragraph [ref=e932]:
+                  - strong [ref=e933]: "--env-file"
+                  - emphasis [ref=e934]: string
+                - paragraph [ref=e935]:
+                  - text: Path to environment settings file. Defaults to
+                  - code [ref=e936]: $HOME/.config/temporalio/temporal.yaml
+                  - text: .
+                - paragraph [ref=e937]:
+                  - strong [ref=e938]: "--grpc-meta"
+                  - emphasis [ref=e939]: string[]
+                - paragraph [ref=e940]:
+                  - text: HTTP headers for requests. Format as a
+                  - code [ref=e941]: KEY=VALUE
+                  - text: pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as
+                  - code [ref=e942]: TEMPORAL_GRPC_META_[name]
+                  - text: .
+                - paragraph [ref=e943]:
+                  - strong [ref=e944]: "--identity"
+                  - emphasis [ref=e945]: string
+                - paragraph [ref=e946]:
+                  - text: "The identity of the user or client submitting this request. Defaults to \"temporal-cli:"
+                  - generic [ref=e947]:
+                    - math [ref=e949]:
+                      - generic [ref=e951]:
+                        - generic [ref=e952]: U
+                        - generic [ref=e953]: S
+                        - generic [ref=e954]: E
+                        - generic [ref=e955]: R
+                        - generic [ref=e956]: "@"
+                    - generic [ref=e958]: USER@
+                  - text: HOST".
+                - paragraph [ref=e959]:
+                  - strong [ref=e960]: "--log-format"
+                  - emphasis [ref=e961]: string-enum
+                - paragraph [ref=e962]: "Log format. Accepted values: text, json. (default \"text\")"
+                - paragraph [ref=e963]:
+                  - strong [ref=e964]: "--log-level"
+                  - emphasis [ref=e965]: string-enum
+                - paragraph [ref=e966]:
+                  - text: Log level. Default is "info" for most commands and "warn" for
+                  - code [ref=e967]: server start-dev
+                  - text: ". Accepted values: debug, info, warn, error, never. (default \"info\")"
+                - paragraph [ref=e968]:
+                  - strong [ref=e969]: "--namespace"
+                  - text: ","
+                  - strong [ref=e970]: "-n"
+                  - emphasis [ref=e971]: string
+                - paragraph [ref=e972]: Temporal Service Namespace. (default "default")
+                - paragraph [ref=e973]:
+                  - strong [ref=e974]: "--no-json-shorthand-payloads"
+                  - emphasis [ref=e975]: bool
+                - paragraph [ref=e976]: Raw payload output, even if the JSON option was used.
+                - paragraph [ref=e977]:
+                  - strong [ref=e978]: "--output"
+                  - text: ","
+                  - strong [ref=e979]: "-o"
+                  - emphasis [ref=e980]: string-enum
+                - paragraph [ref=e981]: "Non-logging data output format. Accepted values: text, json, jsonl, none. (default \"text\")"
+                - paragraph [ref=e982]:
+                  - strong [ref=e983]: "--profile"
+                  - emphasis [ref=e984]: string
+                - paragraph [ref=e985]: Profile to use for config file.
+                - generic [ref=e986]:
+                  - generic [ref=e987]:
+                    - img [ref=e989]
+                    - text: note
+                  - paragraph [ref=e992]: Option is experimental.
+                - paragraph [ref=e993]:
+                  - strong [ref=e994]: "--time-format"
+                  - emphasis [ref=e995]: string-enum
+                - paragraph [ref=e996]: "Time format. Accepted values: relative, iso, raw. (default \"relative\")"
+                - paragraph [ref=e997]:
+                  - strong [ref=e998]: "--tls"
+                  - emphasis [ref=e999]: bool
+                - paragraph [ref=e1000]: Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
+                - paragraph [ref=e1001]:
+                  - strong [ref=e1002]: "--tls-ca-data"
+                  - emphasis [ref=e1003]: string
+                - paragraph [ref=e1004]: Data for server CA certificate. Can't be used with --tls-ca-path.
+                - paragraph [ref=e1005]:
+                  - strong [ref=e1006]: "--tls-ca-path"
+                  - emphasis [ref=e1007]: string
+                - paragraph [ref=e1008]: Path to server CA certificate. Can't be used with --tls-ca-data.
+                - paragraph [ref=e1009]:
+                  - strong [ref=e1010]: "--tls-cert-data"
+                  - emphasis [ref=e1011]: string
+                - paragraph [ref=e1012]: Data for x509 certificate. Can't be used with --tls-cert-path.
+                - paragraph [ref=e1013]:
+                  - strong [ref=e1014]: "--tls-cert-path"
+                  - emphasis [ref=e1015]: string
+                - paragraph [ref=e1016]: Path to x509 certificate. Can't be used with --tls-cert-data.
+                - paragraph [ref=e1017]:
+                  - strong [ref=e1018]: "--tls-disable-host-verification"
+                  - emphasis [ref=e1019]: bool
+                - paragraph [ref=e1020]: Disable TLS host-name verification.
+                - paragraph [ref=e1021]:
+                  - strong [ref=e1022]: "--tls-key-data"
+                  - emphasis [ref=e1023]: string
+                - paragraph [ref=e1024]: Private certificate key data. Can't be used with --tls-key-path.
+                - paragraph [ref=e1025]:
+                  - strong [ref=e1026]: "--tls-key-path"
+                  - emphasis [ref=e1027]: string
+                - paragraph [ref=e1028]: Path to x509 private key. Can't be used with --tls-key-data.
+                - paragraph [ref=e1029]:
+                  - strong [ref=e1030]: "--tls-server-name"
+                  - emphasis [ref=e1031]: string
+                - paragraph [ref=e1032]: Override target TLS server name.
+                - heading "describeDirect link to describe" [level=2] [ref=e1033]:
+                  - text: describe
+                  - link "Direct link to describe" [ref=e1034] [cursor=pointer]:
+                    - /url: "#describe"
+                    - text: "#"
+                - paragraph [ref=e1035]: "Show a Schedule configuration, including information about past, current, and future Workflow runs:"
+                - generic [ref=e1037]:
+                  - code [ref=e1039]:
+                    - generic [ref=e1040]: temporal schedule describe \
+                    - generic [ref=e1041]: "--schedule-id YourScheduleId"
+                  - button "Copy code to clipboard" [ref=e1043] [cursor=pointer]:
+                    - generic [ref=e1044]:
+                      - img [ref=e1045]
+                      - img [ref=e1047]
+                - paragraph [ref=e1049]: Use the following options to change the behavior of this command.
+                - paragraph [ref=e1050]:
+                  - strong [ref=e1051]: "Flags:"
+                - paragraph [ref=e1052]:
+                  - strong [ref=e1053]: "--schedule-id"
+                  - text: ","
+                  - strong [ref=e1054]: "-s"
+                  - emphasis [ref=e1055]: string
+                - paragraph [ref=e1056]: Schedule ID. Required.
+                - paragraph [ref=e1057]:
+                  - strong [ref=e1058]: "Global Flags:"
+                - paragraph [ref=e1059]:
+                  - strong [ref=e1060]: "--address"
+                  - emphasis [ref=e1061]: string
+                - paragraph [ref=e1062]: Temporal Service gRPC endpoint. (default "localhost:7233")
+                - paragraph [ref=e1063]:
+                  - strong [ref=e1064]: "--api-key"
+                  - emphasis [ref=e1065]: string
+                - paragraph [ref=e1066]: API key for request.
+                - paragraph [ref=e1067]:
+                  - strong [ref=e1068]: "--client-authority"
+                  - emphasis [ref=e1069]: string
+                - paragraph [ref=e1070]: Temporal gRPC client :authority pseudoheader.
+                - paragraph [ref=e1071]:
+                  - strong [ref=e1072]: "--client-connect-timeout"
+                  - emphasis [ref=e1073]: duration
+                - paragraph [ref=e1074]: The client connection timeout. 0s means no timeout.
+                - paragraph [ref=e1075]:
+                  - strong [ref=e1076]: "--codec-auth"
+                  - emphasis [ref=e1077]: string
+                - paragraph [ref=e1078]: Authorization header for Codec Server requests.
+                - paragraph [ref=e1079]:
+                  - strong [ref=e1080]: "--codec-endpoint"
+                  - emphasis [ref=e1081]: string
+                - paragraph [ref=e1082]: Remote Codec Server endpoint.
+                - paragraph [ref=e1083]:
+                  - strong [ref=e1084]: "--codec-header"
+                  - emphasis [ref=e1085]: string[]
+                - paragraph [ref=e1086]:
+                  - text: HTTP headers for requests to codec server. Format as a
+                  - code [ref=e1087]: KEY=VALUE
+                  - text: pair. May be passed multiple times to set multiple headers.
+                - paragraph [ref=e1088]:
+                  - strong [ref=e1089]: "--color"
+                  - emphasis [ref=e1090]: string-enum
+                - paragraph [ref=e1091]: "Output coloring. Accepted values: always, never, auto. (default \"auto\")"
+                - paragraph [ref=e1092]:
+                  - strong [ref=e1093]: "--command-timeout"
+                  - emphasis [ref=e1094]: duration
+                - paragraph [ref=e1095]: The command execution timeout. 0s means no timeout.
+                - paragraph [ref=e1096]:
+                  - strong [ref=e1097]: "--config-file"
+                  - emphasis [ref=e1098]: string
+                - paragraph [ref=e1099]:
+                  - text: File path to read TOML config from, defaults to
+                  - code [ref=e1100]: $CONFIG_PATH/temporal/temporal.toml
+                  - text: where
+                  - code [ref=e1101]: $CONFIG_PATH
+                  - text: is defined as
+                  - code [ref=e1102]: $HOME/.config
+                  - text: on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+                - generic [ref=e1103]:
+                  - generic [ref=e1104]:
+                    - img [ref=e1106]
+                    - text: note
+                  - paragraph [ref=e1109]: Option is experimental.
+                - paragraph [ref=e1110]:
+                  - strong [ref=e1111]: "--disable-config-env"
+                  - emphasis [ref=e1112]: bool
+                - paragraph [ref=e1113]: If set, disables loading environment config from environment variables.
+                - generic [ref=e1114]:
+                  - generic [ref=e1115]:
+                    - img [ref=e1117]
+                    - text: note
+                  - paragraph [ref=e1120]: Option is experimental.
+                - paragraph [ref=e1121]:
+                  - strong [ref=e1122]: "--disable-config-file"
+                  - emphasis [ref=e1123]: bool
+                - paragraph [ref=e1124]: If set, disables loading environment config from config file.
+                - generic [ref=e1125]:
+                  - generic [ref=e1126]:
+                    - img [ref=e1128]
+                    - text: note
+                  - paragraph [ref=e1131]: Option is experimental.
+                - paragraph [ref=e1132]:
+                  - strong [ref=e1133]: "--env"
+                  - emphasis [ref=e1134]: string
+                - paragraph [ref=e1135]:
+                  - text: Active environment name (
+                  - code [ref=e1136]: ENV
+                  - text: ). (default "default")
+                - paragraph [ref=e1137]:
+                  - strong [ref=e1138]: "--env-file"
+                  - emphasis [ref=e1139]: string
+                - paragraph [ref=e1140]:
+                  - text: Path to environment settings file. Defaults to
+                  - code [ref=e1141]: $HOME/.config/temporalio/temporal.yaml
+                  - text: .
+                - paragraph [ref=e1142]:
+                  - strong [ref=e1143]: "--grpc-meta"
+                  - emphasis [ref=e1144]: string[]
+                - paragraph [ref=e1145]:
+                  - text: HTTP headers for requests. Format as a
+                  - code [ref=e1146]: KEY=VALUE
+                  - text: pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as
+                  - code [ref=e1147]: TEMPORAL_GRPC_META_[name]
+                  - text: .
+                - paragraph [ref=e1148]:
+                  - strong [ref=e1149]: "--identity"
+                  - emphasis [ref=e1150]: string
+                - paragraph [ref=e1151]:
+                  - text: "The identity of the user or client submitting this request. Defaults to \"temporal-cli:"
+                  - generic [ref=e1152]:
+                    - math [ref=e1154]:
+                      - generic [ref=e1156]:
+                        - generic [ref=e1157]: U
+                        - generic [ref=e1158]: S
+                        - generic [ref=e1159]: E
+                        - generic [ref=e1160]: R
+                        - generic [ref=e1161]: "@"
+                    - generic [ref=e1163]: USER@
+                  - text: HOST".
+                - paragraph [ref=e1164]:
+                  - strong [ref=e1165]: "--log-format"
+                  - emphasis [ref=e1166]: string-enum
+                - paragraph [ref=e1167]: "Log format. Accepted values: text, json. (default \"text\")"
+                - paragraph [ref=e1168]:
+                  - strong [ref=e1169]: "--log-level"
+                  - emphasis [ref=e1170]: string-enum
+                - paragraph [ref=e1171]:
+                  - text: Log level. Default is "info" for most commands and "warn" for
+                  - code [ref=e1172]: server start-dev
+                  - text: ". Accepted values: debug, info, warn, error, never. (default \"info\")"
+                - paragraph [ref=e1173]:
+                  - strong [ref=e1174]: "--namespace"
+                  - text: ","
+                  - strong [ref=e1175]: "-n"
+                  - emphasis [ref=e1176]: string
+                - paragraph [ref=e1177]: Temporal Service Namespace. (default "default")
+                - paragraph [ref=e1178]:
+                  - strong [ref=e1179]: "--no-json-shorthand-payloads"
+                  - emphasis [ref=e1180]: bool
+                - paragraph [ref=e1181]: Raw payload output, even if the JSON option was used.
+                - paragraph [ref=e1182]:
+                  - strong [ref=e1183]: "--output"
+                  - text: ","
+                  - strong [ref=e1184]: "-o"
+                  - emphasis [ref=e1185]: string-enum
+                - paragraph [ref=e1186]: "Non-logging data output format. Accepted values: text, json, jsonl, none. (default \"text\")"
+                - paragraph [ref=e1187]:
+                  - strong [ref=e1188]: "--profile"
+                  - emphasis [ref=e1189]: string
+                - paragraph [ref=e1190]: Profile to use for config file.
+                - generic [ref=e1191]:
+                  - generic [ref=e1192]:
+                    - img [ref=e1194]
+                    - text: note
+                  - paragraph [ref=e1197]: Option is experimental.
+                - paragraph [ref=e1198]:
+                  - strong [ref=e1199]: "--time-format"
+                  - emphasis [ref=e1200]: string-enum
+                - paragraph [ref=e1201]: "Time format. Accepted values: relative, iso, raw. (default \"relative\")"
+                - paragraph [ref=e1202]:
+                  - strong [ref=e1203]: "--tls"
+                  - emphasis [ref=e1204]: bool
+                - paragraph [ref=e1205]: Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
+                - paragraph [ref=e1206]:
+                  - strong [ref=e1207]: "--tls-ca-data"
+                  - emphasis [ref=e1208]: string
+                - paragraph [ref=e1209]: Data for server CA certificate. Can't be used with --tls-ca-path.
+                - paragraph [ref=e1210]:
+                  - strong [ref=e1211]: "--tls-ca-path"
+                  - emphasis [ref=e1212]: string
+                - paragraph [ref=e1213]: Path to server CA certificate. Can't be used with --tls-ca-data.
+                - paragraph [ref=e1214]:
+                  - strong [ref=e1215]: "--tls-cert-data"
+                  - emphasis [ref=e1216]: string
+                - paragraph [ref=e1217]: Data for x509 certificate. Can't be used with --tls-cert-path.
+                - paragraph [ref=e1218]:
+                  - strong [ref=e1219]: "--tls-cert-path"
+                  - emphasis [ref=e1220]: string
+                - paragraph [ref=e1221]: Path to x509 certificate. Can't be used with --tls-cert-data.
+                - paragraph [ref=e1222]:
+                  - strong [ref=e1223]: "--tls-disable-host-verification"
+                  - emphasis [ref=e1224]: bool
+                - paragraph [ref=e1225]: Disable TLS host-name verification.
+                - paragraph [ref=e1226]:
+                  - strong [ref=e1227]: "--tls-key-data"
+                  - emphasis [ref=e1228]: string
+                - paragraph [ref=e1229]: Private certificate key data. Can't be used with --tls-key-path.
+                - paragraph [ref=e1230]:
+                  - strong [ref=e1231]: "--tls-key-path"
+                  - emphasis [ref=e1232]: string
+                - paragraph [ref=e1233]: Path to x509 private key. Can't be used with --tls-key-data.
+                - paragraph [ref=e1234]:
+                  - strong [ref=e1235]: "--tls-server-name"
+                  - emphasis [ref=e1236]: string
+                - paragraph [ref=e1237]: Override target TLS server name.
+                - heading "listDirect link to list" [level=2] [ref=e1238]:
+                  - text: list
+                  - link "Direct link to list" [ref=e1239] [cursor=pointer]:
+                    - /url: "#list"
+                    - text: "#"
+                - paragraph [ref=e1240]: "Lists the Schedules hosted by a Namespace:"
+                - generic [ref=e1242]:
+                  - code [ref=e1244]:
+                    - generic [ref=e1245]: temporal schedule list \
+                    - generic [ref=e1246]: "--namespace YourNamespace"
+                  - button "Copy code to clipboard" [ref=e1248] [cursor=pointer]:
+                    - generic [ref=e1249]:
+                      - img [ref=e1250]
+                      - img [ref=e1252]
+                - paragraph [ref=e1254]: Use the following options to change the behavior of this command.
+                - paragraph [ref=e1255]:
+                  - strong [ref=e1256]: "Flags:"
+                - paragraph [ref=e1257]:
+                  - strong [ref=e1258]: "--long"
+                  - text: ","
+                  - strong [ref=e1259]: "-l"
+                  - emphasis [ref=e1260]: bool
+                - paragraph [ref=e1261]: Show detailed information.
+                - paragraph [ref=e1262]:
+                  - strong [ref=e1263]: "--query"
+                  - text: ","
+                  - strong [ref=e1264]: "-q"
+                  - emphasis [ref=e1265]: string
+                - paragraph [ref=e1266]: Filter results using given List Filter.
+                - paragraph [ref=e1267]:
+                  - strong [ref=e1268]: "--really-long"
+                  - emphasis [ref=e1269]: bool
+                - paragraph [ref=e1270]: Show extensive information in non-table form.
+                - paragraph [ref=e1271]:
+                  - strong [ref=e1272]: "Global Flags:"
+                - paragraph [ref=e1273]:
+                  - strong [ref=e1274]: "--address"
+                  - emphasis [ref=e1275]: string
+                - paragraph [ref=e1276]: Temporal Service gRPC endpoint. (default "localhost:7233")
+                - paragraph [ref=e1277]:
+                  - strong [ref=e1278]: "--api-key"
+                  - emphasis [ref=e1279]: string
+                - paragraph [ref=e1280]: API key for request.
+                - paragraph [ref=e1281]:
+                  - strong [ref=e1282]: "--client-authority"
+                  - emphasis [ref=e1283]: string
+                - paragraph [ref=e1284]: Temporal gRPC client :authority pseudoheader.
+                - paragraph [ref=e1285]:
+                  - strong [ref=e1286]: "--client-connect-timeout"
+                  - emphasis [ref=e1287]: duration
+                - paragraph [ref=e1288]: The client connection timeout. 0s means no timeout.
+                - paragraph [ref=e1289]:
+                  - strong [ref=e1290]: "--codec-auth"
+                  - emphasis [ref=e1291]: string
+                - paragraph [ref=e1292]: Authorization header for Codec Server requests.
+                - paragraph [ref=e1293]:
+                  - strong [ref=e1294]: "--codec-endpoint"
+                  - emphasis [ref=e1295]: string
+                - paragraph [ref=e1296]: Remote Codec Server endpoint.
+                - paragraph [ref=e1297]:
+                  - strong [ref=e1298]: "--codec-header"
+                  - emphasis [ref=e1299]: string[]
+                - paragraph [ref=e1300]:
+                  - text: HTTP headers for requests to codec server. Format as a
+                  - code [ref=e1301]: KEY=VALUE
+                  - text: pair. May be passed multiple times to set multiple headers.
+                - paragraph [ref=e1302]:
+                  - strong [ref=e1303]: "--color"
+                  - emphasis [ref=e1304]: string-enum
+                - paragraph [ref=e1305]: "Output coloring. Accepted values: always, never, auto. (default \"auto\")"
+                - paragraph [ref=e1306]:
+                  - strong [ref=e1307]: "--command-timeout"
+                  - emphasis [ref=e1308]: duration
+                - paragraph [ref=e1309]: The command execution timeout. 0s means no timeout.
+                - paragraph [ref=e1310]:
+                  - strong [ref=e1311]: "--config-file"
+                  - emphasis [ref=e1312]: string
+                - paragraph [ref=e1313]:
+                  - text: File path to read TOML config from, defaults to
+                  - code [ref=e1314]: $CONFIG_PATH/temporal/temporal.toml
+                  - text: where
+                  - code [ref=e1315]: $CONFIG_PATH
+                  - text: is defined as
+                  - code [ref=e1316]: $HOME/.config
+                  - text: on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+                - generic [ref=e1317]:
+                  - generic [ref=e1318]:
+                    - img [ref=e1320]
+                    - text: note
+                  - paragraph [ref=e1323]: Option is experimental.
+                - paragraph [ref=e1324]:
+                  - strong [ref=e1325]: "--disable-config-env"
+                  - emphasis [ref=e1326]: bool
+                - paragraph [ref=e1327]: If set, disables loading environment config from environment variables.
+                - generic [ref=e1328]:
+                  - generic [ref=e1329]:
+                    - img [ref=e1331]
+                    - text: note
+                  - paragraph [ref=e1334]: Option is experimental.
+                - paragraph [ref=e1335]:
+                  - strong [ref=e1336]: "--disable-config-file"
+                  - emphasis [ref=e1337]: bool
+                - paragraph [ref=e1338]: If set, disables loading environment config from config file.
+                - generic [ref=e1339]:
+                  - generic [ref=e1340]:
+                    - img [ref=e1342]
+                    - text: note
+                  - paragraph [ref=e1345]: Option is experimental.
+                - paragraph [ref=e1346]:
+                  - strong [ref=e1347]: "--env"
+                  - emphasis [ref=e1348]: string
+                - paragraph [ref=e1349]:
+                  - text: Active environment name (
+                  - code [ref=e1350]: ENV
+                  - text: ). (default "default")
+                - paragraph [ref=e1351]:
+                  - strong [ref=e1352]: "--env-file"
+                  - emphasis [ref=e1353]: string
+                - paragraph [ref=e1354]:
+                  - text: Path to environment settings file. Defaults to
+                  - code [ref=e1355]: $HOME/.config/temporalio/temporal.yaml
+                  - text: .
+                - paragraph [ref=e1356]:
+                  - strong [ref=e1357]: "--grpc-meta"
+                  - emphasis [ref=e1358]: string[]
+                - paragraph [ref=e1359]:
+                  - text: HTTP headers for requests. Format as a
+                  - code [ref=e1360]: KEY=VALUE
+                  - text: pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as
+                  - code [ref=e1361]: TEMPORAL_GRPC_META_[name]
+                  - text: .
+                - paragraph [ref=e1362]:
+                  - strong [ref=e1363]: "--identity"
+                  - emphasis [ref=e1364]: string
+                - paragraph [ref=e1365]:
+                  - text: "The identity of the user or client submitting this request. Defaults to \"temporal-cli:"
+                  - generic [ref=e1366]:
+                    - math [ref=e1368]:
+                      - generic [ref=e1370]:
+                        - generic [ref=e1371]: U
+                        - generic [ref=e1372]: S
+                        - generic [ref=e1373]: E
+                        - generic [ref=e1374]: R
+                        - generic [ref=e1375]: "@"
+                    - generic [ref=e1377]: USER@
+                  - text: HOST".
+                - paragraph [ref=e1378]:
+                  - strong [ref=e1379]: "--log-format"
+                  - emphasis [ref=e1380]: string-enum
+                - paragraph [ref=e1381]: "Log format. Accepted values: text, json. (default \"text\")"
+                - paragraph [ref=e1382]:
+                  - strong [ref=e1383]: "--log-level"
+                  - emphasis [ref=e1384]: string-enum
+                - paragraph [ref=e1385]:
+                  - text: Log level. Default is "info" for most commands and "warn" for
+                  - code [ref=e1386]: server start-dev
+                  - text: ". Accepted values: debug, info, warn, error, never. (default \"info\")"
+                - paragraph [ref=e1387]:
+                  - strong [ref=e1388]: "--namespace"
+                  - text: ","
+                  - strong [ref=e1389]: "-n"
+                  - emphasis [ref=e1390]: string
+                - paragraph [ref=e1391]: Temporal Service Namespace. (default "default")
+                - paragraph [ref=e1392]:
+                  - strong [ref=e1393]: "--no-json-shorthand-payloads"
+                  - emphasis [ref=e1394]: bool
+                - paragraph [ref=e1395]: Raw payload output, even if the JSON option was used.
+                - paragraph [ref=e1396]:
+                  - strong [ref=e1397]: "--output"
+                  - text: ","
+                  - strong [ref=e1398]: "-o"
+                  - emphasis [ref=e1399]: string-enum
+                - paragraph [ref=e1400]: "Non-logging data output format. Accepted values: text, json, jsonl, none. (default \"text\")"
+                - paragraph [ref=e1401]:
+                  - strong [ref=e1402]: "--profile"
+                  - emphasis [ref=e1403]: string
+                - paragraph [ref=e1404]: Profile to use for config file.
+                - generic [ref=e1405]:
+                  - generic [ref=e1406]:
+                    - img [ref=e1408]
+                    - text: note
+                  - paragraph [ref=e1411]: Option is experimental.
+                - paragraph [ref=e1412]:
+                  - strong [ref=e1413]: "--time-format"
+                  - emphasis [ref=e1414]: string-enum
+                - paragraph [ref=e1415]: "Time format. Accepted values: relative, iso, raw. (default \"relative\")"
+                - paragraph [ref=e1416]:
+                  - strong [ref=e1417]: "--tls"
+                  - emphasis [ref=e1418]: bool
+                - paragraph [ref=e1419]: Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
+                - paragraph [ref=e1420]:
+                  - strong [ref=e1421]: "--tls-ca-data"
+                  - emphasis [ref=e1422]: string
+                - paragraph [ref=e1423]: Data for server CA certificate. Can't be used with --tls-ca-path.
+                - paragraph [ref=e1424]:
+                  - strong [ref=e1425]: "--tls-ca-path"
+                  - emphasis [ref=e1426]: string
+                - paragraph [ref=e1427]: Path to server CA certificate. Can't be used with --tls-ca-data.
+                - paragraph [ref=e1428]:
+                  - strong [ref=e1429]: "--tls-cert-data"
+                  - emphasis [ref=e1430]: string
+                - paragraph [ref=e1431]: Data for x509 certificate. Can't be used with --tls-cert-path.
+                - paragraph [ref=e1432]:
+                  - strong [ref=e1433]: "--tls-cert-path"
+                  - emphasis [ref=e1434]: string
+                - paragraph [ref=e1435]: Path to x509 certificate. Can't be used with --tls-cert-data.
+                - paragraph [ref=e1436]:
+                  - strong [ref=e1437]: "--tls-disable-host-verification"
+                  - emphasis [ref=e1438]: bool
+                - paragraph [ref=e1439]: Disable TLS host-name verification.
+                - paragraph [ref=e1440]:
+                  - strong [ref=e1441]: "--tls-key-data"
+                  - emphasis [ref=e1442]: string
+                - paragraph [ref=e1443]: Private certificate key data. Can't be used with --tls-key-path.
+                - paragraph [ref=e1444]:
+                  - strong [ref=e1445]: "--tls-key-path"
+                  - emphasis [ref=e1446]: string
+                - paragraph [ref=e1447]: Path to x509 private key. Can't be used with --tls-key-data.
+                - paragraph [ref=e1448]:
+                  - strong [ref=e1449]: "--tls-server-name"
+                  - emphasis [ref=e1450]: string
+                - paragraph [ref=e1451]: Override target TLS server name.
+                - heading "toggleDirect link to toggle" [level=2] [ref=e1452]:
+                  - text: toggle
+                  - link "Direct link to toggle" [ref=e1453] [cursor=pointer]:
+                    - /url: "#toggle"
+                    - text: "#"
+                - paragraph [ref=e1454]: "Pause or unpause a Schedule by passing a flag with your desired state:"
+                - generic [ref=e1456]:
+                  - code [ref=e1458]:
+                    - generic [ref=e1459]: temporal schedule toggle \
+                    - generic [ref=e1460]: "--schedule-id \"YourScheduleId\" \\"
+                    - generic [ref=e1461]: "--pause \\"
+                    - generic [ref=e1462]: "--reason \"YourReason\""
+                  - button "Copy code to clipboard" [ref=e1464] [cursor=pointer]:
+                    - generic [ref=e1465]:
+                      - img [ref=e1466]
+                      - img [ref=e1468]
+                - paragraph [ref=e1470]: and
+                - generic [ref=e1472]:
+                  - code [ref=e1474]:
+                    - generic [ref=e1475]: temporal schedule toggle
+                    - generic [ref=e1476]: "--schedule-id \"YourScheduleId\" \\"
+                    - generic [ref=e1477]: "--unpause \\"
+                    - generic [ref=e1478]: "--reason \"YourReason\""
+                  - button "Copy code to clipboard" [ref=e1480] [cursor=pointer]:
+                    - generic [ref=e1481]:
+                      - img [ref=e1482]
+                      - img [ref=e1484]
+                - paragraph [ref=e1486]:
+                  - text: The
+                  - code [ref=e1487]: "--reason"
+                  - text: text updates the Schedule's
+                  - code [ref=e1488]: notes
+                  - text: field for operations communication. It defaults to "(no reason provided)" if omitted. This field is also visible on the Service Web UI.
+                - paragraph [ref=e1489]: Use the following options to change the behavior of this command.
+                - paragraph [ref=e1490]:
+                  - strong [ref=e1491]: "Flags:"
+                - paragraph [ref=e1492]:
+                  - strong [ref=e1493]: "--pause"
+                  - emphasis [ref=e1494]: bool
+                - paragraph [ref=e1495]: Pause the Schedule.
+                - paragraph [ref=e1496]:
+                  - strong [ref=e1497]: "--reason"
+                  - emphasis [ref=e1498]: string
+                - paragraph [ref=e1499]: Reason for pausing or unpausing the Schedule. (default "(no reason provided)")
+                - paragraph [ref=e1500]:
+                  - strong [ref=e1501]: "--schedule-id"
+                  - text: ","
+                  - strong [ref=e1502]: "-s"
+                  - emphasis [ref=e1503]: string
+                - paragraph [ref=e1504]: Schedule ID. Required.
+                - paragraph [ref=e1505]:
+                  - strong [ref=e1506]: "--unpause"
+                  - emphasis [ref=e1507]: bool
+                - paragraph [ref=e1508]: Unpause the Schedule.
+                - paragraph [ref=e1509]:
+                  - strong [ref=e1510]: "Global Flags:"
+                - paragraph [ref=e1511]:
+                  - strong [ref=e1512]: "--address"
+                  - emphasis [ref=e1513]: string
+                - paragraph [ref=e1514]: Temporal Service gRPC endpoint. (default "localhost:7233")
+                - paragraph [ref=e1515]:
+                  - strong [ref=e1516]: "--api-key"
+                  - emphasis [ref=e1517]: string
+                - paragraph [ref=e1518]: API key for request.
+                - paragraph [ref=e1519]:
+                  - strong [ref=e1520]: "--client-authority"
+                  - emphasis [ref=e1521]: string
+                - paragraph [ref=e1522]: Temporal gRPC client :authority pseudoheader.
+                - paragraph [ref=e1523]:
+                  - strong [ref=e1524]: "--client-connect-timeout"
+                  - emphasis [ref=e1525]: duration
+                - paragraph [ref=e1526]: The client connection timeout. 0s means no timeout.
+                - paragraph [ref=e1527]:
+                  - strong [ref=e1528]: "--codec-auth"
+                  - emphasis [ref=e1529]: string
+                - paragraph [ref=e1530]: Authorization header for Codec Server requests.
+                - paragraph [ref=e1531]:
+                  - strong [ref=e1532]: "--codec-endpoint"
+                  - emphasis [ref=e1533]: string
+                - paragraph [ref=e1534]: Remote Codec Server endpoint.
+                - paragraph [ref=e1535]:
+                  - strong [ref=e1536]: "--codec-header"
+                  - emphasis [ref=e1537]: string[]
+                - paragraph [ref=e1538]:
+                  - text: HTTP headers for requests to codec server. Format as a
+                  - code [ref=e1539]: KEY=VALUE
+                  - text: pair. May be passed multiple times to set multiple headers.
+                - paragraph [ref=e1540]:
+                  - strong [ref=e1541]: "--color"
+                  - emphasis [ref=e1542]: string-enum
+                - paragraph [ref=e1543]: "Output coloring. Accepted values: always, never, auto. (default \"auto\")"
+                - paragraph [ref=e1544]:
+                  - strong [ref=e1545]: "--command-timeout"
+                  - emphasis [ref=e1546]: duration
+                - paragraph [ref=e1547]: The command execution timeout. 0s means no timeout.
+                - paragraph [ref=e1548]:
+                  - strong [ref=e1549]: "--config-file"
+                  - emphasis [ref=e1550]: string
+                - paragraph [ref=e1551]:
+                  - text: File path to read TOML config from, defaults to
+                  - code [ref=e1552]: $CONFIG_PATH/temporal/temporal.toml
+                  - text: where
+                  - code [ref=e1553]: $CONFIG_PATH
+                  - text: is defined as
+                  - code [ref=e1554]: $HOME/.config
+                  - text: on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+                - generic [ref=e1555]:
+                  - generic [ref=e1556]:
+                    - img [ref=e1558]
+                    - text: note
+                  - paragraph [ref=e1561]: Option is experimental.
+                - paragraph [ref=e1562]:
+                  - strong [ref=e1563]: "--disable-config-env"
+                  - emphasis [ref=e1564]: bool
+                - paragraph [ref=e1565]: If set, disables loading environment config from environment variables.
+                - generic [ref=e1566]:
+                  - generic [ref=e1567]:
+                    - img [ref=e1569]
+                    - text: note
+                  - paragraph [ref=e1572]: Option is experimental.
+                - paragraph [ref=e1573]:
+                  - strong [ref=e1574]: "--disable-config-file"
+                  - emphasis [ref=e1575]: bool
+                - paragraph [ref=e1576]: If set, disables loading environment config from config file.
+                - generic [ref=e1577]:
+                  - generic [ref=e1578]:
+                    - img [ref=e1580]
+                    - text: note
+                  - paragraph [ref=e1583]: Option is experimental.
+                - paragraph [ref=e1584]:
+                  - strong [ref=e1585]: "--env"
+                  - emphasis [ref=e1586]: string
+                - paragraph [ref=e1587]:
+                  - text: Active environment name (
+                  - code [ref=e1588]: ENV
+                  - text: ). (default "default")
+                - paragraph [ref=e1589]:
+                  - strong [ref=e1590]: "--env-file"
+                  - emphasis [ref=e1591]: string
+                - paragraph [ref=e1592]:
+                  - text: Path to environment settings file. Defaults to
+                  - code [ref=e1593]: $HOME/.config/temporalio/temporal.yaml
+                  - text: .
+                - paragraph [ref=e1594]:
+                  - strong [ref=e1595]: "--grpc-meta"
+                  - emphasis [ref=e1596]: string[]
+                - paragraph [ref=e1597]:
+                  - text: HTTP headers for requests. Format as a
+                  - code [ref=e1598]: KEY=VALUE
+                  - text: pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as
+                  - code [ref=e1599]: TEMPORAL_GRPC_META_[name]
+                  - text: .
+                - paragraph [ref=e1600]:
+                  - strong [ref=e1601]: "--identity"
+                  - emphasis [ref=e1602]: string
+                - paragraph [ref=e1603]:
+                  - text: "The identity of the user or client submitting this request. Defaults to \"temporal-cli:"
+                  - generic [ref=e1604]:
+                    - math [ref=e1606]:
+                      - generic [ref=e1608]:
+                        - generic [ref=e1609]: U
+                        - generic [ref=e1610]: S
+                        - generic [ref=e1611]: E
+                        - generic [ref=e1612]: R
+                        - generic [ref=e1613]: "@"
+                    - generic [ref=e1615]: USER@
+                  - text: HOST".
+                - paragraph [ref=e1616]:
+                  - strong [ref=e1617]: "--log-format"
+                  - emphasis [ref=e1618]: string-enum
+                - paragraph [ref=e1619]: "Log format. Accepted values: text, json. (default \"text\")"
+                - paragraph [ref=e1620]:
+                  - strong [ref=e1621]: "--log-level"
+                  - emphasis [ref=e1622]: string-enum
+                - paragraph [ref=e1623]:
+                  - text: Log level. Default is "info" for most commands and "warn" for
+                  - code [ref=e1624]: server start-dev
+                  - text: ". Accepted values: debug, info, warn, error, never. (default \"info\")"
+                - paragraph [ref=e1625]:
+                  - strong [ref=e1626]: "--namespace"
+                  - text: ","
+                  - strong [ref=e1627]: "-n"
+                  - emphasis [ref=e1628]: string
+                - paragraph [ref=e1629]: Temporal Service Namespace. (default "default")
+                - paragraph [ref=e1630]:
+                  - strong [ref=e1631]: "--no-json-shorthand-payloads"
+                  - emphasis [ref=e1632]: bool
+                - paragraph [ref=e1633]: Raw payload output, even if the JSON option was used.
+                - paragraph [ref=e1634]:
+                  - strong [ref=e1635]: "--output"
+                  - text: ","
+                  - strong [ref=e1636]: "-o"
+                  - emphasis [ref=e1637]: string-enum
+                - paragraph [ref=e1638]: "Non-logging data output format. Accepted values: text, json, jsonl, none. (default \"text\")"
+                - paragraph [ref=e1639]:
+                  - strong [ref=e1640]: "--profile"
+                  - emphasis [ref=e1641]: string
+                - paragraph [ref=e1642]: Profile to use for config file.
+                - generic [ref=e1643]:
+                  - generic [ref=e1644]:
+                    - img [ref=e1646]
+                    - text: note
+                  - paragraph [ref=e1649]: Option is experimental.
+                - paragraph [ref=e1650]:
+                  - strong [ref=e1651]: "--time-format"
+                  - emphasis [ref=e1652]: string-enum
+                - paragraph [ref=e1653]: "Time format. Accepted values: relative, iso, raw. (default \"relative\")"
+                - paragraph [ref=e1654]:
+                  - strong [ref=e1655]: "--tls"
+                  - emphasis [ref=e1656]: bool
+                - paragraph [ref=e1657]: Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
+                - paragraph [ref=e1658]:
+                  - strong [ref=e1659]: "--tls-ca-data"
+                  - emphasis [ref=e1660]: string
+                - paragraph [ref=e1661]: Data for server CA certificate. Can't be used with --tls-ca-path.
+                - paragraph [ref=e1662]:
+                  - strong [ref=e1663]: "--tls-ca-path"
+                  - emphasis [ref=e1664]: string
+                - paragraph [ref=e1665]: Path to server CA certificate. Can't be used with --tls-ca-data.
+                - paragraph [ref=e1666]:
+                  - strong [ref=e1667]: "--tls-cert-data"
+                  - emphasis [ref=e1668]: string
+                - paragraph [ref=e1669]: Data for x509 certificate. Can't be used with --tls-cert-path.
+                - paragraph [ref=e1670]:
+                  - strong [ref=e1671]: "--tls-cert-path"
+                  - emphasis [ref=e1672]: string
+                - paragraph [ref=e1673]: Path to x509 certificate. Can't be used with --tls-cert-data.
+                - paragraph [ref=e1674]:
+                  - strong [ref=e1675]: "--tls-disable-host-verification"
+                  - emphasis [ref=e1676]: bool
+                - paragraph [ref=e1677]: Disable TLS host-name verification.
+                - paragraph [ref=e1678]:
+                  - strong [ref=e1679]: "--tls-key-data"
+                  - emphasis [ref=e1680]: string
+                - paragraph [ref=e1681]: Private certificate key data. Can't be used with --tls-key-path.
+                - paragraph [ref=e1682]:
+                  - strong [ref=e1683]: "--tls-key-path"
+                  - emphasis [ref=e1684]: string
+                - paragraph [ref=e1685]: Path to x509 private key. Can't be used with --tls-key-data.
+                - paragraph [ref=e1686]:
+                  - strong [ref=e1687]: "--tls-server-name"
+                  - emphasis [ref=e1688]: string
+                - paragraph [ref=e1689]: Override target TLS server name.
+                - heading "triggerDirect link to trigger" [level=2] [ref=e1690]:
+                  - text: trigger
+                  - link "Direct link to trigger" [ref=e1691] [cursor=pointer]:
+                    - /url: "#trigger"
+                    - text: "#"
+                - paragraph [ref=e1692]: "Trigger a Schedule to run immediately:"
+                - generic [ref=e1694]:
+                  - code [ref=e1696]:
+                    - generic [ref=e1697]: temporal schedule trigger \
+                    - generic [ref=e1698]: "--schedule-id \"YourScheduleId\""
+                  - button "Copy code to clipboard" [ref=e1700] [cursor=pointer]:
+                    - generic [ref=e1701]:
+                      - img [ref=e1702]
+                      - img [ref=e1704]
+                - paragraph [ref=e1706]: Use the following options to change the behavior of this command.
+                - paragraph [ref=e1707]:
+                  - strong [ref=e1708]: "Flags:"
+                - paragraph [ref=e1709]:
+                  - strong [ref=e1710]: "--overlap-policy"
+                  - emphasis [ref=e1711]: string-enum
+                - paragraph [ref=e1712]: "Policy for handling overlapping Workflow Executions. Accepted values: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll. (default \"Skip\")"
+                - paragraph [ref=e1713]:
+                  - strong [ref=e1714]: "--schedule-id"
+                  - text: ","
+                  - strong [ref=e1715]: "-s"
+                  - emphasis [ref=e1716]: string
+                - paragraph [ref=e1717]: Schedule ID. Required.
+                - paragraph [ref=e1718]:
+                  - strong [ref=e1719]: "Global Flags:"
+                - paragraph [ref=e1720]:
+                  - strong [ref=e1721]: "--address"
+                  - emphasis [ref=e1722]: string
+                - paragraph [ref=e1723]: Temporal Service gRPC endpoint. (default "localhost:7233")
+                - paragraph [ref=e1724]:
+                  - strong [ref=e1725]: "--api-key"
+                  - emphasis [ref=e1726]: string
+                - paragraph [ref=e1727]: API key for request.
+                - paragraph [ref=e1728]:
+                  - strong [ref=e1729]: "--client-authority"
+                  - emphasis [ref=e1730]: string
+                - paragraph [ref=e1731]: Temporal gRPC client :authority pseudoheader.
+                - paragraph [ref=e1732]:
+                  - strong [ref=e1733]: "--client-connect-timeout"
+                  - emphasis [ref=e1734]: duration
+                - paragraph [ref=e1735]: The client connection timeout. 0s means no timeout.
+                - paragraph [ref=e1736]:
+                  - strong [ref=e1737]: "--codec-auth"
+                  - emphasis [ref=e1738]: string
+                - paragraph [ref=e1739]: Authorization header for Codec Server requests.
+                - paragraph [ref=e1740]:
+                  - strong [ref=e1741]: "--codec-endpoint"
+                  - emphasis [ref=e1742]: string
+                - paragraph [ref=e1743]: Remote Codec Server endpoint.
+                - paragraph [ref=e1744]:
+                  - strong [ref=e1745]: "--codec-header"
+                  - emphasis [ref=e1746]: string[]
+                - paragraph [ref=e1747]:
+                  - text: HTTP headers for requests to codec server. Format as a
+                  - code [ref=e1748]: KEY=VALUE
+                  - text: pair. May be passed multiple times to set multiple headers.
+                - paragraph [ref=e1749]:
+                  - strong [ref=e1750]: "--color"
+                  - emphasis [ref=e1751]: string-enum
+                - paragraph [ref=e1752]: "Output coloring. Accepted values: always, never, auto. (default \"auto\")"
+                - paragraph [ref=e1753]:
+                  - strong [ref=e1754]: "--command-timeout"
+                  - emphasis [ref=e1755]: duration
+                - paragraph [ref=e1756]: The command execution timeout. 0s means no timeout.
+                - paragraph [ref=e1757]:
+                  - strong [ref=e1758]: "--config-file"
+                  - emphasis [ref=e1759]: string
+                - paragraph [ref=e1760]:
+                  - text: File path to read TOML config from, defaults to
+                  - code [ref=e1761]: $CONFIG_PATH/temporal/temporal.toml
+                  - text: where
+                  - code [ref=e1762]: $CONFIG_PATH
+                  - text: is defined as
+                  - code [ref=e1763]: $HOME/.config
+                  - text: on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+                - generic [ref=e1764]:
+                  - generic [ref=e1765]:
+                    - img [ref=e1767]
+                    - text: note
+                  - paragraph [ref=e1770]: Option is experimental.
+                - paragraph [ref=e1771]:
+                  - strong [ref=e1772]: "--disable-config-env"
+                  - emphasis [ref=e1773]: bool
+                - paragraph [ref=e1774]: If set, disables loading environment config from environment variables.
+                - generic [ref=e1775]:
+                  - generic [ref=e1776]:
+                    - img [ref=e1778]
+                    - text: note
+                  - paragraph [ref=e1781]: Option is experimental.
+                - paragraph [ref=e1782]:
+                  - strong [ref=e1783]: "--disable-config-file"
+                  - emphasis [ref=e1784]: bool
+                - paragraph [ref=e1785]: If set, disables loading environment config from config file.
+                - generic [ref=e1786]:
+                  - generic [ref=e1787]:
+                    - img [ref=e1789]
+                    - text: note
+                  - paragraph [ref=e1792]: Option is experimental.
+                - paragraph [ref=e1793]:
+                  - strong [ref=e1794]: "--env"
+                  - emphasis [ref=e1795]: string
+                - paragraph [ref=e1796]:
+                  - text: Active environment name (
+                  - code [ref=e1797]: ENV
+                  - text: ). (default "default")
+                - paragraph [ref=e1798]:
+                  - strong [ref=e1799]: "--env-file"
+                  - emphasis [ref=e1800]: string
+                - paragraph [ref=e1801]:
+                  - text: Path to environment settings file. Defaults to
+                  - code [ref=e1802]: $HOME/.config/temporalio/temporal.yaml
+                  - text: .
+                - paragraph [ref=e1803]:
+                  - strong [ref=e1804]: "--grpc-meta"
+                  - emphasis [ref=e1805]: string[]
+                - paragraph [ref=e1806]:
+                  - text: HTTP headers for requests. Format as a
+                  - code [ref=e1807]: KEY=VALUE
+                  - text: pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as
+                  - code [ref=e1808]: TEMPORAL_GRPC_META_[name]
+                  - text: .
+                - paragraph [ref=e1809]:
+                  - strong [ref=e1810]: "--identity"
+                  - emphasis [ref=e1811]: string
+                - paragraph [ref=e1812]:
+                  - text: "The identity of the user or client submitting this request. Defaults to \"temporal-cli:"
+                  - generic [ref=e1813]:
+                    - math [ref=e1815]:
+                      - generic [ref=e1817]:
+                        - generic [ref=e1818]: U
+                        - generic [ref=e1819]: S
+                        - generic [ref=e1820]: E
+                        - generic [ref=e1821]: R
+                        - generic [ref=e1822]: "@"
+                    - generic [ref=e1824]: USER@
+                  - text: HOST".
+                - paragraph [ref=e1825]:
+                  - strong [ref=e1826]: "--log-format"
+                  - emphasis [ref=e1827]: string-enum
+                - paragraph [ref=e1828]: "Log format. Accepted values: text, json. (default \"text\")"
+                - paragraph [ref=e1829]:
+                  - strong [ref=e1830]: "--log-level"
+                  - emphasis [ref=e1831]: string-enum
+                - paragraph [ref=e1832]:
+                  - text: Log level. Default is "info" for most commands and "warn" for
+                  - code [ref=e1833]: server start-dev
+                  - text: ". Accepted values: debug, info, warn, error, never. (default \"info\")"
+                - paragraph [ref=e1834]:
+                  - strong [ref=e1835]: "--namespace"
+                  - text: ","
+                  - strong [ref=e1836]: "-n"
+                  - emphasis [ref=e1837]: string
+                - paragraph [ref=e1838]: Temporal Service Namespace. (default "default")
+                - paragraph [ref=e1839]:
+                  - strong [ref=e1840]: "--no-json-shorthand-payloads"
+                  - emphasis [ref=e1841]: bool
+                - paragraph [ref=e1842]: Raw payload output, even if the JSON option was used.
+                - paragraph [ref=e1843]:
+                  - strong [ref=e1844]: "--output"
+                  - text: ","
+                  - strong [ref=e1845]: "-o"
+                  - emphasis [ref=e1846]: string-enum
+                - paragraph [ref=e1847]: "Non-logging data output format. Accepted values: text, json, jsonl, none. (default \"text\")"
+                - paragraph [ref=e1848]:
+                  - strong [ref=e1849]: "--profile"
+                  - emphasis [ref=e1850]: string
+                - paragraph [ref=e1851]: Profile to use for config file.
+                - generic [ref=e1852]:
+                  - generic [ref=e1853]:
+                    - img [ref=e1855]
+                    - text: note
+                  - paragraph [ref=e1858]: Option is experimental.
+                - paragraph [ref=e1859]:
+                  - strong [ref=e1860]: "--time-format"
+                  - emphasis [ref=e1861]: string-enum
+                - paragraph [ref=e1862]: "Time format. Accepted values: relative, iso, raw. (default \"relative\")"
+                - paragraph [ref=e1863]:
+                  - strong [ref=e1864]: "--tls"
+                  - emphasis [ref=e1865]: bool
+                - paragraph [ref=e1866]: Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
+                - paragraph [ref=e1867]:
+                  - strong [ref=e1868]: "--tls-ca-data"
+                  - emphasis [ref=e1869]: string
+                - paragraph [ref=e1870]: Data for server CA certificate. Can't be used with --tls-ca-path.
+                - paragraph [ref=e1871]:
+                  - strong [ref=e1872]: "--tls-ca-path"
+                  - emphasis [ref=e1873]: string
+                - paragraph [ref=e1874]: Path to server CA certificate. Can't be used with --tls-ca-data.
+                - paragraph [ref=e1875]:
+                  - strong [ref=e1876]: "--tls-cert-data"
+                  - emphasis [ref=e1877]: string
+                - paragraph [ref=e1878]: Data for x509 certificate. Can't be used with --tls-cert-path.
+                - paragraph [ref=e1879]:
+                  - strong [ref=e1880]: "--tls-cert-path"
+                  - emphasis [ref=e1881]: string
+                - paragraph [ref=e1882]: Path to x509 certificate. Can't be used with --tls-cert-data.
+                - paragraph [ref=e1883]:
+                  - strong [ref=e1884]: "--tls-disable-host-verification"
+                  - emphasis [ref=e1885]: bool
+                - paragraph [ref=e1886]: Disable TLS host-name verification.
+                - paragraph [ref=e1887]:
+                  - strong [ref=e1888]: "--tls-key-data"
+                  - emphasis [ref=e1889]: string
+                - paragraph [ref=e1890]: Private certificate key data. Can't be used with --tls-key-path.
+                - paragraph [ref=e1891]:
+                  - strong [ref=e1892]: "--tls-key-path"
+                  - emphasis [ref=e1893]: string
+                - paragraph [ref=e1894]: Path to x509 private key. Can't be used with --tls-key-data.
+                - paragraph [ref=e1895]:
+                  - strong [ref=e1896]: "--tls-server-name"
+                  - emphasis [ref=e1897]: string
+                - paragraph [ref=e1898]: Override target TLS server name.
+                - heading "updateDirect link to update" [level=2] [ref=e1899]:
+                  - text: update
+                  - link "Direct link to update" [ref=e1900] [cursor=pointer]:
+                    - /url: "#update"
+                    - text: "#"
+                - paragraph [ref=e1901]: "Update an existing Schedule with new configuration details, including time specifications, action, and policies:"
+                - generic [ref=e1903]:
+                  - code [ref=e1905]:
+                    - generic [ref=e1906]: temporal schedule update \
+                    - generic [ref=e1907]: "--schedule-id \"YourScheduleId\" \\"
+                    - generic [ref=e1908]: "--workflow-type \"NewWorkflowType\""
+                  - button "Copy code to clipboard" [ref=e1910] [cursor=pointer]:
+                    - generic [ref=e1911]:
+                      - img [ref=e1912]
+                      - img [ref=e1914]
+                - paragraph [ref=e1916]: Use the following options to change the behavior of this command.
+                - paragraph [ref=e1917]:
+                  - strong [ref=e1918]: "Flags:"
+                - paragraph [ref=e1919]:
+                  - strong [ref=e1920]: "--calendar"
+                  - emphasis [ref=e1921]: string[]
+                - paragraph [ref=e1922]:
+                  - text: "Calendar specification in JSON. For example:"
+                  - code [ref=e1923]: "{\"dayOfWeek\":\"Fri\",\"hour\":\"17\",\"minute\":\"5\"}"
+                  - text: .
+                - paragraph [ref=e1924]:
+                  - strong [ref=e1925]: "--catchup-window"
+                  - emphasis [ref=e1926]: duration
+                - paragraph [ref=e1927]: Maximum catch-up time for when the Service is unavailable.
+                - paragraph [ref=e1928]:
+                  - strong [ref=e1929]: "--cron"
+                  - emphasis [ref=e1930]: string[]
+                - paragraph [ref=e1931]:
+                  - text: "Calendar specification in cron string format. For example:"
+                  - code [ref=e1932]: "\"30 12 * * Fri\""
+                  - text: .
+                - paragraph [ref=e1933]:
+                  - strong [ref=e1934]: "--end-time"
+                  - emphasis [ref=e1935]: timestamp
+                - paragraph [ref=e1936]: Schedule end time.
+                - paragraph [ref=e1937]:
+                  - strong [ref=e1938]: "--execution-timeout"
+                  - emphasis [ref=e1939]: duration
+                - paragraph [ref=e1940]:
+                  - text: Fail a WorkflowExecution if it lasts longer than
+                  - code [ref=e1941]: DURATION
+                  - text: . This time-out includes retries and ContinueAsNew tasks.
+                - paragraph [ref=e1942]:
+                  - strong [ref=e1943]: "--fairness-key"
+                  - emphasis [ref=e1944]: string
+                - paragraph [ref=e1945]: Fairness key (max 64 bytes) for proportional task dispatch. Tasks with same key share capacity based on their weight.
+                - paragraph [ref=e1946]:
+                  - strong [ref=e1947]: "--fairness-weight"
+                  - emphasis [ref=e1948]: float
+                - paragraph [ref=e1949]: Weight [0.001-1000] for this fairness key. Keys are dispatched proportionally to their weights.
+                - paragraph [ref=e1950]:
+                  - strong [ref=e1951]: "--input"
+                  - text: ","
+                  - strong [ref=e1952]: "-i"
+                  - emphasis [ref=e1953]: string[]
+                - paragraph [ref=e1954]: Input value. Use JSON content or set --input-meta to override. Can't be combined with --input-file. Can be passed multiple times to pass multiple arguments.
+                - paragraph [ref=e1955]:
+                  - strong [ref=e1956]: "--input-base64"
+                  - emphasis [ref=e1957]: bool
+                - paragraph [ref=e1958]: Assume inputs are base64-encoded and attempt to decode them.
+                - paragraph [ref=e1959]:
+                  - strong [ref=e1960]: "--input-file"
+                  - emphasis [ref=e1961]: string[]
+                - paragraph [ref=e1962]: A path or paths for input file(s). Use JSON content or set --input-meta to override. Can't be combined with --input. Can be passed multiple times to pass multiple arguments.
+                - paragraph [ref=e1963]:
+                  - strong [ref=e1964]: "--input-meta"
+                  - emphasis [ref=e1965]: string[]
+                - paragraph [ref=e1966]:
+                  - text: Input payload metadata as a
+                  - code [ref=e1967]: KEY=VALUE
+                  - text: pair. When the KEY is "encoding", this overrides the default ("json/plain"). Can be passed multiple times. Repeated metadata keys are applied to the corresponding inputs in the provided order.
+                - paragraph [ref=e1968]:
+                  - strong [ref=e1969]: "--interval"
+                  - emphasis [ref=e1970]: string[]
+                - paragraph [ref=e1971]: Interval duration. For example, 90m, or 60m/15m to include phase offset.
+                - paragraph [ref=e1972]:
+                  - strong [ref=e1973]: "--jitter"
+                  - emphasis [ref=e1974]: duration
+                - paragraph [ref=e1975]: Max difference in time from the specification. Vary the start time randomly within this amount.
+                - paragraph [ref=e1976]:
+                  - strong [ref=e1977]: "--memo"
+                  - emphasis [ref=e1978]: string[]
+                - paragraph [ref=e1979]: Memo using 'KEY="VALUE"' pairs. Use JSON values.
+                - paragraph [ref=e1980]:
+                  - strong [ref=e1981]: "--notes"
+                  - emphasis [ref=e1982]: string
+                - paragraph [ref=e1983]: Initial notes field value.
+                - paragraph [ref=e1984]:
+                  - strong [ref=e1985]: "--overlap-policy"
+                  - emphasis [ref=e1986]: string-enum
+                - paragraph [ref=e1987]: "Policy for handling overlapping Workflow Executions. Accepted values: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll. (default \"Skip\")"
+                - paragraph [ref=e1988]:
+                  - strong [ref=e1989]: "--pause-on-failure"
+                  - emphasis [ref=e1990]: bool
+                - paragraph [ref=e1991]: Pause schedule after Workflow failures.
+                - paragraph [ref=e1992]:
+                  - strong [ref=e1993]: "--paused"
+                  - emphasis [ref=e1994]: bool
+                - paragraph [ref=e1995]: Pause the Schedule immediately on creation.
+                - paragraph [ref=e1996]:
+                  - strong [ref=e1997]: "--priority-key"
+                  - emphasis [ref=e1998]: int
+                - paragraph [ref=e1999]: Priority key (1-5, lower numbers = higher priority). Tasks in a queue should be processed in close-to-priority-order. Default is 3 when not specified.
+                - paragraph [ref=e2000]:
+                  - strong [ref=e2001]: "--remaining-actions"
+                  - emphasis [ref=e2002]: int
+                - paragraph [ref=e2003]: Total allowed actions. Default is zero (unlimited).
+                - paragraph [ref=e2004]:
+                  - strong [ref=e2005]: "--run-timeout"
+                  - emphasis [ref=e2006]: duration
+                - paragraph [ref=e2007]:
+                  - text: Fail a Workflow Run if it lasts longer than
+                  - code [ref=e2008]: DURATION
+                  - text: .
+                - paragraph [ref=e2009]:
+                  - strong [ref=e2010]: "--schedule-id"
+                  - text: ","
+                  - strong [ref=e2011]: "-s"
+                  - emphasis [ref=e2012]: string
+                - paragraph [ref=e2013]: Schedule ID. Required.
+                - paragraph [ref=e2014]:
+                  - strong [ref=e2015]: "--schedule-memo"
+                  - emphasis [ref=e2016]: string[]
+                - paragraph [ref=e2017]:
+                  - text: Set schedule memo using
+                  - code [ref=e2018]: KEY="VALUE
+                  - text: "pairs. Keys must be identifiers, and values must be JSON values. For example:"
+                  - code [ref=e2019]: "'YourKey={\"your\": \"value\"}'"
+                  - text: . Can be passed multiple times.
+                - paragraph [ref=e2020]:
+                  - strong [ref=e2021]: "--schedule-search-attribute"
+                  - emphasis [ref=e2022]: string[]
+                - paragraph [ref=e2023]:
+                  - text: Set schedule Search Attributes using
+                  - code [ref=e2024]: KEY="VALUE
+                  - text: "pairs. Keys must be identifiers, and values must be JSON values. For example:"
+                  - code [ref=e2025]: "'YourKey={\"your\": \"value\"}'"
+                  - text: . Can be passed multiple times.
+                - paragraph [ref=e2026]:
+                  - strong [ref=e2027]: "--search-attribute"
+                  - emphasis [ref=e2028]: string[]
+                - paragraph [ref=e2029]:
+                  - text: Search Attribute in
+                  - code [ref=e2030]: KEY=VALUE
+                  - text: "format. Keys must be identifiers, and values must be JSON values. For example:"
+                  - code [ref=e2031]: "'YourKey={\"your\": \"value\"}'"
+                  - text: . Can be passed multiple times.
+                - paragraph [ref=e2032]:
+                  - strong [ref=e2033]: "--start-time"
+                  - emphasis [ref=e2034]: timestamp
+                - paragraph [ref=e2035]: Schedule start time.
+                - paragraph [ref=e2036]:
+                  - strong [ref=e2037]: "--static-details"
+                  - emphasis [ref=e2038]: string
+                - paragraph [ref=e2039]: Static Workflow details for human consumption in UIs. Uses Temporal Markdown formatting, may be multiple lines.
+                - generic [ref=e2040]:
+                  - generic [ref=e2041]:
+                    - img [ref=e2043]
+                    - text: note
+                  - paragraph [ref=e2046]: Option is experimental.
+                - paragraph [ref=e2047]:
+                  - strong [ref=e2048]: "--static-summary"
+                  - emphasis [ref=e2049]: string
+                - paragraph [ref=e2050]: Static Workflow summary for human consumption in UIs. Uses Temporal Markdown formatting, should be a single line.
+                - generic [ref=e2051]:
+                  - generic [ref=e2052]:
+                    - img [ref=e2054]
+                    - text: note
+                  - paragraph [ref=e2057]: Option is experimental.
+                - paragraph [ref=e2058]:
+                  - strong [ref=e2059]: "--task-queue"
+                  - text: ","
+                  - strong [ref=e2060]: "-t"
+                  - emphasis [ref=e2061]: string
+                - paragraph [ref=e2062]: Workflow Task queue. Required.
+                - paragraph [ref=e2063]:
+                  - strong [ref=e2064]: "--task-timeout"
+                  - emphasis [ref=e2065]: duration
+                - paragraph [ref=e2066]:
+                  - text: Fail a Workflow Task if it lasts longer than
+                  - code [ref=e2067]: DURATION
+                  - text: . This is the Start-to-close timeout for a Workflow Task. (default "10s")
+                - paragraph [ref=e2068]:
+                  - strong [ref=e2069]: "--time-zone"
+                  - emphasis [ref=e2070]: string
+                - paragraph [ref=e2071]:
+                  - text: Interpret calendar specs with the
+                  - code [ref=e2072]: TZ
+                  - text: "time zone. For a list of time zones, see:"
+                  - link "https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" [ref=e2073] [cursor=pointer]:
+                    - /url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+                  - text: .
+                - paragraph [ref=e2074]:
+                  - strong [ref=e2075]: "--type"
+                  - emphasis [ref=e2076]: string
+                - paragraph [ref=e2077]: Workflow Type name. Required.
+                - paragraph [ref=e2078]:
+                  - strong [ref=e2079]: "--workflow-id"
+                  - text: ","
+                  - strong [ref=e2080]: "-w"
+                  - emphasis [ref=e2081]: string
+                - paragraph [ref=e2082]: Workflow ID. If not supplied, the Service generates a unique ID.
+                - paragraph [ref=e2083]:
+                  - strong [ref=e2084]: "Global Flags:"
+                - paragraph [ref=e2085]:
+                  - strong [ref=e2086]: "--address"
+                  - emphasis [ref=e2087]: string
+                - paragraph [ref=e2088]: Temporal Service gRPC endpoint. (default "localhost:7233")
+                - paragraph [ref=e2089]:
+                  - strong [ref=e2090]: "--api-key"
+                  - emphasis [ref=e2091]: string
+                - paragraph [ref=e2092]: API key for request.
+                - paragraph [ref=e2093]:
+                  - strong [ref=e2094]: "--client-authority"
+                  - emphasis [ref=e2095]: string
+                - paragraph [ref=e2096]: Temporal gRPC client :authority pseudoheader.
+                - paragraph [ref=e2097]:
+                  - strong [ref=e2098]: "--client-connect-timeout"
+                  - emphasis [ref=e2099]: duration
+                - paragraph [ref=e2100]: The client connection timeout. 0s means no timeout.
+                - paragraph [ref=e2101]:
+                  - strong [ref=e2102]: "--codec-auth"
+                  - emphasis [ref=e2103]: string
+                - paragraph [ref=e2104]: Authorization header for Codec Server requests.
+                - paragraph [ref=e2105]:
+                  - strong [ref=e2106]: "--codec-endpoint"
+                  - emphasis [ref=e2107]: string
+                - paragraph [ref=e2108]: Remote Codec Server endpoint.
+                - paragraph [ref=e2109]:
+                  - strong [ref=e2110]: "--codec-header"
+                  - emphasis [ref=e2111]: string[]
+                - paragraph [ref=e2112]:
+                  - text: HTTP headers for requests to codec server. Format as a
+                  - code [ref=e2113]: KEY=VALUE
+                  - text: pair. May be passed multiple times to set multiple headers.
+                - paragraph [ref=e2114]:
+                  - strong [ref=e2115]: "--color"
+                  - emphasis [ref=e2116]: string-enum
+                - paragraph [ref=e2117]: "Output coloring. Accepted values: always, never, auto. (default \"auto\")"
+                - paragraph [ref=e2118]:
+                  - strong [ref=e2119]: "--command-timeout"
+                  - emphasis [ref=e2120]: duration
+                - paragraph [ref=e2121]: The command execution timeout. 0s means no timeout.
+                - paragraph [ref=e2122]:
+                  - strong [ref=e2123]: "--config-file"
+                  - emphasis [ref=e2124]: string
+                - paragraph [ref=e2125]:
+                  - text: File path to read TOML config from, defaults to
+                  - code [ref=e2126]: $CONFIG_PATH/temporal/temporal.toml
+                  - text: where
+                  - code [ref=e2127]: $CONFIG_PATH
+                  - text: is defined as
+                  - code [ref=e2128]: $HOME/.config
+                  - text: on Unix, "$HOME/Library/Application Support" on macOS, and %AppData% on Windows.
+                - generic [ref=e2129]:
+                  - generic [ref=e2130]:
+                    - img [ref=e2132]
+                    - text: note
+                  - paragraph [ref=e2135]: Option is experimental.
+                - paragraph [ref=e2136]:
+                  - strong [ref=e2137]: "--disable-config-env"
+                  - emphasis [ref=e2138]: bool
+                - paragraph [ref=e2139]: If set, disables loading environment config from environment variables.
+                - generic [ref=e2140]:
+                  - generic [ref=e2141]:
+                    - img [ref=e2143]
+                    - text: note
+                  - paragraph [ref=e2146]: Option is experimental.
+                - paragraph [ref=e2147]:
+                  - strong [ref=e2148]: "--disable-config-file"
+                  - emphasis [ref=e2149]: bool
+                - paragraph [ref=e2150]: If set, disables loading environment config from config file.
+                - generic [ref=e2151]:
+                  - generic [ref=e2152]:
+                    - img [ref=e2154]
+                    - text: note
+                  - paragraph [ref=e2157]: Option is experimental.
+                - paragraph [ref=e2158]:
+                  - strong [ref=e2159]: "--env"
+                  - emphasis [ref=e2160]: string
+                - paragraph [ref=e2161]:
+                  - text: Active environment name (
+                  - code [ref=e2162]: ENV
+                  - text: ). (default "default")
+                - paragraph [ref=e2163]:
+                  - strong [ref=e2164]: "--env-file"
+                  - emphasis [ref=e2165]: string
+                - paragraph [ref=e2166]:
+                  - text: Path to environment settings file. Defaults to
+                  - code [ref=e2167]: $HOME/.config/temporalio/temporal.yaml
+                  - text: .
+                - paragraph [ref=e2168]:
+                  - strong [ref=e2169]: "--grpc-meta"
+                  - emphasis [ref=e2170]: string[]
+                - paragraph [ref=e2171]:
+                  - text: HTTP headers for requests. Format as a
+                  - code [ref=e2172]: KEY=VALUE
+                  - text: pair. May be passed multiple times to set multiple headers. Can also be made available via environment variable as
+                  - code [ref=e2173]: TEMPORAL_GRPC_META_[name]
+                  - text: .
+                - paragraph [ref=e2174]:
+                  - strong [ref=e2175]: "--identity"
+                  - emphasis [ref=e2176]: string
+                - paragraph [ref=e2177]:
+                  - text: "The identity of the user or client submitting this request. Defaults to \"temporal-cli:"
+                  - generic [ref=e2178]:
+                    - math [ref=e2180]:
+                      - generic [ref=e2182]:
+                        - generic [ref=e2183]: U
+                        - generic [ref=e2184]: S
+                        - generic [ref=e2185]: E
+                        - generic [ref=e2186]: R
+                        - generic [ref=e2187]: "@"
+                    - generic [ref=e2189]: USER@
+                  - text: HOST".
+                - paragraph [ref=e2190]:
+                  - strong [ref=e2191]: "--log-format"
+                  - emphasis [ref=e2192]: string-enum
+                - paragraph [ref=e2193]: "Log format. Accepted values: text, json. (default \"text\")"
+                - paragraph [ref=e2194]:
+                  - strong [ref=e2195]: "--log-level"
+                  - emphasis [ref=e2196]: string-enum
+                - paragraph [ref=e2197]:
+                  - text: Log level. Default is "info" for most commands and "warn" for
+                  - code [ref=e2198]: server start-dev
+                  - text: ". Accepted values: debug, info, warn, error, never. (default \"info\")"
+                - paragraph [ref=e2199]:
+                  - strong [ref=e2200]: "--namespace"
+                  - text: ","
+                  - strong [ref=e2201]: "-n"
+                  - emphasis [ref=e2202]: string
+                - paragraph [ref=e2203]: Temporal Service Namespace. (default "default")
+                - paragraph [ref=e2204]:
+                  - strong [ref=e2205]: "--no-json-shorthand-payloads"
+                  - emphasis [ref=e2206]: bool
+                - paragraph [ref=e2207]: Raw payload output, even if the JSON option was used.
+                - paragraph [ref=e2208]:
+                  - strong [ref=e2209]: "--output"
+                  - text: ","
+                  - strong [ref=e2210]: "-o"
+                  - emphasis [ref=e2211]: string-enum
+                - paragraph [ref=e2212]: "Non-logging data output format. Accepted values: text, json, jsonl, none. (default \"text\")"
+                - paragraph [ref=e2213]:
+                  - strong [ref=e2214]: "--profile"
+                  - emphasis [ref=e2215]: string
+                - paragraph [ref=e2216]: Profile to use for config file.
+                - generic [ref=e2217]:
+                  - generic [ref=e2218]:
+                    - img [ref=e2220]
+                    - text: note
+                  - paragraph [ref=e2223]: Option is experimental.
+                - paragraph [ref=e2224]:
+                  - strong [ref=e2225]: "--time-format"
+                  - emphasis [ref=e2226]: string-enum
+                - paragraph [ref=e2227]: "Time format. Accepted values: relative, iso, raw. (default \"relative\")"
+                - paragraph [ref=e2228]:
+                  - strong [ref=e2229]: "--tls"
+                  - emphasis [ref=e2230]: bool
+                - paragraph [ref=e2231]: Enable base TLS encryption. Does not have additional options like mTLS or client certs. This is defaulted to true if api-key or any other TLS options are present. Use --tls=false to explicitly disable.
+                - paragraph [ref=e2232]:
+                  - strong [ref=e2233]: "--tls-ca-data"
+                  - emphasis [ref=e2234]: string
+                - paragraph [ref=e2235]: Data for server CA certificate. Can't be used with --tls-ca-path.
+                - paragraph [ref=e2236]:
+                  - strong [ref=e2237]: "--tls-ca-path"
+                  - emphasis [ref=e2238]: string
+                - paragraph [ref=e2239]: Path to server CA certificate. Can't be used with --tls-ca-data.
+                - paragraph [ref=e2240]:
+                  - strong [ref=e2241]: "--tls-cert-data"
+                  - emphasis [ref=e2242]: string
+                - paragraph [ref=e2243]: Data for x509 certificate. Can't be used with --tls-cert-path.
+                - paragraph [ref=e2244]:
+                  - strong [ref=e2245]: "--tls-cert-path"
+                  - emphasis [ref=e2246]: string
+                - paragraph [ref=e2247]: Path to x509 certificate. Can't be used with --tls-cert-data.
+                - paragraph [ref=e2248]:
+                  - strong [ref=e2249]: "--tls-disable-host-verification"
+                  - emphasis [ref=e2250]: bool
+                - paragraph [ref=e2251]: Disable TLS host-name verification.
+                - paragraph [ref=e2252]:
+                  - strong [ref=e2253]: "--tls-key-data"
+                  - emphasis [ref=e2254]: string
+                - paragraph [ref=e2255]: Private certificate key data. Can't be used with --tls-key-path.
+                - paragraph [ref=e2256]:
+                  - strong [ref=e2257]: "--tls-key-path"
+                  - emphasis [ref=e2258]: string
+                - paragraph [ref=e2259]: Path to x509 private key. Can't be used with --tls-key-data.
+                - paragraph [ref=e2260]:
+                  - strong [ref=e2261]: "--tls-server-name"
+                  - emphasis [ref=e2262]: string
+                - paragraph [ref=e2263]: Override target TLS server name.
+              - generic [ref=e2264]:
+                - generic [ref=e2266]:
+                  - text: "Tags:"
+                  - list [ref=e2267]:
+                    - listitem [ref=e2268]:
+                      - link "Temporal CLI" [ref=e2269] [cursor=pointer]:
+                        - /url: /tags/temporal-cli
+                    - listitem [ref=e2270]:
+                      - link "Schedules" [ref=e2271] [cursor=pointer]:
+                        - /url: /tags/schedules
+                - paragraph [ref=e2275]:
+                  - text: Help us make Temporal better. Contribute to our
+                  - link "documentation" [ref=e2276] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation
+                  - text: .
+            - navigation "Docs pages" [ref=e2278]:
+              - link "Previous « operator" [ref=e2279] [cursor=pointer]:
+                - /url: /cli/operator
+                - generic [ref=e2280]: Previous
+                - generic [ref=e2281]: « operator
+              - link "Next server »" [ref=e2282] [cursor=pointer]:
+                - /url: /cli/server
+                - generic [ref=e2283]: Next
+                - generic [ref=e2284]: server »
+          - list [ref=e2287]:
+            - listitem [ref=e2288]:
+              - link "backfill" [ref=e2289] [cursor=pointer]:
+                - /url: "#backfill"
+            - listitem [ref=e2290]:
+              - link "create" [ref=e2291] [cursor=pointer]:
+                - /url: "#create"
+            - listitem [ref=e2292]:
+              - link "delete" [ref=e2293] [cursor=pointer]:
+                - /url: "#delete"
+            - listitem [ref=e2294]:
+              - link "describe" [ref=e2295] [cursor=pointer]:
+                - /url: "#describe"
+            - listitem [ref=e2296]:
+              - link "list" [ref=e2297] [cursor=pointer]:
+                - /url: "#list"
+            - listitem [ref=e2298]:
+              - link "toggle" [ref=e2299] [cursor=pointer]:
+                - /url: "#toggle"
+            - listitem [ref=e2300]:
+              - link "trigger" [ref=e2301] [cursor=pointer]:
+                - /url: "#trigger"
+            - listitem [ref=e2302]:
+              - link "update" [ref=e2303] [cursor=pointer]:
+                - /url: "#update"
+    - contentinfo [ref=e2304]:
+      - generic [ref=e2305]:
+        - generic [ref=e2306]:
+          - list [ref=e2308]:
+            - listitem [ref=e2309]:
+              - link "GitHub" [ref=e2310] [cursor=pointer]:
+                - /url: https://github.com/temporalio
+                - text: GitHub
+                - img [ref=e2311]
+            - listitem [ref=e2313]:
+              - link "Twitter" [ref=e2314] [cursor=pointer]:
+                - /url: https://twitter.com/temporalio
+                - text: Twitter
+                - img [ref=e2315]
+            - listitem [ref=e2317]:
+              - link "YouTube" [ref=e2318] [cursor=pointer]:
+                - /url: https://www.youtube.com/c/Temporalio
+                - text: YouTube
+                - img [ref=e2319]
+            - listitem [ref=e2321]:
+              - link "About the docs" [ref=e2322] [cursor=pointer]:
+                - /url: https://github.com/temporalio/documentation/blob/master/README.md
+                - text: About the docs
+                - img [ref=e2323]
+          - list [ref=e2326]:
+            - listitem [ref=e2327]:
+              - link "Temporal Cloud" [ref=e2328] [cursor=pointer]:
+                - /url: https://temporal.io/cloud
+                - text: Temporal Cloud
+                - img [ref=e2329]
+            - listitem [ref=e2331]:
+              - link "Meetups" [ref=e2332] [cursor=pointer]:
+                - /url: https://temporal.io/community#events
+                - text: Meetups
+                - img [ref=e2333]
+            - listitem [ref=e2335]:
+              - link "Workshops" [ref=e2336] [cursor=pointer]:
+                - /url: https://temporal.io/community#workshops
+                - text: Workshops
+                - img [ref=e2337]
+            - listitem [ref=e2339]:
+              - link "Support forum" [ref=e2340] [cursor=pointer]:
+                - /url: https://community.temporal.io/
+                - text: Support forum
+                - img [ref=e2341]
+            - listitem [ref=e2343]:
+              - link "Ask an expert" [ref=e2344] [cursor=pointer]:
+                - /url: https://pages.temporal.io/ask-an-expert
+                - text: Ask an expert
+                - img [ref=e2345]
+          - list [ref=e2348]:
+            - listitem [ref=e2349]:
+              - link "Learn Temporal" [ref=e2350] [cursor=pointer]:
+                - /url: https://learn.temporal.io
+                - text: Learn Temporal
+                - img [ref=e2351]
+            - listitem [ref=e2353]:
+              - link "Blog" [ref=e2354] [cursor=pointer]:
+                - /url: https://temporal.io/blog
+                - text: Blog
+                - img [ref=e2355]
+            - listitem [ref=e2357]:
+              - link "Use cases" [ref=e2358] [cursor=pointer]:
+                - /url: https://temporal.io/use-cases
+                - text: Use cases
+                - img [ref=e2359]
+            - listitem [ref=e2361]:
+              - link "Newsletter signup" [ref=e2362] [cursor=pointer]:
+                - /url: https://pages.temporal.io/newsletter-subscribe
+                - text: Newsletter signup
+                - img [ref=e2363]
+          - list [ref=e2366]:
+            - listitem [ref=e2367]:
+              - link "Security" [ref=e2368] [cursor=pointer]:
+                - /url: /security
+            - listitem [ref=e2369]:
+              - link "Privacy policy" [ref=e2370] [cursor=pointer]:
+                - /url: https://temporal.io/global-privacy-policy
+            - listitem [ref=e2371]:
+              - link "Terms of service" [ref=e2372] [cursor=pointer]:
+                - /url: https://docs.temporal.io/pdf/temporal-tos-2021-07-24.pdf
+                - text: Terms of service
+                - img [ref=e2373]
+            - listitem [ref=e2375]:
+              - link "We're hiring" [ref=e2376] [cursor=pointer]:
+                - /url: https://temporal.io/careers
+                - text: We're hiring
+                - img [ref=e2377]
+        - generic [ref=e2379]:
+          - link "Temporal logo" [ref=e2381] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e2382]
+          - generic [ref=e2383]: Copyright © 2025 Temporal Technologies Inc.
+  - generic [ref=e2384] [cursor=pointer]:
+    - img [ref=e2386]
+    - generic: Feedback
+```

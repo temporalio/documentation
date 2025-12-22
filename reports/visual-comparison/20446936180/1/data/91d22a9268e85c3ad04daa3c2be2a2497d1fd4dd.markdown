@@ -1,0 +1,666 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e5]:
+      - 'link "Save on Replay ‘26 with code HOLIDAY60 | Move fast: Workshops almost sold out! | May 5–7, 2026 | Get tickets now ›" [ref=e7] [cursor=pointer]':
+        - /url: https://replay.temporal.io
+        - paragraph [ref=e8]: "Save on Replay ‘26 with code HOLIDAY60 | Move fast: Workshops almost sold out! | May 5–7, 2026 | Get tickets now ›"
+      - button [ref=e9] [cursor=pointer]:
+        - img [ref=e10]
+    - navigation [ref=e12]:
+      - link "Home" [ref=e13] [cursor=pointer]:
+        - /url: /
+        - img "Temporal Logo" [ref=e14]
+      - list [ref=e15]:
+        - listitem [ref=e16]:
+          - text: Platform
+          - list [ref=e17]:
+            - listitem:
+              - link "Overview" [ref=e18] [cursor=pointer]:
+                - /url: /product
+            - listitem:
+              - link "How Temporal Works" [ref=e19] [cursor=pointer]:
+                - /url: /how-it-works
+            - listitem:
+              - link "Temporal Cloud" [ref=e20] [cursor=pointer]:
+                - /url: /cloud
+            - listitem:
+              - link "Security" [ref=e21] [cursor=pointer]:
+                - /url: /security
+        - listitem [ref=e22]:
+          - link "Docs" [ref=e23] [cursor=pointer]:
+            - /url: https://docs.temporal.io/
+        - listitem [ref=e24]:
+          - link "Pricing" [ref=e25] [cursor=pointer]:
+            - /url: /pricing
+        - listitem [ref=e26]:
+          - text: Use Cases
+          - list [ref=e27]:
+            - listitem:
+              - link "Customer Stories" [ref=e28] [cursor=pointer]:
+                - /url: /in-use
+            - listitem:
+              - link "AI" [ref=e29] [cursor=pointer]:
+                - /url: /solutions/ai
+            - listitem:
+              - link "Financial Services" [ref=e30] [cursor=pointer]:
+                - /url: /solutions/financial-services
+            - listitem:
+              - link "Platform Engineering" [ref=e31] [cursor=pointer]:
+                - /url: /solutions/platform-engineering
+        - listitem [ref=e32]:
+          - text: Resources
+          - list [ref=e33]:
+            - listitem:
+              - link "Resource Library" [ref=e34] [cursor=pointer]:
+                - /url: /resources
+            - listitem:
+              - link "Learn Temporal" [ref=e35] [cursor=pointer]:
+                - /url: https://learn.temporal.io
+            - listitem:
+              - link "Community" [ref=e36] [cursor=pointer]:
+                - /url: /community
+            - listitem:
+              - link "Code Exchange" [ref=e37] [cursor=pointer]:
+                - /url: /code-exchange
+            - listitem:
+              - link "Blog" [ref=e38] [cursor=pointer]:
+                - /url: /blog
+            - listitem:
+              - link "For Startups" [ref=e39] [cursor=pointer]:
+                - /url: /startup
+            - listitem:
+              - link "Partners" [ref=e40] [cursor=pointer]:
+                - /url: /partners
+            - listitem:
+              - link "Change Log" [ref=e41] [cursor=pointer]:
+                - /url: /change-log
+        - listitem [ref=e42]:
+          - link "Replay 2026" [ref=e43] [cursor=pointer]:
+            - /url: https://replay.temporal.io
+        - link [ref=e44] [cursor=pointer]:
+          - /url: https://github.com/temporalio
+          - img [ref=e45]
+        - generic [ref=e48]:
+          - link "Try Free" [ref=e49] [cursor=pointer]:
+            - /url: /get-cloud
+          - link "Log In" [ref=e50] [cursor=pointer]:
+            - /url: https://cloud.temporal.io/
+    - heading "Change Log" [level=1] [ref=e53]
+    - generic [ref=e55]:
+      - link "Cloud" [ref=e56] [cursor=pointer]:
+        - /url: /change-log/product-area/cloud
+      - link "Server" [ref=e57] [cursor=pointer]:
+        - /url: /change-log/product-area/server
+      - link "UI" [ref=e58] [cursor=pointer]:
+        - /url: /change-log/product-area/ui
+      - link "Temporal CLI" [ref=e59] [cursor=pointer]:
+        - /url: /change-log/product-area/temporal-cli
+      - link "Go SDK" [ref=e60] [cursor=pointer]:
+        - /url: /change-log/product-area/go-sdk
+      - link "Java SDK" [ref=e61] [cursor=pointer]:
+        - /url: /change-log/product-area/java-sdk
+      - link "TypeScript SDK" [ref=e62] [cursor=pointer]:
+        - /url: /change-log/product-area/typescript-sdk
+      - link "Python SDK" [ref=e63] [cursor=pointer]:
+        - /url: /change-log/product-area/python-sdk
+      - link ".NET SDK" [ref=e64] [cursor=pointer]:
+        - /url: /change-log/product-area/net-sdk
+      - link "PHP SDK" [ref=e65] [cursor=pointer]:
+        - /url: /change-log/product-area/php-sdk
+      - link "Ruby SDK" [ref=e66] [cursor=pointer]:
+        - /url: /change-log/product-area/ruby-sdk
+    - generic [ref=e67]:
+      - generic [ref=e68]:
+        - link "October 29, 2025" [ref=e69] [cursor=pointer]:
+          - /url: /change-log/scim-ga
+        - generic "Change Log Card scim-ga" [ref=e70]:
+          - generic [ref=e71]:
+            - link "Feature" [ref=e72] [cursor=pointer]:
+              - /url: /change-log/type/feature
+              - generic [ref=e73]: Feature
+            - link "Cloud" [ref=e74] [cursor=pointer]:
+              - /url: /change-log/product-area/cloud
+              - generic [ref=e75]: Cloud
+          - generic [ref=e76]:
+            - paragraph [ref=e77]: SCIM user management for Temporal Cloud is generally available
+            - link "SCIM Documentation" [ref=e79] [cursor=pointer]:
+              - /url: https://docs.temporal.io/cloud/scim
+              - img [ref=e80]
+              - text: SCIM Documentation
+      - generic [ref=e82]:
+        - link "October 22, 2025" [ref=e83] [cursor=pointer]:
+          - /url: /change-log/cloud-user-groups
+        - generic "Change Log Card cloud-user-groups" [ref=e84]:
+          - generic [ref=e85]:
+            - link "Feature" [ref=e86] [cursor=pointer]:
+              - /url: /change-log/type/feature
+              - generic [ref=e87]: Feature
+            - link "Cloud" [ref=e88] [cursor=pointer]:
+              - /url: /change-log/product-area/cloud
+              - generic [ref=e89]: Cloud
+          - generic [ref=e90]:
+            - paragraph [ref=e91]: Cloud User Groups are generally available!
+            - link "User Groups documentation" [ref=e93] [cursor=pointer]:
+              - /url: https://docs.temporal.io/cloud/user-groups
+              - img [ref=e94]
+              - text: User Groups documentation
+      - generic [ref=e96]:
+        - link "October 21, 2025" [ref=e97] [cursor=pointer]:
+          - /url: /change-log/audit-log-ui-api
+        - generic "Change Log Card audit-log-ui-api" [ref=e98]:
+          - generic [ref=e99]:
+            - link "Feature" [ref=e100] [cursor=pointer]:
+              - /url: /change-log/type/feature
+              - generic [ref=e101]: Feature
+            - link "Cloud" [ref=e102] [cursor=pointer]:
+              - /url: /change-log/product-area/cloud
+              - generic [ref=e103]: Cloud
+          - generic [ref=e104]:
+            - paragraph [ref=e105]: Audit Log UI and API are in public preview for Temporal Cloud
+            - link "Audit Logging Documentation" [ref=e107] [cursor=pointer]:
+              - /url: https://docs.temporal.io/cloud/audit-logging#view-an-audit-log
+              - img [ref=e108]
+              - text: Audit Logging Documentation
+      - generic [ref=e110]:
+        - link "October 8, 2025" [ref=e111] [cursor=pointer]:
+          - /url: /change-log/saved-views
+        - generic "Change Log Card saved-views" [ref=e112]:
+          - generic [ref=e113]:
+            - link "Feature" [ref=e114] [cursor=pointer]:
+              - /url: /change-log/type/feature
+              - generic [ref=e115]: Feature
+            - link "Cloud" [ref=e116] [cursor=pointer]:
+              - /url: /change-log/product-area/cloud
+              - generic [ref=e117]: Cloud
+            - link "UI" [ref=e118] [cursor=pointer]:
+              - /url: /change-log/product-area/ui
+              - generic [ref=e119]: UI
+          - paragraph [ref=e121]: Saved Views allows you to save your custom queries for quick retrieval in the future, eliminating repetitive filter building.
+      - generic [ref=e122]:
+        - link "October 5, 2025" [ref=e123] [cursor=pointer]:
+          - /url: /change-log/openmetrics
+        - generic "Change Log Card openmetrics" [ref=e124]:
+          - generic [ref=e125]:
+            - link "Feature" [ref=e126] [cursor=pointer]:
+              - /url: /change-log/type/feature
+              - generic [ref=e127]: Feature
+            - link "Cloud" [ref=e128] [cursor=pointer]:
+              - /url: /change-log/product-area/cloud
+              - generic [ref=e129]: Cloud
+          - generic [ref=e130]:
+            - paragraph [ref=e131]: The OpenMetrics endpoint for Temporal Cloud is in public preview
+            - link "OpenMetrics Documentation" [ref=e133] [cursor=pointer]:
+              - /url: https://docs.temporal.io/cloud/metrics/openmetrics/
+              - img [ref=e134]
+              - text: OpenMetrics Documentation
+      - generic [ref=e136]:
+        - link "October 1, 2025" [ref=e137] [cursor=pointer]:
+          - /url: /change-log/ruby-sdk-generally-available
+        - generic "Change Log Card ruby-sdk-generally-available" [ref=e138]:
+          - generic [ref=e139]:
+            - link "Announcement" [ref=e140] [cursor=pointer]:
+              - /url: /change-log/type/announcement
+              - generic [ref=e141]: Announcement
+            - link "Ruby SDK" [ref=e142] [cursor=pointer]:
+              - /url: /change-log/product-area/ruby-sdk
+              - generic [ref=e143]: Ruby SDK
+          - generic [ref=e144]:
+            - paragraph [ref=e145]: We're excited to announce that the fully-featured Temporal Ruby SDK is generally available.
+            - link "Ruby SDK Docs" [ref=e147] [cursor=pointer]:
+              - /url: https://docs.temporal.io/develop/ruby
+              - img [ref=e148]
+              - text: Ruby SDK Docs
+            - link "Ruby SDK Quickstart - Setup Guide" [ref=e151] [cursor=pointer]:
+              - /url: https://docs.temporal.io/develop/ruby/set-up-local-ruby
+              - img [ref=e152]
+              - text: Ruby SDK Quickstart - Setup Guide
+            - link "Ruby SDK Courses" [ref=e155] [cursor=pointer]:
+              - /url: https://learn.temporal.io/getting_started/ruby/
+              - img [ref=e156]
+              - text: Ruby SDK Courses
+            - link "Ruby SDK API Documentation" [ref=e159] [cursor=pointer]:
+              - /url: https://ruby.temporal.io/
+              - img [ref=e160]
+              - text: Ruby SDK API Documentation
+            - link "Ruby SDK GitHub" [ref=e163] [cursor=pointer]:
+              - /url: https://github.com/temporalio/sdk-ruby
+              - img [ref=e164]
+              - text: Ruby SDK GitHub
+            - link "Temporal 101 with Ruby" [ref=e167] [cursor=pointer]:
+              - /url: https://temporal.talentlms.com/catalog/info/id:274
+              - img [ref=e168]
+              - text: Temporal 101 with Ruby
+      - generic [ref=e170]:
+        - link "September 26, 2025" [ref=e171] [cursor=pointer]:
+          - /url: /change-log/namespace-tags
+        - generic "Change Log Card namespace-tags" [ref=e172]:
+          - generic [ref=e173]:
+            - link "Feature" [ref=e174] [cursor=pointer]:
+              - /url: /change-log/type/feature
+              - generic [ref=e175]: Feature
+            - link "Cloud" [ref=e176] [cursor=pointer]:
+              - /url: /change-log/product-area/cloud
+              - generic [ref=e177]: Cloud
+            - link "UI" [ref=e178] [cursor=pointer]:
+              - /url: /change-log/product-area/ui
+              - generic [ref=e179]: UI
+          - generic [ref=e180]:
+            - paragraph [ref=e181]: Namespace Tags — a Temporal Cloud feature which allows you to organize, track, and manage Namespaces based on customizable tags — is now generally available!
+            - link "Namespace Tags Documentation" [ref=e183] [cursor=pointer]:
+              - /url: https://docs.temporal.io/cloud/namespaces#tag-a-namespace
+              - img [ref=e184]
+              - text: Namespace Tags Documentation
+      - generic [ref=e186]:
+        - link "August 8, 2025" [ref=e187] [cursor=pointer]:
+          - /url: /change-log/scim
+        - generic "Change Log Card scim" [ref=e188]:
+          - generic [ref=e189]:
+            - link "Announcement" [ref=e190] [cursor=pointer]:
+              - /url: /change-log/type/announcement
+              - generic [ref=e191]: Announcement
+            - link "Cloud" [ref=e192] [cursor=pointer]:
+              - /url: /change-log/product-area/cloud
+              - generic [ref=e193]: Cloud
+            - link "UI" [ref=e194] [cursor=pointer]:
+              - /url: /change-log/product-area/ui
+              - generic [ref=e195]: UI
+          - generic [ref=e196]:
+            - paragraph [ref=e197]: SCIM user management is now available in Public Preview
+            - link "SCIM Documentation" [ref=e199] [cursor=pointer]:
+              - /url: https://docs.temporal.io/cloud/scim
+              - img [ref=e200]
+              - text: SCIM Documentation
+      - generic [ref=e202]:
+        - link "July 30, 2025" [ref=e203] [cursor=pointer]:
+          - /url: /change-log/open-ai-agents-sdk-integration-pp
+        - generic "Change Log Card open-ai-agents-sdk-integration-pp" [ref=e204]:
+          - generic [ref=e205]:
+            - link "Announcement" [ref=e206] [cursor=pointer]:
+              - /url: /change-log/type/announcement
+              - generic [ref=e207]: Announcement
+            - link "Python SDK" [ref=e208] [cursor=pointer]:
+              - /url: /change-log/product-area/python-sdk
+              - generic [ref=e209]: Python SDK
+          - generic [ref=e210]:
+            - paragraph [ref=e211]: Announcing a new integration between the OpenAI Agents SDK and Temporal to let you build production-ready agents, fast. Now in Public Preview in the Python SDK.
+            - link "Announcing OpenAI Agents SDK Integration" [ref=e213] [cursor=pointer]:
+              - /url: https://temporal.io/blog/announcing-openai-agents-sdk-integration
+              - img [ref=e214]
+              - text: Announcing OpenAI Agents SDK Integration
+            - link "OpenAI Agents SDK Integration Documentation" [ref=e217] [cursor=pointer]:
+              - /url: https://github.com/temporalio/sdk-python/tree/main/temporalio/contrib/openai_agents
+              - img [ref=e218]
+              - text: OpenAI Agents SDK Integration Documentation
+      - generic [ref=e220]:
+        - link "July 15, 2025" [ref=e221] [cursor=pointer]:
+          - /url: /change-log/worker-versioning-public-preview
+        - generic "Change Log Card worker-versioning-public-preview" [ref=e222]:
+          - generic [ref=e223]:
+            - link "Feature" [ref=e224] [cursor=pointer]:
+              - /url: /change-log/type/feature
+              - generic [ref=e225]: Feature
+            - link "Cloud" [ref=e226] [cursor=pointer]:
+              - /url: /change-log/product-area/cloud
+              - generic [ref=e227]: Cloud
+            - link "Server" [ref=e228] [cursor=pointer]:
+              - /url: /change-log/product-area/server
+              - generic [ref=e229]: Server
+          - generic [ref=e230]:
+            - paragraph [ref=e231]: Worker Versioning is now in Public Preview! This allows you to confidently deploy new changes to the Workflows running on your Workers without breaking them. Temporal enables this by helping you manage different builds or versions.
+            - link "Worker Versioning Documentation" [ref=e233] [cursor=pointer]:
+              - /url: https://docs.temporal.io/production-deployment/worker-deployments/worker-versioning
+              - img [ref=e234]
+              - text: Worker Versioning Documentation
+      - generic [ref=e236]:
+        - link "July 14, 2025" [ref=e237] [cursor=pointer]:
+          - /url: /change-log/mcr-public-preview
+        - generic "Change Log Card mcr-public-preview" [ref=e238]:
+          - generic [ref=e239]:
+            - link "Announcement" [ref=e240] [cursor=pointer]:
+              - /url: /change-log/type/announcement
+              - generic [ref=e241]: Announcement
+            - link "Cloud" [ref=e242] [cursor=pointer]:
+              - /url: /change-log/product-area/cloud
+              - generic [ref=e243]: Cloud
+          - generic [ref=e244]:
+            - paragraph [ref=e245]: Multi-Cloud Replication is now in Public Preview!
+            - link "Read the docs" [ref=e247] [cursor=pointer]:
+              - /url: https://docs.temporal.io/cloud/high-availability/enable#high-availability-features
+              - img [ref=e248]
+              - text: Read the docs
+      - generic [ref=e250]:
+        - link "May 30, 2025" [ref=e251] [cursor=pointer]:
+          - /url: /change-log/audit-logging-gcp
+        - generic "Change Log Card audit-logging-gcp" [ref=e252]:
+          - generic [ref=e253]:
+            - link "Feature" [ref=e254] [cursor=pointer]:
+              - /url: /change-log/type/feature
+              - generic [ref=e255]: Feature
+            - link "Cloud" [ref=e256] [cursor=pointer]:
+              - /url: /change-log/product-area/cloud
+              - generic [ref=e257]: Cloud
+          - generic [ref=e258]:
+            - paragraph [ref=e259]: Audit Logging, now available for Google Cloud customers, is a feature of Temporal Cloud that provides forensic access information at the account level, the user level, Namespace level, and the Nexus Endpoint level.
+            - link "Audit Logging" [ref=e261] [cursor=pointer]:
+              - /url: https://docs.temporal.io/cloud/audit-logging
+              - img [ref=e262]
+              - text: Audit Logging
+            - link "Audit Logging - GCP Pub/Sub" [ref=e265] [cursor=pointer]:
+              - /url: https://docs.temporal.io/cloud/audit-logging-gcp
+              - img [ref=e266]
+              - text: Audit Logging - GCP Pub/Sub
+      - generic [ref=e268]:
+        - link "May 1, 2025" [ref=e269] [cursor=pointer]:
+          - /url: /change-log/ruby-sdk-public-preview
+        - generic "Change Log Card ruby-sdk-public-preview" [ref=e270]:
+          - generic [ref=e271]:
+            - link "Announcement" [ref=e272] [cursor=pointer]:
+              - /url: /change-log/type/announcement
+              - generic [ref=e273]: Announcement
+            - link "Ruby SDK" [ref=e274] [cursor=pointer]:
+              - /url: /change-log/product-area/ruby-sdk
+              - generic [ref=e275]: Ruby SDK
+          - generic [ref=e276]:
+            - paragraph [ref=e277]: The Temporal Ruby SDK is now in Public Preview!
+            - link "Ruby SDK" [ref=e279] [cursor=pointer]:
+              - /url: https://github.com/temporalio/sdk-ruby
+              - img [ref=e280]
+              - text: Ruby SDK
+      - generic [ref=e282]:
+        - link "April 14, 2025" [ref=e283] [cursor=pointer]:
+          - /url: /change-log/temporal-cloud-metrics-in-datadog
+        - generic "Change Log Card temporal-cloud-metrics-in-datadog" [ref=e284]:
+          - generic [ref=e285]:
+            - link "Cloud" [ref=e286] [cursor=pointer]:
+              - /url: /change-log/product-area/cloud
+              - generic [ref=e287]: Cloud
+            - link "Server" [ref=e288] [cursor=pointer]:
+              - /url: /change-log/product-area/server
+              - generic [ref=e289]: Server
+          - generic [ref=e290]:
+            - paragraph [ref=e291]: We’re excited to announce a new integration between Temporal Cloud and Datadog, designed to transform how developers monitor and optimize their Temporal Workflows.
+            - link "Temporal Cloud Metrics in Datadog Blog" [ref=e293] [cursor=pointer]:
+              - /url: https://temporal.io/blog/temporal-cloud-metrics-in-datadog
+              - img [ref=e294]
+              - text: Temporal Cloud Metrics in Datadog Blog
+            - link "Datadog Metrics Documentation" [ref=e297] [cursor=pointer]:
+              - /url: https://docs.temporal.io/cloud/metrics/datadog
+              - img [ref=e298]
+              - text: Datadog Metrics Documentation
+      - generic [ref=e300]:
+        - link "April 11, 2025" [ref=e301] [cursor=pointer]:
+          - /url: /change-log/keda-based-auto-scaling-for-temporal-workers
+        - generic "Change Log Card keda-based-auto-scaling-for-temporal-workers" [ref=e302]:
+          - generic [ref=e303]:
+            - link "Feature" [ref=e304] [cursor=pointer]:
+              - /url: /change-log/type/feature
+              - generic [ref=e305]: Feature
+            - link "Cloud" [ref=e306] [cursor=pointer]:
+              - /url: /change-log/product-area/cloud
+              - generic [ref=e307]: Cloud
+            - link "Server" [ref=e308] [cursor=pointer]:
+              - /url: /change-log/product-area/server
+              - generic [ref=e309]: Server
+          - generic [ref=e310]:
+            - paragraph [ref=e311]: We’re thrilled to announce the availability of the Temporal Worker scaler in the latest version of KEDA (v2.17.0), a Kubernetes-based Event-Driven Autoscaling component.
+            - link "Announcing KEDA-Based Auto-scaling for Temporal Workers Blog" [ref=e313] [cursor=pointer]:
+              - /url: https://temporal.io/blog/announcing-keda-based-auto-scaling-for-temporal-workers
+              - img [ref=e314]
+              - text: Announcing KEDA-Based Auto-scaling for Temporal Workers Blog
+            - link "Temporal Scaling Demo" [ref=e317] [cursor=pointer]:
+              - /url: https://github.com/temporal-community/temporal-scaling-demo
+              - img [ref=e318]
+              - text: Temporal Scaling Demo
+      - generic [ref=e320]:
+        - link "March 5, 2025" [ref=e321] [cursor=pointer]:
+          - /url: /change-log/temporal-nexus-now-available
+        - generic "Change Log Card temporal-nexus-now-available" [ref=e322]:
+          - generic [ref=e323]:
+            - link "Announcement" [ref=e324] [cursor=pointer]:
+              - /url: /change-log/type/announcement
+              - generic [ref=e325]: Announcement
+            - link "Cloud" [ref=e326] [cursor=pointer]:
+              - /url: /change-log/product-area/cloud
+              - generic [ref=e327]: Cloud
+            - link "Server" [ref=e328] [cursor=pointer]:
+              - /url: /change-log/product-area/server
+              - generic [ref=e329]: Server
+          - generic [ref=e330]:
+            - paragraph [ref=e331]: Temporal Nexus is now generally available!
+            - link "Temporal Nexus Blog" [ref=e333] [cursor=pointer]:
+              - /url: https://temporal.io/blog/temporal-nexus-now-available
+              - img [ref=e334]
+              - text: Temporal Nexus Blog
+            - link "Nexus Documentation" [ref=e337] [cursor=pointer]:
+              - /url: https://docs.temporal.io/evaluate/nexus
+              - img [ref=e338]
+              - text: Nexus Documentation
+            - link "Connect Applications with Nexus Webinar" [ref=e341] [cursor=pointer]:
+              - /url: https://pages.temporal.io/webinar-connect-applications-with-nexus.html
+              - img [ref=e342]
+              - text: Connect Applications with Nexus Webinar
+            - link "Replay 2024 Keynote" [ref=e345] [cursor=pointer]:
+              - /url: https://www.youtube.com/watch?v=qqc2vsv1mrU&t=2082s
+              - img [ref=e346]
+              - text: Replay 2024 Keynote
+      - generic [ref=e348]:
+        - link "March 3, 2025" [ref=e349] [cursor=pointer]:
+          - /url: /change-log/announcing-automated-migrations
+        - generic "Change Log Card announcing-automated-migrations" [ref=e350]:
+          - generic [ref=e351]:
+            - link "Announcement" [ref=e352] [cursor=pointer]:
+              - /url: /change-log/type/announcement
+              - generic [ref=e353]: Announcement
+            - link "Cloud" [ref=e354] [cursor=pointer]:
+              - /url: /change-log/product-area/cloud
+              - generic [ref=e355]: Cloud
+            - link "Server" [ref=e356] [cursor=pointer]:
+              - /url: /change-log/product-area/server
+              - generic [ref=e357]: Server
+          - generic [ref=e358]:
+            - paragraph [ref=e359]: Announcing our migration tooling for seamless transitions from self-hosted Temporal instances to Temporal Cloud, now in Pre-release.
+            - link "Announcing Automated Migrations Blog" [ref=e361] [cursor=pointer]:
+              - /url: https://temporal.io/blog/announcing-automated-migrations
+              - img [ref=e362]
+              - text: Announcing Automated Migrations Blog
+      - generic [ref=e364]:
+        - link "March 3, 2025" [ref=e365] [cursor=pointer]:
+          - /url: /change-log/replay-2025-product-announcements
+        - generic "Change Log Card replay-2025-product-announcements" [ref=e366]:
+          - generic [ref=e367]:
+            - link "Announcement" [ref=e368] [cursor=pointer]:
+              - /url: /change-log/type/announcement
+              - generic [ref=e369]: Announcement
+            - link "Cloud" [ref=e370] [cursor=pointer]:
+              - /url: /change-log/product-area/cloud
+              - generic [ref=e371]: Cloud
+            - link "Server" [ref=e372] [cursor=pointer]:
+              - /url: /change-log/product-area/server
+              - generic [ref=e373]: Server
+            - link "Ruby SDK" [ref=e374] [cursor=pointer]:
+              - /url: /change-log/product-area/ruby-sdk
+              - generic [ref=e375]: Ruby SDK
+          - generic [ref=e376]:
+            - paragraph [ref=e377]: Check out these new capabilities announced at Replay 2025!
+            - link "Replay 2025 Product Announcement Blog" [ref=e379] [cursor=pointer]:
+              - /url: https://temporal.io/blog/replay-2025-product-announcements
+              - img [ref=e380]
+              - text: Replay 2025 Product Announcement Blog
+      - generic [ref=e382]:
+        - link "January 16, 2025" [ref=e383] [cursor=pointer]:
+          - /url: /change-log/activity-operability-pre-release-enhanced-control-for-misbehaving-activities
+        - generic "Change Log Card activity-operability-pre-release-enhanced-control-for-misbehaving-activities" [ref=e384]:
+          - generic [ref=e385]:
+            - link "Cloud" [ref=e386] [cursor=pointer]:
+              - /url: /change-log/product-area/cloud
+              - generic [ref=e387]: Cloud
+            - link "Server" [ref=e388] [cursor=pointer]:
+              - /url: /change-log/product-area/server
+              - generic [ref=e389]: Server
+            - link "Temporal CLI" [ref=e390] [cursor=pointer]:
+              - /url: /change-log/product-area/temporal-cli
+              - generic [ref=e391]: Temporal CLI
+          - generic [ref=e392]:
+            - paragraph [ref=e393]: The Activity Operability Pre-release adds CLI tools to pause, unpause, reset, and update workflow activities, improving issue management. It’s a pre-release, and feedback is welcomed for future updates.
+            - link "Notes" [ref=e395] [cursor=pointer]:
+              - /url: https://docs.google.com/document/d/1oU4Icx4Icqq7rr8B8KriPsBd_1Df_6BQPllCXwtNHwk/edit?tab=t.0#heading=h.s437ybm2pl08
+              - img [ref=e396]
+              - text: Notes
+      - generic [ref=e398]:
+        - link "December 13, 2024" [ref=e399] [cursor=pointer]:
+          - /url: /change-log/temporal-cloud-terraform-provider-v0-5-0-released
+        - generic "Change Log Card temporal-cloud-terraform-provider-v0-5-0-released" [ref=e400]:
+          - link "Cloud" [ref=e402] [cursor=pointer]:
+            - /url: /change-log/product-area/cloud
+            - generic [ref=e403]: Cloud
+          - generic [ref=e404]:
+            - paragraph [ref=e405]: Temporal Cloud Terraform Provider V0.5.0 has just been released
+            - link "Terraform registry" [ref=e407] [cursor=pointer]:
+              - /url: https://registry.terraform.io/providers/temporalio/temporalcloud/latest
+              - img [ref=e408]
+              - text: Terraform registry
+            - link "Temporal Cloud Terraform provider documentation" [ref=e411] [cursor=pointer]:
+              - /url: https://docs.temporal.io/production-deployment/cloud/terraform-provider
+              - img [ref=e412]
+              - text: Temporal Cloud Terraform provider documentation
+      - generic [ref=e414]:
+        - button "Previous" [disabled]:
+          - img
+          - text: Previous
+        - button "Next" [ref=e415] [cursor=pointer]:
+          - text: Next
+          - img [ref=e416]
+    - contentinfo [ref=e418]:
+      - generic [ref=e419]:
+        - generic [ref=e421]:
+          - link "ALL SYSTEMS OPERATIONAL" [ref=e422] [cursor=pointer]:
+            - /url: https://status.temporal.io/
+            - paragraph [ref=e423]: ALL SYSTEMS OPERATIONAL
+          - generic [ref=e424]:
+            - link "Follow us on YouTube" [ref=e425] [cursor=pointer]:
+              - /url: https://www.youtube.com/temporalio
+              - img [ref=e426]
+            - link "Follow us on Twitter" [ref=e428] [cursor=pointer]:
+              - /url: https://twitter.com/temporalio
+              - img [ref=e429]
+            - link "Follow us on GitHub" [ref=e431] [cursor=pointer]:
+              - /url: https://github.com/temporalio
+              - img [ref=e432]
+            - link "Follow us on Linkedin" [ref=e435] [cursor=pointer]:
+              - /url: https://www.linkedin.com/company/temporal-technologies
+              - img [ref=e436]
+            - link "Join us on Slack" [ref=e439] [cursor=pointer]:
+              - /url: https://t.mp/slack
+              - img [ref=e440]
+        - generic [ref=e444]:
+          - generic [ref=e445]:
+            - paragraph [ref=e446]: Discover
+            - link "Overview" [ref=e447] [cursor=pointer]:
+              - /url: /product
+            - link "How Temporal Works" [ref=e448] [cursor=pointer]:
+              - /url: /how-it-works
+            - link "Temporal Cloud" [ref=e449] [cursor=pointer]:
+              - /url: /cloud
+            - link "Pricing" [ref=e450] [cursor=pointer]:
+              - /url: /pricing
+            - link "Security" [ref=e451] [cursor=pointer]:
+              - /url: /security
+            - link "Trust Center" [ref=e452] [cursor=pointer]:
+              - /url: https://trust.temporal.io
+            - link "Startups" [ref=e453] [cursor=pointer]:
+              - /url: /startup
+            - generic [ref=e454]:
+              - link "Get Started for Free" [ref=e455] [cursor=pointer]:
+                - /url: /get-cloud
+              - link "Log In" [ref=e456] [cursor=pointer]:
+                - /url: https://cloud.temporal.io/login
+          - generic [ref=e457]:
+            - paragraph [ref=e458]: Explore
+            - link "Customer Stories" [ref=e459] [cursor=pointer]:
+              - /url: /in-use
+            - link "Project-based tutorials" [ref=e460] [cursor=pointer]:
+              - /url: https://learn.temporal.io/tutorials/
+            - link "Example applications" [ref=e461] [cursor=pointer]:
+              - /url: https://learn.temporal.io/examples/
+            - link "Code Exchange" [ref=e462] [cursor=pointer]:
+              - /url: /code-exchange
+            - link "Replay 2025 Recap" [ref=e463] [cursor=pointer]:
+              - /url: /replay/2025
+            - link "Ask an expert" [ref=e464] [cursor=pointer]:
+              - /url: https://pages.temporal.io/ask-an-expert
+            - link "Blog" [ref=e465] [cursor=pointer]:
+              - /url: /blog
+          - generic [ref=e467]:
+            - paragraph [ref=e468]: Developers
+            - link "Getting Started with Temporal" [ref=e469] [cursor=pointer]:
+              - /url: https://learn.temporal.io/getting_started/
+            - link "Start building your next app" [ref=e470] [cursor=pointer]:
+              - /url: https://docs.temporal.io/dev-guide/
+            - link "Temporal Cloud docs" [ref=e471] [cursor=pointer]:
+              - /url: https://docs.temporal.io/cloud
+            - link "Production deployments" [ref=e472] [cursor=pointer]:
+              - /url: https://docs.temporal.io/production-deployment
+            - link "Temporal 101" [ref=e473] [cursor=pointer]:
+              - /url: https://learn.temporal.io/courses/temporal_101/
+            - link "Temporal 102" [ref=e474] [cursor=pointer]:
+              - /url: https://learn.temporal.io/courses/temporal_102/
+            - link "Introduction to Temporal Cloud" [ref=e475] [cursor=pointer]:
+              - /url: https://learn.temporal.io/courses/intro_to_temporal_cloud/
+          - generic [ref=e477]:
+            - generic [ref=e478]:
+              - paragraph [ref=e479]: Community
+              - link "Join our Slack group" [ref=e480] [cursor=pointer]:
+                - /url: https://t.mp/slack
+              - link "Find a meetup near you" [ref=e481] [cursor=pointer]:
+                - /url: /community
+              - link "Community forum" [ref=e482] [cursor=pointer]:
+                - /url: https://community.temporal.io/
+              - link "Events" [ref=e483] [cursor=pointer]:
+                - /url: /events
+              - link "Replay 2026" [ref=e484] [cursor=pointer]:
+                - /url: https://replay.temporal.io/
+            - generic [ref=e486]:
+              - paragraph [ref=e487]: Company
+              - link "About" [ref=e488] [cursor=pointer]:
+                - /url: /about
+              - link "Careers" [ref=e489] [cursor=pointer]:
+                - /url: /careers
+              - link "News" [ref=e490] [cursor=pointer]:
+                - /url: /news
+              - link "Contact us" [ref=e491] [cursor=pointer]:
+                - /url: https://pages.temporal.io/contact-us
+              - link "Partners" [ref=e492] [cursor=pointer]:
+                - /url: /partners
+        - generic [ref=e495]:
+          - generic [ref=e498]:
+            - generic [ref=e499]: Email Address
+            - textbox "Email Address" [ref=e500]
+            - button [ref=e501] [cursor=pointer]:
+              - img [ref=e502]
+          - generic [ref=e504]:
+            - paragraph [ref=e505]: 2025 © Temporal Technologies. All Rights Reserved.
+            - link "Privacy Policy" [ref=e506] [cursor=pointer]:
+              - /url: /global-privacy-policy
+            - link "Candidate Privacy Policy" [ref=e507] [cursor=pointer]:
+              - /url: /candidate-privacy-policy
+            - link "Terms of Service" [ref=e508] [cursor=pointer]:
+              - /url: /terms-of-service
+            - link "Code of Conduct" [ref=e509] [cursor=pointer]:
+              - /url: /code-of-conduct
+  - generic [ref=e511]:
+    - generic [ref=e512]:
+      - img [ref=e513]
+      - generic [ref=e515]:
+        - paragraph [ref=e516]: View Our Cookie Policy
+        - paragraph [ref=e517]:
+          - text: We use cookies and similar technologies to help personalize content, tailor and measure ads, and provide a better experience. By clicking Accept, you agree to this as outlined in our
+          - link "cookie policy" [ref=e518] [cursor=pointer]:
+            - /url: https://docs.temporal.io/privacy-policy/
+          - text: .
+    - generic [ref=e519]:
+      - button "Accept" [ref=e520] [cursor=pointer]
+      - button "Decline" [ref=e521] [cursor=pointer]
+```

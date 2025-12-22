@@ -1,0 +1,751 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - region "Skip to main content":
+      - link "Skip to main content" [ref=e3] [cursor=pointer]:
+        - /url: "#__docusaurus_skipToContent_fallback"
+    - navigation "Main" [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - link "Temporal logo" [ref=e7] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e9]
+          - link "Home" [ref=e10] [cursor=pointer]:
+            - /url: /
+          - link "Courses" [ref=e11] [cursor=pointer]:
+            - /url: https://learn.temporal.io/getting_started/
+            - text: Courses
+            - img [ref=e12]
+          - link "SDKs" [ref=e14] [cursor=pointer]:
+            - /url: /develop
+          - link "AI Cookbook" [ref=e15] [cursor=pointer]:
+            - /url: /ai-cookbook
+          - link "Code Exchange" [ref=e16] [cursor=pointer]:
+            - /url: https://temporal.io/code-exchange
+            - text: Code Exchange
+            - img [ref=e17]
+          - link "Temporal Cloud" [ref=e19] [cursor=pointer]:
+            - /url: /cloud
+        - generic [ref=e20]:
+          - button "Ask AI" [ref=e21] [cursor=pointer]:
+            - img [ref=e22]
+            - generic [ref=e26]: Ask AI
+          - button "Switch between dark and light mode (currently system mode)" [ref=e28] [cursor=pointer]:
+            - img [ref=e29]
+          - button "Search (Ctrl+K)" [ref=e32] [cursor=pointer]:
+            - generic [ref=e33]:
+              - img [ref=e34]
+              - generic [ref=e36]: Search
+            - generic [ref=e37]:
+              - img [ref=e39]
+              - generic [ref=e41]: K
+    - generic [ref=e44]:
+      - complementary [ref=e45]:
+        - generic [ref=e47]:
+          - navigation "Docs sidebar" [ref=e48]:
+            - list [ref=e49]:
+              - listitem [ref=e50]:
+                - link "Documentation Home" [ref=e51] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=e52]:
+                - link "Quickstarts" [ref=e53] [cursor=pointer]:
+                  - /url: /quickstarts
+              - listitem [ref=e54]:
+                - generic [ref=e55]:
+                  - link "Evaluate" [ref=e56] [cursor=pointer]:
+                    - /url: /evaluate/
+                  - button "Collapse sidebar category 'Evaluate'" [expanded] [ref=e57] [cursor=pointer]
+                - list [ref=e58]:
+                  - listitem [ref=e59]:
+                    - link "Why Temporal" [ref=e60] [cursor=pointer]:
+                      - /url: /evaluate/why-temporal
+                  - listitem [ref=e61]:
+                    - link "Understanding Temporal" [ref=e62] [cursor=pointer]:
+                      - /url: /evaluate/understanding-temporal
+                  - listitem [ref=e63]:
+                    - generic [ref=e64]:
+                      - link "Features" [ref=e65] [cursor=pointer]:
+                        - /url: /evaluate/development-production-features/
+                      - button "Expand sidebar category 'Features'" [ref=e66] [cursor=pointer]
+                  - listitem [ref=e67]:
+                    - generic [ref=e68]:
+                      - link "Temporal Cloud" [ref=e69] [cursor=pointer]:
+                        - /url: /cloud/introduction
+                      - button "Expand sidebar category 'Temporal Cloud'" [ref=e70] [cursor=pointer]
+                  - listitem [ref=e71]:
+                    - link "Security" [ref=e72] [cursor=pointer]:
+                      - /url: /security
+                  - listitem [ref=e73]:
+                    - link "Use Cases" [ref=e74] [cursor=pointer]:
+                      - /url: /evaluate/use-cases-design-patterns
+              - listitem [ref=e75]:
+                - generic [ref=e76]:
+                  - link "Develop" [ref=e77] [cursor=pointer]:
+                    - /url: /develop/
+                  - button "Collapse sidebar category 'Develop'" [expanded] [ref=e78] [cursor=pointer]
+                - list [ref=e79]:
+                  - listitem [ref=e80]:
+                    - generic [ref=e81]:
+                      - link "Go SDK" [ref=e82] [cursor=pointer]:
+                        - /url: /develop/go/
+                      - button "Expand sidebar category 'Go SDK'" [ref=e83] [cursor=pointer]
+                  - listitem [ref=e84]:
+                    - generic [ref=e85]:
+                      - link "Java SDK" [ref=e86] [cursor=pointer]:
+                        - /url: /develop/java/
+                      - button "Expand sidebar category 'Java SDK'" [ref=e87] [cursor=pointer]
+                  - listitem [ref=e88]:
+                    - generic [ref=e89]:
+                      - link "PHP SDK" [ref=e90] [cursor=pointer]:
+                        - /url: /develop/php/
+                      - button "Expand sidebar category 'PHP SDK'" [ref=e91] [cursor=pointer]
+                  - listitem [ref=e92]:
+                    - generic [ref=e93]:
+                      - link "Python SDK" [ref=e94] [cursor=pointer]:
+                        - /url: /develop/python/
+                      - button "Expand sidebar category 'Python SDK'" [ref=e95] [cursor=pointer]
+                  - listitem [ref=e96]:
+                    - generic [ref=e97]:
+                      - link "TypeScript SDK" [ref=e98] [cursor=pointer]:
+                        - /url: /develop/typescript/
+                      - button "Expand sidebar category 'TypeScript SDK'" [ref=e99] [cursor=pointer]
+                  - listitem [ref=e100]:
+                    - generic [ref=e101]:
+                      - link ".NET SDK" [ref=e102] [cursor=pointer]:
+                        - /url: /develop/dotnet/
+                      - button "Expand sidebar category '.NET SDK'" [ref=e103] [cursor=pointer]
+                  - listitem [ref=e104]:
+                    - generic [ref=e105]:
+                      - link "Ruby SDK" [ref=e106] [cursor=pointer]:
+                        - /url: /develop/ruby/
+                      - button "Expand sidebar category 'Ruby SDK'" [ref=e107] [cursor=pointer]
+                  - listitem [ref=e108]:
+                    - link "Environment configuration" [ref=e109] [cursor=pointer]:
+                      - /url: /develop/environment-configuration
+                  - listitem [ref=e110]:
+                    - link "Activity retry simulator" [ref=e111] [cursor=pointer]:
+                      - /url: /develop/activity-retry-simulator
+                  - listitem [ref=e112]:
+                    - link "Worker performance" [ref=e113] [cursor=pointer]:
+                      - /url: /develop/worker-performance
+                  - listitem [ref=e114]:
+                    - link "Safe deployments" [ref=e115] [cursor=pointer]:
+                      - /url: /develop/safe-deployments
+                  - listitem [ref=e116]:
+                    - link "Plugins guide" [ref=e117] [cursor=pointer]:
+                      - /url: /develop/plugins-guide
+              - listitem [ref=e118]:
+                - generic [ref=e119]:
+                  - link "Deploy to production" [ref=e120] [cursor=pointer]:
+                    - /url: /production-deployment
+                  - button "Collapse sidebar category 'Deploy to production'" [expanded] [ref=e121] [cursor=pointer]
+                - list [ref=e122]:
+                  - listitem [ref=e123]:
+                    - generic [ref=e124]:
+                      - link "Temporal Cloud" [ref=e125] [cursor=pointer]:
+                        - /url: /cloud
+                      - button "Collapse sidebar category 'Temporal Cloud'" [expanded] [ref=e126] [cursor=pointer]
+                    - list [ref=e127]:
+                      - listitem [ref=e128]:
+                        - generic [ref=e129]:
+                          - link "Get started with Cloud" [ref=e130] [cursor=pointer]:
+                            - /url: /cloud/get-started/
+                          - button "Collapse sidebar category 'Get started with Cloud'" [expanded] [ref=e131] [cursor=pointer]
+                        - list [ref=e132]:
+                          - listitem [ref=e133]:
+                            - link "Namespaces" [ref=e134] [cursor=pointer]:
+                              - /url: /cloud/namespaces
+                          - listitem [ref=e135]:
+                            - link "Manage API keys" [ref=e136] [cursor=pointer]:
+                              - /url: /cloud/api-keys
+                          - listitem [ref=e137]:
+                            - link "Authenticate with mTLS certificates" [ref=e138] [cursor=pointer]:
+                              - /url: /cloud/certificates
+                          - listitem [ref=e139]:
+                            - link "Usage and billing" [ref=e140] [cursor=pointer]:
+                              - /url: /cloud/billing-and-cost
+                      - listitem [ref=e141]:
+                        - generic [ref=e142]:
+                          - link "Account access" [ref=e143] [cursor=pointer]:
+                            - /url: /cloud/manage-access/
+                          - button "Collapse sidebar category 'Account access'" [expanded] [ref=e144] [cursor=pointer]
+                        - list [ref=e145]:
+                          - listitem [ref=e146]:
+                            - link "Manage users" [ref=e147] [cursor=pointer]:
+                              - /url: /cloud/users
+                          - listitem [ref=e148]:
+                            - link "Manage user groups" [ref=e149] [cursor=pointer]:
+                              - /url: /cloud/user-groups
+                          - listitem [ref=e150]:
+                            - link "Manage service accounts" [ref=e151] [cursor=pointer]:
+                              - /url: /cloud/service-accounts
+                          - listitem [ref=e152]:
+                            - link "SAML authentication" [ref=e153] [cursor=pointer]:
+                              - /url: /cloud/saml
+                          - listitem [ref=e154]:
+                            - link "SCIM user management" [ref=e155] [cursor=pointer]:
+                              - /url: /cloud/scim
+                      - listitem [ref=e156]:
+                        - generic [ref=e157]:
+                          - link "Metrics" [ref=e158] [cursor=pointer]:
+                            - /url: /cloud/metrics/
+                          - button "Expand sidebar category 'Metrics'" [ref=e159] [cursor=pointer]
+                      - listitem [ref=e160]:
+                        - generic [ref=e161]:
+                          - link "Connectivity" [ref=e162] [cursor=pointer]:
+                            - /url: /cloud/connectivity
+                          - button "Expand sidebar category 'Connectivity'" [ref=e163] [cursor=pointer]
+                      - listitem [ref=e164]:
+                        - generic [ref=e165]:
+                          - link "High Availability" [ref=e166] [cursor=pointer]:
+                            - /url: /cloud/high-availability
+                          - button "Expand sidebar category 'High Availability'" [ref=e167] [cursor=pointer]
+                      - listitem [ref=e168]:
+                        - link "RPO and RTO" [ref=e169] [cursor=pointer]:
+                          - /url: /cloud/rpo-rto
+                      - listitem [ref=e170]:
+                        - link "Notifications" [ref=e171] [cursor=pointer]:
+                          - /url: /cloud/notifications
+                      - listitem [ref=e172]:
+                        - generic [ref=e173]:
+                          - link "Temporal Nexus" [ref=e174] [cursor=pointer]:
+                            - /url: /cloud/nexus
+                          - button "Expand sidebar category 'Temporal Nexus'" [ref=e175] [cursor=pointer]
+                      - listitem [ref=e176]:
+                        - link "Monitor worker health" [ref=e177] [cursor=pointer]:
+                          - /url: /production-deployment/cloud/worker-health
+                      - listitem [ref=e178]:
+                        - link "Capacity Modes" [ref=e179] [cursor=pointer]:
+                          - /url: /cloud/capacity-modes
+                      - listitem [ref=e180]:
+                        - link "Monitor Temporal Cloud" [ref=e181] [cursor=pointer]:
+                          - /url: /production-deployment/cloud/service-health
+                      - listitem [ref=e182]:
+                        - link "Cloud Ops API" [ref=e183] [cursor=pointer]:
+                          - /url: /ops
+                      - listitem [ref=e184]:
+                        - link "Terraform provider" [ref=e185] [cursor=pointer]:
+                          - /url: /production-deployment/cloud/terraform-provider
+                      - listitem [ref=e186]:
+                        - generic [ref=e187]:
+                          - link "Export" [ref=e188] [cursor=pointer]:
+                            - /url: /cloud/export
+                          - button "Expand sidebar category 'Export'" [ref=e189] [cursor=pointer]
+                      - listitem [ref=e190]:
+                        - generic [ref=e191]:
+                          - link "Audit Logging" [ref=e192] [cursor=pointer]:
+                            - /url: /cloud/audit-logs
+                          - button "Expand sidebar category 'Audit Logging'" [ref=e193] [cursor=pointer]
+                      - listitem [ref=e194]:
+                        - generic [ref=e195]:
+                          - link "CLI (tcld)" [ref=e196] [cursor=pointer]:
+                            - /url: /cloud/tcld
+                          - button "Expand sidebar category 'CLI (tcld)'" [ref=e197] [cursor=pointer]
+                      - listitem [ref=e198]:
+                        - generic [ref=e199]:
+                          - link "Migrate" [ref=e200] [cursor=pointer]:
+                            - /url: /cloud/migrate
+                          - button "Expand sidebar category 'Migrate'" [ref=e201] [cursor=pointer]
+                  - listitem [ref=e202]:
+                    - link "Codecs and Encryption" [ref=e203] [cursor=pointer]:
+                      - /url: /production-deployment/data-encryption
+                  - listitem [ref=e204]:
+                    - generic [ref=e205]:
+                      - link "Self-host" [ref=e206] [cursor=pointer]:
+                        - /url: /self-hosted-guide
+                      - button "Expand sidebar category 'Self-host'" [ref=e207] [cursor=pointer]
+                  - listitem [ref=e208]:
+                    - generic [ref=e209]:
+                      - link "Worker deployments" [ref=e210] [cursor=pointer]:
+                        - /url: /production-deployment/worker-deployments
+                      - button "Expand sidebar category 'Worker deployments'" [ref=e211] [cursor=pointer]
+              - listitem [ref=e212]:
+                - generic [ref=e213]:
+                  - link "CLI (temporal)" [ref=e214] [cursor=pointer]:
+                    - /url: /cli
+                  - button "Expand sidebar category 'CLI (temporal)'" [ref=e215] [cursor=pointer]
+              - listitem [ref=e216]:
+                - generic [ref=e217]:
+                  - link "References" [ref=e218] [cursor=pointer]:
+                    - /url: /references/
+                  - button "Expand sidebar category 'References'" [ref=e219] [cursor=pointer]
+              - listitem [ref=e220]:
+                - generic [ref=e221]:
+                  - link "Troubleshooting" [ref=e222] [cursor=pointer]:
+                    - /url: /troubleshooting/
+                  - button "Expand sidebar category 'Troubleshooting'" [ref=e223] [cursor=pointer]
+              - listitem [ref=e224]:
+                - generic [ref=e225]:
+                  - link "Best Practices" [ref=e226] [cursor=pointer]:
+                    - /url: /best-practices/
+                  - button "Expand sidebar category 'Best Practices'" [ref=e227] [cursor=pointer]
+              - listitem [ref=e228]:
+                - generic [ref=e229]:
+                  - link "Encyclopedia" [ref=e230] [cursor=pointer]:
+                    - /url: /encyclopedia/
+                  - button "Expand sidebar category 'Encyclopedia'" [ref=e231] [cursor=pointer]
+              - listitem [ref=e232]:
+                - link "Glossary" [ref=e233] [cursor=pointer]:
+                  - /url: /glossary
+          - button "Collapse sidebar" [ref=e234] [cursor=pointer]:
+            - img [ref=e235]
+      - main [ref=e239]:
+        - generic [ref=e241]:
+          - generic [ref=e243]:
+            - article [ref=e244]:
+              - navigation "Breadcrumbs" [ref=e245]:
+                - list [ref=e246]:
+                  - listitem [ref=e247]:
+                    - link "Home page" [ref=e248] [cursor=pointer]:
+                      - /url: /
+                      - img [ref=e249]
+                  - listitem [ref=e251]:
+                    - link "Deploy to production" [ref=e252] [cursor=pointer]:
+                      - /url: /production-deployment
+                  - listitem [ref=e253]:
+                    - link "Temporal Cloud" [ref=e254] [cursor=pointer]:
+                      - /url: /cloud
+                  - listitem [ref=e255]:
+                    - generic [ref=e256]: Monitor Temporal Cloud
+              - generic [ref=e257]:
+                - heading "Monitor Temporal Cloud" [level=1] [ref=e259]
+                - paragraph [ref=e260]: Temporal Cloud metrics help monitor production deployments. This documentation covers best practices for monitoring Temporal Cloud.
+                - heading "Monitor availability issuesDirect link to Monitor availability issues" [level=2] [ref=e261]:
+                  - text: Monitor availability issues
+                  - link "Direct link to Monitor availability issues" [ref=e262] [cursor=pointer]:
+                    - /url: "#monitor-availability-issues"
+                    - text: "#"
+                - paragraph [ref=e263]: When you see a sudden drop in Worker resource utilization, verify whether Temporal Cloud's API is showing increased latency and error rates.
+                - heading "Reference MetricsDirect link to Reference Metrics" [level=3] [ref=e264]:
+                  - text: Reference Metrics
+                  - link "Direct link to Reference Metrics" [ref=e265] [cursor=pointer]:
+                    - /url: "#reference-metrics"
+                    - text: "#"
+                - list [ref=e266]:
+                  - listitem [ref=e267]:
+                    - link "temporal_cloud_v1_service_latency_p99" [ref=e268] [cursor=pointer]:
+                      - /url: /production-deployment/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_service_latency_p99
+                - paragraph [ref=e269]:
+                  - text: This metric measures latency for
+                  - code [ref=e270]: SignalWithStartWorkflowExecution
+                  - text: ","
+                  - code [ref=e271]: SignalWorkflowExecution
+                  - text: ","
+                  - code [ref=e272]: StartWorkflowExecution
+                  - text: operations. These operations are mission critical and never
+                  - link "throttled" [ref=e273] [cursor=pointer]:
+                    - /url: /cloud/service-availability#throughput
+                  - text: . This metric is a good indicator of your lowest possible latency for the 99th percentile of requests.
+                - heading "Monitor Temporal Service errorsDirect link to Monitor Temporal Service errors" [level=2] [ref=e274]:
+                  - text: Monitor Temporal Service errors
+                  - link "Direct link to Monitor Temporal Service errors" [ref=e275] [cursor=pointer]:
+                    - /url: "#monitor-temporal-service-errors"
+                    - text: "#"
+                - paragraph [ref=e276]:
+                  - text: Check for Temporal Service gRPC API errors. Note that Service API errors are not equivalent to guarantees mentioned in the
+                  - link "Temporal Cloud SLA" [ref=e277] [cursor=pointer]:
+                    - /url: /cloud/sla
+                  - text: .
+                - heading "Reference MetricsDirect link to Reference Metrics" [level=3] [ref=e278]:
+                  - text: Reference Metrics
+                  - link "Direct link to Reference Metrics" [ref=e279] [cursor=pointer]:
+                    - /url: "#reference-metrics-1"
+                    - text: "#"
+                - list [ref=e280]:
+                  - listitem [ref=e281]:
+                    - link "temporal_cloud_v1_frontend_service_error_count" [ref=e282] [cursor=pointer]:
+                      - /url: /production-deployment/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_frontend_service_error_count
+                  - listitem [ref=e283]:
+                    - link "temporal_cloud_v1_frontend_service_request_count" [ref=e284] [cursor=pointer]:
+                      - /url: /production-deployment/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_frontend_service_request_count
+                - heading "Prometheus Query for this MetricDirect link to Prometheus Query for this Metric" [level=3] [ref=e285]:
+                  - text: Prometheus Query for this Metric
+                  - link "Direct link to Prometheus Query for this Metric" [ref=e286] [cursor=pointer]:
+                    - /url: "#prometheus-query-for-this-metric"
+                    - text: "#"
+                - paragraph [ref=e287]: "Measure your daily average errors over 10-minute windows:"
+                - generic [ref=e289]:
+                  - code [ref=e291]:
+                    - generic [ref=e292]: avg_over_time((
+                    - generic [ref=e293]: (
+                    - generic [ref=e294]: (
+                    - generic [ref=e295]: "sum(increase(temporal_cloud_v1_frontend_service_request_count{temporal_namespace=~\"$namespace\", operation=~\"StartWorkflowExecution|SignalWorkflowExecution|SignalWithStartWorkflowExecution|RequestCancelWorkflowExecution|TerminateWorkflowExecution\"}[10m]))"
+                    - generic [ref=e296]: "-"
+                    - generic [ref=e297]: "sum(increase(temporal_cloud_v1_frontend_service_error_count{temporal_namespace=~\"$namespace\", operation=~\"StartWorkflowExecution|SignalWorkflowExecution|SignalWithStartWorkflowExecution|RequestCancelWorkflowExecution|TerminateWorkflowExecution\"}[10m]))"
+                    - generic [ref=e298]: )
+                    - generic [ref=e299]: /
+                    - generic [ref=e300]: "sum(increase(temporal_cloud_v1_frontend_service_request_count{temporal_namespace=~\"$namespace\", operation=~\"StartWorkflowExecution|SignalWorkflowExecution|SignalWithStartWorkflowExecution|RequestCancelWorkflowExecution|TerminateWorkflowExecution\"}[10m]))"
+                    - generic [ref=e301]: )
+                    - generic [ref=e302]: or vector(1)
+                    - generic [ref=e303]: )[1d:10m])
+                  - generic [ref=e304]:
+                    - button "Toggle word wrap" [ref=e305] [cursor=pointer]:
+                      - img [ref=e306]
+                    - button "Copy code to clipboard" [ref=e308] [cursor=pointer]:
+                      - generic [ref=e309]:
+                        - img [ref=e310]
+                        - img [ref=e312]
+                - heading "Detecting Activity and Workflow FailuresDirect link to Detecting Activity and Workflow Failures" [level=2] [ref=e314]:
+                  - text: Detecting Activity and Workflow Failures
+                  - link "Direct link to Detecting Activity and Workflow Failures" [ref=e315] [cursor=pointer]:
+                    - /url: "#detecting-activity-and-workflow-failures"
+                    - text: "#"
+                - paragraph [ref=e316]:
+                  - text: The metrics
+                  - code [ref=e317]: temporal_activity_execution_failed
+                  - text: and
+                  - code [ref=e318]: temporal_cloud_v1_workflow_failed_count
+                  - text: together provide failure detection for Temporal applications. These metrics work in tandem to give you both granular component-level visibility and high-level workflow health insights.
+                - paragraph [ref=e319]:
+                  - text: Note that
+                  - code [ref=e320]: temporal_activity_execution_failed
+                  - text: is an SDK metric that must be collected from the Worker.
+                - heading "Activity failure cascadeDirect link to Activity failure cascade" [level=3] [ref=e321]:
+                  - text: Activity failure cascade
+                  - link "Direct link to Activity failure cascade" [ref=e322] [cursor=pointer]:
+                    - /url: "#activity-failure-cascade"
+                    - text: "#"
+                - paragraph [ref=e323]: "If not using infinite retry policies, Activity failures can lead to Workflow failures:"
+                - generic [ref=e325]:
+                  - code [ref=e327]:
+                    - generic [ref=e328]: Activity Failure --> Retry Logic --> More Activity Failures --> Workflow Decision --> Potential Workflow Failure
+                  - generic [ref=e329]:
+                    - button "Toggle word wrap" [ref=e330] [cursor=pointer]:
+                      - img [ref=e331]
+                    - button "Copy code to clipboard" [ref=e333] [cursor=pointer]:
+                      - generic [ref=e334]:
+                        - img [ref=e335]
+                        - img [ref=e337]
+                - paragraph [ref=e339]: Activity failures are often recoverable and expected. Workflow failures represent terminal states requiring immediate attention. A spike in activity failures may precede workflow failures. Generally Temporal recommends that Workflows should be designed to always succeed. If an Activity fails more than its retry policy allows, we suggest having the Workflow handle Activity failure and take action to notify a human to take corrective action or be aware of the error.
+                - heading "Ratio-based monitoringDirect link to Ratio-based monitoring" [level=3] [ref=e340]:
+                  - text: Ratio-based monitoring
+                  - link "Direct link to Ratio-based monitoring" [ref=e341] [cursor=pointer]:
+                    - /url: "#ratio-based-monitoring"
+                    - text: "#"
+                - heading "Failure conversion rateDirect link to Failure conversion rate" [level=4] [ref=e342]:
+                  - text: Failure conversion rate
+                  - link "Direct link to Failure conversion rate" [ref=e343] [cursor=pointer]:
+                    - /url: "#failure-conversion-rate"
+                    - text: "#"
+                - paragraph [ref=e344]: "Monitor the ratio of workflow failures to activity failures:"
+                - generic [ref=e346]:
+                  - code [ref=e348]:
+                    - generic [ref=e349]: workflow_failure_rate = temporal_cloud_v1_workflow_failed_count / temporal_activity_execution_failed
+                  - generic [ref=e350]:
+                    - button "Toggle word wrap" [ref=e351] [cursor=pointer]:
+                      - img [ref=e352]
+                    - button "Copy code to clipboard" [ref=e354] [cursor=pointer]:
+                      - generic [ref=e355]:
+                        - img [ref=e356]
+                        - img [ref=e358]
+                - paragraph [ref=e360]: "What to watch for:"
+                - list [ref=e361]:
+                  - listitem [ref=e362]: "High ratio (greater than 0.1): Poor error handling - activities failing are causing workflow failures"
+                  - listitem [ref=e363]: "Low ratio (less than 0.01): Good resilience - activities fail but workflows recover"
+                  - listitem [ref=e364]: "Sudden spikes: May indicate systematic issues"
+                - heading "Activity success rateDirect link to Activity success rate" [level=4] [ref=e365]:
+                  - text: Activity success rate
+                  - link "Direct link to Activity success rate" [ref=e366] [cursor=pointer]:
+                    - /url: "#activity-success-rate"
+                    - text: "#"
+                - generic [ref=e368]:
+                  - code [ref=e370]:
+                    - generic [ref=e371]: activity_success_rate = (total_activities - temporal_activity_execution_failed) / total_activities
+                  - generic [ref=e372]:
+                    - button "Toggle word wrap" [ref=e373] [cursor=pointer]:
+                      - img [ref=e374]
+                    - button "Copy code to clipboard" [ref=e376] [cursor=pointer]:
+                      - generic [ref=e377]:
+                        - img [ref=e378]
+                        - img [ref=e380]
+                - paragraph [ref=e382]: "Target: >95% for most applications. Lower success rate can be a sign of system troubles. See also:"
+                - list [ref=e383]:
+                  - listitem [ref=e384]:
+                    - link "Crafting an Error Handling Strategy" [ref=e385] [cursor=pointer]:
+                      - /url: https://learn.temporal.io/courses/errstrat/
+                  - listitem [ref=e386]:
+                    - link "Temporal Failures reference" [ref=e387] [cursor=pointer]:
+                      - /url: /references/failures
+                  - listitem [ref=e388]:
+                    - link "Detecting Workflow failures" [ref=e389] [cursor=pointer]:
+                      - /url: /encyclopedia/detecting-workflow-failures
+                - heading "Monitor replication lag for Namespaces with High Availability featuresDirect link to Monitor replication lag for Namespaces with High Availability features" [level=2] [ref=e390]:
+                  - text: Monitor replication lag for Namespaces with High Availability features
+                  - link "Direct link to Monitor replication lag for Namespaces with High Availability features" [ref=e391] [cursor=pointer]:
+                    - /url: "#monitor-replication-lag-for-namespaces-with-high-availability-features"
+                    - text: "#"
+                - paragraph [ref=e392]:
+                  - text: Replication lag refers to the transmission delay of Workflow updates and history events from the primary Namespace to the replica. Always check the
+                  - link "metric replication lag" [ref=e393] [cursor=pointer]:
+                    - /url: /production-deployment/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p99
+                  - text: before initiating a failover. A forced failover when there is a large replication lag has a higher likelihood of rolling back Workflow progress.
+                - paragraph [ref=e394]:
+                  - strong [ref=e395]: Who owns the replication lag?
+                  - text: Temporal owns replication lag.
+                - paragraph [ref=e396]:
+                  - strong [ref=e397]: What guarantees are available?
+                  - text: There is no SLA for replication lag. Temporal recommends that customers do not trigger failovers except for testing or emergency situations. High Availability feature's four-9 guarantee SLA means Temporal will handle failovers and ensure high availability. Temporal also monitors replication lag. Customer who decide to trigger failovers should look at this metric before moving forward.
+                - paragraph [ref=e398]:
+                  - strong [ref=e399]: If the lag is high, what should you do?
+                  - text: We don't expect users to failover. Please contact Temporal support if you feel you have a pressing need.
+                - paragraph [ref=e400]:
+                  - strong [ref=e401]: Where can you read more?
+                  - text: See
+                  - link "operations and metrics" [ref=e402] [cursor=pointer]:
+                    - /url: /cloud/high-availability
+                  - text: for Namespaces with High Availability features.
+                - heading "Reference MetricsDirect link to Reference Metrics" [level=3] [ref=e403]:
+                  - text: Reference Metrics
+                  - link "Direct link to Reference Metrics" [ref=e404] [cursor=pointer]:
+                    - /url: "#reference-metrics-2"
+                    - text: "#"
+                - list [ref=e405]:
+                  - listitem [ref=e406]:
+                    - link "temporal_cloud_v1_replication_lag_p99" [ref=e407] [cursor=pointer]:
+                      - /url: /production-deployment/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p99
+                  - listitem [ref=e408]:
+                    - link "temporal_cloud_v1_replication_lag_p95" [ref=e409] [cursor=pointer]:
+                      - /url: /production-deployment/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p95
+                  - listitem [ref=e410]:
+                    - link "temporal_cloud_v1_replication_lag_p50" [ref=e411] [cursor=pointer]:
+                      - /url: /production-deployment/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p50
+                - heading "Detecting Resource ExhaustionDirect link to Detecting Resource Exhaustion" [level=2] [ref=e412]:
+                  - text: Detecting Resource Exhaustion
+                  - link "Direct link to Detecting Resource Exhaustion" [ref=e413] [cursor=pointer]:
+                    - /url: "#detecting-resource-exhaustion"
+                    - text: "#"
+                - paragraph [ref=e414]:
+                  - text: The Cloud metric
+                  - code [ref=e415]: temporal_cloud_v1_resource_exhausted_error_count
+                  - text: is the primary indicator for Cloud-side throttling, signaling system limits are exceeded and
+                  - code [ref=e416]: ResourceExhausted
+                  - text: gRPC errors are occurring. This generally does not break workflow processing due to how resources are prioritized.
+                - paragraph [ref=e417]: Persistent non-zero values of this metric are unexpected.
+                - heading "Monitoring Trends Against LimitsDirect link to Monitoring Trends Against Limits" [level=2] [ref=e418]:
+                  - text: Monitoring Trends Against Limits
+                  - link "Direct link to Monitoring Trends Against Limits" [ref=e419] [cursor=pointer]:
+                    - /url: "#rps-aps-rate-limits"
+                    - text: "#"
+                - paragraph [ref=e420]:
+                  - text: The set of
+                  - link "limit metrics" [ref=e421] [cursor=pointer]:
+                    - /url: /production-deployment/cloud/metrics/openmetrics/metrics-reference#limit-metrics
+                  - text: provide a time series of values for limits. Use these metrics with their corresponding count metrics to monitor general trends against limits and set alerts when limits are exceeded. Use the corresponding throttle metrics to determine the severity of any active rate limiting.
+                - table [ref=e422]:
+                  - rowgroup [ref=e423]:
+                    - row "Limit Metric Count Metric Throttle Metric" [ref=e424]:
+                      - columnheader "Limit Metric" [ref=e425]
+                      - columnheader "Count Metric" [ref=e426]
+                      - columnheader "Throttle Metric" [ref=e427]
+                  - rowgroup [ref=e428]:
+                    - row "temporal_cloud_v1_action_limit temporal_cloud_v1_total_action_count temporal_cloud_v1_total_action_throttled_count" [ref=e429]:
+                      - cell "temporal_cloud_v1_action_limit" [ref=e430]:
+                        - code [ref=e431]: temporal_cloud_v1_action_limit
+                      - cell "temporal_cloud_v1_total_action_count" [ref=e432]:
+                        - code [ref=e433]: temporal_cloud_v1_total_action_count
+                      - cell "temporal_cloud_v1_total_action_throttled_count" [ref=e434]:
+                        - code [ref=e435]: temporal_cloud_v1_total_action_throttled_count
+                    - row "temporal_cloud_v1_frontend_rps_limit temporal_cloud_v1_frontend_service_request_count temporal_cloud_v1_service_request_throttled_count" [ref=e436]:
+                      - cell "temporal_cloud_v1_frontend_rps_limit" [ref=e437]:
+                        - code [ref=e438]: temporal_cloud_v1_frontend_rps_limit
+                      - cell "temporal_cloud_v1_frontend_service_request_count" [ref=e439]:
+                        - code [ref=e440]: temporal_cloud_v1_frontend_service_request_count
+                      - cell "temporal_cloud_v1_service_request_throttled_count" [ref=e441]:
+                        - code [ref=e442]: temporal_cloud_v1_service_request_throttled_count
+                    - row "temporal_cloud_v1_operations_limit temporal_cloud_v1_operations_count temporal_cloud_v1_operations_throttled_count" [ref=e443]:
+                      - cell "temporal_cloud_v1_operations_limit" [ref=e444]:
+                        - code [ref=e445]: temporal_cloud_v1_operations_limit
+                      - cell "temporal_cloud_v1_operations_count" [ref=e446]:
+                        - code [ref=e447]: temporal_cloud_v1_operations_count
+                      - cell "temporal_cloud_v1_operations_throttled_count" [ref=e448]:
+                        - code [ref=e449]: temporal_cloud_v1_operations_throttled_count
+                - paragraph [ref=e450]:
+                  - text: The
+                  - link "Grafana dashboard example" [ref=e451] [cursor=pointer]:
+                    - /url: https://github.com/grafana/jsonnet-libs/blob/master/temporal-mixin/dashboards/temporal-overview.json
+                  - text: includes a Usage & Quotas section that creates demo charts for these limits and count metrics respectively.
+                - paragraph [ref=e452]:
+                  - text: The limit metrics, throttle metrics, and count metrics are already directly comparable as per second rates. Keep in mind that each
+                  - code [ref=e453]: count
+                  - text: metric is represented as a per second rate averaged over each minute. For example, to get the total count of Actions, you must multiply this metric by 60.
+                  - text: When setting alerts against limits, consider if your workload is spiky or sensitive to throttling (e.g. does latency matter?). If your workload is sensitive, consider alerting for
+                  - code [ref=e454]: temporal_cloud_v1_total_action_count
+                  - text: at a 50% threshold of the
+                  - code [ref=e455]: temporal_cloud_v1_action_limit
+                  - text: . If your workload is not sensitive, consider an alert at 90% of this threshold or directly when throttling is detected as a value greater than zero for
+                  - code [ref=e456]: temporal_cloud_v1_total_action_throttled_count
+                  - text: . This logic can also be used to automatically scale
+                  - link "Temporal Resource Units" [ref=e457] [cursor=pointer]:
+                    - /url: /cloud/capacity-modes#provisioned-capacity
+                  - text: up or down as needed. Some workloads choose to exceed limits and accept throttling because they are not latency sensitive.
+              - generic [ref=e458]:
+                - generic [ref=e460]:
+                  - text: "Tags:"
+                  - list [ref=e461]:
+                    - listitem [ref=e462]:
+                      - link "Temporal Cloud" [ref=e463] [cursor=pointer]:
+                        - /url: /tags/temporal-cloud
+                    - listitem [ref=e464]:
+                      - link "Observability" [ref=e465] [cursor=pointer]:
+                        - /url: /tags/observability
+                - paragraph [ref=e469]:
+                  - text: Help us make Temporal better. Contribute to our
+                  - link "documentation" [ref=e470] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation
+                  - text: .
+            - navigation "Docs pages" [ref=e472]:
+              - link "Previous « Capacity Modes" [ref=e473] [cursor=pointer]:
+                - /url: /cloud/capacity-modes
+                - generic [ref=e474]: Previous
+                - generic [ref=e475]: « Capacity Modes
+              - link "Next Cloud Ops API »" [ref=e476] [cursor=pointer]:
+                - /url: /ops
+                - generic [ref=e477]: Next
+                - generic [ref=e478]: Cloud Ops API »
+          - list [ref=e481]:
+            - listitem [ref=e482]:
+              - link "Monitor availability issues" [ref=e483] [cursor=pointer]:
+                - /url: "#monitor-availability-issues"
+              - list [ref=e484]:
+                - listitem [ref=e485]:
+                  - link "Reference Metrics" [ref=e486] [cursor=pointer]:
+                    - /url: "#reference-metrics"
+            - listitem [ref=e487]:
+              - link "Monitor Temporal Service errors" [ref=e488] [cursor=pointer]:
+                - /url: "#monitor-temporal-service-errors"
+              - list [ref=e489]:
+                - listitem [ref=e490]:
+                  - link "Reference Metrics" [ref=e491] [cursor=pointer]:
+                    - /url: "#reference-metrics-1"
+                - listitem [ref=e492]:
+                  - link "Prometheus Query for this Metric" [ref=e493] [cursor=pointer]:
+                    - /url: "#prometheus-query-for-this-metric"
+            - listitem [ref=e494]:
+              - link "Detecting Activity and Workflow Failures" [ref=e495] [cursor=pointer]:
+                - /url: "#detecting-activity-and-workflow-failures"
+              - list [ref=e496]:
+                - listitem [ref=e497]:
+                  - link "Activity failure cascade" [ref=e498] [cursor=pointer]:
+                    - /url: "#activity-failure-cascade"
+                - listitem [ref=e499]:
+                  - link "Ratio-based monitoring" [ref=e500] [cursor=pointer]:
+                    - /url: "#ratio-based-monitoring"
+                  - list [ref=e501]:
+                    - listitem [ref=e502]:
+                      - link "Failure conversion rate" [ref=e503] [cursor=pointer]:
+                        - /url: "#failure-conversion-rate"
+                    - listitem [ref=e504]:
+                      - link "Activity success rate" [ref=e505] [cursor=pointer]:
+                        - /url: "#activity-success-rate"
+            - listitem [ref=e506]:
+              - link "Monitor replication lag for Namespaces with High Availability features" [ref=e507] [cursor=pointer]:
+                - /url: "#monitor-replication-lag-for-namespaces-with-high-availability-features"
+              - list [ref=e508]:
+                - listitem [ref=e509]:
+                  - link "Reference Metrics" [ref=e510] [cursor=pointer]:
+                    - /url: "#reference-metrics-2"
+            - listitem [ref=e511]:
+              - link "Detecting Resource Exhaustion" [ref=e512] [cursor=pointer]:
+                - /url: "#detecting-resource-exhaustion"
+            - listitem [ref=e513]:
+              - link "Monitoring Trends Against Limits" [ref=e514] [cursor=pointer]:
+                - /url: "#rps-aps-rate-limits"
+    - contentinfo [ref=e515]:
+      - generic [ref=e516]:
+        - generic [ref=e517]:
+          - list [ref=e519]:
+            - listitem [ref=e520]:
+              - link "GitHub" [ref=e521] [cursor=pointer]:
+                - /url: https://github.com/temporalio
+                - text: GitHub
+                - img [ref=e522]
+            - listitem [ref=e524]:
+              - link "Twitter" [ref=e525] [cursor=pointer]:
+                - /url: https://twitter.com/temporalio
+                - text: Twitter
+                - img [ref=e526]
+            - listitem [ref=e528]:
+              - link "YouTube" [ref=e529] [cursor=pointer]:
+                - /url: https://www.youtube.com/c/Temporalio
+                - text: YouTube
+                - img [ref=e530]
+            - listitem [ref=e532]:
+              - link "About the docs" [ref=e533] [cursor=pointer]:
+                - /url: https://github.com/temporalio/documentation/blob/master/README.md
+                - text: About the docs
+                - img [ref=e534]
+          - list [ref=e537]:
+            - listitem [ref=e538]:
+              - link "Temporal Cloud" [ref=e539] [cursor=pointer]:
+                - /url: https://temporal.io/cloud
+                - text: Temporal Cloud
+                - img [ref=e540]
+            - listitem [ref=e542]:
+              - link "Meetups" [ref=e543] [cursor=pointer]:
+                - /url: https://temporal.io/community#events
+                - text: Meetups
+                - img [ref=e544]
+            - listitem [ref=e546]:
+              - link "Workshops" [ref=e547] [cursor=pointer]:
+                - /url: https://temporal.io/community#workshops
+                - text: Workshops
+                - img [ref=e548]
+            - listitem [ref=e550]:
+              - link "Support forum" [ref=e551] [cursor=pointer]:
+                - /url: https://community.temporal.io/
+                - text: Support forum
+                - img [ref=e552]
+            - listitem [ref=e554]:
+              - link "Ask an expert" [ref=e555] [cursor=pointer]:
+                - /url: https://pages.temporal.io/ask-an-expert
+                - text: Ask an expert
+                - img [ref=e556]
+          - list [ref=e559]:
+            - listitem [ref=e560]:
+              - link "Learn Temporal" [ref=e561] [cursor=pointer]:
+                - /url: https://learn.temporal.io
+                - text: Learn Temporal
+                - img [ref=e562]
+            - listitem [ref=e564]:
+              - link "Blog" [ref=e565] [cursor=pointer]:
+                - /url: https://temporal.io/blog
+                - text: Blog
+                - img [ref=e566]
+            - listitem [ref=e568]:
+              - link "Use cases" [ref=e569] [cursor=pointer]:
+                - /url: https://temporal.io/use-cases
+                - text: Use cases
+                - img [ref=e570]
+            - listitem [ref=e572]:
+              - link "Newsletter signup" [ref=e573] [cursor=pointer]:
+                - /url: https://pages.temporal.io/newsletter-subscribe
+                - text: Newsletter signup
+                - img [ref=e574]
+          - list [ref=e577]:
+            - listitem [ref=e578]:
+              - link "Security" [ref=e579] [cursor=pointer]:
+                - /url: /security
+            - listitem [ref=e580]:
+              - link "Privacy policy" [ref=e581] [cursor=pointer]:
+                - /url: https://temporal.io/global-privacy-policy
+            - listitem [ref=e582]:
+              - link "Terms of service" [ref=e583] [cursor=pointer]:
+                - /url: https://docs.temporal.io/pdf/temporal-tos-2021-07-24.pdf
+                - text: Terms of service
+                - img [ref=e584]
+            - listitem [ref=e586]:
+              - link "We're hiring" [ref=e587] [cursor=pointer]:
+                - /url: https://temporal.io/careers
+                - text: We're hiring
+                - img [ref=e588]
+        - generic [ref=e590]:
+          - link "Temporal logo" [ref=e592] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e593]
+          - generic [ref=e594]: Copyright © 2025 Temporal Technologies Inc.
+  - generic [ref=e595] [cursor=pointer]:
+    - img [ref=e597]
+    - generic: Feedback
+```

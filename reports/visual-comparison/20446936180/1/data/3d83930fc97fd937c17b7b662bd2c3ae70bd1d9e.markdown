@@ -1,0 +1,2666 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - region "Skip to main content":
+      - link "Skip to main content" [ref=e3] [cursor=pointer]:
+        - /url: "#__docusaurus_skipToContent_fallback"
+    - navigation "Main" [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - link "Temporal logo" [ref=e7] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e9]
+          - link "Home" [ref=e10] [cursor=pointer]:
+            - /url: /
+          - link "Courses" [ref=e11] [cursor=pointer]:
+            - /url: https://learn.temporal.io/getting_started/
+            - text: Courses
+            - img [ref=e12]
+          - link "SDKs" [ref=e14] [cursor=pointer]:
+            - /url: /develop
+          - link "AI Cookbook" [ref=e15] [cursor=pointer]:
+            - /url: /ai-cookbook
+          - link "Code Exchange" [ref=e16] [cursor=pointer]:
+            - /url: https://temporal.io/code-exchange
+            - text: Code Exchange
+            - img [ref=e17]
+          - link "Temporal Cloud" [ref=e19] [cursor=pointer]:
+            - /url: /cloud
+        - generic [ref=e20]:
+          - button "Ask AI" [ref=e21] [cursor=pointer]:
+            - img [ref=e22]
+            - generic [ref=e26]: Ask AI
+          - button "Switch between dark and light mode (currently system mode)" [ref=e28] [cursor=pointer]:
+            - img [ref=e29]
+          - button "Search (Ctrl+K)" [ref=e32] [cursor=pointer]:
+            - generic [ref=e33]:
+              - img [ref=e34]
+              - generic [ref=e36]: Search
+            - generic [ref=e37]:
+              - img [ref=e39]
+              - generic [ref=e41]: K
+    - generic [ref=e44]:
+      - complementary [ref=e45]:
+        - generic [ref=e47]:
+          - navigation "Docs sidebar" [ref=e48]:
+            - list [ref=e49]:
+              - listitem [ref=e50]:
+                - link "Documentation Home" [ref=e51] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=e52]:
+                - link "Quickstarts" [ref=e53] [cursor=pointer]:
+                  - /url: /quickstarts
+              - listitem [ref=e54]:
+                - generic [ref=e55]:
+                  - link "Evaluate" [ref=e56] [cursor=pointer]:
+                    - /url: /evaluate/
+                  - button "Collapse sidebar category 'Evaluate'" [expanded] [ref=e57] [cursor=pointer]
+                - list [ref=e58]:
+                  - listitem [ref=e59]:
+                    - link "Why Temporal" [ref=e60] [cursor=pointer]:
+                      - /url: /evaluate/why-temporal
+                  - listitem [ref=e61]:
+                    - link "Understanding Temporal" [ref=e62] [cursor=pointer]:
+                      - /url: /evaluate/understanding-temporal
+                  - listitem [ref=e63]:
+                    - generic [ref=e64]:
+                      - link "Features" [ref=e65] [cursor=pointer]:
+                        - /url: /evaluate/development-production-features/
+                      - button "Expand sidebar category 'Features'" [ref=e66] [cursor=pointer]
+                  - listitem [ref=e67]:
+                    - generic [ref=e68]:
+                      - link "Temporal Cloud" [ref=e69] [cursor=pointer]:
+                        - /url: /cloud/introduction
+                      - button "Expand sidebar category 'Temporal Cloud'" [ref=e70] [cursor=pointer]
+                  - listitem [ref=e71]:
+                    - link "Security" [ref=e72] [cursor=pointer]:
+                      - /url: /security
+                  - listitem [ref=e73]:
+                    - link "Use Cases" [ref=e74] [cursor=pointer]:
+                      - /url: /evaluate/use-cases-design-patterns
+              - listitem [ref=e75]:
+                - generic [ref=e76]:
+                  - link "Develop" [ref=e77] [cursor=pointer]:
+                    - /url: /develop/
+                  - button "Collapse sidebar category 'Develop'" [expanded] [ref=e78] [cursor=pointer]
+                - list [ref=e79]:
+                  - listitem [ref=e80]:
+                    - generic [ref=e81]:
+                      - link "Go SDK" [ref=e82] [cursor=pointer]:
+                        - /url: /develop/go/
+                      - button "Expand sidebar category 'Go SDK'" [ref=e83] [cursor=pointer]
+                  - listitem [ref=e84]:
+                    - generic [ref=e85]:
+                      - link "Java SDK" [ref=e86] [cursor=pointer]:
+                        - /url: /develop/java/
+                      - button "Expand sidebar category 'Java SDK'" [ref=e87] [cursor=pointer]
+                  - listitem [ref=e88]:
+                    - generic [ref=e89]:
+                      - link "PHP SDK" [ref=e90] [cursor=pointer]:
+                        - /url: /develop/php/
+                      - button "Expand sidebar category 'PHP SDK'" [ref=e91] [cursor=pointer]
+                  - listitem [ref=e92]:
+                    - generic [ref=e93]:
+                      - link "Python SDK" [ref=e94] [cursor=pointer]:
+                        - /url: /develop/python/
+                      - button "Expand sidebar category 'Python SDK'" [ref=e95] [cursor=pointer]
+                  - listitem [ref=e96]:
+                    - generic [ref=e97]:
+                      - link "TypeScript SDK" [ref=e98] [cursor=pointer]:
+                        - /url: /develop/typescript/
+                      - button "Collapse sidebar category 'TypeScript SDK'" [expanded] [ref=e99] [cursor=pointer]
+                    - list [ref=e100]:
+                      - listitem [ref=e101]:
+                        - link "Quickstart - Setup" [ref=e102] [cursor=pointer]:
+                          - /url: /develop/typescript/set-up-your-local-typescript
+                      - listitem [ref=e103]:
+                        - link "Core application" [ref=e104] [cursor=pointer]:
+                          - /url: /develop/typescript/core-application
+                      - listitem [ref=e105]:
+                        - link "Temporal Client" [ref=e106] [cursor=pointer]:
+                          - /url: /develop/typescript/temporal-client
+                      - listitem [ref=e107]:
+                        - link "Namespaces" [ref=e108] [cursor=pointer]:
+                          - /url: /develop/typescript/namespaces
+                      - listitem [ref=e109]:
+                        - link "Testing" [ref=e110] [cursor=pointer]:
+                          - /url: /develop/typescript/testing-suite
+                      - listitem [ref=e111]:
+                        - link "Failure detection" [ref=e112] [cursor=pointer]:
+                          - /url: /develop/typescript/failure-detection
+                      - listitem [ref=e113]:
+                        - link "Messages" [ref=e114] [cursor=pointer]:
+                          - /url: /develop/typescript/message-passing
+                      - listitem [ref=e115]:
+                        - link "Interrupt a Workflow" [ref=e116] [cursor=pointer]:
+                          - /url: /develop/typescript/cancellation
+                      - listitem [ref=e117]:
+                        - link "Asynchronous Activity Completion" [ref=e118] [cursor=pointer]:
+                          - /url: /develop/typescript/asynchronous-activity-completion
+                      - listitem [ref=e119]:
+                        - link "Versioning" [ref=e120] [cursor=pointer]:
+                          - /url: /develop/typescript/versioning
+                      - listitem [ref=e121]:
+                        - link "Observability" [ref=e122] [cursor=pointer]:
+                          - /url: /develop/typescript/observability
+                      - listitem [ref=e123]:
+                        - link "Benign exceptions" [ref=e124] [cursor=pointer]:
+                          - /url: /develop/typescript/benign-exceptions
+                      - listitem [ref=e125]:
+                        - link "Enriching the UI" [ref=e126] [cursor=pointer]:
+                          - /url: /develop/typescript/enriching-ui
+                      - listitem [ref=e127]:
+                        - link "Debugging" [ref=e128] [cursor=pointer]:
+                          - /url: /develop/typescript/debugging
+                      - listitem [ref=e129]:
+                        - link "Schedules" [ref=e130] [cursor=pointer]:
+                          - /url: /develop/typescript/schedules
+                      - listitem [ref=e131]:
+                        - link "Converters and encryption" [ref=e132] [cursor=pointer]:
+                          - /url: /develop/typescript/converters-and-encryption
+                      - listitem [ref=e133]:
+                        - link "Durable Timers" [ref=e134] [cursor=pointer]:
+                          - /url: /develop/typescript/timers
+                      - listitem [ref=e135]:
+                        - link "Temporal Nexus" [ref=e136] [cursor=pointer]:
+                          - /url: /develop/typescript/nexus
+                      - listitem [ref=e137]:
+                        - link "Child Workflows" [ref=e138] [cursor=pointer]:
+                          - /url: /develop/typescript/child-workflows
+                      - listitem [ref=e139]:
+                        - link "Continue-As-New" [ref=e140] [cursor=pointer]:
+                          - /url: /develop/typescript/continue-as-new
+                      - listitem [ref=e141]:
+                        - link "Interceptors" [ref=e142] [cursor=pointer]:
+                          - /url: /develop/typescript/interceptors
+                      - listitem [ref=e143]:
+                        - link "Vercel AI SDK Integration" [ref=e144] [cursor=pointer]:
+                          - /url: /develop/typescript/ai-sdk
+                  - listitem [ref=e145]:
+                    - generic [ref=e146]:
+                      - link ".NET SDK" [ref=e147] [cursor=pointer]:
+                        - /url: /develop/dotnet/
+                      - button "Expand sidebar category '.NET SDK'" [ref=e148] [cursor=pointer]
+                  - listitem [ref=e149]:
+                    - generic [ref=e150]:
+                      - link "Ruby SDK" [ref=e151] [cursor=pointer]:
+                        - /url: /develop/ruby/
+                      - button "Expand sidebar category 'Ruby SDK'" [ref=e152] [cursor=pointer]
+                  - listitem [ref=e153]:
+                    - link "Environment configuration" [ref=e154] [cursor=pointer]:
+                      - /url: /develop/environment-configuration
+                  - listitem [ref=e155]:
+                    - link "Activity retry simulator" [ref=e156] [cursor=pointer]:
+                      - /url: /develop/activity-retry-simulator
+                  - listitem [ref=e157]:
+                    - link "Worker performance" [ref=e158] [cursor=pointer]:
+                      - /url: /develop/worker-performance
+                  - listitem [ref=e159]:
+                    - link "Safe deployments" [ref=e160] [cursor=pointer]:
+                      - /url: /develop/safe-deployments
+                  - listitem [ref=e161]:
+                    - link "Plugins guide" [ref=e162] [cursor=pointer]:
+                      - /url: /develop/plugins-guide
+              - listitem [ref=e163]:
+                - generic [ref=e164]:
+                  - link "Deploy to production" [ref=e165] [cursor=pointer]:
+                    - /url: /production-deployment
+                  - button "Collapse sidebar category 'Deploy to production'" [expanded] [ref=e166] [cursor=pointer]
+                - list [ref=e167]:
+                  - listitem [ref=e168]:
+                    - generic [ref=e169]:
+                      - link "Temporal Cloud" [ref=e170] [cursor=pointer]:
+                        - /url: /cloud
+                      - button "Expand sidebar category 'Temporal Cloud'" [ref=e171] [cursor=pointer]
+                  - listitem [ref=e172]:
+                    - link "Codecs and Encryption" [ref=e173] [cursor=pointer]:
+                      - /url: /production-deployment/data-encryption
+                  - listitem [ref=e174]:
+                    - generic [ref=e175]:
+                      - link "Self-host" [ref=e176] [cursor=pointer]:
+                        - /url: /self-hosted-guide
+                      - button "Expand sidebar category 'Self-host'" [ref=e177] [cursor=pointer]
+                  - listitem [ref=e178]:
+                    - generic [ref=e179]:
+                      - link "Worker deployments" [ref=e180] [cursor=pointer]:
+                        - /url: /production-deployment/worker-deployments
+                      - button "Expand sidebar category 'Worker deployments'" [ref=e181] [cursor=pointer]
+              - listitem [ref=e182]:
+                - generic [ref=e183]:
+                  - link "CLI (temporal)" [ref=e184] [cursor=pointer]:
+                    - /url: /cli
+                  - button "Expand sidebar category 'CLI (temporal)'" [ref=e185] [cursor=pointer]
+              - listitem [ref=e186]:
+                - generic [ref=e187]:
+                  - link "References" [ref=e188] [cursor=pointer]:
+                    - /url: /references/
+                  - button "Expand sidebar category 'References'" [ref=e189] [cursor=pointer]
+              - listitem [ref=e190]:
+                - generic [ref=e191]:
+                  - link "Troubleshooting" [ref=e192] [cursor=pointer]:
+                    - /url: /troubleshooting/
+                  - button "Expand sidebar category 'Troubleshooting'" [ref=e193] [cursor=pointer]
+              - listitem [ref=e194]:
+                - generic [ref=e195]:
+                  - link "Best Practices" [ref=e196] [cursor=pointer]:
+                    - /url: /best-practices/
+                  - button "Expand sidebar category 'Best Practices'" [ref=e197] [cursor=pointer]
+              - listitem [ref=e198]:
+                - generic [ref=e199]:
+                  - link "Encyclopedia" [ref=e200] [cursor=pointer]:
+                    - /url: /encyclopedia/
+                  - button "Expand sidebar category 'Encyclopedia'" [ref=e201] [cursor=pointer]
+              - listitem [ref=e202]:
+                - link "Glossary" [ref=e203] [cursor=pointer]:
+                  - /url: /glossary
+          - button "Collapse sidebar" [ref=e204] [cursor=pointer]:
+            - img [ref=e205]
+      - main [ref=e209]:
+        - generic [ref=e211]:
+          - generic [ref=e213]:
+            - article [ref=e214]:
+              - navigation "Breadcrumbs" [ref=e215]:
+                - list [ref=e216]:
+                  - listitem [ref=e217]:
+                    - link "Home page" [ref=e218] [cursor=pointer]:
+                      - /url: /
+                      - img [ref=e219]
+                  - listitem [ref=e221]:
+                    - link "Develop" [ref=e222] [cursor=pointer]:
+                      - /url: /develop/
+                  - listitem [ref=e223]:
+                    - link "TypeScript SDK" [ref=e224] [cursor=pointer]:
+                      - /url: /develop/typescript/
+                  - listitem [ref=e225]:
+                    - generic [ref=e226]: Core application
+              - generic [ref=e227]:
+                - heading "Core application - TypeScript SDK" [level=1] [ref=e229]
+                - paragraph [ref=e230]:
+                  - text: The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a
+                  - link "Temporal Application" [ref=e231] [cursor=pointer]:
+                    - /url: /temporal#temporal-application
+                  - text: —that is, all the relevant steps to start a
+                  - link "Workflow Execution" [ref=e232] [cursor=pointer]:
+                    - /url: "#develop-workflows"
+                  - text: that executes an
+                  - link "Activity" [ref=e233] [cursor=pointer]:
+                    - /url: "#develop-activities"
+                  - text: .
+                - paragraph [ref=e234]: "In this section you can find the following:"
+                - list [ref=e235]:
+                  - listitem [ref=e236]:
+                    - link "Run a development Temporal Service" [ref=e237] [cursor=pointer]:
+                      - /url: "#run-a-development-server"
+                  - listitem [ref=e238]:
+                    - link "Connect to a development Temporal Service" [ref=e239] [cursor=pointer]:
+                      - /url: "#connect-to-a-dev-cluster"
+                  - listitem [ref=e240]:
+                    - link "Connect to Temporal Cloud" [ref=e241] [cursor=pointer]:
+                      - /url: "#connect-to-temporal-cloud"
+                  - listitem [ref=e242]:
+                    - link "Develop a Workflow" [ref=e243] [cursor=pointer]:
+                      - /url: "#develop-workflows"
+                  - listitem [ref=e244]:
+                    - link "Develop an Activity" [ref=e245] [cursor=pointer]:
+                      - /url: "#develop-activities"
+                  - listitem [ref=e246]:
+                    - link "Start an Activity Execution" [ref=e247] [cursor=pointer]:
+                      - /url: "#activity-execution"
+                  - listitem [ref=e248]:
+                    - link "Run a dev Worker" [ref=e249] [cursor=pointer]:
+                      - /url: "#run-a-dev-worker"
+                  - listitem [ref=e250]:
+                    - link "Run a Worker on Docker" [ref=e251] [cursor=pointer]:
+                      - /url: "#run-a-worker-on-docker"
+                  - listitem [ref=e252]:
+                    - link "Run a Temporal Cloud Worker" [ref=e253] [cursor=pointer]:
+                      - /url: "#run-a-dev-worker"
+                  - listitem [ref=e254]:
+                    - link "Start a Workflow Execution" [ref=e255] [cursor=pointer]:
+                      - /url: "#start-workflow-execution"
+                - heading "How to install the Temporal CLI and run a development serverDirect link to How to install the Temporal CLI and run a development server" [level=2] [ref=e256]:
+                  - text: How to install the Temporal CLI and run a development server
+                  - link "Direct link to How to install the Temporal CLI and run a development server" [ref=e257] [cursor=pointer]:
+                    - /url: "#run-a-development-server"
+                    - text: "#"
+                - paragraph [ref=e258]:
+                  - text: This section describes how to install the
+                  - link "Temporal CLI" [ref=e259] [cursor=pointer]:
+                    - /url: /cli
+                  - text: and run a development Temporal Service. The local development Temporal Service comes packaged with the
+                  - link "Temporal Web UI" [ref=e260] [cursor=pointer]:
+                    - /url: /web-ui
+                  - text: .
+                - paragraph [ref=e261]:
+                  - text: For information on deploying and running a self-hosted production Temporal Service, see the
+                  - link "Self-hosted guide" [ref=e262] [cursor=pointer]:
+                    - /url: /self-hosted-guide
+                  - text: ", or sign up for"
+                  - link "Temporal Cloud" [ref=e263] [cursor=pointer]:
+                    - /url: /cloud
+                  - text: and let us run your production Temporal Service for you.
+                - paragraph [ref=e264]: Temporal CLI is a tool for interacting with a Temporal Service from the command line and it includes a distribution of the Temporal Server and Web UI. This local development Temporal Service runs as a single process with zero runtime dependencies and it supports persistence to disk and in-memory mode through SQLite.
+                - paragraph [ref=e265]:
+                  - strong [ref=e266]: Install the Temporal CLI
+                - paragraph [ref=e267]: The Temporal CLI is available on macOS, Windows, and Linux.
+                - heading "macOSDirect link to macOS" [level=3] [ref=e268]:
+                  - text: macOS
+                  - link "Direct link to macOS" [ref=e269] [cursor=pointer]:
+                    - /url: "#macos"
+                    - text: "#"
+                - paragraph [ref=e270]:
+                  - strong [ref=e271]: How to install the Temporal CLI on macOS
+                - paragraph [ref=e272]: "Choose one of the following install methods to install the Temporal CLI on macOS:"
+                - paragraph [ref=e273]:
+                  - strong [ref=e274]: Install the Temporal CLI with Homebrew
+                - generic [ref=e276]:
+                  - code [ref=e278]:
+                    - generic [ref=e279]: brew install temporal
+                  - button "Copy code to clipboard" [ref=e281] [cursor=pointer]:
+                    - generic [ref=e282]:
+                      - img [ref=e283]
+                      - img [ref=e285]
+                - paragraph [ref=e287]:
+                  - strong [ref=e288]: Install the Temporal CLI from CDN
+                - list [ref=e289]:
+                  - listitem [ref=e290]: Select the platform and architecture needed.
+                - list [ref=e291]:
+                  - listitem [ref=e292]:
+                    - text: "Download for Darwin amd64:"
+                    - link "https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64" [ref=e293] [cursor=pointer]:
+                      - /url: https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64
+                  - listitem [ref=e294]:
+                    - text: "Download for Darwin arm64:"
+                    - link "https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64" [ref=e295] [cursor=pointer]:
+                      - /url: https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64
+                - list [ref=e296]:
+                  - listitem [ref=e297]:
+                    - paragraph [ref=e298]: Extract the downloaded archive.
+                  - listitem [ref=e299]:
+                    - paragraph [ref=e300]:
+                      - text: Add the
+                      - code [ref=e301]: temporal
+                      - text: binary to your PATH.
+                - heading "LinuxDirect link to Linux" [level=3] [ref=e302]:
+                  - text: Linux
+                  - link "Direct link to Linux" [ref=e303] [cursor=pointer]:
+                    - /url: "#linux"
+                    - text: "#"
+                - paragraph [ref=e304]:
+                  - strong [ref=e305]: How to install the Temporal CLI on Linux
+                - paragraph [ref=e306]: "Choose one of the following install methods to install the Temporal CLI on Linux:"
+                - paragraph [ref=e307]:
+                  - strong [ref=e308]: Install the Temporal CLI with Homebrew
+                - generic [ref=e310]:
+                  - code [ref=e312]:
+                    - generic [ref=e313]: brew install temporal
+                  - button "Copy code to clipboard" [ref=e315] [cursor=pointer]:
+                    - generic [ref=e316]:
+                      - img [ref=e317]
+                      - img [ref=e319]
+                - paragraph [ref=e321]:
+                  - strong [ref=e322]: Install the Temporal CLI from CDN
+                - list [ref=e323]:
+                  - listitem [ref=e324]: Select the platform and architecture needed.
+                - list [ref=e325]:
+                  - listitem [ref=e326]:
+                    - text: "Download for Linux amd64:"
+                    - link "https://temporal.download/cli/archive/latest?platform=linux&arch=amd64" [ref=e327] [cursor=pointer]:
+                      - /url: https://temporal.download/cli/archive/latest?platform=linux&arch=amd64
+                  - listitem [ref=e328]:
+                    - text: "Download for Linux arm64:"
+                    - link "https://temporal.download/cli/archive/latest?platform=linux&arch=arm64" [ref=e329] [cursor=pointer]:
+                      - /url: https://temporal.download/cli/archive/latest?platform=linux&arch=arm64
+                - list [ref=e330]:
+                  - listitem [ref=e331]:
+                    - paragraph [ref=e332]: Extract the downloaded archive.
+                  - listitem [ref=e333]:
+                    - paragraph [ref=e334]:
+                      - text: Add the
+                      - code [ref=e335]: temporal
+                      - text: binary to your PATH.
+                - heading "WindowsDirect link to Windows" [level=3] [ref=e336]:
+                  - text: Windows
+                  - link "Direct link to Windows" [ref=e337] [cursor=pointer]:
+                    - /url: "#windows"
+                    - text: "#"
+                - paragraph [ref=e338]:
+                  - strong [ref=e339]: How to install the Temporal CLI on Windows
+                - paragraph [ref=e340]: "Follow these instructions to install the Temporal CLI on Windows:"
+                - paragraph [ref=e341]:
+                  - strong [ref=e342]: Install the Temporal CLI from CDN
+                - list [ref=e343]:
+                  - listitem [ref=e344]: Select the platform and architecture needed and download the binary.
+                - list [ref=e345]:
+                  - listitem [ref=e346]:
+                    - text: "Download for Windows amd64:"
+                    - link "https://temporal.download/cli/archive/latest?platform=windows&arch=amd64" [ref=e347] [cursor=pointer]:
+                      - /url: https://temporal.download/cli/archive/latest?platform=windows&arch=amd64
+                  - listitem [ref=e348]:
+                    - text: "Download for Windows arm64:"
+                    - link "https://temporal.download/cli/archive/latest?platform=windows&arch=arm64" [ref=e349] [cursor=pointer]:
+                      - /url: https://temporal.download/cli/archive/latest?platform=windows&arch=arm64
+                - list [ref=e350]:
+                  - listitem [ref=e351]:
+                    - paragraph [ref=e352]: Extract the downloaded archive.
+                  - listitem [ref=e353]:
+                    - paragraph [ref=e354]:
+                      - text: Add the
+                      - code [ref=e355]: temporal.exe
+                      - text: binary to your PATH.
+                - heading "Start the Temporal Development ServerDirect link to Start the Temporal Development Server" [level=3] [ref=e356]:
+                  - text: Start the Temporal Development Server
+                  - link "Direct link to Start the Temporal Development Server" [ref=e357] [cursor=pointer]:
+                    - /url: "#start-the-temporal-development-server"
+                    - text: "#"
+                - paragraph [ref=e358]:
+                  - text: Start the Temporal Development Server by using the
+                  - code [ref=e359]: server start-dev
+                  - text: command.
+                - generic [ref=e361]:
+                  - code [ref=e363]:
+                    - generic [ref=e364]: temporal server start-dev
+                  - button "Copy code to clipboard" [ref=e366] [cursor=pointer]:
+                    - generic [ref=e367]:
+                      - img [ref=e368]
+                      - img [ref=e370]
+                - paragraph [ref=e372]:
+                  - text: This command automatically starts the Web UI, creates the default
+                  - link "Namespace" [ref=e373] [cursor=pointer]:
+                    - /url: /namespaces
+                  - text: ", and uses an in-memory database."
+                - paragraph [ref=e374]:
+                  - text: The Temporal Server should be available on
+                  - code [ref=e375]: localhost:7233
+                  - text: and the Temporal Web UI should be accessible at
+                  - link "http://localhost:8233" [ref=e376] [cursor=pointer]:
+                    - /url: http://localhost:8233/
+                    - code [ref=e377]: http://localhost:8233
+                  - text: .
+                - paragraph [ref=e378]: "The server's startup configuration can be customized using command line options. For a full list of options, run:"
+                - generic [ref=e380]:
+                  - code [ref=e382]:
+                    - generic [ref=e383]: temporal server start-dev --help
+                  - button "Copy code to clipboard" [ref=e385] [cursor=pointer]:
+                    - generic [ref=e386]:
+                      - img [ref=e387]
+                      - img [ref=e389]
+                - heading "How to install a Temporal SDKDirect link to How to install a Temporal SDK" [level=2] [ref=e391]:
+                  - text: How to install a Temporal SDK
+                  - link "Direct link to How to install a Temporal SDK" [ref=e392] [cursor=pointer]:
+                    - /url: "#install-a-temporal-sdk"
+                    - text: "#"
+                - paragraph [ref=e393]:
+                  - text: A
+                  - link "Temporal SDK" [ref=e394] [cursor=pointer]:
+                    - /url: /encyclopedia/temporal-sdks
+                  - text: provides a framework for
+                  - link "Temporal Application" [ref=e395] [cursor=pointer]:
+                    - /url: /temporal#temporal-application
+                  - text: development.
+                - paragraph [ref=e396]: "An SDK provides you with the following:"
+                - list [ref=e397]:
+                  - listitem [ref=e398]:
+                    - text: A
+                    - link "Temporal Client" [ref=e399] [cursor=pointer]:
+                      - /url: /encyclopedia/temporal-sdks#temporal-client
+                    - text: to communicate with a
+                    - link "Temporal Service" [ref=e400] [cursor=pointer]:
+                      - /url: /temporal-service
+                    - text: .
+                  - listitem [ref=e401]:
+                    - text: APIs to develop
+                    - link "Workflows" [ref=e402] [cursor=pointer]:
+                      - /url: /workflows
+                    - text: .
+                  - listitem [ref=e403]:
+                    - text: APIs to create and manage
+                    - link "Worker Processes" [ref=e404] [cursor=pointer]:
+                      - /url: /workers#worker
+                    - text: .
+                  - listitem [ref=e405]:
+                    - text: APIs to author
+                    - link "Activities" [ref=e406] [cursor=pointer]:
+                      - /url: /activity-definition
+                    - text: .
+                - paragraph [ref=e407]:
+                  - link "NPM" [ref=e408] [cursor=pointer]:
+                    - /url: https://www.npmjs.com/search?q=author%3Atemporal-sdk-team
+                    - img "NPM" [ref=e409]
+                - paragraph [ref=e410]: This project requires Node.js 18 or later.
+                - paragraph [ref=e411]:
+                  - strong [ref=e412]: Create a project
+                - generic [ref=e414]:
+                  - code [ref=e416]:
+                    - generic [ref=e417]: npx @temporalio/create@latest ./your-app
+                  - button "Copy code to clipboard" [ref=e419] [cursor=pointer]:
+                    - generic [ref=e420]:
+                      - img [ref=e421]
+                      - img [ref=e423]
+                - paragraph [ref=e425]:
+                  - strong [ref=e426]: Add to an existing project
+                - generic [ref=e428]:
+                  - code [ref=e430]:
+                    - generic [ref=e431]: npm install @temporalio/client @temporalio/worker @temporalio/workflow @temporalio/activity @temporalio/common
+                  - generic [ref=e432]:
+                    - button "Toggle word wrap" [ref=e433] [cursor=pointer]:
+                      - img [ref=e434]
+                    - button "Copy code to clipboard" [ref=e436] [cursor=pointer]:
+                      - generic [ref=e437]:
+                        - img [ref=e438]
+                        - img [ref=e440]
+                - generic [ref=e442]:
+                  - generic [ref=e443]:
+                    - img [ref=e445]
+                    - text: note
+                  - paragraph [ref=e448]: The TypeScript SDK is designed with TypeScript-first developer experience in mind, but it works equally well with JavaScript.
+                - heading "How to find the TypeScript SDK API referenceDirect link to How to find the TypeScript SDK API reference" [level=3] [ref=e449]:
+                  - text: How to find the TypeScript SDK API reference
+                  - link "Direct link to How to find the TypeScript SDK API reference" [ref=e450] [cursor=pointer]:
+                    - /url: "#api-reference"
+                    - text: "#"
+                - paragraph [ref=e451]:
+                  - text: The Temporal TypeScript SDK API reference is published to
+                  - link "typescript.temporal.io" [ref=e452] [cursor=pointer]:
+                    - /url: https://typescript.temporal.io
+                  - text: .
+                - heading "Where are SDK-specific code examples?Direct link to Where are SDK-specific code examples?" [level=3] [ref=e453]:
+                  - text: Where are SDK-specific code examples?
+                  - link "Direct link to Where are SDK-specific code examples?" [ref=e454] [cursor=pointer]:
+                    - /url: "#code-samples"
+                    - text: "#"
+                - paragraph [ref=e455]:
+                  - text: You can find a complete list of executable code samples in
+                  - link "Temporal's GitHub repository" [ref=e456] [cursor=pointer]:
+                    - /url: https://github.com/temporalio?q=samples-&type=all&language=&sort=
+                  - text: .
+                - paragraph [ref=e457]:
+                  - text: Additionally, several of the
+                  - link "Tutorials" [ref=e458] [cursor=pointer]:
+                    - /url: https://learn.temporal.io
+                  - text: are backed by a fully executable template application.
+                - paragraph [ref=e459]:
+                  - text: Use the
+                  - link "TypeScript samples library" [ref=e460] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/samples-typescript
+                  - text: stored on GitHub to demonstrate various capabilities of Temporal.
+                - paragraph [ref=e461]:
+                  - strong [ref=e462]: Where can I find video demos?
+                - paragraph [ref=e463]:
+                  - link "Temporal TypeScript YouTube playlist" [ref=e464] [cursor=pointer]:
+                    - /url: https://www.youtube.com/playlist?list=PLl9kRkvFJrlTavecydpk9r6cF7qBmQJvb
+                  - text: .
+                - heading "How to import an ECMAScript moduleDirect link to How to import an ECMAScript module" [level=3] [ref=e465]:
+                  - text: How to import an ECMAScript module
+                  - link "Direct link to How to import an ECMAScript module" [ref=e466] [cursor=pointer]:
+                    - /url: "#ecmascript-modules"
+                    - text: "#"
+                - paragraph [ref=e467]:
+                  - text: The JavaScript ecosystem is quickly moving toward publishing ECMAScript modules (ESM) instead of CommonJS modules. For example,
+                  - code [ref=e468]: node-fetch@3
+                  - text: is ESM, but
+                  - code [ref=e469]: node-fetch@2
+                  - text: is CommonJS.
+                - paragraph [ref=e470]:
+                  - text: For more information about importing a pure ESM dependency, see our
+                  - link "Fetch ESM" [ref=e471] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/samples-typescript/tree/main/fetch-esm
+                  - text: "sample for the necessary configuration changes:"
+                - list [ref=e472]:
+                  - listitem [ref=e473]:
+                    - code [ref=e474]: package.json
+                    - text: must have include the
+                    - code [ref=e475]: "\"type\": \"module\""
+                    - text: attribute.
+                  - listitem [ref=e476]:
+                    - code [ref=e477]: tsconfig.json
+                    - text: should output in
+                    - code [ref=e478]: esnext
+                    - text: format.
+                  - listitem [ref=e479]:
+                    - text: Imports must include the
+                    - code [ref=e480]: .js
+                    - text: file extension.
+                - heading "Linting and types in TypeScriptDirect link to Linting and types in TypeScript" [level=2] [ref=e481]:
+                  - text: Linting and types in TypeScript
+                  - link "Direct link to Linting and types in TypeScript" [ref=e482] [cursor=pointer]:
+                    - /url: "#linting-and-types"
+                    - text: "#"
+                - paragraph [ref=e483]:
+                  - text: If you started your project with
+                  - code [ref=e484]: "@temporalio/create"
+                  - text: ", you already have our recommended TypeScript and ESLint configurations."
+                - paragraph [ref=e485]:
+                  - text: If you incrementally added Temporal to an existing app, we do recommend setting up linting and types because they help catch bugs well before you ship them to production, and they improve your development feedback loop. Take a look at our recommended
+                  - link ".eslintrc" [ref=e486] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/samples-typescript/blob/main/.shared/.eslintrc.js
+                  - text: file and tweak to suit your needs.
+                - heading "How to connect a Temporal Client to a Temporal ServiceDirect link to How to connect a Temporal Client to a Temporal Service" [level=2] [ref=e487]:
+                  - text: How to connect a Temporal Client to a Temporal Service
+                  - link "Direct link to How to connect a Temporal Client to a Temporal Service" [ref=e488] [cursor=pointer]:
+                    - /url: "#connect-to-a-dev-cluster"
+                    - text: "#"
+                - paragraph [ref=e489]:
+                  - text: A
+                  - link "Temporal Client" [ref=e490] [cursor=pointer]:
+                    - /url: /encyclopedia/temporal-sdks#temporal-client
+                  - text: enables you to communicate with the
+                  - link "Temporal Service" [ref=e491] [cursor=pointer]:
+                    - /url: /temporal-service
+                  - text: ". Communication with a Temporal Service includes, but isn't limited to, the following:"
+                - list [ref=e492]:
+                  - listitem [ref=e493]: Starting Workflow Executions.
+                  - listitem [ref=e494]: Sending Signals to Workflow Executions.
+                  - listitem [ref=e495]: Sending Queries to Workflow Executions.
+                  - listitem [ref=e496]: Getting the results of a Workflow Execution.
+                  - listitem [ref=e497]: Providing an Activity Task Token.
+                - generic [ref=e498]:
+                  - generic [ref=e499]:
+                    - img [ref=e501]
+                    - text: caution
+                  - paragraph [ref=e504]: A Temporal Client cannot be initialized and used inside a Workflow. However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with a Temporal Service.
+                - paragraph [ref=e505]:
+                  - text: When you are running a Temporal Service locally (such as the
+                  - link "Temporal CLI" [ref=e506] [cursor=pointer]:
+                    - /url: https://docs.temporal.io/cli/server#start-dev
+                  - text: ), the number of connection options you must provide is minimal. Many SDKs default to the local host or IP address and port that Temporalite and
+                  - link "Docker Compose" [ref=e507] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/docker-compose
+                  - text: serve (
+                  - code [ref=e508]: 127.0.0.1:7233
+                  - text: ).
+                - paragraph [ref=e509]:
+                  - text: Creating a
+                  - link "Connection" [ref=e510] [cursor=pointer]:
+                    - /url: https://typescript.temporal.io/api/classes/client.Connection
+                  - text: connects to the Temporal Service, and you can pass the
+                  - code [ref=e511]: Connection
+                  - text: instance when creating the
+                  - link "Client" [ref=e512] [cursor=pointer]:
+                    - /url: https://typescript.temporal.io/api/classes/client.Client#connection
+                  - text: .
+                - paragraph [ref=e513]:
+                  - text: If you omit the
+                  - code [ref=e514]: Connection
+                  - text: and just create a
+                  - code [ref=e515]: new Client()
+                  - text: ", it will connect to"
+                  - code [ref=e516]: localhost:7233
+                  - text: .
+                - generic [ref=e518]:
+                  - code [ref=e520]:
+                    - generic [ref=e521]: "import { Client } from '@temporalio/client';"
+                    - generic [ref=e522]: "async function run() {"
+                    - generic [ref=e523]: const client = new Client();
+                    - generic [ref=e524]: // . . .
+                    - generic [ref=e525]: await client.connection.close();
+                    - generic [ref=e526]: "}"
+                    - generic [ref=e527]: "run().catch((err) => {"
+                    - generic [ref=e528]: console.error(err);
+                    - generic [ref=e529]: process.exit(1);
+                    - generic [ref=e530]: "});"
+                  - button "Copy code to clipboard" [ref=e532] [cursor=pointer]:
+                    - generic [ref=e533]:
+                      - img [ref=e534]
+                      - img [ref=e536]
+                - heading "How to connect to Temporal CloudDirect link to How to connect to Temporal Cloud" [level=2] [ref=e538]:
+                  - text: How to connect to Temporal Cloud
+                  - link "Direct link to How to connect to Temporal Cloud" [ref=e539] [cursor=pointer]:
+                    - /url: "#connect-to-temporal-cloud"
+                    - text: "#"
+                - paragraph [ref=e540]:
+                  - text: When you connect to
+                  - link "Temporal Cloud" [ref=e541] [cursor=pointer]:
+                    - /url: /cloud
+                  - text: ", you need to provide additional connection and client options that include the following:"
+                - list [ref=e542]:
+                  - listitem [ref=e543]:
+                    - text: The
+                    - link "Temporal Cloud Namespace Id" [ref=e544] [cursor=pointer]:
+                      - /url: /cloud/namespaces#temporal-cloud-namespace-id
+                    - text: .
+                  - listitem [ref=e545]:
+                    - text: The
+                    - link "Namespace's gRPC endpoint" [ref=e546] [cursor=pointer]:
+                      - /url: /cloud/namespaces#temporal-cloud-grpc-endpoint
+                    - text: . An endpoint listing is available at the
+                    - link "Temporal Cloud Website" [ref=e547] [cursor=pointer]:
+                      - /url: https://cloud.temporal.io/namespaces
+                    - text: on each Namespace detail page. The endpoint contains the Namespace Id and port.
+                  - listitem [ref=e548]: mTLS CA certificate.
+                  - listitem [ref=e549]: mTLS private key.
+                - paragraph [ref=e550]:
+                  - text: For more information about managing and generating client certificates for Temporal Cloud, see
+                  - link "How to manage certificates in Temporal Cloud" [ref=e551] [cursor=pointer]:
+                    - /url: /cloud/certificates
+                  - text: .
+                - paragraph [ref=e552]:
+                  - text: For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see
+                  - link "Temporal Customization Samples" [ref=e553] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/samples-server
+                  - text: .
+                - paragraph [ref=e554]:
+                  - text: Create a
+                  - link "Connection" [ref=e555] [cursor=pointer]:
+                    - /url: https://typescript.temporal.io/api/classes/client.Connection
+                    - code [ref=e556]: Connection
+                  - text: with a
+                  - link "connectionOptions" [ref=e557] [cursor=pointer]:
+                    - /url: https://typescript.temporal.io/api/interfaces/client.ConnectionOptions
+                    - code [ref=e558]: connectionOptions
+                  - text: object that has your Cloud namespace and client certificate.
+                - generic [ref=e560]:
+                  - code [ref=e562]:
+                    - generic [ref=e563]: "import { Client, Connection } from '@temporalio/client';"
+                    - generic [ref=e564]: import fs from 'fs-extra';
+                    - generic [ref=e565]: "const { NODE_ENV = 'development' } = process.env;"
+                    - generic [ref=e566]: const isDeployed = ['production', 'staging'].includes(NODE_ENV);
+                    - generic [ref=e567]: "async function run() {"
+                    - generic [ref=e568]: const cert = await fs.readFile('./path-to/your.pem');
+                    - generic [ref=e569]: const key = await fs.readFile('./path-to/your.key');
+                    - generic [ref=e570]: "let connectionOptions = {};"
+                    - generic [ref=e571]: "if (isDeployed) {"
+                    - generic [ref=e572]: "connectionOptions = {"
+                    - generic [ref=e573]: "address: 'your-namespace.tmprl.cloud:7233',"
+                    - generic [ref=e574]: "tls: {"
+                    - generic [ref=e575]: "clientCertPair: {"
+                    - generic [ref=e576]: "crt: cert,"
+                    - generic [ref=e577]: key,
+                    - generic [ref=e578]: "},"
+                    - generic [ref=e579]: "},"
+                    - generic [ref=e580]: "};"
+                    - generic [ref=e581]: const connection = await Connection.connect(connectionOptions);
+                    - generic [ref=e582]: "const client = new Client({"
+                    - generic [ref=e583]: connection,
+                    - generic [ref=e584]: "namespace: 'your-namespace',"
+                    - generic [ref=e585]: "});"
+                    - generic [ref=e586]: // . . .
+                    - generic [ref=e587]: await client.connection.close();
+                    - generic [ref=e588]: "}"
+                    - generic [ref=e589]: "}"
+                    - generic [ref=e590]: "run().catch((err) => {"
+                    - generic [ref=e591]: console.error(err);
+                    - generic [ref=e592]: process.exit(1);
+                    - generic [ref=e593]: "});"
+                  - button "Copy code to clipboard" [ref=e595] [cursor=pointer]:
+                    - generic [ref=e596]:
+                      - img [ref=e597]
+                      - img [ref=e599]
+                - heading "How to develop a basic WorkflowDirect link to How to develop a basic Workflow" [level=2] [ref=e601]:
+                  - text: How to develop a basic Workflow
+                  - link "Direct link to How to develop a basic Workflow" [ref=e602] [cursor=pointer]:
+                    - /url: "#develop-workflows"
+                    - text: "#"
+                - paragraph [ref=e603]:
+                  - text: Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a
+                  - link "Workflow Definition" [ref=e604] [cursor=pointer]:
+                    - /url: /workflow-definition
+                  - text: .
+                - paragraph [ref=e605]:
+                  - text: In the Temporal TypeScript SDK programming model, Workflow Definitions are
+                  - emphasis [ref=e606]: just functions
+                  - text: ", which can store state and orchestrate Activity Functions. The following code snippet uses"
+                  - code [ref=e607]: proxyActivities
+                  - text: to schedule a
+                  - code [ref=e608]: greet
+                  - text: Activity in the system to say hello.
+                - paragraph [ref=e609]: A Workflow Definition can have multiple parameters; however, we recommend using a single object parameter.
+                - generic [ref=e611]:
+                  - code [ref=e613]:
+                    - generic [ref=e614]: "type ExampleArgs = {"
+                    - generic [ref=e615]: "name: string;"
+                    - generic [ref=e616]: "};"
+                    - generic [ref=e617]: export async function example(
+                    - generic [ref=e618]: "args: ExampleArgs,"
+                    - generic [ref=e619]: "): Promise<{ greeting: string }> {"
+                    - generic [ref=e620]: const greeting = await greet(args.name);
+                    - generic [ref=e621]: "return { greeting };"
+                    - generic [ref=e622]: "}"
+                  - button "Copy code to clipboard" [ref=e624] [cursor=pointer]:
+                    - generic [ref=e625]:
+                      - img [ref=e626]
+                      - img [ref=e628]
+                - heading "How to define Workflow parametersDirect link to How to define Workflow parameters" [level=3] [ref=e630]:
+                  - text: How to define Workflow parameters
+                  - link "Direct link to How to define Workflow parameters" [ref=e631] [cursor=pointer]:
+                    - /url: "#workflow-parameters"
+                    - text: "#"
+                - paragraph [ref=e632]: Temporal Workflows may have any number of custom parameters. However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow. All Workflow Definition parameters must be serializable.
+                - paragraph [ref=e633]:
+                  - text: You can define and pass parameters in your Workflow. In this example, you define your arguments in your
+                  - code [ref=e634]: client.ts
+                  - text: file and pass those parameters to
+                  - code [ref=e635]: workflow.ts
+                  - text: through your Workflow function.
+                - paragraph [ref=e636]:
+                  - text: Start a Workflow with the parameters that are in the
+                  - code [ref=e637]: client.ts
+                  - text: file. In this example we set the
+                  - code [ref=e638]: name
+                  - text: parameter to
+                  - code [ref=e639]: Temporal
+                  - text: and
+                  - code [ref=e640]: born
+                  - text: to
+                  - code [ref=e641]: "2019"
+                  - text: . Then set the Task Queue and Workflow Id.
+                - paragraph [ref=e642]:
+                  - code [ref=e643]: client.ts
+                - generic [ref=e645]:
+                  - code [ref=e647]:
+                    - generic [ref=e648]: "import { example } from './workflows';"
+                    - generic [ref=e649]: ...
+                    - generic [ref=e650]: "await client.workflow.start(example, {"
+                    - generic [ref=e651]: "args: [{ name: 'Temporal', born: 2019 }],"
+                    - generic [ref=e652]: "taskQueue: 'your-queue',"
+                    - generic [ref=e653]: "workflowId: 'business-meaningful-id',"
+                    - generic [ref=e654]: "});"
+                  - button "Copy code to clipboard" [ref=e656] [cursor=pointer]:
+                    - generic [ref=e657]:
+                      - img [ref=e658]
+                      - img [ref=e660]
+                - paragraph [ref=e662]:
+                  - text: In
+                  - code [ref=e663]: workflows.ts
+                  - text: define the type of the parameter that the Workflow function takes in. The interface
+                  - code [ref=e664]: ExampleParam
+                  - text: is a name we can now use to describe the requirement in the previous example. It still represents having the two properties called
+                  - code [ref=e665]: name
+                  - text: and
+                  - code [ref=e666]: born
+                  - text: that is of the type
+                  - code [ref=e667]: string
+                  - text: . Then define a function that takes in a parameter of the type
+                  - code [ref=e668]: ExampleParam
+                  - text: and return a
+                  - code [ref=e669]: Promise<string>
+                  - text: . The
+                  - code [ref=e670]: Promise
+                  - text: object represents the eventual completion, or failure, of
+                  - code [ref=e671]: await client.workflow.start()
+                  - text: and its resulting value.
+                - generic [ref=e673]:
+                  - code [ref=e675]:
+                    - generic [ref=e676]: "interface ExampleParam {"
+                    - generic [ref=e677]: "name: string;"
+                    - generic [ref=e678]: "born: number;"
+                    - generic [ref=e679]: "}"
+                    - generic [ref=e680]: "export async function example({ name, born }: ExampleParam): Promise<string> {"
+                    - generic [ref=e681]: "return `Hello ${name}, you were born in ${born}.`;"
+                    - generic [ref=e682]: "}"
+                  - button "Copy code to clipboard" [ref=e684] [cursor=pointer]:
+                    - generic [ref=e685]:
+                      - img [ref=e686]
+                      - img [ref=e688]
+                - heading "How to define Workflow return parametersDirect link to How to define Workflow return parameters" [level=3] [ref=e690]:
+                  - text: How to define Workflow return parameters
+                  - link "Direct link to How to define Workflow return parameters" [ref=e691] [cursor=pointer]:
+                    - /url: "#workflow-return-values"
+                    - text: "#"
+                - paragraph [ref=e692]: Workflow return values must also be serializable. Returning results, returning errors, or throwing exceptions is fairly idiomatic in each language that is supported. However, Temporal APIs that must be used to get the result of a Workflow Execution will only ever receive one of either the result or the error.
+                - paragraph [ref=e693]:
+                  - text: To return a value of the Workflow function, use
+                  - code [ref=e694]: Promise<something>
+                  - text: . The
+                  - code [ref=e695]: Promise
+                  - text: is used to make asynchronous calls and comes with guarantees.
+                - paragraph [ref=e696]:
+                  - text: The following example uses a
+                  - code [ref=e697]: Promise<string>
+                  - text: to eventually return a
+                  - code [ref=e698]: name
+                  - text: and
+                  - code [ref=e699]: born
+                  - text: parameter.
+                - generic [ref=e701]:
+                  - code [ref=e703]:
+                    - generic [ref=e704]: "interface ExampleParam {"
+                    - generic [ref=e705]: "name: string;"
+                    - generic [ref=e706]: "born: number;"
+                    - generic [ref=e707]: "}"
+                    - generic [ref=e708]: "export async function example({ name, born }: ExampleParam): Promise<string> {"
+                    - generic [ref=e709]: "return `Hello ${name}, you were born in ${born}.`;"
+                    - generic [ref=e710]: "}"
+                  - button "Copy code to clipboard" [ref=e712] [cursor=pointer]:
+                    - generic [ref=e713]:
+                      - img [ref=e714]
+                      - img [ref=e716]
+                - heading "How to customize your Workflow TypeDirect link to How to customize your Workflow Type" [level=3] [ref=e718]:
+                  - text: How to customize your Workflow Type
+                  - link "Direct link to How to customize your Workflow Type" [ref=e719] [cursor=pointer]:
+                    - /url: "#workflow-type"
+                    - text: "#"
+                - paragraph [ref=e720]: Workflows have a Type that are referred to as the Workflow name.
+                - paragraph [ref=e721]: The following examples demonstrate how to set a custom name for your Workflow Type.
+                - paragraph [ref=e722]: In TypeScript, the Workflow Type is the Workflow function name and there isn't a mechanism to customize the Workflow Type.
+                - paragraph [ref=e723]:
+                  - text: In the following example, the Workflow Type is the name of the function,
+                  - code [ref=e724]: helloWorld
+                  - text: .
+                - paragraph [ref=e725]:
+                  - link "snippets/src/workflows.ts" [ref=e726] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/samples-typescript/blob/main/snippets/src/workflows.ts
+                - generic [ref=e728]:
+                  - code [ref=e730]:
+                    - generic [ref=e731]: "export async function helloWorld(): Promise<string> {"
+                    - generic [ref=e732]: return '👋 Hello World!';
+                    - generic [ref=e733]: "}"
+                  - button "Copy code to clipboard" [ref=e735] [cursor=pointer]:
+                    - generic [ref=e736]:
+                      - img [ref=e737]
+                      - img [ref=e739]
+                - heading "How to develop Workflow logicDirect link to How to develop Workflow logic" [level=3] [ref=e741]:
+                  - text: How to develop Workflow logic
+                  - link "Direct link to How to develop Workflow logic" [ref=e742] [cursor=pointer]:
+                    - /url: "#workflow-logic-requirements"
+                    - text: "#"
+                - paragraph [ref=e743]:
+                  - text: Workflow logic is constrained by
+                  - link "deterministic execution requirements" [ref=e744] [cursor=pointer]:
+                    - /url: /workflow-definition#deterministic-constraints
+                  - text: . Therefore, each language is limited to the use of certain idiomatic techniques. However, each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
+                - paragraph [ref=e745]: In the Temporal TypeScript SDK, Workflows run in a deterministic sandboxed environment. The code is bundled on Worker creation using Webpack, and can import any package as long as it does not reference Node.js or DOM APIs.
+                - generic [ref=e746]:
+                  - generic [ref=e747]:
+                    - img [ref=e749]
+                    - text: note
+                  - paragraph [ref=e752]:
+                    - text: If you
+                    - strong [ref=e753]: must
+                    - text: use a library that references a Node.js or DOM API and you are certain that those APIs are not used at runtime, add that module to the
+                    - link "ignoreModules" [ref=e754] [cursor=pointer]:
+                      - /url: https://typescript.temporal.io/api/interfaces/worker.BundleOptions#ignoremodules
+                    - text: list.
+                - paragraph [ref=e755]: The Workflow sandbox can run only deterministic code, so side effects and access to external state must be done through Activities because Activity outputs are recorded in the Event History and can read deterministically by the Workflow.
+                - paragraph [ref=e756]:
+                  - text: This limitation also means that Workflow code cannot directly import the
+                  - link "Activity Definition" [ref=e757] [cursor=pointer]:
+                    - /url: /activity-definition
+                  - text: .
+                  - link "Activity Types" [ref=e758] [cursor=pointer]:
+                    - /url: /activity-definition#activity-type
+                  - text: can be imported, so they can be invoked in a type-safe manner.
+                - paragraph [ref=e759]:
+                  - text: To make the Workflow runtime deterministic, functions like
+                  - code [ref=e760]: Math.random()
+                  - text: ","
+                  - code [ref=e761]: Date
+                  - text: ", and"
+                  - code [ref=e762]: setTimeout()
+                  - text: are replaced by deterministic versions.
+                - paragraph [ref=e763]:
+                  - link "FinalizationRegistry" [ref=e764] [cursor=pointer]:
+                    - /url: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry
+                  - text: and
+                  - link "WeakRef" [ref=e765] [cursor=pointer]:
+                    - /url: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef
+                  - text: are removed because v8's garbage collector is not deterministic.
+                - group [ref=e766]:
+                  - generic "Expand to see the implications of the deterministic Date API" [ref=e767] [cursor=pointer]:
+                    - paragraph [ref=e768]: Expand to see the implications of the deterministic Date API
+                - heading "How to develop a basic ActivityDirect link to How to develop a basic Activity" [level=2] [ref=e769]:
+                  - text: How to develop a basic Activity
+                  - link "Direct link to How to develop a basic Activity" [ref=e770] [cursor=pointer]:
+                    - /url: "#develop-activities"
+                    - text: "#"
+                - paragraph [ref=e771]:
+                  - text: One of the primary things that Workflows do is orchestrate the execution of Activities. An Activity is a normal function or method execution that's intended to execute a single, well-defined action (either short or long-running), such as querying a database, calling a third-party API, or transcoding a media file. An Activity can interact with world outside the Temporal Platform or use a Temporal Client to interact with a Temporal Service. For the Workflow to be able to execute the Activity, we must define the
+                  - link "Activity Definition" [ref=e772] [cursor=pointer]:
+                    - /url: /activity-definition
+                  - text: .
+                - list [ref=e773]:
+                  - listitem [ref=e774]: Activities execute in the standard Node.js environment.
+                  - listitem [ref=e775]: Activities cannot be in the same file as Workflows and must be separately registered.
+                  - listitem [ref=e776]: Activities may be retried repeatedly, so you may need to use idempotency keys for critical side effects.
+                - paragraph [ref=e777]:
+                  - text: Activities are
+                  - emphasis [ref=e778]: just functions
+                  - text: . The following is an Activity that accepts a string parameter and returns a string.
+                - paragraph [ref=e779]:
+                  - link "snippets/src/activities.ts" [ref=e780] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/samples-typescript/blob/main/snippets/src/activities.ts
+                - generic [ref=e782]:
+                  - code [ref=e784]:
+                    - generic [ref=e785]: "export async function greet(name: string): Promise<string> {"
+                    - generic [ref=e786]: "return `👋 Hello, ${name}!`;"
+                    - generic [ref=e787]: "}"
+                  - button "Copy code to clipboard" [ref=e789] [cursor=pointer]:
+                    - generic [ref=e790]:
+                      - img [ref=e791]
+                      - img [ref=e793]
+                - heading "How to develop Activity ParametersDirect link to How to develop Activity Parameters" [level=3] [ref=e795]:
+                  - text: How to develop Activity Parameters
+                  - link "Direct link to How to develop Activity Parameters" [ref=e796] [cursor=pointer]:
+                    - /url: "#activity-parameters"
+                    - text: "#"
+                - paragraph [ref=e797]:
+                  - text: There is no explicit limit to the total number of parameters that an
+                  - link "Activity Definition" [ref=e798] [cursor=pointer]:
+                    - /url: /activity-definition
+                  - text: may support. However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
+                - paragraph [ref=e799]: A single argument is limited to a maximum size of 2 MB. And the total size of a gRPC message, which includes all the arguments, is limited to a maximum of 4 MB.
+                - paragraph [ref=e800]:
+                  - text: Also, keep in mind that all Payload data is recorded in the
+                  - link "Workflow Execution Event History" [ref=e801] [cursor=pointer]:
+                    - /url: /workflow-execution/event#event-history
+                  - text: and large Event Histories can affect Worker performance. This is because the entire Event History could be transferred to a Worker Process with a
+                  - link "Workflow Task" [ref=e802] [cursor=pointer]:
+                    - /url: /tasks#workflow-task
+                  - text: .
+                - paragraph [ref=e803]: Some SDKs require that you pass context objects, others do not. When it comes to your application data—that is, data that is serialized and encoded into a Payload—we recommend that you use a single object as an argument that wraps the application data passed to Activities. This is so that you can change what data is passed to the Activity without breaking a function or method signature.
+                - paragraph [ref=e804]:
+                  - text: This Activity takes a single
+                  - code [ref=e805]: name
+                  - text: parameter of type
+                  - code [ref=e806]: string
+                  - text: .
+                - paragraph [ref=e807]:
+                  - link "snippets/src/activities.ts" [ref=e808] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/samples-typescript/blob/main/snippets/src/activities.ts
+                - generic [ref=e810]:
+                  - code [ref=e812]:
+                    - generic [ref=e813]: "export async function greet(name: string): Promise<string> {"
+                    - generic [ref=e814]: "return `👋 Hello, ${name}!`;"
+                    - generic [ref=e815]: "}"
+                  - button "Copy code to clipboard" [ref=e817] [cursor=pointer]:
+                    - generic [ref=e818]:
+                      - img [ref=e819]
+                      - img [ref=e821]
+                - heading "How to define Activity return valuesDirect link to How to define Activity return values" [level=3] [ref=e823]:
+                  - text: How to define Activity return values
+                  - link "Direct link to How to define Activity return values" [ref=e824] [cursor=pointer]:
+                    - /url: "#activity-return-values"
+                    - text: "#"
+                - paragraph [ref=e825]: All data returned from an Activity must be serializable.
+                - paragraph [ref=e826]:
+                  - text: Activity return values are subject to payload size limits in Temporal. The default payload size limit is 2MB, and there is a hard limit of 4MB for any gRPC message size in the Event History transaction (
+                  - link "see Cloud limits here" [ref=e827] [cursor=pointer]:
+                    - /url: https://docs.temporal.io/cloud/limits#per-message-grpc-limit
+                  - text: ). Keep in mind that all return values are recorded in a
+                  - link "Workflow Execution Event History" [ref=e828] [cursor=pointer]:
+                    - /url: /workflow-execution/event#event-history
+                  - text: .
+                - paragraph [ref=e829]: In TypeScript, the return value is always a Promise.
+                - paragraph [ref=e830]:
+                  - text: In the following example,
+                  - code [ref=e831]: Promise<string>
+                  - text: is the return value.
+                - generic [ref=e833]:
+                  - code [ref=e835]:
+                    - generic [ref=e836]: "export async function greet(name: string): Promise<string> {"
+                    - generic [ref=e837]: "return `👋 Hello, ${name}!`;"
+                    - generic [ref=e838]: "}"
+                  - button "Copy code to clipboard" [ref=e840] [cursor=pointer]:
+                    - generic [ref=e841]:
+                      - img [ref=e842]
+                      - img [ref=e844]
+                - heading "How to customize your Activity TypeDirect link to How to customize your Activity Type" [level=3] [ref=e846]:
+                  - text: How to customize your Activity Type
+                  - link "Direct link to How to customize your Activity Type" [ref=e847] [cursor=pointer]:
+                    - /url: "#activity-type"
+                    - text: "#"
+                - paragraph [ref=e848]: Activities have a Type that are referred to as the Activity name. The following examples demonstrate how to set a custom name for your Activity Type.
+                - paragraph [ref=e849]:
+                  - text: You can customize the name of the Activity when you register it with the Worker. In the following example, the Activity Name is
+                  - code [ref=e850]: activityFoo
+                  - text: .
+                - paragraph [ref=e851]:
+                  - link "snippets/src/worker-activity-type-custom.ts" [ref=e852] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/samples-typescript/blob/main/snippets/src/worker-activity-type-custom.ts
+                - generic [ref=e854]:
+                  - code [ref=e856]:
+                    - generic [ref=e857]: "import { Worker } from '@temporalio/worker';"
+                    - generic [ref=e858]: "import { greet } from './activities';"
+                    - generic [ref=e859]: "async function run() {"
+                    - generic [ref=e860]: "const worker = await Worker.create({"
+                    - generic [ref=e861]: "workflowsPath: require.resolve('./workflows'),"
+                    - generic [ref=e862]: "taskQueue: 'snippets',"
+                    - generic [ref=e863]: "activities: {"
+                    - generic [ref=e864]: "activityFoo: greet,"
+                    - generic [ref=e865]: "},"
+                    - generic [ref=e866]: "});"
+                    - generic [ref=e867]: await worker.run();
+                    - generic [ref=e868]: "}"
+                  - button "Copy code to clipboard" [ref=e870] [cursor=pointer]:
+                    - generic [ref=e871]:
+                      - img [ref=e872]
+                      - img [ref=e874]
+                - heading "Important design patterns for ActivitiesDirect link to Important design patterns for Activities" [level=3] [ref=e876]:
+                  - text: Important design patterns for Activities
+                  - link "Direct link to Important design patterns for Activities" [ref=e877] [cursor=pointer]:
+                    - /url: "#activity-design-patterns"
+                    - text: "#"
+                - paragraph [ref=e878]: The following are some important (and frequently requested) patterns for using our Activities APIs. These patterns address common needs and use cases.
+                - heading "Share dependencies in Activity functions (dependency injection)Direct link to Share dependencies in Activity functions (dependency injection)" [level=4] [ref=e879]:
+                  - text: Share dependencies in Activity functions (dependency injection)
+                  - link "Direct link to Share dependencies in Activity functions (dependency injection)" [ref=e880] [cursor=pointer]:
+                    - /url: "#share-dependencies-in-activity-functions-dependency-injection"
+                    - text: "#"
+                - paragraph [ref=e881]: "Because Activities are \"just functions,\" you can also create functions that create Activities. This is a helpful pattern for using closures to do the following:"
+                - list [ref=e882]:
+                  - listitem [ref=e883]: Store expensive dependencies for sharing, such as database connections.
+                  - listitem [ref=e884]: Inject secret keys (such as environment variables) from the Worker to the Activity.
+                - paragraph [ref=e885]:
+                  - link "activities-dependency-injection/src/activities.ts" [ref=e886] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/samples-typescript/blob/main/activities-dependency-injection/src/activities.ts
+                - generic [ref=e888]:
+                  - code [ref=e890]:
+                    - generic [ref=e891]: "export interface DB {"
+                    - generic [ref=e892]: "get(key: string): Promise<string>;"
+                    - generic [ref=e893]: "}"
+                    - generic [ref=e894]: "export const createActivities = (db: DB) => ({"
+                    - generic [ref=e895]: "async greet(msg: string): Promise<string> {"
+                    - generic [ref=e896]: const name = await db.get('name'); // simulate read from db
+                    - generic [ref=e897]: "return `${msg}: ${name}`;"
+                    - generic [ref=e898]: "},"
+                    - generic [ref=e899]: "async greet_es(mensaje: string): Promise<string> {"
+                    - generic [ref=e900]: const name = await db.get('name'); // simulate read from db
+                    - generic [ref=e901]: "return `${mensaje}: ${name}`;"
+                    - generic [ref=e902]: "},"
+                    - generic [ref=e903]: "});"
+                  - button "Copy code to clipboard" [ref=e905] [cursor=pointer]:
+                    - generic [ref=e906]:
+                      - img [ref=e907]
+                      - img [ref=e909]
+                - group [ref=e911]:
+                  - generic "See full example" [ref=e912] [cursor=pointer]
+                - heading "Import multiple Activities simultaneouslyDirect link to Import multiple Activities simultaneously" [level=4] [ref=e913]:
+                  - text: Import multiple Activities simultaneously
+                  - link "Direct link to Import multiple Activities simultaneously" [ref=e914] [cursor=pointer]:
+                    - /url: "#import-multiple-activities-simultaneously"
+                    - text: "#"
+                - paragraph [ref=e915]:
+                  - text: You can proxy multiple Activities from the same
+                  - code [ref=e916]: proxyActivities
+                  - text: "call if you want them to share the same timeouts, retries, and options:"
+                - generic [ref=e918]:
+                  - code [ref=e920]:
+                    - generic [ref=e921]: "export async function Workflow(name: string): Promise<string> {"
+                    - generic [ref=e922]: // destructuring multiple activities with the same options
+                    - generic [ref=e923]: "const { act1, act2, act3 } = proxyActivities<typeof activities>();"
+                    - generic [ref=e924]: /* activityOptions */
+                    - generic [ref=e925]: await act1();
+                    - generic [ref=e926]: await Promise.all([act2, act3]);
+                    - generic [ref=e927]: "}"
+                  - button "Copy code to clipboard" [ref=e929] [cursor=pointer]:
+                    - generic [ref=e930]:
+                      - img [ref=e931]
+                      - img [ref=e933]
+                - heading "Dynamically reference ActivitiesDirect link to Dynamically reference Activities" [level=4] [ref=e935]:
+                  - text: Dynamically reference Activities
+                  - link "Direct link to Dynamically reference Activities" [ref=e936] [cursor=pointer]:
+                    - /url: "#dynamically-reference-activities"
+                    - text: "#"
+                - paragraph [ref=e937]: "Because Activities are referenced only by their string names, you can reference them dynamically if needed:"
+                - generic [ref=e939]:
+                  - code [ref=e941]:
+                    - generic [ref=e942]: "export async function DynamicWorkflow(activityName, ...args) {"
+                    - generic [ref=e943]: const acts = proxyActivities(/* activityOptions */);
+                    - generic [ref=e944]: // these are equivalent
+                    - generic [ref=e945]: await acts.activity1();
+                    - generic [ref=e946]: await acts['activity1']();
+                    - generic [ref=e947]: // dynamic reference to activities using activityName
+                    - generic [ref=e948]: let result = await acts[activityName](...args);
+                    - generic [ref=e949]: "}"
+                  - button "Copy code to clipboard" [ref=e951] [cursor=pointer]:
+                    - generic [ref=e952]:
+                      - img [ref=e953]
+                      - img [ref=e955]
+                - paragraph [ref=e957]:
+                  - text: Type safety is still supported here, but we encourage you to validate and handle mismatches in Activity names. An invalid Activity name leads to a
+                  - code [ref=e958]: NotFoundError
+                  - text: "with a message that looks like this:"
+                - generic [ref=e960]:
+                  - code [ref=e962]:
+                    - generic [ref=e963]: "ApplicationFailure: Activity function actC is not registered on this Worker, available activities: [\"actA\", \"actB\"]"
+                  - generic [ref=e964]:
+                    - button "Toggle word wrap" [ref=e965] [cursor=pointer]:
+                      - img [ref=e966]
+                    - button "Copy code to clipboard" [ref=e968] [cursor=pointer]:
+                      - generic [ref=e969]:
+                        - img [ref=e970]
+                        - img [ref=e972]
+                - heading "How to start an Activity ExecutionDirect link to How to start an Activity Execution" [level=2] [ref=e974]:
+                  - text: How to start an Activity Execution
+                  - link "Direct link to How to start an Activity Execution" [ref=e975] [cursor=pointer]:
+                    - /url: "#activity-execution"
+                    - text: "#"
+                - paragraph [ref=e976]:
+                  - text: Calls to spawn
+                  - link "Activity Executions" [ref=e977] [cursor=pointer]:
+                    - /url: /activity-execution
+                  - text: are written within a
+                  - link "Workflow Definition" [ref=e978] [cursor=pointer]:
+                    - /url: /workflow-definition
+                  - text: . In TypeScript, you never call an Activity function directly. Instead, you pass in the
+                  - emphasis [ref=e979]: types
+                  - text: of your Activities and Activity options to the
+                  - code [ref=e980]: proxyActivities
+                  - text: function. This will give you an
+                  - emphasis [ref=e981]: Activity Handle
+                  - text: ", a type-safe proxy object with the same function names and signatures as your real activities. From the Activity Handle, you can call your Activities as if they were normal async functions."
+                - generic [ref=e983]:
+                  - code [ref=e985]:
+                    - generic [ref=e986]: "import { proxyActivities } from '@temporalio/workflow';"
+                    - generic [ref=e987]: // Only import the activity types, not the functions themselves
+                    - generic [ref=e988]: import type * as activities from './activities';
+                    - generic [ref=e989]: // Retrieve the Activity Handle by passing in the Activity types and options
+                    - generic [ref=e990]: "const activityHandle = proxyActivities<typeof activities>({"
+                    - generic [ref=e991]: "startToCloseTimeout: '1 minute',"
+                    - generic [ref=e992]: "});"
+                    - generic [ref=e993]: // Deconstruct the individual Activity functions from the Activity Handle
+                    - generic [ref=e994]: "const { greet } = activityHandle;"
+                    - generic [ref=e995]: // A workflow that calls an activity
+                    - generic [ref=e996]: "export async function example(name: string): Promise<string> {"
+                    - generic [ref=e997]: return await greet(name);
+                    - generic [ref=e998]: "}"
+                  - button "Copy code to clipboard" [ref=e1000] [cursor=pointer]:
+                    - generic [ref=e1001]:
+                      - img [ref=e1002]
+                      - img [ref=e1004]
+                - paragraph [ref=e1006]:
+                  - text: When you call a proxied function, the Workflow does not execute the Activity code directly. Instead, it schedules an Activity Task. After the Activity Task is scheduled, it becomes available for a Worker to pick up and execute. This results in the set of three
+                  - link "Activity Task" [ref=e1007] [cursor=pointer]:
+                    - /url: /tasks#activity-task
+                  - text: "related Events:"
+                  - link "ActivityTaskScheduled" [ref=e1008] [cursor=pointer]:
+                    - /url: /references/events#activitytaskscheduled
+                  - text: ","
+                  - link "ActivityTaskStarted" [ref=e1009] [cursor=pointer]:
+                    - /url: /references/events#activitytaskstarted
+                  - text: ", and"
+                  - link "ActivityTaskCompleted" [ref=e1010] [cursor=pointer]:
+                    - /url: /references/events#activitytaskcompleted
+                  - text: in your Workflow Execution Event History.
+                - paragraph [ref=e1011]:
+                  - text: The Worker may run many Activity executions at the same time, all using the same Activity function code. Temporal can also retry an Activity if it fails or times out. For this reason, you should write Activities to be
+                  - link "idempotent" [ref=e1012] [cursor=pointer]:
+                    - /url: /activity-definition#idempotency
+                  - text: ": calling them multiple times with the same input should have the same effect as calling them once."
+                - generic [ref=e1013]:
+                  - generic [ref=e1014]:
+                    - img [ref=e1016]
+                    - text: tip
+                  - paragraph [ref=e1019]: Every Activity call you make is recorded in the Workflow’s execution history, including the parameters you pass in and the value that comes back. This history is what allows Temporal to recover a Workflow after a failure. Because the entire history must be stored and replayed, avoid passing large objects as Activity inputs or return values. Keeping payloads small will help your Workflows replay and recover efficiently.
+                - heading "How to set the required Activity TimeoutsDirect link to How to set the required Activity Timeouts" [level=3] [ref=e1020]:
+                  - text: How to set the required Activity Timeouts
+                  - link "Direct link to How to set the required Activity Timeouts" [ref=e1021] [cursor=pointer]:
+                    - /url: "#required-timeout"
+                    - text: "#"
+                - paragraph [ref=e1022]:
+                  - text: Activity Execution semantics rely on several parameters. The only required value that needs to be set is either a
+                  - link "Schedule-To-Close Timeout" [ref=e1023] [cursor=pointer]:
+                    - /url: /encyclopedia/detecting-activity-failures#schedule-to-close-timeout
+                  - text: or a
+                  - link "Start-To-Close Timeout" [ref=e1024] [cursor=pointer]:
+                    - /url: /encyclopedia/detecting-activity-failures#start-to-close-timeout
+                  - text: . These values are set in the Activity Options.
+                - heading "How to get the results of an Activity ExecutionDirect link to How to get the results of an Activity Execution" [level=3] [ref=e1025]:
+                  - text: How to get the results of an Activity Execution
+                  - link "Direct link to How to get the results of an Activity Execution" [ref=e1026] [cursor=pointer]:
+                    - /url: "#get-activity-results"
+                    - text: "#"
+                - paragraph [ref=e1027]:
+                  - text: The call to spawn an
+                  - link "Activity Execution" [ref=e1028] [cursor=pointer]:
+                    - /url: /activity-execution
+                  - text: generates the
+                  - link "ScheduleActivityTask" [ref=e1029] [cursor=pointer]:
+                    - /url: /references/commands#scheduleactivitytask
+                  - text: Command and provides the Workflow with an Awaitable. Workflow Executions can either block progress until the result is available through the Awaitable or continue progressing, making use of the result when it becomes available.
+                - paragraph [ref=e1030]: Since Activities are referenced by their string name, you can reference them dynamically to get the result of an Activity Execution.
+                - generic [ref=e1032]:
+                  - code [ref=e1034]:
+                    - generic [ref=e1035]: "export async function DynamicWorkflow(activityName, ...args) {"
+                    - generic [ref=e1036]: const acts = proxyActivities(/* activityOptions */);
+                    - generic [ref=e1037]: // these are equivalent
+                    - generic [ref=e1038]: await acts.activity1();
+                    - generic [ref=e1039]: await acts['activity1']();
+                    - generic [ref=e1040]: let result = await acts[activityName](...args);
+                    - generic [ref=e1041]: return result;
+                    - generic [ref=e1042]: "}"
+                  - button "Copy code to clipboard" [ref=e1044] [cursor=pointer]:
+                    - generic [ref=e1045]:
+                      - img [ref=e1046]
+                      - img [ref=e1048]
+                - paragraph [ref=e1050]:
+                  - text: The
+                  - code [ref=e1051]: proxyActivities()
+                  - text: returns an object that calls the Activities in the function.
+                  - code [ref=e1052]: acts[activityName]()
+                  - text: references the Activity using the Activity name, then it returns the results.
+                - heading "How to run Worker ProcessesDirect link to How to run Worker Processes" [level=2] [ref=e1053]:
+                  - text: How to run Worker Processes
+                  - link "Direct link to How to run Worker Processes" [ref=e1054] [cursor=pointer]:
+                    - /url: "#run-a-dev-worker"
+                    - text: "#"
+                - paragraph [ref=e1055]:
+                  - text: The
+                  - link "Worker Process" [ref=e1056] [cursor=pointer]:
+                    - /url: /workers#worker-process
+                  - text: is where Workflow Functions and Activity Functions are executed.
+                - list [ref=e1057]:
+                  - listitem [ref=e1058]:
+                    - text: Each
+                    - link "Worker Entity" [ref=e1059] [cursor=pointer]:
+                      - /url: /workers#worker-entity
+                    - text: in the Worker Process must register the exact Workflow Types and Activity Types it may execute.
+                  - listitem [ref=e1060]:
+                    - text: Each Worker Entity must also associate itself with exactly one
+                    - link "Task Queue" [ref=e1061] [cursor=pointer]:
+                      - /url: /task-queue
+                    - text: .
+                  - listitem [ref=e1062]: Each Worker Entity polling the same Task Queue must be registered with the same Workflow Types and Activity Types.
+                - paragraph [ref=e1063]:
+                  - text: A
+                  - link "Worker Entity" [ref=e1064] [cursor=pointer]:
+                    - /url: /workers#worker-entity
+                  - text: is the component within a Worker Process that listens to a specific Task Queue.
+                - paragraph [ref=e1065]:
+                  - text: Although multiple Worker Entities can be in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient. For more information, see the
+                  - link "Worker tuning guide" [ref=e1066] [cursor=pointer]:
+                    - /url: /develop/worker-performance
+                  - text: .
+                - paragraph [ref=e1067]: A Worker Entity contains a Workflow Worker and/or an Activity Worker, which makes progress on Workflow Executions and Activity Executions, respectively.
+                - heading "How to run a Worker on Docker in TypeScriptDirect link to How to run a Worker on Docker in TypeScript" [level=2] [ref=e1068]:
+                  - text: How to run a Worker on Docker in TypeScript
+                  - link "Direct link to How to run a Worker on Docker in TypeScript" [ref=e1069] [cursor=pointer]:
+                    - /url: "#run-a-worker-on-docker"
+                    - text: "#"
+                - generic [ref=e1070]:
+                  - generic [ref=e1071]:
+                    - img [ref=e1073]
+                    - text: note
+                  - paragraph [ref=e1076]:
+                    - text: To improve worker startup time, we recommend preparing workflow bundles ahead-of-time. See our
+                    - link "productionsample" [ref=e1077] [cursor=pointer]:
+                      - /url: https://github.com/temporalio/samples-typescript/tree/main/production
+                    - text: for details.
+                - paragraph [ref=e1078]: Workers based on the TypeScript SDK can be deployed and run as Docker containers.
+                - paragraph [ref=e1079]:
+                  - text: We recommend an LTS Node.js release such as 18, 20, 22, or 24. Both
+                  - code [ref=e1080]: amd64
+                  - text: and
+                  - code [ref=e1081]: arm64
+                  - text: architectures are supported. A glibc-based image is required; musl-based images are
+                  - emphasis [ref=e1082]: not
+                  - text: supported (see below).
+                - paragraph [ref=e1083]:
+                  - text: The easiest way to deploy a TypeScript SDK Worker on Docker is to start with the
+                  - code [ref=e1084]: node:20-bullseye
+                  - text: "image. For example:"
+                - generic [ref=e1086]:
+                  - code [ref=e1088]:
+                    - generic [ref=e1089]: FROM node:20-bullseye
+                    - generic [ref=e1090]: "# For better cache utilization, copy package.json and lock file first and install the dependencies before copying the"
+                    - generic [ref=e1091]: "# rest of the application and building."
+                    - generic [ref=e1092]: COPY . /app
+                    - generic [ref=e1093]: WORKDIR /app
+                    - generic [ref=e1094]: "# Alternatively, run npm ci, which installs only dependencies specified in the lock file and is generally faster."
+                    - generic [ref=e1095]: RUN npm install --only=production \
+                    - generic [ref=e1096]: "&& npm run build"
+                    - generic [ref=e1097]: CMD ["npm", "start"]
+                  - generic [ref=e1098]:
+                    - button "Toggle word wrap" [ref=e1099] [cursor=pointer]:
+                      - img [ref=e1100]
+                    - button "Copy code to clipboard" [ref=e1102] [cursor=pointer]:
+                      - generic [ref=e1103]:
+                        - img [ref=e1104]
+                        - img [ref=e1106]
+                - paragraph [ref=e1108]:
+                  - text: For smaller images and/or more secure deployments, it is also possible to use
+                  - code [ref=e1109]: "-slim"
+                  - text: Docker image variants (like
+                  - code [ref=e1110]: node:20-bullseye-slim
+                  - text: ) or
+                  - code [ref=e1111]: distroless/nodejs
+                  - text: Docker images (like
+                  - code [ref=e1112]: gcr.io/distroless/nodejs20-debian11
+                  - text: ) with the following caveats.
+                - heading "Using node:slim imagesDirect link to using-nodeslim-images" [level=3] [ref=e1113]:
+                  - text: Using
+                  - code [ref=e1114]: node:slim
+                  - text: images
+                  - link "Direct link to using-nodeslim-images" [ref=e1115] [cursor=pointer]:
+                    - /url: "#using-nodeslim-images"
+                    - text: "#"
+                - paragraph [ref=e1116]:
+                  - code [ref=e1117]: node:slim
+                  - text: images do not contain some of the common packages found in regular images. This results in significantly smaller images.
+                - paragraph [ref=e1118]:
+                  - text: However, TypeScript SDK requires the presence of root TLS certificates (the
+                  - code [ref=e1119]: ca-certificates
+                  - text: package), which are not included in
+                  - code [ref=e1120]: slim
+                  - text: images. The
+                  - code [ref=e1121]: ca-certificates
+                  - text: package is required even when connecting to a local Temporal Server or when using a server connection config that doesn't explicitly use TLS.
+                - paragraph [ref=e1122]:
+                  - text: For this reason, the
+                  - code [ref=e1123]: ca-certificates
+                  - text: "package must be installed during the construction of the Docker image. For example:"
+                - generic [ref=e1125]:
+                  - code [ref=e1127]:
+                    - generic [ref=e1128]: FROM node:20-bullseye-slim
+                    - generic [ref=e1129]: RUN apt-get update \
+                    - generic [ref=e1130]: "&& apt-get install -y ca-certificates \\"
+                    - generic [ref=e1131]: "&& rm -rf /var/lib/apt/lists/*"
+                    - generic [ref=e1132]: "# ... same as with regular image"
+                  - button "Copy code to clipboard" [ref=e1134] [cursor=pointer]:
+                    - generic [ref=e1135]:
+                      - img [ref=e1136]
+                      - img [ref=e1138]
+                - paragraph [ref=e1140]:
+                  - text: Failure to install this dependency results in a
+                  - code [ref=e1141]: "[TransportError: transport error]"
+                  - text: runtime error, because the certificates cannot be verified.
+                - heading "Using distroless/nodejs imagesDirect link to using-distrolessnodejs-images" [level=3] [ref=e1142]:
+                  - text: Using
+                  - code [ref=e1143]: distroless/nodejs
+                  - text: images
+                  - link "Direct link to using-distrolessnodejs-images" [ref=e1144] [cursor=pointer]:
+                    - /url: "#using-distrolessnodejs-images"
+                    - text: "#"
+                - paragraph [ref=e1145]:
+                  - code [ref=e1146]: distroless/nodejs
+                  - text: images include only the files that are strictly required to execute
+                  - code [ref=e1147]: node
+                  - text: . This results in even smaller images (approximately half the size of
+                  - code [ref=e1148]: node:slim
+                  - text: images). It also significantly reduces the surface of potential security issues that could be exploited by a hacker in the resulting Docker images.
+                - paragraph [ref=e1149]:
+                  - text: It is generally possible and safe to execute TypeScript SDK Workers using
+                  - code [ref=e1150]: distroless/nodejs
+                  - text: images (unless your code itself requires dependencies that are not included in
+                  - code [ref=e1151]: distroless/nodejs
+                  - text: ).
+                - paragraph [ref=e1152]:
+                  - text: However, some tools required for the build process (notably the
+                  - code [ref=e1153]: npm
+                  - text: command) are
+                  - emphasis [ref=e1154]: not
+                  - text: included in the
+                  - code [ref=e1155]: distroless/nodejs
+                  - text: image. This might result in various error messages during the Docker build.
+                - paragraph [ref=e1156]: "The recommended solution is to use a multi-step Dockerfile. For example:"
+                - generic [ref=e1158]:
+                  - code [ref=e1160]:
+                    - generic [ref=e1161]: "# -- BUILD STEP --"
+                    - generic [ref=e1162]: FROM node:20-bullseye AS builder
+                    - generic [ref=e1163]: COPY . /app
+                    - generic [ref=e1164]: WORKDIR /app
+                    - generic [ref=e1165]: RUN npm install --only=production \
+                    - generic [ref=e1166]: "&& npm run build"
+                    - generic [ref=e1167]: "# -- RESULTING IMAGE --"
+                    - generic [ref=e1168]: FROM gcr.io/distroless/nodejs20-debian11
+                    - generic [ref=e1169]: COPY --from=builder /app /app
+                    - generic [ref=e1170]: WORKDIR /app
+                    - generic [ref=e1171]: CMD ["node", "build/worker.js"]
+                  - button "Copy code to clipboard" [ref=e1173] [cursor=pointer]:
+                    - generic [ref=e1174]:
+                      - img [ref=e1175]
+                      - img [ref=e1177]
+                - heading "Properly configure Node.js memory in DockerDirect link to Properly configure Node.js memory in Docker" [level=3] [ref=e1179]:
+                  - text: Properly configure Node.js memory in Docker
+                  - link "Direct link to Properly configure Node.js memory in Docker" [ref=e1180] [cursor=pointer]:
+                    - /url: "#properly-configure-nodejs-memory-in-docker"
+                    - text: "#"
+                - paragraph [ref=e1181]:
+                  - text: By default,
+                  - code [ref=e1182]: node
+                  - text: configures its maximum old-gen memory to 25% of the
+                  - emphasis [ref=e1183]: physical memory
+                  - text: of the machine on which it is executing, with a maximum of 4 GB. This is likely inappropriate when running Node.js in a Docker environment and can result in either underusage of available memory (
+                  - code [ref=e1184]: node
+                  - text: only uses a fraction of the memory allocated to the container) or overusage (
+                  - code [ref=e1185]: node
+                  - text: tries to use more memory than what is allocated to the container, which will eventually lead to the process being killed by the operating system).
+                - paragraph [ref=e1186]:
+                  - text: Therefore we recommended that you always explicitly set the
+                  - code [ref=e1187]: "--max-old-space-size"
+                  - code [ref=e1188]: node
+                  - text: argument to approximately 80% of the maximum size (in megabytes) that you want to allocate the
+                  - code [ref=e1189]: node
+                  - text: process. You might need some experimentation and adjustment to find the most appropriate value based on your specific application.
+                - paragraph [ref=e1190]:
+                  - text: In practice, it is generally easier to provide this argument through the
+                  - link "NODE_OPTIONS environment variable" [ref=e1191] [cursor=pointer]:
+                    - /url: https://nodejs.org/api/cli.html#node_optionsoptions
+                    - code [ref=e1192]: NODE_OPTIONS
+                    - text: environment variable
+                  - text: .
+                - heading "Do not use AlpineDirect link to Do not use Alpine" [level=3] [ref=e1193]:
+                  - text: Do not use Alpine
+                  - link "Direct link to Do not use Alpine" [ref=e1194] [cursor=pointer]:
+                    - /url: "#do-not-use-alpine"
+                    - text: "#"
+                - paragraph [ref=e1195]: Alpine replaces glibc with musl, which is incompatible with the Rust core of the TypeScript SDK. If you receive errors like the following, it's probably because you are using Alpine.
+                - generic [ref=e1197]:
+                  - code [ref=e1199]:
+                    - generic [ref=e1200]: "Error: Error loading shared library ld-linux-x86-64.so.2: No such file or directory (needed by /opt/app/node_modules/@temporalio/core-bridge/index.node)"
+                  - generic [ref=e1201]:
+                    - button "Toggle word wrap" [ref=e1202] [cursor=pointer]:
+                      - img [ref=e1203]
+                    - button "Copy code to clipboard" [ref=e1205] [cursor=pointer]:
+                      - generic [ref=e1206]:
+                        - img [ref=e1207]
+                        - img [ref=e1209]
+                - paragraph [ref=e1211]: "Or like this:"
+                - generic [ref=e1213]:
+                  - code [ref=e1215]:
+                    - generic [ref=e1216]: "Error: Error relocating /opt/app/node_modules/@temporalio/core-bridge/index.node: __register_atfork: symbol not found"
+                  - generic [ref=e1217]:
+                    - button "Toggle word wrap" [ref=e1218] [cursor=pointer]:
+                      - img [ref=e1219]
+                    - button "Copy code to clipboard" [ref=e1221] [cursor=pointer]:
+                      - generic [ref=e1222]:
+                        - img [ref=e1223]
+                        - img [ref=e1225]
+                - heading "How to run a Temporal Cloud WorkerDirect link to How to run a Temporal Cloud Worker" [level=2] [ref=e1227]:
+                  - text: How to run a Temporal Cloud Worker
+                  - link "Direct link to How to run a Temporal Cloud Worker" [ref=e1228] [cursor=pointer]:
+                    - /url: "#run-a-temporal-cloud-worker"
+                    - text: "#"
+                - paragraph [ref=e1229]:
+                  - text: To run a Worker that uses
+                  - link "Temporal Cloud" [ref=e1230] [cursor=pointer]:
+                    - /url: /cloud
+                  - text: ", you need to provide additional connection and client options that include the following:"
+                - list [ref=e1231]:
+                  - listitem [ref=e1232]:
+                    - text: An address that includes your
+                    - link "Cloud Namespace Name" [ref=e1233] [cursor=pointer]:
+                      - /url: /namespaces
+                    - text: "and a port number:"
+                    - code [ref=e1234]: <Namespace>.<ID>.tmprl.cloud:<port>
+                    - text: .
+                  - listitem [ref=e1235]: mTLS CA certificate.
+                  - listitem [ref=e1236]: mTLS private key.
+                - paragraph [ref=e1237]:
+                  - text: For more information about managing and generating client certificates for Temporal Cloud, see
+                  - link "How to manage certificates in Temporal Cloud" [ref=e1238] [cursor=pointer]:
+                    - /url: /cloud/certificates
+                  - text: .
+                - paragraph [ref=e1239]:
+                  - text: For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see
+                  - link "Temporal Customization Samples" [ref=e1240] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/samples-server
+                  - text: .
+                - heading "How to register typesDirect link to How to register types" [level=3] [ref=e1241]:
+                  - text: How to register types
+                  - link "Direct link to How to register types" [ref=e1242] [cursor=pointer]:
+                    - /url: "#register-types"
+                    - text: "#"
+                - paragraph [ref=e1243]: All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
+                - paragraph [ref=e1244]: If a Worker polls a Task for a Workflow Type or Activity Type it does not know about, it fails that Task. However, the failure of the Task does not cause the associated Workflow Execution to fail.
+                - paragraph [ref=e1245]:
+                  - text: In development, use
+                  - link "workflowsPath" [ref=e1246] [cursor=pointer]:
+                    - /url: https://typescript.temporal.io/api/interfaces/worker.WorkerOptions/#workflowspath
+                    - code [ref=e1247]: workflowsPath
+                  - text: ":"
+                - paragraph [ref=e1248]:
+                  - link "snippets/src/worker.ts" [ref=e1249] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/samples-typescript/blob/main/snippets/src/worker.ts
+                - generic [ref=e1251]:
+                  - code [ref=e1253]:
+                    - generic [ref=e1254]: "import { Worker } from '@temporalio/worker';"
+                    - generic [ref=e1255]: import * as activities from './activities';
+                    - generic [ref=e1256]: "async function run() {"
+                    - generic [ref=e1257]: "const worker = await Worker.create({"
+                    - generic [ref=e1258]: "workflowsPath: require.resolve('./workflows'),"
+                    - generic [ref=e1259]: "taskQueue: 'snippets',"
+                    - generic [ref=e1260]: activities,
+                    - generic [ref=e1261]: "});"
+                    - generic [ref=e1262]: await worker.run();
+                    - generic [ref=e1263]: "}"
+                  - button "Copy code to clipboard" [ref=e1265] [cursor=pointer]:
+                    - generic [ref=e1266]:
+                      - img [ref=e1267]
+                      - img [ref=e1269]
+                - paragraph [ref=e1271]: In this snippet, the Worker bundles the Workflow code at runtime.
+                - paragraph [ref=e1272]:
+                  - text: "In production, you can improve your Worker's startup time by bundling in advance: as part of your production build, call"
+                  - code [ref=e1273]: bundleWorkflowCode
+                  - text: ":"
+                - paragraph [ref=e1274]:
+                  - link "production/src/scripts/build-workflow-bundle.ts" [ref=e1275] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/samples-typescript/blob/main/production/src/scripts/build-workflow-bundle.ts
+                - generic [ref=e1277]:
+                  - code [ref=e1279]:
+                    - generic [ref=e1280]: "import { bundleWorkflowCode } from '@temporalio/worker';"
+                    - generic [ref=e1281]: "import { writeFile } from 'fs/promises';"
+                    - generic [ref=e1282]: import path from 'path';
+                    - generic [ref=e1283]: "async function bundle() {"
+                    - generic [ref=e1284]: "const { code } = await bundleWorkflowCode({"
+                    - generic [ref=e1285]: "workflowsPath: require.resolve('../workflows'),"
+                    - generic [ref=e1286]: "});"
+                    - generic [ref=e1287]: const codePath = path.join(__dirname, '../../workflow-bundle.js');
+                    - generic [ref=e1288]: await writeFile(codePath, code);
+                    - generic [ref=e1289]: "console.log(`Bundle written to ${codePath}`);"
+                    - generic [ref=e1290]: "}"
+                  - button "Copy code to clipboard" [ref=e1292] [cursor=pointer]:
+                    - generic [ref=e1293]:
+                      - img [ref=e1294]
+                      - img [ref=e1296]
+                - paragraph [ref=e1298]: "Then the bundle can be passed to the Worker:"
+                - paragraph [ref=e1299]:
+                  - link "production/src/worker.ts" [ref=e1300] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/samples-typescript/blob/main/production/src/worker.ts
+                - generic [ref=e1302]:
+                  - code [ref=e1304]:
+                    - generic [ref=e1305]: const workflowOption = () =>
+                    - generic [ref=e1306]: process.env.NODE_ENV === 'production'
+                    - generic [ref=e1307]: "? {"
+                    - generic [ref=e1308]: "workflowBundle: {"
+                    - generic [ref=e1309]: "codePath: require.resolve('../workflow-bundle.js'),"
+                    - generic [ref=e1310]: "},"
+                    - generic [ref=e1311]: "}"
+                    - generic [ref=e1312]: ": { workflowsPath: require.resolve('./workflows') };"
+                    - generic [ref=e1313]: "async function run() {"
+                    - generic [ref=e1314]: "const worker = await Worker.create({"
+                    - generic [ref=e1315]: ...workflowOption(),
+                    - generic [ref=e1316]: activities,
+                    - generic [ref=e1317]: "taskQueue: 'production-sample',"
+                    - generic [ref=e1318]: "});"
+                    - generic [ref=e1319]: await worker.run();
+                    - generic [ref=e1320]: "}"
+                  - button "Copy code to clipboard" [ref=e1322] [cursor=pointer]:
+                    - generic [ref=e1323]:
+                      - img [ref=e1324]
+                      - img [ref=e1326]
+                - heading "How to shut down a Worker and track its stateDirect link to How to shut down a Worker and track its state" [level=2] [ref=e1328]:
+                  - text: How to shut down a Worker and track its state
+                  - link "Direct link to How to shut down a Worker and track its state" [ref=e1329] [cursor=pointer]:
+                    - /url: "#shut-down-a-worker"
+                    - text: "#"
+                - paragraph [ref=e1330]:
+                  - text: Workers shut down if they receive any of the Signals enumerated in
+                  - link "shutdownSignals" [ref=e1331] [cursor=pointer]:
+                    - /url: https://typescript.temporal.io/api/interfaces/worker.RuntimeOptions#shutdownsignals
+                  - text: ":"
+                  - code [ref=e1332]: "'SIGINT'"
+                  - text: ","
+                  - code [ref=e1333]: "'SIGTERM'"
+                  - text: ","
+                  - code [ref=e1334]: "'SIGQUIT'"
+                  - text: ", and"
+                  - code [ref=e1335]: "'SIGUSR2'"
+                  - text: .
+                - paragraph [ref=e1336]:
+                  - text: In development, we shut down Workers with
+                  - code [ref=e1337]: Ctrl+C
+                  - text: (
+                  - code [ref=e1338]: SIGINT
+                  - text: ) or
+                  - link "nodemon" [ref=e1339] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/samples-typescript/blob/c37bae3ea235d1b6956fcbe805478aa46af973ce/hello-world/package.json#L10
+                  - text: (
+                  - code [ref=e1340]: SIGUSR2
+                  - text: ). In production, you usually want to give Workers time to finish any in-progress Activities by setting
+                  - link "shutdownGraceTime" [ref=e1341] [cursor=pointer]:
+                    - /url: https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#shutdowngracetime
+                  - text: .
+                - paragraph [ref=e1342]:
+                  - text: As soon as a Worker receives a shutdown Signal or request, the Worker stops polling for new Tasks and allows in-flight Tasks to complete until
+                  - code [ref=e1343]: shutdownGraceTime
+                  - text: is reached. Any Activities that are still running at that time will stop running and will be rescheduled by Temporal Server when an Activity timeout occurs.
+                - paragraph [ref=e1344]:
+                  - text: If you must guarantee that the Worker eventually shuts down, you can set
+                  - link "shutdownForceTime" [ref=e1345] [cursor=pointer]:
+                    - /url: https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#shutdownforcetime
+                  - text: .
+                - paragraph [ref=e1346]:
+                  - text: You might want to programmatically shut down Workers (with
+                  - link "Worker.shutdown()" [ref=e1347] [cursor=pointer]:
+                    - /url: https://typescript.temporal.io/api/classes/worker.Worker#shutdown
+                  - text: ) in integration tests or when automating a fleet of Workers.
+                - heading "Worker statesDirect link to Worker states" [level=3] [ref=e1348]:
+                  - text: Worker states
+                  - link "Direct link to Worker states" [ref=e1349] [cursor=pointer]:
+                    - /url: "#worker-states"
+                    - text: "#"
+                - paragraph [ref=e1350]:
+                  - text: At any time, you can Query Worker state with
+                  - link "Worker.getState()" [ref=e1351] [cursor=pointer]:
+                    - /url: https://typescript.temporal.io/api/classes/worker.Worker#getstate
+                  - text: ". A Worker is always in one of seven states:"
+                - list [ref=e1352]:
+                  - listitem [ref=e1353]:
+                    - code [ref=e1354]: INITIALIZED
+                    - text: ": The initial state of the Worker after calling"
+                    - link "Worker.create()" [ref=e1355] [cursor=pointer]:
+                      - /url: https://typescript.temporal.io/api/classes/worker.Worker#create
+                    - text: and successfully connecting to the server.
+                  - listitem [ref=e1356]:
+                    - code [ref=e1357]: RUNNING
+                    - text: ":"
+                    - link "Worker.run()" [ref=e1358] [cursor=pointer]:
+                      - /url: https://typescript.temporal.io/api/classes/worker.Worker#run
+                    - text: was called and the Worker is polling Task Queues.
+                  - listitem [ref=e1359]:
+                    - code [ref=e1360]: FAILED
+                    - text: ": The Worker encountered an unrecoverable error;"
+                    - code [ref=e1361]: Worker.run()
+                    - text: should reject with the error.
+                  - listitem [ref=e1362]:
+                    - text: "The last four states are related to the Worker shutdown process:"
+                    - list [ref=e1363]:
+                      - listitem [ref=e1364]:
+                        - code [ref=e1365]: STOPPING
+                        - text: ": The Worker received a shutdown Signal or"
+                        - code [ref=e1366]: Worker.shutdown()
+                        - text: was called. The Worker will forcefully shut down after
+                        - code [ref=e1367]: shutdownGraceTime
+                        - text: expires.
+                      - listitem [ref=e1368]:
+                        - code [ref=e1369]: DRAINING
+                        - text: ": All Workflow Tasks have been drained; waiting for Activities and cached Workflows eviction."
+                      - listitem [ref=e1370]:
+                        - code [ref=e1371]: DRAINED
+                        - text: ": All Activities and Workflows have completed; ready to shut down."
+                      - listitem [ref=e1372]:
+                        - code [ref=e1373]: STOPPED
+                        - text: ": Shutdown complete;"
+                        - code [ref=e1374]: worker.run()
+                        - text: resolves.
+                - paragraph [ref=e1375]:
+                  - text: If you need more visibility into internal Worker state, see the
+                  - link "Worker class" [ref=e1376] [cursor=pointer]:
+                    - /url: https://typescript.temporal.io/api/classes/worker.Worker
+                  - text: in the API reference.
+                - heading "How to start a Workflow ExecutionDirect link to How to start a Workflow Execution" [level=2] [ref=e1377]:
+                  - text: How to start a Workflow Execution
+                  - link "Direct link to How to start a Workflow Execution" [ref=e1378] [cursor=pointer]:
+                    - /url: "#start-workflow-execution"
+                    - text: "#"
+                - paragraph [ref=e1379]:
+                  - link "Workflow Execution" [ref=e1380] [cursor=pointer]:
+                    - /url: /workflow-execution
+                  - text: semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
+                - paragraph [ref=e1381]:
+                  - text: In the examples below, all Workflow Executions are started using a Temporal Client. To spawn Workflow Executions from within another Workflow Execution, use either the
+                  - link "Child Workflow" [ref=e1382] [cursor=pointer]:
+                    - /url: /develop/typescript/child-workflows
+                  - text: or External Workflow APIs.
+                - paragraph [ref=e1383]:
+                  - text: See the
+                  - link "Customize Workflow Type" [ref=e1384] [cursor=pointer]:
+                    - /url: "#workflow-type"
+                  - text: section to see how to customize the name of the Workflow Type.
+                - paragraph [ref=e1385]:
+                  - text: A request to spawn a Workflow Execution causes the Temporal Service to create the first Event (
+                  - link "WorkflowExecutionStarted" [ref=e1386] [cursor=pointer]:
+                    - /url: /references/events#workflowexecutionstarted
+                  - text: ) in the Workflow Execution Event History. The Temporal Service then creates the first Workflow Task, resulting in the first
+                  - link "WorkflowTaskScheduled" [ref=e1387] [cursor=pointer]:
+                    - /url: /references/events#workflowtaskscheduled
+                  - text: Event.
+                - paragraph [ref=e1388]:
+                  - text: When you have a Client, you can schedule the start of a Workflow with
+                  - code [ref=e1389]: client.workflow.start()
+                  - text: ", specifying"
+                  - code [ref=e1390]: workflowId
+                  - text: ","
+                  - code [ref=e1391]: taskQueue
+                  - text: ", and"
+                  - code [ref=e1392]: args
+                  - text: and returning a Workflow handle immediately after the Server acknowledges the receipt.
+                - generic [ref=e1394]:
+                  - code [ref=e1396]:
+                    - generic [ref=e1397]: "const handle = await client.workflow.start(example, {"
+                    - generic [ref=e1398]: "workflowId: 'your-workflow-id',"
+                    - generic [ref=e1399]: "taskQueue: 'your-task-queue',"
+                    - generic [ref=e1400]: "args: ['argument01', 'argument02', 'argument03'], // this is typechecked against workflowFn's args"
+                    - generic [ref=e1401]: "});"
+                    - generic [ref=e1402]: const handle = client.getHandle(workflowId);
+                    - generic [ref=e1403]: const result = await handle.result();
+                  - button "Copy code to clipboard" [ref=e1405] [cursor=pointer]:
+                    - generic [ref=e1406]:
+                      - img [ref=e1407]
+                      - img [ref=e1409]
+                - paragraph [ref=e1411]:
+                  - text: Calling
+                  - code [ref=e1412]: client.workflow.start()
+                  - text: and
+                  - code [ref=e1413]: client.workflow.execute()
+                  - text: send a command to Temporal Server to schedule a new Workflow Execution on the specified Task Queue. It does not actually start until a Worker that has a matching Workflow Type, polling that Task Queue, picks it up.
+                - paragraph [ref=e1414]: You can test this by executing a Client command without a matching Worker. Temporal Server records the command in Event History, but does not make progress with the Workflow Execution until a Worker starts polling with a matching Task Queue and Workflow Definition.
+                - paragraph [ref=e1415]:
+                  - text: Workflow Execution run in a separate V8 isolate context in order to provide a
+                  - link "deterministic runtime" [ref=e1416] [cursor=pointer]:
+                    - /url: /workflow-definition#deterministic-constraints
+                  - text: .
+                - heading "How to set a Workflow's Task QueueDirect link to How to set a Workflow's Task Queue" [level=3] [ref=e1417]:
+                  - text: How to set a Workflow's Task Queue
+                  - link "Direct link to How to set a Workflow's Task Queue" [ref=e1418] [cursor=pointer]:
+                    - /url: "#set-task-queue"
+                    - text: "#"
+                - paragraph [ref=e1419]:
+                  - text: In most SDKs, the only Workflow Option that must be set is the name of the
+                  - link "Task Queue" [ref=e1420] [cursor=pointer]:
+                    - /url: /task-queue
+                  - text: .
+                - paragraph [ref=e1421]: For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task Queue name.
+                - paragraph [ref=e1422]: A Task Queue is a dynamic queue in Temporal polled by one or more Workers.
+                - paragraph [ref=e1423]: Workers bundle Workflow code and node modules using Webpack v5 and execute them inside V8 isolates. Activities are directly required and run by Workers in the Node.js environment.
+                - paragraph [ref=e1424]: Workers are flexible. You can host any or all of your Workflows and Activities on a Worker, and you can host multiple Workers on a single machine.
+                - paragraph [ref=e1425]: "The Worker need three main things:"
+                - list [ref=e1426]:
+                  - listitem [ref=e1427]:
+                    - code [ref=e1428]: taskQueue
+                    - text: ": The Task Queue to poll. This is the only required argument."
+                  - listitem [ref=e1429]:
+                    - code [ref=e1430]: activities
+                    - text: ": Optional. Imported and supplied directly to the Worker."
+                  - listitem [ref=e1431]:
+                    - text: "Workflow bundle. Choose one of the following options:"
+                    - list [ref=e1432]:
+                      - listitem [ref=e1433]:
+                        - text: Specify
+                        - code [ref=e1434]: workflowsPath
+                        - text: pointing to your
+                        - code [ref=e1435]: workflows.ts
+                        - text: file to pass to Webpack; for example,
+                        - code [ref=e1436]: require.resolve('./workflows')
+                        - text: . Workflows are bundled with their dependencies.
+                      - listitem [ref=e1437]:
+                        - text: If you prefer to handle the bundling yourself, pass a prebuilt bundle to
+                        - code [ref=e1438]: workflowBundle
+                        - text: .
+                - generic [ref=e1440]:
+                  - code [ref=e1442]:
+                    - generic [ref=e1443]: "import { Worker } from '@temporalio/worker';"
+                    - generic [ref=e1444]: import * as activities from './activities';
+                    - generic [ref=e1445]: "async function run() {"
+                    - generic [ref=e1446]: "// Step 1: Register Workflows and Activities with the Worker and connect to"
+                    - generic [ref=e1447]: // the Temporal server.
+                    - generic [ref=e1448]: "const worker = await Worker.create({"
+                    - generic [ref=e1449]: "workflowsPath: require.resolve('./workflows'),"
+                    - generic [ref=e1450]: activities,
+                    - generic [ref=e1451]: "taskQueue: 'hello-world',"
+                    - generic [ref=e1452]: "});"
+                    - generic [ref=e1453]: // Worker connects to localhost by default and uses console.error for logging.
+                    - generic [ref=e1454]: "// Customize the Worker by passing more options to create():"
+                    - generic [ref=e1455]: // https://typescript.temporal.io/api/classes/worker.Worker
+                    - generic [ref=e1456]: "// If you need to configure server connection parameters, see docs:"
+                    - generic [ref=e1457]: // /typescript/security#encryption-in-transit-with-mtls
+                    - generic [ref=e1458]: "// Step 2: Start accepting tasks on the `tutorial` queue"
+                    - generic [ref=e1459]: await worker.run();
+                    - generic [ref=e1460]: "}"
+                    - generic [ref=e1461]: "run().catch((err) => {"
+                    - generic [ref=e1462]: console.error(err);
+                    - generic [ref=e1463]: process.exit(1);
+                    - generic [ref=e1464]: "});"
+                  - button "Copy code to clipboard" [ref=e1466] [cursor=pointer]:
+                    - generic [ref=e1467]:
+                      - img [ref=e1468]
+                      - img [ref=e1470]
+                - paragraph [ref=e1472]:
+                  - code [ref=e1473]: taskQueue
+                  - text: is the only required option; however, use
+                  - code [ref=e1474]: workflowsPath
+                  - text: and
+                  - code [ref=e1475]: activities
+                  - text: to register Workflows and Activities with the Worker.
+                - paragraph [ref=e1476]:
+                  - text: When scheduling a Workflow, you must specify
+                  - code [ref=e1477]: taskQueue
+                  - text: .
+                - generic [ref=e1479]:
+                  - code [ref=e1481]:
+                    - generic [ref=e1482]: "import { Client, Connection } from '@temporalio/client';"
+                    - generic [ref=e1483]: // This is the code that is used to start a Workflow.
+                    - generic [ref=e1484]: const connection = await Connection.create();
+                    - generic [ref=e1485]: "const client = new Client({ connection });"
+                    - generic [ref=e1486]: "const result = await client.workflow.execute(yourWorkflow, {"
+                    - generic [ref=e1487]: // required
+                    - generic [ref=e1488]: "taskQueue: 'your-task-queue',"
+                    - generic [ref=e1489]: // required
+                    - generic [ref=e1490]: "workflowId: 'your-workflow-id',"
+                    - generic [ref=e1491]: "});"
+                  - button "Copy code to clipboard" [ref=e1493] [cursor=pointer]:
+                    - generic [ref=e1494]:
+                      - img [ref=e1495]
+                      - img [ref=e1497]
+                - paragraph [ref=e1499]:
+                  - text: When creating a Worker, you must pass the
+                  - code [ref=e1500]: taskQueue
+                  - text: option to the
+                  - code [ref=e1501]: Worker.create()
+                  - text: function.
+                - generic [ref=e1503]:
+                  - code [ref=e1505]:
+                    - generic [ref=e1506]: "const worker = await Worker.create({"
+                    - generic [ref=e1507]: // imported elsewhere
+                    - generic [ref=e1508]: activities,
+                    - generic [ref=e1509]: "taskQueue: 'your-task-queue',"
+                    - generic [ref=e1510]: "});"
+                  - button "Copy code to clipboard" [ref=e1512] [cursor=pointer]:
+                    - generic [ref=e1513]:
+                      - img [ref=e1514]
+                      - img [ref=e1516]
+                - paragraph [ref=e1518]:
+                  - text: Optionally, in Workflow code, when calling an Activity, you can specify the Task Queue by passing the
+                  - code [ref=e1519]: taskQueue
+                  - text: option to
+                  - code [ref=e1520]: proxyActivities()
+                  - text: ","
+                  - code [ref=e1521]: startChild()
+                  - text: ", or"
+                  - code [ref=e1522]: executeChild()
+                  - text: . If you do not specify
+                  - code [ref=e1523]: taskQueue
+                  - text: ", the TypeScript SDK places Activity and Child Workflow Tasks in the same Task Queue as the Workflow Task Queue."
+                - heading "How to set a Workflow IdDirect link to How to set a Workflow Id" [level=3] [ref=e1524]:
+                  - text: How to set a Workflow Id
+                  - link "Direct link to How to set a Workflow Id" [ref=e1525] [cursor=pointer]:
+                    - /url: "#workflow-id"
+                    - text: "#"
+                - paragraph [ref=e1526]:
+                  - text: Although it is not required, we recommend providing your own
+                  - link "Workflow Id" [ref=e1527] [cursor=pointer]:
+                    - /url: /workflow-execution/workflowid-runid#workflow-id
+                  - text: that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
+                - paragraph [ref=e1528]:
+                  - text: Connect to a Client with
+                  - code [ref=e1529]: client.workflow.start()
+                  - text: and any arguments. Then specify your
+                  - code [ref=e1530]: taskQueue
+                  - text: and set your
+                  - code [ref=e1531]: workflowId
+                  - text: to a meaningful business identifier.
+                - generic [ref=e1533]:
+                  - code [ref=e1535]:
+                    - generic [ref=e1536]: "const handle = await client.workflow.start(example, {"
+                    - generic [ref=e1537]: "workflowId: 'yourWorkflowId',"
+                    - generic [ref=e1538]: "taskQueue: 'yourTaskQueue',"
+                    - generic [ref=e1539]: "args: ['your', 'arg', 'uments'],"
+                    - generic [ref=e1540]: "});"
+                  - button "Copy code to clipboard" [ref=e1542] [cursor=pointer]:
+                    - generic [ref=e1543]:
+                      - img [ref=e1544]
+                      - img [ref=e1546]
+                - paragraph [ref=e1548]: This starts a new Client with the given Workflow Id, Task Queue name, and an argument.
+                - heading "How to get the results of a Workflow ExecutionDirect link to How to get the results of a Workflow Execution" [level=3] [ref=e1549]:
+                  - text: How to get the results of a Workflow Execution
+                  - link "Direct link to How to get the results of a Workflow Execution" [ref=e1550] [cursor=pointer]:
+                    - /url: "#get-workflow-results"
+                    - text: "#"
+                - paragraph [ref=e1551]: If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
+                - paragraph [ref=e1552]: The Workflow Id, Run Id, and Namespace may be used to uniquely identify a Workflow Execution in the system and get its result.
+                - paragraph [ref=e1553]: It's possible to both block progress on the result (synchronous execution) or get the result at some other point in time (asynchronous execution).
+                - paragraph [ref=e1554]: In the Temporal Platform, it's also acceptable to use Queries as the preferred method for accessing the state and results of Workflow Executions.
+                - paragraph [ref=e1555]: "To return the results of a Workflow Execution:"
+                - generic [ref=e1557]:
+                  - code [ref=e1559]:
+                    - generic [ref=e1560]: return (
+                    - generic [ref=e1561]: "'Completed '"
+                    - generic [ref=e1562]: + wf.workflowInfo().workflowId
+                    - generic [ref=e1563]: "+ ', Total Charged: '"
+                    - generic [ref=e1564]: + totalCharged
+                    - generic [ref=e1565]: );
+                  - button "Copy code to clipboard" [ref=e1567] [cursor=pointer]:
+                    - generic [ref=e1568]:
+                      - img [ref=e1569]
+                      - img [ref=e1571]
+                - paragraph [ref=e1573]:
+                  - code [ref=e1574]: totalCharged
+                  - text: is just a function declared in your code. For a full example, see
+                  - link "subscription-workflow-project-template-typescript/src/workflows.ts" [ref=e1575] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/subscription-workflow-project-template-typescript/blob/main/src/workflows.ts
+                  - text: .
+                - paragraph [ref=e1576]:
+                  - text: A Workflow function may return a result. If it doesn't (in which case the return type is
+                  - code [ref=e1577]: Promise<void>
+                  - text: ), the result will be
+                  - code [ref=e1578]: undefined
+                  - text: .
+                - paragraph [ref=e1579]:
+                  - text: If you started a Workflow with
+                  - code [ref=e1580]: client.workflow.start()
+                  - text: ", you can choose to wait for the result anytime with"
+                  - code [ref=e1581]: handle.result()
+                  - text: .
+                - generic [ref=e1583]:
+                  - code [ref=e1585]:
+                    - generic [ref=e1586]: const handle = client.getHandle(workflowId);
+                    - generic [ref=e1587]: const result = await handle.result();
+                  - button "Copy code to clipboard" [ref=e1589] [cursor=pointer]:
+                    - generic [ref=e1590]:
+                      - img [ref=e1591]
+                      - img [ref=e1593]
+                - paragraph [ref=e1595]:
+                  - text: Using a Workflow Handle isn't necessary with
+                  - code [ref=e1596]: client.workflow.execute()
+                  - text: .
+                - paragraph [ref=e1597]:
+                  - text: Workflows that prematurely end will throw a
+                  - code [ref=e1598]: WorkflowFailedError
+                  - text: if you call
+                  - code [ref=e1599]: result()
+                  - text: .
+                - paragraph [ref=e1600]:
+                  - text: If you call
+                  - code [ref=e1601]: result()
+                  - text: on a Workflow that prematurely ended for some reason, it throws a
+                  - link "WorkflowFailedError error" [ref=e1602] [cursor=pointer]:
+                    - /url: https://typescript.temporal.io/api/classes/client.WorkflowFailedError/
+                    - code [ref=e1603]: WorkflowFailedError
+                    - text: error
+                  - text: that reflects the reason. For that reason, it is recommended to catch that error.
+                - generic [ref=e1605]:
+                  - code [ref=e1607]:
+                    - generic [ref=e1608]: const handle = client.getHandle(workflowId);
+                    - generic [ref=e1609]: "try {"
+                    - generic [ref=e1610]: const result = await handle.result();
+                    - generic [ref=e1611]: "} catch (err) {"
+                    - generic [ref=e1612]: "if (err instanceof WorkflowFailedError) {"
+                    - generic [ref=e1613]: "throw new Error('Temporal workflow failed: ' + workflowId, {"
+                    - generic [ref=e1614]: "cause: err,"
+                    - generic [ref=e1615]: "});"
+                    - generic [ref=e1616]: "} else {"
+                    - generic [ref=e1617]: "throw new Error('error from Temporal workflow ' + workflowId, {"
+                    - generic [ref=e1618]: "cause: err,"
+                    - generic [ref=e1619]: "});"
+                    - generic [ref=e1620]: "}"
+                    - generic [ref=e1621]: "}"
+                  - button "Copy code to clipboard" [ref=e1623] [cursor=pointer]:
+                    - generic [ref=e1624]:
+                      - img [ref=e1625]
+                      - img [ref=e1627]
+                - heading "Cancellation scopes in TypescriptDirect link to Cancellation scopes in Typescript" [level=2] [ref=e1629]:
+                  - text: Cancellation scopes in Typescript
+                  - link "Direct link to Cancellation scopes in Typescript" [ref=e1630] [cursor=pointer]:
+                    - /url: "#cancellation-scopes"
+                    - text: "#"
+                - paragraph [ref=e1631]: In the TypeScript SDK, Workflows are represented internally by a tree of cancellation scopes, each with cancellation behaviors you can specify. By default, everything runs in the "root" scope.
+                - paragraph [ref=e1632]:
+                  - text: Scopes are created using the
+                  - link "CancellationScope" [ref=e1633] [cursor=pointer]:
+                    - /url: https://typescript.temporal.io/api/classes/workflow.CancellationScope
+                  - text: "constructor or one of three static helpers:"
+                - list [ref=e1634]:
+                  - listitem [ref=e1635]:
+                    - link "cancellable(fn)" [ref=e1636] [cursor=pointer]:
+                      - /url: https://typescript.temporal.io/api/classes/workflow.CancellationScope#cancellable-1
+                    - text: ": Children are automatically cancelled when their containing scope is cancelled."
+                    - list [ref=e1637]:
+                      - listitem [ref=e1638]:
+                        - text: Equivalent to
+                        - code [ref=e1639]: new CancellationScope().run(fn)
+                        - text: .
+                  - listitem [ref=e1640]:
+                    - link "nonCancellable(fn)" [ref=e1641] [cursor=pointer]:
+                      - /url: https://typescript.temporal.io/api/classes/workflow.CancellationScope#noncancellable
+                    - text: ": Cancellation does not propagate to children."
+                    - list [ref=e1642]:
+                      - listitem [ref=e1643]:
+                        - text: Equivalent to
+                        - code [ref=e1644]: "new CancellationScope({ cancellable: false }).run(fn)"
+                        - text: .
+                  - listitem [ref=e1645]:
+                    - link "withTimeout(timeoutMs, fn)" [ref=e1646] [cursor=pointer]:
+                      - /url: https://typescript.temporal.io/api/classes/workflow.CancellationScope#withtimeout
+                    - text: ": If a timeout triggers before"
+                    - code [ref=e1647]: fn
+                    - text: resolves, the scope is cancelled, triggering cancellation of any enclosed operations, such as Activities and Timers.
+                    - list [ref=e1648]:
+                      - listitem [ref=e1649]:
+                        - text: Equivalent to
+                        - code [ref=e1650]: "new CancellationScope({ cancellable: true, timeout: timeoutMs }).run(fn)"
+                        - text: .
+                - paragraph [ref=e1651]:
+                  - text: Cancellations are applied to cancellation scopes, which can encompass an entire Workflow or just part of one. Scopes can be nested, and cancellation propagates from outer scopes to inner ones. A Workflow's
+                  - code [ref=e1652]: main
+                  - text: function runs in the outermost scope. Cancellations are handled by catching
+                  - code [ref=e1653]: CancelledFailure
+                  - text: s thrown by cancelable operations.
+                - paragraph [ref=e1654]:
+                  - code [ref=e1655]: CancellationScope.run()
+                  - text: and the static helpers mentioned earlier return native JavaScript promises, so you can use the familiar Promise APIs like
+                  - code [ref=e1656]: Promise.all
+                  - text: and
+                  - code [ref=e1657]: Promise.race
+                  - text: "to model your asynchronous logic. You can also use the following APIs:"
+                - list [ref=e1658]:
+                  - listitem [ref=e1659]:
+                    - code [ref=e1660]: CancellationScope.current()
+                    - text: ": Get the current scope."
+                  - listitem [ref=e1661]:
+                    - code [ref=e1662]: scope.cancel()
+                    - text: ": Cancel all operations inside a"
+                    - code [ref=e1663]: scope
+                    - text: .
+                  - listitem [ref=e1664]:
+                    - code [ref=e1665]: scope.run(fn)
+                    - text: ": Run an async function within a"
+                    - code [ref=e1666]: scope
+                    - text: and return the result of
+                    - code [ref=e1667]: fn
+                    - text: .
+                  - listitem [ref=e1668]:
+                    - code [ref=e1669]: scope.cancelRequested
+                    - text: ": A promise that resolves when a scope cancellation is requested, such as when Workflow code calls"
+                    - code [ref=e1670]: cancel()
+                    - text: or the entire Workflow is cancelled by an external client.
+                - paragraph [ref=e1671]:
+                  - text: When a
+                  - code [ref=e1672]: CancellationScope
+                  - text: "is cancelled, it propagates cancellation in any child scopes and of any cancelable operations created within it, such as the following:"
+                - list [ref=e1673]:
+                  - listitem [ref=e1674]: Activities
+                  - listitem [ref=e1675]:
+                    - text: Timers (created with the
+                    - link "sleep" [ref=e1676] [cursor=pointer]:
+                      - /url: https://typescript.temporal.io/api/namespaces/workflow#sleep
+                    - text: function)
+                  - listitem [ref=e1677]:
+                    - link "Triggers" [ref=e1678] [cursor=pointer]:
+                      - /url: https://typescript.temporal.io/api/classes/workflow.Trigger
+                - heading "CancelledFailureDirect link to CancelledFailure" [level=3] [ref=e1679]:
+                  - text: CancelledFailure
+                  - link "Direct link to CancelledFailure" [ref=e1680] [cursor=pointer]:
+                    - /url: "#cancelledfailure"
+                    - text: "#"
+                - paragraph [ref=e1681]:
+                  - text: Timers and triggers throw
+                  - link "CancelledFailure" [ref=e1682] [cursor=pointer]:
+                    - /url: https://typescript.temporal.io/api/classes/common.CancelledFailure
+                  - text: when cancelled; Activities and Child Workflows throw
+                  - code [ref=e1683]: ActivityFailure
+                  - text: and
+                  - code [ref=e1684]: ChildWorkflowFailure
+                  - text: with cause set to
+                  - code [ref=e1685]: CancelledFailure
+                  - text: . One exception is when an Activity or Child Workflow is scheduled in an already cancelled scope (or Workflow). In this case, they propagate the
+                  - code [ref=e1686]: CancelledFailure
+                  - text: that was thrown to cancel the scope.
+                - paragraph [ref=e1687]:
+                  - text: To simplify checking for cancellation, use the
+                  - link "isCancellation(err)" [ref=e1688] [cursor=pointer]:
+                    - /url: https://typescript.temporal.io/api/namespaces/workflow#iscancellation
+                  - text: function.
+                - heading "Internal cancellation exampleDirect link to Internal cancellation example" [level=3] [ref=e1689]:
+                  - text: Internal cancellation example
+                  - link "Direct link to Internal cancellation example" [ref=e1690] [cursor=pointer]:
+                    - /url: "#internal-cancellation-example"
+                    - text: "#"
+                - paragraph [ref=e1691]:
+                  - link "packages/test/src/workflows/cancel-timer-immediately.ts" [ref=e1692] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/cancel-timer-immediately.ts
+                - generic [ref=e1694]:
+                  - code [ref=e1696]:
+                    - generic [ref=e1697]: "import { CancelledFailure, CancellationScope, sleep } from '@temporalio/workflow';"
+                    - generic [ref=e1698]: "export async function cancelTimer(): Promise<void> {"
+                    - generic [ref=e1699]: // Timers and Activities are automatically cancelled when their containing scope is cancelled.
+                    - generic [ref=e1700]: "try {"
+                    - generic [ref=e1701]: "await CancellationScope.cancellable(async () => {"
+                    - generic [ref=e1702]: const promise = sleep(1); // <-- Will be cancelled because it is attached to this closure's scope
+                    - generic [ref=e1703]: CancellationScope.current().cancel();
+                    - generic [ref=e1704]: "await promise; // <-- Promise must be awaited in order for `cancellable` to throw"
+                    - generic [ref=e1705]: "});"
+                    - generic [ref=e1706]: "} catch (e) {"
+                    - generic [ref=e1707]: "if (e instanceof CancelledFailure) {"
+                    - generic [ref=e1708]: console.log('Timer cancelled 👍');
+                    - generic [ref=e1709]: "} else {"
+                    - generic [ref=e1710]: throw e; // <-- Fail the workflow
+                    - generic [ref=e1711]: "}"
+                    - generic [ref=e1712]: "}"
+                    - generic [ref=e1713]: "}"
+                  - generic [ref=e1714]:
+                    - button "Toggle word wrap" [ref=e1715] [cursor=pointer]:
+                      - img [ref=e1716]
+                    - button "Copy code to clipboard" [ref=e1718] [cursor=pointer]:
+                      - generic [ref=e1719]:
+                        - img [ref=e1720]
+                        - img [ref=e1722]
+                - paragraph [ref=e1724]: Alternatively, the preceding can be written as the following.
+                - paragraph [ref=e1725]:
+                  - link "packages/test/src/workflows/cancel-timer-immediately-alternative-impl.ts" [ref=e1726] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/cancel-timer-immediately-alternative-impl.ts
+                - generic [ref=e1728]:
+                  - code [ref=e1730]:
+                    - generic [ref=e1731]: "import { CancelledFailure, CancellationScope, sleep } from '@temporalio/workflow';"
+                    - generic [ref=e1732]: "export async function cancelTimerAltImpl(): Promise<void> {"
+                    - generic [ref=e1733]: "try {"
+                    - generic [ref=e1734]: const scope = new CancellationScope();
+                    - generic [ref=e1735]: const promise = scope.run(() => sleep(1));
+                    - generic [ref=e1736]: scope.cancel(); // <-- Cancel the timer created in scope
+                    - generic [ref=e1737]: await promise; // <-- Throws CancelledFailure
+                    - generic [ref=e1738]: "} catch (e) {"
+                    - generic [ref=e1739]: "if (e instanceof CancelledFailure) {"
+                    - generic [ref=e1740]: console.log('Timer cancelled 👍');
+                    - generic [ref=e1741]: "} else {"
+                    - generic [ref=e1742]: throw e; // <-- Fail the workflow
+                    - generic [ref=e1743]: "}"
+                    - generic [ref=e1744]: "}"
+                    - generic [ref=e1745]: "}"
+                  - button "Copy code to clipboard" [ref=e1747] [cursor=pointer]:
+                    - generic [ref=e1748]:
+                      - img [ref=e1749]
+                      - img [ref=e1751]
+                - heading "External cancellation exampleDirect link to External cancellation example" [level=3] [ref=e1753]:
+                  - text: External cancellation example
+                  - link "Direct link to External cancellation example" [ref=e1754] [cursor=pointer]:
+                    - /url: "#external-cancellation-example"
+                    - text: "#"
+                - paragraph [ref=e1755]: The following code shows how to handle Workflow cancellation by an external client while an Activity is running.
+                - paragraph [ref=e1756]:
+                  - link "packages/test/src/workflows/handle-external-workflow-cancellation-while-activity-running.ts" [ref=e1757] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/handle-external-workflow-cancellation-while-activity-running.ts
+                - generic [ref=e1759]:
+                  - code [ref=e1761]:
+                    - generic [ref=e1762]: "import { CancellationScope, proxyActivities, isCancellation } from '@temporalio/workflow';"
+                    - generic [ref=e1763]: import type * as activities from '../activities';
+                    - generic [ref=e1764]: "const { httpPostJSON, cleanup } = proxyActivities<typeof activities>({"
+                    - generic [ref=e1765]: "startToCloseTimeout: '10m',"
+                    - generic [ref=e1766]: "});"
+                    - generic [ref=e1767]: "export async function handleExternalWorkflowCancellationWhileActivityRunning(url: string, data: any): Promise<void> {"
+                    - generic [ref=e1768]: "try {"
+                    - generic [ref=e1769]: await httpPostJSON(url, data);
+                    - generic [ref=e1770]: "} catch (err) {"
+                    - generic [ref=e1771]: "if (isCancellation(err)) {"
+                    - generic [ref=e1772]: console.log('Workflow cancelled');
+                    - generic [ref=e1773]: // Cleanup logic must be in a nonCancellable scope
+                    - generic [ref=e1774]: // If we'd run cleanup outside of a nonCancellable scope it would've been cancelled
+                    - generic [ref=e1775]: // before being started because the Workflow's root scope is cancelled.
+                    - generic [ref=e1776]: await CancellationScope.nonCancellable(() => cleanup(url));
+                    - generic [ref=e1777]: "}"
+                    - generic [ref=e1778]: throw err; // <-- Fail the Workflow
+                    - generic [ref=e1779]: "}"
+                    - generic [ref=e1780]: "}"
+                  - generic [ref=e1781]:
+                    - button "Toggle word wrap" [ref=e1782] [cursor=pointer]:
+                      - img [ref=e1783]
+                    - button "Copy code to clipboard" [ref=e1785] [cursor=pointer]:
+                      - generic [ref=e1786]:
+                        - img [ref=e1787]
+                        - img [ref=e1789]
+                - heading "nonCancellable exampleDirect link to nonCancellable example" [level=3] [ref=e1791]:
+                  - text: nonCancellable example
+                  - link "Direct link to nonCancellable example" [ref=e1792] [cursor=pointer]:
+                    - /url: "#noncancellable-example"
+                    - text: "#"
+                - paragraph [ref=e1793]:
+                  - code [ref=e1794]: CancellationScope.nonCancellable
+                  - text: prevents cancellation from propagating to children.
+                - paragraph [ref=e1795]:
+                  - link "activities-cancellation-heartbeating/src/cancellation-scopes.ts" [ref=e1796] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/samples-typescript/blob/main/activities-cancellation-heartbeating/src/cancellation-scopes.ts
+                - generic [ref=e1798]:
+                  - code [ref=e1800]:
+                    - generic [ref=e1801]: "export async function nonCancellable(url: string): Promise<any> {"
+                    - generic [ref=e1802]: // Prevent Activity from being cancelled and await completion.
+                    - generic [ref=e1803]: // Note that the Workflow is completely oblivious and impervious to cancellation in this example.
+                    - generic [ref=e1804]: return CancellationScope.nonCancellable(() => httpGetJSON(url));
+                    - generic [ref=e1805]: "}"
+                  - button "Copy code to clipboard" [ref=e1807] [cursor=pointer]:
+                    - generic [ref=e1808]:
+                      - img [ref=e1809]
+                      - img [ref=e1811]
+                - heading "withTimeout exampleDirect link to withTimeout example" [level=3] [ref=e1813]:
+                  - text: withTimeout example
+                  - link "Direct link to withTimeout example" [ref=e1814] [cursor=pointer]:
+                    - /url: "#withtimeout-example"
+                    - text: "#"
+                - paragraph [ref=e1815]:
+                  - text: A common operation is to cancel one or more Activities if a deadline elapses.
+                  - code [ref=e1816]: withTimeout
+                  - text: creates a
+                  - code [ref=e1817]: CancellationScope
+                  - text: that is automatically cancelled after a timeout.
+                - paragraph [ref=e1818]:
+                  - link "packages/test/src/workflows/multiple-activities-single-timeout.ts" [ref=e1819] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/multiple-activities-single-timeout.ts
+                - generic [ref=e1821]:
+                  - code [ref=e1823]:
+                    - generic [ref=e1824]: "import { CancellationScope, proxyActivities } from '@temporalio/workflow';"
+                    - generic [ref=e1825]: import type * as activities from '../activities';
+                    - generic [ref=e1826]: "export function multipleActivitiesSingleTimeout(urls: string[], timeoutMs: number): Promise<any> {"
+                    - generic [ref=e1827]: "const { httpGetJSON } = proxyActivities<typeof activities>({"
+                    - generic [ref=e1828]: "startToCloseTimeout: timeoutMs,"
+                    - generic [ref=e1829]: "});"
+                    - generic [ref=e1830]: // If timeout triggers before all activities complete
+                    - generic [ref=e1831]: // the Workflow will fail with a CancelledError.
+                    - generic [ref=e1832]: return CancellationScope.withTimeout(timeoutMs, () => Promise.all(urls.map((url) => httpGetJSON(url))));
+                    - generic [ref=e1833]: "}"
+                  - generic [ref=e1834]:
+                    - button "Toggle word wrap" [ref=e1835] [cursor=pointer]:
+                      - img [ref=e1836]
+                    - button "Copy code to clipboard" [ref=e1838] [cursor=pointer]:
+                      - generic [ref=e1839]:
+                        - img [ref=e1840]
+                        - img [ref=e1842]
+                - heading "scope.cancelRequestedDirect link to scope.cancelRequested" [level=3] [ref=e1844]:
+                  - text: scope.cancelRequested
+                  - link "Direct link to scope.cancelRequested" [ref=e1845] [cursor=pointer]:
+                    - /url: "#scopecancelrequested"
+                    - text: "#"
+                - paragraph [ref=e1846]:
+                  - text: You can await
+                  - code [ref=e1847]: cancelRequested
+                  - text: to make a Workflow aware of cancellation while waiting on
+                  - code [ref=e1848]: nonCancellable
+                  - text: scopes.
+                - paragraph [ref=e1849]:
+                  - link "packages/test/src/workflows/cancel-requested-with-non-cancellable.ts" [ref=e1850] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/cancel-requested-with-non-cancellable.ts
+                - generic [ref=e1852]:
+                  - code [ref=e1854]:
+                    - generic [ref=e1855]: "import { CancellationScope, CancelledFailure, proxyActivities } from '@temporalio/workflow';"
+                    - generic [ref=e1856]: import type * as activities from '../activities';
+                    - generic [ref=e1857]: "const { httpGetJSON } = proxyActivities<typeof activities>({"
+                    - generic [ref=e1858]: "startToCloseTimeout: '10m',"
+                    - generic [ref=e1859]: "});"
+                    - generic [ref=e1860]: "export async function resumeAfterCancellation(url: string): Promise<any> {"
+                    - generic [ref=e1861]: "let result: any = undefined;"
+                    - generic [ref=e1862]: "const scope = new CancellationScope({ cancellable: false });"
+                    - generic [ref=e1863]: const promise = scope.run(() => httpGetJSON(url));
+                    - generic [ref=e1864]: "try {"
+                    - generic [ref=e1865]: result = await Promise.race([scope.cancelRequested, promise]);
+                    - generic [ref=e1866]: "} catch (err) {"
+                    - generic [ref=e1867]: "if (!(err instanceof CancelledFailure)) {"
+                    - generic [ref=e1868]: throw err;
+                    - generic [ref=e1869]: "}"
+                    - generic [ref=e1870]: // Prevent Workflow from completing so Activity can complete
+                    - generic [ref=e1871]: result = await promise;
+                    - generic [ref=e1872]: "}"
+                    - generic [ref=e1873]: return result;
+                    - generic [ref=e1874]: "}"
+                  - button "Copy code to clipboard" [ref=e1876] [cursor=pointer]:
+                    - generic [ref=e1877]:
+                      - img [ref=e1878]
+                      - img [ref=e1880]
+                - heading "Cancellation scopes and callbacksDirect link to Cancellation scopes and callbacks" [level=3] [ref=e1882]:
+                  - text: Cancellation scopes and callbacks
+                  - link "Direct link to Cancellation scopes and callbacks" [ref=e1883] [cursor=pointer]:
+                    - /url: "#cancellation-scopes-and-callbacks"
+                    - text: "#"
+                - paragraph [ref=e1884]:
+                  - text: Callbacks are not particularly useful in Workflows because all meaningful asynchronous operations return promises. In the rare case that code uses callbacks and needs to handle cancellation, a callback can consume the
+                  - code [ref=e1885]: CancellationScope.cancelRequested
+                  - text: promise.
+                - paragraph [ref=e1886]:
+                  - link "packages/test/src/workflows/cancellation-scopes-with-callbacks.ts" [ref=e1887] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/cancellation-scopes-with-callbacks.ts
+                - generic [ref=e1889]:
+                  - code [ref=e1891]:
+                    - generic [ref=e1892]: "import { CancellationScope } from '@temporalio/workflow';"
+                    - generic [ref=e1893]: "function doSomething(callback: () => any) {"
+                    - generic [ref=e1894]: setTimeout(callback, 10);
+                    - generic [ref=e1895]: "}"
+                    - generic [ref=e1896]: "export async function cancellationScopesWithCallbacks(): Promise<void> {"
+                    - generic [ref=e1897]: "await new Promise<void>((resolve, reject) => {"
+                    - generic [ref=e1898]: doSomething(resolve);
+                    - generic [ref=e1899]: CancellationScope.current().cancelRequested.catch(reject);
+                    - generic [ref=e1900]: "});"
+                    - generic [ref=e1901]: "}"
+                  - button "Copy code to clipboard" [ref=e1903] [cursor=pointer]:
+                    - generic [ref=e1904]:
+                      - img [ref=e1905]
+                      - img [ref=e1907]
+                - heading "Nesting cancellation scopesDirect link to Nesting cancellation scopes" [level=3] [ref=e1909]:
+                  - text: Nesting cancellation scopes
+                  - link "Direct link to Nesting cancellation scopes" [ref=e1910] [cursor=pointer]:
+                    - /url: "#nesting-cancellation-scopes"
+                    - text: "#"
+                - paragraph [ref=e1911]: You can achieve complex flows by nesting cancellation scopes.
+                - paragraph [ref=e1912]:
+                  - link "packages/test/src/workflows/nested-cancellation.ts" [ref=e1913] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/nested-cancellation.ts
+                - generic [ref=e1915]:
+                  - code [ref=e1917]:
+                    - generic [ref=e1918]: "import { CancellationScope, proxyActivities, isCancellation } from '@temporalio/workflow';"
+                    - generic [ref=e1919]: import type * as activities from '../activities';
+                    - generic [ref=e1920]: "const { setup, httpPostJSON, cleanup } = proxyActivities<typeof activities>({"
+                    - generic [ref=e1921]: "startToCloseTimeout: '10m',"
+                    - generic [ref=e1922]: "});"
+                    - generic [ref=e1923]: "export async function nestedCancellation(url: string): Promise<void> {"
+                    - generic [ref=e1924]: "await CancellationScope.cancellable(async () => {"
+                    - generic [ref=e1925]: await CancellationScope.nonCancellable(() => setup());
+                    - generic [ref=e1926]: "try {"
+                    - generic [ref=e1927]: "await CancellationScope.withTimeout(1000, () => httpPostJSON(url, { some: 'data' }));"
+                    - generic [ref=e1928]: "} catch (err) {"
+                    - generic [ref=e1929]: "if (isCancellation(err)) {"
+                    - generic [ref=e1930]: await CancellationScope.nonCancellable(() => cleanup(url));
+                    - generic [ref=e1931]: "}"
+                    - generic [ref=e1932]: throw err;
+                    - generic [ref=e1933]: "}"
+                    - generic [ref=e1934]: "});"
+                    - generic [ref=e1935]: "}"
+                  - button "Copy code to clipboard" [ref=e1937] [cursor=pointer]:
+                    - generic [ref=e1938]:
+                      - img [ref=e1939]
+                      - img [ref=e1941]
+                - heading "Sharing promises between scopesDirect link to Sharing promises between scopes" [level=3] [ref=e1943]:
+                  - text: Sharing promises between scopes
+                  - link "Direct link to Sharing promises between scopes" [ref=e1944] [cursor=pointer]:
+                    - /url: "#sharing-promises-between-scopes"
+                    - text: "#"
+                - paragraph [ref=e1945]: Operations like Timers and Activities are cancelled by the cancellation scope they were created in. Promises returned by these operations can be awaited in different scopes.
+                - paragraph [ref=e1946]:
+                  - link "activities-cancellation-heartbeating/src/cancellation-scopes.ts" [ref=e1947] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/samples-typescript/blob/main/activities-cancellation-heartbeating/src/cancellation-scopes.ts
+                - generic [ref=e1949]:
+                  - code [ref=e1951]:
+                    - generic [ref=e1952]: "export async function sharedScopes(): Promise<any> {"
+                    - generic [ref=e1953]: // Start activities in the root scope
+                    - generic [ref=e1954]: const p1 = httpGetJSON('http://url1.ninja');
+                    - generic [ref=e1955]: const p2 = httpGetJSON('http://url2.ninja');
+                    - generic [ref=e1956]: "const scopePromise = CancellationScope.cancellable(async () => {"
+                    - generic [ref=e1957]: const first = await Promise.race([p1, p2]);
+                    - generic [ref=e1958]: // Does not cancel activity1 or activity2 as they're linked to the root scope
+                    - generic [ref=e1959]: CancellationScope.current().cancel();
+                    - generic [ref=e1960]: return first;
+                    - generic [ref=e1961]: "});"
+                    - generic [ref=e1962]: return await scopePromise;
+                    - generic [ref=e1963]: // The Activity that did not complete will effectively be cancelled when
+                    - generic [ref=e1964]: "// Workflow completes unless the Activity is awaited:"
+                    - generic [ref=e1965]: // await Promise.all([p1, p2]);
+                    - generic [ref=e1966]: "}"
+                  - button "Copy code to clipboard" [ref=e1968] [cursor=pointer]:
+                    - generic [ref=e1969]:
+                      - img [ref=e1970]
+                      - img [ref=e1972]
+                - paragraph [ref=e1974]:
+                  - link "activities-cancellation-heartbeating/src/cancellation-scopes.ts" [ref=e1975] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/samples-typescript/blob/main/activities-cancellation-heartbeating/src/cancellation-scopes.ts
+                - generic [ref=e1977]:
+                  - code [ref=e1979]:
+                    - generic [ref=e1980]: "export async function shieldAwaitedInRootScope(): Promise<any> {"
+                    - generic [ref=e1981]: "let p: Promise<any> | undefined = undefined;"
+                    - generic [ref=e1982]: "await CancellationScope.nonCancellable(async () => {"
+                    - generic [ref=e1983]: p = httpGetJSON('http://example.com'); // <-- Start activity in nonCancellable scope without awaiting completion
+                    - generic [ref=e1984]: "});"
+                    - generic [ref=e1985]: // Activity is shielded from cancellation even though it is awaited in the cancellable root scope
+                    - generic [ref=e1986]: return p;
+                    - generic [ref=e1987]: "}"
+                  - generic [ref=e1988]:
+                    - button "Toggle word wrap" [ref=e1989] [cursor=pointer]:
+                      - img [ref=e1990]
+                    - button "Copy code to clipboard" [ref=e1992] [cursor=pointer]:
+                      - generic [ref=e1993]:
+                        - img [ref=e1994]
+                        - img [ref=e1996]
+              - generic [ref=e1998]:
+                - generic [ref=e2000]:
+                  - text: "Tags:"
+                  - list [ref=e2001]:
+                    - listitem [ref=e2002]:
+                      - link "Activities" [ref=e2003] [cursor=pointer]:
+                        - /url: /tags/activities
+                    - listitem [ref=e2004]:
+                      - link "Temporal Client" [ref=e2005] [cursor=pointer]:
+                        - /url: /tags/temporal-client
+                    - listitem [ref=e2006]:
+                      - link "Task Queues" [ref=e2007] [cursor=pointer]:
+                        - /url: /tags/task-queues
+                    - listitem [ref=e2008]:
+                      - link "Workers" [ref=e2009] [cursor=pointer]:
+                        - /url: /tags/workers
+                    - listitem [ref=e2010]:
+                      - link "Workflows" [ref=e2011] [cursor=pointer]:
+                        - /url: /tags/workflows
+                    - listitem [ref=e2012]:
+                      - link "TypeScript SDK" [ref=e2013] [cursor=pointer]:
+                        - /url: /tags/type-script-sdk
+                    - listitem [ref=e2014]:
+                      - link "Temporal SDKs" [ref=e2015] [cursor=pointer]:
+                        - /url: /tags/temporal-sd-ks
+                - paragraph [ref=e2019]:
+                  - text: Help us make Temporal better. Contribute to our
+                  - link "documentation" [ref=e2020] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation
+                  - text: .
+            - navigation "Docs pages" [ref=e2022]:
+              - link "Previous « Quickstart - Setup" [ref=e2023] [cursor=pointer]:
+                - /url: /develop/typescript/set-up-your-local-typescript
+                - generic [ref=e2024]: Previous
+                - generic [ref=e2025]: « Quickstart - Setup
+              - link "Next Temporal Client »" [ref=e2026] [cursor=pointer]:
+                - /url: /develop/typescript/temporal-client
+                - generic [ref=e2027]: Next
+                - generic [ref=e2028]: Temporal Client »
+          - list [ref=e2031]:
+            - listitem [ref=e2032]:
+              - link "How to install the Temporal CLI and run a development server" [ref=e2033] [cursor=pointer]:
+                - /url: "#run-a-development-server"
+            - listitem [ref=e2034]:
+              - link "How to install a Temporal SDK" [ref=e2035] [cursor=pointer]:
+                - /url: "#install-a-temporal-sdk"
+            - listitem [ref=e2036]:
+              - link "Linting and types in TypeScript" [ref=e2037] [cursor=pointer]:
+                - /url: "#linting-and-types"
+            - listitem [ref=e2038]:
+              - link "How to connect a Temporal Client to a Temporal Service" [ref=e2039] [cursor=pointer]:
+                - /url: "#connect-to-a-dev-cluster"
+            - listitem [ref=e2040]:
+              - link "How to connect to Temporal Cloud" [ref=e2041] [cursor=pointer]:
+                - /url: "#connect-to-temporal-cloud"
+            - listitem [ref=e2042]:
+              - link "How to develop a basic Workflow" [ref=e2043] [cursor=pointer]:
+                - /url: "#develop-workflows"
+            - listitem [ref=e2044]:
+              - link "How to develop a basic Activity" [ref=e2045] [cursor=pointer]:
+                - /url: "#develop-activities"
+            - listitem [ref=e2046]:
+              - link "How to start an Activity Execution" [ref=e2047] [cursor=pointer]:
+                - /url: "#activity-execution"
+            - listitem [ref=e2048]:
+              - link "How to run Worker Processes" [ref=e2049] [cursor=pointer]:
+                - /url: "#run-a-dev-worker"
+            - listitem [ref=e2050]:
+              - link "How to run a Worker on Docker in TypeScript" [ref=e2051] [cursor=pointer]:
+                - /url: "#run-a-worker-on-docker"
+            - listitem [ref=e2052]:
+              - link "How to run a Temporal Cloud Worker" [ref=e2053] [cursor=pointer]:
+                - /url: "#run-a-temporal-cloud-worker"
+            - listitem [ref=e2054]:
+              - link "How to shut down a Worker and track its state" [ref=e2055] [cursor=pointer]:
+                - /url: "#shut-down-a-worker"
+            - listitem [ref=e2056]:
+              - link "How to start a Workflow Execution" [ref=e2057] [cursor=pointer]:
+                - /url: "#start-workflow-execution"
+            - listitem [ref=e2058]:
+              - link "Cancellation scopes in Typescript" [ref=e2059] [cursor=pointer]:
+                - /url: "#cancellation-scopes"
+    - contentinfo [ref=e2060]:
+      - generic [ref=e2061]:
+        - generic [ref=e2062]:
+          - list [ref=e2064]:
+            - listitem [ref=e2065]:
+              - link "GitHub" [ref=e2066] [cursor=pointer]:
+                - /url: https://github.com/temporalio
+                - text: GitHub
+                - img [ref=e2067]
+            - listitem [ref=e2069]:
+              - link "Twitter" [ref=e2070] [cursor=pointer]:
+                - /url: https://twitter.com/temporalio
+                - text: Twitter
+                - img [ref=e2071]
+            - listitem [ref=e2073]:
+              - link "YouTube" [ref=e2074] [cursor=pointer]:
+                - /url: https://www.youtube.com/c/Temporalio
+                - text: YouTube
+                - img [ref=e2075]
+            - listitem [ref=e2077]:
+              - link "About the docs" [ref=e2078] [cursor=pointer]:
+                - /url: https://github.com/temporalio/documentation/blob/master/README.md
+                - text: About the docs
+                - img [ref=e2079]
+          - list [ref=e2082]:
+            - listitem [ref=e2083]:
+              - link "Temporal Cloud" [ref=e2084] [cursor=pointer]:
+                - /url: https://temporal.io/cloud
+                - text: Temporal Cloud
+                - img [ref=e2085]
+            - listitem [ref=e2087]:
+              - link "Meetups" [ref=e2088] [cursor=pointer]:
+                - /url: https://temporal.io/community#events
+                - text: Meetups
+                - img [ref=e2089]
+            - listitem [ref=e2091]:
+              - link "Workshops" [ref=e2092] [cursor=pointer]:
+                - /url: https://temporal.io/community#workshops
+                - text: Workshops
+                - img [ref=e2093]
+            - listitem [ref=e2095]:
+              - link "Support forum" [ref=e2096] [cursor=pointer]:
+                - /url: https://community.temporal.io/
+                - text: Support forum
+                - img [ref=e2097]
+            - listitem [ref=e2099]:
+              - link "Ask an expert" [ref=e2100] [cursor=pointer]:
+                - /url: https://pages.temporal.io/ask-an-expert
+                - text: Ask an expert
+                - img [ref=e2101]
+          - list [ref=e2104]:
+            - listitem [ref=e2105]:
+              - link "Learn Temporal" [ref=e2106] [cursor=pointer]:
+                - /url: https://learn.temporal.io
+                - text: Learn Temporal
+                - img [ref=e2107]
+            - listitem [ref=e2109]:
+              - link "Blog" [ref=e2110] [cursor=pointer]:
+                - /url: https://temporal.io/blog
+                - text: Blog
+                - img [ref=e2111]
+            - listitem [ref=e2113]:
+              - link "Use cases" [ref=e2114] [cursor=pointer]:
+                - /url: https://temporal.io/use-cases
+                - text: Use cases
+                - img [ref=e2115]
+            - listitem [ref=e2117]:
+              - link "Newsletter signup" [ref=e2118] [cursor=pointer]:
+                - /url: https://pages.temporal.io/newsletter-subscribe
+                - text: Newsletter signup
+                - img [ref=e2119]
+          - list [ref=e2122]:
+            - listitem [ref=e2123]:
+              - link "Security" [ref=e2124] [cursor=pointer]:
+                - /url: /security
+            - listitem [ref=e2125]:
+              - link "Privacy policy" [ref=e2126] [cursor=pointer]:
+                - /url: https://temporal.io/global-privacy-policy
+            - listitem [ref=e2127]:
+              - link "Terms of service" [ref=e2128] [cursor=pointer]:
+                - /url: https://docs.temporal.io/pdf/temporal-tos-2021-07-24.pdf
+                - text: Terms of service
+                - img [ref=e2129]
+            - listitem [ref=e2131]:
+              - link "We're hiring" [ref=e2132] [cursor=pointer]:
+                - /url: https://temporal.io/careers
+                - text: We're hiring
+                - img [ref=e2133]
+        - generic [ref=e2135]:
+          - link "Temporal logo" [ref=e2137] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e2138]
+          - generic [ref=e2139]: Copyright © 2025 Temporal Technologies Inc.
+  - generic [ref=e2140] [cursor=pointer]:
+    - img [ref=e2142]
+    - generic: Feedback
+```

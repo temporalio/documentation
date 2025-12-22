@@ -1,0 +1,150 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - region "Skip to main content":
+      - link "Skip to main content" [ref=e3] [cursor=pointer]:
+        - /url: "#__docusaurus_skipToContent_fallback"
+    - navigation "Main" [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - link "Temporal logo" [ref=e7] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e9]
+          - link "Home" [ref=e10] [cursor=pointer]:
+            - /url: /
+          - link "Courses" [ref=e11] [cursor=pointer]:
+            - /url: https://learn.temporal.io/getting_started/
+            - text: Courses
+            - img [ref=e12]
+          - link "SDKs" [ref=e14] [cursor=pointer]:
+            - /url: /develop
+          - link "AI Cookbook" [ref=e15] [cursor=pointer]:
+            - /url: /ai-cookbook
+          - link "Code Exchange" [ref=e16] [cursor=pointer]:
+            - /url: https://temporal.io/code-exchange
+            - text: Code Exchange
+            - img [ref=e17]
+          - link "Temporal Cloud" [ref=e19] [cursor=pointer]:
+            - /url: /cloud
+        - generic [ref=e20]:
+          - button "Ask AI" [ref=e21] [cursor=pointer]:
+            - img [ref=e22]
+            - generic [ref=e26]: Ask AI
+          - button "Switch between dark and light mode (currently system mode)" [ref=e28] [cursor=pointer]:
+            - img [ref=e29]
+          - button "Search (Ctrl+K)" [ref=e32] [cursor=pointer]:
+            - generic [ref=e33]:
+              - img [ref=e34]
+              - generic [ref=e36]: Search
+            - generic [ref=e37]:
+              - img [ref=e39]
+              - generic [ref=e41]: K
+    - main [ref=e45]:
+      - generic [ref=e46]:
+        - heading "One doc tagged with \"litellm\"" [level=1] [ref=e47]
+        - link "View all tags" [ref=e48] [cursor=pointer]:
+          - /url: /ai-cookbook/tags
+      - article [ref=e50]:
+        - link "Hello World with LiteLLM" [ref=e51] [cursor=pointer]:
+          - /url: /ai-cookbook/hello-world-litellm-python
+          - heading "Hello World with LiteLLM" [level=2] [ref=e52]
+        - paragraph [ref=e53]: Integrate LiteLLM into a Temporal Workflow in Python.
+    - contentinfo [ref=e54]:
+      - generic [ref=e55]:
+        - generic [ref=e56]:
+          - list [ref=e58]:
+            - listitem [ref=e59]:
+              - link "GitHub" [ref=e60] [cursor=pointer]:
+                - /url: https://github.com/temporalio
+                - text: GitHub
+                - img [ref=e61]
+            - listitem [ref=e63]:
+              - link "Twitter" [ref=e64] [cursor=pointer]:
+                - /url: https://twitter.com/temporalio
+                - text: Twitter
+                - img [ref=e65]
+            - listitem [ref=e67]:
+              - link "YouTube" [ref=e68] [cursor=pointer]:
+                - /url: https://www.youtube.com/c/Temporalio
+                - text: YouTube
+                - img [ref=e69]
+            - listitem [ref=e71]:
+              - link "About the docs" [ref=e72] [cursor=pointer]:
+                - /url: https://github.com/temporalio/documentation/blob/master/README.md
+                - text: About the docs
+                - img [ref=e73]
+          - list [ref=e76]:
+            - listitem [ref=e77]:
+              - link "Temporal Cloud" [ref=e78] [cursor=pointer]:
+                - /url: https://temporal.io/cloud
+                - text: Temporal Cloud
+                - img [ref=e79]
+            - listitem [ref=e81]:
+              - link "Meetups" [ref=e82] [cursor=pointer]:
+                - /url: https://temporal.io/community#events
+                - text: Meetups
+                - img [ref=e83]
+            - listitem [ref=e85]:
+              - link "Workshops" [ref=e86] [cursor=pointer]:
+                - /url: https://temporal.io/community#workshops
+                - text: Workshops
+                - img [ref=e87]
+            - listitem [ref=e89]:
+              - link "Support forum" [ref=e90] [cursor=pointer]:
+                - /url: https://community.temporal.io/
+                - text: Support forum
+                - img [ref=e91]
+            - listitem [ref=e93]:
+              - link "Ask an expert" [ref=e94] [cursor=pointer]:
+                - /url: https://pages.temporal.io/ask-an-expert
+                - text: Ask an expert
+                - img [ref=e95]
+          - list [ref=e98]:
+            - listitem [ref=e99]:
+              - link "Learn Temporal" [ref=e100] [cursor=pointer]:
+                - /url: https://learn.temporal.io
+                - text: Learn Temporal
+                - img [ref=e101]
+            - listitem [ref=e103]:
+              - link "Blog" [ref=e104] [cursor=pointer]:
+                - /url: https://temporal.io/blog
+                - text: Blog
+                - img [ref=e105]
+            - listitem [ref=e107]:
+              - link "Use cases" [ref=e108] [cursor=pointer]:
+                - /url: https://temporal.io/use-cases
+                - text: Use cases
+                - img [ref=e109]
+            - listitem [ref=e111]:
+              - link "Newsletter signup" [ref=e112] [cursor=pointer]:
+                - /url: https://pages.temporal.io/newsletter-subscribe
+                - text: Newsletter signup
+                - img [ref=e113]
+          - list [ref=e116]:
+            - listitem [ref=e117]:
+              - link "Security" [ref=e118] [cursor=pointer]:
+                - /url: /security
+            - listitem [ref=e119]:
+              - link "Privacy policy" [ref=e120] [cursor=pointer]:
+                - /url: https://temporal.io/global-privacy-policy
+            - listitem [ref=e121]:
+              - link "Terms of service" [ref=e122] [cursor=pointer]:
+                - /url: https://docs.temporal.io/pdf/temporal-tos-2021-07-24.pdf
+                - text: Terms of service
+                - img [ref=e123]
+            - listitem [ref=e125]:
+              - link "We're hiring" [ref=e126] [cursor=pointer]:
+                - /url: https://temporal.io/careers
+                - text: We're hiring
+                - img [ref=e127]
+        - generic [ref=e129]:
+          - link "Temporal logo" [ref=e131] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e132]
+          - generic [ref=e133]: Copyright © 2025 Temporal Technologies Inc.
+  - generic [ref=e134] [cursor=pointer]:
+    - img [ref=e136]
+    - generic: Feedback
+```

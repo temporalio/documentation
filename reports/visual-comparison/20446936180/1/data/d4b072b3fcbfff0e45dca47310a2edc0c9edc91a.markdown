@@ -1,0 +1,1134 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - region "Skip to main content":
+      - link "Skip to main content" [ref=e3] [cursor=pointer]:
+        - /url: "#__docusaurus_skipToContent_fallback"
+    - navigation "Main" [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - link "Temporal logo" [ref=e7] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e9]
+          - link "Home" [ref=e10] [cursor=pointer]:
+            - /url: /
+          - link "Courses" [ref=e11] [cursor=pointer]:
+            - /url: https://learn.temporal.io/getting_started/
+            - text: Courses
+            - img [ref=e12]
+          - link "SDKs" [ref=e14] [cursor=pointer]:
+            - /url: /develop
+          - link "AI Cookbook" [ref=e15] [cursor=pointer]:
+            - /url: /ai-cookbook
+          - link "Code Exchange" [ref=e16] [cursor=pointer]:
+            - /url: https://temporal.io/code-exchange
+            - text: Code Exchange
+            - img [ref=e17]
+          - link "Temporal Cloud" [ref=e19] [cursor=pointer]:
+            - /url: /cloud
+        - generic [ref=e20]:
+          - button "Ask AI" [ref=e21] [cursor=pointer]:
+            - img [ref=e22]
+            - generic [ref=e26]: Ask AI
+          - button "Switch between dark and light mode (currently system mode)" [ref=e28] [cursor=pointer]:
+            - img [ref=e29]
+          - button "Search (Ctrl+K)" [ref=e32] [cursor=pointer]:
+            - generic [ref=e33]:
+              - img [ref=e34]
+              - generic [ref=e36]: Search
+            - generic [ref=e37]:
+              - img [ref=e39]
+              - generic [ref=e41]: K
+    - generic [ref=e44]:
+      - complementary [ref=e45]:
+        - generic [ref=e47]:
+          - navigation "Docs sidebar" [ref=e48]:
+            - list [ref=e49]:
+              - listitem [ref=e50]:
+                - link "Documentation Home" [ref=e51] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=e52]:
+                - link "Quickstarts" [ref=e53] [cursor=pointer]:
+                  - /url: /quickstarts
+              - listitem [ref=e54]:
+                - generic [ref=e55]:
+                  - link "Evaluate" [ref=e56] [cursor=pointer]:
+                    - /url: /evaluate/
+                  - button "Collapse sidebar category 'Evaluate'" [expanded] [ref=e57] [cursor=pointer]
+                - list [ref=e58]:
+                  - listitem [ref=e59]:
+                    - link "Why Temporal" [ref=e60] [cursor=pointer]:
+                      - /url: /evaluate/why-temporal
+                  - listitem [ref=e61]:
+                    - link "Understanding Temporal" [ref=e62] [cursor=pointer]:
+                      - /url: /evaluate/understanding-temporal
+                  - listitem [ref=e63]:
+                    - generic [ref=e64]:
+                      - link "Features" [ref=e65] [cursor=pointer]:
+                        - /url: /evaluate/development-production-features/
+                      - button "Expand sidebar category 'Features'" [ref=e66] [cursor=pointer]
+                  - listitem [ref=e67]:
+                    - generic [ref=e68]:
+                      - link "Temporal Cloud" [ref=e69] [cursor=pointer]:
+                        - /url: /cloud/introduction
+                      - button "Expand sidebar category 'Temporal Cloud'" [ref=e70] [cursor=pointer]
+                  - listitem [ref=e71]:
+                    - link "Security" [ref=e72] [cursor=pointer]:
+                      - /url: /security
+                  - listitem [ref=e73]:
+                    - link "Use Cases" [ref=e74] [cursor=pointer]:
+                      - /url: /evaluate/use-cases-design-patterns
+              - listitem [ref=e75]:
+                - generic [ref=e76]:
+                  - link "Develop" [ref=e77] [cursor=pointer]:
+                    - /url: /develop/
+                  - button "Collapse sidebar category 'Develop'" [expanded] [ref=e78] [cursor=pointer]
+                - list [ref=e79]:
+                  - listitem [ref=e80]:
+                    - generic [ref=e81]:
+                      - link "Go SDK" [ref=e82] [cursor=pointer]:
+                        - /url: /develop/go/
+                      - button "Expand sidebar category 'Go SDK'" [ref=e83] [cursor=pointer]
+                  - listitem [ref=e84]:
+                    - generic [ref=e85]:
+                      - link "Java SDK" [ref=e86] [cursor=pointer]:
+                        - /url: /develop/java/
+                      - button "Expand sidebar category 'Java SDK'" [ref=e87] [cursor=pointer]
+                  - listitem [ref=e88]:
+                    - generic [ref=e89]:
+                      - link "PHP SDK" [ref=e90] [cursor=pointer]:
+                        - /url: /develop/php/
+                      - button "Expand sidebar category 'PHP SDK'" [ref=e91] [cursor=pointer]
+                  - listitem [ref=e92]:
+                    - generic [ref=e93]:
+                      - link "Python SDK" [ref=e94] [cursor=pointer]:
+                        - /url: /develop/python/
+                      - button "Collapse sidebar category 'Python SDK'" [expanded] [ref=e95] [cursor=pointer]
+                    - list [ref=e96]:
+                      - listitem [ref=e97]:
+                        - link "Quickstart - Setup" [ref=e98] [cursor=pointer]:
+                          - /url: /develop/python/set-up-your-local-python
+                      - listitem [ref=e99]:
+                        - link "Core application" [ref=e100] [cursor=pointer]:
+                          - /url: /develop/python/core-application
+                      - listitem [ref=e101]:
+                        - link "Temporal Client" [ref=e102] [cursor=pointer]:
+                          - /url: /develop/python/temporal-client
+                      - listitem [ref=e103]:
+                        - link "Python SDK sandbox" [ref=e104] [cursor=pointer]:
+                          - /url: /develop/python/python-sdk-sandbox
+                      - listitem [ref=e105]:
+                        - link "Python SDK sync vs async" [ref=e106] [cursor=pointer]:
+                          - /url: /develop/python/python-sdk-sync-vs-async
+                      - listitem [ref=e107]:
+                        - link "Testing" [ref=e108] [cursor=pointer]:
+                          - /url: /develop/python/testing-suite
+                      - listitem [ref=e109]:
+                        - link "Failure detection" [ref=e110] [cursor=pointer]:
+                          - /url: /develop/python/failure-detection
+                      - listitem [ref=e111]:
+                        - link "Messages" [ref=e112] [cursor=pointer]:
+                          - /url: /develop/python/message-passing
+                      - listitem [ref=e113]:
+                        - link "Interrupt a Workflow" [ref=e114] [cursor=pointer]:
+                          - /url: /develop/python/cancellation
+                      - listitem [ref=e115]:
+                        - link "Asynchronous Activity Completion" [ref=e116] [cursor=pointer]:
+                          - /url: /develop/python/asynchronous-activity-completion
+                      - listitem [ref=e117]:
+                        - link "Versioning" [ref=e118] [cursor=pointer]:
+                          - /url: /develop/python/versioning
+                      - listitem [ref=e119]:
+                        - link "Observability" [ref=e120] [cursor=pointer]:
+                          - /url: /develop/python/observability
+                      - listitem [ref=e121]:
+                        - link "Benign exceptions" [ref=e122] [cursor=pointer]:
+                          - /url: /develop/python/benign-exceptions
+                      - listitem [ref=e123]:
+                        - link "Enriching the UI" [ref=e124] [cursor=pointer]:
+                          - /url: /develop/python/enriching-ui
+                      - listitem [ref=e125]:
+                        - link "Debugging" [ref=e126] [cursor=pointer]:
+                          - /url: /develop/python/debugging
+                      - listitem [ref=e127]:
+                        - link "Schedules" [ref=e128] [cursor=pointer]:
+                          - /url: /develop/python/schedules
+                      - listitem [ref=e129]:
+                        - link "Converters and encryption" [ref=e130] [cursor=pointer]:
+                          - /url: /develop/python/converters-and-encryption
+                      - listitem [ref=e131]:
+                        - link "Durable Timers" [ref=e132] [cursor=pointer]:
+                          - /url: /develop/python/timers
+                      - listitem [ref=e133]:
+                        - link "Temporal Nexus" [ref=e134] [cursor=pointer]:
+                          - /url: /develop/python/nexus
+                      - listitem [ref=e135]:
+                        - link "Child Workflows" [ref=e136] [cursor=pointer]:
+                          - /url: /develop/python/child-workflows
+                      - listitem [ref=e137]:
+                        - link "Continue-As-New" [ref=e138] [cursor=pointer]:
+                          - /url: /develop/python/continue-as-new
+                      - listitem [ref=e139]:
+                        - link "Interceptors" [ref=e140] [cursor=pointer]:
+                          - /url: /develop/python/interceptors
+                  - listitem [ref=e141]:
+                    - generic [ref=e142]:
+                      - link "TypeScript SDK" [ref=e143] [cursor=pointer]:
+                        - /url: /develop/typescript/
+                      - button "Expand sidebar category 'TypeScript SDK'" [ref=e144] [cursor=pointer]
+                  - listitem [ref=e145]:
+                    - generic [ref=e146]:
+                      - link ".NET SDK" [ref=e147] [cursor=pointer]:
+                        - /url: /develop/dotnet/
+                      - button "Expand sidebar category '.NET SDK'" [ref=e148] [cursor=pointer]
+                  - listitem [ref=e149]:
+                    - generic [ref=e150]:
+                      - link "Ruby SDK" [ref=e151] [cursor=pointer]:
+                        - /url: /develop/ruby/
+                      - button "Expand sidebar category 'Ruby SDK'" [ref=e152] [cursor=pointer]
+                  - listitem [ref=e153]:
+                    - link "Environment configuration" [ref=e154] [cursor=pointer]:
+                      - /url: /develop/environment-configuration
+                  - listitem [ref=e155]:
+                    - link "Activity retry simulator" [ref=e156] [cursor=pointer]:
+                      - /url: /develop/activity-retry-simulator
+                  - listitem [ref=e157]:
+                    - link "Worker performance" [ref=e158] [cursor=pointer]:
+                      - /url: /develop/worker-performance
+                  - listitem [ref=e159]:
+                    - link "Safe deployments" [ref=e160] [cursor=pointer]:
+                      - /url: /develop/safe-deployments
+                  - listitem [ref=e161]:
+                    - link "Plugins guide" [ref=e162] [cursor=pointer]:
+                      - /url: /develop/plugins-guide
+              - listitem [ref=e163]:
+                - generic [ref=e164]:
+                  - link "Deploy to production" [ref=e165] [cursor=pointer]:
+                    - /url: /production-deployment
+                  - button "Collapse sidebar category 'Deploy to production'" [expanded] [ref=e166] [cursor=pointer]
+                - list [ref=e167]:
+                  - listitem [ref=e168]:
+                    - generic [ref=e169]:
+                      - link "Temporal Cloud" [ref=e170] [cursor=pointer]:
+                        - /url: /cloud
+                      - button "Expand sidebar category 'Temporal Cloud'" [ref=e171] [cursor=pointer]
+                  - listitem [ref=e172]:
+                    - link "Codecs and Encryption" [ref=e173] [cursor=pointer]:
+                      - /url: /production-deployment/data-encryption
+                  - listitem [ref=e174]:
+                    - generic [ref=e175]:
+                      - link "Self-host" [ref=e176] [cursor=pointer]:
+                        - /url: /self-hosted-guide
+                      - button "Expand sidebar category 'Self-host'" [ref=e177] [cursor=pointer]
+                  - listitem [ref=e178]:
+                    - generic [ref=e179]:
+                      - link "Worker deployments" [ref=e180] [cursor=pointer]:
+                        - /url: /production-deployment/worker-deployments
+                      - button "Expand sidebar category 'Worker deployments'" [ref=e181] [cursor=pointer]
+              - listitem [ref=e182]:
+                - generic [ref=e183]:
+                  - link "CLI (temporal)" [ref=e184] [cursor=pointer]:
+                    - /url: /cli
+                  - button "Expand sidebar category 'CLI (temporal)'" [ref=e185] [cursor=pointer]
+              - listitem [ref=e186]:
+                - generic [ref=e187]:
+                  - link "References" [ref=e188] [cursor=pointer]:
+                    - /url: /references/
+                  - button "Expand sidebar category 'References'" [ref=e189] [cursor=pointer]
+              - listitem [ref=e190]:
+                - generic [ref=e191]:
+                  - link "Troubleshooting" [ref=e192] [cursor=pointer]:
+                    - /url: /troubleshooting/
+                  - button "Expand sidebar category 'Troubleshooting'" [ref=e193] [cursor=pointer]
+              - listitem [ref=e194]:
+                - generic [ref=e195]:
+                  - link "Best Practices" [ref=e196] [cursor=pointer]:
+                    - /url: /best-practices/
+                  - button "Expand sidebar category 'Best Practices'" [ref=e197] [cursor=pointer]
+              - listitem [ref=e198]:
+                - generic [ref=e199]:
+                  - link "Encyclopedia" [ref=e200] [cursor=pointer]:
+                    - /url: /encyclopedia/
+                  - button "Expand sidebar category 'Encyclopedia'" [ref=e201] [cursor=pointer]
+              - listitem [ref=e202]:
+                - link "Glossary" [ref=e203] [cursor=pointer]:
+                  - /url: /glossary
+          - button "Collapse sidebar" [ref=e204] [cursor=pointer]:
+            - img [ref=e205]
+      - main [ref=e209]:
+        - generic [ref=e211]:
+          - generic [ref=e213]:
+            - article [ref=e214]:
+              - navigation "Breadcrumbs" [ref=e215]:
+                - list [ref=e216]:
+                  - listitem [ref=e217]:
+                    - link "Home page" [ref=e218] [cursor=pointer]:
+                      - /url: /
+                      - img [ref=e219]
+                  - listitem [ref=e221]:
+                    - link "Develop" [ref=e222] [cursor=pointer]:
+                      - /url: /develop/
+                  - listitem [ref=e223]:
+                    - link "Python SDK" [ref=e224] [cursor=pointer]:
+                      - /url: /develop/python/
+                  - listitem [ref=e225]:
+                    - generic [ref=e226]: Core application
+              - generic [ref=e227]:
+                - heading "Core application - Python SDK" [level=1] [ref=e229]
+                - paragraph [ref=e230]: "This page shows how to do the following:"
+                - list [ref=e231]:
+                  - listitem [ref=e232]:
+                    - link "Develop a basic Workflow" [ref=e233] [cursor=pointer]:
+                      - /url: "#develop-workflows"
+                  - listitem [ref=e234]:
+                    - link "Define Workflow parameters" [ref=e235] [cursor=pointer]:
+                      - /url: "#workflow-parameters"
+                  - listitem [ref=e236]:
+                    - link "Define Workflow return parameters" [ref=e237] [cursor=pointer]:
+                      - /url: "#workflow-return-values"
+                  - listitem [ref=e238]:
+                    - link "Customize your Workflow Type" [ref=e239] [cursor=pointer]:
+                      - /url: "#workflow-type"
+                  - listitem [ref=e240]:
+                    - link "Develop Workflow logic" [ref=e241] [cursor=pointer]:
+                      - /url: "#workflow-logic-requirements"
+                  - listitem [ref=e242]:
+                    - link "Develop a basic Activity" [ref=e243] [cursor=pointer]:
+                      - /url: "#develop-activities"
+                  - listitem [ref=e244]:
+                    - link "Develop Activity Parameters" [ref=e245] [cursor=pointer]:
+                      - /url: "#activity-parameters"
+                  - listitem [ref=e246]:
+                    - link "Define Activity return values" [ref=e247] [cursor=pointer]:
+                      - /url: "#activity-return-values"
+                  - listitem [ref=e248]:
+                    - link "Customize your Activity Type" [ref=e249] [cursor=pointer]:
+                      - /url: "#activity-type"
+                  - listitem [ref=e250]:
+                    - link "Start an Activity Execution" [ref=e251] [cursor=pointer]:
+                      - /url: "#activity-execution"
+                  - listitem [ref=e252]:
+                    - link "Set the required Activity Timeouts" [ref=e253] [cursor=pointer]:
+                      - /url: "#required-timeout"
+                  - listitem [ref=e254]:
+                    - link "Get the results of an Activity Execution" [ref=e255] [cursor=pointer]:
+                      - /url: "#get-activity-results"
+                  - listitem [ref=e256]:
+                    - link "Run a Worker Process" [ref=e257] [cursor=pointer]:
+                      - /url: "#run-a-dev-worker"
+                  - listitem [ref=e258]:
+                    - link "Register types" [ref=e259] [cursor=pointer]:
+                      - /url: "#register-types"
+                - heading "Develop a basic WorkflowDirect link to Develop a basic Workflow" [level=2] [ref=e260]:
+                  - text: Develop a basic Workflow
+                  - link "Direct link to Develop a basic Workflow" [ref=e261] [cursor=pointer]:
+                    - /url: "#develop-workflows"
+                    - text: "#"
+                - paragraph [ref=e262]:
+                  - strong [ref=e263]: How to develop a basic Workflow using the Temporal Python SDK.
+                - paragraph [ref=e264]:
+                  - text: Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a
+                  - link "Workflow Definition" [ref=e265] [cursor=pointer]:
+                    - /url: /workflow-definition
+                  - text: .
+                - paragraph [ref=e266]: In the Temporal Python SDK programming model, Workflows are defined as classes.
+                - paragraph [ref=e267]:
+                  - text: Specify the
+                  - code [ref=e268]: "@workflow.defn"
+                  - text: decorator on the Workflow class to identify a Workflow.
+                - paragraph [ref=e269]:
+                  - text: Use the
+                  - code [ref=e270]: "@workflow.run"
+                  - text: to mark the entry point method to be invoked. This must be set on one asynchronous method defined on the same class as
+                  - code [ref=e271]: "@workflow.defn"
+                  - text: . Run methods have positional parameters.
+                - generic [ref=e272]:
+                  - link "View the source code" [ref=e273] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_workflows_dacx.py
+                    - paragraph [ref=e274]: View the source code
+                  - paragraph [ref=e275]: in the context of the rest of the application code.
+                - generic [ref=e277]:
+                  - code [ref=e279]:
+                    - generic [ref=e280]: from temporalio import workflow
+                    - generic [ref=e281]: "# ..."
+                    - generic [ref=e282]: "# ..."
+                    - generic [ref=e283]: "@workflow.defn(name=\"YourWorkflow\")"
+                    - generic [ref=e284]: "class YourWorkflow:"
+                    - generic [ref=e285]: "@workflow.run"
+                    - generic [ref=e286]: "async def run(self, name: str) -> str:"
+                    - generic [ref=e287]: return await workflow.execute_activity(
+                    - generic [ref=e288]: your_activity,
+                    - generic [ref=e289]: YourParams("Hello", name),
+                    - generic [ref=e290]: start_to_close_timeout=timedelta(seconds=10),
+                    - generic [ref=e291]: )
+                  - button "Copy code to clipboard" [ref=e293] [cursor=pointer]:
+                    - generic [ref=e294]:
+                      - img [ref=e295]
+                      - img [ref=e297]
+                - heading "Define Workflow parametersDirect link to Define Workflow parameters" [level=3] [ref=e299]:
+                  - text: Define Workflow parameters
+                  - link "Direct link to Define Workflow parameters" [ref=e300] [cursor=pointer]:
+                    - /url: "#workflow-parameters"
+                    - text: "#"
+                - paragraph [ref=e301]:
+                  - strong [ref=e302]: How to define Workflow parameters using the Temporal Python SDK.
+                - paragraph [ref=e303]: Temporal Workflows may have any number of custom parameters. However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow. All Workflow Definition parameters must be serializable.
+                - paragraph [ref=e304]:
+                  - text: Workflow parameters are the method parameters of the singular method decorated with
+                  - code [ref=e305]: "@workflow.run"
+                  - text: . These can be any data type Temporal can convert, including
+                  - link "dataclasses" [ref=e306] [cursor=pointer]:
+                    - /url: https://docs.python.org/3/library/dataclasses.html
+                    - code [ref=e307]: dataclasses
+                  - text: when properly type-annotated. Technically this can be multiple parameters, but Temporal strongly encourages a single
+                  - code [ref=e308]: dataclass
+                  - text: parameter containing all input fields.
+                - generic [ref=e309]:
+                  - link "View the source code" [ref=e310] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_dataobject_dacx.py
+                    - paragraph [ref=e311]: View the source code
+                  - paragraph [ref=e312]: in the context of the rest of the application code.
+                - generic [ref=e314]:
+                  - code [ref=e316]:
+                    - generic [ref=e317]: from dataclasses import dataclass
+                    - generic [ref=e318]: "# ..."
+                    - generic [ref=e319]: "# ..."
+                    - generic [ref=e320]: "@dataclass"
+                    - generic [ref=e321]: "class YourParams:"
+                    - generic [ref=e322]: "greeting: str"
+                    - generic [ref=e323]: "name: str"
+                  - button "Copy code to clipboard" [ref=e325] [cursor=pointer]:
+                    - generic [ref=e326]:
+                      - img [ref=e327]
+                      - img [ref=e329]
+                - heading "Define Workflow return parametersDirect link to Define Workflow return parameters" [level=3] [ref=e331]:
+                  - text: Define Workflow return parameters
+                  - link "Direct link to Define Workflow return parameters" [ref=e332] [cursor=pointer]:
+                    - /url: "#workflow-return-values"
+                    - text: "#"
+                - paragraph [ref=e333]:
+                  - strong [ref=e334]: How to define Workflow return parameters using the Temporal Python SDK.
+                - paragraph [ref=e335]: Workflow return values must also be serializable. Returning results, returning errors, or throwing exceptions is fairly idiomatic in each language that is supported. However, Temporal APIs that must be used to get the result of a Workflow Execution will only ever receive one of either the result or the error.
+                - paragraph [ref=e336]:
+                  - text: To return a value of the Workflow, use
+                  - code [ref=e337]: return
+                  - text: to return an object.
+                - paragraph [ref=e338]:
+                  - text: To return the results of a Workflow Execution, use either
+                  - code [ref=e339]: start_workflow()
+                  - text: or
+                  - code [ref=e340]: execute_workflow()
+                  - text: asynchronous methods.
+                - generic [ref=e341]:
+                  - link "View the source code" [ref=e342] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_workflows_dacx.py
+                    - paragraph [ref=e343]: View the source code
+                  - paragraph [ref=e344]: in the context of the rest of the application code.
+                - generic [ref=e346]:
+                  - code [ref=e348]:
+                    - generic [ref=e349]: from temporalio import workflow
+                    - generic [ref=e350]: "# ..."
+                    - generic [ref=e351]: "# ..."
+                    - generic [ref=e352]: "@workflow.defn(name=\"YourWorkflow\")"
+                    - generic [ref=e353]: "class YourWorkflow:"
+                    - generic [ref=e354]: "@workflow.run"
+                    - generic [ref=e355]: "async def run(self, name: str) -> str:"
+                    - generic [ref=e356]: return await workflow.execute_activity(
+                    - generic [ref=e357]: your_activity,
+                    - generic [ref=e358]: YourParams("Hello", name),
+                    - generic [ref=e359]: start_to_close_timeout=timedelta(seconds=10),
+                    - generic [ref=e360]: )
+                  - button "Copy code to clipboard" [ref=e362] [cursor=pointer]:
+                    - generic [ref=e363]:
+                      - img [ref=e364]
+                      - img [ref=e366]
+                - heading "Customize your Workflow TypeDirect link to Customize your Workflow Type" [level=3] [ref=e368]:
+                  - text: Customize your Workflow Type
+                  - link "Direct link to Customize your Workflow Type" [ref=e369] [cursor=pointer]:
+                    - /url: "#workflow-type"
+                    - text: "#"
+                - paragraph [ref=e370]:
+                  - strong [ref=e371]: How to customize your Workflow Type using the Temporal Python SDK.
+                - paragraph [ref=e372]: Workflows have a Type that are referred to as the Workflow name.
+                - paragraph [ref=e373]: The following examples demonstrate how to set a custom name for your Workflow Type.
+                - paragraph [ref=e374]:
+                  - text: You can customize the Workflow name with a custom name in the decorator argument. For example,
+                  - code [ref=e375]: "@workflow.defn(name=\"your-workflow-name\")"
+                  - text: . If the name parameter is not specified, the Workflow name defaults to the unqualified class name.
+                - generic [ref=e376]:
+                  - link "View the source code" [ref=e377] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_workflows_dacx.py
+                    - paragraph [ref=e378]: View the source code
+                  - paragraph [ref=e379]: in the context of the rest of the application code.
+                - generic [ref=e381]:
+                  - code [ref=e383]:
+                    - generic [ref=e384]: from temporalio import workflow
+                    - generic [ref=e385]: "# ..."
+                    - generic [ref=e386]: "# ..."
+                    - generic [ref=e387]: "@workflow.defn(name=\"YourWorkflow\")"
+                    - generic [ref=e388]: "class YourWorkflow:"
+                    - generic [ref=e389]: "@workflow.run"
+                    - generic [ref=e390]: "async def run(self, name: str) -> str:"
+                    - generic [ref=e391]: return await workflow.execute_activity(
+                    - generic [ref=e392]: your_activity,
+                    - generic [ref=e393]: YourParams("Hello", name),
+                    - generic [ref=e394]: start_to_close_timeout=timedelta(seconds=10),
+                    - generic [ref=e395]: )
+                  - button "Copy code to clipboard" [ref=e397] [cursor=pointer]:
+                    - generic [ref=e398]:
+                      - img [ref=e399]
+                      - img [ref=e401]
+                - heading "Develop Workflow logicDirect link to Develop Workflow logic" [level=3] [ref=e403]:
+                  - text: Develop Workflow logic
+                  - link "Direct link to Develop Workflow logic" [ref=e404] [cursor=pointer]:
+                    - /url: "#workflow-logic-requirements"
+                    - text: "#"
+                - paragraph [ref=e405]:
+                  - strong [ref=e406]: How to develop Workflow logic using the Temporal Python SDK.
+                - paragraph [ref=e407]:
+                  - text: Workflow logic is constrained by
+                  - link "deterministic execution requirements" [ref=e408] [cursor=pointer]:
+                    - /url: /workflow-definition#deterministic-constraints
+                  - text: . Therefore, each language is limited to the use of certain idiomatic techniques. However, each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
+                - paragraph [ref=e409]: "Workflow code must be deterministic. This means:"
+                - list [ref=e410]:
+                  - listitem [ref=e411]: no threading
+                  - listitem [ref=e412]: no randomness
+                  - listitem [ref=e413]: no external calls to processes
+                  - listitem [ref=e414]: no network I/O
+                  - listitem [ref=e415]: no global state mutation
+                  - listitem [ref=e416]: no system date or time
+                - paragraph [ref=e417]:
+                  - text: All API safe for Workflows used in the
+                  - link "temporalio.workflow" [ref=e418] [cursor=pointer]:
+                    - /url: https://python.temporal.io/temporalio.workflow.html
+                    - code [ref=e419]: temporalio.workflow
+                  - text: must run in the implicit
+                  - link "asyncio event loop" [ref=e420] [cursor=pointer]:
+                    - /url: https://docs.python.org/3/library/asyncio-eventloop.html
+                    - code [ref=e421]: asyncio
+                    - text: event loop
+                  - text: and be
+                  - emphasis [ref=e422]: deterministic
+                  - text: .
+                - heading "Develop a basic ActivityDirect link to Develop a basic Activity" [level=2] [ref=e423]:
+                  - text: Develop a basic Activity
+                  - link "Direct link to Develop a basic Activity" [ref=e424] [cursor=pointer]:
+                    - /url: "#develop-activities"
+                    - text: "#"
+                - paragraph [ref=e425]:
+                  - strong [ref=e426]: How to develop a basic Activity using the Temporal Python SDK.
+                - paragraph [ref=e427]:
+                  - text: One of the primary things that Workflows do is orchestrate the execution of Activities. An Activity is a normal function or method execution that's intended to execute a single, well-defined action (either short or long-running), such as querying a database, calling a third-party API, or transcoding a media file. An Activity can interact with world outside the Temporal Platform or use a Temporal Client to interact with a Temporal Service. For the Workflow to be able to execute the Activity, we must define the
+                  - link "Activity Definition" [ref=e428] [cursor=pointer]:
+                    - /url: /activity-definition
+                  - text: .
+                - paragraph [ref=e429]:
+                  - text: You can develop an Activity Definition by using the
+                  - code [ref=e430]: "@activity.defn"
+                  - text: decorator. Register the function as an Activity with a custom name through a decorator argument, for example
+                  - code [ref=e431]: "@activity.defn(name=\"your_activity\")"
+                  - text: .
+                - generic [ref=e432]:
+                  - generic [ref=e433]:
+                    - img [ref=e435]
+                    - text: note
+                  - generic [ref=e437]:
+                    - paragraph [ref=e438]: "The Temporal Python SDK supports multiple ways of implementing an Activity:"
+                    - list [ref=e439]:
+                      - listitem [ref=e440]:
+                        - text: Asynchronously using
+                        - link "asyncio" [ref=e441] [cursor=pointer]:
+                          - /url: https://docs.python.org/3/library/asyncio.html
+                          - code [ref=e442]: asyncio
+                      - listitem [ref=e443]:
+                        - text: Synchronously multithreaded using
+                        - link "concurrent.futures.ThreadPoolExecutor" [ref=e444] [cursor=pointer]:
+                          - /url: https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor
+                          - code [ref=e445]: concurrent.futures.ThreadPoolExecutor
+                      - listitem [ref=e446]:
+                        - text: Synchronously multiprocess using
+                        - link "concurrent.futures.ProcessPoolExecutor" [ref=e447] [cursor=pointer]:
+                          - /url: https://docs.python.org/3/library/concurrent.futures.html#processpoolexecutor
+                          - code [ref=e448]: concurrent.futures.ProcessPoolExecutor
+                        - text: and
+                        - link "multiprocessing.managers.SyncManager" [ref=e449] [cursor=pointer]:
+                          - /url: https://docs.python.org/3/library/multiprocessing.html#multiprocessing.managers.SyncManager
+                          - code [ref=e450]: multiprocessing.managers.SyncManager
+                    - paragraph [ref=e451]:
+                      - text: Blocking the async event loop in Python would turn your asynchronous program into a synchronous program that executes serially, defeating the entire purpose of using
+                      - code [ref=e452]: asyncio
+                      - text: . This can also lead to potential deadlock, and unpredictable behavior that causes tasks to be unable to execute. Debugging these issues can be difficult and time consuming, as locating the source of the blocking call might not always be immediately obvious.
+                    - paragraph [ref=e453]: Due to this, consider not make blocking calls from within an asynchronous Activity, or use an async safe library to perform these actions. If you must use a blocking library, consider using a synchronous Activity instead.
+                - generic [ref=e454]:
+                  - link "View the source code" [ref=e455] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py
+                    - paragraph [ref=e456]: View the source code
+                  - paragraph [ref=e457]: in the context of the rest of the application code.
+                - generic [ref=e459]:
+                  - code [ref=e461]:
+                    - generic [ref=e462]: from temporalio import activity
+                    - generic [ref=e463]: "# ..."
+                    - generic [ref=e464]: "# ..."
+                    - generic [ref=e465]: "@activity.defn(name=\"your_activity\")"
+                    - generic [ref=e466]: "async def your_activity(input: YourParams) -> str:"
+                    - generic [ref=e467]: "return f\"{input.greeting}, {input.name}!\""
+                  - button "Copy code to clipboard" [ref=e469] [cursor=pointer]:
+                    - generic [ref=e470]:
+                      - img [ref=e471]
+                      - img [ref=e473]
+                - heading "Develop Activity ParametersDirect link to Develop Activity Parameters" [level=3] [ref=e475]:
+                  - text: Develop Activity Parameters
+                  - link "Direct link to Develop Activity Parameters" [ref=e476] [cursor=pointer]:
+                    - /url: "#activity-parameters"
+                    - text: "#"
+                - paragraph [ref=e477]:
+                  - strong [ref=e478]: How to develop Activity Parameters using the Temporal Python SDK.
+                - paragraph [ref=e479]:
+                  - text: There is no explicit limit to the total number of parameters that an
+                  - link "Activity Definition" [ref=e480] [cursor=pointer]:
+                    - /url: /activity-definition
+                  - text: may support. However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
+                - paragraph [ref=e481]: A single argument is limited to a maximum size of 2 MB. And the total size of a gRPC message, which includes all the arguments, is limited to a maximum of 4 MB.
+                - paragraph [ref=e482]:
+                  - text: Also, keep in mind that all Payload data is recorded in the
+                  - link "Workflow Execution Event History" [ref=e483] [cursor=pointer]:
+                    - /url: /workflow-execution/event#event-history
+                  - text: and large Event Histories can affect Worker performance. This is because the entire Event History could be transferred to a Worker Process with a
+                  - link "Workflow Task" [ref=e484] [cursor=pointer]:
+                    - /url: /tasks#workflow-task
+                  - text: .
+                - paragraph [ref=e485]: Some SDKs require that you pass context objects, others do not. When it comes to your application data—that is, data that is serialized and encoded into a Payload—we recommend that you use a single object as an argument that wraps the application data passed to Activities. This is so that you can change what data is passed to the Activity without breaking a function or method signature.
+                - paragraph [ref=e486]:
+                  - text: Activity parameters are the function parameters of the function decorated with
+                  - code [ref=e487]: "@activity.defn"
+                  - text: . These can be any data type Temporal can convert, including dataclasses when properly type-annotated. Technically this can be multiple parameters, but Temporal strongly encourages a single dataclass parameter containing all input fields.
+                - generic [ref=e488]:
+                  - link "View the source code" [ref=e489] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py
+                    - paragraph [ref=e490]: View the source code
+                  - paragraph [ref=e491]: in the context of the rest of the application code.
+                - generic [ref=e493]:
+                  - code [ref=e495]:
+                    - generic [ref=e496]: from temporalio import activity
+                    - generic [ref=e497]: from your_dataobject_dacx import YourParams
+                    - generic [ref=e498]: "# ..."
+                    - generic [ref=e499]: "# ..."
+                    - generic [ref=e500]: "@activity.defn(name=\"your_activity\")"
+                    - generic [ref=e501]: "async def your_activity(input: YourParams) -> str:"
+                    - generic [ref=e502]: "return f\"{input.greeting}, {input.name}!\""
+                  - button "Copy code to clipboard" [ref=e504] [cursor=pointer]:
+                    - generic [ref=e505]:
+                      - img [ref=e506]
+                      - img [ref=e508]
+                - heading "Define Activity return valuesDirect link to Define Activity return values" [level=3] [ref=e510]:
+                  - text: Define Activity return values
+                  - link "Direct link to Define Activity return values" [ref=e511] [cursor=pointer]:
+                    - /url: "#activity-return-values"
+                    - text: "#"
+                - paragraph [ref=e512]:
+                  - strong [ref=e513]: How to define Activity return values using the Temporal Python SDK.
+                - paragraph [ref=e514]: All data returned from an Activity must be serializable.
+                - paragraph [ref=e515]:
+                  - text: Activity return values are subject to payload size limits in Temporal. The default payload size limit is 2MB, and there is a hard limit of 4MB for any gRPC message size in the Event History transaction (
+                  - link "see Cloud limits here" [ref=e516] [cursor=pointer]:
+                    - /url: https://docs.temporal.io/cloud/limits#per-message-grpc-limit
+                  - text: ). Keep in mind that all return values are recorded in a
+                  - link "Workflow Execution Event History" [ref=e517] [cursor=pointer]:
+                    - /url: /workflow-execution/event#event-history
+                  - text: .
+                - paragraph [ref=e518]: An Activity Execution can return inputs and other Activity values.
+                - paragraph [ref=e519]: The following example defines an Activity that takes a string as input and returns a string.
+                - generic [ref=e520]:
+                  - link "View the source code" [ref=e521] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py
+                    - paragraph [ref=e522]: View the source code
+                  - paragraph [ref=e523]: in the context of the rest of the application code.
+                - generic [ref=e525]:
+                  - code [ref=e527]:
+                    - generic [ref=e528]: "# ..."
+                    - generic [ref=e529]: "@activity.defn(name=\"your_activity\")"
+                    - generic [ref=e530]: "async def your_activity(input: YourParams) -> str:"
+                    - generic [ref=e531]: "return f\"{input.greeting}, {input.name}!\""
+                  - button "Copy code to clipboard" [ref=e533] [cursor=pointer]:
+                    - generic [ref=e534]:
+                      - img [ref=e535]
+                      - img [ref=e537]
+                - heading "Customize your Activity TypeDirect link to Customize your Activity Type" [level=3] [ref=e539]:
+                  - text: Customize your Activity Type
+                  - link "Direct link to Customize your Activity Type" [ref=e540] [cursor=pointer]:
+                    - /url: "#activity-type"
+                    - text: "#"
+                - paragraph [ref=e541]:
+                  - strong [ref=e542]: How to customize your Activity Type
+                - paragraph [ref=e543]: Activities have a Type that are referred to as the Activity name. The following examples demonstrate how to set a custom name for your Activity Type.
+                - paragraph [ref=e544]:
+                  - text: You can customize the Activity name with a custom name in the decorator argument. For example,
+                  - code [ref=e545]: "@activity.defn(name=\"your-activity\")"
+                  - text: . If the name parameter is not specified, the Activity name defaults to the function name.
+                - generic [ref=e546]:
+                  - link "View the source code" [ref=e547] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_activities_dacx.py
+                    - paragraph [ref=e548]: View the source code
+                  - paragraph [ref=e549]: in the context of the rest of the application code.
+                - generic [ref=e551]:
+                  - code [ref=e553]:
+                    - generic [ref=e554]: "# ..."
+                    - generic [ref=e555]: "@activity.defn(name=\"your_activity\")"
+                    - generic [ref=e556]: "async def your_activity(input: YourParams) -> str:"
+                    - generic [ref=e557]: "return f\"{input.greeting}, {input.name}!\""
+                  - button "Copy code to clipboard" [ref=e559] [cursor=pointer]:
+                    - generic [ref=e560]:
+                      - img [ref=e561]
+                      - img [ref=e563]
+                - heading "Start an Activity ExecutionDirect link to Start an Activity Execution" [level=2] [ref=e565]:
+                  - text: Start an Activity Execution
+                  - link "Direct link to Start an Activity Execution" [ref=e566] [cursor=pointer]:
+                    - /url: "#activity-execution"
+                    - text: "#"
+                - paragraph [ref=e567]:
+                  - strong [ref=e568]: How to start an Activity Execution using the Temporal Python SDK.
+                - paragraph [ref=e569]:
+                  - text: Calls to spawn
+                  - link "Activity Executions" [ref=e570] [cursor=pointer]:
+                    - /url: /activity-execution
+                  - text: are written within a
+                  - link "Workflow Definition" [ref=e571] [cursor=pointer]:
+                    - /url: /workflow-definition
+                  - text: . The call to spawn an Activity Execution generates the
+                  - link "ScheduleActivityTask" [ref=e572] [cursor=pointer]:
+                    - /url: /references/commands#scheduleactivitytask
+                  - text: Command. This results in the set of three
+                  - link "Activity Task" [ref=e573] [cursor=pointer]:
+                    - /url: /tasks#activity-task
+                  - text: related Events (
+                  - link "ActivityTaskScheduled" [ref=e574] [cursor=pointer]:
+                    - /url: /references/events#activitytaskscheduled
+                  - text: ","
+                  - link "ActivityTaskStarted" [ref=e575] [cursor=pointer]:
+                    - /url: /references/events#activitytaskstarted
+                  - text: ", and ActivityTask[Closed])in your Workflow Execution Event History."
+                - paragraph [ref=e576]:
+                  - text: A single instance of the Activities implementation is shared across multiple simultaneous Activity invocations. Activity implementation code should be
+                  - emphasis [ref=e577]: idempotent
+                  - text: .
+                - paragraph [ref=e578]: The values passed to Activities through invocation parameters or returned through a result value are recorded in the Execution history. The entire Execution history is transferred from the Temporal service to Workflow Workers when a Workflow state needs to recover. A large Execution history can thus adversely impact the performance of your Workflow.
+                - paragraph [ref=e579]: Therefore, be mindful of the amount of data you transfer through Activity invocation parameters or Return Values. Otherwise, no additional limitations exist on Activity implementations.
+                - paragraph [ref=e580]:
+                  - text: To spawn an Activity Execution, use the
+                  - link "execute_activity()" [ref=e581] [cursor=pointer]:
+                    - /url: https://python.temporal.io/temporalio.workflow.html#execute_activity
+                    - code [ref=e582]: execute_activity()
+                  - text: operation from within your Workflow Definition.
+                - paragraph [ref=e583]:
+                  - code [ref=e584]: execute_activity()
+                  - text: is a shortcut for
+                  - link "start_activity()" [ref=e585] [cursor=pointer]:
+                    - /url: https://python.temporal.io/temporalio.workflow.html#start_activity
+                    - code [ref=e586]: start_activity()
+                  - text: that waits on its result.
+                - paragraph [ref=e587]:
+                  - text: To get just the handle to wait and cancel separately, use
+                  - code [ref=e588]: start_activity()
+                  - text: . In most cases, use
+                  - code [ref=e589]: execute_activity()
+                  - text: unless advanced task capabilities are needed.
+                - paragraph [ref=e590]:
+                  - text: A single argument to the Activity is positional. Multiple arguments are not supported in the type-safe form of
+                  - code [ref=e591]: start_activity()
+                  - text: or
+                  - code [ref=e592]: execute_activity()
+                  - text: and must be supplied by the
+                  - code [ref=e593]: args
+                  - text: keyword argument.
+                - generic [ref=e594]:
+                  - link "View the source code" [ref=e595] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_workflows_dacx.py
+                    - paragraph [ref=e596]: View the source code
+                  - paragraph [ref=e597]: in the context of the rest of the application code.
+                - generic [ref=e599]:
+                  - code [ref=e601]:
+                    - generic [ref=e602]: from temporalio import workflow
+                    - generic [ref=e603]: "# ..."
+                    - generic [ref=e604]: "# ..."
+                    - generic [ref=e605]: "@workflow.defn(name=\"YourWorkflow\")"
+                    - generic [ref=e606]: "class YourWorkflow:"
+                    - generic [ref=e607]: "@workflow.run"
+                    - generic [ref=e608]: "async def run(self, name: str) -> str:"
+                    - generic [ref=e609]: return await workflow.execute_activity(
+                    - generic [ref=e610]: your_activity,
+                    - generic [ref=e611]: YourParams("Hello", name),
+                    - generic [ref=e612]: start_to_close_timeout=timedelta(seconds=10),
+                    - generic [ref=e613]: )
+                  - button "Copy code to clipboard" [ref=e615] [cursor=pointer]:
+                    - generic [ref=e616]:
+                      - img [ref=e617]
+                      - img [ref=e619]
+                - heading "Set the required Activity TimeoutsDirect link to Set the required Activity Timeouts" [level=3] [ref=e621]:
+                  - text: Set the required Activity Timeouts
+                  - link "Direct link to Set the required Activity Timeouts" [ref=e622] [cursor=pointer]:
+                    - /url: "#required-timeout"
+                    - text: "#"
+                - paragraph [ref=e623]:
+                  - strong [ref=e624]: How to set the required Activity Timeouts using the Temporal Python SDK.
+                - paragraph [ref=e625]:
+                  - text: Activity Execution semantics rely on several parameters. The only required value that needs to be set is either a
+                  - link "Schedule-To-Close Timeout" [ref=e626] [cursor=pointer]:
+                    - /url: /encyclopedia/detecting-activity-failures#schedule-to-close-timeout
+                  - text: or a
+                  - link "Start-To-Close Timeout" [ref=e627] [cursor=pointer]:
+                    - /url: /encyclopedia/detecting-activity-failures#start-to-close-timeout
+                  - text: . These values are set in the Activity Options.
+                - paragraph [ref=e628]: Activity options are set as keyword arguments after the Activity arguments.
+                - paragraph [ref=e629]: "Available timeouts are:"
+                - list [ref=e630]:
+                  - listitem [ref=e631]: schedule_to_close_timeout
+                  - listitem [ref=e632]: schedule_to_start_timeout
+                  - listitem [ref=e633]: start_to_close_timeout
+                - generic [ref=e634]:
+                  - link "View the source code" [ref=e635] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation/blob/main/sample-apps/python/activity_timeouts_retires/your_workflows_dacx.py
+                    - paragraph [ref=e636]: View the source code
+                  - paragraph [ref=e637]: in the context of the rest of the application code.
+                - generic [ref=e639]:
+                  - code [ref=e641]:
+                    - generic [ref=e642]: "# ..."
+                    - generic [ref=e643]: activity_timeout_result = await workflow.execute_activity(
+                    - generic [ref=e644]: your_activity,
+                    - generic [ref=e645]: YourParams(greeting, "Activity Timeout option"),
+                    - generic [ref=e646]: "# Activity Execution Timeout"
+                    - generic [ref=e647]: start_to_close_timeout=timedelta(seconds=10),
+                    - generic [ref=e648]: "# schedule_to_start_timeout=timedelta(seconds=10),"
+                    - generic [ref=e649]: "# schedule_to_close_timeout=timedelta(seconds=10),"
+                    - generic [ref=e650]: )
+                  - button "Copy code to clipboard" [ref=e652] [cursor=pointer]:
+                    - generic [ref=e653]:
+                      - img [ref=e654]
+                      - img [ref=e656]
+                - heading "Get the results of an Activity ExecutionDirect link to Get the results of an Activity Execution" [level=3] [ref=e658]:
+                  - text: Get the results of an Activity Execution
+                  - link "Direct link to Get the results of an Activity Execution" [ref=e659] [cursor=pointer]:
+                    - /url: "#get-activity-results"
+                    - text: "#"
+                - paragraph [ref=e660]:
+                  - strong [ref=e661]: How to get the results of an Activity Execution using the Temporal Python SDK.
+                - paragraph [ref=e662]:
+                  - text: The call to spawn an
+                  - link "Activity Execution" [ref=e663] [cursor=pointer]:
+                    - /url: /activity-execution
+                  - text: generates the
+                  - link "ScheduleActivityTask" [ref=e664] [cursor=pointer]:
+                    - /url: /references/commands#scheduleactivitytask
+                  - text: Command and provides the Workflow with an Awaitable. Workflow Executions can either block progress until the result is available through the Awaitable or continue progressing, making use of the result when it becomes available.
+                - paragraph [ref=e665]:
+                  - text: Use
+                  - link "start_activity()" [ref=e666] [cursor=pointer]:
+                    - /url: https://python.temporal.io/temporalio.workflow.html#start_activity
+                    - code [ref=e667]: start_activity()
+                  - text: to start an Activity and return its handle,
+                  - link "ActivityHandle" [ref=e668] [cursor=pointer]:
+                    - /url: https://python.temporal.io/temporalio.workflow.ActivityHandle.html
+                    - code [ref=e669]: ActivityHandle
+                  - text: . Use
+                  - link "execute_activity()" [ref=e670] [cursor=pointer]:
+                    - /url: https://python.temporal.io/temporalio.workflow.html#execute_activity
+                    - code [ref=e671]: execute_activity()
+                  - text: to return the results.
+                - paragraph [ref=e672]:
+                  - text: You must provide either
+                  - code [ref=e673]: schedule_to_close_timeout
+                  - text: or
+                  - code [ref=e674]: start_to_close_timeout
+                  - text: .
+                - paragraph [ref=e675]:
+                  - code [ref=e676]: execute_activity()
+                  - text: is a shortcut for
+                  - code [ref=e677]: await start_activity()
+                  - text: . An asynchronous
+                  - code [ref=e678]: execute_activity()
+                  - text: helper is provided which takes the same arguments as
+                  - code [ref=e679]: start_activity()
+                  - text: and
+                  - code [ref=e680]: await
+                  - text: s on the result.
+                  - code [ref=e681]: execute_activity()
+                  - text: should be used in most cases unless advanced task capabilities are needed.
+                - generic [ref=e682]:
+                  - link "View the source code" [ref=e683] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_workflows_dacx.py
+                    - paragraph [ref=e684]: View the source code
+                  - paragraph [ref=e685]: in the context of the rest of the application code.
+                - generic [ref=e687]:
+                  - code [ref=e689]:
+                    - generic [ref=e690]: from temporalio import workflow
+                    - generic [ref=e691]: "# ..."
+                    - generic [ref=e692]: "# ..."
+                    - generic [ref=e693]: "@workflow.defn(name=\"YourWorkflow\")"
+                    - generic [ref=e694]: "class YourWorkflow:"
+                    - generic [ref=e695]: "@workflow.run"
+                    - generic [ref=e696]: "async def run(self, name: str) -> str:"
+                    - generic [ref=e697]: return await workflow.execute_activity(
+                    - generic [ref=e698]: your_activity,
+                    - generic [ref=e699]: YourParams("Hello", name),
+                    - generic [ref=e700]: start_to_close_timeout=timedelta(seconds=10),
+                    - generic [ref=e701]: )
+                  - button "Copy code to clipboard" [ref=e703] [cursor=pointer]:
+                    - generic [ref=e704]:
+                      - img [ref=e705]
+                      - img [ref=e707]
+                - heading "Run a Worker ProcessDirect link to Run a Worker Process" [level=2] [ref=e709]:
+                  - text: Run a Worker Process
+                  - link "Direct link to Run a Worker Process" [ref=e710] [cursor=pointer]:
+                    - /url: "#run-a-dev-worker"
+                    - text: "#"
+                - paragraph [ref=e711]:
+                  - strong [ref=e712]: How to run a Worker Process using the Temporal Python SDK.
+                - paragraph [ref=e713]:
+                  - text: The
+                  - link "Worker Process" [ref=e714] [cursor=pointer]:
+                    - /url: /workers#worker-process
+                  - text: is where Workflow Functions and Activity Functions are executed.
+                - list [ref=e715]:
+                  - listitem [ref=e716]:
+                    - text: Each
+                    - link "Worker Entity" [ref=e717] [cursor=pointer]:
+                      - /url: /workers#worker-entity
+                    - text: in the Worker Process must register the exact Workflow Types and Activity Types it may execute.
+                  - listitem [ref=e718]:
+                    - text: Each Worker Entity must also associate itself with exactly one
+                    - link "Task Queue" [ref=e719] [cursor=pointer]:
+                      - /url: /task-queue
+                    - text: .
+                  - listitem [ref=e720]: Each Worker Entity polling the same Task Queue must be registered with the same Workflow Types and Activity Types.
+                - paragraph [ref=e721]:
+                  - text: A
+                  - link "Worker Entity" [ref=e722] [cursor=pointer]:
+                    - /url: /workers#worker-entity
+                  - text: is the component within a Worker Process that listens to a specific Task Queue.
+                - paragraph [ref=e723]:
+                  - text: Although multiple Worker Entities can be in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient. For more information, see the
+                  - link "Worker tuning guide" [ref=e724] [cursor=pointer]:
+                    - /url: /develop/worker-performance
+                  - text: .
+                - paragraph [ref=e725]: A Worker Entity contains a Workflow Worker and/or an Activity Worker, which makes progress on Workflow Executions and Activity Executions, respectively.
+                - paragraph [ref=e726]:
+                  - text: To develop a Worker, use the
+                  - code [ref=e727]: Worker()
+                  - text: constructor and add your Client, Task Queue, Workflows, and Activities as arguments. The following code example creates a Worker that polls for tasks from the Task Queue and executes the Workflow. When a Worker is created, it accepts a list of Workflows in the workflows parameter, a list of Activities in the activities parameter, or both.
+                - generic [ref=e728]:
+                  - link "View the source code" [ref=e729] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_worker_dacx.py
+                    - paragraph [ref=e730]: View the source code
+                  - paragraph [ref=e731]: in the context of the rest of the application code.
+                - generic [ref=e733]:
+                  - code [ref=e735]:
+                    - generic [ref=e736]: from temporalio.client import Client
+                    - generic [ref=e737]: from temporalio.worker import Worker
+                    - generic [ref=e738]: "# ..."
+                    - generic [ref=e739]: "# ..."
+                    - generic [ref=e740]: "async def main():"
+                    - generic [ref=e741]: client = await Client.connect("localhost:7233")
+                    - generic [ref=e742]: worker = Worker(
+                    - generic [ref=e743]: client,
+                    - generic [ref=e744]: task_queue="your-task-queue",
+                    - generic [ref=e745]: workflows=[YourWorkflow],
+                    - generic [ref=e746]: activities=[your_activity],
+                    - generic [ref=e747]: )
+                    - generic [ref=e748]: await worker.run()
+                    - generic [ref=e749]: "if __name__ == \"__main__\":"
+                    - generic [ref=e750]: asyncio.run(main())
+                  - button "Copy code to clipboard" [ref=e752] [cursor=pointer]:
+                    - generic [ref=e753]:
+                      - img [ref=e754]
+                      - img [ref=e756]
+                - heading "Register typesDirect link to Register types" [level=3] [ref=e758]:
+                  - text: Register types
+                  - link "Direct link to Register types" [ref=e759] [cursor=pointer]:
+                    - /url: "#register-types"
+                    - text: "#"
+                - paragraph [ref=e760]:
+                  - strong [ref=e761]: How to register types using the Temporal Python SDK.
+                - paragraph [ref=e762]: All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
+                - paragraph [ref=e763]: If a Worker polls a Task for a Workflow Type or Activity Type it does not know about, it fails that Task. However, the failure of the Task does not cause the associated Workflow Execution to fail.
+                - paragraph [ref=e764]:
+                  - text: When a
+                  - code [ref=e765]: Worker
+                  - text: is created, it accepts a list of Workflows in the
+                  - code [ref=e766]: workflows
+                  - text: parameter, a list of Activities in the
+                  - code [ref=e767]: activities
+                  - text: parameter, or both.
+                - generic [ref=e768]:
+                  - link "View the source code" [ref=e769] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_worker_dacx.py
+                    - paragraph [ref=e770]: View the source code
+                  - paragraph [ref=e771]: in the context of the rest of the application code.
+                - generic [ref=e773]:
+                  - code [ref=e775]:
+                    - generic [ref=e776]: "# ..."
+                    - generic [ref=e777]: "async def main():"
+                    - generic [ref=e778]: client = await Client.connect("localhost:7233")
+                    - generic [ref=e779]: worker = Worker(
+                    - generic [ref=e780]: client,
+                    - generic [ref=e781]: task_queue="your-task-queue",
+                    - generic [ref=e782]: workflows=[YourWorkflow],
+                    - generic [ref=e783]: activities=[your_activity],
+                    - generic [ref=e784]: )
+                    - generic [ref=e785]: await worker.run()
+                    - generic [ref=e786]: "if __name__ == \"__main__\":"
+                    - generic [ref=e787]: asyncio.run(main())
+                  - button "Copy code to clipboard" [ref=e789] [cursor=pointer]:
+                    - generic [ref=e790]:
+                      - img [ref=e791]
+                      - img [ref=e793]
+              - generic [ref=e795]:
+                - generic [ref=e797]:
+                  - text: "Tags:"
+                  - list [ref=e798]:
+                    - listitem [ref=e799]:
+                      - link "Activities" [ref=e800] [cursor=pointer]:
+                        - /url: /tags/activities
+                    - listitem [ref=e801]:
+                      - link "Temporal Client" [ref=e802] [cursor=pointer]:
+                        - /url: /tags/temporal-client
+                    - listitem [ref=e803]:
+                      - link "Task Queues" [ref=e804] [cursor=pointer]:
+                        - /url: /tags/task-queues
+                    - listitem [ref=e805]:
+                      - link "Workers" [ref=e806] [cursor=pointer]:
+                        - /url: /tags/workers
+                    - listitem [ref=e807]:
+                      - link "Workflows" [ref=e808] [cursor=pointer]:
+                        - /url: /tags/workflows
+                    - listitem [ref=e809]:
+                      - link "Python SDK" [ref=e810] [cursor=pointer]:
+                        - /url: /tags/python-sdk
+                    - listitem [ref=e811]:
+                      - link "Temporal SDKs" [ref=e812] [cursor=pointer]:
+                        - /url: /tags/temporal-sd-ks
+                - paragraph [ref=e816]:
+                  - text: Help us make Temporal better. Contribute to our
+                  - link "documentation" [ref=e817] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation
+                  - text: .
+            - navigation "Docs pages" [ref=e819]:
+              - link "Previous « Quickstart - Setup" [ref=e820] [cursor=pointer]:
+                - /url: /develop/python/set-up-your-local-python
+                - generic [ref=e821]: Previous
+                - generic [ref=e822]: « Quickstart - Setup
+              - link "Next Temporal Client »" [ref=e823] [cursor=pointer]:
+                - /url: /develop/python/temporal-client
+                - generic [ref=e824]: Next
+                - generic [ref=e825]: Temporal Client »
+          - list [ref=e828]:
+            - listitem [ref=e829]:
+              - link "Develop a basic Workflow" [ref=e830] [cursor=pointer]:
+                - /url: "#develop-workflows"
+            - listitem [ref=e831]:
+              - link "Develop a basic Activity" [ref=e832] [cursor=pointer]:
+                - /url: "#develop-activities"
+            - listitem [ref=e833]:
+              - link "Start an Activity Execution" [ref=e834] [cursor=pointer]:
+                - /url: "#activity-execution"
+            - listitem [ref=e835]:
+              - link "Run a Worker Process" [ref=e836] [cursor=pointer]:
+                - /url: "#run-a-dev-worker"
+    - contentinfo [ref=e837]:
+      - generic [ref=e838]:
+        - generic [ref=e839]:
+          - list [ref=e841]:
+            - listitem [ref=e842]:
+              - link "GitHub" [ref=e843] [cursor=pointer]:
+                - /url: https://github.com/temporalio
+                - text: GitHub
+                - img [ref=e844]
+            - listitem [ref=e846]:
+              - link "Twitter" [ref=e847] [cursor=pointer]:
+                - /url: https://twitter.com/temporalio
+                - text: Twitter
+                - img [ref=e848]
+            - listitem [ref=e850]:
+              - link "YouTube" [ref=e851] [cursor=pointer]:
+                - /url: https://www.youtube.com/c/Temporalio
+                - text: YouTube
+                - img [ref=e852]
+            - listitem [ref=e854]:
+              - link "About the docs" [ref=e855] [cursor=pointer]:
+                - /url: https://github.com/temporalio/documentation/blob/master/README.md
+                - text: About the docs
+                - img [ref=e856]
+          - list [ref=e859]:
+            - listitem [ref=e860]:
+              - link "Temporal Cloud" [ref=e861] [cursor=pointer]:
+                - /url: https://temporal.io/cloud
+                - text: Temporal Cloud
+                - img [ref=e862]
+            - listitem [ref=e864]:
+              - link "Meetups" [ref=e865] [cursor=pointer]:
+                - /url: https://temporal.io/community#events
+                - text: Meetups
+                - img [ref=e866]
+            - listitem [ref=e868]:
+              - link "Workshops" [ref=e869] [cursor=pointer]:
+                - /url: https://temporal.io/community#workshops
+                - text: Workshops
+                - img [ref=e870]
+            - listitem [ref=e872]:
+              - link "Support forum" [ref=e873] [cursor=pointer]:
+                - /url: https://community.temporal.io/
+                - text: Support forum
+                - img [ref=e874]
+            - listitem [ref=e876]:
+              - link "Ask an expert" [ref=e877] [cursor=pointer]:
+                - /url: https://pages.temporal.io/ask-an-expert
+                - text: Ask an expert
+                - img [ref=e878]
+          - list [ref=e881]:
+            - listitem [ref=e882]:
+              - link "Learn Temporal" [ref=e883] [cursor=pointer]:
+                - /url: https://learn.temporal.io
+                - text: Learn Temporal
+                - img [ref=e884]
+            - listitem [ref=e886]:
+              - link "Blog" [ref=e887] [cursor=pointer]:
+                - /url: https://temporal.io/blog
+                - text: Blog
+                - img [ref=e888]
+            - listitem [ref=e890]:
+              - link "Use cases" [ref=e891] [cursor=pointer]:
+                - /url: https://temporal.io/use-cases
+                - text: Use cases
+                - img [ref=e892]
+            - listitem [ref=e894]:
+              - link "Newsletter signup" [ref=e895] [cursor=pointer]:
+                - /url: https://pages.temporal.io/newsletter-subscribe
+                - text: Newsletter signup
+                - img [ref=e896]
+          - list [ref=e899]:
+            - listitem [ref=e900]:
+              - link "Security" [ref=e901] [cursor=pointer]:
+                - /url: /security
+            - listitem [ref=e902]:
+              - link "Privacy policy" [ref=e903] [cursor=pointer]:
+                - /url: https://temporal.io/global-privacy-policy
+            - listitem [ref=e904]:
+              - link "Terms of service" [ref=e905] [cursor=pointer]:
+                - /url: https://docs.temporal.io/pdf/temporal-tos-2021-07-24.pdf
+                - text: Terms of service
+                - img [ref=e906]
+            - listitem [ref=e908]:
+              - link "We're hiring" [ref=e909] [cursor=pointer]:
+                - /url: https://temporal.io/careers
+                - text: We're hiring
+                - img [ref=e910]
+        - generic [ref=e912]:
+          - link "Temporal logo" [ref=e914] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e915]
+          - generic [ref=e916]: Copyright © 2025 Temporal Technologies Inc.
+  - generic [ref=e917] [cursor=pointer]:
+    - img [ref=e919]
+    - generic: Feedback
+```

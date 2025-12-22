@@ -1,0 +1,759 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - region "Skip to main content":
+      - link "Skip to main content" [ref=e3] [cursor=pointer]:
+        - /url: "#__docusaurus_skipToContent_fallback"
+    - navigation "Main" [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - link "Temporal logo" [ref=e7] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e9]
+          - link "Home" [ref=e10] [cursor=pointer]:
+            - /url: /
+          - link "Courses" [ref=e11] [cursor=pointer]:
+            - /url: https://learn.temporal.io/getting_started/
+            - text: Courses
+            - img [ref=e12]
+          - link "SDKs" [ref=e14] [cursor=pointer]:
+            - /url: /develop
+          - link "AI Cookbook" [ref=e15] [cursor=pointer]:
+            - /url: /ai-cookbook
+          - link "Code Exchange" [ref=e16] [cursor=pointer]:
+            - /url: https://temporal.io/code-exchange
+            - text: Code Exchange
+            - img [ref=e17]
+          - link "Temporal Cloud" [ref=e19] [cursor=pointer]:
+            - /url: /cloud
+        - generic [ref=e20]:
+          - button "Ask AI" [ref=e21] [cursor=pointer]:
+            - img [ref=e22]
+            - generic [ref=e26]: Ask AI
+          - button "Switch between dark and light mode (currently system mode)" [ref=e28] [cursor=pointer]:
+            - img [ref=e29]
+          - button "Search (Ctrl+K)" [ref=e32] [cursor=pointer]:
+            - generic [ref=e33]:
+              - img [ref=e34]
+              - generic [ref=e36]: Search
+            - generic [ref=e37]:
+              - img [ref=e39]
+              - generic [ref=e41]: K
+    - generic [ref=e44]:
+      - complementary [ref=e45]:
+        - generic [ref=e47]:
+          - navigation "Docs sidebar" [ref=e48]:
+            - list [ref=e49]:
+              - listitem [ref=e50]:
+                - link "Documentation Home" [ref=e51] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=e52]:
+                - link "Quickstarts" [ref=e53] [cursor=pointer]:
+                  - /url: /quickstarts
+              - listitem [ref=e54]:
+                - generic [ref=e55]:
+                  - link "Evaluate" [ref=e56] [cursor=pointer]:
+                    - /url: /evaluate/
+                  - button "Collapse sidebar category 'Evaluate'" [expanded] [ref=e57] [cursor=pointer]
+                - list [ref=e58]:
+                  - listitem [ref=e59]:
+                    - link "Why Temporal" [ref=e60] [cursor=pointer]:
+                      - /url: /evaluate/why-temporal
+                  - listitem [ref=e61]:
+                    - link "Understanding Temporal" [ref=e62] [cursor=pointer]:
+                      - /url: /evaluate/understanding-temporal
+                  - listitem [ref=e63]:
+                    - generic [ref=e64]:
+                      - link "Features" [ref=e65] [cursor=pointer]:
+                        - /url: /evaluate/development-production-features/
+                      - button "Expand sidebar category 'Features'" [ref=e66] [cursor=pointer]
+                  - listitem [ref=e67]:
+                    - generic [ref=e68]:
+                      - link "Temporal Cloud" [ref=e69] [cursor=pointer]:
+                        - /url: /cloud/introduction
+                      - button "Expand sidebar category 'Temporal Cloud'" [ref=e70] [cursor=pointer]
+                  - listitem [ref=e71]:
+                    - link "Security" [ref=e72] [cursor=pointer]:
+                      - /url: /security
+                  - listitem [ref=e73]:
+                    - link "Use Cases" [ref=e74] [cursor=pointer]:
+                      - /url: /evaluate/use-cases-design-patterns
+              - listitem [ref=e75]:
+                - generic [ref=e76]:
+                  - link "Develop" [ref=e77] [cursor=pointer]:
+                    - /url: /develop/
+                  - button "Collapse sidebar category 'Develop'" [expanded] [ref=e78] [cursor=pointer]
+                - list [ref=e79]:
+                  - listitem [ref=e80]:
+                    - generic [ref=e81]:
+                      - link "Go SDK" [ref=e82] [cursor=pointer]:
+                        - /url: /develop/go/
+                      - button "Expand sidebar category 'Go SDK'" [ref=e83] [cursor=pointer]
+                  - listitem [ref=e84]:
+                    - generic [ref=e85]:
+                      - link "Java SDK" [ref=e86] [cursor=pointer]:
+                        - /url: /develop/java/
+                      - button "Expand sidebar category 'Java SDK'" [ref=e87] [cursor=pointer]
+                  - listitem [ref=e88]:
+                    - generic [ref=e89]:
+                      - link "PHP SDK" [ref=e90] [cursor=pointer]:
+                        - /url: /develop/php/
+                      - button "Expand sidebar category 'PHP SDK'" [ref=e91] [cursor=pointer]
+                  - listitem [ref=e92]:
+                    - generic [ref=e93]:
+                      - link "Python SDK" [ref=e94] [cursor=pointer]:
+                        - /url: /develop/python/
+                      - button "Expand sidebar category 'Python SDK'" [ref=e95] [cursor=pointer]
+                  - listitem [ref=e96]:
+                    - generic [ref=e97]:
+                      - link "TypeScript SDK" [ref=e98] [cursor=pointer]:
+                        - /url: /develop/typescript/
+                      - button "Collapse sidebar category 'TypeScript SDK'" [expanded] [ref=e99] [cursor=pointer]
+                    - list [ref=e100]:
+                      - listitem [ref=e101]:
+                        - link "Quickstart - Setup" [ref=e102] [cursor=pointer]:
+                          - /url: /develop/typescript/set-up-your-local-typescript
+                      - listitem [ref=e103]:
+                        - link "Core application" [ref=e104] [cursor=pointer]:
+                          - /url: /develop/typescript/core-application
+                      - listitem [ref=e105]:
+                        - link "Temporal Client" [ref=e106] [cursor=pointer]:
+                          - /url: /develop/typescript/temporal-client
+                      - listitem [ref=e107]:
+                        - link "Namespaces" [ref=e108] [cursor=pointer]:
+                          - /url: /develop/typescript/namespaces
+                      - listitem [ref=e109]:
+                        - link "Testing" [ref=e110] [cursor=pointer]:
+                          - /url: /develop/typescript/testing-suite
+                      - listitem [ref=e111]:
+                        - link "Failure detection" [ref=e112] [cursor=pointer]:
+                          - /url: /develop/typescript/failure-detection
+                      - listitem [ref=e113]:
+                        - link "Messages" [ref=e114] [cursor=pointer]:
+                          - /url: /develop/typescript/message-passing
+                      - listitem [ref=e115]:
+                        - link "Interrupt a Workflow" [ref=e116] [cursor=pointer]:
+                          - /url: /develop/typescript/cancellation
+                      - listitem [ref=e117]:
+                        - link "Asynchronous Activity Completion" [ref=e118] [cursor=pointer]:
+                          - /url: /develop/typescript/asynchronous-activity-completion
+                      - listitem [ref=e119]:
+                        - link "Versioning" [ref=e120] [cursor=pointer]:
+                          - /url: /develop/typescript/versioning
+                      - listitem [ref=e121]:
+                        - link "Observability" [ref=e122] [cursor=pointer]:
+                          - /url: /develop/typescript/observability
+                      - listitem [ref=e123]:
+                        - link "Benign exceptions" [ref=e124] [cursor=pointer]:
+                          - /url: /develop/typescript/benign-exceptions
+                      - listitem [ref=e125]:
+                        - link "Enriching the UI" [ref=e126] [cursor=pointer]:
+                          - /url: /develop/typescript/enriching-ui
+                      - listitem [ref=e127]:
+                        - link "Debugging" [ref=e128] [cursor=pointer]:
+                          - /url: /develop/typescript/debugging
+                      - listitem [ref=e129]:
+                        - link "Schedules" [ref=e130] [cursor=pointer]:
+                          - /url: /develop/typescript/schedules
+                      - listitem [ref=e131]:
+                        - link "Converters and encryption" [ref=e132] [cursor=pointer]:
+                          - /url: /develop/typescript/converters-and-encryption
+                      - listitem [ref=e133]:
+                        - link "Durable Timers" [ref=e134] [cursor=pointer]:
+                          - /url: /develop/typescript/timers
+                      - listitem [ref=e135]:
+                        - link "Temporal Nexus" [ref=e136] [cursor=pointer]:
+                          - /url: /develop/typescript/nexus
+                      - listitem [ref=e137]:
+                        - link "Child Workflows" [ref=e138] [cursor=pointer]:
+                          - /url: /develop/typescript/child-workflows
+                      - listitem [ref=e139]:
+                        - link "Continue-As-New" [ref=e140] [cursor=pointer]:
+                          - /url: /develop/typescript/continue-as-new
+                      - listitem [ref=e141]:
+                        - link "Interceptors" [ref=e142] [cursor=pointer]:
+                          - /url: /develop/typescript/interceptors
+                      - listitem [ref=e143]:
+                        - link "Vercel AI SDK Integration" [ref=e144] [cursor=pointer]:
+                          - /url: /develop/typescript/ai-sdk
+                  - listitem [ref=e145]:
+                    - generic [ref=e146]:
+                      - link ".NET SDK" [ref=e147] [cursor=pointer]:
+                        - /url: /develop/dotnet/
+                      - button "Expand sidebar category '.NET SDK'" [ref=e148] [cursor=pointer]
+                  - listitem [ref=e149]:
+                    - generic [ref=e150]:
+                      - link "Ruby SDK" [ref=e151] [cursor=pointer]:
+                        - /url: /develop/ruby/
+                      - button "Expand sidebar category 'Ruby SDK'" [ref=e152] [cursor=pointer]
+                  - listitem [ref=e153]:
+                    - link "Environment configuration" [ref=e154] [cursor=pointer]:
+                      - /url: /develop/environment-configuration
+                  - listitem [ref=e155]:
+                    - link "Activity retry simulator" [ref=e156] [cursor=pointer]:
+                      - /url: /develop/activity-retry-simulator
+                  - listitem [ref=e157]:
+                    - link "Worker performance" [ref=e158] [cursor=pointer]:
+                      - /url: /develop/worker-performance
+                  - listitem [ref=e159]:
+                    - link "Safe deployments" [ref=e160] [cursor=pointer]:
+                      - /url: /develop/safe-deployments
+                  - listitem [ref=e161]:
+                    - link "Plugins guide" [ref=e162] [cursor=pointer]:
+                      - /url: /develop/plugins-guide
+              - listitem [ref=e163]:
+                - generic [ref=e164]:
+                  - link "Deploy to production" [ref=e165] [cursor=pointer]:
+                    - /url: /production-deployment
+                  - button "Collapse sidebar category 'Deploy to production'" [expanded] [ref=e166] [cursor=pointer]
+                - list [ref=e167]:
+                  - listitem [ref=e168]:
+                    - generic [ref=e169]:
+                      - link "Temporal Cloud" [ref=e170] [cursor=pointer]:
+                        - /url: /cloud
+                      - button "Expand sidebar category 'Temporal Cloud'" [ref=e171] [cursor=pointer]
+                  - listitem [ref=e172]:
+                    - link "Codecs and Encryption" [ref=e173] [cursor=pointer]:
+                      - /url: /production-deployment/data-encryption
+                  - listitem [ref=e174]:
+                    - generic [ref=e175]:
+                      - link "Self-host" [ref=e176] [cursor=pointer]:
+                        - /url: /self-hosted-guide
+                      - button "Expand sidebar category 'Self-host'" [ref=e177] [cursor=pointer]
+                  - listitem [ref=e178]:
+                    - generic [ref=e179]:
+                      - link "Worker deployments" [ref=e180] [cursor=pointer]:
+                        - /url: /production-deployment/worker-deployments
+                      - button "Expand sidebar category 'Worker deployments'" [ref=e181] [cursor=pointer]
+              - listitem [ref=e182]:
+                - generic [ref=e183]:
+                  - link "CLI (temporal)" [ref=e184] [cursor=pointer]:
+                    - /url: /cli
+                  - button "Expand sidebar category 'CLI (temporal)'" [ref=e185] [cursor=pointer]
+              - listitem [ref=e186]:
+                - generic [ref=e187]:
+                  - link "References" [ref=e188] [cursor=pointer]:
+                    - /url: /references/
+                  - button "Expand sidebar category 'References'" [ref=e189] [cursor=pointer]
+              - listitem [ref=e190]:
+                - generic [ref=e191]:
+                  - link "Troubleshooting" [ref=e192] [cursor=pointer]:
+                    - /url: /troubleshooting/
+                  - button "Expand sidebar category 'Troubleshooting'" [ref=e193] [cursor=pointer]
+              - listitem [ref=e194]:
+                - generic [ref=e195]:
+                  - link "Best Practices" [ref=e196] [cursor=pointer]:
+                    - /url: /best-practices/
+                  - button "Expand sidebar category 'Best Practices'" [ref=e197] [cursor=pointer]
+              - listitem [ref=e198]:
+                - generic [ref=e199]:
+                  - link "Encyclopedia" [ref=e200] [cursor=pointer]:
+                    - /url: /encyclopedia/
+                  - button "Expand sidebar category 'Encyclopedia'" [ref=e201] [cursor=pointer]
+              - listitem [ref=e202]:
+                - link "Glossary" [ref=e203] [cursor=pointer]:
+                  - /url: /glossary
+          - button "Collapse sidebar" [ref=e204] [cursor=pointer]:
+            - img [ref=e205]
+      - main [ref=e209]:
+        - generic [ref=e211]:
+          - generic [ref=e213]:
+            - article [ref=e214]:
+              - navigation "Breadcrumbs" [ref=e215]:
+                - list [ref=e216]:
+                  - listitem [ref=e217]:
+                    - link "Home page" [ref=e218] [cursor=pointer]:
+                      - /url: /
+                      - img [ref=e219]
+                  - listitem [ref=e221]:
+                    - link "Develop" [ref=e222] [cursor=pointer]:
+                      - /url: /develop/
+                  - listitem [ref=e223]:
+                    - link "TypeScript SDK" [ref=e224] [cursor=pointer]:
+                      - /url: /develop/typescript/
+                  - listitem [ref=e225]:
+                    - generic [ref=e226]: Vercel AI SDK Integration
+              - generic [ref=e227]:
+                - heading "Vercel AI SDK Integration" [level=1] [ref=e229]
+                - paragraph [ref=e230]:
+                  - text: Temporal's integration with
+                  - link "Vercel's AI SDK" [ref=e231] [cursor=pointer]:
+                    - /url: https://ai-sdk.dev/
+                  - text: lets you use the AI SDK's API directly in Workflow code while Temporal handles Durable Execution.
+                - paragraph [ref=e232]:
+                  - text: Like all API calls, LLM API calls are non-deterministic. In a
+                  - link "Temporal Application" [ref=e233] [cursor=pointer]:
+                    - /url: /glossary#temporal-application
+                  - text: ", that means you cannot make LLM calls directly from a"
+                  - link "Workflow" [ref=e234] [cursor=pointer]:
+                    - /url: /glossary#workflow
+                  - text: ; they must run as
+                  - link "Activities" [ref=e235] [cursor=pointer]:
+                    - /url: /glossary#activity
+                  - text: ". The AI SDK plugin handles this automatically: when you call methods in the AI SDK such as"
+                  - code [ref=e236]: generateText()
+                  - text: ", the plugin wraps those calls in Activities behind the scenes. This preserves the Vercel AI SDK's developer experience that you are already familiar with while Temporal handles Durable Execution for you."
+                - paragraph [ref=e237]:
+                  - text: All code snippets in this guide are taken from the TypeScript SDK
+                  - link "ai-sdk samples" [ref=e238] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/samples-typescript/tree/main/ai-sdk
+                  - text: . Refer to the samples for the complete code and run them locally.
+                - generic [ref=e239]:
+                  - generic [ref=e240]:
+                    - img [ref=e242]
+                    - text: info
+                  - paragraph [ref=e245]:
+                    - text: The Vercel AI SDK Integration is in Pre-release. Refer to the
+                    - link "Temporal product release stages guide" [ref=e246] [cursor=pointer]:
+                      - /url: /evaluate/development-production-features/release-stages
+                    - text: for more information.
+                - heading "PrerequisitesDirect link to Prerequisites" [level=2] [ref=e247]:
+                  - text: Prerequisites
+                  - link "Direct link to Prerequisites" [ref=e248] [cursor=pointer]:
+                    - /url: "#prerequisites"
+                    - text: "#"
+                - list [ref=e249]:
+                  - listitem [ref=e250]:
+                    - text: This guide assumes you are already familiar with the Vercel AI SDK. If you aren't, refer to the
+                    - link "Vercel AI SDK documentation" [ref=e251] [cursor=pointer]:
+                      - /url: https://ai-sdk.dev/
+                    - text: for more details.
+                  - listitem [ref=e252]:
+                    - text: If you are new to Temporal, we also recommend you read the
+                    - link "Understanding Temporal" [ref=e253] [cursor=pointer]:
+                      - /url: /evaluate/understanding-temporal
+                    - text: document or take the
+                    - link "Temporal 101" [ref=e254] [cursor=pointer]:
+                      - /url: https://learn.temporal.io/courses/temporal_101/
+                    - text: course to understand the basics of Temporal.
+                  - listitem [ref=e255]:
+                    - text: Ensure you have set up your local development environment by following the
+                    - link "Set up your local with the TypeScript SDK" [ref=e256] [cursor=pointer]:
+                      - /url: /develop/typescript/set-up-your-local-typescript
+                    - text: guide. When you are done, leave the Temporal Development Server running if you want to test your code locally.
+                - heading "Configure Workers to use the AI SDKDirect link to Configure Workers to use the AI SDK" [level=2] [ref=e257]:
+                  - text: Configure Workers to use the AI SDK
+                  - link "Direct link to Configure Workers to use the AI SDK" [ref=e258] [cursor=pointer]:
+                    - /url: "#configure-workers-to-use-the-ai-sdk"
+                    - text: "#"
+                - paragraph [ref=e259]:
+                  - text: Workers are the compute layer of a Temporal Application. They are responsible for executing the code that defines your
+                  - link "Workflows" [ref=e260] [cursor=pointer]:
+                    - /url: /glossary#workflow
+                  - text: and
+                  - link "Activities" [ref=e261] [cursor=pointer]:
+                    - /url: /glossary#activity
+                  - text: . Before you can execute a Workflow or Activity with the Vercel AI SDK, you need to create a Worker and configure it to use the AI SDK plugin.
+                - paragraph [ref=e262]: Follow the steps below to configure your Worker.
+                - list [ref=e263]:
+                  - listitem [ref=e264]:
+                    - paragraph [ref=e265]:
+                      - text: Install the
+                      - code [ref=e266]: "@temporalio/ai-sdk"
+                      - text: package.
+                    - generic [ref=e268]:
+                      - code [ref=e270]:
+                        - generic [ref=e271]: npm install @temporalio/ai-sdk
+                      - button "Copy code to clipboard" [ref=e273] [cursor=pointer]:
+                        - generic [ref=e274]:
+                          - img [ref=e275]
+                          - img [ref=e277]
+                  - listitem [ref=e279]:
+                    - paragraph [ref=e280]:
+                      - text: Create a
+                      - code [ref=e281]: worker.ts
+                      - text: file and configure the Worker to use the AI SDK plugin.
+                    - generic [ref=e283]:
+                      - code [ref=e285]:
+                        - generic [ref=e286]: "import { openai } from '@ai-sdk/openai';"
+                        - generic [ref=e287]: "import { AiSDKPlugin } from '@temporalio/ai-sdk';"
+                        - generic [ref=e288]: //... other import statements, initializing a connection
+                        - generic [ref=e289]: // to the Temporal Service to be used by the Worker
+                        - generic [ref=e290]: "const worker = await Worker.create({"
+                        - generic [ref=e291]: "plugins: ["
+                        - generic [ref=e292]: "new AiSDKPlugin({"
+                        - generic [ref=e293]: "modelProvider: openai,"
+                        - generic [ref=e294]: "}),"
+                        - generic [ref=e295]: "],"
+                        - generic [ref=e296]: connection,
+                        - generic [ref=e297]: "namespace: 'default',"
+                        - generic [ref=e298]: "taskQueue: 'ai-sdk',"
+                        - generic [ref=e299]: "workflowsPath: require.resolve('./workflows'),"
+                        - generic [ref=e300]: activities,
+                        - generic [ref=e301]: "});"
+                        - generic [ref=e302]: // ... code that runs the worker
+                      - button "Copy code to clipboard" [ref=e304] [cursor=pointer]:
+                        - generic [ref=e305]:
+                          - img [ref=e306]
+                          - img [ref=e308]
+                    - paragraph [ref=e310]:
+                      - text: The
+                      - code [ref=e311]: modelProvider
+                      - text: specifies which AI provider to use when creating models. Choose the provider that best suits your needs. In the Worker options, you are also specifying that the Worker polls the
+                      - code [ref=e312]: ai-sdk
+                      - text: Task Queue for work in the
+                      - code [ref=e313]: default
+                      - text: Namespace. Make sure that you configure your Client application to use the same Task Queue and Namespace.
+                  - listitem [ref=e314]:
+                    - paragraph [ref=e315]:
+                      - text: Run the Worker. This Worker will now poll the Temporal Service for work on the
+                      - code [ref=e316]: ai-sdk
+                      - text: Task Queue in the
+                      - code [ref=e317]: default
+                      - text: Namespace until you stop it.
+                    - generic [ref=e319]:
+                      - code [ref=e321]:
+                        - generic [ref=e322]: nodemon worker.ts
+                      - button "Copy code to clipboard" [ref=e324] [cursor=pointer]:
+                        - generic [ref=e325]:
+                          - img [ref=e326]
+                          - img [ref=e328]
+                    - paragraph [ref=e330]:
+                      - text: You must ensure the Worker process has access to your API credentials. Most provider SDKs read credentials from environment variables. Refer to the
+                      - link "Vercel AI SDK documentation" [ref=e331] [cursor=pointer]:
+                        - /url: https://ai-sdk.dev/providers/ai-sdk-providers
+                      - text: for instructions on how to set up your environment variables for the provider you chose.
+                    - generic [ref=e332]:
+                      - generic [ref=e333]:
+                        - img [ref=e335]
+                        - text: tip
+                      - paragraph [ref=e338]: You only need to give provider credentials to the Worker process. The client application, meaning the application that sends requests to the Temporal Service to start Workflow Executions, doesn't need to know about the credentials.
+                - paragraph [ref=e339]:
+                  - text: See the full example at
+                  - link "ai-sdk samples" [ref=e340] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/samples-typescript/tree/main/ai-sdk
+                  - text: .
+                - heading "Develop a Simple Haiku AgentDirect link to Develop a Simple Haiku Agent" [level=2] [ref=e341]:
+                  - text: Develop a Simple Haiku Agent
+                  - link "Direct link to Develop a Simple Haiku Agent" [ref=e342] [cursor=pointer]:
+                    - /url: "#develop-a-simple-haiku-agent"
+                    - text: "#"
+                - paragraph [ref=e343]: To help you get started, you can develop a simple Haiku Agent that generates haikus based on a prompt.
+                - paragraph [ref=e344]: "If you weren't using Temporal, you would write code like this to generate a haiku:"
+                - generic [ref=e346]:
+                  - code [ref=e348]:
+                    - generic [ref=e349]: "import { generateText } from 'ai';"
+                    - generic [ref=e350]: "import { openai } from '@ai-sdk/openai';"
+                    - generic [ref=e351]: "async function haikuAgent(prompt: string): Promise<string> {"
+                    - generic [ref=e352]: "const result = await generateText({"
+                    - generic [ref=e353]: "model: openai('gpt-4o-mini'),"
+                    - generic [ref=e354]: prompt,
+                    - generic [ref=e355]: "system: 'You only respond in haikus.',"
+                    - generic [ref=e356]: "});"
+                    - generic [ref=e357]: return result.text;
+                    - generic [ref=e358]: "}"
+                  - button "Copy code to clipboard" [ref=e360] [cursor=pointer]:
+                    - generic [ref=e361]:
+                      - img [ref=e362]
+                      - img [ref=e364]
+                - paragraph [ref=e366]:
+                  - text: To add Durable Execution to your agent, implement the agent as a Temporal Workflow. Use the AI SDK as you normally would, but pass
+                  - code [ref=e367]: temporalProvider.languageModel()
+                  - text: as the model. The string you provide (like
+                  - code [ref=e368]: "'gpt-4o-mini'"
+                  - text: ) is passed to your configured
+                  - code [ref=e369]: modelProvider
+                  - text: to create the model.
+                - generic [ref=e371]:
+                  - code [ref=e373]:
+                    - generic [ref=e374]: "import { generateText } from 'ai';"
+                    - generic [ref=e375]: "import { temporalProvider } from '@temporalio/ai-sdk';"
+                    - generic [ref=e376]: "export async function haikuAgent(prompt: string): Promise<string> {"
+                    - generic [ref=e377]: "const result = await generateText({"
+                    - generic [ref=e378]: "model: temporalProvider.languageModel('gpt-4o-mini'),"
+                    - generic [ref=e379]: prompt,
+                    - generic [ref=e380]: "system: 'You only respond in haikus.',"
+                    - generic [ref=e381]: "});"
+                    - generic [ref=e382]: return result.text;
+                    - generic [ref=e383]: "}"
+                  - button "Copy code to clipboard" [ref=e385] [cursor=pointer]:
+                    - generic [ref=e386]:
+                      - img [ref=e387]
+                      - img [ref=e389]
+                - paragraph [ref=e391]: With only two line changes, you have added Durable Execution to your agent. Your agent now gets automatic retries, timeouts, and the ability to run for extended periods without losing state if the process crashes.
+                - heading "Provide your durable agent with toolsDirect link to Provide your durable agent with tools" [level=2] [ref=e392]:
+                  - text: Provide your durable agent with tools
+                  - link "Direct link to Provide your durable agent with tools" [ref=e393] [cursor=pointer]:
+                    - /url: "#provide-your-durable-agent-with-tools"
+                    - text: "#"
+                - paragraph [ref=e394]: The Vercel AI SDK lets you provide tools to your agents, and when the model calls them, they execute in the Workflow. Since tool functions run in Workflow context, they must follow Workflow rules. That means they must call Activities or Child Workflows to perform non-deterministic operations like API calls.
+                - paragraph [ref=e395]: "For example, if you want to call an external API to get the weather, you would implement it as an Activity and call it from the tool function. The following is an example of an Activity that gets the weather for a given location:"
+                - paragraph [ref=e396]:
+                  - link "ai-sdk/src/activities.ts" [ref=e397] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/samples-typescript/blob/main/ai-sdk/src/activities.ts
+                - generic [ref=e399]:
+                  - code [ref=e401]:
+                    - generic [ref=e402]: "export async function getWeather(input: {"
+                    - generic [ref=e403]: "location: string;"
+                    - generic [ref=e404]: "}): Promise<{ city: string; temperatureRange: string; conditions: string }> {"
+                    - generic [ref=e405]: console.log('Activity execution');
+                    - generic [ref=e406]: "return {"
+                    - generic [ref=e407]: "city: input.location,"
+                    - generic [ref=e408]: "temperatureRange: '14-20C',"
+                    - generic [ref=e409]: "conditions: 'Sunny with wind.',"
+                    - generic [ref=e410]: "};"
+                    - generic [ref=e411]: "}"
+                  - button "Copy code to clipboard" [ref=e413] [cursor=pointer]:
+                    - generic [ref=e414]:
+                      - img [ref=e415]
+                      - img [ref=e417]
+                - paragraph [ref=e419]:
+                  - text: Then in your agent implementation, provide the tool to the model using the
+                  - code [ref=e420]: tools
+                  - text: option and instruct the model to use the tool when needed.
+                - generic [ref=e422]:
+                  - code [ref=e424]:
+                    - generic [ref=e425]: "import { proxyActivities } from '@temporalio/workflow';"
+                    - generic [ref=e426]: "import { generateText, tool } from 'ai';"
+                    - generic [ref=e427]: "import { temporalProvider } from '@temporalio/ai-sdk';"
+                    - generic [ref=e428]: "import { z } from 'zod';"
+                    - generic [ref=e429]: "const { getWeather } = proxyActivities<typeof activities>({"
+                    - generic [ref=e430]: "startToCloseTimeout: '1 minute',"
+                    - generic [ref=e431]: "});"
+                    - generic [ref=e432]: "export async function toolsAgent(question: string): Promise<string> {"
+                    - generic [ref=e433]: "const result = await generateText({"
+                    - generic [ref=e434]: "model: temporalProvider.languageModel('gpt-4o-mini'),"
+                    - generic [ref=e435]: "prompt: question,"
+                    - generic [ref=e436]: "system: 'You are a helpful agent.',"
+                    - generic [ref=e437]: "tools: {"
+                    - generic [ref=e438]: "getWeather: tool({"
+                    - generic [ref=e439]: "description: 'Get the weather for a given city',"
+                    - generic [ref=e440]: "inputSchema: z.object({"
+                    - generic [ref=e441]: "location: z.string().describe('The location to get the weather for'),"
+                    - generic [ref=e442]: "}),"
+                    - generic [ref=e443]: "execute: getWeather,"
+                    - generic [ref=e444]: "}),"
+                    - generic [ref=e445]: "},"
+                    - generic [ref=e446]: "stopWhen: stepCountIs(5),"
+                    - generic [ref=e447]: "});"
+                    - generic [ref=e448]: return result.text;
+                    - generic [ref=e449]: "}"
+                  - button "Copy code to clipboard" [ref=e451] [cursor=pointer]:
+                    - generic [ref=e452]:
+                      - img [ref=e453]
+                      - img [ref=e455]
+                - heading "Integrate with Model Context Protocol (MCP) serversDirect link to Integrate with Model Context Protocol (MCP) servers" [level=2] [ref=e457]:
+                  - text: Integrate with Model Context Protocol (MCP) servers
+                  - link "Direct link to Integrate with Model Context Protocol (MCP) servers" [ref=e458] [cursor=pointer]:
+                    - /url: "#integrate-with-model-context-protocol-mcp-servers"
+                    - text: "#"
+                - paragraph [ref=e459]:
+                  - link "Model Context Protocol (MCP)" [ref=e460] [cursor=pointer]:
+                    - /url: https://modelcontextprotocol.io/
+                  - text: is an open standard that lets AI applications connect to external tools and data sources. Calls to MCP servers, being calls to external APIs, are non-deterministic and would usually need to be implemented as Activities. The Temporal AI SDK integration handles this for you and provides a built-in implementation of a stateless MCP client that you can use inside Workflows.
+                - paragraph [ref=e461]: Follow the steps below to integrate your agent with an MCP server.
+                - list [ref=e462]:
+                  - listitem [ref=e463]:
+                    - paragraph [ref=e464]:
+                      - text: Create a connection to the MCP servers using the
+                      - code [ref=e465]: experimental_createMCPClient
+                      - text: function from the
+                      - code [ref=e466]: "@ai-sdk/mcp"
+                      - text: package. You can register multiple MCP servers by providing multiple factory functions in
+                      - code [ref=e467]: mcpClientFactories
+                      - text: .
+                    - generic [ref=e469]:
+                      - code [ref=e471]:
+                        - generic [ref=e472]: "import { experimental_createMCPClient as createMCPClient } from '@ai-sdk/mcp';"
+                        - generic [ref=e473]: "import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';"
+                        - generic [ref=e474]: "const mcpClientFactories = {"
+                        - generic [ref=e475]: "testServer: () =>"
+                        - generic [ref=e476]: "createMCPClient({"
+                        - generic [ref=e477]: "transport: new StdioClientTransport({"
+                        - generic [ref=e478]: "command: 'node',"
+                        - generic [ref=e479]: "args: ['lib/mcp-server.js'],"
+                        - generic [ref=e480]: "}),"
+                        - generic [ref=e481]: "}),"
+                        - generic [ref=e482]: "};"
+                      - button "Copy code to clipboard" [ref=e484] [cursor=pointer]:
+                        - generic [ref=e485]:
+                          - img [ref=e486]
+                          - img [ref=e488]
+                    - paragraph [ref=e490]:
+                      - text: The example uses
+                      - code [ref=e491]: StdioClientTransport
+                      - text: as the transport mechanisms for client-server communication. Each time the Worker processes a Task that requires communication with the MCP server, it will start the server process and connect to it as required by the Task.
+                  - listitem [ref=e492]:
+                    - paragraph [ref=e493]: Configure the Worker to use the MCP client factories.
+                    - generic [ref=e495]:
+                      - code [ref=e497]:
+                        - generic [ref=e498]: "const worker = await Worker.create({"
+                        - generic [ref=e499]: "plugins: ["
+                        - generic [ref=e500]: "new AiSDKPlugin({"
+                        - generic [ref=e501]: "modelProvider: openai,"
+                        - generic [ref=e502]: mcpClientFactories
+                        - generic [ref=e503]: "}),"
+                        - generic [ref=e504]: "]},"
+                        - generic [ref=e505]: ...
+                        - generic [ref=e506]: );
+                      - button "Copy code to clipboard" [ref=e508] [cursor=pointer]:
+                        - generic [ref=e509]:
+                          - img [ref=e510]
+                          - img [ref=e512]
+                  - listitem [ref=e514]:
+                    - paragraph [ref=e515]:
+                      - text: In your agent Workflow, use
+                      - code [ref=e516]: TemporalMCPClient
+                      - text: "to get tools from the MCP server by referencing it by name:"
+                    - generic [ref=e518]:
+                      - code [ref=e520]:
+                        - generic [ref=e521]: "import { TemporalMCPClient, temporalProvider } from '@temporalio/ai-sdk';"
+                        - generic [ref=e522]: "export async function mcpAgent(prompt: string): Promise<string> {"
+                        - generic [ref=e523]: "const mcpClient = new TemporalMCPClient({ name: 'testServer' });"
+                        - generic [ref=e524]: const tools = await mcpClient.tools();
+                        - generic [ref=e525]: "const result = await generateText({"
+                        - generic [ref=e526]: "model: temporalProvider.languageModel('gpt-4o-mini'),"
+                        - generic [ref=e527]: prompt,
+                        - generic [ref=e528]: tools,
+                        - generic [ref=e529]: "system: 'You are a helpful agent, You always use your tools when needed.',"
+                        - generic [ref=e530]: "stopWhen: stepCountIs(5),"
+                        - generic [ref=e531]: "});"
+                        - generic [ref=e532]: return result.text;
+                        - generic [ref=e533]: "}"
+                      - button "Copy code to clipboard" [ref=e535] [cursor=pointer]:
+                        - generic [ref=e536]:
+                          - img [ref=e537]
+                          - img [ref=e539]
+                    - paragraph [ref=e541]: Both listing tools and calling them run as Activities behind the scenes, giving you automatic retries, timeouts, and full observability.
+              - generic [ref=e542]:
+                - generic [ref=e544]:
+                  - text: "Tags:"
+                  - list [ref=e545]:
+                    - listitem [ref=e546]:
+                      - link "AI SDK" [ref=e547] [cursor=pointer]:
+                        - /url: /tags/ai-sdk
+                    - listitem [ref=e548]:
+                      - link "TypeScript SDK" [ref=e549] [cursor=pointer]:
+                        - /url: /tags/type-script-sdk
+                    - listitem [ref=e550]:
+                      - link "Temporal SDKs" [ref=e551] [cursor=pointer]:
+                        - /url: /tags/temporal-sd-ks
+                - paragraph [ref=e555]:
+                  - text: Help us make Temporal better. Contribute to our
+                  - link "documentation" [ref=e556] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation
+                  - text: .
+            - navigation "Docs pages" [ref=e558]:
+              - link "Previous « Interceptors" [ref=e559] [cursor=pointer]:
+                - /url: /develop/typescript/interceptors
+                - generic [ref=e560]: Previous
+                - generic [ref=e561]: « Interceptors
+              - link "Next .NET SDK »" [ref=e562] [cursor=pointer]:
+                - /url: /develop/dotnet/
+                - generic [ref=e563]: Next
+                - generic [ref=e564]: .NET SDK »
+          - list [ref=e567]:
+            - listitem [ref=e568]:
+              - link "Prerequisites" [ref=e569] [cursor=pointer]:
+                - /url: "#prerequisites"
+            - listitem [ref=e570]:
+              - link "Configure Workers to use the AI SDK" [ref=e571] [cursor=pointer]:
+                - /url: "#configure-workers-to-use-the-ai-sdk"
+            - listitem [ref=e572]:
+              - link "Develop a Simple Haiku Agent" [ref=e573] [cursor=pointer]:
+                - /url: "#develop-a-simple-haiku-agent"
+            - listitem [ref=e574]:
+              - link "Provide your durable agent with tools" [ref=e575] [cursor=pointer]:
+                - /url: "#provide-your-durable-agent-with-tools"
+            - listitem [ref=e576]:
+              - link "Integrate with Model Context Protocol (MCP) servers" [ref=e577] [cursor=pointer]:
+                - /url: "#integrate-with-model-context-protocol-mcp-servers"
+    - contentinfo [ref=e578]:
+      - generic [ref=e579]:
+        - generic [ref=e580]:
+          - list [ref=e582]:
+            - listitem [ref=e583]:
+              - link "GitHub" [ref=e584] [cursor=pointer]:
+                - /url: https://github.com/temporalio
+                - text: GitHub
+                - img [ref=e585]
+            - listitem [ref=e587]:
+              - link "Twitter" [ref=e588] [cursor=pointer]:
+                - /url: https://twitter.com/temporalio
+                - text: Twitter
+                - img [ref=e589]
+            - listitem [ref=e591]:
+              - link "YouTube" [ref=e592] [cursor=pointer]:
+                - /url: https://www.youtube.com/c/Temporalio
+                - text: YouTube
+                - img [ref=e593]
+            - listitem [ref=e595]:
+              - link "About the docs" [ref=e596] [cursor=pointer]:
+                - /url: https://github.com/temporalio/documentation/blob/master/README.md
+                - text: About the docs
+                - img [ref=e597]
+          - list [ref=e600]:
+            - listitem [ref=e601]:
+              - link "Temporal Cloud" [ref=e602] [cursor=pointer]:
+                - /url: https://temporal.io/cloud
+                - text: Temporal Cloud
+                - img [ref=e603]
+            - listitem [ref=e605]:
+              - link "Meetups" [ref=e606] [cursor=pointer]:
+                - /url: https://temporal.io/community#events
+                - text: Meetups
+                - img [ref=e607]
+            - listitem [ref=e609]:
+              - link "Workshops" [ref=e610] [cursor=pointer]:
+                - /url: https://temporal.io/community#workshops
+                - text: Workshops
+                - img [ref=e611]
+            - listitem [ref=e613]:
+              - link "Support forum" [ref=e614] [cursor=pointer]:
+                - /url: https://community.temporal.io/
+                - text: Support forum
+                - img [ref=e615]
+            - listitem [ref=e617]:
+              - link "Ask an expert" [ref=e618] [cursor=pointer]:
+                - /url: https://pages.temporal.io/ask-an-expert
+                - text: Ask an expert
+                - img [ref=e619]
+          - list [ref=e622]:
+            - listitem [ref=e623]:
+              - link "Learn Temporal" [ref=e624] [cursor=pointer]:
+                - /url: https://learn.temporal.io
+                - text: Learn Temporal
+                - img [ref=e625]
+            - listitem [ref=e627]:
+              - link "Blog" [ref=e628] [cursor=pointer]:
+                - /url: https://temporal.io/blog
+                - text: Blog
+                - img [ref=e629]
+            - listitem [ref=e631]:
+              - link "Use cases" [ref=e632] [cursor=pointer]:
+                - /url: https://temporal.io/use-cases
+                - text: Use cases
+                - img [ref=e633]
+            - listitem [ref=e635]:
+              - link "Newsletter signup" [ref=e636] [cursor=pointer]:
+                - /url: https://pages.temporal.io/newsletter-subscribe
+                - text: Newsletter signup
+                - img [ref=e637]
+          - list [ref=e640]:
+            - listitem [ref=e641]:
+              - link "Security" [ref=e642] [cursor=pointer]:
+                - /url: /security
+            - listitem [ref=e643]:
+              - link "Privacy policy" [ref=e644] [cursor=pointer]:
+                - /url: https://temporal.io/global-privacy-policy
+            - listitem [ref=e645]:
+              - link "Terms of service" [ref=e646] [cursor=pointer]:
+                - /url: https://docs.temporal.io/pdf/temporal-tos-2021-07-24.pdf
+                - text: Terms of service
+                - img [ref=e647]
+            - listitem [ref=e649]:
+              - link "We're hiring" [ref=e650] [cursor=pointer]:
+                - /url: https://temporal.io/careers
+                - text: We're hiring
+                - img [ref=e651]
+        - generic [ref=e653]:
+          - link "Temporal logo" [ref=e655] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e656]
+          - generic [ref=e657]: Copyright © 2025 Temporal Technologies Inc.
+  - generic [ref=e658] [cursor=pointer]:
+    - img [ref=e660]
+    - generic: Feedback
+```

@@ -1,0 +1,865 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - region "Skip to main content":
+      - link "Skip to main content" [ref=e3] [cursor=pointer]:
+        - /url: "#__docusaurus_skipToContent_fallback"
+    - navigation "Main" [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - link "Temporal logo" [ref=e7] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e9]
+          - link "Home" [ref=e10] [cursor=pointer]:
+            - /url: /
+          - link "Courses" [ref=e11] [cursor=pointer]:
+            - /url: https://learn.temporal.io/getting_started/
+            - text: Courses
+            - img [ref=e12]
+          - link "SDKs" [ref=e14] [cursor=pointer]:
+            - /url: /develop
+          - link "AI Cookbook" [ref=e15] [cursor=pointer]:
+            - /url: /ai-cookbook
+          - link "Code Exchange" [ref=e16] [cursor=pointer]:
+            - /url: https://temporal.io/code-exchange
+            - text: Code Exchange
+            - img [ref=e17]
+          - link "Temporal Cloud" [ref=e19] [cursor=pointer]:
+            - /url: /cloud
+        - generic [ref=e20]:
+          - button "Ask AI" [ref=e21] [cursor=pointer]:
+            - img [ref=e22]
+            - generic [ref=e26]: Ask AI
+          - button "Switch between dark and light mode (currently system mode)" [ref=e28] [cursor=pointer]:
+            - img [ref=e29]
+          - button "Search (Ctrl+K)" [ref=e32] [cursor=pointer]:
+            - generic [ref=e33]:
+              - img [ref=e34]
+              - generic [ref=e36]: Search
+            - generic [ref=e37]:
+              - img [ref=e39]
+              - generic [ref=e41]: K
+    - generic [ref=e44]:
+      - complementary [ref=e45]:
+        - generic [ref=e47]:
+          - navigation "Docs sidebar" [ref=e48]:
+            - list [ref=e49]:
+              - listitem [ref=e50]:
+                - link "Documentation Home" [ref=e51] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=e52]:
+                - link "Quickstarts" [ref=e53] [cursor=pointer]:
+                  - /url: /quickstarts
+              - listitem [ref=e54]:
+                - generic [ref=e55]:
+                  - link "Evaluate" [ref=e56] [cursor=pointer]:
+                    - /url: /evaluate/
+                  - button "Collapse sidebar category 'Evaluate'" [expanded] [ref=e57] [cursor=pointer]
+                - list [ref=e58]:
+                  - listitem [ref=e59]:
+                    - link "Why Temporal" [ref=e60] [cursor=pointer]:
+                      - /url: /evaluate/why-temporal
+                  - listitem [ref=e61]:
+                    - link "Understanding Temporal" [ref=e62] [cursor=pointer]:
+                      - /url: /evaluate/understanding-temporal
+                  - listitem [ref=e63]:
+                    - generic [ref=e64]:
+                      - link "Features" [ref=e65] [cursor=pointer]:
+                        - /url: /evaluate/development-production-features/
+                      - button "Expand sidebar category 'Features'" [ref=e66] [cursor=pointer]
+                  - listitem [ref=e67]:
+                    - generic [ref=e68]:
+                      - link "Temporal Cloud" [ref=e69] [cursor=pointer]:
+                        - /url: /cloud/introduction
+                      - button "Expand sidebar category 'Temporal Cloud'" [ref=e70] [cursor=pointer]
+                  - listitem [ref=e71]:
+                    - link "Security" [ref=e72] [cursor=pointer]:
+                      - /url: /security
+                  - listitem [ref=e73]:
+                    - link "Use Cases" [ref=e74] [cursor=pointer]:
+                      - /url: /evaluate/use-cases-design-patterns
+              - listitem [ref=e75]:
+                - generic [ref=e76]:
+                  - link "Develop" [ref=e77] [cursor=pointer]:
+                    - /url: /develop/
+                  - button "Collapse sidebar category 'Develop'" [expanded] [ref=e78] [cursor=pointer]
+                - list [ref=e79]:
+                  - listitem [ref=e80]:
+                    - generic [ref=e81]:
+                      - link "Go SDK" [ref=e82] [cursor=pointer]:
+                        - /url: /develop/go/
+                      - button "Expand sidebar category 'Go SDK'" [ref=e83] [cursor=pointer]
+                  - listitem [ref=e84]:
+                    - generic [ref=e85]:
+                      - link "Java SDK" [ref=e86] [cursor=pointer]:
+                        - /url: /develop/java/
+                      - button "Collapse sidebar category 'Java SDK'" [expanded] [ref=e87] [cursor=pointer]
+                    - list [ref=e88]:
+                      - listitem [ref=e89]:
+                        - link "Quickstart - Setup" [ref=e90] [cursor=pointer]:
+                          - /url: /develop/java/set-up-your-local-java
+                      - listitem [ref=e91]:
+                        - link "Core application" [ref=e92] [cursor=pointer]:
+                          - /url: /develop/java/core-application
+                      - listitem [ref=e93]:
+                        - link "Temporal Client" [ref=e94] [cursor=pointer]:
+                          - /url: /develop/java/temporal-client
+                      - listitem [ref=e95]:
+                        - link "Namespaces" [ref=e96] [cursor=pointer]:
+                          - /url: /develop/java/namespaces
+                      - listitem [ref=e97]:
+                        - link "Testing" [ref=e98] [cursor=pointer]:
+                          - /url: /develop/java/testing-suite
+                      - listitem [ref=e99]:
+                        - link "Failure detection" [ref=e100] [cursor=pointer]:
+                          - /url: /develop/java/failure-detection
+                      - listitem [ref=e101]:
+                        - link "Messages" [ref=e102] [cursor=pointer]:
+                          - /url: /develop/java/message-passing
+                      - listitem [ref=e103]:
+                        - link "Interrupt a Workflow" [ref=e104] [cursor=pointer]:
+                          - /url: /develop/java/cancellation
+                      - listitem [ref=e105]:
+                        - link "Asynchronous Activity Completion" [ref=e106] [cursor=pointer]:
+                          - /url: /develop/java/asynchronous-activity-completion
+                      - listitem [ref=e107]:
+                        - link "Versioning" [ref=e108] [cursor=pointer]:
+                          - /url: /develop/java/versioning
+                      - listitem [ref=e109]:
+                        - link "Observability" [ref=e110] [cursor=pointer]:
+                          - /url: /develop/java/observability
+                      - listitem [ref=e111]:
+                        - link "Benign exceptions" [ref=e112] [cursor=pointer]:
+                          - /url: /develop/java/benign-exceptions
+                      - listitem [ref=e113]:
+                        - link "Enriching the UI" [ref=e114] [cursor=pointer]:
+                          - /url: /develop/java/enriching-ui
+                      - listitem [ref=e115]:
+                        - link "Debugging" [ref=e116] [cursor=pointer]:
+                          - /url: /develop/java/debugging
+                      - listitem [ref=e117]:
+                        - link "Schedules" [ref=e118] [cursor=pointer]:
+                          - /url: /develop/java/schedules
+                      - listitem [ref=e119]:
+                        - link "Converters and encryption" [ref=e120] [cursor=pointer]:
+                          - /url: /develop/java/converters-and-encryption
+                      - listitem [ref=e121]:
+                        - link "Durable Timers" [ref=e122] [cursor=pointer]:
+                          - /url: /develop/java/timers
+                      - listitem [ref=e123]:
+                        - link "Temporal Nexus" [ref=e124] [cursor=pointer]:
+                          - /url: /develop/java/nexus
+                      - listitem [ref=e125]:
+                        - link "Child Workflows" [ref=e126] [cursor=pointer]:
+                          - /url: /develop/java/child-workflows
+                      - listitem [ref=e127]:
+                        - link "Continue-As-New" [ref=e128] [cursor=pointer]:
+                          - /url: /develop/java/continue-as-new
+                      - listitem [ref=e129]:
+                        - link "Side Effects" [ref=e130] [cursor=pointer]:
+                          - /url: /develop/java/side-effects
+                      - listitem [ref=e131]:
+                        - link "Spring Boot Integration" [ref=e132] [cursor=pointer]:
+                          - /url: /develop/java/spring-boot-integration
+                  - listitem [ref=e133]:
+                    - generic [ref=e134]:
+                      - link "PHP SDK" [ref=e135] [cursor=pointer]:
+                        - /url: /develop/php/
+                      - button "Expand sidebar category 'PHP SDK'" [ref=e136] [cursor=pointer]
+                  - listitem [ref=e137]:
+                    - generic [ref=e138]:
+                      - link "Python SDK" [ref=e139] [cursor=pointer]:
+                        - /url: /develop/python/
+                      - button "Expand sidebar category 'Python SDK'" [ref=e140] [cursor=pointer]
+                  - listitem [ref=e141]:
+                    - generic [ref=e142]:
+                      - link "TypeScript SDK" [ref=e143] [cursor=pointer]:
+                        - /url: /develop/typescript/
+                      - button "Expand sidebar category 'TypeScript SDK'" [ref=e144] [cursor=pointer]
+                  - listitem [ref=e145]:
+                    - generic [ref=e146]:
+                      - link ".NET SDK" [ref=e147] [cursor=pointer]:
+                        - /url: /develop/dotnet/
+                      - button "Expand sidebar category '.NET SDK'" [ref=e148] [cursor=pointer]
+                  - listitem [ref=e149]:
+                    - generic [ref=e150]:
+                      - link "Ruby SDK" [ref=e151] [cursor=pointer]:
+                        - /url: /develop/ruby/
+                      - button "Expand sidebar category 'Ruby SDK'" [ref=e152] [cursor=pointer]
+                  - listitem [ref=e153]:
+                    - link "Environment configuration" [ref=e154] [cursor=pointer]:
+                      - /url: /develop/environment-configuration
+                  - listitem [ref=e155]:
+                    - link "Activity retry simulator" [ref=e156] [cursor=pointer]:
+                      - /url: /develop/activity-retry-simulator
+                  - listitem [ref=e157]:
+                    - link "Worker performance" [ref=e158] [cursor=pointer]:
+                      - /url: /develop/worker-performance
+                  - listitem [ref=e159]:
+                    - link "Safe deployments" [ref=e160] [cursor=pointer]:
+                      - /url: /develop/safe-deployments
+                  - listitem [ref=e161]:
+                    - link "Plugins guide" [ref=e162] [cursor=pointer]:
+                      - /url: /develop/plugins-guide
+              - listitem [ref=e163]:
+                - generic [ref=e164]:
+                  - link "Deploy to production" [ref=e165] [cursor=pointer]:
+                    - /url: /production-deployment
+                  - button "Collapse sidebar category 'Deploy to production'" [expanded] [ref=e166] [cursor=pointer]
+                - list [ref=e167]:
+                  - listitem [ref=e168]:
+                    - generic [ref=e169]:
+                      - link "Temporal Cloud" [ref=e170] [cursor=pointer]:
+                        - /url: /cloud
+                      - button "Expand sidebar category 'Temporal Cloud'" [ref=e171] [cursor=pointer]
+                  - listitem [ref=e172]:
+                    - link "Codecs and Encryption" [ref=e173] [cursor=pointer]:
+                      - /url: /production-deployment/data-encryption
+                  - listitem [ref=e174]:
+                    - generic [ref=e175]:
+                      - link "Self-host" [ref=e176] [cursor=pointer]:
+                        - /url: /self-hosted-guide
+                      - button "Expand sidebar category 'Self-host'" [ref=e177] [cursor=pointer]
+                  - listitem [ref=e178]:
+                    - generic [ref=e179]:
+                      - link "Worker deployments" [ref=e180] [cursor=pointer]:
+                        - /url: /production-deployment/worker-deployments
+                      - button "Expand sidebar category 'Worker deployments'" [ref=e181] [cursor=pointer]
+              - listitem [ref=e182]:
+                - generic [ref=e183]:
+                  - link "CLI (temporal)" [ref=e184] [cursor=pointer]:
+                    - /url: /cli
+                  - button "Expand sidebar category 'CLI (temporal)'" [ref=e185] [cursor=pointer]
+              - listitem [ref=e186]:
+                - generic [ref=e187]:
+                  - link "References" [ref=e188] [cursor=pointer]:
+                    - /url: /references/
+                  - button "Expand sidebar category 'References'" [ref=e189] [cursor=pointer]
+              - listitem [ref=e190]:
+                - generic [ref=e191]:
+                  - link "Troubleshooting" [ref=e192] [cursor=pointer]:
+                    - /url: /troubleshooting/
+                  - button "Expand sidebar category 'Troubleshooting'" [ref=e193] [cursor=pointer]
+              - listitem [ref=e194]:
+                - generic [ref=e195]:
+                  - link "Best Practices" [ref=e196] [cursor=pointer]:
+                    - /url: /best-practices/
+                  - button "Expand sidebar category 'Best Practices'" [ref=e197] [cursor=pointer]
+              - listitem [ref=e198]:
+                - generic [ref=e199]:
+                  - link "Encyclopedia" [ref=e200] [cursor=pointer]:
+                    - /url: /encyclopedia/
+                  - button "Expand sidebar category 'Encyclopedia'" [ref=e201] [cursor=pointer]
+              - listitem [ref=e202]:
+                - link "Glossary" [ref=e203] [cursor=pointer]:
+                  - /url: /glossary
+          - button "Collapse sidebar" [ref=e204] [cursor=pointer]:
+            - img [ref=e205]
+      - main [ref=e209]:
+        - generic [ref=e211]:
+          - generic [ref=e213]:
+            - article [ref=e214]:
+              - navigation "Breadcrumbs" [ref=e215]:
+                - list [ref=e216]:
+                  - listitem [ref=e217]:
+                    - link "Home page" [ref=e218] [cursor=pointer]:
+                      - /url: /
+                      - img [ref=e219]
+                  - listitem [ref=e221]:
+                    - link "Develop" [ref=e222] [cursor=pointer]:
+                      - /url: /develop/
+                  - listitem [ref=e223]:
+                    - link "Java SDK" [ref=e224] [cursor=pointer]:
+                      - /url: /develop/java/
+                  - listitem [ref=e225]:
+                    - generic [ref=e226]: Spring Boot Integration
+              - generic [ref=e227]:
+                - heading "Spring Boot Integration - Java SDK" [level=1] [ref=e229]
+                - paragraph [ref=e230]:
+                  - text: This guide introduces the
+                  - link "Temporal Spring Boot" [ref=e231] [cursor=pointer]:
+                    - /url: https://central.sonatype.com/artifact/io.temporal/temporal-spring-boot-starter?smo=true
+                  - text: integration. The Temporal Spring Boot integration is the easiest way to get started using the Temporal Java SDK if you are a current
+                  - link "Spring" [ref=e232] [cursor=pointer]:
+                    - /url: https://spring.io/
+                  - text: user.
+                - paragraph [ref=e233]: "This section includes the following topics:"
+                - list [ref=e234]:
+                  - listitem [ref=e235]:
+                    - link "Setup Dependency" [ref=e236] [cursor=pointer]:
+                      - /url: "#setup-dependency"
+                  - listitem [ref=e237]:
+                    - link "Connect to your Temporal Service" [ref=e238] [cursor=pointer]:
+                      - /url: "#connect"
+                  - listitem [ref=e239]:
+                    - link "Configure Workers" [ref=e240] [cursor=pointer]:
+                      - /url: "#configure-workers"
+                  - listitem [ref=e241]:
+                    - link "Customize Options" [ref=e242] [cursor=pointer]:
+                      - /url: "#customize-options"
+                  - listitem [ref=e243]:
+                    - link "Interceptors" [ref=e244] [cursor=pointer]:
+                      - /url: "#interceptors"
+                  - listitem [ref=e245]:
+                    - link "Integrations" [ref=e246] [cursor=pointer]:
+                      - /url: "#integrations"
+                  - listitem [ref=e247]:
+                    - link "Testing" [ref=e248] [cursor=pointer]:
+                      - /url: "#testing"
+                - heading "Setup DependencyDirect link to Setup Dependency" [level=2] [ref=e249]:
+                  - text: Setup Dependency
+                  - link "Direct link to Setup Dependency" [ref=e250] [cursor=pointer]:
+                    - /url: "#setup-dependency"
+                    - text: "#"
+                - paragraph [ref=e251]:
+                  - text: To start using the Temporal Spring Boot integration, you need to add
+                  - link "io.temporal:temporal-spring-boot-starter" [ref=e252] [cursor=pointer]:
+                    - /url: https://search.maven.org/artifact/io.temporal/temporal-spring-boot-starter
+                    - code [ref=e253]: io.temporal:temporal-spring-boot-starter
+                  - text: "as a dependency to your Spring project:"
+                - generic [ref=e254]:
+                  - generic [ref=e255]:
+                    - img [ref=e257]
+                    - text: note
+                  - paragraph [ref=e260]: Temporal's Spring Boot integration currently supports Spring 2.x and 3.x
+                - paragraph [ref=e261]:
+                  - strong [ref=e262]:
+                    - link "Apache Maven" [ref=e263] [cursor=pointer]:
+                      - /url: https://maven.apache.org/
+                    - text: ":"
+                - generic [ref=e265]:
+                  - code [ref=e267]:
+                    - generic [ref=e268]: <dependency>
+                    - generic [ref=e269]: <groupId>io.temporal</groupId>
+                    - generic [ref=e270]: <artifactId>temporal-spring-boot-starter</artifactId>
+                    - generic [ref=e271]: <version>1.31.0</version>
+                    - generic [ref=e272]: </dependency>
+                  - button "Copy code to clipboard" [ref=e274] [cursor=pointer]:
+                    - generic [ref=e275]:
+                      - img [ref=e276]
+                      - img [ref=e278]
+                - paragraph [ref=e280]:
+                  - strong [ref=e281]:
+                    - link "Gradle Groovy DSL" [ref=e282] [cursor=pointer]:
+                      - /url: https://gradle.org/
+                    - text: ":"
+                - generic [ref=e284]:
+                  - code [ref=e286]:
+                    - generic [ref=e287]: implementation ("io.temporal:temporal-spring-boot-starter:1.31.0")
+                  - button "Copy code to clipboard" [ref=e289] [cursor=pointer]:
+                    - generic [ref=e290]:
+                      - img [ref=e291]
+                      - img [ref=e293]
+                - heading "ConnectDirect link to Connect" [level=2] [ref=e295]:
+                  - text: Connect
+                  - link "Direct link to Connect" [ref=e296] [cursor=pointer]:
+                    - /url: "#connect"
+                    - text: "#"
+                - paragraph [ref=e297]:
+                  - text: See the
+                  - link "Temporal Client documentation" [ref=e298] [cursor=pointer]:
+                    - /url: /develop/java/temporal-client
+                  - text: for more information about connecting to a Temporal Service.
+                - paragraph [ref=e299]:
+                  - text: To create an autoconfigured
+                  - code [ref=e300]: WorkflowClient
+                  - text: ", you need to specify some connection details in your"
+                  - code [ref=e301]: application.yml
+                  - text: file, as described in the next section.
+                - heading "Connect to your local Temporal ServiceDirect link to Connect to your local Temporal Service" [level=3] [ref=e302]:
+                  - text: Connect to your local Temporal Service
+                  - link "Direct link to Connect to your local Temporal Service" [ref=e303] [cursor=pointer]:
+                    - /url: "#connect-to-your-local-temporal-service"
+                    - text: "#"
+                - generic [ref=e305]:
+                  - code [ref=e307]:
+                    - generic [ref=e308]: "spring.temporal:"
+                    - generic [ref=e309]: "connection:"
+                    - generic [ref=e310]: "target: local # you can specify a host:port here for a remote connection"
+                  - generic [ref=e311]:
+                    - button "Toggle word wrap" [ref=e312] [cursor=pointer]:
+                      - img [ref=e313]
+                    - button "Copy code to clipboard" [ref=e315] [cursor=pointer]:
+                      - generic [ref=e316]:
+                        - img [ref=e317]
+                        - img [ref=e319]
+                - paragraph [ref=e321]:
+                  - text: This is enough to autowire a
+                  - code [ref=e322]: WorkflowClient
+                  - text: "in your Spring Boot application:"
+                - generic [ref=e324]:
+                  - code [ref=e326]:
+                    - generic [ref=e327]: "@SpringBootApplication"
+                    - generic [ref=e328]: "class App {"
+                    - generic [ref=e329]: "@Autowire"
+                    - generic [ref=e330]: private WorkflowClient workflowClient;
+                    - generic [ref=e331]: "}"
+                  - button "Copy code to clipboard" [ref=e333] [cursor=pointer]:
+                    - generic [ref=e334]:
+                      - img [ref=e335]
+                      - img [ref=e337]
+                - heading "Connect to a custom NamespaceDirect link to Connect to a custom Namespace" [level=3] [ref=e339]:
+                  - text: Connect to a custom Namespace
+                  - link "Direct link to Connect to a custom Namespace" [ref=e340] [cursor=pointer]:
+                    - /url: "#connect-to-a-custom-namespace"
+                    - text: "#"
+                - paragraph [ref=e341]:
+                  - text: You can also connect to a custom Namespace by specifying the
+                  - code [ref=e342]: spring.temporal.namespace
+                  - text: property.
+                - generic [ref=e344]:
+                  - code [ref=e346]:
+                    - generic [ref=e347]: "spring.temporal:"
+                    - generic [ref=e348]: "connection:"
+                    - generic [ref=e349]: "target: local # you can specify a host:port here for a remote connection"
+                    - generic [ref=e350]: "namespace: <custom namespace> # you can specify a custom namespace that you are using"
+                  - generic [ref=e351]:
+                    - button "Toggle word wrap" [ref=e352] [cursor=pointer]:
+                      - img [ref=e353]
+                    - button "Copy code to clipboard" [ref=e355] [cursor=pointer]:
+                      - generic [ref=e356]:
+                        - img [ref=e357]
+                        - img [ref=e359]
+                - heading "Connect to Temporal CloudDirect link to Connect to Temporal Cloud" [level=2] [ref=e361]:
+                  - text: Connect to Temporal Cloud
+                  - link "Direct link to Connect to Temporal Cloud" [ref=e362] [cursor=pointer]:
+                    - /url: "#connect"
+                    - text: "#"
+                - paragraph [ref=e363]: You can also connect to Temporal Cloud, using either an API key or mTLS for authentication.
+                - paragraph [ref=e364]:
+                  - text: See the
+                  - link "Connect to Temporal Cloud" [ref=e365] [cursor=pointer]:
+                    - /url: /develop/java/temporal-client#connect-to-temporal-cloud
+                  - text: section for more information about connecting to Temporal Cloud.
+                - heading "Using an API keyDirect link to Using an API key" [level=3] [ref=e366]:
+                  - text: Using an API key
+                  - link "Direct link to Using an API key" [ref=e367] [cursor=pointer]:
+                    - /url: "#using-an-api-key"
+                    - text: "#"
+                - generic [ref=e369]:
+                  - code [ref=e371]:
+                    - generic [ref=e372]: "spring.temporal:"
+                    - generic [ref=e373]: "connection:"
+                    - generic [ref=e374]: "target: <target>"
+                    - generic [ref=e375]: "apiKey: <API key>"
+                    - generic [ref=e376]: "namespace: <namespace>"
+                  - button "Copy code to clipboard" [ref=e378] [cursor=pointer]:
+                    - generic [ref=e379]:
+                      - img [ref=e380]
+                      - img [ref=e382]
+                - heading "Using mTLSDirect link to Using mTLS" [level=3] [ref=e384]:
+                  - text: Using mTLS
+                  - link "Direct link to Using mTLS" [ref=e385] [cursor=pointer]:
+                    - /url: "#using-mtls"
+                    - text: "#"
+                - generic [ref=e387]:
+                  - code [ref=e389]:
+                    - generic [ref=e390]: "spring.temporal:"
+                    - generic [ref=e391]: "connection:"
+                    - generic [ref=e392]: "mtls:"
+                    - generic [ref=e393]: "target: <target>"
+                    - generic [ref=e394]: "key-file: /path/to/key.key"
+                    - generic [ref=e395]: "cert-chain-file: /path/to/cert.pem # If you use PKCS12 (.pkcs12, .pfx or .p12), you don't need to set it because the certificates chain is bundled into the key file"
+                    - generic [ref=e396]: "namespace: <namespace>"
+                  - generic [ref=e397]:
+                    - button "Toggle word wrap" [ref=e398] [cursor=pointer]:
+                      - img [ref=e399]
+                    - button "Copy code to clipboard" [ref=e401] [cursor=pointer]:
+                      - generic [ref=e402]:
+                        - img [ref=e403]
+                        - img [ref=e405]
+                - heading "Configure WorkersDirect link to Configure Workers" [level=2] [ref=e407]:
+                  - text: Configure Workers
+                  - link "Direct link to Configure Workers" [ref=e408] [cursor=pointer]:
+                    - /url: "#configure-workers"
+                    - text: "#"
+                - paragraph [ref=e409]: "Temporal's Spring Boot integration supports two configuration methods for Workers: explicit configuration and auto-discovery."
+                - heading "Explicit configurationDirect link to Explicit configuration" [level=3] [ref=e410]:
+                  - text: Explicit configuration
+                  - link "Direct link to Explicit configuration" [ref=e411] [cursor=pointer]:
+                    - /url: "#explicit-configuration"
+                    - text: "#"
+                - generic [ref=e413]:
+                  - code [ref=e415]:
+                    - generic [ref=e416]: "spring.temporal:"
+                    - generic [ref=e417]: "workers:"
+                    - generic [ref=e418]: "- task-queue: your-task-queue-name"
+                    - generic [ref=e419]: "name: your-worker-name # unique name of the Worker. If not specified, Task Queue is used as the Worker name."
+                    - generic [ref=e420]: "workflow-classes:"
+                    - generic [ref=e421]: "- your.package.YourWorkflowImpl"
+                    - generic [ref=e422]: "activity-beans:"
+                    - generic [ref=e423]: "- activity-bean-name1"
+                  - generic [ref=e424]:
+                    - button "Toggle word wrap" [ref=e425] [cursor=pointer]:
+                      - img [ref=e426]
+                    - button "Copy code to clipboard" [ref=e428] [cursor=pointer]:
+                      - generic [ref=e429]:
+                        - img [ref=e430]
+                        - img [ref=e432]
+                - heading "Auto DiscoveryDirect link to Auto Discovery" [level=3] [ref=e434]:
+                  - text: Auto Discovery
+                  - link "Direct link to Auto Discovery" [ref=e435] [cursor=pointer]:
+                    - /url: "#auto-discovery"
+                    - text: "#"
+                - paragraph [ref=e436]: Auto Discovery allows you to skip specifying Workflow classes, Activity beans, and Nexus Service beans explicitly in the config by referencing Worker Task Queue names or Worker Names on Workflow, Activity implementations, and Nexus Service implementations. Auto-discovery is applied after and on top of an explicit configuration.
+                - generic [ref=e438]:
+                  - code [ref=e440]:
+                    - generic [ref=e441]: "spring.temporal:"
+                    - generic [ref=e442]: "workers-auto-discovery:"
+                    - generic [ref=e443]: "packages:"
+                    - generic [ref=e444]: "- your.package # enumerate all the packages that contain your workflow implementations."
+                  - generic [ref=e445]:
+                    - button "Toggle word wrap" [ref=e446] [cursor=pointer]:
+                      - img [ref=e447]
+                    - button "Copy code to clipboard" [ref=e449] [cursor=pointer]:
+                      - generic [ref=e450]:
+                        - img [ref=e451]
+                        - img [ref=e453]
+                - heading "What is auto-discovered:Direct link to What is auto-discovered:" [level=4] [ref=e455]:
+                  - text: "What is auto-discovered:"
+                  - link "Direct link to What is auto-discovered:" [ref=e456] [cursor=pointer]:
+                    - /url: "#what-is-auto-discovered"
+                    - text: "#"
+                - list [ref=e457]:
+                  - listitem [ref=e458]:
+                    - text: Workflow implementation classes annotated with
+                    - code [ref=e459]: io.temporal.spring.boot.WorkflowImpl
+                  - listitem [ref=e460]:
+                    - text: Activity beans present Spring context whose implementations are annotated with
+                    - code [ref=e461]: io.temporal.spring.boot.ActivityImpl
+                  - listitem [ref=e462]:
+                    - text: Nexus Service beans present in Spring context whose implementations are annotated with
+                    - code [ref=e463]: io.temporal.spring.boot.NexusServiceImpl
+                  - listitem [ref=e464]: Workers if a Task Queue is referenced by the annotations but not explicitly configured. Default configuration will be used.
+                - generic [ref=e465]:
+                  - generic [ref=e466]:
+                    - img [ref=e468]
+                    - text: note
+                  - paragraph [ref=e471]:
+                    - code [ref=e472]: io.temporal.spring.boot.ActivityImpl
+                    - text: and
+                    - code [ref=e473]: io.temporal.spring.boot.NexusServiceImpl
+                    - text: should be applied to beans, one way to do this is to annotate your Activity implementation class with
+                    - code [ref=e474]: "@Component"
+                - generic [ref=e476]:
+                  - code [ref=e478]:
+                    - generic [ref=e479]: "@Component"
+                    - generic [ref=e480]: "@ActivityImpl(workers = \"myWorker\")"
+                    - generic [ref=e481]: "public class MyActivityImpl implements MyActivity {"
+                    - generic [ref=e482]: "@Override"
+                    - generic [ref=e483]: "public String execute(String input) {"
+                    - generic [ref=e484]: return input;
+                    - generic [ref=e485]: "}"
+                    - generic [ref=e486]: "}"
+                  - button "Copy code to clipboard" [ref=e488] [cursor=pointer]:
+                    - generic [ref=e489]:
+                      - img [ref=e490]
+                      - img [ref=e492]
+                - generic [ref=e494]:
+                  - generic [ref=e495]:
+                    - img [ref=e497]
+                    - text: note
+                  - paragraph [ref=e500]: Auto-discovered Workflow implementation classes, Activity beans, and Nexus Service beans will be registered with the configured Workers if not already registered.
+                - heading "InterceptorsDirect link to Interceptors" [level=2] [ref=e501]:
+                  - text: Interceptors
+                  - link "Direct link to Interceptors" [ref=e502] [cursor=pointer]:
+                    - /url: "#interceptors"
+                    - text: "#"
+                - paragraph [ref=e503]:
+                  - text: To enable Interceptors, you can create beans by implementing the
+                  - code [ref=e504]: io.temporal.common.interceptors.WorkflowClientInterceptor
+                  - text: ","
+                  - code [ref=e505]: io.temporal.common.interceptors.ScheduleClientInterceptor
+                  - text: ", or"
+                  - code [ref=e506]: io.temporal.common.interceptors.WorkerInterceptor
+                  - text: interface. Interceptors will be registered in the order specified by the
+                  - code [ref=e507]: "@Order"
+                  - text: annotation.
+                - heading "IntegrationsDirect link to Integrations" [level=2] [ref=e508]:
+                  - text: Integrations
+                  - link "Direct link to Integrations" [ref=e509] [cursor=pointer]:
+                    - /url: "#integrations"
+                    - text: "#"
+                - paragraph [ref=e510]: The Temporal Spring Boot integration also has built in support for various tools in the Spring ecosystem, such as metrics and tracing.
+                - heading "MetricsDirect link to Metrics" [level=3] [ref=e511]:
+                  - text: Metrics
+                  - link "Direct link to Metrics" [ref=e512] [cursor=pointer]:
+                    - /url: "#metrics"
+                    - text: "#"
+                - paragraph [ref=e513]:
+                  - text: You can set up built-in Spring Boot metrics using
+                  - link "Spring Boot Actuator" [ref=e514] [cursor=pointer]:
+                    - /url: https://docs.spring.io/spring-boot/reference/actuator/metrics.html
+                  - text: . The Temporal Spring Boot integration will pick up the
+                  - code [ref=e515]: MeterRegistry
+                  - text: bean and use it to report Temporal metrics.
+                - paragraph [ref=e516]:
+                  - text: Alternatively, you can define a custom
+                  - code [ref=e517]: io.micrometer.core.instrument.MeterRegistry
+                  - text: bean in the application context.
+                - heading "TracingDirect link to Tracing" [level=3] [ref=e518]:
+                  - text: Tracing
+                  - link "Direct link to Tracing" [ref=e519] [cursor=pointer]:
+                    - /url: "#tracing"
+                    - text: "#"
+                - paragraph [ref=e520]:
+                  - text: You can set up
+                  - link "Spring Cloud Sleuth" [ref=e521] [cursor=pointer]:
+                    - /url: https://spring.io/projects/spring-cloud-sleuth
+                  - text: with an OpenTelemetry export. The Temporal Spring Boot integration will pick up the OpenTelemetry bean configured by
+                  - code [ref=e522]: spring-cloud-sleuth-otel-autoconfigure
+                  - text: and use it for Temporal traces.
+                - paragraph [ref=e523]:
+                  - text: Alternatively, you can define a custom
+                  - code [ref=e524]: io.opentelemetry.api.OpenTelemetry
+                  - text: for OpenTelemetry or
+                  - code [ref=e525]: io.opentracing.Tracer
+                  - text: for an OpenTracing bean in the application context.
+                - heading "Customization of OptionsDirect link to Customization of Options" [level=2] [ref=e526]:
+                  - text: Customization of Options
+                  - link "Direct link to Customization of Options" [ref=e527] [cursor=pointer]:
+                    - /url: "#customize-options"
+                    - text: "#"
+                - paragraph [ref=e528]:
+                  - text: To programmatically customize the various options that are created by the Spring Boot integration, you can create beans that implement the
+                  - code [ref=e529]: io.temporal.spring.boot.TemporalOptionsCustomizer<OptionsBuilderType>
+                  - text: interface. This will be called after the options in your properties files are applied.
+                - paragraph [ref=e530]:
+                  - text: Where
+                  - code [ref=e531]: OptionsType
+                  - text: "may be one of:"
+                - list [ref=e532]:
+                  - listitem [ref=e533]:
+                    - code [ref=e534]: WorkflowServiceStubsOptions.Builder
+                  - listitem [ref=e535]:
+                    - code [ref=e536]: WorkflowClientOptions.Builder
+                  - listitem [ref=e537]:
+                    - code [ref=e538]: WorkerFactoryOptions.Builder
+                  - listitem [ref=e539]:
+                    - code [ref=e540]: WorkerOptions.Builder
+                  - listitem [ref=e541]:
+                    - code [ref=e542]: WorkflowImplementationOptions.Builder
+                  - listitem [ref=e543]:
+                    - code [ref=e544]: TestEnvironmentOptions.Builder
+                - paragraph [ref=e545]:
+                  - code [ref=e546]: io.temporal.spring.boot.WorkerOptionsCustomizer
+                  - text: may be used instead of
+                  - code [ref=e547]: TemporalOptionsCustomizer<WorkerOptions.Builder>
+                  - text: if
+                  - code [ref=e548]: WorkerOptions
+                  - text: needs to be customized on the Task Queue or Worker name.
+                - paragraph [ref=e549]:
+                  - code [ref=e550]: io.temporal.spring.boot.WorkflowImplementationOptionsCustomizer
+                  - text: may be used instead of
+                  - code [ref=e551]: TemporalOptionsCustomizer<WorkflowImplementationOptions.Builder>
+                  - text: if
+                  - code [ref=e552]: WorkflowImplementationOptions
+                  - text: needs to be customized on Workflow Type.
+                - heading "TestingDirect link to Testing" [level=2] [ref=e553]:
+                  - text: Testing
+                  - link "Direct link to Testing" [ref=e554] [cursor=pointer]:
+                    - /url: "#testing"
+                    - text: "#"
+                - paragraph [ref=e555]:
+                  - text: The Temporal Spring Boot integration also has easy support for testing your Temporal code. Add the following to your
+                  - code [ref=e556]: application.yml
+                  - text: to reconfigure the client work through
+                  - code [ref=e557]: io.temporal.testing.TestWorkflowEnvironment
+                  - text: "that uses in-memory Java Test Server:"
+                - generic [ref=e559]:
+                  - code [ref=e561]:
+                    - generic [ref=e562]: "spring.temporal:"
+                    - generic [ref=e563]: "test-server:"
+                    - generic [ref=e564]: "enabled: true"
+                  - button "Copy code to clipboard" [ref=e566] [cursor=pointer]:
+                    - generic [ref=e567]:
+                      - img [ref=e568]
+                      - img [ref=e570]
+                - paragraph [ref=e572]:
+                  - text: When
+                  - code [ref=e573]: spring.temporal.test-server.enabled:true
+                  - text: is added, the
+                  - code [ref=e574]: spring.temporal.connection
+                  - text: section is ignored. This allows wiring the
+                  - code [ref=e575]: TestWorkflowEnvironment
+                  - text: "bean in your unit tests:"
+                - generic [ref=e577]:
+                  - code [ref=e579]:
+                    - generic [ref=e580]: "@SpringBootTest(classes = Test.Configuration.class)"
+                    - generic [ref=e581]: "@TestInstance(TestInstance.Lifecycle.PER_CLASS)"
+                    - generic [ref=e582]: "public class Test {"
+                    - generic [ref=e583]: "@Autowired ConfigurableApplicationContext applicationContext;"
+                    - generic [ref=e584]: "@Autowired TestWorkflowEnvironment testWorkflowEnvironment;"
+                    - generic [ref=e585]: "@Autowired WorkflowClient workflowClient;"
+                    - generic [ref=e586]: "@BeforeEach"
+                    - generic [ref=e587]: "void setUp() {"
+                    - generic [ref=e588]: applicationContext.start();
+                    - generic [ref=e589]: "}"
+                    - generic [ref=e590]: "@Test"
+                    - generic [ref=e591]: "@Timeout(value = 10)"
+                    - generic [ref=e592]: "public void test() {"
+                    - generic [ref=e593]: "# ..."
+                    - generic [ref=e594]: "}"
+                    - generic [ref=e595]: "@ComponentScan # to discover Activity beans annotated with @Component"
+                    - generic [ref=e596]: "public static class Configuration {}"
+                    - generic [ref=e597]: "}"
+                  - button "Copy code to clipboard" [ref=e599] [cursor=pointer]:
+                    - generic [ref=e600]:
+                      - img [ref=e601]
+                      - img [ref=e603]
+                - paragraph [ref=e605]:
+                  - text: See the
+                  - link "Java SDK test frameworks documentation" [ref=e606] [cursor=pointer]:
+                    - /url: /develop/java/testing-suite#test-frameworks
+                  - text: for more information about testing.
+              - generic [ref=e607]:
+                - generic [ref=e609]:
+                  - text: "Tags:"
+                  - list [ref=e610]:
+                    - listitem [ref=e611]:
+                      - link "Spring Boot" [ref=e612] [cursor=pointer]:
+                        - /url: /tags/spring-boot
+                    - listitem [ref=e613]:
+                      - link "Java SDK" [ref=e614] [cursor=pointer]:
+                        - /url: /tags/java-sdk
+                    - listitem [ref=e615]:
+                      - link "Temporal SDKs" [ref=e616] [cursor=pointer]:
+                        - /url: /tags/temporal-sd-ks
+                - paragraph [ref=e620]:
+                  - text: Help us make Temporal better. Contribute to our
+                  - link "documentation" [ref=e621] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation
+                  - text: .
+            - navigation "Docs pages" [ref=e623]:
+              - link "Previous « Side Effects" [ref=e624] [cursor=pointer]:
+                - /url: /develop/java/side-effects
+                - generic [ref=e625]: Previous
+                - generic [ref=e626]: « Side Effects
+              - link "Next PHP SDK »" [ref=e627] [cursor=pointer]:
+                - /url: /develop/php/
+                - generic [ref=e628]: Next
+                - generic [ref=e629]: PHP SDK »
+          - list [ref=e632]:
+            - listitem [ref=e633]:
+              - link "Setup Dependency" [ref=e634] [cursor=pointer]:
+                - /url: "#setup-dependency"
+            - listitem [ref=e635]:
+              - link "Connect" [ref=e636] [cursor=pointer]:
+                - /url: "#connect"
+            - listitem [ref=e637]:
+              - link "Connect to Temporal Cloud" [ref=e638] [cursor=pointer]:
+                - /url: "#connect"
+            - listitem [ref=e639]:
+              - link "Configure Workers" [ref=e640] [cursor=pointer]:
+                - /url: "#configure-workers"
+            - listitem [ref=e641]:
+              - link "Interceptors" [ref=e642] [cursor=pointer]:
+                - /url: "#interceptors"
+            - listitem [ref=e643]:
+              - link "Integrations" [ref=e644] [cursor=pointer]:
+                - /url: "#integrations"
+            - listitem [ref=e645]:
+              - link "Customization of Options" [ref=e646] [cursor=pointer]:
+                - /url: "#customize-options"
+            - listitem [ref=e647]:
+              - link "Testing" [ref=e648] [cursor=pointer]:
+                - /url: "#testing"
+    - contentinfo [ref=e649]:
+      - generic [ref=e650]:
+        - generic [ref=e651]:
+          - list [ref=e653]:
+            - listitem [ref=e654]:
+              - link "GitHub" [ref=e655] [cursor=pointer]:
+                - /url: https://github.com/temporalio
+                - text: GitHub
+                - img [ref=e656]
+            - listitem [ref=e658]:
+              - link "Twitter" [ref=e659] [cursor=pointer]:
+                - /url: https://twitter.com/temporalio
+                - text: Twitter
+                - img [ref=e660]
+            - listitem [ref=e662]:
+              - link "YouTube" [ref=e663] [cursor=pointer]:
+                - /url: https://www.youtube.com/c/Temporalio
+                - text: YouTube
+                - img [ref=e664]
+            - listitem [ref=e666]:
+              - link "About the docs" [ref=e667] [cursor=pointer]:
+                - /url: https://github.com/temporalio/documentation/blob/master/README.md
+                - text: About the docs
+                - img [ref=e668]
+          - list [ref=e671]:
+            - listitem [ref=e672]:
+              - link "Temporal Cloud" [ref=e673] [cursor=pointer]:
+                - /url: https://temporal.io/cloud
+                - text: Temporal Cloud
+                - img [ref=e674]
+            - listitem [ref=e676]:
+              - link "Meetups" [ref=e677] [cursor=pointer]:
+                - /url: https://temporal.io/community#events
+                - text: Meetups
+                - img [ref=e678]
+            - listitem [ref=e680]:
+              - link "Workshops" [ref=e681] [cursor=pointer]:
+                - /url: https://temporal.io/community#workshops
+                - text: Workshops
+                - img [ref=e682]
+            - listitem [ref=e684]:
+              - link "Support forum" [ref=e685] [cursor=pointer]:
+                - /url: https://community.temporal.io/
+                - text: Support forum
+                - img [ref=e686]
+            - listitem [ref=e688]:
+              - link "Ask an expert" [ref=e689] [cursor=pointer]:
+                - /url: https://pages.temporal.io/ask-an-expert
+                - text: Ask an expert
+                - img [ref=e690]
+          - list [ref=e693]:
+            - listitem [ref=e694]:
+              - link "Learn Temporal" [ref=e695] [cursor=pointer]:
+                - /url: https://learn.temporal.io
+                - text: Learn Temporal
+                - img [ref=e696]
+            - listitem [ref=e698]:
+              - link "Blog" [ref=e699] [cursor=pointer]:
+                - /url: https://temporal.io/blog
+                - text: Blog
+                - img [ref=e700]
+            - listitem [ref=e702]:
+              - link "Use cases" [ref=e703] [cursor=pointer]:
+                - /url: https://temporal.io/use-cases
+                - text: Use cases
+                - img [ref=e704]
+            - listitem [ref=e706]:
+              - link "Newsletter signup" [ref=e707] [cursor=pointer]:
+                - /url: https://pages.temporal.io/newsletter-subscribe
+                - text: Newsletter signup
+                - img [ref=e708]
+          - list [ref=e711]:
+            - listitem [ref=e712]:
+              - link "Security" [ref=e713] [cursor=pointer]:
+                - /url: /security
+            - listitem [ref=e714]:
+              - link "Privacy policy" [ref=e715] [cursor=pointer]:
+                - /url: https://temporal.io/global-privacy-policy
+            - listitem [ref=e716]:
+              - link "Terms of service" [ref=e717] [cursor=pointer]:
+                - /url: https://docs.temporal.io/pdf/temporal-tos-2021-07-24.pdf
+                - text: Terms of service
+                - img [ref=e718]
+            - listitem [ref=e720]:
+              - link "We're hiring" [ref=e721] [cursor=pointer]:
+                - /url: https://temporal.io/careers
+                - text: We're hiring
+                - img [ref=e722]
+        - generic [ref=e724]:
+          - link "Temporal logo" [ref=e726] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e727]
+          - generic [ref=e728]: Copyright © 2025 Temporal Technologies Inc.
+  - generic [ref=e729] [cursor=pointer]:
+    - img [ref=e731]
+    - generic: Feedback
+```

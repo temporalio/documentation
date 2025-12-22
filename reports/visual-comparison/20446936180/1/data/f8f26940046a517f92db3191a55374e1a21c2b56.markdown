@@ -1,0 +1,276 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - region "Skip to main content":
+      - link "Skip to main content" [ref=e3] [cursor=pointer]:
+        - /url: "#__docusaurus_skipToContent_fallback"
+    - navigation "Main" [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - link "Temporal logo" [ref=e7] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e9]
+          - link "Home" [ref=e10] [cursor=pointer]:
+            - /url: /
+          - link "Courses" [ref=e11] [cursor=pointer]:
+            - /url: https://learn.temporal.io/getting_started/
+            - text: Courses
+            - img [ref=e12]
+          - link "SDKs" [ref=e14] [cursor=pointer]:
+            - /url: /develop
+          - link "AI Cookbook" [ref=e15] [cursor=pointer]:
+            - /url: /ai-cookbook
+          - link "Code Exchange" [ref=e16] [cursor=pointer]:
+            - /url: https://temporal.io/code-exchange
+            - text: Code Exchange
+            - img [ref=e17]
+          - link "Temporal Cloud" [ref=e19] [cursor=pointer]:
+            - /url: /cloud
+        - generic [ref=e20]:
+          - button "Ask AI" [ref=e21] [cursor=pointer]:
+            - img [ref=e22]
+            - generic [ref=e26]: Ask AI
+          - button "Switch between dark and light mode (currently system mode)" [ref=e28] [cursor=pointer]:
+            - img [ref=e29]
+          - button "Search (Ctrl+K)" [ref=e32] [cursor=pointer]:
+            - generic [ref=e33]:
+              - img [ref=e34]
+              - generic [ref=e36]: Search
+            - generic [ref=e37]:
+              - img [ref=e39]
+              - generic [ref=e41]: K
+    - main [ref=e45]:
+      - generic [ref=e46]:
+        - heading "26 docs tagged with \"Temporal Service\"" [level=1] [ref=e47]
+        - link "View all tags" [ref=e48] [cursor=pointer]:
+          - /url: /tags
+      - generic [ref=e49]:
+        - article [ref=e50]:
+          - link "Archival" [ref=e51] [cursor=pointer]:
+            - /url: /temporal-service/archival
+            - heading "Archival" [level=2] [ref=e52]
+          - paragraph [ref=e53]: Archival is a feature that automatically backs up Event Histories and Visibility records from Temporal Service persistence to a custom blob store.
+        - article [ref=e54]:
+          - link "Automated Migration" [ref=e55] [cursor=pointer]:
+            - /url: /cloud/migrate/automated
+            - heading "Automated Migration" [level=2] [ref=e56]
+          - paragraph [ref=e57]: Automated migration is designed to provide a zero-downtime, secure means of migrating to Temporal Cloud. This guide outlines the current process for transitioning workflows from a self-hosted setup to one hosted within Temporal Cloud.
+        - article [ref=e58]:
+          - link "Codec Server - Temporal Platform feature guide" [ref=e59] [cursor=pointer]:
+            - /url: /production-deployment/data-encryption
+            - heading "Codec Server - Temporal Platform feature guide" [level=2] [ref=e60]
+          - paragraph [ref=e61]: Encrypt data in Temporal Server to secure Workflow, Activity, and Worker information. Use custom Payload Codecs for encryption/decryption, set up Codec Servers for remote decoding, and ensure secure access.
+        - article [ref=e62]:
+          - link "Deploying a Temporal Service" [ref=e63] [cursor=pointer]:
+            - /url: /self-hosted-guide/deployment
+            - heading "Deploying a Temporal Service" [level=2] [ref=e64]
+          - paragraph [ref=e65]: Deploy a Temporal Service using Docker, Kubernetes, or from scratch. Requires a database such as Apache Cassandra, MySQL, or PostgreSQL. Customize setup for your infrastructure and tooling.
+        - article [ref=e66]:
+          - link "Manual Migration" [ref=e67] [cursor=pointer]:
+            - /url: /cloud/migrate/manual
+            - heading "Manual Migration" [level=2] [ref=e68]
+          - paragraph [ref=e69]: Migrating to Temporal Cloud from self-hosted Temporal Service varies by Workflow requirements. This guide covers changing Client code, Workflow migration strategies, and necessary code adjustments.
+        - article [ref=e70]:
+          - link "Monitor Temporal Platform metrics" [ref=e71] [cursor=pointer]:
+            - /url: /self-hosted-guide/monitoring
+            - heading "Monitor Temporal Platform metrics" [level=2] [ref=e72]
+          - paragraph [ref=e73]: Monitor and health check a self-hosted Temporal Platform using Prometheus, StatsD, and M3 to track Temporal Service, Client, and Worker metrics for performance and issue troubleshooting.
+        - article [ref=e74]:
+          - link "Multi-Cluster Replication" [ref=e75] [cursor=pointer]:
+            - /url: /temporal-service/multi-cluster-replication
+            - heading "Multi-Cluster Replication" [level=2] [ref=e76]
+          - paragraph [ref=e77]: Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.
+        - article [ref=e78]:
+          - link "Persistence" [ref=e79] [cursor=pointer]:
+            - /url: /temporal-service/persistence
+            - heading "Persistence" [level=2] [ref=e80]
+          - paragraph [ref=e81]: The Temporal Persistence store is a database used by the Temporal Server to persist events generated and processed in your Temporal Service and SDK.
+        - article [ref=e82]:
+          - link "Self-hosted Archival setup" [ref=e83] [cursor=pointer]:
+            - /url: /self-hosted-guide/archival
+            - heading "Self-hosted Archival setup" [level=2] [ref=e84]
+          - paragraph [ref=e85]: Archival backs up Event Histories and Visibility records from Temporal Service to a blob store, aiding compliance and debugging. Supports S3, GCloud, and local storage.
+        - article [ref=e86]:
+          - link "Self-hosted Multi-Cluster Replication" [ref=e87] [cursor=pointer]:
+            - /url: /self-hosted-guide/multi-cluster-replication
+            - heading "Self-hosted Multi-Cluster Replication" [level=2] [ref=e88]
+          - paragraph [ref=e89]: Multi-Cluster Replication in Temporal ensures asynchronous replication of Workflow Executions from active to passive Clusters for backup and state reconstruction, enabling seamless failovers.
+        - article [ref=e90]:
+          - link "Self-hosted Temporal Service defaults" [ref=e91] [cursor=pointer]:
+            - /url: /self-hosted-guide/defaults
+            - heading "Self-hosted Temporal Service defaults" [level=2] [ref=e92]
+          - paragraph [ref=e93]: Explore the Temporal Platform defaults, limits, and configurations, including Workflow Execution, Activity, Worker, and Payload size constraints. Learn about error and warning thresholds.
+        - article [ref=e94]:
+          - link "Self-hosted Temporal Service guide" [ref=e95] [cursor=pointer]:
+            - /url: /self-hosted-guide
+            - heading "Self-hosted Temporal Service guide" [level=2] [ref=e96]
+          - paragraph [ref=e97]: Discover how to self-host the open-source Temporal Service to orchestrate durable applications, or consider using Temporal Cloud for ease of use. Start with our tutorials and dev guide.
+        - article [ref=e98]:
+          - link "Self-hosted Visibility feature setup" [ref=e99] [cursor=pointer]:
+            - /url: /self-hosted-guide/visibility
+            - heading "Self-hosted Visibility feature setup" [level=2] [ref=e100]
+          - paragraph [ref=e101]: A Visibility store is essential for your Temporal Service, supporting features like batch operations and custom Search Attributes for filtering Workflow Executions. Upgrade to PostgreSQL 12, MySQL 8.0.17, or SQLite 3.31.0 with Temporal Server 1.20+ for advanced Visibility
+        - article [ref=e102]:
+          - link "Server Frontend API Reference" [ref=e103] [cursor=pointer]:
+            - /url: /self-hosted-guide/server-frontend-api-reference
+            - heading "Server Frontend API Reference" [level=2] [ref=e104]
+          - paragraph [ref=e105]: Easily interact with the Temporal Server via Client SDKs or CLI, or use the gRPC and HTTP APIs for Workflow operations. Access code examples and API docs at api-docs.temporal.io.
+        - article [ref=e106]:
+          - link "Temporal Platform production deployments" [ref=e107] [cursor=pointer]:
+            - /url: /production-deployment
+            - heading "Temporal Platform production deployments" [level=2] [ref=e108]
+          - paragraph [ref=e109]: Elevate your durable application to production with ease by deploying your code on your infrastructure, using Temporal Cloud for a fully-managed service or self-hosting it.
+        - article [ref=e110]:
+          - link "Temporal Platform security features" [ref=e111] [cursor=pointer]:
+            - /url: /self-hosted-guide/security
+            - heading "Temporal Platform security features" [level=2] [ref=e112]
+          - paragraph [ref=e113]: Discover comprehensive security features of the Temporal Platform, including secure network communication with TLS and mTLS, robust authentication, customizable authorization, and single sign-on integration to protect your data and operations.
+        - article [ref=e114]:
+          - link "Temporal Platform's production readiness checklist" [ref=e115] [cursor=pointer]:
+            - /url: /self-hosted-guide/production-checklist
+            - heading "Temporal Platform's production readiness checklist" [level=2] [ref=e116]
+          - paragraph [ref=e117]: Optimize your Temporal Service for production with scaling, metrics, load testing, and effective workflow versioning techniques. Ensure robust performance and future-proof your workflows.
+        - article [ref=e118]:
+          - link "Temporal Server" [ref=e119] [cursor=pointer]:
+            - /url: /temporal-service/temporal-server
+            - heading "Temporal Server" [level=2] [ref=e120]
+          - paragraph [ref=e121]: The Temporal Server consists of four independently scalable services - Frontend gateway, History subsystem, Matching subsystem, and Worker Service.
+        - article [ref=e122]:
+          - link "Temporal Service" [ref=e123] [cursor=pointer]:
+            - /url: /temporal-service
+            - heading "Temporal Service" [level=2] [ref=e124]
+          - paragraph [ref=e125]: This page provides a comprehensive technical overview of a Temporal Service, detailing its components and subsystems, including the Temporal Server, Frontend Service, History Service, Matching Service, and Worker Service.
+        - article [ref=e126]:
+          - link "Temporal Service configuration" [ref=e127] [cursor=pointer]:
+            - /url: /temporal-service/configuration
+            - heading "Temporal Service configuration" [level=2] [ref=e128]
+          - paragraph [ref=e129]: Temporal Service configuration is the setup and configuration details of your self-hosted Temporal Service, defined using YAML.
+        - article [ref=e130]:
+          - link "Temporal Worker Controller" [ref=e131] [cursor=pointer]:
+            - /url: /production-deployment/worker-deployments/kubernetes-controller
+            - heading "Temporal Worker Controller" [level=2] [ref=e132]
+          - paragraph [ref=e133]: Use Temporal's provided Kubernetes controller to programmatically scale your Worker deployments.
+        - article [ref=e134]:
+          - link "Temporal Worker Deployments" [ref=e135] [cursor=pointer]:
+            - /url: /production-deployment/worker-deployments
+            - heading "Temporal Worker Deployments" [level=2] [ref=e136]
+          - paragraph [ref=e137]: Programmatically scale and deploy your Temporal Workers into common production environments using our provided tooling and best practices.
+        - article [ref=e138]:
+          - link "Temporal's production deployment features" [ref=e139] [cursor=pointer]:
+            - /url: /evaluate/development-production-features/cloud-vs-self-hosted-features
+            - heading "Temporal's production deployment features" [level=2] [ref=e140]
+          - paragraph [ref=e141]: Transform your Temporal apps into production-ready systems by deploying Workflows, Activities, and Workers with either our managed Temporal Cloud or self-hosted service solutions.
+        - article [ref=e142]:
+          - link "Upgrade the Temporal Server" [ref=e143] [cursor=pointer]:
+            - /url: /self-hosted-guide/upgrade-server
+            - heading "Upgrade the Temporal Server" [level=2] [ref=e144]
+          - paragraph [ref=e145]: Upgrade your Temporal Server effectively. Follow our step-by-step guide for seamless upgrades, ensuring data compatibility and schema alignment.
+        - article [ref=e146]:
+          - link "Visibility" [ref=e147] [cursor=pointer]:
+            - /url: /temporal-service/visibility
+            - heading "Visibility" [level=2] [ref=e148]
+          - paragraph [ref=e149]: The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view, filter, and search for Workflow Executions that currently exist within a Temporal Service.
+        - article [ref=e150]:
+          - link "Worker Versioning" [ref=e151] [cursor=pointer]:
+            - /url: /production-deployment/worker-deployments/worker-versioning
+            - heading "Worker Versioning" [level=2] [ref=e152]
+          - paragraph [ref=e153]: Use Worker Versioning to pin Workflow revisions to individual Worker Deployment Versions, avoiding the need for patching to support multiple code paths.
+    - contentinfo [ref=e154]:
+      - generic [ref=e155]:
+        - generic [ref=e156]:
+          - list [ref=e158]:
+            - listitem [ref=e159]:
+              - link "GitHub" [ref=e160] [cursor=pointer]:
+                - /url: https://github.com/temporalio
+                - text: GitHub
+                - img [ref=e161]
+            - listitem [ref=e163]:
+              - link "Twitter" [ref=e164] [cursor=pointer]:
+                - /url: https://twitter.com/temporalio
+                - text: Twitter
+                - img [ref=e165]
+            - listitem [ref=e167]:
+              - link "YouTube" [ref=e168] [cursor=pointer]:
+                - /url: https://www.youtube.com/c/Temporalio
+                - text: YouTube
+                - img [ref=e169]
+            - listitem [ref=e171]:
+              - link "About the docs" [ref=e172] [cursor=pointer]:
+                - /url: https://github.com/temporalio/documentation/blob/master/README.md
+                - text: About the docs
+                - img [ref=e173]
+          - list [ref=e176]:
+            - listitem [ref=e177]:
+              - link "Temporal Cloud" [ref=e178] [cursor=pointer]:
+                - /url: https://temporal.io/cloud
+                - text: Temporal Cloud
+                - img [ref=e179]
+            - listitem [ref=e181]:
+              - link "Meetups" [ref=e182] [cursor=pointer]:
+                - /url: https://temporal.io/community#events
+                - text: Meetups
+                - img [ref=e183]
+            - listitem [ref=e185]:
+              - link "Workshops" [ref=e186] [cursor=pointer]:
+                - /url: https://temporal.io/community#workshops
+                - text: Workshops
+                - img [ref=e187]
+            - listitem [ref=e189]:
+              - link "Support forum" [ref=e190] [cursor=pointer]:
+                - /url: https://community.temporal.io/
+                - text: Support forum
+                - img [ref=e191]
+            - listitem [ref=e193]:
+              - link "Ask an expert" [ref=e194] [cursor=pointer]:
+                - /url: https://pages.temporal.io/ask-an-expert
+                - text: Ask an expert
+                - img [ref=e195]
+          - list [ref=e198]:
+            - listitem [ref=e199]:
+              - link "Learn Temporal" [ref=e200] [cursor=pointer]:
+                - /url: https://learn.temporal.io
+                - text: Learn Temporal
+                - img [ref=e201]
+            - listitem [ref=e203]:
+              - link "Blog" [ref=e204] [cursor=pointer]:
+                - /url: https://temporal.io/blog
+                - text: Blog
+                - img [ref=e205]
+            - listitem [ref=e207]:
+              - link "Use cases" [ref=e208] [cursor=pointer]:
+                - /url: https://temporal.io/use-cases
+                - text: Use cases
+                - img [ref=e209]
+            - listitem [ref=e211]:
+              - link "Newsletter signup" [ref=e212] [cursor=pointer]:
+                - /url: https://pages.temporal.io/newsletter-subscribe
+                - text: Newsletter signup
+                - img [ref=e213]
+          - list [ref=e216]:
+            - listitem [ref=e217]:
+              - link "Security" [ref=e218] [cursor=pointer]:
+                - /url: /security
+            - listitem [ref=e219]:
+              - link "Privacy policy" [ref=e220] [cursor=pointer]:
+                - /url: https://temporal.io/global-privacy-policy
+            - listitem [ref=e221]:
+              - link "Terms of service" [ref=e222] [cursor=pointer]:
+                - /url: https://docs.temporal.io/pdf/temporal-tos-2021-07-24.pdf
+                - text: Terms of service
+                - img [ref=e223]
+            - listitem [ref=e225]:
+              - link "We're hiring" [ref=e226] [cursor=pointer]:
+                - /url: https://temporal.io/careers
+                - text: We're hiring
+                - img [ref=e227]
+        - generic [ref=e229]:
+          - link "Temporal logo" [ref=e231] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e232]
+          - generic [ref=e233]: Copyright © 2025 Temporal Technologies Inc.
+  - generic [ref=e234] [cursor=pointer]:
+    - img [ref=e236]
+    - generic: Feedback
+```

@@ -1,0 +1,945 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - region "Skip to main content":
+      - link "Skip to main content" [ref=e3] [cursor=pointer]:
+        - /url: "#__docusaurus_skipToContent_fallback"
+    - navigation "Main" [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - link "Temporal logo" [ref=e7] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e9]
+          - link "Home" [ref=e10] [cursor=pointer]:
+            - /url: /
+          - link "Courses" [ref=e11] [cursor=pointer]:
+            - /url: https://learn.temporal.io/getting_started/
+            - text: Courses
+            - img [ref=e12]
+          - link "SDKs" [ref=e14] [cursor=pointer]:
+            - /url: /develop
+          - link "AI Cookbook" [ref=e15] [cursor=pointer]:
+            - /url: /ai-cookbook
+          - link "Code Exchange" [ref=e16] [cursor=pointer]:
+            - /url: https://temporal.io/code-exchange
+            - text: Code Exchange
+            - img [ref=e17]
+          - link "Temporal Cloud" [ref=e19] [cursor=pointer]:
+            - /url: /cloud
+        - generic [ref=e20]:
+          - button "Ask AI" [ref=e21] [cursor=pointer]:
+            - img [ref=e22]
+            - generic [ref=e26]: Ask AI
+          - button "Switch between dark and light mode (currently system mode)" [ref=e28] [cursor=pointer]:
+            - img [ref=e29]
+          - button "Search (Ctrl+K)" [ref=e32] [cursor=pointer]:
+            - generic [ref=e33]:
+              - img [ref=e34]
+              - generic [ref=e36]: Search
+            - generic [ref=e37]:
+              - img [ref=e39]
+              - generic [ref=e41]: K
+    - generic [ref=e44]:
+      - complementary [ref=e45]:
+        - generic [ref=e47]:
+          - navigation "Docs sidebar" [ref=e48]:
+            - list [ref=e49]:
+              - listitem [ref=e50]:
+                - link "Documentation Home" [ref=e51] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=e52]:
+                - link "Quickstarts" [ref=e53] [cursor=pointer]:
+                  - /url: /quickstarts
+              - listitem [ref=e54]:
+                - generic [ref=e55]:
+                  - link "Evaluate" [ref=e56] [cursor=pointer]:
+                    - /url: /evaluate/
+                  - button "Collapse sidebar category 'Evaluate'" [expanded] [ref=e57] [cursor=pointer]
+                - list [ref=e58]:
+                  - listitem [ref=e59]:
+                    - link "Why Temporal" [ref=e60] [cursor=pointer]:
+                      - /url: /evaluate/why-temporal
+                  - listitem [ref=e61]:
+                    - link "Understanding Temporal" [ref=e62] [cursor=pointer]:
+                      - /url: /evaluate/understanding-temporal
+                  - listitem [ref=e63]:
+                    - generic [ref=e64]:
+                      - link "Features" [ref=e65] [cursor=pointer]:
+                        - /url: /evaluate/development-production-features/
+                      - button "Expand sidebar category 'Features'" [ref=e66] [cursor=pointer]
+                  - listitem [ref=e67]:
+                    - generic [ref=e68]:
+                      - link "Temporal Cloud" [ref=e69] [cursor=pointer]:
+                        - /url: /cloud/introduction
+                      - button "Expand sidebar category 'Temporal Cloud'" [ref=e70] [cursor=pointer]
+                  - listitem [ref=e71]:
+                    - link "Security" [ref=e72] [cursor=pointer]:
+                      - /url: /security
+                  - listitem [ref=e73]:
+                    - link "Use Cases" [ref=e74] [cursor=pointer]:
+                      - /url: /evaluate/use-cases-design-patterns
+              - listitem [ref=e75]:
+                - generic [ref=e76]:
+                  - link "Develop" [ref=e77] [cursor=pointer]:
+                    - /url: /develop/
+                  - button "Collapse sidebar category 'Develop'" [expanded] [ref=e78] [cursor=pointer]
+                - list [ref=e79]:
+                  - listitem [ref=e80]:
+                    - generic [ref=e81]:
+                      - link "Go SDK" [ref=e82] [cursor=pointer]:
+                        - /url: /develop/go/
+                      - button "Expand sidebar category 'Go SDK'" [ref=e83] [cursor=pointer]
+                  - listitem [ref=e84]:
+                    - generic [ref=e85]:
+                      - link "Java SDK" [ref=e86] [cursor=pointer]:
+                        - /url: /develop/java/
+                      - button "Expand sidebar category 'Java SDK'" [ref=e87] [cursor=pointer]
+                  - listitem [ref=e88]:
+                    - generic [ref=e89]:
+                      - link "PHP SDK" [ref=e90] [cursor=pointer]:
+                        - /url: /develop/php/
+                      - button "Expand sidebar category 'PHP SDK'" [ref=e91] [cursor=pointer]
+                  - listitem [ref=e92]:
+                    - generic [ref=e93]:
+                      - link "Python SDK" [ref=e94] [cursor=pointer]:
+                        - /url: /develop/python/
+                      - button "Collapse sidebar category 'Python SDK'" [expanded] [ref=e95] [cursor=pointer]
+                    - list [ref=e96]:
+                      - listitem [ref=e97]:
+                        - link "Quickstart - Setup" [ref=e98] [cursor=pointer]:
+                          - /url: /develop/python/set-up-your-local-python
+                      - listitem [ref=e99]:
+                        - link "Core application" [ref=e100] [cursor=pointer]:
+                          - /url: /develop/python/core-application
+                      - listitem [ref=e101]:
+                        - link "Temporal Client" [ref=e102] [cursor=pointer]:
+                          - /url: /develop/python/temporal-client
+                      - listitem [ref=e103]:
+                        - link "Python SDK sandbox" [ref=e104] [cursor=pointer]:
+                          - /url: /develop/python/python-sdk-sandbox
+                      - listitem [ref=e105]:
+                        - link "Python SDK sync vs async" [ref=e106] [cursor=pointer]:
+                          - /url: /develop/python/python-sdk-sync-vs-async
+                      - listitem [ref=e107]:
+                        - link "Testing" [ref=e108] [cursor=pointer]:
+                          - /url: /develop/python/testing-suite
+                      - listitem [ref=e109]:
+                        - link "Failure detection" [ref=e110] [cursor=pointer]:
+                          - /url: /develop/python/failure-detection
+                      - listitem [ref=e111]:
+                        - link "Messages" [ref=e112] [cursor=pointer]:
+                          - /url: /develop/python/message-passing
+                      - listitem [ref=e113]:
+                        - link "Interrupt a Workflow" [ref=e114] [cursor=pointer]:
+                          - /url: /develop/python/cancellation
+                      - listitem [ref=e115]:
+                        - link "Asynchronous Activity Completion" [ref=e116] [cursor=pointer]:
+                          - /url: /develop/python/asynchronous-activity-completion
+                      - listitem [ref=e117]:
+                        - link "Versioning" [ref=e118] [cursor=pointer]:
+                          - /url: /develop/python/versioning
+                      - listitem [ref=e119]:
+                        - link "Observability" [ref=e120] [cursor=pointer]:
+                          - /url: /develop/python/observability
+                      - listitem [ref=e121]:
+                        - link "Benign exceptions" [ref=e122] [cursor=pointer]:
+                          - /url: /develop/python/benign-exceptions
+                      - listitem [ref=e123]:
+                        - link "Enriching the UI" [ref=e124] [cursor=pointer]:
+                          - /url: /develop/python/enriching-ui
+                      - listitem [ref=e125]:
+                        - link "Debugging" [ref=e126] [cursor=pointer]:
+                          - /url: /develop/python/debugging
+                      - listitem [ref=e127]:
+                        - link "Schedules" [ref=e128] [cursor=pointer]:
+                          - /url: /develop/python/schedules
+                      - listitem [ref=e129]:
+                        - link "Converters and encryption" [ref=e130] [cursor=pointer]:
+                          - /url: /develop/python/converters-and-encryption
+                      - listitem [ref=e131]:
+                        - link "Durable Timers" [ref=e132] [cursor=pointer]:
+                          - /url: /develop/python/timers
+                      - listitem [ref=e133]:
+                        - link "Temporal Nexus" [ref=e134] [cursor=pointer]:
+                          - /url: /develop/python/nexus
+                      - listitem [ref=e135]:
+                        - link "Child Workflows" [ref=e136] [cursor=pointer]:
+                          - /url: /develop/python/child-workflows
+                      - listitem [ref=e137]:
+                        - link "Continue-As-New" [ref=e138] [cursor=pointer]:
+                          - /url: /develop/python/continue-as-new
+                      - listitem [ref=e139]:
+                        - link "Interceptors" [ref=e140] [cursor=pointer]:
+                          - /url: /develop/python/interceptors
+                  - listitem [ref=e141]:
+                    - generic [ref=e142]:
+                      - link "TypeScript SDK" [ref=e143] [cursor=pointer]:
+                        - /url: /develop/typescript/
+                      - button "Expand sidebar category 'TypeScript SDK'" [ref=e144] [cursor=pointer]
+                  - listitem [ref=e145]:
+                    - generic [ref=e146]:
+                      - link ".NET SDK" [ref=e147] [cursor=pointer]:
+                        - /url: /develop/dotnet/
+                      - button "Expand sidebar category '.NET SDK'" [ref=e148] [cursor=pointer]
+                  - listitem [ref=e149]:
+                    - generic [ref=e150]:
+                      - link "Ruby SDK" [ref=e151] [cursor=pointer]:
+                        - /url: /develop/ruby/
+                      - button "Expand sidebar category 'Ruby SDK'" [ref=e152] [cursor=pointer]
+                  - listitem [ref=e153]:
+                    - link "Environment configuration" [ref=e154] [cursor=pointer]:
+                      - /url: /develop/environment-configuration
+                  - listitem [ref=e155]:
+                    - link "Activity retry simulator" [ref=e156] [cursor=pointer]:
+                      - /url: /develop/activity-retry-simulator
+                  - listitem [ref=e157]:
+                    - link "Worker performance" [ref=e158] [cursor=pointer]:
+                      - /url: /develop/worker-performance
+                  - listitem [ref=e159]:
+                    - link "Safe deployments" [ref=e160] [cursor=pointer]:
+                      - /url: /develop/safe-deployments
+                  - listitem [ref=e161]:
+                    - link "Plugins guide" [ref=e162] [cursor=pointer]:
+                      - /url: /develop/plugins-guide
+              - listitem [ref=e163]:
+                - generic [ref=e164]:
+                  - link "Deploy to production" [ref=e165] [cursor=pointer]:
+                    - /url: /production-deployment
+                  - button "Collapse sidebar category 'Deploy to production'" [expanded] [ref=e166] [cursor=pointer]
+                - list [ref=e167]:
+                  - listitem [ref=e168]:
+                    - generic [ref=e169]:
+                      - link "Temporal Cloud" [ref=e170] [cursor=pointer]:
+                        - /url: /cloud
+                      - button "Expand sidebar category 'Temporal Cloud'" [ref=e171] [cursor=pointer]
+                  - listitem [ref=e172]:
+                    - link "Codecs and Encryption" [ref=e173] [cursor=pointer]:
+                      - /url: /production-deployment/data-encryption
+                  - listitem [ref=e174]:
+                    - generic [ref=e175]:
+                      - link "Self-host" [ref=e176] [cursor=pointer]:
+                        - /url: /self-hosted-guide
+                      - button "Expand sidebar category 'Self-host'" [ref=e177] [cursor=pointer]
+                  - listitem [ref=e178]:
+                    - generic [ref=e179]:
+                      - link "Worker deployments" [ref=e180] [cursor=pointer]:
+                        - /url: /production-deployment/worker-deployments
+                      - button "Expand sidebar category 'Worker deployments'" [ref=e181] [cursor=pointer]
+              - listitem [ref=e182]:
+                - generic [ref=e183]:
+                  - link "CLI (temporal)" [ref=e184] [cursor=pointer]:
+                    - /url: /cli
+                  - button "Expand sidebar category 'CLI (temporal)'" [ref=e185] [cursor=pointer]
+              - listitem [ref=e186]:
+                - generic [ref=e187]:
+                  - link "References" [ref=e188] [cursor=pointer]:
+                    - /url: /references/
+                  - button "Expand sidebar category 'References'" [ref=e189] [cursor=pointer]
+              - listitem [ref=e190]:
+                - generic [ref=e191]:
+                  - link "Troubleshooting" [ref=e192] [cursor=pointer]:
+                    - /url: /troubleshooting/
+                  - button "Expand sidebar category 'Troubleshooting'" [ref=e193] [cursor=pointer]
+              - listitem [ref=e194]:
+                - generic [ref=e195]:
+                  - link "Best Practices" [ref=e196] [cursor=pointer]:
+                    - /url: /best-practices/
+                  - button "Expand sidebar category 'Best Practices'" [ref=e197] [cursor=pointer]
+              - listitem [ref=e198]:
+                - generic [ref=e199]:
+                  - link "Encyclopedia" [ref=e200] [cursor=pointer]:
+                    - /url: /encyclopedia/
+                  - button "Expand sidebar category 'Encyclopedia'" [ref=e201] [cursor=pointer]
+              - listitem [ref=e202]:
+                - link "Glossary" [ref=e203] [cursor=pointer]:
+                  - /url: /glossary
+          - button "Collapse sidebar" [ref=e204] [cursor=pointer]:
+            - img [ref=e205]
+      - main [ref=e209]:
+        - generic [ref=e211]:
+          - generic [ref=e213]:
+            - article [ref=e214]:
+              - navigation "Breadcrumbs" [ref=e215]:
+                - list [ref=e216]:
+                  - listitem [ref=e217]:
+                    - link "Home page" [ref=e218] [cursor=pointer]:
+                      - /url: /
+                      - img [ref=e219]
+                  - listitem [ref=e221]:
+                    - link "Develop" [ref=e222] [cursor=pointer]:
+                      - /url: /develop/
+                  - listitem [ref=e223]:
+                    - link "Python SDK" [ref=e224] [cursor=pointer]:
+                      - /url: /develop/python/
+                  - listitem [ref=e225]:
+                    - generic [ref=e226]: Temporal Client
+              - generic [ref=e227]:
+                - heading "Temporal Client - Python SDK" [level=1] [ref=e229]
+                - paragraph [ref=e230]:
+                  - text: A
+                  - link "Temporal Client" [ref=e231] [cursor=pointer]:
+                    - /url: /encyclopedia/temporal-sdks#temporal-client
+                  - text: enables you to communicate with the Temporal Service. Communication with a Temporal Service lets you perform actions such as starting Workflow Executions, sending Signals and Queries to Workflow Executions, getting Workflow results, and more.
+                - paragraph [ref=e232]: "This page shows you how to do the following using the Python SDK with the Temporal Client:"
+                - list [ref=e233]:
+                  - listitem [ref=e234]:
+                    - link "Connect to a local development Temporal Service" [ref=e235] [cursor=pointer]:
+                      - /url: "#connect-to-development-service"
+                  - listitem [ref=e236]:
+                    - link "Connect to Temporal Cloud" [ref=e237] [cursor=pointer]:
+                      - /url: "#connect-to-temporal-cloud"
+                  - listitem [ref=e238]:
+                    - link "Start a Workflow Execution" [ref=e239] [cursor=pointer]:
+                      - /url: "#start-workflow-execution"
+                  - listitem [ref=e240]:
+                    - link "Get Workflow results" [ref=e241] [cursor=pointer]:
+                      - /url: "#get-workflow-results"
+                - paragraph [ref=e242]: A Temporal Client cannot be initialized and used inside a Workflow. However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with a Temporal Service.
+                - heading "Connect to development Temporal ServiceDirect link to Connect to development Temporal Service" [level=2] [ref=e243]:
+                  - text: Connect to development Temporal Service
+                  - link "Direct link to Connect to development Temporal Service" [ref=e244] [cursor=pointer]:
+                    - /url: "#connect-to-development-service"
+                    - text: "#"
+                - paragraph [ref=e245]:
+                  - text: Use
+                  - link "Client.connect" [ref=e246] [cursor=pointer]:
+                    - /url: https://python.temporal.io/temporalio.client.Client.html#connect
+                    - code [ref=e247]: Client.connect
+                  - text: to create a client. Connection options include the Temporal Server address, Namespace, and (optionally) TLS configuration. You can provide these options directly in code, load them from
+                  - strong [ref=e248]: environment variables
+                  - text: ", or a"
+                  - strong [ref=e249]: TOML configuration file
+                  - text: using the
+                  - link "envconfig" [ref=e250] [cursor=pointer]:
+                    - /url: https://python.temporal.io/temporalio.envconfig.html
+                    - code [ref=e251]: envconfig
+                  - text: helpers. We recommend environment variables or a configuration file for secure, repeatable configuration.
+                - paragraph [ref=e252]:
+                  - text: When you’re running a Temporal Service locally (such as with the
+                  - link "Temporal CLI dev server" [ref=e253] [cursor=pointer]:
+                    - /url: https://docs.temporal.io/cli/server#start-dev
+                  - text: ), the required options are minimal. If you don't specify a host/port, most connections default to
+                  - code [ref=e254]: 127.0.0.1:7233
+                  - text: and the
+                  - code [ref=e255]: default
+                  - text: Namespace.
+                - generic [ref=e256]:
+                  - tablist [ref=e257]:
+                    - tab "Configuration File" [selected] [ref=e258] [cursor=pointer]
+                    - tab "Environment Variables" [ref=e259] [cursor=pointer]
+                    - tab "Code" [ref=e260] [cursor=pointer]
+                  - tabpanel [ref=e262]:
+                    - paragraph [ref=e263]:
+                      - text: You can use a TOML configuration file to set connection options for the Temporal Client. The configuration file lets you configure multiple profiles, each with its own set of connection options. You can then specify which profile to use when creating the Temporal Client. You can use the environment variable
+                      - code [ref=e264]: TEMPORAL_CONFIG_FILE
+                      - text: to specify the location of the TOML file or provide the path to the file directly in code. If you don't provide the configuration file path, the SDK looks for it at the path
+                      - code [ref=e265]: ~/.config/temporalio/temporal.toml
+                      - text: or the equivalent on your OS. Refer to
+                      - link "Environment Configuration" [ref=e266] [cursor=pointer]:
+                        - /url: /develop/environment-configuration#configuration-methods
+                      - text: for more details about configuration files and profiles.
+                    - generic [ref=e267]:
+                      - generic [ref=e268]:
+                        - img [ref=e270]
+                        - text: info
+                      - paragraph [ref=e273]: The connection options set in configuration files have lower precedence than environment variables. This means that if you set the same option in both the configuration file and as an environment variable, the environment variable value overrides the option set in the configuration file.
+                    - paragraph [ref=e274]:
+                      - text: "For example, the following TOML configuration file defines two profiles:"
+                      - code [ref=e275]: default
+                      - text: and
+                      - code [ref=e276]: prod
+                      - text: . Each profile has its own set of connection options.
+                    - generic [ref=e277]:
+                      - generic [ref=e278]: config.toml
+                      - generic [ref=e279]:
+                        - code [ref=e281]:
+                          - generic [ref=e282]: "# Default profile for local development"
+                          - generic [ref=e283]: "[profile.default]"
+                          - generic [ref=e284]: address = "localhost:7233"
+                          - generic [ref=e285]: namespace = "default"
+                          - generic [ref=e286]: "# Optional: Add custom gRPC headers"
+                          - generic [ref=e287]: "[profile.default.grpc_meta]"
+                          - generic [ref=e288]: my-custom-header = "development-value"
+                          - generic [ref=e289]: trace-id = "dev-trace-123"
+                          - generic [ref=e290]: "# Production profile for Temporal Cloud"
+                          - generic [ref=e291]: "[profile.prod]"
+                          - generic [ref=e292]: address = "your-namespace.a1b2c.tmprl.cloud:7233"
+                          - generic [ref=e293]: namespace = "your-namespace"
+                          - generic [ref=e294]: api_key = "your-api-key-here"
+                          - generic [ref=e295]: "# TLS configuration for production"
+                          - generic [ref=e296]: "[profile.prod.tls]"
+                          - generic [ref=e297]: "# TLS auto-enables when TLS config or an API key is present"
+                          - generic [ref=e298]: "# disabled = false"
+                          - generic [ref=e299]: client_cert_path = "/etc/temporal/certs/client.pem"
+                          - generic [ref=e300]: client_key_path = "/etc/temporal/certs/client.key"
+                          - generic [ref=e301]: "# Custom headers for production"
+                          - generic [ref=e302]: "[profile.prod.grpc_meta]"
+                          - generic [ref=e303]: environment = "production"
+                          - generic [ref=e304]: service-version = "v1.2.3"
+                        - button "Copy code to clipboard" [ref=e306] [cursor=pointer]:
+                          - generic [ref=e307]:
+                            - img [ref=e308]
+                            - img [ref=e310]
+                    - paragraph [ref=e312]:
+                      - text: You can create a Temporal Client using a profile from the configuration file using the
+                      - code [ref=e313]: ClientConfig.load_client_connect_config
+                      - text: function as follows. In this example, you load the
+                      - code [ref=e314]: default
+                      - text: "profile for local development:"
+                    - generic [ref=e316]:
+                      - code [ref=e318]:
+                        - generic [ref=e319]: import asyncio
+                        - generic [ref=e320]: from pathlib import Path
+                        - generic [ref=e321]: from temporalio.client import Client
+                        - generic [ref=e322]: from temporalio.envconfig import ClientConfig
+                        - generic [ref=e323]: "async def main():"
+                        - generic [ref=e324]: "\"\"\""
+                        - generic [ref=e325]: Loads the default profile from the config.toml file in this directory.
+                        - generic [ref=e326]: "\"\"\""
+                        - generic [ref=e327]: print("--- Loading default profile from config.toml ---")
+                        - generic [ref=e328]: "# For this sample to be self-contained, we explicitly provide the path to"
+                        - generic [ref=e329]: "# the config.toml file included in this directory."
+                        - generic [ref=e330]: "# By default though, the config.toml file will be loaded from"
+                        - generic [ref=e331]: "# ~/.config/temporalio/temporal.toml (or the equivalent standard config directory on your OS)."
+                        - generic [ref=e332]: config_file = Path(__file__).parent / "config.toml"
+                        - generic [ref=e333]: "# load_client_connect_config is a helper that loads a profile and prepares"
+                        - generic [ref=e334]: "# the config dictionary for Client.connect. By default, it loads the"
+                        - generic [ref=e335]: "# \"default\" profile."
+                        - generic [ref=e336]: connect_config = ClientConfig.load_client_connect_config(
+                        - generic [ref=e337]: config_file=str(config_file)
+                        - generic [ref=e338]: )
+                        - generic [ref=e339]: "print(f\"Loaded 'default' profile from {config_file}.\")"
+                        - generic [ref=e340]: "print(f\" Address: {connect_config.get('target_host')}\")"
+                        - generic [ref=e341]: "print(f\" Namespace: {connect_config.get('namespace')}\")"
+                        - generic [ref=e342]: "print(f\" gRPC Metadata: {connect_config.get('rpc_metadata')}\")"
+                        - generic [ref=e343]: print("\nAttempting to connect to client...")
+                        - generic [ref=e344]: "try:"
+                        - generic [ref=e345]: "await Client.connect(**connect_config) # type: ignore"
+                        - generic [ref=e346]: print("✅ Client connected successfully!")
+                        - generic [ref=e347]: "except Exception as e:"
+                        - generic [ref=e348]: "print(f\"❌ Failed to connect: {e}\")"
+                        - generic [ref=e349]: "if __name__ == \"__main__\":"
+                        - generic [ref=e350]: asyncio.run(main())
+                      - button "Copy code to clipboard" [ref=e352] [cursor=pointer]:
+                        - generic [ref=e353]:
+                          - img [ref=e354]
+                          - img [ref=e356]
+                - heading "Connect to Temporal CloudDirect link to Connect to Temporal Cloud" [level=2] [ref=e358]:
+                  - text: Connect to Temporal Cloud
+                  - link "Direct link to Connect to Temporal Cloud" [ref=e359] [cursor=pointer]:
+                    - /url: "#connect-to-temporal-cloud"
+                    - text: "#"
+                - paragraph [ref=e360]:
+                  - text: You can connect to Temporal Cloud using either an
+                  - link "API key" [ref=e361] [cursor=pointer]:
+                    - /url: /cloud/api-keys
+                  - text: "or through mTLS. Connection to Temporal Cloud or any secured Temporal Service requires additional connection options compared to connecting to an unsecured local development instance:"
+                - list [ref=e362]:
+                  - listitem [ref=e363]:
+                    - text: Your credentials for authentication.
+                    - list [ref=e364]:
+                      - listitem [ref=e365]: If you are using an API key, provide the API key value.
+                      - listitem [ref=e366]: If you are using mTLS, provide the mTLS CA certificate and mTLS private key.
+                  - listitem [ref=e367]:
+                    - text: Your
+                    - emphasis [ref=e368]: Namespace and Account ID
+                    - text: combination, which follows the format
+                    - code [ref=e369]: <namespace_id>.<account_id>
+                    - text: .
+                  - listitem [ref=e370]:
+                    - text: The
+                    - emphasis [ref=e371]: endpoint
+                    - text: "may vary. The most common endpoint used is the gRPC regional endpoint, which follows the format:"
+                    - code [ref=e372]: <region>.<cloud_provider>.api.temporal.io:7233
+                    - text: .
+                  - listitem [ref=e373]:
+                    - text: "For Namespaces with High Availability features with API key authentication enabled, use the gRPC Namespace endpoint:"
+                    - code [ref=e374]: <namespace>.<account>.tmprl.cloud:7233
+                    - text: . This allows automated failover without needing to switch endpoints.
+                - paragraph [ref=e375]: "You can find the Namespace and Account ID, as well as the endpoint, on the Namespaces tab:"
+                - paragraph [ref=e376]:
+                  - img "The Namespace and Account ID combination on the left, and the regional endpoint on the right" [ref=e377]
+                - paragraph [ref=e378]: You can provide these connection options using environment variables, a configuration file, or directly in code.
+                - generic [ref=e379]:
+                  - tablist [ref=e380]:
+                    - tab "Configuration File" [selected] [ref=e381] [cursor=pointer]
+                    - tab "Environment Variables" [ref=e382] [cursor=pointer]
+                    - tab "Code" [ref=e383] [cursor=pointer]
+                  - tabpanel [ref=e385]:
+                    - paragraph [ref=e386]:
+                      - text: You can use a TOML configuration file to set connection options for the Temporal Client. The configuration file lets you configure multiple profiles, each with its own set of connection options. You can then specify which profile to use when creating the Temporal Client. For a list of all available configuration options you can set in the TOML file, refer to
+                      - link "Environment Configuration" [ref=e387] [cursor=pointer]:
+                        - /url: /references/client-environment-configuration
+                      - text: .
+                    - paragraph [ref=e388]:
+                      - text: You can use the environment variable
+                      - code [ref=e389]: TEMPORAL_CONFIG_FILE
+                      - text: to specify the location of the TOML file or provide the path to the file directly in code. If you don't provide the path to the configuration file, the SDK looks for it at the default path
+                      - code [ref=e390]: ~/.config/temporalio/temporal.toml
+                      - text: .
+                    - generic [ref=e391]:
+                      - generic [ref=e392]:
+                        - img [ref=e394]
+                        - text: info
+                      - paragraph [ref=e397]: The connection options set in configuration files have lower precedence than environment variables. This means that if you set the same option in both the configuration file and as an environment variable, the environment variable value overrides the option set in the configuration file.
+                    - paragraph [ref=e398]:
+                      - text: For example, the following TOML configuration file defines a
+                      - code [ref=e399]: staing
+                      - text: "profile with the necessary connection options to connect to Temporal Cloud via an API key:"
+                    - paragraph [ref=e400]:
+                      - text: For example, the following TOML configuration file defines a
+                      - code [ref=e401]: staging
+                      - text: "profile with the necessary connection options to connect to Temporal Cloud via an API key:"
+                    - generic [ref=e403]:
+                      - code [ref=e405]:
+                        - generic [ref=e406]: "# Cloud profile for Temporal Cloud"
+                        - generic [ref=e407]: "[profile.staging]"
+                        - generic [ref=e408]: address = "your-namespace.a1b2c.tmprl.cloud:7233"
+                        - generic [ref=e409]: namespace = "your-namespace"
+                        - generic [ref=e410]: api_key = "your-api-key-here"
+                      - button "Copy code to clipboard" [ref=e412] [cursor=pointer]:
+                        - generic [ref=e413]:
+                          - img [ref=e414]
+                          - img [ref=e416]
+                    - paragraph [ref=e418]:
+                      - text: If you want to use mTLS authentication instead of an API key, replace the
+                      - code [ref=e419]: api_key
+                      - text: "field with your mTLS certificate and private key:"
+                    - generic [ref=e421]:
+                      - code [ref=e423]:
+                        - generic [ref=e424]: "# Cloud profile for Temporal Cloud"
+                        - generic [ref=e425]: "[profile.staging]"
+                        - generic [ref=e426]: address = "your-namespace.a1b2c.tmprl.cloud:7233"
+                        - generic [ref=e427]: namespace = "your-namespace"
+                        - generic [ref=e428]: tls_client_cert_data = "your-tls-client-cert-data"
+                        - generic [ref=e429]: tls_client_key_path = "your-tls-client-key-path"
+                      - button "Copy code to clipboard" [ref=e431] [cursor=pointer]:
+                        - generic [ref=e432]:
+                          - img [ref=e433]
+                          - img [ref=e435]
+                    - paragraph [ref=e437]:
+                      - text: With the connections options defined in the configuration file, use the
+                      - link "connect method" [ref=e438] [cursor=pointer]:
+                        - /url: https://python.temporal.io/temporalio.client.Client.html#connect
+                        - code [ref=e439]: connect
+                        - text: method
+                      - text: on the
+                      - code [ref=e440]: Client
+                      - text: class to create a Temporal Client using the
+                      - code [ref=e441]: staging
+                      - text: profile as follows. After loading the profile, you can also programmatically override specific connection options before creating the client.
+                    - generic [ref=e443]:
+                      - code [ref=e445]:
+                        - generic [ref=e446]: import asyncio
+                        - generic [ref=e447]: from pathlib import Path
+                        - generic [ref=e448]: from temporalio.client import Client
+                        - generic [ref=e449]: from temporalio.envconfig import ClientConfig
+                        - generic [ref=e450]: "async def main():"
+                        - generic [ref=e451]: "\"\"\""
+                        - generic [ref=e452]: Demonstrates loading a named profile and overriding values programmatically.
+                        - generic [ref=e453]: "\"\"\""
+                        - generic [ref=e454]: print("--- Loading 'staging' profile with programmatic overrides ---")
+                        - generic [ref=e455]: config_file = Path(__file__).parent / "config.toml"
+                        - generic [ref=e456]: profile_name = "staging"
+                        - generic [ref=e457]: print(
+                        - generic [ref=e458]: "\"The 'staging' profile in config.toml has an incorrect address (localhost:9999).\""
+                        - generic [ref=e459]: )
+                        - generic [ref=e460]: print("We'll programmatically override it to the correct address.")
+                        - generic [ref=e461]: "# Load the 'staging' profile."
+                        - generic [ref=e462]: connect_config = ClientConfig.load_client_connect_config(
+                        - generic [ref=e463]: profile=profile_name,
+                        - generic [ref=e464]: config_file=str(config_file),
+                        - generic [ref=e465]: )
+                        - generic [ref=e466]: "# Override the target host to the correct address."
+                        - generic [ref=e467]: "# This is the recommended way to override configuration values."
+                        - generic [ref=e468]: connect_config["target_host"] = "localhost:7233"
+                        - generic [ref=e469]: "print(f\"\\nLoaded '{profile_name}' profile from {config_file} with overrides.\")"
+                        - generic [ref=e470]: print(
+                        - generic [ref=e471]: "f\" Address: {connect_config.get('target_host')} (overridden from localhost:9999)\""
+                        - generic [ref=e472]: )
+                        - generic [ref=e473]: "print(f\" Namespace: {connect_config.get('namespace')}\")"
+                        - generic [ref=e474]: print("\nAttempting to connect to client...")
+                        - generic [ref=e475]: "try:"
+                        - generic [ref=e476]: "await Client.connect(**connect_config) # type: ignore"
+                        - generic [ref=e477]: print("✅ Client connected successfully!")
+                        - generic [ref=e478]: "except Exception as e:"
+                        - generic [ref=e479]: "print(f\"❌ Failed to connect: {e}\")"
+                        - generic [ref=e480]: "if __name__ == \"__main__\":"
+                        - generic [ref=e481]: asyncio.run(main())
+                      - button "Copy code to clipboard" [ref=e483] [cursor=pointer]:
+                        - generic [ref=e484]:
+                          - img [ref=e485]
+                          - img [ref=e487]
+                - heading "Start a Workflow ExecutionDirect link to Start a Workflow Execution" [level=2] [ref=e489]:
+                  - text: Start a Workflow Execution
+                  - link "Direct link to Start a Workflow Execution" [ref=e490] [cursor=pointer]:
+                    - /url: "#start-workflow-execution"
+                    - text: "#"
+                - paragraph [ref=e491]:
+                  - strong [ref=e492]: How to start a Workflow Execution using the Python SDK
+                - paragraph [ref=e493]:
+                  - link "Workflow Execution" [ref=e494] [cursor=pointer]:
+                    - /url: /workflow-execution
+                  - text: semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
+                - paragraph [ref=e495]:
+                  - text: In the examples below, all Workflow Executions are started using a Temporal Client. To spawn Workflow Executions from within another Workflow Execution, use either the
+                  - link "Child Workflow" [ref=e496] [cursor=pointer]:
+                    - /url: /develop/python/child-workflows
+                  - text: or External Workflow APIs.
+                - paragraph [ref=e497]:
+                  - text: See the
+                  - link "Customize Workflow Type" [ref=e498] [cursor=pointer]:
+                    - /url: /develop/python/core-application#workflow-type
+                  - text: section to see how to customize the name of the Workflow Type.
+                - paragraph [ref=e499]:
+                  - text: A request to spawn a Workflow Execution causes the Temporal Service to create the first Event (
+                  - link "WorkflowExecutionStarted" [ref=e500] [cursor=pointer]:
+                    - /url: /references/events#workflowexecutionstarted
+                  - text: ) in the Workflow Execution Event History. The Temporal Service then creates the first Workflow Task, resulting in the first
+                  - link "WorkflowTaskScheduled" [ref=e501] [cursor=pointer]:
+                    - /url: /references/events#workflowtaskscheduled
+                  - text: Event.
+                - paragraph [ref=e502]:
+                  - text: To start a Workflow Execution in Python, use either the
+                  - link "start_workflow()" [ref=e503] [cursor=pointer]:
+                    - /url: https://python.temporal.io/temporalio.client.Client.html#start_workflow
+                    - code [ref=e504]: start_workflow()
+                  - text: or
+                  - link "execute_workflow()" [ref=e505] [cursor=pointer]:
+                    - /url: https://python.temporal.io/temporalio.client.Client.html#execute_workflow
+                    - code [ref=e506]: execute_workflow()
+                  - text: asynchronous methods in the Client.
+                - generic [ref=e507]:
+                  - link "View the source code" [ref=e508] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py
+                    - paragraph [ref=e509]: View the source code
+                  - paragraph [ref=e510]: in the context of the rest of the application code.
+                - generic [ref=e512]:
+                  - code [ref=e514]:
+                    - generic [ref=e515]: "# ..."
+                    - generic [ref=e516]: "async def main():"
+                    - generic [ref=e517]: client = await Client.connect("localhost:7233")
+                    - generic [ref=e518]: result = await client.execute_workflow(
+                    - generic [ref=e519]: YourWorkflow.run,
+                    - generic [ref=e520]: "\"your name\","
+                    - generic [ref=e521]: id="your-workflow-id",
+                    - generic [ref=e522]: task_queue="your-task-queue",
+                    - generic [ref=e523]: )
+                    - generic [ref=e524]: "print(f\"Result: {result}\")"
+                    - generic [ref=e525]: "if __name__ == \"__main__\":"
+                    - generic [ref=e526]: asyncio.run(main())
+                  - button "Copy code to clipboard" [ref=e528] [cursor=pointer]:
+                    - generic [ref=e529]:
+                      - img [ref=e530]
+                      - img [ref=e532]
+                - heading "Set a Workflow's Task QueueDirect link to Set a Workflow's Task Queue" [level=3] [ref=e534]:
+                  - text: Set a Workflow's Task Queue
+                  - link "Direct link to Set a Workflow's Task Queue" [ref=e535] [cursor=pointer]:
+                    - /url: "#set-task-queue"
+                    - text: "#"
+                - paragraph [ref=e536]:
+                  - strong [ref=e537]: How to set a Workflow's Task Queue using the Python SDK
+                - paragraph [ref=e538]:
+                  - text: In most SDKs, the only Workflow Option that must be set is the name of the
+                  - link "Task Queue" [ref=e539] [cursor=pointer]:
+                    - /url: /task-queue
+                  - text: .
+                - paragraph [ref=e540]: For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task Queue name.
+                - paragraph [ref=e541]:
+                  - text: To set a Task Queue in Python, specify the
+                  - code [ref=e542]: task_queue
+                  - text: argument when executing a Workflow with either
+                  - link "start_workflow()" [ref=e543] [cursor=pointer]:
+                    - /url: https://python.temporal.io/temporalio.client.Client.html#start_workflow
+                    - code [ref=e544]: start_workflow()
+                  - text: or
+                  - link "execute_workflow()" [ref=e545] [cursor=pointer]:
+                    - /url: https://python.temporal.io/temporalio.client.Client.html#execute_workflow
+                    - code [ref=e546]: execute_workflow()
+                  - text: methods.
+                - generic [ref=e547]:
+                  - link "View the source code" [ref=e548] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py
+                    - paragraph [ref=e549]: View the source code
+                  - paragraph [ref=e550]: in the context of the rest of the application code.
+                - generic [ref=e552]:
+                  - code [ref=e554]:
+                    - generic [ref=e555]: "# ..."
+                    - generic [ref=e556]: "async def main():"
+                    - generic [ref=e557]: client = await Client.connect("localhost:7233")
+                    - generic [ref=e558]: result = await client.execute_workflow(
+                    - generic [ref=e559]: YourWorkflow.run,
+                    - generic [ref=e560]: "\"your name\","
+                    - generic [ref=e561]: id="your-workflow-id",
+                    - generic [ref=e562]: task_queue="your-task-queue",
+                    - generic [ref=e563]: )
+                    - generic [ref=e564]: "print(f\"Result: {result}\")"
+                    - generic [ref=e565]: "if __name__ == \"__main__\":"
+                    - generic [ref=e566]: asyncio.run(main())
+                  - button "Copy code to clipboard" [ref=e568] [cursor=pointer]:
+                    - generic [ref=e569]:
+                      - img [ref=e570]
+                      - img [ref=e572]
+                - heading "Set a Workflow IdDirect link to Set a Workflow Id" [level=3] [ref=e574]:
+                  - text: Set a Workflow Id
+                  - link "Direct link to Set a Workflow Id" [ref=e575] [cursor=pointer]:
+                    - /url: "#workflow-id"
+                    - text: "#"
+                - paragraph [ref=e576]:
+                  - strong [ref=e577]: How to set a Workflow Id using the Python SDK
+                - paragraph [ref=e578]:
+                  - text: You must set a
+                  - link "Workflow Id" [ref=e579] [cursor=pointer]:
+                    - /url: /workflow-execution/workflowid-runid#workflow-id
+                  - text: .
+                - paragraph [ref=e580]: When setting a Workflow Id, we recommended mapping it to a business process or business entity identifier, such as an order identifier or customer identifier.
+                - paragraph [ref=e581]:
+                  - text: To set a Workflow Id in Python, specify the
+                  - code [ref=e582]: id
+                  - text: argument when executing a Workflow with either
+                  - link "start_workflow()" [ref=e583] [cursor=pointer]:
+                    - /url: https://python.temporal.io/temporalio.client.Client.html#start_workflow
+                    - code [ref=e584]: start_workflow()
+                  - text: or
+                  - link "execute_workflow()" [ref=e585] [cursor=pointer]:
+                    - /url: https://python.temporal.io/temporalio.client.Client.html#execute_workflow
+                    - code [ref=e586]: execute_workflow()
+                  - text: methods.
+                - paragraph [ref=e587]:
+                  - text: The
+                  - code [ref=e588]: id
+                  - text: argument should be a unique identifier for the Workflow Execution.
+                - generic [ref=e589]:
+                  - link "View the source code" [ref=e590] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/run_workflow_dacx.py
+                    - paragraph [ref=e591]: View the source code
+                  - paragraph [ref=e592]: in the context of the rest of the application code.
+                - generic [ref=e594]:
+                  - code [ref=e596]:
+                    - generic [ref=e597]: "# ..."
+                    - generic [ref=e598]: "async def main():"
+                    - generic [ref=e599]: client = await Client.connect("localhost:7233")
+                    - generic [ref=e600]: result = await client.execute_workflow(
+                    - generic [ref=e601]: YourWorkflow.run,
+                    - generic [ref=e602]: "\"your name\","
+                    - generic [ref=e603]: id="your-workflow-id",
+                    - generic [ref=e604]: task_queue="your-task-queue",
+                    - generic [ref=e605]: )
+                    - generic [ref=e606]: "print(f\"Result: {result}\")"
+                    - generic [ref=e607]: "if __name__ == \"__main__\":"
+                    - generic [ref=e608]: asyncio.run(main())
+                  - button "Copy code to clipboard" [ref=e610] [cursor=pointer]:
+                    - generic [ref=e611]:
+                      - img [ref=e612]
+                      - img [ref=e614]
+                - heading "Get the results of a Workflow ExecutionDirect link to Get the results of a Workflow Execution" [level=3] [ref=e616]:
+                  - text: Get the results of a Workflow Execution
+                  - link "Direct link to Get the results of a Workflow Execution" [ref=e617] [cursor=pointer]:
+                    - /url: "#get-workflow-results"
+                    - text: "#"
+                - paragraph [ref=e618]:
+                  - strong [ref=e619]: How to get the results of a Workflow Execution using the Python SDK
+                - paragraph [ref=e620]: If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
+                - paragraph [ref=e621]: The Workflow Id, Run Id, and Namespace may be used to uniquely identify a Workflow Execution in the system and get its result.
+                - paragraph [ref=e622]: It's possible to both block progress on the result (synchronous execution) or get the result at some other point in time (asynchronous execution).
+                - paragraph [ref=e623]: In the Temporal Platform, it's also acceptable to use Queries as the preferred method for accessing the state and results of Workflow Executions.
+                - paragraph [ref=e624]:
+                  - text: Use
+                  - link "start_workflow()" [ref=e625] [cursor=pointer]:
+                    - /url: https://python.temporal.io/temporalio.client.Client.html#start_workflow
+                    - code [ref=e626]: start_workflow()
+                  - text: or
+                  - link "get_workflow_handle()" [ref=e627] [cursor=pointer]:
+                    - /url: https://python.temporal.io/temporalio.client.Client.html#get_workflow_handle
+                    - code [ref=e628]: get_workflow_handle()
+                  - text: to return a Workflow handle. Then use the
+                  - link "result" [ref=e629] [cursor=pointer]:
+                    - /url: https://python.temporal.io/temporalio.client.WorkflowHandle.html#result
+                    - code [ref=e630]: result
+                  - text: method to await on the result of the Workflow.
+                - paragraph [ref=e631]:
+                  - text: To get a handle for an existing Workflow by its Id, you can use
+                  - link "get_workflow_handle()" [ref=e632] [cursor=pointer]:
+                    - /url: https://python.temporal.io/temporalio.client.Client.html#get_workflow_handle
+                    - code [ref=e633]: get_workflow_handle()
+                  - text: ", or use"
+                  - link "get_workflow_handle_for()" [ref=e634] [cursor=pointer]:
+                    - /url: https://python.temporal.io/temporalio.client.Client.html#get_workflow_handle_for
+                    - code [ref=e635]: get_workflow_handle_for()
+                  - text: for type safety.
+                - paragraph [ref=e636]:
+                  - text: Then use
+                  - link "describe()" [ref=e637] [cursor=pointer]:
+                    - /url: https://python.temporal.io/temporalio.client.WorkflowHandle.html#describe
+                    - code [ref=e638]: describe()
+                  - text: to get the current status of the Workflow. If the Workflow does not exist, this call fails.
+                - generic [ref=e639]:
+                  - link "View the source code" [ref=e640] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/get_workflow_results_dacx.py
+                    - paragraph [ref=e641]: View the source code
+                  - paragraph [ref=e642]: in the context of the rest of the application code.
+                - generic [ref=e644]:
+                  - code [ref=e646]:
+                    - generic [ref=e647]: "# ..."
+                    - generic [ref=e648]: "async def main():"
+                    - generic [ref=e649]: client = await Client.connect("localhost:7233")
+                    - generic [ref=e650]: handle = client.get_workflow_handle(
+                    - generic [ref=e651]: workflow_id="your-workflow-id",
+                    - generic [ref=e652]: )
+                    - generic [ref=e653]: results = await handle.result()
+                    - generic [ref=e654]: "print(f\"Result: {results}\")"
+                    - generic [ref=e655]: "if __name__ == \"__main__\":"
+                    - generic [ref=e656]: asyncio.run(main())
+                  - button "Copy code to clipboard" [ref=e658] [cursor=pointer]:
+                    - generic [ref=e659]:
+                      - img [ref=e660]
+                      - img [ref=e662]
+              - generic [ref=e664]:
+                - generic [ref=e666]:
+                  - text: "Tags:"
+                  - list [ref=e667]:
+                    - listitem [ref=e668]:
+                      - link "Temporal Client" [ref=e669] [cursor=pointer]:
+                        - /url: /tags/temporal-client
+                    - listitem [ref=e670]:
+                      - link "Python SDK" [ref=e671] [cursor=pointer]:
+                        - /url: /tags/python-sdk
+                    - listitem [ref=e672]:
+                      - link "Temporal SDKs" [ref=e673] [cursor=pointer]:
+                        - /url: /tags/temporal-sd-ks
+                    - listitem [ref=e674]:
+                      - link "Certificates" [ref=e675] [cursor=pointer]:
+                        - /url: /tags/certificates
+                - paragraph [ref=e679]:
+                  - text: Help us make Temporal better. Contribute to our
+                  - link "documentation" [ref=e680] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation
+                  - text: .
+            - navigation "Docs pages" [ref=e682]:
+              - link "Previous « Core application" [ref=e683] [cursor=pointer]:
+                - /url: /develop/python/core-application
+                - generic [ref=e684]: Previous
+                - generic [ref=e685]: « Core application
+              - link "Next Python SDK sandbox »" [ref=e686] [cursor=pointer]:
+                - /url: /develop/python/python-sdk-sandbox
+                - generic [ref=e687]: Next
+                - generic [ref=e688]: Python SDK sandbox »
+          - list [ref=e691]:
+            - listitem [ref=e692]:
+              - link "Connect to development Temporal Service" [ref=e693] [cursor=pointer]:
+                - /url: "#connect-to-development-service"
+            - listitem [ref=e694]:
+              - link "Connect to Temporal Cloud" [ref=e695] [cursor=pointer]:
+                - /url: "#connect-to-temporal-cloud"
+            - listitem [ref=e696]:
+              - link "Start a Workflow Execution" [ref=e697] [cursor=pointer]:
+                - /url: "#start-workflow-execution"
+              - list [ref=e698]:
+                - listitem [ref=e699]:
+                  - link "Set a Workflow's Task Queue" [ref=e700] [cursor=pointer]:
+                    - /url: "#set-task-queue"
+                - listitem [ref=e701]:
+                  - link "Set a Workflow Id" [ref=e702] [cursor=pointer]:
+                    - /url: "#workflow-id"
+                - listitem [ref=e703]:
+                  - link "Get the results of a Workflow Execution" [ref=e704] [cursor=pointer]:
+                    - /url: "#get-workflow-results"
+    - contentinfo [ref=e705]:
+      - generic [ref=e706]:
+        - generic [ref=e707]:
+          - list [ref=e709]:
+            - listitem [ref=e710]:
+              - link "GitHub" [ref=e711] [cursor=pointer]:
+                - /url: https://github.com/temporalio
+                - text: GitHub
+                - img [ref=e712]
+            - listitem [ref=e714]:
+              - link "Twitter" [ref=e715] [cursor=pointer]:
+                - /url: https://twitter.com/temporalio
+                - text: Twitter
+                - img [ref=e716]
+            - listitem [ref=e718]:
+              - link "YouTube" [ref=e719] [cursor=pointer]:
+                - /url: https://www.youtube.com/c/Temporalio
+                - text: YouTube
+                - img [ref=e720]
+            - listitem [ref=e722]:
+              - link "About the docs" [ref=e723] [cursor=pointer]:
+                - /url: https://github.com/temporalio/documentation/blob/master/README.md
+                - text: About the docs
+                - img [ref=e724]
+          - list [ref=e727]:
+            - listitem [ref=e728]:
+              - link "Temporal Cloud" [ref=e729] [cursor=pointer]:
+                - /url: https://temporal.io/cloud
+                - text: Temporal Cloud
+                - img [ref=e730]
+            - listitem [ref=e732]:
+              - link "Meetups" [ref=e733] [cursor=pointer]:
+                - /url: https://temporal.io/community#events
+                - text: Meetups
+                - img [ref=e734]
+            - listitem [ref=e736]:
+              - link "Workshops" [ref=e737] [cursor=pointer]:
+                - /url: https://temporal.io/community#workshops
+                - text: Workshops
+                - img [ref=e738]
+            - listitem [ref=e740]:
+              - link "Support forum" [ref=e741] [cursor=pointer]:
+                - /url: https://community.temporal.io/
+                - text: Support forum
+                - img [ref=e742]
+            - listitem [ref=e744]:
+              - link "Ask an expert" [ref=e745] [cursor=pointer]:
+                - /url: https://pages.temporal.io/ask-an-expert
+                - text: Ask an expert
+                - img [ref=e746]
+          - list [ref=e749]:
+            - listitem [ref=e750]:
+              - link "Learn Temporal" [ref=e751] [cursor=pointer]:
+                - /url: https://learn.temporal.io
+                - text: Learn Temporal
+                - img [ref=e752]
+            - listitem [ref=e754]:
+              - link "Blog" [ref=e755] [cursor=pointer]:
+                - /url: https://temporal.io/blog
+                - text: Blog
+                - img [ref=e756]
+            - listitem [ref=e758]:
+              - link "Use cases" [ref=e759] [cursor=pointer]:
+                - /url: https://temporal.io/use-cases
+                - text: Use cases
+                - img [ref=e760]
+            - listitem [ref=e762]:
+              - link "Newsletter signup" [ref=e763] [cursor=pointer]:
+                - /url: https://pages.temporal.io/newsletter-subscribe
+                - text: Newsletter signup
+                - img [ref=e764]
+          - list [ref=e767]:
+            - listitem [ref=e768]:
+              - link "Security" [ref=e769] [cursor=pointer]:
+                - /url: /security
+            - listitem [ref=e770]:
+              - link "Privacy policy" [ref=e771] [cursor=pointer]:
+                - /url: https://temporal.io/global-privacy-policy
+            - listitem [ref=e772]:
+              - link "Terms of service" [ref=e773] [cursor=pointer]:
+                - /url: https://docs.temporal.io/pdf/temporal-tos-2021-07-24.pdf
+                - text: Terms of service
+                - img [ref=e774]
+            - listitem [ref=e776]:
+              - link "We're hiring" [ref=e777] [cursor=pointer]:
+                - /url: https://temporal.io/careers
+                - text: We're hiring
+                - img [ref=e778]
+        - generic [ref=e780]:
+          - link "Temporal logo" [ref=e782] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e783]
+          - generic [ref=e784]: Copyright © 2025 Temporal Technologies Inc.
+  - generic [ref=e785] [cursor=pointer]:
+    - img [ref=e787]
+    - generic: Feedback
+```

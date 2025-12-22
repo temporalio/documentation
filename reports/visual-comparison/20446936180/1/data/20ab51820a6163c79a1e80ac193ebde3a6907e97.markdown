@@ -1,0 +1,900 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - region "Skip to main content":
+      - link "Skip to main content" [ref=e3] [cursor=pointer]:
+        - /url: "#__docusaurus_skipToContent_fallback"
+    - navigation "Main" [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - link "Temporal logo" [ref=e7] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e9]
+          - link "Home" [ref=e10] [cursor=pointer]:
+            - /url: /
+          - link "Courses" [ref=e11] [cursor=pointer]:
+            - /url: https://learn.temporal.io/getting_started/
+            - text: Courses
+            - img [ref=e12]
+          - link "SDKs" [ref=e14] [cursor=pointer]:
+            - /url: /develop
+          - link "AI Cookbook" [ref=e15] [cursor=pointer]:
+            - /url: /ai-cookbook
+          - link "Code Exchange" [ref=e16] [cursor=pointer]:
+            - /url: https://temporal.io/code-exchange
+            - text: Code Exchange
+            - img [ref=e17]
+          - link "Temporal Cloud" [ref=e19] [cursor=pointer]:
+            - /url: /cloud
+        - generic [ref=e20]:
+          - button "Ask AI" [ref=e21] [cursor=pointer]:
+            - img [ref=e22]
+            - generic [ref=e26]: Ask AI
+          - button "Switch between dark and light mode (currently system mode)" [ref=e28] [cursor=pointer]:
+            - img [ref=e29]
+          - button "Search (Ctrl+K)" [ref=e32] [cursor=pointer]:
+            - generic [ref=e33]:
+              - img [ref=e34]
+              - generic [ref=e36]: Search
+            - generic [ref=e37]:
+              - img [ref=e39]
+              - generic [ref=e41]: K
+    - generic [ref=e44]:
+      - complementary [ref=e45]:
+        - generic [ref=e47]:
+          - navigation "Docs sidebar" [ref=e48]:
+            - list [ref=e49]:
+              - listitem [ref=e50]:
+                - link "Documentation Home" [ref=e51] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=e52]:
+                - link "Quickstarts" [ref=e53] [cursor=pointer]:
+                  - /url: /quickstarts
+              - listitem [ref=e54]:
+                - generic [ref=e55]:
+                  - link "Evaluate" [ref=e56] [cursor=pointer]:
+                    - /url: /evaluate/
+                  - button "Collapse sidebar category 'Evaluate'" [expanded] [ref=e57] [cursor=pointer]
+                - list [ref=e58]:
+                  - listitem [ref=e59]:
+                    - link "Why Temporal" [ref=e60] [cursor=pointer]:
+                      - /url: /evaluate/why-temporal
+                  - listitem [ref=e61]:
+                    - link "Understanding Temporal" [ref=e62] [cursor=pointer]:
+                      - /url: /evaluate/understanding-temporal
+                  - listitem [ref=e63]:
+                    - generic [ref=e64]:
+                      - link "Features" [ref=e65] [cursor=pointer]:
+                        - /url: /evaluate/development-production-features/
+                      - button "Expand sidebar category 'Features'" [ref=e66] [cursor=pointer]
+                  - listitem [ref=e67]:
+                    - generic [ref=e68]:
+                      - link "Temporal Cloud" [ref=e69] [cursor=pointer]:
+                        - /url: /cloud/introduction
+                      - button "Expand sidebar category 'Temporal Cloud'" [ref=e70] [cursor=pointer]
+                  - listitem [ref=e71]:
+                    - link "Security" [ref=e72] [cursor=pointer]:
+                      - /url: /security
+                  - listitem [ref=e73]:
+                    - link "Use Cases" [ref=e74] [cursor=pointer]:
+                      - /url: /evaluate/use-cases-design-patterns
+              - listitem [ref=e75]:
+                - generic [ref=e76]:
+                  - link "Develop" [ref=e77] [cursor=pointer]:
+                    - /url: /develop/
+                  - button "Collapse sidebar category 'Develop'" [expanded] [ref=e78] [cursor=pointer]
+                - list [ref=e79]:
+                  - listitem [ref=e80]:
+                    - generic [ref=e81]:
+                      - link "Go SDK" [ref=e82] [cursor=pointer]:
+                        - /url: /develop/go/
+                      - button "Expand sidebar category 'Go SDK'" [ref=e83] [cursor=pointer]
+                  - listitem [ref=e84]:
+                    - generic [ref=e85]:
+                      - link "Java SDK" [ref=e86] [cursor=pointer]:
+                        - /url: /develop/java/
+                      - button "Expand sidebar category 'Java SDK'" [ref=e87] [cursor=pointer]
+                  - listitem [ref=e88]:
+                    - generic [ref=e89]:
+                      - link "PHP SDK" [ref=e90] [cursor=pointer]:
+                        - /url: /develop/php/
+                      - button "Expand sidebar category 'PHP SDK'" [ref=e91] [cursor=pointer]
+                  - listitem [ref=e92]:
+                    - generic [ref=e93]:
+                      - link "Python SDK" [ref=e94] [cursor=pointer]:
+                        - /url: /develop/python/
+                      - button "Expand sidebar category 'Python SDK'" [ref=e95] [cursor=pointer]
+                  - listitem [ref=e96]:
+                    - generic [ref=e97]:
+                      - link "TypeScript SDK" [ref=e98] [cursor=pointer]:
+                        - /url: /develop/typescript/
+                      - button "Collapse sidebar category 'TypeScript SDK'" [expanded] [ref=e99] [cursor=pointer]
+                    - list [ref=e100]:
+                      - listitem [ref=e101]:
+                        - link "Quickstart - Setup" [ref=e102] [cursor=pointer]:
+                          - /url: /develop/typescript/set-up-your-local-typescript
+                      - listitem [ref=e103]:
+                        - link "Core application" [ref=e104] [cursor=pointer]:
+                          - /url: /develop/typescript/core-application
+                      - listitem [ref=e105]:
+                        - link "Temporal Client" [ref=e106] [cursor=pointer]:
+                          - /url: /develop/typescript/temporal-client
+                      - listitem [ref=e107]:
+                        - link "Namespaces" [ref=e108] [cursor=pointer]:
+                          - /url: /develop/typescript/namespaces
+                      - listitem [ref=e109]:
+                        - link "Testing" [ref=e110] [cursor=pointer]:
+                          - /url: /develop/typescript/testing-suite
+                      - listitem [ref=e111]:
+                        - link "Failure detection" [ref=e112] [cursor=pointer]:
+                          - /url: /develop/typescript/failure-detection
+                      - listitem [ref=e113]:
+                        - link "Messages" [ref=e114] [cursor=pointer]:
+                          - /url: /develop/typescript/message-passing
+                      - listitem [ref=e115]:
+                        - link "Interrupt a Workflow" [ref=e116] [cursor=pointer]:
+                          - /url: /develop/typescript/cancellation
+                      - listitem [ref=e117]:
+                        - link "Asynchronous Activity Completion" [ref=e118] [cursor=pointer]:
+                          - /url: /develop/typescript/asynchronous-activity-completion
+                      - listitem [ref=e119]:
+                        - link "Versioning" [ref=e120] [cursor=pointer]:
+                          - /url: /develop/typescript/versioning
+                      - listitem [ref=e121]:
+                        - link "Observability" [ref=e122] [cursor=pointer]:
+                          - /url: /develop/typescript/observability
+                      - listitem [ref=e123]:
+                        - link "Benign exceptions" [ref=e124] [cursor=pointer]:
+                          - /url: /develop/typescript/benign-exceptions
+                      - listitem [ref=e125]:
+                        - link "Enriching the UI" [ref=e126] [cursor=pointer]:
+                          - /url: /develop/typescript/enriching-ui
+                      - listitem [ref=e127]:
+                        - link "Debugging" [ref=e128] [cursor=pointer]:
+                          - /url: /develop/typescript/debugging
+                      - listitem [ref=e129]:
+                        - link "Schedules" [ref=e130] [cursor=pointer]:
+                          - /url: /develop/typescript/schedules
+                      - listitem [ref=e131]:
+                        - link "Converters and encryption" [ref=e132] [cursor=pointer]:
+                          - /url: /develop/typescript/converters-and-encryption
+                      - listitem [ref=e133]:
+                        - link "Durable Timers" [ref=e134] [cursor=pointer]:
+                          - /url: /develop/typescript/timers
+                      - listitem [ref=e135]:
+                        - link "Temporal Nexus" [ref=e136] [cursor=pointer]:
+                          - /url: /develop/typescript/nexus
+                      - listitem [ref=e137]:
+                        - link "Child Workflows" [ref=e138] [cursor=pointer]:
+                          - /url: /develop/typescript/child-workflows
+                      - listitem [ref=e139]:
+                        - link "Continue-As-New" [ref=e140] [cursor=pointer]:
+                          - /url: /develop/typescript/continue-as-new
+                      - listitem [ref=e141]:
+                        - link "Interceptors" [ref=e142] [cursor=pointer]:
+                          - /url: /develop/typescript/interceptors
+                      - listitem [ref=e143]:
+                        - link "Vercel AI SDK Integration" [ref=e144] [cursor=pointer]:
+                          - /url: /develop/typescript/ai-sdk
+                  - listitem [ref=e145]:
+                    - generic [ref=e146]:
+                      - link ".NET SDK" [ref=e147] [cursor=pointer]:
+                        - /url: /develop/dotnet/
+                      - button "Expand sidebar category '.NET SDK'" [ref=e148] [cursor=pointer]
+                  - listitem [ref=e149]:
+                    - generic [ref=e150]:
+                      - link "Ruby SDK" [ref=e151] [cursor=pointer]:
+                        - /url: /develop/ruby/
+                      - button "Expand sidebar category 'Ruby SDK'" [ref=e152] [cursor=pointer]
+                  - listitem [ref=e153]:
+                    - link "Environment configuration" [ref=e154] [cursor=pointer]:
+                      - /url: /develop/environment-configuration
+                  - listitem [ref=e155]:
+                    - link "Activity retry simulator" [ref=e156] [cursor=pointer]:
+                      - /url: /develop/activity-retry-simulator
+                  - listitem [ref=e157]:
+                    - link "Worker performance" [ref=e158] [cursor=pointer]:
+                      - /url: /develop/worker-performance
+                  - listitem [ref=e159]:
+                    - link "Safe deployments" [ref=e160] [cursor=pointer]:
+                      - /url: /develop/safe-deployments
+                  - listitem [ref=e161]:
+                    - link "Plugins guide" [ref=e162] [cursor=pointer]:
+                      - /url: /develop/plugins-guide
+              - listitem [ref=e163]:
+                - generic [ref=e164]:
+                  - link "Deploy to production" [ref=e165] [cursor=pointer]:
+                    - /url: /production-deployment
+                  - button "Collapse sidebar category 'Deploy to production'" [expanded] [ref=e166] [cursor=pointer]
+                - list [ref=e167]:
+                  - listitem [ref=e168]:
+                    - generic [ref=e169]:
+                      - link "Temporal Cloud" [ref=e170] [cursor=pointer]:
+                        - /url: /cloud
+                      - button "Expand sidebar category 'Temporal Cloud'" [ref=e171] [cursor=pointer]
+                  - listitem [ref=e172]:
+                    - link "Codecs and Encryption" [ref=e173] [cursor=pointer]:
+                      - /url: /production-deployment/data-encryption
+                  - listitem [ref=e174]:
+                    - generic [ref=e175]:
+                      - link "Self-host" [ref=e176] [cursor=pointer]:
+                        - /url: /self-hosted-guide
+                      - button "Expand sidebar category 'Self-host'" [ref=e177] [cursor=pointer]
+                  - listitem [ref=e178]:
+                    - generic [ref=e179]:
+                      - link "Worker deployments" [ref=e180] [cursor=pointer]:
+                        - /url: /production-deployment/worker-deployments
+                      - button "Expand sidebar category 'Worker deployments'" [ref=e181] [cursor=pointer]
+              - listitem [ref=e182]:
+                - generic [ref=e183]:
+                  - link "CLI (temporal)" [ref=e184] [cursor=pointer]:
+                    - /url: /cli
+                  - button "Expand sidebar category 'CLI (temporal)'" [ref=e185] [cursor=pointer]
+              - listitem [ref=e186]:
+                - generic [ref=e187]:
+                  - link "References" [ref=e188] [cursor=pointer]:
+                    - /url: /references/
+                  - button "Expand sidebar category 'References'" [ref=e189] [cursor=pointer]
+              - listitem [ref=e190]:
+                - generic [ref=e191]:
+                  - link "Troubleshooting" [ref=e192] [cursor=pointer]:
+                    - /url: /troubleshooting/
+                  - button "Expand sidebar category 'Troubleshooting'" [ref=e193] [cursor=pointer]
+              - listitem [ref=e194]:
+                - generic [ref=e195]:
+                  - link "Best Practices" [ref=e196] [cursor=pointer]:
+                    - /url: /best-practices/
+                  - button "Expand sidebar category 'Best Practices'" [ref=e197] [cursor=pointer]
+              - listitem [ref=e198]:
+                - generic [ref=e199]:
+                  - link "Encyclopedia" [ref=e200] [cursor=pointer]:
+                    - /url: /encyclopedia/
+                  - button "Expand sidebar category 'Encyclopedia'" [ref=e201] [cursor=pointer]
+              - listitem [ref=e202]:
+                - link "Glossary" [ref=e203] [cursor=pointer]:
+                  - /url: /glossary
+          - button "Collapse sidebar" [ref=e204] [cursor=pointer]:
+            - img [ref=e205]
+      - main [ref=e209]:
+        - generic [ref=e211]:
+          - generic [ref=e213]:
+            - article [ref=e214]:
+              - navigation "Breadcrumbs" [ref=e215]:
+                - list [ref=e216]:
+                  - listitem [ref=e217]:
+                    - link "Home page" [ref=e218] [cursor=pointer]:
+                      - /url: /
+                      - img [ref=e219]
+                  - listitem [ref=e221]:
+                    - link "Develop" [ref=e222] [cursor=pointer]:
+                      - /url: /develop/
+                  - listitem [ref=e223]:
+                    - link "TypeScript SDK" [ref=e224] [cursor=pointer]:
+                      - /url: /develop/typescript/
+                  - listitem [ref=e225]:
+                    - generic [ref=e226]: Interrupt a Workflow
+              - generic [ref=e227]:
+                - heading "Interrupt a Workflow - TypeScript SDK" [level=1] [ref=e229]
+                - heading "Cancellation scopes in TypescriptDirect link to Cancellation scopes in Typescript" [level=2] [ref=e230]:
+                  - text: Cancellation scopes in Typescript
+                  - link "Direct link to Cancellation scopes in Typescript" [ref=e231] [cursor=pointer]:
+                    - /url: "#cancellation-scopes"
+                    - text: "#"
+                - paragraph [ref=e232]: In the TypeScript SDK, Workflows are represented internally by a tree of cancellation scopes, each with cancellation behaviors you can specify. By default, everything runs in the "root" scope.
+                - paragraph [ref=e233]:
+                  - text: Scopes are created using the
+                  - link "CancellationScope" [ref=e234] [cursor=pointer]:
+                    - /url: https://typescript.temporal.io/api/classes/workflow.CancellationScope
+                  - text: "constructor or one of three static helpers:"
+                - list [ref=e235]:
+                  - listitem [ref=e236]:
+                    - link "cancellable(fn)" [ref=e237] [cursor=pointer]:
+                      - /url: https://typescript.temporal.io/api/classes/workflow.CancellationScope#cancellable-1
+                    - text: ": Children are automatically cancelled when their containing scope is cancelled."
+                    - list [ref=e238]:
+                      - listitem [ref=e239]:
+                        - text: Equivalent to
+                        - code [ref=e240]: new CancellationScope().run(fn)
+                        - text: .
+                  - listitem [ref=e241]:
+                    - link "nonCancellable(fn)" [ref=e242] [cursor=pointer]:
+                      - /url: https://typescript.temporal.io/api/classes/workflow.CancellationScope#noncancellable
+                    - text: ": Cancellation does not propagate to children."
+                    - list [ref=e243]:
+                      - listitem [ref=e244]:
+                        - text: Equivalent to
+                        - code [ref=e245]: "new CancellationScope({ cancellable: false }).run(fn)"
+                        - text: .
+                  - listitem [ref=e246]:
+                    - link "withTimeout(timeoutMs, fn)" [ref=e247] [cursor=pointer]:
+                      - /url: https://typescript.temporal.io/api/classes/workflow.CancellationScope#withtimeout
+                    - text: ": If a timeout triggers before"
+                    - code [ref=e248]: fn
+                    - text: resolves, the scope is cancelled, triggering cancellation of any enclosed operations, such as Activities and Timers.
+                    - list [ref=e249]:
+                      - listitem [ref=e250]:
+                        - text: Equivalent to
+                        - code [ref=e251]: "new CancellationScope({ cancellable: true, timeout: timeoutMs }).run(fn)"
+                        - text: .
+                - paragraph [ref=e252]:
+                  - text: Cancellations are applied to cancellation scopes, which can encompass an entire Workflow or just part of one. Scopes can be nested, and cancellation propagates from outer scopes to inner ones. A Workflow's
+                  - code [ref=e253]: main
+                  - text: function runs in the outermost scope. Cancellations are handled by catching
+                  - code [ref=e254]: CancelledFailure
+                  - text: s thrown by cancelable operations.
+                - paragraph [ref=e255]:
+                  - code [ref=e256]: CancellationScope.run()
+                  - text: and the static helpers mentioned earlier return native JavaScript promises, so you can use the familiar Promise APIs like
+                  - code [ref=e257]: Promise.all
+                  - text: and
+                  - code [ref=e258]: Promise.race
+                  - text: "to model your asynchronous logic. You can also use the following APIs:"
+                - list [ref=e259]:
+                  - listitem [ref=e260]:
+                    - code [ref=e261]: CancellationScope.current()
+                    - text: ": Get the current scope."
+                  - listitem [ref=e262]:
+                    - code [ref=e263]: scope.cancel()
+                    - text: ": Cancel all operations inside a"
+                    - code [ref=e264]: scope
+                    - text: .
+                  - listitem [ref=e265]:
+                    - code [ref=e266]: scope.run(fn)
+                    - text: ": Run an async function within a"
+                    - code [ref=e267]: scope
+                    - text: and return the result of
+                    - code [ref=e268]: fn
+                    - text: .
+                  - listitem [ref=e269]:
+                    - code [ref=e270]: scope.cancelRequested
+                    - text: ": A promise that resolves when a scope cancellation is requested, such as when Workflow code calls"
+                    - code [ref=e271]: cancel()
+                    - text: or the entire Workflow is cancelled by an external client.
+                - paragraph [ref=e272]:
+                  - text: When a
+                  - code [ref=e273]: CancellationScope
+                  - text: "is cancelled, it propagates cancellation in any child scopes and of any cancelable operations created within it, such as the following:"
+                - list [ref=e274]:
+                  - listitem [ref=e275]: Activities
+                  - listitem [ref=e276]:
+                    - text: Timers (created with the
+                    - link "sleep" [ref=e277] [cursor=pointer]:
+                      - /url: https://typescript.temporal.io/api/namespaces/workflow#sleep
+                    - text: function)
+                  - listitem [ref=e278]:
+                    - link "Triggers" [ref=e279] [cursor=pointer]:
+                      - /url: https://typescript.temporal.io/api/classes/workflow.Trigger
+                - heading "CancelledFailureDirect link to CancelledFailure" [level=3] [ref=e280]:
+                  - text: CancelledFailure
+                  - link "Direct link to CancelledFailure" [ref=e281] [cursor=pointer]:
+                    - /url: "#cancelledfailure"
+                    - text: "#"
+                - paragraph [ref=e282]:
+                  - text: Timers and triggers throw
+                  - link "CancelledFailure" [ref=e283] [cursor=pointer]:
+                    - /url: https://typescript.temporal.io/api/classes/common.CancelledFailure
+                  - text: when cancelled; Activities and Child Workflows throw
+                  - code [ref=e284]: ActivityFailure
+                  - text: and
+                  - code [ref=e285]: ChildWorkflowFailure
+                  - text: with cause set to
+                  - code [ref=e286]: CancelledFailure
+                  - text: . One exception is when an Activity or Child Workflow is scheduled in an already cancelled scope (or Workflow). In this case, they propagate the
+                  - code [ref=e287]: CancelledFailure
+                  - text: that was thrown to cancel the scope.
+                - paragraph [ref=e288]:
+                  - text: To simplify checking for cancellation, use the
+                  - link "isCancellation(err)" [ref=e289] [cursor=pointer]:
+                    - /url: https://typescript.temporal.io/api/namespaces/workflow#iscancellation
+                  - text: function.
+                - heading "Internal cancellation exampleDirect link to Internal cancellation example" [level=3] [ref=e290]:
+                  - text: Internal cancellation example
+                  - link "Direct link to Internal cancellation example" [ref=e291] [cursor=pointer]:
+                    - /url: "#internal-cancellation-example"
+                    - text: "#"
+                - paragraph [ref=e292]:
+                  - link "packages/test/src/workflows/cancel-timer-immediately.ts" [ref=e293] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/cancel-timer-immediately.ts
+                - generic [ref=e295]:
+                  - code [ref=e297]:
+                    - generic [ref=e298]: "import { CancelledFailure, CancellationScope, sleep } from '@temporalio/workflow';"
+                    - generic [ref=e299]: "export async function cancelTimer(): Promise<void> {"
+                    - generic [ref=e300]: // Timers and Activities are automatically cancelled when their containing scope is cancelled.
+                    - generic [ref=e301]: "try {"
+                    - generic [ref=e302]: "await CancellationScope.cancellable(async () => {"
+                    - generic [ref=e303]: const promise = sleep(1); // <-- Will be cancelled because it is attached to this closure's scope
+                    - generic [ref=e304]: CancellationScope.current().cancel();
+                    - generic [ref=e305]: "await promise; // <-- Promise must be awaited in order for `cancellable` to throw"
+                    - generic [ref=e306]: "});"
+                    - generic [ref=e307]: "} catch (e) {"
+                    - generic [ref=e308]: "if (e instanceof CancelledFailure) {"
+                    - generic [ref=e309]: console.log('Timer cancelled 👍');
+                    - generic [ref=e310]: "} else {"
+                    - generic [ref=e311]: throw e; // <-- Fail the workflow
+                    - generic [ref=e312]: "}"
+                    - generic [ref=e313]: "}"
+                    - generic [ref=e314]: "}"
+                  - generic [ref=e315]:
+                    - button "Toggle word wrap" [ref=e316] [cursor=pointer]:
+                      - img [ref=e317]
+                    - button "Copy code to clipboard" [ref=e319] [cursor=pointer]:
+                      - generic [ref=e320]:
+                        - img [ref=e321]
+                        - img [ref=e323]
+                - paragraph [ref=e325]: Alternatively, the preceding can be written as the following.
+                - paragraph [ref=e326]:
+                  - link "packages/test/src/workflows/cancel-timer-immediately-alternative-impl.ts" [ref=e327] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/cancel-timer-immediately-alternative-impl.ts
+                - generic [ref=e329]:
+                  - code [ref=e331]:
+                    - generic [ref=e332]: "import { CancelledFailure, CancellationScope, sleep } from '@temporalio/workflow';"
+                    - generic [ref=e333]: "export async function cancelTimerAltImpl(): Promise<void> {"
+                    - generic [ref=e334]: "try {"
+                    - generic [ref=e335]: const scope = new CancellationScope();
+                    - generic [ref=e336]: const promise = scope.run(() => sleep(1));
+                    - generic [ref=e337]: scope.cancel(); // <-- Cancel the timer created in scope
+                    - generic [ref=e338]: await promise; // <-- Throws CancelledFailure
+                    - generic [ref=e339]: "} catch (e) {"
+                    - generic [ref=e340]: "if (e instanceof CancelledFailure) {"
+                    - generic [ref=e341]: console.log('Timer cancelled 👍');
+                    - generic [ref=e342]: "} else {"
+                    - generic [ref=e343]: throw e; // <-- Fail the workflow
+                    - generic [ref=e344]: "}"
+                    - generic [ref=e345]: "}"
+                    - generic [ref=e346]: "}"
+                  - button "Copy code to clipboard" [ref=e348] [cursor=pointer]:
+                    - generic [ref=e349]:
+                      - img [ref=e350]
+                      - img [ref=e352]
+                - heading "External cancellation exampleDirect link to External cancellation example" [level=3] [ref=e354]:
+                  - text: External cancellation example
+                  - link "Direct link to External cancellation example" [ref=e355] [cursor=pointer]:
+                    - /url: "#external-cancellation-example"
+                    - text: "#"
+                - paragraph [ref=e356]: The following code shows how to handle Workflow cancellation by an external client while an Activity is running.
+                - paragraph [ref=e357]:
+                  - link "packages/test/src/workflows/handle-external-workflow-cancellation-while-activity-running.ts" [ref=e358] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/handle-external-workflow-cancellation-while-activity-running.ts
+                - generic [ref=e360]:
+                  - code [ref=e362]:
+                    - generic [ref=e363]: "import { CancellationScope, proxyActivities, isCancellation } from '@temporalio/workflow';"
+                    - generic [ref=e364]: import type * as activities from '../activities';
+                    - generic [ref=e365]: "const { httpPostJSON, cleanup } = proxyActivities<typeof activities>({"
+                    - generic [ref=e366]: "startToCloseTimeout: '10m',"
+                    - generic [ref=e367]: "});"
+                    - generic [ref=e368]: "export async function handleExternalWorkflowCancellationWhileActivityRunning(url: string, data: any): Promise<void> {"
+                    - generic [ref=e369]: "try {"
+                    - generic [ref=e370]: await httpPostJSON(url, data);
+                    - generic [ref=e371]: "} catch (err) {"
+                    - generic [ref=e372]: "if (isCancellation(err)) {"
+                    - generic [ref=e373]: console.log('Workflow cancelled');
+                    - generic [ref=e374]: // Cleanup logic must be in a nonCancellable scope
+                    - generic [ref=e375]: // If we'd run cleanup outside of a nonCancellable scope it would've been cancelled
+                    - generic [ref=e376]: // before being started because the Workflow's root scope is cancelled.
+                    - generic [ref=e377]: await CancellationScope.nonCancellable(() => cleanup(url));
+                    - generic [ref=e378]: "}"
+                    - generic [ref=e379]: throw err; // <-- Fail the Workflow
+                    - generic [ref=e380]: "}"
+                    - generic [ref=e381]: "}"
+                  - generic [ref=e382]:
+                    - button "Toggle word wrap" [ref=e383] [cursor=pointer]:
+                      - img [ref=e384]
+                    - button "Copy code to clipboard" [ref=e386] [cursor=pointer]:
+                      - generic [ref=e387]:
+                        - img [ref=e388]
+                        - img [ref=e390]
+                - heading "nonCancellable exampleDirect link to nonCancellable example" [level=3] [ref=e392]:
+                  - text: nonCancellable example
+                  - link "Direct link to nonCancellable example" [ref=e393] [cursor=pointer]:
+                    - /url: "#noncancellable-example"
+                    - text: "#"
+                - paragraph [ref=e394]:
+                  - code [ref=e395]: CancellationScope.nonCancellable
+                  - text: prevents cancellation from propagating to children.
+                - paragraph [ref=e396]:
+                  - link "activities-cancellation-heartbeating/src/cancellation-scopes.ts" [ref=e397] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/samples-typescript/blob/main/activities-cancellation-heartbeating/src/cancellation-scopes.ts
+                - generic [ref=e399]:
+                  - code [ref=e401]:
+                    - generic [ref=e402]: "export async function nonCancellable(url: string): Promise<any> {"
+                    - generic [ref=e403]: // Prevent Activity from being cancelled and await completion.
+                    - generic [ref=e404]: // Note that the Workflow is completely oblivious and impervious to cancellation in this example.
+                    - generic [ref=e405]: return CancellationScope.nonCancellable(() => httpGetJSON(url));
+                    - generic [ref=e406]: "}"
+                  - button "Copy code to clipboard" [ref=e408] [cursor=pointer]:
+                    - generic [ref=e409]:
+                      - img [ref=e410]
+                      - img [ref=e412]
+                - heading "withTimeout exampleDirect link to withTimeout example" [level=3] [ref=e414]:
+                  - text: withTimeout example
+                  - link "Direct link to withTimeout example" [ref=e415] [cursor=pointer]:
+                    - /url: "#withtimeout-example"
+                    - text: "#"
+                - paragraph [ref=e416]:
+                  - text: A common operation is to cancel one or more Activities if a deadline elapses.
+                  - code [ref=e417]: withTimeout
+                  - text: creates a
+                  - code [ref=e418]: CancellationScope
+                  - text: that is automatically cancelled after a timeout.
+                - paragraph [ref=e419]:
+                  - link "packages/test/src/workflows/multiple-activities-single-timeout.ts" [ref=e420] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/multiple-activities-single-timeout.ts
+                - generic [ref=e422]:
+                  - code [ref=e424]:
+                    - generic [ref=e425]: "import { CancellationScope, proxyActivities } from '@temporalio/workflow';"
+                    - generic [ref=e426]: import type * as activities from '../activities';
+                    - generic [ref=e427]: "export function multipleActivitiesSingleTimeout(urls: string[], timeoutMs: number): Promise<any> {"
+                    - generic [ref=e428]: "const { httpGetJSON } = proxyActivities<typeof activities>({"
+                    - generic [ref=e429]: "startToCloseTimeout: timeoutMs,"
+                    - generic [ref=e430]: "});"
+                    - generic [ref=e431]: // If timeout triggers before all activities complete
+                    - generic [ref=e432]: // the Workflow will fail with a CancelledError.
+                    - generic [ref=e433]: return CancellationScope.withTimeout(timeoutMs, () => Promise.all(urls.map((url) => httpGetJSON(url))));
+                    - generic [ref=e434]: "}"
+                  - generic [ref=e435]:
+                    - button "Toggle word wrap" [ref=e436] [cursor=pointer]:
+                      - img [ref=e437]
+                    - button "Copy code to clipboard" [ref=e439] [cursor=pointer]:
+                      - generic [ref=e440]:
+                        - img [ref=e441]
+                        - img [ref=e443]
+                - heading "scope.cancelRequestedDirect link to scope.cancelRequested" [level=3] [ref=e445]:
+                  - text: scope.cancelRequested
+                  - link "Direct link to scope.cancelRequested" [ref=e446] [cursor=pointer]:
+                    - /url: "#scopecancelrequested"
+                    - text: "#"
+                - paragraph [ref=e447]:
+                  - text: You can await
+                  - code [ref=e448]: cancelRequested
+                  - text: to make a Workflow aware of cancellation while waiting on
+                  - code [ref=e449]: nonCancellable
+                  - text: scopes.
+                - paragraph [ref=e450]:
+                  - link "packages/test/src/workflows/cancel-requested-with-non-cancellable.ts" [ref=e451] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/cancel-requested-with-non-cancellable.ts
+                - generic [ref=e453]:
+                  - code [ref=e455]:
+                    - generic [ref=e456]: "import { CancellationScope, CancelledFailure, proxyActivities } from '@temporalio/workflow';"
+                    - generic [ref=e457]: import type * as activities from '../activities';
+                    - generic [ref=e458]: "const { httpGetJSON } = proxyActivities<typeof activities>({"
+                    - generic [ref=e459]: "startToCloseTimeout: '10m',"
+                    - generic [ref=e460]: "});"
+                    - generic [ref=e461]: "export async function resumeAfterCancellation(url: string): Promise<any> {"
+                    - generic [ref=e462]: "let result: any = undefined;"
+                    - generic [ref=e463]: "const scope = new CancellationScope({ cancellable: false });"
+                    - generic [ref=e464]: const promise = scope.run(() => httpGetJSON(url));
+                    - generic [ref=e465]: "try {"
+                    - generic [ref=e466]: result = await Promise.race([scope.cancelRequested, promise]);
+                    - generic [ref=e467]: "} catch (err) {"
+                    - generic [ref=e468]: "if (!(err instanceof CancelledFailure)) {"
+                    - generic [ref=e469]: throw err;
+                    - generic [ref=e470]: "}"
+                    - generic [ref=e471]: // Prevent Workflow from completing so Activity can complete
+                    - generic [ref=e472]: result = await promise;
+                    - generic [ref=e473]: "}"
+                    - generic [ref=e474]: return result;
+                    - generic [ref=e475]: "}"
+                  - button "Copy code to clipboard" [ref=e477] [cursor=pointer]:
+                    - generic [ref=e478]:
+                      - img [ref=e479]
+                      - img [ref=e481]
+                - heading "Cancellation scopes and callbacksDirect link to Cancellation scopes and callbacks" [level=3] [ref=e483]:
+                  - text: Cancellation scopes and callbacks
+                  - link "Direct link to Cancellation scopes and callbacks" [ref=e484] [cursor=pointer]:
+                    - /url: "#cancellation-scopes-and-callbacks"
+                    - text: "#"
+                - paragraph [ref=e485]:
+                  - text: Callbacks are not particularly useful in Workflows because all meaningful asynchronous operations return promises. In the rare case that code uses callbacks and needs to handle cancellation, a callback can consume the
+                  - code [ref=e486]: CancellationScope.cancelRequested
+                  - text: promise.
+                - paragraph [ref=e487]:
+                  - link "packages/test/src/workflows/cancellation-scopes-with-callbacks.ts" [ref=e488] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/cancellation-scopes-with-callbacks.ts
+                - generic [ref=e490]:
+                  - code [ref=e492]:
+                    - generic [ref=e493]: "import { CancellationScope } from '@temporalio/workflow';"
+                    - generic [ref=e494]: "function doSomething(callback: () => any) {"
+                    - generic [ref=e495]: setTimeout(callback, 10);
+                    - generic [ref=e496]: "}"
+                    - generic [ref=e497]: "export async function cancellationScopesWithCallbacks(): Promise<void> {"
+                    - generic [ref=e498]: "await new Promise<void>((resolve, reject) => {"
+                    - generic [ref=e499]: doSomething(resolve);
+                    - generic [ref=e500]: CancellationScope.current().cancelRequested.catch(reject);
+                    - generic [ref=e501]: "});"
+                    - generic [ref=e502]: "}"
+                  - button "Copy code to clipboard" [ref=e504] [cursor=pointer]:
+                    - generic [ref=e505]:
+                      - img [ref=e506]
+                      - img [ref=e508]
+                - heading "Nesting cancellation scopesDirect link to Nesting cancellation scopes" [level=3] [ref=e510]:
+                  - text: Nesting cancellation scopes
+                  - link "Direct link to Nesting cancellation scopes" [ref=e511] [cursor=pointer]:
+                    - /url: "#nesting-cancellation-scopes"
+                    - text: "#"
+                - paragraph [ref=e512]: You can achieve complex flows by nesting cancellation scopes.
+                - paragraph [ref=e513]:
+                  - link "packages/test/src/workflows/nested-cancellation.ts" [ref=e514] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/nested-cancellation.ts
+                - generic [ref=e516]:
+                  - code [ref=e518]:
+                    - generic [ref=e519]: "import { CancellationScope, proxyActivities, isCancellation } from '@temporalio/workflow';"
+                    - generic [ref=e520]: import type * as activities from '../activities';
+                    - generic [ref=e521]: "const { setup, httpPostJSON, cleanup } = proxyActivities<typeof activities>({"
+                    - generic [ref=e522]: "startToCloseTimeout: '10m',"
+                    - generic [ref=e523]: "});"
+                    - generic [ref=e524]: "export async function nestedCancellation(url: string): Promise<void> {"
+                    - generic [ref=e525]: "await CancellationScope.cancellable(async () => {"
+                    - generic [ref=e526]: await CancellationScope.nonCancellable(() => setup());
+                    - generic [ref=e527]: "try {"
+                    - generic [ref=e528]: "await CancellationScope.withTimeout(1000, () => httpPostJSON(url, { some: 'data' }));"
+                    - generic [ref=e529]: "} catch (err) {"
+                    - generic [ref=e530]: "if (isCancellation(err)) {"
+                    - generic [ref=e531]: await CancellationScope.nonCancellable(() => cleanup(url));
+                    - generic [ref=e532]: "}"
+                    - generic [ref=e533]: throw err;
+                    - generic [ref=e534]: "}"
+                    - generic [ref=e535]: "});"
+                    - generic [ref=e536]: "}"
+                  - button "Copy code to clipboard" [ref=e538] [cursor=pointer]:
+                    - generic [ref=e539]:
+                      - img [ref=e540]
+                      - img [ref=e542]
+                - heading "Sharing promises between scopesDirect link to Sharing promises between scopes" [level=3] [ref=e544]:
+                  - text: Sharing promises between scopes
+                  - link "Direct link to Sharing promises between scopes" [ref=e545] [cursor=pointer]:
+                    - /url: "#sharing-promises-between-scopes"
+                    - text: "#"
+                - paragraph [ref=e546]: Operations like Timers and Activities are cancelled by the cancellation scope they were created in. Promises returned by these operations can be awaited in different scopes.
+                - paragraph [ref=e547]:
+                  - link "activities-cancellation-heartbeating/src/cancellation-scopes.ts" [ref=e548] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/samples-typescript/blob/main/activities-cancellation-heartbeating/src/cancellation-scopes.ts
+                - generic [ref=e550]:
+                  - code [ref=e552]:
+                    - generic [ref=e553]: "export async function sharedScopes(): Promise<any> {"
+                    - generic [ref=e554]: // Start activities in the root scope
+                    - generic [ref=e555]: const p1 = httpGetJSON('http://url1.ninja');
+                    - generic [ref=e556]: const p2 = httpGetJSON('http://url2.ninja');
+                    - generic [ref=e557]: "const scopePromise = CancellationScope.cancellable(async () => {"
+                    - generic [ref=e558]: const first = await Promise.race([p1, p2]);
+                    - generic [ref=e559]: // Does not cancel activity1 or activity2 as they're linked to the root scope
+                    - generic [ref=e560]: CancellationScope.current().cancel();
+                    - generic [ref=e561]: return first;
+                    - generic [ref=e562]: "});"
+                    - generic [ref=e563]: return await scopePromise;
+                    - generic [ref=e564]: // The Activity that did not complete will effectively be cancelled when
+                    - generic [ref=e565]: "// Workflow completes unless the Activity is awaited:"
+                    - generic [ref=e566]: // await Promise.all([p1, p2]);
+                    - generic [ref=e567]: "}"
+                  - button "Copy code to clipboard" [ref=e569] [cursor=pointer]:
+                    - generic [ref=e570]:
+                      - img [ref=e571]
+                      - img [ref=e573]
+                - paragraph [ref=e575]:
+                  - link "activities-cancellation-heartbeating/src/cancellation-scopes.ts" [ref=e576] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/samples-typescript/blob/main/activities-cancellation-heartbeating/src/cancellation-scopes.ts
+                - generic [ref=e578]:
+                  - code [ref=e580]:
+                    - generic [ref=e581]: "export async function shieldAwaitedInRootScope(): Promise<any> {"
+                    - generic [ref=e582]: "let p: Promise<any> | undefined = undefined;"
+                    - generic [ref=e583]: "await CancellationScope.nonCancellable(async () => {"
+                    - generic [ref=e584]: p = httpGetJSON('http://example.com'); // <-- Start activity in nonCancellable scope without awaiting completion
+                    - generic [ref=e585]: "});"
+                    - generic [ref=e586]: // Activity is shielded from cancellation even though it is awaited in the cancellable root scope
+                    - generic [ref=e587]: return p;
+                    - generic [ref=e588]: "}"
+                  - generic [ref=e589]:
+                    - button "Toggle word wrap" [ref=e590] [cursor=pointer]:
+                      - img [ref=e591]
+                    - button "Copy code to clipboard" [ref=e593] [cursor=pointer]:
+                      - generic [ref=e594]:
+                        - img [ref=e595]
+                        - img [ref=e597]
+                - heading "Cancel an Activity from a WorkflowDirect link to Cancel an Activity from a Workflow" [level=2] [ref=e599]:
+                  - text: Cancel an Activity from a Workflow
+                  - link "Direct link to Cancel an Activity from a Workflow" [ref=e600] [cursor=pointer]:
+                    - /url: "#cancel-an-activity"
+                    - text: "#"
+                - paragraph [ref=e601]:
+                  - text: Canceling an Activity from within a Workflow requires that the Activity Execution sends Heartbeats and sets a Heartbeat Timeout. If the Heartbeat is not invoked, the Activity cannot receive a cancellation request. When any non-immediate Activity is executed, the Activity Execution should send Heartbeats and set a
+                  - link "Heartbeat Timeout" [ref=e602] [cursor=pointer]:
+                    - /url: /encyclopedia/detecting-activity-failures#heartbeat-timeout
+                  - text: to ensure that the server knows it is still working.
+                - paragraph [ref=e603]:
+                  - text: When an Activity is canceled, an error is raised in the Activity at the next available opportunity. If cleanup logic needs to be performed, it can be done in a
+                  - code [ref=e604]: finally
+                  - text: clause or inside a caught cancel error. However, for the Activity to appear canceled the exception needs to be re-thrown.
+                - generic [ref=e605]:
+                  - generic [ref=e606]:
+                    - img [ref=e608]
+                    - text: note
+                  - paragraph [ref=e611]:
+                    - text: Unlike regular Activities,
+                    - link "Local Activities" [ref=e612] [cursor=pointer]:
+                      - /url: /local-activity
+                    - text: can be canceled if they don't send Heartbeats. Local Activities are handled locally, and all the information needed to handle the cancellation logic is available in the same Worker process.
+                - heading "Reset a Workflow ExecutionDirect link to Reset a Workflow Execution" [level=2] [ref=e613]:
+                  - text: Reset a Workflow Execution
+                  - link "Direct link to Reset a Workflow Execution" [ref=e614] [cursor=pointer]:
+                    - /url: "#reset"
+                    - text: "#"
+                - paragraph [ref=e615]: Resetting a Workflow Execution terminates the current Workflow Execution and starts a new Workflow Execution from a point you specify in its Event History. Use reset when a Workflow is blocked due to a non-deterministic error or other issues that prevent it from completing.
+                - paragraph [ref=e616]: When you reset a Workflow, the Event History up to the reset point is copied to the new Workflow Execution, and the Workflow resumes from that point with the current code. Reset only works if you've fixed the underlying issue, such as removing non-deterministic code. Any progress made after the reset point will be discarded. Provide a reason when resetting, as it will be recorded in the Event History.
+                - generic [ref=e617]:
+                  - tablist [ref=e618]:
+                    - tab "Web UI" [selected] [ref=e619] [cursor=pointer]
+                    - tab "Temporal CLI" [ref=e620] [cursor=pointer]
+                  - tabpanel [ref=e622]:
+                    - list [ref=e623]:
+                      - listitem [ref=e624]: Navigate to the Workflow Execution details page,
+                      - listitem [ref=e625]:
+                        - text: Click the
+                        - strong [ref=e626]: Reset
+                        - text: button in the top right dropdown menu,
+                      - listitem [ref=e627]: Select the Event ID to reset to,
+                      - listitem [ref=e628]: Provide a reason for the reset,
+                      - listitem [ref=e629]: Confirm the reset.
+                    - paragraph [ref=e630]: The Web UI shows available reset points and creates a link to the new Workflow Execution after the reset completes.
+              - generic [ref=e631]:
+                - generic [ref=e633]:
+                  - text: "Tags:"
+                  - list [ref=e634]:
+                    - listitem [ref=e635]:
+                      - link "Workflows" [ref=e636] [cursor=pointer]:
+                        - /url: /tags/workflows
+                    - listitem [ref=e637]:
+                      - link "TypeScript SDK" [ref=e638] [cursor=pointer]:
+                        - /url: /tags/type-script-sdk
+                    - listitem [ref=e639]:
+                      - link "Temporal SDKs" [ref=e640] [cursor=pointer]:
+                        - /url: /tags/temporal-sd-ks
+                - paragraph [ref=e644]:
+                  - text: Help us make Temporal better. Contribute to our
+                  - link "documentation" [ref=e645] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation
+                  - text: .
+            - navigation "Docs pages" [ref=e647]:
+              - link "Previous « Messages" [ref=e648] [cursor=pointer]:
+                - /url: /develop/typescript/message-passing
+                - generic [ref=e649]: Previous
+                - generic [ref=e650]: « Messages
+              - link "Next Asynchronous Activity Completion »" [ref=e651] [cursor=pointer]:
+                - /url: /develop/typescript/asynchronous-activity-completion
+                - generic [ref=e652]: Next
+                - generic [ref=e653]: Asynchronous Activity Completion »
+          - list [ref=e656]:
+            - listitem [ref=e657]:
+              - link "Cancellation scopes in Typescript" [ref=e658] [cursor=pointer]:
+                - /url: "#cancellation-scopes"
+              - list [ref=e659]:
+                - listitem [ref=e660]:
+                  - link "CancelledFailure" [ref=e661] [cursor=pointer]:
+                    - /url: "#cancelledfailure"
+                - listitem [ref=e662]:
+                  - link "Internal cancellation example" [ref=e663] [cursor=pointer]:
+                    - /url: "#internal-cancellation-example"
+                - listitem [ref=e664]:
+                  - link "External cancellation example" [ref=e665] [cursor=pointer]:
+                    - /url: "#external-cancellation-example"
+                - listitem [ref=e666]:
+                  - link "nonCancellable example" [ref=e667] [cursor=pointer]:
+                    - /url: "#noncancellable-example"
+                - listitem [ref=e668]:
+                  - link "withTimeout example" [ref=e669] [cursor=pointer]:
+                    - /url: "#withtimeout-example"
+                - listitem [ref=e670]:
+                  - link "scope.cancelRequested" [ref=e671] [cursor=pointer]:
+                    - /url: "#scopecancelrequested"
+                - listitem [ref=e672]:
+                  - link "Cancellation scopes and callbacks" [ref=e673] [cursor=pointer]:
+                    - /url: "#cancellation-scopes-and-callbacks"
+                - listitem [ref=e674]:
+                  - link "Nesting cancellation scopes" [ref=e675] [cursor=pointer]:
+                    - /url: "#nesting-cancellation-scopes"
+                - listitem [ref=e676]:
+                  - link "Sharing promises between scopes" [ref=e677] [cursor=pointer]:
+                    - /url: "#sharing-promises-between-scopes"
+            - listitem [ref=e678]:
+              - link "Cancel an Activity from a Workflow" [ref=e679] [cursor=pointer]:
+                - /url: "#cancel-an-activity"
+            - listitem [ref=e680]:
+              - link "Reset a Workflow Execution" [ref=e681] [cursor=pointer]:
+                - /url: "#reset"
+    - contentinfo [ref=e682]:
+      - generic [ref=e683]:
+        - generic [ref=e684]:
+          - list [ref=e686]:
+            - listitem [ref=e687]:
+              - link "GitHub" [ref=e688] [cursor=pointer]:
+                - /url: https://github.com/temporalio
+                - text: GitHub
+                - img [ref=e689]
+            - listitem [ref=e691]:
+              - link "Twitter" [ref=e692] [cursor=pointer]:
+                - /url: https://twitter.com/temporalio
+                - text: Twitter
+                - img [ref=e693]
+            - listitem [ref=e695]:
+              - link "YouTube" [ref=e696] [cursor=pointer]:
+                - /url: https://www.youtube.com/c/Temporalio
+                - text: YouTube
+                - img [ref=e697]
+            - listitem [ref=e699]:
+              - link "About the docs" [ref=e700] [cursor=pointer]:
+                - /url: https://github.com/temporalio/documentation/blob/master/README.md
+                - text: About the docs
+                - img [ref=e701]
+          - list [ref=e704]:
+            - listitem [ref=e705]:
+              - link "Temporal Cloud" [ref=e706] [cursor=pointer]:
+                - /url: https://temporal.io/cloud
+                - text: Temporal Cloud
+                - img [ref=e707]
+            - listitem [ref=e709]:
+              - link "Meetups" [ref=e710] [cursor=pointer]:
+                - /url: https://temporal.io/community#events
+                - text: Meetups
+                - img [ref=e711]
+            - listitem [ref=e713]:
+              - link "Workshops" [ref=e714] [cursor=pointer]:
+                - /url: https://temporal.io/community#workshops
+                - text: Workshops
+                - img [ref=e715]
+            - listitem [ref=e717]:
+              - link "Support forum" [ref=e718] [cursor=pointer]:
+                - /url: https://community.temporal.io/
+                - text: Support forum
+                - img [ref=e719]
+            - listitem [ref=e721]:
+              - link "Ask an expert" [ref=e722] [cursor=pointer]:
+                - /url: https://pages.temporal.io/ask-an-expert
+                - text: Ask an expert
+                - img [ref=e723]
+          - list [ref=e726]:
+            - listitem [ref=e727]:
+              - link "Learn Temporal" [ref=e728] [cursor=pointer]:
+                - /url: https://learn.temporal.io
+                - text: Learn Temporal
+                - img [ref=e729]
+            - listitem [ref=e731]:
+              - link "Blog" [ref=e732] [cursor=pointer]:
+                - /url: https://temporal.io/blog
+                - text: Blog
+                - img [ref=e733]
+            - listitem [ref=e735]:
+              - link "Use cases" [ref=e736] [cursor=pointer]:
+                - /url: https://temporal.io/use-cases
+                - text: Use cases
+                - img [ref=e737]
+            - listitem [ref=e739]:
+              - link "Newsletter signup" [ref=e740] [cursor=pointer]:
+                - /url: https://pages.temporal.io/newsletter-subscribe
+                - text: Newsletter signup
+                - img [ref=e741]
+          - list [ref=e744]:
+            - listitem [ref=e745]:
+              - link "Security" [ref=e746] [cursor=pointer]:
+                - /url: /security
+            - listitem [ref=e747]:
+              - link "Privacy policy" [ref=e748] [cursor=pointer]:
+                - /url: https://temporal.io/global-privacy-policy
+            - listitem [ref=e749]:
+              - link "Terms of service" [ref=e750] [cursor=pointer]:
+                - /url: https://docs.temporal.io/pdf/temporal-tos-2021-07-24.pdf
+                - text: Terms of service
+                - img [ref=e751]
+            - listitem [ref=e753]:
+              - link "We're hiring" [ref=e754] [cursor=pointer]:
+                - /url: https://temporal.io/careers
+                - text: We're hiring
+                - img [ref=e755]
+        - generic [ref=e757]:
+          - link "Temporal logo" [ref=e759] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e760]
+          - generic [ref=e761]: Copyright © 2025 Temporal Technologies Inc.
+  - generic [ref=e762] [cursor=pointer]:
+    - img [ref=e764]
+    - generic: Feedback
+```

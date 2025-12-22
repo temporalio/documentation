@@ -1,0 +1,931 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - region "Skip to main content":
+      - link "Skip to main content" [ref=e3] [cursor=pointer]:
+        - /url: "#__docusaurus_skipToContent_fallback"
+    - navigation "Main" [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - link "Temporal logo" [ref=e7] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e9]
+          - link "Home" [ref=e10] [cursor=pointer]:
+            - /url: /
+          - link "Courses" [ref=e11] [cursor=pointer]:
+            - /url: https://learn.temporal.io/getting_started/
+            - text: Courses
+            - img [ref=e12]
+          - link "SDKs" [ref=e14] [cursor=pointer]:
+            - /url: /develop
+          - link "AI Cookbook" [ref=e15] [cursor=pointer]:
+            - /url: /ai-cookbook
+          - link "Code Exchange" [ref=e16] [cursor=pointer]:
+            - /url: https://temporal.io/code-exchange
+            - text: Code Exchange
+            - img [ref=e17]
+          - link "Temporal Cloud" [ref=e19] [cursor=pointer]:
+            - /url: /cloud
+        - generic [ref=e20]:
+          - button "Ask AI" [ref=e21] [cursor=pointer]:
+            - img [ref=e22]
+            - generic [ref=e26]: Ask AI
+          - button "Switch between dark and light mode (currently system mode)" [ref=e28] [cursor=pointer]:
+            - img [ref=e29]
+          - button "Search (Ctrl+K)" [ref=e32] [cursor=pointer]:
+            - generic [ref=e33]:
+              - img [ref=e34]
+              - generic [ref=e36]: Search
+            - generic [ref=e37]:
+              - img [ref=e39]
+              - generic [ref=e41]: K
+    - generic [ref=e44]:
+      - complementary [ref=e45]:
+        - generic [ref=e47]:
+          - navigation "Docs sidebar" [ref=e48]:
+            - list [ref=e49]:
+              - listitem [ref=e50]:
+                - link "Documentation Home" [ref=e51] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=e52]:
+                - link "Quickstarts" [ref=e53] [cursor=pointer]:
+                  - /url: /quickstarts
+              - listitem [ref=e54]:
+                - generic [ref=e55]:
+                  - link "Evaluate" [ref=e56] [cursor=pointer]:
+                    - /url: /evaluate/
+                  - button "Collapse sidebar category 'Evaluate'" [expanded] [ref=e57] [cursor=pointer]
+                - list [ref=e58]:
+                  - listitem [ref=e59]:
+                    - link "Why Temporal" [ref=e60] [cursor=pointer]:
+                      - /url: /evaluate/why-temporal
+                  - listitem [ref=e61]:
+                    - link "Understanding Temporal" [ref=e62] [cursor=pointer]:
+                      - /url: /evaluate/understanding-temporal
+                  - listitem [ref=e63]:
+                    - generic [ref=e64]:
+                      - link "Features" [ref=e65] [cursor=pointer]:
+                        - /url: /evaluate/development-production-features/
+                      - button "Expand sidebar category 'Features'" [ref=e66] [cursor=pointer]
+                  - listitem [ref=e67]:
+                    - generic [ref=e68]:
+                      - link "Temporal Cloud" [ref=e69] [cursor=pointer]:
+                        - /url: /cloud/introduction
+                      - button "Expand sidebar category 'Temporal Cloud'" [ref=e70] [cursor=pointer]
+                  - listitem [ref=e71]:
+                    - link "Security" [ref=e72] [cursor=pointer]:
+                      - /url: /security
+                  - listitem [ref=e73]:
+                    - link "Use Cases" [ref=e74] [cursor=pointer]:
+                      - /url: /evaluate/use-cases-design-patterns
+              - listitem [ref=e75]:
+                - generic [ref=e76]:
+                  - link "Develop" [ref=e77] [cursor=pointer]:
+                    - /url: /develop/
+                  - button "Collapse sidebar category 'Develop'" [expanded] [ref=e78] [cursor=pointer]
+                - list [ref=e79]:
+                  - listitem [ref=e80]:
+                    - generic [ref=e81]:
+                      - link "Go SDK" [ref=e82] [cursor=pointer]:
+                        - /url: /develop/go/
+                      - button "Collapse sidebar category 'Go SDK'" [expanded] [ref=e83] [cursor=pointer]
+                    - list [ref=e84]:
+                      - listitem [ref=e85]:
+                        - link "Quickstart - Setup" [ref=e86] [cursor=pointer]:
+                          - /url: /develop/go/set-up-your-local-go
+                      - listitem [ref=e87]:
+                        - link "Core application" [ref=e88] [cursor=pointer]:
+                          - /url: /develop/go/core-application
+                      - listitem [ref=e89]:
+                        - link "Temporal Client" [ref=e90] [cursor=pointer]:
+                          - /url: /develop/go/temporal-client
+                      - listitem [ref=e91]:
+                        - link "Multithreading" [ref=e92] [cursor=pointer]:
+                          - /url: /develop/go/go-sdk-multithreading
+                      - listitem [ref=e93]:
+                        - link "Namespaces" [ref=e94] [cursor=pointer]:
+                          - /url: /develop/go/namespaces
+                      - listitem [ref=e95]:
+                        - link "Testing" [ref=e96] [cursor=pointer]:
+                          - /url: /develop/go/testing-suite
+                      - listitem [ref=e97]:
+                        - link "Failure detection" [ref=e98] [cursor=pointer]:
+                          - /url: /develop/go/failure-detection
+                      - listitem [ref=e99]:
+                        - link "Messages" [ref=e100] [cursor=pointer]:
+                          - /url: /develop/go/message-passing
+                      - listitem [ref=e101]:
+                        - link "Interrupt a Workflow Execution" [ref=e102] [cursor=pointer]:
+                          - /url: /develop/go/cancellation
+                      - listitem [ref=e103]:
+                        - link "Asynchronous Activity Completion" [ref=e104] [cursor=pointer]:
+                          - /url: /develop/go/asynchronous-activity-completion
+                      - listitem [ref=e105]:
+                        - link "Versioning" [ref=e106] [cursor=pointer]:
+                          - /url: /develop/go/versioning
+                      - listitem [ref=e107]:
+                        - link "Observability" [ref=e108] [cursor=pointer]:
+                          - /url: /develop/go/observability
+                      - listitem [ref=e109]:
+                        - link "Benign exceptions" [ref=e110] [cursor=pointer]:
+                          - /url: /develop/go/benign-exceptions
+                      - listitem [ref=e111]:
+                        - link "Enriching the UI" [ref=e112] [cursor=pointer]:
+                          - /url: /develop/go/enriching-ui
+                      - listitem [ref=e113]:
+                        - link "Debugging" [ref=e114] [cursor=pointer]:
+                          - /url: /develop/go/debugging
+                      - listitem [ref=e115]:
+                        - link "Schedules" [ref=e116] [cursor=pointer]:
+                          - /url: /develop/go/schedules
+                      - listitem [ref=e117]:
+                        - link "Converters and encryption" [ref=e118] [cursor=pointer]:
+                          - /url: /develop/go/converters-and-encryption
+                      - listitem [ref=e119]:
+                        - link "Durable Timers" [ref=e120] [cursor=pointer]:
+                          - /url: /develop/go/timers
+                      - listitem [ref=e121]:
+                        - link "Temporal Nexus" [ref=e122] [cursor=pointer]:
+                          - /url: /develop/go/nexus
+                      - listitem [ref=e123]:
+                        - link "Child Workflows" [ref=e124] [cursor=pointer]:
+                          - /url: /develop/go/child-workflows
+                      - listitem [ref=e125]:
+                        - link "Continue-As-New" [ref=e126] [cursor=pointer]:
+                          - /url: /develop/go/continue-as-new
+                      - listitem [ref=e127]:
+                        - link "Side Effects" [ref=e128] [cursor=pointer]:
+                          - /url: /develop/go/side-effects
+                      - listitem [ref=e129]:
+                        - link "Selectors" [ref=e130] [cursor=pointer]:
+                          - /url: /develop/go/selectors
+                      - listitem [ref=e131]:
+                        - link "Sessions" [ref=e132] [cursor=pointer]:
+                          - /url: /develop/go/sessions
+                  - listitem [ref=e133]:
+                    - generic [ref=e134]:
+                      - link "Java SDK" [ref=e135] [cursor=pointer]:
+                        - /url: /develop/java/
+                      - button "Expand sidebar category 'Java SDK'" [ref=e136] [cursor=pointer]
+                  - listitem [ref=e137]:
+                    - generic [ref=e138]:
+                      - link "PHP SDK" [ref=e139] [cursor=pointer]:
+                        - /url: /develop/php/
+                      - button "Expand sidebar category 'PHP SDK'" [ref=e140] [cursor=pointer]
+                  - listitem [ref=e141]:
+                    - generic [ref=e142]:
+                      - link "Python SDK" [ref=e143] [cursor=pointer]:
+                        - /url: /develop/python/
+                      - button "Expand sidebar category 'Python SDK'" [ref=e144] [cursor=pointer]
+                  - listitem [ref=e145]:
+                    - generic [ref=e146]:
+                      - link "TypeScript SDK" [ref=e147] [cursor=pointer]:
+                        - /url: /develop/typescript/
+                      - button "Expand sidebar category 'TypeScript SDK'" [ref=e148] [cursor=pointer]
+                  - listitem [ref=e149]:
+                    - generic [ref=e150]:
+                      - link ".NET SDK" [ref=e151] [cursor=pointer]:
+                        - /url: /develop/dotnet/
+                      - button "Expand sidebar category '.NET SDK'" [ref=e152] [cursor=pointer]
+                  - listitem [ref=e153]:
+                    - generic [ref=e154]:
+                      - link "Ruby SDK" [ref=e155] [cursor=pointer]:
+                        - /url: /develop/ruby/
+                      - button "Expand sidebar category 'Ruby SDK'" [ref=e156] [cursor=pointer]
+                  - listitem [ref=e157]:
+                    - link "Environment configuration" [ref=e158] [cursor=pointer]:
+                      - /url: /develop/environment-configuration
+                  - listitem [ref=e159]:
+                    - link "Activity retry simulator" [ref=e160] [cursor=pointer]:
+                      - /url: /develop/activity-retry-simulator
+                  - listitem [ref=e161]:
+                    - link "Worker performance" [ref=e162] [cursor=pointer]:
+                      - /url: /develop/worker-performance
+                  - listitem [ref=e163]:
+                    - link "Safe deployments" [ref=e164] [cursor=pointer]:
+                      - /url: /develop/safe-deployments
+                  - listitem [ref=e165]:
+                    - link "Plugins guide" [ref=e166] [cursor=pointer]:
+                      - /url: /develop/plugins-guide
+              - listitem [ref=e167]:
+                - generic [ref=e168]:
+                  - link "Deploy to production" [ref=e169] [cursor=pointer]:
+                    - /url: /production-deployment
+                  - button "Collapse sidebar category 'Deploy to production'" [expanded] [ref=e170] [cursor=pointer]
+                - list [ref=e171]:
+                  - listitem [ref=e172]:
+                    - generic [ref=e173]:
+                      - link "Temporal Cloud" [ref=e174] [cursor=pointer]:
+                        - /url: /cloud
+                      - button "Expand sidebar category 'Temporal Cloud'" [ref=e175] [cursor=pointer]
+                  - listitem [ref=e176]:
+                    - link "Codecs and Encryption" [ref=e177] [cursor=pointer]:
+                      - /url: /production-deployment/data-encryption
+                  - listitem [ref=e178]:
+                    - generic [ref=e179]:
+                      - link "Self-host" [ref=e180] [cursor=pointer]:
+                        - /url: /self-hosted-guide
+                      - button "Expand sidebar category 'Self-host'" [ref=e181] [cursor=pointer]
+                  - listitem [ref=e182]:
+                    - generic [ref=e183]:
+                      - link "Worker deployments" [ref=e184] [cursor=pointer]:
+                        - /url: /production-deployment/worker-deployments
+                      - button "Expand sidebar category 'Worker deployments'" [ref=e185] [cursor=pointer]
+              - listitem [ref=e186]:
+                - generic [ref=e187]:
+                  - link "CLI (temporal)" [ref=e188] [cursor=pointer]:
+                    - /url: /cli
+                  - button "Expand sidebar category 'CLI (temporal)'" [ref=e189] [cursor=pointer]
+              - listitem [ref=e190]:
+                - generic [ref=e191]:
+                  - link "References" [ref=e192] [cursor=pointer]:
+                    - /url: /references/
+                  - button "Expand sidebar category 'References'" [ref=e193] [cursor=pointer]
+              - listitem [ref=e194]:
+                - generic [ref=e195]:
+                  - link "Troubleshooting" [ref=e196] [cursor=pointer]:
+                    - /url: /troubleshooting/
+                  - button "Expand sidebar category 'Troubleshooting'" [ref=e197] [cursor=pointer]
+              - listitem [ref=e198]:
+                - generic [ref=e199]:
+                  - link "Best Practices" [ref=e200] [cursor=pointer]:
+                    - /url: /best-practices/
+                  - button "Expand sidebar category 'Best Practices'" [ref=e201] [cursor=pointer]
+              - listitem [ref=e202]:
+                - generic [ref=e203]:
+                  - link "Encyclopedia" [ref=e204] [cursor=pointer]:
+                    - /url: /encyclopedia/
+                  - button "Expand sidebar category 'Encyclopedia'" [ref=e205] [cursor=pointer]
+              - listitem [ref=e206]:
+                - link "Glossary" [ref=e207] [cursor=pointer]:
+                  - /url: /glossary
+          - button "Collapse sidebar" [ref=e208] [cursor=pointer]:
+            - img [ref=e209]
+      - main [ref=e213]:
+        - generic [ref=e215]:
+          - generic [ref=e217]:
+            - article [ref=e218]:
+              - navigation "Breadcrumbs" [ref=e219]:
+                - list [ref=e220]:
+                  - listitem [ref=e221]:
+                    - link "Home page" [ref=e222] [cursor=pointer]:
+                      - /url: /
+                      - img [ref=e223]
+                  - listitem [ref=e225]:
+                    - link "Develop" [ref=e226] [cursor=pointer]:
+                      - /url: /develop/
+                  - listitem [ref=e227]:
+                    - link "Go SDK" [ref=e228] [cursor=pointer]:
+                      - /url: /develop/go/
+                  - listitem [ref=e229]:
+                    - generic [ref=e230]: Failure detection
+              - generic [ref=e231]:
+                - heading "Failure detection - Go SDK" [level=1] [ref=e233]
+                - paragraph [ref=e234]: "This page shows how to do the following:"
+                - list [ref=e235]:
+                  - listitem [ref=e236]:
+                    - link "Set Workflow timeouts" [ref=e237] [cursor=pointer]:
+                      - /url: "#workflow-timeouts"
+                  - listitem [ref=e238]:
+                    - link "Set a Workflow Retry Policy" [ref=e239] [cursor=pointer]:
+                      - /url: "#workflow-retries"
+                  - listitem [ref=e240]:
+                    - link "Set Activity timeouts" [ref=e241] [cursor=pointer]:
+                      - /url: "#activity-timeouts"
+                  - listitem [ref=e242]:
+                    - link "Set a custom Activity Retry Policy" [ref=e243] [cursor=pointer]:
+                      - /url: "#activity-retries"
+                - heading "Workflow timeoutsDirect link to Workflow timeouts" [level=2] [ref=e244]:
+                  - text: Workflow timeouts
+                  - link "Direct link to Workflow timeouts" [ref=e245] [cursor=pointer]:
+                    - /url: "#workflow-timeouts"
+                    - text: "#"
+                - paragraph [ref=e246]:
+                  - strong [ref=e247]: How to set Workflow timeouts using the Temporal Go SDK
+                - paragraph [ref=e248]: Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
+                - paragraph [ref=e249]:
+                  - text: Workflow timeouts are set when
+                  - link "starting the Workflow Execution" [ref=e250] [cursor=pointer]:
+                    - /url: "#workflow-timeouts"
+                  - text: .
+                - paragraph [ref=e251]: Before we continue, we want to note that we generally do not recommend setting Workflow Timeouts, because Workflows are designed to be long-running and resilient. Instead, setting a Timeout can limit its ability to handle unexpected delays or long-running processes. If you need to perform an action inside your Workflow after a specific period of time, we recommend using a Timer.
+                - list [ref=e252]:
+                  - listitem [ref=e253]:
+                    - strong [ref=e254]:
+                      - link "Workflow Execution Timeout" [ref=e255] [cursor=pointer]:
+                        - /url: /encyclopedia/detecting-workflow-failures#workflow-execution-timeout
+                    - text: "- restricts the maximum amount of time that a single Workflow Execution can be executed."
+                  - listitem [ref=e256]:
+                    - strong [ref=e257]:
+                      - link "Workflow Run Timeout" [ref=e258] [cursor=pointer]:
+                        - /url: /encyclopedia/detecting-workflow-failures#workflow-run-timeout
+                      - text: ":"
+                    - text: restricts the maximum amount of time that a single Workflow Run can last.
+                  - listitem [ref=e259]:
+                    - strong [ref=e260]:
+                      - link "Workflow Task Timeout" [ref=e261] [cursor=pointer]:
+                        - /url: /encyclopedia/detecting-workflow-failures#workflow-task-timeout
+                      - text: ":"
+                    - text: restricts the maximum amount of time that a Worker can execute a Workflow Task.
+                - paragraph [ref=e262]:
+                  - text: Create an instance of
+                  - link "StartWorkflowOptions" [ref=e263] [cursor=pointer]:
+                    - /url: https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions
+                    - code [ref=e264]: StartWorkflowOptions
+                  - text: from the
+                  - code [ref=e265]: go.temporal.io/sdk/client
+                  - text: package, set a timeout, and pass the instance to the
+                  - code [ref=e266]: ExecuteWorkflow
+                  - text: call.
+                - paragraph [ref=e267]: "Available timeouts are:"
+                - list [ref=e268]:
+                  - listitem [ref=e269]:
+                    - code [ref=e270]: WorkflowExecutionTimeout
+                  - listitem [ref=e271]:
+                    - code [ref=e272]: WorkflowRunTimeout
+                  - listitem [ref=e273]:
+                    - code [ref=e274]: WorkflowTaskTimeout
+                - generic [ref=e276]:
+                  - code [ref=e278]:
+                    - generic [ref=e279]: "workflowOptions := client.StartWorkflowOptions{"
+                    - generic [ref=e280]: // ...
+                    - generic [ref=e281]: // Set Workflow Timeout duration
+                    - generic [ref=e282]: "WorkflowExecutionTimeout: 24 * 365 * 10 * time.Hour,"
+                    - generic [ref=e283]: "// WorkflowRunTimeout: 24 * 365 * 10 * time.Hour,"
+                    - generic [ref=e284]: "// WorkflowTaskTimeout: 10 * time.Second,"
+                    - generic [ref=e285]: // ...
+                    - generic [ref=e286]: "}"
+                    - generic [ref=e287]: workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+                    - generic [ref=e288]: "if err != nil {"
+                    - generic [ref=e289]: // ...
+                    - generic [ref=e290]: "}"
+                  - button "Copy code to clipboard" [ref=e292] [cursor=pointer]:
+                    - generic [ref=e293]:
+                      - img [ref=e294]
+                      - img [ref=e296]
+                - heading "Workflow Retry PolicyDirect link to Workflow Retry Policy" [level=3] [ref=e298]:
+                  - text: Workflow Retry Policy
+                  - link "Direct link to Workflow Retry Policy" [ref=e299] [cursor=pointer]:
+                    - /url: "#workflow-retries"
+                    - text: "#"
+                - paragraph [ref=e300]:
+                  - strong [ref=e301]: How to set a Workflow Retry policy using the Go SDK.
+                - paragraph [ref=e302]: A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.
+                - paragraph [ref=e303]:
+                  - text: Use a
+                  - link "Retry Policy" [ref=e304] [cursor=pointer]:
+                    - /url: /encyclopedia/retry-policies
+                  - text: to retry a Workflow Execution in the event of a failure.
+                - paragraph [ref=e305]: Workflow Executions do not retry by default, and Retry Policies should be used with Workflow Executions only in certain situations.
+                - paragraph [ref=e306]:
+                  - text: Create an instance of a
+                  - link "RetryPolicy" [ref=e307] [cursor=pointer]:
+                    - /url: https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy
+                    - code [ref=e308]: RetryPolicy
+                  - text: from the
+                  - code [ref=e309]: go.temporal.io/sdk/temporal
+                  - text: package and provide it as the value to the
+                  - code [ref=e310]: RetryPolicy
+                  - text: field of the instance of
+                  - code [ref=e311]: StartWorkflowOptions
+                  - text: .
+                - list [ref=e312]:
+                  - listitem [ref=e313]:
+                    - text: "Type:"
+                    - link "RetryPolicy" [ref=e314] [cursor=pointer]:
+                      - /url: https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy
+                      - code [ref=e315]: RetryPolicy
+                  - listitem [ref=e316]: "Default: None"
+                - generic [ref=e318]:
+                  - code [ref=e320]:
+                    - generic [ref=e321]: "retrypolicy := &temporal.RetryPolicy{"
+                    - generic [ref=e322]: "InitialInterval: time.Second,"
+                    - generic [ref=e323]: "BackoffCoefficient: 2.0,"
+                    - generic [ref=e324]: "MaximumInterval: time.Second * 100,"
+                    - generic [ref=e325]: "}"
+                    - generic [ref=e326]: "workflowOptions := client.StartWorkflowOptions{"
+                    - generic [ref=e327]: "RetryPolicy: retrypolicy,"
+                    - generic [ref=e328]: // ...
+                    - generic [ref=e329]: "}"
+                    - generic [ref=e330]: workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+                    - generic [ref=e331]: "if err != nil {"
+                    - generic [ref=e332]: // ...
+                    - generic [ref=e333]: "}"
+                  - generic [ref=e334]:
+                    - button "Toggle word wrap" [ref=e335] [cursor=pointer]:
+                      - img [ref=e336]
+                    - button "Copy code to clipboard" [ref=e338] [cursor=pointer]:
+                      - generic [ref=e339]:
+                        - img [ref=e340]
+                        - img [ref=e342]
+                - heading "How to set Activity timeoutsDirect link to How to set Activity timeouts" [level=2] [ref=e344]:
+                  - text: How to set Activity timeouts
+                  - link "Direct link to How to set Activity timeouts" [ref=e345] [cursor=pointer]:
+                    - /url: "#activity-timeouts"
+                    - text: "#"
+                - paragraph [ref=e346]:
+                  - strong [ref=e347]: How to set Activity timeouts using the Go SDK.
+                - paragraph [ref=e348]: Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
+                - paragraph [ref=e349]: The following timeouts are available in the Activity Options.
+                - list [ref=e350]:
+                  - listitem [ref=e351]:
+                    - strong [ref=e352]:
+                      - link "Schedule-To-Close Timeout" [ref=e353] [cursor=pointer]:
+                        - /url: /encyclopedia/detecting-activity-failures#schedule-to-close-timeout
+                      - text: ":"
+                    - text: is the maximum amount of time allowed for the overall
+                    - link "Activity Execution" [ref=e354] [cursor=pointer]:
+                      - /url: /activity-execution
+                    - text: .
+                  - listitem [ref=e355]:
+                    - strong [ref=e356]:
+                      - link "Start-To-Close Timeout" [ref=e357] [cursor=pointer]:
+                        - /url: /encyclopedia/detecting-activity-failures#start-to-close-timeout
+                      - text: ":"
+                    - text: is the maximum time allowed for a single
+                    - link "Activity Task Execution" [ref=e358] [cursor=pointer]:
+                      - /url: /tasks#activity-task-execution
+                    - text: .
+                  - listitem [ref=e359]:
+                    - strong [ref=e360]:
+                      - link "Schedule-To-Start Timeout" [ref=e361] [cursor=pointer]:
+                        - /url: /encyclopedia/detecting-activity-failures#schedule-to-start-timeout
+                      - text: ":"
+                    - text: is the maximum amount of time that is allowed from when an
+                    - link "Activity Task" [ref=e362] [cursor=pointer]:
+                      - /url: /tasks#activity-task
+                    - text: is scheduled to when a
+                    - link "Worker" [ref=e363] [cursor=pointer]:
+                      - /url: /workers#worker
+                    - text: starts that Activity Task.
+                - paragraph [ref=e364]: An Activity Execution must have either the Start-To-Close or the Schedule-To-Close Timeout set.
+                - paragraph [ref=e365]:
+                  - text: To set an Activity Timeout in Go, create an instance of
+                  - code [ref=e366]: ActivityOptions
+                  - text: from the
+                  - code [ref=e367]: go.temporal.io/sdk/workflow
+                  - text: package, set the Activity Timeout field, and then use the
+                  - code [ref=e368]: WithActivityOptions()
+                  - text: API to apply the options to the instance of
+                  - code [ref=e369]: workflow.Context
+                  - text: .
+                - paragraph [ref=e370]: "Available timeouts are:"
+                - list [ref=e371]:
+                  - listitem [ref=e372]:
+                    - code [ref=e373]: StartToCloseTimeout
+                  - listitem [ref=e374]:
+                    - code [ref=e375]: ScheduleToClose
+                  - listitem [ref=e376]:
+                    - code [ref=e377]: ScheduleToStartTimeout
+                - generic [ref=e379]:
+                  - code [ref=e381]:
+                    - generic [ref=e382]: "activityoptions := workflow.ActivityOptions{"
+                    - generic [ref=e383]: // Set Activity Timeout duration
+                    - generic [ref=e384]: "ScheduleToCloseTimeout: 10 * time.Second,"
+                    - generic [ref=e385]: "// StartToCloseTimeout: 10 * time.Second,"
+                    - generic [ref=e386]: "// ScheduleToStartTimeout: 10 * time.Second,"
+                    - generic [ref=e387]: "}"
+                    - generic [ref=e388]: ctx = workflow.WithActivityOptions(ctx, activityoptions)
+                    - generic [ref=e389]: var yourActivityResult YourActivityResult
+                    - generic [ref=e390]: err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+                    - generic [ref=e391]: "if err != nil {"
+                    - generic [ref=e392]: // ...
+                    - generic [ref=e393]: "}"
+                  - generic [ref=e394]:
+                    - button "Toggle word wrap" [ref=e395] [cursor=pointer]:
+                      - img [ref=e396]
+                    - button "Copy code to clipboard" [ref=e398] [cursor=pointer]:
+                      - generic [ref=e399]:
+                        - img [ref=e400]
+                        - img [ref=e402]
+                - heading "Set a custom Activity Retry PolicyDirect link to Set a custom Activity Retry Policy" [level=3] [ref=e404]:
+                  - text: Set a custom Activity Retry Policy
+                  - link "Direct link to Set a custom Activity Retry Policy" [ref=e405] [cursor=pointer]:
+                    - /url: "#activity-retries"
+                    - text: "#"
+                - paragraph [ref=e406]:
+                  - strong [ref=e407]: How to set a custom Activity Retry Policy using the Go SDK.
+                - paragraph [ref=e408]: A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
+                - paragraph [ref=e409]:
+                  - text: Activity Executions are automatically associated with a default
+                  - link "Retry Policy" [ref=e410] [cursor=pointer]:
+                    - /url: /encyclopedia/retry-policies
+                  - text: if a custom one is not provided.
+                - paragraph [ref=e411]:
+                  - text: To set a
+                  - link "RetryPolicy" [ref=e412] [cursor=pointer]:
+                    - /url: /encyclopedia/retry-policies
+                  - text: ", create an instance of"
+                  - code [ref=e413]: ActivityOptions
+                  - text: from the
+                  - code [ref=e414]: go.temporal.io/sdk/workflow
+                  - text: package, set the
+                  - code [ref=e415]: RetryPolicy
+                  - text: field, and then use the
+                  - code [ref=e416]: WithActivityOptions()
+                  - text: API to apply the options to the instance of
+                  - code [ref=e417]: workflow.Context
+                  - text: .
+                - list [ref=e418]:
+                  - listitem [ref=e419]:
+                    - text: "Type:"
+                    - link "RetryPolicy" [ref=e420] [cursor=pointer]:
+                      - /url: https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy
+                      - code [ref=e421]: RetryPolicy
+                  - listitem [ref=e422]: "Default:"
+                - generic [ref=e424]:
+                  - code [ref=e426]:
+                    - generic [ref=e427]: "retrypolicy := &temporal.RetryPolicy{"
+                    - generic [ref=e428]: "InitialInterval: time.Second,"
+                    - generic [ref=e429]: "BackoffCoefficient: 2.0,"
+                    - generic [ref=e430]: "MaximumInterval: time.Second * 100, // 100 * InitialInterval"
+                    - generic [ref=e431]: "MaximumAttempts: 0, // Unlimited"
+                    - generic [ref=e432]: "NonRetryableErrorTypes: []string, // empty"
+                    - generic [ref=e433]: "}"
+                  - button "Copy code to clipboard" [ref=e435] [cursor=pointer]:
+                    - generic [ref=e436]:
+                      - img [ref=e437]
+                      - img [ref=e439]
+                - paragraph [ref=e441]: Providing a Retry Policy here is a customization, and overwrites individual Field defaults.
+                - generic [ref=e443]:
+                  - code [ref=e445]:
+                    - generic [ref=e446]: "retrypolicy := &temporal.RetryPolicy{"
+                    - generic [ref=e447]: "InitialInterval: time.Second,"
+                    - generic [ref=e448]: "BackoffCoefficient: 2.0,"
+                    - generic [ref=e449]: "MaximumInterval: time.Second * 100,"
+                    - generic [ref=e450]: "}"
+                    - generic [ref=e451]: "activityoptions := workflow.ActivityOptions{"
+                    - generic [ref=e452]: "RetryPolicy: retrypolicy,"
+                    - generic [ref=e453]: "}"
+                    - generic [ref=e454]: ctx = workflow.WithActivityOptions(ctx, activityoptions)
+                    - generic [ref=e455]: var yourActivityResult YourActivityResult
+                    - generic [ref=e456]: err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+                    - generic [ref=e457]: "if err != nil {"
+                    - generic [ref=e458]: // ...
+                    - generic [ref=e459]: "}"
+                  - generic [ref=e460]:
+                    - button "Toggle word wrap" [ref=e461] [cursor=pointer]:
+                      - img [ref=e462]
+                    - button "Copy code to clipboard" [ref=e464] [cursor=pointer]:
+                      - generic [ref=e465]:
+                        - img [ref=e466]
+                        - img [ref=e468]
+                - heading "Overriding the retry interval with Next Retry DelayDirect link to Overriding the retry interval with Next Retry Delay" [level=3] [ref=e470]:
+                  - text: Overriding the retry interval with Next Retry Delay
+                  - link "Direct link to Overriding the retry interval with Next Retry Delay" [ref=e471] [cursor=pointer]:
+                    - /url: "#next-retry-delay"
+                    - text: "#"
+                - paragraph [ref=e472]:
+                  - text: You may return an
+                  - link "Application Failure" [ref=e473] [cursor=pointer]:
+                    - /url: /references/failures#application-failure
+                  - text: with the
+                  - code [ref=e474]: NextRetryDelay
+                  - text: field set. This value will replace and override whatever the Retry interval would be on the Retry Policy.
+                - paragraph [ref=e475]: "For example, if in an Activity, you want to base the interval on the number of attempts:"
+                - generic [ref=e477]:
+                  - code [ref=e479]:
+                    - generic [ref=e480]: attempt := activity.GetInfo(ctx).Attempt;
+                    - generic [ref=e481]: "return temporal.NewApplicationErrorWithOptions(fmt.Sprintf(\"Something bad happened on attempt %d\", attempt), \"NextDelay\", temporal.ApplicationErrorOptions{"
+                    - generic [ref=e482]: "NextRetryDelay: 3 * time.Second * delay,"
+                    - generic [ref=e483]: "})"
+                  - generic [ref=e484]:
+                    - button "Toggle word wrap" [ref=e485] [cursor=pointer]:
+                      - img [ref=e486]
+                    - button "Copy code to clipboard" [ref=e488] [cursor=pointer]:
+                      - generic [ref=e489]:
+                        - img [ref=e490]
+                        - img [ref=e492]
+                - heading "Activity HeartbeatsDirect link to Activity Heartbeats" [level=2] [ref=e494]:
+                  - text: Activity Heartbeats
+                  - link "Direct link to Activity Heartbeats" [ref=e495] [cursor=pointer]:
+                    - /url: "#activity-heartbeats"
+                    - text: "#"
+                - paragraph [ref=e496]:
+                  - strong [ref=e497]: How to Heartbeat an Activity using the Go SDK.
+                - paragraph [ref=e498]:
+                  - text: An
+                  - link "Activity Heartbeat" [ref=e499] [cursor=pointer]:
+                    - /url: /encyclopedia/detecting-activity-failures#activity-heartbeat
+                  - text: is a ping from the
+                  - link "Worker Process" [ref=e500] [cursor=pointer]:
+                    - /url: /workers#worker-process
+                  - text: that is executing the Activity to the
+                  - link "Temporal Service" [ref=e501] [cursor=pointer]:
+                    - /url: /temporal-service
+                  - text: . Each Heartbeat informs the Temporal Service that the
+                  - link "Activity Execution" [ref=e502] [cursor=pointer]:
+                    - /url: /activity-execution
+                  - text: is making progress and the Worker has not crashed. If the Temporal Service does not receive a Heartbeat within a
+                  - link "Heartbeat Timeout" [ref=e503] [cursor=pointer]:
+                    - /url: /encyclopedia/detecting-activity-failures#heartbeat-timeout
+                  - text: time period, the Activity will be considered failed and another
+                  - link "Activity Task Execution" [ref=e504] [cursor=pointer]:
+                    - /url: /tasks#activity-task-execution
+                  - text: may be scheduled according to the Retry Policy.
+                - paragraph [ref=e505]:
+                  - text: Heartbeats may not always be sent to the Temporal Service—they may be
+                  - link "throttled" [ref=e506] [cursor=pointer]:
+                    - /url: /encyclopedia/detecting-activity-failures#throttling
+                  - text: by the Worker.
+                - paragraph [ref=e507]: Activity Cancellations are delivered to Activities from the Temporal Service when they Heartbeat. Activities that don't Heartbeat can't receive a Cancellation. Heartbeat throttling may lead to Cancellation getting delivered later than expected.
+                - paragraph [ref=e508]:
+                  - text: Heartbeats can contain a
+                  - code [ref=e509]: details
+                  - text: field describing the Activity's current progress. If an Activity gets retried, the Activity can access the
+                  - code [ref=e510]: details
+                  - text: from the last Heartbeat that was sent to the Temporal Service.
+                - paragraph [ref=e511]:
+                  - text: To
+                  - link "Heartbeat" [ref=e512] [cursor=pointer]:
+                    - /url: /encyclopedia/detecting-activity-failures#activity-heartbeat
+                  - text: in an Activity in Go, use the
+                  - code [ref=e513]: RecordHeartbeat
+                  - text: API.
+                - generic [ref=e515]:
+                  - code [ref=e517]:
+                    - generic [ref=e518]: import (
+                    - generic [ref=e519]: // ...
+                    - generic [ref=e520]: "\"go.temporal.io/sdk/workflow\""
+                    - generic [ref=e521]: // ...
+                    - generic [ref=e522]: )
+                    - generic [ref=e523]: "func YourActivityDefinition(ctx, YourActivityDefinitionParam) (YourActivityDefinitionResult, error) {"
+                    - generic [ref=e524]: // ...
+                    - generic [ref=e525]: activity.RecordHeartbeat(ctx, details)
+                    - generic [ref=e526]: // ...
+                    - generic [ref=e527]: "}"
+                  - generic [ref=e528]:
+                    - button "Toggle word wrap" [ref=e529] [cursor=pointer]:
+                      - img [ref=e530]
+                    - button "Copy code to clipboard" [ref=e532] [cursor=pointer]:
+                      - generic [ref=e533]:
+                        - img [ref=e534]
+                        - img [ref=e536]
+                - paragraph [ref=e538]:
+                  - text: When an Activity Task Execution times out due to a missed Heartbeat, the last value of the
+                  - code [ref=e539]: details
+                  - text: variable above is returned to the calling Workflow in the
+                  - code [ref=e540]: details
+                  - text: field of
+                  - code [ref=e541]: TimeoutError
+                  - text: with
+                  - code [ref=e542]: TimeoutType
+                  - text: set to
+                  - code [ref=e543]: Heartbeat
+                  - text: .
+                - paragraph [ref=e544]: "You can also Heartbeat an Activity from an external source:"
+                - generic [ref=e546]:
+                  - code [ref=e548]:
+                    - generic [ref=e549]: // The client is a heavyweight object that should be created once per process.
+                    - generic [ref=e550]: "temporalClient, err := client.Dial(client.Options{})"
+                    - generic [ref=e551]: // Record heartbeat.
+                    - generic [ref=e552]: err := temporalClient.RecordActivityHeartbeat(ctx, taskToken, details)
+                  - button "Copy code to clipboard" [ref=e554] [cursor=pointer]:
+                    - generic [ref=e555]:
+                      - img [ref=e556]
+                      - img [ref=e558]
+                - paragraph [ref=e560]:
+                  - text: The parameters of the
+                  - code [ref=e561]: RecordActivityHeartbeat
+                  - text: "function are:"
+                - list [ref=e562]:
+                  - listitem [ref=e563]:
+                    - code [ref=e564]: taskToken
+                    - text: ": The value of the binary"
+                    - code [ref=e565]: TaskToken
+                    - text: field of the
+                    - code [ref=e566]: ActivityInfo
+                    - text: struct retrieved inside the Activity.
+                  - listitem [ref=e567]:
+                    - code [ref=e568]: details
+                    - text: ": The serializable payload containing progress information."
+                - paragraph [ref=e569]: "If an Activity Execution Heartbeats its progress before it failed, the retry attempt will have access to the progress information, so that the Activity Execution can resume from the failed state. Here's an example of how this can be implemented:"
+                - generic [ref=e571]:
+                  - code [ref=e573]:
+                    - generic [ref=e574]: "func SampleActivity(ctx context.Context, inputArg InputParams) error {"
+                    - generic [ref=e575]: startIdx := inputArg.StartIndex
+                    - generic [ref=e576]: "if activity.HasHeartbeatDetails(ctx) {"
+                    - generic [ref=e577]: // Recover from finished progress.
+                    - generic [ref=e578]: var finishedIndex int
+                    - generic [ref=e579]: "if err := activity.GetHeartbeatDetails(ctx, &finishedIndex); err == nil {"
+                    - generic [ref=e580]: startIdx = finishedIndex + 1 // Start from next one.
+                    - generic [ref=e581]: "}"
+                    - generic [ref=e582]: "}"
+                    - generic [ref=e583]: // Normal Activity logic...
+                    - generic [ref=e584]: "for i:=startIdx; i<inputArg.EndIdx; i++ {"
+                    - generic [ref=e585]: // Code for processing item i goes here...
+                    - generic [ref=e586]: activity.RecordHeartbeat(ctx, i) // Report progress.
+                    - generic [ref=e587]: "}"
+                    - generic [ref=e588]: "}"
+                  - button "Copy code to clipboard" [ref=e590] [cursor=pointer]:
+                    - generic [ref=e591]:
+                      - img [ref=e592]
+                      - img [ref=e594]
+                - heading "Set a Heartbeat TimeoutDirect link to Set a Heartbeat Timeout" [level=3] [ref=e596]:
+                  - text: Set a Heartbeat Timeout
+                  - link "Direct link to Set a Heartbeat Timeout" [ref=e597] [cursor=pointer]:
+                    - /url: "#heartbeat-timeout"
+                    - text: "#"
+                - paragraph [ref=e598]:
+                  - strong [ref=e599]: How to set a Heartbeat Timeout for an Activity using the Go SDK.
+                - paragraph [ref=e600]:
+                  - text: A
+                  - link "Heartbeat Timeout" [ref=e601] [cursor=pointer]:
+                    - /url: /encyclopedia/detecting-activity-failures#heartbeat-timeout
+                  - text: works in conjunction with
+                  - link "Activity Heartbeats" [ref=e602] [cursor=pointer]:
+                    - /url: /encyclopedia/detecting-activity-failures#activity-heartbeat
+                  - text: .
+                - paragraph [ref=e603]:
+                  - text: To set a
+                  - link "Heartbeat Timeout" [ref=e604] [cursor=pointer]:
+                    - /url: /encyclopedia/detecting-activity-failures#heartbeat-timeout
+                  - text: ", Create an instance of"
+                  - code [ref=e605]: ActivityOptions
+                  - text: from the
+                  - code [ref=e606]: go.temporal.io/sdk/workflow
+                  - text: package, set the
+                  - code [ref=e607]: RetryPolicy
+                  - text: field, and then use the
+                  - code [ref=e608]: WithActivityOptions()
+                  - text: API to apply the options to the instance of
+                  - code [ref=e609]: workflow.Context
+                  - text: .
+                - generic [ref=e611]:
+                  - code [ref=e613]:
+                    - generic [ref=e614]: "activityoptions := workflow.ActivityOptions{"
+                    - generic [ref=e615]: "HeartbeatTimeout: 10 * time.Second,"
+                    - generic [ref=e616]: "}"
+                    - generic [ref=e617]: ctx = workflow.WithActivityOptions(ctx, activityoptions)
+                    - generic [ref=e618]: var yourActivityResult YourActivityResult
+                    - generic [ref=e619]: err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+                    - generic [ref=e620]: "if err != nil {"
+                    - generic [ref=e621]: // ...
+                    - generic [ref=e622]: "}"
+                  - generic [ref=e623]:
+                    - button "Toggle word wrap" [ref=e624] [cursor=pointer]:
+                      - img [ref=e625]
+                    - button "Copy code to clipboard" [ref=e627] [cursor=pointer]:
+                      - generic [ref=e628]:
+                        - img [ref=e629]
+                        - img [ref=e631]
+              - generic [ref=e633]:
+                - generic [ref=e635]:
+                  - text: "Tags:"
+                  - list [ref=e636]:
+                    - listitem [ref=e637]:
+                      - link "Activities" [ref=e638] [cursor=pointer]:
+                        - /url: /tags/activities
+                    - listitem [ref=e639]:
+                      - link "Workflows" [ref=e640] [cursor=pointer]:
+                        - /url: /tags/workflows
+                    - listitem [ref=e641]:
+                      - link "Failures" [ref=e642] [cursor=pointer]:
+                        - /url: /tags/failures
+                    - listitem [ref=e643]:
+                      - link "Errors" [ref=e644] [cursor=pointer]:
+                        - /url: /tags/errors
+                    - listitem [ref=e645]:
+                      - link "Go SDK" [ref=e646] [cursor=pointer]:
+                        - /url: /tags/go-sdk
+                    - listitem [ref=e647]:
+                      - link "Temporal SDKs" [ref=e648] [cursor=pointer]:
+                        - /url: /tags/temporal-sd-ks
+                - paragraph [ref=e652]:
+                  - text: Help us make Temporal better. Contribute to our
+                  - link "documentation" [ref=e653] [cursor=pointer]:
+                    - /url: https://github.com/temporalio/documentation
+                  - text: .
+            - navigation "Docs pages" [ref=e655]:
+              - link "Previous « Testing" [ref=e656] [cursor=pointer]:
+                - /url: /develop/go/testing-suite
+                - generic [ref=e657]: Previous
+                - generic [ref=e658]: « Testing
+              - link "Next Messages »" [ref=e659] [cursor=pointer]:
+                - /url: /develop/go/message-passing
+                - generic [ref=e660]: Next
+                - generic [ref=e661]: Messages »
+          - list [ref=e664]:
+            - listitem [ref=e665]:
+              - link "Workflow timeouts" [ref=e666] [cursor=pointer]:
+                - /url: "#workflow-timeouts"
+              - list [ref=e667]:
+                - listitem [ref=e668]:
+                  - link "Workflow Retry Policy" [ref=e669] [cursor=pointer]:
+                    - /url: "#workflow-retries"
+            - listitem [ref=e670]:
+              - link "How to set Activity timeouts" [ref=e671] [cursor=pointer]:
+                - /url: "#activity-timeouts"
+              - list [ref=e672]:
+                - listitem [ref=e673]:
+                  - link "Set a custom Activity Retry Policy" [ref=e674] [cursor=pointer]:
+                    - /url: "#activity-retries"
+                - listitem [ref=e675]:
+                  - link "Overriding the retry interval with Next Retry Delay" [ref=e676] [cursor=pointer]:
+                    - /url: "#next-retry-delay"
+            - listitem [ref=e677]:
+              - link "Activity Heartbeats" [ref=e678] [cursor=pointer]:
+                - /url: "#activity-heartbeats"
+              - list [ref=e679]:
+                - listitem [ref=e680]:
+                  - link "Set a Heartbeat Timeout" [ref=e681] [cursor=pointer]:
+                    - /url: "#heartbeat-timeout"
+    - contentinfo [ref=e682]:
+      - generic [ref=e683]:
+        - generic [ref=e684]:
+          - list [ref=e686]:
+            - listitem [ref=e687]:
+              - link "GitHub" [ref=e688] [cursor=pointer]:
+                - /url: https://github.com/temporalio
+                - text: GitHub
+                - img [ref=e689]
+            - listitem [ref=e691]:
+              - link "Twitter" [ref=e692] [cursor=pointer]:
+                - /url: https://twitter.com/temporalio
+                - text: Twitter
+                - img [ref=e693]
+            - listitem [ref=e695]:
+              - link "YouTube" [ref=e696] [cursor=pointer]:
+                - /url: https://www.youtube.com/c/Temporalio
+                - text: YouTube
+                - img [ref=e697]
+            - listitem [ref=e699]:
+              - link "About the docs" [ref=e700] [cursor=pointer]:
+                - /url: https://github.com/temporalio/documentation/blob/master/README.md
+                - text: About the docs
+                - img [ref=e701]
+          - list [ref=e704]:
+            - listitem [ref=e705]:
+              - link "Temporal Cloud" [ref=e706] [cursor=pointer]:
+                - /url: https://temporal.io/cloud
+                - text: Temporal Cloud
+                - img [ref=e707]
+            - listitem [ref=e709]:
+              - link "Meetups" [ref=e710] [cursor=pointer]:
+                - /url: https://temporal.io/community#events
+                - text: Meetups
+                - img [ref=e711]
+            - listitem [ref=e713]:
+              - link "Workshops" [ref=e714] [cursor=pointer]:
+                - /url: https://temporal.io/community#workshops
+                - text: Workshops
+                - img [ref=e715]
+            - listitem [ref=e717]:
+              - link "Support forum" [ref=e718] [cursor=pointer]:
+                - /url: https://community.temporal.io/
+                - text: Support forum
+                - img [ref=e719]
+            - listitem [ref=e721]:
+              - link "Ask an expert" [ref=e722] [cursor=pointer]:
+                - /url: https://pages.temporal.io/ask-an-expert
+                - text: Ask an expert
+                - img [ref=e723]
+          - list [ref=e726]:
+            - listitem [ref=e727]:
+              - link "Learn Temporal" [ref=e728] [cursor=pointer]:
+                - /url: https://learn.temporal.io
+                - text: Learn Temporal
+                - img [ref=e729]
+            - listitem [ref=e731]:
+              - link "Blog" [ref=e732] [cursor=pointer]:
+                - /url: https://temporal.io/blog
+                - text: Blog
+                - img [ref=e733]
+            - listitem [ref=e735]:
+              - link "Use cases" [ref=e736] [cursor=pointer]:
+                - /url: https://temporal.io/use-cases
+                - text: Use cases
+                - img [ref=e737]
+            - listitem [ref=e739]:
+              - link "Newsletter signup" [ref=e740] [cursor=pointer]:
+                - /url: https://pages.temporal.io/newsletter-subscribe
+                - text: Newsletter signup
+                - img [ref=e741]
+          - list [ref=e744]:
+            - listitem [ref=e745]:
+              - link "Security" [ref=e746] [cursor=pointer]:
+                - /url: /security
+            - listitem [ref=e747]:
+              - link "Privacy policy" [ref=e748] [cursor=pointer]:
+                - /url: https://temporal.io/global-privacy-policy
+            - listitem [ref=e749]:
+              - link "Terms of service" [ref=e750] [cursor=pointer]:
+                - /url: https://docs.temporal.io/pdf/temporal-tos-2021-07-24.pdf
+                - text: Terms of service
+                - img [ref=e751]
+            - listitem [ref=e753]:
+              - link "We're hiring" [ref=e754] [cursor=pointer]:
+                - /url: https://temporal.io/careers
+                - text: We're hiring
+                - img [ref=e755]
+        - generic [ref=e757]:
+          - link "Temporal logo" [ref=e759] [cursor=pointer]:
+            - /url: https://temporal.io
+            - img "Temporal logo" [ref=e760]
+          - generic [ref=e761]: Copyright © 2025 Temporal Technologies Inc.
+  - generic [ref=e762] [cursor=pointer]:
+    - img [ref=e764]
+    - generic: Feedback
+```
