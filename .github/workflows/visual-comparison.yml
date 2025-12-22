@@ -249,6 +249,12 @@ jobs:
         if: steps.check-branch.outputs.exists == 'false'
         uses: actions/checkout@v5
 
+      - name: Set git user
+        if: steps.check-branch.outputs.exists == 'false'
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
       - name: Create gh-pages branch
         if: steps.check-branch.outputs.exists == 'false'
         run: |
@@ -264,7 +270,8 @@ jobs:
         with:
           ref: gh-pages
 
-      - name: Set git user
+      - name: Set git user for existing branch
+        if: steps.check-branch.outputs.exists == 'true'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
