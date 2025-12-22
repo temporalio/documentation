@@ -1,0 +1,131 @@
+name: Screenshot Capture
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'  # Weekly on Sunday at midnight UTC
+  workflow_dispatch:
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  PALETTE_API_KEY: ${{ secrets.PALETTE_API_KEY }}
+  FULLSTORY_ORGID: ${{ secrets.FULLSTORY_ORGID }}
+  ALGOLIA_ADMIN_KEY: ${{ secrets.ALGOLIA_ADMIN_KEY }}
+  ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
+  ALGOLIA_SEARCH_KEY: ${{ secrets.ALGOLIA_SEARCH_KEY }}
+  ALGOLIA_INDEX_NAME: ${{ secrets.ALGOLIA_INDEX_NAME }}
+  DISABLE_PACKS_INTEGRATIONS: ${{ secrets.DISABLE_PACKS_INTEGRATIONS }}
+  DISABLE_SECURITY_INTEGRATIONS: ${{ secrets.DISABLE_SECURITY_INTEGRATIONS }}
+  SHOW_LAST_UPDATE_TIME: ${{ secrets.SHOW_LAST_UPDATE_TIME }}
+  DSO_AUTH_TOKEN: ${{ secrets.DSO_AUTH_TOKEN }}
+  SEERS_CMP_KEY: ${{ secrets.SEERS_CMP_KEY }}
+
+jobs:
+  create-assets:
+    name: asset-builds
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: 'yarn'
+
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Build Website
+        run: |
+          touch .env
+          yarn build
+
+      - name: Upload Build
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: build/
+          if-no-files-found: error
+          retention-days: 1
+
+  visual-snapshots:
+    runs-on: ubuntu-latest
+    needs: [create-assets]
+    permissions:
+      contents: read
+      actions: read
+    strategy:
+      fail-fast: false
+      matrix:
+        shardIndex: [1, 2, 3, 4]
+        shardTotal: [4]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: 'yarn'
+
+      - name: Install Dependencies
+        uses: Wandalen/wretry.action@v3
+        with:
+          command: yarn install --frozen-lockfile
+          attempt_limit: 3
+          attempt_delay: 60000
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Download build artifact
+        uses: Wandalen/wretry.action@v3
+        with:
+          attempt_limit: 3
+          attempt_delay: 60000
+          action: actions/download-artifact@v5
+          with: |
+            name: build
+            path: build
+
+      - name: Take Screenshots with Playwright
+        env:
+          PLAYWRIGHT_SNAPSHOT_DIR: ${{ github.workspace }}/screenshots
+        run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} --update-snapshots || exit 0
+
+      - name: Upload Screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-${{ matrix.shardIndex }}
+          path: screenshots/
+          if-no-files-found: error
+          retention-days: 3
+
+  merge-snapshots:
+    name: Merge Screenshots
+    runs-on: ubuntu-latest
+    needs: [visual-snapshots]
+    permissions:
+      actions: read
+    steps:
+      - name: Download screenshots
+        uses: actions/download-artifact@v5
+        with:
+          path: screenshots
+          pattern: screenshots-*
+          merge-multiple: true
+
+      - name: Upload merged screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: screenshots/
+          if-no-files-found: error
+          retention-days: 14

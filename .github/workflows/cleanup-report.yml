@@ -1,0 +1,59 @@
+name: Delete Visual Tests Reports
+
+on:
+  delete:
+    branches-ignore: [master, main, gh-pages]
+
+concurrency:
+  group: ${{ github.event.ref }}
+  cancel-in-progress: true
+
+jobs:
+  delete_reports:
+    name: Delete Reports
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      BRANCH_REPORTS_DIR: reports/${{ github.event.ref }}
+    steps:
+      - name: Checkout GitHub Pages Branch
+        uses: actions/checkout@v5
+        with:
+          ref: gh-pages
+
+      - name: Set Git User
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Check for workflow reports
+        run: |
+          if [ -d "$BRANCH_REPORTS_DIR" ] && [ "$(ls -A $BRANCH_REPORTS_DIR)" ]; then
+            echo "BRANCH_REPORTS_EXIST=true" >> "$GITHUB_ENV"
+          else
+            echo "BRANCH_REPORTS_EXIST=false" >> "$GITHUB_ENV"
+          fi
+
+      - name: Delete reports from repo for branch
+        if: ${{ env.BRANCH_REPORTS_EXIST == 'true' }}
+        timeout-minutes: 3
+        env:
+          DELETED_BRANCH: ${{ github.event.ref }}
+        run: |
+          cd "$(dirname "$BRANCH_REPORTS_DIR")"
+          rm -rf "${DELETED_BRANCH}"
+          git add .
+          git commit -m "workflow: remove all reports for branch ${DELETED_BRANCH}"
+          while true; do
+            git pull --rebase
+            if [ $? -ne 0 ]; then
+              echo "Failed to rebase. Please review manually."
+              exit 1
+            fi
+            git push
+            if [ $? -eq 0 ]; then
+              echo "Successfully pushed HTML reports to repo."
+              exit 0
+            fi
+          done
