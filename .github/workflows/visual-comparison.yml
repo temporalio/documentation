@@ -262,7 +262,7 @@ jobs:
           git rm -rf . 2>/dev/null || true
           git clean -fdx
           git commit --allow-empty -m "Initialize gh-pages branch"
-          git push origin gh-pages
+          git push -u origin gh-pages
 
       - name: Checkout GitHub Pages branch
         if: steps.check-branch.outputs.exists == 'true'
@@ -291,13 +291,13 @@ jobs:
           git add .
           git commit -m "workflow: add HTML report for run-id ${RUN_ID} (attempt: ${RUN_ATTEMPT})"
           while true; do
-            git pull --rebase
+            git pull --rebase origin gh-pages
             if [ $? -ne 0 ]; then
               echo "Failed to rebase. Please review manually."
               exit 1
             fi
 
-            git push
+            git push origin gh-pages
             if [ $? -eq 0 ]; then
               echo "Successfully pushed HTML report to repo."
               exit 0
