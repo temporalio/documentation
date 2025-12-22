@@ -262,16 +262,15 @@ jobs:
           git rm -rf . 2>/dev/null || true
           git clean -fdx
           git commit --allow-empty -m "Initialize gh-pages branch"
-          git push -u origin gh-pages
+          # Try to push, but don't fail if branch was created by another run
+          git push -u origin gh-pages || echo "Branch already exists, continuing..."
 
-      - name: Checkout GitHub Pages branch
-        if: steps.check-branch.outputs.exists == 'true'
+      - name: Checkout GitHub Pages branch (for existing or just created)
         uses: actions/checkout@v5
         with:
           ref: gh-pages
 
-      - name: Set git user for existing branch
-        if: steps.check-branch.outputs.exists == 'true'
+      - name: Set git user
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
