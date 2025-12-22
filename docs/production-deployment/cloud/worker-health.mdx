@@ -26,6 +26,10 @@ keywords:
   - workflow task execution size
   - temporal worker resources
 ---
+import { LANGUAGE_TAB_GROUP, getLanguageLabel } from '@site/src/constants/languageTabs';
+import SdkTabs from '@site/src/components';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 This page is a guide to monitoring a Temporal Worker fleet and covers the following scenarios:
 
@@ -413,31 +417,12 @@ Workers, the Server can obtain an accurate count of Workers, understand Worker p
 Use the Temporal CLI to view information about all Workers connected to Temporal Server. Use `temporal worker describe` to see details of a specific Worker. Use `temporal worker list` to get a complete list of all connected Workers.
 
 If you wish to disable Worker heartbeating (features above will not work with this feature disabled) or set heartbeating to be more frequent than every 60 seconds (allowed range is 1s to 60s), set the configuration relevant to your SDK.
-
-#### Python SDK
-
-Disable Worker heartbeats
-
-```
-runtime = Runtime(
-    telemetry=TelemetryConfig(),
-    worker_heartbeat_interval=None,
-)
-```
-Set Worker heartbeats to every 30 seconds
-
-```
-runtime = Runtime(
-    telemetry=TelemetryConfig(),
-    worker_heartbeat_interval=timedelta(seconds=30),
-)
-```
-After setting the configuration, then connect to Temporal Server
-
-```
-client = await Client.connect(
-    "localhost:7233",
-    runtime=runtime,
-)
-```
+<SdkTabs hideUnsupportedLanguages>
+<SdkTabs.Python>
+Use `TelemetryConfig()` to adjust heartbeat settings. See the [Python SDK documentation](https://python.temporal.io/temporalio.bridge.runtime.RuntimeOptions.html#worker_heartbeat_interval_millis) for more details.
+</SdkTabs.Python>
+<SdkTabs.Ruby>
+Add configurations to `Runtime()` to adjust heartbeat settings. See the [Ruby SDK documentation](https://ruby.temporal.io/Temporalio/Runtime.html) for more details.
+</SdkTabs.Ruby>
+</SdkTabs>
 
