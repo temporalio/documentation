@@ -236,21 +236,33 @@ jobs:
       pull-requests: write
     continue-on-error: true
     steps:
+      - name: Check if gh-pages branch exists
+        id: check-branch
+        run: |
+          if git ls-remote --exit-code --heads origin gh-pages; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Checkout repository
+        if: steps.check-branch.outputs.exists == 'false'
+        uses: actions/checkout@v5
+
+      - name: Create gh-pages branch
+        if: steps.check-branch.outputs.exists == 'false'
+        run: |
+          git checkout --orphan gh-pages
+          git rm -rf . 2>/dev/null || true
+          git clean -fdx
+          git commit --allow-empty -m "Initialize gh-pages branch"
+          git push origin gh-pages
+
       - name: Checkout GitHub Pages branch
+        if: steps.check-branch.outputs.exists == 'true'
         uses: actions/checkout@v5
         with:
           ref: gh-pages
-          fetch-depth: 0
-        continue-on-error: true
-        id: checkout-gh-pages
-
-      - name: Create gh-pages branch if it doesn't exist
-        if: steps.checkout-gh-pages.outcome == 'failure'
-        run: |
-          git checkout --orphan gh-pages
-          git rm -rf .
-          git commit --allow-empty -m "Initialize gh-pages branch"
-          git push origin gh-pages
 
       - name: Set git user
         run: |
