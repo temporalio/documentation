@@ -93,7 +93,7 @@ Only practical for a small number (< 50) of high-value tenants due to operationa
 - Expensive at scale
 
 <RelatedReadContainer>
-  <RelatedReadItem path="/evaluate/development-production-features/multi-tenant#namespace-isolation" text="Namespace Isolation in Temporal Cloud" archetype="cloud-guide" />
+  <RelatedReadItem path="/evaluate/development-production-features/multi-tenancy#namespace-isolation" text="Namespace Isolation in Temporal Cloud" archetype="cloud-guide" />
 </RelatedReadContainer>
 
 ## Task Queue isolation pattern
@@ -247,7 +247,6 @@ Strategies:
 - Implement per-tenant rate limiting in your application
 - Move problematic tenants to dedicated Workers
 - Use [Workflow](/workflows)/[Activity](/activities) timeouts aggressively
-- Consider [priority and fairness](/cloud/priority-and-fairness) features
 
 ### Tenant lifecycle
 
@@ -259,7 +258,7 @@ Plan for:
 
 ### Search Attributes
 
-Use [Search Attributes](/visibility#search-attribute) to enable tenant-scoped queries:
+Use [Search Attributes](/search-attribute) to enable tenant-scoped queries:
 ```go
 // Add tenant ID as a Search Attribute
 searchAttributes := map[string]interface{}{
@@ -275,7 +274,7 @@ TenantId = 'customer-123' AND ExecutionStatus = 'Running'
 ## Related resources
 
 <RelatedReadContainer>
-  <RelatedReadItem path="/evaluate/development-production-features/multi-tenant" text="Multi-tenancy Overview" archetype="feature-guide" />
+  <RelatedReadItem path="/evaluate/development-production-features/multi-tenancy" text="Multi-tenancy Overview" archetype="feature-guide" />
   <RelatedReadItem path="/cloud/limits" text="Temporal Cloud Limits" archetype="cloud-guide" />
   <RelatedReadItem path="/visibility" text="Visibility and Search Attributes" archetype="feature-guide" />
 </RelatedReadContainer>
