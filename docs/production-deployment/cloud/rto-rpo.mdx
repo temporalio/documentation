@@ -55,7 +55,7 @@ Temporal has put extensive work into tools and processes that minimize the recov
 
 - Best-in-class data replication technology that keeps the replica up to date with the active.
 
-- Monitoring, alerting, and internal SLOs on the replication lag across all Temporal Cloud Namespaces.
+- Monitoring, alerting, and internal SLOs on the replication lag for every Temporal Cloud Namespace.
 
 However, user actions on a Namespace can affect the recovery point. For example, suddenly "bursting" into much higher throughput than your Namespace has seen before could create a period of replication lag where the replica falls behind the active. For this reason, Temporal exposes the [replication lag](/cloud/high-availability/monitoring#replication-lag-metric) metric that you can monitor on your Namespace. This metric approximates the recovery point the Namespace would achieve in a "worst case" failure at that given moment. Temporal recommends monitoring your replication lag and alerting should it rise too high, e.g., above 1 minute.
 
