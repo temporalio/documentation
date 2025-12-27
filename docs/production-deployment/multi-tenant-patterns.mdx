@@ -19,7 +19,7 @@ import { RelatedReadContainer, RelatedReadItem } from '@site/src/components';
 
 **How do I build a multi-tenant application using Temporal?**
 
-Many SaaS providers and large enterprise platform teams use a single Temporal [Namespace](/namespaces) to power their multi-tenant applications. This approach maximizes resource efficiency while maintaining logical separation between tenants.
+Many SaaS providers and large enterprise platform teams use a single Temporal [Namespace](/namespaces) with [per-tenant Task Queues](#1-task-queues-per-tenant-recommended) to power their multi-tenant applications. This approach maximizes resource efficiency while maintaining logical separation between tenants.
 
 This guide covers architectural patterns, design considerations, and practical examples for building multi-tenant applications with Temporal.
 
@@ -136,7 +136,7 @@ workflowOptions := client.StartWorkflowOptions{
 Consider creating an API or service that:
 - Maps tenant IDs to Task Queue names
 - Tracks which [Workers](/workers) are handling which tenants
-- Provides this information to both your application and Workers
+- Allows both your application and Workers to read the mappings of 1. Tenant IDs to Task Queues and 2. Workers to tenants.
 
 ### Capacity planning
 
@@ -210,6 +210,8 @@ Automate tenant onboarding with a Temporal [Workflow](/workflows):
 
 :::note
 These are theoretical calculations based on SDK defaults. **Always perform load testing** to determine actual capacity for your specific workload. Monitor CPU, memory, and Temporal metrics during testing.
+
+While testing, also pay attention to your [metrics capacity and cardinality](/production-deployment/cloud/metrics/openmetrics/api-reference#managing-high-cardinality).
 :::
 
 ### Worker assignment strategies
