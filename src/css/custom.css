@@ -1340,16 +1340,3 @@ code {
     height: 14px;
   }
 }
-
-/* TEMPORARY TEST: Very visible red navbar for visual comparison testing */
-.navbar {
-  background-color: #ff0000 !important;
-}
-
-.navbar__title {
-  color: #ffffff !important;
-}
-
-.navbar__item {
-  color: #ffffff !important;
-}
