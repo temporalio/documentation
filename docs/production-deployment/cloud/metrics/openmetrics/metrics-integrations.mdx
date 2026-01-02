@@ -40,6 +40,11 @@ Grafana provides a serverless integration with the OpenMetrics endpoint for Graf
 for visualizing the metrics in Grafana Cloud. See the [integration page](https://grafana.com/docs/grafana-cloud/monitor-infrastructure/integrations/integration-reference/integration-temporal/)
  for more details.
 
+### ClickStack
+
+ClickHouse provides an integration with the OpenMetrics endpoint for ClickStack. This integration uses an OpenTelemetry collector to read from the OpenMetrics endpoint, ingest data into ClickHouse, and
+includes a default dashboard to visualize the data with HyperDX. See the [integration page](https://clickhouse.com/docs/use-cases/observability/clickstack/integrations/temporal-metrics) for more details.
+
 ### Prometheus \+ Grafana
 
 Self hosted Prometheus can be used to scrape the OpenMetrics endpoint.

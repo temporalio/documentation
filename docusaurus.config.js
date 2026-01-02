@@ -87,12 +87,12 @@ module.exports = async function createConfigAsync() {
             activeBasePath: 'none',
           },
           {
-            label: 'Start learning',
+            label: 'Courses',
             href: 'https://learn.temporal.io/getting_started/',
             right: 'left',
           },
           {
-            label: 'Start building',
+            label: 'SDKs',
             href: '/develop',
             right: 'left',
           },
@@ -292,6 +292,8 @@ module.exports = async function createConfigAsync() {
         'data-website-id': '91a88508-9cdc-441f-b1df-37aa9329e6bc',
         'data-project-name': 'Temporal',
         'data-project-color': '#000000',
+        'data-mcp-enabled': 'true',
+        'data-mcp-server-url': 'https://temporal.mcp.kapa.ai',
         'data-project-logo': 'https://avatars.githubusercontent.com/u/56493103?s=280&v=4',
         'data-modal-title': "Temporal's AI developer assistant",
         'data-user-analytics-fingerprint-enabled': true,

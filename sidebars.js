@@ -3,11 +3,6 @@ module.exports = {
     'index',
     'quickstarts',
     {
-      type: 'link',
-      label: 'Courses and Tutorials',
-      href: 'https://learn.temporal.io/',
-    },
-    {
       type: 'category',
       label: 'Evaluate',
       collapsed: false,
@@ -250,6 +245,7 @@ module.exports = {
             'develop/typescript/child-workflows',
             'develop/typescript/continue-as-new',
             'develop/typescript/interceptors',
+            'develop/typescript/ai-sdk',
           ],
         },
         {
@@ -439,6 +435,7 @@ module.exports = {
               ],
             },
             'production-deployment/cloud/rpo-rto',
+            'production-deployment/cloud/notifications',
             {
               type: 'category',
               label: 'Temporal Nexus',
@@ -573,7 +570,6 @@ module.exports = {
         'cli/setup-cli',
         'cli/activity',
         'cli/batch',
-        'cli/cmd-options',
         'cli/config',
         'cli/env',
         'cli/operator',
@@ -632,11 +628,11 @@ module.exports = {
         id: 'best-practices/index',
       },
       items: [
-        "best-practices/managing-namespace",
-        "best-practices/managing-aps-limits",
-        "best-practices/cloud-access-control",
-        "best-practices/security-controls",
-        "best-practices/worker",
+        'best-practices/managing-namespace',
+        'best-practices/managing-aps-limits',
+        'best-practices/cloud-access-control',
+        'best-practices/security-controls',
+        'best-practices/worker',
       ],
     },
     {
