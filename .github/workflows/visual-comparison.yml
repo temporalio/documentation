@@ -6,7 +6,6 @@ on:
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  HTML_REPORT_URL_PATH: reports/${{ github.head_ref }}/${{ github.run_id }}/${{ github.run_attempt }}
 
 concurrency:
   group: visual-comparison-${{ github.workflow }}-${{ github.head_ref }}
@@ -34,7 +33,6 @@ jobs:
           echo "GITHUB_BASE_REF: ${BASE_REF}"
           echo "GITHUB_HEAD_REF: ${HEAD_REF}"
           echo "GITHUB_REF_NAME: ${REF_NAME}"
-          echo "HTML_REPORT_URL_PATH ${{ env.HTML_REPORT_URL_PATH }}"
 
   create-assets:
     name: Create Build Assets
@@ -232,83 +230,24 @@ jobs:
       - merge-reports
     runs-on: ubuntu-latest
     permissions:
-      contents: write
       pull-requests: write
     continue-on-error: true
     steps:
-      - name: Check if gh-pages branch exists
-        id: check-branch
-        run: |
-          if git ls-remote --exit-code --heads origin gh-pages; then
-            echo "exists=true" >> $GITHUB_OUTPUT
-          else
-            echo "exists=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Checkout repository
-        if: steps.check-branch.outputs.exists == 'false'
-        uses: actions/checkout@v5
-
-      - name: Set git user
-        if: steps.check-branch.outputs.exists == 'false'
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-      - name: Create gh-pages branch
-        if: steps.check-branch.outputs.exists == 'false'
-        run: |
-          git checkout --orphan gh-pages
-          git rm -rf . 2>/dev/null || true
-          git clean -fdx
-          git commit --allow-empty -m "Initialize gh-pages branch"
-          # Try to push, but don't fail if branch was created by another run
-          git push -u origin gh-pages || echo "Branch already exists, continuing..."
-
-      - name: Checkout GitHub Pages branch (for existing or just created)
-        uses: actions/checkout@v5
-        with:
-          ref: gh-pages
-
-      - name: Set git user
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
       - name: Download HTML report
         uses: actions/download-artifact@v5
         with:
           name: report
-          path: ${{ env.HTML_REPORT_URL_PATH }}
+          path: playwright-report
 
-      - name: Push HTML report
-        timeout-minutes: 5
+      - name: Deploy to Vercel
+        id: deploy
+        run: |
+          npm i -g vercel@latest
+          DEPLOY_URL=$(vercel deploy playwright-report --token=${{ secrets.VERCEL_TOKEN }} --yes)
+          echo "url=$DEPLOY_URL" >> $GITHUB_OUTPUT
         env:
-          RUN_ID: ${{ github.run_id }}
-          RUN_ATTEMPT: ${{ github.run_attempt }}
-        run: |
-          git add .
-          git commit -m "workflow: add HTML report for run-id ${RUN_ID} (attempt: ${RUN_ATTEMPT})"
-          while true; do
-            git pull --rebase origin gh-pages
-            if [ $? -ne 0 ]; then
-              echo "Failed to rebase. Please review manually."
-              exit 1
-            fi
-
-            git push origin gh-pages
-            if [ $? -eq 0 ]; then
-              echo "Successfully pushed HTML report to repo."
-              exit 0
-            fi
-          done
-
-      - name: DNS wait
-        run: sleep 120
-
-      - name: Publish notice
-        run: |
-          echo "::notice title=Published Playwright Test Report::https://temporalio.github.io/documentation/${{ env.HTML_REPORT_URL_PATH }}"
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Post report URL comment
         uses: mshick/add-pr-comment@v2
@@ -318,10 +257,8 @@ jobs:
           RUN_ATTEMPT: ${{ github.run_attempt }}
         with:
           message: |
-            📋 Visual Report for branch ${{ env.HEAD_REF }} with CI run ${{ env.RUN_ID }} and attempt ${{ env.RUN_ATTEMPT }} is ready at
-              https://temporalio.github.io/documentation/${{ env.HTML_REPORT_URL_PATH }}
-
-              💡 You may have to wait for DNS to resolve or the GitHub Pages job to complete. You can view the progress of the GitHub Pages job [here](https://github.com/temporalio/documentation/actions/workflows/pages/pages-build-deployment).
+            📋 Visual Report for branch ${{ env.HEAD_REF }} with CI run ${{ env.RUN_ID }} and attempt ${{ env.RUN_ATTEMPT }} is ready at:
+              ${{ steps.deploy.outputs.url }}
           message-failure: |
             👎 Uh oh! Unable to publish Visual Report URL.
           refresh-message-position: true
