@@ -49,7 +49,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: '20'
           cache: 'yarn'
 
       - name: Check for reference screenshots
@@ -79,7 +79,7 @@ jobs:
         uses: mshick/add-pr-comment@v2
         with:
           message: |
-            🤖 Starting the visual tests. This will take approximately an hour.
+            🤖 Starting the visual tests. This will take approximately 15 minutes.
             ${{ steps.check-references.outputs.has_references == 'false' && '⚠️ **Note:** No reference screenshots found on the base branch. This run will create new baselines instead of performing comparisons.' || '' }}
           refresh-message-position: true
 
@@ -124,7 +124,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: '20'
           cache: 'yarn'
 
       - name: Install dependencies
@@ -193,7 +193,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: '20'
           cache: 'yarn'
 
       - name: Install dependencies
