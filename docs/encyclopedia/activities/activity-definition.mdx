@@ -17,7 +17,8 @@ tags:
 
 import { CaptionedImage } from '@site/src/components';
 
-This page discusses the following: 
+This page discusses the following:
+
 - [Activity Definition](#activity-definition)
 - [Idempotency](#idempotency)
 - [Constraints](#activity-constraints)
@@ -30,7 +31,7 @@ Temporal documentation aims to be explicit and differentiate between them.
 ## What is an Activity Definition? {#activity-definition}
 
 An Activity Definition is the code that defines the constraints of an [Activity Task Execution](/tasks#activity-task-execution).
-Activities encapsulate business logic that is prone to failure, allowing for automatic retries when issues occur. 
+Activities encapsulate business logic that is prone to failure, allowing for automatic retries when issues occur.
 
 - [How to develop an Activity Definition using the Go SDK](/develop/go/core-application#activity-definition)
 - [How to develop an Activity Definition using the Java SDK](/develop/java/core-application#develop-activities)
@@ -59,8 +60,8 @@ In the context of Temporal, Activities should be designed to be safely executed 
 Consider the power button on your laptop. When you press it, the machine is changed from one state to the other, from on to off, and vice versa. This is not an idempotent operation. Each invocation leads to a different state. However, imagine that you modified your laptop to have separate on and off buttons. Pressing the On button multiple times would have no effect beyond the initial invocation as the laptop is already on. This action is considered idempotent.
 
 <CaptionedImage
-    src="/diagrams/idempotence-image.png"
-    />
+  src="/diagrams/idempotence-image.png"
+/>
 
 Idempotency is an important design consideration in software applications as well. You have probably encountered idempotent operations in your work already.
 
@@ -97,8 +98,6 @@ Imagine that the first two steps succeed, but the third step fails due to a perm
 
 Idempotence for Activities is also important due to a particular edge case inherent in distributed computing. Consider a scenario in which a Worker polls the Temporal Service, accepts the Activity Task, and begins executing the Activity. The Activity function completes successfully, but the Worker crashes just before it notifies the Temporal Service. In this case, the Event History won’t reflect the successful completion of the Task, so the Activity will be retried. If the Activity is not idempotent, this could have negative consequences, such as duplicate charges in a payment processing scenario.
 
-For an Activity with a Retry Policy that permits retries, Temporal guarantees that the Activity will be observed as completed exactly once. However, the Activity may be executed multiple times and may even partially complete more than once during this process. This could lead to a scenario where certain parts of the Activity are executed multiple times before a successful execution is completed.
-
 You can achieve idempotency in your application through the use of unique identifiers, known as idempotency keys, which are used to detect duplicate requests. These are enforced by the service you are calling from your Activity, not by the Activity itself.
 
 For example, the APIs provided by most payment processors allow the client to include an idempotency key with the request. When the payment service receives a request, it checks a database to determine whether there has already been a request with this key. If so, the duplicate request is ignored and does not result in another charge. If not, then it writes a new record to the database with this key, allowing it to identify duplicate requests in the future.
@@ -108,6 +107,17 @@ In Temporal, the request to the payment service would be made from within an Act
 For more information about idempotency in Temporal, see the following post:
 
 [Idempotency and Durable Execution](https://temporal.io/blog/idempotency-and-durable-execution)
+
+### Activity retry policy
+
+The Activity retry mechanism gives applications the benefits of durable execution.
+For example, Temporal will keep track of the [exponential backoff delay](/encyclopedia/retry-policies#backoff-coefficient) even if the Worker crashes. Since Temporal can’t tell when a Worker crashes, Workflows rely on the [start_to_close timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout) to know how long to wait before assuming that an Activity is inactive.
+
+For an Activity with a [Retry Policy](/encyclopedia/retry-policies) that allows retries, Temporal guarantees that the Activity will be observed as completed exactly once. However, the Activity may be executed multiple times and may even partially complete more than once during this process. This could lead to a scenario where certain parts of the Activity are executed multiple times before a successful execution is completed.
+
+:::caution
+Be cautious when doing retries within your Activity because it lengthens the needed Activity timeout.  Such internal retries also prevent users from counting failure metrics and make it harder for users to debug in Temporal UI when something is wrong.
+:::
 
 ### Constraints {#activity-constraints}
 
@@ -137,3 +147,12 @@ Other parameters, such as [Retry Policies](/encyclopedia/retry-policies) and ret
 An Activity Type is the mapping of a name to an Activity Definition.
 
 Activity Types are scoped through Task Queues.
+
+## Best practices for defining Activities
+
+Here are some best practices you can use when you are creating an Activities for your Workflow:
+
+- Activity arguments and return values should be serializable.
+- Activities that perform writes should be idempotent.
+- Activities have [timeouts](/develop/python/failure-detection#heartbeat-timeout) and [retry policies](/encyclopedia/retry-policies). For Activities, your operation should either complete within a few minutes or it should support the ability to heartbeat or poll for a result. This way it will be clear to the Workflow when the Activity is still making progress.
+- You need to specify at least one timeout, typically the [start_to_close timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout). Keep in mind that the shorter the timeout, the faster Temporal will retry upon failure. See the [Activity retry policy section](#activity-retry-policy) to learn more.

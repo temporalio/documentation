@@ -1,0 +1,113 @@
+name: Docs Preview Links
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  comment-preview-links:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Compute preview base URL
+        id: preview-url
+        env:
+          REPO_PREVIEW_BASE_URL: ${{ vars.DOCS_PREVIEW_BASE_URL }}
+          REPO_PREVIEW_TEMPLATE: ${{ vars.DOCS_PREVIEW_BASE_URL_TEMPLATE }}
+        run: |
+          BRANCH_NAME="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
+          BRANCH_SLUG=$(echo "$BRANCH_NAME" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$//')
+
+          if [ -n "$REPO_PREVIEW_BASE_URL" ]; then
+            BASE_URL="$REPO_PREVIEW_BASE_URL"
+          elif [ -n "$REPO_PREVIEW_TEMPLATE" ]; then
+            BASE_URL="${REPO_PREVIEW_TEMPLATE//\{branch\}/$BRANCH_SLUG}"
+          else
+            BASE_URL="https://temporal-documentation-git-${BRANCH_SLUG}.preview.thundergun.io"
+          fi
+
+          echo "DOCS_PREVIEW_BASE_URL=$BASE_URL" >> "$GITHUB_ENV"
+          echo "BRANCH_SLUG=$BRANCH_SLUG" >> "$GITHUB_ENV"
+          echo "base_url=$BASE_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Generate docs preview list
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          DOCS_PREVIEW_BASE_URL: ${{ env.DOCS_PREVIEW_BASE_URL }}
+        run: |
+          SUMMARY_FILE="temp/doc-preview-summary.md"
+          mkdir -p "$(dirname "$SUMMARY_FILE")"
+          node bin/generate-docs-preview-list.js > "$SUMMARY_FILE"
+          if [ -s "$SUMMARY_FILE" ]; then
+            echo "has_changes=true" >> "$GITHUB_ENV"
+          else
+            echo "This PR does not change any pages in /docs. If you make updates, links to the modified pages will appear here." > "$SUMMARY_FILE"
+            echo "has_changes=false" >> "$GITHUB_ENV"
+          fi
+          echo "SUMMARY_FILE_PATH=$SUMMARY_FILE" >> "$GITHUB_ENV"
+
+      - name: Comment with changed docs
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- docs-preview-links -->';
+            const summaryPath = process.env.SUMMARY_FILE_PATH || 'temp/doc-preview-summary.md';
+            const summary = fs.readFileSync(summaryPath, 'utf8').trim();
+            const hasChanges = process.env.has_changes === 'true';
+            core.info(`Docs changes detected: ${hasChanges}`);
+
+            const body = [
+              marker,
+              '',
+              '### 📖 Docs PR preview links',
+              '',
+              summary,
+            ].join('\n');
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              per_page: 100,
+            });
+
+            const existing = comments.find(
+              (comment) => comment.user?.login === 'github-actions[bot]' && comment.body?.includes(marker),
+            );
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+              core.info(`Updated existing preview comment (${existing.id}).`);
+            } else {
+              const { data: newComment } = await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+              core.info(`Created new preview comment (${newComment.id}).`);
+            }

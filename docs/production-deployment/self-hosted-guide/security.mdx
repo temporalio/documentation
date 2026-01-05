@@ -104,16 +104,51 @@ See https://github.com/temporalio/samples-server/blob/main/extensibility/authori
 
 ### Single sign-on integration
 
-Temporal can be integrated with a single sign-on (SSO) experience by utilizing the `ClaimMapper` and `Authorizer` plugins.
+Temporal can be integrated with a single sign-on (SSO) experience by using the `ClaimMapper` and `Authorizer` plugins.
 The default JWT `ClaimMapper` implementation can be used as is or as a base for a custom implementation of a similar plugin.
 
-#### Temporal Web
+### Temporal UI
 
-To enable SSO for the Temporal Web UI edit the web service's configuration per the [Temporal Web README](https://github.com/temporalio/web#configuring-authentication-optional).
+To enable SSO authentication in the Temporal UI using environment credentials, you need to configure the UI container with specific environment variables that define your identity provider and OAuth settings.
+In your docker-compose.yaml, set `TEMPORAL_AUTH_ENABLED=true` to activate authentication.
+Next, specify the required OAuth credentials and endpoints using environment variables such as:
+
+- `TEMPORAL_AUTH_CLIENT_ID`
+- `TEMPORAL_AUTH_CLIENT_SECRET`
+- `TEMPORAL_AUTH_PROVIDER_URL`
+- `TEMPORAL_AUTH_CALLBACK_URL`
+
+These values correspond to the client credentials and endpoints provided by your OAuth identity provider (such as Google, Auth0, Okta).
+When properly configured, Temporal UI will redirect users to your SSO login page and enforce authentication on access.
+This approach does not require any additional configuration files, making it ideal for containerized environments using secure environment variable injection.
+
+```yaml
+temporal-ui:
+  container_name: temporal-ui
+  depends_on:
+    - temporal
+  environment:
+    - TEMPORAL_GRPC_ENDPOINT=temporal:7233
+    - TEMPORAL_ADDRESS=temporal:7233
+    - TEMPORAL_AUTH_ENABLED=true
+    - TEMPORAL_AUTH_PROVIDER_URL=https://example.com
+    - TEMPORAL_AUTH_CLIENT_ID=xxxxxxxxxxxxxx
+    - TEMPORAL_AUTH_CLIENT_SECRET=xxxxxxxxxxxxxx
+    - TEMPORAL_AUTH_CALLBACK_URL=https://your-domain/auth/sso/callback
+    - TEMPORAL_AUTH_SCOPES=openid profile email
+  image: temporalio/ui:latest
+  networks:
+    - temporal-network
+  ports:
+    - 8080:8080
+```
+
+For more general guidance for configuration, refer to the [Temporal UI README](https://github.com/temporalio/ui?tab=readme-ov-file#configuration).
+For more details on configuration with Docker, refer to [Temporal UI Config](https://github.com/temporalio/ui/blob/c95265ee6431fd0f6cf78ae06373885d66a8ee0c/server/docker/config-template.yaml).
 
 ## Temporal Service plugins {#plugins}
 
-The Temporal Service supports some pluggable 
+The Temporal Service supports some pluggable components.
 
 ### What is a ClaimMapper Plugin? {#claim-mapper}
 
@@ -246,18 +281,27 @@ The following arguments must be passed to `Authorizer`:
 - `DecisionDeny`: the requested API call is not invoked and an error is returned to the caller.
 - `DecisionAllow`: the requested API call is invoked.
 
-:::caution
+:::warning Security Warning
 
-`Authorizer` allows all API calls pass by default. Disable the `nopAuthority` authorizer and configure your own to prevent this behavior.
+If you do **not** explicitly configure an `Authorizer`, Temporal uses the default `noopAuthorizer`. This default allows **every** API request,
+with no authentication or access control. Anyone who can reach your Temporal Server can invoke any API, including sensitive administrative operations.
+This is **not secure** for production or for any environment that is accessible to untrusted clients (such as over the internet).
+
+**To protect your Temporal Server, you must configure an `Authorizer` plugin with a corresponding `ClaimMapper`.** Without this, your deployment is
+effectively open to anyone with network access.
 
 :::
 
-Configure your `Authorizer` when you start the server via the [`temporal.WithAuthorizer`](/references/server-options#withauthorizer) server option.
-
-If an `Authorizer` is not set in the server options, Temporal uses the `nopAuthority` authorizer that unconditionally allows all API calls to pass through.
+Configure your `Authorizer` with the [`temporal.WithAuthorizer`](/references/server-options#withauthorizer) server option, and your `ClaimMapper` with
+the [`temporal.WithClaimMapper`](/references/server-options#withclaimmapper) server option.
 
 ```go
-a := authorization.NewDefaultAuthorizer()
+temporalServer, err := temporal.NewServer(
+	temporal.WithAuthorizer(newCustomAuthorizer()),
+	temporal.WithClaimMapper(func(cfg *config.Config) authorization.ClaimMapper {
+		return newCustomClaimMapper(cfg)
+	}),
+)
 ```
 
 #### How to authorize SDK API calls {#authorize-api-calls}

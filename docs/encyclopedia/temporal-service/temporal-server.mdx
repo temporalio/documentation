@@ -21,6 +21,7 @@ tags:
 import { CaptionedImage } from '@site/src/components';
 
 This page discusses the following:
+
 - [Frontend Service](#frontend-service)
 - [History Service](#history-service)
 - [History Shard](#history-shard)
@@ -222,6 +223,15 @@ Setting the Retention Period to 0 results in the error _A valid retention period
 If you don't set the Retention Period value when using the [`temporal operator namespace create`](/cli/operator#create) command, it defaults to 3 days.
 If you don't set the Retention Period value when using the Register Namespace Request API, it returns an error.
 
-When changing the Retention Period, the new duration applies to Workflow Executions that close after the change is saved.
+When changing the Retention Period (with [`temporal operator namespace update`](/cli/operator#update) or the `UpdateNamespace` API), the new duration applies to Workflow Executions that close after the change is saved.
 
-{/* TODO link up to working API usage examples */}
+:::info
+
+Changing the Retention Period does NOT affect existing closed Workflow Executions: they retain their original cleanup timers based on the Retention Period that was in effect when they closed.
+
+::: 
+
+### Manual cleanup of closed Workflow Executions
+
+For cases where you need to remove closed Workflow Executions before their retention timer expires, you can use [`temporal workflow delete`](/cli/workflow#delete) or the `DeleteWorkflowExecution` command.
+This is particularly useful along with reducing the Retention Period to clean up previously closed Workflow Executions to reduce storage costs.

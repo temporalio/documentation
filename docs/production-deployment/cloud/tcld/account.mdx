@@ -18,8 +18,295 @@ The `tcld account` commands manage accounts in Temporal Cloud.
 
 Alias: `a`
 
+- [tcld account audit-log](#audit-log)
 - [tcld account get](#get)
+- [tcld account list-regions](#list-regions)
 - [tcld account metrics](#metrics)
+
+## audit-log
+
+The `tcld account audit-log` command manage Audit Logs in Temporal Cloud.
+
+Alias: `al`
+
+- [tcld account audit-log kinesis](#kinesis)
+- [tcld account audit-log pubsub](#pubsub)
+
+### kinesis
+
+The `tcld account audit-log kinesis` command manages Kinesis audit log sinks.
+
+Alias: `k`
+
+- [tcld account audit-log kinesis create](#create)
+- [tcld account audit-log kinesis delete](#delete)
+- [tcld account audit-log kinesis get](#account-audit-log-kinesis-get)
+- [tcld account audit-log kinesis list](#list)
+- [tcld account audit-log kinesis update](#update)
+- [tcld account audit-log kinesis validate](#validate)
+
+#### create
+
+The `tcld account audit-log kinesis` command creates a Kinesis audit log sink.
+
+Alias: `c`
+
+##### --destination-uri
+
+The destination URI of the audit log sink.
+
+Alias: `du`
+
+##### --region
+
+The region to use for the request.
+
+Alias: `re`
+
+##### --role-name
+
+The role name to use to write to the sink.
+
+Alias: `rn`
+
+##### --sink-name
+
+Provide a name for the sink.
+
+#### delete
+
+The `tcld account audit-log kinesis delete` command deletes an audit log sink.
+
+Alias: `d`
+
+##### --resource-version
+
+The resource-version (etag) to update from, if not set the cli will use the latest (optional).
+
+Alias: `v`
+
+##### --sink-name
+
+Provide a name for the sink.
+
+#### get {#account-audit-log-kinesis-get}
+
+The `tcld account audit-log kinesis get` command gets an audit log sink.
+
+Alias: `g`
+
+##### --sink-name
+
+Provide a name for the sink.
+
+#### list
+
+The `tcld account audit-log kinesis list` command lists audit log sinks on the account.
+
+Alias: `l`
+
+##### --page-size
+
+The page size for list operations.
+
+##### --page-token
+
+The page token for list operations.
+
+#### update
+
+The `tcld account audit-log kinesis update` command updates an audit log sink.
+
+Alias: `u`
+
+##### --destination-uri
+
+The destination URI of the audit log sink.
+
+Alias: `du`
+
+##### --enabled
+
+Whether the sink is enabled.
+
+##### --region
+
+The region to use for the request.
+
+Alias: `re`
+
+##### --resource-version
+
+The resource-version (etag) to update from, if not set the cli will use the latest (optional).
+
+Alias: `v`
+
+##### --role-name
+
+The role name to use to write to the sink.
+
+Alias: `rn`
+
+##### --sink-name
+
+Provide a name for the sink.
+
+#### validate
+
+The `tcld account audit-log kinesis validate` command verifies Temporal Cloud can write to a Kinesis sink.
+
+Alias: `v`
+
+##### --destination-uri
+
+The destination URI of the audit log sink.
+
+Alias: `du`
+
+##### --region
+
+The region to use for the request.
+
+Alias: `re`
+
+##### --role-name
+
+The role name to use to write to the sink.
+
+Alias: `rn`
+
+##### --sink-name
+
+Provide a name for the sink.
+
+### pubsub
+
+The `tcld account audit-log pubsub` command manages Pub/Sub audit log sinks.
+
+Alias: `ps`
+
+- [tcld account audit-log pubsub create](#create)
+- [tcld account audit-log pubsub delete](#delete)
+- [tcld account audit-log pubsub get](#account-audit-log-pubsub-get)
+- [tcld account audit-log pubsub list](#list)
+- [tcld account audit-log pubsub update](#update)
+- [tcld account audit-log pubsub validate](#validate)
+
+#### create
+
+The `tcld account audit-log pubsub` command creates a Pub/Sub audit log sink.
+
+Alias: `c`
+
+##### --service-account-email
+
+The service account email to impersonate to write to the sink.
+
+Alias: `sae`
+
+##### --sink-name
+
+Provide a name for the sink.
+
+##### --topic-name
+
+The topic name to write to the sink.
+
+Alias: `tn`
+
+#### delete
+
+The `tcld account audit-log pubsub delete` command deletes an audit log sink.
+
+Alias: `d`
+
+##### --resource-version
+
+The resource-version (etag) to update from, if not set the cli will use the latest (optional).
+
+Alias: `v`
+
+##### --sink-name
+
+Provide a name for the sink.
+
+#### get {#account-audit-log-pubsub-get}
+
+The `tcld account audit-log pubsub get` command gets an audit log sink.
+
+Alias: `g`
+
+##### --sink-name
+
+Provide a name for the sink.
+
+#### list
+
+The `tcld account audit-log pubsub list` command lists audit log sinks on the account.
+
+Alias: `l`
+
+##### --page-size
+
+The page size for list operations.
+
+##### --page-token
+
+The page token for list operations.
+
+#### update
+
+The `tcld account audit-log pubsub update` command updates an audit log sink.
+
+Alias: `u`
+
+##### --enabled
+
+Whether the sink is enabled.
+
+##### --resource-version
+
+The resource-version (etag) to update from, if not set the cli will use the latest (optional).
+
+Alias: `v`
+
+##### --service-account-email
+
+The service account email to impersonate to write to the sink.
+
+Alias: `sae`
+
+##### --sink-name
+
+Provide a name for the sink.
+
+##### --topic-name
+
+The topic name to write to the sink.
+
+Alias: `tn`
+
+#### validate
+
+The `tcld account audit-log pubsub validate` command verifies Temporal Cloud can write to a Pub/Sub sink.
+
+Alias: `v`
+
+##### --service-account-email
+
+The service account email to impersonate to write to the sink.
+
+Alias: `sae`
+
+##### --sink-name
+
+Provide a name for the sink.
+
+##### --topic-name
+
+The topic name to write to the sink.
+
+Alias: `tn`
 
 ## get
 
@@ -30,6 +317,12 @@ Alias: `g`
 `tcld account get`
 
 The command has no modifiers.
+
+## list-regions
+
+The `tcld account list-regions` lists all regions where the account can provision namespaces.
+
+Alias: `l`
 
 ## metrics
 

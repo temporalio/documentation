@@ -2,7 +2,7 @@
 id: index
 title: Java SDK developer guide
 sidebar_label: Java SDK
-description: Explore Temporal Java SDK feature guides to master developing Temporal Applications. Learn how to build Workflows, Activities, and Workers, connect to Temporal Services, set up a testing suite, handle failure detection, send messages, complete Activities asynchronously, implement Versioning, use Observability, debug applications, schedule Workflows
+description: Explore Temporal Java SDK feature guides to master developing Temporal Applications. Build Workflows, Activities, and Workers, connect to Temporal Services, set up a testing suite, handle failure detection, send messages, complete Activities asynchronously, implement Versioning, use Observability, debug applications, schedule Workflows
 toc_max_heading_level: 4
 keywords:
   - Java SDK
@@ -20,9 +20,11 @@ Build Temporal Applications with the Java SDK.
 
 **Temporal Java Technical Resources:**
 
+- [Java SDK Quickstart - Setup Guide](https://docs.temporal.io/develop/java/set-up-your-local-java)
 - [Java API Documentation](https://javadoc.io/doc/io.temporal/temporal-sdk)
 - [Java SDK Code Samples](https://github.com/temporalio/samples-java)
 - [Java SDK GitHub](https://github.com/temporalio/sdk-java)
+- [Temporal 101 in Java Free Course](https://learn.temporal.io/courses/temporal_101/java/)
 
 **Get Connected with the Temporal Java Community:**
 
@@ -39,14 +41,13 @@ Use the essential components of a Temporal Application (Workflows, Activities, a
 - [How to start an Activity Execution](/develop/java/core-application#activity-execution)
 - [How to develop a Worker Program in Java](/develop/java/core-application#run-a-dev-worker)
 
-## [Temporal Client](/develop/java/temporal-clients)
+## [Temporal Client](/develop/java/temporal-client)
 
 Connect to a Temporal Service and start a Workflow Execution.
 
-- [Connect to a development Temporal Service](/develop/java/temporal-clients#connect-to-development-service)
-- [Connect to a custom Namespace](/develop/java/temporal-clients#connect-to-custom-namespace)
-- [Connect to Temporal Cloud](/develop/java/temporal-clients#connect-to-temporal-cloud)
-- [Start a Workflow Execution](/develop/java/temporal-clients#start-workflow-execution)
+- [Connect to a development Temporal Service](/develop/java/temporal-client#connect-to-development-service)
+- [Connect to Temporal Cloud](/develop/java/temporal-client#connect-to-temporal-cloud)
+- [Start a Workflow Execution](/develop/java/temporal-client#start-workflow-execution)
 
 ## [Testing](/develop/java/testing-suite)
 
@@ -84,8 +85,7 @@ Complete Activities asynchronously.
 
 Change Workflow Definitions without causing non-deterministic behavior in running Workflows.
 
-- [How to patch Workflows in Java](/develop/java/versioning#patching)
-- [How to use Worker Versioning in Java](/develop/java/versioning#worker-versioning)
+- [Temporal Java SDK Versioning APIs](/develop/java/versioning#patching)
 
 ## [Observability](/develop/java/observability)
 
@@ -128,6 +128,15 @@ The [Temporal Nexus](/develop/java/nexus) feature guide shows how to use Tempora
 - [Make Nexus calls across Namespaces with a development Server](/develop/java/nexus#nexus-calls-across-namespaces-dev-server)
 - [Make Nexus calls across Namespaces in Temporal Cloud](/develop/java/nexus#nexus-calls-across-namespaces-temporal-cloud)
 
+## [Interrupt a Workflow feature guide](/develop/java/cancellation)
+
+Interrupt a Workflow Execution with a Cancel or Terminate action.
+
+- [Cancel a Workflow](/develop/java/cancellation#cancellation)
+- [Terminate a Workflow](/develop/java/cancellation#termination)
+- [Reset a Workflow](/develop/java/cancellation#reset): Resume a Workflow Execution from an earlier point in its Event History.
+- [Cancel an Activity from a Workflow](/develop/java/cancellation#cancel-activity)
+
 ## [Child Workflows](/develop/java/child-workflows)
 
 Explore how to spawn a Child Workflow Execution and handle Child Workflow Events.
@@ -153,9 +162,21 @@ Use Side Effects in Workflows.
 
 - [Side Effects](/develop/java/side-effects#side-effects)
 
+## [Enriching the User Interface](/develop/java/enriching-ui)
+
+Add descriptive information to workflows and events for better visibility and context in the UI.
+
+- [Adding Summary and Details to Workflows](/develop/java/enriching-ui#adding-summary-and-details-to-workflows)
+
 ## [Manage Namespaces](/develop/java/namespaces)
 
 Create and manage Namespaces.
 
 - [Create a Namespace](/develop/java/namespaces#register-namespace)
 - [Manage Namespaces](/develop/java/namespaces#manage-namespaces)
+
+## [Spring Boot](/develop/java/spring-boot-integration)
+
+Use Temporal in your Spring Boot application.
+
+- [Spring Boot](/develop/java/spring-boot-integration#setup-dependency)

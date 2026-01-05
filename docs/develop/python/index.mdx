@@ -20,9 +20,11 @@ Build Temporal Applications with the Python SDK.
 
 **Temporal Python Technical Resources:**
 
+- [Python SDK Quickstart - Setup Guide](https://docs.temporal.io/develop/python/set-up-your-local-python)
 - [Python API Documentation](https://python.temporal.io)
 - [Python SDK Code Samples](https://github.com/temporalio/samples-python)
 - [Python SDK Github](https://github.com/temporalio/sdk-python)
+- [Temporal 101 in Python Free Course](https://learn.temporal.io/courses/temporal_101/python/)
 
 **Get Connected with the Temporal Python Community:**
 
@@ -39,14 +41,13 @@ Use the essential components of a Temporal Application (Workflows, Activities, a
 - [Start an Activity Execution](/develop/python/core-application#activity-execution)
 - [Run Worker Processes](/develop/python/core-application#run-a-dev-worker)
 
-## [Temporal Client](/develop/python/temporal-clients)
+## [Temporal Client](/develop/python/temporal-client)
 
 Connect to a Temporal Service and start a Workflow Execution.
 
-- [Connect to Development Temporal Service](/develop/python/temporal-clients#connect-to-development-service)
-- [Connect a Temporal Client to a Temporal Service](/develop/python/temporal-clients#connect-to-a-dev-cluster)
-- [Connect to Temporal Cloud](/develop/python/temporal-clients#connect-to-temporal-cloud)
-- [Start a Workflow Execution](/develop/python/temporal-clients#start-workflow-execution)
+- [Connect to Development Temporal Service](/develop/python/temporal-client#connect-to-development-service)
+- [Connect to Temporal Cloud](/develop/python/temporal-client#connect-to-temporal-cloud)
+- [Start a Workflow Execution](/develop/python/temporal-client#start-workflow-execution)
 
 ## [Python SDK Sandbox](/develop/python/python-sdk-sandbox)
 
@@ -88,6 +89,7 @@ Interrupt a Workflow Execution with a Cancel or Terminate action.
 
 - [Cancel a Workflow](/develop/python/cancellation#cancellation)
 - [Terminate a Workflow](/develop/python/cancellation#termination)
+- [Reset a Workflow](/develop/python/cancellation#reset): Resume a Workflow Execution from an earlier point in its Event History.
 - [Cancel an Activity from a Workflow](/develop/python/cancellation#cancel-activity)
 
 ## [Asynchronous Activity completion](/develop/python/asynchronous-activity-completion)
@@ -100,9 +102,8 @@ Complete Activities asynchronously.
 
 Change Workflow Definitions without causing non-deterministic behavior in running Workflows.
 
-- [Introduction to Versioning](/develop/python/versioning#introduction-to-versioning)
-- [How to Use the Patching API](/develop/python/versioning#python-sdk-patching-api)
-- [How to Use Worker Versioning](/develop/python/versioning#worker-versioning)
+- [Introduction to Versioning](/develop/python/versioning)
+- [How to Use the Patching API](/develop/python/versioning#patching)
 
 ## [Observability](/develop/python/observability)
 
@@ -134,6 +135,17 @@ Use compression, encryption, and other data handling by implementing custom conv
 - [Custom Payload Codec](/develop/python/converters-and-encryption#custom-payload-codec)
 - [Payload Conversion](/develop/python/converters-and-encryption#payload-conversion)
 
+## Temporal Nexus
+
+The [Temporal Nexus](/develop/python/nexus) feature guide shows how to use Temporal Nexus to connect durable executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
+
+- [Create a Nexus Endpoint to route requests from caller to handler](/develop/python/nexus#create-nexus-endpoint)
+- [Define the Nexus Service contract](/develop/python/nexus#define-nexus-service-contract)
+- [Develop a Nexus Service and Operation handlers](/develop/python/nexus#develop-nexus-service-operation-handlers)
+- [Develop a caller Workflow that uses a Nexus Service](/develop/python/nexus#develop-caller-workflow-nexus-service)
+- [Make Nexus calls across Namespaces with a dev Server](/develop/python/nexus#register-the-caller-workflow-in-a-worker-and-start-the-caller-workflow)
+- [Make Nexus calls across Namespaces in Temporal Cloud](/develop/python/nexus#nexus-calls-across-namespaces-temporal-cloud)
+
 ## [Durable Timers](/develop/python/timers)
 
 Use Timers to make a Workflow Execution pause or "sleep" for seconds, minutes, days, months, or years.
@@ -151,3 +163,15 @@ Explore how to spawn a Child Workflow Execution and handle Child Workflow Events
 Continue the Workflow Execution with a new Workflow Execution using the same Workflow ID.
 
 - [Continue-As-New](/develop/python/continue-as-new)
+
+## [Interceptors](/develop/python/interceptors)
+
+Manage inbound and outbound SDK calls, enhance tracing, and add authorization to your Workflows and Activities.
+
+- [Interceptors](/develop/python/interceptors)
+
+## [Enriching the User Interface](/develop/python/enriching-ui)
+
+Add descriptive information to workflows and events for better visibility and context in the UI.
+
+- [Adding Summary and Details to Workflows](/develop/python/enriching-ui#adding-summary-and-details-to-workflows)

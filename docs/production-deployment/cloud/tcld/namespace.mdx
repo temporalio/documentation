@@ -2,7 +2,9 @@
 id: namespace
 title: tcld namespace command reference
 sidebar_label: namespace
-description: Unlock the full potential of Temporal Cloud with tcld namespace commands. Efficiently manage Namespace operations, including add-region, create, delete, failover, get, list, and export.
+description:
+  Unlock the full potential of Temporal Cloud with tcld namespace commands. Efficiently manage Namespace operations,
+  including add-region, create, delete, failover, get, list, and export.
 slug: /cloud/tcld/namespace/
 toc_max_heading_level: 3
 keywords:
@@ -14,7 +16,7 @@ tags:
   - Namespaces
 ---
 
-import { ToolTipTerm } from '@site/src/components'
+import { ToolTipTerm } from '@site/src/components';
 
 The `tcld namespace` commands enable [Namespace](/namespaces) operations in Temporal Cloud.
 
@@ -33,12 +35,16 @@ Alias: `n`
 - [tcld namespace retention](#retention)
 - [tcld namespace update-codec-server](#update-codec-server)
 - [tcld namespace update-high-availability](#update-high-availability)
+- [tcld namespace tags](#tags)
+- [tcld namespace set-connectivity-rules](#set-connectivity-rules)
 
 ## add-region
 
-Use `tcld namespace add-region` to add a <ToolTipTerm term="replica" /> to an existing Temporal Cloud [Namespace](/namespaces).
-Adding a replica upgrades the Namespace to [High Availability features](/cloud/high-availability).
-Once provisioned, High Availability features enable Temporal Cloud to start replicating Workflow Execution data from the primary to the replica and trigger failover during adverse conditions.
+Use `tcld namespace add-region` to add a <ToolTipTerm term="replica" /> to an existing Temporal Cloud
+[Namespace](/namespaces). Adding a replica upgrades the Namespace to
+[High Availability features](/cloud/high-availability). Once provisioned, High Availability features enable Temporal
+Cloud to start replicating Workflow Execution data from the primary to the replica and trigger failover during adverse
+conditions.
 
 Alias: _none_
 
@@ -46,15 +52,14 @@ The following modifiers control the behavior of the command.
 
 #### --request-id
 
-The request identifier to use for the asynchronous operation.
-If not set, the server assigns an identifier.
+The request identifier to use for the asynchronous operation. If not set, the server assigns an identifier.
 
 Alias: `-r`
 
 #### --namespace
 
-Specify a Namespace hosted on Temporal Cloud.
-If not specified, the value of the environment variable `$TEMPORAL_CLOUD_NAMESPACE` is used.
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
+`$TEMPORAL_CLOUD_NAMESPACE` is used.
 
 Alias: `-n`
 
@@ -62,8 +67,7 @@ _Required modifier_
 
 #### --region
 
-The region to add to the existing Namespace.
-See [Regions](/cloud/high-availability/regions) for a list of supported regions.
+The region to add to the existing Namespace. See [Regions](/cloud/regions) for a list of supported regions.
 
 :::tip Choosing Replica Regions
 
@@ -81,7 +85,7 @@ _Required modifier_
 
 ```bash
 tcld namespace add-region \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id> \
     --region <replica_region>
 ```
 
@@ -90,13 +94,14 @@ When using API key authentication, add your API credentials before pressing Ente
 ```bash
 tcld --api-key <your_api_key> \
     add-region \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id> \
     --region <replica_region>
 ```
 
 Specify the region code of the region where you want to create the replica as an argument to the `--region` flag:
 
-- Using the current region replicates to an <ToolTipTerm term="isolation domain" src="isolation domains" /> within your existing region.
+- Using the current region replicates to an <ToolTipTerm term="isolation domain" src="isolation domains" /> within your
+  existing region.
 - Using a different region (within the same continent) replicates across regions.
 - You cannot create a Multi-region deployment on separate continents.
 
@@ -104,14 +109,14 @@ Temporal Cloud sends an email alert once your Namespace is ready for use.
 
 #### --cloud-provider
 
-The cloud provider of the region.
+The cloud provider of the region. One of [aws, gcp].
 
 Default: aws (default: "aws")
 
 ## create
 
-The `tcld namespace create` command creates a Temporal [Namespace](/namespaces) in Temporal Cloud.
-Use it to create a standard Namespace or a Namespace with [High Availability features](/cloud/high-availability).
+The `tcld namespace create` command creates a Temporal [Namespace](/namespaces) in Temporal Cloud. Use it to create a
+standard Namespace or a Namespace with [High Availability features](/cloud/high-availability).
 
 Alias: `c`
 
@@ -121,8 +126,7 @@ The following modifiers control the behavior of the command.
 
 #### --request-id
 
-The request identifier to use for the asynchronous operation.
-If not set, the server assigns an identifier.
+The request identifier to use for the asynchronous operation. If not set, the server assigns an identifier.
 
 Alias: `-r`
 
@@ -138,8 +142,8 @@ Alias: `-c`
 
 #### --namespace
 
-Specify a Namespace hosted on Temporal Cloud.
-If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
+$TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
@@ -150,13 +154,14 @@ _Required modifier_
 The region to create the Namespace in.
 
 - Supplying a single `--region` flags creates a standard Namespace.
-- Supplying two `--region` flags creates a Namespace that uses <ToolTipTerm term="replication" /> and <ToolTipTerm term="failover" /> for continued service availability in case of failures of incidents.
+- Supplying two `--region` flags creates a Namespace that uses <ToolTipTerm term="replication" /> and
+  <ToolTipTerm term="failover" /> for continued service availability in case of failures of incidents.
 
 **Example**
 
 ```bash
 tcld namespace create \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id> \
     --region <primary_region> [\]
     [--region <replica_region>] // if adding replica
 ```
@@ -166,17 +171,17 @@ When using API key authentication, add your API credentials before pressing Ente
 ```bash
 tcld --api-key <your_api_key> \
     namespace create \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id> \
     --region <primary_region> [\]
     [--region <replica_region>] // if adding replica
 ```
 
-When using High Availability features, specify the region code of the region where you want to create the replica as an argument to the `--region` flag:
+When using High Availability features, specify the region code of the region where you want to create the replica as an
+argument to the `--region` flag:
 
-- Using the current region replicates to an <ToolTipTerm term="isolation domain" src="isolation domains" /> within your existing region.
-  This enables Same-region replication.
-- Using a different region (within the same continent) replicates across regions.
-  This enables Multi-region replication.
+- Using the current region replicates to an <ToolTipTerm term="isolation domain" src="isolation domains" /> within your
+  existing region. This enables Same-region replication.
+- Using a different region (within the same continent) replicates across regions. This enables Multi-region replication.
 
 Temporal Cloud sends an email alert once your Namespace is ready for use.
 
@@ -199,6 +204,10 @@ The number of days that data about closed Workflow Executions will be retained (
 
 Alias: `--rd`
 
+#### --auth-method
+
+The authentication method to use for the namespace (e.g. 'mtls', 'api_key') (default: "mtls")
+
 #### --ca-certificate-file
 
 _Required modifier unless `--ca-certificate` is specified_
@@ -213,8 +222,8 @@ Alias: `--cf`
 
 _Required modifier unless `--certificate-filter-input` is specified_
 
-Path to a JSON file that defines the certificate filters to be applied to the Namespace.
-The specified filters replace any existing filters.
+Path to a JSON file that defines the certificate filters to be applied to the Namespace. The specified filters replace
+any existing filters.
 
 Sample JSON: `{ "filters": [ { "commonName": "test1" } ] }`
 
@@ -226,8 +235,8 @@ Alias: `--cff`
 
 _Required modifier unless `--certificate-filter-file` is specified_
 
-A JSON string that defines the certificate filters to be applied to the Namespace.
-The specified filters replace any existing filters.
+A JSON string that defines the certificate filters to be applied to the Namespace. The specified filters replace any
+existing filters.
 
 Sample JSON: `{ "filters": [ { "commonName": "test1" } ] }`
 
@@ -239,7 +248,7 @@ Alias: `--cfi`
 
 _Required modifier; can be specified more than once_
 
-A custom Search Attribute in the form `_name_=_type_`.
+A custom Search Attribute in the form '_name_=_type_'.
 
 Valid values for _type_: `Bool` | `Datetime` | `Double` | `Int` | `Keyword` | `Text`
 
@@ -249,11 +258,17 @@ Alias: `--sa`
 
 _Can be specified more than once_
 
-A [Namespace-level permission](/cloud/users#namespace-level-permissions) for a user in the form `_email_=_permission_`.
+A [Namespace-level permission](/cloud/users#namespace-level-permissions) for a user in the form '_email_=_permission_'.
 
 Valid values for _permission_: `Admin` | `Write` | `Read`
 
 Alias: `-p`
+
+#### --enable-delete-protection
+
+Enable delete protection on the namespace. (default: false)
+
+Alias: `--edp`
 
 #### --endpoint
 
@@ -273,11 +288,26 @@ Include cross-origin credentials (default: false).
 
 Alias: `--ic`
 
+#### --cloud-provider
+
+The cloud provider of the region. One of ['aws', 'gcp']. (default: "aws")
+
+Alias: `--cp`
+
+#### --tag
+
+A tag in the form "_key_=_value_".
+
+[Tag structure and limits](/cloud/namespaces#tag-structure-and-limits).
+
+Alias: `--t`
+
 **Example**
 
 ```bash
 tcld namespace create \
     --namespace <namespace_id> \
+    --cloud-provider aws \
     --region us-west-2 \
     --retention-days 60 \
     --certificate-filter-input '{"filters": [{"commonName": "test1"}]}' \
@@ -286,7 +316,32 @@ tcld namespace create \
     --search-attribute "customer_name=Text" \
     --endpoint "https://test-codec-server.com" \
     --pass-access-token \
-    --include-credentials
+    --include-credentials \
+    --tag "key=value"
+```
+
+#### --connectivity-rule-ids
+
+The list of connectivity rule IDs, can be used in create namespace and update namespace. example: --ids id1 --ids id2
+--ids id3.
+
+Alias: `--ids`
+
+```bash
+tcld namespace create \
+    --namespace <namespace_id> \
+    --cloud-provider aws \
+    --region us-west-2 \
+    --retention-days 60 \
+    --certificate-filter-input '{"filters": [{"commonName": "test1"}]}' \
+    --user-namespace-permission "user@example.com=Admin" \
+    --search-attribute "customer_id=Int" \
+    --search-attribute "customer_name=Text" \
+    --endpoint "https://test-codec-server.com" \
+    --pass-access-token \
+    --include-credentials \
+    --connectivity-rule-ids <rule_id1> \
+    --connectivity-rule-ids <rule_id2> // if adding multiple rules
 ```
 
 ## delete
@@ -309,15 +364,13 @@ _Required modifier_
 
 #### --request-id
 
-The request identifier to use for the asynchronous operation.
-If not set, the server assigns an identifier.
+The request identifier to use for the asynchronous operation. If not set, the server assigns an identifier.
 
 Alias: `-r`
 
 #### --resource-version
 
-A resource version (ETag) to update from.
-If not set, the CLI uses the latest.
+A resource version (ETag) to update from. If not set, the CLI uses the latest.
 
 Alias: `-v`
 
@@ -330,14 +383,10 @@ tcld namespace delete \
 
 ## delete-region
 
-Use `tcld namespace delete-region` to remove a <ToolTipTerm term="replica" /> for an existing Temporal Cloud [Namespace](/namespaces).
-Removing a replica disables [High Availability features](/cloud/high-availability).
-
-:::tip
-
-Disabling replication by removing a region results in a mandatory 7-day waiting period before you can re-enable High Availability Namespace features.
-
-:::
+Use `tcld namespace delete-region` to remove a <ToolTipTerm term="replica" /> for an existing Temporal Cloud
+[Namespace](/namespaces). Removing a replica disables [High Availability features](/cloud/high-availability) and results
+in a mandatory 7-day waiting period before you can re-enable High Availability features in the same location. Refer to
+[Enable High Availability](/cloud/high-availability/enable) for more information.
 
 Alias: _none_
 
@@ -345,15 +394,14 @@ The following modifiers control the behavior of the command.
 
 #### --request-id
 
-The request identifier to use for the asynchronous operation.
-If not set, the server assigns an identifier.
+The request identifier to use for the asynchronous operation. If not set, the server assigns an identifier.
 
 Alias: `-r`
 
 #### --namespace
 
-Specify a Namespace hosted on Temporal Cloud.
-If not specified, the value of the environment variable `$TEMPORAL_CLOUD_NAMESPACE` is used.
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
+`$TEMPORAL_CLOUD_NAMESPACE` is used.
 
 Alias: `-n`
 
@@ -361,9 +409,8 @@ _Required modifier_
 
 #### --region
 
-The region to remove from the Namespace.
-Upon removal, Temporal stops replication and the Namespace becomes a Standard Namespace.
-You cannot re-add a region or add a new region for seven days after removing a Namespace region.
+The region to remove from the Namespace. Upon removal, Temporal stops replication and the Namespace becomes a Standard
+Namespace. You cannot re-add a region or add a new region for seven days after removing a Namespace region.
 
 Alias: `--re`
 
@@ -373,7 +420,7 @@ _Required modifier_
 
 ```bash
 tcld namespace delete-region \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id>\
     --region <replica_region>
 ```
 
@@ -382,26 +429,26 @@ When using API key authentication, add your API credentials before pressing Ente
 ```bash
 tcld --api-key <your_api_key> \
     delete-region \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id> \
     --region <replica_region>
 ```
 
 #### --cloud-provider
 
-The cloud provider of the region to failover to.
+The cloud provider of the region to failover to. One of [aws, gcp].
 
 Default: aws (default: "aws")
 
 ## failover
 
-Failover a Temporal Namespace with [High Availability features](/cloud/high-availability).
-A failover switches a Namespace region from a primary Namespace to its replica.
+Failover a Temporal Namespace with [High Availability features](/cloud/high-availability). A failover switches a
+Namespace region from a primary Namespace to its replica.
 
 **Example**
 
 ```bash
 tcld namespace failover \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id> \
     --region <target_region>
 ```
 
@@ -410,21 +457,21 @@ When using API key authentication, add your API credentials before pressing Ente
 ```bash
 tcld --api-key <your_api_key> \
     namespace failover \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id> \
     --region <target_region>
 ```
 
 #### --request-id
 
-Specify a request identifier to use for the asynchronous operation.
-If not specified, the server assigns a request identifier.
+Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request
+identifier.
 
 Alias: `-r`
 
 #### --namespace
 
-Specify a Namespace hosted on Temporal Cloud.
-If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
+$TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
@@ -434,7 +481,7 @@ _Required modifier_
 
 The region to failover _to_.
 
-See [Regions](/cloud/high-availability/regions) for a list of supported regions.
+See [Regions](/cloud/regions) for a list of supported regions.
 
 Alias: `--re`
 
@@ -452,7 +499,7 @@ Alias: `-c`
 
 #### --cloud-provider
 
-The cloud provider of the region to failover to.
+The cloud provider of the region to failover to. One of [aws, gcp].
 
 Default: aws (default: "aws")
 
@@ -468,7 +515,8 @@ The following modifier controls the behavior of the command.
 
 #### --namespace
 
-Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
+$TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
@@ -506,7 +554,8 @@ Alias: `es`
 
 ### create
 
-The `tcld namespace export s3 create` command allows users to create an export sink for the Namespace of a Temporal Cloud account.
+The `tcld namespace export s3 create` command allows users to create an export sink for the Namespace of a Temporal
+Cloud account.
 
 **Example**
 
@@ -522,8 +571,8 @@ The following modifiers control the behavior of the command.
 
 #### --namespace
 
-Specify a Namespace hosted on Temporal Cloud.
-If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
+$TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
@@ -549,18 +598,20 @@ _Required modifier_
 
 #### --request-id
 
-Specify a request identifier to use for the asynchronous operation.
-If not specified, the server assigns a request identifier.
+Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request
+identifier.
 
 Alias: `-r`
 
 #### --kms-arn
 
-Provide the ARN of the KMS key to use for encryption. Note: If the KMS ARN needs to be added or updated, users should create the IAM Role with KMS or modify the created IAM Role accordingly. Providing it as part of the input won't help.
+Provide the ARN of the KMS key to use for encryption. Note: If the KMS ARN needs to be added or updated, users should
+create the IAM Role with KMS or modify the created IAM Role accordingly. Providing it as part of the input won't help.
 
 ### get
 
-The `tcld namespace export s3 get` command allows users to retrieve details about an existing export sink from the Namespace of a Temporal Cloud account.
+The `tcld namespace export s3 get` command allows users to retrieve details about an existing export sink from the
+Namespace of a Temporal Cloud account.
 
 **Example**
 
@@ -574,8 +625,8 @@ The following modifiers control the behavior of the command.
 
 #### --namespace
 
-Specify a Namespace hosted on Temporal Cloud.
-If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
+$TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
@@ -589,7 +640,8 @@ _Required modifier_
 
 ### delete
 
-The `tcld namespace export s3 delete` command allows users to delete an existing export sink from the Namespace of a Temporal Cloud account.
+The `tcld namespace export s3 delete` command allows users to delete an existing export sink from the Namespace of a
+Temporal Cloud account.
 
 **Example**
 
@@ -603,8 +655,8 @@ The following modifiers control the behavior of the command.
 
 #### --namespace
 
-Specify a Namespace hosted on Temporal Cloud.
-If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
+$TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
@@ -618,21 +670,21 @@ _Required modifier_
 
 #### --resource-version
 
-Specify a resource version (ETag) to delete from.
-If not specified, the CLI will use the latest version.
+Specify a resource version (ETag) to delete from. If not specified, the CLI will use the latest version.
 
 Alias: `-v`
 
 #### --request-id
 
-Specify a request identifier to use for the asynchronous operation.
-If not specified, the server assigns a request identifier.
+Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request
+identifier.
 
 Alias: `-r`
 
 ### list
 
-The `tcld namespace export s3 list` command allows users to list all existing export sinks within the Namespace of a Temporal Cloud account.
+The `tcld namespace export s3 list` command allows users to list all existing export sinks within the Namespace of a
+Temporal Cloud account.
 
 **Example**
 
@@ -645,8 +697,8 @@ The following modifiers control the behavior of the command.
 
 #### --namespace
 
-Specify a Namespace hosted on Temporal Cloud.
-If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
+$TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
@@ -662,7 +714,8 @@ Provide the page token to continue listing results from where the previous list 
 
 ### update
 
-The `tcld namespace export s3 update` command allows users to modify the details of an existing export sink within the Namespace of a Temporal Cloud account.
+The `tcld namespace export s3 update` command allows users to modify the details of an existing export sink within the
+Namespace of a Temporal Cloud account.
 
 **Example**
 
@@ -677,8 +730,8 @@ The following modifiers control the behavior of the command.
 
 #### --namespace
 
-Specify a Namespace hosted on Temporal Cloud.
-If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
+$TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
@@ -704,25 +757,26 @@ Update the name of the AWS S3 bucket that Temporal will send closed workflow his
 
 #### --resource-version
 
-Specify a resource version (ETag) to update from.
-If not specified, the CLI will use the latest version.
+Specify a resource version (ETag) to update from. If not specified, the CLI will use the latest version.
 
 Alias: `-v`
 
 #### --kms-arn
 
-Update the ARN of the KMS key used for encryption. Note: If the KMS ARN needs to be added or updated, users should create the IAM Role with KMS or modify the created IAM Role accordingly. Providing it as part of the input won't help.
+Update the ARN of the KMS key used for encryption. Note: If the KMS ARN needs to be added or updated, users should
+create the IAM Role with KMS or modify the created IAM Role accordingly. Providing it as part of the input won't help.
 
 #### --request-id
 
-Specify a request identifier to use for the asynchronous operation.
-If not specified, the server assigns a request identifier.
+Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request
+identifier.
 
 Alias: `-r`
 
 ### validate
 
-The `tcld namespace export s3 validate` command allows users to validate an export sink from the Namespace of a Temporal Cloud account.
+The `tcld namespace export s3 validate` command allows users to validate an export sink from the Namespace of a Temporal
+Cloud account.
 
 **Example**
 
@@ -738,8 +792,8 @@ The following modifiers control the behavior of the command.
 
 #### --namespace
 
-Specify a Namespace hosted on Temporal Cloud.
-If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
+$TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
@@ -763,11 +817,13 @@ Update the name of the AWS S3 bucket that Temporal will send closed workflow his
 
 #### --kms-arn
 
-Update the ARN of the KMS key used for encryption. Note: If the KMS ARN needs to be added or updated, users should create the IAM Role with KMS or modify the created IAM Role accordingly. Providing it as part of the input won't help.
+Update the ARN of the KMS key used for encryption. Note: If the KMS ARN needs to be added or updated, users should
+create the IAM Role with KMS or modify the created IAM Role accordingly. Providing it as part of the input won't help.
 
 ## accepted-client-ca
 
-The `tcld namespace accepted-client-ca` commands manage the client CA certificates of the specified [Namespace](/namespaces) in Temporal Cloud. The certificates are used to verify client connections.
+The `tcld namespace accepted-client-ca` commands manage the client CA certificates of the specified
+[Namespace](/namespaces) in Temporal Cloud. The certificates are used to verify client connections.
 
 :::note
 
@@ -784,9 +840,8 @@ Alias: `ca`
 
 :::important
 
-Do not use a CA certificate that is signed with an insecure signature algorithm, such as SHA-1.
-Such signatures will be rejected.
-Existing CA certificates that use SHA-1 can stop working without warning.
+Do not use a CA certificate that is signed with an insecure signature algorithm, such as SHA-1. Such signatures will be
+rejected. Existing CA certificates that use SHA-1 can stop working without warning.
 
 For more information about the vulnerabilities of SHA-1, see [SHAttered](https://shattered.io/).
 
@@ -794,7 +849,8 @@ For more information about the vulnerabilities of SHA-1, see [SHAttered](https:/
 
 ### add
 
-The `tcld namespace accepted-client-ca add` command adds client CA certificates to a [Namespace](/namespaces) in Temporal Cloud.
+The `tcld namespace accepted-client-ca add` command adds client CA certificates to a [Namespace](/namespaces) in
+Temporal Cloud.
 
 `tcld namespace accepted-client-ca add --ca-certificate <value>`
 
@@ -804,7 +860,8 @@ The following modifiers control the behavior of the command.
 
 #### --namespace
 
-Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
+$TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
@@ -818,7 +875,8 @@ tcld namespace accepted-client-ca add \
 
 #### --request-id
 
-Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
+Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request
+identifier.
 
 Alias: `-r`
 
@@ -880,7 +938,8 @@ tcld namespace accepted-client-ca add \
 
 ### list
 
-The `tcld namespace accepted-client-ca list` command lists the client CA certificates that are currently configured for a [Namespace](/namespaces) in Temporal Cloud.
+The `tcld namespace accepted-client-ca list` command lists the client CA certificates that are currently configured for
+a [Namespace](/namespaces) in Temporal Cloud.
 
 `tcld namespace accepted-client-ca list`
 
@@ -890,7 +949,8 @@ The following modifier controls the behavior of the command.
 
 #### --namespace
 
-Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
+$TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
@@ -903,7 +963,8 @@ tcld namespace accepted-client-ca list \
 
 ### remove
 
-The `tcld namespace accepted-client-ca remove` command removes client CA certificates from a [Namespace](/namespaces) in Temporal Cloud.
+The `tcld namespace accepted-client-ca remove` command removes client CA certificates from a [Namespace](/namespaces) in
+Temporal Cloud.
 
 `tcld namespace accepted-client-ca remove --ca-certificate <value>`
 
@@ -913,7 +974,8 @@ The following modifiers control the behavior of the command.
 
 #### --namespace
 
-Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
+$TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
@@ -927,7 +989,8 @@ tcld namespace accepted-client-ca remove \
 
 #### --request-id
 
-Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
+Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request
+identifier.
 
 Alias: `-r`
 
@@ -1010,7 +1073,8 @@ tcld namespace accepted-client-ca remove \
 
 ### set
 
-The `tcld namespace accepted-client-ca set` command sets the client CA certificates for a [Namespace](/namespaces) in Temporal Cloud.
+The `tcld namespace accepted-client-ca set` command sets the client CA certificates for a [Namespace](/namespaces) in
+Temporal Cloud.
 
 `tcld namespace accepted-client-ca set --ca-certificate <value>`
 
@@ -1018,11 +1082,11 @@ Alias: `s`
 
 {/* How to rollover accepted client CA certificates in Temporal Cloud using tcld */}
 
-When updating CA certificates, it's important to follow a rollover process.
-Doing so enables your Namespace to serve both CA certificates for a period of time until traffic to your old CA certificate ceases.
+When updating CA certificates, it's important to follow a rollover process. Doing so enables your Namespace to serve
+both CA certificates for a period of time until traffic to your old CA certificate ceases.
 
-1. Create a single file that contains both your old and new CA certificate PEM blocks.
-   Just concatenate the PEM blocks on adjacent lines.
+1. Create a single file that contains both your old and new CA certificate PEM blocks. Just concatenate the PEM blocks
+   on adjacent lines.
 
    ```
    -----BEGIN CERTIFICATE-----
@@ -1050,7 +1114,8 @@ The following modifiers control the behavior of the command.
 
 #### --namespace
 
-Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
+$TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
@@ -1064,7 +1129,8 @@ tcld namespace accepted-client-ca set \
 
 #### --request-id
 
-Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
+Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request
+identifier.
 
 Alias: `-r`
 
@@ -1126,7 +1192,9 @@ tcld namespace accepted-client-ca set \
 
 ## certificate-filters
 
-The `tcld namespace certificate-filters` commands manage optional certificate filters for the specified [Namespace](/namespaces) in Temporal Cloud. The Namespace can use certificate filters to authorize client certificates based on distinguished name (DN) fields.
+The `tcld namespace certificate-filters` commands manage optional certificate filters for the specified
+[Namespace](/namespaces) in Temporal Cloud. The Namespace can use certificate filters to authorize client certificates
+based on distinguished name (DN) fields.
 
 Alias: `cf`
 
@@ -1136,14 +1204,15 @@ Alias: `cf`
 
 ### add
 
-The `tcld namespace certificates-filter add` command adds additional certificate filters to the Namespace of a Temporal Cloud account.
+The `tcld namespace certificates-filter add` command adds additional certificate filters to the Namespace of a Temporal
+Cloud account.
 
 The following modifiers control the behavior of the command.
 
 #### --namespace
 
-Specify a Namespace hosted on Temporal Cloud.
-If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
+$TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
@@ -1157,8 +1226,8 @@ tcld namespace certificate-filters add \
 
 #### --request-id
 
-Specify a request identifier to use for the asynchronous operation.
-If not specified, the server assigns a request identifier.
+Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request
+identifier.
 
 Alias: `-r`
 
@@ -1172,8 +1241,7 @@ tcld namespace certificate-filters add \
 
 #### --resource-version
 
-Specify a resource version (ETag) to update from.
-If not specified, the latest version is used.
+Specify a resource version (ETag) to update from. If not specified, the latest version is used.
 
 Alias: `-v`
 
@@ -1217,11 +1285,13 @@ tcld namespace certificate-filters add \
 
 ### clear
 
-The `tcld namespace certificate-filters clear` command clears all certificate filters from a [Namespace](/namespaces) in Temporal Cloud.
+The `tcld namespace certificate-filters clear` command clears all certificate filters from a [Namespace](/namespaces) in
+Temporal Cloud.
 
 :::caution
 
-Using this command allows _any_ client certificate that chains up to a configured CA certificate to connect to the Namespace.
+Using this command allows _any_ client certificate that chains up to a configured CA certificate to connect to the
+Namespace.
 
 :::
 
@@ -1231,7 +1301,8 @@ The following modifiers control the behavior of the command.
 
 #### --namespace
 
-Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
+$TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
@@ -1244,7 +1315,8 @@ tcld namespace certificate-filters clear \
 
 #### --request-id
 
-Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
+Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request
+identifier.
 
 Alias: `-r`
 
@@ -1270,7 +1342,8 @@ tcld namespace certificate-filters clear \
 
 ### export
 
-The `tcld namespace certificate-filters export` command exports existing certificate filters from a [Namespace](/namespaces) in Temporal Cloud.
+The `tcld namespace certificate-filters export` command exports existing certificate filters from a
+[Namespace](/namespaces) in Temporal Cloud.
 
 `tcld namespace certificate-filters export --certificate-filter-file <path>`
 
@@ -1293,7 +1366,8 @@ tcld namespace certificate-filters export \
 
 #### --namespace
 
-Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
+$TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
@@ -1307,7 +1381,8 @@ tcld namespace certificate-filters import \
 
 #### --request-id
 
-Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
+Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request
+identifier.
 
 Alias: `-r`
 
@@ -1335,7 +1410,8 @@ tcld namespace certificate-filters import \
 
 ### import
 
-The `tcld namespace certificate-filters import` command sets certificate filters for a [Namespace](/namespaces) in Temporal Cloud.
+The `tcld namespace certificate-filters import` command sets certificate filters for a [Namespace](/namespaces) in
+Temporal Cloud.
 
 `tcld namespace certificate-filters import --certificate-filter-file <path>`
 
@@ -1354,7 +1430,8 @@ The following modifiers control the behavior of the command.
 
 _Required modifier unless `--certificate-filter-input` is specified_
 
-Specify a path to a JSON file that defines certificate filters to be applied to the Namespace, such as `{ "filters": [ { "commonName": "test1" } ] }`. The specified filters replace any existing filters.
+Specify a path to a JSON file that defines certificate filters to be applied to the Namespace, such as
+`{ "filters": [ { "commonName": "test1" } ] }`. The specified filters replace any existing filters.
 
 If both `--certificate-filter-file` and `--certificate-filter-input` are specified, the command returns an error.
 
@@ -1371,7 +1448,8 @@ tcld namespace certificate-filters import \
 
 _Required modifier unless `--certificate-filter-file` is specified_
 
-Specify a JSON string that defines certificate filters to be applied to the Namespace, such as `{ "filters": [ { "commonName": "test1" } ] }`. The specified filters replace any existing filters.
+Specify a JSON string that defines certificate filters to be applied to the Namespace, such as
+`{ "filters": [ { "commonName": "test1" } ] }`. The specified filters replace any existing filters.
 
 If both `--certificate-filter-input` and `--certificate-filter-file` are specified, the command returns an error.
 
@@ -1386,7 +1464,8 @@ tcld namespace certificate-filters import \
 
 #### --namespace
 
-Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
+$TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
@@ -1400,7 +1479,8 @@ tcld namespace certificate-filters import \
 
 #### --request-id
 
-Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
+Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request
+identifier.
 
 Alias: `-r`
 
@@ -1428,18 +1508,21 @@ tcld namespace certificate-filters import \
 
 ## search-attributes
 
-The `tcld namespace search-attributes` commands manage [Search Attributes](/search-attribute) of the specified [Namespace](/namespaces) in Temporal Cloud.
+The `tcld namespace search-attributes` commands manage [Search Attributes](/search-attribute) of the specified
+[Namespace](/namespaces) in Temporal Cloud.
 
 Alias: `sa`
 
 - [tcld namespace search-attributes add](#add)
 - [tcld namespace search-attributes rename](#rename)
 
-If you wish to delete a Search Attribute, please contact [Support](/cloud/support) at [support.temporal.io](https://support.temporal.io).
+If you wish to delete a Search Attribute, please contact [Support](/cloud/support) at
+[support.temporal.io](https://support.temporal.io).
 
 ### add
 
-The `tcld namespace search-attributes add` command adds custom [Search Attributes](/search-attribute) to a Namespace in Temporal Cloud.
+The `tcld namespace search-attributes add` command adds custom [Search Attributes](/search-attribute) to a Namespace in
+Temporal Cloud.
 
 `tcld namespace search-attributes add --search-attribute <value>`
 
@@ -1449,7 +1532,8 @@ The following modifiers control the behavior of the command.
 
 #### --namespace
 
-Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
+$TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
@@ -1463,7 +1547,8 @@ tcld namespace search-attributes add \
 
 #### --request-id
 
-Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
+Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request
+identifier.
 
 Alias: `-r`
 
@@ -1514,7 +1599,8 @@ tcld namespace search-attributes add \
 
 ### rename
 
-The `tcld namespace search-attributes rename` command renames a custom [Search Attribute](/search-attribute) in Temporal Cloud.
+The `tcld namespace search-attributes rename` command renames a custom [Search Attribute](/search-attribute) in Temporal
+Cloud.
 
 `tcld namespace search-attributes rename --existing-name <value> --new-name <value>`
 
@@ -1522,7 +1608,8 @@ The following modifiers control the behavior of the command.
 
 #### --namespace
 
-Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
+$TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
@@ -1537,7 +1624,8 @@ tcld namespace search-attributes rename \
 
 #### --request-id
 
-Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
+Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request
+identifier.
 
 Alias: `-r`
 
@@ -1599,7 +1687,8 @@ tcld namespace search-attributes rename \
 
 ## retention
 
-The `tcld namespace retention` commands manage the length of time (in days) a closed Workflow is preserved before deletion for a given Namespace in Temporal Cloud.
+The `tcld namespace retention` commands manage the length of time (in days) a closed Workflow is preserved before
+deletion for a given Namespace in Temporal Cloud.
 
 Alias: `r`
 
@@ -1618,8 +1707,8 @@ The following modifier controls the behavior of the command.
 
 _Required modifier_
 
-Specify a Namespace hosted on Temporal Cloud.
-If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
+$TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
@@ -1642,8 +1731,8 @@ The following modifiers control the behavior of the command.
 
 _Required modifier_
 
-Specify a Namespace hosted on Temporal Cloud.
-If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
+$TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
@@ -1665,7 +1754,8 @@ tcld namespace retention set \
 
 ## update-codec-server
 
-The `tcld namespace update-codec-server` command updates the configuration of a codec server for Temporal Cloud, which allows payloads to be decodec through a remote endpoint.
+The `tcld namespace update-codec-server` command updates the configuration of a codec server for Temporal Cloud, which
+allows payloads to be decodec through a remote endpoint.
 
 Alias: `ucs`
 
@@ -1675,7 +1765,8 @@ The following modifiers control the behavior of the command.
 
 _Required modifier._
 
-Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
+$TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
@@ -1691,8 +1782,8 @@ tcld namespace update-codec-server \
 
 _Required modifier._
 
-Specify an endpoint to decode payloads for all users interacting with this Namespace.
-Endpoints must be valid https URLs.
+Specify an endpoint to decode payloads for all users interacting with this Namespace. Endpoints must be valid https
+URLs.
 
 Alias: `-e`
 
@@ -1706,8 +1797,7 @@ tcld namespace update-codec-server \
 
 #### --pass-access-token
 
-Enables a user access token to be passed with the remote endpoint.
-This is set to `false` by default.
+Enables a user access token to be passed with the remote endpoint. This is set to `false` by default.
 
 Alias: `--pat`
 
@@ -1722,8 +1812,7 @@ tcld namespace update-codec-server \
 
 #### --include-credentials
 
-Enables the inclusion of cross-origin credentials.
-This is set to `false` by default.
+Enables the inclusion of cross-origin credentials. This is set to `false` by default.
 
 Alias: `--ic`
 
@@ -1738,8 +1827,8 @@ tcld namespace update-codec-server \
 
 ## update-high-availability {#update-high-availability}
 
-The `tcld namespace update-high-availability` command enables you to adjust settings for your [Namespace](/namespaces) with [High Availability features](/cloud/high-availability).
-This is set to `false` by default.
+The `tcld namespace update-high-availability` command enables you to adjust settings for your [Namespace](/namespaces)
+with [High Availability features](/cloud/high-availability). This is set to `false` by default.
 
 Alias: `uha`
 
@@ -1749,13 +1838,15 @@ The following modifiers control the behavior of the command.
 
 _Required modifier._
 
-Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
+$TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
 #### --disable-auto-failover
 
-Specify whether Temporal Cloud should perform <ToolTipTerm term="health checks" src="health check" /> and trigger automatic failovers.
+Specify whether Temporal Cloud should perform <ToolTipTerm term="health checks" src="health check" /> and trigger
+automatic failovers.
 
 Pass `true` or `false` (default).
 
@@ -1763,9 +1854,8 @@ Pass `true` or `false` (default).
 
 ```
 tcld namespace update-high-availability \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id> \
     --disable-auto-failover=true
-
 ```
 
 When using API key authentication, add your API credentials before pressing Enter:
@@ -1773,8 +1863,126 @@ When using API key authentication, add your API credentials before pressing Ente
 ```
 tcld --api-key <your_api_key> \
     namespace update-high-availability \
-    --namespace <namespace_id>.<account_id> \
+    --namespace <namespace_id> \
     --disable-auto-failover=true
 ```
 
 Alias: `-daf`
+
+## tags
+
+The `tcld namespace tags` commands manage [Tags](/cloud/namespaces#tag-a-namespace) of the specified
+[Namespace](/namespaces) in Temporal Cloud.
+
+Alias: `t`
+
+- [tcld namespace tags upsert](#upsert)
+- [tcld namespace tags remove](#remove)
+
+### upsert
+
+Add new tags or update existing tag values for the specified Namespace.
+
+Alias: `u`
+
+The following modifier controls the behavior of the command.
+
+#### --namespace
+
+_Required modifier_
+
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
+$TEMPORAL_CLOUD_NAMESPACE is used.
+
+Alias: `-n`
+
+#### --request-id
+
+The request identifier to use for the asynchronous operation. If not set, the server assigns an identifier.
+
+Alias: `-r`
+
+#### --tag
+
+_Required modifier; can be specified more than once_
+
+A tag in the form "_key_=_value_".
+
+[Tag structure and limits](/cloud/namespaces#tag-structure-and-limits).
+
+Alias: `--t`
+
+**Example**
+
+```bash
+tcld namespace tags upsert \
+    --namespace <namespace_id> \
+    --tag "key1=value1" \
+    --tag "key2=updated"
+```
+
+### remove
+
+Remove existing tags for the specified Namespace using the key.
+
+Alias: `rm`
+
+The following modifiers control the behavior of the command.
+
+#### --namespace
+
+_Required modifier_
+
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
+$TEMPORAL_CLOUD_NAMESPACE is used.
+
+Alias: `-n`
+
+#### --request-id
+
+The request identifier to use for the asynchronous operation. If not set, the server assigns an identifier.
+
+Alias: `-r`
+
+#### --tag-key
+
+_Required modifier; can be specified more than once_
+
+A tag key string.
+
+[Tag Key structure and limits](/cloud/namespaces#tag-structure-and-limits).
+
+Alias: `--tk`
+
+**Example**
+
+```bash
+tcld namespace tags remove \
+    --namespace <namespace_id> \
+    --tag-key "key1" \
+    --tag-key "key2"
+```
+
+## set-connectivity-rules
+
+The `tcld namespace set-connectivity-rules` command enables you to set connectivity rules on your
+[Namespace](/namespaces).
+
+Alias: `scrs`
+
+#### --connectivity-rule-ids
+
+The list of connectivity rule IDs, can be used in create namespace and update namespace. example: --ids id1 --ids id2
+--ids id3.
+
+Alias: `ids`
+
+#### --namespace
+
+The namespace hosted on temporal cloud.
+
+Alias: `n`
+
+#### --remove-all
+
+Acknowledge that all connectivity rules will be removed, enabling connectivity from any source.

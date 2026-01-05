@@ -1,7 +1,7 @@
 ---
 id: saml
-title: SAML authentication - Temporal Cloud feature guide
-sidebar_label: SAML
+title: SAML authentication
+sidebar_label: SAML authentication
 description: Integrate SAML 2.0 with your Temporal Cloud account for secure user authentication. Connect via Microsoft Entra ID or Okta and ensure seamless SSO. Charges apply.
 slug: /cloud/saml
 toc_max_heading_level: 4
@@ -13,21 +13,22 @@ keywords:
 tags:
   - Security
   - Temporal Cloud
+  - Users
 ---
 
 To authenticate the users of your Temporal Cloud account, you can connect an identity provider (IdP) to your account by using Security Assertion Markup Language (SAML) 2.0.
 
 :::info
 
-Enabling this feature adds a charge to your account.
-For more information, contact your account manager.
+SAML is a paid feature. See the [pricing page](/cloud/pricing) for details.
 
 :::
 
 ## Integrate SAML with your Temporal Cloud account
 
 1. Locate your [Temporal Cloud Account Id](/cloud/namespaces#temporal-cloud-account-id).
-   One way to do so is to sign in to Temporal Cloud and find your [Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id).
+   Your Account Id can be viewed and copied from the Temporal Cloud user profile dropdown menu in the top right corner.
+   Alternatively, find your [Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id).
    The Account Id is the five or six characters following the period (.), such as `f45a2`.
    You will need the Account Id to construct your callback URL and your entity identifier.
 1. Configure SAML with your IdP by following one of these sets of instructions:
@@ -75,11 +76,23 @@ To use Entra ID as your SAML IdP, create a Microsoft Entra ID Enterprise applica
    https://login.tmprl.cloud/login/callback?connection=f45a2-saml
    ```
 
+1. In **Sign on URL**, enter the following login url, including your Account Id where indicated:
+
+   ```bash
+   https://cloud.temporal.io/login/saml?connection=ACCOUNT_ID-saml
+   ```
+
+   A correctly formed login URL looks like this:
+
+   ```bash
+   https://cloud.temporal.io/login/saml?connection=f45a2-saml
+   ```
+
 1. You can leave the other fields blank.
    Near the top of the pane, select **Save**.
 1. In the **Attributes & Claims** section, select **Edit**.
 1. We require the user's full email address when connecting to Temporal.
-   In the **Required claim** section, set **emailaddress** and **name**.
+   In the **Required claim** section, set **email** and **name**.
    Verify that **Unique User Identifier (NameID)** is set to `user.userprincipalname [nameid-format:emailAddress]`.
 1. Collect information that you need to send to us:
    - In the **SAML Certificates** section of the **SAML-based Sign-on** page, select the download link for **Certificate (Base64)**.
@@ -140,7 +153,7 @@ After you configure SAML with your IdP, we can finish the configuration on our s
 [Create a support ticket](/cloud/support#support-ticket) that includes the following information:
 
 - The sign-in URL from your application
-- The X.509 SAML sign-in certificate
+- The X.509 SAML sign-in certificate in PEM format
 - One or more IdP domains to map to the SAML connection
 
 Generally, the provided IdP domain is the same as the domain for your email address.

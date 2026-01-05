@@ -20,7 +20,7 @@ tags:
   - Security
 ---
 
-This page discusses [Failure Converter](#failure-converter). 
+This page discusses [Failure Converter](#failure-converter).
 
 ## What is a Failure Converter? {#failure-converter}
 
@@ -49,4 +49,3 @@ c, err := client.Dial(client.Options{
 
 If for some reason you need to specify a different set of Converter logic for your Failures, you can replace the `NewDefaultFailureConverter` with a custom method.
 For example, if you are both working with highly sensitive data and using a sophisticated logging/observability implementation, you may need to implement different encryption methods for each of them.
-

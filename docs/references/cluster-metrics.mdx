@@ -68,7 +68,7 @@ Example: P95 service latency by operation for the Frontend Service
 
 (Available only in v1.17.0+) Identifies errors encountered by the service.
 Example: Service errors by type for the Frontend Service
-`sum(rate(service_errors_with_type{service_name="frontend"}[5m])) by (error_type)`
+`sum(rate(service_error_with_type{service_name="frontend"}[5m])) by (error_type)`
 
 ### `client_errors`
 
@@ -95,7 +95,7 @@ Example: `sum(rate(poll_timeouts{}[5m]))`
 
 Measures the time from creation to delivery for async matched Tasks.
 The larger this latency, the longer Tasks are sitting in the queue waiting for your Workers to pick them up.
-Example: `histogram_quantile(0.95, sum(rate(asyncmatch_latency_bucket{service_name=~"matching"}[5m])) by (operation, le))`
+Example: `histogram_quantile(0.95, sum(rate(asyncmatch_latency_bucket{service_name="matching"}[5m])) by (operation, le))`
 
 ### `no_poller_tasks`
 
@@ -111,7 +111,7 @@ The following key metrics can be used to monitor the History Service health:
 ### `task_requests`
 
 Emitted on every Task process request.
-Example: `sum(rate(task_requests{service="$service",operation=~"TransferActive.*"}[1m]))`
+Example: `sum(rate(task_requests{operation=~"TransferActive.*"}[1m]))`
 
 ### `task_errors`
 
@@ -122,12 +122,12 @@ Example: `sum(rate(task_errors{operation=~"TransferActive.*"}[1m]))`
 
 Number of attempts on each Task Execution.
 A Task is retried forever, and each retry increases the attempt count.
-Example: `histogram_quantile($percentile, sum(rate(task_attempt_bucket{service="$service",operation=~"TransferActive.*"}[1m])) by (operation, le))`
+Example: `histogram_quantile(0.95, sum(rate(task_attempt_bucket{operation=~"TransferActive.*"}[1m])) by (operation, le))`
 
 ### `task_latency_processing`
 
 Shows the processing latency per attempt.
-Example: `histogram_quantile($percentile, sum(rate(task_latency_processing_bucket{operation=~"TransferActive.*",service="$service", service_name="history"}[1m])) by (operation, le))`
+Example: `histogram_quantile(0.95, sum(rate(task_latency_processing_bucket{operation=~"TransferActive.*",service_name="history"}[1m])) by (operation, le))`
 
 ### `task_latency`
 
@@ -151,7 +151,7 @@ Measures the duration, end-to-end, from when the Task should be executed (from t
 If fewer than 100 Tasks are in the Task channel for 30 seconds, the latency is scaled to 100 Tasks upon emission.
 Note: This is still an experimental metric and is subject to change.
 
-### `task_latency_userlatency`
+### `service_latency_userlatency`
 
 Shows the latency introduced because of Workflow logic.
 For example, if you have one Workflow scheduling many Activities or Child Workflows at the same time, it can cause a per-Workflow lock contention.
@@ -170,9 +170,9 @@ Emitted on every persistence request.
 Examples:
 
 - Prometheus query for getting the total number of persistence requests by operation for the History Service:
-  `sum by (operation) (rate(persistence_requests{service="$service",service_name="history"}[1m]))`
+  `sum by (operation) (rate(persistence_requests{service_name="history"}[1m]))`
 - Prometheus query for getting the total number of persistence requests by operation for the Matching Service:
-  `sum by (operation) (rate(persistence_requests{cluster="$cluster",service_name="matching"}[5m]))`
+  `sum by (operation) (rate(persistence_requests{service_name="matching"}[1m]))`
 
 ### `persistence_errors`
 
@@ -181,14 +181,14 @@ This metric is a good indicator for connection issues between the Temporal Servi
 Example:
 
 - Prometheus query for getting all persistence errors by service (history)
-  `sum (rate(persistence_errors{service="$service",service_name="history"}[1m]))`
+  `sum (rate(persistence_errors{service_name="history"}[1m]))`
 
 ### `persistence_error_with_type`
 
 Shows all errors related to the persistence store with type, and contain an `error_type` tag.
 
 - Prometheus query for getting persistence errors with type by (history) and by error type:
-  `sum(rate(persistence_error_with_type{service="$service",service_name="history"}[1m])) by (error_type)`
+  `sum(rate(persistence_error_with_type{service_name="history"}[1m])) by (error_type)`
 
 ### `persistence_latency`
 
@@ -196,7 +196,7 @@ Shows the latency on persistence operations.
 Example:
 
 - Prometheus query for getting latency by percentile:
-  `histogram_quantile($percentile, sum(rate(persistence_latency_bucket{service="$service" service_name="history"}[1m])) by (operation, le))`
+  `histogram_quantile(0.95, sum(rate(persistence_latency_bucket{service_name="history"}[1m])) by (operation, le))`
 
 ## Schedule metrics
 

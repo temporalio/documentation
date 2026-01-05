@@ -31,11 +31,9 @@ This section covers features related to viewing the state of the application, in
 Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
 For a complete list of metrics capable of being emitted, see the [SDK metrics reference](/references/sdk-metrics).
 
-Metrics can be scraped and stored in time series databases, such as [Prometheus](https://prometheus.io/docs/introduction/overview/).
-Temporal also provides a dashboard you can integrate with graphing services like [Grafana](https://grafana.com/docs/). For more information, see:
-
-- Temporal's implementation of the [Grafana dashboard](https://github.com/temporalio/dashboards)
-- [How to export metrics in Grafana](https://github.com/temporalio/helm-charts#exploring-metrics-via-grafana)
+- For an overview of Prometheus and Grafana integration, refer to the [Monitoring](/self-hosted-guide/monitoring) guide.
+- For a list of metrics, see the [SDK metrics reference](/references/sdk-metrics).
+- For an end-to-end example that exposes metrics with the TypeScript SDK, refer to the [samples-typescript](https://github.com/temporalio/samples-typescript/tree/main/interceptors-opentelemetry) repo.
 
 Workers can emit metrics and traces. There are a few [telemetry options](https://typescript.temporal.io/api/interfaces/worker.TelemetryOptions) that can be provided to [`Runtime.install`](https://typescript.temporal.io/api/classes/worker.Runtime/#install). The common options are:
 
@@ -293,19 +291,18 @@ However, they differ from Activities in important ways:
 Explicitly declaring a sink's interface is optional but is useful for ensuring type safety in subsequent steps:
 
 <!--SNIPSTART typescript-logger-sink-interface-->
-
-[packages/test/src/workflows/log-sink-tester.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/log-sink-tester.ts)
-
+[sinks/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/sinks/src/workflows.ts)
 ```ts
-import type { Sinks } from '@temporalio/workflow';
+import { log, proxySinks, Sinks } from '@temporalio/workflow';
 
-export interface CustomLoggerSinks extends Sinks {
-  customLogger: {
-    info(message: string): void;
+export interface AlertSinks extends Sinks {
+  alerter: {
+    alert(message: string): void;
   };
 }
-```
 
+export type MySinks = AlertSinks;
+```
 <!--SNIPEND-->
 
 #### Implement sinks
@@ -315,9 +312,7 @@ Implementing sinks is a two-step process.
 Implement and inject the Sink function into a Worker
 
 <!--SNIPSTART typescript-logger-sink-worker-->
-
 [sinks/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/main/sinks/src/worker.ts)
-
 ```ts
 import { InjectedSinks, Worker } from '@temporalio/worker';
 import { MySinks } from './workflows';
@@ -351,7 +346,6 @@ main().catch((err) => {
   process.exit(1);
 });
 ```
-
 <!--SNIPEND-->
 
 - Sink function implementations are passed as an object into [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions/#sinks).
@@ -360,17 +354,16 @@ main().catch((err) => {
 #### Proxy and call a sink function from a Workflow
 
 <!--SNIPSTART typescript-logger-sink-workflow-->
-
-[packages/test/src/workflows/log-sample.ts](https://github.com/temporalio/sdk-typescript/blob/main/packages/test/src/workflows/log-sample.ts)
-
+[sinks/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/sinks/src/workflows.ts)
 ```ts
-import * as wf from '@temporalio/workflow';
+const { alerter } = proxySinks<MySinks>();
 
-export async function logSampleWorkflow(): Promise<void> {
-  wf.log.info('Workflow execution started');
+export async function sinkWorkflow(): Promise<string> {
+  log.info('Workflow Execution started');
+  alerter.alert('alerter: Workflow Execution started');
+  return 'Hello, Temporal!';
 }
 ```
-
 <!--SNIPEND-->
 
 Some important features of the [InjectedSinkFunction](https://typescript.temporal.io/api/interfaces/worker.InjectedSinkFunction) interface:
@@ -489,19 +482,17 @@ After you've created custom Search Attributes in your Temporal Service (using `t
 Use [`WorkflowOptions.searchAttributes`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions#searchattributes).
 
 <!--SNIPSTART typescript-search-attributes-client-->
-
 [search-attributes/src/client.ts](https://github.com/temporalio/samples-typescript/blob/main/search-attributes/src/client.ts)
-
 ```ts
 const handle = await client.workflow.start(example, {
   taskQueue: 'search-attributes',
   workflowId: 'search-attributes-example-0',
   searchAttributes: {
     CustomIntField: [2],
-    CustomKeywordField: ['keywordA', 'keywordB'],
+    CustomKeywordListField: ['keywordA', 'keywordB'],
     CustomBoolField: [true],
     CustomDatetimeField: [new Date()],
-    CustomStringField: [
+    CustomTextField: [
       'String field is for text. When queried, it will be tokenized for partial match. StringTypeField cannot be used in Order By',
     ],
   },
@@ -509,7 +500,6 @@ const handle = await client.workflow.start(example, {
 
 const { searchAttributes } = await handle.describe();
 ```
-
 <!--SNIPEND-->
 
 The type of `searchAttributes` is `Record<string, string[] | number[] | boolean[] | Date[]>`.
@@ -521,13 +511,10 @@ You can upsert Search Attributes to add or update Search Attributes from within 
 Inside a Workflow, we can read from [`WorkflowInfo.searchAttributes`](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInfo#searchattributes) and call [`upsertSearchAttributes`](https://typescript.temporal.io/api/namespaces/workflow#upsertsearchattributes):
 
 <!--SNIPSTART typescript-search-attributes-workflow -->
-
 [search-attributes/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/search-attributes/src/workflows.ts)
-
 ```ts
 export async function example(): Promise<SearchAttributes> {
-  const customInt =
-    (workflowInfo().searchAttributes.CustomIntField?.[0] as number) || 0;
+  const customInt = (workflowInfo().searchAttributes.CustomIntField?.[0] as number) || 0;
   upsertSearchAttributes({
     // overwrite the existing CustomIntField: [2]
     CustomIntField: [customInt + 1],
@@ -541,7 +528,6 @@ export async function example(): Promise<SearchAttributes> {
   return workflowInfo().searchAttributes;
 }
 ```
-
 <!--SNIPEND-->
 
 ### How to remove a Search Attribute from a Workflow {#remove-search-attribute}

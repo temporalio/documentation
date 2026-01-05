@@ -2,7 +2,7 @@
 id: core-application
 title: Core application - Python SDK
 sidebar_label: Core application
-description: Learn to develop and customize Workflows and Activities using the Temporal Python SDK, manage parameters, set timeouts, execute Activities, and run a Worker Process efficiently.
+description: Develop and customize Workflows and Activities using the Temporal Python SDK, manage parameters, set timeouts, execute Activities, and run a Worker Process efficiently.
 toc_max_heading_level: 2
 keywords:
   - temporal python core
@@ -285,7 +285,7 @@ async def your_activity(input: YourParams) -> str:
 
 All data returned from an Activity must be serializable.
 
-There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a [Workflow Execution Event History](/workflow-execution/event#event-history).
+Activity return values are subject to payload size limits in Temporal. The default payload size limit is 2MB, and there is a hard limit of 4MB for any gRPC message size in the Event History transaction ([see Cloud limits here](https://docs.temporal.io/cloud/limits#per-message-grpc-limit)). Keep in mind that all return values are recorded in a [Workflow Execution Event History](/workflow-execution/event#event-history).
 
 An Activity Execution can return inputs and other Activity values.
 
@@ -448,7 +448,7 @@ class YourWorkflow:
         )
 ```
 
-## Run a Worker Processes {#run-a-dev-worker}
+## Run a Worker Process {#run-a-dev-worker}
 
 **How to run a Worker Process using the Temporal Python SDK.**
 

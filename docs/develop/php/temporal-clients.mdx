@@ -1,17 +1,17 @@
 ---
-id: temporal-clients
+id: temporal-client
 title: Temporal Client - PHP SDK
 sidebar_label: Temporal Client
-slug: /develop/php/temporal-clients
+slug: /develop/php/temporal-client
 toc_max_heading_level: 3
 keywords:
-  - temporal-clients
+  - temporal-client
 tags:
   - Temporal Client
   - PHP SDK
   - Temporal SDKs
   - Certificates
-description: Learn to connect a Temporal Client to a Temporal Service and start Workflow Executions. This guide covers communication, including sending signals and queries.
+description: Connect a Temporal Client to a Temporal Service and start Workflow Executions. This guide covers communication, including sending signals and queries.
 ---
 
 This guide introduces Temporal Clients.
@@ -71,7 +71,6 @@ $workflowClient = WorkflowClient::create($serviceClient);
 
 See the [Advanced connection options](#advanced-connection-options) section for more information on configuring the connection.
 
-
 ## How to connect a Temporal Client to a Temporal Cloud {#connect-to-temporal-cloud}
 
 When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
@@ -130,12 +129,11 @@ $serviceClient = \Temporal\Client\GRPC\ServiceClient::createSSL(/*...*/)
     ->withAuthKey('your-api-key');
 ```
 
-
 ## How to start a Workflow Execution {#start-workflow-execution}
 
 [Workflow Execution](/workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
 
-In the examples below, all Workflow Executions are started using a Temporal Client.
+In the examples following all Workflow Executions are started using a Temporal Client.
 To spawn Workflow Executions from within another Workflow Execution, use either the [Child Workflow](/develop/php/child-workflows) or External Workflow APIs.
 
 See the [Customize Workflow Type](/develop/php/core-application#workflow-type) section to see how to customize the name of the Workflow Type.
@@ -328,7 +326,6 @@ var_dump($stub->getResult(timeout: 5.5));
 Note that you can specify a timeout for the `getResult()` method in seconds.
 If the Workflow does not complete within the specified time, a `TimeoutException` will be thrown.
 See how to limit all RPC calls in the [RPC timeout](#configure-rpc-timeout) section.
-
 
 ## Advanced connection options {#advanced-connection-options}
 

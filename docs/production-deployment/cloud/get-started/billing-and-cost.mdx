@@ -1,7 +1,7 @@
 ---
 id: billing-and-cost
-title: Manage billing and cost
-sidebar_label: Manage billing and cost
+title: Usage and Billing Management
+sidebar_label: Usage and billing
 sidebar_position: 3
 description: As an Account Owner, you can access and manage billing details anytime, with invoices available for download on the Billing page. Typical billing cycles begin on the first of the month (UTC).
 slug: /cloud/billing-and-cost
@@ -25,9 +25,11 @@ import * as Components from '@site/src/components';
 
 Temporal strives to provide full transparency over billing and costs.
 Account Owners and Finance Admins can view their [detailed billing information](https://cloud.temporal.io/billing) at any time.
-Use this information to assess your spending patterns, inspect your credit ledger, check your invoice histories, or update payment details as needed.
+Use this information to assess your spending patterns, inspect your credit ledger, check your invoice histories, update payment details,
+and manage your current plan as needed.
+You can see namespace-level cost estimates on the [usage dashboard](https://cloud.temporal.io/usage).
 
-For more information on Temporal Cloud pricing for Actions, storage, and services/support, please visit our [Pricing](/cloud/pricing) page.
+For more information on current Temporal Cloud pricing for Actions, storage, and services/support, please visit our [Pricing](/cloud/pricing) page.
 
 The [billing](https://cloud.temporal.io/billing) page includes the following information.
 If you're not on a standard plan, your billing page may show a subset of this list:
@@ -36,6 +38,7 @@ If you're not on a standard plan, your billing page may show a subset of this li
 - [Recent bill](#recent-bill): The amount of your most recent bill
 - [Invoice history](#invoice): Access to all past invoices
 - [Credit ledger](#credit-table): A record of all credit related transactions including details on credit grants, purchases, usage, and remaining credits, if applicable
+- [Plan](#plans): Your current plan, consumption pricing, and entitlements, with the ability to manage upgrades and downgrades, payment method, and account deletion
 
 The [Usage](https://cloud.temporal.io/usage) page shows the cost breakdown by Namespace.
 If your organization separates projects by Namespace -- for architectural reasons, for development/production differentiation, for different products, etc -- you can view individual costs for each Namespace.
@@ -48,7 +51,7 @@ This balance adjusts with use and appears on the first line of your Invoices tab
 :::note Billing Cycles
 
 Billing cycles normally begin on the first of the month (UTC).
-The minimum support fee for your first month is prorated based on your sign-up date.
+The minimum plan fee for your first month is prorated based on your sign-up date.
 
 :::
 
@@ -74,6 +77,7 @@ The Invoices table shows the following information:
 
 - Date (UTC): The date range covered by the invoice
 - Type: The type of invoice, such as credit purchase or cloud usage
+- Status: The current status of the invoice, such as paid or pending
 - Credit Granted: The total credits added to your account
 - Credit Purchase Amount: The amount paid for purchasing credits
 - Credit Usage: The credits used during the billing cycle
@@ -81,6 +85,8 @@ The Invoices table shows the following information:
 - Balance Due: The amount to pay after applying credits
 
 ![Billing page showing Invoices tab](/img/cloud/billing/billing-invoices.png)
+
+You may download your Invoices prior to this calendar month by clicking the download icon by the date.
 
 :::note Current Month Invoice
 
@@ -101,7 +107,7 @@ The following information appears under the credits table:
 
 ## Cost by Namespace {#cost-by-namespace}
 
-Account Owners can access a cost column on the Usage page.
+Account Owners and Finance Admins can access a cost column on the Usage page.
 This allows you to monitor your cost on a per Namespace basis.
 If your organization separates work by Namespace—for development, production, or different products—you can view costs for each.
 
@@ -109,11 +115,30 @@ If your organization separates work by Namespace—for development, production, 
 
 :::note Cost Breakdown Limitations
 
-Namespace cost details are not available for "last 90 days" or "last 120 days"
+Namespace cost details are not available for "last 90 days" or "last 120 days".
+
+Cost breakdowns distribute the total usage cost to namespaces proportionally based on their metered usage. The proration
+reflects your effective price, factoring in included Actions/Storage and tiered pricing rates in your Temporal plan.
 
 :::
 
-You may download your Invoices prior to this calendar month by clicking the download icon by the date.
+## Plans {#plans}
+
+Account Owners and Finance Admins can access their Temporal Plan information on the plans page.
+For customers on a standard agreement you will be able to:
+
+- View current plan information, pricing details and entitlements
+- View other available plans, pricing details and entitlements
+- View Pay-as-You-Go pricing rates applicable to your plan
+- Upgrade and Downgrade between plans available on a standard agreement
+
+![Billing page showing Plans tab](/img/cloud/billing/billing-plans.png)
+
+Requests to upgrade your plan are processed immediately and you will be billed on a pro-rated basis for that billing period.
+Your monthly entitlements will reflect the full volume of included Actions and Storage of the upgrade plan for that billing month.
+After an upgrade, a downgrade cannot be processed until the following billing period.
+
+Requests to downgrade will be processed immediately. Billing and entitlements will be backdated to the beginning of the billing period.
 
 ## Account Cancellation
 
@@ -125,5 +150,9 @@ The way you created your Temporal account determines how you can cancel your sub
 - **For accounts created through our self-signup portal**. <br />
   Account owners can delete their accounts on the Temporal Cloud Billing page, under the **Plan** tab.
   If you're no longer using Temporal Cloud, use the Delete Account button to begin the process.
+
+  - Permanently deleted accounts will immediately cease billing and be scheduled for full deletion within 72 hours.
+
+  - Account Data and Active Storage will be permanently deleted. Retained Storage will be deleted in accordance with its configured retention period.
 
 ![Billing page showing the Plan tab. The contents on the tab include "Manage Payment Method" and "Delete Account" buttons. The "Delete Account" button is placed below text asking "No longer using Temporal Cloud?"](/img/cloud/billing/billing-cancel.png)

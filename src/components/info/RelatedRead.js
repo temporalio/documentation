@@ -17,6 +17,7 @@ const languageIcons = {
   Python: "/img/sdks/svgs/python.svg",
   TypeScript: "/img/sdks/svgs/typescript.svg",
   ".NET": "/img/sdks/svgs/dotnet.svg",
+  Ruby: "/img/sdks/svgs/ruby.svg",
   "Temporal CLI": "/img/assets/terminal.svg",
 };
 

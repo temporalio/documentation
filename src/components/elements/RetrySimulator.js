@@ -58,7 +58,8 @@ export default function RetrySimulator() {
     maximumInterval: 0,
   });
   const chartCanvas = useRef(null);
-  const { isDarkTheme } = useColorMode();
+  const { colorMode } = useColorMode();
+  const isDarkTheme = colorMode === 'dark';
 
   const addRetry = useCallback(function addRetry(success, runtimeMS) {
     const retries = [...state.retries];

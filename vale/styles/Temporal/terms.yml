@@ -29,7 +29,7 @@ swap:
   custom data converter: Custom Data Converter
   data converter: Data Converter
   default data converter: Default Data Converter
-  durable exeuction: Durable Execution
+  durable execution: Durable Execution
   event history: Event History
   failure converter: Failure Converter
   frontend service: Frontend Service
@@ -115,7 +115,6 @@ swap:
   workflow id: Workflow Id
   workflow id reuse policy: Workflow Id Reuse Policy
   workflow ids: Workflow Ids
-  workflow id reuse policy: Workflow Id Reuse Policy
   workflow run timeout: Workflow Run Timeout
   workflow task: Workflow Task
   workflow tasks: Workflow Tasks

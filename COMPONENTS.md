@@ -21,6 +21,7 @@ Whether you’re using core components or experimenting with new ones, this guid
 - [Using CaptionedImage](#using-captionedimage)
 - [Using DiscoverableDisclosure](#using-discoverabledisclosure)
 - [Using DocsTable](#using-docstable)
+- [Using PhotoCarousel](#using-photocarousel)
 - [Using RelatedRead](#using-relatedread)
 - [Using ToolTipTerm](#using-tooltipterm)
 - [Using ZoomingImage](#using-zoomingimage)
@@ -38,39 +39,6 @@ Our components are located in the `src/components` folder at the root of this re
 - **`info`**: This folder includes components for presenting additional content, often used to enhance the user experience with supplementary information.
 - **`experimental`**: This folder contains components that are not currently used on the site.
   These are either for testing or were previously part of ongoing development.
-
-```
-components
-├── elements
-│   ├── Button.js
-│   ├── Intro.js
-│   ├── PhotoCarousel.js
-│   ├── RetrySimulator.js
-│   ├── SdkLogos.js
-│   └── retry-simulator.module.css
-├── experimental
-│   ├── CenteredImage.js
-│   ├── CustomWarning.js
-│   ├── DetermineHeader.js
-│   ├── InfoButton.js
-│   ├── NoBreak.js
-│   ├── ResponsivePlayer.js
-│   ├── RowOfImages.js
-│   ├── Spacer.js
-│   └── ToolTipText.js
-├── formatting
-│   └── DocsTable.js
-├── images
-│   ├── CaptionedImage.js
-│   └── CaptionedImage.module.css
-├── index.js
-└── info
-    ├── DiscoverableDisclosure.js
-    ├── RelatedRead.js
-    ├── RelatedRead.module.css
-    ├── RelatedReadList.js
-    └── ToolTipTerm.js
-```
 
 Components are reusable, self-contained units of code used for our Documentation site.
 As shown in this file tree, our components are built using JavaScript and React.
@@ -261,6 +229,66 @@ Archetypes:
 - encyclopedia
 - feature-guide
 - feature-summary
+
+## Using PhotoCarousel
+
+Role: Provide annotated walk-through using an image carousel presentation with text.
+
+How to import:
+
+```
+import { PhotoCarousel } from '@site/src/components';
+```
+
+or 
+
+```
+import PhotoCarousel from "@site/src/components/elements/PhotoCarousel";
+```
+
+Usage:
+
+```
+<PhotoCarousel
+images={[
+"/link/to/image-1",
+"/link/to/image-2",
+...
+]}
+captions={[
+"caption-1",
+"caption-2",
+...
+]}
+/>
+```
+
+- If links are stored on-site, place images in static in an appropriately themed folder.
+- If links are stored off-site, use a fully specified URL
+- Please ensure the caption count and order matches that of the images
+- You may pass an optional `isDarkMode` Boolean prop
+
+### Skipping captioning
+
+To skip slide captioning, pass the string `"NA"` instead of a normal description.
+
+```
+<PhotoCarousel
+images={[
+"/link/to/image-1",
+"/link/to/image-2",
+...
+]}
+captions={[
+"NA",
+"caption-2",
+...
+]}
+/>
+```
+
+Photo 1 will not have a caption but photo 2 will have a caption.
+This ensures photo 2 won't be matched with caption 1. 
 
 ## Using ToolTipTerm
 

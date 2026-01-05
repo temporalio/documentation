@@ -3,7 +3,7 @@ id: observability
 title: Observability - Java SDK
 sidebar_label: Observability
 slug: /develop/java/observability
-description: Explore the observability features of Temporal, including Metrics, Tracing, Logging, and Visibility. Learn to emit Metrics with the Java SDK, set up Tracing, and use Search Attributes.
+description: Explore the observability features of Temporal, including Metrics, Tracing, Logging, and Visibility. Emit Metrics with the Java SDK, set up Tracing, and use Search Attributes.
 toc_max_heading_level: 4
 keywords:
   - context propagators
@@ -43,11 +43,9 @@ This section covers features related to viewing the state of the application, in
 Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
 For a complete list of metrics capable of being emitted, see the [SDK metrics reference](/references/sdk-metrics).
 
-Metrics can be scraped and stored in time series databases, such as [Prometheus](https://prometheus.io/docs/introduction/overview/).
-Temporal also provides a dashboard you can integrate with graphing services like [Grafana](https://grafana.com/docs/). For more information, see:
-
-- Temporal's implementation of the [Grafana dashboard](https://github.com/temporalio/dashboards)
-- [How to export metrics in Grafana](https://github.com/temporalio/helm-charts#exploring-metrics-via-grafana)
+- For an overview of Prometheus and Grafana integration, refer to the [Monitoring](/self-hosted-guide/monitoring) guide.
+- For a list of metrics, see the [SDK metrics reference](/references/sdk-metrics).
+- For an end-to-end example that exposes metrics with the Java SDK, refer to the [samples-java](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/metrics) repo.
 
 To emit metrics with the Java SDK, use the[`MicrometerClientStatsReporter`](https://github.com/temporalio/sdk-java/blob/55ee7894aec427d7e384c3519732bdd61119961a/src/main/java/io/temporal/common/reporter/MicrometerClientStatsReporter.java#L34) class to integrate with Micrometer MeterRegistry configured for your metrics backend.
 [Micrometer](https://micrometer.io/docs) is a popular Java framework that provides integration with Prometheus and other backends.
