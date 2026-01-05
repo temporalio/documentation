@@ -4,6 +4,9 @@ secure
 
 # Production
 build
+playwright-report
+blob-report
+test-results
 
 # Generated files
 .docusaurus
@@ -43,5 +46,7 @@ package-lock.json
 # Tests
 test-results/*
 
+# screenshots
+screenshots
 # Ignore cookbook recipes since they are synced from the remote repo
 ai-cookbook
