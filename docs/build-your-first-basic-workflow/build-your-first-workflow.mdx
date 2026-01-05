@@ -54,10 +54,7 @@ You'll understand the core building blocks of Temporal and learn how Temporal he
 
 ### Prerequisites
 
-Before starting this tutorial:
-
-- **Set up a local development environment** for developing Temporal applications
-- **Ensure you have Git installed** to clone the project
+Before you begin, set up your local development environment:
 
 <CallToAction 
   href="/quickstarts"
@@ -195,7 +192,7 @@ In this application, you'll write Activities for withdraw, deposit, and refund o
 
 </SetupSteps>
 
-<details>
+<details open>
 <summary><strong>What You'll Build and Run</strong></summary>
 
 The project in this tutorial mimics a "money transfer" application. 
@@ -205,7 +202,7 @@ To perform a money transfer, you will do the following:
 
 1. **Launch a Worker**: Since a Worker is responsible for executing the Workflow and Activity code, at least one Worker must be running for the money transfer to make progress.
 
-2. **Submit a Workflow Execution request** to the Temporal Service: After the Worker communicates with the Temporal Service, the Worker will begin executing the Workflow and Activity code. It reports the results to the Temporal Service, which tracks the progress of the Workflow Execution.
+2. **Start a Workflow Execution** through the Temporal Service: After the Worker communicates with the Temporal Service, the Worker will begin executing the Workflow and Activity code. It reports the results to the Temporal Service, which tracks the progress of the Workflow Execution.
 
 </details>
 
@@ -1204,7 +1201,7 @@ $this->bankingActivity = Workflow::newActivityStub(
 </SdkTabs>
 
 ### What Makes Errors Non-Retryable?
-Without retry policies, a temporary network glitch could cause your entire money transfer to fail. With Temporal's intelligent retries, your workflow becomes resilient to these common infrastructure issues.
+Without retry policies, a temporary network glitch could cause your entire money transfer to fail. With Temporal's intelligent retries, your Workflow becomes resilient to these common infrastructure issues.
 
 
 <RetryPolicyComparison />
@@ -2095,7 +2092,7 @@ The Temporal Web UI lets you see details about the Workflow you just ran.
 
 <NextButton 
   href="/build-your-first-basic-workflow/failure-simulation" 
-  description="Simulate crashes, fix bugs in running workflows, and experience Temporal's reliability superpowers"
+  description="Simulate crashes and fix bugs in running Workflows"
 >
   Continue to Part 2: Simulate Failures
 </NextButton>
