@@ -17,14 +17,34 @@ tags:
 
 import SdkTabs from '@site/src/components';
 
+[Task Queue Priority](#task-queue-priority) and [Task Queue Fairness](#task-queue-fairness) are two ways to manage the distribution of work within Task Queues. Priority focuses on how Tasks are prioritized within a Task Queue and Fairness aims to prevent one set of prioritized Tasks from blocking others within a single Task Queue.
+
+:::tip Support, stability, and dependency info
+Priority and Fairness is currently in [pre-release](/evaluate/development-production-features/release-stages#pre-release). 
+Please contact your AE or Support to enable this feature.
+:::
+
 ## Task Queue priority
 
-**Task Queue priority** allows you to control the execution order of Workflows, Activities, and child Workflows based on assigned priority values within a *single* Task Queue. You can select a priority level in the integer range `[1,5]`. A lower value implies higher priority, so `1` is the highest priority level. The default priority if unspecified is `3`.
+**Task Queue priority** lets you control the execution order of Workflows, Activities, and Child Workflows based on assigned priority values within a *single* Task Queue.
 
-If you're using Temporal Cloud, contact Temporal support or your Temporal account team to enable this feature for your cloud Namespaces.
+If you're using Temporal Cloud, contact Temporal Support or your Temporal account team to enable this feature for your cloud Namespaces.
 
 If you're self-hosting Temporal, use the latest pre-release development server and set `matching.useNewMatcher` to `true` in the [dynamic config](https://github.com/temporalio/temporal/blob/a3a53266c002ae33b630a41977274f8b5b587031/common/dynamicconfig/constants.go#L1345-L1348) on the relevant Task Queues or Namespaces.
 
+### When to use priority
+
+If you need a way to specify the order your Tasks execute in, you can use priority to manage that. Priority gives you a way to differentiate between batch and real-time Tasks so that you can allocated resources more effectively. You can also use this as a way to run Tasks immediately and override others if you have an urgent Task.
+
+### How to use priority
+
+You can select a priority level by setting the _priority key_ to a value within the integer range `[1,5]`. A lower value implies higher priority, so `1` is the highest priority level. The default priority, if unspecified, is `3`.
+
+When you set a priority level within your Task Queues, this means that they will __all__ be processed in priority order. Each priority level acts as a separate virtual task queue. For example, all your priority level `1` Tasks will execute before your priority level `2` Tasks and so on. So your lower priority Tasks will be completely blocked until the higher priority Tasks finish running. Tasks with the same priority are scheduled in first-in-first-out (FIFO) order. If you need more flexibility to allocate resources to lower priority Tasks sooner, check out [the fairness section](#task-queue-fairness).
+
+:::note
+[Sticky tasks](/sticky-execution) ignore priority settings.
+:::
 
 Choose your SDK below to see an example of setting priority for your Workflows:
 
@@ -174,34 +194,34 @@ await Workflow.ExecuteChildWorkflowAsync(
 
 ## Task Queue fairness
 
-Task Queue fairness allows for more control over the order that Tasks are dispatched from a backlog. It’s intended to address common situations like, multi-tenant applications and reserved capacity bands.
+Task Queue fairness applies within each priority level. This gives you more control over the order that Tasks are dispatched from the backlog at a specific priority level. You can assign compute resources fairly so that priority levels are respected, but Tasks at lower priority levels will still be processed without waiting for all higher priority Tasks to finish first. It’s intended to address common situations like:
 
-Fairness creates multiple “virtual queues”, one for each _fairness key_, within a Task Queue that are dispatched in a weighted-round-robin manner. This lets you handle scenarios like:
-
-- Multi-tenant applications with big and small tenants where small tenants should not not be blocked by big ones and any single user should be able to use all available resources rather than being rate limited at some fixed level.
-- Assign Tasks to bands and then dispatch 80% from one band and 20% from another, for example, without limiting overall capacity when one band is empty.
+- Multi-tenant applications with big and small tenants where small tenants shouldn't be blocked by big ones. That means any single user should be able to use all available resources rather than being rate limited at a fixed level.
+- Assigning Tasks to different capacity bands and then dispatch 80% from one band and 20% from another, for example, without limiting overall capacity when one band is empty.
 
 To enable this feature, use the latest pre-release development server and set `matching.enableFairness` to `true` in the [dynamic config](https://github.com/temporalio/temporal/blob/a3a53266c002ae33b630a41977274f8b5b587031/common/dynamicconfig/constants.go#L1350-L1353) on the relevant Task Queues or Namespaces.
 
 :::warning
-For **Public Preview**, fairness cannot be enabled for active Task Queues. The Task Queues have to be new or idle and there can't be any running Workflows. Once fairness is enabled, all existing backlog Tasks in the Task Queue will be abandoned.
+For **Pre-release**, fairness cannot be enabled for active Task Queues. The Task Queues have to be new or idle and there can't be any running Workflows. Once fairness is enabled, all existing backlog Tasks in the Task Queue will be abandoned.
 :::
 
-### How it works
+### How fairness works
 
-Each priority level acts as a separate virtual Task Queue. Fairness attempts to distribute all the Tasks from a higher priority level first before distributing any from a lower priority. There are _fairness keys_ which are the attribute used to distinguish Tasks in the context of fair dispatch. There are also _fairness weights_ which is the weight assigned to a fairness key to allow for unequal distribution among tenants or for allocating fractions of capacity to different levels or types of Tasks.
+Fairness creates multiple “virtual queues”, one for each _fairness key_, within a Task Queue. The fairness keys are used to describe your Task structure. A fairness key can correspond to unique applications, tenants, or other groupings useful to your workloads. The Tasks associated with each fairness key are dispatched based on the _fairness weight_ that has been assigned to the key. Using the fairness keys and their corresponding fairness weights lets you define tiers with weighted capacities, like high, medium, and low, so that higher priority tasks don't overwhelm your resources and block lower priority tasks.
+
+Fairness attempts to distribute all the Tasks from a higher priority level first before distributing any from a lower priority. There are also _fairness weights_ which is the weight assigned to a fairness key to allow for unequal distribution among tenants or for allocating fractions of capacity to different levels or types of Tasks.
 
 Fairness applies within each priority level. It sequences Tasks in the Task Queue probabilistically using a weighted round-robin, based on:
 
-- Fairness weights the customer sets
+- Fairness weights you set
 - The current backlog of Tasks
-- A data structure that tracks how Tasks are distributed for different fairness keys
+- A data structure that tracks how you've distributed Tasks for different fairness keys
 
 ### When to use fairness
 
-Fairness applies to backlogged Tasks when there isn't sufficient Worker capacity to dispatch Tasks immediately. If all Tasks can be dispatched immediately, the you don't need to use fairness.
+Fairness applies to backlogged Tasks when there isn't sufficient Worker capacity to dispatch Tasks immediately. If all Tasks can be dispatched immediately, then you don't need to use fairness. Fairness is applicable if you want to distribute a finite resource across all of your Tasks without blockers.
 
-Fairness applies at Task dispatch time based on information about the Tasks passing through the Task Queue and considers each Task as having equal cost. It doesn't consider any Task execution that is currently being done by Workers. So if you look at Tasks being process by Workers, you might not see "fairness" across tenants.
+Fairness applies at Task dispatch time based on information about the Tasks passing through the Task Queue and considers each Task as having equal cost. It doesn't consider any Task execution that is currently being done by Workers. So if you look at Tasks being processed by Workers, you might not see "fairness" across tenants.
 
 ### Limitations of fairness
 
@@ -209,7 +229,7 @@ When you use Worker Versioning and you're moving Workflows from one version to a
 
 There isn't a limit on the number of fairness keys you can use, but their accuracy can degrade as you add more fairness keys.
 
-Task Queues are internally [partitioned](/task-queue#task-ordering) and Tasks are distributed to partitions randomly. This could interfer with fairnesss. Depending on your use case, you can reach out to Temporal support to get your Task Queues set to a single partition.
+Task Queues are internally [partitioned](/task-queue#task-ordering) and Tasks are distributed to partitions randomly. This could interfer with fairnesss. Depending on your use case, you can reach out to Temporal Support to get your Task Queues set to a single partition.
 
 Choose your SDK below to see an example of setting fairness for your Workflows:
 
