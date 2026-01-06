@@ -87,7 +87,7 @@ Submit a support ticket with the following details:
   - storage used
   - retention policy
   - any custom search attributes
-  - peak request per second (RPS) and action per second (APS)
+  - peak request per second (RPS) and action per second (APS) - refer to [this document](https://docs.google.com/document/d/151xjeI53SBfJ94X1toi5krPp4oeyzJ6wVUrOBhgK714) for instructions on fetching these metrics
 - If you use a SQL-based datastore for visibility, and you use custom search attributes, provide _CustomSearchAttributeAliases_ of your namespace by running
   temporal operator namespace describe using the [latest Temporal CLI](https://github.com/temporalio/cli).
 
@@ -107,7 +107,7 @@ Cloud-side resources must be in place prior to starting a migration. Complete th
    (including APS/RPS) matching your existing self-hosted workload.
 3. Verify that a migration endpoint has been created in Temporal Cloud (e.g., `your-endpoint.{your-acct}.tmprl.cloud`). If you don't have one, request one via a support ticket.
 4. Create any required custom search attributes used by your workflow.
-5. If you need [PrivateLink support](https://docs.temporal.io/cloud/security/aws-privatelink) for the namespace in Temporal Cloud, request this via a separate support ticket.
+5. If you need [private connectivity](https://docs.temporal.io/cloud/connectivity) for the namespace in Temporal Cloud, then prepare this setup in advance.
 
 ### Prepare your self-hosted service
 
@@ -123,7 +123,7 @@ Cloud-side resources must be in place prior to starting a migration. Complete th
 
    ```yaml
    dcRedirectionPolicy:
-   policy: "all-apis-forwarding"
+      policy: "all-apis-forwarding"
 
    clusterMetadata:
    enableGlobalNamespace: true # add this
