@@ -171,10 +171,12 @@ This will designate the Error as non-retryable.
 To throw a non-retryable error, use the `newNonRetryableFailure` method:
 
 ```java
-    throw ApplicationFailure.newNonRetryableFailure(
-      "Invalid credit card number: " + creditCardNumber,
-      InvalidChargeAmountException.class.getName());
+throw ApplicationFailure.newNonRetryableFailure(
+    "Invalid credit card number: " + creditCardNumber,
+    InvalidChargeAmountException.class.getName()
+);
 ```
+
 
 This will designate the `ApplicationFailure` as non-retryable.
 
