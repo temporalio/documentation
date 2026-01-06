@@ -162,6 +162,17 @@ jobs:
             echo "⚠️ No reference screenshots found. This will create new baselines instead of comparing."
           fi
 
+      - name: Debug screenshot structure
+        run: |
+          echo "Contents of ./screenshots:"
+          ls -la ./screenshots/ || true
+          echo ""
+          echo "First 20 files found:"
+          find ./screenshots -type f | head -20 || true
+          echo ""
+          echo "Directory structure:"
+          tree -L 3 ./screenshots/ || find ./screenshots -type d | head -20
+
       - name: Take screenshots with Playwright
         env:
           PLAYWRIGHT_SNAPSHOT_DIR: ${{ github.workspace }}/screenshots
