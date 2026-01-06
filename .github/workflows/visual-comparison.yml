@@ -56,6 +56,7 @@ jobs:
         id: check-references
         env:
           GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BRANCH: ${{ github.base_ref }}
         continue-on-error: true
         run: |
@@ -151,6 +152,7 @@ jobs:
         id: download-references
         env:
           GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         continue-on-error: true
         run: |
           if ./static/scripts/screenshot-artifacts.sh ./screenshots; then
