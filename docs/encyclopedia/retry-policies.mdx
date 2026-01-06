@@ -202,7 +202,8 @@ var attempt = ActivityExecutionContext.Current.Info.Attempt;
 throw new ApplicationFailureException(
     $"Something bad happened on attempt {attempt}",
     errorType: "my_failure_type",
-    nonRetryable: true);
+    nonRetryable: true
+);
 ```
 
 This will designate the `ApplicationFailureException` as non-retryable.
