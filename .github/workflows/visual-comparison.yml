@@ -173,6 +173,26 @@ jobs:
           echo "Directory structure:"
           tree -L 3 ./screenshots/ || find ./screenshots -type d | head -20
 
+      - name: Fix screenshot directory structure
+        if: steps.download-references.outputs.has_references == 'true'
+        run: |
+          # The merged artifact gets extracted to ./screenshots/screenshots/
+          # We need to move it up one level to ./screenshots/
+          if [ -d "./screenshots/screenshots" ]; then
+            echo "Moving screenshots from nested directory..."
+            # Create temp directory
+            mkdir -p /tmp/screenshots-temp
+            # Move the nested content to temp
+            mv ./screenshots/screenshots/* /tmp/screenshots-temp/
+            # Remove the old structure
+            rm -rf ./screenshots/*
+            # Move back to correct location
+            mv /tmp/screenshots-temp/* ./screenshots/
+            rm -rf /tmp/screenshots-temp
+            echo "Screenshot structure fixed"
+            ls -la ./screenshots/ | head -20
+          fi
+
       - name: Take screenshots with Playwright
         env:
           PLAYWRIGHT_SNAPSHOT_DIR: ${{ github.workspace }}/screenshots
