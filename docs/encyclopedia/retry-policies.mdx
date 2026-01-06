@@ -141,11 +141,11 @@ This will designate the `ApplicationError` as non-retryable.
 To raise a non-retryable error, specify the `non_retryable` flag when raising an `ApplicationError`:
 
 ```python
-    raise ApplicationError(
-        f"Invalid credit card number: {credit_card_number}",
-        type="InvalidChargeAmount",
-        non_retryable=True,
-    )
+raise ApplicationError(
+    f"Invalid credit card number: {credit_card_number}",
+    type="InvalidChargeAmount",
+    non_retryable=True,
+)
 ```
 
 This will designate the `ApplicationError` as non-retryable.
