@@ -216,7 +216,40 @@ worker = Temporalio::Worker.new(
 </SdkTabs.Ruby>
 </SdkTabs>
 
-### Which Default Versioning Behavior should you choose?
+
+
+## Choosing a Versioning Behavior {#choosing-behavior}
+
+The right versioning behavior depends on how long your Workflows run relative to your deployment frequency.
+
+### Decision guide {#decision-guide}
+
+| Workflow Duration | Uses Continue-as-New? | Recommended Behavior | Patching Required? |
+|-------------------|----------------------|---------------------|-------------------|
+| **Short** (completes before next deploy) | N/A | `PINNED` | Never |
+| **Medium** (spans multiple deploys) | No | `AUTO_UPGRADE` | Yes |
+| **Long** (weeks to years) | Yes | `PINNED` + [upgrade on CaN](#upgrade-on-continue-as-new) | Never |
+| **Long** (weeks to years) | No | `AUTO_UPGRADE` + patching | Yes |
+
+### Examples by Workflow type {#behavior-examples}
+
+| Workflow Type | Duration | Recommended Behavior | Notes |
+|---------------|----------|---------------------|-------|
+| Order processing | Minutes | `PINNED` | Completes before next deploy |
+| Payment retry | Hours | `PINNED` or `AUTO_UPGRADE` | Depends on deploy frequency |
+| Subscription billing | Days | `AUTO_UPGRADE` | May span multiple deploys |
+| Customer entity | Months-Years | `PINNED` + upgrade on CaN | Uses Continue-as-New pattern |
+| AI agent / Chatbot | Weeks | `PINNED` + upgrade on CaN | Long sleeps, uses CaN |
+| Compliance audit | Months | `AUTO_UPGRADE` + patching | Cannot use CaN (needs full history) |
+
+:::info Long-running Workflows with Continue-as-New
+
+If your Workflow uses Continue-as-New to manage history size, you can upgrade to new Worker Deployment Versions at the CaN boundary without patching.
+See [Upgrading on Continue-as-New](#upgrade-on-continue-as-new) below.
+
+:::
+
+### Default Versioning Behavior Considerations
 
 If you are using blue-green deployments, you should default to Auto-Upgrade and should not use Workflow Pinning. Otherwise, if your Worker and Workflows are new, we suggest not providing a `DefaultVersioningBehavior`.
 
@@ -235,6 +268,7 @@ Keep in mind that Child Workflows of a parent or previous Auto-Upgrade Workflow 
 :::
 
 You also want to make sure you understand how your Activities are going to work across different Worker Deployment Versions. Refer to the [Worker Versioning Activitiy behavior docs](/worker-versioning#actvity-behavior-across-versions) for more details.
+
 
 ## Rolling out changes with the CLI
 
@@ -438,6 +472,268 @@ temporal workflow update-options \
 :::note
 When you change the behavior to Auto-Upgrade, the Workflow will resume work on the Workflow's Target Version. So if the Workflow's Target Version is different from the earlier Pinned Version, you should make sure you [patch](/patching#patching) the Workflow code.
 :::
+
+## Upgrading on Continue-as-New {#upgrade-on-continue-as-new}
+
+Long-running Workflows that use [Continue-as-New](/workflow-execution/continue-as-new) can upgrade to newer Worker Deployment Versions at Continue-as-New boundaries without requiring patching.
+
+This pattern is ideal for:
+- **Entity Workflows** that run for months or years
+- **Batch processing** Workflows that checkpoint with Continue-as-New
+- **AI agent Workflows** with long sleeps waiting for user input
+
+:::note Public Preview
+
+This feature is in Public Preview as an experimental SDK-level option.
+
+:::
+
+### How it works {#upgrade-on-can-how-it-works}
+
+By default, Pinned Workflows stay on their original Worker Deployment Version even when they Continue-as-New.
+With the upgrade option enabled:
+
+1. Each Workflow run remains pinned to its version (no patching needed during a run)
+2. The Temporal Server suggests Continue-as-New when a new version becomes available
+3. When the Workflow performs Continue-as-New with the upgrade option, the new run starts on the Current or Ramping version
+
+### Checking for new versions {#checking-for-new-versions}
+
+When a new Worker Deployment Version becomes Current or Ramping, active Workflows can detect this through `continue_as_new_suggested`.
+Check for the `TARGET_WORKER_DEPLOYMENT_VERSION_CHANGED` reason:
+
+<SdkTabs>
+  <SdkTabs.Go>
+
+```go
+import (
+    "go.temporal.io/sdk/workflow"
+)
+
+func MyEntityWorkflow(ctx workflow.Context, state EntityState) error {
+    for {
+        // Your workflow logic here
+
+        // Check if we should continue as new
+        if workflow.IsContinueAsNewSuggested(ctx) {
+            info := workflow.GetInfo(ctx)
+            for _, reason := range info.ContinueAsNewSuggestedReasons {
+                if reason == workflow.ContinueAsNewSuggestedReasonTargetVersionChanged {
+                    // A new Worker Deployment Version is available
+                    // Continue-as-New with upgrade to the new version
+                    return workflow.NewContinueAsNewError(
+                        ctx,
+                        MyEntityWorkflow,
+                        state,
+                        workflow.WithContinueAsNewVersioningBehavior(workflow.VersioningBehaviorAutoUpgrade),
+                    )
+                }
+            }
+            // Other CaN reasons (history size) - continue without upgrading
+            return workflow.NewContinueAsNewError(ctx, MyEntityWorkflow, state)
+        }
+
+        // Wait for signals, timers, etc.
+        selector := workflow.NewSelector(ctx)
+        selector.AddReceive(workflow.GetSignalChannel(ctx, "update"), func(c workflow.ReceiveChannel, more bool) {
+            // Handle signal
+        })
+        selector.Select(ctx)
+    }
+}
+```
+
+  </SdkTabs.Go>
+  <SdkTabs.Python>
+
+```python
+from datetime import timedelta
+from temporalio import workflow
+from temporalio.workflow import ContinueAsNewSuggestedReason, VersioningBehavior
+
+@workflow.defn
+class MyEntityWorkflow:
+    @workflow.run
+    async def run(self, state: EntityState) -> None:
+        while True:
+            # Your workflow logic here
+
+            # Check if we should continue as new
+            if workflow.continue_as_new_suggested():
+                info = workflow.info()
+                for reason in info.continue_as_new_suggested_reasons:
+                    if reason == ContinueAsNewSuggestedReason.TARGET_WORKER_DEPLOYMENT_VERSION_CHANGED:
+                        # A new Worker Deployment Version is available
+                        # Continue-as-New with upgrade to the new version
+                        workflow.continue_as_new(
+                            args=[state],
+                            versioning_behavior=VersioningBehavior.AUTO_UPGRADE,
+                        )
+
+                # Other CaN reasons (history size) - continue without upgrading
+                workflow.continue_as_new(args=[state])
+
+            # Wait for signals, timers, etc.
+            await workflow.wait_condition(
+                lambda: self.has_pending_work or workflow.continue_as_new_suggested(),
+                timeout=timedelta(hours=1),
+            )
+```
+
+  </SdkTabs.Python>
+  <SdkTabs.TypeScript>
+
+```typescript
+import {
+  continueAsNew,
+  continueAsNewSuggested,
+  workflowInfo,
+  condition,
+  ContinueAsNewSuggestedReason,
+} from '@temporalio/workflow';
+
+export async function myEntityWorkflow(state: EntityState): Promise<void> {
+  while (true) {
+    // Your workflow logic here
+
+    // Check if we should continue as new
+    if (continueAsNewSuggested()) {
+      const info = workflowInfo();
+      for (const reason of info.continueAsNewSuggestedReasons ?? []) {
+        if (reason === ContinueAsNewSuggestedReason.TARGET_WORKER_DEPLOYMENT_VERSION_CHANGED) {
+          // A new Worker Deployment Version is available
+          // Continue-as-New with upgrade to the new version
+          await continueAsNew<typeof myEntityWorkflow>(state, {
+            versioningBehavior: 'AUTO_UPGRADE',
+          });
+        }
+      }
+      // Other CaN reasons (history size) - continue without upgrading
+      await continueAsNew<typeof myEntityWorkflow>(state);
+    }
+
+    // Wait for signals, timers, etc.
+    await condition(() => hasPendingWork || continueAsNewSuggested(), '1h');
+  }
+}
+```
+
+  </SdkTabs.TypeScript>
+  <SdkTabs.Java>
+
+```java
+import io.temporal.workflow.Workflow;
+import io.temporal.workflow.ContinueAsNewOptions;
+import io.temporal.api.enums.v1.ContinueAsNewSuggestedReason;
+import io.temporal.api.enums.v1.VersioningBehavior;
+
+public class MyEntityWorkflowImpl implements MyEntityWorkflow {
+    @Override
+    public void run(EntityState state) {
+        while (true) {
+            // Your workflow logic here
+
+            // Check if we should continue as new
+            if (Workflow.isContinueAsNewSuggested()) {
+                var info = Workflow.getInfo();
+                for (var reason : info.getContinueAsNewSuggestedReasons()) {
+                    if (reason == ContinueAsNewSuggestedReason.TARGET_WORKER_DEPLOYMENT_VERSION_CHANGED) {
+                        // A new Worker Deployment Version is available
+                        Workflow.continueAsNew(
+                            ContinueAsNewOptions.newBuilder()
+                                .setVersioningBehavior(VersioningBehavior.AUTO_UPGRADE)
+                                .build(),
+                            state
+                        );
+                    }
+                }
+                // Other CaN reasons - continue without upgrading
+                Workflow.continueAsNew(state);
+            }
+
+            // Wait for signals, timers, etc.
+            Workflow.await(() -> hasPendingWork || Workflow.isContinueAsNewSuggested());
+        }
+    }
+}
+```
+
+  </SdkTabs.Java>
+  <SdkTabs.DotNet>
+
+```csharp
+using Temporalio.Workflows;
+
+[Workflow]
+public class MyEntityWorkflow
+{
+    [WorkflowRun]
+    public async Task RunAsync(EntityState state)
+    {
+        while (true)
+        {
+            // Your workflow logic here
+
+            // Check if we should continue as new
+            if (Workflow.ContinueAsNewSuggested)
+            {
+                var info = Workflow.Info;
+                foreach (var reason in info.ContinueAsNewSuggestedReasons)
+                {
+                    if (reason == ContinueAsNewSuggestedReason.TargetWorkerDeploymentVersionChanged)
+                    {
+                        // A new Worker Deployment Version is available
+                        throw Workflow.CreateContinueAsNewException<MyEntityWorkflow>(
+                            wf => wf.RunAsync(state),
+                            new() { VersioningBehavior = VersioningBehavior.AutoUpgrade });
+                    }
+                }
+                // Other CaN reasons - continue without upgrading
+                throw Workflow.CreateContinueAsNewException<MyEntityWorkflow>(
+                    wf => wf.RunAsync(state));
+            }
+
+            // Wait for signals, timers, etc.
+            await Workflow.WaitConditionAsync(
+                () => hasPendingWork || Workflow.ContinueAsNewSuggested,
+                TimeSpan.FromHours(1));
+        }
+    }
+}
+```
+
+  </SdkTabs.DotNet>
+</SdkTabs>
+
+### Continue-as-New suggested reasons {#can-suggested-reasons}
+
+The `continue_as_new_suggested` mechanism can return multiple reasons:
+
+| Reason | Description | Action |
+|--------|-------------|--------|
+| `TARGET_WORKER_DEPLOYMENT_VERSION_CHANGED` | A new Worker Deployment Version is available | Use upgrade option when continuing |
+| `EVENTS_HISTORY_SIZE` | History size approaching limit | Continue-as-New to reset history |
+| `EVENTS_HISTORY_LENGTH` | History event count approaching limit | Continue-as-New to reset history |
+
+:::tip
+
+Handle different reasons differently.
+For version upgrades, use the `AUTO_UPGRADE` versioning behavior option.
+For history size reasons, you may want to continue without upgrading to stay on the same version.
+
+:::
+
+### Limitations {#upgrade-on-can-limitations}
+
+:::caution Current Limitations
+
+- **Lazy moving only:** Workflows must wake up naturally to receive the Continue-as-New suggestion.
+  Sleeping Workflows won't be proactively signaled (planned for a future release).
+- **Interface compatibility:** When continuing as new to a different version, ensure your Workflow input format is compatible.
+  If incompatible, the new run may fail on its first Workflow Task.
+
+:::
+
 
 ## Sunsetting an old Deployment Version
 
