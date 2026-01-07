@@ -1,43 +1,102 @@
 .temporalProgress {
     display: flex;
     align-items: center;
+    gap: 0.75rem;
     margin: 2rem 0;
-    padding: 1.5rem;
-    background: linear-gradient(135deg, #444CE7 0%, #7C3AED 100%);
-    border-radius: 12px;
-    color: white;
 }
 
 .progressStep {
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
+    padding: 0.6rem 1.25rem;
+    border-radius: 4px;
     font-weight: 600;
-    font-size: 0.9rem;
-    min-width: 200px;
-    text-align: center;
+    font-size: 0.875rem;
+    transition: all 0.15s ease;
+    text-decoration: none !important;
+    cursor: pointer;
 }
 
+.progressStep:hover {
+    text-decoration: none !important;
+}
+
+/* Light mode - completed */
 .progressStep.completed {
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: #E0E7FF;
+    color: #3730A3;
+    opacity: 0.7;
 }
 
+.progressStep.completed:hover {
+    opacity: 1;
+    background: #C7D2FE;
+}
+
+/* Light mode - active */
 .progressStep.active {
-    background: rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    background: #4F46E5;
+    color: white;
+    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
 }
 
+.progressStep.active:hover {
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+    transform: translateY(-1px);
+}
+
+/* Light mode - pending */
 .progressStep.pending {
-    background: rgba(255, 255, 255, 0.1);
+    background: #E0E7FF;
+    color: #3730A3;
+    opacity: 0.7;
+}
+
+.progressStep.pending:hover {
+    opacity: 1;
+    background: #C7D2FE;
+}
+
+/* Light mode - connector */
+.progressConnector {
+    color: #A5B4FC;
+    font-size: 0.875rem;
+}
+
+/* Dark mode - completed */
+[data-theme='dark'] .progressStep.completed {
+    background: rgba(124, 58, 237, 0.2);
+    color: #A78BFA;
     opacity: 0.6;
 }
 
-.progressConnector {
-    flex: 1;
-    height: 2px;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
-    margin: 0 1rem;
+[data-theme='dark'] .progressStep.completed:hover {
+    opacity: 1;
+    background: rgba(124, 58, 237, 0.35);
+}
+
+/* Dark mode - active */
+[data-theme='dark'] .progressStep.active {
+    background: linear-gradient(135deg, #444CE7 0%, #7C3AED 100%);
+    color: white;
+    box-shadow: 0 2px 12px rgba(124, 58, 237, 0.35);
+}
+
+[data-theme='dark'] .progressStep.active:hover {
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.45);
+}
+
+/* Dark mode - pending */
+[data-theme='dark'] .progressStep.pending {
+    background: rgba(124, 58, 237, 0.2);
+    color: #A78BFA;
+    opacity: 0.6;
+}
+
+[data-theme='dark'] .progressStep.pending:hover {
+    opacity: 1;
+    background: rgba(124, 58, 237, 0.35);
+}
+
+/* Dark mode - connector */
+[data-theme='dark'] .progressConnector {
+    color: rgba(124, 58, 237, 0.6);
 }

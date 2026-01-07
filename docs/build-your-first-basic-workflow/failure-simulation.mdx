@@ -59,8 +59,8 @@ In this part, you'll simulate failures to see how Temporal handles them.
 This demonstrates why Temporal is particularly useful for building reliable systems.
 
 <TemporalProgress steps={[
-  { id: 'part1', label: 'Part 1: Basic Workflow', status: 'completed' },
-  { id: 'part2', label: 'Part 2: Failure Simulation', status: 'active' }
+  { id: 'part1', label: 'Part 1: Build Your First Workflow', status: 'completed', href: '/build-your-first-basic-workflow/build-your-first-workflow' },
+  { id: 'part2', label: 'Part 2: Failure Simulation', status: 'active', href: '/build-your-first-basic-workflow/failure-simulation' }
 ]} />
 
 Systems fail in unpredictable ways. A seemingly harmless deployment can bring down production, a database connection can time out during peak traffic, or a third-party service can decide to have an outage. 
@@ -105,7 +105,7 @@ In traditional systems, this would corrupt the transaction or lose data entirely
   Web UI is open at `http://localhost:8233`
 </TemporalCheckbox>
 
-<details>
+<details open>
 <summary><strong>What's happening behind the scenes?</strong></summary>
 
 Unlike many modern applications that require complex leader election processes and external databases to handle failure, Temporal automatically preserves the state of your Workflow even if the server is down. 
