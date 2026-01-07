@@ -43,8 +43,8 @@ loaded with a specific order of precedence:
    1. The path specified by the `TEMPORAL_CONFIG_FILE` environment variable.
    2. The default configuration path for your operating system:
       - Linux: `~/.config/temporalio/temporal.toml`
-      - macOS: `$HOME/Library/Application Support/temporal/temporal.toml`
-      - Windows: `%AppData%\temporal\temporal.toml`
+      - macOS: `$HOME/Library/Application Support/temporalio/temporal.toml`
+      - Windows: `%AppData%\temporalio\temporal.toml`
 
 ## TOML file configuration
 
@@ -336,6 +336,7 @@ To load the `default` profile along with any environment variables in TypeScript
 
 {/* SNIPSTART typescript-env-config-load-default-profile {"highlightedLines": "17-19,28-29"} */}
 [env-config/src/load-from-file.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-from-file.ts)
+
 ```ts {17-19,28-29}
 import { Connection, Client } from '@temporalio/client';
 import { loadClientConnectConfig } from '@temporalio/envconfig';
@@ -378,15 +379,20 @@ main().catch((err) => {
   process.exit(1);
 });
 ```
+
 {/* SNIPEND */}
 
   </SdkTabs.TypeScript>
 
   <SdkTabs.Java>
 
-To load the `default` profile along with any environment variables in Java, use the `ClientConfigProfile.load` method from the `envconfig` package. This method will load the `default` profile from the default location and any environment variables. Environment variables take precedence over the configuration file settings.
+To load the `default` profile along with any environment variables in Java, use the `ClientConfigProfile.load` method
+from the `envconfig` package. This method will load the `default` profile from the default location and any environment
+variables. Environment variables take precedence over the configuration file settings.
 
-Then use `profile.toWorkflowServiceStubsOptions` and `profile.toWorkflowClientOptions` to convert the profile to `WorkflowServiceStubsOptions` and `WorkflowClientOptions` respectively. Then use `WorkflowClient.newInstance` to create a Temporal Client.
+Then use `profile.toWorkflowServiceStubsOptions` and `profile.toWorkflowClientOptions` to convert the profile to
+`WorkflowServiceStubsOptions` and `WorkflowClientOptions` respectively. Then use `WorkflowClient.newInstance` to create
+a Temporal Client.
 
 ```java
 import io.temporal.client.WorkflowClient;
@@ -688,6 +694,7 @@ To load a specific profile from a custom path in TypeScript, use the `loadClient
 
 {/* SNIPSTART typescript-env-config-load-default-profile {"highlightedLines": "17-19,28-29"} */}
 [env-config/src/load-from-file.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-from-file.ts)
+
 ```ts {17-19,28-29}
 import { Connection, Client } from '@temporalio/client';
 import { loadClientConnectConfig } from '@temporalio/envconfig';
@@ -730,13 +737,16 @@ main().catch((err) => {
   process.exit(1);
 });
 ```
+
 {/* SNIPEND */}
 
 </SdkTabs.TypeScript>
 
 <SdkTabs.Java>
 
-To load a profile configuration file from a custom path in Java, use the `ClientConfigProfile.load` method from the `envconfig` package with the `ConfigFilePath` parameter. This method will load the profile from the custom path and any environment variables. Environment variables take precedence over the configuration file settings.
+To load a profile configuration file from a custom path in Java, use the `ClientConfigProfile.load` method from the
+`envconfig` package with the `ConfigFilePath` parameter. This method will load the profile from the custom path and any
+environment variables. Environment variables take precedence over the configuration file settings.
 
 ```java {21-25}
 import io.temporal.client.WorkflowClient;
@@ -798,6 +808,5 @@ public class LoadFromFile {
 ```
 
 </SdkTabs.Java>
-
 
 </SdkTabs>
