@@ -161,10 +161,26 @@ jobs:
             echo "⚠️ No reference screenshots found. This will create new baselines instead of comparing."
           fi
 
+      - name: Debug - List downloaded screenshots
+        run: |
+          echo "=== Contents of ./screenshots ==="
+          ls -la ./screenshots || echo "Directory doesn't exist"
+          echo ""
+          echo "=== First level subdirectories ==="
+          find ./screenshots -maxdepth 2 -type d || echo "No subdirectories"
+          echo ""
+          echo "=== Sample files (first 10) ==="
+          find ./screenshots -type f -name "*.png" | head -10 || echo "No PNG files found"
+          echo ""
+          echo "=== Total PNG count ==="
+          find ./screenshots -type f -name "*.png" | wc -l
+
       - name: Take screenshots with Playwright
         env:
           PLAYWRIGHT_SNAPSHOT_DIR: ${{ github.workspace }}/screenshots
         run: |
+          echo "PLAYWRIGHT_SNAPSHOT_DIR is set to: ${PLAYWRIGHT_SNAPSHOT_DIR}"
+          echo "Workspace directory: ${{ github.workspace }}"
           if [ "${{ steps.download-references.outputs.has_references }}" = "false" ]; then
             echo "Creating new baseline screenshots..."
             npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} --update-snapshots || exit 0
