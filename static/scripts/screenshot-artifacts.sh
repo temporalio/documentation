@@ -58,11 +58,19 @@ while IFS= read -r artifact; do
   unzip -oq "${TMP_ZIP}" -d "${TMP_DIR}"
 
   if [[ -d "${TMP_DIR}/screenshots" ]]; then
+    # Artifact contains a screenshots/ subdirectory - extract its contents
     shopt -s dotglob
     mkdir -p "${TARGET_DIR}"
     cp -R "${TMP_DIR}/screenshots"/* "${TARGET_DIR}/" 2>/dev/null || true
     shopt -u dotglob
+  elif [[ "${NAME}" == "screenshots" ]]; then
+    # Special case: merged "screenshots" artifact extracts directly to target
+    shopt -s dotglob
+    mkdir -p "${TARGET_DIR}"
+    cp -R "${TMP_DIR}"/* "${TARGET_DIR}/" 2>/dev/null || true
+    shopt -u dotglob
   else
+    # Other artifacts go to subdirectories
     DEST_DIR="${TARGET_DIR}/${NAME}"
     mkdir -p "${DEST_DIR}"
     cp -R "${TMP_DIR}"/* "${DEST_DIR}/" 2>/dev/null || true

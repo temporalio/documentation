@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures';
 import { extractSitemapPathnames, WaitForDocusaurusHydration } from './utils';
 
 const siteUrl = process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:3000';
