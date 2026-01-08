@@ -46,6 +46,13 @@ echo "Downloading ${COUNT} artifact(s) from run ${RUN_ID}..."
 INDEX=0
 while IFS= read -r artifact; do
   NAME=$(echo "${artifact}" | jq -r '.name')
+
+  # Only download the merged screenshots artifact, skip individual shards
+  if [[ "${NAME}" =~ ^screenshots-[0-9]+$ ]]; then
+    echo "Skipping shard artifact ${NAME} (merged artifact preferred)" >&2
+    continue
+  fi
+
   URL=$(echo "${artifact}" | jq -r '.archive_download_url')
   if [[ -z "${URL}" || "${URL}" == "null" ]]; then
     echo "Skipping artifact ${NAME} with no download URL" >&2
@@ -64,7 +71,7 @@ while IFS= read -r artifact; do
     cp -R "${TMP_DIR}/screenshots"/* "${TARGET_DIR}/" 2>/dev/null || true
     shopt -u dotglob
   elif [[ "${NAME}" == "screenshots" ]]; then
-    # Special case: merged "screenshots" artifact extracts directly to target
+    # Merged screenshots artifact extracts directly to target
     shopt -s dotglob
     mkdir -p "${TARGET_DIR}"
     cp -R "${TMP_DIR}"/* "${TARGET_DIR}/" 2>/dev/null || true
