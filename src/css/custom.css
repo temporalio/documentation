@@ -98,6 +98,7 @@ html[data-theme='light']:root {
   --gray-600: #576e8f;
   --space-black: #141414;
   --slate-200: #aebed9;
+  --gray-900: #243349;
 }
 
 /* --ifm-background-surface-color: #000000;
