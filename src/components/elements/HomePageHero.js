@@ -89,19 +89,20 @@ const HomePageHero = () => {
       href: 'https://temporal.io/slack',
       icon: <Icon src="/img/icons/Slack.svg" alt="Slack" />,
       title: 'Slack Community',
-      description: 'Join us on <span class="linkify">temporal.io/slack</span> and say hi or ask us a question.',
+      description:
+        'Join us on <a href="https://temporal.io/slack">temporal.io/slack</a> and say hi or ask us a question.',
     },
     {
       href: 'https://community.temporal.io',
       icon: <Icon src="/img/icons/Message.svg" alt="Message" />,
       title: 'Developer Forum',
-      description: '<span class="linkify">Find out</span> if your question has already been asked.',
+      description: '<a href="https://community.temporal.io">Find out</a> if your question has already been asked.',
     },
     {
       href: '#',
       icon: <Icon src="/img/icons/Education.svg" alt="Education" />,
       title: 'Learn it all',
-      description: '<span class="linkify">Master Temporal</span> with our courses and tutorials.',
+      description: '<a href="#">Master Temporal</a> with our courses and tutorials.',
     },
   ];
 
@@ -151,12 +152,10 @@ const HomePageHero = () => {
 
       <div className="community-cards">
         {communityCards.map((card, index) => (
-          <div key={index} className="border-container">
-            <a key={index} href={card.href} className="community-card">
-              <div className="community-icon">{card.icon}</div>
-              <h3>{card.title}</h3>
-              <p dangerouslySetInnerHTML={{ __html: card.description }}></p>
-            </a>
+          <div key={index} className="community-card">
+            <div className="community-icon">{card.icon}</div>
+            <h3>{card.title}</h3>
+            <p dangerouslySetInnerHTML={{ __html: card.description }}></p>
           </div>
         ))}
       </div>

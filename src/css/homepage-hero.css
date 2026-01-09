@@ -45,7 +45,7 @@
 
 .homepage-hero-wrapper .hero-content p {
   color: var(--ifm-color);
-  font-family: 'Aeonik-Light', var(--ifm-font-family-base);
+  font-family: 'Aeonik', var(--ifm-font-family-base);
   font-size: 1rem;
   font-weight: 300;
   margin-bottom: 1.5rem;
@@ -115,30 +115,8 @@
 .homepage-hero-wrapper .border-container {
   background-color: var(--space-black);
   background-clip: content-box;
-
   padding: 1px;
   position: relative;
-
-  .action-card {
-    display: flex;
-    gap: 0.875rem;
-    overflow: hidden;
-    padding: 1rem;
-    text-decoration: none;
-
-    .action-icon {
-      align-items: center;
-      color: #1ff1a5;
-      display: flex;
-      height: 24px;
-      justify-content: center;
-      width: 24px;
-
-      img {
-        height: 100%;
-      }
-    }
-  }
 
   &::after,
   &::before {
@@ -168,7 +146,41 @@
 
 [data-theme='light'] .homepage-hero-wrapper .border-container {
   background-color: #fff;
-  border: 1px solid var(--slate-200);
+
+  &::after {
+    background: linear-gradient(var(--gray-600));
+  }
+
+  &::before {
+    background: linear-gradient(255deg, #444ce7 0%, #b664ff 100%);
+    z-index: -2;
+  }
+}
+
+.action-card {
+  display: flex;
+  gap: 0.875rem;
+  overflow: hidden;
+  padding: 1rem;
+  text-decoration: none;
+
+  &:hover {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .action-icon {
+    align-items: center;
+    color: #1ff1a5;
+    display: flex;
+    height: 24px;
+    justify-content: center;
+    width: 24px;
+
+    img {
+      height: 100%;
+    }
+  }
 }
 
 .homepage-hero-wrapper .action-card h3 {
@@ -185,10 +197,11 @@
 }
 
 .homepage-hero-wrapper .action-card p {
-  margin: 0;
+  color: var(--indigo-100);
+  font-family: 'Aeonik', var(--ifm-font-family-base);
   font-size: 0.8rem;
   line-height: 1.4;
-  color: var(--indigo-100);
+  margin: 0;
 }
 
 [data-theme='light'] .homepage-hero-wrapper .action-card p {
@@ -248,6 +261,7 @@
 
 .homepage-hero-wrapper .community-card p {
   color: var(--indigo-100);
+  font-family: 'Aeonik', var(--ifm-font-family-base);
   line-height: 1.5;
   font-size: 0.85rem;
   margin: 0;
@@ -276,6 +290,10 @@
 .linkify {
   color: var(--off-white);
   text-decoration: underline;
+}
+
+[data-theme='light'] .linkify {
+  color: var(--space-black);
 }
 
 /* Mobile responsiveness  */
