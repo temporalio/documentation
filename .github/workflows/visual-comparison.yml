@@ -197,9 +197,12 @@ jobs:
 
       - name: Upload blob report
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: blob-report-${{ matrix.shardIndex }}
-          path: blob-report
+          path: |
+            blob-report
+            test-results
           retention-days: 1
 
   merge-reports:
