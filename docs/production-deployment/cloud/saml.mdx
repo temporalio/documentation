@@ -2,7 +2,9 @@
 id: saml
 title: SAML authentication
 sidebar_label: SAML authentication
-description: Integrate SAML 2.0 with your Temporal Cloud account for secure user authentication. Connect via Microsoft Entra ID or Okta and ensure seamless SSO. Charges apply.
+description:
+  Integrate SAML 2.0 with your Temporal Cloud account for secure user authentication. Connect via Microsoft Entra ID or
+  Okta and ensure seamless SSO. Charges apply.
 slug: /cloud/saml
 toc_max_heading_level: 4
 keywords:
@@ -16,7 +18,8 @@ tags:
   - Users
 ---
 
-To authenticate the users of your Temporal Cloud account, you can connect an identity provider (IdP) to your account by using Security Assertion Markup Language (SAML) 2.0.
+To authenticate the users of your Temporal Cloud account, you can connect an identity provider (IdP) to your account by
+using Security Assertion Markup Language (SAML) 2.0.
 
 :::info
 
@@ -26,11 +29,11 @@ SAML is a paid feature. See the [pricing page](/cloud/pricing) for details.
 
 ## Integrate SAML with your Temporal Cloud account
 
-1. Locate your [Temporal Cloud Account Id](/cloud/namespaces#temporal-cloud-account-id).
-   Your Account Id can be viewed and copied from the Temporal Cloud user profile dropdown menu in the top right corner.
-   Alternatively, find your [Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id).
-   The Account Id is the five or six characters following the period (.), such as `f45a2`.
-   You will need the Account Id to construct your callback URL and your entity identifier.
+1. Locate your [Temporal Cloud Account Id](/cloud/namespaces#temporal-cloud-account-id). Your Account Id can be viewed
+   and copied from the Temporal Cloud user profile dropdown menu in the top right corner. Alternatively, find your
+   [Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id). The Account Id is the five or six characters following
+   the period (.), such as `f45a2`. You will need the Account Id to construct your callback URL and your entity
+   identifier.
 1. Configure SAML with your IdP by following one of these sets of instructions:
    - [Microsoft Entra ID](#configure-saml-with-azure-ad)
    - [Okta](#configure-saml-with-okta)
@@ -38,8 +41,8 @@ SAML is a paid feature. See the [pricing page](/cloud/pricing) for details.
 
 ## How to configure SAML with Microsoft Entra ID {#configure-saml-with-azure-ad}
 
-If you want to use the general Microsoft login mechanism, you don't need to set up SAML with Entra ID.
-Just select **Continue with Microsoft** on the Temporal Cloud sign-in page.
+If you want to use the general Microsoft login mechanism, you don't need to set up SAML with Entra ID. Just select
+**Continue with Microsoft** on the Temporal Cloud sign-in page.
 
 To use Entra ID as your SAML IdP, create a Microsoft Entra ID Enterprise application.
 
@@ -47,7 +50,8 @@ To use Entra ID as your SAML IdP, create a Microsoft Entra ID Enterprise applica
 1. On the home page, under **Manage Microsoft Entra ID**, select **View**.
 1. On the **Overview** page near the top, select **Add > Enterprise application**.
 1. On the **Browse Microsoft Entra ID Gallery** page near the top, select **Create your own application**.
-1. In the **Create your own application** pane, provide a name for your application (such as `temporal-cloud`) and select **Integrate any other application you don't find in the gallery**.
+1. In the **Create your own application** pane, provide a name for your application (such as `temporal-cloud`) and
+   select **Integrate any other application you don't find in the gallery**.
 1. Select **Save**.
 1. In the **Getting Started** section, select **2. Set up single sign on**.
 1. On the **Single sign-on** page, select **SAML**.
@@ -64,7 +68,8 @@ To use Entra ID as your SAML IdP, create a Microsoft Entra ID Enterprise applica
    urn:auth0:prod-tmprl:f45a2-saml
    ```
 
-1. In **Reply URL (Assertion Consumer Service URL)**, enter the following callback URL, including your Account Id where indicated:
+1. In **Reply URL (Assertion Consumer Service URL)**, enter the following callback URL, including your Account Id where
+   indicated:
 
    ```bash
    https://login.tmprl.cloud/login/callback?connection=ACCOUNT_ID-saml
@@ -88,14 +93,23 @@ To use Entra ID as your SAML IdP, create a Microsoft Entra ID Enterprise applica
    https://cloud.temporal.io/login/saml?connection=f45a2-saml
    ```
 
-1. You can leave the other fields blank.
-   Near the top of the pane, select **Save**.
-1. In the **Attributes & Claims** section, select **Edit**.
-1. We require the user's full email address when connecting to Temporal.
-   In the **Required claim** section, set **email** and **name**.
-   Verify that **Unique User Identifier (NameID)** is set to `user.userprincipalname [nameid-format:emailAddress]`.
+1. You can leave the other fields blank. Near the top of the pane, select **Save**.
+1. In the **Attributes & Claims** section, select **Edit**. Configure the following settings:
+
+   - Set **Unique User Identifier (NameID)** to `user.userprincipalname`
+   - Set the **NameID format** to `emailAddress`
+
+   Ensure the following claims are present:
+
+   - `email`
+   - `name`
+
+   Temporal requires the user's full email address to identify the user. Authentication succeeds only if the email
+   address is included in the SAML assertion.
+
 1. Collect information that you need to send to us:
-   - In the **SAML Certificates** section of the **SAML-based Sign-on** page, select the download link for **Certificate (Base64)**.
+   - In the **SAML Certificates** section of the **SAML-based Sign-on** page, select the download link for **Certificate
+     (Base64)**.
    - In the **Set up _APPLICATION_NAME_** section of the **SAML-based Sign-on** page, copy the value of **Login URL**.
 
 To finish setting up Microsoft Entra ID as your SAML IdP, see [Finish SAML configuration](#finish-saml-configuration).
@@ -108,8 +122,10 @@ To use Okta as your SAML IdP, configure a new Okta application integration.
 1. In the left navigation pane, select **Applications > Applications**.
 1. On the **Applications** page, select **Create App Integration**.
 1. In the **Create a new app integration** dialog, select **SAML 2.0** and then select **Next**.
-1. On the **Create SAML Integration** page in the **General Settings** section, provide a name for your application (such as `temporal-cloud`) and then select **Next**.
-1. In the **Configure SAML** section in **Single sign on URL**, enter the following callback URL, including your Account Id where indicated:
+1. On the **Create SAML Integration** page in the **General Settings** section, provide a name for your application
+   (such as `temporal-cloud`) and then select **Next**.
+1. In the **Configure SAML** section in **Single sign on URL**, enter the following callback URL, including your Account
+   Id where indicated:
 
    ```bash
    https://login.tmprl.cloud/login/callback?connection=ACCOUNT_ID-saml
@@ -145,7 +161,8 @@ To use Okta as your SAML IdP, configure a new Okta application integration.
    - Copy the IdP settings.
    - Download the active certificate.
 
-To finish setting up Okta as your SAML IdP, see the next section, [Finish SAML configuration](#finish-saml-configuration).
+To finish setting up Okta as your SAML IdP, see the next section,
+[Finish SAML configuration](#finish-saml-configuration).
 
 ## How to finish your SAML configuration {#finish-saml-configuration}
 
@@ -156,10 +173,9 @@ After you configure SAML with your IdP, we can finish the configuration on our s
 - The X.509 SAML sign-in certificate in PEM format
 - One or more IdP domains to map to the SAML connection
 
-Generally, the provided IdP domain is the same as the domain for your email address.
-You can provide multiple IdP domains.
+Generally, the provided IdP domain is the same as the domain for your email address. You can provide multiple IdP
+domains.
 
-When you receive confirmation from us that we have finished configuration, log in to Temporal Cloud.
-This time, though, enter your email address in **Enterprise identity** and select **Continue**.
-Do not select **Continue with Google** or **Continue with Microsoft**.
-You will be redirected to the authentication page of your IdP.
+When you receive confirmation from us that we have finished configuration, log in to Temporal Cloud. This time, though,
+enter your email address in **Enterprise identity** and select **Continue**. Do not select **Continue with Google** or
+**Continue with Microsoft**. You will be redirected to the authentication page of your IdP.
