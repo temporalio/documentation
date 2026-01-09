@@ -151,6 +151,7 @@ jobs:
         id: download-references
         env:
           GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         continue-on-error: true
         run: |
           if ./static/scripts/screenshot-artifacts.sh ./screenshots; then
@@ -160,10 +161,32 @@ jobs:
             echo "⚠️ No reference screenshots found. This will create new baselines instead of comparing."
           fi
 
+      - name: Debug - List downloaded screenshots
+        run: |
+          echo "=== Contents of ./screenshots ==="
+          ls -la ./screenshots || echo "Directory doesn't exist"
+          echo ""
+          echo "=== First level subdirectories ==="
+          find ./screenshots -maxdepth 2 -type d || echo "No subdirectories"
+          echo ""
+          echo "=== Sample files (first 10) ==="
+          find ./screenshots -type f -name "*.png" | head -10 || echo "No PNG files found"
+          echo ""
+          echo "=== Total PNG count ==="
+          find ./screenshots -type f -name "*.png" | wc -l
+          echo ""
+          echo "=== Check specific files ==="
+          ls -la ./screenshots/screenshot.doc.spec.ts/Docs-screenshots-pathname-cli-cmd-options*.png 2>&1 || echo "cli-cmd-options file not found"
+          echo ""
+          echo "=== Check if paths contain -1.png suffix ==="
+          find ./screenshots -name "*-1.png" | head -5
+
       - name: Take screenshots with Playwright
         env:
           PLAYWRIGHT_SNAPSHOT_DIR: ${{ github.workspace }}/screenshots
         run: |
+          echo "PLAYWRIGHT_SNAPSHOT_DIR is set to: ${PLAYWRIGHT_SNAPSHOT_DIR}"
+          echo "Workspace directory: ${{ github.workspace }}"
           if [ "${{ steps.download-references.outputs.has_references }}" = "false" ]; then
             echo "Creating new baseline screenshots..."
             npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} --update-snapshots || exit 0
@@ -174,6 +197,7 @@ jobs:
 
       - name: Upload blob report
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: blob-report-${{ matrix.shardIndex }}
           path: blob-report
@@ -209,6 +233,14 @@ jobs:
           path: all-blob-reports
           pattern: blob-report-*
           merge-multiple: true
+
+      - name: Debug - Check downloaded reports
+        run: |
+          echo "=== Contents of all-blob-reports ==="
+          ls -laR all-blob-reports/ || echo "Directory doesn't exist or is empty"
+          echo ""
+          echo "=== File count ==="
+          find all-blob-reports -type f | wc -l
 
       - name: Merge into HTML report
         run: npx playwright merge-reports --reporter html ./all-blob-reports
