@@ -32,6 +32,9 @@
     "e2e:dev": "concurrently \"docusaurus start\" \"wait-on http://localhost:3000 && playwright test --project=chromium-desktop\"",
     "e2e": "playwright test"
   },
+  "resolutions": {
+    "caniuse-lite": "1.0.30001731"
+  },
   "browserslist": {
     "production": [
       ">0.2%",

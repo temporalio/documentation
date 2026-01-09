@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures';
 import { extractSitemapPathnames, WaitForDocusaurusHydration } from './utils';
 
 const siteUrl = process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:3000';
@@ -28,11 +28,6 @@ function isVersionedDocsPathname(pathname: string, list: string[]): boolean {
   return true;
 }
 
-function sanitizePathname(pathname: string): string {
-  const cleaned = pathname.replace(/^\/+/, '').replace(/[^a-zA-Z0-9]+/g, '_');
-  return cleaned === '' ? 'home' : cleaned;
-}
-
 test.beforeAll(async () => {
   console.log('Excluded pages: ', excludeList);
   console.log('Total pages: ', extractSitemapPathnames(sitemapPath).length);
@@ -53,10 +48,8 @@ function screenshotPathname(pathname: string) {
 
     await page.waitForTimeout(1_000);
 
-    const snapshotName = `${sanitizePathname(pathname)}.png`;
     await expect(page).toHaveScreenshot({
       fullPage: true,
-      path: testInfo.snapshotPath(snapshotName),
       timeout: 10_000,
     });
   });
