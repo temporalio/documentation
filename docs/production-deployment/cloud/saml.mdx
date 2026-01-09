@@ -94,18 +94,13 @@ To use Entra ID as your SAML IdP, create a Microsoft Entra ID Enterprise applica
    ```
 
 1. You can leave the other fields blank. Near the top of the pane, select **Save**.
-1. In the **Attributes & Claims** section, select **Edit**. Configure the following settings:
+1. In the **Attributes & Claims** section, select **Edit**. Configure the following settings. Under **Required claim**:
 
    - Set **Unique User Identifier (NameID)** to `user.userprincipalname`
    - Set the **NameID format** to `emailAddress`
 
-   Ensure the following claims are present:
-
-   - `email`
-   - `name`
-
-   Temporal requires the user's full email address to identify the user. Authentication succeeds only if the email
-   address is included in the SAML assertion.
+   These are the default settings for Microsoft Entra ID. Then under **Additional claims**, ensure **Email** and
+   **Name** are present.
 
 1. Collect information that you need to send to us:
    - In the **SAML Certificates** section of the **SAML-based Sign-on** page, select the download link for **Certificate
