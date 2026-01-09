@@ -60,10 +60,9 @@ module.exports = {
           collapsed: true,
           link: {
             type: 'doc',
-            id: 'evaluate/temporal-cloud/index',
+            id: 'evaluate/temporal-cloud/overview',
           },
           items: [
-            'evaluate/temporal-cloud/overview',
             'evaluate/temporal-cloud/security',
             'evaluate/temporal-cloud/service-availability',
             'evaluate/temporal-cloud/regions',
