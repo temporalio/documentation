@@ -234,6 +234,14 @@ jobs:
           pattern: blob-report-*
           merge-multiple: true
 
+      - name: Debug - Check downloaded reports
+        run: |
+          echo "=== Contents of all-blob-reports ==="
+          ls -laR all-blob-reports/ || echo "Directory doesn't exist or is empty"
+          echo ""
+          echo "=== File count ==="
+          find all-blob-reports -type f | wc -l
+
       - name: Merge into HTML report
         run: npx playwright merge-reports --reporter html ./all-blob-reports
 
