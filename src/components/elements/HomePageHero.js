@@ -151,11 +151,13 @@ const HomePageHero = () => {
 
       <div className="community-cards">
         {communityCards.map((card, index) => (
-          <a key={index} href={card.href} className="community-card">
-            <div className="community-icon">{card.icon}</div>
-            <h3>{card.title}</h3>
-            <p dangerouslySetInnerHTML={{ __html: card.description }}></p>
-          </a>
+          <div key={index} className="border-container">
+            <a key={index} href={card.href} className="community-card">
+              <div className="community-icon">{card.icon}</div>
+              <h3>{card.title}</h3>
+              <p dangerouslySetInnerHTML={{ __html: card.description }}></p>
+            </a>
+          </div>
         ))}
       </div>
     </div>

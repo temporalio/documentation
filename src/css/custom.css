@@ -26,6 +26,13 @@
   --tag-text-color-dark: #ddd;
   --feedback-primary-color: #000000;
   --feedback-white-color: #fff;
+  --space-black: #141414;
+  --indigo-100: #cacbf9;
+  --off-white: #f8fafc;
+  --text-secondary: #374761;
+  --gray-600: #576e8f;
+  --slate-200: #aebed9;
+  --gray-900: #243349;
 }
 
 html[data-theme='dark']:root {
@@ -61,8 +68,6 @@ html[data-theme='dark']:root {
   --docusaurus-highlighted-code-line-bg: rgb(57, 104, 77);
   --tag-background-color: var(--tag-background-color-dark);
   --tag-text-color: var(--tag-text-color-dark);
-  --indigo-100: #cacbf9;
-  --off-white: #f8fafc;
 }
 
 html[data-theme='light']:root {
@@ -94,11 +99,6 @@ html[data-theme='light']:root {
   --tag-background-color: var(--tag-background-color-light);
   --tag-text-color: var(--tag-text-color-light);
   --docsearch-muted-color: #3b3b3b;
-  --text-secondary: #374761;
-  --gray-600: #576e8f;
-  --space-black: #141414;
-  --slate-200: #aebed9;
-  --gray-900: #243349;
 }
 
 /* --ifm-background-surface-color: #000000;
