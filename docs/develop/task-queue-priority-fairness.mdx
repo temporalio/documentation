@@ -38,7 +38,7 @@ If you need a way to specify the order your Tasks execute in, you can use priori
 
 ### How to use priority
 
-You can select a priority level by setting the _priority key_ to a value within the integer range `[1,5]`. A lower value implies higher priority, so `1` is the highest priority level. The default priority, if unspecified, is `3`.
+You can select a priority level by setting the _priority key_ to a value within the integer range `[1,5]`. A lower value implies higher priority, so `1` is the highest priority level. If you don't specify a Priority, a Task defaults to a Priority of`3`.
 
 When you set a priority level within your Task Queues, this means that they will __all__ be processed in priority order. For example, all of your priority level `1` Tasks will execute before your priority level `2` Tasks and so on. So your lower priority Tasks will be blocked until the higher priority Tasks finish running. Tasks with the same priority level are scheduled to run in first-in-first-out (FIFO) order. If you need more flexibility to allocate resources to lower priority Tasks sooner, check out [the fairness section](#task-queue-fairness).
 
