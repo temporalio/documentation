@@ -200,9 +200,7 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: blob-report-${{ matrix.shardIndex }}
-          path: |
-            blob-report
-            test-results
+          path: blob-report
           retention-days: 1
 
   merge-reports:
