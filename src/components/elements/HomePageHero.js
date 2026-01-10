@@ -28,33 +28,6 @@ const Icon = ({ src, alt, className, width, height }) => {
 };
 
 const HomePageHero = () => {
-  const quickstartLinks = [
-    {
-      path: '/develop/go/set-up-your-local-go',
-      name: 'Go Quickstart',
-    },
-    {
-      path: '/develop/java/set-up-your-local-java',
-      name: 'Java Quickstart',
-    },
-    {
-      path: '/develop/python/set-up-your-local-python',
-      name: 'Python Quickstart',
-    },
-    {
-      path: '/develop/typescript/set-up-your-local-typescript',
-      name: 'TypeScript Quickstart',
-    },
-    {
-      path: '/develop/dotnet/set-up-your-local-dotnet',
-      name: '.NET Quickstart',
-    },
-    {
-      path: '/develop/ruby/set-up-local-ruby',
-      name: 'Ruby Quickstart',
-    },
-  ];
-
   const actionCards = [
     {
       href: '/quickstarts',
