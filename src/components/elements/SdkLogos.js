@@ -3,7 +3,7 @@ import React from 'react';
 const supportedTech = [
   {
     link: '/develop/go',
-    image: '/img/sdks/svgs/golang-block.svg',
+    image: '/img/sdks/svgs/golang.svg',
     alt: 'Go lang logo',
     class: 'w-10 h-8',
   },
