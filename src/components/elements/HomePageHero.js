@@ -57,7 +57,7 @@ const HomePageHero = () => {
 
   const actionCards = [
     {
-      href: 'https://learn.temporal.io/courses/',
+      href: '/quickstarts',
       icon: <Icon src="/img/icons/Lightning.svg" alt="Lightning icon" />,
       title: 'Quickstart',
       description: 'Setup your local and run a Hello World workflow.',
@@ -99,10 +99,10 @@ const HomePageHero = () => {
       description: '<a href="https://community.temporal.io">Find out</a> if your question has already been asked.',
     },
     {
-      href: '#',
+      href: 'https://learn.temporal.io/courses/',
       icon: <Icon src="/img/icons/Education.svg" alt="Education" />,
       title: 'Learn it all',
-      description: '<a href="#">Master Temporal</a> with our courses and tutorials.',
+      description: '<a href="https://learn.temporal.io/courses/">Master Temporal</a> with our courses and tutorials.',
     },
   ];
 
