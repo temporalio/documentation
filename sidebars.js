@@ -531,6 +531,7 @@ module.exports = {
             'production-deployment/self-hosted-guide/deployment',
             'production-deployment/self-hosted-guide/checklist',
             'production-deployment/self-hosted-guide/defaults',
+            'production-deployment/self-hosted-guide/namespaces',
             'production-deployment/self-hosted-guide/security',
             'production-deployment/self-hosted-guide/monitoring',
             'production-deployment/self-hosted-guide/visibility',
