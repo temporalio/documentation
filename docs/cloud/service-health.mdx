@@ -23,7 +23,7 @@ When you see a sudden drop in Worker resource utilization, verify whether Tempor
 
 ### Reference Metrics
 
-- [temporal\_cloud\_v1\_service\_latency\_p99](/production-deployment/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_service_latency_p99)
+- [temporal\_cloud\_v1\_service\_latency\_p99](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_service_latency_p99)
 
 This metric measures latency for `SignalWithStartWorkflowExecution`, `SignalWorkflowExecution`, `StartWorkflowExecution` operations.
 These operations are mission critical and never [throttled](/cloud/service-availability#throughput).
@@ -36,8 +36,8 @@ Note that Service API errors are not equivalent to guarantees mentioned in the [
 
 ### Reference Metrics
 
-- [temporal\_cloud\_v1\_service\_error\_count](/production-deployment/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_service_error_count)
-- [temporal\_cloud\_v1\_service\_request\_count](/production-deployment/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_service_request_count)
+- [temporal\_cloud\_v1\_frontend\_service\_error\_count](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_frontend_service_error_count)
+- [temporal\_cloud\_v1\_frontend\_service\_request\_count](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_frontend_service_request_count)
 
 ### Prometheus Query for this Metric
 
@@ -109,7 +109,7 @@ See also:
 ## Monitor replication lag for Namespaces with High Availability features
 
 Replication lag refers to the transmission delay of Workflow updates and history events from the primary Namespace to the replica.
-Always check the [metric replication lag](/production-deployment/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p99) before initiating a failover.
+Always check the [metric replication lag](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p99) before initiating a failover.
 A forced failover when there is a large replication lag has a higher likelihood of rolling back Workflow progress.
 
 **Who owns the replication lag?**
@@ -131,9 +131,9 @@ See [operations and metrics](/cloud/high-availability) for Namespaces with High 
 
 ### Reference Metrics
 
-- [temporal\_cloud\_v1\_replication\_lag\_p99](/production-deployment/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p99)
-- [temporal\_cloud\_v1\_replication\_lag\_p95](/production-deployment/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p95)
-- [temporal\_cloud\_v1\_replication\_lag\_p50](/production-deployment/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p50)
+- [temporal\_cloud\_v1\_replication\_lag\_p99](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p99)
+- [temporal\_cloud\_v1\_replication\_lag\_p95](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p95)
+- [temporal\_cloud\_v1\_replication\_lag\_p50](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p50)
 
 ## Detecting Resource Exhaustion
 
@@ -144,7 +144,7 @@ Persistent non-zero values of this metric are unexpected.
 
 ## Monitoring Trends Against Limits {#rps-aps-rate-limits}
 
-The set of [limit metrics](/production-deployment/cloud/metrics/openmetrics/metrics-reference#limit-metrics) provide a time series of values for limits. Use these 
+The set of [limit metrics](/cloud/metrics/openmetrics/metrics-reference#limit-metrics) provide a time series of values for limits. Use these 
 metrics with their corresponding count metrics to monitor general trends against limits and set alerts when limits are exceeded. Use the corresponding throttle metrics
 to determine the severity of any active rate limiting.
 | Limit Metric | Count Metric | Throttle Metric |
