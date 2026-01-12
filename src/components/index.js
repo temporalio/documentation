@@ -1,6 +1,7 @@
 // Website components
 export { default as RetrySimulator } from "./elements/RetrySimulator";
 export { Intro } from "./elements/Intro";
+export { default as HomePageHero } from "./elements/HomePageHero";
 export { SdkLogos } from "./elements/SdkLogos";
 export { default as PhotoCarousel } from "./elements/PhotoCarousel";
 export { default as SdkTabs } from './elements/SdkTabs';
