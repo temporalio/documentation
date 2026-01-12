@@ -24,12 +24,16 @@
     "sync:ai-cookbook": "node ./bin/sync-ai-cookbook.js",
     "swizzle": "docusaurus swizzle",
     "vale": "./assembly/run-vale.sh",
+    "test:visual": "playwright test",
     "write-heading-ids": "docusaurus write-heading-ids",
     "write-translations": "docusaurus write-translations",
     "prepare": "husky",
     "e2e:install": "npx playwright install --with-deps",
     "e2e:dev": "concurrently \"docusaurus start\" \"wait-on http://localhost:3000 && playwright test --project=chromium-desktop\"",
     "e2e": "playwright test"
+  },
+  "resolutions": {
+    "caniuse-lite": "1.0.30001731"
   },
   "browserslist": {
     "production": [
@@ -53,7 +57,6 @@
     "@docusaurus/theme-common": "^3.8.1",
     "@docusaurus/types": "^3.8.1",
     "@mdx-js/react": "^3.0.0",
-    "@playwright/test": "^1.47.0",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
     "js-yaml": "^4.1.1",
@@ -80,6 +83,8 @@
     "yaml": "^2.8.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.55.1",
+    "dprint": "^0.45.0",
     "@types/node": "^24.5.1",
     "@types/yaml": "^1.9.7",
     "eslint": "^7.32.0",

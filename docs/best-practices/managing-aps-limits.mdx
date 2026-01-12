@@ -35,7 +35,9 @@ The difficulty is that APS consumption isn't always intuitive.
 A single Workflow Execution generates multiple actions from the moment it starts, and use cases that fit nicely within APS limits at small scale can exhaust those limits as they grow. 
 Many customers are surprised to find they're hitting APS constraints well before they expected to based on their Workflow count alone.
 
-This guide will help you understand why customers hit APS limits, how to design Workflows that use actions efficiently, and what to do when you're approaching capacity. 
+This guide will help you understand why customers hit APS limits, how to design Workflows that use actions efficiently, and what to do when you're approaching capacity.
+When design changes aren't enough, Temporal Cloud offers [Provisioned Capacity Mode](#provisioned-capacity-and-trus) that let you reserve additional capacity using Temporal Resource Units (TRUs) for spiky or unpredictable workloads.
+
 Whether you're just getting started with Temporal Cloud or optimizing an existing deployment, managing APS effectively is key to building scalable, reliable applications.
 
 ## Understanding Actions in Temporal
@@ -175,16 +177,66 @@ An APS limit is set per Namespace, so multiple use cases with multiple traffic p
 
 Plan for a set of Namespaces (one per environment) per use case. See [Managing a Namespace](/best-practices/managing-namespace) for more details.
 
-#### Provisioned Capacity
+## Provisioned Capacity and TRUs
 
-If you have a workload that is both latency-sensitive and is being rate-limited, you can also use [Provisioned Capacity](/cloud/capacity-modes#provisioned-capacity) Modes on your Namespace. 
-This allows you to set Temporal Resource units that will scale up your limits to meet the needs of your specific workloads.  
+The strategies above help you design Workflows that use actions efficiently.
+But sometimes you need more capacity than the on-demand model provides, especially for spiky or unpredictable workloads.
 
-## Knowing if You’re Hitting APS Limits
+Temporal Cloud offers two [Capacity Modes](/cloud/capacity-modes):
 
-In addition to understanding the patterns that can affect APS limits on a Temporal Namespace, it’s also important to know if you’re approaching (or exceeding) these limits. 
-Temporal Cloud provides several metrics that, if tracked, will tell you if you’re being rate limited due to APS. 
+- **On-Demand mode** (default): Your Namespace automatically scales based on your trailing 7-day usage. This works well for steady, predictable workloads.
+- **Provisioned mode**: You reserve capacity by adding Temporal Resource Units (TRUs), giving you guaranteed headroom for traffic spikes.
+
+See [Capacity Modes](/cloud/capacity-modes) for complete details on TRUs, available increments, and how to manage capacity via UI, CLI, or API.
+
+### Choosing the Right Approach
+
+Use Provisioned capacity when the on-demand model can't respond quickly enough:
+
+| Scenario | Pattern | Recommendation |
+|----------|---------|----------------|
+| **Planned spikes** | Promotions, holiday traffic, product launches | Pre-provision TRUs before the event starts |
+| **Unplanned spikes** | Sudden traffic surges, viral events | React instantly via UI/CLI/API when you see throttling |
+| **Load testing** | Validating new services at scale | Provision TRUs for the test, deprovision after |
+| **Batch jobs** | Scheduled high-throughput jobs | Automate TRU scaling via API around job schedules |
+| **Migrations** | Onboarding a new workload faster than on-demand adjusts | Bridge with TRUs for approximately 7 days while the on-demand envelope catches up |
+
+:::note
+When switching back to on-demand mode, your APS limit resets to the running average from the last 7 days.
+Plan for this if your workload is sensitive to the transition.
+:::
+
+### Cost Optimization Tips
+
+See [Capacity Modes Pricing](/cloud/pricing#capacity-modes-pricing) for billing details. To minimize costs:
+
+- Provision only when you need extra capacity
+- Deprovision promptly after spikes end
+- For predictable patterns, automate scaling to minimize time in provisioned mode
+
+### Automation Best Practices
+
+Since you understand your workload patterns better than any auto-scaling system, consider building your own TRU automation:
+
+- **Use the [Cloud Ops API](/ops), [Terraform Provider](/production-deployment/cloud/terraform-provider), or [tcld CLI](/cloud/tcld)** to programmatically scale capacity based on your application's signals
+- **Set utilization thresholds**: For example, scale up when hitting 70-80% of your limit, scale down after sustained low usage
+- **Schedule capacity changes**: Use [Temporal Schedules](/schedule) or Workflows to increase TRUs before known events
+- **React to leading indicators**: If your application has upstream signals (incoming order queue depth, marketing campaign start), use those to trigger capacity changes proactively
+
+## Knowing if You're Hitting APS Limits
+
+In addition to understanding the patterns that can affect APS limits on a Temporal Namespace, it's also important to know if you're approaching (or exceeding) these limits.
+Temporal Cloud provides several metrics that, if tracked, will tell you if you're being rate limited due to APS.
 See the documentation on [detecting resource exhaustion](/production-deployment/cloud/service-health#rps-aps-rate-limits) for an explanation of those metrics as well as a sample Grafana dashboard that shows how they could be viewed.
+
+### Monitoring for TRU Decisions
+
+If you're considering Provisioned capacity, set up monitoring to understand your usage patterns:
+
+- **Use [OpenMetrics](/cloud/metrics/openmetrics)**: For real-time visibility into APS consumption, integrate Temporal Cloud metrics with your observability stack
+- **Track APS usage vs. limits**: Monitor `temporal_cloud_v0_resource_exhausted_errors` to detect throttling events
+- **Set alerts at 70-80% utilization**: This gives you time to provision TRUs before hitting limits
+- **Analyze historical patterns**: Understanding your traffic patterns helps you decide between reactive TRU provisioning and proactive automation
 
 ## Key Takeaways
 
@@ -192,11 +244,15 @@ Let's recap the main reasons customers hit APS limits and how to address them:
 
 | Reason for Hitting APS Limits | How to Address It |
 |-------------------------------|-------------------|
-| Bursty Traffic                | Implement application-level queuing or rate limiting to smooth spike, stagger start times for scheduled batch operations. | 
+| Bursty Traffic                | Implement application-level queuing or rate limiting to smooth spike, stagger start times for scheduled batch operations. |
 | Cascading Workflows <br />and Fan-Out Patterns | Evaluate if Child Workflows are necessary (consider activities or another Namespace), limit fan-out size by processing work in batches within a Child Workflow, consider flattening deeply nested hierarchies. |
 | Human-in-the-Loop <br />Processes at Scale | Design long-running Workflows to minimize sustained APS load from interaction (by avoiding polling where UIs constantly Query state and using Signals only for key human inputs). |
 | Many small activities         | Consider if you can combine multiple external calls within a single Activity. If processing a large amount of data, process it in chunks. |
 | Multiple use cases <br />in one Namespace | Plan for a set of Namespaces (one per environment) per use case. |
+| Planned traffic spikes        | Pre-provision TRUs before the event, then deprovision after. |
+| Unpredictable spikes <br />requiring instant response | Switch to Provisioned mode for self-service capacity scaling via UI, CLI, or API. |
+| Load testing at scale         | Provision TRUs for the test duration, deprovision when complete. |
+| New workload onboarding       | Bridge with TRUs while the on-demand envelope adjusts (approximately 7 days). |
 
 
 ## General guidance
