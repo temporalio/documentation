@@ -83,12 +83,14 @@ export default function LLMActions() {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-analytics-component="llm-actions">
       <button
         className={styles.actionButton}
         onClick={handleCopyForLLM}
         disabled={loading}
         title="Copy page markdown for use with LLMs"
+        data-analytics-id="copy-for-llm"
+        data-analytics-action="click"
       >
         {copied ? (
           <FaCheck className={styles.icon} />
@@ -101,6 +103,8 @@ export default function LLMActions() {
         className={styles.actionButton}
         onClick={handleViewMarkdown}
         title="View raw markdown in new tab"
+        data-analytics-id="view-as-markdown"
+        data-analytics-action="click"
       >
         <FaMarkdown className={styles.icon} />
         View as Markdown
