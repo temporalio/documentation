@@ -22,6 +22,12 @@ The `tcld namespace` commands enable [Namespace](/namespaces) operations in Temp
 
 Alias: `n`
 
+:::info Namespace ID Format
+
+The `--namespace` flag accepts a **Namespace ID** in the format `<namespace_name>.<account_suffix>` (e.g., `your-namespace.a1b2c`). This is the full identifier shown in Temporal Cloud, not just the [Namespace Name](/cloud/namespaces#temporal-cloud-namespace-name). You can find your account suffix in the Temporal Cloud UI.
+
+:::
+
 - [tcld namespace add-region](#add-region)
 - [tcld namespace create](#create)
 - [tcld namespace delete](#delete)
@@ -40,13 +46,9 @@ Alias: `n`
 
 ## add-region
 
-Use `tcld namespace add-region` to add a <ToolTipTerm term="replica" /> to an existing Temporal Cloud
-[Namespace](/namespaces). Adding a replica upgrades the Namespace to
-[High Availability features](/cloud/high-availability). Once provisioned, High Availability features enable Temporal
-Cloud to start replicating Workflow Execution data from the primary to the replica and trigger failover during adverse
-conditions.
+Use `tcld namespace add-region` to add a <ToolTipTerm term="replica" /> region to an existing Temporal Cloud [Namespace](/namespaces), upgrading it to support [High Availability](/cloud/high-availability).
 
-Alias: _none_
+See [Regions](/cloud/regions) for available regions and their supported replication options.
 
 The following modifiers control the behavior of the command.
 
@@ -58,28 +60,21 @@ Alias: `-r`
 
 #### --namespace
 
-Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
-`$TEMPORAL_CLOUD_NAMESPACE` is used.
+**Required.** Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable `$TEMPORAL_CLOUD_NAMESPACE` is used.
 
 Alias: `-n`
 
-_Required modifier_
-
 #### --region
 
-The region to add to the existing Namespace. See [Regions](/cloud/regions) for a list of supported regions.
+**Required.** The region to add to the existing Namespace. See [Regions](/cloud/regions) for a list of supported regions.
 
 :::tip Choosing Replica Regions
 
-- GCP Namespaces support Multi-region Replication but do not support Same-region Replication.
-- The AWS `sa-east-1` region supports Same-region Replication but does not support Multi-region Replication.
-- You must select a region using the same Cloud provider for your replica as your primary.
+See [Regions](/cloud/regions) for available regions and their supported replication options. See [High Availability](/cloud/high-availability) to learn how replication and failover work.
 
 :::
 
 Alias: `--re`
-
-_Required modifier_
 
 **Example**
 
@@ -89,141 +84,70 @@ tcld namespace add-region \
     --region <replica_region>
 ```
 
-When using API key authentication, add your API credentials before pressing Enter:
-
-```bash
-tcld --api-key <your_api_key> \
-    add-region \
-    --namespace <namespace_id> \
-    --region <replica_region>
-```
-
-Specify the region code of the region where you want to create the replica as an argument to the `--region` flag:
-
-- Using the current region replicates to an <ToolTipTerm term="isolation domain" src="isolation domains" /> within your
-  existing region.
-- Using a different region (within the same continent) replicates across regions.
-- You cannot create a Multi-region deployment on separate continents.
+Specify the region code of the region where you want to create the replica as an argument to the `--region` flag.
+See [High Availability](/cloud/high-availability) for details on same-region, multi-region, and multi-cloud replication options.
 
 Temporal Cloud sends an email alert once your Namespace is ready for use.
 
 #### --cloud-provider
 
-The cloud provider of the region. One of [aws, gcp].
+The cloud provider of the region. One of [`aws`, `gcp`].
 
-Default: aws (default: "aws")
+Default: `aws`
 
 ## create
 
-The `tcld namespace create` command creates a Temporal [Namespace](/namespaces) in Temporal Cloud. Use it to create a
-standard Namespace or a Namespace with [High Availability features](/cloud/high-availability).
+The `tcld namespace create` command creates a Temporal [Namespace](/namespaces) in Temporal Cloud.
 
 Alias: `c`
 
-`tcld namespace create`
-
 The following modifiers control the behavior of the command.
-
-#### --request-id
-
-The request identifier to use for the asynchronous operation. If not set, the server assigns an identifier.
-
-Alias: `-r`
-
-#### --ca-certificate
-
-_Required modifier unless `--ca-certificate-file` is specified_
-
-A base64-encoded CA certificate.
-
-If both `--ca-certificate` and `--ca-certificate-file` are specified, only `--ca-certificate` is used.
-
-Alias: `-c`
 
 #### --namespace
 
-Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
-$TEMPORAL_CLOUD_NAMESPACE is used.
+**Required.** The name for the new Namespace. This becomes part of the Namespace ID (`<namespace_name>.<account_suffix>`).
 
 Alias: `-n`
 
-_Required modifier_
-
 #### --region
 
-The region to create the Namespace in.
+**Required.** The cloud provider region to create the Namespace in. Supply one `--region` for a standard Namespace, or two for a Namespace with [High Availability](/cloud/high-availability).
 
-- Supplying a single `--region` flags creates a standard Namespace.
-- Supplying two `--region` flags creates a Namespace that uses <ToolTipTerm term="replication" /> and
-  <ToolTipTerm term="failover" /> for continued service availability in case of failures of incidents.
+See [Regions](/cloud/regions) for available regions and their supported replication options.
+
+Alias: `--re`
+
+#### --auth-method
+
+The authentication method for the Namespace. One of [`mtls`, `api_key`].
+
+- `mtls` (default): Requires `--ca-certificate` or `--ca-certificate-file`
+- `api_key`: No other modifiers
 
 **Example**
 
 ```bash
 tcld namespace create \
-    --namespace <namespace_id> \
-    --region <primary_region> [\]
-    [--region <replica_region>] // if adding replica
+    --namespace test-namespace.a1b2c \
+    --region us-east-1 \
+    --auth-method api_key
 ```
 
-When using API key authentication, add your API credentials before pressing Enter:
+#### --ca-certificate
 
-```bash
-tcld --api-key <your_api_key> \
-    namespace create \
-    --namespace <namespace_id> \
-    --region <primary_region> [\]
-    [--region <replica_region>] // if adding replica
-```
+A base64-encoded [CA certificate](/cloud/certificates). If both `--ca-certificate` and `--ca-certificate-file` are specified, only `--ca-certificate` is used.
 
-When using High Availability features, specify the region code of the region where you want to create the replica as an
-argument to the `--region` flag:
-
-- Using the current region replicates to an <ToolTipTerm term="isolation domain" src="isolation domains" /> within your
-  existing region. This enables Same-region replication.
-- Using a different region (within the same continent) replicates across regions. This enables Multi-region replication.
-
-Temporal Cloud sends an email alert once your Namespace is ready for use.
-
-:::tip Choosing Replica Regions
-
-- GCP Namespaces support Multi-region Replication but do not support Same-region Replication.
-- The AWS `sa-east-1` region supports Same-region Replication but does not support Multi-region Replication.
-- You must select a region using the same Cloud provider for your replica as your primary.
-- You cannot create a Multi-region deployment on separate continents.
-
-:::
-
-Alias: `--re`
-
-_Required modifier_
-
-#### --retention-days
-
-The number of days that data about closed Workflow Executions will be retained (default: 30).
-
-Alias: `--rd`
-
-#### --auth-method
-
-The authentication method to use for the namespace (e.g. 'mtls', 'api_key') (default: "mtls")
+Alias: `-c`
 
 #### --ca-certificate-file
 
-_Required modifier unless `--ca-certificate` is specified_
-
-A path to a CA certificate PEM file.
-
-If both `--ca-certificate` and `--ca-certificate-file` are specified, only `--ca-certificate` is used.
+A path to a [CA certificate](/cloud/certificates) PEM file. If both options are specified, only `--ca-certificate` is used.
 
 Alias: `--cf`
 
 #### --certificate-filter-file
 
-_Required modifier unless `--certificate-filter-input` is specified_
-
-Path to a JSON file that defines the certificate filters to be applied to the Namespace. The specified filters replace
-any existing filters.
+Path to a JSON file that defines the [certificate filters](/cloud/certificates#manage-certificate-filters) to be applied to the Namespace.
 
 Sample JSON: `{ "filters": [ { "commonName": "test1" } ] }`
 
@@ -233,10 +157,7 @@ Alias: `--cff`
 
 #### --certificate-filter-input
 
-_Required modifier unless `--certificate-filter-file` is specified_
-
-A JSON string that defines the certificate filters to be applied to the Namespace. The specified filters replace any
-existing filters.
+A JSON string that defines the [certificate filters](/cloud/certificates#manage-certificate-filters) to be applied to the Namespace.
 
 Sample JSON: `{ "filters": [ { "commonName": "test1" } ] }`
 
@@ -244,61 +165,99 @@ If both `--certificate-filter-input` and `--certificate-filter-file` are specifi
 
 Alias: `--cfi`
 
-#### --search-attribute
+#### --cloud-provider
 
-_Required modifier; can be specified more than once_
+The cloud provider of the region. One of [`aws`, `gcp`].
 
-A custom Search Attribute in the form '_name_=_type_'.
+Default: `aws`
 
-Valid values for _type_: `Bool` | `Datetime` | `Double` | `Int` | `Keyword` | `Text`
+Alias: `--cp`
 
-Alias: `--sa`
+#### --connectivity-rule-ids
 
-#### --user-namespace-permission
+A list of [connectivity rule](/cloud/connectivity#connectivity-rules) IDs to apply to the Namespace. Can be specified more than once.
 
-_Can be specified more than once_
+Alias: `--ids`
 
-A [Namespace-level permission](/cloud/users#namespace-level-permissions) for a user in the form '_email_=_permission_'.
+**Example**
 
-Valid values for _permission_: `Admin` | `Write` | `Read`
-
-Alias: `-p`
+```bash
+tcld namespace create \
+    --namespace test-namespace.a1b2c \
+    --region us-east-1 \
+    --auth-method api_key \
+    --connectivity-rule-ids <rule_id1> \
+    --connectivity-rule-ids <rule_id2>
+```
 
 #### --enable-delete-protection
 
-Enable delete protection on the namespace. (default: false)
+Enable [delete protection](/cloud/namespaces#delete-protection) on the Namespace.
+
+Default: `false`
 
 Alias: `--edp`
 
 #### --endpoint
 
-The codec server endpoint to decode payloads for all users interacting with this Namespace. Must be HTTPS.
+The [codec server](/production-deployment/data-encryption) endpoint to decode payloads for all users interacting with this Namespace. Must be HTTPS.
 
 Alias: `-e`
 
-#### --pass-access-token
-
-Pass the user access token to the remote endpoint (default: false).
-
-Alias: `--pat`
-
 #### --include-credentials
 
-Include cross-origin credentials (default: false).
+Include cross-origin credentials when calling the [codec server](/production-deployment/data-encryption).
+
+Default: `false`
 
 Alias: `--ic`
 
-#### --cloud-provider
+#### --pass-access-token
 
-The cloud provider of the region. One of ['aws', 'gcp']. (default: "aws")
+Pass the user access token to the [codec server](/production-deployment/data-encryption) endpoint.
 
-Alias: `--cp`
+Default: `false`
+
+Alias: `--pat`
+
+#### --request-id
+
+The request identifier to use for the asynchronous operation. If not set, the server assigns an identifier.
+
+Alias: `-r`
+
+#### --retention-days
+
+The [retention period](/temporal-service/temporal-server#retention-period) in days for closed Workflow Executions.
+
+Default: `30`
+
+Alias: `--rd`
+
+#### --search-attribute
+
+A custom [Search Attribute](/search-attribute) in the form '_name_=_type_'. Can be specified more than once.
+
+Valid values for _type_: `Bool` | `Datetime` | `Double` | `Int` | `Keyword` | `Text`
+
+Alias: `--sa`
+
+**Example**
+
+```bash
+tcld namespace create \
+    --namespace test-namespace.a1b2c \
+    --region us-east-1 \
+    --auth-method api_key \
+    --search-attribute "customer_id=Int" \
+    --search-attribute "customer_name=Text"
+```
 
 #### --tag
 
-A tag in the form "_key_=_value_".
+A [tag](/cloud/namespaces#tag-a-namespace) in the form "_key_=_value_". Can be specified more than once.
 
-[Tag structure and limits](/cloud/namespaces#tag-structure-and-limits).
+See [Tag structure and limits](/cloud/namespaces#tag-structure-and-limits).
 
 Alias: `--t`
 
@@ -306,42 +265,30 @@ Alias: `--t`
 
 ```bash
 tcld namespace create \
-    --namespace <namespace_id> \
-    --cloud-provider aws \
-    --region us-west-2 \
-    --retention-days 60 \
-    --certificate-filter-input '{"filters": [{"commonName": "test1"}]}' \
-    --user-namespace-permission "user@example.com=Admin" \
-    --search-attribute "customer_id=Int" \
-    --search-attribute "customer_name=Text" \
-    --endpoint "https://test-codec-server.com" \
-    --pass-access-token \
-    --include-credentials \
-    --tag "key=value"
+    --namespace test-namespace.a1b2c \
+    --region us-east-1 \
+    --auth-method api_key \
+    --tag "key=value" \
+    --tag "key2=value2"
 ```
 
-#### --connectivity-rule-ids
+#### --user-namespace-permission
 
-The list of connectivity rule IDs, can be used in create namespace and update namespace. example: --ids id1 --ids id2
---ids id3.
+A [Namespace-level permission](/cloud/users#namespace-level-permissions) for a user in the form '_email_=_permission_'. Can be specified more than once.
 
-Alias: `--ids`
+Valid values for _permission_: `Admin` | `Write` | `Read`
+
+Alias: `-p`
+
+**Example**
 
 ```bash
 tcld namespace create \
-    --namespace <namespace_id> \
-    --cloud-provider aws \
-    --region us-west-2 \
-    --retention-days 60 \
-    --certificate-filter-input '{"filters": [{"commonName": "test1"}]}' \
+    --namespace test-namespace.a1b2c \
+    --region us-east-1 \
+    --auth-method api_key \
     --user-namespace-permission "user@example.com=Admin" \
-    --search-attribute "customer_id=Int" \
-    --search-attribute "customer_name=Text" \
-    --endpoint "https://test-codec-server.com" \
-    --pass-access-token \
-    --include-credentials \
-    --connectivity-rule-ids <rule_id1> \
-    --connectivity-rule-ids <rule_id2> // if adding multiple rules
+    --user-namespace-permission "user2@example.com=Write"
 ```
 
 ## delete
@@ -356,11 +303,9 @@ The following modifiers control the behavior of the command.
 
 #### --namespace
 
-Specify the Namespace hosted on Temporal Cloud to be deleted.
+**Required.** Specify the Namespace hosted on Temporal Cloud to be deleted.
 
 Alias: `-n`
-
-_Required modifier_
 
 #### --request-id
 
@@ -388,8 +333,6 @@ Use `tcld namespace delete-region` to remove a <ToolTipTerm term="replica" /> fo
 in a mandatory 7-day waiting period before you can re-enable High Availability features in the same location. Refer to
 [Enable High Availability](/cloud/high-availability/enable) for more information.
 
-Alias: _none_
-
 The following modifiers control the behavior of the command.
 
 #### --request-id
@@ -400,21 +343,15 @@ Alias: `-r`
 
 #### --namespace
 
-Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
-`$TEMPORAL_CLOUD_NAMESPACE` is used.
+**Required.** Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable `$TEMPORAL_CLOUD_NAMESPACE` is used.
 
 Alias: `-n`
 
-_Required modifier_
-
 #### --region
 
-The region to remove from the Namespace. Upon removal, Temporal stops replication and the Namespace becomes a Standard
-Namespace. You cannot re-add a region or add a new region for seven days after removing a Namespace region.
+**Required.** The region to remove from the Namespace. Upon removal, Temporal stops replication and the Namespace becomes a Standard Namespace. You cannot re-add a region or add a new region for seven days after removing a Namespace region.
 
 Alias: `--re`
-
-_Required modifier_
 
 **Example**
 
@@ -470,22 +407,17 @@ Alias: `-r`
 
 #### --namespace
 
-Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable
-$TEMPORAL_CLOUD_NAMESPACE is used.
+**Required.** Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable `$TEMPORAL_CLOUD_NAMESPACE` is used.
 
 Alias: `-n`
 
-_Required modifier_
-
 #### --region
 
-The region to failover _to_.
+**Required.** The region to failover _to_.
 
 See [Regions](/cloud/regions) for a list of supported regions.
 
 Alias: `--re`
-
-_Required modifier_
 
 #### --ca-certificate
 
@@ -576,8 +508,6 @@ $TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
-_Required modifier_
-
 #### --sink-name
 
 Provide a name for the export sink.
@@ -630,8 +560,6 @@ $TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
-_Required modifier_
-
 #### --sink-name
 
 Provide the name of the export sink you wish to retrieve details for.
@@ -659,8 +587,6 @@ Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the
 $TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
-
-_Required modifier_
 
 #### --sink-name
 
@@ -702,8 +628,6 @@ $TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
-_Required modifier_
-
 #### --page-size
 
 Determine the number of results to return per page for list operations. If not specified, the default value is 100.
@@ -734,8 +658,6 @@ Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the
 $TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
-
-_Required modifier_
 
 #### --sink-name
 
@@ -796,8 +718,6 @@ Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the
 $TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
-
-_Required modifier_
 
 #### --sink-name
 

@@ -26,6 +26,7 @@ tags:
 - [How to update an account-level Role in Temporal Cloud](#update-roles)
 - [How to update Namespace-level permissions in Temporal Cloud](#update-permissions)
 - [How to delete a user from your Temporal Cloud account](#delete-users)
+- [How to troubleshoot account access issues](#troubleshoot-access)
 
 ## How to invite users to your Temporal Cloud account {#invite-users}
 
@@ -350,3 +351,29 @@ These permissions are configured per Namespace per user.
 | ValidateGlobalizeNamespace         |      |       | ✔               |
 
 Account Owners and Global Admins will have Namespace Admin permissions on Namespaces.
+
+## How to troubleshoot account access issues {#troubleshoot-access}
+
+### Why can't I sign in after my email domain changed? {#email-domain-change}
+
+If your organization changed its email domain (for example, from `@oldcompany.com` to `@newcompany.com`), you may be unable to sign in to Temporal Cloud with your existing account.
+
+**Why this happens:**
+When you sign in using "Continue with Google" or "Continue with Microsoft", Temporal Cloud identifies your account by your email address.
+If your email address changes, Temporal Cloud sees this as a different identity and cannot match it to your existing account.
+
+**How to resolve this:**
+[Create a support ticket](/cloud/support#support-ticket) with the following information:
+
+- Your previous email address (the one originally used to access Temporal Cloud)
+- Your new email address
+- Your Temporal Cloud Account Id (if known)
+
+Temporal Support can update your account to use your new email address.
+
+:::tip Use SAML for enterprise identity management
+
+If your organization frequently changes email domains or wants centralized control over user authentication, consider using [SAML authentication](/cloud/saml).
+With SAML, your identity provider (IdP) manages user identities, and email domain changes can be handled within your IdP without affecting Temporal Cloud access.
+
+:::

@@ -6,6 +6,11 @@
   },
   "redirects": [
     {
+      "source": "/cloud/introduction",
+      "destination": "/cloud/overview",
+      "permanent": true
+    },
+    {
       "source": "/cookbook/:path*",
       "destination": "/ai-cookbook/:path*",
       "permanent": true
