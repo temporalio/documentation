@@ -308,6 +308,32 @@ The topic name to write to the sink.
 
 Alias: `tn`
 
+### list
+
+Returns a paginated list of audit logs for the account, optionally filtered by time range.
+
+Alias: `l`
+
+#### --end-time
+
+The end time (exclusive) in RFC3339 format (e.g., '2006-01-02T15:04:05Z' or '2006-01-02T15:04:05+07:00').
+
+Alias: `et`
+
+#### --page-size
+
+The page size for list operations.
+
+#### --page-token
+
+The page token for list operations.
+
+#### --start-time
+
+The start time (inclusive) in RFC3339 format (e.g., '2006-01-02T15:04:05Z' or '2006-01-02T15:04:05+07:00').
+
+Alias: `st`
+
 ## get
 
 The `tcld account get` command gets information about the Temporal Cloud account you are logged into.
