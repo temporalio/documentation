@@ -5,62 +5,55 @@ const supportedTech = [
     link: '/develop/go',
     image: '/img/sdks/svgs/golang-block.svg',
     alt: 'Go lang logo',
-    class: 'w-10 h-8',
   },
   {
     link: '/develop/java',
-    image: '/img/sdks/svgs/java.svg',
+    image: '/img/sdks/svgs/java-block.svg',
     alt: 'Java logo',
-    class: 'w-7 h-7',
   },
   {
     link: '/develop/python',
-    image: '/img/sdks/svgs/python.svg',
+    image: '/img/sdks/svgs/python-block.svg',
     alt: 'Python logo',
-    class: 'w-7 h-7',
   },
   {
     link: '/develop/typescript',
-    image: '/img/sdks/svgs/typescript.svg',
+    image: '/img/sdks/svgs/typescript-block.svg',
     alt: 'TypeScript logo',
-    class: 'w-7 h-7',
   },
   {
     link: '/develop/php',
-    image: '/img/sdks/svgs/php.svg',
+    image: '/img/sdks/svgs/php-block.svg',
     alt: 'php logo',
-    class: 'w-10',
   },
   {
     link: '/develop/dotnet',
-    image: '/img/sdks/svgs/dotnet.svg',
+    image: '/img/sdks/svgs/dotnet-block.svg',
     alt: '.Net logo',
-    class: 'w-10',
   },
   {
     link: '/develop/ruby',
-    image: '/img/sdks/svgs/ruby.svg',
+    image: '/img/sdks/svgs/ruby-block.svg',
     alt: 'Ruby logo',
-    class: 'w-10',
   },
 ];
 
 const displayTechListItems = () => {
   return supportedTech.map((tech) => {
     return (
-      <li className="list-logo" key={tech.alt}>
+      <li className="sdk-logo" key={tech.alt}>
         <a href={tech.link}>
-          <img className={`${tech.class} pr-1 transition hover:scale-110 code-logo`} src={tech.image} alt={tech.alt} />
+          <img src={tech.image} alt={tech.alt} />
         </a>
       </li>
     );
   });
 };
 
-export const SdkLogos = () => {
+export const SdkLogosAsBlocks = () => {
   return (
-    <div className="supported-tech tailwindcss">
-      <ul className="landing-card-list-b logos mb-4">{displayTechListItems()}</ul>
+    <div className="supported-tech">
+      <ul className="sdk-logos-list">{displayTechListItems()}</ul>
     </div>
   );
 };

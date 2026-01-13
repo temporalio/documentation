@@ -23,7 +23,6 @@ origins:
     repo: samples-java
   - owner: temporalio
     repo: features
-    ref: 'nexus-snip-sync'
   - owner: temporalio
     repo: reference-app-orders-go
   - files:
