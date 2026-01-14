@@ -17,11 +17,24 @@ const supportedTech = [
     className: 'sdkJava',
   },
   {
+    name: 'phpBlock',
+    link: '/develop/php',
+    image: '/img/sdks/svgs/php-block.svg',
+    alt: 'php logo',
+    className: 'sdkPhp',
+  },
+  {
     name: 'pythonBlock',
     link: '/develop/python',
     image: '/img/sdks/svgs/python-block.svg',
     alt: 'Python logo',
     className: 'sdkPython',
+  },
+  {
+    name: 'rubyBlock',
+    link: '/develop/ruby',
+    alt: 'Ruby logo',
+    className: 'sdkRuby',
   },
   {
     name: 'typeScriptBlock',
@@ -31,23 +44,10 @@ const supportedTech = [
     className: 'sdkTypeScript',
   },
   {
-    name: 'phpBlock',
-    link: '/develop/php',
-    image: '/img/sdks/svgs/php-block.svg',
-    alt: 'php logo',
-    className: 'sdkPhp',
-  },
-  {
     name: 'dotnetBlock',
     link: '/develop/dotnet',
     alt: '.Net logo',
     className: 'sdkDotNet',
-  },
-  {
-    name: 'rubyBlock',
-    link: '/develop/ruby',
-    alt: 'Ruby logo',
-    className: 'sdkRuby',
   },
 ];
 

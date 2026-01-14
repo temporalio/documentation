@@ -1,9 +1,10 @@
 .homepage-hero-wrapper {
   color: #fff;
-  font-family: 'Aeonik-Light', var(--ifm-font-family-base);
+  font-family: 'Aeonik', var(--ifm-font-family-base);
   max-width: 1024px;
 
   .hero-main-title-container .hero-main-title {
+    font-family: 'Aeonik-Light', var(--ifm-font-family-base);
     font-size: 3rem;
     margin-bottom: 14px;
   }
@@ -25,6 +26,11 @@
   .hero-content {
     color: var(--ifm-color);
 
+    h1 {
+      font-family: 'Aeonik-Light', var(--ifm-font-family-base);
+      font-weight: 300;
+    }
+
     @media (max-width: 768px) {
       order: 1;
     }
@@ -37,9 +43,7 @@
 
     p {
       color: var(--ifm-color);
-      font-family: 'Aeonik', var(--ifm-font-family-base);
       font-size: 1rem;
-      font-weight: 300;
       margin-bottom: 1.5rem;
     }
   }
