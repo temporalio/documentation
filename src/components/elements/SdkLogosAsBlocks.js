@@ -1,5 +1,5 @@
 import React from 'react';
-import SdkSvg from './SdkSvg/SdkSvg';
+import SdkSvg from './SdkSvgs/SdkSvg';
 
 const supportedTech = [
   {
