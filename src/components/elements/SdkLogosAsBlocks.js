@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './sdk-logos-as-blocks.module.css';
 import SdkSvg from './SdkSvg/SdkSvg';
 
 const supportedTech = [
@@ -66,7 +65,7 @@ const displayTechListItems = () => {
 
 export const SdkLogosAsBlocks = () => {
   return (
-    <div className={styles.sdkLogosAsBlocks}>
+    <div>
       <ul className="sdk-logos-list">{displayTechListItems()}</ul>
     </div>
   );
