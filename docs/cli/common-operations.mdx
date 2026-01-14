@@ -1,0 +1,134 @@
+---
+id: common-operations
+title: Common CLI operations
+sidebar_label: Common operations
+slug: /cli/common-operations
+description: Common Temporal CLI workflows for starting, listing, and describing Workflows.
+keywords:
+  - Temporal CLI
+  - workflow start
+  - workflow list
+  - workflow describe
+---
+
+The following are some of the more common operations you can perform with the Temporal CLI.
+
+## Start a Workflow
+
+In another terminal, use the following commands to interact with the Server. The following command starts a Workflow:
+
+```shell
+$ temporal workflow start \
+  --task-queue hello-world \
+  --type MyWorkflow \
+  --workflow-id 123 \
+  --input 456
+
+Running execution:
+  WorkflowId                                   123
+  RunId       357074e4-0dd8-4c44-8367-d92536dd0943
+  Type        MyWorkflow
+  Namespace   default
+  TaskQueue   hello-world
+  Args        [456]
+```
+
+Shorthand options are available:
+
+```shell
+temporal workflow start --task-queue hello-world --type MyWorkflow --workflow-id 123 --input 456
+```
+
+You can also list and describe Workflows:
+
+```shell
+$ temporal workflow list
+
+  Status   WorkflowId     Name       StartTime
+  Running         123  MyWorkflow  14 seconds ago
+
+$ temporal workflow describe --workflow-id 123
+
+{
+  "executionConfig": {
+    "taskQueue": {
+      "name": "hello-world",
+      "kind": "Normal"
+    },
+    "workflowExecutionTimeout": "0s",
+    "workflowRunTimeout": "0s",
+    "defaultWorkflowTaskTimeout": "10s"
+  },
+  "workflowExecutionInfo": {
+    "execution": {
+      "workflowId": "123",
+      "runId": "357074e4-0dd8-4c44-8367-d92536dd0943"
+    },
+    "type": {
+      "name": "MyWorkflow"
+    },
+    "startTime": "2023-04-15T06:42:31.191137Z",
+    "status": "Running",
+    "historyLength": "2",
+    "executionTime": "2023-04-15T06:42:31.191137Z",
+    "memo": {
+
+    },
+    "autoResetPoints": {
+
+    },
+    "stateTransitionCount": "1"
+  },
+  "pendingWorkflowTask": {
+    "state": "Scheduled",
+    "scheduledTime": "2023-04-15T06:42:31.191173Z",
+    "originalScheduledTime": "2023-04-15T06:42:31.191173Z",
+    "attempt": 1
+  }
+}
+```
+
+For more detailed output in JSON format, use the following command:
+
+```shell
+$ temporal workflow list --output json
+
+[
+  {
+    "execution": {
+      "workflow_id": "123",
+      "run_id": "357074e4-0dd8-4c44-8367-d92536dd0943"
+    },
+    "type": {
+      "name": "MyWorkflow"
+    },
+    "start_time": "2023-04-15T06:42:31.191137Z",
+    "status": 1,
+    "execution_time": "2023-04-15T06:42:31.191137Z",
+    "memo": {},
+    "task_queue": "hello-world"
+  }
+]
+```
+
+Filter out Workflows based on Workflow Type with [jq](https://stedolan.github.io/jq/):
+
+```shell
+$ temporal workflow list --output json | jq '.[].type.name'
+
+"OtherWorkflow"
+"MyWorkflow"
+"MyWorkflow"
+```
+
+To count the number of Workflows, use the following command:
+
+```shell
+$ temporal workflow list --output json | jq '.[].type.name' | uniq -c
+
+   1 "OtherWorkflow"
+   2 "MyWorkflow"
+```
+
+To see the full range of Workflow-related commands, run `temporal workflow` or see the
+[Temporal CLI workflow command reference](/cli/command-reference/workflow).
