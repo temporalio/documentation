@@ -394,6 +394,14 @@ main.max-w-screen-lg {
 
 @font-face {
   font-family: 'Aeonik';
+  src: url('../fonts/Aeonik/Aeonik-Light.woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Aeonik';
   src: url('../fonts/Aeonik/Aeonik-Regular.woff');
   font-weight: 400;
   font-style: normal;
@@ -401,17 +409,9 @@ main.max-w-screen-lg {
 }
 
 @font-face {
-  font-family: 'Aeonik-Bold';
+  font-family: 'Aeonik';
   src: url('../fonts/Aeonik/Aeonik-Bold.woff');
   font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Aeonik-Light';
-  src: url('../fonts/Aeonik/Aeonik-Light.woff');
-  font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
@@ -455,12 +455,6 @@ main.max-w-screen-lg {
   font-display: swap;
 }
 
-h2,
-h3 {
-  font-weight: 700;
-  letter-spacing: -0.5px;
-}
-
 h1,
 h2,
 h3,
@@ -472,18 +466,20 @@ h1 {
   font-size: 1.6rem;
   font-weight: 300;
   letter-spacing: -1px;
-}
 
-@media only screen and (min-width: 1280px) {
-  h1 {
+  @media only screen and (min-width: 1280px) {
     font-size: 3rem;
   }
-}
 
-@media only screen and (max-width: 1279px) and (min-width: 640px) {
-  h1 {
+  @media only screen and (max-width: 1279px) and (min-width: 640px) {
     font-size: 2rem;
   }
+}
+
+h2,
+h3 {
+  font-weight: 700;
+  letter-spacing: -0.5px;
 }
 
 .h2-landing {

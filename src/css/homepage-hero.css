@@ -1,11 +1,11 @@
 .homepage-hero-wrapper {
   color: #fff;
-  font-family: 'Aeonik', var(--ifm-font-family-base);
   max-width: 1024px;
 
   .hero-main-title-container .hero-main-title {
-    font-family: 'Aeonik-Light', var(--ifm-font-family-base);
+    font-family: 'Aeonik', var(--ifm-font-family-base);
     font-size: 3rem;
+    font-weight: 300;
     margin-bottom: 14px;
   }
 
@@ -26,19 +26,8 @@
   .hero-content {
     color: var(--ifm-color);
 
-    h1 {
-      font-family: 'Aeonik-Light', var(--ifm-font-family-base);
-      font-weight: 300;
-    }
-
     @media (max-width: 768px) {
       order: 1;
-    }
-
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 2rem;
-      }
     }
 
     p {
@@ -54,7 +43,7 @@
     justify-content: center;
     background-image: linear-gradient(255deg, #444ce7 0%, #b664ff 100%);
     color: #fff;
-    font-family: 'Noto Sans Mono', monospace;
+    font-family: var(--ifm-font-family-monospace);
     font-weight: 500;
     font-size: 16px;
     letter-spacing: 0.02em;
@@ -133,7 +122,6 @@
 
     h3 {
       color: #fff;
-      font-family: 'Aeonik-Light', var(--ifm-font-family-base);
       font-size: 1.125rem;
       font-weight: 300;
       line-height: 100%;
@@ -142,7 +130,6 @@
 
     p {
       color: var(--indigo-100);
-      font-family: 'Aeonik', var(--ifm-font-family-base);
       font-size: 0.8rem;
       line-height: 1.4;
       margin: 0;
@@ -198,7 +185,6 @@
 
       h3 {
         color: var(--ifm-color-emphasis-900);
-        font-family: 'Aeonik-Light', var(--ifm-font-family-base);
         font-size: 1.125rem;
         font-weight: 300;
         margin: 0;
@@ -206,7 +192,6 @@
 
       p {
         color: var(--indigo-100);
-        font-family: 'Aeonik', var(--ifm-font-family-base);
         line-height: 1.5;
         font-size: 0.85rem;
         margin: 0;
@@ -237,7 +222,6 @@
 
     h1 {
       color: var(--space-black);
-      font-family: 'Aeonik-Light', var(--ifm-font-family-base);
       font-size: 2rem;
       font-weight: 300;
       letter-spacing: -0.02em;
