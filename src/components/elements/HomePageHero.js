@@ -5,7 +5,7 @@ import '../../css/homepage-hero.css';
 
 const Icon = ({ src, alt, className, width, height }) => {
   const darkSrc = src;
-  const lightSrc = src.replace('.svg', '-dark.svg');
+  const lightSrc = src.replace('-dark-mode-24x24.svg', '-24x24.svg');
 
   return (
     <>
@@ -28,56 +28,29 @@ const Icon = ({ src, alt, className, width, height }) => {
 };
 
 const HomePageHero = () => {
-  const quickstartLinks = [
-    {
-      path: '/develop/go/set-up-your-local-go',
-      name: 'Go Quickstart',
-    },
-    {
-      path: '/develop/java/set-up-your-local-java',
-      name: 'Java Quickstart',
-    },
-    {
-      path: '/develop/python/set-up-your-local-python',
-      name: 'Python Quickstart',
-    },
-    {
-      path: '/develop/typescript/set-up-your-local-typescript',
-      name: 'TypeScript Quickstart',
-    },
-    {
-      path: '/develop/dotnet/set-up-your-local-dotnet',
-      name: '.NET Quickstart',
-    },
-    {
-      path: '/develop/ruby/set-up-local-ruby',
-      name: 'Ruby Quickstart',
-    },
-  ];
-
   const actionCards = [
     {
       href: '/quickstarts',
-      icon: <Icon src="/img/icons/Lightning.svg" alt="Lightning icon" />,
+      icon: <Icon src="/img/icons/bolt-dark-mode-24x24.svg" alt="Lightning icon" />,
       title: 'Quickstart',
       description: 'Setup your local and run a Hello World workflow.',
     },
     {
       href: '/develop',
-      icon: <Icon src="/img/icons/Code.svg" alt="Code icon" />,
+      icon: <Icon src="/img/icons/code-dark-mode-24x24.svg" alt="Code icon" />,
       title: 'Developer Guide',
       description: 'Dive into everything you need to know about building Temporal workflows.',
     },
     {
       href: '/production-deployment',
-      icon: <Icon src="/img/icons/Rocket.svg" alt="Rocket icon" />,
+      icon: <Icon src="/img/icons/rocket-dark-mode-24x24.svg" alt="Rocket icon" />,
       title: 'Deploy your Workflows',
       description:
         'Deploy your Temporal Application to your environment. Self-Host the Temporal Service or use Temporal Cloud.',
     },
     {
       href: 'https://temporal.io/cloud',
-      icon: <Icon src="/img/icons/Cloud.svg" alt="Cloud icon" />,
+      icon: <Icon src="/img/icons/cloud-dark-mode-24x24.svg" alt="Cloud icon" />,
       title: 'Get started for free with $1000 in credits',
       description:
         '<span class="linkify">Sign up for Temporal Cloud</span> and let us host the Temporal Service for you.',
@@ -87,20 +60,20 @@ const HomePageHero = () => {
   const communityCards = [
     {
       href: 'https://temporal.io/slack',
-      icon: <Icon src="/img/icons/Slack.svg" alt="Slack" />,
+      icon: <Icon src="/img/icons/slack-dark-mode-24x24.svg" alt="Slack" />,
       title: 'Slack Community',
       description:
         'Join us on <a href="https://temporal.io/slack">temporal.io/slack</a> and say hi or ask us a question.',
     },
     {
       href: 'https://community.temporal.io',
-      icon: <Icon src="/img/icons/Message.svg" alt="Message" />,
+      icon: <Icon src="/img/icons/forum-dark-mode-24x24.svg" alt="Message" />,
       title: 'Developer Forum',
       description: '<a href="https://community.temporal.io">Find out</a> if your question has already been asked.',
     },
     {
       href: 'https://learn.temporal.io/courses/',
-      icon: <Icon src="/img/icons/Education.svg" alt="Education" />,
+      icon: <Icon src="/img/icons/learn-dark-mode-24x24.svg" alt="Education" />,
       title: 'Learn it all',
       description: '<a href="https://learn.temporal.io/courses/">Master Temporal</a> with our courses and tutorials.',
     },
@@ -111,7 +84,9 @@ const HomePageHero = () => {
       <div className="hero-main-title-container">
         <header className="hero-main-title">Temporal Docs</header>
 
-        <div className="quickstart-links">{SdkLogosAsBlocks()}</div>
+        <div className="quickstart-links">
+          <SdkLogosAsBlocks />
+        </div>
       </div>
 
       <div className="hero-section">
@@ -137,15 +112,15 @@ const HomePageHero = () => {
 
         <div className="hero-actions">
           {actionCards.map((card, index) => (
-            <div key={index} className="border-container">
-              <a href={card.href} className="action-card">
+            <a key={index} href={card.href} className="action-card">
+              <div className="action-card-inner">
                 <div className="action-icon">{card.icon}</div>
                 <div className="action-content">
                   <h3>{card.title}</h3>
                   <p dangerouslySetInnerHTML={{ __html: card.description }}></p>
                 </div>
-              </a>
-            </div>
+              </div>
+            </a>
           ))}
         </div>
       </div>

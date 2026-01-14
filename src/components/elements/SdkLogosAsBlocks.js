@@ -1,49 +1,62 @@
 import React from 'react';
+import SdkSvg from './SdkSvgs/SdkSvg';
 
 const supportedTech = [
   {
+    name: 'goLangBlock',
     link: '/develop/go',
     image: '/img/sdks/svgs/golang-block.svg',
     alt: 'Go lang logo',
+    className: 'sdkGoLang',
   },
   {
+    name: 'javaBlock',
     link: '/develop/java',
     image: '/img/sdks/svgs/java-block.svg',
     alt: 'Java logo',
+    className: 'sdkJava',
   },
   {
-    link: '/develop/python',
-    image: '/img/sdks/svgs/python-block.svg',
-    alt: 'Python logo',
-  },
-  {
-    link: '/develop/typescript',
-    image: '/img/sdks/svgs/typescript-block.svg',
-    alt: 'TypeScript logo',
-  },
-  {
+    name: 'phpBlock',
     link: '/develop/php',
     image: '/img/sdks/svgs/php-block.svg',
     alt: 'php logo',
+    className: 'sdkPhp',
   },
   {
-    link: '/develop/dotnet',
-    image: '/img/sdks/svgs/dotnet-block.svg',
-    alt: '.Net logo',
+    name: 'pythonBlock',
+    link: '/develop/python',
+    image: '/img/sdks/svgs/python-block.svg',
+    alt: 'Python logo',
+    className: 'sdkPython',
   },
   {
+    name: 'rubyBlock',
     link: '/develop/ruby',
-    image: '/img/sdks/svgs/ruby-block.svg',
     alt: 'Ruby logo',
+    className: 'sdkRuby',
+  },
+  {
+    name: 'typeScriptBlock',
+    link: '/develop/typescript',
+    image: '/img/sdks/svgs/typescript-block.svg',
+    alt: 'TypeScript logo',
+    className: 'sdkTypeScript',
+  },
+  {
+    name: 'dotnetBlock',
+    link: '/develop/dotnet',
+    alt: '.Net logo',
+    className: 'sdkDotNet',
   },
 ];
 
 const displayTechListItems = () => {
   return supportedTech.map((tech) => {
     return (
-      <li className="sdk-logo" key={tech.alt}>
+      <li className={'sdk-logo'} key={tech.alt}>
         <a href={tech.link}>
-          <img src={tech.image} alt={tech.alt} />
+          <SdkSvg name={tech.name} className={tech.className} />
         </a>
       </li>
     );
@@ -52,7 +65,7 @@ const displayTechListItems = () => {
 
 export const SdkLogosAsBlocks = () => {
   return (
-    <div className="supported-tech">
+    <div>
       <ul className="sdk-logos-list">{displayTechListItems()}</ul>
     </div>
   );
