@@ -84,7 +84,9 @@ const HomePageHero = () => {
       <div className="hero-main-title-container">
         <header className="hero-main-title">Temporal Docs</header>
 
-        <div className="quickstart-links">{SdkLogosAsBlocks()}</div>
+        <div className="quickstart-links">
+          <SdkLogosAsBlocks />
+        </div>
       </div>
 
       <div className="hero-section">
