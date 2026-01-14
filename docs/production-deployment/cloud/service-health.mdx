@@ -36,8 +36,8 @@ Note that Service API errors are not equivalent to guarantees mentioned in the [
 
 ### Reference Metrics
 
-- [temporal\_cloud\_v1\_frontend\_service\_error\_count](/production-deployment/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_frontend_service_error_count)
-- [temporal\_cloud\_v1\_frontend\_service\_request\_count](/production-deployment/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_frontend_service_request_count)
+- [temporal\_cloud\_v1\_service\_error\_count](/production-deployment/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_service_error_count)
+- [temporal\_cloud\_v1\_service\_request\_count](/production-deployment/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_service_request_count)
 
 ### Prometheus Query for this Metric
 
@@ -48,12 +48,12 @@ avg_over_time((
     (
 
         (
-            sum(increase(temporal_cloud_v1_frontend_service_request_count{temporal_namespace=~"$namespace", operation=~"StartWorkflowExecution|SignalWorkflowExecution|SignalWithStartWorkflowExecution|RequestCancelWorkflowExecution|TerminateWorkflowExecution"}[10m]))
+            sum(increase(temporal_cloud_v1_service_request_count{temporal_namespace=~"$namespace", operation=~"StartWorkflowExecution|SignalWorkflowExecution|SignalWithStartWorkflowExecution|RequestCancelWorkflowExecution|TerminateWorkflowExecution"}[10m]))
             -
-            sum(increase(temporal_cloud_v1_frontend_service_error_count{temporal_namespace=~"$namespace", operation=~"StartWorkflowExecution|SignalWorkflowExecution|SignalWithStartWorkflowExecution|RequestCancelWorkflowExecution|TerminateWorkflowExecution"}[10m]))
+            sum(increase(temporal_cloud_v1_service_error_count{temporal_namespace=~"$namespace", operation=~"StartWorkflowExecution|SignalWorkflowExecution|SignalWithStartWorkflowExecution|RequestCancelWorkflowExecution|TerminateWorkflowExecution"}[10m]))
         )
         /
-        sum(increase(temporal_cloud_v1_frontend_service_request_count{temporal_namespace=~"$namespace", operation=~"StartWorkflowExecution|SignalWorkflowExecution|SignalWithStartWorkflowExecution|RequestCancelWorkflowExecution|TerminateWorkflowExecution"}[10m]))
+        sum(increase(temporal_cloud_v1_service_request_count{temporal_namespace=~"$namespace", operation=~"StartWorkflowExecution|SignalWorkflowExecution|SignalWithStartWorkflowExecution|RequestCancelWorkflowExecution|TerminateWorkflowExecution"}[10m]))
     )
 
     or vector(1)
@@ -150,7 +150,7 @@ to determine the severity of any active rate limiting.
 | Limit Metric | Count Metric | Throttle Metric |
 | ------------ | ------------ | --------------- |
 | `temporal_cloud_v1_action_limit` | `temporal_cloud_v1_total_action_count` | `temporal_cloud_v1_total_action_throttled_count` |
-| `temporal_cloud_v1_frontend_rps_limit` | `temporal_cloud_v1_frontend_service_request_count` | `temporal_cloud_v1_service_request_throttled_count` |
+| `temporal_cloud_v1_service_request_limit` | `temporal_cloud_v1_service_request_count` | `temporal_cloud_v1_service_request_throttled_count` |
 | `temporal_cloud_v1_operations_limit` | `temporal_cloud_v1_operations_count` | `temporal_cloud_v1_operations_throttled_count` |
 
 The [Grafana dashboard example](https://github.com/grafana/jsonnet-libs/blob/master/temporal-mixin/dashboards/temporal-overview.json) includes a Usage & Quotas section

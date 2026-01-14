@@ -59,7 +59,7 @@ All metrics include these base labels:
 
 ### Frontend Service Metrics
 
-#### temporal\_cloud\_v1\_frontend\_service\_request\_count
+#### temporal\_cloud\_v1\_service\_request\_count
 
 gRPC requests received per second.
 
@@ -79,7 +79,7 @@ gRPC requests throttled per second.
 
 **Type**: Rate
 
-#### temporal\_cloud\_v1\_frontend\_service\_error\_count
+#### temporal\_cloud\_v1\_service\_error\_count
 
 gRPC errors per second.
 
@@ -89,7 +89,7 @@ gRPC errors per second.
 
 **Type**: Rate
 
-#### temporal\_cloud\_v1\_frontend\_service\_pending\_requests
+#### temporal\_cloud\_v1\_service\_pending\_requests
 
 The number of pollers that are waiting for a task. Use this to track against ``temporal_cloud_v1_poller_limit``
 
@@ -171,7 +171,6 @@ Successful workflow completions per second.
 
 | Label | Description |
 | ----- | ----- |
-| `operation` | The operation name |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 
@@ -183,7 +182,6 @@ Workflow failures per second.
 
 | Label | Description |
 | ----- | ----- |
-| `operation` | The operation name |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 
@@ -195,7 +193,6 @@ Workflow timeouts per second.
 
 | Label | Description |
 | ----- | ----- |
-| `operation` | The operation name |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 
@@ -207,7 +204,6 @@ Workflow cancellations per second.
 
 | Label | Description |
 | ----- | ----- |
-| `operation` | The operation name |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 
@@ -219,7 +215,6 @@ Workflow terminations per second.
 
 | Label | Description |
 | ----- | ----- |
-| `operation` | The operation name |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 
@@ -231,7 +226,6 @@ Workflows continued as new per second.
 
 | Label | Description |
 | ----- | ----- |
-| `operation` | The operation name |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 
@@ -310,12 +304,6 @@ The rate of tasks added to queues with no active pollers.
 The current number of open workflows in a namespace.
 
 **Type**: Value
-
-#### temporal\_cloud\_v1\_state\_transition\_count
-
-Workflow state transitions per second.
-
-**Type**: Rate
 
 #### temporal\_cloud\_v1\_total\_action\_count
 
@@ -418,15 +406,15 @@ The current configured actions per second limit for a namespace. Track utilizati
 
 **Type**: Value
 
-#### temporal\_cloud\_v1\_frontend\_rps\_limit
+#### temporal\_cloud\_v1\_service\_request\_limit
 
-The current configured frontend service RPS limit for a namespace. Track utilization against this limit with ``temporal_cloud_v1_frontend_service_request_count``
+The current configured frontend service RPS limit for a namespace. Track utilization against this limit with ``temporal_cloud_v1_service_request_count``
 
 **Type**: Value
 
 #### temporal\_cloud\_v1\_poller\_limit
 
-The current configured poller limit for a namespace. Track utilization against this limit with ``temporal_cloud_v1_frontend_service_pending_requests``.
+The current configured poller limit for a namespace. Track utilization against this limit with ``temporal_cloud_v1_service_pending_requests``.
 
 **Type**: Value
 
