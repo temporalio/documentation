@@ -1,0 +1,57 @@
+---
+id: temporal-cloud
+title: Integrate CLI with Temporal Cloud
+sidebar_label: Integrate with Cloud
+slug: /cli/temporal-cloud
+description: Connect the Temporal CLI to Temporal Cloud using environment profiles and authentication.
+keywords:
+  - Temporal CLI
+  - Temporal Cloud
+  - API keys
+  - mTLS
+  - env
+---
+
+Use the `temporal` CLI to connect to Temporal Cloud by creating a reusable environment profile and setting the
+Cloud-specific connection details.
+
+## Configure a Temporal Cloud profile
+
+Use `temporal env set` to store settings for your Temporal Cloud Namespace.
+
+```shell
+temporal env set prod.namespace production.f45a2
+temporal env set prod.address production.f45a2.tmprl.cloud:7233
+temporal env set prod.tls-cert-path /temporal/certs/prod.pem
+temporal env set prod.tls-key-path /temporal/certs/prod.key
+```
+
+If your Cloud setup uses API keys, you can also store an API key in the profile:
+
+```shell
+temporal env set prod.api-key <api-key>
+```
+
+You can create API keys in the Temporal Cloud UI. For details, see
+[Create API keys](/production-deployment/cloud/get-started/api-keys).
+
+## Use the Cloud profile
+
+Run commands with the profile name:
+
+```shell
+temporal workflow list --env prod
+```
+
+Check your stored settings:
+
+```shell
+$ temporal env get prod
+
+  address        production.f45a2.tmprl.cloud:7233
+  namespace      production.f45a2
+  tls-cert-path  /temporal/certs/prod.pem
+  tls-key-path   /temporal/certs/prod.key
+```
+
+For a full list of properties, use `temporal env set -h`.
