@@ -1,9 +1,9 @@
 ---
 id: setup-cli
-title: Set up the Temporal CLI
-sidebar_label: Set up the CLI
+title: Install and configure the CLI
+sidebar_label: Install and configure
 slug: /cli/setup-cli
-description: Install the Temporal CLI and run a local development server.
+description: Install the Temporal CLI, run a local development server, and configure your environment.
 keywords:
   - Temporal CLI
   - Install CLI
@@ -13,16 +13,6 @@ keywords:
 
 The Temporal CLI is a command-line tool for interacting with the Temporal Service.
 It helps you manage, monitor, and debug Temporal applications.
-You can also use it to run a local development server and interact with Temporal Applications from the command line.
-
-With the Temporal CLI, you can:
-
-- Run a local Temporal Service for development
-- Start Workflow Executions on any Temporal Service (local, self-hosted, or Temporal Cloud)
-- Interact with running Workflows
-- Inspect the state of Workflows and Activities
-- Manage Namespaces, Schedules, and Task Queues
-- Monitor and debug application behavior
 
 ## Install the CLI
 
@@ -43,7 +33,7 @@ Or download from the CDN:
 - [Darwin amd64](https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64)
 - [Darwin arm64](https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64)
 
-Extract the archive and add the `temporal` binary to your `PATH`.
+extract the archive and add the `temporal` binary to your `PATH`.
 
 </TabItem>
 
@@ -60,7 +50,7 @@ Or download from the CDN:
 - [Linux amd64](https://temporal.download/cli/archive/latest?platform=linux&arch=amd64)
 - [Linux arm64](https://temporal.download/cli/archive/latest?platform=linux&arch=arm64)
 
-Extract the archive and add the `temporal` binary to your `PATH`.
+extract the archive and add the `temporal` binary to your `PATH`.
 
 </TabItem>
 
@@ -71,7 +61,7 @@ Download from the CDN:
 - [Windows amd64](https://temporal.download/cli/archive/latest?platform=windows&arch=amd64)
 - [Windows arm64](https://temporal.download/cli/archive/latest?platform=windows&arch=arm64)
 
-Extract the archive and add the `temporal.exe` binary to your `PATH`.
+extract the archive and add the `temporal.exe` binary to your `PATH`.
 
 </TabItem>
 
@@ -83,61 +73,229 @@ Temporal CLI container image is available on [DockerHub](https://hub.docker.com/
 docker run --rm temporalio/temporal --help
 ```
 
+::::note
+
+When running the Temporal CLI inside Docker, for the development server to be accessible from the host system, the
+server needs to be configured to listen on external IP and the ports need to be forwarded:
+
+```shell
+docker run --rm -p 7233:7233 -p 8233:8233 temporalio/temporal server start-dev --ip 0.0.0.0
+# UI is now accessible from host at http://localhost:8233/
+```
+
+::::
+
 </TabItem>
 
 </Tabs>
 
-## Run the development server
+## Run a local development server
 
 The CLI includes a local Temporal development service for fast feedback while building your application.
 
 Start the server:
 
 ```bash
-temporal server start-dev \
-   --db-filename path/to/local-persistent-store
+temporal server start-dev
 ```
 
-View available options:
+This command automatically starts the Web UI, creates the `default` [Namespace](/namespaces), and uses an in-memory
+SQLite database.
 
-```bash
-temporal server start-dev \
-   --help
-```
+The Temporal Server will be available on `localhost:7233` and the Temporal Web UI will be available at
+[`http://localhost:8233`](http://localhost:8233/).
 
-:::note
-
-When running the CLI inside Docker, for the development server to be accessible from the host system,
-the server needs to be configured to listen on external IP and the ports need to be forwarded:
+Persist state locally by specifying a database file:
 
 ```shell
-docker run --rm \
-   -p 7233:7233 -p 8233:8233 \
-   temporalio/temporal server start-dev \
-      --ip 0.0.0.0
-# UI is now accessible from host at http://localhost:8233/
+temporal server start-dev --db-filename temporal.db
 ```
 
-:::
+::::note
 
-### What the local server provides
+Local databases created with `--db-filename` may not be compatible with newer versions of the Temporal CLI. The
+`temporal server start-dev` command is intended for development environments.
 
-- A local instance of the Temporal Service
-- Automatic startup of the Web UI
-- A default Namespace
-- Optional persistence using SQLite
+::::
 
-Omitting `--db-filename` uses an in-memory database. This speeds up testing but does not persist Workflow data between sessions.
+For the full list of development server options, use the `--help` flag:
 
-### Access the Web UI
+```shell
+temporal server start-dev --help
+```
 
-- Temporal Service: `localhost:7233`
-- Web UI: [http://localhost:8233](http://localhost:8233)
+### Development server configuration
 
-:::tip
-The CLI works with all Temporal SDKs.
-Use it to develop and test your application before deploying to production.
-:::
+#### Namespace registration
+
+Namespaces are pre-registered at startup for immediate use. Customize pre-registered Namespaces with the following
+command:
+
+```shell
+temporal server start-dev --namespace foo --namespace bar
+```
+
+Register Namespaces with `namespace create`:
+
+```shell
+temporal operator namespace create --namespace foo
+```
+
+#### Enable or turn off the Temporal Web UI
+
+By default, the Temporal Web UI is enabled when running the development server using the Temporal CLI. To turn off the UI,
+use the `--headless` modifier:
+
+```shell
+temporal server start-dev --headless
+```
+
+#### Dynamic configuration
+
+Advanced Temporal CLI configuration requires a dynamic configuration file.
+
+To set values on the command line, use `--dynamic-config-value KEY=JSON_VALUE`. For example, enable the Search Attribute
+cache:
+
+```bash
+temporal server start-dev --dynamic-config-value system.forceSearchAttributesCacheRefreshOnRead=false
+```
+
+This setting makes created Search Attributes immediately available.
+
+## Configure the CLI
+
+### Environment variables
+
+The following table describes the environment variables you can set for the Temporal CLI.
+
+{/* This is an automatically generated file and the TEMPORAL_API_KEY correction will disappear on the next push. */}
+
+| Variable                                 | Definition                                                                | Client Option                   |
+| ---------------------------------------- | ------------------------------------------------------------------------- | ------------------------------- |
+| `TEMPORAL_ADDRESS`                       | Host and port (formatted as host:port) for the Temporal Frontend Service. | --address                       |
+| `TEMPORAL_CODEC_AUTH`                    | Authorization header for requests to Codec Server.                        | --codec-auth                    |
+| `TEMPORAL_CODEC_ENDPOINT`                | Endpoint for remote Codec Server.                                         | --codec-endpoint                |
+| `TEMPORAL_NAMESPACE`                     | Namespace in Temporal Workflow. Default: "default".                       | --namespace                     |
+| `TEMPORAL_TLS_CA`                        | Path to server CA certificate.                                            | --tls-ca-path                   |
+| `TEMPORAL_TLS_CERT`                      | Path to x509 certificate.                                                 | --tls-cert-path                 |
+| `TEMPORAL_TLS_DISABLE_HOST_VERIFICATION` | Turns off TLS host name verification. Default: false.                      | --tls-disable-host-verification |
+| `TEMPORAL_TLS_KEY`                       | Path to private certificate key.                                          | --tls-key-path                  |
+| `TEMPORAL_TLS_SERVER_NAME`               | Override for target TLS server name.                                      | --tls-server-name               |
+| `TEMPORAL_API_KEY`                       | API key used for authentication.                                          | --api-key                       |
+
+{/* This is an automatically generated file and this caution will disappear on the next push. */}
+{/* issue: https://github.com/temporalio/cli/issues/776 */}
+
+::::tip ENVIRONMENT VARIABLES
+
+Do not confuse environment variables, set with your shell, with temporal env options.
+
+::::
+
+### Create and modify configuration files
+
+<a id="configuration-files"></a>
+
+The Temporal CLI lets you create and modify TOML configuration files to store your environment variables and other
+settings. Refer to [Environment Configuration](../develop/environment-configuration#cli-integration) for more
+information.
+
+### Configure proxy support
+
+The Temporal CLI provides support for users who are operating behind a proxy. This feature ensures seamless
+communication even in network-restricted environments.
+
+#### Setting up proxy support
+
+If you are behind a proxy, you'll need to instruct the Temporal CLI to route its requests via that proxy. You can
+achieve this by setting the `HTTPS_PROXY` environment variable.
+
+```command
+export HTTPS_PROXY=<host>:<port>
+```
+
+Replace `<host>` with the proxy's hostname or IP address, and `<port>` with the proxy's port number.
+
+Once set, you can run the Temporal CLI commands as you normally would.
+
+::::note
+
+Temporal CLI uses the gRPC library which natively supports HTTP CONNECT proxies. The gRPC library checks for the
+`HTTPS_PROXY` (and its case-insensitive variants) environment variable to determine if it should route requests through
+a proxy.
+
+::::
+
+In addition to `HTTPS_PROXY`, gRPC also respects the `NO_PROXY` environment variable. This can be useful if there are
+specific addresses or domains you wish to exclude from proxying.
+
+For more information, see [Proxy](https://github.com/grpc/grpc-go/blob/master/Documentation/proxy.md) in the gRPC
+documentation.
+
+## Enable auto-completion
+
+Enable auto-completion using the following commands.
+
+### zsh auto-completion
+
+1. Add the following line to your `~/.zshrc` startup script:
+
+   ```sh
+   eval "$(temporal completion zsh)"
+   ```
+
+2. Re-launch your shell or run:
+
+   ```sh
+   source ~/.zshrc
+   ```
+
+### Bash auto-completion
+
+1. Install [bash-completion](https://github.com/scop/bash-completion#installation) and add the software to your
+   `~/.bashrc`.
+
+2. Add the following line to your `~/.bashrc` startup script:
+
+   ```sh
+   eval "$(temporal completion bash)"
+   ```
+
+3. Re-launch your shell or run:
+
+   ```sh
+   source ~/.bashrc
+   ```
+
+::::note
+
+If auto-completion fails with the error: `bash: _get_comp_words_by_ref: command not found`, you did not successfully
+install [bash-completion](https://github.com/scop/bash-completion#installation). This package must be loaded into your
+shell for `temporal` auto-completion to work.
+
+::::
+
+### Fish auto-completion
+
+1. Create the Fish custom completions directory if it does not already exist:
+
+   ```fish
+   mkdir -p ~/.config/fish/completions
+   ```
+
+2. Configure the completions to load when needed. Note: the filename must be `temporal.fish` or the completions will
+   not be found:
+
+   ```fish
+   echo 'eval "$(temporal completion fish)"' >~/.config/fish/completions/temporal.fish
+   ```
+
+3. Re-launch your shell or run:
+
+   ```fish
+   source ~/.config/fish/completions/temporal.fish
+   ```
 
 ## Getting CLI help
 
@@ -153,17 +311,4 @@ For example:
 - `temporal workflow --help`
 - `temporal workflow delete --help`
 
-Available commands
-
-| Command                            | Description                                                 |
-| ---------------------------------- | ----------------------------------------------------------- |
-| [**activity**](/cli/activity)      | Complete, update, pause, unpause, reset or fail an Activity |
-| [**batch**](/cli/batch)            | Manage running batch jobs                                   |
-| [**completion**](/cli/cmd-options) | Generate the autocompletion script for the specified shell  |
-| [**env**](/cli/env)                | Manage environments                                         |
-| [**operator**](/cli/operator)      | Manage Temporal deployments                                 |
-| [**schedule**](/cli/schedule)      | Perform operations on Schedules                             |
-| [**server**](/cli/server)          | Run Temporal Server                                         |
-| [**task-queue**](/cli/task-queue)  | Manage Task Queues                                          |
-| [**worker**](/cli/worker)          | Read or update Worker state                                 |
-| [**workflow**](/cli/workflow)      | Start, list, and operate on Workflows                       |
+For a full list of commands, see the [Temporal CLI command reference](/cli#command-reference).

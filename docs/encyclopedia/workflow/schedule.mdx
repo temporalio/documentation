@@ -21,7 +21,7 @@ A Schedule contains instructions for starting a [Workflow Execution](/workflow-e
 Schedules provide a more flexible and user-friendly approach than [Temporal Cron Jobs](/cron-job).
 
 - [How to enable Schedules](#limitations)
-- [How to operate Schedules using the Temporal CLI](/cli/schedule)
+- [How to operate Schedules using the Temporal CLI](/cli/command-reference/schedule)
 
 A Schedule has an identity and is independent of a Workflow Execution.
 This differs from a Temporal Cron Job, which relies on a cron schedule as a property of the Workflow Execution.
@@ -115,7 +115,7 @@ For more operational control, embed the contents of the time zone database file 
 
 A Schedule can be Paused.
 When a Schedule is Paused, the Spec has no effect.
-However, you can still force manual actions by using the [temporal schedule trigger](/cli/schedule#trigger) command.
+However, you can still force manual actions by using the [temporal schedule trigger](/cli/command-reference/schedule#trigger) command.
 
 To assist communication among developers and operators, a “notes” field can be updated on pause or resume to store an explanation for the current state.
 

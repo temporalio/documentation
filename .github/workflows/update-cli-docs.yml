@@ -79,7 +79,9 @@ jobs:
 
           branch_name="update-cli-docs-$CLI_RELEASE_TAG"
           git checkout -b "$branch_name"
-          cp ../cli/dist/docs/*.mdx docs/cli/
+          rm -rf docs/cli/command-reference
+          mkdir -p docs/cli/command-reference
+          cp ../cli/dist/docs/*.mdx docs/cli/command-reference/
           git add .
           git commit -m "$COMMIT_MESSAGE"
           git push origin "$branch_name"
