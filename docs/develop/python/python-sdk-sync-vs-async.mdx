@@ -69,7 +69,7 @@ such as `aiohttp` or `httpx`. Otherwise, use a synchronous Activity.
 
 ## Python SDK Worker Execution Architecture
 
-Python workers have following components for executing code:
+Python workers have the following components for executing code:
 
 - Your event loop, which runs Tasks from async Activities **plus the rest of the Temporal Worker, such as communicating with the server**.
 - An executor for executing Activity Tasks from synchronous Activities. A thread pool executor is recommended.
