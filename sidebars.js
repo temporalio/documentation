@@ -312,6 +312,7 @@ module.exports = {
         'develop/worker-performance',
         'develop/safe-deployments',
         'develop/plugins-guide',
+        'develop/task-queue-priority-fairness',
       ],
     },
     {
