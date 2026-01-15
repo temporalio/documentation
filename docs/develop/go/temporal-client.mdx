@@ -2,7 +2,9 @@
 id: temporal-client
 title: Temporal Client - Go SDK
 sidebar_label: Temporal Client
-description: Connect to Temporal Service or Cloud, start Workflow Executions, manage Workflow options, and retrieve Workflow results using the Go SDK. Follow detailed steps and code examples to effectively use Temporal’s capabilities.
+description:
+  Connect to Temporal Service or Cloud, start Workflow Executions, manage Workflow options, and retrieve Workflow
+  results using the Go SDK. Follow detailed steps and code examples to effectively use Temporal’s capabilities.
 toc_max_heading_level: 4
 keywords:
   - temporal go sdk
@@ -30,43 +32,180 @@ tags:
   - Certificates
 ---
 
-The pages shows how to do the following:
+A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the
+[Temporal Service](/temporal-service). Communication with a Temporal Service lets you perform actions such as
+starting Workflow Executions, sending Signals to Workflow Executions, sending Queries to Workflow Executions, getting
+the results of a Workflow Execution, and providing Activity Task Tokens.
+
+This page shows you how to do the following using the Go SDK with the Temporal Client:
 
 - [Connect to a local development Temporal Service](#connect-to-development-service)
 - [Connect to Temporal Cloud](#connect-to-temporal-cloud)
 - [Start a Workflow Execution](#start-workflow-execution)
-- [How to start a Workflow Execution](/develop/go/temporal-client#start-workflow-execution)
-
-## Connect to development Temporal Service {#connect-to-development-service}
-
-**How to connect to the local Temporal CLI development Temporal Service using the Go SDK**
-
-A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the [Temporal Service](/temporal-service).
-Communication with a Temporal Service includes, but isn't limited to, the following:
-
-- Starting Workflow Executions.
-- Sending Signals to Workflow Executions.
-- Sending Queries to Workflow Executions.
-- Getting the results of a Workflow Execution.
-- Providing an Activity Task Token.
+- [Get Workflow results](#get-workflow-results)
 
 :::caution
 
-A Temporal Client cannot be initialized and used inside a Workflow.
-However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with a Temporal Service.
+A Temporal Client cannot be initialized and used inside a Workflow. However, it is acceptable and common to use a
+Temporal Client inside an Activity to communicate with a Temporal Service.
 
 :::
 
-When you are running a Temporal Service locally (such as the [Temporal CLI](https://docs.temporal.io/cli/server#start-dev)), the number of connection options you must provide is minimal.
-Many SDKs default to the local host or IP address and port that Temporalite and [Docker Compose](https://github.com/temporalio/docker-compose) serve (`127.0.0.1:7233`).
+## Connect to development Temporal Service {#connect-to-development-service}
 
-Use the [`Dial()`](https://pkg.go.dev/go.temporal.io/sdk/client#Dial) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to create a [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client).
+Use the [`Dial()`](https://pkg.go.dev/go.temporal.io/sdk/client#Dial) API available in the
+[`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to create a
+[`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client). The `Dial()` API expects connection options such as the
+Temporal Server address, the Namespace to connect to, and Transport Layer Security (TLS) configuration. You can specify
+these options in the function call, or specify them using environment variables or a configuration file. We recommend
+you use environment variables or a configuration file to manage these connection options securely.
 
-If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions), the Client defaults the address and port number to `127.0.0.1:7233`, which is the port of the development Temporal Service.
+:::info Versioning Requirements
 
-If you don't set a custom Namespace name in the Namespace field, the client connects to the default Namespace.
+Environment variable and configuration file support were added in Go SDK v1.28.0.
 
-<!--SNIPSTART samples-apps-go-yourapp-gateway {"selectedLines": ["1-23", "32"]} -->
+:::
+
+When you are running a Temporal Service locally, such as the
+[Temporal CLI](https://docs.temporal.io/cli/server#start-dev), the connection options you must provide are minimal.
+
+If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions), the Client defaults the
+address and port number to `127.0.0.1:7233`, which is the port of the development Temporal Service. If you don't set a
+custom Namespace name in the Namespace field, the client connects to the default Namespace.
+
+<Tabs groupId="connect-options" defaultValue="env-vars" >
+
+<TabItem value="config-file" label="Configuration File">
+
+You can use a TOML configuration file to set connection options for the Temporal Client. The configuration file lets you
+configure multiple profiles, each with its own set of connection options. You can then specify which profile to use when
+creating the Temporal Client. You can use the environment variable `TEMPORAL_CONFIG_FILE` to specify the location of the
+TOML file or provide the path to the file directly in code. If you don't provide the configuration file path, the SDK
+looks for it at the path `~/.config/temporalio/temporal.toml`. For a list of all available configuration options, refer
+to [Environment Configuration](/references/client-environment-configuration)
+
+:::info
+
+The connection options set in configuration files have lower precedence than environment variables. This means that if
+you set the same option in both the configuration file and as an environment variable, the environment variable value
+overrides the option set in the configuration file.
+
+:::
+
+For example, the following TOML configuration file defines two profiles: `default` and `prod`. Each profile has its own
+set of connection options.
+
+```toml
+# Default profile for local development
+[profile.default]
+address = "localhost:7233"
+namespace = "default"
+
+# Custom gRPC headers
+[profile.default.grpc_meta]
+my-custom-header = "development-value"
+trace-id = "dev-trace-123"
+
+# Production profile for Temporal Cloud
+[profile.prod]
+address = "your-namespace.a1b2c.tmprl.cloud:7233"
+namespace = "your-namespace"
+api_key = "your-api-key-here"
+
+# TLS configuration for production
+[profile.prod.tls]
+# TLS is auto-enabled when this TLS config or API key is present, but you can configure it explicitly
+# disabled = false
+# Use certificate files for mTLS
+client_cert_path = "/etc/temporal/certs/client.pem"
+client_key_path = "/etc/temporal/certs/client.key"
+
+# Custom headers for production
+[profile.prod.grpc_meta]
+environment = "production"
+service-version = "v1.2.3"
+```
+
+You can create a Temporal Client using a specific profile from the configuration file as follows:
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/contrib/envconfig"
+)
+
+func main() {
+	// Load a specific profile from the TOML config file.
+	// This requires a [profile.prod] section in your config.
+	opts, err := envconfig.LoadClientOptions(envconfig.LoadClientOptionsRequest{
+		ConfigFileProfile: "prod",
+	})
+	if err != nil {
+		log.Fatalf("Failed to load 'prod' profile: %v", err)
+	}
+
+	c, err := client.Dial(opts)
+	if err != nil {
+		log.Fatalf("Failed to connect using 'prod' profile: %v", err)
+	}
+	defer c.Close()
+
+	fmt.Printf("✅ Connected to Temporal namespace %q on %s using 'prod' profile\n", c.Options().Namespace, c.Options().HostPort)
+}
+```
+
+</TabItem>
+
+<TabItem value="env-vars" label="Environment Variables">
+
+Use the `envconfig` package to set connection options for the Temporal Client using environment variables. For a list of
+all available environment variables and their default values, refer to
+[Environment Configuration](/references/client-environment-configuration).
+
+For example, the following code snippet loads all environment variables and creates a Temporal Client with the options
+specified in those variables. If you have defined a configuration file at either the default location
+(`~/.config/temporalio/temporal.toml`) or a custom location specified by the `TEMPORAL_CONFIG_FILE` environment
+variable, this will also load the default profile in the configuration file. However, any options set via environment
+variables will take precedence.
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/contrib/envconfig"
+)
+
+func main() {
+	// Loads the "default" profile from the standard location and environment variables.
+	c, err := client.Dial(envconfig.MustLoadDefaultClientOptions())
+	if err != nil {
+		log.Fatalf("Failed to create client: %v", err)
+	}
+	defer c.Close()
+
+	fmt.Printf("✅ Connected to Temporal namespace %q on %s\n", c.Options().Namespace, c.Options().HostPort)
+}
+
+```
+
+</TabItem>
+
+<TabItem value="code" label="Code">
+
+If you don't want to use environment variables or a configuration file, you can specify connection options directly in
+code. This is convenient for local development and testing. You can also load a base configuration from environment
+variables or a configuration file, and then override specific options in code.
+
+{/* SNIPSTART samples-apps-go-yourapp-gateway {"selectedLines": ["1-23", "32"]} */}
 [sample-apps/go/yourapp/gateway/main.go](https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/gateway/main.go)
 ```go
 package main
@@ -95,28 +234,166 @@ func main() {
 // ...
 }
 ```
-<!--SNIPEND-->
+{/* SNIPEND */}
+
+</TabItem>
+
+</Tabs>
 
 ## Connect to Temporal Cloud {#connect-to-temporal-cloud}
 
-### How to connect to Temporal Cloud using an API Key {#connect-to-temporal-cloud-api-key}
+You can connect to Temporal Cloud using either an [API key](/cloud/api-keys) or through mTLS. Connection to Temporal
+Cloud or any secured Temporal Service requires additional connection options compared to connecting to an unsecured
+local development instance:
 
-To use an [API key](/cloud/api-keys) with the Temporal Go SDK, you will need to provide additional connection options:
-
-- Your _API Key_ value
-- Your _Namespace and Account id_ combination, which follows the format `<namespace_id>.<account_id>`.
-- The _endpoint_ may vary. The most common endpoint used is the gRPC regional endpoint, which follows the format: `<region>.<cloud_provider>.api.temporal.io:7233`.
-- For Namespaces with High Availability features with API key authentication enabled, use the gRPC Namespace endpoint: `<namespace>.<account>.tmprl.cloud:7233`.
-  This allows automated failover without needing to switch endpoints.
+- Your credentials for authentication.
+  - If you are using an API key, provide the API key value.
+  - If you are using mTLS, provide the mTLS CA certificate and mTLS private key.
+- Your _Namespace and Account ID_ combination, which follows the format `<namespace_id>.<account_id>`.
+- The _endpoint_ may vary. The most common endpoint used is the gRPC regional endpoint, which follows the format:
+  `<region>.<cloud_provider>.api.temporal.io:7233`.
+- For Namespaces with High Availability features with API key authentication enabled, use the gRPC Namespace endpoint:
+  `<namespace>.<account>.tmprl.cloud:7233`. This allows automated failover without needing to switch endpoints.
 
 You can find the Namespace and Account ID, as well as the endpoint, on the Namespaces tab:
 
 ![The Namespace and Account ID combination on the left, and the regional endpoint on the right](/img/cloud/apikeys/namespaces-and-regional-endpoints.png)
 
-Now, when instantiating a Temporal `client` in your Temporal Go SDK code, provide the API key with the following `clientOptions`:
+You can provide these connection options using environment variables, a configuration file, or directly in code.
 
-<details>
-<summary><strong>v1.33.0+</strong></summary>
+<Tabs groupId="connect-api-key-options" defaultValue="config-file" >
+
+<TabItem value="config-file" label="Configuration File">
+
+You can use a TOML configuration file to set connection options for the Temporal Client. The configuration file lets you
+configure multiple profiles, each with its own set of connection options. You can then specify which profile to use when
+creating the Temporal Client. For a list of all available configuration options you can set in the TOML file, refer to
+[Environment Configuration](/references/client-environment-configuration).
+
+You can use the environment variable `TEMPORAL_CONFIG_FILE` to specify the location of the TOML file or provide the path
+to the file directly in code. If you don't provide the path to the configuration file, the SDK looks for it at the
+default path `~/.config/temporalio/temporal.toml`.
+
+:::info
+
+The connection options set in configuration files have lower precedence than environment variables. This means that if
+you set the same option in both the configuration file and as an environment variable, the environment variable value
+overrides the option set in the configuration file.
+
+:::
+
+For example, the following TOML configuration file defines a `cloud` profile with the necessary connection options to
+connect to Temporal Cloud via an API key:
+
+```toml
+# Cloud profile for Temporal Cloud
+[profile.cloud]
+address = "your-namespace.a1b2c.tmprl.cloud:7233"
+namespace = "your-namespace"
+api_key = "your-api-key-here"
+```
+
+If you want to use mTLS authentication instead of an API key, replace the `api_key` field with your mTLS certificate and
+private key:
+
+```toml
+# Cloud profile for Temporal Cloud
+[profile.cloud]
+address = "your-namespace.a1b2c.tmprl.cloud:7233"
+namespace = "your-namespace"
+tls_client_cert_data = "your-tls-client-cert-data"
+tls_client_key_path = "your-tls-client-key-path"
+```
+
+With the connections options defined in the configuration file, use the `LoadClientOptions` function in the `envconfig`
+package to create a Temporal Client using the `cloud` profile as follows:
+
+```go {13-15}
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/contrib/envconfig"
+)
+
+func main() {
+	// Replace with the actual path to your TOML file.
+	configFilePath := "/Users/yourname/.config/my-app/temporal.toml"
+
+	opts, err := envconfig.LoadClientOptions(envconfig.LoadClientOptionsRequest{
+		ConfigFilePath: configFilePath,
+	})
+	if err != nil {
+		log.Fatalf("Failed to load client config from custom file: %v", err)
+	}
+
+	c, err := client.Dial(opts)
+	if err != nil {
+		log.Fatalf("Failed to connect using custom config file: %v", err)
+	}
+	defer c.Close()
+
+	fmt.Printf("✅ Connected using custom config at: %s\n", configFilePath)
+}
+```
+
+</TabItem>
+
+<TabItem value="env-vars" label="Environment Variables">
+The following environment variables are required to connect to Temporal Cloud:
+
+- `TEMPORAL_NAMESPACE`: Your Namespace and Account ID combination in the format `<namespace_id>.<account_id>`.
+- `TEMPORAL_ADDRESS`: The gRPC endpoint for your Temporal Cloud Namespace.
+- `TEMPORAL_API_KEY`: Your API key value. Required if you are using API key authentication.
+- `TEMPORAL_TLS_CLIENT_CERT_DATA` or `TEMPORAL_TLS_CLIENT_CERT_PATH`: Your mTLS client certificate data or file path.
+  Required if you are using mTLS authentication.
+- `TEMPORAL_TLS_CLIENT_KEY_DATA` or `TEMPORAL_TLS_CLIENT_KEY_PATH`: Your mTLS client private key data or file path.
+  Required if you are using mTLS authentication.
+
+Ensure these environment variables exist in your environment before running your Go application.
+
+Import the `envconfig` package to set connection options for the Temporal Client using environment variables. The
+`MustLoadDefaultClientOptions` function will automatically load all environment variables. For a list of all available
+environment variables and their default values, refer to [Environment Configuration](../environment-configuration).
+
+For example, the following code snippet loads all environment variables and creates a Temporal Client with the options
+specified in those variables. If you have defined a configuration file at either the default location
+(`~/.config/temporalio/temporal.toml`) or a custom location specified by the `TEMPORAL_CONFIG_FILE` environment
+variable, this will also load the default profile in the configuration file. However, any options set via environment
+variables will take precedence.
+
+```go {13}
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/contrib/envconfig"
+)
+
+func main() {
+	// Loads the "default" profile from the standard location and environment variables.
+	c, err := client.Dial(envconfig.MustLoadDefaultClientOptions())
+	if err != nil {
+		log.Fatalf("Failed to create client: %v", err)
+	}
+	defer c.Close()
+
+	fmt.Printf("✅ Connected to Temporal Service")
+}
+```
+
+</TabItem>
+
+<TabItem value="code" label="Code">
+
+You can also provide connections options in your Go code directly. When instantiating a Temporal `client` in your
+Temporal Go SDK code, provide the following `clientOptions`:
 
 ```go
 clientOptions := client.Options{
@@ -139,10 +416,47 @@ creds := client.NewAPIKeyDynamicCredentials(
 myKey = myKeyUpdated
 ```
 
-</details>
+You can use a combination of environment variables, configuration files, and code to set connection options. For
+example, you can load a base configuration from environment variables or a configuration file, and then override
+specific options in code.
+
+For example, the following code snippet loads the base configuration from environment variables and the default profile
+with `envconfig.MustLoadDefaultClientOptions()`. It then overrides the `HostPort` and `Namespace` options
+programmatically. Refer to
+[Client Options type in the Go SDK](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions) for a list of all
+available connection options you can override.
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/contrib/envconfig"
+)
+
+func main() {
+	// Load the base configuration (e.g., from the default profile).
+	opts := envconfig.MustLoadDefaultClientOptions()
+
+	// Apply overrides programmatically.
+	opts.HostPort = "localhost:7233"
+	opts.Namespace = "test-namespace"
+
+	c, err := client.Dial(opts)
+	if err != nil {
+		log.Fatalf("Failed to connect with overridden options: %v", err)
+	}
+	defer c.Close()
+
+	fmt.Printf("✅ Connected with overridden config to: %s in namespace: %s\n", opts.HostPort, opts.Namespace)
+}
+```
 
 <details>
-<summary><strong>v1.26.0 to v1.33.0 (exclusive)</strong></summary>
+<summary><strong>v1.26.0 to v1.32.x </strong></summary>
 
 Create an initial connection:
 
@@ -223,97 +537,37 @@ apiKeyProvider.APIKey = myKeyUpdated
 
 </details>
 
-### How to connect to Temporal Cloud using mTLS {#connect-to-temporal-cloud-tls}
+</TabItem>
 
-When you connect to [Temporal Cloud](/cloud) with mTLS, you need to provide additional connection and client options that include the following:
-
-- The [Temporal Cloud Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id).
-- The [Namespace's gRPC endpoint](/cloud/namespaces#temporal-cloud-grpc-endpoint).
-  An endpoint listing is available at the [Temporal Cloud Website](https://cloud.temporal.io/namespaces) on each Namespace detail page.
-  The endpoint contains the Namespace Id and port.
-- mTLS CA certificate.
-- mTLS private key.
-
-For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/certificates).
-
-For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
-
-To connect to and run Workflows through Temporal Cloud, you need the following:
-
-- A compatible mTLS CA certificate and mTLS private key that has been added to your Namespace.
-  See [certificate requirements](/cloud/certificates#certificate-requirements).
-- Your [Temporal Cloud Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id), which includes your [Temporal Cloud Namespace Name](/cloud/namespaces#temporal-cloud-namespace-name) and the unique five- or six-digit [Temporal Cloud Account Id](/cloud/namespaces#temporal-cloud-account-id) that is appended to it.
-  This information can be found in the URL of your Namespace; for example, `https://cloud.temporal.io/namespaces/yournamespace.a2fx6/`.
-  Remember that the Namespace Id must include the Account Id: `yournamespace.a2fx6`.
-
-For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/certificates).
-
-For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
-
-<!--SNIPSTART sample-apps-go-cloud-client {"selectedLines": ["1-38", "64"]} -->
-[sample-apps/go/cloud/client/main.go](https://github.com/temporalio/documentation/blob/main/sample-apps/go/cloud/client/main.go)
-```go
-package main
-
-import (
-	"context"
-	"crypto/tls"
-	"encoding/json"
-	"log"
-
-	"documentation-samples-go/cloud"
-
-	"go.temporal.io/sdk/client"
-)
-
-func main() {
-	// Get the key and cert from your env or local machine
-	clientKeyPath := "./secrets/yourkey.key"
-	clientCertPath := "./secrets/yourcert.pem"
-	// Specify the host and port of your Temporal Cloud Namespace
-	// Host and port format: namespace.unique_id.tmprl.cloud:port
-	hostPort := "<yournamespace>.<id>.tmprl.cloud:7233"
-	namespace := "<yournamespace>.<id>"
-	// Use the crypto/tls package to create a cert object
-	cert, err := tls.LoadX509KeyPair(clientCertPath, clientKeyPath)
-	if err != nil {
-		log.Fatalln("Unable to load cert and key pair.", err)
-	}
-	// Add the cert to the tls certificates in the ConnectionOptions of the Client
-	temporalClient, err := client.Dial(client.Options{
-		HostPort:  hostPort,
-		Namespace: namespace,
-		ConnectionOptions: client.ConnectionOptions{
-			TLS: &tls.Config{Certificates: []tls.Certificate{cert}},
-		},
-	})
-	if err != nil {
-		log.Fatalln("Unable to connect to Temporal Cloud.", err)
-	}
-	defer temporalClient.Close()
-// ...
-}
-```
-<!--SNIPEND-->
+</Tabs>
 
 ## Start Workflow Execution {#start-workflow-execution}
 
 **How to start a Workflow Execution using the Go SDK**
 
-[Workflow Execution](/workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
+[Workflow Execution](/workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution
+you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type,
+language-specific contextual data, and Workflow Function parameters.
 
-In the examples below, all Workflow Executions are started using a Temporal Client.
-To spawn Workflow Executions from within another Workflow Execution, use either the [Child Workflow](/develop/go/child-workflows) or External Workflow APIs.
+In the examples below, all Workflow Executions are started using a Temporal Client. To spawn Workflow Executions from
+within another Workflow Execution, use either the [Child Workflow](/develop/go/child-workflows) or External Workflow
+APIs.
 
-See the [Customize Workflow Type](/develop/go/core-application#customize-workflow-type) section to see how to customize the name of the Workflow Type.
+See the [Customize Workflow Type](/develop/go/core-application#customize-workflow-type) section to see how to customize
+the name of the Workflow Type.
 
-A request to spawn a Workflow Execution causes the Temporal Service to create the first Event ([WorkflowExecutionStarted](/references/events#workflowexecutionstarted)) in the Workflow Execution Event History.
-The Temporal Service then creates the first Workflow Task, resulting in the first [WorkflowTaskScheduled](/references/events#workflowtaskscheduled) Event.
+A request to spawn a Workflow Execution causes the Temporal Service to create the first Event
+([WorkflowExecutionStarted](/references/events#workflowexecutionstarted)) in the Workflow Execution Event History. The
+Temporal Service then creates the first Workflow Task, resulting in the first
+[WorkflowTaskScheduled](/references/events#workflowtaskscheduled) Event.
 
-To spawn a [Workflow Execution](/workflow-execution), use the `ExecuteWorkflow()` method on the Go SDK [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client).
+To spawn a [Workflow Execution](/workflow-execution), use the `ExecuteWorkflow()` method on the Go SDK
+[`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client).
 
-The `ExecuteWorkflow()` API call requires an instance of [`context.Context`](https://pkg.go.dev/context#Context), an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions), a Workflow Type name, and all variables to be passed to the Workflow Execution.
-The `ExecuteWorkflow()` call returns a Future, which can be used to get the result of the Workflow Execution.
+The `ExecuteWorkflow()` API call requires an instance of [`context.Context`](https://pkg.go.dev/context#Context), an
+instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions), a Workflow Type
+name, and all variables to be passed to the Workflow Execution. The `ExecuteWorkflow()` call returns a Future, which can
+be used to get the result of the Workflow Execution.
 
 ```go
 package main
@@ -346,13 +600,16 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (Your
 }
 ```
 
-If the invocation process has access to the function directly, then the Workflow Type name parameter can be passed as if the function name were a variable, without quotations.
+If the invocation process has access to the function directly, then the Workflow Type name parameter can be passed as if
+the function name were a variable, without quotations.
 
 ```go
 workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
 ```
 
-If the invocation process does not have direct access to the statically defined Workflow Definition, for example, if the Workflow Definition is in an un-importable package, or it is written in a completely different language, then the Workflow Type can be provided as a `string`.
+If the invocation process does not have direct access to the statically defined Workflow Definition, for example, if the
+Workflow Definition is in an un-importable package, or it is written in a completely different language, then the
+Workflow Type can be provided as a `string`.
 
 ```go
 workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "YourWorkflowDefinition", param)
@@ -364,9 +621,12 @@ workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "Yo
 
 In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/task-queue).
 
-For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task Queue name.
+For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task
+Queue name.
 
-Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `TaskQueue` field, and pass the instance to the `ExecuteWorkflow` call.
+Create an instance of
+[`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the
+`go.temporal.io/sdk/client` package, set the `TaskQueue` field, and pass the instance to the `ExecuteWorkflow` call.
 
 - Type: `string`
 - Default: None, this is a required field to be set by the developer
@@ -383,16 +643,22 @@ if err != nil {
 }
 ```
 
-You can configure Task Queues that are host-specific, Worker-specific or Workflow-specific to distribute your application load.
-For more information, refer to [Task Queues Processing Tuning](/develop/worker-performance#task-queues-processing-tuning) and [Worker Versioning](https://docs.temporal.io/worker-versioning).
+You can configure Task Queues that are host-specific, Worker-specific or Workflow-specific to distribute your
+application load. For more information, refer to
+[Task Queues Processing Tuning](/develop/worker-performance#task-queues-processing-tuning) and
+[Worker Versioning](https://docs.temporal.io/worker-versioning).
 
 ### Set custom Workflow Id {#workflow-id}
 
 **How to set a custom Workflow Id using the Go SDK**
 
-Although it is not required, we recommend providing your own [Workflow Id](/workflow-execution/workflowid-runid#workflow-id)that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
+Although it is not required, we recommend providing your own
+[Workflow Id](/workflow-execution/workflowid-runid#workflow-id)that maps to a business process or business entity
+identifier, such as an order identifier or customer identifier.
 
-Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `ID` field, and pass the instance to the `ExecuteWorkflow` call.
+Create an instance of
+[`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the
+`go.temporal.io/sdk/client` package, set the `ID` field, and pass the instance to the `ExecuteWorkflow` call.
 
 - Type: `string`
 - Default: System generated UUID
@@ -411,7 +677,9 @@ if err != nil {
 
 ### Go StartWorkflowOptions reference {#workflow-options-reference}
 
-Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, and pass the instance to the `ExecuteWorkflow` call.
+Create an instance of
+[`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the
+`go.temporal.io/sdk/client` package, and pass the instance to the `ExecuteWorkflow` call.
 
 The following fields are available:
 
@@ -431,9 +699,12 @@ The following fields are available:
 
 #### ID
 
-Although it is not required, we recommend providing your own [Workflow Id](/workflow-execution/workflowid-runid#workflow-id)that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
+Although it is not required, we recommend providing your own
+[Workflow Id](/workflow-execution/workflowid-runid#workflow-id)that maps to a business process or business entity
+identifier, such as an order identifier or customer identifier.
 
-Create an instance of [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `ID` field, and pass the instance to the `ExecuteWorkflow` call.
+Create an instance of [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions)
+from the `go.temporal.io/sdk/client` package, set the `ID` field, and pass the instance to the `ExecuteWorkflow` call.
 
 - Type: `string`
 - Default: System generated UUID
@@ -452,7 +723,9 @@ if err != nil {
 
 #### TaskQueue
 
-Create an instance of [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `TaskQueue` field, and pass the instance to the `ExecuteWorkflow` call.
+Create an instance of [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions)
+from the `go.temporal.io/sdk/client` package, set the `TaskQueue` field, and pass the instance to the `ExecuteWorkflow`
+call.
 
 - Type: `string`
 - Default: None; this is a required field to be set by the developer
@@ -471,7 +744,9 @@ if err != nil {
 
 #### WorkflowExecutionTimeout
 
-Create an instance of [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `WorkflowExecutionTimeout` field, and pass the instance to the `ExecuteWorkflow` call.
+Create an instance of [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the
+`go.temporal.io/sdk/client` package, set the `WorkflowExecutionTimeout` field, and pass the instance to the
+`ExecuteWorkflow` call.
 
 - Type: `time.Duration`
 - Default: Unlimited
@@ -490,7 +765,9 @@ if err != nil {
 
 #### WorkflowRunTimeout
 
-Create an instance of [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `WorkflowRunTimeout` field, and pass the instance to the `ExecuteWorkflow` call.
+Create an instance of [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the
+`go.temporal.io/sdk/client` package, set the `WorkflowRunTimeout` field, and pass the instance to the `ExecuteWorkflow`
+call.
 
 - Type: `time.Duration`
 - Default: Same as [`WorkflowExecutionTimeout`](#workflowexecutiontimeout)
@@ -508,7 +785,9 @@ if err != nil {
 
 #### WorkflowTaskTimeout
 
-Create an instance of [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `WorkflowTaskTimeout` field, and pass the instance to the `ExecuteWorkflow` call.
+Create an instance of [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the
+`go.temporal.io/sdk/client` package, set the `WorkflowTaskTimeout` field, and pass the instance to the `ExecuteWorkflow`
+call.
 
 - Type: `time.Duration`
 - Default: `time.Seconds * 10`
@@ -560,7 +839,9 @@ if err != nil {
 
 #### RetryPolicy
 
-Create an instance of a [RetryPolicy](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy) from the `go.temporal.io/sdk/temporal` package and provide it as the value to the `RetryPolicy` field of the instance of `StartWorkflowOptions`.
+Create an instance of a [RetryPolicy](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy) from the
+`go.temporal.io/sdk/temporal` package and provide it as the value to the `RetryPolicy` field of the instance of
+`StartWorkflowOptions`.
 
 - Type: [RetryPolicy](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)
 - Default: None
@@ -654,13 +935,18 @@ if err != nil {
 
 If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
 
-The Workflow Id, Run Id, and Namespace may be used to uniquely identify a Workflow Execution in the system and get its result.
+The Workflow Id, Run Id, and Namespace may be used to uniquely identify a Workflow Execution in the system and get its
+result.
 
-It's possible to both block progress on the result (synchronous execution) or get the result at some other point in time (asynchronous execution).
+It's possible to both block progress on the result (synchronous execution) or get the result at some other point in time
+(asynchronous execution).
 
-In the Temporal Platform, it's also acceptable to use Queries as the preferred method for accessing the state and results of Workflow Executions.
+In the Temporal Platform, it's also acceptable to use Queries as the preferred method for accessing the state and
+results of Workflow Executions.
 
-The `ExecuteWorkflow` call returns an instance of [`WorkflowRun`](https://pkg.go.dev/go.temporal.io/sdk/client#WorkflowRun), which is the `workflowRun` variable in the following line.
+The `ExecuteWorkflow` call returns an instance of
+[`WorkflowRun`](https://pkg.go.dev/go.temporal.io/sdk/client#WorkflowRun), which is the `workflowRun` variable in the
+following line.
 
 ```go
  workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, app.YourWorkflowDefinition, param)
@@ -674,10 +960,12 @@ The `ExecuteWorkflow` call returns an instance of [`WorkflowRun`](https://pkg.go
 The instance of `WorkflowRun` has the following three methods:
 
 - `GetWorkflowID()`: Returns the Workflow Id of the invoked Workflow Execution.
-- `GetRunID()`: Always returns the Run Id of the initial Run (See [Continue As New](#)) in the series of Runs that make up the full Workflow Execution.
+- `GetRunID()`: Always returns the Run Id of the initial Run (See [Continue As New](#)) in the series of Runs that make
+  up the full Workflow Execution.
 - `Get`: Takes a pointer as a parameter and populates the associated variable with the Workflow Execution result.
 
-To wait on the result of Workflow Execution in the same process that invoked it, call `Get()` on the instance of `WorkflowRun` that is returned by the `ExecuteWorkflow()` call.
+To wait on the result of Workflow Execution in the same process that invoked it, call `Get()` on the instance of
+`WorkflowRun` that is returned by the `ExecuteWorkflow()` call.
 
 ```go
  workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
@@ -693,15 +981,16 @@ To wait on the result of Workflow Execution in the same process that invoked it,
 }
 ```
 
-However, the result of a Workflow Execution can be obtained from a completely different process.
-All that is needed is the [Workflow Id](#).
-(A [Run Id](#) is optional if more than one closed Workflow Execution has the same Workflow Id.)
-The result of the Workflow Execution is available for as long as the Workflow Execution Event History remains in the system.
+However, the result of a Workflow Execution can be obtained from a completely different process. All that is needed is
+the [Workflow Id](#). (A [Run Id](#) is optional if more than one closed Workflow Execution has the same Workflow Id.)
+The result of the Workflow Execution is available for as long as the Workflow Execution Event History remains in the
+system.
 
 {/* TODO (See [How long do Workflow Execution Histories persist](#)). */}
 
-Call the `GetWorkflow()` method on an instance of the Go SDK Client and pass it the Workflow Id used to spawn the Workflow Execution.
-Then call the `Get()` method on the instance of `WorkflowRun` that is returned, passing it a pointer to populate the result.
+Call the `GetWorkflow()` method on an instance of the Go SDK Client and pass it the Workflow Id used to spawn the
+Workflow Execution. Then call the `Get()` method on the instance of `WorkflowRun` that is returned, passing it a pointer
+to populate the result.
 
 ```go
  // ...
@@ -718,9 +1007,13 @@ Then call the `Get()` method on the instance of `WorkflowRun` that is returned, 
 
 **Get last completion result**
 
-In the case of a [Temporal Cron Job](/cron-job), you might need to get the result of the previous Workflow Run and use it in the current Workflow Run.
+In the case of a [Temporal Cron Job](/cron-job), you might need to get the result of the previous Workflow Run and use
+it in the current Workflow Run.
 
-To do this, use the [`HasLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#HasLastCompletionResult) and [`GetLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLastCompletionResult) APIs, available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow) package, directly in your Workflow code.
+To do this, use the [`HasLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#HasLastCompletionResult)
+and [`GetLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLastCompletionResult) APIs, available
+from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow) package, directly in your
+Workflow code.
 
 ```go
 type CronResult struct {
@@ -744,5 +1037,5 @@ func YourCronWorkflowDefinition(ctx workflow.Context) (CronResult, error) {
 }
 ```
 
-This will work even if one of the cron Workflow Runs fails.
-The next Workflow Run gets the result of the last successfully Completed Workflow Run.
+This will work even if one of the cron Workflow Runs fails. The next Workflow Run gets the result of the last
+successfully Completed Workflow Run.

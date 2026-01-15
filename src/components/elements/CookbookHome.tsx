@@ -1,9 +1,9 @@
-import React from "react";
-import Tile from "@site/src/components/elements/Tile";
-import { useAllDocsData } from "@docusaurus/plugin-content-docs/client";
-import styles from "./CookbookHome.module.css";
-import useGlobalData, { usePluginData } from "@docusaurus/useGlobalData";
-import clsx from "clsx";
+import React from 'react';
+import Tile from '@site/src/components/elements/Tile';
+import { useAllDocsData } from '@docusaurus/plugin-content-docs/client';
+import styles from './CookbookHome.module.css';
+import useGlobalData, { usePluginData } from '@docusaurus/useGlobalData';
+import clsx from 'clsx';
 
 type CookbookItem = {
   id: string;
@@ -20,7 +20,13 @@ type DocMeta = {
   unversionedId?: string;
   title?: string;
   description?: string;
-  frontMatter?: { title?: string; description?: string; tags?: any[] };
+  frontMatter?: {
+    title?: string;
+    description?: string;
+    tags?: any[];
+    last_updated?: unknown;
+    last_updated_at?: unknown;
+  };
   tags?: { label: string }[];
   permalink?: string;
   lastUpdatedAt?: number | string | null;
@@ -30,7 +36,7 @@ function resolveDocMeta(item: CookbookItem, docsById: Map<string, DocMeta>) {
   return (
     docsById.get(item.id) ??
     docsById.get(`cookbook:${item.id}`) ??
-    docsById.get(item.id.replace(/^cookbook:/, "")) ??
+    docsById.get(item.id.replace(/^cookbook:/, '')) ??
     null
   );
 }
@@ -46,27 +52,27 @@ function DocTile({ item, docsById }: { item: CookbookItem; docsById: Map<string,
   if (!title || !description) {
     throw new Error(
       `Cookbook doc "${id}" missing required field(s):` +
-        `${!title ? " title" : ""}` +
-        `${!description ? " description" : ""}`
+        `${!title ? ' title' : ''}` +
+        `${!description ? ' description' : ''}`
     );
   }
 
   const tagsFromMeta = docMeta?.tags?.map((t: any) => t.label);
   const tagsFromFrontMatter = Array.isArray(docMeta?.frontMatter?.tags)
-    ? docMeta.frontMatter.tags.map((t: any) => (typeof t === "string" ? t : t?.label)).filter(Boolean)
+    ? docMeta.frontMatter.tags.map((t: any) => (typeof t === 'string' ? t : t?.label)).filter(Boolean)
     : undefined;
   const resolvedTags = (tagsFromMeta ?? tagsFromFrontMatter ?? pluginTags) as string[];
 
-  const href = docMeta?.permalink ?? pluginPermalink ?? "#";
+  const href = docMeta?.permalink ?? pluginPermalink ?? '#';
 
   return <Tile title={title} description={description} href={href} tags={resolvedTags} headingLevel="h2" />;
 }
 
 export default function CookbookHome() {
   const global = useGlobalData();
-  console.log("[CookbookHome] plugins:", Object.keys(global?.plugins ?? {})); // should include 'cookbook-index'
+  console.log('[CookbookHome] plugins:', Object.keys(global?.plugins ?? {})); // should include 'cookbook-index'
 
-  const dataAny = usePluginData("cookbook-index") as any;
+  const dataAny = usePluginData('cookbook-index') as any;
   const allDocsData = useAllDocsData();
   const cookbookDocs =
     allDocsData?.cookbook?.versions?.find((version: any) => version?.isLast) ?? allDocsData?.cookbook?.versions?.[0];
@@ -87,39 +93,73 @@ export default function CookbookHome() {
 
   const raw = (dataAny?.items ?? []) as (CookbookItem | null | undefined)[];
   raw.forEach((x, i) => {
-    if (!x || typeof (x as any).title !== "string") {
-      console.warn("[CookbookHome] invalid item at index", i, x);
+    if (!x || typeof (x as any).title !== 'string') {
+      console.warn('[CookbookHome] invalid item at index', i, x);
     }
   });
 
   const items: CookbookItem[] = raw.filter(
-    (x): x is CookbookItem => !!x && typeof x === "object" && typeof (x as any).title === "string"
+    (x): x is CookbookItem => !!x && typeof x === 'object' && typeof (x as any).title === 'string'
   );
 
   if (items.length === 0) {
-    throw new Error("CookbookHome: no items found by cookbook-index plugin (check server logs for [cookbook-index]).");
+    throw new Error('CookbookHome: no items found by cookbook-index plugin (check server logs for [cookbook-index]).');
   }
+
+  const normalizeTimestamp = React.useCallback((value: unknown): number | undefined => {
+    const normalizeNumber = (input: number): number | undefined => {
+      if (!Number.isFinite(input)) {
+        return undefined;
+      }
+      return input < 1e11 ? input * 1000 : input;
+    };
+
+    if (typeof value === 'number') {
+      return normalizeNumber(value);
+    }
+    if (typeof value === 'string') {
+      const trimmed = value.trim();
+      if (!trimmed) {
+        return undefined;
+      }
+      const numeric = Number(trimmed);
+      if (!Number.isNaN(numeric)) {
+        return normalizeNumber(numeric);
+      }
+      const parsed = Date.parse(trimmed);
+      return Number.isNaN(parsed) ? undefined : normalizeNumber(parsed);
+    }
+    if (value instanceof Date) {
+      const time = value.getTime();
+      return Number.isNaN(time) ? undefined : normalizeNumber(time);
+    }
+    return undefined;
+  }, []);
 
   const getLastUpdatedTimestamp = React.useCallback(
     (item: CookbookItem) => {
       const meta = resolveDocMeta(item, docsById);
-      const rawTimestamp = meta?.lastUpdatedAt;
-      if (typeof rawTimestamp === "number") {
-        return Number.isFinite(rawTimestamp) ? rawTimestamp : 0;
+      const frontMatterTimestampCandidates = [meta?.frontMatter?.last_updated, meta?.frontMatter?.last_updated_at];
+      for (const candidate of frontMatterTimestampCandidates) {
+        const normalized = normalizeTimestamp(candidate);
+        if (typeof normalized === 'number') {
+          return normalized;
+        }
       }
-      if (typeof rawTimestamp === "string") {
-        const parsed = Number(rawTimestamp);
-        return Number.isFinite(parsed) ? parsed : 0;
+
+      const normalizedMeta = normalizeTimestamp(meta?.lastUpdatedAt ?? null);
+      if (typeof normalizedMeta === 'number') {
+        return normalizedMeta;
       }
       return 0;
     },
-    [docsById]
+    [docsById, normalizeTimestamp]
   );
 
   const sortedItems = React.useMemo(() => {
     return [...items].sort((a, b) => {
-      const priorityA = typeof a.priority === "number" && Number.isFinite(a.priority) ? a.priority : null;
-      const priorityB = typeof b.priority === "number" && Number.isFinite(b.priority) ? b.priority : null;
+      const priorityA = typeof a.priority === 'number' && Number.isFinite(a.priority) ? a.priority : null;
+      const priorityB = typeof b.priority === 'number' && Number.isFinite(b.priority) ? b.priority : null;
 
       if (priorityA !== null && priorityB !== null) {
         if (priorityA !== priorityB) {
@@ -142,7 +182,7 @@ export default function CookbookHome() {
   }, [getLastUpdatedTimestamp, items]);
 
   return (
-    <section className={clsx("cookbook--centered", styles.page)}>
+    <section className={clsx('cookbook--centered', styles.page)}>
       <div className={styles.inner}>
         <header data-testid="cookbook-hero" className={styles.hero} aria-label="Cookbook overview">
           <h1 className={styles.heroTitle}>AI Cookbook</h1>

@@ -1,0 +1,62 @@
+---
+id: index
+title: Temporal Cloud OpenMetrics
+sidebar_label: OpenMetrics
+description: Export metrics from Temporal Cloud using the OpenMetrics standard and third party integrations.
+slug: /cloud/metrics/openmetrics/
+toc_max_heading_level: 4
+keywords:
+  - explanation
+  - how-to
+  - introduction
+  - metrics
+  - observability
+  - prometheus
+  - reference
+  - tcld cli
+  - temporal cloud
+  - grafana
+tags:
+  - Metrics
+  - Observability
+  - Temporal Cloud
+---
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal Cloud OpenMetrics support is available in  [Public Preview](/evaluate/development-production-features/release-stages#public-preview).
+
+:::
+
+:::tip PRICING
+
+Future pricing may apply to high-volume usage that exceeds standard [limits](/cloud/metrics/openmetrics/api-reference#api-limits).
+
+:::
+
+Temporal Cloud's [OpenMetrics](https://openmetrics.io/) endpoint provides operational metrics for your Temporal Cloud workloads in industry-standard Prometheus format, enabling comprehensive monitoring across Namespaces, Workflows, and Task Queues with your existing observability stack.
+
+## Quick Links
+* [Integrations](/cloud/metrics/openmetrics/metrics-integrations) - Get started exporting metrics with common integrations
+* [API Documentation](/cloud/metrics/openmetrics/api-reference) - Endpoint specification and advanced configuration
+* [Metrics Reference](/cloud/metrics/openmetrics/metrics-reference) - Complete catalog of all metrics with descriptions and labels
+* [Migration Guide](/cloud/metrics/openmetrics/migration-guide) - Guide on how to transition from the Prometheus query endpoint
+
+## Overview
+Temporal Cloud OpenMetrics exposes 30+ metrics covering workflow lifecycles, task queue operations, service performance, and system limits. All metrics are aggregated over one-minute windows and available for scraping within two minutes.
+
+* [Set up authentication and scraping](/cloud/metrics/openmetrics/api-reference#authentication) with the API documentation. 
+* Browse the [complete metrics catalog](/cloud/metrics/openmetrics/metrics-reference) for descriptions and labels. 
+* Teams using the query endpoint should review the [migration guide](/cloud/metrics/openmetrics/migration-guide).
+
+## API key authentication
+Create a [service account](/cloud/metrics/openmetrics/migration-guide#create-an-api-key) with the "Metrics Read-Only" role, generate an API key, and start scraping immediately - no certificate rotation or distribution required.
+
+## Global endpoint
+This is a single endpoint at `metrics.temporal.io` which serves all metrics across your entire account with API key authentication and standard HTTPS.
+
+## Namespace and metric filtering
+You can use query parameters to enable selective scraping to manage data volume and costs, which support wildcards for flexible namespace selection and specific metric filtering.
+
+## Dashboard templates
+Production-ready [Grafana dashboards](https://github.com/grafana/jsonnet-libs/blob/master/temporal-mixin/dashboards/temporal-overview.json) provide immediate visibility with pre-built queries and visualizations.

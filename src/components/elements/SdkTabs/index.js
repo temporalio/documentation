@@ -26,21 +26,25 @@ export const Ruby = ({ children }) => children;
 Ruby.displayName = 'rb';
 
 // Main wrapper
-const SdkTabs = ({ children, languageOrder }) => {
+const SdkTabs = ({ children, hideUnsupportedLanguages = false }) => {
   const contentMap = {};
 
   React.Children.forEach(children, (child) => {
     if (child?.type?.displayName) {
       const langKey = child.type.displayName.toLowerCase();
-      contentMap[langKey] = child;
+      contentMap[langKey] = child.props?.children;
     }
   });
 
-  const languages = languageOrder || SDK_LANGUAGES;
+  const languagesToRender = hideUnsupportedLanguages
+    ? SDK_LANGUAGES.filter(({ key }) => contentMap[key])
+    : SDK_LANGUAGES;
+
+  const tabLanguages = languagesToRender.length > 0 ? languagesToRender : SDK_LANGUAGES;
 
   return (
     <Tabs groupId={LANGUAGE_TAB_GROUP}>
-      {languages.map(({ key, icon: Icon, label }) => (
+      {tabLanguages.map(({ key, icon: Icon, label }) => (
         <TabItem key={key} value={key} label={<Icon title={label} />}>
           {contentMap[key] || (
             <div style={{ backgroundColor: '#ffffcc', padding: '1rem', borderRadius: '6px' }}>
