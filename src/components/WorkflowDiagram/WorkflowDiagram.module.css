@@ -1,0 +1,41 @@
+.workflowDiagram {
+    background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%);
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem 0;
+    text-align: center;
+    color: white;
+    font-family: 'Monaco', 'Consolas', monospace;
+}
+
+.diagramFlow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.diagramNode {
+    padding: 0.5rem 1rem;
+    background: rgba(68, 76, 231, 0.3);
+    border: 2px solid rgba(68, 76, 231, 0.5);
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.diagramNode.crashed {
+    background: rgba(239, 68, 68, 0.3);
+    border-color: rgba(239, 68, 68, 0.5);
+}
+
+.diagramNode.recovered {
+    background: rgba(16, 185, 129, 0.3);
+    border-color: rgba(16, 185, 129, 0.5);
+}
+
+.diagramArrow {
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.7);
+}

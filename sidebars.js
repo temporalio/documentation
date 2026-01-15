@@ -1,7 +1,36 @@
 module.exports = {
   documentation: [
     'index',
-    'quickstarts',
+    {
+      type: 'category',
+      label: 'Getting Started',
+      collapsed: false,
+      items: [
+        {
+          type: 'category',
+          label: 'Quickstarts',
+          collapsed: false,
+          link: {
+            type: 'doc',
+            id: 'quickstarts',
+          },
+          items: [],
+        },
+        {
+          type: 'category',
+          label: 'Build your First Basic Workflow',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'build-your-first-basic-workflow/index',
+          },
+          items: [
+            'build-your-first-basic-workflow/build-your-first-workflow',
+            'build-your-first-basic-workflow/failure-simulation',
+          ],
+        },
+      ],
+    },
     {
       type: 'category',
       label: 'Evaluate',
@@ -322,9 +351,9 @@ module.exports = {
         type: 'doc',
         id: 'cloud/index',
       },
-  items: [
-    {
-      type: 'category',
+      items: [
+        {
+          type: 'category',
           label: 'Get started with Cloud',
           collapsed: false,
           link: {
@@ -441,7 +470,7 @@ module.exports = {
             'cloud/nexus/pricing',
           ],
         },
-       {
+        {
           type: 'category',
           label: 'Migrate',
           collapsed: true,

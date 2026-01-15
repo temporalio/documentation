@@ -1,0 +1,1 @@
+export { AnimatedTerminal } from './AnimatedTerminal';
