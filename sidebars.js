@@ -212,7 +212,16 @@ module.exports = {
             'develop/python/child-workflows',
             'develop/python/continue-as-new',
             'develop/python/interceptors',
-            'develop/python/integrations/index',
+            {
+              type: 'category',
+              label: 'Integrations',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/python/integrations/index',
+              },
+              items: [],
+            },
           ],
         },
         {
@@ -245,7 +254,16 @@ module.exports = {
             'develop/typescript/child-workflows',
             'develop/typescript/continue-as-new',
             'develop/typescript/interceptors',
-            'develop/typescript/integrations/index',
+            {
+              type: 'category',
+              label: 'Integrations',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/typescript/integrations/index',
+              },
+              items: ['develop/typescript/integrations/ai-sdk'],
+            },
           ],
         },
         {
