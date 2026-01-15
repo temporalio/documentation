@@ -266,11 +266,7 @@ Examples for all these integrations live [here](https://github.com/temporal-comm
 
 ### Metric Mapping Reference
 
-Below is a template for mapping metrics from the old query endpoint to the new OpenMetrics endpoint. Note that all
-metrics follow the pattern of `v0` → `v1` version change, and the fundamental difference is the shift from cumulative
-counters to pre-computed rates for the majority of the metrics. Note that the labels below are only new labels added to
-the metrics. For the complete list of labels, see the
-/production-deployment/cloud/metrics/openmetrics/metrics-reference.
+Below is a template for mapping metrics from the old query endpoint to the new OpenMetrics endpoint. Note that all metrics follow the pattern of `v0` → `v1` version change, and the fundamental difference is the shift from cumulative counters to pre-computed rates for the majority of the metrics. Note that the labels below are only new labels added to the metrics. For the complete list of labels, see the /cloud/metrics/openmetrics/metrics-reference.
 
 #### Frontend Service Metrics
 
@@ -320,8 +316,7 @@ In addition to these metrics, there are a number of new metrics provided by our 
 
 :::info
 
-See the [metrics reference](/production-deployment/cloud/metrics/openmetrics/metrics-reference) for an up-to-date list
-of all available metrics and their full descriptions.
+See the [metrics reference](/cloud/metrics/openmetrics/metrics-reference) for an up-to-date list of all available metrics and their full descriptions.
 
 :::
 
@@ -388,7 +383,7 @@ metric_relabel_configs:
 
 ## Limits
 
-See [API limits](/production-deployment/cloud/metrics/openmetrics/api-reference#api-limits) for details.
+See [API limits](/cloud/metrics/openmetrics/api-reference#api-limits) for details.
 
 ## FAQ
 
@@ -417,7 +412,7 @@ Historical data from the query endpoint will remain in your observability platfo
 
 ### Q: Are there limits to how frequently I can scrape or how much data will be returned?
 
-The limits are documented [here](/production-deployment/cloud/metrics/openmetrics/api-reference#api-limits).
+The limits are documented [here](/cloud/metrics/openmetrics/api-reference#api-limits).
 
 ### Q: Why are some metrics missing from my scrapes? I don’t see all the metrics documented.
 

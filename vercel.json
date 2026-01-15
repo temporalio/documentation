@@ -1986,7 +1986,7 @@
       "permanent": true
     },
     {
-      "source": "/production-deployment/cloud/metrics/performance-bottlenecks",
+      "source": "/cloud/metrics/performance-bottlenecks",
       "destination": "/troubleshooting/performance-bottlenecks",
       "permanent": true
     },

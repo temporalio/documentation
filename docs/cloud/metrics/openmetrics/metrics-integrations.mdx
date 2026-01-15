@@ -24,7 +24,7 @@ import { CaptionedImage } from '@site/src/components';
 
 Metrics can be exported from Temporal Cloud using the OpenMetrics endpoint. This document describes configuring integrations that have third party support or are based on open standards.
 This document is for basic configuration only. For advanced concepts such as label management and high cardinality scenarios see the 
-[general API reference](/production-deployment/cloud/metrics/openmetrics/api-reference).
+[general API reference](/cloud/metrics/openmetrics/api-reference).
 
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
@@ -53,7 +53,7 @@ New Relic integrates with Temporal Cloud via the infrastructure agent using a fl
 
 Self hosted Prometheus can be used to scrape the OpenMetrics endpoint.
 
-1. Add a new scrape job for the OpenMetrics endpoint with your [API key](/production-deployment/cloud/metrics/openmetrics/api-reference#creating-api-keys).
+1. Add a new scrape job for the OpenMetrics endpoint with your [API key](/cloud/metrics/openmetrics/api-reference#creating-api-keys).
 
 ```yaml
 scrape_configs:
@@ -76,7 +76,7 @@ scrape_configs:
 
 Collect metrics with a self-hosted OpenTelemetry Collector to ingest into the system of your choosing.
 
-1. Add a new prometheus receiver for the OpenMetrics endpoint with your [API key](/production-deployment/cloud/metrics/openmetrics/api-reference#creating-api-keys).
+1. Add a new prometheus receiver for the OpenMetrics endpoint with your [API key](/cloud/metrics/openmetrics/api-reference#creating-api-keys).
 
 ```yaml
 receivers:
