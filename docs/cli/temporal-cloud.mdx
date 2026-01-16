@@ -12,46 +12,87 @@ keywords:
   - env
 ---
 
-Use the `temporal` CLI to connect to Temporal Cloud by creating a reusable environment profile and setting the
-Cloud-specific connection details.
+If you install the Temporal Cloud extension for the Temporal CLI, you can use the extension to interact with Temporal
+Cloud.
 
-## Configure a Temporal Cloud profile
+## Authentication
 
-Use `temporal env set` to store settings for your Temporal Cloud Namespace.
+Use the `temporal cloud login` command to authenticate with Temporal Cloud. Provide a environment configuration profile
+name to output the authentication credentials to. For more information about environment configuration profiles, see
+[Environment Configuration](../develop/environment-configuration.mdx).
 
-```shell
-temporal env set prod.namespace production.f45a2
-temporal env set prod.address production.f45a2.tmprl.cloud:7233
-temporal env set prod.tls-cert-path /temporal/certs/prod.pem
-temporal env set prod.tls-key-path /temporal/certs/prod.key
+```bash
+temporal cloud login --profile <profile-name>
 ```
 
-If your Cloud setup uses API keys, you can also store an API key in the profile:
+The command will open a browser window to authenticate with Temporal Cloud. Once authenticated, the command will output
+the authentication credentials to the specified profile. If you do not provide a profile name, the command will output
+the authentication credentials to the `default` profile.
 
-```shell
-temporal env set prod.api-key <api-key>
-```
+A successful login will allow you to run `temporal cloud` command to perform operational and administrative tasks on
+Temporal Cloud. It does not automatically provide the CLI with information about the Temporal Service you want to
+communicate with. If you need to communicate with a Temporal Service, you still need to provide the `--address` and
+`--namespace` flags to the command as well as credentials for the Temporal Service you want to communicate with.
 
-You can create API keys in the Temporal Cloud UI. For details, see
-[Manage API keys](/cloud/api-keys).
+## Common operations
 
-## Use the Cloud profile
+The following cheat sheet groups common Temporal Cloud commands by object. Commands and subcommands are listed in
+alphabetical order.
 
-Run commands with the profile name:
+### Namespace
 
-```shell
-temporal workflow list --env prod
-```
+| Operation                  | Command                                                                      |
+| -------------------------- | ---------------------------------------------------------------------------- |
+| Apply Namespace spec       | `temporal cloud namespace apply --namespace-id <id> --spec @spec-file.yaml`  |
+| Create Namespace           | `temporal cloud namespace create`                                            |
+| Create Namespace with spec | `temporal cloud namespace create --namespace-id <id> --spec @spec-file.yaml` |
+| Delete Namespace           | `temporal cloud namespace delete`                                            |
+| Describe Namespace         | `temporal cloud namespace describe`                                          |
+| Export Namespace           | `temporal cloud namespace export`                                            |
+| List Namespaces            | `temporal cloud namespace list`                                              |
 
-Check your stored settings:
+### API key
 
-```shell
-$ temporal env get prod
+| Operation        | Command                                   |
+| ---------------- | ----------------------------------------- |
+| Create API key   | `temporal cloud apikey create`            |
+| Delete API key   | `temporal cloud apikey delete <key-id>`   |
+| Describe API key | `temporal cloud apikey describe <key-id>` |
+| Turn off API key | `temporal cloud apikey disable <key-id>`  |
+| Turn on API key  | `temporal cloud apikey enable <key-id>`   |
+| List API keys    | `temporal cloud apikey list`              |
 
-  address        production.f45a2.tmprl.cloud:7233
-  namespace      production.f45a2
-  tls-cert-path  /temporal/certs/prod.pem
-  tls-key-path   /temporal/certs/prod.key
-```
+### `Temporal Nexus`
 
-For a full list of properties, use `temporal env set -h`.
+Endpoint operations:
+
+| Operation       | Command                                |
+| --------------- | -------------------------------------- |
+| Create endpoint | `temporal cloud nexus endpoint create` |
+| Delete endpoint | `temporal cloud nexus endpoint delete` |
+| Get endpoint    | `temporal cloud nexus endpoint get`    |
+| List endpoints  | `temporal cloud nexus endpoint list`   |
+| Update endpoint | `temporal cloud nexus endpoint update` |
+
+### Service account
+
+| Operation              | Command                                 |
+| ---------------------- | --------------------------------------- |
+| Create service account | `temporal cloud service-account create` |
+| Delete service account | `temporal cloud service-account delete` |
+| Get service account    | `temporal cloud service-account get`    |
+| List service accounts  | `temporal cloud service-account list`   |
+| Update service account | `temporal cloud service-account update` |
+
+### User
+
+| Operation                          | Command                                         |
+| ---------------------------------- | ----------------------------------------------- |
+| Delete user                        | `temporal cloud user delete`                    |
+| Describe user                      | `temporal cloud user describe`                  |
+| Get user                           | `temporal cloud user get`                       |
+| Invite user                        | `temporal cloud user invite`                    |
+| List users                         | `temporal cloud user list`                      |
+| Resend invite for user             | `temporal cloud user resend-invite`             |
+| Set account role for user          | `temporal cloud user set-account-role`          |
+| Set Namespace permissions for user | `temporal cloud user set-namespace-permissions` |
