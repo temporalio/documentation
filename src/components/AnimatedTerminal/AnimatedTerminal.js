@@ -91,6 +91,8 @@ export const AnimatedTerminal = ({
         return () => clearTimeout(timer);
     }, [currentLineIndex, lines, delay, typingSpeed, autoStart, loop, restartDelay, shouldStart]);
 
+    const bodyHeight = lines.length * 24 + 32;
+    
     return (
         <div ref={terminalRef} className={styles.terminal}>
             <div className={styles.terminalHeader}>
@@ -101,7 +103,7 @@ export const AnimatedTerminal = ({
                 </div>
                 <div className={styles.terminalTitle}>Terminal</div>
             </div>
-            <div className={styles.terminalBody}>
+            <div className={styles.terminalBody} style={{ height: bodyHeight }}>
                 {displayedLines.map((line, index) => (
                     <div key={`${currentLineIndex}-${index}`} className={styles.terminalLine}>
                         <span className={styles.prompt}>{prompt}</span>
