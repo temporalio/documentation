@@ -34,6 +34,9 @@ Using private network connectivity with a HA namespace requires extra setup. See
 There are charges associated with Replication and enabling High Availability features. For pricing details, visit
 Temporal Cloud's [Pricing](/cloud/pricing) page.
 
+If the Namespace's APS limit has been raised above the [default limit](https://docs.temporal.io/cloud/namespaces#constraints-and-limitations), then it will require a support ticket to to add a replica. Support will ensure that Temporal Cloud has capacity in the replica's region to handle the additional APS. Please
+[contact support](/cloud/support#support-ticket) with the Namespace ID and the region where you want to add a replica.
+
 ## Create a Namespace with High Availability features {#create}
 
 To create a new Namespace with High Availability features, you can use the Temporal Cloud UI or the tcld command line
