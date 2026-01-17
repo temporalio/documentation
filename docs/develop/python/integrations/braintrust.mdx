@@ -14,31 +14,46 @@ tags:
   - Braintrust
   - Python SDK
   - Temporal SDKs
-description: Add LLM observability and prompt management to Python Workflows using the Temporal Python SDK and Braintrust.
+description:
+  Add LLM observability and prompt management to Python Workflows using the Temporal Python SDK and Braintrust.
 ---
 
-Temporal's integration with [Braintrust](https://braintrust.dev) gives you full observability into your AI agent Workflows—tracing every LLM call, managing prompts without code deploys, and tracking costs across models.
+Temporal's integration with [Braintrust](https://braintrust.dev) gives you full observability into your AI agent
+Workflows—tracing every LLM call, managing prompts without code deploys, and tracking costs across models.
 
-When building AI agents with Temporal, you get durable execution: automatic retries, state persistence, and the ability to recover from failures mid-workflow.
-Braintrust adds the observability layer: see exactly what your agents are doing, iterate on prompts in a UI, and measure whether changes improve outcomes.
+When building AI agents with Temporal, you get durable execution: automatic retries, state persistence, and the ability
+to recover from failures mid-workflow. Braintrust adds the observability layer: see exactly what your agents are doing,
+iterate on prompts in a UI, and measure whether changes improve outcomes.
 
-The integration connects these capabilities with minimal code changes.
-Every Workflow and Activity becomes a span in Braintrust, and every LLM call is traced with inputs, outputs, tokens, and latency.
+The integration connects these capabilities with minimal code changes. Every Workflow and Activity becomes a span in
+Braintrust, and every LLM call is traced with inputs, outputs, tokens, and latency.
 
-All code snippets in this guide are taken from the [deep research sample](https://github.com/temporalio/samples-python/tree/main/braintrust).
-Refer to the sample for the complete code and run it locally.
+:::info
+
+The Temporal Python SDK integration with Braintrust is currently in
+[Public Preview](/evaluate/development-production-features/release-stages#public-preview). Refer to the
+[Temporal product release stages guide](/evaluate/development-production-features/release-stages) for more information.
+
+:::
+
+All code snippets in this guide are taken from the
+[deep research sample](https://github.com/temporalio/samples-python/tree/main/braintrust). Refer to the sample for the
+complete code and run it locally.
 
 ## Prerequisites
 
-- This guide assumes you are already familiar with Braintrust. If you aren't, refer to the [Braintrust documentation](https://www.braintrust.dev/docs) for more details.
-- If you are new to Temporal, we recommend reading [Understanding Temporal](/evaluate/understanding-temporal) or taking the [Temporal 101](https://learn.temporal.io/courses/temporal_101/) course.
-- Ensure you have set up your local development environment by following the [Set up your local development environment](/develop/python/core-application) guide.
-  When you're done, leave the Temporal Development Server running if you want to test your code locally.
+- This guide assumes you are already familiar with Braintrust. If you aren't, refer to the
+  [Braintrust documentation](https://www.braintrust.dev/docs) for more details.
+- If you are new to Temporal, we recommend reading [Understanding Temporal](/evaluate/understanding-temporal) or taking
+  the [Temporal 101](https://learn.temporal.io/courses/temporal_101/) course.
+- Ensure you have set up your local development environment by following the
+  [Set up your local development environment](/develop/python/core-application) guide. When you're done, leave the
+  Temporal Development Server running if you want to test your code locally.
 
 ## Configure Workers to use Braintrust
 
-Workers execute the code that defines your Workflows and Activities.
-To trace Workflow and Activity execution in Braintrust, add the `BraintrustPlugin` to your Worker.
+Workers execute the code that defines your Workflows and Activities. To trace Workflow and Activity execution in
+Braintrust, add the `BraintrustPlugin` to your Worker.
 
 Follow the steps below to configure your Worker.
 
@@ -48,8 +63,8 @@ Follow the steps below to configure your Worker.
    uv pip install "braintrust[temporal]"
    ```
 
-2. Initialize the Braintrust logger before creating your Worker.
-   The logger must be initialized first so that spans are properly connected.
+2. Initialize the Braintrust logger before creating your Worker. The logger must be initialized first so that spans are
+   properly connected.
 
    ```python
    import os
@@ -74,8 +89,8 @@ Follow the steps below to configure your Worker.
    )
    ```
 
-4. Add the plugin to your Temporal Client as well.
-   This enables span context propagation, linking client code to the Workflows it starts.
+4. Add the plugin to your Temporal Client as well. This enables span context propagation, linking client code to the
+   Workflows it starts.
 
    ```python
    from temporalio.client import Client
@@ -87,8 +102,8 @@ Follow the steps below to configure your Worker.
    )
    ```
 
-5. Run the Worker.
-   Ensure the Worker process has access to your Braintrust API key via the `BRAINTRUST_API_KEY` environment variable.
+5. Run the Worker. Ensure the Worker process has access to your Braintrust API key via the `BRAINTRUST_API_KEY`
+   environment variable.
 
    ```bash
    export BRAINTRUST_API_KEY="your-api-key"
@@ -97,15 +112,15 @@ Follow the steps below to configure your Worker.
 
    :::tip
 
-   You only need to provide API credentials to the Worker process.
-   The client application that starts Workflow Executions doesn't need the Braintrust API key.
+   You only need to provide API credentials to the Worker process. The client application that starts Workflow
+   Executions doesn't need the Braintrust API key.
 
    :::
 
 ## Trace LLM calls with wrap_openai
 
-The simplest way to trace LLM calls is to wrap your OpenAI client.
-Every call through the wrapped client automatically creates a span in Braintrust with inputs, outputs, token counts, and latency.
+The simplest way to trace LLM calls is to wrap your OpenAI client. Every call through the wrapped client automatically
+creates a span in Braintrust with inputs, outputs, token counts, and latency.
 
 ```python
 from braintrust import wrap_openai
@@ -169,8 +184,7 @@ async def run_research(query: str):
 
 ## Manage prompts with load_prompt
 
-Braintrust lets you manage prompts in a UI and deploy changes without code deploys.
-The workflow is:
+Braintrust lets you manage prompts in a UI and deploy changes without code deploys. The workflow is:
 
 1. **Develop** prompts in code, see results in Braintrust traces
 2. **Create** a prompt in the Braintrust UI from your best version
@@ -217,8 +231,8 @@ async def invoke_model(prompt_slug: str, user_input: str) -> str:
 
 :::tip
 
-Provide a fallback prompt in your code for resilience.
-If Braintrust is unavailable, your Workflow continues with the hardcoded prompt.
+Provide a fallback prompt in your code for resilience. If Braintrust is unavailable, your Workflow continues with the
+hardcoded prompt.
 
 ```python
 DEFAULT_SYSTEM_PROMPT = "You are a helpful assistant."
@@ -235,14 +249,16 @@ except Exception as e:
 
 ## Example: Deep Research Agent
 
-The [deep research sample](https://github.com/temporalio/samples-python/tree/main/braintrust) demonstrates a complete AI agent that:
+The [deep research sample](https://github.com/temporalio/samples-python/tree/main/braintrust) demonstrates a complete AI
+agent that:
 
 - Plans research strategies
 - Generates search queries
 - Executes web searches in parallel
 - Synthesizes findings into comprehensive reports
 
-The sample shows all integration patterns: wrapped OpenAI client, BraintrustPlugin on Worker and Client, custom spans, and prompt management with `load_prompt()`.
+The sample shows all integration patterns: wrapped OpenAI client, BraintrustPlugin on Worker and Client, custom spans,
+and prompt management with `load_prompt()`.
 
 To run the sample:
 
