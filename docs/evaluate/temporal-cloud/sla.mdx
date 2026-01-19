@@ -54,7 +54,7 @@ Our internal alerting system is based on a [service level objective](https://en.
 When we receive an alert that an SLO is not being met, we page our on-call engineers, which often means that issues are resolved before they become noticeable.
 
 Internally, our components are distributed across a minimum of three availability zones per region.
-We implement a [cell architecture](https://docs.aws.amazon.com/wellarchitected/latest/reducing-scope-of-impact-with-cell-based-architecture/what-is-a-cell-based-architecture.html).
+We implement a cell architecture.
 Each cell contains the software and services necessary to host a Namespace.
 Within each cell, the components are distributed across a minimum of three availability zones per region.
 
