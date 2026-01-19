@@ -246,9 +246,11 @@ with workflow.unsafe.imports_passed_through():
     from activities import BankingActivities
     from shared import PaymentDetails
 
-@workflow.defn
+# highlight-next-line
+@workflow.defn  # Marks this class as a Workflow Definition
 class MoneyTransfer:
-    @workflow.run
+    # highlight-next-line
+    @workflow.run  # Entry point method that Temporal calls when the Workflow starts
     async def run(self, payment_details: PaymentDetails) -> str:
         retry_policy = RetryPolicy(
             maximum_attempts=3,
@@ -257,21 +259,25 @@ class MoneyTransfer:
         )
 
         # Withdraw money
-        withdraw_output = await workflow.execute_activity_method(
+        # highlight-start
+        withdraw_output = await workflow.execute_activity_method(  # Executes an Activity and waits for result
             BankingActivities.withdraw,
             payment_details,
             start_to_close_timeout=timedelta(seconds=5),
             retry_policy=retry_policy,
         )
+        # highlight-end
 
         # Deposit money
         try:
+            # highlight-start
             deposit_output = await workflow.execute_activity_method(
                 BankingActivities.deposit,
                 payment_details,
                 start_to_close_timeout=timedelta(seconds=5),
                 retry_policy=retry_policy,
             )
+            # highlight-end
 
             result = f"Transfer complete (transaction IDs: {withdraw_output}, {deposit_output})"
             return result
@@ -312,7 +318,8 @@ from temporalio import activity
 from shared import PaymentDetails
 
 class BankingActivities:
-    @activity.defn
+    # highlight-next-line
+    @activity.defn  # Marks this method as an Activity Definition
     async def withdraw(self, data: PaymentDetails) -> str:
         reference_id = f"{data.reference_id}-withdrawal"
         try:
@@ -326,7 +333,8 @@ class BankingActivities:
             activity.logger.exception("Withdrawal failed")
             raise
 
-    @activity.defn
+    # highlight-next-line
+    @activity.defn  # Marks this method as an Activity Definition
     async def deposit(self, data: PaymentDetails) -> str:
         reference_id = f"{data.reference_id}-deposit"
         try:
@@ -367,7 +375,8 @@ This is what the Workflow Definition looks like for the money transfer process:
 **workflow.go**
 
 ```go
-func MoneyTransfer(ctx workflow.Context, input PaymentDetails) (string, error) {
+// highlight-next-line
+func MoneyTransfer(ctx workflow.Context, input PaymentDetails) (string, error) {  // Workflow Definition: accepts workflow.Context as first param
     // RetryPolicy specifies how to automatically handle retries if an Activity fails.
     retrypolicy := &temporal.RetryPolicy{
         InitialInterval:        time.Second,
@@ -390,14 +399,16 @@ func MoneyTransfer(ctx workflow.Context, input PaymentDetails) (string, error) {
 
     // Withdraw money.
     var withdrawOutput string
-    withdrawErr := workflow.ExecuteActivity(ctx, Withdraw, input).Get(ctx, &withdrawOutput)
+    // highlight-next-line
+    withdrawErr := workflow.ExecuteActivity(ctx, Withdraw, input).Get(ctx, &withdrawOutput)  // Executes Activity and waits for result
     if withdrawErr != nil {
         return "", withdrawErr
     }
 
     // Deposit money.
     var depositOutput string
-    depositErr := workflow.ExecuteActivity(ctx, Deposit, input).Get(ctx, &depositOutput)
+    // highlight-next-line
+    depositErr := workflow.ExecuteActivity(ctx, Deposit, input).Get(ctx, &depositOutput)  // Executes Activity and waits for result
     if depositErr != nil {
         // The deposit failed; put money back in original account.
         var result string
@@ -436,7 +447,8 @@ Activities handle the business logic. Each Activity function calls an external b
 **activity.go**
 
 ```go
-func Withdraw(ctx context.Context, data PaymentDetails) (string, error) {
+// highlight-next-line
+func Withdraw(ctx context.Context, data PaymentDetails) (string, error) {  // Activity Definition: accepts context.Context as first param
     log.Printf("Withdrawing $%d from account %s.\n\n",
         data.Amount,
         data.SourceAccount,
@@ -448,7 +460,8 @@ func Withdraw(ctx context.Context, data PaymentDetails) (string, error) {
     return confirmation, err
 }
 
-func Deposit(ctx context.Context, data PaymentDetails) (string, error) {
+// highlight-next-line
+func Deposit(ctx context.Context, data PaymentDetails) (string, error) {  // Activity Definition: accepts context.Context as first param
     log.Printf("Depositing $%d into account %s.\n\n",
         data.Amount,
         data.TargetAccount,
@@ -478,9 +491,11 @@ In the Temporal Java SDK, a Workflow Definition is marked by the `@WorkflowInter
 **MoneyTransferWorkflow.java**
 
 ```java
-@WorkflowInterface
+// highlight-next-line
+@WorkflowInterface  // Marks this interface as a Workflow Definition
 public interface MoneyTransferWorkflow {
-    @WorkflowMethod
+    // highlight-next-line
+    @WorkflowMethod  // Entry point method that Temporal calls when the Workflow starts
     void transfer(TransactionDetails transaction);
 }
 ```
@@ -516,7 +531,8 @@ public class MoneyTransferWorkflowImpl implements MoneyTransferWorkflow {
 
         // Stage 1: Withdraw funds from source
         try {
-            accountActivityStub.withdraw(sourceAccountId, transactionReferenceId, amountToTransfer);
+            // highlight-next-line
+            accountActivityStub.withdraw(sourceAccountId, transactionReferenceId, amountToTransfer);  // Executes Activity via stub
         } catch (Exception e) {
             System.out.printf("[%s] Withdrawal of $%d from account %s failed", 
                             transactionReferenceId, amountToTransfer, sourceAccountId);
@@ -525,7 +541,8 @@ public class MoneyTransferWorkflowImpl implements MoneyTransferWorkflow {
 
         // Stage 2: Deposit funds to destination
         try {
-            accountActivityStub.deposit(destinationAccountId, transactionReferenceId, amountToTransfer);
+            // highlight-next-line
+            accountActivityStub.deposit(destinationAccountId, transactionReferenceId, amountToTransfer);  // Executes Activity via stub
             System.out.printf("[%s] Transaction succeeded.\n", transactionReferenceId);
             return;
         } catch (Exception e) {
@@ -567,15 +584,19 @@ Activities handle the business logic. Each Activity method calls an external ban
 **AccountActivity.java**
 
 ```java
-@ActivityInterface
+// highlight-next-line
+@ActivityInterface  // Marks this interface as containing Activity Definitions
 public interface AccountActivity {
-    @ActivityMethod
+    // highlight-next-line
+    @ActivityMethod  // Marks this method as an Activity Definition
     void withdraw(String accountId, String referenceId, int amount);
 
-    @ActivityMethod
+    // highlight-next-line
+    @ActivityMethod  // Marks this method as an Activity Definition
     void deposit(String accountId, String referenceId, int amount);
 
-    @ActivityMethod
+    // highlight-next-line
+    @ActivityMethod  // Marks this method as an Activity Definition
     void refund(String accountId, String referenceId, int amount);
 }
 ```
@@ -636,7 +657,8 @@ import { ApplicationFailure } from '@temporalio/common';
 import type * as activities from './activities';
 import type { PaymentDetails } from './shared';
 
-export async function moneyTransfer(details: PaymentDetails): Promise<string> {
+// highlight-next-line
+export async function moneyTransfer(details: PaymentDetails): Promise<string> {  // Workflow Definition: an exported async function
   // Get the Activities for the Workflow and set up the Activity Options.
   const { withdraw, deposit, refund } = proxyActivities<typeof activities>({
     // RetryPolicy specifies how to automatically handle retries if an Activity fails.
@@ -653,7 +675,8 @@ export async function moneyTransfer(details: PaymentDetails): Promise<string> {
   // Execute the withdraw Activity
   let withdrawResult: string;
   try {
-    withdrawResult = await withdraw(details);
+    // highlight-next-line
+    withdrawResult = await withdraw(details);  // Executes Activity via proxy and waits for result
   } catch (withdrawErr) {
     throw new ApplicationFailure(`Withdrawal failed. Error: ${withdrawErr}`);
   }
@@ -661,7 +684,8 @@ export async function moneyTransfer(details: PaymentDetails): Promise<string> {
   //Execute the deposit Activity
   let depositResult: string;
   try {
-    depositResult = await deposit(details);
+    // highlight-next-line
+    depositResult = await deposit(details);  // Executes Activity via proxy and waits for result
   } catch (depositErr) {
     // The deposit failed; try to refund the money.
     let refundResult;
@@ -703,7 +727,8 @@ Activities handle the business logic. Each Activity function calls an external b
 import type { PaymentDetails } from './shared';
 import { BankingService } from './banking-client';
 
-export async function withdraw(details: PaymentDetails): Promise<string> {
+// highlight-next-line
+export async function withdraw(details: PaymentDetails): Promise<string> {  // Activity Definition: an exported async function
   console.log(
     `Withdrawing $${details.amount} from account ${details.sourceAccount}.\n\n`
   );
@@ -715,7 +740,8 @@ export async function withdraw(details: PaymentDetails): Promise<string> {
   );
 }
 
-export async function deposit(details: PaymentDetails): Promise<string> {
+// highlight-next-line
+export async function deposit(details: PaymentDetails): Promise<string> {  // Activity Definition: an exported async function
   console.log(
     `Depositing $${details.amount} into account ${details.targetAccount}.\n\n`
   );
@@ -754,7 +780,8 @@ This is what the Workflow Definition looks like for the money transfer process:
 **workflow.rb**
 
 ```ruby
-class MoneyTransferWorkflow < Temporalio::Workflow::Definition
+# highlight-next-line
+class MoneyTransferWorkflow < Temporalio::Workflow::Definition  # Workflow Definition: extends Temporalio::Workflow::Definition
   def execute(details)
     retry_policy = Temporalio::RetryPolicy.new(
       max_interval: 10,
@@ -766,20 +793,24 @@ class MoneyTransferWorkflow < Temporalio::Workflow::Definition
 
     Temporalio::Workflow.logger.info("Starting workflow (#{details})")
 
-    withdraw_result = Temporalio::Workflow.execute_activity(
+    # highlight-start
+    withdraw_result = Temporalio::Workflow.execute_activity(  # Executes Activity and waits for result
       BankActivities::Withdraw,
       details,
       start_to_close_timeout: 5,
       retry_policy: retry_policy
     )
+    # highlight-end
 
     begin
-      deposit_result = Temporalio::Workflow.execute_activity(
+      # highlight-start
+      deposit_result = Temporalio::Workflow.execute_activity(  # Executes Activity and waits for result
         BankActivities::Deposit,
         details,
         start_to_close_timeout: 5,
         retry_policy: retry_policy
       )
+      # highlight-end
       
       "Transfer complete (transaction IDs: #{withdraw_result}, #{deposit_result})"
     rescue Temporalio::Error::ActivityError => e
@@ -821,7 +852,8 @@ Activities handle the business logic. Each Activity class calls an external bank
 
 ```ruby
 module BankActivities
-  class Withdraw < Temporalio::Activity::Definition
+  # highlight-next-line
+  class Withdraw < Temporalio::Activity::Definition  # Activity Definition: extends Temporalio::Activity::Definition
     def execute(details)
       puts("Doing a withdrawal from #{details.source_account} for #{details.amount}")
       raise InsufficientFundsError, 'Transfer amount too large' if details.amount > 1000
@@ -833,7 +865,8 @@ module BankActivities
     end
   end
 
-  class Deposit < Temporalio::Activity::Definition
+  # highlight-next-line
+  class Deposit < Temporalio::Activity::Definition  # Activity Definition: extends Temporalio::Activity::Definition
     def execute(details)
       puts("Doing a deposit into #{details.target_account} for #{details.amount}")
       raise InvalidAccountError, 'Invalid account number' if details.target_account == 'B5555'
@@ -885,7 +918,8 @@ use Temporal\Workflow\ReturnType;
 use Temporal\Workflow\WorkflowInterface;
 use Temporal\Workflow\WorkflowMethod;
 
-#[WorkflowInterface]
+// highlight-next-line
+#[WorkflowInterface]  // Marks this class as a Workflow Definition
 final class MoneyTransfer
 {
     private Banking|ActivityProxy $bankingActivity;
@@ -905,16 +939,20 @@ final class MoneyTransfer
         );
     }
 
-    #[WorkflowMethod('money_transfer')]
+    // highlight-start
+    #[WorkflowMethod('money_transfer')]  // Entry point method that Temporal calls when the Workflow starts
     #[ReturnType(Type::TYPE_STRING)]
     public function handle(PaymentDetails $paymentDetails): \Generator
+    // highlight-end
     {
         # Withdraw money
-        $withdrawOutput = yield $this->bankingActivity->withdraw($paymentDetails);
+        // highlight-next-line
+        $withdrawOutput = yield $this->bankingActivity->withdraw($paymentDetails);  // Executes Activity via stub
 
         # Deposit money
         try {
-            $depositOutput = yield $this->bankingActivity->deposit($paymentDetails);
+            // highlight-next-line
+            $depositOutput = yield $this->bankingActivity->deposit($paymentDetails);  // Executes Activity via stub
             return "Transfer complete (transaction IDs: {$withdrawOutput}, {$depositOutput})";
         } catch (\Throwable $depositError) {
             # Handle deposit error
@@ -960,7 +998,8 @@ final class BankingActivity implements Banking
         private readonly Service $bank,
     ) {}
 
-    #[\Override]
+    // highlight-next-line
+    #[\Override]  // Activity method implementation
     public function withdraw(PaymentDetails $data): string
     {
         $referenceId = $data->referenceId . "-withdrawal";
@@ -979,7 +1018,8 @@ final class BankingActivity implements Banking
         }
     }
 
-    #[\Override]
+    // highlight-next-line
+    #[\Override]  // Activity method implementation
     public function deposit(PaymentDetails $data): string
     {
         $referenceId = $data->referenceId . "-deposit";
@@ -1040,10 +1080,12 @@ This is what the Workflow Definition looks like for this process:
 **MoneyTransferWorker/Workflow.cs**
 
 ```csharp
-[Workflow]
+// highlight-next-line
+[Workflow]  // Marks this class as a Workflow Definition
 public class MoneyTransferWorkflow
 {
-    [WorkflowRun]
+    // highlight-next-line
+    [WorkflowRun]  // Entry point method that Temporal calls when the Workflow starts
     public async Task<string> RunAsync(PaymentDetails details)
     {
         // Retry policy
@@ -1059,10 +1101,12 @@ public class MoneyTransferWorkflow
         string withdrawResult;
         try
         {
-            withdrawResult = await Workflow.ExecuteActivityAsync(
+            // highlight-start
+            withdrawResult = await Workflow.ExecuteActivityAsync(  // Executes Activity and waits for result
                 () => BankingActivities.WithdrawAsync(details),
                 new ActivityOptions { StartToCloseTimeout = TimeSpan.FromMinutes(5), RetryPolicy = retryPolicy }
             );
+            // highlight-end
         }
         catch (ApplicationFailureException ex) when (ex.ErrorType == "InsufficientFundsException")
         {
@@ -1072,10 +1116,12 @@ public class MoneyTransferWorkflow
         string depositResult;
         try
         {
-            depositResult = await Workflow.ExecuteActivityAsync(
+            // highlight-start
+            depositResult = await Workflow.ExecuteActivityAsync(  // Executes Activity and waits for result
                 () => BankingActivities.DepositAsync(details),
                 new ActivityOptions { StartToCloseTimeout = TimeSpan.FromMinutes(5), RetryPolicy = retryPolicy }
             );
+            // highlight-end
             return $"Transfer complete (transaction IDs: {withdrawResult}, {depositResult})";
         }
         catch (Exception depositEx)
@@ -1119,7 +1165,8 @@ Activities handle the business logic. Each Activity method calls an external ban
 ```csharp
 public class BankingActivities
 {
-    [Activity]
+    // highlight-next-line
+    [Activity]  // Marks this method as an Activity Definition
     public static async Task<string> WithdrawAsync(PaymentDetails details)
     {
         var bankService = new BankingService("bank1.example.com");
@@ -1134,7 +1181,8 @@ public class BankingActivities
         }
     }
 
-    [Activity]
+    // highlight-next-line
+    [Activity]  // Marks this method as an Activity Definition
     public static async Task<string> DepositAsync(PaymentDetails details)
     {
         var bankService = new BankingService("bank2.example.com");
