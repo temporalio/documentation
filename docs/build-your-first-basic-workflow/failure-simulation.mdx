@@ -287,7 +287,7 @@ In this part of the tutorial, you will inject a bug into your production code, w
 This demo application makes a call to an external service in an Activity. 
 If that call fails due to a bug in your code, the Activity produces an error.
 
-To test this out and see how Temporal responds, you'll simulate a bug in the Deposit Activity function or method.
+To test this out and see how Temporal responds, you'll simulate a bug in one of the Activity functions or methods.
 
 <WorkflowDiagram 
   title="Live Debugging Flow"
@@ -397,15 +397,22 @@ Save your changes. You've now created a deliberate failure point in your deposit
 
 <SdkTabs.Java>
 
-Find the `deposit()` method and **change `activityShouldSucceed` to `false`**:
+Open `AccountActivityImpl.java` and find the `deposit()` method. **Change `activityShouldSucceed` to `false`**:
 
-**AccountActivityImpl.java**
+**src/main/java/moneytransferapp/AccountActivityImpl.java**
 ```java
-public String deposit(PaymentDetails details) {
+@Override
+public void deposit(String accountId, String referenceId, int amount) {
     // Change this to false to simulate failure:
     boolean activityShouldSucceed = false;
     
-    // ... rest of your method
+    if (activityShouldSucceed) {
+        System.out.printf("\nDepositing $%d into account %s.\n[ReferenceId: %s]\n", 
+                         amount, accountId, referenceId);
+    } else {
+        System.out.println("Deposit failed");
+        throw new RuntimeException("Simulated deposit failure");
+    }
 }
 ```
 
@@ -415,11 +422,16 @@ Save your changes. You've now created a deliberate failure point in your deposit
 
 <SdkTabs.TypeScript>
 
-Find the `deposit()` function and **uncomment the failing line** while **commenting out the working line**:
+Find the `deposit()` function in `activities.ts` and **comment out the working line** while **uncommenting the failing line**:
 
-**activities.ts**
+**src/activities.ts**
 ```typescript
 export async function deposit(details: PaymentDetails): Promise<string> {
+  console.log(
+    `Depositing $${details.amount} into account ${details.targetAccount}.\n\n`
+  );
+  const bank = new BankingService('bank2.example.com');
+  
   // Comment out this working line:
   // return await bank.deposit(details.targetAccount, details.amount, details.referenceId);
   
@@ -467,27 +479,32 @@ Save your changes. You've now created a deliberate failure point in your deposit
 
 <SdkTabs.Ruby>
 
-Find the `deposit` method and **uncomment the failing line** that causes a divide-by-zero error:
+Find the `Withdraw` class in `activities.rb` and **uncomment the failing line** that causes a divide-by-zero error:
 
 **activities.rb**
 ```ruby
-def deposit(details)
-  # Uncomment this line to introduce the bug:
-  result = 100 / 0  # This will cause a divide-by-zero error
-  
-  # Your existing deposit logic here...
+class Withdraw < Temporalio::Activity::Definition
+  def execute(details)
+    puts("Doing a withdrawal from #{details.source_account} for #{details.amount}")
+    raise InsufficientFundsError, 'Transfer amount too large' if details.amount > 1000
+
+    # Uncomment to expose a bug and cause the Activity to fail
+    x = details.amount / 0
+
+    "OKW-#{details.amount}-#{details.source_account}"
+  end
 end
 ```
 
-Save your changes. You've now created a deliberate failure point in your deposit Activity. This simulates a real-world scenario where external service calls might fail intermittently.
+Save your changes. You've now created a deliberate failure point in your withdraw Activity. This simulates a real-world scenario where external service calls might fail intermittently.
 
 </SdkTabs.Ruby>
 
 <SdkTabs.PHP>
 
-Find the `deposit()` method in `BankingActivity.php` and **uncomment the failing line** while **commenting out the working line**:
+Find the `deposit()` method in `src/Banking/Internal/BankingActivity.php` and **uncomment the failing block** while **commenting out the working line**:
 
-**BankingActivity.php**
+**src/Banking/Internal/BankingActivity.php**
 
 ```php
 #[\Override]
@@ -496,17 +513,18 @@ public function deposit(PaymentDetails $data): string
     $referenceId = $data->referenceId . "-deposit";
     try {
         // Comment out this working line:
-        // $confirmation = $this->bank->deposit(
-        //     $data->targetAccount,
-        //     $data->amount,
-        //     $referenceId,
-        // );
-        
-        // Uncomment this failing line:
-        $confirmation = $this->bank->depositThatFails(
+        /*
+        $confirmation = $this->bank->deposit(
             $data->targetAccount,
             $data->amount,
             $referenceId,
+        );
+        */
+        // Uncomment this failing block:
+        $confirmation = $this->bank->depositThatFails(
+            $data->targetAccount,
+            $data->amount,
+            $referenceId
         );
         return $confirmation;
     } catch (InvalidAccount $e) {
@@ -525,7 +543,7 @@ Save your changes. You've now created a deliberate failure point in your deposit
 
 ### Step 3: Start Worker & Observe Retry Behavior
 
-Now let's see how Temporal handles this failure. When you start your Worker, it will execute the withdraw Activity successfully, but hit the failing deposit Activity. Instead of the entire Workflow failing permanently, Temporal will retry the failed Activity according to your retry policy.
+Now let's see how Temporal handles this failure. When you start your Worker, it will hit the failing Activity. Instead of the entire Workflow failing permanently, Temporal will retry the failed Activity according to your retry policy.
 
 <SdkTabs languageOrder={TUTORIAL_LANGUAGE_ORDER}>
 <SdkTabs.Python>
@@ -692,18 +710,17 @@ bundle exec ruby starter.rb
 ```
 
 **Here's what you'll see:**
-- The `withdraw` Activity completes successfully
-- The `deposit` Activity fails and retries automatically
+- The `Withdraw` Activity fails and retries automatically (due to the divide-by-zero bug)
+- The `Deposit` Activity never runs because the Workflow is stuck on the failing Withdraw
 
 <AnimatedTerminal 
   lines={[
     "Starting Ruby worker...",
-    "Withdraw completed: $150 from account 85-150",
-    "Attempting deposit: $150 to account 43-812",
+    "Doing a withdrawal from A1001 for 100",
     "Error: Deposit failed - divide by zero error",
-    "Retrying deposit: $150 to account 43-812", 
+    "Doing a withdrawal from A1001 for 100",
     "Error: Deposit failed - divide by zero error",
-    "Retrying deposit: $150 to account 43-812"
+    "Doing a withdrawal from A1001 for 100"
   ]}
   delay={800}
   typingSpeed={30}
@@ -732,7 +749,7 @@ Check the Web UI - click on your Workflow to see the failure details and retry a
 </SdkTabs.PHP>
 </SdkTabs>
 
-**Key observation:** Your Workflow isn't stuck or terminated. Temporal automatically retries the failed Activity according to your configured retry policy, while maintaining the overall Workflow state. The successful withdraw Activity doesn't get re-executed - only the failed deposit Activity is retried.
+**Key observation:** Your Workflow isn't stuck or terminated. Temporal automatically retries the failed Activity according to your configured retry policy, while maintaining the overall Workflow state. Successfully completed Activities aren't re-executed - only the failed Activity is retried.
 
 ### Step 4: Fix the Bug
 
@@ -801,13 +818,20 @@ func Deposit(ctx context.Context, data PaymentDetails) (string, error) {
 
 Go back to `AccountActivityImpl.java` and **change `activityShouldSucceed` back to `true`**:
 
-**AccountActivityImpl.java**
+**src/main/java/moneytransferapp/AccountActivityImpl.java**
 ```java
-public String deposit(PaymentDetails details) {
+@Override
+public void deposit(String accountId, String referenceId, int amount) {
     // Change this back to true to fix the bug:
     boolean activityShouldSucceed = true;
     
-    // ... rest of your method
+    if (activityShouldSucceed) {
+        System.out.printf("\nDepositing $%d into account %s.\n[ReferenceId: %s]\n", 
+                         amount, accountId, referenceId);
+    } else {
+        System.out.println("Deposit failed");
+        throw new RuntimeException("Simulated deposit failure");
+    }
 }
 ```
 
@@ -817,9 +841,14 @@ public String deposit(PaymentDetails details) {
 
 Go back to `activities.ts` and **reverse the comments** - comment out the failing line and uncomment the working line:
 
-**activities.ts**
+**src/activities.ts**
 ```typescript
 export async function deposit(details: PaymentDetails): Promise<string> {
+  console.log(
+    `Depositing $${details.amount} into account ${details.targetAccount}.\n\n`
+  );
+  const bank = new BankingService('bank2.example.com');
+  
   // Uncomment this working line:
   return await bank.deposit(details.targetAccount, details.amount, details.referenceId);
   
@@ -865,11 +894,16 @@ Go back to `activities.rb` and **comment out the failing line**:
 
 **activities.rb**
 ```ruby
-def deposit(details)
-  # Comment out this problematic line:
-  # result = 100 / 0  # This will cause a divide-by-zero error
-  
-  # Your existing deposit logic here...
+class Withdraw < Temporalio::Activity::Definition
+  def execute(details)
+    puts("Doing a withdrawal from #{details.source_account} for #{details.amount}")
+    raise InsufficientFundsError, 'Transfer amount too large' if details.amount > 1000
+
+    # Comment out this failing line:
+    # x = details.amount / 0
+
+    "OKW-#{details.amount}-#{details.source_account}"
+  end
 end
 ```
 
@@ -879,7 +913,7 @@ end
 
 Go back to `BankingActivity.php` and **reverse the comments** - comment out the failing line and uncomment the working line:
 
-**BankingActivity.php**
+**src/Banking/Internal/BankingActivity.php**
 
 ```php
 #[\Override]
@@ -893,13 +927,14 @@ public function deposit(PaymentDetails $data): string
             $data->amount,
             $referenceId,
         );
-        
-        // Comment out this failing line:
-        // $confirmation = $this->bank->depositThatFails(
-        //     $data->targetAccount,
-        //     $data->amount,
-        //     $referenceId,
-        // );
+        // Comment out this failing block:
+        /*
+        $confirmation = $this->bank->depositThatFails(
+            $data->targetAccount,
+            $data->amount,
+            $referenceId
+        );
+        */
         return $confirmation;
     } catch (InvalidAccount $e) {
         throw $e;
@@ -1025,7 +1060,7 @@ Ctrl+C
 bundle exec ruby worker.rb
 ```
 
-**On the next retry attempt,** your fixed `deposit` Activity will succeed, and you'll see the Workflow complete successfully.
+**On the next retry attempt,** your fixed `Withdraw` Activity will succeed, and you'll see the Workflow complete successfully.
 
 </SdkTabs.Ruby>
 

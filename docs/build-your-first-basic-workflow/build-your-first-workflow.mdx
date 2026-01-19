@@ -98,6 +98,9 @@ This allows you to focus on business logic, instead of writing application code 
       <CodeSnippet language="bash">
       cd money-transfer-project-template-python
       </CodeSnippet>
+      <CodeSnippet language="bash">
+      python -m pip install temporalio
+      </CodeSnippet>
     </SdkTabs.Python>
     <SdkTabs.Go>
       <CodeSnippet language="bash">
@@ -122,13 +125,16 @@ This allows you to focus on business logic, instead of writing application code 
       <CodeSnippet language="bash">
       cd money-transfer-project-template-ts
       </CodeSnippet>
+      <CodeSnippet language="bash">
+      npm install
+      </CodeSnippet>
     </SdkTabs.TypeScript>
     <SdkTabs.DotNet>
       <CodeSnippet language="bash">
       git clone https://github.com/temporalio/money-transfer-project-template-dotnet
       </CodeSnippet>
       <CodeSnippet language="bash">
-      cd money-transfer-temporal-template-dotnet
+      cd money-transfer-project-template-dotnet
       </CodeSnippet>
     </SdkTabs.DotNet>
     <SdkTabs.Ruby>
@@ -137,6 +143,9 @@ This allows you to focus on business logic, instead of writing application code 
       </CodeSnippet>
       <CodeSnippet language="bash">
       cd money-transfer-project-template-ruby
+      </CodeSnippet>
+      <CodeSnippet language="bash">
+      bundle install
       </CodeSnippet>
     </SdkTabs.Ruby>
     <SdkTabs.PHP>
@@ -286,9 +295,14 @@ class MoneyTransfer:
                 raise refund_error
 ```
 
+:::tip Understanding the imports
+- **`workflow.unsafe.imports_passed_through()`**: This context manager allows importing non-Workflow-safe modules (like Activities) into Workflow code. 
+- **`PaymentDetails`**: A dataclass defined in `shared.py` containing `source_account`, `target_account`, `amount`, and `reference_id` fields.
+:::
+
 <h3>Activity Definition</h3>
 
-Activities handle the business logic. Each activity method calls an external banking service:
+Activities handle the business logic. Each Activity method calls an external banking service:
 
 **activities.py**
 
@@ -311,7 +325,34 @@ class BankingActivities:
         except Exception:
             activity.logger.exception("Withdrawal failed")
             raise
+
+    @activity.defn
+    async def deposit(self, data: PaymentDetails) -> str:
+        reference_id = f"{data.reference_id}-deposit"
+        try:
+            # In Part 2, you'll comment out this line and uncomment the failing one below
+            confirmation = await asyncio.to_thread(
+                self.bank.deposit, data.target_account, data.amount, reference_id
+            )
+            
+            # Uncomment this line in Part 2 to simulate a failure:
+            # confirmation = await asyncio.to_thread(
+            #     self.bank.deposit_that_fails,
+            #     data.target_account,
+            #     data.amount,
+            #     reference_id,
+            # )
+            return confirmation
+        except InvalidAccountError:
+            raise
+        except Exception:
+            activity.logger.exception("Deposit failed")
+            raise
 ```
+
+:::note
+The `self.bank` attribute is a `BankingService` client initialized in the class constructor (`__init__`). The full class also includes a `refund()` method. You can view the complete implementation in the cloned repository.
+:::
 
 </SdkTabs.Python>
 
@@ -415,7 +456,13 @@ func Deposit(ctx context.Context, data PaymentDetails) (string, error) {
 
     referenceID := fmt.Sprintf("%s-deposit", data.ReferenceID)
     bank := BankingService{"bank-api.example.com"}
+    
+    // In Part 2, you'll comment out this line and uncomment the failing one below
     confirmation, err := bank.Deposit(data.TargetAccount, data.Amount, referenceID)
+    
+    // Uncomment this line in Part 2 to simulate a failure:
+    // confirmation, err := bank.DepositThatFails(data.TargetAccount, data.Amount, referenceID)
+    
     return confirmation, err
 }
 ```
@@ -545,8 +592,17 @@ public class AccountActivityImpl implements AccountActivity {
 
     @Override
     public void deposit(String accountId, String referenceId, int amount) {
-        System.out.printf("\nDepositing $%d into account %s.\n[ReferenceId: %s]\n", 
-                         amount, accountId, referenceId);
+        // This variable controls whether the deposit succeeds or fails.
+        // You'll change this to false in Part 2 to simulate a bug.
+        boolean activityShouldSucceed = true;
+        
+        if (activityShouldSucceed) {
+            System.out.printf("\nDepositing $%d into account %s.\n[ReferenceId: %s]\n", 
+                             amount, accountId, referenceId);
+        } else {
+            System.out.println("Deposit failed");
+            throw new RuntimeException("Simulated deposit failure");
+        }
     }
 
     @Override
@@ -556,6 +612,10 @@ public class AccountActivityImpl implements AccountActivity {
     }
 }
 ```
+
+:::tip View the complete code
+For the full implementation, see [`AccountActivityImpl.java`](https://github.com/temporalio/money-transfer-project-java/blob/main/src/main/java/moneytransferapp/AccountActivityImpl.java) in the GitHub repository.
+:::
 
 </SdkTabs.Java>
 
@@ -659,12 +719,13 @@ export async function deposit(details: PaymentDetails): Promise<string> {
   console.log(
     `Depositing $${details.amount} into account ${details.targetAccount}.\n\n`
   );
-  const bank2 = new BankingService('bank2.example.com');
-  return await bank2.deposit(
-    details.targetAccount,
-    details.amount,
-    details.referenceId
-  );
+  const bank = new BankingService('bank2.example.com');
+  
+  // In Part 2, you'll comment out this line and uncomment the failing one below
+  return await bank.deposit(details.targetAccount, details.amount, details.referenceId);
+  
+  // Uncomment this line in Part 2 to simulate a failure:
+  // return await bank.depositThatFails(details.targetAccount, details.amount, details.referenceId);
 }
 
 export async function refund(details: PaymentDetails): Promise<string> {
@@ -764,7 +825,10 @@ module BankActivities
     def execute(details)
       puts("Doing a withdrawal from #{details.source_account} for #{details.amount}")
       raise InsufficientFundsError, 'Transfer amount too large' if details.amount > 1000
-      
+
+      # Uncomment to expose a bug and cause the Activity to fail
+      # x = details.amount / 0
+
       "OKW-#{details.amount}-#{details.source_account}"
     end
   end
@@ -773,7 +837,7 @@ module BankActivities
     def execute(details)
       puts("Doing a deposit into #{details.target_account} for #{details.amount}")
       raise InvalidAccountError, 'Invalid account number' if details.target_account == 'B5555'
-      
+
       "OKD-#{details.amount}-#{details.target_account}"
     end
   end
@@ -781,7 +845,7 @@ module BankActivities
   class Refund < Temporalio::Activity::Definition
     def execute(details)
       puts("Refunding #{details.amount} back to account #{details.source_account}")
-      
+
       "OKR-#{details.amount}-#{details.source_account}"
     end
   end
@@ -914,6 +978,52 @@ final class BankingActivity implements Banking
             throw $e;
         }
     }
+
+    #[\Override]
+    public function deposit(PaymentDetails $data): string
+    {
+        $referenceId = $data->referenceId . "-deposit";
+        try {
+            $confirmation = $this->bank->deposit(
+                $data->targetAccount,
+                $data->amount,
+                $referenceId,
+            );
+            // In Part 2, uncomment the block below and comment out the line above
+            /*
+            $confirmation = $this->bank->depositThatFails(
+                $data->targetAccount,
+                $data->amount,
+                $referenceId
+            );
+            */
+            return $confirmation;
+        } catch (InvalidAccount $e) {
+            throw $e;
+        } catch (\Throwable $e) {
+            $this->logger->error("Deposit failed", ['exception' => $e]);
+            throw $e;
+        }
+    }
+
+    #[\Override]
+    public function refund(PaymentDetails $data): string
+    {
+        $referenceId = $data->referenceId . "-refund";
+        try {
+            $confirmation = $this->bank->deposit(
+                $data->sourceAccount,
+                $data->amount,
+                $referenceId,
+            );
+            return $confirmation;
+        } catch (InvalidAccount $e) {
+            throw $e;
+        } catch (\Throwable $e) {
+            $this->logger->error("Refund failed", ['exception' => $e]);
+            throw $e;
+        }
+    }
 }
 ```
 
@@ -1029,6 +1139,9 @@ public class BankingActivities
     {
         var bankService = new BankingService("bank2.example.com");
         Console.WriteLine($"Depositing ${details.Amount} into account {details.TargetAccount}.");
+
+        // In Part 2, you'll uncomment this failing line and comment out the try/catch block below
+        // return await bankService.DepositThatFailsAsync(details.TargetAccount, details.Amount, details.ReferenceId);
         
         try
         {
@@ -1100,7 +1213,7 @@ options := workflow.ActivityOptions{
 
 <SdkTabs.Java>
 
-**src/main/java/moneytransfer/MoneyTransferWorkflowImpl.java**
+**src/main/java/moneytransferapp/MoneyTransferWorkflowImpl.java**
 
 ```java
 // ...
@@ -1290,7 +1403,7 @@ func main() {
 
 <SdkTabs.Java>
 
-**src/main/java/moneytransfer/MoneyTransferWorker.java**
+**src/main/java/moneytransferapp/MoneyTransferWorker.java**
 
 ```java
 package moneytransferapp;
@@ -1519,7 +1632,7 @@ MONEY_TRANSFER_TASK_QUEUE_NAME = "MONEY_TRANSFER_TASK_QUEUE"
 
 <SdkTabs.Go>
 
-**app/shared.go**
+**shared.go**
 
 ```go
 package app
@@ -1533,7 +1646,7 @@ const MoneyTransferTaskQueueName = "MONEY_TRANSFER_TASK_QUEUE"
 
 <SdkTabs.Java>
 
-**src/main/java/moneytransfer/Shared.java**
+**src/main/java/moneytransferapp/Shared.java**
 
 ```java
 package moneytransferapp;
@@ -1618,7 +1731,7 @@ Now you'll create a client program that starts a Workflow execution. This code c
 <SdkTabs languageOrder={TUTORIAL_LANGUAGE_ORDER}>
 <SdkTabs.Python>
 
-**start_workflow.py**
+**run_workflow.py**
 
 ```python
 import asyncio
@@ -1708,7 +1821,7 @@ func main() {
 
 <SdkTabs.Java>
 
-**src/main/java/moneytransfer/TransferApp.java**
+**src/main/java/moneytransferapp/TransferApp.java**
 
 ```java
 public class TransferApp {
@@ -1720,7 +1833,6 @@ public class TransferApp {
         WorkflowClient client = WorkflowClient.newInstance(serviceStub);
 
         // Workflow options configure Workflow stubs.
-        // A WorkflowId prevents duplicate instances.
         WorkflowOptions options = WorkflowOptions.newBuilder()
                 .setTaskQueue(Shared.MONEY_TRANSFER_TASK_QUEUE)
                 .setWorkflowId("money-transfer-workflow")
@@ -1730,12 +1842,15 @@ public class TransferApp {
         // but actually perform a gRPC call to the Temporal Service.
         MoneyTransferWorkflow workflow = client.newWorkflowStub(MoneyTransferWorkflow.class, options);
         
-        // Configure the details for this money transfer request
+        // Generate random transaction details (values will differ each run)
+        Random random = new Random();
         String referenceId = UUID.randomUUID().toString().substring(0, 18);
-        String fromAccount = "A1001";
-        String toAccount = "B2002";
-        int amountToTransfer = 100;
-        TransactionDetails transaction = new CoreTransactionDetails(fromAccount, toAccount, referenceId, amountToTransfer);
+        String fromAccount = String.valueOf(random.nextInt(1000000000));
+        String toAccount = String.valueOf(random.nextInt(1000000000));
+        int amountToTransfer = random.nextInt(1000);
+        
+        TransactionDetails transaction = new CoreTransactionDetails(
+            fromAccount, toAccount, referenceId, amountToTransfer);
 
         // Perform asynchronous execution
         WorkflowExecution we = WorkflowClient.start(workflow::transfer, transaction);
@@ -1747,6 +1862,10 @@ public class TransferApp {
     }
 }
 ```
+
+:::note
+The Java template generates **random** account numbers and transfer amounts each time you run it. Your output values will differ from the examples shown.
+:::
 
 </SdkTabs.Java>
 
@@ -1797,7 +1916,7 @@ run().catch((err) => {
 
 <SdkTabs.DotNet>
 
-**MoneyTransferStarter/Program.cs**
+**MoneyTransferClient/Program.cs**
 
 ```csharp
 using Temporalio.Client;
@@ -1807,20 +1926,19 @@ using Temporalio.MoneyTransferProject.MoneyTransferWorker;
 var client = await TemporalClient.ConnectAsync(new("localhost:7233"));
 
 // Configure the money transfer details
-var transferDetails = new TransferDetails
-{
-    SourceAccount = "A1001",
-    TargetAccount = "B2002", 
-    Amount = 100,
-    ReferenceId = "12345"
-};
+var paymentDetails = new PaymentDetails(
+    SourceAccount: "A1001",
+    TargetAccount: "B2002", 
+    Amount: 100,
+    ReferenceId: "12345"
+);
 
-Console.WriteLine($"Starting transfer of ${transferDetails.Amount} from {transferDetails.SourceAccount} to {transferDetails.TargetAccount}");
+Console.WriteLine($"Starting transfer of ${paymentDetails.Amount} from {paymentDetails.SourceAccount} to {paymentDetails.TargetAccount}");
 
 // Start the workflow
 var handle = await client.StartWorkflowAsync(
-    (MoneyTransferWorkflow wf) => wf.RunAsync(transferDetails),
-    new(id: $"money-transfer-{transferDetails.ReferenceId}", taskQueue: "MONEY_TRANSFER_TASK_QUEUE"));
+    (MoneyTransferWorkflow wf) => wf.RunAsync(paymentDetails),
+    new(id: $"money-transfer-{paymentDetails.ReferenceId}", taskQueue: "MONEY_TRANSFER_TASK_QUEUE"));
 
 Console.WriteLine($"Started workflow {handle.Id}");
 
@@ -2023,11 +2141,15 @@ Transfer complete (transaction IDs: W1779185060, D1779185060)</CodeSnippet>
           <CodeSnippet language="text">Worker is running and actively polling the Task Queue.
 To quit, use ^C to interrupt.
 
-Withdrawing $62 from account 249946050.
-[ReferenceId: 1480a22d-d0fc-4361]
-Depositing $62 into account 591856595.
-[ReferenceId: 1480a22d-d0fc-4361]
-[1480a22d-d0fc-4361] Transaction succeeded.</CodeSnippet>
+Withdrawing $[AMOUNT] from account [SOURCE_ACCOUNT].
+[ReferenceId: [UUID]]
+Depositing $[AMOUNT] into account [DEST_ACCOUNT].
+[ReferenceId: [UUID]]
+[[UUID]] Transaction succeeded.</CodeSnippet>
+
+:::note
+Your account numbers and amount will be different - the Java template generates random values each run.
+:::
         </SdkTabs.Java>
         <SdkTabs.TypeScript>
           <CodeSnippet language="text">Transfer complete (transaction IDs: W3436600150, D9270097234)</CodeSnippet>
