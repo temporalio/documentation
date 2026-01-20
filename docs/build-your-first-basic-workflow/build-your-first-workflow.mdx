@@ -90,7 +90,7 @@ This allows you to focus on business logic, instead of writing application code 
 <SetupSteps>
 
 <SetupStep code={
-  <SdkTabs>
+  <SdkTabs languageOrder={TUTORIAL_LANGUAGE_ORDER}>
     <SdkTabs.Python>
       <CodeSnippet language="bash">
       git clone https://github.com/temporalio/money-transfer-project-template-python
@@ -303,8 +303,22 @@ class MoneyTransfer:
 
 :::tip Understanding the imports
 - **`workflow.unsafe.imports_passed_through()`**: This context manager allows importing non-Workflow-safe modules (like Activities) into Workflow code. 
-- **`PaymentDetails`**: A dataclass defined in `shared.py` containing `source_account`, `target_account`, `amount`, and `reference_id` fields.
 :::
+
+The `PaymentDetails` dataclass is defined in `shared.py`:
+
+**shared.py**
+
+```python
+from dataclasses import dataclass
+
+@dataclass
+class PaymentDetails:
+    source_account: str
+    target_account: str
+    amount: int
+    reference_id: str
+```
 
 <h3>Activity Definition</h3>
 
@@ -2239,11 +2253,11 @@ The Workflow starter script starts a Workflow Execution. Each time you run it, t
   <CallToAction 
     href="http://localhost:8233"
     buttonText="Open the Temporal UI "
-    description="View the state of the Workflow with the Temporal Web UI"
+    description="View your local Workflow in the Web UI (runs on localhost:8233)"
   />
 }>
 
-The Temporal Web UI lets you see details about the Workflow you just ran.
+The Temporal Web UI lets you see details about the Workflow you just ran. Since you're running Temporal locally with `temporal server start-dev`, the UI is available at `http://localhost:8233`.
 
 **What you'll see in the UI:**
 - List of Workflows with their execution status
