@@ -131,16 +131,16 @@ utility at a command line interface (CLI). Follow these steps.
 
 </Tabs>
 
-## What is a Cloud Namespace Id? {#temporal-cloud-namespace-id}
+## What is a Cloud Namespace ID? {#temporal-cloud-namespace-id}
 
-A Cloud Namespace Id is a globally unique identifier for a [Namespace](/namespaces) in Temporal Cloud. A Namespace Id is
+A Cloud Namespace ID is a globally unique identifier for a [Namespace](/namespaces) in Temporal Cloud. A Namespace ID is
 formed by concatenating the following:
 
 1. A [Namespace Name](#temporal-cloud-namespace-name)
 1. A period (.)
 1. The [Account ID](#temporal-cloud-account-id) to which the Namespace belongs
 
-For example, for the Account ID `123de` and Namespace Name `accounting-production`, the Namespace Id is
+For example, for the Account ID `123de` and Namespace Name `accounting-production`, the Namespace ID is
 `accounting-production.123de`.
 
 ## What is a Cloud gRPC Endpoint? {#temporal-cloud-grpc-endpoint}
@@ -158,7 +158,8 @@ A gRPC endpoint appears on the detail page for each Cloud Namespace. Follow thes
 2. Navigate to the Namespace list page from the left-side vertical navigation.
 3. Tap or click on the Namespace Name to select and open the page for the Namespace whose endpoint you want to retrieve.
 4. On the Namespace detail page, click on the "Connect" button in the top right corner of the page.
-5. Click the copy icon next to the gRPC address to copy it to your clipboard.
+5. If multiple endpoints are displayed, choose which [type of endpoint](/cloud/namespaces/#access-namespaces) best fits your use case.
+6. Click the copy icon next to the gRPC address to copy it to your clipboard.
 
 See [How to access a Namespace in Temporal Cloud](/cloud/namespaces/#access-namespaces) for more information on
 different gRPC endpoint types and how to access them.
@@ -235,96 +236,48 @@ See the [`tcld` namespace create](/cloud/tcld/namespace/#create) command referen
 
 ## What are some Namespace best practices? {#best-practices}
 
-This section provides general guidance for organizing [Namespaces](/namespaces) across use cases, services,
-applications, or domains. Temporal Cloud provides Namespace–as-a-service, so the Namespace is the endpoint. Customers
-should consider not only a Namespace naming convention but also how to group or isolate workloads using the Namespace as
-a boundary.
+See [Namespace Best Practices](/best-practices/managing-namespace) for an overview of:
 
-Each team can have their own Namespace for improved modularity, security, debugging, and fault isolation. Namespaces
-contain the blast radius of misbehaving Workers that may exhaust rate limits. Sensitive Workflow state (PCI data) can be
-secured with per-Namespace permissions and encrypted with a separate encryption key.
+- naming conventions
+- typical organizational patterns
+- safeguards for production
+- tagging
+
+## How to call Workflows from different Namespaces?
 
 Temporal Applications in different Namespaces may be connected with [Nexus](/cloud/nexus) by exposing a clean service
 contract for others to use with built-in [Nexus access controls](/cloud/nexus/security). Nexus supports cross-team,
 cross-domain, multi-region, and multi-cloud use cases.
 
-### Constraints and limitations
+## Namespace Constraints and Limitations {#limits}
 
-Before considering an appropriate Namespace configuration, you should be aware of the following constraints:
+Temporal Cloud Namespaces operate under the following constraints:
 
 - By default, each account is allocated with a limit of ten Namespaces. As you create and use your Namespaces, for
   example by scheduling Workflows, Temporal Cloud automatically raises your limit. Our service identifies your usage
   patterns. It responds by slowly increasing your allowance, up to 100 Namespaces. You can request further increases
   beyond the 100 Namespace limit by opening a [support ticket](/cloud/support#support-ticket).
-- Each Namespace has a rate limit, which is measured in Actions per second (APS). A namespace may be throttled when its
-  throughput becomes too high. Throttling means limiting the rate at which actions are performed to prevent overloading
-  the system.
-  - Each Namespace's default limit is set at 400 APS and automatically adjusts based on recent usage (over the
-  prior 7 days). The Namespace's APS limit will never fall below this default value.
-- Each Namespace has a default service-level agreement (SLA) of 99.9% uptime.
-- You can opt-in to using [High Availability features](https://docs.temporal.io/cloud/high-availability) with a 99.99%
-  contractual SLA.
-  - Note: If a Namespace's APS limit has been raised above the default limit (above), then enabling High Availability will require a support ticket. Support will ensure that Temporal Cloud has capacity in the replica region to handle the additional APS before it adds the replica.
+- Each Namespace has [rate limits](/cloud/limits#namespace-level) for actions, operations, schedules, requests, and visibility requests.
+  A namespace may be rate limited when its throughput becomes too high to prevent overloading the system.
+  Namespace limits automatically adjust based on the prior 7 days of usage.
+- By default, Namespaces have a [service-level agreement (SLA)](/cloud/sla) of 99.9% availability against service errors.
+- You can opt-in to using [High Availability features](https://docs.temporal.io/cloud/high-availability) to increase the 
+  SLA to 99.99%.
+  - Note: If a Namespace's [action per second limit](/cloud/limits#actions-per-second) has been raised above the default, 
+    then it will require a support ticket to enable High Availability.
+    Support will ensure that Temporal Cloud has capacity to handle the additional APS before it adds the replica.
 - A Namespace is a security isolation boundary. Access to Temporal by [Worker Processes](/workers#worker-process) is
   permitted at the Namespace level. Isolating applications or environments (development, test, staging, production)
-  should take this into consideration.
+  should take this into consideration. See the [best practices for organizing Namespaces](/best-practices/managing-namespace)
 - A Namespace is provisioned with [endpoints](constraints-and-limitations) for executing your Workflows. Accessing a Namespace from a Worker or Temporal Client
   requires [API keys](/cloud/api-keys) or [mTLS](/cloud/certificates) authentication.
-- Every [Workflow Id](/workflow-execution/workflowid-runid#workflow-id) in a Namespace must be unique. Workflow Ids in different Namespaces may be the same.
+- Every open Workflow in a Namespace needs a unique [Workflow ID](/workflow-execution/workflowid-runid#workflow-id).
+  This does not apply to closed Workflows, which may have the same Workflow ID in the same Namespace.
+  Open Workflows in different Namespaces may have the same Workflow ID.
 - [Task Queue](/task-queue) names are unique per Namespace.
 - Closed Workflow retention is per Namespace.
 - RBAC [permissions](/cloud/users#namespace-level-permissions) are implemented at the Namespace level.
-
-### General guidance
-
-Namespace configuration requires some consideration. Following are some general guidelines to consider.
-
-- Namespaces are usually defined per use case. A use case can encompass a broad range of Workflow types and a nearly
-  unlimited scale of concurrent [Workflow Executions](/workflow-execution). 
-- Namespaces can be split along additional boundaries such as service, application, domain or even sub-domain.
-- Namespaces should be used to reduce the "blast radius" for mission-critical applications.
-- Environments such as production and development usually have requirements for isolation. We recommend that each
-  environment has its own Namespace. This helps keep production Namespaces secure. It also protects production Namespaces from being throttled due to throughput spikes in development.
-- Workflows should use Nexus to communicate across Namespaces with a clean service contract instead of sharing Temporal primitives directly.
-- Workflows in the same Namespace can communicate with each other directly.
-
-### Examples
-
-Following are some ideas about how to organize Namespaces.
-
-#### Example 1: Namespace per use case and environment
-
-We recommend using one Namespace for each use case and environment combination for simple configurations in which
-multiple services and team or domain boundaries don't exist.
-
-Sample naming convention:
-
-<pre>&lt;use-case>_&lt;environment></pre>
-
-#### Example 2: Namespace per use case, service, and environment
-
-We recommend using one Namespace for each use case, service, and environment combination when multiple services that are
-part of same use case communicate externally to Temporal via API (HTTP/gRPC).
-
-Sample naming convention:
-
-<pre>&lt;use-case>_&lt;service>_&lt;environment></pre>
-
-#### Example 3: Namespace per use case, domain, and environment
-
-We recommend using one namespace per use case, domain, and environment combination when multiple services that are part
-of the same use case need to communicate with each another via [Signals](/sending-messages#sending-signals) or by
-starting [Child Workflows](/child-workflows). In this case, though, you must be mindful about Workflow Id uniqueness by
-prefixing each Workflow Id with a service-specific string. The name of each Task Queue must also be unique. If multiple
-teams are involved, the domain could also represent a team boundary.
-
-Sample naming convention:
-
-<pre>&lt;use-case>_&lt;domain>_&lt;environment></pre>
-
-Sample workflowId convention:
-
-<pre>&lt;service-string>_&lt;workflow-id></pre>
+- For Workflows in different Namespaces to communicate with each other, they must use Nexus.
 
 ## How to access a Namespace in Temporal Cloud {#access-namespaces}
 
@@ -357,7 +310,9 @@ There are two types of gRPC endpoints for accessing a Namespace in Temporal Clou
         - Temporal Cloud has only one regional endpoint for each cloud region. The same regional endpoint can access any Namespace that is active in that region (or that has a [replica](/cloud/high-availability) in that region).
         - A Temporal Client can use a regional endpoint to ensure connection to a Namespace always happens within that region.
     - Restrictions:
-        - When using mTLS to authenticate, the Temporal Client must set the `server_name` property in its request to the value of the Namespace endpoint.
+        - When using mTLS to authenticate, the Temporal Client override the Server Name Indication (SNI) in the TLS configuration with the value of the Namespace endpoint.
+          In the Temporal SDKs, this can be done using the "TLS Server Name" property in requests to Temporal Cloud.
+          For example, in the [Temporal CLI](/cloud/certificates#configure-temporal-cli, this can be done by using `TEMPORAL_TLS_SERVER_NAME=<namespace endpoint>` or `--tls-server-name <namespace endpoint>`.
 
 This table summarizes which endpoints are available for a Namespace based on which features the Namespace has enabled:
 
@@ -375,8 +330,7 @@ Temporal Clients and Workers. See [Disable High Availability](/cloud/high-availa
 
 ### Authenticating with API keys or mTLS
 
-To use API keys to connect with the [Temporal CLI](/cli), [Client SDK](/develop), [tcld](/cloud/tcld),
-  [Cloud Ops API](/ops), and [Terraform](/cloud/terraform-provider), see
+To use API keys with [supported SDKs](/cloud/api-keys#api-key-supported-tooling), see
   [Use API keys to authenticate](/cloud/api-keys#using-apikeys).
   
 To use mTLS to connect with the [Temporal CLI](/cli) and [Client SDK](/develop), see
@@ -393,9 +347,13 @@ For accessing the Temporal Web UI, use the HTTPS endpoint in the form:
 To ensure the security of your data, all traffic to and from your Namespace is encrypted with TLS 1.3. 
 
 For enhanced protection:
+
 - Set up [private connectivity](/cloud/connectivity#private-network-connectivity-for-namespaces) to the Namespace.
+- When not using private connectivity, always connect to a Namespace from the same cloud provider.
+  If the Namespace is on AWS, then only connect to it from Workers that are also on AWS.
+  This keeps all traffic between Workers and Temporal Cloud on the cloud's backbone (see [AWS docs](https://aws.amazon.com/vpc/faqs/#:~:text=the%20Internet%20gateway.-,Q.,AWS%20use%20AWS's%20private%20network.), [GCP docs](https://cloud.google.com/network-tiers/docs/overview))
 - In your own networking architecture, set up an allow list for outgoing network requests from your Clients and Workers with the IP address ranges of the
-  Cloud Provider region in which your Namespace is located:
+  Cloud Provider region(s) in which your Namespace is located:
   - [AWS IP address ranges](https://docs.aws.amazon.com/vpc/latest/userguide/aws-ip-ranges.html)
   - [GCP IP address ranges](https://cloud.google.com/compute/docs/faq#find_ip_range)
 
