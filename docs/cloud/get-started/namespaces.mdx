@@ -332,13 +332,13 @@ Sample workflowId convention:
 
 Temporal Cloud supports authentication to Namespaces using [API keys](/cloud/api-keys) _or_
 [mTLS](/cloud/certificates). To migrate a Namespace from one authentication method to another, or to use both API
-key and mTLS authentication one the same Namespace, please contact
+key and mTLS authentication on the same Namespace, please contact
 [Support](https://docs.temporal.io/cloud/support#support-ticket).
 
 :::info
 
 Using both API key and mTLS authentication on the same Namespace is in
-[pre-release](/evaluate/development-production-features/release-stages) and doesn't support
+[pre-release](/evaluate/development-production-features/release-stages) and cannot be used along with
 [High Availability features](/cloud/high-availability).
 
 :::
@@ -373,7 +373,7 @@ Temporal Clients and Workers. See [Disable High Availability](/cloud/high-availa
 
 :::
 
-### Configuring a Temporal Client with API keys or mTLS
+### Authenticating with API keys or mTLS
 
 To use API keys to connect with the [Temporal CLI](/cli), [Client SDK](/develop), [tcld](/cloud/tcld),
   [Cloud Ops API](/ops), and [Terraform](/cloud/terraform-provider), see
