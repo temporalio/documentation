@@ -33,9 +33,9 @@ tags:
 ---
 
 A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the
-[Temporal Service](/temporal-service). Communication with a Temporal Service lets you perform actions such as
-starting Workflow Executions, sending Signals to Workflow Executions, sending Queries to Workflow Executions, getting
-the results of a Workflow Execution, and providing Activity Task Tokens.
+[Temporal Service](/temporal-service). Communication with a Temporal Service lets you perform actions such as starting
+Workflow Executions, sending Signals to Workflow Executions, sending Queries to Workflow Executions, getting the results
+of a Workflow Execution, and providing Activity Task Tokens.
 
 This page shows you how to do the following using the Go SDK with the Temporal Client:
 
@@ -207,6 +207,7 @@ variables or a configuration file, and then override specific options in code.
 
 {/* SNIPSTART samples-apps-go-yourapp-gateway {"selectedLines": ["1-23", "32"]} */}
 [sample-apps/go/yourapp/gateway/main.go](https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/gateway/main.go)
+
 ```go
 package main
 
@@ -234,6 +235,7 @@ func main() {
 // ...
 }
 ```
+
 {/* SNIPEND */}
 
 </TabItem>
@@ -308,7 +310,7 @@ tls_client_key_path = "your-tls-client-key-path"
 With the connections options defined in the configuration file, use the `LoadClientOptions` function in the `envconfig`
 package to create a Temporal Client using the `cloud` profile as follows:
 
-```go {13-15}
+```go {13-17}
 package main
 
 import (
@@ -325,6 +327,7 @@ func main() {
 
 	opts, err := envconfig.LoadClientOptions(envconfig.LoadClientOptionsRequest{
 		ConfigFilePath: configFilePath,
+    ConfigFileProfile: "cloud",
 	})
 	if err != nil {
 		log.Fatalf("Failed to load client config from custom file: %v", err)
