@@ -326,7 +326,7 @@ func main() {
 	configFilePath := "/Users/yourname/.config/my-app/temporal.toml"
 
 	opts, err := envconfig.LoadClientOptions(envconfig.LoadClientOptionsRequest{
-		ConfigFilePath: configFilePath,
+    ConfigFilePath: configFilePath,
     ConfigFileProfile: "cloud",
 	})
 	if err != nil {
