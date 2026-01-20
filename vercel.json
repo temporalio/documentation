@@ -1636,6 +1636,11 @@
       "permanent": true
     },
     {
+      "source": "/develop/typescript/ai-sdk",
+      "destination": "/develop/typescript/integrations/ai-sdk",
+      "permanent": true
+    },
+    {
       "source": "/python/:path*",
       "destination": "/develop/python"
     },
