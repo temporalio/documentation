@@ -220,7 +220,7 @@ module.exports = {
                 type: 'doc',
                 id: 'develop/python/integrations/index',
               },
-              items: [],
+              items: ['develop/python/integrations/braintrust'],
             },
           ],
         },
