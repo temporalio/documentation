@@ -183,7 +183,9 @@ Create a Workflow file (workflows.py):
 ```python
 from datetime import timedelta
 from temporalio import workflow
-from activities import greet
+
+with workflow.unsafe.imports_passed_through():
+    from activities import greet
 
 @workflow.defn
 class SayHelloWorkflow:
@@ -208,8 +210,10 @@ Create a Worker file (worker.py):
 import asyncio
 from temporalio.client import Client
 from temporalio.worker import Worker
-from workflows import SayHelloWorkflow
-from activities import greet
+
+with workflow.unsafe.imports_passed_through():
+    from workflows import SayHelloWorkflow
+    from activities import greet
 
 async def main():
     client = await Client.connect("localhost:7233")
