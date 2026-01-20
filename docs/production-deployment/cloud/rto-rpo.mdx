@@ -19,35 +19,45 @@ tags:
 
 import { ToolTipTerm } from '@site/src/components';
 
-Recovery Point Objective (RPO) and Recovery Time Objective (RTO) are the objectives that Temporal strives to meet for data durability (recovery point) and service restoration (recovery time) in the event of cloud outages.
-These objectives are complementary to but different from Temporal Cloud's [Service Level Agreement (SLA)](/cloud/sla).
+When a cloud outage disrupts a Namespace, Temporal Cloud takes measures to maintain the Namespace's availability and data durability. The time it takes to recover from the outage is called the "recovery time." The amount of data (event histories) lost is called the "recovery point." A durable system should have a low recovery time and recovery point.
 
-To achieve the lowest RPO and RTO, Temporal Cloud offers [High Availability](/cloud/high-availability) features that keep Workflows operational with minimal downtime. 
+To help users plan for keeping critical Workflows available during a cloud outage, Temporal Cloud publishes goals for the recovery time and recovery point for each kind of outage. These goals are called the Recovery Time Objective (RTO) and Recovery Point Objective (RPO). These objectives are complementary to Temporal Cloud's [Service Level Agreement (SLA)](/cloud/sla).
 
-When High Availability is enabled on a Namespace, the user chooses an "active" region (where processing happens) and a "replica" region (where processing will switch to in the event of a failure). If the active and replica are in the same cloud provider but different regions (e.g., AWS us-east-1 and AWS us-west-2), this is called Multi-region Replication. If the active and replica are in different cloud providers (e.g., AWS and GCP), this is called Multi-cloud Replication. If the active and replica are in the same region, this is called Same-region Replication. Temporal will always place the active and replica in different [cells](/cloud/sla).
+To achieve the lowest RPO and RTO, Temporal Cloud offers [High Availability](/cloud/high-availability) features that keep Workflows operational with minimal downtime. When High Availability is enabled on a Namespace, the user chooses a region to place a "replica" that will take over in the event of a failure. The location of the replica determines the type of replication used and the type of outages that can be handled. "Multi-region Replication" is when the active and replica are in different regions on the same cloud (e.g., AWS us-east-1 and AWS us-west-2). "Multi-cloud Replication" is when the active and replica are in different clouds (e.g., AWS and GCP). "Same-region Replication" is when the active and replica are in the same region. Temporal always places the active and replica in different [cells](/cloud/sla).
 
 As Workflows progress in the active region, history events are asynchronously replicated to the replica.
-In case of an outage in the active region or cell, Temporal Cloud will failover to the replica so that existing Workflow Executions will continue to run and new Executions can be started.
+Because replication is asynchronous, High Availability does not impact the latency or throughput of Workflow Executions in the active region.
+If an outage hits the active region or cell, Temporal Cloud will failover to the replica so that existing Workflow Executions will continue to run and new Workflow Executions can be started.
 
-The Recovery Point Objective and Recovery Time Objective for Temporal Cloud depend on the type of outage and which [High Availability](/cloud/high-availability) feature your Namespace has enabled:
+The Recovery Point Objective and Recovery Time Objective for Temporal Cloud depend on the type of outage and which [High Availability](/cloud/high-availability) feature your Namespace has enabled. Temporal Cloud can only set an RPO and RTO for cases where it has the ability to mitigate the outage. Therefore, the below RPOs and RTOs apply to Namespaces that have the corresponding type of replication and have enabled Temporal-initiated failovers (which comes enabled by default). 
 
-1. **Availability zone outage**: Historically, these have been the most common type of outage in the cloud. Temporal Cloud Namespaces and data are always replicated across three availability zones. The failure of a single availability zone is handled automatically by Temporal Cloud behind the scenes, with no potential for data loss, and little-to-no observable downtime to the end user.
-    1. All Namespaces: Zero RPO and near-zero RTO.
-2. **Cell outage**: Temporal Cloud runs on a [cell architecture](/cloud/sla). Each cell contains the software and services necessary to host a Namespace. While unlikely, it's possible for a cell to experience a disruption due to uncaught software bugs or sub-component failures (e.g., an outage in the database the Namespaces uses).
-    1. Namespaces without High Availability: **TODO pending Engineering response**
-    2. Namespaces with High Availability and Temporal-initiated failovers enabled* (Same-region Replication, Multi-region Replication, or Multi-cloud Replication): 1-minute RPO and 20-minute RTO
-3. **Regional outage**: On [rare occasions](https://temporal.io/blog/how-devs-kept-running-during-the-aws-us-east-1-oct-20-2025), an entire region within a cloud provider will be degraded. Since Namespaces depend on the cloud provider's infrastructure, Temporal Cloud is not immune to these outages.
-    1. Namespaces without Multi-region Replication or Multi-cloud Replication enabled: 8-hour RPO* and Unbounded RTO (dependent on how long the cloud region takes to recover)
-    2. Namespaces with Multi-region Replication or Multi-cloud Replication and Temporal-initiated failovers enabled*: 1-minute RPO and 20-minute RTO
-4. **Cloud-wide outage**: An entire cloud provider has an outage across most or all regions. Since cloud providers strive to keep cloud regions de-coupled, these are the rarest outages of all. Still, they [have happened](https://status.cloud.google.com/incidents/ow5i3PPK96RduMcb1SsW) in the past.
-    1. Namespaces without Multi-cloud Replication: 8-hour RPO* and Unbounded RTO (dependent on how long the cloud provider takes to recover)
-    2. Namespaces with Multi-cloud Replication and Temporal-initiated failovers enabled*: 1-minute RPO and 20 minutes or less RTO
+1. **Availability zone outage**:
+    1. _Applicable Namespaces:_ All Namespaces
+    2. _Goals:_ Zero RPO and near-zero RTO
+    3. _More details:_ Historically, these have been the most common type of outage in the cloud. Temporal Cloud replicates every Namespace across three availability zones. The failure of a single availability zone is handled automatically by Temporal Cloud behind the scenes, with no potential for data loss, and little-to-no observable downtime to the end user.
+2. **Cell outage**: 
+    1. _Applicable Namespaces:_ Namespaces with Same-region Replication, Multi-region Replication, or Multi-cloud Replication
+    2. _Goals:_ 1-minute RPO and 20-minute RTO
+    3. _More details:_ Temporal Cloud runs on a [cell architecture](/cloud/sla). Each cell contains the software and services necessary to host a Namespace. While unlikely, it's possible for a cell to experience a disruption due to uncaught software bugs or sub-component failures (e.g., an outage in the underlying database).
+3. **Regional outage**: 
+    1. _Applicable Namespaces:_ Namespaces with Multi-region Replication or Multi-cloud Replication
+    2. _Goals:_ 1-minute RPO and 20-minute RTO
+    3. _More details:_ On [rare occasions](https://temporal.io/blog/how-devs-kept-running-during-the-aws-us-east-1-oct-20-2025), an entire region within a cloud provider will be degraded. Since Namespaces depend on the cloud provider's infrastructure, Temporal Cloud is not immune to these outages.
+4. **Cloud-wide outage**: 
+    1. _Applicable Namespaces:_ Namespaces with Multi-cloud Replication
+    2. _Goals:_ 1-minute RPO and 20 minutes or less RTO
+    3. _More details:_ An entire cloud provider has an outage across most or all regions. Since cloud providers strive to keep cloud regions de-coupled, these are the rarest outages of all. Still, they [have happened](https://status.cloud.google.com/incidents/ow5i3PPK96RduMcb1SsW) in the past.
 
-A few notes on these goals:
+Notes:
 
-- "8-hour RPO" in certain scenarios: Cloud region outages generally do not cause data loss in systems that are replicated across three availability zones. In past cloud region outages, affected Namespaces generally observed no data loss, even without replication enabled. However, should a future outage cause data loss, Temporal backs up all Namespace data in a way that would meet an 8-hour RPO.
+- The above goals are only applicable to Namespaces that have enabled "Temporal-initiated failovers" (which comes enabled by default). Temporal-initiated failovers are initiated by Temporal's tooling and/or on-call engineers without user action. Users can always initiate a failover on their Namespace, even when Temporal-initiated failovers are enabled. In an outage, a user-initiated failover will not "cancel out" or "accidentally reverse" a Temporal-initiated failover. **Temporal highly recommends keeping Temporal-initiated failovers enabled.** When Temporal-initiated failovers are _disabled,_ Temporal Cloud cannot set an RPO and RTO for that Namespace, because it cannot control when or if the user will trigger a failover.
 
-- "Temporal-initiated failovers:" these failovers are initiated by Temporal's tooling and/or on-call engineers without requiring user action. **Temporal highly recommends keeping Temporal-initiated failovers enabled,** which is the default for Namespaces with High Availability. Users can still trigger a failover on their Namespace ("manual failover") even if Temporal-initiated failovers are enabled. When Temporal-initiated failovers are _disabled,_ Temporal's RTO for that Namespace is unbounded (dependent on how long the cloud outage lasts), because Temporal cannot control when the user triggers a failover for that Namespace.
+- The above goals are for unplanned cloud outages. They do not apply to user-initiated failovers during healthy periods (e.g., for DR drills). Read about [triggering a failover](/cloud/high-availability/failovers) to see how a Namespace failover should perform during healthy periods.
+
+- As soon as a cloud outage resolves, Temporal's on-call engineers will work to restore service to Namespaces that were not protected by High Availability. A cloud outage can leave lingering effects in Temporal's systems and applications, even after the cloud provider restores the underlying service. Because of this, affected Namespaces may not be immediately available when the underlying service is restored. An affected Namespace's outage may last longer than the cloud provider's outage.
+
+- All Namespaces are backed up every 4 hours. If an outage causes data loss on a Namespace that was not protected by High Availability, then Temporal will use the backup to restore as much data as feasible.
+
 
 ## Minimizing the Recovery Point
 
