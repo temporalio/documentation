@@ -212,6 +212,16 @@ module.exports = {
             'develop/python/child-workflows',
             'develop/python/continue-as-new',
             'develop/python/interceptors',
+            {
+              type: 'category',
+              label: 'Integrations',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/python/integrations/index',
+              },
+              items: ['develop/python/integrations/braintrust'],
+            },
           ],
         },
         {
@@ -244,7 +254,16 @@ module.exports = {
             'develop/typescript/child-workflows',
             'develop/typescript/continue-as-new',
             'develop/typescript/interceptors',
-            'develop/typescript/ai-sdk',
+            {
+              type: 'category',
+              label: 'Integrations',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/typescript/integrations/index',
+              },
+              items: ['develop/typescript/integrations/ai-sdk'],
+            },
           ],
         },
         {
@@ -322,9 +341,9 @@ module.exports = {
         type: 'doc',
         id: 'cloud/index',
       },
-  items: [
-    {
-      type: 'category',
+      items: [
+        {
+          type: 'category',
           label: 'Get started with Cloud',
           collapsed: false,
           link: {
@@ -441,7 +460,7 @@ module.exports = {
             'cloud/nexus/pricing',
           ],
         },
-       {
+        {
           type: 'category',
           label: 'Migrate',
           collapsed: true,
@@ -449,11 +468,7 @@ module.exports = {
             type: 'doc',
             id: 'cloud/migrate/index',
           },
-          items: [
-            'cloud/migrate/automated',
-            'cloud/migrate/manual',
-            'cloud/migrate/migrate-within-cloud',
-          ],
+          items: ['cloud/migrate/automated', 'cloud/migrate/manual', 'cloud/migrate/migrate-within-cloud'],
         },
         'cloud/capacity-modes',
         'cloud/worker-health',
