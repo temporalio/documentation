@@ -24,7 +24,7 @@ module.exports = async function createConfigAsync() {
         },
       },
     ],
-    clientModules: ['./src/client/remote-amplitude-analytics.js'],
+    clientModules: ['./src/client/remote-amplitude-analytics.js', './src/client/scrollSidebarToActivePage.ts'],
     themeConfig: {
       colorMode: {
         defaultMode: 'dark',

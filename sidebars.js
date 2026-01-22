@@ -5,7 +5,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Evaluate',
-      collapsed: false,
+      collapsed: true,
       link: {
         type: 'doc',
         id: 'evaluate/index',
@@ -80,7 +80,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Develop',
-      collapsed: false,
+      collapsed: true,
       link: {
         type: 'doc',
         id: 'develop/index',
@@ -527,7 +527,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Deploy to production',
-      collapsed: false,
+      collapsed: true,
       link: {
         type: 'doc',
         id: 'production-deployment/index',
