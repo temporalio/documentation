@@ -188,9 +188,8 @@ async def main():
     client = await Client.connect(**connect_config)
     print(f"✅ Client connected to {client.service_client.config.target_host} in namespace '{client.namespace}'")
 
-
-	if __name__ == "__main__":
-		asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
   </SdkTabs.Python>
