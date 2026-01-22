@@ -197,7 +197,7 @@ The repository for this tutorial is a GitHub Template repository, which means yo
 The Temporal Application will consist of the following pieces:
 
 1. **A Workflow** written in your programming language of choice and your installed Temporal SDK in that language. A Workflow defines the overall flow of the application.
-2. **An Activity** is a function or method that does specific operation - like withdrawing money, sending an email, or calling an API. Since these operations often depend on external services that can be unreliable, Temporal automatically retries Activities when they fail. 
+2. **An Activity** is a function or method that does a specific operation - like withdrawing money, sending an email, or calling an API. Since these operations often depend on external services that can be unreliable, Temporal automatically retries Activities when they fail. 
 In this application, you'll write Activities for withdraw, deposit, and refund operations.
 3. **A Worker**, provided by the Temporal SDK, which runs your Workflow and Activities reliably and consistently.
 
