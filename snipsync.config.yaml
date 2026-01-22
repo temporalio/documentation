@@ -16,8 +16,13 @@ origins:
   - owner: temporalio
     repo: samples-go
   - owner: temporalio
+    repo: samples-ruby
+  - owner: temporalio
+    repo: samples-dotnet
+  - owner: temporalio
     repo: samples-java
-    ref: 'nexus-snip-sync'
+  - owner: temporalio
+    repo: features
   - owner: temporalio
     repo: reference-app-orders-go
   - files:

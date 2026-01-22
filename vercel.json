@@ -6,6 +6,11 @@
   },
   "redirects": [
     {
+      "source": "/cloud/introduction",
+      "destination": "/cloud/overview",
+      "permanent": true
+    },
+    {
       "source": "/cookbook/:path*",
       "destination": "/ai-cookbook/:path*",
       "permanent": true
@@ -1631,6 +1636,11 @@
       "permanent": true
     },
     {
+      "source": "/develop/typescript/ai-sdk",
+      "destination": "/develop/typescript/integrations/ai-sdk",
+      "permanent": true
+    },
+    {
       "source": "/python/:path*",
       "destination": "/develop/python"
     },
@@ -1981,7 +1991,7 @@
       "permanent": true
     },
     {
-      "source": "/production-deployment/cloud/metrics/performance-bottlenecks",
+      "source": "/cloud/metrics/performance-bottlenecks",
       "destination": "/troubleshooting/performance-bottlenecks",
       "permanent": true
     },
