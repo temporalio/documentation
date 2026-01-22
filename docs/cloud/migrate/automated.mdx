@@ -218,7 +218,9 @@ Before failing over your namespace to Temporal Cloud, review the following produ
 ### Additional Notes
 
 #### Special dynamic configuration for Version 1.22.x-1.23.x
-Temporal versions 1.22.x and 1.23.x support stream-based replication, but it was disabled by default. Since those versions were released, stream-based replication has been tested as more reliable than the poll-based replication that was the default in 1.22 and 1.23. When preparing for an S2C migration on these versions, please add the following dynamic configuration to enable stream-based replication:
+Temporal versions 1.22.x and 1.23.x include support for stream-based replication, but it is disabled by default. Since those releases, stream-based replication has been validated as more reliable than the poll-based replication that remained the default in 1.22 and 1.23. 
+
+When preparing for an S2C migration on these versions, configure the following dynamic settings to enable stream-based replication:
 
 ```yaml
 history.enableReplicationStream:
