@@ -1,7 +1,7 @@
 ---
 id: ai-sdk
-title: Vercel AI SDK Integration
-sidebar_label: Vercel AI SDK Integration
+title: AI SDK by Vercel Integration
+sidebar_label: AI SDK by Vercel Integration
 toc_max_heading_level: 2
 keywords:
   - ai
@@ -29,7 +29,7 @@ complete code and run them locally.
 
 :::info
 
-The Vercel AI SDK Integration is in Pre-release. Refer to the
+The Vercel AI SDK Integration is in Public Preview. Refer to the
 [Temporal product release stages guide](/evaluate/development-production-features/release-stages) for more information.
 
 :::
@@ -159,7 +159,9 @@ For example, if you want to call an external API to get the weather, you would i
 from the tool function. The following is an example of an Activity that gets the weather for a given location:
 
 <!--SNIPSTART typescript-vercel-ai-sdk-weather-activity -->
+
 [ai-sdk/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/main/ai-sdk/src/activities.ts)
+
 ```ts
 export async function getWeather(input: {
   location: string;
@@ -172,6 +174,7 @@ export async function getWeather(input: {
   };
 }
 ```
+
 <!--SNIPEND-->
 
 Then in your agent implementation, provide the tool to the model using the `tools` option and instruct the model to use
