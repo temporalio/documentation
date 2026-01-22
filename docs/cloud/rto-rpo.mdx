@@ -23,7 +23,7 @@ When a cloud outage disrupts a Namespace, Temporal Cloud takes measures to maint
 
 To help users plan for keeping critical Workflows available during a cloud outage, Temporal Cloud publishes goals for the recovery time and recovery point for each kind of outage. These goals are called the Recovery Time Objective (RTO) and Recovery Point Objective (RPO). These objectives are complementary to Temporal Cloud's [Service Level Agreement (SLA)](/cloud/sla).
 
-To achieve the lowest RPO and RTO, Temporal Cloud offers [High Availability](/cloud/high-availability) features that keep Workflows operational with minimal downtime. When High Availability is enabled on a Namespace, the user chooses a region to place a "replica" that will take over in the event of a failure. The location of the replica determines the type of replication used and the type of outages that can be handled. Multi-region Replication is when the active and replica are in different regions on the same cloud (e.g., AWS us-east-1 and AWS us-west-2). Multi-cloud Replication is when the active and replica are in different clouds (e.g., AWS and GCP). Same-region Replication is when the active and replica are in the same region. Temporal always places the active and replica in different [cells](/cloud/sla).
+To achieve the lowest RPO and RTO, Temporal Cloud offers [High Availability](/cloud/high-availability) features that keep Workflows operational with minimal downtime. When High Availability is enabled on a Namespace, the user chooses a region to place a "replica" that will take over in the event of a failure. The location of the replica determines the type of replication used and the type of outages that can be handled. Multi-region Replication is when the active and replica are in different regions on the same cloud (e.g., AWS us-east-1 and AWS us-west-2). Multi-cloud Replication is when the active and replica are in different clouds (e.g., AWS and GCP). Same-region Replication is when the active and replica are in the same region. Temporal always places the active and replica in different [cells](/cloud/overview#cell-based-infrastructure).
 
 As Workflows progress in the active region, history events are asynchronously replicated to the replica.
 Because replication is asynchronous, High Availability does not impact the latency or throughput of Workflow Executions in the active region.
@@ -45,7 +45,7 @@ The Recovery Point Objective and Recovery Time Objective for Temporal Cloud depe
     3. _More details:_ On [rare occasions](https://temporal.io/blog/how-devs-kept-running-during-the-aws-us-east-1-oct-20-2025), an entire region within a cloud provider will be degraded. Since Namespaces depend on the cloud provider's infrastructure, Temporal Cloud is not immune to these outages.
 4. **Cloud-wide outage**: 
     1. _Applicable Namespaces:_ Namespaces with Multi-cloud Replication
-    2. _Goals:_ 1-minute RPO and 20 minutes or less RTO
+    2. _Goals:_ 1-minute RPO and 20-minute RTO
     3. _More details:_ An entire cloud provider has an outage across most or all regions. Since cloud providers strive to keep cloud regions de-coupled, these are the rarest outages of all. Still, they [have happened](https://status.cloud.google.com/incidents/ow5i3PPK96RduMcb1SsW) in the past.
 
 Notes:
