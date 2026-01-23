@@ -49,7 +49,7 @@ module.exports = async function createConfigAsync() {
       prism: {
         //theme: require("prism-react-renderer/themes/nightOwlLight"),
         // darkTheme: require("prism-react-renderer/themes/dracula"),
-        additionalLanguages: ['java', 'ruby', 'php', 'csharp', 'toml', 'bash', 'docker','hcl'],
+        additionalLanguages: ['java', 'ruby', 'php', 'csharp', 'toml', 'bash', 'docker', 'hcl'],
       },
       docs: {
         sidebar: {
@@ -416,8 +416,7 @@ module.exports = async function createConfigAsync() {
     ],
     future: {
       v4: true,
-      // Disable experimental_faster on Vercel to avoid build timeouts
-      experimental_faster: process.env.VERCEL ? false : true,
+      experimental_faster: true,
     },
   };
 
