@@ -2051,8 +2051,8 @@
       "permanent": true
     },
     {
-      "source": "/production-deployment/cloud/terraform-provider",
-      "destination": "/cloud/terraform-provider",
+      "source": "/production-deployment/cloud/:path*",
+      "destination": "/cloud/:path*",
       "permanent": true
     }
   ]
