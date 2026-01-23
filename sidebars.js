@@ -651,6 +651,20 @@ module.exports = {
         'best-practices/managing-aps-limits',
         'best-practices/cloud-access-control',
         'best-practices/security-controls',
+        'best-practices/worker',
+        'production-deployment/multi-tenant-patterns',
+        {
+          type: 'category',
+          label: 'Knowledge Hub',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'best-practices/knowledge-hub/index',
+          },
+          items: [
+            'best-practices/knowledge-hub/temporal-overview',
+          ],
+        },
       ],
     },
     {
