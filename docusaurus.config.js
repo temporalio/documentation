@@ -416,7 +416,8 @@ module.exports = async function createConfigAsync() {
     ],
     future: {
       v4: true,
-      experimental_faster: true,
+      // Disable experimental_faster on Vercel to avoid build timeouts
+      experimental_faster: process.env.VERCEL ? false : true,
     },
   };
 
