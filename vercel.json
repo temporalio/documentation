@@ -2049,6 +2049,11 @@
       "source": "/cloud/audit-logging-gcp",
       "destination": "/cloud/audit-logs-gcp",
       "permanent": true
+    },
+    {
+      "source": "/production-deployment/cloud/terraform-provider",
+      "destination": "/cloud/terraform-provider",
+      "permanent": true
     }
   ]
 }
