@@ -18,7 +18,11 @@ The Temporal Knowledge Hub is a foundational template for organizations to creat
 It is designed for customization by internal Temporal Platform teams to facilitate structured developer onboarding and continuous education.
 
 For illustration, the content currently uses a hypothetical organization, "ABC Financial."
-Users must follow the provided instructions (shown as `Notes`) to customize the content for their specific organization and operational needs.
+Users must follow the provided instructions (see below for an example) to customize the content for their specific organization and operational needs.
+
+:::note
+On each page, instructions will be shown in note banners, like this one.
+:::
 
 ## Target audience
 

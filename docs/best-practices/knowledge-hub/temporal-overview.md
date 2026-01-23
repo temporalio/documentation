@@ -14,6 +14,10 @@ tags:
   - Knowledge Hub
 ---
 
+:::info
+This page is part of the [Temporal Knowledge Hub](./index.md).
+:::
+
 ## What is Temporal?
 
 :::note
