@@ -2,7 +2,9 @@
 id: index
 title: TypeScript SDK developer guide
 sidebar_label: TypeScript SDK
-description: This guide offers a thorough overview of structures, features, and best practices for developing with Temporal's TypeScript SDK, including Workflows, Client, Testing, Failure Detection, and more.
+description:
+  This guide offers a thorough overview of structures, features, and best practices for developing with Temporal's
+  TypeScript SDK, including Workflows, Client, Testing, Failure Detection, and more.
 toc_max_heading_level: 4
 keywords:
   - typescript
@@ -15,8 +17,7 @@ import * as Components from '@site/src/components';
 
 ![TypeScript SDK Banner](/img/assets/banner-typescript-temporal.png)
 
-:::info TYPESCRIPT SPECIFIC RESOURCES
-Build Temporal Applications with the TypeScript SDK.
+:::info TYPESCRIPT SPECIFIC RESOURCES Build Temporal Applications with the TypeScript SDK.
 
 **Temporal TypeScript Technical Resources:**
 
@@ -30,11 +31,13 @@ Build Temporal Applications with the TypeScript SDK.
 
 - [Temporal TypeScript Community Slack](https://temporalio.slack.com/archives/C01DKSMU94L)
 - [TypeScript SDK Forum](https://community.temporal.io/tag/typescript-sdk)
-  :::
+
+:::
 
 ## [Core application](/develop/typescript/core-application)
 
-Use the essential components of a Temporal Application (Workflows, Activities, and Workers) to build and run a Temporal application.
+Use the essential components of a Temporal Application (Workflows, Activities, and Workers) to build and run a Temporal
+application.
 
 - [Develop a Basic Workflow](/develop/typescript/core-application#develop-workflows)
 - [Develop a Basic Activity](/develop/typescript/core-application#develop-activities)
@@ -79,7 +82,8 @@ Send messages to and read the state of Workflow Executions.
 Interrupt a Workflow Execution with a Cancel or Terminate action.
 
 - [Cancellation scopes in Typescript](/develop/typescript/cancellation#cancellation-scopes)
-- [Reset a Workflow](/develop/typescript/cancellation#reset): Resume a Workflow Execution from an earlier point in its Event History.
+- [Reset a Workflow](/develop/typescript/cancellation#reset): Resume a Workflow Execution from an earlier point in its
+  Event History.
 
 ## [Asynchronous Activity Completion](/develop/typescript/asynchronous-activity-completion)
 
@@ -123,9 +127,10 @@ Use compression, encryption, and other data handling by implementing custom conv
 
 - [Custom Payload Codec](/develop/typescript/converters-and-encryption#custom-payload-conversion)
 
-## Temporal Nexus
+## [Temporal Nexus](/develop/typescript/nexus)
 
-The [Temporal Nexus](/develop/typescript/nexus) feature guide shows how to use Temporal Nexus to connect durable executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
+The Temporal Nexus feature guide shows how to use Temporal Nexus to connect durable
+executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
 
 - [Create a Nexus Endpoint to route requests from caller to handler](/develop/typescript/nexus#create-nexus-endpoint)
 - [Define the Nexus Service contract](/develop/typescript/nexus#define-nexus-service-contract)
@@ -164,3 +169,9 @@ Manage inbound and outbound SDK calls, enhance tracing, and add authorization to
 
 - [How to implement interceptors](/develop/typescript/interceptors#interceptors)
 - [Register an interceptor](/develop/typescript/interceptors#register-interceptor)
+
+## [Vercel AI SDK Integration](/develop/typescript/integrations/ai-sdk)
+
+Integrate the Vercel AI SDK with Temporal to build durable AI agents and AI-powered applications.
+
+- [Vercel AI SDK Integration](/develop/typescript/integrations/ai-sdk)
