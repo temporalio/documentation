@@ -13,6 +13,10 @@ const quickstartLinks = [
     name: "Java Quickstart",
   },
   {
+    path: "/develop/php/set-up-your-local-php",
+    name: "PHP Quickstart",
+  },
+  {
     path: "/develop/python/set-up-your-local-python",
     name: "Python Quickstart",
   },
