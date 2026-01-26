@@ -161,7 +161,7 @@ Nexus Machinery on both sides handles the cross-namepace communication.
 
 For example, when you execute a Nexus Operation in a caller Workflow the following Namespace gRPC calls are made:
 
-1. **RespondWorkflowTaskCompleted ([ScheduleNexusOperation command](/references/commands#schedulenexusoperation)) is used by the caller Worker to schedule a Nexus Operation, which atomically hands off execution to the caller's Nexus Machinery.
+1. **RespondWorkflowTaskCompleted** ([ScheduleNexusOperation command](/references/commands#schedulenexusoperation)) is used by the caller Worker to schedule a Nexus Operation, which atomically hands off execution to the caller's Nexus Machinery.
 1. **PollNexusTaskQueue** is used by the handler Worker to receive a [Nexus Task](/tasks#nexus-task) to process, for example to start a Nexus Operation.
 1. **RespondNexusTaskCompleted** or **RespondNexusTaskFailed** is used by the handler Worker to return the Nexus Task result.
    When asked to start a Nexus Operation, the Nexus handler decides if the Operation will be synchronous or asynchronous.
