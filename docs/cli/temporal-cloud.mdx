@@ -1,7 +1,7 @@
 ---
 id: temporal-cloud
-title: Integrate CLI with Temporal Cloud
-sidebar_label: Integrate with Cloud
+title: Use with Temporal Cloud
+sidebar_label: Use with Temporal Cloud
 slug: /cli/temporal-cloud
 description: Connect the Temporal CLI to Temporal Cloud using environment profiles and authentication.
 keywords:
@@ -30,14 +30,23 @@ the authentication credentials to the specified profile. If you do not provide a
 the authentication credentials to the `default` profile.
 
 A successful login will allow you to run `temporal cloud` command to perform operational and administrative tasks on
-Temporal Cloud. It does not automatically provide the CLI with information about the Temporal Service you want to
-communicate with. If you need to communicate with a Temporal Service, you still need to provide the `--address` and
-`--namespace` flags to the command as well as credentials for the Temporal Service you want to communicate with.
+Temporal Cloud.
 
-## Common operations
+:::info
+
+`temporal cloud login` allows you to perform administrative and operational tasks on Temporal Cloud. It does not provide
+the CLI with information about the Temporal Service you want to communicate with. Commands such as
+`temporal workflow list`, which interact with a Temporal Service, still require the `--address` and `--namespace` flags
+as well as API key credentials.
+
+:::
+
+## Common operations {#common-operations}
 
 The following cheat sheet groups common Temporal Cloud commands by object. Commands and subcommands are listed in
 alphabetical order.
+
+:::info
 
 ### Namespace
 
