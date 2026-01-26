@@ -14,7 +14,7 @@ tags:
   - Priority and Fairness
 ---
 
-import { CaptionedImage } from '@site/src/components';
+import { EnlargeImage } from '@site/src/components';
 import SdkTabs from '@site/src/components';
 
 [Task Queue Priority](#task-queue-priority) and [Task Queue Fairness](#task-queue-fairness) are two ways to manage the
@@ -22,26 +22,24 @@ distribution of work within Task Queues. Priority focuses on how Tasks are prior
 Fairness aims to prevent one set of Tasks from blocking others within the same priority level.
 
 You can use Priority and Fairness individually within your Task Queues or you can use them together for more complex
-scenarios. We recommend using them individually to keep your Task Queues easier to manage.
+scenarios.
 
 :::tip Support, stability, and dependency info
 
 Priority and Fairness is currently in
-[Public Preview](/evaluate/development-production-features/release-stages#public-preview). Please contact your AE or
-Support to enable this feature.
+[Public Preview](/evaluate/development-production-features/release-stages#public-preview).
 
 :::
 
 ## Task Queue Priority
 
 **Task Queue Priority** lets you control the execution order of Workflows, Activities, and Child Workflows based on
-assigned priority values within a _single_ Task Queue. Each priority level acts as a "virtual" queue that prioritizes
-Tasks within a single Task Queue.
+assigned priority values within a _single_ Task Queue. Each priority level acts as a sub-queue that prioritizes Tasks
+within a single Task Queue.
 
-<CaptionedImage
+<EnlargeImage
   src="/img/develop/task-queue-priority-fairness/priority-details.png"
-  title="Detailed view of how Priority works"
-  zoom="true"
+  alt="Detailed view of how Priority works"
 />
 
 ### When to use Priority
@@ -69,8 +67,7 @@ are scheduled to run in first-in-first-out (FIFO) order. If you need more flexib
 the same type, like processing payments for multiple e-commerce platforms, check out
 [the fairness section](#task-queue-fairness).
 
-When you update priority levels, the Task Queues will only reflect these changes for Tasks that haven't dispatched yet,
-not Tasks that are already queued.
+When you update priority levels, the Task Queues will only reflect these changes for Tasks that haven't dispatched yet.
 
 Choose your SDK below to see an example of setting priority for your Workflows:
 
@@ -225,12 +222,21 @@ await Workflow.ExecuteChildWorkflowAsync(
 ## Task Queue Fairness
 
 Task Queue Fairness lets you distribute Tasks based on _fairness keys_ and their _fairness weight_ within a Task Queue.
-The fairness keys are used to describe your Task structure. A fairness key can correspond to different tier levels,
-tenants, or other groupings useful to your workloads.
+The fairness keys are used to describe your Task structure. Each fairness key creates its own "virtual queue" within a
+Task Queue, allowing you to organize Tasks into logical groups like tenants, applications, or workload types.
 
-The Tasks associated with each fairness key are dispatched based on the _fairness weight_ that has been assigned to the
-key. There should only be one fairness weight assigned to each fairness key within a single Task Queue. Having multiple
-fairness weights on a fairness key will result in unspecific behavior.
+These virtual queues operate using a round-robin dispatch mechanism, meaning the system cycles through each fairness key
+in turn when selecting the next Task to dispatch. The round-robin approach essentially prevents any single fairness key
+from hogging Worker capacity. This ensures that Tasks from one fairness key can't completely block Tasks from other
+keys, even if one key has a much larger backlog than the others.
+
+When Workers become available, each fairness key gets an opportunity to dispatch Tasks rather than processing all Tasks
+from one key before moving to the next. This creates a fairer distribution where smaller tenants or lower-volume
+workloads still receive regular processing time, rather than waiting behind higher volume operations.
+
+The Tasks associated with each fairness key can be dispatched based on the _fairness weight_ that has been assigned to
+the key. There should only be one fairness weight assigned to each fairness key within a single Task Queue. Having
+multiple fairness weights on a fairness key will result in unspecific behavior.
 
 Using the fairness keys and their corresponding fairness weights lets you define levels with weighted capacities. For
 example, you can have free, basic, and premium levels and Fairness makes sure that an influx of premium Tasks don't
@@ -245,10 +251,22 @@ created with Fairness and the existing queued Tasks get processed before any of 
 
 ### When to use Fairness
 
+Fairness is intended to address common situations like:
+
+- Multi-tenant applications with big and small tenants where small tenants shouldn't be blocked by big ones.
+- Assigning Tasks to different capacity bands and then, for example, dispatching 80% from one band and 20% from another
+  without limiting overall capacity when one band is empty.
+
+It sequences Tasks in the Task Queue probabilistically using a weighted distribution based on:
+
+- Fairness weights you set
+- The current backlog of Tasks
+- A data structure that tracks how you've distributed Tasks for different fairness keys
+
 As an example, imagine a workload with three tenants, _tenant-big_, _tenant-mid_, _tenant-small_, that have varying
 numbers of Tasks at all times. Your _tenant-big_ has a large number of Tasks that can overwhelm your Task Queue and
 prevent _tenant-mid_ and _tenant-small_ from running their Tasks. With Fairness, you can give each tenant a different
-fairness weight to make sure _tenant-big_ doesn't use all of the Task Queue resources and block the others.
+fairness key to make sure _tenant-big_ doesn't use all of the Task Queue resources and block the others.
 
 In this case, _tenant-mid_ and _tenant-small_ will have Tasks run in between _tenant-big_ Tasks so that they are
 executed "fairly". Although, if all your Tasks can be dispatched immediately, then you don't need to use fairness.
@@ -266,12 +284,12 @@ There are two ways to use Task Queue Fairness: without Priority and with Priorit
 
 ### How Fairness works
 
-If you implement Fairness without Priority, Tasks with different **fairness keys** will use a weighted distribution
-based on the **fairness weights** to allocate resources in the Task Queue. For example, say you have three fairness keys
-to describe customer tiers: _free-tier_, _basic-tier_, and _premium-tier_. You give _premium-tier_ a fairness weight of
-5.0, _basic-tier_ a fairness weight of 3.0, and _free-tier_ a fairness weight of 2.0. With Fairness, that means 50% of
-the time _premium-tier_ Tasks dispatch, 30% of the time _basic-tier_ Tasks dispatch, and 20% of the time _free-tier_
-Tasks dispatch from the Task Queue backlog.
+If you use Fairness without Priority, Tasks with different fairness keys will use a weighted distribution based on the
+fairness weights to allocate resources in the Task Queue. For example, say you have three fairness keys to describe
+customer tiers: _free-tier_, _basic-tier_, and _premium-tier_. You give _premium-tier_ a fairness weight of 5.0,
+_basic-tier_ a fairness weight of 3.0, and _free-tier_ a fairness weight of 2.0. With Fairness, that means 50% of the
+time _premium-tier_ Tasks dispatch, 30% of the time _basic-tier_ Tasks dispatch, and 20% of the time _free-tier_ Tasks
+dispatch from the Task Queue backlog.
 
 If there are Tasks in the Task Queue backlog that have the same fairness key, then they're dispatched in
 [FIFO order](/task-queue#task-ordering).
@@ -279,46 +297,36 @@ If there are Tasks in the Task Queue backlog that have the same fairness key, th
 This is how you are able to ensure that one tier doesn't use all the resources and block other Tasks in the Task Queue
 backlog from dispatching.
 
-<CaptionedImage
+When you update fairness keys or fairness weights, the Task Queues will only reflect these changes for Tasks that
+haven't dispatched yet.
+
+<EnlargeImage
   src="/img/develop/task-queue-priority-fairness/fairness-details.png"
-  title="High-level of how priority and fairness work together"
-  zoom="true"
+  alt="High-level of how fairness works"
 />
 
 ### Using Fairness and Priority together
 
-When you use Fairness and Priority together, Priority determines which "bucket" Tasks go into. A single Task Queue with
-Priority implemented will have different "buckets" based on priority levels. Fairness will apply to the Tasks within
-each priority level. It sequences Tasks in the Task Queue probabilistically using a weighted distribution, like
-explained above, based on:
+When you use Fairness and Priority together, Priority determines which sub-queue Tasks go into. A single Task Queue with
+Priority implemented will have different sub-queues based on priority levels. Fairness will apply to the Tasks within
+each priority level.
 
-- Fairness weights you set
-- The current backlog of Tasks
-- A data structure that tracks how you've distributed Tasks for different fairness keys
-
-It’s intended to address common situations like:
-
-- Multi-tenant applications with big and small tenants where small tenants shouldn't be blocked by big ones.
-- Assigning Tasks to different capacity bands and then, for example, dispatching 80% from one band and 20% from another
-  without limiting overall capacity when one band is empty.
-
-<CaptionedImage
+<EnlargeImage
   src="/img/develop/task-queue-priority-fairness/priority-fairness.png"
-  title="High-level of how priority and fairness work together"
-  zoom="true"
+  alt="High-level of how priority and fairness work together"
 />
-
-When you update fairness keys or fairness weights, the Task Queues will only reflect these changes for Tasks that
-haven't dispatched yet, not Tasks that are already queued.
 
 ### How to use Fairness
 
 Fairness is avaliable for both self-hosted Temporal instances and Temporal Cloud.
 
+If you start using _fairness keys_ in your API calls, it will automatically be enabled in Temporal Cloud.
+
 If you're self-hosting Temporal, use the latest pre-release development server and set `matching.useNewMatcher` and
 `matching.enableFairness` to `true` in the
 [dynamic config](https://github.com/temporalio/temporal/blob/a3a53266c002ae33b630a41977274f8b5b587031/common/dynamicconfig/constants.go#L1345-L1348)
-on the relevant Task Queues or Namespaces.
+on the relevant Task Queues or Namespaces. You'll also need to set `matching.enableMigration` to `true` in order to
+support draining Tasks in existing backlogs after Fairness is enabled.
 
 Enabling `matching.useNewMatcher` and `matching.enableFairness` is only applicable for self-hosted Temporal instances.
 There is a toggle coming to Temporal Cloud soon to enable Priority and Fairness at the Namespace level.
@@ -418,11 +426,16 @@ Choose your SDK below to see an example of setting fairness for your Activities:
 <SdkTabs.Go>
 ```go
 ao := workflow.ActivityOptions{
-  Stardd
+    StartToCloseTimeout: time.Minute,
+    Priority: temporal.Priority{
+    PriorityKey: 1,
+    FairnessKey: "a-key",
+    FairnessWeight: 3.14,
+  },
 }
 ctx := workflow.WithActivityOptions(ctx, ao)
 err := workflow.ExecuteActivity(ctx, MyActivity).Get(ctx, nil)
-```
+````
 </SdkTabs.Go>
 <SdkTabs.Java>
 ```java
@@ -432,7 +445,8 @@ ActivityOptions options = ActivityOptions.newBuilder()
   .build();
 MyActivity activity = Workflow.newActivityStub(MyActivity.class, options);
 activity.perform();
-```
+````
+
 </SdkTabs.Java>
 <SdkTabs.Python>
 ```python
@@ -568,9 +582,11 @@ var handle = await Client.StartWorkflowAsync(
 
 ### Limitations of Fairness
 
-When you use Worker Versioning and you're moving Workflows from one version to another, the ordering of Workflow Tasks
-that are moved to the next version is undefined. Tasks redirected to a new Worker version may not be treated fairly with
-respect to each other or Tasks that aren't redirected.
+When you use Worker Versioning and you're moving Workflows from one version to another, Priority will still apply
+between versions. Fairness isn't guaranteed between versions. For example, you may have Tasks that were originally
+queued on Worker version _alpha_, Tasks that were queued on Worker version _beta_, and some Tasks were moved from
+_alpha_ to _beta_. Fairness is only guaranteed when Tasks are originally queued on the same Worker version. So there
+might be some discrepancies on the Tasks moved from _alpha_ to _beta_.
 
 There isn't a limit on the number of fairness keys you can use, but their accuracy can degrade as you add more.
 
