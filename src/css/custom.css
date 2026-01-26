@@ -1358,3 +1358,14 @@ code {
   padding: 0;
   width: 40px;
 }
+
+/* Make comments visible on highlighted code lines */
+.theme-code-block-highlighted-line .token.comment {
+  color: #89e5c3 !important; /* Light green that contrasts with the green highlight background */
+  font-style: italic;
+}
+
+/* For light theme, use a different color */
+html[data-theme='light'] .theme-code-block-highlighted-line .token.comment {
+  color: #8adfa7 !important; /* Darker green for light mode */
+}

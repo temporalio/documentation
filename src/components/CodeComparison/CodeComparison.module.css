@@ -1,0 +1,25 @@
+.codeComparison {
+    display: flex;
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.codeToggle {
+    background: linear-gradient(135deg, #444CE7 0%, #7C3AED 100%);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.codeToggle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(68, 76, 231, 0.3);
+}
+
+.codeToggle.active {
+    background: linear-gradient(135deg, #10B981, #059669);
+}
