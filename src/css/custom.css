@@ -478,7 +478,7 @@ h1 {
 
 h2,
 h3 {
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: -0.5px;
 }
 
@@ -808,7 +808,9 @@ h3 {
 }
 
 .cloud-button {
-  font-feature-settings: 'clig' off, 'liga' off;
+  font-feature-settings:
+    'clig' off,
+    'liga' off;
   font-family: Noto Sans Mono;
   font-style: normal;
   font-size: 16px;
