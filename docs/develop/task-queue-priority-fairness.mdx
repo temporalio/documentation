@@ -65,9 +65,7 @@ For example, all of your priority level `1` Tasks will execute before your prior
 lower priority Tasks will be blocked until the higher priority Tasks finish running. Tasks with the same priority level
 are scheduled to run in first-in-first-out (FIFO) order. If you need more flexibility to allocate resources to Tasks of
 the same type, like processing payments for multiple e-commerce platforms, check out
-[the fairness section](#task-queue-fairness).
-
-When you update priority levels, the Task Queues will only reflect these changes for Tasks that haven't dispatched yet.
+[the Fairness section](#task-queue-fairness).
 
 Choose your SDK below to see an example of setting priority for your Workflows:
 
@@ -582,14 +580,13 @@ var handle = await Client.StartWorkflowAsync(
 
 ### Limitations of Fairness
 
-When you use Worker Versioning and you're moving Workflows from one version to another, Priority will still apply
-between versions. Fairness isn't guaranteed between versions. For example, you may have Tasks that were originally
-queued on Worker version _alpha_, Tasks that were queued on Worker version _beta_, and some Tasks were moved from
-_alpha_ to _beta_. Fairness is only guaranteed when Tasks are originally queued on the same Worker version. So there
-might be some discrepancies on the Tasks moved from _alpha_ to _beta_.
-
-There isn't a limit on the number of fairness keys you can use, but their accuracy can degrade as you add more.
-
-Task Queues are internally [partitioned](/task-queue#task-ordering) and Tasks are distributed to partitions randomly.
-This could interfer with fairnesss. Depending on your use case, you can reach out to Temporal Support to get your Task
-Queues set to a single partition.
+- There isn't a limit on the number of fairness keys you can use, but their accuracy can degrade as you add more.
+- Task Queues are internally [partitioned](/task-queue#task-ordering) and Tasks are distributed to partitions randomly.
+  This could interfer with fairnesss. Depending on your use case, you can reach out to Temporal Support to get your Task
+  Queues set to a single partition.
+- When you use Worker Versioning and you're moving Workflows from one version to another, Priority will still apply
+  between versions. Fairness isn't guaranteed between versions. For example, you may have Tasks that were originally
+  queued on Worker version _alpha_, Tasks that were queued on Worker version _beta_, and some Tasks were moved from
+  _alpha_ to _beta_. Fairness is only guaranteed when Tasks are originally queued on the same Worker version. So there
+  might be some discrepancies on the Tasks moved from _alpha_ to _beta_.
+- Fairness stats are not persisted, so server deployments can cause temporary lack of Fairness and misordered tasks.
