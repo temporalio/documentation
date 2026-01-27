@@ -46,8 +46,9 @@ You can customize [Activity Execution timeouts](/encyclopedia/detecting-activity
 [retry policies](/encyclopedia/retry-policies).
 
 If an Activity Execution fails (because it exhausted all retries, threw a
-[non-retryable error](/encyclopedia/retry-policies#non-retryable-errors), or was canceled), the error is returned to the
-[Workflow](/workflows), which decides how to handle it.
+[non-retryable error](/encyclopedia/retry-policies#non-retryable-errors), or was canceled), the error is returned to your
+[Workflow](/workflows) code when it attempts to fetch the Activity result. For [Standalone Activities](/standalone-activity) the error is
+returned to the Client when you attempt to fetch the Activity result.
 
 :::note
 
