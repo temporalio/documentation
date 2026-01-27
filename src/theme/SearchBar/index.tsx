@@ -33,6 +33,8 @@ import type {
 import type {AutocompleteState} from '@algolia/autocomplete-core';
 import type {FacetFilters} from 'algoliasearch/lite';
 import AskAIButton from "./AskAIButton";
+import {getInitialLanguageFilter} from "./SDKLanguageFilter";
+import {CustomSearchModal} from "./CustomSearchModal";
 
 type DocSearchProps = Omit<
   DocSearchModalProps,
@@ -186,60 +188,41 @@ function useSearchParameters({
   };
 }
 
-function DocSearch({externalUrlRegex, ...props}: DocSearchProps) {
-  const navigator = useNavigator({externalUrlRegex});
-  const searchParameters = useSearchParameters({...props});
-  const transformItems = useTransformItems(props);
-  const transformSearchClient = useTransformSearchClient();
 
-  const searchContainer = useRef<HTMLDivElement | null>(null);
-  // TODO remove "as any" after React 19 upgrade
+function DocSearch({externalUrlRegex, appId, apiKey, indexName, ...props}: DocSearchProps) {
+  const [selectedLanguages, setSelectedLanguages] = useState<string[]>(() => getInitialLanguageFilter());
   const searchButtonRef = useRef<HTMLButtonElement>(null as any);
   const [isOpen, setIsOpen] = useState(false);
-  const [initialQuery, setInitialQuery] = useState<string | undefined>(
-    undefined,
-  );
-
-  const prepareSearchContainer = useCallback(() => {
-    if (!searchContainer.current) {
-      const divElement = document.createElement('div');
-      searchContainer.current = divElement;
-      document.body.insertBefore(divElement, document.body.firstChild);
-    }
-  }, []);
 
   const openModal = useCallback(() => {
-    prepareSearchContainer();
-    importDocSearchModalIfNeeded().then(() => setIsOpen(true));
-  }, [prepareSearchContainer]);
+    setIsOpen(true);
+  }, []);
 
   const closeModal = useCallback(() => {
     setIsOpen(false);
     searchButtonRef.current?.focus();
-    setInitialQuery(undefined);
   }, []);
 
-  const handleInput = useCallback(
-    (event: KeyboardEvent) => {
-      if (event.key === 'f' && (event.metaKey || event.ctrlKey)) {
-        // ignore browser's ctrl+f
-        return;
-      }
-      // prevents duplicate key insertion in the modal input
-      event.preventDefault();
-      setInitialQuery(event.key);
-      openModal();
-    },
-    [openModal],
-  );
-
-  const resultsFooterComponent = useResultsFooterComponent({closeModal});
+  const handleLanguageChange = useCallback((languages: string[]) => {
+    setSelectedLanguages(languages);
+    try {
+      localStorage.setItem('temporal-docs-sdk-language-filter', JSON.stringify(languages));
+    } catch (e) {
+      console.error('Failed to save language filter:', e);
+    }
+  }, []);
 
   useDocSearchKeyboardEvents({
     isOpen,
     onOpen: openModal,
     onClose: closeModal,
-    onInput: handleInput,
+    onInput: useCallback((event: KeyboardEvent) => {
+      if (event.key === 'f' && (event.metaKey || event.ctrlKey)) {
+        return;
+      }
+      event.preventDefault();
+      openModal();
+    }, [openModal]),
     searchButtonRef,
   });
 
@@ -251,45 +234,28 @@ function DocSearch({externalUrlRegex, ...props}: DocSearchProps) {
         query faster, especially on mobile. */}
         <link
           rel="preconnect"
-          href={`https://${props.appId}-dsn.algolia.net`}
+          href={`https://${appId}-dsn.algolia.net`}
           crossOrigin="anonymous"
         />
       </Head>
 
       <DocSearchButton
-        onTouchStart={importDocSearchModalIfNeeded}
-        onFocus={importDocSearchModalIfNeeded}
-        onMouseOver={importDocSearchModalIfNeeded}
         onClick={openModal}
         ref={searchButtonRef}
         translations={props.translations?.button ?? translations.button}
       />
 
       {isOpen &&
-        DocSearchModal &&
-        // TODO need to fix this React Compiler lint error
-        // eslint-disable-next-line react-compiler/react-compiler
-        searchContainer.current &&
         createPortal(
-          <DocSearchModal
+          <CustomSearchModal
+            appId={appId}
+            apiKey={apiKey}
+            indexName={indexName}
             onClose={closeModal}
-            initialScrollY={window.scrollY}
-            initialQuery={initialQuery}
-            navigator={navigator}
-            transformItems={transformItems}
-            hitComponent={Hit}
-            transformSearchClient={transformSearchClient}
-            {...(props.searchPagePath && {
-              resultsFooterComponent,
-            })}
-            placeholder={translations.placeholder}
-            {...props}
-            translations={props.translations?.modal ?? translations.modal}
-            searchParameters={searchParameters}
+            selectedLanguages={selectedLanguages}
+            onLanguageChange={handleLanguageChange}
           />,
-          // TODO need to fix this React Compiler lint error
-          // eslint-disable-next-line react-compiler/react-compiler
-          searchContainer.current,
+          document.body,
         )}
     </>
   );

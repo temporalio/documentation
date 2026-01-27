@@ -222,6 +222,17 @@ module.exports = async function createConfigAsync() {
         appId: 'T5D6KNJCQS', // Optional, if you run the DocSearch crawler on your own
         // algoliaOptions: {}, // Optional, if provided by Algolia
         insights: true,
+        searchParameters: {
+          attributesToRetrieve: [
+            'hierarchy',
+            'content',
+            'anchor',
+            'url',
+            'url_without_anchor',
+            'type',
+            'sdk_language',
+          ],
+        },
       },
     },
     presets: [
