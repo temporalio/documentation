@@ -188,6 +188,10 @@
   font-family: 'Aeonik', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
+.custom-search-input:focus-visible {
+  outline: none;
+}
+
 .custom-search-input::placeholder {
   color: var(--temporal-placeholder);
   opacity: 1;
@@ -212,10 +216,16 @@
   white-space: nowrap;
   font-weight: 500;
   transition: opacity 0.2s;
+  border-radius: 4px;
 }
 
 .custom-search-clear:hover {
   opacity: 0.8;
+}
+
+.custom-search-clear:focus-visible {
+  outline: 2px solid var(--temporal-primary);
+  outline-offset: 2px;
 }
 
 .custom-search-close {
@@ -233,6 +243,11 @@
 
 .custom-search-close:hover {
   color: var(--temporal-dark);
+}
+
+.custom-search-close:focus-visible {
+  outline: 2px solid var(--temporal-primary);
+  outline-offset: -4px;
 }
 
 .custom-search-close svg {
@@ -319,6 +334,20 @@
   background: var(--temporal-bg-hover);
 }
 
+/* Keyboard navigation selected state */
+.custom-search-hit--selected {
+  background: var(--temporal-bg-hover);
+  outline: 2px solid var(--temporal-primary);
+  outline-offset: -2px;
+}
+
+/* Focus indicators for keyboard navigation */
+.custom-search-hit:focus-visible {
+  outline: 2px solid var(--temporal-primary);
+  outline-offset: -2px;
+  background: var(--temporal-bg-hover);
+}
+
 .custom-search-hit-content {
   flex: 1;
   min-width: 0;
@@ -388,11 +417,17 @@
   cursor: pointer;
   transition: opacity 0.2s ease;
   font-weight: 500;
+  border-radius: 4px;
 }
 
 .custom-search-language-filter-clear:hover {
   opacity: 0.8;
   text-decoration: underline;
+}
+
+.custom-search-language-filter-clear:focus-visible {
+  outline: 2px solid var(--temporal-primary);
+  outline-offset: 2px;
 }
 
 .custom-search-language-filter-options {
@@ -418,6 +453,12 @@
 .custom-search-language-filter-option:hover {
   background: var(--temporal-bg-hover);
   border-color: var(--temporal-primary);
+}
+
+.custom-search-language-filter-option:focus-within {
+  outline: 2px solid var(--temporal-primary);
+  outline-offset: 2px;
+  background: var(--temporal-bg-hover);
 }
 
 .custom-search-language-filter-option input[type="checkbox"] {
@@ -498,4 +539,17 @@
 
 .custom-search-footer-label {
   font-size: 13px;
+}
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }

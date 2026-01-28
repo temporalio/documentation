@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   InstantSearch,
   SearchBox,
@@ -48,14 +48,25 @@ const SDK_LANGUAGES = [
   { id: 'ruby', label: 'Ruby' },
 ];
 
-function Hit({ hit }: { hit: any }) {
+function Hit({ hit, isSelected }: { hit: any; isSelected: boolean }) {
   const history = useHistory();
+  const hitRef = useRef<HTMLAnchorElement>(null);
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     const url = hit.url || hit.objectID;
     history.push(url);
   };
+
+  // Scroll into view when selected
+  useEffect(() => {
+    if (isSelected && hitRef.current) {
+      hitRef.current.scrollIntoView({
+        block: 'nearest',
+        behavior: 'smooth',
+      });
+    }
+  }, [isSelected]);
 
   // Get the page title (hierarchy lvl0 or lvl1)
   const title = hit.hierarchy?.lvl1 || hit.hierarchy?.lvl0 || 'Untitled';
@@ -73,7 +84,15 @@ function Hit({ hit }: { hit: any }) {
   }
 
   return (
-    <a href={hit.url || hit.objectID} onClick={handleClick} className="custom-search-hit">
+    <a
+      ref={hitRef}
+      href={hit.url || hit.objectID}
+      onClick={handleClick}
+      className={`custom-search-hit ${isSelected ? 'custom-search-hit--selected' : ''}`}
+      tabIndex={-1}
+      role="option"
+      aria-selected={isSelected}
+    >
       <div className="custom-search-hit-content">
         <div className="custom-search-hit-title">
           <Highlight attribute="hierarchy.lvl1" hit={hit} />
@@ -154,7 +173,7 @@ function LanguageFilter({ selectedLanguages, onLanguageChange }: {
   );
 }
 
-function GroupedHits() {
+function GroupedHits({ selectedIndex }: { selectedIndex: number }) {
   const { items } = useHits();
 
   // Group hits by their top-level category (hierarchy.lvl0)
@@ -173,6 +192,8 @@ function GroupedHits() {
     return null;
   }
 
+  let hitIndex = 0;
+
   return (
     <>
       {categories.map((category) => (
@@ -181,9 +202,16 @@ function GroupedHits() {
             {category}
           </div>
           <div className="custom-search-section-hits">
-            {groupedHits[category].map((hit: any) => (
-              <Hit key={hit.objectID} hit={hit} />
-            ))}
+            {groupedHits[category].map((hit: any) => {
+              const currentIndex = hitIndex++;
+              return (
+                <Hit
+                  key={hit.objectID}
+                  hit={hit}
+                  isSelected={currentIndex === selectedIndex}
+                />
+              );
+            })}
           </div>
         </div>
       ))}
@@ -191,13 +219,22 @@ function GroupedHits() {
   );
 }
 
-function SearchResults({ onClose }: { onClose: () => void }) {
+function SearchResults({ onClose, selectedIndex, onResultsChange }: {
+  onClose: () => void;
+  selectedIndex: number;
+  onResultsChange: (count: number) => void;
+}) {
   const { items } = useHits();
   const { query } = useSearchBox();
 
+  // Notify parent when results change
+  useEffect(() => {
+    onResultsChange(items.length);
+  }, [items.length, onResultsChange]);
+
   return (
-    <div className="custom-search-results">
-      <GroupedHits />
+    <div className="custom-search-results" role="listbox" aria-label="Search results">
+      <GroupedHits selectedIndex={selectedIndex} />
       {items.length === 0 && query && (
         <div className="custom-search-no-results">
           No results found for "{query}"
@@ -241,16 +278,105 @@ export function CustomSearchModal({
   onLanguageChange,
 }: CustomSearchModalProps) {
   const searchClient = algoliasearch(appId, apiKey);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [resultCount, setResultCount] = useState(0);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const history = useHistory();
 
+  // Reset selected index when search changes
+  useEffect(() => {
+    setSelectedIndex(-1);
+  }, [selectedLanguages]);
+
+  // Handle results change - only reset selection when count actually changes
+  const handleResultsChange = useCallback((count: number) => {
+    setResultCount((prevCount) => {
+      // Only reset selection if the result count changed
+      if (prevCount !== count) {
+        setSelectedIndex(-1);
+      }
+      return count;
+    });
+  }, []);
+
+  // Keyboard navigation and focus trap
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Only handle if the modal is mounted
+      if (!modalRef.current) return;
+
+      // Get all hits dynamically
+      const hitElements = modalRef.current.querySelectorAll('.custom-search-hit');
+      const totalHits = hitElements?.length || 0;
+
       if (e.key === 'Escape') {
+        e.preventDefault();
+        e.stopPropagation();
         onClose();
+        return;
+      }
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        e.stopPropagation();
+        if (totalHits > 0) {
+          setSelectedIndex((prev) => (prev < totalHits - 1 ? prev + 1 : prev));
+        }
+        return;
+      }
+
+      if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        e.stopPropagation();
+        setSelectedIndex((prev) => (prev > 0 ? prev - 1 : -1));
+        return;
+      }
+
+      if (e.key === 'Enter') {
+        // Only handle Enter for navigation if a result is selected
+        if (selectedIndex >= 0 && hitElements) {
+          e.preventDefault();
+          e.stopPropagation();
+          const selectedHit = hitElements[selectedIndex] as HTMLAnchorElement;
+          if (selectedHit) {
+            const url = selectedHit.getAttribute('href');
+            if (url) {
+              history.push(url);
+              onClose();
+            }
+          }
+        }
+        return;
+      }
+
+      if (e.key === 'Tab') {
+        // Focus trap logic
+        const focusableElements = modalRef.current.querySelectorAll(
+          'input, button, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstElement = focusableElements[0] as HTMLElement;
+        const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+        if (e.shiftKey) {
+          // Shift+Tab - if on first element, go to last
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement?.focus();
+          }
+        } else {
+          // Tab - if on last element, go to first
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement?.focus();
+          }
+        }
       }
     };
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
+
+    // Add event listener in capture phase to intercept before child elements
+    window.addEventListener('keydown', handleKeyDown, true);
+    return () => window.removeEventListener('keydown', handleKeyDown, true);
+  }, [onClose, selectedIndex, history]);
 
   // Build facet filters based on selected languages
   // Uses negative filters to exclude unselected languages
@@ -264,8 +390,15 @@ export function CustomSearchModal({
   }
 
   return (
-    <div className="custom-search-overlay" onClick={onClose}>
-      <div className="custom-search-modal" onClick={(e) => e.stopPropagation()}>
+    <div className="custom-search-overlay" onClick={onClose} role="presentation">
+      <div
+        ref={modalRef}
+        className="custom-search-modal"
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Search documentation"
+      >
         <InstantSearch searchClient={searchClient} indexName={indexName}>
           <Configure
             hitsPerPage={20}
@@ -307,8 +440,16 @@ export function CustomSearchModal({
             selectedLanguages={selectedLanguages}
             onLanguageChange={onLanguageChange}
           />
-          <SearchResults onClose={onClose} />
+          <SearchResults
+            onClose={onClose}
+            selectedIndex={selectedIndex}
+            onResultsChange={handleResultsChange}
+          />
           <SearchFooter />
+          {/* Screen reader announcements */}
+          <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+            {resultCount > 0 ? `${resultCount} results found` : ''}
+          </div>
         </InstantSearch>
       </div>
     </div>
