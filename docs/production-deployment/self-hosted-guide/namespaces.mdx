@@ -45,7 +45,9 @@ The `temporalio/auto-setup` image is deprecated and no longer receives updates. 
 
 :::
 
-For all deployment methods, create the `default` Namespace manually using the Temporal CLI:
+For local development, the [`temporal server start-dev`](/cli/server#start-dev) command automatically creates the `default` Namespace.
+
+For all other deployment methods, create the `default` Namespace manually using the Temporal CLI:
 
 ```bash
 temporal operator namespace create --namespace default

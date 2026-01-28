@@ -48,6 +48,24 @@ For example configurations and setup guidance, refer to the [samples-server repo
 
 :::
 
+:::tip Local Development Alternative
+
+For local development and testing, use the Temporal CLI's built-in development server:
+
+```bash
+temporal server start-dev
+```
+
+This provides:
+- A local Temporal Server with Web UI (http://localhost:8233)
+- Automatic creation of the `default` Namespace
+- Optional persistence with `--db-filename` for SQLite storage
+- Custom Search Attributes with `--search-attribute`
+
+See [`temporal server start-dev`](/cli/server#start-dev) for all options.
+
+:::
+
 The following commands start and run a Temporal Service in Docker using the default configuration:
 
 ```bash
