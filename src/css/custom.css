@@ -26,9 +26,16 @@
   --tag-text-color-dark: #ddd;
   --feedback-primary-color: #000000;
   --feedback-white-color: #fff;
+  --space-black: #141414;
+  --indigo-100: #cacbf9;
+  --off-white: #f8fafc;
+  --text-secondary: #374761;
+  --gray-600: #576e8f;
+  --slate-200: #aebed9;
+  --gray-900: #243349;
 }
 
-html[data-theme="dark"]:root {
+html[data-theme='dark']:root {
   --ifm-color-primary: #bfdbfe;
   --ifm-background-color: #141414;
   --ifm-footer-background-color: #000000;
@@ -63,7 +70,7 @@ html[data-theme="dark"]:root {
   --tag-text-color: var(--tag-text-color-dark);
 }
 
-html[data-theme="light"]:root {
+html[data-theme='light']:root {
   --ifm-color-primary: #1d4ed8;
   --ifm-background-color: #f9fafb;
   --ifm-footer-background-color: #ffffff;
@@ -386,97 +393,93 @@ main.max-w-screen-lg {
 /* End Crazy Tailwind hax */
 
 @font-face {
-  font-family: "Aeonik";
-  src: url("../fonts/Aeonik/Aeonik-Regular.woff");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Aeonik-Bold";
-  src: url("../fonts/Aeonik/Aeonik-Bold.woff");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Aeonik-Light";
-  src: url("../fonts/Aeonik/Aeonik-Light.woff");
+  font-family: 'Aeonik';
+  src: url('../fonts/Aeonik/Aeonik-Light.woff');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Poppins";
-  src: url("../fonts/Poppins/Poppins-Regular.ttf");
+  font-family: 'Aeonik';
+  src: url('../fonts/Aeonik/Aeonik-Regular.woff');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Poppins";
-  src: url("../fonts/Poppins/Poppins-Medium.ttf");
+  font-family: 'Aeonik';
+  src: url('../fonts/Aeonik/Aeonik-Bold.woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('../fonts/Poppins/Poppins-Regular.ttf');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('../fonts/Poppins/Poppins-Medium.ttf');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Poppins";
-  src: url("../fonts/Poppins/Poppins-SemiBold.ttf");
+  font-family: 'Poppins';
+  src: url('../fonts/Poppins/Poppins-SemiBold.ttf');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Poppins";
-  src: url("../fonts/Poppins/Poppins-Bold.ttf");
+  font-family: 'Poppins';
+  src: url('../fonts/Poppins/Poppins-Bold.ttf');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Noto Sans Mono";
-  src: url("../fonts/Noto\ Sans\ Mono/NotoSansMono-VariableFont_wdth,wght.ttf");
+  font-family: 'Noto Sans Mono';
+  src: url('../fonts/Noto\ Sans\ Mono/NotoSansMono-VariableFont_wdth,wght.ttf');
   font-style: normal;
   font-display: swap;
-}
-
-h2,
-h3 {
-  font-weight: 700;
-  letter-spacing: -0.5px;
 }
 
 h1,
 h2,
 h3,
 h4 {
-  font-family: "Aeonik";
+  font-family: 'Aeonik';
 }
 
 h1 {
   font-size: 1.6rem;
   font-weight: 300;
   letter-spacing: -1px;
-}
 
-@media only screen and (min-width: 1280px) {
-  h1 {
+  @media only screen and (min-width: 1280px) {
     font-size: 3rem;
   }
-}
 
-@media only screen and (max-width: 1279px) and (min-width: 640px) {
-  h1 {
+  @media only screen and (max-width: 1279px) and (min-width: 640px) {
     font-size: 2rem;
   }
+}
+
+h2,
+h3 {
+  font-weight: 500;
+  letter-spacing: -0.5px;
 }
 
 .h2-landing {
@@ -487,14 +490,14 @@ h1 {
 }
 
 .p-landing {
-  font-family: "Aeonik";
+  font-family: 'Aeonik';
   font-size: 0.875rem;
   font-weight: 400;
   letter-spacing: 1px;
 }
 
 .a-landing {
-  font-family: "Aeonik";
+  font-family: 'Aeonik';
   font-size: 0.875rem;
   font-weight: 400;
   margin-bottom: 0.25rem;
@@ -517,7 +520,7 @@ h1 {
   display: grid;
   grid-template-columns: 50% 50%;
   column-gap: 1rem;
-  font-family: "Aeonik";
+  font-family: 'Aeonik';
   font-size: 1rem;
   font-weight: 400;
   vertical-align: top;
@@ -526,7 +529,7 @@ h1 {
 
 .single-column-list {
   margin-right: 2.5em;
-  font-family: "Aeonik";
+  font-family: 'Aeonik';
   font-size: 1rem;
   font-weight: 400;
   vertical-align: top;
@@ -617,7 +620,7 @@ h1 {
 }
 
 .landing-card-p {
-  font-family: "Aeonik";
+  font-family: 'Aeonik';
   font-size: 1rem;
   font-weight: 400;
   margin-bottom: 1.5rem;
@@ -637,11 +640,11 @@ h1 {
 }
 
 .menu__link {
-  font-family: "Aeonik";
+  font-family: 'Aeonik';
 }
 
 .badge-purple {
-  font-family: "Poppins";
+  font-family: 'Poppins';
   font-weight: 500;
   font-size: 0.75rem;
   color: #6d28d9;
@@ -652,7 +655,7 @@ h1 {
 }
 
 .badge-blue {
-  font-family: "Poppins";
+  font-family: 'Poppins';
   font-weight: 500;
   font-size: 0.75rem;
   color: #1d4ed8;
@@ -696,7 +699,7 @@ h1 {
   border-color: #2563eb;
   border-style: solid;
   padding: 1.2rem 1.25rem 0.25rem 1.25rem;
-  font-family: "Aeonik";
+  font-family: 'Aeonik';
   font-size: 0.875rem;
   font-weight: 400;
   letter-spacing: 1px;
@@ -805,7 +808,9 @@ h1 {
 }
 
 .cloud-button {
-  font-feature-settings: "clig" off, "liga" off;
+  font-feature-settings:
+    'clig' off,
+    'liga' off;
   font-family: Noto Sans Mono;
   font-style: normal;
   font-size: 16px;
@@ -835,7 +840,7 @@ h1 {
 }
 
 .core-concepts {
-  background-image: url("/img/assets/stars_bg.png");
+  background-image: url('/img/assets/stars_bg.png');
   color: white;
   position: absolute;
   right: 0;
@@ -1310,7 +1315,7 @@ code {
   .ask-ai-text {
     display: none;
   }
-  
+
   .ask-ai-navbar-button {
     padding: 8px;
     border-radius: 50%;
@@ -1334,9 +1339,24 @@ code {
     margin-left: 8px;
     margin-right: 8px;
   }
-  
+
   .ask-ai-navbar-button svg {
     width: 14px;
     height: 14px;
   }
+}
+
+.sdk-logos-list {
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+}
+
+.sdk-logo {
+  height: 40px;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 40px;
 }
