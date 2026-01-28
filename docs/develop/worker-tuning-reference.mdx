@@ -1,0 +1,215 @@
+---
+id: worker-tuning-reference
+title: Worker tuning quick reference
+sidebar_label: Worker tuning reference
+description: A quick reference guide for Temporal Worker configuration defaults across SDKs, organized by resource type (compute, memory, IO) with key metrics for each.
+toc_max_heading_level: 4
+keywords:
+  - worker tuning
+  - worker configuration
+  - sdk defaults
+  - worker metrics
+  - performance
+tags:
+  - Workers
+  - Performance
+  - Reference
+---
+
+This page provides a quick reference for Worker configuration options and their default values across Temporal SDKs.
+Use this guide alongside the comprehensive [Worker performance](/develop/worker-performance) documentation for detailed tuning guidance.
+
+Worker performance is constrained by three primary resources:
+
+| Resource | Description |
+|----------|-------------|
+| **Compute** | CPU-bound operations, concurrent Task execution |
+| **Memory** | Workflow cache, thread pools |
+| **IO** | Network calls to Temporal Service, polling |
+
+## How a Worker works
+
+Workers poll a [Task Queue](/workers#task-queues) in Temporal Cloud or a self-hosted Temporal Service, execute Tasks, and respond with the result.
+
+```
+┌─────────────────┐     Poll for Tasks       ┌─────────────────┐
+│     Worker      │ ◄─────────────────────── │ Temporal Service│
+│   - Workflows   │                          │                 │
+│   - Activities  │ ─────────────────────►   │                 │
+└─────────────────┘   Respond with results   └─────────────────┘
+```
+
+Multiple Workers can poll the same Task Queue, providing horizontal scalability.
+
+### How Worker failure recovery works
+
+When a Worker crashes or experiences a host outage:
+
+1. The Workflow Task times out
+2. Another available Worker picks up the Task
+3. The new Worker replays the Event History to reconstruct state
+4. Execution continues from where it left off
+
+For more details on Worker architecture, see [What is a Temporal Worker?](/workers)
+
+## Compute settings
+
+Compute settings control how many Tasks a Worker can execute concurrently.
+
+### Compute configuration options
+
+| Setting | Description |
+|---------|-------------|
+| `MaxConcurrentWorkflowTaskExecutionSize` | Maximum concurrent Workflow Tasks |
+| `MaxConcurrentActivityTaskExecutionSize` | Maximum concurrent Activity Tasks |
+| `MaxConcurrentLocalActivityTaskExecutionSize` | Maximum concurrent Local Activities |
+| `MaxWorkflowThreadCount` / `workflowThreadPoolSize` | Thread pool for Workflow execution |
+
+### Compute defaults by SDK
+
+| SDK | MaxConcurrentWorkflowTaskExecutionSize | MaxConcurrentActivityTaskExecutionSize | MaxConcurrentLocalActivityTaskExecutionSize | MaxWorkflowThreadCount |
+|-----|----------------------------------------|----------------------------------------|---------------------------------------------|------------------------|
+| **Go** | 1,000 | 1,000 | 1,000 | - |
+| **Java** | 200 | 200 | 200 | 600 |
+| **TypeScript** | 40 | 100 | 100 | 1 (reuseV8Context) |
+| **Python** | 100 | 100 | 100 | - |
+| **.NET** | 100 | 100 | 100 | - |
+
+### Resource-based slot suppliers
+
+Instead of fixed slot counts, you can use resource-based slot suppliers that automatically adjust available Task slots based on CPU and memory utilization.
+For implementation details, see [Slot suppliers](/develop/worker-performance#slot-suppliers).
+
+## Memory settings
+
+Memory settings control the Workflow cache size and thread pool allocation.
+
+### Memory configuration options
+
+| Setting | Description |
+|---------|-------------|
+| `MaxCachedWorkflows` / `StickyWorkflowCacheSize` | Number of Workflows to keep in cache |
+| `MaxWorkflowThreadCount` | Thread pool size |
+| `reuseV8Context` (TypeScript) | Reuse V8 context for Workflows |
+
+### Memory defaults by SDK
+
+| SDK | MaxCachedWorkflows / StickyWorkflowCacheSize |
+|-----|----------------------------------------------|
+| **Go** | 10,000 |
+| **Java** | 600 |
+| **TypeScript** | Dynamic (e.g., 2000 for 4 GiB RAM) |
+| **Python** | 1,000 |
+| **.NET** | 10,000 |
+
+For cache tuning guidance, see [Workflow cache tuning](/develop/worker-performance#workflow-cache-tuning).
+
+## IO settings
+
+IO settings control the number of pollers and rate limits for Task Queue interactions.
+
+### IO configuration options
+
+| Setting | Description |
+|---------|-------------|
+| `MaxConcurrentWorkflowTaskPollers` | Number of concurrent Workflow pollers |
+| `MaxConcurrentActivityTaskPollers` | Number of concurrent Activity pollers |
+| `Namespace APS` | Actions per second limit for Namespace |
+| `TaskQueueActivitiesPerSecond` | Activity rate limit per Task Queue |
+
+### IO defaults by SDK
+
+| SDK | MaxConcurrentWorkflowTaskPollers | MaxConcurrentActivityTaskPollers | Namespace APS | TaskQueueActivitiesPerSecond |
+|-----|----------------------------------|----------------------------------|---------------|------------------------------|
+| **Go** | 2 | 2 | 400 | Unlimited |
+| **Java** | 5 | 5 | - | - |
+| **TypeScript** | 10 | 10 | - | - |
+| **Python** | 5 | 5 | - | - |
+| **.NET** | 5 | 5 | - | - |
+
+### Poller autoscaling
+
+Use poller autoscaling to automatically adjust the number of concurrent polls based on workload.
+For configuration details, see [Configuring poller options](/develop/worker-performance#configuring-poller-options).
+
+## Metrics reference by resource type
+
+Use these metrics to identify bottlenecks and guide tuning decisions.
+For the complete metrics reference, see [SDK metrics](/references/sdk-metrics).
+
+### Compute-related metrics
+
+| Worker configuration option | SDK metric |
+|-----------------------------|------------|
+| `MaxConcurrentWorkflowTaskExecutionSize` | `worker_task_slots_available {worker_type = WorkflowWorker}` |
+| `MaxConcurrentActivityTaskExecutionSize` | `worker_task_slots_available {worker_type = ActivityWorker}` |
+| `MaxWorkflowThreadCount` | `workflow_active_thread_count` (Java only) |
+| CPU-intensive logic | `workflow_task_execution_latency` |
+
+Also monitor your machine's CPU consumption (for example, `container_cpu_usage_seconds_total` in Kubernetes).
+
+### Memory-related metrics
+
+| Worker configuration option | SDK metric |
+|-----------------------------|------------|
+| `StickyWorkflowCacheSize` | `sticky_cache_total_forced_eviction`, `sticky_cache_size`, `sticky_cache_hit`, `sticky_cache_miss` |
+
+Also monitor your machine's memory consumption (for example, `container_memory_usage_bytes` in Kubernetes).
+
+### IO-related metrics
+
+| Worker configuration option | SDK metric |
+|-----------------------------|------------|
+| `MaxConcurrentWorkflowTaskPollers` | `num_pollers {poller_type = workflow_task}` |
+| `MaxConcurrentActivityTaskPollers` | `num_pollers {poller_type = activity_task}` |
+| Network latency | `request_latency {namespace, operation}` |
+
+### Task Queue metrics
+
+| Metric | Description |
+|--------|-------------|
+| `poll_success_sync_count` | Sync match rate (Tasks immediately assigned to Workers) |
+| `approximate_backlog_count` | Approximate number of Tasks in a Task Queue |
+
+Task Queue statistics are also available via the `DescribeTaskQueue` API:
+- `ApproximateBacklogCount`
+- `ApproximateBacklogAge`
+- `TasksAddRate`
+- `TasksDispatchRate`
+- `BacklogIncreaseRate`
+
+For more on Task Queue metrics, see [Available Task Queue information](/develop/worker-performance#task-queue-metrics).
+
+### Failure metrics
+
+| Metric | Description |
+|--------|-------------|
+| `long_request_failure` | Failures for long-running operations (polling, history retrieval) |
+| `request_failure` | Failures for standard operations (Task completion responses) |
+
+Common failure codes:
+- `RESOURCE_EXHAUSTED` - Rate limits exceeded
+- `DEADLINE_EXCEEDED` - Operation timeout
+- `NOT_FOUND` - Resource not found
+
+## Worker tuning tips
+
+1. **Scale test before production**: Validate your configuration under realistic load.
+2. **Infrastructure matters**: Workers don't operate in a vacuum. Consider network latency, database performance, and external service dependencies.
+3. **Tune and observe**: Make incremental changes and monitor metrics before making additional adjustments.
+4. **Identify the bottleneck**: Use the [theory of constraints](https://en.wikipedia.org/wiki/Theory_of_constraints). Improving non-bottleneck resources won't improve overall throughput.
+
+For detailed tuning guidance, see:
+- [Worker performance](/develop/worker-performance)
+- [Worker deployment and performance best practices](/best-practices/worker)
+- [Performance bottlenecks troubleshooting](/troubleshooting/performance-bottlenecks)
+
+## Related resources
+
+- [What is a Temporal Worker?](/workers) - Conceptual overview
+- [Worker performance](/develop/worker-performance) - Comprehensive tuning guide
+- [Worker deployment and performance](/best-practices/worker) - Best practices
+- [SDK metrics reference](/references/sdk-metrics) - Complete metrics documentation
+- [Worker Versioning](/production-deployment/worker-deployments/worker-versioning) - Safe deployments
+- [Workers in production](https://temporal.io/blog/workers-in-production) - Blog post
+- [Introduction to Worker Tuning](https://temporal.io/blog/an-introduction-to-worker-tuning) - Blog post
