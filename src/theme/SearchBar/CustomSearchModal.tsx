@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   InstantSearch,
   SearchBox,
-  Hits,
   Configure,
   Snippet,
   Highlight,
@@ -12,6 +11,7 @@ import {
 import { liteClient as algoliasearch } from 'algoliasearch/lite';
 import { useHistory } from '@docusaurus/router';
 import AskAIButton from './AskAIButton';
+import { SDK_LANGUAGES } from './SDKLanguageFilter';
 
 function ClearButton() {
   const { query, refine } = useSearchBox();
@@ -38,24 +38,21 @@ interface CustomSearchModalProps {
   onLanguageChange: (languages: string[]) => void;
 }
 
-const SDK_LANGUAGES = [
-  { id: 'go', label: 'Go' },
-  { id: 'python', label: 'Python' },
-  { id: 'typescript', label: 'TypeScript' },
-  { id: 'java', label: 'Java' },
-  { id: 'php', label: 'PHP' },
-  { id: 'dotnet', label: '.NET' },
-  { id: 'ruby', label: 'Ruby' },
-];
-
-function Hit({ hit, isSelected }: { hit: any; isSelected: boolean }) {
+function Hit({ hit, isSelected, onNavigate }: { hit: any; isSelected: boolean; onNavigate: () => void }) {
   const history = useHistory();
   const hitRef = useRef<HTMLAnchorElement>(null);
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    const url = hit.url || hit.objectID;
-    history.push(url);
+    const fullUrl = hit.url || hit.objectID;
+    // Extract pathname from full URL to avoid appending the whole URL
+    try {
+      const url = new URL(fullUrl, window.location.origin);
+      history.push(url.pathname + url.hash);
+    } catch {
+      history.push(fullUrl);
+    }
+    onNavigate();
   };
 
   // Scroll into view when selected
@@ -173,7 +170,7 @@ function LanguageFilter({ selectedLanguages, onLanguageChange }: {
   );
 }
 
-function GroupedHits({ selectedIndex }: { selectedIndex: number }) {
+function GroupedHits({ selectedIndex, onNavigate }: { selectedIndex: number; onNavigate: () => void }) {
   const { items } = useHits();
 
   // Group hits by their top-level category (hierarchy.lvl0)
@@ -209,6 +206,7 @@ function GroupedHits({ selectedIndex }: { selectedIndex: number }) {
                   key={hit.objectID}
                   hit={hit}
                   isSelected={currentIndex === selectedIndex}
+                  onNavigate={onNavigate}
                 />
               );
             })}
@@ -234,7 +232,7 @@ function SearchResults({ onClose, selectedIndex, onResultsChange }: {
 
   return (
     <div className="custom-search-results" role="listbox" aria-label="Search results">
-      <GroupedHits selectedIndex={selectedIndex} />
+      <GroupedHits selectedIndex={selectedIndex} onNavigate={onClose} />
       {items.length === 0 && query && (
         <div className="custom-search-no-results">
           No results found for "{query}"
@@ -281,7 +279,15 @@ export function CustomSearchModal({
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [resultCount, setResultCount] = useState(0);
   const modalRef = useRef<HTMLDivElement>(null);
-  const history = useHistory();
+
+  // Prevent background scroll when modal is open
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, []);
 
   // Reset selected index when search changes
   useEffect(() => {
@@ -338,13 +344,7 @@ export function CustomSearchModal({
           e.preventDefault();
           e.stopPropagation();
           const selectedHit = hitElements[selectedIndex] as HTMLAnchorElement;
-          if (selectedHit) {
-            const url = selectedHit.getAttribute('href');
-            if (url) {
-              history.push(url);
-              onClose();
-            }
-          }
+          selectedHit?.click();
         }
         return;
       }
@@ -376,18 +376,16 @@ export function CustomSearchModal({
     // Add event listener in capture phase to intercept before child elements
     window.addEventListener('keydown', handleKeyDown, true);
     return () => window.removeEventListener('keydown', handleKeyDown, true);
-  }, [onClose, selectedIndex, history]);
+  }, [onClose, selectedIndex]);
 
   // Build facet filters based on selected languages
   // Uses negative filters to exclude unselected languages
   // This shows selected languages + language-agnostic content (no sdk_language attribute)
-  const allLanguages = ['go', 'python', 'typescript', 'java', 'php', 'dotnet', 'ruby'];
-  let facetFilters: any = undefined;
-
-  if (selectedLanguages.length > 0) {
-    const unselectedLanguages = allLanguages.filter(lang => !selectedLanguages.includes(lang));
-    facetFilters = unselectedLanguages.map(lang => `sdk_language:-${lang}`);
-  }
+  const facetFilters = selectedLanguages.length > 0
+    ? SDK_LANGUAGES
+        .filter(lang => !selectedLanguages.includes(lang.id))
+        .map(lang => `sdk_language:-${lang.id}`)
+    : undefined;
 
   return (
     <div className="custom-search-overlay" onClick={onClose} role="presentation">

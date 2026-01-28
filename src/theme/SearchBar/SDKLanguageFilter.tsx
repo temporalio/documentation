@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-const SDK_LANGUAGES = [
+export const SDK_LANGUAGES = [
   { id: 'go', label: 'Go' },
   { id: 'python', label: 'Python' },
   { id: 'typescript', label: 'TypeScript' },
@@ -10,7 +10,7 @@ const SDK_LANGUAGES = [
   { id: 'ruby', label: 'Ruby' },
 ];
 
-const STORAGE_KEY = 'temporal-docs-sdk-language-filter';
+export const SDK_LANGUAGE_STORAGE_KEY = 'temporal-docs-sdk-language-filter';
 
 interface SDKLanguageFilterProps {
   selectedLanguages: string[];
@@ -20,7 +20,7 @@ interface SDKLanguageFilterProps {
 export function SDKLanguageFilter({ selectedLanguages, onFilterChange }: SDKLanguageFilterProps) {
   useEffect(() => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(selectedLanguages));
+      localStorage.setItem(SDK_LANGUAGE_STORAGE_KEY, JSON.stringify(selectedLanguages));
     } catch (e) {
       console.error('Failed to save SDK language filter:', e);
     }
@@ -69,7 +69,7 @@ export function SDKLanguageFilter({ selectedLanguages, onFilterChange }: SDKLang
 
 export function getInitialLanguageFilter(): string[] {
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
+    const stored = localStorage.getItem(SDK_LANGUAGE_STORAGE_KEY);
     return stored ? JSON.parse(stored) : [];
   } catch {
     return [];

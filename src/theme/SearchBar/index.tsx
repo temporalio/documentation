@@ -21,7 +21,7 @@ import type {
 import type { AutocompleteState } from '@algolia/autocomplete-core';
 import type { FacetFilters } from 'algoliasearch/lite';
 import AskAIButton from './AskAIButton';
-import { getInitialLanguageFilter } from './SDKLanguageFilter';
+import { getInitialLanguageFilter, SDK_LANGUAGE_STORAGE_KEY } from './SDKLanguageFilter';
 import { CustomSearchModal } from './CustomSearchModal';
 
 type DocSearchProps = Omit<DocSearchModalProps, 'onClose' | 'initialScrollY'> & {
@@ -168,7 +168,7 @@ function DocSearch({ externalUrlRegex, appId, apiKey, indexName, ...props }: Doc
   const handleLanguageChange = useCallback((languages: string[]) => {
     setSelectedLanguages(languages);
     try {
-      localStorage.setItem('temporal-docs-sdk-language-filter', JSON.stringify(languages));
+      localStorage.setItem(SDK_LANGUAGE_STORAGE_KEY, JSON.stringify(languages));
     } catch (e) {
       console.error('Failed to save language filter:', e);
     }
