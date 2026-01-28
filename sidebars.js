@@ -648,6 +648,7 @@ module.exports = {
         'best-practices/cloud-access-control',
         'best-practices/security-controls',
         'best-practices/worker',
+        'best-practices/knowledge-hub',
       ],
     },
     {
