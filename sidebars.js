@@ -652,29 +652,8 @@ module.exports = {
         'best-practices/cloud-access-control',
         'best-practices/security-controls',
         'best-practices/worker',
-        'production-deployment/multi-tenant-patterns',
-        {
-          type: 'category',
-          label: 'Knowledge Hub',
-          collapsed: true,
-          link: {
-            type: 'doc',
-            id: 'best-practices/knowledge-hub/index',
-          },
-          items: [
-            'best-practices/knowledge-hub/temporal-overview',
-            'best-practices/knowledge-hub/decision-framework',
-            'best-practices/knowledge-hub/getting-started',
-            'best-practices/knowledge-hub/learning-path',
-            'best-practices/knowledge-hub/architecture',
-            'best-practices/knowledge-hub/cost',
-            'best-practices/knowledge-hub/shared-responsibility',
-            'best-practices/knowledge-hub/patterns',
-            'best-practices/knowledge-hub/troubleshooting',
-            'best-practices/knowledge-hub/support',
-            'best-practices/knowledge-hub/faqs',
-          ],
-        },
+        'best-practices/knowledge-hub',
+        'production-deployment/multi-tenant-patterns'
       ],
     },
     {
