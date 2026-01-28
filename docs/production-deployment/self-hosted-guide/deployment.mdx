@@ -39,9 +39,14 @@ If you have Docker and Docker Compose installed, all you need to do is clone the
 
 The `temporalio/docker-compose` repo comes loaded with a variety of configuration templates that enable you to try all three databases that the Temporal Platform supports (PostgreSQL, MySQL, Cassandra).
 It also enables you to try [Advanced Visibility](/visibility#advanced-visibility) using [Search Attributes](/search-attribute), emit metrics, and even play with the [Archival](/temporal-service/archival) feature.
-The Docker images in this repo are produced using the Temporal Server [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script.
-This script defaults to creating images that run all the Temporal Server services in a single process.
-You can use this script as a starting point for producing your own images.
+
+:::warning Docker Image Changes
+
+The `temporalio/auto-setup` image is **deprecated** and no longer receives updates.
+
+For example configurations and setup guidance, refer to the [samples-server repository](https://github.com/temporalio/samples-server) instead.
+
+:::
 
 The following commands start and run a Temporal Service in Docker using the default configuration:
 
@@ -74,10 +79,48 @@ docker run
     temporalio/server:<tag>
 ```
 
-The environment variables supported by the Temporal Docker images are documented [on Docker Hub](https://hub.docker.com/r/temporalio/auto-setup).
+:::note Server Image Changes
 
-Each Temporal Server release ships an [Auto Setup](https://temporal.io/blog/auto-setup) Docker image that includes an [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script.
-We recommend using this script for initial schema setup of each supported database.
+The `temporalio/server` image has been streamlined to include only production-essential components. The following tools have been removed:
+
+- `temporal` CLI
+- `dockerize` (replaced with embedded `sprig` templating)
+- `curl`
+- `bash`
+
+Configuration templating now uses embedded `sprig` instead of `dockerize`. See [Configuration Templating](#configuration-templating) for details.
+
+:::
+
+The environment variables supported by the Temporal Docker images are documented [on Docker Hub](https://hub.docker.com/r/temporalio/server).
+
+:::warning Deprecated: Auto Setup Image
+
+The `temporalio/auto-setup` Docker image is deprecated and no longer receives updates. For initial schema setup and example configurations, refer to:
+
+- [samples-server repository](https://github.com/temporalio/samples-server) for setup examples
+- Manual schema setup instructions in the [Visibility guide](/self-hosted-guide/visibility)
+- The `temporal-elasticsearch-tool` in the `temporalio/admin-tools` image for Elasticsearch setup
+
+:::
+
+### Configuration Templating
+
+Configuration templating has changed from using the external `dockerize` tool to embedded `sprig` templating built directly into the Temporal Server binary.
+
+#### What Changed
+
+- **Previously:** `dockerize` processed configuration templates with custom helper functions
+- **Now:** `sprig` templating is embedded in the server binary, and the default config template is embedded (not a separate file)
+
+#### Migration Notes
+
+If you use custom configuration templates, be aware that:
+- Some template syntax has changed (particularly `.Env` and `default` function usage)
+- Refer to the [sprig documentation](http://masterminds.github.io/sprig/) for supported template functions
+- Use `temporal-server render-config` to verify your templates render correctly
+
+Default configuration loading now uses the embedded template instead of searching the filesystem.
 
 ### Importing the Server package
 
@@ -93,3 +136,17 @@ This requires Go v1.19 or later, as specified in the Temporal Server [Build prer
 [Temporal Helm charts](https://github.com/temporalio/helm-charts) enable you to get a Temporal Service running on [Kubernetes](https://kubernetes.io/) by deploying the Temporal Server services to individual pods and connecting them to your existing database and Elasticsearch instances.
 
 The Temporal Helm charts repo contains [extensive documentation](https://github.com/temporalio/helm-charts/blob/main/README.md) about Kubernetes deployments.
+
+:::warning Helm Chart Breaking Changes
+
+**Important compatibility requirements:**
+
+- Existing Helm chart versions are **not compatible** with `server` and `admin-tools` images **version 1.30 and later**
+- You **cannot** override existing chart versions with newer images
+- **Required Helm chart version:** [temporal-0.73.1](https://github.com/temporalio/helm-charts/releases/tag/temporal-0.73.1) **or later**
+
+If you are using Temporal Server images 1.30+, you must upgrade to Helm chart version 0.73.1 or later.
+
+**Note:** Temporal Cloud deployments are not impacted by these changes.
+
+:::

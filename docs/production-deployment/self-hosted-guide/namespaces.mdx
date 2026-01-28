@@ -39,9 +39,13 @@ You can create Namespaces using:
 If no Namespace is specified, SDKs and CLI use the `default` Namespace.
 You must register this Namespace before using it.
 
-When deploying with Docker Compose or the [auto-setup image](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh), the `default` Namespace is created automatically.
+:::warning Deprecated: auto-setup Image
 
-When deploying with [Helm charts](https://github.com/temporalio/helm-charts), create it manually:
+The `temporalio/auto-setup` image is deprecated and no longer receives updates. For setup examples, refer to the [samples-server repository](https://github.com/temporalio/samples-server).
+
+:::
+
+For all deployment methods, create the `default` Namespace manually using the Temporal CLI:
 
 ```bash
 temporal operator namespace create --namespace default
