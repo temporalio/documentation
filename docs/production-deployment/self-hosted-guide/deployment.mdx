@@ -122,6 +122,16 @@ If you use custom configuration templates, be aware that:
 
 Default configuration loading now uses the embedded template instead of searching the filesystem.
 
+#### Helm Chart Configuration
+
+When deploying with Helm charts (version 0.73.1 or later), the following configuration options control the dockerize to sprig migration:
+
+| Configuration Option | Description | Default |
+|---------------------|-------------|---------|
+| `server.useEntrypointScript` | Use entrypoint script that auto-detects dockerize vs sprig | `false` |
+| `server.configMapsToMount` | Which config template to mount: `"dockerize"`, `"sprig"`, or `"both"` | `"dockerize"` |
+| `server.setConfigFilePath` | Set `TEMPORAL_SERVER_CONFIG_FILE_PATH` env var (required for sprig) | `false` |
+
 ### Importing the Server package
 
 The Temporal Server is a standalone Go application that can be [imported](/references/server-options) into another project.
