@@ -1,0 +1,423 @@
+---
+id: set-up-your-local-php
+title: Set up your local development with the PHP SDK
+sidebar_label: Quickstart - Setup
+slug: /develop/php/set-up-your-local-php
+keywords:
+  - set up
+  - getting started
+  - php sdk
+tags:
+  - PHP SDK
+  - setup
+  - getting started
+hide_table_of_contents: true
+description: Configure your local development environment to get started developing with Temporal
+---
+
+import { SetupSteps, SetupStep, CodeSnippet } from "@site/src/components/elements/SetupSteps";
+import { CallToAction } from "@site/src/components/elements/CallToAction";
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Quickstart - Setup
+
+Configure your local development environment to get started developing with Temporal.
+
+<SetupSteps>
+<SetupStep code={
+  <>
+    <CodeSnippet language="bash">
+    php -v
+    </CodeSnippet>
+  </>
+}>
+
+## Install the PHP
+
+Make sure you have the PHP installed.
+
+**If you don't have PHP:** Visit official website to [download and install](https://www.php.net/downloads.php) it.
+
+### GRPC extension
+
+GRPC extension is required to work with RoadRunner application server.
+
+**If you don't have `ext-grpc` installed:** Visit official website to [download and install](https://docs.cloud.google.com/php/docs/reference/help/grpc) it.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+<CodeSnippet language="bash">
+mkdir temporal-hello-world
+</CodeSnippet>
+<CodeSnippet language="bash">
+cd temporal-hello-world
+</CodeSnippet>
+<CodeSnippet language="bash">
+composer init -n
+</CodeSnippet>
+</>
+}>
+
+## Create a Project
+
+Now that you have your build tool installed, create a project to manage your dependencies and build your Temporal application.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+<CodeSnippet language="bash">
+  composer require temporal/sdk
+</CodeSnippet>
+</>
+}>
+
+## Add Temporal PHP SDK Dependencies
+
+Now add the Temporal SDK dependencies to your project configuration file.
+</SetupStep>
+
+<SetupStep code={
+<>
+  <Tabs>
+    <TabItem value="cli" label="CLI">
+      <p>Download RoadRunner by the following command</p>
+      <CodeSnippet language="bash">
+        ./vendor/bin/rr get
+      </CodeSnippet>
+
+    </TabItem>
+    <TabItem value="dload" label="DLoad">
+      <p>Install DLoad package manager using Composer</p>
+      <CodeSnippet language="bash">
+        composer require --dev internal/dload
+      </CodeSnippet>
+      <p>Create configuration file named `dload.xml` with the following content</p>
+      <CodeSnippet language="xml">
+        {`<?xml version="1.0"?>
+<dload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="vendor/internal/dload/dload.xsd"
+       temp-dir="./runtime"
+>
+    <actions>
+        <download software="rr" version="^2025.1.6"/>
+    </actions>
+</dload>
+`}
+      </CodeSnippet>
+      <p>Finally, download specific RoadRunner binary</p>
+      <CodeSnippet language="bash">
+        ./vendor/bin/dload
+      </CodeSnippet>
+    </TabItem>
+  </Tabs>
+</>
+}>
+
+## Install RoadRunner application server
+
+Install [RoadRunner application server](https://github.com/roadrunner-server/roadrunner). It does lots of things for you, including:
+- managing workflow workers
+- managing activity workers
+- provides GRPC channel to communicate with Temporal Service through Go SDK
+
+See [RoadRunner installation instructions](https://docs.roadrunner.dev/docs/general/install) to learn about other installation methods.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+<CodeSnippet language="yml">
+  {`rpc:
+    listen: tcp://127.0.0.1:6001
+
+  server:
+    command: "php worker.php"
+
+  temporal:
+    address: "127.0.0.1:7233"
+
+  logs:
+    level: info
+  `}
+</CodeSnippet>
+</>
+}>
+
+Create a simple configuration file named `.rr.yaml` with the following content:
+
+</SetupStep>
+
+<SetupStep code={
+<>
+<Tabs>
+<TabItem value="macos" label="macOS" default>
+
+        <p>Install the Temporal CLI using Homebrew:</p>
+        <CodeSnippet language="bash">
+        brew install temporal
+        </CodeSnippet>
+      </TabItem>
+
+      <TabItem value="windows" label="Windows">
+        <p>Download the Temporal CLI archive for your architecture:</p>
+        <ul>
+          <li><a href="https://temporal.download/cli/archive/latest?platform=windows&arch=amd64">Windows amd64</a></li>
+          <li><a href="https://temporal.download/cli/archive/latest?platform=windows&arch=arm64">Windows arm64</a></li>
+        </ul>
+        <p>Extract it and add <code>temporal.exe</code> to your PATH.</p>
+      </TabItem>
+
+      <TabItem value="linux" label="Linux">
+        <p>Download the Temporal CLI for your architecture:</p>
+        <ul>
+          <li><a href="https://temporal.download/cli/archive/latest?platform=linux&arch=amd64">Linux amd64</a></li>
+          <li><a href="https://temporal.download/cli/archive/latest?platform=linux&arch=arm64">Linux arm64</a></li>
+        </ul>
+        <p>Extract the archive and move the <code>temporal</code> binary into your PATH, for example:</p>
+        <CodeSnippet language="bash">
+        sudo mv temporal /usr/local/bin
+        </CodeSnippet>
+      </TabItem>
+    </Tabs>
+
+</>
+}>
+
+## Install Temporal CLI and start the development server
+
+The fastest way to get a development version of the Temporal Service running on your local machine is to use [Temporal CLI](https://docs.temporal.io/cli).
+
+Choose your operating system to install Temporal CLI:
+
+</SetupStep>
+
+<SetupStep code={
+<>
+  <p>Add one more download action to the configuration file</p>
+  <CodeSnippet language="xml">
+    {`<download software="temporal" version="^1.5"/>`}
+  </CodeSnippet>
+  <p>So the final configuration file will looks like the following</p>
+  <CodeSnippet language="xml">
+    {`<?xml version="1.0"?>
+<dload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="vendor/internal/dload/dload.xsd"
+       temp-dir="./runtime"
+>
+    <actions>
+        <download software="rr" version="^2025.1.6"/>
+        <download software="temporal" version="^1.5"/>
+    </actions>
+</dload>
+`}
+  </CodeSnippet>
+</>
+}>
+
+### DLoad package manager
+Consider using DLoad to delegate all installation and updating processes to the package manager.
+
+</SetupStep>
+
+<SetupStep code={
+<>
+
+<p>After installing, open a new Terminal. Keep this running in the background:</p>
+<CodeSnippet language="bash">
+temporal server start-dev
+</CodeSnippet>
+
+<div className="port-info">
+<h4>Change the Web UI port</h4>
+<p>The Temporal Web UI may be on a different port in some examples or tutorials. To change the port for the Web UI, use the <code>--ui-port</code> option when starting the server:</p>
+<CodeSnippet language="bash">
+temporal server start-dev --ui-port 8080
+</CodeSnippet>
+<p>The Temporal Web UI will now be available at http://localhost:8080.</p>
+</div>
+<style>
+{`.port-info { background: rgba(68, 76, 231, 0.1); border: 1px solid rgba(68, 76, 231, 0.2); border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; transition: all 0.3s ease-in-out; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); } [data-theme='dark'] .port-info { background: rgba(68, 76, 231, 0.15); border-color: rgba(68, 76, 231, 0.3); } .port-info h4 { margin-top: 0; margin-bottom: 1rem; color: var(--ifm-color-emphasis-900); font-weight: 600; } .port-info p { margin-bottom: 1rem; font-size: 0.95rem; line-height: 1.5; color: var(--ifm-color-emphasis-800); } .port-info p:last-child { margin-bottom: 0; } .port-info code { background: rgba(255, 255, 255, 0.5); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; } [data-theme='dark'] .port-info code { background: rgba(0, 0, 0, 0.2); } @media (max-width: 768px) { .port-info { padding: 1.25rem; } }`}
+</style>
+</>
+}>
+
+## Start the development server
+
+Once you've installed Temporal CLI and added it to your PATH, open a new Terminal window and run the following command.
+
+This command starts a local Temporal Service. It starts the Web UI, creates the default Namespace, and uses an in-memory database.
+
+The Temporal Service will be available on localhost:7233.
+The Temporal Web UI will be available at http://localhost:8233.
+
+Leave the local Temporal Service running as you work through tutorials and other projects. You can stop the Temporal Service at any time by pressing CTRL+C.
+
+Once you have everything installed, you're ready to build apps with Temporal on your local machine.
+
+</SetupStep>
+</SetupSteps>
+## Run Hello World: Test Your Installation
+
+Now let's verify your setup is working by creating and running a complete Temporal application with both a Workflow and Activity.
+
+This test will confirm that:
+
+- The Temporal PHP SDK is properly installed
+- Your local Temporal Service is running
+- You can successfully create and execute Workflows and Activities
+- The communication between components is functioning correctly
+
+### 1. Create the Activity implementation
+
+Create an Activity implementation file (`src/GreetingActivity.php`):
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App;
+
+use Temporal\Activity\ActivityInterface;
+use Temporal\Activity\ActivityMethod;
+
+#[ActivityInterface]
+class GreetingActivity
+{
+    #[ActivityMethod]
+    public function greet(string $name): string
+    {
+        return "Hello, $name!";
+    }
+}
+```
+
+An Activity is a method that executes a single, well-defined action (either short or long-running), which often involves interacting with the outside world, such as sending emails, making network requests, writing to a database, or calling an API, which is prone to failure.
+If an Activity fails, Temporal automatically retries it based on your configuration.
+
+You define Activities in PHP as classes annotated with the `Temporal\Activity\ActivityInterface` attribute.
+
+Each method used in workflow classes should be annotated with `Temporal\Activity\ActivityMethod`.
+
+### 2. Create the Workflow Implementation
+
+Create a Workflow implementation file (`src/SayHelloWorkflow.php`):
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App;
+
+use Temporal\Activity\ActivityOptions;
+use Temporal\Workflow;
+use Temporal\Workflow\WorkflowInterface;
+use Temporal\Workflow\WorkflowMethod;
+
+#[WorkflowInterface]
+class SayHelloWorkflow
+{
+    #[WorkflowMethod]
+    public function sayHello(string $name)
+    {
+        $activity = Workflow::newActivityStub(
+            GreetingActivity::class,
+            ActivityOptions::new()
+                ->withStartToCloseTimeout(5),
+        );
+
+        return yield $activity->greet($name);
+    }
+}
+```
+
+### 3. Create Worker
+
+Create a Worker file (`worker.php`, under project root directory):
+
+```php
+<?php
+declare(strict_types=1);
+
+use Temporal\WorkerFactory;
+
+ini_set('display_errors', 'stderr');
+require "vendor/autoload.php";
+
+$factory = WorkerFactory::create();
+
+$worker = $factory->newWorker();
+
+// Register Workflows
+$worker->registerWorkflowTypes(\App\SayHelloWorkflow::class);
+// Register Activities
+$worker->registerActivity(\App\GreetingActivity::class);
+
+$factory->run();
+```
+
+### 4. Run the Worker
+
+Previously, we created a Worker that executes Workflow and Activity tasks.
+
+Now, start the RoadRunner application server to run the Worker:
+
+```bash
+./rr serve
+```
+
+A Worker polls a Task Queue, that you configure it to poll, looking for work to do.
+Once the Worker dequeues a Workflow or Activity task from the Task Queue, it then executes the task.
+
+Workers are a crucial part of your Temporal application as they're what actually execute the tasks defined in your Workflows and Activities.
+For more information on Workers, see [Understanding Temporal](/evaluate/understanding-temporal#workers) and a [deep dive into Workers](/workers).
+
+### 5. Execute the Workflow
+
+Now that your Worker is running, it's time to start a Workflow Execution.
+
+This final step will validate that everything is working correctly with your file labeled `client.php`.
+
+Create a separate file called `client.php`:
+
+```php
+<?php
+declare(strict_types=1);
+
+use Temporal\Client\GRPC\ServiceClient;
+use Temporal\Client\WorkflowClient;
+
+ini_set('display_errors', 'stderr');
+require "vendor/autoload.php";
+
+$client = new WorkflowClient(
+    ServiceClient::create('localhost:7233'),
+);
+
+$workflowStub = $client->newWorkflowStub(\App\SayHelloWorkflow::class);
+$result = $workflowStub->sayHello('Temporal');
+
+echo "Result: {$result}\n";
+```
+
+While your worker is still running, open a new terminal and run:
+
+```bash
+php client.php
+```
+
+### Verify Success
+
+If everything is working correctly, you should see:
+
+- Worker processing the workflow and activity
+- Output: `Result: Hello, Temporal!`
+- Workflow Execution details in the [Temporal Web UI](http://localhost:8233)
+
+<CallToAction href="https://learn.temporal.io/getting_started/php/hello_world_in_php/">
+  <h3>Next: Run your first Temporal Application</h3>
+  <p>Create a basic Workflow and run it with the Temporal PHP SDK</p>
+</CallToAction>
