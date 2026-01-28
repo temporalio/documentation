@@ -17,6 +17,11 @@ Cloud.
 
 ## Authentication
 
+You can authenticate with Temporal Cloud interactively or programmatically. Both approaches use environment
+configuration files to store the authentication credentials.
+
+### Interactive authentication
+
 Use the `temporal cloud login` command to authenticate with Temporal Cloud. Provide a environment configuration profile
 name to output the authentication credentials to. For more information about environment configuration profiles, see
 [Environment Configuration](../develop/environment-configuration.mdx).
@@ -30,16 +35,14 @@ the authentication credentials to the specified profile. If you do not provide a
 the authentication credentials to the `default` profile.
 
 A successful login will allow you to run `temporal cloud` command to perform operational and administrative tasks on
-Temporal Cloud.
+Temporal Cloud. It will also allow you to use the base `temporal` CLI to interact with a Temporal Service on Temporal
+Cloud.
 
-:::info
+### Programmatic authentication
 
-`temporal cloud login` allows you to perform administrative and operational tasks on Temporal Cloud. It does not provide
-the CLI with information about the Temporal Service you want to communicate with. Commands such as
-`temporal workflow list`, which interact with a Temporal Service, still require the `--address` and `--namespace` flags
-as well as API key credentials.
-
-:::
+You can authenticate with Temporal Cloud using environment configuration files or setting environment variables. For
+more information about environment configuration files, see
+[Environment Configuration](../develop/environment-configuration.mdx).
 
 ## Common operations {#common-operations}
 
@@ -71,9 +74,7 @@ alphabetical order.
 | Turn on API key  | `temporal cloud apikey enable <key-id>`   |
 | List API keys    | `temporal cloud apikey list`              |
 
-### `Temporal Nexus`
-
-Endpoint operations:
+### Nexus endpoint
 
 | Operation       | Command                                |
 | --------------- | -------------------------------------- |
