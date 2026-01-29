@@ -72,7 +72,7 @@ Throttling limits the rate at which Actions are performed to prevent the Namespa
 
 **How throttling works:**
 - Low-priority operations are throttled first; higher-priority operations (like starting or signaling Workflows) continue when possible.
-- A burst factor allows temporary spikes above your limit without immediate throttling.
+- Rate limiting is not instantaneous, so usage may briefly exceed your limit before throttling takes effect.
 - When throttled, the server returns `ResourceExhausted` errors that SDK clients automatically retry.
 - If throttling persists beyond the SDK's retry limit, client calls can fail.
 
