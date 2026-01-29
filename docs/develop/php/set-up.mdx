@@ -364,7 +364,7 @@ class SayHelloWorkflow
 }
 ```
 
-### 3. Create Worker
+### 3. Create a Worker file
 
 Create a Worker file (`worker.php`, under project root directory):
 
@@ -389,11 +389,11 @@ $worker->registerActivity(\App\GreetingActivity::class);
 $factory->run();
 ```
 
-### 4. Run the Worker
+#### Run the Worker
 
 Previously, we created a Worker that executes Workflow and Activity tasks.
 
-Now, start the RoadRunner application server to run the Worker:
+Now, start the RoadRunner application server to run the Worker by opening up a new terminal window and running this command:
 
 ```bash
 ./rr serve
