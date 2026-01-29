@@ -20,10 +20,11 @@ tags:
 There are many ways to self-host a [Temporal Service](/temporal-service). The right way for you depends entirely on your
 use case and where you plan to run it.
 
-This page provides instructions for deploying a Temporal Service for production. If you are deploying a Temporal Service
-for development, you can use the Temporal CLI to [start a local Temporal Service](/cli/start-dev-server).
+This page provides instructions for deploying a Temporal Service for sustained workloads that exceed what the
+[development server](/cli#start-dev-server) is designed to handle. For local development or testing, you can use the
+Temporal CLI to [start a local development Temporal Service](/cli#start-dev-server).
 
-## Docker & Docker Compose
+## Use Docker Compose
 
 You can run a Temporal Service in [Docker](https://docs.docker.com/engine/install) containers using
 [Docker Compose](https://docs.docker.com/compose/install).
@@ -57,9 +58,9 @@ You can run a Temporal Service in [Docker](https://docs.docker.com/engine/instal
 4. (Optional) Review
    [the additional configuration options](https://github.com/temporalio/samples-server/tree/main/compose#other-configuration-files)
    available in the samples-server repository and use `docker compose up` with the corresponding configuration file to
-   try them out. The configurations include different databases, different visibility stores, and TLS settings.
+   try them out. The configurations include different databases, visibility stores, and TLS settings.
 
-## Temporal Server binaries
+## Use Temporal Server binaries
 
 You can run a complete Temporal Server by deploying two Go binaries -- the
 [core Temporal Server](https://github.com/temporalio/temporal/releases/), and the
@@ -72,41 +73,21 @@ tutorials to deploy the Temporal Service behind an
 [Nginx reverse proxy](https://learn.temporal.io/tutorials/infrastructure/nginx-sqlite-binary/) or an
 [Envoy edge proxy](https://learn.temporal.io/tutorials/infrastructure/envoy-sqlite-binary/).
 
-In Docker, you could run each service in its own container, using the `SERVICES` flag to specify the service. Refer to
-the [Temporal Server Docker image documentation](https://hub.docker.com/r/temporalio/server) for the environment
-variables supported by the Temporal Docker images.
-
-```bash
-docker run
-    # persistence/schema setup flags omitted
-    -e SERVICES=history \                      -- Spin up one or more: history, matching, worker, frontend
-    -e LOG_LEVEL=debug,info \                           -- Logging level
-    -e DYNAMIC_CONFIG_FILE_PATH=config/foo.yaml         -- Dynamic config file to be watched
-    temporalio/server:<tag>
-```
-
-:::info
-
-The `temporalio/server` image includes only production-essential components. It does not have the `temporal` CLI,
-`dockerize`, `curl`, or `bash` tools.
-
-:::
-
 ### Configuration templating
 
 Configuration templating is how the Temporal Server turns a template config file into the final `config.yaml` it runs
-with. It lets you reuse one template across environments by filling in values from environment variables (for example,
-database endpoints, TLS paths, or feature flags).
+with. It lets you reuse one template across environments by filling in values from environment variables. For example,
+database endpoints, TLS paths, or feature flags.
 
 If you are **not** using a custom config template, you can skip this section. The default configuration is rendered
-automatically by the server.
+automatically by the server and can be found in the `config` directory when you download the
 
 #### Template compatibility
 
 If you use a custom configuration template, be aware of the following:
 
 - The server renders templates with embedded `sprig`, so any `dockerize`-specific syntax or helpers will fail
-- Some template syntax differs (particularly `.Env` and `default` function usage)
+- Some template syntax differs, particularly `.Env` and `default` function usage.
 - Refer to the [sprig documentation](http://masterminds.github.io/sprig/) for supported template functions
 - Use `temporal-server render-config` to verify your templates render correctly
 
@@ -121,7 +102,7 @@ sprig migration:
 | `server.configMapsToMount`   | Which config template to mount: `"dockerize"`, `"sprig"`, or `"both"` | `"dockerize"` |
 | `server.setConfigFilePath`   | Set `TEMPORAL_SERVER_CONFIG_FILE_PATH` env var (required for sprig)   | `false`       |
 
-## Importing the Server package
+## Import the Server package
 
 The Temporal Server is a standalone Go application that can be [imported](/references/server-options) into another
 project.
@@ -132,7 +113,7 @@ You might want to do this to pass custom plugins or any other customizations thr
 This requires Go v1.19 or later, as specified in the Temporal Server
 [Build prerequisites](https://github.com/temporalio/temporal/blob/main/CONTRIBUTING.md#build-prerequisites).
 
-## Helm charts
+## Use Helm charts
 
 [Temporal Helm charts](https://github.com/temporalio/helm-charts) enable you to get a Temporal Service running on
 [Kubernetes](https://kubernetes.io/) by deploying the Temporal Server services to individual pods and connecting them to
@@ -141,13 +122,11 @@ your existing database and Elasticsearch instances.
 The Temporal Helm charts repo contains
 [extensive documentation](https://github.com/temporalio/helm-charts/blob/main/README.md) about Kubernetes deployments.
 
-:::warning Helm Chart Breaking Changes
-
-- Existing Helm chart versions are **not compatible** with `server` and `admin-tools` images **version 1.30 and later**
-- You **cannot** override existing chart versions with newer images
-- **Required Helm chart version:**
-  [temporal-0.73.1](https://github.com/temporalio/helm-charts/releases/tag/temporal-0.73.1) **or later**
+:::caution Helm Chart version compatibility
 
 If you are using Temporal Server images 1.30+, you must upgrade to Helm chart version 0.73.1 or later.
+
+Helm chart versions below 0.73.1 are **not compatible** with `server` and `admin-tools` images **version 1.30 and
+later**. You **cannot** override old chart versions with newer images.
 
 :::
