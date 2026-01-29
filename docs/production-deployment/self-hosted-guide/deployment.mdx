@@ -2,7 +2,9 @@
 id: deployment
 title: Deploying a Temporal Service
 sidebar_label: Deployment
-description: Deploy a Temporal Service using Docker, Kubernetes, or from scratch. Requires a database such as Apache Cassandra, MySQL, or PostgreSQL. Customize setup for your infrastructure and tooling.
+description:
+  Deploy a Temporal Service using Docker, Kubernetes, or from scratch. Requires a database such as Apache Cassandra,
+  MySQL, or PostgreSQL. Customize setup for your infrastructure and tooling.
 slug: /self-hosted-guide/deployment
 toc_max_heading_level: 4
 keywords:
@@ -15,78 +17,64 @@ tags:
   - Self-hosting
 ---
 
-There are many ways to self-host a [Temporal Service](/temporal-service).
-The right way for you depends entirely on your use case and where you plan to run it.
+There are many ways to self-host a [Temporal Service](/temporal-service). The right way for you depends entirely on your
+use case and where you plan to run it.
 
-For step-by-step guides on deploying and configuring Temporal, refer to our [Infrastructure tutorials](https://learn.temporal.io/tutorials/infrastructure/).
+This page provides instructions for deploying a Temporal Service for production. If you are deploying a Temporal Service
+for development, you can use the Temporal CLI to [start a local Temporal Service](/cli/start-dev-server).
 
-### Minimum requirements
+## Docker & Docker Compose
 
-The Temporal Server depends on a database.
+You can run a Temporal Service in [Docker](https://docs.docker.com/engine/install) containers using
+[Docker Compose](https://docs.docker.com/compose/install).
 
-Supported databases include the following:
+### Prerequisites
 
-- [Apache Cassandra](/self-hosted-guide/visibility#cassandra)
-- [MySQL](/self-hosted-guide/visibility#mysql)
-- [PostgreSQL](/self-hosted-guide/visibility#postgresql)
-- [SQLite](/self-hosted-guide/visibility#sqlite)
+- You have Docker Compose installed.
+- Docker is running and the daemon is available.
+- Git is installed and available.
 
-### Docker & Docker Compose
+### Procedure
 
-You can run a Temporal Service in [Docker](https://docs.docker.com/engine/install) containers using [Docker Compose](https://docs.docker.com/compose/install).
+1. Clone the [temporalio/samples-server](https://github.com/temporalio/samples-server) repository.
 
-If you have Docker and Docker Compose installed, all you need to do is clone the [temporalio/docker-compose](https://github.com/temporalio/docker-compose) repo and run the `docker compose up` command from its root.
+2. Change into the `compose` directory.
 
-The `temporalio/docker-compose` repo comes loaded with a variety of configuration templates that enable you to try all three databases that the Temporal Platform supports (PostgreSQL, MySQL, Cassandra).
-It also enables you to try [Advanced Visibility](/visibility#advanced-visibility) using [Search Attributes](/search-attribute), emit metrics, and even play with the [Archival](/temporal-service/archival) feature.
+   ```
+   cd samples-server/compose
+   ```
 
-:::warning Docker Image Changes
+3. Run the `docker compose up` command. This uses the default configuration from the `docker-compose.yaml` file, which
+   includes a PostgreSQL database, an Elasticsearch instance, and exposes the Temporal gRPC Frontend on port 7233.
 
-The `temporalio/auto-setup` image is **deprecated** and no longer receives updates.
+   ```
+   docker compose up
+   ```
 
-For example configurations and setup guidance, refer to the [samples-server repository](https://github.com/temporalio/samples-server) instead.
+   The Temporal Service will be available at `http://localhost:8233`. The Temporal Web UI will be available at
+   `http://localhost:8080`.
 
-:::
+4. (Optional) Review
+   [the additional configuration options](https://github.com/temporalio/samples-server/tree/main/compose#other-configuration-files)
+   available in the samples-server repository and use `docker compose up` with the corresponding configuration file to
+   try them out. The configurations include different databases, different visibility stores, and TLS settings.
 
-:::tip Local Development Alternative
+## Temporal Server binaries
 
-For local development and testing, use the Temporal CLI's built-in development server:
+You can run a complete Temporal Server by deploying two Go binaries -- the
+[core Temporal Server](https://github.com/temporalio/temporal/releases/), and the
+[Temporal UI Server](https://github.com/temporalio/ui-server/releases).
 
-```bash
-temporal server start-dev
-```
+Each service can be deployed separately. Refer to
+[How to Configure a Temporal Service without a Proxy](https://learn.temporal.io/tutorials/infrastructure/configuring-sqlite-binary/)
+to deploy each service using `systemd`. If you need to run the Temporal Server behind a reverse proxy, refer to our
+tutorials to deploy the Temporal Service behind an
+[Nginx reverse proxy](https://learn.temporal.io/tutorials/infrastructure/nginx-sqlite-binary/) or an
+[Envoy edge proxy](https://learn.temporal.io/tutorials/infrastructure/envoy-sqlite-binary/).
 
-This provides:
-- A local Temporal Server with Web UI (http://localhost:8233)
-- Automatic creation of the `default` Namespace
-- Optional persistence with `--db-filename` for SQLite storage
-- Custom Search Attributes with `--search-attribute`
-
-See [`temporal server start-dev`](/cli/server#start-dev) for all options.
-
-:::
-
-The following commands start and run a Temporal Service in Docker using the default configuration:
-
-```bash
-git clone https://github.com/temporalio/docker-compose.git
-cd docker-compose
-docker compose up
-```
-
-Local [Temporal Clients](/encyclopedia/temporal-sdks#temporal-client) and [Workers](/workers) can connect to the Temporal Service running in Docker at 127.0.0.1:7233 (default connection for most SDKs) and the Temporal Web UI at 127.0.0.1:8080.
-
-To try other configurations (different dependencies and databases), or to try a custom Docker image, follow the [temporalio/docker-compose README](https://github.com/temporalio/docker-compose/blob/main/README.md).
-
-### Temporal Server binaries
-
-You can run a complete Temporal Server by deploying just two Go binaries -- the [core Temporal Server](https://github.com/temporalio/temporal/releases/), and the [Temporal UI Server](https://github.com/temporalio/ui-server/releases).
-Refer to our [tutorial site](https://learn.temporal.io/) for more details on how to deploy Temporal binaries behind an [Nginx reverse proxy](https://learn.temporal.io/tutorials/infrastructure/nginx-sqlite-binary/) or an [Envoy edge proxy](https://learn.temporal.io/tutorials/infrastructure/envoy-sqlite-binary/).
-
-Each service can also be deployed separately.
-For example, if you are using Kubernetes, you could have one service per pod, so they can scale independently in the future.
-
-In Docker, you could run each service in its own container, using the `SERVICES` flag to specify the service:
+In Docker, you could run each service in its own container, using the `SERVICES` flag to specify the service. Refer to
+the [Temporal Server Docker image documentation](https://hub.docker.com/r/temporalio/server) for the environment
+variables supported by the Temporal Docker images.
 
 ```bash
 docker run
@@ -97,84 +85,69 @@ docker run
     temporalio/server:<tag>
 ```
 
-:::note Server Image Changes
+:::info
 
-The `temporalio/server` image has been streamlined to include only production-essential components. The following tools have been removed:
-
-- `temporal` CLI
-- `dockerize` (replaced with embedded `sprig` templating)
-- `curl`
-- `bash`
-
-Configuration templating now uses embedded `sprig` instead of `dockerize`. See [Configuration Templating](#configuration-templating) for details.
+The `temporalio/server` image includes only production-essential components. It does not have the `temporal` CLI,
+`dockerize`, `curl`, or `bash` tools.
 
 :::
 
-The environment variables supported by the Temporal Docker images are documented [on Docker Hub](https://hub.docker.com/r/temporalio/server).
+### Configuration templating
 
-:::warning Deprecated: Auto Setup Image
+Configuration templating is how the Temporal Server turns a template config file into the final `config.yaml` it runs
+with. It lets you reuse one template across environments by filling in values from environment variables (for example,
+database endpoints, TLS paths, or feature flags).
 
-The `temporalio/auto-setup` Docker image is deprecated and no longer receives updates. For initial schema setup and example configurations, refer to:
+If you are **not** using a custom config template, you can skip this section. The default configuration is rendered
+automatically by the server.
 
-- [samples-server repository](https://github.com/temporalio/samples-server) for setup examples
-- Manual schema setup instructions in the [Visibility guide](/self-hosted-guide/visibility)
-- The `temporal-elasticsearch-tool` in the `temporalio/admin-tools` image for Elasticsearch setup
+#### Template compatibility
 
-:::
+If you use a custom configuration template, be aware of the following:
 
-### Configuration Templating
-
-Configuration templating has changed from using the external `dockerize` tool to embedded `sprig` templating built directly into the Temporal Server binary.
-
-#### What Changed
-
-- **Previously:** `dockerize` processed configuration templates with custom helper functions
-- **Now:** `sprig` templating is embedded in the server binary, and the default config template is embedded (not a separate file)
-
-#### Migration Notes
-
-If you use custom configuration templates, be aware that:
-- Some template syntax has changed (particularly `.Env` and `default` function usage)
+- The server renders templates with embedded `sprig`, so any `dockerize`-specific syntax or helpers will fail
+- Some template syntax differs (particularly `.Env` and `default` function usage)
 - Refer to the [sprig documentation](http://masterminds.github.io/sprig/) for supported template functions
 - Use `temporal-server render-config` to verify your templates render correctly
 
-Default configuration loading now uses the embedded template instead of searching the filesystem.
+#### Helm Chart configuration
 
-#### Helm Chart Configuration
+When deploying with Helm charts (version 0.73.1 or later), the following configuration options control the dockerize to
+sprig migration:
 
-When deploying with Helm charts (version 0.73.1 or later), the following configuration options control the dockerize to sprig migration:
+| Configuration Option         | Description                                                           | Default       |
+| ---------------------------- | --------------------------------------------------------------------- | ------------- |
+| `server.useEntrypointScript` | Use entrypoint script that auto-detects dockerize vs sprig            | `false`       |
+| `server.configMapsToMount`   | Which config template to mount: `"dockerize"`, `"sprig"`, or `"both"` | `"dockerize"` |
+| `server.setConfigFilePath`   | Set `TEMPORAL_SERVER_CONFIG_FILE_PATH` env var (required for sprig)   | `false`       |
 
-| Configuration Option | Description | Default |
-|---------------------|-------------|---------|
-| `server.useEntrypointScript` | Use entrypoint script that auto-detects dockerize vs sprig | `false` |
-| `server.configMapsToMount` | Which config template to mount: `"dockerize"`, `"sprig"`, or `"both"` | `"dockerize"` |
-| `server.setConfigFilePath` | Set `TEMPORAL_SERVER_CONFIG_FILE_PATH` env var (required for sprig) | `false` |
+## Importing the Server package
 
-### Importing the Server package
+The Temporal Server is a standalone Go application that can be [imported](/references/server-options) into another
+project.
 
-The Temporal Server is a standalone Go application that can be [imported](/references/server-options) into another project.
+You might want to do this to pass custom plugins or any other customizations through the
+[Server Options](/references/server-options). Then you can build and run a binary that contains your customizations.
 
-You might want to do this to pass custom plugins or any other customizations through the [Server Options](/references/server-options).
-Then you can build and run a binary that contains your customizations.
+This requires Go v1.19 or later, as specified in the Temporal Server
+[Build prerequisites](https://github.com/temporalio/temporal/blob/main/CONTRIBUTING.md#build-prerequisites).
 
-This requires Go v1.19 or later, as specified in the Temporal Server [Build prerequisites](https://github.com/temporalio/temporal/blob/main/CONTRIBUTING.md#build-prerequisites).
+## Helm charts
 
-### Helm charts
+[Temporal Helm charts](https://github.com/temporalio/helm-charts) enable you to get a Temporal Service running on
+[Kubernetes](https://kubernetes.io/) by deploying the Temporal Server services to individual pods and connecting them to
+your existing database and Elasticsearch instances.
 
-[Temporal Helm charts](https://github.com/temporalio/helm-charts) enable you to get a Temporal Service running on [Kubernetes](https://kubernetes.io/) by deploying the Temporal Server services to individual pods and connecting them to your existing database and Elasticsearch instances.
-
-The Temporal Helm charts repo contains [extensive documentation](https://github.com/temporalio/helm-charts/blob/main/README.md) about Kubernetes deployments.
+The Temporal Helm charts repo contains
+[extensive documentation](https://github.com/temporalio/helm-charts/blob/main/README.md) about Kubernetes deployments.
 
 :::warning Helm Chart Breaking Changes
 
-**Important compatibility requirements:**
-
 - Existing Helm chart versions are **not compatible** with `server` and `admin-tools` images **version 1.30 and later**
 - You **cannot** override existing chart versions with newer images
-- **Required Helm chart version:** [temporal-0.73.1](https://github.com/temporalio/helm-charts/releases/tag/temporal-0.73.1) **or later**
+- **Required Helm chart version:**
+  [temporal-0.73.1](https://github.com/temporalio/helm-charts/releases/tag/temporal-0.73.1) **or later**
 
 If you are using Temporal Server images 1.30+, you must upgrade to Helm chart version 0.73.1 or later.
-
-**Note:** Temporal Cloud deployments are not impacted by these changes.
 
 :::
