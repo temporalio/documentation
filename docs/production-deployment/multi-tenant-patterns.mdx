@@ -211,7 +211,7 @@ Automate tenant onboarding with a Temporal [Workflow](/workflows):
 :::note
 These are theoretical calculations based on SDK defaults. **Always perform load testing** to determine actual capacity for your specific workload. Monitor CPU, memory, and Temporal metrics during testing.
 
-While testing, also pay attention to your [metrics capacity and cardinality](/production-deployment/cloud/metrics/openmetrics/api-reference#managing-high-cardinality).
+While testing, also pay attention to your [metrics capacity and cardinality](/cloud/metrics/openmetrics/api-reference#managing-high-cardinality).
 :::
 
 ### Worker assignment strategies
@@ -232,9 +232,9 @@ While testing, also pay attention to your [metrics capacity and cardinality](/pr
 ### Monitoring
 
 Track these [metrics](/references/sdk-metrics) per tenant:
-- [Workflow completion](/production-deployment/cloud/metrics/openmetrics/metrics-reference#workflow-completion-metrics) rates
-- [Activity execution](/production-deployment/cloud/metrics/openmetrics/metrics-reference#task-queue-metrics) rates
-- [Task Queue backlog](/production-deployment/cloud/metrics/openmetrics/metrics-reference#task-queue-metrics)
+- [Workflow completion](/cloud/metrics/openmetrics/metrics-reference#workflow-completion-metrics) rates
+- [Activity execution](/cloud/metrics/openmetrics/metrics-reference#task-queue-metrics) rates
+- [Task Queue backlog](/cloud/metrics/openmetrics/metrics-reference#task-queue-metrics)
 - [Worker resource utilization](/references/sdk-metrics#worker_task_slots_used)
 - [Workflow failure rates](/encyclopedia/detecting-workflow-failures)
 
