@@ -3,9 +3,9 @@
   --docsearch-text-color: var(--ifm-font-color-base);
 
   /* Temporal brand colors for custom search modal - Light Mode */
-  --temporal-primary: #444CE7;
+  --temporal-primary: #444ce7;
   --temporal-dark: #141414;
-  --temporal-light: #F8FAFC;
+  --temporal-light: #f8fafc;
   --temporal-border: rgba(20, 20, 20, 0.08);
   --temporal-border-strong: rgba(20, 20, 20, 0.12);
   --temporal-text-muted: rgba(20, 20, 20, 0.5);
@@ -18,9 +18,9 @@
 
 [data-theme='dark'] {
   /* Temporal brand colors for custom search modal - Dark Mode */
-  --temporal-primary: #6B73FF;
-  --temporal-dark: #E8E8E8;
-  --temporal-light: #1A1A1A;
+  --temporal-primary: #6b73ff;
+  --temporal-dark: #e8e8e8;
+  --temporal-light: #1a1a1a;
   --temporal-border: rgba(255, 255, 255, 0.1);
   --temporal-border-strong: rgba(255, 255, 255, 0.15);
   --temporal-text-muted: rgba(255, 255, 255, 0.5);
@@ -33,8 +33,7 @@
 
 .DocSearch-Button {
   margin: 0;
-  transition: all var(--ifm-transition-fast)
-    var(--ifm-transition-timing-default);
+  transition: all var(--ifm-transition-fast) var(--ifm-transition-timing-default);
 }
 
 .DocSearch-Container {
@@ -127,7 +126,16 @@
   flex-direction: column;
   overflow: hidden;
   animation: slideUp 0.15s ease-out;
-  font-family: 'Aeonik', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family:
+    'Aeonik',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    sans-serif;
 }
 
 @keyframes slideUp {
@@ -185,7 +193,12 @@
   background: transparent;
   color: var(--temporal-dark);
   outline: none;
-  font-family: 'Aeonik', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family:
+    'Aeonik',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
 }
 
 .custom-search-input:focus-visible {
@@ -336,8 +349,11 @@
 }
 
 .custom-search-hit-icon--anchor {
-  width: 14px;
-  height: 14px;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--temporal-text-muted);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1;
 }
 
 /* Tree branch SVG for anchor hits */
@@ -484,7 +500,7 @@
   background: var(--temporal-bg-hover);
 }
 
-.custom-search-language-filter-option input[type="checkbox"] {
+.custom-search-language-filter-option input[type='checkbox'] {
   cursor: pointer;
   width: 14px;
   height: 14px;
