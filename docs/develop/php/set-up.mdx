@@ -37,17 +37,17 @@ Configure your local development environment to get started developing with Temp
 
 Make sure you have PHP installed.
 
-**If you don't have PHP:** Visit official website to [download and install](https://www.php.net/downloads.php) it.
+**If you don't have PHP:** Visit the official website to [download and install](https://www.php.net/downloads.php) it.
 
 ### GRPC extension
 
 GRPC extension is required to work with RoadRunner application server.
 
-**If you don't have `ext-grpc` installed:** Visit official website to [download and install](https://docs.cloud.google.com/php/docs/reference/help/grpc) it.
+**If you don't have `ext-grpc` installed:** Visit the official website to [download and install](https://docs.cloud.google.com/php/docs/reference/help/grpc) it.
 
-:::tip GRCP Installation Tip
+:::tip GRPC Installation Tip
 
-On macOS with Apple Silicon (M1/M2/M3/M4) and PHP 8.3, `pecl install grpc` may appear to hang. If this happens, try installing a specific version:
+On macOS with Apple Silicon (M1/M2/M3/M4) and PHP 8.3, `pecl install grpc` may appear to hang or install indefinitely. If this happens, try installing a specific version:
 
 ```bash
 pecl install channel://pecl.php.net/grpc-1.78.0RC2
@@ -75,7 +75,7 @@ composer init --name="myproject/quickstart" -n
 
 ## Create a Project
 
-Now that you have your build tool installed, create a project to manage your dependencies and build your Temporal application.
+Now that you have PHP installed, create a project to manage your dependencies and build your Temporal application.
 
 </SetupStep>
 
@@ -114,7 +114,7 @@ Your final `composer.json` should look like this. After updating, run `composer 
 <>
   <Tabs>
     <TabItem value="cli" label="CLI">
-      <p>Download RoadRunner by the following command</p>
+      <p>Download RoadRunner with the following command:</p>
       <CodeSnippet language="bash">
         ./vendor/bin/rr get
       </CodeSnippet>
@@ -125,7 +125,7 @@ Your final `composer.json` should look like this. After updating, run `composer 
       <CodeSnippet language="bash">
         composer require --dev internal/dload
       </CodeSnippet>
-      <p>Create configuration file named `dload.xml` with the following content</p>
+      <p>Create a configuration file named `dload.xml` with the following content:</p>
       <CodeSnippet language="xml">
         {`<?xml version="1.0"?>
 <dload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -138,7 +138,7 @@ Your final `composer.json` should look like this. After updating, run `composer 
 </dload>
 `}
       </CodeSnippet>
-      <p>Finally, download specific RoadRunner binary</p>
+      <p>Finally, download the RoadRunner binary:</p>
       <CodeSnippet language="bash">
         ./vendor/bin/dload
       </CodeSnippet>
@@ -231,7 +231,7 @@ Choose your operating system to install Temporal CLI:
   <CodeSnippet language="xml">
     {`<download software="temporal" version="^1.5"/>`}
   </CodeSnippet>
-  <p>So the final configuration file will looks like the following</p>
+  <p>The final configuration file should look like this:</p>
   <CodeSnippet language="xml">
     {`<?xml version="1.0"?>
 <dload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -433,7 +433,7 @@ $result = $workflowStub->sayHello('Temporal');
 echo "Result: {$result}\n";
 ```
 
-While your worker is still running, open a new terminal and run:
+While your Worker is still running, open a new terminal and run:
 
 ```bash
 php client.php
