@@ -17,8 +17,6 @@ tags:
 
 import { RelatedReadContainer, RelatedReadItem } from '@site/src/components';
 
-**How do I build a multi-tenant application using Temporal?**
-
 Many SaaS providers and large enterprise platform teams use a single Temporal [Namespace](/namespaces) with [per-tenant Task Queues](#1-task-queues-per-tenant-recommended) to power their multi-tenant applications. This approach maximizes resource efficiency while maintaining logical separation between tenants.
 
 This guide covers architectural patterns, design considerations, and practical examples for building multi-tenant applications with Temporal.
@@ -89,7 +87,7 @@ Only practical for a small number (< 50) of high-value tenants due to operationa
 **Cons:**
 - Higher operational overhead
 - Credential and connectivity management per [Namespace](/namespaces)
-- Requires more [Workers](/workers) (minimum 2 per Namespace for HA)
+- Requires more [Workers](/workers) (minimum 2 per Namespace for high availability)
 - Expensive at scale
 
 <RelatedReadContainer>
@@ -136,7 +134,9 @@ workflowOptions := client.StartWorkflowOptions{
 Consider creating an API or service that:
 - Maps tenant IDs to Task Queue names
 - Tracks which [Workers](/workers) are handling which tenants
-- Allows both your application and Workers to read the mappings of 1. Tenant IDs to Task Queues and 2. Workers to tenants.
+- Allows both your application and Workers to read the mappings of:
+    1. Tenant IDs to Task Queues 
+    1. Workers to tenants
 
 ### Capacity planning
 
