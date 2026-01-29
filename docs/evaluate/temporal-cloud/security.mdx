@@ -10,6 +10,7 @@ keywords:
   - security
   - temporal cloud
 tags:
+  - Multitenancy
   - Security
   - Temporal Cloud
 ---
@@ -50,9 +51,34 @@ By deploying a [Codec Server](/production-deployment/data-encryption) you can se
 ### Namespace isolation
 
 The base unit of isolation in a Temporal environment is a [Namespace](/namespaces).
-Each Temporal Cloud account can have multiple Namespaces.
-A Namespace (regardless of account) cannot interact with other Namespaces.
-Each Namespace is available through a secure gRPC endpoint and an HTTPS (TLS) endpoint.
+Each Temporal Cloud account can have multiple Namespaces, and each Namespace is isolated to ensure your workloads remain secure and performant.
+
+#### Authentication
+
+Each Namespace is secured with your choice of authentication method:
+- **mTLS certificates** - Namespace-specific X.509 certificates for mutual TLS authentication
+- **API keys** - Namespace-scoped API keys for authentication
+
+See [API Keys](/cloud/api-keys) and [mTLS Certificates](/cloud/certificates) for more details on configuring authentication for your Namespace.
+
+#### Rate limiting
+
+Temporal Cloud protects each Namespace with separate rate limits to prevent noisy neighbor problems:
+- **Actions Per Second (APS)** - Limits the rate of [actions](/best-practices/managing-aps-limits) performed in your Workflows
+- **Operations Per Second (OPS)** - Limits the rate of all [operations](/references/operation-list) that create load on Temporal Server
+
+These per-Namespace rate limits ensure that one Namespace experiencing a traffic spike cannot impact the performance or reliability of other Namespaces, whether those Namespaces belong to a single Temporal Cloud account or separate ones.
+
+See [Rate limiting](/cloud/limits) for more information about Temporal Cloud limits, and [Monitoring trends against limits](/cloud/service-health#rps-aps-rate-limits) for monitoring best practices.
+
+#### Inter-Namespace communication
+
+Namespaces are isolated by default. The only way for Workflows in one Namespace to interact with Workflows in another Namespace is through [Temporal Nexus](/nexus), which provides controlled, secure cross-Namespace communication via Nexus Endpoints.
+
+See [Nexus Security](/nexus/security) for details on how Nexus enables secure inter-Namespace communication.
+
+#### Logical segregation
+
 Temporal Cloud is a multi-tenant service.
 Namespaces in the same environment are logically segregated.
 Namespaces do not share data processing or data storage across regional boundaries.
