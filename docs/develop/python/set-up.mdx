@@ -210,6 +210,7 @@ Create a Worker file (worker.py):
 import asyncio
 from temporalio.client import Client
 from temporalio.worker import Worker
+from temporalio import workflow
 
 with workflow.unsafe.imports_passed_through():
     from workflows import SayHelloWorkflow
