@@ -33,9 +33,9 @@ Configure your local development environment to get started developing with Temp
   </>
 }>
 
-## Install the PHP
+## Install PHP
 
-Make sure you have the PHP installed.
+Make sure you have PHP installed.
 
 **If you don't have PHP:** Visit official website to [download and install](https://www.php.net/downloads.php) it.
 
@@ -44,6 +44,18 @@ Make sure you have the PHP installed.
 GRPC extension is required to work with RoadRunner application server.
 
 **If you don't have `ext-grpc` installed:** Visit official website to [download and install](https://docs.cloud.google.com/php/docs/reference/help/grpc) it.
+
+:::tip GRCP Installation Tip
+
+On macOS with Apple Silicon (M1/M2/M3/M4) and PHP 8.3, `pecl install grpc` may appear to hang. If this happens, try installing a specific version:
+
+```bash
+pecl install channel://pecl.php.net/grpc-1.78.0RC2
+```
+
+Note: You can find the latest versions at [pecl.php.net/package/grpc](https://pecl.php.net/package/grpc).
+
+:::
 
 </SetupStep>
 
@@ -56,7 +68,7 @@ mkdir temporal-hello-world
 cd temporal-hello-world
 </CodeSnippet>
 <CodeSnippet language="bash">
-composer init -n
+composer init --name="myproject/quickstart" -n
 </CodeSnippet>
 </>
 }>
@@ -70,14 +82,32 @@ Now that you have your build tool installed, create a project to manage your dep
 <SetupStep code={
 <>
 <CodeSnippet language="bash">
-  composer require temporal/sdk
+composer require temporal/sdk
+</CodeSnippet>
+<CodeSnippet language="json">
+{`{
+    "name": "myproject/quickstart",
+    "require": {
+        "temporal/sdk": "^2.16"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\\\": "src/"
+        }
+    }
+}`}
+</CodeSnippet>
+<CodeSnippet language="bash">
+composer dump-autoload
 </CodeSnippet>
 </>
 }>
 
-## Add Temporal PHP SDK Dependencies
+## Add Temporal PHP SDK and Configure Autoloading
 
-Now add the Temporal SDK dependencies to your project configuration file.
+Install the Temporal SDK, then add PSR-4 autoloading to your `composer.json` so PHP can find your Workflow and Activity classes.
+
+Your final `composer.json` should look like this. After updating, run `composer dump-autoload` to regenerate the autoloader.
 </SetupStep>
 
 <SetupStep code={
@@ -88,7 +118,7 @@ Now add the Temporal SDK dependencies to your project configuration file.
       <CodeSnippet language="bash">
         ./vendor/bin/rr get
       </CodeSnippet>
-
+      <p>When prompted "Do you want create default '.rr.yaml' configuration file?", answer <strong>yes</strong>. You'll replace it with the proper config in the next step.</p>
     </TabItem>
     <TabItem value="dload" label="DLoad">
       <p>Install DLoad package manager using Composer</p>
@@ -119,10 +149,8 @@ Now add the Temporal SDK dependencies to your project configuration file.
 
 ## Install RoadRunner application server
 
-Install [RoadRunner application server](https://github.com/roadrunner-server/roadrunner). It does lots of things for you, including:
-- managing workflow workers
-- managing activity workers
-- provides GRPC channel to communicate with Temporal Service through Go SDK
+Install [RoadRunner application server](https://github.com/roadrunner-server/roadrunner). 
+It starts and manages your PHP processes that run Temporal Workers, and connects them to the Temporal Service over gRPC.
 
 See [RoadRunner installation instructions](https://docs.roadrunner.dev/docs/general/install) to learn about other installation methods.
 
@@ -131,18 +159,20 @@ See [RoadRunner installation instructions](https://docs.roadrunner.dev/docs/gene
 <SetupStep code={
 <>
 <CodeSnippet language="yml">
-  {`rpc:
-    listen: tcp://127.0.0.1:6001
+  {`version: "3"
 
-  server:
-    command: "php worker.php"
+rpc:
+  listen: tcp://127.0.0.1:6001
 
-  temporal:
-    address: "127.0.0.1:7233"
+server:
+  command: "php worker.php"
 
-  logs:
-    level: info
-  `}
+temporal:
+  address: "127.0.0.1:7233"
+
+logs:
+  level: info
+`}
 </CodeSnippet>
 </>
 }>
