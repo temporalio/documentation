@@ -1,7 +1,7 @@
 ---
 id: multi-tenancy
 title: Multi-tenancy - Temporal feature
-description: Learn about Temporal Cloud's multi-tenant architecture and how to build multi-tenant applications using Temporal.
+description: Learn about Temporal's namespace isolation for multi-tenancy and how to build multi-tenant applications.
 sidebar_label: Multi-tenancy
 tags:
 - Temporal Cloud
@@ -20,14 +20,25 @@ Multi-tenancy in Temporal operates at two levels:
 
 ## Namespace isolation
 
-**How Temporal Cloud isolates your namespaces from each other.**
+[Namespaces](/namespaces) are Temporal's unit of isolation, providing logical separation for multi-tenant deployments in both open source Temporal and Temporal Cloud.
 
-The nature of Temporal workloads – write- and read-heavy, with strong consistency and latency requirements – can make multi-tenant operations challenging. Without careful design, 'noisy neighbor' problems arise when one customer's traffic spike degrades performance for others. 
+### Open source Temporal
 
-Temporal Cloud is a multi-tenant service that isolates each namespace to provide cost-effective, consumption-based pricing while maintaining enterprise-grade security, reliability, and capacity to handle traffic spikes. Each namespace has:
+Namespaces in self-hosted Temporal provide:
+
+- **Workflow ID uniqueness**: Temporal guarantees unique Workflow IDs within a Namespace. Different Namespaces can have Workflows with the same ID without conflict.
+- **Resource isolation**: Traffic from one Namespace does not impact other Namespaces on the same Temporal Service.
+- **Configuration boundaries**: Settings like [Retention Period](/temporal-service/temporal-server#retention-period) and [Archival](/temporal-service/archival) destination are configured per Namespace.
+- **Access control**: Use a custom [Authorizer](/self-hosted-guide/security#authorization) on your Frontend Service to restrict who can access each Namespace.
+
+### Temporal Cloud
+
+Temporal Cloud builds on these capabilities with additional isolation guarantees:
 
 - **Independent authentication** via [API keys](/cloud/api-keys) or [mTLS certificates](/cloud/certificates)
+- **Built-in [role-based access controls](/cloud/users#namespace-level-permissions)** without custom Authorizer configuration
 - **Separate [rate limits](/cloud/limits#namespace-level)** to prevent noisy neighbor problems
+- **[High availability replication](/cloud/high-availability)** across regions
 - **Controlled inter-namespace communication** only through [Nexus](/evaluate/nexus)
 
 <RelatedReadContainer>
@@ -37,12 +48,6 @@ Temporal Cloud is a multi-tenant service that isolates each namespace to provide
 
 ## Application multi-tenancy
 
-**How to build multi-tenant applications using Temporal.**
+Many organizations use Temporal to power their own multi-tenant SaaS applications, isolating their customers' workloads using Task Queues, Search Attributes, and Worker design patterns.
 
-Many organizations use Temporal Cloud to power their own multi-tenant SaaS application. Temporal provides patterns for isolating your tenants using:
-
-- **Task queues per tenant** for workload isolation
-- **Worker design patterns** for efficient resource utilization
-- **Search attributes** for tenant-specific queries
-
-The [best practices guide](/production-deployment/multi-tenant-patterns) includes detailed recommendations and factors to consider when architecting your multi-tenant application on Temporal Cloud.
+See the [multi-tenant application patterns guide](/production-deployment/multi-tenant-patterns) for detailed recommendations on architecting multi-tenant applications with Temporal.
