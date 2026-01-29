@@ -335,6 +335,11 @@
   flex-shrink: 0;
 }
 
+.custom-search-hit-icon--anchor {
+  width: 14px;
+  height: 14px;
+}
+
 /* Tree branch SVG for anchor hits */
 .custom-search-hit-tree {
   width: 24px;

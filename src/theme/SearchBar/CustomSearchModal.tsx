@@ -49,11 +49,11 @@ function PageIcon() {
 
 function AnchorIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="custom-search-hit-icon">
-      <line x1="4" x2="20" y1="9" y2="9"></line>
-      <line x1="4" x2="20" y1="15" y2="15"></line>
-      <line x1="10" x2="8" y1="3" y2="21"></line>
-      <line x1="16" x2="14" y1="3" y2="21"></line>
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" className="custom-search-hit-icon custom-search-hit-icon--anchor">
+      <line x1="1" x2="13" y1="5" y2="5"></line>
+      <line x1="1" x2="13" y1="9" y2="9"></line>
+      <line x1="5" x2="4" y1="1" y2="13"></line>
+      <line x1="10" x2="9" y1="1" y2="13"></line>
     </svg>
   );
 }
