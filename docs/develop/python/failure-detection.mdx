@@ -112,12 +112,12 @@ You could do this in response to an Activity Failure, if the failure of that Act
 
 ```python
 try:
-	credit_card_confirmation = await workflow.execute_activity_method()
+  credit_card_confirmation = await workflow.execute_activity_method()
 except ActivityError as e:
-	workflow.logger.error(f"Unable to process credit card {e.message}")
-	raise ApplicationError(
-		"Unable to process credit card", "CreditCardProcessingError"
-	)
+  workflow.logger.error(f"Unable to process credit card {e.message}")
+    raise ApplicationError(
+      "Unable to process credit card", "CreditCardProcessingError"
+    )
 ```
 
 This works differently in a Workflow than raising exceptions from Activities.

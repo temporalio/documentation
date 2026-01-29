@@ -1,0 +1,104 @@
+.sdkDotNet {
+  border: 1px solid #9747ff;
+
+  &:hover {
+    .backgroundPath {
+      opacity: 0.5;
+    }
+  }
+
+  .backgroundPath {
+    fill: #9747ff;
+    transition: opacity 0.3s ease;
+  }
+}
+
+.sdkGoLang {
+  border: 1px solid #444ce7;
+
+  &:hover {
+    .backgroundPath {
+      opacity: 0.5;
+    }
+  }
+
+  .backgroundPath {
+    fill: #444ce7;
+    transition: opacity 0.3s ease;
+  }
+}
+
+.sdkJava {
+  border: 1px solid #ff9b27;
+
+  &:hover {
+    .backgroundPath {
+      opacity: 0.5;
+    }
+  }
+
+  .backgroundPath {
+    fill: #ff9b27;
+    transition: opacity 0.3s ease;
+  }
+}
+
+.sdkPhp {
+  border: 1px solid #ff6bff;
+
+  &:hover {
+    .backgroundPath {
+      opacity: 0.5;
+    }
+  }
+
+  .backgroundPath {
+    fill: #ff6bff;
+    transition: opacity 0.3s ease;
+  }
+}
+
+.sdkPython {
+  border: 1px solid #fecb2f;
+
+  &:hover {
+    .backgroundPath {
+      opacity: 0.5;
+    }
+  }
+
+  .backgroundPath {
+    fill: #fecb2f;
+    transition: opacity 0.3s ease;
+  }
+}
+
+.sdkRuby {
+  border: 1px solid #ff6565;
+
+  &:hover {
+    .backgroundPath {
+      opacity: 0.5;
+    }
+  }
+
+  .backgroundPath {
+    fill: #ff6565;
+    transition: opacity 0.3s ease;
+  }
+}
+
+.sdkTypeScript {
+  border: 1px solid #59fda0;
+
+  &:hover {
+    .backgroundPath {
+      opacity: 0.5;
+    }
+  }
+
+  .backgroundPath {
+    fill: #59fda0;
+    transition: opacity 0.3s ease;
+  }
+}

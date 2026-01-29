@@ -5,7 +5,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Evaluate',
-      collapsed: false,
+      collapsed: true,
       link: {
         type: 'doc',
         id: 'evaluate/index',
@@ -60,10 +60,9 @@ module.exports = {
           collapsed: true,
           link: {
             type: 'doc',
-            id: 'evaluate/temporal-cloud/index',
+            id: 'evaluate/temporal-cloud/overview',
           },
           items: [
-            'evaluate/temporal-cloud/overview',
             'evaluate/temporal-cloud/security',
             'evaluate/temporal-cloud/service-availability',
             'evaluate/temporal-cloud/regions',
@@ -81,7 +80,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Develop',
-      collapsed: false,
+      collapsed: true,
       link: {
         type: 'doc',
         id: 'develop/index',
@@ -213,6 +212,16 @@ module.exports = {
             'develop/python/child-workflows',
             'develop/python/continue-as-new',
             'develop/python/interceptors',
+            {
+              type: 'category',
+              label: 'Integrations',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/python/integrations/index',
+              },
+              items: ['develop/python/integrations/braintrust'],
+            },
           ],
         },
         {
@@ -245,7 +254,16 @@ module.exports = {
             'develop/typescript/child-workflows',
             'develop/typescript/continue-as-new',
             'develop/typescript/interceptors',
-            'develop/typescript/ai-sdk',
+            {
+              type: 'category',
+              label: 'Integrations',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/typescript/integrations/index',
+              },
+              items: ['develop/typescript/integrations/ai-sdk'],
+            },
           ],
         },
         {
@@ -317,209 +335,204 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'Temporal Cloud',
+      collapsed: true,
+      link: {
+        type: 'doc',
+        id: 'cloud/index',
+      },
+      items: [
+        {
+          type: 'category',
+          label: 'Get started with Cloud',
+          collapsed: false,
+          link: {
+            type: 'doc',
+            id: 'cloud/get-started/index',
+          },
+          items: [
+            'cloud/get-started/namespaces',
+            'cloud/get-started/api-keys',
+            'cloud/get-started/certificates',
+            'cloud/get-started/billing-and-cost',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Account access',
+          collapsed: false,
+          link: {
+            type: 'doc',
+            id: 'cloud/manage-access/index',
+          },
+          items: [
+            'cloud/get-started/users',
+            'cloud/get-started/user-groups',
+            'cloud/get-started/service-accounts',
+            'cloud/saml',
+            'cloud/scim',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Metrics',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'cloud/metrics/index',
+          },
+          items: [
+            {
+              type: 'category',
+              label: 'OpenMetrics',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'cloud/metrics/openmetrics/index',
+              },
+              items: [
+                'cloud/metrics/openmetrics/metrics-integrations',
+                'cloud/metrics/openmetrics/migration-guide',
+                'cloud/metrics/openmetrics/api-reference',
+                'cloud/metrics/openmetrics/metrics-reference',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'PromQL',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'cloud/metrics/promql',
+              },
+              items: [
+                'cloud/metrics/general-setup',
+                'cloud/metrics/reference',
+                'cloud/metrics/datadog',
+                'cloud/metrics/prometheus-grafana',
+              ],
+            },
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Connectivity',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'cloud/connectivity/index',
+          },
+          items: [
+            'cloud/connectivity/aws-connectivity',
+            'cloud/connectivity/gcp-connectivity',
+            'cloud/connectivity/ip-addresses',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'High Availability',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'cloud/high-availability/index',
+          },
+          items: [
+            'cloud/high-availability/enable',
+            'cloud/high-availability/monitoring',
+            'cloud/high-availability/failovers',
+            'cloud/high-availability/ha-connectivity',
+          ],
+        },
+        'cloud/rpo-rto',
+        {
+          type: 'category',
+          label: 'Temporal Nexus',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'cloud/nexus/index',
+          },
+          items: [
+            'cloud/nexus/security',
+            'cloud/nexus/observability',
+            'cloud/nexus/latency-availability',
+            'cloud/nexus/limits',
+            'cloud/nexus/pricing',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Migrate',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'cloud/migrate/index',
+          },
+          items: ['cloud/migrate/automated', 'cloud/migrate/manual', 'cloud/migrate/migrate-within-cloud'],
+        },
+        'cloud/capacity-modes',
+        'cloud/worker-health',
+        'cloud/service-health',
+        'cloud/notifications',
+        'cloud/operation-api',
+        'cloud/terraform-provider',
+        {
+          type: 'category',
+          label: 'Export',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'cloud/export',
+          },
+          items: ['cloud/aws-export-s3', 'cloud/gcp-export-gcs'],
+        },
+        {
+          type: 'category',
+          label: 'Audit Logging',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'cloud/audit-logs',
+          },
+          items: [
+            'cloud/audit-logs-aws',
+            'cloud/audit-logs-gcp', // pre-release
+          ],
+        },
+        {
+          type: 'category',
+          label: 'CLI (tcld)',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'cloud/tcld/index',
+          },
+          items: [
+            'cloud/tcld/account',
+            'cloud/tcld/apikey',
+            'cloud/tcld/feature',
+            'cloud/tcld/generate-certificates',
+            'cloud/tcld/login',
+            'cloud/tcld/logout',
+            'cloud/tcld/namespace',
+            'cloud/tcld/nexus',
+            'cloud/tcld/request',
+            'cloud/tcld/user',
+            'cloud/tcld/user-group',
+            'cloud/tcld/version',
+          ],
+        },
+      ],
+    },
+    {
+      type: 'category',
       label: 'Deploy to production',
-      collapsed: false,
+      collapsed: true,
       link: {
         type: 'doc',
         id: 'production-deployment/index',
       },
       items: [
-        {
-          type: 'category',
-          label: 'Temporal Cloud',
-          collapsed: true,
-          link: {
-            type: 'doc',
-            id: 'production-deployment/cloud/index',
-          },
-          items: [
-            {
-              type: 'category',
-              label: 'Get started with Cloud',
-              collapsed: false,
-              link: {
-                type: 'doc',
-                id: 'production-deployment/cloud/get-started/index',
-              },
-              items: [
-                'production-deployment/cloud/get-started/namespaces',
-                'production-deployment/cloud/get-started/api-keys',
-                'production-deployment/cloud/get-started/certificates',
-                'production-deployment/cloud/get-started/billing-and-cost',
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Account access',
-              collapsed: false,
-              link: {
-                type: 'doc',
-                id: 'production-deployment/cloud/manage-access/index',
-              },
-              items: [
-                'production-deployment/cloud/get-started/users',
-                'production-deployment/cloud/get-started/user-groups',
-                'production-deployment/cloud/get-started/service-accounts',
-                'production-deployment/cloud/saml',
-                'production-deployment/cloud/scim',
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Metrics',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'production-deployment/cloud/metrics/index',
-              },
-              items: [
-                {
-                  type: 'category',
-                  label: 'OpenMetrics',
-                  collapsed: true,
-                  link: {
-                    type: 'doc',
-                    id: 'production-deployment/cloud/metrics/openmetrics/index',
-                  },
-                  items: [
-                    'production-deployment/cloud/metrics/openmetrics/metrics-integrations',
-                    'production-deployment/cloud/metrics/openmetrics/migration-guide',
-                    'production-deployment/cloud/metrics/openmetrics/api-reference',
-                    'production-deployment/cloud/metrics/openmetrics/metrics-reference',
-                  ],
-                },
-                {
-                  type: 'category',
-                  label: 'PromQL',
-                  collapsed: true,
-                  link: {
-                    type: 'doc',
-                    id: 'production-deployment/cloud/metrics/promql',
-                  },
-                  items: [
-                    'production-deployment/cloud/metrics/general-setup',
-                    'production-deployment/cloud/metrics/reference',
-                    'production-deployment/cloud/metrics/datadog',
-                    'production-deployment/cloud/metrics/prometheus-grafana',
-                  ],
-                },
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Connectivity',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'production-deployment/cloud/connectivity/index',
-              },
-              items: [
-                'production-deployment/cloud/connectivity/aws-connectivity',
-                'production-deployment/cloud/connectivity/gcp-connectivity',
-                'production-deployment/cloud/connectivity/ip-addresses',
-              ],
-            },
-            {
-              type: 'category',
-              label: 'High Availability',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'production-deployment/cloud/high-availability/index',
-              },
-              items: [
-                'production-deployment/cloud/high-availability/enable',
-                'production-deployment/cloud/high-availability/monitoring',
-                'production-deployment/cloud/high-availability/failovers',
-                'production-deployment/cloud/high-availability/ha-connectivity',
-              ],
-            },
-            'production-deployment/cloud/rpo-rto',
-            'production-deployment/cloud/notifications',
-            {
-              type: 'category',
-              label: 'Temporal Nexus',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'production-deployment/cloud/nexus/index',
-              },
-              items: [
-                'production-deployment/cloud/nexus/security',
-                'production-deployment/cloud/nexus/observability',
-                'production-deployment/cloud/nexus/latency-availability',
-                'production-deployment/cloud/nexus/limits',
-                'production-deployment/cloud/nexus/pricing',
-              ],
-            },
-            'production-deployment/cloud/worker-health',
-            'production-deployment/cloud/capacity-modes',
-            'production-deployment/cloud/service-health',
-            'production-deployment/cloud/operation-api',
-            'production-deployment/cloud/terraform-provider',
-            {
-              type: 'category',
-              label: 'Export',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'production-deployment/cloud/export',
-              },
-              items: ['production-deployment/cloud/aws-export-s3', 'production-deployment/cloud/gcp-export-gcs'],
-            },
-            {
-              type: 'category',
-              label: 'Audit Logging',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'production-deployment/cloud/audit-logs',
-              },
-              items: [
-                'production-deployment/cloud/audit-logs-aws',
-                'production-deployment/cloud/audit-logs-gcp', // pre-release
-              ],
-            },
-            {
-              type: 'category',
-              label: 'CLI (tcld)',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'production-deployment/cloud/tcld/index',
-              },
-              items: [
-                'production-deployment/cloud/tcld/account',
-                'production-deployment/cloud/tcld/apikey',
-                'production-deployment/cloud/tcld/feature',
-                'production-deployment/cloud/tcld/generate-certificates',
-                'production-deployment/cloud/tcld/login',
-                'production-deployment/cloud/tcld/logout',
-                'production-deployment/cloud/tcld/namespace',
-                'production-deployment/cloud/tcld/nexus',
-                'production-deployment/cloud/tcld/request',
-                'production-deployment/cloud/tcld/user',
-                'production-deployment/cloud/tcld/user-group',
-                'production-deployment/cloud/tcld/version',
-              ],
-            },
-            {
-              type: 'category',
-              label: 'Migrate',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'production-deployment/cloud/migrate/index',
-              },
-              items: [
-                'production-deployment/cloud/migrate/automated',
-                'production-deployment/cloud/migrate/manual',
-                'production-deployment/cloud/migrate/migrate-within-cloud',
-              ],
-            },
-          ],
-        },
-        'production-deployment/data-encryption',
         {
           type: 'category',
           label: 'Self-host',
@@ -532,6 +545,7 @@ module.exports = {
             'production-deployment/self-hosted-guide/deployment',
             'production-deployment/self-hosted-guide/checklist',
             'production-deployment/self-hosted-guide/defaults',
+            'production-deployment/self-hosted-guide/namespaces',
             'production-deployment/self-hosted-guide/security',
             'production-deployment/self-hosted-guide/monitoring',
             'production-deployment/self-hosted-guide/visibility',
@@ -556,6 +570,7 @@ module.exports = {
             'production-deployment/worker-deployments/deploy-workers-to-aws-eks',
           ],
         },
+        'production-deployment/data-encryption',
       ],
     },
     {
@@ -847,6 +862,7 @@ module.exports = {
       ],
     },
     'glossary',
+    'with-ai',
     // {
     //   type: "autogenerated",
     //   dirName: "./dev-guide", // '.' means the current docs folder

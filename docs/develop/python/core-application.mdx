@@ -119,6 +119,8 @@ To return a value of the Workflow, use `return` to return an object.
 
 To return the results of a Workflow Execution, use either `start_workflow()` or `execute_workflow()` asynchronous methods.
 
+For performance and behavior reasons, users should pass through all modules, including Activities, Nexus services, and third-party plugins, whose calls will be deterministic using [`imports_passed_through`](https://python.temporal.io/temporalio.workflow.unsafe.html#imports_passed_through) or at Worker creation time by customizing the runner's restrictions with [`with_passthrough_modules`](https://python.temporal.io/temporalio.worker.workflow_sandbox.SandboxRestrictions.html#with_passthrough_modules).
+
 <div className="copycode-notice-container">
   <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/python/your_app/your_workflows_dacx.py">
     View the source code
@@ -128,7 +130,10 @@ To return the results of a Workflow Execution, use either `start_workflow()` or 
 
 ```python
 from temporalio import workflow
-# ...
+
+with workflow.unsafe.imports_passed_through():
+    from your_activities_dacx import your_activity
+    from your_dataobject_dacx import YourParams
 # ...
 @workflow.defn(name="YourWorkflow")
 class YourWorkflow:
@@ -160,7 +165,10 @@ You can customize the Workflow name with a custom name in the decorator argument
 
 ```python
 from temporalio import workflow
-# ...
+
+with workflow.unsafe.imports_passed_through():
+    from your_activities_dacx import your_activity
+    from your_dataobject_dacx import YourParams
 # ...
 @workflow.defn(name="YourWorkflow")
 class YourWorkflow:
@@ -365,7 +373,10 @@ A single argument to the Activity is positional. Multiple arguments are not supp
 
 ```python
 from temporalio import workflow
-# ...
+
+with workflow.unsafe.imports_passed_through():
+    from your_activities_dacx import your_activity
+    from your_dataobject_dacx import YourParams
 # ...
 @workflow.defn(name="YourWorkflow")
 class YourWorkflow:
@@ -435,7 +446,10 @@ You must provide either `schedule_to_close_timeout` or `start_to_close_timeout`.
 
 ```python
 from temporalio import workflow
-# ...
+
+with workflow.unsafe.imports_passed_through():
+    from your_activities_dacx import your_activity
+    from your_dataobject_dacx import YourParams
 # ...
 @workflow.defn(name="YourWorkflow")
 class YourWorkflow:
