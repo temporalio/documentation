@@ -88,6 +88,20 @@ See the [glossary](/glossary#requests-per-second-rps) for more about RPS.
 
 See the [operations list](/references/operation-list) for the list of operations.
 
+### Throttling behavior
+
+When you exceed your APS, RPS, or OPS limits, Temporal Cloud throttles requests. Here's what happens:
+
+1. **Priority-based throttling**: Low-priority operations are throttled first. Higher-priority operations like `StartWorkflowExecution`, `SignalWorkflowExecution`, and `UpdateWorkflowExecution` continue to go through when possible. Temporal Cloud uses similar [throttling priorities as the open source server](https://github.com/temporalio/temporal/blob/main/service/frontend/configs/quotas.go#L66).
+2. **Burst tolerance**: A burst factor allows temporary spikes above your limit for a short duration without immediate throttling.
+3. **ResourceExhausted errors**: When throttled, the server returns a `ResourceExhausted` gRPC error. SDK clients automatically retry these based on the default gRPC retry policy.
+4. **Potential failure**: If throttling persists beyond the SDK's retry limit, client calls fail. This means work _can_ be lost if you don't handle these failures.
+
+**Best practices for handling throttling:**
+- Log any failed `StartWorkflowExecution`, `SignalWorkflowExecution`, or `UpdateWorkflowExecution` calls on the client side, including the payload, so you can retry or backfill later.
+- Set up [Cloud metrics](/cloud/metrics/openmetrics/metrics-reference#limit-metrics) to alert when throttling occurs and when you approach your limits.
+- Consider [Provisioned Capacity](/cloud/capacity-modes#provisioned-capacity) if you have predictable spikes or need guaranteed throughput.
+
 ### Schedules rate limit
 
 - Scope: Namespace
@@ -106,20 +120,6 @@ This approach uniformly distributes the scheduled Workflow Execution launches th
 - Not configurable
 
 All read calls are subject to the Visibility API rate limit.
-
-### Throttling behavior
-
-When you exceed your APS, RPS, or OPS limits, Temporal Cloud throttles requests. Here's what happens:
-
-1. **Priority-based throttling**: Low-priority operations are throttled first. Higher-priority operations like `StartWorkflowExecution`, `SignalWorkflowExecution`, and `UpdateWorkflowExecution` continue to go through when possible.
-2. **Burst tolerance**: A burst factor allows temporary spikes above your limit for a short duration without immediate throttling.
-3. **ResourceExhausted errors**: When throttled, the server returns a `ResourceExhausted` gRPC error. SDK clients automatically retry these based on the default gRPC retry policy.
-4. **Potential failure**: If throttling persists beyond the SDK's retry limit, client calls fail. This means work _can_ be lost if you don't handle these failures.
-
-**Best practices for handling throttling:**
-- Log any failed `StartWorkflowExecution`, `SignalWorkflowExecution`, or `UpdateWorkflowExecution` calls on the client side, including the payload, so you can retry or backfill later.
-- Set up [Cloud metrics](/cloud/metrics/openmetrics/metrics-reference#limit-metrics) to alert when throttling occurs and when you approach your limits.
-- Consider [Provisioned Capacity](/cloud/capacity-modes#provisioned-capacity) if you have predictable spikes or need guaranteed throughput.
 
 ### Nexus Rate Limit {#nexus-rate-limits}
 
