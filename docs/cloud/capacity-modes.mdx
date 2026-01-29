@@ -67,12 +67,24 @@ RPS and OPS  are lower-level measures to control and balance request rates at th
 
 ### What happens when my Actions Rate exceeds my Limit?
 
-When your Action rate exceeds your quota, Temporal Cloud throttles Actions until the rate matches your quota. 
-Throttling means limiting the rate at which Actions are performed to prevent the Namespace from exceeding its APS limit. 
-Your work is never lost and will continue at the limited pace until APS returns below the limit. 
+When your Action rate exceeds your quota, Temporal Cloud throttles Actions.
+Throttling limits the rate at which Actions are performed to prevent the Namespace from exceeding its APS limit.
+
+**How throttling works:**
+- Low-priority operations are throttled first; higher-priority operations (like starting or signaling Workflows) continue when possible.
+- Rate limiting is not instantaneous, so usage may briefly exceed your limit before throttling takes effect.
+- When throttled, the server returns `ResourceExhausted` errors that SDK clients automatically retry.
+- If throttling persists beyond the SDK's retry limit, client calls can fail.
+
+**To avoid data loss during throttling:**
+- Log any failed client calls (with payloads) so you can retry or backfill later.
+- Set up [limit metrics](/cloud/metrics/openmetrics/metrics-reference#limit-metrics) to alert when approaching your limits.
+
+See [Throttling behavior](/cloud/limits#throttling-behavior) for more details.
+
 Your rate limits can be adjusted automatically over time or provisioned manually with Capacity Modes.
 
-We recommend tracking your Actions Rate and Limits using Temporal metrics to assess your use cases specific needs. 
+We recommend tracking your Actions Rate and Limits using Temporal metrics to assess your use cases specific needs.
 See [Monitoring Trends Against Limits](/cloud/service-health#rps-aps-rate-limits) to track usage trends.
 
 :::note Actions that don't count against APS
