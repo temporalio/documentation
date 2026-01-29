@@ -40,17 +40,27 @@ Please contact your AE or Support to enable this feature.
 
 Temporal Cloud has a p99 latency SLO of 200ms per region.
 
-In March 2024, latency over a week-long period for starting and signaling Workflow Executions was as follows:
+The same SLO for normal Worker requests (commands and polling) apply to Nexus in both the caller and handler Namespaces.
+
+### Historical latency data
+
+Latency over a week-long period for starting and signaling Workflow Executions was as follows:
+
+#### January 2026
+
+| Operation                          |  p50   | p90  |  p99 |
+| :--------------------------------- | :----: | :--: | ---: |
+| `StartWorkflowExecution`           | 14ms | 21ms | 69ms |
+| `SignalWorkflowExecution`          | 11ms | 19ms | 46ms |
+| `SignalWithStartWorkflowExecution` | 19ms | 37ms | 95ms |
+
+#### March 2024
 
 | Operation                          | p90  |  p99 |
 | :--------------------------------- | :--: | ---: |
 | `StartWorkflowExecution`           | 24ms | 54ms |
 | `SignalWorkflowExecution`          | 14ms | 40ms |
 | `SignalWithStartWorkflowExecution` | 24ms | 61ms |
-
-As Temporal continues working on improving latencies, these numbers will progressively decrease.
-
-The same SLO for normal Worker requests (commands and polling) apply to Nexus in both the caller and handler Namespaces.
 
 Latency observed from the Temporal Client is influenced by other system components like the Codec Server, egress proxy, and the network itself.
 Also, concurrent operations on the same Workflow Execution may result in higher latency.
