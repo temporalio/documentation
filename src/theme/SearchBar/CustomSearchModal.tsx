@@ -38,7 +38,50 @@ interface CustomSearchModalProps {
   onLanguageChange: (languages: string[]) => void;
 }
 
-function Hit({ hit, isSelected, onNavigate }: { hit: any; isSelected: boolean; onNavigate: () => void }) {
+// Icon components for hit types
+function PageIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" className="custom-search-hit-icon">
+      <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clipRule="evenodd"/>
+    </svg>
+  );
+}
+
+function AnchorIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="custom-search-hit-icon">
+      <line x1="4" x2="20" y1="9" y2="9"></line>
+      <line x1="4" x2="20" y1="15" y2="15"></line>
+      <line x1="10" x2="8" y1="3" y2="21"></line>
+      <line x1="16" x2="14" y1="3" y2="21"></line>
+    </svg>
+  );
+}
+
+function TreeBranch({ isLast }: { isLast: boolean }) {
+  return (
+    <svg className="custom-search-hit-tree" viewBox="0 0 24 54" strokeWidth="1.5">
+      <g stroke="currentColor" fill="none" fillRule="evenodd" strokeLinecap="round" strokeLinejoin="round">
+        {isLast ? (
+          // Bottom branch: vertical line stops at horizontal
+          <path d="M8 6v21M20 27H8"></path>
+        ) : (
+          // Middle branch: vertical line goes all the way through
+          <path d="M8 6v42M20 27H8"></path>
+        )}
+      </g>
+    </svg>
+  );
+}
+
+function Hit({ hit, isSelected, onNavigate, isAnchor, isLastAnchor, parentTitle }: {
+  hit: any;
+  isSelected: boolean;
+  onNavigate: () => void;
+  isAnchor?: boolean;
+  isLastAnchor?: boolean;
+  parentTitle?: string;
+}) {
   const history = useHistory();
   const hitRef = useRef<HTMLAnchorElement>(null);
 
@@ -65,46 +108,42 @@ function Hit({ hit, isSelected, onNavigate }: { hit: any; isSelected: boolean; o
     }
   }, [isSelected]);
 
-  // Get the page title (hierarchy lvl0 or lvl1)
-  const title = hit.hierarchy?.lvl1 || hit.hierarchy?.lvl0 || 'Untitled';
-
-  // Build breadcrumb from hierarchy with highlighting
-  const breadcrumbParts = [];
-  if (hit.hierarchy?.lvl0 && hit.hierarchy?.lvl0 !== title) {
-    breadcrumbParts.push({ attribute: 'hierarchy.lvl0', value: hit.hierarchy.lvl0 });
-  }
-  if (hit.hierarchy?.lvl2) {
-    breadcrumbParts.push({ attribute: 'hierarchy.lvl2', value: hit.hierarchy.lvl2 });
-  }
-  if (hit.hierarchy?.lvl3) {
-    breadcrumbParts.push({ attribute: 'hierarchy.lvl3', value: hit.hierarchy.lvl3 });
-  }
+  const hitClassName = [
+    'custom-search-hit',
+    isSelected ? 'custom-search-hit--selected' : '',
+    isAnchor ? 'custom-search-hit--anchor' : 'custom-search-hit--page',
+  ].filter(Boolean).join(' ');
 
   return (
     <a
       ref={hitRef}
       href={hit.url || hit.objectID}
       onClick={handleClick}
-      className={`custom-search-hit ${isSelected ? 'custom-search-hit--selected' : ''}`}
+      className={hitClassName}
       tabIndex={-1}
       role="option"
       aria-selected={isSelected}
     >
+      {isAnchor ? (
+        <div className="custom-search-hit-icon-wrapper">
+          <TreeBranch isLast={isLastAnchor ?? true} />
+          <AnchorIcon />
+        </div>
+      ) : (
+        <div className="custom-search-hit-icon-wrapper">
+          <PageIcon />
+        </div>
+      )}
       <div className="custom-search-hit-content">
         <div className="custom-search-hit-title">
-          <Highlight attribute="hierarchy.lvl1" hit={hit} />
+          <Highlight attribute={isAnchor ? 'hierarchy.lvl2' : 'hierarchy.lvl1'} hit={hit} />
         </div>
-        {breadcrumbParts.length > 0 && (
+        {isAnchor && parentTitle && (
           <div className="custom-search-hit-path">
-            {breadcrumbParts.map((part, index) => (
-              <React.Fragment key={part.attribute}>
-                {index > 0 && ' › '}
-                <Highlight attribute={part.attribute} hit={hit} />
-              </React.Fragment>
-            ))}
+            {parentTitle}
           </div>
         )}
-        {hit.content && (
+        {!isAnchor && hit.content && (
           <div className="custom-search-hit-text">
             <Snippet attribute="content" hit={hit} />
           </div>
@@ -174,7 +213,7 @@ function GroupedHits({ selectedIndex, onNavigate }: { selectedIndex: number; onN
   const { items } = useHits();
 
   // Group hits by their top-level category (hierarchy.lvl0)
-  const groupedHits = items.reduce((acc: any, hit: any) => {
+  const groupedByCategory = items.reduce((acc: any, hit: any) => {
     const category = hit.hierarchy?.lvl0 || 'Other';
     if (!acc[category]) {
       acc[category] = [];
@@ -183,7 +222,7 @@ function GroupedHits({ selectedIndex, onNavigate }: { selectedIndex: number; onN
     return acc;
   }, {});
 
-  const categories = Object.keys(groupedHits);
+  const categories = Object.keys(groupedByCategory);
 
   if (categories.length === 0) {
     return null;
@@ -193,26 +232,66 @@ function GroupedHits({ selectedIndex, onNavigate }: { selectedIndex: number; onN
 
   return (
     <>
-      {categories.map((category) => (
-        <div key={category} className="custom-search-section">
-          <div className="custom-search-section-header">
-            {category}
+      {categories.map((category) => {
+        // Within each category, group by page (url_without_anchor)
+        const hitsByPage = groupedByCategory[category].reduce((acc: any, hit: any) => {
+          const pageUrl = hit.url_without_anchor || hit.url;
+          if (!acc[pageUrl]) {
+            acc[pageUrl] = { page: null, anchors: [] };
+          }
+          // Determine if this is a page-level hit or an anchor hit
+          const isAnchorHit = hit.anchor && hit.url !== hit.url_without_anchor;
+          if (isAnchorHit) {
+            acc[pageUrl].anchors.push(hit);
+          } else {
+            acc[pageUrl].page = hit;
+          }
+          return acc;
+        }, {});
+
+        const pageUrls = Object.keys(hitsByPage);
+
+        return (
+          <div key={category} className="custom-search-section">
+            <div className="custom-search-section-header">
+              {category}
+            </div>
+            <div className="custom-search-section-hits">
+              {pageUrls.map((pageUrl) => {
+                const { page, anchors } = hitsByPage[pageUrl];
+                const pageTitle = page?.hierarchy?.lvl1 || anchors[0]?.hierarchy?.lvl1 || 'Untitled';
+
+                return (
+                  <div key={pageUrl} className="custom-search-page-group">
+                    {/* Render page hit if it exists */}
+                    {page && (
+                      <Hit
+                        key={page.objectID}
+                        hit={page}
+                        isSelected={hitIndex++ === selectedIndex}
+                        onNavigate={onNavigate}
+                        isAnchor={false}
+                      />
+                    )}
+                    {/* Render anchor hits */}
+                    {anchors.map((anchor: any, anchorIndex: number) => (
+                      <Hit
+                        key={anchor.objectID}
+                        hit={anchor}
+                        isSelected={hitIndex++ === selectedIndex}
+                        onNavigate={onNavigate}
+                        isAnchor={true}
+                        isLastAnchor={anchorIndex === anchors.length - 1}
+                        parentTitle={pageTitle}
+                      />
+                    ))}
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          <div className="custom-search-section-hits">
-            {groupedHits[category].map((hit: any) => {
-              const currentIndex = hitIndex++;
-              return (
-                <Hit
-                  key={hit.objectID}
-                  hit={hit}
-                  isSelected={currentIndex === selectedIndex}
-                  onNavigate={onNavigate}
-                />
-              );
-            })}
-          </div>
-        </div>
-      ))}
+        );
+      })}
     </>
   );
 }
@@ -232,7 +311,7 @@ function SearchResults({ onClose, selectedIndex, onResultsChange }: {
 
   return (
     <div className="custom-search-results" role="listbox" aria-label="Search results">
-      <GroupedHits selectedIndex={selectedIndex} onNavigate={onClose} />
+      {query && <GroupedHits selectedIndex={selectedIndex} onNavigate={onClose} />}
       {items.length === 0 && query && (
         <div className="custom-search-no-results">
           No results found for "{query}"

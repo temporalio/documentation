@@ -311,23 +311,41 @@
   border-bottom: 1px solid var(--temporal-border);
 }
 
-.custom-search-hit:last-child {
+/* Remove border from last hit in a section */
+.custom-search-section-hits > .custom-search-page-group:last-child > .custom-search-hit:last-child {
   border-bottom: none;
 }
 
-.custom-search-hit::before {
-  content: '';
-  display: block;
+/* Hit icon wrapper */
+.custom-search-hit-icon-wrapper {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  margin-left: 20px;
+  color: var(--temporal-icon);
+}
+
+.custom-search-hit--page .custom-search-hit-icon-wrapper {
+  align-items: center;
+}
+
+.custom-search-hit-icon {
   width: 20px;
   height: 20px;
-  min-width: 20px;
-  margin: 14px 0 14px 20px;
-  background: var(--temporal-icon);
-  opacity: 1;
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor'%3E%3Cpath fill-rule='evenodd' d='M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z' clip-rule='evenodd'/%3E%3C/svg%3E");
-  mask-size: contain;
-  mask-repeat: no-repeat;
-  mask-position: center;
+  flex-shrink: 0;
+}
+
+/* Tree branch SVG for anchor hits */
+.custom-search-hit-tree {
+  width: 24px;
+  height: 100%;
+  flex-shrink: 0;
+  color: var(--temporal-border-strong);
+}
+
+.custom-search-hit--anchor .custom-search-hit-icon-wrapper {
+  align-items: center;
+  gap: 4px;
 }
 
 .custom-search-hit:hover {
