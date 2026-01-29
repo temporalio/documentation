@@ -30,6 +30,7 @@ Namespaces in self-hosted Temporal provide:
 - **Resource isolation**: Traffic from one Namespace does not impact other Namespaces on the same Temporal Service.
 - **Configuration boundaries**: Settings like [Retention Period](/temporal-service/temporal-server#retention-period) and [Archival](/temporal-service/archival) destination are configured per Namespace.
 - **Access control**: Use a custom [Authorizer](/self-hosted-guide/security#authorization) on your Frontend Service to restrict who can access each Namespace.
+- **Inter-namespace communication**: Use [Nexus](/evaluate/nexus) for controlled communication between Namespaces.
 
 ### Temporal Cloud
 
@@ -39,7 +40,6 @@ Temporal Cloud builds on these capabilities with additional isolation guarantees
 - **Built-in [role-based access controls](/cloud/users#namespace-level-permissions)** without custom Authorizer configuration
 - **Separate [rate limits](/cloud/limits#namespace-level)** to prevent noisy neighbor problems
 - **[High availability replication](/cloud/high-availability)** across regions
-- **Controlled inter-namespace communication** only through [Nexus](/evaluate/nexus)
 
 <RelatedReadContainer>
   <RelatedReadItem path="/cloud/security#namespace-isolation" text="Namespace Isolation Details" archetype="cloud-guide" />
