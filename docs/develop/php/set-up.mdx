@@ -301,9 +301,9 @@ This test will confirm that:
 - You can successfully create and execute Workflows and Activities
 - The communication between components is functioning correctly
 
-### 1. Create the Activity implementation
+### 1. Create the Activity
 
-Create an Activity implementation file (`src/GreetingActivity.php`):
+Create an Activity file (`src/GreetingActivity.php`):
 
 ```php
 <?php
@@ -332,9 +332,9 @@ You define Activities in PHP as classes annotated with the `Temporal\Activity\Ac
 
 Each method used in workflow classes should be annotated with `Temporal\Activity\ActivityMethod`.
 
-### 2. Create the Workflow Implementation
+### 2. Create the Workflow
 
-Create a Workflow implementation file (`src/SayHelloWorkflow.php`):
+Create a Workflow file (`src/SayHelloWorkflow.php`):
 
 ```php
 <?php
