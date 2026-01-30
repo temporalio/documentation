@@ -135,6 +135,8 @@ The following example shows how to set up your MySQL as both your persistence an
 [samples-server repository](https://github.com/temporalio/samples-server/tree/main/compose/scripts) for more examples
 with different databases.
 
+{/* SNIPSTART compose-mysql-setup */}
+
 ```bash
 #!/bin/sh
 set -eu
@@ -156,6 +158,8 @@ temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal_visib
 
 echo 'MySQL schema setup complete'
 ```
+
+{/* SNIPEND */}
 
 Note that the script uses
 [temporal-sql-tool](https://github.com/temporalio/temporal/blob/3b982585bf0124839e697952df4bba01fe4d9543/tools/sql/main.go)
@@ -224,6 +228,8 @@ The following example shows how to set up your PostgreSQL as both persistence an
 [samples-server repository](https://github.com/temporalio/samples-server/tree/main/compose/scripts) for more examples
 with different databases.
 
+{/* SNIPSTART compose-postgresql-setup */}
+
 ```bash
 #!/bin/sh
 set -eu
@@ -245,6 +251,8 @@ temporal-sql-tool --plugin postgres12 --ep postgresql -u temporal -p 5432 --db t
 
 echo 'PostgreSQL schema setup complete'
 ```
+
+{/* SNIPEND */}
 
 Note that the script uses
 [temporal-sql-tool](https://github.com/temporalio/temporal/blob/3b982585bf0124839e697952df4bba01fe4d9543/tools/sql/main.go)
@@ -446,12 +454,15 @@ persistence:
 To set up Elasticsearch as your Visibility store, use the `temporal-elasticsearch-tool` available in the
 `temporalio/admin-tools` image.
 
-The following example shows how to set up an Elasticsearch Visibility store with a PostgresSQL persistence store using
+The following example shows how to set up an Elasticsearch Visibility store with a MySQL persistence store using
 `temporal-elasticsearch-tool`. For more examples with different databases, refer to the
 [samples-server repository](https://github.com/temporalio/samples-server/tree/main/compose/scripts).
 
+{/* SNIPSTART compose-mysql-es-setup */}
+
 ```bash
 #!/bin/sh
+# @@@SNIPSTART compose-mysql-es-setup
 set -eu
 
 # Validate required environment variables
@@ -461,15 +472,15 @@ set -eu
 : "${ES_VISIBILITY_INDEX:?ERROR: ES_VISIBILITY_INDEX environment variable is required}"
 : "${ES_VERSION:?ERROR: ES_VERSION environment variable is required}"
 
-echo 'Starting PostgreSQL and Elasticsearch schema setup...'
-echo 'Waiting for PostgreSQL port to be available...'
-nc -z -w 10 postgresql 5432
-echo 'PostgreSQL port is available'
+echo 'Starting MySQL and Elasticsearch schema setup...'
+echo 'Waiting for MySQL port to be available...'
+nc -z -w 10 mysql 3306
+echo 'MySQL port is available'
 
 # Create and setup temporal database
-temporal-sql-tool --plugin postgres12 --ep postgresql -u temporal -p 5432 --db temporal create
-temporal-sql-tool --plugin postgres12 --ep postgresql -u temporal -p 5432 --db temporal setup-schema -v 0.0
-temporal-sql-tool --plugin postgres12 --ep postgresql -u temporal -p 5432 --db temporal update-schema -d /etc/temporal/schema/postgresql/v12/temporal/versioned
+temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal create
+temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal setup-schema -v 0.0
+temporal-sql-tool --plugin mysql8 --ep mysql -u root -p 3306 --db temporal update-schema -d /etc/temporal/schema/mysql/v8/temporal/versioned
 
 # Setup Elasticsearch index
 # temporal-elasticsearch-tool is available in v1.30+ server releases
@@ -504,8 +515,10 @@ else
   echo ''
 fi
 
-echo 'PostgreSQL and Elasticsearch setup complete'
+echo 'MySQL and Elasticsearch setup complete'
 ```
+
+{/* SNIPEND */}
 
 ### Elasticsearch privileges
 
@@ -891,8 +904,8 @@ temporal operator search-attribute create --name="CustomSA" --type="Keyword" --n
 
 You can also create multiple custom Search Attributes when you set up your Visibility store.
 
-The following example shows how custom Search Attributes can be created during Visibility store setup (for SQL
-databases). For setup examples, refer to the [samples-server repository](https://github.com/temporalio/samples-server)
+The following example shows how custom Search Attributes can be created during Visibility store setup for SQL databases.
+For setup examples, refer to the [samples-server repository](https://github.com/temporalio/samples-server)
 
 ```bash
 add_custom_search_attributes() {
@@ -914,9 +927,6 @@ add_custom_search_attributes() {
         --name="CustomBoolField" --type="Bool"
 }
 ```
-
-Note that this script has been updated for Temporal Server v1.20, which requires associating every custom Search
-Attribute with a Namespace when using a SQL database.
 
 For Temporal Server v1.19 and earlier, or if using Elasticsearch for advanced Visibility, you can create custom Search
 Attributes without a Namespace association, as shown in the following example.
