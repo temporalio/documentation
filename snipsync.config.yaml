@@ -37,7 +37,7 @@ origins:
       ref: 'main'
   - owner: temporalio
     repo: samples-server
-    ref: 'docker-image-restructure-snipsync'
+    ref: 'main'
 
 targets:
   - docs
