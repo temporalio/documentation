@@ -130,7 +130,7 @@ For example configuration templates, see
 Visibility data is stored in a database table called `executions_visibility` and must be created using the schema for
 [MySQL v8.0.17 and later](https://github.com/temporalio/temporal/tree/main/schema/mysql/v8/visibility).
 
-The following example shows how to set up your MySQ as both your persistence and Visibility store using
+The following example shows how to set up your MySQL as both your persistence and Visibility store using
 `temporal-sql-tool`. Refer to the
 [samples-server repository](https://github.com/temporalio/samples-server/tree/main/compose/scripts) for more examples
 with different databases.
@@ -272,7 +272,7 @@ If using SQLite v3.31.0 and later as your Visibility store with Temporal Server 
 [custom Search Attributes](/search-attribute#custom-search-attribute) that you create must be associated with a
 Namespace in that Temporal Service.
 
-**Persistence configuration**
+### Persistence configuration
 
 Set your SQLite Visibility store name in the `visibilityStore` parameter in your Persistence configuration, and then
 define the Visibility store configuration under `datastores`.
@@ -312,7 +312,7 @@ persistence:
 
 SQLite (v3.31.0 and later) has advanced Visibility enabled by default.
 
-**Database schema and setup**
+### Database schema and setup
 
 Visibility data is stored in a database table called `executions_visibility` that must be set up according to the
 schemas defined (by supported versions) in
@@ -344,7 +344,7 @@ performance.
 To migrate from Cassandra to a supported SQL database, see
 [Migrating Visibility database](#migrating-visibility-database).
 
-**Persistence configuration**
+### Persistence configuration
 
 Set your Cassandra Visibility store name in the `visibilityStore` parameter in your Persistence configuration, and then
 define the Visibility store configuration under `datastores`.
@@ -368,19 +368,14 @@ persistence:
 #...
 ```
 
-**Database schema and setup**
+### Database schema and setup
 
 Visibility data is stored in a database table called `executions_visibility` that must be set up according to the
 schemas defined (by supported versions) in https://github.com/temporalio/temporal/tree/main/schema/cassandra/visibility.
 
-:::warning Deprecated: auto-setup.sh Script
-
-The `auto-setup.sh` script and `temporalio/auto-setup` image are deprecated and no longer receive updates. For setup
-examples, refer to the [samples-server repository](https://github.com/temporalio/samples-server).
-
-:::
-
-The following example shows how to set up your Cassandra Visibility store using `temporal-cassandra-tool`:
+The following example shows how to set up your Cassandra Visibility store using `temporal-cassandra-tool`. For more
+examples with different databases, refer to the
+[samples-server repository](https://github.com/temporalio/samples-server/tree/main/compose/scripts).
 
 ```bash
 #...
@@ -422,7 +417,7 @@ for large-scale operations on the Temporal Service.
 To integrate Elasticsearch with your Temporal Service, edit the `persistence` section of your `development.yaml`
 configuration file to add Elasticsearch as the `visibilityStore`, and run the index schema setup commands.
 
-**Persistence configuration**
+### Persistence configuration
 
 Set your Elasticsearch Visibility store name in the `visibilityStore` parameter in your Persistence configuration, and
 then define the Visibility store configuration under `datastores`.
@@ -446,49 +441,73 @@ persistence:
           visibility: temporal_visibility_v1_dev
 ```
 
-**Index schema and index**
+### Index schema and index
 
-:::warning Deprecated: auto-setup.sh Script
+To set up Elasticsearch as your Visibility store, use the `temporal-elasticsearch-tool` available in the
+`temporalio/admin-tools` image.
 
-The `auto-setup.sh` script and `temporalio/auto-setup` image are deprecated and no longer receive updates.
-
-For Elasticsearch setup, use the `temporal-elasticsearch-tool` available in the `temporalio/admin-tools` image (version
-1.30+). For examples, refer to the [samples-server repository](https://github.com/temporalio/samples-server).
-
-:::
-
-The following example shows how to set up an Elasticsearch Visibility store using `temporal-elasticsearch-tool`:
+The following example shows how to set up an Elasticsearch Visibility store with a PostgresSQL persistence store using
+`temporal-elasticsearch-tool`. For more examples with different databases, refer to the
+[samples-server repository](https://github.com/temporalio/samples-server/tree/main/compose/scripts).
 
 ```bash
-#...
-# Elasticsearch
-: "${ENABLE_ES:=false}"
-: "${ES_SCHEME:=http}"
-: "${ES_SEEDS:=}"
-: "${ES_PORT:=9200}"
-: "${ES_USER:=}"
-: "${ES_PWD:=}"
-: "${ES_VERSION:=v7}"
-: "${ES_VIS_INDEX:=temporal_visibility_v1}"
-: "${ES_SEC_VIS_INDEX:=}"
-: "${ES_SCHEMA_SETUP_TIMEOUT_IN_SECONDS:=0}"
-#...
-# Validate your ES environment
-#...
-# Wait for ES to start
-#...
-# ES_SERVER is the URL of Elasticsearch server; for example, "http://localhost:9200".
-SETTINGS_URL="${ES_SERVER}/_cluster/settings"
-SETTINGS_FILE=${TEMPORAL_HOME}/schema/elasticsearch/visibility/cluster_settings_${ES_VERSION}.json
-TEMPLATE_URL="${ES_SERVER}/_template/temporal_visibility_v1_template"
-SCHEMA_FILE=${TEMPORAL_HOME}/schema/elasticsearch/visibility/index_template_${ES_VERSION}.json
-INDEX_URL="${ES_SERVER}/${ES_VIS_INDEX}"
-curl --fail --user "${ES_USER}":"${ES_PWD}" -X PUT "${SETTINGS_URL}" -H "Content-Type: application/json" --data-binary "@${SETTINGS_FILE}" --write-out "\n"
-curl --fail --user "${ES_USER}":"${ES_PWD}" -X PUT "${TEMPLATE_URL}" -H 'Content-Type: application/json' --data-binary "@${SCHEMA_FILE}" --write-out "\n"
-curl --user "${ES_USER}":"${ES_PWD}" -X PUT "${INDEX_URL}" --write-out "\n"
+#!/bin/sh
+set -eu
+
+# Validate required environment variables
+: "${ES_SCHEME:?ERROR: ES_SCHEME environment variable is required}"
+: "${ES_HOST:?ERROR: ES_HOST environment variable is required}"
+: "${ES_PORT:?ERROR: ES_PORT environment variable is required}"
+: "${ES_VISIBILITY_INDEX:?ERROR: ES_VISIBILITY_INDEX environment variable is required}"
+: "${ES_VERSION:?ERROR: ES_VERSION environment variable is required}"
+
+echo 'Starting PostgreSQL and Elasticsearch schema setup...'
+echo 'Waiting for PostgreSQL port to be available...'
+nc -z -w 10 postgresql 5432
+echo 'PostgreSQL port is available'
+
+# Create and setup temporal database
+temporal-sql-tool --plugin postgres12 --ep postgresql -u temporal -p 5432 --db temporal create
+temporal-sql-tool --plugin postgres12 --ep postgresql -u temporal -p 5432 --db temporal setup-schema -v 0.0
+temporal-sql-tool --plugin postgres12 --ep postgresql -u temporal -p 5432 --db temporal update-schema -d /etc/temporal/schema/postgresql/v12/temporal/versioned
+
+# Setup Elasticsearch index
+# temporal-elasticsearch-tool is available in v1.30+ server releases
+if [ -x /usr/local/bin/temporal-elasticsearch-tool ]; then
+  echo 'Using temporal-elasticsearch-tool for Elasticsearch setup'
+  temporal-elasticsearch-tool --ep "$ES_SCHEME://$ES_HOST:$ES_PORT" setup-schema
+  temporal-elasticsearch-tool --ep "$ES_SCHEME://$ES_HOST:$ES_PORT" create-index --index $ES_VISIBILITY_INDEX
+else
+  echo 'Using curl for Elasticsearch setup'
+  echo 'WARNING: curl will be removed from admin-tools in v1.30.'
+  echo 'Waiting for Elasticsearch to be ready...'
+  max_attempts=30
+  attempt=0
+  until curl -s -f "$ES_SCHEME://$ES_HOST:$ES_PORT/_cluster/health?wait_for_status=yellow&timeout=1s"; do
+    attempt=$((attempt + 1))
+    if [ $attempt -ge $max_attempts ]; then
+      echo "ERROR: Elasticsearch did not become ready after $max_attempts attempts"
+      echo "Last error from curl:"
+      curl "$ES_SCHEME://$ES_HOST:$ES_PORT/_cluster/health?wait_for_status=yellow&timeout=1s" 2>&1 || true
+      exit 1
+    fi
+    echo "Elasticsearch not ready yet, waiting... (attempt $attempt/$max_attempts)"
+    sleep 2
+  done
+  echo ''
+  echo 'Elasticsearch is ready'
+  echo 'Creating index template...'
+  curl -X PUT --fail "$ES_SCHEME://$ES_HOST:$ES_PORT/_template/temporal_visibility_v1_template" -H 'Content-Type: application/json' --data-binary "@/etc/temporal/schema/elasticsearch/visibility/index_template_$ES_VERSION.json"
+  echo ''
+  echo 'Creating index...'
+  curl --head --fail "$ES_SCHEME://$ES_HOST:$ES_PORT/$ES_VISIBILITY_INDEX" 2>/dev/null || curl -X PUT --fail "$ES_SCHEME://$ES_HOST:$ES_PORT/$ES_VISIBILITY_INDEX"
+  echo ''
+fi
+
+echo 'PostgreSQL and Elasticsearch setup complete'
 ```
 
-**Elasticsearch privileges**
+### Elasticsearch privileges
 
 Ensure that the following privileges are granted for the Elasticsearch Temporal index:
 
@@ -872,15 +891,8 @@ temporal operator search-attribute create --name="CustomSA" --type="Keyword" --n
 
 You can also create multiple custom Search Attributes when you set up your Visibility store.
 
-:::warning Deprecated: auto-setup.sh Script
-
-The `auto-setup.sh` script and `temporalio/auto-setup` image are deprecated and no longer receive updates. For setup
-examples, refer to the [samples-server repository](https://github.com/temporalio/samples-server).
-
-:::
-
 The following example shows how custom Search Attributes can be created during Visibility store setup (for SQL
-databases).
+databases). For setup examples, refer to the [samples-server repository](https://github.com/temporalio/samples-server)
 
 ```bash
 add_custom_search_attributes() {
