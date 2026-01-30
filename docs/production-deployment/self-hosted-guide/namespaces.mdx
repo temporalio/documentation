@@ -2,7 +2,8 @@
 id: namespaces
 title: Managing Namespaces
 sidebar_label: Namespaces
-description: How to create and manage Namespaces in open source Temporal, including registration, configuration, and security.
+description:
+  How to create and manage Namespaces in open source Temporal, including registration, configuration, and security.
 slug: /self-hosted-guide/namespaces
 keywords:
   - namespaces
@@ -13,19 +14,18 @@ tags:
   - Self-hosting
 ---
 
-:::info Open source Temporal
-This page covers namespace operations for **open source Temporal**.
-For core namespace concepts, see [Temporal Namespace](/namespaces).
-For Temporal Cloud, see [Temporal Cloud Namespaces](/cloud/namespaces).
+:::info Open source Temporal This page covers namespace operations for **open source Temporal**. For core namespace
+concepts, see [Temporal Namespace](/namespaces). For Temporal Cloud, see [Temporal Cloud Namespaces](/cloud/namespaces).
 :::
 
-A [Namespace](/namespaces) is a unit of isolation within the Temporal Platform.
-Before you can run Workflows, you must register at least one Namespace with your Temporal Service.
+A [Namespace](/namespaces) is a unit of isolation within the Temporal Platform. Before you can run Workflows, you must
+register at least one Namespace with your Temporal Service.
 
 ## Create a Namespace
 
-Registering a Namespace creates it on the Temporal Service.
-When you register a Namespace, you must set a [Retention Period](/temporal-service/temporal-server#retention-period) that determines how long closed Workflow execution history is kept.
+Registering a Namespace creates it on the Temporal Service. When you register a Namespace, you must set a
+[Retention Period](/temporal-service/temporal-server#retention-period) that determines how long closed Workflow
+execution history is kept.
 
 You can create Namespaces using:
 
@@ -36,16 +36,11 @@ You can create Namespaces using:
 
 ### The default Namespace
 
-If no Namespace is specified, SDKs and CLI use the `default` Namespace.
-You must register this Namespace before using it.
+If no Namespace is specified, SDKs and CLI use the `default` Namespace. You must register this Namespace before using
+it.
 
-:::warning Deprecated: auto-setup Image
-
-The `temporalio/auto-setup` image is deprecated and no longer receives updates. For setup examples, refer to the [samples-server repository](https://github.com/temporalio/samples-server).
-
-:::
-
-For local development, the [`temporal server start-dev`](/cli/server#start-dev) command automatically creates the `default` Namespace.
+For local development, the [`temporal server start-dev`](/cli/server#start-dev) command automatically creates the
+`default` Namespace.
 
 For all other deployment methods, create the `default` Namespace manually using the Temporal CLI:
 
@@ -53,21 +48,22 @@ For all other deployment methods, create the `default` Namespace manually using 
 temporal operator namespace create --namespace default
 ```
 
-Namespace registration takes up to 15 seconds to complete.
-Wait for this process to finish before making calls to the Namespace.
+Namespace registration takes up to 15 seconds to complete. Wait for this process to finish before making calls to the
+Namespace.
 
 ## Manage Namespaces
 
 Common namespace management operations:
 
-| Operation | CLI Command | Description |
-|-----------|-------------|-------------|
-| List | [`temporal operator namespace list`](/cli/operator#list) | List all registered Namespaces |
-| Describe | [`temporal operator namespace describe`](/cli/operator#describe) | Get details for a Namespace |
-| Update | [`temporal operator namespace update`](/cli/operator#update) | Update Namespace configuration |
-| Delete | [`temporal operator namespace delete`](/cli/operator#delete) | Delete a Namespace and all its data |
+| Operation | CLI Command                                                      | Description                         |
+| --------- | ---------------------------------------------------------------- | ----------------------------------- |
+| List      | [`temporal operator namespace list`](/cli/operator#list)         | List all registered Namespaces      |
+| Describe  | [`temporal operator namespace describe`](/cli/operator#describe) | Get details for a Namespace         |
+| Update    | [`temporal operator namespace update`](/cli/operator#update)     | Update Namespace configuration      |
+| Delete    | [`temporal operator namespace delete`](/cli/operator#delete)     | Delete a Namespace and all its data |
 
 For SDK-based namespace management:
+
 - [Go SDK namespace management](/develop/go/namespaces#manage-namespaces)
 - [Java SDK namespace management](/develop/java/namespaces#manage-namespaces)
 - [TypeScript SDK namespace management](/develop/typescript/namespaces#manage-namespaces)
@@ -79,12 +75,15 @@ For SDK-based namespace management:
 
 ## Security
 
-Use a custom [Authorizer](/self-hosted-guide/security#authorizer-plugin) on your Frontend Service to control who can create, update, or deprecate Namespaces.
+Use a custom [Authorizer](/self-hosted-guide/security#authorizer-plugin) on your Frontend Service to control who can
+create, update, or deprecate Namespaces.
 
 Without an Authorizer configured, Temporal uses the `nopAuthority` authorizer that allows all API calls unconditionally.
 
-For Temporal Cloud, [role-based access controls](/cloud/users#namespace-level-permissions) provide namespace-level authorization without custom configuration.
+For Temporal Cloud, [role-based access controls](/cloud/users#namespace-level-permissions) provide namespace-level
+authorization without custom configuration.
 
 ## Best practices
 
-For namespace naming conventions, organizational patterns, and production safeguards, see [Namespace Best Practices](/best-practices/managing-namespace).
+For namespace naming conventions, organizational patterns, and production safeguards, see
+[Namespace Best Practices](/best-practices/managing-namespace).
