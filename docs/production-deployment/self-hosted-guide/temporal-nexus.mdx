@@ -71,10 +71,12 @@ To enable Nexus in your deployment:
    component.callbacks.allowedAddresses:
      # This list is a security mechanism for limiting which callback URLs are accepted by the server.
      # Attackers may leverage the callback mechanism to force the server to call arbitrary URLs.
-     # The config below is only recommended for development, tune this to your requirements.
+     # Using * (wildcard pattern) and insecure is only recommended for development purposes
+     # For Production Use cases, it is best practice to restric the hosts (by setting appropriate regex)
+     # and to not allow Insecure (if your use case can support secure)
      - value:
-         - Pattern: "*"
-           AllowInsecure: true
+         - Pattern: "*" # Update this to restrict allowed callers for example: "^https://$EXAMPLE_URL\\.example\\.com(:1234)?/.*$"
+           AllowInsecure: true # Change this false, if your hosts can make calls using TLS
    ```
 
 ## Build and use Nexus Services

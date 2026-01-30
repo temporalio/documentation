@@ -18,6 +18,11 @@ tags:
 There are many ways to self-host a [Temporal Service](/temporal-service).
 The right way for you depends entirely on your use case and where you plan to run it.
 
+:::warning Temporal Hosts Should Not Be Exposed to the Open Internet
+
+Temporal is a persistence layer and should be treated similarly to a database. Temporal services should run on hosts that are not accessible from the public internet, with network configurations that restrict access to trusted internal networks only.
+:::
+
 For step-by-step guides on deploying and configuring Temporal, refer to our [Infrastructure tutorials](https://learn.temporal.io/tutorials/infrastructure/).
 
 ### Minimum requirements

@@ -239,3 +239,15 @@ The Temporal server reports the server version and the version of the SDK that i
 | Dynamic configuration key           | Type    | Description                                                                                                                       | Default value |
 | ----------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------- | ------------- |
 | `frontend.enableServerVersionCheck` | Boolean | Enables the Temporal server to report version information about the current server and SDK. Allowed values are `true` or `false`. | `true`        |
+
+### Nexus settings
+
+Settings related to the management of Nexus
+
+| Dynamic configuration key                              | Type    | Description                                                                                                                                    | Default value                                                           |
+| ------------------------------------------------------ | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| `system.enableNexus`                                   | Boolean | Enables Nexus Features                                                                                                                         | `false`                                                                 |
+| `component.nexusoperations.callback.endpoint.template` | String  | Defines the URL template used to construct Nexus callback endpoints that Nexus uses to deliver asynchronous completion results.                | `https://$PUBLIC_URL:7243/namespaces/{{.NamespaceName}}/nexus/callback` |
+| `component.callbacks.allowedAddresses`                 | Object  | Defines the security allow-list of callback URL patterns that the server will accept; used to restrict what callback endpoints can be invoked. | (See below sub-properties)                                              |
+| `component.callbacks.allowedAddresses.Pattern`         | String  | Defines which callback URLs are permitted to be called by the server. (the patterns is a regex or wildcard)                                    | `*`                                                                     |
+| `component.callbacks.allowedAddresses.AllowInsecure`   | Boolean | Enables whether insecure (non-TLS/HTTP) URLs matching the pattern are permitted; should be false in production when HTTPS is supported.        | `true`                                                                  |
