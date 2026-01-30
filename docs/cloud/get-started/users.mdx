@@ -276,6 +276,20 @@ This table provides API-level details for the permissions granted to a user thro
 | UpdateUser                        |           |           |               | ✔            | ✔             |
 | ValidateAccountAuditLogSink       |           |           |               | ✔            | ✔             |
 
+:::note UpdateNamespace permission details
+
+`UpdateNamespace` covers these namespace settings:
+- [Retention period](/temporal-service/temporal-server#retention-period)
+- [API key auth](/cloud/api-keys#namespace-authentication)
+- [mTLS certificates](/cloud/certificates)
+- [Certificate filters](/cloud/certificates#manage-certificate-filters)
+- [Codec server](/production-deployment/data-encryption)
+- [Connectivity rules](/cloud/connectivity)
+- **Namespace Admin** Required: [Custom Search Attributes](/search-attribute#custom-search-attribute)
+- **Namespace Admin** Required: [Provisioned capacity (TRUs)](/cloud/capacity-modes#provisioned-capacity)
+
+:::
+
 #### Namespace-level permissions details
 
 This table provides API-level details for the permissions granted to a user through Namespace-level permissions.
@@ -344,7 +358,7 @@ These permissions are configured per Namespace per user.
 | StopBatchOperation                 |      | ✔     | ✔               |
 | TerminateWorkflowExecution         |      | ✔     | ✔               |
 | UpdateExportSink                   |      | ✔     | ✔               |
-| UpdateNamespace                    |      | ✔     | ✔               |
+| UpdateNamespace*                   |      | ◐     | ✔               |
 | UpdateSchedule                     |      | ✔     | ✔               |
 | UpdateUserNamespacePermissions     |      |       | ✔               |
 | ValidateExportSink                 |      | ✔     | ✔               |
