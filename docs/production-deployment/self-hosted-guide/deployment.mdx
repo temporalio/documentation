@@ -96,11 +96,11 @@ If you use a custom configuration template, be aware of the following:
 When deploying with Helm charts (version 0.73.1 or later), the following configuration options control the dockerize to
 sprig migration:
 
-| Configuration Option         | Description                                                                                                                                                                                                                                | Default       |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------- |
-| `server.useEntrypointScript` | Use entrypoint script that autodetects `dockerize` vs `sprig`. If you are using a combination of both pre-1.30 and 1.30+ images, set it to `true`.                                                                                         | `false`       |
-| `server.configMapsToMount`   | Which config template to mount: `"dockerize"`, `"sprig"`, or `"both"`. If you are using 1.30+ images, set it to `"sprig"`. IF you are using pre-1.30 images only, set it to `dockerize`. If you are using a combination, set it to `both`. | `"dockerize"` |
-| `server.setConfigFilePath`   | Set `TEMPORAL_SERVER_CONFIG_FILE_PATH` env variable. Set it to `true` only if you are only using 1.30+ images.                                                                                                                             | `false`       |
+| Configuration Option         | Description                                                                                                                                                                                                                                     | Default       |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| `server.useEntrypointScript` | Use entrypoint script that autodetects `dockerize` vs `sprig`. If you are using a combination of both pre-1.30 and 1.30+ images, set it to `true`.                                                                                              | `false`       |
+| `server.configMapsToMount`   | Which config template to mount: `"dockerize"`, `"sprig"`, or `"both"`. If you are using 1.30+ images only, set it to `"sprig"`. If you are using pre-1.30 images only, set it to `dockerize`. If you are using a combination, set it to `both`. | `"dockerize"` |
+| `server.setConfigFilePath`   | Set `TEMPORAL_SERVER_CONFIG_FILE_PATH` env variable. Set it to `true` if you are only using 1.30+ images.                                                                                                                                       | `false`       |
 
 ## Import the Server package
 
