@@ -58,7 +58,7 @@ To enable Nexus in your deployment:
          httpAddress: $PUBLIC_URL:7243
    ```
 
-2. Enable Nexus through dynamic config, set the public callback URL, and set the allowed callback addresses.
+2a. Prior to version 1.30.X, you must enable Nexus through dynamic config, set the public callback URL, and set the allowed callback addresses.
 
    ```yaml
    system.enableNexus:
@@ -69,14 +69,18 @@ To enable Nexus in your deployment:
      # membership. The URL is a Go template that interpolates the `NamepaceName` and `NamespaceID` variables.
      - value: https://$PUBLIC_URL:7243/namespaces/{{.NamespaceName}}/nexus/callback
    component.callbacks.allowedAddresses:
-     # This list is a security mechanism for limiting which callback URLs are accepted by the server.
-     # Attackers may leverage the callback mechanism to force the server to call arbitrary URLs.
-     # Using * (wildcard pattern) and insecure is only recommended for development purposes
-     # For Production Use cases, it is best practice to restric the hosts (by setting appropriate regex)
-     # and to not allow Insecure (if your use case can support secure)
+     # Limits which callback URLs are accepted by the server.
+     # Wildcard patterns (*) and insecure (HTTP) callbacks are intended for development only.
+     # For production, restrict allowed hosts and set AllowInsecure to false
+     # whenever HTTPS/TLS is supported. Allowing HTTP increases MITM and data exposure risk.
      - value:
-         - Pattern: "*" # Update this to restrict allowed callers for example: "^https://$EXAMPLE_URL\\.example\\.com(:1234)?/.*$"
-           AllowInsecure: true # Change this false, if your hosts can make calls using TLS
+         - Pattern: "*" # Update to restrict allowed callers, e.g. "https://$EXAMPLE_URL\\.example\\.com(:1234)?/.*$"
+           AllowInsecure: true # In production, set to false when HTTPS/TLS is supported. 
+   ```
+
+2b. Since version 1.30.X, Nexus is enabled by default, the only configuration needed is to use the SystemCallbackURL.
+   ```yaml
+   component.nexusoperations.useSystemCallbackURL: true
    ```
 
 ## Build and use Nexus Services
