@@ -256,6 +256,11 @@ function GroupedHits({ selectedIndex, onNavigate }: { selectedIndex: number; onN
                 const { page, anchors } = hitsByPage[pageUrl];
                 const pageTitle = page?.hierarchy?.lvl1 || anchors[0]?.hierarchy?.lvl1 || 'Untitled';
 
+                // If there's no page hit but there are anchors, treat the first anchor as the "page"
+                const hasPageHit = !!page;
+                const firstAnchorAsPage = !hasPageHit && anchors.length > 0 ? anchors[0] : null;
+                const remainingAnchors = firstAnchorAsPage ? anchors.slice(1) : anchors;
+
                 return (
                   <div key={pageUrl} className="custom-search-page-group">
                     {/* Render page hit if it exists */}
@@ -268,15 +273,25 @@ function GroupedHits({ selectedIndex, onNavigate }: { selectedIndex: number; onN
                         isAnchor={false}
                       />
                     )}
-                    {/* Render anchor hits */}
-                    {anchors.map((anchor: any, anchorIndex: number) => (
+                    {/* If no page hit, render first anchor as page-level item */}
+                    {firstAnchorAsPage && (
+                      <Hit
+                        key={firstAnchorAsPage.objectID}
+                        hit={firstAnchorAsPage}
+                        isSelected={hitIndex++ === selectedIndex}
+                        onNavigate={onNavigate}
+                        isAnchor={false}
+                      />
+                    )}
+                    {/* Render remaining anchor hits as tree children */}
+                    {remainingAnchors.map((anchor: any, anchorIndex: number) => (
                       <Hit
                         key={anchor.objectID}
                         hit={anchor}
                         isSelected={hitIndex++ === selectedIndex}
                         onNavigate={onNavigate}
                         isAnchor={true}
-                        isLastAnchor={anchorIndex === anchors.length - 1}
+                        isLastAnchor={anchorIndex === remainingAnchors.length - 1}
                         parentTitle={pageTitle}
                       />
                     ))}
