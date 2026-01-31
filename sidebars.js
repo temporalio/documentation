@@ -649,6 +649,7 @@ module.exports = {
         'best-practices/cloud-access-control',
         'best-practices/security-controls',
         'best-practices/worker',
+        'best-practices/pre-production-testing',
         'production-deployment/multi-tenant-patterns',
       ],
     },
