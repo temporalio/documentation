@@ -163,6 +163,7 @@ module.exports = {
             id: 'develop/php/index',
           },
           items: [
+            'develop/php/set-up-your-local-php',
             'develop/php/core-application',
             'develop/php/temporal-client',
             'develop/php/testing-suite',
@@ -648,6 +649,7 @@ module.exports = {
         'best-practices/cloud-access-control',
         'best-practices/security-controls',
         'best-practices/worker',
+        'production-deployment/multi-tenant-patterns',
       ],
     },
     {
