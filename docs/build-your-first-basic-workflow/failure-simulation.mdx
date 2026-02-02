@@ -141,7 +141,7 @@ In a production deployment, the Temporal Service can be deployed as a cluster, s
         <CodeSnippet language="bash">npm run worker</CodeSnippet>
       </SdkTabs.TypeScript>
       <SdkTabs.DotNet>
-        <CodeSnippet language="bash">dotnet run --project MoneyTransferWorker</CodeSnippet>
+        <CodeSnippet language="bash">dotnet run --project MoneyTransferWorker/MoneyTransferWorker.csproj</CodeSnippet>
       </SdkTabs.DotNet>
       <SdkTabs.Ruby>
         <CodeSnippet language="bash">bundle exec ruby worker.rb</CodeSnippet>
@@ -183,7 +183,7 @@ First, stop any running Worker (`Ctrl+C`) and start a fresh one in Terminal 2.
         <CodeSnippet language="bash">npm run client</CodeSnippet>
       </SdkTabs.TypeScript>
       <SdkTabs.DotNet>
-        <CodeSnippet language="bash">dotnet run --project MoneyTransferClient</CodeSnippet>
+        <CodeSnippet language="bash">dotnet run --project MoneyTransferClient/MoneyTransferClient.csproj</CodeSnippet>
       </SdkTabs.DotNet>
       <SdkTabs.Ruby>
         <CodeSnippet language="bash">bundle exec ruby starter.rb</CodeSnippet>
@@ -247,7 +247,7 @@ That's the magic! The Workflow keeps running because Temporal saved its state, e
         <CodeSnippet language="bash">npm run worker</CodeSnippet>
       </SdkTabs.TypeScript>
       <SdkTabs.DotNet>
-        <CodeSnippet language="bash">dotnet run --project MoneyTransferWorker</CodeSnippet>
+        <CodeSnippet language="bash">dotnet run --project MoneyTransferWorker/MoneyTransferWorker.csproj</CodeSnippet>
       </SdkTabs.DotNet>
       <SdkTabs.Ruby>
         <CodeSnippet language="bash">bundle exec ruby worker.rb</CodeSnippet>
@@ -671,7 +671,7 @@ npm run worker
 <SdkTabs.DotNet>
 
 ```bash
-dotnet run --project MoneyTransferWorker
+dotnet run --project MoneyTransferWorker/MoneyTransferWorker.csproj
 ```
 
 **Here's what you'll see:**
@@ -1039,7 +1039,7 @@ Transfer complete (transaction IDs: W3436600150, D9270097234)
 Ctrl+C
 
 # Start it again with the fix
-dotnet run --project MoneyTransferWorker
+dotnet run --project MoneyTransferWorker/MoneyTransferWorker.csproj
 ```
 
 **On the next retry attempt,** your fixed `DepositAsync()` Activity will succeed, and you'll see the completed transaction in your client terminal:
