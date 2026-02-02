@@ -80,7 +80,8 @@ To enable Nexus in your deployment:
 
 2b. Since version 1.30.X, Nexus is enabled by default, the only configuration needed is to use the SystemCallbackURL.
    ```yaml
-   component.nexusoperations.useSystemCallbackURL: true
+   component.nexusoperations.useSystemCallbackURL:
+     -value: true
    ```
 
 ## Build and use Nexus Services
