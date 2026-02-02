@@ -31,7 +31,9 @@ export function CustomSearchModal({
   const searchClient = algoliasearch(appId, apiKey);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [resultCount, setResultCount] = useState(0);
+  const [isFilterCollapsed, setIsFilterCollapsed] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
+  const hasScrolledRef = useRef(false);
 
   // Prevent background scroll when modal is open
   useEffect(() => {
@@ -55,6 +57,37 @@ export function CustomSearchModal({
         setSelectedIndex(-1);
       }
       return count;
+    });
+  }, []);
+
+  // Auto-collapse filter on scroll (only if no filters selected)
+  useEffect(() => {
+    const modalElement = modalRef.current;
+    if (!modalElement) return;
+
+    // Find the results container within the modal
+    const resultsContainer = modalElement.querySelector('.custom-search-results');
+    if (!resultsContainer) return;
+
+    const handleScroll = () => {
+      if (!hasScrolledRef.current && selectedLanguages.length === 0 && !isFilterCollapsed) {
+        hasScrolledRef.current = true;
+        setIsFilterCollapsed(true);
+      }
+    };
+
+    resultsContainer.addEventListener('scroll', handleScroll);
+    return () => resultsContainer.removeEventListener('scroll', handleScroll);
+  }, [selectedLanguages.length, isFilterCollapsed, resultCount]);
+
+  // Reset scroll tracking when filter is manually expanded
+  const handleToggleCollapse = useCallback(() => {
+    setIsFilterCollapsed(prev => {
+      if (prev) {
+        // Expanding - reset scroll tracking
+        hasScrolledRef.current = false;
+      }
+      return !prev;
     });
   }, []);
 
@@ -190,6 +223,8 @@ export function CustomSearchModal({
           <LanguageFilter
             selectedLanguages={selectedLanguages}
             onLanguageChange={onLanguageChange}
+            isCollapsed={isFilterCollapsed}
+            onToggleCollapse={handleToggleCollapse}
           />
           <SearchResults
             onClose={onClose}
