@@ -25,6 +25,22 @@ origins:
     repo: features
   - owner: temporalio
     repo: reference-app-orders-go
+  # Money transfer project templates
+  - owner: temporalio
+    repo: money-transfer-project-template-dotnet
+  - owner: temporalio
+    repo: money-transfer-project-template-python
+  - owner: temporalio
+    repo: money-transfer-project-java
+  - owner: temporalio
+    repo: money-transfer-project-template-ts
+  - owner: temporalio
+    repo: money-transfer-project-template-go
+  - owner: temporalio
+    repo: money-transfer-project-template-php
+  - owner: temporalio
+    repo: money-transfer-project-template-ruby
+  # Sample apps
   - files:
       pattern: './sample-apps/**/*.go'
       owner: 'temporalio'
