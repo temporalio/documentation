@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useHits, useSearchBox } from 'react-instantsearch';
+import { useHits, useSearchBox, useStats } from 'react-instantsearch';
 import { GroupedHits } from './GroupedHits';
 import AskAIButton from './AskAIButton';
 
@@ -12,11 +12,17 @@ interface SearchResultsProps {
 export function SearchResults({ onClose, selectedIndex, onResultsChange }: SearchResultsProps) {
   const { items } = useHits();
   const { query } = useSearchBox();
+  const { nbHits } = useStats();
 
   // Notify parent when results change
   useEffect(() => {
     onResultsChange(items.length);
   }, [items.length, onResultsChange]);
+
+  const handleSeeAllResults = () => {
+    onClose();
+    window.location.href = `/search?q=${encodeURIComponent(query)}`;
+  };
 
   return (
     <div className="custom-search-results" role="listbox" aria-label="Search results">
@@ -29,6 +35,13 @@ export function SearchResults({ onClose, selectedIndex, onResultsChange }: Searc
       {query && items.length > 0 && (
         <div id="ai-footer">
           <AskAIButton query={query} closeDocSearch={onClose} />
+          <button
+            className="custom-search-see-all"
+            onClick={handleSeeAllResults}
+            type="button"
+          >
+            See all {nbHits.toLocaleString()} results
+          </button>
         </div>
       )}
     </div>
