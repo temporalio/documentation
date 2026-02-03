@@ -1,8 +1,8 @@
 ---
-id: activity-execution
+id: execution
 title: Activity execution with the TypeScript SDK
 description: Shows how to perform Activity execution with the TypeScript SDK
-sidebar_label: Basic Activity
+sidebar_label: Activity Execution
 slug: /develop/typescript/activities/execution
 toc_max_heading_level: 3
 tags:
@@ -47,7 +47,7 @@ results in the set of three [Activity Task](/tasks#activity-task) related Events
 
 The Worker may run many Activity executions at the same time, all using the same Activity function code. Temporal can
 also retry an Activity if it fails or times out. For this reason, you should write Activities to be
-[idempotent](../../encyclopedia/activities/activity-definition.mdx#idempotency): calling them multiple times with the
+[idempotent](/encyclopedia/activities/activity-definition.mdx#idempotency): calling them multiple times with the
 same input should have the same effect as calling them once.
 
 :::tip Every Activity call you make is recorded in the Workflow’s execution history, including the parameters you pass
