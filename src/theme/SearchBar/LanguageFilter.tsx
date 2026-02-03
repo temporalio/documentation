@@ -67,23 +67,25 @@ export function LanguageFilter({
         )}
       </div>
       <div className="custom-search-language-filter-content">
-        <div className="custom-search-language-filter-options">
-          {SDK_LANGUAGES.map((lang) => (
-            <label key={lang.id} className="custom-search-language-filter-option">
-              <input
-                type="checkbox"
-                checked={selectedLanguages.includes(lang.id)}
-                onChange={() => toggleLanguage(lang.id)}
-              />
-              <span>{lang.label}</span>
-            </label>
-          ))}
-        </div>
-        {selectedLanguages.length > 0 && (
-          <div className="custom-search-language-filter-note">
-            Showing {selectedLabels} and language-agnostic content
+        <div className="custom-search-language-filter-content-inner">
+          <div className="custom-search-language-filter-options">
+            {SDK_LANGUAGES.map((lang) => (
+              <label key={lang.id} className="custom-search-language-filter-option">
+                <input
+                  type="checkbox"
+                  checked={selectedLanguages.includes(lang.id)}
+                  onChange={() => toggleLanguage(lang.id)}
+                />
+                <span>{lang.label}</span>
+              </label>
+            ))}
           </div>
-        )}
+          {selectedLanguages.length > 0 && (
+            <div className="custom-search-language-filter-note">
+              Showing {selectedLabels} and language-agnostic content
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

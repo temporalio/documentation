@@ -492,18 +492,22 @@
 }
 
 .custom-search-language-filter-content {
-  overflow: hidden;
-  max-height: 200px;
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.25s ease, opacity 0.2s ease;
   opacity: 1;
-  transition: max-height 0.25s ease, opacity 0.2s ease, margin 0.25s ease;
-  padding: 4px;
-  margin: -4px;
 }
 
 .custom-search-language-filter--collapsed .custom-search-language-filter-content {
-  max-height: 0;
+  grid-template-rows: 0fr;
   opacity: 0;
-  margin: 0;
+  pointer-events: none;
+}
+
+.custom-search-language-filter-content-inner {
+  overflow: hidden;
+  padding: 4px;
+  margin: -4px;
 }
 
 .custom-search-language-filter-title {
