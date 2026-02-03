@@ -169,11 +169,16 @@ import io.temporal.common.VersioningBehavior;
 import io.temporal.common.WorkerDeploymentVersion;
 import io.temporal.worker.WorkerDeploymentOptions;
 
-WorkerOptions.newBuilder() .setDeploymentOptions( WorkerDeploymentOptions.newBuilder() .setVersion(new
-WorkerDeploymentVersion("llm_srv", "1.0")) .setUseVersioning(true)
-.setDefaultVersioningBehavior(VersioningBehavior.AUTO_UPGRADE) .build()) .build();
+WorkerOptions.newBuilder()
+  .setDeploymentOptions(
+      WorkerDeploymentOptions.newBuilder()
+      .setVersion(new WorkerDeploymentVersion("llm_srv", "1.0"))
+      .setUseVersioning(true)
+      .setDefaultVersioningBehavior(VersioningBehavior.AUTO_UPGRADE)
+      .build())
+  .build();
 
-````
+```
 </SdkTabs.Java>
 <SdkTabs.Python>
 ```python
@@ -193,7 +198,7 @@ Worker(
         default_versioning_behavior=VersioningBehavior.UNSPECIFIED
     ),
 )
-````
+```
 
 </SdkTabs.Python>
 <SdkTabs.TypeScript>
@@ -377,10 +382,15 @@ public interface HelloWorld {
     String hello();
 }
 
-public static class HelloWorldImpl implements HelloWorld { @Override
-@WorkflowVersioningBehavior(VersioningBehavior.PINNED) public String hello() { return "Hello, World!"; } }
+public static class HelloWorldImpl implements HelloWorld {
+    @Override
+    @WorkflowVersioningBehavior(VersioningBehavior.PINNED)
+    public String hello() {
+        return "Hello, World!";
+    }
+}
 
-````
+```
 </SdkTabs.Java>
 <SdkTabs.Python>
 ```python
@@ -389,7 +399,8 @@ class HelloWorld:
     @workflow.run
     async def run(self):
         return "hello world!"
-````
+
+```
 
 </SdkTabs.Python>
 <SdkTabs.TypeScript>
@@ -549,6 +560,59 @@ upgrade option enabled:
 When a new Worker Deployment Version becomes Current or Ramping, active Workflows can detect this through
 `continue_as_new_suggested`. Check for the `TARGET_WORKER_DEPLOYMENT_VERSION_CHANGED` reason:
 
+```go
+func (w *Workflows) ContinueAsNewWithVersionUpgradeV1(
+  ctx workflow.Context,
+  attempt int,
+) (string, error) {
+  if attempt > 0 {
+    return "v1.0", nil
+  }
+
+  // Check continue-as-new-suggested periodically.
+  // Continue-as-new-suggested is refreshed after each WFT completes.
+  for {
+    // Trigger a WFT when timer expires to refresh the continue-as-new-suggested flag.
+    // Since this is just a test workflow, we aren't doing any real work. In a real workflow regularly
+    // doing non-sleep workflow tasks, you would not need to artificially trigger a WFT to refresh the
+    // continue-as-new-suggested flag. You could choose to check for the suggestion periodically, or you
+    // might want to check before accepting updates, starting activities, or starting child workflows.
+    err := workflow.Sleep(ctx, 10*time.Millisecond)
+    if err != nil {
+      return "", err
+    }
+    if info := workflow.GetInfo(ctx); info.GetContinueAsNewSuggested() {
+      for _, reason := range info.GetContinueAsNewSuggestedReasons() {
+        // Optionally confirm that one of the reasons for ContinueAsNewSuggested is TargetWorkerDeploymentVersionChanged.
+        // In most cases there will only be one reason in this list, but it is possible to have multiple reasons.
+        // For example, if the Target Version changes at the same time that the History becomes too large, both
+        // of those reasons will be listed.
+        if reason == workflow.ContinueAsNewSuggestedReasonTargetWorkerDeploymentVersionChanged {
+          return "", workflow.NewContinueAsNewErrorWithOptions(
+            ctx,
+            workflow.ContinueAsNewErrorOptions{
+              // Pass InitialVersioningBehavior=workflow.ContinueAsNewVersioningBehaviorAutoUpgrade
+              // to make the new run start with AutoUpgrade behavior and use the Target Version of
+              // its Worker Deployment.
+              InitialVersioningBehavior: workflow.ContinueAsNewVersioningBehaviorAutoUpgrade,
+            },
+            "ContinueAsNewWithVersionUpgrade",
+            attempt+1,
+          )
+        }
+      }
+    }
+  }
+}
+
+func (w *Workflows) ContinueAsNewWithVersionUpgradeV2(
+  ctx workflow.Context,
+  attempt int,
+) (string, error) {
+  return "v2.0", nil
+}
+```
+
 ### Continue-as-New suggested reasons {#can-suggested-reasons}
 
 The `continue_as_new_suggested` mechanism can return multiple reasons:
@@ -563,8 +627,8 @@ The `continue_as_new_suggested` mechanism can return multiple reasons:
 
 :::caution Current Limitations
 
-- **Lazy moving only:** Workflows must wake up naturally to receive the Continue-as-New suggestion. Sleeping Workflows
-  won't be proactively signaled (planned for a future release).
+- **Lazy moving only:** Workflows must be invoked by executing a step to receive the Continue-as-New suggestion. Sleeping Workflows
+  won't be proactively get the Continue-as-New suggested information (planned for a future release).
 - **Interface compatibility:** When continuing as new to a different version, ensure your Workflow input format is
   compatible. If incompatible, the new run may fail on its first Workflow Task.
 
