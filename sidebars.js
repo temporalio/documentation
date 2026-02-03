@@ -431,7 +431,7 @@ module.exports = {
         },
         {
           type: 'category',
-          label: 'High availability',
+          label: 'High Availability',
           collapsed: true,
           link: {
             type: 'doc',

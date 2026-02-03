@@ -30,6 +30,8 @@ swap:
   data converter: Data Converter
   default data converter: Default Data Converter
   durable execution: Durable Execution
+  durable timer: Durable Timer
+  durable timers: Durable Timers
   event history: Event History
   failure converter: Failure Converter
   frontend service: Frontend Service
@@ -37,6 +39,7 @@ swap:
   '\bheartbeat\b': Heartbeat
   heartbeat timeout: Heartbeat Timeout
   heartbeating: Heartbeating
+  high availability: High Availability
   history service: History Service
   history shard: History Shard
   id: ID
@@ -76,6 +79,8 @@ swap:
   signals: Signals
   signal-with-start: Signal-With-Start
   standard visibility: Standard Visibility
+  start delay: Start Delay
+  start delays: Start Delays
   start-to-close timeout: Start-To-Close Timeout
   state transition: State Transition
   sticky execution: Sticky Execution
