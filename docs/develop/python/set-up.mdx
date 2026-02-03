@@ -1,7 +1,7 @@
 ---
 id: set-up-your-local-python
 title: Set up your local with the Python SDK
-sidebar_label: Quickstart - Setup
+sidebar_label: Quickstart
 description: Configure your local development environment to get started developing with Temporal
 keywords:
   - set up
@@ -17,7 +17,7 @@ hide_table_of_contents: true
 import { SetupSteps, SetupStep, CodeSnippet } from "@site/src/components/elements/SetupSteps";
 import { CallToAction } from "@site/src/components/elements/CallToAction";
 
-# Quickstart - Setup
+# Quickstart
 
 Configure your local development environment to get started developing with Temporal.
 
@@ -210,6 +210,7 @@ Create a Worker file (worker.py):
 import asyncio
 from temporalio.client import Client
 from temporalio.worker import Worker
+from temporalio import workflow
 
 with workflow.unsafe.imports_passed_through():
     from workflows import SayHelloWorkflow
