@@ -88,7 +88,7 @@ creating the Temporal Client.
 You can use the environment variable `TEMPORAL_CONFIG_FILE` to specify the location of the TOML file or provide the path
 to the file directly in code. If you don't provide the configuration file path, the SDK looks for it at the path
 `~/.config/temporalio/temporal.toml` or the equivalent on your OS. Refer to
-[Environment Configuration](../environment-configuration.mdx) for more details about configuration files and profiles.
+[Environment Configuration](/develop/environment-configuration) for more details about configuration files and profiles.
 
 :::info
 
@@ -645,7 +645,7 @@ language-specific contextual data, and Workflow Function parameters.
 In the examples below, all Workflow Executions are started using a Temporal Client. To spawn Workflow Executions from
 within another Workflow Execution, use either the Child Workflow or External Workflow APIs.
 
-See the [Customize Workflow Type](/develop/typescript/core-application#workflow-type) section to see how to customize
+See the [Customize Workflow Type](/develop/typescript/workflows/basic-workflow#workflow-type) section to see how to customize
 the name of the Workflow Type.
 
 A request to spawn a Workflow Execution causes the Temporal Service to create the first Event
