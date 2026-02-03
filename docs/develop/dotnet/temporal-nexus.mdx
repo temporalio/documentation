@@ -381,9 +381,20 @@ To cancel a Nexus Operation from within a Workflow, cancel the cancellation toke
 The Workflow or other resources backing the operation may choose to ignore the cancellation request.
 If ignored, the operation may enter a terminal state.
 
+When a Nexus operation is started the caller can specify different cancellation types that will control how the caller reacts to cancellation:
+
+- `Abandon` - Do not request cancellation of the operation.
+- `TryCancel` - Initiate a cancellation request and immediately report cancellation to the caller. Note that this type doesn't guarantee that cancellation is delivered to the operation handler if the caller exits before the delivery is done.
+- `WaitCancellationRequested` ` Request cancellation of the operation and wait for confirmation that the request was received. Doesn't wait for actual cancellation.
+- `WaitCancellationCompleted` - Wait for operation completion. Operation may or may not complete as cancelled.
+
+The default is `WaitCancellationCompleted`. Users can set a different option for `CancellationType` in `NexusOperationOptions` when starting an operation.
+
 Once the caller Workflow completes, the caller's Nexus Machinery will not make any further attempts to cancel operations that are still running.
 It's okay to leave operations running in some use cases.
 To ensure cancellations are delivered, wait for all pending operations to finish before exiting the Workflow.
+
+TODO See the [Nexus cancelation sample](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/nexuscancellation) for reference.
 
 ## Make Nexus calls across Namespaces in Temporal Cloud {#nexus-calls-across-namespaces-temporal-cloud}
 
