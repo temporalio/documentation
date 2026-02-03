@@ -361,7 +361,7 @@ For open source server users, Temporal Server version [Temporal Server version 1
 :::
 
 [Update-with-Start](/sending-messages#update-with-start) lets you
-[send an Update](/develop/typescript/message-passing#send-update-from-client) that checks whether an already-running Workflow with that ID exists:
+[send an Update](/develop/typescript/workflows/message-passing#send-update-from-client) that checks whether an already-running Workflow with that ID exists:
 
 - If the Workflow exists, the Update is processed.
 - If the Workflow does not exist, a new Workflow Execution is started with the given ID, and the Update is processed before the main Workflow method starts to execute.
