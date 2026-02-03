@@ -247,6 +247,7 @@ module.exports = {
               items: [
                 'develop/typescript/activities/basic-activity',
                 'develop/typescript/activities/asynchronous-activity-completion',
+                'develop/typescript/activities/execution',
                 'develop/typescript/activities/timeouts',
                 'develop/typescript/activities/benign-exceptions',
               ],
