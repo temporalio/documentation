@@ -142,7 +142,7 @@ For the complete metrics reference, see [SDK metrics](/references/sdk-metrics).
 | Worker configuration option | SDK metric |
 |-----------------------------|------------|
 | `MaxConcurrentWorkflowTaskExecutionSize` | [`worker_task_slots_available {worker_type = WorkflowWorker}`](/references/sdk-metrics#worker_task_slots_available) |
-| `MaxConcurrentActivityTaskExecutionSize` | `worker_task_slots_available {worker_type = ActivityWorker}` |
+| `MaxConcurrentActivityTaskExecutionSize` | [`worker_task_slots_available {worker_type = ActivityWorker}`](/references/sdk-metrics#worker_task_slots_available) |
 | `MaxWorkflowThreadCount` | `workflow_active_thread_count` (Java only) |
 | CPU-intensive logic | `workflow_task_execution_latency` |
 
