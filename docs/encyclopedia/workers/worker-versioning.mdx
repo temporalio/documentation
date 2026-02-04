@@ -2,16 +2,16 @@
 id: worker-versioning
 title: Worker Versioning
 sidebar_label: Worker Versioning
-description: This page 
+description: Learn the concepts behind Worker Versioning and the details behind how it works.
 slug: /worker-versioning
 toc_max_heading_level: 4
 keywords:
+  - versioning
   - workers
   - safe deploys
   - draining
   - inheritance
   - pinning
-  - versioning
 tags:
   - Versioning
   - Workers
@@ -22,6 +22,7 @@ This page defines some of the underlying concepts used in [Worker Versioning](/p
 - [Worker Deployments](#deployments)
 - [Worker Deployment Versions](#deployment-versions)
 - [Versioning Behaviors](#versioning-behaviors)
+- [Versioning Definitions](#versioning-definitions)
 - [Versioning Statuses](#versioning-statuses)
 - [Continue-as-new, Child Workflow, and Retry Semantics](#inheritance-semantics)
 
@@ -38,15 +39,42 @@ When a Worker starts polling for Workflow and Activity Tasks, it reports its Dep
 
 ## Versioning Behaviors {#versioning-behaviors}
 
-Using **Workflow Pinning**, you can declare each Workflow type to have a **Versioning Behavior**, either Pinned or Auto-Upgrade.
+You can declare each Workflow type to have a **Versioning Behavior**, either Pinned or Auto-Upgrade, in your Workflow configuration using an SDK or the CLI.
+
+To learn more about implementing Worker Versioning, see our [Worker Versioning in production](production-deployment/worker-deployments/worker-versioning) page.
 
 ### Pinned Workflows {#pinned}
 
-A **Pinned** Workflow is guaranteed to complete on a single Worker Deployment Version. You can mark a Workflow Type as pinned when you register it by adding an additional Pinned parameter. If you need to move a pinned Workflow to a new version, use [`temporal workflow update-options`](https://docs.temporal.io/cli/workflow#update-options).
+A **Pinned** Workflow is guaranteed to complete on a single Worker Deployment Version. You can mark a Workflow Type as pinned when you register it by adding an additional Pinned parameter. If you need to move a pinned Workflow to a new version, use [`temporal workflow update-options`](/cli/workflow#update-options).
 
 ### Auto-Upgrade Workflows {#auto-upgrade}
 
 An **Auto-Upgrade** Workflow will move to the latest Worker Deployment Version automatically whenever you change the current version. Auto-upgrade Workflows are not restricted to a single Deployment Version and need to be kept replay-safe manually, i.e. with [patching](/workflow-definition#workflow-versioning).
+
+### Actvity behavior across versions
+
+There are a few scenarios to consider for your Activities when you're handling your Worker Deployment versions.
+
+- Activities generally start on the Worker Deployment Version of their Workflow which means:
+  - For Pinned Workflows, an Activity starts on the pinned version.
+  - For Auto-Upgrade Workflows, an Activity starts on the Target Worker Deployment Version of the Workflow. In this case, Workflow Execution moves to its Target Version immediately before starting the Activity if the Target Version is different from the last used Version. The Target Worker Deployment Version of a Workflow is the Current or Ramping Version of the Workflow's Task Queue, depending on the Ramp Percentage and Workflow ID.
+
+There is an exception where you will have **Independent Activities**. Independent Activities are specific to Worker Versioning. They start on the Current or Ramping Version of their own Task Queue independently from their Workflow.
+
+- For a Pinned Workflow, Independent Activities are Activities that start on a Task Queue that's not a member of the calling Workflow's Pinned Worker Deployment Version.
+- For an Auto-Upgrade Workflow, Independent Activities are Activities that start on a Task Queue that's not a member of the calling Workflow's Target Worker Deployment Version.
+
+Since Independent Activities aren't part of a Workflow's version, they can run in a few different ways:
+
+- The Activity Task Queue is running in a separate Worker Deployment that only has the Independent Activity.
+- The Independent Activity is in an unversioned Task Queue.
+- The Independent Activity is in a separate Worker Deployment that has its own Workflows, but other Workflows reuse the Activity from other Worker Deployments.
+
+## Versioning Definitions
+
+- **Current Worker Deployment Version**: The version where Workflows are routed to unless they were previously pinned on a different version. Other versions can continue polling to allow pinned Workflows to finish executing or in case you need to roll back. If no current version is specified, the default is unversioned.
+- **Ramping Worker Deployment Version**: The version where a configurable percentage of Workflows are routed to unless they were previously pinned on a different version. The ramp percentage can be in the range [0, 100]. Workflows that don't go to the Ramping Version will go to the Current Version. If no Ramping Version is specified, 100% of new Workflows and Auto-Upgrade Workflows will go to the Current Version.
+- **Target Worker Deployment Version**: The version your Workflow will move to next. This could be the Deployment's Current Version or the Ramping Version. For example, if an Auto-Upgrade Workflow was running on Version A, the Current Version is B, and there is a 5% ramp to C, there is a 95% chance that its Target Version is B and 5% that it's C.
 
 ## Versioning Statuses {#versioning-statuses}
 

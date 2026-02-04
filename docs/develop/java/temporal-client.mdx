@@ -3,7 +3,9 @@ id: temporal-client
 title: Temporal Client - Java SDK
 sidebar_label: Temporal Client
 toc_max_heading_level: 3
-description: This guide introduces Temporal Clients, explaining their role and configuration in Java to connect to various Temporal Services, including starting Workflow Executions and customizing Workflow options.
+description:
+  This guide introduces Temporal Clients, explaining their role and configuration in Java to connect to various Temporal
+  Services, including starting Workflow Executions and customizing Workflow options.
 keywords:
   - temporal java sdk
   - temporal client java sdk
@@ -30,33 +32,36 @@ tags:
   - Certificates
 ---
 
-This guide introduces Temporal Clients.
-It explains the role and use of Clients and shows you how to configure your Java Client code to connect to the Temporal Service.
+A [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) enables you to communicate with the
+[Temporal Service](/temporal-service). Communication with a Temporal Service lets you perform actions such as starting
+Workflow Executions, sending Signals to Workflow Executions, sending Queries to Workflow Executions, getting the results
+of a Workflow Execution, and providing Activity Task Tokens.
 
-This section includes the following topics:
+This page shows you how to do the following using the Java SDK with the Temporal Client:
 
-- [How to initialize a Temporal Client for the Temporal CLI development service](#connect-to-development-service)
-- [How to initialize a Temporal Client to connect to a custom Namespace](#connect-to-custom-namespace)
-- [How to initialize a Temporal Client to connect to Temporal Cloud](#connect-to-temporal-cloud)
-- [How to start a Workflow Execution](#start-workflow-execution)
+- [Connect to a local development Temporal Service](#connect-to-development-service)
+- [Connect to Temporal Cloud](#connect-to-temporal-cloud)
+- [Start a Workflow Execution](#start-workflow-execution)
+- [Get Workflow results](#get-workflow-results)
 
-## Connect to a development Temporal Service {#connect-to-development-service}
+:::caution
 
-**How to initialize a Temporal Client for the Temporal CLI development service using the Java SDK.**
-
-The Java SDK provides an already-configured way to connect to a locally hosted Temporal Service.
-The `.newLocalServiceStubs()` method returns a stub that points to the default Temporal CLI service settings (localhost:7233).
-
-:::info
-
-A Temporal Client cannot be initialized and used inside a Workflow.
-However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with a Temporal Service.
+A Temporal Client cannot be initialized and used inside a Workflow. However, it is acceptable and common to use a
+Temporal Client inside an Activity to communicate with a Temporal Service.
 
 :::
 
-<!--SNIPSTART javasdk-build-caller-app-using-local-client {"selectedLines": ["11-17"]}-->
+## Connect to a development Temporal Service {#connect-to-development-service}
+
+Use the `newLocalServiceStubs` method to create a stub that points to the Temporal development service, and then use the
+[`WorkflowClient.newInstance` method](<https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClient.html#newInstance(io.temporal.serviceclient.WorkflowServiceStubs)>)
+to create a Temporal Client.
+
+<!--SNIPSTART javasdk-build-caller-app-using-local-client {"selectedLines": ["11-17"], "highlightedLines": ["3","7"]}-->
+
 [sample-apps/java/client/devserver-client-sample/src/main/java/clientsample/YourCallerApp.java](https://github.com/temporalio/documentation/blob/main/sample-apps/java/client/devserver-client-sample/src/main/java/clientsample/YourCallerApp.java)
-```java
+
+```java {3,7}
 // ...
         // Create an instance that connects to a Temporal Service running on the local
         // machine, using the default port (7233)
@@ -66,19 +71,211 @@ However, it is acceptable and common to use a Temporal Client inside an Activity
         // This application uses the Client to communicate with the local Temporal Service
         WorkflowClient client = WorkflowClient.newInstance(serviceStub);
 ```
+
 <!--SNIPEND-->
 
-The Namespace is assumed to be 'default' unless otherwise specified.
+When you create a new Client with an instance of `newLocalServiceStubs`, the Client connects to the default local port
+at port 7233. When you don't specify a custom Namespace, the Client connects to the `default` Namespace.
 
-## Connect to a custom Namespace {#connect-to-custom-namespace}
+To connect to a custom Namespace, use the `WorkflowClientOptions.Builder.setNamespace` method to set the Namespace. Then
+pass the `clientOptions` to the `WorkflowClient.newInstance` method.
 
-**How to initialize a Temporal Client to connect to a custom Namespace using the Java SDK.**
+<Tabs groupId="connect-options" defaultValue="config-file" >
 
-Custom Namespaces on local development systems let you to build out new features while isolating Workflow Executions.
-Namespaces are established by setting a Client's options to configure the new instance.
+<TabItem value="config-file" label="Configuration File">
+
+You can use a TOML configuration file to set connection options for the Temporal Client. The configuration file lets you
+configure multiple profiles, each with its own set of connection options. You can then specify which profile to use when
+creating the Temporal Client. You can use the environment variable `TEMPORAL_CONFIG_FILE` to specify the location of the
+TOML file or provide the path to the file directly in code. If you don't provide the configuration file path, the SDK
+looks for it at the path `~/.config/temporalio/temporal.toml`. For a list of all available configuration options, refer
+to [Environment Configuration](/references/client-environment-configuration)
+
+:::info
+
+The connection options set in configuration files have lower precedence than environment variables. This means that if
+you set the same option in both the configuration file and as an environment variable, the environment variable value
+overrides the option set in the configuration file.
+
+:::
+
+For example, the following TOML configuration file defines two profiles: `default` and `prod`. Each profile has its own
+set of connection options.
+
+```toml
+# Default profile for local development
+[profile.default]
+address = "localhost:7233"
+namespace = "default"
+
+# Custom gRPC headers
+[profile.default.grpc_meta]
+my-custom-header = "development-value"
+trace-id = "dev-trace-123"
+
+# Production profile for Temporal Cloud
+[profile.prod]
+address = "your-namespace.a1b2c.tmprl.cloud:7233"
+namespace = "your-namespace"
+api_key = "your-api-key-here"
+
+# TLS configuration for production
+[profile.prod.tls]
+# TLS is auto-enabled when this TLS config or API key is present, but you can configure it explicitly
+# disabled = false
+# Use certificate files for mTLS
+client_cert_path = "/etc/temporal/certs/client.pem"
+client_key_path = "/etc/temporal/certs/client.key"
+
+# Custom headers for production
+[profile.prod.grpc_meta]
+environment = "production"
+service-version = "v1.2.3"
+```
+
+You can create a Temporal Client using a specific profile from the configuration file as follows. First use
+`ClientConfigProfile.load` to load the profile from the configuration file. Then use
+`profile.toWorkflowServiceStubsOptions` and `profile.toWorkflowClientOptions` to convert the profile to
+`WorkflowServiceStubsOptions` and `WorkflowClientOptions` respectively. Then use `WorkflowClient.newInstance` to create
+a Temporal Client.
+
+```java {21-25,32-34}
+import io.temporal.client.WorkflowClient;
+import io.temporal.client.WorkflowClientOptions;
+import io.temporal.envconfig.ClientConfigProfile;
+import io.temporal.envconfig.LoadClientConfigProfileOptions;
+import io.temporal.serviceclient.WorkflowServiceStubs;
+import io.temporal.serviceclient.WorkflowServiceStubsOptions;
+import java.nio.file.Paths;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class LoadFromFile {
+
+  private static final Logger logger = LoggerFactory.getLogger(LoadFromFile.class);
+
+  public static void main(String[] args) {
+    try {
+
+      String configFilePath =
+          Paths.get(LoadFromFile.class.getResource("/config.toml").toURI()).toString();
+
+      ClientConfigProfile profile =
+          ClientConfigProfile.load(
+              LoadClientConfigProfileOptions.newBuilder()
+                  .setConfigFilePath(configFilePath)
+                  .build());
+
+      WorkflowServiceStubsOptions serviceStubsOptions = profile.toWorkflowServiceStubsOptions();
+      WorkflowClientOptions clientOptions = profile.toWorkflowClientOptions();
+
+      try {
+        // Create the workflow client using the loaded configuration
+        WorkflowClient client =
+            WorkflowClient.newInstance(
+                WorkflowServiceStubs.newServiceStubs(serviceStubsOptions), clientOptions);
+
+        // Test the connection by getting system info
+        var systemInfo =
+            client
+                .getWorkflowServiceStubs()
+                .blockingStub()
+                .getSystemInfo(
+                    io.temporal.api.workflowservice.v1.GetSystemInfoRequest.getDefaultInstance());
+
+        logger.info("✅ Client connected successfully!");
+        logger.info("   Server version: {}", systemInfo.getServerVersion());
+
+      } catch (Exception e) {
+        logger.error("❌ Failed to connect: {}", e.getMessage());
+      }
+
+    } catch (Exception e) {
+      logger.error("Failed to load configuration: {}", e.getMessage(), e);
+      System.exit(1);
+    }
+  }
+}
+```
+
+</TabItem>
+<TabItem value="env-vars" label="Environment Variables">
+
+Use the `envconfig` package to set connection options for the Temporal Client using environment variables. For a list of
+all available environment variables and their default values, refer to
+[Environment Configuration](/references/client-environment-configuration).
+
+For example, the following code snippet loads all environment variables and creates a Temporal Client with the options
+specified in those variables. If you have defined a configuration file at either the default location
+(`~/.config/temporalio/temporal.toml`) or a custom location specified by the `TEMPORAL_CONFIG_FILE` environment
+variable, this will also load the default profile in the configuration file. However, any options set via environment
+variables will take precedence.
+
+```java {18-19,26-28}
+import io.temporal.client.WorkflowClient;
+import io.temporal.client.WorkflowClientOptions;
+import io.temporal.envconfig.ClientConfigProfile;
+import io.temporal.envconfig.LoadClientConfigProfileOptions;
+import io.temporal.serviceclient.WorkflowServiceStubs;
+import io.temporal.serviceclient.WorkflowServiceStubsOptions;
+import java.nio.file.Paths;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class LoadFromFile {
+
+  private static final Logger logger = LoggerFactory.getLogger(LoadFromFile.class);
+
+  public static void main(String[] args) {
+    try {
+
+      ClientConfigProfile profile =
+          ClientConfigProfile.load(LoadClientConfigProfileOptions.newBuilder().build());
+
+      WorkflowServiceStubsOptions serviceStubsOptions = profile.toWorkflowServiceStubsOptions();
+      WorkflowClientOptions clientOptions = profile.toWorkflowClientOptions();
+
+      try {
+        // Create the workflow client using the loaded configuration
+        WorkflowClient client =
+            WorkflowClient.newInstance(
+                WorkflowServiceStubs.newServiceStubs(serviceStubsOptions), clientOptions);
+
+        // Test the connection by getting system info
+        var systemInfo =
+            client
+                .getWorkflowServiceStubs()
+                .blockingStub()
+                .getSystemInfo(
+                    io.temporal.api.workflowservice.v1.GetSystemInfoRequest.getDefaultInstance());
+
+        logger.info("✅ Client connected successfully!");
+        logger.info("   Server version: {}", systemInfo.getServerVersion());
+
+      } catch (Exception e) {
+        logger.error("❌ Failed to connect: {}", e.getMessage());
+      }
+
+    } catch (Exception e) {
+      logger.error("Failed to load configuration: {}", e.getMessage(), e);
+      System.exit(1);
+    }
+  }
+}
+```
+
+</TabItem>
+
+<TabItem value="code" label="Code">
+
+If you don't want to use environment variables or a configuration file, you can specify connection options directly in
+code. This is convenient for local development and testing. You can also load a base configuration from environment
+variables or a configuration file, and then override specific options in code.
 
 <!--SNIPSTART javasdk-build-caller-app-using-local-client-custom-namespace {"selectedLines": ["23-31"]}-->
+
 [sample-apps/java/client/devserver-namespace-client-sample/src/main/java/clientsample/YourCallerApp.java](https://github.com/temporalio/documentation/blob/main/sample-apps/java/client/devserver-namespace-client-sample/src/main/java/clientsample/YourCallerApp.java)
+
 ```java
 // ...
         // Add the Namespace as a Client Option
@@ -91,25 +288,232 @@ Namespaces are established by setting a Client's options to configure the new in
         // This application uses the Client to communicate with the Temporal Service
         WorkflowClient client = WorkflowClient.newInstance(service, clientOptions);
 ```
+
 <!--SNIPEND-->
+
+</TabItem>
+</Tabs>
 
 ## Connect to Temporal Cloud {#connect-to-temporal-cloud}
 
-### How to connect a Temporal Client to Temporal Cloud using an API key {#connect-to-temporal-cloud-api-key}
+You can connect to Temporal Cloud using either an [API key](/cloud/api-keys) or through [mTLS](/cloud/certificates).
+Connection to Temporal Cloud or any secured Temporal Service requires additional connection options compared to
+connecting to an unsecured local development instance:
 
-To use an [API key](/cloud/api-keys) with the Temporal Java SDK, you will need to provide additional connection options:
-
-- Your _API Key_ value.
-- Your _Namespace and Account id_ combination, which follows the format `<namespace_id>.<account_id>`.
-- The _endpoint_ may vary. The most common endpoint used is the gRPC regional endpoint, which follows the format: `<region>.<cloud_provider>.api.temporal.io:7233`.
-- For Namespaces with High Availability features with API key authentication enabled, use the gRPC Namespace endpoint: `<namespace>.<account>.tmprl.cloud:7233`.
-  This allows automated failover without needing to switch endpoints.
+- Your credentials for authentication.
+  - If you are using an API key, provide the API key value.
+  - If you are using mTLS, provide the mTLS CA certificate and mTLS private key.
+- Your _Namespace and Account ID_ combination, which follows the format `<namespace_id>.<account_id>`.
+- The _endpoint_ may vary. The most common endpoint used is the gRPC regional endpoint, which follows the format:
+  `<region>.<cloud_provider>.api.temporal.io:7233`.
+- For Namespaces with High Availability features with API key authentication enabled, use the gRPC Namespace endpoint:
+  `<namespace>.<account>.tmprl.cloud:7233`. This allows automated failover without needing to switch endpoints.
 
 You can find the Namespace and Account ID, as well as the endpoint, on the Namespaces tab:
 
 ![The Namespace and Account ID combination on the left, and the regional endpoint on the right](/img/cloud/apikeys/namespaces-and-regional-endpoints.png)
 
-Now, when instantiating a Temporal `client` in your Temporal Java SDK code, provide the API key with `WorkflowServiceStubsOptions` and the Namespace and Account ID in `WorkflowClient.newInstance`:
+You can provide these connection options using environment variables, a configuration file, or directly in code.
+
+<Tabs groupId="connect-options" defaultValue="config-file" >
+
+<TabItem value="config-file" label="Configuration File">
+
+You can use a TOML configuration file to set connection options for the Temporal Client. The configuration file lets you
+configure multiple profiles, each with its own set of connection options. You can then specify which profile to use when
+creating the Temporal Client. For a list of all available configuration options you can set in the TOML file, refer to
+[Environment Configuration](/references/client-environment-configuration).
+
+You can use the environment variable `TEMPORAL_CONFIG_FILE` to specify the location of the TOML file or provide the path
+to the file directly in code. If you don't provide the path to the configuration file, the SDK looks for it at the
+default path `~/.config/temporalio/temporal.toml`.
+
+:::info
+
+The connection options set in configuration files have lower precedence than environment variables. This means that if
+you set the same option in both the configuration file and as an environment variable, the environment variable value
+overrides the option set in the configuration file.
+
+:::
+
+For example, the following TOML configuration file defines a `cloud` profile with the necessary connection options to
+connect to Temporal Cloud via an API key:
+
+```toml
+# Cloud profile for Temporal Cloud
+[profile.cloud]
+address = "your-namespace.a1b2c.tmprl.cloud:7233"
+namespace = "your-namespace"
+api_key = "your-api-key-here"
+```
+
+If you want to use mTLS authentication instead of an API key, replace the `api_key` field with your mTLS certificate and
+private key:
+
+```toml
+# Cloud profile for Temporal Cloud
+[profile.cloud]
+address = "your-namespace.a1b2c.tmprl.cloud:7233"
+namespace = "your-namespace"
+tls_client_cert_data = "your-tls-client-cert-data"
+tls_client_key_path = "your-tls-client-key-path"
+```
+
+With the connections options defined in the configuration file, use the `LoadClientOptions` function in the `envconfig`
+package to create a Temporal Client using the `cloud` profile as follows. After loading the profile, you can also
+programmatically override specific connection options before creating the client.
+
+```java {25-30,33-35,42-44}
+import io.temporal.client.WorkflowClient;
+import io.temporal.client.WorkflowClientOptions;
+import io.temporal.envconfig.ClientConfigProfile;
+import io.temporal.envconfig.LoadClientConfigProfileOptions;
+import io.temporal.serviceclient.WorkflowServiceStubs;
+import io.temporal.serviceclient.WorkflowServiceStubsOptions;
+import java.nio.file.Paths;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class LoadProfile {
+
+  private static final Logger logger = LoggerFactory.getLogger(LoadProfile.class);
+
+  public static void main(String[] args) {
+    String profileName = "cloud";
+
+    try {
+      String configFilePath =
+          Paths.get(LoadProfile.class.getResource("/config.toml").toURI()).toString();
+
+      logger.info("--- Loading '{}' profile from {} ---", profileName, configFilePath);
+
+      // Load specific profile from file with environment variable overrides
+      ClientConfigProfile profile =
+          ClientConfigProfile.load(
+              LoadClientConfigProfileOptions.newBuilder()
+                  .setConfigFilePath(configFilePath)
+                  .setConfigFileProfile(profileName)
+                  .build());
+
+      // Demonstrate programmatic override - fix the incorrect address from staging profile
+      ClientConfigProfile.Builder profileBuilder = profile.toBuilder();
+      profileBuilder.setAddress("localhost:7233"); // Override the incorrect address
+      profile = profileBuilder.build();
+
+      WorkflowServiceStubsOptions serviceStubsOptions = profile.toWorkflowServiceStubsOptions();
+      WorkflowClientOptions clientOptions = profile.toWorkflowClientOptions();
+
+      try {
+        // Create the workflow client using the loaded configuration
+        WorkflowClient client =
+            WorkflowClient.newInstance(
+                WorkflowServiceStubs.newServiceStubs(serviceStubsOptions), clientOptions);
+
+        // Test the connection by getting system info
+        var systemInfo =
+            client
+                .getWorkflowServiceStubs()
+                .blockingStub()
+                .getSystemInfo(
+                    io.temporal.api.workflowservice.v1.GetSystemInfoRequest.getDefaultInstance());
+
+        logger.info("✅ Client connected successfully!");
+        logger.info("   Server version: {}", systemInfo.getServerVersion());
+
+      } catch (Exception e) {
+        logger.error("❌ Failed to connect: {}", e.getMessage());
+      }
+
+    } catch (Exception e) {
+      logger.error("Failed to load configuration: {}", e.getMessage(), e);
+      System.exit(1);
+    }
+  }
+}
+```
+
+</TabItem>
+<TabItem value="env-vars" label="Environment Variables">
+
+The following environment variables are required to connect to Temporal Cloud:
+
+- `TEMPORAL_NAMESPACE`: Your Namespace and Account ID combination in the format `<namespace_id>.<account_id>`.
+- `TEMPORAL_ADDRESS`: The gRPC endpoint for your Temporal Cloud Namespace.
+- `TEMPORAL_API_KEY`: Your API key value. Required if you are using API key authentication.
+- `TEMPORAL_TLS_CLIENT_CERT_DATA` or `TEMPORAL_TLS_CLIENT_CERT_PATH`: Your mTLS client certificate data or file path.
+  Required if you are using mTLS authentication.
+- `TEMPORAL_TLS_CLIENT_KEY_DATA` or `TEMPORAL_TLS_CLIENT_KEY_PATH`: Your mTLS client private key data or file path.
+  Required if you are using mTLS authentication.
+
+Ensure these environment variables exist in your environment before running your Java application.
+
+Import the `envconfig` package to set connection options for the Temporal Client using environment variables. The
+`MustLoadDefaultClientOptions` function will automatically load all environment variables. For a list of all available
+environment variables and their default values, refer to [Environment Configuration](../environment-configuration).
+
+For example, the following code snippet loads all environment variables and creates a Temporal Client with the options
+specified in those variables. If you have defined a configuration file at either the default location
+(`~/.config/temporalio/temporal.toml`) or a custom location specified by the `TEMPORAL_CONFIG_FILE` environment
+variable, this will also load the default profile in the configuration file. However, any options set via environment
+variables will take precedence.
+
+```java {17-18,25-27}
+import io.temporal.client.WorkflowClientOptions;
+import io.temporal.envconfig.ClientConfigProfile;
+import io.temporal.envconfig.LoadClientConfigProfileOptions;
+import io.temporal.serviceclient.WorkflowServiceStubs;
+import io.temporal.serviceclient.WorkflowServiceStubsOptions;
+import java.nio.file.Paths;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class LoadFromFile {
+
+  private static final Logger logger = LoggerFactory.getLogger(LoadFromFile.class);
+
+  public static void main(String[] args) {
+    try {
+
+      ClientConfigProfile profile =
+          ClientConfigProfile.load(LoadClientConfigProfileOptions.newBuilder().build());
+
+      WorkflowServiceStubsOptions serviceStubsOptions = profile.toWorkflowServiceStubsOptions();
+      WorkflowClientOptions clientOptions = profile.toWorkflowClientOptions();
+
+      try {
+        // Create the workflow client using the loaded configuration
+        WorkflowClient client =
+            WorkflowClient.newInstance(
+                WorkflowServiceStubs.newServiceStubs(serviceStubsOptions), clientOptions);
+
+        // Test the connection by getting system info
+        var systemInfo =
+            client
+                .getWorkflowServiceStubs()
+                .blockingStub()
+                .getSystemInfo(
+                    io.temporal.api.workflowservice.v1.GetSystemInfoRequest.getDefaultInstance());
+
+        logger.info("✅ Client connected successfully!");
+        logger.info("   Server version: {}", systemInfo.getServerVersion());
+
+      } catch (Exception e) {
+        logger.error("❌ Failed to connect: {}", e.getMessage());
+      }
+
+    } catch (Exception e) {
+      logger.error("Failed to load configuration: {}", e.getMessage(), e);
+      System.exit(1);
+    }
+  }
+}
+```
+
+</TabItem>
+<TabItem value="code" label="Code">
+
+Now, when instantiating a Temporal `client` in your Temporal Java SDK code, provide the API key with
+`WorkflowServiceStubsOptions` and the Namespace and Account ID in `WorkflowClient.newInstance`:
 
 ```java
     WorkflowServiceStubs service =
@@ -140,13 +544,17 @@ WorkflowServiceStubsOptions stubOptions =
 myKey = "Bearer " + <new APIKey>;
 ```
 
-### How to connect a Temporal Client to Temporal Cloud using mTLS {#connect-to-temporal-cloud-tls}
+To connect to Temporal Cloud using mTLS, you need to provide the mTLS CA certificate and mTLS private key. You can then
+use the `SimpleSslContextBuilder` to build an SSL context. Then use the
+`WorkflowServiceStubsOptions.Builder.setSslContext` method to set the SSL context.
 
-When you use a remote service, you don't use the `newLocalServicesStubs` convenience method.
-Instead, set your connection details as stub configuration options:
+When you use a remote service, you don't use the `newLocalServicesStubs` convenience method. Instead, set your
+connection details as stub configuration options:
 
 <!--SNIPSTART javasdk-build-caller-app-using-temporal-cloud {"selectedLines": ["46-54"]}-->
+
 [sample-apps/java/client/cloudserver-client-sample/src/main/java/clientsample/YourCallerApp.java](https://github.com/temporalio/documentation/blob/main/sample-apps/java/client/cloudserver-client-sample/src/main/java/clientsample/YourCallerApp.java)
+
 ```java
 // ...
             // Set the Service Stub options (SSL context and gRPC endpoint)
@@ -159,6 +567,7 @@ Instead, set your connection details as stub configuration options:
              // Create a stub that accesses a Temporal Service
             WorkflowServiceStubs serviceStub = WorkflowServiceStubs.newServiceStubs(stubsOptions);
 ```
+
 <!--SNIPEND-->
 
 Each Temporal Cloud service Client has four prerequisites.
@@ -170,12 +579,14 @@ Each Temporal Cloud service Client has four prerequisites.
 
 Retrieve these values before building your Client.
 
-The following sample generates an SSL context from the mTLS .pem and .key files.
-Along with the gRPC endpoint, this information configures a service stub for Temporal Cloud.
-Add the Namespace to your Client build options and initialize the new Client:
+The following sample generates an SSL context from the mTLS .pem and .key files. Along with the gRPC endpoint, this
+information configures a service stub for Temporal Cloud. Add the Namespace to your Client build options and initialize
+the new Client:
 
 <!--SNIPSTART javasdk-build-caller-app-using-temporal-cloud {"selectedLines": ["41-64"]}-->
+
 [sample-apps/java/client/cloudserver-client-sample/src/main/java/clientsample/YourCallerApp.java](https://github.com/temporalio/documentation/blob/main/sample-apps/java/client/cloudserver-client-sample/src/main/java/clientsample/YourCallerApp.java)
+
 ```java
 // ...
             // Generate an SSL context
@@ -203,46 +614,61 @@ Add the Namespace to your Client build options and initialize the new Client:
             // This application uses the Client to communicate with the Temporal Service
             WorkflowClient client = WorkflowClient.newInstance(serviceStub, clientOptions);
 ```
+
 <!--SNIPEND-->
+
+</TabItem>
+</Tabs>
 
 ## Start a Workflow Execution {#start-workflow-execution}
 
 **How to start a Workflow Execution using the Java SDK**
 
-[Workflow Execution](/workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
+[Workflow Execution](/workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution
+you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type,
+language-specific contextual data, and Workflow Function parameters.
 
-In the examples below, all Workflow Executions are started using a Temporal Client.
-To spawn Workflow Executions from within another Workflow Execution, use either the [Child Workflow](/develop/java/child-workflows) or External Workflow APIs.
+In the examples below, all Workflow Executions are started using a Temporal Client. To spawn Workflow Executions from
+within another Workflow Execution, use either the [Child Workflow](/develop/java/child-workflows) or External Workflow
+APIs.
 
-See the [Customize Workflow Type](/develop/java/core-application#workflow-type) section to see how to customize the name of the Workflow Type.
+See the [Customize Workflow Type](/develop/java/core-application#workflow-type) section to see how to customize the name
+of the Workflow Type.
 
-A request to spawn a Workflow Execution causes the Temporal Service to create the first Event ([WorkflowExecutionStarted](/references/events#workflowexecutionstarted)) in the Workflow Execution Event History.
-The Temporal Service then creates the first Workflow Task, resulting in the first [WorkflowTaskScheduled](/references/events#workflowtaskscheduled) Event.
+A request to spawn a Workflow Execution causes the Temporal Service to create the first Event
+([WorkflowExecutionStarted](/references/events#workflowexecutionstarted)) in the Workflow Execution Event History. The
+Temporal Service then creates the first Workflow Task, resulting in the first
+[WorkflowTaskScheduled](/references/events#workflowtaskscheduled) Event.
 
-Use `WorkflowStub` to start a Workflow Execution from within a Client, and `ExternalWorkflowStub` to start a different Workflow Execution from within a Workflow.
+Use `WorkflowStub` to start a Workflow Execution from within a Client, and `ExternalWorkflowStub` to start a different
+Workflow Execution from within a Workflow.
 
-See [`SignalwithStart`](/develop/java/message-passing#signal-with-start) to start a Workflow Execution to receive a Signal from within another Workflow.
+See [`SignalwithStart`](/develop/java/message-passing#signal-with-start) to start a Workflow Execution to receive a
+Signal from within another Workflow.
 
 **Using `WorkflowStub`**
 
-`WorkflowStub` is a proxy generated by the `WorkflowClient`.
-Each time a new Workflow Execution is started, an instance of the Workflow implementation object is created.
-Then, one of the methods (depending on the Workflow Type of the instance) annotated with `@WorkflowMethod` can be invoked.
-As soon as this method returns, the Workflow Execution is considered to be complete.
+`WorkflowStub` is a proxy generated by the `WorkflowClient`. Each time a new Workflow Execution is started, an instance
+of the Workflow implementation object is created. Then, one of the methods (depending on the Workflow Type of the
+instance) annotated with `@WorkflowMethod` can be invoked. As soon as this method returns, the Workflow Execution is
+considered to be complete.
 
 You can use a typed or untyped `WorkflowStub` in the client code.
 
-- Typed `WorkflowStub` are useful because they are type safe and allow you to invoke your Workflow methods such as `@WorkflowMethod`, `@QueryMethod`, and `@SignalMethod` directly.
-- An untyped `WorkflowStub` does not use the Workflow interface, and is not type safe. It is more flexible because it has methods from the `WorkflowStub` interface, such as `start`, `signalWithStart`, `getResults` (sync and async), `query`, `signal`, `cancel` and `terminate`.
-  Note that the Temporal Java SDK also provides typed `WorkflowStub` versions for these methods.
-  When using untyped `WorkflowStub`, we rely on the Workflow Type, Activity Type, Child Workflow Type, as well as Query and Signal names.
-  For details, see [Temporal Client](#connect-to-development-service).
+- Typed `WorkflowStub` are useful because they are type safe and allow you to invoke your Workflow methods such as
+  `@WorkflowMethod`, `@QueryMethod`, and `@SignalMethod` directly.
+- An untyped `WorkflowStub` does not use the Workflow interface, and is not type safe. It is more flexible because it
+  has methods from the `WorkflowStub` interface, such as `start`, `signalWithStart`, `getResults` (sync and async),
+  `query`, `signal`, `cancel` and `terminate`. Note that the Temporal Java SDK also provides typed `WorkflowStub`
+  versions for these methods. When using untyped `WorkflowStub`, we rely on the Workflow Type, Activity Type, Child
+  Workflow Type, as well as Query and Signal names. For details, see [Temporal Client](#connect-to-development-service).
 
 A Workflow Execution can be started either synchronously or asynchronously.
 
-- Synchronous invocation starts a Workflow and then waits for its completion. If the process that started the Workflow crashes or stops waiting, the Workflow continues executing.
-  Because Workflows are potentially long-running, and Client crashes happen, it is not very commonly found in production use.
-  The following example is a type-safe approach for starting a Workflow Execution synchronously.
+- Synchronous invocation starts a Workflow and then waits for its completion. If the process that started the Workflow
+  crashes or stops waiting, the Workflow continues executing. Because Workflows are potentially long-running, and Client
+  crashes happen, it is not very commonly found in production use. The following example is a type-safe approach for
+  starting a Workflow Execution synchronously.
 
   ```java
     NotifyUserAccounts workflow = client.newWorkflowStub(
@@ -260,11 +686,14 @@ A Workflow Execution can be started either synchronously or asynchronously.
   // notify(String[] accountIds) is a Workflow method defined in the Workflow Definition.
   ```
 
-- Asynchronous start initiates a Workflow Execution and immediately returns to the caller. This is the most common way to start Workflows in production code.
-  The [`WorkflowClient`](https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/client/WorkflowClient.java) provides some static methods, such as `start`, `execute`, `signalWithStart` etc., that help with starting your Workflows asynchronously.
+- Asynchronous start initiates a Workflow Execution and immediately returns to the caller. This is the most common way
+  to start Workflows in production code. The
+  [`WorkflowClient`](https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/client/WorkflowClient.java)
+  provides some static methods, such as `start`, `execute`, `signalWithStart` etc., that help with starting your
+  Workflows asynchronously.
 
-  The following examples show how to start Workflow Executions asynchronously, with either typed or untyped `WorkflowStub`.
-
+  The following examples show how to start Workflow Executions asynchronously, with either typed or untyped
+  `WorkflowStub`.
   - **Typed WorkflowStub Example**
 
     ```java
@@ -292,8 +721,8 @@ A Workflow Execution can be started either synchronously or asynchronously.
     untyped.start(argument);
     ```
 
-You can call a Dynamic Workflow implementation using an untyped `WorkflowStub`.
-The following example shows how to call the Dynamic Workflow implementation in the Client code.
+You can call a Dynamic Workflow implementation using an untyped `WorkflowStub`. The following example shows how to call
+the Dynamic Workflow implementation in the Client code.
 
 ```java
     WorkflowClient client = WorkflowClient.newInstance(service);
@@ -310,8 +739,8 @@ The following example shows how to call the Dynamic Workflow implementation in t
     WorkflowStub workflow = client.newUntypedWorkflowStub("DynamicWF", workflowOptions);
 ```
 
-`DynamicWorkflow` can be used to invoke different Workflow Types.
-To check what type is running when your Dynamic Workflow `execute` method runs, use `getWorkflowType()` in the implementation code.
+`DynamicWorkflow` can be used to invoke different Workflow Types. To check what type is running when your Dynamic
+Workflow `execute` method runs, use `getWorkflowType()` in the implementation code.
 
 ```java
 String type = Workflow.getInfo().getWorkflowType();
@@ -332,20 +761,25 @@ This helps particularly for executing Workflows written in other language SDKs, 
     }
 ```
 
-See the [Temporal Polyglot](https://github.com/tsurdilo/temporal-polyglot) code for examples of executing Workflows written in other language SDKs.
+See the [Temporal Polyglot](https://github.com/tsurdilo/temporal-polyglot) code for examples of executing Workflows
+written in other language SDKs.
 
 **Recurring start**
 
-You can start a Workflow Execution on a regular schedule by using [`setCronSchedule`](/develop/java/schedules#cron-schedule) Workflow option in the Client code.
+You can start a Workflow Execution on a regular schedule by using
+[`setCronSchedule`](/develop/java/schedules#cron-schedule) Workflow option in the Client code.
 
 ### How to set a Workflow's Task Queue {#set-task-queue}
 
 In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/task-queue).
 
-For your code to execute, a Worker Process must be running.
-This process needs a Worker Entity that is polling the same Task Queue name.
+For your code to execute, a Worker Process must be running. This process needs a Worker Entity that is polling the same
+Task Queue name.
 
-Set the Workflow Task Queue with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setTaskQueue`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+Set the Workflow Task Queue with the
+[`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html)
+instance in the Client code using
+[`WorkflowOptions.Builder.setTaskQueue`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
 
 - Type: `String`
 - Default: none
@@ -364,9 +798,14 @@ YourWorkflowInterface workflow1 =
 
 ### How to set a Workflow Id {#workflow-id}
 
-Although it is not required, we recommend providing your own [Workflow Id](/workflow-execution/workflowid-runid#workflow-id)that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
+Although it is not required, we recommend providing your own
+[Workflow Id](/workflow-execution/workflowid-runid#workflow-id) that maps to a business process or business entity
+identifier, such as an order identifier or customer identifier.
 
-Set the Workflow Id with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setWorkflowId​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+Set the Workflow Id with the
+[`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html)
+instance in the Client code using
+[`WorkflowOptions.Builder.setWorkflowId​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
 
 - Type: `String`
 - Default: none
@@ -385,7 +824,11 @@ YourWorkflowInterface workflow1 =
 
 ### Java WorkflowOptions reference {#workflow-options-reference}
 
-Create a [`newWorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) in the Temporal Client code, call the instance of the Workflow, and set the Workflow options with the [`WorkflowOptions.Builder`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html) class.
+Create a
+[`newWorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) in
+the Temporal Client code, call the instance of the Workflow, and set the Workflow options with the
+[`WorkflowOptions.Builder`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html)
+class.
 
 The following fields are available:
 
@@ -404,7 +847,10 @@ The following fields are available:
 
 #### WorkflowId
 
-Set the Workflow Id with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setWorkflowId​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+Set the Workflow Id with the
+[`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html)
+instance in the Client code using
+[`WorkflowOptions.Builder.setWorkflowId​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
 
 - Type: `String`
 - Default: none
@@ -423,7 +869,10 @@ YourWorkflowInterface workflow1 =
 
 #### TaskQueue
 
-Set the Workflow Task Queue with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setTaskQueue`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+Set the Workflow Task Queue with the
+[`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html)
+instance in the Client code using
+[`WorkflowOptions.Builder.setTaskQueue`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
 
 - Type: `String`
 - Default: none
@@ -442,9 +891,12 @@ YourWorkflowInterface workflow1 =
 
 #### WorkflowExecutionTimeout
 
-Set the [Workflow Execution Timeout](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout) with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setWorkflowExecutionTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+Set the [Workflow Execution Timeout](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout) with the
+[`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html)
+instance in the Client code using
+[`WorkflowOptions.Builder.setWorkflowExecutionTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
 
-- Type: `time.Duration`
+- Type: `Duration`
 - Default: Unlimited
 
 ```java
@@ -462,9 +914,12 @@ YourWorkflowInterface workflow1 =
 
 #### WorkflowRunTimeout
 
-Set the Workflow Run Timeout with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setWorkflowRunTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+Set the Workflow Run Timeout with the
+[`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html)
+instance in the Client code using
+[`WorkflowOptions.Builder.setWorkflowRunTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
 
-- Type: `time.Duration`
+- Type: `Duration`
 - Default: Same as [WorkflowExecutionTimeout](#workflowexecutiontimeout).
 
 ```java
@@ -482,9 +937,12 @@ YourWorkflowInterface workflow1 =
 
 #### WorkflowTaskTimeout
 
-Set the Workflow Task Timeout with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setWorkflowTaskTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+Set the Workflow Task Timeout with the
+[`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html)
+instance in the Client code using
+[`WorkflowOptions.Builder.setWorkflowTaskTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
 
-- Type: `time.Duration`
+- Type: `Duration`
 - Default: 10 seconds.
 - Values: Maximum accepted value is 60 seconds.
 
@@ -506,7 +964,8 @@ YourWorkflowInterface workflow1 =
 - Type: `WorkflowIdReusePolicy`
 - Default: `AllowDuplicate`
 - Values:
-  - `enums.AllowDuplicateFailedOnly`: The Workflow can start if the earlier Workflow Execution failed, Canceled, or Terminated.
+  - `enums.AllowDuplicateFailedOnly`: The Workflow can start if the earlier Workflow Execution failed, Canceled, or
+    Terminated.
   - `AllowDuplicate`: The Workflow can start regardless of the earlier Execution's closure status.
   - `RejectDuplicate`: The Workflow can not start if there is a earlier Run.
 
@@ -526,7 +985,10 @@ GreetWorkflowInterface workflow1 =
 
 #### RetryOptions
 
-To set a Workflow Retry Options in the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance use [`WorkflowOptions.Builder.setWorkflowRetryOptions`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+To set a Workflow Retry Options in the
+[`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html)
+instance use
+[`WorkflowOptions.Builder.setWorkflowRetryOptions`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
 
 - Type: `RetryOptions`
 - Default: `Null` which means no retries will be attempted.
@@ -546,14 +1008,18 @@ GreetWorkflowInterface workflow1 =
 
 #### CronSchedule
 
-A [Temporal Cron Job](/cron-job) is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
+A [Temporal Cron Job](/cron-job) is the series of Workflow Executions that occur when a Cron Schedule is provided in the
+call to spawn a Workflow Execution.
 
 A Cron Schedule is provided as an option when the call to spawn a Workflow Execution is made.
 
-Set the Cron Schedule with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setCronSchedule`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+Set the Cron Schedule with the
+[`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html)
+instance in the Client code using
+[`WorkflowOptions.Builder.setCronSchedule`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
 
-Setting `setCronSchedule` changes the Workflow Execution into a Temporal Cron Job.
-The default timezone for a Cron is UTC.
+Setting `setCronSchedule` changes the Workflow Execution into a Temporal Cron Job. The default timezone for a Cron is
+UTC.
 
 - Type: `String`
 - Default: None
@@ -571,7 +1037,8 @@ YourWorkflowInterface workflow1 =
                 .build());
 ```
 
-For more details, see the [HelloCron Sample](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/hello/HelloCron.java).
+For more details, see the
+[HelloCron Sample](https://github.com/temporalio/samples-java/blob/main/core/src/main/java/io/temporal/samples/hello/HelloCron.java).
 
 #### Memo
 
@@ -595,9 +1062,9 @@ GreetWorkflowInterface workflow1 =
 
 #### SearchAttributes
 
-Search Attributes are additional indexed information attributed to Workflow and used for search and visibility.
-These can be used in a query of List/Scan/Count Workflow APIs.
-The key and its value type must be registered on Temporal server side.
+Search Attributes are additional indexed information attributed to Workflow and used for search and visibility. These
+can be used in a query of List/Scan/Count Workflow APIs. The key and its value type must be registered on Temporal
+server side.
 
 - Type: `Map<String, Object>`
 - Default: None
@@ -624,13 +1091,17 @@ The following Java types are supported:
 
 If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
 
-The Workflow Id, Run Id, and Namespace may be used to uniquely identify a Workflow Execution in the system and get its result.
+The Workflow Id, Run Id, and Namespace may be used to uniquely identify a Workflow Execution in the system and get its
+result.
 
-It's possible to both block progress on the result (synchronous execution) or get the result at some other point in time (asynchronous execution).
+It's possible to both block progress on the result (synchronous execution) or get the result at some other point in time
+(asynchronous execution).
 
-In the Temporal Platform, it's also acceptable to use Queries as the preferred method for accessing the state and results of Workflow Executions.
+In the Temporal Platform, it's also acceptable to use Queries as the preferred method for accessing the state and
+results of Workflow Executions.
 
-A synchronous Workflow Execution blocks your client thread until the Workflow Execution completes (or fails) and get the results (or error in case of failure).
+A synchronous Workflow Execution blocks your client thread until the Workflow Execution completes (or fails) and get the
+results (or error in case of failure).
 
 The following example is a type-safe approach for getting the results of a synchronous Workflow Execution.
 
@@ -676,9 +1147,11 @@ The following examples show how to get the results of a Workflow Execution throu
   untyped.start(argument);
   ```
 
-If you need to wait for a Workflow Execution to complete after an asynchronous start, the most straightforward way is to call the blocking Workflow instance again.
+If you need to wait for a Workflow Execution to complete after an asynchronous start, the most straightforward way is to
+call the blocking Workflow instance again.
 
-Note that if `WorkflowOptions.WorkflowIdReusePolicy` is not set to `AllowDuplicate`, then instead of throwing `DuplicateWorkflowException`, it reconnects to an existing Workflow and waits for its completion.
+Note that if `WorkflowOptions.WorkflowIdReusePolicy` is not set to `AllowDuplicate`, then instead of throwing
+`DuplicateWorkflowException`, it reconnects to an existing Workflow and waits for its completion.
 
 The following example shows how to do this from a different process than the one that started the Workflow Execution.
 
@@ -689,7 +1162,8 @@ YourWorkflow workflow = client.newWorkflowStub(YourWorkflow.class, workflowId);
 String result = workflow.yourMethod();
 ```
 
-Another way to connect to an existing Workflow and wait for its completion from another process, is to use `UntypedWorkflowStub`. For example:
+Another way to connect to an existing Workflow and wait for its completion from another process, is to use
+`UntypedWorkflowStub`. For example:
 
 ```java
 WorkflowStub workflowStub = client.newUntypedWorkflowStub(workflowType, workflowOptions);
@@ -700,9 +1174,8 @@ String result = untyped.getResult(String.class);
 
 **Get last (successful) completion result**
 
-For a Temporal Cron Job, get the result of previous successful runs using `GetLastCompletionResult()`.
-The method returns `null` if there is no previous completion.
-The following example shows how to implement this in a Workflow.
+For a Temporal Cron Job, get the result of previous successful runs using `GetLastCompletionResult()`. The method
+returns `null` if there is no previous completion. The following example shows how to implement this in a Workflow.
 
 ```java
 public String cronWorkflow() {
@@ -716,6 +1189,7 @@ public String cronWorkflow() {
 }
 ```
 
-Note that this works even if one of the Cron schedule runs failed.
-The next schedule will still get the last successful result if it ever successfully completed at least once.
-For example, for a daily cron Workflow, if the run succeeds on the first day and fails on the second day, then the third day run will get the result from first day's run using these APIs.
+Note that this works even if one of the Cron schedule runs failed. The next schedule will still get the last successful
+result if it ever successfully completed at least once. For example, for a daily cron Workflow, if the run succeeds on
+the first day and fails on the second day, then the third day run will get the result from first day's run using these
+APIs.

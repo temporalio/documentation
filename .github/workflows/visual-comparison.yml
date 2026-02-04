@@ -1,0 +1,297 @@
+name: Visual Comparison
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, labeled]
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+concurrency:
+  group: visual-comparison-${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  run-ci:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    if: >-
+      ${{
+        !github.event.pull_request.draft &&
+        github.actor != 'dependabot[bot]' &&
+        github.actor != 'dependabot-preview[bot]' &&
+        contains(github.event.pull_request.labels.*.name, 'visual-comparison')
+      }}
+    steps:
+      - name: PR metadata
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          HEAD_REF: ${{ github.head_ref }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          echo "GITHUB_BASE_REF: ${BASE_REF}"
+          echo "GITHUB_HEAD_REF: ${HEAD_REF}"
+          echo "GITHUB_REF_NAME: ${REF_NAME}"
+
+  create-assets:
+    name: Create Build Assets
+    needs: run-ci
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+
+      - name: Check for reference screenshots
+        id: check-references
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          DEFAULT_BRANCH: ${{ github.base_ref }}
+        continue-on-error: true
+        run: |
+          WORKFLOW_FILE="screenshot-capture.yml"
+          TOKEN="${GITHUB_TOKEN}"
+          REPO="${GITHUB_REPOSITORY}"
+
+          RUN_ID=$(curl -sSL \
+            -H "Authorization: Bearer ${TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${REPO}/actions/workflows/${WORKFLOW_FILE}/runs?branch=${DEFAULT_BRANCH}&status=completed&per_page=1" \
+            | jq -r '.workflow_runs | map(select(.conclusion == "success")) | first | .id')
+
+          if [[ -z "${RUN_ID}" || "${RUN_ID}" == "null" ]]; then
+            echo "has_references=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_references=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Post PR comment
+        uses: mshick/add-pr-comment@v2
+        with:
+          message: |
+            🤖 Starting the visual tests. This will take approximately 15 minutes.
+            ${{ steps.check-references.outputs.has_references == 'false' && '⚠️ **Note:** No reference screenshots found on the base branch. This run will create new baselines instead of performing comparisons.' || '' }}
+          refresh-message-position: true
+
+      - name: Install dependencies
+        uses: Wandalen/wretry.action@v3
+        with:
+          command: yarn install --frozen-lockfile
+          attempt_limit: 3
+          attempt_delay: 60000
+
+      - name: Build site
+        run: |
+          touch .env
+          yarn build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: build
+          if-no-files-found: error
+          retention-days: 1
+
+  take-screenshots:
+    name: Visual Comparison
+    needs:
+      - run-ci
+      - create-assets
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    strategy:
+      fail-fast: false
+      matrix:
+        shardIndex: [1, 2, 3, 4]
+        shardTotal: [4]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        uses: Wandalen/wretry.action@v3
+        with:
+          command: yarn install --frozen-lockfile
+          attempt_limit: 3
+          attempt_delay: 60000
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Download build artifact
+        uses: Wandalen/wretry.action@v3
+        with:
+          attempt_limit: 3
+          attempt_delay: 60000
+          action: actions/download-artifact@v5
+          with: |
+            name: build
+            path: build
+
+      - name: Download reference screenshots
+        id: download-references
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
+        run: |
+          if ./static/scripts/screenshot-artifacts.sh ./screenshots; then
+            echo "has_references=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_references=false" >> $GITHUB_OUTPUT
+            echo "⚠️ No reference screenshots found. This will create new baselines instead of comparing."
+          fi
+
+      - name: Debug - List downloaded screenshots
+        run: |
+          echo "=== Contents of ./screenshots ==="
+          ls -la ./screenshots || echo "Directory doesn't exist"
+          echo ""
+          echo "=== First level subdirectories ==="
+          find ./screenshots -maxdepth 2 -type d || echo "No subdirectories"
+          echo ""
+          echo "=== Sample files (first 10) ==="
+          find ./screenshots -type f -name "*.png" | head -10 || echo "No PNG files found"
+          echo ""
+          echo "=== Total PNG count ==="
+          find ./screenshots -type f -name "*.png" | wc -l
+          echo ""
+          echo "=== Check specific files ==="
+          ls -la ./screenshots/screenshot.doc.spec.ts/Docs-screenshots-pathname-cli-cmd-options*.png 2>&1 || echo "cli-cmd-options file not found"
+          echo ""
+          echo "=== Check if paths contain -1.png suffix ==="
+          find ./screenshots -name "*-1.png" | head -5
+
+      - name: Take screenshots with Playwright
+        env:
+          PLAYWRIGHT_SNAPSHOT_DIR: ${{ github.workspace }}/screenshots
+        run: |
+          echo "PLAYWRIGHT_SNAPSHOT_DIR is set to: ${PLAYWRIGHT_SNAPSHOT_DIR}"
+          echo "Workspace directory: ${{ github.workspace }}"
+          if [ "${{ steps.download-references.outputs.has_references }}" = "false" ]; then
+            echo "Creating new baseline screenshots..."
+            npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} --update-snapshots || exit 0
+          else
+            echo "Comparing against reference screenshots..."
+            npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} || exit 0
+          fi
+
+      - name: Upload blob report
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: blob-report-${{ matrix.shardIndex }}
+          path: blob-report
+          retention-days: 1
+
+  merge-reports:
+    name: Merge Reports
+    needs: take-screenshots
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        uses: Wandalen/wretry.action@v3
+        with:
+          command: yarn install --frozen-lockfile
+          attempt_limit: 3
+          attempt_delay: 60000
+
+      - name: Download blob reports
+        uses: actions/download-artifact@v5
+        with:
+          path: all-blob-reports
+          pattern: blob-report-*
+          merge-multiple: true
+
+      - name: Debug - Check downloaded reports
+        run: |
+          echo "=== Contents of all-blob-reports ==="
+          ls -laR all-blob-reports/ || echo "Directory doesn't exist or is empty"
+          echo ""
+          echo "=== File count ==="
+          find all-blob-reports -type f | wc -l
+
+      - name: Merge into HTML report
+        run: npx playwright merge-reports --reporter html ./all-blob-reports
+
+      - name: Upload report artifact
+        id: report
+        uses: actions/upload-artifact@v4
+        with:
+          name: report
+          path: playwright-report
+          if-no-files-found: error
+          retention-days: 1
+
+  publish_report:
+    name: Publish HTML Report
+    needs:
+      - run-ci
+      - take-screenshots
+      - merge-reports
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    continue-on-error: true
+    steps:
+      - name: Download HTML report
+        uses: actions/download-artifact@v5
+        with:
+          name: report
+          path: playwright-report
+
+      - name: Deploy to Vercel
+        id: deploy
+        run: |
+          npm i -g vercel@latest
+          DEPLOY_URL=$(vercel deploy playwright-report --token=${{ secrets.VERCEL_TOKEN }} --yes)
+          echo "url=$DEPLOY_URL" >> $GITHUB_OUTPUT
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Post report URL comment
+        uses: mshick/add-pr-comment@v2
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+        with:
+          message: |
+            📋 Visual Report for branch ${{ env.HEAD_REF }} with CI run ${{ env.RUN_ID }} and attempt ${{ env.RUN_ATTEMPT }} is ready at:
+              ${{ steps.deploy.outputs.url }}
+          message-failure: |
+            👎 Uh oh! Unable to publish Visual Report URL.
+          refresh-message-position: true
+          update-only: true

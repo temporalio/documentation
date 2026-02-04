@@ -10,8 +10,8 @@ module.exports = async function createConfigAsync() {
     url: 'https://docs.temporal.io',
     baseUrl: '/',
     onBrokenLinks: 'throw',
-    onBrokenAnchors: 'throw',
-    favicon: 'img/favicon.svg',
+    onBrokenAnchors: 'warn',
+    favicon: 'img/favicon.ico',
     organizationName: 'temporalio', // Usually your GitHub org/user name.
     projectName: 'temporal-documentation', // Usually your repo name.
     headTags: [
@@ -24,7 +24,7 @@ module.exports = async function createConfigAsync() {
         },
       },
     ],
-    clientModules: ['./src/client/remote-amplitude-analytics.js'],
+    clientModules: ['./src/client/remote-amplitude-analytics.js', './src/client/scrollSidebarToActivePage.ts'],
     themeConfig: {
       colorMode: {
         defaultMode: 'dark',
@@ -49,7 +49,7 @@ module.exports = async function createConfigAsync() {
       prism: {
         //theme: require("prism-react-renderer/themes/nightOwlLight"),
         // darkTheme: require("prism-react-renderer/themes/dracula"),
-        additionalLanguages: ['java', 'ruby', 'php', 'csharp', 'toml', 'bash'],
+        additionalLanguages: ['java', 'ruby', 'php', 'csharp', 'toml', 'bash', 'docker', 'hcl'],
       },
       docs: {
         sidebar: {
@@ -87,12 +87,12 @@ module.exports = async function createConfigAsync() {
             activeBasePath: 'none',
           },
           {
-            label: 'Start learning',
+            label: 'Courses',
             href: 'https://learn.temporal.io/getting_started/',
             right: 'left',
           },
           {
-            label: 'Start building',
+            label: 'SDKs',
             href: '/develop',
             right: 'left',
           },
@@ -292,6 +292,8 @@ module.exports = async function createConfigAsync() {
         'data-website-id': '91a88508-9cdc-441f-b1df-37aa9329e6bc',
         'data-project-name': 'Temporal',
         'data-project-color': '#000000',
+        'data-mcp-enabled': 'true',
+        'data-mcp-server-url': 'https://temporal.mcp.kapa.ai',
         'data-project-logo': 'https://avatars.githubusercontent.com/u/56493103?s=280&v=4',
         'data-modal-title': "Temporal's AI developer assistant",
         'data-user-analytics-fingerprint-enabled': true,
