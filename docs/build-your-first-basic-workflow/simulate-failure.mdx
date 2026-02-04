@@ -1,13 +1,13 @@
 ---
-id: failure-simulation
+id: simulate-failure
 title: Simulate Failures with Temporal 
-sidebar_label: "Part 2: Failure Simulation"
+sidebar_label: "Part 2: Simulate Failure"
 description: Learn how Temporal handles failures, recovers from crashes, and enables live debugging of your Workflows.
 hide_table_of_contents: true
 keywords:
   - temporal
   - python
-  - failure simulation
+  - simulate failure
   - crash recovery
   - live debugging
   - reliability
@@ -42,13 +42,13 @@ export const getTodayDateISO = () => {
   return new Date().toISOString();
 };
 
-# Part 2: Simulate Failures 
+# Part 2: Simulate Failure 
 In this part, you'll simulate failures to see how Temporal handles them. 
 This demonstrates why Temporal is particularly useful for building reliable systems.
 
 <TemporalProgress steps={[
-  { id: 'part1', label: 'Part 1: Build Your First Workflow', status: 'completed', href: '/build-your-first-basic-workflow/build-your-first-workflow' },
-  { id: 'part2', label: 'Part 2: Failure Simulation', status: 'active', href: '/build-your-first-basic-workflow/failure-simulation' }
+  { id: 'part1', label: 'Part 1: Build Your First Temporal Application', status: 'completed', href: '/build-your-first-basic-workflow/build-your-first-workflow' },
+  { id: 'part2', label: 'Part 2: Simulate Failure', status: 'active', href: '/build-your-first-basic-workflow/simulate-failure' }
 ]} />
 
 Systems fail in unpredictable ways. A seemingly harmless deployment can bring down production, a database connection can time out during peak traffic, or a third-party service can decide to have an outage. 
