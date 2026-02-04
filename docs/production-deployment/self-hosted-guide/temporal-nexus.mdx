@@ -2,7 +2,7 @@
 id: nexus
 title:  Self-hosted Temporal Nexus
 sidebar_label: Temporal Nexus
-description: Use Nexus in your self-hosted Temporal Service. 
+description: Use Nexus in your self-hosted Temporal Service.
 toc_max_heading_level: 4
 keywords:
   - self-hosted
@@ -58,31 +58,35 @@ To enable Nexus in your deployment:
          httpAddress: $PUBLIC_URL:7243
    ```
 
-2a. **Prior to version 1.30.X**, you must enable Nexus through dynamic config, set the public callback URL, and set the allowed callback addresses.
+2. Set the required dynamic configuration
+    1. **Prior to version 1.30.X**, you must enable Nexus through dynamic config, set the public callback URL, and set the allowed callback addresses.
 
-   ```yaml
-   system.enableNexus:
-     - value: true
-   component.nexusoperations.callback.endpoint.template:
-     # The URL must be publicly accessible if the callback is meant to be called by external services.
-     # When using Nexus for cross namespace calls, the URL's host is irrelevant as the address is resolved using
-     # membership. The URL is a Go template that interpolates the `NamepaceName` and `NamespaceID` variables.
-     - value: https://$PUBLIC_URL:7243/namespaces/{{.NamespaceName}}/nexus/callback
-   component.callbacks.allowedAddresses:
-     # Limits which callback URLs are accepted by the server.
-     # Wildcard patterns (*) and insecure (HTTP) callbacks are intended for development only.
-     # For production, restrict allowed hosts and set AllowInsecure to false
-     # whenever HTTPS/TLS is supported. Allowing HTTP increases MITM and data exposure risk.
-     - value:
-         - Pattern: "*" # Update to restrict allowed callers, e.g. "https://$EXAMPLE_URL\\.example\\.com(:1234)?/.*$"
-           AllowInsecure: true # In production, set to false when HTTPS/TLS is supported. 
-   ```
+       **NOTE**: the callback endpoint template and allowed addresses should be set when using the experimental
+       "external" endpoint targets.
 
-2b. Since version 1.30.X, Nexus is enabled by default, the only configuration needed is to use the SystemCallbackURL.
-   ```yaml
-   component.nexusoperations.useSystemCallbackURL:
-     -value: true
-   ```
+       ```yaml
+       system.enableNexus:
+         - value: true
+       component.nexusoperations.callback.endpoint.template:
+         # The URL must be publicly accessible if the callback is meant to be called by external services.
+         # When using Nexus for cross namespace calls, the URL's host is irrelevant as the address is resolved using
+         # membership. The URL is a Go template that interpolates the `NamepaceName` and `NamespaceID` variables.
+         - value: https://$PUBLIC_URL:7243/namespaces/{{.NamespaceName}}/nexus/callback
+       component.callbacks.allowedAddresses:
+         # Limits which callback URLs are accepted by the server.
+         # Wildcard patterns (*) and insecure (HTTP) callbacks are intended for development only.
+         # For production, restrict allowed hosts and set AllowInsecure to false
+         # whenever HTTPS/TLS is supported. Allowing HTTP increases MITM and data exposure risk.
+         - value:
+             - Pattern: "*" # Update to restrict allowed callers, e.g. "*.example.com"
+               AllowInsecure: true # In production, set to false and ensure traffic is HTTPS/TLS encrypted
+       ```
+
+    2. Since version 1.30.X, Nexus is enabled by default, the only configuration needed is to use the system callback URL.
+       ```yaml
+       component.nexusoperations.useSystemCallbackURL:
+         -value: true
+       ```
 
 ## Build and use Nexus Services
 
