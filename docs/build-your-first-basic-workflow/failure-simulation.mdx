@@ -23,18 +23,6 @@ import { WorkflowDiagram } from "@site/src/components/WorkflowDiagram";
 import { RetryCounter } from "@site/src/components/RetryCounter";
 import { TemporalCheckbox } from "@site/src/components/TemporalCheckbox";
 import SdkTabs from "@site/src/components/elements/SdkTabs";
-import { FaPython, FaJava } from 'react-icons/fa';
-import { SiGo, SiTypescript, SiPhp, SiDotnet, SiRuby } from 'react-icons/si';
-
-export const TUTORIAL_LANGUAGE_ORDER = [
-  { key: 'py', label: 'Python', icon: FaPython },
-  { key: 'go', label: 'Go', icon: SiGo },
-  { key: 'java', label: 'Java', icon: FaJava },
-  { key: 'ts', label: 'TypeScript', icon: SiTypescript },
-  { key: 'php', label: 'PHP', icon: SiPhp },
-  { key: 'dotnet', label: '.NET', icon: SiDotnet },
-  { key: 'rb', label: 'Ruby', icon: SiRuby },
-];
 import { SetupSteps, SetupStep, CodeSnippet } from "@site/src/components/elements/SetupSteps";
 import { CodeComparison } from "@site/src/components/CodeComparison";
 import { AnimatedTerminal } from "@site/src/components/AnimatedTerminal";
@@ -127,7 +115,7 @@ In a production deployment, the Temporal Service can be deployed as a cluster, s
     <div style={{marginBottom: '1rem'}}>
       <strong>Terminal 2 - Worker</strong>
     </div>
-    <SdkTabs languageOrder={TUTORIAL_LANGUAGE_ORDER}>
+    <SdkTabs hideUnsupportedLanguages>
       <SdkTabs.Python>
         <CodeSnippet language="bash">python run_worker.py</CodeSnippet>
       </SdkTabs.Python>
@@ -146,9 +134,6 @@ In a production deployment, the Temporal Service can be deployed as a cluster, s
       <SdkTabs.Ruby>
         <CodeSnippet language="bash">bundle exec ruby worker.rb</CodeSnippet>
       </SdkTabs.Ruby>
-      <SdkTabs.PHP>
-        <CodeSnippet language="bash">./rr serve</CodeSnippet>
-      </SdkTabs.PHP>
     </SdkTabs>
   </div>
 }>
@@ -169,7 +154,7 @@ First, stop any running Worker (`Ctrl+C`) and start a fresh one in Terminal 2.
     <div style={{marginBottom: '1rem'}}>
       <strong>Terminal 3 - Workflow</strong>
     </div>
-    <SdkTabs languageOrder={TUTORIAL_LANGUAGE_ORDER}>
+    <SdkTabs hideUnsupportedLanguages>
       <SdkTabs.Python>
         <CodeSnippet language="bash">python run_workflow.py</CodeSnippet>
       </SdkTabs.Python>
@@ -188,9 +173,6 @@ First, stop any running Worker (`Ctrl+C`) and start a fresh one in Terminal 2.
       <SdkTabs.Ruby>
         <CodeSnippet language="bash">bundle exec ruby starter.rb</CodeSnippet>
       </SdkTabs.Ruby>
-      <SdkTabs.PHP>
-        <CodeSnippet language="bash">php src/transfer.php</CodeSnippet>
-      </SdkTabs.PHP>
     </SdkTabs>
   </div>
 }>
@@ -233,7 +215,7 @@ That's the magic! The Workflow keeps running because Temporal saved its state, e
     <div style={{marginBottom: '1rem'}}>
       <strong>Terminal 2 - Recovery</strong>
     </div>
-    <SdkTabs languageOrder={TUTORIAL_LANGUAGE_ORDER}>
+    <SdkTabs hideUnsupportedLanguages>
       <SdkTabs.Python>
         <CodeSnippet language="bash">python run_worker.py</CodeSnippet>
       </SdkTabs.Python>
@@ -252,9 +234,6 @@ That's the magic! The Workflow keeps running because Temporal saved its state, e
       <SdkTabs.Ruby>
         <CodeSnippet language="bash">bundle exec ruby worker.rb</CodeSnippet>
       </SdkTabs.Ruby>
-      <SdkTabs.PHP>
-        <CodeSnippet language="bash">./rr serve</CodeSnippet>
-      </SdkTabs.PHP>
     </SdkTabs>
   </div>
 }>
@@ -332,7 +311,7 @@ In Terminal 2 (where your Worker is running), stop it with `Ctrl+C`.
 
 Now we'll intentionally introduce a failure in the deposit Activity to simulate real-world scenarios like network timeouts, database connection issues, or external service failures. This demonstrates how Temporal handles partial failures in multi-step processes.
 
-<SdkTabs languageOrder={TUTORIAL_LANGUAGE_ORDER}>
+<SdkTabs hideUnsupportedLanguages>
 <SdkTabs.Python>
 
 Find the `deposit()` method and **uncomment the failing line** while **commenting out the working line**:
@@ -499,53 +478,13 @@ end
 Save your changes. You've now created a deliberate failure point in your withdraw Activity. This simulates a real-world scenario where external service calls might fail intermittently.
 
 </SdkTabs.Ruby>
-
-<SdkTabs.PHP>
-
-Find the `deposit()` method in `src/Banking/Internal/BankingActivity.php` and **uncomment the failing block** while **commenting out the working line**:
-
-**src/Banking/Internal/BankingActivity.php**
-
-```php
-#[\Override]
-public function deposit(PaymentDetails $data): string
-{
-    $referenceId = $data->referenceId . "-deposit";
-    try {
-        // Comment out this working line:
-        /*
-        $confirmation = $this->bank->deposit(
-            $data->targetAccount,
-            $data->amount,
-            $referenceId,
-        );
-        */
-        // Uncomment this failing block:
-        $confirmation = $this->bank->depositThatFails(
-            $data->targetAccount,
-            $data->amount,
-            $referenceId
-        );
-        return $confirmation;
-    } catch (InvalidAccount $e) {
-        throw $e;
-    } catch (\Throwable $e) {
-        $this->logger->error("Deposit failed", ['exception' => $e]);
-        throw $e;
-    }
-}
-```
-
-Save your changes. You've now created a deliberate failure point in your deposit Activity. This simulates a real-world scenario where external service calls might fail intermittently.
-
-</SdkTabs.PHP>
 </SdkTabs>
 
 ### Step 3: Start Worker & Observe Retry Behavior
 
 Now let's see how Temporal handles this failure. When you start your Worker, it will hit the failing Activity. Instead of the entire Workflow failing permanently, Temporal will retry the failed Activity according to your retry policy.
 
-<SdkTabs languageOrder={TUTORIAL_LANGUAGE_ORDER}>
+<SdkTabs hideUnsupportedLanguages>
 <SdkTabs.Python>
 
 ```bash
@@ -733,20 +672,6 @@ bundle exec ruby starter.rb
 Check the Web UI - click on your Workflow to see the failure details and retry attempts.
 
 </SdkTabs.Ruby>
-
-<SdkTabs.PHP>
-
-```bash
-./rr serve
-```
-
-**Here's what you'll see:**
-- The `withdraw()` Activity completes successfully
-- The `deposit()` Activity fails and retries automatically
-
-Check the Web UI - click on your Workflow to see the failure details and retry attempts.
-
-</SdkTabs.PHP>
 </SdkTabs>
 
 **Key observation:** Your Workflow isn't stuck or terminated. Temporal automatically retries the failed Activity according to your configured retry policy, while maintaining the overall Workflow state. Successfully completed Activities aren't re-executed - only the failed Activity is retried.
@@ -755,7 +680,7 @@ Check the Web UI - click on your Workflow to see the failure details and retry a
 
 Here's where Temporal really shines - you can fix bugs in production code while Workflows are still executing. The Workflow state is preserved in Temporal's durable storage, so you can deploy fixes and let the retry mechanism pick up your corrected code.
 
-<SdkTabs languageOrder={TUTORIAL_LANGUAGE_ORDER}>
+<SdkTabs hideUnsupportedLanguages>
 <SdkTabs.Python>
 
 Go back to `activities.py` and **reverse the comments** - comment out the failing line and uncomment the working line:
@@ -908,44 +833,6 @@ end
 ```
 
 </SdkTabs.Ruby>
-
-<SdkTabs.PHP>
-
-Go back to `BankingActivity.php` and **reverse the comments** - comment out the failing line and uncomment the working line:
-
-**src/Banking/Internal/BankingActivity.php**
-
-```php
-#[\Override]
-public function deposit(PaymentDetails $data): string
-{
-    $referenceId = $data->referenceId . "-deposit";
-    try {
-        // Uncomment this working line:
-        $confirmation = $this->bank->deposit(
-            $data->targetAccount,
-            $data->amount,
-            $referenceId,
-        );
-        // Comment out this failing block:
-        /*
-        $confirmation = $this->bank->depositThatFails(
-            $data->targetAccount,
-            $data->amount,
-            $referenceId
-        );
-        */
-        return $confirmation;
-    } catch (InvalidAccount $e) {
-        throw $e;
-    } catch (\Throwable $e) {
-        $this->logger->error("Deposit failed", ['exception' => $e]);
-        throw $e;
-    }
-}
-```
-
-</SdkTabs.PHP>
 </SdkTabs>
 
 Save your changes. You've now restored the working implementation. The key insight here is that you can deploy fixes to Activities while Workflows are still executing - Temporal will pick up your changes on the next retry attempt.
@@ -954,7 +841,7 @@ Save your changes. You've now restored the working implementation. The key insig
 
 To apply your fix, you need to restart the Worker process so it picks up the code changes. Since the Workflow execution state is stored in Temporal's servers (not in your Worker process), restarting the Worker won't affect the running Workflow.
 
-<SdkTabs languageOrder={TUTORIAL_LANGUAGE_ORDER}>
+<SdkTabs hideUnsupportedLanguages>
 <SdkTabs.Python>
 
 ```bash
@@ -1063,24 +950,6 @@ bundle exec ruby worker.rb
 **On the next retry attempt,** your fixed `Withdraw` Activity will succeed, and you'll see the Workflow complete successfully.
 
 </SdkTabs.Ruby>
-
-<SdkTabs.PHP>
-
-```bash
-# Stop the current Worker
-Ctrl+C
-
-# Start it again with the fix
-./rr serve
-```
-
-**On the next retry attempt,** your fixed `deposit()` Activity will succeed, and you'll see the completed transaction:
-
-```
-Result: Transfer complete (transaction IDs: W12345, D12345)
-```
-
-</SdkTabs.PHP>
 </SdkTabs>
 
 Check the Web UI - your Workflow shows as completed. You've just demonstrated Temporal's key differentiator: the ability to fix production bugs in running applications without losing transaction state or progress. This is possible because Temporal stores execution state separately from your application code.
