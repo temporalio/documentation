@@ -81,10 +81,12 @@ We recommend using this script for initial schema setup of each supported databa
 
 ### Importing the Server package
 
-The Temporal Server is a standalone Go application that can be [imported](/references/server-options) into another project.
+The Temporal Server is a standalone Go application that can be [imported](/references/server-options) into another project as a library.
+This is useful for testing, development, and building customized servers.
 
-You might want to do this to pass custom plugins or any other customizations through the [Server Options](/references/server-options).
-Then you can build and run a binary that contains your customizations.
+You can pass custom plugins or other customizations through the [Server Options](/references/server-options), then build and run a binary that contains your customizations.
+
+See [Embedded server](/self-hosted-guide/embedded-server) for details on running Temporal in-process with SQLite, or the [samples-server repository](https://github.com/temporalio/samples-server) for examples of server extensibility (authorization, metrics, TLS).
 
 This requires Go v1.19 or later, as specified in the Temporal Server [Build prerequisites](https://github.com/temporalio/temporal/blob/main/CONTRIBUTING.md#build-prerequisites).
 
