@@ -200,12 +200,6 @@ For details, see the [tcld user delete](/cloud/tcld/user/#delete) command.
 Temporal account-level roles and Namespace-level permissions provide access to specific Temporal Workflow and Temporal Cloud operational APIs.
 The following table provides the API details associated with each account-level role and Namespace-level permission.
 
-:::note
-
-Account Owners and Global Admins have Namespace Admin permissions on all Namespaces.
-
-:::
-
 #### Account-level role details
 
 This table provides API-level details for the permissions granted to a user through account-level roles. These permissions are configured per user.
@@ -281,13 +275,19 @@ This table provides API-level details for the permissions granted to a user thro
 This table provides API-level details for the permissions granted to a user through Namespace-level permissions.
 These permissions are configured per Namespace per user.
 
+:::note
+
+Account Owners and Global Admins inherit Namespace Admin permissions on all Namespaces.
+
+:::
+
 | Permission                         | Read | Write | Namespace Admin |
 | ---------------------------------- | ---- | ----- | --------------- |
 | CountWorkflowExecutions            | ✔    | ✔     | ✔               |
-| CreateExportSink                   |      | ✔     | ✔               |
+| CreateExportSink                   |      |       | ✔               |
 | CreateSchedule                     |      | ✔     | ✔               |
-| DeleteExportSink                   |      | ✔     | ✔               |
-| DeleteNamespace                    |      | ✔     | ✔               |
+| DeleteExportSink                   |      |       | ✔               |
+| DeleteNamespace                    |      |       | ✔               |
 | DeleteSchedule                     |      | ✔     | ✔               |
 | DescribeBatchOperation             | ✔    | ✔     | ✔               |
 | DescribeNamespace                  | ✔    | ✔     | ✔               |
@@ -323,7 +323,7 @@ These permissions are configured per Namespace per user.
 | QueryWorkflow                      | ✔    | ✔     | ✔               |
 | RecordActivityTaskHeartbeat        |      | ✔     | ✔               |
 | RecordActivityTaskHeartbeatById    |      | ✔     | ✔               |
-| RenameCustomSearchAttribute        |      | ✔     | ✔               |
+| RenameCustomSearchAttribute        |      |       | ✔               |
 | RequestCancelWorkflowExecution     |      | ✔     | ✔               |
 | ResetStickyTaskQueue               |      | ✔     | ✔               |
 | ResetWorkflowExecution             |      | ✔     | ✔               |
@@ -343,14 +343,28 @@ These permissions are configured per Namespace per user.
 | StartWorkflowExecution             |      | ✔     | ✔               |
 | StopBatchOperation                 |      | ✔     | ✔               |
 | TerminateWorkflowExecution         |      | ✔     | ✔               |
-| UpdateExportSink                   |      | ✔     | ✔               |
-| UpdateNamespace                    |      | ✔     | ✔               |
+| UpdateExportSink                   |      |       | ✔               |
+| UpdateNamespace                    |      |       | ✔               |
 | UpdateSchedule                     |      | ✔     | ✔               |
+| UpdateSearchAttributes             |      |       | ✔               |
 | UpdateUserNamespacePermissions     |      |       | ✔               |
-| ValidateExportSink                 |      | ✔     | ✔               |
+| ValidateExportSink                 |      |       | ✔               |
 | ValidateGlobalizeNamespace         |      |       | ✔               |
 
-Account Owners and Global Admins will have Namespace Admin permissions on Namespaces.
+:::note UpdateNamespace settings
+
+`UpdateNamespace` requires Namespace Admin permission and covers these settings:
+- [Retention period](/temporal-service/temporal-server#retention-period)
+- [API key auth](/cloud/api-keys#namespace-authentication)
+- [mTLS certificates](/cloud/certificates)
+- [Certificate filters](/cloud/certificates#manage-certificate-filters)
+- [Codec server](/production-deployment/data-encryption)
+- [Connectivity rules](/cloud/connectivity)
+- [Custom Search Attributes](/search-attribute#custom-search-attribute)
+- [Provisioned capacity (TRUs)](/cloud/capacity-modes#provisioned-capacity)
+- [High Availability](/cloud/high-availability)
+
+:::
 
 ## How to troubleshoot account access issues {#troubleshoot-access}
 
