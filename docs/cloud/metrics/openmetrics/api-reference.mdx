@@ -370,4 +370,4 @@ count({__name__=~"temporal_cloud_v1_.*"}) by (__name__)
 | Limit | Impact | Mitigation |
 | ----- | ----- | ----- |
 | 30k total datapoints per scrape | Response may be truncated | Use namespace/metric filtering |
-| 180 requests per account per hour | HTTP 429 returned | Set appropriate scrape interval of 30-60s |
+| 180 requests per account per hour (~3 requests per minute) | HTTP 429 returned | Set appropriate scrape interval of 30-60s |
