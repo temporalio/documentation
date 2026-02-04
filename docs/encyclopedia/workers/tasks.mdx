@@ -56,7 +56,6 @@ The Temporal Service creates and schedules a new Workflow Task whenever one of t
 - A Timer fires
 - A Child Workflow completes
 - A Workflow Task fails and needs to be retried
-- A Query arrives (in some cases)
 
 Any event that might affect the Workflow's state triggers a new Workflow Task. The Workflow Task bundles together all
 new events that have occurred since the last Workflow Task completed.
