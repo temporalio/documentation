@@ -404,8 +404,8 @@ There are some subtle nuances to how Events are recorded to an Event History whe
   retries). This is to avoid filling the Event History with noise. Use the Describe API to get a pending Activity
   Execution's attempt count.
 
-- When a Workflow fails and has a Retry Policy, the failed run ends with `WorkflowExecutionFailed`,with
+- When a Workflow fails and has a Retry Policy, the failed run ends with `WorkflowExecutionFailed`, with
   `retryState=IN_PROGRESS` and `newExecutionRunId` set, and the Temporal Service starts a new Workflow Execution. The
-  new Workflow Execution is created immediately. But the first Workflow Task won't be scheduled until the backoff
-  duration is exhausted. That duration is recorded as the `first_workflow_task_backoff` field of the new run's
-  `WorkflowExecutionStartedEventAttributes` event.
+  new Workflow Execution is created immediately, but the first Workflow Task won’t be scheduled until the backoff
+  duration is exhausted. That duration is recorded as the `first_workflow_task_backoff` field on the new run’s
+  `WorkflowExecutionStartedEventAttributes`.
