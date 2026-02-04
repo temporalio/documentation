@@ -77,43 +77,7 @@ History.
 - The Temporal Service persists the Commands as new Events in the Event History
 
 This replay mechanism makes Temporal Workflows durable and fault-tolerant. If a Worker crashes mid-execution, another
-Worker can pick up the Workflow Task and replay the entire history to reconstruct the exact state before continuing.
-
-### How does the SDK know which code to run? {#how-sdk-knows-code}
-
-During a Workflow Task Execution, the SDK maintains an internal mapping between each pending operation (like awaiting an
-Activity result, waiting for a Signal, or sleeping on a Timer) and the corresponding code that should execute when that
-operation completes.
-
-When the Worker replays the Workflow:
-
-- The SDK resolves all awaitable tasks that have corresponding completion Events in the history
-- Workflow threads/goroutines/coroutines that were waiting for those Events can now make progress
-- The Workflow code runs until all threads/goroutines/coroutines are blocked waiting for future events
-- Any new operations (new Activity calls, Timers, etc.) generate Commands for the Temporal Service
-
-The Workflow Task completes when the Workflow code can no longer make progress without new external events.
-
-### Workflow Tasks and Determinism {#workflow-tasks-determinism}
-
-Because Workflow code is replayed from the Event History every time a Workflow Task executes, the code must be
-deterministic.
-
-- Given the same Event History, the Workflow code must make the same decisions and generate the same Commands every time
-- The Workflow code cannot rely on non-deterministic operations like:
-  - System time (use Workflow sleep/timer instead)
-  - Random number generation (use Activities or Side Effects)
-  - External API calls (use Activities)
-  - Threading primitives from the language runtime (use Workflow-safe SDK equivalents)
-
-If Workflow code is non-deterministic, replay may generate different Commands than the original execution, causing the
-Workflow Task to fail with a non-determinism error.
-
-### Performance characteristics {#workflow-task-performance}
-
-Workflow Task Execution is typically very fast (milliseconds). The Worker replays code and makes decisions based on the
-Event History. No actual I/O operations occur during replay (Activity results come from history). The time spent in a
-Workflow Task is unrelated to how long Activities or Timers take.
+Worker can pick up the Workflow Task and replay the entire history to reconstruct the exact state before continuing
 
 ### What is a Workflow Task Execution? {#workflow-task-execution}
 
@@ -121,22 +85,27 @@ A Workflow Task Execution occurs when a [Worker](/workers#worker-entity) picks u
 uses it to make progress on the execution of a [Workflow Definition](/workflow-definition) (also known as a Workflow
 function).
 
+Workflow Task Execution is typically very fast (milliseconds). The Worker replays code and makes decisions based on the
+Event History. No actual I/O operations occur during replay (Activity results come from history). The time spent in a
+Workflow Task is unrelated to how long Activities or Timers take.
+
 ## Workflow Task Failures vs Workflow Execution Failures {#workflow-task-failures-vs-execution-failures}
 
 Understanding the difference between Workflow Task failures and Workflow Execution failures is essential to working with
 Temporal at a deeper level.
 
-**Workflow Task failure** means a Worker can't successfully process a Workflow Task due to infrastructure, Workflow code,
-or execution environment issues (not business logic). Common causes include non-determinism, unhandled exceptions, task
-timeouts, invalid Commands, or bad binary checksums. The Service automatically retries the task with exponential backoff,
-and the Workflow Execution stays Open until a task completes, an operator terminates it, or the Workflow Execution
-Timeout is reached. Fixes typically involve correcting code, scaling Workers, or resolving infrastructure problems.
+**Workflow Task failure** means a Worker can't successfully process a Workflow Task due to infrastructure, Workflow
+code, or execution environment issues (not business logic). Common causes include non-determinism, unhandled exceptions,
+task timeouts, invalid Commands, or bad binary checksums. The Service automatically retries the task with exponential
+backoff, and the Workflow Execution stays Open until a task completes, an operator terminates it, or the Workflow
+Execution Timeout is reached. Fixes typically involve correcting code, scaling Workers, or resolving infrastructure
+problems.
 
 **Workflow Execution failure** means the Workflow's business logic determines it can't complete. It occurs when Workflow
 code throws or returns an error, an Activity failure propagates uncaught, or an external system terminates/cancels the
-Workflow. The Workflow closes with a Failed status and does not automatically retry; if a Retry Policy is configured, the
-Service starts a new Run with the same Workflow ID and continues retrying until success or exhaustion. Each retry is a
-separate Run with its own Event History.
+Workflow. The Workflow closes with a Failed status and does not automatically retry; if a Retry Policy is configured,
+the Service starts a new Run with the same Workflow ID and continues retrying until success or exhaustion. Each retry is
+a separate Run with its own Event History.
 
 The table summarizes the differences:
 
@@ -149,17 +118,11 @@ The table summarizes the differences:
 | **How to resolve**  | Fix code/infrastructure and redeploy                   | May require business logic changes or external intervention |
 | **Visibility**      | Shows as Workflow Task failures in history and metrics | Shows as a Failed Workflow Execution in the UI              |
 
-**Example scenario (Workflow Task failure):** A new deployment introduces non-determinism, existing Workflows fail
-Workflow Tasks, and the executions stay Open and retry. After deploying a fix, the Workflows automatically continue.
+**Workflow Task failure example:** A new deployment introduces non-determinism, existing Workflows fail Workflow Tasks,
+and the executions stay Open and retry. After deploying a fix, the Workflows automatically continue.
 
-**Example scenario (Workflow Execution failure):** A payment Activity fails due to a declined card, the failure
-propagates uncaught, and the Workflow closes as Failed. The customer updates payment details and restarts the order.
-
-**Best practices:** Design for business failures by handling errors in Workflow code and using Retry Policies where
-appropriate. Prevent Workflow Task failures by keeping code deterministic, testing before deployment, using versioning,
-and monitoring task failure metrics. Set retries thoughtfully: Activities retry by default, Workflows only when needed,
-and Workflow Tasks always retry. Monitor both failure types to distinguish code/infrastructure issues from business
-outcomes.
+**Workflow Execution failure example:** A payment Activity fails due to a declined card, the failure propagates
+uncaught, and the Workflow closes as Failed. The customer updates payment details and restarts the order.
 
 ## What is an Activity Task? {#activity-task}
 
