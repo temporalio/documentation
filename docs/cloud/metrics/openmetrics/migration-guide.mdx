@@ -239,26 +239,12 @@ This replaces the direct Grafana datasource configuration you used with the quer
 - Import alongside existing dashboards during transition
 - Update any custom alerts and queries to use new metrics and remove `rate()` functions
 
-### Configuring Datadog
-
-:::tip
-
-Automated integration update coming soon.
-
-:::
-
-The Datadog team is working on updating the official Temporal Cloud integration to use the new endpoint. This transition
-should be largely transparent for most users.
-
-For users that want to get started immediately, Temporal Cloud metrics can be directly integrated into Datadog by
-configuring the Datadog agent to scrape the OpenMetrics endpoint. An example for that lives
-[here](https://github.com/temporal-community/cloud-metrics-scrape-examples/tree/main/datadog/openmetrics).
-
 #### Other Observability Providers
 
 Consult the documentation for your observability system for how to configure it to scrape this endpoint and retrieve
 your metrics:
 
+- [Datadog](https://docs.datadoghq.com/integrations/temporal-cloud-openmetrics/)
 - [NewRelic](https://docs.newrelic.com/docs/infrastructure/prometheus-integrations/install-configure-openmetrics/configure-prometheus-openmetrics-integrations/)
 - [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/configuration/#receivers)
 
