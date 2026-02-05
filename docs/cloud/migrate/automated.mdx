@@ -40,6 +40,9 @@ Migration involves the following phases:
 4. Initiate - At the conclusion of a successful testing process, migration of production Namespaces may begin.
 5. Finalize - After the Namespace has been transferred to Temporal Cloud and validated, the migration will be finalized.
 
+When planning a migration is highly recommended to migrate in the order of least-critical to most-critical. For example, prioritize migrating
+Namespaces used for "development" over those that are "production". 
+
 
 #### Limitations
 The following are known limitations.
@@ -57,7 +60,7 @@ The following are known limitations.
   1. Initial Failover Version must be less than or equal to 1,000,000
   2. Failover Version Increment must be a divisor of 1,000,000
 - OSS supports cross-Namespace commands (e.g., parent-child, SignalExternal, CancelExternal) through the `system.enableCrossNamespaceCommands` configuration. This
-  configuration is disabled on Temporal Cloud. All `system.enableCrossNamespaceCommands` must be disabled and code uses cross-Namespace calls must be updated or removed prior to migration.
+  configuration is disabled on Temporal Cloud. All `system.enableCrossNamespaceCommands` must be disabled and code using cross-Namespace calls must be updated or removed prior to migration.
 
 
 #### Additional Notes
