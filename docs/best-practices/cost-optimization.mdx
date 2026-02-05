@@ -62,7 +62,7 @@ See [Spooky Stories: Chilling Temporal Anti-Patterns](https://temporal.io/blog/s
 ### Large payloads in Workflow History
 
 Passing multi-megabyte payloads through Workflows when external storage (S3, blob storage) is more appropriate.
-Use [compression](/troubleshooting/blob-size-limit-error#why-does-this-error-occur) or the claim check pattern for large data.
+Use [compression](/troubleshooting/blob-size-limit-error#why-does-this-error-occur) or the [claim check pattern](https://dataengineering.wiki/Concepts/Software+Engineering/Claim+Check+Pattern) for large data.
 
 ### Over-optimization at the expense of observability
 
@@ -71,7 +71,7 @@ Balance cost reduction with your team's observability requirements.
 
 ### Excessive Activity Heartbeats
 
-Each Heartbeat counts as 1 Action.
+Each Heartbeat counts as one Action.
 Only use Heartbeats for long-running Activities (10+ minutes) where you need to detect Worker failures and track progress.
 Short-running Activities that complete in seconds or minutes don't need Heartbeats.
 See [Activity Heartbeat documentation](/encyclopedia/detecting-activity-failures#which-activities-should-heartbeat) for guidance.
@@ -109,7 +109,7 @@ Focus optimization efforts on what's driving costs with a specific workload:
 
 ## Measuring
 
-Establish baseline metrics before optimizing and be sure to validate impact after implementation.
+Establish [baseline metrics](https://docs.temporal.io/cloud/metrics/reference) before optimizing and be sure to validate impact after implementation.
 Specifically:
 
 - Actions consumption (per Workflow, per day/month, by Namespace)
@@ -119,7 +119,7 @@ Specifically:
 
 ## Actions optimization
 
-Actions encompass Workflow operations, Activity Executions, Signals, Queries, and other interactions with Temporal.
+[Actions](https://docs.temporal.io/cloud/actions) encompass Workflow operations, Activity Executions, Signals, Queries, and other interactions with Temporal.
 Each represents a unit of consumption.
 
 ### Activity granularity
@@ -137,7 +137,7 @@ See [Child Workflows documentation](/child-workflows) for detailed comparison of
 
 ### Retry Policies
 
-Each Activity retry counts as 1 Action.
+Each Activity retry counts as one Action.
 Default [Retry Policies](/encyclopedia/retry-policies) can be aggressive, which is appropriate for most operations but costly for expensive external operations.
 Consider limiting maximum attempts, increasing initial intervals, and using larger backoff coefficients for expensive operations while maintaining standard retry behavior for normal operations.
 
@@ -197,7 +197,7 @@ See [Continue-As-New documentation](/workflow-execution/continue-as-new) to lear
 #### Compression
 
 Large payloads increase Active Storage costs.
-Implement custom DataConverter with compression for moderately large payloads (100KB-1MB).
+Implement a custom Data Converter with compression for moderately large payloads (100KB-1MB).
 See the [Data Converter documentation](/default-custom-data-converters#custom-data-converter) to learn more.
 
 #### Claim check pattern
@@ -211,7 +211,7 @@ The following sections detail optimization opportunities for Retained Storage.
 
 #### Retention periods
 
-Default Namespace retention is 30 days (configurable 1-90 days).
+The default Namespace retention is 30 days (configurable between 1 and 90 days).
 Adjust based on operational and compliance requirements.
 
 **Considerations**:
@@ -225,9 +225,9 @@ See [Namespace retention documentation](/temporal-service/temporal-server#retent
 #### Workflow export
 
 Temporal Cloud supports exporting Workflow Histories to external storage for compliance while maintaining shorter retention periods.
-Note that Workflow export costs 1 Action per export.
+Note that Workflow export costs one Action per export.
 
-See [Workflow History export documentation](/cloud/export) for more details.
+See the [Workflow History export documentation](/cloud/export) for more details.
 Alternatively, if you are looking to do analysis on closed Workflow Executions, [review this blog post to learn how to gain insights from exported Workflow Histories](https://temporal.io/blog/get-insights-from-workflow-histories-export-on-temporal-cloud).
 
 ## Validation
@@ -236,7 +236,7 @@ Alternatively, if you are looking to do analysis on closed Workflow Executions, 
 
 1. **Test in non-production**: Validate functional correctness before production deployment
 2. **Monitor comprehensively**: Leverage the [Usage dashboard](/cloud/actions#usage) in the Cloud UI to track the impact on Actions and Storage after optimizations are made
-3. **Progressive rollout**: Deploy to small percentage, validate, then expand. [Review Worker Versioning documentation](/production-deployment/worker-deployments/worker-versioning) to learn about rolling out changes to Workflows
+3. **Progressive rollout**: Deploy to a small percentage, validate, then expand. Review the [Worker Versioning documentation](/production-deployment/worker-deployments/worker-versioning) to learn about rolling out changes to Workflows
 4. **Continuous review**: Re-evaluate optimization effectiveness quarterly as system evolves
 
 ### Success criteria
