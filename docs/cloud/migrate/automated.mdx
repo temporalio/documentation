@@ -34,9 +34,9 @@ Migration involves the following phases:
 
 1. Prepare - Initial preparation involves collecting and evaluating key data points from the self-hosted clusters. Collected data will be evaluated
    by Temporal to ensure eligibility for migration.
-2. Setup - Once eligibility has been verified, configurations for the self-hosted clusters will be modified to support the migration. Additionally,
-   cloud-side resources will be deployed, and the [S2S Proxy](https://hub.docker.com/r/temporalio/s2s-proxy/tags) will be deployed.
-3. Test - Once all required components are in place, the migration process will be tested to ensure full functionality prior to migrating any production Namespaces.
+2. Setup - Once eligibility has been verified, configurations for the self-hosted clusters will be modified to support the migration. All
+   cloud-side components will be provisioned and the self-hosted [S2S Proxy](https://hub.docker.com/r/temporalio/s2s-proxy/tags) will be deployed.
+3. Test - Once all required components are in place, the migration process will be validated using a test Namespace.
 4. Initiate - At the conclusion of a successful testing process, migration of production Namespaces may begin.
 5. Finalize - After the Namespace has been transferred to Temporal Cloud and validated, the migration will be finalized.
 
@@ -57,7 +57,7 @@ The following are known limitations.
   1. Initial Failover Version must be less than or equal to 1,000,000
   2. Failover Version Increment must be a divisor of 1,000,000
 - OSS supports cross-Namespace commands (e.g., parent-child, SignalExternal, CancelExternal) through the `system.enableCrossNamespaceCommands` configuration. This
-  configuration is disabled on Temporal Cloud. If cross-Namespace calls exist within Workflow code, they must be updated or removed prior to migration.
+  configuration is disabled on Temporal Cloud. All `system.enableCrossNamespaceCommands` must be disabled and code uses cross-Namespace calls must be updated or removed prior to migration.
 
 
 #### Additional Notes
@@ -114,8 +114,10 @@ collect the following metrics:
 - Current retention policy. Note that this may differ from the [default retention policy](https://docs.temporal.io/cloud/limits#default-retention-period) in Temporal Cloud.
 - Peak [action per second](https://docs.temporal.io/glossary#actions-per-second-aps) (APS).
   See the section [below](#how-to-gather-self-hosted-metrics) for instructions on collecting these metrics.
-- If you use custom search attributes, provide _CustomSearchAttributeAliases_ of your Namespace. The following command will retrieve this data:
-  `temporal operator Namespace describe`
+- If you use custom search Attributes:
+   - provide _CustomSearchAttributeAliases_ of your Namespace. The following command will retrieve this data:
+     `temporal operator Namespace describe`
+   - provide the VisibilityStore used (e.g. ElasticSearch or SQL)
 
 
 #### Report Collected data
@@ -288,6 +290,9 @@ The following [command](https://pkg.go.dev/github.com/temporalio/tcld#readme-per
 ```
 tcld migration handover --id <migration-id> --to-replica-id <to-replica-id>
 ```
+
+When using this command, replace `<to-replica-id>` with `cloud` when handing over to Temporal Cloud. Replace `<to-replica-id>` with `on-prem` when handing
+back to the self-hosted setup.
 
 
 ### Phase 5: Finalize
