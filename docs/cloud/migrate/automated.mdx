@@ -94,15 +94,21 @@ In preparation for migrating to Temporal Cloud, the following data points must b
 Temporal must review your self-hosted server configurations to ensure compatibility. For modern versions of Temporal OSS, the run the following command against
 each of your clusters:
 
-`temporal operator cluster describe --address <frontend:7233> --output json`
+```
+temporal operator cluster describe --address <frontend:7233> --output json
+```
 
 For server versions 1.28.1 and prior, use one of the following alternate methods:
 
-`tctl --address <frontend:7233> admin cluster describe`
+```
+tctl --address <frontend:7233> admin cluster describe
+```
 
 or
 
-`grpcurl -v -plaintext <your temporal address and port> temporal.server.api.adminservice.v1.AdminService.DescribeCluster`
+```
+grpcurl -v -plaintext <your temporal address and port> temporal.server.api.adminservice.v1.AdminService.DescribeCluster
+```
 
 
 #### Capture Namespace Metrics
@@ -115,9 +121,13 @@ collect the following metrics:
 - Peak [action per second](https://docs.temporal.io/glossary#actions-per-second-aps) (APS).
   See the section [below](#how-to-gather-self-hosted-metrics) for instructions on collecting these metrics.
 - If you use custom search Attributes:
-   - provide _CustomSearchAttributeAliases_ of your Namespace. The following command will retrieve this data:
-     `temporal operator Namespace describe`
+   - provide _CustomSearchAttributeAliases_ of your Namespace (see command below).
    - provide the VisibilityStore used (e.g. ElasticSearch or SQL)
+
+Use the following command to capture _CustomSearchAttributeAliases_, if needed:
+```
+temporal operator Namespace describe
+```
 
 
 #### Report Collected data
@@ -203,7 +213,9 @@ clusterInformation:
 
 After all services have restarted, verify the configuration using:
 
-`temporal operator cluster describe` 
+```
+temporal operator cluster describe
+``` 
 
 The following sample output is expected:
 ```yaml
@@ -237,7 +249,9 @@ Use the following procedure to deploy the proxy:
    as a reference. See the [example](https://github.com/temporalio/s2s-proxy/blob/main/charts/s2s-proxy/example.yaml) configuration file as a reference.
 4. Test access using the command below. It should display the information of the migration server.
 
-`temporal operator cluster describe --address {the-outbound-external-address-of-your-proxy}`
+```
+temporal operator cluster describe --address {the-outbound-external-address-of-your-proxy}
+```
 
 Once connectivity has been verified, notify Temporal so that connectivity may be validated from the cloud-side proxy.
 
