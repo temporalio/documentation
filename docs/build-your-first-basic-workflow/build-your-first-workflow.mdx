@@ -157,12 +157,19 @@ The repository for this tutorial is a GitHub Template repository, which means yo
 :::
 
 <SetupStep code={
-  <div style={{textAlign: 'center', padding: '2rem', background: 'rgba(99, 102, 241, 0.1)', borderRadius: '0.5rem'}}>
+  <div style={{textAlign: 'center', padding: '2rem', borderRadius: '0.5rem'}} className="temporal-app-diagram-bg">
     <div style={{marginBottom: '1rem'}}>
       <strong>Temporal Application Components</strong>
     </div>
     <div style={{textAlign: 'center', margin: '2rem 0'}}>
-  <img src="/img/moneytransfer/yourapplication.png" alt="Your Temporal Application" style={{maxWidth: '250px', height: 'auto'}} />
+  <ThemedImage
+    alt="Your Temporal Application"
+    sources={{
+      light: '/img/moneytransfer/workflow-custom-light-mode.png',
+      dark: '/img/moneytransfer/workflow-custom-dark-mode.png',
+    }}
+    style={{maxWidth: '250px', height: 'auto'}}
+  />
 </div>
     
     </div>
@@ -304,7 +311,49 @@ class PaymentDetails:
 
 <h3>Activity Definition</h3>
 
-Activities handle the business logic. Each Activity method calls an external banking service:
+Activities handle the business logic. Each Activity method calls an external banking service. This application has three Activities:
+
+<Tabs>
+  <TabItem value="withdraw" label="Withdraw" default>
+
+Takes money out of the source account.
+
+<!--SNIPSTART python-money-transfer-project-template-withdraw-->
+[activities.py](https://github.com/temporalio/money-transfer-project-template-python/blob/main/activities.py)
+```py
+import asyncio
+
+from temporalio import activity
+
+from banking_service import BankingService, InvalidAccountError
+from shared import PaymentDetails
+
+
+class BankingActivities:
+    def __init__(self):
+        self.bank = BankingService("bank-api.example.com")
+
+    @activity.defn
+    async def withdraw(self, data: PaymentDetails) -> str:
+        reference_id = f"{data.reference_id}-withdrawal"
+        try:
+            confirmation = await asyncio.to_thread(
+                self.bank.withdraw, data.source_account, data.amount, reference_id
+            )
+            return confirmation
+        except InvalidAccountError:
+            raise
+        except Exception:
+            activity.logger.exception("Withdrawal failed")
+            raise
+
+```
+<!--SNIPEND-->
+
+  </TabItem>
+  <TabItem value="deposit" label="Deposit">
+
+Puts money into the target account. Note the commented line for simulating failures in Part 2.
 
 <!--SNIPSTART python-money-transfer-project-template-deposit-->
 [activities.py](https://github.com/temporalio/money-transfer-project-template-python/blob/main/activities.py)
@@ -333,6 +382,34 @@ Activities handle the business logic. Each Activity method calls an external ban
 
 ```
 <!--SNIPEND-->
+
+  </TabItem>
+  <TabItem value="refund" label="Refund">
+
+Returns money to the source account if the deposit fails.
+
+<!--SNIPSTART python-money-transfer-project-template-refund-->
+[activities.py](https://github.com/temporalio/money-transfer-project-template-python/blob/main/activities.py)
+```py
+    @activity.defn
+    async def refund(self, data: PaymentDetails) -> str:
+        reference_id = f"{data.reference_id}-refund"
+        try:
+            confirmation = await asyncio.to_thread(
+                self.bank.deposit, data.source_account, data.amount, reference_id
+            )
+            return confirmation
+        except InvalidAccountError:
+            raise
+        except Exception:
+            activity.logger.exception("Refund failed")
+            raise
+
+```
+<!--SNIPEND-->
+
+  </TabItem>
+</Tabs>
 
 </SdkTabs.Python>
 
@@ -1415,19 +1492,13 @@ This tutorial shows core Temporal features and is not intended for production us
 :::
 
 ## Step 3: Create a Worker file
+A Worker is the part of your application that runs your Workflow and Activity code. 
 
-A Worker is responsible for executing your Workflow and Activity code. It:
+A **Task Queue** is where Temporal Workers look for Tasks about which Workflows and Activities to execute. 
+The Worker knows which piece of code to execute based on the Tasks from the Task Queue, only listens to the Task Queue it's registered to, and sends the results back to the Temporal Service. 
 
-- Can only execute Workflows and Activities registered to it
-- Knows which piece of code to execute based on Tasks from the Task Queue
-- Only listens to the Task Queue that it's registered to
-- Returns execution results back to the Temporal Server
 
-A **Task Queue** is where Temporal Workers look for Tasks about Workflows and Activities to execute. Each Task Queue is identified by a name, which you specify when you configure the Worker and again in the code that starts the Workflow Execution.
-
-:::tip Why Use Constants?
-Using a shared constant for your Task Queue name prevents typos that would cause your Worker to listen to a different Task Queue than where your Workflow tasks are being sent. It's a common source of "Why isn't my Workflow running?" issues.
-:::
+Each Task Queue is identified by a name, which you specify when you configure the Worker and again in the code that starts the Workflow Execution.
 
 <SdkTabs hideUnsupportedLanguages>
 <SdkTabs.Python>
@@ -1668,6 +1739,10 @@ worker.run(shutdown_signals: ['SIGINT'])
 </SdkTabs.Ruby>
 
 </SdkTabs>
+
+:::tip Why Use Constants?
+Using a shared constant for your Task Queue name prevents typos that would cause your Worker to listen to a different Task Queue than where your Workflow tasks are being sent. It's a common source of "Why isn't my Workflow running?" issues.
+:::
 
 ## Step 4: Execute the Workflow
 
@@ -2023,10 +2098,10 @@ Depositing $[AMOUNT] into account [DEST_ACCOUNT].
 [ReferenceId: [UUID]]
 [[UUID]] Transaction succeeded.</CodeSnippet>
 
-:::note
+<br/>
 Your account numbers and amount will be different - the Java template generates random values each run.
-:::
-        </SdkTabs.Java>
+
+</SdkTabs.Java>
         <SdkTabs.TypeScript>
           <CodeSnippet language="text">Transfer complete (transaction IDs: W3436600150, D9270097234)</CodeSnippet>
         </SdkTabs.TypeScript>
