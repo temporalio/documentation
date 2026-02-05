@@ -1,6 +1,6 @@
 ---
 id: nexus
-title: Temporal Nexus - Go SDK Feature Guide
+title: Temporal Nexus - Go SDK feature guide
 sidebar_label: Temporal Nexus
 description: Use Temporal Nexus within the Go SDK to connect durable executions within and across Namespaces using a Nexus Endpoint, a Nexus Service contract, and Nexus Operations.
 toc_max_heading_level: 4
@@ -452,8 +452,8 @@ Run the Nexus handler Worker:
 ```
 cd handler
 go run ./worker \
-    -target-host localhost:7233 \
-    -namespace my-target-namespace
+  -target-host localhost:7233 \
+  -namespace my-target-namespace
 ```
 
 In another terminal window, run the Nexus caller Worker:
@@ -461,8 +461,8 @@ In another terminal window, run the Nexus caller Worker:
 ```
 cd caller
 go run ./worker \
-    -target-host localhost:7233 \
-    -namespace my-caller-namespace
+  -target-host localhost:7233 \
+  -namespace my-caller-namespace
 ```
 
 ### Start a caller Workflow
@@ -474,8 +474,8 @@ Run the starter:
 ```
 cd caller
 go run ./starter \
-    -target-host localhost:7233 \
-    -namespace my-caller-namespace
+  -target-host localhost:7233 \
+  -namespace my-caller-namespace
 ```
 
 This will result in:
@@ -532,18 +532,18 @@ If you already have these Namespaces, you don't need to do this.
 tcld login
 
 tcld namespace create \
-	--namespace <your-caller-namespace> \
-	--cloud-provider aws \
-	--region us-west-2 \
-	--ca-certificate-file 'path/to/your/ca.pem' \
-	--retention-days 1
+  --namespace <your-caller-namespace> \
+  --cloud-provider aws \
+  --region us-west-2 \
+  --ca-certificate-file 'path/to/your/ca.pem' \
+  --retention-days 1
 
 tcld namespace create \
-	--namespace <your-target-namespace> \
-	--cloud-provider aws \
-	--region us-west-2 \
-	--ca-certificate-file 'path/to/your/ca.pem' \
-	--retention-days 1
+  --namespace <your-target-namespace> \
+  --cloud-provider aws \
+  --region us-west-2 \
+  --ca-certificate-file 'path/to/your/ca.pem' \
+  --retention-days 1
 ```
 
 Alternatively, you can create Namespaces through the UI: [https://cloud.temporal.io/Namespaces](https://cloud.temporal.io/Namespaces).
@@ -573,10 +573,10 @@ Run the handler Worker:
 cd handler
 
 go run ./worker \
-	-target-host <your-target-namespace.account>.tmprl.cloud:7233 \
-	-namespace <your-target-namespace.account> \
-	-client-cert 'path/to/your/ca.pem' \
-	-client-key 'path/to/your/ca.key'
+  -target-host <your-target-namespace.account>.tmprl.cloud:7233 \
+  -namespace <your-target-namespace.account> \
+  -client-cert 'path/to/your/ca.pem' \
+  -client-key 'path/to/your/ca.key'
 ```
 
 Run the caller Worker:
@@ -585,10 +585,10 @@ Run the caller Worker:
 cd caller
 
 go run ./worker \
-	-target-host <your-caller-namespace.account>.tmprl.cloud:7233 \
-	-namespace <your-caller-namespace.account> \
-	-client-cert 'path/to/your/ca.pem' \
-	-client-key 'path/to/your/ca.key'
+  -target-host <your-caller-namespace.account>.tmprl.cloud:7233 \
+  -namespace <your-caller-namespace.account> \
+  -client-cert 'path/to/your/ca.pem' \
+  -client-key 'path/to/your/ca.key'
 ```
 
 ### Start a caller Workflow
@@ -597,10 +597,10 @@ go run ./worker \
 cd caller
 
 go run ./starter \
-	-target-host <your-caller-namespace.account>.tmprl.cloud:7233 \
-	-namespace <your-caller-namespace.account> \
-	-client-cert 'path/to/your/ca.pem' \
-	-client-key 'path/to/your/ca.key'
+  -target-host <your-caller-namespace.account>.tmprl.cloud:7233 \
+  -namespace <your-caller-namespace.account> \
+  -client-cert 'path/to/your/ca.pem' \
+  -client-key 'path/to/your/ca.key'
 ```
 
 This will result in:
@@ -620,9 +620,9 @@ Run the handler Worker:
 cd handler
 
 go run ./worker \
-	-target-host <region>.<cloud_provider>.api.temporal.io:7233 \
-	-namespace <your-target-namespace.account> \
-	-api-key <your-api-key>
+  -target-host <region>.<cloud_provider>.api.temporal.io:7233 \
+  -namespace <your-target-namespace.account> \
+  -api-key <your-api-key>
 ```
 
 Run the caller Worker:
@@ -631,9 +631,9 @@ Run the caller Worker:
 cd caller
 
 go run ./worker \
-	-target-host <region>.<cloud_provider>.api.temporal.io:7233 \
-	-namespace <your-caller-namespace.account> \
-	-api-key <your-api-key>
+  -target-host <region>.<cloud_provider>.api.temporal.io:7233 \
+  -namespace <your-caller-namespace.account> \
+  -api-key <your-api-key>
 ```
 
 ### Start a caller Workflow
@@ -642,9 +642,9 @@ go run ./worker \
 cd caller
 
 go run ./starter \
-	-target-host <region>.<cloud_provider>.api.temporal.io:7233 \
-	-namespace <your-caller-namespace.account> \
-	-api-key <your-api-key>
+  -target-host <region>.<cloud_provider>.api.temporal.io:7233 \
+  -namespace <your-caller-namespace.account> \
+  -api-key <your-api-key>
 ```
 
 This will result in:

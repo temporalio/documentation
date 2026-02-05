@@ -267,10 +267,19 @@ A versioning strategy is even more important if your Workflow Executions live lo
 
 Temporal offers two Versioning strategies:
 
+- [Worker Versioning](#worker-versioning): keep Workers tied to specific code revisions, so that old Workers can run old code paths and new Workers can run new code paths.
+
+:::note
+Support for the experimental method of Worker Versioning prior to 2025 will be removed from Temporal Server in March 2026. Refer to the [latest Worker Versioning docs](/worker-versioning) for guidance.
+:::
+
 - [Versioning with patching](#workflow-patching): make sure your code changes are compatible across versions of your Workflow.
-- [Worker Versioning](#worker-versioning): keep Workers tied to specific code revisions, so that old Workers can run old code paths and new Workers can run new code paths. (Note: If you were using this method experimentally prior to 2025, refer to the [Worker Versioning Legacy](/encyclopedia/worker-versioning-legacy) docs, but note that these are planned for deprecation.)
 
 You can use either strategy, or a combination.
+
+#### Worker Versioning {#worker-versioning}
+
+This is the **recommended** way to handle versioning and users see improved error rates when adopting it. To learn more about Worker Versioning, see our [Worker Versioning in production](production-deployment/worker-deployments/worker-versioning) page.
 
 #### Versioning with Patching {#workflow-patching}
 
@@ -286,10 +295,6 @@ To patch:
 - [How to patch Workflow code in .NET](/develop/dotnet/versioning#patching)
 
 To test, see [Safe Deployments](/develop/safe-deployments.mdx).
-
-#### Worker Versioning {#worker-versioning}
-
-To learn more about Worker Versioning, see our [Worker Versioning](production-deployment/worker-deployments/worker-versioning) page.
 
 ### Handling unreliable Worker Processes {#unreliable-worker-processes}
 

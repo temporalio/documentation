@@ -80,14 +80,14 @@ Available slot suppliers include:
 
 ### Worker tuning {#worker-tuning}
 
-**Worker tuning** lets you manage and customize a Worker's runtime performance characteristics.
-They use special types called **Worker tuners** that assign slot suppliers to various Task Types, including Worker, Activity, Nexus, and Local Activity Tasks.
+Worker tuning is the process of defining customized slot suppliers for the different task slots of a Worker to fine-tune its performance.
+You use special types called **Worker tuners** that assign slot suppliers to various Task Types, including Worker, Activity, Nexus, and Local Activity Tasks.
 
-For more on how to configure and use Worker tuners, see [Worker runtime performance tuning](#worker-performance-tuning) below.
+For more on how to configure and use Worker tuners, refer to [Worker runtime performance tuning](#worker-performance-tuning).
 
 :::caution
 
-- Worker tuners supersede the existing `maxConcurrentXXXTask` style Worker options.
+Worker tuners supersede the existing `maxConcurrentXXXTask` style Worker options.
   Using both styles will cause an error at Worker initialization time.
 
 :::
@@ -102,6 +102,10 @@ Temporal recommends using Poller Autoscaling for the majority of use cases, as m
 To configure Poller Autoscaling, see [Configuring Poller Options](#configuring-poller-options) and samples for each Temporal SDK.
 
 ### Eager task execution
+
+:::caution
+Eager start does not respect Worker versioning. An eagerly started Workflow may run on any available local Worker even if that Worker is not the Current or Ramping version of its Worker deployment.
+:::
 
 As a latency optimization, Activity and Workflow Tasks may be started eagerly in a local Worker under the right circumstances.
 
@@ -119,9 +123,10 @@ Temporal Cloud and Temporal Server 1.29.0 and higher have Eager Workflow Start a
 
 :::
 
-Eager Workflow Start is feature that reduces the time it takes to start a Workflow.
-The target use case is short-lived Workflows that interact with other services using Local Activities, ideally initiating this interaction in the first Workflow Task, and deployed close to the Temporal Server.
-These Workflows have a happy path that needs to initiate interactions within low tens of milliseconds, but they also want to take advantage of server-driven retries, and reliable compensation processes, for those less happy days.
+Eager Workflow Start reduces the latency required to initiate a Workflow execution.
+It is recommended for short-lived Workflows that use Local Activities to interact with external services, especially when these interactions are initiated in the first Workflow Task and the Workflow is deployed near the Temporal Server to minimize network delay.
+
+This feature is particularly beneficial for Workflows with a “happy path” that must begin external interactions within tens of milliseconds, while still relying on Temporal’s server-driven retries and compensation mechanisms to ensure reliability in failure scenarios.
 
 **Quick Start**
 

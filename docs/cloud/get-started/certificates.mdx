@@ -1,0 +1,504 @@
+---
+id: certificates
+title: Authenticate with mTLS certificates
+sidebar_label: Authenticate with mTLS certificates
+description:
+  Temporal Cloud supports mTLS, which requires CA certificates for secure communication. Keep certificates updated to
+  avoid disruptions in Workflow Execution. Manage and update certificates easily via the Temporal Cloud UI or tcld tool.
+slug: /cloud/certificates
+toc_max_heading_level: 4
+keywords:
+  - certificates
+  - explanation
+  - how-to
+  - introduction
+  - temporal cloud
+tags:
+  - Security
+  - Certificates
+  - Temporal Cloud
+---
+
+[Temporal Cloud](https://temporal.io/cloud) supports both mTLS and [API key](/cloud/api-keys) authentication for
+namespace access.
+
+When using mTLS authentication, each [Worker Process](/workers#worker-process) uses a CA certificate and private key to
+connect to Temporal Cloud. Temporal Cloud does not require an exchange of secrets; only the certificates produced by
+private keys are used for verification.
+
+:::caution Don't let your certificates expire
+
+An expired root CA certificate invalidates all downstream certificates.
+
+An expired end-entity certificate prevents a [Temporal Client](/encyclopedia/temporal-sdks#temporal-client) from
+connecting to a Namespace or starting a Workflow Execution. If the client is on a Worker, any current Workflow
+Executions that are processed by that Worker either run indefinitely without making progress until the Worker resumes or
+fail because of timeouts.
+
+Temporal Cloud sends [courtesy emails](/cloud/notifications#admin-notifications) prior to certificate expiry.
+
+
+To update certificates, see
+[How to add, update, and remove certificates in a Temporal Cloud Namespace](#manage-certificates).
+
+:::
+
+All certificates used by Temporal Cloud must meet the following requirements.
+
+## Requirements for CA certificates in Temporal Cloud {#certificate-requirements}
+
+Certificates provided to Temporal for your [Namespaces](/namespaces) _must_ meet the following requirements.
+
+### CA certificates
+
+A CA certificate is a type of X.509v3 certificate used for secure communication and authentication. In Temporal Cloud,
+CA certificates are required for configuring mTLS.
+
+CA certificates _must_ meet the following criteria:
+
+- The certificates must be X.509v3.
+- Each certificate in the bundle must be either a root certificate or issued by another certificate in the bundle.
+- Each certificate in the bundle must include `CA: true`.
+- A certificate cannot be a well-known CA (such as DigiCert or Let's Encrypt) _unless_ the user also specifies
+  certificate filters.
+- The signing algorithm must be either RSA or ECDSA and must include SHA-256 or stronger message authentication. SHA-1
+  and MD5 cannot be used.
+- The certificates cannot be generated with a passphrase.
+
+:::info
+
+A certificate bundle can contain up to 16 CA certificates. A certificate bundle can have a maximum payload size of 32 KB
+before base64 encoding.
+
+:::
+
+### End-entity certificates
+
+An end-entity certificate is a type of X.509v3 certificate used by clients to authenticate themselves. Temporal Cloud
+lets you limit access to specific end-entity certificates by using [certificate filters](#manage-certificate-filters).
+
+An end-entity (leaf) certificate _must_ meet the following criteria:
+
+- The certificate must be X.509v3.
+- Basic constraints must include `CA: false`.
+- The key usage must include Digital Signature.
+- The signing algorithm must be either RSA or ECDSA and must include SHA-256 or stronger message authentication. SHA-1
+  and MD5 cannot be used.
+
+When a client presents an end-entity certificate, and the whole certificate chain is constructed, each certificate in
+the chain (from end-entity to the root) must have a unique Distinguished Name.
+
+:::caution
+
+Distinguished Names are _not_ case sensitive; that is, uppercase letters (such as ABC) and lowercase letters (such as
+abc) are equivalent.
+
+:::
+
+## How to issue root CA and end-entity certificates {#issue-certificates}
+
+Temporal Cloud authenticates a client connection by validating the client certificate against one or more CA
+certificates that are configured for the specified Namespace.
+
+Choose one of the following options to generate and manage the certificates:
+
+### Option 1: You already have certificate management infrastructure
+
+If you have existing certificate management infrastructure that supports issuing CA and end-entity certificates, export
+the CA and generate an end-entity certificates using your existing tools.
+
+Ensure that the CA certificate is long-lived and that the end-entity certificate expires before the CA certificate.
+
+Follow the instructions to [upload the CA certificate](/cloud/certificates#update-certificates-using-temporal-cloud-ui)
+and [configure your client](/cloud/certificates#configure-clients-to-use-client-certificates) with the end-entity
+certificate.
+
+### Option 2: You don't have certificate management infrastructure
+
+If you don't have an existing certificate management infrastructure, we recommend using API keys for authentication
+instead. API keys are generally easier to manage than mTLS certs if you're not using certificate management
+infrastructure otherwise.
+
+If you still want to use mTLS, issue the CA and end-entity certificates using [tcld](#use-tcld-to-generate-certificates)
+or open source tools like OpenSSL or [step CLI](#use-step-cli-to-generate-certificates).
+
+#### Use tcld to generate certificates
+
+You can generate CA and end-entity certificates by using [tcld](/cloud/tcld).
+
+Although Temporal Cloud supports long-lived CA certificates, a CA certificate generated by [tcld](/cloud/tcld) has a
+maximum duration of 1 year (`-d 1y`). You must set an end-entity certificate to expire before its root CA certificate,
+so specify its duration appropriately.
+
+To create a new CA certificate, use `tcld gen ca`.
+
+```sh
+mkdir temporal-certs
+cd temporal-certs
+tcld gen ca --org temporal -d 1y --ca-cert ca.pem --ca-key ca.key
+```
+
+The contents of the generated `ca.pem` should be pasted into the "Authentication" section of your Namespace settings
+page.
+
+To create a new end-entity certificate, use `tcld gen leaf`.
+
+```sh
+tcld gen leaf --org temporal -d 364d --ca-cert ca.pem --ca-key ca.key --cert client.pem --key client.key
+```
+
+You can now use the generated CA certificate (`ca.pem`) with Temporal Cloud and configure your client with these certs
+(`client.pem`, `client.key`).
+
+Upload the contents of the `ca.pem` file to the **Authentication** section of your **Namespace** settings.
+
+Follow the instructions to [upload the CA certificate](/cloud/certificates#update-certificates-using-temporal-cloud-ui)
+and [configure your client](/cloud/certificates#configure-clients-to-use-client-certificates) with the end-entity
+certificate.
+
+#### Use step CLI to generate certificates
+
+Temporal Cloud requires client certificates for authentication and secure communication.
+[The step CLI](https://github.com/smallstep/cli) is a popular and easy-to-use tool for issuing certificates.
+
+Before you begin, ensure you have installed smallstep/cli by following the instructions in the
+[installation guide](https://github.com/smallstep/cli#installation).
+
+A Certificate Authority (CA) is a trusted entity that issues digital certificates. These certificates certify the
+ownership of a public key by the named subject of the certificate. End-entity certificates are issued and signed by a
+CA, and they are used by clients to authenticate themselves to Temporal Cloud.
+
+Create a self-signed CA certificate and use it to issue an end-entity certificate for your Temporal Cloud namespace.
+
+##### 1. Create a Certificate Authority (CA)
+
+Create a new Certificate Authority (CA) using step CLI:
+
+```command
+step certificate create "CertAuth" CertAuth.crt CertAuth.key --profile root-ca --no-password --insecure
+```
+
+This command creates a self-signed CA certificate named `CertAuth.crt` and private key `CertAuth.key`. This CA certificate will be used to sign and issue end-entity certificates.
+
+##### 2. Set the Namespace Name
+
+Set the Namespace Name as the common name for the end-entity certificate:
+
+<Tabs>
+  <TabItem value="macos" label="macOS" default>
+
+For Linux or macOS:
+
+```command
+export NAMESPACE_NAME=your-namespace
+```
+
+</TabItem>
+    <TabItem value="windows" label="Windows" default>
+
+For Windows:
+
+```command
+set NAMESPACE_NAME=your-namespace
+```
+
+</TabItem>
+</Tabs>
+
+Replace `your-namespace` with the name of your Temporal Cloud namespace.
+
+##### 3. Create and Sign an End-Entity Certificate
+
+Create and sign an end-entity certificate with a common name equal to the Namespace Name:
+
+```command
+step certificate create ${NAMESPACE_NAME} ${NAMESPACE_NAME}.crt ${NAMESPACE_NAME}.key --ca CertAuth.crt --ca-key CertAuth.key --no-password --insecure --not-after 8760h
+```
+
+This command creates an end-entity certificate (`your-namespace.crt`) and private key (`your-namespace.key`) that is signed by your CA (`CertAuth`).
+
+##### 4. (optional) Convert to PKCS8 Format for Java SDK
+
+If you are using the Temporal Java SDK, you will need to convert the PKCS1 file format to PKCS8 file format. Export the
+end-entity's private key to a PKCS8 file:
+
+```command
+openssl pkcs8 -topk8 -inform PEM -outform PEM -in ${NAMESPACE_NAME}.key -out ${NAMESPACE_NAME}.pkcs8.key -nocrypt
+```
+
+##### 5. Use the Certificates with Temporal Cloud
+
+You can now use the generated client certificate (`your-namespace.crt`) and the CA certificate (`CertAuth.crt`) with
+Temporal Cloud.
+
+Upload the contents of the `CertAuth.crt` file to the **CA Certificates** section of your **Namespace** settings.
+
+Follow the instructions to [upload the CA certificate](/cloud/certificates#update-certificates-using-temporal-cloud-ui)
+and [configure your client](/cloud/certificates#configure-clients-to-use-client-certificates) with the end-entity
+certificate.
+
+## How to control authorization for Temporal Cloud Namespaces {#control-authorization}
+
+We recommend that an end-entity certificate be scoped to a specific Namespace to enforce the principle of least
+privilege. Temporal Cloud requires full CA chains, so you can achieve authorization in two ways.
+
+### Option 1: Issue a separate root certificate for each Namespace
+
+Each certificate must belong to a chain up to the root CA certificate. Temporal uses the root CA certificate as the
+trusted authority for access to your Namespaces.
+
+1. Ensure that your certificates meet the [certificate requirements](#certificate-requirements).
+1. [Add client CA certificates to a Cloud Namespace](/cloud/tcld/namespace/#add).
+
+### Option 2: Use the same root certificate for all Namespaces but create a separate certificate filter for each Namespace
+
+[How to manage certificate filters in Temporal Cloud](#manage-certificate-filters)
+
+## How to receive notifications about certificate expiration {#expiration-notifications}
+
+To keep your Namespace secure and online, you must update the CA certificate for the Namespace _before_ the certificate
+expires.
+
+To help you remember to do so, Temporal Cloud sends [email notifications](/cloud/notifications#admin-notifications). 
+
+## How to handle a compromised end-entity certificate
+
+:::warning
+
+Temporal does not support or check certificate revocation lists (CRLs). Customers are expected to keep their
+certificates up to date.
+
+:::
+
+The recommended approach to avoiding compromised certificates is to have short-lived end-entity certificates. A
+short-lived compromised certificate can be left to expire on its own. Seek guidance from your infosec team to determine
+an appropriate value of "short-lived" for your business.
+
+If you suspect or confirm that an end-entity certificate has been compromised, and leaving it to expire is not an
+option, take immediate action to secure your Temporal Cloud Namespace and prevent unauthorized access.
+
+If you're using certificate filters, you can set the filters to block a compromised certificate. Follow the instructions
+in [How to manage certificate filters in Temporal Cloud](#manage-certificate-filters).
+
+If you need to replace a compromised certificate manually, follow these steps:
+
+### 1. Generate a new CA certificate
+
+Follow the instructions in [How to issue CA and end-entity certificates](#issue-certificates). All end-entity
+certificates that can be reached by the previous CA must be regenerated. Ensure the new CA certificate meets
+[the certificate requirements](#certificate-requirements).
+
+### 2. Deploy the new CA certificate to the Namespace
+
+Follow the instructions for issuing a
+[new CA certificate to a Namespace](#option-1-issue-a-separate-root-certificate-for-each-namespace). Deploy the new CA
+certificate alongside the existing one, so you don’t lose connectivity with old end-entity certificates before the new
+ones are generated and deployed.
+
+### 3. Regenerate end-entity certificates with the new CA certificate
+
+[Configure all clients](https://docs.temporal.io/cloud/certificates#configure-clients-to-use-client-certificates)
+(Temporal CLI, SDKs, or Workers) to use the new certificate and private key alongside the compromised key. Update the
+client configuration as described in
+[Configure clients to use client certificates](#configure-clients-to-use-client-certificates).
+
+Test the new certificate to confirm clients can connect to the Namespace without issues.
+
+### 4. Remove the compromised CA certificate
+
+Follow the instructions in
+[How to add, update, and remove certificates in a Temporal Cloud Namespace](#manage-certificates) to remove the
+compromised CA certificate from the Namespace.
+
+### 5. Monitor and audit
+
+After implementing the changes, monitor your Namespace for unauthorized access attempts or unusual activity in audit
+logs. Review your certificate management practices to identify how the compromise occurred. Consider implementing
+stricter controls, such as:
+
+- Limiting end-entity certificates to specific Namespaces
+- Rotating certificates regularly as a preventive measure
+- [Audit logs on a regular schedule](https://docs.temporal.io/cloud/audit-logs)
+
+## How to add, update, and remove certificates in a Temporal Cloud Namespace {#manage-certificates}
+
+:::note
+
+To manage certificates for a Namespace, a user must have [Namespace Admin](/cloud/users#namespace-level-permissions)
+permission for that Namespace.
+
+:::
+
+To manage certificates for Temporal Cloud Namespaces, use the **Namespaces** page in Temporal Cloud UI or the
+[tcld namespace accepted-client-ca](/cloud/tcld/namespace/#accepted-client-ca) commands.
+
+Don't let your certificates expire! Add reminders to your calendar to issue new CA certificates well before the
+expiration dates of the existing ones. Temporal Cloud begins sending notifications 15 days before expiration. For
+details, see the previous section
+([How to receive notifications about certificate expiration](#expiration-notifications)).
+
+When updating CA certificates, it's important to follow a rollover process (sometimes referred to as "certificate
+rotation"). Doing so enables your Namespace to serve both CA certificates for a period of time until traffic to your old
+CA certificate ceases. This prevents any service disruption during the rollover process.
+
+{/* How to update certificates in Temporal Cloud using Temporal Cloud UI */}
+
+### Update certificates using Temporal Cloud UI
+
+Updating certificates using the following strategy allows for a zero-downtime rotation of certificates.
+
+1. On the left side of the window, select **Namespaces**.
+
+2. Select the name of the Namespace to update.
+
+3. In the top-right portion of the page for the Namespace, select **Edit**.
+
+4. On the **Edit** page, select the **Authentication** card to expand it.
+
+5. In the certificates box, scroll to the end of the existing certificate (that is, past `-----END CERTIFICATE-----`).
+
+6. On the following new line, paste the entire PEM block of the new certificate.
+
+7. Select **Save**.
+
+8. Wait until all Workers are using the new certificate.
+
+9. Return to the **Edit** page of the Namespace and select the **Authentication** card.
+
+10. In the certificates box, delete the old certificate, leaving the new one in place.
+
+11. Select **Save**.
+
+{/* How to update certificates in Temporal Cloud using tcld */}
+
+### Update certificates using tcld
+
+Updating certificates using the following strategy allows for a zero-downtime rotation of certificates.
+
+1. Create a single file that contains both your old and new CA certificate PEM blocks. Just concatenate the PEM blocks
+   on adjacent lines.
+
+   ```
+   -----BEGIN CERTIFICATE-----
+   ... old CA cert ...
+   -----END CERTIFICATE-----
+   -----BEGIN CERTIFICATE-----
+   ... new CA cert ...
+   -----END CERTIFICATE-----
+   ```
+
+1. Run the `tcld namespace accepted-client-ca set` command with the CA certificate bundle file.
+
+   ```bash
+   tcld namespace accepted-client-ca set --ca-certificate-file <path>
+   ```
+
+1. Monitor traffic to your old certificate until it ceases.
+
+1. Create another file that contains only the new CA certificate.
+
+1. Run the `tcld namespace accepted-client-ca set` command again with the updated CA certificate bundle file.
+
+## How to manage certificate filters in Temporal Cloud {#manage-certificate-filters}
+
+To limit access to specific [end-entity certificates](#end-entity-certificates), create certificate filters. Each filter
+contains values for one or more of the following fields:
+
+- commonName (CN)
+- organization (O)
+- organizationalUnit (OU)
+- subjectAlternativeName (SAN)
+
+Corresponding fields in the client certificate must match every specified value in the filter.
+
+The values for the fields are case-insensitive. If no wildcard is used, each specified value must match its field
+exactly.
+
+To match a substring, place a single `*` wildcard at the beginning or end (but not both) of a value. You cannot use a
+`*` wildcard by itself.
+
+You can create a maximum of 25 certificate filters in a Namespace.
+
+If you provide a well-known CA certificate, you cannot clear a certificate filter. A well-known CA certificate is one
+that is typically included in the certificate store of an operating system.
+
+**Examples**
+
+In the following example, only the CN field of the certificate's subject is checked, and it must be exactly
+`code.example.com`. The other fields are not checked.
+
+```json
+AuthorizedClientCertificate {
+  CN : "code.example.com"
+}
+```
+
+In the following example, the CN field must be `stage.example.com` and the O field must be `Example Code Inc.`
+
+```json
+AuthorizedClientCertificate {
+  CN : "stage.example.com"
+  O : "Example Code Inc."
+}
+```
+
+When using a `*` wildcard, the following values are valid:
+
+- `*.example.com` matches `code.example.com` and `text.example.com`.
+- `Example Code*` matches `Example Code` and `Example Code Inc`.
+
+The following values are not valid:
+
+- `.example.*`
+- `code.*.com`
+- `*`
+
+{/* How to manage certificate filters in Temporal Cloud using Temporal Cloud UI */}
+
+### Manage certificate filters using Temporal Cloud UI
+
+To add or remove a certificate filter, follow these steps:
+
+1. On the left side of the window, click **Namespaces**.
+1. On the **Namespaces** page, click the name of the Namespace to manage.
+1. On the right side of the page for the selected Namespace, click **Edit**.
+1. On the **Edit** page, click the **Authentication** card.
+   - To add a certificate filter, click **Add a Certificate Filter** and enter values in one or more fields.
+   - To remove a certificate filter, click the **×** in the upper-right corner of the filter details.
+1. To cancel your changes, click **Back to Namespace**. To save your changes, click **Save**.
+
+{/* How to manage certificate filters in Temporal Cloud using tcld */}
+
+### Manage certificate filters using tcld
+
+To set or clear certificate filters, use the following [tcld](/cloud/tcld) commands:
+
+- [tcld namespace certificate-filters import](/cloud/tcld/namespace/#import)
+- [tcld namespace certificate-filters clear](/cloud/tcld/namespace/#clear)
+
+To view the current certificate filters, use the
+[tcld namespace certificate-filters export](/cloud/tcld/namespace/#export) command.
+
+## Configure clients to use client certificates {#configure-clients-to-use-client-certificates}
+
+- [Go SDK](/develop/go/temporal-client#connect-to-temporal-cloud)
+- [Java SDK](/develop/java/temporal-client#connect-to-temporal-cloud)
+- [PHP SDK](/develop/php/temporal-client#connect-to-a-dev-cluster)
+- [Python SDK](/develop/python/temporal-client#connect-to-temporal-cloud)
+- [TypeScript SDK](/develop/typescript/temporal-client#connect-to-temporal-cloud)
+- [.NET SDK](/develop/dotnet/temporal-client#connect-to-temporal-cloud)
+
+### Configure Temporal CLI {#configure-temporal-cli}
+
+To connect to a Temporal Namespace using the Temporal CLI and certificate authentication, specify your credentials and
+the TLS server name:
+
+```sh
+temporal <command> <subcommand> \
+    --tls-ca-path <Path to server CA certificate> \
+    --tls-cert-path <Path to x509 certificate> \
+    --tls-key-path <Path to private certificate key> \
+    --tls-server-name <Override for target TLS server name>
+```
+
+For more information on Temporal CLI environment variables, see [Environment variables](/cli#environment-variables).
