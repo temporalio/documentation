@@ -26,6 +26,7 @@ swap:
   continue as new: Continue-As-New
   continue-as-new: Continue-As-New
   core SDK: Core SDK
+  cron job: Cron Job
   custom data converter: Custom Data Converter
   data converter: Data Converter
   default data converter: Default Data Converter
@@ -58,6 +59,7 @@ swap:
   namespace id: Namespace Id
   nexus: Temporal Nexus
   Nexus: Temporal Nexus
+  nexus registry: Nexus Registry
   parent close policy: Parent Close Policy
   payload codec: Payload Codec
   payload converter: Payload Converter
@@ -100,6 +102,7 @@ swap:
   temporal sdks: Temporal SDKs
   temporal server: Temporal Server
   '\bworker\b': Worker
+  worker controller: Worker Controller
   '\bworkflow\b': Workflow
   timer: Timer
   timers: Timers
