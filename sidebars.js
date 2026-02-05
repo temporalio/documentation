@@ -409,7 +409,6 @@ module.exports = {
               items: [
                 'cloud/metrics/general-setup',
                 'cloud/metrics/reference',
-                'cloud/metrics/datadog',
                 'cloud/metrics/prometheus-grafana',
               ],
             },
