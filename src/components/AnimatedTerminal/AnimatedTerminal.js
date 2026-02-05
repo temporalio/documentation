@@ -92,7 +92,7 @@ export const AnimatedTerminal = ({
     }, [currentLineIndex, lines, delay, typingSpeed, autoStart, loop, restartDelay, shouldStart]);
 
     const bodyHeight = lines.length * 24 + 32;
-    
+
     return (
         <div ref={terminalRef} className={styles.terminal}>
             <div className={styles.terminalHeader}>
@@ -108,7 +108,7 @@ export const AnimatedTerminal = ({
                     <div key={`${currentLineIndex}-${index}`} className={styles.terminalLine}>
                         <span className={styles.prompt}>{prompt}</span>
                         <span className={styles.command}>{line}</span>
-                        {index === currentLineIndex - 1 && isTyping && (
+                        {index === currentLineIndex && isTyping && (
                             <span className={styles.cursor}>|</span>
                         )}
                     </div>
