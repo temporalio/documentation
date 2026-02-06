@@ -322,7 +322,9 @@ This allows for a near-seamless failover when incidents or outages occur.
 
 The pricing for High Availability features aligns with the volume of your workloads.
 Actions and Storage in your Namespace contribute to your Actions and Storage consumption.
-To estimate costs for this deployment model, apply a 2x multiplier to the Actions and Storage in the Namespace you are replicating and include this scaling in your account’s consumption.
+To estimate costs for this deployment model, apply a 2x multiplier to the Actions and Storage in the Namespace you are replicating and include this scaling in your account's consumption.
+For pre-existing Namespaces that add a replica, the 2x multiplier only applies to Actions and Storage after the replica is active.
+Storage used and Actions completed before the replica's creation, or while it was being created but not yet in the 'active' status, do not incur the additional charges.
 
 :::tip Future Pricing Update
 
