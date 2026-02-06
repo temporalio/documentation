@@ -1,7 +1,7 @@
 ---
 id: automated
-title: Automated Migration
-sidebar_label: Automated Migration
+title: Automated migration
+sidebar_label: Automated migration
 description: Automated migration is designed to provide a zero-downtime, secure means of migrating to Temporal Cloud. This guide outlines the current process for transitioning workflows from a self-hosted setup to one hosted within Temporal Cloud.
 slug: /cloud/migrate/automated
 toc_max_heading_level: 4
@@ -217,8 +217,20 @@ Before failing over your namespace to Temporal Cloud, review the following produ
 
 ### Additional Notes
 
+#### Special dynamic configuration for Version 1.22.x-1.23.x
+Temporal versions 1.22.x and 1.23.x include support for stream-based replication, but it is disabled by default. Since those releases, stream-based replication has been validated as more reliable than the poll-based replication that remained the default in 1.22 and 1.23. 
+
+When preparing for an S2C migration on these versions, configure the following dynamic settings to enable stream-based replication:
+
+```yaml
+history.enableReplicationStream:
+  - value: true
+```
+
+Enabling this configuration will require a restart of your history pods. 
+
 #### Alternative Commands for Versions 1.28.1 and Prior
-Version 1.28.1 and older do not provide the details necessary for setting up migration. If you are running an older version of Temporal, then substitute the below
+The `temporal operator cluster describe` command is missing some details needed for migration when run against Version 1.28.1 or older. If you are running that version of Temporal or older, then substitute the below
 commands for the "temporal operator cluster describe" command cited in this document. 
 
 If you are using tctl, then substitute the following command: `tctl --address <frontend:7233> admin cluster describe`
