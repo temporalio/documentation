@@ -48,44 +48,7 @@ Migration involves the following phases:
 4. Initiate - At the conclusion of a successful testing process, migration of production Namespaces will begin.
 5. Finalize - After the Namespace has been transferred to Temporal Cloud and validated, the migration will be finalized.
 
-
-
-
-### Limitations
-The following are known limitations.
-
-- OSS server versions 1.22 or newer are required. Refer to the [upgrade](https://docs.temporal.io/self-hosted-guide/upgrade-server#upgrade-server) procedure as needed.
-- History shard counts must be a multiple of two.
-- Enabling payload encryption as part of migration is not yet supported. If payloads are already [encrypted](https://docs.temporal.io/payload-codec#encryption) in your self-hosted server
-  via data converter, then they will remain encrypted during and after migration.
-- If you have multiple self-hosted servers and they are all configured with the same cluster name (by default Temporal uses 'active' as cluster name), they cannot be connected to
-  a single migration server simultaneously due to cluster name collision. There are 2 available options:
-  1. Migrate one server at a time using a single migration server.
-  2. Create multiple migration servers (one for each self-hosted server) if you need to migrate all servers simultaneously.
-- If you are using multi-cluster replication in your self-hosted setup and have previously failed over Namespaces, then this may impact your eligibility for automated migration.
-  Specifically, whenever Global Namespace has been previously enabled the following restrictions apply:
-  1. Initial Failover Version must be less than or equal to 1,000,000
-  2. Failover Version Increment must be a divisor of 1,000,000
-- OSS supports cross-Namespace commands (e.g., parent-child, SignalExternal, CancelExternal) through the `system.enableCrossNamespaceCommands` configuration. This
-  configuration is disabled on Temporal Cloud. The `system.enableCrossNamespaceCommands` configuration must be disabled, and code using cross-Namespace calls must be updated or
-  removed prior to migration.
-
-
-### Additional notes
-
-**Special dynamic configuration for Version 1.22.x-1.23.x**
-
-Temporal versions 1.22.x and 1.23.x include support for stream-based replication, but it is disabled by default. Since those releases, stream-based replication has been validated
-as more reliable than the poll-based replication that remained the default in 1.22 and 1.23. 
-
-When preparing for an S2C migration on these versions, configure the following dynamic settings to enable stream-based replication:
-
-```yaml
-history.enableReplicationStream:
-  - value: true
-```
-
-Enabling this configuration will require a restart of your history pods. 
+Please review the [additional notes](#additional-notes) section prior to planning the migration.
 
 
 ## Phase 1: Prepare
@@ -381,6 +344,46 @@ The process is as follows:
 
 
 
+
+## Additional notes
+
+### Limitations
+The following are known limitations.
+
+- OSS server versions 1.22 or newer are required. Refer to the [upgrade](https://docs.temporal.io/self-hosted-guide/upgrade-server#upgrade-server) procedure as needed.
+- History shard counts must be a multiple of two.
+- Enabling payload encryption as part of migration is not yet supported. If payloads are already [encrypted](https://docs.temporal.io/payload-codec#encryption) in your self-hosted server
+  via data converter, then they will remain encrypted during and after migration.
+- If you have multiple self-hosted servers and they are all configured with the same cluster name (by default Temporal uses 'active' as cluster name), they cannot be connected to
+  a single migration server simultaneously due to cluster name collision. There are 2 available options:
+  1. Migrate one server at a time using a single migration server.
+  2. Create multiple migration servers (one for each self-hosted server) if you need to migrate all servers simultaneously.
+- If you are using multi-cluster replication in your self-hosted setup and have previously failed over Namespaces, then this may impact your eligibility for automated migration.
+  Specifically, whenever Global Namespace has been previously enabled the following restrictions apply:
+  1. Initial Failover Version must be less than or equal to 1,000,000
+  2. Failover Version Increment must be a divisor of 1,000,000
+- OSS supports cross-Namespace commands (e.g., parent-child, SignalExternal, CancelExternal) through the `system.enableCrossNamespaceCommands` configuration. This
+  configuration is disabled on Temporal Cloud. The `system.enableCrossNamespaceCommands` configuration must be disabled, and code using cross-Namespace calls must be updated or
+  removed prior to migration.
+
+
+### Special dynamic configuration for Version 1.22.x-1.23.x
+
+Temporal versions 1.22.x and 1.23.x include support for stream-based replication, but it is disabled by default. Since those releases, stream-based replication has been validated
+as more reliable than the poll-based replication that remained the default in 1.22 and 1.23. 
+
+When preparing for an S2C migration on these versions, configure the following dynamic settings to enable stream-based replication:
+
+```yaml
+history.enableReplicationStream:
+  - value: true
+```
+
+Enabling this configuration will require a restart of your history pods. 
+
+
+
+
 ## Frequently asked questions
 
 **Why does it matter if custom search attributes are used?**
@@ -398,7 +401,6 @@ Occasionally, self-hosted [retention periods](https://docs.temporal.io/temporal-
 [supported](https://docs.temporal.io/cloud/limits#default-retention-period) in Temporal Cloud.
 In these cases it is recommended to utilize [archival](https://docs.temporal.io/temporal-service/archival) to store closed Workflows that cannot be
 migrated. In general, archival is recommended over large retention periods since the extra data can stress the persistence layer of the system.
-
 
 
 
