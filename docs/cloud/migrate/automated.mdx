@@ -27,7 +27,15 @@ Automated migration is designed to provide a zero-downtime, secure means of migr
 for transitioning Workflows from a self-hosted setup to one hosted within Temporal Cloud.
 
 
-#### Migration Phases
+#### Namespace migration order
+When planning a migration it is highly recommended to migrate in the order of least-critical to most-critical Namespace. Ideally, the project
+will begin with Namespaces designated as "testing", where data loss is an acceptable outcome of the testing process. From there, prioritize
+migrations based on order of least potential impact.
+
+![Temporal automated migration components](/img/cloud/migration/ns_migration_schedule.png)
+
+
+#### Project phases
 The migration process is separated into several phases, part of which involves coordinating with Temporal to create necessary cloud-side resources.
 
 Migration involves the following phases:
@@ -40,8 +48,7 @@ Migration involves the following phases:
 4. Initiate - At the conclusion of a successful testing process, migration of production Namespaces may begin.
 5. Finalize - After the Namespace has been transferred to Temporal Cloud and validated, the migration will be finalized.
 
-When planning a migration is highly recommended to migrate in the order of least-critical to most-critical. For example, prioritize migrating
-Namespaces used for "development" over those that are "production". 
+
 
 
 #### Limitations
@@ -63,7 +70,7 @@ The following are known limitations.
   configuration is disabled on Temporal Cloud. All `system.enableCrossNamespaceCommands` must be disabled and code using cross-Namespace calls must be updated or removed prior to migration.
 
 
-#### Additional Notes
+#### Additional notes
 
 ##### Special dynamic configuration for Version 1.22.x-1.23.x
 Temporal versions 1.22.x and 1.23.x include support for stream-based replication, but it is disabled by default. Since those releases, stream-based replication has been validated
@@ -93,7 +100,7 @@ In preparation for migrating to Temporal Cloud, the following data points must b
     Temporal Cloud.
 
 
-#### Capture Cluster configurations
+#### Capture cluster configurations
 Temporal must review your self-hosted server configurations to ensure compatibility. For modern versions of Temporal OSS, the run the following command against
 each of your clusters:
 
@@ -114,7 +121,7 @@ grpcurl -v -plaintext <your temporal address and port> temporal.server.api.admin
 ```
 
 
-#### Capture Namespace Metrics
+#### Capture Namespace metrics
 It is vital that current usage patterns for production Namespaces are well understood, as this data is used for cloud-side resource planning. For each Namespace,
 collect the following metrics:
 
@@ -133,7 +140,7 @@ temporal operator Namespace describe
 ```
 
 
-#### Report Collected data
+#### Report collected data
 Use the following template to provide all collected data to Temporal via [support ticket](https://docs.temporal.io/cloud/support#ticketing).
 
 ```
@@ -175,7 +182,7 @@ If you are new to Temporal Cloud, consider your desired connectiviy path to your
 [private connectivity](https://docs.temporal.io/cloud/connectivity).
 
 
-#### Modify Cluster Configuration
+#### Modify cluster configuration
 The [dynamic configuration](https://docs.temporal.io/references/dynamic-configuration) of your self-hosted cluster must be modified to facilitate the migration.
 
 :::warning
@@ -228,14 +235,14 @@ The following sample output is expected:
 ```
 
 
-#### Prepare mTLS Certificates
+#### Prepare mTLS certificates
 TLS is used to secure the communications channel for migration. Generate new certificates following the process outlined [here](https://docs.temporal.io/cloud/certificates#issue-certificates).
 The certificates will be used by the S2S Proxy.
 
 Provide the certificates to Temporal via a support ticket.
 
 
-#### S2S Proxy Configuration
+#### S2S Proxy configuration
 The [S2S Proxy](https://github.com/temporalio/s2s-proxy) requires a cloud-side inbound endpoint. Proceed with deployment only after receiving the endpoint from Temporal.
 
 The proxy provides API forwarding over a secure 2-way tunnel to Temporal Cloud. The self-hosted proxy will initiate an outbound connection (TCP 8233) to its cloud-side
@@ -271,7 +278,7 @@ Testing will follow the same process as the production migration. Use the steps 
 The sections below outline the process for initiating the migration.
 
 
-#### Migration Start
+#### Migration start
 Temporal will intiate the migration. During this process, the self-hosted Namespace remains active while the cloud Namespace becomes passive.
 Workflows are replicated from the self-hosted Namespace to the cloud Namespace. Once cloud Namespace has fully synced with self-hosted Namespace,
 migration is ready for handover.
@@ -297,7 +304,7 @@ tcld migration get --id <migration-id>
 
 
 
-#### Handover-to-Cloud
+#### Handover-to-cloud
 Once the sync process has completed, Temporal will flip the roles of the self-hosted and cloud Namespace. At this point, the cloud becomes active
 and the self-hosted Namespace becomes passive. Workflows are then replicated from the cloud to the self-hosted server. Workers should be updated
 to use the cloud Namespace. See the instructions [below](#transfer-clients-to-cloud) for an overview of updating Workers.
@@ -314,7 +321,7 @@ back to the self-hosted setup.
 
 ### Phase 5: Finalize
 
-#### Final Validation
+#### Final validation
 Use the following checklist prior to finalizing the migration:
 - Confirm that workers can access Namespaces. Either via public internet or [private connectivity](https://docs.temporal.io/cloud/connectivity).
 - Understand how to access metrics for your Namespace on Temporal Cloud.
@@ -324,7 +331,7 @@ Use the following checklist prior to finalizing the migration:
 - Know how to reach out to your Temporal Solutions Architect (SA) and Account Executive (AE) for assistance.
 
 
-#### Confirm Complete
+#### Confirm complete
 Once a Namespace has been transferred to the cloud and validated, the migration will be completed. Note that this step is final and may not be undone. Once performed, 
 Workflow replication from the cloud Namespace to the self-hosted server is halted. 
 
@@ -366,7 +373,7 @@ The process is as follows:
 
 
 
-### Frequently Asked Questions
+### Frequently asked questions
 
 **What Workflows are migrated by default?**
 
