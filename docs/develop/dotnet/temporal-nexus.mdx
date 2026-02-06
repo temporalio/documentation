@@ -375,8 +375,6 @@ This will show the two workflows started and their results.
 
 ### Canceling a Nexus Operation {#canceling-a-nexus-operation}
 
-<!--TODO: Add .NET cancellation type information (like Java) once available -->
-
 To cancel a Nexus Operation from within a Workflow, cancel the cancellation token passed to the operation call. Only asynchronous operations can be canceled in Nexus, since cancellation is sent using an operation token.
 The Workflow or other resources backing the operation may choose to ignore the cancellation request.
 If ignored, the operation may enter a terminal state.
@@ -394,7 +392,7 @@ Once the caller Workflow completes, the caller's Nexus Machinery will not make a
 It's okay to leave operations running in some use cases.
 To ensure cancellations are delivered, wait for all pending operations to finish before exiting the Workflow.
 
-TODO See the [Nexus cancelation sample](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/nexuscancellation) for reference.
+See the [Nexus cancelation sample](https://github.com/temporalio/samples-dotnet/tree/main/src/NexusCancellation) for reference.
 
 ## Make Nexus calls across Namespaces in Temporal Cloud {#nexus-calls-across-namespaces-temporal-cloud}
 
