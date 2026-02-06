@@ -47,7 +47,7 @@ module.exports = {
               items: [
                 {
                   type: 'link',
-                  label: 'Change-log',
+                  label: 'Changelog',
                   href: 'https://temporal.io/change-log',
                 },
               ],
@@ -409,7 +409,6 @@ module.exports = {
               items: [
                 'cloud/metrics/general-setup',
                 'cloud/metrics/reference',
-                'cloud/metrics/datadog',
                 'cloud/metrics/prometheus-grafana',
               ],
             },
@@ -638,7 +637,7 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Best Practices',
+      label: 'Best practices',
       collapsed: true,
       link: {
         type: 'doc',
