@@ -1,7 +1,36 @@
 module.exports = {
   documentation: [
     'index',
-    'quickstarts',
+    {
+      type: 'category',
+      label: 'Getting Started',
+      collapsed: false,
+      items: [
+        {
+          type: 'category',
+          label: 'Quickstarts',
+          collapsed: false,
+          link: {
+            type: 'doc',
+            id: 'quickstarts',
+          },
+          items: [],
+        },
+        {
+          type: 'category',
+          label: 'Build Your First Temporal Application',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'build-your-first-basic-workflow/index',
+          },
+          items: [
+            'build-your-first-basic-workflow/build-your-first-workflow',
+            'build-your-first-basic-workflow/simulate-failure',
+          ],
+        },
+      ],
+    },
     {
       type: 'category',
       label: 'Evaluate',

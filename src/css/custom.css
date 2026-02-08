@@ -47,11 +47,16 @@ html[data-theme='dark']:root {
   --alert--competency-background: #00474a;
   --alert--copycode-background: #29005e;
   --alert--info-background: #353536;
-  --feedback-primary-color: #fff; /* title on button AND submit button color*/
-  --feedback-light-color: #fff; /* text entry field color */
-  --feedback-dark-color: #ccc; /* overall backsplash color */
-  --feedback-text-color: #444; /* helpful and powered-by */
-  --feedback-white-color: #000; /* other text colors AND main-page button background color */
+  --feedback-primary-color: #fff;
+  /* title on button AND submit button color*/
+  --feedback-light-color: #fff;
+  /* text entry field color */
+  --feedback-dark-color: #ccc;
+  /* overall backsplash color */
+  --feedback-text-color: #444;
+  /* helpful and powered-by */
+  --feedback-white-color: #000;
+  /* other text colors AND main-page button background color */
   /* --ifm-menu-color-active: var(--ifm-color-primary-lighter);
   --ifm-navbar-link-hover-color: var(--ifm-color-primary-lighter);
   --ifm-toc-link-color: #ffffff;
@@ -318,26 +323,25 @@ main.p-6,
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
-.tailwindcss .space-x-3 > :not([hidden]) ~ :not([hidden]) {
+.tailwindcss .space-x-3> :not([hidden])~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-left: calc(0.75rem * (1 - var(--tw-space-x-reverse)));
   margin-right: calc(0.75rem * var(--tw-space-x-reverse));
 }
 
-.tailwindcss .space-x-4 > :not([hidden]) ~ :not([hidden]) {
+.tailwindcss .space-x-4> :not([hidden])~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-left: calc(1rem * (1 - var(--tw-space-x-reverse)));
   margin-right: calc(1rem * var(--tw-space-x-reverse));
 }
 
-.tailwindcss .space-y-3 > :not([hidden]) ~ :not([hidden]) {
+.tailwindcss .space-y-3> :not([hidden])~ :not([hidden]) {
   --tw-space-y-reverse: 0;
   margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
   margin-top: calc(0.75rem * (1 - var(--tw-space-y-reverse)));
 }
 
-.tailwindcss p {
-}
+.tailwindcss p {}
 
 main.max-w-screen-lg {
   max-width: 1024px;
@@ -536,7 +540,7 @@ h3 {
   line-height: 1.25em;
 }
 
-.landing-card-list li + li {
+.landing-card-list li+li {
   margin-top: 0;
 }
 
@@ -1002,6 +1006,7 @@ h3 {
   .deployment {
     display: flex;
   }
+
   .second-row-container {
     display: flex;
   }
@@ -1111,7 +1116,8 @@ h3 {
 }
 
 tdiiw img {
-  object-fit: contain; /* ensures the image maintains its aspect ratio */
+  object-fit: contain;
+  /* ensures the image maintains its aspect ratio */
 }
 
 .tdi {
@@ -1184,10 +1190,12 @@ code {
 
 .copycode-notice-container a {
   color: #000000 !important;
-  margin-right: 5px; /* Add space between the link and the text */
+  margin-right: 5px;
+  /* Add space between the link and the text */
 }
 
 @keyframes bounce {
+
   0%,
   20%,
   50%,
@@ -1195,9 +1203,11 @@ code {
   100% {
     transform: translateY(0);
   }
+
   40% {
     transform: translateY(-30px);
   }
+
   60% {
     transform: translateY(-15px);
   }
@@ -1359,4 +1369,13 @@ code {
   margin: 0;
   padding: 0;
   width: 40px;
+}
+
+/* Temporal app diagram background - theme aware */
+.temporal-app-diagram-bg {
+  background: rgba(99, 102, 241, 0.1);
+}
+
+html[data-theme='light'] .temporal-app-diagram-bg {
+  background: rgba(0, 0, 0, 0.03);
 }
