@@ -27,8 +27,9 @@ When a Workflow Execution is spawned, it does so within a specific Namespace.
 
 ## Usage
 
-- **Workflow ID uniqueness**: Temporal guarantees a unique Workflow Id within a Namespace.
-  Workflow Executions may have the same Workflow Id if they are in different Namespaces.
+- **Workflow ID uniqueness**: Temporal guarantees that each running Workflow Exeecution within a Namespace has a unique Workflow ID.
+  Closed Workflow Executions may have the same Workflow ID.
+  Running Workflow Executions may have the same Workflow ID if they are in different Namespaces.
 - **Resource isolation**: Heavy traffic from one Namespace will not impact other Namespaces running on the same Temporal Service.
 - **Configuration boundaries**: Options like the [Retention Period](/temporal-service/temporal-server#retention-period) and [Archival](/temporal-service/archival) destination are configured per Namespace.
 - **Default Namespace**: If no Namespace is specified, the Temporal Service uses the Namespace "default" for all Temporal SDKs and the Temporal CLI.
