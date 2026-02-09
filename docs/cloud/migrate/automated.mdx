@@ -58,7 +58,7 @@ In preparation for migrating to Temporal Cloud, the following data points must b
 - Target Temporal Cloud provider/region per cluster. See the list of [current regions](https://docs.temporal.io/cloud/regions).
 - Server Configuration for each cluster.
 - For each Namespace:
-  - Namespace name and its translated cloud-side name. Since Namespaces in Temporal Cloud follow a [specific format](https://docs.temporal.io/cloud/namespaces#temporal-cloud-namespace-name),
+  - Namespace name and its translated cloud-side name. Since Namespaces in Temporal Cloud follow a [specific format](/cloud/namespaces#temporal-cloud-namespace-name),
     existing Namespaces must be converted to the new format.
   - Namespace sizing metrics. These are used to properly size cloud-side resources for the migration.
   - Custom search attributes (if any). Temporal must ensure that your custom search attributes, specifically when using SQL-based visibility store, are compatible with
