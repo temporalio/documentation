@@ -32,6 +32,7 @@ keywords:
 ---
 
 import { RelatedReadContainer, RelatedReadItem } from '@site/src/components';
+import ThemedImage from '@theme/ThemedImage';
 
 :::tip SUPPORT, STABILITY, and DEPENDENCY INFO
 
@@ -52,8 +53,15 @@ Unlike other forms of inter-service communication, Nexus combines a familiar pro
 Use the following decision tree to help determine if Nexus is right for your use case:
 
 <div style={{textAlign: 'center', margin: '2rem 0'}}>
-  <a href="/diagrams/nexusadoptiontree.png" target="_blank">
-    <img src="/diagrams/nexusadoptiontree.png" alt="Should I use Nexus? Decision tree" style={{maxWidth: '100%', cursor: 'pointer'}} />
+  <a href="/diagrams/nexusadoptionlight.png" target="_blank" rel="noopener noreferrer">
+    <ThemedImage
+      alt="Should I use Nexus? Decision tree"
+      sources={{
+        light: '/diagrams/nexusadoptionlight.png',
+        dark: '/diagrams/nexusadoptiondark.png',
+      }}
+      style={{maxWidth: '100%', cursor: 'pointer'}}
+    />
   </a>
 </div>
 
