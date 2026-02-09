@@ -105,6 +105,7 @@ module.exports = {
             'develop/go/message-passing',
             'develop/go/cancellation',
             'develop/go/asynchronous-activity-completion',
+            'develop/go/standalone-activities',
             'develop/go/versioning',
             'develop/go/observability',
             'develop/go/benign-exceptions',
