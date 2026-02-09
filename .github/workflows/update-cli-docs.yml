@@ -60,8 +60,7 @@ jobs:
 
       - name: Generate CLI docs
         working-directory: cli
-        run: |
-          make gen-docs
+        run: go run ./cmd/gen-docs -input internal/temporalcli/commands.yaml -input cliext/option-sets.yaml -output dist/docs
 
       - name: Publish generated docs to documentation repo
         env:
@@ -79,7 +78,7 @@ jobs:
 
           branch_name="update-cli-docs-$CLI_RELEASE_TAG"
           git checkout -b "$branch_name"
-          cp ../cli/docs/*.mdx docs/cli/
+          cp ../cli/dist/docs/*.mdx docs/cli/
           git add .
           git commit -m "$COMMIT_MESSAGE"
           git push origin "$branch_name"
