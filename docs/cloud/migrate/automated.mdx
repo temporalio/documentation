@@ -55,7 +55,7 @@ Please review the [additional notes](#additional-notes) section prior to plannin
 In preparation for migrating to Temporal Cloud, the following data points must be collected and provided to Temporal via support ticket.
 
 - List of Temporal Cloud Accounts. If you are new to Temporal Cloud, then the most common recommendation is to create a single Account that contains your Namespaces.
-- Target Temporal Cloud provider/region per cluster. See the list of [current regions](https://docs.temporal.io/cloud/regions).
+- Target Temporal Cloud provider/region per cluster. See the list of [current regions](/cloud/regions).
 - Server Configuration for each cluster.
 - For each Namespace:
   - Namespace name and its translated cloud-side name. Since Namespaces in Temporal Cloud follow a [specific format](/cloud/namespaces#temporal-cloud-namespace-name),
@@ -92,8 +92,8 @@ collect the following metrics:
 
 - Total number of open/closed Workflows
 - Total storage used
-- Current retention policy. Note that this may differ from the [default retention policy](https://docs.temporal.io/cloud/limits#default-retention-period) in Temporal Cloud.
-- Peak [action per second](https://docs.temporal.io/glossary#actions-per-second-aps) (APS).
+- Current retention policy. Note that this may differ from the [default retention policy](/cloud/limits#default-retention-period) in Temporal Cloud.
+- Peak [action per second](/glossary#actions-per-second-aps) (APS).
   See the section [below](#how-to-gather-self-hosted-metrics) for instructions on collecting these metrics.
 - If you use custom search Attributes:
    - provide _CustomSearchAttributeAliases_ of your Namespace (see command below).
@@ -106,7 +106,7 @@ temporal operator namespace describe
 
 
 ### Report collected data
-Use the following template to provide all collected data to Temporal via [support ticket](https://docs.temporal.io/cloud/support#ticketing).
+Use the following template to provide all collected data to Temporal via [support ticket](/cloud/support#ticketing).
 
 ```
 List of Accounts:
@@ -142,14 +142,14 @@ Proceed only when your request has been approved by Temporal.
 For each Namespace to be migrated, create an empty Namespace in Temporal Cloud to serve as the migration target. Since migration cannot proceed into a Namespace that's already
 in use, the Namespace should remain empty (no Workflows). Apply any required custom search attributes.
 
-Be sure to adjust the [rate limits](https://docs.temporal.io/cloud/capacity-modes) of your Namespace as needed and create any custom search attributes that are required.
+Be sure to adjust the [rate limits](/cloud/capacity-modes) of your Namespace as needed and create any custom search attributes that are required.
 
 If you are new to Temporal Cloud, consider your desired connectivity path to your Namespace. You may connect over the public internet or via
-[private connectivity](https://docs.temporal.io/cloud/connectivity).
+[private connectivity](/cloud/connectivity).
 
 
 ### Modify cluster configuration
-The [dynamic configuration](https://docs.temporal.io/references/dynamic-configuration) of your self-hosted cluster must be modified to facilitate the migration.
+The [dynamic configuration](/references/dynamic-configuration) of your self-hosted cluster must be modified to facilitate the migration.
 
 :::warning
 
@@ -163,7 +163,7 @@ frontend.keepAliveMaxConnectionAge:
 - value: "2h"
 ```
 
-If you have previously enabled [Global Namespace](https://docs.temporal.io/global-namespace), the Failover Version Increment must be approved by Temporal.
+If you have previously enabled [Global Namespace](/global-namespace), the Failover Version Increment must be approved by Temporal.
 This is **critical**, since the value may only be set once and cannot change.
 
 If you've never enabled Global Namespace, then you may enable it and set the Initial Failover Version to a unique value (between 1 and 100).
@@ -202,7 +202,7 @@ The following sample output is expected:
 
 
 ### Prepare mTLS certificates
-TLS is used to secure the communications channel for migration. Generate new certificates following the process outlined [here](https://docs.temporal.io/cloud/certificates#issue-certificates).
+TLS is used to secure the communications channel for migration. Generate new certificates following the process outlined [here](/cloud/certificates#issue-certificates).
 The certificates will be used by the S2S Proxy.
 
 Provide the certificates to Temporal via a support ticket.
@@ -294,10 +294,10 @@ back to the self-hosted setup.
 
 ### Final validation
 Use the following checklist prior to finalizing the migration:
-- Confirm that workers can access Namespaces. Either via public internet or [private connectivity](https://docs.temporal.io/cloud/connectivity).
+- Confirm that workers can access Namespaces. Either via public internet or [private connectivity](/cloud/connectivity).
 - Understand how to access metrics for your Namespace on Temporal Cloud.
 - Monitor general Workflow metrics (schedule to start latency, start v.s. completion rate, sync match rate, etc).
-- Learn how [capacity management](https://docs.temporal.io/cloud/capacity-modes) works in Temporal Cloud.
+- Learn how [capacity management](/cloud/capacity-modes) works in Temporal Cloud.
 - Plan for a worker tuning session - performance change between Temporal Cloud v.s. self-hosted cluster, which could lead to unexpected symptoms and optimizations.
 - Know how to reach out to your Temporal Solutions Architect (SA) and Account Executive (AE) for assistance.
 
@@ -350,9 +350,9 @@ The process is as follows:
 ### Limitations
 The following are known limitations.
 
-- OSS server versions 1.22 or newer are required. Refer to the [upgrade](https://docs.temporal.io/self-hosted-guide/upgrade-server#upgrade-server) procedure as needed.
+- OSS server versions 1.22 or newer are required. Refer to the [upgrade](/self-hosted-guide/upgrade-server#upgrade-server) procedure as needed.
 - History shard counts must be a multiple of two.
-- Enabling payload encryption as part of migration is not yet supported. If payloads are already [encrypted](https://docs.temporal.io/payload-codec#encryption) in your self-hosted server
+- Enabling payload encryption as part of migration is not yet supported. If payloads are already [encrypted](/payload-codec#encryption) in your self-hosted server
   via data converter, then they will remain encrypted during and after migration.
 - If you have multiple self-hosted servers and they are all configured with the same cluster name (by default Temporal uses 'active' as cluster name), they cannot be connected to
   a single migration server simultaneously due to cluster name collision. There are 2 available options:
@@ -397,16 +397,16 @@ amount of time it takes to migrate a Namespace. Your cloud-side Namespace must b
 
 **I have a long retention period for my Workflows. Is this compatible with Temporal Cloud?**
 
-Occasionally, self-hosted [retention periods](https://docs.temporal.io/temporal-service/temporal-server#retention-period) are in excess of what is 
-[supported](https://docs.temporal.io/cloud/limits#default-retention-period) in Temporal Cloud.
-In these cases it is recommended to utilize [archival](https://docs.temporal.io/temporal-service/archival) to store closed Workflows that cannot be
+Occasionally, self-hosted [retention periods](/temporal-service/temporal-server#retention-period) are in excess of what is 
+[supported](/cloud/limits#default-retention-period) in Temporal Cloud.
+In these cases it is recommended to utilize [archival](/temporal-service/archival) to store closed Workflows that cannot be
 migrated. In general, archival is recommended over large retention periods since the extra data can stress the persistence layer of the system.
 
 
 
 
 ## How to gather self-hosted metrics
-Temporal Server (version > 1.17) provides an [action](https://docs.temporal.io/cloud/pricing#action) metric. You may use Grafana to capture and display
+Temporal Server (version > 1.17) provides an [action](/cloud/pricing#action) metric. You may use Grafana to capture and display
 this metric. Use this [sample](https://github.com/temporalio/dashboards/blob/master/server/server-general.json) dashboard as a reference.
 To determine actions per second (APS) you may use the following promql queries.
 
