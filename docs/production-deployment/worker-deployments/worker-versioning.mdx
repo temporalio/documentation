@@ -257,30 +257,20 @@ The right versioning behavior depends on how long your Workflows run relative to
 
 ### Decision guide {#decision-guide}
 
-| Workflow Duration                        | Uses Continue-as-New? | Recommended Behavior                                     | Patching Required? |
-| ---------------------------------------- | --------------------- | -------------------------------------------------------- | ------------------ |
-| **Short** (completes before next deploy) | N/A                   | `PINNED`                                                 | Never              |
-| **Medium** (spans multiple deploys)      | No                    | `AUTO_UPGRADE`                                           | Yes                |
-| **Long** (weeks to years)                | Yes                   | `PINNED` + [upgrade on CaN](#upgrade-on-continue-as-new) | Never              |
-| **Long** (weeks to years)                | No                    | `AUTO_UPGRADE` + patching                                | Yes                |
+| Workflow Duration                        | Uses Continue-as-New? | Recommended Behavior      | Patching Required? |
+| ---------------------------------------- | --------------------- | ------------------------- | ------------------ |
+| **Short** (completes before next deploy) | N/A                   | `PINNED`                  | Never              |
+| **Medium** (spans multiple deploys)      | No                    | `AUTO_UPGRADE`            | Yes                |
+| **Long** (weeks to years)                | No                    | `AUTO_UPGRADE` + patching | Yes                |
 
 ### Examples by Workflow type {#behavior-examples}
 
-| Workflow Type        | Duration     | Recommended Behavior       | Notes                               |
-| -------------------- | ------------ | -------------------------- | ----------------------------------- |
-| Order processing     | Minutes      | `PINNED`                   | Completes before next deploy        |
-| Payment retry        | Hours        | `PINNED` or `AUTO_UPGRADE` | Depends on deploy frequency         |
-| Subscription billing | Days         | `AUTO_UPGRADE`             | May span multiple deploys           |
-| Customer entity      | Months-Years | `PINNED` + upgrade on CaN  | Uses Continue-as-New pattern        |
-| AI agent / Chatbot   | Weeks        | `PINNED` + upgrade on CaN  | Long sleeps, uses CaN               |
-| Compliance audit     | Months       | `AUTO_UPGRADE` + patching  | Cannot use CaN (needs full history) |
-
-:::info Long-running Workflows with Continue-as-New
-
-If your Workflow uses Continue-as-New to manage history size, you can upgrade to new Worker Deployment Versions at the
-CaN boundary without patching. See [Upgrading on Continue-as-New](#upgrade-on-continue-as-new) below.
-
-:::
+| Workflow Type        | Duration | Recommended Behavior       | Notes                               |
+| -------------------- | -------- | -------------------------- | ----------------------------------- |
+| Order processing     | Minutes  | `PINNED`                   | Completes before next deploy        |
+| Payment retry        | Hours    | `PINNED` or `AUTO_UPGRADE` | Depends on deploy frequency         |
+| Subscription billing | Days     | `AUTO_UPGRADE`             | May span multiple deploys           |
+| Compliance audit     | Months   | `AUTO_UPGRADE` + patching  | Cannot use CaN (needs full history) |
 
 ### Default Versioning Behavior Considerations
 
@@ -526,113 +516,7 @@ When you change the behavior to Auto-Upgrade, the Workflow will resume work on t
 Workflow's Target Version is different from the earlier Pinned Version, you should make sure you
 [patch](/patching#patching) the Workflow code.
 
-:::
 
-## Upgrading on Continue-as-New {#upgrade-on-continue-as-new}
-
-Long-running Workflows that use [Continue-as-New](/workflow-execution/continue-as-new) can upgrade to newer Worker
-Deployment Versions at Continue-as-New boundaries without requiring patching.
-
-This pattern is ideal for:
-
-- **Entity Workflows** that run for months or years
-- **Batch processing** Workflows that checkpoint with Continue-as-New
-- **AI agent Workflows** with long sleeps waiting for user input
-
-:::note Public Preview
-
-This feature is in Public Preview as an experimental SDK-level option.
-
-:::
-
-### How it works {#upgrade-on-can-how-it-works}
-
-By default, Pinned Workflows stay on their original Worker Deployment Version even when they Continue-as-New. With the
-upgrade option enabled:
-
-1. Each Workflow run remains pinned to its version (no patching needed during a run)
-2. The Temporal Server suggests Continue-as-New when a new version becomes available
-3. When the Workflow performs Continue-as-New with the upgrade option, the new run starts on the Current or Ramping
-   version
-
-### Checking for new versions {#checking-for-new-versions}
-
-When a new Worker Deployment Version becomes Current or Ramping, active Workflows can detect this through
-`continue_as_new_suggested`. Check for the `TARGET_WORKER_DEPLOYMENT_VERSION_CHANGED` reason:
-
-```go
-func (w *Workflows) ContinueAsNewWithVersionUpgradeV1(
-  ctx workflow.Context,
-  attempt int,
-) (string, error) {
-  if attempt > 0 {
-    return "v1.0", nil
-  }
-
-  // Check continue-as-new-suggested periodically.
-  // Continue-as-new-suggested is refreshed after each WFT completes.
-  for {
-    // Trigger a WFT when timer expires to refresh the continue-as-new-suggested flag.
-    // Since this is just a test workflow, we aren't doing any real work. In a real workflow regularly
-    // doing non-sleep workflow tasks, you would not need to artificially trigger a WFT to refresh the
-    // continue-as-new-suggested flag. You could choose to check for the suggestion periodically, or you
-    // might want to check before accepting updates, starting activities, or starting child workflows.
-    err := workflow.Sleep(ctx, 10*time.Millisecond)
-    if err != nil {
-      return "", err
-    }
-    if info := workflow.GetInfo(ctx); info.GetContinueAsNewSuggested() {
-      for _, reason := range info.GetContinueAsNewSuggestedReasons() {
-        // Optionally confirm that one of the reasons for ContinueAsNewSuggested is TargetWorkerDeploymentVersionChanged.
-        // In most cases there will only be one reason in this list, but it is possible to have multiple reasons.
-        // For example, if the Target Version changes at the same time that the History becomes too large, both
-        // of those reasons will be listed.
-        if reason == workflow.ContinueAsNewSuggestedReasonTargetWorkerDeploymentVersionChanged {
-          return "", workflow.NewContinueAsNewErrorWithOptions(
-            ctx,
-            workflow.ContinueAsNewErrorOptions{
-              // Pass InitialVersioningBehavior=workflow.ContinueAsNewVersioningBehaviorAutoUpgrade
-              // to make the new run start with AutoUpgrade behavior and use the Target Version of
-              // its Worker Deployment.
-              InitialVersioningBehavior: workflow.ContinueAsNewVersioningBehaviorAutoUpgrade,
-            },
-            "ContinueAsNewWithVersionUpgrade",
-            attempt+1,
-          )
-        }
-      }
-    }
-  }
-}
-
-func (w *Workflows) ContinueAsNewWithVersionUpgradeV2(
-  ctx workflow.Context,
-  attempt int,
-) (string, error) {
-  return "v2.0", nil
-}
-```
-
-### Continue-as-New suggested reasons {#can-suggested-reasons}
-
-The `continue_as_new_suggested` mechanism can return multiple reasons:
-
-| Reason                                     | Description                                  | Action                             |
-| ------------------------------------------ | -------------------------------------------- | ---------------------------------- |
-| `TARGET_WORKER_DEPLOYMENT_VERSION_CHANGED` | A new Worker Deployment Version is available | Use upgrade option when continuing |
-| `EVENTS_HISTORY_SIZE`                      | History size approaching limit               | Continue-as-New to reset history   |
-| `EVENTS_HISTORY_LENGTH`                    | History event count approaching limit        | Continue-as-New to reset history   |
-
-### Limitations {#upgrade-on-can-limitations}
-
-:::caution Current Limitations
-
-- **Lazy moving only:** Workflows must be invoked by executing a step to receive the Continue-as-New suggestion. Sleeping Workflows
-  won't be proactively get the Continue-as-New suggested information (planned for a future release).
-- **Interface compatibility:** When continuing as new to a different version, ensure your Workflow input format is
-  compatible. If incompatible, the new run may fail on its first Workflow Task.
-
-:::
 
 ## Sunsetting an old Deployment Version
 
