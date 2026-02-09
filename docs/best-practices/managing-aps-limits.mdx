@@ -1,7 +1,7 @@
 ---
 id: managing-aps-limits
-title: Managing Actions per Second (APS) Limits in Temporal Cloud
-sidebar_label: Managing APS Limits
+title: Managing Actions per Second (APS) limits in Temporal Cloud
+sidebar_label: Managing APS limits
 description: Control how limits are assigned to a Namespace with Capacity Modes
 slug: /best-practices/managing-aps-limits
 toc_max_heading_level: 4
@@ -218,7 +218,7 @@ See [Capacity Modes Pricing](/cloud/pricing#capacity-modes-pricing) for billing 
 
 Since you understand your workload patterns better than any auto-scaling system, consider building your own TRU automation:
 
-- **Use the [Cloud Ops API](/ops), [Terraform Provider](/production-deployment/cloud/terraform-provider), or [tcld CLI](/cloud/tcld)** to programmatically scale capacity based on your application's signals
+- **Use the [Cloud Ops API](/ops), [Terraform Provider](/cloud/terraform-provider), or [tcld CLI](/cloud/tcld)** to programmatically scale capacity based on your application's signals
 - **Set utilization thresholds**: For example, scale up when hitting 70-80% of your limit, scale down after sustained low usage
 - **Schedule capacity changes**: Use [Temporal Schedules](/schedule) or Workflows to increase TRUs before known events
 - **React to leading indicators**: If your application has upstream signals (incoming order queue depth, marketing campaign start), use those to trigger capacity changes proactively
@@ -227,7 +227,7 @@ Since you understand your workload patterns better than any auto-scaling system,
 
 In addition to understanding the patterns that can affect APS limits on a Temporal Namespace, it's also important to know if you're approaching (or exceeding) these limits.
 Temporal Cloud provides several metrics that, if tracked, will tell you if you're being rate limited due to APS.
-See the documentation on [detecting resource exhaustion](/production-deployment/cloud/service-health#rps-aps-rate-limits) for an explanation of those metrics as well as a sample Grafana dashboard that shows how they could be viewed.
+See the documentation on [detecting resource exhaustion](/cloud/service-health#rps-aps-rate-limits) for an explanation of those metrics as well as a sample Grafana dashboard that shows how they could be viewed.
 
 ### Monitoring for TRU Decisions
 

@@ -33,8 +33,8 @@ The following sections detail common metrics, their potential causes for high la
 High [`temporal_workflow_task_schedule_to_start_latency`](/references/sdk-metrics#workflow_task_schedule_to_start_latency) (P95 higher than one second) can be caused by several factors.
 This metric represents the time between when a [Workflow Task](/tasks#workflow-task) is scheduled (enqueued) and when it is picked up by a Worker for processing. Here are some potential causes:
 
-- Insufficient Worker capacity: If there aren't enough Workers or if the Workers are overloaded, they may not be able to pick up Tasks quickly enough. This can lead to Tasks waiting longer in the queue ([Detect Task Backlog](https://docs.temporal.io/production-deployment/cloud/worker-health#detect-task-backlog)).
-- Worker configuration issues: Improperly configured Workers, such as having too few pollers or Task slots, can lead to increased latency ([Detect Task Backlog](https://docs.temporal.io/production-deployment/cloud/worker-health#detect-task-backlog)).
+- Insufficient Worker capacity: If there aren't enough Workers or if the Workers are overloaded, they may not be able to pick up Tasks quickly enough. This can lead to Tasks waiting longer in the queue ([Detect Task Backlog](https://docs.temporal.io/cloud/worker-health#detect-task-backlog)).
+- Worker configuration issues: Improperly configured Workers, such as having too few pollers or Task slots, can lead to increased latency ([Detect Task Backlog](https://docs.temporal.io/cloud/worker-health#detect-task-backlog)).
 - High Workflow lock latency: If many updates are made to a single execution, this can cause Workflow lock latency, which in turn affects the Schedule-to-start latency. Reduce the rate of Signals.
 - Network latency: Workers in a different region from the Temporal cluster, or large payload size, can introduce additional latency.
 
@@ -51,8 +51,8 @@ High [`temporal_activity_schedule_to_start_latency`](/references/sdk-metrics#act
 This metric represents the time between when an [Activity Task](/tasks#activity-task) is scheduled (enqueued) and when it is picked up by a Worker for processing.
 Here are some potential causes:
 
-- Insufficient Worker capacity: If there aren't enough Workers or if the Workers are overloaded, they may not be able to pick up Tasks quickly enough. This can lead to Tasks waiting longer in the queue ([Detect Task Backlog](https://docs.temporal.io/production-deployment/cloud/worker-health#detect-task-backlog)).
-- Worker configuration issues: Improperly configured Workers, such as having too few pollers or Task slots, can lead to increased latency ([Detect Task Backlog](https://docs.temporal.io/production-deployment/cloud/worker-health#detect-task-backlog)).
+- Insufficient Worker capacity: If there aren't enough Workers or if the Workers are overloaded, they may not be able to pick up Tasks quickly enough. This can lead to Tasks waiting longer in the queue ([Detect Task Backlog](https://docs.temporal.io/cloud/worker-health#detect-task-backlog)).
+- Worker configuration issues: Improperly configured Workers, such as having too few pollers or Task slots, can lead to increased latency ([Detect Task Backlog](https://docs.temporal.io/cloud/worker-health#detect-task-backlog)).
 - Task Queue configuration: Setting `TaskQueueActivitiesPerSecond` too low can limit the rate at which Activities are started, leading to increased Schedule-to-start latency.
 - Network latency: Workers in a different region from the Temporal cluster, or large payload size can introduce additional latency.
 
@@ -70,7 +70,7 @@ Normal ranges for this metric depend on the use case, but here are some potentia
 
 - Complex Workflows: If the Workflows have many Activities or if the Activities take a long time to execute.
 - Workflow and Activity retries: If Workflows or Activities are configured to retry upon failure and they fail often, this can increase the end-to-end latency as the system will wait for the retry delay before reattempting the failed operation.
-- Worker capacity and configuration: If there aren't enough Workers or if the Workers are overloaded, they may not be able to pick up and process Tasks quickly enough. This can lead to Tasks waiting longer in the queue, thereby increasing the end-to-end latency ([Detect Task Backlog](https://docs.temporal.io/production-deployment/cloud/worker-health#detect-task-backlog)).
+- Worker capacity and configuration: If there aren't enough Workers or if the Workers are overloaded, they may not be able to pick up and process Tasks quickly enough. This can lead to Tasks waiting longer in the queue, thereby increasing the end-to-end latency ([Detect Task Backlog](https://docs.temporal.io/cloud/worker-health#detect-task-backlog)).
 - External dependencies: If your Workflows or Activities depend on external systems or services (such as databases or APIs) and these systems are slow or unreliable, they can increase the end-to-end latency.
 - Network latency: Workers in a different region from the Temporal cluster can introduce additional latency.
 
@@ -228,7 +228,7 @@ To diagnose and address high `temporal_request_latency`:
 2. Check the network connection between the Temporal Client and the Temporal Server.
 3. Monitor the resource usage on both the Temporal Client and the Temporal Server.
 4. Review your Temporal Client configuration to ensure it is optimized for your workload.
-5. If you're using Temporal Cloud, check if the Cloud’s [service-latency](https://docs.temporal.io/production-deployment/cloud/metrics/reference#service-latency) metric spikes up and reach out to Temporal Support for help.
+5. If you're using Temporal Cloud, check if the Cloud’s [service-latency](https://docs.temporal.io/cloud/metrics/reference#service-latency) metric spikes up and reach out to Temporal Support for help.
 
 ### `rate(temporal_long_request_total{operation="PollActivityTaskQueue"})`
 

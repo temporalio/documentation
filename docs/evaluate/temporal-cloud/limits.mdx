@@ -62,6 +62,7 @@ The following limits apply at the Namespace level.
   - Automatically increases (and decreases) based on the last 7 days of APS usage. Will never go below the default limit.
   - See [Capacity Modes](/cloud/capacity-modes).
   - [Contact support](/cloud/support#support-ticket).
+- What happens when you exceed the limit: See [Throttling behavior](#throttling-behavior) below.
 
 See the [Actions page](/cloud/actions) for the list of actions. 
 
@@ -86,6 +87,20 @@ See the [glossary](/glossary#requests-per-second-rps) for more about RPS.
   - [Contact support](/cloud/support#support-ticket).
 
 See the [operations list](/references/operation-list) for the list of operations.
+
+### Throttling behavior
+
+When you exceed your APS, RPS, or OPS limits, Temporal Cloud throttles requests. Here's what happens:
+
+1. **Priority-based throttling**: Low-priority operations are throttled first. Higher-priority operations like `StartWorkflowExecution`, `SignalWorkflowExecution`, and `UpdateWorkflowExecution` continue to go through when possible. Temporal Cloud uses similar [throttling priorities as the open source server](https://github.com/temporalio/temporal/blob/main/service/frontend/configs/quotas.go#L66).
+2. **Throttling latency**: Rate limiting is not instantaneous, so usage may briefly exceed your limit before throttling takes effect.
+3. **ResourceExhausted errors**: When throttled, the server returns a `ResourceExhausted` gRPC error. SDK clients automatically retry these based on the default gRPC retry policy.
+4. **Potential failure**: If throttling persists beyond the SDK's retry limit, client calls fail. This means work _can_ be lost if you don't handle these failures.
+
+**Best practices for handling throttling:**
+- Log any failed `StartWorkflowExecution`, `SignalWorkflowExecution`, or `UpdateWorkflowExecution` calls on the client side, including the payload, so you can retry or backfill later.
+- Set up [Cloud metrics](/cloud/metrics/openmetrics/metrics-reference#limit-metrics) to alert when throttling occurs and when you approach your limits.
+- Consider [Provisioned Capacity](/cloud/capacity-modes#provisioned-capacity) if you have predictable spikes or need guaranteed throughput.
 
 ### Schedules rate limit
 
@@ -185,8 +200,8 @@ For more information on custom Search Attributes see [Custom Search Attributes l
 
 ### Nexus Endpoints limits
 
-By default, each account is provisioned with 10 Nexus Endpoints.
-You can request further increases beyond the initial 10 Endpoint limit by [opening a support ticket](/cloud/support#support-ticket).
+By default, each account is provisioned with 100 Nexus Endpoints.
+You can request further increases beyond the initial 100 Endpoint limit by [opening a support ticket](/cloud/support#support-ticket).
 
 ## Programming model level
 

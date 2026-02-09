@@ -1,0 +1,186 @@
+---
+id: gcp-connectivity
+title: Google Private Service Connect connectivity
+sidebar_label: GCP Private Connect
+slug: /cloud/connectivity/gcp-connectivity
+description: Connect to Temporal Cloud using Google Private Services Connect
+tags:
+  - Connectivity
+  - GCP
+  - Production
+  - Temporal Cloud
+keywords:
+  - availability
+  - explanation
+  - failover
+  - high-availability
+  - multi-region
+  - multi-region namespace
+  - namespaces
+  - temporal-cloud
+  - term
+---
+
+import { ToolTipTerm, DiscoverableDisclosure, JsonTable } from '@site/src/components';
+
+[Google Cloud Private Service Connect](https://cloud.google.com/vpc/docs/private-service-connect) allows you to open a path to Temporal without opening a public egress.
+It establishes a private connection between your Google Virtual Private Cloud (VPC) and Temporal Cloud.
+This one-way connection means Temporal cannot establish a connection back to your service.
+This is useful if normally you block traffic egress as part of your security protocols.
+If you use a private environment that does not allow external connectivity, you will remain isolated.
+
+:::warning Namespaces with High Availability features and GCP Private Service Connect
+
+Automatic failover via Temporal Cloud DNS is not currently supported with GCP Private Service Connect.
+If you use GCP Private Service Connect, you must manually update your workers to point to the active region's Private Service Connect endpoint when a failover occurs.
+
+:::
+
+## Requirements
+
+Your GCP Private Service Connect connection must be in the same region as your Temporal Cloud namespace. If using [replication for High Availability](/cloud/high-availability), the PSC connection must be in the same region as one of the replicas.
+
+## Creating a Private Service Connect connection
+
+Set up Private Service Connect with Temporal Cloud with these steps:
+
+1. Open the Google Cloud console
+2. Navigate to **Network Services**, then **Private Service Connect**. If you haven't used **Network Services** recently, you might have to find it by clicking on **View All Products** at the bottom of the left sidebar.
+
+   ![GCP console showing Network Services, and the View All Products button](/img/cloud/gcp/gcp-console.png)
+
+3. Go to the **Endpoints** section. Click on **Connect endpoint**.
+
+   ![GCP console showing the endpoints, and the Connect endpoint button](/img/cloud/gcp/connect-endpoint-button.png)
+
+4. Under **Target**, select **Published service**, this will change the contents of the form to allow you to fill the rest as described below
+
+   ![GCP console showing the endpoints, and the Connect endpoint button](/img/cloud/gcp/connect-endpoint.png)
+
+- For **Target service**, fill in the **Service name** with the Private Service Connect Service Name for the region you’re trying to connect to:
+
+:::tip
+
+GCP Private Service Connect services are regional.
+Individual Namespaces do not use separate services.
+
+:::
+
+<JsonTable filename="/json/privatelink_gcp.json" />
+
+- For **Endpoint name**, enter a unique identifier to use for this endpoint. It could be for instance `temporal-api` or `temporal-api-<namespace>` if you want a different endpoint per namespace.
+- For **Network** and **Subnetwork**, choose the network and subnetwork where you want to publish your endpoint.
+- For **IP address**, click the dropdown and select **Create IP address** to create an internal IP from your subnet dedicated to the endpoint. Select this IP.
+- Check **Enable global access** if you intend to connect the endpoint to virtual machines outside of the selected region. We recommend regional connectivity instead of global access, as it can be better in terms of latency for your workers. _**Note:** this requires the network routing mode to be set to **GLOBAL**._
+
+5. Click the **Add endpoint** button at the bottom of the screen.
+
+6. [Create a Temporal Cloud Connectivity Rule](/cloud/connectivity#creating-a-connectivity-rule) using the Connection ID of the newly created endpoint and the corresponding GCP Project.
+
+7. Once the status is "Accepted", the GCP Private Service Connect endpoint is ready for use.
+
+- Take note of the **IP address** that has been assigned to your endpoint, as it will be used to connect to Temporal Cloud.
+
+:::caution
+You still need to set up private DNS or override client configuration for your clients to actually use the new Private Service Connect connection to connect to Temporal Cloud.
+
+See [configuring private DNS for GCP Private Service Connect](#configuring-private-dns-for-gcp-private-service-connect)
+:::
+
+## Configuring Private DNS for GCP Private Service Connect
+
+### Why configure private DNS?
+
+When you connect to Temporal Cloud through GCP Private Service Connect you normally must:
+
+1. **Point your SDKs/Workers at the Private Service Connect endpoint IP address** _and_
+2. **Override the Server Name Indicator (SNI)** so that the TLS handshake still presents the public Temporal Cloud hostname (e.g., `my-namespace.my-account.tmprl.cloud`).
+
+By creating a **private Cloud DNS zone (PZ)** that maps the public TemporalC Cloud hostname (or the region hostname) directly to the PSC endpoint IP address, you can:
+
+- Keep using the standard Temporal Cloud hostnames in code and configuration.
+- Eliminate the need to set a custom SNI override.
+- Make future endpoint rotations transparent—only the DNS record changes.
+
+This approach is **optional**; Temporal Cloud works without it. It simply streamlines configuration and operations. If you cannot use private DNS, refer to [our guide for updating the server and TLS settings on your clients](/cloud/connectivity#update-dns-or-clients-to-use-private-connectivity).
+
+### Prerequisites
+
+| Requirement                                           | Notes                                                                             |
+| ----------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Google Cloud VPC Network with DNS enabled             | PSC endpoints and the DNS zone must live in (or be attached to) the same network. |
+| Private Service Connect endpoint for Temporal Cloud   | Create an endpoint and reserve an internal IP in the namespace region             |
+| Cloud DNS API enabled and roles/dns.admin permissions | Needed to create private zones and records.                                       |
+| Namespace details                                     | Determines which hostname pattern you override (table below).                     |
+
+### Choose the override domain and endpoint
+
+| Temporal Cloud setup                       | Use this PHZ domain                | Example                                        |
+| ------------------------------------------ | ---------------------------------- | ---------------------------------------------- |
+| Single-region namespace with mTLS auth     | `<account>.tmprl.cloud`            | `payments.abcde.tmprl.cloud` ↔ `X.X.X.X`       |
+| Single-region namespace with API-key auth  | `<cloud_provider>.api.temporal.io` | `us-central1.gcp.api.temporal.io` ↔ `X.X.X.X`  |
+| Multi-region namespace | `region.tmprl.cloud`               | `gcp-us-central1.region.tmprl.cloud` ↔ `X.X.X.X` |
+
+### Step-by-step instructions
+
+#### 1. Collect your PSC endpoint IP address
+
+```shell
+# List the forwarding rule you created for the endpoint
+gcloud compute forwarding-rules list \
+  --filter="NAME:<endpoint-name>" \
+  --format="value(IP_ADDRESS)"
+# Example output: 10.1.2.3
+```
+
+Save the internal IP -- you will point the A record at it.
+
+#### 2. Create a Cloud DNS private zone
+
+1. Open _Network Services → Cloud DNS → Create zone_.
+2. Select zone type **Private**.
+3. Enter a **Zone name** (e.g., `temporal-cloud`).
+4. Enter a **DNS name** based on the table above (e.g., `payments.abcde.tmprl.cloud` or `aws-us-east-1.region.tmprl.cloud`).
+5. Select **Add networks** and choose the Project and Network that contains your PSC endpoint.
+6. Click **Create**.
+
+#### 3. Add an A record
+
+Inside the new zone, add a _standard A record_:
+
+| Field                | Value                                                          |
+| -------------------- | -------------------------------------------------------------- |
+| DNS name             | the namespace endpoint (e.g. `payments.abcde.tmprl.cloud`)     |
+| Resource record type | A                                                              |
+| TTL                  | 60s is typical, but you can adjust as needed.                  |
+| IPv4 Address         | the internal IP address of your PSC endpoint (e.g. `10.1.2.3`) |
+
+#### 4. Verify DNS resolution from inside the Network
+
+```shell
+dig payments.abcde.tmprl.cloud
+```
+
+If the hostname resolves to the PSC endpoint IP address from a VM in the bound network, the override is working.
+
+### Updating your workers/clients
+
+With private DNS in place, configure your SDKs exactly as the public-internet examples show (filling in your own namespace):
+
+```go
+clientOptions := client.Options{
+    HostPort: "payments.abcde.tmprl.cloud:7233",
+    Namespace: "payments",
+    // No TLS SNI override needed
+}
+```
+
+The DNS resolver inside your network returns the private endpoint IP address, while TLS still validates the original hostname—simplifying both code and certificate management.
+
+## Available GCP regions, PSC endpoints, and DNS record overrides
+
+The following table lists the available Temporal regions, PrivateLink endpoints, and regional endpoints used for DNS record overrides:
+
+import GCPRegions from '@site/docs/cloud/references/regions/gcpregions.md';
+
+<GCPRegions />
