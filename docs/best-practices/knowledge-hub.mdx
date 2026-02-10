@@ -67,22 +67,48 @@ covers how to operationalize this feedback loop.
 
 ## What belongs in your Knowledge Hub
 
-Each section of a knowledge hub maps to the metrics above.
-The following outline shows what to include, organized by the developer journey from evaluation through production
-operations:
+The following outline shows what to include, organized by where developers are in their journey.
 
-| Section | What it covers | Metrics it drives |
-| :--- | :--- | :--- |
-| **Temporal overview** | What Temporal is, why your organization chose it, and business value metrics. | Knowledge Hub traffic |
-| **Decision framework** | Qualifying questions, good and bad use cases, and alternative recommendations. | Knowledge Hub traffic, support question rate |
-| **Getting started** | 30-minute quickstart with environment setup, starter template, and first Workflow locally and on Temporal Cloud. | Time to first Workflow |
-| **Learning paths** | Structured courses from foundational to advanced, tailored by persona. Links to [Temporal's free training](https://learn.temporal.io/). | Time to first Workflow, time to first Workflow in production |
-| **Architecture and standards** | Namespace conventions, connectivity requirements, and Worker deployment standards. | Time to Workflow in production |
-| **Cost guidance** | Billable Actions, storage tiers, and cost-saving tips. | Support question rate |
-| **Shared responsibility** | Ownership matrix between Platform and Application teams across IAM, infrastructure, development, deployment, observability, and operations. | Support question rate |
-| **Design patterns** | Curated Workflow patterns with descriptions and code sample links. | Time to Workflow in production, support question rate |
-| **Troubleshooting and escalation** | Observability tools, runbooks for common issues, escalation path, SLAs, and example alert definitions. | Support question rate |
-| **Support and FAQs** | Support tier, ticket submission, Temporal account contacts, expert-led session types, and frequently asked questions. | Support question rate |
+### Evaluate - increases Knowledge Hub traffic, decreases support question rate
+
+Help developers understand what Temporal is and whether it fits their problem before they write code.
+
+- **Temporal overview** explains what Temporal is, why your organization chose it, and the business value metrics
+  that justify adoption.
+- **Decision framework** provides qualifying questions, good and bad use cases, and alternative recommendations so
+  developers can determine whether Temporal fits their problem.
+
+### Build - decreases time to first Workflow
+
+Give developers a single path from zero to a running Workflow.
+
+- **Getting started** walks developers through a 30-minute quickstart covering environment setup, a starter template,
+  and running a first Workflow locally and on Temporal Cloud.
+- **Learning paths** structures self-paced courses from foundational to advanced topics, tailored by persona, and links
+  to [Temporal's free training](https://learn.temporal.io/).
+
+### Ship - decreases time to Workflow in production
+
+Provide the architecture standards and guardrails developers need to go from a local prototype to a production
+deployment.
+
+- **Architecture and standards** documents Namespace conventions, connectivity requirements, and Worker deployment
+  standards that every team follows.
+- **Cost guidance** explains billable Actions, storage tiers, and cost-saving tips so developers build cost-efficient
+  Workflows.
+- **Shared responsibility** defines an ownership matrix between Platform and Application teams across IAM,
+  infrastructure, development, deployment, observability, and operations.
+- **Design patterns** curates Workflow patterns with descriptions and code sample links that developers can adopt
+  directly.
+
+### Operate - decreases support question rate
+
+Give developers the tools to self-serve during incidents and find answers without escalating to the Platform team.
+
+- **Troubleshooting and escalation** covers observability tools, runbooks for common issues, escalation paths, SLAs,
+  and example alert definitions.
+- **Support and FAQs** documents your support tier, ticket submission process, Temporal account contacts, expert-led
+  session types, and frequently asked questions.
 
 ## What doesn't belong in your Knowledge Hub
 
