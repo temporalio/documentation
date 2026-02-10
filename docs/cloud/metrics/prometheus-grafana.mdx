@@ -2,7 +2,9 @@
 id: prometheus-grafana
 title: Prometheus Grafana setup
 sidebar_label: Prometheus Grafana
-description: Set up Grafana with Temporal Cloud observability to monitor performance and troubleshoot errors using the Prometheus HTTP API endpoint.
+description:
+  Set up Grafana with Temporal Cloud observability to monitor performance and troubleshoot errors using the Prometheus
+  HTTP API endpoint.
 slug: /cloud/metrics/prometheus-grafana
 toc_max_heading_level: 4
 keywords:
@@ -36,11 +38,14 @@ For Grafana setup with the OpenMetrics endpoint, see the [OpenMetrics integratio
 
 **How to set up Grafana with Temporal Cloud PromQL endpoint to view Cloud metrics.**
 
-Temporal Cloud emits metrics through a [Prometheus HTTP API endpoint](https://prometheus.io/docs/prometheus/latest/querying/api/), which can be directly used as a Prometheus data source in Grafana or to query and export Cloud metrics to any observability platform.
+Temporal Cloud emits metrics through a
+[Prometheus HTTP API endpoint](https://prometheus.io/docs/prometheus/latest/querying/api/), which can be directly used
+as a Prometheus data source in Grafana or to query and export Cloud metrics to any observability platform.
 
 :::note
 
-For setting up SDK metrics (emitted by your Workers and Clients), see [SDK metrics setup](/cloud/metrics/sdk-metrics-setup).
+For setting up SDK metrics (emitted by your Workers and Clients), see
+[SDK metrics setup](/cloud/metrics/sdk-metrics-setup).
 
 :::
 
@@ -48,13 +53,16 @@ The process for setting up Temporal Cloud PromQL to work with Grafana includes t
 
 1. [Generate a Prometheus HTTP API endpoint](/cloud/metrics/general-setup) on Temporal Cloud using valid certificates.
 2. Run Grafana and [set up a data source for Temporal Cloud metrics](#grafana-data-source-configuration) in Grafana.
-3. [Create dashboards](#grafana-dashboards-setup) in Grafana to view Temporal Cloud metrics. Temporal provides [sample community-driven Grafana dashboards](https://github.com/temporalio/dashboards) for Cloud metrics that you can use and customize according to your requirements.
+3. [Create dashboards](#grafana-dashboards-setup) in Grafana to view Temporal Cloud metrics. Temporal provides
+   [sample community-driven Grafana dashboards](https://github.com/temporalio/dashboards) for Cloud metrics that you can
+   use and customize according to your requirements.
 
 If you're following through with the examples provided here, ensure that you have the following:
 
-- Root CA certificates and end-entity certificates. See [Certificate requirements](/cloud/certificates#certificate-requirements) for details.
-- Set up your connections to Temporal Cloud using an SDK of your choice and have some Workflows running on Temporal Cloud. See Connect to a Temporal Service for details.
-
+- Root CA certificates and end-entity certificates. See
+  [Certificate requirements](/cloud/certificates#certificate-requirements) for details.
+- Set up your connections to Temporal Cloud using an SDK of your choice and have some Workflows running on Temporal
+  Cloud. See Connect to a Temporal Service for details.
   - [Go](/develop/go/temporal-client#connect-to-temporal-cloud)
   - [Java](/develop/java/temporal-client#connect-to-temporal-cloud)
   - [PHP](/develop/php/temporal-client#connect-to-a-dev-cluster)
@@ -68,50 +76,62 @@ If you're following through with the examples provided here, ensure that you hav
 
 Before you set up your Temporal Cloud metrics, ensure that you have the following:
 
-- Account Owner or Global Admin [role privileges](/cloud/manage-access/roles-and-permissions#account-level-roles) for the Temporal Cloud account.
-- [CA certificate and key](/cloud/certificates) for the Observability integration.
-  You will need the certificate to set up the Observability endpoint in Temporal Cloud.
+- Account Owner or Global Admin [role privileges](/cloud/manage-access/roles-and-permissions#account-level-roles) for
+  the Temporal Cloud account.
+- [CA certificate and key](/cloud/certificates) for the Observability integration. You will need the certificate to set
+  up the Observability endpoint in Temporal Cloud.
 
 The following steps describe how to set up Observability on Temporal Cloud to generate an endpoint:
 
-1. Log in to Temporal Cloud UI with an Account Owner or Global Admin [role](/cloud/manage-access/roles-and-permissions#account-level-roles).
+1. Log in to Temporal Cloud UI with an Account Owner or Global Admin
+   [role](/cloud/manage-access/roles-and-permissions#account-level-roles).
 2. Go to **Settings** and select **Integrations**.
-3. Select **Configure Observability** (if you're setting it up for the first time) or click **Edit** in the Observability section (if it was already configured before).
-4. Add your root CA certificate (.pem) and save it.
-   Note that if an observability endpoint is already set up, you can append your root CA certificate here to use the generated observability endpoint with your instance of Grafana.
+3. Select **Configure Observability** (if you're setting it up for the first time) or click **Edit** in the
+   Observability section (if it was already configured before).
+4. Add your root CA certificate (.pem) and save it. Note that if an observability endpoint is already set up, you can
+   append your root CA certificate here to use the generated observability endpoint with your instance of Grafana.
 5. To test your endpoint, run the following command on your host:
    ```
    curl -v --cert <path to your client-cert.pem> --key <path to your client-cert.key> "<your generated Temporal Cloud prometheus_endpoint>/api/v1/query?query=temporal_cloud_v0_state_transition_count"
    ```
-   If you have Workflows running on a Namespace in your Temporal Cloud instance, you should see some data as a result of running this command.
+   If you have Workflows running on a Namespace in your Temporal Cloud instance, you should see some data as a result of
+   running this command.
 6. Copy the HTTP API endpoint that is generated (it is shown in the UI).
 
-This endpoint should be configured as a data source for Temporal Cloud metrics in Grafana.
-See [Grafana data source configuration](#grafana-data-source-configuration) for details.
+This endpoint should be configured as a data source for Temporal Cloud metrics in Grafana. See
+[Grafana data source configuration](#grafana-data-source-configuration) for details.
 
 ## Grafana data source configuration {#grafana-data-source-configuration}
 
 **How to configure the Temporal Cloud metrics data source in Grafana.**
 
-Depending on how you use Grafana, you can either install and run it locally, run it as a Docker container, or log in to Grafana Cloud to set up your data sources.
+Depending on how you use Grafana, you can either install and run it locally, run it as a Docker container, or log in to
+Grafana Cloud to set up your data sources.
 
 If you have installed and are running Grafana locally, go to [http://localhost:3000](http://localhost:3000) and sign in.
 
-To add the Temporal Cloud Prometheus HTTP API endpoint that we generated in the [Temporal Cloud metrics setup](/cloud/metrics/general-setup) section, do the following:
+To add the Temporal Cloud Prometheus HTTP API endpoint that we generated in the
+[Temporal Cloud metrics setup](/cloud/metrics/general-setup) section, do the following:
 
 1. Go to **Configuration&nbsp;> Data sources**.
 1. Select **Add data source&nbsp;> Prometheus**.
 1. Enter a name for your Temporal Cloud metrics data source, such as _Temporal Cloud metrics_.
-1. In the **Connection** section, paste the URL that was generated in the Observability section on the Temporal Cloud UI.
+1. In the **Connection** section, paste the URL that was generated in the Observability section on the Temporal Cloud
+   UI.
 1. The **Authentication** section may be left as **No Authentication**.
 1. In the **TLS Settings** section, select **TLS Client Authentication**:
    - Leave **ServerName** blank. This is not required.
    - Paste in your end-entity certificate and key.
-   - Note that the end-entity certificate used here must be part of the certificate chain with the root CA certificates used in your [Temporal Cloud observability setup](/cloud/metrics/general-setup).
-     <ZoomingImage src="/img/cloud/prometheus/add-prometheus-api-endpoint.png" alt="Data source configuration in Grafana" />
+   - Note that the end-entity certificate used here must be part of the certificate chain with the root CA certificates
+     used in your [Temporal Cloud observability setup](/cloud/metrics/general-setup).
+     <ZoomingImage
+       src="/img/cloud/prometheus/add-prometheus-api-endpoint.png"
+       alt="Data source configuration in Grafana"
+     />
 1. Click **Save and test** to verify that the data source is working.
 
-If you see issues in setting this data source, verify your CA certificate chain and ensure that you are setting the correct certificates in your Temporal Cloud observability setup and in the TLS authentication in Grafana.
+If you see issues in setting this data source, verify your CA certificate chain and ensure that you are setting the
+correct certificates in your Temporal Cloud observability setup and in the TLS authentication in Grafana.
 
 ### Grafana dashboards setup
 
@@ -119,21 +139,26 @@ To set up dashboards in Grafana, you can use the UI or configure them directly i
 
 :::tip
 
-Temporal provides community-driven [example dashboards for Temporal Cloud](https://github.com/temporalio/dashboards/tree/master/cloud) that you can customize to meet your needs.
+Temporal provides community-driven
+[example dashboards for Temporal Cloud](https://github.com/temporalio/dashboards/tree/master/cloud) that you can
+customize to meet your needs.
 
 :::
 
 To import a dashboard in Grafana:
 
 1. In the left-hand navigation bar, select **Dashboards** > **Import dashboard**.
-2. You can either copy and paste the JSON from the [Temporal Cloud sample dashboards](https://github.com/temporalio/dashboards/tree/master/cloud), or import the JSON files into Grafana.
+2. You can either copy and paste the JSON from the
+   [Temporal Cloud sample dashboards](https://github.com/temporalio/dashboards/tree/master/cloud), or import the JSON
+   files into Grafana.
 3. Save the dashboard and review the metrics data in the graphs.
 
 To configure dashboards with the UI:
 
 1. Go to **Create > Dashboard** and add an empty panel.
-2. On the **Panel configuration** page, in the **Query** tab, select the "Temporal Cloud metrics" data source that you configured earlier.
-3. Expand the **Metrics browser** and select the metrics you want.
-   You can also select associated labels and values to sort the query data.
-   The [PromQL documentation](/cloud/metrics/reference) lists all metrics emitted from PromQL in Temporal Cloud.
+2. On the **Panel configuration** page, in the **Query** tab, select the "Temporal Cloud metrics" data source that you
+   configured earlier.
+3. Expand the **Metrics browser** and select the metrics you want. You can also select associated labels and values to
+   sort the query data. The [PromQL documentation](/cloud/metrics/reference) lists all metrics emitted from PromQL in
+   Temporal Cloud.
 4. The graph should now display data based on your selected queries.

@@ -28,11 +28,11 @@ You can debug production Workflows using:
 - [Web UI](/web-ui)
 - [Temporal CLI](/cli)
 - [Replay](/develop/typescript/best-practices/testing-suite#replay)
-- [Tracing](/develop/typescript/observability#tracing)
-- [Logging](/develop/typescript/observability#logging)
+- [Tracing](/develop/typescript/workers/observability#tracing)
+- [Logging](/develop/typescript/workers/observability#logging)
 
 You can debug and tune Worker performance with metrics and the [Worker performance guide](/develop/worker-performance).
-For information on setting up SDK metrics, see [Metrics](/develop/typescript/observability#metrics) in the Observability section of the TypeScript SDK developer's guide.
+For information on setting up SDK metrics, see [Metrics](/develop/typescript/workers/observability#metrics) in the Observability section of the TypeScript SDK developer's guide.
 
 Debug Server performance with [Cloud metrics](/cloud/metrics/) or [self-hosted Server metrics](/self-hosted-guide/production-checklist#scaling-and-metrics).
 
@@ -99,7 +99,7 @@ For more information, see the [Register types](/develop/typescript/workers/run-w
 
 The TypeScript SDK's Worker bundles Workflows based on `workflowsPath` with [Webpack](https://webpack.js.org/) and run them inside v8 isolates.
 
-If Webpack fails to create the bundle, the SDK will throw an error and emit webpack logs using the SDK's [logger](/develop/typescript/observability#logging).
+If Webpack fails to create the bundle, the SDK will throw an error and emit webpack logs using the SDK's [logger](/develop/typescript/workers/observability#logging).
 
 If you do not see Webpack output in your terminal make sure that you have not disabled SDK logging (see reference to `Runtime.install()` in the link above).
 
