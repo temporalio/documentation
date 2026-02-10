@@ -53,7 +53,6 @@ function FeedbackWidget() {
         }
     }, []);
 
-
     const {
         feedbackButtonText,
         emailPlaceholder,
