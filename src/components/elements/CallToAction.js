@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from './call-to-action.module.css';
 
-export const CallToAction = ({ href, children, buttonText, description }) => {
+export const CallToAction = ({ href, children, buttonText, description, openInNewTab }) => {
   return (
-    <a href={href} className={styles.cta}>
+    <a href={href} className={styles.cta} target={openInNewTab ? "_blank" : undefined} rel={openInNewTab ? "noopener noreferrer" : undefined}>
       <div className={styles.content}>
         {children || (
           <>

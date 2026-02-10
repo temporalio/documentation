@@ -1498,7 +1498,8 @@ A Task Queue is where Temporal Workers look for Tasks about which Workflows and 
 The Worker knows which piece of code to execute based on the Tasks from the Task Queue, only listens to the Task Queue it's registered to, and sends the results back to the Temporal Service. 
 
 
-Each Task Queue is identified by a name, which you specify when you configure the Worker and again in the code that starts the Workflow Execution.
+Each Task Queue is identified by a name, which you specify when you configure the Worker and again in the code that starts the Workflow Execution. 
+Mismatched Task Queue names don't result in an error, but the Worker won't receive any tasks so the Workflow Execution will not progress.
 
 <SdkTabs hideUnsupportedLanguages>
 <SdkTabs.Python>
@@ -2214,6 +2215,7 @@ The Workflow starter script starts a Workflow Execution. Each time you run it, t
     href="http://localhost:8233"
     buttonText="Open the Temporal UI "
     description="View your local Workflow in the Web UI (runs on localhost:8233)"
+    openInNewTab
   />
 }>
 
