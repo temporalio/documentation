@@ -1,0 +1,60 @@
+.nextButton {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 2rem;
+    background: linear-gradient(135deg, #444CE7 0%, #7C3AED 100%);
+    border-radius: 12px;
+    color: white;
+    text-decoration: none;
+    margin: 2rem 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(68, 76, 231, 0.2);
+}
+
+.nextButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(68, 76, 231, 0.3);
+    text-decoration: none;
+    color: white;
+}
+
+.nextContent {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.nextTitle {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.nextDescription {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    margin: 0;
+}
+
+.nextIcon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .nextButton {
+        padding: 1rem 1.5rem;
+    }
+
+    .nextTitle {
+        font-size: 1rem;
+    }
+
+    .nextDescription {
+        font-size: 0.8rem;
+    }
+}

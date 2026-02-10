@@ -1,0 +1,28 @@
+.retryCounter {
+    background: linear-gradient(135deg, #444CE7 0%, #7C3AED 100%);
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem 0;
+    color: white;
+    font-family: 'Monaco', 'Consolas', monospace;
+}
+
+.retryBar {
+    background: rgba(255, 255, 255, 0.2);
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0.5rem 0;
+}
+
+.retryProgress {
+    background: linear-gradient(90deg, #10B981, #059669);
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.nextRetry {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}

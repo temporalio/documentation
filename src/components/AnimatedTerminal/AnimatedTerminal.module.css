@@ -1,0 +1,111 @@
+.terminal {
+    background: #1e1e1e;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin: 1.5rem 0;
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Consolas', 'Liberation Mono', monospace;
+    font-size: 14px;
+    overflow: hidden;
+}
+
+.terminalHeader {
+    background: #323232;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #444;
+}
+
+.terminalButtons {
+    display: flex;
+    gap: 8px;
+    margin-right: 16px;
+}
+
+.terminalButtons span {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.close {
+    background: #ff5f57;
+}
+
+.minimize {
+    background: #ffbd2e;
+}
+
+.maximize {
+    background: #28ca42;
+}
+
+.terminalTitle {
+    color: #ccc;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.terminalBody {
+    padding: 16px;
+    background: #1e1e1e;
+    color: #f8f8f2;
+}
+
+.terminalLine {
+    display: flex;
+    align-items: center;
+    margin: 4px 0;
+    line-height: 1.4;
+}
+
+.prompt {
+    color: #50fa7b;
+    margin-right: 8px;
+    user-select: none;
+}
+
+.command {
+    color: #f8f8f2;
+    white-space: pre-wrap;
+}
+
+.cursor {
+    color: #f8f8f2;
+    animation: blink 1s infinite;
+    margin-left: 2px;
+}
+
+@keyframes blink {
+
+    0%,
+    50% {
+        opacity: 1;
+    }
+
+    51%,
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Different colors for different types of output */
+.terminalLine:has(.command:contains("ERROR")) .command,
+.terminalLine .command:contains("ERROR") {
+    color: #ff5555;
+}
+
+.terminalLine:has(.command:contains("Withdrawing")) .command,
+.terminalLine .command:contains("Withdrawing") {
+    color: #8be9fd;
+}
+
+.terminalLine:has(.command:contains("Depositing")) .command,
+.terminalLine .command:contains("Depositing") {
+    color: #ffb86c;
+}
+
+.terminalLine:has(.command:contains("Running")) .command,
+.terminalLine .command:contains("Running") {
+    color: #50fa7b;
+}

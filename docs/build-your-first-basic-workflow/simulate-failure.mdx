@@ -1,0 +1,1030 @@
+---
+id: simulate-failure
+title: Simulate Failures with Temporal 
+sidebar_label: "Part 2: Simulate Failure"
+description: Learn how Temporal handles failures, recovers from crashes, and enables live debugging of your Workflows.
+hide_table_of_contents: true
+keywords:
+  - temporal
+  - python
+  - simulate failure
+  - crash recovery
+  - live debugging
+  - reliability
+tags:
+  - Getting Started
+  - Tutorial
+---
+
+import { CallToAction } from "@site/src/components/elements/CallToAction";
+import { TemporalProgress } from "@site/src/components/TemporalProgress";
+import { StatusIndicators } from "@site/src/components/StatusIndicators";
+import { WorkflowDiagram } from "@site/src/components/WorkflowDiagram";
+import { RetryCounter } from "@site/src/components/RetryCounter";
+import { TemporalCheckbox } from "@site/src/components/TemporalCheckbox";
+import SdkTabs from "@site/src/components/elements/SdkTabs";
+import { SetupSteps, SetupStep, CodeSnippet } from "@site/src/components/elements/SetupSteps";
+import { CodeComparison } from "@site/src/components/CodeComparison";
+import { AnimatedTerminal } from "@site/src/components/AnimatedTerminal";
+
+export const getTodayDate = () => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
+};
+
+export const getTodayDateISO = () => {
+  return new Date().toISOString();
+};
+
+# Part 2: Simulate Failure 
+In this part, you'll simulate failures to see how Temporal handles them. 
+This demonstrates why Temporal is particularly useful for building reliable systems.
+
+<TemporalProgress steps={[
+  { id: 'part1', label: 'Part 1: Build Your First Temporal Application', status: 'completed', href: '/build-your-first-basic-workflow/build-your-first-workflow' },
+  { id: 'part2', label: 'Part 2: Simulate Failure', status: 'active', href: '/build-your-first-basic-workflow/simulate-failure' }
+]} />
+
+Systems fail in unpredictable ways. A seemingly harmless deployment can bring down production, a database connection can time out during peak traffic, or a third-party service can decide to have an outage. 
+Despite our best efforts with comprehensive testing and monitoring, systems are inherently unpredictable and complex. 
+Networks fail, servers restart unexpectedly, and dependencies we trust can become unavailable without warning.
+
+Traditional systems aren't equipped to handle these realities. 
+When something fails halfway through a multi-step process, you're left with partial state, inconsistent data, and the complex task of figuring out where things went wrong and how to recover. 
+Most applications either lose progress entirely or require you to build extensive checkpointing and recovery logic. 
+
+In this tutorial, you'll see Temporal's durable execution in action by running two tests: crashing a server while it's working and fixing code problems on the fly without stopping your application.
+
+## Recover from a server crash
+
+Unlike other solutions, Temporal is designed with failure in mind. 
+In this part of the tutorial, you'll simulate a server crash mid-transaction and watch Temporal helps you recover from it.
+
+**Here's the challenge:** Kill your Worker process while money is being transferred. 
+In traditional systems, this would corrupt the transaction or lose data entirely.
+
+<WorkflowDiagram 
+  title="What We're Testing"
+  nodes={[
+    { id: 'worker', label: 'Worker', status: 'default' },
+    { id: 'crash', label: 'CRASH', status: 'crashed' },
+    { id: 'recovery', label: 'Recovery', status: 'recovered' },
+    { id: 'success', label: 'Success', status: 'default' }
+  ]}
+/>
+
+### Before You Start
+
+<TemporalCheckbox id="worker-stopped">
+  Worker is currently stopped
+</TemporalCheckbox>
+
+<TemporalCheckbox id="terminals-ready">
+  You have terminals ready (Terminal 2 for Worker, Terminal 3 for Workflow)
+</TemporalCheckbox>
+
+<TemporalCheckbox id="webui-open">
+  Web UI is open at `http://localhost:8233`
+</TemporalCheckbox>
+
+<details open>
+<summary><strong>What's happening behind the scenes?</strong></summary>
+
+Unlike many modern applications that require complex leader election processes and external databases to handle failure, Temporal automatically preserves the state of your Workflow even if the server is down. 
+You can test this by stopping the Temporal Service while a Workflow Execution is in progress.
+
+No data is lost once the Temporal Service went offline. 
+When it comes back online, the work picked up where it left off before the outage. 
+Keep in mind that this example uses a single instance of the service running on a single machine. 
+In a production deployment, the Temporal Service can be deployed as a cluster, spread across several machines for higher availability and increased throughput.
+
+</details>
+
+### Instructions
+
+<SetupSteps>
+
+<SetupStep code={
+  <div>
+    <div style={{marginBottom: '1rem'}}>
+      <strong>Terminal 2 - Worker</strong>
+    </div>
+    <SdkTabs hideUnsupportedLanguages>
+      <SdkTabs.Python>
+        <CodeSnippet language="bash">python run_worker.py</CodeSnippet>
+      </SdkTabs.Python>
+      <SdkTabs.Go>
+        <CodeSnippet language="bash">go run worker/main.go</CodeSnippet>
+      </SdkTabs.Go>
+      <SdkTabs.Java>
+        <CodeSnippet language="bash">mvn compile exec:java -Dexec.mainClass="moneytransferapp.MoneyTransferWorker"</CodeSnippet>
+      </SdkTabs.Java>
+      <SdkTabs.TypeScript>
+        <CodeSnippet language="bash">npm run worker</CodeSnippet>
+      </SdkTabs.TypeScript>
+      <SdkTabs.DotNet>
+        <CodeSnippet language="bash">dotnet run --project MoneyTransferWorker/MoneyTransferWorker.csproj</CodeSnippet>
+      </SdkTabs.DotNet>
+      <SdkTabs.Ruby>
+        <CodeSnippet language="bash">bundle exec ruby worker.rb</CodeSnippet>
+      </SdkTabs.Ruby>
+    </SdkTabs>
+  </div>
+}>
+
+### Step 1: Start Your Worker
+
+First, stop any running Worker (`Ctrl+C`) and start a fresh one in Terminal 2.
+
+<StatusIndicators items={[
+  { id: 'worker-status', label: 'Worker Status', value: 'RUNNING', status: 'running' },
+  { id: 'workflow-status', label: 'Workflow Status', value: 'WAITING', status: 'pending' }
+]} />
+
+</SetupStep>
+
+<SetupStep code={
+  <div>
+    <div style={{marginBottom: '1rem'}}>
+      <strong>Terminal 3 - Workflow</strong>
+    </div>
+    <SdkTabs hideUnsupportedLanguages>
+      <SdkTabs.Python>
+        <CodeSnippet language="bash">python run_workflow.py</CodeSnippet>
+      </SdkTabs.Python>
+      <SdkTabs.Go>
+        <CodeSnippet language="bash">go run start/main.go</CodeSnippet>
+      </SdkTabs.Go>
+      <SdkTabs.Java>
+        <CodeSnippet language="bash">mvn compile exec:java -Dexec.mainClass="moneytransferapp.TransferApp"</CodeSnippet>
+      </SdkTabs.Java>
+      <SdkTabs.TypeScript>
+        <CodeSnippet language="bash">npm run client</CodeSnippet>
+      </SdkTabs.TypeScript>
+      <SdkTabs.DotNet>
+        <CodeSnippet language="bash">dotnet run --project MoneyTransferClient/MoneyTransferClient.csproj</CodeSnippet>
+      </SdkTabs.DotNet>
+      <SdkTabs.Ruby>
+        <CodeSnippet language="bash">bundle exec ruby starter.rb</CodeSnippet>
+      </SdkTabs.Ruby>
+    </SdkTabs>
+  </div>
+}>
+
+### Step 2: Start the Workflow
+
+Now in Terminal 3, start the Workflow. Check the Web UI - you'll see your Worker busy executing the Workflow and its Activities.
+
+<StatusIndicators items={[
+  { id: 'worker-status', label: 'Worker Status', value: 'EXECUTING', status: 'running' },
+  { id: 'workflow-status', label: 'Workflow Status', value: 'RUNNING', status: 'running' }
+]} />
+
+</SetupStep>
+
+<SetupStep code={
+  <div style={{backgroundColor: 'rgba(239, 68, 68, 0.1)', border: '2px solid #ef4444', padding: '1rem', borderRadius: '0.5rem'}}>
+    <strong>The Crash Test</strong>
+    <p style={{margin: '0.5rem 0 0 0'}}>Go back to Terminal 2 and kill the Worker with <code>Ctrl+C</code></p>
+  </div>
+} style={{background: 'transparent'}}>
+
+### Step 3: Simulate the Crash
+
+**The moment of truth!** Kill your Worker while it's processing the transaction.
+
+**Jump back to the Web UI** and refresh. Your Workflow is still showing as "Running"!
+
+That's the magic! The Workflow keeps running because Temporal saved its state, even though we killed the Worker.
+
+<StatusIndicators items={[
+  { id: 'worker-status', label: 'Worker Status', value: 'CRASHED', status: 'crashed' },
+  { id: 'workflow-status', label: 'Workflow Status', value: 'RUNNING', status: 'running' }
+]} />
+
+</SetupStep>
+
+<SetupStep code={
+  <div>
+    <div style={{marginBottom: '1rem'}}>
+      <strong>Terminal 2 - Recovery</strong>
+    </div>
+    <SdkTabs hideUnsupportedLanguages>
+      <SdkTabs.Python>
+        <CodeSnippet language="bash">python run_worker.py</CodeSnippet>
+      </SdkTabs.Python>
+      <SdkTabs.Go>
+        <CodeSnippet language="bash">go run worker/main.go</CodeSnippet>
+      </SdkTabs.Go>
+      <SdkTabs.Java>
+        <CodeSnippet language="bash">mvn compile exec:java -Dexec.mainClass="moneytransferapp.MoneyTransferWorker"</CodeSnippet>
+      </SdkTabs.Java>
+      <SdkTabs.TypeScript>
+        <CodeSnippet language="bash">npm run worker</CodeSnippet>
+      </SdkTabs.TypeScript>
+      <SdkTabs.DotNet>
+        <CodeSnippet language="bash">dotnet run --project MoneyTransferWorker/MoneyTransferWorker.csproj</CodeSnippet>
+      </SdkTabs.DotNet>
+      <SdkTabs.Ruby>
+        <CodeSnippet language="bash">bundle exec ruby worker.rb</CodeSnippet>
+      </SdkTabs.Ruby>
+    </SdkTabs>
+  </div>
+}>
+
+### Step 4: Bring Your Worker Back
+
+Restart your Worker in Terminal 2. Watch Terminal 3 - you'll see the Workflow finish up and show the result!
+
+<StatusIndicators items={[
+  { id: 'worker-status', label: 'Worker Status', value: 'RECOVERED', status: 'success' },
+  { id: 'workflow-status', label: 'Workflow Status', value: 'COMPLETED', status: 'success' },
+  { id: 'transaction', label: 'Transaction', value: 'SUCCESS', status: 'success'}
+]} />
+
+</SetupStep>
+
+</SetupSteps>
+
+
+:::tip **Try This Challenge**
+
+Try killing the Worker at different points during execution. Start the Workflow, kill the Worker during the withdrawal, then restart it. Kill it during the deposit. Each time, notice how Temporal maintains perfect state consistency.
+
+Check the Web UI while the Worker is down and you'll see the Workflow is still "Running" even though no code is executing.
+:::
+
+## Recover from an unknown error 
+
+In this part of the tutorial, you will inject a bug into your production code, watch Temporal retry automatically, then fix the bug while the Workflow is still running. 
+This demo application makes a call to an external service in an Activity. 
+If that call fails due to a bug in your code, the Activity produces an error.
+
+To test this out and see how Temporal responds, you'll simulate a bug in one of the Activity functions or methods.
+
+<WorkflowDiagram 
+  title="Live Debugging Flow"
+  nodes={[
+    { id: 'bug', label: 'Bug', status: 'default' },
+    { id: 'retry', label: 'Retry', status: 'crashed' },
+    { id: 'fix', label: 'Fix', status: 'default' },
+    { id: 'success', label: 'Success', status: 'recovered' }
+  ]}
+/>
+
+### Before You Start
+
+<TemporalCheckbox id="worker-stopped-2">
+  Worker is stopped
+</TemporalCheckbox>
+
+<TemporalCheckbox id="code-editor">
+  Code editor open with the Activities file
+</TemporalCheckbox>
+
+<TemporalCheckbox id="failure-ready">
+  Ready to uncomment the failure line
+</TemporalCheckbox>
+
+<TemporalCheckbox id="webui-ready">
+  Web UI open to watch the retries
+</TemporalCheckbox>
+
+
+## Instructions
+
+### Step 1: Stop Your Worker
+
+Before we can simulate a failure, we need to stop the current Worker process. This allows us to modify the Activity code safely.
+
+In Terminal 2 (where your Worker is running), stop it with `Ctrl+C`.
+
+**What's happening?** You're about to modify Activity code to introduce a deliberate failure. The Worker process needs to restart to pick up code changes, but the Workflow execution will continue running in Temporal's service - this separation between execution state and code is a core Temporal concept.
+
+### Step 2: Introduce the Bug
+
+Now we'll intentionally introduce a failure in the deposit Activity to simulate real-world scenarios like network timeouts, database connection issues, or external service failures. This demonstrates how Temporal handles partial failures in multi-step processes.
+
+<SdkTabs hideUnsupportedLanguages>
+<SdkTabs.Python>
+
+Find the `deposit()` method and **uncomment the failing line** while **commenting out the working line**:
+
+**activities.py**
+```python
+@activity.defn
+async def deposit(self, data: PaymentDetails) -> str:
+    reference_id = f"{data.reference_id}-deposit"
+    try:
+        # Comment out this working line:
+        # confirmation = await asyncio.to_thread(
+        #     self.bank.deposit, data.target_account, data.amount, reference_id
+        # )
+        
+        # Uncomment this failing line:
+        confirmation = await asyncio.to_thread(
+            self.bank.deposit_that_fails,
+            data.target_account,
+            data.amount,
+            reference_id,
+        )
+        return confirmation
+    except InvalidAccountError:
+        raise
+    except Exception:
+        activity.logger.exception("Deposit failed")
+        raise
+```
+
+Save your changes. You've now created a deliberate failure point in your deposit Activity. This simulates a real-world scenario where external service calls might fail intermittently.
+
+</SdkTabs.Python>
+
+<SdkTabs.Go>
+
+Find the `Deposit()` function and **uncomment the failing line** while **commenting out the working line**:
+
+**activity.go**
+```go
+func Deposit(ctx context.Context, data PaymentDetails) (string, error) {
+    log.Printf("Depositing $%d into account %s.\n\n",
+        data.Amount,
+        data.TargetAccount,
+    )
+
+    referenceID := fmt.Sprintf("%s-deposit", data.ReferenceID)
+    bank := BankingService{"bank-api.example.com"}
+    
+    // Uncomment this failing line:
+    confirmation, err := bank.DepositThatFails(data.TargetAccount, data.Amount, referenceID)
+    // Comment out this working line:
+    // confirmation, err := bank.Deposit(data.TargetAccount, data.Amount, referenceID)
+    
+    return confirmation, err
+}
+```
+
+Save your changes. You've now created a deliberate failure point in your deposit Activity. This simulates a real-world scenario where external service calls might fail intermittently.
+
+</SdkTabs.Go>
+
+<SdkTabs.Java>
+
+Open `AccountActivityImpl.java` and find the `deposit()` method. **Change `activityShouldSucceed` to `false`**:
+
+**src/main/java/moneytransferapp/AccountActivityImpl.java**
+```java
+@Override
+public void deposit(String accountId, String referenceId, int amount) {
+    // Change this to false to simulate failure:
+    boolean activityShouldSucceed = false;
+    
+    if (activityShouldSucceed) {
+        System.out.printf("\nDepositing $%d into account %s.\n[ReferenceId: %s]\n", 
+                         amount, accountId, referenceId);
+    } else {
+        System.out.println("Deposit failed");
+        throw new RuntimeException("Simulated deposit failure");
+    }
+}
+```
+
+Save your changes. You've now created a deliberate failure point in your deposit Activity. This simulates a real-world scenario where external service calls might fail intermittently.
+
+</SdkTabs.Java>
+
+<SdkTabs.TypeScript>
+
+Find the `deposit()` function in `activities.ts` and **comment out the working line** while **uncommenting the failing line**:
+
+**src/activities.ts**
+```typescript
+export async function deposit(details: PaymentDetails): Promise<string> {
+  console.log(
+    `Depositing $${details.amount} into account ${details.targetAccount}.\n\n`
+  );
+  const bank = new BankingService('bank2.example.com');
+  
+  // Comment out this working line:
+  // return await bank.deposit(details.targetAccount, details.amount, details.referenceId);
+  
+  // Uncomment this failing line:
+  return await bank.depositThatFails(details.targetAccount, details.amount, details.referenceId);
+}
+```
+
+Save your changes. You've now created a deliberate failure point in your deposit Activity. This simulates a real-world scenario where external service calls might fail intermittently.
+
+</SdkTabs.TypeScript>
+
+<SdkTabs.DotNet>
+
+Find the `DepositAsync()` method and **uncomment the failing line** while **commenting out the working block**:
+
+**MoneyTransferWorker/Activities.cs**
+```csharp
+[Activity]
+public static async Task<string> DepositAsync(PaymentDetails details)
+{
+    var bankService = new BankingService("bank2.example.com");
+    Console.WriteLine($"Depositing ${details.Amount} into account {details.TargetAccount}.");
+
+    // Uncomment this failing line:
+    return await bankService.DepositThatFailsAsync(details.TargetAccount, details.Amount, details.ReferenceId);
+    
+    // Comment out this working block:
+    /*
+    try
+    {
+        return await bankService.DepositAsync(details.TargetAccount, details.Amount, details.ReferenceId);
+    }
+    catch (Exception ex)
+    {
+        throw new ApplicationFailureException("Deposit failed", ex);
+    }
+    */
+}
+```
+
+Save your changes. You've now created a deliberate failure point in your deposit Activity. This simulates a real-world scenario where external service calls might fail intermittently.
+
+</SdkTabs.DotNet>
+
+<SdkTabs.Ruby>
+
+Find the `Withdraw` class in `activities.rb` and **uncomment the failing line** that causes a divide-by-zero error:
+
+**activities.rb**
+```ruby
+class Withdraw < Temporalio::Activity::Definition
+  def execute(details)
+    puts("Doing a withdrawal from #{details.source_account} for #{details.amount}")
+    raise InsufficientFundsError, 'Transfer amount too large' if details.amount > 1000
+
+    # Uncomment to expose a bug and cause the Activity to fail
+    x = details.amount / 0
+
+    "OKW-#{details.amount}-#{details.source_account}"
+  end
+end
+```
+
+Save your changes. You've now created a deliberate failure point in your withdraw Activity. This simulates a real-world scenario where external service calls might fail intermittently.
+
+</SdkTabs.Ruby>
+</SdkTabs>
+
+### Step 3: Start Worker & Observe Retry Behavior
+
+Now let's see how Temporal handles this failure. When you start your Worker, it will hit the failing Activity. Instead of the entire Workflow failing permanently, Temporal will retry the failed Activity according to your retry policy.
+
+<SdkTabs hideUnsupportedLanguages>
+<SdkTabs.Python>
+
+```bash
+python run_worker.py
+```
+
+**Here's what you'll see:**
+- The `withdraw()` Activity completes successfully
+- The `deposit()` Activity fails and retries automatically
+
+<AnimatedTerminal 
+  lines={[
+    `${getTodayDate()} Withdrawing $250 from account 85-150.`,
+    `${getTodayDate()} Depositing $250 into account 43-812.`,
+    `${getTodayDate()} ERROR Activity error. This deposit has failed.`,
+    `${getTodayDate()} Depositing $250 into account 43-812.`,
+    `${getTodayDate()} ERROR Activity error. This deposit has failed.`
+  ]}
+  delay={800}
+  typingSpeed={30}
+  prompt=""
+  loop={true}
+  restartDelay={60000}
+  startOnVisible={true}
+/>
+
+</SdkTabs.Python>
+
+<SdkTabs.Go>
+
+```bash
+go run worker/main.go
+```
+
+**Here's what you'll see:**
+- The `Withdraw()` Activity completes successfully
+- The `Deposit()` Activity fails and retries automatically
+
+<AnimatedTerminal 
+  lines={[
+    `${getTodayDate()} INFO  Started Worker Namespace default TaskQueue TRANSFER_MONEY_TASK_QUEUE`,
+    `${getTodayDate()} Withdrawing $250 from account 85-150.`,
+    `${getTodayDate()} Depositing $250 into account 43-812.`,
+    `${getTodayDate()} ERROR Activity error. This deposit has failed.`,
+    `${getTodayDate()} Depositing $250 into account 43-812.`,
+    `${getTodayDate()} ERROR Activity error. This deposit has failed.`
+  ]}
+  delay={800}
+  typingSpeed={30}
+  prompt=""
+  loop={true}
+  restartDelay={60000}
+  startOnVisible={true}
+/>
+
+</SdkTabs.Go>
+
+<SdkTabs.Java>
+
+Make sure your Workflow is still running in the Web UI, then start your Worker:
+
+```bash
+mvn clean install -Dorg.slf4j.simpleLogger.defaultLogLevel=info 2>/dev/null
+mvn compile exec:java -Dexec.mainClass="moneytransferapp.MoneyTransferWorker" -Dorg.slf4j.simpleLogger.defaultLogLevel=warn
+```
+
+**Here's what you'll see:**
+- The `withdraw()` Activity completes successfully
+- The `deposit()` Activity fails and retries automatically
+
+<AnimatedTerminal 
+  lines={[
+    "Withdrawing $32 from account 612849675.",
+    "[ReferenceId: d3d9bcf0-a897-4326]",
+    "Deposit failed",
+    "Deposit failed", 
+    "Deposit failed",
+    "Deposit failed"
+  ]}
+  delay={800}
+  typingSpeed={30}
+  prompt=""
+  loop={true}
+  restartDelay={60000}
+  startOnVisible={true}
+/>
+
+</SdkTabs.Java>
+
+<SdkTabs.TypeScript>
+
+```bash
+npm run worker
+```
+
+**Here's what you'll see:**
+- The `withdraw()` Activity completes successfully
+- The `deposit()` Activity fails and retries automatically
+
+<AnimatedTerminal 
+  lines={[
+    `${getTodayDateISO()} [INFO] Worker state changed { state: 'RUNNING' }`,
+    "Withdrawing $400 from account 85-150.",
+    "Depositing $400 into account 43-812.",
+    `${getTodayDateISO()} [WARN] Activity failed {`,
+    "  attempt: 1,",
+    "  activityType: 'deposit',", 
+    "  taskQueue: 'money-transfer',",
+    "  error: Error: This deposit has failed",
+    "}",
+    "Depositing $400 into account 43-812."
+  ]}
+  delay={800}
+  typingSpeed={30}
+  prompt=""
+  loop={true}
+  restartDelay={60000}
+  startOnVisible={true}
+/>
+
+</SdkTabs.TypeScript>
+
+<SdkTabs.DotNet>
+
+```bash
+dotnet run --project MoneyTransferWorker/MoneyTransferWorker.csproj
+```
+
+**Here's what you'll see:**
+- The `WithdrawAsync()` Activity completes successfully
+- The `DepositAsync()` Activity fails and retries automatically
+
+<AnimatedTerminal 
+  lines={[
+    "Running worker...",
+    "Withdrawing $400 from account 85-150.",
+    "Depositing $400 into account 43-812.",
+    "Depositing $400 into account 43-812.",
+    "Depositing $400 into account 43-812.",
+    "Depositing $400 into account 43-812."
+  ]}
+  delay={800}
+  typingSpeed={30}
+  prompt=""
+  loop={true}
+  restartDelay={60000}
+  startOnVisible={true}
+/>
+
+</SdkTabs.DotNet>
+
+<SdkTabs.Ruby>
+
+```bash
+bundle exec ruby worker.rb
+```
+
+In another terminal, start a new Workflow:
+
+```bash
+bundle exec ruby starter.rb
+```
+
+**Here's what you'll see:**
+- The `Withdraw` Activity fails and retries automatically (due to the divide-by-zero bug)
+- The `Deposit` Activity never runs because the Workflow is stuck on the failing Withdraw
+
+<AnimatedTerminal 
+  lines={[
+    "Starting Ruby worker...",
+    "Doing a withdrawal from A1001 for 100",
+    "Error: Deposit failed - divide by zero error",
+    "Doing a withdrawal from A1001 for 100",
+    "Error: Deposit failed - divide by zero error",
+    "Doing a withdrawal from A1001 for 100"
+  ]}
+  delay={800}
+  typingSpeed={30}
+  prompt=""
+  loop={true}
+  restartDelay={60000}
+  startOnVisible={true}
+/>
+
+Check the Web UI - click on your Workflow to see the failure details and retry attempts.
+
+</SdkTabs.Ruby>
+</SdkTabs>
+
+**Key observation:** Your Workflow isn't stuck or terminated. Temporal automatically retries the failed Activity according to your configured retry policy, while maintaining the overall Workflow state. Successfully completed Activities aren't re-executed - only the failed Activity is retried.
+
+### Step 4: Fix the Bug
+
+Here's where Temporal really shines - you can fix bugs in production code while Workflows are still executing. The Workflow state is preserved in Temporal's durable storage, so you can deploy fixes and let the retry mechanism pick up your corrected code.
+
+<SdkTabs hideUnsupportedLanguages>
+<SdkTabs.Python>
+
+Go back to `activities.py` and **reverse the comments** - comment out the failing line and uncomment the working line:
+
+**activities.py**
+```python
+@activity.defn
+async def deposit(self, data: PaymentDetails) -> str:
+    reference_id = f"{data.reference_id}-deposit"
+    try:
+        # Uncomment this working line:
+        confirmation = await asyncio.to_thread(
+            self.bank.deposit, data.target_account, data.amount, reference_id
+        )
+        
+        # Comment out this failing line:
+        # confirmation = await asyncio.to_thread(
+        #     self.bank.deposit_that_fails,
+        #     data.target_account,
+        #     data.amount,
+        #     reference_id,
+        # )
+        return confirmation
+    except InvalidAccountError:
+        raise
+    except Exception:
+        activity.logger.exception("Deposit failed")
+        raise
+```
+
+</SdkTabs.Python>
+
+<SdkTabs.Go>
+
+Go back to `activity.go` and **reverse the comments** - comment out the failing line and uncomment the working line:
+
+**activity.go**
+```go
+func Deposit(ctx context.Context, data PaymentDetails) (string, error) {
+    log.Printf("Depositing $%d into account %s.\n\n",
+        data.Amount,
+        data.TargetAccount,
+    )
+
+    referenceID := fmt.Sprintf("%s-deposit", data.ReferenceID)
+    bank := BankingService{"bank-api.example.com"}
+    
+    // Comment out this failing line:
+    // confirmation, err := bank.DepositThatFails(data.TargetAccount, data.Amount, referenceID)
+    // Uncomment this working line:
+    confirmation, err := bank.Deposit(data.TargetAccount, data.Amount, referenceID)
+    
+    return confirmation, err
+}
+```
+
+</SdkTabs.Go>
+
+<SdkTabs.Java>
+
+Go back to `AccountActivityImpl.java` and **change `activityShouldSucceed` back to `true`**:
+
+**src/main/java/moneytransferapp/AccountActivityImpl.java**
+```java
+@Override
+public void deposit(String accountId, String referenceId, int amount) {
+    // Change this back to true to fix the bug:
+    boolean activityShouldSucceed = true;
+    
+    if (activityShouldSucceed) {
+        System.out.printf("\nDepositing $%d into account %s.\n[ReferenceId: %s]\n", 
+                         amount, accountId, referenceId);
+    } else {
+        System.out.println("Deposit failed");
+        throw new RuntimeException("Simulated deposit failure");
+    }
+}
+```
+
+</SdkTabs.Java>
+
+<SdkTabs.TypeScript>
+
+Go back to `activities.ts` and **reverse the comments** - comment out the failing line and uncomment the working line:
+
+**src/activities.ts**
+```typescript
+export async function deposit(details: PaymentDetails): Promise<string> {
+  console.log(
+    `Depositing $${details.amount} into account ${details.targetAccount}.\n\n`
+  );
+  const bank = new BankingService('bank2.example.com');
+  
+  // Uncomment this working line:
+  return await bank.deposit(details.targetAccount, details.amount, details.referenceId);
+  
+  // Comment out this failing line:
+  // return await bank.depositThatFails(details.targetAccount, details.amount, details.referenceId);
+}
+```
+
+</SdkTabs.TypeScript>
+
+<SdkTabs.DotNet>
+
+Go back to `Activities.cs` and **reverse the comments** - comment out the failing line and uncomment the working block:
+
+**MoneyTransferWorker/Activities.cs**
+```csharp
+[Activity]
+public static async Task<string> DepositAsync(PaymentDetails details)
+{
+    var bankService = new BankingService("bank2.example.com");
+    Console.WriteLine($"Depositing ${details.Amount} into account {details.TargetAccount}.");
+
+    // Comment out this failing line:
+    // return await bankService.DepositThatFailsAsync(details.TargetAccount, details.Amount, details.ReferenceId);
+    
+    // Uncomment this working block:
+    try
+    {
+        return await bankService.DepositAsync(details.TargetAccount, details.Amount, details.ReferenceId);
+    }
+    catch (Exception ex)
+    {
+        throw new ApplicationFailureException("Deposit failed", ex);
+    }
+}
+```
+
+</SdkTabs.DotNet>
+
+<SdkTabs.Ruby>
+
+Go back to `activities.rb` and **comment out the failing line**:
+
+**activities.rb**
+```ruby
+class Withdraw < Temporalio::Activity::Definition
+  def execute(details)
+    puts("Doing a withdrawal from #{details.source_account} for #{details.amount}")
+    raise InsufficientFundsError, 'Transfer amount too large' if details.amount > 1000
+
+    # Comment out this failing line:
+    # x = details.amount / 0
+
+    "OKW-#{details.amount}-#{details.source_account}"
+  end
+end
+```
+
+</SdkTabs.Ruby>
+</SdkTabs>
+
+Save your changes. You've now restored the working implementation. The key insight here is that you can deploy fixes to Activities while Workflows are still executing - Temporal will pick up your changes on the next retry attempt.
+
+### Step 5: Restart Worker
+
+To apply your fix, you need to restart the Worker process so it picks up the code changes. Since the Workflow execution state is stored in Temporal's servers (not in your Worker process), restarting the Worker won't affect the running Workflow.
+
+<SdkTabs hideUnsupportedLanguages>
+<SdkTabs.Python>
+
+```bash
+# Stop the current Worker
+Ctrl+C
+
+# Start it again with the fix
+python run_worker.py
+```
+
+**On the next retry attempt,** your fixed `deposit()` Activity will succeed, and you'll see the completed transaction in Terminal 3:
+
+```
+Transfer complete.
+Withdraw: {'amount': 250, 'receiver': '43-812', 'reference_id': '1f35f7c6-4376-4fb8-881a-569dfd64d472', 'sender': '85-150'}
+Deposit: {'amount': 250, 'receiver': '43-812', 'reference_id': '1f35f7c6-4376-4fb8-881a-569dfd64d472', 'sender': '85-150'}
+```
+
+</SdkTabs.Python>
+
+<SdkTabs.Go>
+
+```bash
+# Stop the current Worker
+Ctrl+C
+
+# Start it again with the fix
+go run worker/main.go
+```
+
+**On the next retry attempt,** your fixed `Deposit()` Activity will succeed, and you'll see the completed transaction in your starter terminal:
+
+```
+Transfer complete (transaction IDs: W1779185060, D1779185060)
+```
+
+</SdkTabs.Go>
+
+<SdkTabs.Java>
+
+```bash
+# Stop the current Worker
+Ctrl+C
+
+# Start it again with the fix
+mvn clean install -Dorg.slf4j.simpleLogger.defaultLogLevel=info 2>/dev/null
+mvn compile exec:java -Dexec.mainClass="moneytransferapp.MoneyTransferWorker" -Dorg.slf4j.simpleLogger.defaultLogLevel=warn
+```
+
+**On the next retry attempt,** your fixed `deposit()` Activity will succeed:
+
+```
+Depositing $32 into account 872878204.
+[ReferenceId: d3d9bcf0-a897-4326]
+[d3d9bcf0-a897-4326] Transaction succeeded.
+```
+
+</SdkTabs.Java>
+
+<SdkTabs.TypeScript>
+
+```bash
+# Stop the current Worker
+Ctrl+C
+
+# Start it again with the fix
+npm run worker
+```
+
+**On the next retry attempt,** your fixed `deposit()` Activity will succeed, and you'll see the completed transaction in your client terminal:
+
+```
+Transfer complete (transaction IDs: W3436600150, D9270097234)
+```
+
+</SdkTabs.TypeScript>
+
+<SdkTabs.DotNet>
+
+```bash
+# Stop the current Worker
+Ctrl+C
+
+# Start it again with the fix
+dotnet run --project MoneyTransferWorker/MoneyTransferWorker.csproj
+```
+
+**On the next retry attempt,** your fixed `DepositAsync()` Activity will succeed, and you'll see the completed transaction in your client terminal:
+
+```
+Workflow result: Transfer complete (transaction IDs: W-caa90e06-3a48-406d-86ff-e3e958a280f8, D-1910468b-5951-4f1d-ab51-75da5bba230b)
+```
+
+</SdkTabs.DotNet>
+
+<SdkTabs.Ruby>
+
+```bash
+# Stop the current Worker
+Ctrl+C
+
+# Start it again with the fix
+bundle exec ruby worker.rb
+```
+
+**On the next retry attempt,** your fixed `Withdraw` Activity will succeed, and you'll see the Workflow complete successfully.
+
+</SdkTabs.Ruby>
+</SdkTabs>
+
+Check the Web UI - your Workflow shows as completed. You've just demonstrated Temporal's key differentiator: the ability to fix production bugs in running applications without losing transaction state or progress. This is possible because Temporal stores execution state separately from your application code.
+
+**Mission Accomplished.** You have just fixed a bug in a running application without losing the state of the Workflow or restarting the transaction.
+
+
+
+
+
+
+:::tip Advanced Challenge
+
+Try this advanced scenario of compensating transactions.
+
+
+1. **Modify the retry policy** in the workflow file to only retry 1 time
+2. **Force the deposit to fail permanently** 
+3. **Watch the automatic refund** execute
+
+:::
+
+
+## Knowledge Check
+
+Test your understanding of what you just experienced:
+
+<details>
+<summary><strong>Q: What are four of Temporal's value propositions that you learned about in this tutorial? </strong></summary>
+
+**Answer**: 
+1. Temporal automatically maintains the state of your Workflow, despite crashes or even outages of the Temporal Service itself.
+2. Temporal's built-in support for retries and timeouts enables your code to overcome transient and intermittent failures.
+3. Temporal provides full visibility in the state of the Workflow Execution and its Web UI offers a convenient way to see the details of both current and past executions.
+4. Temporal makes it possible to fix a bug in a Workflow Execution that you've already started. After updating the code and restarting the Worker, the failing Activity is retried using the code containing the bug fix, completes successfully, and execution continues with what comes next.
+</details>
+
+<details>
+<summary><strong>Q: Why do we use a shared constant for the Task Queue name?</strong></summary>
+
+**Answer**: Because the Task Queue name is specified in two different parts of the code (the first starts the Workflow and the second configures the Worker). If their values differ, the Worker and Temporal Service would not share the same Task Queue, and the Workflow Execution would not progress.
+
+
+</details>
+
+<details>
+<summary><strong>Q: What do you have to do if you make changes to Activity code for a Workflow that is running? </strong></summary>
+
+**Answer**: Restart the Worker.
+
+
+</details>
+
+## Continue Your Learning
+
+<div className="row">
+  <div className="col col--4">
+    <CallToAction 
+      href="/evaluate/understanding-temporal"
+      buttonText="Understanding Temporal"
+      description="Learn core concepts"
+    />
+  </div>
+  <div className="col col--4">
+    <CallToAction 
+      href="https://learn.temporal.io/courses/"
+      buttonText="Take a Free Course"
+      description="Enroll in Temporal 101 and 102"
+    />
+  </div>
+  <div className="col col--4">
+    <CallToAction 
+      href="https://temporal.io/code-exchange"
+      buttonText="Code Exchange "
+      description="Explore example applications"
+    />
+  </div>
+</div>
