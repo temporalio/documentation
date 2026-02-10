@@ -61,7 +61,7 @@ html[data-theme='dark']:root {
   --feedback-modal-rating-button-color: #d1d5db; /* thumbs up/down */
   --feedback-color-gray-400: #b0b5bd; /* placeholder text base color */
   --feedback-modal-button-submit-text-color: #1a1a1a; /* dark text on white send button */
-  --feedback-button-light-bg-color: #1a1a1a; /* floating button background */
+  --feedback-button-light-bg-color: #0d0d0d; /* floating button background */
   --feedback-button-light-text-color: #e8e8e8; /* floating button text */
   --feedback-button-light-icon-color: #e8e8e8; /* floating button icon */
   /* --ifm-menu-color-active: var(--ifm-color-primary-lighter);
@@ -81,6 +81,7 @@ html[data-theme='dark']:root {
   --tag-background-color: var(--tag-background-color-dark);
   --tag-text-color: var(--tag-text-color-dark);
 }
+
 
 html[data-theme='light']:root {
   --ifm-color-primary: #1d4ed8;
