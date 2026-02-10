@@ -235,7 +235,6 @@ module.exports = {
           },
           items: [
             'develop/typescript/set-up-your-local-typescript',
-            'develop/typescript/install-typescript-sdk',
             {
               type: 'category',
               label: 'Activities',
@@ -246,9 +245,9 @@ module.exports = {
               },
               items: [
                 'develop/typescript/activities/basic-activity',
-                'develop/typescript/activities/asynchronous-activity-completion',
                 'develop/typescript/activities/execution',
                 'develop/typescript/activities/timeouts',
+                'develop/typescript/activities/asynchronous-activity-completion',
                 'develop/typescript/activities/benign-exceptions',
               ],
             },
@@ -262,17 +261,17 @@ module.exports = {
               },
               items: [
                 'develop/typescript/workflows/basic-workflow',
-                'develop/typescript/workflows/child-workflows',
+                'develop/typescript/workflows/workflow-execution',
                 'develop/typescript/workflows/continue-as-new',
-                'develop/typescript/workflows/cancellation',
                 'develop/typescript/workflows/timeouts',
+                'develop/typescript/workflows/cancellation',
+                'develop/typescript/workflows/cancellation-scopes',
                 'develop/typescript/workflows/message-passing',
-                'develop/typescript/workflows/versioning',
-                'develop/typescript/workflows/enriching-ui',
+                'develop/typescript/workflows/child-workflows',
                 'develop/typescript/workflows/schedules',
                 'develop/typescript/workflows/timers',
-                'develop/typescript/workflows/cancellation-scopes',
-                'develop/typescript/workflows/workflow-execution'
+                'develop/typescript/workflows/enriching-ui',
+                'develop/typescript/workflows/versioning',
               ],
             },
             {
@@ -284,9 +283,9 @@ module.exports = {
                 id: 'develop/typescript/workers/index',
               },
               items: [
+                'develop/typescript/workers/run-worker-process',
                 'develop/typescript/workers/interceptors',
                 'develop/typescript/workers/observability',
-                'develop/typescript/workers/run-worker-process'
               ],
             },
             {
@@ -326,6 +325,7 @@ module.exports = {
                 'develop/typescript/best-practices/testing-suite',
                 'develop/typescript/best-practices/debugging',
                 'develop/typescript/best-practices/converters-and-encryption',
+                'develop/typescript/best-practices/entity-pattern',
               ],
             },
             {
