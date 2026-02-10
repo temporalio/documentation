@@ -47,7 +47,7 @@ module.exports = {
               items: [
                 {
                   type: 'link',
-                  label: 'Change-log',
+                  label: 'Changelog',
                   href: 'https://temporal.io/change-log',
                 },
               ],
@@ -163,6 +163,7 @@ module.exports = {
             id: 'develop/php/index',
           },
           items: [
+            'develop/php/set-up-your-local-php',
             'develop/php/core-application',
             'develop/php/temporal-client',
             'develop/php/testing-suite',
@@ -408,7 +409,6 @@ module.exports = {
               items: [
                 'cloud/metrics/general-setup',
                 'cloud/metrics/reference',
-                'cloud/metrics/datadog',
                 'cloud/metrics/prometheus-grafana',
               ],
             },
@@ -543,6 +543,7 @@ module.exports = {
           },
           items: [
             'production-deployment/self-hosted-guide/deployment',
+            'production-deployment/self-hosted-guide/embedded-server',
             'production-deployment/self-hosted-guide/checklist',
             'production-deployment/self-hosted-guide/defaults',
             'production-deployment/self-hosted-guide/namespaces',
@@ -636,7 +637,7 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Best Practices',
+      label: 'Best practices',
       collapsed: true,
       link: {
         type: 'doc',
@@ -648,6 +649,7 @@ module.exports = {
         'best-practices/cloud-access-control',
         'best-practices/security-controls',
         'best-practices/worker',
+        'production-deployment/multi-tenant-patterns',
       ],
     },
     {
