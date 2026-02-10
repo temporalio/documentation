@@ -222,7 +222,8 @@ Use the following procedure to deploy the proxy:
 1. Obtain the latest Docker image from the [temporalio/s2s-proxy repository](https://hub.docker.com/r/temporalio/s2s-proxy/tags).
 2. Gather the mTLS certs generated in the previous step.
 3. Deploy 1 replica of the s2s-proxy (minimum 4 CPU and 512mb memory). For Kubernetes users, use this [helm chart example](https://github.com/temporalio/s2s-proxy/blob/main/charts/s2s-proxy/README.md)
-   as a reference. See the [example](https://github.com/temporalio/s2s-proxy/blob/main/charts/s2s-proxy/example.yaml) configuration file as a reference.
+   as a reference. See the [example](https://github.com/temporalio/s2s-proxy/blob/main/charts/s2s-proxy/example.yaml) configuration file as a reference. Note that it is possible to deploy
+   more than 1 replica. If more than 1 replica is deployed, you must update Temporal with the number of replicas used so that an identical number may be configured on the cloud-side.
 4. Test access using the command below. It should display the information of the migration server.
 
 ```
