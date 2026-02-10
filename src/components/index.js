@@ -12,6 +12,7 @@ export { default as JsonTable } from './formatting/JsonTable';
 
 // Image components
 export { default as CaptionedImage } from './images/CaptionedImage';
+export { default as EnlargeImage } from './images/EnlargeImage';
 export { default as ZoomingImage } from './images/ZoomingImage';
 
 // Information components
