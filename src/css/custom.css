@@ -52,6 +52,15 @@ html[data-theme='dark']:root {
   --feedback-dark-color: #1a1a1a; /* modal background */
   --feedback-text-color: #9ca3af; /* body text, footer, labels */
   --feedback-white-color: #e8e8e8; /* header text, button text */
+  --feedback-modal-button-text-color: #d1d5db; /* screenshot/action button text */
+  --feedback-modal-button-icon-color: #d1d5db; /* button icons */
+  --feedback-modal-input-text-color: #d1d5db; /* input text */
+  --feedback-modal-input-border-color: rgba(255, 255, 255, 0.2); /* input borders */
+  --feedback-modal-input-border-color-hover: rgba(255, 255, 255, 0.35); /* input borders hover */
+  --feedback-modal-content-text-color: #d1d5db; /* placeholder and content text */
+  --feedback-modal-rating-button-color: #d1d5db; /* thumbs up/down */
+  --feedback-color-gray-400: #b0b5bd; /* placeholder text base color */
+  --feedback-modal-button-submit-text-color: #1a1a1a; /* dark text on white send button */
   /* --ifm-menu-color-active: var(--ifm-color-primary-lighter);
   --ifm-navbar-link-hover-color: var(--ifm-color-primary-lighter);
   --ifm-toc-link-color: #ffffff;
