@@ -1,0 +1,280 @@
+---
+id: encore
+title: Encore integration - TypeScript SDK
+sidebar_label: Encore integration
+toc_max_heading_level: 2
+keywords:
+  - encore
+  - backend framework
+  - typescript
+  - infrastructure
+tags:
+  - Encore
+  - TypeScript SDK
+  - Temporal SDKs
+description: Build durable Workflows in a type-safe Encore backend using the Temporal TypeScript SDK.
+---
+
+[Encore](https://encore.dev) is an open-source backend framework for TypeScript (and Go) that provides type-safe APIs,
+declarative infrastructure, and built-in observability. It pairs naturally with Temporal: Encore handles your API layer,
+databases, and infrastructure automation, while Temporal handles durable, long-running Workflows that must survive
+failures.
+
+This guide shows you how to run a Temporal Worker inside an Encore service, define Workflows and Activities, and trigger
+Workflow Executions from type-safe Encore API endpoints.
+
+## Prerequisites
+
+- Familiarity with the [Encore TypeScript SDK](https://encore.dev/docs/ts). If you're new to Encore, follow the
+  [quick start](https://encore.dev/docs/ts/quick-start) to set up your environment.
+- If you are new to Temporal, we recommend reading [Understanding Temporal](/evaluate/understanding-temporal) or taking
+  the [Temporal 101](https://learn.temporal.io/courses/temporal_101/) course.
+- Ensure you have set up your local development environment by following the
+  [Set up your local with the TypeScript SDK](/develop/typescript/set-up-your-local-typescript) guide. When you're done,
+  leave the Temporal Development Server running if you want to test your code locally.
+
+## Set up the Encore service
+
+An Encore service is defined by creating an `encore.service.ts` file in a directory. Create a service called
+`greeting` that will host both your Temporal Worker and your API endpoints.
+
+```text
+your-app/
+└── greeting/
+    ├── encore.service.ts
+    ├── activities.ts
+    ├── workflows.ts
+    ├── worker.ts
+    └── api.ts
+```
+
+Define the service:
+
+```ts
+// greeting/encore.service.ts
+import { Service } from "encore.dev/service";
+
+export default new Service("greeting");
+```
+
+## Configure secrets
+
+Use [Encore secrets](https://encore.dev/docs/ts/primitives/secrets) to store your Temporal connection details. This
+keeps credentials out of your code and lets you use different values per environment — for example, `localhost:7233` for
+local development and a Temporal Cloud address for production.
+
+```ts
+// greeting/config.ts
+import { secret } from "encore.dev/config";
+
+export const temporalAddress = secret("TemporalAddress");
+export const temporalNamespace = secret("TemporalNamespace");
+```
+
+Set the secrets using the Encore CLI:
+
+```bash
+# Local development (connects to a local Temporal dev server)
+encore secret set --type local TemporalAddress     # enter: localhost:7233
+encore secret set --type local TemporalNamespace   # enter: default
+
+# Production (connects to Temporal Cloud or a self-hosted cluster)
+encore secret set --type prod TemporalAddress      # enter: <namespace>.<account>.tmprl.cloud:7233
+encore secret set --type prod TemporalNamespace    # enter: <namespace>
+```
+
+## Define Activities
+
+[Activities](/glossary#activity) contain your business logic — API calls, database queries, or any code with side
+effects. Define them as regular async functions:
+
+```ts
+// greeting/activities.ts
+export async function greet(name: string): Promise<string> {
+  return `Hello, ${name}!`;
+}
+
+export async function sendNotification(message: string): Promise<void> {
+  console.log(`Notification sent: ${message}`);
+  // In a real app, call an email API or push notification service here.
+}
+```
+
+## Define Workflows
+
+[Workflows](/glossary#workflow) orchestrate Activities into reliable, durable sequences. Even if the process crashes
+mid-execution, Temporal replays the Workflow from its event history and resumes where it left off.
+
+```ts
+// greeting/workflows.ts
+import { proxyActivities } from "@temporalio/workflow";
+import type * as activities from "./activities";
+
+const { greet, sendNotification } = proxyActivities<typeof activities>({
+  startToCloseTimeout: "30 seconds",
+});
+
+export async function greetingWorkflow(name: string): Promise<string> {
+  const message = await greet(name);
+  await sendNotification(message);
+  return message;
+}
+```
+
+:::tip
+
+Workflow code must be deterministic — it cannot make network calls or use `Date.now()` directly. All side effects
+belong in Activities. See the [Workflow constraints](/develop/typescript/core-application#develop-workflows) for more
+details.
+
+:::
+
+## Start the Worker
+
+The [Worker](/glossary#worker) polls the Temporal Service for tasks and executes your Workflows and Activities. Start it
+inside the Encore service so that it runs alongside your API endpoints:
+
+```ts
+// greeting/worker.ts
+import { Connection, Client } from "@temporalio/client";
+import { Worker, NativeConnection } from "@temporalio/worker";
+import { temporalAddress, temporalNamespace } from "./config";
+import * as activities from "./activities";
+
+const TASK_QUEUE = "greeting";
+
+// Create the Temporal Client (used by API endpoints to start Workflows).
+const clientConnection = await Connection.connect({
+  address: temporalAddress(),
+});
+
+export const temporalClient = new Client({
+  connection: clientConnection,
+  namespace: temporalNamespace(),
+});
+
+// Create and start the Worker.
+const workerConnection = await NativeConnection.connect({
+  address: temporalAddress(),
+});
+
+const worker = await Worker.create({
+  connection: workerConnection,
+  namespace: temporalNamespace(),
+  taskQueue: TASK_QUEUE,
+  workflowsPath: require.resolve("./workflows"),
+  activities,
+});
+
+// worker.run() returns a promise that resolves when the Worker shuts down.
+worker.run().catch((err) => {
+  console.error("Temporal Worker failed:", err);
+  process.exit(1);
+});
+
+export { TASK_QUEUE };
+```
+
+Encore runs top-level module code at service startup, so the Worker starts automatically when the service initializes.
+
+## Trigger Workflows from API endpoints
+
+Use [Encore API endpoints](https://encore.dev/docs/ts/primitives/defining-apis) to start Workflow Executions. Encore
+gives you type-safe request/response handling, automatic OpenAPI documentation, and built-in distributed tracing.
+
+```ts
+// greeting/api.ts
+import { api } from "encore.dev/api";
+import { temporalClient, TASK_QUEUE } from "./worker";
+
+interface GreetParams {
+  name: string;
+}
+
+interface GreetResponse {
+  message: string;
+  workflowId: string;
+}
+
+// Start a greeting Workflow and wait for the result.
+export const greet = api(
+  { method: "POST", path: "/greet", expose: true },
+  async (params: GreetParams): Promise<GreetResponse> => {
+    const workflowId = `greeting-${params.name}-${Date.now()}`;
+
+    const handle = await temporalClient.workflow.start("greetingWorkflow", {
+      workflowId,
+      taskQueue: TASK_QUEUE,
+      args: [params.name],
+    });
+
+    const message = await handle.result();
+    return { message, workflowId };
+  },
+);
+
+// Start a Workflow without waiting for the result.
+export const greetAsync = api(
+  { method: "POST", path: "/greet/async", expose: true },
+  async (params: GreetParams): Promise<{ workflowId: string }> => {
+    const workflowId = `greeting-${params.name}-${Date.now()}`;
+
+    await temporalClient.workflow.start("greetingWorkflow", {
+      workflowId,
+      taskQueue: TASK_QUEUE,
+      args: [params.name],
+    });
+
+    return { workflowId };
+  },
+);
+```
+
+## Run locally
+
+To develop locally, run the Temporal Development Server and Encore side by side:
+
+```bash
+# Terminal 1: Start the Temporal dev server
+temporal server start-dev
+```
+
+```bash
+# Terminal 2: Start your Encore app
+encore run
+```
+
+Encore starts the `greeting` service, which initializes the Temporal Worker and begins polling for tasks. You can call
+your API endpoint:
+
+```bash
+curl -X POST http://localhost:4000/greet -d '{"name": "World"}'
+```
+
+Encore's [local development dashboard](https://encore.dev/docs/ts/observability/dev-dash) gives you tracing and API
+documentation, while the [Temporal UI](http://localhost:8233) shows Workflow Execution history and state.
+
+## Deploy to production
+
+First, set your production secrets to point at [Temporal Cloud](https://temporal.io/cloud) or a self-hosted Temporal
+cluster:
+
+```bash
+encore secret set --type prod TemporalAddress    # e.g. <namespace>.<account>.tmprl.cloud:7233
+encore secret set --type prod TemporalNamespace  # e.g. your-namespace
+```
+
+Then deploy with a single command:
+
+```bash
+git push encore
+```
+
+This deploys to [Encore Cloud](https://encore.cloud) (free tier available), which provisions your infrastructure
+automatically. You can also deploy to your own AWS or GCP account using Encore Cloud as the CI/CD layer. See the
+[Encore deployment docs](https://encore.dev/docs/ts/deploy/deploying) for more details.
+
+If your Temporal cluster requires mTLS (such as Temporal Cloud), extend the connection setup in `worker.ts` to include
+TLS certificates, stored as additional Encore secrets.
+
+No code changes are needed. Encore's per-environment secrets handle the configuration automatically.
