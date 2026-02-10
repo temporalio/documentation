@@ -232,6 +232,13 @@ temporal operator cluster describe --address {the-outbound-external-address-of-y
 
 Once connectivity has been verified, notify Temporal so that connectivity may be validated from the cloud-side proxy.
 
+There are multiple metrics available on the S2S proxy (prometheus endpoint: _proxy-pod-ip_:9090/metrics). These are helpful for monitoring the overall health of the proxy. In particular,
+the metric
+
+`temporal_s2s_proxy_mux_connection_active`
+
+will monitor connectivity to the cloud-side proxy.
+
 
 ## Phase 3: Testing
 Testing should proceed using either a newly created Namespace or else one that is considered to be non-production. In either case, test Workflows
@@ -266,8 +273,6 @@ tcld migration start --endpoint-id <endpoint-id> --source-namespace <source-name
 ### Monitor
 During the initial sync, it is important to monitor the overall process to ensure progress is being made. While Temporal will monitor from the cloud-side,
 progress may also be monitored from the self-hosted side using the _replication_stream_stuck_ metric.
-
-Additionally, there are multiple metrics available on the S2S proxy itself.
 
 The following [command](https://pkg.go.dev/github.com/temporalio/tcld#readme-get-a-migration) may also be used to monitor the migration progress:
 
