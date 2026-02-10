@@ -3,9 +3,9 @@ id: knowledge-hub
 title: Knowledge Hub
 sidebar_label: Knowledge Hub
 description:
-  TBD
+  Best practices for building and maintaining an internal Temporal knowledge hub that accelerates developer onboarding,
+  reduces platform team support load, and establishes consistent standards across your organization.
 toc_max_heading_level: 3
-hide_table_of_contents: true
 keywords:
   - temporal best practices
   - operational excellence
@@ -17,7 +17,11 @@ As organizations scale their Temporal adoption, the need for centralized, consis
 Mature Temporal organizations establish internal knowledge hubs to address common challenges that emerge when multiple teams
 adopt Temporal independently.
 
-### The problem
+This guide covers what belongs in a knowledge hub, how to communicate it, and how to keep it useful over time.
+To bootstrap your knowledge hub, use the
+[Temporal Platform Hub](https://kawofong.github.io/temporal-platform-hub/) template as a starting point.
+
+## The problem
 
 Without a centralized knowledge base, organizations often experience:
 
@@ -32,7 +36,7 @@ Without a centralized knowledge base, organizations often experience:
 - **Compliance and security gaps**: Without standardized guidance, teams may inadvertently introduce security
   vulnerabilities or miss compliance requirements.
 
-### Value of a Temporal knowledge hub
+## Value of a Temporal Knowledge Hub
 
 Organizations that invest in an internal Temporal knowledge hub see measurable improvements:
 
@@ -44,11 +48,86 @@ Organizations that invest in an internal Temporal knowledge hub see measurable i
 | **Faster time-to-production** | Ship features faster with validated patterns and decision frameworks. |
 | **Improved compliance** | Ensure consistent security controls and access management across teams. |
 
-### Next steps
+## Quantifying the value
 
-1. **Use the template**: Start with the [Temporal Platform Hub template](https://kawofong.github.io/temporal-platform-hub/) as your foundation.
-It provides a proven structure covering everything from decision frameworks to escalation path.
-2. **Assign ownership**: Designate a Platform team to customize the content and keep it current as your
-Temporal practice evolves.
-3. **Iterate**: Track which pages developers visit most and which questions still come to the Platform
-   team. Use this data to continuously improve the documentation.
+These benefits become concrete when you attach metrics to them.
+The following table shows example indicators that organizations use to measure the impact of their knowledge hub,
+along with realistic before-and-after targets:
+
+| Metric | Before Knowledge Hub | Target | What it tells you |
+| :--- | :--- | :--- | :--- |
+| **Time to first Workflow** | Days to weeks (developers piece together scattered resources) | Under 30 minutes (developers follow a single getting started guide) | Measures onboarding friction. A short time to first Workflow signals that your getting started guide is effective. |
+| **Time to Workflow in production** | Weeks to months (blocked by unclear Namespace provisioning and deployment processes) | Under 2 weeks (developers follow documented self-service provisioning) | Measures the gap between development and delivering value. Long times point to missing documentation and automation opportunities. |
+| **Support question rate** | 20-30+ questions per week to the Platform team via Slack | Fewer than 5 per week | Measures self-service resolution. A declining trend shows that developers are finding answers in the knowledge hub instead of asking the Platform team. |
+| **Knowledge Hub traffic** | N/A (no centralized resource exists) | Steady or growing page views per month | Identifies which content developers rely on and where gaps remain. Declining traffic on a page may indicate it is outdated; high traffic with high bounce rates may indicate the page is not answering the question. |
+
+These metrics create a feedback loop: measure, identify gaps, improve content, and measure again.
+The [How to maintain and communicate your Knowledge Hub](#how-to-maintain-and-communicate-your-knowledge-hub) section
+covers how to operationalize this feedback loop.
+
+## What belongs in your Knowledge Hub
+
+Each section of a knowledge hub maps to the metrics above.
+The following outline shows what to include, organized by the developer journey from evaluation through production
+operations:
+
+| Section | What it covers | Metrics it drives |
+| :--- | :--- | :--- |
+| **Temporal overview** | What Temporal is, why your organization chose it, and business value metrics. | Knowledge Hub traffic |
+| **Decision framework** | Qualifying questions, good and bad use cases, and alternative recommendations. | Knowledge Hub traffic, support question rate |
+| **Getting started** | 30-minute quickstart with environment setup, starter template, and first Workflow locally and on Temporal Cloud. | Time to first Workflow |
+| **Learning paths** | Structured courses from foundational to advanced, tailored by persona. Links to [Temporal's free training](https://learn.temporal.io/). | Time to first Workflow, time to first Workflow in production |
+| **Architecture and standards** | Namespace conventions, connectivity requirements, and Worker deployment standards. | Time to Workflow in production |
+| **Cost guidance** | Billable Actions, storage tiers, and cost-saving tips. | Support question rate |
+| **Shared responsibility** | Ownership matrix between Platform and Application teams across IAM, infrastructure, development, deployment, observability, and operations. | Support question rate |
+| **Design patterns** | Curated Workflow patterns with descriptions and code sample links. | Time to Workflow in production, support question rate |
+| **Troubleshooting and escalation** | Observability tools, runbooks for common issues, escalation path, SLAs, and example alert definitions. | Support question rate |
+| **Support and FAQs** | Support tier, ticket submission, Temporal account contacts, expert-led session types, and frequently asked questions. | Support question rate |
+
+## What doesn't belong in your Knowledge Hub
+
+A knowledge hub is not a mirror of [Temporal's official documentation](https://docs.temporal.io/).
+Avoid duplicating SDK API references, concept explanations, or release notes that Temporal already maintains.
+When that content changes, your copy becomes a source of confusion rather than clarity.
+Instead, link to the official docs and reserve your knowledge hub for organization-specific decisions, conventions,
+and operational procedures that Temporal's public documentation does not cover.
+
+## How to maintain and communicate your Knowledge Hub
+
+### Assign ownership
+
+Designate a Platform team or developer experience team as the owner.
+This team is responsible for initial content creation, ongoing maintenance, and reviewing contributions from
+application teams.
+
+### Make it discoverable
+
+A knowledge hub that developers can not find is the same as not having one.
+
+- Register a short URL (for example, `go/temporal`) that redirects to the knowledge hub.
+- Pin the link in your Temporal-related communication channels (e.g. Slack, Microsoft Teams).
+- When answering questions in Slack, respond with a link to the relevant knowledge hub page instead of re-explaining
+  inline.
+  This builds the habit of checking the hub first.
+
+### Review metrics regularly
+
+Track the metrics from [Quantifying the value](#quantifying-the-value) on a regular cadence to identify what is
+working and where gaps remain.
+
+Capture every question that reaches the Platform team through Slack or tickets as a candidate for new content.
+
+Solicit contributions from application teams through a lightweight process such as a pull request template.
+
+### Keep content current
+
+- **Review on a cadence**: Review each page at least quarterly.
+  Assign a review owner and date to each page so staleness is visible.
+- **Tie updates to events**: Update the knowledge hub whenever your organization changes its Temporal architecture,
+  updates its deployment tooling, or modifies its shared responsibility model.
+- **Prune aggressively**: Remove or archive content that no longer applies.
+  Outdated documentation is worse than no documentation because developers follow it and get unexpected results.
+
+## Get started
+
+Start with the [Temporal Platform Hub template](https://kawofong.github.io/temporal-platform-hub/) as your foundation.
