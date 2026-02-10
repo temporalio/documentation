@@ -61,6 +61,9 @@ html[data-theme='dark']:root {
   --feedback-modal-rating-button-color: #d1d5db; /* thumbs up/down */
   --feedback-color-gray-400: #b0b5bd; /* placeholder text base color */
   --feedback-modal-button-submit-text-color: #1a1a1a; /* dark text on white send button */
+  --feedback-button-dark-bg-color: #2a2a2a; /* floating button background */
+  --feedback-button-dark-text-color: #e8e8e8; /* floating button text */
+  --feedback-button-dark-icon-color: #e8e8e8; /* floating button icon */
   /* --ifm-menu-color-active: var(--ifm-color-primary-lighter);
   --ifm-navbar-link-hover-color: var(--ifm-color-primary-lighter);
   --ifm-toc-link-color: #ffffff;
