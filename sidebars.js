@@ -644,13 +644,13 @@ module.exports = {
         id: 'best-practices/index',
       },
       items: [
+        'best-practices/worker',
+        'best-practices/pre-production-testing',
+        'production-deployment/multi-tenant-patterns',
         'best-practices/managing-namespace',
         'best-practices/managing-aps-limits',
         'best-practices/cloud-access-control',
         'best-practices/security-controls',
-        'best-practices/worker',
-        'best-practices/pre-production-testing',
-        'production-deployment/multi-tenant-patterns',
       ],
     },
     {

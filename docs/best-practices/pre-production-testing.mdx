@@ -17,7 +17,7 @@ tags:
 This guide collects practical, experience-driven testing practices for teams running Temporal applications.
 The goal is not just to verify that things fail and recover, but to build confidence that *recovery*, *correctness*, *consistency*, and *operability* hold under real-world conditions.
 
-The scenarios below assume familiarity with Temporal concepts such as Namespaces, Workers, Task Queues, History shards, Timers, and Workflow replay.
+The scenarios below assume familiarity with Temporal concepts such as [Namespaces](/namespaces), [Workers](/workers), [Task Queues](/task-queue), [History shards](/temporal-service/temporal-server#history-shard), [Timers](/workflow-execution/timers-delays), and [Workflow replay](/workflow-execution#replay).
 Start with [Understanding Temporal](/evaluate/understanding-temporal#durable-execution) if you need background.
 
 Before starting any load testing in Temporal Cloud, we recommend connecting with your Temporal Account team and our Developer Success Engineering team.
@@ -32,47 +32,9 @@ Before diving into specific experiments, keep these principles in mind:
 - **Build observability before you break things**: Ensure metrics, logs, and visibility tools are in place before injecting failures.
 - **Testing is a continual process**: Testing is never finished. Testing is a practice.
 
-## Network-level testing (optional)
-
-**Relevant best practices**: Idempotent Activities, bounded retries, appropriate timeouts
-
-- [Activity timeouts](https://temporal.io/blog/activity-timeouts)
-- [Idempotency and durable execution](https://temporal.io/blog/idempotency-and-durable-execution)
-
-### Remove network connectivity to a Namespace
-
-**What to test**
-
-Temporarily block all network access between Workers and the Temporal service for a Namespace.
-
-**Why it matters**
-
-- Validates Worker retry behavior, Sticky Task Queue behavior, Worker recovery performance, backoff policies, and Workflow replay determinism under prolonged disconnection.
-- Ensures no assumptions are made about "always-on" connectivity.
-
-**Temporal failure modes exercised**
-
-- Workflow Task timeouts vs retries
-- Activity retry semantics
-- Replay correctness after long gaps
-
-**How to run this**
-
-- **Kubernetes**: Apply a NetworkPolicy that denies egress from Worker pods to the Temporal APIs.
-- **[ToxiProxy](https://github.com/Shopify/toxiproxy)**: Proves your application doesn't have single points of failure.
-- **Chaos Mesh / Litmus**: NetworkChaos with full packet drop.
-- **Local testing**: Block ports with iptables or firewall rules.
-
-**Things to watch**
-
-- Workflow failures (replay, timeout)
-- Workflow Task retries
-- Activity failures, classifications (retryable vs non-retryable)
-- Worker CPU usage during reconnect storms
-
 ## Worker testing
 
-**Relevant best practices**: Appropriate timeouts, managing Worker shutdown, idempotency
+**Relevant best practices**: [Worker deployment and performance](/best-practices/worker), appropriate timeouts, managing Worker shutdown, idempotency
 
 - [Worker shutdown](/encyclopedia/workers/worker-shutdown)
 
@@ -313,6 +275,46 @@ Intentionally break or degrade downstream dependencies used by Activities:
 - Workflow Task failure reasons
 - Backlog growth and drain time
 - Effectiveness of versioning and patching patterns
+
+## Network-level testing
+
+The scenarios below are most relevant if your infrastructure introduces network boundaries (such as firewalls, VPNs, or network policies) between Workers and the Temporal service, or if you need to verify application behavior during prolonged disconnections.
+
+**Relevant best practices**: Idempotent Activities, bounded retries, appropriate timeouts
+
+- [Activity timeouts](https://temporal.io/blog/activity-timeouts)
+- [Idempotency and durable execution](https://temporal.io/blog/idempotency-and-durable-execution)
+
+### Remove network connectivity to a Namespace
+
+**What to test**
+
+Temporarily block all network access between Workers and the Temporal service for a Namespace.
+
+**Why it matters**
+
+- Validates Worker retry behavior, Sticky Task Queue behavior, Worker recovery performance, backoff policies, and Workflow replay determinism under prolonged disconnection.
+- Ensures no assumptions are made about "always-on" connectivity.
+
+**Temporal failure modes exercised**
+
+- Workflow Task timeouts vs retries
+- Activity retry semantics
+- Replay correctness after long gaps
+
+**How to run this**
+
+- **Kubernetes**: Apply a NetworkPolicy that denies egress from Worker pods to the Temporal APIs.
+- **[ToxiProxy](https://github.com/Shopify/toxiproxy)**: Proves your application doesn't have single points of failure.
+- **Chaos Mesh / Litmus**: NetworkChaos with full packet drop.
+- **Local testing**: Block ports with iptables or firewall rules.
+
+**Things to watch**
+
+- Workflow failures (replay, timeout)
+- Workflow Task retries
+- Activity failures, classifications (retryable vs non-retryable)
+- Worker CPU usage during reconnect storms
 
 ## Observability checklist
 
