@@ -24,6 +24,14 @@ This page provides instructions for deploying a Temporal Service for sustained w
 [development server](/cli#start-dev-server) is designed to handle. For local development or testing, you can use the
 Temporal CLI to [start a local development Temporal Service](/cli#start-dev-server).
 
+:::warning Temporal Hosts Should Not Be Exposed to the Open Internet
+
+In self-hosted deployments, the Temporal Service is a critical control and persistence component and should be secured similarly to a database. Temporal services should run on hosts that are not accessible from the public internet, with network configurations that restrict access to trusted internal networks only.
+
+:::
+
+For step-by-step guides on deploying and configuring Temporal, refer to our [Infrastructure tutorials](https://learn.temporal.io/tutorials/infrastructure/).
+
 ## Use Docker Compose
 
 You can run a Temporal Service in [Docker](https://docs.docker.com/engine/install) containers using
