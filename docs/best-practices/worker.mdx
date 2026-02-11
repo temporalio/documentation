@@ -59,7 +59,6 @@ production-ready Worker image:
 
 {/* SNIPSTART oms-dockerfile-worker */}
 [Dockerfile](https://github.com/temporalio/reference-app-orders-go/blob/main/Dockerfile)
-
 ```Dockerfile
 FROM golang:1.24.1 AS oms-builder
 
@@ -79,7 +78,6 @@ RUN --mount=type=cache,target=/go/pkg/mod \
 
 FROM busybox AS oms-worker
 ```
-
 {/* SNIPEND oms-dockerfile-worker */}
 
 This Dockerfile uses a multi-stage build pattern with two stages:
@@ -102,27 +100,25 @@ uses environment variables to configure the Worker:
 
 {/* SNIPSTART oms-billing-worker-deployment {"selectedLines": ["20-35"]} */}
 [deployments/k8s/billing-worker-deployment.yaml](https://github.com/temporalio/reference-app-orders-go/blob/main/deployments/k8s/billing-worker-deployment.yaml)
-
 ```yaml
 # ...
-spec:
-  containers:
-    - args:
-        - -k
-        - supersecretkey
-        - -s
-        - billing
-      env:
-        - name: FRAUD_API_URL
-          value: http://billing-api:8084
-        - name: TEMPORAL_ADDRESS
-          value: temporal-frontend.temporal:7233
-      image: ghcr.io/temporalio/reference-app-orders-go-worker:latest
-      name: billing-worker
-      imagePullPolicy: Always
-  enableServiceLinks: false
+    spec:
+      containers:
+        - args:
+            - -k
+            - supersecretkey
+            - -s
+            - billing
+          env:
+            - name: FRAUD_API_URL
+              value: http://billing-api:8084
+            - name: TEMPORAL_ADDRESS
+              value: temporal-frontend.temporal:7233
+          image: ghcr.io/temporalio/reference-app-orders-go-worker:latest
+          name: billing-worker
+          imagePullPolicy: Always
+      enableServiceLinks: false
 ```
-
 {/* SNIPEND */}
 
 ### Separate Task Queues logically
@@ -150,7 +146,6 @@ Worker reference to avoid this issue.
 
 {/* SNIPSTART oms-billing-worker-go {"selectedLines": ["12-23"]} */}
 [app/billing/worker.go](https://github.com/temporalio/reference-app-orders-go/blob/main/app/billing/worker.go)
-
 ```go
 // ...
 // RunWorker runs a Workflow and Activity worker for the Billing system.
@@ -166,7 +161,6 @@ func RunWorker(ctx context.Context, config config.AppConfig, client client.Clien
 	return w.Run(temporalutil.WorkerInterruptFromContext(ctx))
 }
 ```
-
 {/* SNIPEND */}
 
 ### Use Worker Versioning to safely deploy new Workflow code
