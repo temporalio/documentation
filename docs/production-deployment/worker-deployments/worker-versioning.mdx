@@ -2,7 +2,9 @@
 id: worker-versioning
 title: Worker versioning
 sidebar_label: Worker versioning
-description: Use Worker Versioning to pin Workflow revisions to individual Worker Deployment Versions, avoiding the need for patching to support multiple code paths.
+description:
+  Use Worker Versioning to pin Workflow revisions to individual Worker Deployment Versions, avoiding the need for
+  patching to support multiple code paths.
 slug: /production-deployment/worker-deployments/worker-versioning
 toc_max_heading_level: 4
 keywords:
@@ -18,8 +20,9 @@ tags:
 import { LANGUAGE_TAB_GROUP, getLanguageLabel } from '@site/src/constants/languageTabs';
 import SdkTabs from '@site/src/components';
 
-Worker Versioning is a Temporal feature that allows you to confidently deploy new changes to the Workflows running on your Workers without breaking them.
-Temporal enables this by helping you manage different builds or versions, formally called [Worker Deployment Versions](/worker-versioning#deployment-versions).
+Worker Versioning is a Temporal feature that allows you to confidently deploy new changes to the Workflows running on
+your Workers without breaking them. Temporal enables this by helping you manage different builds or versions, formally
+called [Worker Deployment Versions](/worker-versioning#deployment-versions).
 
 Worker Versioning unlocks important benefits for users of [blue-green or rainbow deployments](#deployment-systems).
 
@@ -28,26 +31,33 @@ Worker Versioning unlocks important benefits for users of [blue-green or rainbow
 - Instant rollback when you detect that a new Deployment Version is broken.
 - Improved error rates when adopting it.
 
-In addition, Worker Versioning introduces **Workflow Pinning**.
-For pinned Workflow Types, each execution runs entirely on the Worker Deployment Version where it started.
-You need not worry about making breaking code changes to running, pinned Workflows.
+In addition, Worker Versioning introduces **Workflow Pinning**. For pinned Workflow Types, each execution runs entirely
+on the Worker Deployment Version where it started. You need not worry about making breaking code changes to running,
+pinned Workflows.
 
 To use Workflow Pinning, we recommend using [rainbow deployments](#deployment-systems).
 
 :::tip
+
 Watch this Temporal Replay 2025 talk to learn more about Worker Versioning and see a demo.
 
 <div style={{ display: 'flex', justifyContent: 'center' }}>
-    <iframe width="560" height="315"
-        src="https://www.youtube.com/embed/rm4BlD9WXqc"
-        title="YouTube video player"
-        frameBorder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
+  <iframe
+    width="560"
+    height="315"
+    src="https://www.youtube.com/embed/rm4BlD9WXqc"
+    title="YouTube video player"
+    frameBorder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerPolicy="strict-origin-when-cross-origin"
+    allowFullScreen
+  ></iframe>
 </div>
+
 :::
 
 :::note
+
 Worker Versioning is currently available in Public Preview.
 
 Minimum versions:
@@ -65,26 +75,39 @@ Self-hosted users:
 - Minimum Temporal CLI version [v1.4.1](https://github.com/temporalio/cli/releases/tag/v1.4.1)
 - Minimum Temporal Server version: [v1.29.1](https://github.com/temporalio/temporal/releases/tag/v1.29.1)
 - Minimum Temporal UI Version [v2.38.0](https://github.com/temporalio/ui/releases/tag/v2.38.0)
-  :::
+
+:::
 
 ## Getting Started with Worker Versioning {#definition}
 
 To get started with Worker Versioning, you should understand some concepts around versioning and deployments.
 
-- A **Worker Deployment** is a deployment or service across multiple versions. In a rainbow deployment, more than two active Deployment Versions can run at once.
-- A **Worker Deployment Version** is a version of a deployment or service. It can have multiple Workers polling on multiple Task Queues, but they all run the same build.
+- A **Worker Deployment** is a deployment or service across multiple versions. In a rainbow deployment, more than two
+  active Deployment Versions can run at once.
+- A **Worker Deployment Version** is a version of a deployment or service. It can have multiple Workers polling on
+  multiple Task Queues, but they all run the same build.
 - A **Build ID**, in combination with a Worker Deployment name, identifies a single Worker Deployment Version.
-- When a versioned worker polls on a task queue, that task queue becomes part of that Worker's version. That version's Worker Deployment controls how the task queue matches Workflow Tasks with Workers.
-- Using **Workflow Pinning**, you can declare each Workflow type to have a **Versioning Behavior**, either Pinned or Auto-Upgrade.
+- When a versioned worker polls on a task queue, that task queue becomes part of that Worker's version. That version's
+  Worker Deployment controls how the task queue matches Workflow Tasks with Workers.
+- Using **Workflow Pinning**, you can declare each Workflow type to have a **Versioning Behavior**, either Pinned or
+  Auto-Upgrade.
   - A **Pinned** Workflow is guaranteed to complete on a single Worker Deployment Version.
-  - An **Auto-Upgrade** Workflow will automatically move to a new code version as you roll it out, specifically its Target Worker Deployment Version (defined below). Therefore, Auto-Upgrade Workflows are not restricted to a single Deployment Version and need to be kept replay-safe manually, i.e. with [patching](/workflow-definition#workflow-versioning).
-  - Both Pinned and Auto-Upgrade Workflows are guaranteed to start only on the Current or Ramping Version of their Worker Deployment.
+  - An **Auto-Upgrade** Workflow will automatically move to a new code version as you roll it out, specifically its
+    Target Worker Deployment Version (defined below). Therefore, Auto-Upgrade Workflows are not restricted to a single
+    Deployment Version and need to be kept replay-safe manually, i.e. with
+    [patching](/workflow-definition#workflow-versioning).
+  - Both Pinned and Auto-Upgrade Workflows are guaranteed to start only on the Current or Ramping Version of their
+    Worker Deployment.
   - Pinned Workflows are designed for use with rainbow deployments. See [Deployment Systems](#deployment-systems).
   - Pinned Workflows don't need to be patched, as they run on the same worker and build until they complete.
-  - If you expect your Workflow to run longer than you want your Worker Deployment Versions to exist, you should mark your Workflow Type as Auto-Upgrade.
-- Each Worker Deployment has a single [**Current Version**](/worker-versioning#versioning-definitions) which is where Workflows are routed to unless they were previously pinned on a different version.
-- Each Worker Deployment can have a [**Ramping Version**](/worker-versioning#versioning-definitions) which is where a configurable percentage of Workflows are routed to unless they were previously pinned on a different version.
-- For a given Workflow, its [**Target Worker Deployment Version**](/worker-versioning#versioning-definitions) is the version it will move to next.
+  - If you expect your Workflow to run longer than you want your Worker Deployment Versions to exist, you should mark
+    your Workflow Type as Auto-Upgrade.
+- Each Worker Deployment has a single [**Current Version**](/worker-versioning#versioning-definitions) which is where
+  Workflows are routed to unless they were previously pinned on a different version.
+- Each Worker Deployment can have a [**Ramping Version**](/worker-versioning#versioning-definitions) which is where a
+  configurable percentage of Workflows are routed to unless they were previously pinned on a different version.
+- For a given Workflow, its [**Target Worker Deployment Version**](/worker-versioning#versioning-definitions) is the
+  version it will move to next.
 
 ## Setting up your deployment system {#deployment-systems}
 
@@ -92,22 +115,34 @@ If you haven't already, you'll want to pick a container deployment solution for 
 
 You also need to pick among three common deployment strategies:
 
-- A **rolling deployment** strategy upgrades Workers in place with little control over how quickly they cut over and only a slow ability to roll Workers back. Rolling deploys have minimal footprint but tend to provide lower availability than the other strategies and are incompatible with Worker Versioning.
-- A **blue-green deployment** strategy maintains two "colors," or Worker Deployment Versions simultaneously and can control how traffic is routed between them. This allows you to maximize your uptime with features like instant rollback and ramping. Worker Versioning enables the routing control that blue-green deployments need.
-- A **rainbow deployment** strategy is like blue-green but with more colors, allowing Workflow Pinning. You can deploy new revisions of your Workflows freely while older versions drain. Using Worker Versioning, Temporal lets you know when all the Workflows of a given version are drained so that you can sunset it.
+- A **rolling deployment** strategy upgrades Workers in place with little control over how quickly they cut over and
+  only a slow ability to roll Workers back. Rolling deploys have minimal footprint but tend to provide lower
+  availability than the other strategies and are incompatible with Worker Versioning.
+- A **blue-green deployment** strategy maintains two "colors," or Worker Deployment Versions simultaneously and can
+  control how traffic is routed between them. This allows you to maximize your uptime with features like instant
+  rollback and ramping. Worker Versioning enables the routing control that blue-green deployments need.
+- A **rainbow deployment** strategy is like blue-green but with more colors, allowing Workflow Pinning. You can deploy
+  new revisions of your Workflows freely while older versions drain. Using Worker Versioning, Temporal lets you know
+  when all the Workflows of a given version are drained so that you can sunset it.
 
 :::note
-You also have the option to use the [Temporal Worker Controller](/production-deployment/worker-deployments/kubernetes-controller) to automatically enable rainbow deployments of your Workers if you're using Kubernetes.
+
+You also have the option to use the
+[Temporal Worker Controller](/production-deployment/worker-deployments/kubernetes-controller) to automatically enable
+rainbow deployments of your Workers if you're using Kubernetes.
+
 :::
 
 ## Configuring a Worker for Versioning
 
-You'll need to add a few additional configuration parameters to your Workers to toggle on Worker Versioning.
-There are three new parameters, with different names depending on the language:
+You'll need to add a few additional configuration parameters to your Workers to toggle on Worker Versioning. There are
+three new parameters, with different names depending on the language:
 
 - `UseVersioning`: This enables the Versioning functionality for this Worker.
-- A `Version` to identify the revision that this Worker will be allowed to execute. This is a combination of a deployment name and a build ID number.
-- (Optional) The [Default Versioning Behavior](#definition). If unset, you'll be required to specify the behavior on each Workflow. Or you can default to Pinned or Auto-Upgrade.
+- A `Version` to identify the revision that this Worker will be allowed to execute. This is a combination of a
+  deployment name and a build ID number.
+- (Optional) The [Default Versioning Behavior](#definition). If unset, you'll be required to specify the behavior on
+  each Workflow. Or you can default to Pinned or Auto-Upgrade.
 
 Follow the example for your SDK below:
 
@@ -134,7 +169,7 @@ import io.temporal.common.VersioningBehavior;
 import io.temporal.common.WorkerDeploymentVersion;
 import io.temporal.worker.WorkerDeploymentOptions;
 
-  WorkerOptions.newBuilder()
+WorkerOptions.newBuilder()
   .setDeploymentOptions(
       WorkerDeploymentOptions.newBuilder()
       .setVersion(new WorkerDeploymentVersion("llm_srv", "1.0"))
@@ -216,30 +251,62 @@ worker = Temporalio::Worker.new(
 </SdkTabs.Ruby>
 </SdkTabs>
 
-### Which Default Versioning Behavior should you choose?
+## Choosing a Versioning Behavior {#choosing-behavior}
 
-If you are using blue-green deployments, you should default to Auto-Upgrade and should not use Workflow Pinning. Otherwise, if your Worker and Workflows are new, we suggest not providing a `DefaultVersioningBehavior`.
+The right versioning behavior depends on how long your Workflows run relative to your deployment frequency.
 
-In general, each Workflow Type should be annotated as Auto-Upgrade or Pinned. If all of your Workflows will be short-running for the foreseeable future, you can default to Pinned.
+### Decision guide {#decision-guide}
 
-Many users who are migrating to Worker Versioning will start by defaulting to Auto-Upgrade until they have had time to annotate their Workflows.
-This default is the most similar to the legacy behavior.
-Once each Workflow Type is annotated, you can remove the `DefaultVersioningBehavior`.
+| Workflow Duration                        | Uses Continue-as-New? | Recommended Behavior      | Patching Required? |
+| ---------------------------------------- | --------------------- | ------------------------- | ------------------ |
+| **Short** (completes before next deploy) | N/A                   | `PINNED`                  | Never              |
+| **Medium** (spans multiple deploys)      | No                    | `AUTO_UPGRADE`            | Yes                |
+| **Long** (weeks to years)                | No                    | `AUTO_UPGRADE` + patching | Yes                |
 
-There is a possibility of a queue blocking limitation for new or Auto-Upgrade Workflows if there is a ramp, but one of the Current or Ramping versions is down or doesn't have enough capacity. This leads to other versions not getting Tasks or slowing down.
+### Examples by Workflow type {#behavior-examples}
 
-For example, you have a Current Version and a Ramping Version at 50%. If all of your Current Version Workers go down, you would expect at least 50% of new Workflows to go to the Ramping Version. This won't happen because the Tasks for the Current Version are blocking the queue.
+| Workflow Type        | Duration | Recommended Behavior       | Notes                               |
+| -------------------- | -------- | -------------------------- | ----------------------------------- |
+| Order processing     | Minutes  | `PINNED`                   | Completes before next deploy        |
+| Payment retry        | Hours    | `PINNED` or `AUTO_UPGRADE` | Depends on deploy frequency         |
+| Subscription billing | Days     | `AUTO_UPGRADE`             | May span multiple deploys           |
+| Compliance audit     | Months   | `AUTO_UPGRADE` + patching  | Cannot use CaN (needs full history) |
+
+### Default Versioning Behavior Considerations
+
+If you are using blue-green deployments, you should default to Auto-Upgrade and should not use Workflow Pinning.
+Otherwise, if your Worker and Workflows are new, we suggest not providing a `DefaultVersioningBehavior`.
+
+In general, each Workflow Type should be annotated as Auto-Upgrade or Pinned. If all of your Workflows will be
+short-running for the foreseeable future, you can default to Pinned.
+
+Many users who are migrating to Worker Versioning will start by defaulting to Auto-Upgrade until they have had time to
+annotate their Workflows. This default is the most similar to the legacy behavior. Once each Workflow Type is annotated,
+you can remove the `DefaultVersioningBehavior`.
+
+There is a possibility of a queue blocking limitation for new or Auto-Upgrade Workflows if there is a ramp, but one of
+the Current or Ramping versions is down or doesn't have enough capacity. This leads to other versions not getting Tasks
+or slowing down.
+
+For example, you have a Current Version and a Ramping Version at 50%. If all of your Current Version Workers go down,
+you would expect at least 50% of new Workflows to go to the Ramping Version. This won't happen because the Tasks for the
+Current Version are blocking the queue.
 
 :::note
-Keep in mind that Child Workflows of a parent or previous Auto-Upgrade Workflow default to Auto-Upgrade behavior and not Unspecified.
+
+Keep in mind that Child Workflows of a parent or previous Auto-Upgrade Workflow default to Auto-Upgrade behavior and not
+Unspecified.
+
 :::
 
-You also want to make sure you understand how your Activities are going to work across different Worker Deployment Versions. Refer to the [Worker Versioning Activitiy behavior docs](/worker-versioning#actvity-behavior-across-versions) for more details.
+You also want to make sure you understand how your Activities are going to work across different Worker Deployment
+Versions. Refer to the [Worker Versioning Activitiy behavior docs](/worker-versioning#actvity-behavior-across-versions)
+for more details.
 
 ## Rolling out changes with the CLI
 
-Next, deploy your Worker with the additional configuration parameters.
-Before making any Workflow revisions, you can use the `temporal` CLI to check which of your Worker versions are currently polling:
+Next, deploy your Worker with the additional configuration parameters. Before making any Workflow revisions, you can use
+the `temporal` CLI to check which of your Worker versions are currently polling:
 
 You can view the Versions that are part of a Deployment with `temporal worker deployment describe`:
 
@@ -247,7 +314,8 @@ You can view the Versions that are part of a Deployment with `temporal worker de
 temporal worker deployment describe --name="$MY_DEPLOYMENT"
 ```
 
-To activate a Deployment Version, use `temporal worker deployment set-current-version`, specifying the deployment name and a Build ID:
+To activate a Deployment Version, use `temporal worker deployment set-current-version`, specifying the deployment name
+and a Build ID:
 
 ```bash
 temporal worker deployment set-current-version \
@@ -255,7 +323,8 @@ temporal worker deployment set-current-version \
     --build-id "YourBuildID"
 ```
 
-To ramp a Deployment Version up to some percentage of your overall Worker fleet, use `set-ramping version`, with the same parameters and a ramping percentage:
+To ramp a Deployment Version up to some percentage of your overall Worker fleet, use `set-ramping version`, with the
+same parameters and a ramping percentage:
 
 ```bash
 temporal worker deployment set-ramping-version \
@@ -282,8 +351,8 @@ Versioning Info:
 
 ## Marking a Workflow Type as Pinned
 
-You can mark a Workflow Type as pinned when you register it by adding an additional Pinned parameter.
-This will cause it to remain on its original deployed version:
+You can mark a Workflow Type as pinned when you register it by adding an additional Pinned parameter. This will cause it
+to remain on its original deployed version:
 
 <SdkTabs>
 <SdkTabs.Go>
@@ -310,6 +379,7 @@ public static class HelloWorldImpl implements HelloWorld {
         return "Hello, World!";
     }
 }
+
 ```
 </SdkTabs.Java>
 <SdkTabs.Python>
@@ -319,6 +389,7 @@ class HelloWorld:
     @workflow.run
     async def run(self):
         return "hello world!"
+
 ```
 
 </SdkTabs.Python>
@@ -364,7 +435,8 @@ end
 
 ## Moving a pinned Workflow
 
-Sometimes you'll need to manually move a set of pinned Workflows off of a version that has a bug to a version with the fix.
+Sometimes you'll need to manually move a set of pinned Workflows off of a version that has a bug to a version with the
+fix.
 
 If you need to move a pinned Workflow to a new version, use `temporal workflow update-options`:
 
@@ -386,14 +458,14 @@ temporal workflow update-options \
   --versioning-override-build-id "$FIXED_BUILD_ID"
 ```
 
-In this scenario, you may also need to use the other [Versioning APIs](/workflow-definition#workflow-versioning) to patch
-your Workflow in the "fixed" build, so that your target Worker can handle the moved Workflows correctly.
-If you made a [version-incompatible change](/workflow-definition#deterministic-constraints) to your Workflow, and you
-want to roll back to an earlier version, it's not possible to patch it. Considering using [Workflow Reset](/workflow-execution/event#reset)
-along with your move.
+In this scenario, you may also need to use the other [Versioning APIs](/workflow-definition#workflow-versioning) to
+patch your Workflow in the "fixed" build, so that your target Worker can handle the moved Workflows correctly. If you
+made a [version-incompatible change](/workflow-definition#deterministic-constraints) to your Workflow, and you want to
+roll back to an earlier version, it's not possible to patch it. Considering using
+[Workflow Reset](/workflow-execution/event#reset) along with your move.
 
-"Reset-with-Move" allows you to atomically Reset your Workflow and set a Versioning Override on the newly reset Workflow,
-so when it resumes execution, all new Workflow Tasks will be executed on your new Worker.
+"Reset-with-Move" allows you to atomically Reset your Workflow and set a Versioning Override on the newly reset
+Workflow, so when it resumes execution, all new Workflow Tasks will be executed on your new Worker.
 
 ```bash
 temporal workflow reset with-workflow-update-options \
@@ -407,11 +479,14 @@ temporal workflow reset with-workflow-update-options \
 
 ## Migrating a Workflow from Pinned to Auto-Upgrade
 
-There may be times when you need to migrate your Workflow from Pinned to Auto-Upgrade because you configured your Workflow Type with the wrong behavior or you've pinned a really long-running Workflow by mistake.
+There may be times when you need to migrate your Workflow from Pinned to Auto-Upgrade because you configured your
+Workflow Type with the wrong behavior or you've pinned a really long-running Workflow by mistake.
 
-Pinned Workflows can block version drainage, especially when they run for a long time. You could move the Workflow to a new build, but that would just push the problem to the next build.
+Pinned Workflows can block version drainage, especially when they run for a long time. You could move the Workflow to a
+new build, but that would just push the problem to the next build.
 
-In order to make this change, you need to change the versioning behavior for your Workflow from Pinned to Auto-Upgrade. You can use `temporal workflow update-options` for this:
+In order to make this change, you need to change the versioning behavior for your Workflow from Pinned to Auto-Upgrade.
+You can use `temporal workflow update-options` for this:
 
 ```bash
 temporal workflow update-options \
@@ -436,27 +511,37 @@ temporal workflow update-options \
 ```
 
 :::note
-When you change the behavior to Auto-Upgrade, the Workflow will resume work on the Workflow's Target Version. So if the Workflow's Target Version is different from the earlier Pinned Version, you should make sure you [patch](/patching#patching) the Workflow code.
+
+When you change the behavior to Auto-Upgrade, the Workflow will resume work on the Workflow's Target Version. So if the
+Workflow's Target Version is different from the earlier Pinned Version, you should make sure you
+[patch](/patching#patching) the Workflow code.
+
 :::
 
 ## Sunsetting an old Deployment Version
 
 A Worker Deployment Version moves through the following states:
 
-1. **Inactive**: The version exists because a Worker with that version has polled the server. If this version never becomes Active, it will never be Draining or Drained.
-2. **Active**: The version is either Current or Ramping, so it is accepting new Workflows and existing Auto-Upgrade Workflows.
-3. **Draining**: The version stopped being Current or Ramping, and it has open pinned Workflows running on it. It is possible to be Draining and have no open pinned Workflows for a short time, since the drainage status is updated periodically.
+1. **Inactive**: The version exists because a Worker with that version has polled the server. If this version never
+   becomes Active, it will never be Draining or Drained.
+2. **Active**: The version is either Current or Ramping, so it is accepting new Workflows and existing Auto-Upgrade
+   Workflows.
+3. **Draining**: The version stopped being Current or Ramping, and it has open pinned Workflows running on it. It is
+   possible to be Draining and have no open pinned Workflows for a short time, since the drainage status is updated
+   periodically.
 4. **Drained**: The version was draining and now all the pinned Workflows that were running on it are closed.
 
-You can see these statuses when you describe a Worker Deployment in the `WorkerDeploymentVersionStatus` of each `VersionSummary`, or by describing the version directly.
-When a version is Draining or Drained, that is displayed in a value called `DrainageStatus`.
-Periodically, the Temporal Service will refresh this status by counting any open pinned Workflows using that version.
+You can see these statuses when you describe a Worker Deployment in the `WorkerDeploymentVersionStatus` of each
+`VersionSummary`, or by describing the version directly. When a version is Draining or Drained, that is displayed in a
+value called `DrainageStatus`. Periodically, the Temporal Service will refresh this status by counting any open pinned
+Workflows using that version.
 
-On each refresh, `DrainageInfo.last_checked_time` is updated.
-Eventually, `DrainageInfo` will report that the version is fully drained.
-At this point, no Workflows are still running on that version and no more will be automatically routed to it, so you can consider shutting down the running Workers.
+On each refresh, `DrainageInfo.last_checked_time` is updated. Eventually, `DrainageInfo` will report that the version is
+fully drained. At this point, no Workflows are still running on that version and no more will be automatically routed to
+it, so you can consider shutting down the running Workers.
 
-You can monitor this by checking `WorkerDeploymentInfo.VersionSummaries` or with `temporal worker deployment describe-version`:
+You can monitor this by checking `WorkerDeploymentInfo.VersionSummaries` or with
+`temporal worker deployment describe-version`:
 
 ```bash
 temporal worker deployment describe-version \
@@ -480,7 +565,8 @@ Task Queues:
   hello-world  workflow
 ```
 
-If you have implemented [Queries](/sending-messages#sending-queries) on closed pinned Workflows, you may need to keep some Workers running to handle them.
+If you have implemented [Queries](/sending-messages#sending-queries) on closed pinned Workflows, you may need to keep
+some Workers running to handle them.
 
 ### Adding a pre-deployment test
 
@@ -573,16 +659,24 @@ handle = env.client.start_workflow(
 
 ## Garbage collection
 
-Worker Deployments are never garbage collected, but *Worker Deployment Versions* (often referred to as Versions, Worker Versions, Deployment Versions) are.
+Worker Deployments are never garbage collected, but _Worker Deployment Versions_ (often referred to as Versions, Worker
+Versions, Deployment Versions) are.
 
-Versions are deleted to keep the total number of versions in one Worker Deployment less than or equal to [`matching.maxVersionsInDeployment`](https://github.com/temporalio/temporal/blob/a3a53266c002ae33b630a41977274f8b5b587031/common/dynamicconfig/constants.go#L1317-L1321), which is currently set to 100 in Temporal Cloud, but that's a conservative number and it could be increased if needed.
+Versions are deleted to keep the total number of versions in one Worker Deployment less than or equal to
+[`matching.maxVersionsInDeployment`](https://github.com/temporalio/temporal/blob/a3a53266c002ae33b630a41977274f8b5b587031/common/dynamicconfig/constants.go#L1317-L1321),
+which is currently set to 100 in Temporal Cloud, but that's a conservative number and it could be increased if needed.
 
-For example, when you deploy your 101st Worker version in a Worker Deployment, the server looks at the oldest drained version in the Worker deployment. If it has had no pollers in the last 5 minutes, the server deletes it. If that version still has pollers, the server will try the next oldest version.
-If none of the 100 versions are eligible for deletion (ie. none of them are drained with no pollers), then no version will be deleted and the poll from the 101st version would fail.
+For example, when you deploy your 101st Worker version in a Worker Deployment, the server looks at the oldest drained
+version in the Worker deployment. If it has had no pollers in the last 5 minutes, the server deletes it. If that version
+still has pollers, the server will try the next oldest version. If none of the 100 versions are eligible for deletion
+(ie. none of them are drained with no pollers), then no version will be deleted and the poll from the 101st version
+would fail.
 
-At that point, to successfully deploy your 101st version, you would need to increase `matching.maxVersionsInDeployment` or stop polling from one of the old drained versions to make it eligible for clean up.
+At that point, to successfully deploy your 101st version, you would need to increase `matching.maxVersionsInDeployment`
+or stop polling from one of the old drained versions to make it eligible for clean up.
 
-If you want to re-deploy a previously deleted version, start polling with a Worker that has the same build ID and Deployment Name as the deleted version and the server will recreate it.
+If you want to re-deploy a previously deleted version, start polling with a Worker that has the same build ID and
+Deployment Name as the deleted version and the server will recreate it.
 
-This covers the complete lifecycle of working with Worker Versioning.
-We are continuing to improve this feature, and we welcome any feedback or feature requests using the sidebar link!
+This covers the complete lifecycle of working with Worker Versioning. We are continuing to improve this feature, and we
+welcome any feedback or feature requests using the sidebar link!
