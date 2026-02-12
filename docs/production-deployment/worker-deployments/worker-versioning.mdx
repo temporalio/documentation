@@ -1,7 +1,7 @@
 ---
 id: worker-versioning
-title: Worker versioning
-sidebar_label: Worker versioning
+title: Worker Versioning
+sidebar_label: Worker Versioning
 description: Use Worker Versioning to pin Workflow revisions to individual Worker Deployment Versions, avoiding the need for patching to support multiple code paths.
 slug: /production-deployment/worker-deployments/worker-versioning
 toc_max_heading_level: 4
@@ -239,7 +239,7 @@ You also want to make sure you understand how your Activities are going to work 
 ## Rolling out changes with the CLI
 
 Next, deploy your Worker with the additional configuration parameters.
-Before making any Workflow revisions, you can use the `temporal` CLI to check which of your Worker versions are currently polling:
+Before making any Workflow revisions, you can use the `temporal` CLI to check which of your Worker Versions are currently polling:
 
 You can view the Versions that are part of a Deployment with `temporal worker deployment describe`:
 
@@ -577,7 +577,7 @@ Worker Deployments are never garbage collected, but *Worker Deployment Versions*
 
 Versions are deleted to keep the total number of versions in one Worker Deployment less than or equal to [`matching.maxVersionsInDeployment`](https://github.com/temporalio/temporal/blob/a3a53266c002ae33b630a41977274f8b5b587031/common/dynamicconfig/constants.go#L1317-L1321), which is currently set to 100 in Temporal Cloud, but that's a conservative number and it could be increased if needed.
 
-For example, when you deploy your 101st Worker version in a Worker Deployment, the server looks at the oldest drained version in the Worker deployment. If it has had no pollers in the last 5 minutes, the server deletes it. If that version still has pollers, the server will try the next oldest version.
+For example, when you deploy your 101st Worker Version in a Worker Deployment, the server looks at the oldest drained version in the Worker deployment. If it has had no pollers in the last 5 minutes, the server deletes it. If that version still has pollers, the server will try the next oldest version.
 If none of the 100 versions are eligible for deletion (ie. none of them are drained with no pollers), then no version will be deleted and the poll from the 101st version would fail.
 
 At that point, to successfully deploy your 101st version, you would need to increase `matching.maxVersionsInDeployment` or stop polling from one of the old drained versions to make it eligible for clean up.
