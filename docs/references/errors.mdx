@@ -192,6 +192,18 @@ A retry will be scheduled if the error is recoverable.
 
 {/* TODO: more info */}
 
+## gRPC Message Too Large {#grpc-message-too-large}
+
+This error occurs when the Workflow Task response exceeds the gRPC message size limit of 4 MB.
+The Workflow Execution is automatically terminated because this is a non-recoverable error.
+
+This typically happens when a Workflow schedules too many Activities, Child Workflows, or commands in a single Workflow Task, or when a Workflow returns a large result.
+
+To resolve this error, fix your Workflow code and start a new Workflow Execution.
+Break work into smaller batches, reduce the size of Workflow returns, use Continue-As-New for long-running Workflows, or compress large payloads with a custom Payload Codec.
+
+See the [BlobSizeLimitError troubleshooting guide](/troubleshooting/blob-size-limit-error) for detailed resolution strategies.
+
 ## Nondeterminism Error {#non-deterministic-error}
 
 The [Workflow Task](/tasks#workflow-task) failed due to a [nondeterminism error](/workflow-definition#non-deterministic-change).

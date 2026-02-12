@@ -17,15 +17,18 @@ This page discusses [Archival](#archival).
 
 ## What is Archival? {#archival}
 
-Archival is a feature that automatically backs up [Event Histories](/workflow-execution/event#event-history) and Visibility records from Temporal Service persistence to a custom blob store.
+Use Archival to copy closed Workflow Execution [Event Histories](/workflow-execution/event#event-history) and Visibility records from Temporal Service persistence to blob storage.
 
 - [How to create a custom Archiver](/self-hosted-guide/archival#custom-archiver)
 - [How to set up Archival](/self-hosted-guide/archival#set-up-archival)
 
-Workflow Execution Event Histories are backed up after the [Retention Period](/temporal-service/temporal-server#retention-period) is reached.
-Visibility records are backed up immediately after a Workflow Execution reaches a Closed status.
+When a Workflow Execution closes, Temporal schedules close-processing tasks for both Visibility records and Event History archival.
+Archival then runs asynchronously after a randomized delay.
+By default, that delay is up to 5 minutes (`history.archivalProcessorArchiveDelay`), capped by the Namespace [Retention Period](/temporal-service/temporal-server#retention-period).
 
-Archival enables Workflow Execution data to persist as long as needed, while not overwhelming the Temporal Service's persistence store.
+The closed execution still stays in Temporal persistence until retention cleanup runs.
+For some time, the same closed execution can exist in both persistence and archival storage.
+Archival enables Workflow Execution data to persist beyond retention without overwhelming the Temporal Service persistence store.
 
 This feature is helpful for compliance and debugging.
 
