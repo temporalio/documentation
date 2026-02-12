@@ -24,6 +24,12 @@ Instead of starting an Activity from within a Workflow Definition using `workflo
 
 The Activity definition and Worker registration are identical to regular Activities — only the execution path differs.
 
+This page covers the following:
+
+- [Execute a Standalone Activity](#execute-activity)
+- [Get the result of a Standalone Activity](#get-activity-result)
+- [Get a handle to an existing Standalone Activity](#get-activity-handle)
+
 :::caution EXPERIMENTAL
 
 Standalone Activities are [Experimental](/evaluate/development-production-features/release-stages).
@@ -44,11 +50,6 @@ The `ListActivities` and `CountActivities` APIs use Go's `iter.Seq2` type, which
 
 :::
 
-This page covers the following:
-
-- [Execute a Standalone Activity](#execute-activity)
-- [Get the result of a Standalone Activity](#get-activity-result)
-- [Get a handle to an existing Standalone Activity](#get-activity-handle)
 
 ## Execute a Standalone Activity {#execute-activity}
 
