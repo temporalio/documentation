@@ -651,9 +651,8 @@ module.exports = {
         'best-practices/managing-aps-limits',
         'best-practices/cloud-access-control',
         'best-practices/security-controls',
-        'best-practices/worker',
+        'best-practices/cost-optimization',
         'best-practices/knowledge-hub',
-        'production-deployment/multi-tenant-patterns'
       ],
     },
     {
