@@ -49,7 +49,7 @@
 }
 
 .inner {
-  width: min(100%, 1440px);
+  width: min(100%, 1520px);
   margin: 0 auto;
   padding: var(--ifm-spacing-xl, var(--cbk-space-xl, 32px))
            var(--ifm-spacing-horizontal, var(--cbk-space-md, 16px));
@@ -89,7 +89,8 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--ifm-spacing-lg, var(--cbk-space-lg, 24px));
+  column-gap: clamp(1.5rem, 2vw, 2.25rem);
+  row-gap: clamp(2.75rem, 5vw, 4.5rem);
   width: 100%;
 }
 

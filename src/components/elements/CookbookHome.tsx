@@ -40,7 +40,7 @@ type DocMeta = {
   formattedLastUpdatedAt?: string;
 };
 
-const PAGE_SIZE = 9;
+const PAGE_SIZE = 6;
 
 function normalizeCookbookId(id: string | undefined): string {
   return (id ?? '').replace(/^cookbook:/, '').trim();
