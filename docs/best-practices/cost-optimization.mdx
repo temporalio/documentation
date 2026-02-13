@@ -69,6 +69,11 @@ Use [compression](/troubleshooting/blob-size-limit-error#why-does-this-error-occ
 Aggressively optimizing costs without maintaining sufficient visibility for debugging and operational needs.
 Balance cost reduction with your team's observability requirements.
 
+For example, merging five separate Activities (validate input, call payment API, update database, send notification, generate receipt) into a single "processOrder" Activity reduces from 5 Actions to 1, but you lose per-step visibility in the Temporal UI.
+When the notification step fails, you can't see which of the five steps failed, you lose independent retry control (a notification failure retries the entire flow including the payment call), and you can't filter Workflows by failure stage.
+
+Similarly, removing [Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat) from a long-running data processing Activity saves Actions, but means you can't detect a stuck Worker until the full Activity timeout expires and you lose progress tracking (for example, "processed 500 of 1,000 records").
+
 ### Excessive Activity Heartbeats
 
 Each Heartbeat counts as one Action.
@@ -88,10 +93,10 @@ Focus optimization efforts on what's driving costs with a specific workload:
 
 **High Actions costs generally indicate**:
 
-- Many Activities per Workflow
-- Frequent Signals, Queries, or Updates
-- Long-running Activities with Heartbeats
-- High Activity retry rates
+- [Many Activities per Workflow](https://temporal.io/blog/how-many-activities-should-i-use-in-my-temporal-workflow)
+- Frequent [Signals, Queries, or Updates](/encyclopedia/workflow-message-passing#choosing-messages)
+- Long-running Activities with [Heartbeats](/cloud/worker-health#manage-worker-heartbeating)
+- High [Activity retry rates](/develop/activity-retry-simulator)
 - Extensive Query usage
 
 **High Storage costs generally indicate**:
@@ -139,9 +144,21 @@ See [Child Workflows documentation](/child-workflows) for detailed comparison of
 
 Each Activity retry counts as one Action.
 Default [Retry Policies](/encyclopedia/retry-policies) can be aggressive, which is appropriate for most operations but costly for expensive external operations.
-Consider limiting maximum attempts, increasing initial intervals, and using larger backoff coefficients for expensive operations while maintaining standard retry behavior for normal operations.
 
-For particularly expensive operations, consider using [next retry delay](/encyclopedia/retry-policies#per-error-next-retry-delay) to dynamically control retry timing based on failure types, or implement an [Activity pause pattern](/cli/activity#pause) to wait for manual intervention rather than automatic retries.
+For example, consider an Activity that calls a third-party payment API.
+With Temporal's default Retry Policy (1s initial interval, 2.0 backoff coefficient, unlimited maximum attempts), if that API goes down for 30 minutes, the Activity retries approximately 20 times before reaching the 100s maximum interval cap, then continues retrying every 100 seconds.
+Each retry counts as 1 Action.
+Across 1,000 concurrent Workflows hitting the same outage, that produces 20,000+ extra Actions from retries alone.
+
+For expensive external operations like this, consider:
+
+- Setting `MaximumAttempts` to cap total retries
+- Increasing `InitialInterval` (for example, to 10s) to reduce retry frequency
+- Adding error types to `NonRetryableErrorTypes` for errors that won't resolve on retry (such as 4xx HTTP status codes)
+- Using [next retry delay](/encyclopedia/retry-policies#per-error-next-retry-delay) to dynamically control retry timing based on failure types (for example, respecting rate-limit headers)
+- Implementing an [Activity pause pattern](/cli/activity#pause) to wait for manual intervention rather than automatic retries
+
+Use the [Activity Retry Simulator](/develop/activity-retry-simulator) to visualize how different Retry Policy configurations affect retry behavior and Action consumption.
 
 Refer to this blog post on [Mastering Workflow retry logic for resilient applications](https://temporal.io/blog/failure-handling-in-practice) for additional guidance.
 
