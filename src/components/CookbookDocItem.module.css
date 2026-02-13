@@ -33,8 +33,12 @@
 
 .lastUpdated {
   margin: 0 0 var(--ifm-spacing-sm, 0.75rem);
-  color: #465A78;
+  color: var(--ifm-color-emphasis-800);
   font-size: 0.95rem;
+}
+
+:global(html[data-theme='dark']) .article .lastUpdated {
+  color: #ffffff;
 }
 
 .actionsRow {
@@ -95,6 +99,50 @@
   margin-bottom: var(--ifm-spacing-lg, 1.5rem);
 }
 
+.recipePagination {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: var(--ifm-spacing-xl, 2rem);
+  padding-top: var(--ifm-spacing-lg, 1.5rem);
+  border-top: 1px solid color-mix(in srgb, var(--ifm-color-emphasis-400) 45%, transparent);
+}
+
+.recipeNavLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  color: var(--ifm-color-emphasis-800);
+  text-decoration: none;
+  padding: 0.5rem 0.25rem;
+}
+
+.recipeNavLink:hover,
+.recipeNavLink:focus-visible {
+  text-decoration: none;
+  color: var(--ifm-color-emphasis-900);
+}
+
+.recipeNavLinkNext {
+  justify-self: end;
+  text-align: right;
+}
+
+.recipeNavLabel {
+  display: block;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ifm-color-emphasis-600);
+}
+
+.recipeNavTitle {
+  display: block;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
 .toc {
   position: sticky;
   top: calc(var(--ifm-navbar-height, 60px) + 24px);
@@ -125,5 +173,14 @@
   .actionsRow :is(.actionLink, .actionGithub) {
     width: 100%;
     text-align: center;
+  }
+
+  .recipePagination {
+    grid-template-columns: 1fr;
+  }
+
+  .recipeNavLinkNext {
+    justify-self: stretch;
+    text-align: left;
   }
 }

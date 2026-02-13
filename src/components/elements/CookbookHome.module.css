@@ -96,7 +96,48 @@
 .cell {
 }
 
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ifm-spacing-md, var(--cbk-space-md, 16px));
+  width: 100%;
+  margin-top: var(--ifm-spacing-lg, var(--cbk-space-lg, 24px));
+}
+
+.paginationButton {
+  border: 1px solid var(--cookbook-tile-border-color);
+  background: transparent;
+  color: var(--ifm-color-emphasis-800);
+  font-weight: 600;
+  min-width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  line-height: 1;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.paginationButton:hover,
+.paginationButton:focus-visible {
+  background: color-mix(in srgb, var(--ifm-color-emphasis-800) 10%, transparent);
+  color: var(--ifm-color-emphasis-900);
+}
+
+.paginationInfo {
+  color: var(--ifm-color-emphasis-700);
+  font-weight: 500;
+}
+
 /* Mobile: stack */
 @media (max-width: 768px) {
   .grid { grid-template-columns: 1fr; }
+  .pagination {
+    flex-direction: column;
+  }
 }
