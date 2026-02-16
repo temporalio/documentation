@@ -266,9 +266,9 @@ Before considering an appropriate Namespace configuration, you should be aware o
 - A Namespace is a security isolation boundary. Access to Temporal by [Worker Processes](/workers#worker-process) is
   permitted at the Namespace level. Isolating applications or environments (development, test, staging, production)
   should take this into consideration.
-- A Namespace is provisioned with an endpoint for executing your Workflows. Accessing a Namespace from a Temporal Client
+- A Namespace is provisioned with [endpoints](constraints-and-limitations) for executing your Workflows. Accessing a Namespace from a Worker or Temporal Client
   requires [API keys](/cloud/api-keys) or [mTLS](/cloud/certificates) authentication.
-- [Workflow Id](/workflow-execution/workflowid-runid#workflow-id)uniqueness is per Namespace.
+- Every [Workflow Id](/workflow-execution/workflowid-runid#workflow-id) in a Namespace must be unique. Workflow Ids in different Namespaces may be the same.
 - [Task Queue](/task-queue) names are unique per Namespace.
 - Closed Workflow retention is per Namespace.
 - RBAC [permissions](/cloud/users#namespace-level-permissions) are implemented at the Namespace level.
@@ -278,13 +278,13 @@ Before considering an appropriate Namespace configuration, you should be aware o
 Namespace configuration requires some consideration. Following are some general guidelines to consider.
 
 - Namespaces are usually defined per use case. A use case can encompass a broad range of Workflow types and a nearly
-  unlimited scale of concurrent [Workflow Executions](/workflow-execution).
+  unlimited scale of concurrent [Workflow Executions](/workflow-execution). 
 - Namespaces can be split along additional boundaries such as service, application, domain or even sub-domain.
-- Environments such as production and development usually have requirements for isolation. We recommend that each
-  environment has its own Namespace.
 - Namespaces should be used to reduce the "blast radius" for mission-critical applications.
-- Workflows that need to communicate with each other should (for now) be in the same Namespace.
-- If you need to share Namespaces across team or domain boundaries, be sure to ensure the uniqueness of Workflow Ids.
+- Environments such as production and development usually have requirements for isolation. We recommend that each
+  environment has its own Namespace. This helps keep production Namespaces secure. It also protects production Namespaces from being throttled due to throughput spikes in development.
+- Workflows should use Nexus to communicate across Namespaces with a clean service contract instead of sharing Temporal primitives directly.
+- Workflows in the same Namespace can communicate with each other directly.
 
 ### Examples
 
@@ -328,61 +328,71 @@ Sample workflowId convention:
 
 {/* How to access a Namespace in Temporal Cloud */}
 
-Temporal Cloud normally supports authentication to Namespaces using [API keys](/cloud/api-keys) _or_
-[mTLS](/cloud/certificates). If you need to migrate from one authentication method to another, or you require both API
-key and mTLS authentication to be enabled on your Namespace, please contact
+Temporal Cloud supports authentication to Namespaces using [API keys](/cloud/api-keys) _or_
+[mTLS](/cloud/certificates). To migrate a Namespace from one authentication method to another, or to use both API
+key and mTLS authentication on the same Namespace, please contact
 [Support](https://docs.temporal.io/cloud/support#support-ticket).
 
 :::info
 
-Namespace authentication requiring both API key and mTLS is in
-[pre-release](/evaluate/development-production-features/release-stages), and doesn't support
+Using both API key and mTLS authentication on the same Namespace is in
+[pre-release](/evaluate/development-production-features/release-stages) and doesn't support
 [High Availability features](/cloud/high-availability).
 
 :::
 
-See the documentation for [API keys](/cloud/api-keys) and [mTLS certificates](/cloud/certificates) for more information
-on how to create and manage your credentials.
+Connecting to your Namespace requires a specific endpoint that works for the given Namespace.
+There are two types of gRPC endpoints for accessing a Namespace in Temporal Cloud: a Namespace endpoint and a regional endpoint.
 
-Programmatically accessing your Namespace requires specific endpoints based on your authentication method. There are two
-types of gRPC endpoints for accessing a Namespace in Temporal Cloud:
+- Namespace endpoint (`<namespace>.<account>.tmprl.cloud:7233`)
+    - Benefits:
+        - This endpoint is unique to each Namespace. It will always connect to the Namespace, no matter which region(s) the Namespace is using. (Recommended for Namespaces with High Availability)
+        - A Temporal Client that uses a Namespace endpoint doesn't have to be aware of which region the Namespace is in.
+    - Restrictions:
+        - If [High Availability](/cloud/high-availability) is not enabled, then accessing a Namespace via API key + Namespace endpoint is not supported. To use the Namespace endpoint with API keys, a Namespace must have [High Availability](/cloud/high-availability) enabled.
+- Regional endpoint (`<region>.<cloud_provider>.api.temporal.io:7233`)
+    - Benefits:
+        - Temporal Cloud has only one regional endpoint for each cloud region. The same regional endpoint can access any Namespace that is active in that region (or that has a [replica](/cloud/high-availability) in that region).
+        - A Temporal Client can use a regional endpoint to ensure connection to a Namespace always happens within that region.
+    - Restrictions:
+        - When using mTLS to authenticate, the Temporal Client must set the `server_name` property in its request to the value of the Namespace endpoint.
 
-- A namespace endpoint (`<namespace>.<account>.tmprl.cloud:7233`)
-- A regional endpoint (`<region>.<cloud_provider>.api.temporal.io:7233`).
+This table summarizes which endpoints are available for a Namespace based on which features the Namespace has enabled:
 
-Which one to use depends on your authentication method and whether your Namespace has
-[High Availability features](/cloud/high-availability) enabled, as shown in the table below.
-
-|                        | Not High Availability | High Availability                                                                                                            |
-| ---------------------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| mTLS Authentication    | Namespace             | Namespace                                                                                                                    |
-| API Key Authentication | Regional              | Both work, but we reommend using the Namespace endpoint because it reduces the unavailability window during a failover event |
+|                            | Not High Availability                                                 | High Availability                                                                   |
+|----------------------------|-----------------------------------------------------------------------|-------------------------------------------------------------------------------------|
+| **mTLS Authentication**    | Namespace endpoint or regional endpoint (must override `server_name`) | Namespace endpoint (recommended) or regional endpoint (must override `server_name`) |
+| **API Key Authentication** | Regional endpoint only                                                | Namespace endpoint (recommended) or regional endpoint                               |
 
 :::info
 
 When switching on or off High Availability features for a Namespace, you may need to update the gRPC endpoint used by
-your clients and Workers, because the Namespace endpoint changes based on whether High Availability features are
-enabled. See [Disable High Availability](/cloud/high-availability/enable#disable) for more information.
+Temporal Clients and Workers. See [Disable High Availability](/cloud/high-availability/enable#disable) for more information.
 
 :::
 
-For information on how to connect to Clients using a specific authentication method see the following documentation.
+### Configuring a Temporal Client with API keys or mTLS
 
-- To use API keys to connect with the [Temporal CLI](/cli), [Client SDK](/develop), [tcld](/cloud/tcld),
+To use API keys to connect with the [Temporal CLI](/cli), [Client SDK](/develop), [tcld](/cloud/tcld),
   [Cloud Ops API](/ops), and [Terraform](/cloud/terraform-provider), see
   [Use API keys to authenticate](/cloud/api-keys#using-apikeys).
-- To use mTLS to connect with the [Temporal CLI](/cli) and [Client SDK](/develop), see
+  
+To use mTLS to connect with the [Temporal CLI](/cli) and [Client SDK](/develop), see
   [Configure Clients to use Client certificates](/cloud/certificates#configure-clients-to-use-client-certificates).
+
+### Accessing the Temporal Web UI
 
 For accessing the Temporal Web UI, use the HTTPS endpoint in the form:
 `https://cloud.temporal.io/namespaces/<namespace>.<account>`. For example:
 `https://cloud.temporal.io/namespaces/accounting-production.f45a2`.
 
-To ensure the security of your data, all traffic to and from your Namespace is encrypted. However, for enhanced
-protection, you have additional options:
+### Accessing Namespaces with Encryption and Private Connectivity
 
-- (Recommended) Set up private connectivity by [creating a ticket for Temporal Support](/cloud/support#support-ticket).
-- Set up your allow list for outgoing network requests from your Clients and Workers with the IP address ranges of the
+To ensure the security of your data, all traffic to and from your Namespace is encrypted with TLS 1.3. 
+
+For enhanced protection:
+- Set up [private connectivity](/cloud/connectivity#private-network-connectivity-for-namespaces) to the Namespace.
+- In your own networking architecture, set up an allow list for outgoing network requests from your Clients and Workers with the IP address ranges of the
   Cloud Provider region in which your Namespace is located:
   - [AWS IP address ranges](https://docs.aws.amazon.com/vpc/latest/userguide/aws-ip-ranges.html)
   - [GCP IP address ranges](https://cloud.google.com/compute/docs/faq#find_ip_range)
