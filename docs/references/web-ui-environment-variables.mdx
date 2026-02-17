@@ -26,7 +26,6 @@ docker run\
 -e TEMPORAL_UI_PORT=8080\
 -e TEMPORAL_UI_PUBLIC_PATH=path/to/webui\
 -e TEMPORAL_UI_ENABLED=true\
--e TEMPORAL_BANNER_TEXT="Some banner text"\
 -e TEMPORAL_CLOUD_UI=false\
 -e TEMPORAL_DEFAULT_NAMESPACE=default\
 -e TEMPORAL_FEEDBACK_URL=https://feedback.here\
@@ -55,8 +54,8 @@ temporalio/ui:<tag>
 ```
 
 The environment variables are defined in the
-[UI server configuration template file](https://github.com/temporalio/ui-server/blob/main/config/docker.yaml)
-and described in more detail below.
+[UI server configuration template file](https://github.com/temporalio/ui-server/blob/main/config/docker.yaml) and
+described in more detail below.
 
 ## `TEMPORAL_ADDRESS`
 
@@ -82,10 +81,6 @@ Enables or disables the [browser UI](/references/web-ui-configuration#enableui) 
 
 Enabling the browser UI allows the Server to be accessed from your web browser. If disabled, the server cannot be viewed
 on the web, but the UI server APIs remain available for use.
-
-## `TEMPORAL_BANNER_TEXT`
-
-Provides banner text to display on the Web UI.
 
 ## `TEMPORAL_CLOUD_UI`
 
@@ -231,8 +226,8 @@ Specifies whether to include credentials along with requests to the Codec Server
 
 ## `TEMPORAL_FORWARD_HEADERS`
 
-Forward-specified HTTP headers to direct from HTTP API requests to the Temporal gRPC backend. This is a
-comma-delimited list of the HTTP headers to be forwarded.
+Forward-specified HTTP headers to direct from HTTP API requests to the Temporal gRPC backend. This is a comma-delimited
+list of the HTTP headers to be forwarded.
 
 ## `TEMPORAL_HIDE_LOGS`
 
