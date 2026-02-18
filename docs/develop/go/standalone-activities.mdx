@@ -25,6 +25,12 @@ Activity directly from a Temporal Client using `client.ExecuteActivity()`.
 
 The Activity definition and Worker registration are identical to regular Activities — only the execution path differs.
 
+This page covers the following:
+
+- [Execute a Standalone Activity](#execute-activity)
+- [Get the result of a Standalone Activity](#get-activity-result)
+- [Get a handle to an existing Standalone Activity](#get-activity-handle)
+
 :::caution EXPERIMENTAL
 
 Standalone Activities are [Experimental](/evaluate/development-production-features/release-stages). The API may change
@@ -45,11 +51,6 @@ The `ListActivities` and `CountActivities` APIs use Go's `iter.Seq2` type, which
 
 :::
 
-This page covers the following:
-
-- [Execute a Standalone Activity](#execute-activity)
-- [Get the result of a Standalone Activity](#get-activity-result)
-- [Get a handle to an existing Standalone Activity](#get-activity-handle)
 
 ## Execute a Standalone Activity {#execute-activity}
 

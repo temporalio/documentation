@@ -18,6 +18,11 @@ tags:
 There are many ways to self-host a [Temporal Service](/temporal-service).
 The right way for you depends entirely on your use case and where you plan to run it.
 
+:::warning Temporal Hosts Should Not Be Exposed to the Open Internet
+
+In self-hosted deployments, the Temporal Service is a critical control and persistence component and should be secured similarly to a database. Temporal services should run on hosts that are not accessible from the public internet, with network configurations that restrict access to trusted internal networks only.
+:::
+
 For step-by-step guides on deploying and configuring Temporal, refer to our [Infrastructure tutorials](https://learn.temporal.io/tutorials/infrastructure/).
 
 ### Minimum requirements
@@ -35,7 +40,7 @@ Supported databases include the following:
 
 You can run a Temporal Service in [Docker](https://docs.docker.com/engine/install) containers using [Docker Compose](https://docs.docker.com/compose/install).
 
-If you have Docker and Docker Compose installed, all you need to do is clone the [temporalio/docker-compose](https://github.com/temporalio/docker-compose) repo and run the `docker compose up` command from its root.
+If you have Docker and Docker Compose installed, all you need to do is clone the [temporalio/samples-server](https://github.com/temporalio/samples-server) repo and run the `docker compose up` command from the `compose` folder.
 
 The `temporalio/docker-compose` repo comes loaded with a variety of configuration templates that enable you to try all three databases that the Temporal Platform supports (PostgreSQL, MySQL, Cassandra).
 It also enables you to try [Advanced Visibility](/visibility#advanced-visibility) using [Search Attributes](/search-attribute), emit metrics, and even play with the [Archival](/temporal-service/archival) feature.
@@ -81,10 +86,12 @@ We recommend using this script for initial schema setup of each supported databa
 
 ### Importing the Server package
 
-The Temporal Server is a standalone Go application that can be [imported](/references/server-options) into another project.
+The Temporal Server is a standalone Go application that can be [imported](/references/server-options) into another project as a library.
+This is useful for testing, development, and building customized servers.
 
-You might want to do this to pass custom plugins or any other customizations through the [Server Options](/references/server-options).
-Then you can build and run a binary that contains your customizations.
+You can pass custom plugins or other customizations through the [Server Options](/references/server-options), then build and run a binary that contains your customizations.
+
+See [Embedded server](/self-hosted-guide/embedded-server) for details on running Temporal in-process with SQLite, or the [samples-server repository](https://github.com/temporalio/samples-server) for examples of server extensibility (authorization, metrics, TLS).
 
 This requires Go v1.19 or later, as specified in the Temporal Server [Build prerequisites](https://github.com/temporalio/temporal/blob/main/CONTRIBUTING.md#build-prerequisites).
 
