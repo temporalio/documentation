@@ -1,0 +1,146 @@
+---
+id: knowledge-hub
+title: Knowledge Hub
+sidebar_label: Knowledge Hub
+description:
+  Best practices for building and maintaining an internal Temporal knowledge hub that accelerates developer onboarding,
+  reduces platform team support load, and establishes consistent standards across your organization.
+toc_max_heading_level: 3
+keywords:
+  - temporal best practices
+  - operational excellence
+tags:
+  - Best Practices
+---
+
+As organizations scale their Temporal adoption, the use cases become more complex, and it can be difficult to locate all the relevant information you need.
+Tribal knowledge gets siloed within teams, leading to inconsistent patterns for Workflow design, error handling, and testing.
+This fragmentation leads to an increased burden on support, as well as slower onboarding for new developers.
+You may also inadvertently introduce security vulnerabilities or compliance gaps.
+To prevent these issues, you can establish an internal Temporal knowledge hub to address common issues that arise when multiple teams
+adopt Temporal independently.
+
+This guide covers what belongs in a knowledge hub, how to communicate it, and how to keep it useful over time.
+To bootstrap your knowledge hub, use the
+[Temporal Platform Hub](https://kawofong.github.io/temporal-platform-hub/) template as a starting point.
+
+## What belongs in your knowledge hub
+
+Although Temporal itself has [thorough documentation](https://docs.temporal.io/), not all of it applies to your organization or your teams' use cases.
+The knolwedge hub distills the documentation into just the specific information your teams need.
+One way to organize the content is according to where developers are in their journey.
+The following sample outline shows what sections to include.
+
+### Evaluate
+
+The Evaluation section helps developers understand what Temporal is and whether it fits their problem.
+Goals for this section are to increase knowledge hub traffic and decrease the support question rate.
+Include the following items in this section:
+
+- **Temporal overview** explains what Temporal is, why your organization chose it, and the business value metrics
+  that justify adoption.
+- **Decision framework** provides qualifying questions, good and bad use cases, and alternative recommendations so
+  developers can determine whether Temporal fits their problem.
+
+### Build
+
+The Build section is aimed at developers who are just getting started with Temporal.
+The goal of this section is to give developers a single path from zero to a running Workflow.
+Include the following items in this section:
+
+- **Getting started** walks developers through a 30-minute quickstart covering environment setup, a starter template,
+  and running a first Workflow locally and on Temporal Cloud. Use an existing Temporal [quickstart](/quickstarts), or build one from your own use case.
+- **Learning paths** provides self-paced courses from foundational to advanced topics, tailored by persona, and links
+  to [Temporal's free training](https://learn.temporal.io/).
+
+### Ship
+
+The Ship section provides the architecture standards and guardrails developers need to go from a local prototype to a production
+deployment.
+The goal for this section is to provide reference material developers need to reduce their time to production.
+Include the following items in this section:
+
+- **Architecture and standards** documents Namespace conventions, connectivity requirements, and Worker deployment
+  standards that every team follows.
+- **Cost guidance** explains billable Actions, storage tiers, and cost-saving tips so developers build cost-efficient
+  Workflows.
+- **Shared responsibility** defines an ownership matrix between Platform and Application teams across IAM,
+  infrastructure, development, deployment, observability, and operations.
+- **Design patterns** curates Workflow patterns with descriptions and code sample links that developers can adopt
+  directly.
+
+### Operate
+
+The Operate section gives developers the tools to self-serve during incidents and find answers without escalating to the Platform team.
+The goal of this section is to decrease the number of questions to support.
+Include the following items in this section:
+
+- **Troubleshooting and escalation** covers observability tools, runbooks for common issues, escalation paths, SLAs,
+  and example alert definitions.
+- **Support and FAQs** documents your support tier, ticket submission process, Temporal account contacts, expert-led
+  session types, and frequently asked questions.
+
+## Measuring success of your knowledge hub
+
+After you've created your knolwedge hub, establish metrics to measure its effectiveness for your organization.
+The following table shows example indicators that organizations use to measure the impact of their knowledge hub,
+along with realistic before-and-after targets:
+
+| Metric | Before Knowledge Hub | Target | What it tells you |
+| :--- | :--- | :--- | :--- |
+| **Time to first Workflow** | Days to weeks (developers piece together scattered resources) | Under 30 minutes (developers follow a single getting started guide) | Measures onboarding friction. A short time to first Workflow signals that your getting started guide is effective. |
+| **Time to Workflow in production** | Weeks to months (blocked by unclear Namespace provisioning and deployment processes) | Under 2 weeks (developers follow documented self-service provisioning) | Measures the gap between development and delivering value. Long times point to missing documentation and automation opportunities. |
+| **Support question rate** | 20-30+ questions per week to the Platform team via Slack | Fewer than 5 per week | Measures self-service resolution. A declining trend shows that developers are finding answers in the knowledge hub instead of asking the Platform team. |
+| **Knowledge Hub traffic** | N/A (no centralized resource exists) | Steady or growing page views per month | Identifies which content developers rely on and where gaps remain. Declining traffic on a page may indicate it is outdated; high traffic with high bounce rates may indicate the page is not answering the question. |
+
+These metrics create a feedback loop: measure, identify gaps, improve content, and measure again.
+
+## What doesn't belong in your knowledge hub
+
+A knowledge hub is not a mirror of [Temporal's official documentation](https://docs.temporal.io/).
+Avoid duplicating SDK API references, concept explanations, or release notes that Temporal already maintains.
+When that content changes, your copy becomes a source of confusion rather than clarity.
+Instead, link to the official docs and reserve your knowledge hub for organization-specific decisions, conventions,
+and operational procedures that Temporal's public documentation does not cover.
+
+## How to maintain and communicate your knowledge hub
+
+Having a thorough, complete knowledge hub isn't useful if the information becomes stale, or if developers don't know it exists.
+
+### Assign ownership
+
+Designate a Platform team or developer experience team as the owner.
+This team is responsible for initial content creation, ongoing maintenance, and reviewing contributions from
+application teams.
+
+### Make it discoverable
+
+A knowledge hub that developers can not find is the same as not having one.
+
+- Register a short URL (for example, `go/temporal`) that redirects to the knowledge hub.
+- Pin the link in your Temporal-related communication channels (Slack, Microsoft Teams).
+- When answering questions in Slack, respond with a link to the relevant knowledge hub page instead of re-explaining
+  inline.
+  This builds the habit of checking the hub first.
+
+### Review metrics regularly
+
+Track the metrics from [Measuring success of your knowledge hub](#measuring-success-of-your-knowledge-hub) on a regular cadence to identify what is
+working and where gaps remain.
+
+Capture every question that reaches the Platform team through Slack or tickets as a candidate for new content.
+
+Solicit contributions from application teams through a lightweight process such as a pull request template.
+
+### Keep content current
+
+- **Review on a cadence**: Review each page at least quarterly.
+  Assign a review owner and date to each page so staleness is visible.
+- **Tie updates to events**: Update the knowledge hub whenever your organization changes its Temporal architecture,
+  updates its deployment tooling, or modifies its shared responsibility model.
+- **Prune aggressively**: Remove or archive content that no longer applies.
+  Outdated documentation is worse than no documentation because developers follow it and get unexpected results.
+
+## Get started
+
+Start with the [Temporal Platform Hub template](https://kawofong.github.io/temporal-platform-hub/) as your foundation.
