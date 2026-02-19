@@ -1,0 +1,244 @@
+---
+id: basic-workflow
+title: Basic Workflow - Java SDK
+sidebar_label: Basic Workflow
+description: This section explains how to implement Activities with the Java SDK
+toc_max_heading_level: 4
+keywords:
+  - Java SDK
+tags:
+  - Java SDK
+  - Temporal SDKs
+---
+
+## How to develop a basic Workflow {#develop-workflows}
+
+Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflow-definition).
+
+In the Temporal Java SDK programming model, a Workflow Definition comprises a Workflow interface annotated with `@WorkflowInterface` and a Workflow implementation that implements the Workflow interface.
+
+The Workflow interface is a Java interface and is annotated with `@WorkflowInterface`.
+Each Workflow interface must have only one method annotated with `@WorkflowMethod`.
+
+```java
+// Workflow interface
+@WorkflowInterface
+public interface YourWorkflow {
+
+    @WorkflowMethod
+    String yourWFMethod(Arguments args);
+}
+```
+
+However, when using dynamic Workflows, do not specify a `@WorkflowMethod`, and implement the `DynamicWorkflow` directly in the Workflow implementation code.
+
+The `@WorkflowMethod` identifies the method that is the starting point of the Workflow Execution.
+The Workflow Execution completes when this method completes.
+
+You can create [interface inheritance hierarchies](#interface-inheritance) to reuse components across other Workflow interfaces.
+The interface inheritance approach does not apply to `@WorkflowMethod` annotations.
+
+A Workflow implementation implements a Workflow interface.
+
+```java
+// Define the Workflow implementation which implements our getGreeting Workflow method.
+  public static class GreetingWorkflowImpl implements GreetingWorkflow {
+      ...
+    }
+  }
+```
+
+To call Activities in your Workflow, call the Activity implementation.
+
+Use `ExternalWorkflowStub` to start or send Signals from within a Workflow to other running Workflow Executions.
+
+You can also invoke other Workflows as Child Workflows with `Workflow.newChildWorkflowStub()` or `Workflow.newUntypedChildWorkflowStub()` within a Workflow Definition.
+
+## Workflow interface inheritance {#interface-inheritance}
+
+Workflow interfaces can form inheritance hierarchies.
+It may be useful for creating reusable components across multiple
+Workflow interfaces.
+For example imagine a UI or CLI button that allows a `retryNow` Signal on any Workflow. To implement this feature you can redesign an interface like the following:
+
+```java
+public interface Retryable {
+    @SignalMethod
+    void retryNow();
+}
+
+@WorkflowInterface
+public interface FileProcessingWorkflow extends Retryable {
+
+    @WorkflowMethod
+    String processFile(Arguments args);
+
+    @QueryMethod(name="history")
+    List<String> getHistory();
+
+    @QueryMethod
+    String getStatus();
+
+    @SignalMethod
+    void abandon();
+}
+```
+
+Then some other Workflow interface can extend just `Retryable`, for example:
+
+```java
+@WorkflowInterface
+public interface MediaProcessingWorkflow extends Retryable {
+
+    @WorkflowMethod
+    String processBlob(Arguments args);
+}
+```
+
+Now if we have two running Workflows, one that implements the `FileProcessingWorkflow` interface and another that implements the `MediaProcessingWorkflow` interface, we can Signal to both using their common interface and knowing their WorkflowIds, for example:
+
+```java
+Retryable r1 = client.newWorkflowStub(Retryable.class, firstWorkflowId);
+Retryable r2 = client.newWorkflowStub(Retryable.class, secondWorkflowId);
+r1.retryNow();
+r2.retryNow();
+```
+
+The same technique can be used to query Workflows using a base Workflow interface.
+
+Note that this approach does not apply to `@WorkflowMethod` annotations, meaning that when using a base interface, it should not include any `@WorkflowMethod` methods.
+To illustrate this, lets' say that we define the following **invalid** code:
+
+```java
+// INVALID CODE!
+public interface BaseWorkflow {
+    @WorkflowMethod
+    void retryNow();
+}
+
+@WorkflowInterface
+public interface Workflow1 extends BaseWorkflow {}
+
+@WorkflowInterface
+public interface Workflow2 extends BaseWorkflow {}
+```
+
+Any attempt to register both implementations with the Worker will fail.
+Let's say that we have:
+
+```java
+worker.registerWorkflowImplementationTypes(
+    Workflow1Impl.class, Workflow2Impl.class);
+```
+
+This registration will fail with:
+
+```text
+java.lang.IllegalStateException: BaseWorkflow workflow type is already registered with the worker
+```
+
+## Define Workflow parameters {#workflow-parameters}
+
+Temporal Workflows may have any number of custom parameters.
+However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
+All Workflow Definition parameters must be serializable.
+
+A method annotated with `@WorkflowMethod` can have any number of parameters.
+
+We recommend passing a single parameter that contains all the input fields to allow for adding fields in a backward-compatible manner.
+
+Note that all inputs should be serializable by the default Jackson JSON Payload Converter.
+
+You can create a custom object and pass it to the Workflow method, as shown in the following example.
+
+```java
+//...
+@WorkflowInterface
+public interface YourWorkflow {
+    @WorkflowMethod
+    String yourWFMethod(CustomObj customobj);
+// ...
+}
+```
+
+## Define Workflow return parameters {#workflow-return-values}
+
+Workflow return values must also be serializable.
+Returning results, returning errors, or throwing exceptions is fairly idiomatic in each language that is supported.
+However, Temporal APIs that must be used to get the result of a Workflow Execution will only ever receive one of either the result or the error.
+
+Workflow method arguments and return values must be serializable and deserializable using the provided [`DataConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.17.0/io/temporal/common/converter/DataConverter.html).
+
+The `execute` method for `DynamicWorkflow` can return type Object.
+Ensure that your Client can handle an Object type return or is able to convert the Object type response.
+
+Related references:
+
+- [Data Converter](/dataconversion)
+- [Java DataConverter reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html)
+
+## Customize your Workflow Type {#workflow-type}
+
+Workflows have a Type that are referred to as the Workflow name.
+
+The following examples demonstrate how to set a custom name for your Workflow Type.
+
+The Workflow Type defaults to the short name of the Workflow interface.
+In the following example, the Workflow Type defaults to `NotifyUserAccounts`.
+
+```java
+  @WorkflowInterface
+
+  public interface NotifyUserAccounts {
+    @WorkflowMethod
+    void notify(String[] accountIds);
+}
+```
+
+To overwrite this default naming and assign a custom Workflow Type, use the `@WorkflowMethod` annotation with the `name` parameter.
+In the following example, the Workflow Type is set to `your-workflow`.
+
+```java
+@WorkflowInterface
+
+  public interface NotifyUserAccounts {
+  @WorkflowMethod(name = "your-workflow")
+  void notify(String[] accountIds);
+  }
+```
+
+When you set the Workflow Type this way, the value of the `name` parameter does not have to start with an uppercase letter.
+
+## Workflow logic requirements {#workflow-logic-requirements}
+
+Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints).
+Therefore, each language is limited to the use of certain idiomatic techniques.
+However, each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
+
+When defining Workflows using the Temporal Java SDK, the Workflow code must be written to execute effectively once and to completion.
+
+The following constraints apply when writing Workflow Definitions:
+
+- Do not use mutable global variables in your Workflow implementations.
+  This will ensure that multiple Workflow instances are fully isolated.
+- Your Workflow code must be deterministic.
+  Do not call non-deterministic functions (such as non-seeded random or `UUID.randomUUID()`) directly from the Workflow code.
+  The Temporal SDK provides specific API for calling non-deterministic code in your Workflows.
+- Do not use programming language constructs that rely on system time.
+  For example, only use `Workflow.currentTimeMillis()` to get the current time inside a Workflow.
+- Do not use native Java `Thread` or any other multi-threaded classes like `ThreadPoolExecutor`.
+  Use `Async.function` or `Async.procedure`, provided by the Temporal SDK, to execute code asynchronously.
+- Do not use synchronization, locks, or other standard Java blocking concurrency-related classes besides those provided by the Workflow class.
+  There is no need for explicit synchronization because multi-threaded code inside a Workflow is executed one thread at a time and under a global lock.
+  - Call `Workflow.sleep` instead of `Thread.sleep`.
+  - Use `Promise` and `CompletablePromise` instead of `Future` and `CompletableFuture`.
+  - Use `WorkflowQueue` instead of `BlockingQueue`.
+- Use `Workflow.getVersion` when making any changes to the Workflow code.
+  Without this, any deployment of updated Workflow code might break already running Workflows.
+- Do not access configuration APIs directly from a Workflow because changes in the configuration might affect a Workflow Execution path.
+  Pass it as an argument to a Workflow function or use an Activity to load it.
+- Use `DynamicWorkflow` when you need a default Workflow that can handle all Workflow Types that are not registered with a Worker.
+  A single implementation can implement a Workflow Type which by definition is dynamically loaded from some external source.
+  All standard `WorkflowOptions` and determinism rules apply to Dynamic Workflow implementations.
+
+Java Workflow reference: [https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html)
