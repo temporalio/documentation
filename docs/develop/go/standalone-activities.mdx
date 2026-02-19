@@ -19,6 +19,13 @@ tags:
 description: Execute Activities independently without a Workflow using the Temporal Go SDK.
 ---
 
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal TypeScript SDK support for Standalone Activities is at
+[Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+
+:::
+
 Standalone Activities are Activity Executions that run independently, without being orchestrated by a Workflow. Instead
 of starting an Activity from within a Workflow Definition using `workflow.ExecuteActivity()`, you start a Standalone
 Activity directly from a Temporal Client using `client.ExecuteActivity()`.
@@ -27,30 +34,92 @@ The Activity definition and Worker registration are identical to regular Activit
 
 This page covers the following:
 
+- [Run the Temporal Development Server with Standalone Activities enabled](#run-the-temporal-standalone-activity-development-server)
+- [Run a worker with the activity registered](#run-worker)
 - [Execute a Standalone Activity](#execute-activity)
 - [Get the result of a Standalone Activity](#get-activity-result)
 - [Get a handle to an existing Standalone Activity](#get-activity-handle)
+- [List Standalone Activities](#list-activities)
+- [Count Standalone Activities](#count-activities)
 
-:::caution EXPERIMENTAL
+:::note
 
-Standalone Activities are [Experimental](/evaluate/development-production-features/release-stages). The API may change
-in future releases.
-
-:::
-
-:::info PREREQUISITES
-
-Standalone Activities require server-side support. If you are running a self-hosted Temporal Server, the following
-dynamic config values must be enabled:
-
-- `activity.enableStandalone=true`
-- `history.enableChasm=true`
-- `history.enableTransitionHistory=true`
-
-The `ListActivities` and `CountActivities` APIs use Go's `iter.Seq2` type, which requires **Go 1.23 or later**.
+This documentation uses source code derived from the
+[Go sample](https://github.com/temporalio/samples-go/tree/main/standalone-activity/helloworld).
 
 :::
 
+## Run the Temporal Development Server with Standalone Activities enabled {#run-the-temporal-standalone-activity-development-server}
+
+Prerequisites:
+
+- [Install the latest Temporal CLI](https://docs.temporal.io/develop/go/core-application#run-a-development-server)
+  (TO_BE_ANNOUNCED or higher recommended)
+- [Install the latest Temporal Go SDK](https://docs.temporal.io/develop/go/core-application#install-a-temporal-sdk)
+  (v1.40.0 or higher recommended)
+
+The first step in running a Standalone Activity involves starting a Temporal server.
+
+```
+temporal server start-dev
+```
+
+This command automatically starts the Temporal development server with the Web UI, and creates the `default` Namespace.
+It uses an in-memory database, so do not use it for real use cases.
+
+The Temporal Web UI should now be accessible at [http://localhost:8233](http://localhost:8233), and the Temporal Server
+should now be available for client connections on `localhost:7233`.
+
+## Run a worker with the activity registered {#run-worker}
+
+Running a Worker for Standalone Activities is the same as running a Worker for Workflow-driven Activities — you create a
+Worker, register the Activity, and call `Run()`. The Worker doesn't need to know whether the Activity will be invoked
+from a Workflow or as a Standalone Activity. See
+[How to develop a Worker in Go](/develop/go/core-application#develop-worker) for more details on Worker setup and
+configuration options.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/samples-go/blob/main/standalone-activity/helloworld/worker/main.go">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```go
+package main
+
+import (
+	"context"
+	"go.temporal.io/sdk/activity"
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/worker"
+	"log"
+)
+
+func MyActivity(ctx context.Context, name string) (string, error) {
+	logger := activity.GetLogger(ctx)
+	logger.Info("MyActivity", "name", name)
+	return "Hello " + name + "!", nil
+}
+
+func main() {
+	c, err := client.Dial(client.Options{})
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer c.Close()
+
+	w := worker.New(c, "my-task-queue", worker.Options{})
+
+	w.RegisterActivity(MyActivity)
+
+	err = w.Run(worker.InterruptCh())
+	if err != nil {
+		log.Fatalln("Unable to start worker", err)
+	}
+}
+
+```
 
 ## Execute a Standalone Activity {#execute-activity}
 
@@ -113,7 +182,6 @@ func main() {
 You can pass the Activity as either a function reference or a string Activity type name:
 
 ```go
-// Using a function reference (recommended — enables compile-time parameter validation)
 handle, err := c.ExecuteActivity(ctx, options, MyActivity, "arg1")
 
 // Using a string type name
@@ -159,5 +227,87 @@ var result string
 err := handle.Get(context.Background(), &result)
 if err != nil {
 	log.Fatalln("Unable to get activity result", err)
+}
+```
+
+## List Standalone Activities {#list-activities}
+
+Use [`client.ListActivities()`](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to list Standalone Activity
+Executions that match a [List Filter](/list-filter) query. The result contains an iterator that yields
+[`ActivityExecutionInfo`](https://pkg.go.dev/go.temporal.io/sdk/client#ActivityExecutionInfo) entries.
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"log"
+
+	"go.temporal.io/sdk/client"
+)
+
+func main() {
+	c, err := client.Dial(client.Options{})
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer c.Close()
+
+	resp, err := c.ListActivities(context.Background(), client.ListActivitiesOptions{
+		Query: "TaskQueue = 'my-task-queue'",
+	})
+	if err != nil {
+		log.Fatalln("Unable to list activities", err)
+	}
+
+	for info, err := range resp.Results {
+		if err != nil {
+			log.Fatalln("Error iterating activities", err)
+		}
+		fmt.Printf("ActivityID: %s, Type: %s, Status: %v\n",
+			info.ActivityID, info.ActivityType, info.Status)
+	}
+}
+```
+
+The `Query` field accepts the same [List Filter](/list-filter) syntax used for Workflow Visibility. For example,
+`"ActivityType = 'MyActivity' AND Status = 'Running'"`.
+
+## Count Standalone Activities {#count-activities}
+
+Use [`client.CountActivities()`](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to count Standalone Activity
+Executions that match a [List Filter](/list-filter) query.
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"log"
+
+	"go.temporal.io/sdk/client"
+)
+
+func main() {
+	c, err := client.Dial(client.Options{})
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer c.Close()
+
+	resp, err := c.CountActivities(context.Background(), client.CountActivitiesOptions{
+		Query: "TaskQueue = 'my-task-queue'",
+	})
+	if err != nil {
+		log.Fatalln("Unable to count activities", err)
+	}
+
+	fmt.Println("Total activities:", resp.Count)
+
+	for _, group := range resp.Groups {
+		fmt.Printf("Group %v: %d\n", group.GroupValues, group.Count)
+	}
 }
 ```
