@@ -280,8 +280,8 @@ Please contact your AE or Support to enable this feature.
 
 The number of Actions accrued can be impacted by your capacity mode. 
 For On-Demand Capacity Mode, Actions are accrued as usual. 
-For Provisioned Capacity there is a minimum number of Actions that must be used per hour for each [Temporal Resource Unit (TRU)](/cloud/capacity-modes) that is provisioned.
-If Action volume in an hour does not exceed the minimum allocation, Actions of the subtype `ns_capacity:tru` will be recorded to the required volume. 
+For Provisioned Capacity there is a minimum number of Actions that must be used per calendar hour for each [Temporal Resource Unit (TRU)](/cloud/capacity-modes) that is provisioned.
+If Action volume in a calendar hour does not exceed the minimum allocation, Actions of the subtype `ns_capacity:tru` will be recorded to the required volume. 
 The minimum requirement for the first TRU is 0 Actions as it aligns with the default rate limits on Temporal. 
 For each additional TRU, there is a minimum hourly requirement of 360,000 Actions Per Hour. 
 360,000 Actions per hour represents a 20% utilization of requested resources. 
