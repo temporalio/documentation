@@ -395,7 +395,7 @@ For open source server users, Temporal Server version [Temporal Server version 1
 :::
 
 [Update-with-Start](/sending-messages#update-with-start) lets you
-[send an Update](/develop/java/message-passing#send-update-from-client) that checks whether an already-running Workflow with that ID exists:
+[send an Update](/develop/java/workflows/message-passing#send-update-from-client) that checks whether an already-running Workflow with that ID exists:
 
 - If the Workflow exists, the Update is processed.
 - If the Workflow does not exist, a new Workflow Execution is started with the given ID, and the Update is processed before the main Workflow method starts to execute.
@@ -413,7 +413,7 @@ You will need to provide:
   For example, specifying a Cron Schedule will result in an error.
 
 - [`UpdateOptions`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/UpdateOptions.html).
-  Same as for [Update Workflow](/develop/java/message-passing#send-update-from-client), the update wait stage must be specified.
+  Same as for [Update Workflow](/develop/java/workflows/message-passing#send-update-from-client), the update wait stage must be specified.
   For Update-with-Start, the Workflow Id is optional.
   When specified, the Id must match the one used in `WorkflowOptions`.
   Since a running Workflow Execution may not already exist, you can't set a Run Id.
@@ -588,8 +588,8 @@ See [Finishing handlers before the Workflow completes](/handling-messages#finish
 ### Use `@WorkflowInit` to operate on Workflow input before any handler executes
 
 Normally, your Workflows constructor won't have any parameters.
-However, if you use the `@WorkflowInit` annotation on your constructor, you can give it the same [Workflow parameters](/develop/java/core-application#workflow-parameters) as your `@WorkflowMethod`.
-The SDK will then ensure that your constructor receives the Workflow input arguments that the [Client sent](/develop/java/temporal-client#start-workflow-execution).
+However, if you use the `@WorkflowInit` annotation on your constructor, you can give it the same [Workflow parameters](/develop/java/workflows/basic-workflow#workflow-parameters) as your `@WorkflowMethod`.
+The SDK will then ensure that your constructor receives the Workflow input arguments that the [Client sent](/develop/java/client/temporal-client#start-workflow-execution).
 The Workflow input arguments are also passed to your `@WorkflowMethod` method -- that always happens, whether or not you use the `@WorkflowInit` annotation.
 This is useful if you have message handlers that need access to Workflow input: see [Initializing the Workflow first](/handling-messages#workflow-initializers).
 
