@@ -192,7 +192,7 @@ A forced failover when there is a significant replication lag has a higher likel
 
 ### Trigger the failover {#manual-failovers}
 
-You can trigger a failover manually using the Temporal&nbsp;Cloud<br />Web&nbsp;UI or the tcld CLI, depending on your preference and setup.
+You can trigger a failover manually using the Temporal&nbsp;Cloud Web&nbsp;UI, the tcld CLI, or the Cloud Ops API, depending on your preference and setup.
 The following instructions outline the steps for each method:
 
 <Tabs>
@@ -217,6 +217,51 @@ tcld namespace failover \
 ```
 
 If using API key authentication with the `--api-key` flag, you must add it directly after the tcld command and before `namespace failover`.
+
+</TabItem>
+
+<TabItem value="ops-api" label="Cloud Ops API">
+
+You can trigger a failover programmatically using the [Cloud Ops API](/ops).
+The API is available via both HTTP and gRPC.
+
+**Using HTTP**
+
+Send a POST request to the [`FailoverNamespaceRegion`](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/high-availability/POST/cloud/namespaces/{namespace}/failover-region) endpoint:
+
+```
+POST https://saas-api.tmprl.cloud/cloud/namespaces/<namespace>/failover-region
+```
+
+Request body:
+
+```json
+{
+  "region": "<target_region>",
+  "asyncOperationId": "<optional_async_operation_id>"
+}
+```
+
+- `region` (required): The ID of the region to failover to. Must be a region the Namespace is currently available in.
+- `asyncOperationId` (optional): A user-defined ID for tracking the async operation.
+
+**Using gRPC**
+
+Use the [`FailoverNamespaceRegion`](https://buf.build/temporalio/cloud-api/docs/main:temporal.api.cloud.cloudservice.v1#temporal.api.cloud.cloudservice.v1.CloudService.FailoverNamespaceRegion) RPC with a [`FailoverNamespaceRegionRequest`](https://buf.build/temporalio/cloud-api/docs/main:temporal.api.cloud.cloudservice.v1#temporal.api.cloud.cloudservice.v1.FailoverNamespaceRegionRequest):
+
+```protobuf
+message FailoverNamespaceRegionRequest {
+    // The namespace to failover.
+    string namespace = 1;
+    // The id of the region to failover to.
+    // Must be a region that the namespace is currently available in.
+    string region = 2;
+    // The id to use for this async operation - optional.
+    string async_operation_id = 3;
+}
+```
+
+Both methods return a [`FailoverNamespaceRegionResponse`](https://buf.build/temporalio/cloud-api/docs/main:temporal.api.cloud.cloudservice.v1#temporal.api.cloud.cloudservice.v1.FailoverNamespaceRegionResponse) containing an async operation that you can use to track the failover status.
 
 </TabItem>
 
