@@ -242,8 +242,8 @@ Request body:
 }
 ```
 
-- `region` (required): The ID of the region to failover to. Must be a region the Namespace is currently available in.
-- `asyncOperationId` (optional): A user-defined ID for tracking the async operation.
+- `region` (required): The ID of the region to failover to. Must be a region the Namespace is currently available in. Example: `us-east-1`
+- `asyncOperationId` (optional): A user-defined ID for tracking the async operation. If not set, the server will assign one.
 
 **Using gRPC**
 
