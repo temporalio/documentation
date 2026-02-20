@@ -242,7 +242,7 @@ Request body:
 }
 ```
 
-- `region` (required): The ID of the region to failover to. Must be a region the Namespace is currently available in. Example: `us-east-1`
+- `region` (required): The [region code](/cloud/regions) of the region to failover to. Must be a region where the Namespace has a replica in `Activated` replica state, indicating the replica is ready to be failed over to. Example: `aws-us-east-1`
 - `asyncOperationId` (optional): A user-defined ID for tracking the async operation. If not set, the server will assign one.
 
 **Using gRPC**
