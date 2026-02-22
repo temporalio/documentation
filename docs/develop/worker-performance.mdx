@@ -448,6 +448,8 @@ These examples focus on Activities and Local Activities, since Workflow Tasks no
 ### Go SDK
 
 ```go
+import "go.temporal.io/sdk/contrib/resourcetuner"
+
 // Using the ResourceBasedTuner in worker options
 tuner, err := resourcetuner.NewResourceBasedTuner(resourcetuner.ResourceBasedTunerOptions{
     TargetMem: 0.8,
@@ -457,36 +459,37 @@ if err != nil {
   return err
 }
 workerOptions := worker.Options{
-    Tuner: tuner
+    Tuner: tuner,
 }
-// Combining different types
-options := DefaultResourceControllerOptions()
+
+// Customize the tuner
+options := resourcetuner.DefaultResourceControllerOptions()
 options.MemTargetPercent = 0.8
 options.CpuTargetPercent = 0.9
-controller := NewResourceController(options)
+controller := resourcetuner.NewResourceController(options)
 wfSS, err := worker.NewFixedSizeSlotSupplier(10)
 if err != nil {
   return err
 }
-actSS := &ResourceBasedSlotSupplier{controller: controller,
-    options: defaultActivityResourceBasedSlotSupplierOptions()}
-laSS := &ResourceBasedSlotSupplier{controller: controller,
-    options: defaultActivityResourceBasedSlotSupplierOptions()}
+
+actSS, err := resourcetuner.NewResourceBasedSlotSupplier(controller, resourcetuner.DefaultActivityResourceBasedSlotSupplierOptions())
+laSS, err := resourcetuner.NewResourceBasedSlotSupplier(controller, resourcetuner.DefaultActivityResourceBasedSlotSupplierOptions())
 nexusSS, err := worker.NewFixedSizeSlotSupplier(10)
 if err != nil {
   return err
 }
+
 compositeTuner, err := worker.NewCompositeTuner(worker.CompositeTunerOptions{
-    WorkflowSlotSupplier:      wfSS,
-    ActivitySlotSupplier:      actSS,
-    LocalActivitySlotSupplier: laSS,
-    NexusSlotSupplier:         nexusSS,
+  WorkflowSlotSupplier:      wfSS,
+  ActivitySlotSupplier:      actSS,
+  LocalActivitySlotSupplier: laSS,
+  NexusSlotSupplier:         nexusSS,
 })
 if err != nil {
   return err
 }
 workerOptions := worker.Options{
-    Tuner: compositeTuner
+  Tuner: compositeTuner,
 }
 ```
 
