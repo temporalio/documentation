@@ -61,8 +61,16 @@ import { Connection, Client } from '@temporalio/client';
 
 async function run() {
   const connection = await Connection.connect();
+
+  // your code goes here
+
   const client = new Client({ connection });
 }
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
 ```
 
 If you need to connect to a Temporal Service with custom options, you can provide connection options directly in code,
@@ -80,7 +88,7 @@ creating the Temporal Client.
 You can use the environment variable `TEMPORAL_CONFIG_FILE` to specify the location of the TOML file or provide the path
 to the file directly in code. If you don't provide the configuration file path, the SDK looks for it at the path
 `~/.config/temporalio/temporal.toml` or the equivalent on your OS. Refer to
-[Environment Configuration](../environment-configuration.mdx) for more details about configuration files and profiles.
+[Environment Configuration](/develop/environment-configuration) for more details about configuration files and profiles.
 
 :::info
 
@@ -128,6 +136,7 @@ You can create a Temporal Client using a profile from the configuration file as 
 
 {/* SNIPSTART typescript-env-config-load-default-profile {"highlightedLines": "17-19,28-29"} */}
 [env-config/src/load-from-file.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-from-file.ts)
+
 ```ts {17-19,28-29}
 import { Connection, Client } from '@temporalio/client';
 import { loadClientConnectConfig } from '@temporalio/envconfig';
@@ -170,6 +179,7 @@ main().catch((err) => {
   process.exit(1);
 });
 ```
+
 {/* SNIPEND */}
 
 </TabItem>
@@ -201,17 +211,18 @@ variables take precedence, they will override any values set in the configuratio
 
 {/* SNIPSTART typescript-env-config-load-default-profile {"highlightedLines": "7,17-18", "selectedLines": ["1-5","17","19","22-40"]} */}
 [env-config/src/load-from-file.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-from-file.ts)
+
 ```ts {7,17-18}
 import { Connection, Client } from '@temporalio/client';
 import { loadClientConnectConfig } from '@temporalio/envconfig';
 import { resolve } from 'path';
 
 async function main() {
-// ...
+  // ...
   const config = loadClientConnectConfig({
-// ...
+    // ...
   });
-// ...
+  // ...
   console.log(`  Address: ${config.connectionOptions.address}`);
   console.log(`  Namespace: ${config.namespace}`);
   console.log(`  gRPC Metadata: ${JSON.stringify(config.connectionOptions.metadata)}`);
@@ -232,6 +243,7 @@ main().catch((err) => {
   process.exit(1);
 });
 ```
+
 {/* SNIPEND */}
 
 </TabItem>
@@ -267,7 +279,8 @@ local development instance:
 - Your credentials for authentication.
   - If you are using an API key, provide the API key value.
   - If you are using mTLS, provide the mTLS CA certificate and mTLS private key.
-- Your _Namespace and Account ID_ combination, which follows the format `<namespace_id>.<account_id>`.
+- Your [Temporal Cloud Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id) and Account Id combination, which
+  follows the format `<namespace_id>.<account_id>`.
 - The _endpoint_ may vary. The most common endpoint used is the gRPC regional endpoint, which follows the format:
   `<region>.<cloud_provider>.api.temporal.io:7233`.
 - For Namespaces with High Availability features with API key authentication enabled, use the gRPC Namespace endpoint:
@@ -331,6 +344,7 @@ you can also programmatically override specific connection options before creati
 
 {/* SNIPSTART typescript-env-config-load-profile-with-overrides {"highlightedLines": "15-18,30-31"} */}
 [env-config/src/load-profile.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-profile.ts)
+
 ```ts {15-18,30-31}
 import { Connection, Client } from '@temporalio/client';
 import { loadClientConnectConfig } from '@temporalio/envconfig';
@@ -375,6 +389,7 @@ main().catch((err) => {
   process.exit(1);
 });
 ```
+
 {/* SNIPEND */}
 
 </TabItem>
@@ -406,17 +421,18 @@ variables will take precedence.
 
 {/* SNIPSTART typescript-env-config-load-default-profile {"highlightedLines": "17-19,28-29", "selectedLines": ["1-5","17","19","22-40"]} */}
 [env-config/src/load-from-file.ts](https://github.com/temporalio/samples-typescript/blob/main/env-config/src/load-from-file.ts)
+
 ```ts {17-19,28-29}
 import { Connection, Client } from '@temporalio/client';
 import { loadClientConnectConfig } from '@temporalio/envconfig';
 import { resolve } from 'path';
 
 async function main() {
-// ...
+  // ...
   const config = loadClientConnectConfig({
-// ...
+    // ...
   });
-// ...
+  // ...
   console.log(`  Address: ${config.connectionOptions.address}`);
   console.log(`  Namespace: ${config.namespace}`);
   console.log(`  gRPC Metadata: ${JSON.stringify(config.connectionOptions.metadata)}`);
@@ -437,6 +453,7 @@ main().catch((err) => {
   process.exit(1);
 });
 ```
+
 {/* SNIPEND */}
 
 </TabItem>
@@ -628,7 +645,7 @@ language-specific contextual data, and Workflow Function parameters.
 In the examples below, all Workflow Executions are started using a Temporal Client. To spawn Workflow Executions from
 within another Workflow Execution, use either the Child Workflow or External Workflow APIs.
 
-See the [Customize Workflow Type](/develop/typescript/core-application#workflow-type) section to see how to customize
+See the [Customize Workflow Type](/develop/typescript/workflows/basic-workflow#workflow-type) section to see how to customize
 the name of the Workflow Type.
 
 A request to spawn a Workflow Execution causes the Temporal Service to create the first Event

@@ -1,0 +1,89 @@
+---
+id: execution
+title: Activity execution - TypeScript SDK
+description: Shows how to perform Activity execution with the TypeScript SDK
+sidebar_label: Activity Execution
+slug: /develop/typescript/activities/execution
+toc_max_heading_level: 3
+tags:
+  - TypeScript SDK
+  - Temporal SDKs
+  - Activity
+---
+
+## How to start an Activity Execution {#activity-execution}
+
+Calls to spawn [Activity Executions](/activity-execution) are written within a
+[Workflow Definition](/workflow-definition). In TypeScript, you never call an Activity function directly. Instead, you
+pass in the _types_ of your Activities and Activity options to the `proxyActivities` function. This will give you an
+_Activity Handle_, a type-safe proxy object with the same function names and signatures as your real activities. From
+the Activity Handle, you can call your Activities as if they were normal async functions.
+
+```typescript
+import { proxyActivities } from '@temporalio/workflow';
+// Only import the activity types, not the functions themselves
+import type * as activities from './activities';
+
+// Retrieve the Activity Handle by passing in the Activity types and options
+const activityHandle = proxyActivities<typeof activities>({
+  startToCloseTimeout: '1 minute',
+});
+
+// Deconstruct the individual Activity functions from the Activity Handle
+const { greet } = activityHandle;
+
+// A workflow that calls an activity
+export async function example(name: string): Promise<string> {
+  return await greet(name);
+}
+```
+
+When you call a proxied function, the Workflow does not execute the Activity code directly. Instead, it schedules an
+Activity Task. After the Activity Task is scheduled, it becomes available for a Worker to pick up and execute. This
+results in the set of three [Activity Task](/tasks#activity-task) related Events:
+[ActivityTaskScheduled](/references/events#activitytaskscheduled),
+[ActivityTaskStarted](/references/events#activitytaskstarted), and
+[ActivityTaskCompleted](/references/events#activitytaskcompleted) in your Workflow Execution Event History.
+
+The Worker may run many Activity executions at the same time, all using the same Activity function code. Temporal can
+also retry an Activity if it fails or times out. For this reason, you should write Activities to be
+[idempotent](/encyclopedia/activities/activity-definition.mdx#idempotency): calling them multiple times with the
+same input should have the same effect as calling them once.
+
+:::tip Every Activity call you make is recorded in the Workflow’s execution history, including the parameters you pass
+in and the value that comes back. This history is what allows Temporal to recover a Workflow after a failure. Because
+the entire history must be stored and replayed, avoid passing large objects as Activity inputs or return values. Keeping
+payloads small will help your Workflows replay and recover efficiently. :::
+
+### How to set the required Activity Timeouts {#required-timeout}
+
+Activity Execution semantics rely on several parameters. The only required value that needs to be set is either a
+[Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout) or a
+[Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout). These values are set in the
+Activity Options.
+
+### How to get the results of an Activity Execution {#get-activity-results}
+
+The call to spawn an [Activity Execution](/activity-execution) generates the
+[ScheduleActivityTask](/references/commands#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
+Workflow Executions can either block progress until the result is available through the Awaitable or continue
+progressing, making use of the result when it becomes available.
+
+Since Activities are referenced by their string name, you can reference them dynamically to get the result of an
+Activity Execution.
+
+```typescript
+export async function DynamicWorkflow(activityName, ...args) {
+  const acts = proxyActivities(/* activityOptions */);
+
+  // these are equivalent
+  await acts.activity1();
+  await acts['activity1']();
+
+  let result = await acts[activityName](...args);
+  return result;
+}
+```
+
+The `proxyActivities()` returns an object that calls the Activities in the function. `acts[activityName]()` references
+the Activity using the Activity name, then it returns the results.
