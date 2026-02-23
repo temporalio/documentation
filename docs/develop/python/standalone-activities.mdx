@@ -1,0 +1,129 @@
+---
+id: standalone-activities
+title: Standalone Activities - Python SDK
+sidebar_label: Standalone Activities
+toc_max_heading_level: 4
+keywords:
+  - standalone activity
+  - activity execution
+  - execute activity
+  - activity handle
+  - list activities
+  - count activities
+  - python sdk
+tags:
+  - Activities
+  - Temporal Client
+  - Python SDK
+  - Temporal SDKs
+description: Execute Activities independently without a Workflow using the Temporal Python SDK.
+---
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Temporal Python SDK support for Standalone Activities is at
+[Pre-release](/evaluate/development-production-features/release-stages#pre-release).
+
+:::
+
+Standalone Activities are Activity Executions that run independently, without being orchestrated by a Workflow. Instead
+of starting an Activity from within a Workflow Definition, you start a Standalone
+Activity directly from a Temporal Client.
+
+The Activity definition and Worker registration are identical to regular Activities, and only the execution path differs.
+
+This page covers the following:
+
+- [Run the Temporal Development Server with Standalone Activities enabled](#run-the-temporal-standalone-activity-development-server)
+- [Run a worker with the activity registered](#run-worker)
+- [Execute a Standalone Activity](#execute-activity)
+- [Get the result of a Standalone Activity](#get-activity-result)
+- [Get a handle to an existing Standalone Activity](#get-activity-handle)
+- [List Standalone Activities](#list-activities)
+- [Count Standalone Activities](#count-activities)
+
+:::note
+
+This documentation uses source code derived from the
+[Python sample](https://github.com/temporalio/samples-python).
+<!-- TODO: Update with actual sample path when available -->
+
+:::
+
+## Run the Temporal Development Server with Standalone Activities enabled {#run-the-temporal-standalone-activity-development-server}
+
+Prerequisites:
+
+- [Install the latest Temporal CLI](https://docs.temporal.io/develop/python/core-application#run-a-development-server)
+- [Install the latest Temporal Python SDK](https://docs.temporal.io/develop/python/core-application#install-a-temporal-sdk)
+
+The first step in running a Standalone Activity involves starting a Temporal server.
+
+```bash
+temporal server start-dev
+```
+
+This command automatically starts the Temporal development server with the Web UI, and creates the `default` Namespace.
+It uses an in-memory database, so do not use it for real use cases.
+
+The Temporal Web UI should now be accessible at [http://localhost:8233](http://localhost:8233), and the Temporal Server
+should now be available for client connections on `localhost:7233`.
+
+## Run a worker with the activity registered {#run-worker}
+
+Running a Worker for Standalone Activities is the same as running a Worker for Workflow-driven Activities — you create a
+Worker, register the Activity, and run it. The Worker doesn't need to know whether the Activity will be invoked
+from a Workflow or as a Standalone Activity. See
+[How to develop a Worker in Python](/develop/python/core-application#run-a-dev-worker) for more details on Worker setup and
+configuration options.
+
+<!-- TODO: Add Python Worker code sample -->
+
+```python
+# TODO: Add Python Worker code sample
+```
+
+## Execute a Standalone Activity {#execute-activity}
+
+<!-- TODO: Add description of Python client method for executing standalone activity -->
+
+<!-- TODO: Add Python code sample -->
+
+```python
+# TODO: Add Python code sample for executing a standalone activity
+```
+
+<!-- TODO: Document StartActivityOptions equivalent for Python -->
+
+## Get the result of a Standalone Activity {#get-activity-result}
+
+<!-- TODO: Add description of how to get activity result in Python -->
+
+```python
+# TODO: Add Python code sample for getting activity result
+```
+
+## Get a handle to an existing Standalone Activity {#get-activity-handle}
+
+<!-- TODO: Add description of how to get activity handle in Python -->
+
+```python
+# TODO: Add Python code sample for getting activity handle
+```
+
+## List Standalone Activities {#list-activities}
+
+<!-- TODO: Add description of how to list activities in Python -->
+
+```python
+# TODO: Add Python code sample for listing activities
+```
+
+## Count Standalone Activities {#count-activities}
+
+<!-- TODO: Add description of how to count activities in Python -->
+
+```python
+# TODO: Add Python code sample for counting activities
+```
+
