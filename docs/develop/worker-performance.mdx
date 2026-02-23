@@ -323,20 +323,23 @@ worker = Temporalio::Worker.new(
 </SdkTabs.Ruby>
 </SdkTabs>
 
-### Cache options
+### Cache options (Java SDK) {#cache-options}
 
 A Workflow Cache is created and shared between all Workers on a single host.
 It's designed to limit the resources used by the cache for each host/process.
-These options are defined on `WorkerFactoryOptions` in JavaSDK and in `worker` package in GoSDK:
+These options are defined on `WorkerFactoryOptions`:
 
-- `worker.setStickyWorkflowCacheSize` (JavaSDK: `WorkerFactoryOptions#workflowCacheSize`) defines the maximum number of cached Workflows Executions.
-  Each cached Workflow contains at least one Workflow thread and its resources.
-  Resources include memory, etc.
+- `WorkerFactoryOptions#workflowCacheSize` defines the maximum number of cached Workflow Executions.
+  Each cached Workflow contains at least one Workflow thread and its resources (memory, etc.).
 - `maxWorkflowThreadCount` defines the maximum number of Workflow threads that may exist concurrently at any time.
 
 These cache options limit the resource consumption of the in-memory Workflow cache.
 Workflow cache options are shared between all Workers because the Workflow cache is tightly integrated with the resource consumption of the entire host.
 This includes memory and the total thread count, which should be limited per host/JVM.
+
+:::note Go SDK
+For Go, see [`SetStickyWorkflowCacheSize`](https://pkg.go.dev/go.temporal.io/sdk/worker#SetStickyWorkflowCacheSize) to configure the Workflow cache size.
+:::
 
 ### "Large value" drawbacks
 
