@@ -337,9 +337,7 @@ These cache options limit the resource consumption of the in-memory Workflow cac
 Workflow cache options are shared between all Workers because the Workflow cache is tightly integrated with the resource consumption of the entire host.
 This includes memory and the total thread count, which should be limited per host/JVM.
 
-:::note Go SDK
-For Go, see [`SetStickyWorkflowCacheSize`](https://pkg.go.dev/go.temporal.io/sdk/worker#SetStickyWorkflowCacheSize) to configure the Workflow cache size.
-:::
+For Go, use [`SetStickyWorkflowCacheSize`](https://pkg.go.dev/go.temporal.io/sdk/worker#SetStickyWorkflowCacheSize). For Python, use the `max_cached_workflows` Worker option.
 
 ### "Large value" drawbacks
 
