@@ -194,6 +194,7 @@ module.exports = {
             'develop/python/set-up-your-local-python',
             'develop/python/core-application',
             'develop/python/temporal-client',
+            'develop/python/standalone-activities',
             'develop/python/python-sdk-sandbox',
             'develop/python/python-sdk-sync-vs-async',
             'develop/python/testing-suite',
