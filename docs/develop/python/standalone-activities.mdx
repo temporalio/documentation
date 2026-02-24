@@ -27,10 +27,11 @@ Temporal Python SDK support for Standalone Activities is at
 :::
 
 Standalone Activities are Activity Executions that run independently, without being orchestrated by a Workflow. Instead
-of starting an Activity from within a Workflow Definition, you start a Standalone
-Activity directly from a Temporal Client.
+of starting an Activity from within a Workflow Definition, you start a Standalone Activity directly from a Temporal
+Client.
 
-The Activity definition and Worker registration are identical to regular Activities, and only the execution path differs.
+The Activity definition and Worker registration are identical to regular Activities, and only the execution path
+differs.
 
 This page covers the following:
 
@@ -44,8 +45,8 @@ This page covers the following:
 
 :::note
 
-This documentation uses source code derived from the
-[Python sample](https://github.com/temporalio/samples-python).
+This documentation uses source code derived from the [Python sample](https://github.com/temporalio/samples-python).
+
 <!-- TODO: Update with actual sample path when available -->
 
 :::
@@ -72,58 +73,175 @@ should now be available for client connections on `localhost:7233`.
 ## Run a worker with the activity registered {#run-worker}
 
 Running a Worker for Standalone Activities is the same as running a Worker for Workflow-driven Activities — you create a
-Worker, register the Activity, and run it. The Worker doesn't need to know whether the Activity will be invoked
-from a Workflow or as a Standalone Activity. See
-[How to develop a Worker in Python](/develop/python/core-application#run-a-dev-worker) for more details on Worker setup and
-configuration options.
+Worker, register the Activity, and run it. The Worker doesn't need to know whether the Activity will be invoked from a
+Workflow or as a Standalone Activity. See
+[How to develop a Worker in Python](/develop/python/core-application#run-a-dev-worker) for more details on Worker setup
+and configuration options.
 
-<!-- TODO: Add Python Worker code sample -->
+<!-- TODO: Add Python Worker code sample URL -->
 
 ```python
-# TODO: Add Python Worker code sample
+from dataclasses import dataclass
+import asyncio
+from temporalio import activity
+from temporalio.client import Client
+from temporalio.worker import Worker
+
+
+@dataclass
+class ComposeGreetingInput:
+    greeting: str
+    name: str
+
+@activity.defn
+async def compose_greeting(input: ComposeGreetingInput) -> str:
+    activity.logger.info("Running activity with parameter %s" % input)
+    return f"{input.greeting}, {input.name}!"
+
+async def main():
+    client = await Client.connect("localhost:7233")
+    worker = Worker(
+        client,
+        task_queue="hello-standalone-activity-task-queue",
+        activities=[compose_greeting],
+    )
+    await worker.run()
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 ## Execute a Standalone Activity {#execute-activity}
 
-<!-- TODO: Add description of Python client method for executing standalone activity -->
+Use [`client.start_activity()`](https://python.temporal.io/temporalio.client.Client.html#start_activity) to start a
+Standalone Activity Execution. This is called from application code (for example, a starter program), not from inside a
+Workflow Definition.
 
-<!-- TODO: Add Python code sample -->
+`start_activity` returns an https://python.temporal.io/temporalio.client.ActivityHandle.html that you can use to get the
+result, describe, cancel, or terminate the Activity.
+
+As a convenience,
+[`client.execute_activity()`](https://python.temporal.io/temporalio.client.Client.html#execute_activity) starts the
+Activity and waits for its result in a single call.
+
+<!-- TODO: Add Python code sample URL -->
 
 ```python
-# TODO: Add Python code sample for executing a standalone activity
-```
+import asyncio
+from datetime import timedelta
 
-<!-- TODO: Document StartActivityOptions equivalent for Python -->
+from temporalio.client import Client
+from temporalio.envconfig import ClientConfig
+
+from hello.hello_standalone_activity_docs import ComposeGreetingInput, compose_greeting
+
+
+async def main():
+  config = ClientConfig.load_client_connect_config()
+  config.setdefault("target_host", "localhost:7233")
+  client = await Client.connect(**config)
+
+  result = await client.execute_activity(
+      compose_greeting,
+      args=[ComposeGreetingInput("Hello", "World")],
+      id="my-standalone-activity-id",
+      task_queue="hello-standalone-activity-task-queue",
+      start_to_close_timeout=timedelta(seconds=10),
+  )
+  print(f"Activity result: {result}")
+
+if __name__ == "__main__":
+  asyncio.run(main())
+```
 
 ## Get the result of a Standalone Activity {#get-activity-result}
 
-<!-- TODO: Add description of how to get activity result in Python -->
+Use await ActivityHandle.result() to wait until the Activity completes and retrieve its result. This is analogous to
+calling await WorkflowHandle.result().
 
 ```python
-# TODO: Add Python code sample for getting activity result
+handle = await client.start_activity(
+      compose_greeting,
+      args=[ComposeGreetingInput("Hello", "World")],
+      id="my-standalone-activity-id",
+      task_queue="hello-standalone-activity-task-queue",
+      start_to_close_timeout=timedelta(seconds=10),
+  )
+
+  result = await handle.result()
 ```
 
 ## Get a handle to an existing Standalone Activity {#get-activity-handle}
 
-<!-- TODO: Add description of how to get activity handle in Python -->
+Use client.get_activity_handle() to create a handle to a previously started Standalone Activity. This is analogous to
+client.get_workflow_handle() for Workflow Executions.
+
+Both activity_id and activity_run_id are required.
 
 ```python
-# TODO: Add Python code sample for getting activity handle
+handle = client.get_activity_handle(
+    activity_id="my-standalone-activity-id",
+    activity_run_id="the-run-id",
+)
+
+# Use the handle to get the result, describe, cancel, or terminate
+result = await handle.result()
 ```
 
 ## List Standalone Activities {#list-activities}
 
-<!-- TODO: Add description of how to list activities in Python -->
+Use [client.list_activities()](https://python.temporal.io/temporalio.client.Client.html#count_activities) to list
+Standalone Activity Executions that match a /list-filter query. The result is an async iterator that yields
+ActivityExecution entries.
 
 ```python
-# TODO: Add Python code sample for listing activities
+import asyncio
+
+from temporalio.client import Client
+
+
+async def main():
+    client = await Client.connect("localhost:7233")
+
+    activities = await client.list_activities(
+        query="TaskQueue = 'my-task-queue'",
+    )
+
+    async for info in activities:
+        print(f"ActivityID: {info.activity_id}, Type: {info.activity_type}, Status: {info.status}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
+
+The query parameter accepts the same /list-filter syntax used for Workflow Visibility. For example, "ActivityType =
+'MyActivity' AND Status = 'Running'".
 
 ## Count Standalone Activities {#count-activities}
 
-<!-- TODO: Add description of how to count activities in Python -->
+Use [client.count_activities()](https://python.temporal.io/temporalio.client.Client.html#count_activities) to count
+Standalone Activity Executions that match a /list-filter query.
 
 ```python
-# TODO: Add Python code sample for counting activities
-```
+import asyncio
 
+from temporalio.client import Client
+
+
+async def main():
+    client = await Client.connect("localhost:7233")
+
+    resp = await client.count_activities(
+        query="TaskQueue = 'my-task-queue'",
+    )
+
+    print("Total activities:", resp.count)
+
+    for group in resp.groups:
+        print(f"Group {group.group_values}: {group.count}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
