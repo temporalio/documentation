@@ -271,7 +271,7 @@ See details on how capacity is set and the associated limits at [Capacity Modes]
 
 :::tip Support, stability, and dependency info
 
-Provisioned Capacity is currently in [pre-release](/evaluate/development-production-features/release-stages#pre-release). 
+Provisioned Capacity is currently in [Public Preview](/evaluate/development-production-features/release-stages#public-preview). 
 Please contact your AE or Support to enable this feature.
 
 :::
@@ -280,8 +280,8 @@ Please contact your AE or Support to enable this feature.
 
 The number of Actions accrued can be impacted by your capacity mode. 
 For On-Demand Capacity Mode, Actions are accrued as usual. 
-For Provisioned Capacity there is a minimum number of Actions that must be used per hour for each [Temporal Resource Unit (TRU)](/cloud/capacity-modes) that is provisioned.
-If Action volume in an hour does not exceed the minimum allocation, Actions of the subtype `ns_capacity:tru` will be recorded to the required volume. 
+For Provisioned Capacity there is a minimum number of Actions that must be used per calendar hour for each [Temporal Resource Unit (TRU)](/cloud/capacity-modes) that is provisioned.
+If Action volume in a calendar hour does not exceed the minimum allocation, Actions of the subtype `ns_capacity:tru` will be recorded to the required volume. 
 The minimum requirement for the first TRU is 0 Actions as it aligns with the default rate limits on Temporal. 
 For each additional TRU, there is a minimum hourly requirement of 360,000 Actions Per Hour. 
 360,000 Actions per hour represents a 20% utilization of requested resources. 
@@ -304,7 +304,7 @@ Then the cost of Provisioned Capacity would be calculated as:
 * Hour 4: 500,000 Actions < 1,080,000 minimum Actions so 1,080,000-500,000 Actions = 580,000 additional actions will be added to the hour
 Total for 4 hours: 2,000,000+5,000,000+4,000,000+1,080,000=12,080,000 Actions
 
-It TRUs are changed multiple times within an hour, the highest value within that hour will be used to calculate the minimum actions required.
+If TRUs are changed multiple times within an hour, the highest value within that hour will be used to calculate the minimum actions required.
 
 Temporal’s approach to pricing Provisioned Capacity aligns with our goal to only charge for what you use. 
 The minimum hourly allocation will have no impact on your price if you utilize the requested capacity above your default by 20% or more, and will only incur an additional charge if the requested capacity is not used. 
