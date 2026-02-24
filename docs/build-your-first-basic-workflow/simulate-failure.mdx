@@ -51,7 +51,7 @@ This demonstrates why Temporal is particularly useful for building reliable syst
   { id: 'part2', label: 'Part 2: Simulate Failure', status: 'active', href: '/build-your-first-basic-workflow/simulate-failure' }
 ]} />
 
-Systems fail in unpredictable ways. A seemingly harmless deployment can bring down production, a database connection can time out during peak traffic, or a third-party service can decide to have an outage. 
+Systems fail in unpredictable ways. A seemingly harmless deployment can bring down production, a database connection can time out during peak traffic, or a third-party service may experience an outage. 
 Despite our best efforts with comprehensive testing and monitoring, systems are inherently unpredictable and complex. 
 Networks fail, servers restart unexpectedly, and dependencies we trust can become unavailable without warning.
 
@@ -59,7 +59,7 @@ Traditional systems aren't equipped to handle these realities.
 When something fails halfway through a multi-step process, you're left with partial state, inconsistent data, and the complex task of figuring out where things went wrong and how to recover. 
 Most applications either lose progress entirely or require you to build extensive checkpointing and recovery logic. 
 
-In this tutorial, you'll see Temporal's durable execution in action by running two tests: crashing a server while it's working and fixing code problems on the fly without stopping your application.
+In this tutorial, you'll see Temporal's Durable Execution in action by running two tests: crashing a server while it's working and fixing code problems on the fly without stopping your application.
 
 ## Recover from a server crash
 
@@ -305,7 +305,7 @@ Before we can simulate a failure, we need to stop the current Worker process. Th
 
 In Terminal 2 (where your Worker is running), stop it with `Ctrl+C`.
 
-**What's happening?** You're about to modify Activity code to introduce a deliberate failure. The Worker process needs to restart to pick up code changes, but the Workflow execution will continue running in Temporal's service - this separation between execution state and code is a core Temporal concept.
+**What's happening?** You're about to modify Activity code to introduce a deliberate failure. The Worker process needs to restart to pick up code changes, but the Workflow Execution will continue running in Temporal's service - this separation between execution state and code is a core Temporal concept.
 
 ### Step 2: Introduce the Bug
 
@@ -839,7 +839,7 @@ Save your changes. You've now restored the working implementation. The key insig
 
 ### Step 5: Restart Worker
 
-To apply your fix, you need to restart the Worker process so it picks up the code changes. Since the Workflow execution state is stored in Temporal's servers (not in your Worker process), restarting the Worker won't affect the running Workflow.
+To apply your fix, you need to restart the Worker process so it picks up the code changes. Since the Workflow Execution state is stored in Temporal's servers (not in your Worker process), restarting the Worker won't affect the running Workflow.
 
 <SdkTabs hideUnsupportedLanguages>
 <SdkTabs.Python>

@@ -27,7 +27,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 In this tutorial, you'll build and run your first Temporal application. 
-You'll understand the core building blocks of Temporal and learn how Temporal helps you build crash proof applications through durable execution. 
+You'll understand the core building blocks of Temporal and learn how Temporal helps you build crash-proof applications through Durable Execution. 
 
 
 <TemporalProgress steps={[
@@ -41,12 +41,12 @@ You'll understand the core building blocks of Temporal and learn how Temporal he
 
 ### Prerequisites
 
-Before you begin, set up your local development environment:
+Before you begin, setup your local development environment:
 
 <CallToAction 
   href="/quickstarts"
   buttonText="Quickstart Guide"
-  description="Run through the Quickstart to get your set up complete."
+  description="Run through the Quickstart to get your setup complete."
 />
 
 ### What You'll Build
@@ -182,7 +182,7 @@ The repository for this tutorial is a GitHub Template repository, which means yo
 
 The Temporal Application will consist of the following pieces:
 
-1. **A Workflow** written in your programming language of choice and your installed Temporal SDK in that language. A Workflow defines the overall flow of the application.
+1. **A Workflow** is a function or method that defines the overall flow of your application. It's written in your programming language of choice and supported by your chosen SDK. 
 2. **An Activity** is a function or method that does a specific operation - like withdrawing money, sending an email, or calling an API. Since these operations often depend on external services that can be unreliable, Temporal automatically retries Activities when they fail. 
 In this application, you'll write Activities for withdraw, deposit, and refund operations.
 3. **A Worker**, provided by the Temporal SDK, which runs your Workflow and Activities reliably and consistently.
@@ -201,7 +201,7 @@ To perform a money transfer, you will do the following:
 
 1. **Launch a Worker**: Since a Worker is responsible for executing the Workflow and Activity code, at least one Worker must be running for the money transfer to make progress.
 
-2. **Start a Workflow Execution** through the Temporal Service: After the Worker communicates with the Temporal Service, the Worker will begin executing the Workflow and Activity code. It reports the results to the Temporal Service, which tracks the progress of the Workflow Execution.
+2. **Send a Workflow Execution request** to the Temporal Service: The Temporal Service accepts your request but does not run the code. The Workers communicate with the Temporal Service, accept tasks related to that request, and then fulfill them by running the code. The results are reported back to the Temporal Service, which tracks the progress of the Workflow Execution.
 
 </details>
 
@@ -1747,7 +1747,7 @@ Using a shared constant for your Task Queue name prevents typos that would cause
 
 ## Step 4: Execute the Workflow
 
-Now you'll create a client program that starts a Workflow execution. This code connects to the Temporal Service and submits a Workflow execution request:
+Now you'll create a client program that starts a Workflow Execution. This code connects to the Temporal Service and submits a Workflow Execution request:
 
 <SdkTabs hideUnsupportedLanguages>
 <SdkTabs.Python>
