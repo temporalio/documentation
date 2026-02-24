@@ -37,7 +37,7 @@ Each history is an ordered sequence of events that records everything that happe
 
 - **Workflow configuration** - Input data, timeouts, Task Queue, retry policies, search attributes, and memo
 - **Activity lifecycle** - Each Activity scheduled, started, completed (or failed/timed out), including inputs and results
-- **Timers and sleeps** - Timer starts and fires
+- **Timers** - Timer starts and fires
 - **Signals and Updates** - External signals received and Update requests handled
 - **Child Workflows** - Child Workflow starts and completions
 - **Workflow result** - How the Workflow ended (completed, failed, timed out, terminated, canceled, or continued-as-new)
@@ -81,11 +81,6 @@ This example shows a Workflow that started, ran one Activity, and completed:
           {
             "eventId": "3",
             "eventTime": "2025-02-24T18:00:01Z",
-            "eventType": "EVENT_TYPE_WORKFLOW_TASK_COMPLETED"
-          },
-          {
-            "eventId": "4",
-            "eventTime": "2025-02-24T18:00:01Z",
             "eventType": "EVENT_TYPE_ACTIVITY_TASK_SCHEDULED",
             "activityTaskScheduledEventAttributes": {
               "activityType": { "name": "ChargeCustomer" },
@@ -96,32 +91,25 @@ This example shows a Workflow that started, ran one Activity, and completed:
             }
           },
           {
-            "eventId": "5",
+            "eventId": "4",
             "eventTime": "2025-02-24T18:00:02Z",
             "eventType": "EVENT_TYPE_ACTIVITY_TASK_STARTED"
           },
           {
-            "eventId": "6",
+            "eventId": "5",
             "eventTime": "2025-02-24T18:00:03Z",
             "eventType": "EVENT_TYPE_ACTIVITY_TASK_COMPLETED",
             "activityTaskCompletedEventAttributes": {
-              "result": { "payloads": ["...serialized result..."] },
-              "scheduledEventId": "4",
-              "startedEventId": "5"
+              "result": { "payloads": ["...serialized result..."] }
             }
           },
           {
-            "eventId": "7",
-            "eventTime": "2025-02-24T18:00:03Z",
-            "eventType": "EVENT_TYPE_WORKFLOW_TASK_SCHEDULED"
-          },
-          {
-            "eventId": "8",
+            "eventId": "6",
             "eventTime": "2025-02-24T18:00:03Z",
             "eventType": "EVENT_TYPE_WORKFLOW_TASK_COMPLETED"
           },
           {
-            "eventId": "9",
+            "eventId": "7",
             "eventTime": "2025-02-24T18:00:03Z",
             "eventType": "EVENT_TYPE_WORKFLOW_EXECUTION_COMPLETED",
             "workflowExecutionCompletedEventAttributes": {
@@ -136,7 +124,6 @@ This example shows a Workflow that started, ran one Activity, and completed:
 ```
 
 The outer `items` array can contain multiple Workflow Executions per file.
-`WORKFLOW_TASK_SCHEDULED` and `WORKFLOW_TASK_COMPLETED` events are internal bookkeeping - most analytics pipelines skip them.
 Only the key fields are shown above. Actual events include additional fields like `version`, `taskId`, and `workerVersion`.
 
 ## Prerequisites {#prerequisites}
