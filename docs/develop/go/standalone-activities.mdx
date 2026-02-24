@@ -30,7 +30,8 @@ Standalone Activities are Activity Executions that run independently, without be
 of starting an Activity from within a Workflow Definition using `workflow.ExecuteActivity()`, you start a Standalone
 Activity directly from a Temporal Client using `client.ExecuteActivity()`.
 
-The Activity definition and Worker registration are identical to regular Activities, and only the execution path differs.
+The Activity definition and Worker registration are identical to regular Activities, and only the execution path
+differs.
 
 This page covers the following:
 
@@ -41,6 +42,7 @@ This page covers the following:
 - [Get a handle to an existing Standalone Activity](#get-activity-handle)
 - [List Standalone Activities](#list-activities)
 - [Count Standalone Activities](#count-activities)
+- [Run Standalone Activities with Temporal Cloud](#run-standalone-activities-temporal-cloud)
 
 :::note
 
@@ -69,6 +71,13 @@ It uses an in-memory database, so do not use it for real use cases.
 
 The Temporal Web UI should now be accessible at [http://localhost:8233](http://localhost:8233), and the Temporal Server
 should now be available for client connections on `localhost:7233`.
+
+Clone the [samples-go](https://github.com/temporalio/samples-go) repository to follow along:
+
+```
+git clone https://github.com/temporalio/samples-go.git
+cd samples-go
+```
 
 ## Run a worker with the activity registered {#run-worker}
 
@@ -119,6 +128,12 @@ func main() {
 	}
 }
 
+```
+
+To run the sample Worker from the cloned repository:
+
+```
+go run standalone-activity/helloworld/worker/main.go
 ```
 
 ## Execute a Standalone Activity {#execute-activity}
@@ -191,6 +206,12 @@ handle, err := c.ExecuteActivity(ctx, options, "MyActivity", "arg1")
 `client.StartActivityOptions` requires `ID`, `TaskQueue`, and at least one of `ScheduleToCloseTimeout` or
 `StartToCloseTimeout`. See [`StartActivityOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartActivityOptions)
 in the API reference for the full set of options.
+
+To run the sample starter from the cloned repository (in a separate terminal from the Worker):
+
+```
+go run standalone-activity/helloworld/starter/main.go
+```
 
 ## Get the result of a Standalone Activity {#get-activity-result}
 
@@ -274,10 +295,15 @@ func main() {
 The `Query` field accepts the same [List Filter](/list-filter) syntax used for Workflow Visibility. For example,
 `"ActivityType = 'MyActivity' AND Status = 'Running'"`.
 
+You can also list activities using the Temporal CLI:
+
+```
+temporal activity list
+```
+
 ## Count Standalone Activities {#count-activities}
 
-Use [`client.CountActivities()`](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to count Standalone Activity
-Executions that match a [List Filter](/list-filter) query.
+Use client.count_activities() to count Standalone Activity Executions that match a /list-filter query.
 
 ```go
 package main
@@ -310,4 +336,95 @@ func main() {
 		fmt.Printf("Group %v: %d\n", group.GroupValues, group.Count)
 	}
 }
+```
+
+## Run Standalone Activities with Temporal Cloud {#run-standalone-activities-temporal-cloud}
+
+This section assumes you are already familiar with [how to connect a Worker to Temporal Cloud](https://docs.temporal.io/develop/go/core-application#run-a-temporal-cloud-worker).
+The same [source code](https://github.com/temporalio/samples-go/tree/main/standalone-activity/helloworld) is used in
+this section. The `tcld` CLI will be used to create a Namespace, and mTLS client certificates will be used to securely
+connect the Worker to Temporal Cloud.
+
+### Install the latest `tcld` CLI and generate certificates
+
+To install the latest version of the `tcld` CLI, run the following command (on MacOS):
+
+```
+brew install temporalio/brew/tcld
+```
+
+If you don't already have certificates, you can generate them for mTLS Worker authentication using the command below:
+
+```
+tcld gen ca --org $YOUR_ORG_NAME --validity-period 1y --ca-cert ca.pem --ca-key ca.key
+```
+
+These certificates will be valid for one year.
+
+### Create your Namespace
+
+If you don't already have a Namespace, create one for your Standalone Activities:
+
+```
+tcld login
+
+tcld namespace create \
+  --namespace <your-namespace> \
+  --cloud-provider aws \
+  --region us-west-2 \
+  --ca-certificate-file 'path/to/your/ca.pem' \
+  --retention-days 1
+```
+
+Alternatively, you can create a Namespace through the UI: [https://cloud.temporal.io/Namespaces](https://cloud.temporal.io/Namespaces).
+
+### Run a Worker connected to Temporal Cloud with TLS certificates
+
+The sample uses [environment configuration](/references/client-environment-configuration) to connect to Temporal Cloud.
+Set the following environment variables before running the Worker:
+
+```
+export TEMPORAL_ADDRESS=<your-namespace>.tmprl.cloud:7233
+export TEMPORAL_NAMESPACE=<your-namespace>
+export TEMPORAL_TLS_CLIENT_CERT_PATH='path/to/your/ca.pem'
+export TEMPORAL_TLS_CLIENT_KEY_PATH='path/to/your/ca.key'
+```
+
+Then run the Worker:
+
+```
+go run standalone-activity/helloworld/worker/main.go
+```
+
+### Execute a Standalone Activity on Temporal Cloud
+
+In a separate terminal, set the same environment variables and run the starter:
+
+```
+export TEMPORAL_ADDRESS=<your-namespace>.tmprl.cloud:7233
+export TEMPORAL_NAMESPACE=<your-namespace>
+export TEMPORAL_TLS_CLIENT_CERT_PATH='path/to/your/ca.pem'
+export TEMPORAL_TLS_CLIENT_KEY_PATH='path/to/your/ca.key'
+
+go run standalone-activity/helloworld/starter/main.go
+```
+
+### Run a Worker connected to Temporal Cloud with API keys
+
+Alternatively, you can use an API key instead of TLS certificates:
+
+```
+export TEMPORAL_ADDRESS=<region>.<cloud_provider>.api.temporal.io:7233
+export TEMPORAL_NAMESPACE=<your-namespace>
+export TEMPORAL_API_KEY=<your-api-key>
+```
+
+Then run the Worker and starter the same way:
+
+```
+go run standalone-activity/helloworld/worker/main.go
+```
+
+```
+go run standalone-activity/helloworld/starter/main.go
 ```
