@@ -2,7 +2,9 @@
 id: server-frontend-api-reference
 title: Server frontend API reference
 sidebar_label: Server API
-description: Easily interact with the Temporal Server via Client SDKs or CLI, or use the gRPC and HTTP APIs for Workflow operations. Access code examples and API docs at api-docs.temporal.io.
+description:
+  Easily interact with the Temporal Server via Client SDKs or CLI, or use the gRPC and HTTP APIs for Workflow
+  operations. Access code examples and API docs at api-docs.temporal.io.
 slug: /self-hosted-guide/server-frontend-api-reference
 toc_max_heading_level: 4
 keywords:
@@ -15,7 +17,9 @@ tags:
 
 import { CaptionedImage } from '@site/src/components';
 
-While it's usually easiest to interact with [Temporal Server](/temporal-service/temporal-server) via a [Client SDK](/encyclopedia/temporal-sdks#temporal-client) or the [Temporal CLI](https://docs.temporal.io/cli), you can also use its gRPC API.
+While it's usually easiest to interact with [Temporal Server](/temporal-service/temporal-server) via a
+[Client SDK](/encyclopedia/temporal-sdks#temporal-client) or the [Temporal CLI](https://docs.temporal.io/cli), you can
+also use its gRPC API.
 
 ## gRPC API
 
@@ -25,11 +29,15 @@ Our Client and Worker SDKs use the gRPC API. The API reference is located here:
 
 ### Use with code
 
-Usually you interact with the API via high-level methods like `client.workflow.start()`. However, Client SDKs also expose the underlying gRPC services. For instance, the TypeScript SDK has:
+Usually you interact with the API via high-level methods like `client.workflow.start()`. However, Client SDKs also
+expose the underlying gRPC services. For instance, the TypeScript SDK has:
 
-- WorkflowService: [`Client.connection.workflowService`](https://typescript.temporal.io/api/classes/client.Connection#workflowservice)
-- OperatorService: [`Client.connection.operatorService`](https://typescript.temporal.io/api/classes/client.Connection/#operatorservice)
-- HealthService: [`Client.connection.healthService`](https://typescript.temporal.io/api/classes/client.Connection/#healthservice)
+- WorkflowService:
+  [`Client.connection.workflowService`](https://typescript.temporal.io/api/classes/client.Connection#workflowservice)
+- OperatorService:
+  [`Client.connection.operatorService`](https://typescript.temporal.io/api/classes/client.Connection/#operatorservice)
+- HealthService:
+  [`Client.connection.healthService`](https://typescript.temporal.io/api/classes/client.Connection/#healthservice)
 
 If you're not using an SDK Client (rare), you can generate gRPC client stubs by:
 
@@ -63,7 +71,8 @@ To connect to Temporal Cloud, set the host, cert, cert key, and TLS flag:
 evans --proto temporal/api/workflowservice/v1/service.proto --host devrel.a2dd6.tmprl.cloud --port 7233 --tls --cert /Users/me/certs/temporal.pem --certkey /Users/me/certs/temporal.key
 ```
 
-Once inside the evans prompt, you can run commands like `help`, `show service` to list available methods, and `call ListWorkflowExecutions`.
+Once inside the evans prompt, you can run commands like `help`, `show service` to list available methods, and
+`call ListWorkflowExecutions`.
 
 #### With a GUI
 
@@ -80,32 +89,27 @@ Once inside the evans prompt, you can run commands like `help`, `show service` t
 - Edit the JSON in the left pane.
 - Hit `Cmd/Ctrl-Enter` or click the play button to get a response from the server on the right.
 
-<CaptionedImage
-    src="/img/proto/ListWorkflowExecutions.png"
-    title="ListWorkflowExecutions"
-/>
+<CaptionedImage src="/img/proto/ListWorkflowExecutions.png" title="ListWorkflowExecutions" />
 
-One downside compared to [command line](#with-command-line) is it doesn't show enum names, just numbers like `"task_queue_type": 1`.
+One downside compared to [command line](#with-command-line) is it doesn't show enum names, just numbers like
+`"task_queue_type": 1`.
 
-<CaptionedImage
-    src="/img/proto/DescribeTaskQueue.png"
-    title="DescribeTaskQueue"
-/>
+<CaptionedImage src="/img/proto/DescribeTaskQueue.png" title="DescribeTaskQueue" />
 
 ## HTTP API
 
-The Temporal Server includes a native HTTP API that translates HTTP requests to gRPC calls.
-The HTTP API runs on a separate port from the gRPC API (7233) and must be explicitly enabled.
+The Temporal Server includes a native HTTP API that translates HTTP requests to gRPC calls. The HTTP API runs on a
+separate port from the gRPC API (7233) and must be explicitly enabled.
 
 ### Enable the HTTP API
 
-To enable the HTTP API on a specific port with the dev server, use the `--http-port` flag:
+To enable the HTTP API on a specific port with the local development server, use the `--http-port` flag:
 
 ```sh
 temporal server start-dev --http-port 7243
 ```
 
-For self-hosted deployments, set the `httpPort` in your frontend service configuration:
+For self-hosted deployments, set [`httpPort`](/references/configuration#rpc) in your frontend service configuration:
 
 ```yaml
 services:
