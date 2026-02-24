@@ -256,19 +256,12 @@ These metrics could have high cardinality depending on number of activity types,
 
 :::
 
-:::note Standalone Activities
-
-Standalone Activities are Activity Executions that are started independently, without an associated Workflow. For Activity metrics that include the `temporal_workflow_type` label, Standalone Activities use the placeholder value `"__standalone_activity"`.
-
-:::
-
 #### temporal\_cloud\_v1\_activity\_success\_count
 
 Successful activity completions per second.
 
 | Label | Description |
 | ----- | ----- |
-| `operation` | The operation name |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 | `temporal_activity_type` | The activity type (opt-in) |
@@ -281,7 +274,6 @@ Activity failures per second.
 
 | Label | Description |
 | ----- | ----- |
-| `operation` | The operation name |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 | `temporal_activity_type` | The activity type (opt-in) |
@@ -294,7 +286,6 @@ Activity timeouts per second.
 
 | Label | Description |
 | ----- | ----- |
-| `operation` | The operation name |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 | `temporal_activity_type` | The activity type (opt-in) |
@@ -308,7 +299,6 @@ Activity task failures per second.
 
 | Label | Description |
 | ----- | ----- |
-| `operation` | The operation name |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 | `temporal_activity_type` | The activity type (opt-in) |
@@ -321,7 +311,6 @@ Activity task timeouts per second.
 
 | Label | Description |
 | ----- | ----- |
-| `operation` | The operation name |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 | `temporal_activity_type` | The activity type (opt-in) |
@@ -335,7 +324,6 @@ Activity cancellations per second.
 
 | Label | Description |
 | ----- | ----- |
-| `operation` | The operation name |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 | `temporal_activity_type` | The activity type (opt-in) |
@@ -344,11 +332,10 @@ Activity cancellations per second.
 
 #### temporal\_cloud\_v1\_activity\_terminate\_count
 
-Activity terminations per second. This metric only applies to Standalone Activities. Regular Activities that run within a Workflow cannot be terminated independently.
+Activity terminations per second.
 
 | Label | Description |
 | ----- | ----- |
-| `operation` | The operation name |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 | `temporal_activity_type` | The activity type (opt-in) |
