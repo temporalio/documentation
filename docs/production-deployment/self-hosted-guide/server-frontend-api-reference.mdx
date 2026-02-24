@@ -94,40 +94,42 @@ One downside compared to [command line](#with-command-line) is it doesn't show e
 
 ## HTTP API
 
-The Web UI uses [`temporalio/ui-server`](https://github.com/temporalio/ui-server), an HTTP proxy for the gRPC API.
+The Temporal Server includes a native HTTP API that translates HTTP requests to gRPC calls.
+The HTTP API runs on a separate port from the gRPC API (7233) and must be explicitly enabled.
 
-:::caution
+:::note
 
-As soon as [this HTTP API proposal](https://github.com/temporalio/proposals/pull/79) is implemented, it will be the recommended HTTP API, at which point the `ui-server` API may be discontinued. Further, `ui-server` was designed for use in the UI, and may make breaking changes.
+The HTTP API is still considered unstable and may have breaking changes.
 
 :::
 
-To view the API docs, run [`temporal server start-dev`](/cli#start-dev-server) and open:
+### Enable the HTTP API
 
-[`localhost:8233/openapi/`](http://localhost:8233/openapi/)
+To enable the HTTP API on a specific port with the dev server, use the `--http-port` flag:
 
-To make a request, run:
-
-````sh
-$ curl localhost:8233/api/v1/namespaces/default/workflows
-
-{
-  "executions": [
-    {
-      "execution": {
-        "workflowId": "workflow-_homozdkzYWLRpX6Rfou5",
-        "runId": "c981cb26-baa4-4af8-ac5f-866451d3f83c"
-      },
-      "type": {
-        "name": "example"
-      },
-      "startTime": ...
-    },
-    ...
-  ],
-  "nextPageToken": null
-}
+```sh
+temporal server start-dev --http-port 7243
 ```
 
-*/}
-````
+For self-hosted deployments, set the `httpPort` in your frontend service configuration:
+
+```yaml
+services:
+  frontend:
+    rpc:
+      grpcPort: 7233
+      httpPort: 7243
+```
+
+### View the OpenAPI spec
+
+With the HTTP API enabled, the OpenAPI specs are available at:
+
+- [`localhost:7243/openapi.yaml`](http://localhost:7243/openapi.yaml) — OpenAPI v3 (YAML)
+- [`localhost:7243/swagger.json`](http://localhost:7243/swagger.json) — OpenAPI v2 / Swagger (JSON)
+
+### Make a request
+
+```sh
+curl localhost:7243/api/v1/namespaces/default/workflows
+```
