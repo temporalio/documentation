@@ -387,7 +387,6 @@ _Required_
 `rpc` contains settings related to the way a service interacts with other services. The following values are supported:
 
 - `grpcPort`: Port on which gRPC will listen.
-- `httpPort`: Port for the [HTTP API](/self-hosted-guide/server-frontend-api-reference#http-api). Set to a non-zero value to enable the HTTP API on the frontend service. When enabled, the HTTP API translates HTTP requests to gRPC calls and serves OpenAPI specs. Defaults to `0` (disabled).
 - `membershipPort`: Port used to communicate with other hosts in the same Cluster for membership info.
   Each service should use different port.
   If there are multiple Temporal Clusters in your environment (Kubernetes for example), and they have network access to each other, each Cluster should use a different membership port.
