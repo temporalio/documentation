@@ -55,6 +55,23 @@ All metrics include these base labels:
 | `temporal_account` | The Temporal account identifier |
 | `region` | Cloud region where the metric originated |
 
+### Opt-in Labels
+
+Some labels are **opt-in** due to their high cardinality.
+These labels are not included by default when you scrape the OpenMetrics endpoint.
+To enable an opt-in label, add it to the `labels` query parameter on your scrape URL.
+When an opt-in label is enabled, it is populated on **all metrics** that support it.
+
+| Label | Available on | Description |
+| ----- | ----- | ----- |
+| `temporal_activity_type` | Activity metrics | The activity type name |
+
+For example, to include `temporal_activity_type` in your scrape results:
+
+```
+/v1/metrics?labels=temporal_activity_type
+```
+
 ## Metrics Catalog
 
 ### Frontend Service Metrics
@@ -230,6 +247,203 @@ Workflows continued as new per second.
 | `temporal_workflow_type` | The workflow type |
 
 **Type**: Rate
+
+### Activity Metrics
+
+:::caution High Cardinality
+
+These metrics could have high cardinality depending on number of activity types, workflow types, and task queues. The `temporal_activity_type` label is [opt-in](#opt-in-labels) to help manage cardinality.
+
+:::
+
+#### temporal\_cloud\_v1\_activity\_success\_count
+
+Successful activity completions per second.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_task_queue` | The task queue name |
+| `temporal_workflow_type` | The workflow type |
+| `temporal_activity_type` | The activity type (opt-in) |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_activity\_fail\_count
+
+Activity failures per second.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_task_queue` | The task queue name |
+| `temporal_workflow_type` | The workflow type |
+| `temporal_activity_type` | The activity type (opt-in) |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_activity\_timeout\_count
+
+Activity timeouts per second.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_task_queue` | The task queue name |
+| `temporal_workflow_type` | The workflow type |
+| `temporal_activity_type` | The activity type (opt-in) |
+| `timeout_type` | The timeout type |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_activity\_task\_fail\_count
+
+Activity task failures per second.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_task_queue` | The task queue name |
+| `temporal_workflow_type` | The workflow type |
+| `temporal_activity_type` | The activity type (opt-in) |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_activity\_task\_timeout\_count
+
+Activity task timeouts per second.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_task_queue` | The task queue name |
+| `temporal_workflow_type` | The workflow type |
+| `temporal_activity_type` | The activity type (opt-in) |
+| `timeout_type` | The timeout type |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_activity\_cancel\_count
+
+Activity cancellations per second.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_task_queue` | The task queue name |
+| `temporal_workflow_type` | The workflow type |
+| `temporal_activity_type` | The activity type (opt-in) |
+
+**Type**: Rate
+
+#### temporal\_cloud\_v1\_activity\_terminate\_count
+
+Activity terminations per second.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_task_queue` | The task queue name |
+| `temporal_workflow_type` | The workflow type |
+| `temporal_activity_type` | The activity type (opt-in) |
+
+**Type**: Rate
+
+:::info Activity latency labels
+
+Activity latency metrics include only the `temporal_activity_type` label.
+Labels such as `temporal_task_queue` and `temporal_workflow_type` are intentionally excluded because pre-calculated percentile values cannot be accurately aggregated across additional dimensions.
+
+:::
+
+#### temporal\_cloud\_v1\_activity\_start\_to\_close\_latency\_p50
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 50th percentile activity start-to-close latency in seconds.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_activity_type` | The activity type (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_activity\_start\_to\_close\_latency\_p95
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 95th percentile activity start-to-close latency in seconds.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_activity_type` | The activity type (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_activity\_start\_to\_close\_latency\_p99
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 99th percentile activity start-to-close latency in seconds.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_activity_type` | The activity type (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_activity\_schedule\_to\_close\_latency\_p50
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 50th percentile activity schedule-to-close latency in seconds.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_activity_type` | The activity type (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_activity\_schedule\_to\_close\_latency\_p95
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 95th percentile activity schedule-to-close latency in seconds.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_activity_type` | The activity type (opt-in) |
+
+**Type**: Latency
+
+#### temporal\_cloud\_v1\_activity\_schedule\_to\_close\_latency\_p99
+
+:::caution
+
+Avoid aggregating this metric across dimensions because the percentile won't be accurate.
+
+:::
+
+The 99th percentile activity schedule-to-close latency in seconds.
+
+| Label | Description |
+| ----- | ----- |
+| `temporal_activity_type` | The activity type (opt-in) |
+
+**Type**: Latency
 
 ### Task Queue Metrics
 

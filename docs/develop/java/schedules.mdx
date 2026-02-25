@@ -53,7 +53,11 @@ Schedule schedule =
                         .setTaskQueue("TaskQueue")
                         .build())
                 .build())
-        .setSpec(ScheduleSpec.newBuilder().build())
+        .setSpec(ScheduleSpec.newBuilder()
+                .setIntervals(
+                    Collections.singletonList(new ScheduleIntervalSpec(Duration.ofSeconds(5)))
+                ).build()
+            )
         .build();
 
 // Create a schedule on the server
