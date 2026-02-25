@@ -35,7 +35,7 @@ differs.
 This page covers the following:
 
 - [Run the Temporal Development Server with Standalone Activities enabled](#run-the-temporal-standalone-activity-development-server)
-- [Run a worker with the activity registered](#run-worker)
+- [Run a Worker with the Activity registered](#run-worker)
 - [Execute a Standalone Activity](#execute-activity)
 - [Get the result of a Standalone Activity](#get-activity-result)
 - [Get a handle to an existing Standalone Activity](#get-activity-handle)
@@ -78,11 +78,13 @@ git clone https://github.com/temporalio/samples-go.git
 cd samples-go
 ```
 
-## Run a worker with the activity registered {#run-worker}
+## Run a Worker with the Activity registered {#run-worker}
 
 Running a Worker for Standalone Activities is the same as running a Worker for Workflow-driven Activities — you create a
 Worker, register the Activity, and call `Run()`. The Worker doesn't need to know whether the Activity will be invoked
-from a Workflow or as a Standalone Activity. See
+from a Workflow or as a Standalone Activity. 
+
+See
 [How to develop a Worker in Go](/develop/go/core-application#develop-worker) for more details on Worker setup and
 configuration options.
 
