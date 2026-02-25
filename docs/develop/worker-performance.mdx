@@ -73,6 +73,8 @@ Available slot suppliers include:
 - You cannot guarantee that the targets for resource-based suppliers won't ever be exceeded.
   Resources consumed during a task can't be known ahead of time.
 
+- Read about [choosing an appropriate slot supplier type](#choosing-slot-supplier-types) before picking one.
+
 - Worker tuners supersede the existing `maxConcurrentXXXTask` style Worker options.
   Using both styles will cause an error at Worker initialization time.
 
@@ -362,7 +364,7 @@ A **Worker Tuner** instance exists per-Worker, providing slot suppliers for diff
 A tuner assigns different suppliers to each slot type.
 For example, it might provide a fixed assignment slot supplier for Workflows and use a resource-based supplier for Activities.
 
-### Choosing slot supplier types
+### Choosing slot supplier types {#choosing-slot-supplier-types}
 
 Temporal offers three types of slot suppliers: fixed assignment, resource-based, and custom.
 Here’s how to choose the best approach based on your system requirements and workload characteristics.
@@ -375,7 +377,13 @@ When choosing whether to opt for fixed assignment or resource-based suppliers, c
 - Reserve auto-tuned resource-based slot suppliers for deployments focused on avoiding Worker overload.
   They provide excellent balance with built-in throttling that ensures the Worker will be cautious when handing out new executor slots.
 
-The following use cases are particularly well suited to resource-based auto-tuning slot suppliers:
+
+Scenarios with tasks that have variable, or very high, resource needs should rely on fixed-size
+suppliers and manual tuning. The resource-based tuner can never perform as well as a fixed-size
+tuner with appropriately chosen configuration, but can offer reasonable performance without the 
+need for profiling.
+
+The following use cases are well suited to resource-based auto-tuning slot suppliers: 
 
 - **Fluctuating workloads with low per-Task consumption**:
   The resource-based supplier works well when each Task consumes few resources but may run for a (relatively) long time.
