@@ -262,7 +262,6 @@ Successful activity completions per second.
 
 | Label | Description |
 | ----- | ----- |
-| `operation` | The operation name |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 | `temporal_activity_type` | The activity type (opt-in) |
@@ -275,7 +274,6 @@ Activity failures per second.
 
 | Label | Description |
 | ----- | ----- |
-| `operation` | The operation name |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 | `temporal_activity_type` | The activity type (opt-in) |
@@ -288,7 +286,6 @@ Activity timeouts per second.
 
 | Label | Description |
 | ----- | ----- |
-| `operation` | The operation name |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 | `temporal_activity_type` | The activity type (opt-in) |
@@ -302,7 +299,6 @@ Activity task failures per second.
 
 | Label | Description |
 | ----- | ----- |
-| `operation` | The operation name |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 | `temporal_activity_type` | The activity type (opt-in) |
@@ -315,7 +311,6 @@ Activity task timeouts per second.
 
 | Label | Description |
 | ----- | ----- |
-| `operation` | The operation name |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 | `temporal_activity_type` | The activity type (opt-in) |
@@ -329,7 +324,6 @@ Activity cancellations per second.
 
 | Label | Description |
 | ----- | ----- |
-| `operation` | The operation name |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 | `temporal_activity_type` | The activity type (opt-in) |
@@ -342,12 +336,18 @@ Activity terminations per second.
 
 | Label | Description |
 | ----- | ----- |
-| `operation` | The operation name |
 | `temporal_task_queue` | The task queue name |
 | `temporal_workflow_type` | The workflow type |
 | `temporal_activity_type` | The activity type (opt-in) |
 
 **Type**: Rate
+
+:::info Activity latency labels
+
+Activity latency metrics include only the `temporal_activity_type` label.
+Labels such as `temporal_task_queue` and `temporal_workflow_type` are intentionally excluded because pre-calculated percentile values cannot be accurately aggregated across additional dimensions.
+
+:::
 
 #### temporal\_cloud\_v1\_activity\_start\_to\_close\_latency\_p50
 
