@@ -5,6 +5,7 @@ sidebar_label: Job Queue
 description: Standalone Activities adds the ability to execute any Temporal Activity as a top-level primitive without the full overhead of a Workflow.
 keywords:
   - job queue
+  - job system
   - standalone activities
   - background jobs
   - durable execution
@@ -13,9 +14,11 @@ tags:
   - Standalone Activities
 ---
 
-## What is a Job Queue in Temporal?
+import { RelatedReadContainer, RelatedReadItem } from '@site/src/components';
 
-A job is a single, discrete unit of work that runs asynchronously in the background such as sending an email, processing a webhook, syncing data, or executing a long-running task.
+## What is a Job Queue?
+
+A job is a single, discrete unit of work that runs asynchronously in the background such as sending an email, processing a webhook, syncing data, or executing a single function reliably.
 
 A job queue is the system that manages these jobs: accepting work, dispatching it to workers, retrying on failure, and providing visibility into what's running and what failed.
 
@@ -49,3 +52,9 @@ Standalone Activities add the ability to execute any Temporal Activity as a top-
 - OpenMetrics support
 - Lifecycle controls: cancel, pause, unpause, reset, terminate
 - Manual completion for external integrations & on-call management
+
+<RelatedReadContainer>
+  <RelatedReadItem path="/standalone-activity" text="Standalone Activity concepts and getting started" archetype="encyclopedia" />
+  <RelatedReadItem path="/develop/go/standalone-activities" text="Go SDK - Standalone Activities quick start and code sample" archetype="feature-guide" />
+  <RelatedReadItem path="/develop/python/standalone-activities" text="Python SDK - Standalone Activities quick start and code sample" archetype="feature-guide" />
+</RelatedReadContainer>

@@ -23,7 +23,6 @@ module.exports = {
           },
           items: [
             'evaluate/development-production-features/core-application',
-            'evaluate/development-production-features/job-queue',
             'evaluate/development-production-features/failure-detection',
             'evaluate/development-production-features/throughput-composability',
             'evaluate/development-production-features/nexus',
@@ -37,6 +36,7 @@ module.exports = {
             'evaluate/development-production-features/cloud-automation',
             'evaluate/development-production-features/low-latency',
             'evaluate/development-production-features/multi-tenancy',
+            'evaluate/development-production-features/job-queue',
             {
               type: 'category',
               label: 'Product release stages',
@@ -705,8 +705,8 @@ module.exports = {
           items: [
             'encyclopedia/activities/activity-definition',
             'encyclopedia/activities/activity-execution',
-            'encyclopedia/activities/standalone-activity',
             'encyclopedia/activities/local-activity',
+            'encyclopedia/activities/standalone-activity',
           ],
         },
         {
