@@ -624,8 +624,7 @@ plugin = Temporalio::SimplePlugin.new(
 
 ### Interceptors
 
-Interceptors are middleware that can run before and after various calls such as Activities, Workflows, and Signals. You
-can [learn more about interceptors](/develop/python/interceptors) for the details of implementing them. They're used to:
+Interceptors are middleware that can run before and after various calls such as Activities, Workflows, and Signals. You can [learn more about interceptors](/develop/python/workers/interceptors) for the details of implementing them. They're used to:
 
 - Create side effects such as logging and tracing.
 - Modify arguments, such as adding headers for authorization or tracing propagation.
@@ -853,9 +852,7 @@ effects.
 
 ### Versioning tests
 
-When you make changes to your plugin after it has already shipped to users, we recommend that you set up
-[replay testing](/develop/python/testing-suite#replay) on each important change to make sure that you’re not causing
-non-determinism errors for your users.
+When you make changes to your plugin after it has already shipped to users, it's recommended that you set up [replay testing](/develop/python/best-practices/testing-suite#replay) on each important change to make sure that you’re not causing non-determinism errors for your users.
 
 ### Side effects tests
 
