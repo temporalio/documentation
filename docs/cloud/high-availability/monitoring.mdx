@@ -39,7 +39,7 @@ You can monitor your replica status with the Temporal Cloud UI. If the replica i
 
 These issues prevent the replica from being used during a failover, ensuring system stability and consistency.
 
-## Replication lag metric
+## Monitoring replication
 
 Temporal Cloud's High Availability features use asynchronous replication between the primary and the replica. Workflow
 updates in the primary, along with associated History Events, are transmitted to the replica. Replication lag refers to
@@ -55,35 +55,8 @@ P95 means 95% of updates are processed faster than this limit.
 A forced failover, when there is significant replication lag, increases the likelihood of rolling back Workflow
 progress. Always check the replication lag metrics before initiating a failover.
 
-Temporal Cloud emits pre-computed replication lag percentile
-[metrics](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_replication_lag_p99). The following samples demonstrate how you can
-use these metrics to monitor and explore replication lag:
-
-**P99 replication lag**:
-
-```
-temporal_cloud_v1_replication_lag_p99{temporal_namespace=~"$namespace"}
-```
-
-**P95 replication lag**:
-
-```
-temporal_cloud_v1_replication_lag_p95{temporal_namespace=~"$namespace"}
-```
-
-**Average replication lag (estimated)**:
-
-```
-temporal_cloud_v1_replication_lag_p50{temporal_namespace=~"$namespace"}
-```
-
-:::note
-
-OpenMetrics v1 replication lag metrics are pre-computed percentiles (p50, p95, p99) rather than histograms.
-You do not need to use `histogram_quantile()` or `rate()` on these metrics.
-The p50 value can serve as a reasonable proxy for the average.
-
-:::
+Temporal Cloud emits replication lag [metrics](/cloud/metrics/openmetrics/metrics-reference#replication-metrics)
+as pre-computed percentiles (p50, p95, p99) that are labeled with `temporal_namespace`.
 
 When a Namespace is using a replica, you may notice that the Action count in `temporal_cloud_v1_total_action_count` is
 2x what it was before adding a replica. This happens because Actions are replicated; they occur on both the primary and
