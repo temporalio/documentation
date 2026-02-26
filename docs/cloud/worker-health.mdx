@@ -79,25 +79,31 @@ The following alerts build on the above to dive deeper into specific potential c
 
 - Alert at >\{predetermined_high_number\}
 
+4. Create monitors for the [temporal_cloud_v1_approximate_backlog_count](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_approximate_backlog_count) Cloud metric.
+   This metric provides a server-side view of how many Tasks are waiting in a Task Queue and complements the SDK Schedule To Start latency metrics.
+
+- Alert when the value is growing over time for a given Task Queue
+
 ## Detect Task Backlog {#detect-task-backlog}
 
 ### Symptoms of high Task backlog
 
 If the Task backlog is too high, you will find that tasks are waiting to find Workers to run on. This can cause a delay in
-Workflow execution. Detecting a growing Task backlog is possible by watching the Schedule To Start latency and sync match rate.
+Workflow execution. Detecting a growing Task backlog is possible by watching the Schedule To Start latency, sync match rate, and approximate backlog count.
 
 Metrics to monitor:
 
 - **SDK metric**: [workflow_task_schedule_to_start_latency](/references/sdk-metrics#workflow_task_schedule_to_start_latency)
 - **SDK metric**: [activity_schedule_to_start_latency](/references/sdk-metrics#activity_schedule_to_start_latency)
-- **Temporal Cloud metric**: [temporal_cloud_v0_poll_success_count](/cloud/metrics/reference#temporal_cloud_v0_poll_success_count)
-- **Temporal Cloud metric**: [temporal_cloud_v0_poll_success_sync_count](/cloud/metrics/reference#temporal_cloud_v0_poll_success_sync_count)
+- **Temporal Cloud metric**: [temporal_cloud_v1_poll_success_count](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_poll_success_count)
+- **Temporal Cloud metric**: [temporal_cloud_v1_poll_success_sync_count](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_poll_success_sync_count)
+- **Temporal Cloud metric**: [temporal_cloud_v1_approximate_backlog_count](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_approximate_backlog_count)
 
 ### Schedule To Start latency
 
 The Schedule To Start metric represents how long Tasks are staying unprocessed in the Task Queues.
 It is the time between when a Task is enqueued and when it is started by a Worker.
-This time being long (likely) means that your Workers can't keep up — either increase the number of Workers (if the host load is already high) or increase the number of pollers per Worker.
+This time being long (likely) means that your Workers can't keep up - either increase the number of Workers (if the host load is already high) or increase the number of pollers per Worker.
 
 If your Schedule To Start latency alert triggers or is high, check the [Sync Match Rate](#sync-match-rate) to decide if you need to adjust your Worker or fleet, or contact Temporal Cloud support.
 If your Sync Match Rate is low, contact [Temporal Cloud support](/cloud/support#support-ticket).
@@ -151,24 +157,22 @@ An async match is when a Task cannot be matched to the Sticky Queue for a Worker
 **Calculate Sync Match Rate**
 
 ```
-temporal_cloud_v0_poll_success_sync_count ÷ temporal_cloud_v0_poll_success_count = N
+temporal_cloud_v1_poll_success_sync_count / temporal_cloud_v1_poll_success_count = N
 ```
 
 #### Prometheus query samples
 
 **sync_match_rate query**
 
+OpenMetrics v1 metrics are pre-computed rates. Do not wrap them with `rate()` or `increase()`.
+
 ```
 sum by(temporal_namespace) (
-    rate(
-        temporal_cloud_v0_poll_success_sync_count{temporal_namespace=~"$namespace"}[5m]
-    )
+    temporal_cloud_v1_poll_success_sync_count{temporal_namespace=~"$namespace"}
 )
 /
 sum by(temporal_namespace) (
-    rate(
-        temporal_cloud_v0_poll_success_count{temporal_namespace=~"$namespace"}[5m]
-    )
+    temporal_cloud_v1_poll_success_count{temporal_namespace=~"$namespace"}
 )
 ```
 
@@ -207,16 +211,24 @@ In this case it's also important to understand the fill and drain rates of the a
 Successful async polls
 
 ```
-temporal_cloud_v0_poll_success_count - temporal_cloud_v0_poll_success_sync_count = N
+temporal_cloud_v1_poll_success_count - temporal_cloud_v1_poll_success_sync_count = N
 ```
 
 ```
-sum(rate(temporal_cloud_v0_poll_success_count{temporal_namespace=~"$temporal_namespace"}[5m])) by (temporal_namespace, task_type)
+sum by(temporal_namespace, task_type) (
+    temporal_cloud_v1_poll_success_count{temporal_namespace=~"$namespace"}
+)
 -
-sum(rate(temporal_cloud_v0_poll_success_sync_count{temporal_namespace=~"$temporal_namespace"}[5m])) by (temporal_namespace, task_type)
+sum by(temporal_namespace, task_type) (
+    temporal_cloud_v1_poll_success_sync_count{temporal_namespace=~"$namespace"}
+)
 ```
 
-[//]: # (add `temporal_cloud_v1_approximate_backlog_count` once the v2 metrics has been GA'd)
+You can also monitor the [approximate backlog count](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_approximate_backlog_count) to observe Task Queue depth directly:
+
+```
+temporal_cloud_v1_approximate_backlog_count{temporal_namespace=~"$namespace", temporal_task_queue=~"$task_queue"}
+```
 
 **Actions**
 
@@ -244,18 +256,18 @@ If you see the Poll Success Rate showing low numbers, you might have too many re
 
 Metrics to monitor:
 
-- **Temporal Cloud metric**: [temporal_cloud_v0_poll_success_count](/cloud/metrics/reference#temporal_cloud_v0_poll_success_count)
-- **Temporal Cloud metric**: [temporal_cloud_v0_poll_success_sync_count](/cloud/metrics/reference#temporal_cloud_v0_poll_success_sync_count)
-- **Temporal Cloud metric**: [temporal_cloud_v0_poll_timeout_count](/cloud/metrics/reference#temporal_cloud_v0_poll_timeout_count)
+- **Temporal Cloud metric**: [temporal_cloud_v1_poll_success_count](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_poll_success_count)
+- **Temporal Cloud metric**: [temporal_cloud_v1_poll_success_sync_count](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_poll_success_sync_count)
+- **Temporal Cloud metric**: [temporal_cloud_v1_poll_timeout_count](/cloud/metrics/openmetrics/metrics-reference#temporal_cloud_v1_poll_timeout_count)
 - **SDK metric**: [temporal_workflow_task_schedule_to_start_latency](/references/sdk-metrics#workflow_task_schedule_to_start_latency)
 - **SDK metric**: [temporal_activity_schedule_to_start_latency](/references/sdk-metrics#activity_schedule_to_start_latency)
 
 **Calculate Poll Success Rate**
 
 ```
-(temporal_cloud_v0_poll_success_count + temporal_cloud_v0_poll_success_sync_count)
+(temporal_cloud_v1_poll_success_count + temporal_cloud_v1_poll_success_sync_count)
 /
-(temporal_cloud_v0_poll_success_count + temporal_cloud_v0_poll_success_sync_count + temporal_cloud_v0_poll_timeout_count)
+(temporal_cloud_v1_poll_success_count + temporal_cloud_v1_poll_success_sync_count + temporal_cloud_v1_poll_timeout_count)
 ```
 
 **Target**
@@ -285,42 +297,32 @@ Consider sizing down your Workers by either:
 
 **poll_success_rate query**
 
+OpenMetrics v1 metrics are pre-computed rates. Do not wrap them with `rate()` or `increase()`.
+
 ```
+(
+    sum by(temporal_namespace) (
+        temporal_cloud_v1_poll_success_count{temporal_namespace=~"$namespace"}
+    )
+    +
+    sum by(temporal_namespace) (
+        temporal_cloud_v1_poll_success_sync_count{temporal_namespace=~"$namespace"}
+    )
+)
+/
 (
     (
         sum by(temporal_namespace) (
-          rate(
-            temporal_cloud_v0_poll_success_count{temporal_namespace=~"$namespace"}[5m]
-          )
+            temporal_cloud_v1_poll_success_count{temporal_namespace=~"$namespace"}
         )
-      +
+        +
         sum by(temporal_namespace) (
-          rate(
-            temporal_cloud_v0_poll_success_sync_count{temporal_namespace=~"$namespace"}[5m]
-          )
+            temporal_cloud_v1_poll_success_sync_count{temporal_namespace=~"$namespace"}
         )
     )
-  /
-    (
-        (
-            sum by(temporal_namespace) (
-              rate(
-                temporal_cloud_v0_poll_success_count{temporal_namespace=~"$namespace"}[5m]
-              )
-            )
-          +
-            sum by(temporal_namespace) (
-              rate(
-                temporal_cloud_v0_poll_success_sync_count{temporal_namespace=~"$namespace"}[5m]
-              )
-            )
-        )
-      +
-        sum by(temporal_namespace) (
-          rate(
-            temporal_cloud_v0_poll_timeout_count{temporal_namespace=~"$namespace"}[5m]
-          )
-        )
+    +
+    sum by(temporal_namespace) (
+        temporal_cloud_v1_poll_timeout_count{temporal_namespace=~"$namespace"}
     )
 )
 ```
@@ -425,4 +427,3 @@ Use `TelemetryConfig()` to adjust heartbeat settings. See the [Python SDK docume
 Add configurations to `Runtime()` to adjust heartbeat settings. See the [Ruby SDK documentation](https://ruby.temporal.io/Temporalio/Runtime.html) for more details.
 </SdkTabs.Ruby>
 </SdkTabs>
-
