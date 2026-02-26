@@ -164,8 +164,6 @@ temporal_cloud_v1_poll_success_sync_count / temporal_cloud_v1_poll_success_count
 
 **sync_match_rate query**
 
-OpenMetrics v1 metrics are pre-computed rates. Do not wrap them with `rate()` or `increase()`.
-
 ```
 sum by(temporal_namespace) (
     temporal_cloud_v1_poll_success_sync_count{temporal_namespace=~"$namespace"}
@@ -265,9 +263,9 @@ Metrics to monitor:
 **Calculate Poll Success Rate**
 
 ```
-(temporal_cloud_v1_poll_success_count + temporal_cloud_v1_poll_success_sync_count)
+(temporal_cloud_v1_poll_success_count)
 /
-(temporal_cloud_v1_poll_success_count + temporal_cloud_v1_poll_success_sync_count + temporal_cloud_v1_poll_timeout_count)
+(temporal_cloud_v1_poll_success_count + temporal_cloud_v1_poll_timeout_count)
 ```
 
 **Target**
@@ -292,40 +290,6 @@ Consider sizing down your Workers by either:
 - Reducing the number of Workers polling the impacted Task Queue, OR
 - Reducing the concurrent pollers per Worker, OR
 - Both of the above
-
-#### Prometheus query samples
-
-**poll_success_rate query**
-
-OpenMetrics v1 metrics are pre-computed rates. Do not wrap them with `rate()` or `increase()`.
-
-```
-(
-    sum by(temporal_namespace) (
-        temporal_cloud_v1_poll_success_count{temporal_namespace=~"$namespace"}
-    )
-    +
-    sum by(temporal_namespace) (
-        temporal_cloud_v1_poll_success_sync_count{temporal_namespace=~"$namespace"}
-    )
-)
-/
-(
-    (
-        sum by(temporal_namespace) (
-            temporal_cloud_v1_poll_success_count{temporal_namespace=~"$namespace"}
-        )
-        +
-        sum by(temporal_namespace) (
-            temporal_cloud_v1_poll_success_sync_count{temporal_namespace=~"$namespace"}
-        )
-    )
-    +
-    sum by(temporal_namespace) (
-        temporal_cloud_v1_poll_timeout_count{temporal_namespace=~"$namespace"}
-    )
-)
-```
 
 ## Detect misconfigured Workers {#detect-misconfigured-workers}
 
