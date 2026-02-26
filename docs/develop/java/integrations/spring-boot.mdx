@@ -1,8 +1,8 @@
 ---
-id: spring-boot-integration
+id: spring-boot
 title: Spring Boot integration - Java SDK
 sidebar_label: Spring Boot integration
-slug: /develop/java/spring-boot-integration
+slug: /develop/java/integrations/spring-boot-integration
 toc_max_heading_level: 2
 keywords:
   - spring-boot-integration
@@ -52,7 +52,7 @@ implementation ("io.temporal:temporal-spring-boot-starter:1.31.0")
 
 ## Connect {#connect}
 
-See the [Temporal Client documentation](/develop/java/temporal-client) for more information about connecting to a Temporal Service.
+See the [Temporal Client documentation](/develop/java/client/temporal-client) for more information about connecting to a Temporal Service.
 
 To create an autoconfigured `WorkflowClient`, you need to specify some connection details in your `application.yml` file, as described in the next section.
 
@@ -89,7 +89,7 @@ spring.temporal:
 
 You can also connect to Temporal Cloud, using either an API key or mTLS for authentication.
 
-See the [Connect to Temporal Cloud](/develop/java/temporal-client#connect-to-temporal-cloud) section for more information about connecting to Temporal Cloud.
+See the [Connect to Temporal Cloud](/develop/java/client/temporal-client#connect-to-temporal-cloud) section for more information about connecting to Temporal Cloud.
 
 ### Using an API key
 
@@ -240,4 +240,4 @@ public class Test {
 }
 ```
 
-See the [Java SDK test frameworks documentation](/develop/java/testing-suite#test-frameworks) for more information about testing.
+See the [Java SDK test frameworks documentation](/develop/java/best-practices/testing-suite#test-frameworks) for more information about testing.

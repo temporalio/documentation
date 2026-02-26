@@ -449,7 +449,7 @@ Ensure these environment variables exist in your environment before running your
 
 Import the `envconfig` package to set connection options for the Temporal Client using environment variables. The
 `MustLoadDefaultClientOptions` function will automatically load all environment variables. For a list of all available
-environment variables and their default values, refer to [Environment Configuration](../environment-configuration).
+environment variables and their default values, refer to [Environment Configuration](/references/client-environment-configuration).
 
 For example, the following code snippet loads all environment variables and creates a Temporal Client with the options
 specified in those variables. If you have defined a configuration file at either the default location
@@ -629,10 +629,10 @@ you must supply a Task Queue that will be used for the Tasks (one that a Worker 
 language-specific contextual data, and Workflow Function parameters.
 
 In the examples below, all Workflow Executions are started using a Temporal Client. To spawn Workflow Executions from
-within another Workflow Execution, use either the [Child Workflow](/develop/java/child-workflows) or External Workflow
+within another Workflow Execution, use either the [Child Workflow](/develop/java/workflows/child-workflows) or External Workflow
 APIs.
 
-See the [Customize Workflow Type](/develop/java/core-application#workflow-type) section to see how to customize the name
+See the [Customize Workflow Type](/develop/java/workflows/basic-workflow#workflow-type) section to see how to customize the name
 of the Workflow Type.
 
 A request to spawn a Workflow Execution causes the Temporal Service to create the first Event
@@ -643,7 +643,7 @@ Temporal Service then creates the first Workflow Task, resulting in the first
 Use `WorkflowStub` to start a Workflow Execution from within a Client, and `ExternalWorkflowStub` to start a different
 Workflow Execution from within a Workflow.
 
-See [`SignalwithStart`](/develop/java/message-passing#signal-with-start) to start a Workflow Execution to receive a
+See [`SignalwithStart`](/develop/java/workflows/message-passing#signal-with-start) to start a Workflow Execution to receive a
 Signal from within another Workflow.
 
 **Using `WorkflowStub`**
@@ -767,7 +767,7 @@ written in other language SDKs.
 **Recurring start**
 
 You can start a Workflow Execution on a regular schedule by using
-[`setCronSchedule`](/develop/java/schedules#cron-schedule) Workflow option in the Client code.
+[`setCronSchedule`](/develop/java/workflows/schedules#cron-schedule) Workflow option in the Client code.
 
 ### How to set a Workflow's Task Queue {#set-task-queue}
 
