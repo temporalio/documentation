@@ -24,6 +24,8 @@ description: Execute Activities independently without a Workflow using the Tempo
 Temporal Python SDK support for Standalone Activities is at
 [Pre-release](/evaluate/development-production-features/release-stages#pre-release).
 
+All APIs are experimental and may be subject to backwards-incompatible changes.
+
 :::
 
 Standalone Activities are Activity Executions that run independently, without being orchestrated by a Workflow. Instead
@@ -39,8 +41,9 @@ This page covers the following:
 - [Run the Temporal Development Server with Standalone Activities enabled](#run-the-temporal-standalone-activity-development-server)
 - [Run a worker with the activity registered](#run-worker)
 - [Execute a Standalone Activity](#execute-activity)
-- [Get the result of a Standalone Activity](#get-activity-result)
+- [Start a Standalone Activity without waiting for the result](#start-activity)
 - [Get a handle to an existing Standalone Activity](#get-activity-handle)
+- [Wait for the result of a Standalone Activity](#get-activity-result)
 - [List Standalone Activities](#list-activities)
 - [Count Standalone Activities](#count-activities)
 
