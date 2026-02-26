@@ -200,7 +200,7 @@ plugin = SimplePlugin(
 
 ### Interceptors
 
-Interceptors are middleware that can run before and after various calls such as Activities, Workflows, and Signals. You can [learn more about interceptors](/develop/python/interceptors) for the details of implementing them. They're used to:
+Interceptors are middleware that can run before and after various calls such as Activities, Workflows, and Signals. You can [learn more about interceptors](/develop/python/workers/interceptors) for the details of implementing them. They're used to:
 
 - Create side effects such as logging and tracing.
 - Modify arguments, such as adding headers for authorization or tracing propagation.
@@ -222,7 +222,7 @@ plugin = SimplePlugin(
 
 Each of the SDKs has nuances you should be aware of so you can account for it in your code.
 
-For example, you can choose to [run your Workflows in a sandbox in Python](/develop/python/python-sdk-sandbox). This lets you run Workflow code in a sandbox environment to help prevent non-determinism errors in your application. To work for users who use sandboxing, your Plugin should specify the Workflow runner that it uses.
+For example, you can choose to [run your Workflows in a sandbox in Python](/develop/python/best-practices/python-sdk-sandbox). This lets you run Workflow code in a sandbox environment to help prevent non-determinism errors in your application. To work for users who use sandboxing, your Plugin should specify the Workflow runner that it uses.
 
 Here's an example of how to explicitly define the Workflow runner for your Plugin with Python:
 
@@ -250,7 +250,7 @@ Two special concerns are versioning tests, for when you're making changes to you
 
 ### Versioning tests 
 
-When you make changes to your plugin after it has already shipped to users, it's recommended that you set up [replay testing](/develop/python/testing-suite#replay) on each important change to make sure that you’re not causing non-determinism errors for your users.
+When you make changes to your plugin after it has already shipped to users, it's recommended that you set up [replay testing](/develop/python/best-practices/testing-suite#replay) on each important change to make sure that you’re not causing non-determinism errors for your users.
 
 ### Side effects tests
 

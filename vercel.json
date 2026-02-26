@@ -1005,7 +1005,7 @@
     },
     {
       "source": "/dev-guide/python/foundations:path*",
-      "destination": "/develop/python/core-application",
+      "destination": "/develop/python",
       "permanent": true
     },
     {
@@ -1015,7 +1015,7 @@
     },
     {
       "source": "/dev-guide/python/testing:path*",
-      "destination": "/develop/python/testing-suite",
+      "destination": "/develop/python/best-practices/testing-suite",
       "permanent": true
     },
     {

@@ -36,7 +36,7 @@ Activities encapsulate business logic that is prone to failure, allowing for aut
 - [How to develop an Activity Definition using the Go SDK](/develop/go/core-application#activity-definition)
 - [How to develop an Activity Definition using the Java SDK](/develop/java/core-application#develop-activities)
 - [How to develop an Activity Definition using the PHP SDK](/develop/php/core-application#develop-activities)
-- [How to develop an Activity Definition using the Python SDK](/develop/python/core-application#develop-activities)
+- [How to develop an Activity Definition using the Python SDK](/develop/python/activities/basics)
 - [How to develop an Activity Definition using the TypeScript SDK](/develop/typescript/core-application#develop-activities)
 - [How to develop an Activity Definition using the .NET SDK](/develop/dotnet/core-application#develop-activity)
 
@@ -154,5 +154,5 @@ Here are some best practices you can use when you are creating an Activities for
 
 - Activity arguments and return values should be serializable.
 - Activities that perform writes should be idempotent.
-- Activities have [timeouts](/develop/python/failure-detection#heartbeat-timeout) and [retry policies](/encyclopedia/retry-policies). For Activities, your operation should either complete within a few minutes or it should support the ability to heartbeat or poll for a result. This way it will be clear to the Workflow when the Activity is still making progress.
+- Activities have [timeouts](/develop/python/activities/timeouts#activity-heartbeats) and [retry policies](/encyclopedia/retry-policies). For Activities, your operation should either complete within a few minutes or it should support the ability to heartbeat or poll for a result. This way it will be clear to the Workflow when the Activity is still making progress.
 - You need to specify at least one timeout, typically the [start_to_close timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout). Keep in mind that the shorter the timeout, the faster Temporal will retry upon failure. See the [Activity retry policy section](#activity-retry-policy) to learn more.
