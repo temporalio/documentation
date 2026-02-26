@@ -9,6 +9,8 @@ origins:
     repo: samples-python
   - owner: temporalio
     repo: reference-app-orders-go
+  - owner: temporalio
+    repo: features
   # Some samples were left in the SDK code itself because it has better testing
   # capabilities than the samples repo
   - owner: temporalio
