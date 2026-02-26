@@ -1,0 +1,630 @@
+---
+id: task-queue-priority-fairness
+title: Task Queue Priority and Fairness
+sidebar_label: Task queue priority and fairness
+description: How the Task Queue Priority and Fairness features can be used.
+toc_max_heading_level: 4
+keywords:
+  - task queue
+  - task queue priority
+  - task queue fairness
+  - task queue priority and fairness
+tags:
+  - Task Queues
+  - Priority and Fairness
+---
+
+import { EnlargeImage } from '@site/src/components';
+import SdkTabs from '@site/src/components';
+
+[Task Queue Priority](#task-queue-priority) and [Task Queue Fairness](#task-queue-fairness) are two ways to manage the
+distribution of work within Task Queues. Priority focuses on how Tasks are prioritized within a single Task Queue.
+Fairness aims to prevent one set of Tasks from blocking others within the same priority level.
+
+You can use Priority and Fairness individually within your Task Queues or you can use them together for more complex
+scenarios.
+
+:::tip Support, stability, and dependency info
+
+Priority and Fairness is currently in
+[Public Preview](/evaluate/development-production-features/release-stages#public-preview). Priority is a free feature in Temporal Cloud and for self-hosted Temporal Services. Fairness will be a paid
+feature in Temporal Cloud and billing will be enabled in the near future. All actions performed while Fairness is enabled will incur a 10% upcharge in that Namespace.
+
+:::
+
+## Task Queue Priority
+
+**Task Queue Priority** lets you control the execution order of Workflows, Activities, and Child Workflows based on assigned priority values within a _single_ Task Queue. Each priority level acts as a sub-queue that separates Tasks within a single Task Queue so that high priority Tasks can cut in front of low priority Tasks.
+
+<EnlargeImage
+  src="/img/develop/task-queue-priority-fairness/priority-details.png"
+  alt="Detailed view of how Priority works"
+/>
+
+### When to use Priority
+
+If you need a way to specify the order your Tasks execute in, you can use Priority to manage that. Priority lets you differentiate between your Tasks, like batch and real-time Tasks, so that you can use a single pool of Workers for efficient resource allocation, while ensuring real-time Tasks are processed ahead of batch Tasks.
+
+You can also use this as a way to run urgent Tasks immediately and override others. For example, if you are running an e-commerce platform, you may want to process payment related Tasks before less time-sensitive Tasks like internal inventory management.
+
+### How to use Priority
+
+Priority is avaliable for both self-hosted Temporal instances and Temporal Cloud and it will be automatically enabled.
+If you apply priority keys, the feature will be in use.
+
+You can select a priority level by setting the _priority key_ to a value within the integer range `[1,5]`. A lower value
+implies higher priority, so `1` is the highest priority level. If you don't specify a Priority, a Task defaults to a
+Priority of `3`. Activities will inherit the priority level of their Workflow if a separate Activity priority level
+isn't set.
+
+When you set a priority level within your Task Queues, this means that they will **all** be processed in priority order.
+For example, all of your priority level `1` Tasks will execute before your priority level `2` Tasks and so on. So your
+lower priority Tasks will be blocked until the higher priority Tasks finish running. Tasks with the same priority level
+are scheduled to run in first-in-first-out (FIFO) order. If you need more flexibility to allocate resources to Tasks of
+the same type, like processing payments for multiple e-commerce platforms, check out
+[the Fairness section](#task-queue-fairness).
+
+You can do this via the Temporal CLI where you set the priority key parameter on a Workflow:
+
+```
+temporal workflow start \
+  --type ChargeCustomer \
+  --task-queue my-task-queue \
+  --workflow-id my-workflow-id \
+  --input '{"customerId":"12345"}' \
+  --priority-key 1
+```
+
+Or choose your SDK below to see an example of setting priority for your Workflows:
+
+<SdkTabs>
+<SdkTabs.Go>
+```go
+workflowOptions := client.StartWorkflowOptions{
+  ID:        "my-workflow-id",
+  TaskQueue: "my-task-queue",
+  Priority:  temporal.Priority{PriorityKey: 5},
+}
+we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, MyWorkflow)
+```
+</SdkTabs.Go>
+<SdkTabs.Java>
+```java
+WorkflowOptions options = WorkflowOptions.newBuilder()
+  .setTaskQueue("my-task-queue")
+  .setPriority(Priority.newBuilder().setPriorityKey(5).build()) 
+  .build();
+
+WorkflowClient client = WorkflowClient.newInstance(service); MyWorkflow workflow =
+client.newWorkflowStub(MyWorkflow.class, options); workflow.run();
+
+````
+</SdkTabs.Java>
+<SdkTabs.Python>
+```python
+await client.start_workflow(
+  MyWorkflow.run,
+  args="hello",
+  id="my-workflow-id",
+  task_queue="my-task-queue",
+  priority=Priority(priority_key=1),
+)
+````
+
+</SdkTabs.Python>
+<SdkTabs.DotNet>
+```csharp
+var handle = await Client.StartWorkflowAsync(
+  (MyWorkflow wf) => wf.RunAsync("hello"),
+  new StartWorkflowOptions(
+    id: "my-workflow-id",
+    taskQueue: "my-task-queue"
+  )
+  {
+    Priority = new Priority(1),
+  }
+);
+```
+</SdkTabs.DotNet>
+</SdkTabs>
+
+Choose your SDK below to see an example of setting priority for your Activities:
+
+<SdkTabs>
+<SdkTabs.Go>
+```go
+ao := workflow.ActivityOptions{
+  StartToCloseTimeout: time.Minute,
+  Priority:            temporal.Priority{PriorityKey: 3},
+}
+ctx := workflow.WithActivityOptions(ctx, ao)
+err := workflow.ExecuteActivity(ctx, MyActivity).Get(ctx, nil)
+```
+</SdkTabs.Go>
+<SdkTabs.Java>
+```java
+ActivityOptions options = ActivityOptions.newBuilder()
+  .setStartToCloseTimeout(Duration.ofMinutes(1))
+  .setPriority(Priority.newBuilder().setPriorityKey(3).build())
+  .build();
+
+MyActivity activity = Workflow.newActivityStub(MyActivity.class, options); activity.perform();
+
+````
+</SdkTabs.Java>
+<SdkTabs.Python>
+```python
+await workflow.execute_activity(
+  say_hello,
+  "hi",
+  priority=Priority(priority_key=3),
+  start_to_close_timeout=timedelta(seconds=5),
+)
+````
+
+</SdkTabs.Python>
+<SdkTabs.TypeScript>
+</SdkTabs.TypeScript>
+<SdkTabs.DotNet>
+```csharp
+await Workflow.ExecuteActivityAsync(
+  () => SayHello("hi"),
+    new()
+    {
+      StartToCloseTimeout = TimeSpan.FromSeconds(5),
+      Priority = new(3),
+    }
+  );
+```
+</SdkTabs.DotNet>
+</SdkTabs>
+
+Choose your SDK below to see an example of setting priority for your Child Workflows:
+
+<SdkTabs>
+<SdkTabs.Go>
+```go
+cwo := workflow.ChildWorkflowOptions{
+  WorkflowID: "child-workflow-id",
+  TaskQueue:  "child-task-queue",
+  Priority:   temporal.Priority{PriorityKey: 1},
+}
+ctx := workflow.WithChildOptions(ctx, cwo)
+err := workflow.ExecuteChildWorkflow(ctx, MyChildWorkflow).Get(ctx, nil)
+```
+</SdkTabs.Go>
+<SdkTabs.Java>
+```java
+ChildWorkflowOptions childOptions = ChildWorkflowOptions.newBuilder()
+  .setTaskQueue("child-task-queue")
+  .setWorkflowId("child-workflow-id")
+  .setPriority(Priority.newBuilder().setPriorityKey(1).build())
+  .build();
+
+MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, childOptions); child.run();
+
+````
+</SdkTabs.Java>
+<SdkTabs.Python>
+```python
+await workflow.execute_child_workflow(
+  MyChildWorkflow.run,
+  args="hello child",
+  priority=Priority(priority_key=1),
+)
+````
+
+</SdkTabs.Python>
+<SdkTabs.DotNet>
+```csharp
+await Workflow.ExecuteChildWorkflowAsync(
+  (MyChildWorkflow wf) => wf.RunAsync("hello child"),
+  new() { Priority = new(1) }
+);
+```
+</SdkTabs.DotNet>
+</SdkTabs>
+
+## Task Queue Fairness
+
+Task Queue Fairness lets you distribute Tasks based on _fairness keys_ and their _fairness weight_ within a Task Queue. The fairness keys are used to describe your Task structure. Each fairness key creates its own "virtual queue" within a Task Queue, allowing you to organize Tasks into logical groups like tenants, applications, or workload types.
+
+These virtual queues operate using a round-robin dispatch mechanism, meaning the system cycles through each fairness key in turn when selecting the next Task to dispatch. The round-robin approach essentially prevents any single fairness key from hogging Worker capacity. This ensures that Tasks from one fairness key can't completely block Tasks from other keys, even if one key has a much larger backlog than the others.
+
+When Workers become available, each fairness key gets an opportunity to dispatch Tasks rather than processing all Tasks from one key before moving to the next. This creates a fairer distribution where smaller tenants or lower-volume workloads still receive regular processing time, rather than waiting behind higher volume operations.
+
+The Tasks associated with each fairness key can be dispatched based on the _fairness weight_ that has been assigned to the key. There should only be one fairness weight assigned to each fairness key within a single Task Queue. Having multiple fairness weights on a fairness key will result in unspecific behavior.
+
+Fairness weight can be used to give more or less resources to a fairness key. By default, fairness keys have a fairness weight of 1.0. Tasks belonging to a fairness key with weight of 2.0 will be dispatched twice as often as other keys with a weight of 1.0.
+
+Using the fairness keys and their corresponding fairness weights lets you define levels with weighted capacities. For example, you can have free, basic, and premium levels and Fairness makes sure that an influx of premium Tasks don't overwhelm your resources and block free and basic Tasks.
+
+:::info
+
+When you start using fairness keys, it switches your active Task Queues to fairness mode. That means new Tasks are created with Fairness and the existing queued Tasks get processed before any of the new ones.
+
+:::
+
+### When to use Fairness
+
+Fairness is intended to address common situations like:
+
+- Multi-tenant applications with big and small tenants where small tenants shouldn't be blocked by big ones.
+- Assigning Tasks to different capacity bands and then, for example, dispatching 80% from one band and 20% from another
+  without limiting overall capacity when one band is empty.
+
+It sequences Tasks in the Task Queue probabilistically using a weighted distribution based on:
+
+- Fairness weights you set
+- The current backlog of Tasks
+- A data structure that tracks how you've distributed Tasks for different fairness keys
+
+As an example, imagine a workload with three tenants, _tenant-big_, _tenant-mid_, _tenant-small_, that have varying
+numbers of Tasks at all times. Your _tenant-big_ has a large number of Tasks that can overwhelm your Task Queue and
+prevent _tenant-mid_ and _tenant-small_ from running their Tasks. With Fairness, you can give each tenant a different
+fairness key to make sure _tenant-big_ doesn't use all of the Task Queue resources and block the others.
+
+In this case, _tenant-mid_ and _tenant-small_ will have Tasks run in between _tenant-big_ Tasks so that they are
+executed "fairly". Although, if all your Tasks can be dispatched immediately, then you don't need to use fairness.
+
+This same scenario can apply to batch jobs where certain jobs run more often than others or processing orders from
+multiple vendors where several vendors have the majority of the orders.
+
+Fairness applies at Task dispatch time based on information about the Tasks passing through the Task Queue and considers
+each Task as having equal cost until dispatch. It doesn't consider any Task execution that is currently being done by
+Workers. So if you look at Tasks being processed by Workers, you might not see "fairness" across tenants. For example,
+if you already have Tasks from _tenant-big_ being processed, when Tasks for _tenant-small_ are dispatched it may still
+look like _tenant-big_ is using the most resources.
+
+There are two ways to use Task Queue Fairness: without Priority and with Priority.
+
+### How Fairness works
+
+If you use Fairness without Priority, Tasks with different fairness keys will use a weighted distribution based on the
+fairness weights to allocate resources in the Task Queue. For example, say you have three fairness keys to describe
+customer tiers: _free-tier_, _basic-tier_, and _premium-tier_. You give _premium-tier_ a fairness weight of 5.0,
+_basic-tier_ a fairness weight of 3.0, and _free-tier_ a fairness weight of 2.0. With Fairness, that means 50% of the
+time _premium-tier_ Tasks dispatch, 30% of the time _basic-tier_ Tasks dispatch, and 20% of the time _free-tier_ Tasks
+dispatch from the Task Queue backlog.
+
+If there are Tasks in the Task Queue backlog that have the same fairness key, then they're dispatched in
+[FIFO order](/task-queue#task-ordering).
+
+This is how you are able to ensure that one tier doesn't use all the resources and block other Tasks in the Task Queue
+backlog from dispatching.
+
+When you update fairness keys or fairness weights, the Task Queues will only reflect these changes for Tasks that
+haven't dispatched yet.
+
+<EnlargeImage
+  src="/img/develop/task-queue-priority-fairness/fairness-details.png"
+  alt="High-level of how fairness works"
+/>
+
+### Using Fairness and Priority together
+
+When you use Fairness and Priority together, Priority determines which sub-queue Tasks go into. A single Task Queue with
+Priority implemented will have different sub-queues based on priority levels. Fairness will apply to the Tasks within
+each priority level.
+
+<EnlargeImage
+  src="/img/develop/task-queue-priority-fairness/priority-fairness.png"
+  alt="High-level of how priority and fairness work together"
+/>
+
+### How to use Fairness
+
+Fairness is avaliable for both self-hosted Temporal instances and Temporal Cloud.
+
+If you start using _fairness keys_ in your API calls, it will automatically be enabled in Temporal Cloud.
+
+If you're self-hosting Temporal, use the latest pre-release development server and set `matching.useNewMatcher` and
+`matching.enableFairness` to `true` in the
+[dynamic config](https://github.com/temporalio/temporal/blob/a3a53266c002ae33b630a41977274f8b5b587031/common/dynamicconfig/constants.go#L1345-L1348)
+on the relevant Task Queues or Namespaces. You'll also need to set `matching.enableMigration` to `true` in order to
+support draining Tasks in existing backlogs after Fairness is enabled.
+
+Enabling `matching.useNewMatcher` and `matching.enableFairness` is only applicable for self-hosted Temporal instances.
+There is a toggle coming to Temporal Cloud soon to enable Priority and Fairness at the Namespace level.
+
+:::info
+
+Fairness will be a paid feature in Temporal Cloud and billing will be enabled in the near future. You will be notified
+before billing is enabled for your Namespaces. You will be able to enable or disable Fairness at the Namespace level and
+billing will be disabled at the next calendar hour after it is disabled.
+
+:::
+
+You can do this via the Temporal CLI where you set the fairness key and weight parameters for your Workflow:
+
+```
+temporal workflow start \
+  --type ChargeCustomer \
+  --task-queue my-task-queue \
+  --workflow-id my-workflow-id \
+  --input '{"customerId":"12345"}' \
+  --priority-key 1 \
+  --fairness-key a-key \
+  --fairness-weight 3.14
+```
+
+Or choose your SDK below to see an example of setting fairness for your Workflows:
+
+<SdkTabs>
+<SdkTabs.Go>
+```go
+workflowOptions := client.StartWorkflowOptions{
+  ID:        "my-workflow-id",
+  TaskQueue: "my-task-queue",
+  Priority:  temporal.Priority{
+    PriorityKey:    1,
+    FairnessKey:    "a-key",
+    FairnessWeight: 3.14,
+  },
+}
+we, err := c.ExecuteWorkflow(context.Background(), workflowOptions, MyWorkflow)
+```
+</SdkTabs.Go>
+<SdkTabs.Java>
+```java
+WorkflowOptions options = WorkflowOptions.newBuilder()
+  .setTaskQueue("my-task-queue")
+  .setPriority(Priority.newBuilder().setPriorityKey(5).setFairnessKey("a-key").setFairnessWeight(3.14).build())
+  .build();
+WorkflowClient client = WorkflowClient.newInstance(service);
+MyWorkflow workflow = client.newWorkflowStub(MyWorkflow.class, options);
+workflow.run();
+```
+</SdkTabs.Java>
+<SdkTabs.Python>
+```python
+await client.start_workflow(
+  MyWorkflow.run,
+  args="hello",
+  id="my-workflow-id",
+  task_queue="my-task-queue",
+  priority=Priority(priority_key=3, fairness_key="a-key", fairness_weight=3.14),
+)
+```
+</SdkTabs.Python>
+<SdkTabs.Ruby>
+```ruby
+client.start_workflow(
+  MyWorkflow, "input-arg",
+  id: "my-workflow-id",
+  task_queue: "my-task-queue",
+  priority: Temporalio::Priority.new(
+    priority_key: 3,
+    fairness_key: "a-key",
+    fairness_weight: 3.14
+  )
+)
+```
+</SdkTabs.Ruby>
+<SdkTabs.TypeScript>
+```ts
+const handle = await startWorkflow(workflows.priorityWorkflow, {
+  args: [false, 1],
+  priority: { priorityKey: 3, fairnessKey: 'a-key', fairnessWeight: 3.14 },
+});
+```
+</SdkTabs.TypeScript>
+<SdkTabs.DotNet>
+```csharp
+var handle = await Client.StartWorkflowAsync(
+  (MyWorkflow wf) => wf.RunAsync("hello"),
+  new StartWorkflowOptions(
+    id: "my-workflow-id",
+    taskQueue: "my-task-queue"
+  )
+  {
+    Priority = new Priority(
+      priorityKey: 3,
+      fairnessKey: "a-key",
+      fairnessWeight: 3.14
+    )
+  }
+);
+```
+</SdkTabs.DotNet>
+</SdkTabs>
+
+Choose your SDK below to see an example of setting fairness for your Activities:
+
+<SdkTabs>
+<SdkTabs.Go>
+```go
+ao := workflow.ActivityOptions{
+    StartToCloseTimeout: time.Minute,
+    Priority: temporal.Priority{
+    PriorityKey: 1,
+    FairnessKey: "a-key",
+    FairnessWeight: 3.14,
+  },
+}
+ctx := workflow.WithActivityOptions(ctx, ao)
+err := workflow.ExecuteActivity(ctx, MyActivity).Get(ctx, nil)
+````
+</SdkTabs.Go>
+<SdkTabs.Java>
+```java
+ActivityOptions options = ActivityOptions.newBuilder()
+  .setStartToCloseTimeout(Duration.ofMinutes(1))
+  .setPriority(Priority.newBuilder().setPriorityKey(3).setFairnessKey("a-key").setFairnessWeight(3.14).build())
+  .build();
+MyActivity activity = Workflow.newActivityStub(MyActivity.class, options);
+activity.perform();
+````
+
+</SdkTabs.Java>
+<SdkTabs.Python>
+```python
+await workflow.execute_activity(
+  say_hello,
+  "hi",
+  priority=Priority(priority_key=3, fairness_key="a-key", fairness_weight=3.14),
+  start_to_close_timeout=timedelta(seconds=5),
+)
+```
+</SdkTabs.Python>
+<SdkTabs.Ruby>
+```ruby
+client.start_activity(
+  MyActivity, "input-arg",
+  id: "my-workflow-id",
+  task_queue: "my-task-queue",
+  priority: Temporalio::Priority.new(
+    priority_key: 3,
+    fairness_key: "a-key",
+    fairness_weight: 3.14
+  )
+)
+```
+</SdkTabs.Ruby>
+<SdkTabs.TypeScript>
+```ts
+const handle = await startWorkflow(workflows.priorityWorkflow, {
+  args: [false, 1],
+  priority: { priorityKey: 3, fairnessKey: 'a-key', fairnessWeight: 3.14 },
+});
+```
+</SdkTabs.TypeScript>
+<SdkTabs.DotNet>
+```csharp
+var handle = await Client.StartWorkflowAsync(
+  (MyWorkflow wf) => wf.RunAsync("hello"),
+  new StartWorkflowOptions(
+    id: "my-workflow-id",
+    taskQueue: "my-task-queue"
+  )
+  {
+    Priority = new Priority(
+      priorityKey: 3,
+      fairnessKey: "a-key",
+      fairnessWeight: 3.14
+    )
+  }
+);
+```
+</SdkTabs.DotNet>
+</SdkTabs>
+
+Choose your SDK below to see an example of setting fairness for your Child Workflows:
+
+<SdkTabs>
+<SdkTabs.Go>
+```go
+cwo := workflow.ChildWorkflowOptions{
+  WorkflowID: "child-workflow-id",
+  TaskQueue:  "child-task-queue",
+  Priority:   temporal.Priority{
+    PriorityKey:    1,
+    FairnessKey:    "a-key",
+    FairnessWeight: 3.14,
+  },
+}
+ctx := workflow.WithChildOptions(ctx, cwo)
+err := workflow.ExecuteChildWorkflow(ctx, MyChildWorkflow).Get(ctx, nil)
+```
+</SdkTabs.Go>
+<SdkTabs.Java>
+```java
+ChildWorkflowOptions childOptions = ChildWorkflowOptions.newBuilder()
+  .setTaskQueue("child-task-queue")
+  .setWorkflowId("child-workflow-id")
+  .setPriority(Priority.newBuilder().setPriorityKey(1).setFairnessKey("a-key").setFairnessWeight(3.14).build())
+  .build();
+MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, childOptions);
+child.run();
+```
+</SdkTabs.Java>
+<SdkTabs.Python>
+```python
+await workflow.execute_child_workflow(
+  MyChildWorkflow.run,
+  args="hello child",
+  priority=Priority(priority_key=3, fairness_key="a-key", fairness_weight=3.14),
+)
+```
+</SdkTabs.Python>
+<SdkTabs.Ruby>
+```ruby
+client.start_child_workflow(
+  MyChildWorkflow, "input-arg",
+  id: "my-child-workflow-id",
+  task_queue: "my-task-queue",
+  priority: Temporalio::Priority.new(
+    priority_key: 3,
+    fairness_key: "a-key",
+    fairness_weight: 3.14
+  )
+)
+```
+</SdkTabs.Ruby>
+<SdkTabs.TypeScript>
+```ts
+const handle = await startChildWorkflow(workflows.priorityWorkflow, {
+  args: [false, 1],
+  priority: { priorityKey: 3, fairnessKey: 'a-key', fairnessWeight: 3.14 },
+});
+```
+</SdkTabs.TypeScript>
+<SdkTabs.DotNet>
+```csharp
+var handle = await Client.StartWorkflowAsync(
+  (MyWorkflow wf) => wf.RunAsync("hello"),
+  new StartWorkflowOptions(
+    id: "my-workflow-id",
+    taskQueue: "my-task-queue"
+  )
+  {
+    Priority = new Priority(
+      priorityKey: 3,
+      fairnessKey: "a-key",
+      fairnessWeight: 3.14
+    )
+  }
+);
+```
+</SdkTabs.DotNet>
+</SdkTabs>
+
+### Set rate limits at the Task Queue level
+
+When you're starting to scale your Temporal Services, you may decide to set [Requests Per Second (RPS)](/references/dynamic-configuration#service-level-rps-limits) limits to test your workload or experiment with provisioning benchmarks. You can set the RPS limit at the Task Queue level with `queue-rps-limit` in the CLI.
+
+The whole queue rate limits the dispatch rate of Tasks regardless of the fairness key. Tasks won't be dispatched faster than the specified limit when averaged over a few seconds, although you may see small bursts due to partitioning.
+
+:::note
+
+The whole queue rate limit is the same feature that's available through the Worker Options in the SDKs. If it's set through the API, that limit takes precedence over the limit set through Worker Options.
+
+:::
+
+If you want to make sure that a specific fairness key has limits to throttle Tasks, you can also set an RPS limit based on fairness keys with `fairness-key-rps-limit-default` in the CLI. This could be how you distinguish customer tiers in a way that only allows a defined number of Tasks to be processed by that tier.
+
+```
+temporal task-queue config set \
+    --task-queue my-task-queue \
+    --task-queue-type activity \
+    --namespace my-namespace \
+    --queue-rps-limit 500 \
+    --queue-rps-limit-reason "overall limit" \
+    --fairness-key-rps-limit-default 33.3 \
+    --fairness-key-rps-limit-reason "per-key limit"
+```
+
+The per-fairness-key rate limit works in conjunction with Task Queue Fairness. If you think of Fairness as dividing the queue into one virtual queue for each key, then the per-fairness-key rate limit is a limit on each individual virtual queue. Some important notes on the per-fairness-key limit:
+
+- The whole queue limit and per-fairness-key limit may be set independently: none, one or the other, or both may be set. If both are set, then the more restrictive one applies.
+- The per-fairness-key limit for a key is scaled by the fairness weight assigned to that key. So if the per-fairness-key limit for a queue is set to 10, then all keys with the default weight (1.0) will have a limit of 10 tasks/second. But if a particular key is given a weight of 2.5, then the per-key rate limit for that key will be 25 tasks/second.
+- Since the dispatch rate for each key should be proportional to its weight, if any key is hitting the per-key limit, then nearly all of them are. The way it works is if the next Task to be dispatched hits the per-key limit, then dispatch will wait until it can go.
+- Usually there isn't actually any blocking, but there can be when the fairness weight for a key is changed between when a Task is scheduled and when it's dispatched. If the fairness weight for a key is lowered, for example, the new lower per-key rate limit will be respected. Since those Tasks were originally scheduled with the higher rate, they will block other Tasks as they're dispatched. This limitation will be improved in the future.
+
+### Limitations of Fairness
+
+- There isn't a limit on the number of fairness keys you can use, but their accuracy can degrade as you add more.
+- Task Queues are internally [partitioned](/task-queue#task-ordering) and Tasks are distributed to partitions randomly. This could interfer with fairnesss. Depending on your use case, you can reach out to Temporal Support to get your Task Queues set to a single partition.
+- The fairness weight applies at schedule time, not at dispatch time. So it only affects newly-scheduled Tasks, not currently backlogged ones. This means if you need to throttle a single fairness key in the existing backlog of Tasks, you won't be able to.
+- When you use Worker Versioning and you're moving Workflows from one version to another, Priority will still apply between versions. Fairness isn't guaranteed between versions. For example, you may have Tasks that were originally queued on Worker version _alpha_, Tasks that were queued on Worker version _beta_, and some Tasks were moved from _alpha_ to _beta_. Fairness is only guaranteed when Tasks are originally queued on the same Worker version. So there might be some discrepancies on the Tasks moved from _alpha_ to _beta_.
+- Fairness stats are not persisted, so server deployments can cause temporary lack of Fairness and misordered tasks.
