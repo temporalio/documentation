@@ -14,6 +14,10 @@ keywords:
   - nexus circuit breaking
   - nexus circuit breaker
   - circuit breaker is open
+  - nexus timeouts
+  - schedule-to-close timeout
+  - schedule-to-start timeout
+  - start-to-close timeout
   - execution semantics
   - temporal sdk
   - versioning
@@ -179,7 +183,7 @@ For example, when you execute a Nexus Operation in a caller Workflow the followi
 ## Automatic retries {#automatic-retries}
 
 Once the caller Workflow schedules an Operation with the caller's Temporal Service, the caller's Nexus Machinery keeps trying to start the Operation.
-If a [retryable Nexus error](/references/failures#nexus-errors) is returned the Nexus Machinery will retry until the Nexus Operation's Start-to-Close-Timeout is exceeded.
+If a [retryable Nexus error](/references/failures#nexus-errors) is returned the Nexus Machinery will retry until the Nexus Operation's [Schedule-to-Close timeout](#schedule-to-close-timeout) is exceeded.
 
 For example, if a Nexus handler returns a [retryable error](/references/failures#nexus-errors), or an [upstream timeout](https://github.com/nexus-rpc/api/blob/main/SPEC.md#predefined-handler-errors) is encountered by the caller, the Nexus request will be retried up to the [default Retry Policy's](https://github.com/temporalio/temporal/blob/de7c8879e103be666a7b067cc1b247f0ac63c25c/components/nexusoperations/config.go#L111) max attempts and expiration interval.
 
@@ -192,6 +196,51 @@ This differs from how Activities and Workflows handle errors and retries:
 :::
 
 See [errors in Nexus handlers](/nexus/error-handling#errors-in-nexus-handlers) to control the retry behavior by returning a [non-retryable Nexus error](/references/failures#non-retryable-nexus-errors).
+
+## Timeouts {#timeouts}
+
+Nexus Operations support three types of timeouts that control how long the caller is willing to wait at different stages of the Operation lifecycle.
+These timeouts are set by the caller when scheduling the Operation.
+
+### Schedule-to-Close timeout {#schedule-to-close-timeout}
+
+The Schedule-to-Close timeout limits the total duration from when the Operation is scheduled to when it completes.
+This is the overall timeout for the entire Operation.
+The Nexus Machinery [automatically retries](#automatic-retries) failed requests internally until this timeout is exceeded, at which point the Operation fails with a [NexusOperationTimedOut](/references/events#nexusoperationtimedout) event.
+
+For asynchronous Operations, this timeout covers the full lifecycle: scheduling, starting, and completing.
+For synchronous Operations, this timeout covers the time from scheduling to receiving the result.
+
+In Temporal Cloud, the maximum Schedule-to-Close timeout is 60 days.
+
+### Schedule-to-Start timeout {#schedule-to-start-timeout}
+
+The Schedule-to-Start timeout limits how long the caller is willing to wait for the Operation to be started (or completed, if synchronous) by the handler.
+If the Operation is not started within this timeout, it fails with `TIMEOUT_TYPE_SCHEDULE_TO_START`.
+
+If not set or set to zero, no Schedule-to-Start timeout is enforced.
+
+:::note
+
+The Schedule-to-Start timeout requires Temporal Server version 1.31.0 or later.
+
+:::
+
+### Start-to-Close timeout {#start-to-close-timeout}
+
+The Start-to-Close timeout limits how long the caller is willing to wait for an asynchronous Operation to complete after it has been started.
+If the Operation does not complete within this timeout after starting, it fails with `TIMEOUT_TYPE_START_TO_CLOSE`.
+
+This timeout only applies to asynchronous Operations.
+Synchronous Operations ignore this timeout because they complete as part of the start request.
+
+If not set or set to zero, no Start-to-Close timeout is enforced.
+
+:::note
+
+The Start-to-Close timeout requires Temporal Server version 1.31.0 or later.
+
+:::
 
 ## Circuit breaking {#circuit-breaking}
 
@@ -296,7 +345,7 @@ Pending Nexus Operations: 1
 
 ### At-least-once execution semantics and idempotency
 
-The Nexus Machinery provides reliable execution with at-least-once execution semantics for a Nexus Operation, until the caller's Schedule-to-Close-Timeout is exceeded, at which time the overall Nexus Operation times out.
+The Nexus Machinery provides reliable execution with at-least-once execution semantics for a Nexus Operation, until the caller's [Schedule-to-Close timeout](#schedule-to-close-timeout) is exceeded, at which time the overall Nexus Operation times out.
 
 The Nexus Machinery breaks up the [Nexus Operation lifecycle](/nexus/operations#operation-lifecycle) into one or more [Nexus Tasks](/tasks#nexus-task) that a Nexus handler is responsible for processing.
 If a Nexus handler times out or returns a non-retryable Nexus error, then the Nexus Machinery will retry the Nexus request to provide at-least-once execution.
