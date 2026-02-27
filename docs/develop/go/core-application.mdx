@@ -573,7 +573,7 @@ func main() {
 
 Calls to spawn [Activity Executions](/activity-execution) are written within a [Workflow Definition](/workflow-definition).
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
-This results in the set of three [Activity Task](/tasks#activity-task) related Events ([ActivityTaskScheduled](/references/events#activitytaskscheduled), [ActivityTaskStarted](/references/events#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
+This results in the set of three [Activity Task](/tasks#activity-task) related Events ([ActivityTaskScheduled](/references/events#activitytaskscheduled), [ActivityTaskStarted](/references/events#activitytaskstarted), and ActivityTask[Closed]) in your Workflow Execution Event History.
 
 A single instance of the Activities implementation is shared across multiple simultaneous Activity invocations.
 Activity implementation code should be _idempotent_.
@@ -772,7 +772,7 @@ if err != nil {
 
 #### HeartbeatTimeout
 
-To set a [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+To set a [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `HeartbeatTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
 ```go
 activityOptions := workflow.ActivityOptions{
@@ -963,7 +963,7 @@ func main() {
     // Use the RegisterWorkflow or RegisterWorkflowWithOptions method for each Workflow registration.
     yourWorker.RegisterWorkflow(yourapp.YourWorkflowDefinition)
 // ...
-    // Register your Activity Definitons with the Worker.
+    // Register your Activity Definitions with the Worker.
     // Use this technique for registering all Activities that are part of a struct and set the shared variable values.
     message := "This could be a connection string or endpoint details"
     number := 100
@@ -1042,7 +1042,7 @@ Intended use case is to limit resources used by the Worker.
 
 Notice that the value type is a float so that the value can be less than 1 if needed.
 For example, if set to 0.1, Activity Task Executions will happen once every ten seconds.
-This can be used to protect down stream services from flooding with requests.
+This can be used to protect downstream services from flooding with requests.
 
 ```go
 // ...
@@ -1086,7 +1086,7 @@ Intended use case is to limit resources used by the Worker.
 
 Notice that the value type is a float so that the value can be less than 1 if needed.
 For example, if set to 0.1, Local Activity Task Executions will happen once every ten seconds.
-This can be used to protect down stream services from flooding with requests.
+This can be used to protect downstream services from flooding with requests.
 
 ```go
 // ...
@@ -1111,7 +1111,7 @@ This rate is managed by the Temporal Service and limits the Activity Tasks per s
 
 Notice that the number is represented in float, so that you can set it to less than 1 if needed.
 For example, set the number to 0.1 means you want your Activity to be executed once for every 10 seconds.
-This can be used to protect down stream services from flooding.
+This can be used to protect downstream services from flooding.
 
 ```go
 // ...
@@ -1190,7 +1190,7 @@ Set to enable logging in Workflow Execution replays.
 In Workflow Definitions you can use [`workflow.GetLogger(ctx)`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLogger) to write logs.
 By default, the logger will skip logging during replays, so you do not see duplicate logs.
 
-This is only really useful for debugging purpose.
+This is only really useful for debugging purposes.
 
 ```go
 // ...
