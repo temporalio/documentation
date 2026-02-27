@@ -65,6 +65,7 @@ When an opt-in label is enabled, it is populated on **all metrics** that support
 | Label | Available on | Description |
 | ----- | ----- | ----- |
 | `temporal_activity_type` | Activity metrics | The activity type name |
+| `worker_version` | `temporal_cloud_v1_approximate_backlog_count` | The Worker version |
 
 For example, to include `temporal_activity_type` in your scrape results:
 
@@ -461,6 +462,8 @@ The approximate number of tasks pending in a task queue. Started Activities are 
 | ----- | ----- |
 | `temporal_task_queue` | The task queue name |
 | `task_type` | Type of task: `workflow` or `activity` |
+| `task_priority` | The task priority |
+| `worker_version` | The Worker version (opt-in) |
 
 **Type**: Value
 
