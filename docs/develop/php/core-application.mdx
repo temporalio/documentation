@@ -393,7 +393,7 @@ A Worker Entity contains a Workflow Worker and/or an Activity Worker, which make
 The [RoadRunner application server](https://roadrunner.dev/) will launch multiple Temporal PHP Worker processes based on provided `.rr.yaml` configuration.
 
 Each Worker might connect to one or multiple Task Queues.
-Workers poll the _Temporal Service_ for tasks, performs those tasks, and communicates task execution results back to the _Temporal Service_.
+Workers poll the _Temporal Service_ for tasks, perform those tasks, and communicate task execution results back to the _Temporal Service_.
 
 Worker code is developed, deployed, and operated by Temporal customers.
 To create a worker use `Temporal\WorkerFactory`:
