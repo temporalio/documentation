@@ -31,7 +31,7 @@ We record the number of gRPC service errors that occurred.
 For each Namespace, we calculate the service-error rate as 1 - (count of errors / count of requests).
 Rates are averaged per month and reset quarterly.
 
-Errors are recorded against the SLA are service errors, such as the `UNAVAILABLE` [gRPC status code](https://grpc.github.io/grpc/core/md_doc_statuscodes.html).
+Errors recorded against the SLA are service errors, such as the `UNAVAILABLE` [gRPC status code](https://grpc.github.io/grpc/core/md_doc_statuscodes.html).
 The following errors are _not_ counted against the SLA:
 
 - `ClientVersionNotSupported`

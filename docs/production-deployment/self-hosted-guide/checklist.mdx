@@ -50,7 +50,7 @@ Temporal recommends scaling your clusters to well above the average throughput.
 See [Scaling Temporal: The Basics](https://temporal.io/blog/scaling-temporal-the-basics) for an introduction to the topic.
 
 Temporal server throughput is often limited by the number of [Shards](/temporal-service/temporal-server#history-shard) configured for the Temporal Service.
-A Shard is an unit within a Temporal Service by which concurrent Workflow Execution throughput can be scaled.
+A Shard is a unit within a Temporal Service by which concurrent Workflow Execution throughput can be scaled.
 Shard capacity, and often overall cluster throughput, is set at build time for a cluster and that cluster setting cannot be adjusted later.
 Adding more Shards if needed requires a cluster rebuild, and a migration to the new cluster.
 
@@ -97,7 +97,7 @@ Running multiple Temporal Services is complex work, as each needs its own setup,
 Needing to monitor and manage all your Temporal Services in a unified way leads to operational management pain.
 Consider adding a layer on top of Temporal to manage multiple Temporal Services: a control plane.
 A control plane manages and directs data flow, deciding where data packets should be sent.
-A Temporal Service data plan can streamline operations and improve efficiency.
+A Temporal Service data plane can streamline operations and improve efficiency.
 Since Temporal does not ship its own open source data plane, rolling your own can be complex and take effort to add.
 
 Temporal Cloud provides exactly that support.
