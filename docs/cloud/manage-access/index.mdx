@@ -100,3 +100,28 @@ Temporal Cloud UI, navigate to **My Profile** > **Password and Authentication**,
 If you're not currently logged in, navigate to the login page of the Temporal Cloud UI, enter your email address, click
 **Continue**, and then select **Forgot password**. In both cases, you will receive an email with instructions on how to
 reset your password.
+
+### How do I sign in after my email domain changes? {#email-domain-change}
+
+If your organization changed its email domain (for example, from `@oldcompany.com` to `@newcompany.com`), you may be
+unable to sign in to Temporal Cloud with your existing account.
+
+**Why this happens:** When you sign in using "Continue with Google" or "Continue with Microsoft", Temporal Cloud
+identifies your account by your email address. If your email address changes, Temporal Cloud sees this as a different
+identity and cannot match it to your existing account.
+
+**How to resolve this:** [Create a support ticket](/cloud/support#support-ticket) with the following information:
+
+- Your previous email address (the one originally used to access Temporal Cloud)
+- Your new email address
+- Your Temporal Cloud Account Id (if known)
+
+Temporal Support can update your account to use your new email address.
+
+:::tip Use SAML for enterprise identity management
+
+If your organization frequently changes email domains or wants centralized control over user authentication, consider
+using [SAML authentication](/cloud/saml). With SAML, your identity provider (IdP) manages user identities, and email
+domain changes can be handled within your IdP without affecting Temporal Cloud access.
+
+:::

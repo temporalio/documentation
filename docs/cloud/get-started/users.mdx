@@ -23,10 +23,10 @@ tags:
 ---
 
 Users are one of the primary access principals in Temporal Cloud. Each user is assigned one
-[account-level role](/cloud/manage-access/roles-and-permissions#account-level-roles), and each role has a set of permissions. In addition to
-account-level roles, users can also be assigned [Namespace-level permissions](/cloud/manage-access/roles-and-permissions#namespace-level-permissions)
-for specific Namespaces. Each user can only perform an action if they have a role that grants them the necessary
-permissions.
+[account-level role](/cloud/manage-access/roles-and-permissions#account-level-roles), and each role has a set of
+permissions. In addition to account-level roles, users can also be assigned
+[Namespace-level permissions](/cloud/manage-access/roles-and-permissions#namespace-level-permissions) for specific
+Namespaces. Each user can only perform an action if they have a role that grants them the necessary permissions.
 
 When you register for Temporal Cloud without joining an existing account, you are assigned the Account Owner role for a
 new account. You can then invite other users to join the account and assign them roles.
@@ -42,8 +42,9 @@ account.
 
 ## Update a user's account-level role {#update-roles}
 
-With Global Admin or Account Owner privileges, you can update any user's account-level [role](/cloud/manage-access/roles-and-permissions#account-level-roles). The
-Account Owner role can only be granted by existing Account Owners.
+With Global Admin or Account Owner privileges, you can update any user's account-level
+[role](/cloud/manage-access/roles-and-permissions#account-level-roles). The Account Owner role can only be granted by
+existing Account Owners.
 
 For security reasons, you cannot remove the Account Owner role from a user. Removing the Account Owner role must be made
 through Temporal Support. To remove the Account Owner role, you must submit a
@@ -100,12 +101,14 @@ Available roles: `ROLE_OWNER` | `ROLE_ADMIN` | `ROLE_DEVELOPER` | `ROLE_FINANCE_
 
 ## Update a user's Namespace-level permissions {#update-permissions}
 
-You can update Namespace-level [permissions](/cloud/manage-access/roles-and-permissions#namespace-level-permissions) for any user.
+You can update Namespace-level [permissions](/cloud/manage-access/roles-and-permissions#namespace-level-permissions) for
+any user.
 
 :::note
 
-A user with the Account Owner or Global Admin account-level [role](/cloud/manage-access/roles-and-permissions#account-level-roles) has Namespace Admin permissions
-for all Namespaces.
+A user with the Account Owner or Global Admin account-level
+[role](/cloud/manage-access/roles-and-permissions#account-level-roles) has Namespace Admin permissions for all
+Namespaces.
 
 :::
 
@@ -178,7 +181,8 @@ You can delete a user from your Temporal Cloud account.
 
 :::info
 
-To delete a user, a user must have the Account Owner or Global Admin account-level [role](/cloud/manage-access/roles-and-permissions#account-level-roles).
+To delete a user, a user must have the Account Owner or Global Admin account-level
+[role](/cloud/manage-access/roles-and-permissions#account-level-roles).
 
 :::
 
@@ -225,36 +229,3 @@ DELETE /cloud/users/{userId}
 </TabItem>
 
 </Tabs>
-
-## Account-level roles and Namespace-level permissions {#account-level-roles-and-namespace-level-permissions}
-
-Temporal account-level roles and Namespace-level permissions provide access to specific Temporal Workflow and Temporal
-Cloud operational APIs. The following table provides the API details associated with each account-level role and
-Namespace-level permission.
-
-## How to troubleshoot account access issues {#troubleshoot-access}
-
-### Why can't I sign in after my email domain changed? {#email-domain-change}
-
-If your organization changed its email domain (for example, from `@oldcompany.com` to `@newcompany.com`), you may be
-unable to sign in to Temporal Cloud with your existing account.
-
-**Why this happens:** When you sign in using "Continue with Google" or "Continue with Microsoft", Temporal Cloud
-identifies your account by your email address. If your email address changes, Temporal Cloud sees this as a different
-identity and cannot match it to your existing account.
-
-**How to resolve this:** [Create a support ticket](/cloud/support#support-ticket) with the following information:
-
-- Your previous email address (the one originally used to access Temporal Cloud)
-- Your new email address
-- Your Temporal Cloud Account Id (if known)
-
-Temporal Support can update your account to use your new email address.
-
-:::tip Use SAML for enterprise identity management
-
-If your organization frequently changes email domains or wants centralized control over user authentication, consider
-using [SAML authentication](/cloud/saml). With SAML, your identity provider (IdP) manages user identities, and email
-domain changes can be handled within your IdP without affecting Temporal Cloud access.
-
-:::
