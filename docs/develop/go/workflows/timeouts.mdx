@@ -1,0 +1,84 @@
+---
+id: timeouts
+title: Workflow Timeouts - Go SDK
+sidebar_label: Timeouts
+description: Optimize Workflow Execution with Temporal Go SDK - Set Workflow Timeouts and Retry Policies efficiently.
+toc_max_heading_level: 4
+keywords:
+  - Go
+  - failure detection
+  - timeouts
+tags:
+  - Activities
+  - Workflows
+  - Errors
+  - Failures
+  - Go SDK
+  - Temporal SDKs
+---
+
+## Workflow timeouts {#workflow-timeouts}
+
+Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
+
+Workflow timeouts are set when [starting the Workflow Execution](#workflow-timeouts).
+
+Before we continue, we want to note that we generally do not recommend setting Workflow Timeouts, because Workflows are designed to be long-running and resilient.
+Instead, setting a Timeout can limit its ability to handle unexpected delays or long-running processes.
+If you need to perform an action inside your Workflow after a specific period of time, we recommend using a Timer.
+
+- **[Workflow Execution Timeout](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout)** - restricts the maximum amount of time that a single Workflow Execution can be executed.
+- **[Workflow Run Timeout](/encyclopedia/detecting-workflow-failures#workflow-run-timeout):** restricts the maximum amount of time that a single Workflow Run can last.
+- **[Workflow Task Timeout](/encyclopedia/detecting-workflow-failures#workflow-task-timeout):** restricts the maximum amount of time that a Worker can execute a Workflow Task.
+
+Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set a timeout, and pass the instance to the `ExecuteWorkflow` call.
+
+Available timeouts are:
+
+- `WorkflowExecutionTimeout`
+- `WorkflowRunTimeout`
+- `WorkflowTaskTimeout`
+
+```go
+workflowOptions := client.StartWorkflowOptions{
+  // ...
+  // Set Workflow Timeout duration
+  WorkflowExecutionTimeout: 24 * 365 * 10 * time.Hour,
+  // WorkflowRunTimeout: 24 * 365 * 10 * time.Hour,
+  // WorkflowTaskTimeout: 10 * time.Second,
+  // ...
+}
+workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+if err != nil {
+  // ...
+}
+```
+
+## Workflow Retry Policy {#workflow-retries}
+
+A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.
+
+Use a [Retry Policy](/encyclopedia/retry-policies) to retry a Workflow Execution in the event of a failure.
+
+Workflow Executions do not retry by default, and Retry Policies should be used with Workflow Executions only in certain situations.
+
+Create an instance of a [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy) from the `go.temporal.io/sdk/temporal` package and provide it as the value to the `RetryPolicy` field of the instance of `StartWorkflowOptions`.
+
+- Type: [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)
+- Default: None
+
+```go
+retrypolicy := &temporal.RetryPolicy{
+  InitialInterval:    time.Second,
+  BackoffCoefficient: 2.0,
+  MaximumInterval:    time.Second * 100,
+}
+workflowOptions := client.StartWorkflowOptions{
+  RetryPolicy: retrypolicy,
+  // ...
+}
+workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+if err != nil {
+  // ...
+}
+```

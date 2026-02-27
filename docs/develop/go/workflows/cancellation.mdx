@@ -1,7 +1,7 @@
 ---
 id: cancellation
-title: Interrupt a Workflow - Go SDK
-sidebar_label: Interrupt a Workflow Execution
+title: Cancel a Workflow - Go SDK
+sidebar_label: Cancellation
 description:
   Handle Cancellations in Temporal Workflows and Activities, set Activity Heartbeat Timeouts, and send Cancellation
   requests from a Temporal Client in Go.
@@ -25,8 +25,6 @@ This pages shows the following:
 - Heartbeating after a Cancellation.
 
 ## Handle Cancellation in Workflow {#handle-cancellation-in-workflow}
-
-**How to handle a Cancellation in a Workflow in Go.**
 
 Workflow Definitions can be written to handle execution cancellation requests with Go's `defer` and the
 `workflow.NewDisconnectedContext` API. In the Workflow Definition, there is a special Activity that handles clean up

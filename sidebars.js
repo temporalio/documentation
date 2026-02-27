@@ -96,29 +96,105 @@ module.exports = {
           },
           items: [
             'develop/go/set-up-your-local-go',
-            'develop/go/core-application',
-            'develop/go/temporal-client',
-            'develop/go/go-sdk-multithreading',
-            'develop/go/namespaces',
-            'develop/go/testing-suite',
-            'develop/go/failure-detection',
-            'develop/go/message-passing',
-            'develop/go/cancellation',
-            'develop/go/asynchronous-activity-completion',
-            'develop/go/versioning',
-            'develop/go/observability',
-            'develop/go/benign-exceptions',
-            'develop/go/enriching-ui',
-            'develop/go/debugging',
-            'develop/go/schedules',
-            'develop/go/converters-and-encryption',
-            'develop/go/timers',
-            'develop/go/nexus',
-            'develop/go/child-workflows',
-            'develop/go/continue-as-new',
-            'develop/go/side-effects',
-            'develop/go/selectors',
-            'develop/go/sessions',
+            'develop/go/run-a-development-server',
+            {
+              type: 'category',
+              label: 'Workflows',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/go/workflows/index',
+              },
+              items: [
+                'develop/go/workflows/basics',
+                'develop/go/workflows/child-workflows',
+                'develop/go/workflows/continue-as-new',
+                'develop/go/workflows/cancellation',
+                'develop/go/workflows/timeouts',
+                'develop/go/workflows/message-passing',
+                'develop/go/workflows/enriching-ui',
+                'develop/go/workflows/schedules',
+                'develop/go/workflows/timers',
+                'develop/go/workflows/selectors',
+                'develop/go/workflows/side-effects',
+                'develop/go/workflows/dynamic-workflow',
+                'develop/go/workflows/versioning',
+              ]
+            },
+            {
+              type: 'category',
+              label: 'Activities',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/go/activities/index',
+              },
+              items: [
+                'develop/go/activities/basics',
+                'develop/go/activities/execution',
+                'develop/go/activities/timeouts',
+                'develop/go/activities/asynchronous-activity-completion',
+                'develop/go/activities/dynamic-activity',
+                'develop/go/activities/benign-exceptions',
+              ]
+            },
+            {
+              type: 'category',
+              label: 'Workers',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/go/workers/index',
+              },
+              items: [
+                'develop/go/workers/basics',
+                'develop/go/workers/run-worker-process',
+                'develop/go/workers/cloud-worker',
+                'develop/go/workers/sessions',
+                'develop/go/workers/observability',
+              ]
+            },
+            {
+              type: 'category',
+              label: 'Client',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/go/client/index',
+              },
+              items: [
+                'develop/go/client/temporal-client',
+                'develop/go/client/namespaces',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Nexus',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/go/nexus/index',
+              },
+              items: [
+                'develop/go/nexus/service-handler',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Best practices',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/go/best-practices/index',
+              },
+              items: [
+                'develop/go/best-practices/go-sdk-multithreading',
+                'develop/go/best-practices/error-handling',
+                'develop/go/best-practices/debugging',
+                'develop/go/best-practices/testing-suite',
+                'develop/go/best-practices/converters-and-encryption',
+              ]
+            },
           ],
         },
         {
