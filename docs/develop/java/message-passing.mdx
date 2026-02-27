@@ -736,7 +736,7 @@ When working with Updates, you may encounter these errors:
   A [Workflow Task Failure](/references/failures) causes the server to retry Workflow Tasks indefinitely. What happens to your Update request depends on its stage:
   - If the request hasn't been accepted by the server, you receive a `FAILED_PRECONDITION` [`WorkflowServiceException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowServiceException.html) exception.
   - If the request has been accepted, it is durable.
-    Once the Workflow is healthy again after a code deploy, use an `WorkflowUpdateHandle`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowUpdateHandle.html) to fetch the Update result.
+    Once the Workflow is healthy again after a code deploy, use a [`WorkflowUpdateHandle`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowUpdateHandle.html) to fetch the Update result.
 
 - **The Workflow finished while the Update handler execution was in progress**:
   You'll receive a [`WorkflowServiceException`](https://javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowServiceException.html) "workflow execution already completed"`.

@@ -47,7 +47,7 @@ For a complete list of metrics capable of being emitted, see the [SDK metrics re
 - For a list of metrics, see the [SDK metrics reference](/references/sdk-metrics).
 - For an end-to-end example that exposes metrics with the Java SDK, refer to the [samples-java](https://github.com/temporalio/samples-java/tree/main/core/src/main/java/io/temporal/samples/metrics) repo.
 
-To emit metrics with the Java SDK, use the[`MicrometerClientStatsReporter`](https://github.com/temporalio/sdk-java/blob/55ee7894aec427d7e384c3519732bdd61119961a/src/main/java/io/temporal/common/reporter/MicrometerClientStatsReporter.java#L34) class to integrate with Micrometer MeterRegistry configured for your metrics backend.
+To emit metrics with the Java SDK, use the [`MicrometerClientStatsReporter`](https://github.com/temporalio/sdk-java/blob/55ee7894aec427d7e384c3519732bdd61119961a/src/main/java/io/temporal/common/reporter/MicrometerClientStatsReporter.java#L34) class to integrate with Micrometer MeterRegistry configured for your metrics backend.
 [Micrometer](https://micrometer.io/docs) is a popular Java framework that provides integration with Prometheus and other backends.
 
 The following example shows how to use `MicrometerClientStatsReporter` to define the metrics scope and set it with the `WorkflowServiceStubsOptions`.
@@ -229,7 +229,7 @@ Each `SearchAttribute` object represents a custom attribute name, and the value 
 - Text
 
 In this example `isOrderFailed` is set as a Search Attribute. This attribute is
-useful for querying Workflows based the success/failure of customer orders.
+useful for querying Workflows based on the success/failure of customer orders.
 
 ### How to upsert Search Attributes {#upsert-search-attributes}
 
