@@ -318,7 +318,7 @@ If everything is working correctly, you should see:
 <summary><strong>Additional details about Workflow Execution</strong></summary>
 
 - Temporal clients are not explicitly closed.
-- To enable TLS, set the `tls` option to `true` for default settings or pass a [`TLSConfig`](https://typescript.temporal.io/api/interfaces/client.TLSConfig) for custom configuration.
+- To enable TLS, set the `tls` option to `true` for default settings or pass a [`TLSConfig`](https://typescript.temporal.io/api/interfaces/worker.TLSConfig) for custom configuration.
 - Calling `client.workflow.start()` and `client.workflow.execute()` send a command to Temporal Server to schedule a new
   Workflow Execution on the specified Task Queue.
 - If you started a Workflow with `client.workflow.start()`, you can choose to wait for the result anytime with
