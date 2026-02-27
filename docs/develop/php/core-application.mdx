@@ -253,7 +253,7 @@ The `#[ActivityInterface("file_activities.")]` is an attribute that tells the PH
 
 Calls to spawn [Activity Executions](/activity-execution) are written within a [Workflow Definition](/workflow-definition).
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
-This results in the set of three [Activity Task](/tasks#activity-task) related Events ([ActivityTaskScheduled](/references/events#activitytaskscheduled), [ActivityTaskStarted](/references/events#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
+This results in the set of three [Activity Task](/tasks#activity-task) related Events ([ActivityTaskScheduled](/references/events#activitytaskscheduled), [ActivityTaskStarted](/references/events#activitytaskstarted), and ActivityTask[Closed]) in your Workflow Execution Event History.
 
 A single instance of the Activities implementation is shared across multiple simultaneous Activity invocations.
 Activity implementation code should be _idempotent_.
@@ -393,9 +393,9 @@ A Worker Entity contains a Workflow Worker and/or an Activity Worker, which make
 The [RoadRunner application server](https://roadrunner.dev/) will launch multiple Temporal PHP Worker processes based on provided `.rr.yaml` configuration.
 
 Each Worker might connect to one or multiple Task Queues.
-Worker poll _Temporal service_ for tasks, performs those tasks, and communicates task execution results back to the _Temporal service_.
+Workers poll the _Temporal Service_ for tasks, perform those tasks, and communicate task execution results back to the _Temporal Service_.
 
-Worker code are developed, deployed, and operated by Temporal customers.
+Worker code is developed, deployed, and operated by Temporal customers.
 To create a worker use `Temporal\WorkerFactory`:
 
 ```php
@@ -435,7 +435,7 @@ You can configure task queue name using first argument of `WorkerFactory`->`newW
 $worker = $factory->newWorker('your-task-queue');
 ```
 
-As mentioned precedingyou can create as many Task Queue connections inside a single Worker Process as you need.
+As mentioned preceding, you can create as many Task Queue connections inside a single Worker Process as you need.
 
 To configure additional WorkerOptions use `Temporal\Worker\WorkerOptions`:
 
@@ -509,5 +509,5 @@ If you want to clean up some resources after activity is done, you may register 
 after each activity invocation:
 
 ```php
-$worker->registerActivityFinalizer(fn() => $kernel->showtdown());
+$worker->registerActivityFinalizer(fn() => $kernel->shutdown());
 ```

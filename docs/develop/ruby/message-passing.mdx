@@ -291,7 +291,7 @@ To send an Update to a Workflow Execution, you can:
   prev_language = handle.execute_update(MessagePassingSimple::GreetingWorkflow.set_language, :chinese)
   ```
 
-- 2. Use `start_update` to receive a handle as soon as the Update is accepted.
+2. Use `start_update` to receive a handle as soon as the Update is accepted.
      It returns a `WorkflowUpdateHandle`
 
   - Use this `WorkflowUpdateHandle` later to fetch your results.
@@ -622,7 +622,7 @@ When working with Updates, you may encounter these errors:
 - **No Workflow Workers are polling the Task Queue**:
   Your request will be retried by the SDK Client indefinitely.
   Use a `Cancellation` in your [RPC options](https://ruby.temporal.io/Temporalio/Client/RPCOptions.html) to cancel the Update.
-  This raises a [WorkflowUpdateRPCTimeoutOrCanceledError](https://ruby.temporal.io/Temporalio/Error/WorkflowUpdateRPCTimeoutOrCanceledError.html) exception .
+  This raises a [WorkflowUpdateRPCTimeoutOrCanceledError](https://ruby.temporal.io/Temporalio/Error/WorkflowUpdateRPCTimeoutOrCanceledError.html) exception.
 
 - **Update failed**: You'll receive a [`WorkflowUpdateFailedError`](https://ruby.temporal.io/Temporalio/Error/WorkflowUpdateFailedError.html) exception.
   There are two ways this can happen:
@@ -734,7 +734,7 @@ A Dynamic Update in Temporal is an Update that is invoked dynamically at runtime
 An Update can be made dynamic by setting `dynamic` to `true` on the `workflow_update` class method.
 Only one Dynamic Update can be present on a Workflow.
 
-The Query Handler parameters must accept a string name as the first parameter. Often users set `raw_args` to `true` and set the second parameter as `*args` which will be an array of `Temporalio::Converters::RawValue`.
+The Update Handler parameters must accept a string name as the first parameter. Often users set `raw_args` to `true` and set the second parameter as `*args` which will be an array of `Temporalio::Converters::RawValue`.
 The [Temporalio::Workflow.payload_converter](https://ruby.temporal.io/Temporalio/Workflow.html#payload_converter-class_method) property is used to convert the raw value instances to proper types.
 
 ```ruby

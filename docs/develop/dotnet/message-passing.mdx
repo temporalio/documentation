@@ -320,7 +320,7 @@ To send an Update to a Workflow Execution, you can:
     wf => wf.SetCurrentLanguageAsync(GreetingWorkflow.Language.Chinese));
   ```
 
-- 2. Use `StartUpdateAsync` to receive a handle as soon as the Update is accepted.
+2. Use `StartUpdateAsync` to receive a handle as soon as the Update is accepted.
      It returns an `UpdateHandle`
 
   - Use this `UpdateHandle` later to fetch your results.
@@ -714,7 +714,7 @@ When working with Updates, you may encounter these errors:
 - **No Workflow Workers are polling the Task Queue**:
   Your request will be retried by the SDK Client indefinitely.
   Use a `CancellationToken` in your [RPC options](https://dotnet.temporal.io/api/Temporalio.Client.WorkflowUpdateOptions.html#Temporalio_Client_WorkflowUpdateOptions_Rpc) to cancel the Update.
-  This raises a [Temporalio.Exceptions.WorkflowUpdateRpcTimeoutOrCanceledException](https://dotnet.temporal.io/api/Temporalio.Exceptions.WorkflowUpdateRpcTimeoutOrCanceledException.html) exception .
+  This raises a [Temporalio.Exceptions.WorkflowUpdateRpcTimeoutOrCanceledException](https://dotnet.temporal.io/api/Temporalio.Exceptions.WorkflowUpdateRpcTimeoutOrCanceledException.html) exception.
 
 - **Update failed**: You'll receive a [`Temporalio.Exceptions.WorkflowUpdateFailedException`](https://dotnet.temporal.io/api/Temporalio.Exceptions.WorkflowUpdateFailedException.html) exception.
   There are two ways this can happen:
