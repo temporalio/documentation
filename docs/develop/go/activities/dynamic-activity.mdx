@@ -1,0 +1,37 @@
+---
+id: dynamic-activity
+title: Dynamic Activity - Go SDK
+sidebar_label: Dynamic Activity
+description: This section explains Dynamic Activities with the Go SDK
+toc_max_heading_level: 4
+keywords:
+  - Go SDK
+tags:
+  - Go SDK
+  - Temporal SDKs
+---
+
+## Set a Dynamic Activity {#set-a-dynamic-activity}
+
+A Dynamic Activity in Temporal is an Activity that is invoked dynamically at runtime if no other Activity with the same name is registered.
+An Activity can be registered as dynamic by using `worker.RegisterDynamicActivity()`.
+You must register the Activity with the Worker before it can be invoked.
+Only one Dynamic Activity can be present on a Worker.
+
+The Activity Definition must then accept a single argument of type `converter.EncodedValues`.
+This code snippet is taken from the [Dynamic Workflow example from samples-go](https://github.com/temporalio/samples-go/tree/main/dynamic-workflows).
+
+```go
+func DynamicActivity(ctx context.Context, args converter.EncodedValues) (string, error) {
+	var arg1, arg2 string
+	err := args.Get(&arg1, &arg2)
+	if err != nil {
+		return "", fmt.Errorf("failed to decode arguments: %w", err)
+	}
+
+	info := activity.GetInfo(ctx)
+	result := fmt.Sprintf("%s - %s - %s", info.WorkflowType.Name, arg1, arg2)
+
+	return result, nil
+}
+```

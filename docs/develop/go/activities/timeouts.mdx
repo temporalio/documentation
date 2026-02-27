@@ -1,100 +1,23 @@
 ---
-id: failure-detection
-title: Failure detection - Go SDK
-sidebar_label: Failure detection
+id: timeouts
+title: Activity Timeouts - Go SDK
+sidebar_label: Timeouts
+description: Optimize Workflow Execution with Temporal Go SDK - Set Activity Timeouts and Retry Policies efficiently.
 toc_max_heading_level: 4
 keywords:
+  - Go
   - failure detection
+  - timeouts
 tags:
   - Activities
   - Workflows
-  - Failures
   - Errors
+  - Failures
   - Go SDK
   - Temporal SDKs
-description: Configure Workflow timeouts, set Retry Policies, and manage Activity timeouts and Heartbeats using Temporal's Go SDK for optimized execution control.
 ---
 
-This page shows how to do the following:
-
-- [Set Workflow timeouts](#workflow-timeouts)
-- [Set a Workflow Retry Policy](#workflow-retries)
-- [Set Activity timeouts](#activity-timeouts)
-- [Set a custom Activity Retry Policy](#activity-retries)
-
-## Workflow timeouts {#workflow-timeouts}
-
-**How to set Workflow timeouts using the Temporal Go SDK**
-
-Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
-
-Workflow timeouts are set when [starting the Workflow Execution](#workflow-timeouts).
-
-Before we continue, we want to note that we generally do not recommend setting Workflow Timeouts, because Workflows are designed to be long-running and resilient.
-Instead, setting a Timeout can limit its ability to handle unexpected delays or long-running processes.
-If you need to perform an action inside your Workflow after a specific period of time, we recommend using a Timer.
-
-- **[Workflow Execution Timeout](/encyclopedia/detecting-workflow-failures#workflow-execution-timeout)** - restricts the maximum amount of time that a single Workflow Execution can be executed.
-- **[Workflow Run Timeout](/encyclopedia/detecting-workflow-failures#workflow-run-timeout):** restricts the maximum amount of time that a single Workflow Run can last.
-- **[Workflow Task Timeout](/encyclopedia/detecting-workflow-failures#workflow-task-timeout):** restricts the maximum amount of time that a Worker can execute a Workflow Task.
-
-Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set a timeout, and pass the instance to the `ExecuteWorkflow` call.
-
-Available timeouts are:
-
-- `WorkflowExecutionTimeout`
-- `WorkflowRunTimeout`
-- `WorkflowTaskTimeout`
-
-```go
-workflowOptions := client.StartWorkflowOptions{
-  // ...
-  // Set Workflow Timeout duration
-  WorkflowExecutionTimeout: 24 * 365 * 10 * time.Hour,
-  // WorkflowRunTimeout: 24 * 365 * 10 * time.Hour,
-  // WorkflowTaskTimeout: 10 * time.Second,
-  // ...
-}
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
-if err != nil {
-  // ...
-}
-```
-
-### Workflow Retry Policy {#workflow-retries}
-
-**How to set a Workflow Retry policy using the Go SDK.**
-
-A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.
-
-Use a [Retry Policy](/encyclopedia/retry-policies) to retry a Workflow Execution in the event of a failure.
-
-Workflow Executions do not retry by default, and Retry Policies should be used with Workflow Executions only in certain situations.
-
-Create an instance of a [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy) from the `go.temporal.io/sdk/temporal` package and provide it as the value to the `RetryPolicy` field of the instance of `StartWorkflowOptions`.
-
-- Type: [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)
-- Default: None
-
-```go
-retrypolicy := &temporal.RetryPolicy{
-  InitialInterval:    time.Second,
-  BackoffCoefficient: 2.0,
-  MaximumInterval:    time.Second * 100,
-}
-workflowOptions := client.StartWorkflowOptions{
-  RetryPolicy: retrypolicy,
-  // ...
-}
-workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
-if err != nil {
-  // ...
-}
-```
-
 ## How to set Activity timeouts {#activity-timeouts}
-
-**How to set Activity timeouts using the Go SDK.**
 
 Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
 
@@ -130,8 +53,6 @@ if err != nil {
 ```
 
 ### Set a custom Activity Retry Policy {#activity-retries}
-
-**How to set a custom Activity Retry Policy using the Go SDK.**
 
 A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
@@ -188,8 +109,6 @@ return temporal.NewApplicationErrorWithOptions(fmt.Sprintf("Something bad happen
 ```
 
 ## Activity Heartbeats {#activity-heartbeats}
-
-**How to Heartbeat an Activity using the Go SDK.**
 
 An [Activity Heartbeat](/encyclopedia/detecting-activity-failures#activity-heartbeat) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Service](/temporal-service).
 Each Heartbeat informs the Temporal Service that the [Activity Execution](/activity-execution) is making progress and the Worker has not crashed.
@@ -259,8 +178,6 @@ func SampleActivity(ctx context.Context, inputArg InputParams) error {
 ```
 
 ### Set a Heartbeat Timeout {#heartbeat-timeout}
-
-**How to set a Heartbeat Timeout for an Activity using the Go SDK.**
 
 A [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout) works in conjunction with [Activity Heartbeats](/encyclopedia/detecting-activity-failures#activity-heartbeat).
 

@@ -121,7 +121,7 @@
     },
     {
       "source": "/dev-guide/golang/versioning:path*",
-      "destination": "/develop/go/versioning:path*",
+      "destination": "/develop/go/workflows/versioning:path*",
       "permanent": true
     },
     {
@@ -286,22 +286,22 @@
     },
     {
       "source": "/go-activities",
-      "destination": "/develop/go/core-application#develop-activities",
+      "destination": "/develop/go",
       "permanent": true
     },
     {
       "source": "/go-continue-as-new",
-      "destination": "/develop/go/continue-as-new",
+      "destination": "/develop/go/workflows/continue-as-new",
       "permanent": true
     },
     {
       "source": "/go-create-workflows",
-      "destination": "/develop/go/core-application#develop-workflows",
+      "destination": "/develop/go/workflows",
       "permanent": true
     },
     {
       "source": "/go-error-handling",
-      "destination": "/develop/go/error-handling",
+      "destination": "/develop/go/best-practices/error-handling",
       "permanent": true
     },
     {
@@ -326,7 +326,7 @@
     },
     {
       "source": "/go-selectors",
-      "destination": "/develop/go/selectors",
+      "destination": "/develop/go/workflows/selectors",
       "permanent": true
     },
     {
@@ -359,7 +359,7 @@
     },
     {
       "source": "/go-sessions/#use-cases",
-      "destination": "/develop/go/sessions"
+      "destination": "/develop/go/workers/sessions"
     },
     {
       "source": "/go/:path*",
@@ -367,7 +367,7 @@
     },
     {
       "source": "/dev-guide/go/foundations:path*",
-      "destination": "/develop/go/core-application",
+      "destination": "/develop/go",
       "permanent": true
     },
     {
@@ -377,7 +377,7 @@
     },
     {
       "source": "/dev-guide/go/testing:path*",
-      "destination": "/develop/go/testing-suite",
+      "destination": "/develop/go/best-practices/testing-suite",
       "permanent": true
     },
     {

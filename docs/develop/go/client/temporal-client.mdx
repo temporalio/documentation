@@ -360,7 +360,7 @@ Ensure these environment variables exist in your environment before running your
 
 Import the `envconfig` package to set connection options for the Temporal Client using environment variables. The
 `MustLoadDefaultClientOptions` function will automatically load all environment variables. For a list of all available
-environment variables and their default values, refer to [Environment Configuration](../environment-configuration).
+environment variables and their default values, refer to [Environment Configuration](/references/client-environment-configuration).
 
 For example, the following code snippet loads all environment variables and creates a Temporal Client with the options
 specified in those variables. If you have defined a configuration file at either the default location
@@ -553,10 +553,10 @@ you must supply a Task Queue that will be used for the Tasks (one that a Worker 
 language-specific contextual data, and Workflow Function parameters.
 
 In the examples below, all Workflow Executions are started using a Temporal Client. To spawn Workflow Executions from
-within another Workflow Execution, use either the [Child Workflow](/develop/go/child-workflows) or External Workflow
+within another Workflow Execution, use either the [Child Workflow](/develop/go/workflows/child-workflows) or External Workflow
 APIs.
 
-See the [Customize Workflow Type](/develop/go/core-application#customize-workflow-type) section to see how to customize
+See the [Customize Workflow Type](/develop/go/workflows/basics#customize-workflow-type) section to see how to customize
 the name of the Workflow Type.
 
 A request to spawn a Workflow Execution causes the Temporal Service to create the first Event
