@@ -1,0 +1,174 @@
+---
+id: basics
+title: Workflow Basics - .NET SDK
+sidebar_label: Workflow basics
+description: This section explains Workflow Basics with the .NET SDK
+toc_max_heading_level: 4
+keywords:
+  - .NET SDK
+tags:
+  - .NET SDK
+  - Temporal SDKs
+---
+
+## Develop a Workflow {#develop-workflow}
+
+Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflow-definition).
+
+In the Temporal .NET SDK programming model, Workflows are defined as classes.
+
+Specify the `[Workflow]` attribute from the `Temporalio.Workflows` namespace on the Workflow class to identify a Workflow.
+
+Use the `[WorkflowRun]` attribute to mark the entry point method to be invoked. This must be set on one asynchronous method defined on the same class as `[Workflow]`.
+
+```csharp
+using Temporalio.Workflows;
+
+[Workflow]
+public class MyWorkflow
+{
+    [WorkflowRun]
+    public async Task<string> RunAsync(string name)
+    {
+        var param = MyActivityParams("Hello", name);
+        return await Workflow.ExecuteActivityAsync(
+            (MyActivities a) => a.MyActivity(param),
+            new() { StartToCloseTimeout = TimeSpan.FromMinutes(5) });
+    }
+}
+```
+
+Temporal Workflows may have any number of custom parameters.
+However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
+All Workflow Definition parameters must be serializable.
+
+### Workflow logic requirements {#workflow-logic-requirements}
+
+Workflow logic is constrained by [deterministic execution requirements](/workflow-definition#deterministic-constraints).
+Therefore, each language is limited to the use of certain idiomatic techniques.
+However, each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
+
+This means there are several things Workflows cannot do such as:
+
+- Perform IO (network, disk, stdio, etc)
+- Access/alter external mutable state
+- Do any threading
+- Do anything using the system clock (e.g. `DateTime.Now`)
+  - This includes .NET timers (e.g. `Task.Delay` or `Thread.Sleep`)
+- Make any random calls
+- Make any not-guaranteed-deterministic calls (e.g. iterating over a dictionary)
+
+#### .NET Task Determinism
+
+Some calls in .NET do unsuspecting non-deterministic things and are easy to accidentally use.
+This is especially true with `Task`s.
+Temporal requires that the deterministic `TaskScheduler.Current` is used, but many .NET async calls will use `TaskScheduler.Default` implicitly (and some analyzers even encourage this).
+Here are some known gotchas to avoid with .NET tasks inside of Workflows:
+
+- Do not use `Task.Run` - this uses the default scheduler and puts work on the thread pool.
+  - Use `Workflow.RunTaskAsync` instead.
+  - Can also use `Task.Factory.StartNew` with current scheduler or instantiate the `Task` and run `Task.Start` on it.
+- Do not use `Task.ConfigureAwait(false)` - this will not use the current context.
+  - If you must use `Task.ConfigureAwait`, use `Task.ConfigureAwait(true)`.
+  - There is no significant performance benefit to `Task.ConfigureAwait` in workflows anyways due to how the scheduler works.
+- Do not use anything that defaults to the default task scheduler.
+- Do not use `Task.Delay`, `Task.Wait`, timeout-based `CancellationTokenSource`, or anything that uses .NET built-in timers.
+  - `Workflow.DelayAsync`, `Workflow.WaitConditionAsync`, or non-timeout-based cancellation token source is suggested.
+- Do not use `Task.WhenAny`.
+  - Use `Workflow.WhenAnyAsync` instead.
+  - Technically this only applies to an enumerable set of tasks with results or more than 2 tasks with results. Other
+    uses are safe. See [this issue](https://github.com/dotnet/runtime/issues/87481).
+- Do not use `Task.WhenAll`
+  - Use `Workflow.WhenAllAsync` instead.
+  - Technically `Task.WhenAll` is currently deterministic in .NET and safe, but it is better to use the wrapper to be
+    sure.
+- Do not use `CancellationTokenSource.CancelAsync`.
+  - Use `CancellationTokenSource.Cancel` instead.
+- Do not use `System.Threading.Semaphore` or `System.Threading.SemaphoreSlim` or `System.Threading.Mutex`.
+  - Use `Temporalio.Workflows.Semaphore` or `Temporalio.Workflows.Mutex` instead.
+  - _Technically_ `SemaphoreSlim` does work if only the async form of `WaitAsync` is used without no timeouts and
+    `Release` is used. But anything else can deadlock the workflow and its use is cumbersome since it must be disposed.
+- Be wary of additional libraries' implicit use of the default scheduler.
+  - For example, while there are articles for `Dataflow` about [using a specific scheduler](https://learn.microsoft.com/en-us/dotnet/standard/parallel-programming/how-to-specify-a-task-scheduler-in-a-dataflow-block), there are hidden implicit uses of `TaskScheduler.Default`. For example, see [this bug](https://github.com/dotnet/runtime/issues/83159).
+
+In order to help catch wrong scheduler use, by default the Temporal .NET SDK adds an event source listener for info-level task events.
+While this technically receives events from all uses of tasks in the process, we make sure to ignore anything that is not running in a Workflow in a high performant way (basically one thread local check).
+For code that does run in a Workflow and accidentally starts a task in another scheduler, an `InvalidWorkflowOperationException` will be thrown which "pauses" the Workflow (fails the Workflow Rask which continually retries until the code is fixed).
+This is unfortunately a runtime-only check, but can help catch mistakes early. If this needs to be turned off for any reason, set `DisableWorkflowTracingEventListener` to `true` in Worker options.
+
+In the near future for modern .NET versions we hope to use the
+[new `TimeProvider` API](https://github.com/dotnet/runtime/issues/36617) which will allow us to control current time and
+timers.
+
+#### Workflow .editorconfig
+
+Since Workflow code follows some different logic rules than regular C# code, there are some common analyzer rules that developers may want to disable.
+To ensure these are only disabled for Workflows, current recommendation is to use the `.workflow.cs` extension for files containing Workflows.
+
+Here are the rules to disable:
+
+- [CA1024](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1024) - This encourages properties instead of methods that look like getters. However for reflection reasons we cannot use property getters for queries, so it is very normal to have
+
+  ```csharp
+  [WorkflowQuery]
+  public string GetSomeThing() => someThing;
+  ```
+
+- [CA1822](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1822) - This encourages static methods when methods don't access instance state. Workflows however use instance methods for run, Signals, Queries, or Updates even if they could be static.
+- [CA2007](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2007) - This encourages users to use `ConfigureAwait` instead of directly waiting on a task. But in Workflows, there is no benefit to this and it just adds noise (and if used, needs to be `ConfigureAwait(true)` not `ConfigureAwait(false)`).
+- [CA2008](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2008) - This encourages users to always apply an explicit task scheduler because the default of `TaskScheduler.Current` is bad. But for Workflows, the default of `TaskScheduler.Current` is good/required.
+- [CA5394](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5394) - This discourages use of non-crypto random. But deterministic Workflows, via `Workflow.Random` intentionally provide a deterministic non-crypto random instance.
+- `CS1998` - This discourages use of `async` on async methods that don't `await`. But Workflows handlers like Signals are often easier to write in one-line form this way, e.g. `public async Task SignalSomethingAsync(string value) => this.value = value;`.
+- [VSTHRD105](https://github.com/microsoft/vs-threading/blob/main/doc/analyzers/VSTHRD105.md) - This is similar to `CA2008` above in that use of implicit current scheduler is discouraged. That does not apply to Workflows where it is encouraged/required.
+
+Here is the `.editorconfig` snippet for the above which may frequently change as more analyzers need to be adjusted:
+
+```ini
+##### Configuration specific for Temporal workflows #####
+[*.workflow.cs]
+
+# We use getters for queries, they cannot be properties
+dotnet_diagnostic.CA1024.severity = none
+
+# Don't force workflows to have static methods
+dotnet_diagnostic.CA1822.severity = none
+
+# Do not need ConfigureAwait for workflows
+dotnet_diagnostic.CA2007.severity = none
+
+# Do not need task scheduler for workflows
+dotnet_diagnostic.CA2008.severity = none
+
+# Workflow randomness is intentionally deterministic
+dotnet_diagnostic.CA5394.severity = none
+
+# Allow async methods to not have await in them
+dotnet_diagnostic.CS1998.severity = none
+
+# Don't avoid, but rather encourage things using TaskScheduler.Current in workflows
+dotnet_diagnostic.VSTHRD105.severity = none
+```
+
+### Customize Workflow Type {#workflow-type}
+
+Workflows have a Type that are referred to as the Workflow name.
+
+The following examples demonstrate how to set a custom name for your Workflow Type.
+
+You can customize the Workflow name with a custom name in the attribute. For example, `[Workflow("my-workflow-name")]`. If the name parameter is not specified, the Workflow name defaults to the unqualified class name.
+
+```csharp
+using Temporalio.Workflows;
+
+[Workflow("MyDifferentWorkflowName")]
+public class MyWorkflow
+{
+    public async Task<string> RunAsync(string name)
+    {
+        var param = MyActivityParams("Hello", name);
+        return await Workflow.ExecuteActivityAsync(
+            (MyActivities a) => a.MyActivity(param),
+            new() { StartToCloseTimeout = TimeSpan.FromMinutes(5) });
+    }
+}
+```
