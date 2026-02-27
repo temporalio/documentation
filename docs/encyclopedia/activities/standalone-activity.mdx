@@ -1,0 +1,97 @@
+---
+id: standalone-activity
+title: Standalone Activity
+sidebar_label: Standalone Activity
+description: Learn about Standalone Activities in Temporal, their benefits, execution model, and when to use them.
+slug: /standalone-activity
+toc_max_heading_level: 4
+keywords:
+  - standalone activity
+  - explanation
+  - term
+  - timeouts
+tags:
+  - Concepts
+  - Activities
+  - Durable Execution
+---
+
+:::tip SUPPORT, STABILITY, and DEPENDENCY INFO
+
+Standalone Activities are available as a [Pre-release](/evaluate/development-production-features/release-stages#pre-release) feature in [Temporal Cloud](#temporal-cloud-support) and in a [special release](#temporal-cli-support) of the Temporal CLI.
+
+:::
+
+See [limitations](#pre-release-limitations) below.
+
+## What is a Standalone Activity? {#standalone-activity}
+
+A top-level [Activity Execution](/activity-execution) that is started directly by a
+[Client](/encyclopedia/temporal-sdks#temporal-client), without using a Workflow, is called a
+Standalone Activity.
+
+Standalone Activities are Temporal's [job queue](/evaluate/development-production-features/job-queue).
+
+If you need to orchestrate multiple Activities, then you should use a Workflow. But if you just need
+to execute a single Activity, then you can use a Standalone Activity. This will result in fewer
+[Billable Actions](/cloud/actions#actions-in-workflows) in Temporal Cloud than using a Workflow to
+run a single Activity. If your Activity Execution is short-lived, then you will also notice lower
+latency, since there are fewer worker round-trips than when executing the Activity in a Workflow.
+
+Standalone Activities support the same retry policies and timeouts as Workflow Activities, and you
+write your Activity Functions in the same way for both. In fact, an Activity Function can be
+executed both as a Standalone Activity and as a Workflow Activity.
+
+## Use cases
+
+Standalone Activities can be used for [durable job processing use cases](/evaluate/development-production-features/job-queue) such as sending an email, processing a webhook, syncing data, or executing a single function reliably with built-in retries and timeouts.
+
+## Key features
+- Execute any Temporal Activity as a top-level primitive without the overhead of a Workflow
+- Native async job processing model: schedule -> dispatch -> process -> result
+- No head-of-line blocking - a slow job doesn’t block the dispatch of other Tasks
+- Arbitrary length jobs with heartbeats for liveness and checkpointing progress
+- At-least-once execution by default with native retry policy and timeouts
+- At-most-once execution if retry max attempts is 1
+- Addressable - get an Activity ID / Run ID and get the result, cancel, and terminate
+- Deduplication - with conflict policy: (USE_EXISTING, …), reuse policy: (REJECT_DUPLICATES, …)
+- Separate ID space from Workflows - Standalone Activities are a different kind of top-level execution
+- Priority and fairness - multi-tenant fairness, weighted priority tiers, and safeguards against starvation of lower-weighted tasks
+- Visibility - list Activity Executions and view status, retry count, and last error
+- Manual completion by ID (or token): ignore activity return and wait for external completion
+- Activity metrics - including counts for success, failure, timeout, and cancel
+- Dual use - execute Activities within a Workflow or standalone with no Worker code changes
+
+## Pre-release limitations
+
+The pre-release of Standalone Activities is recommended for experimental use only and has some known limitations.
+
+General limitations:
+- Not suitable for production use cases during Pre-release
+- Delete, pause, reset, and update options are not supported yet
+- TerminateExisting conflict policy and TerminateIfRunning reuse policy are not supported yet
+- Heartbeat timeout must be explicitly set by the caller if using heartbeats in an Activity definition, otherwise it will fail immediately
+
+Temporal Cloud limitations:
+- Standalone Activities are free for evaluation purposes during Pre-release, so we reserve the right to limit usage if it exceeds a reasonable amount
+- 1 day max retention for Standalone Activities
+- We recommend enabling Standalone Activities on a new namespace for dev/test experimental use only
+
+## Temporal CLI support
+
+A [special release of the Temporal CLI](https://TODO) supports Standalone Activities during Pre-release:
+- The `temporal activity` subcommand supports Standalone Activities with commands including: `start`, `result`, and `list`
+- Temporal Dev Server has Standalone Activities enabled by default in this special CLI release for local testing
+
+## Temporal Cloud support
+
+Contact your account team to enable Standalone Activities in Temporal Cloud as a Pre-release feature.
+
+## Get started
+
+:::tip RESOURCES
+
+- [Go SDK - Standalone Activities quick start and code sample](/develop/go/standalone-activities)
+- [Python SDK - Standalone Activities quick start and code sample](/develop/python/standalone-activities)
+
+  :::

@@ -36,6 +36,7 @@ module.exports = {
             'evaluate/development-production-features/cloud-automation',
             'evaluate/development-production-features/low-latency',
             'evaluate/development-production-features/multi-tenancy',
+            'evaluate/development-production-features/job-queue',
             {
               type: 'category',
               label: 'Product release stages',
@@ -105,6 +106,7 @@ module.exports = {
             'develop/go/message-passing',
             'develop/go/cancellation',
             'develop/go/asynchronous-activity-completion',
+            'develop/go/standalone-activities',
             'develop/go/versioning',
             'develop/go/observability',
             'develop/go/benign-exceptions',
@@ -194,6 +196,7 @@ module.exports = {
             'develop/python/set-up-your-local-python',
             'develop/python/core-application',
             'develop/python/temporal-client',
+            'develop/python/standalone-activities',
             'develop/python/python-sdk-sandbox',
             'develop/python/python-sdk-sync-vs-async',
             'develop/python/testing-suite',
@@ -710,6 +713,7 @@ module.exports = {
             'encyclopedia/activities/activity-definition',
             'encyclopedia/activities/activity-execution',
             'encyclopedia/activities/local-activity',
+            'encyclopedia/activities/standalone-activity',
           ],
         },
         {
