@@ -277,24 +277,99 @@ module.exports = {
           },
           items: [
             'develop/dotnet/set-up-your-local-dotnet',
-            'develop/dotnet/core-application',
-            'develop/dotnet/temporal-client',
-            'develop/dotnet/testing-suite',
-            'develop/dotnet/failure-detection',
-            'develop/dotnet/message-passing',
-            'develop/dotnet/cancellation',
-            'develop/dotnet/asynchronous-activity',
-            'develop/dotnet/versioning',
-            'develop/dotnet/observability',
-            'develop/dotnet/benign-exceptions',
-            'develop/dotnet/enriching-ui',
-            'develop/dotnet/debugging',
-            'develop/dotnet/schedules',
-            'develop/dotnet/converters-and-encryption',
-            'develop/dotnet/durable-timers',
-            'develop/dotnet/nexus',
-            'develop/dotnet/child-workflows',
-            'develop/dotnet/continue-as-new',
+            {
+              type: 'category',
+              label: 'Workflows',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/dotnet/workflows/index',
+              },
+              items: [
+                'develop/dotnet/workflows/basics',
+                'develop/dotnet/workflows/child-workflows',
+                'develop/dotnet/workflows/continue-as-new',
+                'develop/dotnet/workflows/cancellation',
+                'develop/dotnet/workflows/timeouts',
+                'develop/dotnet/workflows/message-passing',
+                'develop/dotnet/workflows/enriching-ui',
+                'develop/dotnet/workflows/schedules',
+                'develop/dotnet/workflows/timers',
+                'develop/dotnet/workflows/dynamic-workflow',
+                'develop/dotnet/workflows/versioning',
+              ]
+            },
+            {
+              type: 'category',
+              label: 'Activities',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/dotnet/activities/index',
+              },
+              items: [
+                'develop/dotnet/activities/basics',
+                'develop/dotnet/activities/execution',
+                'develop/dotnet/activities/timeouts',
+                'develop/dotnet/activities/asynchronous-activity',
+                'develop/dotnet/activities/dynamic-activity',
+                'develop/dotnet/activities/benign-exceptions',
+              ]
+            },
+            {
+              type: 'category',
+              label: 'Workers',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/dotnet/workers/index',
+              },
+              items: [
+                'develop/dotnet/workers/basics',
+                'develop/dotnet/workers/run-worker-process',
+                'develop/dotnet/workers/observability',
+              ]
+            },
+            {
+              type: 'category',
+              label: 'Client',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/dotnet/client/index',
+              },
+              items: [
+                'develop/dotnet/client/temporal-client',
+                'develop/dotnet/client/namespaces',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Nexus',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/dotnet/nexus/index',
+              },
+              items: [
+                'develop/dotnet/nexus/service-handler',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Best practices',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'develop/dotnet/best-practices/index',
+              },
+              items: [
+                'develop/dotnet/best-practices/error-handling',
+                'develop/dotnet/best-practices/testing-suite',
+                'develop/dotnet/best-practices/debugging',
+                'develop/dotnet/best-practices/converters-and-encryption',
+              ]
+            },
           ],
         },
         {

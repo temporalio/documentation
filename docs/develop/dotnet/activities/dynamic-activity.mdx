@@ -1,0 +1,36 @@
+---
+id: dynamic-activity
+title: Dynamic Activity - .NET SDK
+sidebar_label: Dynamic Activity
+description: This section explains Dynamic Activities with the .NET SDK
+toc_max_heading_level: 4
+keywords:
+  - .NET SDK
+tags:
+  - .NET SDK
+  - Temporal SDKs
+---
+
+## Set a Dynamic Activity {#set-a-dynamic-activity}
+
+**How to set a Dynamic Activity using the Temporal .NET SDK**
+
+A Dynamic Activity in Temporal is an Activity that is invoked dynamically at runtime if no other Activity with the same name is registered.
+An Activity can be made dynamic by setting `Dynamic` as `true` on the `[Activity]` attribute.
+You must register the Activity with the Worker before it can be invoked.
+Only one Dynamic Activity can be present on a Worker.
+
+The Activity Definition must then accept a single argument of type `Temporalio.Converters.IRawValue[]`.
+The [PayloadConverter](https://dotnet.temporal.io/api/Temporalio.Activities.ActivityExecutionContext.html#Temporalio_Activities_ActivityExecutionContext_PayloadConverter) property on the `ActivityExecutionContext` is used to convert an `IRawValue` object to the desired type using extension methods in the `Temporalio.Converters` namespace.
+
+```csharp
+public class MyActivities
+{
+    [Activity(Dynamic = true)]
+    public string DynamicActivity(IRawValue[] args)
+    {
+        var input = ActivityExecutionContext.Current.PayloadConverter.ToValue<MyActivityParams>(args.Single());
+        return $"{input.Greeting}, {input.Name}!";
+    }
+}
+```

@@ -1,0 +1,54 @@
+---
+id: execution
+title: Activity execution - .NET SDK
+description: Shows how to perform Activity execution with the .NET SDK
+sidebar_label: Activity Execution
+slug: /develop/dotnet/activities/execution
+toc_max_heading_level: 3
+tags:
+  - .NET SDK
+  - Temporal SDKs
+  - Activity
+---
+
+## Start Activity Execution {#activity-execution}
+
+Calls to spawn [Activity Executions](/activity-execution) are written within a [Workflow Definition](/workflow-definition).
+The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
+This results in the set of three [Activity Task](/tasks#activity-task) related Events ([ActivityTaskScheduled](/references/events#activitytaskscheduled), [ActivityTaskStarted](/references/events#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
+
+A single instance of the Activities implementation is shared across multiple simultaneous Activity invocations.
+Activity implementation code should be _idempotent_.
+
+The values passed to Activities through invocation parameters or returned through a result value are recorded in the Execution history.
+The entire Execution history is transferred from the Temporal service to Workflow Workers when a Workflow state needs to recover.
+A large Execution history can thus adversely impact the performance of your Workflow.
+
+Therefore, be mindful of the amount of data you transfer through Activity invocation parameters or Return Values.
+Otherwise, no additional limitations exist on Activity implementations.
+
+To spawn an Activity Execution, use the `ExecuteActivityAsync` operation from within your Workflow Definition.
+
+```csharp
+using Temporalio.Workflows;
+
+[Workflow]
+public class MyWorkflow
+{
+    public async Task<string> RunAsync(string name)
+    {
+        var param = MyActivityParams("Hello", name);
+        return await Workflow.ExecuteActivityAsync(
+            (MyActivities a) => a.MyActivity(param),
+            new() { StartToCloseTimeout = TimeSpan.FromMinutes(5) });
+    }
+}
+```
+
+Activity Execution semantics rely on several parameters.
+The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
+These values are set in the Activity Options.
+
+### Get Activity Execution results {#get-activity-results}
+
+The Activity result is the returned in the task from the `ExecuteActivityAsync` call.

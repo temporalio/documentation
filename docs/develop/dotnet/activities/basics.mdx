@@ -1,0 +1,55 @@
+---
+id: basics
+title: Activity Basics - .NET SDK
+sidebar_label: Activity Basics
+description: This section explains Activity Basics with the .NET SDK
+toc_max_heading_level: 4
+keywords:
+  - .NET SDK
+tags:
+  - .NET SDK
+  - Temporal SDKs
+---
+
+## Develop an Activity {#develop-activity}
+
+One of the primary things that Workflows do is orchestrate the execution of Activities.
+An Activity is a normal method execution that's intended to execute a single, well-defined action (either short or long-running), such as querying a database, calling a third-party API, or transcoding a media file.
+An Activity can interact with world outside the Temporal Platform or use a Temporal Client to interact with a Temporal Service.
+For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/activity-definition).
+
+You can develop an Activity Definition by using the `[Activity]` attribute from the `Temporalio.Activities` namespace on the method.
+To register a method as an Activity with a custom name, use an attribute parameter, for example `[Activity("your-activity")]`.
+Otherwise, the activity name is the unqualified method name (sans an "Async" suffix if the method is async).
+
+Activities can be asynchronous or synchronous.
+
+```csharp
+using Temporalio.Activities;
+
+public class MyActivities
+{
+    // Activities can be async and/or static too. We just demonstrate instance methods since many
+    // use them that way.
+    [Activity]
+    public string MyActivity(MyActivityParams input) =>
+        $"{input.Greeting}, {input.Name}!";
+}
+```
+
+There is no explicit limit to the total number of parameters that an [Activity Definition](/activity-definition) may support.
+However, there is a limit to the total size of the data that ends up encoded into a gRPC message Payload.
+
+A single argument is limited to a maximum size of 2 MB.
+And the total size of a gRPC message, which includes all the arguments, is limited to a maximum of 4 MB.
+
+Also, keep in mind that all Payload data is recorded in the [Workflow Execution Event History](/workflow-execution/event#event-history) and large Event Histories can affect Worker performance.
+This is because the entire Event History could be transferred to a Worker Process with a [Workflow Task](/tasks#workflow-task).
+
+Some SDKs require that you pass context objects, others do not.
+When it comes to your application data—that is, data that is serialized and encoded into a Payload—we recommend that you use a single object as an argument that wraps the application data passed to Activities.
+This is so that you can change what data is passed to the Activity without breaking a method signature.
+
+Activity parameters are the method parameters of the method with the `[Activity]` attribute.
+These can be any data type Temporal can convert, including records.
+Technically this can be multiple parameters, but Temporal strongly encourages a single parameter containing all input fields.
