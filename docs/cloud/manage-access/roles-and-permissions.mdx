@@ -1,0 +1,89 @@
+---
+id: roles-and-permissions
+title: Roles and permissions
+description: Learn about the roles and permissions in Temporal Cloud
+toc_max_heading_level: 4
+keywords:
+  - explanation
+  - how-to
+  - introduction
+  - temporal cloud
+  - temporal cloud account
+  - users
+---
+
+Temporal Cloud uses role-based access control (RBAC) to manage access to resources. Access is governed both on the
+account-level and within a Namespace. On the account-level, each access principal is assigned one account-level role. On
+the Namespace-level, each access principal can be assigned one Namespace-level permission. Some account-level roles,
+such as Account Owner and Global Admin, automatically have Namespace Admin permissions on all Namespaces in the account.
+
+## Account-level roles
+
+Account-level roles are assigned to access principals at the account level. They control access to account resources,
+such as:
+
+- Users and Service Accounts
+- Billing and usage
+- Namespaces. This includes creating and managing Namespaces only, not access to resources within a Namespace, which is
+  controlled by [Namespace-level permissions](#namespace-level-permissions).
+- Nexus Endpoints
+
+The following table provides a summary of the account-level roles and their primary purpose:
+
+| Role          | Primary purpose                             | Can create Namespaces | Automatic Namespace Admin               | Billing and usage access          |
+| ------------- | ------------------------------------------- | --------------------- | --------------------------------------- | --------------------------------- |
+| Account Owner | Owns and governs the account                | Yes                   | All Namespaces (cannot be revoked)      | Full billing, payments, and usage |
+| Global Admin  | Administers account configuration and users | Yes                   | All Namespaces (cannot be revoked)      | Usage only                        |
+| Developer     | Creates and manages Namespaces they own     | Yes                   | Namespaces they create (can be revoked) | None                              |
+| Finance Admin | Manages billing and payment information     | No                    | None                                    | Full billing and payments         |
+| Read-Only     | Views account configuration and resources   | No                    | None                                    | None                              |
+
+Account-level roles don't govern day-to-day operations within a Namespace. Access to resources inside a Namespace, such
+as Workflows and Workflow Executions, is controlled by [Namespace-level permissions](#namespace-level-permissions).
+
+Account Owner and Global Admin roles automatically have Namespace Admin permissions on all Namespaces in the account,
+and these permissions cannot be revoked without removing the role. Developers can create Namespaces, and have Namespace
+Admin permissions for each Namespace they create. This permission can be revoked. Developer roles also don't have
+automatic access to Namespaces that they didn't create.
+
+### Best practice for assigning the Account Owner role
+
+The Account Owner role holds the highest level of access in the system. This role configures account-level parameters
+and manages Temporal billing and payment information. It allows users to perform all actions within the Temporal Cloud
+account.
+
+We strongly recommend the following precautions when assigning the Account Owner role to users:
+
+- Assign the role to at least two users in your organization. Otherwise, limit the number of users with this role.
+- Associate a person’s direct email address to the Account Owner, rather than a shared or generic address, so Temporal
+  Support can contact the right person in urgent situations.
+
+This latter rule is useful for anyone on your team who may need to be contacted urgently, regardless of their Account
+role.
+
+## Namespace-level permissions {#namespace-level-permissions}
+
+Namespace-level permissions govern access to resources within a Namespace, such as the following:
+
+- Workflows
+- Workflow Executions
+- Task Queues
+- Activity Executions
+- Search Attributes
+- History
+- Events
+
+Namespace-level permissions are assigned to access principals within a Namespace. Each permission has a set of actions
+that grant access to specific resources within the Namespace.
+
+The following table provides a summary of the Namespace-level permissions and their primary purpose:
+
+| Permission level | Intended use                      | Human access                                                                                 | Worker runtime access                                     | Namespace administration                                                                                  |
+| ---------------- | --------------------------------- | -------------------------------------------------------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| Read             | Observe Namespace activity        | View Workflows, Workflow Executions, Schedules, Task Queues, and metadata                    | None                                                      | None                                                                                                      |
+| Write            | Operate Workflows and run Workers | Start, signal, cancel, terminate, and reset Workflows; manage Schedules and batch operations | Poll Task Queues and complete Workflow and Activity Tasks | None                                                                                                      |
+| Namespace Admin  | Administer the Namespace          | All Read and Write capabilities                                                              | All Read and Write capabilities                           | Update Namespace settings, manage Search Attributes, Export Sinks, replication, and Namespace user access |
+
+You can grant Namespace Admin, Write, or Read-Only permissions to principals with the account-level roles of Developer,
+Finance Admin, or Read-Only. Account Owners and Global Admins already have Namespace Admin permissions on all Namespaces
+in the account and do not need to be manually assigned Namespace-level permissions.

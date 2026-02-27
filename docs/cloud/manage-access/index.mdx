@@ -16,10 +16,107 @@ tags:
   - Users
 ---
 
-Temporal Cloud offers several ways to manage access to your Temporal Cloud account.
+Access to Temporal Cloud is governed by role-based access control (RBAC). Within an account, each access principal, such
+as user, user group or service account, is assigned one or more account-level roles, and each role has a set of
+permissions. Each principal can only perform an action if they have a role that grants them the necessary permissions.
+
+Within a Namespace, each principal is assigned one or more Namespace-level permissions, and each permission permits a
+set of actions. Each principal can only perform an action if they have a permission that grants them the necessary
+actions within the Namespace.
+
+Temporal Cloud supports Security Assertion Markup Language (SAML) and System for Cross-domain Identity Management (SCIM)
+for integration with your organization's identity provider (IDP). SAML enables single sign-on (SSO) by allowing your
+identity provider to authenticate users into Temporal Cloud. SCIM automatically creates, updates, and removes users and
+groups in Temporal Cloud based on changes in your identity provider.
+
+## Temporal Cloud accounts
+
+Accounts are the top-level container for access control. Each account has at least one user assigned the Account Owner
+role, which has full administrative permissions across the account, including users, billing and usage. An account is
+**not** an access principal itself.
+
+When you sign up for Temporal Cloud without joining an existing account, you are automatically assigned the Account
+Owner role for a new account. You can then invite other users to join the account and assign them roles.
+
+:::info
+
+Multiple accounts can coexist on the same email domain. Each account can have its own independent SAML configuration,
+tied to its unique Account ID.
+
+However, each email address can only be associated with a single Temporal Cloud account. If you need access to multiple
+accounts, you’ll need a separate invite for each one using a different email address.
+
+:::
+
+## Access principals
+
+Temporal Cloud offers the following principals for access control:
 
 - [**Users**](/cloud/users) - Manage individual user accounts and permissions
 - [**User Groups**](/cloud/user-groups) - Organize users into groups for simplified access management
 - [**Service Accounts**](/cloud/service-accounts) - Configure service accounts for automated access
-- [**SAML**](/cloud/saml) - Configure SAML-based single sign-on integration
+
+These principals can assume [account-level roles](/cloud/manage-access/roles-and-permissions#account-level-roles) and be
+granted [Namespace-level permissions](/cloud/manage-access/roles-and-permissions#namespace-level-permissions) to perform
+actions within the account and a Namespace, respectively.
+
+## Roles and permissions
+
+Temporal Cloud' RBAC model works in a hierarchical manner. Account-level roles grant permissions to perform actions
+within the account, and Namespace-level permissions grant permissions to perform actions within a Namespace. Refer to
+the [Roles and permissions](/cloud/manage-access/roles-and-permissions) page for more details.
+
+## Integration with identity providers
+
+Temporal Cloud supports SAML and SCIM for integration with your organization's identity provider (IDP).
+
+- [**SAML**](/cloud/saml) - Configure SAML-based SSO integration
 - [**SCIM**](/cloud/scim) - Use your IDP to manage Temporal Cloud users and access via SCIM integration
+
+## Troubleshoot account access issues
+
+### Recover your account after losing access to your authenticator app {#mfa-recovery}
+
+Accounts registered with email and password require multi-factor authentication (MFA) with an authenticator app. If you
+lose access to your authenticator app, you can still log in by clicking **Try another method** on the MFA screen. From
+there, you can either:
+
+- Enter your recovery code (provided when you first set up MFA)
+- Receive a verification code through email
+
+Once you're logged in, you can reset your authenticator app by navigating to **My Profile** > **Password and
+Authentication** and then clicking **Authenticator App** > **Remove method**.
+
+### Reset your password {#reset-password}
+
+If you're currently logged in and would like to change your password, click your profile icon at the top right of the
+Temporal Cloud UI, navigate to **My Profile** > **Password and Authentication**, and then click **Reset Password**.
+
+If you're not currently logged in, navigate to the login page of the Temporal Cloud UI, enter your email address, click
+**Continue**, and then select **Forgot password**. In both cases, you will receive an email with instructions on how to
+reset your password.
+
+### Sign in after email domain changes {#email-domain-change}
+
+If your organization changed its email domain (for example, from `@oldcompany.com` to `@newcompany.com`), you may be
+unable to sign in to Temporal Cloud with your existing account.
+
+**Why this happens:** When you sign in using "Continue with Google" or "Continue with Microsoft", Temporal Cloud
+identifies your account by your email address. If your email address changes, Temporal Cloud sees this as a different
+identity and cannot match it to your existing account.
+
+**How to resolve this:** [Create a support ticket](/cloud/support#support-ticket) with the following information:
+
+- Your previous email address (the one originally used to access Temporal Cloud)
+- Your new email address
+- Your Temporal Cloud Account Id (if known)
+
+Temporal Support can update your account to use your new email address.
+
+:::tip Use SAML for enterprise identity management
+
+If your organization frequently changes email domains or wants centralized control over user authentication, consider
+using [SAML authentication](/cloud/saml). With SAML, your identity provider (IdP) manages user identities, and email
+domain changes can be handled within your IdP without affecting Temporal Cloud access.
+
+:::
