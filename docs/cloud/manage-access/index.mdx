@@ -73,28 +73,13 @@ Temporal Cloud supports SAML and SCIM for integration with your organization's i
 - [**SAML**](/cloud/saml) - Configure SAML-based SSO integration
 - [**SCIM**](/cloud/scim) - Use your IDP to manage Temporal Cloud users and access via SCIM integration
 
-## Frequently Asked Questions
+## Troubleshoot account access issues
 
-### How do I complete the `Secure Your Account` step?
+### Recover your account after losing access to your authenticator app {#mfa-recovery}
 
-If you signed up to Temporal Cloud using an email and password, you're required to set up multi-factor authentication
-(MFA) for added security. Currently, only authenticator apps are supported as an additional factor (such as Google
-Authenticator, Microsoft Authenticator, and Authy).
-
-To proceed:
-
-1. Download a supported authenticator app on your mobile device.
-2. Scan the QR code shown on the **Secure Your Account** screen.
-3. Enter the verification code from your app to complete MFA setup.
-4. Securely store your recovery code. This code allows you to access your account if you lose access to your
-   authenticator app.
-
-Once MFA is configured, you’ll be able to continue using Temporal Cloud.
-
-### What if I lose access to my authenticator app?
-
-If you lose access to your authenticator app, you can still log in by clicking **Try another method** on the MFA screen.
-From there, you can either:
+Accounts registered with email and password require multi-factor authentication (MFA) with an authenticator app. If you
+lose access to your authenticator app, you can still log in by clicking **Try another method** on the MFA screen. From
+there, you can either:
 
 - Enter your recovery code (provided when you first set up MFA)
 - Receive a verification code through email
@@ -102,7 +87,7 @@ From there, you can either:
 Once you're logged in, you can reset your authenticator app by navigating to **My Profile** > **Password and
 Authentication** and then clicking **Authenticator App** > **Remove method**.
 
-### How do I reset my password?
+### Reset your password {#reset-password}
 
 If you're currently logged in and would like to change your password, click your profile icon at the top right of the
 Temporal Cloud UI, navigate to **My Profile** > **Password and Authentication**, and then click **Reset Password**.
@@ -111,7 +96,7 @@ If you're not currently logged in, navigate to the login page of the Temporal Cl
 **Continue**, and then select **Forgot password**. In both cases, you will receive an email with instructions on how to
 reset your password.
 
-### How do I sign in after my email domain changes? {#email-domain-change}
+### Sign in after email domain changes {#email-domain-change}
 
 If your organization changed its email domain (for example, from `@oldcompany.com` to `@newcompany.com`), you may be
 unable to sign in to Temporal Cloud with your existing account.
