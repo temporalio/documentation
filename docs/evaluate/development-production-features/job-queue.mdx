@@ -28,7 +28,7 @@ They let you use Temporal Activities as background jobs, in addition to using th
 
 Temporal provides stronger guarantees, better visibility, and more control than traditional job queues - while remaining cost-effective for high-volume use cases and offering a clean upgrade path to multi-step workflow orchestration.
 
-### Overview 
+### Overview
 
 Standalone Activities add the ability to execute any Temporal Activity as a top-level Activity Execution for durable job processing.
 
@@ -42,7 +42,7 @@ Standalone Activities add the ability to execute any Temporal Activity as a top-
 
 - Jobs are submitted as Standalone Activity Executions
 - Each job is durably persisted with Temporal reliability, so jobs are not lost
-- Jobs are scheduled with priority, fairness, deduplication and no head of line blocking
+- Jobs are scheduled with priority, fairness, deduplication and no head-of-line blocking
 - Workers poll task queues and execute Activities (you run your own Workers)
 - Temporal ensures retries, timeouts, and exponential backoff policy is enforced
 

@@ -26,13 +26,17 @@ See [limitations](#pre-release-limitations) below.
 
 ## What is a Standalone Activity? {#standalone-activity}
 
-A top-level [Activity Execution](/activity-execution) that is started directly by a [Client](/encyclopedia/temporal-sdks#temporal-client), without using a Workflow, is called a Standalone Activity.
+A top-level [Activity Execution](/activity-execution) that is started directly by a
+[Client](/encyclopedia/temporal-sdks#temporal-client), without using a Workflow, is called a
+Standalone Activity.
 
-If you need to orchestrate multiple Activity Executions, then you should use a Workflow. But if you
-just need to execute a single Activity, then you can use a Standalone Activity. This will result in
-fewer [Billable Actions](/cloud/actions#actions-in-workflows) in Temporal Cloud than using a Workflow to run a single Activity. If your Activity
-Execution is short-lived, then you will also notice lower latency, since there are fewer worker
-round-trips than when executing the Activity in a Workflow.
+Standalone Activities are Temporal's [job queue](/evaluate/development-production-features/job-queue).
+
+If you need to orchestrate multiple Activities, then you should use a Workflow. But if you just need
+to execute a single Activity, then you can use a Standalone Activity. This will result in fewer
+[Billable Actions](/cloud/actions#actions-in-workflows) in Temporal Cloud than using a Workflow to
+run a single Activity. If your Activity Execution is short-lived, then you will also notice lower
+latency, since there are fewer worker round-trips than when executing the Activity in a Workflow.
 
 Standalone Activities support the same retry policies and timeouts as Workflow Activities, and you
 write your Activity Functions in the same way for both. In fact, an Activity Function can be
