@@ -69,12 +69,21 @@ tcld user invite \
 
 <TabItem value="invite-ops-api" label="Cloud Ops API">
 
-You can invite users pragmatically using the Cloud Ops API.
+Use the [CreateUser](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users) endpoint to invite a user.
 
-1. Create a connection to your Temporal Service using the Cloud Operations API.
-2. Use the
-   [CreateUser service](https://github.com/temporalio/api-cloud/blob/main/temporal/api/cloud/cloudservice/v1/service.proto)
-   to create a user.
+```
+POST /cloud/users
+```
+
+The request body includes a `spec` with the following fields:
+
+- `spec.email` — The email address of the user to invite.
+- `spec.access.account_access.role` — The account-level role to assign.
+- `spec.access.namespace_accesses` — A map of Namespace names to permissions.
+
+Available roles: `ROLE_ADMIN` | `ROLE_DEVELOPER` | `ROLE_READ` | `ROLE_OWNER` | `ROLE_FINANCE_ADMIN`.
+
+Available Namespace permissions: `PERMISSION_ADMIN` | `PERMISSION_WRITE` | `PERMISSION_READ`.
 
 </TabItem>
 
