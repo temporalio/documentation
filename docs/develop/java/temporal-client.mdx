@@ -548,7 +548,7 @@ To connect to Temporal Cloud using mTLS, you need to provide the mTLS CA certifi
 use the `SimpleSslContextBuilder` to build an SSL context. Then use the
 `WorkflowServiceStubsOptions.Builder.setSslContext` method to set the SSL context.
 
-When you use a remote service, you don't use the `newLocalServicesStubs` convenience method. Instead, set your
+When you use a remote service, you don't use the `newLocalServiceStubs` convenience method. Instead, set your
 connection details as stub configuration options:
 
 <!--SNIPSTART javasdk-build-caller-app-using-temporal-cloud {"selectedLines": ["46-54"]}-->
