@@ -23,8 +23,8 @@ tags:
 ---
 
 Users are one of the primary access principals in Temporal Cloud. Each user is assigned one
-[account-level role](/cloud/users#account-level-roles), and each role has a set of permissions. In addition to
-account-level roles, users can also be assigned [Namespace-level permissions](/cloud/users#namespace-level-permissions)
+[account-level role](/cloud/manage-access/roles-and-permissions#account-level-roles), and each role has a set of permissions. In addition to
+account-level roles, users can also be assigned [Namespace-level permissions](/cloud/manage-access/roles-and-permissions#namespace-level-permissions)
 for specific Namespaces. Each user can only perform an action if they have a role that grants them the necessary
 permissions.
 
@@ -37,30 +37,21 @@ import InvitationContent from '@site/docs/cloud/get-started/user-invite.mdx';
 
 <InvitationContent />
 
-In addition, there are two roles that the Global Admin cannot assign:
+Global Admin roles cannot assign the Account Owner role or the Finance Admin role to new users they invite to the
+account.
 
-- **Account Owner**
-  - Has full administrative permissions across the account, including users, usage and
-    [billing](/cloud/billing-and-cost)
-  - Can create and manage Namespaces and Nexus Endpoints
-  - Has Namespace Admin [permissions](#namespace-level-permissions) on all [Namespaces](/namespaces) in the account.
-    This permission cannot be revoked
-- **Finance Admin**
-  - Has permissions to view [billing](/cloud/billing-and-cost) information and update payment information
-  - Otherwise, has the same permissions as Account Read-only users
-  - Can be assigned to Service Accounts by a Global Admin, but otherwise can only be assigned by an Account Owner
+## Update a user's account-level role {#update-roles}
 
-## How to update an account-level role in Temporal Cloud {#update-roles}
+With Global Admin or Account Owner privileges, you can update any user's account-level [role](/cloud/manage-access/roles-and-permissions#account-level-roles). The
+Account Owner role can only be granted by existing Account Owners.
 
-With Global Admin or Account Owner privileges, you can update any user's account-level [role](#account-level-roles)
-using either the Web UI or the tcld CLI utility. The Account Owner role can only be granted by existing Account Owners.
+For security reasons, you cannot remove the Account Owner role from a user. Removing the Account Owner role must be made
+through Temporal Support. To remove the Account Owner role, you must submit a
+[support ticket](https://temporalsupport.zendesk.com/).
 
-For security reasons, changes to the Account Owner role must be made through Temporal Support. To change or delete an
-Account Owner, you must submit a [support ticket](https://temporalsupport.zendesk.com/).
+<Tabs>
 
-{/* How to update an account-level role in Temporal Cloud using Web UI */}
-
-### How to update an account-level role using Web UI
+<TabItem value="update-role-webui" label="Web UI">
 
 1. In Temporal Web UI, select **Settings** in the left portion of the window.
 1. On the **Settings** page, select the user.
@@ -68,37 +59,70 @@ Account Owner, you must submit a [support ticket](https://temporalsupport.zendes
 1. On the **Edit User** page in **Account Level Role**, select the role.
 1. Select **Save**.
 
-{/* How to update an account-level role in Temporal Cloud using tcld */}
+</TabItem>
 
-### How to update an account-level role using tcld
+<TabItem value="update-role-tcld" label="tcld">
 
-For details, see the [tcld user set-account-role](/cloud/tcld/user/#set-account-role) command.
+Use the [`tcld user set-account-role`](/cloud/tcld/user/#set-account-role) command. Specify the user by email or ID and
+the new role.
 
-## How to update Namespace-level permissions in Temporal Cloud {#update-permissions}
+Available account roles: `admin` | `developer` | `read`. The Account Owner and Finance Admin roles cannot be assigned
+through tcld; use the Web UI or Cloud Ops API to assign these roles.
 
-You can update Namespace-level [permissions](#namespace-level-permissions) by using either Web UI or tcld.
+```command
+tcld user set-account-role --user-email <user@example.com> --account-role <role>
+```
 
-{/* How to update Namespace-level permissions for a Namespace in Temporal Cloud using Web UI */}
+You can also identify the user by ID:
 
-### How to use the Web UI to update a user's permissions across multiple Namespaces
+```command
+tcld user set-account-role --user-id <user-id> --account-role <role>
+```
+
+</TabItem>
+
+<TabItem value="update-role-api" label="Cloud Ops API">
+
+Use the [UpdateUser](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users) endpoint to update a user's account-level
+role.
+
+```
+POST /cloud/users/{userId}
+```
+
+The request body includes a `spec` with the user's `access.account_access.role` field set to the desired role.
+
+Available roles: `ROLE_OWNER` | `ROLE_ADMIN` | `ROLE_DEVELOPER` | `ROLE_FINANCE_ADMIN` | `ROLE_READ`.
+
+</TabItem>
+
+</Tabs>
+
+## Update a user's Namespace-level permissions {#update-permissions}
+
+You can update Namespace-level [permissions](/cloud/manage-access/roles-and-permissions#namespace-level-permissions) for any user.
+
+:::note
+
+A user with the Account Owner or Global Admin account-level [role](/cloud/manage-access/roles-and-permissions#account-level-roles) has Namespace Admin permissions
+for all Namespaces.
+
+:::
+
+<Tabs>
+
+<TabItem value="update-perms-webui" label="Web UI">
+
+**Update a user's permissions across multiple Namespaces:**
 
 1. In Temporal Web UI, select **Namespaces** in the left portion of the window.
 1. On the **Namespaces** page, select the Namespace.
-1. If necessary, scroll down to the list of permissions
+1. If necessary, scroll down to the list of permissions.
 1. On the user profile page in **Namespace permissions**, select the Namespace.
 1. On the Namespace page in **Account Level Role**, select the role.
 1. Select **Save**.
 
-{/* How to update Namespace-level permissions for a user in Temporal Cloud using Web UI */}
-
-### How to use the Web UI to update permissions for multiple users within a single Namespace
-
-:::note
-
-A user with the Account Owner or Global Admin account-level [role](#account-level-roles) has Namespace Admin permissions
-for all Namespaces.
-
-:::
+**Update permissions for multiple users within a single Namespace:**
 
 1. In Temporal Web UI, select **Settings** in the left portion of the window.
 1. On the **Settings** page in the **Users** tab, select the user.
@@ -106,40 +130,101 @@ for all Namespaces.
 1. On the **Edit User** page in **Namespace permissions**, change the permissions for one or more Namespaces.
 1. Select **Save**.
 
-{/* How to update an account-level role in Temporal Cloud using tcld */}
+</TabItem>
 
-### How to use tcld to update Namespace-level permissions
+<TabItem value="update-perms-tcld" label="tcld">
 
-For details, see the [tcld user set-namespace-permissions](/cloud/tcld/user/#set-namespace-permissions) command.
+Use the [`tcld user set-namespace-permissions`](/cloud/tcld/user/#set-namespace-permissions) command. Specify the user
+by email or ID and one or more Namespace permissions.
 
-## How to delete a user from your Temporal Cloud account {#delete-users}
+Each permission value must be in the format `namespace=permission-type`.
 
-You can delete a user from your Temporal Cloud Account by using either Web UI or tcld.
+Available Namespace permissions: `Admin` | `Write` | `Read`.
+
+```command
+tcld user set-namespace-permissions --user-email <user@example.com> --namespace-permission <namespace>=<permission>
+```
+
+You can set multiple Namespace permissions in a single request:
+
+```command
+tcld user set-namespace-permissions --user-email <user@example.com> \
+  --namespace-permission ns1=Admin \
+  --namespace-permission ns2=Write
+```
+
+</TabItem>
+
+<TabItem value="update-perms-api" label="Cloud Ops API">
+
+Use the [SetUserNamespaceAccess](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users) endpoint to set a user's
+permission for a specific Namespace.
+
+```
+POST /cloud/namespaces/{namespace}/users/{userId}/access
+```
+
+Set the `access.permission` field to the desired permission.
+
+Available permissions: `PERMISSION_ADMIN` | `PERMISSION_WRITE` | `PERMISSION_READ`.
+
+</TabItem>
+
+</Tabs>
+
+## Delete a user from your Temporal Cloud account {#delete-users}
+
+You can delete a user from your Temporal Cloud account.
 
 :::info
 
-To delete a user, a user must have the Account Owner or Global Admin account-level [role](#account-level-roles).
+To delete a user, a user must have the Account Owner or Global Admin account-level [role](/cloud/manage-access/roles-and-permissions#account-level-roles).
 
 :::
 
-{/* How to delete a user from your Temporal Cloud account using Web UI */}
+<Tabs>
 
-### How to update an account-level role using Web UI
+<TabItem value="delete-user-webui" label="Web UI">
 
 1. In Temporal Web UI, select **Settings** in the left portion of the window.
 1. On the **Settings** page, find the user and, on the right end of the row, select **Delete**.
 1. In the **Delete User** dialog, select **Delete**.
 
-You can delete a user in two other ways in Web UI:
+You can also delete a user in two other ways in Web UI:
 
 - User profile page: Select the down arrow next to **Edit User** and then select **Delete**.
 - **Edit User** page: Select **Delete User**.
 
-{/* How to delete a user from your Temporal Cloud account using tcld */}
+</TabItem>
 
-### How to update an account-level role using tcld
+<TabItem value="delete-user-tcld" label="tcld">
 
-For details, see the [tcld user delete](/cloud/tcld/user/#delete) command.
+Use the [`tcld user delete`](/cloud/tcld/user/#delete) command. Specify the user by email or ID.
+
+```command
+tcld user delete --user-email <user@example.com>
+```
+
+You can also identify the user by ID:
+
+```command
+tcld user delete --user-id <user-id>
+```
+
+</TabItem>
+
+<TabItem value="delete-user-api" label="Cloud Ops API">
+
+Use the [DeleteUser](https://saas-api.tmprl.cloud/docs/httpapi.html#tag/users) endpoint to remove a user from your
+account.
+
+```
+DELETE /cloud/users/{userId}
+```
+
+</TabItem>
+
+</Tabs>
 
 ## Account-level roles and Namespace-level permissions {#account-level-roles-and-namespace-level-permissions}
 
