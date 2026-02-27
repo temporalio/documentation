@@ -797,7 +797,7 @@ A dynamic Activity is a stand-in implementation.
 It's used when an Activity Task with an unknown Activity type is received by the Worker.
 
 To participate, your Activity must opt into dynamic access.
-Adding `dynamic=True` to the `@activity.defn` decorator makes the Workflow Definition eligible to participate in dynamic invocation.
+Adding `dynamic=True` to the `@activity.defn` decorator makes the Activity Definition eligible to participate in dynamic invocation.
 You must register the Activity with the [Worker](https://python.temporal.io/temporalio.worker.html) before it can be invoked.
 
 The Activity Definition must then accept a single argument of type `Sequence[temporalio.common.RawValue]`.

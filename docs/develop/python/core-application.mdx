@@ -220,7 +220,7 @@ _deterministic_.
 
 One of the primary things that Workflows do is orchestrate the execution of Activities. An Activity is a normal function
 or method execution that's intended to execute a single, well-defined action (either short or long-running), such as
-querying a database, calling a third-party API, or transcoding a media file. An Activity can interact with world outside
+querying a database, calling a third-party API, or transcoding a media file. An Activity can interact with the world outside
 the Temporal Platform or use a Temporal Client to interact with a Temporal Service. For the Workflow to be able to
 execute the Activity, we must define the [Activity Definition](/activity-definition).
 
@@ -244,7 +244,7 @@ serially, defeating the entire purpose of using `asyncio`. This can also lead to
 behavior that causes tasks to be unable to execute. Debugging these issues can be difficult and time consuming, as
 locating the source of the blocking call might not always be immediately obvious.
 
-Due to this, consider not make blocking calls from within an asynchronous Activity, or use an async safe library to
+Due to this, consider not making blocking calls from within an asynchronous Activity, or use an async safe library to
 perform these actions. If you must use a blocking library, consider using a synchronous Activity instead.
 
 :::
