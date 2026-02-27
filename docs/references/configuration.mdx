@@ -60,7 +60,7 @@ Check `net.ParseIP` for supported syntax, only IPv4 is supported.
 ### metrics
 
 Configures the Cluster's metric subsystem.
-Specific provides are configured using provider names as the keys.
+Specific providers are configured using provider names as the keys.
 
 - [`statsd`](#statsd)
 - `prometheus`
@@ -110,7 +110,7 @@ The `prometheus` sections supports the following settings:
 The `m3` sections supports the following settings:
 
 - `hostPort`: The host:port of the M3 server.
-- `service`: The service tag to that this client emits.
+- `service`: The service tag that this client emits.
 - `queue`: M3 reporter queue size, default is 4k.
 - `packetSize`: M3 reporter max packet size, default is 32k.
 
@@ -398,7 +398,7 @@ _Required_
 
 ## publicClient
 
-The `publicClient` a required section describing the configuration needed to for worker to connect to Temporal server for background server maintenance.
+The `publicClient` is a required section describing the configuration needed for a worker to connect to Temporal server for background server maintenance.
 
 - `hostPort` IPv4 host port or DNS name to reach Temporal frontend, [reference](https://github.com/grpc/grpc/blob/master/doc/naming.md)
 
