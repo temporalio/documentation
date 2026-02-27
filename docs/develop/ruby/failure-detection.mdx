@@ -132,8 +132,6 @@ result = my_client.execute_workflow(
 A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
 Use a [Retry Policy](/encyclopedia/retry-policies) to automatically retry Workflow Executions on failure.
-Workflow Executions do not retry by default.
-
 Workflow Executions do not retry by default, and Retry Policies should be used with Workflow Executions only in certain situations.
 
 The `retry_policy` can be set when calling `start_workflow` or `execute_workflow`.

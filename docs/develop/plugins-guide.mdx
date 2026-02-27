@@ -345,7 +345,7 @@ The Replayer allows Workflow authors to validate that their Workflows will work 
 
 The Replayer runs on a Workflow History created by a previous Workflow run. Suppose something in the Workflow or underlying code has changed in a way which could potentially cause a non-determinism error. In that case, the Replayer will notice the change in the way it runs compared to the history provided. 
 
-The Replayer is typically configured identically to the Worker and client. Ff you’re using `SimplePlugin`, this is already handled for you.
+The Replayer is typically configured identically to the Worker and client. If you’re using `SimplePlugin`, this is already handled for you.
 
 If you need to do something custom for the Replayer, you can configure it directly. Here's an example of how to do that with Python:
 

@@ -81,7 +81,7 @@ interface FileProcessingWorkflow
 Note that name parameter of Workflow method attributes can be used to specify name of Workflow, Signal and Query types.
 If name is not specified the short name of the Workflow interface is used.
 
-In the precedingcode the `#[WorkflowMethod(name)]` is not specified, thus the Workflow Type defaults to `"FileProcessingWorkflow"`.
+In the preceding code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow Type defaults to `"FileProcessingWorkflow"`.
 
 ### How to handle a Signal {#handle-signal}
 
@@ -253,7 +253,7 @@ interface FileProcessingWorkflow
 Note that name parameter of Workflow method attributes can be used to specify name of Workflow, Signal and Query types.
 If name is not specified the short name of the Workflow interface is used.
 
-In the precedingcode the `#[WorkflowMethod(name)]` is not specified, thus the Workflow Type defaults to `"FileProcessingWorkflow"`.
+In the preceding code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow Type defaults to `"FileProcessingWorkflow"`.
 
 ### How to handle a Query {#handle-query}
 
@@ -773,7 +773,7 @@ When sending a Signal, Update, or Query to a Workflow, your Client might encount
   You'll receive a [`ServiceClientException`](https://php.temporal.io/classes/Temporal-Exception-Client-ServiceClientException.html) in case of a server connection error.
   [How to configure RPC Retry Policy](/develop/php/temporal-client#configure-rpc-retry-policy)
 
-- **RPC timout**:
+- **RPC timeout**:
   You'll receive a [`TimeoutException`](https://php.temporal.io/classes/Temporal-Exception-Client-TimeoutException.html) in case of an RPC timeout.
   [How to configure RPC timeout](/develop/php/temporal-client#configure-rpc-timeout)
 

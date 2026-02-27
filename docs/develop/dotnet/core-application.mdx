@@ -114,7 +114,7 @@ Here are some known gotchas to avoid with .NET tasks inside of Workflows:
 
 In order to help catch wrong scheduler use, by default the Temporal .NET SDK adds an event source listener for info-level task events.
 While this technically receives events from all uses of tasks in the process, we make sure to ignore anything that is not running in a Workflow in a high performant way (basically one thread local check).
-For code that does run in a Workflow and accidentally starts a task in another scheduler, an `InvalidWorkflowOperationException` will be thrown which "pauses" the Workflow (fails the Workflow Rask which continually retries until the code is fixed).
+For code that does run in a Workflow and accidentally starts a task in another scheduler, an `InvalidWorkflowOperationException` will be thrown which "pauses" the Workflow (fails the Workflow Task which continually retries until the code is fixed).
 This is unfortunately a runtime-only check, but can help catch mistakes early. If this needs to be turned off for any reason, set `DisableWorkflowTracingEventListener` to `true` in Worker options.
 
 In the near future for modern .NET versions we hope to use the
@@ -247,7 +247,7 @@ Technically this can be multiple parameters, but Temporal strongly encourages a 
 
 Calls to spawn [Activity Executions](/activity-execution) are written within a [Workflow Definition](/workflow-definition).
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
-This results in the set of three [Activity Task](/tasks#activity-task) related Events ([ActivityTaskScheduled](/references/events#activitytaskscheduled), [ActivityTaskStarted](/references/events#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
+This results in the set of three [Activity Task](/tasks#activity-task) related Events ([ActivityTaskScheduled](/references/events#activitytaskscheduled), [ActivityTaskStarted](/references/events#activitytaskstarted), and ActivityTask[Closed]) in your Workflow Execution Event History.
 
 A single instance of the Activities implementation is shared across multiple simultaneous Activity invocations.
 Activity implementation code should be _idempotent_.
@@ -285,7 +285,7 @@ These values are set in the Activity Options.
 
 **How to get the results of an Activity Execution using the Temporal .NET SDK**
 
-The Activity result is the returned in the task from the `ExecuteActivityAsync` call.
+The Activity result is returned in the task from the `ExecuteActivityAsync` call.
 
 ## Run Worker Process
 
