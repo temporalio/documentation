@@ -96,7 +96,7 @@ When you connect to Temporal Cloud through GCP Private Service Connect you norma
 1. **Point your SDKs/Workers at the Private Service Connect endpoint IP address** _and_
 2. **Override the Server Name Indicator (SNI)** so that the TLS handshake still presents the public Temporal Cloud hostname (e.g., `my-namespace.my-account.tmprl.cloud`).
 
-By creating a **private Cloud DNS zone (PZ)** that maps the public TemporalC Cloud hostname (or the region hostname) directly to the PSC endpoint IP address, you can:
+By creating a **private Cloud DNS zone (PZ)** that maps the public Temporal Cloud hostname (or the region hostname) directly to the PSC endpoint IP address, you can:
 
 - Keep using the standard Temporal Cloud hostnames in code and configuration.
 - Eliminate the need to set a custom SNI override.

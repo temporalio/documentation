@@ -129,7 +129,7 @@ The following examples illustrate the RTO and SLA calculations for different typ
 
 Suppose that region `middle-earth-1` experienced a cascading failure starting at 10:00:00 UTC, causing various instances and machines to fail over time. Temporal's automatic failover triggered for all Namespaces and completed at 10:15:00 UTC. 
 
-- Namespace 0 was in the region but its cell was not affected by the outage. The only downtime it had was for a few seconds during the failover operation. It experienced a near-zero Recovery Time, and its service error rate was neglible.  Graceful failover was successful, and this Namespace achieved a recovery point of 0.
+- Namespace 0 was in the region but its cell was not affected by the outage. The only downtime it had was for a few seconds during the failover operation. It experienced a near-zero Recovery Time, and its service error rate was negligible.  Graceful failover was successful, and this Namespace achieved a recovery point of 0.
 
 - Namespace 1_A was in the region and its cell experienced a partial degradation that caused 10% of requests to fail in the first 5 minutes, 25% in the second five minutes, and 50% in the third five minutes. Since it was significantly impacted from 10:00:00 to 10:15:00, its Recovery Time was 15 minutes. If it had no other service errors that month, then its service error rate for the month would be: ( (1 - 10%) + (1 - 25%) + (1 - 50%) + 8925 * 100% ) / 8928  = 99.990%. (Note: there are 8928 5-minute periods in a 31-day month.)  Graceful failover was successful, and this Namespace achieved a recovery point of 0.
 
