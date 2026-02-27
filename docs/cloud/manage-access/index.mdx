@@ -56,6 +56,16 @@ Temporal Cloud offers the following principals for access control:
 - [**User Groups**](/cloud/user-groups) - Organize users into groups for simplified access management
 - [**Service Accounts**](/cloud/service-accounts) - Configure service accounts for automated access
 
+These principals can assume [account-level roles](/cloud/manage-access/roles-and-permissions#account-level-roles) and be
+granted [Namespace-level permissions](/cloud/manage-access/roles-and-permissions#namespace-level-permissions) to perform
+actions within the account and a Namespace, respectively.
+
+## Roles and permissions
+
+Temporal Cloud' RBAC model works in a hierarchical manner. Account-level roles grant permissions to perform actions
+within the account, and Namespace-level permissions grant permissions to perform actions within a Namespace. Refer to
+the [Roles and permissions](/cloud/manage-access/roles-and-permissions) page for more details.
+
 ## Integration with identity providers
 
 Temporal Cloud supports SAML and SCIM for integration with your organization's identity provider (IDP).
