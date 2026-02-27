@@ -1,0 +1,200 @@
+---
+id: cloud-worker
+title: Cloud Worker - Go SDK
+sidebar_label: Cloud Worker
+description: This section explains Cloud Workers with the Go SDK
+toc_max_heading_level: 4
+keywords:
+  - Go SDK
+tags:
+  - Go SDK
+  - Temporal SDKs
+---
+
+## How to run a Temporal Cloud Worker {#run-a-temporal-cloud-worker}
+
+To run a Worker that uses [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
+
+- An address that includes your [Cloud Namespace Name](/namespaces) and a port number: `<Namespace>.<ID>.tmprl.cloud:<port>`.
+- mTLS CA certificate.
+- mTLS private key.
+
+For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/certificates).
+
+For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
+
+To run a Worker that talks to Temporal Cloud, you need the following:
+
+- A compatible mTLS CA certificate and mTLS private key that has been added to your Namespace.
+  See [certificate requirements](/cloud/certificates#certificate-requirements).
+- Your [Temporal Cloud Namespace Id](/cloud/namespaces#temporal-cloud-namespace-id), which includes your [Temporal Cloud Namespace Name](/cloud/namespaces#temporal-cloud-namespace-name) and the unique five- or six-digit [Temporal Cloud Account Id](/cloud/namespaces#temporal-cloud-account-id) that is appended to it.
+  This information can be found in the URL of your Namespace; for example, `https://cloud.temporal.io/namespaces/yournamespace.a2fx6/`.
+  Remember that the Namespace Id must include the Account Id: `yournamespace.a2fx6`.
+
+For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/certificates).
+
+For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Service, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/cloud/worker/main_dacx.go">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```go
+package main
+
+import (
+    "crypto/tls"
+    "log"
+
+    "go.temporal.io/sdk/client"
+    "go.temporal.io/sdk/worker"
+
+    "documentation-samples-go/cloud"
+)
+
+func main() {
+    // Get the key and cert from your env or local machine
+    clientKeyPath := "./secrets/yourkey.key"
+    clientCertPath := "./secrets/yourcert.pem"
+    // Specify the host and port of your Temporal Cloud Namespace
+    // Host and port format: namespace.unique_id.tmprl.cloud:port
+    hostPort := "<yournamespace>.<id>.tmprl.cloud:7233"
+    namespace := "<yournamespace>.<id>"
+    // Use the crypto/tls package to create a cert object
+    cert, err := tls.LoadX509KeyPair(clientCertPath, clientKeyPath)
+    if err != nil {
+        log.Fatalln("Unable to load cert and key pair.", err)
+    }
+    // Add the cert to the tls certificates in the ConnectionOptions of the Client
+    temporalClient, err := client.Dial(client.Options{
+        HostPort:  hostPort,
+        Namespace: namespace,
+        ConnectionOptions: client.ConnectionOptions{
+            TLS: &tls.Config{Certificates: []tls.Certificate{cert}},
+        },
+    })
+    if err != nil {
+        log.Fatalln("Unable to connect to Temporal Cloud.", err)
+    }
+    defer temporalClient.Close()
+    // Create a new Worker.
+    yourWorker := worker.New(temporalClient, "cloud-connection-example-go-task-queue", worker.Options{})
+// ...
+}
+```
+
+### How to register types {#register-types}
+
+All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
+
+If a Worker polls a Task for a Workflow Type or Activity Type it does not know about, it fails that Task.
+However, the failure of the Task does not cause the associated Workflow Execution to fail.
+
+The `RegisterWorkflow()` and `RegisterActivity()` calls essentially create an in-memory mapping between the Workflow Types and their implementations, inside the Worker process.
+
+**Registering Activity `structs`**
+
+Per [Activity Definition](#activity-definition) best practices, you might have an Activity struct that has multiple methods and fields.
+When you use `RegisterActivity()` for an Activity struct, that Worker has access to all exported methods.
+
+**Registering multiple Types**
+
+To register multiple Activity Types and/or Workflow Types with the Worker Entity, just make multiple Activity registration calls, but make sure each Type name is unique:
+
+```go
+w.RegisterActivity(ActivityA)
+w.RegisterActivity(ActivityB)
+w.RegisterActivity(ActivityC)
+w.RegisterWorkflow(WorkflowA)
+w.RegisterWorkflow(WorkflowB)
+w.RegisterWorkflow(WorkflowC)
+```
+
+### How to set RegisterWorkflowOptions in Go {#registerworkflowoptions}
+
+Create an instance of [`RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#RegisterOptions) from the `go.temporal.io/sdk/workflow` package and pass it to the [`RegisterWorkflowWithOptions`](https://pkg.go.dev/go.temporal.io/sdk/worker#WorkflowRegistry) call when registering the Workflow Type with the Worker.
+
+- Used to set options for registering a Workflow
+
+| Field                                                             | Required | Type     |
+| ----------------------------------------------------------------- | -------- | -------- |
+| [`Name`](#name)                                                   | No       | `string` |
+| [`DisableAlreadyRegisteredCheck`](#disablealreadyregisteredcheck) | No       | `bool`   |
+
+#### Name
+
+See [How to customize a Workflow Type in Go](#customize-workflow-type)
+
+#### DisableAlreadyRegisteredCheck
+
+Disables the check to see if the Workflow Type has already been registered.
+
+- Type: `bool`
+- Default: `false`
+
+```go
+// ...
+w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
+registerOptions := workflow.RegisterOptions{
+  DisableAlreadyRegisteredCheck: `false`,
+  // ...
+}
+w.RegisterWorkflowWithOptions(YourWorkflowDefinition, registerOptions)
+// ...
+```
+
+### How to set RegisterActivityOptions in Go {#registeractivityoptions}
+
+Create an instance of [`RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/activity#RegisterOptions) from the `go.temporal.io/sdk/activity` package and pass it to the [`RegisterActivityWithOptions`](https://pkg.go.dev/go.temporal.io/sdk/worker#ActivityRegistry) call when registering the Activity Type with the Worker.
+
+Options for registering an Activity
+
+| Field                                                             | Required | Type     |
+| ----------------------------------------------------------------- | -------- | -------- |
+| [`Name`](#name)                                                   | No       | `string` |
+| [`DisableAlreadyRegisteredCheck`](#disablealreadyregisteredcheck) | No       | `bool`   |
+| [`SkipInvalidStructFunctions`](#skipinvalidstructfunctions)       | No       | `bool`   |
+
+#### Name
+
+See [How to customize Activity Type in Go](#customize-activity-type).
+
+#### DisableAlreadyRegisteredCheck
+
+Disables the check to see if the Activity has already been registered.
+
+- Type: `bool`
+- Default: `false`
+
+```go
+// ...
+w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
+registerOptions := activity.RegisterOptions{
+  DisableAlreadyRegisteredCheck: false,
+  // ...
+}
+w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
+// ...
+```
+
+#### SkipInvalidStructFunctions
+
+When registering a struct that has Activities, skip functions that are not valid.
+If false, registration panics.
+
+- Type: `bool`
+- Default: `false`
+
+```go
+// ...
+w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
+registerOptions := activity.RegisterOptions{
+  SkipInvalidStructFunctions: false,
+  // ...
+}
+w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
+// ...
+```

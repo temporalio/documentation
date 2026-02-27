@@ -1,0 +1,346 @@
+---
+id: execution
+title: Activity execution - Go SDK
+description: Shows how to perform Activity execution with the Go SDK
+sidebar_label: Activity Execution
+slug: /develop/go/activities/execution
+toc_max_heading_level: 3
+tags:
+  - Go SDK
+  - Temporal SDKs
+  - Activity
+---
+
+## How to start an Activity Execution {#activity-execution}
+
+Calls to spawn [Activity Executions](/activity-execution) are written within a [Workflow Definition](/workflow-definition).
+The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command.
+This results in the set of three [Activity Task](/tasks#activity-task) related Events ([ActivityTaskScheduled](/references/events#activitytaskscheduled), [ActivityTaskStarted](/references/events#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
+
+A single instance of the Activities implementation is shared across multiple simultaneous Activity invocations.
+Activity implementation code should be _idempotent_.
+
+The values passed to Activities through invocation parameters or returned through a result value are recorded in the Execution history.
+The entire Execution history is transferred from the Temporal Service to Workflow Workers when a Workflow state needs to recover.
+A large Execution history can thus adversely impact the performance of your Workflow.
+
+Therefore, be mindful of the amount of data you transfer through Activity invocation parameters or Return Values.
+Otherwise, no additional limitations exist on Activity implementations.
+
+    To spawn an [Activity Execution](/activity-execution), call [`ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ExecuteActivity) inside your Workflow Definition.
+    The API is available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow) package.
+    The `ExecuteActivity()` API call requires an instance of `workflow.Context`, the Activity function name, and any variables to be passed to the Activity Execution.
+        The Activity function name can be provided as a variable object (no quotations) or as a string.
+        The benefit of passing the actual function object is that the framework can validate the parameters against the Activity Definition.
+        The `ExecuteActivity` call returns a Future, which can be used to get the result of the Activity Execution.
+
+<div className="copycode-notice-container">
+  <a href="https://github.com/temporalio/documentation/blob/main/sample-apps/go/yourapp/your_workflow_definition_dacx.go">
+    View the source code
+  </a>{' '}
+  in the context of the rest of the application code.
+</div>
+
+```go
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {
+    // Set the options for the Activity Execution.
+    // Either StartToClose Timeout OR ScheduleToClose is required.
+    // Not specifying a Task Queue will default to the parent Workflow Task Queue.
+    activityOptions := workflow.ActivityOptions{
+        StartToCloseTimeout: 10 * time.Second,
+    }
+    ctx = workflow.WithActivityOptions(ctx, activityOptions)
+    activityParam := YourActivityParam{
+        ActivityParamX: param.WorkflowParamX,
+        ActivityParamY: param.WorkflowParamY,
+    }
+    // Use a nil struct pointer to call Activities that are part of a struct.
+    var a *YourActivityObject
+    // Execute the Activity and wait for the result.
+    var activityResult YourActivityResultObject
+    err := workflow.ExecuteActivity(ctx, a.YourActivityDefinition, activityParam).Get(ctx, &activityResult)
+    if err != nil {
+        return nil, err
+    }
+// ...
+}
+```
+
+### How to set the required Activity Timeouts {#required-timeout}
+
+Activity Execution semantics rely on several parameters.
+The only required value that needs to be set is either a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout) or a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout).
+These values are set in the Activity Options.
+
+To set an Activity Timeout in Go, create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the Activity Timeout field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+
+Available timeouts are:
+
+- `StartToCloseTimeout`
+- `ScheduleToClose`
+- `ScheduleToStartTimeout`
+
+```go
+activityOptions := workflow.ActivityOptions{
+  // Set Activity Timeout duration
+  ScheduleToCloseTimeout: 10 * time.Second,
+  // StartToCloseTimeout: 10 * time.Second,
+  // ScheduleToStartTimeout: 10 * time.Second,
+}
+ctx = workflow.WithActivityOptions(ctx, activityOptions)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+if err != nil {
+  // ...
+}
+```
+
+### Go ActivityOptions reference {#activity-options-reference}
+
+Create an instance of [`ActivityOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ActivityOptions) from the `go.temporal.io/sdk/workflow` package and use [`WithActivityOptions()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#WithActivityOptions) to apply it to the instance of `workflow.Context`.
+
+The instance of `workflow.Context` is then passed to the `ExecuteActivity()` call.
+
+| Field                                               | Required                          | Type                                                                        |
+| --------------------------------------------------- | --------------------------------- | --------------------------------------------------------------------------- |
+| [`ActivityID`](#activityid)                         | No                                | `string`                                                                    |
+| [`TaskQueueName`](#taskqueuename)                   | No                                | `string`                                                                    |
+| [`ScheduleToCloseTimeout`](#scheduletoclosetimeout) | Yes (or `StartToCloseTimeout`)    | `time.Duration`                                                             |
+| [`ScheduleToStartTimeout`](#scheduletostarttimeout) | No                                | `time.Duration`                                                             |
+| [`StartToCloseTimeout`](#scheduletoclosetimeout)    | Yes (or `ScheduleToCloseTimeout`) | `time.Duration`                                                             |
+| [`HeartbeatTimeout`](#heartbeattimeout)             | No                                | `time.Duration`                                                             |
+| [`WaitForCancellation`](#waitforcancellation)       | No                                | `bool`                                                                      |
+| [`OriginalTaskQueueName`](#originaltaskqueuename)   | No                                | `string`                                                                    |
+| [`RetryPolicy`](#retrypolicy)                       | No                                | [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy) |
+
+#### ActivityID
+
+- Type: `string`
+- Default: None
+
+```go
+activityOptions := workflow.ActivityOptions{
+  ActivityID: "your-activity-id",
+}
+ctx = workflow.WithActivityOptions(ctx, activityOptions)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+if err != nil {
+  // ...
+}
+```
+
+- [What is an Activity Id](/activity-execution#activity-id)
+
+#### TaskQueueName
+
+- Type: `string`
+- Default: Inherits the TaskQueue name from the Workflow.
+
+```go
+activityOptions := workflow.ActivityOptions{
+  TaskQueueName: "your-task-queue-name",
+}
+ctx = workflow.WithActivityOptions(ctx, activityOptions)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+if err != nil {
+  // ...
+}
+```
+
+- [What is a Task Queue](/task-queue)
+
+#### ScheduleToCloseTimeout
+
+To set a [Schedule-To-Close Timeout](/encyclopedia/detecting-activity-failures#schedule-to-close-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `ScheduleToCloseTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+
+This or `StartToCloseTimeout` must be set.
+
+- Type: `time.Duration`
+- Default: ∞ (infinity - no limit)
+
+```go
+activityOptions := workflow.ActivityOptions{
+  ScheduleToCloseTimeout: 10 * time.Second,
+}
+ctx = workflow.WithActivityOptions(ctx, activityOptions)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+if err != nil {
+  // ...
+}
+```
+
+#### ScheduleToStartTimeout
+
+To set a [Schedule-To-Start Timeout](/encyclopedia/detecting-activity-failures#schedule-to-start-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `ScheduleToStartTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+
+- Type: `time.Duration`
+- Default: ∞ (infinity - no limit)
+
+```go
+activityOptions := workflow.ActivityOptions{
+  ScheduleToStartTimeout: 10 * time.Second,
+}
+ctx = workflow.WithActivityOptions(ctx, activityOptions)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+if err != nil {
+  // ...
+}
+```
+
+#### StartToCloseTimeout
+
+To set a [Start-To-Close Timeout](/encyclopedia/detecting-activity-failures#start-to-close-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `StartToCloseTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+
+This or `ScheduleToCloseTimeout` must be set.
+
+- Type: `time.Duration`
+- Default: Same as the `ScheduleToCloseTimeout`
+
+```go
+activityOptions := workflow.ActivityOptions{
+  StartToCloseTimeout: 10 * time.Second,
+}
+ctx = workflow.WithActivityOptions(ctx, activityOptions)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+if err != nil {
+  // ...
+}
+```
+
+#### HeartbeatTimeout
+
+To set a [Heartbeat Timeout](/encyclopedia/detecting-activity-failures#heartbeat-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+
+```go
+activityOptions := workflow.ActivityOptions{
+  HeartbeatTimeout: 10 * time.Second,
+}
+ctx = workflow.WithActivityOptions(ctx, activityOptions)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+if err != nil {
+  // ...
+}
+```
+
+#### WaitForCancellation
+
+If `true` the Activity Execution will finish executing should there be a Cancellation request.
+
+- Type: `bool`
+- Default: `false`
+
+```go
+activityOptions := workflow.ActivityOptions{
+  WaitForCancellation: false,
+}
+ctx = workflow.WithActivityOptions(ctx, activityOptions)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+if err != nil {
+  // ...
+}
+```
+
+#### OriginalTaskQueueName
+
+```go
+activityOptions := workflow.ActivityOptions{
+  OriginalTaskQueueName: "your-original-task-queue-name",
+}
+ctx = workflow.WithActivityOptions(ctx, activityOptions)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+if err != nil {
+  // ...
+}
+```
+
+#### RetryPolicy
+
+To set a [RetryPolicy](/encyclopedia/retry-policies), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+
+- Type: [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)
+- Default:
+
+```go
+retryPolicy := &temporal.RetryPolicy{
+  InitialInterval:    time.Second,
+  BackoffCoefficient: 2.0,
+  MaximumInterval:    time.Second * 100, // 100 * InitialInterval
+  MaximumAttempts:    0, // Unlimited
+  NonRetryableErrorTypes: []string, // empty
+}
+```
+
+Providing a Retry Policy here is a customization that overwrites individual Field defaults.
+
+```go
+retryPolicy := &temporal.RetryPolicy{
+  InitialInterval:    time.Second,
+  BackoffCoefficient: 2.0,
+  MaximumInterval:    time.Second * 100,
+}
+
+activityOptions := workflow.ActivityOptions{
+  RetryPolicy: retryPolicy,
+}
+ctx = workflow.WithActivityOptions(ctx, activityOptions)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+if err != nil {
+  // ...
+}
+```
+
+### How to get the results of an Activity Execution {#get-activity-results}
+
+The call to spawn an [Activity Execution](/activity-execution) generates the [ScheduleActivityTask](/references/commands#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
+Workflow Executions can either block progress until the result is available through the Awaitable or continue progressing, making use of the result when it becomes available.
+
+The `ExecuteActivity` API call returns an instance of [`workflow.Future`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Futures) which has the following two methods:
+
+- `Get()`: Takes an instance of the `workflow.Context`, that was passed to the Activity Execution, and a pointer as parameters.
+  The variable associated with the pointer is populated with the Activity Execution result.
+  This call blocks until the results are available.
+- `IsReady()`: Returns `true` when the result of the Activity Execution is ready.
+
+Call the `Get()` method on the instance of `workflow.Future` to get the result of the Activity Execution.
+The type of the result parameter must match the type of the return value declared by the Activity function.
+
+```go
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
+ // ...
+ future := workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam)
+ var yourActivityResult YourActivityResult
+ if err := future.Get(ctx, &yourActivityResult); err != nil {
+   // ...
+ }
+ // ...
+}
+```
+
+Use the `IsReady()` method first to make sure the `Get()` call doesn't cause the Workflow Execution to wait on the result.
+
+```go
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
+ // ...
+ future := workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam)
+ // ...
+ if(future.IsReady()) {
+   var yourActivityResult YourActivityResult
+   if err := future.Get(ctx, &yourActivityResult); err != nil {
+     // ...
+   }
+ }
+ // ...
+}
+```
+
+It is idiomatic to invoke multiple Activity Executions from within a Workflow.
+Therefore, it is also idiomatic to either block on the results of the Activity Executions or continue on to execute additional logic, checking for the Activity Execution results at a later time.
