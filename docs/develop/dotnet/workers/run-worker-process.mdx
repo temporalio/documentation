@@ -1,0 +1,101 @@
+---
+id: run-worker-process
+title: Run Worker processes - .NET SDK
+description: Shows how to run Worker processes with the .NET SDK
+sidebar_label: Worker processes
+slug: /develop/dotnet/workers/run-worker-process
+toc_max_heading_level: 3
+tags:
+  - .NET SDK
+  - Temporal SDKs
+  - Worker
+---
+
+## Run Worker Process
+
+**How to create and run a Worker Process using the Temporal .NET SDK**
+
+The [Worker Process](/workers#worker-process) is where Workflow Functions and Activity Functions are executed.
+
+- Each [Worker Entity](/workers#worker-entity) in the Worker Process must register the exact Workflow Types and Activity Types it may execute.
+- Each Worker Entity must also associate itself with exactly one [Task Queue](/task-queue).
+- Each Worker Entity polling the same Task Queue must be registered with the same Workflow Types and Activity Types.
+
+A [Worker Entity](/workers#worker-entity) is the component within a Worker Process that listens to a specific Task Queue.
+
+Although multiple Worker Entities can be in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient.
+For more information, see the [Worker tuning guide](/develop/worker-performance).
+
+A Worker Entity contains a Workflow Worker and/or an Activity Worker, which makes progress on Workflow Executions and Activity Executions, respectively.
+
+To develop a Worker, create a new `Temporalio.Worker.TemporalWorker` providing the Client and worker options which include Task Queue, Workflows, and Activities and more.
+The following code example creates a Worker that polls for tasks from the Task Queue and executes the Workflow.
+When a Worker is created, it accepts a list of Workflows, a list of Activities, or both.
+
+```csharp
+// Create a client to localhost on default namespace
+var client = await TemporalClient.ConnectAsync(new("localhost:7233")
+{
+    LoggerFactory = LoggerFactory.Create(builder =>
+        builder.
+            AddSimpleConsole(options => options.TimestampFormat = "[HH:mm:ss] ").
+            SetMinimumLevel(LogLevel.Information)),
+});
+
+// Cancellation token cancelled on ctrl+c
+using var tokenSource = new CancellationTokenSource();
+Console.CancelKeyPress += (_, eventArgs) =>
+{
+    tokenSource.Cancel();
+    eventArgs.Cancel = true;
+};
+
+// Create an activity instance with some state
+var activities = new MyActivities();
+
+// Run worker until cancelled
+Console.WriteLine("Running worker");
+using var worker = new TemporalWorker(
+    client,
+    new TemporalWorkerOptions(taskQueue: "my-task-queue").
+        AddAllActivities(activities).
+        AddWorkflow<MyWorkflow>());
+try
+{
+    await worker.ExecuteAsync(tokenSource.Token);
+}
+catch (OperationCanceledException)
+{
+    Console.WriteLine("Worker cancelled");
+}
+```
+
+All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
+
+If a Worker polls a Task for a Workflow Type or Activity Type it does not know about, it fails that Task.
+However, the failure of the Task does not cause the associated Workflow Execution to fail.
+
+### Worker Processes with host builder and dependency injection
+
+The [Temporalio.Extensions.Hosting](https://github.com/temporalio/sdk-dotnet/tree/main/src/Temporalio.Extensions.Hosting) extension exists for .NET developers to support HostBuilder and Dependency Injection approaches.
+
+To create the same worker as before using this approach:
+
+```csharp
+var host = Host.CreateDefaultBuilder(args)
+    .ConfigureLogging(ctx => ctx.AddSimpleConsole().SetMinimumLevel(LogLevel.Information))
+    .ConfigureServices(ctx =>
+        ctx.
+            // Add the database client at the scoped level
+            AddScoped<IMyDatabaseClient, MyDatabaseClient>().
+            // Add the worker
+            AddHostedTemporalWorker(
+                clientTargetHost: "localhost:7233",
+                clientNamespace: "default",
+                taskQueue: "my-task-queue").
+            // Add the activities class at the scoped level
+            AddScopedActivities<MyActivities>().
+            AddWorkflow<MyWorkflow>())
+    .Build();
+await host.RunAsync();
+```
