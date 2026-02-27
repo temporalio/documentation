@@ -201,7 +201,7 @@ You can also use `client.get_activity_handle()` to create a handle to a previous
 ```python
 activity_handle = client.get_activity_handle(
     activity_id="my-standalone-activity-id",
-    activity_run_id="the-run-id",
+    run_id="the-run-id",
 )
 ```
 
@@ -235,7 +235,7 @@ from temporalio.client import Client
 async def my_application():
     client = await Client.connect("localhost:7233")
 
-    activities = await client.list_activities(
+    activities = client.list_activities(
         query="TaskQueue = 'my-task-queue'",
     )
 
