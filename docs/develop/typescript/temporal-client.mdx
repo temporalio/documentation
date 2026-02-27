@@ -676,7 +676,7 @@ directly required and run by Workers in the Node.js environment.
 Workers are flexible. You can host any or all of your Workflows and Activities on a Worker, and you can host multiple
 Workers on a single machine.
 
-The Worker need three main things:
+The Worker needs three main things:
 
 - `taskQueue`: The Task Queue to poll. This is the only required argument.
 - `activities`: Optional. Imported and supplied directly to the Worker.
@@ -748,7 +748,7 @@ places Activity and Child Workflow Tasks in the same Task Queue as the Workflow 
 ### Set a Workflow Id {#workflow-id}
 
 Although it is not required, we recommend providing your own
-[Workflow Id](/workflow-execution/workflowid-runid#workflow-id)that maps to a business process or business entity
+[Workflow Id](/workflow-execution/workflowid-runid#workflow-id) that maps to a business process or business entity
 identifier, such as an order identifier or customer identifier.
 
 Connect to a Client with `client.workflow.start()` and any arguments. Then specify your `taskQueue` and set your

@@ -154,7 +154,7 @@ export async function yourWorkflow(): Promise<string> {
 :::
 
 This is invalid because activity implementations should not be directly referenced by Workflow code.
-Activities are used by Workflows in order make network calls and reading from the filesystem, operations which are non-deterministic by nature because they rely on external state.
+Activities are used by Workflows in order to make network calls and read from the filesystem, operations which are non-deterministic by nature because they rely on external state.
 Temporal records Activity results in the Workflow history and in case your Workflow is replayed, completed Activities will not be rerun, instead their recorded result will be delivered to the Workflow.
 
 You'll typically see an error in this form in the Webpack output:
@@ -196,7 +196,7 @@ The two main sources of dev-prod discrepancies are in bundling and connecting.
 
 You may experience your Client sending stripped names as the Workflow "Type" when scheduling a Workflow.
 Webpack can change the Workflow's function name to something shorter.
-Temporal won't know how to handle the mismatch between the shorter name and the expect Workflow type.
+Temporal won't know how to handle the mismatch between the shorter name and the expected Workflow type.
 
 You may experience errors like this:
 
