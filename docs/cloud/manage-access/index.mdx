@@ -16,10 +16,37 @@ tags:
   - Users
 ---
 
-Temporal Cloud offers several ways to manage access to your Temporal Cloud account.
+Access to Temporal Cloud is governed by role-based access control (RBAC). Within an account, each access principal, such
+as user, user group or service account, is assigned one or more account-level roles, and each role has a set of
+permissions. Each principal can only perform an action if they have a role that grants them the necessary permissions.
+
+Within a Namespace, each principal is assigned one or more Namespace-level permissions, and each permission permits a
+set of actions. Each principal can only perform an action if they have a permission that grants them the necessary
+actions within the Namespace.
+
+Temporal Cloud supports Security Assertion Markup Language (SAML) and System for Cross-domain Identity Management (SCIM)
+for integration with your organization's identity provider (IDP). SAML enables single sign-on (SSO) by allowing your
+identity provider to authenticate users into Temporal Cloud. SCIM automatically creates, updates, and removes users and
+groups in Temporal Cloud based on changes in your identity provider.
+
+## Temporal Cloud accounts
+
+Accounts are the top-level container for access control. Each account has at least one user assigned the Account Owner
+role, which has full administrative permissions across the account, including users, billing and usage. An account is
+**not** an access principal itself.
+
+When you sign up for Temporal Cloud without joining an existing account, you are automatically assigned the Account
+Owner role for a new account. You can then invite other users to join the account and assign them roles.
+
+## Access principals
+
+Temporal Cloud offers the following principals for access control:
 
 - [**Users**](/cloud/users) - Manage individual user accounts and permissions
 - [**User Groups**](/cloud/user-groups) - Organize users into groups for simplified access management
 - [**Service Accounts**](/cloud/service-accounts) - Configure service accounts for automated access
-- [**SAML**](/cloud/saml) - Configure SAML-based single sign-on integration
+
+## Integration with identity providers
+
+- [**SAML**](/cloud/saml) - Configure SAML-based SSO integration
 - [**SCIM**](/cloud/scim) - Use your IDP to manage Temporal Cloud users and access via SCIM integration
